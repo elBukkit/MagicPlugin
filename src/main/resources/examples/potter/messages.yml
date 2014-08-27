@@ -4,10 +4,10 @@
 
 
 cooldown:
-    wait_seconds: You must wait another $seconds seconds.
-    wait_minutes: You must wait another $minutes minutes.
-    wait_hours: You must wait another $hours hours.
-    wait_moment: You must wait a moment.
+    wait_seconds: Spell is on cooldown for $seconds seconds.
+    wait_minutes: Spell is on cooldown for $minutes minutes.
+    wait_hours: Spell is on recharging for $hours hours.
+    wait_moment: Spell is recharging.
 
 worlds:
     Hogwarts:
@@ -112,12 +112,12 @@ categories:
 spells:
     accio:
         name: Accio
-        description: Brings an object to you
+        description: Summons an object to you
         cast: Accio $target!
         cast_player_message: ""
     aguamenti:
         name: Aguamenti
-        description: Creates a gush of water
+        description: Conjures a gush of water
         cast: Aguamenti!
     alohomora:
         name: Alohomora
@@ -125,7 +125,7 @@ spells:
         cast_finish: ""
     aparecium:
         name: Aparecium
-        description: Reveals concealed objects
+        description: Reveals concealed objects and paths
         cast_finish: ""
     apparate:
         name: Apparate
@@ -138,14 +138,14 @@ spells:
         no_target: Can't apparate there
     araniaexumai:
         name: Arania Exumai
-        description: Blast away arachnids
+        description: Charm for repelling arachnids
         cast: Arania Exumai!
     arresto:
         name: Arresto Momentum
         description: Keep you safe from a fall
     arrow:
         name: Arrow
-        description: Fire a magic arrow
+        description: Fires a magic arrow
     ascendio:
         name: Ascendio
         description: Lifts the caster high into the air
@@ -156,7 +156,7 @@ spells:
         area: You stir up a storm
     avadakedavra:
         name: Avada Kedavra
-        description: Kill your target.
+        description: The killing curse
         usage: Unforgiveable!
         cast: Avada Kedavra!
     avadamaxima:
@@ -166,7 +166,7 @@ spells:
         cast: Avada Kedavra $target!
     avis:
         name: Avis
-        description: Makes birds fly out of the end of your wand
+        description: Conjures birds
         cast: Avis!
     beat:
         name: Beat
@@ -187,7 +187,7 @@ spells:
         crash: CRASH!
     bubble:
         name: Bubble-Head Charm
-        description: Create a bubble of air around your head
+        description: Underwater breathing charm
     colorvaria:
         name: Colorvaria
         description: Changes the color of certain objects
@@ -210,7 +210,7 @@ spells:
         cast: Conjunctivitis $target!
     crucio:
         name: Crucio
-        description: Torture your opponent
+        description: Inflicts unbearable pain
         usage: Unforgiveable!
         cast: Crucio $target!
     dementor:
@@ -246,7 +246,7 @@ spells:
         description: Cause the target to become nearly invisible
     duro:
         name: Duro
-        description: Turn the target to stone
+        description: Turn's lava into stone
         cast: Duro!
     rennervate:
         name: Rennervate
@@ -263,25 +263,25 @@ spells:
         cast: Erecto Tent!
     episkey:
         name: Episkey
-        description: Heals relatively minor wounds
+        description: Minor healing charm
         cast_self: Episkey!
         cast: Episkey $target!
     ferula:
         name: Ferula
-        description: Heals major wounds
+        description: Major healing charm
         cast_self: Ferula!
         cast: Ferula $target!
     engorgio:
         name: Engorgio
-        description: Grow your target
+        description: Enlarges your target
         cast: Engorgio $target!
     evanesco:
         name: Evanesco
-        description: Disintegrate the target
+        description: Vanishes the target
         cast: Evanesco $target!
     expelliarmus:
         name: Expelliarmus
-        description: Disarm your opponent
+        description: Disarms your opponent
         cast: Expelliarmus!
     expulsion:
         name: Expulsion
@@ -289,7 +289,7 @@ spells:
         cast: Expelled $target!
     fiendfyre:
         name: Fiendfyre
-        description: Summon a dragon of fire
+        description: Summons a unstoppable flame
     finiteincantatem:
         name: Finite Incantatem
         description: Counter target player's spell
@@ -303,7 +303,7 @@ spells:
         description: Surround yourself with a ring of fire
     flagrate:
         name: Flagrate
-        description: Write in the air with fire
+        description: Write your name with fire
         cast: Flagrate!
     flipendo:
         name: Flipendo
@@ -336,7 +336,7 @@ spells:
         cost_free: You feel heavier
     immobulus:
         name: Immobulus
-        description: Immobilize your target
+        description: Immobilizes your target
         cast: Immobulus $target!
     locomotomortus:
         name: Locomoto Mortus
@@ -350,7 +350,7 @@ spells:
         cast_player_message: "&d&o$player: &r&5Imperio!"
     imperio:
         name: Imperio
-        description: Fling your target like a ragdoll
+        description: Fling your target
         usage: Unforgiveable!
         cast_player_message: ""
     impervius:
@@ -359,7 +359,7 @@ spells:
         cast: Impervius!
     incendio:
         name: Incendio
-        description: Light a fire at your target
+        description: Conjures a fire at your target
         cast: Incendio!
     incarcerous:
         name: Incarcerous
@@ -373,15 +373,15 @@ spells:
         description: Peer into your target's soul
     levicorpus:
         name: Levicorpus
-        description: Throw your opponent into the air
+        description: Levitates your target into the air
         cast: Levicorpus $target!
     lumos:
         name: Lumos
-        description: Light up the night time
+        description: Lights up your wand
         cast: Lumos!
     mayday:
         name: Mayday
-        description: Call for Help
+        description: Aurors call for help
         cast: Mayday!
     maydaymaxima:
         name: Mayday Maxima
@@ -417,7 +417,7 @@ spells:
         cast: Periculum!
     petrificustotalus:
         name: Petrificus Totalus
-        description: Paralyze your target
+        description: Paralyzes your target
         cast: Petrificus Totalus!
     patronus:
         name: Expecto Patronum
@@ -428,7 +428,7 @@ spells:
         description: Summon animated armor to protect you
     protego:
         name: Protego
-        description: Create a magical shield
+        description: Create a magical shield that reflects
         cast: Protego!
     protegomaxima:
         name: Protego Maxima
@@ -507,18 +507,18 @@ spells:
         cast: Sectumsempra!
     stupefy:
         name: Stupefy
-        description: Damage your target with a magical blast
+        description: Damage and stuns your target
         cast: Stupefy $target!
     silencio:
         name: Silencio
-        description: Silence your target
+        description: Silences your target
         cast: Silencio $target!
     silenciomaxima:
         name: Silencio Maxima
         description: Silence Everyone
     snowball:
         name: Bewitched Snowball
-        description: Animate snow to attach your target
+        description: Animate snow to attach your target and slows them
     jail:
         name: Jail
         description: Do not pass Go...
@@ -638,7 +638,7 @@ wands:
 
     gryffindor:
         name: Sword of Gryffindor
-        description: The Sword of Bravery
+        description: Godric Gryffindor's Sword
 
     lignumvitae:
         name: Dr00bles Wand
