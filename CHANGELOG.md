@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 1.8
+
+ - Add cooldown and permission accessors to spell class
+
 ## 1.7
 
  - Removed compatibility layer for Bukkit Metadata API (a PR of mine). Don't think that's gonna happen at this point.

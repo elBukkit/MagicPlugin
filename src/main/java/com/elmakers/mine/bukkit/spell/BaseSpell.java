@@ -660,6 +660,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     {
         return false;
     }
+
     public void checkActiveCosts() {
         if (activeCosts == null) return;
 
@@ -750,6 +751,17 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         pvpRestricted = node.getBoolean("pvp_restricted", pvpRestricted);
         castOnNoTarget = node.getBoolean("cast_on_no_target", false);
         hidden = node.getBoolean("hidden", false);
+
+        // Preload some parameters
+        ConfigurationSection parameters = node.getConfigurationSection("parameters");
+        if (parameters != null) {
+            cooldown = parameters.getInt("cooldown", cooldown);
+            cooldown = parameters.getInt("cool", cooldown);
+            bypassPvpRestriction = parameters.getBoolean("bypass_pvp", false);
+            bypassPvpRestriction = parameters.getBoolean("bp", bypassPvpRestriction);
+            bypassPermissions = parameters.getBoolean("bypass_permissions", bypassPermissions);
+            requirePassthrough = parameters.getBoolean("require_passthrough", requirePassthrough);
+        }
 
         effects.clear();
         if (node.contains("effects")) {
@@ -843,53 +855,44 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         color = ConfigurationUtils.getColor(parameters, "color", color);
         particle = parameters.getString("particle", null);
 
-        long currentTime = System.currentTimeMillis();
-        if (!mage.isCooldownFree()) {
-            double cooldownReduction = mage.getCooldownReduction() + this.cooldownReduction;
-            if (cooldownReduction < 1 && !isActive && cooldown > 0) {
-                int reducedCooldown = (int)Math.ceil((1.0f - cooldownReduction) * cooldown);
-                if (lastCast != 0 && lastCast > currentTime - reducedCooldown)
-                {
-                    long seconds = (lastCast - (currentTime - reducedCooldown)) / 1000;
-                    if (seconds > 60 * 60 ) {
-                        long hours = seconds / (60 * 60);
-                        sendMessage(Messages.get("cooldown.wait_hours").replace("$hours", ((Long)hours).toString()));
-                    } else if (seconds > 60) {
-                        long minutes = seconds / 60;
-                        sendMessage(Messages.get("cooldown.wait_minutes").replace("$minutes", ((Long)minutes).toString()));
-                    } else if (seconds > 1) {
-                        sendMessage(Messages.get("cooldown.wait_seconds").replace("$seconds", ((Long)seconds).toString()));
-                    } else {
-                        sendMessage(Messages.get("cooldown.wait_moment"));
-                    }
-                    processResult(SpellResult.COOLDOWN);
-                    return false;
+        long cooldownRemaining = getRemainingCooldown() / 1000;
+        if (cooldownRemaining > 0) {
+            if (cooldownRemaining > 60 * 60 ) {
+                long hours = cooldownRemaining / (60 * 60);
+                if (hours == 1) {
+                    sendMessage(Messages.get("cooldown.wait_hour"));
+                } else {
+                    sendMessage(Messages.get("cooldown.wait_hours").replace("$hours", ((Long) hours).toString()));
                 }
+            } else if (cooldownRemaining > 60) {
+                long minutes = cooldownRemaining / 60;
+                if (minutes == 1) {
+                    sendMessage(Messages.get("cooldown.wait_minute"));
+                } else {
+                    sendMessage(Messages.get("cooldown.wait_minutes").replace("$minutes", ((Long) minutes).toString()));
+                }
+            } else if (cooldownRemaining > 1) {
+                sendMessage(Messages.get("cooldown.wait_seconds").replace("$seconds", ((Long)cooldownRemaining).toString()));
+            } else {
+                sendMessage(Messages.get("cooldown.wait_moment"));
             }
+            processResult(SpellResult.COOLDOWN);
+            return false;
         }
 
-        if (!mage.isCostFree())
-        {
-            if (costs != null && !isActive)
-            {
-                for (CastingCost cost : costs)
-                {
-                    if (!cost.has(this))
-                    {
-                        String baseMessage = Messages.get("costs.insufficient_resources");
-                        String costDescription = cost.getDescription(mage);
-                        sendMessage(baseMessage.replace("$cost", costDescription));
-                        processResult(SpellResult.INSUFFICIENT_RESOURCES);
-                        return false;
-                    }
-                }
-            }
+        com.elmakers.mine.bukkit.api.spell.CastingCost required = getRequiredCost();
+        if (required != null) {
+            String baseMessage = Messages.get("costs.insufficient_resources");
+            String costDescription = required.getDescription(mage);
+            sendMessage(baseMessage.replace("$cost", costDescription));
+            processResult(SpellResult.INSUFFICIENT_RESOURCES);
+            return false;
         }
 
         return finalizeCast(parameters);
     }
 
-    protected boolean canCast(Location location) {
+    public boolean canCast(Location location) {
         if (!hasCastPermission(mage.getCommandSender())) return false;
         if (requirePassthrough && !controller.isPassthrough(location)) return false;
         return !pvpRestricted || bypassPvpRestriction || mage.isPVPAllowed(location) || mage.isSuperPowered();
@@ -1372,9 +1375,70 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     }
 
     @Override
+    public String getCooldownDescription() {
+        if (cooldown > 0) {
+            int cooldownInSeconds = cooldown / 1000;
+            if (cooldownInSeconds > 60 * 60 ) {
+                int hours = cooldownInSeconds / (60 * 60);
+                if (hours == 1) {
+                    return Messages.get("cooldown.description_hour");
+                }
+                return Messages.get("cooldown.description_hours").replace("$hours", ((Integer)hours).toString());
+            } else if (cooldownInSeconds > 60) {
+                int minutes = cooldownInSeconds / 60;
+                if (minutes == 1) {
+                    return Messages.get("cooldown.description_minute");
+                }
+                return Messages.get("cooldown.description_minutes").replace("$minutes", ((Integer)minutes).toString());
+            } else if (cooldownInSeconds > 1) {
+                return Messages.get("cooldown.description_seconds").replace("$seconds", ((Integer)cooldownInSeconds).toString());
+            } else {
+                return Messages.get("cooldown.description_moment");
+            }
+        }
+        return null;
+    }
+
+    @Override
     public long getCooldown()
     {
         return cooldown;
+    }
+
+    @Override
+    public CastingCost getRequiredCost() {
+        if (!mage.isCostFree())
+        {
+            if (costs != null && !isActive)
+            {
+                for (CastingCost cost : costs)
+                {
+                    if (!cost.has(this))
+                    {
+                        return cost;
+                    }
+                }
+            }
+        }
+
+        return null;
+    }
+
+    @Override
+    public long getRemainingCooldown() {
+        long currentTime = System.currentTimeMillis();
+        if (!mage.isCooldownFree()) {
+            double cooldownReduction = mage.getCooldownReduction() + this.cooldownReduction;
+            if (cooldownReduction < 1 && !isActive && cooldown > 0) {
+                int reducedCooldown = (int)Math.ceil((1.0f - cooldownReduction) * cooldown);
+                if (lastCast != 0 && lastCast > currentTime - reducedCooldown)
+                {
+                    return lastCast - (currentTime - reducedCooldown);
+                }
+            }
+        }
+
+        return 0;
     }
 
     @Override
