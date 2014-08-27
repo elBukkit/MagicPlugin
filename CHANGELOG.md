@@ -3,6 +3,9 @@
 ## 1.7
 
  - Removed compatibility layer for Bukkit Metadata API (a PR of mine). Don't think that's gonna happen at this point.
+ - Added separate mana/xp costs system
+ - Add spell levelling system
+ - Add "blocking" scheduled undo tasks
 
 ## 1.6
 
