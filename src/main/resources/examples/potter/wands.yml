@@ -834,6 +834,7 @@ restartyear:
     icon: firework_charge
 
 staff:
+    icon: firework_charge
     upgrade: true
     upgrade_path: graduate
     effect_color: 'DDDDDD'
@@ -855,8 +856,12 @@ staff:
      - finiteincantatem|3
      - deprimo|3
      - duro|2
+     - incendio|3
+     - arrow|3
+     - episkey|2
 
 headstaff:
+    icon: firework_charge
     upgrade: true
     upgrade_path: graduate
     xp_max: 250
@@ -888,6 +893,7 @@ headstaff:
      - aguamenti|2
      - reducto|2
      - deprimo|3
+     - incendio|3
 
 # Other upgrades
 

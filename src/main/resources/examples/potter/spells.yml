@@ -2954,6 +2954,12 @@ reducio:
 
 reducio|2:
     parameters:
+        player_damage: 2
+        entity_damage: 8
+        target_breakables: 2
+
+reducio|3:
+    parameters:
         player_damage: 4
         entity_damage: 10
         target_breakables: 3

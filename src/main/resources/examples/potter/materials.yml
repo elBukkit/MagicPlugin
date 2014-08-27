@@ -189,12 +189,14 @@ destructible:
 - monster_eggs
 - quartz_block
 - quartz_stairs
+- quartz_ore
 
 hardenable:
 - monster_eggs
 - lava
 - stationary_lava
 - quartz_block
+- quartz_ore
 
 floatable:
 - quartz_ore
@@ -205,5 +207,3 @@ colorable:
 - stained_clay
 - stained_glass_pane
 - carpet
-- monaster_eggs
-- quartz_block
