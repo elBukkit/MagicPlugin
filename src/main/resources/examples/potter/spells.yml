@@ -2876,7 +2876,7 @@ protego:
         breakable: 3
         brushcolor: false
         bypass_build: true
-        cooldown: 250
+        cooldown: 350
         reflect_chance: 0.1
         bypass_confusion: true
         bypass_backfire: true

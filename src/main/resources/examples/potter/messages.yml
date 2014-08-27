@@ -38,7 +38,7 @@ costs:
     mana_amount: $amount Energy
     mana: Energy
     xp: XP
-    insufficient_resources: Not enough $cost
+    insufficient_resources: ""
 
 spell:
     brush: Uses Material Brushes
