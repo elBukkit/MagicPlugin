@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## 1.7
+
+ - Added separate mana/xp costs system
+ - Add "stealthy" mages
+ - Allow "blocking" scheduled undo tasks
+ - Add spell levelling API
+
 ## 1.6
 
  - More effect player controls
