@@ -378,6 +378,7 @@ key:
     effect_color: 'FFFFFF'
     uses: 1
     overrides: range 5
+    cost_reduction: 2
     spells:
         - alohomora
 

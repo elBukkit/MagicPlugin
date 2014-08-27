@@ -2842,6 +2842,7 @@ piertotum:
         reason: custom
         undo: 10000
         name: Animated Statue
+        entity_undo: false
     costs:
         mana: 15
     costs:

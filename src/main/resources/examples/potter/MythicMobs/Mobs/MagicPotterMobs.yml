@@ -153,8 +153,8 @@ Werewolf:
 PoisonToad:
   Mobtype: slime
   Display: "&aPoison Toad"
-  Health: 30
-  Damage: 2
+  Health: 20
+  Damage: 1
   Drops:
   - MinorBoss
   Options:
@@ -169,12 +169,12 @@ PoisonToad:
 GiantToad:
   Mobtype: slime
   Display: "&aGiant Toad"
-  Health: 100
-  Damage: 4
+  Health: 50
+  Damage: 2
   Drops:
   - MidBoss
   Options:
-    Size: 10
+    Size: 5
     MovementSpeed: 0.1
     PreventSlimeSplit: true
     PreventOtherDrops: true

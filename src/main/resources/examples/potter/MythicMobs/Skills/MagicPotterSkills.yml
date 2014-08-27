@@ -4,7 +4,7 @@ SummonTarantulas:
   - TargetInLineOfSight
   - TargetWithin 15
   Skills:
-  - msg 40:'$boss; &4Come to me, children!' >0 1
+  - msg 40:'$boss: &4Come to me, children!' >0 1
   - delay 20
   - summon $Tarantula:1:3 >0 1
   - delay 20
