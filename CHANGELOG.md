@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 1.8
+
+ - Add cooldown and permission accessors to spell class
+
 ## 1.7
 
  - Added separate mana/xp costs system

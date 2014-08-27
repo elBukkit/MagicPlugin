@@ -28,4 +28,7 @@ public interface Spell extends SpellTemplate {
     public Vector getDirection();
     public boolean isActive();
     public boolean hasBrushOverride();
+    public boolean canCast(Location location);
+    public long getRemainingCooldown();
+    public CastingCost getRequiredCost();
 }
