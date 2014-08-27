@@ -41,9 +41,10 @@ lignumvitae:
     bound: true
     keep: true
     fill: true
+    organize: true
     quiet: 1
-    xp_max: 100
-    xp_regeneration: 20
+    xp_max: 220
+    xp_regeneration: 40
     effect_color: 'FF00FF'
     effect_particle: enchantment_table
     effect_particle_count: 1
@@ -59,44 +60,15 @@ allis0n:
     path: graduate
     bound: true
     keep: true
+    fill: true
+    organize: true
     quiet: 1
-    xp_max: 100
-    xp_regeneration: 20
+    xp_max: 220
+    xp_regeneration: 40
     effect_color: '00AACC'
     effect_bubbles: true
     active_spell: ascendio
     hidden: true
-    spells:
-      - flagrate
-      - flipendo
-      - lumos
-      - stupefy
-      - apparatemaxima
-      - ascendio
-      - bombarda
-      - avis
-      - bogies
-      - disillusion
-      - incendio
-      - expelliarmus
-      - immobulus
-      - conjunctivitis
-      - episkey
-      - finiteincantatem
-      - vulnera
-      - flight
-      - reparifarge
-      - petrificustotalus
-      - accio
-      - sectumsempra
-      - deprimo
-      - arresto
-      - protego
-      - meteo
-      - nox
-      - atmos
-      - rennervate
-      - snowball
 
 elder:
     icon: diamond_hoe
@@ -158,7 +130,7 @@ wolf:
 unspeakable:
     icon: diamond_axe
     undroppable: true
-    path: master
+    path: graduate
     bound: true
     keep: true
     fill: true
