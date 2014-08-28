@@ -21,6 +21,17 @@
 # https://github.com/elBukkit/MagicPlugin/tree/master/src/main/resources/examples
 #
 
+# Load one of the included example configurations instead of the defaults.
+# Current options: potter, safe, survival
+# Any customizations will still be loaded on top of the example configs.
+# example: potter
+
+# Add one or more of the included example configurations on top of the defaults.
+# The config.yml potion is not loaded, for sanity's sake.
+# add_examples:
+#   - potter
+#   - survival
+
 # Some common fields that you might like to override:
 
 # Give new players a wand when they first join
