@@ -92,9 +92,11 @@ public class WandCommandExecutor extends MagicTabExecutor {
 		List<String> options = new ArrayList<String>();
 		
 		Player player = (sender instanceof Player) ? (Player)sender : null;
-		
-		if (commandName.equalsIgnoreCase("wandp")) 
+
+        String permissionKey = "wand";
+		if (commandName.contains("wandp"))
 		{
+            permissionKey = "wandp";
 			if (args.length > 0) {
 				player = Bukkit.getPlayer(args[0]);
 			}
@@ -108,31 +110,31 @@ public class WandCommandExecutor extends MagicTabExecutor {
 		}
 		
 		if (args.length == 1) {
-			addIfPermissible(sender, options, "Magic.commands." + commandName + ".", "add");
-			addIfPermissible(sender, options, "Magic.commands." + commandName + ".", "remove");
-			addIfPermissible(sender, options, "Magic.commands." + commandName + ".", "name");
-			addIfPermissible(sender, options, "Magic.commands." + commandName + ".", "fill");
-			addIfPermissible(sender, options, "Magic.commands." + commandName + ".", "configure");
-            addIfPermissible(sender, options, "Magic.commands." + commandName + ".", "override");
-			addIfPermissible(sender, options, "Magic.commands." + commandName + ".", "organize");
-			addIfPermissible(sender, options, "Magic.commands." + commandName + ".", "combine");
-			addIfPermissible(sender, options, "Magic.commands." + commandName + ".", "upgrade");
-			addIfPermissible(sender, options, "Magic.commands." + commandName + ".", "describe");
-            addIfPermissible(sender, options, "Magic.commands." + commandName + ".", "enchant");
-            addIfPermissible(sender, options, "Magic.commands." + commandName + ".", "unenchant");
-            addIfPermissible(sender, options, "Magic.commands." + commandName + ".", "duplicate");
-            addIfPermissible(sender, options, "Magic.commands." + commandName + ".", "restore");
-            addIfPermissible(sender, options, "Magic.commands." + commandName + ".", "unlock");
+			addIfPermissible(sender, options, "Magic.commands." + permissionKey + ".", "add");
+			addIfPermissible(sender, options, "Magic.commands." + permissionKey + ".", "remove");
+			addIfPermissible(sender, options, "Magic.commands." + permissionKey + ".", "name");
+			addIfPermissible(sender, options, "Magic.commands." + permissionKey + ".", "fill");
+			addIfPermissible(sender, options, "Magic.commands." + permissionKey + ".", "configure");
+            addIfPermissible(sender, options, "Magic.commands." + permissionKey + ".", "override");
+			addIfPermissible(sender, options, "Magic.commands." + permissionKey + ".", "organize");
+			addIfPermissible(sender, options, "Magic.commands." + permissionKey + ".", "combine");
+			addIfPermissible(sender, options, "Magic.commands." + permissionKey + ".", "upgrade");
+			addIfPermissible(sender, options, "Magic.commands." + permissionKey + ".", "describe");
+            addIfPermissible(sender, options, "Magic.commands." + permissionKey + ".", "enchant");
+            addIfPermissible(sender, options, "Magic.commands." + permissionKey + ".", "unenchant");
+            addIfPermissible(sender, options, "Magic.commands." + permissionKey + ".", "duplicate");
+            addIfPermissible(sender, options, "Magic.commands." + permissionKey + ".", "restore");
+            addIfPermissible(sender, options, "Magic.commands." + permissionKey + ".", "unlock");
 
             Collection<String> allWands = api.getWandKeys();
 			for (String wandKey : allWands) {
-				addIfPermissible(sender, options, "Magic.commands." + commandName + ".wand.", wandKey, true);
+				addIfPermissible(sender, options, "Magic.commands." + permissionKey + ".wand.", wandKey, true);
 			}
 		}
 		
 		if (args.length == 2) {
 			String subCommand = args[0];
-			String subCommandPNode = "Magic.commands." + commandName + "." + subCommand;
+			String subCommandPNode = "Magic.commands." + permissionKey + "." + subCommand;
 			
 			if (!api.hasPermission(sender, subCommandPNode)) {
 				return options;
@@ -173,7 +175,7 @@ public class WandCommandExecutor extends MagicTabExecutor {
 			if (subCommand.equalsIgnoreCase("combine")) {
 				Collection<String> allWands = api.getWandKeys();
 				for (String wandKey : allWands) {
-					addIfPermissible(sender, options, "Magic.commands." + commandName + ".combine.", wandKey, true);
+					addIfPermissible(sender, options, "Magic.commands." + permissionKey + ".combine.", wandKey, true);
 				}
 			}
 		}
@@ -183,7 +185,7 @@ public class WandCommandExecutor extends MagicTabExecutor {
 			String subCommand = args[0];
 			String subCommand2 = args[1];
 
-            String commandPNode = "Magic.commands." + commandName + "." + subCommand;
+            String commandPNode = "Magic.commands." + permissionKey + "." + subCommand;
 
             if (!api.hasPermission(sender, commandPNode)) {
                 return options;
@@ -203,7 +205,7 @@ public class WandCommandExecutor extends MagicTabExecutor {
                 }
             }
 			
-			String subCommandPNode = "Magic.commands." + commandName + "." + subCommand + "." + subCommand2;
+			String subCommandPNode = "Magic.commands." + permissionKey + "." + subCommand + "." + subCommand2;
 			if (!api.hasPermission(sender, subCommandPNode)) {
 				return options;
 			}
