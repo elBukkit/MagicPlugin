@@ -84,7 +84,7 @@ public class FireSpell extends BlockSpell
 
 		if (radius < 1)
 		{
-			action.perform(targetBlock);
+			action.perform(findBlockUnder(targetBlock));
 		}
 		else
 		{

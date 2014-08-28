@@ -160,7 +160,7 @@ public class FrostSpell extends BlockSpell
 
 		if (radius < 1)
 		{
-			action.perform(target.getBlock());
+			action.perform(findBlockUnder(target.getBlock()));
 		}
 		else
 		{
