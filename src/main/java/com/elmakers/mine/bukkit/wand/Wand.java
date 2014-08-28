@@ -3295,4 +3295,9 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         Integer level = spellLevels.get(key.getBaseKey());
         return level == null ? 0 : level;
     }
+
+    public Integer getPlayerInventorySlot()
+    {
+        return playerInventorySlot;
+    }
 }

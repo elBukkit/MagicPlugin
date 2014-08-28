@@ -2748,6 +2748,17 @@ public class MagicController implements Listener, MageController {
                 event.setCancelled(true);
                 return;
             }
+        } else if (activeWand != null) {
+            // Check for changes that could have been made to the active wand
+            Integer activeSlot = activeWand.getPlayerInventorySlot();
+            if (activeSlot != null
+                && event.getSlot() == activeSlot
+                || (event.getAction() == InventoryAction.HOTBAR_SWAP && event.getHotbarButton() == activeSlot)
+            )
+            {
+                activeWand.deactivate();
+                activeWand = null;
+            }
         }
 
 		// Check for dropping items out of a wand's inventory
@@ -2837,22 +2848,32 @@ public class MagicController implements Listener, MageController {
                 previousWand.closeInventory();
 			}
 		} else {
+            if (previousWand != null) {
+                if (player.getInventory().getHeldItemSlot() != previousWand.getPlayerInventorySlot()) {
+                    previousWand.deactivate();
+                    previousWand = null;
+                }
+            }
+            ItemStack currentItem = player.getItemInHand();
+
             // If we're not in a wand inventory, check for the player
             // having re-arranged their items such that a new wand is now active
             // we don't get an equip event for this.
             // Note that ".equals" is very strong and will detect any changes at all
             // in the wand item, including an active spell change.
-            Wand wand = Wand.getActiveWand(this, player);
             boolean changedWands = false;
-            if (previousWand != null && wand == null) changedWands = true;
-            if (previousWand == null && wand != null) changedWands = true;
-            if (previousWand != null && wand != null && !previousWand.getItem().equals(wand.getItem())) changedWands = true;
+            boolean itemIsWand = Wand.isWand(currentItem);
+            if (previousWand != null && !itemIsWand) changedWands = true;
+            if (previousWand == null && itemIsWand) changedWands = true;
+            if (previousWand != null && itemIsWand && !previousWand.getItem().equals(currentItem)) changedWands = true;
+
             if (changedWands) {
                 if (previousWand != null) {
                     previousWand.deactivate();
                 }
-                if (wand != null) {
-                    wand.activate(mage);
+                if (itemIsWand) {
+                    Wand newWand = new Wand(this, currentItem);
+                    newWand.activate(mage);
                 }
             }
         }
