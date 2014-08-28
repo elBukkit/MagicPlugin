@@ -4613,6 +4613,7 @@ hat:
     category: staff
     class: HatSpell
     worth: 18
+    hidden: true
     effects:
         cast:
         -  class: EffectSingle
