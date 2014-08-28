@@ -136,7 +136,6 @@ public class FrostSpell extends BlockSpell
 				if (li instanceof Player)
 				{
                     CompatibilityUtils.magicDamage(li, playerDamage, mage.getEntity());
-					li.damage(playerDamage, mage.getEntity());
 				}
 				else
 				{
