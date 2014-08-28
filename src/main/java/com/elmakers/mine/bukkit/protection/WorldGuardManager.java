@@ -102,7 +102,7 @@ public class WorldGuardManager {
             ApplicableRegionSet checkSet = regionManager.getApplicableRegions(location);
             if (checkSet == null) return true;
 
-           return customFlags.canCast(checkSet, spell.getKey());
+           return customFlags.canCast(checkSet, spell.getSpellKey().getBaseKey());
         }
         return true;
     }
