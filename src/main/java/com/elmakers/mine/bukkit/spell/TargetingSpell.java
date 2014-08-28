@@ -590,6 +590,30 @@ public abstract class TargetingSpell extends BaseSpell {
         return location.add(direction).getBlock();
     }
 
+    public Block findBlockUnder(Block block)
+    {
+        int depth = 0;
+        if (targetThroughMaterials.contains(block.getType()))
+        {
+            while (depth < verticalSearchDistance && targetThroughMaterials.contains(block.getType()))
+            {
+                depth++;
+                block = block.getRelative(BlockFace.DOWN);
+            }
+        }
+        else
+        {
+            while (depth < verticalSearchDistance && !targetThroughMaterials.contains(block.getType()))
+            {
+                depth++;
+                block = block.getRelative(BlockFace.UP);
+            }
+            block = block.getRelative(BlockFace.DOWN);
+        }
+
+        return block;
+    }
+
     public void coverSurface(Location center, int radius, BlockAction action)
     {
         int y = center.getBlockY();
@@ -602,25 +626,7 @@ public abstract class TargetingSpell extends BaseSpell {
                     int x = center.getBlockX() + dx;
                     int z = center.getBlockZ() + dz;
                     Block block = getWorld().getBlockAt(x, y, z);
-                    int depth = 0;
-
-                    if (targetThroughMaterials.contains(block.getType()))
-                    {
-                        while (depth < verticalSearchDistance && targetThroughMaterials.contains(block.getType()))
-                        {
-                            depth++;
-                            block = block.getRelative(BlockFace.DOWN);
-                        }
-                    }
-                    else
-                    {
-                        while (depth < verticalSearchDistance && !targetThroughMaterials.contains(block.getType()))
-                        {
-                            depth++;
-                            block = block.getRelative(BlockFace.UP);
-                        }
-                        block = block.getRelative(BlockFace.DOWN);
-                    }
+                    block = findBlockUnder(block);
                     Block coveringBlock = block.getRelative(BlockFace.UP);
                     if (!targetThroughMaterials.contains(block.getType()) && targetThroughMaterials.contains(coveringBlock.getType()))
                     {

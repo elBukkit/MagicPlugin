@@ -3,6 +3,7 @@
 ## 1.8
 
  - Add cooldown and permission accessors to spell class
+ - Add findBlockUnder method
 
 ## 1.7
 
