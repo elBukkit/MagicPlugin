@@ -43,7 +43,7 @@ public class FireSpell extends BlockSpell
 				block = block.getRelative(BlockFace.UP);
 			}
 			super.perform(block);
-            MaterialAndData applyMaterial = new MaterialAndData(Material.FIRE);
+            MaterialAndData applyMaterial = new MaterialAndData(material);
             applyMaterial.modify(block);
 
 			return SpellResult.CAST;
