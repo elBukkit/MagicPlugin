@@ -23,9 +23,12 @@ gryffindor:
     undroppable: true
     path: graduate
     keep: true
+    cost_reduction: 2
+    cooldown_reduction: 2
+    protection_falling: 2
     quiet: 1
-    xp_max: 100
-    xp_regeneration: 50
+    power: 0
+    haste: 0.1
     effect_color: '880000'
     effect_bubbles: true
     active_spell: ascendio
@@ -35,7 +38,7 @@ gryffindor:
       - vulnera
 
 lignumvitae:
-    icon: wood_hoe,gold_axe,gold_pickaxe,gold_spade
+    icon: wood_hoe,gold_axe,gold_pickaxe,gold_spade,stone_axe,stone_hoe,stone_pickaxe,stone_spade,wood_axe,wood_spade,wood_pickaxe
     undroppable: true
     path: graduate
     bound: true
@@ -55,7 +58,7 @@ lignumvitae:
 
 
 allis0n:
-    icon: wood_hoe
+    icon: wood_hoe,gold_axe,gold_pickaxe,gold_spade,stone_axe,stone_hoe,stone_pickaxe,stone_spade,wood_axe,wood_spade,wood_pickaxe
     undroppable: true
     path: graduate
     bound: true
