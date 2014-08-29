@@ -681,7 +681,7 @@ wands:
     unspeakable:
         name: Unspeakable
         description: $wood and $core
-		
+
     slytherin:
         name: Wand of Slytherin
         description: Hawthorn and Phoenix Feather
