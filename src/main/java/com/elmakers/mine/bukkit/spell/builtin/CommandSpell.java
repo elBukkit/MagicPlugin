@@ -42,7 +42,7 @@ import java.util.List;
  */
 public class CommandSpell extends TargetingSpell {
     public final static String[] PARAMETERS = {
-            "command", "console", "op"
+            "command", "console", "op", "radius"
     };
 
     @Override
@@ -124,13 +124,25 @@ public class CommandSpell extends TargetingSpell {
             }
 
             if (command.contains("@a")) {
+                double radius = parameters.getDouble("radius", 0);
+                double radiusSquared = radius * radius;
                 Player exclude = mage.getPlayer();
-                if (parameters.getBoolean("excludePlayer", true)) {
+                if (parameters.getBoolean("exclude_player", true)) {
                     exclude = null;
                 }
                 Player[] players = Bukkit.getOnlinePlayers();
+                Location source = targetLocation == null ? getLocation() : targetLocation;
                 for (Player player : players) {
                     if (exclude != null && exclude.equals(player)) continue;
+                    if (radiusSquared != 0) {
+                        Location playerLocation = player.getLocation();
+                        if (playerLocation.getWorld().equals(source.getWorld())) {
+                            continue;
+                        }
+                        if (playerLocation.distanceSquared(source) > radiusSquared) {
+                            continue;
+                        }
+                    }
 
                     String playerCommand = command;
                     playerCommand = playerCommand.replace("@a", player.getName());

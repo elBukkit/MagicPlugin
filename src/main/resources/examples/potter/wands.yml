@@ -886,6 +886,9 @@ staff:
     xp_regeneration: 40
     spells:
      - silencio
+     - silenciomaxima
+     - amplify
+     - amplifytotalus
      - jail
      - protego|3
      - stupefy|3
@@ -919,6 +922,9 @@ headstaff:
      - expulsion
      - silencio
      - silenciomaxima
+     - silenciototalus
+     - amplify
+     - amplifytotalus
      - jail
      - meteo
      - atmos

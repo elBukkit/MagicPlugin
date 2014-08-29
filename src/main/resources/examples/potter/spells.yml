@@ -3232,13 +3232,118 @@ silencio:
              iterations: 24
     parameters:
         commands:
-        - mute @t 120
+        - mute @t
         target_type: Player
         target: other
         range: 16
         target_breakables: 1
         bypass_backfire: true
         cooldown: 1000
+        check_protection: true
+
+silenciomaxima:
+    icon: ink_sack:3
+    category: staff
+    class: CommandSpell
+    hidden: true
+    worth: 500
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: shoot_arrow
+           sound_volume: 0.4
+           sound_pitch: 0.1
+           location: origin
+           effectlib:
+             class: AtomEffect
+             particleNucleus: witch_magic
+             particleOrbital: magic_critical
+             iterations: 20
+    parameters:
+        range: 32
+        allow_max_range: true
+        radius: 16
+        commands:
+        - mute @a
+        target: block
+        bypass_backfire: true
+        check_protection: true
+
+silenciototalus:
+    icon: ink_sack:3
+    category: staff
+    class: CommandSpell
+    hidden: true
+    worth: 500
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: shoot_arrow
+           sound_volume: 0.4
+           sound_pitch: 0.1
+           location: origin
+           effectlib:
+             class: AtomEffect
+             particleNucleus: witch_magic
+             particleOrbital: magic_critical
+             iterations: 20
+    parameters:
+        commands:
+        - mute @a 60
+        - say §dSILENCIO TOTALUS!
+        target: none
+        bypass_backfire: true
+        check_protection: true
+
+amplify:
+    icon: ink_sack:3
+    category: staff
+    class: CommandSpell
+    hidden: true
+    worth: 500
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: shoot_arrow
+           sound_volume: 0.4
+           sound_pitch: 0.1
+           location: origin
+           effectlib:
+             class: AtomEffect
+             particleNucleus: witch_magic
+             particleOrbital: magic_critical
+             iterations: 20
+    parameters:
+        commands:
+        - mute @t 0
+        target: none
+        bypass_backfire: true
+        check_protection: true
+
+amplifytotalus:
+    icon: ink_sack:3
+    category: staff
+    class: CommandSpell
+    hidden: true
+    worth: 500
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: shoot_arrow
+           sound_volume: 0.4
+           sound_pitch: 0.1
+           location: origin
+           effectlib:
+             class: AtomEffect
+             particleNucleus: witch_magic
+             particleOrbital: magic_critical
+             iterations: 20
+    parameters:
+        commands:
+        - mute @a 0
+        - say §dAMPLIFY TOTALUS!
+        target: none
+        bypass_backfire: true
         check_protection: true
 
 expulsion:
@@ -3294,32 +3399,6 @@ jail:
         brush: schematic|cage
         transparent: transparent_to_construction
         bypass_backfire: true
-
-silenciomaxima:
-    icon: ink_sack:3
-    category: staff
-    class: CommandSpell
-    hidden: true
-    worth: 500
-    effects:
-        cast:
-        -  class: EffectSingle
-           sound: shoot_arrow
-           sound_volume: 0.4
-           sound_pitch: 0.1
-           location: origin
-           effectlib:
-             class: AtomEffect
-             particleNucleus: witch_magic
-             particleOrbital: magic_critical
-             iterations: 20
-    parameters:
-        commands:
-        - mute @a 10
-        - say §dSILENCIO MAXIMA!
-        target: none
-        bypass_backfire: true
-        check_protection: true
 
 stupefy:
     icon: ink_sack:4

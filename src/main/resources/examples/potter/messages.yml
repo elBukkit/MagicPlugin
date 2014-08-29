@@ -130,6 +130,12 @@ spells:
         name: Alohomora
         description: Unlock locked doors
         cast_finish: ""
+    amplify:
+        name: Amplify
+        description: Un-mute the target player
+    amplifytotalus:
+        name: Amplify Totalus
+        description: Un-mute everyone
     aparecium:
         name: Aparecium
         description: Reveals concealed objects and paths
@@ -522,6 +528,9 @@ spells:
         cast: Silencio $target!
     silenciomaxima:
         name: Silencio Maxima
+        description: Silence everyone in the area
+    silenciototalus:
+        name: Silencio Totalus
         description: Silence Everyone
     snowball:
         name: Bewitched Snowball
