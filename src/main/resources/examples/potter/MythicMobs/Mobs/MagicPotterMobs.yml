@@ -35,9 +35,6 @@ Inferius:
   - Inferius
   Equipment:
   - Deatheater_Helmet:4
-  - Deatheater_Chestplate:3
-  - Deatheater_Leggings:2
-  - Deatheater_Boots:1
   Options:
     MaxCombatDistance: 32
     KnockbackResistance: 1

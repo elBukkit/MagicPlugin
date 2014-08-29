@@ -1582,11 +1582,11 @@ episkey:
 
 episkey|2:
     parameters:
-    heal: 4
+        heal: 4
 
 episkey|3:
     parameters:
-    heal: 10
+        heal: 10
 
 firestorm:
     icon: fire

@@ -714,9 +714,9 @@ wands:
         name: The Headmaster
         description: The Elder Broom
 
-    unbroomable:
-        name: Unspeakable 9000
-        description: Shhhhhhhhhhhhh
+    unspeakabroom:
+        name: Unspeakabroom
+        description: Whooshhhhhhhhhhhh
 
     nimbus:
         name: Nimbus 2000

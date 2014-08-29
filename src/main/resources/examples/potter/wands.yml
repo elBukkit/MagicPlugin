@@ -447,11 +447,11 @@ minister:
     indestructible: true
     locked: true
     effect_color: '00AAFF'
-    overrides: broom.mount_color creamy, broom.mount_style whitefield, broom.mount_boost 4, broom.mount_boost_ticks 600, broom.mount_health 20, broom.slow_ticks 1, broom.steer_speed 0, broom.slow_steer_speed 0.05, broom.mount_boost_per_jump 0.5
+    overrides: broom.mount_color creamy, broom.mount_style whitefield, broom.mount_boost 4, broom.mount_boost_ticks 600, broom.mount_health 20, broom.slow_ticks 1, broom.steer_speed 0, broom.slow_steer_speed 0.05, broom.mount_boost_per_jump 0.5, broom.effect_confusion 0
     spells:
         - broom
 
-unbroomable:
+unspeakabroom:
     mode: cast
     path: broom
     active_spell: broom
@@ -459,7 +459,7 @@ unbroomable:
     indestructible: true
     locked: true
     effect_color: '00FFFF'
-    overrides: broom.mount_color creamy, broom.mount_style whitefield, broom.mount_boost 4, broom.mount_boost_ticks 600, broom.mount_health 20, broom.slow_ticks 2, broom.steer_speed 0, broom.slow_steer_speed 0.05, broom.mount_boost_per_jump 0.3
+    overrides: broom.mount_color creamy, broom.mount_style whitefield, broom.mount_boost 4, broom.mount_boost_ticks 600, broom.mount_health 20, broom.slow_ticks 2, broom.steer_speed 0, broom.slow_steer_speed 0.05, broom.mount_boost_per_jump 0.3, broom.effect_confusion 0
     spells:
         - broom
 
@@ -471,7 +471,7 @@ headmaster:
     indestructible: true
     locked: true
     effect_color: 'FF00FF'
-    overrides: broom.mount_color creamy, broom.mount_style white_dots, broom.mount_boost 4, broom.mount_boost_ticks 600, broom.mount_health 20, broom.slow_ticks 5, broom.steer_speed 0, broom.slow_steer_speed 0.05, broom.mount_boost_per_jump 0.3
+    overrides: broom.mount_color creamy, broom.mount_style white_dots, broom.mount_boost 4, broom.mount_boost_ticks 600, broom.mount_health 20, broom.slow_ticks 5, broom.steer_speed 0, broom.slow_steer_speed 0.05, broom.mount_boost_per_jump 0.3, broom.effect_confusion 0
     spells:
         - broom
 
@@ -874,6 +874,9 @@ prefect:
      - arrow|3
      - episkey|2
      - reducio|2
+     - lumos|3
+     - conjunctivitis|2
+     - flipendo|3
 
 staff:
     icon: firework_charge
@@ -902,6 +905,9 @@ staff:
      - arrow|3
      - episkey|2
      - reducio|2
+     - lumos|3
+     - conjunctivitis|2
+     - flipendo|3
 
 headstaff:
     icon: firework_charge
@@ -935,6 +941,9 @@ headstaff:
      - reducto|2
      - deprimo|3
      - incendio|3
+     - lumos|3
+     - conjunctivitis|2
+     - flipendo|3
 
 # Other upgrades
 
