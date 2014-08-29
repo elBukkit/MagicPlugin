@@ -3462,12 +3462,16 @@ vermillious|2:
         range: 24
         damage: 3
         target_breakables: 3
+    costs:
+        mana: 50
 
 vermillious|3:
     parameters:
         range: 35
         damage: 4
         target_breakables: 4
+    costs:
+        mana: 70
 
 colorvaria:
     icon: ink_sack
