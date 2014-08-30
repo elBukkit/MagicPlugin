@@ -2847,7 +2847,7 @@ piertotum:
         type: iron_golem
         count: 1
         reason: custom
-        undo: 10000
+        undo: 1500
         name: Animated Statue
         entity_undo: false
     costs:
