@@ -1184,7 +1184,7 @@ deprimo:
         falling: true
         check_destructible: true
         destructible: destructible
-        radius: 1
+        radius: 2
         bypass_build: true
         transparent: transparent_to_construction
         undo: 15000
@@ -1193,11 +1193,11 @@ deprimo:
 
 deprimo|2:
     parameters:
-    radius: 2
+    radius: 3
 
 deprimo|3:
     parameters:
-    radius: 3
+    radius: 4
 
 deprimomaxima:
     icon: flint
@@ -1228,7 +1228,7 @@ deprimomaxima:
         falling: true
         check_destructible: false
         indestructible: air
-        radius: 3
+        radius: 5
         bypass_build: true
         transparent: transparent_to_construction
         undo: 15000
@@ -3067,7 +3067,7 @@ reductomaxima:
         speed: 1.0
         falling: true
         brush: air
-        radius: 3
+        radius: 4
         type: sphere
         check_destructible: false
         undo: 5000
