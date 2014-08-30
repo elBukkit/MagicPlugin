@@ -2726,6 +2726,7 @@ webbing:
         y_offset: 0
         bypass_build: true
         cooldown: 5000
+        entity_undo: false
 
 patronus:
     icon: ink_sack:12

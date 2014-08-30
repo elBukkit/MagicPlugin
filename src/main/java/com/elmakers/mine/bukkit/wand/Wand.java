@@ -2617,7 +2617,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
                 for (Map.Entry<String, String> entry : castOverrides.entrySet()) {
                     String[] key = StringUtils.split(entry.getKey(), ".");
                     if (key.length == 0) continue;
-                    if (key.length == 2 && !key[0].equals("default") && !key[0].equals(spell.getKey())) {
+                    if (key.length == 2 && !key[0].equals("default") && !key[0].equals(spell.getSpellKey().getBaseKey()) && !key[0].equals(spell.getSpellKey().getKey())) {
                         continue;
                     }
                     castParameters.add(key.length == 2 ? key[1] : key[0]);
