@@ -29,6 +29,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     protected UUID uuid = null;
     protected Location location;
     protected boolean hasMoved = false;
+    protected boolean isTemporary = false;
     protected String name = null;
     protected EntityType type;
     protected Art art;
@@ -59,6 +60,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
 
     public EntityData(Location location, Entity entity) {
         setEntity(entity);
+        this.isTemporary = entity.hasMetadata("temporary");
         this.isLiving = entity instanceof LivingEntity;
         this.isHanging = entity instanceof Hanging;
         this.isProjectile = entity instanceof Projectile;
@@ -285,7 +287,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         Entity entity = this.getEntity();
 
         // Re-spawn if dead or missing
-        if ((entity == null || !entity.isValid() || entity.isDead()) && !(entity instanceof Player) && uuid != null) {
+        if (!isTemporary && uuid != null && (entity == null || !entity.isValid() || entity.isDead()) && !(entity instanceof Player)) {
             // Avoid re-re-spawning an entity
             WeakReference<Entity> respawnedEntity = respawned.get(uuid);
             if (respawnedEntity != null) {

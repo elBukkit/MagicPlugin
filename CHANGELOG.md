@@ -4,6 +4,7 @@
 
  - Fix multiple-respawn glitch with entity undo after death
  - Don't undo entity effects from spells with auto-undo by default
+ - Add temporary entity metadata flag
  - Add cooldown and permission accessors to spell class
  - Add findBlockUnder method
 
