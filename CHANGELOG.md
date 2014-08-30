@@ -4,6 +4,7 @@
 
  - Add cooldown and permission accessors to spell class
  - Add findBlockUnder method
+ - Don't undo entity effects from spells with auto-undo by default
 
 ## 1.7
 

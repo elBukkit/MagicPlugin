@@ -23,7 +23,7 @@ import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 
 public abstract class UndoableSpell extends TargetingSpell {
     private UndoList 		modifiedBlocks 			= null;
-    private boolean 		undoEntityEffects		= true;
+    private boolean 		undoEntityEffects		= false;
     private boolean 		bypassUndo				= false;
     private double 		    targetBreakables	    = 0;
     private int	 			autoUndo				= 0;
@@ -32,7 +32,7 @@ public abstract class UndoableSpell extends TargetingSpell {
     protected void processParameters(ConfigurationSection parameters)
     {
         super.processParameters(parameters);
-        undoEntityEffects = parameters.getBoolean("entity_undo", true);
+        undoEntityEffects = parameters.getBoolean("entity_undo", false);
         bypassUndo = parameters.getBoolean("bypass_undo", false);
         bypassUndo = parameters.getBoolean("bu", bypassUndo);
         autoUndo = parameters.getInt("undo", 0);
