@@ -1,5 +1,11 @@
 # Migration Notes
 
+## 3.8
+
+ * The "enable_creative_mode_ejecting" in config.yml now controls the creative mode special
+   behavior. If you have "enable_custom_item_hacks" set to false, you probably want to set
+   enable_creative_mode_ejecting to false also.
+
 ## 3.7
 
  * Some magic items (spells, upgrades) may need to be updated. Sorry!

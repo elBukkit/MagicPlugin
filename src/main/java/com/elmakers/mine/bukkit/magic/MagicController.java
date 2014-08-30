@@ -1608,6 +1608,7 @@ public class MagicController implements Listener, MageController {
 		maxBlockUpdates = properties.getInt("max_block_updates", maxBlockUpdates);
 		ageDroppedItems = properties.getInt("age_dropped_items", ageDroppedItems);
 		enableItemHacks = properties.getBoolean("enable_custom_item_hacks", enableItemHacks);
+        enableCreativeModeEjecting = properties.getBoolean("enable_creative_mode_ejecting", enableCreativeModeEjecting);
 		soundsEnabled = properties.getBoolean("sounds", soundsEnabled);
 		fillingEnabled = properties.getBoolean("fill_wands", fillingEnabled);
 		indestructibleWands = properties.getBoolean("indestructible_wands", indestructibleWands);
@@ -2882,7 +2883,7 @@ public class MagicController implements Listener, MageController {
 	@EventHandler
 	public void onPlayerGameModeChange(PlayerGameModeChangeEvent event)
 	{
-		if (event.getNewGameMode() == GameMode.CREATIVE && enableItemHacks) {
+		if (event.getNewGameMode() == GameMode.CREATIVE && enableCreativeModeEjecting) {
 			boolean ejected = false;
 			Player player = event.getPlayer();
             Mage apiMage = getMage(player);
@@ -2933,7 +2934,7 @@ public class MagicController implements Listener, MageController {
 		boolean isWand = Wand.isWand(pickup);
 
 		// Creative mode inventory hacky work-around :\
-		if (event.getPlayer().getGameMode() == GameMode.CREATIVE && isWand && enableItemHacks) {
+		if (event.getPlayer().getGameMode() == GameMode.CREATIVE && isWand && enableCreativeModeEjecting) {
 			event.setCancelled(true);
 			return;
 		}
@@ -3896,6 +3897,7 @@ public class MagicController implements Listener, MageController {
     private final File							defaultsFolder;
     private final File							playerDataFolder;
     private boolean							    enableItemHacks			 	= true;
+    private boolean                             enableCreativeModeEjecting  = true;
 
     private int								    toggleCooldown				= 1000;
     private int								    toggleMessageRange			= 1024;
