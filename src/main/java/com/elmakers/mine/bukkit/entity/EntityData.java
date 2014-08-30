@@ -1,9 +1,15 @@
 package com.elmakers.mine.bukkit.entity;
 
+import java.lang.ref.WeakReference;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
-import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
-import org.bukkit.*;
+import org.bukkit.Art;
+import org.bukkit.DyeColor;
+import org.bukkit.Location;
+import org.bukkit.Rotation;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.*;
 import org.bukkit.entity.Skeleton.SkeletonType;
@@ -17,6 +23,10 @@ import org.bukkit.util.Vector;
  *
  */
 public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityData {
+    protected static Map<UUID, WeakReference<Entity>> respawned = new HashMap<UUID, WeakReference<Entity>>();
+
+    protected WeakReference<Entity> entity = null;
+    protected UUID uuid = null;
     protected Location location;
     protected boolean hasMoved = false;
     protected String name = null;
@@ -48,6 +58,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     }
 
     public EntityData(Location location, Entity entity) {
+        setEntity(entity);
         this.isLiving = entity instanceof LivingEntity;
         this.isHanging = entity instanceof Hanging;
         this.isProjectile = entity instanceof Projectile;
@@ -106,6 +117,11 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
             Ocelot ocelot = (Ocelot)entity;
             ocelotType = ocelot.getCatType();
         }
+    }
+
+    public void setEntity(Entity entity) {
+        this.entity = entity == null ? null : new WeakReference<Entity>(entity);
+        this.uuid = entity == null ? null : entity.getUniqueId();
     }
 
     /**
@@ -265,19 +281,33 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     }
 
     @Override
+    public Entity undo() {
+        Entity entity = this.getEntity();
+
+        // Re-spawn if dead or missing
+        if ((entity == null || !entity.isValid() || entity.isDead()) && !(entity instanceof Player) && uuid != null) {
+            // Avoid re-re-spawning an entity
+            WeakReference<Entity> respawnedEntity = respawned.get(uuid);
+            if (respawnedEntity != null) {
+                entity = respawnedEntity.get();
+            } else {
+                entity = trySpawn();
+                if (entity != null) {
+                    respawned.put(uuid, new WeakReference<Entity>(entity));
+                }
+            }
+            setEntity(entity);
+        }
+
+        modify(entity);
+        return entity;
+    }
+
+    @Override
     public boolean modify(Entity entity) {
         if (entity == null || entity.getType() != type) return false;
 
         entity.setFireTicks(fireTicks);
-
-        // Re-spawn if dead
-        if (!entity.isValid() && !(entity instanceof Player)) {
-            Entity tryEntity = trySpawn();
-            if (tryEntity != null) {
-                entity = tryEntity;
-            }
-        }
-
         if (entity instanceof Ageable) {
             Ageable ageable = (Ageable)entity;
             if (isBaby) {
@@ -377,5 +407,9 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
 
     public boolean isProjectile() {
         return isProjectile;
+    }
+
+    public Entity getEntity() {
+        return entity == null ? null : entity.get();
     }
 }
