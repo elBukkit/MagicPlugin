@@ -15,7 +15,7 @@ public interface EntityData {
     public ItemStack getItem();
     public double getHealth();
     public void setHasMoved(boolean hasMoved);
-
     public Entity spawn();
+    public Entity undo();
     public boolean modify(Entity entity);
 }
