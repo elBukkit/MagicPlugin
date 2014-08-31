@@ -13,12 +13,4 @@ public interface CostReducer {
      * @return The percent cost reduction.
      */
     public float getCostReduction();
-
-    /**
-     * Get whether or not the display should use Mana
-     * instead of XP.
-     *
-     * @return True if a Mana display should be used.
-     */
-    public boolean usesMana();
 }
