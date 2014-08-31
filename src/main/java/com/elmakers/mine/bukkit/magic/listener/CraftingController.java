@@ -39,6 +39,9 @@ public class CraftingController implements Listener {
 	
 	public void load(ConfigurationSection configuration) {
         recipes.clear();
+        if (!craftingEnabled) {
+            return;
+        }
         Set<String> recipeKeys = configuration.getKeys(false);
         for (String key : recipeKeys)
         {
@@ -62,6 +65,9 @@ public class CraftingController implements Listener {
 	}
 	
 	public void register(Plugin plugin) {
+        if (!craftingEnabled) {
+            return;
+        }
         for (List<MagicRecipe> list : recipes.values()) {
             for (MagicRecipe recipe : list) {
                 recipe.register(plugin);
@@ -72,6 +78,8 @@ public class CraftingController implements Listener {
 	@EventHandler
 	public void onPrepareCraftItem(PrepareItemCraftEvent event) 
 	{
+        if (!craftingEnabled) return;
+
         Recipe recipe = event.getRecipe();
         Material resultType = recipe.getResult().getType();
         List<MagicRecipe> candidates = recipes.get(resultType);
