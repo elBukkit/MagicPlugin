@@ -1198,12 +1198,6 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         return costReduction + mage.getCostReduction();
     }
 
-    @Override
-    public boolean usesMana()
-    {
-        return mage.usesMana();
-    }
-
     //
     // Public API Implementation
     //

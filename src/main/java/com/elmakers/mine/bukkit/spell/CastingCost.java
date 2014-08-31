@@ -154,11 +154,15 @@ public class CastingCost implements com.elmakers.mine.bukkit.api.spell.CastingCo
         if (item != null && getAmount() != 0) {
             return item.getName();
         }
-        if (reducer != null && !reducer.usesMana()) {
+        if (xp > 0) {
             return Messages.get("costs.xp");
         }
 
-        return Messages.get("costs.mana");
+        if (mana > 0) {
+            return Messages.get("costs.mana");
+        }
+
+        return "";
     }
 
     public String getFullDescription(CostReducer reducer)
@@ -166,9 +170,12 @@ public class CastingCost implements com.elmakers.mine.bukkit.api.spell.CastingCo
         if (item != null) {
             return getAmount(reducer) + " " + item.getName();
         }
-        if (reducer != null && !reducer.usesMana()) {
+        if (xp > 0) {
             return Messages.get("costs.xp_amount").replace("$amount", ((Integer)getXP(reducer)).toString());
         }
-        return Messages.get("costs.mana_amount").replace("$amount", ((Integer)getMana(reducer)).toString());
+        if (mana > 0) {
+            Messages.get("costs.mana_amount").replace("$amount", ((Integer)getMana(reducer)).toString());
+        }
+        return "";
     }
 }
