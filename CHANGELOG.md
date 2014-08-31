@@ -3,6 +3,8 @@
 ## 1.8
 
  - Add cooldown and permission accessors to spell class
+ - Add Messages API for localization
+ - Add MapController API for custom image maps (loaded from URLs)
 
 ## 1.7
 

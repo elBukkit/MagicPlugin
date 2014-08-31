@@ -5,6 +5,7 @@ import java.util.Set;
 import java.util.logging.Logger;
 
 import com.elmakers.mine.bukkit.api.block.MaterialAndData;
+import com.elmakers.mine.bukkit.api.maps.MapController;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -216,4 +217,10 @@ public interface MageController {
      * @return The Messages controller for getting in-game text.
      */
     public Messages getMessages();
+
+    /**
+     * Get Magic's URLMap controller, for generating custom
+     * image maps.
+     */
+    public MapController getMaps();
 }
