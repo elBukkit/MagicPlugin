@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.spell.builtin;
 
+import com.elmakers.mine.bukkit.api.maps.MapController;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
@@ -12,7 +13,7 @@ import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.TargetingSpell;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.Target;
-import com.elmakers.mine.bukkit.utility.URLMap;
+import com.elmakers.mine.bukkit.api.maps.URLMap;
 
 public class CameraSpell extends TargetingSpell
 {
@@ -33,6 +34,8 @@ public class CameraSpell extends TargetingSpell
 			meta.setDisplayName(mapName);
 			newMapItem.setItemMeta(meta);
 		}
+
+        MapController maps = controller.getMaps();
 		
 		// Check for special case url
 		if (newMapItem == null) {
@@ -43,7 +46,7 @@ public class CameraSpell extends TargetingSpell
 				int width = parameters.getInt("width", 0);
 				int height = parameters.getInt("height", 0);
 				String mapName = parameters.getString("name", "Photo");
-				newMapItem = URLMap.getURLItem(getWorld().getName(), url, mapName, x, y, width, height, priority);
+				newMapItem = maps.getURLItem(getWorld().getName(), url, mapName, x, y, width, height, priority);
 			}
 		}
 		
@@ -87,9 +90,9 @@ public class CameraSpell extends TargetingSpell
 				}
 			}
 			if (parameters.contains("reload")) {
-				URLMap.forceReloadPlayerPortrait(getWorld().getName(), playerName);
+				maps.forceReloadPlayerPortrait(getWorld().getName(), playerName);
 			}
-			newMapItem = URLMap.getPlayerPortrait(getWorld().getName(), playerName, priority, metaName);
+			newMapItem = maps.getPlayerPortrait(getWorld().getName(), playerName, priority, metaName);
 		}
 		if (newMapItem == null) {
 			return SpellResult.FAIL;

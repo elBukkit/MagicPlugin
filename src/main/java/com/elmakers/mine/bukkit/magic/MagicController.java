@@ -16,6 +16,8 @@ import java.util.zip.ZipInputStream;
 
 import com.elmakers.mine.bukkit.api.spell.*;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
+import com.elmakers.mine.bukkit.maps.MapController;
+import com.elmakers.mine.bukkit.maps.URLMap;
 import com.elmakers.mine.bukkit.protection.MultiverseManager;
 import com.elmakers.mine.bukkit.protection.PvPManagerManager;
 import com.elmakers.mine.bukkit.spell.BrushSpell;
@@ -452,6 +454,8 @@ public class MagicController implements Listener, MageController {
                 ((com.elmakers.mine.bukkit.magic.Mage) mage).clearCache();
             }
         }
+
+        maps.clearCache();
     }
 
     public WorldEditSchematic loadSchematic(String schematicName) {
@@ -590,6 +594,11 @@ public class MagicController implements Listener, MageController {
         enchanting = new EnchantingController(this);
         anvil = new AnvilController(this);
         messages = new Messages();
+
+        File urlMapFile = getDataFile(URL_MAPS_FILE);
+        File imageCache = new File(dataFolder, "imagemapcache");
+        imageCache.mkdirs();
+        maps = new MapController(plugin, urlMapFile, imageCache);
 
         // Initialize EffectLib.
         if (EffectPlayer.initialize(plugin)) {
@@ -1163,11 +1172,8 @@ public class MagicController implements Listener, MageController {
 
                 // Load URL Map Data
                 try {
-                    URLMap.resetAll();
-                    File urlMapFile = getDataFile(URL_MAPS_FILE);
-                    File imageCache = new File(dataFolder, "imagemapcache");
-                    imageCache.mkdirs();
-                    URLMap.load(plugin, urlMapFile, imageCache);
+                    maps.resetAll();
+                    maps.loadConfiguration();
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }
@@ -1383,7 +1389,7 @@ public class MagicController implements Listener, MageController {
 	public void save(boolean asynchronous)
 	{
         getLogger().info("Saving image map data");
-        URLMap.save(asynchronous);
+        maps.save(asynchronous);
 
         final List<DataStore> saveData = new ArrayList<DataStore>();
 		getLogger().info("Saving player data");
@@ -2562,7 +2568,7 @@ public class MagicController implements Listener, MageController {
     protected void playerQuit(PlayerEvent event) {
         Player player = event.getPlayer();
 		// Make sure they get their portraits re-rendered on relogin.
-		URLMap.resend(player.getName());
+        maps.resend(player.getName());
 
         Mage apiMage = getMage(player);
 
@@ -3134,6 +3140,10 @@ public class MagicController implements Listener, MageController {
     @Override
     public com.elmakers.mine.bukkit.api.magic.Messages getMessages() {
         return messages;
+    }
+
+    public MapController getMaps() {
+        return maps;
     }
 
     public String getWelcomeWand() {
@@ -3957,4 +3967,5 @@ public class MagicController implements Listener, MageController {
     private EnchantingController				enchanting					= null;
     private AnvilController					    anvil						= null;
     private Messages                            messages                    = null;
+    private MapController                       maps                        = null;
 }

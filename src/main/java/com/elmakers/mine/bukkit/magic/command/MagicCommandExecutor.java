@@ -1,11 +1,20 @@
 package com.elmakers.mine.bukkit.magic.command;
 
-import java.lang.reflect.Method;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map.Entry;
+import java.util.Set;
 
+import com.elmakers.mine.bukkit.api.magic.MageController;
+import com.elmakers.mine.bukkit.api.maps.URLMap;
 import com.elmakers.mine.bukkit.block.batch.SpellBatch;
-import com.elmakers.mine.bukkit.utility.*;
+import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
+import com.elmakers.mine.bukkit.utility.RunnableJob;
+import com.elmakers.mine.bukkit.utility.TimedRunnable;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Chunk;
@@ -264,17 +273,17 @@ public class MagicCommandExecutor extends MagicTabExecutor {
 				}
 
 				int shown = 0;
-				Set<Entry<Short, URLMap>> allMaps = URLMap.getAll();
-				for (Entry<Short, URLMap> mapRecord : allMaps) {
-					Short mapId = mapRecord.getKey();
-					URLMap map = mapRecord.getValue();
+                MageController apiController = api.getController();
+                Collection<URLMap> maps = api.getController().getMaps().getAll();
+				for (URLMap map : maps) {
+					Short mapId = map.getId();
 					if (map == null || mapId == null) continue;
-					
+
 					if (map.matches(keyword)) {
 						shown++;
 						String name = map.getName();
 						name = (name == null ? "(None)" : name);
-						sender.sendMessage(ChatColor.AQUA + "" + mapId + ChatColor.WHITE + ": " + 
+						sender.sendMessage(ChatColor.AQUA + "" + mapId + ChatColor.WHITE + ": " +
 								name + " => " + ChatColor.GRAY + map.getURL());
 					}
 				}

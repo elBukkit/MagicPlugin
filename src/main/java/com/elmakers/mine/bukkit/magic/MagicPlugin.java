@@ -21,7 +21,6 @@ import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.magic.MagicAPI;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.api.wand.LostWand;
-import com.elmakers.mine.bukkit.utility.URLMap;
 import com.elmakers.mine.bukkit.wand.Wand;
 
 /*! \mainpage Magic Bukkit Plugin
@@ -191,19 +190,16 @@ public class MagicPlugin extends JavaPlugin implements MagicAPI
 	@Override
 	public void save() {
 		controller.save();
-		URLMap.save();
 	}
 
 	@Override
 	public void reload() {
 		controller.loadConfiguration();
-		URLMap.loadConfiguration();
 	}
 
 	@Override
 	public void clearCache() {
 		controller.clearCache();
-		URLMap.clearCache();
 	}
 	
 	@Override
