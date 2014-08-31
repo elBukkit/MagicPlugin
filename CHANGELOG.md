@@ -7,6 +7,8 @@
  - Add temporary entity metadata flag
  - Add cooldown and permission accessors to spell class
  - Add findBlockUnder method
+ - Make Messages API available to other plugins
+ - Make MapController API available to other plugins
 
 ## 1.7
 
