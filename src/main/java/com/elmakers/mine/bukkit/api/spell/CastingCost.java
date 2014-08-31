@@ -1,6 +1,7 @@
 package com.elmakers.mine.bukkit.api.spell;
 
 import com.elmakers.mine.bukkit.api.block.MaterialAndData;
+import com.elmakers.mine.bukkit.api.magic.Messages;
 
 /**
  * This reprsents a cost required to cast a Spell.
@@ -33,7 +34,7 @@ public interface CastingCost {
      * @param reducer The CostReducer to use to calculate costs and determine display type
      * @return A printable String to display this casting cost to a Player.
      */
-    public String getDescription(CostReducer reducer);
+    public String getDescription(Messages messages, CostReducer reducer);
 
     /**
      * Get a human-readable description of this cost.
@@ -46,7 +47,7 @@ public interface CastingCost {
      * @param reducer The CostReducer to use to calculate costs and determine display type
      * @return A printable String to display this casting cost to a Player.
      */
-    public String getFullDescription(CostReducer reducer);
+    public String getFullDescription(Messages messages, CostReducer reducer);
 
     /**
      * Returns the raw XP cost.

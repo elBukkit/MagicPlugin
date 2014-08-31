@@ -497,4 +497,10 @@ public interface MagicAPI {
      * @return An ItemStack spell book
      */
     public ItemStack getSpellBook(SpellCategory category, int count);
+
+    /**
+     * Return the Messages controller, which manages Magic's
+     * localization store.
+     */
+    public Messages getMessages();
 }

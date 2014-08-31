@@ -209,4 +209,11 @@ public interface MageController {
     public boolean soundsEnabled();
 
     public MaterialAndData getRedstoneReplacement();
+
+    /**
+     * Get Magic's localization store.
+     *
+     * @return The Messages controller for getting in-game text.
+     */
+    public Messages getMessages();
 }
