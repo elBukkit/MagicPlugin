@@ -4,12 +4,12 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import com.elmakers.mine.bukkit.api.magic.Messages;
 import org.bukkit.Color;
 
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
-import com.elmakers.mine.bukkit.utility.Messages;
 
 public class SpellCategory implements com.elmakers.mine.bukkit.api.spell.SpellCategory {
     protected List<SpellTemplate> spells = new ArrayList<SpellTemplate>();
@@ -24,9 +24,10 @@ public class SpellCategory implements com.elmakers.mine.bukkit.api.spell.SpellCa
     public SpellCategory(String key, MageController controller) {
         this.key = key;
         this.controller = controller;
-        name = Messages.get("categories." + key + ".name", key);
-        description = Messages.get("categories." + key + ".description", "");
-        color = ConfigurationUtils.toColor(Messages.get("categories." + key + ".color", ""));
+        Messages messages = controller.getMessages();
+        name = messages.get("categories." + key + ".name", key);
+        description = messages.get("categories." + key + ".description", "");
+        color = ConfigurationUtils.toColor(messages.get("categories." + key + ".color", ""));
     }
 
     public SpellCategory(String key, MageController controller, long castCount, long lastCast) {

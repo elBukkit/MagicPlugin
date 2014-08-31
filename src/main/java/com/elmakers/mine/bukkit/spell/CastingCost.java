@@ -3,6 +3,7 @@ package com.elmakers.mine.bukkit.spell;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.elmakers.mine.bukkit.api.magic.Messages;
 import org.bukkit.Material;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -12,8 +13,6 @@ import com.elmakers.mine.bukkit.api.spell.CostReducer;
 import com.elmakers.mine.bukkit.api.spell.MageSpell;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
-import com.elmakers.mine.bukkit.block.MaterialBrush;
-import com.elmakers.mine.bukkit.utility.Messages;
 
 public class CastingCost implements com.elmakers.mine.bukkit.api.spell.CastingCost
 {
@@ -149,32 +148,32 @@ public class CastingCost implements com.elmakers.mine.bukkit.api.spell.CastingCo
         return (item != null && getAmount(reducer) > 0) || getXP(reducer) > 0 || getMana(reducer) > 0;
     }
 
-    public String getDescription(CostReducer reducer)
+    public String getDescription(Messages messages, CostReducer reducer)
     {
         if (item != null && getAmount() != 0) {
             return item.getName();
         }
         if (xp > 0) {
-            return Messages.get("costs.xp");
+            return messages.get("costs.xp");
         }
 
         if (mana > 0) {
-            return Messages.get("costs.mana");
+            return messages.get("costs.mana");
         }
 
         return "";
     }
 
-    public String getFullDescription(CostReducer reducer)
+    public String getFullDescription(Messages messages, CostReducer reducer)
     {
         if (item != null) {
             return getAmount(reducer) + " " + item.getName();
         }
         if (xp > 0) {
-            return Messages.get("costs.xp_amount").replace("$amount", ((Integer)getXP(reducer)).toString());
+            return messages.get("costs.xp_amount").replace("$amount", ((Integer)getXP(reducer)).toString());
         }
         if (mana > 0) {
-            Messages.get("costs.mana_amount").replace("$amount", ((Integer)getMana(reducer)).toString());
+            messages.get("costs.mana_amount").replace("$amount", ((Integer)getMana(reducer)).toString());
         }
         return "";
     }

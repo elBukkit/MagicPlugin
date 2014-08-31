@@ -1,22 +1,32 @@
 package com.elmakers.mine.bukkit.utility;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
+import java.util.Set;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
 
-
-public class Messages {
-    public static String PARAMETER_PATTERN_STRING = "\\$([^ :]+)";
-    public static Pattern PARAMETER_PATTERN = Pattern.compile(PARAMETER_PATTERN_STRING);
-
-    private static Map<String, String> messageMap = new HashMap<String, String>();
-    private static Map<String, List<String>> randomized = new HashMap<String, List<String>>();
-    private static ConfigurationSection configuration = null;
+public class Messages implements com.elmakers.mine.bukkit.api.magic.Messages {
+    private static String PARAMETER_PATTERN_STRING = "\\$([^ :]+)";
+    private static Pattern PARAMETER_PATTERN = Pattern.compile(PARAMETER_PATTERN_STRING);
     private static Random random = new Random();
 
-    public static void load(ConfigurationSection messages) {
+    private Map<String, String> messageMap = new HashMap<String, String>();
+    private Map<String, List<String>> randomized = new HashMap<String, List<String>>();
+    private ConfigurationSection configuration = null;
+
+    public Messages() {
+
+    }
+
+    public void load(ConfigurationSection messages) {
         configuration = messages;
         Collection<String> keys = messages.getKeys(true);
         for (String key : keys) {
@@ -32,35 +42,48 @@ public class Messages {
         }
     }
 
-    public static List<String> getAll(String path) {
+    public List<String> getAll(String path) {
         if (configuration == null) return new ArrayList<String>();
         return configuration.getStringList(path);
     }
 
-    public static void reset() {
+    public void reset() {
         messageMap.clear();
     }
 
-    public static String get(String key, String defaultValue) {
+    public String get(String key, String defaultValue) {
         return messageMap.containsKey(key) ? ChatColor.translateAlternateColorCodes('&', messageMap.get(key)) : defaultValue;
     }
 
-    public static String get(String key) {
+    public String get(String key) {
         return get(key, key);
     }
 
-    public static String getParameterized(String key, String paramName, String paramValue) {
+    public String getParameterized(String key, String paramName, String paramValue) {
         return get(key, key).replace(paramName, paramValue);
     }
 
-    public static String getParameterized(String key, String paramName1, String paramValue1, String paramName2, String paramValue2) {
+    public String getParameterized(String key, String paramName1, String paramValue1, String paramName2, String paramValue2) {
         return get(key, key).replace(paramName1, paramValue1).replace(paramName2, paramValue2);
     }
 
-    public static String getRandomized(String key) {
+    public String getRandomized(String key) {
         if (!randomized.containsKey(key)) return "";
         List<String> options = randomized.get(key);
         if (options.size() == 0) return "";
         return options.get(random.nextInt(options.size()));
+    }
+
+    public String escape(String source) {
+        Matcher matcher = PARAMETER_PATTERN.matcher(source);
+        String result = source;
+        while (matcher.find()) {
+            String key = matcher.group(1);
+            if (key != null) {
+                result = result.replace("$" + key, getRandomized(key));
+            }
+        }
+
+        return result;
     }
 }

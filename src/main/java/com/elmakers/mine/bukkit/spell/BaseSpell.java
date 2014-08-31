@@ -703,29 +703,29 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         String baseKey = spellKey.getBaseKey();
 
         // Message defaults come from the messages.yml file
-        name = Messages.get("spells." + baseKey + ".name", baseKey);
-        description = Messages.get("spells." + baseKey + ".description", "");
-        extendedDescription = Messages.get("spells." + baseKey + ".extended_description", "");
-        usage = Messages.get("spells." + baseKey + ".usage", "");
+        name = controller.getMessages().get("spells." + baseKey + ".name", baseKey);
+        description = controller.getMessages().get("spells." + baseKey + ".description", "");
+        extendedDescription = controller.getMessages().get("spells." + baseKey + ".extended_description", "");
+        usage = controller.getMessages().get("spells." + baseKey + ".usage", "");
 
         // Can be overridden by the base spell, or the variant spell
-        levelDescription = Messages.get("spells." + baseKey + ".level_description", levelDescription);
+        levelDescription = controller.getMessages().get("spells." + baseKey + ".level_description", levelDescription);
 
         // Spell level variants can override
         if (spellKey.isVariant()) {
             String variantKey = spellKey.getKey();
-            name = Messages.get("spells." + variantKey + ".name", name);
-            description = Messages.get("spells." + variantKey + ".description", description);
-            extendedDescription = Messages.get("spells." + variantKey + ".extended_description", extendedDescription);
-            usage = Messages.get("spells." + variantKey + ".usage", usage);
+            name = controller.getMessages().get("spells." + variantKey + ".name", name);
+            description = controller.getMessages().get("spells." + variantKey + ".description", description);
+            extendedDescription = controller.getMessages().get("spells." + variantKey + ".extended_description", extendedDescription);
+            usage = controller.getMessages().get("spells." + variantKey + ".usage", usage);
 
             // Level description defaults to pre-formatted text
-            levelDescription = Messages.get("spell.level_description", levelDescription);
+            levelDescription = controller.getMessages().get("spell.level_description", levelDescription);
 
             // Any spell may have a level description, including base spells if chosen.
             // Base spells must specify their own level in each spell config though,
             // they don't get an auto-generated one.
-            levelDescription = Messages.get("spells." + variantKey + ".level_description", levelDescription);
+            levelDescription = controller.getMessages().get("spells." + variantKey + ".level_description", levelDescription);
         }
 
         // Individual spell configuration overrides all
@@ -860,21 +860,21 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
             if (cooldownRemaining > 60 * 60 ) {
                 long hours = cooldownRemaining / (60 * 60);
                 if (hours == 1) {
-                    sendMessage(Messages.get("cooldown.wait_hour"));
+                    sendMessage(controller.getMessages().get("cooldown.wait_hour"));
                 } else {
-                    sendMessage(Messages.get("cooldown.wait_hours").replace("$hours", ((Long) hours).toString()));
+                    sendMessage(controller.getMessages().get("cooldown.wait_hours").replace("$hours", ((Long) hours).toString()));
                 }
             } else if (cooldownRemaining > 60) {
                 long minutes = cooldownRemaining / 60;
                 if (minutes == 1) {
-                    sendMessage(Messages.get("cooldown.wait_minute"));
+                    sendMessage(controller.getMessages().get("cooldown.wait_minute"));
                 } else {
-                    sendMessage(Messages.get("cooldown.wait_minutes").replace("$minutes", ((Long) minutes).toString()));
+                    sendMessage(controller.getMessages().get("cooldown.wait_minutes").replace("$minutes", ((Long) minutes).toString()));
                 }
             } else if (cooldownRemaining > 1) {
-                sendMessage(Messages.get("cooldown.wait_seconds").replace("$seconds", ((Long)cooldownRemaining).toString()));
+                sendMessage(controller.getMessages().get("cooldown.wait_seconds").replace("$seconds", ((Long)cooldownRemaining).toString()));
             } else {
-                sendMessage(Messages.get("cooldown.wait_moment"));
+                sendMessage(controller.getMessages().get("cooldown.wait_moment"));
             }
             processResult(SpellResult.COOLDOWN);
             return false;
@@ -882,8 +882,8 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
 
         com.elmakers.mine.bukkit.api.spell.CastingCost required = getRequiredCost();
         if (required != null) {
-            String baseMessage = Messages.get("costs.insufficient_resources");
-            String costDescription = required.getDescription(mage);
+            String baseMessage = controller.getMessages().get("costs.insufficient_resources");
+            String costDescription = required.getDescription(controller.getMessages(), mage);
             sendMessage(baseMessage.replace("$cost", costDescription));
             processResult(SpellResult.INSUFFICIENT_RESOURCES);
             return false;
@@ -954,10 +954,10 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     }
 
     public String getMessage(String messageKey, String def) {
-        String message = Messages.get("spells.default." + messageKey, def);
-        message = Messages.get("spells." + spellKey.getBaseKey() + "." + messageKey, message);
+        String message = controller.getMessages().get("spells.default." + messageKey, def);
+        message = controller.getMessages().get("spells." + spellKey.getBaseKey() + "." + messageKey, message);
         if (spellKey.isVariant()) {
-            message = Messages.get("spells." + spellKey.getKey() + "." + messageKey, message);
+            message = controller.getMessages().get("spells." + spellKey.getKey() + "." + messageKey, message);
         }
         if (message == null) message = "";
 
@@ -1375,19 +1375,19 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
             if (cooldownInSeconds > 60 * 60 ) {
                 int hours = cooldownInSeconds / (60 * 60);
                 if (hours == 1) {
-                    return Messages.get("cooldown.description_hour");
+                    return controller.getMessages().get("cooldown.description_hour");
                 }
-                return Messages.get("cooldown.description_hours").replace("$hours", ((Integer)hours).toString());
+                return controller.getMessages().get("cooldown.description_hours").replace("$hours", ((Integer)hours).toString());
             } else if (cooldownInSeconds > 60) {
                 int minutes = cooldownInSeconds / 60;
                 if (minutes == 1) {
-                    return Messages.get("cooldown.description_minute");
+                    return controller.getMessages().get("cooldown.description_minute");
                 }
-                return Messages.get("cooldown.description_minutes").replace("$minutes", ((Integer)minutes).toString());
+                return controller.getMessages().get("cooldown.description_minutes").replace("$minutes", ((Integer)minutes).toString());
             } else if (cooldownInSeconds > 1) {
-                return Messages.get("cooldown.description_seconds").replace("$seconds", ((Integer)cooldownInSeconds).toString());
+                return controller.getMessages().get("cooldown.description_seconds").replace("$seconds", ((Integer)cooldownInSeconds).toString());
             } else {
-                return Messages.get("cooldown.description_moment");
+                return controller.getMessages().get("cooldown.description_moment");
             }
         }
         return null;
