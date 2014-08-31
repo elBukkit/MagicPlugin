@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
+import com.elmakers.mine.bukkit.api.magic.Messages;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -22,7 +23,6 @@ import com.elmakers.mine.bukkit.block.batch.SimulateBatch;
 import com.elmakers.mine.bukkit.utilities.TextUtils;
 import com.elmakers.mine.bukkit.utility.AscendingPair;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
-import com.elmakers.mine.bukkit.utility.Messages;
 import com.elmakers.mine.bukkit.utility.RandomUtils;
 import com.elmakers.mine.bukkit.utility.WeightedPair;
 
@@ -124,17 +124,18 @@ public class AnimateSpell extends SimulateSpell
 				+ targetMaterial.getKey() +
 				" cd " + (simCheckDestructible ? "true" : "false") + " level " + level;
 		String commandName = parameters.getString("name", "Automata");
-		
+
+        Messages messages = controller.getMessages();
 		String automataType = parameters.getString("message_type", "evil");
-		List<String> prefixes = Messages.getAll("automata." + automataType + ".prefixes");
-		List<String> suffixes = Messages.getAll("automata." + automataType + ".suffixes");
+		List<String> prefixes = messages.getAll("automata." + automataType + ".prefixes");
+		List<String> suffixes = messages.getAll("automata." + automataType + ".suffixes");
 		
 		commandName = prefixes.get(random.nextInt(prefixes.size())) 
 				+ " " + commandName + " " + suffixes.get(random.nextInt(suffixes.size()));
-		
+
 		if (level > 1) 
 		{
-			commandName += " " + escapeLevel("automata.level", level);
+			commandName += " " + escapeLevel(messages, "automata.level", level);
 		}
 
         // Hack to work-around weird issues with redstone blocks not signaling when replacing a variant material.
@@ -219,9 +220,9 @@ public class AnimateSpell extends SimulateSpell
 		}
 	}
 	
-	protected static String escapeLevel(String templateName, int level)
+	protected static String escapeLevel(Messages messages, String templateName, int level)
 	{
-		String templateString = Messages.get(templateName);
+		String templateString = messages.get(templateName);
 		if (templateString.contains("$roman")) {
 			return templateString.replace("$roman", TextUtils.roman(level));
 		}

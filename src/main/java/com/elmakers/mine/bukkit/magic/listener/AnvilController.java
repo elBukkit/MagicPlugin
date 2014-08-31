@@ -79,7 +79,7 @@ public class AnvilController implements Listener {
 				Wand wand = new Wand(controller, current);
 				if (!wand.canUse(player)) {
 					event.setCancelled(true);
-					mage.sendMessage(Messages.get("wand.bound").replace("$name", wand.getOwner()));
+					mage.sendMessage(controller.getMessages().get("wand.bound").replace("$name", wand.getOwner()));
 					return;
 				}
 				wand.setName(newName);

@@ -56,7 +56,7 @@ public class SpellsCommandExecutor extends MagicTabExecutor {
 
 		if (categorySpells.size() == 0)
 		{
-			String message = Messages.get("general.no_spells_in_category");
+			String message = api.getMessages().get("general.no_spells_in_category");
 			message = message.replace("$category", category);
 			sender.sendMessage(message);
 			return;
@@ -98,7 +98,7 @@ public class SpellsCommandExecutor extends MagicTabExecutor {
 		}
 		if (spellGroups.size() == 0)
 		{
-			player.sendMessage(Messages.get("general.no_spells"));
+			player.sendMessage(api.getMessages().get("general.no_spells"));
 			return;
 		}
 
@@ -148,13 +148,13 @@ public class SpellsCommandExecutor extends MagicTabExecutor {
 			{
 				pageNumber = maxPages;
 			}
-			String message = Messages.get("general.spell_list_page");
+			String message = api.getMessages().get("general.spell_list_page");
 			message = message.replace("$count", Integer.toString(spellCount));
 			message = message.replace("$pages", Integer.toString(maxPages));
 			message = message.replace("$page", Integer.toString(pageNumber));
 			sender.sendMessage(message);
 		} else {
-			String message = Messages.get("general.spell_list");
+			String message = api.getMessages().get("general.spell_list");
 			message = message.replace("$count", Integer.toString(spellCount));
 			sender.sendMessage(message);	
 		}

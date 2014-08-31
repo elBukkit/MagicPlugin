@@ -485,7 +485,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         for (Spell spell : spells) {
             // Reactivate spells that were active on logout.
             if (spell.isActive()) {
-                sendMessage(Messages.get("spell.reactivate").replace("$name", spell.getName()));
+                sendMessage(controller.getMessages().get("spell.reactivate").replace("$name", spell.getName()));
                 activateSpell(spell);
             }
         }

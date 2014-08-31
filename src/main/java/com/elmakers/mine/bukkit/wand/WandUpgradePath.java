@@ -1,10 +1,10 @@
 package com.elmakers.mine.bukkit.wand;
 
+import com.elmakers.mine.bukkit.api.magic.Messages;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.effect.EffectPlayer;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
-import com.elmakers.mine.bukkit.utility.Messages;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -12,7 +12,14 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
 
 /**
  * A represents a randomized upgrade path that a wand may use
@@ -103,10 +110,11 @@ public class WandUpgradePath {
         matchSpellMana = template.getBoolean("match_spell_mana", matchSpellMana);
 
         // Description information
+        Messages messages = controller.getMessages();
         name = template.getString("name", name);
-        name = Messages.get("paths." + key + ".name", name);
+        name = messages.get("paths." + key + ".name", name);
         description = template.getString("description", description);
-        description = Messages.get("paths." + key + ".description", description);
+        description = messages.get("paths." + key + ".description", description);
 
         // Upgrade commands
         upgradeCommands = template.getStringList("upgrade_commands");
@@ -464,7 +472,7 @@ public class WandUpgradePath {
                         mage.getController().getLogger().warning("Invalid spell required for upgrade: " + requiredKey);
                         continue;
                     }
-                    mage.sendMessage(Messages.get("spell.required_spell").replace("$spell", spell.getName()));
+                    mage.sendMessage(mage.getController().getMessages().get("spell.required_spell").replace("$spell", spell.getName()));
                     return false;
                 }
             }

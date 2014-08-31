@@ -33,9 +33,9 @@ public class Automaton extends BlockData implements com.elmakers.mine.bukkit.api
 		node.set("created", createdAt);
 	}
 	
-	public String getMessage() {
+	public String getMessage(Messages messages) {
 		if (message == null || message.length() == 0 || name == null || name.length() == 0) return "";
-		String contents = Messages.get(message);
+		String contents = messages.get(message);
 		if (contents == null || contents.length() == 0) return "";
 		return contents.replace("$name", name);
 	}

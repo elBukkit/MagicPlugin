@@ -310,7 +310,7 @@ public class MagicGiveCommandExecutor extends MagicTabExecutor {
                 showWorth(sender, wand.getItem());
             }
 		} else  {
-			if (!quiet) sender.sendMessage(Messages.getParameterized("wand.unknown_template", "$name", wandKey));
+			if (!quiet) sender.sendMessage(api.getMessages().getParameterized("wand.unknown_template", "$name", wandKey));
 			return false;
 		}
 		return true;

@@ -563,7 +563,7 @@ public class SimulateBatch extends UndoableBatch {
 					if (commandReload) {
 						String automataName = commandName;
 						if (automataName == null || automataName.length() <= 1) {
-							automataName = Messages.get("automata.default_name");
+							automataName = controller.getMessages().get("automata.default_name");
 						}
 						controller.registerAutomata(powerTargetBlock, automataName, "automata.awaken");
 					}

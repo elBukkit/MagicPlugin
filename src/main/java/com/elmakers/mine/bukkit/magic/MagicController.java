@@ -589,6 +589,7 @@ public class MagicController implements Listener, MageController {
         crafting = new CraftingController(this);
         enchanting = new EnchantingController(this);
         anvil = new AnvilController(this);
+        messages = new Messages();
 
         // Initialize EffectLib.
         if (EffectPlayer.initialize(plugin)) {
@@ -1076,8 +1077,8 @@ public class MagicController implements Listener, MageController {
 
         // Load localizations
         try {
-            Messages.reset();
-            Messages.load(loadConfigFile(MESSAGES_FILE, true));
+            messages.reset();
+            messages.load(loadConfigFile(MESSAGES_FILE, true));
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -2437,7 +2438,7 @@ public class MagicController implements Listener, MageController {
 					}
 				}
 				inventory.setContents(items);
-				mage.sendMessage(Messages.get("wand.self_destruct"));
+				mage.sendMessage(messages.get("wand.self_destruct"));
 			}
 			return;
 		}
@@ -2682,7 +2683,7 @@ public class MagicController implements Listener, MageController {
 			// Update the item for proper naming and lore
 			SpellTemplate spell = getSpellTemplate(spellKey);
 			if (spell != null) {
-				Wand.updateSpellItem(droppedItem, spell, null, null, true);
+				Wand.updateSpellItem(messages, droppedItem, spell, null, null, true);
 			}
 		} else if (Wand.isBrush(droppedItem)) {
 			String brushKey = Wand.getBrush(droppedItem);
@@ -2943,7 +2944,7 @@ public class MagicController implements Listener, MageController {
         if (isWand) {
             Wand wand = new Wand(this, pickup);
             if (!wand.canUse(player)) {
-                mage.sendMessage(Messages.get("wand.bound").replace("$name", wand.getOwner()));
+                mage.sendMessage(messages.get("wand.bound").replace("$name", wand.getOwner()));
                 event.setCancelled(true);
                 Item droppedItem = event.getItem();
                 org.bukkit.util.Vector velocity = droppedItem.getVelocity();
@@ -3129,6 +3130,11 @@ public class MagicController implements Listener, MageController {
 			dynmap.showCastMarker(mage, spell, result);
 		}
 	}
+
+    @Override
+    public com.elmakers.mine.bukkit.api.magic.Messages getMessages() {
+        return messages;
+    }
 
     public String getWelcomeWand() {
         return welcomeWand;
@@ -3663,12 +3669,12 @@ public class MagicController implements Listener, MageController {
         CostReducer reducer = null;
         ItemStack bookItem = new ItemStack(Material.WRITTEN_BOOK, count);
         BookMeta book = (BookMeta)bookItem.getItemMeta();
-        book.setAuthor(Messages.get("books.default.author"));
+        book.setAuthor(messages.get("books.default.author"));
         String title = null;
         if (category != null) {
-            title = Messages.get("books.default.title").replace("$category", category.getName());
+            title = messages.get("books.default.title").replace("$category", category.getName());
         } else {
-            title = Messages.get("books.all.title");
+            title = messages.get("books.all.title");
         }
         book.setTitle(title);
         List<String> pages = new ArrayList<String>();
@@ -3677,7 +3683,7 @@ public class MagicController implements Listener, MageController {
 
         for (String key : categoryKeys) {
             category = getCategory(key);
-            title = Messages.get("books.default.title").replace("$category", category.getName());
+            title = messages.get("books.default.title").replace("$category", category.getName());
             String description = "" + ChatColor.BOLD + ChatColor.BLUE + title + "\n\n";
             description += "" + ChatColor.RESET + ChatColor.DARK_BLUE + category.getDescription();
             pages.add(description);
@@ -3697,7 +3703,7 @@ public class MagicController implements Listener, MageController {
 
                 String spellCooldownDescription = spell.getCooldownDescription();
                 if (spellCooldownDescription != null && spellCooldownDescription.length() > 0) {
-                    spellCooldownDescription = Messages.get("cooldown.description").replace("$time", spellCooldownDescription);
+                    spellCooldownDescription = messages.get("cooldown.description").replace("$time", spellCooldownDescription);
                     lines.add("" + ChatColor.DARK_PURPLE + spellCooldownDescription);
                 }
 
@@ -3705,7 +3711,7 @@ public class MagicController implements Listener, MageController {
                 if (costs != null) {
                     for (CastingCost cost : costs) {
                         if (cost.hasCosts(reducer)) {
-                            lines.add(ChatColor.DARK_PURPLE + Messages.get("wand.costs_description").replace("$description", cost.getFullDescription(reducer)));
+                            lines.add(ChatColor.DARK_PURPLE + messages.get("wand.costs_description").replace("$description", cost.getFullDescription(messages, reducer)));
                         }
                     }
                 }
@@ -3713,7 +3719,7 @@ public class MagicController implements Listener, MageController {
                 if (activeCosts != null) {
                     for (CastingCost cost : activeCosts) {
                         if (cost.hasCosts(reducer)) {
-                            lines.add(ChatColor.DARK_PURPLE + Messages.get("wand.active_costs_description").replace("$description", cost.getFullDescription(reducer)));
+                            lines.add(ChatColor.DARK_PURPLE + messages.get("wand.active_costs_description").replace("$description", cost.getFullDescription(messages, reducer)));
                         }
                     }
                 }
@@ -3721,7 +3727,7 @@ public class MagicController implements Listener, MageController {
                 for (String pathKey : paths) {
                     WandUpgradePath checkPath = WandUpgradePath.getPath(pathKey);
                     if (checkPath.hasSpell(spell.getKey())) {
-                        lines.add(ChatColor.DARK_BLUE + Messages.get("spell.available_path").replace("$path", checkPath.getName()));
+                        lines.add(ChatColor.DARK_BLUE + messages.get("spell.available_path").replace("$path", checkPath.getName()));
                         break;
                     }
                 }
@@ -3729,7 +3735,7 @@ public class MagicController implements Listener, MageController {
                 for (String pathKey : paths) {
                     WandUpgradePath checkPath = WandUpgradePath.getPath(pathKey);
                     if (checkPath.requiresSpell(spell.getKey())) {
-                        lines.add(ChatColor.DARK_RED + Messages.get("spell.required_path").replace("$path", checkPath.getName()));
+                        lines.add(ChatColor.DARK_RED + messages.get("spell.required_path").replace("$path", checkPath.getName()));
                         break;
                     }
                 }
@@ -3739,20 +3745,20 @@ public class MagicController implements Listener, MageController {
                     long seconds = duration / 1000;
                     if (seconds > 60 * 60) {
                         long hours = seconds / (60 * 60);
-                        lines.add(ChatColor.DARK_GREEN + Messages.get("duration.lasts_hours").replace("$hours", ((Long) hours).toString()));
+                        lines.add(ChatColor.DARK_GREEN + messages.get("duration.lasts_hours").replace("$hours", ((Long) hours).toString()));
                     } else if (seconds > 60) {
                         long minutes = seconds / 60;
-                        lines.add(ChatColor.DARK_GREEN + Messages.get("duration.lasts_minutes").replace("$minutes", ((Long) minutes).toString()));
+                        lines.add(ChatColor.DARK_GREEN + messages.get("duration.lasts_minutes").replace("$minutes", ((Long) minutes).toString()));
                     } else {
-                        lines.add(ChatColor.DARK_GREEN + Messages.get("duration.lasts_seconds").replace("$seconds", ((Long) seconds).toString()));
+                        lines.add(ChatColor.DARK_GREEN + messages.get("duration.lasts_seconds").replace("$seconds", ((Long) seconds).toString()));
                     }
                 }
 
                 if ((spell instanceof BrushSpell) && !((BrushSpell) spell).hasBrushOverride()) {
-                    lines.add(ChatColor.DARK_GRAY + Messages.get("spell.brush"));
+                    lines.add(ChatColor.DARK_GRAY + messages.get("spell.brush"));
                 }
                 if (spell instanceof UndoableSpell && ((UndoableSpell) spell).isUndoable()) {
-                    lines.add(ChatColor.GRAY + Messages.get("spell.undoable"));
+                    lines.add(ChatColor.GRAY + messages.get("spell.undoable"));
                 }
 
                 String usage = spell.getUsage();
@@ -3950,4 +3956,5 @@ public class MagicController implements Listener, MageController {
     private CraftingController					crafting					= null;
     private EnchantingController				enchanting					= null;
     private AnvilController					    anvil						= null;
+    private Messages                            messages                    = null;
 }

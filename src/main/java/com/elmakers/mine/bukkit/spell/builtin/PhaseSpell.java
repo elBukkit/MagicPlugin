@@ -153,7 +153,7 @@ public class PhaseSpell extends TargetingSpell
 	@Override
 	public String getMessage(String messageKey, String def) {
 		String message = super.getMessage(messageKey, def);
-		targetWorldName = Messages.get("worlds." + targetWorldName + ".name", targetWorldName);
+		targetWorldName = controller.getMessages().get("worlds." + targetWorldName + ".name", targetWorldName);
 		return message.replace("$world_name", targetWorldName);
 	}
 }

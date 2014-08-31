@@ -397,8 +397,8 @@ public class WandCommandExecutor extends MagicTabExecutor {
 			if (templateConfig.getBoolean("hidden", false)) continue;
 			
 			String key = templateConfig.getString("key");
-			String name = Messages.get("wands." + key + ".name", Messages.get("wand.default_name"));
-			String description = Messages.get("wands." + key + ".description", "");
+			String name = api.getMessages().get("wands." + key + ".name", api.getMessages().get("wand.default_name"));
+			String description = api.getMessages().get("wands." + key + ".description", "");
 			description = ChatColor.YELLOW + description; 
 			if (!name.equals(key)) {
 				description = ChatColor.BLUE + name + ChatColor.WHITE + " : " + description;
@@ -413,9 +413,9 @@ public class WandCommandExecutor extends MagicTabExecutor {
         ItemStack itemInHand = player.getItemInHand();
         if (itemInHand == null) {
             if (sender != player) {
-                sender.sendMessage(Messages.getParameterized("wand.player_no_item", "$name", player.getName()));
+                sender.sendMessage(api.getMessages().getParameterized("wand.player_no_item", "$name", player.getName()));
             } else {
-                player.sendMessage(Messages.get("wand.no_item"));
+                player.sendMessage(api.getMessages().get("wand.no_item"));
             }
             return true;
         }
@@ -463,9 +463,9 @@ public class WandCommandExecutor extends MagicTabExecutor {
 
         if (!api.isBrush(itemInHand) && !api.isSpell(itemInHand) && !api.isWand(itemInHand)) {
             if (sender != player) {
-                sender.sendMessage(Messages.getParameterized("wand.player_no_magic_item", "$name", player.getName()));
+                sender.sendMessage(api.getMessages().getParameterized("wand.player_no_magic_item", "$name", player.getName()));
             } else {
-                player.sendMessage(Messages.get("wand.no_magic_item"));
+                player.sendMessage(api.getMessages().get("wand.no_magic_item"));
             }
         }
 
@@ -482,9 +482,9 @@ public class WandCommandExecutor extends MagicTabExecutor {
 		Wand wand = mage.getActiveWand();
 		wand.closeInventory();
 		wand.organizeInventory(mage);
-		mage.sendMessage(Messages.get("wand.reorganized"));
+		mage.sendMessage(api.getMessages().get("wand.reorganized"));
 		if (sender != player) {
-			sender.sendMessage(Messages.getParameterized("wand.player_reorganized", "$name", player.getName()));
+			sender.sendMessage(api.getMessages().getParameterized("wand.player_reorganized", "$name", player.getName()));
 		}
 		
 		return true;
@@ -516,9 +516,9 @@ public class WandCommandExecutor extends MagicTabExecutor {
 
         if (sender != player) {
             if (levels > 0) {
-                sender.sendMessage(Messages.getParameterized("wand.player_upgraded", "$name", player.getName()));
+                sender.sendMessage(api.getMessages().getParameterized("wand.player_upgraded", "$name", player.getName()));
             } else {
-                sender.sendMessage(Messages.getParameterized("wand.player_not_upgraded", "$name", player.getName()));
+                sender.sendMessage(api.getMessages().getParameterized("wand.player_not_upgraded", "$name", player.getName()));
             }
         }
         return true;
@@ -530,14 +530,14 @@ public class WandCommandExecutor extends MagicTabExecutor {
 		ItemStack heldItem = player.getItemInHand();
 		if (heldItem == null || heldItem.getType() == Material.AIR)
 		{
-			mage.sendMessage(Messages.get("wand.no_item"));
+			mage.sendMessage(api.getMessages().get("wand.no_item"));
 			if (sender != player) {
-				sender.sendMessage(Messages.getParameterized("wand.player_no_item", "$name", player.getName()));
+				sender.sendMessage(api.getMessages().getParameterized("wand.player_no_item", "$name", player.getName()));
 			}
 			return false;
 		}
         if (api.isWand(heldItem) || api.isSpell(heldItem) || api.isBrush(heldItem)) {
-            sender.sendMessage(Messages.getParameterized("wand.already_enchanted", "$item", MaterialBrush.getMaterialName(heldItem.getType(), (byte)heldItem.getDurability())));
+            sender.sendMessage(api.getMessages().getParameterized("wand.already_enchanted", "$item", MaterialBrush.getMaterialName(heldItem.getType(), (byte)heldItem.getDurability())));
             return false;
         }
 		
@@ -545,10 +545,10 @@ public class WandCommandExecutor extends MagicTabExecutor {
 		player.setItemInHand(wand.getItem());
 		wand.activate(mage);
 		
-		mage.sendMessage(Messages.getParameterized("wand.enchanted", "$item", MaterialBrush.getMaterialName(heldItem.getType(), (byte)heldItem.getDurability())));
+		mage.sendMessage(api.getMessages().getParameterized("wand.enchanted", "$item", MaterialBrush.getMaterialName(heldItem.getType(), (byte)heldItem.getDurability())));
 				
 		if (sender != player) {
-			sender.sendMessage(Messages.getParameterized("wand.player_enchanted", 
+			sender.sendMessage(api.getMessages().getParameterized("wand.player_enchanted",
 					"$item", MaterialBrush.getMaterialName(heldItem.getType(), (byte)heldItem.getDurability()),
 					"$name", player.getName()
 			));
@@ -568,9 +568,9 @@ public class WandCommandExecutor extends MagicTabExecutor {
 		// Trying to make sure the player is actually holding the active wand
 		// Just in case. This isn't fool-proof though, if they have more than one wand.
 		if (wand == null || !api.isWand(player.getItemInHand())) {
-			mage.sendMessage(Messages.get("wand.no_wand"));
+			mage.sendMessage(api.getMessages().get("wand.no_wand"));
 			if (sender != player) {
-				sender.sendMessage(Messages.getParameterized("wand.player_no_wand", "$name", player.getName()));
+				sender.sendMessage(api.getMessages().getParameterized("wand.player_no_wand", "$name", player.getName()));
 			}
 			return false;
 		}
@@ -579,9 +579,9 @@ public class WandCommandExecutor extends MagicTabExecutor {
 		wand.unenchant();
 		player.setItemInHand(wand.getItem());
 		
-		mage.sendMessage(Messages.get("wand.unenchanted"));
+		mage.sendMessage(api.getMessages().get("wand.unenchanted"));
 		if (sender != player) {
-			sender.sendMessage(Messages.getParameterized("wand.player_unenchanted", "$name", player.getName()));
+			sender.sendMessage(api.getMessages().getParameterized("wand.player_unenchanted", "$name", player.getName()));
 		}
 		return true;
 	}
@@ -597,9 +597,9 @@ public class WandCommandExecutor extends MagicTabExecutor {
 		
 		api.giveItemToPlayer(player, newWand.getItem());
 		
-		mage.sendMessage(Messages.get("wand.duplicated"));
+		mage.sendMessage(api.getMessages().get("wand.duplicated"));
 		if (sender != player) {
-			sender.sendMessage(Messages.getParameterized("wand.player_duplicated", "$name", player.getName()));
+			sender.sendMessage(api.getMessages().getParameterized("wand.player_duplicated", "$name", player.getName()));
 		}
 		return true;
 	}
@@ -608,14 +608,14 @@ public class WandCommandExecutor extends MagicTabExecutor {
     {
         Mage mage = api.getMage(player);
         if (mage.restoreWand()) {
-            mage.sendMessage(Messages.get("wand.restored"));
+            mage.sendMessage(api.getMessages().get("wand.restored"));
             if (sender != player) {
-                sender.sendMessage(Messages.getParameterized("wand.player_restored", "$name", player.getName()));
+                sender.sendMessage(api.getMessages().getParameterized("wand.player_restored", "$name", player.getName()));
             }
         } else {
-            mage.sendMessage(Messages.get("wand.not_restored"));
+            mage.sendMessage(api.getMessages().get("wand.not_restored"));
             if (sender != player) {
-                sender.sendMessage(Messages.getParameterized("wand.player_not_restored", "$name", player.getName()));
+                sender.sendMessage(api.getMessages().getParameterized("wand.player_not_restored", "$name", player.getName()));
             }
         }
 
@@ -631,9 +631,9 @@ public class WandCommandExecutor extends MagicTabExecutor {
         Wand wand = mage.getActiveWand();
 
         wand.unlock();
-        mage.sendMessage(Messages.get("wand.unlocked"));
+        mage.sendMessage(api.getMessages().get("wand.unlocked"));
         if (sender != player) {
-            sender.sendMessage(Messages.getParameterized("wand.player_unlocked", "$name", player.getName()));
+            sender.sendMessage(api.getMessages().getParameterized("wand.player_unlocked", "$name", player.getName()));
         }
         return true;
     }
@@ -712,9 +712,9 @@ public class WandCommandExecutor extends MagicTabExecutor {
 			wand.configure(node);
 		}
 		wand.activate(mage);
-		mage.sendMessage(Messages.get("wand.reconfigured"));
+		mage.sendMessage(api.getMessages().get("wand.reconfigured"));
 		if (sender != player) {
-			sender.sendMessage(Messages.getParameterized("wand.player_reconfigured", "$name", player.getName()));
+			sender.sendMessage(api.getMessages().getParameterized("wand.player_reconfigured", "$name", player.getName()));
 		}
 		return true;
 	}
@@ -740,24 +740,24 @@ public class WandCommandExecutor extends MagicTabExecutor {
 		Wand wand = mage.getActiveWand();
 		
 		if (wand == null) {
-			if (!quiet) mage.sendMessage(Messages.get("wand.no_wand"));
+			if (!quiet) mage.sendMessage(api.getMessages().get("wand.no_wand"));
 			if (sender != player) {
-				sender.sendMessage(Messages.getParameterized("wand.player_no_wand", "$name", player.getName()));
+				sender.sendMessage(api.getMessages().getParameterized("wand.player_no_wand", "$name", player.getName()));
 			}
 			return false;
 		}
         boolean bypassLocked = (sender instanceof Player) && api.hasPermission(sender, "Magic.wand.override_locked");
 		if (!skipModifiable && wand.isLocked() && !bypassLocked) {
-			if (!quiet) mage.sendMessage(Messages.get("wand.unmodifiable"));
+			if (!quiet) mage.sendMessage(api.getMessages().get("wand.unmodifiable"));
 			if (sender != player) {
-				sender.sendMessage(Messages.getParameterized("wand.player_unmodifiable", "$name", player.getName()));
+				sender.sendMessage(api.getMessages().getParameterized("wand.player_unmodifiable", "$name", player.getName()));
 			}
 			return false;
 		}
 		if (!skipBound && !wand.canUse(mage.getPlayer()) ) {
-			if (!quiet) mage.sendMessage(Messages.get("wand.bound_to_other"));
+			if (!quiet) mage.sendMessage(api.getMessages().get("wand.bound_to_other"));
 			if (sender != player) {
-				sender.sendMessage(Messages.getParameterized("wand.player_unmodifiable", "$name", player.getName()));
+				sender.sendMessage(api.getMessages().getParameterized("wand.player_unmodifiable", "$name", player.getName()));
 			}
 			return false;
 		}
@@ -782,7 +782,7 @@ public class WandCommandExecutor extends MagicTabExecutor {
 		String wandName = parameters[0];
 		Wand newWand = api.createWand(wandName);
 		if (newWand == null) {
-			sender.sendMessage(Messages.getParameterized("wand.unknown_template", "$name", wandName));
+			sender.sendMessage(api.getMessages().getParameterized("wand.unknown_template", "$name", wandName));
 			return false;
 		}
 		wand.deactivate();
@@ -791,9 +791,9 @@ public class WandCommandExecutor extends MagicTabExecutor {
 		
 		if (sender != player) {
 			if (result) {
-				sender.sendMessage(Messages.getParameterized("wand.player_upgraded", "$name", player.getName()));
+				sender.sendMessage(api.getMessages().getParameterized("wand.player_upgraded", "$name", player.getName()));
 			} else {
-				sender.sendMessage(Messages.getParameterized("wand.player_not_upgraded", "$name", player.getName()));
+				sender.sendMessage(api.getMessages().getParameterized("wand.player_not_upgraded", "$name", player.getName()));
 			}
 		}
 		return true;
@@ -809,9 +809,9 @@ public class WandCommandExecutor extends MagicTabExecutor {
 		Wand wand = mage.getActiveWand();
 		
 		wand.fill(player);
-		mage.sendMessage(Messages.get("wand.filled"));
+		mage.sendMessage(api.getMessages().get("wand.filled"));
 		if (sender != player) {
-			sender.sendMessage(Messages.getParameterized("wand.player_filled", "$name", player.getName()));
+			sender.sendMessage(api.getMessages().getParameterized("wand.player_filled", "$name", player.getName()));
 		}
 		
 		return true;
@@ -875,9 +875,9 @@ public class WandCommandExecutor extends MagicTabExecutor {
                 if (levelDescription == null || levelDescription.isEmpty()) {
                     levelDescription = spell.getName();
                 }
-                mage.sendMessage(Messages.get("wand.spell_upgraded").replace("$name", currentSpell.getName()).replace("$level", levelDescription));
+                mage.sendMessage(api.getMessages().get("wand.spell_upgraded").replace("$name", currentSpell.getName()).replace("$level", levelDescription));
                 if (sender != player) {
-                    sender.sendMessage(Messages.get("wand.player_spell_upgraded").replace("$player", player.getName()).replace("$name", currentSpell.getName()).replace("$level", levelDescription));
+                    sender.sendMessage(api.getMessages().get("wand.player_spell_upgraded").replace("$player", player.getName()).replace("$name", currentSpell.getName()).replace("$level", levelDescription));
                 }
             } else {
                 mage.sendMessage("Spell '" + spell.getName() + "' has been added to your wand");
@@ -965,9 +965,9 @@ public class WandCommandExecutor extends MagicTabExecutor {
 		Wand wand = mage.getActiveWand();
 		
 		wand.setName(StringUtils.join(parameters, " "));
-		mage.sendMessage(Messages.get("wand.renamed"));
+		mage.sendMessage(api.getMessages().get("wand.renamed"));
 		if (sender != player) {
-			sender.sendMessage(Messages.getParameterized("wand.player_renamed", "$name", player.getName()));
+			sender.sendMessage(api.getMessages().getParameterized("wand.player_renamed", "$name", player.getName()));
 		}
 
 		return true;
