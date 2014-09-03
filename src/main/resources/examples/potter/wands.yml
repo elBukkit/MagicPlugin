@@ -4,7 +4,7 @@
 
 default:
     icon: wood_hoe,gold_axe,gold_pickaxe,gold_spade,stone_axe,stone_hoe,stone_pickaxe,stone_spade,wood_axe,wood_spade,wood_pickaxe
-    randomize_icon: wood_step:11
+    randomize_icon: wood_step
     path: year1
     bound: true
     keep: true
