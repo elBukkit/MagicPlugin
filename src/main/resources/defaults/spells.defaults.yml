@@ -881,7 +881,8 @@ tag:
            target_offset: 0,3,0
            effectlib:
              class: TextEffect
-             text: $name
+             text: $target
+             iterations: 2
     parameters:
         target_type: Player
         allow_max_range: false
