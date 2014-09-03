@@ -372,7 +372,7 @@ function printMaterial($materialKey, $iconOnly = null) {
 					    Wands may function in one of three modes:<br/>
 					    <b>Chest Mode</b><br/>
 					    In the default mode, right-clicking with your wand will pop up a chest inventory. Click on a spell icon to activate it.<br/><br/>
-					    If your wand has a lot of spells, right-click in the inventory to move to the next page.
+					    If your wand has a lot of spells, click outside of the inventory window to move to the next page. Right-click outside of the inventory to move back a page.
 					    <br/><br/>
 					    <b>Inventory Mode</b><br/>
 						Right-click with your wand to toggle the wand inventory. When the wand's inventory is active, your survival items are stored
@@ -388,14 +388,15 @@ function printMaterial($materialKey, $iconOnly = null) {
 						<br/><br/>
 						While in this view, you can re-arrange your spells and materials, deciding which ones to put in the hotbar.
 						<br/><br/>
-						Right-click again to deactive the wand inventory and restore your items. Any items you
-						collected while the wand inventory was active will be in your surivival inventory.
+						Right-click again to deactivate the wand inventory and restore your items. Any items you
+						collected while the wand inventory was active will be in your survival inventory.
 						<br/><br/>
-						For wands with more than 35 spells, right-clicking an additional time will cycle to the next "page" of spells. You may also
-						right-click on an item in the inventory to cycle the inventory page. Renaming a wand on an anvil will also organize its inventory,
+						For wands with more than 35 spells, clicking outside of the inventory will cycle to the next "page" of spells.
+                        Right-clicking outside of the inventory will go to the previous page.
+                        Renaming a wand on an anvil will organize its inventory,
 						should it get too cluttered.
 						<br/><br/>
-						A spell or material can be quick-selected from an open wand inventory using shift+click.
+						A spell or material can be quick-selected from an open wand inventory using right-click.
 						<br/><br/>
 						<b>Cycle Mode</b><br/>
 						This mode only works well with low-powered wands, ones that only have a few spells. In this mode
