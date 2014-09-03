@@ -2714,7 +2714,7 @@ webbing:
         target_type: LivingEntity
         allow_max_range: false
         range: 16
-        radius: 2
+        radius: 1
         type: sphere
         brush: web
         orient: false

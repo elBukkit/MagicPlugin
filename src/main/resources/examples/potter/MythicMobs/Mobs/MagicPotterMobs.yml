@@ -25,6 +25,17 @@ Tarantula:
   Drops:
   - Minion
   - Tarantula
+Polterghast:
+  Mobtype: ghast
+  Display: '&1Polterghast'
+  Health: 30
+  Damage: 3
+  Drops:
+  - Minion
+  Options:
+    MaxCombatDistance: 32
+    KnockbackResistance: 1
+    PreventOtherDrops: true
 Inferius:
   Mobtype: zombie
   Display: '&1Inferius'
