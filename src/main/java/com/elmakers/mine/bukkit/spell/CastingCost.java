@@ -173,7 +173,7 @@ public class CastingCost implements com.elmakers.mine.bukkit.api.spell.CastingCo
             return messages.get("costs.xp_amount").replace("$amount", ((Integer)getXP(reducer)).toString());
         }
         if (mana > 0) {
-            messages.get("costs.mana_amount").replace("$amount", ((Integer)getMana(reducer)).toString());
+            return messages.get("costs.mana_amount").replace("$amount", ((Integer) getMana(reducer)).toString());
         }
         return "";
     }
