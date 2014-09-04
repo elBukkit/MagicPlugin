@@ -373,6 +373,9 @@ public class CompatibilityUtils extends NMSUtils {
     public static void setTarget(LivingEntity entity, Location target)
     {
         Object sourceHandle = getHandle(entity);
+        if (sourceHandle == null || !class_EntityCreature.isAssignableFrom(sourceHandle.getClass())) {
+            return;
+        }
         try {
             Method setPathMethod = class_EntityCreature.getMethod("setPathEntity", class_PathEntity);
             Constructor pointConstructor = class_PathPoint.getConstructor(Integer.TYPE, Integer.TYPE, Integer.TYPE);
