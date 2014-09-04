@@ -531,6 +531,7 @@ atmos:
         -  class: EffectSingle
            sound: ambience_thunder
            effectlib:
+             offset: 0,4,0
              class: HelixEffect
              iterations: 1
              particle: drip_water
@@ -3229,8 +3230,16 @@ silencio:
            sound_pitch: 0.1
            location: origin
            effectlib:
-             class: DnaEffect
-             iterations: 24
+             class: ConeEffect
+             iterations: 15
+             particle: barrier
+             lengthGrow: 0.4
+        -  class: EffectSingle
+           location: target
+           effectlib:
+             class: IconEffect
+             iterations: 15
+             particle: barrier
     parameters:
         commands:
         - mute @t
@@ -3256,10 +3265,17 @@ silenciomaxima:
            sound_pitch: 0.1
            location: origin
            effectlib:
-             class: AtomEffect
-             particleNucleus: witch_magic
-             particleOrbital: magic_critical
-             iterations: 20
+             class: ConeEffect
+             iterations: 15
+             particle: barrier
+             lengthGrow: 0.4
+        -  class: EffectSingle
+           location: target
+           effectlib:
+             offset: 0,4,0
+             class: HelixEffect
+             iterations: 1
+             particle: barrier
     parameters:
         range: 32
         allow_max_range: true
@@ -3284,10 +3300,10 @@ silenciototalus:
            sound_pitch: 0.1
            location: origin
            effectlib:
-             class: AtomEffect
-             particleNucleus: witch_magic
-             particleOrbital: magic_critical
-             iterations: 20
+             offset: 0,5,0
+             class: HelixEffect
+             iterations: 1
+             particle: barrier
     parameters:
         commands:
         - mute @a 60
@@ -3595,6 +3611,7 @@ meteo:
         -  class: EffectSingle
            sound: blaze_breath
            effectlib:
+             offset: 0,4,0
              class: HelixEffect
              iterations: 1
              particle: drip_lava
