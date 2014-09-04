@@ -164,8 +164,8 @@ public class FamiliarSpell extends UndoableSpell implements Listener
         EntityType famType = null;
 		int famCount = parameters.getInt("count", 1);
 
-		String famTypeName = parameters.getString("type", "");
-        if (famTypeName != null) {
+		String famTypeName = parameters.getString("type", null);
+        if (famTypeName != null && !famTypeName.isEmpty()) {
             try {
                 famType = EntityType.valueOf(famTypeName.toUpperCase());
             } catch (Throwable ex) {
