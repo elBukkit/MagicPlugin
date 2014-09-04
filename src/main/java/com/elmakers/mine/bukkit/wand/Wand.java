@@ -58,6 +58,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	public final static int HOTBAR_SIZE = 9;
 	public final static float DEFAULT_SPELL_COLOR_MIX_WEIGHT = 0.0001f;
 	public final static float DEFAULT_WAND_COLOR_MIX_WEIGHT = 1.0f;
+    public final static int POTION_EFFECT_DURATION = 240;
 
     public final static String[] EMPTY_PARAMETERS = new String[0];
 	
@@ -2762,7 +2763,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		if (speedIncrease > 0) {
 			int hasteLevel = (int)(speedIncrease * controller.getMaxHaste());
 			if (hasteEffect == null || hasteEffect.getAmplifier() != hasteLevel) {
-				hasteEffect = new PotionEffect(PotionEffectType.SPEED, 80, hasteLevel, true);
+				hasteEffect = new PotionEffect(PotionEffectType.SPEED, POTION_EFFECT_DURATION, hasteLevel, true);
 			}
 			
 			CompatibilityUtils.applyPotionEffect(player, hasteEffect);
@@ -2770,7 +2771,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		if (healthRegeneration > 0) {
 			int regenLevel = (int)(healthRegeneration * controller.getMaxHealthRegeneration());
 			if (healthRegenEffect == null || healthRegenEffect.getAmplifier() != regenLevel) {
-				healthRegenEffect = new PotionEffect(PotionEffectType.REGENERATION, 80, regenLevel, true);
+				healthRegenEffect = new PotionEffect(PotionEffectType.REGENERATION, POTION_EFFECT_DURATION, regenLevel, true);
 			}
 			
 			CompatibilityUtils.applyPotionEffect(player, healthRegenEffect);
@@ -2778,7 +2779,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		if (hungerRegeneration > 0) {
 			int regenLevel = (int)(hungerRegeneration * controller.getMaxHungerRegeneration());
 			if (hungerRegenEffect == null || hungerRegenEffect.getAmplifier() != regenLevel) {
-				hungerRegenEffect = new PotionEffect(PotionEffectType.SATURATION, 80, regenLevel, true);
+				hungerRegenEffect = new PotionEffect(PotionEffectType.SATURATION, POTION_EFFECT_DURATION, regenLevel, true);
 			}
 			
 			CompatibilityUtils.applyPotionEffect(player, hungerRegenEffect);
