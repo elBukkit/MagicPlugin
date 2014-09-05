@@ -1222,6 +1222,9 @@ wands:
     aquaeffects:
         name: Aqua Wand Effects
         description: Tint your wand effects!
+    organgeeffects:
+        name: Orange Wand Effects
+        description: Tint your wand effects!
     rainboweffects:
         name: Rainbow Wand Effects
         description: Color-changing particles

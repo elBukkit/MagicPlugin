@@ -748,6 +748,12 @@ aquaeffects:
     icon: carpet:3
     effect_color: '00FFFF'
     effect_bubbles: true
+orangeeffects:
+    upgrade: true
+    indestructible: false
+    icon: carpet:14
+    effect_color: 'FFAA00'
+    effect_bubbles: true
 rainboweffects:
     upgrade: true
     indestructible: false
@@ -1018,6 +1024,11 @@ gold_pickaxe_upgrade:
     upgrade: true
     icon: gold_pickaxe
     upgrade_icon: gold_pickaxe
+
+gold_axe_upgrade:
+    upgrade: true
+    icon: gold_axe
+    upgrade_icon: gold_axe
 
 gold_spade_upgrade:
     upgrade: true

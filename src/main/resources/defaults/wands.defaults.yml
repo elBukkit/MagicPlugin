@@ -1254,6 +1254,12 @@ aquaeffects:
     icon: carpet:3
     effect_color: '00FFFF'
     effect_bubbles: true
+orangeeffects:
+    upgrade: true
+    indestructible: false
+    icon: carpet:14
+    effect_color: 'FFAA00'
+    effect_bubbles: true
 rainboweffects:
     upgrade: true
     indestructible: false
