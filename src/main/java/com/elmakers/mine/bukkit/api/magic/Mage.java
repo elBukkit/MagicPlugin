@@ -279,6 +279,8 @@ public interface Mage extends CostReducer {
     public void deactivateAllSpells();
     public void deactivateAllSpells(boolean force, boolean quiet);
 
+    public ConfigurationSection getData();
+
     public boolean isCooldownFree();
     public float getCooldownReduction();
     public boolean isCostFree();
