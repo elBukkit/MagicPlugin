@@ -55,6 +55,7 @@ transparent:
 - carpet
 - water
 - stationary_water
+- portal
 
 # Materials that can be apparated through
 apparate:
