@@ -12,7 +12,6 @@ import java.util.Set;
 
 import com.elmakers.mine.bukkit.effect.HoloUtils;
 import com.elmakers.mine.bukkit.effect.Hologram;
-import com.elmakers.mine.bukkit.utility.Messages;
 import de.slikey.effectlib.util.ParticleEffect;
 import org.bukkit.*;
 import org.bukkit.block.Block;
@@ -61,6 +60,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     private static String defaultMageName = "Mage";
 
     protected final String id;
+    protected ConfigurationSection data = new MemoryConfiguration();
     protected WeakReference<Player> _player;
     protected WeakReference<Entity> _entity;
     protected WeakReference<CommandSender> _commandSender;
@@ -502,6 +502,9 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             if (configNode.contains("bound_wand")) {
                 boundWand = new Wand(controller, configNode.getConfigurationSection("bound_wand"));
             }
+            if (configNode.contains("data")) {
+                data = configNode.getConfigurationSection("data");
+            }
 
             isNewPlayer = false;
             playerName = configNode.getString("name", playerName);
@@ -557,6 +560,9 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                 ConfigurationSection wandConfig = configNode.createSection("bound_wand");
                 boundWand.saveProperties(wandConfig);
             }
+
+            ConfigurationSection dataSection = configNode.createSection("data");
+            ConfigurationUtils.addConfigurations(dataSection, data);
         } catch (Exception ex) {
             controller.getPlugin().getLogger().warning("Failed to save player data for " + playerName + ": " + ex.getMessage());
         }
@@ -1307,5 +1313,10 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         if (player != null && player.isSneaking()) return true;
         if (activeWand != null && activeWand.isStealth()) return true;
         return false;
+    }
+
+    @Override
+    public ConfigurationSection getData() {
+        return data;
     }
 }
