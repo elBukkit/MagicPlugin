@@ -2380,12 +2380,13 @@ public class MagicController implements Listener, MageController {
     public void onPlayerInteractEntity(PlayerInteractEntityEvent event) {
         if (event.isCancelled())
             return;
-        
+
+        Player player = event.getPlayer();
+
         // Check for clicking on a Citizens NPC, in case
         // this hasn't been cancelled yet
         if (isNPC(event.getRightClicked())) {
-        	Player player = event.getPlayer();
-            Mage apiMage = getMage(event.getPlayer());
+            Mage apiMage = getMage(player);
             if (!(apiMage instanceof com.elmakers.mine.bukkit.magic.Mage)) return;
             com.elmakers.mine.bukkit.magic.Mage mage = (com.elmakers.mine.bukkit.magic.Mage)apiMage;
 
@@ -2396,6 +2397,13 @@ public class MagicController implements Listener, MageController {
         	
         	// Don't let it re-open right away
         	mage.checkLastClick(0);
+        } else {
+            // Don't allow interacting while holding spells, brushes or upgrades
+            ItemStack itemInHand = player.getItemInHand();
+            if (Wand.isSpell(itemInHand) || Wand.isBrush(itemInHand) || Wand.isUpgrade(itemInHand)) {
+                event.setCancelled(true);
+                return;
+            }
         }
     }
 
@@ -2410,14 +2418,22 @@ public class MagicController implements Listener, MageController {
 		// getLogger().info("INTERACT: " + event.getAction() + " on " + (block == null ? "NOTHING" : block.getType()));
 		
 		Player player = event.getPlayer();
-        Mage apiMage = getMage(player);
+
+        // Don't allow interacting while holding spells, brushes or upgrades
+        ItemStack itemInHand = player.getItemInHand();
+        if (Wand.isSpell(itemInHand) || Wand.isBrush(itemInHand) || Wand.isUpgrade(itemInHand)) {
+            event.setCancelled(true);
+            return;
+        }
+
+                Mage apiMage = getMage(player);
         if (!(apiMage instanceof com.elmakers.mine.bukkit.magic.Mage)) return;
         com.elmakers.mine.bukkit.magic.Mage mage = (com.elmakers.mine.bukkit.magic.Mage)apiMage;
 
         if (!mage.checkLastClick(clickCooldown)) {
 			return;
 		}
-		
+
 		Wand wand = mage.getActiveWand();
 		
 		// Hacky check for immediately activating a wand if for some reason it was
