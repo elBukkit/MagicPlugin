@@ -22,16 +22,9 @@ public class EffectUtils extends NMSUtils {
             meta.addEffect(effect);
             meta.setPower(power);
             firework.setFireworkMeta(meta);
+            firework.detonate();
 
-            // Use the firework entity to spawn an effect
-            Object worldHandle = getHandle(world);
-            Object fireworkHandle = getHandle(firework);
-            Method broadcastMethod = class_World.getMethod("broadcastEntityEffect", class_Entity, Byte.TYPE);
-
-            // 17 is a magic number from EntityFireworks.. I do not know what it means :\
-            broadcastMethod.invoke(worldHandle,  fireworkHandle, (byte)17);
-
-            // Remove the firework, we only needed it for the effec.t
+            // Remove the firework, we only needed it for the effect
             firework.remove();
         } catch (Exception ex) {
 
