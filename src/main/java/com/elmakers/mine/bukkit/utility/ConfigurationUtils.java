@@ -11,6 +11,7 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.WorldCreator;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.util.Vector;
@@ -28,6 +29,25 @@ public class ConfigurationUtils {
         }
 
         return toLocation(stringData);
+    }
+
+    public static BlockFace toBlockFace(String s) {
+        BlockFace face = null;
+        try {
+            face = BlockFace.valueOf(s.toUpperCase());
+        } catch(Exception ex) {
+            face = null;
+        }
+        return face;
+    }
+
+    public static String fromBlockFace(BlockFace face) {
+        return face.name().toLowerCase();
+    }
+
+    public static String fromVector(Vector vector) {
+        if (vector == null) return "";
+        return vector.getX() + "," + vector.getY() + "," + vector.getZ();
     }
 
     public static Vector getVector(ConfigurationSection node, String path) {
