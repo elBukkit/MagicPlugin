@@ -2264,12 +2264,16 @@ incendio|2:
         radius: 1
         cooldown: 2000
         undo: 3000
+    costs:
+        mana: 75
 
 incendio|3:
     parameters:
         radius: 2
         cooldown: 3000
         undo: 4000
+    costs:
+        mana: 90
 
 lacarnum:
     icon: fireball
@@ -2309,7 +2313,7 @@ lacarnum|2:
 
 lacarnum|3:
     parameters:
-        size: 3
+        size: 2
         spread: 2
         speed: 1.5
 
@@ -2898,6 +2902,8 @@ protego|2:
         reflect_chance: 0.75
         cooldown: 600
         breakable: 2
+    costs:
+        mana: 30
 
 protego|3:
     parameters:
@@ -2906,6 +2912,8 @@ protego|3:
         cooldown: 800
         reflect_chance: 0.99
         breakable: 1
+    costs:
+        mana: 50
 
 protegomaxima:
     icon: ink_sack:12
