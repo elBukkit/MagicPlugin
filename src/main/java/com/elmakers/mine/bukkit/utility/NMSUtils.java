@@ -12,6 +12,7 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 
@@ -55,6 +56,7 @@ public class NMSUtils {
     protected static Class<?> class_AxisAlignedBB;
     protected static Class<?> class_PathPoint;
     protected static Class<?> class_PathEntity;
+    protected static Class<?> class_EntityFirework;
 
     protected static Method class_NBTTagList_addMethod;
     protected static Method class_NBTTagCompound_setMethod;
@@ -71,6 +73,7 @@ public class NMSUtils {
     protected static Method class_NBTTagCompound_getStringMethod;
     protected static Method class_NBTTagCompound_getMethod;
     protected static Method class_NBTTagCompound_getCompoundMethod;
+    protected static Method class_World_addEntityMethod;
 
     protected static Method class_CraftItemStack_copyMethod;
     protected static Method class_CraftItemStack_mirrorMethod;
@@ -81,10 +84,13 @@ public class NMSUtils {
     protected static Constructor class_CraftInventoryCustom_constructor;
     protected static Constructor class_NBTTagByte_constructor;
     protected static Constructor class_NBTTagByte_legacy_constructor;
+    protected static Constructor class_EntityFireworkConstructor;
 
     protected static Field class_Entity_invulnerableField;
     protected static Field class_ItemStack_tagField;
     protected static Field class_DamageSource_MagicField;
+    protected static Field class_Firework_ticksFlownField;
+    protected static Field class_Firework_expectedLifespanField;
 
     static
     {
@@ -121,6 +127,7 @@ public class NMSUtils {
             class_DamageSource = fixBukkitClass("net.minecraft.server.DamageSource");
             class_PathEntity = fixBukkitClass("net.minecraft.server.PathEntity");
             class_PathPoint = fixBukkitClass("net.minecraft.server.PathPoint");
+            class_EntityFirework = fixBukkitClass("net.minecraft.server.EntityFireworks");
 
             class_NBTTagList_addMethod = class_NBTTagList.getMethod("add", class_NBTBase);
             class_NBTTagCompound_setMethod = class_NBTTagCompound.getMethod("set", String.class, class_NBTBase);
@@ -140,13 +147,20 @@ public class NMSUtils {
             class_NBTTagCompound_getCompoundMethod = class_NBTTagCompound.getMethod("getCompound", String.class);
             class_EntityLiving_damageEntityMethod = class_EntityLiving.getMethod("damageEntity", class_DamageSource, Float.TYPE);
             class_DamageSource_getMagicSourceMethod = class_DamageSource.getMethod("b", class_Entity, class_Entity);
+            class_World_addEntityMethod = class_World.getMethod("addEntity", class_Entity, CreatureSpawnEvent.SpawnReason.class);
 
             class_CraftInventoryCustom_constructor = class_CraftInventoryCustom.getConstructor(InventoryHolder.class, Integer.TYPE, String.class);
+            class_EntityFireworkConstructor = class_EntityFirework.getConstructor(class_World, Double.TYPE, Double.TYPE, Double.TYPE, class_ItemStack);
 
             class_Entity_invulnerableField = class_Entity.getDeclaredField("invulnerable");
             class_Entity_invulnerableField.setAccessible(true);
             class_ItemStack_tagField = class_ItemStack.getField("tag");
             class_DamageSource_MagicField = class_DamageSource.getField("MAGIC");
+
+            class_Firework_ticksFlownField = class_EntityFirework.getDeclaredField("ticksFlown");
+            class_Firework_ticksFlownField.setAccessible(true);
+            class_Firework_expectedLifespanField = class_EntityFirework.getDeclaredField("expectedLifespan");
+            class_Firework_expectedLifespanField.setAccessible(true);
 
             try {
                 class_NBTTagList_legacy_consructor = class_NBTTagString.getConstructor(String.class, String.class);
