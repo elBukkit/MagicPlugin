@@ -2627,11 +2627,6 @@ periculum:
         cast:
         -  class: EffectSingle
            sound: firework_launch
-        cast:
-        -  class: EffectSingle
-           firework: ball
-           location: target
-           radius: 8
     parameters:
         allow_max_range: true
         range: 16
