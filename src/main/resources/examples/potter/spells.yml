@@ -131,6 +131,7 @@ aguamenti|2:
     parameters:
         width: 4
         height: 4
+        range: 32
 
 alohomora:
     icon: shears
