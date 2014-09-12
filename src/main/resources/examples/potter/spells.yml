@@ -980,8 +980,8 @@ confundus:
         target_type: LivingEntity
         target_breakables: 1
         target: other
-        duration: 8000
-        cooldown: 9000
+        duration: 5000
+        cooldown: 8000
         effect_confusion: 5
 
 conjunctivitis:
