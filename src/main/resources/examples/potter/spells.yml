@@ -2888,7 +2888,7 @@ protego:
         breakable: 3
         brushcolor: false
         bypass_build: true
-        cooldown: 350
+        cooldown: 1000
         reflect_chance: 0.1
         bypass_confusion: true
         bypass_backfire: true
@@ -2898,9 +2898,9 @@ protego:
 protego|2:
     parameters:
         radius: 1
-        undo: 500
+        undo: 1500
         reflect_chance: 0.75
-        cooldown: 600
+        cooldown: 800
         breakable: 2
     costs:
         mana: 30
@@ -2909,7 +2909,7 @@ protego|3:
     parameters:
         radius: 2
         undo: 1000
-        cooldown: 800
+        cooldown: 2000
         reflect_chance: 0.99
         breakable: 1
     costs:
