@@ -1579,16 +1579,19 @@ episkey:
         duration: 1000
         effect_saturation: 4
         heal: 2
+        cooldown: 1000
     costs:
         mana: 50
 
 episkey|2:
     parameters:
         heal: 4
+        cooldown: 2000
 
 episkey|3:
     parameters:
         heal: 10
+        cooldown: 3000
 
 firestorm:
     icon: fire
@@ -3707,11 +3710,11 @@ vulnera:
         target: any
         allow_max_range: false
         range: 16
-        duration: 5000
-        cooldown: 10000
+        duration: 3000
+        cooldown: 9000
         effect_regeneration: 1
         effect_saturation: 1
-        effect_slow: 4
+        effect_slow: 0
         heal: 10
     costs:
         mana: 80
