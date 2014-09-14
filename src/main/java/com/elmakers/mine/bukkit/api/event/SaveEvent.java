@@ -8,8 +8,14 @@ import org.bukkit.event.HandlerList;
  */
 public class SaveEvent extends Event {
     private static final HandlerList handlers = new HandlerList();
+    private final boolean asynchronous;
 
     public SaveEvent() {
+        this(true);
+    }
+
+    public SaveEvent(boolean asynchronous) {
+        this.asynchronous = asynchronous;
     }
 
     @Override
@@ -19,5 +25,9 @@ public class SaveEvent extends Event {
 
     public static HandlerList getHandlerList() {
         return handlers;
+    }
+
+    public boolean isAsynchronousSave() {
+        return asynchronous;
     }
 }
