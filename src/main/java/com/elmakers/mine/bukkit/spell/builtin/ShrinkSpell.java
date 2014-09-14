@@ -167,18 +167,11 @@ public class ShrinkSpell extends BlockSpell
         if (itemName != null) {
             meta.setDisplayName(itemName);
         }
-        if (meta instanceof SkullMeta) {
+        if (meta instanceof SkullMeta && ownerName != null) {
             SkullMeta skullData = (SkullMeta)meta;
             skullData.setOwner(ownerName);
         }
         shrunkenHead.setItemMeta(meta);
-        if (ownerName != null) {
-            shrunkenHead = InventoryUtils.getCopy(shrunkenHead);
-            ItemMeta itemMeta = shrunkenHead.getItemMeta();
-
-            shrunkenHead.setItemMeta(itemMeta);
-            InventoryUtils.setMeta(shrunkenHead, "SkullOwner", ownerName);
-        }
         location.getWorld().dropItemNaturally(location, shrunkenHead);
 	}
 }
