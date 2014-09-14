@@ -14,6 +14,7 @@ import java.util.logging.Logger;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
+import com.elmakers.mine.bukkit.api.event.SaveEvent;
 import com.elmakers.mine.bukkit.api.spell.*;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.maps.MapController;
@@ -1420,6 +1421,9 @@ public class MagicController implements Listener, MageController {
                 config.save();
             }
         }
+
+        SaveEvent saveEvent = new SaveEvent(asynchronous);
+        Bukkit.getPluginManager().callEvent(saveEvent);
 	}
 	
 	protected void loadSpells(ConfigurationSection config)
