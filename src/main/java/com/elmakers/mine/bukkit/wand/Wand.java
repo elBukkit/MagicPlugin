@@ -188,6 +188,9 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	public static Material EnchantableWandMaterial = null;
 	public static boolean EnableGlow = true;
     public static boolean SpellGlow = true;
+    public static SoundEffect inventoryOpenSound = null;
+    public static SoundEffect inventoryCloseSound = null;
+    public static SoundEffect inventoryCycleSound = null;
 
     private Inventory storedInventory = null;
     private Integer playerInventorySlot = null;
@@ -2202,7 +2205,9 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 			openInventoryPage = inventoryCount == 0 ? 0 : (openInventoryPage + inventoryCount + direction) % inventoryCount;
 			updateInventory();
 			if (mage != null && inventories.size() > 1) {
-				mage.playSound(Sound.CHEST_OPEN, 0.3f, 1.5f);
+                if (inventoryCycleSound != null) {
+                    mage.playSound(inventoryCycleSound.getSound(), inventoryCycleSound.getVolume(), inventoryCycleSound.getPitch());
+                }
 				mage.getPlayer().updateInventory();
 			}
 		}
@@ -2219,8 +2224,10 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		WandMode wandMode = getMode();
 		if (wandMode == WandMode.CHEST) {
 			inventoryIsOpen = true;
-			mage.playSound(Sound.CHEST_OPEN, 0.4f, 0.2f);
-			updateInventory();
+            if (inventoryOpenSound != null) {
+                mage.playSound(inventoryOpenSound.getSound(), inventoryOpenSound.getVolume(), inventoryOpenSound.getPitch());
+            }
+            updateInventory();
 			mage.getPlayer().openInventory(getDisplayInventory());
 		} else if (wandMode == WandMode.INVENTORY) {
 			if (hasStoredInventory()) return;
@@ -2228,7 +2235,9 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 
             if (storeInventory()) {
 				inventoryIsOpen = true;
-				mage.playSound(Sound.CHEST_OPEN, 0.4f, 0.2f);
+                if (inventoryOpenSound != null) {
+                    mage.playSound(inventoryOpenSound.getSound(), inventoryOpenSound.getVolume(), inventoryOpenSound.getPitch());
+                }
 				updateInventory();
 				mage.getPlayer().updateInventory();
 			}
@@ -2240,7 +2249,9 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         inventoryIsOpen = false;
 		saveInventory();
 		if (mage != null) {
-			mage.playSound(Sound.CHEST_CLOSE, 0.4f, 0.2f);
+            if (inventoryCloseSound != null) {
+                mage.playSound(inventoryCloseSound.getSound(), inventoryCloseSound.getVolume(), inventoryCloseSound.getPitch());
+            }
 			if (getMode() == WandMode.INVENTORY) {
 				restoreInventory();
 			} else {

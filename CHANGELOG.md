@@ -6,6 +6,7 @@
  - Toggle hotbar spell glow to show cooldowns/casting ability
  - Add cooldowns to spell lore
  - Fix "crafting_enabled" option- sorry about that! :(
+ - Allow overriding wand inventory sounds
 
 ## 3.7
 
