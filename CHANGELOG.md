@@ -5,6 +5,7 @@
  - Add cooldown and permission accessors to spell class
  - Add Messages API for localization
  - Add MapController API for custom image maps (loaded from URLs)
+ - Add save event for other plugins to hook into Magic's autosave mechanism
 
 ## 1.7
 
