@@ -33,8 +33,6 @@ public class TradersController {
 		ItemAttr.registerAttr(WandEffectParticleIntervalAttr.class);
 		ItemAttr.registerAttr(WandEffectSoundAttr.class);
 		ItemAttr.registerAttr(WandEffectSoundIntervalAttr.class);
-		ItemAttr.registerAttr(WandEffectSoundPitchAttr.class);
-		ItemAttr.registerAttr(WandEffectSoundVolumeAttr.class);
 		ItemAttr.registerAttr(WandHasteAttr.class);
 		ItemAttr.registerAttr(WandHealthRegenerationAttr.class);
 		ItemAttr.registerAttr(WandHungerRegenerationAttr.class);

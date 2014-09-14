@@ -32,6 +32,7 @@ import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import com.elmakers.mine.bukkit.utility.NMSUtils;
+import com.elmakers.mine.bukkit.utility.SoundEffect;
 import de.slikey.effectlib.util.ParticleEffect;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
@@ -152,11 +153,9 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	private boolean effectBubbles = false;
 	private EffectRing effectPlayer = null;
 	
-	private Sound effectSound = null;
+	private SoundEffect effectSound = null;
 	private int effectSoundInterval = 0;
 	private int effectSoundCounter = 0;
-	private float effectSoundVolume = 0;
-	private float effectSoundPitch = 0;
 	
 	private float speedIncrease = 0;
 	private PotionEffect hasteEffect = null;
@@ -945,8 +944,6 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		node.set("effect_particle_count", effectParticleCount);
 		node.set("effect_particle_interval", effectParticleInterval);
 		node.set("effect_sound_interval", effectSoundInterval);
-		node.set("effect_sound_volume", Float.toString(effectSoundVolume));
-		node.set("effect_sound_pitch", Float.toString(effectSoundPitch));
 		node.set("quiet", quietLevel);
 		node.set("keep", keep);
         node.set("randomize", randomize);
@@ -968,7 +965,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
             node.set("overrides", null);
         }
 		if (effectSound != null) {
-			node.set("effect_sound", effectSound.name());
+			node.set("effect_sound", effectSound.toString());
 		} else {
 			node.set("effectSound", null);
 		}
@@ -1095,18 +1092,16 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
             rename = wandConfig.getBoolean("rename", rename);
 
             if (wandConfig.contains("effect_particle")) {
-				parseParticleEffect(wandConfig.getString("effect_particle"));
+                effectParticle = ConfigurationUtils.toParticleEffect(wandConfig.getString("effect_particle"));
 				effectParticleData = 0;
 			}
 			if (wandConfig.contains("effect_sound")) {
-				parseSoundEffect(wandConfig.getString("effect_sound"));
+                effectSound = ConfigurationUtils.toSoundEffect(wandConfig.getString("effect_sound"));
 			}
 			effectParticleData = (float)wandConfig.getDouble("effect_particle_data", effectParticleData);
 			effectParticleCount = wandConfig.getInt("effect_particle_count", effectParticleCount);
 			effectParticleInterval = wandConfig.getInt("effect_particle_interval", effectParticleInterval);
 			effectSoundInterval =  wandConfig.getInt("effect_sound_interval", effectSoundInterval);
-			effectSoundVolume = (float)wandConfig.getDouble("effect_sound_volume", effectSoundVolume);
-			effectSoundPitch = (float)wandConfig.getDouble("effect_sound_pitch", effectSoundPitch);
 			
 			setMode(parseWandMode(wandConfig.getString("mode"), mode));
 
@@ -1186,12 +1181,8 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		// so try to keep defaults as 0/0.0/false.
 		if (effectSound == null) {
 			effectSoundInterval = 0;
-			effectSoundVolume = 0;
-			effectSoundPitch = 0;
 		} else {
 			effectSoundInterval = (effectSoundInterval == 0) ? 5 : effectSoundInterval;
-			effectSoundVolume = (effectSoundVolume < 0.01f) ? 0.8f : effectSoundVolume;
-			effectSoundPitch = (effectSoundPitch < 0.01f) ? 1.1f : effectSoundPitch;
 		}
 		
 		if (effectParticle == null) {
@@ -1204,32 +1195,6 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 
 		checkActiveMaterial();
 	}
-
-    protected void parseSoundEffect(String effectSoundName) {
-        if (effectSoundName.length() > 0) {
-            String soundName = effectSoundName.toUpperCase();
-            try {
-                effectSound = Sound.valueOf(soundName);
-            } catch (Exception ex) {
-                effectSound = null;
-            }
-        } else {
-            effectSound = null;
-        }
-    }
-
-    protected void parseParticleEffect(String effectParticleName) {
-        if (effectParticleName.length() > 0) {
-            String particleName = effectParticleName.toUpperCase();
-            try {
-                effectParticle = ParticleEffect.valueOf(particleName);
-            } catch (Exception ex) {
-                effectParticle = null;
-            }
-        } else {
-            effectParticle = null;
-        }
-    }
 
 	public void describe(CommandSender sender) {
 		Object wandNode = InventoryUtils.getNode(item, "wand");
@@ -2010,14 +1975,10 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		}
 		
 		if (other.effectSound != null && (other.isUpgrade || effectSound == null)) {
-			modified = modified | (effectSound != other.effectSound);
-			effectSound = other.effectSound;
+			modified = modified | (effectSound == null || !effectSound.equals(other.effectSound));
+            effectSound = other.effectSound;
 			modified = modified | (effectSoundInterval != other.effectSoundInterval);
 			effectSoundInterval = other.effectSoundInterval;
-			modified = modified | (effectSoundVolume != other.effectSoundVolume);
-			effectSoundVolume = other.effectSoundVolume;
-			modified = modified | (effectSoundPitch != other.effectSoundPitch);
-			effectSoundPitch = other.effectSoundPitch;
 		}
 		
 		if ((template == null || template.length() == 0) && (other.template != null && other.template.length() > 0)) {
@@ -2516,7 +2477,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		
 		if (effectSound != null && location != null && controller.soundsEnabled()) {
 			if ((effectSoundCounter++ % effectSoundInterval) == 0) {
-				mage.getLocation().getWorld().playSound(location, effectSound, effectSoundVolume, effectSoundPitch);
+				mage.getLocation().getWorld().playSound(location, effectSound.getSound(), effectSound.getVolume(), effectSound.getPitch());
 			}
 		}
 	}

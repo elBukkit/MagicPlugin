@@ -408,9 +408,7 @@ wolf:
     effect_particle: enchantment_table
     effect_particle_count: 1
     effect_particle_data: 1
-    effect_sound: ambience_cave
-    effect_sound_volume: 0.6
-    effect_sound_pitch: 0.3
+    effect_sound: ambience_cave,0.6,0.3
     effect_sound_interval: 30
     organize: true
     mode: inventory
