@@ -3,11 +3,13 @@ package com.elmakers.mine.bukkit.utility;
 import java.util.*;
 import java.util.Map.Entry;
 
+import de.slikey.effectlib.util.ParticleEffect;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.World;
 import org.bukkit.WorldCreator;
 import org.bukkit.block.Block;
@@ -647,4 +649,38 @@ public class ConfigurationUtils {
             }
         }
     }
+
+    public static SoundEffect toSoundEffect(String soundConfig) {
+        SoundEffect soundEffect = null;
+        if (soundConfig.length() > 0) {
+            String[] pieces = StringUtils.split(soundConfig, ',');
+            try {
+                String soundName = pieces[0].toUpperCase();
+                soundEffect = new SoundEffect(Sound.valueOf(soundName));
+                if (pieces.length > 1) {
+                    soundEffect.setVolume(Float.parseFloat(pieces[1]));
+                }
+                if (pieces.length > 2) {
+                    soundEffect.setPitch(Float.parseFloat(pieces[2]));
+                }
+            } catch (Exception ex) {
+            }
+        }
+
+        return soundEffect;
+    }
+
+    public static ParticleEffect toParticleEffect(String effectParticleName) {
+        ParticleEffect effectParticle = null;
+        if (effectParticleName.length() > 0) {
+            String particleName = effectParticleName.toUpperCase();
+            try {
+                effectParticle = ParticleEffect.valueOf(particleName);
+            } catch (Exception ex) {
+            }
+        }
+
+        return effectParticle;
+    }
+
 }

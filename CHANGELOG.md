@@ -9,6 +9,7 @@
  - Add findBlockUnder method
  - Make Messages API available to other plugins
  - Make MapController API available to other plugins
+ - Add additional configuration parsing utilities
 
 ## 1.7
 
