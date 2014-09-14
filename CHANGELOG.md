@@ -7,6 +7,7 @@
  - Add cooldowns to spell lore
  - Fix "crafting_enabled" option- sorry about that! :(
  - Allow overriding wand inventory sounds
+ - Avoid targeting pets (tested with EchoPet)
 
 ## 3.7
 
