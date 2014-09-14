@@ -84,7 +84,6 @@ categories:
     unforgiveable:
         name: Unforgiveable Hexes
         description: Casting these spells is a terrible crime.
-        color: '010101'
     staff:
         name: Staff Only
         description: These are generally only for staff
@@ -94,27 +93,21 @@ categories:
     dada:
         name: DADA
         description: Defense Against the Dark Arts
-        color: '00AAFF'
     charms:
         name: Charms
         description: Buffs, Boons and Boosts
-        color: 'FFFF00'
     herbology:
         name: Herbology
         description: Give your wand a green thumb
-        color: '11FF11'
     dark:
         name: Dark Arts
         description: Exploring the darker side of magic
-        color: '222222'
     transfiguration:
         name: Transfiguration
         description: Alchemy, polymorphing
-        color: 'FF1111'
     creatures:
         name: Care of Magical Creatures
         description: Keep them under control!
-        color: 'FF11FF'
 
 spells:
     accio:
