@@ -1494,6 +1494,8 @@ rennervate:
         allow_max_range: false
         range: 16
         bypass_confusion: true
+        duration: 1000
+        effect_saturation: 4
         remove_effects:
         - confusion
         - slow
