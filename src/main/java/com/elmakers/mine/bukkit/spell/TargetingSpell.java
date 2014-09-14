@@ -14,6 +14,7 @@ import org.bukkit.command.BlockCommandSender;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.metadata.MetadataValue;
 import org.bukkit.util.BlockIterator;
@@ -483,6 +484,10 @@ public abstract class TargetingSpell extends BaseSpell {
     }
 
     protected boolean canTarget(Entity entity) {
+        // This is mainly here to ignore pets...
+        if (entity.getType() == EntityType.UNKNOWN) {
+            return false;
+        }
         if (!targetNPCs && controller.isNPC(entity)) return false;
         if (checkProtection && entity instanceof Player) {
             Player player = (Player)entity;

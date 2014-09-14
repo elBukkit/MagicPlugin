@@ -10,6 +10,7 @@
  - Make Messages API available to other plugins
  - Make MapController API available to other plugins
  - Add additional configuration parsing utilities
+ - Ignore unknown entity types when targeting (avoids targeting pets)
 
 ## 1.7
 
