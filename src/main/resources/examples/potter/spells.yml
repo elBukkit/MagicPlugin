@@ -1442,13 +1442,13 @@ expelliarmus:
     parameters:
         target_type: LivingEntity
         allow_max_range: false
-        range: 8
+        range: 16
         fov: 0.12
         fizzle_chance: 0.6
         backfire_chance: 0.3
         keep_in_inventory: true
         target_breakables: 1
-        cooldown: 10000
+        cooldown: 15000
     costs:
         mana: 60
 
@@ -1456,24 +1456,25 @@ expelliarmus|2:
     parameters:
         fizzle_chance: 0.4
         backfire_chance: 0.2
+        cooldown: 15000
 
 expelliarmus|3:
     parameters:
         fizzle_chance: 0.3
         backfire_chance: 0.1
-        cooldown: 7000
+        cooldown: 15000
 
 expelliarmus|4:
     parameters:
         fizzle_chance: 0.1
         backfire_chance: 0.05
-        cooldown: 5000
+        cooldown: 15000
 
 expelliarmus|5:
     parameters:
         fizzle_chance: 0
         backfire_chance: 0
-        cooldown: 3000
+        cooldown: 15000
 
 rennervate:
     icon: ink_sack:9
