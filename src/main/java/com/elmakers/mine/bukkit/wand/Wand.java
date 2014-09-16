@@ -2300,6 +2300,13 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
             return;
         }
 
+        // This is pretty much a huge hack for the potter config :(
+        if (randomize && mage.getBoundWand() != null) {
+            mage.sendMessage(controller.getMessages().get("wand.already_bound"));
+            mage.setActiveWand(null);
+            return;
+        }
+
         if (this.isUpgrade) {
             controller.getLogger().warning("Activated an upgrade item- this shouldn't happen");
             return;
