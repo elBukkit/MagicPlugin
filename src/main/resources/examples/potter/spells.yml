@@ -79,7 +79,7 @@ accio:
     parameters:
         target_type: Entity
         allow_max_range: true
-        range: 32
+        range: 48
         allow_area: false
         item_force: 2
         area_range: 20
@@ -1442,7 +1442,7 @@ expelliarmus:
     parameters:
         target_type: LivingEntity
         allow_max_range: false
-        range: 35
+        range: 8
         fov: 0.12
         fizzle_chance: 0.6
         backfire_chance: 0.3

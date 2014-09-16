@@ -18,8 +18,14 @@ import com.elmakers.mine.bukkit.spell.TargetingSpell;
 import com.elmakers.mine.bukkit.utility.Target;
 import com.elmakers.mine.bukkit.wand.Wand;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
 public class DisarmSpell extends TargetingSpell 
-{   
+{
+    private Random random = new Random();
+
 	@Override
 	public SpellResult onCast(ConfigurationSection parameters) 
 	{
@@ -54,21 +60,30 @@ public class DisarmSpell extends TargetingSpell
 
         Integer targetSlot = null;
         PlayerInventory targetInventory = null;
+        ItemStack swapItem = null;
         if (entity instanceof Player && parameters.getBoolean("keep_in_inventory", false)) {
             Player targetPlayer = (Player)entity;
             targetInventory = targetPlayer.getInventory();
-            int currentSlot = targetInventory.getHeldItemSlot();
+            List<Integer> validSlots = new ArrayList<Integer>();
             ItemStack[] contents = targetInventory.getContents();
-            for (int i = contents.length - 1; i >= 0; i--) {
-                if (i == currentSlot) continue;
+            for (int i = Wand.HOTBAR_SIZE; i < contents.length; i++) {
                 if (contents[i] == null || contents[i].getType() == Material.AIR) {
-                    targetSlot = i;
-                    break;
+                    validSlots.add(i);
                 }
             }
+
+            // Randomly choose a slot if no empty one was found
+            if (validSlots.size() == 0) {
+                int swapSlot = random.nextInt(contents.length - Wand.HOTBAR_SIZE) + Wand.HOTBAR_SIZE;
+                swapItem = targetInventory.getItem(swapSlot);
+                validSlots.add(swapSlot);
+            }
+
+            int chosen = random.nextInt(validSlots.size());
+            targetSlot = validSlots.get(chosen);
         }
 
-        equipment.setItemInHand(null);
+        equipment.setItemInHand(swapItem);
         if (targetSlot != null && targetInventory != null) {
             targetInventory.setItem(targetSlot, stack);
         } else {
