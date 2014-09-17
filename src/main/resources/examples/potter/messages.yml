@@ -32,7 +32,6 @@ wand:
     need_more_levels: "§cYou need at least §4$levels §clevels to take an exam."
     spell_added: "You have learned the &r&6$name &d&ospell!"
     no_path: You must be holding your wand
-    already_bound: The box will not open, you  must find your old wand.
 
 costs:
     xp_amount: $amount XP

@@ -1307,10 +1307,6 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         return true;
     }
 
-    public Wand getBoundWand() {
-        return boundWand;
-    }
-
     @Override
     public boolean isStealth() {
         Player player = getPlayer();
