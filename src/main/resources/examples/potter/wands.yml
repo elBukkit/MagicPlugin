@@ -358,6 +358,13 @@ sorting:
     spells:
         - recall
 
+ollivander:
+    icon: paper
+    indestructible: true
+    locked: true
+    keep: true
+    quiet: 2
+
 camera:
     mode: cast
     active_spell: camera

@@ -700,6 +700,10 @@ wands:
         name: Letter from Hogwarts
         description: Use this to get sorted into a house!
 
+    ollivander:
+        name: Ticket from Ollivander
+        description: This could be exchanged for something wondrous.
+
     floopowder:
         name: Floo Powder
         description: Use for 20 seconds of protection

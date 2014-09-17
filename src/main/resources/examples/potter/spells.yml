@@ -798,9 +798,9 @@ bogies:
     costs:
         mana: 50
     parameters:
-        fov: 2
+        fov: 0.7
         range: 8
-        deactivate_target_mage: true
+        deactivate_target_mage: false
         target_type: LivingEntity
         target: other
         target_breakables: 1
@@ -3769,6 +3769,7 @@ wingardium:
     class: RaiseSpell
     worth: 15
     cast_on_no_target: true
+    pvp_restricted: false
     effects:
         cast:
         -  class: EffectSingle
@@ -3824,7 +3825,7 @@ wingardium:
         otdx: 0
         otdz: 0
     costs:
-        mana: 80
+        mana: 40
 
 # These are currently what I would classify as admin-only utility spells
 # But could be added in some form as canon spells eventually.
