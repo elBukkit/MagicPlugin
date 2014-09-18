@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## 3.9
+
+ - Some improvements to wand spell tracking to avoid lost spells
+ - Fix ability to glitch through walls on a broom
+
 ## 3.8
 
  - Fix combining two wands of different paths on an anvil

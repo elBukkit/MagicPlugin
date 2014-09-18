@@ -45,6 +45,8 @@ import java.util.Set;
 
 public class LevitateSpell extends TargetingSpell implements Listener
 {
+    private static final BlockFace[] CHECK_FACES = {BlockFace.EAST, BlockFace.WEST, BlockFace.NORTH, BlockFace.SOUTH};
+
 	private static final float defaultFlySpeed = 0.1f;
 	
 	private long levitateEnded;
@@ -470,6 +472,17 @@ public class LevitateSpell extends TargetingSpell implements Listener
             land();
 			return SpellResult.COST_FREE;
 		}
+
+        if (mountType != null) {
+            Location testLocation = getEyeLocation();
+            for (BlockFace facing : CHECK_FACES) {
+                Block block = testLocation.getBlock().getRelative(facing);
+                if (!isOkToStandIn(block.getType())) {
+                    return SpellResult.FAIL;
+                }
+            }
+        }
+
 		activate();
 
 		return SpellResult.CAST;
