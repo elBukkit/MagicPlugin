@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 1.9
+
+ - Add wand inventory alphabetizing
+
 ## 1.8
 
  - Add cooldown and permission accessors to spell class

@@ -33,6 +33,7 @@ public interface Wand extends CostReducer {
     public void activate(Mage mage);
     public void deactivate();
     public void organizeInventory(Mage mage);
+    public void alphabetizeInventory();
     public ItemStack getItem();
     public void makeUpgrade();
     public Collection<String> getSpells();
