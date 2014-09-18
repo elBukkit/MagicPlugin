@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 1.9
+
+ - Fix some issues parsing potion effects from strings.
+
 ## 1.8
 
  - Fix multiple-respawn glitch with entity undo after death
