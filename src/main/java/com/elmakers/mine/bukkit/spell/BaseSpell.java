@@ -580,15 +580,16 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
             String parameterName = "effect_" + effectType.getName().toLowerCase();
             if (parameters.contains(parameterName)) {
                 String value = parameters.getString(parameterName);
+
                 int ticks = 10;
                 int power = 1;
                 try {
                     if (value.contains(",")) {
                         String[] pieces = value.split(",");
-                        ticks = Integer.parseInt(pieces[0]);
-                        power = Integer.parseInt(pieces[1]);
+                        ticks = (int)Float.parseFloat(pieces[0]);
+                        power = (int)Float.parseFloat(pieces[1]);
                     } else {
-                        power = Integer.parseInt(value);
+                        power = (int)Float.parseFloat(value);
                         if (duration != null) {
                             ticks = duration / 50;
                         }
