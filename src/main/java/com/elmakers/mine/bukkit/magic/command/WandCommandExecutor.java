@@ -117,6 +117,7 @@ public class WandCommandExecutor extends MagicTabExecutor {
 			addIfPermissible(sender, options, "Magic.commands." + permissionKey + ".", "configure");
             addIfPermissible(sender, options, "Magic.commands." + permissionKey + ".", "override");
 			addIfPermissible(sender, options, "Magic.commands." + permissionKey + ".", "organize");
+            addIfPermissible(sender, options, "Magic.commands." + permissionKey + ".", "alphabetize");
 			addIfPermissible(sender, options, "Magic.commands." + permissionKey + ".", "combine");
 			addIfPermissible(sender, options, "Magic.commands." + permissionKey + ".", "upgrade");
 			addIfPermissible(sender, options, "Magic.commands." + permissionKey + ".", "describe");
@@ -320,6 +321,13 @@ public class WandCommandExecutor extends MagicTabExecutor {
 			onWandOrganize(sender, player);
 			return true;
 		}
+        if (subCommand.equalsIgnoreCase("alphabetize"))
+        {
+            if (!api.hasPermission(sender, "Magic.commands." + command + "." + subCommand)) return true;
+
+            onWandAlphabetize(sender, player);
+            return true;
+        }
 		if (subCommand.equalsIgnoreCase("combine"))
 		{
 			if (!api.hasPermission(sender, "Magic.commands." + command + "." + subCommand)) return true;
@@ -480,7 +488,6 @@ public class WandCommandExecutor extends MagicTabExecutor {
 		}
 		Mage mage = api.getMage(player);
 		Wand wand = mage.getActiveWand();
-		wand.closeInventory();
 		wand.organizeInventory(mage);
 		mage.sendMessage(api.getMessages().get("wand.reorganized"));
 		if (sender != player) {
@@ -489,6 +496,22 @@ public class WandCommandExecutor extends MagicTabExecutor {
 		
 		return true;
 	}
+
+    public boolean onWandAlphabetize(CommandSender sender, Player player)
+    {
+        if (!checkWand(sender, player, true)) {
+            return true;
+        }
+        Mage mage = api.getMage(player);
+        Wand wand = mage.getActiveWand();
+        wand.alphabetizeInventory();
+        mage.sendMessage(api.getMessages().get("wand.alphabetized"));
+        if (sender != player) {
+            sender.sendMessage(api.getMessages().getParameterized("wand.player_alphabetized", "$name", player.getName()));
+        }
+
+        return true;
+    }
 
     public boolean onWandEnchant(CommandSender sender, Player player, String levelString)
     {

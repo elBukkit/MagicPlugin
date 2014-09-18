@@ -1000,6 +1000,11 @@ organizer:
     indestructible: false
     icon: firework_charge
     organize: true
+alphabetizer:
+    upgrade: true
+    indestructible: false
+    icon: nether_star
+    alphabetize: true
 loud:
     upgrade: true
     indestructible: false

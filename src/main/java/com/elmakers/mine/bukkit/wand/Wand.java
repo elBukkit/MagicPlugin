@@ -83,7 +83,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	};
 	public final static String[] HIDDEN_PROPERTY_KEYS = {
 		"id", "owner", "owner_id", "name", "description", "template",
-		"organize", "fill", "stored", "upgrade_icon"
+		"organize", "alphabetize", "fill", "stored", "upgrade_icon"
 	};
 	public final static String[] ALL_PROPERTY_KEYS = (String[])ArrayUtils.addAll(PROPERTY_KEYS, HIDDEN_PROPERTY_KEYS);
 	
@@ -112,6 +112,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
     private boolean undroppable = false;
 	private boolean keep = false;
 	private boolean autoOrganize = false;
+    private boolean autoAlphabetize = false;
 	private boolean autoFill = false;
 	private boolean isUpgrade = false;
     private boolean randomize = false;
@@ -728,7 +729,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         spellLevels.clear();
         brushes.clear();
 
-		// Support YML-List-As-String formar
+		// Support YML-List-As-String format
 		spellString = spellString.replaceAll("[\\]\\[]", "");
 		String[] spellNames = StringUtils.split(spellString, ",");
 		for (String spellName : spellNames) {		
@@ -945,6 +946,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		node.set("fill", autoFill);
 		node.set("upgrade", isUpgrade);
 		node.set("organize", autoOrganize);
+        node.set("alphabetize", autoAlphabetize);
         if (castOverrides != null && castOverrides.size() > 0) {
             Collection<String> parameters = new ArrayList<String>();
             for (Map.Entry entry : castOverrides.entrySet()) {
@@ -1077,6 +1079,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 			bound = wandConfig.getBoolean("bound", bound);
             forceUpgrade = wandConfig.getBoolean("force", forceUpgrade);
             autoOrganize = wandConfig.getBoolean("organize", autoOrganize);
+            autoAlphabetize = wandConfig.getBoolean("alphabetize", autoAlphabetize);
 			autoFill = wandConfig.getBoolean("fill", autoFill);
             randomize = wandConfig.getBoolean("randomize", randomize);
             rename = wandConfig.getBoolean("rename", rename);
@@ -1780,7 +1783,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		for (int i = 0; i < openInventory.getSize(); i++) {
             ItemStack playerItem = playerInventory.getItem(i + HOTBAR_SIZE);
 			openInventory.setItem(i, playerItem);
-            updateSlot(i + HOTBAR_SIZE, playerItem);
+            updateSlot(i + HOTBAR_SIZE + openInventoryPage * Wand.INVENTORY_SIZE, playerItem);
 		}
 	}
 
@@ -2111,6 +2114,12 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 			if (mage != null) mage.sendMessage(controller.getMessages().get("wand.reorganized"));
 		}
 
+        if (other.autoAlphabetize) {
+            this.alphabetizeInventory();
+            modified = true;
+            if (mage != null) mage.sendMessage(controller.getMessages().get("wand.alphabetized"));
+        }
+
 		saveState();
 		updateName();
 		updateLore();
@@ -2338,6 +2347,11 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		if (autoOrganize && !isUpgrade) {
 			organizeInventory(mage);
 		}
+
+        // Check for auto-alphabetize
+        if (autoAlphabetize && !isUpgrade) {
+            alphabetizeInventory();
+        }
 		
 		// Check for auto-bind
         // Don't do this for op'd players, effectively, so
@@ -2825,11 +2839,6 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		return mage;
 	}
 	
-	protected void clearInventories() {
-		inventories.clear();
-		hotbar.clear();
-	}
-	
 	public Color getEffectColor() {
 		return effectColor == null ? null : effectColor.getColor();
 	}
@@ -2902,12 +2911,31 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 
 	@Override
 	public void organizeInventory(com.elmakers.mine.bukkit.api.magic.Mage mage) {
-			WandOrganizer organizer = new WandOrganizer(this, mage);
-			organizer.organize();
-			openInventoryPage = 0;
-			autoOrganize = false;
-			saveState();
-		}
+        WandOrganizer organizer = new WandOrganizer(this, mage);
+        organizer.organize();
+        openInventoryPage = 0;
+        autoOrganize = false;
+        autoAlphabetize = false;
+
+        // This will regenerate the inventory views
+        saveState();
+        loadState();
+        updateInventory();
+    }
+
+    @Override
+    public void alphabetizeInventory() {
+        WandOrganizer organizer = new WandOrganizer(this);
+        organizer.alphabetize();
+        openInventoryPage = 0;
+        autoOrganize = false;
+        autoAlphabetize = false;
+
+        // This will regenerate the inventory views
+        saveState();
+        loadState();
+        updateInventory();
+    }
 
 	@Override
 	public com.elmakers.mine.bukkit.api.wand.Wand duplicate() {
@@ -3300,5 +3328,33 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 
     public MageController getController() {
         return controller;
+    }
+
+    protected Map<String, Integer> getSpellInventory() {
+        return new HashMap<String, Integer>(spells);
+    }
+
+    protected Map<String, Integer> getBrushInventory() {
+        return new HashMap<String, Integer>(brushes);
+    }
+
+    protected void updateSpellInventory(Map<String, Integer> updateSpells) {
+        for (Map.Entry<String, Integer> spellEntry : spells.entrySet()) {
+            String spellKey = spellEntry.getKey();
+            Integer slot = updateSpells.get(spellKey);
+            if (slot != null) {
+                spellEntry.setValue(slot);
+            }
+        }
+    }
+
+    protected void updateBrushInventory(Map<String, Integer> updateBrushes) {
+        for (Map.Entry<String, Integer> brushEntry : brushes.entrySet()) {
+            String brushKey = brushEntry.getKey();
+            Integer slot = updateBrushes.get(brushKey);
+            if (slot != null) {
+                brushEntry.setValue(slot);
+            }
+        }
     }
 }

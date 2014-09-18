@@ -138,6 +138,8 @@ wand:
     player_no_item: $name is not holding an item
     reorganized: Wand reorganized
     player_reorganized: $name's wand reorganized
+    alphabetized: Wand alphabetized
+    player_alphabetized: $name's wand alphabetized
     already_enchanted: That $item is already enchanted
     enchanted: Your $item has been enchanted
     player_enchanted: $name's $item has been enchanted
@@ -1268,6 +1270,9 @@ wands:
     organizer:
         name: The Organizer
         description: Re-organizes your wand inventory
+    alphabetizer:
+        name: The Alphabetizer
+        description: Alphabetizes your wand inventory
     manaboost:
         name: Mana Boost
         description: An instant boost to 1000 Mana (or your max)

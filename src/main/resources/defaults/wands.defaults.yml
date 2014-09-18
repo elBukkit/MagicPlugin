@@ -1321,6 +1321,11 @@ organizer:
     indestructible: false
     icon: nether_star
     organize: true
+alphabetizer:
+    upgrade: true
+    indestructible: false
+    icon: nether_star
+    alphabetize: true
 antihunger:
     upgrade: true
     hunger_regeneration: 0.5
