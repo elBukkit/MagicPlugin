@@ -970,7 +970,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 			node.set("mode", null);
 		}
 		if (icon != null) {
-			String iconKey = MaterialBrush.getMaterialKey(icon);
+			String iconKey = icon.getKey();
 			if (iconKey != null && iconKey.length() > 0) {
 				node.set("icon", iconKey);
 			} else {
