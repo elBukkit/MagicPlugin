@@ -95,9 +95,9 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	private String id = "";
 	private Inventory hotbar;
 	private List<Inventory> inventories;
-    private Set<String> spells = new HashSet<String>();
+    private Map<String, Integer> spells = new HashMap<String, Integer>();
     private Map<String, Integer> spellLevels = new HashMap<String, Integer>();
-    private Set<String> brushes = new HashSet<String>();
+    private Map<String, Integer> brushes = new HashMap<String, Integer>();
 	
 	private String activeSpell = "";
 	private String activeMaterial = "";
@@ -569,49 +569,36 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	}
 	
 	public Set<String> getSpells() {
-		return spells;
+		return spells.keySet();
 	}
 
     protected String getSpellString() {
 		Set<String> spellNames = new TreeSet<String>();
-		List<Inventory> allInventories = getAllInventories();
-        int index = 0;
-		for (Inventory inventory : allInventories) {
-			ItemStack[] items = inventory.getContents();
-			for (int i = 0; i < items.length; i++) {
-				if (items[i] != null && isSpell(items[i])) {
-                    String spellName = getSpell(items[i]) + "@" + index;
-                    spellNames.add(spellName);
-				}
-                index++;
-			}
-		}
+        for (Map.Entry<String, Integer> spellSlot : spells.entrySet()) {
+            Integer slot = spellSlot.getValue();
+            String spellKey = spellSlot.getKey();
+            if (slot != null) {
+                spellKey += "@" + slot;
+            }
+            spellNames.add(spellKey);
+        }
 		return StringUtils.join(spellNames, ",");
 	}
 
 	public Set<String> getBrushes() {
-		return brushes;
+		return brushes.keySet();
 	}
 
     protected String getMaterialString() {
 		Set<String> materialNames = new TreeSet<String>();
-		List<Inventory> allInventories = new ArrayList<Inventory>(inventories.size() + 1);
-		allInventories.add(hotbar);
-		allInventories.addAll(inventories);
-        int index = 0;
-		for (Inventory inventory : allInventories) {
-			ItemStack[] items = inventory.getContents();
-			for (int i = 0; i < items.length; i++) {
-                if (items[i] != null && isBrush(items[i])) {
-                    String materialKey = getBrush(items[i]);
-                    if (materialKey != null) {
-                        materialKey += "@" + index;
-                        materialNames.add(materialKey);
-                    }
-                }
-                index++;
-			}
-		}
+        for (Map.Entry<String, Integer> brushSlot : brushes.entrySet()) {
+            Integer slot = brushSlot.getValue();
+            String materialKey = brushSlot.getKey();
+            if (slot != null) {
+                materialKey += "@" + slot;
+            }
+            materialNames.add(materialKey);
+        }
 		return StringUtils.join(materialNames, ",");
 	}
 	
@@ -748,7 +735,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 			String[] pieces = spellName.split("@");
 			Integer slot = parseSlot(pieces);
             SpellKey spellKey = new SpellKey(pieces[0].trim());
-            spells.add(spellKey.getKey());
+            spells.put(spellKey.getKey(), slot);
             Integer currentLevel = spellLevels.get(spellKey.getBaseKey());
             if (currentLevel == null || currentLevel < spellKey.getLevel()) {
                 spellLevels.put(spellKey.getBaseKey(), spellKey.getLevel());
@@ -769,7 +756,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 			String[] pieces = materialName.split("@");
 			Integer slot = parseSlot(pieces);
 			String materialKey = pieces[0].trim();
-            brushes.add(materialKey);
+            brushes.put(materialKey, slot);
 			ItemStack itemStack = createBrushIcon(materialKey);
 			if (itemStack == null) {
 				controller.getPlugin().getLogger().warning("Unable to create material icon for key " + materialKey);
@@ -1772,7 +1759,10 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		if (mage.getPlayer() == null) return;
 		if (getMode() != WandMode.INVENTORY) return;
 		if (!hasStoredInventory()) return;
-		
+
+        // Work-around glitches that happen if you're dragging an item on death
+        if (mage.isDead()) return;
+
 		// Fill in the hotbar
 		Player player = mage.getPlayer();
 		PlayerInventory playerInventory = player.getInventory();
@@ -1782,14 +1772,29 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 				playerItem = null;
 			}
 			hotbar.setItem(i, playerItem);
+            updateSlot(i, playerItem);
 		}
 		
 		// Fill in the active inventory page
 		Inventory openInventory = getOpenInventory();
 		for (int i = 0; i < openInventory.getSize(); i++) {
-			openInventory.setItem(i, playerInventory.getItem(i + HOTBAR_SIZE));
+            ItemStack playerItem = playerInventory.getItem(i + HOTBAR_SIZE);
+			openInventory.setItem(i, playerItem);
+            updateSlot(i + HOTBAR_SIZE, playerItem);
 		}
 	}
+
+    protected void updateSlot(int slot, ItemStack item) {
+        String spellKey = getSpell(item);
+        if (spellKey != null) {
+            spells.put(spellKey, slot);
+        } else {
+            String brushKey = getBrush(item);
+            if (brushKey != null) {
+                brushes.put(brushKey, slot);
+            }
+        }
+    }
 
     public int enchant(int totalLevels, com.elmakers.mine.bukkit.api.magic.Mage mage) {
         return randomize(totalLevels, true, mage);
@@ -3009,7 +3014,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
             }
         }
         spellLevels.put(spellKey.getBaseKey(), level);
-        spells.add(template.getKey());
+        spells.put(template.getKey(), null);
 		addToInventory(spellItem, inventorySlot);
 		updateInventory();
 		hasInventory = getSpells().size() + getBrushes().size() > 1;
@@ -3055,7 +3060,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		ItemStack itemStack = createBrushIcon(materialKey);
 		if (itemStack == null) return false;
 
-        brushes.add(materialKey);
+        brushes.put(materialKey, null);
 		addToInventory(itemStack);
 		if (activeMaterial == null || activeMaterial.length() == 0) {
 			setActiveBrush(materialKey);
