@@ -1003,7 +1003,7 @@ organizer:
 alphabetizer:
     upgrade: true
     indestructible: false
-    icon: nether_star
+    icon: firework_charge
     alphabetize: true
 loud:
     upgrade: true

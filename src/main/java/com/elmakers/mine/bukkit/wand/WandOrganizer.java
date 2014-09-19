@@ -2,7 +2,6 @@ package com.elmakers.mine.bukkit.wand;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -85,20 +84,17 @@ public class WandOrganizer {
 						favorites = favoriteSpells.get(castCount);
 					}
 					favorites.add(spellName);
-					spell = null;
 				}
-				if (spell != null) {
-					String category = spell.getCategory().getKey();
-					if (category == null || category.length() == 0) {
-						category = "default";
-					}
-					Collection<String> spellList = groupedSpells.get(category);
-					if (spellList == null) {
-						spellList = new TreeSet<String>();
-						groupedSpells.put(category, spellList);
-					}
-					spellList.add(spellName);
-				}
+                String category = spell.getCategory().getKey();
+                if (category == null || category.length() == 0) {
+                    category = "default";
+                }
+                Collection<String> spellList = groupedSpells.get(category);
+                if (spellList == null) {
+                    spellList = new TreeSet<String>();
+                    groupedSpells.put(category, spellList);
+                }
+                spellList.add(spellName);
 			}
 		}
 
@@ -118,17 +114,18 @@ public class WandOrganizer {
         Set<String> addedFavorites = new HashSet<String>();
         List<String> favoriteList = new ArrayList<String>();
 		for (List<String> favorites : favoriteSpells.descendingMap().values()) {
+            if (addedFavorites.size() >= favoritePageSize) break;
 			for (String spellName : favorites) {
                 addedFavorites.add(spellName);
                 favoriteList.add(spellName);
                 if (addedFavorites.size() >= favoritePageSize) break;
 			}
-            if (addedFavorites.size() >= favoritePageSize) break;
 		}
 
         if (addedFavorites.size() > favoriteCountThreshold) {
             for (String favorite : favoriteList) {
-                spells.put(favorite, getNextSlot());
+                int slot = getNextSlot();
+                spells.put(favorite, slot);
             }
             nextPage();
         } else {
@@ -145,7 +142,8 @@ public class WandOrganizer {
 
 			for (String spellName : spellGroup) {
                 if (!addedFavorites.contains(spellName)) {
-                    spells.put(spellName, getNextSlot());
+                    int slot = getNextSlot();
+                    spells.put(spellName, slot);
                 }
 			}
 		}
@@ -191,14 +189,14 @@ public class WandOrganizer {
         currentInventoryCount = 0;
 
         for (String spellName : alphabetized.values()) {
-            spells.put(spellName, getNextSlot());
+            spells.put(spellName, getNextSlot(Wand.INVENTORY_SIZE));
         }
 
         if (materials.size() > 0) {
             nextPage();
 
             for (String materialName : materials.values()) {
-                brushes.put(materialName, getNextSlot());
+                brushes.put(materialName, getNextSlot(Wand.INVENTORY_SIZE));
             }
         }
 
@@ -207,12 +205,15 @@ public class WandOrganizer {
     }
 
     protected int getNextSlot() {
+        return getNextSlot(inventoryOrganizeSize);
+    }
+
+    protected int getNextSlot(int nextPageSize) {
         int slot = Wand.HOTBAR_SIZE + currentInventoryCount + (currentInventoryIndex * Wand.INVENTORY_SIZE);
         currentInventoryCount++;
-        if (currentInventoryCount > inventoryOrganizeSize) {
+        if (currentInventoryCount > nextPageSize) {
             nextPage();
         }
-
         return slot;
     }
 
