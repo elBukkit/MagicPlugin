@@ -265,6 +265,13 @@ public interface MagicAPI {
     public ItemStack createItem(String magicItemKey);
 
     /**
+     * Create a generic version of an item with no extra data.
+     * @param magicItemKey The template key, may be a wand, spell, etc.
+     * @return The specified item.
+     */
+    public ItemStack createGenericItem(String magicItemKey);
+
+    /**
      * Create a new Wand from a template.
      *
      * Once created, a Wand is a unique item. It "remembers" which template

@@ -3,6 +3,7 @@
 ## 1.9
 
  - Add wand inventory alphabetizing
+ - Add createGenericItem, for creating non-enchanted items from templates.
 
 ## 1.8
 
