@@ -2166,8 +2166,12 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	public static Collection<ConfigurationSection> getWandTemplates() {
 		return wandTemplates.values();
 	}
-	
-	public static WandMode parseWandMode(String modeString, WandMode defaultValue) {
+
+    public static ConfigurationSection getWandTemplate(String key) {
+        return wandTemplates.get(key);
+    }
+
+    public static WandMode parseWandMode(String modeString, WandMode defaultValue) {
 		for (WandMode testMode : WandMode.values()) {
 			if (testMode.name().equalsIgnoreCase(modeString)) {
 				return testMode;

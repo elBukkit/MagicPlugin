@@ -76,6 +76,9 @@ public class MagicItemDb extends ItemDb {
                 wand.makeUpgrade();
                 return wand.getItem();
             }
+        } else if (id.startsWith("item:")) {
+            String wandId = id.replace("item:", "");
+            return controller.createItem(wandId);
         }
 		
 		return super.get(id);

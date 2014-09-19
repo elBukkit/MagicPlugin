@@ -3245,6 +3245,36 @@ public class MagicController implements Listener, MageController {
         return null;
     }
 
+    public ItemStack createItem(String key) {
+        ConfigurationSection template = Wand.getWandTemplate(key);
+        if (template == null || !template.contains("icon")) {
+            return null;
+        }
+        MaterialAndData icon = ConfigurationUtils.toMaterialAndData(template.getString("icon"));
+        ItemStack item = icon.getItemStack(1);
+        ItemMeta meta = item.getItemMeta();
+        if (template.contains("name")) {
+            meta.setDisplayName(template.getString("name"));
+        } else {
+            String name = messages.get("wands." + key + ".name");
+            if (name != null && !name.isEmpty()) {
+                meta.setDisplayName(name);
+            }
+        }
+        List<String> lore = new ArrayList<String>();
+        if (template.contains("description")) {
+            lore.add(template.getString("description"));
+        } else {
+            String description = messages.get("wands." + key + ".description");
+            if (description != null && !description.isEmpty()) {
+               lore.add(description);
+            }
+        }
+        meta.setLore(lore);
+        item.setItemMeta(meta);
+        return item;
+    }
+
 	/*
 	 * API Implementation
 	 */

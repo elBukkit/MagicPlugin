@@ -144,7 +144,19 @@ public class MagicGiveCommandExecutor extends MagicTabExecutor {
             api.giveItemToPlayer(player, itemStack);
             sender.sendMessage("Gave brush " + brushKey + " to " + player.getName());
             return true;
-        } else {
+        } else if (itemName.contains("item:")) {
+            String itemKey = itemName.substring(5);
+            ItemStack itemStack = api.createGenericItem(itemKey);
+            if (itemStack == null) {
+                sender.sendMessage("Failed to create item for " + itemKey);
+                return false;
+            }
+
+            itemStack.setAmount(count);
+            api.giveItemToPlayer(player, itemStack);
+            sender.sendMessage("Gave item " + itemKey + " to " + player.getName());
+            return true;
+        }else {
             Wand wand = api.createWand(itemName);
             if (wand != null) {
                 Mage mage = api.getMage(player);
