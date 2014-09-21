@@ -3046,7 +3046,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
             }
         }
         spellLevels.put(spellKey.getBaseKey(), level);
-        spells.put(template.getKey(), null);
+        spells.put(template.getKey(), inventorySlot);
 		addToInventory(spellItem, inventorySlot);
 		updateInventory();
 		hasInventory = getSpells().size() + getBrushes().size() > 1;
