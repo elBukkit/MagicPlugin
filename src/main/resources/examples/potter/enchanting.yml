@@ -295,6 +295,7 @@ graduate:
       duro|3: 20,30,40
       bogies|3: 20,30,40
       lacarnum|3: 20,30,40
+      revelio: 5,10,20
 
 broom:
     hidden: true

@@ -919,7 +919,7 @@ camera:
         mana: 5
 
 confringo:
-    icon: flint_and_steel
+    icon: clay_ball
     category: charms
     class: BoomSpell
     pvp_restricted: true
@@ -1233,7 +1233,7 @@ deprimomaxima:
         radius: 5
         bypass_build: true
         transparent: transparent_to_construction
-        undo: 15000
+        undo: 30000
     costs:
         mana: 200
 
@@ -2519,9 +2519,8 @@ morsmordremaxima:
         transparent: apparate
         op: true
         commands:
-        - broadcast @pd cast §aMorsmordre Maxima, and two Deatheaters appare!
-        - mm mobs spawn Deatheater
-        - mm mobs spawn Deatheater
+        - broadcast @pd cast §aMorsmordre Maxima, and a Dementor appears!
+        - mm mobs spawn Dementor 1 @tworld,@tx,@ty,@tz
     costs:
         mana: 100
 
@@ -3081,7 +3080,7 @@ reductomaxima:
         radius: 4
         type: sphere
         check_destructible: false
-        undo: 5000
+        undo: 30000
         bypass_build: true
     costs:
         mana: 150
@@ -4335,39 +4334,33 @@ vault:
           $lock: [Lock]
 
 revelio:
-    icon: ender_portal
+    icon: coal:1
     category: staff
-    class: PhaseSpell
-    worth: 100
+    class: PotionEffectSpell
+    worth: 20
+    cast_on_no_target: true
     effects:
         cast:
         -  class: EffectSingle
            sound: level_up
            location: both
         -  class: EffectSingle
-           location: both
+           location: target
            effectlib:
              class: WarpEffect
              particle: portal
     costs:
-        mana: 100
+        mana: 30
     parameters:
-      target_type: LivingEntity
-      range: 12
-      target: any
-      cooldown: 1000
-      worlds:
-          world:
-             target: Hogwarts
-             scale: 1
-          world_other:
-             target: Hogwarts
-             scale: 1
-          Hogwarts:
-             target: MuggleWorld
-             scale: 1
-          MuggleWorld:
-            target: Hogwarts
+       target: other
+       target_type: LivingEntity
+       radius: 0
+       range: 32
+       fov: 3
+       allow_max_range: true
+       target_breakables: 1
+       remove_effects:
+       - invisibility
 
 deluminate:
     hidden: true

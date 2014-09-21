@@ -27,7 +27,7 @@ public class PotionEffectSpell extends UndoableSpell
 	public SpellResult onCast(ConfigurationSection parameters) 
 	{
 		Target target = getTarget();
-		if (!target.hasTarget() || !target.hasEntity())
+		if (!target.hasTarget())
 		{
 			return SpellResult.NO_TARGET;
 		}
@@ -43,9 +43,9 @@ public class PotionEffectSpell extends UndoableSpell
         radius = (int)(mage.getRadiusMultiplier() * radius);
 
         if (radius > 0) {
-            List<Entity> entities = CompatibilityUtils.getNearbyEntities(location, radius, radius, radius);
+            List<Entity> entities = CompatibilityUtils.getNearbyEntities(target.getLocation(), radius, radius, radius);
             for (Entity entity : entities) {
-                if (entity instanceof LivingEntity && entity != targetedEntity) {
+                if (entity instanceof LivingEntity && entity != targetedEntity && entity != mage.getEntity()) {
                     targetEntities.add((LivingEntity)entity);
                 }
             }

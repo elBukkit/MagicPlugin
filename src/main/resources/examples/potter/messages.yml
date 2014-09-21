@@ -460,7 +460,7 @@ spells:
     revelio:
         name: Revelio
         description: Reveal the unseen
-        cast: You reveal $world_name to $target
+        cast: Revelio!
     salviohexia:
         name: Salivo Hexia
         description: Preserve an area for Reparo
@@ -702,7 +702,7 @@ wands:
 
     ollivander:
         name: Ticket from Ollivander
-        description: This could be exchanged for something wondrous.
+        description: Exchange this for something wondrous
 
     floopowder:
         name: Floo Powder
