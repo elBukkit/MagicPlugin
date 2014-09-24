@@ -188,8 +188,6 @@ powerable:
 destructible:
 - air
 - monster_eggs
-- quartz_block
-- quartz_stairs
 - quartz_ore
 
 hardenable:
