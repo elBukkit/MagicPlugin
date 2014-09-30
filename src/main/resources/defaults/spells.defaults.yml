@@ -3535,7 +3535,7 @@ wolfhouse:
         obz: 10
         otx: 1
         oty: 1
-        mm: erase 
+        brushmod: erase
         transparent: transparent_to_construction
         commands:
           wolf_generate: castp @p[r=7] wolfhouse type sphere cd true md 150 tx ~-6 ty ~22 tz ~11 obx 0 oby -46 obz -1 r 52 brushmod dirt
