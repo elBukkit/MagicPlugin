@@ -119,8 +119,8 @@ aguamenti:
         height: 3
         range: 25
         width: 3
-        cooldown: 500
-        undo: 1000
+        cooldown: 1000
+        undo: 2000
         disable_physics: 8000
         bypass_build: true
         entity_undo: false
@@ -807,6 +807,7 @@ bogies:
         target_breakables: 1
         duration: 3000
         effect_poison: 1
+        cooldown: 3000
 
 bogies|2:
     parameters:
@@ -1020,12 +1021,12 @@ conjunctivitis:
         target_type: LivingEntity
         target_breakables: 1
         target: other
-        duration: 5000
+        duration: 4000
         effect_blindness: 5
 
 conjunctivitis|2:
     parameters:
-        duration: 10000
+        duration: 6000
 
 obscuro:
     alias: blind
@@ -1068,6 +1069,7 @@ obscuro:
         target: other
         duration: 2000
         effect_blindness: 1
+        cooldown: 4000
 
 crucio:
     icon: quartz
@@ -1268,7 +1270,7 @@ diffindo:
         brush: air
         falling: true
         check_destructible: true
-        destructible: wool
+        destructible: gold_ore
         radius: 2
         bypass_build: true
         transparent: transparent_to_construction
@@ -1325,7 +1327,7 @@ duro:
         brush: obsidian
         transparent: transparent_to_construction
         undo: 4000
-        cooldown: 8000
+        cooldown: 1000
         bypass_build: true
         bypass_backfire: true
     costs:
@@ -1583,19 +1585,19 @@ episkey:
         duration: 1000
         effect_saturation: 4
         heal: 2
-        cooldown: 1000
+        cooldown: 3000
     costs:
         mana: 50
 
 episkey|2:
     parameters:
         heal: 4
-        cooldown: 2000
+        cooldown: 4000
 
 episkey|3:
     parameters:
         heal: 10
-        cooldown: 3000
+        cooldown: 5000
 
 firestorm:
     icon: fire
@@ -1734,7 +1736,7 @@ finiteincantatem:
         bypass_protection: true
         bypass_confusion: true
         bypass_backfire: true
-        cooldown: 1000
+        cooldown: 5000
         transparent: apparatemaxima
         fizzle_chance: 0.6
     costs:
@@ -2813,7 +2815,7 @@ patronus:
         target_type: Wither
         range: 32
         type: chicken
-        cooldown: 5000
+        cooldown: 7000
         damage: 100
         damage_range: 4
         speed: 0.8
@@ -3557,7 +3559,7 @@ vermillious:
         fov: 0.12
         target_type: LivingEntity
         damage: 2
-        cooldown: 1000
+        cooldown: 2500
         target_breakables: 1
         bypass_backfire: false
     costs:
