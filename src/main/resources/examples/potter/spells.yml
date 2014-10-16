@@ -1326,12 +1326,12 @@ duro:
         destructible: hardenable
         brush: obsidian
         transparent: transparent_to_construction
-        undo: 4000
+        undo: 5000
         cooldown: 1000
         bypass_build: true
         bypass_backfire: true
     costs:
-        mana: 80
+        mana: 30
 
 duro|2:
     parameters:
@@ -1445,7 +1445,7 @@ expelliarmus:
     parameters:
         target_type: LivingEntity
         allow_max_range: false
-        range: 16
+        range: 20
         fov: 0.12
         fizzle_chance: 0.6
         backfire_chance: 0.3
