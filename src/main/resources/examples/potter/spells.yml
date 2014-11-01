@@ -1326,7 +1326,7 @@ duro:
         destructible: hardenable
         brush: obsidian
         transparent: transparent_to_construction
-        undo: 5000
+        undo: 4000
         cooldown: 1000
         bypass_build: true
         bypass_backfire: true
@@ -3083,8 +3083,8 @@ reductomaxima:
         radius: 4
         type: sphere
         check_destructible: false
-        undo: 30000
         bypass_build: true
+        undo: 30000
     costs:
         mana: 150
 
@@ -3223,7 +3223,7 @@ sectumsempra:
         fov: 0.8
         target: other_entity
         damage: 7
-        cooldown: 6000
+        cooldown: 10000
         target_breakables: 3
     costs:
         mana: 100
