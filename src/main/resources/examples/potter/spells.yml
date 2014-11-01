@@ -88,7 +88,7 @@ accio:
         count: 1
         fall_protection: 10000
     costs:
-        mana: 35
+        mana: 50
 
 accio|2:
     parameters:
@@ -124,6 +124,7 @@ aguamenti:
         disable_physics: 8000
         bypass_build: true
         entity_undo: false
+        bypass_backfire: true
     costs:
         mana: 30
 
@@ -212,7 +213,7 @@ aparecium:
         type: sphere
         power: true
         cooldown: 3000
-        undo: 2000
+        undo: 4000
         bypass_build: true
         check_destructible: true
         destructible: powerable
@@ -268,7 +269,7 @@ apparate:
         transparent: apparate
         cooldown: 10000
     costs:
-        mana: 80
+        mana: 100
 
 apparatemaxima:
     icon: eye_of_ender
@@ -476,7 +477,7 @@ ascendio:
         min_speed: 1.0
         max_speed: 1.5
     costs:
-        mana: 30
+        mana: 60
 
 ascendio|2:
     parameters:
@@ -628,7 +629,7 @@ avadakedavra:
     icon: ink_sack:10
     category: unforgiveable
     class: PotionEffectSpell
-    pvp_restricted: true
+    pvp_restricted: false
     cast_on_no_target: true
     worth: 1000
     effects:
@@ -653,7 +654,7 @@ avadakedavra:
         allow_max_range: false
         range: 20
         target: other_entity
-        damage: 100
+        damage: 1000
         check_destructible: false
         cooldown: 30000
         target_breakables: 1
@@ -807,18 +808,18 @@ bogies:
         target_breakables: 1
         duration: 3000
         effect_poison: 1
-        cooldown: 3000
+        cooldown: 5000
 
 bogies|2:
     parameters:
         range: 16
-        duration: 6000
+        duration: 4000
         effect_poison: 2
 
 bogies|3:
     parameters:
         range: 24
-        duration: 8000
+        duration: 5000
         effect_poison: 3
 
 bombarda:
@@ -841,15 +842,17 @@ bombarda:
         target: other
         allow_max_range: true
         range: 16
-        target_breakables: 1
+        target_breakables: 3
         break_blocks: false
-        size: 1
+        size: 2
         cooldown: 10000
         undo: 8000
         entity_undo: false
         otx: r(-3,3)
         oty: r(2,3)
         otz: r(-3,3)
+        bypass_backfire: true
+        bypass_protection: true
     costs:
         mana: 50
 
@@ -864,8 +867,8 @@ bombarda|2:
            color: 'FF1500'
            color2: 'FF0088'
     parameters:
-        range: 30
-        size: 2
+        range: 32
+        size: 2.8
 
 bubble:
     icon: ender_pearl
@@ -984,7 +987,8 @@ confundus:
         target_breakables: 1
         target: other
         duration: 5000
-        cooldown: 8000
+        cooldown: 10000
+        fov: .12
         effect_confusion: 5
 
 conjunctivitis:
@@ -1106,7 +1110,7 @@ crucio:
         target_breakables: 1
         target: other
         duration: 5000
-        effect_wither: 8
+        effect_wither: 10
         cooldown: 9000
 
 dementor:
@@ -1451,7 +1455,7 @@ expelliarmus:
         backfire_chance: 0.3
         keep_in_inventory: true
         target_breakables: 1
-        cooldown: 15000
+        cooldown: 8000
     costs:
         mana: 60
 
@@ -1459,25 +1463,25 @@ expelliarmus|2:
     parameters:
         fizzle_chance: 0.4
         backfire_chance: 0.2
-        cooldown: 15000
+        cooldown: 9000
 
 expelliarmus|3:
     parameters:
         fizzle_chance: 0.3
         backfire_chance: 0.1
-        cooldown: 15000
+        cooldown: 10000
 
 expelliarmus|4:
     parameters:
         fizzle_chance: 0.1
         backfire_chance: 0.05
-        cooldown: 15000
+        cooldown: 11000
 
 expelliarmus|5:
     parameters:
         fizzle_chance: 0
         backfire_chance: 0
-        cooldown: 15000
+        cooldown: 12000
 
 rennervate:
     icon: ink_sack:9
@@ -1502,11 +1506,8 @@ rennervate:
         effect_saturation: 4
         remove_effects:
         - confusion
-        - slow
-        - blindness
         - weakness
         - poison
-        - wither
         cooldown: 2000
     costs:
         mana: 30
@@ -1553,6 +1554,7 @@ engorgio:
         allow_max_range: false
         range: 16
         target_breakables: 1
+        cooldown: 7000
     costs:
         mana: 110
 
@@ -1599,6 +1601,39 @@ episkey|3:
         heal: 10
         cooldown: 5000
 
+bandage:
+    icon: ink_sack:9
+    category: charms
+    class: PotionEffectSpell
+    worth: 30
+    pvp_restricted: false
+    cast_on_no_target: true
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: orb_pickup
+           effectlib:
+             class: ConeEffect
+             iterations: 15
+             particle: heart
+        -  class: EffectSingle
+           location: target
+           effectlib:
+             class: LoveEffect
+             iterations: 10
+             period: 2
+    parameters:
+        target_type: LivingEntity
+        target: any
+        allow_max_range: false
+        range: 16
+        duration: 1000
+        effect_saturation: 2
+        heal: 1
+        cooldown: 3000
+    costs:
+        mana: 1
+
 firestorm:
     icon: fire
     category: dark
@@ -1626,9 +1661,29 @@ firestorm:
         brush: fire
         undo: 6000
         bypass_build: true
+        cooldown: 5000
     costs:
-        mana: 80
+        mana: 100
 
+bandage|2:
+    parameters:
+        heal: 2
+        cooldown: 4000
+
+bandage|3:
+    parameters:
+        heal: 4
+        cooldown: 5000
+
+bandage|4:
+    parameters:
+        heal: 8
+        cooldown: 5000
+
+bandage|5:
+    parameters:
+        heal: 10
+        cooldown: 5000
 floo:
     icon: sulphur
     category: specialty
@@ -1678,7 +1733,7 @@ fiendfyre:
         require_block: true
         brush: lava
         cooldown: 20000
-        undo: 5000
+        undo: 1000
         target_breakables: 1
     costs:
         mana: 180
@@ -1987,8 +2042,9 @@ glacius:
         entity_damage: 2
         slowness: 1
         ice: ice
-        undo: 5000
-        duration: 5000
+        undo: 2000
+        duration: 1000
+        cooldown: 3000
         entity_undo: false
         bypass_build: true
         freeze_lava: false
@@ -2021,7 +2077,7 @@ glacius|2:
         player_damage: 3
         entity_damage: 6
         slowness: 2
-        undo: 8000
+        undo: 2000
         duration: 8000
     costs:
         mana: 90
@@ -2033,8 +2089,7 @@ glacius|3:
         player_damage: 4
         entity_damage: 8
         slowness: 2
-        undo: 10000
-        undo: 20000
+        undo: 3000
         freeze_lava: true
     costs:
         mana: 125
@@ -2137,7 +2192,7 @@ incarcerous:
         target: other
         target_type: LivingEntity
         allow_max_range: true
-        range: 16
+        range: 32
         radius: 1
         type: cuboid
         brush: nether_fence
@@ -2259,9 +2314,10 @@ incendio:
         target_type: LivingEntity
         allow_max_range: false
         range: 32
+        fov: 0.12
         radius: 0
         vertical_search_distance: 8
-        undo: 2000
+        undo: 1500
         cooldown: 1000
         bypass_build: true
         target_breakables: 1
@@ -2272,16 +2328,16 @@ incendio:
 incendio|2:
     parameters:
         radius: 1
-        cooldown: 2000
-        undo: 3000
+        cooldown: 3000
+        undo: 1600
     costs:
         mana: 75
 
 incendio|3:
     parameters:
         radius: 2
-        cooldown: 3000
-        undo: 4000
+        cooldown: 5000
+        undo: 1700
     costs:
         mana: 90
 
@@ -2312,6 +2368,7 @@ lacarnum:
         speed: 1.1
         entity_undo: false
         undo: 8000
+        cooldown: 4000
     costs:
         mana: 100
 
@@ -2319,13 +2376,13 @@ lacarnum|2:
     parameters:
         size: 2
         spread: 5
-        speed: 1.3
+        speed: 2
 
 lacarnum|3:
     parameters:
         size: 2
         spread: 2
-        speed: 1.5
+        speed: 4
 
 legilimens:
     icon: iron_helmet
@@ -2379,6 +2436,7 @@ levicorpus:
         target_type: LivingEntity
         allow_max_range: false
         range: 35
+        fov: 0.12
         cooldown: 4000
         target_breakables: 1
         undo_velocity: true
@@ -2856,7 +2914,7 @@ piertotum:
         type: iron_golem
         count: 1
         reason: custom
-        undo: 1500
+        undo: 5000
         name: Animated Statue
         entity_undo: false
     costs:
@@ -2887,14 +2945,14 @@ protego:
         orient: true
         transparent: transparent_to_construction
         check_destructible: true
-        destructible: air
+        destructible: air,fire,water,stationarywater
         undo: 1000
         breakable: 3
         brushcolor: false
         bypass_build: true
         cooldown: 2000
         reflect_chance: 0.1
-        bypass_confusion: true
+        bypass_confusion: false
         bypass_backfire: true
     costs:
         mana: 20
@@ -2914,7 +2972,7 @@ protego|3:
         radius: 2
         undo: 1200
         cooldown: 3000
-        reflect_chance: 0.99
+        reflect_chance: 0.90
         breakable: 1
     costs:
         mana: 50
@@ -2994,6 +3052,7 @@ reducio:
         player_damage: 1
         entity_damage: 4
         target_breakables: 1
+        cooldown: 4000
     costs:
         mana: 110
 
@@ -3219,14 +3278,14 @@ sectumsempra:
     parameters:
         target_type: LivingEntity
         allow_max_range: false
-        range: 8
-        fov: 0.8
+        range: 9
+        fov: 0.2
         target: other_entity
         damage: 7
-        cooldown: 10000
+        cooldown: 9000
         target_breakables: 3
     costs:
-        mana: 100
+        mana: 120
 
 silencio:
     icon: ink_sack:3
@@ -3480,7 +3539,7 @@ stupefy:
              lengthGrow: 0.4
     parameters:
         range: 35
-        fov: 0.10
+        fov: 0.12
         target_type: LivingEntity
         damage: 2
         cooldown: 5000
@@ -4774,3 +4833,43 @@ superregenerate:
         max_dimension: 1024
         expand: true
         transparent: transparent_to_construction
+
+pulsus:
+    icon: ink_sack:5
+    category: dada
+    class: PushSpell
+    pvp_restricted: true
+    cast_on_no_target: true
+    worth: 15
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: wither_shoot
+           effectlib:
+             class: ConeEffect
+             iterations: 12
+             particle: spell
+             lengthGrow: 0.1
+        area:
+        -  class: EffectSingle
+           sound: fizz
+           effectlib:
+             class: FountainEffect
+             particle: spell
+             iterations: 2
+             particlesStrand: 10
+             particlesSpout: 30
+    parameters:
+        target: other
+        range: 16
+        allow_area: true
+        allow_max_range: true
+        item_force: 5
+        area_range: 15
+        entity_force: 20
+        type: cuboid
+        count: 0
+        damage: 0.5
+        cooldown: 4000
+    costs:
+        mana: 40
