@@ -1951,24 +1951,21 @@ public class MagicController implements Listener, MageController {
                 frame.setItem(null);
             }
 		}
-        if (preventMeleeDamage && event.getCause() == EntityDamageEvent.DamageCause.ENTITY_ATTACK)
+        if (preventMeleeDamage && event.getCause() == EntityDamageEvent.DamageCause.ENTITY_ATTACK && damager instanceof Player )
         {
-            event.setCancelled(true);
+            Player player = (Player)damager;
+            ItemStack itemInHand = player.getItemInHand();
+            if (!isSword(itemInHand))
+            {
+                event.setCancelled(true);
+            }
         }
         else if (wandAbuseDamage > 0 && event.getCause() == EntityDamageEvent.DamageCause.ENTITY_ATTACK && damager instanceof Player && isMage(damager))
         {
             Player player = (Player)damager;
             Mage mage = getMage(player);
             com.elmakers.mine.bukkit.api.wand.Wand wand = mage.getActiveWand();
-            if
-            (
-                wand != null &&
-                wand.getItem().getType() != Material.DIAMOND_SWORD &&
-                wand.getItem().getType() != Material.WOOD_SWORD &&
-                wand.getItem().getType() != Material.IRON_SWORD &&
-                wand.getItem().getType() != Material.STONE_SWORD &&
-                wand.getItem().getType() != Material.GOLD_SWORD
-            )
+            if (wand != null && !isSword(wand.getItem()))
             {
                 event.setCancelled(true);
                 player.playEffect(EntityEffect.HURT);
@@ -1976,6 +1973,15 @@ public class MagicController implements Listener, MageController {
             }
         }
 	}
+
+    protected boolean isSword(ItemStack item)
+    {
+        return item.getType() == Material.DIAMOND_SWORD ||
+            item.getType() == Material.WOOD_SWORD ||
+            item.getType() == Material.IRON_SWORD ||
+            item.getType() == Material.STONE_SWORD ||
+            item.getType() == Material.GOLD_SWORD;
+    }
 	
 	protected UndoList getEntityUndo(Entity entity) {
 		UndoList blockList = null;
