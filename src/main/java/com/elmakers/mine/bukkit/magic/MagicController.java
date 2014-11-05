@@ -18,13 +18,14 @@ import com.elmakers.mine.bukkit.api.event.SaveEvent;
 import com.elmakers.mine.bukkit.api.spell.*;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.maps.MapController;
-import com.elmakers.mine.bukkit.maps.URLMap;
 import com.elmakers.mine.bukkit.protection.MultiverseManager;
 import com.elmakers.mine.bukkit.protection.PvPManagerManager;
 import com.elmakers.mine.bukkit.spell.BrushSpell;
 import com.elmakers.mine.bukkit.spell.UndoableSpell;
 import com.elmakers.mine.bukkit.utility.*;
 import com.elmakers.mine.bukkit.wand.*;
+import com.elmakers.mine.bukkit.wand.LostWand;
+import com.elmakers.mine.bukkit.wand.Wand;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.*;
 import org.bukkit.block.Block;
@@ -1953,7 +1954,16 @@ public class MagicController implements Listener, MageController {
         {
             Player player = (Player)damager;
             Mage mage = getMage(player);
-            if (mage.getActiveWand() != null)
+            com.elmakers.mine.bukkit.api.wand.Wand wand = mage.getActiveWand();
+            if
+            (
+                wand != null &&
+                wand.getItem().getType() != Material.DIAMOND_SWORD &&
+                wand.getItem().getType() != Material.WOOD_SWORD &&
+                wand.getItem().getType() != Material.IRON_SWORD &&
+                wand.getItem().getType() != Material.STONE_SWORD &&
+                wand.getItem().getType() != Material.GOLD_SWORD
+            )
             {
                 event.setCancelled(true);
                 player.playEffect(EntityEffect.HURT);
