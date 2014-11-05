@@ -29,7 +29,7 @@ public class FireSpell extends BlockSpell
 		
 		public SpellResult perform(Block block)
 		{
-			if (block.getType() == Material.AIR || block.getType() == Material.FIRE)
+			if (block.getType() == Material.AIR || block.getType() == Material.FIRE || block.getType() == Material.WATER || block.getType() == Material.STATIONARY_WATER)
 			{
 				return SpellResult.NO_TARGET;
 			}
