@@ -560,6 +560,7 @@ interactible:
 - workbench
 - furnace
 - stone_button
+- wood_button
 - lever
 - bed
 - sign_post

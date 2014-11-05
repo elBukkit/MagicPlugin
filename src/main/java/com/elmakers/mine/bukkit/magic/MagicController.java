@@ -2433,7 +2433,7 @@ public class MagicController implements Listener, MageController {
             return;
         }
 
-                Mage apiMage = getMage(player);
+        Mage apiMage = getMage(player);
         if (!(apiMage instanceof com.elmakers.mine.bukkit.magic.Mage)) return;
         com.elmakers.mine.bukkit.magic.Mage mage = (com.elmakers.mine.bukkit.magic.Mage)apiMage;
 
