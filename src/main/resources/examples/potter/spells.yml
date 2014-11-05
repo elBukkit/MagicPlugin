@@ -1836,6 +1836,36 @@ flagrate:
     costs:
         mana: 5
 
+push:
+    icon: ink_sack:5
+    category: dada
+    class: PushSpell
+    pvp_restricted: true
+    cast_on_no_target: true
+    worth: 15
+    effects:
+        area:
+        -  class: EffectSingle
+           sound: fizz
+           effectlib:
+             class: FountainEffect
+             particle: spell
+             iterations: 2
+             particlesStrand: 10
+             particlesSpout: 30
+    parameters:
+        area: true
+        target_type: Entity
+        item_force: 2
+        area_range: 6
+        entity_force: 1
+        type: push
+        count: 1
+        damage: 0.5
+        cooldown: 1500
+    costs:
+        mana: 50
+
 flipendo:
     icon: ink_sack:5
     category: dada
