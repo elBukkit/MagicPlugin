@@ -34,7 +34,7 @@ public class FireSpell extends BlockSpell
 				return SpellResult.NO_TARGET;
 			}
             Material material = Material.FIRE;
-			if (block.getType() == Material.WATER || block.getType() == Material.STATIONARY_WATER || block.getType() == Material.ICE || block.getType() == Material.SNOW)
+			if (block.getType() == Material.ICE || block.getType() == Material.SNOW)
 			{
 				material = Material.AIR;
 			}
