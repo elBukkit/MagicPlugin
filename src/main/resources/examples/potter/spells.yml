@@ -1914,7 +1914,7 @@ flipendo|3:
              particlesSpout: 30
     parameters:
         range: 32
-        allow_area: true
+        allow_area: false
         area_range: 20
         item_force: 5
         entity_force: 1.8
