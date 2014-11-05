@@ -21,6 +21,7 @@ wand_inventory_close_sound: level_up,0.4,0.2
 
 # Stop bashing each other with wands!!
 wand_abuse_damage: 2
+prevent_melee_damage: true
 
 # Backup Inventory to wand data
 # .. maybe not for now.

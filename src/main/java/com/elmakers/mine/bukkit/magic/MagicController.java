@@ -1705,6 +1705,7 @@ public class MagicController implements Listener, MageController {
         Wand.inventoryCycleSound = ConfigurationUtils.toSoundEffect(properties.getString("wand_inventory_cycle_sound"));
 
         wandAbuseDamage = properties.getDouble("wand_abuse_damage", 0);
+        preventMeleeDamage = properties.getBoolean("prevent_melee_damage", false);
 
 		// Set up other systems
 		EffectPlayer.SOUNDS_ENABLED = soundsEnabled;
@@ -1950,7 +1951,11 @@ public class MagicController implements Listener, MageController {
                 frame.setItem(null);
             }
 		}
-        if (wandAbuseDamage > 0 && event.getCause() == EntityDamageEvent.DamageCause.ENTITY_ATTACK && damager instanceof Player && isMage(damager))
+        if (preventMeleeDamage && event.getCause() == EntityDamageEvent.DamageCause.ENTITY_ATTACK)
+        {
+            event.setCancelled(true);
+        }
+        else if (wandAbuseDamage > 0 && event.getCause() == EntityDamageEvent.DamageCause.ENTITY_ATTACK && damager instanceof Player && isMage(damager))
         {
             Player player = (Player)damager;
             Mage mage = getMage(player);
@@ -3956,6 +3961,7 @@ public class MagicController implements Listener, MageController {
     private int								    autoUndo						= 0;
     private int								    autoSaveTaskId					= 0;
     private double                              wandAbuseDamage                 = 0;
+    private boolean                             preventMeleeDamage              = false;
     private WarpController						warpController					= null;
 
     private final Map<String, SpellTemplate>    spells              		= new HashMap<String, SpellTemplate>();
