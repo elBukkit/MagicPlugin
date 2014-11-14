@@ -4903,3 +4903,30 @@ pulsus:
         cooldown: 4000
     costs:
         mana: 40
+
+animagus_wolf:
+    name: Animagus
+    description: Turn into a Wolf
+    icon: bone
+    category: dark
+    class: CommandSpell
+    worth: 20
+    effects:
+        cast:
+        - class: EffectSingle
+          sound: enderman_teleport
+          location: source
+          particle_override: particleOrbital
+          effectlib:
+            class: AtomEffect
+            particleNucleus: smoke
+            particleOrbital: large_smoke
+            iterations: 8
+    parameters:
+        target: self
+        cooldown: 60000
+        op: true
+        commands:
+        - dis wolf
+    costs:
+        mana: 55
