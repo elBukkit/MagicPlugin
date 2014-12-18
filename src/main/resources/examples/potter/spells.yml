@@ -3698,8 +3698,6 @@ stupefy:
              lengthGrow: 0.4
     parameters:
         range: 35
-        close_range: 10
-        close_fov: 5
         fov: 0.12
         target_type: LivingEntity
         damage: 2
@@ -3713,16 +3711,12 @@ stupefy:
 
 stupefy|2:
     parameters:
-        close_range: 10
-        close_fov: 5
         damage: 3
         duration: 750
         target_breakables: 1
 
 stupefy|3:
     parameters:
-        close_range: 10
-        close_fov: 5
         damage: 4
         duration: 1000
         target_breakables: 2
