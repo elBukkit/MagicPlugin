@@ -29,12 +29,12 @@ public class FireSpell extends BlockSpell
 		
 		public SpellResult perform(Block block)
 		{
-			if (block.getType() == Material.AIR || block.getType() == Material.FIRE)
+			if (block.getType() == Material.AIR || block.getType() == Material.FIRE || block.getType() == Material.WATER || block.getType() == Material.STATIONARY_WATER)
 			{
 				return SpellResult.NO_TARGET;
 			}
             Material material = Material.FIRE;
-			if (block.getType() == Material.WATER || block.getType() == Material.STATIONARY_WATER || block.getType() == Material.ICE || block.getType() == Material.SNOW)
+			if (block.getType() == Material.ICE || block.getType() == Material.SNOW)
 			{
 				material = Material.AIR;
 			}
@@ -42,6 +42,10 @@ public class FireSpell extends BlockSpell
 			{
 				block = block.getRelative(BlockFace.UP);
 			}
+            if (block.getType() == Material.FIRE || block.getType() == Material.WATER || block.getType() == Material.STATIONARY_WATER)
+            {
+                return SpellResult.NO_TARGET;
+            }
 			super.perform(block);
             MaterialAndData applyMaterial = new MaterialAndData(material);
             applyMaterial.modify(block);

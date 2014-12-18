@@ -1,4 +1,30 @@
-# Spell Scripting
+# Disabling / Removing Spells
+
+You can not edit the default config files, so you cannot simply "delete" a spell. If you want to completely remove a spell,
+you have a couple of options.
+
+## Spells.yml
+
+You can add entries to spells.yml to disable individual spells using the "enabled" property, e.g.
+
+```
+nuke:
+   enabled: false
+```
+
+Will effectively remove the "nuke" spell from the game.
+
+## Custom Configuration
+
+Adding the following to config.yml will disable loading of the default spells completely:
+
+```
+load_default_spells: false
+```
+
+At which point you may pick and choose what spells to copy from the spells.defaults.yml file.
+
+# Spell Scripting and Customization
 
 Any of these parameters may be used in spells.yml, or via command-line, command blocks or any
 plugins that support forcing Bukkit commands. If used in spells.yml, these go in the "parameters" map.

@@ -18,13 +18,14 @@ import com.elmakers.mine.bukkit.api.event.SaveEvent;
 import com.elmakers.mine.bukkit.api.spell.*;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.maps.MapController;
-import com.elmakers.mine.bukkit.maps.URLMap;
 import com.elmakers.mine.bukkit.protection.MultiverseManager;
 import com.elmakers.mine.bukkit.protection.PvPManagerManager;
 import com.elmakers.mine.bukkit.spell.BrushSpell;
 import com.elmakers.mine.bukkit.spell.UndoableSpell;
 import com.elmakers.mine.bukkit.utility.*;
 import com.elmakers.mine.bukkit.wand.*;
+import com.elmakers.mine.bukkit.wand.LostWand;
+import com.elmakers.mine.bukkit.wand.Wand;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.*;
 import org.bukkit.block.Block;
@@ -1704,6 +1705,7 @@ public class MagicController implements Listener, MageController {
         Wand.inventoryCycleSound = ConfigurationUtils.toSoundEffect(properties.getString("wand_inventory_cycle_sound"));
 
         wandAbuseDamage = properties.getDouble("wand_abuse_damage", 0);
+        preventMeleeDamage = properties.getBoolean("prevent_melee_damage", false);
 
 		// Set up other systems
 		EffectPlayer.SOUNDS_ENABLED = soundsEnabled;
@@ -1949,11 +1951,21 @@ public class MagicController implements Listener, MageController {
                 frame.setItem(null);
             }
 		}
-        if (wandAbuseDamage > 0 && event.getCause() == EntityDamageEvent.DamageCause.ENTITY_ATTACK && damager instanceof Player && isMage(damager))
+        if (preventMeleeDamage && event.getCause() == EntityDamageEvent.DamageCause.ENTITY_ATTACK && damager instanceof Player )
+        {
+            Player player = (Player)damager;
+            ItemStack itemInHand = player.getItemInHand();
+            if (!isSword(itemInHand))
+            {
+                event.setCancelled(true);
+            }
+        }
+        else if (wandAbuseDamage > 0 && event.getCause() == EntityDamageEvent.DamageCause.ENTITY_ATTACK && damager instanceof Player && isMage(damager))
         {
             Player player = (Player)damager;
             Mage mage = getMage(player);
-            if (mage.getActiveWand() != null)
+            com.elmakers.mine.bukkit.api.wand.Wand wand = mage.getActiveWand();
+            if (wand != null && !isSword(wand.getItem()))
             {
                 event.setCancelled(true);
                 player.playEffect(EntityEffect.HURT);
@@ -1961,6 +1973,15 @@ public class MagicController implements Listener, MageController {
             }
         }
 	}
+
+    protected boolean isSword(ItemStack item)
+    {
+        return item.getType() == Material.DIAMOND_SWORD ||
+            item.getType() == Material.WOOD_SWORD ||
+            item.getType() == Material.IRON_SWORD ||
+            item.getType() == Material.STONE_SWORD ||
+            item.getType() == Material.GOLD_SWORD;
+    }
 	
 	protected UndoList getEntityUndo(Entity entity) {
 		UndoList blockList = null;
@@ -2433,7 +2454,7 @@ public class MagicController implements Listener, MageController {
             return;
         }
 
-                Mage apiMage = getMage(player);
+        Mage apiMage = getMage(player);
         if (!(apiMage instanceof com.elmakers.mine.bukkit.magic.Mage)) return;
         com.elmakers.mine.bukkit.magic.Mage mage = (com.elmakers.mine.bukkit.magic.Mage)apiMage;
 
@@ -3946,6 +3967,7 @@ public class MagicController implements Listener, MageController {
     private int								    autoUndo						= 0;
     private int								    autoSaveTaskId					= 0;
     private double                              wandAbuseDamage                 = 0;
+    private boolean                             preventMeleeDamage              = false;
     private WarpController						warpController					= null;
 
     private final Map<String, SpellTemplate>    spells              		= new HashMap<String, SpellTemplate>();

@@ -191,6 +191,7 @@ wand_upgrade_item: nether_star
 wand_glow: true
 spell_glow: true
 wand_abuse_damage: 0
+prevent_melee_damage: false
 wand_inventory_open_sound: chest_open,0.3,1.5
 wand_inventory_cycle_sound: chest_open,0.4,0.2
 wand_inventory_close_sound: chest_close,0.4,0.2
