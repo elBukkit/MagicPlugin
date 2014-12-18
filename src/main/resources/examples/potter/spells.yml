@@ -2320,33 +2320,6 @@ imperio:
     costs:
         mana: 170
 
-imperiomaxima:
-    icon: coal:1
-    hidden: true
-    category: staff
-    class: com.elmakers.mine.bukkit.potterspells.spell.ImperioSpell
-    pvp_restricted: true
-    cast_on_no_target: true
-    worth: 500
-    effects:
-        cast:
-        -  class: EffectSingle
-           sound: portal_trigger
-        -  class: EffectTrail
-           particle: spell
-           length: 16
-    parameters:
-        target_type: Player
-        target: other_entity
-        range: 32
-        item_force: 1
-        entity_force: 1
-        target_breakables: 1
-        bypass_backfire: true
-        check_protection: true
-    costs:
-        mana: 200
-
 impervius:
     icon: sponge
     category: transfiguration
