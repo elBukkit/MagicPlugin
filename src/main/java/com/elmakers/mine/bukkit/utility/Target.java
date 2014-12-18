@@ -18,8 +18,8 @@ public class Target implements Comparable<Target>
     protected int    minDistanceSquared = 0;
     protected double maxAngle           = 0.3;
 
-    protected double closeDistanceSquared = 2 * 2;
-    protected double closeAngle = Math.PI;
+    protected double closeDistanceSquared = 3 * 3;
+    protected double closeAngle = Math.PI / 2;
 
     private Location source;
     private Location location;
@@ -87,14 +87,19 @@ public class Target implements Comparable<Target>
 
     public Target(Location sourceLocation, Entity entity, int range, double angle)
     {
-        this(sourceLocation, entity, range, angle, range, angle);
+        this.maxDistanceSquared = range * range;
+        this.maxAngle = angle;
+        this.source = sourceLocation;
+        this._entity = new WeakReference<Entity>(entity);
+        if (entity != null) this.location = entity.getLocation();
+        calculateScore();
     }
 
     public Target(Location sourceLocation, Entity entity, int range, double angle, double closeRange, double closeAngle)
     {
-        this.maxDistanceSquared = range * range;
         this.closeDistanceSquared = closeRange * closeRange;
         this.closeAngle = closeAngle;
+        this.maxDistanceSquared = range * range;
         this.maxAngle = angle;
         this.source = sourceLocation;
         this._entity = new WeakReference<Entity>(entity);
@@ -170,18 +175,20 @@ public class Target implements Comparable<Target>
         if (source == null) return;
 
         Vector playerFacing = source.getDirection();
-        Vector playerLoc = new Vector(source.getBlockX(), source.getBlockY(), source.getBlockZ());
+        Vector playerLoc = new Vector(source.getX(), source.getY(), source.getZ());
 
         Location targetLocation = getLocation();
         if (targetLocation == null) return;
 
-        Vector targetLoc = new Vector(targetLocation.getBlockX(), targetLocation.getBlockY(), targetLocation.getBlockZ());
-        Vector targetDirection = new Vector(targetLoc.getBlockX() - playerLoc.getBlockX(), targetLoc.getBlockY() - playerLoc.getBlockY(), targetLoc.getBlockZ() - playerLoc.getBlockZ());
+        Vector targetLoc = new Vector(targetLocation.getX(), targetLocation.getY(), targetLocation.getZ());
+        Vector targetDirection = new Vector(targetLoc.getX() - playerLoc.getX(), targetLoc.getY() - playerLoc.getY(), targetLoc.getZ() - playerLoc.getZ());
         angle = targetDirection.angle(playerFacing);
         distanceSquared = targetDirection.lengthSquared();
 
         score = 0;
-        double checkAngle = (distanceSquared < closeDistanceSquared) ? closeAngle : maxAngle;
+        boolean isClose = (distanceSquared < closeDistanceSquared);
+        double checkAngle = isClose ? closeAngle : maxAngle;
+
         if (checkAngle > 0 && angle > checkAngle) return;
         if (maxDistanceSquared > 0 && distanceSquared > maxDistanceSquared) return;
         if (distanceSquared < minDistanceSquared) return;

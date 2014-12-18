@@ -2,7 +2,6 @@ package com.elmakers.mine.bukkit.spell;
 
 import java.util.*;
 
-import com.elmakers.mine.bukkit.effect.EffectPlayer;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -56,8 +55,8 @@ public abstract class TargetingSpell extends BaseSpell {
 
     private int                                 range                   = 32;
     private double                              fov                     = 0.3;
-    private double                              closeRange              = 1.5;
-    private double                              closeFOV                = Math.PI;
+    private double                              closeRange              = 3;
+    private double                              closeFOV                = Math.PI / 2;
 
     private Set<Material>                       targetThroughMaterials  = new HashSet<Material>();
     private boolean                             reverseTargeting        = false;
