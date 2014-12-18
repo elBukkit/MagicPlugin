@@ -2,6 +2,7 @@
 
 ## 3.9
 
+ - 1.8 Compatibility
  - Some improvements to wand spell tracking to avoid lost spells
  - Fix ability to glitch through walls on a broom
 
