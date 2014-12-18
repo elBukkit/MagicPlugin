@@ -25,10 +25,21 @@ public class ProjectileSpell extends UndoableSpell
 {
 	private int defaultSize = 1;
 	private Random random = new Random();
+	private static Field lifeField = null;
+	private static Method getHandleMethod = null;
+	private static boolean reflectionInitialized = false;
+
+	private static Class<?> projectileClass;
+	private static Class<?> fireballClass;
+	private static Class<?> arrowClass;
+	private static Class<?> worldClass;
+	private static Class<?> entityClass;
+	private static Class<?> craftArrowClass;
 
 	@Override
 	public SpellResult onCast(ConfigurationSection parameters) 
 	{
+		checkReflection();
         getTarget();
 		int count = parameters.getInt("count", 1);
 		int size = parameters.getInt("size", defaultSize);
@@ -56,12 +67,6 @@ public class ProjectileSpell extends UndoableSpell
 		int tickIncrease = parameters.getInt("tick_increase", 1180);
 		
 		String projectileTypeName = parameters.getString("projectile", "Arrow");
-		final Class<?> projectileClass = NMSUtils.getBukkitClass("net.minecraft.server.EntityProjectile");
-		final Class<?> fireballClass = NMSUtils.getBukkitClass("net.minecraft.server.EntityFireball");
-		final Class<?> arrowClass = NMSUtils.getBukkitClass("net.minecraft.server.EntityArrow");
-		final Class<?> worldClass = NMSUtils.getBukkitClass("net.minecraft.server.World");
-		final Class<?> entityClass = NMSUtils.getBukkitClass("net.minecraft.server.Entity");
-		final Class<?> craftArrowClass = NMSUtils.getBukkitClass("org.bukkit.craftbukkit.entity.CraftArrow");
 		
 		if (projectileClass == null || worldClass == null || fireballClass == null || arrowClass == null || craftArrowClass == null) {
 			controller.getLogger().warning("Can't find NMS classess");
@@ -206,7 +211,7 @@ public class ProjectileSpell extends UndoableSpell
 		}
 
 		if (tickIncrease > 0 && projectiles.size() > 0 && arrowClass != null) {
-			scheduleProjectileCheck(projectiles, tickIncrease, effects, radius, arrowClass, craftArrowClass, 5);
+			scheduleProjectileCheck(projectiles, tickIncrease, effects, radius, 5);
 		}
 		
 		registerForUndo();
@@ -214,34 +219,58 @@ public class ProjectileSpell extends UndoableSpell
 	}
 	
 	protected void scheduleProjectileCheck(final Collection<Projectile> projectiles, final int tickIncrease, 
-			final Collection<PotionEffect> effects, final int radius, final Class<?> arrowClass, final Class<?> craftArrowClass, final int retries) {
+			final Collection<PotionEffect> effects, final int radius, final int retries) {
 		Bukkit.getScheduler().scheduleSyncDelayedTask(controller.getPlugin(), new Runnable() {
 			public void run() {
-				checkProjectiles(projectiles, tickIncrease, effects, radius, arrowClass, craftArrowClass, retries);
+				checkProjectiles(projectiles, tickIncrease, effects, radius, retries);
 			}
 		}, 40);
 	}
-	
-	protected void checkProjectiles(final Collection<Projectile> projectiles, final int tickIncrease, 
-			final Collection<PotionEffect> effects, final int radius, final Class<?> arrowClass, final Class<?> craftArrowClass, int retries) {
 
-		Field lifeField = null;
-		Method getHandleMethod = null;
-		
-		try {
-			// This is kinda hacky, like fer reals :\
+	private void checkReflection()
+	{
+		if (!reflectionInitialized)
+		{
+			projectileClass = NMSUtils.getBukkitClass("net.minecraft.server.EntityProjectile");
+			fireballClass = NMSUtils.getBukkitClass("net.minecraft.server.EntityFireball");
+			arrowClass = NMSUtils.getBukkitClass("net.minecraft.server.EntityArrow");
+			worldClass = NMSUtils.getBukkitClass("net.minecraft.server.World");
+			entityClass = NMSUtils.getBukkitClass("net.minecraft.server.Entity");
+			craftArrowClass = NMSUtils.getBukkitClass("org.bukkit.craftbukkit.entity.CraftArrow");
+
+			reflectionInitialized = true;
 			try {
-				lifeField = arrowClass.getDeclaredField("at");
-			} catch (Throwable ignore) {
-				lifeField = arrowClass.getDeclaredField("j");
+				// This is kinda hacky, like fer reals :\
+				try {
+					// 1.8
+					lifeField = arrowClass.getDeclaredField("ap");
+				}
+				catch (Throwable ignore2)
+				{
+					try {
+						// 1.7
+						lifeField = arrowClass.getDeclaredField("at");
+					} catch (Throwable ignore) {
+						// Prior
+						lifeField = arrowClass.getDeclaredField("j");
+					}
+				}
+				getHandleMethod = craftArrowClass.getMethod("getHandle");
+			} catch (Throwable ex) {
+				lifeField = null;
+				getHandleMethod = null;
+				controller.getLogger().warning("Failed to create short-lived arrow. Set tick_increase to 0 to avoid this message");
 			}
-			getHandleMethod = craftArrowClass.getMethod("getHandle");			
-		} catch (Throwable ex) {
-			lifeField = null;
-			getHandleMethod = null;
-			controller.getLogger().warning("Failed to create short-lived arrow. Are you running bukkit? Set tick_increase to 0 to avoid this message");			
+			if (lifeField != null)
+			{
+				lifeField.setAccessible(true);
+			}
 		}
-		
+	}
+
+	protected void checkProjectiles(final Collection<Projectile> projectiles, final int tickIncrease, 
+			final Collection<PotionEffect> effects, final int radius, int retries) {
+
 		final Collection<Projectile> remaining = new ArrayList<Projectile>();
 		for (Projectile projectile : projectiles) {
 			if (projectile.isDead()) {
@@ -252,7 +281,6 @@ public class ProjectileSpell extends UndoableSpell
 				if (projectile instanceof Arrow && tickIncrease > 0 && lifeField != null && getHandleMethod != null) {
 					try {
 						Object handle = getHandleMethod.invoke(projectile);
-						lifeField.setAccessible(true);
 						int currentLife = (Integer)lifeField.get(handle);
 						if (currentLife < tickIncrease) {
 							lifeField.set(handle, tickIncrease);
@@ -264,7 +292,7 @@ public class ProjectileSpell extends UndoableSpell
 			}
 		}
 		if (remaining.size() > 0 && retries > 0) {
-			scheduleProjectileCheck(remaining, tickIncrease, effects, radius, arrowClass, craftArrowClass, retries - 1);
+			scheduleProjectileCheck(remaining, tickIncrease, effects, radius, retries - 1);
 		}
 	}
 }
