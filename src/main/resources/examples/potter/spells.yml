@@ -120,7 +120,7 @@ aguamenti:
         range: 25
         width: 3
         cooldown: 1000
-        undo: 2000
+        undo: 1800
         disable_physics: 8000
         bypass_build: true
         entity_undo: false
@@ -267,7 +267,7 @@ apparate:
         allow_descend: false
         range: 16
         transparent: apparate
-        cooldown: 10000
+        cooldown: 5000
     costs:
         mana: 100
 
@@ -353,6 +353,7 @@ araniaexumai:
         item_force: 2
         area_range: 20
         entity_force: 2
+        bypass_backfire: true
         type: push
         count: 8
         damage: 10
@@ -652,12 +653,12 @@ avadakedavra:
     parameters:
         target_type: LivingEntity
         allow_max_range: false
-        range: 20
+        range: 32
         target: other_entity
         damage: 1000
         check_destructible: false
         cooldown: 30000
-        target_breakables: 1
+        target_breakables: 5
         bypass_backfire: true
     costs:
         mana: 180
@@ -693,7 +694,7 @@ avadamaxima:
              iterations: 50
     parameters:
         commands:
-        - ban @t Avada Kadavra
+        - ban @t you have been Avada Kadavra'd!
         - say §aAvada Kadavra §c@t!
         target_type: Player
         target: other
@@ -800,26 +801,26 @@ bogies:
     costs:
         mana: 50
     parameters:
-        fov: 0.7
+        fov: 0.12
         range: 8
         deactivate_target_mage: false
         target_type: LivingEntity
         target: other
         target_breakables: 1
-        duration: 3000
+        duration: 2500
         effect_poison: 1
-        cooldown: 5000
+        cooldown: 7000
 
 bogies|2:
     parameters:
         range: 16
-        duration: 4000
+        duration: 3000
         effect_poison: 2
 
 bogies|3:
     parameters:
         range: 24
-        duration: 5000
+        duration: 3500
         effect_poison: 3
 
 bombarda:
@@ -923,12 +924,13 @@ camera:
     costs:
         mana: 5
 
-confringo:
+confringoold:
     icon: clay_ball
     category: charms
     class: BoomSpell
     pvp_restricted: true
     worth: 50
+    hidden: true
     effects:
         cast:
         -  class: EffectSingle
@@ -986,7 +988,7 @@ confundus:
         target_type: LivingEntity
         target_breakables: 1
         target: other
-        duration: 5000
+        duration: 2500
         cooldown: 10000
         fov: .12
         effect_confusion: 5
@@ -1023,14 +1025,15 @@ conjunctivitis:
     parameters:
         range: 32
         target_type: LivingEntity
-        target_breakables: 1
+        target_breakables: 0
         target: other
-        duration: 4000
+        duration: 2000
+        cooldown: 10000
         effect_blindness: 5
 
 conjunctivitis|2:
     parameters:
-        duration: 6000
+        duration: 4000
 
 obscuro:
     alias: blind
@@ -1069,11 +1072,11 @@ obscuro:
     parameters:
         range: 32
         target_type: LivingEntity
-        target_breakables: 1
+        target_breakables: 0
         target: other
-        duration: 2000
+        duration: 3000
         effect_blindness: 1
-        cooldown: 4000
+        cooldown: 10000
 
 crucio:
     icon: quartz
@@ -1107,11 +1110,11 @@ crucio:
     parameters:
         range: 32
         target_type: LivingEntity
-        target_breakables: 1
+        target_breakables: 3
         target: other
-        duration: 5000
+        duration: 3000
         effect_wither: 10
-        cooldown: 9000
+        cooldown: 10000
 
 dementor:
     icon: quartz
@@ -1142,11 +1145,12 @@ dementor:
     costs:
         mana: 150
     parameters:
-        range: 6
+        range: 13
         target_type: LivingEntity
         target_breakables: 1
         target: other
         duration: 10000
+        fov: .5
         effect_wither: 1
         cooldown: 9000
 
@@ -1187,6 +1191,7 @@ deprimo:
            color: FFFF00
            firework: burst
     parameters:
+        target_breakables: 3
         allow_max_range: false
         range: 32
         brush: air
@@ -1309,7 +1314,7 @@ disillusion:
     parameters:
         target: any
         particle: red_dust
-        duration: 30000
+        duration: 8000
         effect_invisibility: 5
 
 duro:
@@ -1449,12 +1454,12 @@ expelliarmus:
     parameters:
         target_type: LivingEntity
         allow_max_range: false
-        range: 20
+        range: 25
         fov: 0.12
         fizzle_chance: 0.6
         backfire_chance: 0.3
         keep_in_inventory: true
-        target_breakables: 1
+        target_breakables: 0
         cooldown: 8000
     costs:
         mana: 60
@@ -1464,24 +1469,28 @@ expelliarmus|2:
         fizzle_chance: 0.4
         backfire_chance: 0.2
         cooldown: 9000
+        target_breakables: 0
 
 expelliarmus|3:
     parameters:
         fizzle_chance: 0.3
         backfire_chance: 0.1
         cooldown: 10000
+        target_breakables: 1
 
 expelliarmus|4:
     parameters:
         fizzle_chance: 0.1
         backfire_chance: 0.05
         cooldown: 11000
+        target_breakables: 1
 
 expelliarmus|5:
     parameters:
         fizzle_chance: 0
         backfire_chance: 0
         cooldown: 12000
+        target_breakables: 3
 
 rennervate:
     icon: ink_sack:9
@@ -1508,7 +1517,37 @@ rennervate:
         - confusion
         - weakness
         - poison
-        cooldown: 2000
+        cooldown: 1000
+    costs:
+        mana: 30
+
+reparifors:
+    name: Reparifors
+    description: Cures blindness and slows!
+    icon: ink_sack:9
+    category: charms
+    class: PotionEffectSpell
+    worth: 20
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: orb_pickup
+           effectlib:
+             class: ConeEffect
+             iterations: 15
+             particle: happy_villager
+    parameters:
+        target_type: LivingEntity
+        target: any
+        allow_max_range: false
+        range: 16
+        bypass_confusion: true
+        duration: 1000
+        effect_saturation: 4
+        remove_effects:
+        - slow
+        - blindness
+        cooldown: 1000
     costs:
         mana: 30
 
@@ -1634,7 +1673,8 @@ bandage:
     costs:
         mana: 1
 
-firestorm:
+firestormbase:
+    hidden: true
     icon: fire
     category: dark
     class: ConstructSpell
@@ -1658,6 +1698,8 @@ firestorm:
         type: sphere
         orient_dimension_max: 0
         orient_dimension_min: 0
+        effect_fire_resistance: 100
+        duration: 5000
         brush: fire
         undo: 6000
         bypass_build: true
@@ -1685,6 +1727,7 @@ bandage|5:
         heal: 10
         cooldown: 5000
 floo:
+    hidden: true
     icon: sulphur
     category: specialty
     class: PotionEffectSpell
@@ -1702,9 +1745,9 @@ floo:
              particle: flame
     parameters:
         target: self
-        duration: 20000
+        duration: 10000
         effect_fire_resistance: 100
-        cooldown: 30000
+        cooldown: 7000
 
 fiendfyre:
     icon: fire
@@ -1734,7 +1777,8 @@ fiendfyre:
         brush: lava
         cooldown: 20000
         undo: 1000
-        target_breakables: 1
+        target_breakables: 3
+        bypass_backfire: true
     costs:
         mana: 180
 
@@ -1791,7 +1835,7 @@ finiteincantatem:
         bypass_protection: true
         bypass_confusion: true
         bypass_backfire: true
-        cooldown: 5000
+        cooldown: 7000
         transparent: apparatemaxima
         fizzle_chance: 0.6
     costs:
@@ -1836,7 +1880,7 @@ flagrate:
     costs:
         mana: 5
 
-push:
+Rictusempra:
     icon: ink_sack:5
     category: dada
     class: PushSpell
@@ -1844,27 +1888,53 @@ push:
     cast_on_no_target: true
     worth: 15
     effects:
-        area:
+        cast:
         -  class: EffectSingle
-           sound: fizz
+           sound: shoot_arrow
+           sound_volume: 5.0
+           location: origin
            effectlib:
-             class: FountainEffect
-             particle: spell
-             iterations: 2
-             particlesStrand: 10
-             particlesSpout: 30
+             class: ConeEffect
+             iterations: 15
+             particle: instant_spell
+             lengthGrow: 0.7
+        -  class: EffectSingle
+           target_offset: 0,1.5,0
+           location: target
+           color: 996699
+           firework: ball
+        no_target:
+        -  class: EffectSingle
+           sound: shoot_arrow
+           sound_volume: 5.0
+           location: origin
+           effectlib:
+             class: ConeEffect
+             iterations: 15
+             particle: instant_spell
+             lengthGrow: 0.7
+        -  class: EffectSingle
+           target_offset: 0,1.5,0
+           location: target
+           color: 996699
+           firework: ball
     parameters:
-        area: true
-        target_type: Entity
+        range: 35
+        fov: .12
+        target_type: LivingEntity
+        allow_area: false
+        allow_max_range: false
         item_force: 2
-        area_range: 6
-        entity_force: 1
+        area_range: 32
+        entity_force: 5
         type: push
         count: 1
-        damage: 0.5
-        cooldown: 1500
+        cooldown: 3000
+        damage: 2
+        target_breakables: 0
+        bypass_backfire: false
     costs:
-        mana: 50
+        mana: 40
 
 flipendo:
     icon: ink_sack:5
@@ -2041,6 +2111,7 @@ glacius:
     category: transfiguration
     class: FrostSpell
     pvp_restricted: true
+    cast_on_no_target: true
     worth: 80
     effects:
         cast:
@@ -2048,10 +2119,15 @@ glacius:
            sound: glass
            effectlib:
              class: ConeEffect
-             iterations: 12
+             iterations: 15
              particle: snowball_poof
              particles: 3
-             lengthGrow: 0.3
+             lengthGrow: 0.4
+        -  class: EffectSingle
+           target_offset: 0,1.5,0
+           location: target
+           color: F5EFFB
+           firework: ball
         - class: EffectSingle
           location: target
           target_offset: 0,2,0
@@ -2064,7 +2140,8 @@ glacius:
     parameters:
         target_type: LivingEntity
         allow_max_range: false
-        range: 24
+        range: 32
+        fov: 0.12
         radius: 1
         vertical_search_distance: 8
         transparent: transparent_to_construction
@@ -2074,7 +2151,7 @@ glacius:
         ice: ice
         undo: 2000
         duration: 1000
-        cooldown: 3000
+        cooldown: 7000
         entity_undo: false
         bypass_build: true
         freeze_lava: false
@@ -2089,10 +2166,15 @@ glacius|2:
            sound: glass
            effectlib:
              class: ConeEffect
-             iterations: 12
+             iterations: 15
              particle: snowball_poof
              particles: 5
-             lengthGrow: 0.2
+             lengthGrow: 0.4
+        -  class: EffectSingle
+           target_offset: 0,1.5,0
+           location: target
+           color: F5EFFB
+           firework: ball
         - class: EffectSingle
           location: target
           target_offset: 0,2,0
@@ -2104,11 +2186,12 @@ glacius|2:
              radius: 8
     parameters:
         radius: 2
-        player_damage: 3
+        fov: 0.12
+        player_damage: 2
         entity_damage: 6
         slowness: 2
-        undo: 2000
-        duration: 8000
+        undo: 4000
+        duration: 2000
     costs:
         mana: 90
 
@@ -2116,10 +2199,12 @@ glacius|3:
     worth: 120
     parameters:
         radius: 3
-        player_damage: 4
+        fov: 0.12
+        player_damage: 3
         entity_damage: 8
         slowness: 2
-        undo: 3000
+        undo: 6000
+        duration: 4000
         freeze_lava: true
     costs:
         mana: 125
@@ -2158,10 +2243,10 @@ immobulus:
         target_type: LivingEntity
         target_breakables: 1
         target: other
-        duration: 4000
+        duration: 4500
         effect_slow: 20
         effect_jump: -1
-        cooldown: 4000
+        cooldown: 5000
         fall_protection: 5000
 
 locomotomortus:
@@ -2233,10 +2318,10 @@ incarcerous:
         transparent: transparent_to_construction
         check_destructible: true
         destructible: air
-        undo: 4000
+        undo: 5000
         breakable: 1
         bypass_build: true
-        cooldown: 6000
+        cooldown: 8000
     costs:
         mana: 70
 
@@ -2250,7 +2335,7 @@ imperio:
     effects:
         cast:
         -  class: EffectSingle
-           sound: arrow_hit
+           sound: fizz
         -  class: EffectTrail
            particle: spell
            length: 16
@@ -2350,7 +2435,7 @@ incendio:
         undo: 1500
         cooldown: 1000
         bypass_build: true
-        target_breakables: 1
+        target_breakables: 0
         entity_undo: false
     costs:
         mana: 50
@@ -2360,6 +2445,7 @@ incendio|2:
         radius: 1
         cooldown: 3000
         undo: 1600
+        target_breakables: 1
     costs:
         mana: 75
 
@@ -2368,6 +2454,7 @@ incendio|3:
         radius: 2
         cooldown: 5000
         undo: 1700
+        target_breakables: 2
     costs:
         mana: 90
 
@@ -2399,6 +2486,8 @@ lacarnum:
         entity_undo: false
         undo: 8000
         cooldown: 4000
+        bypass_backfire: false
+        target_breakables: 0
     costs:
         mana: 100
 
@@ -2407,12 +2496,14 @@ lacarnum|2:
         size: 2
         spread: 5
         speed: 2
+        target_breakables: 1
 
 lacarnum|3:
     parameters:
         size: 2
         spread: 2
         speed: 4
+        target_breakables: 2
 
 legilimens:
     icon: iron_helmet
@@ -2468,7 +2559,7 @@ levicorpus:
         range: 35
         fov: 0.12
         cooldown: 4000
-        target_breakables: 1
+        target_breakables: 0
         undo_velocity: true
         undo_damage: true
         undo_movement: true
@@ -2496,7 +2587,8 @@ levicorpus|2:
            effectlib:
              class: SkyRocketEffect
              power: 1.3
-
+    parameters:
+        target_breakables: 1
 levicorpus|3:
     effects:
         cast:
@@ -2518,6 +2610,8 @@ levicorpus|3:
            effectlib:
              class: SkyRocketEffect
              power: 1.4
+    parameters:
+        target_breakables: 2
 
 lumos:
     icon: ink_sack:11
@@ -2541,7 +2635,7 @@ lumos:
         mana: 55
     parameters:
         target: any
-        range: 32
+        range: 10
         target_type: LivingEntity
         duration: 10000
         effect_night_vision: 5
@@ -2919,7 +3013,7 @@ patronus:
         mana: 150
 
 piertotum:
-    icon: iron_fence
+    icon: skull_item:4
     category: master
     class: FamiliarSpell
     worth: 250
@@ -2940,11 +3034,11 @@ piertotum:
         allow_max_range: true
         range: 32
         spawn_range: 2
-        cooldown: 8000
+        cooldown: 10000
         type: iron_golem
         count: 1
         reason: custom
-        undo: 5000
+        undo: 7000
         name: Animated Statue
         entity_undo: false
     costs:
@@ -2981,7 +3075,7 @@ protego:
         brushcolor: false
         bypass_build: true
         cooldown: 2000
-        reflect_chance: 0.1
+        reflect_chance: 0.025
         bypass_confusion: false
         bypass_backfire: true
     costs:
@@ -2991,7 +3085,7 @@ protego|2:
     parameters:
         radius: 1
         undo: 1100
-        reflect_chance: 0.75
+        reflect_chance: 0.25
         cooldown: 2500
         breakable: 2
     costs:
@@ -3002,7 +3096,7 @@ protego|3:
         radius: 2
         undo: 1200
         cooldown: 3000
-        reflect_chance: 0.90
+        reflect_chance: .5
         breakable: 1
     costs:
         mana: 50
@@ -3137,8 +3231,8 @@ reducto:
 
 reducto|2:
     parameters:
-    radius: 2
-    speed: 1.2
+        radius: 2
+        speed: 1.2
 
 reductomaxima:
     icon: clay_brick
@@ -3173,7 +3267,7 @@ reductomaxima:
         type: sphere
         check_destructible: false
         bypass_build: true
-        undo: 30000
+        undo: 10000
     costs:
         mana: 150
 
@@ -3311,11 +3405,46 @@ sectumsempra:
         range: 9
         fov: 0.2
         target: other_entity
-        damage: 7
-        cooldown: 9000
+        damage: 6
+        cooldown: 10000
         target_breakables: 3
     costs:
         mana: 120
+
+slash:
+    hidden: true
+    alias: slash
+    icon: quartz
+    category: melee
+    pvp_restricted: true
+    class: PotionEffectSpell
+    cast_on_no_target: true
+    worth: 25
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: irongolem_hit
+           effectlib:
+             class: ConeEffect
+             iterations: 15
+             particle: drip_lava
+        -  class: EffectSingle
+           location: target
+           effectlib:
+             class: BleedEffect
+             iterations: 2
+             hurt: false
+    parameters:
+        target_type: LivingEntity
+        allow_max_range: false
+        range: 4
+        target: other_entity
+        damage: 7
+        fov: 1
+        cooldown: 2000
+        target_breakables: 0
+    costs:
+        mana: 25
 
 silencio:
     icon: ink_sack:3
@@ -3382,7 +3511,7 @@ silenciomaxima:
         allow_max_range: true
         radius: 16
         commands:
-        - mute @a
+        - hpclass silence
         target: block
         bypass_backfire: true
         check_protection: true
@@ -3433,7 +3562,7 @@ amplify:
              iterations: 20
     parameters:
         commands:
-        - mute @t 0
+        - unmute @t
         target: none
         bypass_backfire: true
         check_protection: true
@@ -3458,7 +3587,7 @@ amplifytotalus:
              iterations: 20
     parameters:
         commands:
-        - mute @a 0
+        - hpclass silence
         - say §dAMPLIFY TOTALUS!
         target: none
         bypass_backfire: true
@@ -3569,11 +3698,13 @@ stupefy:
              lengthGrow: 0.4
     parameters:
         range: 35
+        close_range: 10
+        close_fov: 5
         fov: 0.12
         target_type: LivingEntity
         damage: 2
         cooldown: 5000
-        target_breakables: 1
+        target_breakables: 0
         bypass_backfire: false
         effect_confusion: 5
         duration: 500
@@ -3582,15 +3713,19 @@ stupefy:
 
 stupefy|2:
     parameters:
+        close_range: 10
+        close_fov: 5
         damage: 3
-        duration: 1000
-        target_breakables: 2
+        duration: 750
+        target_breakables: 1
 
 stupefy|3:
     parameters:
+        close_range: 10
+        close_fov: 5
         damage: 4
-        duration: 2000
-        target_breakables: 3
+        duration: 1000
+        target_breakables: 2
 
 vermillious:
     icon: ink_sack:1
@@ -3649,7 +3784,7 @@ vermillious:
         target_type: LivingEntity
         damage: 2
         cooldown: 2500
-        target_breakables: 1
+        target_breakables: 0
         bypass_backfire: false
     costs:
         mana: 30
@@ -3658,15 +3793,15 @@ vermillious|2:
     parameters:
         range: 24
         damage: 3
-        target_breakables: 3
+        target_breakables: 0
     costs:
         mana: 50
 
 vermillious|3:
     parameters:
         range: 35
-        damage: 4
-        target_breakables: 4
+        damage: 3.5
+        target_breakables: 0
     costs:
         mana: 70
 
@@ -4872,17 +5007,9 @@ pulsus:
     cast_on_no_target: true
     worth: 15
     effects:
-        cast:
-        -  class: EffectSingle
-           sound: wither_shoot
-           effectlib:
-             class: ConeEffect
-             iterations: 12
-             particle: spell
-             lengthGrow: 0.1
         area:
         -  class: EffectSingle
-           sound: fizz
+           sound: wither_shoot
            effectlib:
              class: FountainEffect
              particle: spell
@@ -4890,22 +5017,21 @@ pulsus:
              particlesStrand: 10
              particlesSpout: 30
     parameters:
-        target: other
-        range: 16
-        allow_area: true
-        allow_max_range: true
-        item_force: 5
+        area: true
+        target_type: Entity
+        item_force: 4
         area_range: 15
-        entity_force: 20
-        type: cuboid
-        count: 0
+        entity_force: 10
+        type: push
+        count: 1
         damage: 0.5
-        cooldown: 4000
+        cooldown: 5000
+        bypass_backfire: true
     costs:
-        mana: 40
+        mana: 70
 
 animagus_wolf:
-    name: Animagus
+    name: Wolf Animagus
     description: Turn into a Wolf
     icon: bone
     category: dark
@@ -4924,9 +5050,523 @@ animagus_wolf:
             iterations: 8
     parameters:
         target: self
+        cooldown: 10000
+        op: false
+        commands:
+        - dis wolf setAngry False SETTAMED TRUE
+    costs:
+        mana: 5
+
+humaculus:
+    name: Humaculus
+    description: Revert you back to a human
+    icon: eye_of_ender
+    category: dark
+    class: CommandSpell
+    worth: 20
+    effects:
+        cast:
+        - class: EffectSingle
+          sound: orb_pickup
+          location: source
+          particle_override: particleOrbital
+          effectlib:
+            class: AtomEffect
+            particleNucleus: smoke
+            particleOrbital: large_smoke
+            iterations: 8
+    parameters:
+        target_type: LivingEntity
+        target: any
+        range: 16
+        cooldown: 10000
+        op: false
+        commands:
+        - undisguiseplayer @t
+    costs:
+        mana: 5
+
+animagus_cat:
+    name: Cat Animagus
+    description: Turn into a Cat
+    icon: raw_fish
+    category: dark
+    class: CommandSpell
+    worth: 20
+    effects:
+        cast:
+        - class: EffectSingle
+          sound: enderman_teleport
+          location: source
+          particle_override: particleOrbital
+          effectlib:
+            class: AtomEffect
+            particleNucleus: smoke
+            particleOrbital: large_smoke
+            iterations: 8
+    parameters:
+        target: self
+        cooldown: 10000
+        op: false
+        commands:
+        - dis ocelot setType Wild_Ocelot
+    costs:
+        mana: 5
+
+animagus_chicken:
+    name: Chicken Animagus
+    description: Turn into a Chicken
+    icon: monster_egg
+    category: dark
+    class: CommandSpell
+    worth: 20
+    effects:
+        cast:
+        - class: EffectSingle
+          sound: enderman_teleport
+          location: source
+          particle_override: particleOrbital
+          effectlib:
+            class: AtomEffect
+            particleNucleus: smoke
+            particleOrbital: large_smoke
+            iterations: 8
+    parameters:
+        target: self
+        cooldown: 10000
+        op: false
+        commands:
+        - dis chicken
+    costs:
+        mana: 5
+
+animagus_owl:
+    name: Owl Animagus
+    description: Turn into a Owl
+    icon: ink_sack:8
+    category: dark
+    class: CommandSpell
+    worth: 20
+    effects:
+        cast:
+        - class: EffectSingle
+          sound: enderman_teleport
+          location: source
+          particle_override: particleOrbital
+          effectlib:
+            class: AtomEffect
+            particleNucleus: smoke
+            particleOrbital: large_smoke
+            iterations: 8
+    parameters:
+        target: self
+        cooldown: 10000
+        op: false
+        commands:
+        - dis bat
+    costs:
+        mana: 5
+
+animagus_rat:
+    name: Rat Animagus
+    description: Turn into a Rat
+    icon: egg
+    category: dark
+    class: CommandSpell
+    worth: 20
+    effects:
+        cast:
+        - class: EffectSingle
+          sound: enderman_teleport
+          location: source
+          particle_override: particleOrbital
+          effectlib:
+            class: AtomEffect
+            particleNucleus: smoke
+            particleOrbital: large_smoke
+            iterations: 8
+    parameters:
+        target: self
+        cooldown: 10000
+        op: false
+        commands:
+        - dis silverfish
+    costs:
+        mana: 5
+
+animagus_horse:
+    name: Horse Animagus
+    description: Turn into a Horse
+    icon: leash
+    category: dark
+    class: CommandSpell
+    worth: 20
+    effects:
+        cast:
+        - class: EffectSingle
+          sound: enderman_teleport
+          location: source
+          particle_override: particleOrbital
+          effectlib:
+            class: AtomEffect
+            particleNucleus: smoke
+            particleOrbital: large_smoke
+            iterations: 8
+    parameters:
+        target: self
+        cooldown: 10000
+        op: false
+        commands:
+        - dis undead_horse
+    costs:
+        mana: 5
+
+animagus_donkey:
+    name: Donkey Animagus
+    description: Turn into a Donkey
+    icon: leash
+    category: dark
+    class: CommandSpell
+    worth: 20
+    effects:
+        cast:
+        - class: EffectSingle
+          sound: enderman_teleport
+          location: source
+          particle_override: particleOrbital
+          effectlib:
+            class: AtomEffect
+            particleNucleus: smoke
+            particleOrbital: large_smoke
+            iterations: 8
+    parameters:
+        target: self
+        cooldown: 10000
+        op: false
+        commands:
+        - dis donkey
+    costs:
+        mana: 5
+
+animagus_spider:
+    name: Spider Animagus
+    description: Turn into a Spider
+    icon: web
+    category: dark
+    class: CommandSpell
+    worth: 20
+    effects:
+        cast:
+        - class: EffectSingle
+          sound: enderman_teleport
+          location: source
+          particle_override: particleOrbital
+          effectlib:
+            class: AtomEffect
+            particleNucleus: smoke
+            particleOrbital: large_smoke
+            iterations: 8
+    parameters:
+        target: self
+        cooldown: 10000
+        op: false
+        commands:
+        - dis spider
+    costs:
+        mana: 5
+
+animagus_sheep:
+    name: Sheep Animagus
+    description: Turn into a Sheep
+    icon: wool
+    category: dark
+    class: CommandSpell
+    worth: 20
+    effects:
+        cast:
+        - class: EffectSingle
+          sound: enderman_teleport
+          location: source
+          particle_override: particleOrbital
+          effectlib:
+            class: AtomEffect
+            particleNucleus: smoke
+            particleOrbital: large_smoke
+            iterations: 8
+    parameters:
+        target: self
+        cooldown: 10000
+        op: false
+        commands:
+        - dis sheep
+    costs:
+        mana: 5
+
+animagus_cow:
+    name: Cow Animagus
+    description: Turn into a Cow
+    icon: milk_bucket
+    category: dark
+    class: CommandSpell
+    worth: 20
+    effects:
+        cast:
+        - class: EffectSingle
+          sound: enderman_teleport
+          location: source
+          particle_override: particleOrbital
+          effectlib:
+            class: AtomEffect
+            particleNucleus: smoke
+            particleOrbital: large_smoke
+            iterations: 8
+    parameters:
+        target: self
+        cooldown: 10000
+        op: false
+        commands:
+        - dis cow
+    costs:
+        mana: 5
+
+animagus_pig:
+    name: Pig Animagus
+    description: Turn into a Pig
+    icon: pork
+    category: dark
+    class: CommandSpell
+    worth: 20
+    effects:
+        cast:
+        - class: EffectSingle
+          sound: enderman_teleport
+          location: source
+          particle_override: particleOrbital
+          effectlib:
+            class: AtomEffect
+            particleNucleus: smoke
+            particleOrbital: large_smoke
+            iterations: 8
+    parameters:
+        target: self
+        cooldown: 10000
+        op: false
+        commands:
+        - dis pig
+    costs:
+        mana: 5
+
+unspeakable:
+    name: Unspeakadeath
+    description: Wound your target.
+    icon: ink_sack:14
+    category: dark
+    class: CommandSpell
+    worth: 20
+    hidden: true
+    effects:
+        cast:
+        - class: EffectSingle
+          sound: enderman_teleport
+          location: source
+          particle_override: particleOrbital
+          effectlib:
+            class: AtomEffect
+            particleNucleus: spell
+            particleOrbital: splash
+            iterations: 9
+    parameters:
+        target: self
         cooldown: 60000
         op: true
         commands:
-        - dis wolf
+        - castp @t glacius|3
+        - castp @t stupefy|3
+        - castp @t expelliarmus|5
+        - castp @t arrow|4
+        - castp @t incendio|3
+        - castp @t pulsus
+        - castp @t bogies|3
+        - castp @t levicorpus|3
+        - castp @t flipendo|3
+        - castp @t vermillious|3
+        - castp @t lacarnum|3
     costs:
-        mana: 55
+        mana: 100
+
+smite:
+    name: Smite
+    description: Wound your target.
+    icon: ink_sack:11
+    category: dark
+    class: CommandSpell
+    worth: 20
+    hidden: true
+    pvp_restricted: true
+    cast_on_no_target: true
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: burp
+           location: origin
+           effectlib:
+             class: ConeEffect
+             iterations: 5
+             particle: fireworks_spark
+             lengthGrow: 0.32
+        -  class: EffectSingle
+           target_offset: 0,1.5,0
+           location: target
+           color: F5EFFB
+           firework: ball
+        -  class: EffectSingle
+           location: target
+           effectlib:
+             class: SmokeEffect
+             iterations: 30
+    parameters:
+        target: other
+        target_type: LivingEntity
+        allow_max_range: true
+        cooldown: 7000
+        op: true
+        bypass_backfire: true
+        check_destructible: false
+        target_breakables: 3
+        bypass_protection: true
+        commands:
+        - smite @t
+    costs:
+        mana: 120
+
+confringo:
+    description: Incinerate your target!
+    icon: fireball
+    category: dark
+    class: CommandSpell
+    worth: 35
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: ghast_fireball
+        projectile:
+        -  class: EffectSingle
+           location: origin
+           effectlib:
+             class: SmokeEffect
+             iterations: 8
+             particle: lava
+    parameters:
+        target: self
+        target_type: LivingEntity
+        cooldown: 5000
+        op: true
+        commands:
+        - castp @t confringoincendio
+        - castp @t confringofireball
+        bypass_backfire: true
+    costs:
+        mana: 100
+
+firestorm:
+    description: Incinerate your target!
+    icon: fireball
+    category: dark
+    class: CommandSpell
+    worth: 35
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: ghast_fireball
+        projectile:
+        -  class: EffectSingle
+           location: origin
+           effectlib:
+             class: SmokeEffect
+             iterations: 8
+             particle: lava
+    parameters:
+        target: self
+        target_type: LivingEntity
+        cooldown: 8000
+        op: true
+        commands:
+        - castp @t firestormbase
+        - castp @t floo
+        bypass_backfire: true
+    costs:
+        mana: 100
+
+confringofireball:
+    name: Confringo Fireball
+    icon: fireball
+    category: dark
+    class: ProjectileSpell
+    hidden: true
+    worth: 35
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: ghast_fireball
+        projectile:
+        -  class: EffectSingle
+           location: origin
+           effectlib:
+             class: SmokeEffect
+             iterations: 8
+             particle: lava
+    parameters:
+        projectile: LargeFireball
+        fire: false
+        range: 32
+        cooldown: 1000
+        size: 2
+        spread: 2
+        speed: 15
+        entity_undo: false
+        undo: 8000
+        cooldown: 4000
+        bypass_backfire: true
+    costs:
+        mana: 100
+
+confringoincendio:
+    name: Confringo Flames
+    icon: clay_ball
+    category: dark
+    class: FireSpell
+    pvp_restricted: true
+    hidden: true
+    cast_on_no_target: true
+    worth: 50
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: ghast_fireball
+           location: both
+        -  class: EffectSingle
+           effectlib:
+             class: ConeEffect
+             iterations: 15
+             particle: lava
+             lengthGrow: 0.4
+        -  class: EffectSingle
+           target_offset: 0,1.5,0
+           location: target
+           color: FE642E
+           firework: ball
+    parameters:
+        target_type: LivingEntity
+        allow_max_range: false
+        range: 32
+        fov: 0.10
+        vertical_search_distance: 8
+        bypass_build: true
+        target_breakables: 1
+        entity_undo: false
+        bypass_backfire: true
+        radius: 1
+        cooldown: 5000
+        undo: 1200
+    costs:
+        mana: 50
