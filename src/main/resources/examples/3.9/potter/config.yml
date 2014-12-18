@@ -1,0 +1,83 @@
+#
+# Set up for a Harry Potter server.
+#
+# Crafting is not allowed, it is assumed each player has one wand
+# they will keep throughout their play experience.
+#
+
+# This is a complete wand/spell overhaul
+load_default_spells: false
+load_default_wands: false
+load_default_enchanting: false
+load_default_crafting: false
+
+# Customized wand sounds
+wand_inventory_open_sound: level_up,0.3,1.5
+wand_inventory_cycle_sound: orb_pickup,0.4,0.2
+wand_inventory_close_sound: level_up,0.4,0.2
+
+# Display mana as item durability
+# mana_display: durability
+
+# Stop bashing each other with wands!!
+wand_abuse_damage: 2
+prevent_melee_damage: true
+
+# Backup Inventory to wand data
+# .. maybe not for now.
+backup_inventory: false
+
+# Make sure the world doesn't change
+undo_on_world_save: true
+
+# Quickly expiring items for performance
+age_dropped_items: 240000
+
+# Don't allow crafting
+enable_crafting: false
+
+# Don't allow combining
+enable_combining: false
+
+# Whether wands can be upgraded on an enchanting table
+enable_enchanting: false
+
+# Whether or not using a wand on an anvil will organize its inventory
+enable_organizing: true
+
+# Wands don't need to glow, because Dr00bles is awesome
+wand_glow: false
+
+# Wands will auto-bind to their owner
+enable_binding: true
+
+# Spells cannot be dropped out of wands
+allow_spell_dropping: false
+
+# We're going to asssume you're running a patched CB...
+enable_custom_item_hacks: false
+enable_creative_mode_ejecting: false
+
+# Change the upgrade item
+wand_upgrade_item: fireworks_charge
+
+# Magic items don't work quite right if they have an enchanting path
+default_wand_path:
+
+# Only show spell casts from players
+dynmap_only_player_spells: true
+
+# Don't live-update dynmap on spell casts .. too much auto-undo!
+dynmap_update: false
+
+max_health_regeneration: 5
+max_hunger_regeneration: 5
+max_damage_reduction: 0.8
+max_damage_reduction_explosions: 0.9
+max_damage_reduction_falling: 0.9
+max_damage_reduction_fire: 0.9
+max_damage_reduction_physical: 0.9
+max_damage_reduction_projectiles: 0.9
+max_cost_reduction: 0.5
+max_cooldown_reduction: 0.75
+max_haste: 15

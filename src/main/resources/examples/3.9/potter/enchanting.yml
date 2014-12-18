@@ -1,0 +1,308 @@
+#
+# Add several Harry Potter themed wand enchanting paths.
+#
+
+# To convert old wands
+master:
+    inherit: default
+    hidden: true
+    upgrade: year1
+    upgrade_item: year1
+    min_enchant_level: 4
+    max_enchant_level: 5
+    levels: 1,30,50
+
+default:
+  match_spell_mana: false
+  hidden: true
+  min_enchant_level: 20
+  max_enchant_level: 50
+  max_mana: 50
+  max_mana_regeneration: 5
+  max_health_regeneration: 1.0
+  max_hunger_regeneration: 1.0
+  max_damage_reduction: 1.0
+  max_damage_reduction_explosions: 1.0
+  max_damage_reduction_falling: 1.0
+  max_damage_reduction_fire: 1.0
+  max_damage_reduction_physical: 1.0
+  max_damage_reduction_projectiles: 1.0
+  max_cost_reduction: 1.0
+  max_cooldown_reduction: 1.0
+  max_haste: 1.0
+  max_power: 1.0
+  effects:
+      enchant:
+      -  class: EffectSingle
+         sound: level_up
+         effectlib:
+           class: SphereEffect
+           iterations: 10
+           period: 2
+           particle: enchantment_table
+           radius: 3
+      upgrade:
+      -  class: EffectSingle
+         sound: level_up
+      -  class: EffectRing
+         firework: star
+         radius: 4
+         size: 3
+      -  class: EffectRing
+         firework: ball_large
+         radius: 6
+         size: 5
+
+year1:
+    inherit: default
+    upgrade: year2
+    upgrade_item: year2
+    min_enchant_level: 10
+    upgrade_commands:
+      - pex user @p suffix "(Year 2) "
+      - broadcast &6@p §3has graduated to §b$path§3!
+    levels: 1,30,50
+    max_mana: 60
+    max_xp_regeneration: 8
+    xp_regeneration:
+      1: 5,10,15,100,100
+    xp_max:
+      2: 100, 10,  0
+      3:  20, 30, 50
+    spell_count:
+      1: 100, 100,  100
+      2:   0,   0,    5
+    spells:
+      flagrate: 100,100,100
+      vermillious: 80,90,100
+      flipendo: 10,20,30
+      periculum: 50,60,70
+      arrow: 50,60,70
+      lumos: 100,100,100
+      incendio: 20,30,40
+      conjunctivitis: 20,30,40
+      fourpoint: 50,60,70
+      arresto: 90,100,100
+      avis: 20,30,40
+    required_spells:
+      - alohomora
+      - wingardium
+
+year2:
+    upgrade: year3
+    upgrade_item: year3
+    inherit: year1
+    min_enchant_level: 12
+    max_mana: 90
+    upgrade_commands:
+      - pex user @p suffix "(Year 3) "
+      - broadcast &6@p §3has graduated to §b$path§3!
+    xp_max:
+      3: 100, 10,  0
+      4:  20, 30, 50
+    max_xp_regeneration: 12
+    xp_regeneration:
+      1: 5,10,15,100,100
+    spells:
+      vermillious|2: 80,90,100
+      flipendo|2: 5,10,20
+      immobulus: 40,50,60
+      fumos: 80,90,100
+      finiteincantatem: 1,1,2
+      nox: 20,30,50
+      bogies: 10,20,30
+      incendio|2: 5,10,20
+      arrow|2: 50,60,70
+    required_spells:
+      - expelliarmus
+      - araniaexumai
+      - glacius
+
+year3:
+    upgrade: year4
+    upgrade_item: year4
+    inherit: year2
+    min_enchant_level: 15
+    max_mana: 110
+    xp_max:
+      4: 100, 10,  0
+      5:  20, 30, 50
+    max_xp_regeneration: 15
+    xp_regeneration:
+      1: 5,10,15,100,100
+    upgrade_commands:
+      - pex user @p suffix "(Year 4) "
+      - broadcast &6@p §3has graduated to §b$path§3!
+    spells:
+      flipendo|3: 5,10,20
+      bombarda: 5,10,20
+      snowball: 15,50,80
+      colorvaria: 40,60,80
+      expelliarmus|2: 5,10,20
+      lumos|2: 15,50,80
+      glacius|2: 15,50,80
+      incendio|3: 15,50,80
+      finiteincantatem|2: 1,2,5
+      conjunctivitis|2: 20,30,40
+    required_spells:
+      - deprimo
+      - duro
+      - diffindo
+
+year4:
+    upgrade: year5
+    upgrade_item: year5
+    inherit: year3
+    min_enchant_level: 18
+    max_mana: 130
+    xp_max:
+      4: 100, 10,  0
+      5:  20, 30, 50
+    max_xp_regeneration: 20
+    xp_regeneration:
+      1: 5,10,15,100,100
+    upgrade_commands:
+      - pex user @p suffix "(Year 5) "
+      - broadcast &6@p §3has graduated to §b$path§3!
+    spells:
+      protego: 40,60,80
+      rennervate: 90,100,100
+      episkey: 20,30,40
+      obscuro: 20,40,50
+      accio: 40,50,60
+      locomotomortus: 1,5,10
+      orchideous: 1,5,10
+      deprimo|2: 10,25,40
+      arrow|3: 50,60,70
+      diffindo|2: 20,30,40
+    required_spells:
+      - aguamenti
+      - bubble
+      - ascendio
+
+year5:
+    upgrade: year6
+    upgrade_item: year6
+    inherit: year4
+    min_enchant_level: 20
+    max_mana: 150
+    upgrade_commands:
+      - pex user @p suffix "(Year 6) "
+      - broadcast &6@p §3has graduated to §b$path§3!
+    xp_max:
+      4: 100, 10,  0
+      6:  20, 30, 50
+    max_xp_regeneration: 28
+    xp_regeneration:
+      1: 5,10,15,100,100
+    spells:
+      stupefy: 100,100,100
+      reducio: 5,10,20
+      petrificustotalus: 40,60,80
+      levicorpus: 20,40,50
+      ferula: 50,60,70
+      lacarnum: 5,10,20
+      protego|2: 15,50,80
+      expelliarmus|3: 5,10,20
+      accio|2: 30,40,50
+      episkey|2: 20,30,40
+      diffindo|3: 20,30,40
+    required_spells:
+      - evanesco
+      - reducto
+
+year6:
+    upgrade: year7
+    upgrade_item: year7
+    inherit: year5
+    max_mana: 170
+    min_enchant_level: 22
+    xp_max:
+      5: 100, 10,  0
+      8:  20, 30, 50
+    max_xp_regeneration: 34
+    xp_regeneration:
+      1: 5,10,15,100,100
+    upgrade_commands:
+      - pex user @p suffix "(Year 7) "
+      - broadcast &6@p §3has graduated to §b$path§3!
+    spells:
+      firestorm: 5,10,15
+      engorgio: 1,5,10
+      vermillious|3: 80,90,100
+      stupefy|2: 30,40,50
+      expelliarmus|4: 5,10,20
+      levicorpus|2: 20,30,40
+      aguamenti|2: 10,20,30
+      reducto|2: 10,20,30
+      finiteincantatem|3: 1,2,5
+      deprimo|3: 10,25,40
+      duro|2: 20,30,40
+      bogies|2: 20,30,40
+    required_spells:
+      - apparate
+      - aparecium
+
+year7:
+    upgrade: graduate
+    upgrade_item: graduate
+    inherit: year6
+    min_enchant_level: 25
+    max_mana: 190
+    xp_max:
+      5: 100, 10,  0
+      10:  20, 30, 50
+    max_xp_regeneration: 36
+    xp_regeneration:
+      1: 5,10,15,100,100
+    upgrade_commands:
+      - pex user @p suffix "(Graduate) "
+      - broadcast &6@p §3has graduated from Hogwarts!
+    spells:
+      atmos: 10,20,30
+      meteo: 5,10,20
+      disillusion: 5,10,20
+      vulnera: 5,10,20
+      protego|3: 15,50,80
+      stupefy|3: 10,20,30
+      levicorpus|3: 30,40,50
+      glacius|3: 40,50,60
+      bombarda|2: 15,50,80
+      ferula|2: 50,60,70
+      ascendio|2: 10,20,30
+      reducio|2: 10,20,30
+      lacarnum|2: 5,10,20
+    required_spells:
+      - piertotum
+
+graduate:
+    inherit: year7
+    max_xp_regeneration: 30
+    xp_regeneration:
+      1: 5,10,15,100,100
+    max_mana: 200
+    xp_max:
+      8: 100, 10,  0
+      10:  20, 30, 50
+    spells:
+      expelliarmus|5: 30,40,50
+      finiteincantatem|4: 1,2,5
+      reducio|3: 10,20,30
+      episkey|3: 20,30,40
+      ferula|3: 50,60,70
+      ascendio|3: 10,20,30
+      arrow|4: 50,60,70
+      duro|3: 20,30,40
+      bogies|3: 20,30,40
+      lacarnum|3: 20,30,40
+      revelio: 5,10,20
+
+broom:
+    hidden: true
+    levels: 1,25,35,40,45
+    max_power: 0.9
+    power:
+      0:   100,100,80, 30, 0
+      0^1: 0,   0, 40, 50, 0
+      0^2: 0 ,  0, 20, 30, 0
+      0^3: 0 ,  0, 10, 20, 100

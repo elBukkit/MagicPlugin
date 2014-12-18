@@ -1,0 +1,864 @@
+#
+# Harry Potter themed in-game text
+#
+
+
+cooldown:
+    wait_seconds: Spell is recharging for $seconds seconds.
+    wait_minutes: Spell is recharging for $minutes minutes.
+    wait_hours: Spell is recharging for $hours hours.
+    wait_moment: ""
+    description_seconds: $seconds seconds
+    description_minutes: $minutes minutes
+    description_hours: $hours hours
+    description_minute: One minute
+    description_hour: One hour
+    description_moment: A Moment
+    description: "&eCooldown: &6$time"
+
+worlds:
+    Hogwarts:
+        name: The Wizarding World
+    Hogwarts_muggle:
+        name: The Muggle World
+    MuggleWorld:
+        name: The Muggle World
+
+wand:
+    mana_amount: "Energy: §e$amount"
+    mana_regeneration: "Energy Regeneration: §e$amount/s"
+    level_up: "§3You have graduated to §b$path§3!"
+    fully_enchanted: "§cYou have nothing more to learn here."
+    need_more_levels: "§cYou need at least §4$levels §clevels to take an exam."
+    spell_added: "You have learned the &r&6$name &d&ospell!"
+    no_path: You must be holding your wand
+
+costs:
+    xp_amount: $amount XP
+    mana_amount: $amount Energy
+    mana: Energy
+    xp: XP
+    insufficient_resources: ""
+
+spell:
+    brush: Uses Material Brushes
+    undoable: ""
+    reactivate: Reactivating $name
+    available_path: Available to $paths
+    required_path: Required for $path graduation
+    required_spell: "You must learn &r&4$spell &d&oto advance"
+
+paths:
+    year1:
+        name: First Year
+        description: First years learn a variety of beginning spells, as well as the basics of wand use.
+    year2:
+        name: Second Year
+        description: Spells for second year students.
+    year3:
+        name: Third Year
+        description: Spells for third year students.
+    year4:
+        name: Fourth Year
+        description: Spells for fourth year students.
+    year5:
+        name: Fifth Year
+        description: Spells for fifth year students.
+    year6:
+        name: Sixth Year
+        description: Spells for sixth year students.
+    year7:
+        name: Seventh Year
+        description: Spells for seventh year students.
+    graduate:
+        name: Graduates
+        description: What comes next?
+    broom:
+        name: Broom
+        description: Flying broom upgrades!
+
+categories:
+    specialty:
+        name: Speciality
+        description: Generally not for casting, these often power magic items.
+    unforgiveable:
+        name: Unforgiveable Hexes
+        description: Casting these spells is a terrible crime.
+    staff:
+        name: Staff Only
+        description: These are generally only for staff
+    elective:
+        name: Electives
+        description: Various subjects you can choose to take on your own.
+    dada:
+        name: DADA
+        description: Defense Against the Dark Arts
+    charms:
+        name: Charms
+        description: Buffs, Boons and Boosts
+    herbology:
+        name: Herbology
+        description: Give your wand a green thumb
+    dark:
+        name: Dark Arts
+        description: Exploring the darker side of magic
+    transfiguration:
+        name: Transfiguration
+        description: Alchemy, polymorphing
+    creatures:
+        name: Care of Magical Creatures
+        description: Keep them under control!
+
+spells:
+    accio:
+        name: Accio
+        description: Summons an object to you
+        cast: Accio $target!
+        cast_player_message: ""
+    aguamenti:
+        name: Aguamenti
+        description: Conjures a gush of water
+        cast: Aguamenti!
+    alohomora:
+        name: Alohomora
+        description: Unlock locked doors
+        cast_finish: ""
+    amplify:
+        name: Amplify
+        description: Un-mute the target player
+    amplifytotalus:
+        name: Amplify Totalus
+        description: Un-mute everyone
+    aparecium:
+        name: Aparecium
+        description: Reveals concealed objects and paths
+        cast_finish: ""
+    apparate:
+        name: Apparate
+        description: Teleport to your target
+        no_target: Can't apparate there
+    apparatemaxima:
+        name: Apparate Maxima
+        description: Teleport to your target
+        usage: Can pass through solid objects
+        no_target: Can't apparate there
+    araniaexumai:
+        name: Arania Exumai
+        description: Charm for repelling arachnids
+        cast: Arania Exumai!
+    arresto:
+        name: Arresto Momentum
+        description: Keep you safe from a fall
+    arrow:
+        name: Arrow
+        description: Fires a magic arrow
+    ascendio:
+        name: Ascendio
+        description: Lifts the caster high into the air
+    atmos:
+        name: Atmospheric Charm
+        description: Change the weather
+        cast: You calm the storm
+        area: You stir up a storm
+    avadakedavra:
+        name: Avada Kedavra
+        description: The killing curse
+        usage: Unforgiveable!
+        cast: Avada Kedavra!
+    avadamaxima:
+        name: Avada Kedavra Maxima
+        description: Kill your target PERMANENTLY.
+        usage: Unforgiveable!
+        cast: Avada Kedavra $target!
+    avis:
+        name: Avis
+        description: Conjures birds
+        cast: Avis!
+    beat:
+        name: Beat
+        description: Knock your opponent senseless
+        cast_player_message: "&d&o$player &r&5beat you down!"
+    bogies:
+        name: Curse of the Bogies
+        description: Make your target feel unwell
+    bombarda:
+        name: Bombarda
+        description: Create a small explosion
+        cast: Bombarda!
+    broom:
+        name: Broom
+        description: Powers magic brooms
+        cast: Your broom springs to life!
+        deactivate: Your broom quiets down.
+        crash: CRASH!
+    bubble:
+        name: Bubble-Head Charm
+        description: Underwater breathing charm
+    colorvaria:
+        name: Colorvaria
+        description: Changes the color of certain objects
+        cast: Aguamenti!
+    colloportus:
+        name: Colloportus
+        description: Locks doors
+        cast_finish: ""
+    confringo:
+        name: Confringo
+        description: Explode the target item
+        cast: Confringo $target
+    confundus:
+        name: Confundus
+        description: Confound your target
+        cast: Confundus $target!
+    conjunctivitis:
+        name: Conjunctivitis
+        description: Blind your opponent
+        cast: Conjunctivitis $target!
+    crucio:
+        name: Crucio
+        description: Inflicts unbearable pain
+        usage: Unforgiveable!
+        cast: Crucio $target!
+    dementor:
+        name: Dementor Attack
+        description: Suck their souls!
+        cast_player_message: "&8You feel so cold, and overwhelmed by sadness"
+    deluminate:
+        name: Deluminate
+        description: Snuffs out all light in the area
+        cast: Deluminate!
+    meteo:
+        name: Meteolojinx Recanto
+        description: Clear weather incantations
+        area: Meteolojinx Recanto!
+    deletrius:
+        name: Deletrius
+        description: Erase a wand's cast history
+        cast: Deletrius!
+    deprimo:
+        name: Deprimo
+        description: Collapse certain blocks
+        cast: Deprimo!
+    deprimomaxima:
+        name: Deprimo Maxima
+        description: Collapse the target with immense pressure
+        cast: Deprimo Maxima!
+    diffindo:
+        name: Diffindo
+        description: Severs fabrics
+        cast: Diffindo!
+    disillusion:
+        name: Disillusionment Charm
+        description: Cause the target to become nearly invisible
+    duro:
+        name: Duro
+        description: Turn's lava into stone
+        cast: Duro!
+    rennervate:
+        name: Rennervate
+        description: Wake a stunned person
+        cast_self: Rennervate!
+        cast: Rennervate $target!
+        cast: Rennervate!
+    floo:
+        name: Fire Protection
+        description: Use to avoid fire damage
+    erecto:
+        name: Erecto
+        description: Put up an instant tent
+        cast: Erecto Tent!
+    episkey:
+        name: Episkey
+        description: Minor healing charm
+        cast_self: Episkey!
+        cast: Episkey $target!
+    ferula:
+        name: Ferula
+        description: Major healing charm
+        cast_self: Ferula!
+        cast: Ferula $target!
+    engorgio:
+        name: Engorgio
+        description: Enlarges your target
+        cast: Engorgio $target!
+    evanesco:
+        name: Evanesco
+        description: Vanishes the target
+        cast: Evanesco $target!
+    expelliarmus:
+        name: Expelliarmus
+        description: Disarms your opponent
+        cast: Expelliarmus!
+    expulsion:
+        name: Expulsion
+        description: Kick your target out of school
+        cast: Expelled $target!
+    fiendfyre:
+        name: Fiendfyre
+        description: Summons a unstoppable flame
+    finiteincantatem:
+        name: Finite Incantatem
+        description: Counter target player's spell
+        usage: Only works on recently cast spells
+        extended_description: "The Minister of Magic's Favourite Spell."
+        cast: "Finite Incantatem &d&o$target &r&6$spell!"
+        fail:
+        cast_player_message: "&d&o$player &r&5countered your &3&o$spell &r&5cast!"
+    firestorm:
+        name: Firestorm
+        description: Surround yourself with a ring of fire
+    flagrate:
+        name: Flagrate
+        description: Write your name with fire
+        cast: Flagrate!
+    flipendo:
+        name: Flipendo
+        description: Push your target backwards
+        cast: Flipendo $target!
+        cast_player_message: ""
+    fumos:
+        name: Fumos
+        description: Produce a defensive cloud of dark grey smoke
+        cast: Fumos!
+    flight:
+        name: Flight
+        description: A gift from the Dark Lord
+        cast: You feel lighter
+        cost_free: You feel heavier
+    fourpoint:
+        name: The Four Point Spell
+        description: Points you North
+        extended_description: Believed to be invented by Hermionie Granger
+        cast: Point Me!
+    glacius:
+        name: Glacius
+        description: The Freezing Charm
+        extended_description: Freezes an area
+        cast: Glacius $target!
+    superfly:
+        name: SuperFly
+        description: For videographers
+        cast: You feel lighter
+        cost_free: You feel heavier
+    immobulus:
+        name: Immobulus
+        description: Immobilizes your target
+        cast: Immobulus $target!
+    locomotomortus:
+        name: Locomoto Mortus
+        description: The leg-locker curse
+        cast: Locomotomortus $target!
+    imperiomaxima:
+        name: Imperio Maxima
+        description: Control your target
+        usage: Unforgiveable!
+        cast: Imperio Maxima $target!
+        cast_player_message: "&d&o$player: &r&5Imperio!"
+    imperio:
+        name: Imperio
+        description: Fling your target
+        usage: Unforgiveable!
+        cast_player_message: ""
+    impervius:
+        name: Impervius
+        description: Remove all water in the area
+        cast: Impervius!
+    incendio:
+        name: Incendio
+        description: Conjures a fire at your target
+        cast: Incendio!
+    incarcerous:
+        name: Incarcerous
+        description: Bind your target with ropes
+        cast: Incarcerous!
+    lacarnum:
+        name: Lacarnum Inflamari
+        description: Launch a fireball
+    legilimens:
+        name: Legilimens
+        description: Peer into your target's soul
+    levicorpus:
+        name: Levicorpus
+        description: Levitates your target into the air
+        cast: Levicorpus $target!
+    lumos:
+        name: Lumos
+        description: Lights up your wand
+        cast: Lumos!
+    mayday:
+        name: Mayday
+        description: Aurors call for help
+        cast: Mayday!
+    maydaymaxima:
+        name: Mayday Maxima
+        description: Call for Help (and get it)
+        cast: Mayday!
+    morsmordre:
+        name: Morsmordre
+        description: Summon the Dark Mark
+        cast: Morsmordre!
+    morsmordremaxima:
+        name: Morsmordre Maxima
+        description: Call for help with the Dark Mark
+        cast: Morsmordre!
+    nox:
+        name: Nox
+        description: The anti-Lumos
+        area: Nox $target!
+    noxmaxima:
+        name: Nox Maxima
+        description: Make it dark everywhere
+        area: Nox Maxima!
+    obscuro:
+        name: Obscuro
+        description: Obscure your target's vision
+        cast: Obscuro $target!
+    orchideous:
+        name: Orchideous
+        description: Conjure flowers from the tip of your wand
+        removed: Your magical flower turns to dust
+    periculum:
+        name: Periculum
+        description: Shoot fireworks from your wand
+        cast: Periculum!
+    petrificustotalus:
+        name: Petrificus Totalus
+        description: Paralyzes your target
+        cast: Petrificus Totalus!
+    patronus:
+        name: Expecto Patronum
+        description: Summon a Patronus to protect you
+        cast: Expecto Patronum!
+    piertotum:
+        name: Piertotum Locomotor
+        description: Summon animated armor to protect you
+    protego:
+        name: Protego
+        description: Create a magical shield that reflects
+        cast: Protego!
+    protegomaxima:
+        name: Protego Maxima
+        description: Create a large hollow sphere
+        usage: Cast twice to construct
+        cancel: Protego cancelled
+        target_selected: Cast again to build shell
+        fail: Too large!
+        cast_finish: Filled $count blocks with $material
+    reducio:
+        name: Reducio
+        description: Shrink your target
+        cast: Reducio $target!
+        insufficient_permission:
+    reducto:
+        name: Reducto
+        description: Blast certain blocks to pieces
+        cast: Reducto!
+    reductomaxima:
+        name: Reducto Maxima
+        description: Blast your target to pieces
+        cast: Reducto Maxima!
+    revelio:
+        name: Revelio
+        description: Reveal the unseen
+        cast: Revelio!
+    salviohexia:
+        name: Salivo Hexia
+        description: Preserve an area for Reparo
+        usage: Cast twice to preserve an area
+        cancel: Salvio Hexia cancelled
+        fail: Too large!
+        cast_finish: Preserved $count blocks
+        target_selected: Cast again to preserve area
+    reparifarge:
+        name: Reparifarge
+        description: Reverse your last spell
+        cast: "&5Your reverse your &6$spell cast"
+        cast_self: "&5You reverse your &6$spell &5cast"
+        cost_free: "&5You cancel your &6$spell &5cast"
+        fail: Nothing to reverse
+    reparo:
+        name: Reparo
+        description: Repairs an area preserved with Salvio Hexia
+        cast: Reparo!
+    recall:
+        name: Recall
+        description: Apparate you to previous locations
+        fail: ""
+        no_target: ""
+        cast_marker: You apparate to your marker
+        cast_death: You apparate to your last death location
+        cast_spawn: You apparate to spawn
+        cast_home: You apparate home
+        cast_wand: You apparate to your lost wand
+        cast_warp: Apparating to $name
+    gather:
+        name: Gather
+        description: Apparates you to other players
+        cast_to_player: You apparate to $target
+        cast_entity: Apparating $target to your target
+        cast_player_message: "&d&o$player &r&5apparated"
+        target_selected: You captured $target
+        cancel: Released target
+    reparomaxima:
+        name: Reparo Maxima
+        description: Repairs a large area preserved with Salvio Hexia
+        usage: Cast twice to repair
+        cancel: Repair cancelled
+        target_selected: Cast again to repair
+        fail: Too large!
+        cast_finish: Reparo Maxima!
+    sectumsempra:
+        name: Sectumsempra
+        description: Lascerate your target
+        cast: Sectumsempra!
+    stupefy:
+        name: Stupefy
+        description: Damage and stuns your target
+        cast: Stupefy $target!
+    silencio:
+        name: Silencio
+        description: Silences your target
+        cast: Silencio $target!
+    silenciomaxima:
+        name: Silencio Maxima
+        description: Silence everyone in the area
+    silenciototalus:
+        name: Silencio Totalus
+        description: Silence Everyone
+    snowball:
+        name: Bewitched Snowball
+        description: Animate snow to attach your target and slows them
+    jail:
+        name: Jail
+        description: Do not pass Go...
+    vault:
+        name: Vault
+        description: You're rich!
+    vulnera:
+        name: Vulnera Sanentur
+        description: Mends and cleans wounds
+        cast_self: Vulnera Sanentur!
+        cast: Vulnera Sanentur $target!
+    superregenerate:
+        name: SuperRegenerate
+        description: Regenerate full chunks
+        usage: Cast twice to regenerate
+        fail: Can't regenerate that much!
+        cast: Regenerating chunks
+        target_selected: Cast again to regenerate chunks
+        cast_finish: Regenerate complete
+    regenerate:
+        name: Regenerate
+        description: Regenerate a selected area
+        fail: Can't regenerate that much!
+        usage: Cast twice to regenerate
+        cast: Regenerating area
+        target_selected: Cast again to regenerate area
+        cast_finish: Regenerated $count blocks
+    vermillious:
+        name: Vermillious
+        description: Shoots burning red sparks from your wand
+        cast: Vermillious!
+    wingardium:
+        name: Wingardium Leviosa
+        description: Levitate lightweight objects
+        cast: Wingardium Leviosa!
+    webbing:
+        name: Arachnid Attack
+        description: Encase your target in webbing
+        cast: Webs!
+
+randomized:
+   wood:
+     - Acacia
+     - Alder
+     - Apple
+     - Ash
+     - Aspen
+     - Beech
+     - Blackthorn
+     - Black Walnut
+     - Cedar
+     - Cherry
+     - Chestnut
+     - Cypress
+     - Dogwood
+     - Ebony
+     - English Oak
+     - Elder
+     - Elm
+     - Fir
+     - Hawthorn
+     - Hazel
+     - Holly
+     - Hornbeam
+     - Larch
+     - Laurel
+     - Mahogany
+     - Maple
+     - Oak
+     - Olive
+     - Pear
+     - Pine
+     - Poplar
+     - Red Oak
+     - Redwood
+     - Rosewood
+     - Rowan
+     - Silver Lime
+     - Spruce
+     - Sycamore
+     - Vine
+     - Walnut
+     - Willow
+     - Yew
+   core:
+     - Unicorn Tail Hair
+     - Dragon Heartstring
+     - Pheonix Feather
+
+wands:
+
+    default:
+        name: Wand
+        description: $wood and $core
+
+    auror:
+        name: Auror Wand
+        description: $wood and $core
+        upgrade_description: Become an Auror!
+
+    deatheater:
+        name: Deatheater Wand
+        description: $wood and $core
+        upgrade_description: Become a Deatheater!
+
+    flappy:
+        name: Flappy Feather
+        description: Fly, little bird, fly!
+
+    squib:
+        name: Squib Wand
+        description: Kersplode Things
+
+    video:
+        name: Videographer Wand
+        description: Fly like the wind!
+
+    gryffindor:
+        name: Sword of Gryffindor
+        description: Godric Gryffindor's Sword
+
+    lignumvitae:
+        name: Dr00bles Wand
+        description: Lignum Vitae and Phoenix Feather
+
+    allis0n:
+        name: Moon Scepter
+        description: Rosewood and Phoenix Feather
+
+    staff:
+        name: Staff Upgrade
+        description: A powerful staff-only upgrade
+        upgrade_description: Welcome to the Staff!
+
+    headstaff:
+        name: Head Staff Upgrade
+        description: A super powerful staff-only upgrade
+        upgrade_description: Welcome to the VIP Staff!
+
+    prefect:
+        name: Prefect Upgrade
+        description: An upgrade for the best and brightest
+        upgrade_description: A nice upgrade to your spells
+
+    elder:
+        name: Elder Wand
+        description: Elder Wood and Thestral Hair
+
+    wolf:
+        name: The Wolf
+        description: Redwood and Werewolf Hair
+
+    unspeakable:
+        name: Unspeakable
+        description: $wood and $core
+
+    slytherin:
+        name: Wand of Slytherin
+        description: Hawthorn and Phoenix Feather
+
+    crudwand:
+        name: Cracked Wand
+        description: May have some life left in it.
+
+    portkey:
+        name: Portkey
+        description: Where will it take you?
+
+    sorting:
+        name: Letter from Hogwarts
+        description: Use this to get sorted into a house!
+
+    ollivander:
+        name: Ticket from Ollivander
+        description: Exchange this for something wondrous
+
+    floopowder:
+        name: Floo Powder
+        description: Use for 20 seconds of protection
+
+    thestral:
+        name: Thestral Bone
+        description: Summon a Thestral!
+
+    minister:
+        name: The Minister
+        description: For Magic!
+
+    headmaster:
+        name: The Headmaster
+        description: The Elder Broom
+
+    unspeakabroom:
+        name: Unspeakabroom
+        description: Whooshhhhhhhhhhhh
+
+    nimbus:
+        name: Nimbus 2000
+        description: Can turn on a dime
+
+    crudnimbus:
+        name: Knockoff Nimbus 2000
+        description: It's kinda dingy
+
+    bluebottle:
+        name: Bluebottle
+        description: The Family Broom
+
+    comet290:
+        name: Comet 290
+        description: Horton-Keitch Braking Charm
+
+    cleansweep1:
+        name: Cleansweep One
+        description: Corners like no other
+
+    crudbroom:
+        name: Cracked Broomstick
+        description: May have some life left in it
+
+    firebolt:
+        name: Firebolt
+        description: Superb balance and precision
+
+    crudfirebolt:
+        name: Knockoff Firebolt
+        description: Trusty?
+
+    cleanbroom:
+        name: Streamline Broom
+        description: Remove all broom attachments
+
+    stabilizer:
+        name: Broom Stabilizer
+        description: Your broom will turn on a dime!
+
+    brakes:
+        name: Broom Brakes
+        description: Your broom will stop on a dime!
+
+    booster:
+        name: Broom Booster
+        description: Increase your top speed!
+
+    beater:
+        name: Beater Bat
+        description: Whack!
+
+    camera:
+        name: Camera
+        description: Take a picture of your target
+
+    handbag:
+        name: Beaded Handbag
+        description: It's quite large on the inside
+
+    key:
+        name: Key
+        description: Used to unlock a door
+
+    deluminator:
+        name: Deluminator
+        description: Snuff out all light in the area
+
+    energy1:
+        name: Energy Upgrade Level 1
+        description: Upgrade to 75 Energy
+    energy2:
+        name: Energy Upgrade Level 2
+        description: Upgrade to 100 Energy
+    energy3:
+        name: Energy Upgrade Level 3
+        description: Upgrade to 150 Energy
+    energy4:
+        name: Energy Upgrade Level 4
+        description: Upgrade to 200 Energy
+    energy5:
+        name: Energy Upgrade Level 5
+        description: Upgrade to 250 Energy
+    restartyear:
+        name: Go back to Year 1
+        description: Must be year 7!
+
+    undroppable:
+        name: Undroppable Upgrade
+        description: Makes your wand undroppable
+
+    patronus_wolf:
+        name: Wolf Patronus
+        description: A new patronus finds you.
+
+    patronus_horse:
+        name: Horse Patronus
+        description: A new patronus finds you.
+
+    patronus_ocelot:
+        name: Ocelot Patronus
+        description: A new patronus finds you.
+
+    patronus_spider:
+        name: Spider Patronus
+        description: A new patronus finds you.
+
+    patronus_cow:
+        name: Cow Patronus
+        description: A new patronus finds you.
+
+    patronus_pig:
+        name: Pig Patronus
+        description: A new patronus finds you.
+
+    patronus_sheep:
+        name: Sheep Patronus
+        description: A new patronus finds you.
+
+    patronus_cat_siamese:
+        name: Siamese Cat Patronus
+        description: A new patronus finds you.
+
+    patronus_cat_red:
+        name: Red Cat Patronus
+        description: A new patronus finds you.
+
+    patronus_cat_black:
+        name: Black Cat Patronus
+        description: A new patronus finds you.
+
+    patronus_threstral:
+        name: Thestral Patronus
+        description: A new patronus finds you.
+
+    patronus_slime:
+        name: Slime Patronus
+        description: A new patronus finds you.
