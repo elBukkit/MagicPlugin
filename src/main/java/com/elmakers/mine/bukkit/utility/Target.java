@@ -18,6 +18,9 @@ public class Target implements Comparable<Target>
     protected int    minDistanceSquared = 0;
     protected double maxAngle           = 0.3;
 
+    protected double closeDistanceSquared = 2 * 2;
+    protected double closeAngle = Math.PI;
+
     private Location source;
     private Location location;
     private WeakReference<Entity>   _entity;
@@ -90,14 +93,9 @@ public class Target implements Comparable<Target>
     public Target(Location sourceLocation, Entity entity, int range, double angle, double closeRange, double closeAngle)
     {
         this.maxDistanceSquared = range * range;
-        if (closeRange < range && this.maxDistanceSquared < closeRange * closeRange)
-        {
-            this.maxAngle = closeAngle;
-        }
-        else
-        {
-            this.maxAngle = angle;
-        }
+        this.closeDistanceSquared = closeRange * closeRange;
+        this.closeAngle = closeAngle;
+        this.maxAngle = angle;
         this.source = sourceLocation;
         this._entity = new WeakReference<Entity>(entity);
         if (entity != null) this.location = entity.getLocation();
@@ -183,7 +181,8 @@ public class Target implements Comparable<Target>
         distanceSquared = targetDirection.lengthSquared();
 
         score = 0;
-        if (maxAngle > 0 && angle > maxAngle) return;
+        double checkAngle = (distanceSquared < closeDistanceSquared) ? closeAngle : maxAngle;
+        if (checkAngle > 0 && angle > checkAngle) return;
         if (maxDistanceSquared > 0 && distanceSquared > maxDistanceSquared) return;
         if (distanceSquared < minDistanceSquared) return;
 
