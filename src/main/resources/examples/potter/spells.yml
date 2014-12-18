@@ -1309,7 +1309,7 @@ disillusion:
     parameters:
         target: any
         particle: red_dust
-        duration: 30000
+        duration: 8000
         effect_invisibility: 5
 
 duro:
@@ -1914,7 +1914,7 @@ flipendo|3:
              particlesSpout: 30
     parameters:
         range: 32
-        allow_area: true
+        allow_area: false
         area_range: 20
         item_force: 5
         entity_force: 1.8
@@ -2945,7 +2945,7 @@ protego:
         orient: true
         transparent: transparent_to_construction
         check_destructible: true
-        destructible: air,fire,water,stationarywater
+        destructible: air,fire,water,stationary_water
         undo: 1000
         breakable: 3
         brushcolor: false
@@ -3286,6 +3286,41 @@ sectumsempra:
         target_breakables: 3
     costs:
         mana: 120
+
+slash:
+    hidden: true
+    alias: slash
+    icon: quartz
+    category: melee
+    pvp_restricted: true
+    class: PotionEffectSpell
+    cast_on_no_target: true
+    worth: 25
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: irongolem_hit
+           effectlib:
+             class: ConeEffect
+             iterations: 15
+             particle: drip_lava
+        -  class: EffectSingle
+           location: target
+           effectlib:
+             class: BleedEffect
+             iterations: 2
+             hurt: false
+    parameters:
+        target_type: LivingEntity
+        allow_max_range: false
+        range: 4
+        target: other_entity
+        damage: 7
+        fov: 1
+        cooldown: 2000
+        target_breakables: 0
+    costs:
+        mana: 25
 
 silencio:
     icon: ink_sack:3
@@ -4842,14 +4877,6 @@ pulsus:
     cast_on_no_target: true
     worth: 15
     effects:
-        cast:
-        -  class: EffectSingle
-           sound: wither_shoot
-           effectlib:
-             class: ConeEffect
-             iterations: 12
-             particle: spell
-             lengthGrow: 0.1
         area:
         -  class: EffectSingle
            sound: fizz
@@ -4860,16 +4887,14 @@ pulsus:
              particlesStrand: 10
              particlesSpout: 30
     parameters:
-        target: other
-        range: 16
-        allow_area: true
-        allow_max_range: true
+        area: true
+        target_type: Entity
         item_force: 5
         area_range: 15
         entity_force: 20
-        type: cuboid
-        count: 0
+        type: push
+        count: 1
         damage: 0.5
-        cooldown: 4000
+        cooldown: 5000
     costs:
-        mana: 40
+        mana: 50
