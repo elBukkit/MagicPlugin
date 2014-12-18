@@ -84,8 +84,20 @@ public class Target implements Comparable<Target>
 
     public Target(Location sourceLocation, Entity entity, int range, double angle)
     {
+        this(sourceLocation, entity, range, angle, range, angle);
+    }
+
+    public Target(Location sourceLocation, Entity entity, int range, double angle, float closeRange, double closeAngle)
+    {
         this.maxDistanceSquared = range * range;
-        this.maxAngle = angle;
+        if (closeRange < range && this.maxDistanceSquared < closeRange * closeRange)
+        {
+            this.maxAngle = closeAngle;
+        }
+        else
+        {
+            this.maxAngle = angle;
+        }
         this.source = sourceLocation;
         this._entity = new WeakReference<Entity>(entity);
         if (entity != null) this.location = entity.getLocation();

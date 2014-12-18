@@ -56,6 +56,8 @@ public abstract class TargetingSpell extends BaseSpell {
 
     private int                                 range                   = 32;
     private double                              fov                     = 0.3;
+    private double                              closeRange              = 1.5;
+    private double                              closeFOV                = Math.PI;
 
     private Set<Material>                       targetThroughMaterials  = new HashSet<Material>();
     private boolean                             reverseTargeting        = false;
@@ -658,6 +660,8 @@ public abstract class TargetingSpell extends BaseSpell {
         super.processParameters(parameters);
         range = parameters.getInt("range", range);
         fov = parameters.getDouble("fov", fov);
+        closeRange = parameters.getDouble("close_range", closeRange);
+        closeFOV = parameters.getDouble("close_fov", closeFOV);
         allowMaxRange = parameters.getBoolean("allow_max_range", allowMaxRange);
         bypassBackfire = parameters.getBoolean("bypass_backfire", bypassBackfire);
         bypassProtection = parameters.getBoolean(("bypass_protection"));
