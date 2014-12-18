@@ -1755,7 +1755,7 @@ cat:
     costs:
         mana: 30
 portal:
-    icon: portal
+    icon: eye_of_ender
     category: master
     class: PortalSpell
     worth: 60
@@ -1774,7 +1774,7 @@ portal:
     costs:
         mana: 20
 phase:
-    icon: ender_portal
+    icon: eye_of_ender
     category: master
     class: PhaseSpell
     worth: 10
@@ -3197,7 +3197,7 @@ superiterate:
     costs:
         mana: 200
 flamethrower:
-    icon: fire
+    icon: blaze_powder
     category: firebending
     class: IterateSpell
     worth: 90
