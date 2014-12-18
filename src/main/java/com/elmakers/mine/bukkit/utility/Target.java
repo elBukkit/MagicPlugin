@@ -172,6 +172,7 @@ public class Target implements Comparable<Target>
 
     protected void calculateScore()
     {
+        score = 0;
         if (source == null) return;
 
         Vector playerFacing = source.getDirection();
@@ -182,15 +183,23 @@ public class Target implements Comparable<Target>
 
         Vector targetLoc = new Vector(targetLocation.getX(), targetLocation.getY(), targetLocation.getZ());
         Vector targetDirection = new Vector(targetLoc.getX() - playerLoc.getX(), targetLoc.getY() - playerLoc.getY(), targetLoc.getZ() - playerLoc.getZ());
-        angle = targetDirection.angle(playerFacing);
         distanceSquared = targetDirection.lengthSquared();
 
-        score = 0;
-        boolean isClose = (distanceSquared < closeDistanceSquared);
-        double checkAngle = isClose ? closeAngle : maxAngle;
+        if (maxDistanceSquared > 0 && distanceSquared > maxDistanceSquared) return;
+        angle = targetDirection.angle(playerFacing);
+
+        double checkAngle = maxAngle;
+        if (closeDistanceSquared > 0 && maxDistanceSquared > closeDistanceSquared)
+        {
+            if (distanceSquared <= closeDistanceSquared) {
+                checkAngle = closeAngle;
+            } else {
+                double ratio = (distanceSquared - closeDistanceSquared) / (maxDistanceSquared - closeDistanceSquared);
+                checkAngle = closeAngle + ratio * (maxAngle - closeAngle);
+            }
+        }
 
         if (checkAngle > 0 && angle > checkAngle) return;
-        if (maxDistanceSquared > 0 && distanceSquared > maxDistanceSquared) return;
         if (distanceSquared < minDistanceSquared) return;
 
         if (reverseDistance) {
