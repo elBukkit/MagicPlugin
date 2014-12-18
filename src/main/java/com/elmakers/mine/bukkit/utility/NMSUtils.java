@@ -154,7 +154,8 @@ public class NMSUtils {
 
             class_Entity_invulnerableField = class_Entity.getDeclaredField("invulnerable");
             class_Entity_invulnerableField.setAccessible(true);
-            class_ItemStack_tagField = class_ItemStack.getField("tag");
+            class_ItemStack_tagField = class_ItemStack.getDeclaredField("tag");
+            class_ItemStack_tagField.setAccessible(true);
             class_DamageSource_MagicField = class_DamageSource.getField("MAGIC");
 
             class_Firework_ticksFlownField = class_EntityFirework.getDeclaredField("ticksFlown");
