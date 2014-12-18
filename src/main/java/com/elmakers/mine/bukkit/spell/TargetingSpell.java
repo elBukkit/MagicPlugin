@@ -474,7 +474,7 @@ public abstract class TargetingSpell extends BaseSpell {
             // Ignore invisible entities
             // if (entity instanceof LivingEntity && ((LivingEntity)entity).hasPotionEffect(PotionEffectType.INVISIBILITY)) continue;
 
-            Target newScore = new Target(sourceLocation, entity, maxRange, fov);
+            Target newScore = new Target(sourceLocation, entity, maxRange, fov, closeRange, closeFOV);
             if (newScore.getScore() > 0)
             {
                 scored.add(newScore);

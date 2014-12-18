@@ -87,7 +87,7 @@ public class Target implements Comparable<Target>
         this(sourceLocation, entity, range, angle, range, angle);
     }
 
-    public Target(Location sourceLocation, Entity entity, int range, double angle, float closeRange, double closeAngle)
+    public Target(Location sourceLocation, Entity entity, int range, double angle, double closeRange, double closeAngle)
     {
         this.maxDistanceSquared = range * range;
         if (closeRange < range && this.maxDistanceSquared < closeRange * closeRange)
