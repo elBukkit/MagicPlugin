@@ -370,23 +370,9 @@ public class CompatibilityUtils extends NMSUtils {
         }
     }
 
+    @Deprecated
     public static void setTarget(LivingEntity entity, Location target)
     {
-        Object sourceHandle = getHandle(entity);
-        if (sourceHandle == null || !class_EntityCreature.isAssignableFrom(sourceHandle.getClass())) {
-            return;
-        }
-        try {
-            Method setPathMethod = class_EntityCreature.getMethod("setPathEntity", class_PathEntity);
-            Constructor pointConstructor = class_PathPoint.getConstructor(Integer.TYPE, Integer.TYPE, Integer.TYPE);
-            Object targetPoint = pointConstructor.newInstance(target.getBlockX(), target.getBlockY(), target.getBlockZ());
-            Object pathArray = Array.newInstance(class_PathPoint, 1);
-            Array.set(pathArray, 0, targetPoint);
-            Constructor pathConstructor = class_PathEntity.getConstructor(pathArray.getClass());
-            Object pathEntity = pathConstructor.newInstance(pathArray);
-            setPathMethod.invoke(sourceHandle, pathEntity);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
+        // This never seemed to work, and is not compatible with 1.8, so removing it.
     }
 }
