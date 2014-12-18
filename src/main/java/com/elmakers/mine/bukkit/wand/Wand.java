@@ -60,6 +60,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	public final static float DEFAULT_SPELL_COLOR_MIX_WEIGHT = 0.0001f;
 	public final static float DEFAULT_WAND_COLOR_MIX_WEIGHT = 1.0f;
     public final static int POTION_EFFECT_DURATION = 240;
+	public final static Material DEFAULT_BRUSH_MATERIAL = Material.SULPHUR;
 
     public final static String[] EMPTY_PARAMETERS = new String[0];
 	
@@ -832,8 +833,11 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		ItemStack originalItemStack = new ItemStack(material, 1, (short)0, (byte)dataId);
 		ItemStack itemStack = InventoryUtils.makeReal(originalItemStack);
 		if (itemStack == null) {
-			controller.getPlugin().getLogger().warning("Unable to create material icon for " + material.name() + ": " + materialKey);	
-			return null;
+			itemStack = new ItemStack(DEFAULT_BRUSH_MATERIAL, 1, (short)0, (byte)dataId);
+			itemStack = InventoryUtils.makeReal(itemStack);
+			if (itemStack == null) {
+				return itemStack;
+			}
 		}
 		List<String> lore = new ArrayList<String>();
 		if (material != null) {
