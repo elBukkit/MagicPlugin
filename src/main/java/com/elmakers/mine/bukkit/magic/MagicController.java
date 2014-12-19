@@ -1015,8 +1015,11 @@ public class MagicController implements Listener, MageController {
         DataStore configuration = new DataStore(getLogger(), dataFile);
         return configuration;
     }
-
     protected ConfigurationSection loadConfigFile(String fileName, boolean loadDefaults) {
+        return loadConfigFile(fileName, loadDefaults, false);
+    }
+
+    protected ConfigurationSection loadConfigFile(String fileName, boolean loadDefaults, boolean disableDefaults) {
         String configFileName = fileName + ".yml";
         File configFile = new File(configFolder, configFileName);
         if (!configFile.exists()) {
@@ -1037,6 +1040,21 @@ public class MagicController implements Listener, MageController {
 
         if (loadDefaults) {
             Configuration defaultConfig = YamlConfiguration.loadConfiguration(plugin.getResource(defaultsFileName));
+            if (disableDefaults) {
+                Set<String> keys = defaultConfig.getKeys(false);
+                for (String key : keys)
+                {
+                    defaultConfig.getConfigurationSection(key).set("enabled", false);
+                }
+                keys = overrides.getKeys(false);
+                for (String key : keys)
+                {
+                    ConfigurationSection section = overrides.getConfigurationSection(key);
+                    if (!section.isSet("enabled")) {
+                        section.set("enabled", true);
+                    }
+                }
+            }
             config = ConfigurationUtils.addConfigurations(config, defaultConfig);
         }
 
@@ -1103,7 +1121,7 @@ public class MagicController implements Listener, MageController {
 
         // Load spells
         try {
-            loadSpells(loadConfigFile(SPELLS_FILE, loadDefaultSpells));
+            loadSpells(loadConfigFile(SPELLS_FILE, loadDefaultSpells, disableDefaultSpells));
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -1426,7 +1444,45 @@ public class MagicController implements Listener, MageController {
         SaveEvent saveEvent = new SaveEvent(asynchronous);
         Bukkit.getPluginManager().callEvent(saveEvent);
 	}
-	
+
+    protected ConfigurationSection getSpellConfig(String key, ConfigurationSection config)
+    {
+        ConfigurationSection spellNode = config.getConfigurationSection(key);
+
+        SpellKey spellKey = new SpellKey(key);
+        String inheritFrom = spellNode.getString("inherit");
+        if (spellKey.isVariant()) {
+            int level = spellKey.getLevel();
+            String baseKey = spellKey.getBaseKey();
+            for (int i = level - 1; i > 0; i--) {
+                inheritFrom = baseKey;
+                if (i > 1) {
+                    inheritFrom += "|" + i;
+                }
+            }
+        }
+
+        if (inheritFrom != null)
+        {
+            ConfigurationSection inheritConfig = getSpellConfig(inheritFrom, config);
+            if (inheritConfig != null)
+            {
+                spellNode = ConfigurationUtils.addConfigurations(spellNode, inheritConfig, false);
+            }
+            else
+            {
+                Bukkit.getLogger().warning("Spell " + key + " inherits from unknown ancestor " + inheritFrom);
+            }
+        } else {
+            ConfigurationSection defaults = config.getConfigurationSection("default");
+            if (defaults != null) {
+                spellNode = ConfigurationUtils.addConfigurations(spellNode, defaults, false);
+            }
+        }
+
+        return spellNode;
+    }
+
 	protected void loadSpells(ConfigurationSection config)
 	{
 		if (config == null) return;
@@ -1435,35 +1491,14 @@ public class MagicController implements Listener, MageController {
 		spells.clear();
         spellAliases.clear();
 
-        ConfigurationSection defaults = config.getConfigurationSection("default");
-
 		Set<String> spellKeys = config.getKeys(false);
 		for (String key : spellKeys)
 		{
             if (key.equals("default")) continue;
 
-			ConfigurationSection spellNode = config.getConfigurationSection(key);
-			if (!spellNode.getBoolean("enabled", true)) {
-				continue;
-			}
-
-            SpellKey spellKey = new SpellKey(key);
-            if (spellKey.isVariant()) {
-                int level = spellKey.getLevel();
-                String baseKey = spellKey.getBaseKey();
-                for (int i = level - 1; i > 0; i--) {
-                    String parentKey = baseKey;
-                    if (i > 1) {
-                        parentKey += "|" + i;
-                    }
-                    if (config.contains(parentKey)) {
-                        spellNode = ConfigurationUtils.addConfigurations(spellNode, config.getConfigurationSection(parentKey), false);
-                    }
-                }
-            }
-
-            if (defaults != null) {
-                spellNode = ConfigurationUtils.addConfigurations(spellNode, defaults, false);
+            ConfigurationSection spellNode = getSpellConfig(key, config);
+            if (spellNode == null || !spellNode.getBoolean("enabled", true)) {
+                continue;
             }
 
             // Kind of a hacky way to do this, and only works with BaseSpell spells.
@@ -1508,7 +1543,10 @@ public class MagicController implements Listener, MageController {
 	public static Spell loadSpell(String name, ConfigurationSection node, MageController controller)
 	{
 		String className = node.getString("class");
-		if (className == null) return null;
+		if (className == null) {
+            controller.getLogger().warning("Spell missing class name: " + name);
+            return null;
+        }
 
 		if (className.indexOf('.') <= 0)
 		{
@@ -1598,6 +1636,7 @@ public class MagicController implements Listener, MageController {
         activateHoloTextRange = properties.getInt("activate_holotext_range", activateHoloTextRange);
 
 		loadDefaultSpells = properties.getBoolean("load_default_spells", loadDefaultSpells);
+        disableDefaultSpells = properties.getBoolean("disable_default_spells", disableDefaultSpells);
 		loadDefaultWands = properties.getBoolean("load_default_wands", loadDefaultWands);
         loadDefaultCrafting = properties.getBoolean("load_default_crafting", loadDefaultCrafting);
         loadDefaultEnchanting = properties.getBoolean("load_default_enchanting", loadDefaultEnchanting);
@@ -3891,6 +3930,7 @@ public class MagicController implements Listener, MageController {
     private final String						AUTOMATA_FILE				= "automata";
     private final String						URL_MAPS_FILE				= "imagemaps";
 
+    private boolean                             disableDefaultSpells        = false;
     private boolean 							loadDefaultSpells			= true;
     private boolean 							loadDefaultWands			= true;
     private boolean 							loadDefaultEnchanting		= true;

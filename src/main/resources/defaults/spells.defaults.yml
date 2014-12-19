@@ -3561,7 +3561,7 @@ wolfhouse:
         mana: 1000
 
 missile:
-    icon: ink_sack:4
+    icon: ink_sack:1
     category: combat
     class: PotionEffectSpell
     pvp_restricted: true
@@ -3577,13 +3577,31 @@ missile:
            effectlib:
              class: ConeEffect
              iterations: 15
-             particle: magic_crit
-             lengthGrow: 0.4
+             particle: red_dust
+             lengthGrow: 0.3
         -  class: EffectSingle
            target_offset: 0,1.5,0
            location: target
-           color: 0000FF
-           firework: ball
+           color: FF8800
+           color2: FF0000
+           firework: burst
+        no_target:
+        -  class: EffectSingle
+           sound: enderman_teleport
+           sound_pitch: 0.1
+           location: origin
+           particle_override: particle
+           effectlib:
+             class: ConeEffect
+             iterations: 15
+             particle: smoke
+             lengthGrow: 0.3
+        -  class: EffectSingle
+           target_offset: 0,1.5,0
+           location: target
+           color: "#884400"
+           color2: "#880000"
+           firework: burst
         backfire:
         -  class: EffectSingle
            sound: enderman_teleport
@@ -3594,20 +3612,18 @@ missile:
            effectlib:
              class: ConeEffect
              iterations: 15
-             particle: magic_crit
-             lengthGrow: 0.4
+             particle: red_dust
+             lengthGrow: 0.3
     parameters:
-        range: 35
-        fov: 0.11
+        range: 16
+        fov: 0.12
         target_type: LivingEntity
-        duration: 3000
-        damage: 4.5
-        effect_confusion: 40
-        cooldown: 750
-        target_breakables: 2
-        transparent: transparent_to_construction
+        damage: 2
+        cooldown: 2500
+        target_breakables: 0
+        bypass_backfire: false
     costs:
-        mana: 50
+        mana: 30
 
 silence:
     icon: ink_sack

@@ -88,6 +88,10 @@
 # You will need to do the same with wands, since they refer to the default spells.
 load_default_spells: true
 
+# Use this to load, but disable the default spells.
+# This is useful if you want to inherit from the defaults, or choose what to expose.
+disable_default_spells: false
+
 # Set to false to skip loading defaults/wands.defaults.yml entirely.
 # Use this to have completely custom wands, and avoid getting updates to wands
 # in the future.
