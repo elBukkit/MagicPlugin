@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 4.0
+
+ - Add hitbox-based targeting.
+
 ## 3.9
 
  - 1.8 Compatibility

@@ -12,6 +12,7 @@ import java.util.Set;
 
 import com.elmakers.mine.bukkit.effect.HoloUtils;
 import com.elmakers.mine.bukkit.effect.Hologram;
+import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import de.slikey.effectlib.util.ParticleEffect;
 import org.bukkit.*;
 import org.bukkit.block.Block;
@@ -706,15 +707,12 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
     @Override
     public Location getEyeLocation() {
-        LivingEntity entity = getLivingEntity();
-        if (entity != null) return entity.getEyeLocation();
-
-        Location location = getLocation();
-        if (location != null) {
-            location.setY(location.getY() + 1.5);
-            return location;
+        Entity entity = getEntity();
+        if (entity != null) {
+            return CompatibilityUtils.getEyeLocation(entity);
         }
-        return null;
+
+        return getLocation();
     }
 
     @Override

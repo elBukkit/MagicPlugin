@@ -3616,7 +3616,7 @@ missile:
              lengthGrow: 0.3
     parameters:
         range: 16
-        fov: 0.12
+        hitbox: true
         target_type: LivingEntity
         damage: 2
         cooldown: 2500

@@ -3112,6 +3112,7 @@ reducio:
            color: "FFFFFF"
            firework: ball
     parameters:
+        hitbox: true
         target_type: LivingEntity
         target: other_entity
         allow_max_range: false
@@ -3640,6 +3641,7 @@ stupefy:
              particle: magic_crit
              lengthGrow: 0.4
     parameters:
+        hitbox: true
         range: 35
         fov: 0.12
         target_type: LivingEntity
