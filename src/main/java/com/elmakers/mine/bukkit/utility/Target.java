@@ -14,11 +14,14 @@ import com.elmakers.mine.bukkit.api.magic.Mage;
 
 public class Target implements Comparable<Target>
 {
+    private static final boolean DEBUG_TARGETING = false;
+
     protected int    maxDistanceSquared = 128 * 128;
     protected int    minDistanceSquared = 0;
     protected double maxAngle           = 0.3;
+    protected boolean useHitbox         = false;
 
-    protected double closeDistanceSquared = 3 * 3;
+    protected double closeDistanceSquared = 1;
     protected double closeAngle = Math.PI / 2;
 
     private Location source;
@@ -81,7 +84,17 @@ public class Target implements Comparable<Target>
         this.maxDistanceSquared = range * range;
         this.source = sourceLocation;
         this._entity = new WeakReference<Entity>(entity);
-        if (entity != null) this.location = entity.getLocation();
+        if (entity != null) this.location = CompatibilityUtils.getEyeLocation(entity);
+        calculateScore();
+    }
+
+    public Target(Location sourceLocation, Entity entity, int range, boolean hitbox)
+    {
+        this.maxDistanceSquared = range * range;
+        this.source = sourceLocation;
+        this.useHitbox = hitbox;
+        this._entity = new WeakReference<Entity>(entity);
+        if (entity != null) this.location = CompatibilityUtils.getEyeLocation(entity);
         calculateScore();
     }
 
@@ -91,7 +104,7 @@ public class Target implements Comparable<Target>
         this.maxAngle = angle;
         this.source = sourceLocation;
         this._entity = new WeakReference<Entity>(entity);
-        if (entity != null) this.location = entity.getLocation();
+        if (entity != null) this.location = CompatibilityUtils.getEyeLocation(entity);
         calculateScore();
     }
 
@@ -103,7 +116,7 @@ public class Target implements Comparable<Target>
         this.maxAngle = angle;
         this.source = sourceLocation;
         this._entity = new WeakReference<Entity>(entity);
-        if (entity != null) this.location = entity.getLocation();
+        if (entity != null) this.location = CompatibilityUtils.getEyeLocation(entity);
         calculateScore();
     }
 
@@ -114,7 +127,7 @@ public class Target implements Comparable<Target>
         this.reverseDistance = reverseDistance;
         this.source = sourceLocation;
         this._entity = new WeakReference<Entity>(entity);
-        if (entity != null) this.location = entity.getLocation();
+        if (entity != null) this.location = CompatibilityUtils.getEyeLocation(entity);
         calculateScore();
     }
 
@@ -126,7 +139,7 @@ public class Target implements Comparable<Target>
         this.reverseDistance = reverseDistance;
         this.source = sourceLocation;
         this._entity = new WeakReference<Entity>(entity);
-        if (entity != null) this.location = entity.getLocation();
+        if (entity != null) this.location = CompatibilityUtils.getEyeLocation(entity);
         calculateScore();
     }
 
@@ -141,7 +154,7 @@ public class Target implements Comparable<Target>
         if (mage != null) {
             this._entity = new WeakReference<Entity>(mage.getLivingEntity());
         }
-        if (mage != null) this.location = mage.getLocation();
+        if (mage != null) this.location = mage.getEyeLocation();
         calculateScore();
     }
 
@@ -150,7 +163,7 @@ public class Target implements Comparable<Target>
         this.maxDistanceSquared = 0;
         this.source = sourceLocation;
         this._entity = new WeakReference<Entity>(entity);
-        if (entity != null) this.location = entity.getLocation();
+        if (entity != null) this.location = CompatibilityUtils.getEyeLocation(entity);
     }
 
     public Target(Location sourceLocation, Entity entity, Block block)
@@ -161,7 +174,7 @@ public class Target implements Comparable<Target>
         if (block != null) {
             this.location = block.getLocation();
         } else if (entity != null) {
-            this.location = entity.getLocation();
+            this.location = CompatibilityUtils.getEyeLocation(entity);
         }
     }
 
@@ -186,34 +199,68 @@ public class Target implements Comparable<Target>
         distanceSquared = targetDirection.lengthSquared();
 
         if (maxDistanceSquared > 0 && distanceSquared > maxDistanceSquared) return;
-        angle = targetDirection.angle(playerFacing);
+        if (distanceSquared < minDistanceSquared) return;
 
-        double checkAngle = maxAngle;
-        if (closeDistanceSquared > 0 && maxDistanceSquared > closeDistanceSquared)
+        Entity entity = getEntity();
+        if (useHitbox)
         {
-            if (distanceSquared <= closeDistanceSquared) {
-                checkAngle = closeAngle;
-            } else {
-                double ratio = (distanceSquared - closeDistanceSquared) / (maxDistanceSquared - closeDistanceSquared);
-                checkAngle = closeAngle + ratio * (maxAngle - closeAngle);
+            Vector playerMaxRange = playerLoc.clone().add(playerFacing.multiply(maxDistanceSquared));
+            BoundingBox hitbox = null;
+            if (entity == null)
+            {
+                hitbox =  new BoundingBox(targetLoc, -0.5, 0.5, 0, 1, -0.5, 0.5);
+            }
+            else
+            {
+                hitbox = CompatibilityUtils.getHitbox(entity);
+
+                if (DEBUG_TARGETING)
+                {
+                    org.bukkit.Bukkit.getLogger().info("CHECKING " + getEntity().getType() + ": " + hitbox + ", " + playerLoc + " - " + playerMaxRange + ": " + hitbox.intersectsLine(playerLoc, playerMaxRange));
+                }
+            }
+            if (!hitbox.intersectsLine(playerLoc, playerMaxRange))
+            {
+                return;
             }
         }
+        else
+        {
+            angle = targetDirection.angle(playerFacing);
 
-        if (checkAngle > 0 && angle > checkAngle) return;
-        if (distanceSquared < minDistanceSquared) return;
+            double checkAngle = maxAngle;
+            if (closeDistanceSquared > 0 && maxDistanceSquared > closeDistanceSquared)
+            {
+                if (distanceSquared <= closeDistanceSquared) {
+                    checkAngle = closeAngle;
+                } else {
+                    double ratio = (distanceSquared - closeDistanceSquared) / (maxDistanceSquared - closeDistanceSquared);
+                    checkAngle = closeAngle - ratio * (closeAngle - maxAngle);
+                }
+            }
+
+            if (DEBUG_TARGETING && hasEntity())
+            {
+                org.bukkit.Bukkit.getLogger().info("CHECKING " + getEntity().getType() + " (" + closeDistanceSquared + ") " +
+                        " angle = " + angle + " against " + checkAngle + " at distance " + distanceSquared
+                        + " rangeA = (" + closeAngle + " to " + maxAngle + "), rangeD = (" + closeDistanceSquared + " to " + maxDistanceSquared + ")"
+                        + " ... from " + playerLoc + " to " + targetLoc);
+            }
+
+
+            if (checkAngle > 0 && angle > checkAngle) return;
+        }
 
         if (reverseDistance) {
             distanceSquared = maxDistanceSquared - distanceSquared;
         }
 
-        score = 0;
-
+        score = 1;
         if (maxDistanceSquared > 0) score += (maxDistanceSquared - distanceSquared);
-        if (angle > 0) score += (3 - angle) * 4;
+        if (!useHitbox && angle > 0) score += (3 - angle) * 4;
 
         // Favor targeting players, a bit
         // TODO: Make this configurable? Offensive spells should prefer mobs, maybe?
-        Entity entity = getEntity();
         if (entity != null && mage != null && mage.getController().isNPC(entity))
         {
             score = score - 1;

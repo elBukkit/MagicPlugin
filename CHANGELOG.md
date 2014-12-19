@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 2.0
+
+ - Add hitbox-based targeting.
+
 ## 1.9
 
  - Fix some issues parsing potion effects from strings.

@@ -53,10 +53,11 @@ public abstract class TargetingSpell extends BaseSpell {
     private boolean                             allowMaxRange           = false;
     private boolean                             bypassBackfire          = false;
 
+    private boolean                             useHitbox               = false;
     private int                                 range                   = 32;
     private double                              fov                     = 0.3;
-    private double                              closeRange              = 3;
-    private double                              closeFOV                = Math.PI / 2;
+    private double                              closeRange              = 1;
+    private double                              closeFOV                = 0.5;
 
     private Set<Material>                       targetThroughMaterials  = new HashSet<Material>();
     private boolean                             reverseTargeting        = false;
@@ -175,7 +176,7 @@ public abstract class TargetingSpell extends BaseSpell {
     }
 
     public void setTarget(Location location) {
-        target = new Target(getLocation(), location.getBlock());
+        target = new Target(getEyeLocation(), location.getBlock());
     }
 
     public boolean hasBuildPermission(Block block)
@@ -289,7 +290,7 @@ public abstract class TargetingSpell extends BaseSpell {
                                         }
                                     }, 5l);
                         }
-                        target = new Target(getLocation(), mageEntity);
+                        target = new Target(getEyeLocation(), mageEntity);
                     }
                 }
             }
@@ -330,13 +331,14 @@ public abstract class TargetingSpell extends BaseSpell {
      */
     public Target findTarget()
     {
+        final Location location = getEyeLocation();
         if (targetType != TargetType.NONE && targetType != TargetType.BLOCK && targetEntity != null) {
-            return new Target(getLocation(), targetEntity);
+            return new Target(location, targetEntity);
         }
 
         final Entity mageEntity = mage.getEntity();
         if (targetType == TargetType.SELF && mageEntity != null) {
-            return new Target(getLocation(), mageEntity);
+            return new Target(location, mageEntity);
         }
 
         CommandSender sender = mage.getCommandSender();
@@ -345,7 +347,6 @@ public abstract class TargetingSpell extends BaseSpell {
             return new Target(commandBlock.getBlock().getLocation(), commandBlock.getBlock());
         }
 
-        final Location location = getLocation();
         if (targetType == TargetType.SELF && location != null) {
             return new Target(location, location.getBlock());
         }
@@ -355,21 +356,21 @@ public abstract class TargetingSpell extends BaseSpell {
         }
 
         if (targetType != TargetType.NONE && targetLocation != null) {
-            return new Target(getLocation(), targetLocation.getBlock());
+            return new Target(location, targetLocation.getBlock());
         }
 
         if (targetType == TargetType.NONE) {
-            return new Target(getLocation());
+            return new Target(location);
         }
 
         findTargetBlock();
         final Block block = getCurBlock();
 
         if (targetType == TargetType.BLOCK) {
-            return new Target(getLocation(), block);
+            return new Target(location, block);
         }
 
-        Target targetBlock = block == null ? null : new Target(getLocation(), block);
+        Target targetBlock = block == null ? null : new Target(location, block);
         Target entityTarget = getEntityTarget();
 
         // Don't allow targeting entities in an area you couldn't cast the spell in
@@ -381,7 +382,7 @@ public abstract class TargetingSpell extends BaseSpell {
         }
 
         if (targetType == TargetType.OTHER_ENTITY && entityTarget == null) {
-            return new Target(getLocation());
+            return new Target(location);
         }
 
         if (targetType == TargetType.ANY_ENTITY && entityTarget == null) {
@@ -389,7 +390,7 @@ public abstract class TargetingSpell extends BaseSpell {
         }
 
         if (entityTarget == null && targetType == TargetType.ANY && mageEntity != null) {
-            return new Target(getLocation(), mageEntity, targetBlock == null ? null : targetBlock.getBlock());
+            return new Target(location, mageEntity, targetBlock == null ? null : targetBlock.getBlock());
         }
 
         if (targetBlock != null && entityTarget != null) {
@@ -406,13 +407,13 @@ public abstract class TargetingSpell extends BaseSpell {
             return targetBlock;
         }
 
-        return new Target(getLocation());
+        return new Target(location);
     }
 
     public Target getCurrentTarget()
     {
         if (target == null) {
-            target = new Target(getLocation());
+            target = new Target(getEyeLocation());
         }
         return target;
     }
@@ -446,15 +447,11 @@ public abstract class TargetingSpell extends BaseSpell {
         List<Entity> entities = null;
         Entity mageEntity = mage.getEntity();
         int maxRange = getMaxRange();
-        Location sourceLocation = null;
+        Location sourceLocation = getEyeLocation();
         if (location == null && mageEntity != null) {
-            sourceLocation = mageEntity.getLocation();
             entities = mageEntity.getNearbyEntities(maxRange, maxRange, maxRange);
-        } else {
-            sourceLocation = getLocation();
-            if (sourceLocation != null) {
-                entities = CompatibilityUtils.getNearbyEntities(sourceLocation, maxRange, maxRange, maxRange);
-            }
+        } else if (sourceLocation != null) {
+            entities = CompatibilityUtils.getNearbyEntities(sourceLocation, maxRange, maxRange, maxRange);
         }
 
         if (entities == null) return scored;
@@ -473,7 +470,12 @@ public abstract class TargetingSpell extends BaseSpell {
             // Ignore invisible entities
             // if (entity instanceof LivingEntity && ((LivingEntity)entity).hasPotionEffect(PotionEffectType.INVISIBILITY)) continue;
 
-            Target newScore = new Target(sourceLocation, entity, maxRange, fov, closeRange, closeFOV);
+            Target newScore = null;
+            if (this.useHitbox) {
+                newScore = new Target(sourceLocation, entity, maxRange, useHitbox);
+            } else {
+                newScore = new Target(sourceLocation, entity, maxRange, fov, closeRange, closeFOV);
+            }
             if (newScore.getScore() > 0)
             {
                 scored.add(newScore);
@@ -657,6 +659,7 @@ public abstract class TargetingSpell extends BaseSpell {
     @Override
     protected void processParameters(ConfigurationSection parameters) {
         super.processParameters(parameters);
+        useHitbox = parameters.getBoolean("hitbox", useHitbox);
         range = parameters.getInt("range", range);
         fov = parameters.getDouble("fov", fov);
         closeRange = parameters.getDouble("close_range", closeRange);

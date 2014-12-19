@@ -375,4 +375,19 @@ public class CompatibilityUtils extends NMSUtils {
     {
         // This never seemed to work, and is not compatible with 1.8, so removing it.
     }
+
+    public static Location getEyeLocation(Entity entity)
+    {
+        if (entity instanceof LivingEntity)
+        {
+            return ((LivingEntity)entity).getEyeLocation();
+        }
+
+        return entity.getLocation();
+    }
+
+    public static BoundingBox getHitbox(Entity entity)
+    {
+        return new BoundingBox(entity.getLocation().toVector(), -0.5, 0.5, 0, 1.67, -0.5, 0.5);
+    }
 }
