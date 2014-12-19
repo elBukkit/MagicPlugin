@@ -651,6 +651,7 @@ avadakedavra:
            color: "00FF00"
            firework: creeper
     parameters:
+        hitbox: true
         target_type: LivingEntity
         allow_max_range: false
         range: 32
@@ -703,6 +704,7 @@ avadamaxima:
         cooldown: 30000
         bypass_backfire: true
         check_protection: true
+        hitbox: true
     costs:
         mana: 300
 
@@ -960,7 +962,7 @@ confundus:
         target: other
         duration: 2500
         cooldown: 10000
-        fov: .12
+        hitbox: true
         effect_confusion: 5
 
 conjunctivitis:
@@ -1000,6 +1002,7 @@ conjunctivitis:
         duration: 2000
         cooldown: 10000
         effect_blindness: 5
+        hitbox: true
 
 conjunctivitis|2:
     parameters:
@@ -1047,6 +1050,7 @@ obscuro:
         duration: 3000
         effect_blindness: 1
         cooldown: 10000
+        hitbox: true
 
 crucio:
     icon: quartz
@@ -1078,6 +1082,7 @@ crucio:
     costs:
         mana: 150
     parameters:
+        hitbox: true
         range: 32
         target_type: LivingEntity
         target_breakables: 3
@@ -2055,7 +2060,7 @@ fourpoint:
 fumos:
     icon: sulphur
     category: dada
-    class: GenericSpell
+    class: PotionEffectSpell
     worth: 10
     effects:
         cast:
@@ -2071,8 +2076,11 @@ fumos:
              iterations: 10
     parameters:
         target: self
+        duration: 10000
         cooldown: 20000
         transparent: transparent_to_construction
+        effect_damage_resistance: 600
+        effect_slow: 1
     costs:
         mana: 35
 
@@ -3424,6 +3432,7 @@ silencio:
         bypass_backfire: true
         cooldown: 1000
         check_protection: true
+        hitbox: true
 
 silenciomaxima:
     icon: ink_sack:3
@@ -3565,6 +3574,7 @@ expulsion:
         bypass_backfire: true
         cooldown: 1000
         check_protection: true
+        hitbox: true
 
 jail:
     icon: iron_fence
@@ -3590,6 +3600,7 @@ jail:
         brush: schematic|cage
         transparent: transparent_to_construction
         bypass_backfire: true
+        hitbox: true
 
 stupefy:
     icon: ink_sack:4
@@ -3643,7 +3654,6 @@ stupefy:
     parameters:
         hitbox: true
         range: 35
-        fov: 0.12
         target_type: LivingEntity
         damage: 2
         cooldown: 5000
@@ -3681,7 +3691,7 @@ vermillious|2:
 vermillious|3:
     parameters:
         range: 35
-        damage: 3.5
+        damage: 200
         target_breakables: 0
     costs:
         mana: 70

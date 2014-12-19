@@ -2078,7 +2078,7 @@ fourpoint:
 fumos:
     icon: sulphur
     category: dada
-    class: GenericSpell
+    class: PotionEffectSpell
     worth: 10
     effects:
         cast:
@@ -2094,8 +2094,11 @@ fumos:
              iterations: 10
     parameters:
         target: self
+        duration: 10000
         cooldown: 20000
         transparent: transparent_to_construction
+        effect_damage_resistance: 600
+        effect_slow: 1
     costs:
         mana: 35
 
@@ -2133,7 +2136,7 @@ glacius:
         target_type: LivingEntity
         allow_max_range: false
         range: 32
-        fov: 0.12
+        hitbox: true
         radius: 1
         vertical_search_distance: 8
         transparent: transparent_to_construction
@@ -2177,7 +2180,6 @@ glacius|2:
              radius: 8
     parameters:
         radius: 2
-        fov: 0.12
         player_damage: 2
         entity_damage: 6
         slowness: 2
@@ -2190,7 +2192,6 @@ glacius|3:
     worth: 120
     parameters:
         radius: 3
-        fov: 0.12
         player_damage: 3
         entity_damage: 8
         slowness: 2
