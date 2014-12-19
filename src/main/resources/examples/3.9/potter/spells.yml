@@ -924,6 +924,36 @@ camera:
     costs:
         mana: 5
 
+confringoold:
+    icon: clay_ball
+    category: charms
+    class: BoomSpell
+    pvp_restricted: true
+    worth: 50
+    hidden: true
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: ghast_fireball
+        -  class: EffectSingle
+           location: target
+           effectlib:
+             class: HelixEffect
+             particle: flame
+             iterations: 2
+    parameters:
+        target_type: Item
+        target: other_entity
+        range: 16
+        size: 1
+        fire: true
+        target_breakables: 1
+        break_blocks: false
+        undo: 10000
+        entity_undo: false
+    costs:
+        mana: 75
+
 confundus:
     icon: coal:1
     category: dada
@@ -1962,6 +1992,7 @@ flipendo|2:
     parameters:
         range: 20
         item_force: 4
+        allow_area: false
         area_range: 20
         entity_force: 1.5
         type: push
@@ -5534,33 +5565,3 @@ confringoincendio:
         undo: 1200
     costs:
         mana: 50
-
-confringoold:
-    icon: clay_ball
-    category: charms
-    class: BoomSpell
-    pvp_restricted: true
-    worth: 50
-    hidden: true
-    effects:
-        cast:
-        -  class: EffectSingle
-           sound: ghast_fireball
-        -  class: EffectSingle
-           location: target
-           effectlib:
-             class: HelixEffect
-             particle: flame
-             iterations: 2
-    parameters:
-        target_type: Item
-        target: other_entity
-        range: 16
-        size: 1
-        fire: true
-        target_breakables: 1
-        break_blocks: false
-        undo: 10000
-        entity_undo: false
-    costs:
-        mana: 75
