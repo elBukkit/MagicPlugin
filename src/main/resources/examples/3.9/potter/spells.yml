@@ -646,7 +646,6 @@ avadakedavra:
              particle: happy_villager
              lengthGrow: 0.4
         -  class: EffectSingle
-           target_offset: 0,1.5,0
            location: target
            color: "00FF00"
            firework: creeper
@@ -660,6 +659,7 @@ avadakedavra:
         cooldown: 30000
         target_breakables: 5
         bypass_backfire: true
+        hitbox: true
     costs:
         mana: 180
 
@@ -703,6 +703,7 @@ avadamaxima:
         cooldown: 30000
         bypass_backfire: true
         check_protection: true
+        hitbox: true
     costs:
         mana: 300
 
@@ -788,7 +789,6 @@ bogies:
              particle: slime
              lengthGrow: 0.2
         -  class: EffectSingle
-           target_offset: 0,1.5,0
            location: target
            color: 088A08
            firework: ball
@@ -971,7 +971,6 @@ confundus:
              particle: smoke
              lengthGrow: 0.3
         -  class: EffectSingle
-           target_offset: 0,1.5,0
            location: target
            color: 2E2E2E
            firework: ball
@@ -992,6 +991,7 @@ confundus:
         cooldown: 10000
         fov: .12
         effect_confusion: 5
+        hitbox: true
 
 conjunctivitis:
     alias: blind
@@ -1011,7 +1011,6 @@ conjunctivitis:
              particle: smoke
              lengthGrow: 0.3
         -  class: EffectSingle
-           target_offset: 0,1.5,0
            location: target
            color: 2E2E2E
            firework: ball
@@ -1030,6 +1029,7 @@ conjunctivitis:
         duration: 2000
         cooldown: 10000
         effect_blindness: 5
+        hitbox: true
 
 conjunctivitis|2:
     parameters:
@@ -1053,7 +1053,6 @@ obscuro:
              particle: mob_spell
              lengthGrow: 0.3
         -  class: EffectSingle
-           target_offset: 0,1.5,0
            location: target
            color: 19070B
            firework: ball
@@ -1077,6 +1076,7 @@ obscuro:
         duration: 3000
         effect_blindness: 1
         cooldown: 10000
+        hitbox: true
 
 crucio:
     icon: quartz
@@ -1095,7 +1095,6 @@ crucio:
              particle: mob_spell
              lengthGrow: 0.3
         -  class: EffectSingle
-           target_offset: 0,1.5,0
            location: target
            color: 19070B
            firework: ball
@@ -1115,6 +1114,7 @@ crucio:
         duration: 3000
         effect_wither: 10
         cooldown: 10000
+        hitbox: true
 
 dementor:
     icon: quartz
@@ -1132,7 +1132,6 @@ dementor:
              particle: mob_spell
              lengthGrow: 0.3
         -  class: EffectSingle
-           target_offset: 0,1.5,0
            location: target
            color: 19070B
            firework: ball
@@ -1422,7 +1421,6 @@ expelliarmus:
              particle: crit
              lengthGrow: 0.4
         -  class: EffectSingle
-           target_offset: 0,1.5,0
            location: target
            color: DF0101
            firework: ball
@@ -1435,7 +1433,6 @@ expelliarmus:
              particle: crit
              lengthGrow: 0.4
         -  class: EffectSingle
-           target_offset: 0,1.5,0
            location: target
            color: DF0101
            firework: ball
@@ -1455,7 +1452,7 @@ expelliarmus:
         target_type: LivingEntity
         allow_max_range: false
         range: 25
-        fov: 0.12
+        hitbox: true
         fizzle_chance: 0.6
         backfire_chance: 0.3
         keep_in_inventory: true
@@ -1569,7 +1566,6 @@ engorgio:
              particle: instant_spell
              lengthGrow: 0.32
         -  class: EffectSingle
-           target_offset: 0,1.5,0
            location: target
            color: "81F7D8"
            firework: ball_large
@@ -1583,7 +1579,6 @@ engorgio:
              particle: instant_spell
              lengthGrow: 0.32
         -  class: EffectSingle
-           target_offset: 0,1.5,0
            location: target
            color: "FFFFFF"
            firework: ball
@@ -1821,7 +1816,6 @@ finiteincantatem:
              particleBase1: portal
              particleBase2: enchantment_table
         -  class: EffectSingle
-           target_offset: 0,1.5,0
            location: target
            firework: star
     parameters:
@@ -1899,7 +1893,6 @@ Rictusempra:
              particle: instant_spell
              lengthGrow: 0.7
         -  class: EffectSingle
-           target_offset: 0,1.5,0
            location: target
            color: 996699
            firework: ball
@@ -1914,7 +1907,6 @@ Rictusempra:
              particle: instant_spell
              lengthGrow: 0.7
         -  class: EffectSingle
-           target_offset: 0,1.5,0
            location: target
            color: 996699
            firework: ball
@@ -2125,7 +2117,6 @@ glacius:
              particles: 3
              lengthGrow: 0.4
         -  class: EffectSingle
-           target_offset: 0,1.5,0
            location: target
            color: F5EFFB
            firework: ball
@@ -2172,7 +2163,6 @@ glacius|2:
              particles: 5
              lengthGrow: 0.4
         -  class: EffectSingle
-           target_offset: 0,1.5,0
            location: target
            color: F5EFFB
            firework: ball
@@ -2227,7 +2217,6 @@ immobulus:
              particle: smoke
              lengthGrow: 0.33
         -  class: EffectSingle
-           target_offset: 0,1.5,0
            location: target
            color: 2F0B3A
            firework: ball
@@ -2249,6 +2238,7 @@ immobulus:
         effect_jump: -1
         cooldown: 5000
         fall_protection: 5000
+        hitbox: true
 
 locomotomortus:
     alias: locomoto
@@ -2268,7 +2258,6 @@ locomotomortus:
              particle: witch_magic
              lengthGrow: 0.4
         -  class: EffectSingle
-           target_offset: 0,1.5,0
            location: target
            color: 5F04B4
            firework: ball
@@ -2291,6 +2280,7 @@ locomotomortus:
         effect_jump: -2
         cooldown: 7000
         fall_protection: 5000
+        hitbox: true
 
 incarcerous:
     icon: gold_ingot
@@ -2422,7 +2412,6 @@ incendio:
              particle: lava
              lengthGrow: 0.4
         -  class: EffectSingle
-           target_offset: 0,1.5,0
            location: target
            color: FE642E
            firework: ball
@@ -2545,7 +2534,6 @@ levicorpus:
              particle: witch_magic
              lengthGrow: 0.4
         -  class: EffectSingle
-           target_offset: 0,1.5,0
            location: target
            color: BF00FF
            firework: ball
@@ -2564,6 +2552,7 @@ levicorpus:
         undo_velocity: true
         undo_damage: true
         undo_movement: true
+        hitbox: true
     costs:
         mana: 40
 
@@ -2579,7 +2568,6 @@ levicorpus|2:
              particle: witch_magic
              lengthGrow: 0.4
         -  class: EffectSingle
-           target_offset: 0,1.5,0
            location: target
            color: BF00FF
            firework: ball
@@ -2602,7 +2590,6 @@ levicorpus|3:
              particle: witch_magic
              lengthGrow: 0.4
         -  class: EffectSingle
-           target_offset: 0,1.5,0
            location: target
            color: BF00FF
            firework: ball
@@ -2843,7 +2830,6 @@ petrificustotalus:
              particle: fireworks_spark
              lengthGrow: 0.32
         -  class: EffectSingle
-           target_offset: 0,1.5,0
            location: target
            color: F5EFFB
            firework: ball
@@ -2890,7 +2876,6 @@ webbing:
              particle: fireworks_spark
              lengthGrow: 0.32
         -  class: EffectSingle
-           target_offset: 0,1.5,0
            location: target
            color: F5EFFB
            firework: ball
@@ -3151,7 +3136,6 @@ reducio:
              particle: instant_spell
              lengthGrow: 0.32
         -  class: EffectSingle
-           target_offset: 0,1.5,0
            location: target
            color: "81F7D8"
            firework: ball
@@ -3165,7 +3149,6 @@ reducio:
              particle: instant_spell
              lengthGrow: 0.32
         -  class: EffectSingle
-           target_offset: 0,1.5,0
            location: target
            color: "FFFFFF"
            firework: ball
@@ -3668,7 +3651,6 @@ stupefy:
              particle: magic_crit
              lengthGrow: 0.4
         -  class: EffectSingle
-           target_offset: 0,1.5,0
            location: target
            color: 5FD2FF
            firework: ball
@@ -3683,7 +3665,6 @@ stupefy:
              particle: magic_crit
              lengthGrow: 0.4
         -  class: EffectSingle
-           target_offset: 0,1.5,0
            location: target
            color: 5FD2FF
            firework: ball
@@ -3742,7 +3723,6 @@ vermillious:
              particle: smoke
              lengthGrow: 0.3
         -  class: EffectSingle
-           target_offset: 0,1.5,0
            location: target
            color: FF8800
            color2: FF0000
@@ -3758,7 +3738,6 @@ vermillious:
              particle: smoke
              lengthGrow: 0.3
         -  class: EffectSingle
-           target_offset: 0,1.5,0
            location: target
            color: "#884400"
            color2: "#880000"
@@ -5411,7 +5390,6 @@ smite:
              particle: fireworks_spark
              lengthGrow: 0.32
         -  class: EffectSingle
-           target_offset: 0,1.5,0
            location: target
            color: F5EFFB
            firework: ball
@@ -5547,7 +5525,6 @@ confringoincendio:
              particle: lava
              lengthGrow: 0.4
         -  class: EffectSingle
-           target_offset: 0,1.5,0
            location: target
            color: FE642E
            firework: ball

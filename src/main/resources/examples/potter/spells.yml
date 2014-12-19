@@ -1425,7 +1425,7 @@ expelliarmus:
         target_type: LivingEntity
         allow_max_range: false
         range: 25
-        fov: 0.12
+        hitbox: true
         fizzle_chance: 0.6
         backfire_chance: 0.3
         keep_in_inventory: true

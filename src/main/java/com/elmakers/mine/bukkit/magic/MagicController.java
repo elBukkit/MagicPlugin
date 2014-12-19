@@ -1453,12 +1453,9 @@ public class MagicController implements Listener, MageController {
         String inheritFrom = spellNode.getString("inherit");
         if (spellKey.isVariant()) {
             int level = spellKey.getLevel();
-            String baseKey = spellKey.getBaseKey();
-            for (int i = level - 1; i > 0; i--) {
-                inheritFrom = baseKey;
-                if (i > 1) {
-                    inheritFrom += "|" + i;
-                }
+            inheritFrom = spellKey.getBaseKey();
+            if (level != 1) {
+                inheritFrom += "|" + (level - 1);
             }
         }
 
