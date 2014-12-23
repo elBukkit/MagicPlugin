@@ -388,6 +388,7 @@ public class CompatibilityUtils extends NMSUtils {
 
     public static BoundingBox getHitbox(Entity entity)
     {
-        return new BoundingBox(entity.getLocation().toVector(), -0.5, 0.5, 0, 1.67, -0.5, 0.5);
+        // TODO: Config-driven
+        return new BoundingBox(entity.getLocation().toVector(), -0.75, 0.75, 0, 2, -0.75, 0.75);
     }
 }
