@@ -1,0 +1,34 @@
+#
+# Modify this file to change the available spells.
+# New spells can be added, existing spells modified or removed (disabled)
+#
+
+#
+# This is the Spell configuration file for the Magic plugin.
+#
+# Here you may alter default spell behavior, or add and remove spells.
+#
+# See https://github.com/elBukkit/MagicPlugin/blob/master/SPELLS.md for more information.
+#
+# To see the default spells and configurations, look in defaults/spells.defaults.yml
+# 
+# The name, description, and usage of a spell should be defined in messages.yml as
+#  messages.spells.<spellkey>.name
+#  messages.spells.<spellkey>.description
+#  messages.spells.<spellkey>.usage
+#  messages.spells.<spellkey>.cast
+#  ... etc.
+#
+# General format:
+#
+# <spellkey>:
+#       icon:  <material name>
+#       category: <anything>
+#       class: <Must be a class from the spells package.>
+#       costs:
+#           xp: <xp/mana amount>
+#           <material_name>: <reagent amount>#      
+#       parameters:
+#           <specific spell parameters- TODO: list common ones>
+#
+
