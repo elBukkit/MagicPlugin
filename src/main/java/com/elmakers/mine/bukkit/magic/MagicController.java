@@ -1448,13 +1448,18 @@ public class MagicController implements Listener, MageController {
     protected ConfigurationSection getSpellConfig(String key, ConfigurationSection config)
     {
         ConfigurationSection spellNode = config.getConfigurationSection(key);
+        if (spellNode == null)
+        {
+            getLogger().warning("Spell " + key + " not known");
+            return null;
+        }
 
         SpellKey spellKey = new SpellKey(key);
         String inheritFrom = spellNode.getString("inherit");
         if (spellKey.isVariant()) {
             int level = spellKey.getLevel();
             inheritFrom = spellKey.getBaseKey();
-            if (level != 1) {
+            if (level != 2) {
                 inheritFrom += "|" + (level - 1);
             }
         }
@@ -1468,7 +1473,7 @@ public class MagicController implements Listener, MageController {
             }
             else
             {
-                Bukkit.getLogger().warning("Spell " + key + " inherits from unknown ancestor " + inheritFrom);
+                getLogger().warning("Spell " + key + " inherits from unknown ancestor " + inheritFrom);
             }
         } else {
             ConfigurationSection defaults = config.getConfigurationSection("default");
