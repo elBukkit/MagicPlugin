@@ -199,7 +199,7 @@ public interface MagicAPI {
     public Collection<Mage> getMagesWithPendingBatches();
 
     /**
-     * Retrieve or create a Mage for a particlar CommandSender.
+     * Retrieve or create a Mage for a particular CommandSender.
      *
      * There is one Mage for the Console sender, one Mage for each Player,
      * and one Mage for each named Command Block.
@@ -212,6 +212,18 @@ public interface MagicAPI {
      * @return Mage instance, new, created or loaded.
      */
     public Mage getMage(CommandSender sender);
+
+    /**
+     * Retrieve or create a Mage for a particular Entity.
+     *
+     * Every Entity should use its own Mage for casting spells. Entity
+     * Mages are tracked by UUID, and their data is saved and restored
+     * as normal.
+     *
+     * @param entity the Entity to turn into a Mage
+     * @return Mage instance, new, created or loaded.
+     */
+    public Mage getMage(Entity entity);
 
     /**
      * A utility method for giving an item to a player. This will place
