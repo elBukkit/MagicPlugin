@@ -111,6 +111,11 @@ public class PotionEffectSpell extends UndoableSpell
                 registerPotionEffects(targetEntity);
             }
 
+            if (parameters.contains("fire")) {
+                registerModified(targetEntity);
+                targetEntity.setFireTicks(parameters.getInt("fire"));
+            }
+
             CompatibilityUtils.applyPotionEffects(targetEntity, effects);
 
             if (parameters.contains("remove_effects")) {
