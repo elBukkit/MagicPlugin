@@ -295,7 +295,7 @@ public class MagicPlugin extends JavaPlugin implements MagicAPI
 	}
 
 	@Override
-	public com.elmakers.mine.bukkit.api.magic.Mage getMage(Entity entity) {
+	public com.elmakers.mine.bukkit.api.magic.Mage getMage(Entity entity, CommandSender sender) {
 		return controller.getMage(entity);
 	}
 
