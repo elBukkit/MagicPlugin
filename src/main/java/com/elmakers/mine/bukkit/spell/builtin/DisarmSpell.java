@@ -66,7 +66,10 @@ public class DisarmSpell extends TargetingSpell
             targetInventory = targetPlayer.getInventory();
             List<Integer> validSlots = new ArrayList<Integer>();
             ItemStack[] contents = targetInventory.getContents();
-            for (int i = Wand.HOTBAR_SIZE; i < contents.length; i++) {
+            int minSlot = parameters.getInt("min_slot", Wand.HOTBAR_SIZE);
+            int maxSlot = parameters.getInt("max_slot", contents.length - 1);
+
+            for (int i = minSlot; i <= maxSlot; i++) {
                 if (contents[i] == null || contents[i].getType() == Material.AIR) {
                     validSlots.add(i);
                 }
@@ -74,7 +77,7 @@ public class DisarmSpell extends TargetingSpell
 
             // Randomly choose a slot if no empty one was found
             if (validSlots.size() == 0) {
-                int swapSlot = random.nextInt(contents.length - Wand.HOTBAR_SIZE) + Wand.HOTBAR_SIZE;
+                int swapSlot = random.nextInt(maxSlot - minSlot) + minSlot;
                 swapItem = targetInventory.getItem(swapSlot);
                 validSlots.add(swapSlot);
             }
