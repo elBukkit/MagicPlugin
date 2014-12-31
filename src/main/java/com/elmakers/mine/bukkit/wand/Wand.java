@@ -880,7 +880,6 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         ConfigurationSection stateNode = new MemoryConfiguration();
         saveProperties(stateNode);
 
-        // Save legacy data as well until migration is settled
 		Object wandNode = InventoryUtils.createNode(item, "wand");
 		if (wandNode == null) {
 			controller.getLogger().warning("Failed to save wand state for wand to : " + item + " in slot " + playerInventorySlot);
@@ -908,7 +907,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         node.set("materials", getMaterialString());
 
 		node.set("spells", getSpellString());
-		
+
 		node.set("active_spell", activeSpell);
 		node.set("active_material", activeMaterial);
 		node.set("name", wandName);
@@ -2268,8 +2267,8 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	
 	public void closeInventory() {
 		if (!isInventoryOpen()) return;
-        inventoryIsOpen = false;
 		saveInventory();
+		inventoryIsOpen = false;
 		if (mage != null) {
             if (inventoryCloseSound != null) {
                 mage.playSound(inventoryCloseSound.getSound(), inventoryCloseSound.getVolume(), inventoryCloseSound.getPitch());
