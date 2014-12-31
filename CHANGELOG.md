@@ -1,8 +1,9 @@
 # CHANGELOG
 
-## 4.0
+## 3.9.1
 
- - Add hitbox-based targeting.
+- Hotfix for wand inventory saving issues, particularly in 1.8
+- Add hitbox-based targeting. Only used in Magic Missile, for now.
 
 ## 3.9
 
