@@ -221,9 +221,10 @@ public interface MagicAPI {
      * as normal.
      *
      * @param entity the Entity to turn into a Mage
+     * @param sender the CommandSender to use, optional
      * @return Mage instance, new, created or loaded.
      */
-    public Mage getMage(Entity entity);
+    public Mage getMage(Entity entity, CommandSender sender);
 
     /**
      * A utility method for giving an item to a player. This will place
