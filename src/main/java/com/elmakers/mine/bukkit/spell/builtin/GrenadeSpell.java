@@ -7,6 +7,7 @@ import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.TNTPrimed;
+import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
@@ -22,6 +23,7 @@ public class GrenadeSpell extends BlockSpell
 		size = (int)(mage.getRadiusMultiplier() * size);		
 		int fuse = parameters.getInt("fuse", 80);
 		boolean useFire = parameters.getBoolean("fire", false);
+		boolean breakBlocks = parameters.getBoolean("break_blocks", true);
 
 		Block target = getTarget().getBlock();
 		if (target == null) {
@@ -51,6 +53,9 @@ public class GrenadeSpell extends BlockSpell
 			grenade.setFuseTicks(fuse);
 			grenade.setIsIncendiary(useFire);
 			registerForUndo(grenade);
+			if (!breakBlocks) {
+				grenade.setMetadata("cancel_explosion", new FixedMetadataValue(controller.getPlugin(), true));
+			}
 		}
 		
 		registerForUndo();

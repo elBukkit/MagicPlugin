@@ -2097,8 +2097,10 @@ public class MagicController implements Listener, MageController {
 		if (explodingEntity == null) return;
 		
 		UndoList blockList = getEntityUndo(explodingEntity);
-		
-		if (event.isCancelled()) {
+		boolean cancel = event.isCancelled();
+        cancel = cancel || explodingEntity.hasMetadata("cancel_explosion");
+		if (cancel) {
+            event.setCancelled(true);
 			if (blockList != null) blockList.cancelExplosion(explodingEntity);
 		}
 		else if (maxTNTPerChunk > 0 && explodingEntity.getType() == EntityType.PRIMED_TNT) {

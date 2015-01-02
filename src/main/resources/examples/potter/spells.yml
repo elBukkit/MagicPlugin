@@ -5491,3 +5491,22 @@ confringoold:
         entity_undo: false
     costs:
         mana: 75
+
+grenade:
+    icon: tnt
+    category: dark
+    pvp_restricted: true
+    class: GrenadeSpell
+    worth: 25
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: lava_pop
+    parameters:
+        allow_max_range: true
+        range: 32
+        size: 2
+        fuse: 60
+        break_blocks: false
+    costs:
+        mana: 40
