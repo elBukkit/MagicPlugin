@@ -333,23 +333,18 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
 
         if (particleType != null) {
             ParticleEffect useEffect = overrideParticle(particleType);
-            String subType = particleSubType;
-            if ((useEffect == ParticleEffect.BLOCK_CRACK || useEffect == ParticleEffect.ICON_CRACK || useEffect == ParticleEffect.TILE_CRACK) && particleSubType.length() == 0) {
+            ParticleEffect.ParticleData data = null;
+            if ((useEffect == ParticleEffect.BLOCK_CRACK || useEffect == ParticleEffect.ITEM_CRACK || useEffect == ParticleEffect.BLOCK_DUST) && particleSubType.length() == 0) {
                 Material material = getWorkingMaterial().getMaterial();
 
-                // Check for potential bad materials, this can get really hairy (client crashes)
-                if (useEffect == ParticleEffect.BLOCK_CRACK && !material.isSolid()) {
-                    return;
+                if (useEffect == ParticleEffect.ITEM_CRACK) {
+                    data = new ParticleEffect.ItemData(material, getWorkingMaterial().getData());
+                } else {
+                    data = new ParticleEffect.BlockData(material, getWorkingMaterial().getData());
                 }
-
-                // TODO: Check for tools... ?
-                if (useEffect == ParticleEffect.TILE_CRACK || useEffect == ParticleEffect.ICON_CRACK) {
-                    material = Material.DIAMOND_AXE;
-                }
-                subType = "" + material.getId() + "_" + getWorkingMaterial().getData();
             }
 
-            useEffect.display(subType, sourceLocation, PARTICLE_RANGE, particleXOffset, particleYOffset, particleZOffset, particleData, particleCount);
+            useEffect.display(data, sourceLocation, PARTICLE_RANGE, particleXOffset, particleYOffset, particleZOffset, particleData, particleCount);
         }
     }
 
