@@ -1264,7 +1264,7 @@ rainboweffects:
     icon: magma_cream
     effect_color: random
     effect_bubbles: false
-    effect_particle: mob_spell
+    effect_particle: spell_mob
     effect_parcticle_data: 2
     effect_particle_count: 3
 mana1:
