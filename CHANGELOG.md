@@ -1,9 +1,13 @@
 # CHANGELOG
 
+## 4.0
+
+ - Update EffectLib to latest ParticleEffect code (see migration notes!)
+
 ## 3.9.1
 
-- Hotfix for wand inventory saving issues, particularly in 1.8
-- Add hitbox-based targeting. Only used in Magic Missile, for now.
+ - Hotfix for wand inventory saving issues, particularly in 1.8
+ - Add hitbox-based targeting. Only used in Magic Missile, for now.
 
 ## 3.9
 

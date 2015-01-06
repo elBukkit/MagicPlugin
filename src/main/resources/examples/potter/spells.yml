@@ -13,7 +13,7 @@ default:
          sound: anvil_use
        - class: EffectSingle
          location: target
-         particle: happy_villager
+         particle: villager_happy
          particle_offset_x: 0.5
          particle_offset_y: 0.5
          particle_offset_z: 0.5
@@ -145,7 +145,7 @@ alohomora:
         -  class: EffectSingle
            sound: orb_pickup
         -  class: EffectTrail
-           particle: red_dust
+           particle: redstone
            particle_data: 2
            particle_count: 5
     parameters:
@@ -173,7 +173,7 @@ colloportus:
         -  class: EffectSingle
            sound: fuse
         -  class: EffectTrail
-           particle: smoke
+           particle: smoke_normal
            particle_data: 1
            particle_count: 5
     parameters:
@@ -203,7 +203,7 @@ aparecium:
            particle_data: 2
            particle_count: 5
         -  class: EffectRing
-           particle: wake
+           particle: water_wake
            particle_count: 3
            location: target
     parameters:
@@ -236,14 +236,14 @@ apparate:
                particle_override: particleOrbital
                effectlib:
                    class: AtomEffect
-                   particleNucleus: smoke
-                   particleOrbital: large_smoke
+                   particleNucleus: smoke_normal
+                   particleOrbital: smoke_large_normal
                    iterations: 8
              - class: EffectSingle
                particle_override: particle
                effectlib:
                    class: LineEffect
-                   particle: large_smoke
+                   particle: smoke_large_normal
              '5':
              - class: EffectSingle
                sound: enderman_teleport
@@ -251,7 +251,7 @@ apparate:
                particle_override: particleOrbital
                effectlib:
                    class: AtomEffect
-                   particleNucleus: instant_spell
+                   particleNucleus: spell_instant
                    particleOrbital: spell
                    iterations: 8
              - class: EffectSingle
@@ -288,14 +288,14 @@ apparatemaxima:
                particle_override: particleOrbital
                effectlib:
                    class: AtomEffect
-                   particleNucleus: smoke
-                   particleOrbital: large_smoke
+                   particleNucleus: smoke_normal
+                   particleOrbital: smoke_large_normal
                    iterations: 12
              - class: EffectSingle
                particle_override: particleOrbital
                effectlib:
                    class: LineEffect
-                   particle: large_smoke
+                   particle: smoke_large_normal
              '5':
              - class: EffectSingle
                sound: enderman_teleport
@@ -303,7 +303,7 @@ apparatemaxima:
                particle_override: particleOrbital
                effectlib:
                    class: AtomEffect
-                   particleNucleus: instant_spell
+                   particleNucleus: spell_instant
                    particleOrbital: spell
                    iterations: 12
              - class: EffectSingle
@@ -339,13 +339,13 @@ araniaexumai:
              class: ConeEffect
              iterations: 10
              lengthGrow: 0.1
-             particle: instant_spell
+             particle: spell_instant
         area:
         -  class: EffectSingle
            sound: fizz
            effectlib:
              class: VortexEffect
-             particle: witch_magic
+             particle: spell_witch
     parameters:
         target_type: Spider
         range: 32
@@ -437,7 +437,7 @@ snowball:
            effectlib:
              class: SmokeEffect
              iterations: 8
-             particle: snowball_poof
+             particle: snowball
     parameters:
       projectile: Snowball
       origin_at_target: true
@@ -565,7 +565,7 @@ broom:
         -  class: EffectSingle
            location: origin
            entity_effect: hurt
-           particle: large_explode
+           particle: explosion_large
         -  class: EffectSingle
            location: origin
            effectlib:
@@ -643,7 +643,7 @@ avadakedavra:
            effectlib:
              class: ConeEffect
              iterations: 15
-             particle: happy_villager
+             particle: villager_happy
              lengthGrow: 0.4
         -  class: EffectSingle
            target_offset: 0,1.5,0
@@ -726,7 +726,7 @@ avis:
            effectlib:
              class: AtomEffect
              iterations: 32
-             particleOrbital: bubble
+             particleOrbital: water_bubble
     parameters:
         allow_max_range: true
         range: 2
@@ -886,14 +886,14 @@ bubble:
            effectlib:
              class: ConeEffect
              iterations: 15
-             particle: bubble
+             particle: water_bubble
         -  class: EffectSingle
            location: target
            effectlib:
              class: SphereEffect
              iterations: 10
              period: 2
-             particle: bubble
+             particle: water_bubble
              radius: 0.5
     parameters:
         target_type: LivingEntity
@@ -940,7 +940,7 @@ confundus:
            effectlib:
              class: ConeEffect
              iterations: 15
-             particle: smoke
+             particle: smoke_normal
              lengthGrow: 0.3
         -  class: EffectSingle
            target_offset: 0,1.5,0
@@ -980,7 +980,7 @@ conjunctivitis:
            effectlib:
              class: ConeEffect
              iterations: 15
-             particle: smoke
+             particle: smoke_normal
              lengthGrow: 0.3
         -  class: EffectSingle
            target_offset: 0,1.5,0
@@ -1023,7 +1023,7 @@ obscuro:
            effectlib:
              class: ConeEffect
              iterations: 15
-             particle: mob_spell
+             particle: spell_mob
              lengthGrow: 0.3
         -  class: EffectSingle
            target_offset: 0,1.5,0
@@ -1036,7 +1036,7 @@ obscuro:
              class: SphereEffect
              iterations: 100
              period: 4
-             particle: smoke
+             particle: smoke_normal
              radius: 0.5
              particles: 20
 
@@ -1066,7 +1066,7 @@ crucio:
            effectlib:
              class: ConeEffect
              iterations: 15
-             particle: mob_spell
+             particle: spell_mob
              lengthGrow: 0.3
         -  class: EffectSingle
            target_offset: 0,1.5,0
@@ -1104,7 +1104,7 @@ dementor:
            effectlib:
              class: ConeEffect
              iterations: 15
-             particle: mob_spell
+             particle: spell_mob
              lengthGrow: 0.3
         -  class: EffectSingle
            target_offset: 0,1.5,0
@@ -1158,7 +1158,7 @@ deprimo:
            effectlib:
              class: ConeEffect
              iterations: 10
-             particle: witch_magic
+             particle: spell_witch
              lengthGrow: 0.4
         -  class: EffectSingle
            target_offset: 0,0.5,0
@@ -1203,7 +1203,7 @@ deprimomaxima:
            effectlib:
              class: ConeEffect
              iterations: 10
-             particle: witch_magic
+             particle: spell_witch
              lengthGrow: 0.5
         -  class: EffectSingle
            target_offset: 0,0.5,0
@@ -1280,15 +1280,15 @@ disillusion:
         -  class: EffectSingle
            sound: villager_idle
         -  class: EffectTrail
-           particle: smoke
+           particle: smoke_normal
         -  class: EffectRing
-           particle: smoke
+           particle: smoke_normal
            location: target
     costs:
         mana: 50
     parameters:
         target: any
-        particle: red_dust
+        particle: redstone
         duration: 8000
         effect_invisibility: 5
 
@@ -1479,7 +1479,7 @@ rennervate:
            effectlib:
              class: ConeEffect
              iterations: 15
-             particle: happy_villager
+             particle: villager_happy
     parameters:
         target_type: LivingEntity
         target: any
@@ -1510,7 +1510,7 @@ reparifors:
            effectlib:
              class: ConeEffect
              iterations: 15
-             particle: happy_villager
+             particle: villager_happy
     parameters:
         target_type: LivingEntity
         target: any
@@ -1541,7 +1541,7 @@ engorgio:
            effectlib:
              class: ConeEffect
              iterations: 11
-             particle: instant_spell
+             particle: spell_instant
              lengthGrow: 0.32
         -  class: EffectSingle
            target_offset: 0,1.5,0
@@ -1555,7 +1555,7 @@ engorgio:
            effectlib:
              class: ConeEffect
              iterations: 11
-             particle: instant_spell
+             particle: spell_instant
              lengthGrow: 0.32
         -  class: EffectSingle
            target_offset: 0,1.5,0
@@ -1777,7 +1777,7 @@ finiteincantatem:
              iterations: 15
              particlesBase: 5
              particlesHelix: 4
-             particleHelix: witch_magic
+             particleHelix: spell_witch
              particleBase1: portal
              particleBase2: enchantment_table
         cast:
@@ -1792,7 +1792,7 @@ finiteincantatem:
              iterations: 15
              particlesBase: 5
              particlesHelix: 4
-             particleHelix: witch_magic
+             particleHelix: spell_witch
              particleBase1: portal
              particleBase2: enchantment_table
         -  class: EffectSingle
@@ -1871,7 +1871,7 @@ Rictusempra:
            effectlib:
              class: ConeEffect
              iterations: 15
-             particle: instant_spell
+             particle: spell_instant
              lengthGrow: 0.7
         -  class: EffectSingle
            target_offset: 0,1.5,0
@@ -1886,7 +1886,7 @@ Rictusempra:
            effectlib:
              class: ConeEffect
              iterations: 15
-             particle: instant_spell
+             particle: spell_instant
              lengthGrow: 0.7
         -  class: EffectSingle
            target_offset: 0,1.5,0
@@ -2016,7 +2016,7 @@ flight:
                particle_override: particle
                effectlib:
                    class: ShieldEffect
-                   particle: smoke
+                   particle: smoke_normal
              '5':
              - class: EffectSingle
                sound: enderdragon_wings
@@ -2071,7 +2071,7 @@ fumos:
            target_offset: -4,0,0
            effectlib:
              class: HillEffect
-             particle: explode
+             particle: explosion_normal
              particles: 10
              iterations: 10
     parameters:
@@ -2098,7 +2098,7 @@ glacius:
            effectlib:
              class: ConeEffect
              iterations: 15
-             particle: snowball_poof
+             particle: snowball
              particles: 3
              lengthGrow: 0.4
         -  class: EffectSingle
@@ -2113,7 +2113,7 @@ glacius:
              class: SphereEffect
              iterations: 10
              period: 4
-             particle: snowball_poof
+             particle: snowball
              radius: 5
     parameters:
         target_type: LivingEntity
@@ -2145,7 +2145,7 @@ glacius|2:
            effectlib:
              class: ConeEffect
              iterations: 15
-             particle: snowball_poof
+             particle: snowball
              particles: 5
              lengthGrow: 0.4
         -  class: EffectSingle
@@ -2160,7 +2160,7 @@ glacius|2:
              class: SphereEffect
              iterations: 15
              period: 3
-             particle: snowball_poof
+             particle: snowball
              radius: 8
     parameters:
         radius: 2
@@ -2201,7 +2201,7 @@ immobulus:
            effectlib:
              class: ConeEffect
              iterations: 15
-             particle: smoke
+             particle: smoke_normal
              lengthGrow: 0.33
         -  class: EffectSingle
            target_offset: 0,1.5,0
@@ -2242,7 +2242,7 @@ locomotomortus:
            effectlib:
              class: ConeEffect
              iterations: 15
-             particle: witch_magic
+             particle: spell_witch
              lengthGrow: 0.4
         -  class: EffectSingle
            target_offset: 0,1.5,0
@@ -2250,12 +2250,12 @@ locomotomortus:
            color: 5F04B4
            firework: ball
         -  class: EffectSingle
-           particle: witch_magic
+           particle: spell_witch
            location: target
            effectlib:
              class: SmokeEffect
              iterations: 80
-             particle: witch_magic
+             particle: spell_witch
     costs:
         mana: 40
     parameters:
@@ -2492,7 +2492,7 @@ levicorpus:
            effectlib:
              class: ConeEffect
              iterations: 15
-             particle: witch_magic
+             particle: spell_witch
              lengthGrow: 0.4
         -  class: EffectSingle
            target_offset: 0,1.5,0
@@ -2526,7 +2526,7 @@ levicorpus|2:
            effectlib:
              class: ConeEffect
              iterations: 15
-             particle: witch_magic
+             particle: spell_witch
              lengthGrow: 0.4
         -  class: EffectSingle
            target_offset: 0,1.5,0
@@ -2549,7 +2549,7 @@ levicorpus|3:
            effectlib:
              class: ConeEffect
              iterations: 15
-             particle: witch_magic
+             particle: spell_witch
              lengthGrow: 0.4
         -  class: EffectSingle
            target_offset: 0,1.5,0
@@ -2574,14 +2574,14 @@ lumos:
         -  class: EffectSingle
            sound: orb_pickup
         -  class: EffectTrail
-           particle: red_dust
+           particle: redstone
            particle_data: 2
            particle_count: 3
         -  class: EffectSingle
            location: target
            effectLib:
              class: TraceEffect
-             particle: red_dust
+             particle: redstone
     costs:
         mana: 55
     parameters:
@@ -2925,8 +2925,8 @@ patronus:
                particle_override: particle
                effectlib:
                    class: WaveEffect
-                   particle: large_smoke
-                   cloudParticle: smoke
+                   particle: smoke_large_normal
+                   cloudParticle: smoke_normal
                    iterations: 8
                    particlesFront: 5
                    particlesBack: 5
@@ -2976,7 +2976,7 @@ piertotum:
            effectlib:
              class: VortexEffect
              iterations: 4
-             particle: smoke
+             particle: smoke_normal
              helixes: 16
              circles: 7
              grow: 0.1
@@ -3098,7 +3098,7 @@ reducio:
            effectlib:
              class: ConeEffect
              iterations: 11
-             particle: instant_spell
+             particle: spell_instant
              lengthGrow: 0.32
         -  class: EffectSingle
            target_offset: 0,1.5,0
@@ -3112,7 +3112,7 @@ reducio:
            effectlib:
              class: ConeEffect
              iterations: 11
-             particle: instant_spell
+             particle: spell_instant
              lengthGrow: 0.32
         -  class: EffectSingle
            target_offset: 0,1.5,0
@@ -3158,14 +3158,14 @@ reducto:
            effectlib:
              class: ConeEffect
              iterations: 10
-             particle: explode
+             particle: explosion_normal
              lengthGrow: 0.4
         -  class: EffectSingle
            target_offset: 0,0.5,0
            location: target
            color: FFFF00
            firework: burst
-           particle: large_explode
+           particle: explosion_large
     parameters:
         allow_max_range: false
         range: 32
@@ -3201,14 +3201,14 @@ reductomaxima:
            effectlib:
              class: ConeEffect
              iterations: 10
-             particle: explode
+             particle: explosion_normal
              lengthGrow: 0.4
         -  class: EffectSingle
            target_offset: 0,0.5,0
            location: target
            color: FFFF00
            firework: burst
-           particle: huge_explosion
+           particle: explosion_huge
     parameters:
         allow_max_range: false
         range: 32
@@ -3510,8 +3510,8 @@ amplify:
            location: origin
            effectlib:
              class: AtomEffect
-             particleNucleus: witch_magic
-             particleOrbital: magic_critical
+             particleNucleus: spell_witch
+             particleOrbital: crit_magicical
              iterations: 20
     parameters:
         commands:
@@ -3535,8 +3535,8 @@ amplifytotalus:
            location: origin
            effectlib:
              class: AtomEffect
-             particleNucleus: witch_magic
-             particleOrbital: magic_critical
+             particleNucleus: spell_witch
+             particleOrbital: crit_magicical
              iterations: 20
     parameters:
         commands:
@@ -3618,7 +3618,7 @@ stupefy:
            effectlib:
              class: ConeEffect
              iterations: 15
-             particle: magic_crit
+             particle: crit_magic
              lengthGrow: 0.4
         -  class: EffectSingle
            target_offset: 0,1.5,0
@@ -3633,7 +3633,7 @@ stupefy:
            effectlib:
              class: ConeEffect
              iterations: 15
-             particle: magic_crit
+             particle: crit_magic
              lengthGrow: 0.4
         -  class: EffectSingle
            target_offset: 0,1.5,0
@@ -3649,7 +3649,7 @@ stupefy:
            effectlib:
              class: ConeEffect
              iterations: 15
-             particle: magic_crit
+             particle: crit_magic
              lengthGrow: 0.4
     parameters:
         hitbox: true
@@ -3766,7 +3766,7 @@ nox:
            effectlib:
              class: ConeEffect
              iterations: 10
-             particle: mob_spell
+             particle: spell_mob
     parameters:
         target_type: LivingEntity
         target: any
@@ -3792,7 +3792,7 @@ noxmaxima:
            effectlib:
              class: HelixEffect
              iterations: 2
-             particle: large_smoke
+             particle: smoke_large_normal
     parameters:
         allow_max_range: false
         allow_night: false
@@ -4060,8 +4060,8 @@ recall:
                particle_override: particleOrbital
                effectlib:
                    class: AtomEffect
-                   particleNucleus: smoke
-                   particleOrbital: large_smoke
+                   particleNucleus: smoke_normal
+                   particleOrbital: smoke_large_normal
                    iterations: 20
              '5':
              - class: EffectSingle
@@ -4070,7 +4070,7 @@ recall:
                particle_override: particleOrbital
                effectlib:
                    class: AtomEffect
-                   particleNucleus: instant_spell
+                   particleNucleus: spell_instant
                    particleOrbital: spell
                    iterations: 20
     parameters:
@@ -4100,8 +4100,8 @@ gather:
                particle_override: particleOrbital
                effectlib:
                    class: AtomEffect
-                   particleNucleus: smoke
-                   particleOrbital: large_smoke
+                   particleNucleus: smoke_normal
+                   particleOrbital: smoke_large_normal
                    iterations: 20
              '5':
              - class: EffectSingle
@@ -4110,7 +4110,7 @@ gather:
                particle_override: particleOrbital
                effectlib:
                    class: AtomEffect
-                   particleNucleus: instant_spell
+                   particleNucleus: spell_instant
                    particleOrbital: spell
                    iterations: 20
     parameters:
@@ -4936,8 +4936,8 @@ animagus_wolf:
           particle_override: particleOrbital
           effectlib:
             class: AtomEffect
-            particleNucleus: smoke
-            particleOrbital: large_smoke
+            particleNucleus: smoke_normal
+            particleOrbital: smoke_large_normal
             iterations: 8
     parameters:
         target: self
@@ -4963,8 +4963,8 @@ humaculus:
           particle_override: particleOrbital
           effectlib:
             class: AtomEffect
-            particleNucleus: smoke
-            particleOrbital: large_smoke
+            particleNucleus: smoke_normal
+            particleOrbital: smoke_large_normal
             iterations: 8
     parameters:
         target_type: LivingEntity
@@ -4992,8 +4992,8 @@ animagus_cat:
           particle_override: particleOrbital
           effectlib:
             class: AtomEffect
-            particleNucleus: smoke
-            particleOrbital: large_smoke
+            particleNucleus: smoke_normal
+            particleOrbital: smoke_large_normal
             iterations: 8
     parameters:
         target: self
@@ -5019,8 +5019,8 @@ animagus_chicken:
           particle_override: particleOrbital
           effectlib:
             class: AtomEffect
-            particleNucleus: smoke
-            particleOrbital: large_smoke
+            particleNucleus: smoke_normal
+            particleOrbital: smoke_large_normal
             iterations: 8
     parameters:
         target: self
@@ -5046,8 +5046,8 @@ animagus_owl:
           particle_override: particleOrbital
           effectlib:
             class: AtomEffect
-            particleNucleus: smoke
-            particleOrbital: large_smoke
+            particleNucleus: smoke_normal
+            particleOrbital: smoke_large_normal
             iterations: 8
     parameters:
         target: self
@@ -5073,8 +5073,8 @@ animagus_rat:
           particle_override: particleOrbital
           effectlib:
             class: AtomEffect
-            particleNucleus: smoke
-            particleOrbital: large_smoke
+            particleNucleus: smoke_normal
+            particleOrbital: smoke_large_normal
             iterations: 8
     parameters:
         target: self
@@ -5100,8 +5100,8 @@ animagus_horse:
           particle_override: particleOrbital
           effectlib:
             class: AtomEffect
-            particleNucleus: smoke
-            particleOrbital: large_smoke
+            particleNucleus: smoke_normal
+            particleOrbital: smoke_large_normal
             iterations: 8
     parameters:
         target: self
@@ -5127,8 +5127,8 @@ animagus_donkey:
           particle_override: particleOrbital
           effectlib:
             class: AtomEffect
-            particleNucleus: smoke
-            particleOrbital: large_smoke
+            particleNucleus: smoke_normal
+            particleOrbital: smoke_large_normal
             iterations: 8
     parameters:
         target: self
@@ -5154,8 +5154,8 @@ animagus_spider:
           particle_override: particleOrbital
           effectlib:
             class: AtomEffect
-            particleNucleus: smoke
-            particleOrbital: large_smoke
+            particleNucleus: smoke_normal
+            particleOrbital: smoke_large_normal
             iterations: 8
     parameters:
         target: self
@@ -5181,8 +5181,8 @@ animagus_sheep:
           particle_override: particleOrbital
           effectlib:
             class: AtomEffect
-            particleNucleus: smoke
-            particleOrbital: large_smoke
+            particleNucleus: smoke_normal
+            particleOrbital: smoke_large_normal
             iterations: 8
     parameters:
         target: self
@@ -5208,8 +5208,8 @@ animagus_cow:
           particle_override: particleOrbital
           effectlib:
             class: AtomEffect
-            particleNucleus: smoke
-            particleOrbital: large_smoke
+            particleNucleus: smoke_normal
+            particleOrbital: smoke_large_normal
             iterations: 8
     parameters:
         target: self
@@ -5235,8 +5235,8 @@ animagus_pig:
           particle_override: particleOrbital
           effectlib:
             class: AtomEffect
-            particleNucleus: smoke
-            particleOrbital: large_smoke
+            particleNucleus: smoke_normal
+            particleOrbital: smoke_large_normal
             iterations: 8
     parameters:
         target: self
@@ -5264,7 +5264,7 @@ unspeakable:
           effectlib:
             class: AtomEffect
             particleNucleus: spell
-            particleOrbital: splash
+            particleOrbital: water_splash
             iterations: 9
     parameters:
         target: self
@@ -5493,7 +5493,7 @@ confringoold:
         mana: 75
 
 grenade:
-    icon: tnt
+    icon: clay_ball
     category: dark
     pvp_restricted: true
     class: GrenadeSpell

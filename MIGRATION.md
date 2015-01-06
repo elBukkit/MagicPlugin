@@ -1,5 +1,10 @@
 # Migration Notes
 
+## 4.0
+
+ * All of the particle effect names have changed (internal EffectLib change).
+   There is a PHP script available to help migrate custom configs.
+
 ## 3.8
 
  * The "enable_creative_mode_ejecting" in config.yml now controls the creative mode special

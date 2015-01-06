@@ -87,7 +87,7 @@ default:
          sound: anvil_use
        - class: EffectSingle
          location: target
-         particle: happy_villager
+         particle: villager_happy
          particle_offset_x: 0.5
          particle_offset_y: 0.5
          particle_offset_z: 0.5
@@ -195,14 +195,14 @@ boon:
         -  class: EffectSingle
            sound: orb_pickup
         -  class: EffectTrail
-           particle: red_dust
+           particle: redstone
            particle_data: 2
            particle_count: 3
         -  class: EffectSingle
            location: target
            effectLib:
              class: TraceEffect
-             particle: red_dust
+             particle: redstone
     costs:
         mana: 65
     parameters:
@@ -227,11 +227,11 @@ perk:
         -  class: EffectSingle
            sound: orb_pickup
         -  class: EffectTrail
-           particle: red_dust
+           particle: redstone
            particle_data: 2
            particle_count: 2
         -  class: EffectRing
-           particle: red_dust
+           particle: redstone
            location: target
            particle_data: 2
     costs:
@@ -253,11 +253,11 @@ bounce:
         -  class: EffectSingle
            sound: orb_pickup
         -  class: EffectTrail
-           particle: red_dust
+           particle: redstone
            particle_data: 1
            particle_count: 3
         -  class: EffectRing
-           particle: red_dust
+           particle: redstone
            location: target
            particle_data: 1
     costs:
@@ -1044,7 +1044,7 @@ nuke:
         -  class: EffectRing
            effect_lib:
              class: HelixEffect
-           particle: huge_explosion
+           particle: explosion_huge
            radius: 16
            iterations: 8
            location: target
@@ -1072,7 +1072,7 @@ frost:
            effectlib:
              class: ConeEffect
              iterations: 20
-             particle: snowball_poof
+             particle: snowball
     parameters:
         target_type: LivingEntity
         allow_max_range: false
@@ -1094,13 +1094,13 @@ lightning:
         -  class: EffectSingle
            sound: firework_large_blast
         -  class: EffectTrail
-           particle: smoke
+           particle: smoke_normal
            particle_count: 2
         -  class: EffectSingle
            location: target
            effectlib:
              class: HelixEffect
-             particle: smoke
+             particle: smoke_normal
     parameters:
         target_type: LivingEntity
         allow_max_range: true
@@ -1118,13 +1118,13 @@ storm:
         -  class: EffectSingle
            sound: ambience_thunder
         -  class: EffectTrail
-           particle: smoke
+           particle: smoke_normal
            particle_count: 4
         -  class: EffectSingle
            location: target
            effectlib:
              class: HelixEffect
-             particle: smoke
+             particle: smoke_normal
     parameters:
         target_type: LivingEntity
         allow_max_range: true
@@ -1164,18 +1164,18 @@ disarm:
            effectlib:
              class: ConeEffect
              iterations: 20
-             particle: mob_spell
+             particle: spell_mob
         backfire:
         -  class: EffectSingle
            sound: hurt_flesh
         -  class: EffectRing
-           particle: red_dust
+           particle: redstone
            location: origin
         fizzle:
         -  class: EffectSingle
            sound: explode
         -  class: EffectRing
-           particle: red_dust
+           particle: redstone
            location: origin
     parameters:
         target_type: LivingEntity
@@ -1439,7 +1439,7 @@ sniper:
         -  class: EffectSingle
            effectlib:
              class: LineEffect
-             particle: smoke
+             particle: smoke_normal
     parameters:
       projectile: Arrow
       fire: false
@@ -1561,13 +1561,13 @@ familiar:
              class: DnaEffect
              particleHelix: drip_lava
              iterations: 24
-             particleBase1: bubble
+             particleBase1: water_bubble
         -  class: EffectSingle
            location: target
            effectlib:
              class: AtomEffect
              iterations: 32
-             particleNucleus: bubble
+             particleNucleus: water_bubble
     parameters:
         target_type: LivingEntity
         allow_max_range: false
@@ -1605,13 +1605,13 @@ monster:
              class: DnaEffect
              particleHelix: drip_lava
              iterations: 24
-             particleBase1: bubble
+             particleBase1: water_bubble
         -  class: EffectSingle
            location: target
            effectlib:
              class: AtomEffect
              iterations: 32
-             particleNucleus: bubble
+             particleNucleus: water_bubble
     parameters:
         target_type: LivingEntity
         allow_max_range: false
@@ -1648,13 +1648,13 @@ mob:
              class: DnaEffect
              particleHelix: drip_lava
              iterations: 24
-             particleBase1: bubble
+             particleBase1: water_bubble
         -  class: EffectSingle
            location: target
            effectlib:
              class: AtomEffect
              iterations: 32
-             particleNucleus: bubble
+             particleNucleus: water_bubble
     parameters:
         target_type: LivingEntity
         allow_max_range: false
@@ -1682,13 +1682,13 @@ farm:
              class: DnaEffect
              particleHelix: drip_lava
              iterations: 24
-             particleBase1: bubble
+             particleBase1: water_bubble
         -  class: EffectSingle
            location: target
            effectlib:
              class: AtomEffect
              iterations: 32
-             particleNucleus: bubble
+             particleNucleus: water_bubble
     parameters:
         target_type: LivingEntity
         allow_max_range: false
@@ -1711,13 +1711,13 @@ wolf:
              class: DnaEffect
              particleHelix: drip_lava
              iterations: 24
-             particleBase1: bubble
+             particleBase1: water_bubble
         -  class: EffectSingle
            location: target
            effectlib:
              class: AtomEffect
              iterations: 32
-             particleNucleus: bubble
+             particleNucleus: water_bubble
     parameters:
         target_type: LivingEntity
         max_wolves: 5
@@ -1739,13 +1739,13 @@ cat:
              class: DnaEffect
              particleHelix: drip_lava
              iterations: 24
-             particleBase1: bubble
+             particleBase1: water_bubble
         -  class: EffectSingle
            location: target
            effectlib:
              class: AtomEffect
              iterations: 32
-             particleNucleus: bubble
+             particleNucleus: water_bubble
     parameters:
         target_type: LivingEntity
         max_ocelots: 5
@@ -2000,9 +2000,9 @@ gills:
         -  class: EffectSingle
            sound: swim
         -  class: EffectTrail
-           particle: bubble
+           particle: water_bubble
         -  class: EffectRing
-           particle: bubble
+           particle: water_bubble
            location: target
            particle_count: 4
     costs:
@@ -2011,7 +2011,7 @@ gills:
         range: 32
         target_type: LivingEntity
         target: any
-        particle: bubbles
+        particle: water_bubble
         effect_water_breathing: 6000,5
         effect_night_vision: 6000,5
 day:
@@ -2050,7 +2050,7 @@ night:
            effectlib:
              class: HelixEffect
              iterations: 24
-             particle: large_smoke
+             particle: smoke_large_normal
     parameters:
         allow_max_range: false
         allow_night: false
@@ -2489,7 +2489,7 @@ blast:
         -  class: EffectSingle
            sound: explode
         -  class: EffectTrail
-           particle: large_explode
+           particle: explosion_large
     parameters:
         allow_max_range: false
         range: 16
@@ -2511,7 +2511,7 @@ earthquake:
         -  class: EffectSingle
            sound: explode
         -  class: EffectTrail
-           particle: large_explode
+           particle: explosion_large
     parameters:
         allow_max_range: false
         range: 16
@@ -2536,7 +2536,7 @@ tunnel:
         -  class: EffectSingle
            sound: explode
         -  class: EffectTrail
-           particle: large_explode
+           particle: explosion_large
     parameters:
         allow_max_range: false
         range: 32
@@ -2552,7 +2552,7 @@ superblast:
         -  class: EffectSingle
            sound: explode
         -  class: EffectTrail
-           particle: huge_explosion
+           particle: explosion_huge
     parameters:
         allow_max_range: false
         range: 32
@@ -2619,7 +2619,7 @@ collapse:
         -  class: EffectSingle
            sound: explode
         -  class: EffectTrail
-           particle: large_explode
+           particle: explosion_large
     parameters:
         allow_max_range: false
         range: 16
@@ -2641,7 +2641,7 @@ supercollapse:
         -  class: EffectSingle
            sound: explode
         -  class: EffectTrail
-           particle: huge_explosion
+           particle: explosion_huge
     parameters:
         allow_max_range: false
         range: 32
@@ -2666,15 +2666,15 @@ cloak:
         -  class: EffectSingle
            sound: villager_idle
         -  class: EffectTrail
-           particle: smoke
+           particle: smoke_normal
         -  class: EffectRing
-           particle: smoke
+           particle: smoke_normal
            location: target
     costs:
         mana: 10
     parameters:
         target: any
-        particle: red_dust
+        particle: redstone
         effect_invisibility: 600,5
 undo:
     icon: book_and_quill
@@ -2721,7 +2721,7 @@ counterspell:
         -  class: EffectSingle
            sound: anvil_break
         -  class: EffectTrail
-           particle: smoke
+           particle: smoke_normal
     parameters:
         allow_max_range: false
         target: other
@@ -2744,7 +2744,7 @@ breach:
         -  class: EffectSingle
            sound: fizz
         -  class: EffectTrail
-           particle: smoke
+           particle: smoke_normal
     parameters:
         allow_max_range: false
         check_destructible: false
@@ -2951,10 +2951,10 @@ emp:
         -  class: EffectSingle
            sound: fuse
         -  class: EffectTrail
-           particle: red_dust
+           particle: redstone
            particle_count: 5
         -  class: EffectRing
-           particle: red_dust
+           particle: redstone
            particle_count: 3
            location: target
     parameters:
@@ -2979,10 +2979,10 @@ superemp:
         -  class: EffectSingle
            sound: fuse
         -  class: EffectTrail
-           particle: red_dust
+           particle: redstone
            particle_count: 5
         -  class: EffectRing
-           particle: red_dust
+           particle: redstone
            particle_count: 6
            location: target
     parameters:
@@ -3257,7 +3257,7 @@ shrink:
            effectlib:
              class: ConeEffect
              iterations: 20
-             particle: angry_villager
+             particle: villager_angry
     parameters:
         target_type: LivingEntity
         allow_max_range: false
@@ -3279,7 +3279,7 @@ grow:
            effectlib:
              class: ConeEffect
              iterations: 20
-             particle: happy_villager
+             particle: villager_happy
     parameters:
         target_type: LivingEntity
         allow_max_range: false
@@ -3577,7 +3577,7 @@ missile:
            effectlib:
              class: ConeEffect
              iterations: 15
-             particle: red_dust
+             particle: redstone
              lengthGrow: 0.3
         -  class: EffectSingle
            target_offset: 0,1.5,0
@@ -3594,7 +3594,7 @@ missile:
            effectlib:
              class: ConeEffect
              iterations: 15
-             particle: smoke
+             particle: smoke_normal
              lengthGrow: 0.3
         -  class: EffectSingle
            target_offset: 0,1.5,0
@@ -3612,7 +3612,7 @@ missile:
            effectlib:
              class: ConeEffect
              iterations: 15
-             particle: red_dust
+             particle: redstone
              lengthGrow: 0.3
     parameters:
         range: 16
@@ -3638,7 +3638,7 @@ silence:
            location: target
            effectlib:
              class: ShieldEffect
-             particle: angry_villager
+             particle: villager_angry
              iterations: 200
              particles: 1
     parameters:
@@ -3739,7 +3739,7 @@ broom:
         -  class: EffectSingle
            location: origin
            entity_effect: hurt
-           particle: large_explode
+           particle: explosion_large
         -  class: EffectSingle
            location: origin
            effectlib:
