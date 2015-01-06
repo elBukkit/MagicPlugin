@@ -1449,7 +1449,7 @@ sniper:
     costs:
         mana: 50
 weather:
-    icon: water
+    icon: water_bucket
     category: elemental
     class: WeatherSpell
     worth: 80
