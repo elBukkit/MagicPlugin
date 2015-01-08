@@ -332,7 +332,7 @@ wolf:
     mode: inventory
     active_spell: apparatemaxima
     hidden: true
-    effect_particle: magic_crit
+    effect_particle: crit_magic
     effect_particle_count: 2
     effect_particle_interval: 0
     overrides: patronus.type wolf,max_dimension 1024
@@ -1040,7 +1040,7 @@ rainboweffects:
     icon: magma_cream
     effect_color: random
     effect_bubbles: false
-    effect_particle: mob_spell
+    effect_particle: spell_mob
     effect_parcticle_data: 2
     effect_particle_count: 3
 
