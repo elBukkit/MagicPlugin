@@ -100,7 +100,7 @@ accio|3:
         allow_area: true
 
 aguamenti:
-    icon: water
+    icon: water_bucket
     category: transfiguration
     class: CushionSpell
     pvp_restricted: true
@@ -6088,7 +6088,7 @@ confringo:
 
 firestorm:
     description: Incinerate your target!
-    icon: fire
+    icon: clay_ball
     category: dark
     class: CommandSpell
     worth: 35

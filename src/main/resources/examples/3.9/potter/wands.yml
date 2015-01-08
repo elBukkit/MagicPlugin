@@ -1393,5 +1393,5 @@ wood_pickaxe_upgrade:
 hotbar2:
     upgrade: true
     indestructible: false
-    icon: nether_star
+    icon: firework_charge
     hotbar_count: 2
