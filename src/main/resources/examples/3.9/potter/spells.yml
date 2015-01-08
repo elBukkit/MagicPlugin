@@ -3966,14 +3966,14 @@ silencio:
            effectlib:
              class: ConeEffect
              iterations: 15
-             particle: barrier
+             particle: reddust
              lengthGrow: 0.4
         -  class: EffectSingle
            location: target
            effectlib:
              class: IconEffect
              iterations: 15
-             particle: barrier
+             particle: reddust
     parameters:
         commands:
         - mute @t
@@ -4001,7 +4001,7 @@ silenciomaxima:
            effectlib:
              class: ConeEffect
              iterations: 15
-             particle: barrier
+             particle: reddust
              lengthGrow: 0.4
         -  class: EffectSingle
            location: target
@@ -4009,7 +4009,7 @@ silenciomaxima:
              offset: 0,4,0
              class: HelixEffect
              iterations: 1
-             particle: barrier
+             particle: reddust
     parameters:
         range: 32
         allow_max_range: true
@@ -4037,7 +4037,7 @@ silenciototalus:
              offset: 0,5,0
              class: HelixEffect
              iterations: 1
-             particle: barrier
+             particle: reddust
     parameters:
         commands:
         - mute @a 60
