@@ -3,6 +3,7 @@
 ## 4.0
 
  - Update EffectLib to latest ParticleEffect code (see migration notes!)
+ - Add hotbar_count to wands, multiple hotbars!
 
 ## 3.9.1
 

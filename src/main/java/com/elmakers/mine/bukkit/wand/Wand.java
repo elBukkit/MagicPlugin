@@ -10,7 +10,6 @@ import java.util.Random;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.UUID;
-import java.util.regex.Matcher;
 
 import com.elmakers.mine.bukkit.api.block.BrushMode;
 import com.elmakers.mine.bukkit.api.magic.MageController;
@@ -74,7 +73,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		"cost_reduction", "cooldown_reduction", "effect_bubbles", "effect_color", 
 		"effect_particle", "effect_particle_count", "effect_particle_data", "effect_particle_interval", 
 		"effect_sound", "effect_sound_interval", "effect_sound_pitch", "effect_sound_volume",
-		"haste", 
+		"haste", "hotbar_count",
 		"health_regeneration", "hunger_regeneration", 
 		"icon", "mode", "keep", "locked", "quiet", "force", "randomize", "rename",
 		"power", "overrides",
@@ -94,7 +93,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	
 	// Cached state
 	private String id = "";
-	private Inventory hotbar;
+	private List<Inventory> hotbars;
 	private List<Inventory> inventories;
     private Map<String, Integer> spells = new HashMap<String, Integer>();
     private Map<String, Integer> spellLevels = new HashMap<String, Integer>();
@@ -174,6 +173,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	private int openInventoryPage = 0;
 	private boolean inventoryIsOpen = false;
 	private Inventory displayInventory = null;
+	private int currentHotbar = 0;
 	
 	// Kinda of a hacky initialization optimization :\
 	private boolean suspendSave = false;
@@ -201,7 +201,8 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 
 	public Wand(MagicController controller, ItemStack itemStack) {
 		this.controller = controller;
-		hotbar = CompatibilityUtils.createInventory(null, 9, "Wand");
+		hotbars = new ArrayList<Inventory>();
+		setHotbarCount(1);
 		this.icon = new MaterialAndData(itemStack.getType(), (byte)itemStack.getDurability());
 		inventories = new ArrayList<Inventory>();
         item = itemStack;
@@ -209,6 +210,16 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		loadState();
         updateName();
         updateLore();
+	}
+
+	protected void setHotbarCount(int count) {
+		hotbars.clear();
+		while (hotbars.size() < count) {
+			hotbars.add(CompatibilityUtils.createInventory(null, 9, "Wand"));
+		}
+		while (hotbars.size() > count) {
+			hotbars.remove(0);
+		}
 	}
 	
 	public Wand(MagicController controller) {
@@ -564,8 +575,8 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	}
 	
 	protected List<Inventory> getAllInventories() {
-		List<Inventory> allInventories = new ArrayList<Inventory>(inventories.size() + 1);
-		allInventories.add(hotbar);
+		List<Inventory> allInventories = new ArrayList<Inventory>(inventories.size() + hotbars.size());
+		allInventories.addAll(hotbars);
 		allInventories.addAll(inventories);
 		return allInventories;
 	}
@@ -626,6 +637,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 
 		// Set the wand item
 		Integer selectedItem = null;
+		Inventory hotbar = getHotbar();
         if (getMode() == WandMode.INVENTORY && mage != null && mage.getPlayer() != null && playerInventorySlot != null) {
             if (item == null || !isWand(item))
             {
@@ -682,23 +694,31 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		}
 		return inventories.get(inventoryIndex);
 	}
+
+	protected int getHotbarSize() {
+		return hotbars.size() * HOTBAR_SIZE;
+	}
 	
 	protected Inventory getInventory(Integer slot) {
-		Inventory inventory = hotbar;
-		if (slot >= HOTBAR_SIZE) {
-			int inventoryIndex = (slot - HOTBAR_SIZE) / INVENTORY_SIZE;
+		Inventory inventory = null;
+		int hotbarSize = getHotbarSize();
+		if (slot >= hotbarSize) {
+			int inventoryIndex = (slot - hotbarSize) / INVENTORY_SIZE;
 			inventory = getInventoryByIndex(inventoryIndex);
+		} else {
+			inventory = hotbars.get(slot / HOTBAR_SIZE);
 		}
 		
 		return inventory;
 	}
 	
 	protected int getInventorySlot(Integer slot) {
-		if (slot < HOTBAR_SIZE) {
-			return slot;
+		int hotbarSize = getHotbarSize();
+		if (slot < hotbarSize) {
+			return slot % HOTBAR_SIZE;
 		}
 		
-		return ((slot - HOTBAR_SIZE) % INVENTORY_SIZE);
+		return ((slot - hotbarSize) % INVENTORY_SIZE);
 	}
 	
 	protected void addToInventory(ItemStack itemStack, Integer slot) {
@@ -724,7 +744,9 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	}
 	
 	protected void parseInventoryStrings(String spellString, String materialString) {
-		hotbar.clear();
+		for (Inventory hotbar : hotbars) {
+			hotbar.clear();
+		}
 		inventories.clear();
         spells.clear();
         spellLevels.clear();
@@ -905,9 +927,8 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	public void saveProperties(ConfigurationSection node) {
         node.set("id", id);
         node.set("materials", getMaterialString());
-
 		node.set("spells", getSpellString());
-
+		node.set("hotbar_count", hotbars.size());
 		node.set("active_spell", activeSpell);
 		node.set("active_material", activeMaterial);
 		node.set("name", wandName);
@@ -1068,6 +1089,21 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		
 		if (wandConfig.contains("effect_color") && !safe) {
 			setEffectColor(wandConfig.getString("effect_color"));
+		}
+
+		if (wandConfig.contains("hotbar_count")) {
+			int newCount = Math.max(1, wandConfig.getInt("hotbar_count"));
+			if ((!safe && newCount != hotbars.size()) || newCount > hotbars.size()) {
+				if (isInventoryOpen()) {
+					closeInventory();
+				}
+				String wandSpells = getSpellString();
+				String wandMaterials = getMaterialString();
+				setHotbarCount(newCount);
+				if (wandMaterials.length() > 0 || wandSpells.length() > 0) {
+					parseInventoryStrings(wandSpells, wandMaterials);
+				}
+			}
 		}
 		
 		// Don't change any of this stuff in safe mode
@@ -1642,6 +1678,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	private void updateHotbar(PlayerInventory playerInventory) {
 		// Check for an item already in the player's held slot, which
 		// we are about to replace with the wand.
+		Inventory hotbar = getHotbar();
 		int currentSlot = playerInventory.getHeldItemSlot();
 		ItemStack existingHotbar = hotbar.getItem(currentSlot);
 
@@ -1681,6 +1718,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		}
 		
 		if (addHotbar) {
+			Inventory hotbar = getHotbar();
 			for (int i = 0; i < HOTBAR_SIZE; i++) {
 				ItemStack inventoryItem = hotbar.getItem(i);
 				updateInventoryName(inventoryItem, false);
@@ -1772,6 +1810,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		// Fill in the hotbar
 		Player player = mage.getPlayer();
 		PlayerInventory playerInventory = player.getInventory();
+		Inventory hotbar = getHotbar();
 		for (int i = 0; i < HOTBAR_SIZE; i++) {
 			ItemStack playerItem = playerInventory.getItem(i);
 			if (isWand(playerItem)) {
@@ -1940,7 +1979,23 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		if (other.isForcedUpgrade() || other.healthRegeneration > healthRegeneration) { healthRegeneration = other.healthRegeneration; modified = true; if (healthRegeneration > 0) sendAddMessage("wand.upgraded_property", getLevelString(messages, "wand.health_regeneration", healthRegeneration)); }
 		if (other.isForcedUpgrade() || other.hungerRegeneration > hungerRegeneration) { hungerRegeneration = other.hungerRegeneration; modified = true; if (hungerRegeneration > 0) sendAddMessage("wand.upgraded_property", getLevelString(messages, "wand.hunger_regeneration", hungerRegeneration)); }
 		if (other.isForcedUpgrade() || other.speedIncrease > speedIncrease) { speedIncrease = other.speedIncrease; modified = true; if (speedIncrease > 0) sendAddMessage("wand.upgraded_property", getLevelString(messages, "wand.haste", speedIncrease)); }
-		
+
+		if (other.isForcedUpgrade() || other.hotbars.size() > hotbars.size()) {
+			int newCount = Math.max(1, other.hotbars.size());
+			if (newCount != hotbars.size()) {
+				if (isInventoryOpen()) {
+					closeInventory();
+				}
+				String wandSpells = getSpellString();
+				String wandMaterials = getMaterialString();
+				setHotbarCount(newCount);
+				if (wandMaterials.length() > 0 || wandSpells.length() > 0) {
+					parseInventoryStrings(wandSpells, wandMaterials);
+				}
+				modified = true;
+			}
+		}
+
 		// Mix colors
 		if (other.effectColor != null) {
 			if (this.effectColor == null || (other.isUpgrade() && other.effectColor != null)) {
@@ -2231,6 +2286,22 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
                 }
 				mage.getPlayer().updateInventory();
 			}
+		}
+	}
+
+	public void cycleHotbar(int direction) {
+		if (!hasInventory) {
+			return;
+		}
+		if (isInventoryOpen() && mage != null && hotbars.size() > 1) {
+			saveInventory();
+			int hotbarCount = hotbars.size();
+			currentHotbar = hotbarCount == 0 ? 0 : (currentHotbar + hotbarCount + direction) % hotbarCount;
+			updateInventory();
+			if (inventoryCycleSound != null) {
+				mage.playSound(inventoryCycleSound.getSound(), inventoryCycleSound.getVolume(), inventoryCycleSound.getPitch());
+			}
+			mage.getPlayer().updateInventory();
 		}
 	}
 
@@ -2855,7 +2926,11 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
     }
 
 	public Inventory getHotbar() {
-		return hotbar;
+		if (currentHotbar < 0 || currentHotbar >= this.hotbars.size())
+		{
+			currentHotbar = 0;
+		}
+		return this.hotbars.get(currentHotbar);
 	}
 	
 	public WandMode getMode() {

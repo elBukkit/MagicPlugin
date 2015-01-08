@@ -2201,6 +2201,13 @@ public class MagicController implements Listener, MageController {
 
         boolean cancelEvent = false;
         if (Wand.isWand(droppedItem) && activeWand != null && activeWand.isUndroppable()) {
+            // Postpone cycling until after this event unwinds
+            Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
+                @Override
+                public void run() {
+                    activeWand.cycleHotbar(1);
+               }
+            });
             cancelEvent = true;
         } else if (activeWand != null) {
 			ItemStack inHand = event.getPlayer().getInventory().getItemInHand();
@@ -2221,26 +2228,8 @@ public class MagicController implements Listener, MageController {
 			}
 		}
 
-        // Cancelling the event causes some really strange behavior, including the item
-        // being put back in the inventory. (This bug's been in CB since 1.6!!!)
-        // Thanks to this thread for a hacky, but effective solution:
-        // https://forums.bukkit.org/threads/cancelling-item-dropping.111676/page-2
         if (cancelEvent) {
-            if (activeWand != null && activeWand.getItem().equals(droppedItem)) {
-                PlayerInventory playerInventory = player.getInventory();
-                ItemStack cloneItem = InventoryUtils.getCopy(droppedItem);
-                Item drop = event.getItemDrop();
-                drop.setItemStack(new ItemStack(Material.AIR, 1));
-                drop.remove();
-                playerInventory.setItem(playerInventory.getHeldItemSlot(), cloneItem);
-            } else {
-                event.setCancelled(true);
-            }
-            Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
-                public void run() {
-                    player.updateInventory();
-                }
-            }, 1);
+            event.setCancelled(true);
         }
 	}
 
