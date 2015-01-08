@@ -1082,3 +1082,10 @@ wood_pickaxe_upgrade:
     icon: wood_pickaxe
     upgrade_icon: wood_pickaxe
 
+hotbar2:
+    upgrade: true
+    indestructible: false
+    icon: nether_star
+    hotbar_count: 2
+
+

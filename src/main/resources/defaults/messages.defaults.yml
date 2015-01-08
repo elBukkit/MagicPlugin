@@ -1243,6 +1243,9 @@ wands:
     mana4:
         name: Mana Upgrade Level 4
         description: Upgrade to 1500 Mana
+    hotbar2:
+        name: Hotbar Upgrade
+        description: Add an extra hotbar to your wand!
     antihunger:
         name: Anti-Hunger Upgrade
         description: Never go hungry again!

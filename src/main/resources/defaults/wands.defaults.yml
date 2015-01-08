@@ -404,6 +404,7 @@ wolf:
     power: 2
     haste: 0.1
     quiet: 1
+    hotbar_count: 3
     effect_color: '00AACC'
     effect_particle: enchantment_table
     effect_particle_count: 1
@@ -1291,6 +1292,11 @@ mana4:
     icon: nether_star
     xp_max: 1500
     xp_regeneration: 150
+hotbar2:
+    upgrade: true
+    indestructible: false
+    icon: nether_star
+    hotbar_count: 2
 manaboost:
     upgrade: true
     indestructible: false
