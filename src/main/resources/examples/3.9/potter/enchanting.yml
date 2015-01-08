@@ -8,7 +8,7 @@ master:
     hidden: true
     upgrade: year1
     upgrade_item: year1
-    min_enchant_level: 4
+    min_enchant_level: 5
     max_enchant_level: 5
     levels: 1,30,50
 
@@ -16,7 +16,7 @@ default:
   match_spell_mana: false
   hidden: true
   min_enchant_level: 20
-  max_enchant_level: 50
+  max_enchant_level: 20
   max_mana: 50
   max_mana_regeneration: 5
   max_health_regeneration: 1.0
@@ -58,32 +58,31 @@ year1:
     upgrade: year2
     upgrade_item: year2
     min_enchant_level: 10
+    max_enchant_level: 10
     upgrade_commands:
       - pex user @p suffix "(Year 2) "
       - broadcast &6@p §3has graduated to §b$path§3!
-    levels: 1,30,50
+    levels: 1
     max_mana: 60
     max_xp_regeneration: 8
     xp_regeneration:
-      1: 5,10,15,100,100
+      1: 100
     xp_max:
-      2: 100, 10,  0
-      3:  20, 30, 50
+      2: 100
     spell_count:
-      1: 100, 100,  100
-      2:   0,   0,    5
+      1: 100
     spells:
-      flagrate: 100,100,100
-      vermillious: 80,90,100
-      flipendo: 10,20,30
-      periculum: 50,60,70
-      arrow: 50,60,70
-      lumos: 100,100,100
-      incendio: 20,30,40
-      conjunctivitis: 20,30,40
-      fourpoint: 50,60,70
-      arresto: 90,100,100
-      avis: 20,30,40
+      flagrate: 100
+      vermillious: 80
+      flipendo: 10
+      periculum: 50
+      arrow: 50
+      lumos: 100
+      incendio: 20
+      conjunctivitis: 20
+      fourpoint: 50
+      arresto: 90
+      avis: 20
     required_spells:
       - alohomora
       - wingardium
