@@ -927,6 +927,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	public void saveProperties(ConfigurationSection node) {
         node.set("id", id);
         node.set("materials", getMaterialString());
+		controller.getLogger().info("Saving spells: " + getSpellString());
 		node.set("spells", getSpellString());
 		node.set("hotbar_count", hotbars.size());
 		node.set("active_spell", activeSpell);
@@ -1099,6 +1100,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 				}
 				String wandSpells = getSpellString();
 				String wandMaterials = getMaterialString();
+				controller.getLogger().info("Loading spells: " + wandSpells);
 				setHotbarCount(newCount);
 				if (wandMaterials.length() > 0 || wandSpells.length() > 0) {
 					parseInventoryStrings(wandSpells, wandMaterials);
@@ -1154,6 +1156,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 				wandMaterials = wandMaterials.length() == 0 ? getMaterialString() : wandMaterials;
 				wandSpells = wandSpells.length() == 0 ? getSpellString() : wandSpells;
 				parseInventoryStrings(wandSpells, wandMaterials);
+				controller.getLogger().info("Loaded spells: " + wandSpells);
 			}
 
             if (wandConfig.contains("randomize_icon")) {
@@ -1817,15 +1820,16 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 				playerItem = null;
 			}
 			hotbar.setItem(i, playerItem);
-            updateSlot(i, playerItem);
+            updateSlot(i + currentHotbar * HOTBAR_SIZE, playerItem);
 		}
 		
 		// Fill in the active inventory page
+		int hotbarOffset = getHotbarSize();
 		Inventory openInventory = getOpenInventory();
 		for (int i = 0; i < openInventory.getSize(); i++) {
             ItemStack playerItem = playerInventory.getItem(i + HOTBAR_SIZE);
 			openInventory.setItem(i, playerItem);
-            updateSlot(i + HOTBAR_SIZE + openInventoryPage * Wand.INVENTORY_SIZE, playerItem);
+            updateSlot(i + hotbarOffset + openInventoryPage * Wand.INVENTORY_SIZE, playerItem);
 		}
 	}
 
