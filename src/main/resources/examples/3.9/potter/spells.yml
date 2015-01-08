@@ -2454,7 +2454,7 @@ glacius:
         duration: 1000
         effect_slow: 1
         ice: ice
-        undo: 1000
+        undo: 4000
         cooldown: 5000
         entity_undo: false
         bypass_build: true
@@ -2493,7 +2493,7 @@ glacius|2:
         entity_damage: 6
         duration: 2000
         effect_slow: 1
-        undo: 2000
+        undo: 5000
     costs:
         mana: 90
 
@@ -2505,7 +2505,7 @@ glacius|3:
         entity_damage: 8
         duration: 3000
         effect_slow: 1
-        undo: 3000
+        undo: 6000
         freeze_lava: true
     costs:
         mana: 125
@@ -5547,6 +5547,37 @@ pulsus:
         count: 1
         damage: 0.5
         cooldown: 7000
+        bypass_backfire: true
+    costs:
+        mana: 70
+
+whomping:
+    icon: ink_sack:5
+    category: dada
+    class: PushSpell
+    pvp_restricted: true
+    cast_on_no_target: true
+    worth: 15
+    effects:
+        area:
+        -  class: EffectSingle
+           sound: fizz
+           effectlib:
+             class: FountainEffect
+             particle: spell
+             iterations: 2
+             particlesStrand: 10
+             particlesSpout: 30
+    parameters:
+        area: true
+        target_type: Entity
+        item_force: 4
+        area_range: 25
+        entity_force: 2
+        type: push
+        count: 1
+        damage: 0.1
+        cooldown: 0
         bypass_backfire: true
     costs:
         mana: 70

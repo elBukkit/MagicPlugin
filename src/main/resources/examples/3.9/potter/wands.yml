@@ -165,6 +165,21 @@ megiderp:
     spells:
      - flagrate
 
+danny:
+    icon: gold_spade
+    path: year1
+    bound: true
+    keep: true
+    undroppable: true
+    quiet: 1
+    xp_max: 50
+    xp: 50
+    xp_regeneration: 6
+    effect_color: '888888'
+    effect_bubbles: false
+    spells:
+     - flagrate
+
 staffscarf:
     locked: true
     icon: leather_helmet
@@ -383,7 +398,7 @@ architect:
     path: engineer
     keep: true
     bound: true
-    icon: wood_axe
+    icon: diamond_spade
     effect_color: '00FF00'
     hunger_regeneration: 1
     health_regeneration: 1
@@ -391,7 +406,7 @@ architect:
     protection: 0.2
     cost_reduction: 2
     cooldown_reduction: 2
-    power: 1
+    power: 10
     effect_color: '8B008B'
     effect_bubbles: true
     organize: true
@@ -1182,6 +1197,36 @@ staff:
      - lumos|3
      - conjunctivitis|2
      - flipendo|3
+
+gates:
+    icon: firework_charge
+    upgrade: true
+    upgrade_path: graduate
+    xp_max: 220
+    xp_regeneration: 40
+    spells:
+     - alohomora
+     - wingardium
+     - expelliarmus
+     - glacius
+     - araniaexumai
+     - aparecium
+     - Rictusempra
+     - diffindo
+     - deprimo
+     - duro
+     - bubble
+     - aguamenti
+     - ascendio
+     - reducto
+     - evanesco
+     - reparifors
+     - incarcerous
+     - confundus
+     - apparate
+     - confringo
+     - piertotum
+     - ventus
 
 headstaff:
     icon: firework_charge
