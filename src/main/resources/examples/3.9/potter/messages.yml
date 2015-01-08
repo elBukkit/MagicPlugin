@@ -196,8 +196,8 @@ spells:
         description: Underwater breathing charm
     colorvaria:
         name: Colorvaria
-        description: Changes the color of certain objects
-        cast: Aguamenti!
+        description: Changes the color of wool blocks!
+        cast: Colorvaria!
     colloportus:
         name: Colloportus
         description: Locks doors
@@ -298,7 +298,7 @@ spells:
         description: Summons a unstoppable flame
     finiteincantatem:
         name: Finite Incantatem
-        description: Counter target player's spell
+        description: Counter target player's last cast spell
         usage: Only works on recently cast spells
         extended_description: "The Minister of Magic's Favourite Spell."
         cast: "Finite Incantatem &d&o$target &r&6$spell!"
@@ -315,7 +315,12 @@ spells:
         name: Flipendo
         description: Push your target backwards
         cast: Flipendo $target!
-        cast_player_message: ""
+        cast_player_message: "Flipendo!"
+    ventus:
+        name: Ventus
+        description: Conjures a gust of wind at your target
+        cast: Ventus $target!
+        cast_player_message: "Ventus!"
     fumos:
         name: Fumos
         description: Produce a defensive cloud of dark grey smoke
@@ -460,7 +465,8 @@ spells:
     revelio:
         name: Revelio
         description: Reveal the unseen
-        cast: Revelio!
+        cast: Revelio $target!
+        cast_player_message: "Reveal your secrets!"
     salviohexia:
         name: Salivo Hexia
         description: Preserve an area for Reparo
@@ -511,6 +517,10 @@ spells:
         name: Sectumsempra
         description: Lascerate your target
         cast: Sectumsempra!
+    slash:
+        name: Slash
+        description: A mighty slash!
+        cast: Whoosh!
     stupefy:
         name: Stupefy
         description: Damage and stuns your target
@@ -567,6 +577,14 @@ spells:
         name: Arachnid Attack
         description: Encase your target in webbing
         cast: Webs!
+    bandage:
+        name: Bandage
+        description: Heal your self up!
+        cast: You used a Bandage!
+    pulsus:
+        name: Pulsus
+        description: Aim up/down to push your opponent!
+        cast: Get back!
 
 randomized:
    wood:
@@ -628,6 +646,15 @@ wands:
         description: $wood and $core
         upgrade_description: Become an Auror!
 
+    phoenix:
+        name: Phoenix Wand
+        description: $wood and $core
+        upgrade_description: Become a Phoenix Member!
+
+    auroreye:
+        name: Mad-Eye Moody's Eye
+        description: Mad-Eye Moody's Magical Eye
+
     deatheater:
         name: Deatheater Wand
         description: $wood and $core
@@ -641,6 +668,14 @@ wands:
         name: Squib Wand
         description: Kersplode Things
 
+    alochal:
+        name: Alohomora Challenge Wand
+        description: Temp Alohomora Spell
+
+    wingchal:
+        name: Wingardium Challenge Wand
+        description: Temp Wingardium Spell
+
     video:
         name: Videographer Wand
         description: Fly like the wind!
@@ -650,12 +685,12 @@ wands:
         description: Godric Gryffindor's Sword
 
     lignumvitae:
-        name: Dr00bles Wand
+        name: The Mini Elder Wand
         description: Lignum Vitae and Phoenix Feather
 
     allis0n:
-        name: Moon Scepter
-        description: Rosewood and Phoenix Feather
+        name: The Moon Scepter
+        description: Rosewood and Moon Crystal
 
     staff:
         name: Staff Upgrade
@@ -673,8 +708,12 @@ wands:
         upgrade_description: A nice upgrade to your spells
 
     elder:
-        name: Elder Wand
+        name: The Elder Wand
         description: Elder Wood and Thestral Hair
+
+    corruptelder:
+        name: Corrupted Elder Wand
+        description: Dark Elder Wood and Thestral Hair
 
     wolf:
         name: The Wolf
@@ -684,9 +723,33 @@ wands:
         name: Unspeakable
         description: $wood and $core
 
+    ravenclaw:
+        name: Ravenclaw's Diadem
+        description: Rowena's enchanted diadem
+
+    hufflepuff:
+        name: Hufflepuff's Cup
+        description: Helga's enchanted cup
+
     slytherin:
+        name: Slytherin's Locket
+        description: Salazar's magical golden locket
+
+    slytherinwand:
         name: Wand of Slytherin
         description: Hawthorn and Phoenix Feather
+
+    karkaroff:
+        name: Karkaroff's Staff
+        description: Karkaroff's Heirloom Staff
+
+    pande:
+        name: Pande's Wand
+        description: Cherry Wood and Veela Hair Core
+
+    megiderp:
+        name: Euphoria
+        description: Cedar Wood and Veela Hair Core
 
     crudwand:
         name: Cracked Wand
@@ -699,6 +762,10 @@ wands:
     sorting:
         name: Letter from Hogwarts
         description: Use this to get sorted into a house!
+
+    gamepass:
+        name: Game Pass For October
+        description: Created a game for the October game, The Walking Dead!
 
     ollivander:
         name: Ticket from Ollivander
@@ -862,3 +929,19 @@ wands:
     patronus_slime:
         name: Slime Patronus
         description: A new patronus finds you.
+
+    staffscarf:
+        name: Potterworld Staff Scarf
+        description: Enchanted Scarf belonging to a Potterworld Staff Member!
+
+    staffrobes:
+        name: Potterworld Staff Robe
+        description: Enchanted Robe belonging to a Potterworld Staff Member!
+
+    staffpants:
+        name: Potterworld Staff Pants
+        description: Enchanted Pants belonging to a Potterworld Staff Member!
+
+    staffboots:
+        name: Potterworld Staff Boots
+        description: Enchanted Boots belonging to a Potterworld Staff Member!

@@ -18,44 +18,219 @@ default:
     spells:
      - flagrate
 
-gryffindor:
-    icon: diamond_sword
+auroreye:
+    locked: true
+    icon: iron_helmet
     undroppable: true
-    path: graduate
     keep: true
+    bound: true
+    quiet: true
+    protection_falling: 2
     cost_reduction: 2
     cooldown_reduction: 2
-    protection_falling: 2
     quiet: 1
     power: 0
     haste: 0.1
-    effect_color: '880000'
+    effect_color: '2FAACE'
     effect_bubbles: true
-    active_spell: ascendio
+    active_spell: revelio
     spells:
-      - accio
-      - ascendio
+      - revelio
+      - fumos
+      - protego|2
+      - pulsus
+
+karkaroff:
+    locked: true
+    icon: stick
+    undroppable: true
+    keep: true
+    bound: true
+    quiet: true
+    protection_falling: 2
+    cost_reduction: 2
+    cooldown_reduction: 2
+    quiet: 1
+    power: 0
+    haste: 0.1
+    effect_color: '010101'
+    effect_bubbles: true
+    active_spell: apparate
+    spells:
+      - apparate
+      - sectumsempra
+      - aparecium
+
+ravenclaw:
+    locked: true
+    icon: diamond_helmet
+    undroppable: true
+    keep: true
+    bound: true
+    quiet: true
+    protection_falling: 2
+    cost_reduction: 2
+    cooldown_reduction: 2
+    quiet: 1
+    power: 0
+    haste: 0.1
+    effect_color: '5555FF'
+    effect_bubbles: true
+    active_spell: legilimens
+    spells:
+      - legilimens
+
+hufflepuff:
+    locked: true
+    icon: diamond_leggings
+    undroppable: true
+    keep: true
+    quiet: true
+    bound: true
+    protection_falling: 2
+    cost_reduction: 2
+    cooldown_reduction: 2
+    quiet: 1
+    power: 0
+    haste: 0.1
+    effect_color: 'FFFF55'
+    effect_bubbles: true
+    active_spell: vulnera
+    spells:
       - vulnera
 
-lignumvitae:
-    icon: wood_hoe,gold_axe,gold_pickaxe,gold_spade,stone_axe,stone_hoe,stone_pickaxe,stone_spade,wood_axe,wood_spade,wood_pickaxe
+slytherin:
+    locked: true
+    icon: diamond_chestplate
     undroppable: true
-    path: graduate
+    keep: true
+    quiet: true
+    bound: true
+    protection_falling: 2
+    cost_reduction: 2
+    cooldown_reduction: 2
+    quiet: 1
+    power: 0
+    haste: 0.1
+    effect_color: '00AA00'
+    effect_bubbles: true
+    active_spell: firestorm
+    spells:
+      - firestorm
+      - obscuro
+      - imperio
+
+gryffindor:
+    locked: true
+    icon: diamond_sword
+    undroppable: true
+    quiet: true
+    keep: true
+    bound: true
+    protection: 0.2
+    protection_falling: 2
+    quiet: 1
+    power: 0.1
+    haste: 0.1
+    effect_color: '880000'
+    effect_bubbles: true
+
+pande:
+    icon: wood_hoe
+    path: year1
+    bound: true
+    keep: true
+    undroppable: true
+    quiet: 1
+    xp_max: 50
+    xp: 50
+    xp_regeneration: 6
+    effect_color: '888888'
+    effect_bubbles: false
+    spells:
+     - flagrate
+
+megiderp:
+    icon: wood_pickaxe
+    path: year1
+    bound: true
+    keep: true
+    undroppable: true
+    quiet: 1
+    xp_max: 50
+    xp: 50
+    xp_regeneration: 6
+    effect_color: '888888'
+    effect_bubbles: false
+    spells:
+     - flagrate
+
+staffscarf:
+    locked: true
+    icon: leather_helmet
+    bound: true
+    undroppable: true
+
+staffrobes:
+    locked: true
+    icon: leather_chestplate
+    bound: true
+    undroppable: true
+
+staffpants:
+    locked: true
+    icon: leather_leggings
+    bound: true
+    undroppable: true
+
+staffboots:
+    locked: true
+    icon: leather_boots
+    bound: true
+    undroppable: true
+
+corruptelder:
+    icon: diamond_hoe
+    path: year1
+    bound: true
+    keep: true
+    undroppable: true
+    quiet: 1
+    xp_max: 50
+    xp: 50
+    xp_regeneration: 6
+    effect_color: '888888'
+    effect_bubbles: false
+    spells:
+     - flagrate
+
+lignumvitae:
+    icon: diamond_hoe
+    undroppable: true
+    path: master
     bound: true
     keep: true
     fill: true
     organize: true
     quiet: 1
     xp_max: 220
-    xp_regeneration: 40
-    effect_color: 'FF00FF'
-    effect_particle: enchantment_table
+    xp_regeneration: 140
+    effect_color: '888888'
     effect_particle_count: 1
     effect_particle_data: 1
     effect_bubbles: false
     active_spell: ascendio
     hidden: true
-
+    overrides: patronus.type bat
+    spells:
+      - stupefy
+      - vermillious
+      - aguamenti
+      - levicorpus
+      - protego
+      - Rictusempra
+      - apparate
+      - rennervate
 
 allis0n:
     icon: wood_hoe,gold_axe,gold_pickaxe,gold_spade,stone_axe,stone_hoe,stone_pickaxe,stone_spade,wood_axe,wood_spade,wood_pickaxe
@@ -72,6 +247,16 @@ allis0n:
     effect_bubbles: true
     active_spell: ascendio
     hidden: true
+    overrides: patronus.type ocelot
+    spells:
+      - stupefy
+      - vermillious
+      - aguamenti
+      - levicorpus
+      - protego
+      - Rictusempra
+      - apparate
+      - rennervate
 
 elder:
     icon: diamond_hoe
@@ -86,15 +271,32 @@ elder:
     protection_falling: 2
     quiet: 1
     power: 0
-    haste: 0.1
+    haste: 0
     effect_color: 'FF00FF'
     effect_particle: enchantment_table
     effect_particle_count: 1
     effect_particle_data: 1
-    effect_particle_interval: 0
+    effect_particle_interval: 1
     effect_bubbles: false
     active_spell: ascendio
     hidden: true
+    overrides: patronus.type bat
+    spells:
+      - stupefy
+      - expelliarmus
+      - ascendio
+      - volo
+      - protego
+      - invis
+      - apparatemaxima
+      - vulnera
+      - flight
+      - gather
+      - reductomaxima
+      - deprimomaxima
+      - smite
+      - invis
+      - avadamaxima
 
 wolf:
     icon: gold_hoe
@@ -154,7 +356,7 @@ unspeakable:
     hidden: true
     overrides: patronus.type sheep, patronus.variant blue
 
-slytherin:
+slytherinwand:
     icon: stone_pickaxe
     undroppable: true
     path: graduate
@@ -326,6 +528,35 @@ squib:
       - deprimo
       - duro
 
+alochal:
+    icon: stick
+    indestructible: false
+    locked: true
+    xp: 100
+    xp_max: 100
+    xp_regeneration: 20
+    cost_reduction: 2
+    uses: 100
+    quiet: 2
+    effect_color: 'FF0000'
+    active_spell: alohomora
+    spells:
+      - alohomora
+
+wingchal:
+    icon: stick
+    indestructible: false
+    locked: true
+    xp: 100
+    xp_max: 100
+    xp_regeneration: 20
+    cost_reduction: 2
+    uses: 100
+    quiet: 2
+    effect_color: 'FF0000'
+    active_spell: wingardium
+    spells:
+      - wingardium
 #
 # ITEMS
 #
@@ -358,7 +589,23 @@ sorting:
     spells:
         - recall
 
+gamepass:
+    mode: cast
+    active_spell: recall
+    icon: paper
+    indestructible: true
+    locked: true
+    keep: true
+    uses: 1
+    quiet: 2
+    effect_color: 'FFFF00'
+    overrides: warp GameWorld
+    spells:
+        - recall
+
 ollivander:
+    bound: true
+    undroppable: true
     icon: paper
     indestructible: true
     locked: true
@@ -705,6 +952,17 @@ deatheater:
     spells:
      - morsmordre
 
+phoenix:
+    icon: skull_item
+    rename: true
+    upgrade: true
+    effect_color: 'F09E05'
+    effect_bubbles: true
+    active_spell: phoenixcry
+    spells:
+     - phoenixcry
+     - animagus_phoenix
+
 # Upgrade items copied from default config
 
 redeffects:
@@ -836,7 +1094,7 @@ graduate:
     indestructible: false
     icon: firework_charge
     xp_max: 200
-    xp_regeneration: 38
+    xp_regeneration: 40
     spells:
      - protego|3
      - stupefy|3
@@ -895,7 +1153,7 @@ staff:
     icon: firework_charge
     upgrade: true
     upgrade_path: graduate
-    xp_max: 200
+    xp_max: 220
     xp_regeneration: 40
     spells:
      - silencio
@@ -1027,6 +1285,11 @@ wood_hoe_upgrade:
     icon: wood_hoe
     upgrade_icon: wood_hoe
 
+iron_spade_upgrade:
+    upgrade: true
+    icon: iron_spade
+    upgrade_icon: iron_spade
+
 wood_hoe_upgrade:
     upgrade: true
     icon: gold_axe
@@ -1081,4 +1344,3 @@ wood_pickaxe_upgrade:
     upgrade: true
     icon: wood_pickaxe
     upgrade_icon: wood_pickaxe
-

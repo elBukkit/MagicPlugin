@@ -117,6 +117,7 @@ year2:
       - expelliarmus
       - araniaexumai
       - glacius
+      - rictusempra
 
 year3:
     upgrade: year4
@@ -173,6 +174,7 @@ year4:
       locomotomortus: 1,5,10
       orchideous: 1,5,10
       deprimo|2: 10,25,40
+      glacius|3: 15,50,80
       arrow|3: 50,60,70
       diffindo|2: 20,30,40
     required_spells:
@@ -210,6 +212,8 @@ year5:
     required_spells:
       - evanesco
       - reducto
+      - reparifors
+      - incarcerous
 
 year6:
     upgrade: year7
@@ -241,7 +245,8 @@ year6:
       bogies|2: 20,30,40
     required_spells:
       - apparate
-      - aparecium
+      - confringo
+      - confundus
 
 year7:
     upgrade: graduate
@@ -274,13 +279,14 @@ year7:
       lacarnum|2: 5,10,20
     required_spells:
       - piertotum
+      - ventus
 
 graduate:
     inherit: year7
-    max_xp_regeneration: 30
+    max_xp_regeneration: 40
     xp_regeneration:
       1: 5,10,15,100,100
-    max_mana: 200
+    max_mana: 220
     xp_max:
       8: 100, 10,  0
       10:  20, 30, 50
@@ -295,7 +301,6 @@ graduate:
       duro|3: 20,30,40
       bogies|3: 20,30,40
       lacarnum|3: 20,30,40
-      revelio: 5,10,20
 
 broom:
     hidden: true
