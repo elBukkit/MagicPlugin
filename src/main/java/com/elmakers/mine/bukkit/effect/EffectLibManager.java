@@ -34,6 +34,12 @@ public class EffectLibManager {
         return new EffectLibManager();
     }
 
+    public void enableDebug(boolean debug) {
+        if (effectManager != null) {
+            effectManager.enableDebug(debug);
+        }
+    }
+
     public Effect play(ConfigurationSection configuration, EffectPlayer player, Location origin, Entity originEntity, Location target, Entity targetEntity) {
         if (originEntity != null && originEntity instanceof Player) {
             nameMap.put("$name", ((Player)originEntity).getName());

@@ -33,6 +33,12 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
         return effectLib != null;
     }
 
+    public static void debugEffects(boolean debug) {
+        if (effectLib != null) {
+            effectLib.enableDebug(debug);
+        }
+    }
+
     private static EffectLibManager effectLib = null;
     private ConfigurationSection effectLibConfig = null;
     private List<de.slikey.effectlib.Effect> currentEffects = new ArrayList<de.slikey.effectlib.Effect>();
