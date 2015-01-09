@@ -8,7 +8,7 @@ master:
     hidden: true
     upgrade: year1
     upgrade_item: year1
-    min_enchant_level: 5
+    min_enchant_level: 4
     max_enchant_level: 5
     levels: 1,30,50
 
@@ -16,7 +16,7 @@ default:
   match_spell_mana: false
   hidden: true
   min_enchant_level: 20
-  max_enchant_level: 20
+  max_enchant_level: 50
   max_mana: 50
   max_mana_regeneration: 5
   max_health_regeneration: 1.0
@@ -62,7 +62,7 @@ year1:
     upgrade_commands:
       - pex user @p suffix "(Year 2) "
       - broadcast &6@p §3has graduated to §b$path§3!
-    levels: 1
+    levels: 1,30,50
     max_mana: 60
     max_xp_regeneration: 8
     xp_regeneration:
@@ -92,26 +92,28 @@ year2:
     upgrade_item: year3
     inherit: year1
     min_enchant_level: 12
+    max_enchant_level: 12
     max_mana: 90
     upgrade_commands:
       - pex user @p suffix "(Year 3) "
       - broadcast &6@p §3has graduated to §b$path§3!
     xp_max:
-      3: 100, 10,  0
-      4:  20, 30, 50
+      3: 100
     max_xp_regeneration: 12
     xp_regeneration:
-      1: 5,10,15,100,100
+      1: 100
+    spell_count:
+      1: 100
     spells:
-      vermillious|2: 80,90,100
-      flipendo|2: 5,10,20
-      immobulus: 40,50,60
-      fumos: 80,90,100
-      finiteincantatem: 1,1,2
-      nox: 20,30,50
-      bogies: 10,20,30
-      incendio|2: 5,10,20
-      arrow|2: 50,60,70
+      vermillious|2: 80
+      flipendo|2: 5
+      immobulus: 40
+      fumos: 80
+      finiteincantatem: 1
+      nox: 20
+      bogies: 10
+      incendio|2: 5
+      arrow|2: 50
     required_spells:
       - expelliarmus
       - araniaexumai
@@ -123,27 +125,29 @@ year3:
     upgrade_item: year4
     inherit: year2
     min_enchant_level: 15
+    max_enchant_level: 15
     max_mana: 110
-    xp_max:
-      4: 100, 10,  0
-      5:  20, 30, 50
     max_xp_regeneration: 15
     xp_regeneration:
-      1: 5,10,15,100,100
+      1: 100
+    xp_max:
+      2: 100
+    spell_count:
+      1: 100
     upgrade_commands:
       - pex user @p suffix "(Year 4) "
       - broadcast &6@p §3has graduated to §b$path§3!
     spells:
-      flipendo|3: 5,10,20
-      bombarda: 5,10,20
-      snowball: 15,50,80
-      colorvaria: 40,60,80
-      expelliarmus|2: 5,10,20
-      lumos|2: 15,50,80
-      glacius|2: 15,50,80
-      incendio|3: 15,50,80
-      finiteincantatem|2: 1,2,5
-      conjunctivitis|2: 20,30,40
+      flipendo|3: 5
+      bombarda: 5
+      snowball: 15
+      colorvaria: 40
+      expelliarmus|2: 5
+      lumos|2: 15
+      glacius|2: 15
+      incendio|3: 15
+      finiteincantatem|2: 1
+      conjunctivitis|2: 20
     required_spells:
       - deprimo
       - duro
@@ -154,28 +158,30 @@ year4:
     upgrade_item: year5
     inherit: year3
     min_enchant_level: 18
+    max_enchant_level: 18
     max_mana: 130
-    xp_max:
-      4: 100, 10,  0
-      5:  20, 30, 50
     max_xp_regeneration: 20
     xp_regeneration:
-      1: 5,10,15,100,100
+      1: 100
+    xp_max:
+      2: 100
+    spell_count:
+      1: 100
     upgrade_commands:
       - pex user @p suffix "(Year 5) "
       - broadcast &6@p §3has graduated to §b$path§3!
     spells:
-      protego: 40,60,80
-      rennervate: 90,100,100
-      episkey: 20,30,40
-      obscuro: 20,40,50
-      accio: 40,50,60
-      locomotomortus: 1,5,10
-      orchideous: 1,5,10
-      deprimo|2: 10,25,40
-      glacius|3: 15,50,80
-      arrow|3: 50,60,70
-      diffindo|2: 20,30,40
+      protego: 40
+      rennervate: 90
+      episkey: 20
+      obscuro: 20
+      accio: 40
+      locomotomortus: 1
+      orchideous: 1
+      deprimo|2: 10
+      glacius|3: 15
+      arrow|3: 50
+      diffindo|2: 20
     required_spells:
       - aguamenti
       - bubble
@@ -186,28 +192,30 @@ year5:
     upgrade_item: year6
     inherit: year4
     min_enchant_level: 20
+    max_enchant_level: 20
     max_mana: 150
     upgrade_commands:
       - pex user @p suffix "(Year 6) "
       - broadcast &6@p §3has graduated to §b$path§3!
-    xp_max:
-      4: 100, 10,  0
-      6:  20, 30, 50
     max_xp_regeneration: 28
     xp_regeneration:
-      1: 5,10,15,100,100
+      1: 100
+    xp_max:
+      2: 100
+    spell_count:
+      1: 100
     spells:
-      stupefy: 100,100,100
-      reducio: 5,10,20
-      petrificustotalus: 40,60,80
-      levicorpus: 20,40,50
-      ferula: 50,60,70
-      lacarnum: 5,10,20
-      protego|2: 15,50,80
-      expelliarmus|3: 5,10,20
-      accio|2: 30,40,50
-      episkey|2: 20,30,40
-      diffindo|3: 20,30,40
+      stupefy: 100
+      reducio: 5
+      petrificustotalus: 40
+      levicorpus: 20
+      ferula: 50
+      lacarnum: 5
+      protego|2: 15
+      expelliarmus|3: 5
+      accio|2: 30
+      episkey|2: 20
+      diffindo|3: 20
     required_spells:
       - evanesco
       - reducto
@@ -220,28 +228,30 @@ year6:
     inherit: year5
     max_mana: 170
     min_enchant_level: 22
-    xp_max:
-      5: 100, 10,  0
-      8:  20, 30, 50
+    max_enchant_level: 22
     max_xp_regeneration: 34
     xp_regeneration:
-      1: 5,10,15,100,100
+      1: 100
+    xp_max:
+      2: 100
+    spell_count:
+      1: 100
     upgrade_commands:
       - pex user @p suffix "(Year 7) "
       - broadcast &6@p §3has graduated to §b$path§3!
     spells:
-      firestorm: 5,10,15
-      engorgio: 1,5,10
-      vermillious|3: 80,90,100
-      stupefy|2: 30,40,50
-      expelliarmus|4: 5,10,20
-      levicorpus|2: 20,30,40
-      aguamenti|2: 10,20,30
-      reducto|2: 10,20,30
-      finiteincantatem|3: 1,2,5
-      deprimo|3: 10,25,40
-      duro|2: 20,30,40
-      bogies|2: 20,30,40
+      firestorm: 5
+      engorgio: 1
+      vermillious|3: 80
+      stupefy|2: 30
+      expelliarmus|4: 5
+      levicorpus|2: 20
+      aguamenti|2: 10
+      reducto|2: 10
+      finiteincantatem|3: 1
+      deprimo|3: 10
+      duro|2: 20
+      bogies|2: 20
     required_spells:
       - apparate
       - confringo
@@ -252,30 +262,32 @@ year7:
     upgrade_item: graduate
     inherit: year6
     min_enchant_level: 25
+    max_enchant_level: 25
     max_mana: 190
-    xp_max:
-      5: 100, 10,  0
-      10:  20, 30, 50
     max_xp_regeneration: 36
     xp_regeneration:
-      1: 5,10,15,100,100
+      1: 100
+    xp_max:
+      2: 100
+    spell_count:
+      1: 100
     upgrade_commands:
       - pex user @p suffix "(Graduate) "
       - broadcast &6@p §3has graduated from Hogwarts!
     spells:
-      atmos: 10,20,30
-      meteo: 5,10,20
-      disillusion: 5,10,20
-      vulnera: 5,10,20
-      protego|3: 15,50,80
-      stupefy|3: 10,20,30
-      levicorpus|3: 30,40,50
-      glacius|3: 40,50,60
-      bombarda|2: 15,50,80
-      ferula|2: 50,60,70
-      ascendio|2: 10,20,30
-      reducio|2: 10,20,30
-      lacarnum|2: 5,10,20
+      atmos: 10
+      meteo: 5
+      disillusion: 5
+      vulnera: 5
+      protego|3: 15
+      stupefy|3: 10
+      levicorpus|3: 30
+      glacius|3: 40
+      bombarda|2: 15
+      ferula|2: 50
+      ascendio|2: 10
+      reducio|2: 10
+      lacarnum|2: 5
     required_spells:
       - piertotum
       - ventus
@@ -284,22 +296,22 @@ graduate:
     inherit: year7
     max_xp_regeneration: 40
     xp_regeneration:
-      1: 5,10,15,100,100
-    max_mana: 220
+      1: 100
     xp_max:
-      8: 100, 10,  0
-      10:  20, 30, 50
+      2: 100
+    spell_count:
+      1: 100
     spells:
-      expelliarmus|5: 30,40,50
-      finiteincantatem|4: 1,2,5
-      reducio|3: 10,20,30
-      episkey|3: 20,30,40
-      ferula|3: 50,60,70
-      ascendio|3: 10,20,30
-      arrow|4: 50,60,70
-      duro|3: 20,30,40
-      bogies|3: 20,30,40
-      lacarnum|3: 20,30,40
+      expelliarmus|5: 30
+      finiteincantatem|4: 1
+      reducio|3: 10
+      episkey|3: 20
+      ferula|3: 50
+      ascendio|3: 10
+      arrow|4: 50
+      duro|3: 20
+      bogies|3: 20
+      lacarnum|3: 20
 
 broom:
     hidden: true
