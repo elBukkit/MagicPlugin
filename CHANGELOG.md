@@ -4,6 +4,7 @@
 
  - Update EffectLib to latest ParticleEffect code (see migration notes!)
  - Add hotbar_count to wands, multiple hotbars!
+ - Update to WorldGuard 6.0
 
 ## 3.9.1
 

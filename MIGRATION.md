@@ -4,6 +4,7 @@
 
  * All of the particle effect names have changed (internal EffectLib change).
    There is a PHP script available to help migrate custom configs.
+ * WorldGuard 6 or higher is now required for region support!
 
 ## 3.8
 

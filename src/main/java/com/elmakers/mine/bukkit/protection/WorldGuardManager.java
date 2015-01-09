@@ -1,6 +1,7 @@
 package com.elmakers.mine.bukkit.protection;
 
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -29,7 +30,13 @@ public class WorldGuardManager {
 			try {
 				Plugin wgPlugin = plugin.getServer().getPluginManager().getPlugin("WorldGuard");
 				if (wgPlugin instanceof WorldGuardPlugin) {
-					worldGuard = (WorldGuardPlugin)wgPlugin;
+					String[] versionPieces = StringUtils.split(wgPlugin.getDescription().getVersion(), '.');
+					int version = Integer.parseInt(versionPieces[0]);
+					if (version >= 6) {
+						worldGuard = (WorldGuardPlugin)wgPlugin;
+					} else {
+						plugin.getLogger().warning("Only WorldGuard 6 and above are supported- please update! (WG version: " + wgPlugin.getDescription().getVersion() + ")");
+					}
 				}
 			} catch (Throwable ex) {
 			}
