@@ -2,29 +2,35 @@ Acromantula:
   Mobtype: cavespider
   Display: '&7Acromantula'
   Health: 50
-  Damage: 5
+  Damage: 3
+  DamageModifiers:
+  - FALL 0
   Skills:
   - skill SummonTarantulas >0 0.3
-  - skill AcromantulaAttack >0 0.9
+  - skill AcromantulaAttack >0 2
   Drops:
-  - MinorBoss
   - Acromantula
   Options:
     AlwaysShowName: true
-    MovementSpeed: 0.2
+    MovementSpeed: 0.8
+    MaxCombatDistance: 30
+    PreventOtherDrops: true
+Dementor:
+  Mobtype: wither
+  Display: ‘&8Dementor’
+  Health: 500
+  Damage: 15
+  Skills:
+  - skill DementorAttack ~onTimer:5
+  - skill AcromantulaAttack >0 0.9
+  - skill Death >0 0.9
+  Drops:
+  - Dementor
+  Options:
+    AlwaysShowName: true
+    MovementSpeed: 0.3
     MaxCombatDistance: 25
     PreventOtherDrops: true
-Tarantula:
-  Mobtype: spider
-  Display: '&1Tarantula'
-  Health: 20
-  Damage: 3
-  Options:
-    MovementSpeed: 0.1
-    PreventOtherDrops: true
-  Drops:
-  - Minion
-  - Tarantula
 Polterghast:
   Mobtype: ghast
   Display: '&1Polterghast'
@@ -39,16 +45,39 @@ Polterghast:
 Inferius:
   Mobtype: zombie
   Display: '&1Inferius'
-  Health: 20
+  Health: 50
   Damage: 3
+  DamageModifiers:
+  - FIRE 1.5
+  - FIRE_TICK 1.5
+  - POISON 0
+  - DROWNING 0
+  - MAGIC 0.5
+  - WITHER 0.5
+  - LAVA 5
+  - FALL 0.5
+  - SUFFOCATION 0.1
+  - PROJECTILE 0.5
   Drops:
-  - Minion
   - Inferius
   Equipment:
   - Deatheater_Helmet:4
   Options:
+    MovementSpeed: 0.325
     MaxCombatDistance: 32
     KnockbackResistance: 1
+    PreventOtherDrops: true
+SuperZombie:
+  Mobtype: zombie
+  Display: '&1Inferius'
+  Health: 30
+  Damage: 3
+  Drops:
+  - Appocalypse
+  Options:
+    MovementSpeed: 0.25
+    MaxCombatDistance: 100
+    KnockbackResistance: 0
     PreventOtherDrops: true
 DreadKnight:
   Mobtype: witherskeleton
@@ -70,7 +99,7 @@ DreadKnight:
 Deatheater:
   Mobtype: zombie
   Display: "&4Deatheater"
-  Health: 80
+  Health: 40
   Damage: 4
   Equipment:
   - DeatheaterWand:0
@@ -112,7 +141,7 @@ DarkLord:
 Auror:
   Mobtype: pigzombie
   Display: "&bAuror"
-  Health: 100
+  Health: 40
   Damage: 5
   Equipment:
   - AurorWand:0
@@ -129,67 +158,67 @@ Auror:
     PreventOtherDrops: true
   Skills:
   - skill AurorAttack ~onTimer:5 >0 0.90
-Dementor:
-  Mobtype: wither
-  Display: "&8Dementor"
-  Health: 500
-  Damage: 10
-  Drops:
-  - Boss
-  Options:
-    MaxCombatDistance: 24
-    KnockbackResistance: 2
-    PreventOtherDrops: true
-    MovementSpeed: 0.3
-    PreventTeleporting: false
-    FollowRange: 48
-  Skills:
-  - skill DementorAttack ~onTimer:10
 Werewolf:
   Mobtype: angrywolf
   Display: '&6Werewolf'
-  Health: 75
+  Health: 30
+  Damage: 8
+  Skills:
+  - skill Ascendio >0 9
+  DamageModifiers:
+  - FIRE 0
+  - FIRE_TICK 0
+  - FALL 0
+  - POISON 0
   Drops:
-  - MinorBoss
   - Werewolf
+  - MidBoss
   Options:
     Size: 10
-    MovementSpeed: 0.3
+    MovementSpeed: 0.4
     PreventOtherDrops: true
     MaxCombatDistance: 30
     KnockbackResistance: 1
 PoisonToad:
   Mobtype: slime
   Display: "&aPoison Toad"
-  Health: 20
-  Damage: 1
+  Health: 40
+  Damage: 5
+  DamageModifiers:
+  - FALL 0
+  - POISON 0
+  Skills:
+  - skill Poison >0 0 3
+  - skill Ascendio >0 10
   Drops:
   - MinorBoss
   Options:
-    Size: 2
-    MovementSpeed: 0.2
+    Size: 3
+    MovementSpeed: 1
     PreventSlimeSplit: true
     PreventOtherDrops: true
     MaxCombatDistance: 30
-    KnockbackResistance: 1
-  Skills:
-  - skill ToadPoison >0 0.2
+    KnockbackResistance: 3
 GiantToad:
   Mobtype: slime
   Display: "&aGiant Toad"
-  Health: 50
-  Damage: 2
+  Health: 100
+  Damage: 6
+  DamageModifiers:
+  - FALL 0
+  - POISON 0
+  Skills:
+  - skill Poison >0 0 5
+  - skill Ascendio >0 20
   Drops:
   - MidBoss
   Options:
     Size: 5
-    MovementSpeed: 0.1
+    MovementSpeed: 0.3
     PreventSlimeSplit: true
     PreventOtherDrops: true
     MaxCombatDistance: 30
     KnockbackResistance: 1
-  Skills:
-  - skill ToadPoison >0 0.2
 Firebender:
   Mobtype: angrypigzombie
   Display: Firebender
@@ -269,3 +298,31 @@ Earthbender:
     KnockbackResistance: 1
   Skills:
   - skill Earthbending ~onTimer:50 >0 0.8
+Rat:
+  Mobtype: zombie
+  Display: ‘&8Rat’
+  Health: 6
+  Damage: 2
+  Drops:
+  - Rat
+  Options:
+    MovementSpeed: 0.4
+    PreventOtherDrops: true
+    MaxCombatDistance: 30
+    FollowRange: 20
+    Disguise: silverfish
+    KnockbackResistance: 0.1
+AgressiveHeadmaster:
+  Mobtype: zombie
+  Display: ‘&8Rat’
+  Health: 30
+  Damage: 2
+  Drops:
+  - Rat
+  Options:
+    MovementSpeed: 0.5
+    PreventOtherDrops: true
+    MaxCombatDistance: 30
+    FollowRange: 20
+    KnockbackResistance: 0.1
+    Disguise: player:Droobledore:Dr00bles

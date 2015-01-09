@@ -4,17 +4,35 @@ Minion:
   - exp 2
 MinorBoss:
   Drops:
-  - iron_ingot 3-5
-  - exp 10
+  - poisonous_potato 1-2
+  - ghast_tear 1 0.1
+  - bone 1 0.1
+  - redstone 1 0.1
+  - exp 7
 MidBoss:
   Drops:
-  - iron_ingot 6-12
-  - exp 20
+  - bone 1 0.15
+  - ghast_tear 1 0.15
+  - golden_carrot 1 0.15
+  - blaze_powder 1 0.15
+  - egg 1 0.15
 Boss:
   Drops:
   - diamond 1-5
   - exp 30
-  - speckled_melon 1 0.7
+Appocalypse:
+  Drops:
+  - apple 1 0.25
+  - cooked_beef 1 0.015
+  - cooked_chicken 1 0.015
+  - raw_chicken 0-2
+  - raw_beef 0—2
+  - mushroom_stew 1 0.025
+  - pumpkin_pie 1 0.0005
+  - rotten_flesh 1 0.55
+  - spider_eye 1 0.66
+  - cookie 1 0.011
+  - exp 7
 MegaBoss:
   Drops:
   - diamond 4-8
@@ -28,12 +46,16 @@ Deatheater:
   - glowstone_dust 1 0.2
 Tarantula:
   Drops:
-  - spider_eye 1 0.3
+  - glowstone_dust 1 0.3
 Acromantula:
   Drops:
-  - spider_eye 1-3 0.5
-  - spider_eye 1-3 0.5
-  - fermented_spider_eye 1 0.1
+  - glowstone_dust 1 0.10
+  - spider_eye 1 0.10
+  - redstone 1 0.10
+  - fermented_spider_eye 1 0.10
+  - melon_seeds 1 0.10
+  - raw_beef 1 0.10
+  - exp 5
 Auror:
   Drops:
   - sugar 1-2 0.2
@@ -41,9 +63,28 @@ Auror:
   - redstone 1-2 0.2
 Inferius:
   Drops:
-  - magma_cream 1 0.5
+  - string 1 0.15
+  - speckled_melon 1 0.15
+  - brown_mushroom 1 0.15
+  - sugar_cane 1 0.15
+  - nether_stalk 1 0.15
+  - exp 8
 Werewolf:
   Drops:
-  - blaze_powder 1-2 0.7
-  - golden_carrot 1 0.5
-
+  - bone 1 0.15
+  - ghast_tear 1 0.15
+  - golden_carrot 1 0.15
+  - blaze_powder 1 0.15
+  - exp 10
+Dementor:
+  Drops:
+  - sugar 1 0.25
+  - magma_cream 1 0.25
+  - slime_ball 1 0.25
+  - wheat 1 0.25
+  - exp 11
+Rat:
+  Drops:
+  - rotten_flesh 0-2 0.15
+  - apple 0-1 0.1
+  - exp 1

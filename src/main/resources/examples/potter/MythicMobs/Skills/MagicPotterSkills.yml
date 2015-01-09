@@ -18,38 +18,46 @@ Necromancy:
   - msg 40:'$boss &4performs Necromancy' >0 1
   - summon $Inferius:1:2 >0 1
 Poison:
+  Cooldown: 5
+  Conditions:
+  - TargetWithin 10
+  - TargetInLineOfSight true
+  Skills:
+  - potion 30:POISON:100:2 >0
+  - effect boss particles happyVillager:30:1:1000:1:0.5 >0
+Death:
   Cooldown: 10
   Conditions:
   - TargetWithin 16
   - TargetInLineOfSight true
   Skills:
-  - potion 30:POISON:100:2 >0
+  - potion 30:WITHER:100:2 >0
   - effect boss particles happyVillager:30:1:1000:1:0.5 >0
 FlipendoArea:
   Cooldown: 80
   Conditions:
-  - TargetWithin 4
+  - TargetWithin 10
   - TargetInLineOfSight true
   Skills:
-  - cmd 'castp $world,$boss_x,$boss_z,$mobuuid flipendo area true bypass_pvp true ' >0 1
+  - cmd 'castp $world,$boss_x,$boss_z,$mobuuid flipendo area true bypass_pvp true' >0 1
 AccioArea:
-  Cooldown: 25
+  Cooldown: 5
   Conditions:
   - TargetWithin 24
   - TargetInLineOfSight true
   Skills:
-  - cmd 'castp $world,$boss_x,$boss_z,$mobuuid accio area true bypass_pvp true ' >0 1
+  - cmd 'castp $world,$boss_x,$boss_z,$mobuuid accio area true bypass_pvp true' >0 1
 Avada:
   Cooldown: 10
   Conditions:
   - TargetWithin 32
   - TargetInLineOfSight true
   Skills:
-  - cmd 'castp $world,$boss_x,$boss_z,$mobuuid avadakedavra bypass_pvp true ' >0 1
+  - cmd 'castp $world,$boss_x,$boss_z,$mobuuid avadakedavra bypass_pvp true player $player ' >0 1
 Flipendo:
   Cooldown: 10
   Conditions:
-  - TargetWithin 5
+  - TargetWithin 10
   - TargetInLineOfSight true
   Skills:
   - cmd 'castp $world,$boss_x,$boss_z,$mobuuid flipendo bypass_pvp true ' >0 1
@@ -63,31 +71,24 @@ Accio:
 Crucio:
   Cooldown: 15
   Conditions:
-  - TargetWithin 16
+  - TargetWithin 20
   - TargetInLineOfSight true
   Skills:
   - cmd 'castp $world,$boss_x,$boss_z,$mobuuid crucio bypass_pvp true ' >0 1
 SectumSempra:
   Cooldown: 10
   Conditions:
-  - TargetWithin 6
+  - TargetWithin 12
   - TargetInLineOfSight true
   Skills:
   - cmd 'castp $world,$boss_x,$boss_z,$mobuuid sectumsempra bypass_pvp true ' >0 1
 Stupefy:
   Cooldown: 5
   Conditions:
-  - TargetWithin 24
+  - TargetWithin 30
   - TargetInLineOfSight true
   Skills:
   - cmd 'castp $world,$boss_x,$boss_z,$mobuuid stupefy bypass_pvp true ' >0 1
-Dementor:
-  Cooldown: 10
-  Conditions:
-  - TargetWithin 12
-  - TargetInLineOfSight true
-  Skills:
-  - cmd 'castp $world,$boss_x,$boss_z,$mobuuid dementor fov 0 bypass_pvp true' >0 1
 DementorApparate:
   Cooldown: 2
   Conditions:
@@ -103,7 +104,7 @@ Arrow:
   Skills:
   - cmd 'castp $world,$boss_x,$boss_z,$mobuuid arrow bypass_pvp true' >0 1
 Ascendio:
-  Cooldown: 4
+  Cooldown: 2
   Conditions:
   - TargetInLineOfSight
   Skills:
@@ -140,20 +141,34 @@ Petrificus:
   - TargetInLineOfSight true
   Skills:
   - cmd 'castp $world,$boss_x,$boss_z,$mobuuid petrificustotalus bypass_pvp true fov 0' >0 1
-Locomoto:
-  Cooldown: 20
-  Conditions:
-  - TargetWithin 24
-  - TargetInLineOfSight true
-  Skills:
-  - cmd 'castp $world,$boss_x,$boss_z,$mobuuid locomotomortus bypass_pvp true fov 0' >0 1
 Webbing:
   Cooldown: 10
   Conditions:
-  - TargetWithin 16
+  - TargetWithin 13
   - TargetInLineOfSight true
   Skills:
-  - cmd 'castp $world,$boss_x,$boss_z,$mobuuid webbing bypass_pvp true fov 0' >0 1
+  - cmd 'castp $world,$boss_x,$boss_z,$mobuuid webbing bypass_pvp true fov 0’ >0 1
+Dementor:
+  Cooldown: 5
+  Conditions:
+  - TargetWithin 32
+  - TargetInLineOfSight true
+  Skills:
+  - radiuscmd 5:’castp $world,$boss_x,$boss_z,$mobuuid dementor bypass_pvp true fov 0 player $player’
+Locomoto:
+  Cooldown: 5
+  Conditions:
+  - TargetWithin 32
+  - TargetInLineOfSight true
+  Skills:
+  - radiuscmd 5:’castp $world,$boss_x,$boss_z,$mobuuid locomotomortus bypass_pvp true fov 0 player $player’
+Glacius:
+  Cooldown: 5
+  Conditions:
+  - TargetWithin 32
+  - TargetInLineOfSight true
+  Skills:
+  - radiuscmd 5:’castp $world,$boss_x,$boss_z,$mobuuid glacius bypass_pvp true fov 0 player $player’
 Firebending:
   Cooldown: 5
   Conditions:
@@ -212,11 +227,11 @@ DementorAttack:
   - TargetWithin 32
   - TargetInLineOfSight true
   Skills:
-  - randomskill Locomoto,AccioArea,Dementor,DementorApparate >0 1
+  - randomskill Locomoto,Dementor,Glacius >0 1
 AcromantulaAttack:
   Cooldown: 4
   Conditions:
   - TargetWithin 32
   - TargetInLineOfSight true
   Skills:
-  - randomskill Poison,Webbing >0 1
+  - randomskill Ascendio,Webbing >0 1
