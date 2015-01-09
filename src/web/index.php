@@ -55,6 +55,9 @@ foreach ($spells as $key => $spell) {
         unset($spells[$key]);
         continue;
     }
+
+	// TODO: Handle inheritance here!
+
     $spell['name'] = isset($messages['spells'][$key]['name']) ? $messages['spells'][$key]['name'] : '';
     $spell['description'] = isset($messages['spells'][$key]['description']) ? $messages['spells'][$key]['description'] : '';
     $spell['extended_description'] = isset($messages['spells'][$key]['extended_description']) ? $messages['spells'][$key]['extended_description'] : '';
