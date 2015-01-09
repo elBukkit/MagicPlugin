@@ -56,6 +56,7 @@ import org.bukkit.potion.PotionEffectType;
 public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand {
 	public final static int INVENTORY_SIZE = 27;
 	public final static int HOTBAR_SIZE = 9;
+	public final static int HOTBAR_INVENTORY_SIZE = HOTBAR_SIZE - 1;
 	public final static float DEFAULT_SPELL_COLOR_MIX_WEIGHT = 0.0001f;
 	public final static float DEFAULT_WAND_COLOR_MIX_WEIGHT = 1.0f;
     public final static int POTION_EFFECT_DURATION = 240;
@@ -696,7 +697,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	}
 
 	protected int getHotbarSize() {
-		return hotbars.size() * HOTBAR_SIZE;
+		return hotbars.size() * HOTBAR_INVENTORY_SIZE;
 	}
 	
 	protected Inventory getInventory(Integer slot) {
@@ -706,7 +707,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 			int inventoryIndex = (slot - hotbarSize) / INVENTORY_SIZE;
 			inventory = getInventoryByIndex(inventoryIndex);
 		} else {
-			inventory = hotbars.get(slot / HOTBAR_SIZE);
+			inventory = hotbars.get(slot / HOTBAR_INVENTORY_SIZE);
 		}
 		
 		return inventory;
@@ -715,7 +716,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	protected int getInventorySlot(Integer slot) {
 		int hotbarSize = getHotbarSize();
 		if (slot < hotbarSize) {
-			return slot % HOTBAR_SIZE;
+			return slot % HOTBAR_INVENTORY_SIZE;
 		}
 		
 		return ((slot - hotbarSize) % INVENTORY_SIZE);
@@ -925,8 +926,8 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	}
 
 	public void saveProperties(ConfigurationSection node) {
-        node.set("id", id);
-        node.set("materials", getMaterialString());
+		node.set("id", id);
+		node.set("materials", getMaterialString());
 		node.set("spells", getSpellString());
 		node.set("hotbar_count", hotbars.size());
 		node.set("active_spell", activeSpell);
@@ -1680,22 +1681,19 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		// we are about to replace with the wand.
 		Inventory hotbar = getHotbar();
 		int currentSlot = playerInventory.getHeldItemSlot();
-		ItemStack existingHotbar = hotbar.getItem(currentSlot);
-
-        if (existingHotbar != null && existingHotbar.getType() != Material.AIR && !isWand(existingHotbar)) {
-			// Toss the item back into the wand inventory, it'll find a home somewhere.
-            hotbar.setItem(currentSlot, item);
-			addToInventory(existingHotbar);
-            hotbar.setItem(currentSlot, null);
-		}
 
         // Set hotbar items from remaining list
-		for (int hotbarSlot = 0; hotbarSlot < HOTBAR_SIZE; hotbarSlot++) {
-			if (hotbarSlot != currentSlot) {
-				ItemStack hotbarItem = hotbar.getItem(hotbarSlot);
-				updateInventoryName(hotbarItem, true);
-				playerInventory.setItem(hotbarSlot, hotbarItem);
+		int targetOffset = 0;
+		for (int hotbarSlot = 0; hotbarSlot < HOTBAR_INVENTORY_SIZE; hotbarSlot++)
+		{
+			if (hotbarSlot == currentSlot)
+			{
+				targetOffset = 1;
 			}
+
+			ItemStack hotbarItem = hotbar.getItem(hotbarSlot);
+			updateInventoryName(hotbarItem, true);
+			playerInventory.setItem(hotbarSlot + targetOffset, hotbarItem);
 		}
 
         // Put the wand in the player's active slot.
@@ -1719,7 +1717,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		
 		if (addHotbar) {
 			Inventory hotbar = getHotbar();
-			for (int i = 0; i < HOTBAR_SIZE; i++) {
+			for (int i = 0; i < HOTBAR_INVENTORY_SIZE; i++) {
 				ItemStack inventoryItem = hotbar.getItem(i);
 				updateInventoryName(inventoryItem, false);
 				targetInventory.setItem(currentOffset++, inventoryItem);
@@ -1811,13 +1809,15 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		Player player = mage.getPlayer();
 		PlayerInventory playerInventory = player.getInventory();
 		Inventory hotbar = getHotbar();
+		int saveOffset = 0;
 		for (int i = 0; i < HOTBAR_SIZE; i++) {
 			ItemStack playerItem = playerInventory.getItem(i);
 			if (isWand(playerItem)) {
-				playerItem = null;
+				saveOffset = -1;
+				continue;
 			}
-			hotbar.setItem(i, playerItem);
-            updateSlot(i + currentHotbar * HOTBAR_SIZE, playerItem);
+			hotbar.setItem(i + saveOffset, playerItem);
+            updateSlot(i + saveOffset + currentHotbar * HOTBAR_INVENTORY_SIZE, playerItem);
 		}
 		
 		// Fill in the active inventory page
@@ -2299,7 +2299,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 			saveInventory();
 			int hotbarCount = hotbars.size();
 			currentHotbar = hotbarCount == 0 ? 0 : (currentHotbar + hotbarCount + direction) % hotbarCount;
-			updateInventory();
+			updateHotbar();
 			if (inventoryCycleSound != null) {
 				mage.playSound(inventoryCycleSound.getSound(), inventoryCycleSound.getVolume(), inventoryCycleSound.getPitch());
 			}
@@ -2804,7 +2804,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
                     Spell spell = mage.getSpell(spellKey);
                     if (spell != null) {
                         if (spell.canCast(location) && spell.getRemainingCooldown() == 0 && spell.getRequiredCost() == null) {
-                            CompatibilityUtils.addGlow(spellItem);
+							CompatibilityUtils.addGlow(spellItem);
                         } else {
                             CompatibilityUtils.removeGlow(spellItem);
                         }
@@ -2934,6 +2934,10 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		}
 		return this.hotbars.get(currentHotbar);
 	}
+
+	public List<Inventory> getHotbars() {
+		return hotbars;
+	}
 	
 	public WandMode getMode() {
 		return mode != null ? mode : controller.getDefaultWandMode();
@@ -2995,30 +2999,26 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 
 	@Override
 	public void organizeInventory(com.elmakers.mine.bukkit.api.magic.Mage mage) {
+		closeInventory();
         WandOrganizer organizer = new WandOrganizer(this, mage);
         organizer.organize();
         openInventoryPage = 0;
+		currentHotbar = 0;
         autoOrganize = false;
         autoAlphabetize = false;
-
-        // This will regenerate the inventory views
         saveState();
-        loadState();
-        updateInventory();
     }
 
     @Override
     public void alphabetizeInventory() {
+		closeInventory();
         WandOrganizer organizer = new WandOrganizer(this);
         organizer.alphabetize();
         openInventoryPage = 0;
+		currentHotbar = 0;
         autoOrganize = false;
         autoAlphabetize = false;
-
-        // This will regenerate the inventory views
         saveState();
-        loadState();
-        updateInventory();
     }
 
 	@Override

@@ -43,18 +43,21 @@ public class WandOrganizer {
     }
 
     protected void removeHotbar(Map<String, Integer> spells, Map<String, Integer> brushes) {
-        Inventory hotbar = wand.getHotbar();
-        for (int i = 0; i < Wand.HOTBAR_SIZE; i++) {
-            ItemStack hotbarItem = hotbar.getItem(i);
-            if (hotbarItem == null || hotbarItem.getType() == Material.AIR) continue;
+        List<Inventory> hotbars = wand.getHotbars();
+        for (Inventory hotbar : hotbars) {
+            int hotbarSize = hotbar.getSize();
+            for (int i = 0; i < hotbarSize; i++) {
+                ItemStack hotbarItem = hotbar.getItem(i);
+                if (hotbarItem == null || hotbarItem.getType() == Material.AIR) continue;
 
-            String spellName = Wand.getSpell(hotbarItem);
-            if (spellName != null) {
-                spells.remove(spellName);
-            } else {
-                String materialKey = Wand.getBrush(hotbarItem);
-                if (materialKey != null) {
-                    brushes.remove(materialKey);
+                String spellName = Wand.getSpell(hotbarItem);
+                if (spellName != null) {
+                    spells.remove(spellName);
+                } else {
+                    String materialKey = Wand.getBrush(hotbarItem);
+                    if (materialKey != null) {
+                        brushes.remove(materialKey);
+                    }
                 }
             }
         }
@@ -209,7 +212,7 @@ public class WandOrganizer {
     }
 
     protected int getNextSlot(int nextPageSize) {
-        int slot = Wand.HOTBAR_SIZE + currentInventoryCount + (currentInventoryIndex * Wand.INVENTORY_SIZE);
+        int slot = wand.getHotbarSize() + currentInventoryCount + (currentInventoryIndex * Wand.INVENTORY_SIZE);
         currentInventoryCount++;
         if (currentInventoryCount > nextPageSize) {
             nextPage();
