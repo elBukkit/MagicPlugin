@@ -2815,6 +2815,7 @@ public class MagicController implements Listener, MageController {
             if (clickedWand)
             {
                 event.setCancelled(true);
+                activeWand.cycleHotbar(1);
                 return;
             }
 
@@ -2854,6 +2855,7 @@ public class MagicController implements Listener, MageController {
                 Wand wand = new Wand(this, clickedItem);
                 if (wand.isUndroppable()) {
                     event.setCancelled(true);
+                    activeWand.cycleHotbar(1);
                     return;
                 }
             }
