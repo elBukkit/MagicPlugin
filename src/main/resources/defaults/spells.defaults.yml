@@ -3528,7 +3528,7 @@ wolfhouse:
         range: 16
         radius: 4
         type: sphere
-        cooldown: 600000
+        cooldown: 20000
         brush: schematic|wolfhouse
         obx: -3
         oby: -22 

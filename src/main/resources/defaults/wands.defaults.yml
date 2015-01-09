@@ -1427,6 +1427,17 @@ golemheart:
     spells:
         - animate
 
+wolfhouse:
+    active_spell: wolfhouse
+    icon: sapling:5
+    indestructible: false
+    cost_reduction: 2
+    locked: true
+    uses: 1
+    effect_color: 'FFAA00'
+    spells:
+        - wolfhouse
+
 #
 # Older or example templates not directly used in crafting or enchanting
 #

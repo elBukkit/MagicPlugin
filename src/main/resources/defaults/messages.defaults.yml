@@ -1286,6 +1286,9 @@ wands:
     respawntoken:
         name: Respawn Token
         description: Cast to return to spawn
+    wolfhouse:
+        name: Wolf House
+        description: An auto-regenerating base-in-a-box
     defenderheart:
         name: Heart of Defender
         description: It pulsates with power
