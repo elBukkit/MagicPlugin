@@ -74,7 +74,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		"cost_reduction", "cooldown_reduction", "effect_bubbles", "effect_color", 
 		"effect_particle", "effect_particle_count", "effect_particle_data", "effect_particle_interval", 
 		"effect_sound", "effect_sound_interval", "effect_sound_pitch", "effect_sound_volume",
-		"haste", "hotbar_count",
+		"haste", "hotbar_count", "hotbar",
 		"health_regeneration", "hunger_regeneration", 
 		"icon", "mode", "keep", "locked", "quiet", "force", "randomize", "rename",
 		"power", "overrides",
@@ -930,6 +930,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		node.set("materials", getMaterialString());
 		node.set("spells", getSpellString());
 		node.set("hotbar_count", hotbars.size());
+		node.set("hotbar", currentHotbar);
 		node.set("active_spell", activeSpell);
 		node.set("active_material", activeMaterial);
 		node.set("name", wandName);
@@ -1105,6 +1106,11 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 					parseInventoryStrings(wandSpells, wandMaterials);
 				}
 			}
+		}
+
+		if (wandConfig.contains("hotbar")) {
+			int hotbar = wandConfig.getInt("hotbar");
+			currentHotbar = hotbar < 0 || hotbar >= hotbars.size() ? 0 : hotbar;
 		}
 		
 		// Don't change any of this stuff in safe mode
@@ -3018,7 +3024,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		currentHotbar = 0;
         autoOrganize = false;
         autoAlphabetize = false;
-        saveState();
+		saveState();
     }
 
 	@Override
