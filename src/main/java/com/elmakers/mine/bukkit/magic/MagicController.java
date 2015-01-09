@@ -1629,6 +1629,8 @@ public class MagicController implements Listener, MageController {
 			autoSaveTaskId = 0;
 		}
 
+        EffectPlayer.debugEffects(properties.getBoolean("debug_effects", false));
+
         exampleDefaults = properties.getString("example", exampleDefaults);
         addExamples = properties.getStringList("add_examples");
 

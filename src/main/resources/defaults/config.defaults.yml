@@ -481,3 +481,6 @@ bypass_pvp: false
 
 # Will consider all spells as pvp spells
 pvp_restricted: false
+
+# Debug EffectLib issues
+debug_effects: false
