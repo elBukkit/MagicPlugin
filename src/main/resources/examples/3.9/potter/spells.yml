@@ -248,13 +248,13 @@ apparate:
                effectlib:
                    class: AtomEffect
                    particleNucleus: smoke_normal
-                   particleOrbital: smoke_large_normal
+                   particleOrbital: smoke_large
                    iterations: 8
              - class: EffectSingle
                particle_override: particle
                effectlib:
                    class: LineEffect
-                   particle: smoke_large_normal
+                   particle: smoke_large
              '5':
              - class: EffectSingle
                sound: enderman_teleport
@@ -301,13 +301,13 @@ apparatemaxima:
                effectlib:
                    class: AtomEffect
                    particleNucleus: smoke_normal
-                   particleOrbital: smoke_large_normal
+                   particleOrbital: smoke_large
                    iterations: 12
              - class: EffectSingle
                particle_override: particleOrbital
                effectlib:
                    class: LineEffect
-                   particle: smoke_large_normal
+                   particle: smoke_large
              '5':
              - class: EffectSingle
                sound: enderman_teleport
@@ -2675,33 +2675,6 @@ imperio:
     costs:
         mana: 170
 
-imperiomaxima:
-    icon: ink_sack:0
-    hidden: true
-    category: staff
-    class: com.elmakers.mine.bukkit.potterspells.spell.ImperioSpell
-    pvp_restricted: true
-    cast_on_no_target: true
-    worth: 500
-    effects:
-        cast:
-        -  class: EffectSingle
-           sound: portal_trigger
-        -  class: EffectTrail
-           particle: spell
-           length: 16
-    parameters:
-        target_type: Player
-        target: other_entity
-        range: 32
-        item_force: 1
-        entity_force: 1
-        target_breakables: 1
-        bypass_backfire: true
-        check_protection: true
-    costs:
-        mana: 200
-
 impervius:
     icon: bucket
     category: transfiguration
@@ -2962,12 +2935,12 @@ lumos:
            particle_count: 3
         -  class: EffectSingle
            location: target
+           target_offset: 10,0,0
            effectlib:
              class: SphereEffect
              iterations: 5
              period: .1
              particle: flame
-             target_offset: 10,0,0
              radius: 1
              particles: 20
     costs:
@@ -3449,7 +3422,7 @@ patronus:
                particle_override: particle
                effectlib:
                    class: WaveEffect
-                   particle: smoke_large_normal
+                   particle: smoke_large
                    cloudParticle: smoke_normal
                    iterations: 8
                    particlesFront: 5
@@ -4419,7 +4392,7 @@ noxmaxima:
            effectlib:
              class: HelixEffect
              iterations: 2
-             particle: smoke_large_normal
+             particle: smoke_large
     parameters:
         allow_max_range: false
         allow_night: false
@@ -4691,7 +4664,7 @@ recall:
                effectlib:
                    class: AtomEffect
                    particleNucleus: smoke_normal
-                   particleOrbital: smoke_large_normal
+                   particleOrbital: smoke_large
                    iterations: 20
              '5':
              - class: EffectSingle
@@ -4731,7 +4704,7 @@ gather:
                effectlib:
                    class: AtomEffect
                    particleNucleus: smoke_normal
-                   particleOrbital: smoke_large_normal
+                   particleOrbital: smoke_large
                    iterations: 20
              '5':
              - class: EffectSingle
@@ -5626,7 +5599,7 @@ animagus_wolf:
           effectlib:
             class: AtomEffect
             particleNucleus: smoke_normal
-            particleOrbital: smoke_large_normal
+            particleOrbital: smoke_large
             iterations: 8
     parameters:
         target: self
@@ -5653,7 +5626,7 @@ humaculus:
           effectlib:
             class: AtomEffect
             particleNucleus: smoke_normal
-            particleOrbital: smoke_large_normal
+            particleOrbital: smoke_large
             iterations: 8
     parameters:
         target_type: LivingEntity
@@ -5682,7 +5655,7 @@ animagus_cat:
           effectlib:
             class: AtomEffect
             particleNucleus: smoke_normal
-            particleOrbital: smoke_large_normal
+            particleOrbital: smoke_large
             iterations: 8
     parameters:
         target: self
@@ -5709,7 +5682,7 @@ animagus_chicken:
           effectlib:
             class: AtomEffect
             particleNucleus: smoke_normal
-            particleOrbital: smoke_large_normal
+            particleOrbital: smoke_large
             iterations: 8
     parameters:
         target: self
@@ -5736,7 +5709,7 @@ animagus_owl:
           effectlib:
             class: AtomEffect
             particleNucleus: smoke_normal
-            particleOrbital: smoke_large_normal
+            particleOrbital: smoke_large
             iterations: 8
     parameters:
         target: self
@@ -5763,7 +5736,7 @@ animagus_rat:
           effectlib:
             class: AtomEffect
             particleNucleus: smoke_normal
-            particleOrbital: smoke_large_normal
+            particleOrbital: smoke_large
             iterations: 8
     parameters:
         target: self
@@ -5790,7 +5763,7 @@ animagus_horse:
           effectlib:
             class: AtomEffect
             particleNucleus: smoke_normal
-            particleOrbital: smoke_large_normal
+            particleOrbital: smoke_large
             iterations: 8
     parameters:
         target: self
@@ -5817,7 +5790,7 @@ animagus_donkey:
           effectlib:
             class: AtomEffect
             particleNucleus: smoke_normal
-            particleOrbital: smoke_large_normal
+            particleOrbital: smoke_large
             iterations: 8
     parameters:
         target: self
@@ -5844,7 +5817,7 @@ animagus_spider:
           effectlib:
             class: AtomEffect
             particleNucleus: smoke_normal
-            particleOrbital: smoke_large_normal
+            particleOrbital: smoke_large
             iterations: 8
     parameters:
         target: self
@@ -5871,7 +5844,7 @@ animagus_sheep:
           effectlib:
             class: AtomEffect
             particleNucleus: smoke_normal
-            particleOrbital: smoke_large_normal
+            particleOrbital: smoke_large
             iterations: 8
     parameters:
         target: self
@@ -5898,7 +5871,7 @@ animagus_cow:
           effectlib:
             class: AtomEffect
             particleNucleus: smoke_normal
-            particleOrbital: smoke_large_normal
+            particleOrbital: smoke_large
             iterations: 8
     parameters:
         target: self
@@ -5925,7 +5898,7 @@ animagus_pig:
           effectlib:
             class: AtomEffect
             particleNucleus: smoke_normal
-            particleOrbital: smoke_large_normal
+            particleOrbital: smoke_large
             iterations: 8
     parameters:
         target: self
