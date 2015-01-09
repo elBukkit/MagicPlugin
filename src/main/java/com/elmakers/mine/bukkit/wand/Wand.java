@@ -727,12 +727,6 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 			addToInventory(itemStack);
 			return;
 		}
-        Player player = mage != null ? mage.getPlayer() : null;
-        if (player != null && slot == player.getInventory().getHeldItemSlot()) {
-            addToInventory(itemStack);
-            return;
-        }
-		
 		Inventory inventory = getInventory(slot);
 		slot = getInventorySlot(slot);
 		
@@ -3005,26 +2999,32 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 
 	@Override
 	public void organizeInventory(com.elmakers.mine.bukkit.api.magic.Mage mage) {
-		closeInventory();
         WandOrganizer organizer = new WandOrganizer(this, mage);
         organizer.organize();
         openInventoryPage = 0;
 		currentHotbar = 0;
         autoOrganize = false;
         autoAlphabetize = false;
-        saveState();
+
+		// Force inventory re-load
+		saveState();
+		loadState();
+		updateInventory();
     }
 
     @Override
     public void alphabetizeInventory() {
-		closeInventory();
         WandOrganizer organizer = new WandOrganizer(this);
         organizer.alphabetize();
         openInventoryPage = 0;
 		currentHotbar = 0;
         autoOrganize = false;
         autoAlphabetize = false;
+
+		// Force inventory re-load
 		saveState();
+		loadState();
+		updateInventory();
     }
 
 	@Override
