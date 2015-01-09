@@ -1997,6 +1997,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 					parseInventoryStrings(wandSpells, wandMaterials);
 				}
 				modified = true;
+				sendAddMessage("wand.hotbar_added", Integer.toString(newCount));
 			}
 		}
 
