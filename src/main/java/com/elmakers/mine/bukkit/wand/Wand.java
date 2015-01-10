@@ -216,7 +216,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	protected void setHotbarCount(int count) {
 		hotbars.clear();
 		while (hotbars.size() < count) {
-			hotbars.add(CompatibilityUtils.createInventory(null, 9, "Wand"));
+			hotbars.add(CompatibilityUtils.createInventory(null, HOTBAR_INVENTORY_SIZE, "Wand"));
 		}
 		while (hotbars.size() > count) {
 			hotbars.remove(0);
@@ -635,32 +635,9 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         if (itemStack == null || itemStack.getType() == Material.AIR) {
             return;
         }
-
-		// Set the wand item
-		Integer selectedItem = null;
-		Inventory hotbar = getHotbar();
-        if (getMode() == WandMode.INVENTORY && mage != null && mage.getPlayer() != null && playerInventorySlot != null) {
-            if (item == null || !isWand(item))
-            {
-                controller.getLogger().warning("Wand item isn't a wand");
-                return;
-            }
-            selectedItem = playerInventorySlot;
-
-            // Toss the item back into the wand inventory, it'll find a home somewhere.
-            // We hope this doesn't recurse too badly! :\
-            ItemStack existingHotbar = hotbar.getItem(selectedItem);
-
-            // Set the wand item to occupy this spot
-            hotbar.setItem(selectedItem, item);
-
-            if (existingHotbar != null && existingHotbar.getType() != Material.AIR && !isWand(existingHotbar)) {
-                addToInventory(existingHotbar);
-            }
-        }
 		List<Inventory> checkInventories = getAllInventories();
 		boolean added = false;
-		
+
 		for (Inventory inventory : checkInventories) {
 			HashMap<Integer, ItemStack> returned = inventory.addItem(itemStack);
 
@@ -673,11 +650,6 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 			Inventory newInventory = CompatibilityUtils.createInventory(null, INVENTORY_SIZE, "Wand");
 			newInventory.addItem(itemStack);
 			inventories.add(newInventory);
-		}
-		
-		// Restore empty wand slot
-		if (selectedItem != null) {
-			hotbar.setItem(selectedItem, null);
 		}
 	}
 	
