@@ -2207,7 +2207,11 @@ public class MagicController implements Listener, MageController {
             Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
                 @Override
                 public void run() {
-                    activeWand.cycleHotbar(1);
+                    if (activeWand.getHotbars().size() > 1) {
+                        activeWand.cycleHotbar(1);
+                    } else {
+                        activeWand.closeInventory();
+                    }
                }
             });
             cancelEvent = true;
@@ -2855,7 +2859,11 @@ public class MagicController implements Listener, MageController {
                 Wand wand = new Wand(this, clickedItem);
                 if (wand.isUndroppable()) {
                     event.setCancelled(true);
-                    activeWand.cycleHotbar(1);
+                    if (activeWand.getHotbars().size() > 1) {
+                        activeWand.cycleHotbar(1);
+                    } else {
+                        activeWand.closeInventory();
+                    }
                     return;
                 }
             }
