@@ -409,7 +409,8 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	}
 
     public boolean isUndroppable() {
-        return undroppable;
+		// Don't allow dropping wands while the inventory is open.
+        return undroppable || isInventoryOpen();
     }
 	
 	public boolean isUpgrade() {
