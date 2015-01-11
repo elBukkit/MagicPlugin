@@ -459,14 +459,9 @@ public class WandUpgradePath {
     public boolean checkUpgrade(Mage mage, Wand wand) {
         if (requiredSpells == null && requiredSpells.isEmpty()) return true;
 
-        Set<String> wandSpells = wand.getSpells();
-        if (wandSpells.containsAll(requiredSpells)) {
-            return true;
-        }
-
         if (mage != null) {
             for (String requiredKey : requiredSpells) {
-                if (!wandSpells.contains(requiredKey)) {
+                if (!wand.hasSpell(requiredKey)) {
                     SpellTemplate spell = mage.getController().getSpellTemplate(requiredKey);
                     if (spell == null) {
                         mage.getController().getLogger().warning("Invalid spell required for upgrade: " + requiredKey);
