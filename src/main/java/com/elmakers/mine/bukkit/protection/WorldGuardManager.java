@@ -1,6 +1,7 @@
 package com.elmakers.mine.bukkit.protection;
 
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
+import com.sk89q.worldguard.protection.flags.StateFlag;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
@@ -72,7 +73,7 @@ public class WorldGuardManager {
 		ApplicableRegionSet checkSet = regionManager.getApplicableRegions(location);
 		if (checkSet == null) return true;
 
-		return checkSet.allows(DefaultFlag.PVP);
+		return checkSet.queryState(null, DefaultFlag.PVP) != StateFlag.State.DENY;
 	}
 	
 	public boolean isPassthrough(Location location) {
@@ -83,7 +84,7 @@ public class WorldGuardManager {
 
 		ApplicableRegionSet checkSet = regionManager.getApplicableRegions(location);
 		if (checkSet == null) return true;
-		return checkSet.size() == 0 || checkSet.allows(DefaultFlag.PASSTHROUGH);
+		return checkSet.size() == 0 || checkSet.testState(null, DefaultFlag.PASSTHROUGH);
 	}
 	
 	public boolean hasBuildPermission(Player player, Block block) {
