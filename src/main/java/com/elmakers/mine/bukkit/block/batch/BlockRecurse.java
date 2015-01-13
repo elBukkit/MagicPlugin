@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.block.batch;
 
+import com.elmakers.mine.bukkit.api.action.BlockAction;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 
@@ -31,7 +32,7 @@ public class BlockRecurse
 			undoList.add(block);
 		}
 
-		if (recurseAction.perform(block) != SpellResult.CAST)
+		if (recurseAction.perform(null, block) != SpellResult.CAST)
 		{
 			return;
 		}

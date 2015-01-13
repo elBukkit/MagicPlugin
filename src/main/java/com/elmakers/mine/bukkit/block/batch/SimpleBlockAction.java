@@ -1,10 +1,12 @@
 package com.elmakers.mine.bukkit.block.batch;
 
+import com.elmakers.mine.bukkit.api.action.BlockAction;
 import org.bukkit.block.Block;
 
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.block.UndoList;
+import org.bukkit.configuration.ConfigurationSection;
 
 public class SimpleBlockAction implements BlockAction
 {
@@ -17,7 +19,7 @@ public class SimpleBlockAction implements BlockAction
 		this.controller = controller;
 	}
 
-	public SpellResult perform(Block block)
+	public SpellResult perform(ConfigurationSection parameters, Block block)
 	{
 		if (controller != null)
 		{
