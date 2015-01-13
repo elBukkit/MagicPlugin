@@ -11,24 +11,25 @@ public class BlockRecurse
 {
 	protected int maxRecursion = 8;
 
-	public int recurse(Block startBlock, BlockAction recurseAction)
+	public void recurse(Block startBlock, BlockAction recurseAction, UndoList undoList)
 	{
-		recurse(startBlock, recurseAction, null, 0);
-		return recurseAction.getBlocks().size();
+		recurse(startBlock, recurseAction, undoList, null, 0);
 	}
 
-	protected void recurse(Block block, BlockAction recurseAction, BlockFace nextFace, int rDepth)
+	protected void recurse(Block block, BlockAction recurseAction, UndoList undoList, BlockFace nextFace, int rDepth)
 	{
-		UndoList affectedBlocks = recurseAction.getBlocks();
 		if (nextFace != null)
 		{
 			block = block.getRelative(nextFace);
 		}
-		if (affectedBlocks.contains(block))
+		if (undoList != null)
 		{
-			return;
+			if (undoList.contains(block))
+			{
+				return;
+			}
+			undoList.add(block);
 		}
-		affectedBlocks.add(block);
 
 		if (recurseAction.perform(block) != SpellResult.CAST)
 		{
@@ -41,7 +42,7 @@ public class BlockRecurse
 			{
 				if (nextFace == null || nextFace != BlockData.getReverseFace(face))
 				{
-					recurse(block, recurseAction, face, rDepth + 1);
+					recurse(block, recurseAction, undoList, face, rDepth + 1);
 				}
 			}
 		}

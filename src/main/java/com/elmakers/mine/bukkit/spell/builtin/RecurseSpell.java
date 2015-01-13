@@ -59,8 +59,8 @@ public class RecurseSpell extends BrushSpell
 				action.addReplaceable(Material.SNOW, i);
 			}
 		}
-		blockRecurse.recurse(targetBlock, action);
-		mage.registerForUndo(action.getBlocks());
+		blockRecurse.recurse(targetBlock, action, getUndoList());
+		registerForUndo();
 		controller.updateBlock(targetBlock);
 		
 		return SpellResult.CAST;
