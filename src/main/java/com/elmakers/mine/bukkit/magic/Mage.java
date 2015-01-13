@@ -1307,10 +1307,15 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
     @Override
     public boolean isStealth() {
-        Player player = getPlayer();
-        if (player != null && player.isSneaking()) return true;
+        if (isSneaking()) return true;
         if (activeWand != null && activeWand.isStealth()) return true;
         return false;
+    }
+
+    @Override
+    public boolean isSneaking() {
+        Player player = getPlayer();
+        return (player != null && player.isSneaking());
     }
 
     @Override
