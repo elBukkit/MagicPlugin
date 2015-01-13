@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 2.0
+
+ - Add Mage.isSneaking
+
 ## 1.9
 
  - Add wand inventory alphabetizing

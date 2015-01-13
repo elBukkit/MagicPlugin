@@ -360,4 +360,5 @@ public interface Mage extends CostReducer {
     public boolean restoreWand();
     public UndoList getLastUndoList();
     public boolean isStealth();
+    public boolean isSneaking();
 }
