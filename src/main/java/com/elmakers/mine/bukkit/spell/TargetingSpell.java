@@ -2,6 +2,7 @@ package com.elmakers.mine.bukkit.spell;
 
 import java.util.*;
 
+import com.elmakers.mine.bukkit.api.action.BlockAction;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -23,7 +24,6 @@ import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.spell.TargetType;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.block.MaterialBrush;
-import com.elmakers.mine.bukkit.block.batch.BlockAction;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.Target;
 
@@ -657,7 +657,7 @@ public abstract class TargetingSpell extends BaseSpell {
                     Block coveringBlock = block.getRelative(BlockFace.UP);
                     if (!targetThroughMaterials.contains(block.getType()) && targetThroughMaterials.contains(coveringBlock.getType()))
                     {
-                        action.perform(block);
+                        action.perform(null, block);
                     }
                 }
             }
