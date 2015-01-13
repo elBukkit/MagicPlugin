@@ -1545,12 +1545,11 @@ public class MagicController implements Listener, MageController {
 	public static Spell loadSpell(String name, ConfigurationSection node, MageController controller)
 	{
 		String className = node.getString("class");
-		if (className == null) {
-            controller.getLogger().warning("Spell missing class name: " + name);
-            return null;
+		if (className == null)
+        {
+            className = "com.elmakers.mine.bukkit.spell.ActionSpell";
         }
-
-		if (className.indexOf('.') <= 0)
+        else if (className.indexOf('.') <= 0)
 		{
 			className = BUILTIN_SPELL_CLASSPATH + "." + className;
 		}
