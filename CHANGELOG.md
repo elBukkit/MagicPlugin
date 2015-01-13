@@ -3,6 +3,7 @@
 ## 2.0
 
  - Add hitbox-based targeting.
+ - Add SpellAction system.
 
 ## 1.9
 

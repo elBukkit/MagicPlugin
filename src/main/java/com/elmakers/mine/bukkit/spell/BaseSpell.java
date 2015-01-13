@@ -205,7 +205,6 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
 
     public boolean isSafeLocation(Block block)
     {
-
         if (!block.getChunk().isLoaded()) {
             block.getChunk().load(true);
             return false;
@@ -569,7 +568,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         return getPotionEffects(parameters, null);
     }
 
-    protected static Collection<PotionEffect> getPotionEffects(ConfigurationSection parameters, Integer duration)
+    public static Collection<PotionEffect> getPotionEffects(ConfigurationSection parameters, Integer duration)
     {
         List<PotionEffect> effects = new ArrayList<PotionEffect>();
         PotionEffectType[] effectTypes = PotionEffectType.values();

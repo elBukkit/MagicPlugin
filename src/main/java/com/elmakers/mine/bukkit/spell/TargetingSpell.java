@@ -32,6 +32,7 @@ public abstract class TargetingSpell extends BaseSpell {
     private static final int  MAX_RANGE  = 511;
 
     private Target								target					= null;
+    private List<Target>                        targets                 = null;
     private String								targetName			    = null;
     private TargetType							targetType				= TargetType.OTHER;
     private boolean								targetNPCs				= false;
@@ -77,6 +78,7 @@ public abstract class TargetingSpell extends BaseSpell {
 
     protected void initializeTargeting()
     {
+        clearTarget();
         blockIterator = null;
         targetSpaceRequired = false;
         reverseTargeting = false;
@@ -371,7 +373,7 @@ public abstract class TargetingSpell extends BaseSpell {
         }
 
         Target targetBlock = block == null ? null : new Target(location, block);
-        Target entityTarget = getEntityTarget();
+        Target entityTarget = getEntityTarget(targetBlock);
 
         // Don't allow targeting entities in an area you couldn't cast the spell in
         if (entityTarget != null && !canCast(entityTarget.getLocation())) {
@@ -421,6 +423,9 @@ public abstract class TargetingSpell extends BaseSpell {
     public void clearTarget()
     {
         target = null;
+        targets = null;
+        targetName = null;
+        targetLocation = null;
     }
 
     public Block getTargetBlock()
@@ -428,10 +433,10 @@ public abstract class TargetingSpell extends BaseSpell {
         return getTarget().getBlock();
     }
 
-    protected Target getEntityTarget()
+    protected Target getEntityTarget(Target blockTarget)
     {
         if (targetEntityType == null) return null;
-        List<Target> scored = getAllTargetEntities();
+        List<Target> scored = getAllTargetEntities(blockTarget);
         if (scored.size() <= 0) return null;
         return scored.get(0);
     }
@@ -440,10 +445,22 @@ public abstract class TargetingSpell extends BaseSpell {
         return getAllTargetEntities(null);
     }
 
-    protected List<Target> getAllTargetEntities(Double range) {
-        List<Target> scored = new ArrayList<Target>();
+    protected List<Target> getAllTargetEntities(Target target) {
+        double range = this.range;
+        if (target != null)
+        {
+            range = target.getDistanceSquared();
+        }
+        return getAllTargetEntities(range);
+    }
 
-        Double rangeSquared = range == null ? null : range * range;
+    protected List<Target> getAllTargetEntities(double range) {
+        if (targets != null) {
+            return targets;
+        }
+        targets = new ArrayList<Target>();
+
+        int rangeSquared = (int)Math.floor(range * range);
         List<Entity> entities = null;
         Entity mageEntity = mage.getEntity();
         int maxRange = getMaxRange();
@@ -454,13 +471,13 @@ public abstract class TargetingSpell extends BaseSpell {
             entities = CompatibilityUtils.getNearbyEntities(sourceLocation, maxRange, maxRange, maxRange);
         }
 
-        if (entities == null) return scored;
+        if (entities == null) return targets;
         for (Entity entity : entities)
         {
             if (entity == mage.getEntity()) continue;
             if (!targetNPCs && controller.isNPC(entity)) continue;
             if (entity.hasMetadata("notarget")) continue;
-            if (rangeSquared != null && entity.getLocation().distanceSquared(sourceLocation) > rangeSquared) continue;
+            if (entity.getLocation().distanceSquared(sourceLocation) > rangeSquared) continue;
 
             // Special check for Elementals
             if (!controller.isElemental(entity) && !canTarget(entity)) continue;
@@ -478,30 +495,32 @@ public abstract class TargetingSpell extends BaseSpell {
             }
             if (newScore.getScore() > 0)
             {
-                scored.add(newScore);
+                targets.add(newScore);
             }
         }
 
-        Collections.sort(scored);
-        return scored;
+        Collections.sort(targets);
+        return targets;
     }
 
-    protected boolean canTarget(Entity entity) {
+    public boolean canTarget(Entity entity) {
         // This is mainly here to ignore pets...
         if (entity.getType() == EntityType.UNKNOWN) {
             return false;
         }
         if (!targetNPCs && controller.isNPC(entity)) return false;
-        if (checkProtection && entity instanceof Player) {
+        if (entity instanceof Player)
+        {
             Player player = (Player)entity;
-            if (player.hasPermission("Magic.protected." + this.getKey())) return false;
+            if (checkProtection && player.hasPermission("Magic.protected." + this.getKey())) return false;
+            if (controller.isMage(entity) && controller.getMage(entity).isSuperProtected()) return false;
         }
 
         if (targetEntityType == null) return true;
         return targetEntityType.isAssignableFrom(entity.getClass());
     }
 
-    protected boolean isSuperProtected(Mage mage) {
+    public boolean isSuperProtected(Mage mage) {
         return !bypassProtection && mage.isSuperProtected();
     }
 
@@ -650,9 +669,7 @@ public abstract class TargetingSpell extends BaseSpell {
     {
         super.reset();
 
-        this.target = null;
-        this.targetName = null;
-        this.targetLocation = null;
+        this.clearTarget();
     }
 
     @SuppressWarnings("unchecked")
