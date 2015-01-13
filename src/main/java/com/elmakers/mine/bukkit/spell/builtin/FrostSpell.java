@@ -46,7 +46,8 @@ public class FrostSpell extends BlockSpell
 		}
 		
 		@SuppressWarnings("deprecation")
-		public SpellResult perform(Block block)
+		@Override
+		public SpellResult perform(ConfigurationSection parameters, Block block)
 		{
 			if (isTransparent(block.getType()))
 			{
@@ -89,7 +90,7 @@ public class FrostSpell extends BlockSpell
 			{
 				block = block.getRelative(BlockFace.UP);
 			}
-			super.perform(block);
+			super.perform(parameters, block);
             MaterialAndData applyMaterial = new MaterialAndData(material);
 			if (block.getType() == Material.SNOW && material == Material.SNOW) {
 				if (block.getData() < 7) {
@@ -160,7 +161,7 @@ public class FrostSpell extends BlockSpell
 
 		if (radius < 1)
 		{
-			action.perform(findBlockUnder(target.getBlock()));
+			action.perform(parameters, findBlockUnder(target.getBlock()));
 		}
 		else
 		{

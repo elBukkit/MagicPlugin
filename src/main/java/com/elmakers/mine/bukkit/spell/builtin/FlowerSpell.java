@@ -52,8 +52,9 @@ public class FlowerSpell extends BlockSpell
             this.ageItems = ageItems;
             random = new Random();
 		}
-		
-		public SpellResult perform(Block block)
+
+        @Override
+		public SpellResult perform(ConfigurationSection parameters, Block block)
 		{
 			if (block.getType() != Material.GRASS)
 			{
@@ -78,12 +79,12 @@ public class FlowerSpell extends BlockSpell
                 return SpellResult.FAIL;
             }
 
-			super.perform(block);
+			super.perform(parameters, block);
             material.modify(block);
 
             if (tall) {
                 block = block.getRelative(BlockFace.UP);
-                super.perform(block);
+                super.perform(parameters, block);
                 material.setData((byte)8);
                 material.modify(block);
             }
@@ -127,7 +128,7 @@ public class FlowerSpell extends BlockSpell
 
 		if (radius <= 1)
 		{
-			action.perform(targetBlock);
+			action.perform(parameters, targetBlock);
 		}
 		else
 		{

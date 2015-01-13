@@ -59,7 +59,7 @@ public class RecurseSpell extends BrushSpell
 				action.addReplaceable(Material.SNOW, i);
 			}
 		}
-		blockRecurse.recurse(targetBlock, action, getUndoList());
+		blockRecurse.recurse(targetBlock, action, parameters, getUndoList());
 		registerForUndo();
 		controller.updateBlock(targetBlock);
 		

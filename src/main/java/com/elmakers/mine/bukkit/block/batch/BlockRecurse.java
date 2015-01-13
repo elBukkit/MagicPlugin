@@ -7,17 +7,18 @@ import org.bukkit.block.BlockFace;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.block.BlockData;
 import com.elmakers.mine.bukkit.block.UndoList;
+import org.bukkit.configuration.ConfigurationSection;
 
 public class BlockRecurse
 {
 	protected int maxRecursion = 8;
 
-	public void recurse(Block startBlock, BlockAction recurseAction, UndoList undoList)
+	public void recurse(Block startBlock, BlockAction recurseAction, ConfigurationSection parameters, UndoList undoList)
 	{
-		recurse(startBlock, recurseAction, undoList, null, 0);
+		recurse(startBlock, recurseAction, parameters, undoList, null, 0);
 	}
 
-	protected void recurse(Block block, BlockAction recurseAction, UndoList undoList, BlockFace nextFace, int rDepth)
+	protected void recurse(Block block, BlockAction recurseAction, ConfigurationSection parameters, UndoList undoList, BlockFace nextFace, int rDepth)
 	{
 		if (nextFace != null)
 		{
@@ -32,7 +33,7 @@ public class BlockRecurse
 			undoList.add(block);
 		}
 
-		if (recurseAction.perform(null, block) != SpellResult.CAST)
+		if (recurseAction.perform(parameters, block) != SpellResult.CAST)
 		{
 			return;
 		}
@@ -43,7 +44,7 @@ public class BlockRecurse
 			{
 				if (nextFace == null || nextFace != BlockData.getReverseFace(face))
 				{
-					recurse(block, recurseAction, undoList, face, rDepth + 1);
+					recurse(block, recurseAction, parameters, undoList, face, rDepth + 1);
 				}
 			}
 		}

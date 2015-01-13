@@ -5,6 +5,7 @@ import java.util.Set;
 
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.FallingBlock;
 import org.bukkit.util.Vector;
 
@@ -51,7 +52,8 @@ public class ReplaceMaterialAction extends SimpleBlockAction
 	}
 
 	@SuppressWarnings("deprecation")
-	public SpellResult perform(Block block)
+	@Override
+	public SpellResult perform(ConfigurationSection parameters, Block block)
 	{
 		if (brush == null)
 		{
@@ -86,7 +88,7 @@ public class ReplaceMaterialAction extends SimpleBlockAction
 					}
 				}
 			}
-			super.perform(block);
+			super.perform(parameters, block);
 			return SpellResult.CAST;
 		}
 

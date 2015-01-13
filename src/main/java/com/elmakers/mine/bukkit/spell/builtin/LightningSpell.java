@@ -25,11 +25,11 @@ public class LightningSpell extends UndoableSpell
 			this.thunderThreshold = thunderThreshold;
 		}
 
-		public SpellResult perform(Block block)
+		public SpellResult perform(ConfigurationSection parameters, Block block)
 		{
 			if (Math.random() > density) return SpellResult.COST_FREE;
 
-			super.perform(block);
+			super.perform(parameters, block);
 			World world = block.getWorld();
 			world.strikeLightning(block.getLocation());
 			
@@ -62,7 +62,7 @@ public class LightningSpell extends UndoableSpell
 
 		if (radius <= 1)
 		{
-			action.perform(target.getBlock());
+			action.perform(parameters, target.getBlock());
 		}
 		else
 		{

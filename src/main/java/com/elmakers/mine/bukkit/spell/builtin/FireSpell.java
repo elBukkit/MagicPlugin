@@ -26,8 +26,9 @@ public class FireSpell extends BlockSpell
 		{
 			super(controller, undoList);
 		}
-		
-		public SpellResult perform(Block block)
+
+		@Override
+		public SpellResult perform(ConfigurationSection parameters, Block block)
 		{
 			if (block.getType() == Material.AIR || block.getType() == Material.FIRE || block.getType() == Material.WATER || block.getType() == Material.STATIONARY_WATER)
 			{
@@ -46,7 +47,7 @@ public class FireSpell extends BlockSpell
             {
                 return SpellResult.NO_TARGET;
             }
-			super.perform(block);
+			super.perform(parameters, block);
             MaterialAndData applyMaterial = new MaterialAndData(material);
             applyMaterial.modify(block);
 
@@ -88,7 +89,7 @@ public class FireSpell extends BlockSpell
 
 		if (radius < 1)
 		{
-			action.perform(findBlockUnder(targetBlock));
+			action.perform(parameters, findBlockUnder(targetBlock));
 		}
 		else
 		{
