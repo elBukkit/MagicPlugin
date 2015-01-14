@@ -302,6 +302,7 @@ public class ConfigurationUtils {
 
     public static ConfigurationSection addConfigurations(ConfigurationSection first, ConfigurationSection second, boolean override)
     {
+        if (second == null) return first;
         Set<String> keys = second.getKeys(false);
         for (String key : keys) {
             Object value = second.get(key);

@@ -17,8 +17,9 @@ import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 
 public abstract class BrushSpell extends BlockSpell {
 
-    private MaterialBrush brush;
-    private boolean hasBrush = false;
+    protected MaterialBrush brush;
+    protected boolean hasBrush = false;
+    protected boolean usesBrush = true;
 
     public final static String[] BRUSH_PARAMETERS = {
         "brushmod", "brush", "obx", "oby", "obz", "obworld", "btarget", "brushcolor", "preserve_data"
@@ -91,6 +92,7 @@ public abstract class BrushSpell extends BlockSpell {
     {
         super.loadTemplate(node);
         hasBrush = parameters.contains("brush");
+        usesBrush = node.getBoolean("uses_brush", usesBrush);
     }
 
     public com.elmakers.mine.bukkit.api.block.MaterialBrush getBrush()
@@ -113,6 +115,12 @@ public abstract class BrushSpell extends BlockSpell {
     public boolean hasBrushOverride()
     {
         return brush != null || hasBrush;
+    }
+
+    @Override
+    public boolean usesBrush()
+    {
+        return usesBrush && !hasBrushOverride();
     }
 
     @Override

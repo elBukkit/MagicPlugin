@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
+import java.util.logging.Level;
 
 import com.elmakers.mine.bukkit.api.event.CastEvent;
 import com.elmakers.mine.bukkit.api.event.PreCastEvent;
@@ -147,6 +148,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     private boolean hidden                      = false;
 
     protected ConfigurationSection parameters = null;
+    protected ConfigurationSection configuration = null;
 
     protected static Random random            = new Random();
 
@@ -657,6 +659,18 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     }
 
     public boolean hasBrushOverride()
+    {
+        return false;
+    }
+
+    @Override
+    public boolean usesBrush()
+    {
+        return false;
+    }
+
+    @Override
+    public boolean isUndoable()
     {
         return false;
     }
@@ -1205,8 +1219,15 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     @Override
     public com.elmakers.mine.bukkit.api.spell.Spell createSpell()
     {
-        BaseSpell spell = (BaseSpell)this.clone();
-        spell.template = this;
+        BaseSpell spell = null;
+        try {
+            spell = (BaseSpell) this.getClass().newInstance();
+            spell.initialize(controller);
+            spell.loadTemplate(spellKey.getKey(), configuration);
+            spell.template = this;
+        } catch (Exception ex) {
+            controller.getLogger().log(Level.WARNING, "Error creating spell", ex);
+        }
         return spell;
     }
 
@@ -1539,6 +1560,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     public void loadTemplate(String key, ConfigurationSection node)
     {
         spellKey = new SpellKey(key);
+        this.configuration = node;
         this.loadTemplate(node);
     }
 
