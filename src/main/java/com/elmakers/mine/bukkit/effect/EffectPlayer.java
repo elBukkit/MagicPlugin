@@ -86,6 +86,7 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
     protected ParticleEffect particleType = null;
     protected ParticleEffect particleOverride = null;
     protected String useParticleOverride = null;
+    protected String useColorOverride = null;
     protected String particleSubType = "";
     protected float particleData = 0f;
     protected float particleXOffset = 0.3f;
@@ -129,6 +130,7 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
         }
 
         useParticleOverride = configuration.getString("particle_override", null);
+        useColorOverride = configuration.getString("color_override", null);
         originOffset = ConfigurationUtils.getVector(configuration, "origin_offset");
         targetOffset = ConfigurationUtils.getVector(configuration, "target_offset");
         delayTicks = configuration.getInt("delay", delayTicks) * 20 / 1000;
@@ -363,6 +365,10 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
 
     public String getParticleOverrideName() {
         return useParticleOverride;
+    }
+
+    public String getColorOverrideName() {
+        return useColorOverride;
     }
 
     public void setParticleData(float effectData) {

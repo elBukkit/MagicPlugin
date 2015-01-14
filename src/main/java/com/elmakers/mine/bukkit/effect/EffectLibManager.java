@@ -4,6 +4,7 @@ import de.slikey.effectlib.Effect;
 import de.slikey.effectlib.EffectManager;
 import de.slikey.effectlib.util.ParticleEffect;
 import org.bukkit.Bukkit;
+import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemoryConfiguration;
@@ -60,15 +61,27 @@ public class EffectLibManager {
         String effectClass = configuration.getString("class");
         ParticleEffect particleEffect = player.overrideParticle(null);
         String effectOverride = player.getParticleOverrideName();
-
+        if (effectOverride != null && effectOverride.isEmpty()) effectOverride = null;
+        String colorOverrideName = player.getColorOverrideName();
+        if (colorOverrideName != null && colorOverrideName.isEmpty()) colorOverrideName = null;
         ConfigurationSection parameters = configuration;
-        if (particleEffect != null && effectOverride != null && !effectOverride.isEmpty() && configuration.contains(effectOverride)) {
+        Color colorOverride = player.getColor1();
+        if ((colorOverrideName != null && colorOverride != null) || (effectOverride != null && particleEffect != null))
+        {
             parameters = new MemoryConfiguration();
             Collection<String> keys = configuration.getKeys(false);
             for (String key : keys) {
                 parameters.set(key, configuration.get(key));
             }
-            parameters.set(effectOverride, particleEffect.name());
+            if (effectOverride != null && particleEffect != null)
+            {
+                parameters.set(effectOverride, particleEffect.name());
+            }
+            if (colorOverride != null && colorOverrideName != null)
+            {
+                String hexColor = Integer.toHexString(colorOverride.asRGB());
+                parameters.set(colorOverrideName, hexColor);
+            }
         }
         try {
             effect = effectManager.start(effectClass, parameters, origin, target, originEntity, targetEntity, nameMap);
