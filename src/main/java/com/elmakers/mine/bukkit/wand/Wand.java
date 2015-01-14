@@ -343,7 +343,9 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		setActiveBrush(materialKey);
 		if (materialKey != null) {
 			com.elmakers.mine.bukkit.api.block.MaterialBrush brush = mage.getBrush();
-			if (brush != null) {
+			if (brush != null)
+			{
+				boolean eraseWasActive = brush.isEraseModifierActive();
 				brush.activate(mage.getLocation(), materialKey);
 
                 if (mage != null) {
@@ -353,7 +355,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
                     } else if (mode == BrushMode.REPLICATE) {
                         mage.sendMessage(controller.getMessages().get("wand.replicate_material_activated"));
                     }
-                    if (brush.isEraseModifierActive()) {
+                    if (!eraseWasActive && brush.isEraseModifierActive()) {
                         mage.sendMessage(controller.getMessages().get("wand.erase_modifier_activated"));
                     }
                 }
