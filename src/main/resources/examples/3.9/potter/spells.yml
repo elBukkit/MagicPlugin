@@ -379,10 +379,11 @@ araniaexumai:
 arrow:
     icon: arrow
     category: dada
-    class: ProjectileSpell
     pvp_restricted: true
-    cast_on_no_target: true
     worth: 2
+    actions:
+        cast:
+        - class: ProjectileAction
     effects:
         cast:
         -  class: EffectSingle
@@ -419,6 +420,7 @@ arrow:
       cooldown: 2000
       undo: 5000
       range: 50
+      radius: 16
     costs:
         mana: 50
 
@@ -452,9 +454,14 @@ arrow|4:
 snowball:
     icon: snow_ball
     category: charms
-    class: ProjectileSpell
     pvp_restricted: true
     worth: 5
+    actions:
+        cast:
+        - class: ProjectileAction
+        projectile:
+        - class: PotionEffectAction
+        - class: DamageAction
     effects:
         cast:
         -  class: EffectSingle
@@ -474,12 +481,13 @@ snowball:
       otdx: 0
       otdy: -1
       otdz: 0
-      count: 8
+      count: 4
       radius: 3
       range: 16
       allow_max_range: true
       spread: 20
       effect_slow: 120,1
+      damage: 1
     costs:
         mana: 80
 
@@ -4246,7 +4254,6 @@ stupefy:
     icon: ink_sack:4
     category: dada
     pvp_restricted: true
-    cast_on_no_target: true
     worth: 40
     actions:
         cast:
@@ -4330,7 +4337,6 @@ vermillious:
     icon: ink_sack:1
     category: charms
     pvp_restricted: true
-    cast_on_no_target: true
     worth: 40
     actions:
         cast:
@@ -4866,8 +4872,10 @@ absorb:
     hidden: true
     icon: bucket
     category: engineering
-    class: AbsorbSpell
     worth: 1500
+    actions:
+        cast:
+        -  class: AbsorbAction
     effects:
         cast:
         -  class: EffectSingle

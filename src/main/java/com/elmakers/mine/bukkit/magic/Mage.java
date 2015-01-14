@@ -12,6 +12,7 @@ import java.util.Set;
 
 import com.elmakers.mine.bukkit.effect.HoloUtils;
 import com.elmakers.mine.bukkit.effect.Hologram;
+import com.elmakers.mine.bukkit.spell.ActionSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import de.slikey.effectlib.util.ParticleEffect;
 import org.bukkit.*;
@@ -632,6 +633,10 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             if (config.contains(key)) {
                 ConfigurationSection template = config.getConfigurationSection(key);
                 String className = template.getString("class");
+                if (className == null)
+                {
+                    className = ActionSpell.class.getName();
+                }
                 // Check for spells that have changed class
                 if (!spell.getClass().getName().contains(className)) {
                     ConfigurationSection spellData = new MemoryConfiguration();
