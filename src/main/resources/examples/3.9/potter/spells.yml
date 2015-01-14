@@ -245,32 +245,36 @@ apparate:
                sound_volume: 1
                location: both
                particle_override: particleOrbital
+               color_override: colorOrbital
                effectlib:
                    class: AtomEffect
-                   particleNucleus: smoke_normal
-                   particleOrbital: smoke_large
+                   particleNucleus: smoke_large
+                   particleOrbital: redstone
                    iterations: 8
              - class: EffectSingle
                particle_override: particle
+               color_override: color
                effectlib:
                    class: LineEffect
-                   particle: smoke_large
+                   particle: redstone
              '5':
              - class: EffectSingle
                sound: enderman_teleport
                sound_volume: 1
                location: both
                particle_override: particleOrbital
+               color_override: colorOrbital
                effectlib:
                    class: AtomEffect
-                   particleNucleus: spell_instant
-                   particleOrbital: spell
+                   particleNucleus: spell
+                   particleOrbital: redstone
                    iterations: 8
              - class: EffectSingle
                particle_override: particle
+               color_override: color
                effectlib:
                    class: LineEffect
-                   particle: spell
+                   particle: redstone
     parameters:
         pvp_restricted: true
         allow_max_range: true
@@ -297,32 +301,36 @@ apparatemaxima:
              - class: EffectSingle
                sound: enderman_teleport
                location: both
-               particle_override: particleOrbital
+               particle_override: particleNucleus
+               color_override: colorOrbital
                effectlib:
                    class: AtomEffect
                    particleNucleus: smoke_normal
-                   particleOrbital: smoke_large
+                   particleOrbital: redstone
                    iterations: 12
              - class: EffectSingle
                particle_override: particleOrbital
+               color_override: color
                effectlib:
                    class: LineEffect
-                   particle: smoke_large
+                   particle: redstone
              '5':
              - class: EffectSingle
                sound: enderman_teleport
                location: both
-               particle_override: particleOrbital
+               particle_override: particleNucleus
+               color_override: colorOrbital
                effectlib:
                    class: AtomEffect
                    particleNucleus: spell_instant
-                   particleOrbital: spell
+                   particleOrbital: redstone
                    iterations: 12
              - class: EffectSingle
                particle_override: particleOrbital
+               color_override: color
                effectlib:
                    class: LineEffect
-                   particle: spell
+                   particle: redstone
     parameters:
         pvp_restricted: true
         allow_max_range: false
@@ -3393,11 +3401,10 @@ petrificustotalus:
            sound: wither_spawn
         -  class: EffectSingle
            sound: burp
-           color_override: color
            effectlib:
              class: ConeEffect
              iterations: 5
-             particle: spell_mob
+             particle: fireworks_spark
              lengthGrow: 0.32
         -  class: EffectSingle
            location: target
@@ -3417,11 +3424,10 @@ petrificustotalus:
            sound: wither_spawn
         -  class: EffectSingle
            sound: burp
-           color_override: color
            effectlib:
              class: ConeEffect
              iterations: 15
-             particle: spell_mob
+             particle: fireworks_spark
              lengthGrow: 0.4
         -  class: EffectSingle
            location: target
