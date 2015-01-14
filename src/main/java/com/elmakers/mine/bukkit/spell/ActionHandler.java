@@ -9,6 +9,7 @@ import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.Target;
+import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 
@@ -84,6 +85,11 @@ public class ActionHandler
 
     public SpellResult perform(ConfigurationSection parameters)
     {
+        return perform(parameters, null);
+    }
+
+    public SpellResult perform(ConfigurationSection parameters, Location targetLocation)
+    {
         SpellResult result = SpellResult.CAST;
         for (GeneralAction generalAction : generalActions)
         {
@@ -94,18 +100,26 @@ public class ActionHandler
             }
         }
 
-        Target target = spell.getTarget();
-        if (!target.hasTarget())
+        if (entityActions.size() == 0 && blockActions.size() == 0)
         {
-            return SpellResult.NO_TARGET;
+            return result;
         }
 
+        Entity targetedEntity = null;
         List<Entity> targetEntities = new ArrayList<Entity>();
-
-        Entity targetedEntity = target.getEntity();
-        if (target.hasEntity())
+        if (targetLocation == null)
         {
-            targetEntities.add(targetedEntity);
+            Target target = spell.getTarget();
+            if (!target.hasTarget())
+            {
+                return SpellResult.NO_TARGET;
+            }
+            if (target.hasEntity())
+            {
+                targetedEntity = target.getEntity();
+                targetEntities.add(targetedEntity);
+            }
+            targetLocation = target.getLocation();
         }
 
         int radius = parameters.getInt("radius", 0);
@@ -115,7 +129,7 @@ public class ActionHandler
 
         if (radius > 0)
         {
-            List<Entity> entities = CompatibilityUtils.getNearbyEntities(target.getLocation(), radius, radius, radius);
+            List<Entity> entities = CompatibilityUtils.getNearbyEntities(targetLocation, radius, radius, radius);
             for (Entity entity : entities)
             {
                 if (entity != targetedEntity && entity != mage.getEntity() && spell.canTarget(entity))

@@ -19,6 +19,10 @@ public abstract class BaseSpellAction implements SpellAction
         spell.registerModified(entity);
     }
 
+    public void registerForUndo(Entity entity) {
+        spell.registerForUndo(entity);
+    }
+
     public void registerPotionEffects(Entity entity)
     {
         spell.registerPotionEffects(entity);

@@ -144,7 +144,7 @@ public abstract class UndoableSpell extends TargetingSpell {
         return !bypassUndo;
     }
 
-    protected void applyPotionEffects(Location location, int radius, Collection<PotionEffect> potionEffects) {
+    public void applyPotionEffects(Location location, int radius, Collection<PotionEffect> potionEffects) {
         if (potionEffects == null || radius <= 0 || potionEffects.size() == 0) return;
 
         int radiusSquared = radius * 2;

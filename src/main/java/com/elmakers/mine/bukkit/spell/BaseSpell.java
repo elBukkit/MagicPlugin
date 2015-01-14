@@ -135,14 +135,14 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     private List<CastingCost> costs = null;
     private List<CastingCost> activeCosts = null;
 
-    private boolean pvpRestricted           	= false;
-    private boolean bypassPvpRestriction    	= false;
-    private boolean bypassConfusion             = false;
-    private boolean bypassPermissions           = false;
-    private boolean requirePassthrough = false;
-    private boolean castOnNoTarget              = false;
-    private boolean bypassDeactivate            = false;
-    private boolean quiet                       = false;
+    protected boolean pvpRestricted           	= false;
+    protected boolean bypassPvpRestriction    	= false;
+    protected boolean bypassConfusion             = false;
+    protected boolean bypassPermissions           = false;
+    protected boolean requirePassthrough = false;
+    protected boolean castOnNoTarget              = false;
+    protected boolean bypassDeactivate            = false;
+    protected boolean quiet                       = false;
 
     private boolean backfired                   = false;
     private boolean hidden                      = false;
@@ -565,7 +565,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         return mobSkin;
     }
 
-    protected static Collection<PotionEffect> getPotionEffects(ConfigurationSection parameters)
+    public static Collection<PotionEffect> getPotionEffects(ConfigurationSection parameters)
     {
         return getPotionEffects(parameters, null);
     }
@@ -763,7 +763,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         costs = parseCosts(node.getConfigurationSection("costs"));
         activeCosts = parseCosts(node.getConfigurationSection("active_costs"));
         pvpRestricted = node.getBoolean("pvp_restricted", pvpRestricted);
-        castOnNoTarget = node.getBoolean("cast_on_no_target", false);
+        castOnNoTarget = node.getBoolean("cast_on_no_target", castOnNoTarget);
         hidden = node.getBoolean("hidden", false);
 
         // Preload some parameters
@@ -771,7 +771,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         if (parameters != null) {
             cooldown = parameters.getInt("cooldown", cooldown);
             cooldown = parameters.getInt("cool", cooldown);
-            bypassPvpRestriction = parameters.getBoolean("bypass_pvp", false);
+            bypassPvpRestriction = parameters.getBoolean("bypass_pvp", bypassPvpRestriction);
             bypassPvpRestriction = parameters.getBoolean("bp", bypassPvpRestriction);
             bypassPermissions = parameters.getBoolean("bypass_permissions", bypassPermissions);
             requirePassthrough = parameters.getBoolean("require_passthrough", requirePassthrough);

@@ -49,6 +49,7 @@ public class ActionSpell extends BrushSpell
     {
         usesBrush = false;
         undoable = false;
+        castOnNoTarget = true;
         if (template.contains("actions"))
         {
             ConfigurationSection actionsNode = template.getConfigurationSection("actions");
@@ -70,5 +71,10 @@ public class ActionSpell extends BrushSpell
     public boolean isUndoable()
     {
         return undoable;
+    }
+
+    public ActionHandler getActions(String key)
+    {
+        return actions.get(key);
     }
 }
