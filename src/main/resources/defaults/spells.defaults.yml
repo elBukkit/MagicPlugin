@@ -3574,6 +3574,7 @@ missile:
            sound_pitch: 0.1
            location: origin
            particle_override: particle
+           color_override: color
            effectlib:
              class: ConeEffect
              iterations: 15
@@ -3591,10 +3592,11 @@ missile:
            sound_pitch: 0.1
            location: origin
            particle_override: particle
+           color_override: color
            effectlib:
              class: ConeEffect
              iterations: 15
-             particle: smoke_normal
+             particle: redstone
              lengthGrow: 0.3
         -  class: EffectSingle
            target_offset: 0,1.5,0
@@ -3609,6 +3611,7 @@ missile:
            location: origin
            entity_effect: hurt
            particle_override: particle
+           color_override: color
            effectlib:
              class: ConeEffect
              iterations: 15

@@ -3393,10 +3393,11 @@ petrificustotalus:
            sound: wither_spawn
         -  class: EffectSingle
            sound: burp
+           color_override: color
            effectlib:
              class: ConeEffect
              iterations: 5
-             particle: fireworks_spark
+             particle: spell_mob
              lengthGrow: 0.32
         -  class: EffectSingle
            location: target
@@ -3416,10 +3417,11 @@ petrificustotalus:
            sound: wither_spawn
         -  class: EffectSingle
            sound: burp
+           color_override: color
            effectlib:
              class: ConeEffect
              iterations: 15
-             particle: fireworks_spark
+             particle: spell_mob
              lengthGrow: 0.4
         -  class: EffectSingle
            location: target
