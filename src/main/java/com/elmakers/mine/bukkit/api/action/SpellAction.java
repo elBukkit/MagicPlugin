@@ -7,4 +7,6 @@ public interface SpellAction
 {
     public void load(Spell spell, ConfigurationSection parameters);
     public ConfigurationSection getParameters(ConfigurationSection baseParameters);
+    public boolean usesBrush();
+    public boolean isUndoable();
 }
