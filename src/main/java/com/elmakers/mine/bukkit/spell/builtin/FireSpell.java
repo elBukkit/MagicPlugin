@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.spell.builtin;
 
+import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -22,9 +23,9 @@ public class FireSpell extends BlockSpell
     
 	public class FireAction extends SimpleBlockAction
 	{
-		public FireAction(MageController controller, UndoList undoList)
+		public FireAction(Spell spell, UndoList undoList)
 		{
-			super(controller, undoList);
+			super(spell, undoList);
 		}
 
 		@Override
@@ -85,7 +86,7 @@ public class FireSpell extends BlockSpell
 		int radius = parameters.getInt("radius", DEFAULT_RADIUS);
 		radius = (int)(mage.getRadiusMultiplier() * radius);
 		
-		FireAction action = new FireAction(controller, getUndoList());
+		FireAction action = new FireAction(this, getUndoList());
 
 		if (radius < 1)
 		{

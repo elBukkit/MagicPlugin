@@ -167,7 +167,7 @@ public class WandLevel {
 		for (String spellName : spells) {
 			SpellTemplate spell = wand.getMaster().getSpellTemplate(spellName);
 			if (spell != null) {
-				needsMaterials = needsMaterials || (spell instanceof BrushSpell) && !((BrushSpell)spell).hasBrushOverride();
+				needsMaterials = needsMaterials || spell.usesBrush();
 				Collection<CastingCost> costs = spell.getCosts();
 				if (costs != null) {
 					for (CastingCost cost : costs) {

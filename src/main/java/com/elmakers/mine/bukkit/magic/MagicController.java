@@ -3881,10 +3881,10 @@ public class MagicController implements Listener, MageController {
                     }
                 }
 
-                if ((spell instanceof BrushSpell) && !((BrushSpell) spell).hasBrushOverride()) {
+                if (spell.usesBrush()) {
                     lines.add(ChatColor.DARK_GRAY + messages.get("spell.brush"));
                 }
-                if (spell instanceof UndoableSpell && ((UndoableSpell) spell).isUndoable()) {
+                if (spell.isUndoable()) {
                     lines.add(ChatColor.GRAY + messages.get("spell.undoable"));
                 }
 

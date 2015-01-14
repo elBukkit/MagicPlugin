@@ -17,8 +17,6 @@ import com.elmakers.mine.bukkit.spell.BrushSpell;
 
 public class ReplaceMaterialAction extends SimpleBlockAction
 {
-	protected BrushSpell spell;
-    protected Mage mage;
 	protected MaterialBrush brush;
 	protected Set<MaterialAndData> replaceable = new HashSet<MaterialAndData>();
 	
@@ -27,9 +25,7 @@ public class ReplaceMaterialAction extends SimpleBlockAction
 	
 	public ReplaceMaterialAction(BrushSpell spell, Block targetBlock)
 	{
-		super(spell.getMage().getController(), spell.getUndoList());
-		this.spell = spell;
-        this.mage = spell.getMage();
+		super(spell, spell.getUndoList());
 		this.brush = spell.getBrush();
 		if (targetBlock != null) {
 			replaceable.add(new MaterialAndData(targetBlock));
@@ -76,6 +72,7 @@ public class ReplaceMaterialAction extends SimpleBlockAction
 			byte previousData = block.getData();
 			
 			if (brush.isDifferent(block)) {
+				Mage mage = getMage();
 				brush.update(mage, block.getLocation());
 				brush.modify(block);
 				mage.getController().updateBlock(block);

@@ -1,6 +1,7 @@
 package com.elmakers.mine.bukkit.spell.builtin;
 
 import com.elmakers.mine.bukkit.api.magic.MageController;
+import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.block.UndoList;
@@ -41,9 +42,9 @@ public class FlowerSpell extends BlockSpell
         private final double effectsSpeed;
         private final int ageItems;
 
-		public FlowerAction(MageController controller, double itemSpeed, Location effectsLocation, UndoList undoList, ArrayList<MaterialAndData> flowers, ArrayList<MaterialAndData> tallFlowers, int ageItems)
+		public FlowerAction(Spell spell, double itemSpeed, Location effectsLocation, UndoList undoList, ArrayList<MaterialAndData> flowers, ArrayList<MaterialAndData> tallFlowers, int ageItems)
 		{
-			super(controller, undoList);
+			super(spell, undoList);
 
             this.flowers = flowers;
             this.tallFlowers = tallFlowers;
@@ -124,7 +125,7 @@ public class FlowerSpell extends BlockSpell
         Block faceBlock = getInteractBlock();
         Location effectLocation = faceBlock == null ? mage.getEyeLocation() : faceBlock.getLocation();
 
-        FlowerAction action = new FlowerAction(controller, itemSpeed, effectLocation, getUndoList(), flowers, tallFlowers, ageItems);
+        FlowerAction action = new FlowerAction(this, itemSpeed, effectLocation, getUndoList(), flowers, tallFlowers, ageItems);
 
 		if (radius <= 1)
 		{

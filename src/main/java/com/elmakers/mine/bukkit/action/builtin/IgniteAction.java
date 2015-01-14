@@ -1,18 +1,13 @@
-package com.elmakers.mine.bukkit.magic.action.builtin;
+package com.elmakers.mine.bukkit.action.builtin;
 
+import com.elmakers.mine.bukkit.api.action.EntityAction;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
-import com.elmakers.mine.bukkit.spell.SpellAction;
-import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
+import com.elmakers.mine.bukkit.spell.BaseSpellAction;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
 
-import java.util.Collection;
-import java.util.List;
-
-public class IgniteAction extends SpellAction
+public class IgniteAction extends BaseSpellAction implements EntityAction
 {
 	@Override
 	public SpellResult perform(ConfigurationSection parameters, Entity entity)

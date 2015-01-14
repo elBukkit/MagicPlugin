@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.spell.builtin;
 
+import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import org.bukkit.Material;
@@ -36,9 +37,9 @@ public class FrostSpell extends BlockSpell
         private final boolean freezeLava;
         private final boolean freezeFire;
 		
-		public FrostAction(MageController controller, UndoList undoList, Material iceMaterial, boolean freezeWater, boolean freezeLava, boolean freezeFire)
+		public FrostAction(Spell spell, UndoList undoList, Material iceMaterial, boolean freezeWater, boolean freezeLava, boolean freezeFire)
 		{
-			super(controller, undoList);
+			super(spell, undoList);
 			this.iceMaterial = iceMaterial;
             this.freezeLava = freezeLava;
             this.freezeWater = freezeWater;
@@ -157,7 +158,7 @@ public class FrostSpell extends BlockSpell
 
 		int radius = parameters.getInt("radius", defaultRadius);
 		radius = (int)(mage.getRadiusMultiplier() * radius);		
-		FrostAction action = new FrostAction(controller, getUndoList(), iceMaterial, freezeWater, freezeLava, freezeFire);
+		FrostAction action = new FrostAction(this, getUndoList(), iceMaterial, freezeWater, freezeLava, freezeFire);
 
 		if (radius < 1)
 		{

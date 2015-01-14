@@ -1,7 +1,8 @@
-package com.elmakers.mine.bukkit.magic.action.builtin;
+package com.elmakers.mine.bukkit.action.builtin;
 
+import com.elmakers.mine.bukkit.api.action.EntityAction;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
-import com.elmakers.mine.bukkit.spell.SpellAction;
+import com.elmakers.mine.bukkit.spell.BaseSpellAction;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
@@ -12,7 +13,7 @@ import org.bukkit.potion.PotionEffectType;
 import java.util.Collection;
 import java.util.List;
 
-public class PotionEffectAction extends SpellAction
+public class PotionEffectAction extends BaseSpellAction implements EntityAction
 {
 	@Override
 	public SpellResult perform(ConfigurationSection parameters, Entity entity)

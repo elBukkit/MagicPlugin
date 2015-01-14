@@ -1243,7 +1243,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
     private static String getSpellDisplayName(SpellTemplate spell, String materialKey) {
 		String name = "";
 		if (spell != null) {
-			if (materialKey != null && (spell instanceof BrushSpell) && !((BrushSpell)spell).hasBrushOverride()) {
+			if (materialKey != null && spell.usesBrush()) {
 				name = ChatColor.GOLD + spell.getName() + " " + getBrushDisplayName(materialKey) + ChatColor.WHITE;
 			} else {
 				name = ChatColor.GOLD + spell.getName() + ChatColor.WHITE;
@@ -1747,13 +1747,13 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 			}
 		}
 		
-		if ((spell instanceof BrushSpell) && !((BrushSpell)spell).hasBrushOverride()) {
+		if (spell.usesBrush()) {
 			String brushText = messages.get("spell.brush");
             if (!brushText.isEmpty()) {
                 lore.add(ChatColor.GOLD + brushText);
             }
 		}
-		if (spell instanceof UndoableSpell && ((UndoableSpell)spell).isUndoable()) {
+		if (spell.isUndoable()) {
             String undoableText = messages.get("spell.undoable");
             if (!undoableText.isEmpty()) {
                 lore.add(ChatColor.GRAY + undoableText);

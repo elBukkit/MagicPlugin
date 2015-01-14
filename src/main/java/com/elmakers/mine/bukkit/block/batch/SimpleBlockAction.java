@@ -1,26 +1,28 @@
 package com.elmakers.mine.bukkit.block.batch;
 
 import com.elmakers.mine.bukkit.api.action.BlockAction;
+import com.elmakers.mine.bukkit.api.magic.MageController;
+import com.elmakers.mine.bukkit.api.spell.Spell;
+import com.elmakers.mine.bukkit.spell.BaseSpellAction;
 import org.bukkit.block.Block;
 
-import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.block.UndoList;
 import org.bukkit.configuration.ConfigurationSection;
 
-public class SimpleBlockAction implements BlockAction
+public class SimpleBlockAction extends BaseSpellAction implements BlockAction
 {
-	protected final MageController controller;
 	protected final UndoList modified;
 	
-	public SimpleBlockAction(MageController controller, UndoList undoList)
+	public SimpleBlockAction(Spell spell, UndoList undoList)
 	{
 		modified = undoList;
-		this.controller = controller;
+		load(spell, null);
 	}
 
 	public SpellResult perform(ConfigurationSection parameters, Block block)
 	{
+		MageController controller = getController();
 		if (controller != null)
 		{
 			controller.updateBlock(block);

@@ -1,12 +1,13 @@
-package com.elmakers.mine.bukkit.magic.action.builtin;
+package com.elmakers.mine.bukkit.action.builtin;
 
+import com.elmakers.mine.bukkit.api.action.EntityAction;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
-import com.elmakers.mine.bukkit.spell.SpellAction;
+import com.elmakers.mine.bukkit.spell.BaseSpellAction;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 
-public class HealAction extends SpellAction
+public class HealAction extends BaseSpellAction implements EntityAction
 {
 	@Override
 	public SpellResult perform(ConfigurationSection parameters, Entity entity)
