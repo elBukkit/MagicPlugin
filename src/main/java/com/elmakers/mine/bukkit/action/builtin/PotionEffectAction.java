@@ -43,4 +43,10 @@ public class PotionEffectAction extends BaseSpellAction implements EntityAction
 
 		return SpellResult.CAST;
 	}
+
+    @Override
+    public boolean isUndoable()
+    {
+        return true;
+    }
 }

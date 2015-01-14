@@ -4245,10 +4245,13 @@ jail:
 stupefy:
     icon: ink_sack:4
     category: dada
-    class: PotionEffectSpell
     pvp_restricted: true
     cast_on_no_target: true
     worth: 40
+    actions:
+        cast:
+        - class: DamageAction
+        - class: PotionEffectAction
     effects:
         cast:
         -  class: EffectSingle
@@ -4326,10 +4329,12 @@ stupefy|3:
 vermillious:
     icon: ink_sack:1
     category: charms
-    class: PotionEffectSpell
     pvp_restricted: true
     cast_on_no_target: true
     worth: 40
+    actions:
+        cast:
+        - class: DamageAction
     effects:
         cast:
         -  class: EffectSingle

@@ -42,7 +42,7 @@ costs:
 
 spell:
     brush: Uses Material Brushes
-    undoable: ""
+    undoable: Counterable
     reactivate: Reactivating $name
     available_path: Available to $paths
     required_path: Required for $path graduation
