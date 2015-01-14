@@ -428,7 +428,6 @@ arrow:
       cooldown: 2000
       undo: 5000
       range: 50
-      radius: 16
     costs:
         mana: 50
 
@@ -3927,6 +3926,7 @@ reparo:
         otworld: ~-_backup
         obworld: ~_backup
         brushtarget: true
+        cooldown: 10000
     costs:
         mana: 0
 
@@ -6422,3 +6422,80 @@ grenade:
         break_blocks: false
     costs:
         mana: 40
+
+rectumsempra:
+    name: Wrecktumsempra
+    description: Utterly destroy your enemies!
+    icon: ink_sack:3
+    category: dark
+    pvp_restricted: false
+    class: CommandSpell
+    worth: 35
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: irongolem_death
+           sound_volume: 2
+        -  class: EffectSingle
+           sound: creeper_death
+           sound_volume: 1
+        -  class: EffectSingle
+           sound: wither_spawn
+           sound_volume: 3
+           location: origin
+           effectlib:
+             class: ConeEffect
+             iterations: 16
+             particle: spell_instant
+             lengthGrow: 0.4
+        -  class: EffectSingle
+           location: target
+           color: "04B486"
+           firework: star
+        - class: EffectSingle
+          location: target
+          particle_override: particleOrbital
+          effectlib:
+             class: AtomEffect
+             particleNucleus: spell_instant
+             particleOrbital: spell_instant
+             iterations: 16
+        no_target:
+        -  class: EffectSingle
+           sound: irongolem_death
+           sound_volume: 2
+        -  class: EffectSingle
+           sound: creeper_death
+           sound_volume: 1
+        -  class: EffectSingle
+           sound: wither_spawn
+           sound_volume: 3
+           location: origin
+           effectlib:
+             class: ConeEffect
+             iterations: 16
+             particle: spell_instant
+             lengthGrow: 0.4
+        -  class: EffectSingle
+           location: target
+           color: "04B486"
+           firework: star
+    parameters:
+        allow_max_range: false
+        speed: 1.0
+        falling: true
+        brush: air
+        radius: 4
+        type: sphere
+        check_destructible: false
+        bypass_build: true
+        undo: 5000
+        range: 50
+        cooldown: 13000
+        commands:
+        - cast reductomaxima
+        - kill @t
+        bypass_backfire: true
+        target_breakables: 10
+    costs:
+        mana: 300
