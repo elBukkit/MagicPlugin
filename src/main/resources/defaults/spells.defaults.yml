@@ -2851,7 +2851,7 @@ alter:
         -  class: EffectSingle
            sound: dig_wool
         -  class: EffectTrail
-           particle: block_crack
+           particle: flame
     parameters:
         target_type: Entity
         allow_max_range: false
@@ -2870,7 +2870,7 @@ superalter:
         -  class: EffectSingle
            sound: dig_wool
         -  class: EffectTrail
-           particle: block_crack
+           particle: flame
     parameters:
         allow_max_range: false
         range: 64
