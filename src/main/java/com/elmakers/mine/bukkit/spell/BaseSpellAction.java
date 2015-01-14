@@ -54,4 +54,16 @@ public abstract class BaseSpellAction implements SpellAction
         ConfigurationUtils.addConfigurations(combined, parameters);
         return combined;
     }
+
+    @Override
+    public boolean usesBrush()
+    {
+        return false;
+    }
+
+    @Override
+    public boolean isUndoable()
+    {
+        return false;
+    }
 }

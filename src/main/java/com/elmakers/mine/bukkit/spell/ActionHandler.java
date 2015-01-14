@@ -25,6 +25,8 @@ public class ActionHandler
     private List<EntityAction> entityActions = new ArrayList<EntityAction>();
 
     private final ActionSpell spell;
+    private boolean undoable = false;
+    private boolean usesBrush = false;
 
     public ActionHandler(ActionSpell spell)
     {
@@ -33,6 +35,8 @@ public class ActionHandler
 
     public void load(ConfigurationSection root, String key)
     {
+        undoable = false;
+        usesBrush = false;
         Collection<ConfigurationSection> actionNodes = ConfigurationUtils.getNodeList(root, key);
         if (actionNodes != null)
         {
@@ -59,6 +63,8 @@ public class ActionHandler
                             actionConfiguration = null;
                         }
                         action.load(spell, actionConfiguration);
+                        usesBrush = usesBrush || action.usesBrush();
+                        undoable = undoable || action.isUndoable();
                         if (action instanceof GeneralAction) {
                             generalActions.add((GeneralAction)action);
                         }
@@ -78,7 +84,6 @@ public class ActionHandler
 
     public SpellResult perform(ConfigurationSection parameters)
     {
-        spell.registerForUndo();
         SpellResult result = SpellResult.CAST;
         for (GeneralAction generalAction : generalActions)
         {
@@ -145,5 +150,15 @@ public class ActionHandler
             }
         }
         return result;
+    }
+
+    public boolean isUndoable()
+    {
+        return undoable;
+    }
+
+    public boolean usesBrush()
+    {
+        return usesBrush;
     }
 }

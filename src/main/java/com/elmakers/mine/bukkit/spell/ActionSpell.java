@@ -10,10 +10,15 @@ import java.util.Map;
 public class ActionSpell extends BrushSpell
 {
     private Map<String, ActionHandler> actions = new HashMap<String, ActionHandler>();
+    private boolean undoable = false;
 
     @Override
     public SpellResult onCast(ConfigurationSection parameters)
     {
+        if (undoable)
+        {
+            registerForUndo();
+        }
         ActionHandler downHandler = actions.get("alt_down");
         if (downHandler != null && isLookingDown())
         {
@@ -43,7 +48,7 @@ public class ActionSpell extends BrushSpell
     protected void loadTemplate(ConfigurationSection template)
     {
         usesBrush = false;
-        super.loadTemplate(template);
+        undoable = false;
         if (template.contains("actions"))
         {
             ConfigurationSection actionsNode = template.getConfigurationSection("actions");
@@ -52,8 +57,18 @@ public class ActionSpell extends BrushSpell
             {
                 ActionHandler handler = new ActionHandler(this);
                 handler.load(actionsNode, actionKey);
+                usesBrush = usesBrush || handler.usesBrush();
+                undoable = undoable || handler.isUndoable();
                 actions.put(actionKey, handler);
             }
         }
+        undoable = template.getBoolean("undoable", undoable);
+        super.loadTemplate(template);
+    }
+
+    @Override
+    public boolean isUndoable()
+    {
+        return undoable;
     }
 }
