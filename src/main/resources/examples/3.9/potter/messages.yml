@@ -165,6 +165,11 @@ spells:
         description: The killing curse
         usage: Unforgiveable!
         cast: Avada Kedavra!
+    unknown:
+        name: Unknown Spell
+        description: Powerful spell of unknown origins.
+        usage: A super powerful spell!
+        cast: The hair on your neck stands on end!
     avadamaxima:
         name: Avada Kedavra Maxima
         description: Kill your target PERMANENTLY.
@@ -368,6 +373,10 @@ spells:
         name: Impervius
         description: Remove all water in the area
         cast: Impervius!
+    phoenixfire:
+        name: Phoenixfire
+        description: Conjures a fire at your target
+        cast: Phoenix Fire!
     incendio:
         name: Incendio
         description: Conjures a fire at your target
@@ -585,6 +594,10 @@ spells:
         name: Pulsus
         description: Aim up/down to push your opponent!
         cast: Get back!
+    whomping:
+        name: Whomping Willow Attack!
+        description: Whoosh!
+        cast: YOU GOT SMECKED!
 
 randomized:
    wood:
@@ -750,6 +763,10 @@ wands:
     megiderp:
         name: Euphoria
         description: Cedar Wood and Veela Hair Core
+
+    danny:
+        name: Malevolence
+        description: English Oak and Dragon Heartstring
 
     crudwand:
         name: Cracked Wand

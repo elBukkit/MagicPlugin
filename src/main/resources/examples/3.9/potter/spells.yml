@@ -100,7 +100,7 @@ accio|3:
         allow_area: true
 
 aguamenti:
-    icon: water_bucket
+    icon: ink_sack:4
     category: transfiguration
     class: CushionSpell
     pvp_restricted: true
@@ -767,6 +767,75 @@ avadamaxima:
     costs:
         mana: 300
 
+unknown:
+    icon: coal
+    category: unforgiveable
+    class: PotionEffectSpell
+    pvp_restricted: true
+    cast_on_no_target: true
+    worth: 1000
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: shoot_arrow
+           sound_volume: 2
+        -  class: EffectSingle
+           sound: creeper_death
+           sound_volume: 1
+        -  class: EffectSingle
+           sound: wither_spawn
+           sound_volume: 3
+           location: origin
+           effectlib:
+             class: ConeEffect
+             iterations: 16
+             particle: enchantment_table
+             lengthGrow: 0.4
+        -  class: EffectSingle
+           location: target
+           color: "FAFAFA"
+           firework: ball_large
+        - class: EffectSingle
+          location: target
+          particle_override: particleOrbital
+          effectlib:
+             class: AtomEffect
+             particleNucleus: enchantment_table
+             particleOrbital: enchantment_table
+             iterations: 16
+        no_target:
+        -  class: EffectSingle
+           sound: shoot_arrow
+           sound_volume: 2
+        -  class: EffectSingle
+           sound: creeper_death
+           sound_volume: 1
+        -  class: EffectSingle
+           sound: wither_spawn
+           sound_volume: 3
+           location: origin
+           effectlib:
+             class: ConeEffect
+             iterations: 16
+             particle: enchantment_table
+             lengthGrow: 0.4
+        -  class: EffectSingle
+           location: target
+           color: "FAFAFA"
+           firework: ball_large
+    parameters:
+        target_type: LivingEntity
+        allow_max_range: false
+        range: 48
+        damage: 1000
+        check_destructible: false
+        cooldown: 30000
+        target_breakables: 5
+        bypass_backfire: true
+        hitbox: true
+    costs:
+        mana: 180
+
 avis:
     icon: monster_egg
     category: creatures
@@ -890,7 +959,7 @@ bogies:
     parameters:
         hitbox: true
         fov: 0.12
-        range: 8
+        range: 48
         deactivate_target_mage: false
         target_type: LivingEntity
         target: other
@@ -974,7 +1043,7 @@ bombarda|2:
         range: 32
         damage: 7
 
-water_bubble:
+bubble:
     icon: ender_pearl
     category: transfiguration
     class: PotionEffectSpell
@@ -1692,7 +1761,7 @@ expelliarmus:
         max_slot: 8
         target_type: LivingEntity
         allow_max_range: false
-        range: 15
+        range: 30
         hitbox: true
         fizzle_chance: 0.6
         backfire_chance: 0.3
@@ -2280,12 +2349,13 @@ flipendo|2:
            sound: burp
            sound_volume: 1
            effectlib:
-             class: VortexEffect
+             class: ConeEffect
              iterations: 16
              particle: spell
              helixes: 6
              circles: 4
              grow: 0.5
+             lengthGrow: 0.3
     parameters:
         hitbox: true
         range: 20
@@ -2307,6 +2377,14 @@ flipendo|3:
         -  class: EffectSingle
            sound: burp
            sound_volume: 1
+           effectlib:
+             class: ConeEffect
+             iterations: 16
+             particle: spell
+             helixes: 6
+             circles: 4
+             grow: 0.9
+             lengthGrow: 0.4
            effectlib:
              class: FountainEffect
              particle: spell
@@ -2699,6 +2777,46 @@ impervius:
         undo: 10000
     costs:
         mana: 65
+
+phoenixfire:
+    hidden: true
+    icon: clay_ball
+    category: dark
+    class: FireSpell
+    pvp_restricted: true
+    cast_on_no_target: true
+    worth: 50
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: ghast_fireball
+           sound_volume: 1
+           location: both
+        -  class: EffectSingle
+           effectlib:
+             class: ConeEffect
+             iterations: 15
+             particle: lava
+             lengthGrow: 0.4
+        -  class: EffectSingle
+           location: target
+           color: FE642E
+           firework: ball
+    parameters:
+        target_type: LivingEntity
+        allow_max_range: false
+        range: 48
+        hitbox: true
+        fov: 0.03
+        radius: 2
+        vertical_search_distance: 8
+        undo: 1500
+        cooldown: 0
+        bypass_build: true
+        target_breakables: 0
+        entity_undo: false
+    costs:
+        mana: 50
 
 incendio:
     icon: clay_ball
@@ -5525,6 +5643,7 @@ pulsus:
         mana: 70
 
 whomping:
+    hidden: true
     icon: ink_sack:5
     category: dada
     class: PushSpell
@@ -6065,6 +6184,7 @@ firestorm:
     category: dark
     class: CommandSpell
     worth: 35
+    pvp_restricted: true
     effects:
         cast:
         -  class: EffectSingle

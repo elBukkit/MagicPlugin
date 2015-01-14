@@ -398,6 +398,8 @@ architect:
     path: engineer
     keep: true
     bound: true
+    undroppable: true
+    bound: true
     icon: diamond_spade
     effect_color: '00FF00'
     hunger_regeneration: 1
