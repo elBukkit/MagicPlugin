@@ -100,7 +100,7 @@ accio|3:
         allow_area: true
 
 aguamenti:
-    icon: ink_sack:4
+    icon: ghast_tear
     category: transfiguration
     class: CushionSpell
     pvp_restricted: true
