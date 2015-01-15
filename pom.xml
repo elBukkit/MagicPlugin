@@ -123,6 +123,18 @@
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
+			<groupId>net.sacredlabyrinth.Phaed</groupId>
+			<artifactId>PreciousStones</artifactId>
+			<version>9.7.1</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.palmergames</groupId>
+			<artifactId>Towny</artifactId>
+			<version>0.89.2.0</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
 			<groupId>info.nothingspecial</groupId>
 			<artifactId>Splateds_Elementals</artifactId>
 			<version>B.1.6</version>
@@ -146,8 +158,18 @@
             <version>1.6.1</version>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+        	<groupId>com.elmakers.mine.bukkit</groupId>
+        	<artifactId>MagicAPI</artifactId>
+        	<version>2.0-SNAPSHOT</version>
+        </dependency>
 	</dependencies>
 	<repositories>
+	  <repository>
+            <id>SacredCoding</id>
+            <name>SacredCoding-releases</name>
+            <url>http://repo.sacredlabyrinth.net/artifactory/releases</url>
+      </repository>
       <repository>
             <id>elMakers</id>
             <url>http://maven.elmakers.com/repository/</url>
