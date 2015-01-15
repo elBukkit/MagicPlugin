@@ -461,7 +461,7 @@ dynmap_show_spells: true
 # Only show spell casts from players
 dynmap_only_player_spells: false
 
-# Enable worldguard protection against construction spells
+# Enable worldguard protection against construction spells, and PVP
 region_manager_enabled: true
 
 # Enable Factions protection against construction spells
@@ -469,6 +469,12 @@ factions_enabled: true
 
 # Enable PvPManager integration for PVP spells
 pvp_manager_enabled: true
+
+# Enable Towny integration for Build checks
+towny_enabled: true
+
+# Enable PreciousStones integration for Build and PVP Checks
+precious_stones_enabled: true
 
 # Enable MVCore integration for PVP checks
 multiverse_enabled: true
