@@ -1739,7 +1739,8 @@ expelliarmus:
            effectlib:
              class: ConeEffect
              iterations: 16
-             particle: crit
+             particle: redstone
+             color: 880000
              lengthGrow: 0.4
         -  class: EffectSingle
            location: target
@@ -1753,7 +1754,8 @@ expelliarmus:
            effectlib:
              class: ConeEffect
              iterations: 16
-             particle: crit
+             particle: redstone
+             color: 880000
              lengthGrow: 0.4
         -  class: EffectSingle
            location: target
@@ -2193,11 +2195,12 @@ flagrate:
         -  class: EffectSingle
            location: target
            target_offset: 0,3,0
+           color_override: color
            effectlib:
              class: TextEffect
              text: $target
              iterations: 2
-             particle: flame
+             particle: redstone
     parameters:
         allow_max_range: true
         range: 3
@@ -2427,24 +2430,14 @@ flight:
     worth: 600
     effects:
         cast:
-        -  class: EffectVariable
-           brightness:
-             '0.5':
-             - class: EffectSingle
-               sound: enderdragon_wings
-               location: both
-               particle_override: particle
-               effectlib:
-                   class: ShieldEffect
-                   particle: smoke_normal
-             '5':
-             - class: EffectSingle
-               sound: enderdragon_wings
-               location: both
-               particle_override: particle
-               effectlib:
-                   class: ShieldEffect
-                   particle: spell
+           - class: EffectSingle
+             sound: enderdragon_wings
+             location: both
+             color_override: color
+             effectlib:
+                 class: SphereEffect
+                 particle: redstone
+                 radius: 2.5
         cost_free:
         -  class: EffectSingle
            sound: enderdragon_wings
@@ -2893,55 +2886,47 @@ incendio|3:
 lacarnum:
     icon: coal
     category: charms
-    class: ProjectileSpell
+    class: com.elmakers.mine.bukkit.spell.ActionSpell
     pvp_restricted: true
     worth: 35
+    actions:
+        cast:
+        -  class: IgniteAction
     effects:
         cast:
         -  class: EffectSingle
            sound: ghast_fireball
            sound_volume: 1
-        projectile:
+           location: both
         -  class: EffectSingle
-           location: origin
            effectlib:
-             class: SmokeEffect
-             iterations: 8
+             class: ConeEffect
+             iterations: 15
              particle: lava
+             lengthGrow: 0.4
+        -  class: EffectSingle
+           location: target
+           color: FE642E
+           firework: ball
     parameters:
-        projectile: Arrow
-        fire: true
-        damage: 0.01
-        speed: 3
+        target_type: LivingEntity
+        hitbox: true
+        target: other
         range: 40
-        cooldown: 1000
-        spread: 1
-        tick_increase: 1180
-        entity_undo: false
-        undo: 1000
         cooldown: 2000
-        bypass_backfire: true
         target_breakables: 0
+        duration: 1000
     costs:
         mana: 100
 
 lacarnum|2:
     parameters:
-        size: 1.10
-        spread: 4
-        count: 2
-        damage: 0.01
-        speed: 4
-        cooldown: 4000
+        duration: 3000
         target_breakables: 1
 
 lacarnum|3:
     parameters:
-        damage: 0.01
-        spread: 7
-        count: 3
-        speed: 5
-        cooldown: 6000
+        duration: 5000
         target_breakables: 2
 
 legilimens:
