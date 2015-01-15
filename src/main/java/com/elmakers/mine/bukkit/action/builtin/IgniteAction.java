@@ -12,17 +12,11 @@ public class IgniteAction extends BaseSpellAction implements EntityAction
 	@Override
 	public SpellResult perform(ConfigurationSection parameters, Entity entity)
 	{
-		if (!(entity instanceof LivingEntity))
-		{
-			return SpellResult.NO_TARGET;
-		}
-
         int duration = parameters.getInt("duration", 5000);
         int ticks = duration * 20 / 1000;
-        LivingEntity targetEntity = (LivingEntity)entity;
 
-        registerModified(targetEntity);
-        targetEntity.setFireTicks(ticks);
+        registerModified(entity);
+        entity.setFireTicks(ticks);
 
 		return SpellResult.CAST;
 	}
