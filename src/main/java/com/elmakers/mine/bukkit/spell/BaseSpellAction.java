@@ -12,9 +12,10 @@ import org.bukkit.entity.Entity;
 
 public abstract class BaseSpellAction implements SpellAction
 {
-    protected Spell spell;
+    protected BaseSpell spell;
     protected MageSpell mageSpell;
     protected UndoableSpell undoSpell;
+    protected ActionSpell actionSpell;
     protected ConfigurationSection parameters;
 
     public void registerModified(Entity entity)
@@ -41,6 +42,14 @@ public abstract class BaseSpellAction implements SpellAction
         }
     }
 
+    public ActionHandler getActions(String key) {
+        if (actionSpell != null)
+        {
+            return actionSpell.getActions(key);
+        }
+        return null;
+    }
+
     public Mage getMage()
     {
         return mageSpell == null ? null : mageSpell.getMage();
@@ -54,7 +63,10 @@ public abstract class BaseSpellAction implements SpellAction
     @Override
     public void load(Spell spell, ConfigurationSection parameters)
     {
-        this.spell = spell;
+        if (spell instanceof BaseSpell)
+        {
+            this.spell = (BaseSpell)spell;
+        }
         if (spell instanceof MageSpell)
         {
             this.mageSpell = (MageSpell)spell;
@@ -62,6 +74,10 @@ public abstract class BaseSpellAction implements SpellAction
         if (spell instanceof UndoableSpell)
         {
             this.undoSpell = (UndoableSpell)spell;
+        }
+        if (spell instanceof ActionSpell)
+        {
+            this.actionSpell = (ActionSpell)spell;
         }
         this.parameters = parameters;
     }
