@@ -96,7 +96,7 @@ public class ProjectileAction  extends BaseSpellAction implements GeneralAction
 
 		Mage mage = getMage();
 		MageController controller = getController();
-		actions = spell.getActions("projectile");
+		actions = getActions("projectile");
 
 		// Modify with wand power
 		// Turned some of this off for now
@@ -154,8 +154,8 @@ public class ProjectileAction  extends BaseSpellAction implements GeneralAction
 		}
 		
 		// Prepare parameters
-		Location location = spell.getEyeLocation();
-		Vector direction = spell.getDirection().normalize();
+		Location location = getEyeLocation();
+		Vector direction = getDirection().normalize();
 
 		// Track projectiles to remove them after some time.
 		List<Projectile> projectiles = new ArrayList<Projectile>();
@@ -244,7 +244,7 @@ public class ProjectileAction  extends BaseSpellAction implements GeneralAction
 						ex.printStackTrace();
 					}
 				}
-                Collection<EffectPlayer> projectileEffects = spell.getEffects("projectile");
+                Collection<EffectPlayer> projectileEffects = getEffects("projectile");
                 for (EffectPlayer effectPlayer : projectileEffects) {
                     effectPlayer.start(projectile.getLocation(), projectile, null, null);
                 }

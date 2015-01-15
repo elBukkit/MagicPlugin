@@ -56,12 +56,12 @@ public class ReplaceMaterialAction extends SimpleBlockAction
 			return SpellResult.FAIL;
 		}
 		
-		if (!spell.hasBuildPermission(block))
+		if (!hasBuildPermission(block))
 		{
 			return SpellResult.INSUFFICIENT_PERMISSION;
 		}
 		
-		if (spell.isIndestructible(block))
+		if (isIndestructible(block))
 		{
 			return SpellResult.FAIL;
 		}

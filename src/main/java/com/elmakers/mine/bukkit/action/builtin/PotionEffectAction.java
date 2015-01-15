@@ -30,7 +30,7 @@ public class PotionEffectAction extends BaseSpellAction implements EntityAction
         }
         LivingEntity targetEntity = (LivingEntity)entity;
         registerPotionEffects(targetEntity);
-		Collection<PotionEffect> effects = spell.getPotionEffects(parameters, duration);
+		Collection<PotionEffect> effects = getPotionEffects(parameters, duration);
         CompatibilityUtils.applyPotionEffects(targetEntity, effects);
 
         if (parameters.contains("remove_effects")) {

@@ -18,7 +18,7 @@ public class HealAction extends BaseSpellAction implements EntityAction
 		}
 
         LivingEntity targetEntity = (LivingEntity)entity;
-        spell.registerModified(targetEntity);
+        registerModified(targetEntity);
         if (parameters.contains("percentage"))
         {
             double health = targetEntity.getHealth() + targetEntity.getMaxHealth() * parameters.getDouble("percentage");
