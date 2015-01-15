@@ -75,7 +75,8 @@ accio:
            sound: fizz
            effectlib:
              class: HelixEffect
-             particle: flame
+             particle: redstone
+             color: E0ECF8
     parameters:
         target_type: Entity
         allow_max_range: true
@@ -156,6 +157,7 @@ alohomora:
            sound: fuse
         -  class: EffectTrail
            particle: redstone
+           color: FFFF00
            particle_data: 2
            particle_count: 5
     parameters:
@@ -360,8 +362,9 @@ araniaexumai:
            effectlib:
              class: ConeEffect
              iterations: 10
-             lengthGrow: 0.1
-             particle: spell_instant
+             lengthGrow: 0.15
+             particle: spell_mob
+             color: 58FAD0
         area:
         -  class: EffectSingle
            sound: ghast_fireball
@@ -371,7 +374,7 @@ araniaexumai:
              particle: spell_witch
     parameters:
         target_type: Spider
-        range: 32
+        range: 40
         allow_area: false
         item_force: 2
         area_range: 20
@@ -690,7 +693,8 @@ avadakedavra:
            effectlib:
              class: ConeEffect
              iterations: 16
-             particle: villager_happy
+             particle: spell_mob
+             color: 00FF00
              lengthGrow: 0.4
         -  class: EffectSingle
            location: target
@@ -716,7 +720,8 @@ avadakedavra:
            effectlib:
              class: ConeEffect
              iterations: 16
-             particle: villager_happy
+             particle: spell_mob
+             color: 00FF00
              lengthGrow: 0.4
         -  class: EffectSingle
            location: target
@@ -753,7 +758,8 @@ avadamaxima:
            effectlib:
              class: ConeEffect
              iterations: 15
-             particle: villager_happy
+             particle: spell_mob
+             color: 00FF00
              lengthGrow: 0.4
         -  class: EffectSingle
            location: target
@@ -804,11 +810,12 @@ unknown:
            effectlib:
              class: ConeEffect
              iterations: 16
-             particle: enchantment_table
+             particle: spell_mob
+             color: F7FE2E
              lengthGrow: 0.4
         -  class: EffectSingle
            location: target
-           color: "FAFAFA"
+           color: "F7FE2E"
            firework: ball_large
         - class: EffectSingle
           location: target
@@ -832,11 +839,12 @@ unknown:
            effectlib:
              class: ConeEffect
              iterations: 16
-             particle: enchantment_table
+             particle: spell_mob
+             color: F7FE2E
              lengthGrow: 0.4
         -  class: EffectSingle
            location: target
-           color: "FAFAFA"
+           color: "F7FE2E"
            firework: ball_large
     parameters:
         target_type: LivingEntity
@@ -1155,7 +1163,8 @@ confundus:
            effectlib:
              class: ConeEffect
              iterations: 15
-             particle: enchantment_table
+             particle: redstone
+             color: 210B61
              lengthGrow: 0.3
         -  class: EffectSingle
            location: target
@@ -1166,14 +1175,16 @@ confundus:
            effectlib:
              class: SmokeEffect
              iterations: 16
-             particle: enchantment_table
+             particle: spell_mob
+             color: 210B61
         -  class: EffectSingle
            location: target
            effectlib:
              class: SphereEffect
              iterations: 45
              period: .1
-             particle: enchantment_table
+             particle: spell_mob
+             color: 210B61
              radius: 1
              particles: 20
         no_target:
@@ -1182,11 +1193,12 @@ confundus:
            effectlib:
              class: ConeEffect
              iterations: 15
-             particle: enchantment_table
+             particle: spell_mob
+             color: 210B61
              lengthGrow: 0.3
         -  class: EffectSingle
            location: target
-           color: 380B61
+           color: 210B61
            firework: burst
         -  class: EffectSingle
            location: target
@@ -1570,7 +1582,8 @@ diffindo:
            effectlib:
              class: ConeEffect
              iterations: 10
-             particle: flame
+             particle: redstone
+             color: FFFF00
              lengthGrow: 0.4
         -  class: EffectSingle
            location: target
@@ -1579,7 +1592,8 @@ diffindo:
              class: HelixEffect
              iterations: 1
              radius: 4
-             particle: flame
+             particle: redstone
+             color: FFFF00
         -  class: EffectSingle
            location: target
            color: FFFF00
@@ -1739,8 +1753,8 @@ expelliarmus:
            effectlib:
              class: ConeEffect
              iterations: 16
-             particle: redstone
-             color: 880000
+             particle: spell_mob
+             color: FF0000
              lengthGrow: 0.4
         -  class: EffectSingle
            location: target
@@ -1754,8 +1768,8 @@ expelliarmus:
            effectlib:
              class: ConeEffect
              iterations: 16
-             particle: redstone
-             color: 880000
+             particle: spell_mob
+             color: FF0000
              lengthGrow: 0.4
         -  class: EffectSingle
            location: target
@@ -1765,13 +1779,15 @@ expelliarmus:
         -  class: EffectSingle
            sound: hurt_flesh
         -  class: EffectRing
-           particle: crit
+           particle: spell_mob
+           color: FF0000
            location: self
         fizzle:
         -  class: EffectSingle
            sound: explode
         -  class: EffectRing
-           particle: crit
+           particle: spell_mob
+           color: FF0000
            location: self
     parameters:
         min_slot: 0
@@ -2225,7 +2241,8 @@ Rictusempra:
            effectlib:
              class: ConeEffect
              iterations: 15
-             particle: spell_instant
+             particle: spell_mob
+             color: 8181F7
              lengthGrow: 0.7
         -  class: EffectSingle
            location: target
@@ -2239,7 +2256,8 @@ Rictusempra:
            effectlib:
              class: ConeEffect
              iterations: 15
-             particle: spell_instant
+             particle: spell_mob
+             color: 8181F7
              lengthGrow: 0.7
         -  class: EffectSingle
            location: target
@@ -2333,13 +2351,15 @@ flipendo:
              class: ConeEffect
              iterations: 12
              particle: spell
+             color: E6E6E6
              lengthGrow: 0.1
         area:
         -  class: EffectSingle
            sound: burp
            effectlib:
              class: FountainEffect
-             particle: spell
+             particle: redstone
+             color: FE9A2E
              iterations: 2
              particlesStrand: 10
              particlesSpout: 30
@@ -2369,7 +2389,8 @@ flipendo|2:
            effectlib:
              class: ConeEffect
              iterations: 16
-             particle: spell
+             particle: redstone
+             color: E6E6E6
              helixes: 6
              circles: 4
              grow: 0.5
@@ -2398,7 +2419,8 @@ flipendo|3:
            effectlib:
              class: ConeEffect
              iterations: 16
-             particle: spell
+             particle: redstone
+             color: E6E6E6
              helixes: 6
              circles: 4
              grow: 0.9
@@ -2484,7 +2506,8 @@ fumos:
              class: SphereEffect
              iterations: 70
              period: .1
-             particle: smoke_normal
+             particle: redstone
+             color: 0A2A0A
              radius: 2
              particles: 20
     parameters:
@@ -2610,11 +2633,12 @@ immobulus:
            effectlib:
              class: ConeEffect
              iterations: 15
-             particle: smoke_normal
+             particle: spell_mob
+             color: 380B61
              lengthGrow: 0.33
         -  class: EffectSingle
            location: target
-           color: D358F7
+           color: 380B61
            firework: ball
         -  class: EffectSingle
            location: target
@@ -2622,7 +2646,8 @@ immobulus:
              class: SphereEffect
              iterations: 55
              period: .1
-             particle: spell_witch
+             particle: spell_mob
+             color: 380B61
              radius: 1.8
              particles: 20
         no_target:
@@ -2631,11 +2656,12 @@ immobulus:
            effectlib:
              class: ConeEffect
              iterations: 15
-             particle: spell_witch
+             particle: redstone
+             color: 380B61
              lengthGrow: 0.4
         -  class: EffectSingle
            location: target
-           color: D358F7
+           color: 380B61
            firework: burst
     costs:
         mana: 50
@@ -2666,11 +2692,12 @@ locomotomortus:
            effectlib:
              class: ConeEffect
              iterations: 15
-             particle: smoke_normal
+             particle: spell_mob
+             color: 8A084B
              lengthGrow: 0.4
         -  class: EffectSingle
            location: target
-           color: 5F04B4
+           color: 8A084B
            firework: ball
         -  class: EffectSingle
            location: target
@@ -2678,7 +2705,8 @@ locomotomortus:
              class: SphereEffect
              iterations: 25
              period: 4
-             particle: smoke_normal
+             particle: spell_mob
+             color: 8A084B
              radius: 0.5
              particles: 20
     costs:
@@ -2966,11 +2994,12 @@ levicorpus:
            effectlib:
              class: ConeEffect
              iterations: 15
-             particle: spell_witch
+             particle: spell_mob
+             color: 8258FA
              lengthGrow: 0.4
         -  class: EffectSingle
            location: target
-           color: BF00FF
+           color: 8258FA
            firework: ball
         -  class: EffectSingle
            location: target
@@ -3001,11 +3030,12 @@ levicorpus|2:
            effectlib:
              class: ConeEffect
              iterations: 15
-             particle: spell_witch
+             particle: spell_mob
+             color: 8258FA
              lengthGrow: 0.4
         -  class: EffectSingle
            location: target
-           color: BF00FF
+           color: 8258FA
            firework: ball
         -  class: EffectSingle
            location: target
@@ -3024,11 +3054,12 @@ levicorpus|3:
            effectlib:
              class: ConeEffect
              iterations: 15
-             particle: spell_witch
+             particle: spell_mob
+             color: 8258FA
              lengthGrow: 0.4
         -  class: EffectSingle
            location: target
-           color: BF00FF
+           color: 8258FA
            firework: ball
         -  class: EffectSingle
            location: target
@@ -3765,12 +3796,13 @@ reducto:
            effectlib:
              class: ConeEffect
              iterations: 10
-             particle: explosion_normal
+             particle: redstone
+             color: FACC2E
              lengthGrow: 0.4
         -  class: EffectSingle
            target_offset: 0,0.5,0
            location: target
-           color: FFFF00
+           color: FACC2E
            firework: burst
            particle: explosion_large
     parameters:
@@ -3808,12 +3840,13 @@ reductomaxima:
            effectlib:
              class: ConeEffect
              iterations: 10
-             particle: explosion_normal
+             particle: redstone
+             color: FACC2E
              lengthGrow: 0.4
         -  class: EffectSingle
            target_offset: 0,0.5,0
            location: target
-           color: FFFF00
+           color: FACC2E
            firework: burst
            particle: explosion_huge
     parameters:
@@ -3956,7 +3989,8 @@ sectumsempra:
            effectlib:
              class: ConeEffect
              iterations: 15
-             particle: drip_lava
+             particle: spell_mob
+             color: 8A0829
              lengthGrow: 0.4
         -  class: EffectSingle
            location: target
@@ -3970,7 +4004,7 @@ sectumsempra:
              class: SphereEffect
              iterations: 16
              period: 1
-             particle: crit
+             particle: drip_lava
              radius: .5
              particles: 15
         no_target:
@@ -3983,7 +4017,8 @@ sectumsempra:
            effectlib:
              class: ConeEffect
              iterations: 15
-             particle: drip_lava
+             particle: spell_mob
+             color: 8A0829
              lengthGrow: 0.4
         -  class: EffectSingle
            location: target
@@ -4258,7 +4293,8 @@ stupefy:
            effectlib:
              class: ConeEffect
              iterations: 16
-             particle: crit_magic
+             particle: spell_mob
+             color: 81DAF5
              lengthGrow: 0.4
         -  class: EffectSingle
            location: target
@@ -4275,7 +4311,8 @@ stupefy:
            effectlib:
              class: ConeEffect
              iterations: 16
-             particle: crit_magic
+             particle: spell_mob
+             color: 81DAF5
              lengthGrow: 0.4
         -  class: EffectSingle
            location: target
@@ -4293,7 +4330,8 @@ stupefy:
            effectlib:
              class: ConeEffect
              iterations: 16
-             particle: crit_magic
+             particle: spell_mob
+             color: 81DAF5
              lengthGrow: 0.4
     parameters:
         hitbox: true
@@ -4340,12 +4378,13 @@ vermillious:
            effectlib:
              class: ConeEffect
              iterations: 15
-             particle: smoke_normal
+             particle: spell_mob
+             color: 610B0B
              lengthGrow: 0.3
         -  class: EffectSingle
            location: target
-           color: DF0101
-           color2: DF0101
+           color: 610B0B
+           color2: 610B0B
            firework: ball
         no_target:
         -  class: EffectSingle
@@ -4358,12 +4397,13 @@ vermillious:
            effectlib:
              class: ConeEffect
              iterations: 15
-             particle: smoke_normal
+             particle: spell_mob
+             color: 610B0B
              lengthGrow: 0.3
         -  class: EffectSingle
            location: target
-           color: DF0101
-           color2: DF0101
+           color: 610B0B
+           color2: 610B0B
            firework: ball
         backfire:
         -  class: EffectSingle
@@ -4374,7 +4414,8 @@ vermillious:
            effectlib:
              class: ConeEffect
              iterations: 15
-             particle: smoke_normal
+             particle: spell_mob
+             color: 610B0B
              lengthGrow: 0.3
     parameters:
         range: 48
@@ -6399,6 +6440,7 @@ grenade:
         size: 2
         fuse: 60
         break_blocks: false
+        cooldown: 6000
     costs:
         mana: 40
 
@@ -6425,7 +6467,8 @@ rectumsempra:
            effectlib:
              class: ConeEffect
              iterations: 16
-             particle: spell_instant
+             particle: spell_mob
+             color: 04B486
              lengthGrow: 0.4
         -  class: EffectSingle
            location: target
@@ -6453,7 +6496,8 @@ rectumsempra:
            effectlib:
              class: ConeEffect
              iterations: 16
-             particle: spell_instant
+             particle: spell_mob
+             color: 04B486
              lengthGrow: 0.4
         -  class: EffectSingle
            location: target
