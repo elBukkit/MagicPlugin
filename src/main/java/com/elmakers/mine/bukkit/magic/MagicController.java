@@ -19,7 +19,9 @@ import com.elmakers.mine.bukkit.api.spell.*;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.maps.MapController;
 import com.elmakers.mine.bukkit.protection.MultiverseManager;
+import com.elmakers.mine.bukkit.protection.PreciousStonesManager;
 import com.elmakers.mine.bukkit.protection.PvPManagerManager;
+import com.elmakers.mine.bukkit.protection.TownyManager;
 import com.elmakers.mine.bukkit.spell.BrushSpell;
 import com.elmakers.mine.bukkit.spell.UndoableSpell;
 import com.elmakers.mine.bukkit.utility.*;
@@ -430,6 +432,8 @@ public class MagicController implements Listener, MageController {
 
         allowed = allowed && worldGuardManager.hasBuildPermission(player, block);
         allowed = allowed && factionsManager.hasBuildPermission(player, block);
+        allowed = allowed && preciousStonesManager.hasBuildPermission(player, block);
+        allowed = allowed && townyManager.hasBuildPermission(player, block);
 
         return allowed;
     }
@@ -728,6 +732,12 @@ public class MagicController implements Listener, MageController {
 
         // Link to Multiverse
         multiverseManager.initialize(plugin);
+        
+        // Link to PreciousStones
+        preciousStonesManager.initialize(plugin);
+        
+        // Link to Towny
+        townyManager.initialize(plugin);
 
         // Try to link to dynmap:
         try {
@@ -1628,7 +1638,7 @@ public class MagicController implements Listener, MageController {
 			autoSaveTaskId = 0;
 		}
 
-        EffectPlayer.debugEffects(properties.getBoolean("debug_effects", false));
+
 
         exampleDefaults = properties.getString("example", exampleDefaults);
         addExamples = properties.getStringList("add_examples");
@@ -1722,6 +1732,8 @@ public class MagicController implements Listener, MageController {
 		factionsManager.setEnabled(properties.getBoolean("factions_enabled", factionsManager.isEnabled()));
         pvpManager.setEnabled(properties.getBoolean("pvp_manager_enabled", pvpManager.isEnabled()));
         multiverseManager.setEnabled(properties.getBoolean("multiverse_enabled", multiverseManager.isEnabled()));
+        preciousStonesManager.setEnabled(properties.getBoolean("precious_stones_enabled", preciousStonesManager.isEnabled()));
+        townyManager.setEnabled(properties.getBoolean("towny_enabled", townyManager.isEnabled()));
 
         metricsLevel = properties.getInt("metrics_level", metricsLevel);
 		
@@ -3557,7 +3569,9 @@ public class MagicController implements Listener, MageController {
         return worldGuardManager.isPVPAllowed(player.getLocation())
             && (location == null || worldGuardManager.isPVPAllowed(location))
             && pvpManager.isPVPAllowed(player)
-            && multiverseManager.isPVPAllowed(player.getLocation().getWorld());
+            && multiverseManager.isPVPAllowed(player.getLocation().getWorld())
+            && preciousStonesManager.isPVPAllowed(player.getLocation())
+            && townyManager.isPVPAllowed(player.getLocation());
     }
 	
 	@Override
@@ -4053,6 +4067,8 @@ public class MagicController implements Listener, MageController {
     private WorldGuardManager					worldGuardManager			= new WorldGuardManager();
     private PvPManagerManager                   pvpManager                  = new PvPManagerManager();
     private MultiverseManager                   multiverseManager           = new MultiverseManager();
+    private PreciousStonesManager				preciousStonesManager		= new PreciousStonesManager();
+    private TownyManager						townyManager				= new TownyManager();
 
     private TradersController					tradersController			= null;
     private String								extraSchematicFilePath		= null;
