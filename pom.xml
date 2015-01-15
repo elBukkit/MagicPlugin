@@ -165,6 +165,11 @@
         </dependency>
 	</dependencies>
 	<repositories>
+	  <repository>
+            <id>SacredCoding</id>
+            <name>SacredCoding-releases</name>
+            <url>http://repo.sacredlabyrinth.net/artifactory/releases</url>
+      </repository>
       <repository>
             <id>elMakers</id>
             <url>http://maven.elmakers.com/repository/</url>
