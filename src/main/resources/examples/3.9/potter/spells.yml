@@ -1679,6 +1679,33 @@ duro|3:
         size: 3
         undo: 8000
 
+spongify:
+    icon: slime_block
+    category: transfiguration
+    class: RecurseSpell
+    worth: 150
+    cast_on_no_target: true
+    effects:
+        cast:
+        -  class: EffectTrail
+           effect: step_sound
+        -  class: EffectSingle
+           sound: fuse
+    parameters:
+        allow_max_range: false
+        range: 16
+        size: 3
+        check_destructible: true
+        destructible: destructible
+        brush: slime_block
+        transparent: transparent_to_construction
+        undo: 4000
+        cooldown: 2000
+        bypass_build: true
+        bypass_backfire: true
+    costs:
+        mana: 50
+
 erecto:
     icon: sapling:4
     category: staff
