@@ -68,7 +68,7 @@ public abstract class BaseSpellAction implements SpellAction
     }
 
     public Location getEyeLocation() {
-        return baseSpell != null ? baseSpell.getLocation() : null;
+        return baseSpell != null ? baseSpell.getEyeLocation() : null;
     }
 
     public boolean isIndestructible(Block block) {
