@@ -24,7 +24,7 @@ public class TownyAPI
     public boolean isPVPAllowed(Location location) {
         if (towny == null || location == null)
             return true;
-        return false;
+        return TownyUniverse.isWilderness(location.getBlock());
     }
 
     public boolean hasBuildPermission(Player player, Block block) {
