@@ -8,7 +8,6 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
-
 public class PreciousStonesManager {
 	private boolean enabled = false;
 	private PreciousStones preciousStones = null;

@@ -5,14 +5,9 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
-import com.palmergames.bukkit.towny.Towny;
-import com.palmergames.bukkit.towny.exceptions.NotRegisteredException;
-import com.palmergames.bukkit.towny.object.TownBlockOwner;
-import com.palmergames.bukkit.towny.object.TownyUniverse;
-
 public class TownyManager {
 	private boolean enabled = false;
-	private Towny towny = null;
+	private TownyAPI towny = null;
 
 	public void setEnabled(boolean enabled) {
 		this.enabled = enabled;
@@ -27,8 +22,8 @@ public class TownyManager {
 			try {
 				Plugin townyPlugin = plugin.getServer().getPluginManager()
 						.getPlugin("Towny");
-				if (townyPlugin instanceof Towny) {
-					towny = (Towny) townyPlugin;
+				if (townyPlugin != null) {
+					towny = new TownyAPI(townyPlugin);
 				}
 			} catch (Throwable ex) {
 			}
@@ -50,22 +45,12 @@ public class TownyManager {
 	public boolean isPVPAllowed(Location location) {
 		if (!enabled || towny == null || location == null)
 			return true;
-		return false;
+		return towny.isPVPAllowed(location);
 	}
 
 	public boolean hasBuildPermission(Player player, Block block) {
 		if (enabled && block != null && towny != null) {
-			if (TownyUniverse.isWilderness(block)) {
-				return true;
-			}
-			try {
-				TownBlockOwner owner = TownyUniverse.getDataSource()
-						.getResident(player.getName());
-				return TownyUniverse.getTownBlock(block.getLocation()).isOwner(
-						owner);
-			} catch (NotRegisteredException e) {
-				return false;
-			}
+			return towny.hasBuildPermission(player, block);
 		}
 		return true;
 	}
