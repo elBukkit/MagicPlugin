@@ -4713,7 +4713,7 @@ wingardium:
 
 phase:
     hidden: true
-    icon: ender_portal
+    icon: iron_helmet
     category: staff
     class: PhaseSpell
     worth: 10
