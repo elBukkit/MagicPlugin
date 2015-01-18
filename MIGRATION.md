@@ -1,6 +1,6 @@
 # Migration Notes
 
-## 4.0
+## 3.9.4, 4.0
 
  * All of the particle effect names have changed (internal EffectLib change).
    There is a PHP script available to help migrate custom configs.

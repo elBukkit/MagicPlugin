@@ -2,7 +2,13 @@
 
 ## 4.0
 
+ - Spells converted to new action system
+ - All default spells changed
+
+## 3.9.4
+
  - Update EffectLib to latest ParticleEffect code (see migration notes!)
+ - Add support for PreciousStones and Towny
  - Add hotbar_count to wands, multiple hotbars!
  - Update to WorldGuard 6.0
 
