@@ -141,7 +141,7 @@ public class ActionHandler
         else if (coneCount > 1)
         {
             List<Target> entities = spell.getAllTargetEntities();
-            for (int i = 1; i < coneCount; i++)
+            for (int i = 1; i < coneCount && i < entities.size(); i++)
             {
                 targetEntities.add(entities.get(i).getEntity());
             }
