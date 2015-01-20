@@ -3,11 +3,14 @@ package com.elmakers.mine.bukkit.action.builtin;
 import com.elmakers.mine.bukkit.api.action.EntityAction;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.BaseSpellAction;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.Hanging;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.util.Vector;
 
@@ -15,11 +18,17 @@ public class VelocityAction extends BaseSpellAction implements EntityAction
 {
     @Override
     public SpellResult perform(ConfigurationSection parameters, Entity entity) {
-        if (!(entity instanceof LivingEntity)) {
-            return SpellResult.LIVING_ENTITY_REQUIRED;
+        if (entity instanceof Hanging)
+        {
+            return SpellResult.NO_TARGET;
         }
 
         double magnitude = parameters.getDouble("speed", 1);
+        if (entity instanceof LivingEntity && parameters.contains("living_entity_speed")) {
+            magnitude = parameters.getDouble("living_entity_speed");
+        } else if (entity instanceof Item && parameters.contains("item_speed")) {
+            magnitude = parameters.getDouble("item_speed");
+        }
 
         if (parameters.contains("min_speed") || parameters.contains("max_speed"))
         {
@@ -40,6 +49,22 @@ public class VelocityAction extends BaseSpellAction implements EntityAction
         }
 
         Vector velocity = getDirection();
+        if (parameters.contains("push"))
+        {
+            double direction = parameters.getDouble("push");
+            Location to = entity.getLocation();
+            Location from = getLocation();
+            Vector toVector = new Vector(to.getBlockX(), to.getBlockY(), to.getBlockZ());
+            Vector fromVector = new Vector(from.getBlockX(), from.getBlockY(), from.getBlockZ());
+            Vector forceVector = toVector;
+            forceVector.subtract(fromVector);
+            forceVector.normalize().multiply(direction);
+            if (forceVector.lengthSquared() > 1)
+            {
+                velocity = forceVector;
+            }
+        }
+
         if (getLocation().getBlockY() >= 256)
         {
             velocity.setY(0);

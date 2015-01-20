@@ -57,10 +57,13 @@ default:
 accio:
     icon: ink_sack:6
     category: charms
-    class: PushSpell
     pvp_restricted: true
     cast_on_no_target: true
     worth: 10
+    actions:
+        cast:
+        -  class: VelocityAction
+        -  class: FallProtectionAction
     effects:
         cast:
         -  class: EffectSingle
@@ -81,13 +84,11 @@ accio:
         target_type: Entity
         allow_max_range: true
         range: 48
-        allow_area: false
-        item_force: 2
-        area_range: 20
-        entity_force: 1
-        type: pull
+        item_speed: 2
+        living_entity_speed: 1
+        push: -1
         count: 1
-        fall_protection: 10000
+        duration: 10000
     costs:
         mana: 50
 
@@ -349,10 +350,13 @@ apparatemaxima:
 araniaexumai:
     icon: ink_sack:2
     category: creatures
-    class: PushSpell
     pvp_restricted: true
     cast_on_no_target: true
     worth: 15
+    actions:
+        cast:
+        -  class: VelocityAction
+        -  class: DamageAction
     effects:
         cast:
         -  class: EffectSingle
@@ -365,22 +369,13 @@ araniaexumai:
              lengthGrow: 0.15
              particle: spell_mob
              color: 58FAD0
-        area:
-        -  class: EffectSingle
-           sound: ghast_fireball
-           sound_volume: 1
-           effectlib:
-             class: VortexEffect
-             particle: spell_witch
     parameters:
         target_type: Spider
         range: 40
-        allow_area: false
-        item_force: 2
-        area_range: 20
-        entity_force: 2
+        item_speed: 2
+        living_entity_speed: 2
         bypass_backfire: true
-        type: push
+        push: 1
         count: 8
         damage: 10
         cooldown: 500
@@ -1016,10 +1011,13 @@ bogies|3:
 bombarda:
     icon: ink_sack:7
     category: dada
-    class: PushSpell
     pvp_restricted: true
     cast_on_no_target: true
     worth: 40
+    actions:
+        cast:
+        -  class: VelocityAction
+        -  class: DamageAction
     effects:
         cast:
         -  class: EffectSingle
@@ -1042,15 +1040,14 @@ bombarda:
         allow_max_range: true
         range: 40
         target_breakables: 3
-        break_blocks: false
         damage: 5
-        item_force: 1
-        area_range: 10
-        entity_force: 1
+        radius: 10
+        item_speed: 1
+        living_entity_speed: 1
         cooldown: 12000
-        undo: 8000
         bypass_backfire: true
-        bypass_protection: true
+        push: 1
+        origin_at_target: true
     costs:
         mana: 100
 
@@ -2269,10 +2266,13 @@ flagrate:
 Rictusempra:
     icon: ink_sack:3
     category: dada
-    class: PushSpell
     pvp_restricted: true
     cast_on_no_target: true
     worth: 15
+    actions:
+        cast:
+        -  class: VelocityAction
+        -  class: DamageAction
     effects:
         cast:
         -  class: EffectSingle
@@ -2309,12 +2309,10 @@ Rictusempra:
         fov: .12
         hitbox: true
         target_type: LivingEntity
-        allow_area: false
         allow_max_range: false
-        item_force: 2
-        area_range: 32
-        entity_force: 5
-        type: push
+        item_speed: 2
+        living_entity_speed: 5
+        push: 1
         count: 1
         cooldown: 2500
         damage: 1.5
@@ -2326,10 +2324,12 @@ Rictusempra:
 ventus:
     icon: ink_sack:5
     category: dada
-    class: PushSpell
     pvp_restricted: true
     cast_on_no_target: true
     worth: 15
+    actions:
+        cast:
+        - VelocityAction
     effects:
         cast:
         -  class: EffectSingle
@@ -2363,14 +2363,10 @@ ventus:
     parameters:
         target_type: Entity
         range: 15
-        allow_area: false
         allow_max_range: true
-        item_force: 5
-        area_range: 20
-        entity_force: 1
-        type: push
-        count: 1
-        damage: 0
+        item_speed: 5
+        living_entity_speed: 1
+        push: 1
         bypass_backfire: true
         cooldown: 10000
     costs:
@@ -2379,10 +2375,12 @@ ventus:
 flipendo:
     icon: ink_sack:5
     category: dada
-    class: PushSpell
     pvp_restricted: true
     cast_on_no_target: true
     worth: 15
+    actions:
+        cast:
+        - class: VelocityAction
     effects:
         cast:
         -  class: EffectSingle
@@ -2394,34 +2392,25 @@ flipendo:
              particle: spell_instant
              color: FFFFFF
              lengthGrow: 0.1
-        area:
-        -  class: EffectSingle
-           sound: burp
-           effectlib:
-             class: FountainEffect
-             particle: spell_instant
-             color: FFFFFF
-             iterations: 2
-             particlesStrand: 10
-             particlesSpout: 30
     parameters:
         hitbox: true
         target_type: Entity
         range: 16
-        allow_area: false
         allow_max_range: true
-        item_force: 2
+        item_speed: 2
+        living_entity_speed: .5
         area_range: 20
-        entity_force: 1
-        type: push
-        count: 1
-        damage: 0
+        push: 1
         cooldown: 1500
     costs:
         mana: 40
 
 flipendo|2:
     worth: 30
+    actions:
+        cast:
+        - class: DamageAction
+        - class: VelocityAction
     effects:
         cast:
         -  class: EffectSingle
@@ -2439,13 +2428,12 @@ flipendo|2:
     parameters:
         hitbox: true
         range: 20
-        item_force: 4
-        allow_area: false
+        item_speed: 2.5
+        living_entity_speed: 1
         area_range: 20
-        entity_force: .5
         type: push
-        count: 3
         damage: 1
+        count: 3
         cooldown: 3000
     costs:
         mana: 70
@@ -2475,10 +2463,8 @@ flipendo|3:
     parameters:
         hitbox: true
         range: 32
-        allow_area: false
-        area_range: 20
-        item_force: 3
-        entity_force: 1
+        item_speed: 3
+        living_entity_speed: 1
         count: 5
         damage: 2
         cooldown: 4500
@@ -5704,12 +5690,15 @@ superregenerate:
 pulsus:
     icon: ink_sack:5
     category: dada
-    class: PushSpell
     pvp_restricted: true
     cast_on_no_target: true
     worth: 15
+    actions:
+        cast:
+        -  class: VelocityAction
+        -  class: DamageAction
     effects:
-        area:
+        cast:
         -  class: EffectSingle
            sound: fizz
            effectlib:
@@ -5719,12 +5708,12 @@ pulsus:
              particlesStrand: 10
              particlesSpout: 30
     parameters:
-        area: true
+        fov: 4
         target_type: Entity
-        item_force: 4
-        area_range: 15
-        entity_force: 10
-        type: push
+        item_speed: 4
+        range: 15
+        living_entity_speed: 10
+        push: 1
         count: 1
         damage: 0.5
         cooldown: 7000
@@ -5736,12 +5725,15 @@ whomping:
     hidden: true
     icon: ink_sack:5
     category: dada
-    class: PushSpell
     pvp_restricted: true
     cast_on_no_target: true
     worth: 15
+    actions:
+        cast:
+        -  class: VelocityAction
+        -  class: DamageAction
     effects:
-        area:
+        cast:
         -  class: EffectSingle
            sound: fizz
            effectlib:
@@ -5751,12 +5743,12 @@ whomping:
              particlesStrand: 10
              particlesSpout: 30
     parameters:
-        area: true
+        fov: 4
+        rage: 25
         target_type: Entity
-        item_force: 4
-        area_range: 25
-        entity_force: 2
-        type: push
+        item_speed: 4
+        living_entity_speed: 2
+        push: 1
         count: 1
         damage: 0.1
         cooldown: 0
