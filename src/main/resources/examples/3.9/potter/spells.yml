@@ -504,9 +504,11 @@ snowball:
 ascendio:
     icon: ink_sack:8
     category: charms
-    class: FlingSpell
     worth: 80
     pvp_restricted: false
+    actions:
+        cast:
+        - class: VelocityAction
     effects:
         cast:
         -  class: EffectSingle
@@ -521,7 +523,7 @@ ascendio:
            particle: spell
            period: 2
     parameters:
-        safety: 0
+        target: self
         min_speed: 1.0
         max_speed: 1.5
     costs:
@@ -529,13 +531,16 @@ ascendio:
 
 ascendio|2:
     parameters:
-        safety: 0
         min_speed: 1.5
         max_speed: 3
 
 ascendio|3:
+    actions:
+        cast:
+        - class: VelocityAction
+        - class: FallProtectionAction
     parameters:
-        safety: 20000
+        duration: 20000
         min_speed: 2
         max_speed: 5
 

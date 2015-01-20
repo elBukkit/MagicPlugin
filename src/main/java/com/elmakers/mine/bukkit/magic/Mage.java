@@ -13,6 +13,7 @@ import java.util.Set;
 import com.elmakers.mine.bukkit.effect.HoloUtils;
 import com.elmakers.mine.bukkit.effect.Hologram;
 import com.elmakers.mine.bukkit.spell.ActionSpell;
+import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import de.slikey.effectlib.util.ParticleEffect;
 import org.bukkit.*;
@@ -90,6 +91,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     private Location lastDeathLocation = null;
     private final MaterialBrush brush;
     private long fallProtection = 0;
+    private BaseSpell fallingSpell = null;
 
     private boolean isNewPlayer = true;
 
@@ -252,9 +254,22 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         if (event.isCancelled()) return;
 
         EntityDamageEvent.DamageCause cause = event.getCause();
-        if (cause == EntityDamageEvent.DamageCause.FALL && fallProtection > 0 && fallProtection > System.currentTimeMillis()) {
-            event.setCancelled(true);
-            return;
+        if (cause == EntityDamageEvent.DamageCause.FALL) {
+            if (fallProtection > 0 && fallProtection > System.currentTimeMillis()) {
+                event.setCancelled(true);
+                fallProtection = 0;
+                if (fallingSpell != null) {
+                    double scale = 1;
+                    LivingEntity li = getLivingEntity();
+                    if (li != null) {
+                        scale = event.getDamage() / li.getMaxHealth();
+                    }
+                    fallingSpell.playEffects("land", (float)scale);
+                }
+                fallingSpell = null;
+                return;
+            }
+            fallingSpell = null;
         }
 
         // First check for damage reduction
@@ -1264,14 +1279,22 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         }
     }
 
-    public void enableFallProtection(int ms)
+    public void enableFallProtection(int ms, Spell protector)
     {
         if (ms == 0) return;
+        if (protector != null && protector instanceof BaseSpell) {
+            this.fallingSpell = (BaseSpell)protector;
+        }
 
         long nextTime = System.currentTimeMillis() + ms;
         if (nextTime > fallProtection) {
             fallProtection = nextTime;
         }
+    }
+
+    public void enableFallProtection(int ms)
+    {
+        enableFallProtection(ms, null);
     }
 
     public void setLoading(boolean loading) {

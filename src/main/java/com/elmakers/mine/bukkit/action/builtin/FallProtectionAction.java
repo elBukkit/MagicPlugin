@@ -22,7 +22,7 @@ public class FallProtectionAction extends BaseSpellAction implements EntityActio
             return SpellResult.NO_TARGET;
         }
 
-        targetMage.enableFallProtection(fallProtection);
+        targetMage.enableFallProtection(fallProtection, getSpell());
 		return SpellResult.CAST;
 	}
 }
