@@ -23,9 +23,11 @@ public interface Spell extends SpellTemplate {
     public boolean cast(String[] parameters);
     public boolean cast(String[] parameters, Location defaultLocation);
     public Location getLocation();
+    public void target();
     public Location getTargetLocation();
     public Entity getTargetEntity();
     public Vector getDirection();
+    public boolean canTarget(Entity entity);
     public boolean isActive();
     public boolean hasBrushOverride();
     public boolean canCast(Location location);
