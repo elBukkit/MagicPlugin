@@ -526,6 +526,10 @@ spells:
         name: Sectumsempra
         description: Lascerate your target
         cast: Sectumsempra!
+    rictusempra:
+        name: Rictusempra
+        description: The tickling charm
+        cast: Rictusempra!
     slash:
         name: Slash
         description: A mighty slash!

@@ -676,10 +676,12 @@ broom:
 avadakedavra:
     icon: ink_sack:10
     category: unforgiveable
-    class: PotionEffectSpell
     pvp_restricted: true
     cast_on_no_target: true
     worth: 1000
+    actions:
+        cast:
+        -  class: DamageAction
     effects:
         cast:
         -  class: EffectSingle
@@ -793,10 +795,12 @@ avadamaxima:
 unknown:
     icon: coal
     category: unforgiveable
-    class: PotionEffectSpell
     pvp_restricted: true
     cast_on_no_target: true
     worth: 1000
+    actions:
+        cast:
+        -  class: DamageAction
     effects:
         cast:
         -  class: EffectSingle
@@ -897,10 +901,13 @@ beat:
     hidden: true
     icon: stick
     category: specialty
-    class: PotionEffectSpell
     pvp_restricted: true
     cast_on_no_target: true
     worth: 10
+    actions:
+        cast:
+        -  class: PotionEffectAction
+        -  class: DamageAction
     effects:
         cast:
         -  class: EffectSingle
@@ -930,10 +937,12 @@ beat:
 bogies:
     icon: ink_sack:15
     category: creatures
-    class: PotionEffectSpell
     pvp_restricted: true
     cast_on_no_target: true
     worth: 20
+    actions:
+        cast:
+        -  class: PotionEffectAction
     effects:
         cast:
         -  class: EffectSingle
@@ -1074,9 +1083,11 @@ bombarda|2:
 bubble:
     icon: ender_pearl
     category: transfiguration
-    class: PotionEffectSpell
     worth: 30
     pvp_restricted: false
+    actions:
+        cast:
+        -  class: PotionEffectAction
     effects:
         cast:
         -  class: EffectSingle
@@ -1157,10 +1168,12 @@ confringoold:
 confundus:
     icon: coal:1
     category: dada
-    class: PotionEffectSpell
     pvp_restricted: true
     cast_on_no_target: true
     worth: 10
+    actions:
+        cast:
+        -  class: PotionEffectAction
     effects:
         cast:
         -  class: EffectSingle
@@ -1231,10 +1244,12 @@ confundusmaxima:
     icon: coal:1
     hidden: true
     category: dada
-    class: PotionEffectSpell
     pvp_restricted: true
     cast_on_no_target: true
     worth: 10
+    actions:
+        cast:
+        -  class: PotionEffectAction
     effects:
         cast:
         -  class: EffectSingle
@@ -1272,10 +1287,12 @@ conjunctivitis:
     alias: blind
     icon: ender_pearl
     category: dada
-    class: PotionEffectSpell
     pvp_restricted: true
     cast_on_no_target: true
     worth: 10
+    actions:
+        cast:
+        -  class: PotionEffectAction
     effects:
         cast:
         -  class: EffectSingle
@@ -1330,10 +1347,12 @@ obscuro:
     alias: blind
     icon: ender_pearl
     category: dada
-    class: PotionEffectSpell
     pvp_restricted: true
     cast_on_no_target: true
     worth: 10
+    actions:
+        cast:
+        -  class: PotionEffectAction
     effects:
         cast:
         -  class: EffectSingle
@@ -1372,10 +1391,13 @@ obscuro:
 crucio:
     icon: quartz
     category: unforgiveable
-    class: PotionEffectSpell
     pvp_restricted: true
     cast_on_no_target: true
     worth: 300
+    actions:
+        cast:
+        -  class: PotionEffectAction
+        -  class: DamageAction
     effects:
         cast:
         -  class: EffectSingle
@@ -1433,9 +1455,11 @@ crucio:
 dementor:
     icon: quartz
     category: hidden
-    class: PotionEffectSpell
     pvp_restricted: true
     cast_on_no_target: false
+    actions:
+        cast:
+        -  class: PotionEffectAction
     effects:
         cast:
         -  class: EffectSingle
@@ -1631,8 +1655,10 @@ diffindo|3:
 disillusion:
     icon: coal:1
     category: charms
-    class: PotionEffectSpell
     worth: 20
+    actions:
+        cast:
+        -  class: PotionEffectAction
     effects:
         cast:
         -  class: EffectSingle
@@ -1873,8 +1899,10 @@ expelliarmus|5:
 rennervate:
     icon: ink_sack:9
     category: charms
-    class: PotionEffectSpell
     worth: 20
+    actions:
+        cast:
+        -  class: PotionEffectAction
     effects:
         cast:
         - class: EffectSingle
@@ -1910,8 +1938,10 @@ reparifors:
     description: Cures blindness and slows!
     icon: ink_sack:9
     category: charms
-    class: PotionEffectSpell
     worth: 20
+    actions:
+        cast:
+        -  class: PotionEffectAction
     effects:
         cast:
         - class: EffectSingle
@@ -1985,10 +2015,13 @@ engorgio:
 episkey:
     icon: ink_sack:9
     category: charms
-    class: PotionEffectSpell
     worth: 30
     pvp_restricted: false
     cast_on_no_target: true
+    actions:
+        cast:
+        -  class: PotionEffectAction
+        -  class: HealAction
     effects:
         cast:
         -  class: EffectSingle
@@ -2011,7 +2044,7 @@ episkey:
         range: 16
         duration: 1000
         effect_saturation: 4
-        heal: 2
+        amount: 2
         cooldown: 8000
     costs:
         mana: 50
@@ -2029,10 +2062,13 @@ episkey|3:
 bandage:
     icon: ink_sack:9
     category: charms
-    class: PotionEffectSpell
     worth: 30
     pvp_restricted: false
     cast_on_no_target: true
+    actions:
+        cast:
+        -  class: PotionEffectAction
+        -  class: HealAction
     effects:
         cast:
         -  class: EffectSingle
@@ -2054,7 +2090,7 @@ bandage:
         range: 16
         duration: 1000
         effect_saturation: 2
-        heal: 1
+        amount: 1
         cooldown: 3000
     costs:
         mana: 1
@@ -2116,8 +2152,10 @@ floo:
     hidden: true
     icon: sulphur
     category: specialty
-    class: PotionEffectSpell
     worth: 30
+    actions:
+        cast:
+        -  class: PotionEffectAction
     effects:
         cast:
         -  class: EffectSingle
@@ -2263,7 +2301,8 @@ flagrate:
     costs:
         mana: 5
 
-Rictusempra:
+rictusempra:
+    alias: Rictusempra
     icon: ink_sack:3
     category: dada
     pvp_restricted: true
@@ -2522,8 +2561,10 @@ fourpoint:
 fumos:
     icon: ink_sack
     category: dada
-    class: PotionEffectSpell
     worth: 10
+    actions:
+        cast:
+        -  class: PotionEffectAction
     effects:
         cast:
         -  class: EffectSingle
@@ -2649,10 +2690,12 @@ glacius|3:
 immobulus:
     icon: gold_ingot
     category: dada
-    class: PotionEffectSpell
     pvp_restricted: true
     cast_on_no_target: true
     worth: 30
+    actions:
+        cast:
+        -  class: PotionEffectAction
     effects:
         cast:
         -  class: EffectSingle
@@ -2708,10 +2751,12 @@ locomotomortus:
     alias: locomoto
     icon: gold_ingot
     category: dada
-    class: PotionEffectSpell
     pvp_restricted: true
     cast_on_no_target: true
     worth: 30
+    actions:
+        cast:
+        -  class: PotionEffectAction
     effects:
         cast:
         -  class: EffectSingle
@@ -3101,7 +3146,9 @@ lumos:
     icon: ink_sack:11
     category: charms
     worth: 10
-    class: PotionEffectSpell
+    actions:
+        cast:
+        -  class: PotionEffectAction
     effects:
         cast:
         -  class: EffectSingle
@@ -3432,10 +3479,12 @@ petrificustotalus:
     alias: petrificus
     icon: nether_brick_item
     category: dada
-    class: PotionEffectSpell
     pvp_restricted: true
     cast_on_no_target: true
     worth: 50
+    actions:
+        cast:
+        -  class: PotionEffectAction
     effects:
         cast:
         -  class: EffectSingle
@@ -4010,9 +4059,11 @@ sectumsempra:
     icon: quartz
     category: dark
     pvp_restricted: true
-    class: PotionEffectSpell
     cast_on_no_target: true
     worth: 25
+    actions:
+        cast:
+        -  class: DamageAction
     effects:
         cast:
         -  class: EffectSingle
@@ -4077,9 +4128,11 @@ slash:
     icon: quartz
     category: melee
     pvp_restricted: true
-    class: PotionEffectSpell
     cast_on_no_target: true
     worth: 25
+    actions:
+        cast:
+        -  class: DamageAction
     effects:
         cast:
         -  class: EffectSingle
@@ -4548,9 +4601,11 @@ meteo:
 nox:
     icon: ink_sack:0
     category: charms
-    class: PotionEffectSpell
     cast_on_no_target: true
     worth: 20
+    actions:
+        cast:
+        -  class: PotionEffectAction
     effects:
         cast:
         -  class: EffectSingle
@@ -4599,10 +4654,13 @@ noxmaxima:
 vulnera:
     icon: ink_sack:9
     category: charms
-    class: PotionEffectSpell
     cast_on_no_target: true
     worth: 50
     pvp_restricted: false
+    actions:
+        cast:
+        -  class: PotionEffectAction
+        -  class: HealAction
     effects:
         cast:
         - class: EffectSingle
@@ -4633,17 +4691,19 @@ vulnera:
         remove_effects:
         - confusion
         - wither
-        heal: 1
+        amount: 1
     costs:
         mana: 80
 
 ferula:
     icon: ink_sack:9
     category: charms
-    class: PotionEffectSpell
     cast_on_no_target: true
     worth: 50
     pvp_restricted: false
+    actions:
+        cast:
+        -  class: PotionEffectAction
     effects:
         cast:
         - class: EffectSingle
@@ -5251,9 +5311,11 @@ vault:
 revelio:
     icon: iron_helmet
     category: staff
-    class: PotionEffectSpell
     worth: 20
     cast_on_no_target: true
+    actions:
+        cast:
+        -  class: PotionEffectAction
     effects:
         cast:
         -  class: EffectSingle
@@ -6364,12 +6426,14 @@ confringoincendio:
     costs:
         mana: 50
 
-Tripudio:
+tripudio:
     description: Gain the power to jump high
     name: Tripudio
     icon: ink_sack:8
     worth: 10
-    class: PotionEffectSpell
+    actions:
+        cast:
+        -  class: PotionEffectAction
     effects:
         cast:
         -  class: EffectSingle
@@ -6401,7 +6465,9 @@ volo:
     icon: eye_of_ender
     category: light
     worth: 10
-    class: PotionEffectSpell
+    actions:
+        cast:
+        -  class: PotionEffectAction
     effects:
         cast:
         -  class: EffectSingle
@@ -6433,7 +6499,9 @@ fiantoduri:
     icon: ink_sack:12
     category: light
     worth: 10
-    class: PotionEffectSpell
+    actions:
+        cast:
+        -  class: PotionEffectAction
     effects:
         cast:
         -  class: EffectSingle
@@ -6463,7 +6531,6 @@ fiantoduri:
         effect_jump: -10
         fall_protection: 5000
         effect_absorption: 4
-
 
 grenade:
     icon: clay_ball
