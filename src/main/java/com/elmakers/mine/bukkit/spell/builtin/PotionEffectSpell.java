@@ -15,6 +15,7 @@ import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.Target;
 import org.bukkit.potion.PotionEffectType;
 
+@Deprecated
 public class PotionEffectSpell extends UndoableSpell
 {
     private final static PotionEffectType[] _negativeEffects =

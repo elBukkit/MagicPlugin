@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Random;
 
 import com.elmakers.mine.bukkit.api.effect.EffectPlayer;
-import com.elmakers.mine.bukkit.spell.TargetingSpell;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
@@ -21,6 +20,7 @@ import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.UndoableSpell;
 import com.elmakers.mine.bukkit.utility.NMSUtils;
 
+@Deprecated
 public class ProjectileSpell extends UndoableSpell
 {
 	private int defaultSize = 1;

@@ -16,6 +16,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
+@Deprecated
 public class HealSpell extends TargetingSpell 
 {
     private final static PotionEffectType[] _negativeEffects =

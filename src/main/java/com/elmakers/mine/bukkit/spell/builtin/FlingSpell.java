@@ -17,8 +17,8 @@ import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.api.spell.SpellEventType;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
-import com.elmakers.mine.bukkit.spell.TargetingSpell;
 
+@Deprecated
 public class FlingSpell extends UndoableSpell implements Listener
 {
 	private long safetyLength = 20000;
