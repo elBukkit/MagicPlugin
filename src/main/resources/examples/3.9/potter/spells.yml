@@ -87,18 +87,17 @@ accio:
         item_speed: 2
         living_entity_speed: 1
         push: -1
-        count: 1
         duration: 10000
     costs:
         mana: 50
 
 accio|2:
     parameters:
-        count: 4
+        target_count: 4
 
 accio|3:
     parameters:
-        count: 8
+        target_count: 8
         allow_area: true
 
 aguamenti:
@@ -376,7 +375,7 @@ araniaexumai:
         living_entity_speed: 2
         bypass_backfire: true
         push: 1
-        count: 8
+        target_count: 8
         damage: 10
         cooldown: 500
     costs:
@@ -2352,7 +2351,6 @@ rictusempra:
         item_speed: 2
         living_entity_speed: 5
         push: 1
-        count: 1
         cooldown: 2500
         damage: 1.5
         target_breakables: 0
@@ -2472,7 +2470,7 @@ flipendo|2:
         area_range: 20
         type: push
         damage: 1
-        count: 3
+        target_count: 3
         cooldown: 3000
     costs:
         mana: 70
@@ -2504,7 +2502,7 @@ flipendo|3:
         range: 32
         item_speed: 3
         living_entity_speed: 1
-        count: 5
+        target_count: 5
         damage: 2
         cooldown: 4500
     costs:
@@ -5331,7 +5329,6 @@ revelio:
     parameters:
        target: other
        target_type: LivingEntity
-       radius: 0
        range: 32
        fov: 3
        allow_max_range: true
@@ -5776,7 +5773,6 @@ pulsus:
         range: 15
         living_entity_speed: 10
         push: 1
-        count: 1
         damage: 0.5
         cooldown: 7000
         bypass_backfire: true
@@ -5811,7 +5807,6 @@ whomping:
         item_speed: 4
         living_entity_speed: 2
         push: 1
-        count: 1
         damage: 0.1
         cooldown: 0
         bypass_backfire: true
