@@ -43,6 +43,22 @@ public abstract class BaseSpellAction implements SpellAction
         }
     }
 
+    public void registerVelocity(Entity entity)
+    {
+        if (undoSpell != null)
+        {
+            undoSpell.registerVelocity(entity);
+        }
+    }
+
+    public void registerMoved(Entity entity)
+    {
+        if (undoSpell != null)
+        {
+            undoSpell.registerMoved(entity);
+        }
+    }
+
     public void registerPotionEffects(Entity entity)
     {
         if (undoSpell != null)
@@ -147,5 +163,9 @@ public abstract class BaseSpellAction implements SpellAction
     public boolean isUndoable()
     {
         return false;
+    }
+
+    public Spell getSpell() {
+        return spell;
     }
 }
