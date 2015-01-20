@@ -261,6 +261,12 @@ public abstract class TargetingSpell extends BaseSpell {
         return targetType;
     }
 
+    @Override
+    public void target()
+    {
+        getTarget();
+    }
+
     protected Target getTarget()
     {
         target = findTarget();
@@ -503,6 +509,7 @@ public abstract class TargetingSpell extends BaseSpell {
         return targets;
     }
 
+    @Override
     public boolean canTarget(Entity entity) {
         // This is mainly here to ignore pets...
         if (entity.getType() == EntityType.UNKNOWN) {

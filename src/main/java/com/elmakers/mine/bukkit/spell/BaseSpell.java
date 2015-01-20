@@ -1062,10 +1062,22 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         playEffects(effectName, 1);
     }
 
+    @Override
+    public void target() {
+
+    }
+
+    @Override
     public Location getTargetLocation() {
         return null;
     }
 
+    @Override
+    public boolean canTarget(Entity entity) {
+        return true;
+    }
+
+    @Override
     public Entity getTargetEntity() {
         return null;
     }

@@ -3,14 +3,17 @@ package com.elmakers.mine.bukkit.spell;
 import com.elmakers.mine.bukkit.api.action.GeneralAction;
 import com.elmakers.mine.bukkit.api.action.BlockAction;
 import com.elmakers.mine.bukkit.api.action.EntityAction;
+import com.elmakers.mine.bukkit.api.action.SpellAction;
 import com.elmakers.mine.bukkit.api.magic.Mage;
-import com.elmakers.mine.bukkit.api.magic.MageController;
+import com.elmakers.mine.bukkit.api.spell.MageSpell;
+import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.Target;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.entity.Entity;
 
 import java.util.ArrayList;
@@ -25,11 +28,11 @@ public class ActionHandler
     private List<BlockAction> blockActions = new ArrayList<BlockAction>();
     private List<EntityAction> entityActions = new ArrayList<EntityAction>();
 
-    private final ActionSpell spell;
+    private final Spell spell;
     private boolean undoable = false;
     private boolean usesBrush = false;
 
-    public ActionHandler(ActionSpell spell)
+    public ActionHandler(Spell spell)
     {
         this.spell = spell;
     }
@@ -57,29 +60,38 @@ public class ActionHandler
                             throw new Exception("Must extend SpellAction");
                         }
 
+                        @SuppressWarnings("unchecked")
                         Class<? extends BaseSpellAction> actionClass = (Class<? extends BaseSpellAction>)genericClass;
                         BaseSpellAction action = actionClass.newInstance();
                         actionConfiguration.set("class", null);
                         if (actionConfiguration.getKeys(false).size() == 0) {
                             actionConfiguration = null;
                         }
-                        action.load(spell, actionConfiguration);
-                        usesBrush = usesBrush || action.usesBrush();
-                        undoable = undoable || action.isUndoable();
-                        if (action instanceof GeneralAction) {
-                            generalActions.add((GeneralAction)action);
-                        }
-                        if (action instanceof EntityAction) {
-                            entityActions.add((EntityAction)action);
-                        }
-                        if (action instanceof BlockAction) {
-                            blockActions.add((BlockAction)action);
-                        }
+                        loadAction(action, actionConfiguration);
                     } catch (Exception ex) {
                         ex.printStackTrace();
                     }
                 }
             }
+        }
+    }
+
+    public void loadAction(SpellAction action) {
+        loadAction(action, new MemoryConfiguration());
+    }
+
+    public void loadAction(SpellAction action, ConfigurationSection parameters) {
+        action.load(spell, parameters);
+        usesBrush = usesBrush || action.usesBrush();
+        undoable = undoable || action.isUndoable();
+        if (action instanceof GeneralAction) {
+            generalActions.add((GeneralAction)action);
+        }
+        if (action instanceof EntityAction) {
+            entityActions.add((EntityAction)action);
+        }
+        if (action instanceof BlockAction) {
+            blockActions.add((BlockAction)action);
         }
     }
 
@@ -94,7 +106,7 @@ public class ActionHandler
         for (GeneralAction generalAction : generalActions)
         {
             SpellResult actionResult = generalAction.perform(generalAction.getParameters(parameters));
-            if (actionResult.ordinal() > result.ordinal())
+            if (actionResult.ordinal() < result.ordinal())
             {
                 result = actionResult;
             }
@@ -105,42 +117,61 @@ public class ActionHandler
             return result;
         }
 
-        Entity targetedEntity = null;
-        List<Entity> targetEntities = new ArrayList<Entity>();
+        spell.target();
         if (targetLocation == null)
         {
-            Target target = spell.getTarget();
-            if (!target.hasTarget())
+            targetLocation = spell.getTargetLocation();
+        }
+        if (targetLocation == null)
+        {
+            targetLocation = spell.getLocation();
+        }
+        if (targetLocation == null)
+        {
+            return SpellResult.LOCATION_REQUIRED;
+        }
+
+        for (BlockAction action : blockActions)
+        {
+            SpellResult actionResult = action.perform(action.getParameters(parameters), targetLocation.getBlock());
+            if (actionResult.ordinal() < result.ordinal())
             {
-                return SpellResult.NO_TARGET;
+                result = actionResult;
             }
-            if (target.hasEntity())
-            {
-                targetedEntity = target.getEntity();
-                targetEntities.add(targetedEntity);
-            }
-            targetLocation = target.getLocation();
+        }
+
+
+        List<Entity> targetEntities = new ArrayList<Entity>();
+        Entity targetedEntity = spell.getTargetEntity();
+        if (targetedEntity != null)
+        {
+            targetEntities.add(targetedEntity);
         }
 
         int radius = parameters.getInt("target_radius", 0);
         int coneCount = parameters.getInt("target_count", 0);
-        Mage mage = spell.getMage();
-        radius = (int)(mage.getRadiusMultiplier() * radius);
+        Entity mageEntity = null;
+        if (spell instanceof MageSpell)
+        {
+            Mage mage = ((MageSpell)spell).getMage();
+            mageEntity = mage.getEntity();
+            radius = (int)(mage.getRadiusMultiplier() * radius);
+        }
 
         if (radius > 0)
         {
             List<Entity> entities = CompatibilityUtils.getNearbyEntities(targetLocation, radius, radius, radius);
             for (Entity entity : entities)
             {
-                if (entity != targetedEntity && entity != mage.getEntity() && spell.canTarget(entity))
+                if (entity != targetedEntity && entity != mageEntity && spell.canTarget(entity))
                 {
                     targetEntities.add(entity);
                 }
             }
         }
-        else if (coneCount > 1)
+        else if (coneCount > 1 && spell instanceof TargetingSpell)
         {
-            List<Target> entities = spell.getAllTargetEntities();
+            List<Target> entities = ((TargetingSpell)spell).getAllTargetEntities();
             for (int i = 1; i < coneCount && i < entities.size(); i++)
             {
                 targetEntities.add(entities.get(i).getEntity());
@@ -157,7 +188,7 @@ public class ActionHandler
             for (EntityAction action : entityActions)
             {
                 SpellResult actionResult = action.perform(action.getParameters(parameters), entity);
-                if (actionResult.ordinal() > result.ordinal())
+                if (actionResult.ordinal() < result.ordinal())
                 {
                     result = actionResult;
                 }
