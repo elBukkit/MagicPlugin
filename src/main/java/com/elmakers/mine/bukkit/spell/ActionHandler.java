@@ -122,8 +122,8 @@ public class ActionHandler
             targetLocation = target.getLocation();
         }
 
-        int radius = parameters.getInt("radius", 0);
-        int coneCount = parameters.getInt("count", 0);
+        int radius = parameters.getInt("target_radius", 0);
+        int coneCount = parameters.getInt("target_count", 0);
         Mage mage = spell.getMage();
         radius = (int)(mage.getRadiusMultiplier() * radius);
 
