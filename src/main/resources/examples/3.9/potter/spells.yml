@@ -737,6 +737,7 @@ avadakedavra:
         target_breakables: 5
         bypass_backfire: true
         hitbox: true
+        transparent: transparent_to_avada
     costs:
         mana: 180
 
@@ -785,6 +786,7 @@ avadamaxima:
         bypass_backfire: true
         check_protection: true
         hitbox: true
+        transparent: transparent_to_avada
     costs:
         mana: 300
 
@@ -856,6 +858,7 @@ unknown:
         target_breakables: 5
         bypass_backfire: true
         hitbox: true
+        transparent: transparent_to_avada
     costs:
         mana: 180
 
@@ -1030,7 +1033,7 @@ bombarda:
            particle: explosion_large
     parameters:
         hitbox: true
-        target_type: entity
+        target_type: Entity
         allow_max_range: true
         range: 40
         target_breakables: 3
@@ -6604,61 +6607,3 @@ wrecktumsempra:
         target_breakables: 10
     costs:
         mana: 300
-
-
-
-hunter:
-    icon: spider_eye
-    category: automata
-    class: AnimateSpell
-    worth: 600
-    effects:
-        cast:
-        -  class: EffectSingle
-           sound: enderman_scream
-        -  class: EffectTrail
-           effect: step_sound
-    levels:
-        1: 100
-        3: 40
-        5: 10
-    move: 2,2,2
-    radius: 5,6,7
-    yradius: 5,6,7
-    birth_range: 3,4,5
-    live_range: 3,4,5
-    delay: 1200,800,500
-    drop_mana: 300,500,700
-    death_cast:
-        "reducto target self radius 7 speed 0^1 destructible $birth check_destructible true": 500,300,50
-        "reducto target self radius 7 speed 0^5 destructible $birth check_destructible true": 300,200,100
-        "reducto target self radius 7 speed 1^0 destructible $birth check_destructible true": 250,200,150
-        "reducto target self radius 7 speed 1^5 destructible $birth check_destructible true": 100,100,200
-    cast:
-        "stupefy transparent air,$birth,command,redstone_block": 20,40,100
-        "vermillious transparent air,$birth,command,redstone_block": 30,40,50
-        "protego transparent air,$birth,redstone_block": 100,100,100
-        "expelliarmus transparent air,$birth,redstone_block": 100,100,150
-        "bogies brush stained_glass:15 radius 2 type sphere check_destructible true undo 5000 transparent air,$birth,redstone_block": 20,40,80
-        "crucio transparent air,$birth,redstone_block": 0,10,20
-        "none": 300,200,50
-    parameters:
-        bypass_undo: true
-        allow_max_range: false
-        transparent: transparent_to_construction
-        check_destructible: false
-        range: 32
-        cooldown: 60000
-        name: Hunter
-        target_min_range: 1
-        target_max_range: 128
-        target_mode: hunt
-        target_types: player
-        live_rules: 5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26
-        birth_rules: 5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26
-        concurrent: true
-        drop: hunterheart
-        restricted: restricted_animate
-        message_type: evil
-    costs:
-        mana: 600
