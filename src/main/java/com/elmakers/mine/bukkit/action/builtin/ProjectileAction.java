@@ -16,6 +16,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Fireball;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Projectile;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 
 import java.lang.reflect.Constructor;
@@ -312,7 +313,17 @@ public class ProjectileAction  extends BaseSpellAction implements GeneralAction
 		}
 	}
 
-	protected void projectileDied(Projectile projectile) {
-
+	@Override
+	public void getParameterNames(Collection<String> parameters) {
+		super.getParameterNames(parameters);
+		parameters.add("count");
+		parameters.add("check_frequency");
+		parameters.add("size");
+		parameters.add("damage");
+		parameters.add("speed");
+		parameters.add("spread");
+		parameters.add("projectile");
+		parameters.add("fire");
+		parameters.add("tick_increase");
 	}
 }

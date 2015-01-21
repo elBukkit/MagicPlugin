@@ -14,6 +14,8 @@ import org.bukkit.entity.Item;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.util.Vector;
 
+import java.util.Collection;
+
 public class VelocityAction extends BaseSpellAction implements EntityAction
 {
     @Override
@@ -77,5 +79,18 @@ public class VelocityAction extends BaseSpellAction implements EntityAction
         entity.setVelocity(velocity);
 
         return SpellResult.CAST;
+    }
+
+    @Override
+    public void getParameterNames(Collection<String> parameters) {
+        super.getParameterNames(parameters);
+
+        parameters.add("push");
+        parameters.add("speed");
+        parameters.add("living_entity_speed");
+        parameters.add("item_speed");
+        parameters.add("min_speed");
+        parameters.add("max_speed");
+        parameters.add("max_altitude");
     }
 }

@@ -8,6 +8,8 @@ import com.elmakers.mine.bukkit.spell.BaseSpellAction;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 
+import java.util.Collection;
+
 public class FallProtectionAction extends BaseSpellAction implements EntityAction
 {
 	@Override
@@ -24,5 +26,11 @@ public class FallProtectionAction extends BaseSpellAction implements EntityActio
 
         targetMage.enableFallProtection(fallProtection, getSpell());
 		return SpellResult.CAST;
+	}
+
+	@Override
+	public void getParameterNames(Collection<String> parameters) {
+        super.getParameterNames(parameters);
+        parameters.add("duration");
 	}
 }

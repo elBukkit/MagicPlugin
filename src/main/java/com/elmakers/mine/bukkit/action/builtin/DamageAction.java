@@ -9,6 +9,8 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 
+import java.util.Collection;
+
 public class DamageAction extends BaseSpellAction implements EntityAction
 {
 	@Override
@@ -32,5 +34,11 @@ public class DamageAction extends BaseSpellAction implements EntityAction
 	public boolean isUndoable()
 	{
 		return true;
+	}
+
+	@Override
+	public void getParameterNames(Collection<String> parameters) {
+		super.getParameterNames(parameters);
+		parameters.add("damage");
 	}
 }

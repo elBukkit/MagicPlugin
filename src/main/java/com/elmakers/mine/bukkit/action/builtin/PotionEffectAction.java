@@ -49,4 +49,15 @@ public class PotionEffectAction extends BaseSpellAction implements EntityAction
     {
         return true;
     }
+
+    @Override
+    public void getParameterNames(Collection<String> parameters) {
+        super.getParameterNames(parameters);
+        parameters.add("duration");
+        PotionEffectType[] effectTypes = PotionEffectType.values();
+        for (PotionEffectType effectType : effectTypes) {
+            if (effectType == null) continue;
+            parameters.add("effect_" + effectType.getName().toLowerCase());
+        }
+    }
 }
