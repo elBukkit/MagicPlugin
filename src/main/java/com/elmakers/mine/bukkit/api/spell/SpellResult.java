@@ -8,7 +8,9 @@ package com.elmakers.mine.bukkit.api.spell;
  * A Spell that fails to cast will not consume costs or register for cooldown.
  */
 public enum SpellResult {
+    // Cast should always be first
     CAST,
+
     AREA,
     FIZZLE,
     BACKFIRE,
@@ -28,7 +30,10 @@ public enum SpellResult {
     LOCATION_REQUIRED,
     WORLD_REQUIRED,
     INVALID_WORLD,
-    COST_FREE;
+    COST_FREE,
+
+    // This should always be last
+    NO_ACTION;
 
     /**
      * Determine if this result is a success or not.
@@ -37,5 +42,9 @@ public enum SpellResult {
      */
     public boolean isSuccess() {
         return this == CAST || this == AREA || this == FIZZLE || this == BACKFIRE;
+    }
+
+    public SpellResult min(SpellResult other) {
+        return (this.ordinal() < other.ordinal()) ? this : other;
     }
 }
