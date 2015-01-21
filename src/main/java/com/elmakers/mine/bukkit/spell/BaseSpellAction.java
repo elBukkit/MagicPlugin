@@ -12,6 +12,7 @@ import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.util.Vector;
 
@@ -180,6 +181,8 @@ public abstract class BaseSpellAction implements SpellAction
         parameters.add("target_radius");
         parameters.add("target_count");
         parameters.add("target_self");
+        parameters.add("target_all");
+        parameters.add("target_all_worlds");
     }
 
     @Override
@@ -187,6 +190,10 @@ public abstract class BaseSpellAction implements SpellAction
         if (parameterKey.equals("target_radius") || parameterKey.equals("target_count")) {
             examples.addAll(Arrays.asList((BaseSpell.EXAMPLE_SIZES)));
         } else if (parameterKey.equals("target_self")) {
+            examples.addAll(Arrays.asList((BaseSpell.EXAMPLE_BOOLEANS)));
+        } else if (parameterKey.equals("target_all")) {
+            examples.addAll(Arrays.asList((BaseSpell.EXAMPLE_BOOLEANS)));
+        } else if (parameterKey.equals("target_all_worlds")) {
             examples.addAll(Arrays.asList((BaseSpell.EXAMPLE_BOOLEANS)));
         }
     }

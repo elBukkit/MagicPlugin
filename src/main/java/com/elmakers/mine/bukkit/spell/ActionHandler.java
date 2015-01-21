@@ -11,10 +11,13 @@ import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.Target;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -114,10 +117,7 @@ public class ActionHandler
         for (GeneralAction generalAction : generalActions)
         {
             SpellResult actionResult = generalAction.perform(generalAction.getParameters(parameters));
-            if (actionResult.ordinal() < result.ordinal())
-            {
-                result = actionResult;
-            }
+            result = result.min(actionResult);
         }
 
         spell.target();
@@ -125,20 +125,15 @@ public class ActionHandler
         {
             targetLocation = spell.getTargetLocation();
         }
-        if (targetLocation == null)
-        {
-            return SpellResult.NO_TARGET.min(result);
-        }
 
-        for (BlockAction action : blockActions)
+        if (targetLocation != null)
         {
-            SpellResult actionResult = action.perform(action.getParameters(parameters), targetLocation.getBlock());
-            if (actionResult.ordinal() < result.ordinal())
+            for (BlockAction action : blockActions)
             {
-                result = actionResult;
+                SpellResult actionResult = action.perform(action.getParameters(parameters), targetLocation.getBlock());
+                result = result.min(actionResult);
             }
         }
-
 
         List<Entity> targetEntities = new ArrayList<Entity>();
         Entity targetedEntity = spell.getTargetEntity();
@@ -150,7 +145,9 @@ public class ActionHandler
         int radius = parameters.getInt("target_radius", 0);
         int coneCount = parameters.getInt("target_count", 0);
         boolean targetSelf = parameters.getBoolean("target_self", false);
+        boolean targetAllWorlds = parameters.getBoolean("target_all_worlds", false);
         Entity mageEntity = null;
+        Location sourceLocation = spell.getLocation();
         if (spell instanceof MageSpell)
         {
             Mage mage = ((MageSpell)spell).getMage();
@@ -158,7 +155,47 @@ public class ActionHandler
             radius = (int)(mage.getRadiusMultiplier() * radius);
         }
 
-        if (radius > 0)
+        if (parameters.getBoolean("target_all"))
+        {
+            Class<?> targetType = Player.class;
+            if (spell instanceof TargetingSpell)
+            {
+                targetType = ((TargetingSpell)spell).targetEntityType;
+            }
+            if (targetType == Player.class)
+            {
+                Player[] players = Bukkit.getOnlinePlayers();
+                for (Player player : players)
+                {
+                    if ((targetSelf || player != mageEntity) && (targetAllWorlds || (sourceLocation != null && sourceLocation.getWorld().equals(player.getWorld()))) && spell.canTarget(player))
+                    {
+                        targetEntities.add(player);
+                    }
+                }
+            }
+            else if (sourceLocation != null)
+            {
+                List<World> worlds = null;
+                if (targetAllWorlds) {
+                    worlds = Bukkit.getWorlds();
+                } else {
+                    worlds = new ArrayList<World>();
+                    worlds.add(sourceLocation.getWorld());
+                }
+                for (World world : worlds)
+                {
+                    List<Entity> entities = world.getEntities();
+                    for (Entity entity : entities)
+                    {
+                        if (spell.canTarget(entity) && (targetSelf || entity != mageEntity))
+                        {
+                            targetEntities.add(entity);
+                        }
+                    }
+                }
+            }
+        }
+        else if (radius > 0 && targetLocation != null)
         {
             List<Entity> entities = CompatibilityUtils.getNearbyEntities(targetLocation, radius, radius, radius);
             for (Entity entity : entities)
