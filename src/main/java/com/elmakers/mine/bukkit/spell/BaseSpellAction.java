@@ -168,4 +168,10 @@ public abstract class BaseSpellAction implements SpellAction
     public Spell getSpell() {
         return spell;
     }
+
+    @Override
+    public void getParameterNames(Collection<String> parameters) {
+        parameters.add("target_radius");
+        parameters.add("target_count");
+    }
 }

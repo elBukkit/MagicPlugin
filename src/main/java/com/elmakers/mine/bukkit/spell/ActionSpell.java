@@ -77,4 +77,12 @@ public class ActionSpell extends BrushSpell
     {
         return actions.get(key);
     }
+
+    @Override
+    public void getParameters(Collection<String> parameters) {
+        super.getParameters(parameters);
+        for (ActionHandler handler : actions.values()) {
+            handler.getParameterNames(parameters);
+        }
+    }
 }

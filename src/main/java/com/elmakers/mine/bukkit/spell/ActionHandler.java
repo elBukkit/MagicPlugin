@@ -24,6 +24,7 @@ public class ActionHandler
 {
     private static final String ACTION_BUILTIN_CLASSPATH = "com.elmakers.mine.bukkit.action.builtin";
 
+    private List<SpellAction> allActions = new ArrayList<SpellAction>();
     private List<GeneralAction> generalActions = new ArrayList<GeneralAction>();
     private List<BlockAction> blockActions = new ArrayList<BlockAction>();
     private List<EntityAction> entityActions = new ArrayList<EntityAction>();
@@ -82,6 +83,7 @@ public class ActionHandler
 
     public void loadAction(SpellAction action, ConfigurationSection parameters) {
         action.load(spell, parameters);
+        allActions.add(action);
         usesBrush = usesBrush || action.usesBrush();
         undoable = undoable || action.isUndoable();
         if (action instanceof GeneralAction) {
@@ -205,5 +207,13 @@ public class ActionHandler
     public boolean usesBrush()
     {
         return usesBrush;
+    }
+
+    public void getParameterNames(Collection<String> parameters)
+    {
+        for (SpellAction action : allActions)
+        {
+            action.getParameterNames(parameters);
+        }
     }
 }
