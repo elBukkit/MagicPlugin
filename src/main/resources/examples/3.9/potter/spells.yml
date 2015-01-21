@@ -1741,6 +1741,33 @@ spongify:
     costs:
         mana: 50
 
+spongifymaxima:
+    icon: slime_block
+    category: transfiguration
+    class: RecurseSpell
+    worth: 150
+    cast_on_no_target: true
+    effects:
+        cast:
+        -  class: EffectTrail
+           effect: step_sound
+        -  class: EffectSingle
+           sound: fuse
+    parameters:
+        allow_max_range: false
+        range: 16
+        size: 8
+        check_destructible: false
+        brush: slime_block
+        transparent: transparent_to_construction
+        undo: 60000
+        cooldown: 5000
+        bypass_build: true
+        bypass_backfire: true
+        select_self: false
+    costs:
+        mana: 200
+
 erecto:
     icon: sapling:4
     category: staff
@@ -3371,12 +3398,15 @@ phoenixcrymaxima:
              particle: redstone
     parameters:
         target: any
-        allow_max_range: true
+        allow_max_range: false
         range: 16
+        target_type: Player
+        target_radius: 16
+        target_count: 32
+        target_self: true
         cooldown: 60000
         transparent: apparate
-        op: true
-        duration: 5000
+        duration: 30000
         effect_speed: 5
         effect_heal: 5
         effect_jump: 5
@@ -6486,6 +6516,7 @@ confringoincendio:
         mana: 50
 
 tripudio:
+    alias: Tripudio
     description: Gain the power to jump high
     name: Tripudio
     icon: ink_sack:8

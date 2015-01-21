@@ -538,6 +538,10 @@ spells:
         name: Spongify
         description: Make your target bouncy
         cast: Spongify!
+    spongifymaxima:
+        name: Spongify Maxima
+        description: Make your target bouncy
+        cast: Spongify Maxima!
     stupefy:
         name: Stupefy
         description: Damage and stuns your target
