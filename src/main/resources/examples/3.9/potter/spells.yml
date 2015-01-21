@@ -744,11 +744,13 @@ avadakedavra:
 avadamaxima:
     icon: ink_sack:10
     category: staff
-    class: CommandSpell
     pvp_restricted: true
     worth: 1000
     cast_on_no_target: true
     hidden: true
+    actions:
+        cast:
+        -  class: CommandAction
     effects:
         cast:
         -  class: EffectSingle
@@ -776,8 +778,8 @@ avadamaxima:
              iterations: 16
     parameters:
         commands:
-        - ban @t you have been Avada Kedavra'd!
-        - say §aAvada Kedavra §c@t!
+        - ban @tn you have been Avada Kedavra'd!
+        - say §aAvada Kedavra §c@tn!
         target_type: Player
         target: other
         target_breakables: 1
@@ -3185,8 +3187,10 @@ lumos|3:
 morsmordre:
     icon: skull_item:4
     category: dark
-    class: CommandSpell
     worth: 20
+    actions:
+        cast:
+        - class: CommandAction
     effects:
         cast:
         -  class: EffectSingle
@@ -3215,8 +3219,10 @@ morsmordre:
 morsmordremaxima:
     icon: skull_item:4
     category: dark
-    class: CommandSpell
     worth: 20
+    actions:
+        cast:
+        - class: CommandAction
     effects:
         cast:
         -  class: EffectSingle
@@ -3246,8 +3252,10 @@ morsmordremaxima:
 mayday:
     icon: firework
     category: charms
-    class: CommandSpell
     worth: 20
+    actions:
+        cast:
+        - class: CommandAction
     effects:
         cast:
         -  class: EffectSingle
@@ -3276,8 +3284,10 @@ phoenixcry:
     description: Ca Caw!!!
     icon: firework
     category: charms
-    class: CommandSpell
     worth: 20
+    actions:
+        cast:
+        - class: CommandAction
     effects:
         cast:
         -  class: EffectSingle
@@ -3304,8 +3314,10 @@ phoenixcry:
 maydaymaxima:
     icon: firework
     category: charms
-    class: CommandSpell
     worth: 20
+    actions:
+        cast:
+        - class: CommandAction
     effects:
         cast:
         -  class: EffectSingle
@@ -3337,8 +3349,10 @@ phoenixcrymaxima:
     description: CA CAWW CAWWWW!
     icon: firework
     category: charms
-    class: CommandSpell
     worth: 20
+    actions:
+        cast:
+        - class: PotionEffectAction
     effects:
         cast:
         -  class: EffectSingle
@@ -3362,18 +3376,18 @@ phoenixcrymaxima:
         cooldown: 60000
         transparent: apparate
         op: true
-        commands:
-        - effect @p SPEED 30 5
-        - effect @p HEAL 30 5
-        - effect @p JUMP 30 5
-        - effect @p SATURATION 30 5
-        - effect @p INCREASE_DAMAGE 30 5
-        - effect @p REGENERATION 30 5
-        - effect @p DAMAGE_RESISTANCE 30 5
-        - effect @p FIRE_RESISTANCE 30 5
-        - effect @p WATER_BREATHING 30 5
-        - effect @p ABSORPTION 30 5
-        - effect @p HEALTH_BOOST 30 5
+        duration: 5000
+        effect_speed: 5
+        effect_heal: 5
+        effect_jump: 5
+        effect_saturation: 5
+        effect_increase_damage: 5
+        effect_regeneration: 5
+        effect_damage_resistance: 5
+        effect_fire_resistance: 5
+        effect_water_breathing: 5
+        effect_absorption: 5
+        effect_health_boost: 5
     costs:
         mana: 100
 
@@ -4158,9 +4172,11 @@ slash:
 silencio:
     icon: ink_sack:3
     category: staff
-    class: CommandSpell
     hidden: true
     worth: 500
+    actions:
+        cast:
+        -  class: CommandAction
     effects:
         cast:
         -  class: EffectSingle
@@ -4171,17 +4187,17 @@ silencio:
            effectlib:
              class: ConeEffect
              iterations: 15
-             particle: reddust
+             particle: redstone
              lengthGrow: 0.4
         -  class: EffectSingle
            location: target
            effectlib:
              class: IconEffect
              iterations: 15
-             particle: reddust
+             particle: redstone
     parameters:
         commands:
-        - mute @t
+        - mute @tn
         target_type: Player
         target: other
         range: 16
@@ -4193,9 +4209,11 @@ silencio:
 silenciomaxima:
     icon: ink_sack:3
     category: staff
-    class: CommandSpell
     hidden: true
     worth: 500
+    actions:
+        cast:
+        -  class: CommandAction
     effects:
         cast:
         -  class: EffectSingle
@@ -4206,7 +4224,7 @@ silenciomaxima:
            effectlib:
              class: ConeEffect
              iterations: 15
-             particle: reddust
+             particle: redstone
              lengthGrow: 0.4
         -  class: EffectSingle
            location: target
@@ -4214,7 +4232,7 @@ silenciomaxima:
              offset: 0,4,0
              class: HelixEffect
              iterations: 1
-             particle: reddust
+             particle: redstone
     parameters:
         range: 32
         allow_max_range: true
@@ -4228,9 +4246,12 @@ silenciomaxima:
 silenciototalus:
     icon: ink_sack:3
     category: staff
-    class: CommandSpell
     hidden: true
     worth: 500
+    actions:
+        cast:
+        -  class: CommandAction
+        -  class: DamageAction
     effects:
         cast:
         -  class: EffectSingle
@@ -4242,21 +4263,28 @@ silenciototalus:
              offset: 0,5,0
              class: HelixEffect
              iterations: 1
-             particle: reddust
+             particle: redstone
     parameters:
         commands:
-        - mute @a 60
+        - mute @tn 60
         - say §dSILENCIO TOTALUS!
         target: none
+        target_all: true
+        target_all_worlds: true
+        target_type: Player
+        target_self: true
         bypass_backfire: true
         check_protection: true
+        damage: 100
 
 amplify:
     icon: ink_sack:3
     category: staff
-    class: CommandSpell
     hidden: true
     worth: 500
+    actions:
+        cast:
+        -  class: CommandAction
     effects:
         cast:
         -  class: EffectSingle
@@ -4271,17 +4299,19 @@ amplify:
              iterations: 20
     parameters:
         commands:
-        - unmute @t
-        target: none
+        - unmute @tn
+        target: other
         bypass_backfire: true
         check_protection: true
 
 amplifytotalus:
     icon: ink_sack:3
     category: staff
-    class: CommandSpell
     hidden: true
     worth: 500
+    actions:
+        cast:
+        -  class: CommandAction
     effects:
         cast:
         -  class: EffectSingle
@@ -4305,9 +4335,11 @@ amplifytotalus:
 expulsion:
     icon: ink_sack:3
     category: staff
-    class: CommandSpell
     hidden: true
     worth: 500
+    actions:
+        cast:
+        -  class: CommandAction
     effects:
         cast:
         -  class: EffectSingle
@@ -4320,9 +4352,9 @@ expulsion:
              iterations: 24
     parameters:
         commands:
-        - nick @t @t_Expelled
+        - nick @tn @tn_Expelled
         - broadcast @td was Expelled from Hogwarts by @pd!
-        - spawn @t
+        - spawn @tn
         target_type: Player
         target: other
         range: 16
@@ -5816,8 +5848,10 @@ animagus_phoenix:
     description: Turn into a Phoenix
     icon: fireball
     category: dark
-    class: CommandSpell
     worth: 20
+    actions:
+        cast:
+        -  class: CommandAction
     effects:
         cast:
         - class: EffectSingle
@@ -5844,8 +5878,10 @@ animagus_wolf:
     description: Turn into a Wolf
     icon: bone
     category: dark
-    class: CommandSpell
     worth: 20
+    actions:
+        cast:
+        -  class: CommandAction
     effects:
         cast:
         - class: EffectSingle
@@ -5871,8 +5907,10 @@ humaculus:
     description: Reverts target back to a human!
     icon: eye_of_ender
     category: dark
-    class: CommandSpell
     worth: 20
+    actions:
+        cast:
+        -  class: CommandAction
     effects:
         cast:
         - class: EffectSingle
@@ -5891,7 +5929,7 @@ humaculus:
         cooldown: 10000
         op: false
         commands:
-        - undisguiseplayer @t
+        - undisguiseplayer @tn
     costs:
         mana: 5
 
@@ -5900,8 +5938,10 @@ animagus_cat:
     description: Turn into a Cat
     icon: raw_fish
     category: dark
-    class: CommandSpell
     worth: 20
+    actions:
+        cast:
+        -  class: CommandAction
     effects:
         cast:
         - class: EffectSingle
@@ -5927,8 +5967,10 @@ animagus_chicken:
     description: Turn into a Chicken
     icon: monster_egg
     category: dark
-    class: CommandSpell
     worth: 20
+    actions:
+        cast:
+        -  class: CommandAction
     effects:
         cast:
         - class: EffectSingle
@@ -5954,8 +5996,10 @@ animagus_owl:
     description: Turn into a Owl
     icon: ink_sack:8
     category: dark
-    class: CommandSpell
     worth: 20
+    actions:
+        cast:
+        -  class: CommandAction
     effects:
         cast:
         - class: EffectSingle
@@ -5981,8 +6025,10 @@ animagus_rat:
     description: Turn into a Rat
     icon: egg
     category: dark
-    class: CommandSpell
     worth: 20
+    actions:
+        cast:
+        -  class: CommandAction
     effects:
         cast:
         - class: EffectSingle
@@ -6008,8 +6054,10 @@ animagus_horse:
     description: Turn into a Horse
     icon: leash
     category: dark
-    class: CommandSpell
     worth: 20
+    actions:
+        cast:
+        -  class: CommandAction
     effects:
         cast:
         - class: EffectSingle
@@ -6035,8 +6083,10 @@ animagus_donkey:
     description: Turn into a Donkey
     icon: leash
     category: dark
-    class: CommandSpell
     worth: 20
+    actions:
+        cast:
+        -  class: CommandAction
     effects:
         cast:
         - class: EffectSingle
@@ -6062,8 +6112,10 @@ animagus_spider:
     description: Turn into a Spider
     icon: web
     category: dark
-    class: CommandSpell
     worth: 20
+    actions:
+        cast:
+        -  class: CommandAction
     effects:
         cast:
         - class: EffectSingle
@@ -6089,8 +6141,10 @@ animagus_sheep:
     description: Turn into a Sheep
     icon: wool
     category: dark
-    class: CommandSpell
     worth: 20
+    actions:
+        cast:
+        -  class: CommandAction
     effects:
         cast:
         - class: EffectSingle
@@ -6116,8 +6170,10 @@ animagus_cow:
     description: Turn into a Cow
     icon: milk_bucket
     category: dark
-    class: CommandSpell
     worth: 20
+    actions:
+        cast:
+        -  class: CommandAction
     effects:
         cast:
         - class: EffectSingle
@@ -6143,8 +6199,10 @@ animagus_pig:
     description: Turn into a Pig
     icon: pork
     category: dark
-    class: CommandSpell
     worth: 20
+    actions:
+        cast:
+        -  class: CommandAction
     effects:
         cast:
         - class: EffectSingle
@@ -6170,9 +6228,11 @@ unspeakable:
     description: Wound your target.
     icon: ink_sack:14
     category: dark
-    class: CommandSpell
     worth: 20
     hidden: true
+    actions:
+        cast:
+        -  class: CommandAction
     effects:
         cast:
         - class: EffectSingle
@@ -6189,17 +6249,17 @@ unspeakable:
         cooldown: 60000
         op: false
         commands:
-        - castp @t glacius|3
-        - castp @t stupefy|3
-        - castp @t expelliarmus|5
-        - castp @t arrow|4
-        - castp @t incendio|3
-        - castp @t pulsus
-        - castp @t bogies|3
-        - castp @t levicorpus|3
-        - castp @t flipendo|3
-        - castp @t vermillious|3
-        - castp @t lacarnum|3
+        - castp @tn glacius|3
+        - castp @tn stupefy|3
+        - castp @tn expelliarmus|5
+        - castp @tn arrow|4
+        - castp @tn incendio|3
+        - castp @tn pulsus
+        - castp @tn bogies|3
+        - castp @tn levicorpus|3
+        - castp @tn flipendo|3
+        - castp @tn vermillious|3
+        - castp @tn lacarnum|3
     costs:
         mana: 100
 
@@ -6208,11 +6268,13 @@ smite:
     description: Wound your target.
     icon: ink_sack:11
     category: dark
-    class: CommandSpell
     worth: 20
     hidden: true
     pvp_restricted: true
     cast_on_no_target: true
+    actions:
+        cast:
+        -  class: CommandAction
     effects:
         cast:
         -  class: EffectSingle
@@ -6244,7 +6306,7 @@ smite:
         target_breakables: 3
         bypass_protection: true
         commands:
-        - smite @t
+        - smite @tn
     costs:
         mana: 120
 
@@ -6253,11 +6315,13 @@ invis:
     description: Vanish in a Spark!
     icon: nether_star
     category: dark
-    class: CommandSpell
     worth: 20
     hidden: true
     pvp_restricted: true
     cast_on_no_target: true
+    actions:
+        cast:
+        -  class: CommandAction
     effects:
         cast:
         -  class: EffectSingle
@@ -6279,7 +6343,7 @@ invis:
         cooldown: 1000
         bypass_protection: true
         commands:
-        - vanish @p
+        - vanish @pn
     costs:
         mana: 120
 
@@ -6349,9 +6413,11 @@ confringofireball:
     name: Confringo Fireball
     icon: fireball
     category: dark
-    class: ProjectileSpell
     hidden: true
     worth: 35
+    actions:
+        cast:
+        - class: ProjectileAction
     effects:
         cast:
         -  class: EffectSingle
@@ -6591,8 +6657,10 @@ wrecktumsempra:
     icon: ink_sack:3
     category: dark
     pvp_restricted: false
-    class: CommandSpell
     worth: 35
+    actions:
+        cast:
+        -  class: CommandAction
     effects:
         cast:
         -  class: EffectSingle
@@ -6659,7 +6727,7 @@ wrecktumsempra:
         cooldown: 13000
         commands:
         - cast wreckducto
-        - kill @t
+        - kill @tn
         bypass_backfire: true
         target_breakables: 10
     costs:
