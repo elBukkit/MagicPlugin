@@ -2,11 +2,13 @@ package com.elmakers.mine.bukkit.action.builtin;
 
 import com.elmakers.mine.bukkit.api.action.EntityAction;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
+import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.spell.BaseSpellAction;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 
+import java.util.Arrays;
 import java.util.Collection;
 
 public class IgniteAction extends BaseSpellAction implements EntityAction
@@ -33,5 +35,14 @@ public class IgniteAction extends BaseSpellAction implements EntityAction
 	public void getParameterNames(Collection<String> parameters) {
 		super.getParameterNames(parameters);
 		parameters.add("duration");
+	}
+
+	@Override
+	public void getParameterOptions(Collection<String> examples, String parameterKey) {
+		if (parameterKey.equals("duration")) {
+			examples.addAll(Arrays.asList((BaseSpell.EXAMPLE_DURATIONS)));
+		} else {
+			super.getParameterOptions(examples, parameterKey);
+		}
 	}
 }

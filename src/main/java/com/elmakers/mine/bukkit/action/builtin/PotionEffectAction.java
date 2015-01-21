@@ -2,6 +2,7 @@ package com.elmakers.mine.bukkit.action.builtin;
 
 import com.elmakers.mine.bukkit.api.action.EntityAction;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
+import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.spell.BaseSpellAction;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import org.bukkit.configuration.ConfigurationSection;
@@ -10,6 +11,7 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
@@ -58,6 +60,15 @@ public class PotionEffectAction extends BaseSpellAction implements EntityAction
         for (PotionEffectType effectType : effectTypes) {
             if (effectType == null) continue;
             parameters.add("effect_" + effectType.getName().toLowerCase());
+        }
+    }
+
+    @Override
+    public void getParameterOptions(Collection<String> examples, String parameterKey) {
+        if (parameterKey.equals("duration")) {
+            examples.addAll(Arrays.asList((BaseSpell.EXAMPLE_DURATIONS)));
+        } else {
+            super.getParameterOptions(examples, parameterKey);
         }
     }
 }

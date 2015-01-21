@@ -3,12 +3,14 @@ package com.elmakers.mine.bukkit.action.builtin;
 import com.elmakers.mine.bukkit.api.action.EntityAction;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
+import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.spell.BaseSpellAction;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 
+import java.util.Arrays;
 import java.util.Collection;
 
 public class DamageAction extends BaseSpellAction implements EntityAction
@@ -40,5 +42,14 @@ public class DamageAction extends BaseSpellAction implements EntityAction
 	public void getParameterNames(Collection<String> parameters) {
 		super.getParameterNames(parameters);
 		parameters.add("damage");
+	}
+
+	@Override
+	public void getParameterOptions(Collection<String> examples, String parameterKey) {
+		if (parameterKey.equals("damage")) {
+			examples.addAll(Arrays.asList((BaseSpell.EXAMPLE_SIZES)));
+		} else {
+			super.getParameterOptions(examples, parameterKey);
+		}
 	}
 }

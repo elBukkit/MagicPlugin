@@ -6,6 +6,7 @@ import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.ActionHandler;
+import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.spell.BaseSpellAction;
 import com.elmakers.mine.bukkit.utility.NMSUtils;
 import org.bukkit.Bukkit;
@@ -23,6 +24,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Random;
@@ -325,5 +327,25 @@ public class ProjectileAction  extends BaseSpellAction implements GeneralAction
 		parameters.add("projectile");
 		parameters.add("fire");
 		parameters.add("tick_increase");
+	}
+
+	@Override
+	public void getParameterOptions(Collection<String> examples, String parameterKey) {
+		if (parameterKey.equals("check_frequency")) {
+			examples.addAll(Arrays.asList((BaseSpell.EXAMPLE_DURATIONS)));
+		} else if (parameterKey.equals("count") || parameterKey.equals("size") || parameterKey.equals("speed")
+				|| parameterKey.equals("spread") || parameterKey.equals("tick_increase") || parameterKey.equals("damage")) {
+			examples.addAll(Arrays.asList((BaseSpell.EXAMPLE_SIZES)));
+		} else if (parameterKey.equals("fire")) {
+			examples.addAll(Arrays.asList((BaseSpell.EXAMPLE_BOOLEANS)));
+		} else if (parameterKey.equals("projectile")) {
+			examples.add("LargeFireball");
+			examples.add("SmallFireball");
+			examples.add("WitherSkull");
+			examples.add("Arrow");
+			examples.add("Snowball");
+		} else {
+			super.getParameterOptions(examples, parameterKey);
+		}
 	}
 }

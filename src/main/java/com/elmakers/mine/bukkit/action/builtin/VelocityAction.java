@@ -2,6 +2,7 @@ package com.elmakers.mine.bukkit.action.builtin;
 
 import com.elmakers.mine.bukkit.api.action.EntityAction;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
+import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.spell.BaseSpellAction;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -14,6 +15,7 @@ import org.bukkit.entity.Item;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.util.Vector;
 
+import java.util.Arrays;
 import java.util.Collection;
 
 public class VelocityAction extends BaseSpellAction implements EntityAction
@@ -92,5 +94,18 @@ public class VelocityAction extends BaseSpellAction implements EntityAction
         parameters.add("min_speed");
         parameters.add("max_speed");
         parameters.add("max_altitude");
+    }
+
+    @Override
+    public void getParameterOptions(Collection<String> examples, String parameterKey) {
+        if (parameterKey.equals("push")) {
+            examples.addAll(Arrays.asList((BaseSpell.EXAMPLE_BOOLEANS)));
+        } else if (parameterKey.equals("speed") || parameterKey.equals("living_entity_speed")
+            || parameterKey.equals("item_speed") || parameterKey.equals("min_speed")
+            || parameterKey.equals("max_speed") || parameterKey.equals("max_altitude")) {
+            examples.addAll(Arrays.asList((BaseSpell.EXAMPLE_SIZES)));
+        } else {
+            super.getParameterOptions(examples, parameterKey);
+        }
     }
 }

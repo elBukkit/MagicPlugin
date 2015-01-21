@@ -2,11 +2,13 @@ package com.elmakers.mine.bukkit.action.builtin;
 
 import com.elmakers.mine.bukkit.api.action.EntityAction;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
+import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.spell.BaseSpellAction;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 
+import java.util.Arrays;
 import java.util.Collection;
 
 public class HealAction extends BaseSpellAction implements EntityAction
@@ -46,5 +48,16 @@ public class HealAction extends BaseSpellAction implements EntityAction
         super.getParameterNames(parameters);
         parameters.add("percentage");
         parameters.add("amount");
+    }
+
+    @Override
+    public void getParameterOptions(Collection<String> examples, String parameterKey) {
+        if (parameterKey.equals("percentage")) {
+            examples.addAll(Arrays.asList((BaseSpell.EXAMPLE_PERCENTAGES)));
+        } else if (parameterKey.equals("amount")) {
+            examples.addAll(Arrays.asList((BaseSpell.EXAMPLE_SIZES)));
+        } else {
+            super.getParameterOptions(examples, parameterKey);
+        }
     }
 }
