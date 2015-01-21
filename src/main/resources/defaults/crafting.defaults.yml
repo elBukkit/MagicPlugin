@@ -25,7 +25,10 @@ master:
   # and get some weird non-wand but wand-looking item.
   # This means that, by default, crafting a wood hoe will get you an iron hoe.
   # If you don't want this behavior, just empty out this field.
-  substitute: iron_hoe
+  # substitute: iron_hoe
+
+  # Just disable the default recipe
+  disable_default: true
 
   # This defines the materials that will be required to craft this wand
   materials:
@@ -37,6 +40,13 @@ master:
   row_1: o
   row_2: i
   row_3:
+
+# This is here to disable crafting of the "wolf wand" item
+# you can't craft the wand either, so there is no recipe.
+wolf:
+  output: wolf
+  output_type: wand
+  disable_default: true
 
 apprentice:
   output: apprentice(20)

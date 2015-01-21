@@ -14,6 +14,7 @@ import org.bukkit.plugin.Plugin;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -25,6 +26,7 @@ public class MagicRecipe {
     private Set<Material> ingredients = new HashSet<Material>();
     private Material outputType;
     private Material substitue;
+    private boolean disableDefaultRecipe;
     private Recipe recipe;
     private final MagicController controller;
 
@@ -35,6 +37,7 @@ public class MagicRecipe {
     public boolean load(ConfigurationSection configuration) {
         outputKey = configuration.getString("output");
         substitue = ConfigurationUtils.getMaterial(configuration, "substitue", null);
+        disableDefaultRecipe = configuration.getBoolean("disable_default", false);
 
         Wand wand = controller.createWand(outputKey);
         if (wand == null) {
@@ -54,27 +57,42 @@ public class MagicRecipe {
                 rows.add(recipeRow);
             }
         }
-        if (rows.size() == 0) {
-            return false;
-        }
-        shaped = shaped.shape(rows.toArray(new String[0]));
+        if (rows.size() > 0) {
+            shaped = shaped.shape(rows.toArray(new String[0]));
 
-        ConfigurationSection materials = configuration.getConfigurationSection("materials");
-        Set<String> keys = materials.getKeys(false);
-        for (String key : keys) {
-            MaterialAndData mat = new MaterialAndData(materials.getString(key));
-            ingredients.add(mat.getMaterial());
-            shaped.setIngredient(key.charAt(0), mat.getMaterial());
-        }
+            ConfigurationSection materials = configuration.getConfigurationSection("materials");
+            Set<String> keys = materials.getKeys(false);
+            for (String key : keys) {
+                MaterialAndData mat = new MaterialAndData(materials.getString(key));
+                ingredients.add(mat.getMaterial());
+                shaped.setIngredient(key.charAt(0), mat.getMaterial());
+            }
 
-        recipe = shaped;
+            recipe = shaped;
+        }
 
         return true;
     }
 
-    public void register(Plugin plugin) {
+    public void register(Plugin plugin)
+    {
+        if (disableDefaultRecipe)
+        {
+            Iterator<Recipe> it = plugin.getServer().recipeIterator();
+            while (it.hasNext())
+            {
+                Recipe defaultRecipe = it.next();
+                if (defaultRecipe != null && defaultRecipe.getResult().getType() == outputType)
+                {
+                    plugin.getLogger().info("Disabled default crafting recipe for " + outputType);
+                    it.remove();
+                }
+            }
+        }
         // Add our custom recipe if crafting is enabled
-        if (recipe != null) {
+        if (recipe != null)
+        {
+            plugin.getLogger().info("Adding crafting recipe for " + outputKey);
             plugin.getServer().addRecipe(recipe);
         }
     }
