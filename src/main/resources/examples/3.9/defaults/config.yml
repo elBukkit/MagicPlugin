@@ -86,7 +86,7 @@
 # Use this if you want a completely customized configuration. 
 # You will only have your custom spells, and will not get any new spells when you update.
 # You will need to do the same with wands, since they refer to the default spells.
-load_default_spells: true
+load_default_spells: false
 
 # Use this to load, but disable the default spells.
 # This is useful if you want to inherit from the defaults, or choose what to expose.
@@ -95,13 +95,13 @@ disable_default_spells: false
 # Set to false to skip loading defaults/wands.defaults.yml entirely.
 # Use this to have completely custom wands, and avoid getting updates to wands
 # in the future.
-load_default_wands: true
+load_default_wands: false
 
 # Set to false to skip loading defaults/enchanting.defaults.yml entirely.
-load_default_enchanting: true
+load_default_enchanting: false
 
 # Set to false to skip loading defaults/crafting.defaults.yml entirely.
-load_default_crafting: true
+load_default_crafting: false
 
 # Whether or not to show any messages (in chat) 
 show_messages: true
