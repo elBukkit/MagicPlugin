@@ -216,4 +216,12 @@ public class ActionHandler
             action.getParameterNames(parameters);
         }
     }
+
+    public void getParameterOptions(Collection<String> examples, String parameterKey)
+    {
+        for (SpellAction action : allActions)
+        {
+            action.getParameterOptions(examples, parameterKey);
+        }
+    }
 }

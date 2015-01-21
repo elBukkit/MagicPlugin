@@ -85,4 +85,12 @@ public class ActionSpell extends BrushSpell
             handler.getParameterNames(parameters);
         }
     }
+
+    @Override
+    public void getParameterOptions(Collection<String> examples, String parameterKey) {
+        super.getParameterOptions(examples, parameterKey);
+        for (ActionHandler handler : actions.values()) {
+            handler.getParameterOptions(examples, parameterKey);
+        }
+    }
 }

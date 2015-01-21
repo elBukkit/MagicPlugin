@@ -15,6 +15,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.util.Vector;
 
+import java.util.Arrays;
 import java.util.Collection;
 
 public abstract class BaseSpellAction implements SpellAction
@@ -173,5 +174,12 @@ public abstract class BaseSpellAction implements SpellAction
     public void getParameterNames(Collection<String> parameters) {
         parameters.add("target_radius");
         parameters.add("target_count");
+    }
+
+    @Override
+    public void getParameterOptions(Collection<String> examples, String parameterKey) {
+        if (parameterKey.equals("target_radius") || parameterKey.equals("target_count")) {
+            examples.addAll(Arrays.asList((BaseSpell.EXAMPLE_SIZES)));
+        }
     }
 }
