@@ -10,6 +10,7 @@ public interface SpellAction
     public void load(Spell spell, ConfigurationSection parameters);
     public ConfigurationSection getParameters(ConfigurationSection baseParameters);
     public void getParameterNames(Collection<String> parameters);
+    public void getParameterOptions(Collection<String> examples, String parameterKey);
     public boolean usesBrush();
     public boolean isUndoable();
 }
