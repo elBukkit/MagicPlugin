@@ -352,6 +352,7 @@ public class LevitateSpell extends TargetingSpell implements Listener
         }
 
         startDelay = parameters.getInt("start_delay", 0);
+        flyDelay = parameters.getInt("fly_delay", 2);
         slowMultiplier = parameters.getDouble("slow", 1);
         castBoost = parameters.getDouble("boost", 0);
         yBoost = parameters.getDouble("y_boost", 2);
