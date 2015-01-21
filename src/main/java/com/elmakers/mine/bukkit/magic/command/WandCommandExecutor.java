@@ -88,7 +88,7 @@ public class WandCommandExecutor extends MagicTabExecutor {
 	}
 
 	@Override
-	public List<String> onTabComplete(CommandSender sender, String commandName, String[] args) {
+	public Collection<String> onTabComplete(CommandSender sender, String commandName, String[] args) {
 		List<String> options = new ArrayList<String>();
 		
 		Player player = (sender instanceof Player) ? (Player)sender : null;
@@ -102,7 +102,6 @@ public class WandCommandExecutor extends MagicTabExecutor {
 			}
 			if (args.length == 1) {
 				options.addAll(api.getPlayerNames());
-				Collections.sort(options);
 				return options;
 			} else if (args.length > 1) {
 				args = Arrays.copyOfRange(args, 1, args.length);
@@ -229,8 +228,7 @@ public class WandCommandExecutor extends MagicTabExecutor {
 				options.addAll(api.getBrushes());
 			}
 		}
-		
-		Collections.sort(options);
+
 		return options;
 	}
 

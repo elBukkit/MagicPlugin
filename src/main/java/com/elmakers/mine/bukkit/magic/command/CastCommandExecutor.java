@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 
 import com.elmakers.mine.bukkit.api.magic.Mage;
@@ -174,8 +175,8 @@ public class CastCommandExecutor extends MagicTabExecutor {
 	}
 
 	@Override
-	public List<String> onTabComplete(CommandSender sender, String commandName, String[] args) {
-		List<String> options = new ArrayList<String>();
+	public Collection<String> onTabComplete(CommandSender sender, String commandName, String[] args) {
+		Collection<String> options = new HashSet<String>();
 
         String permissionKey = "cast";
 		if (commandName.contains("castp"))
@@ -183,20 +184,19 @@ public class CastCommandExecutor extends MagicTabExecutor {
             permissionKey = "castp";
 			if (args.length == 1) {
 				options.addAll(api.getPlayerNames());
-				Collections.sort(options);
 				return options;
 			} else if (args.length > 1) {
 				args = Arrays.copyOfRange(args, 1, args.length);
 			}
 		}
-		
+
 		if (args.length == 1) {
 			Collection<SpellTemplate> spellList = api.getSpellTemplates();
 			for (SpellTemplate spell : spellList) {
 				addIfPermissible(sender, options, "Magic." + permissionKey + ".", spell.getKey(), true);
 			}
 		}
-		
+
 		if (args.length > 1)
 		{
 			String spellName = args[0];
@@ -209,8 +209,7 @@ public class CastCommandExecutor extends MagicTabExecutor {
 				}
 			}
 		}
-		
-		Collections.sort(options);
+
 		return options;
 	}
 

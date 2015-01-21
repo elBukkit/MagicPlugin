@@ -336,7 +336,7 @@ public class MagicGiveCommandExecutor extends MagicTabExecutor {
 	}
 	
 	@Override
-	public List<String> onTabComplete(CommandSender sender, String commandName, String[] args) {
+	public Collection<String> onTabComplete(CommandSender sender, String commandName, String[] args) {
 		List<String> options = new ArrayList<String>();
         if (!sender.hasPermission("Magic.commands.mgive")) return options;
 
@@ -355,7 +355,6 @@ public class MagicGiveCommandExecutor extends MagicTabExecutor {
             }
             options.addAll(api.getBrushes());
 		}
-		Collections.sort(options);
 		return options;
 	}
 }

@@ -24,7 +24,7 @@ public class SpellsCommandExecutor extends MagicTabExecutor {
 	}
 	
 	@Override
-	public List<String> onTabComplete(CommandSender sender, String comandName, String[] args) {
+	public Collection<String> onTabComplete(CommandSender sender, String comandName, String[] args) {
 		return new ArrayList<String>();
 	}
 

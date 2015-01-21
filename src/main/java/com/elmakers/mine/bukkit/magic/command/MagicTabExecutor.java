@@ -3,6 +3,8 @@ package com.elmakers.mine.bukkit.magic.command;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Properties;
 
@@ -27,14 +29,14 @@ public abstract class MagicTabExecutor implements TabExecutor {
 		this.api = api;
 	}
 	
-	public abstract List<String> onTabComplete(CommandSender sender, String commandName, String[] args);
+	public abstract Collection<String> onTabComplete(CommandSender sender, String commandName, String[] args);
 	
 	@Override
 	public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
 		String completeCommand = args.length > 0 ? args[args.length - 1] : "";
 	
 		completeCommand = completeCommand.toLowerCase();
-		List<String> allOptions = onTabComplete(sender, command.getName(), args);
+		Collection<String> allOptions = onTabComplete(sender, command.getName(), args);
 		List<String>options = new ArrayList<String>();
 		for (String option : allOptions) {
 			String lowercase = option.toLowerCase();
@@ -42,6 +44,7 @@ public abstract class MagicTabExecutor implements TabExecutor {
 				options.add(option);
 			}
 		}
+        Collections.sort(options);
 		
 		return options;
 	}
@@ -71,7 +74,7 @@ public abstract class MagicTabExecutor implements TabExecutor {
         if (sender != null) sender.sendMessage(ChatColor.RED + "You are not allowed to use that command.");
 	}
 
-	protected void addIfPermissible(CommandSender sender, List<String> options, String permissionPrefix, String option)
+	protected void addIfPermissible(CommandSender sender, Collection<String> options, String permissionPrefix, String option)
 	{
 		if (api.hasPermission(sender, permissionPrefix + option))
 		{
@@ -79,7 +82,7 @@ public abstract class MagicTabExecutor implements TabExecutor {
 		}
 	}
 
-	protected void addIfPermissible(CommandSender sender, List<String> options, String permissionPrefix, String option, boolean defaultPermission)
+	protected void addIfPermissible(CommandSender sender, Collection<String> options, String permissionPrefix, String option, boolean defaultPermission)
 	{
 		if (api.hasPermission(sender, permissionPrefix + option, defaultPermission))
 		{

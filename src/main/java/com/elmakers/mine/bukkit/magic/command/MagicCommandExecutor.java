@@ -502,7 +502,7 @@ public class MagicCommandExecutor extends MagicTabExecutor {
 	}
 	
 	@Override
-	public List<String> onTabComplete(CommandSender sender, String comandName, String[] args) {
+	public Collection<String> onTabComplete(CommandSender sender, String commandName, String[] args) {
 		List<String> options = new ArrayList<String>();
 		if (args.length == 1) {
 			addIfPermissible(sender, options, "Magic.commands.magic.", "clean");
@@ -546,7 +546,6 @@ public class MagicCommandExecutor extends MagicTabExecutor {
 				}
 			}
 		}
-		Collections.sort(options);
 		return options;
 	}
 }
