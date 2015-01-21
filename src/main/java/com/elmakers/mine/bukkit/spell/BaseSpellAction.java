@@ -155,6 +155,11 @@ public abstract class BaseSpellAction implements SpellAction
     }
 
     @Override
+    public void prepare(ConfigurationSection parameters) {
+
+    }
+
+    @Override
     public boolean usesBrush()
     {
         return false;

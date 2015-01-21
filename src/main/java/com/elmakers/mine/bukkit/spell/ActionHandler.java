@@ -105,6 +105,12 @@ public class ActionHandler
     public SpellResult perform(ConfigurationSection parameters, Location targetLocation)
     {
         SpellResult result = SpellResult.NO_ACTION;
+
+        for (SpellAction action : allActions)
+        {
+            action.prepare(parameters);
+        }
+
         for (GeneralAction generalAction : generalActions)
         {
             SpellResult actionResult = generalAction.perform(generalAction.getParameters(parameters));
@@ -112,11 +118,6 @@ public class ActionHandler
             {
                 result = actionResult;
             }
-        }
-
-        if (entityActions.size() == 0 && blockActions.size() == 0)
-        {
-            return result;
         }
 
         spell.target();
