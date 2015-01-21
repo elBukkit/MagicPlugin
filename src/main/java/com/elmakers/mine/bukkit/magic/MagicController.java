@@ -2721,8 +2721,12 @@ public class MagicController implements Listener, MageController {
 	@EventHandler
 	public void onPluginDisable(PluginDisableEvent event)
 	{
+        if (!initialized) return;
+        initialized = false;
+
         Collection<Mage> saveMages = new ArrayList<Mage>(mages.values());
-		for (Mage mage : saveMages) {
+		for (Mage mage : saveMages)
+        {
             Player player = mage.getPlayer();
             if (player == null) continue;
 
@@ -2735,6 +2739,9 @@ public class MagicController implements Listener, MageController {
 	@EventHandler
 	public void onPluginEnable(PluginEnableEvent event)
 	{
+        if (initialized) return;
+        initialized = true;
+
 		Player[] players = plugin.getServer().getOnlinePlayers();
 		for (Player player : players) {
 			Wand wand = Wand.getActiveWand(this, player);
@@ -4091,6 +4098,7 @@ public class MagicController implements Listener, MageController {
 
     private String                              exampleDefaults             = null;
     private Collection<String>                  addExamples                 = null;
+    private boolean                             initialized                 = false;
 
     // Synchronization
     private final Object                        saveLock                    = new Object();
