@@ -125,13 +125,13 @@ public class CommandAction extends BaseSpellAction implements EntityAction, Gene
             Mage targetMage = controller.getMage(targetEntity);
             return command
                     .replace("@td", targetMage.getDisplayName())
-                    .replace("@t", targetMage.getName())
+                    .replace("@tn", targetMage.getName())
                     .replace("@tuuid", targetMage.getId());
         }
 
         return command
                 .replace("@td", controller.getEntityDisplayName(targetEntity))
-                .replace("@t", controller.getEntityName(targetEntity))
+                .replace("@tn", controller.getEntityName(targetEntity))
                 .replace("@tuuid", targetEntity.getUniqueId().toString());
     }
 

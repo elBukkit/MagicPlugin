@@ -1,6 +1,12 @@
 # Migration Notes
 
-## 3.9.4, 4.0
+## 4.0
+
+ * All default spells migrated to the new "action" system.
+ * Commands in command spell parameters have changed slightly.
+   (@t -> @tn, @p -> @pn for target and player names)
+
+## 3.9.4
 
  * All of the particle effect names have changed (internal EffectLib change).
    There is a PHP script available to help migrate custom configs.
