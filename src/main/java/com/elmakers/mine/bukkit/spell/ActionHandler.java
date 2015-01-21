@@ -104,7 +104,7 @@ public class ActionHandler
 
     public SpellResult perform(ConfigurationSection parameters, Location targetLocation)
     {
-        SpellResult result = SpellResult.CAST;
+        SpellResult result = SpellResult.NO_ACTION;
         for (GeneralAction generalAction : generalActions)
         {
             SpellResult actionResult = generalAction.perform(generalAction.getParameters(parameters));
@@ -126,11 +126,7 @@ public class ActionHandler
         }
         if (targetLocation == null)
         {
-            targetLocation = spell.getLocation();
-        }
-        if (targetLocation == null)
-        {
-            return SpellResult.LOCATION_REQUIRED;
+            return SpellResult.NO_TARGET.min(result);
         }
 
         for (BlockAction action : blockActions)
@@ -152,6 +148,7 @@ public class ActionHandler
 
         int radius = parameters.getInt("target_radius", 0);
         int coneCount = parameters.getInt("target_count", 0);
+        boolean targetSelf = parameters.getBoolean("target_self", false);
         Entity mageEntity = null;
         if (spell instanceof MageSpell)
         {
@@ -165,7 +162,7 @@ public class ActionHandler
             List<Entity> entities = CompatibilityUtils.getNearbyEntities(targetLocation, radius, radius, radius);
             for (Entity entity : entities)
             {
-                if (entity != targetedEntity && entity != mageEntity && spell.canTarget(entity))
+                if (entity != targetedEntity && (targetSelf || entity != mageEntity) && spell.canTarget(entity))
                 {
                     targetEntities.add(entity);
                 }

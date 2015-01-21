@@ -174,12 +174,15 @@ public abstract class BaseSpellAction implements SpellAction
     public void getParameterNames(Collection<String> parameters) {
         parameters.add("target_radius");
         parameters.add("target_count");
+        parameters.add("target_self");
     }
 
     @Override
     public void getParameterOptions(Collection<String> examples, String parameterKey) {
         if (parameterKey.equals("target_radius") || parameterKey.equals("target_count")) {
             examples.addAll(Arrays.asList((BaseSpell.EXAMPLE_SIZES)));
+        } else if (parameterKey.equals("target_self")) {
+            examples.addAll(Arrays.asList((BaseSpell.EXAMPLE_BOOLEANS)));
         }
     }
 }

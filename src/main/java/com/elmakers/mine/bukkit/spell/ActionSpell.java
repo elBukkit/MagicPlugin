@@ -41,7 +41,8 @@ public class ActionSpell extends BrushSpell
             return castHandler.perform(parameters);
         }
 
-        return SpellResult.FAIL;
+        // Allow for effect-only spells
+        return SpellResult.CAST;
     }
 
     @Override
