@@ -126,6 +126,7 @@ wand:
     spell_upgraded: "&r&6$name &d&ohas been upgraded to &3$level"
     spell_override_upgraded: "&r&6$name &d&ohas been upgraded"
     upgraded_property: "Your wand has been upgraded to &r&b$name"
+    hotbar_added: "Your wand's hotbar has been upgraded! Press Q while your wand is active"
     player_upgraded: $name's wand upgraded
     player_not_upgraded: $name's wand not upgraded
     no_item: You are not holding an item
@@ -1243,6 +1244,9 @@ wands:
     mana4:
         name: Mana Upgrade Level 4
         description: Upgrade to 1500 Mana
+    hotbar2:
+        name: Hotbar Upgrade
+        description: Add an extra hotbar to your wand!
     antihunger:
         name: Anti-Hunger Upgrade
         description: Never go hungry again!
@@ -1282,6 +1286,9 @@ wands:
     respawntoken:
         name: Respawn Token
         description: Cast to return to spawn
+    wolfhouse:
+        name: Wolf House
+        description: An auto-regenerating base-in-a-box
     defenderheart:
         name: Heart of Defender
         description: It pulsates with power

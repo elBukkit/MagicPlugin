@@ -404,6 +404,7 @@ wolf:
     power: 2
     haste: 0.1
     quiet: 1
+    hotbar_count: 3
     effect_color: '00AACC'
     effect_particle: enchantment_table
     effect_particle_count: 1
@@ -1264,7 +1265,7 @@ rainboweffects:
     icon: magma_cream
     effect_color: random
     effect_bubbles: false
-    effect_particle: mob_spell
+    effect_particle: spell_mob
     effect_parcticle_data: 2
     effect_particle_count: 3
 mana1:
@@ -1291,6 +1292,11 @@ mana4:
     icon: nether_star
     xp_max: 1500
     xp_regeneration: 150
+hotbar2:
+    upgrade: true
+    indestructible: false
+    icon: nether_star
+    hotbar_count: 2
 manaboost:
     upgrade: true
     indestructible: false
@@ -1420,6 +1426,17 @@ golemheart:
     effect_color: '8888FF'
     spells:
         - animate
+
+wolfhouse:
+    active_spell: wolfhouse
+    icon: sapling:5
+    indestructible: false
+    cost_reduction: 2
+    locked: true
+    uses: 1
+    effect_color: 'FFAA00'
+    spells:
+        - wolfhouse
 
 #
 # Older or example templates not directly used in crafting or enchanting

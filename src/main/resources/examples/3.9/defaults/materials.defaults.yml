@@ -566,6 +566,11 @@ interactible:
 - sign_post
 - command
 - wall_sign
+- spruce_door
+- birch_door
+- jungle_door
+- acacia_door
+- dark_oak_door
 
 passthrough:
 - water

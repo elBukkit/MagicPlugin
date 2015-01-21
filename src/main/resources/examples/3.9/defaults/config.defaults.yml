@@ -88,6 +88,10 @@
 # You will need to do the same with wands, since they refer to the default spells.
 load_default_spells: true
 
+# Use this to load, but disable the default spells.
+# This is useful if you want to inherit from the defaults, or choose what to expose.
+disable_default_spells: false
+
 # Set to false to skip loading defaults/wands.defaults.yml entirely.
 # Use this to have completely custom wands, and avoid getting updates to wands
 # in the future.
@@ -457,7 +461,7 @@ dynmap_show_spells: true
 # Only show spell casts from players
 dynmap_only_player_spells: false
 
-# Enable worldguard protection against construction spells
+# Enable worldguard protection against construction spells, and PVP
 region_manager_enabled: true
 
 # Enable Factions protection against construction spells
@@ -465,6 +469,12 @@ factions_enabled: true
 
 # Enable PvPManager integration for PVP spells
 pvp_manager_enabled: true
+
+# Enable Towny integration for Build checks
+towny_enabled: true
+
+# Enable PreciousStones integration for Build and PVP Checks
+precious_stones_enabled: true
 
 # Enable MVCore integration for PVP checks
 multiverse_enabled: true
@@ -477,3 +487,6 @@ bypass_pvp: false
 
 # Will consider all spells as pvp spells
 pvp_restricted: false
+
+# Debug EffectLib issues
+debug_effects: false

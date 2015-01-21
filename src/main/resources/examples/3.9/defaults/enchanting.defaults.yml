@@ -288,7 +288,6 @@ master:
       weather: 0,0,0,1,100
       cage: 0,0,2,10,100
       tent: 0,0,5,15,100
-      wolfhouse: 0,0,0,1,100
       simulate: 0,0,0,1,100
       glider: 0,0,0,1,100
       meteor: 0,0,0,1,100
