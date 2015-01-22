@@ -17,7 +17,7 @@ public class LocketteManager {
 	}
 	
 	public boolean isEnabled() {
-		return enabled && isOwnerMethod != null;
+		return enabled && isOwnerMethod != null && isProtectedMethod != null;
 	}
 	
 	public void initialize(Plugin plugin) {
