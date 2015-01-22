@@ -2721,6 +2721,7 @@ immobulus:
     actions:
         cast:
         -  class: PotionEffectAction
+        -  class: FallProtectionAction
     effects:
         cast:
         -  class: EffectSingle
@@ -2769,7 +2770,6 @@ immobulus:
         effect_slow: 20
         effect_jump: -20
         cooldown: 10000
-        fall_protection: 5000
         hitbox: true
 
 locomotomortus:
@@ -3525,6 +3525,7 @@ petrificustotalus:
     actions:
         cast:
         -  class: PotionEffectAction
+        -  class: FallProtectionAction
     effects:
         cast:
         -  class: EffectSingle
@@ -3576,7 +3577,6 @@ petrificustotalus:
         effect_confusion: 5
         cooldown: 10000
         effect_absorption: 4
-        fall_protection: 5000
         hitbox: true
 
 webbing:
@@ -6763,3 +6763,29 @@ wrecktumsempra:
         target_breakables: 10
     costs:
         mana: 300
+
+count:
+    name: Entity Counter
+    description: An admin tool to check for nearby entities
+    icon: watch
+    category: staff
+    worth: 120
+    hidden: true
+    actions:
+        cast:
+        -  class: CountAction
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: fuse
+           effectlib:
+             class: HelixEffect
+             iterations: 1
+             particle: flame
+    parameters:
+        target: self
+        target_type: Entity
+        target_radius: 64
+        target_count: 100000
+    costs:
+        mana: 200
