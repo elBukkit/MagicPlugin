@@ -23,22 +23,31 @@ public class FactionsManager {
 	
 	public void initialize(Plugin plugin) {
 		if (enabled) {
-			try {
-				Class<?> psClass = Class.forName("com.massivecraft.mcore.ps.PS");
-				factionsManager = Class.forName("com.massivecraft.factions.listeners.FactionsListenerMain");
-				factionsCanBuildMethod = factionsManager.getMethod("canPlayerBuildAt", Player.class, psClass, Boolean.TYPE);
-				psFactoryMethod = psClass.getMethod("valueOf", Location.class);
-				if (factionsManager != null && factionsCanBuildMethod != null && psFactoryMethod != null) {
-					plugin.getLogger().info("Factions found, build permissions will be respected.");
-				} else {
-					factionsManager = null;
-					factionsCanBuildMethod = null;
-					psFactoryMethod = null;
+			Plugin factionsPlugin = plugin.getServer().getPluginManager().getPlugin("Factions");
+			if (factionsPlugin != null)
+			{
+				try {
+					Class<?> psClass = Class.forName("com.massivecraft.mcore.ps.PS");
+					factionsManager = Class.forName("com.massivecraft.factions.listeners.FactionsListenerMain");
+					factionsCanBuildMethod = factionsManager.getMethod("canPlayerBuildAt", Player.class, psClass, Boolean.TYPE);
+					psFactoryMethod = psClass.getMethod("valueOf", Location.class);
+					if (factionsManager != null && factionsCanBuildMethod != null && psFactoryMethod != null) {
+						plugin.getLogger().info("Factions found, build permissions will be respected.");
+					} else {
+						factionsManager = null;
+						factionsCanBuildMethod = null;
+						psFactoryMethod = null;
+					}
+				} catch (Throwable ex) {
+					ex.printStackTrace();
 				}
-			} catch (Throwable ex) {
-			}
-			
-			if (factionsManager == null) {
+
+				if (factionsManager == null) {
+					plugin.getLogger().info("Factions integration failed.");
+				} else {
+					plugin.getLogger().info("Factions found, will integrate for build checks.");
+				}
+			} else {
 				plugin.getLogger().info("Factions not found, will not integrate.");
 			}
 		} else {

@@ -473,8 +473,11 @@ pvp_manager_enabled: true
 # Enable Towny integration for Build checks
 towny_enabled: true
 
-# Enable PreciousStones integration for Build and PVP Checks
+# Enable PreciousStones integration for Build and PVP checks
 precious_stones_enabled: true
+
+# Enable Lockette integration for Build checks
+lockette_enabled: true
 
 # Enable MVCore integration for PVP checks
 multiverse_enabled: true

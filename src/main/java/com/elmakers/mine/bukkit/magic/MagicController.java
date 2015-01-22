@@ -18,6 +18,7 @@ import com.elmakers.mine.bukkit.api.event.SaveEvent;
 import com.elmakers.mine.bukkit.api.spell.*;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.maps.MapController;
+import com.elmakers.mine.bukkit.protection.LocketteManager;
 import com.elmakers.mine.bukkit.protection.MultiverseManager;
 import com.elmakers.mine.bukkit.protection.PreciousStonesManager;
 import com.elmakers.mine.bukkit.protection.PvPManagerManager;
@@ -430,6 +431,7 @@ public class MagicController implements Listener, MageController {
 
         allowed = allowed && worldGuardManager.hasBuildPermission(player, block);
         allowed = allowed && factionsManager.hasBuildPermission(player, block);
+        allowed = allowed && locketteManager.hasBuildPermission(player, block);
         allowed = allowed && preciousStonesManager.hasBuildPermission(player, block);
         allowed = allowed && townyManager.hasBuildPermission(player, block);
 
@@ -737,6 +739,9 @@ public class MagicController implements Listener, MageController {
         // Link to Towny
         townyManager.initialize(plugin);
 
+        // Link to Lockette
+        locketteManager.initialize(plugin);
+
         // Try to link to dynmap:
         try {
             Plugin dynmapPlugin = plugin.getServer().getPluginManager().getPlugin("dynmap");
@@ -891,6 +896,24 @@ public class MagicController implements Listener, MageController {
                         @Override
                         public int getValue() {
                             return controller.multiverseManager.isEnabled() ? 1 : 0;
+                        }
+                    });
+                    integrationGraph.addPlotter(new Metrics.Plotter("Towny") {
+                        @Override
+                        public int getValue() {
+                            return controller.townyManager.isEnabled() ? 1 : 0;
+                        }
+                    });
+                    integrationGraph.addPlotter(new Metrics.Plotter("PreciousStones") {
+                        @Override
+                        public int getValue() {
+                            return controller.preciousStonesManager.isEnabled() ? 1 : 0;
+                        }
+                    });
+                    integrationGraph.addPlotter(new Metrics.Plotter("Lockette") {
+                        @Override
+                        public int getValue() {
+                            return controller.locketteManager.isEnabled() ? 1 : 0;
                         }
                     });
 
@@ -1732,6 +1755,7 @@ public class MagicController implements Listener, MageController {
         multiverseManager.setEnabled(properties.getBoolean("multiverse_enabled", multiverseManager.isEnabled()));
         preciousStonesManager.setEnabled(properties.getBoolean("precious_stones_enabled", preciousStonesManager.isEnabled()));
         townyManager.setEnabled(properties.getBoolean("towny_enabled", townyManager.isEnabled()));
+        locketteManager.setEnabled(properties.getBoolean("lockette_enabled", locketteManager.isEnabled()));
 
         metricsLevel = properties.getInt("metrics_level", metricsLevel);
 		
@@ -4069,6 +4093,7 @@ public class MagicController implements Listener, MageController {
     private boolean							    bypassPvpPermissions        = false;
     private boolean							    allPvpRestricted            = false;
     private FactionsManager					    factionsManager				= new FactionsManager();
+    private LocketteManager                     locketteManager				= new LocketteManager();
     private WorldGuardManager					worldGuardManager			= new WorldGuardManager();
     private PvPManagerManager                   pvpManager                  = new PvPManagerManager();
     private MultiverseManager                   multiverseManager           = new MultiverseManager();
