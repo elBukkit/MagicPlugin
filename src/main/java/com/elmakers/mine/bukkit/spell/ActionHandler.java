@@ -217,7 +217,7 @@ public class ActionHandler
 
         if (targetEntities.size() == 0)
         {
-            return SpellResult.NO_TARGET;
+            result = SpellResult.NO_TARGET;
         }
 
         for (Entity entity : targetEntities)
@@ -231,6 +231,12 @@ public class ActionHandler
                 }
             }
         }
+
+        for (SpellAction action : allActions)
+        {
+            action.finish(parameters);
+        }
+
         return result;
     }
 
