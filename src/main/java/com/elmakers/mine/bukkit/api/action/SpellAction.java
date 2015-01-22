@@ -9,6 +9,7 @@ import java.util.Collection;
 public interface SpellAction
 {
     public void prepare(ConfigurationSection parameters);
+    public void finish(ConfigurationSection parameters);
     public void load(Spell spell, ConfigurationSection parameters);
     public ConfigurationSection getParameters(ConfigurationSection baseParameters);
     public void getParameterNames(Collection<String> parameters);
