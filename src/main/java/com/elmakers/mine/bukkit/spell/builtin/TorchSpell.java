@@ -3,6 +3,7 @@ package com.elmakers.mine.bukkit.spell.builtin;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.ConfigurationSection;
 
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
@@ -125,13 +126,43 @@ public class TorchSpell extends BlockSpell
 			return SpellResult.NO_TARGET;
 		}
 
+		BlockFace direction = face.getFace(target);
 		if (!replaceAttachment)
 		{
 			target = face;
 		}	
 
-		target.setType(targetMaterial);
+		byte data = 0;
+		if (targetMaterial == Material.TORCH)
+		{
+			switch (direction)
+			{
+				case WEST:
+					data = 1;
+					break;
+				case EAST:
+					data = 2;
+					break;
+				case NORTH:
+					data = 3;
+					break;
+				case SOUTH:
+					data = 4;
+					break;
+				case DOWN:
+					data = 5;
+					break;
+				default:
+					targetMaterial = Material.GLOWSTONE;
+			}
+		}
+
+		if (!allowLightstone && targetMaterial == Material.GLOWSTONE) {
+			return SpellResult.NO_TARGET;
+		}
+
 		registerForUndo(target);
+		target.setTypeIdAndData(targetMaterial.getId(), data, false);
 		registerForUndo();
 		controller.updateBlock(target);
 
