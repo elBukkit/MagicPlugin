@@ -265,4 +265,13 @@ public class ActionHandler
             action.getParameterOptions(examples, parameterKey);
         }
     }
+
+    public String transformMessage(String message)
+    {
+        for (SpellAction action : allActions)
+        {
+            message = action.transformMessage(message);
+        }
+        return message;
+    }
 }

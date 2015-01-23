@@ -8,6 +8,7 @@ import com.elmakers.mine.bukkit.api.spell.MageSpell;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemoryConfiguration;
@@ -79,6 +80,10 @@ public abstract class BaseSpellAction implements SpellAction
 
     public Vector getDirection() {
         return baseSpell != null ? baseSpell.getDirection() : null;
+    }
+
+    public World getWorld() {
+        return baseSpell != null ? baseSpell.getWorld() : null;
     }
 
     public Location getLocation() {
@@ -201,5 +206,9 @@ public abstract class BaseSpellAction implements SpellAction
         } else if (parameterKey.equals("target_all_worlds")) {
             examples.addAll(Arrays.asList((BaseSpell.EXAMPLE_BOOLEANS)));
         }
+    }
+
+    public String transformMessage(String message) {
+        return message;
     }
 }

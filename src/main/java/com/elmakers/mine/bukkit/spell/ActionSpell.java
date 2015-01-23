@@ -94,4 +94,13 @@ public class ActionSpell extends BrushSpell
             handler.getParameterOptions(examples, parameterKey);
         }
     }
+
+    @Override
+    public String getMessage(String messageKey, String def) {
+        String message = super.getMessage(messageKey, def);
+        for (ActionHandler handler : actions.values()) {
+            message = handler.getMessage(messageKey, message);
+        }
+        return message;
+    }
 }
