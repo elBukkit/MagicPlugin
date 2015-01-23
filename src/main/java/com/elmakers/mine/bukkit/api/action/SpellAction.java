@@ -16,4 +16,5 @@ public interface SpellAction
     public void getParameterOptions(Collection<String> examples, String parameterKey);
     public boolean usesBrush();
     public boolean isUndoable();
+    public String transformMessage(String message);
 }
