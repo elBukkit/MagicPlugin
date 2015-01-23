@@ -99,7 +99,7 @@ public class ActionSpell extends BrushSpell
     public String getMessage(String messageKey, String def) {
         String message = super.getMessage(messageKey, def);
         for (ActionHandler handler : actions.values()) {
-            message = handler.getMessage(messageKey, message);
+            message = handler.transformMessage(message);
         }
         return message;
     }

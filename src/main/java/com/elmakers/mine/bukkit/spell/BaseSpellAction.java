@@ -26,6 +26,7 @@ public abstract class BaseSpellAction implements SpellAction
     private BaseSpell baseSpell;
     private BlockSpell blockSpell;
     private MageSpell mageSpell;
+    private TargetingSpell targetingSpell;
     private UndoableSpell undoSpell;
     private ActionSpell actionSpell;
     private ConfigurationSection parameters;
@@ -43,6 +44,23 @@ public abstract class BaseSpellAction implements SpellAction
         if (undoSpell != null)
         {
             undoSpell.registerForUndo(entity);
+        }
+    }
+
+    public void registerForUndo(Block block)
+    {
+        if (undoSpell != null)
+        {
+            undoSpell.registerForUndo(block);
+        }
+    }
+
+    public void updateBlock(Block block)
+    {
+        MageController controller = getController();
+        if (controller != null)
+        {
+            controller.updateBlock(block);
         }
     }
 
@@ -76,6 +94,11 @@ public abstract class BaseSpellAction implements SpellAction
             return actionSpell.getActions(key);
         }
         return null;
+    }
+
+    public Block getPreviousBlock()
+    {
+        return targetingSpell != null ? targetingSpell.getPreviousBlock() : null;
     }
 
     public Vector getDirection() {
@@ -139,6 +162,10 @@ public abstract class BaseSpellAction implements SpellAction
         if (spell instanceof ActionSpell)
         {
             this.actionSpell = (ActionSpell)spell;
+        }
+        if (spell instanceof TargetingSpell)
+        {
+            this.targetingSpell = (TargetingSpell)spell;
         }
         if (spell instanceof BlockSpell)
         {
@@ -210,5 +237,13 @@ public abstract class BaseSpellAction implements SpellAction
 
     public String transformMessage(String message) {
         return message;
+    }
+
+    public String getMessage(String key) {
+        return getMessage(key, key);
+    }
+
+    public String getMessage(String key, String def) {
+        return baseSpell != null ? baseSpell.getMessage(key, def) : def;
     }
 }
