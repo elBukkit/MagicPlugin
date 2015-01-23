@@ -6,6 +6,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 
+@Deprecated
 public class WeatherSpell extends BaseSpell
 {
 	@Override
@@ -35,7 +36,7 @@ public class WeatherSpell extends BaseSpell
 		{
 			world.setStorm(true);
 			// This is mainly so we can have different cast messages and effects, but is a bit of a hack.
-			return SpellResult.AREA;
+			return SpellResult.ALTERNATE;
 		}
 		return SpellResult.CAST;
 	}

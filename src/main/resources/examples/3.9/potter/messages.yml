@@ -158,8 +158,8 @@ spells:
     atmos:
         name: Atmospheric Charm
         description: Change the weather
-        cast: You calm the storm
-        area: You stir up a storm
+        cast: You stir up a storm
+        alternate: You calm the storm
     avadakedavra:
         name: Avada Kedavra
         description: The killing curse
@@ -235,7 +235,7 @@ spells:
     meteo:
         name: Meteolojinx Recanto
         description: Clear weather incantations
-        area: Meteolojinx Recanto!
+        cast: Meteolojinx Recanto!
     deletrius:
         name: Deletrius
         description: Erase a wand's cast history
@@ -307,6 +307,7 @@ spells:
         usage: Only works on recently cast spells
         extended_description: "The Minister of Magic's Favourite Spell."
         cast: "Finite Incantatem &d&o$target &r&6$spell!"
+        alternate: "Finite Incantatem &d&o$target &r&6$spell!"
         fail:
         cast_player_message: "&d&o$player &r&5countered your &3&o$spell &r&5cast!"
     firestorm:
@@ -334,7 +335,7 @@ spells:
         name: Flight
         description: A gift from the Dark Lord
         cast: You feel lighter
-        cost_free: You feel heavier
+        deactivate: You feel heavier
     fourpoint:
         name: The Four Point Spell
         description: Points you North
@@ -349,7 +350,7 @@ spells:
         name: SuperFly
         description: For videographers
         cast: You feel lighter
-        cost_free: You feel heavier
+        deactivate: You feel heavier
     immobulus:
         name: Immobulus
         description: Immobilizes your target
@@ -489,7 +490,7 @@ spells:
         description: Reverse your last spell
         cast: "&5Your reverse your &6$spell cast"
         cast_self: "&5You reverse your &6$spell &5cast"
-        cost_free: "&5You cancel your &6$spell &5cast"
+        alternate: "&5You cancel your &6$spell &5cast"
         fail: Nothing to reverse
     reparo:
         name: Reparo

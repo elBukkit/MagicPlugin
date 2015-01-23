@@ -190,14 +190,13 @@ costs:
     mana_amount: $amount Mana
     mana: Mana
     xp: XP
-    insufficient_resources: Not enough $cost
 cooldown:
-    wait_seconds: You must wait another $seconds seconds.
-    wait_minutes: You must wait another $minutes minutes.
-    wait_hours: You must wait another $hours hours.
-    wait_moment: You must wait a moment.
-    wait_minute: You must wait a minute.
-    wait_hour: You must wait another hour.
+    wait_seconds: another $seconds seconds
+    wait_minutes: another $minutes minutes
+    wait_hours: another $hours hours
+    wait_moment: a moment
+    wait_minute: a minute
+    wait_hour: another hour
     description_seconds: $seconds seconds
     description_minutes: $minutes minutes
     description_hours: $hours hours
@@ -261,6 +260,15 @@ spells:
         fail: Your spell failed!
         insufficient_permission: You don't have permission to cast that here.
         cast_player_message: "&d&o$player &r&5cast &3&o$spell &r&5on you!"
+        insufficient_resources: Not enough $cost
+        cooldown: You must wait $time.
+        cancelled: Your spell was cancelled!
+        entity_required: An entity is required for this spell.
+        living_entity_required: A living entity is required for this spell.
+        player_required: A player is required for this spell.
+        location_required: A location is required for this spell.
+        world_required: A world is required for this spell.
+        invalid_world: The specified world is not valid.
     curse:
         name: Curse
         description: Slows down and weakens the target
@@ -342,7 +350,7 @@ spells:
     pull:
         name: Pull
         description: Pull things toward you
-        area: Gimme!
+        alternate: Gimme!
         cast: Yoink!
     kaboom:
         name: KaBoom
@@ -400,8 +408,8 @@ spells:
     weather:
         name: Weather
         description: Change the weather
-        cast: You calm the storm
-        area: You stir up a storm
+        cast: You stir up a storm
+        alternate: You calm the storm
     fling:
         name: Fling
         description: Sends you flying in the target direction
@@ -418,7 +426,7 @@ spells:
         description: Animate the target material
         cast: You create a Magic Golem
         no_target: You must target two blocks next to each other
-        restricted: You can not make a Golem out of $material
+        fail: You can not make a Golem out of $material
         cast_broadcast: "&c&o$name &r&5was born"
         death_broadcast: "&c&o$name &r&5has been defeated"
     simulate3:
@@ -436,7 +444,7 @@ spells:
         cast_broadcast: "&c&o$name &r&5was born"
         death_broadcast: "&c&o$name &r&5has been defeated"
         no_target: You must target two blocks next to each other
-        restricted: You can not make a Virus out of $material
+        fail: You can not make a Virus out of $material
     worm:
         name: Worm
         description: Release a dangerous giant worm
@@ -444,13 +452,13 @@ spells:
         cast_broadcast: "&c&o$name &r&5was born"
         death_broadcast: "&c&o$name &r&5has been defeated"
         no_target: You must target two blocks next to each other
-        restricted: You can not make a Worm out of $material
+        fail: You can not make a Worm out of $material
     hunter:
         no_target: You must target two blocks next to each other
         name: Hunter
         description: Create a deadly Automaton
         no_target: You must target two blocks next to each other
-        restricted: You can not make a Hunter out of $material
+        fail: You can not make a Hunter out of $material
         cast: Destroy all humans!
         cast_broadcast: "&c&o$name &r&5was born"
         death_broadcast: "&c&o$name &r&5has been defeated"
@@ -459,7 +467,7 @@ spells:
         description: Create an Automata hunter
         cast: I will hunt for you, human
         no_target: You must target two blocks next to each other
-        restricted: You can not make a Defender out of $material
+        fail: You can not make a Defender out of $material
         cast_broadcast: "&c&o$name &r&5was born"
         death_broadcast: "&c&o$name &r&5has been defeated"
     life:
@@ -475,7 +483,7 @@ spells:
         description: Creates a torch or glowstone
         no_target: Can't put a torch there
         cast: Flame on!
-        area: Changed time to $time
+        alternate: Changed time to $time
     tunnel:
         name: Tunnel
         description: Mine out a tunnel in front of you
@@ -484,12 +492,12 @@ spells:
     monster:
         name: Monster
         description: Call a monster to your side
-        cost_free: You release your monster
+        deactivate: You release your monster
         cast: You summon a monster
     mob:
         name: Mob
         description: Summon a mob of monsters
-        cost_free: You release your mob
+        deactivate: You release your mob
         cast: You summon $count monster(s)
     portal:
         name: Portal
@@ -548,15 +556,15 @@ spells:
     day:
         name: Sunny Day
         description: Make it a lovely day
-        area: What a pretty day!
+        alternate: What a pretty day!
     night:
         name: Night
         description: Make it dark
-        area: Spoooooky
+        alternate: Spoooooky
     time:
         name: Time
         description: Change the time of day
-        area: Changed time to $time
+        alternate: Changed time to $time
     bridge:
         name: Bridge
         description: Extend the ground underneath you
@@ -711,8 +719,7 @@ spells:
         name: Rollback
         description: Undo your last spell
         cast: "&5Your undo your &6$spell cast"
-        cast_self: "&5You undo your &6$spell &5cast"
-        cost_free: "&5You cancel your &6$spell &5cast"
+        alternate: "&5You cancel your &6$spell &5cast"
         fail: Nothing to undo
     commit:
         name: Commit
@@ -738,11 +745,11 @@ spells:
     push:
         name: Push
         description: Push things away from you
-        area: Get away!
+        alternate: Get away!
     farm:
         name: Herd
         description: Create a herd
-        cost_free: You release your herd
+        deactivate: You release your herd
         cast: You summon $count farm animals
     breach:
         name: Breach
@@ -837,7 +844,7 @@ spells:
         name: Familiar
         description: Create an animal familiar
         cast: You summon a familiar
-        cost_free: You release your familiar
+        deactivate: You release your familiar
     disintegrate:
         name: Disintegrate
         description: Damage your target

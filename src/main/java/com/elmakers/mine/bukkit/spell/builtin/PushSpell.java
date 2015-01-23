@@ -90,7 +90,7 @@ public class PushSpell extends UndoableSpell
 		)
 		{
 			forceAll(sourceEntity, multiplier, pull, entityMagnitude, itemMagnitude, maxAllDistance, damage, fallProtection);
-			return SpellResult.AREA;
+			return SpellResult.ALTERNATE;
 		}
 
         Target directTarget = getTarget();

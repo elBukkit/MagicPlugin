@@ -9,6 +9,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.BlockSpell;
 
+@Deprecated
 public class TorchSpell extends BlockSpell 
 {
 	private String timeType = "day";
@@ -67,11 +68,11 @@ public class TorchSpell extends BlockSpell
                 long currentTime = world.getFullTime();
                 currentTime = ((currentTime % 24000) + 1) * 24000 + targetTime;
                 world.setFullTime(currentTime);
-                return SpellResult.AREA;
+                return SpellResult.ALTERNATE;
             }
 
 			world.setTime(targetTime);
-			return SpellResult.AREA;
+			return SpellResult.ALTERNATE;
 		}
 		
 		boolean allowNight = parameters.getBoolean("allow_night", false);
@@ -80,7 +81,7 @@ public class TorchSpell extends BlockSpell
 		{
 			timeType = "day";
 			world.setTime(0);
-			return SpellResult.AREA;
+			return SpellResult.ALTERNATE;
 		}
 
 
@@ -88,7 +89,7 @@ public class TorchSpell extends BlockSpell
 		{
 			timeType = "night";
 			world.setTime(13000);
-			return SpellResult.AREA;
+			return SpellResult.ALTERNATE;
 		}
 
 		Block target = getTargetBlock();	

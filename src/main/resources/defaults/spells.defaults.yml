@@ -125,8 +125,20 @@ default:
        - class: EffectSingle
          location: origin
          entity_effect: hurt
-       cost_free: cast
        no_target: cast
+       alternate: cast
+       alternate_up: cast
+       alternate_down: cast
+       alternate_sneak: cast
+       fizzle: fail
+       cancelled: fail
+       entity_required: fail
+       living_entity_required: fail
+       player_required: fail
+       location_required: fail
+       world_required: fail
+       invalid_world: fail
+       no_action: fail
 
 curse:
     icon: rotten_flesh
@@ -3375,7 +3387,7 @@ fly:
            effectlib:
              class: ShieldEffect
              particle: spell
-        cost_free:
+        deactivate:
         -  class: EffectSingle
            sound: enderdragon_wings
            sound_pitch: 0.2

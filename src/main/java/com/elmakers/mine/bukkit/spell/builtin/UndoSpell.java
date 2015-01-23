@@ -35,7 +35,7 @@ public class UndoSpell extends TargetingSpell
             BlockBatch batch = targetMage.cancelPending();
             if (batch != null) {
                 undoListName = (batch instanceof SpellBatch) ? ((SpellBatch)batch).getSpell().getName() : null;
-                return SpellResult.CAST;
+                return SpellResult.ALTERNATE;
             }
 
             UndoQueue queue = targetMage.getUndoQueue();

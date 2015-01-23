@@ -22,7 +22,7 @@ public class InvincibleSpell extends TargetingSpell implements Listener
 		if (protectAmount != 0)
 		{
 			deactivate();
-			return SpellResult.COST_FREE;
+			return SpellResult.DEACTIVATE;
 		}
 		else
 		{

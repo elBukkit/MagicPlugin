@@ -906,15 +906,10 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     @Override
     public void onCast(Spell spell, SpellResult result) {
         lastCast = System.currentTimeMillis();
-        if (spell != null && result.isSuccess()) {
+        if (spell != null) {
             // Notify controller of successful casts,
             // this if for dynmap display or other global-level processing.
             controller.onCast(this, spell, result);
-
-            //TODO: Move this to BaseSpell?
-            if (controller.getShowCastHoloText()) {
-                showHoloText(getEyeLocation(), spell.getName(), 10000);
-            }
         }
     }
 

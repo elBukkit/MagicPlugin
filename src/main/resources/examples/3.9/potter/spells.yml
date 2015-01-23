@@ -51,8 +51,20 @@ default:
        - class: EffectSingle
          location: origin
          entity_effect: hurt
-       cost_free: cast
        no_target: cast
+       alternate: cast
+       alternate_up: cast
+       alternate_down: cast
+       alternate_sneak: cast
+       fizzle: fail
+       cancelled: fail
+       entity_required: fail
+       living_entity_required: fail
+       player_required: fail
+       location_required: fail
+       world_required: fail
+       invalid_world: fail
+       no_action: fail
 
 accio:
     icon: ink_sack:6
@@ -73,7 +85,7 @@ accio:
            reverse: true
            length: 16
            particle_count: 6
-        area:
+        alternate:
         -  class: EffectSingle
            sound: fizz
            effectlib:
@@ -96,6 +108,10 @@ accio|2:
         target_count: 4
 
 accio|3:
+    actions:
+        alternate:
+        -  class: VelocityAction
+        -  class: FallProtectionAction
     parameters:
         target_count: 8
         allow_area: true
@@ -567,17 +583,20 @@ arresto:
 atmos:
     icon: watch
     category: herbology
-    class: WeatherSpell
     worth: 80
+    actions:
+        cast:
+        -  class: WeatherAction
     effects:
         cast:
         -  class: EffectSingle
            sound: ambience_rain
            effectlib:
+             offset: 0,4,0
              class: HelixEffect
              iterations: 1
              particle: drip_water
-        area:
+        alternate:
         -  class: EffectSingle
            sound: ambience_thunder
            effectlib:
@@ -587,6 +606,7 @@ atmos:
              particle: drip_water
     parameters:
         cooldown: 30000
+        weather: cycle
     costs:
         mana: 150
 
@@ -617,7 +637,7 @@ broom:
            effectlib:
              class: SmokeEffect
              iterations: 12
-        area:
+        alternate:
         -  class: EffectSingle
            sound: enderdragon_wings
            sound_volume: .25
@@ -2410,20 +2430,6 @@ ventus:
              particleBase2: spell
              iterations: 10
              lengthGrow: 20
-        area:
-        -  class: EffectSingle
-           sound: burp
-           sound_volume: 1
-           sound_pitch: -0.1
-           effectlib:
-             class: DnaEffect
-             particlesBase: 0
-             particlesHelix: 7
-             particleHelix: spell
-             particleBase1: spell
-             particleBase2: spell
-             iterations: 10
-             lengthGrow: 20
     parameters:
         target_type: Entity
         range: 15
@@ -2457,13 +2463,11 @@ flipendo:
              color: FFFFFF
              lengthGrow: 0.1
     parameters:
-        hitbox: true
         target_type: Entity
         range: 16
         allow_max_range: true
         item_speed: 2
         living_entity_speed: .5
-        area_range: 20
         push: 1
         cooldown: 1500
     costs:
@@ -2490,11 +2494,9 @@ flipendo|2:
              grow: 0.5
              lengthGrow: 0.3
     parameters:
-        hitbox: true
         range: 20
         item_speed: 2.5
         living_entity_speed: 1
-        area_range: 20
         type: push
         damage: 1
         target_count: 3
@@ -2504,28 +2506,7 @@ flipendo|2:
 
 flipendo|3:
     worth: 50
-    effects:
-        area:
-        -  class: EffectSingle
-           sound: burp
-           sound_volume: 1
-           effectlib:
-             class: ConeEffect
-             iterations: 16
-             particle: spell_instant
-             color: FFFFFF
-             helixes: 6
-             circles: 4
-             grow: 0.9
-             lengthGrow: 0.4
-           effectlib:
-             class: FountainEffect
-             particle: spell
-             iterations: 2
-             particlesStrand: 10
-             particlesSpout: 30
     parameters:
-        hitbox: true
         range: 32
         item_speed: 3
         living_entity_speed: 1
@@ -2551,7 +2532,7 @@ flight:
                  class: SphereEffect
                  particle: redstone
                  radius: 2.5
-        cost_free:
+        deactivate:
         -  class: EffectSingle
            sound: enderdragon_wings
            sound_pitch: 0.2
@@ -4619,13 +4600,17 @@ colorvaria:
 meteo:
     icon: watch
     category: staff
-    class: TorchSpell
     worth: 120
+    actions:
+        cast:
+        -  class: TimeAction
+        -  class: WeatherAction
     effects:
         cast:
         -  class: EffectSingle
            sound: fuse
            effectlib:
+             offset: 0,4,0
              class: HelixEffect
              iterations: 1
              particle: flame
@@ -4633,7 +4618,7 @@ meteo:
            particle: flame
            particle_data: 2
            particle_count: 5
-        area:
+        alternate:
         -  class: EffectSingle
            sound: fuse
            effectlib:
@@ -4646,10 +4631,6 @@ meteo:
            particle_data: 2
            particle_count: 5
     parameters:
-        allow_max_range: false
-        allow_night: false
-        allow_day: true
-        allow_glowstone: false
         cooldown: 5000
         time: day
         weather: clear
@@ -4687,9 +4668,11 @@ nox:
 noxmaxima:
     icon: ink_sack:0
     category: staff
-    class: TorchSpell
     hidden: true
     worth: 130
+    actions:
+        cast:
+        -  class: TimeAction
     effects:
         cast:
         -  class: EffectSingle
@@ -4699,10 +4682,6 @@ noxmaxima:
              iterations: 2
              particle: smoke_large
     parameters:
-        allow_max_range: false
-        allow_night: false
-        allow_day: true
-        allow_glowstone: false
         cooldown: 5000
         time: night
         cycle_moon_phase: true
@@ -5328,7 +5307,7 @@ superfly:
         cast:
         -  class: EffectSingle
            sound: enderdragon_wings
-        cost_free:
+        deactivate:
         -  class: EffectSingle
            sound: enderdragon_wings
            sound_pitch: 0.2
@@ -5644,9 +5623,11 @@ paint:
 torch:
     icon: torch
     category: engineering
-    class: TorchSpell
     worth: 80
     hidden: true
+    actions:
+        cast:
+        -  class: TorchAction
     effects:
         cast:
         -  class: EffectSingle
@@ -5656,9 +5637,7 @@ torch:
            material: glowstone
     parameters:
         allow_max_range: false
-        allow_night: false
         range: 32
-        allow_day: false
         allow_glowstone: true
     costs:
         mana: 15

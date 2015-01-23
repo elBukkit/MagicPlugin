@@ -62,7 +62,7 @@ public class AnimateSpell extends SimulateSpell
         if (!mage.isSuperPowered()) {
             Set<Material> restricted = controller.getMaterialSet("restricted");
             if (restricted.contains(targetMaterial.getMaterial())) {
-                return SpellResult.RESTRICTED;
+                return SpellResult.FAIL;
             }
 
             if (parameters.contains("restricted")) {
@@ -70,7 +70,7 @@ public class AnimateSpell extends SimulateSpell
                 if (customRestricted != null && customRestricted.length() > 0 && !customRestricted.equals("restricted")) {
                     restricted = controller.getMaterialSet(customRestricted);
                     if (restricted.contains(targetMaterial.getMaterial())) {
-                        return SpellResult.RESTRICTED;
+                        return SpellResult.FAIL;
                     }
                 }
             }

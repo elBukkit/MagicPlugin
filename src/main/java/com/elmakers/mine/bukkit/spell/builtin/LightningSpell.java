@@ -28,7 +28,7 @@ public class LightningSpell extends UndoableSpell
 
 		public SpellResult perform(ConfigurationSection parameters, Block block)
 		{
-			if (Math.random() > density) return SpellResult.COST_FREE;
+			if (Math.random() > density) return SpellResult.NO_ACTION;
 
 			super.perform(parameters, block);
 			World world = block.getWorld();

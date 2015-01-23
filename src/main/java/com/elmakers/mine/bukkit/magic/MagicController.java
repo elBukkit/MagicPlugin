@@ -3257,12 +3257,16 @@ public class MagicController implements Listener, MageController {
 	}
 	
 	public void onCast(Mage mage, com.elmakers.mine.bukkit.api.spell.Spell spell, SpellResult result) {
-		if (dynmapShowSpells && dynmap != null) {
+		if (dynmapShowSpells && dynmap != null && result.isSuccess()) {
             if (dynmapOnlyPlayerSpells && (mage == null || !mage.isPlayer())) {
                 return;
             }
 			dynmap.showCastMarker(mage, spell, result);
 		}
+
+        if (result.isSuccess() && getShowCastHoloText()) {
+            mage.showHoloText(mage.getEyeLocation(), spell.getName(), 10000);
+        }
 	}
 
     @Override

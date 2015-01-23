@@ -257,7 +257,7 @@ public class ThrustSpell extends TargetingSpell
         if (isActive())
         {
             deactivate();
-            return SpellResult.COST_FREE;
+            return SpellResult.DEACTIVATE;
         }
         activate();
 		return SpellResult.CAST;

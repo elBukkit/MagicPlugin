@@ -72,18 +72,13 @@ public class DynmapController {
 				marker.setFillStyle(0.5, mageColor.asRGB());
 				
 				// Create a targeting indicator line
-				Location target = null;
-				if (result != SpellResult.AREA) {
-					target = spell.getTargetLocation();
+				Location target = spell.getTargetLocation();
 					
-					if (target == null) {
-						target = location.clone();
-						Vector direction = location.getDirection();
-						direction.normalize().multiply(range);
-						target.add(direction);
-					}
-				} else {
-					target = location;
+				if (target == null) {
+					target = location.clone();
+					Vector direction = location.getDirection();
+					direction.normalize().multiply(range);
+					target.add(direction);
 				}
 							
 				PolyLineMarker targetMarker = spellSet.findPolyLineMarker(targetId);

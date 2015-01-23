@@ -466,12 +466,12 @@ public class LevitateSpell extends TargetingSpell implements Listener
 		if (isActive()) {
             if (castBoost != 0) {
                 boostTicksRemaining += boostTicks;
-                return SpellResult.AREA;
+                return SpellResult.ALTERNATE;
             } else if (mountEntity != null && thrust != null) {
-                return SpellResult.COST_FREE;
+                return SpellResult.NO_ACTION;
             }
             land();
-			return SpellResult.COST_FREE;
+			return SpellResult.DEACTIVATE;
 		}
 
         if (mountType != null) {

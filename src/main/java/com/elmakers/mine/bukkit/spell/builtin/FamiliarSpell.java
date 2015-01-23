@@ -125,7 +125,7 @@ public class FamiliarSpell extends UndoableSpell implements Listener
 			{
 				checkListener();
 				releaseFamiliar(target.getEntity());
-				return SpellResult.COST_FREE;
+				return SpellResult.DEACTIVATE;
 			}
 
 			releaseFamiliars();
