@@ -824,7 +824,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         Bukkit.getPluginManager().callEvent(preCast);
 
         if (preCast.isCancelled()) {
-            processResult(SpellResult.EVENT_CANCELLED);
+            processResult(SpellResult.CANCELLED);
             return false;
         }
 
@@ -870,33 +870,35 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         particle = parameters.getString("particle", null);
 
         long cooldownRemaining = getRemainingCooldown() / 1000;
+        String timeDescription = "";
         if (cooldownRemaining > 0) {
             if (cooldownRemaining > 60 * 60 ) {
                 long hours = cooldownRemaining / (60 * 60);
                 if (hours == 1) {
-                    sendMessage(controller.getMessages().get("cooldown.wait_hour"));
+                    timeDescription = controller.getMessages().get("cooldown.wait_hour");
                 } else {
-                    sendMessage(controller.getMessages().get("cooldown.wait_hours").replace("$hours", ((Long) hours).toString()));
+                    timeDescription = controller.getMessages().get("cooldown.wait_hours").replace("$hours", ((Long) hours).toString());
                 }
             } else if (cooldownRemaining > 60) {
                 long minutes = cooldownRemaining / 60;
                 if (minutes == 1) {
-                    sendMessage(controller.getMessages().get("cooldown.wait_minute"));
+                    timeDescription = controller.getMessages().get("cooldown.wait_minute");
                 } else {
-                    sendMessage(controller.getMessages().get("cooldown.wait_minutes").replace("$minutes", ((Long) minutes).toString()));
+                    timeDescription = controller.getMessages().get("cooldown.wait_minutes").replace("$minutes", ((Long) minutes).toString());
                 }
             } else if (cooldownRemaining > 1) {
-                sendMessage(controller.getMessages().get("cooldown.wait_seconds").replace("$seconds", ((Long)cooldownRemaining).toString()));
+                timeDescription = controller.getMessages().get("cooldown.wait_seconds").replace("$seconds", ((Long)cooldownRemaining).toString());
             } else {
-                sendMessage(controller.getMessages().get("cooldown.wait_moment"));
+                timeDescription = controller.getMessages().get("cooldown.wait_moment");
             }
+            sendMessage(getMessage("cooldown").replace("$time", timeDescription));
             processResult(SpellResult.COOLDOWN);
             return false;
         }
 
         com.elmakers.mine.bukkit.api.spell.CastingCost required = getRequiredCost();
         if (required != null) {
-            String baseMessage = controller.getMessages().get("costs.insufficient_resources");
+            String baseMessage = getMessage("insufficient_resources");
             String costDescription = required.getDescription(controller.getMessages(), mage);
             sendMessage(baseMessage.replace("$cost", costDescription));
             processResult(SpellResult.INSUFFICIENT_RESOURCES);
@@ -945,8 +947,9 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         }
         processResult(result);
 
+        boolean free = (castOnNoTarget && result == SpellResult.NO_TARGET) || result.isFree();
         boolean success = (castOnNoTarget && result == SpellResult.NO_TARGET) || result.isSuccess();
-        if (success) {
+        if (!free) {
             lastCast = System.currentTimeMillis();
             if (costs != null && !mage.isCostFree()) {
                 for (CastingCost cost : costs)
@@ -954,6 +957,8 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
                     cost.use(this);
                 }
             }
+        }
+        if (success) {
             castCount++;
             if (template != null) {
                 template.castCount++;
@@ -1004,8 +1009,15 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
 
         // Show messaging
         String resultName = result.name().toLowerCase();
-        if (result == SpellResult.CAST) {
-            String message = getMessage(resultName);
+        if (result.isSuccess()) {
+            String message = null;
+            if (result != SpellResult.CAST) {
+                message = getMessage("cast");
+            }
+            if (result.isAlternate() && result != SpellResult.ALTERNATE) {
+                message = getMessage("alternate", message);
+            }
+            message = getMessage(resultName, message);
             LivingEntity sourceEntity = mage.getLivingEntity();
             Entity targetEntity = getTargetEntity();
             if (targetEntity == sourceEntity) {
@@ -1025,8 +1037,16 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
                 message = getMessage("cast_entity", message);
             }
             castMessage(message);
-        } else {
-            sendMessage(getMessage(resultName));
+        } else
+        // Special cases where messaging is handled elsewhere
+        if (result != SpellResult.INSUFFICIENT_RESOURCES && result != SpellResult.COOLDOWN)
+        {
+            String message = null;
+            if (result.isFailure() && result != SpellResult.FAIL) {
+                message = getMessage("fail");
+            }
+
+            sendMessage(getMessage(resultName, message));
         }
 
         // Play effects
