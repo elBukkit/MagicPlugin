@@ -300,8 +300,17 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
         return result;
     }
 
-    @SuppressWarnings("deprecation")
     protected void playEffect(Location sourceLocation, Entity sourceEntity, Location targetLocation, Entity targetEntity) {
+        if (playAtOrigin) {
+            performEffect(sourceLocation, sourceEntity, targetLocation, targetEntity);
+        }
+        if (playAtTarget && targetLocation != null) {
+            performEffect(targetLocation, targetEntity, sourceLocation, sourceEntity);
+        }
+    }
+
+    @SuppressWarnings("deprecation")
+    private void performEffect(Location sourceLocation, Entity sourceEntity, Location targetLocation, Entity targetEntity) {
         if (offset != null) {
             if (sourceLocation != null) {
                 sourceLocation = sourceLocation.clone();

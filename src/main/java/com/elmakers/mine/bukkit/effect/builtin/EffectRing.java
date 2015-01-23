@@ -45,16 +45,14 @@ public class EffectRing extends EffectRepeating {
         for (int i = 0; i < size; i++) {
             double radians = (double)i / size * Math.PI * 2 + startRadians;
             Vector direction = new Vector(Math.cos(radians) * currentRadius, 0, Math.sin(radians) * currentRadius);
-            if (playAtOrigin) {
-                Location loc = origin.clone();
-                loc.add(direction);
-                playEffect(loc, getOriginEntity(), target, getTargetEntity());
+            Location source = origin.clone();
+            Location target = this.target;
+            source.add(direction);
+            if (target != null) {
+                target = target.clone();
+                target.add(direction);
             }
-            if (playAtTarget && target != null) {
-                Location loc = target.clone();
-                loc.add(direction);
-                playEffect(loc, getTargetEntity(), origin, getOriginEntity());
-            }
+            playEffect(source, getOriginEntity(), target, getTargetEntity());
         }
     }
 }

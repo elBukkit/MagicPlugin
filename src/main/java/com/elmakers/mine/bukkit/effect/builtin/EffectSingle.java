@@ -8,11 +8,6 @@ public class EffectSingle extends EffectPlayer {
     }
 
     public void play() {
-        if (playAtOrigin) {
-            playEffect(origin, getOriginEntity(), target, getTargetEntity());
-        }
-        if (playAtTarget && target != null) {
-            playEffect(target, getTargetEntity(), origin, getOriginEntity());
-        }
+        playEffect(origin, getOriginEntity(), target, getTargetEntity());
     }
 }
