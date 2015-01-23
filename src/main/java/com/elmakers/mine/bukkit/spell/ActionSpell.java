@@ -19,20 +19,20 @@ public class ActionSpell extends BrushSpell
         {
             registerForUndo();
         }
-        ActionHandler downHandler = actions.get("alt_down");
+        ActionHandler downHandler = actions.get("alternate_down");
         if (downHandler != null && isLookingDown())
         {
-            return downHandler.perform(parameters);
+            return SpellResult.ALTERNATE_DOWN.max(downHandler.perform(parameters));
         }
-        ActionHandler upHandler = actions.get("alt_up");
+        ActionHandler upHandler = actions.get("alternate_up");
         if (upHandler != null && isLookingUp())
         {
-            return upHandler.perform(parameters);
+            return SpellResult.ALTERNATE_UP.max(upHandler.perform(parameters));
         }
-        ActionHandler sneakHandler = actions.get("alt_sneak");
+        ActionHandler sneakHandler = actions.get("alternate_sneak");
         if (sneakHandler != null && mage.isSneaking())
         {
-            return sneakHandler.perform(parameters);
+            return SpellResult.ALTERNATE_SNEAK.max(sneakHandler.perform(parameters));
         }
 
         ActionHandler castHandler = actions.get("cast");

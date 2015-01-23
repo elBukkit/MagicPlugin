@@ -215,9 +215,9 @@ public class ActionHandler
             }
         }
 
-        if (targetEntities.size() == 0)
+        if (targetEntities.size() == 0 && entityActions.size() > 0)
         {
-            result = SpellResult.NO_TARGET;
+            result = SpellResult.NO_TARGET.min(result);
         }
 
         for (Entity entity : targetEntities)
