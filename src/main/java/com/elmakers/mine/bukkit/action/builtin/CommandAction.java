@@ -77,6 +77,7 @@ public class CommandAction extends BaseSpellAction implements EntityAction, Gene
 
     @Override
     public void prepare(ConfigurationSection parameters) {
+        super.prepare(parameters);
         commands = new ArrayList<String>();
         entityCommands = new ArrayList<String>();
         blockCommands = new ArrayList<String>();

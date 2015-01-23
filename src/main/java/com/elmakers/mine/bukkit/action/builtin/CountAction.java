@@ -37,6 +37,7 @@ public class CountAction extends BaseSpellAction implements EntityAction
 
 	@Override
 	public void finish(ConfigurationSection parameters) {
+		super.finish(parameters);
 		CommandSender sender = getMage().getCommandSender();
 		if (sender != null)
 		{
@@ -53,6 +54,7 @@ public class CountAction extends BaseSpellAction implements EntityAction
 
 	@Override
 	public void prepare(ConfigurationSection parameters) {
+		super.prepare(parameters);
 		totalCount = 0;
 		counts.clear();
 	}
