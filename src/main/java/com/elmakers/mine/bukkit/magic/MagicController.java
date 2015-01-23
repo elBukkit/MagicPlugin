@@ -23,6 +23,7 @@ import com.elmakers.mine.bukkit.protection.MultiverseManager;
 import com.elmakers.mine.bukkit.protection.PreciousStonesManager;
 import com.elmakers.mine.bukkit.protection.PvPManagerManager;
 import com.elmakers.mine.bukkit.protection.TownyManager;
+import com.elmakers.mine.bukkit.spell.ActionHandler;
 import com.elmakers.mine.bukkit.utility.*;
 import com.elmakers.mine.bukkit.wand.*;
 import com.elmakers.mine.bukkit.wand.LostWand;
@@ -1922,6 +1923,39 @@ public class MagicController implements Listener, MageController {
                     }
                 }
             }
+        }
+    }
+
+    @EventHandler
+    public void onProjectileHit(ProjectileHitEvent event) {
+        Projectile projectile = event.getEntity();
+        if (projectile.hasMetadata("spell"))
+        {
+            for (MetadataValue metadata : projectile.getMetadata("spell"))
+            {
+                Object value = metadata.value();
+                if (value instanceof MageSpell)
+                {
+                    MageSpell spell = (MageSpell) value;
+                    spell.playEffects("hit", 1, projectile.getLocation(), projectile, spell.getTargetLocation(), spell.getTargetEntity());
+                }
+                break;
+            }
+            projectile.removeMetadata("spell", getPlugin());
+        }
+        if (projectile.hasMetadata("actions"))
+        {
+            for (MetadataValue metadata : projectile.getMetadata("spell"))
+            {
+                Object value = metadata.value();
+                if (value instanceof ActionHandler)
+                {
+                    ActionHandler actions = (ActionHandler)value;
+                    actions.perform(projectile.getLocation());
+                }
+                break;
+            }
+            projectile.removeMetadata("actions", getPlugin());
         }
     }
 

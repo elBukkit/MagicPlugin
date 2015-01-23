@@ -29,13 +29,6 @@ public class CountAction extends BaseSpellAction implements EntityAction
 	}
 
 	@Override
-	public boolean isUndoable()
-	{
-		return true;
-	}
-
-
-	@Override
 	public void finish(ConfigurationSection parameters) {
 		super.finish(parameters);
 		CommandSender sender = getMage().getCommandSender();

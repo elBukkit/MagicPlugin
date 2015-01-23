@@ -413,14 +413,15 @@ arrow:
            sound_volume: 1
            location: origin
         -  class: EffectSingle
-           location: target
+           location: origin
            effectlib:
              class: ConeEffect
              iterations: 8
              lengthGrow: 1
              particle: smoke_normal
+        hit:
         -  class: EffectSingle
-           location: target
+           location: origin
            color: CC9933
            firework: ball
         projectile:

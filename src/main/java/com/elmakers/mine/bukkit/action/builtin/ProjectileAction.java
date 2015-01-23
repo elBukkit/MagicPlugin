@@ -17,6 +17,8 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Fireball;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Projectile;
+import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.metadata.MetadataValue;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 
@@ -90,7 +92,7 @@ public class ProjectileAction  extends BaseSpellAction implements GeneralAction
 	{
 		checkReflection();
 		int count = parameters.getInt("count", 1);
-		int checkFrequency = parameters.getInt("check_frequency", 20);
+		int checkFrequency = parameters.getInt("check_frequency", 40);
 		int size = parameters.getInt("size", defaultSize);
 		double damage = parameters.getDouble("damage", 0);
 		float speed = (float)parameters.getDouble("speed", 0.6f);
@@ -100,6 +102,10 @@ public class ProjectileAction  extends BaseSpellAction implements GeneralAction
 		Mage mage = getMage();
 		MageController controller = getController();
 		actions = getActions("projectile");
+
+		if (actions != null) {
+			actions.setParameters(parameters);
+		}
 
 		// Modify with wand power
 		// Turned some of this off for now
@@ -242,6 +248,17 @@ public class ProjectileAction  extends BaseSpellAction implements GeneralAction
 								damageField.setAccessible(true);
 								damageField.set(handle, damage);
 							}
+
+							if (lifeField != null) {
+								try {
+									int currentLife = (Integer) lifeField.get(handle);
+									if (currentLife < tickIncrease) {
+										lifeField.set(handle, tickIncrease);
+									}
+								} catch (Exception ex) {
+									ex.printStackTrace();
+								}
+							}
 						}
 					} catch (Throwable ex) {
 						ex.printStackTrace();
@@ -257,7 +274,7 @@ public class ProjectileAction  extends BaseSpellAction implements GeneralAction
 			}
 		}
 		if (projectiles.size() > 0) {
-			scheduleProjectileCheck(projectiles, parameters, tickIncrease, actions, checkFrequency, 5);
+			registerProjectiles(projectiles, actions, checkFrequency, 4);
 		}
 
 		return SpellResult.CAST;
@@ -267,20 +284,34 @@ public class ProjectileAction  extends BaseSpellAction implements GeneralAction
 	public boolean isUndoable() {
 		return true;
 	}
-	
-	protected void scheduleProjectileCheck(final Collection<Projectile> projectiles,
-		    final ConfigurationSection parameters, final int tickIncrease,
+
+	protected void registerProjectiles(final Collection<Projectile> projectiles,
 			final ActionHandler actions, final int checkFrequency, final int retries) {
+
+		for (Projectile projectile : projectiles)
+		{
+			if (actions != null)
+			{
+				projectile.setMetadata("actions", new FixedMetadataValue(getController().getPlugin(), actions));
+			}
+			projectile.setMetadata("spell", new FixedMetadataValue(getController().getPlugin(), getSpell()));
+
+		}
+		scheduleProjectileCheck(projectiles, checkFrequency, retries);
+	}
+
+	protected void scheduleProjectileCheck(final Collection<Projectile> projectiles,
+										   final int checkFrequency, final int retries) {
+
 		Bukkit.getScheduler().scheduleSyncDelayedTask(getController().getPlugin(), new Runnable() {
 			public void run() {
-				checkProjectiles(projectiles, parameters, tickIncrease, actions, checkFrequency, retries);
+				checkProjectiles(projectiles, checkFrequency, retries);
 			}
 		}, checkFrequency);
 	}
 
 	protected void checkProjectiles(final Collection<Projectile> projectiles,
-			final ConfigurationSection parameters, final int tickIncrease,
-			final ActionHandler actions, int checkFrequency, int retries) {
+			int checkFrequency, int retries) {
 
 		final Collection<Projectile> remaining = new ArrayList<Projectile>();
 		for (Projectile projectile : projectiles)
@@ -289,29 +320,30 @@ public class ProjectileAction  extends BaseSpellAction implements GeneralAction
 			{
 				projectile.remove();
 			}
-			if (projectile.isDead())
+			if (projectile.isDead() && projectile.hasMetadata("actions"))
 			{
-				if (actions != null)
+				ActionHandler actions = null;
+				for (MetadataValue metadata : projectile.getMetadata("actions"))
 				{
-					actions.perform(parameters, projectile.getLocation());
-				}
-			} else  {
-				remaining.add(projectile);
-				if (projectile instanceof Arrow && tickIncrease > 0 && lifeField != null && getHandleMethod != null) {
-					try {
-						Object handle = getHandleMethod.invoke(projectile);
-						int currentLife = (Integer)lifeField.get(handle);
-						if (currentLife < tickIncrease) {
-							lifeField.set(handle, tickIncrease);
-						}
-					} catch(Exception ex) {
-						ex.printStackTrace();
+					Object meta = metadata.value();
+					if (meta instanceof ActionHandler)
+					{
+						actions = (ActionHandler)meta;
+						break;
 					}
 				}
+				if (actions != null)
+				{
+					actions.perform(projectile.getLocation());
+				}
+				projectile.removeMetadata("actions", getController().getPlugin());
+			} else  {
+				remaining.add(projectile);
 			}
 		}
-		if (remaining.size() > 0 && retries > 0) {
-			scheduleProjectileCheck(remaining, parameters, tickIncrease, actions, checkFrequency, retries - 1);
+		if (remaining.size() > 0 && retries > 0)
+		{
+			scheduleProjectileCheck(remaining, checkFrequency, retries - 1);
 		}
 	}
 
