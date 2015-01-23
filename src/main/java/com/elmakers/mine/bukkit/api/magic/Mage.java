@@ -362,4 +362,6 @@ public interface Mage extends CostReducer {
     public UndoList getLastUndoList();
     public boolean isStealth();
     public boolean isSneaking();
+
+    public void showHoloText(Location location, String text, int duration);
 }
