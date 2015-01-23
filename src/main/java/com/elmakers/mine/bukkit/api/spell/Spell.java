@@ -33,4 +33,5 @@ public interface Spell extends SpellTemplate {
     public boolean canCast(Location location);
     public long getRemainingCooldown();
     public CastingCost getRequiredCost();
+    public void playEffects(String effectName, float scale, Location source, Entity sourceEntity, Location target, Entity targetEntity);
 }
