@@ -36,9 +36,15 @@ public class ActionHandler
     private boolean undoable = false;
     private boolean usesBrush = false;
 
+    private ConfigurationSection parameters = null;
+
     public ActionHandler(Spell spell)
     {
         this.spell = spell;
+    }
+
+    public void setParameters(ConfigurationSection parameters) {
+        this.parameters = parameters;
     }
 
     public void load(ConfigurationSection root, String key)
@@ -100,6 +106,11 @@ public class ActionHandler
         }
     }
 
+    public SpellResult perform(Location targetLocation)
+    {
+        return perform(null, targetLocation);
+    }
+
     public SpellResult perform(ConfigurationSection parameters)
     {
         return perform(parameters, null);
@@ -108,6 +119,9 @@ public class ActionHandler
     public SpellResult perform(ConfigurationSection parameters, Location targetLocation)
     {
         SpellResult result = SpellResult.NO_ACTION;
+        if (this.parameters != null) {
+            parameters = ConfigurationUtils.addConfigurations(this.parameters, parameters, true);
+        }
 
         for (SpellAction action : allActions)
         {

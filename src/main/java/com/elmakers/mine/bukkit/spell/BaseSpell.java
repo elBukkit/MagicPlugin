@@ -1053,12 +1053,18 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         playEffects(resultName);
     }
 
-    public void playEffects(String effectName, float scale)
+    public void playEffects(String effectName, float scale) {
+        playEffects(effectName, scale, getEffectLocation(), mage.getEntity(), getTargetLocation(), getTargetEntity());
+    }
+
+    public void playEffects(String effectName)
     {
-        Location mageLocation = getEffectLocation();
-        if (effects.containsKey(effectName) && mageLocation != null) {
-            Location targetLocation = getTargetLocation();
-            Entity targetEntity = getTargetEntity();
+        playEffects(effectName, 1);
+    }
+
+    @Override
+    public void playEffects(String effectName, float scale, Location source, Entity sourceEntity, Location targetLocation, Entity targetEntity) {
+        if (effects.containsKey(effectName) && source != null) {
             cancelEffects();
             currentEffects = effects.get(effectName);
             for (EffectPlayer player : currentEffects) {
@@ -1071,15 +1077,9 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
                 String overrideParticle = particle != null ? particle : mage.getEffectParticleName();
                 player.setParticleOverride(overrideParticle);
 
-                Entity entity = mage.getEntity();
-                player.start(mageLocation, entity, targetLocation, targetEntity);
+                player.start(source, sourceEntity, targetLocation, targetEntity);
             }
         }
-    }
-
-    public void playEffects(String effectName)
-    {
-        playEffects(effectName, 1);
     }
 
     @Override
