@@ -3377,11 +3377,10 @@ phoenixcrymaxima:
            sound: enderdragon_growl
         -  class: EffectTrail
            particle: spell
-        -  class: EffectRing
-           location: target
+        -  class: EffectSingle
+           location: targets
            firework: star
-           radius: 15
-           target_offset: 0,13,0
+           target_offset: 0,4,0
         -  class: EffectSingle
            location: target
            effectLib:
