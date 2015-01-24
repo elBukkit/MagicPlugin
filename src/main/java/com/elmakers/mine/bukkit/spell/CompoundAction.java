@@ -23,7 +23,7 @@ public abstract class CompoundAction extends BaseSpellAction
 
 		usesBrush = false;
 		undoable = false;
-		if (template.contains("actions"))
+		if (template != null && template.contains("actions"))
 		{
 			actions = new ActionHandler(getSpell());
 			actions.load(template, "actions");
