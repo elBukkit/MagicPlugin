@@ -3521,6 +3521,7 @@ cage:
         transparent: transparent_to_construction
     costs:
         mana: 50
+
 wolfhouse:
     icon: sapling:5
     category: master
@@ -3543,7 +3544,7 @@ wolfhouse:
         cooldown: 20000
         brush: schematic|wolfhouse
         obx: -3
-        oby: -22 
+        oby: -22
         obz: 10
         otx: 1
         oty: 1

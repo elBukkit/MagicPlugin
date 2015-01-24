@@ -3352,7 +3352,6 @@ maydaymaxima:
     costs:
         mana: 100
 
-
 phoenixcrymaxima:
     name: Phoenix Cry Maxima
     description: CA CAWW CAWWWW!
@@ -3361,7 +3360,9 @@ phoenixcrymaxima:
     worth: 20
     actions:
         cast:
-        - class: PotionEffectAction
+        -  class: AreaOfEffectAction
+           actions:
+           -  class: PotionEffectAction
     effects:
         cast:
         -  class: EffectSingle
@@ -3379,12 +3380,11 @@ phoenixcrymaxima:
              class: TraceEffect
              particle: redstone
     parameters:
-        target: any
-        allow_max_range: false
-        range: 16
+        target: other
+        allow_max_range: true
+        range: 32
+        radius: 16
         target_type: Player
-        target_radius: 16
-        target_count: 32
         target_self: true
         cooldown: 60000
         transparent: apparate
@@ -4262,8 +4262,10 @@ silenciototalus:
     worth: 500
     actions:
         cast:
-        -  class: CommandAction
-        -  class: DamageAction
+        -  class: AllEntitiesAction
+           actions:
+           -  class: CommandAction
+           -  class: KillAction
     effects:
         cast:
         -  class: EffectSingle
@@ -4281,13 +4283,11 @@ silenciototalus:
         - mute @tn 60
         - say §dSILENCIO TOTALUS!
         target: none
-        target_all: true
         target_all_worlds: true
         target_type: Player
-        target_self: true
+        target_self: false
         bypass_backfire: true
         check_protection: true
-        damage: 100
 
 amplify:
     icon: ink_sack:3
@@ -6753,7 +6753,9 @@ count:
     hidden: true
     actions:
         cast:
-        -  class: CountAction
+        -  class: AreaOfEffectAction
+           actions:
+           -  class: CountAction
     effects:
         cast:
         -  class: EffectSingle
@@ -6763,9 +6765,11 @@ count:
              iterations: 1
              particle: flame
     parameters:
-        target: self
+        target: block
+        range: 64
         target_type: Entity
-        target_radius: 64
+        target_self: false
+        radius: 64
         target_count: 100000
     costs:
         mana: 200
