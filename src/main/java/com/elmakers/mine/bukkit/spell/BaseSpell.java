@@ -1063,21 +1063,41 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     }
 
     @Override
-    public void playEffects(String effectName, float scale, Location source, Entity sourceEntity, Location targetLocation, Entity targetEntity) {
-        if (effects.containsKey(effectName) && source != null) {
+    public void playEffects(String effectName, float scale, Location source, Entity sourceEntity, Location targetLocation, Entity targetEntity)
+    {
+        if (effects.containsKey(effectName) && source != null)
+        {
             cancelEffects();
             currentEffects = effects.get(effectName);
-            for (EffectPlayer player : currentEffects) {
-                // Set scale
-                player.setScale(scale);
+            Collection<Entity> targeted = getTargetEntities();
+            if (targeted == null || targeted.size() == 0)
+            {
+                targeted = new ArrayList<Entity>();
+                targeted.add(targetEntity);
+            }
 
-                // Set material and color
-                player.setMaterial(getEffectMaterial());
-                player.setColor(mage.getEffectColor());
-                String overrideParticle = particle != null ? particle : mage.getEffectParticleName();
-                player.setParticleOverride(overrideParticle);
+            for (EffectPlayer player : currentEffects)
+            {
+                for (Entity entity : targeted)
+                {
+                    boolean isCurrentEntity = (entity == targetEntity);
+                    if (!player.shouldPlayAtAllTargets() && !isCurrentEntity)
+                    {
+                        continue;
+                    }
+                    Location entityLocation = isCurrentEntity || entity == null ? targetLocation : entity.getLocation();
 
-                player.start(source, sourceEntity, targetLocation, targetEntity);
+                    // Set scale
+                    player.setScale(scale);
+
+                    // Set material and color
+                    player.setMaterial(getEffectMaterial());
+                    player.setColor(mage.getEffectColor());
+                    String overrideParticle = particle != null ? particle : mage.getEffectParticleName();
+                    player.setParticleOverride(overrideParticle);
+
+                    player.start(source, sourceEntity, entityLocation, entity);
+                }
             }
         }
     }
@@ -1099,6 +1119,10 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
 
     @Override
     public Entity getTargetEntity() {
+        return null;
+    }
+
+    public Collection<Entity> getTargetEntities() {
         return null;
     }
 

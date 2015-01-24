@@ -38,6 +38,9 @@ public abstract class CompoundAction extends BaseSpellAction
 			return SpellResult.FAIL;
 		}
 
+		for (Entity entity : targetEntities) {
+			addTargetEntity(entity);
+		}
 		return actions.perform(parameters, targetLocation, targetEntities);
 	}
 

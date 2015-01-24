@@ -69,6 +69,8 @@ public abstract class TargetingSpell extends BaseSpell {
     private	Block								previousBlock = null;
     private	Block								previousPreviousBlock = null;
 
+    private Collection<Entity>                  targetedEntities = new HashSet<Entity>();
+
     @Override
     protected void preCast()
     {
@@ -264,7 +266,15 @@ public abstract class TargetingSpell extends BaseSpell {
     @Override
     public void target()
     {
-        getTarget();
+        if (target == null)
+        {
+            getTarget();
+            Entity targetEntity = target != null ? target.getEntity() : null;
+            if (targetEntity != null)
+            {
+                targetedEntities.add(targetEntity);
+            }
+        }
     }
 
     protected Target getTarget()
@@ -432,6 +442,7 @@ public abstract class TargetingSpell extends BaseSpell {
         targets = null;
         targetName = null;
         targetLocation = null;
+        targetedEntities.clear();
     }
 
     public Block getTargetBlock()
@@ -836,5 +847,15 @@ public abstract class TargetingSpell extends BaseSpell {
 
     public Class<? extends Entity> getTargetEntityType() {
         return targetEntityType;
+    }
+
+    protected void addTargetEntity(Entity entity)
+    {
+        targetedEntities.add(entity);
+    }
+
+    public Collection<Entity> getTargetEntities()
+    {
+        return targetedEntities;
     }
 }

@@ -246,4 +246,12 @@ public abstract class BaseSpellAction implements SpellAction
     public String getMessage(String key, String def) {
         return baseSpell != null ? baseSpell.getMessage(key, def) : def;
     }
+
+    public void addTargetEntity(Entity entity)
+    {
+        if (targetingSpell != null)
+        {
+            targetingSpell.addTargetEntity(entity);
+        }
+    }
 }

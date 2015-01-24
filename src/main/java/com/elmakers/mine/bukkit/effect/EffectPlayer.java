@@ -57,6 +57,7 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
     // These are ignored by the Trail type, need multi-inheritance :\
     protected boolean playAtOrigin = true;
     protected boolean playAtTarget = false;
+    protected boolean playAtAllTargets = false;
 
     protected Color color = null;
     protected MaterialAndData material;
@@ -218,12 +219,19 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
         if (locationType.equals("target")) {
             playAtOrigin = false;
             playAtTarget = true;
+            playAtAllTargets = false;
         } else if (locationType.equals("origin")) {
             playAtTarget = false;
             playAtOrigin = true;
+            playAtAllTargets = false;
         } else if (locationType.equals("both")) {
             playAtTarget = true;
             playAtOrigin = true;
+            playAtAllTargets = false;
+        } else if (locationType.equals("targets")) {
+            playAtTarget = true;
+            playAtOrigin = false;
+            playAtAllTargets = true;
         }
     }
 
@@ -553,5 +561,10 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
         }
 
         return players;
+    }
+
+    public boolean shouldPlayAtAllTargets()
+    {
+        return playAtAllTargets;
     }
 }
