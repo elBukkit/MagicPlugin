@@ -479,15 +479,22 @@ snowball:
     worth: 5
     actions:
         cast:
-        - class: ProjectileAction
+        -  class: ProjectileAction
         projectile:
-        - class: PotionEffectAction
-        - class: DamageAction
+        -  class: AreaOfEffectAction
+           actions:
+           - class: PotionEffectAction
+           - class: DamageAction
     effects:
         cast:
         -  class: EffectSingle
            sound: step_snow
            location: origin
+        hit:
+        -  class: EffectSingle
+           location: origin
+           color: DDDDDD
+           firework: ball
         projectile:
         -  class: EffectSingle
            location: origin
@@ -498,7 +505,7 @@ snowball:
     parameters:
       projectile: Snowball
       origin_at_target: true
-      oty: 8
+      oty: 5
       otdx: 0
       otdy: -1
       otdz: 0
@@ -508,6 +515,7 @@ snowball:
       allow_max_range: true
       spread: 20
       effect_slow: 120,1
+      target_self: true
       damage: 1
     costs:
         mana: 80

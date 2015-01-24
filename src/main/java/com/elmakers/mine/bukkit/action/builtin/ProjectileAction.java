@@ -334,7 +334,7 @@ public class ProjectileAction  extends BaseSpellAction implements GeneralAction
 				}
 				if (actions != null)
 				{
-					actions.perform(projectile.getLocation());
+					actions.perform(projectile.getLocation(), projectile, projectile.getLocation(), null);
 				}
 				projectile.removeMetadata("actions", getController().getPlugin());
 			} else  {

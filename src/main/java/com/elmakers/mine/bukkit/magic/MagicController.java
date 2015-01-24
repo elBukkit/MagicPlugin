@@ -1928,7 +1928,7 @@ public class MagicController implements Listener, MageController {
 
     @EventHandler
     public void onProjectileHit(ProjectileHitEvent event) {
-        Projectile projectile = event.getEntity();
+        final Projectile projectile = event.getEntity();
         if (projectile.hasMetadata("spell"))
         {
             for (MetadataValue metadata : projectile.getMetadata("spell"))
@@ -1945,17 +1945,22 @@ public class MagicController implements Listener, MageController {
         }
         if (projectile.hasMetadata("actions"))
         {
-            for (MetadataValue metadata : projectile.getMetadata("spell"))
-            {
-                Object value = metadata.value();
-                if (value instanceof ActionHandler)
-                {
-                    ActionHandler actions = (ActionHandler)value;
-                    actions.perform(projectile.getLocation());
+            Bukkit.getScheduler().scheduleSyncDelayedTask(getPlugin(), new Runnable() {
+                @Override
+                public void run() {
+                    if (projectile.hasMetadata("actions")) {
+                        for (MetadataValue metadata : projectile.getMetadata("actions")) {
+                            Object value = metadata.value();
+                            if (value instanceof ActionHandler) {
+                                ActionHandler actions = (ActionHandler) value;
+                                actions.perform(projectile.getLocation(), projectile, projectile.getLocation(), null);
+                            }
+                            break;
+                        }
+                        projectile.removeMetadata("actions", getPlugin());
+                    }
                 }
-                break;
-            }
-            projectile.removeMetadata("actions", getPlugin());
+            }, 1L);
         }
     }
 
@@ -2061,6 +2066,20 @@ public class MagicController implements Listener, MageController {
                 frame.setItem(null);
             }
 		}
+
+        if (damager.hasMetadata("actions"))
+        {
+            for (MetadataValue metadata : damager.getMetadata("actions")) {
+                Object value = metadata.value();
+                if (value instanceof ActionHandler) {
+                    ActionHandler actions = (ActionHandler) value;
+                    actions.perform(damager.getLocation(), damager, entity.getLocation(), entity);
+                }
+                break;
+            }
+            damager.removeMetadata("actions", getPlugin());
+        }
+
         if (preventMeleeDamage && event.getCause() == EntityDamageEvent.DamageCause.ENTITY_ATTACK && damager instanceof Player )
         {
             Player player = (Player)damager;
