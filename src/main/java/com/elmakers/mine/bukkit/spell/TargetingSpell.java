@@ -71,13 +71,6 @@ public abstract class TargetingSpell extends BaseSpell {
 
     private Collection<Entity>                  targetedEntities = new HashSet<Entity>();
 
-    @Override
-    protected void preCast()
-    {
-        super.preCast();
-        initializeTargeting();
-    }
-
     protected void initializeTargeting()
     {
         clearTarget();
@@ -686,8 +679,7 @@ public abstract class TargetingSpell extends BaseSpell {
     protected void reset()
     {
         super.reset();
-
-        this.clearTarget();
+        this.initializeTargeting();
     }
 
     @SuppressWarnings("unchecked")

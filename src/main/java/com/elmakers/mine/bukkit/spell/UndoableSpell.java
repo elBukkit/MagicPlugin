@@ -58,9 +58,9 @@ public abstract class UndoableSpell extends TargetingSpell {
     }
 
     @Override
-    protected void preCast()
+    protected void reset()
     {
-        super.preCast();
+        super.reset();
         modifiedBlocks = null;
     }
 
