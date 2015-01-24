@@ -100,16 +100,22 @@ public class CommandAction extends BaseSpellAction implements EntityAction, Gene
         Location location = getLocation();
         Mage mage = getMage();
 
-        return command
+        command = command
                 .replace("@_", " ")
                 .replace("@spell", getSpell().getName())
                 .replace("@pd", mage.getDisplayName())
                 .replace("@pn", mage.getName())
-                .replace("@uuid", mage.getId())
+                .replace("@uuid", mage.getId());
+
+        if (location != null) {
+            command = command
                 .replace("@world", location.getWorld().getName())
                 .replace("@x", Double.toString(location.getX()))
                 .replace("@y", Double.toString(location.getY()))
                 .replace("@z", Double.toString(location.getZ()));
+        }
+
+        return command;
     }
 
     protected String parameterize(String command, Location targetLocation) {
