@@ -4,6 +4,7 @@ import com.elmakers.mine.bukkit.api.action.GeneralAction;
 import com.elmakers.mine.bukkit.api.effect.EffectPlayer;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
+import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.ActionHandler;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
@@ -38,6 +39,7 @@ public class ProjectileAction  extends BaseSpellAction implements GeneralAction
 	private static Field lifeField = null;
 	private static Method getHandleMethod = null;
 	private static boolean reflectionInitialized = false;
+	ActionHandler actions = null;
 
 	private static Class<?> projectileClass;
 	private static Class<?> fireballClass;
@@ -88,6 +90,18 @@ public class ProjectileAction  extends BaseSpellAction implements GeneralAction
 	}
 
 	@Override
+	public void load(Spell spell, ConfigurationSection template)
+	{
+		super.load(spell, template);
+
+		if (template != null && template.contains("actions"))
+		{
+			actions = new ActionHandler(getSpell());
+			actions.load(template, "actions");
+		}
+	}
+
+	@Override
 	public SpellResult perform(ConfigurationSection parameters)
 	{
 		checkReflection();
@@ -97,11 +111,9 @@ public class ProjectileAction  extends BaseSpellAction implements GeneralAction
 		double damage = parameters.getDouble("damage", 0);
 		float speed = (float)parameters.getDouble("speed", 0.6f);
 		float spread = (float)parameters.getDouble("spread", 12);
-		ActionHandler actions = null;
 
 		Mage mage = getMage();
 		MageController controller = getController();
-		actions = getActions("projectile");
 
 		if (actions != null) {
 			actions.setParameters(parameters);

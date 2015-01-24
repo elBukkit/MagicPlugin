@@ -480,11 +480,11 @@ snowball:
     actions:
         cast:
         -  class: ProjectileAction
-        projectile:
-        -  class: AreaOfEffectAction
            actions:
-           - class: PotionEffectAction
-           - class: DamageAction
+           -  class: AreaOfEffectAction
+              actions:
+              -  class: PotionEffectAction
+              -  class: DamageAction
     effects:
         cast:
         -  class: EffectSingle

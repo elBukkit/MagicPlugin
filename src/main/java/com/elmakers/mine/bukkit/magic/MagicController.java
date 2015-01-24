@@ -2054,14 +2054,17 @@ public class MagicController implements Listener, MageController {
 	public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
 		if (event.isCancelled()) return;
 		Entity entity = event.getEntity();
+
 		if (entity instanceof Projectile || entity instanceof TNTPrimed) return;
 
 		Entity damager = event.getDamager();
 		UndoList undoList = getEntityUndo(damager);
-		if (undoList != null) {
+		if (undoList != null)
+        {
             // Prevent dropping items from frames,
             undoList.modify(entity);
-            if (entity instanceof ItemFrame && event.getCause() != EntityDamageEvent.DamageCause.ENTITY_ATTACK) {
+            if (entity instanceof ItemFrame && event.getCause() != EntityDamageEvent.DamageCause.ENTITY_ATTACK)
+            {
                 ItemFrame frame = (ItemFrame)entity;
                 frame.setItem(null);
             }
@@ -2069,9 +2072,11 @@ public class MagicController implements Listener, MageController {
 
         if (damager.hasMetadata("actions"))
         {
-            for (MetadataValue metadata : damager.getMetadata("actions")) {
+            for (MetadataValue metadata : damager.getMetadata("actions"))
+            {
                 Object value = metadata.value();
-                if (value instanceof ActionHandler) {
+                if (value instanceof ActionHandler)
+                {
                     ActionHandler actions = (ActionHandler) value;
                     actions.perform(damager.getLocation(), damager, entity.getLocation(), entity);
                 }
