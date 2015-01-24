@@ -833,4 +833,8 @@ public abstract class TargetingSpell extends BaseSpell {
         }
         return super.getEffectMaterial();
     }
+
+    public Class<? extends Entity> getTargetEntityType() {
+        return targetEntityType;
+    }
 }

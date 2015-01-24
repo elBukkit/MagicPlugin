@@ -8,12 +8,9 @@ import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.spell.MageSpell;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
-import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.Target;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.entity.Entity;
@@ -52,6 +49,7 @@ public class ActionHandler
         undoable = false;
         usesBrush = false;
         Collection<ConfigurationSection> actionNodes = ConfigurationUtils.getNodeList(root, key);
+
         if (actionNodes != null)
         {
             for (ConfigurationSection actionConfiguration : actionNodes)
@@ -106,20 +104,72 @@ public class ActionHandler
         }
     }
 
-    public SpellResult perform(Location targetLocation)
-    {
-        return perform(null, targetLocation);
-    }
-
     public SpellResult perform(ConfigurationSection parameters)
     {
-        return perform(parameters, null);
+        spell.target();
+        Location targetLocation = spell.getTargetLocation();
+        List<Entity> targetEntities = new ArrayList<Entity>();
+
+        Entity targetedEntity = spell.getTargetEntity();
+        int targetCount = parameters.getInt("target_count", 1);
+        if (targetedEntity != null && targetCount != 0)
+        {
+            targetEntities.add(targetedEntity);
+        }
+        if (targetCount != 1 && spell instanceof TargetingSpell)
+        {
+            List<Target> entities = ((TargetingSpell)spell).getAllTargetEntities();
+            if (targetCount < 0) {
+                targetCount = entities.size();
+            }
+            // The first entry is the one we already added above, the primary target
+            for (int i = 1; i < targetCount && i < entities.size(); i++)
+            {
+                targetEntities.add(entities.get(i).getEntity());
+            }
+        }
+        return perform(parameters, targetLocation, targetEntities);
     }
 
-    public SpellResult perform(ConfigurationSection parameters, Location targetLocation)
+    public SpellResult perform(ConfigurationSection parameters, Location targetLocation, Collection<Entity> targetEntities)
+    {
+        Entity sourceEntity = null;
+        Location sourceLocation = spell.getLocation();
+        if (spell instanceof MageSpell)
+        {
+            Mage mage = ((MageSpell)spell).getMage();
+            sourceEntity = mage.getEntity();
+        }
+
+        return perform(parameters, sourceLocation, sourceEntity, targetLocation, targetEntities);
+    }
+
+    public SpellResult perform(Location targetLocation, Entity targetEntity)
+    {
+        Entity sourceEntity = null;
+        Location sourceLocation = spell.getLocation();
+        if (spell instanceof MageSpell)
+        {
+            Mage mage = ((MageSpell)spell).getMage();
+            sourceEntity = mage.getEntity();
+        }
+        List<Entity> targetEntities = new ArrayList<Entity>();
+        targetEntities.add(targetEntity);
+        return perform(null, sourceLocation, sourceEntity, targetLocation, targetEntities);
+    }
+
+    public SpellResult perform(Location sourceLocation, Entity sourceEntity, Location targetLocation, Entity targetEntity)
+    {
+        List<Entity> targetEntities = new ArrayList<Entity>();
+        targetEntities.add(targetEntity);
+        return perform(null, sourceLocation, sourceEntity, targetLocation, targetEntities);
+    }
+
+   public SpellResult perform(ConfigurationSection parameters, Location sourceLocation, Entity sourceEntity, Location targetLocation, Collection<Entity> targetEntities)
     {
         SpellResult result = SpellResult.NO_ACTION;
-        if (this.parameters != null) {
+        if (this.parameters != null)
+        {
             parameters = ConfigurationUtils.addConfigurations(this.parameters, parameters, true);
         }
 
@@ -134,98 +184,12 @@ public class ActionHandler
             result = result.min(actionResult);
         }
 
-        spell.target();
-        if (targetLocation == null)
-        {
-            targetLocation = spell.getTargetLocation();
-        }
-
         if (targetLocation != null)
         {
             for (BlockAction action : blockActions)
             {
                 SpellResult actionResult = action.perform(action.getParameters(parameters), targetLocation.getBlock());
                 result = result.min(actionResult);
-            }
-        }
-
-        List<Entity> targetEntities = new ArrayList<Entity>();
-        Entity targetedEntity = spell.getTargetEntity();
-        if (targetedEntity != null)
-        {
-            targetEntities.add(targetedEntity);
-        }
-
-        int radius = parameters.getInt("target_radius", 0);
-        int coneCount = parameters.getInt("target_count", 0);
-        boolean targetSelf = parameters.getBoolean("target_self", false);
-        boolean targetAllWorlds = parameters.getBoolean("target_all_worlds", false);
-        Entity mageEntity = null;
-        Location sourceLocation = spell.getLocation();
-        if (spell instanceof MageSpell)
-        {
-            Mage mage = ((MageSpell)spell).getMage();
-            mageEntity = mage.getEntity();
-            radius = (int)(mage.getRadiusMultiplier() * radius);
-        }
-
-        if (parameters.getBoolean("target_all"))
-        {
-            Class<?> targetType = Player.class;
-            if (spell instanceof TargetingSpell)
-            {
-                targetType = ((TargetingSpell)spell).targetEntityType;
-            }
-            if (targetType == Player.class)
-            {
-                Player[] players = Bukkit.getOnlinePlayers();
-                for (Player player : players)
-                {
-                    if ((targetSelf || player != mageEntity) && (targetAllWorlds || (sourceLocation != null && sourceLocation.getWorld().equals(player.getWorld()))) && spell.canTarget(player))
-                    {
-                        targetEntities.add(player);
-                    }
-                }
-            }
-            else if (sourceLocation != null)
-            {
-                List<World> worlds = null;
-                if (targetAllWorlds) {
-                    worlds = Bukkit.getWorlds();
-                } else {
-                    worlds = new ArrayList<World>();
-                    worlds.add(sourceLocation.getWorld());
-                }
-                for (World world : worlds)
-                {
-                    List<Entity> entities = world.getEntities();
-                    for (Entity entity : entities)
-                    {
-                        if (spell.canTarget(entity) && (targetSelf || entity != mageEntity))
-                        {
-                            targetEntities.add(entity);
-                        }
-                    }
-                }
-            }
-        }
-        else if (radius > 0 && targetLocation != null)
-        {
-            List<Entity> entities = CompatibilityUtils.getNearbyEntities(targetLocation, radius, radius, radius);
-            for (Entity entity : entities)
-            {
-                if (entity != targetedEntity && (targetSelf || entity != mageEntity) && spell.canTarget(entity))
-                {
-                    targetEntities.add(entity);
-                }
-            }
-        }
-        else if (coneCount > 1 && spell instanceof TargetingSpell)
-        {
-            List<Target> entities = ((TargetingSpell)spell).getAllTargetEntities();
-            for (int i = 1; i < coneCount && i < entities.size(); i++)
-            {
-                targetEntities.add(entities.get(i).getEntity());
             }
         }
 
