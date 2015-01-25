@@ -5739,9 +5739,11 @@ supershell:
 hat:
     icon: leather_helmet
     category: staff
-    class: HatSpell
     worth: 18
     hidden: true
+    actions:
+        cast:
+        -  class: HatAction
     effects:
         cast:
         -  class: EffectSingle

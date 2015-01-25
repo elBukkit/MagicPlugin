@@ -16,6 +16,7 @@ import com.elmakers.mine.bukkit.spell.TargetingSpell;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import com.elmakers.mine.bukkit.utility.NMSUtils;
 
+@Deprecated
 public class HatSpell extends TargetingSpell 
 {
 	@Override

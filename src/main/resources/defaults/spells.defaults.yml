@@ -3106,8 +3106,10 @@ absorb:
 hat:
     icon: leather_helmet
     category: light
-    class: HatSpell
     worth: 18
+    actions:
+        cast:
+        -  class: HatAction
     effects:
         cast:
         -  class: EffectSingle
