@@ -2871,6 +2871,7 @@ alter:
         range: 32
         depth: 0
         transparent: transparent_to_construction
+        check_destructible: false
     costs:
         mana: 3
 superalter:
@@ -2889,6 +2890,7 @@ superalter:
         range: 64
         depth: 32
         transparent: transparent_to_construction
+        check_destructible: false
     costs:
         mana: 40
 sphere:
