@@ -1,6 +1,7 @@
 package com.elmakers.mine.bukkit.spell;
 
 import com.elmakers.mine.bukkit.api.action.SpellAction;
+import com.elmakers.mine.bukkit.api.block.MaterialBrush;
 import com.elmakers.mine.bukkit.api.effect.EffectPlayer;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
@@ -26,10 +27,19 @@ public abstract class BaseSpellAction implements SpellAction
     private BaseSpell baseSpell;
     private BlockSpell blockSpell;
     private MageSpell mageSpell;
+    private BrushSpell brushSpell;
     private TargetingSpell targetingSpell;
     private UndoableSpell undoSpell;
     private ActionSpell actionSpell;
     private ConfigurationSection parameters;
+
+    public void registerForUndo(Runnable runnable)
+    {
+        if (undoSpell != null)
+        {
+            undoSpell.registerForUndo(runnable);
+        }
+    }
 
     public void registerModified(Entity entity)
     {
@@ -171,6 +181,10 @@ public abstract class BaseSpellAction implements SpellAction
         {
             this.blockSpell = (BlockSpell)spell;
         }
+        if (spell instanceof BrushSpell)
+        {
+            this.brushSpell = (BrushSpell)spell;
+        }
         this.parameters = parameters;
     }
 
@@ -253,5 +267,9 @@ public abstract class BaseSpellAction implements SpellAction
         {
             targetingSpell.addTargetEntity(entity);
         }
+    }
+
+    public MaterialBrush getBrush() {
+        return brushSpell == null ? null : brushSpell.getBrush();
     }
 }

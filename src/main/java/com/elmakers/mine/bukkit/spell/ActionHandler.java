@@ -14,7 +14,6 @@ import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -203,10 +202,7 @@ public class ActionHandler
             for (EntityAction action : entityActions)
             {
                 SpellResult actionResult = action.perform(action.getParameters(parameters), entity);
-                if (actionResult.ordinal() < result.ordinal())
-                {
-                    result = actionResult;
-                }
+                result = result.min(actionResult);
             }
         }
 
