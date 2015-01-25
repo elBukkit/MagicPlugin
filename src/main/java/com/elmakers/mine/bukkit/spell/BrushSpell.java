@@ -126,9 +126,11 @@ public abstract class BrushSpell extends BlockSpell {
     @Override
     protected String getDisplayMaterialName()
     {
-        com.elmakers.mine.bukkit.api.block.MaterialBrush useBrush = getBrush();
-        if (useBrush != null) {
-            return useBrush.getName();
+        if (usesBrush) {
+            com.elmakers.mine.bukkit.api.block.MaterialBrush useBrush = getBrush();
+            if (useBrush != null) {
+                return useBrush.getName();
+            }
         }
 
         return super.getDisplayMaterialName();
