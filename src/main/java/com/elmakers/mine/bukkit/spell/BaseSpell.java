@@ -947,8 +947,9 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         }
         processResult(result);
 
-        boolean free = (castOnNoTarget && result == SpellResult.NO_TARGET) || result.isFree();
-        boolean success = (castOnNoTarget && result == SpellResult.NO_TARGET) || result.isSuccess();
+        boolean success = (castOnNoTarget && result == SpellResult.NO_TARGET);
+        boolean free = !success && result.isFree();
+        success = success || result.isSuccess();
         if (!free) {
             lastCast = System.currentTimeMillis();
             if (costs != null && !mage.isCostFree()) {
