@@ -1025,19 +1025,26 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
                 message = getMessage("cast_self", message);
             } else if (targetEntity instanceof Player) {
                 message = getMessage("cast_player", message);
-                String playerMessage = getMessage("cast_player_message");
-                if (!mage.isStealth() && playerMessage.length() > 0) {
-                    playerMessage = playerMessage.replace("$spell", getName());
-                    Player targetPlayer = (Player)targetEntity;
-                    Mage targetMage = controller.getMage(targetPlayer);
-                    targetMage.sendMessage(playerMessage);
-                }
             } else if (targetEntity instanceof LivingEntity) {
                 message = getMessage("cast_livingentity", message);
             } else if (targetEntity instanceof Entity) {
                 message = getMessage("cast_entity", message);
             }
             castMessage(message);
+
+            String playerMessage = getMessage("cast_player_message");
+            if (!mage.isStealth() && playerMessage.length() > 0)
+            {
+                Collection<Entity> targets = getTargetEntities();
+                for (Entity target : targets) {
+                    if (target instanceof Player) {
+                        playerMessage = playerMessage.replace("$spell", getName());
+                        Player targetPlayer = (Player)target;
+                        Mage targetMage = controller.getMage(target);
+                        targetMage.sendMessage(playerMessage);
+                    }
+                }
+            }
         } else
         // Special cases where messaging is handled elsewhere
         if (result != SpellResult.INSUFFICIENT_RESOURCES && result != SpellResult.COOLDOWN)
