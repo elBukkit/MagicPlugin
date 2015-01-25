@@ -347,6 +347,7 @@ public class ProjectileAction  extends BaseSpellAction implements GeneralAction
 				if (actions != null)
 				{
 					actions.perform(projectile.getLocation(), projectile, projectile.getLocation(), null);
+					getSpell().messageTargets("indirect_player_message");
 				}
 				projectile.removeMetadata("actions", getController().getPlugin());
 			} else  {

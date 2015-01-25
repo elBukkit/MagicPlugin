@@ -1929,20 +1929,6 @@ public class MagicController implements Listener, MageController {
     @EventHandler
     public void onProjectileHit(ProjectileHitEvent event) {
         final Projectile projectile = event.getEntity();
-        if (projectile.hasMetadata("spell"))
-        {
-            for (MetadataValue metadata : projectile.getMetadata("spell"))
-            {
-                Object value = metadata.value();
-                if (value instanceof MageSpell)
-                {
-                    MageSpell spell = (MageSpell) value;
-                    spell.playEffects("hit", 1, projectile.getLocation(), projectile, spell.getTargetLocation(), spell.getTargetEntity());
-                }
-                break;
-            }
-            projectile.removeMetadata("spell", getPlugin());
-        }
         if (projectile.hasMetadata("actions"))
         {
             Bukkit.getScheduler().scheduleSyncDelayedTask(getPlugin(), new Runnable() {
@@ -1961,6 +1947,21 @@ public class MagicController implements Listener, MageController {
                     }
                 }
             }, 1L);
+        }
+        if (projectile.hasMetadata("spell"))
+        {
+            for (MetadataValue metadata : projectile.getMetadata("spell"))
+            {
+                Object value = metadata.value();
+                if (value instanceof Spell)
+                {
+                    Spell spell = (Spell)value;
+                    spell.playEffects("hit", 1, projectile.getLocation(), projectile, spell.getTargetLocation(), spell.getTargetEntity());
+                    spell.messageTargets("indirect_player_message");
+                }
+                break;
+            }
+            projectile.removeMetadata("spell", getPlugin());
         }
     }
 

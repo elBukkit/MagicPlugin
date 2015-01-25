@@ -110,6 +110,8 @@ categories:
         description: Keep them under control!
 
 spells:
+    default:
+        cooldown: ""
     accio:
         name: Accio
         description: Summons an object to you
