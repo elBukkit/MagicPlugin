@@ -62,6 +62,7 @@ public class ConstructBatch extends BrushBatch {
     private int breakable = 0;
     private double backfireChance = 0;
     private Vector bounds = null;
+	private boolean applyPhysics = false;
 
 	private int x = 0;
 	private int y = 0;
@@ -406,7 +407,7 @@ public class ConstructBatch extends BrushBatch {
                 if (automaton == null || automaton.getCreatedTime() < System.currentTimeMillis() - 30000) {
                     registerForUndo(block);
                     block.getWorld().playEffect(block.getLocation(), Effect.STEP_SOUND, material.getId());
-                    controller.getRedstoneReplacement().modify(block, true);
+                    controller.getRedstoneReplacement().modify(block, applyPhysics);
                 }
 			} else if (material == Material.REDSTONE_TORCH_OFF) {
 				registerForUndo(block);
@@ -492,7 +493,7 @@ public class ConstructBatch extends BrushBatch {
                 }
             }
 
-            brush.modify(block);
+            brush.modify(block, applyPhysics);
             if (breakable > 0) {
                 block.setMetadata("breakable", new FixedMetadataValue(controller.getPlugin(), breakable));
             }
@@ -554,5 +555,9 @@ public class ConstructBatch extends BrushBatch {
 				&& location.getBlockZ() >= center.getBlockZ() - radius
 				&& location.getBlockZ() <= center.getBlockZ() + radius;
 		}
+	}
+
+	public void setApplyPhysics(boolean physics) {
+		this.applyPhysics = physics;
 	}
 }

@@ -242,6 +242,7 @@ aparecium:
         power: true
         cooldown: 9000
         undo: 4000
+        physics: true
         bypass_build: true
         check_destructible: true
         destructible: powerable

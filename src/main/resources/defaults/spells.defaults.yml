@@ -341,6 +341,7 @@ glider:
         range: 10
         radius: 4
         type: sphere
+        physics: true
         cooldown: 60000
         brush: schematic|glider
         transparent: transparent_to_construction
@@ -2976,6 +2977,7 @@ emp:
         radius: 3
         type: sphere
         power: true
+        physics: true
         cooldown: 1000
         check_destructible: false
         undo: 200

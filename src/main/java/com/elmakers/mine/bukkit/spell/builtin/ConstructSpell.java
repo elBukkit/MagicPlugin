@@ -63,6 +63,7 @@ public class ConstructSpell extends BrushSpell
 		radius = parameters.getInt("r", radius);
 		radius = parameters.getInt("size", radius);
 		boolean falling = parameters.getBoolean("falling", false);
+		boolean physics = parameters.getBoolean("physics", false);
         int breakable = parameters.getInt("breakable", 0);
         double backfireChance = parameters.getDouble("reflect_chance", 0);
 		Vector orientTo = null;
@@ -212,6 +213,7 @@ public class ConstructSpell extends BrushSpell
             batch.setFallingDirection(ConfigurationUtils.getVector(parameters, "falling_direction"));
             batch.setFallingBlockSpeed(force);
 		}
+		batch.setApplyPhysics(physics);
         if (breakable > 0) {
             batch.setBreakable(breakable);
         }
