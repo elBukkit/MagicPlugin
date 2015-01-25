@@ -2903,7 +2903,8 @@ public class MagicController implements Listener, MageController {
 			if (message != null && message.length() > 1) {
 				mage.sendMessage(message);
 			}
-			event.setCurrentItem(null);
+            ItemStack replacement = NMSUtils.getReplacement(clickedItem);
+            event.setCurrentItem(replacement);
 			event.setCancelled(true);
 			return;
 		}
