@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
+import java.util.UUID;
 import java.util.logging.Level;
 
 import com.elmakers.mine.bukkit.api.event.CastEvent;
@@ -151,6 +152,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     protected ConfigurationSection configuration = null;
 
     protected static Random random            = new Random();
+    protected Set<UUID> targetMessagesSent = new HashSet<UUID>();
 
     /*
      * private data
@@ -818,6 +820,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     public boolean cast(String[] extraParameters, Location defaultLocation)
     {
         this.reset();
+        targetMessagesSent.clear();
 
         // Allow other plugins to cancel this cast
         PreCastEvent preCast = new PreCastEvent(mage, this);
@@ -1031,20 +1034,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
                 message = getMessage("cast_entity", message);
             }
             castMessage(message);
-
-            String playerMessage = getMessage("cast_player_message");
-            if (!mage.isStealth() && playerMessage.length() > 0)
-            {
-                Collection<Entity> targets = getTargetEntities();
-                for (Entity target : targets) {
-                    if (target instanceof Player) {
-                        playerMessage = playerMessage.replace("$spell", getName());
-                        Player targetPlayer = (Player)target;
-                        Mage targetMage = controller.getMage(target);
-                        targetMage.sendMessage(playerMessage);
-                    }
-                }
-            }
+            messageTargets("cast_player_message");
         } else
         // Special cases where messaging is handled elsewhere
         if (result != SpellResult.INSUFFICIENT_RESOURCES && result != SpellResult.COOLDOWN)
@@ -1059,6 +1049,27 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
 
         // Play effects
         playEffects(resultName);
+    }
+
+    public void messageTargets(String messageKey)
+    {
+        LivingEntity sourceEntity = mage == null ? null : mage.getLivingEntity();
+        String playerMessage = getMessage(messageKey);
+        if (!mage.isStealth() && playerMessage.length() > 0)
+        {
+            Collection<Entity> targets = getTargetEntities();
+            for (Entity target : targets)
+            {
+                UUID targetUUID = target.getUniqueId();
+                if (target instanceof Player && target != sourceEntity && !targetMessagesSent.contains(targetUUID))
+                {
+                    targetMessagesSent.add(targetUUID);
+                    playerMessage = playerMessage.replace("$spell", getName());
+                    Mage targetMage = controller.getMage(target);
+                    targetMage.sendMessage(playerMessage);
+                }
+            }
+        }
     }
 
     public void playEffects(String effectName, float scale) {
