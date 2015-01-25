@@ -710,7 +710,9 @@ avadakedavra:
     worth: 1000
     actions:
         cast:
-        -  class: KillAction
+        -  class: ProjectileAction
+           actions:
+           -  class: KillAction
     effects:
         cast:
         -  class: EffectSingle
@@ -727,12 +729,13 @@ avadakedavra:
              particle: spell_mob
              color: 00FF00
              lengthGrow: 0.4
+        hit:
         -  class: EffectSingle
-           location: target
+           location: source
            color: "00FF00"
            firework: ball_large
         - class: EffectSingle
-          location: target
+          location: source
           particle_override: particleOrbital
           effectlib:
              class: AtomEffect
@@ -759,15 +762,13 @@ avadakedavra:
            color: "00FF00"
            firework: ball_large
     parameters:
-        target_type: LivingEntity
-        allow_max_range: false
-        range: 48
-        check_destructible: false
+        projectile: WitherSkull
         cooldown: 30000
         target_breakables: 5
         bypass_backfire: true
-        hitbox: true
-        transparent: transparent_to_avada
+        spread: 0
+        speed: 1
+        size: 0
     costs:
         mana: 180
 
