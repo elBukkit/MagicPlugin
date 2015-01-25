@@ -24,6 +24,8 @@ public enum SpellResult {
     CURSED(false, true, true),
     COOLDOWN(false, true, true),
 
+    NO_TARGET(false, false, false),
+
     FAIL(false, true, true),
     CANCELLED(false, true, true),
     INSUFFICIENT_RESOURCES(false, true, true),
@@ -35,8 +37,6 @@ public enum SpellResult {
     LOCATION_REQUIRED(false, true, true),
     WORLD_REQUIRED(false, true, true),
     INVALID_WORLD(false, true, true),
-
-    NO_TARGET(false, false, false),
 
     // This should always be last
     NO_ACTION(false, false, false);
