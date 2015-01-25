@@ -9,6 +9,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.BlockFace;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -694,5 +695,27 @@ public class NMSUtils {
 
     public static String getTemporaryMessage(ItemStack itemStack) {
         return getMeta(itemStack, "temporary");
+    }
+
+    public static void setReplacement(ItemStack itemStack, ItemStack replacement) {
+        YamlConfiguration configuration = new YamlConfiguration();
+        configuration.set("item", replacement);
+        setMeta(itemStack, "replacement", configuration.saveToString());
+    }
+
+    public static ItemStack getReplacement(ItemStack itemStack) {
+        String serialized = getMeta(itemStack, "replacement");
+        if (serialized == null || serialized.isEmpty()) {
+            return null;
+        }
+        YamlConfiguration configuration = new YamlConfiguration();
+        ItemStack replacement = null;
+        try {
+            configuration.loadFromString(serialized);
+            replacement = configuration.getItemStack("item");
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return replacement;
     }
 }
