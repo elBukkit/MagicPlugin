@@ -81,8 +81,8 @@ wand:
     erase_modifier_activated: Erase modifier active
     map_material_description: Creates pixel art from last held map
     schematic_material_description: Uses $schematic to build.
-    building_material_description: Magic building material
-    building_material_info: Uses $material with construction spells
+    building_material_description: Magic material
+    building_material_info: Uses the $material brush
     upgrade_uses: Adds $count Uses
     upgrade_uses_singular: Adds $count Use
     uses_remaining_brief: $count Uses

@@ -50,6 +50,7 @@ import org.bukkit.event.player.PlayerExpChangeEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
@@ -847,6 +848,17 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 			} else if (material == MaterialBrush.SchematicMaterial) {
 				lore.add(controller.getMessages().get("wand.schematic_material_description").replace("$schematic", brushData.getCustomName()));
 			} else {
+				if (material == Material.WATER || material == Material.STATIONARY_WATER || material == Material.LAVA || material == Material.STATIONARY_LAVA) {
+					ItemMeta meta = itemStack.getItemMeta();
+					meta.setDisplayName(material.name().toLowerCase().replace('_', ' '));
+					itemStack.setItemMeta(meta);
+					if (material == Material.WATER || material == Material.STATIONARY_WATER) {
+						itemStack.setType(Material.WATER_BUCKET);
+					} else if (material == Material.LAVA || material == Material.STATIONARY_LAVA) {
+						itemStack.setType(Material.LAVA_BUCKET);
+					}
+				}
+
 				lore.add(ChatColor.LIGHT_PURPLE + controller.getMessages().get("wand.building_material_description"));
 			}
 		}
