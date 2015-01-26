@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.api.spell;
 
+import com.elmakers.mine.bukkit.api.magic.MageController;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
@@ -19,6 +20,7 @@ import org.bukkit.util.Vector;
  * implement the MageSpell interface.
  */
 public interface Spell extends SpellTemplate {
+    public MageController getController();
     public boolean cast();
     public boolean cast(String[] parameters);
     public boolean cast(String[] parameters, Location defaultLocation);
