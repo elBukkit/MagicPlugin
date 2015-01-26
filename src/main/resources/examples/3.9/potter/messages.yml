@@ -188,6 +188,12 @@ spells:
     bogies:
         name: Curse of the Bogies
         description: Make your target feel unwell
+    bombtastic:
+        name: Bombtastic Bomb
+        description: An exploding bomb
+    dungbomb:
+        name: Dungbomb
+        description: A magical stinkbomb
     bombarda:
         name: Bombarda
         description: Create a small explosion

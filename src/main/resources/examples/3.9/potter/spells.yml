@@ -1137,7 +1137,6 @@ bubble:
         duration: 20000
         undo: 20000
         effect_water_breathing: 1
-        uses_brush: true
         brush: stained_glass
     costs:
         mana: 15
@@ -6610,23 +6609,70 @@ fiantoduri:
         fall_protection: 5000
         effect_absorption: 4
 
-grenade:
+bombtastic:
     icon: clay_ball
     category: dark
     pvp_restricted: true
-    class: GrenadeSpell
+    hidden: true
     worth: 25
+    actions:
+        cast:
+        -  class: TNTAction
+           actions:
+           -  class: AreaOfEffectAction
+              actions:
+              -  class: DamageAction
     effects:
         cast:
         -  class: EffectSingle
            sound: lava_pop
     parameters:
-        allow_max_range: true
-        range: 32
-        size: 2
+        size: 0
         fuse: 60
+        damage: 4
+        target_self: true
+        radius: 4
         break_blocks: false
         cooldown: 6000
+    costs:
+        mana: 40
+
+dungbomb:
+    icon: clay_ball
+    category: dark
+    pvp_restricted: true
+    hidden: true
+    worth: 25
+    actions:
+        cast:
+        -  class: TNTAction
+           actions:
+           -  class: AreaOfEffectAction
+              actions:
+              -  class: PotionEffectAction
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: lava_pop
+        explode:
+           - class: EffectSingle
+             sound: enderdragon_wings
+             location: both
+             effectlib:
+                 class: SphereEffect
+                 particle: redstone
+                 radius: 2.5
+                 color: '6719ED'
+    parameters:
+        size: 0
+        fuse: 60
+        damage: 4
+        target_self: true
+        radius: 4
+        break_blocks: false
+        cooldown: 6000
+        effect_poison: 1
+        duration: 5000
     costs:
         mana: 40
 
