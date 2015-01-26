@@ -14,6 +14,8 @@ import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.entity.Entity;
+import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.metadata.MetadataValue;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -247,5 +249,107 @@ public class ActionHandler
             message = action.transformMessage(message);
         }
         return message;
+    }
+
+    public static void setActions(Entity entity, ActionHandler actions, String messageKey)
+    {
+        if (actions != null && entity != null)
+        {
+            entity.setMetadata("actions", new FixedMetadataValue(actions.spell.getController().getPlugin(), actions));
+        }
+
+        if (messageKey != null && entity != null)
+        {
+            entity.setMetadata("message", new FixedMetadataValue(actions.spell.getController().getPlugin(), messageKey));
+        }
+    }
+
+    public static boolean hasActions(Entity entity)
+    {
+        return entity != null && entity.hasMetadata("actions");
+    }
+
+    public static void runActions(Entity entity, Location targetLocation, Entity targetEntity)
+    {
+        if (!hasActions(entity)) return;
+
+        ActionHandler actions = null;
+        for (MetadataValue metadata : entity.getMetadata("actions"))
+        {
+            Object meta = metadata.value();
+            if (meta instanceof ActionHandler)
+            {
+                actions = (ActionHandler)meta;
+                break;
+            }
+        }
+
+        if (actions == null) {
+            return;
+        }
+
+        Spell spell = actions.spell;
+        String messageKey = null;
+
+        for (MetadataValue metadata : entity.getMetadata("message"))
+        {
+            Object value = metadata.value();
+            if (value instanceof String)
+            {
+                messageKey = (String)value;
+            }
+            break;
+        }
+
+        actions.perform(entity.getLocation(), entity, targetLocation, targetEntity);
+        spell.messageTargets(messageKey);
+        entity.removeMetadata("actions", spell.getController().getPlugin());
+        entity.removeMetadata("message", spell.getController().getPlugin());
+    }
+
+    public static boolean hasEffects(Entity entity)
+    {
+        return entity != null && entity.hasMetadata("spell") && entity.hasMetadata("effects");
+    }
+
+    public static void runEffects(Entity entity)
+    {
+        if (!hasEffects(entity)) return;
+        String effectKey = null;
+        Spell spell = null;
+
+        for (MetadataValue metadata : entity.getMetadata("effects"))
+        {
+            Object value = metadata.value();
+            if (value instanceof String)
+            {
+                effectKey = (String)value;
+            }
+            break;
+        }
+        for (MetadataValue metadata : entity.getMetadata("spell"))
+        {
+            Object value = metadata.value();
+            if (value instanceof Spell)
+            {
+                spell = (Spell)value;
+            }
+            break;
+        }
+
+        if (spell == null || effectKey == null || effectKey.isEmpty()) return;
+
+        spell.playEffects(effectKey, 1, entity.getLocation(), entity, spell.getTargetLocation(), spell.getTargetEntity());
+        entity.removeMetadata("spell", spell.getController().getPlugin());
+        entity.removeMetadata("effects", spell.getController().getPlugin());
+    }
+
+    public static void setEffects(Entity entity, Spell spell, String key)
+    {
+        if (key != null && spell != null && entity != null)
+        {
+            entity.setMetadata("spell", new FixedMetadataValue(spell.getController().getPlugin(), spell));
+            entity.setMetadata("effects", new FixedMetadataValue(spell.getController().getPlugin(), key));
+        }
     }
 }

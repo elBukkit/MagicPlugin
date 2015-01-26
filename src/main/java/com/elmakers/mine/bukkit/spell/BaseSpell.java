@@ -1696,4 +1696,9 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
      * @return true if the spell worked, false if it failed
      */
     public abstract SpellResult onCast(ConfigurationSection parameters);
+
+    @Override
+    public MageController getController() {
+        return controller;
+    }
 }
