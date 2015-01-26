@@ -1929,40 +1929,18 @@ public class MagicController implements Listener, MageController {
     @EventHandler
     public void onProjectileHit(ProjectileHitEvent event) {
         final Projectile projectile = event.getEntity();
-        if (projectile.hasMetadata("actions"))
+
+        // This is delayed so that the EntityDamage version takes precedence
+        if (ActionHandler.hasActions(projectile))
         {
             Bukkit.getScheduler().scheduleSyncDelayedTask(getPlugin(), new Runnable() {
                 @Override
                 public void run() {
-                    if (projectile.hasMetadata("actions")) {
-                        for (MetadataValue metadata : projectile.getMetadata("actions")) {
-                            Object value = metadata.value();
-                            if (value instanceof ActionHandler) {
-                                ActionHandler actions = (ActionHandler) value;
-                                actions.perform(projectile.getLocation(), projectile, projectile.getLocation(), null);
-                            }
-                            break;
-                        }
-                        projectile.removeMetadata("actions", getPlugin());
-                    }
+                    ActionHandler.runActions(projectile, projectile.getLocation(), null);
                 }
             }, 1L);
         }
-        if (projectile.hasMetadata("spell"))
-        {
-            for (MetadataValue metadata : projectile.getMetadata("spell"))
-            {
-                Object value = metadata.value();
-                if (value instanceof Spell)
-                {
-                    Spell spell = (Spell)value;
-                    spell.playEffects("hit", 1, projectile.getLocation(), projectile, spell.getTargetLocation(), spell.getTargetEntity());
-                    spell.messageTargets("indirect_player_message");
-                }
-                break;
-            }
-            projectile.removeMetadata("spell", getPlugin());
-        }
+        ActionHandler.runEffects(projectile);
     }
 
 	@EventHandler
@@ -2071,20 +2049,7 @@ public class MagicController implements Listener, MageController {
             }
 		}
 
-        if (damager.hasMetadata("actions"))
-        {
-            for (MetadataValue metadata : damager.getMetadata("actions"))
-            {
-                Object value = metadata.value();
-                if (value instanceof ActionHandler)
-                {
-                    ActionHandler actions = (ActionHandler) value;
-                    actions.perform(damager.getLocation(), damager, entity.getLocation(), entity);
-                }
-                break;
-            }
-            damager.removeMetadata("actions", getPlugin());
-        }
+        ActionHandler.runActions(damager, entity.getLocation(), entity);
 
         if (preventMeleeDamage && event.getCause() == EntityDamageEvent.DamageCause.ENTITY_ATTACK && damager instanceof Player )
         {
@@ -2184,12 +2149,19 @@ public class MagicController implements Listener, MageController {
             entity.remove();
         }
     }
+
+    @EventHandler
+    public void onExplosionPrime(ExplosionPrimeEvent event) {
+        Entity explodingEntity = event.getEntity();
+        ActionHandler.runActions(explodingEntity, explodingEntity.getLocation(), null);
+        ActionHandler.runEffects(explodingEntity);
+    }
 	
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onEntityExplode(EntityExplodeEvent event) {
 		Entity explodingEntity = event.getEntity();
 		if (explodingEntity == null) return;
-		
+
 		UndoList blockList = getEntityUndo(explodingEntity);
 		boolean cancel = event.isCancelled();
         cancel = cancel || explodingEntity.hasMetadata("cancel_explosion");

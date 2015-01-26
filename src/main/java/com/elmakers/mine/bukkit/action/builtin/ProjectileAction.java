@@ -39,7 +39,7 @@ public class ProjectileAction  extends BaseSpellAction implements GeneralAction
 	private static Field lifeField = null;
 	private static Method getHandleMethod = null;
 	private static boolean reflectionInitialized = false;
-	ActionHandler actions = null;
+	private ActionHandler actions = null;
 
 	private static Class<?> projectileClass;
 	private static Class<?> fireballClass;
@@ -302,12 +302,8 @@ public class ProjectileAction  extends BaseSpellAction implements GeneralAction
 
 		for (Projectile projectile : projectiles)
 		{
-			if (actions != null)
-			{
-				projectile.setMetadata("actions", new FixedMetadataValue(getController().getPlugin(), actions));
-			}
-			projectile.setMetadata("spell", new FixedMetadataValue(getController().getPlugin(), getSpell()));
-
+			ActionHandler.setActions(projectile, actions, "indirect_player_message");
+			ActionHandler.setEffects(projectile, getSpell(), "hit");
 		}
 		scheduleProjectileCheck(projectiles, checkFrequency, retries);
 	}
@@ -332,25 +328,12 @@ public class ProjectileAction  extends BaseSpellAction implements GeneralAction
 			{
 				projectile.remove();
 			}
-			if (projectile.isDead() && projectile.hasMetadata("actions"))
+			if (projectile.isDead() && ActionHandler.hasActions(projectile))
 			{
-				ActionHandler actions = null;
-				for (MetadataValue metadata : projectile.getMetadata("actions"))
-				{
-					Object meta = metadata.value();
-					if (meta instanceof ActionHandler)
-					{
-						actions = (ActionHandler)meta;
-						break;
-					}
-				}
-				if (actions != null)
-				{
-					actions.perform(projectile.getLocation(), projectile, projectile.getLocation(), null);
-					getSpell().messageTargets("indirect_player_message");
-				}
-				projectile.removeMetadata("actions", getController().getPlugin());
-			} else  {
+				ActionHandler.runActions(projectile, projectile.getLocation(), null);
+			}
+			else
+			{
 				remaining.add(projectile);
 			}
 		}

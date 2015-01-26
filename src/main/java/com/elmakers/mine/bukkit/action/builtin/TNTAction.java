@@ -1,24 +1,29 @@
-package com.elmakers.mine.bukkit.spell.builtin;
+package com.elmakers.mine.bukkit.action.builtin;
 
-import java.util.Random;
-
+import com.elmakers.mine.bukkit.api.action.GeneralAction;
+import com.elmakers.mine.bukkit.api.magic.Mage;
+import com.elmakers.mine.bukkit.api.magic.MageController;
+import com.elmakers.mine.bukkit.api.spell.Spell;
+import com.elmakers.mine.bukkit.api.spell.SpellResult;
+import com.elmakers.mine.bukkit.spell.ActionHandler;
+import com.elmakers.mine.bukkit.spell.BaseSpellAction;
 import org.bukkit.Location;
-import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.TNTPrimed;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.util.Vector;
 
-import com.elmakers.mine.bukkit.api.spell.SpellResult;
-import com.elmakers.mine.bukkit.spell.BlockSpell;
+import java.util.Random;
 
-@Deprecated
-public class GrenadeSpell extends BlockSpell
+public class TNTAction extends BaseSpellAction implements GeneralAction
 {
+	private ActionHandler actions = null;
+
 	@Override
-	public SpellResult onCast(ConfigurationSection parameters) 
-	{
+	public SpellResult perform(ConfigurationSection parameters) {
+		Mage mage = getMage();
+		MageController controller = getController();
 		int size = parameters.getInt("size", 6);
 		int count = parameters.getInt("count", 1);
 		size = (int)(mage.getRadiusMultiplier() * size);		
@@ -26,15 +31,18 @@ public class GrenadeSpell extends BlockSpell
 		boolean useFire = parameters.getBoolean("fire", false);
 		boolean breakBlocks = parameters.getBoolean("break_blocks", true);
 
-		Block target = getTarget().getBlock();
-		if (target == null) {
-			return SpellResult.NO_TARGET;
+		if (actions != null) {
+			actions.setParameters(parameters);
 		}
-		if (!hasBuildPermission(target)) {
+
+		Location loc = getEyeLocation();
+		if (loc == null) {
+			return SpellResult.LOCATION_REQUIRED;
+		}
+		if (!hasBuildPermission(loc.getBlock())) {
 			return SpellResult.INSUFFICIENT_PERMISSION;
 		}
-		
-		Location loc = getEyeLocation();
+
 		final Random rand = new Random();
 		for (int i = 0; i < count; i++)
 		{
@@ -54,12 +62,26 @@ public class GrenadeSpell extends BlockSpell
 			grenade.setFuseTicks(fuse);
 			grenade.setIsIncendiary(useFire);
 			registerForUndo(grenade);
-			if (!breakBlocks) {
+			if (!breakBlocks)
+			{
 				grenade.setMetadata("cancel_explosion", new FixedMetadataValue(controller.getPlugin(), true));
 			}
+			ActionHandler.setActions(grenade, actions, "indirect_player_message");
+			ActionHandler.setEffects(grenade, getSpell(), "explode");
 		}
 		
-		registerForUndo();
 		return SpellResult.CAST;
+	}
+
+	@Override
+	public void load(Spell spell, ConfigurationSection template)
+	{
+		super.load(spell, template);
+
+		if (template != null && template.contains("actions"))
+		{
+			actions = new ActionHandler(getSpell());
+			actions.load(template, "actions");
+		}
 	}
 }
