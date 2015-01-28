@@ -2513,14 +2513,24 @@ public class MagicController implements Listener, MageController {
 
         Player player = event.getPlayer();
 
+        Mage apiMage = getMage(player);
+        if (!(apiMage instanceof com.elmakers.mine.bukkit.magic.Mage)) return;
+        com.elmakers.mine.bukkit.magic.Mage mage = (com.elmakers.mine.bukkit.magic.Mage)apiMage;
+        Wand wand = mage.getActiveWand();
+
+        // Check for a player placing a wand in an item frame
+        if (wand != null && event.getRightClicked() instanceof ItemFrame) {
+            if (wand.isUndroppable()) {
+                event.setCancelled(true);
+                return;
+            } else {
+                wand.deactivate();
+            }
+        }
+
         // Check for clicking on a Citizens NPC, in case
         // this hasn't been cancelled yet
         if (isNPC(event.getRightClicked())) {
-            Mage apiMage = getMage(player);
-            if (!(apiMage instanceof com.elmakers.mine.bukkit.magic.Mage)) return;
-            com.elmakers.mine.bukkit.magic.Mage mage = (com.elmakers.mine.bukkit.magic.Mage)apiMage;
-
-            Wand wand = mage.getActiveWand();
         	if (wand != null) {
         		wand.closeInventory();
         	}
