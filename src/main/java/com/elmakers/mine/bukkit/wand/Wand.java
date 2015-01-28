@@ -1803,6 +1803,11 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 				saveOffset = -1;
 				continue;
 			}
+			int hotbarOffset = i + saveOffset;
+			if (hotbarOffset >= hotbar.getSize()) {
+				// This can happen if there is somehow no wand in the wand inventory.
+				break;
+			}
 			hotbar.setItem(i + saveOffset, playerItem);
             updateSlot(i + saveOffset + currentHotbar * HOTBAR_INVENTORY_SIZE, playerItem);
 		}

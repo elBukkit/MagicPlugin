@@ -2565,10 +2565,20 @@ public class MagicController implements Listener, MageController {
 		}
 
 		Wand wand = mage.getActiveWand();
-		
-		// Hacky check for immediately activating a wand if for some reason it was
+        boolean hasWand = Wand.hasActiveWand(player);
+
+        // Safety check for a wand getting removed from the player's inventory
+        if ((itemInHand == null || itemInHand.getType() == Material.AIR) && wand != null)
+        {
+            getLogger().warning("Mage had an active wand, but player is not holding anything");
+            wand.deactivate();
+            return;
+        }
+
+
+        // Hacky check for immediately activating a wand if for some reason it was
 		// not active
-		if (wand == null && Wand.hasActiveWand(player)) {
+		if (wand == null && hasWand) {
 			wand = Wand.getActiveWand(this, player);
 			wand.activate(mage);
 			getLogger().warning("Player was holding an inactive wand on interact- activating.");
