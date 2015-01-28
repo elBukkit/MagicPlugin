@@ -258,7 +258,7 @@ public class ActionHandler
             entity.setMetadata("actions", new FixedMetadataValue(actions.spell.getController().getPlugin(), actions));
         }
 
-        if (messageKey != null && entity != null)
+        if (messageKey != null && entity != null && actions != null)
         {
             entity.setMetadata("message", new FixedMetadataValue(actions.spell.getController().getPlugin(), messageKey));
         }
