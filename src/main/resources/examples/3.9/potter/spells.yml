@@ -425,6 +425,7 @@ arrow:
            location: origin
            color: CC9933
            firework: ball
+           effect: explosion_large
         projectile:
         -  class: EffectSingle
            location: origin
@@ -731,11 +732,11 @@ avadakedavra:
              lengthGrow: 0.4
         hit:
         -  class: EffectSingle
-           location: source
+           location: origin
            color: "00FF00"
            firework: ball_large
         - class: EffectSingle
-          location: source
+          location: origin
           particle_override: particleOrbital
           effectlib:
              class: AtomEffect
@@ -1123,7 +1124,7 @@ bubble:
         cast:
         -  class: EffectSingle
            sound: water
-           location: source
+           location: origin
            effectlib:
              class: SphereEffect
              iterations: 10
@@ -5873,7 +5874,7 @@ animagus_phoenix:
         cast:
         - class: EffectSingle
           sound: enderman_teleport
-          location: source
+          location: origin
           particle_override: particleOrbital
           effectlib:
             class: AtomEffect
@@ -5903,7 +5904,7 @@ animagus_wolf:
         cast:
         - class: EffectSingle
           sound: enderman_teleport
-          location: source
+          location: origin
           particle_override: particleOrbital
           effectlib:
             class: AtomEffect
@@ -5932,7 +5933,7 @@ humaculus:
         cast:
         - class: EffectSingle
           sound: orb_pickup
-          location: source
+          location: origin
           particle_override: particleOrbital
           effectlib:
             class: AtomEffect
@@ -5963,7 +5964,7 @@ animagus_cat:
         cast:
         - class: EffectSingle
           sound: enderman_teleport
-          location: source
+          location: origin
           particle_override: particleOrbital
           effectlib:
             class: AtomEffect
@@ -5992,7 +5993,7 @@ animagus_chicken:
         cast:
         - class: EffectSingle
           sound: enderman_teleport
-          location: source
+          location: origin
           particle_override: particleOrbital
           effectlib:
             class: AtomEffect
@@ -6021,7 +6022,7 @@ animagus_owl:
         cast:
         - class: EffectSingle
           sound: enderman_teleport
-          location: source
+          location: origin
           particle_override: particleOrbital
           effectlib:
             class: AtomEffect
@@ -6050,7 +6051,7 @@ animagus_rat:
         cast:
         - class: EffectSingle
           sound: enderman_teleport
-          location: source
+          location: origin
           particle_override: particleOrbital
           effectlib:
             class: AtomEffect
@@ -6079,7 +6080,7 @@ animagus_horse:
         cast:
         - class: EffectSingle
           sound: enderman_teleport
-          location: source
+          location: origin
           particle_override: particleOrbital
           effectlib:
             class: AtomEffect
@@ -6108,7 +6109,7 @@ animagus_donkey:
         cast:
         - class: EffectSingle
           sound: enderman_teleport
-          location: source
+          location: origin
           particle_override: particleOrbital
           effectlib:
             class: AtomEffect
@@ -6137,7 +6138,7 @@ animagus_spider:
         cast:
         - class: EffectSingle
           sound: enderman_teleport
-          location: source
+          location: origin
           particle_override: particleOrbital
           effectlib:
             class: AtomEffect
@@ -6166,7 +6167,7 @@ animagus_sheep:
         cast:
         - class: EffectSingle
           sound: enderman_teleport
-          location: source
+          location: origin
           particle_override: particleOrbital
           effectlib:
             class: AtomEffect
@@ -6195,7 +6196,7 @@ animagus_cow:
         cast:
         - class: EffectSingle
           sound: enderman_teleport
-          location: source
+          location: origin
           particle_override: particleOrbital
           effectlib:
             class: AtomEffect
@@ -6224,7 +6225,7 @@ animagus_pig:
         cast:
         - class: EffectSingle
           sound: enderman_teleport
-          location: source
+          location: origin
           particle_override: particleOrbital
           effectlib:
             class: AtomEffect
@@ -6254,7 +6255,7 @@ unspeakable:
         cast:
         - class: EffectSingle
           sound: enderman_teleport
-          location: source
+          location: origin
           particle_override: particleOrbital
           effectlib:
             class: AtomEffect
@@ -6610,8 +6611,8 @@ fiantoduri:
         effect_absorption: 4
 
 bombtastic:
-    icon: clay_ball
-    category: dark
+    icon: magma_cream
+    category: specialty
     pvp_restricted: true
     hidden: true
     worth: 25
@@ -6626,6 +6627,10 @@ bombtastic:
         cast:
         -  class: EffectSingle
            sound: lava_pop
+        explode:
+        -  class: EffectSingle
+           location: origin
+           effect: explosion_huge
     parameters:
         size: 0
         fuse: 60
@@ -6634,12 +6639,10 @@ bombtastic:
         radius: 4
         break_blocks: false
         cooldown: 6000
-    costs:
-        mana: 40
 
 dungbomb:
-    icon: clay_ball
-    category: dark
+    icon: magma_cream
+    category: specialty
     pvp_restricted: true
     hidden: true
     worth: 25
@@ -6655,14 +6658,15 @@ dungbomb:
         -  class: EffectSingle
            sound: lava_pop
         explode:
-           - class: EffectSingle
-             sound: enderdragon_wings
-             location: both
-             effectlib:
-                 class: SphereEffect
-                 particle: redstone
-                 radius: 2.5
-                 color: '6719ED'
+         - class: EffectSingle
+           sound: enderdragon_wings
+           location: origin
+           effectlib:
+               class: SphereEffect
+               particle: redstone
+               radius: 2.5
+               color: '7E3817'
+               iterations: 20
     parameters:
         size: 0
         fuse: 60
@@ -6673,8 +6677,6 @@ dungbomb:
         cooldown: 6000
         effect_poison: 1
         duration: 5000
-    costs:
-        mana: 40
 
 wreckducto:
     hidden: true

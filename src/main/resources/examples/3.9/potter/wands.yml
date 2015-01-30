@@ -654,6 +654,30 @@ floopowder:
     spells:
         - floo
 
+dungbombs:
+    mode: cast
+    quiet: 2
+    active_spell: dungbomb
+    icon: magma_cream
+    indestructible: false
+    locked: true
+    effect_color: '00FF00'
+    uses: 12
+    spells:
+        - dungbomb
+
+bombs:
+    mode: cast
+    quiet: 2
+    active_spell: bombtastic
+    icon: magma_cream
+    indestructible: clay_ball
+    locked: true
+    effect_color: 'FF0000'
+    uses: 16
+    spells:
+        - bombtastic
+
 handbag:
     mode: cast
     quiet: 2

@@ -813,6 +813,14 @@ wands:
         name: Floo Powder
         description: Use for 20 seconds of protection
 
+    dungbombs:
+        name: Dungbomb Pack
+        description: Contains 12 horrid dungbombs
+
+    bombs:
+        name: Bombtastic Bomb Pack
+        description: Contains 16 bombtastic bombs
+
     thestral:
         name: Thestral Bone
         description: Summon a Thestral!
