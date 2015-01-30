@@ -348,8 +348,10 @@ public class MagicCommandExecutor extends MagicTabExecutor {
 			String ownerName = owner == null ? "(Unowned)" : owner;
 			if (world == null) {
 				sender.sendMessage(description + " lost wands in all worlds for owner: " + ownerName);
+			} else if (ownerName.equals("ALL")) {
+				sender.sendMessage(description + " lost wands in world '" + world.getName() + "' for ALL owners");
 			} else {
-				sender.sendMessage(description + " lost wands in world " + world.getName() + " for owner " + ownerName);
+				sender.sendMessage(description + " lost wands in world '" + world.getName() + "' for owner " + ownerName);
 			}
 			runningTask = new WandCleanupRunnable(api, world, owner, check);
 			runningTask.runTaskTimer(api.getPlugin(), 5, 5);
