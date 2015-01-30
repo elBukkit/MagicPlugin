@@ -119,6 +119,7 @@ master:
     keep: true
     bound: true
     undroppable: true
+    indestructible: true
 
 apprentice:
     effect_color: '22FF22'
@@ -151,12 +152,14 @@ battle:
     mode: chest
     icon: diamond_sword
     xp_regeneration: 5
+    indestructible: false
     xp_max: 50
 
 engineer:
     effect_color: '00FF00'
     path: engineer
     undroppable: true
+    indestructible: true
     mode: chest
     icon: wood_axe
     xp_regeneration: 5
@@ -171,6 +174,7 @@ architect:
     keep: true
     bound: true
     undroppable: true
+    indestructible: true
     icon: wood_axe
     effect_color: '00FF00'
     hunger_regeneration: 1
@@ -271,6 +275,7 @@ elder:
     protection: 1
     xp_max: 1000
     undroppable: true
+    indestructible: true
     xp_regeneration: 200
     health_regeneration: 1
     hunger_regeneration: 1
@@ -355,6 +360,7 @@ admin:
     keep: true
     bound: true
     undroppable: true
+    indestructible: true
     cost_reduction: 2
     protection: 2
     cooldown_reduction: 2
@@ -396,6 +402,7 @@ wolf:
     keep: true
     bound: true
     undroppable: true
+    indestructible: true
     cost_reduction: 2
     protection: 2
     cooldown_reduction: 2

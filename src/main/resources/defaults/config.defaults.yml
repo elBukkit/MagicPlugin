@@ -219,9 +219,6 @@ keep_wands_on_death: false
 # Players can remove spells from their wands
 allow_spell_dropping: true
 
-# Wands are indestructible
-indestructible_wands: true
-
 # Give new players a wand when they join.
 welcome_wand:
 
@@ -493,3 +490,9 @@ pvp_restricted: false
 
 # Debug EffectLib issues
 debug_effects: false
+
+
+## Deprecated configuration options
+
+# Wands are indestructible, regardless of their "indestructible" property
+indestructible_wands: true
