@@ -5,6 +5,7 @@
  - Spells converted to new action system
  - All default spells changed
  - Add Lockette integration
+ - Fixed/Updated Factions integration
 
 ## 3.9.4
 

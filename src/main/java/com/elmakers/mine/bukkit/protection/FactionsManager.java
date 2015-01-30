@@ -27,13 +27,11 @@ public class FactionsManager {
 			if (factionsPlugin != null)
 			{
 				try {
-					Class<?> psClass = Class.forName("com.massivecraft.mcore.ps.PS");
-					factionsManager = Class.forName("com.massivecraft.factions.listeners.FactionsListenerMain");
-					factionsCanBuildMethod = factionsManager.getMethod("canPlayerBuildAt", Player.class, psClass, Boolean.TYPE);
+					Class<?> psClass = Class.forName("com.massivecraft.massivecore.ps.PS");
+					factionsManager = Class.forName("com.massivecraft.factions.engine.EngineMain");
+					factionsCanBuildMethod = factionsManager.getMethod("canPlayerBuildAt", Object.class, psClass, Boolean.TYPE);
 					psFactoryMethod = psClass.getMethod("valueOf", Location.class);
-					if (factionsManager != null && factionsCanBuildMethod != null && psFactoryMethod != null) {
-						plugin.getLogger().info("Factions found, build permissions will be respected.");
-					} else {
+					if (factionsManager == null || factionsCanBuildMethod == null || psFactoryMethod == null) {
 						factionsManager = null;
 						factionsCanBuildMethod = null;
 						psFactoryMethod = null;
