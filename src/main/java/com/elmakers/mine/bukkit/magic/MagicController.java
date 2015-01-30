@@ -793,7 +793,11 @@ public class MagicController implements Listener, MageController {
 
                 for (Mage mage : mages.values()) {
                     if (mage instanceof com.elmakers.mine.bukkit.magic.Mage) {
-                        ((com.elmakers.mine.bukkit.magic.Mage) mage).tick();
+                        try {
+                            ((com.elmakers.mine.bukkit.magic.Mage) mage).tick();
+                        } catch (Exception ex) {
+                            getLogger().log(Level.WARNING, "Error ticking Mage " + mage.getName(), ex);
+                        }
                     }
                 }
             }

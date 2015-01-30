@@ -2554,7 +2554,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		if (player == null) return;
 		
 		// Update Bubble effects effects
-		if (effectBubbles) {
+		if (effectBubbles && effectColor != null) {
 			CompatibilityUtils.addPotionEffect(player, effectColor.getColor());
 		}
 		
