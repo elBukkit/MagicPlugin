@@ -52,6 +52,7 @@ public class VelocityAction extends BaseSpellAction implements EntityAction
             magnitude = (minMagnitude + ((maxMagnitude - minMagnitude) * heightModifier));
         }
 
+        // TODO: Fix push = -1? Seems to toggle or something?
         Vector velocity = getDirection();
         if (parameters.contains("push"))
         {
@@ -60,13 +61,10 @@ public class VelocityAction extends BaseSpellAction implements EntityAction
             Location from = getLocation();
             Vector toVector = new Vector(to.getBlockX(), to.getBlockY(), to.getBlockZ());
             Vector fromVector = new Vector(from.getBlockX(), from.getBlockY(), from.getBlockZ());
-            Vector forceVector = toVector;
-            forceVector.subtract(fromVector);
-            forceVector.normalize().multiply(direction);
-            if (forceVector.lengthSquared() > 1)
-            {
-                velocity = forceVector;
-            }
+
+            velocity = toVector;
+            velocity.subtract(fromVector);
+            velocity.normalize().multiply(direction);
         }
 
         if (getLocation().getBlockY() >= 256)
