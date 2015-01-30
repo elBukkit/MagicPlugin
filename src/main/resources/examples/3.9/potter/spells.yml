@@ -2421,7 +2421,7 @@ ventus:
     worth: 15
     actions:
         cast:
-        - VelocityAction
+        - class: VelocityAction
     effects:
         cast:
         -  class: EffectSingle
@@ -2441,6 +2441,8 @@ ventus:
     parameters:
         target_type: Entity
         range: 15
+        fov: 1
+        target_count: 5
         allow_max_range: true
         item_speed: 5
         living_entity_speed: 1
@@ -2478,6 +2480,7 @@ flipendo:
         living_entity_speed: .5
         push: 1
         cooldown: 1500
+        hitbox: true
     costs:
         mana: 40
 
@@ -3162,7 +3165,9 @@ lumos:
     worth: 10
     actions:
         cast:
-        -  class: PotionEffectAction
+        -  class: AreaOfEffectAction
+           actions:
+           -  class: PotionEffectAction
     effects:
         cast:
         -  class: EffectSingle
@@ -3184,8 +3189,9 @@ lumos:
     costs:
         mana: 55
     parameters:
-        target: any
-        range: 10
+        target: self
+        target_self: true
+        radius: 16
         target_type: LivingEntity
         duration: 10000
         effect_night_vision: 5
@@ -3199,6 +3205,24 @@ lumos|2:
 lumos|3:
     parameters:
         duration: 90000
+
+lumossolem:
+    icon: sea_lantern
+    category: charms
+    class: TossSpell
+    worth: 20
+    effects:
+        cast:
+        -  class: EffectRing
+           effect: step_sound
+           location: origin
+    pvp_restricted: true
+    parameters:
+      speed: 1
+      brush: sea_lantern
+      undo: 30000
+    costs:
+        mana: 100
 
 morsmordre:
     icon: skull_item:4
@@ -6623,6 +6647,7 @@ bombtastic:
            -  class: AreaOfEffectAction
               actions:
               -  class: DamageAction
+              -  class: VelocityAction
     effects:
         cast:
         -  class: EffectSingle
@@ -6634,11 +6659,14 @@ bombtastic:
     parameters:
         size: 0
         fuse: 60
-        damage: 4
+        damage: 2
         target_self: true
-        radius: 4
+        radius: 8
         break_blocks: false
         cooldown: 6000
+        push: 1
+        item_speed: 4
+        living_entity_speed: 3
 
 dungbomb:
     icon: magma_cream

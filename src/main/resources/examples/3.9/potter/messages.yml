@@ -408,6 +408,10 @@ spells:
         name: Lumos
         description: Lights up your wand
         cast: Lumos!
+    lumossolem:
+        name: Lumos Solem
+        description: Create a bright light
+        cast: Lumos Solem!
     mayday:
         name: Mayday
         description: Aurors call for help
