@@ -1095,11 +1095,16 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
                 targeted.add(targetEntity);
             }
 
+            // TODO: Make this work.. effect players can't actually be re-used like this.
+            // This is also kind of messed up for target types of "both" - the origin re-plays
+            // for each target.
+            boolean firstEffect = true;
             for (EffectPlayer player : currentEffects)
             {
                 for (Entity entity : targeted)
                 {
-                    boolean isCurrentEntity = (entity == targetEntity);
+                    boolean isCurrentEntity = (entity == targetEntity || (targetEntity == null && firstEffect));
+                    firstEffect = false;
                     if (!player.shouldPlayAtAllTargets() && !isCurrentEntity)
                     {
                         continue;
