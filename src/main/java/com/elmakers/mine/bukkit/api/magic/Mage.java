@@ -355,6 +355,7 @@ public interface Mage extends CostReducer {
     public Set<Spell> getActiveSpells();
     public void enableFallProtection(int ms);
     public void enableFallProtection(int ms, Spell protector);
+    public void enableFallProtection(int ms, int count, Spell protector);
 
     public void save(ConfigurationSection configuration);
     public boolean isValid();

@@ -2,6 +2,7 @@
 
 ## 2.0
 
+ - Add Action API, the new way to create custom spells
  - Add Mage.isSneaking
 
 ## 1.9
