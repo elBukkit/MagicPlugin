@@ -277,6 +277,10 @@ apparate:
                    class: LineEffect
                    particle: redstone
              '5':
+             -  class: EffectSingle
+                location: target
+                color: F5EFFB
+                firework: burst
              - class: EffectSingle
                sound: enderman_teleport
                sound_volume: 1
@@ -294,6 +298,10 @@ apparate:
                effectlib:
                    class: LineEffect
                    particle: redstone
+             -  class: EffectSingle
+                location: self
+                color: F5EFFB
+                firework: burst
     parameters:
         pvp_restricted: true
         allow_max_range: true
@@ -632,7 +640,7 @@ broom:
         cast:
         -  class: EffectSingle
            sound: enderdragon_wings
-           sound_volume: .25
+           sound_volume: .1
         -  class: EffectSingle
            effectlib:
              class: TraceEffect
@@ -2445,7 +2453,7 @@ ventus:
         target_count: 5
         allow_max_range: true
         item_speed: 5
-        living_entity_speed: 1
+        living_entity_speed: 7
         push: 1
         bypass_backfire: true
         cooldown: 10000
@@ -2520,7 +2528,7 @@ flipendo|3:
     parameters:
         range: 32
         item_speed: 3
-        living_entity_speed: 1
+        living_entity_speed: 2
         target_count: 5
         damage: 2
         cooldown: 4500
@@ -2831,7 +2839,7 @@ incarcerous:
         fov: .1
         radius: 1
         type: cuboid
-        brush: nether_fence
+        brush: birch_fence
         thickness: 1
         orient_dimension_max: 0
         orient_dimension_min: 0
@@ -3214,9 +3222,18 @@ lumossolem:
     worth: 20
     effects:
         cast:
-        -  class: EffectRing
-           effect: step_sound
-           location: origin
+        -  class: EffectSingle
+           sound: fire_ignite
+           effectlib:
+             location: target
+             offset: 0,.5,0
+             class: HelixEffect
+             iterations: 1
+             particle: flame
+        -  class: EffectTrail
+           particle: flame
+           particle_data: 2
+           particle_count: 5
     pvp_restricted: true
     parameters:
       speed: 1
@@ -6264,6 +6281,93 @@ animagus_pig:
         op: false
         commands:
         - dis pig
+    costs:
+        mana: 5
+
+animagus_rabbit:
+    name: Rabbit Animagus
+    description: Turn into a Rabbit
+    icon: carrot_item
+    category: dark
+    worth: 20
+    actions:
+        cast:
+        -  class: CommandAction
+    effects:
+        cast:
+        - class: EffectSingle
+          sound: enderman_teleport
+          location: origin
+          particle_override: particleOrbital
+          effectlib:
+            class: AtomEffect
+            particleNucleus: smoke_normal
+            particleOrbital: smoke_large
+            iterations: 8
+    parameters:
+        target: self
+        cooldown: 10000
+        op: false
+        commands:
+        - dis rabbit
+    costs:
+        mana: 5
+
+animagus_elf:
+    name: House Elf Animagus
+    description: Turn into a House Elf
+    icon: chainmail_boots
+    category: dark
+    worth: 20
+    actions:
+        cast:
+        -  class: CommandAction
+    effects:
+        cast:
+        - class: EffectSingle
+          sound: enderman_teleport
+          location: origin
+          particle_override: particleOrbital
+          effectlib:
+            class: AtomEffect
+            particleNucleus: smoke_normal
+            particleOrbital: smoke_large
+            iterations: 8
+    parameters:
+        target: self
+        cooldown: 10000
+        op: false
+        commands:
+        - dis villager setbaby true setprofession butcher
+    costs:
+        mana: 5
+
+animagus_armchair:
+    name: Armchair Animagus
+    description: Turn into a Armchair
+    icon: spruce_wood_stairs
+    category: dark
+    worth: 20
+    actions:
+        cast:
+        -  class: CommandAction
+    effects:
+        cast:
+        - class: EffectSingle
+          sound: enderman_teleport
+          location: origin
+          particle_override: particleOrbital
+          effectlib:
+            class: AtomEffect
+            particleNucleus: smoke_normal
+            particleOrbital: smoke_large
+            iterations: 8
+    parameters:
+        target: self
+        cooldown: 10000
+        op: false
+        commands:
+        - dis fallingblock setblock 134
     costs:
         mana: 5
 
