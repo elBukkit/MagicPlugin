@@ -91,6 +91,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     private Location lastDeathLocation = null;
     private final MaterialBrush brush;
     private long fallProtection = 0;
+    private long fallProtectionCount = 1;
     private BaseSpell fallingSpell = null;
 
     private boolean isNewPlayer = true;
@@ -255,9 +256,9 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
         EntityDamageEvent.DamageCause cause = event.getCause();
         if (cause == EntityDamageEvent.DamageCause.FALL) {
-            if (fallProtection > 0 && fallProtection > System.currentTimeMillis()) {
+            if (fallProtectionCount > 0 && fallProtection > 0 && fallProtection > System.currentTimeMillis()) {
                 event.setCancelled(true);
-                fallProtection = 0;
+                fallProtectionCount--;
                 if (fallingSpell != null) {
                     double scale = 1;
                     LivingEntity li = getLivingEntity();
@@ -266,10 +267,14 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                     }
                     fallingSpell.playEffects("land", (float)scale);
                 }
-                fallingSpell = null;
+                if (fallProtectionCount <= 0) {
+                    fallProtection = 0;
+                    fallingSpell = null;
+                }
                 return;
+            } else {
+                fallingSpell = null;
             }
-            fallingSpell = null;
         }
 
         // First check for damage reduction
@@ -1275,7 +1280,12 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
     public void enableFallProtection(int ms, Spell protector)
     {
-        if (ms == 0) return;
+        enableFallProtection(ms, 1, protector);
+    }
+
+    public void enableFallProtection(int ms, int count, Spell protector)
+    {
+        if (ms <= 0 || count <= 0) return;
         if (protector != null && protector instanceof BaseSpell) {
             this.fallingSpell = (BaseSpell)protector;
         }
@@ -1283,6 +1293,9 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         long nextTime = System.currentTimeMillis() + ms;
         if (nextTime > fallProtection) {
             fallProtection = nextTime;
+        }
+        if (count > fallProtectionCount) {
+            fallProtectionCount = count;
         }
     }
 

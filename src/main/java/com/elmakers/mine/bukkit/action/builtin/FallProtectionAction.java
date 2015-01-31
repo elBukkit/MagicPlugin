@@ -16,6 +16,7 @@ public class FallProtectionAction extends BaseSpellAction implements EntityActio
     @Override
     public SpellResult perform(ConfigurationSection parameters, Entity targetEntity) {
         int fallProtection = parameters.getInt("duration", 5000);
+        int fallProtectionCount = parameters.getInt("protection_count", 1);
         MageController controller = getController();
         Mage targetMage = controller.isMage(targetEntity) ? controller.getMage(targetEntity) : null;
 
@@ -23,7 +24,7 @@ public class FallProtectionAction extends BaseSpellAction implements EntityActio
             return SpellResult.NO_TARGET;
         }
 
-        targetMage.enableFallProtection(fallProtection, getSpell());
+        targetMage.enableFallProtection(fallProtection, fallProtectionCount, getSpell());
         return SpellResult.CAST;
     }
 
@@ -31,12 +32,15 @@ public class FallProtectionAction extends BaseSpellAction implements EntityActio
     public void getParameterNames(Collection<String> parameters) {
         super.getParameterNames(parameters);
         parameters.add("duration");
+        parameters.add("protection_count");
     }
 
     @Override
     public void getParameterOptions(Collection<String> examples, String parameterKey) {
         if (parameterKey.equals("duration")) {
             examples.addAll(Arrays.asList((BaseSpell.EXAMPLE_DURATIONS)));
+        } else if (parameterKey.equals("protection_count")) {
+            examples.addAll(Arrays.asList((BaseSpell.EXAMPLE_SIZES)));
         } else {
             super.getParameterOptions(examples, parameterKey);
         }

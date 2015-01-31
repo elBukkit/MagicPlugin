@@ -2759,6 +2759,7 @@ immobulus:
         target_breakables: 1
         target: other
         duration: 3000
+        protection_count: 1000
         effect_slow: 20
         effect_jump: -20
         cooldown: 10000
@@ -3587,6 +3588,7 @@ petrificustotalus:
         effect_slow: 20
         effect_jump: -20
         effect_confusion: 5
+        protection_count: 1000
         cooldown: 10000
         effect_absorption: 4
         hitbox: true
@@ -6604,6 +6606,7 @@ fiantoduri:
     actions:
         cast:
         -  class: PotionEffectAction
+        -  class: FallProtectionAction
     effects:
         cast:
         -  class: EffectSingle
@@ -6631,7 +6634,7 @@ fiantoduri:
         duration: 7000
         effect_slow: 10
         effect_jump: -10
-        fall_protection: 5000
+        protection_count: 1000
         effect_absorption: 4
 
 bombtastic:
@@ -6667,6 +6670,7 @@ bombtastic:
         push: 1
         item_speed: 4
         living_entity_speed: 3
+        bypass_build: true
 
 dungbomb:
     icon: magma_cream
@@ -6705,6 +6709,7 @@ dungbomb:
         cooldown: 6000
         effect_poison: 1
         duration: 5000
+        bypass_build: true
 
 wreckducto:
     hidden: true
