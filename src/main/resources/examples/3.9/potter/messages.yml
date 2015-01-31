@@ -111,7 +111,7 @@ categories:
 
 spells:
     default:
-        cooldown: ""
+        cooldown: "$time"
     accio:
         name: Accio
         description: Summons an object to you
