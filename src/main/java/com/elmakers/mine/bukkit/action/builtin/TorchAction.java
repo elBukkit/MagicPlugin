@@ -4,6 +4,7 @@ import com.elmakers.mine.bukkit.api.action.BlockAction;
 import com.elmakers.mine.bukkit.api.action.GeneralAction;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
+import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.spell.BaseSpellAction;
 import com.elmakers.mine.bukkit.spell.BlockSpell;
 import org.bukkit.Material;
@@ -11,6 +12,9 @@ import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.ConfigurationSection;
+
+import java.util.Arrays;
+import java.util.Collection;
 
 public class TorchAction extends BaseSpellAction implements BlockAction
 {
@@ -105,5 +109,21 @@ public class TorchAction extends BaseSpellAction implements BlockAction
 		updateBlock(target);
 
 		return SpellResult.CAST;
+	}
+
+	@Override
+	public void getParameterNames(Collection<String> parameters) {
+		super.getParameterNames(parameters);
+		parameters.add("redstone_torch");
+		parameters.add("allow_glowstone");
+	}
+
+	@Override
+	public void getParameterOptions(Collection<String> examples, String parameterKey) {
+		if (parameterKey.equals("redstone_torch") || parameterKey.equals("allow_glowstone")) {
+			examples.addAll(Arrays.asList((BaseSpell.EXAMPLE_BOOLEANS)));
+		} else {
+			super.getParameterOptions(examples, parameterKey);
+		}
 	}
 }

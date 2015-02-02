@@ -6,6 +6,7 @@ import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.ActionHandler;
+import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.spell.BaseSpellAction;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
@@ -14,6 +15,8 @@ import org.bukkit.entity.TNTPrimed;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.util.Vector;
 
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.Random;
 
 public class TNTAction extends BaseSpellAction implements GeneralAction
@@ -82,6 +85,27 @@ public class TNTAction extends BaseSpellAction implements GeneralAction
 		{
 			actions = new ActionHandler(getSpell());
 			actions.load(template, "actions");
+		}
+	}
+
+	@Override
+	public void getParameterNames(Collection<String> parameters) {
+		super.getParameterNames(parameters);
+		parameters.add("size");
+		parameters.add("count");
+		parameters.add("fuse");
+		parameters.add("fire");
+		parameters.add("break_blocks");
+	}
+
+	@Override
+	public void getParameterOptions(Collection<String> examples, String parameterKey) {
+		if (parameterKey.equals("fire") || parameterKey.equals("break_blocks")) {
+			examples.addAll(Arrays.asList((BaseSpell.EXAMPLE_BOOLEANS)));
+		} else if (parameterKey.equals("size") || parameterKey.equals("count") || parameterKey.equals("fuse")) {
+			examples.addAll(Arrays.asList((BaseSpell.EXAMPLE_SIZES)));
+		} else {
+			super.getParameterOptions(examples, parameterKey);
 		}
 	}
 }

@@ -2,9 +2,13 @@ package com.elmakers.mine.bukkit.action.builtin;
 
 import com.elmakers.mine.bukkit.api.action.GeneralAction;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
+import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.spell.BaseSpellAction;
 import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
+
+import java.util.Arrays;
+import java.util.Collection;
 
 public class WeatherAction extends BaseSpellAction implements GeneralAction
 {
@@ -31,5 +35,22 @@ public class WeatherAction extends BaseSpellAction implements GeneralAction
 			world.setThundering(false);
 		}
 		return makeStorm ? SpellResult.CAST : SpellResult.ALTERNATE;
+	}
+
+	@Override
+	public void getParameterNames(Collection<String> parameters) {
+		super.getParameterNames(parameters);
+		parameters.add("weather");
+	}
+
+	@Override
+	public void getParameterOptions(Collection<String> examples, String parameterKey) {
+		if (parameterKey.equals("weather")) {
+			examples.add("storm");
+			examples.add("cycle");
+			examples.add("clear");
+		} else {
+			super.getParameterOptions(examples, parameterKey);
+		}
 	}
 }
