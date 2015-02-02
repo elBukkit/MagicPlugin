@@ -301,18 +301,20 @@ restricted:
 - diamond_block
 - emerald_block
 - coal_block
+- lapis_block
 - iron_ore
 - gold_ore
 - diamond_ore
 - emerald_ore
 - coal_ore
 - redstone_ore
+- lapis_ore
 - anvil
 - chest
 - furnace
 
 # Which materials the AnimateSpell can't be cast on
-# This generally means Autonoma cannot be made out of these materials.
+# This generally means Automata cannot be made out of these materials.
 restricted_animate:
 - grass
 - dirt
