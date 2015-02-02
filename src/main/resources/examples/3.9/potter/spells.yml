@@ -2616,10 +2616,18 @@ fumos:
 glacius:
     icon: snow_ball
     category: transfiguration
-    class: FrostSpell
     pvp_restricted: true
     cast_on_no_target: true
     worth: 80
+    actions:
+        cast:
+        - class: AreaOfEffectAction
+          actions:
+          - class: PotionEffectAction
+          - class: DamageAction
+        - class: CoverAction
+          actions:
+          - class: FreezeAction
     effects:
         cast:
         -  class: EffectSingle
@@ -2651,8 +2659,7 @@ glacius:
         radius: 1
         vertical_search_distance: 8
         transparent: transparent_to_construction
-        player_damage: 1
-        entity_damage: 2
+        damage: 1
         duration: 1000
         effect_slow: 1
         ice: ice
@@ -2956,10 +2963,17 @@ phoenixfire:
 incendio:
     icon: clay_ball
     category: dark
-    class: FireSpell
     pvp_restricted: true
     cast_on_no_target: true
     worth: 50
+    actions:
+        cast:
+        - class: AreaOfEffectAction
+          actions:
+          - class: IgniteAction
+        - class: CoverAction
+          actions:
+          - class: BurnAction
     effects:
         cast:
         -  class: EffectSingle

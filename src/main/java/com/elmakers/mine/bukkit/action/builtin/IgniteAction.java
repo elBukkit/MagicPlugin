@@ -1,12 +1,13 @@
 package com.elmakers.mine.bukkit.action.builtin;
 
 import com.elmakers.mine.bukkit.api.action.EntityAction;
+import com.elmakers.mine.bukkit.api.magic.Mage;
+import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.spell.BaseSpellAction;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.LivingEntity;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -20,8 +21,14 @@ public class IgniteAction extends BaseSpellAction implements EntityAction
         int ticks = duration * 20 / 1000;
 
         registerModified(entity);
-        entity.setFireTicks(ticks);
 
+		MageController controller = getController();
+		Mage mage = getMage();
+		if (controller.isElemental(entity)) {
+			controller.damageElemental(entity, 0, ticks, mage.getCommandSender());
+		} else {
+			entity.setFireTicks(ticks);
+		}
 		return SpellResult.CAST;
 	}
 

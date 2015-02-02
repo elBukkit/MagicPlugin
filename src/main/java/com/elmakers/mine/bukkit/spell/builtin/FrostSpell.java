@@ -21,6 +21,7 @@ import com.elmakers.mine.bukkit.spell.BlockSpell;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.Target;
 
+@Deprecated
 public class FrostSpell extends BlockSpell
 {
 	private static final int			DEFAULT_RADIUS				= 2;

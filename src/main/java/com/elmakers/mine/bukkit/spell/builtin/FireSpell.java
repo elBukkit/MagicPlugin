@@ -15,6 +15,7 @@ import com.elmakers.mine.bukkit.block.batch.SimpleBlockAction;
 import com.elmakers.mine.bukkit.spell.BlockSpell;
 import com.elmakers.mine.bukkit.utility.Target;
 
+@Deprecated
 public class FireSpell extends BlockSpell
 {
 	private final static int		DEFAULT_RADIUS	= 4;
