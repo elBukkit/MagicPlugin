@@ -14,6 +14,7 @@ import org.bukkit.entity.Entity;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 public class AreaOfEffectAction extends CompoundAction implements BlockAction
@@ -40,7 +41,7 @@ public class AreaOfEffectAction extends CompoundAction implements BlockAction
 
 		if (targetCount > 0)
 		{
-			Collection<Target> targets = new ArrayList<Target>();
+			List<Target> targets = new ArrayList<Target>();
 			for (Entity entity : entities)
 			{
 				if ((targetSelf || entity != sourceEntity) && spell.canTarget(entity))
@@ -48,7 +49,7 @@ public class AreaOfEffectAction extends CompoundAction implements BlockAction
 					targets.add(new Target(sourceLocation, entity, radius));
 				}
 			}
-
+			Collections.sort(targets);
 			for (Target target : targets)
 			{
 				if (targetEntities.size() >= targetCount) break;
