@@ -4451,44 +4451,8 @@ colorvaria:
         mana: 70
 
 meteo:
-    icon: watch
     category: staff
-    class: TorchSpell
-    worth: 120
-    effects:
-        cast:
-        -  class: EffectSingle
-           sound: fuse
-           effectlib:
-             class: HelixEffect
-             iterations: 1
-             particle: flame
-        -  class: EffectTrail
-           particle: flame
-           particle_data: 2
-           particle_count: 5
-        area:
-        -  class: EffectSingle
-           sound: fuse
-           effectlib:
-             offset: 0,4,0
-             class: HelixEffect
-             iterations: 1
-             particle: flame
-        -  class: EffectTrail
-           particle: flame
-           particle_data: 2
-           particle_count: 5
-    parameters:
-        allow_max_range: false
-        allow_night: false
-        allow_day: true
-        allow_glowstone: false
-        cooldown: 5000
-        time: day
-        weather: clear
-    costs:
-        mana: 200
+    inherit: day
 
 nox:
     icon: ink_sack:0

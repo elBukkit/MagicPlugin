@@ -2030,26 +2030,42 @@ gills:
 day:
     icon: emerald
     category: master
-    class: TorchSpell
     worth: 120
+    actions:
+        cast:
+        -  class: TimeAction
+        -  class: WeatherAction
     effects:
         cast:
         -  class: EffectSingle
-           sound: ambience_cave
+           sound: fuse
            effectlib:
+             offset: 0,4,0
              class: HelixEffect
-             iterations: 24
-             particle: magic_runes
+             iterations: 1
+             particle: flame
+        -  class: EffectTrail
+           particle: flame
+           particle_data: 2
+           particle_count: 5
+        alternate:
+        -  class: EffectSingle
+           sound: fuse
+           effectlib:
+             offset: 0,4,0
+             class: HelixEffect
+             iterations: 1
+             particle: flame
+        -  class: EffectTrail
+           particle: flame
+           particle_data: 2
+           particle_count: 5
     parameters:
-        allow_max_range: false
-        allow_night: false
-        allow_day: true
-        allow_glowstone: false
-        cooldown: 60000
+        cooldown: 5000
         time: day
         weather: clear
     costs:
-        mana: 40
+        mana: 50
 night:
     icon: coal
     category: master
