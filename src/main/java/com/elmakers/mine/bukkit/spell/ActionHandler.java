@@ -145,6 +145,11 @@ public class ActionHandler
         return perform(parameters, sourceLocation, sourceEntity, targetLocation, targetEntities);
     }
 
+    public SpellResult perform(ConfigurationSection parameters, Location targetLocation)
+    {
+        return perform(parameters, targetLocation, null);
+    }
+
     public SpellResult perform(Location targetLocation, Entity targetEntity)
     {
         Entity sourceEntity = null;
@@ -194,17 +199,20 @@ public class ActionHandler
             }
         }
 
-        if (targetEntities.size() == 0 && entityActions.size() > 0)
+        if ((targetEntities == null || targetEntities.size() == 0) && entityActions.size() > 0)
         {
             result = SpellResult.NO_TARGET.min(result);
         }
 
-        for (Entity entity : targetEntities)
+        if (targetEntities != null)
         {
-            for (EntityAction action : entityActions)
+            for (Entity entity : targetEntities)
             {
-                SpellResult actionResult = action.perform(action.getParameters(parameters), entity);
-                result = result.min(actionResult);
+                for (EntityAction action : entityActions)
+                {
+                    SpellResult actionResult = action.perform(action.getParameters(parameters), entity);
+                    result = result.min(actionResult);
+                }
             }
         }
 

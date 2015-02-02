@@ -9,6 +9,7 @@ import com.elmakers.mine.bukkit.api.spell.MageSpell;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
@@ -267,6 +268,24 @@ public abstract class BaseSpellAction implements SpellAction
         {
             targetingSpell.addTargetEntity(entity);
         }
+    }
+
+    public Block findBlockUnder(Block block)
+    {
+        if (targetingSpell != null)
+        {
+            block = targetingSpell.findBlockUnder(block);
+        }
+        return block;
+    }
+
+    public boolean isTransparent(Material material)
+    {
+        if (targetingSpell != null)
+        {
+            return targetingSpell.isTransparent(material);
+        }
+        return material.isTransparent();
     }
 
     public MaterialBrush getBrush() {
