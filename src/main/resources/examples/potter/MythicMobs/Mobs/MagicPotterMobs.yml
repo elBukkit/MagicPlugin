@@ -220,7 +220,7 @@ GiantToad:
     MaxCombatDistance: 30
     KnockbackResistance: 1
 Firebender:
-  Mobtype: angrypigzombie
+  Mobtype: pigzombie
   Display: Firebender
   Health: 100
   Damage: 4
@@ -280,7 +280,7 @@ Waterbender:
   Skills:
   - skill Waterbending ~onTimer:30 >0 0.8
 Earthbender:
-  Mobtype: angrypigzombievillager
+  Mobtype: pigzombievillager
   Display: Earthbender
   Health: 150
   Damage: 5
