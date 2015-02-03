@@ -9,7 +9,6 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.ConfigurationSection;
 
-@Deprecated
 public class BurnAction extends BaseSpellAction implements BlockAction
 {
 	public SpellResult perform(ConfigurationSection parameters, Block block)

@@ -21,7 +21,8 @@ public class CoverAction extends CompoundAction implements BlockAction
 
 		Mage mage = getMage();
 		int radius = parameters.getInt("radius", DEFAULT_RADIUS);
-		radius = (int)(mage.getRadiusMultiplier() * radius);		
+		radius = (int)(mage.getRadiusMultiplier() * radius);
+		block = findSpaceAbove(block);
 
 		if (radius < 1)
 		{
@@ -41,7 +42,7 @@ public class CoverAction extends CompoundAction implements BlockAction
 					Block targetBlock = getWorld().getBlockAt(x, y, z);
 					targetBlock = findBlockUnder(targetBlock);
 					Block coveringBlock = targetBlock.getRelative(BlockFace.UP);
-					if (!isTransparent(block.getType()) && isTransparent(coveringBlock.getType()))
+					if (!isTransparent(targetBlock.getType()) && isTransparent(coveringBlock.getType()))
 					{
 						actions.perform(parameters, targetBlock.getLocation());
 					}
