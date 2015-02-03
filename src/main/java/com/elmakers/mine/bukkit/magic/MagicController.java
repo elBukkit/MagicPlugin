@@ -43,8 +43,11 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.block.BlockBurnEvent;
+import org.bukkit.event.block.BlockIgniteEvent;
 import org.bukkit.event.block.BlockPhysicsEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.block.BlockSpreadEvent;
 import org.bukkit.event.entity.*;
 import org.bukkit.event.hanging.HangingBreakByEntityEvent;
 import org.bukkit.event.hanging.HangingBreakEvent;
@@ -1952,19 +1955,59 @@ public class MagicController implements Listener, MageController {
 		Entity entity = event.getEntity();
 
 		if (entity instanceof FallingBlock) {
-			if (event.getEntity().hasMetadata("MagicBlockList")) {
-				List<MetadataValue> values = entity.getMetadata("MagicBlockList");  
-				for (MetadataValue value : values) {
-					if (value.getOwningPlugin() == plugin) {
-						UndoList blockList = (UndoList)value.value();
-						blockList.convert(entity, event.getBlock());
-					}
-				}
+            UndoList blockList = com.elmakers.mine.bukkit.block.UndoList.getUndoList(entity);
+			if (blockList != null) {
+                blockList.convert(entity, event.getBlock());
 			} else {
 				registerFallingBlock(entity, event.getBlock());
 			}
 		}
 	}
+
+    @EventHandler
+    public void onBlockBurn(BlockBurnEvent event) {
+        Block targetBlock = event.getBlock();
+        UndoList undoList = getPendingUndo(targetBlock.getLocation());
+        if (undoList != null)
+        {
+            undoList.add(targetBlock);
+        }
+    }
+
+    @EventHandler
+    public void onBlockIgnite(BlockIgniteEvent event) {
+        BlockIgniteEvent.IgniteCause cause = event.getCause();
+        if (cause == BlockIgniteEvent.IgniteCause.ENDER_CRYSTAL || cause == BlockIgniteEvent.IgniteCause.FLINT_AND_STEEL)
+        {
+            return;
+        }
+
+        Entity entity = event.getIgnitingEntity();
+        UndoList entityList = getEntityUndo(entity);
+        if (entityList != null)
+        {
+            entityList.add(event.getBlock());
+            return;
+        }
+
+        Block ignitingBlock = event.getIgnitingBlock();
+        if (ignitingBlock != null)
+        {
+            UndoList undoList = getPendingUndo(ignitingBlock.getLocation());
+            if (undoList != null)
+            {
+                undoList.add(event.getBlock());
+                return;
+            }
+        }
+
+        Block targetBlock = event.getBlock();
+        UndoList undoList = getPendingUndo(targetBlock.getLocation());
+        if (undoList != null)
+        {
+            undoList.add(targetBlock);
+        }
+    }
 
     protected UndoList getPendingUndo(Location location)
     {
@@ -2102,14 +2145,9 @@ public class MagicController implements Listener, MageController {
                     }
                 }
             }
-		} else if (entity.hasMetadata("MagicBlockList")) {
-			List<MetadataValue> values = entity.getMetadata("MagicBlockList");  
-			for (MetadataValue value : values) {
-				if (value.getOwningPlugin() == plugin) {
-					blockList = (UndoList)value.value();
-				}
-			}
-		}
+		} else {
+            blockList = com.elmakers.mine.bukkit.block.UndoList.getUndoList(entity);
+        }
 		
 		return blockList;
 	}
