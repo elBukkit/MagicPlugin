@@ -217,8 +217,8 @@ spells:
         cast_finish: ""
     confringo:
         name: Confringo
-        description: Explode the target item
-        cast: Confringo $target
+        description: Launch an exploding fireball
+        cast: Confringo!
     confundus:
         name: Confundus
         description: Confound your target

@@ -6514,11 +6514,23 @@ confringo:
     icon: fireball
     category: dark
     pvp_restricted: true
-    class: CommandSpell
+    cast_on_no_target: true
     worth: 35
+    actions:
+        cast:
+        -  class: ProjectileAction
+           actions:
+           -  class: CoverAction
+              actions:
+              -  class: BurnAction
     effects:
         cast:
         -  class: EffectSingle
+           effectlib:
+             class: ConeEffect
+             iterations: 15
+             particle: lava
+             lengthGrow: 0.4
            sound: ghast_fireball
            sound_volume: 1
            sound_pitch: -.25
@@ -6529,14 +6541,28 @@ confringo:
              class: SmokeEffect
              iterations: 8
              particle: lava
+        hit:
+        -  class: EffectSingle
+           location: target
+           color: FE642E
+           firework: ball
     parameters:
-        target: self
-        target_type: LivingEntity
+        projectile: LargeFireball
+        fire: false
+        range: 32
+        allow_max_range: true
+        hitbox: true
+        vertical_search_distance: 8
+        bypass_build: true
+        target_breakables: 0
+        radius: 2
+        cooldown: 1000
+        size: 1.25
+        spread: 2
+        speed: 5
+        entity_undo: false
+        undo: 8000
         cooldown: 13000
-        op: true
-        commands:
-        - castp @t confringoincendio
-        - castp @t confringofireball
         bypass_backfire: true
     costs:
         mana: 100
@@ -6570,82 +6596,6 @@ firestorm:
         bypass_backfire: true
     costs:
         mana: 100
-
-confringofireball:
-    name: Confringo Fireball
-    icon: fireball
-    category: dark
-    hidden: true
-    worth: 35
-    actions:
-        cast:
-        - class: ProjectileAction
-    effects:
-        cast:
-        -  class: EffectSingle
-           sound: ghast_fireball
-        projectile:
-        -  class: EffectSingle
-           location: origin
-           effectlib:
-             class: SmokeEffect
-             iterations: 8
-             particle: lava
-    parameters:
-        projectile: LargeFireball
-        fire: false
-        range: 32
-        cooldown: 1000
-        size: 1.25
-        spread: 2
-        speed: 5
-        entity_undo: false
-        undo: 8000
-        cooldown: 4000
-        bypass_backfire: true
-    costs:
-        mana: 100
-
-confringoincendio:
-    name: Confringo Flames
-    icon: clay_ball
-    category: dark
-    class: FireSpell
-    pvp_restricted: true
-    hidden: true
-    cast_on_no_target: true
-    worth: 50
-    effects:
-        cast:
-        -  class: EffectSingle
-           sound: ghast_fireball
-           location: both
-        -  class: EffectSingle
-           effectlib:
-             class: ConeEffect
-             iterations: 15
-             particle: lava
-             lengthGrow: 0.4
-        -  class: EffectSingle
-           location: target
-           color: FE642E
-           firework: ball
-    parameters:
-        target_type: LivingEntity
-        allow_max_range: false
-        range: 32
-        hitbox: true
-        fov: 0.10
-        vertical_search_distance: 8
-        bypass_build: true
-        target_breakables: 0
-        entity_undo: false
-        bypass_backfire: true
-        radius: 1
-        cooldown: 5000
-        undo: 1200
-    costs:
-        mana: 50
 
 tripudio:
     alias: Tripudio
