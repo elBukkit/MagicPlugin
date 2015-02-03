@@ -109,13 +109,8 @@ show_messages: true
 # Whether or not to show messages on every spell cast (in chat)
 show_cast_messages: true
 
-# Whether or not to show (or broadcast) cast messages as holotext
-show_cast_holotext: false
-cast_holotext_range: 0
-
-# Whether or not to show (or broadcast) spell activate holotext
-show_activate_holotext: false
-activate_holotext_range: 0
+# Prevent rapid sending of chat messages from the plugin (in milliseconds)
+message_throttle: 500
 
 # A prefix to use for any important messages
 message_prefix: "&d&o"
@@ -126,14 +121,20 @@ cast_message_prefix: "&5&o"
 # Enable/Disable Sound Effects
 sounds: true
 
-# Prevent rapid sending of chat messages from the plugin (in milliseconds)
-message_throttle: 500
+# Whether wands can be crafted on a crafting table
+enable_crafting: true
+
+# Whether wands can be upgraded on an enchanting table
+enable_enchanting: true
+
+# Whether wands can be combined on an anvil
+enable_combining: true
 
 # Set this to 1 to just turn costs off, or you can use it to scale costs down.
 cost_reduction: 0.0
 
 # Disabling cooldowns is not a great idea. I generally only put cooldowns on spells
-# that can hurt the server via spamming- generally by creating too many entities or explosions.
+# that can hurt the server via spamming- as in by creating too many entities or explosions.
 cooldown_reduction: 0.0
 
 # How much to reduce costs and cooldowns when using /cast (versus a wand)
@@ -144,22 +145,10 @@ cast_command_cooldown_reduction: 0.0
 # Set the to 1.0 to use normal wand power, 0.0 to ignore wand power.
 cast_command_power_multiplier: 0.0
 
-# Whether wands can be crafted on a crafting table
-enable_crafting: true
-
-# Whether wands can be combined on an anvil
-enable_combining: true
-
 # Whether renaming on an anvil will also clear the description
 # In the future, it may be possible to change the description on
 # an anvil.
 anvil_rename_clears_description: false
-
-# Whether wands can be upgraded on an enchanting table
-enable_enchanting: true
-
-# Whether or not to add random wands to naturally spawned chests
-enable_block_populator: false
 
 # Whether or not using a wand on an anvil will organize its inventory
 enable_organizing: true
@@ -177,14 +166,6 @@ metrics_level: 5
 # 
 age_dropped_items: 0
 
-# Generally this hack is required, due to Bukkit not supporting custom items.
-# But just in case, in the future, or if maybe you're running a custom CB....
-# you can turn this off.
-# This disables the item drag event interceptor
-enable_custom_item_hacks: true
-# This disabled wands ejecting themselves in creative mode
-enable_creative_mode_ejecting: true
-
 #
 # Wand configuration
 # 
@@ -194,15 +175,11 @@ wand_item: wood_hoe
 wand_upgrade_item: nether_star
 wand_glow: true
 spell_glow: true
-wand_abuse_damage: 0
+wand_abuse_damage: 0.001
 prevent_melee_damage: false
-wand_inventory_open_sound: chest_open,0.3,1.5
-wand_inventory_cycle_sound: chest_open,0.4,0.2
-wand_inventory_close_sound: chest_close,0.4,0.2
-
-# Used as a work-around for enchanting since the main item may not be enchantable (client-side).
-#wand_item_enchantable: wood_sword
-wand_item_enchantable:
+wand_inventory_open_sound: level_up,0.3,1.5
+wand_inventory_cycle_sound: orb_pickup,0.4,0.2
+wand_inventory_close_sound: level_up,0.4,0.2
 
 # If true, fill wands with all known spells on creation
 fill_wands: false
@@ -217,7 +194,7 @@ enable_keeping: true
 keep_wands_on_death: false
 
 # Players can remove spells from their wands
-allow_spell_dropping: true
+allow_spell_dropping: false
 
 # Give new players a wand when they join.
 welcome_wand:
@@ -232,7 +209,7 @@ default_wand_mode: inventory
 # The default enchanting path.
 # The default default is "master" for backwards compatibility reasons
 # This means that wands prior to 3.3 will be counted as Master wands regardless of type.
-default_wand_path: master
+default_wand_path:
 
 # How to display Mana. Options are "bar", "number" and "hybrid"
 mana_display: hybrid
@@ -313,16 +290,6 @@ commit_on_quit: false
 # a server crash.
 undo_on_world_save: false
 
-# Backup Inventory to wand data
-# This can cause some issues with item sizes, and is somewhat experimental
-backup_inventory: false
-
-# DEPRECATED
-# Nearly all spells undo, so this setting will produce strange behavior.
-# You will need to add "undo" to individual spells in spells.yml if you want auto-undo behavior.
-# If set to non-zero, represents a time (in milliseconds) after which all spells will be reversed.
-auto_undo: 0
-
 # Throttle TNT explosions
 # this is important if you allow building with tnt, especially with griefers.
 max_tnt_per_chunk: 16
@@ -369,7 +336,58 @@ max_cooldown_reduction: 0.75
 max_mana: 1000
 max_mana_regeneration: 100
 
+### Plugin Integration
+
+# Allow wands to be purchased on Essentials' signs, if present.
+enable_essentials_signs: true
+
+# Update dynmap when constructing, if dynmap is present.
+dynmap_update: true
+
+# Show wands as dynmap markers, if dynmap is present
+dynmap_show_wands: true
+
+# Show spell casts as dynmap polylines, if dynmap is present
+dynmap_show_spells: true
+
+# Only show spell casts from players
+dynmap_only_player_spells: false
+
+# Enable worldguard protection against construction spells, and PVP
+region_manager_enabled: true
+
+# Enable Factions protection against construction spells
+factions_enabled: true
+
+# Enable PvPManager integration for PVP spells
+pvp_manager_enabled: true
+
+# Enable Towny integration for Build checks
+towny_enabled: true
+
+# Enable PreciousStones integration for Build and PVP checks
+precious_stones_enabled: true
+
+# Enable Lockette integration for Build checks
+lockette_enabled: true
+
+# Enable MVCore integration for PVP checks
+multiverse_enabled: true
+
+# Disable all build-related checks
+bypass_build: false
+
+# Disable all pvp-related checks
+bypass_pvp: false
+
+# Will consider all spells as pvp spells
+pvp_restricted: false
+
+# Debug EffectLib issues
+debug_effects: false
+
 ### Economy Helpers
+
 # These values are used to help create a balanced economy if you plan on selling wands, spells, or upgrades.
 # Currently they are only visible on the Magic website, though I plan to incorporate them into the plugin in the near future.
 # This will probably appear in the form of a "/magic sell <item>" command. This would work just like "/magic give <item>"
@@ -441,58 +459,36 @@ worth_items:
   diamond: 16
   emerald: 256
 
-### Plugin Integration
+## Work-in-Progress or not-fully-functional options
 
-# Allow wands to be purchased on Essentials' signs, if present.
-enable_essentials_signs: true
+# Whether or not to show (or broadcast) cast messages as holotext
+show_cast_holotext: false
+cast_holotext_range: 0
 
-# Update dynmap when constructing, if dynmap is present.
-dynmap_update: true
-
-# Show wands as dynmap markers, if dynmap is present
-dynmap_show_wands: true
-
-# Show spell casts as dynmap polylines, if dynmap is present
-dynmap_show_spells: true
-
-# Only show spell casts from players
-dynmap_only_player_spells: false
-
-# Enable worldguard protection against construction spells, and PVP
-region_manager_enabled: true
-
-# Enable Factions protection against construction spells
-factions_enabled: true
-
-# Enable PvPManager integration for PVP spells
-pvp_manager_enabled: true
-
-# Enable Towny integration for Build checks
-towny_enabled: true
-
-# Enable PreciousStones integration for Build and PVP checks
-precious_stones_enabled: true
-
-# Enable Lockette integration for Build checks
-lockette_enabled: true
-
-# Enable MVCore integration for PVP checks
-multiverse_enabled: true
-
-# Disable all build-related checks
-bypass_build: false
-
-# Disable all pvp-related checks
-bypass_pvp: false
-
-# Will consider all spells as pvp spells
-pvp_restricted: false
-
-# Debug EffectLib issues
-debug_effects: false
-
+# Whether or not to show (or broadcast) spell activate holotext
+show_activate_holotext: false
+activate_holotext_range: 0
 
 ## Deprecated configuration options
 
 # Wands are indestructible, regardless of their "indestructible" property
 indestructible_wands: true
+
+# Generally this hack is required, due to Bukkit not supporting custom items.
+# But just in case, in the future, or if maybe you're running a custom CB....
+# you can turn this off.
+# This disables the item drag event interceptor
+enable_custom_item_hacks: false
+# This disabled wands ejecting themselves in creative mode
+enable_creative_mode_ejecting: false
+
+# Used as a work-around for enchanting since the main item may not be enchantable (client-side).
+# wand_item_enchantable: wood_sword
+wand_item_enchantable:
+
+# If set to non-zero, represents a time (in milliseconds) after which all spells will be reversed.
+auto_undo: 0
+
+# Backup Inventory to wand data
+# This can cause some issues with item sizes, and is somewhat experimental
+backup_inventory: false
