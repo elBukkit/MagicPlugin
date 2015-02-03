@@ -279,6 +279,15 @@ public abstract class BaseSpellAction implements SpellAction
         return block;
     }
 
+    public Block findSpaceAbove(Block block)
+    {
+        if (targetingSpell != null)
+        {
+            block = targetingSpell.findSpaceAbove(block);
+        }
+        return block;
+    }
+
     public boolean isTransparent(Material material)
     {
         if (targetingSpell != null)

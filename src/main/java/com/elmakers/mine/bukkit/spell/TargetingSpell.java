@@ -652,6 +652,17 @@ public abstract class TargetingSpell extends BaseSpell {
         return block;
     }
 
+    public Block findSpaceAbove(Block block)
+    {
+        int depth = 0;
+        while (depth < verticalSearchDistance && !targetThroughMaterials.contains(block.getType()))
+        {
+            depth++;
+            block = block.getRelative(BlockFace.UP);
+        }
+        return block;
+    }
+
     public void coverSurface(Location center, int radius, BlockAction action)
     {
         int y = center.getBlockY();
