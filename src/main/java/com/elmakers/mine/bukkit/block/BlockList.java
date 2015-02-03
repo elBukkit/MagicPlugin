@@ -38,6 +38,7 @@ public class BlockList implements com.elmakers.mine.bukkit.api.block.BlockList {
         }
     }
 
+    @Override
     public boolean add(Block block)
     {
         if (contains(block))
@@ -77,6 +78,7 @@ public class BlockList implements com.elmakers.mine.bukkit.api.block.BlockList {
         return true;
     }
 
+    @Override
     public void contain(Vector vector)
     {
         if (area == null)
@@ -111,6 +113,7 @@ public class BlockList implements com.elmakers.mine.bukkit.api.block.BlockList {
         blockList.clear();
     }
 
+    @Override
     public boolean contains(Block block)
     {
         if (blockIdMap == null) return false;

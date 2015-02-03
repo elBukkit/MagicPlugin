@@ -14,6 +14,7 @@ import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.metadata.MetadataValue;
 import org.bukkit.plugin.Plugin;
 
 import com.elmakers.mine.bukkit.api.block.BlockData;
@@ -543,5 +544,19 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
 
     public boolean getApplyPhysics() {
         return applyPhysics;
+    }
+
+    public static UndoList getUndoList(Entity entity) {
+        UndoList blockList = null;
+        if (entity != null && entity.hasMetadata("MagicBlockList")) {
+            List<MetadataValue> values = entity.getMetadata("MagicBlockList");
+            for (MetadataValue value : values) {
+                if (value instanceof UndoList) {
+                    blockList = (UndoList)value.value();
+                }
+            }
+        }
+
+        return blockList;
     }
 }
