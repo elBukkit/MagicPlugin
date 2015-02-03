@@ -360,4 +360,10 @@ public class ActionHandler
             entity.setMetadata("effects", new FixedMetadataValue(spell.getController().getPlugin(), key));
         }
     }
+
+    @Override
+    public String toString()
+    {
+        return "ActionHandler [" + allActions.size() + "]";
+    }
 }
