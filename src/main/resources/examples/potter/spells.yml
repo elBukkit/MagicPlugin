@@ -51,16 +51,31 @@ default:
        - class: EffectSingle
          location: origin
          entity_effect: hurt
-       cost_free: cast
        no_target: cast
+       alternate: cast
+       alternate_up: cast
+       alternate_down: cast
+       alternate_sneak: cast
+       fizzle: fail
+       cancelled: fail
+       entity_required: fail
+       living_entity_required: fail
+       player_required: fail
+       location_required: fail
+       world_required: fail
+       invalid_world: fail
+       no_action: fail
 
 accio:
     icon: ink_sack:6
     category: charms
-    class: PushSpell
     pvp_restricted: true
     cast_on_no_target: true
     worth: 10
+    actions:
+        cast:
+        -  class: VelocityAction
+        -  class: FallProtectionAction
     effects:
         cast:
         -  class: EffectSingle
@@ -70,33 +85,35 @@ accio:
            reverse: true
            length: 16
            particle_count: 6
-        area:
+        alternate:
         -  class: EffectSingle
            sound: fizz
            effectlib:
              class: HelixEffect
-             particle: flame
+             particle: redstone
+             color: E0ECF8
     parameters:
         target_type: Entity
         allow_max_range: true
         range: 48
-        allow_area: false
-        item_force: 2
-        area_range: 20
-        entity_force: 1
-        type: pull
-        count: 1
-        fall_protection: 10000
+        item_speed: 2
+        living_entity_speed: 1
+        push: -1
+        duration: 10000
     costs:
         mana: 50
 
 accio|2:
     parameters:
-        count: 4
+        target_count: 4
 
 accio|3:
+    actions:
+        alternate:
+        -  class: VelocityAction
+        -  class: FallProtectionAction
     parameters:
-        count: 8
+        target_count: 8
         allow_area: true
 
 aguamenti:
@@ -156,6 +173,7 @@ alohomora:
            sound: fuse
         -  class: EffectTrail
            particle: redstone
+           color: FFFF00
            particle_data: 2
            particle_count: 5
     parameters:
@@ -224,6 +242,7 @@ aparecium:
         power: true
         cooldown: 9000
         undo: 4000
+        physics: true
         bypass_build: true
         check_destructible: true
         destructible: powerable
@@ -258,6 +277,10 @@ apparate:
                    class: LineEffect
                    particle: redstone
              '5':
+             -  class: EffectSingle
+                location: target
+                color: F5EFFB
+                firework: burst
              - class: EffectSingle
                sound: enderman_teleport
                sound_volume: 1
@@ -275,6 +298,10 @@ apparate:
                effectlib:
                    class: LineEffect
                    particle: redstone
+             -  class: EffectSingle
+                location: self
+                color: F5EFFB
+                firework: burst
     parameters:
         pvp_restricted: true
         allow_max_range: true
@@ -309,7 +336,7 @@ apparatemaxima:
                    particleOrbital: redstone
                    iterations: 12
              - class: EffectSingle
-               particle_override: particleOrbital
+               particle_override: particle
                color_override: color
                effectlib:
                    class: LineEffect
@@ -326,7 +353,7 @@ apparatemaxima:
                    particleOrbital: redstone
                    iterations: 12
              - class: EffectSingle
-               particle_override: particleOrbital
+               particle_override: particle
                color_override: color
                effectlib:
                    class: LineEffect
@@ -347,10 +374,13 @@ apparatemaxima:
 araniaexumai:
     icon: ink_sack:2
     category: creatures
-    class: PushSpell
     pvp_restricted: true
     cast_on_no_target: true
     worth: 15
+    actions:
+        cast:
+        -  class: VelocityAction
+        -  class: DamageAction
     effects:
         cast:
         -  class: EffectSingle
@@ -360,25 +390,17 @@ araniaexumai:
            effectlib:
              class: ConeEffect
              iterations: 10
-             lengthGrow: 0.1
-             particle: spell_instant
-        area:
-        -  class: EffectSingle
-           sound: ghast_fireball
-           sound_volume: 1
-           effectlib:
-             class: VortexEffect
-             particle: spell_witch
+             lengthGrow: 0.15
+             particle: spell_mob
+             color: 58FAD0
     parameters:
         target_type: Spider
-        range: 32
-        allow_area: false
-        item_force: 2
-        area_range: 20
-        entity_force: 2
+        range: 40
+        item_speed: 2
+        living_entity_speed: 2
         bypass_backfire: true
-        type: push
-        count: 8
+        push: 1
+        target_count: 8
         damage: 10
         cooldown: 500
     costs:
@@ -400,16 +422,18 @@ arrow:
            sound_volume: 1
            location: origin
         -  class: EffectSingle
-           location: target
+           location: origin
            effectlib:
              class: ConeEffect
              iterations: 8
              lengthGrow: 1
              particle: smoke_normal
+        hit:
         -  class: EffectSingle
-           location: target
+           location: origin
            color: CC9933
            firework: ball
+           effect: explosion_large
         projectile:
         -  class: EffectSingle
            location: origin
@@ -465,15 +489,22 @@ snowball:
     worth: 5
     actions:
         cast:
-        - class: ProjectileAction
-        projectile:
-        - class: PotionEffectAction
-        - class: DamageAction
+        -  class: ProjectileAction
+           actions:
+           -  class: AreaOfEffectAction
+              actions:
+              -  class: PotionEffectAction
+              -  class: DamageAction
     effects:
         cast:
         -  class: EffectSingle
            sound: step_snow
            location: origin
+        hit:
+        -  class: EffectSingle
+           location: origin
+           color: DDDDDD
+           firework: ball
         projectile:
         -  class: EffectSingle
            location: origin
@@ -484,7 +515,7 @@ snowball:
     parameters:
       projectile: Snowball
       origin_at_target: true
-      oty: 8
+      oty: 5
       otdx: 0
       otdy: -1
       otdz: 0
@@ -494,6 +525,7 @@ snowball:
       allow_max_range: true
       spread: 20
       effect_slow: 120,1
+      target_self: true
       damage: 1
     costs:
         mana: 80
@@ -501,9 +533,11 @@ snowball:
 ascendio:
     icon: ink_sack:8
     category: charms
-    class: FlingSpell
     worth: 80
     pvp_restricted: false
+    actions:
+        cast:
+        - class: VelocityAction
     effects:
         cast:
         -  class: EffectSingle
@@ -518,7 +552,7 @@ ascendio:
            particle: spell
            period: 2
     parameters:
-        safety: 0
+        target: self
         min_speed: 1.0
         max_speed: 1.5
     costs:
@@ -526,13 +560,16 @@ ascendio:
 
 ascendio|2:
     parameters:
-        safety: 0
         min_speed: 1.5
         max_speed: 3
 
 ascendio|3:
+    actions:
+        cast:
+        - class: VelocityAction
+        - class: FallProtectionAction
     parameters:
-        safety: 20000
+        duration: 20000
         min_speed: 2
         max_speed: 5
 
@@ -565,17 +602,20 @@ arresto:
 atmos:
     icon: watch
     category: herbology
-    class: WeatherSpell
     worth: 80
+    actions:
+        cast:
+        -  class: WeatherAction
     effects:
         cast:
         -  class: EffectSingle
            sound: ambience_rain
            effectlib:
+             offset: 0,4,0
              class: HelixEffect
              iterations: 1
              particle: drip_water
-        area:
+        alternate:
         -  class: EffectSingle
            sound: ambience_thunder
            effectlib:
@@ -585,6 +625,7 @@ atmos:
              particle: drip_water
     parameters:
         cooldown: 30000
+        weather: cycle
     costs:
         mana: 150
 
@@ -599,7 +640,7 @@ broom:
         cast:
         -  class: EffectSingle
            sound: enderdragon_wings
-           sound_volume: .25
+           sound_volume: .1
         -  class: EffectSingle
            effectlib:
              class: TraceEffect
@@ -615,7 +656,7 @@ broom:
            effectlib:
              class: SmokeEffect
              iterations: 12
-        area:
+        alternate:
         -  class: EffectSingle
            sound: enderdragon_wings
            sound_volume: .25
@@ -673,10 +714,14 @@ broom:
 avadakedavra:
     icon: ink_sack:10
     category: unforgiveable
-    class: PotionEffectSpell
     pvp_restricted: true
     cast_on_no_target: true
     worth: 1000
+    actions:
+        cast:
+        -  class: ProjectileAction
+           actions:
+           -  class: KillAction
     effects:
         cast:
         -  class: EffectSingle
@@ -690,14 +735,16 @@ avadakedavra:
            effectlib:
              class: ConeEffect
              iterations: 16
-             particle: villager_happy
+             particle: spell_mob
+             color: 00FF00
              lengthGrow: 0.4
+        hit:
         -  class: EffectSingle
-           location: target
+           location: origin
            color: "00FF00"
            firework: ball_large
         - class: EffectSingle
-          location: target
+          location: origin
           particle_override: particleOrbital
           effectlib:
              class: AtomEffect
@@ -716,33 +763,34 @@ avadakedavra:
            effectlib:
              class: ConeEffect
              iterations: 16
-             particle: villager_happy
+             particle: spell_mob
+             color: 00FF00
              lengthGrow: 0.4
         -  class: EffectSingle
            location: target
            color: "00FF00"
            firework: ball_large
     parameters:
-        target_type: LivingEntity
-        allow_max_range: false
-        range: 48
-        damage: 1000
-        check_destructible: false
+        projectile: WitherSkull
         cooldown: 30000
         target_breakables: 5
         bypass_backfire: true
-        hitbox: true
+        spread: 0
+        speed: 1
+        size: 0
     costs:
         mana: 180
 
 avadamaxima:
     icon: ink_sack:10
     category: staff
-    class: CommandSpell
     pvp_restricted: true
     worth: 1000
     cast_on_no_target: true
     hidden: true
+    actions:
+        cast:
+        -  class: CommandAction
     effects:
         cast:
         -  class: EffectSingle
@@ -753,7 +801,8 @@ avadamaxima:
            effectlib:
              class: ConeEffect
              iterations: 15
-             particle: villager_happy
+             particle: spell_mob
+             color: 00FF00
              lengthGrow: 0.4
         -  class: EffectSingle
            location: target
@@ -769,8 +818,8 @@ avadamaxima:
              iterations: 16
     parameters:
         commands:
-        - ban @t you have been Avada Kedavra'd!
-        - say §aAvada Kedavra §c@t!
+        - ban @tn you have been Avada Kedavra'd!
+        - say §aAvada Kedavra §c@tn!
         target_type: Player
         target: other
         target_breakables: 1
@@ -779,16 +828,19 @@ avadamaxima:
         bypass_backfire: true
         check_protection: true
         hitbox: true
+        transparent: transparent_to_avada
     costs:
         mana: 300
 
 unknown:
     icon: coal
     category: unforgiveable
-    class: PotionEffectSpell
     pvp_restricted: true
     cast_on_no_target: true
     worth: 1000
+    actions:
+        cast:
+        -  class: KillAction
     effects:
         cast:
         -  class: EffectSingle
@@ -804,11 +856,12 @@ unknown:
            effectlib:
              class: ConeEffect
              iterations: 16
-             particle: enchantment_table
+             particle: spell_mob
+             color: F7FE2E
              lengthGrow: 0.4
         -  class: EffectSingle
            location: target
-           color: "FAFAFA"
+           color: "F7FE2E"
            firework: ball_large
         - class: EffectSingle
           location: target
@@ -832,22 +885,23 @@ unknown:
            effectlib:
              class: ConeEffect
              iterations: 16
-             particle: enchantment_table
+             particle: spell_mob
+             color: F7FE2E
              lengthGrow: 0.4
         -  class: EffectSingle
            location: target
-           color: "FAFAFA"
+           color: "F7FE2E"
            firework: ball_large
     parameters:
         target_type: LivingEntity
         allow_max_range: false
         range: 48
-        damage: 1000
         check_destructible: false
         cooldown: 30000
         target_breakables: 5
         bypass_backfire: true
         hitbox: true
+        transparent: transparent_to_avada
     costs:
         mana: 180
 
@@ -886,10 +940,13 @@ beat:
     hidden: true
     icon: stick
     category: specialty
-    class: PotionEffectSpell
     pvp_restricted: true
     cast_on_no_target: true
     worth: 10
+    actions:
+        cast:
+        -  class: PotionEffectAction
+        -  class: DamageAction
     effects:
         cast:
         -  class: EffectSingle
@@ -919,10 +976,12 @@ beat:
 bogies:
     icon: ink_sack:15
     category: creatures
-    class: PotionEffectSpell
     pvp_restricted: true
     cast_on_no_target: true
     worth: 20
+    actions:
+        cast:
+        -  class: PotionEffectAction
     effects:
         cast:
         -  class: EffectSingle
@@ -1000,10 +1059,13 @@ bogies|3:
 bombarda:
     icon: ink_sack:7
     category: dada
-    class: PushSpell
     pvp_restricted: true
     cast_on_no_target: true
     worth: 40
+    actions:
+        cast:
+        -  class: VelocityAction
+        -  class: DamageAction
     effects:
         cast:
         -  class: EffectSingle
@@ -1022,19 +1084,18 @@ bombarda:
            particle: explosion_large
     parameters:
         hitbox: true
-        target_type: entity
+        target_type: Entity
         allow_max_range: true
         range: 40
         target_breakables: 3
-        break_blocks: false
         damage: 5
-        item_force: 1
-        area_range: 10
-        entity_force: 1
+        radius: 10
+        item_speed: 1
+        living_entity_speed: 1
         cooldown: 12000
-        undo: 8000
         bypass_backfire: true
-        bypass_protection: true
+        push: 1
+        origin_at_target: true
     costs:
         mana: 100
 
@@ -1061,33 +1122,31 @@ bombarda|2:
 bubble:
     icon: ender_pearl
     category: transfiguration
-    class: PotionEffectSpell
     worth: 30
     pvp_restricted: false
+    actions:
+        cast:
+        -  class: PotionEffectAction
+        -  class: HatAction
     effects:
         cast:
         -  class: EffectSingle
            sound: water
-           effectlib:
-             class: ConeEffect
-             iterations: 16
-             particle: drip_water
-        -  class: EffectSingle
-           location: target
+           location: origin
            effectlib:
              class: SphereEffect
-             iterations: 365
-             period: 1
-             particle: water_bubble
+             iterations: 10
+             period: 4
+             particle: drip_water
              radius: 0.5
     parameters:
         target_type: LivingEntity
-        target: any
-        allow_max_range: false
-        range: 16
+        target: self
         cooldown: 20000
         duration: 20000
+        undo: 20000
         effect_water_breathing: 1
+        brush: stained_glass
     costs:
         mana: 15
 
@@ -1144,10 +1203,12 @@ confringoold:
 confundus:
     icon: coal:1
     category: dada
-    class: PotionEffectSpell
     pvp_restricted: true
     cast_on_no_target: true
     worth: 10
+    actions:
+        cast:
+        -  class: PotionEffectAction
     effects:
         cast:
         -  class: EffectSingle
@@ -1155,7 +1216,8 @@ confundus:
            effectlib:
              class: ConeEffect
              iterations: 15
-             particle: enchantment_table
+             particle: redstone
+             color: 210B61
              lengthGrow: 0.3
         -  class: EffectSingle
            location: target
@@ -1166,14 +1228,16 @@ confundus:
            effectlib:
              class: SmokeEffect
              iterations: 16
-             particle: enchantment_table
+             particle: spell_mob
+             color: 210B61
         -  class: EffectSingle
            location: target
            effectlib:
              class: SphereEffect
              iterations: 45
              period: .1
-             particle: enchantment_table
+             particle: spell_mob
+             color: 210B61
              radius: 1
              particles: 20
         no_target:
@@ -1182,11 +1246,12 @@ confundus:
            effectlib:
              class: ConeEffect
              iterations: 15
-             particle: enchantment_table
+             particle: spell_mob
+             color: 210B61
              lengthGrow: 0.3
         -  class: EffectSingle
            location: target
-           color: 380B61
+           color: 210B61
            firework: burst
         -  class: EffectSingle
            location: target
@@ -1214,10 +1279,12 @@ confundusmaxima:
     icon: coal:1
     hidden: true
     category: dada
-    class: PotionEffectSpell
     pvp_restricted: true
     cast_on_no_target: true
     worth: 10
+    actions:
+        cast:
+        -  class: PotionEffectAction
     effects:
         cast:
         -  class: EffectSingle
@@ -1255,10 +1322,12 @@ conjunctivitis:
     alias: blind
     icon: ender_pearl
     category: dada
-    class: PotionEffectSpell
     pvp_restricted: true
     cast_on_no_target: true
     worth: 10
+    actions:
+        cast:
+        -  class: PotionEffectAction
     effects:
         cast:
         -  class: EffectSingle
@@ -1313,10 +1382,12 @@ obscuro:
     alias: blind
     icon: ender_pearl
     category: dada
-    class: PotionEffectSpell
     pvp_restricted: true
     cast_on_no_target: true
     worth: 10
+    actions:
+        cast:
+        -  class: PotionEffectAction
     effects:
         cast:
         -  class: EffectSingle
@@ -1355,10 +1426,13 @@ obscuro:
 crucio:
     icon: quartz
     category: unforgiveable
-    class: PotionEffectSpell
     pvp_restricted: true
     cast_on_no_target: true
     worth: 300
+    actions:
+        cast:
+        -  class: PotionEffectAction
+        -  class: DamageAction
     effects:
         cast:
         -  class: EffectSingle
@@ -1416,9 +1490,11 @@ crucio:
 dementor:
     icon: quartz
     category: hidden
-    class: PotionEffectSpell
     pvp_restricted: true
     cast_on_no_target: false
+    actions:
+        cast:
+        -  class: PotionEffectAction
     effects:
         cast:
         -  class: EffectSingle
@@ -1507,6 +1583,7 @@ deprimo:
         bypass_build: true
         transparent: transparent_to_construction
         undo: 15000
+        select_self: false
     costs:
         mana: 80
 
@@ -1552,6 +1629,7 @@ deprimomaxima:
         bypass_build: true
         transparent: transparent_to_construction
         undo: 30000
+        select_self: false
     costs:
         mana: 200
 
@@ -1570,7 +1648,8 @@ diffindo:
            effectlib:
              class: ConeEffect
              iterations: 10
-             particle: flame
+             particle: redstone
+             color: FFFF00
              lengthGrow: 0.4
         -  class: EffectSingle
            location: target
@@ -1579,7 +1658,8 @@ diffindo:
              class: HelixEffect
              iterations: 1
              radius: 4
-             particle: flame
+             particle: redstone
+             color: FFFF00
         -  class: EffectSingle
            location: target
            color: FFFF00
@@ -1595,6 +1675,7 @@ diffindo:
         bypass_build: true
         transparent: transparent_to_construction
         undo: 15000
+        select_self: false
     costs:
         mana: 70
 
@@ -1609,8 +1690,10 @@ diffindo|3:
 disillusion:
     icon: coal:1
     category: charms
-    class: PotionEffectSpell
     worth: 20
+    actions:
+        cast:
+        -  class: PotionEffectAction
     effects:
         cast:
         -  class: EffectSingle
@@ -1652,6 +1735,7 @@ duro:
         cooldown: 1000
         bypass_build: true
         bypass_backfire: true
+        select_self: false
     costs:
         mana: 30
 
@@ -1664,6 +1748,61 @@ duro|3:
     parameters:
         size: 3
         undo: 8000
+
+spongify:
+    icon: slime_block
+    category: transfiguration
+    class: RecurseSpell
+    worth: 150
+    cast_on_no_target: true
+    effects:
+        cast:
+        -  class: EffectTrail
+           effect: step_sound
+        -  class: EffectSingle
+           sound: fuse
+    parameters:
+        allow_max_range: false
+        range: 16
+        size: 3
+        check_destructible: true
+        destructible: destructible
+        brush: slime_block
+        transparent: transparent_to_construction
+        undo: 4000
+        cooldown: 2000
+        bypass_build: true
+        bypass_backfire: true
+        select_self: false
+    costs:
+        mana: 50
+
+spongifymaxima:
+    icon: slime_block
+    category: transfiguration
+    class: RecurseSpell
+    worth: 150
+    cast_on_no_target: true
+    effects:
+        cast:
+        -  class: EffectTrail
+           effect: step_sound
+        -  class: EffectSingle
+           sound: fuse
+    parameters:
+        allow_max_range: false
+        range: 16
+        size: 8
+        check_destructible: false
+        brush: slime_block
+        transparent: transparent_to_construction
+        undo: 60000
+        cooldown: 5000
+        bypass_build: true
+        bypass_backfire: true
+        select_self: false
+    costs:
+        mana: 200
 
 erecto:
     icon: sapling:4
@@ -1719,6 +1858,7 @@ evanesco:
         bypass_build: true
         transparent: transparent_to_construction
         undo: 10000
+        select_self: false
     costs:
         mana: 65
 
@@ -1739,7 +1879,8 @@ expelliarmus:
            effectlib:
              class: ConeEffect
              iterations: 16
-             particle: crit
+             particle: redstone
+             color: FF0000
              lengthGrow: 0.4
         -  class: EffectSingle
            location: target
@@ -1753,7 +1894,8 @@ expelliarmus:
            effectlib:
              class: ConeEffect
              iterations: 16
-             particle: crit
+             particle: redstone
+             color: FF0000
              lengthGrow: 0.4
         -  class: EffectSingle
            location: target
@@ -1763,13 +1905,15 @@ expelliarmus:
         -  class: EffectSingle
            sound: hurt_flesh
         -  class: EffectRing
-           particle: crit
+           particle: spell_mob
+           color: FF0000
            location: self
         fizzle:
         -  class: EffectSingle
            sound: explode
         -  class: EffectRing
-           particle: crit
+           particle: redstone
+           color: FF0000
            location: self
     parameters:
         min_slot: 0
@@ -1817,8 +1961,10 @@ expelliarmus|5:
 rennervate:
     icon: ink_sack:9
     category: charms
-    class: PotionEffectSpell
     worth: 20
+    actions:
+        cast:
+        -  class: PotionEffectAction
     effects:
         cast:
         - class: EffectSingle
@@ -1834,7 +1980,7 @@ rennervate:
         target_type: LivingEntity
         target: any
         allow_max_range: false
-        range: 7
+        range: 15
         bypass_confusion: true
         duration: 1000
         effect_saturation: 4
@@ -1854,8 +2000,10 @@ reparifors:
     description: Cures blindness and slows!
     icon: ink_sack:9
     category: charms
-    class: PotionEffectSpell
     worth: 20
+    actions:
+        cast:
+        -  class: PotionEffectAction
     effects:
         cast:
         - class: EffectSingle
@@ -1929,10 +2077,13 @@ engorgio:
 episkey:
     icon: ink_sack:9
     category: charms
-    class: PotionEffectSpell
     worth: 30
     pvp_restricted: false
     cast_on_no_target: true
+    actions:
+        cast:
+        -  class: PotionEffectAction
+        -  class: HealAction
     effects:
         cast:
         -  class: EffectSingle
@@ -1955,7 +2106,7 @@ episkey:
         range: 16
         duration: 1000
         effect_saturation: 4
-        heal: 2
+        amount: 2
         cooldown: 8000
     costs:
         mana: 50
@@ -1973,10 +2124,13 @@ episkey|3:
 bandage:
     icon: ink_sack:9
     category: charms
-    class: PotionEffectSpell
     worth: 30
     pvp_restricted: false
     cast_on_no_target: true
+    actions:
+        cast:
+        -  class: PotionEffectAction
+        -  class: HealAction
     effects:
         cast:
         -  class: EffectSingle
@@ -1998,7 +2152,7 @@ bandage:
         range: 16
         duration: 1000
         effect_saturation: 2
-        heal: 1
+        amount: 1
         cooldown: 3000
     costs:
         mana: 1
@@ -2060,8 +2214,10 @@ floo:
     hidden: true
     icon: sulphur
     category: specialty
-    class: PotionEffectSpell
     worth: 30
+    actions:
+        cast:
+        -  class: PotionEffectAction
     effects:
         cast:
         -  class: EffectSingle
@@ -2193,11 +2349,12 @@ flagrate:
         -  class: EffectSingle
            location: target
            target_offset: 0,3,0
+           color_override: color
            effectlib:
              class: TextEffect
              text: $target
              iterations: 2
-             particle: flame
+             particle: redstone
     parameters:
         allow_max_range: true
         range: 3
@@ -2206,13 +2363,17 @@ flagrate:
     costs:
         mana: 5
 
-Rictusempra:
+rictusempra:
+    alias: Rictusempra
     icon: ink_sack:3
     category: dada
-    class: PushSpell
     pvp_restricted: true
     cast_on_no_target: true
     worth: 15
+    actions:
+        cast:
+        -  class: VelocityAction
+        -  class: DamageAction
     effects:
         cast:
         -  class: EffectSingle
@@ -2222,11 +2383,12 @@ Rictusempra:
            effectlib:
              class: ConeEffect
              iterations: 15
-             particle: spell_instant
+             particle: redstone
+             color: 5882FA
              lengthGrow: 0.7
         -  class: EffectSingle
            location: target
-           color: 5858FA
+           color: 5882FA
            firework: ball
         no_target:
         -  class: EffectSingle
@@ -2236,24 +2398,22 @@ Rictusempra:
            effectlib:
              class: ConeEffect
              iterations: 15
-             particle: spell_instant
+             particle: redstone
+             color: 5882FA
              lengthGrow: 0.7
         -  class: EffectSingle
            location: target
-           color: 5858FA
+           color: 5882FA
            firework: ball
     parameters:
         range: 35
         fov: .12
         hitbox: true
         target_type: LivingEntity
-        allow_area: false
         allow_max_range: false
-        item_force: 2
-        area_range: 32
-        entity_force: 5
-        type: push
-        count: 1
+        item_speed: 2
+        living_entity_speed: 5
+        push: 1
         cooldown: 2500
         damage: 1.5
         target_breakables: 0
@@ -2264,10 +2424,12 @@ Rictusempra:
 ventus:
     icon: ink_sack:5
     category: dada
-    class: PushSpell
     pvp_restricted: true
     cast_on_no_target: true
     worth: 15
+    actions:
+        cast:
+        - class: VelocityAction
     effects:
         cast:
         -  class: EffectSingle
@@ -2275,20 +2437,6 @@ ventus:
            sound_volume: 1
            sound_pitch: -0.1
            location: origin
-           effectlib:
-             class: DnaEffect
-             particlesBase: 0
-             particlesHelix: 7
-             particleHelix: spell
-             particleBase1: spell
-             particleBase2: spell
-             iterations: 10
-             lengthGrow: 20
-        area:
-        -  class: EffectSingle
-           sound: burp
-           sound_volume: 1
-           sound_pitch: -0.1
            effectlib:
              class: DnaEffect
              particlesBase: 0
@@ -2301,14 +2449,12 @@ ventus:
     parameters:
         target_type: Entity
         range: 15
-        allow_area: false
+        fov: 1
+        target_count: 5
         allow_max_range: true
-        item_force: 5
-        area_range: 20
-        entity_force: 1
-        type: push
-        count: 1
-        damage: 0
+        item_speed: 5
+        living_entity_speed: 7
+        push: 1
         bypass_backfire: true
         cooldown: 10000
     costs:
@@ -2317,10 +2463,12 @@ ventus:
 flipendo:
     icon: ink_sack:5
     category: dada
-    class: PushSpell
     pvp_restricted: true
     cast_on_no_target: true
     worth: 15
+    actions:
+        cast:
+        - class: VelocityAction
     effects:
         cast:
         -  class: EffectSingle
@@ -2329,35 +2477,27 @@ flipendo:
            effectlib:
              class: ConeEffect
              iterations: 12
-             particle: spell
+             particle: spell_instant
+             color: FFFFFF
              lengthGrow: 0.1
-        area:
-        -  class: EffectSingle
-           sound: burp
-           effectlib:
-             class: FountainEffect
-             particle: spell
-             iterations: 2
-             particlesStrand: 10
-             particlesSpout: 30
     parameters:
-        hitbox: true
         target_type: Entity
         range: 16
-        allow_area: false
         allow_max_range: true
-        item_force: 2
-        area_range: 20
-        entity_force: 1
-        type: push
-        count: 1
-        damage: 0
+        item_speed: 2
+        living_entity_speed: .5
+        push: 1
         cooldown: 1500
+        hitbox: true
     costs:
         mana: 40
 
 flipendo|2:
     worth: 30
+    actions:
+        cast:
+        - class: DamageAction
+        - class: VelocityAction
     effects:
         cast:
         -  class: EffectSingle
@@ -2366,54 +2506,30 @@ flipendo|2:
            effectlib:
              class: ConeEffect
              iterations: 16
-             particle: spell
+             particle: spell_instant
+             color: FFFFFF
              helixes: 6
              circles: 4
              grow: 0.5
              lengthGrow: 0.3
     parameters:
-        hitbox: true
         range: 20
-        item_force: 4
-        allow_area: false
-        area_range: 20
-        entity_force: .5
+        item_speed: 2.5
+        living_entity_speed: 1
         type: push
-        count: 3
         damage: 1
+        target_count: 3
         cooldown: 3000
     costs:
         mana: 70
 
 flipendo|3:
     worth: 50
-    effects:
-        area:
-        -  class: EffectSingle
-           sound: burp
-           sound_volume: 1
-           effectlib:
-             class: ConeEffect
-             iterations: 16
-             particle: spell
-             helixes: 6
-             circles: 4
-             grow: 0.9
-             lengthGrow: 0.4
-           effectlib:
-             class: FountainEffect
-             particle: spell
-             iterations: 2
-             particlesStrand: 10
-             particlesSpout: 30
     parameters:
-        hitbox: true
         range: 32
-        allow_area: false
-        area_range: 20
-        item_force: 3
-        entity_force: 1
-        count: 5
+        item_speed: 3
+        living_entity_speed: 2
+        target_count: 5
         damage: 2
         cooldown: 4500
     costs:
@@ -2427,25 +2543,15 @@ flight:
     worth: 600
     effects:
         cast:
-        -  class: EffectVariable
-           brightness:
-             '0.5':
-             - class: EffectSingle
-               sound: enderdragon_wings
-               location: both
-               particle_override: particle
-               effectlib:
-                   class: ShieldEffect
-                   particle: smoke_normal
-             '5':
-             - class: EffectSingle
-               sound: enderdragon_wings
-               location: both
-               particle_override: particle
-               effectlib:
-                   class: ShieldEffect
-                   particle: spell
-        cost_free:
+           - class: EffectSingle
+             sound: enderdragon_wings
+             location: both
+             color_override: color
+             effectlib:
+                 class: SphereEffect
+                 particle: redstone
+                 radius: 2.5
+        deactivate:
         -  class: EffectSingle
            sound: enderdragon_wings
            sound_pitch: 0.2
@@ -2480,8 +2586,10 @@ fourpoint:
 fumos:
     icon: ink_sack
     category: dada
-    class: PotionEffectSpell
     worth: 10
+    actions:
+        cast:
+        -  class: PotionEffectAction
     effects:
         cast:
         -  class: EffectSingle
@@ -2491,7 +2599,8 @@ fumos:
              class: SphereEffect
              iterations: 70
              period: .1
-             particle: smoke_normal
+             particle: redstone
+             color: 0A2A0A
              radius: 2
              particles: 20
     parameters:
@@ -2507,10 +2616,18 @@ fumos:
 glacius:
     icon: snow_ball
     category: transfiguration
-    class: FrostSpell
     pvp_restricted: true
     cast_on_no_target: true
     worth: 80
+    actions:
+        cast:
+        - class: AreaOfEffectAction
+          actions:
+          - class: PotionEffectAction
+          - class: DamageAction
+        - class: CoverAction
+          actions:
+          - class: FreezeAction
     effects:
         cast:
         -  class: EffectSingle
@@ -2542,8 +2659,7 @@ glacius:
         radius: 1
         vertical_search_distance: 8
         transparent: transparent_to_construction
-        player_damage: 1
-        entity_damage: 2
+        damage: 1
         duration: 1000
         effect_slow: 1
         ice: ice
@@ -2606,10 +2722,13 @@ glacius|3:
 immobulus:
     icon: gold_ingot
     category: dada
-    class: PotionEffectSpell
     pvp_restricted: true
     cast_on_no_target: true
     worth: 30
+    actions:
+        cast:
+        -  class: PotionEffectAction
+        -  class: FallProtectionAction
     effects:
         cast:
         -  class: EffectSingle
@@ -2617,11 +2736,12 @@ immobulus:
            effectlib:
              class: ConeEffect
              iterations: 15
-             particle: smoke_normal
+             particle: redstone
+             color: 380B61
              lengthGrow: 0.33
         -  class: EffectSingle
            location: target
-           color: D358F7
+           color: 380B61
            firework: ball
         -  class: EffectSingle
            location: target
@@ -2629,7 +2749,8 @@ immobulus:
              class: SphereEffect
              iterations: 55
              period: .1
-             particle: spell_witch
+             particle: redstone
+             color: 380B61
              radius: 1.8
              particles: 20
         no_target:
@@ -2638,11 +2759,12 @@ immobulus:
            effectlib:
              class: ConeEffect
              iterations: 15
-             particle: spell_witch
+             particle: redstone
+             color: 380B61
              lengthGrow: 0.4
         -  class: EffectSingle
            location: target
-           color: D358F7
+           color: 380B61
            firework: burst
     costs:
         mana: 50
@@ -2652,20 +2774,22 @@ immobulus:
         target_breakables: 1
         target: other
         duration: 3000
+        protection_count: 1000
         effect_slow: 20
         effect_jump: -20
         cooldown: 10000
-        fall_protection: 5000
         hitbox: true
 
 locomotomortus:
     alias: locomoto
     icon: gold_ingot
     category: dada
-    class: PotionEffectSpell
     pvp_restricted: true
     cast_on_no_target: true
     worth: 30
+    actions:
+        cast:
+        -  class: PotionEffectAction
     effects:
         cast:
         -  class: EffectSingle
@@ -2673,11 +2797,12 @@ locomotomortus:
            effectlib:
              class: ConeEffect
              iterations: 15
-             particle: smoke_normal
+             particle: redstone
+             color: 8A084B
              lengthGrow: 0.4
         -  class: EffectSingle
            location: target
-           color: 5F04B4
+           color: 8A084B
            firework: ball
         -  class: EffectSingle
            location: target
@@ -2685,7 +2810,8 @@ locomotomortus:
              class: SphereEffect
              iterations: 25
              period: 4
-             particle: smoke_normal
+             particle: redstone
+             color: 8A084B
              radius: 0.5
              particles: 20
     costs:
@@ -2720,7 +2846,7 @@ incarcerous:
         fov: .1
         radius: 1
         type: cuboid
-        brush: nether_fence
+        brush: birch_fence
         thickness: 1
         orient_dimension_max: 0
         orient_dimension_min: 0
@@ -2751,9 +2877,9 @@ imperio:
              class: DnaEffect
              particlesBase: 0
              particlesHelix: 7
-             particleHelix: smoke_normal
-             particleBase1: smoke_normal
-             particleBase2: smoke_normal
+             particleHelix: spell_mob
+             particleBase1: spell_mob
+             particleBase2: spell_mob
              iterations: 10
              lengthGrow: 20
     parameters:
@@ -2790,6 +2916,7 @@ impervius:
         bypass_build: true
         transparent: transparent_to_construction
         undo: 10000
+        select_self: false
     costs:
         mana: 65
 
@@ -2836,10 +2963,17 @@ phoenixfire:
 incendio:
     icon: clay_ball
     category: dark
-    class: FireSpell
     pvp_restricted: true
     cast_on_no_target: true
     worth: 50
+    actions:
+        cast:
+        - class: AreaOfEffectAction
+          actions:
+          - class: IgniteAction
+        - class: CoverAction
+          actions:
+          - class: BurnAction
     effects:
         cast:
         -  class: EffectSingle
@@ -2893,55 +3027,47 @@ incendio|3:
 lacarnum:
     icon: coal
     category: charms
-    class: ProjectileSpell
+    class: com.elmakers.mine.bukkit.spell.ActionSpell
     pvp_restricted: true
     worth: 35
+    actions:
+        cast:
+        -  class: IgniteAction
     effects:
         cast:
         -  class: EffectSingle
            sound: ghast_fireball
            sound_volume: 1
-        projectile:
+           location: both
         -  class: EffectSingle
-           location: origin
            effectlib:
-             class: SmokeEffect
-             iterations: 8
+             class: ConeEffect
+             iterations: 15
              particle: lava
+             lengthGrow: 0.4
+        -  class: EffectSingle
+           location: target
+           color: FE642E
+           firework: ball
     parameters:
-        projectile: Arrow
-        fire: true
-        damage: 0.01
-        speed: 3
+        target_type: LivingEntity
+        hitbox: true
+        target: other
         range: 40
-        cooldown: 1000
-        spread: 1
-        tick_increase: 1180
-        entity_undo: false
-        undo: 1000
         cooldown: 2000
-        bypass_backfire: true
         target_breakables: 0
+        duration: 1000
     costs:
         mana: 100
 
 lacarnum|2:
     parameters:
-        size: 1.10
-        spread: 4
-        count: 2
-        damage: 0.01
-        speed: 4
-        cooldown: 4000
+        duration: 3000
         target_breakables: 1
 
 lacarnum|3:
     parameters:
-        damage: 0.01
-        spread: 7
-        count: 3
-        speed: 5
-        cooldown: 6000
+        duration: 5000
         target_breakables: 2
 
 legilimens:
@@ -2981,12 +3107,13 @@ levicorpus:
            effectlib:
              class: ConeEffect
              iterations: 15
-             particle: spell_witch
+             particle: redstone
+             color: 8258FA
              lengthGrow: 0.4
         -  class: EffectSingle
            location: target
-           color: BF00FF
-           firework: ball
+           color: 8258FA
+           firework: burst
         -  class: EffectSingle
            location: target
            effectlib:
@@ -3016,12 +3143,13 @@ levicorpus|2:
            effectlib:
              class: ConeEffect
              iterations: 15
-             particle: spell_witch
+             particle: redstone
+             color: 8258FA
              lengthGrow: 0.4
         -  class: EffectSingle
            location: target
-           color: BF00FF
-           firework: ball
+           color: 8258FA
+           firework: burst
         -  class: EffectSingle
            location: target
            effectlib:
@@ -3039,12 +3167,13 @@ levicorpus|3:
            effectlib:
              class: ConeEffect
              iterations: 15
-             particle: spell_witch
+             particle: redstone
+             color: 8258FA
              lengthGrow: 0.4
         -  class: EffectSingle
            location: target
-           color: BF00FF
-           firework: ball
+           color: 8258FA
+           firework: burst
         -  class: EffectSingle
            location: target
            effectlib:
@@ -3057,7 +3186,11 @@ lumos:
     icon: ink_sack:11
     category: charms
     worth: 10
-    class: PotionEffectSpell
+    actions:
+        cast:
+        -  class: AreaOfEffectAction
+           actions:
+           -  class: PotionEffectAction
     effects:
         cast:
         -  class: EffectSingle
@@ -3079,8 +3212,9 @@ lumos:
     costs:
         mana: 55
     parameters:
-        target: any
-        range: 10
+        target: self
+        target_self: true
+        radius: 16
         target_type: LivingEntity
         duration: 10000
         effect_night_vision: 5
@@ -3095,11 +3229,40 @@ lumos|3:
     parameters:
         duration: 90000
 
+lumossolem:
+    icon: sea_lantern
+    category: charms
+    class: TossSpell
+    worth: 20
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: fire_ignite
+           effectlib:
+             location: target
+             offset: 0,.5,0
+             class: HelixEffect
+             iterations: 1
+             particle: flame
+        -  class: EffectTrail
+           particle: flame
+           particle_data: 2
+           particle_count: 5
+    pvp_restricted: true
+    parameters:
+      speed: 1
+      brush: sea_lantern
+      undo: 30000
+    costs:
+        mana: 100
+
 morsmordre:
     icon: skull_item:4
     category: dark
-    class: CommandSpell
     worth: 20
+    actions:
+        cast:
+        - class: CommandAction
     effects:
         cast:
         -  class: EffectSingle
@@ -3128,8 +3291,10 @@ morsmordre:
 morsmordremaxima:
     icon: skull_item:4
     category: dark
-    class: CommandSpell
     worth: 20
+    actions:
+        cast:
+        - class: CommandAction
     effects:
         cast:
         -  class: EffectSingle
@@ -3159,8 +3324,10 @@ morsmordremaxima:
 mayday:
     icon: firework
     category: charms
-    class: CommandSpell
     worth: 20
+    actions:
+        cast:
+        - class: CommandAction
     effects:
         cast:
         -  class: EffectSingle
@@ -3189,8 +3356,10 @@ phoenixcry:
     description: Ca Caw!!!
     icon: firework
     category: charms
-    class: CommandSpell
     worth: 20
+    actions:
+        cast:
+        - class: CommandAction
     effects:
         cast:
         -  class: EffectSingle
@@ -3217,8 +3386,10 @@ phoenixcry:
 maydaymaxima:
     icon: firework
     category: charms
-    class: CommandSpell
     worth: 20
+    actions:
+        cast:
+        - class: CommandAction
     effects:
         cast:
         -  class: EffectSingle
@@ -3244,49 +3415,53 @@ maydaymaxima:
     costs:
         mana: 100
 
-
 phoenixcrymaxima:
     name: Phoenix Cry Maxima
     description: CA CAWW CAWWWW!
     icon: firework
     category: charms
-    class: CommandSpell
     worth: 20
+    actions:
+        cast:
+        -  class: AreaOfEffectAction
+           actions:
+           -  class: PotionEffectAction
     effects:
         cast:
         -  class: EffectSingle
            sound: enderdragon_growl
         -  class: EffectTrail
            particle: spell
-        -  class: EffectRing
-           location: target
+        -  class: EffectSingle
+           location: targets
            firework: star
-           radius: 15
-           target_offset: 0,13,0
+           target_offset: 0,4,0
         -  class: EffectSingle
            location: target
            effectLib:
              class: TraceEffect
              particle: redstone
     parameters:
-        target: any
+        target: other
         allow_max_range: true
-        range: 16
+        range: 32
+        radius: 16
+        target_type: Player
+        target_self: true
         cooldown: 60000
         transparent: apparate
-        op: true
-        commands:
-        - effect @p SPEED 30 5
-        - effect @p HEAL 30 5
-        - effect @p JUMP 30 5
-        - effect @p SATURATION 30 5
-        - effect @p INCREASE_DAMAGE 30 5
-        - effect @p REGENERATION 30 5
-        - effect @p DAMAGE_RESISTANCE 30 5
-        - effect @p FIRE_RESISTANCE 30 5
-        - effect @p WATER_BREATHING 30 5
-        - effect @p ABSORPTION 30 5
-        - effect @p HEALTH_BOOST 30 5
+        duration: 30000
+        effect_speed: 5
+        effect_heal: 5
+        effect_jump: 5
+        effect_saturation: 5
+        effect_increase_damage: 5
+        effect_regeneration: 5
+        effect_damage_resistance: 5
+        effect_fire_resistance: 5
+        effect_water_breathing: 5
+        effect_absorption: 5
+        effect_health_boost: 5
     costs:
         mana: 100
 
@@ -3307,12 +3482,6 @@ orchideous:
     - red_rose:6
     - red_rose:7
     - red_rose:8
-    tall_flowers:
-    - double_plant
-    - double_plant:1
-    - double_plant:3
-    - double_plant:4
-    - double_plant:5
     effects:
         cast:
         -  class: EffectSingle
@@ -3362,15 +3531,7 @@ periculux:
            firework: ball
         -  class: EffectSingle
            location: target
-           color: 009900
-           firework: ball
-        -  class: EffectSingle
-           location: target
-           color: 3399FF
-           firework: ball
-        -  class: EffectSingle
-           location: target
-           color: CC33FF
+           color: FF8000
            firework: ball
         -  class: EffectSingle
            location: target
@@ -3378,7 +3539,19 @@ periculux:
            firework: ball
         -  class: EffectSingle
            location: target
-           color: 000099
+           color: 40FF00
+           firework: ball
+        -  class: EffectSingle
+           location: target
+           color: 0080FF
+           firework: ball
+        -  class: EffectSingle
+           location: target
+           color: 9A2EFE
+           firework: ball
+        -  class: EffectSingle
+           location: target
+           color: FF00FF
            firework: ball
     parameters:
         allow_max_range: true
@@ -3390,10 +3563,13 @@ petrificustotalus:
     alias: petrificus
     icon: nether_brick_item
     category: dada
-    class: PotionEffectSpell
     pvp_restricted: true
     cast_on_no_target: true
     worth: 50
+    actions:
+        cast:
+        -  class: PotionEffectAction
+        -  class: FallProtectionAction
     effects:
         cast:
         -  class: EffectSingle
@@ -3443,9 +3619,9 @@ petrificustotalus:
         effect_slow: 20
         effect_jump: -20
         effect_confusion: 5
+        protection_count: 1000
         cooldown: 10000
         effect_absorption: 4
-        fall_protection: 5000
         hitbox: true
 
 webbing:
@@ -3786,12 +3962,13 @@ reducto:
            effectlib:
              class: ConeEffect
              iterations: 10
-             particle: explosion_normal
+             particle: spell_mob
+             color: FACC2E
              lengthGrow: 0.4
         -  class: EffectSingle
            target_offset: 0,0.5,0
            location: target
-           color: FFFF00
+           color: FACC2E
            firework: burst
            particle: explosion_large
     parameters:
@@ -3806,6 +3983,7 @@ reducto:
         check_destructible: true
         undo: 15000
         bypass_build: true
+        select_self: false
     costs:
         mana: 60
 
@@ -3829,12 +4007,13 @@ reductomaxima:
            effectlib:
              class: ConeEffect
              iterations: 10
-             particle: explosion_normal
+             particle: spell_mob
+             color: FACC2E
              lengthGrow: 0.4
         -  class: EffectSingle
            target_offset: 0,0.5,0
            location: target
-           color: FFFF00
+           color: FACC2E
            firework: burst
            particle: explosion_huge
     parameters:
@@ -3848,6 +4027,7 @@ reductomaxima:
         check_destructible: false
         bypass_build: true
         undo: 5000
+        select_self: false
     costs:
         mana: 150
 
@@ -3927,6 +4107,7 @@ reparo:
         obworld: ~_backup
         brushtarget: true
         cooldown: 10000
+        select_self: false
     costs:
         mana: 0
 
@@ -3963,9 +4144,11 @@ sectumsempra:
     icon: quartz
     category: dark
     pvp_restricted: true
-    class: PotionEffectSpell
     cast_on_no_target: true
     worth: 25
+    actions:
+        cast:
+        -  class: DamageAction
     effects:
         cast:
         -  class: EffectSingle
@@ -3977,7 +4160,8 @@ sectumsempra:
            effectlib:
              class: ConeEffect
              iterations: 15
-             particle: drip_lava
+             particle: spell_mob
+             color: 8A0829
              lengthGrow: 0.4
         -  class: EffectSingle
            location: target
@@ -3991,7 +4175,7 @@ sectumsempra:
              class: SphereEffect
              iterations: 16
              period: 1
-             particle: crit
+             particle: drip_lava
              radius: .5
              particles: 15
         no_target:
@@ -4004,7 +4188,8 @@ sectumsempra:
            effectlib:
              class: ConeEffect
              iterations: 15
-             particle: drip_lava
+             particle: spell_mob
+             color: 8A0829
              lengthGrow: 0.4
         -  class: EffectSingle
            location: target
@@ -4028,9 +4213,11 @@ slash:
     icon: quartz
     category: melee
     pvp_restricted: true
-    class: PotionEffectSpell
     cast_on_no_target: true
     worth: 25
+    actions:
+        cast:
+        -  class: DamageAction
     effects:
         cast:
         -  class: EffectSingle
@@ -4060,9 +4247,11 @@ slash:
 silencio:
     icon: ink_sack:3
     category: staff
-    class: CommandSpell
     hidden: true
     worth: 500
+    actions:
+        cast:
+        -  class: CommandAction
     effects:
         cast:
         -  class: EffectSingle
@@ -4073,17 +4262,17 @@ silencio:
            effectlib:
              class: ConeEffect
              iterations: 15
-             particle: reddust
+             particle: redstone
              lengthGrow: 0.4
         -  class: EffectSingle
            location: target
            effectlib:
              class: IconEffect
              iterations: 15
-             particle: reddust
+             particle: redstone
     parameters:
         commands:
-        - mute @t
+        - mute @tn
         target_type: Player
         target: other
         range: 16
@@ -4095,9 +4284,11 @@ silencio:
 silenciomaxima:
     icon: ink_sack:3
     category: staff
-    class: CommandSpell
     hidden: true
     worth: 500
+    actions:
+        cast:
+        -  class: CommandAction
     effects:
         cast:
         -  class: EffectSingle
@@ -4108,7 +4299,7 @@ silenciomaxima:
            effectlib:
              class: ConeEffect
              iterations: 15
-             particle: reddust
+             particle: redstone
              lengthGrow: 0.4
         -  class: EffectSingle
            location: target
@@ -4116,7 +4307,7 @@ silenciomaxima:
              offset: 0,4,0
              class: HelixEffect
              iterations: 1
-             particle: reddust
+             particle: redstone
     parameters:
         range: 32
         allow_max_range: true
@@ -4130,9 +4321,14 @@ silenciomaxima:
 silenciototalus:
     icon: ink_sack:3
     category: staff
-    class: CommandSpell
     hidden: true
     worth: 500
+    actions:
+        cast:
+        -  class: AllEntitiesAction
+           actions:
+           -  class: CommandAction
+           -  class: KillAction
     effects:
         cast:
         -  class: EffectSingle
@@ -4144,21 +4340,26 @@ silenciototalus:
              offset: 0,5,0
              class: HelixEffect
              iterations: 1
-             particle: reddust
+             particle: redstone
     parameters:
         commands:
-        - mute @a 60
+        - mute @tn 60
         - say §dSILENCIO TOTALUS!
         target: none
+        target_all_worlds: true
+        target_type: Player
+        target_self: false
         bypass_backfire: true
         check_protection: true
 
 amplify:
     icon: ink_sack:3
     category: staff
-    class: CommandSpell
     hidden: true
     worth: 500
+    actions:
+        cast:
+        -  class: CommandAction
     effects:
         cast:
         -  class: EffectSingle
@@ -4173,17 +4374,19 @@ amplify:
              iterations: 20
     parameters:
         commands:
-        - unmute @t
-        target: none
+        - unmute @tn
+        target: other
         bypass_backfire: true
         check_protection: true
 
 amplifytotalus:
     icon: ink_sack:3
     category: staff
-    class: CommandSpell
     hidden: true
     worth: 500
+    actions:
+        cast:
+        -  class: CommandAction
     effects:
         cast:
         -  class: EffectSingle
@@ -4207,9 +4410,11 @@ amplifytotalus:
 expulsion:
     icon: ink_sack:3
     category: staff
-    class: CommandSpell
     hidden: true
     worth: 500
+    actions:
+        cast:
+        -  class: CommandAction
     effects:
         cast:
         -  class: EffectSingle
@@ -4222,9 +4427,9 @@ expulsion:
              iterations: 24
     parameters:
         commands:
-        - nick @t @t_Expelled
+        - nick @tn @tn_Expelled
         - broadcast @td was Expelled from Hogwarts by @pd!
-        - spawn @t
+        - spawn @tn
         target_type: Player
         target: other
         range: 16
@@ -4279,7 +4484,8 @@ stupefy:
            effectlib:
              class: ConeEffect
              iterations: 16
-             particle: crit_magic
+             particle: redstone
+             color: 58D3F7
              lengthGrow: 0.4
         -  class: EffectSingle
            location: target
@@ -4296,7 +4502,8 @@ stupefy:
            effectlib:
              class: ConeEffect
              iterations: 16
-             particle: crit_magic
+             particle: redstone
+             color: 58D3F7
              lengthGrow: 0.4
         -  class: EffectSingle
            location: target
@@ -4314,7 +4521,8 @@ stupefy:
            effectlib:
              class: ConeEffect
              iterations: 16
-             particle: crit_magic
+             particle: redstone
+             color: 58D3F7
              lengthGrow: 0.4
     parameters:
         hitbox: true
@@ -4361,12 +4569,13 @@ vermillious:
            effectlib:
              class: ConeEffect
              iterations: 15
-             particle: smoke_normal
+             particle: redstone
+             color: 610B0B
              lengthGrow: 0.3
         -  class: EffectSingle
            location: target
-           color: DF0101
-           color2: DF0101
+           color: 610B0B
+           color2: 610B0B
            firework: ball
         no_target:
         -  class: EffectSingle
@@ -4379,12 +4588,13 @@ vermillious:
            effectlib:
              class: ConeEffect
              iterations: 15
-             particle: smoke_normal
+             particle: redstone
+             color: 610B0B
              lengthGrow: 0.3
         -  class: EffectSingle
            location: target
-           color: DF0101
-           color2: DF0101
+           color: 610B0B
+           color2: 610B0B
            firework: ball
         backfire:
         -  class: EffectSingle
@@ -4395,7 +4605,8 @@ vermillious:
            effectlib:
              class: ConeEffect
              iterations: 15
-             particle: smoke_normal
+             particle: redstone
+             color: 610B0B
              lengthGrow: 0.3
     parameters:
         range: 48
@@ -4457,9 +4668,11 @@ meteo:
 nox:
     icon: ink_sack:0
     category: charms
-    class: PotionEffectSpell
     cast_on_no_target: true
     worth: 20
+    actions:
+        cast:
+        -  class: PotionEffectAction
     effects:
         cast:
         -  class: EffectSingle
@@ -4483,9 +4696,11 @@ nox:
 noxmaxima:
     icon: ink_sack:0
     category: staff
-    class: TorchSpell
     hidden: true
     worth: 130
+    actions:
+        cast:
+        -  class: TimeAction
     effects:
         cast:
         -  class: EffectSingle
@@ -4495,10 +4710,6 @@ noxmaxima:
              iterations: 2
              particle: smoke_large
     parameters:
-        allow_max_range: false
-        allow_night: false
-        allow_day: true
-        allow_glowstone: false
         cooldown: 5000
         time: night
         cycle_moon_phase: true
@@ -4508,10 +4719,13 @@ noxmaxima:
 vulnera:
     icon: ink_sack:9
     category: charms
-    class: PotionEffectSpell
     cast_on_no_target: true
     worth: 50
     pvp_restricted: false
+    actions:
+        cast:
+        -  class: PotionEffectAction
+        -  class: HealAction
     effects:
         cast:
         - class: EffectSingle
@@ -4542,17 +4756,19 @@ vulnera:
         remove_effects:
         - confusion
         - wither
-        heal: 1
+        amount: 1
     costs:
         mana: 80
 
 ferula:
     icon: ink_sack:9
     category: charms
-    class: PotionEffectSpell
     cast_on_no_target: true
     worth: 50
     pvp_restricted: false
+    actions:
+        cast:
+        -  class: PotionEffectAction
     effects:
         cast:
         - class: EffectSingle
@@ -5119,7 +5335,7 @@ superfly:
         cast:
         -  class: EffectSingle
            sound: enderdragon_wings
-        cost_free:
+        deactivate:
         -  class: EffectSingle
            sound: enderdragon_wings
            sound_pitch: 0.2
@@ -5160,9 +5376,11 @@ vault:
 revelio:
     icon: iron_helmet
     category: staff
-    class: PotionEffectSpell
     worth: 20
     cast_on_no_target: true
+    actions:
+        cast:
+        -  class: PotionEffectAction
     effects:
         cast:
         -  class: EffectSingle
@@ -5178,7 +5396,6 @@ revelio:
     parameters:
        target: other
        target_type: LivingEntity
-       radius: 0
        range: 32
        fov: 3
        allow_max_range: true
@@ -5434,9 +5651,11 @@ paint:
 torch:
     icon: torch
     category: engineering
-    class: TorchSpell
     worth: 80
     hidden: true
+    actions:
+        cast:
+        -  class: TorchAction
     effects:
         cast:
         -  class: EffectSingle
@@ -5446,9 +5665,7 @@ torch:
            material: glowstone
     parameters:
         allow_max_range: false
-        allow_night: false
         range: 32
-        allow_day: false
         allow_glowstone: true
     costs:
         mana: 15
@@ -5540,9 +5757,11 @@ supershell:
 hat:
     icon: leather_helmet
     category: staff
-    class: HatSpell
     worth: 18
     hidden: true
+    actions:
+        cast:
+        -  class: HatAction
     effects:
         cast:
         -  class: EffectSingle
@@ -5599,12 +5818,15 @@ superregenerate:
 pulsus:
     icon: ink_sack:5
     category: dada
-    class: PushSpell
     pvp_restricted: true
     cast_on_no_target: true
     worth: 15
+    actions:
+        cast:
+        -  class: VelocityAction
+        -  class: DamageAction
     effects:
-        area:
+        cast:
         -  class: EffectSingle
            sound: fizz
            effectlib:
@@ -5614,13 +5836,12 @@ pulsus:
              particlesStrand: 10
              particlesSpout: 30
     parameters:
-        area: true
+        fov: 4
         target_type: Entity
-        item_force: 4
-        area_range: 15
-        entity_force: 10
-        type: push
-        count: 1
+        item_speed: 4
+        range: 15
+        living_entity_speed: 10
+        push: 1
         damage: 0.5
         cooldown: 7000
         bypass_backfire: true
@@ -5631,12 +5852,15 @@ whomping:
     hidden: true
     icon: ink_sack:5
     category: dada
-    class: PushSpell
     pvp_restricted: true
     cast_on_no_target: true
     worth: 15
+    actions:
+        cast:
+        -  class: VelocityAction
+        -  class: DamageAction
     effects:
-        area:
+        cast:
         -  class: EffectSingle
            sound: fizz
            effectlib:
@@ -5646,13 +5870,12 @@ whomping:
              particlesStrand: 10
              particlesSpout: 30
     parameters:
-        area: true
+        fov: 4
+        rage: 25
         target_type: Entity
-        item_force: 4
-        area_range: 25
-        entity_force: 2
-        type: push
-        count: 1
+        item_speed: 4
+        living_entity_speed: 2
+        push: 1
         damage: 0.1
         cooldown: 0
         bypass_backfire: true
@@ -5664,13 +5887,15 @@ animagus_phoenix:
     description: Turn into a Phoenix
     icon: fireball
     category: dark
-    class: CommandSpell
     worth: 20
+    actions:
+        cast:
+        -  class: CommandAction
     effects:
         cast:
         - class: EffectSingle
           sound: enderman_teleport
-          location: source
+          location: origin
           particle_override: particleOrbital
           effectlib:
             class: AtomEffect
@@ -5692,13 +5917,15 @@ animagus_wolf:
     description: Turn into a Wolf
     icon: bone
     category: dark
-    class: CommandSpell
     worth: 20
+    actions:
+        cast:
+        -  class: CommandAction
     effects:
         cast:
         - class: EffectSingle
           sound: enderman_teleport
-          location: source
+          location: origin
           particle_override: particleOrbital
           effectlib:
             class: AtomEffect
@@ -5719,13 +5946,15 @@ humaculus:
     description: Reverts target back to a human!
     icon: eye_of_ender
     category: dark
-    class: CommandSpell
     worth: 20
+    actions:
+        cast:
+        -  class: CommandAction
     effects:
         cast:
         - class: EffectSingle
           sound: orb_pickup
-          location: source
+          location: origin
           particle_override: particleOrbital
           effectlib:
             class: AtomEffect
@@ -5739,7 +5968,7 @@ humaculus:
         cooldown: 10000
         op: false
         commands:
-        - undisguiseplayer @t
+        - undisguiseplayer @tn
     costs:
         mana: 5
 
@@ -5748,13 +5977,15 @@ animagus_cat:
     description: Turn into a Cat
     icon: raw_fish
     category: dark
-    class: CommandSpell
     worth: 20
+    actions:
+        cast:
+        -  class: CommandAction
     effects:
         cast:
         - class: EffectSingle
           sound: enderman_teleport
-          location: source
+          location: origin
           particle_override: particleOrbital
           effectlib:
             class: AtomEffect
@@ -5775,13 +6006,15 @@ animagus_chicken:
     description: Turn into a Chicken
     icon: monster_egg
     category: dark
-    class: CommandSpell
     worth: 20
+    actions:
+        cast:
+        -  class: CommandAction
     effects:
         cast:
         - class: EffectSingle
           sound: enderman_teleport
-          location: source
+          location: origin
           particle_override: particleOrbital
           effectlib:
             class: AtomEffect
@@ -5802,13 +6035,15 @@ animagus_owl:
     description: Turn into a Owl
     icon: ink_sack:8
     category: dark
-    class: CommandSpell
     worth: 20
+    actions:
+        cast:
+        -  class: CommandAction
     effects:
         cast:
         - class: EffectSingle
           sound: enderman_teleport
-          location: source
+          location: origin
           particle_override: particleOrbital
           effectlib:
             class: AtomEffect
@@ -5829,13 +6064,15 @@ animagus_rat:
     description: Turn into a Rat
     icon: egg
     category: dark
-    class: CommandSpell
     worth: 20
+    actions:
+        cast:
+        -  class: CommandAction
     effects:
         cast:
         - class: EffectSingle
           sound: enderman_teleport
-          location: source
+          location: origin
           particle_override: particleOrbital
           effectlib:
             class: AtomEffect
@@ -5856,13 +6093,15 @@ animagus_horse:
     description: Turn into a Horse
     icon: leash
     category: dark
-    class: CommandSpell
     worth: 20
+    actions:
+        cast:
+        -  class: CommandAction
     effects:
         cast:
         - class: EffectSingle
           sound: enderman_teleport
-          location: source
+          location: origin
           particle_override: particleOrbital
           effectlib:
             class: AtomEffect
@@ -5883,13 +6122,15 @@ animagus_donkey:
     description: Turn into a Donkey
     icon: leash
     category: dark
-    class: CommandSpell
     worth: 20
+    actions:
+        cast:
+        -  class: CommandAction
     effects:
         cast:
         - class: EffectSingle
           sound: enderman_teleport
-          location: source
+          location: origin
           particle_override: particleOrbital
           effectlib:
             class: AtomEffect
@@ -5910,13 +6151,15 @@ animagus_spider:
     description: Turn into a Spider
     icon: web
     category: dark
-    class: CommandSpell
     worth: 20
+    actions:
+        cast:
+        -  class: CommandAction
     effects:
         cast:
         - class: EffectSingle
           sound: enderman_teleport
-          location: source
+          location: origin
           particle_override: particleOrbital
           effectlib:
             class: AtomEffect
@@ -5937,13 +6180,15 @@ animagus_sheep:
     description: Turn into a Sheep
     icon: wool
     category: dark
-    class: CommandSpell
     worth: 20
+    actions:
+        cast:
+        -  class: CommandAction
     effects:
         cast:
         - class: EffectSingle
           sound: enderman_teleport
-          location: source
+          location: origin
           particle_override: particleOrbital
           effectlib:
             class: AtomEffect
@@ -5964,13 +6209,15 @@ animagus_cow:
     description: Turn into a Cow
     icon: milk_bucket
     category: dark
-    class: CommandSpell
     worth: 20
+    actions:
+        cast:
+        -  class: CommandAction
     effects:
         cast:
         - class: EffectSingle
           sound: enderman_teleport
-          location: source
+          location: origin
           particle_override: particleOrbital
           effectlib:
             class: AtomEffect
@@ -5991,13 +6238,15 @@ animagus_pig:
     description: Turn into a Pig
     icon: pork
     category: dark
-    class: CommandSpell
     worth: 20
+    actions:
+        cast:
+        -  class: CommandAction
     effects:
         cast:
         - class: EffectSingle
           sound: enderman_teleport
-          location: source
+          location: origin
           particle_override: particleOrbital
           effectlib:
             class: AtomEffect
@@ -6013,19 +6262,108 @@ animagus_pig:
     costs:
         mana: 5
 
+animagus_rabbit:
+    name: Rabbit Animagus
+    description: Turn into a Rabbit
+    icon: carrot_item
+    category: dark
+    worth: 20
+    actions:
+        cast:
+        -  class: CommandAction
+    effects:
+        cast:
+        - class: EffectSingle
+          sound: enderman_teleport
+          location: origin
+          particle_override: particleOrbital
+          effectlib:
+            class: AtomEffect
+            particleNucleus: smoke_normal
+            particleOrbital: smoke_large
+            iterations: 8
+    parameters:
+        target: self
+        cooldown: 10000
+        op: false
+        commands:
+        - dis rabbit
+    costs:
+        mana: 5
+
+animagus_elf:
+    name: House Elf Animagus
+    description: Turn into a House Elf
+    icon: chainmail_boots
+    category: dark
+    worth: 20
+    actions:
+        cast:
+        -  class: CommandAction
+    effects:
+        cast:
+        - class: EffectSingle
+          sound: enderman_teleport
+          location: origin
+          particle_override: particleOrbital
+          effectlib:
+            class: AtomEffect
+            particleNucleus: smoke_normal
+            particleOrbital: smoke_large
+            iterations: 8
+    parameters:
+        target: self
+        cooldown: 10000
+        op: false
+        commands:
+        - dis villager setbaby true setprofession butcher
+    costs:
+        mana: 5
+
+animagus_armchair:
+    name: Armchair Animagus
+    description: Turn into a Armchair
+    icon: spruce_wood_stairs
+    category: dark
+    worth: 20
+    actions:
+        cast:
+        -  class: CommandAction
+    effects:
+        cast:
+        - class: EffectSingle
+          sound: enderman_teleport
+          location: origin
+          particle_override: particleOrbital
+          effectlib:
+            class: AtomEffect
+            particleNucleus: smoke_normal
+            particleOrbital: smoke_large
+            iterations: 8
+    parameters:
+        target: self
+        cooldown: 10000
+        op: false
+        commands:
+        - dis fallingblock setblock 134
+    costs:
+        mana: 5
+
 unspeakable:
     name: Unspeakadeath
     description: Wound your target.
     icon: ink_sack:14
     category: dark
-    class: CommandSpell
     worth: 20
     hidden: true
+    actions:
+        cast:
+        -  class: CommandAction
     effects:
         cast:
         - class: EffectSingle
           sound: enderman_teleport
-          location: source
+          location: origin
           particle_override: particleOrbital
           effectlib:
             class: AtomEffect
@@ -6037,17 +6375,17 @@ unspeakable:
         cooldown: 60000
         op: false
         commands:
-        - castp @t glacius|3
-        - castp @t stupefy|3
-        - castp @t expelliarmus|5
-        - castp @t arrow|4
-        - castp @t incendio|3
-        - castp @t pulsus
-        - castp @t bogies|3
-        - castp @t levicorpus|3
-        - castp @t flipendo|3
-        - castp @t vermillious|3
-        - castp @t lacarnum|3
+        - castp @tn glacius|3
+        - castp @tn stupefy|3
+        - castp @tn expelliarmus|5
+        - castp @tn arrow|4
+        - castp @tn incendio|3
+        - castp @tn pulsus
+        - castp @tn bogies|3
+        - castp @tn levicorpus|3
+        - castp @tn flipendo|3
+        - castp @tn vermillious|3
+        - castp @tn lacarnum|3
     costs:
         mana: 100
 
@@ -6056,11 +6394,13 @@ smite:
     description: Wound your target.
     icon: ink_sack:11
     category: dark
-    class: CommandSpell
     worth: 20
     hidden: true
     pvp_restricted: true
     cast_on_no_target: true
+    actions:
+        cast:
+        -  class: CommandAction
     effects:
         cast:
         -  class: EffectSingle
@@ -6092,7 +6432,7 @@ smite:
         target_breakables: 3
         bypass_protection: true
         commands:
-        - smite @t
+        - smite @tn
     costs:
         mana: 120
 
@@ -6101,11 +6441,13 @@ invis:
     description: Vanish in a Spark!
     icon: nether_star
     category: dark
-    class: CommandSpell
     worth: 20
     hidden: true
     pvp_restricted: true
     cast_on_no_target: true
+    actions:
+        cast:
+        -  class: CommandAction
     effects:
         cast:
         -  class: EffectSingle
@@ -6127,7 +6469,7 @@ invis:
         cooldown: 1000
         bypass_protection: true
         commands:
-        - vanish @p
+        - vanish @pn
     costs:
         mana: 120
 
@@ -6197,9 +6539,11 @@ confringofireball:
     name: Confringo Fireball
     icon: fireball
     category: dark
-    class: ProjectileSpell
     hidden: true
     worth: 35
+    actions:
+        cast:
+        - class: ProjectileAction
     effects:
         cast:
         -  class: EffectSingle
@@ -6267,12 +6611,15 @@ confringoincendio:
     costs:
         mana: 50
 
-Tripudio:
+tripudio:
+    alias: Tripudio
     description: Gain the power to jump high
     name: Tripudio
     icon: ink_sack:8
     worth: 10
-    class: PotionEffectSpell
+    actions:
+        cast:
+        -  class: PotionEffectAction
     effects:
         cast:
         -  class: EffectSingle
@@ -6304,7 +6651,9 @@ volo:
     icon: eye_of_ender
     category: light
     worth: 10
-    class: PotionEffectSpell
+    actions:
+        cast:
+        -  class: PotionEffectAction
     effects:
         cast:
         -  class: EffectSingle
@@ -6336,7 +6685,10 @@ fiantoduri:
     icon: ink_sack:12
     category: light
     worth: 10
-    class: PotionEffectSpell
+    actions:
+        cast:
+        -  class: PotionEffectAction
+        -  class: FallProtectionAction
     effects:
         cast:
         -  class: EffectSingle
@@ -6364,37 +6716,133 @@ fiantoduri:
         duration: 7000
         effect_slow: 10
         effect_jump: -10
-        fall_protection: 5000
-        effect_damage_resistance: 200
+        protection_count: 1000
+        effect_absorption: 4
 
-
-grenade:
-    icon: clay_ball
-    category: dark
+bombtastic:
+    icon: magma_cream
+    category: specialty
     pvp_restricted: true
-    class: GrenadeSpell
+    hidden: true
     worth: 25
+    actions:
+        cast:
+        -  class: TNTAction
+           actions:
+           -  class: AreaOfEffectAction
+              actions:
+              -  class: DamageAction
+              -  class: VelocityAction
     effects:
         cast:
         -  class: EffectSingle
            sound: lava_pop
+        explode:
+        -  class: EffectSingle
+           location: origin
+           effect: explosion_huge
     parameters:
-        allow_max_range: true
-        range: 32
-        size: 2
+        size: 0
         fuse: 60
+        damage: 2
+        target_self: true
+        radius: 8
         break_blocks: false
-    costs:
-        mana: 40
+        cooldown: 6000
+        push: 1
+        item_speed: 4
+        living_entity_speed: 3
+        bypass_build: true
 
-rectumsempra:
+dungbomb:
+    icon: magma_cream
+    category: specialty
+    pvp_restricted: true
+    hidden: true
+    worth: 25
+    actions:
+        cast:
+        -  class: TNTAction
+           actions:
+           -  class: AreaOfEffectAction
+              actions:
+              -  class: PotionEffectAction
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: lava_pop
+        explode:
+         - class: EffectSingle
+           sound: enderdragon_wings
+           location: origin
+           effectlib:
+               class: SphereEffect
+               particle: redstone
+               radius: 2.5
+               color: '7E3817'
+               iterations: 20
+    parameters:
+        size: 0
+        fuse: 60
+        damage: 4
+        target_self: true
+        radius: 4
+        break_blocks: false
+        cooldown: 6000
+        effect_poison: 1
+        duration: 5000
+        bypass_build: true
+
+wreckducto:
+    hidden: true
+    name: Wreckducto
+    icon: clay_brick
+    category: staff
+    class: ConstructSpell
+    hidden: true
+    worth: 12
+    cast_on_no_target: true
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: explode
+           location: origin
+           effectlib:
+             class: ConeEffect
+             iterations: 10
+             particle: spell_mob
+             color: 04B486
+             lengthGrow: 0.4
+        -  class: EffectSingle
+           target_offset: 0,0.5,0
+           location: target
+           color: 04B486
+           firework: burst
+           particle: explosion_huge
+    parameters:
+        allow_max_range: false
+        range: 32
+        speed: 1.0
+        falling: true
+        brush: air
+        radius: 4
+        type: sphere
+        check_destructible: false
+        bypass_build: true
+        undo: 5000
+    costs:
+        mana: 150
+
+wrecktumsempra:
     name: Wrecktumsempra
     description: Utterly destroy your enemies!
     icon: ink_sack:3
     category: dark
     pvp_restricted: false
-    class: CommandSpell
     worth: 35
+    actions:
+        cast:
+        -  class: CommandAction
     effects:
         cast:
         -  class: EffectSingle
@@ -6410,11 +6858,12 @@ rectumsempra:
            effectlib:
              class: ConeEffect
              iterations: 16
-             particle: spell_instant
+             particle: spell_mob
+             color: 04B486
              lengthGrow: 0.4
         -  class: EffectSingle
            location: target
-           color: "04B486"
+           color: 04B486
            firework: star
         - class: EffectSingle
           location: target
@@ -6438,13 +6887,15 @@ rectumsempra:
            effectlib:
              class: ConeEffect
              iterations: 16
-             particle: spell_instant
+             particle: spell_mob
+             color: 04B486
              lengthGrow: 0.4
         -  class: EffectSingle
            location: target
-           color: "04B486"
+           color: 04B486
            firework: star
     parameters:
+        target_type: LivingEntity
         allow_max_range: false
         speed: 1.0
         falling: true
@@ -6457,9 +6908,39 @@ rectumsempra:
         range: 50
         cooldown: 13000
         commands:
-        - cast reductomaxima
-        - kill @t
+        - cast wreckducto
+        - kill @tn
         bypass_backfire: true
         target_breakables: 10
     costs:
         mana: 300
+
+count:
+    name: Entity Counter
+    description: An admin tool to check for nearby entities
+    icon: watch
+    category: staff
+    worth: 120
+    hidden: true
+    actions:
+        cast:
+        -  class: AreaOfEffectAction
+           actions:
+           -  class: CountAction
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: fuse
+           effectlib:
+             class: HelixEffect
+             iterations: 1
+             particle: flame
+    parameters:
+        target: block
+        range: 64
+        target_type: Entity
+        target_self: false
+        radius: 64
+        target_count: 100000
+    costs:
+        mana: 200
