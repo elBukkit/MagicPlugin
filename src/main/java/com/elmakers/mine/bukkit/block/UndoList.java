@@ -550,9 +550,10 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
         UndoList blockList = null;
         if (entity != null && entity.hasMetadata("MagicBlockList")) {
             List<MetadataValue> values = entity.getMetadata("MagicBlockList");
-            for (MetadataValue value : values) {
+            for (MetadataValue metadataValue : values) {
+                Object value = metadataValue.value();
                 if (value instanceof UndoList) {
-                    blockList = (UndoList)value.value();
+                    blockList = (UndoList)value;
                 }
             }
         }
