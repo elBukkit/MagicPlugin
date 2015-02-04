@@ -3,9 +3,12 @@
 ## 4.0
 
  - Spells converted to new action system
- - All default spells changed
+ - All default spells, wands, and enchanting configs changed
+ - Added level progression to default configs
  - Add Lockette integration
  - Fixed/Updated Factions integration
+ - Add "loud" configuration option for spells
+ - Undo system now tracks fire spreading
 
 ## 3.9.4
 

@@ -1970,7 +1970,7 @@ public class MagicController implements Listener, MageController {
         UndoList undoList = getPendingUndo(targetBlock.getLocation());
         if (undoList != null)
         {
-            undoList.add(targetBlock);
+            undoList.add(targetBlock, true);
         }
     }
 
@@ -1986,49 +1986,32 @@ public class MagicController implements Listener, MageController {
         UndoList entityList = getEntityUndo(entity);
         if (entityList != null)
         {
-            entityList.add(event.getBlock());
+            entityList.add(event.getBlock(), true);
             return;
         }
 
         Block ignitingBlock = event.getIgnitingBlock();
+        Block targetBlock = event.getBlock();
         if (ignitingBlock != null)
         {
             UndoList undoList = getPendingUndo(ignitingBlock.getLocation());
             if (undoList != null)
             {
-                undoList.add(event.getBlock());
+                undoList.add(event.getBlock(), true);
                 return;
             }
         }
 
-        Block targetBlock = event.getBlock();
         UndoList undoList = getPendingUndo(targetBlock.getLocation());
         if (undoList != null)
         {
-            undoList.add(targetBlock);
+            undoList.add(targetBlock, true);
         }
     }
 
     protected UndoList getPendingUndo(Location location)
     {
-        long now = System.currentTimeMillis();
-        Collection<String> keys = new ArrayList<String>(pendingUndo);
-
-        for (String key : keys) {
-            if (mages.containsKey(key)) {
-                Mage mage = mages.get(key);
-                UndoList lastUndo = mage.getLastUndoList();
-                if (lastUndo == null || lastUndo.getModifiedTime() < now - undoTimeWindow) {
-                    pendingUndo.remove(key);
-                } else if (lastUndo.contains(location, undoBlockBorderSize)) {
-                    return lastUndo;
-                }
-            } else {
-                pendingUndo.remove(key);
-            }
-        }
-
-        return null;
+        return com.elmakers.mine.bukkit.block.UndoList.getUndoList(location);
     }
 	
 	protected void registerFallingBlock(Entity fallingBlock, Block block) {
@@ -2136,12 +2119,11 @@ public class MagicController implements Listener, MageController {
         if (isMage(entity)) {
 			Mage mage = getMage(entity);
             if (mage instanceof com.elmakers.mine.bukkit.magic.Mage) {
-                Object lastUndo = mage.getLastUndoList();
-                if (lastUndo != null && lastUndo instanceof UndoList) {
-                    UndoList undoList = (UndoList)lastUndo;
+                UndoList undoList = mage.getLastUndoList();
+                if (undoList != null) {
                     long now = System.currentTimeMillis();
                     if (undoList.getModifiedTime() > now - undoTimeWindow) {
-                        blockList = (UndoList)lastUndo;
+                        blockList = undoList;
                     }
                 }
             }
@@ -2503,6 +2485,7 @@ public class MagicController implements Listener, MageController {
 					pendingUndo.remove(key);
 				} else if (lastUndo.contains(entity.getLocation(), undoBlockBorderSize)) {
 					lastUndo.add(entity);
+                    break;
 				}
 			} else {
 				pendingUndo.remove(key);

@@ -6561,7 +6561,7 @@ confringo:
         spread: 2
         speed: 5
         entity_undo: false
-        undo: 8000
+        undo: 3000
         cooldown: 13000
         bypass_backfire: true
     costs:

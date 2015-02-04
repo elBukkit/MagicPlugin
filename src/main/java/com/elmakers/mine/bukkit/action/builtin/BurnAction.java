@@ -31,7 +31,7 @@ public class BurnAction extends BaseSpellAction implements BlockAction
 			return SpellResult.NO_TARGET;
 		}
 		updateBlock(block);
-		registerForUndo(block);
+		registerForUndo(block, true);
 		MaterialAndData applyMaterial = new MaterialAndData(material);
 		applyMaterial.modify(block);
 
