@@ -410,19 +410,14 @@ public class WandUpgradePath {
         }
         if (upgradeCommands != null) {
             for (String command : upgradeCommands) {
-                if (command.contains("@p")) {
-                    if (mage == null || !mage.isPlayer()) {
-                        Bukkit.getLogger().warning("Tried to upgrade a non-player mage with commands");
-                        continue;
-                    }
-                    command = command.replace("@p", mage.getName());
-                }
-                if (command.contains("@uuid")) {
+                if (command.contains("@uuid") || command.contains("@pn") || command.contains("@pd")) {
                     if (mage == null ) {
                         Bukkit.getLogger().warning("Tried to upgrade with commands but no mage");
                         continue;
                     }
-                    command = command.replace("@uuid", mage.getId());
+                    command = command.replace("@uuid", mage.getId())
+                            .replace("@pn", mage.getName())
+                            .replace("@pd", mage.getDisplayName());;
                 }
                 if (location != null) {
                     command = command
@@ -467,7 +462,12 @@ public class WandUpgradePath {
                         mage.getController().getLogger().warning("Invalid spell required for upgrade: " + requiredKey);
                         continue;
                     }
-                    mage.sendMessage(mage.getController().getMessages().get("spell.required_spell").replace("$spell", spell.getName()));
+                    String message = mage.getController().getMessages().get("spell.required_spell").replace("$spell", spell.getName());
+                    WandUpgradePath upgradePath = getUpgrade();
+                    if (upgradePath != null) {
+                        message = message.replace("$path", upgradePath.getName());
+                    }
+                    mage.sendMessage(message);
                     return false;
                 }
             }

@@ -60,8 +60,8 @@ year1:
     min_enchant_level: 10
     max_enchant_level: 10
     upgrade_commands:
-      - pex user @p suffix "(Year 2) "
-      - broadcast &6@p §3has graduated to §b$path§3!
+      - pex user @pn suffix "(Year 2) "
+      - broadcast &6@pd §3has graduated to §b$path§3!
     levels: 1,30,50
     max_mana: 60
     max_xp_regeneration: 8
@@ -95,8 +95,8 @@ year2:
     max_enchant_level: 12
     max_mana: 90
     upgrade_commands:
-      - pex user @p suffix "(Year 3) "
-      - broadcast &6@p §3has graduated to §b$path§3!
+      - pex user @pn suffix "(Year 3) "
+      - broadcast &6@pd §3has graduated to §b$path§3!
     xp_max:
       3: 100
     max_xp_regeneration: 12
@@ -135,8 +135,8 @@ year3:
     spell_count:
       1: 100
     upgrade_commands:
-      - pex user @p suffix "(Year 4) "
-      - broadcast &6@p §3has graduated to §b$path§3!
+      - pex user @pn suffix "(Year 4) "
+      - broadcast &6@pd §3has graduated to §b$path§3!
     spells:
       flipendo|3: 5
       bombarda: 5
@@ -168,8 +168,8 @@ year4:
     spell_count:
       1: 100
     upgrade_commands:
-      - pex user @p suffix "(Year 5) "
-      - broadcast &6@p §3has graduated to §b$path§3!
+      - pex user @pn suffix "(Year 5) "
+      - broadcast &6@pd §3has graduated to §b$path§3!
     spells:
       protego: 40
       rennervate: 90
@@ -195,8 +195,8 @@ year5:
     max_enchant_level: 20
     max_mana: 150
     upgrade_commands:
-      - pex user @p suffix "(Year 6) "
-      - broadcast &6@p §3has graduated to §b$path§3!
+      - pex user @pn suffix "(Year 6) "
+      - broadcast &6@pd §3has graduated to §b$path§3!
     max_xp_regeneration: 28
     xp_regeneration:
       1: 100
@@ -237,8 +237,8 @@ year6:
     spell_count:
       1: 100
     upgrade_commands:
-      - pex user @p suffix "(Year 7) "
-      - broadcast &6@p §3has graduated to §b$path§3!
+      - pex user @pn suffix "(Year 7) "
+      - broadcast &6@pd §3has graduated to §b$path§3!
     spells:
       firestorm: 5
       engorgio: 1
@@ -272,8 +272,8 @@ year7:
     spell_count:
       1: 100
     upgrade_commands:
-      - pex user @p suffix "(Graduate) "
-      - broadcast &6@p §3has graduated from Hogwarts!
+      - pex user @pn suffix "(Graduate) "
+      - broadcast &6@pd §3has graduated from Hogwarts!
     spells:
       atmos: 10
       meteo: 5
