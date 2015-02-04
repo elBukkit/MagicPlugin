@@ -20,6 +20,7 @@ public interface BlockList extends Collection<BlockData> {
     public String getWorldName();
     public BoundingBox getArea();
     public boolean add(Block block);
+    public boolean add(Block block, boolean includeNeighbors);
     public void contain(Vector vector);
     public boolean contains(Block block);
 }
