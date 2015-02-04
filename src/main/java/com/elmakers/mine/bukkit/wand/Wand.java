@@ -550,11 +550,6 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	
 	public void tryToOwn(Player player) {
         if (ownerId == null || ownerId.length() == 0) {
-            // Backwards-compatibility, don't overwrite unless the
-            // name matches
-            if (owner != null && !owner.equals(player.getName())) {
-                return;
-            }
             takeOwnership(player);
         }
 	}
