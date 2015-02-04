@@ -18,9 +18,6 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Fireball;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Projectile;
-import org.bukkit.metadata.FixedMetadataValue;
-import org.bukkit.metadata.MetadataValue;
-import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 
 import java.lang.reflect.Constructor;
@@ -90,9 +87,9 @@ public class ProjectileAction  extends BaseSpellAction implements GeneralAction
 	}
 
 	@Override
-	public void load(Spell spell, ConfigurationSection template)
+	public void initialize(Spell spell, ConfigurationSection template)
 	{
-		super.load(spell, template);
+		super.initialize(spell, template);
 
 		if (template != null && template.contains("actions"))
 		{

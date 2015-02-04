@@ -17,7 +17,7 @@ public class SimpleBlockAction extends BaseSpellAction implements BlockAction
 	public SimpleBlockAction(Spell spell, UndoList undoList)
 	{
 		modified = undoList;
-		load(spell, null);
+		initialize(spell, null);
 	}
 
 	public SpellResult perform(ConfigurationSection parameters, Block block)

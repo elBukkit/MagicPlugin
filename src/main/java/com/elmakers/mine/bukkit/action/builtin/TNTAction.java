@@ -77,9 +77,9 @@ public class TNTAction extends BaseSpellAction implements GeneralAction
 	}
 
 	@Override
-	public void load(Spell spell, ConfigurationSection template)
+	public void initialize(Spell spell, ConfigurationSection template)
 	{
-		super.load(spell, template);
+		super.initialize(spell, template);
 
 		if (template != null && template.contains("actions"))
 		{
