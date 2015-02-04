@@ -144,6 +144,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     protected boolean castOnNoTarget              = false;
     protected boolean bypassDeactivate            = false;
     protected boolean quiet                       = false;
+    protected boolean loud                        = false;
 
     private boolean backfired                   = false;
     private boolean hidden                      = false;
@@ -1033,7 +1034,11 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
             } else if (targetEntity instanceof Entity) {
                 message = getMessage("cast_entity", message);
             }
-            castMessage(message);
+            if (loud) {
+                sendMessage(message);
+            } else {
+                castMessage(message);
+            }
             messageTargets("cast_player_message");
         } else
         // Special cases where messaging is handled elsewhere
@@ -1183,6 +1188,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
 
         bypassDeactivate = parameters.getBoolean("bypass_deactivate", false);
         quiet = parameters.getBoolean("quiet", false);
+        loud = parameters.getBoolean("loud", false);
     }
 
 
