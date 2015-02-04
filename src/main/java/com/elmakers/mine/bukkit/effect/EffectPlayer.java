@@ -432,12 +432,30 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
         start(origin, target);
     }
 
+    public void start(Location origin, Entity originEntity, Collection<Entity> targets) {
+        if (targets == null || targets.size() == 0) return;
+
+        this.originEntity = new WeakReference<Entity>(originEntity);
+        currentEffects.clear();
+
+        for (Entity targetEntity : targets)
+        {
+            if (targetEntity == null) continue;
+            this.targetEntity = new WeakReference<Entity>(targetEntity);
+            start(origin, targetEntity.getLocation());
+        }
+    }
+
     @Override
     public void start(Location origin, Location target) {
+        currentEffects.clear();
+        startEffects(origin, target);
+    }
+
+    public void startEffects(Location origin, Location target) {
         if (origin == null) {
             throw new InvalidParameterException("Origin cannot be null");
         }
-        currentEffects.clear();
 
         // Kinda hacky, but makes cross-world trails (e.g. Repair, Backup) work
         if (target != null && !origin.getWorld().equals(target.getWorld())) {

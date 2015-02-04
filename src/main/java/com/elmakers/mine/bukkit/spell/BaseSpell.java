@@ -1094,38 +1094,25 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
             cancelEffects();
             currentEffects = effects.get(effectName);
             Collection<Entity> targeted = getTargetEntities();
-            if (targeted == null || targeted.size() == 0)
-            {
-                targeted = new ArrayList<Entity>();
-                targeted.add(targetEntity);
-            }
 
-            // TODO: Make this work.. effect players can't actually be re-used like this.
-            // This is also kind of messed up for target types of "both" - the origin re-plays
-            // for each target.
-            boolean firstEffect = true;
             for (EffectPlayer player : currentEffects)
             {
-                for (Entity entity : targeted)
+                // Set scale
+                player.setScale(scale);
+
+                // Set material and color
+                player.setMaterial(getEffectMaterial());
+                player.setColor(mage.getEffectColor());
+                String overrideParticle = particle != null ? particle : mage.getEffectParticleName();
+                player.setParticleOverride(overrideParticle);
+
+                if (player.shouldPlayAtAllTargets())
                 {
-                    boolean isCurrentEntity = (entity == targetEntity || (targetEntity == null && firstEffect));
-                    firstEffect = false;
-                    if (!player.shouldPlayAtAllTargets() && !isCurrentEntity)
-                    {
-                        continue;
-                    }
-                    Location entityLocation = isCurrentEntity || entity == null ? targetLocation : entity.getLocation();
-
-                    // Set scale
-                    player.setScale(scale);
-
-                    // Set material and color
-                    player.setMaterial(getEffectMaterial());
-                    player.setColor(mage.getEffectColor());
-                    String overrideParticle = particle != null ? particle : mage.getEffectParticleName();
-                    player.setParticleOverride(overrideParticle);
-
-                    player.start(source, sourceEntity, entityLocation, entity);
+                    player.start(source, sourceEntity, targeted);
+                }
+                else
+                {
+                    player.start(source, sourceEntity, targetLocation, targetEntity);
                 }
             }
         }
