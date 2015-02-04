@@ -9,6 +9,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.util.BlockVector;
 import org.bukkit.util.Vector;
@@ -36,6 +37,22 @@ public class BlockList implements com.elmakers.mine.bukkit.api.block.BlockList {
             BlockData newBlock = new com.elmakers.mine.bukkit.block.BlockData(block);
             add(newBlock);
         }
+    }
+
+    @Override
+    public boolean add(Block block, boolean includeNeighbors)
+    {
+        boolean allAdded = add(block);
+        if (includeNeighbors)
+        {
+            allAdded = add(block.getRelative(BlockFace.EAST)) && allAdded;
+            allAdded = add(block.getRelative(BlockFace.NORTH)) && allAdded;
+            allAdded = add(block.getRelative(BlockFace.WEST)) && allAdded;
+            allAdded = add(block.getRelative(BlockFace.SOUTH)) && allAdded;
+            allAdded = add(block.getRelative(BlockFace.UP)) && allAdded;
+            allAdded = add(block.getRelative(BlockFace.DOWN)) && allAdded;
+        }
+        return allAdded;
     }
 
     @Override

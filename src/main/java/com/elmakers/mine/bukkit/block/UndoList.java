@@ -124,6 +124,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
             blockData.setPriorState(priorState);
         }
 
+        blockData.setUndoList(this);
         modified.put(blockData.getId(), blockData);
         return true;
     }
@@ -546,18 +547,27 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
         return applyPhysics;
     }
 
-    public static UndoList getUndoList(Entity entity) {
-        UndoList blockList = null;
+    public static com.elmakers.mine.bukkit.api.block.UndoList getUndoList(Entity entity) {
+        com.elmakers.mine.bukkit.api.block.UndoList blockList = null;
         if (entity != null && entity.hasMetadata("MagicBlockList")) {
             List<MetadataValue> values = entity.getMetadata("MagicBlockList");
             for (MetadataValue metadataValue : values) {
                 Object value = metadataValue.value();
-                if (value instanceof UndoList) {
-                    blockList = (UndoList)value;
+                if (value instanceof com.elmakers.mine.bukkit.api.block.UndoList) {
+                    blockList = (com.elmakers.mine.bukkit.api.block.UndoList)value;
                 }
             }
         }
 
+        return blockList;
+    }
+
+    public static com.elmakers.mine.bukkit.api.block.UndoList getUndoList(Location location) {
+        com.elmakers.mine.bukkit.api.block.UndoList blockList = null;
+        BlockData modifiedBlock = modified.get(com.elmakers.mine.bukkit.block.BlockData.getBlockId(location.getBlock()));
+        if (modifiedBlock != null) {
+            blockList = modifiedBlock.getUndoList();
+        }
         return blockList;
     }
 }

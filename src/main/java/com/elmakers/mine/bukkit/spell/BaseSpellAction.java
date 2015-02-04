@@ -66,6 +66,14 @@ public abstract class BaseSpellAction implements SpellAction
         }
     }
 
+    public void registerForUndo(Block block, boolean addNeighbors)
+    {
+        if (undoSpell != null)
+        {
+            undoSpell.registerForUndo(block, addNeighbors);
+        }
+    }
+
     public void updateBlock(Block block)
     {
         MageController controller = getController();

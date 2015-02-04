@@ -10,8 +10,11 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.util.BlockVector;
+import com.elmakers.mine.bukkit.api.block.UndoList;
 
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
+
+import java.lang.ref.WeakReference;
 
 /**
  * Stores a cached Block. Stores the coordinates and world, but will look up a block reference on demand.
@@ -35,6 +38,9 @@ public class BlockData extends MaterialAndData implements com.elmakers.mine.bukk
     // Persistent
     protected BlockVector  location;
     protected String       worldName;
+
+    // Used for UndoList lookups
+    protected WeakReference<UndoList> undoList = null;
 
     public static long getBlockId(Block block)
     {
@@ -314,5 +320,19 @@ public class BlockData extends MaterialAndData implements com.elmakers.mine.bukk
     public boolean isDifferent()
     {
         return isDifferent(getBlock());
+    }
+
+    @Override
+    public UndoList getUndoList() {
+        return undoList != null ? undoList.get() : null;
+    }
+
+    @Override
+    public void setUndoList(UndoList list) {
+        if (list == null) {
+            undoList = null;
+            return;
+        }
+        undoList = new WeakReference<UndoList>(list);
     }
 }
