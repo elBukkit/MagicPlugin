@@ -564,7 +564,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
     }
 
      public void takeOwnership(Player player, boolean setBound, boolean setKeep) {
-		owner = player.getName();
+        owner = ChatColor.stripColor(player.getDisplayName());
         ownerId = player.getUniqueId().toString();
 		if (setBound) {
 			bound = true;
@@ -2428,10 +2428,10 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		// Check for auto-bind
         // Don't do this for op'd players, effectively, so
         // they can create and give unbound wands.
-		if (bound && (ownerId == null || ownerId.length() == 0) && !controller.hasPermission(player, "Magic.wand.override_bind", false)) {
-            // Backwards-compatibility, don't overrwrite unless the
-            // name matches
-            if (owner == null || owner.length() == 0 || owner.equals(player.getName())) {
+		if (bound && !controller.hasPermission(player, "Magic.wand.override_bind", false))
+        {
+            if (ownerId == null || ownerId.length() == 0 || owner == null || !owner.equals(mage.getPlayer().getDisplayName()))
+            {
                 takeOwnership(mage.getPlayer());
                 needsSave = true;
             }
@@ -3059,13 +3059,8 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 
 	@Override
 	public boolean canUse(Player player) {
-		if (!bound || owner == null || owner.length() == 0) return true;
+		if (!bound || ownerId == null || ownerId.length() == 0) return true;
 		if (controller.hasPermission(player, "Magic.wand.override_bind", false)) return true;
-
-        // Backwards-compatibility
-        if (ownerId == null || ownerId.length() == 0) {
-            return owner.equalsIgnoreCase(player.getName());
-        }
 
 		return ownerId.equalsIgnoreCase(player.getUniqueId().toString());
 	}
