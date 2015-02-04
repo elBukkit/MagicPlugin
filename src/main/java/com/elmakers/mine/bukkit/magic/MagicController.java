@@ -1964,6 +1964,29 @@ public class MagicController implements Listener, MageController {
 		}
 	}
 
+
+    @EventHandler
+    public void onEntityCombust(EntityCombustEvent event)
+    {
+        Entity entity = event.getEntity();
+        if (isMage(entity)) {
+            Mage apiMage = getMage(event.getEntity());
+            if (!(apiMage instanceof com.elmakers.mine.bukkit.magic.Mage)) return;
+            com.elmakers.mine.bukkit.magic.Mage mage = (com.elmakers.mine.bukkit.magic.Mage) apiMage;
+
+            mage.onPlayerCombust(event);
+        }
+
+        if (!event.isCancelled())
+        {
+            UndoList undoList = getPendingUndo(entity.getLocation());
+            if (undoList != null)
+            {
+                undoList.modify(entity);
+            }
+        }
+    }
+
     @EventHandler
     public void onBlockBurn(BlockBurnEvent event) {
         Block targetBlock = event.getBlock();
@@ -2415,19 +2438,6 @@ public class MagicController implements Listener, MageController {
 				}
 			, 5);
 		}
-	}
-	
-	@EventHandler
-	public void onEntityCombust(EntityCombustEvent event)
-	{
-        Entity entity = event.getEntity();
-        if (isMage(entity)) {
-            Mage apiMage = getMage(event.getEntity());
-            if (!(apiMage instanceof com.elmakers.mine.bukkit.magic.Mage)) return;
-            com.elmakers.mine.bukkit.magic.Mage mage = (com.elmakers.mine.bukkit.magic.Mage) apiMage;
-
-            mage.onPlayerCombust(event);
-        }
 	}
 	
 	@EventHandler
