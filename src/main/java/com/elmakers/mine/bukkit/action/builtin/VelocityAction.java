@@ -106,4 +106,10 @@ public class VelocityAction extends BaseSpellAction implements EntityAction
             super.getParameterOptions(examples, parameterKey);
         }
     }
+
+    @Override
+    public boolean isUndoable()
+    {
+        return true;
+    }
 }

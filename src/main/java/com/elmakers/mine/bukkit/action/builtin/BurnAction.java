@@ -37,4 +37,10 @@ public class BurnAction extends BaseSpellAction implements BlockAction
 
 		return SpellResult.CAST;
 	}
+
+    @Override
+    public boolean isUndoable()
+    {
+        return true;
+    }
 }

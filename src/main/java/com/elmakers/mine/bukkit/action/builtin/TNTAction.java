@@ -108,4 +108,10 @@ public class TNTAction extends BaseSpellAction implements GeneralAction
 			super.getParameterOptions(examples, parameterKey);
 		}
 	}
+
+    @Override
+    public boolean isUndoable()
+    {
+        return true;
+    }
 }

@@ -99,4 +99,10 @@ public class FreezeAction extends BaseSpellAction implements BlockAction
 			super.getParameterOptions(examples, parameterKey);
 		}
 	}
+
+    @Override
+    public boolean isUndoable()
+    {
+        return true;
+    }
 }

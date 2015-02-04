@@ -126,4 +126,10 @@ public class TorchAction extends BaseSpellAction implements BlockAction
 			super.getParameterOptions(examples, parameterKey);
 		}
 	}
+
+    @Override
+    public boolean isUndoable()
+    {
+        return true;
+    }
 }
