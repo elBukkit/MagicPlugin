@@ -2,8 +2,6 @@ package com.elmakers.mine.bukkit.spell;
 
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
-import org.apache.commons.lang.StringUtils;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
@@ -17,9 +15,9 @@ public abstract class CompoundAction extends BaseSpellAction
 	protected ActionHandler actions = null;
 
 	@Override
-	public void load(Spell spell, ConfigurationSection template)
+	public void initialize(Spell spell, ConfigurationSection template)
 	{
-		super.load(spell, template);
+		super.initialize(spell, template);
 
 		usesBrush = false;
 		undoable = false;

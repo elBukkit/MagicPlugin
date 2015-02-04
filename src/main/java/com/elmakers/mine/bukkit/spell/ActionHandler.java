@@ -90,7 +90,7 @@ public class ActionHandler
     }
 
     public void loadAction(SpellAction action, ConfigurationSection parameters) {
-        action.load(spell, parameters);
+        action.initialize(spell, parameters);
         allActions.add(action);
         usesBrush = usesBrush || action.usesBrush();
         undoable = undoable || action.isUndoable();

@@ -163,7 +163,19 @@ public abstract class BaseSpellAction implements SpellAction
     }
 
     @Override
-    public void load(Spell spell, ConfigurationSection parameters)
+    public void load(ConfigurationSection parameters)
+    {
+
+    }
+
+    @Override
+    public void save(ConfigurationSection parameters)
+    {
+
+    }
+
+    @Override
+    public void initialize(Spell spell, ConfigurationSection parameters)
     {
         this.spell = spell;
         if (spell instanceof BaseSpell)
