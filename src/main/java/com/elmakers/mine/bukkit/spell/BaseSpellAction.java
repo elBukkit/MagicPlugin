@@ -144,6 +144,14 @@ public abstract class BaseSpellAction implements SpellAction
         return blockSpell != null ? blockSpell.hasBuildPermission(block) : false;
     }
 
+    public void playEffects(String key)
+    {
+        if (baseSpell != null)
+        {
+            baseSpell.playEffects(key);
+        }
+    }
+
     public Collection<EffectPlayer> getEffects(String key) {
         return spell.getEffects(key);
     }
@@ -286,17 +294,27 @@ public abstract class BaseSpellAction implements SpellAction
         return baseSpell != null ? baseSpell.tryFindPlaceToStand(location) : location;
     }
 
-    public void castMessage(String message) {
+    public void castMessage(String message)
+    {
         if (baseSpell != null)
         {
             baseSpell.castMessage(message);
         }
     }
 
-    public void sendMessage(String message) {
+    public void sendMessage(String message)
+    {
         if (baseSpell != null)
         {
             baseSpell.sendMessage(message);
+        }
+    }
+
+    public void setTarget(Location location)
+    {
+        if (targetingSpell != null)
+        {
+            targetingSpell.setTarget(location);
         }
     }
 
