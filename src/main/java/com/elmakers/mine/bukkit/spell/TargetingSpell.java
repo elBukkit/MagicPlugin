@@ -178,7 +178,7 @@ public abstract class TargetingSpell extends BaseSpell {
 
     public boolean hasBuildPermission(Block block)
     {
-        if (bypassBuildRestriction) return true;
+        if (bypassBuildRestriction || hasCastPermissionOverride(mage.getCommandSender())) return true;
         return mage.hasBuildPermission(block);
     }
 
