@@ -34,18 +34,23 @@ import java.util.Map;
 
 public class RecallAction extends BaseSpellAction implements GeneralAction, GUIAction
 {
-    private class UndoMarkerMove implements Runnable {
-        private final Location location;
-        private final RecallAction spell;
+    private static String MARKER_KEY = "recall_marker";
 
-        public UndoMarkerMove(RecallAction spell, Location currentLocation) {
+    private class UndoMarkerMove implements Runnable
+    {
+        private final Location location;
+        private final Mage mage;
+
+        public UndoMarkerMove(Mage mage, Location currentLocation)
+        {
             this.location = currentLocation;
-            this.spell = spell;
+            this.mage = mage;
         }
 
         @Override
-        public void run() {
-            spell.location = this.location;
+        public void run()
+        {
+            mage.getData().set(MARKER_KEY, ConfigurationUtils.fromLocation(location));
         }
     }
 
@@ -118,8 +123,6 @@ public class RecallAction extends BaseSpellAction implements GeneralAction, GUIA
     public boolean isUndoable() {
         return true;
     }
-	
-	public Location location;
 
 	private static int MAX_RETRY_COUNT = 8;
 	private static int RETRY_INTERVAL = 10;
@@ -161,7 +164,8 @@ public class RecallAction extends BaseSpellAction implements GeneralAction, GUIA
 		if (player == null) {
             return SpellResult.PLAYER_REQUIRED;
         }
-		
+
+        Location playerLocation = mage.getLocation();
 		allowCrossWorld = parameters.getBoolean("cross_world", true);
 		for (RecallType testType : RecallType.values())
         {
@@ -234,7 +238,7 @@ public class RecallAction extends BaseSpellAction implements GeneralAction, GUIA
             if (selectedType == RecallType.WARP) {
                 for (String warpKey : warps.keySet()) {
                     Waypoint targetLocation = getWarp(warpKey);
-                    if (targetLocation != null && targetLocation.isValid(allowCrossWorld, location)) {
+                    if (targetLocation != null && targetLocation.isValid(allowCrossWorld, playerLocation)) {
                         allWaypoints.add(targetLocation);
                     }
                 }
@@ -242,13 +246,13 @@ public class RecallAction extends BaseSpellAction implements GeneralAction, GUIA
                 List<LostWand> lostWands = mage.getLostWands();
                 for (int i = 0; i < lostWands.size(); i++) {
                     Waypoint targetLocation = getWaypoint(player, selectedType, i, parameters);
-                    if (targetLocation != null && targetLocation.isValid(allowCrossWorld, location)) {
+                    if (targetLocation != null && targetLocation.isValid(allowCrossWorld, playerLocation)) {
                         allWaypoints.add(targetLocation);
                     }
                 }
             } else {
                 Waypoint targetLocation = getWaypoint(player, selectedType, 0, parameters);
-                if (targetLocation != null && targetLocation.isValid(allowCrossWorld, location)) {
+                if (targetLocation != null && targetLocation.isValid(allowCrossWorld, playerLocation)) {
                     allWaypoints.add(targetLocation);
                 }
             }
@@ -305,6 +309,7 @@ public class RecallAction extends BaseSpellAction implements GeneralAction, GUIA
 		Mage mage = getMage();
 		switch (type) {
 		case MARKER:
+            Location location = ConfigurationUtils.getLocation(mage.getData(), MARKER_KEY);
 			return new Waypoint(location, getMessage("title_marker"), getMessage("cast_marker"), getMessage("no_target_marker"), getMessage("description_marker", ""), ConfigurationUtils.getMaterialAndData(parameters, "icon_marker"));
 		case DEATH:
             return new Waypoint(mage.getLastDeathLocation(), "Last Death", getMessage("cast_death"), getMessage("no_target_death"), getMessage("description_death", ""), ConfigurationUtils.getMaterialAndData(parameters, "icon_death"));
@@ -323,8 +328,10 @@ public class RecallAction extends BaseSpellAction implements GeneralAction, GUIA
 
 	protected boolean removeMarker()
 	{
+        Mage mage = getMage();
+        Location location = ConfigurationUtils.getLocation(mage.getData(), MARKER_KEY);
 		if (location == null) return false;
-		location = null;
+        getMage().getData().set(MARKER_KEY, null);
 		return true;
 	}
 	
@@ -376,10 +383,12 @@ public class RecallAction extends BaseSpellAction implements GeneralAction, GUIA
 			return false;
 		}
 
-		registerForUndo(new UndoMarkerMove(this, location));
+        Mage mage = getMage();
+        Location location = ConfigurationUtils.getLocation(mage.getData(), MARKER_KEY);
+
+		registerForUndo(new UndoMarkerMove(mage, location));
 		if (location != null) 
 		{
-			removeMarker();
 			castMessage(getMessage("cast_marker_move"));
 		}
 		else
@@ -391,19 +400,19 @@ public class RecallAction extends BaseSpellAction implements GeneralAction, GUIA
 		location.setX(target.getX());
 		location.setY(target.getY());
 		location.setZ(target.getZ());
-		
-		return true;
+
+        getMage().getData().set(MARKER_KEY, ConfigurationUtils.fromLocation(location));
+        return true;
 	}
 	
 	@Override
 	public void load(ConfigurationSection node)
 	{
-		location = ConfigurationUtils.getLocation(node, "location");
-	}
-
-	@Override
-	public void save(ConfigurationSection node)
-	{
-		node.set("location", ConfigurationUtils.fromLocation(location));
+        // This is here for backwards-compatibility with RecallSpell
+		Location location = ConfigurationUtils.getLocation(node, "location");
+        if (location != null)
+        {
+            getMage().getData().set(MARKER_KEY, ConfigurationUtils.fromLocation(location));
+        }
 	}
 }
