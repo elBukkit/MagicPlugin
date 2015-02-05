@@ -3200,7 +3200,7 @@ lumos:
            particle_data: 2
            particle_count: 3
         -  class: EffectSingle
-           location: target
+           location: targets
            target_offset: 10,0,0
            effectlib:
              class: SphereEffect
@@ -5003,8 +5003,10 @@ recall:
     hidden: true
     icon: redstone
     category: specialty
-    class: RecallSpell
     worth: 25
+    actions:
+        cast:
+        -  class: RecallAction
     effects:
         cast:
         -  class: EffectVariable

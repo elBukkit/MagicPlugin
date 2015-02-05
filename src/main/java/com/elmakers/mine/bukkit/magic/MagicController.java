@@ -14,6 +14,7 @@ import java.util.logging.Logger;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
+import com.elmakers.mine.bukkit.api.action.GUIAction;
 import com.elmakers.mine.bukkit.api.event.SaveEvent;
 import com.elmakers.mine.bukkit.api.spell.*;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
@@ -118,6 +119,19 @@ public class MagicController implements Listener, MageController {
 
         defaultsFolder = new File(configFolder, "defaults");
         defaultsFolder.mkdirs();
+    }
+
+    @Override
+    public void activateGUI(GUIAction action) {
+        if (gui != null) {
+            gui.deactivated();
+        }
+        gui = action;
+    }
+
+    @Override
+    public void deactivateGUI() {
+        activateGUI(null);
     }
 
     @Override
@@ -2916,6 +2930,12 @@ public class MagicController implements Listener, MageController {
 		if (event.isCancelled()) return;
 		if (!(event.getWhoClicked() instanceof Player)) return;
 
+        if (gui != null)
+        {
+            gui.clicked(event);
+            return;
+        }
+
 		Player player = (Player)event.getWhoClicked();
         Mage apiMage = getMage(player);
 
@@ -3048,6 +3068,13 @@ public class MagicController implements Listener, MageController {
 	@EventHandler
 	public void onInventoryClosed(InventoryCloseEvent event) {
 		if (!(event.getPlayer() instanceof Player)) return;
+
+        if (gui != null)
+        {
+            gui.deactivated();
+            gui = null;
+            return;
+        }
 
 		// Update the active wand, it may have changed around
 		Player player = (Player)event.getPlayer();
@@ -3703,8 +3730,15 @@ public class MagicController implements Listener, MageController {
 	
 	@Override
 	public Location getWarp(String warpName) {
-		if (warpController == null) return null;
-		return warpController.getWarp(warpName);
+        Location location = null;
+		if (warpController != null) {
+            try {
+                location = warpController.getWarp(warpName);
+            } catch (Exception ex) {
+                location = null;
+            }
+        }
+		return location;
 	}
 	
 	@Override
@@ -4183,19 +4217,9 @@ public class MagicController implements Listener, MageController {
     private boolean							    bypassBuildPermissions      = false;
     private boolean							    bypassPvpPermissions        = false;
     private boolean							    allPvpRestricted            = false;
-    private FactionsManager					    factionsManager				= new FactionsManager();
-    private LocketteManager                     locketteManager				= new LocketteManager();
-    private WorldGuardManager					worldGuardManager			= new WorldGuardManager();
-    private PvPManagerManager                   pvpManager                  = new PvPManagerManager();
-    private MultiverseManager                   multiverseManager           = new MultiverseManager();
-    private PreciousStonesManager				preciousStonesManager		= new PreciousStonesManager();
-    private TownyManager						townyManager				= new TownyManager();
 
-    private TradersController					tradersController			= null;
     private String								extraSchematicFilePath		= null;
     private Class<?>							cuboidClipboardClass        = null;
-    private DynmapController					dynmap						= null;
-    private ElementalsController				elementals					= null;
     private Mailer								mailer						= null;
     private Material							defaultMaterial				= Material.DIRT;
 
@@ -4216,6 +4240,8 @@ public class MagicController implements Listener, MageController {
     private Collection<String>                  addExamples                 = null;
     private boolean                             initialized                 = false;
 
+    private GUIAction                           gui                         = null;
+
     // Synchronization
     private final Object                        saveLock                    = new Object();
 
@@ -4225,4 +4251,15 @@ public class MagicController implements Listener, MageController {
     private AnvilController					    anvil						= null;
     private Messages                            messages                    = null;
     private MapController                       maps                        = null;
+    private TradersController					tradersController			= null;
+    private DynmapController					dynmap						= null;
+    private ElementalsController				elementals					= null;
+
+    private FactionsManager					    factionsManager				= new FactionsManager();
+    private LocketteManager                     locketteManager				= new LocketteManager();
+    private WorldGuardManager					worldGuardManager			= new WorldGuardManager();
+    private PvPManagerManager                   pvpManager                  = new PvPManagerManager();
+    private MultiverseManager                   multiverseManager           = new MultiverseManager();
+    private PreciousStonesManager				preciousStonesManager		= new PreciousStonesManager();
+    private TownyManager						townyManager				= new TownyManager();
 }

@@ -19,6 +19,7 @@ import com.elmakers.mine.bukkit.spell.UndoableSpell;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.Target;
 
+@Deprecated
 public class RecallSpell extends UndoableSpell
 {
 	private class UndoMarkerMove implements Runnable {
