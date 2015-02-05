@@ -13,6 +13,7 @@ guest:
         - flare
         - tag
         - camera
+
 villager:
     path: student
     effect_color: '00FF00'
@@ -27,6 +28,7 @@ villager:
         - camera
         - leap
         - perk
+
 knight:
     path: battle
     effect_color: '11FF11'
@@ -44,6 +46,7 @@ knight:
         - leap
         - pull
         - perk
+
 baron:
     path: battle
     effect_color: '11FF11'
@@ -64,6 +67,7 @@ baron:
         - arrowrain
         - shrink
         - perk
+
 lord:
     path: battle
     effect_color: '11FF11'
@@ -87,6 +91,7 @@ lord:
         - torch
         - boom
         - perk
+
 hero:
     path: battle
     effect_color: '11FF11'
@@ -114,6 +119,7 @@ hero:
         - stash
         - blast
         - perk
+
 king:
     path: battle
     effect_color: '22FF22'
@@ -144,6 +150,7 @@ king:
         - frost
         - grenade
         - perk
+
 legend:
     path: apprentice
     effect_color: '22FF22'
@@ -179,6 +186,7 @@ legend:
         - curse
         - frost
         - perk
+
 overseer:
     path: apprentice
     effect_color: '22FF22'
@@ -218,6 +226,7 @@ overseer:
         - perk
         - wolf
         - chop
+
 wizard:
     path: master
     effect_color: '89A0D5'
@@ -258,6 +267,7 @@ wizard:
         - wolf
         - chop
         - fire
+
 nether:
     path: master
     effect_color: 'B40404'
@@ -304,6 +314,7 @@ nether:
         - wolf
         - chop
         - fire
+
 ender:
     path: master
     effect_color: 'AC58FA'
@@ -355,3 +366,497 @@ ender:
         - wolf
         - chop
         - fire
+
+explorer:
+    active_spell: flare
+    xp_regeneration: 1
+    effect_color: '008800'
+    xp_max: 50
+    spells:
+        - tesseract
+        - torch
+        - leap
+        - flare
+
+psychic:
+    protection_falling: 0.9
+    xp_regeneration: 1
+    effect_color: '000088'
+    xp_max: 50
+    active_spell: push
+    spells:
+        - fling
+        - tesseract
+        - leap
+        - push
+        - pull
+        - force
+painter:
+    xp_regeneration: 10
+    effect_color: '118811'
+    xp_max: 200
+    active_spell: paint
+    spells:
+        - paint
+    materials:
+        - wool:0
+        - wool:1
+        - wool:2
+        - wool:3
+        - wool:4
+        - wool:5
+        - wool:6
+        - wool:7
+        - wool:8
+        - wool:9
+        - wool:10
+        - wool:11
+        - wool:12
+        - wool:13
+        - wool:14
+        - wool:15
+        - stained_clay:0
+        - stained_clay:1
+        - stained_clay:2
+        - stained_clay:3
+        - stained_clay:4
+        - stained_clay:5
+        - stained_clay:6
+        - stained_clay:7
+        - stained_clay:8
+        - stained_clay:9
+        - stained_clay:10
+        - stained_clay:11
+        - stained_clay:12
+        - stained_clay:13
+        - stained_clay:14
+        - stained_clay:15
+        - stained_glass:0
+        - stained_glass:1
+        - stained_glass:2
+        - stained_glass:3
+        - stained_glass:4
+        - stained_glass:5
+        - stained_glass:6
+        - stained_glass:7
+        - stained_glass:8
+        - stained_glass:9
+        - stained_glass:10
+        - stained_glass:11
+        - stained_glass:12
+        - stained_glass:13
+        - stained_glass:14
+        - stained_glass:15
+        - stained_glass_pane:15
+        - stained_glass_pane:0
+        - stained_glass_pane:1
+        - stained_glass_pane:2
+        - stained_glass_pane:3
+        - stained_glass_pane:4
+        - stained_glass_pane:5
+        - stained_glass_pane:6
+        - stained_glass_pane:7
+        - stained_glass_pane:8
+        - stained_glass_pane:9
+        - stained_glass_pane:10
+        - stained_glass_pane:11
+        - stained_glass_pane:12
+        - stained_glass_pane:13
+        - stained_glass_pane:14
+        - stained_glass_pane:15
+        - schematic:rainbow
+
+decorator:
+    locked: true
+    cost_reduction: 1
+    effect_color: '118811'
+    active_spell: convert
+    spells:
+        - convert
+    materials:
+        - wool:0
+        - wool:1
+        - wool:2
+        - wool:3
+        - wool:4
+        - wool:5
+        - wool:6
+        - wool:7
+        - wool:8
+        - wool:9
+        - wool:10
+        - wool:11
+        - wool:12
+        - wool:13
+        - wool:14
+        - wool:15
+        - stained_clay:0
+        - stained_clay:1
+        - stained_clay:2
+        - stained_clay:3
+        - stained_clay:4
+        - stained_clay:5
+        - stained_clay:6
+        - stained_clay:7
+        - stained_clay:8
+        - stained_clay:9
+        - stained_clay:10
+        - stained_clay:11
+        - stained_clay:12
+        - stained_clay:13
+        - stained_clay:14
+        - stained_clay:15
+        - stained_glass:0
+        - stained_glass:1
+        - stained_glass:2
+        - stained_glass:3
+        - stained_glass:4
+        - stained_glass:5
+        - stained_glass:6
+        - stained_glass:7
+        - stained_glass:8
+        - stained_glass:9
+        - stained_glass:10
+        - stained_glass:11
+        - stained_glass:12
+        - stained_glass:13
+        - stained_glass:14
+        - stained_glass_pane:15
+        - stained_glass_pane:0
+        - stained_glass_pane:1
+        - stained_glass_pane:2
+        - stained_glass_pane:3
+        - stained_glass_pane:4
+        - stained_glass_pane:5
+        - stained_glass_pane:6
+        - stained_glass_pane:7
+        - stained_glass_pane:8
+        - stained_glass_pane:9
+        - stained_glass_pane:10
+        - stained_glass_pane:11
+        - stained_glass_pane:12
+        - stained_glass_pane:13
+        - stained_glass_pane:14
+        - stained_glass_pane:15
+
+mining:
+    xp_regeneration: 10
+    effect_color: '888888'
+    xp_max: 100
+    active_spell: mine
+    spells:
+        - peek
+        - mine
+        - blast
+        - tunnel
+        - torch
+
+farming:
+    xp_regeneration: 10
+    effect_color: '0000EE'
+    xp_max: 100
+    active_spell: farm
+    spells:
+        - farm
+        - fill
+        - weather
+        - tree
+        - alter
+        - superalter
+        - chop
+    materials:
+        - soil
+        - water
+
+alchemist:
+    xp_regeneration: 10
+    effect_color: 'EE00EE'
+    xp_max: 100
+    active_spell: alter
+    spells:
+        - alter
+        - superalter
+        - sandblast
+        - recurse
+        - fire
+        - blob
+        - lava
+        - wolf
+    materials:
+        - water
+        - lava
+        - soul_sand
+        - sand
+
+elementalist:
+    xp_regeneration: 10
+    effect_color: '0000FF'
+    xp_max: 100
+    active_spell: weather
+    spells:
+        - fire
+        - lightning
+        - storm
+        - lava
+        - wolf
+        - weather
+
+necromancer:
+    xp_regeneration: 10
+    effect_color: '111111'
+    xp_max: 100
+    active_spell: monster
+    spells:
+        - fire
+        - monster
+        - disintegrate
+        - portal
+        - shrink
+        - wither
+
+white:
+    cost_reduction: 0.5
+    protection: 0.9
+    xp_regeneration: 50
+    xp_max: 300
+    health_regeneration: 1
+    hunger_regeneration: 1
+    haste: 0.1
+    power: 0.5
+    effect_color: 'FFFFFF'
+    effect_bubbles: true
+    active_spell: levitate
+    spells:
+        - fling
+        - blink
+        - recurse
+        - time
+        - sniper
+        - superblast
+        - superblob
+        - superconvert
+        - push
+        - pull
+        - force
+        - levitate
+        - farm
+        - volley
+        - stalactite
+        - fill
+        - blob
+        - blast
+        - pillar
+        - place
+        - bridge
+        - absorb
+        - undo
+        - toss
+        - boon
+        - blessing
+        - convert
+        - commit
+        - heal
+        - fill
+        - absorb
+        - flare
+    materials:
+        - replicate
+        - clone
+        - water
+        - glowstone
+        - glass
+        - erase
+        - soul_sand
+        - stained_glass
+        - copy
+        - wool
+        - stained_clay
+        - quartz_block
+        - quartz_block:1
+        - quartz_block:2
+black:
+    cost_reduction: 0.5
+    protection: 0.9
+    xp_regeneration: 50
+    xp_max: 300
+    health_regeneration: 1
+    hunger_regeneration: 1
+    haste: 0.1
+    power: 0.5
+    effect_color: '111111'
+    effect_bubbles: true
+    active_spell: levitate
+    spells:
+        - wither
+        - fling
+        - blink
+        - recurse
+        - sniper
+        - kaboom
+        - fireball
+        - superblast
+        - superblob
+        - superconvert
+        - storm
+        - icbm
+        - inferno
+        - superblob
+        - levitate
+        - mob
+        - shell
+        - shrink
+        - box
+        - frag
+        - volley
+        - stalactite
+        - fill
+        - blob
+        - blast
+        - pillar
+        - place
+        - bridge
+        - absorb
+        - undo
+        - toss
+        - curse
+        - convert
+        - commit
+        - bomb
+        - cluster
+        - superpyramid
+        - disintegrate
+        - flare
+        - portal
+        - neutron
+        - night
+    materials:
+        - water
+        - erase
+        - soul_sand
+        - copy
+        - obsidian
+        - stained_clay:15
+        - stained_glass:15
+        - wool:15
+
+red:
+    protection_fire: 1
+    protection: 0.6
+    xp_regeneration: 40
+    xp_max: 300
+    power: 0.2
+    effect_color: 'FF0000'
+    effect_bubbles: true
+    active_spell: boom
+    spells:
+        - fireball
+        - recurse
+        - blob
+        - fire
+        - inferno
+        - lava
+        - toss
+        - boom
+        - kaboom
+        - convert
+        - icbm
+        - supershell
+        - grenade
+        - flare
+        - flamethrower
+        - cluster
+        - bomb
+        - frag
+    materials:
+        - stationary_lava
+        - stained_clay:14
+        - stained_glass:14
+        - wool:14
+        - sand:1
+        - redstone_block
+
+blue:
+    protection: 0.8
+    xp_regeneration: 40
+    xp_max: 300
+    power: 0.2
+    effect_color: '0000FF'
+    effect_bubbles: true
+    active_spell: frost
+    spells:
+        - frost
+        - toss
+        - volley
+        - blob
+        - recurse
+        - cushion
+        - stream
+        - convert
+        - gills
+        - superconvert
+        - flare
+        - bridge
+        - tesseract
+        - iterate
+        - portal
+    materials:
+        - stationary_water
+        - ice
+        - packed_ice
+        - stained_clay:3
+        - stained_glass:3
+        - wool:3
+        - stained_clay:9
+        - stained_glass:9
+        - wool:9
+        - stained_clay:11
+        - stained_glass:11
+        - wool:11
+        - lapis_block
+        - diamond_block
+
+green:
+    protection: 0.8
+    xp_regeneration: 40
+    xp_max: 300
+    power: 0.2
+    effect_color: '00FF00'
+    effect_bubbles: true
+    active_spell: heal
+    spells:
+        - tree
+        - farm
+        - familiar
+        - blob
+        - recurse
+        - earth
+        - convert
+        - superblob
+        - flare
+        - heal
+        - leap
+        - pillar
+        - place
+        - stalactite
+        - wolf
+        - cat
+        - chop
+        - alter
+        - superalter
+    materials:
+        - dirt
+        - grass
+        - wood
+        - log
+        - vine
+        - mycel
+        - emerald_block
+        - leaves
+        - stained_clay:5
+        - stained_glass:5
+        - stained_clay:13
+        - stained_glass:13
+        - wool:5
+        - wool:13
+        - huge_mushroom_1
+        - huge_mushroom_2

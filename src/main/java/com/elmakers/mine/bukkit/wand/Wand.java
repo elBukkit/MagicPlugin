@@ -1430,7 +1430,17 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		List<String> lore = new ArrayList<String>();
 
         if (description.length() > 0) {
-            if (description.contains("$")) {
+            if (description.contains("$path")) {
+                String pathName = "Unknown";
+                WandUpgradePath path = getPath();
+                if (path != null) {
+                    pathName = path.getName();
+                }
+                String description = this.description;
+                description = description.replace("$path", pathName);
+                lore.add(ChatColor.ITALIC + "" + ChatColor.GREEN + description);
+            }
+            else if (description.contains("$")) {
                 String randomDescription = controller.getMessages().get("wand.randomized_lore");
                 if (randomDescription.length() > 0) {
                     lore.add(ChatColor.ITALIC + "" + ChatColor.DARK_GREEN + randomDescription);

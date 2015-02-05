@@ -41,3 +41,32 @@ categories:
         name: Firebending
         description: Control the element of fire
         color: 'FF0000'
+
+wands:
+    air_student:
+        name: Airbending Student
+    water_student:
+        name: Waterbending Student
+    earth_student:
+        name: Earthbending Student
+    fire_student:
+        name: Firebending Student
+    air_apprentice:
+        name: Airbender
+    water_apprentice:
+        name: Waterbender
+    earth_apprentice:
+        name: Earthbender
+    fire_apprentice:
+        name: Firebender
+    air:
+        name: Airbending Master
+    water:
+        name: Waterbending Master
+    earth:
+        name: Earthbending Master
+    fire:
+        name: Firebending Master
+    avatar:
+        name: The Avatar Wand
+        description: Master of all four elements
