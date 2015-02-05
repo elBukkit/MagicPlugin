@@ -66,7 +66,6 @@ import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.BookMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.metadata.FixedMetadataValue;
-import org.bukkit.metadata.MetadataValue;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.mcstats.Metrics;
@@ -119,19 +118,6 @@ public class MagicController implements Listener, MageController {
 
         defaultsFolder = new File(configFolder, "defaults");
         defaultsFolder.mkdirs();
-    }
-
-    @Override
-    public void activateGUI(GUIAction action) {
-        if (gui != null) {
-            gui.deactivated();
-        }
-        gui = action;
-    }
-
-    @Override
-    public void deactivateGUI() {
-        activateGUI(null);
     }
 
     @Override
@@ -2930,17 +2916,18 @@ public class MagicController implements Listener, MageController {
 		if (event.isCancelled()) return;
 		if (!(event.getWhoClicked() instanceof Player)) return;
 
-        if (gui != null)
-        {
-            gui.clicked(event);
-            return;
-        }
-
 		Player player = (Player)event.getWhoClicked();
         Mage apiMage = getMage(player);
 
         if (!(apiMage instanceof com.elmakers.mine.bukkit.magic.Mage)) return;
         com.elmakers.mine.bukkit.magic.Mage mage = (com.elmakers.mine.bukkit.magic.Mage)apiMage;
+
+        GUIAction gui = mage.getActiveGUI();
+        if (gui != null)
+        {
+            gui.clicked(event);
+            return;
+        }
 
         // Check for temporary items
 		ItemStack clickedItem = event.getCurrentItem();
@@ -2960,7 +2947,6 @@ public class MagicController implements Listener, MageController {
 		InventoryType inventoryType = event.getInventory().getType();
 
         boolean clickedWand = Wand.isWand(clickedItem);
-
         if (activeWand != null && activeWand.isInventoryOpen())
         {
             if (clickedWand)
@@ -3069,13 +3055,6 @@ public class MagicController implements Listener, MageController {
 	public void onInventoryClosed(InventoryCloseEvent event) {
 		if (!(event.getPlayer() instanceof Player)) return;
 
-        if (gui != null)
-        {
-            gui.deactivated();
-            gui = null;
-            return;
-        }
-
 		// Update the active wand, it may have changed around
 		Player player = (Player)event.getPlayer();
         Mage apiMage = getMage(player);
@@ -3083,8 +3062,14 @@ public class MagicController implements Listener, MageController {
         if (!(apiMage instanceof com.elmakers.mine.bukkit.magic.Mage)) return;
         com.elmakers.mine.bukkit.magic.Mage mage = (com.elmakers.mine.bukkit.magic.Mage)apiMage;
 
+        GUIAction gui = mage.getActiveGUI();
+        if (gui != null)
+        {
+            mage.deactivateGUI();
+        }
+
         Wand previousWand = mage.getActiveWand();
-		
+
 		// Save the inventory state of the current wand if its spell inventory is open
 		// This is just to make sure we don't lose changes made to the inventory
 		if (previousWand != null && previousWand.isInventoryOpen()) {
@@ -4239,8 +4224,6 @@ public class MagicController implements Listener, MageController {
     private String                              exampleDefaults             = null;
     private Collection<String>                  addExamples                 = null;
     private boolean                             initialized                 = false;
-
-    private GUIAction                           gui                         = null;
 
     // Synchronization
     private final Object                        saveLock                    = new Object();

@@ -10,6 +10,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
+import com.elmakers.mine.bukkit.api.action.GUIAction;
 import com.elmakers.mine.bukkit.effect.HoloUtils;
 import com.elmakers.mine.bukkit.effect.Hologram;
 import com.elmakers.mine.bukkit.spell.ActionSpell;
@@ -95,6 +96,8 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     private BaseSpell fallingSpell = null;
 
     private boolean isNewPlayer = true;
+
+    private GUIAction gui = null;
 
     private Hologram hologram;
     private Integer hologramTaskId = null;
@@ -1362,5 +1365,31 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     @Override
     public ConfigurationSection getData() {
         return data;
+    }
+
+    @Override
+    public void activateGUI(GUIAction action)
+    {
+        if (gui != null)
+        {
+            gui.deactivated();
+        }
+        gui = action;
+        Player player = getPlayer();
+        if (gui == null && player != null)
+        {
+            player.closeInventory();
+        }
+    }
+
+    @Override
+    public void deactivateGUI()
+    {
+        activateGUI(null);
+    }
+
+    public GUIAction getActiveGUI()
+    {
+        return gui;
     }
 }
