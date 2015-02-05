@@ -19,6 +19,7 @@ import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -143,13 +144,17 @@ public class RecallAction extends BaseSpellAction implements GeneralAction, GUIA
     public void clicked(InventoryClickEvent event)
     {
         int slot = event.getSlot();
-        Waypoint waypoint = options.get(slot);
-        if (waypoint != null)
+        event.setCancelled(true);
+        if (event.getSlotType() == InventoryType.SlotType.CONTAINER)
         {
-            Player player = getMage().getPlayer();
-            getController().deactivateGUI();
-            player.closeInventory();
-            tryTeleport(player, waypoint);
+            Waypoint waypoint = options.get(slot);
+            if (waypoint != null)
+            {
+                Mage mage = getMage();
+                Player player = mage.getPlayer();
+                mage.deactivateGUI();
+                tryTeleport(player, waypoint);
+            }
         }
     }
 
@@ -283,7 +288,7 @@ public class RecallAction extends BaseSpellAction implements GeneralAction, GUIA
             options.put(index, waypoint);
             index++;
         }
-        controller.activateGUI(this);
+        mage.activateGUI(this);
         mage.getPlayer().openInventory(displayInventory);
 
         return SpellResult.CAST;
