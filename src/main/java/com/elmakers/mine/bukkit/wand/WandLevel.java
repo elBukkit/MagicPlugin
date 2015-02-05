@@ -76,8 +76,8 @@ public class WandLevel {
 		com.elmakers.mine.bukkit.utility.RandomUtils.populateFloatProbabilityMap(damageReductionExplosionsProbability, template.getConfigurationSection("protection_explosions"), levelIndex, nextLevelIndex, distance);
 
 		// Fetch regeneration
-		com.elmakers.mine.bukkit.utility.RandomUtils.populateIntegerProbabilityMap(xpRegenerationProbability, template.getConfigurationSection("xp_regeneration"), levelIndex, nextLevelIndex, distance);
-		com.elmakers.mine.bukkit.utility.RandomUtils.populateIntegerProbabilityMap(xpMaxProbability, template.getConfigurationSection("xp_max"), levelIndex, nextLevelIndex, distance);
+		com.elmakers.mine.bukkit.utility.RandomUtils.populateIntegerProbabilityMap(xpRegenerationProbability, template.getConfigurationSection("mana_regeneration"), levelIndex, nextLevelIndex, distance);
+		com.elmakers.mine.bukkit.utility.RandomUtils.populateIntegerProbabilityMap(xpMaxProbability, template.getConfigurationSection("mana_max"), levelIndex, nextLevelIndex, distance);
 		com.elmakers.mine.bukkit.utility.RandomUtils.populateIntegerProbabilityMap(healthRegenerationProbability, template.getConfigurationSection("health_regeneration"), levelIndex, nextLevelIndex, distance);
 		com.elmakers.mine.bukkit.utility.RandomUtils.populateIntegerProbabilityMap(hungerRegenerationProbability, template.getConfigurationSection("hunger_regeneration"), levelIndex, nextLevelIndex, distance);
 		

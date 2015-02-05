@@ -3,6 +3,7 @@
 ## 4.0
 
  * All default spells migrated to the new "action" system.
+ * Enchanting path options changed from max_xp_max and max_xp_regeneration to max_mana and max_mana_regeneration
  * Commands in command spell parameters have changed slightly.
    (@t -> @tn, @p -> @pn for target and player names)
 

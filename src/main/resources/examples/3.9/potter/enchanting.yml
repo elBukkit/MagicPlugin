@@ -64,10 +64,10 @@ year1:
       - broadcast &6@pd §3has graduated to §b$path§3!
     levels: 1,30,50
     max_mana: 60
-    max_xp_regeneration: 8
-    xp_regeneration:
+    max_mana_regeneration: 8
+    mana_regeneration:
       1: 100
-    xp_max:
+    mana_max:
       2: 100
     spell_count:
       1: 100
@@ -97,10 +97,10 @@ year2:
     upgrade_commands:
       - pex user @pn suffix "(Year 3) "
       - broadcast &6@pd §3has graduated to §b$path§3!
-    xp_max:
+    mana_max:
       3: 100
-    max_xp_regeneration: 12
-    xp_regeneration:
+    max_mana_regeneration: 12
+    mana_regeneration:
       1: 100
     spell_count:
       1: 100
@@ -127,10 +127,10 @@ year3:
     min_enchant_level: 15
     max_enchant_level: 15
     max_mana: 110
-    max_xp_regeneration: 15
-    xp_regeneration:
+    max_mana_regeneration: 15
+    mana_regeneration:
       1: 100
-    xp_max:
+    mana_max:
       2: 100
     spell_count:
       1: 100
@@ -160,10 +160,10 @@ year4:
     min_enchant_level: 18
     max_enchant_level: 18
     max_mana: 130
-    max_xp_regeneration: 20
-    xp_regeneration:
+    max_mana_regeneration: 20
+    mana_regeneration:
       1: 100
-    xp_max:
+    mana_max:
       2: 100
     spell_count:
       1: 100
@@ -197,10 +197,10 @@ year5:
     upgrade_commands:
       - pex user @pn suffix "(Year 6) "
       - broadcast &6@pd §3has graduated to §b$path§3!
-    max_xp_regeneration: 28
-    xp_regeneration:
+    max_mana_regeneration: 28
+    mana_regeneration:
       1: 100
-    xp_max:
+    mana_max:
       2: 100
     spell_count:
       1: 100
@@ -229,10 +229,10 @@ year6:
     max_mana: 170
     min_enchant_level: 22
     max_enchant_level: 22
-    max_xp_regeneration: 34
-    xp_regeneration:
+    max_mana_regeneration: 34
+    mana_regeneration:
       1: 100
-    xp_max:
+    mana_max:
       2: 100
     spell_count:
       1: 100
@@ -264,10 +264,10 @@ year7:
     min_enchant_level: 25
     max_enchant_level: 25
     max_mana: 190
-    max_xp_regeneration: 36
-    xp_regeneration:
+    max_mana_regeneration: 36
+    mana_regeneration:
       1: 100
-    xp_max:
+    mana_max:
       2: 100
     spell_count:
       1: 100
@@ -294,10 +294,10 @@ year7:
 
 graduate:
     inherit: year7
-    max_xp_regeneration: 40
-    xp_regeneration:
+    max_mana_regeneration: 40
+    mana_regeneration:
       1: 100
-    xp_max:
+    mana_max:
       2: 100
     spell_count:
       1: 100
