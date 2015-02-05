@@ -81,25 +81,29 @@ public class EnchantingController implements Listener {
                 event.setCancelled(true);
                 return;
             }
+            int minLevel = path.getMinLevel();
+            int maxLevel = path.getMaxLevel();
+            int levelRange = maxLevel - minLevel;
 			Set<Integer> levelSet = path.getLevels();
 			ArrayList<Integer> levels = new ArrayList<Integer>();
 			levels.addAll(levelSet);
 			int[] offered = event.getExpLevelCostsOffered();
-			// bonusLevels caps at 20
+
+            float bonusLevelMultiplier = path.getBonusLevelMultiplier();
 			int bonusLevels = event.getEnchantmentBonus();
-			int maxLevel = levels.get(levels.size() - 1) - 20 + bonusLevels;
-			
-			for (int i = 0; i < offered.length - 1; i++) {
-				int levelIndex = (int)((float)i * levels.size() / (float)offered.length);
-				levelIndex += (float)bonusLevels * ((i + 1) / offered.length);
-				levelIndex = Math.min(levelIndex, levels.size() - 1);
-				offered[i] = levels.get(levelIndex);
+
+			for (int i = 0; i < offered.length; i++)
+            {
+				int level = minLevel + (int)((float)i * levelRange/ (float)offered.length);
+                if (bonusLevels > 0 && bonusLevelMultiplier > 0)
+                {
+                    level += (float)bonusLevels * bonusLevelMultiplier;
+                }
+				offered[i] = level;
 			}
-			offered[offered.length - 1] = maxLevel;
 			event.setCancelled(false);
 		}
 	}
-	
 
 	@EventHandler
 	public void onInventoryClick(InventoryClickEvent event) {

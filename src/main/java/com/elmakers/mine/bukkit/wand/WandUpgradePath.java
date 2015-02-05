@@ -63,6 +63,8 @@ public class WandUpgradePath {
     private int minLevel = 10;
     private int maxLevel = 50;
 
+    private float bonusLevelMultiplier = 0.5f;
+
     public WandUpgradePath(MageController controller, String key, WandUpgradePath inherit, ConfigurationSection template)
     {
         this.parent = inherit;
@@ -474,5 +476,10 @@ public class WandUpgradePath {
         }
 
         return true;
+    }
+
+    public float getBonusLevelMultiplier()
+    {
+        return bonusLevelMultiplier;
     }
 }
