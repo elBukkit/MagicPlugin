@@ -11,6 +11,7 @@ import com.elmakers.mine.bukkit.spell.BaseSpellAction;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.Target;
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
@@ -26,16 +27,20 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class RecallAction extends BaseSpellAction implements GeneralAction, GUIAction
 {
     private static String MARKER_KEY = "recall_marker";
+    private static String UNLOCKED_WARPS = "recall_warps";
 
     private class UndoMarkerMove implements Runnable
     {
@@ -170,6 +175,43 @@ public class RecallAction extends BaseSpellAction implements GeneralAction, GUIA
             return SpellResult.PLAYER_REQUIRED;
         }
 
+        Set<String> unlockedWarps = new HashSet<String>();
+        String unlockedString = mage.getData().getString(UNLOCKED_WARPS);
+        if (unlockedString != null && !unlockedString.isEmpty())
+        {
+            unlockedWarps.addAll(Arrays.asList(StringUtils.split(unlockedString, ",")));
+        }
+
+        ConfigurationSection warpConfig = null;
+        if (parameters.contains("warps"))
+        {
+            warpConfig = parameters.getConfigurationSection("warps");
+        }
+
+        if (parameters.contains("unlock"))
+        {
+            String unlockWarp = parameters.getString("unlock");
+            if (unlockedWarps.contains(unlockWarp))
+            {
+                return SpellResult.NO_ACTION;
+            }
+
+            unlockedWarps.add(unlockWarp);
+            unlockedString = StringUtils.join(unlockedWarps, ",");
+            mage.getData().set(UNLOCKED_WARPS, unlockedString);
+
+            String warpName = unlockWarp;
+            ConfigurationSection config = warpConfig.getConfigurationSection(unlockWarp);
+            if (config != null)
+            {
+                warpName = config.getString("name", warpName);
+            }
+            String unlockMessage = getMessage("unlock_warp").replace("$name", warpName);
+            sendMessage(unlockMessage);
+
+            return SpellResult.TARGET_SELECTED;
+        }
+
         Location playerLocation = mage.getLocation();
 		allowCrossWorld = parameters.getBoolean("cross_world", true);
 		for (RecallType testType : RecallType.values())
@@ -177,22 +219,33 @@ public class RecallAction extends BaseSpellAction implements GeneralAction, GUIA
 			// Special-case for warps
 			if (testType == RecallType.WARP)
             {
-				if (parameters.contains("warps"))
+				if (warpConfig != null)
                 {
-                    ConfigurationSection warpConfig =  parameters.getConfigurationSection("warps");
                     Collection<String> warpKeys = warpConfig.getKeys(false);
                     for (String warpKey : warpKeys)
                     {
-                        warps.put(warpKey, warpConfig.getConfigurationSection(warpKey));
+                        ConfigurationSection config = warpConfig.getConfigurationSection(warpKey);
+                        boolean isLocked = config.getBoolean("locked", false);
+                        if (!isLocked || unlockedWarps.contains(warpKey))
+                        {
+                            warps.put(warpKey, config);
+                        }
                     }
-					enabledTypes.add(testType);
 				}
-			} else {
-				if (parameters.getBoolean("allow_" + testType.name().toLowerCase(), true)) {
+			}
+            else
+            {
+				if (parameters.getBoolean("allow_" + testType.name().toLowerCase(), true))
+                {
 					enabledTypes.add(testType);
 				}
 			}
 		}
+
+        if (warps.size() > 0)
+        {
+            enabledTypes.add(RecallType.WARP);
+        }
 
         if (parameters.contains("warp"))
         {
