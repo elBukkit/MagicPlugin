@@ -11,6 +11,7 @@ public class LostWand implements com.elmakers.mine.bukkit.api.wand.LostWand {
 	private String name;
 	private String description;
 	private String owner;
+    private String ownerId;
 	private boolean indestructible;
 	
 	public LostWand(String id, ConfigurationSection config) {
@@ -27,6 +28,7 @@ public class LostWand implements com.elmakers.mine.bukkit.api.wand.LostWand {
 		this.id = wand.getLostId();
 		this.name = wand.getName();
 		this.owner = wand.getOwner();
+        this.ownerId = wand.getOwnerId();
 		this.description = wand.getHTMLDescription();
 		this.setIndestructible(wand.isIndestructible());
 	}
@@ -35,6 +37,7 @@ public class LostWand implements com.elmakers.mine.bukkit.api.wand.LostWand {
 		this.location = other.location;
 		this.name = other.getName();
 		this.owner = other.getOwner();
+        this.ownerId = other.getOwnerId();
 		this.setIndestructible(other.isIndestructible());
 		String description = other.getDescription();
 		if (description != null && description.length() > 0) {
@@ -53,6 +56,7 @@ public class LostWand implements com.elmakers.mine.bukkit.api.wand.LostWand {
 			configNode.set("name", name);
 			configNode.set("description", description);
 			configNode.set("owner", owner);
+            configNode.set("owner_id", ownerId);
 			configNode.set("indestructible", indestructible);
 		} catch (Exception ex) {
 			ex.printStackTrace();
@@ -65,9 +69,10 @@ public class LostWand implements com.elmakers.mine.bukkit.api.wand.LostWand {
 			if (configNode == null) return;
 
 			location = ConfigurationUtils.getLocation(configNode, "location");
-			name = configNode.getString("name");
+            name = configNode.getString("name");
 			description = configNode.getString("description");
 			owner = configNode.getString("owner");
+            ownerId = configNode.getString("owner_id");
 			indestructible = configNode.getBoolean("indestructible");
 		} catch (Exception ex) {
 			ex.printStackTrace();
@@ -96,8 +101,13 @@ public class LostWand implements com.elmakers.mine.bukkit.api.wand.LostWand {
 	public String getOwner() {
 		return owner;
 	}
-	
-	public String getName() {
+
+    @Override
+    public String getOwnerId() {
+        return ownerId;
+    }
+
+    public String getName() {
 		return name;
 	}
 	

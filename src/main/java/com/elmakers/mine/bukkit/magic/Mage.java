@@ -1229,11 +1229,18 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
     @Override
     public List<LostWand> getLostWands() {
+        Entity entity = getEntity();
         Collection<LostWand> allWands = controller.getLostWands();
         List<LostWand> mageWands = new ArrayList<LostWand>();
+
+        if (entity == null) {
+            return mageWands;
+        }
+
+        String playerId = entity.getUniqueId().toString();
         for (LostWand lostWand : allWands) {
-            String owner = lostWand.getOwner();
-            if (owner != null && owner.equals(playerName)) {
+            String owner = lostWand.getOwnerId();
+            if (owner != null && owner.equals(playerId)) {
                 mageWands.add(lostWand);
             }
         }

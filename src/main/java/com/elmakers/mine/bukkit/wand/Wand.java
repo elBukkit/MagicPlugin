@@ -505,6 +505,10 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		return owner;
 	}
 
+    public String getOwnerId() {
+        return ownerId;
+    }
+
     public long getWorth() {
         long worth = 0;
         // TODO: Item properties, brushes, etc
