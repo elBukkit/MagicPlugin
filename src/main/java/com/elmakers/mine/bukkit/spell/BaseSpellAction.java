@@ -282,6 +282,24 @@ public abstract class BaseSpellAction implements SpellAction
         return baseSpell != null ? baseSpell.getMessage(key, def) : def;
     }
 
+    public Location tryFindPlaceToStand(Location location) {
+        return baseSpell != null ? baseSpell.tryFindPlaceToStand(location) : location;
+    }
+
+    public void castMessage(String message) {
+        if (baseSpell != null)
+        {
+            baseSpell.castMessage(message);
+        }
+    }
+
+    public void sendMessage(String message) {
+        if (baseSpell != null)
+        {
+            baseSpell.sendMessage(message);
+        }
+    }
+
     public void addTargetEntity(Entity entity)
     {
         if (targetingSpell != null)
