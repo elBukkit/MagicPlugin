@@ -68,7 +68,7 @@ public class Messages implements com.elmakers.mine.bukkit.api.magic.Messages {
     }
 
     public String getRandomized(String key) {
-        if (!randomized.containsKey(key)) return "";
+        if (!randomized.containsKey(key)) return null;
         List<String> options = randomized.get(key);
         if (options.size() == 0) return "";
         return options.get(random.nextInt(options.size()));
@@ -80,7 +80,11 @@ public class Messages implements com.elmakers.mine.bukkit.api.magic.Messages {
         while (matcher.find()) {
             String key = matcher.group(1);
             if (key != null) {
-                result = result.replace("$" + key, getRandomized(key));
+                String randomized = getRandomized(key);
+                if (randomized != null)
+                {
+                    result = result.replace("$" + key, randomized);
+                }
             }
         }
 
