@@ -25,6 +25,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -59,20 +60,33 @@ public class RecallAction extends BaseSpellAction implements GeneralAction, GUIA
         //	FHOME,
     };
 
+    private static MaterialAndData defaultMaterial = new MaterialAndData(Material.BEACON);
+
     private class Waypoint implements Comparable<Waypoint>
     {
         public final String name;
+        public final String description;
         public final Location location;
         public final String message;
         public final String failMessage;
         public final MaterialAndData icon;
 
+        public Waypoint(Location location, String name, String message, String failMessage, String description, MaterialAndData icon) {
+            this.name = name;
+            this.location = location;
+            this.message = message;
+            this.description = description;
+            this.failMessage = failMessage;
+            this.icon = icon == null ? defaultMaterial : icon;
+        }
+
         public Waypoint(Location location, String name, String message, String failMessage, MaterialAndData icon) {
             this.name = name;
             this.location = location;
             this.message = message;
+            this.description = "";
             this.failMessage = failMessage;
-            this.icon = icon;
+            this.icon = icon == null ? defaultMaterial : icon;
         }
 
         public Waypoint(Location location, String name, String message, String failMessage)
@@ -80,8 +94,9 @@ public class RecallAction extends BaseSpellAction implements GeneralAction, GUIA
             this.name = name;
             this.location = location;
             this.message = message;
+            this.description = "";
             this.failMessage = failMessage;
-            this.icon = new MaterialAndData(Material.NETHER_STAR);
+            this.icon = defaultMaterial;
         }
 
         @Override
@@ -111,7 +126,7 @@ public class RecallAction extends BaseSpellAction implements GeneralAction, GUIA
 	
 	private int retryCount = 0;
 	private boolean allowCrossWorld = true;
-	private List<String> warps = new ArrayList<String>();
+	private Map<String, ConfigurationSection> warps = new HashMap<String, ConfigurationSection>();
 	private List<RecallType> enabledTypes = new ArrayList<RecallType>();
     private Map<Integer, Waypoint> options = new HashMap<Integer, Waypoint>();
     private Inventory inventory = null;
@@ -137,10 +152,8 @@ public class RecallAction extends BaseSpellAction implements GeneralAction, GUIA
 
     @Override
     public SpellResult perform(ConfigurationSection parameters) {
-		boolean allowMarker = true;
-		int cycleRetries = 5;
 		enabledTypes.clear();
-		warps = null;
+        warps.clear();
 
         Mage mage = getMage();
         MageController controller = getController();
@@ -150,18 +163,24 @@ public class RecallAction extends BaseSpellAction implements GeneralAction, GUIA
         }
 		
 		allowCrossWorld = parameters.getBoolean("cross_world", true);
-		for (RecallType testType : RecallType.values()) {
+		for (RecallType testType : RecallType.values())
+        {
 			// Special-case for warps
-			if (testType == RecallType.WARP) {
-				if (parameters.contains("allow_warps")) {
-					warps = ConfigurationUtils.getStringList(parameters, "allow_warps");
+			if (testType == RecallType.WARP)
+            {
+				if (parameters.contains("warps"))
+                {
+                    ConfigurationSection warpConfig =  parameters.getConfigurationSection("warps");
+                    Collection<String> warpKeys = warpConfig.getKeys(false);
+                    for (String warpKey : warpKeys)
+                    {
+                        warps.put(warpKey, warpConfig.getConfigurationSection(warpKey));
+                    }
 					enabledTypes.add(testType);
 				}
 			} else {
 				if (parameters.getBoolean("allow_" + testType.name().toLowerCase(), true)) {
 					enabledTypes.add(testType);
-				} else {
-					if (testType == RecallType.MARKER) allowMarker = false;
 				}
 			}
 		}
@@ -169,11 +188,7 @@ public class RecallAction extends BaseSpellAction implements GeneralAction, GUIA
         if (parameters.contains("warp"))
         {
             String warpName = parameters.getString("warp");
-            String title = getMessage("title_warp").replace("$name", warpName);
-            String castMessage = getMessage("cast_warp").replace("$name", warpName);
-            String failMessage = getMessage("no_target_warp").replace("$name", warpName);
-            Location location = controller.getWarp(warpName);
-            Waypoint waypoint = new Waypoint(location, title, castMessage, failMessage);
+            Waypoint waypoint = getWarp(warpName);
             if (tryTeleport(player, waypoint)) {
                 return SpellResult.CAST;
             }
@@ -207,7 +222,7 @@ public class RecallAction extends BaseSpellAction implements GeneralAction, GUIA
 				return SpellResult.FAIL;
 			}
 			
-			Waypoint location = getWaypoint(player, recallType, 0);
+			Waypoint location = getWaypoint(player, recallType, 0, parameters);
 			if (tryTeleport(player, location)) {
 				return SpellResult.CAST;
 			}
@@ -217,11 +232,8 @@ public class RecallAction extends BaseSpellAction implements GeneralAction, GUIA
         List<Waypoint> allWaypoints = new LinkedList<Waypoint>();
         for (RecallType selectedType : enabledTypes) {
             if (selectedType == RecallType.WARP) {
-                for (int i = 0; i < warps.size(); i++) {
-                    Waypoint targetLocation = getWaypoint(player, selectedType, i);
-
-                    org.bukkit.Bukkit.getLogger().info("Checking waypoint: " + targetLocation.name + " " + targetLocation.location + ": " + allowCrossWorld);
-
+                for (String warpKey : warps.keySet()) {
+                    Waypoint targetLocation = getWarp(warpKey);
                     if (targetLocation != null && targetLocation.isValid(allowCrossWorld, location)) {
                         allWaypoints.add(targetLocation);
                     }
@@ -229,14 +241,13 @@ public class RecallAction extends BaseSpellAction implements GeneralAction, GUIA
             } else if (selectedType == RecallType.WAND) {
                 List<LostWand> lostWands = mage.getLostWands();
                 for (int i = 0; i < lostWands.size(); i++) {
-                    Waypoint targetLocation = getWaypoint(player, selectedType, i);
+                    Waypoint targetLocation = getWaypoint(player, selectedType, i, parameters);
                     if (targetLocation != null && targetLocation.isValid(allowCrossWorld, location)) {
                         allWaypoints.add(targetLocation);
                     }
                 }
             } else {
-                Waypoint targetLocation = getWaypoint(player, selectedType, 0);
-                targetLocation = getWaypoint(player, selectedType, 0);
+                Waypoint targetLocation = getWaypoint(player, selectedType, 0, parameters);
                 if (targetLocation != null && targetLocation.isValid(allowCrossWorld, location)) {
                     allWaypoints.add(targetLocation);
                 }
@@ -257,6 +268,12 @@ public class RecallAction extends BaseSpellAction implements GeneralAction, GUIA
             ItemStack waypointItem = waypoint.icon.getItemStack(1);
             ItemMeta meta = waypointItem.getItemMeta();
             meta.setDisplayName(waypoint.name);
+            if (waypoint.description != null && waypoint.description.length() > 0)
+            {
+                List<String> lore = new ArrayList<String>();
+                lore.add(waypoint.description);
+                meta.setLore(lore);
+            }
             waypointItem.setItemMeta(meta);
             displayInventory.setItem(index, waypointItem);
             options.put(index, waypoint);
@@ -268,29 +285,37 @@ public class RecallAction extends BaseSpellAction implements GeneralAction, GUIA
         return SpellResult.CAST;
 	}
 
-	protected Waypoint getWaypoint(Player player, RecallType type, int index) {
-		Mage mage = getMage();
+    protected Waypoint getWarp(String warpKey)
+    {
+        if (warps == null) return null;
+        ConfigurationSection config = warps.get(warpKey);
+        if (config == null) return null;
+
         MageController controller = getController();
+        String warpName = config.getString("name", warpKey);
+        String castMessage = getMessage("cast_warp").replace("$name", warpName);
+        String failMessage = getMessage("no_target_warp").replace("$name", warpName);
+        String title = getMessage("title_warp").replace("$name", warpName);
+        String description = config.getString("description");
+        MaterialAndData icon = ConfigurationUtils.getMaterialAndData(config, "icon");
+        return new Waypoint(controller.getWarp(warpKey), title, castMessage, failMessage, description, icon);
+    }
+
+	protected Waypoint getWaypoint(Player player, RecallType type, int index, ConfigurationSection parameters) {
+		Mage mage = getMage();
 		switch (type) {
 		case MARKER:
-			return new Waypoint(location, getMessage("title_marker"), getMessage("cast_marker"), getMessage("no_target_marker"));
+			return new Waypoint(location, getMessage("title_marker"), getMessage("cast_marker"), getMessage("no_target_marker"), getMessage("description_marker", ""), ConfigurationUtils.getMaterialAndData(parameters, "icon_marker"));
 		case DEATH:
-            return new Waypoint(mage.getLastDeathLocation(), "Last Death", getMessage("cast_death"), getMessage("no_target_death"));
+            return new Waypoint(mage.getLastDeathLocation(), "Last Death", getMessage("cast_death"), getMessage("no_target_death"), getMessage("description_death", ""), ConfigurationUtils.getMaterialAndData(parameters, "icon_death"));
 		case SPAWN:
-			return new Waypoint(getWorld().getSpawnLocation(), getMessage("title_spawn"), getMessage("cast_spawn"), getMessage("no_target_spawn"));
+			return new Waypoint(getWorld().getSpawnLocation(), getMessage("title_spawn"), getMessage("cast_spawn"), getMessage("no_target_spawn"), getMessage("description_spawn", ""), ConfigurationUtils.getMaterialAndData(parameters, "icon_spawn"));
         case HOME:
-            return new Waypoint(player == null ? null : player.getBedSpawnLocation(), getMessage("title_home"), getMessage("cast_home"), getMessage("no_target_home"));
+            return new Waypoint(player == null ? null : player.getBedSpawnLocation(), getMessage("title_home"), getMessage("cast_home"), getMessage("no_target_home"), getMessage("description_home", ""), ConfigurationUtils.getMaterialAndData(parameters, "icon_home"));
 		case WAND:
             List<LostWand> lostWands = mage.getLostWands();
 			if (lostWands == null || index < 0 || index >= lostWands.size()) return null;
-			return new Waypoint(lostWands.get(index).getLocation(), getMessage("title_wand"), getMessage("cast_wand"), getMessage("no_target_wand"));
-		case WARP:
-			if (warps == null || index < 0 || index >= warps.size()) return null;
-			String warpName = warps.get(index);
-			String castMessage = getMessage("cast_warp").replace("$name", warpName);
-            String failMessage = getMessage("no_target_warp").replace("$name", warpName);
-            String title = getMessage("title_warp").replace("$name", warpName);
-			return new Waypoint(controller.getWarp(warpName), title, castMessage, failMessage);
+			return new Waypoint(lostWands.get(index).getLocation(), getMessage("title_wand"), getMessage("cast_wand"), getMessage("no_target_wand"), getMessage("description_wand", ""), ConfigurationUtils.getMaterialAndData(parameters, "icon_wand"));
 		}
 		
 		return null;
@@ -331,6 +356,9 @@ public class RecallAction extends BaseSpellAction implements GeneralAction, GUIA
 				return true;
 			}
 		}
+
+        setTarget(targetLocation);
+        playEffects("teleport");
 
         registerMoved(player);
         Location playerLocation = player.getLocation();
