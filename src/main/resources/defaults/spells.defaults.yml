@@ -1825,26 +1825,45 @@ invincible:
         mana: 50
 fire:
     icon: flint_and_steel
-    category: firebending
-    class: FireSpell
+    category: demolition
     pvp_restricted: true
     worth: 10
+    actions:
+        cast:
+        - class: CoverAction
+          actions:
+          - class: BurnAction
     effects:
         cast:
         -  class: EffectSingle
-           sound: fire
+           sound: ghast_fireball
+           sound_volume: 1
            location: both
-        -  class: EffectTrail
-           particle: flame
-           particle_count: 2
+        -  class: EffectSingle
+           effectlib:
+             class: ConeEffect
+             iterations: 15
+             particle: lava
+             lengthGrow: 0.4
+        -  class: EffectSingle
+           location: target
+           color: FE642E
+           firework: ball
     parameters:
         target_type: LivingEntity
         allow_max_range: false
-        range: 32
-        radius: 1
-        vertical_search_distance: 8
+        range: 48
+        hitbox: true
+        fov: 0.03
+        radius: 0
+        vertical_search_distance: 4
+#        undo: 1500
+        cooldown: 1000
+        bypass_build: true
+        target_breakables: 0
     costs:
         mana: 35
+
 inferno:
     icon: blaze_powder
     category: firebending
@@ -2722,6 +2741,7 @@ undo:
         range: 64
         transparent: transparent_to_construction
         bypass_backfire: true
+        loud: true
     costs:
         mana: 100
 
@@ -2737,6 +2757,7 @@ commit:
     parameters:
         target: self
         bypass_backfire: true
+        loud: true
     costs:
         mana: 200
 
@@ -3338,10 +3359,15 @@ flare:
 recall:
     icon: redstone
     category: master
-    class: RecallSpell
     worth: 25
-    effects:
+    actions:
         cast:
+        -  class: RecallAction
+        alternate_down:
+        -  class: RecallAction
+           type: place
+    effects:
+        teleport:
         -  class: EffectSingle
            sound: portal_travel
            location: both
@@ -3355,6 +3381,12 @@ recall:
         allow_wand: true
         allow_home: true
         allow_cross_world: true
+        icon_death: skull_item
+        icon_wand: wood_hoe
+        icon_spawn: wood_door
+        icon_home: bed
+        icon_marker: redstone_torch_on
+        loud: true
     costs:
         mana: 50
 respawn:

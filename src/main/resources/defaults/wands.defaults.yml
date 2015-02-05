@@ -94,10 +94,22 @@
 #
 # "default" is a special entry that is used when a wand is created with /wand or /wandp (no name parameter)
 #
-# This can be used to make a very basic wand that a player may then enchant or configure.
+# This creates a basic starter wand.
 # 
 default:
     effect_color: random
+    path: beginner
+    xp_max: 50
+    xp: 50
+    xp_regeneration: 5
+    quiet: 1
+    bound: true
+    keep: true
+    undroppable: true
+    effect_bubbles: false
+    spells:
+      - missile
+      - flare
 
 #
 #
@@ -109,7 +121,30 @@ default:
 #
 #
 
-# The default randomized wand
+#
+# A sampling of "pre-levelled up" wands
+#
+student:
+    effect_color: '00FF00'
+    path: student
+    icon: stick
+    indestructible: false
+    xp_regeneration: 5
+    xp_max: 50
+
+apprentice:
+    effect_color: '22FF22'
+    path: apprentice
+    indestructible: false
+    xp_regeneration: 10
+    xp_max: 100
+    protection_falling: 0.8
+    protection_physical: 0.8
+    protection_fire: 0.5
+    protection_explosions: 0.5
+    effect_bubbles: true
+    undroppable: true
+
 master:
     path: master
     xp_regeneration: 20
@@ -121,46 +156,39 @@ master:
     undroppable: true
     indestructible: true
 
-apprentice:
-    effect_color: '22FF22'
-    path: apprentice
-    mode: inventory
-    icon: blaze_rod
-    indestructible: false
-    xp_regeneration: 10
-    xp_max: 100
-    protection_falling: 0.8
-    protection_physical: 0.8
-    protection_fire: 0.5
-    protection_explosions: 0.5
-    effect_bubbles: true
-    undroppable: true
-
-student:
-    effect_color: '00FF00'
-    path: student
-    mode: chest
-    icon: stick
-    indestructible: false
-    xp_regeneration: 5
-    xp_max: 50
-
+#
+# A starter battle wand
+#
 battle:
     effect_color: '11FF11'
     protection_physical: 0.3
     path: battle
-    mode: chest
     icon: diamond_sword
     xp_regeneration: 5
     indestructible: false
     xp_max: 50
+    spells:
+      - missile
+      - arrow
+      - boom
+      - curse
+      - fire
+      - fireball
+      - frost
+      - grenade
+      - tesseract
+      - push
+      - lightning
+      - shrink
 
+#
+# A starter engineering wand
+#
 engineer:
     effect_color: '00FF00'
     path: engineer
     undroppable: true
     indestructible: true
-    mode: chest
     icon: wood_axe
     xp_regeneration: 5
     xp_max: 50
@@ -170,7 +198,7 @@ engineer:
 #
 
 architect:
-    path: engineer
+    path: architect
     keep: true
     bound: true
     undroppable: true
@@ -568,611 +596,6 @@ wolf:
         - schematic:lantern
         - schematic:beacon
 
-#
-# Rank-based wands
-#
-
-guest:
-    path: student
-    effect_color: '00FF00'
-    xp_regeneration: 5
-    xp_max: 50
-    icon: stick
-    spells:
-        - perk
-        - flare
-        - tag
-        - camera
-villager:
-    path: student
-    effect_color: '00FF00'
-    xp_regeneration: 10
-    protection_falling: 0.1
-    xp_max: 60
-    icon: stick
-    spells:
-        - arrow
-        - tag
-        - flare
-        - camera
-        - leap
-        - perk
-knight:
-    path: battle
-    effect_color: '11FF11'
-    xp_regeneration: 15
-    xp_max: 80
-    icon: diamond_sword
-    protection_falling: 0.2
-    protection_physical: 0.1
-    spells:
-        - fling
-        - tag
-        - flare
-        - camera
-        - arrow
-        - leap
-        - pull
-        - perk
-baron:
-    path: battle
-    effect_color: '11FF11'
-    xp_regeneration: 18
-    xp_max: 100
-    icon: diamond_sword
-    protection_falling: 0.3
-    protection_physical: 0.2
-    spells:
-        - tesseract
-        - tag
-        - flare
-        - camera
-        - arrow
-        - leap
-        - fling
-        - pull
-        - arrowrain
-        - shrink
-        - perk
-lord:
-    path: battle
-    effect_color: '11FF11'
-    xp_regeneration: 20
-    xp_max: 130
-    icon: diamond_sword
-    protection_falling: 0.5
-    protection_physical: 0.3
-    spells:
-        - arrowrain
-        - tag
-        - flare
-        - camera
-        - arrow
-        - leap
-        - fling
-        - pull
-        - tesseract
-        - shrink
-        - cat
-        - torch
-        - boom
-        - perk
-hero:
-    path: battle
-    effect_color: '11FF11'
-    xp_regeneration: 25
-    xp_max: 150
-    icon: diamond_sword
-    protection_falling: 0.5
-    protection_physical: 0.5
-    protection_fire: 0.1
-    spells:
-        - boom
-        - tag
-        - flare
-        - camera
-        - arrow
-        - leap
-        - fling
-        - pull
-        - arrowrain
-        - tesseract
-        - shrink
-        - cat
-        - torch
-        - stream
-        - stash
-        - blast
-        - perk
-king:
-    path: battle
-    effect_color: '22FF22'
-    xp_regeneration: 30
-    xp_max: 175
-    icon: diamond_sword
-    protection_falling: 0.7
-    protection_physical: 0.6
-    protection_fire: 0.2
-    spells:
-        - curse
-        - tag
-        - flare
-        - camera
-        - arrow
-        - leap
-        - fling
-        - pull
-        - arrowrain
-        - tesseract
-        - shrink
-        - cat
-        - torch
-        - boom
-        - stream
-        - stash
-        - blast
-        - frost
-        - grenade
-        - perk
-legend:
-    path: apprentice
-    effect_color: '22FF22'
-    xp_regeneration: 40
-    xp_max: 200
-    effect_particle: town_aura
-    effect_particle_count: 2
-    icon: blaze_rod
-    protection_falling: 0.8
-    protection_physical: 0.8
-    protection_fire: 0.3
-    spells:
-        - grenade
-        - tag
-        - flare
-        - camera
-        - arrow
-        - leap
-        - fling
-        - pull
-        - monster
-        - map
-        - sniper
-        - arrowrain
-        - tesseract
-        - shrink
-        - cat
-        - torch
-        - boom
-        - stream
-        - stash
-        - blast
-        - curse
-        - frost
-        - perk
-overseer:
-    path: apprentice
-    effect_color: '22FF22'
-    xp_regeneration: 50
-    xp_max: 250
-    effect_particle: town_aura
-    effect_particle_count: 2
-    icon: blaze_rod
-    protection_falling: 0.8
-    protection_physical: 0.8
-    protection_fire: 0.5
-    protection_explosions: 0.5
-    spells:
-        - fire
-        - tag
-        - flare
-        - camera
-        - arrow
-        - leap
-        - fling
-        - pull
-        - monster
-        - map
-        - sniper
-        - arrowrain
-        - tesseract
-        - shrink
-        - cat
-        - torch
-        - boom
-        - stream
-        - stash
-        - blast
-        - curse
-        - frost
-        - grenade
-        - perk
-        - wolf
-        - chop
-wizard:
-    path: master
-    effect_color: '89A0D5'
-    xp_regeneration: 75
-    xp_max: 400
-    effect_particle: portal
-    effect_particle_count: 2
-    protection_falling: 1.0
-    protection: 0.8
-    spells:
-        - recall
-        - tag
-        - flare
-        - camera
-        - arrow
-        - leap
-        - fling
-        - pull
-        - monster
-        - map
-        - sniper
-        - heal
-        - boon
-        - mine
-        - arrowrain
-        - tesseract
-        - shrink
-        - cat
-        - torch
-        - boom
-        - stream
-        - stash
-        - blast
-        - curse
-        - frost
-        - grenade
-        - perk
-        - wolf
-        - chop
-        - fire
-nether:
-    path: master
-    effect_color: 'B40404'
-    xp_regeneration: 100
-    xp_max: 500
-    effect_particle: portal
-    effect_particle_count: 3
-    effect_particle_data: 2
-    protection_falling: 1.0
-    protection: 0.8
-    protection_fire: 1.0
-    spells:
-        - portal
-        - tag
-        - flare
-        - camera
-        - arrow
-        - leap
-        - fling
-        - pull
-        - monster
-        - map
-        - sniper
-        - heal
-        - boon
-        - recall
-        - mine
-        - push
-        - blessing
-        - familiar
-        - arrowrain
-        - tesseract
-        - shrink
-        - cat
-        - torch
-        - boom
-        - stream
-        - stash
-        - blast
-        - curse
-        - frost
-        - grenade
-        - perk
-        - wolf
-        - chop
-        - fire
-ender:
-    path: master
-    effect_color: 'AC58FA'
-    xp_regeneration: 150
-    xp_max: 800
-    effect_particle: drip_lava
-    effect_particle_count: 4
-    effect_bubbles: true
-    protection_falling: 1.0
-    protection: 0.9
-    protection_fire: 1.0
-    spells:
-        - phase
-        - tag
-        - flare
-        - camera
-        - arrow
-        - leap
-        - fling
-        - pull
-        - monster
-        - map
-        - sniper
-        - heal
-        - boon
-        - recall
-        - mine
-        - push
-        - blessing
-        - familiar
-        - portal
-        - levitate
-        - kaboom
-        - cloak
-        - blink
-        - arrowrain
-        - tesseract
-        - shrink
-        - cat
-        - torch
-        - boom
-        - stream
-        - stash
-        - blast
-        - curse
-        - frost
-        - grenade
-        - perk
-        - wolf
-        - chop
-        - fire
-
-#
-# Bending Wands
-#
-
-air_student:
-    protection: 0.2
-    protection_falling: 0.7
-    xp_regeneration: 2
-    effect_color: '888888'
-    xp_max: 50
-    haste: 0.1
-    active_spell: leap
-    spells:
-        - pull
-        - leap
-air_apprentice:
-    protection: 0.4
-    protection_falling: 0.9
-    xp_regeneration: 4
-    xp_max: 75
-    haste: 0.15
-    effect_color: '888888'
-    active_spell: fling
-    spells:
-        - fling
-        - push
-        - pull
-        - leap
-air:
-    protection: 0.5
-    protection_falling: 1
-    xp_regeneration: 10
-    xp_max: 150
-    haste: 0.2
-    effect_color: 'FFFFFF'
-    effect_bubbles: true
-    active_spell: levitate
-    spells:
-        - fling
-        - push
-        - pull
-        - force
-        - leap
-        - levitate
-
-water_student:
-    protection: 0.1
-    xp_regeneration: 2
-    effect_color: '000088'
-    xp_max: 50
-    active_spell: heal
-    spells:
-        - cushion
-        - heal
-water_apprentice:
-    protection: 0.3
-    xp_regeneration: 4
-    xp_max: 75
-    effect_color: '000088'
-    active_spell: stream
-    spells:
-        - toss
-        - blob
-        - recurse
-        - cushion
-        - stream
-    materials:
-        - stationary_water
-water:
-    protection: 0.5
-    xp_regeneration: 10
-    xp_max: 150
-    effect_color: '0000FF'
-    effect_bubbles: true
-    active_spell: force
-    spells:
-        - frost
-        - toss
-        - volley
-        - blob
-        - recurse
-        - cushion
-        - stream
-        - heal
-        - force
-        - gills
-    materials:
-        - stationary_water
-        - ice
-        - packed_ice
-
-earth_student:
-    protection: 0.2
-    protection_physical: 0.6
-    protection_blast: 0.5
-    xp_regeneration: 2
-    effect_color: 'CD853F'
-    xp_max: 50
-    active_spell: earth
-    spells:
-        - sandblast
-        - breach
-        - earth
-    materials:
-        - dirt
-        - cobblestone
-earth_apprentice:
-    protection: 0.3
-    protection_physical: 0.8
-    protection_blast: 0.8
-    xp_regeneration: 4
-    xp_max: 75
-    effect_color: 'CD853F'
-    active_spell: blob
-    spells:
-        - blob
-        - sandblast
-        - toss
-        - breach
-        - earth
-        - collapse
-    materials:
-        - dirt
-        - cobblestone
-        - stone
-        - sand
-earth:
-    protection: 0.4
-    protection_physical: 0.9
-    protection_blast: 0.9
-    xp_regeneration: 10
-    xp_max: 150
-    effect_color: '8B4513'
-    effect_bubbles: true
-    active_spell: collapse
-    spells:
-        - blob
-        - sandblast
-        - recurse
-        - toss
-        - volley
-        - blast
-        - pillar
-        - place
-        - bridge
-        - breach
-        - earth
-        - collapse
-    materials:
-        - dirt
-        - stone
-        - sand
-        - iron_block
-        - soul_sand
-
-fire_student:
-    protection_fire: 0.5
-    xp_regeneration: 2
-    effect_color: '880000'
-    xp_max: 40
-    active_spell: fireball
-    spells:
-        - fire
-        - fireball
-fire_apprentice:
-    protection_fire: 0.7
-    protection: 0.1
-    xp_regeneration: 4
-    xp_max: 75
-    effect_color: '880000'
-    active_spell: lightning
-    spells:
-        - fireball
-        - fire
-        - lava
-        - lightning
-        - toss
-        - boom
-    materials:
-        - stationary_lava
-fire:
-    protection_fire: 1
-    protection: 0.3
-    xp_regeneration: 10
-    xp_max: 150
-    effect_color: 'FF0000'
-    effect_bubbles: true
-    active_spell: flamethrower
-    spells:
-        - fireball
-        - recurse
-        - blob
-        - fire
-        - inferno
-        - lava
-        - lightning
-        - storm
-        - toss
-        - boom
-        - kaboom
-        - flamethrower
-    materials:
-        - stationary_lava
-
-avatar:
-    path: master
-    protection: 0.9
-    protection_fire: 0.9
-    xp_regeneration: 40
-    xp_max: 500
-    power: 0.5
-    effect_color: '0000FF'
-    effect_bubbles: true
-    active_spell: levitate
-    haste: 0.1
-    spells:
-        - fling
-        - push
-        - pull
-        - force
-        - leap
-        - fireball
-        - recurse
-        - blob
-        - fire
-        - inferno
-        - lava
-        - lightning
-        - toss
-        - sandblast
-        - pillar
-        - bridge
-        - breach
-        - frost
-        - cushion
-        - levitate
-        - boom
-        - kaboom
-    materials:
-        - dirt
-        - stone
-        - sand
-        - stationary_lava
-        - iron_block
-        - ice
-        - stationary_water
-
 conway:
     effect_color: 'FFFFFF'
     xp_regeneration: 50
@@ -1207,7 +630,42 @@ conway:
         - obsidian
         - cobblestone
         - redstone_block
-        
+
+#
+# UPGRADES used in enchanting paths
+#
+
+student_upgrade:
+    upgrade: true
+    indestructible: false
+    icon: nether_star
+    xp_max: 100
+    xp_regeneration: 10
+apprentice_upgrade:
+    upgrade: true
+    indestructible: false
+    icon: nether_star
+    xp_max: 150
+    xp_regeneration: 30
+master_upgrade:
+    upgrade: true
+    indestructible: false
+    icon: nether_star
+    xp_max: 250
+    xp_regeneration: 50
+engineer_upgrade:
+    upgrade: true
+    indestructible: false
+    icon: nether_star
+    xp_max: 300
+    xp_regeneration: 70
+architect_upgrade:
+    upgrade: true
+    indestructible: false
+    icon: nether_star
+    xp_max: 400
+    xp_regeneration: 90
+
 #
 # UPGRADE ITEMS
 #
@@ -1275,30 +733,6 @@ rainboweffects:
     effect_particle: spell_mob
     effect_parcticle_data: 2
     effect_particle_count: 3
-mana1:
-    upgrade: true
-    indestructible: false
-    icon: nether_star
-    xp_max: 200
-    xp_regeneration: 20
-mana2:
-    upgrade: true
-    indestructible: false
-    icon: nether_star
-    xp_max: 400
-    xp_regeneration: 40
-mana3:
-    upgrade: true
-    indestructible: false
-    icon: nether_star
-    xp_max: 1000
-    xp_regeneration: 100
-mana4:
-    upgrade: true
-    indestructible: false
-    icon: nether_star
-    xp_max: 1500
-    xp_regeneration: 150
 hotbar2:
     upgrade: true
     indestructible: false
@@ -1364,6 +798,25 @@ silent:
  # ITEMS
  #
 
+broomstick:
+    path: broom
+    mode: cast
+    active_spell: broom
+    icon: gold_spade
+    indestructible: true
+    locked: true
+    effect_color: '880088'
+    spells:
+        - broom
+
+camera:
+    effect_color: 'FFFFFF'
+    xp_regeneration: 1
+    xp_max: 5
+    active_spell: camera
+    spells:
+        - camera
+
 recalltoken:
     active_spell: recall
     icon: redstone
@@ -1388,52 +841,6 @@ respawntoken:
     spells:
         - respawn
 
-hunterheart:
-    active_spell: hunter
-    icon: spider_eye
-    indestructible: false
-    locked: true
-    uses: 1
-    effect_color: 'FF0000'
-    spells:
-        - hunter
-virusheart:
-    active_spell: virus
-    icon: fermented_spider_eye
-    indestructible: false
-    locked: true
-    uses: 1
-    effect_color: 'FF0000'
-    spells:
-        - virus
-wormheart:
-    active_spell: worm
-    icon: string
-    indestructible: false
-    locked: true
-    uses: 1
-    effect_color: 'FF8800'
-    spells:
-        - worm
-defenderheart:
-    active_spell: defender
-    icon: quartz
-    indestructible: false
-    locked: true
-    uses: 1
-    effect_color: 'FF0000'
-    spells:
-        - defender
-golemheart:
-    active_spell: animate
-    icon: iron_ingot
-    indestructible: false
-    locked: true
-    uses: 1
-    effect_color: '8888FF'
-    spells:
-        - animate
-
 wolfhouse:
     active_spell: wolfhouse
     icon: sapling:5
@@ -1446,522 +853,55 @@ wolfhouse:
         - wolfhouse
 
 #
-# Older or example templates not directly used in crafting or enchanting
-#
-# These may be removed in the future!
+# Automata Items
 #
 
-# This is here for backwards-compatibility with signs or commands that
-# rely on the "random(20)" wand syntax.
-random:
-    path: master
-
-# This wand is for demo'ing the plugin
-demo:
-    active_spell: fling
-    spells:
-        - torch
-        - blink
-        - fling
-    xp_max: 500
-    xp_regeneration: 100
-explorer:
-    active_spell: flare
-    xp_regeneration: 1
-    effect_color: '008800'
-    xp_max: 50
-    spells:
-        - tesseract
-        - torch
-        - leap
-        - flare
-psychic:
-    protection_falling: 0.9
-    xp_regeneration: 1
-    effect_color: '000088'
-    xp_max: 50
-    active_spell: push
-    spells:
-        - fling
-        - tesseract
-        - leap
-        - push
-        - pull
-        - force
-painter:
-    xp_regeneration: 10
-    effect_color: '118811'
-    xp_max: 200
-    active_spell: paint
-    spells:
-        - paint
-    materials:
-        - wool:0
-        - wool:1
-        - wool:2
-        - wool:3
-        - wool:4
-        - wool:5
-        - wool:6
-        - wool:7
-        - wool:8
-        - wool:9
-        - wool:10
-        - wool:11
-        - wool:12
-        - wool:13
-        - wool:14
-        - wool:15
-        - stained_clay:0
-        - stained_clay:1
-        - stained_clay:2
-        - stained_clay:3
-        - stained_clay:4
-        - stained_clay:5
-        - stained_clay:6
-        - stained_clay:7
-        - stained_clay:8
-        - stained_clay:9
-        - stained_clay:10
-        - stained_clay:11
-        - stained_clay:12
-        - stained_clay:13
-        - stained_clay:14
-        - stained_clay:15
-        - stained_glass:0
-        - stained_glass:1
-        - stained_glass:2
-        - stained_glass:3
-        - stained_glass:4
-        - stained_glass:5
-        - stained_glass:6
-        - stained_glass:7
-        - stained_glass:8
-        - stained_glass:9
-        - stained_glass:10
-        - stained_glass:11
-        - stained_glass:12
-        - stained_glass:13
-        - stained_glass:14
-        - stained_glass:15
-        - stained_glass_pane:15
-        - stained_glass_pane:0
-        - stained_glass_pane:1
-        - stained_glass_pane:2
-        - stained_glass_pane:3
-        - stained_glass_pane:4
-        - stained_glass_pane:5
-        - stained_glass_pane:6
-        - stained_glass_pane:7
-        - stained_glass_pane:8
-        - stained_glass_pane:9
-        - stained_glass_pane:10
-        - stained_glass_pane:11
-        - stained_glass_pane:12
-        - stained_glass_pane:13
-        - stained_glass_pane:14
-        - stained_glass_pane:15
-        - schematic:rainbow
-decorator:
+hunterheart:
+    active_spell: hunter
+    icon: spider_eye
+    indestructible: false
     locked: true
-    cost_reduction: 1
-    effect_color: '118811'
-    active_spell: convert
-    spells:
-        - convert
-    materials:
-        - wool:0
-        - wool:1
-        - wool:2
-        - wool:3
-        - wool:4
-        - wool:5
-        - wool:6
-        - wool:7
-        - wool:8
-        - wool:9
-        - wool:10
-        - wool:11
-        - wool:12
-        - wool:13
-        - wool:14
-        - wool:15
-        - stained_clay:0
-        - stained_clay:1
-        - stained_clay:2
-        - stained_clay:3
-        - stained_clay:4
-        - stained_clay:5
-        - stained_clay:6
-        - stained_clay:7
-        - stained_clay:8
-        - stained_clay:9
-        - stained_clay:10
-        - stained_clay:11
-        - stained_clay:12
-        - stained_clay:13
-        - stained_clay:14
-        - stained_clay:15
-        - stained_glass:0
-        - stained_glass:1
-        - stained_glass:2
-        - stained_glass:3
-        - stained_glass:4
-        - stained_glass:5
-        - stained_glass:6
-        - stained_glass:7
-        - stained_glass:8
-        - stained_glass:9
-        - stained_glass:10
-        - stained_glass:11
-        - stained_glass:12
-        - stained_glass:13
-        - stained_glass:14
-        - stained_glass_pane:15
-        - stained_glass_pane:0
-        - stained_glass_pane:1
-        - stained_glass_pane:2
-        - stained_glass_pane:3
-        - stained_glass_pane:4
-        - stained_glass_pane:5
-        - stained_glass_pane:6
-        - stained_glass_pane:7
-        - stained_glass_pane:8
-        - stained_glass_pane:9
-        - stained_glass_pane:10
-        - stained_glass_pane:11
-        - stained_glass_pane:12
-        - stained_glass_pane:13
-        - stained_glass_pane:14
-        - stained_glass_pane:15
-mining:
-    xp_regeneration: 10
-    effect_color: '888888'
-    xp_max: 100
-    active_spell: mine
-    spells:
-        - peek
-        - mine
-        - blast
-        - tunnel
-        - torch
-farming:
-    xp_regeneration: 10
-    effect_color: '0000EE'
-    xp_max: 100
-    active_spell: farm
-    spells:
-        - farm
-        - fill
-        - weather
-        - tree
-        - alter
-        - superalter
-        - chop
-    materials:
-        - soil
-        - water
-alchemist:
-    xp_regeneration: 10
-    effect_color: 'EE00EE'
-    xp_max: 100
-    active_spell: alter
-    spells:
-        - alter
-        - superalter
-        - sandblast
-        - recurse
-        - fire
-        - blob
-        - lava
-        - wolf
-    materials:
-        - water
-        - lava
-        - soul_sand
-        - sand
-elementalist:
-    xp_regeneration: 10
-    effect_color: '0000FF'
-    xp_max: 100
-    active_spell: weather
-    spells:
-        - fire
-        - lightning
-        - storm
-        - lava
-        - wolf
-        - weather
-necromancer:
-    xp_regeneration: 10
-    effect_color: '111111'
-    xp_max: 100
-    active_spell: monster
-    spells:
-        - fire
-        - monster
-        - disintegrate
-        - portal
-        - shrink
-        - wither
-camera:
-    effect_color: 'FFFFFF'
-    xp_regeneration: 1
-    xp_max: 5
-    active_spell: camera
-    spells:
-        - camera
-white:
-    cost_reduction: 0.5
-    protection: 0.9
-    xp_regeneration: 50
-    xp_max: 300
-    health_regeneration: 1
-    hunger_regeneration: 1
-    haste: 0.1
-    power: 0.5
-    effect_color: 'FFFFFF'
-    effect_bubbles: true
-    active_spell: levitate
-    spells:
-        - fling
-        - blink
-        - recurse
-        - time
-        - sniper
-        - superblast
-        - superblob
-        - superconvert
-        - push
-        - pull
-        - force
-        - levitate
-        - farm
-        - volley
-        - stalactite
-        - fill
-        - blob
-        - blast
-        - pillar
-        - place
-        - bridge
-        - absorb
-        - undo
-        - toss
-        - boon
-        - blessing
-        - convert
-        - commit
-        - heal
-        - fill
-        - absorb
-        - flare
-    materials:
-        - replicate
-        - clone
-        - water
-        - glowstone
-        - glass
-        - erase
-        - soul_sand
-        - stained_glass
-        - copy
-        - wool
-        - stained_clay
-        - quartz_block
-        - quartz_block:1
-        - quartz_block:2
-black:
-    cost_reduction: 0.5
-    protection: 0.9
-    xp_regeneration: 50
-    xp_max: 300
-    health_regeneration: 1
-    hunger_regeneration: 1
-    haste: 0.1
-    power: 0.5
-    effect_color: '111111'
-    effect_bubbles: true
-    active_spell: levitate
-    spells:
-        - wither
-        - fling
-        - blink
-        - recurse
-        - sniper
-        - kaboom
-        - fireball
-        - superblast
-        - superblob
-        - superconvert
-        - storm
-        - icbm
-        - inferno
-        - superblob
-        - levitate
-        - mob
-        - shell
-        - shrink
-        - box
-        - frag
-        - volley
-        - stalactite
-        - fill
-        - blob
-        - blast
-        - pillar
-        - place
-        - bridge
-        - absorb
-        - undo
-        - toss
-        - curse
-        - convert
-        - commit
-        - bomb
-        - cluster
-        - superpyramid
-        - disintegrate
-        - flare
-        - portal
-        - neutron
-        - night
-    materials:
-        - water
-        - erase
-        - soul_sand
-        - copy
-        - obsidian
-        - stained_clay:15
-        - stained_glass:15
-        - wool:15
-red:
-    protection_fire: 1
-    protection: 0.6
-    xp_regeneration: 40
-    xp_max: 300
-    power: 0.2
+    uses: 1
     effect_color: 'FF0000'
-    effect_bubbles: true
-    active_spell: boom
     spells:
-        - fireball
-        - recurse
-        - blob
-        - fire
-        - inferno
-        - lava
-        - toss
-        - boom
-        - kaboom
-        - convert
-        - icbm
-        - supershell
-        - grenade
-        - flare
-        - flamethrower
-        - cluster
-        - bomb
-        - frag
-    materials:
-        - stationary_lava
-        - stained_clay:14
-        - stained_glass:14
-        - wool:14
-        - sand:1
-        - redstone_block
-blue:
-    protection: 0.8
-    xp_regeneration: 40
-    xp_max: 300
-    power: 0.2
-    effect_color: '0000FF'
-    effect_bubbles: true
-    active_spell: frost
-    spells:
-        - frost
-        - toss
-        - volley
-        - blob
-        - recurse
-        - cushion
-        - stream
-        - convert
-        - gills
-        - superconvert
-        - flare
-        - bridge
-        - tesseract
-        - iterate
-        - portal
-    materials:
-        - stationary_water
-        - ice
-        - packed_ice
-        - stained_clay:3
-        - stained_glass:3
-        - wool:3
-        - stained_clay:9
-        - stained_glass:9
-        - wool:9
-        - stained_clay:11
-        - stained_glass:11
-        - wool:11
-        - lapis_block
-        - diamond_block
-green:
-    protection: 0.8
-    xp_regeneration: 40
-    xp_max: 300
-    power: 0.2
-    effect_color: '00FF00'
-    effect_bubbles: true
-    active_spell: heal
-    spells:
-        - tree
-        - farm
-        - familiar
-        - blob
-        - recurse
-        - earth
-        - convert
-        - superblob
-        - flare
-        - heal
-        - leap
-        - pillar
-        - place
-        - stalactite
-        - wolf
-        - cat
-        - chop
-        - alter
-        - superalter
-    materials:
-        - dirt
-        - grass
-        - wood
-        - log
-        - vine
-        - mycel
-        - emerald_block
-        - leaves
-        - stained_clay:5
-        - stained_glass:5
-        - stained_clay:13
-        - stained_glass:13
-        - wool:5
-        - wool:13
-        - huge_mushroom_1
-        - huge_mushroom_2
+        - hunter
 
-broomstick:
-    path: broom
-    mode: cast
-    active_spell: broom
-    icon: gold_spade
-    indestructible: true
+virusheart:
+    active_spell: virus
+    icon: fermented_spider_eye
+    indestructible: false
     locked: true
-    effect_color: '880088'
+    uses: 1
+    effect_color: 'FF0000'
     spells:
-        - broom
+        - virus
+
+wormheart:
+    active_spell: worm
+    icon: string
+    indestructible: false
+    locked: true
+    uses: 1
+    effect_color: 'FF8800'
+    spells:
+        - worm
+
+defenderheart:
+    active_spell: defender
+    icon: quartz
+    indestructible: false
+    locked: true
+    uses: 1
+    effect_color: 'FF0000'
+    spells:
+        - defender
+
+golemheart:
+    active_spell: animate
+    icon: iron_ingot
+    indestructible: false
+    locked: true
+    uses: 1
+    effect_color: '8888FF'
+    spells:
+        - animate

@@ -48,21 +48,24 @@ books:
     all:
         title: The Master Spell Book
 paths:
-    master:
-        name: Master
-        description: Has all the spells
-    engineer:
-        name: Engineering
-        description: Has all the engineering spells
+    beginner:
+        name: Beginner
+        description: Just starting out with magic
+    student:
+        name: Student
+        description: Starting to learn the basics
     apprentice:
         name: Apprentice
         description: A good variety of spells
-    student:
-        name: Student
-        description: Ha a few starter spells
-    battle:
-        name: Battle
-        description: Has a combat and PvP spells
+    master:
+        name: Master
+        description: The penultimate wizard
+    engineer:
+        name: Engineer
+        description: Has engineering spells
+    architect:
+        name: Architect
+        description: Has super-powerful engineering spells
     broom:
         name: Broom
         description: Flying broom upgrades
@@ -125,8 +128,8 @@ wand:
     player_spell_upgraded: "$players's &r&6$name &d&ohas been upgraded to &3$level"
     spell_upgraded: "&r&6$name &d&ohas been upgraded to &3$level"
     spell_override_upgraded: "&r&6$name &d&ohas been upgraded"
-    upgraded_property: "Your wand has been upgraded to &r&b$name"
-    hotbar_added: "Your wand's hotbar has been upgraded! Press Q while your wand is active"
+    upgraded_property: "&r&dYour wand has been upgraded to &r&b$name"
+    hotbar_added: "&r&bYour wand's hotbar has been upgraded! &r&3Press Q while your wand is active"
     player_upgraded: $name's wand upgraded
     player_not_upgraded: $name's wand not upgraded
     no_item: You are not holding an item
@@ -147,7 +150,7 @@ wand:
     unenchanted: Your wand has been unenchanted
     no_path: That item can not be enchanted
     player_unenchanted: $name's wand has been unenchanted
-    level_up: Your wand has been upgraded to $path!
+    level_up: "&r&bYour wand has been upgraded to &r&5$path"
     duplicated: Your wand has been duplicated
     player_duplicated: $name's wand has been duplicated
     restored: Your wand has been restored
@@ -176,7 +179,7 @@ spell:
     reactivate: Reactivating $name
     available_path: Available on the $path path
     required_path: Required to complete the $path path
-    required_spell: "You must learn &r&4$spell &d&oto advance"
+    required_spell: "You must learn &r&4$spell &d&oto advance to &b$path"
     level_description: Level $level
 worlds:
     world:
@@ -220,20 +223,12 @@ categories:
         name: Master
         description: All the Really Powerful Stuff
         color: '00AACC'
-    airbending:
-        name: Airbending
-        description: Spells for moving things with air
-    waterbending:
-        name: Waterbending
-        description: Control the element of water
-        color: '000088'
-    earthbending:
-        name: Earthbending
-        description: Control the element of earth
-        color: 'A52A2A'
-    firebending:
-        name: Firebending
-        description: Control the element of fire
+    utility:
+        name: Utility
+        description: Utility and movement spells
+    demolition:
+        name: Demolitions
+        description: Highly destructive magic
         color: 'FF0000'
     dark:
         name: Dark Magic
@@ -974,7 +969,23 @@ spells:
         no_target_death: No recorded death location
         no_target_wand: No recorded lost wands
         no_target_home: No home set
+        no_target_warp: Invalid warp $name
+        no_target_marker: No marker set
+        no_target_spawn: Can't recall to spawn
+        title_marker: Marker
+        description_marker: Aim down to move your marker
+        title_death: Last Death
+        description_death: Your last death location
+        title_warp: $name
+        title_spawn: Spawn
+        description_spawn: The current world's spawn location
+        title_home: Home
+        description_home: Your last sleep location
+        title_wand: Lost Wand
+        description_wand: A wand you've dropped on the ground
         cross_world_disallowed: You are not allowed to Recall to another world
+        title: Choose Destination
+        unlock_warp: You have unlocked $name as a Recall destination!
     levitate:
         name: Levitate
         description: Levitate yourself up into the air
