@@ -114,4 +114,19 @@ public class WorldGuardManager {
         }
         return true;
     }
+
+    public boolean hasCastPermissionOverride(Player player, SpellTemplate spell) {
+        if (player != null && worldGuard != null && customFlags != null)
+        {
+            Location location = player.getLocation();
+            RegionManager regionManager = worldGuard.getRegionManager(location.getWorld());
+            if (regionManager == null) return false;
+
+            ApplicableRegionSet checkSet = regionManager.getApplicableRegions(location);
+            if (checkSet == null) return false;
+
+            return customFlags.canOverrideCast(checkSet, spell.getSpellKey().getBaseKey());
+        }
+        return false;
+    }
 }

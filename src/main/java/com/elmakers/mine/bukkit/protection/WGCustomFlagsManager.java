@@ -31,4 +31,9 @@ public class WGCustomFlagsManager {
 
         return true;
     }
+
+    public boolean canOverrideCast(ApplicableRegionSet checkSet, String spellKey) {
+        Set<String> allowed = checkSet.getFlag(ALLOWED_SPELLS);
+        return (allowed != null && (allowed.contains("*") || allowed.contains(spellKey)));
+    }
 }

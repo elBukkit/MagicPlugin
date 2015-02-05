@@ -1874,6 +1874,14 @@ public class MagicController implements Listener, MageController {
         return hasPermission(sender, spell.getPermissionNode(), true);
     }
 
+    public boolean hasCastPermissionOverride(CommandSender sender, SpellTemplate spell)
+    {
+        if (sender == null || !(sender instanceof Player)) return false;
+
+        Player player = (Player)sender;
+        return (player.hasPermission("Magic.bypass") || worldGuardManager.hasCastPermissionOverride((Player) sender, spell));
+    }
+
 	public boolean hasPermission(Player player, String pNode, boolean defaultValue)
 	{
 		// Should this return defaultValue? Can't give perms to console.
