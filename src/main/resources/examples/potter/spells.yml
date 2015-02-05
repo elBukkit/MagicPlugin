@@ -5,67 +5,6 @@
 #    and http://harrypotter.wikia.com/wiki/List_of_spells
 #
 
-default:
-    effects:
-       target_selected:
-       - class: EffectSingle
-         location: origin
-         sound: anvil_use
-       - class: EffectSingle
-         location: target
-         particle: villager_happy
-         particle_offset_x: 0.5
-         particle_offset_y: 0.5
-         particle_offset_z: 0.5
-       - class: EffectTrail
-         particle: drip_water
-       fail:
-       - class: EffectSingle
-         location: origin
-         sound: note_bass_drum
-         sound_volume: 0.8
-         sound_pitch: 1.2
-       insufficient_resources:
-       - class: EffectSingle
-         location: origin
-         sound: note_bass
-         sound_volume: 0.7
-         sound_pitch: 1.2
-       insufficient_permission:
-       - class: EffectSingle
-         location: origin
-         sound: note_bass
-         sound_volume: 0.9
-         sound_pitch: 1.5
-       cooldown:
-       - class: EffectSingle
-         location: origin
-         sound: note_bass_drum
-         sound_volume: 0.6
-         sound_pitch: 0.8
-       cursed:
-       - class: EffectSingle
-         location: origin
-         entity_effect: hurt
-       backfire:
-       - class: EffectSingle
-         location: origin
-         entity_effect: hurt
-       no_target: cast
-       alternate: cast
-       alternate_up: cast
-       alternate_down: cast
-       alternate_sneak: cast
-       fizzle: fail
-       cancelled: fail
-       entity_required: fail
-       living_entity_required: fail
-       player_required: fail
-       location_required: fail
-       world_required: fail
-       invalid_world: fail
-       no_action: fail
-
 accio:
     icon: ink_sack:6
     category: charms
@@ -2961,50 +2900,8 @@ phoenixfire:
         mana: 50
 
 incendio:
-    icon: clay_ball
     category: dark
-    pvp_restricted: true
-    cast_on_no_target: true
-    worth: 50
-    actions:
-        cast:
-        - class: AreaOfEffectAction
-          actions:
-          - class: IgniteAction
-        - class: CoverAction
-          actions:
-          - class: BurnAction
-    effects:
-        cast:
-        -  class: EffectSingle
-           sound: ghast_fireball
-           sound_volume: 1
-           location: both
-        -  class: EffectSingle
-           effectlib:
-             class: ConeEffect
-             iterations: 15
-             particle: lava
-             lengthGrow: 0.4
-        -  class: EffectSingle
-           location: target
-           color: FE642E
-           firework: ball
-    parameters:
-        target_type: LivingEntity
-        allow_max_range: false
-        range: 48
-        hitbox: true
-        fov: 0.03
-        radius: 0
-        vertical_search_distance: 8
-        undo: 1500
-        cooldown: 1000
-        bypass_build: true
-        target_breakables: 0
-        entity_undo: false
-    costs:
-        mana: 50
+    inherit: fire
 
 incendio|2:
     parameters:
@@ -3200,7 +3097,7 @@ lumos:
            particle_data: 2
            particle_count: 3
         -  class: EffectSingle
-           location: target
+           location: targets
            target_offset: 10,0,0
            effectlib:
              class: SphereEffect
@@ -6612,9 +6509,6 @@ confringoincendio:
         mana: 50
 
 tripudio:
-    alias: Tripudio
-    description: Gain the power to jump high
-    name: Tripudio
     icon: ink_sack:8
     worth: 10
     actions:
@@ -6646,8 +6540,6 @@ tripudio:
         effect_jump: 2
 
 volo:
-    name: Volo
-    description: Quickens your speed
     icon: eye_of_ender
     category: light
     worth: 10
@@ -6680,8 +6572,6 @@ volo:
         effect_speed: 5
 
 fiantoduri:
-    description: Gain Protection at the cost of speed and jump.
-    name: Fianto Duri
     icon: ink_sack:12
     category: light
     worth: 10
@@ -6792,128 +6682,6 @@ dungbomb:
         effect_poison: 1
         duration: 5000
         bypass_build: true
-
-wreckducto:
-    hidden: true
-    name: Wreckducto
-    icon: clay_brick
-    category: staff
-    class: ConstructSpell
-    hidden: true
-    worth: 12
-    cast_on_no_target: true
-    effects:
-        cast:
-        -  class: EffectSingle
-           sound: explode
-           location: origin
-           effectlib:
-             class: ConeEffect
-             iterations: 10
-             particle: spell_mob
-             color: 04B486
-             lengthGrow: 0.4
-        -  class: EffectSingle
-           target_offset: 0,0.5,0
-           location: target
-           color: 04B486
-           firework: burst
-           particle: explosion_huge
-    parameters:
-        allow_max_range: false
-        range: 32
-        speed: 1.0
-        falling: true
-        brush: air
-        radius: 4
-        type: sphere
-        check_destructible: false
-        bypass_build: true
-        undo: 5000
-    costs:
-        mana: 150
-
-wrecktumsempra:
-    name: Wrecktumsempra
-    description: Utterly destroy your enemies!
-    icon: ink_sack:3
-    category: dark
-    pvp_restricted: false
-    worth: 35
-    actions:
-        cast:
-        -  class: CommandAction
-    effects:
-        cast:
-        -  class: EffectSingle
-           sound: irongolem_death
-           sound_volume: 2
-        -  class: EffectSingle
-           sound: creeper_death
-           sound_volume: 1
-        -  class: EffectSingle
-           sound: wither_spawn
-           sound_volume: 3
-           location: origin
-           effectlib:
-             class: ConeEffect
-             iterations: 16
-             particle: spell_mob
-             color: 04B486
-             lengthGrow: 0.4
-        -  class: EffectSingle
-           location: target
-           color: 04B486
-           firework: star
-        - class: EffectSingle
-          location: target
-          particle_override: particleOrbital
-          effectlib:
-             class: AtomEffect
-             particleNucleus: spell_instant
-             particleOrbital: spell_instant
-             iterations: 16
-        no_target:
-        -  class: EffectSingle
-           sound: irongolem_death
-           sound_volume: 2
-        -  class: EffectSingle
-           sound: creeper_death
-           sound_volume: 1
-        -  class: EffectSingle
-           sound: wither_spawn
-           sound_volume: 3
-           location: origin
-           effectlib:
-             class: ConeEffect
-             iterations: 16
-             particle: spell_mob
-             color: 04B486
-             lengthGrow: 0.4
-        -  class: EffectSingle
-           location: target
-           color: 04B486
-           firework: star
-    parameters:
-        target_type: LivingEntity
-        allow_max_range: false
-        speed: 1.0
-        falling: true
-        brush: air
-        radius: 4
-        type: sphere
-        check_destructible: false
-        bypass_build: true
-        undo: 5000
-        range: 50
-        cooldown: 13000
-        commands:
-        - cast wreckducto
-        - kill @tn
-        bypass_backfire: true
-        target_breakables: 10
-    costs:
-        mana: 300
 
 count:
     name: Entity Counter

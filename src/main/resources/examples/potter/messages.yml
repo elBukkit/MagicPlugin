@@ -2,28 +2,6 @@
 # Harry Potter themed in-game text
 #
 
-
-cooldown:
-    wait_seconds: Spell is recharging for $seconds seconds.
-    wait_minutes: Spell is recharging for $minutes minutes.
-    wait_hours: Spell is recharging for $hours hours.
-    wait_moment: ""
-    description_seconds: $seconds seconds
-    description_minutes: $minutes minutes
-    description_hours: $hours hours
-    description_minute: One minute
-    description_hour: One hour
-    description_moment: A Moment
-    description: "&eCooldown: &6$time"
-
-worlds:
-    Hogwarts:
-        name: The Wizarding World
-    Hogwarts_muggle:
-        name: The Muggle World
-    MuggleWorld:
-        name: The Muggle World
-
 wand:
     mana_amount: "Energy: §e$amount"
     mana_regeneration: "Energy Regeneration: §e$amount/s"
@@ -38,12 +16,9 @@ costs:
     mana_amount: $amount Energy
     mana: Energy
     xp: XP
-    insufficient_resources: ""
 
 spell:
-    brush: Uses Material Brushes
-    undoable: ""
-    reactivate: Reactivating $name
+    undoable: "Counterable"
     available_path: Available to $paths
     required_path: Required for $path graduation
     required_spell: "You must learn &r&4$spell &d&oto advance"
@@ -204,8 +179,8 @@ spells:
         cast_finish: ""
     confringo:
         name: Confringo
-        description: Explode the target item
-        cast: Confringo $target
+        description: Launch an exploding fireball
+        cast: Confringo!
     confundus:
         name: Confundus
         description: Confound your target
@@ -293,6 +268,10 @@ spells:
         name: Expulsion
         description: Kick your target out of school
         cast: Expelled $target!
+    fiantoduri:
+        description: Gain Protection at the cost of speed and jump.
+        name: Fianto Duri
+        cast: Fianto Duri!
     fiendfyre:
         name: Fiendfyre
         description: Summons a unstoppable flame
@@ -528,12 +507,20 @@ spells:
     snowball:
         name: Bewitched Snowball
         description: Animate snow to attach your target and slows them
+    tripudio:
+        cast: Tripudio!
+        description: Gain the power to jump high
+        name: Tripudio
     jail:
         name: Jail
         description: Do not pass Go...
     vault:
         name: Vault
         description: You're rich!
+    volo:
+        name: Volo
+        description: Quickens your speed
+        cast: Volo!
     vulnera:
         name: Vulnera Sanentur
         description: Mends and cleans wounds
