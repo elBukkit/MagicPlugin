@@ -913,6 +913,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     }
 
     public boolean canCast(Location location) {
+        if (hasCastPermissionOverride(mage.getCommandSender())) return true;
         if (!hasCastPermission(mage.getCommandSender())) return false;
         if (requirePassthrough && !controller.isPassthrough(location)) return false;
         return !pvpRestricted || bypassPvpRestriction || mage.isPVPAllowed(location) || mage.isSuperPowered();
@@ -1662,6 +1663,13 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         if (sender == null || bypassPermissions) return true;
 
         return controller.hasCastPermission(sender, this);
+    }
+
+    public boolean hasCastPermissionOverride(CommandSender sender)
+    {
+        if (sender == null || bypassPermissions) return true;
+
+        return controller.hasCastPermissionOverride(sender, this);
     }
 
     @Override
