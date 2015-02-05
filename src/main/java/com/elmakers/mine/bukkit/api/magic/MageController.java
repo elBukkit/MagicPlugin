@@ -120,6 +120,7 @@ public interface MageController {
 
     public boolean hasPermission(CommandSender sender, String pNode, boolean defaultValue);
     public boolean hasCastPermission(CommandSender sender, SpellTemplate spell);
+    public boolean hasCastPermissionOverride(CommandSender sender, SpellTemplate spell);
     public boolean isPVPAllowed(Location location);
     public boolean isPassthrough(Location location);
 
