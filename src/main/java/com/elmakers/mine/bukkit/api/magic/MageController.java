@@ -4,7 +4,6 @@ import java.util.Collection;
 import java.util.Set;
 import java.util.logging.Logger;
 
-import com.elmakers.mine.bukkit.api.action.GUIAction;
 import com.elmakers.mine.bukkit.api.block.MaterialAndData;
 import com.elmakers.mine.bukkit.api.maps.MapController;
 import org.bukkit.Location;
@@ -71,9 +70,6 @@ public interface MageController {
      * @return A new Wand instance, with a useable ItemStack.
      */
     public Wand createWand(String wandKey);
-
-    public void activateGUI(GUIAction action);
-    public void deactivateGUI();
 
     public SpellCategory getCategory(String key);
     public Collection<SpellCategory> getCategories();

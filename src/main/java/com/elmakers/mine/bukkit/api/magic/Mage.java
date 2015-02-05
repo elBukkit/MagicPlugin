@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
+import com.elmakers.mine.bukkit.api.action.GUIAction;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -363,6 +364,9 @@ public interface Mage extends CostReducer {
     public UndoList getLastUndoList();
     public boolean isStealth();
     public boolean isSneaking();
+
+    public void activateGUI(GUIAction action);
+    public void deactivateGUI();
 
     public void showHoloText(Location location, String text, int duration);
 }
