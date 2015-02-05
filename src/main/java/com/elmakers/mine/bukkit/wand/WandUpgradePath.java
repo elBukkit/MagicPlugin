@@ -89,6 +89,12 @@ public class WandUpgradePath {
         this.levelMap = new TreeMap<Integer, WandLevel>(inherit.levelMap);
         effects.putAll(inherit.effects);
         load(controller, key, template);
+
+        if ((this.upgradeCommands == null || this.upgradeCommands.size() == 0) && inherit.upgradeCommands != null)
+        {
+            this.upgradeCommands = new ArrayList<String>();
+            this.upgradeCommands.addAll(inherit.upgradeCommands);
+        }
     }
 
     public WandUpgradePath(MageController controller, String key, ConfigurationSection template) {
