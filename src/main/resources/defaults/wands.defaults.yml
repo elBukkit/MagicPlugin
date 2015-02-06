@@ -822,7 +822,6 @@ recalltoken:
     active_spell: recall
     icon: redstone
     indestructible: false
-    cost_reduction: 2
     locked: true
     uses: 5
     keep: true
@@ -834,7 +833,6 @@ respawntoken:
     active_spell: respawn
     icon: compass
     indestructible: false
-    cost_reduction: 2
     locked: true
     uses: 10
     keep: true

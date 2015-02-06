@@ -3733,8 +3733,8 @@ recall:
         icon_home: bed
         icon_marker: redstone_torch_on
         loud: true
-    costs:
-        mana: 50
+        cooldown: 30000
+
 respawn:
     icon: compass
     category: master
@@ -3752,8 +3752,7 @@ respawn:
         command: spawn
         op: true
         target: none
-    costs:
-        mana: 20
+        cooldown: 30000
 
 levitate:
     alias: fly
@@ -3955,7 +3954,6 @@ wolfhouse:
 missile:
     icon: ink_sack:1
     category: combat
-    pvp_restricted: true
     worth: 40
     actions:
         cast:
@@ -4021,7 +4019,7 @@ missile:
         target_breakables: 0
         bypass_backfire: false
     costs:
-        mana: 30
+        mana: 15
 
 silence:
     icon: ink_sack
