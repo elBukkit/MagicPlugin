@@ -700,7 +700,7 @@ spells:
         cast_finish: Blasted $count blocks
     blast:
         name: Blast
-        description: Mine out a large area
+        description: Explode weaker objects
         cast_finish: Blasted $count blocks
     earthquake:
         name: Earthquake
@@ -985,7 +985,7 @@ spells:
         description_wand: A wand you've dropped on the ground
         cross_world_disallowed: You are not allowed to Recall to another world
         title: Choose Destination
-        unlock_warp: You have unlocked $name as a Recall destination!
+        unlock_warp: "&bYou have unlocked &5$name &bas a &6Recall &bdestination!"
     levitate:
         name: Levitate
         description: Levitate yourself up into the air
@@ -1044,7 +1044,7 @@ spells:
         cast: You transmute your structure to $material
     missile:
         name: Magic Missile
-        description: Stun and damage your target.
+        description: Fire a bolt of pure magic
         cast: You fire a missile at $target
     silence:
         name: Silence

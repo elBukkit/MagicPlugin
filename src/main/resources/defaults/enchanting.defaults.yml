@@ -163,6 +163,7 @@ beginner:
       shrink: 5,20,30
       stash: 0,1,5
       blind: 0,1,5
+      reflect: 0,1,5
 
 student:
     upgrade: apprentice
@@ -227,6 +228,9 @@ student:
       wither: 5,10,20
       mine: 1,20,30
       chop: 1,20,30
+      shell: 1,20,30
+      reflect|2: 0,1,5
+      tag: 0,1,5
 
 apprentice:
     upgrade: master
@@ -272,6 +276,7 @@ apprentice:
       2: 5,   30,  20
       3: 0,   5,   50
     spells:
+      boon|2: 0,5,10
       blink: 1,5,10
       emp: 0,0,10
       blessing: 0,1,5
@@ -286,6 +291,11 @@ apprentice:
       counterspell: 0,1,5
       tent: 0,0,5
       silence: 0,1,5
+      blob: 1,20,30
+      shell|2: 1,20,30
+      reflect|3: 0,1,5
+      disc: 0,1,5
+      push|2: 10,20,40
 
 master:
     upgrade: engineer
@@ -361,6 +371,7 @@ master:
       cage: 0,0,2
       meteor: 0,0,2
       pollinate: 0,0,10
+      shell|3: 1,20,30
 
 #
 # The move from "master" to engineer requires the player to aquire some basic
@@ -442,6 +453,7 @@ engineer:
       pillar: 0,5,10
       place: 0,1,5
       stalactite: 0,5,10
+      shell|4: 1,20,30
     material_count:
       0: 50, 20, 20,    0,  0
       1: 1,  10,  30,   0,  0
@@ -543,6 +555,7 @@ architect:
       superiterate: 0,0,1
       superdome: 0,0,1
       paste: 0,0,10
+      volley: 2,25,35
     material_count:
       1: 50, 20, 20,    0,  0
       3: 1,  10,  30,   0,  0

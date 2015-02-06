@@ -107,9 +107,6 @@ default:
     keep: true
     undroppable: true
     effect_bubbles: false
-    spells:
-      - missile
-      - flare
 
 #
 #

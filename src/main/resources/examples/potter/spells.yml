@@ -6,54 +6,8 @@
 #
 
 accio:
-    icon: ink_sack:6
     category: charms
-    pvp_restricted: true
-    cast_on_no_target: true
-    worth: 10
-    actions:
-        cast:
-        -  class: VelocityAction
-        -  class: FallProtectionAction
-    effects:
-        cast:
-        -  class: EffectSingle
-           sound: fizz
-        -  class: EffectTrail
-           particle: flame
-           reverse: true
-           length: 16
-           particle_count: 6
-        alternate:
-        -  class: EffectSingle
-           sound: fizz
-           effectlib:
-             class: HelixEffect
-             particle: redstone
-             color: E0ECF8
-    parameters:
-        target_type: Entity
-        allow_max_range: true
-        range: 48
-        item_speed: 2
-        living_entity_speed: 1
-        push: -1
-        duration: 10000
-    costs:
-        mana: 50
-
-accio|2:
-    parameters:
-        target_count: 4
-
-accio|3:
-    actions:
-        alternate:
-        -  class: VelocityAction
-        -  class: FallProtectionAction
-    parameters:
-        target_count: 8
-        allow_area: true
+    inherit: pull
 
 aguamenti:
     icon: ghast_tear
@@ -1140,77 +1094,8 @@ confringoold:
         mana: 75
 
 confundus:
-    icon: coal:1
     category: dada
-    pvp_restricted: true
-    cast_on_no_target: true
-    worth: 10
-    actions:
-        cast:
-        -  class: PotionEffectAction
-    effects:
-        cast:
-        -  class: EffectSingle
-           sound: irongolem_death
-           effectlib:
-             class: ConeEffect
-             iterations: 15
-             particle: redstone
-             color: 210B61
-             lengthGrow: 0.3
-        -  class: EffectSingle
-           location: target
-           color: 380B61
-           firework: star
-        -  class: EffectSingle
-           location: target
-           effectlib:
-             class: SmokeEffect
-             iterations: 16
-             particle: spell_mob
-             color: 210B61
-        -  class: EffectSingle
-           location: target
-           effectlib:
-             class: SphereEffect
-             iterations: 45
-             period: .1
-             particle: spell_mob
-             color: 210B61
-             radius: 1
-             particles: 20
-        no_target:
-        -  class: EffectSingle
-           sound: irongolem_death
-           effectlib:
-             class: ConeEffect
-             iterations: 15
-             particle: spell_mob
-             color: 210B61
-             lengthGrow: 0.3
-        -  class: EffectSingle
-           location: target
-           color: 210B61
-           firework: burst
-        -  class: EffectSingle
-           location: target
-           effectlib:
-             class: SmokeEffect
-             iterations: 10
-    costs:
-        mana: 50
-    parameters:
-        range: 32
-        deactivate_target_mage: true
-        target_type: LivingEntity
-        target_breakables: 1
-        target: other
-        duration: 4000
-        cooldown: 10000
-        hitbox: true
-        fov: .12
-        effect_confusion: 1
-        hitbox: true
+    inherit: curse
 
 confundusmaxima:
     name: Confundus Maxima
@@ -2361,46 +2246,11 @@ rictusempra:
         mana: 40
 
 ventus:
-    icon: ink_sack:5
     category: dada
-    pvp_restricted: true
-    cast_on_no_target: true
-    worth: 15
-    actions:
-        cast:
-        - class: VelocityAction
-    effects:
-        cast:
-        -  class: EffectSingle
-           sound: burp
-           sound_volume: 1
-           sound_pitch: -0.1
-           location: origin
-           effectlib:
-             class: DnaEffect
-             particlesBase: 0
-             particlesHelix: 7
-             particleHelix: spell
-             particleBase1: spell
-             particleBase2: spell
-             iterations: 10
-             lengthGrow: 20
-    parameters:
-        target_type: Entity
-        range: 15
-        fov: 1
-        target_count: 5
-        allow_max_range: true
-        item_speed: 5
-        living_entity_speed: 7
-        push: 1
-        bypass_backfire: true
-        cooldown: 10000
-    costs:
-        mana: 112
+    inherit: push
 
 flipendo:
-    icon: ink_sack:5
+    icon: rails
     category: dada
     pvp_restricted: true
     cast_on_no_target: true
@@ -3703,37 +3553,8 @@ piertotum:
         mana: 150
 
 protego:
-    icon: ink_sack:12
     category: dada
-    class: ConstructSpell
-    pvp_restricted: true
-    worth: 45
-    effects:
-        cast:
-        -  class: EffectSingle
-           sound: creeper_death
-    parameters:
-        allow_max_range: true
-        range: 3
-        radius: 0
-        type: sphere
-        brush: stained_glass
-        orient_dimension_max: 0
-        orient_dimension_min: 0
-        orient: true
-        transparent: transparent_to_construction
-        check_destructible: true
-        destructible: air,fire,water,stationary_water
-        undo: 800
-        breakable: 3
-        brushcolor: false
-        bypass_build: true
-        cooldown: 1000
-        reflect_chance: 0
-        bypass_confusion: false
-        bypass_backfire: true
-    costs:
-        mana: 20
+    inherit: reflect
 
 protego|2:
     parameters:
@@ -3756,7 +3577,7 @@ protego|3:
         mana: 50
 
 protegomaxima:
-    icon: ink_sack:12
+    icon: iron_helmet
     category: dada
     class: ConstructSpell
     worth: 100
@@ -4864,8 +4685,10 @@ recall:
     hidden: true
     icon: redstone
     category: specialty
-    class: RecallSpell
     worth: 25
+    actions:
+        cast:
+        -  class: RecallAction
     effects:
         cast:
         -  class: EffectVariable
@@ -4898,8 +4721,6 @@ recall:
         allow_wand: true
         allow_home: true
         allow_cross_world: true
-        allow_warps: dueling,flyinglessons,greathall,diagonalley,4privet,trainstation,arachnids,deatheaters,hub,arenahub
-
 gather:
     hidden: true
     icon: glowstone_dust
@@ -6375,11 +6196,22 @@ confringo:
     icon: fireball
     category: dark
     pvp_restricted: true
-    class: CommandSpell
     worth: 35
+    actions:
+        cast:
+        -  class: ProjectileAction
+           actions:
+           -  class: CoverAction
+              actions:
+              -  class: BurnAction
     effects:
         cast:
         -  class: EffectSingle
+           effectlib:
+             class: ConeEffect
+             iterations: 15
+             particle: lava
+             lengthGrow: 0.4
            sound: ghast_fireball
            sound_volume: 1
            sound_pitch: -.25
@@ -6390,14 +6222,28 @@ confringo:
              class: SmokeEffect
              iterations: 8
              particle: lava
+        hit:
+        -  class: EffectSingle
+           location: target
+           color: FE642E
+           firework: ball
     parameters:
-        target: self
-        target_type: LivingEntity
+        projectile: LargeFireball
+        fire: false
+        range: 32
+        allow_max_range: true
+        hitbox: true
+        vertical_search_distance: 8
+        bypass_build: true
+        target_breakables: 0
+        radius: 2
+        cooldown: 1000
+        size: 1.25
+        spread: 2
+        speed: 5
+        entity_undo: false
+        undo: 3000
         cooldown: 13000
-        op: true
-        commands:
-        - castp @t confringoincendio
-        - castp @t confringofireball
         bypass_backfire: true
     costs:
         mana: 100
@@ -6432,112 +6278,9 @@ firestorm:
     costs:
         mana: 100
 
-confringofireball:
-    name: Confringo Fireball
-    icon: fireball
-    category: dark
-    hidden: true
-    worth: 35
-    actions:
-        cast:
-        - class: ProjectileAction
-    effects:
-        cast:
-        -  class: EffectSingle
-           sound: ghast_fireball
-        projectile:
-        -  class: EffectSingle
-           location: origin
-           effectlib:
-             class: SmokeEffect
-             iterations: 8
-             particle: lava
-    parameters:
-        projectile: LargeFireball
-        fire: false
-        range: 32
-        cooldown: 1000
-        size: 1.25
-        spread: 2
-        speed: 5
-        entity_undo: false
-        undo: 8000
-        cooldown: 4000
-        bypass_backfire: true
-    costs:
-        mana: 100
-
-confringoincendio:
-    name: Confringo Flames
-    icon: clay_ball
-    category: dark
-    class: FireSpell
-    pvp_restricted: true
-    hidden: true
-    cast_on_no_target: true
-    worth: 50
-    effects:
-        cast:
-        -  class: EffectSingle
-           sound: ghast_fireball
-           location: both
-        -  class: EffectSingle
-           effectlib:
-             class: ConeEffect
-             iterations: 15
-             particle: lava
-             lengthGrow: 0.4
-        -  class: EffectSingle
-           location: target
-           color: FE642E
-           firework: ball
-    parameters:
-        target_type: LivingEntity
-        allow_max_range: false
-        range: 32
-        hitbox: true
-        fov: 0.10
-        vertical_search_distance: 8
-        bypass_build: true
-        target_breakables: 0
-        entity_undo: false
-        bypass_backfire: true
-        radius: 1
-        cooldown: 5000
-        undo: 1200
-    costs:
-        mana: 50
-
 tripudio:
-    icon: ink_sack:8
-    worth: 10
-    actions:
-        cast:
-        -  class: PotionEffectAction
-    effects:
-        cast:
-        -  class: EffectSingle
-           sound: orb_pickup
-        -  class: EffectTrail
-           particle: spell
-           particle_data: 2
-           particle_count: 3
-        -  class: EffectSingle
-           sound: enderdragon_wings
-           sound_volume: 1.1
-           effectlib:
-             class: TraceEffect
-             iterations: 200
-             particle: spell
-    costs:
-        mana: 100
-    parameters:
-        target: any
-        range: 10
-        cooldown: 20000
-        target_type: LivingEntity
-        duration: 10000
-        effect_jump: 2
+    inherit: bounce
+    category: charms
 
 volo:
     icon: eye_of_ender

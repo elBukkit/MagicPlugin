@@ -143,47 +143,102 @@ default:
 curse:
     icon: rotten_flesh
     category: dark
-    class: PotionEffectSpell
     pvp_restricted: true
     worth: 10
+    actions:
+        cast:
+        -  class: PotionEffectAction
     effects:
         cast:
         -  class: EffectSingle
-           sound: burp
-        -  class: EffectTrail
-           particle: town_aura
-           particle_count: 3
+           sound: irongolem_death
+           effectlib:
+             class: ConeEffect
+             iterations: 15
+             particle: redstone
+             color: 210B61
+             lengthGrow: 0.3
+        -  class: EffectSingle
+           location: target
+           color: 380B61
+           firework: star
         -  class: EffectSingle
            location: target
            effectlib:
-             class: BleedEffect
+             class: SmokeEffect
+             iterations: 16
+             particle: spell_mob
+             color: 210B61
+        -  class: EffectSingle
+           location: target
+           effectlib:
+             class: SphereEffect
+             iterations: 45
+             period: .1
+             particle: spell_mob
+             color: 210B61
+             radius: 1
+             particles: 20
+        no_target:
+        -  class: EffectSingle
+           sound: irongolem_death
+           effectlib:
+             class: ConeEffect
+             iterations: 15
+             particle: spell_mob
+             color: 210B61
+             lengthGrow: 0.3
+        -  class: EffectSingle
+           location: target
+           color: 210B61
+           firework: burst
+        -  class: EffectSingle
+           location: target
+           effectlib:
+             class: SmokeEffect
+             iterations: 10
     costs:
         mana: 50
     parameters:
         range: 32
         deactivate_target_mage: true
         target_type: LivingEntity
+        target_breakables: 1
         target: other
-        effect_slow: 200,5  
-        effect_confusion: 200,5
+        duration: 4000
+        cooldown: 10000
+        hitbox: true
+        effect_confusion: 1
+
 blessing:
     icon: double_plant:5
     category: light
-    class: ProjectileSpell
-    pvp_restricted: false
     worth: 100
-    effects:
+    actions:
         cast:
+        -  class: ProjectileAction
+           actions:
+           -  class: AreaOfEffectAction
+              actions:
+              -  class: PotionEffectAction
+    effects:
+        projectile:
+        -  class: EffectSingle
+           location: origin
+           sound: villager_yes
+           effectlib:
+             class: SmokeEffect
+             iterations: 8
+             particle: heart
+        hit:
         -  class: EffectSingle
            sound: villager_yes
-        -  class: EffectSingle
-           location: target
+           location: origin
            effectlib:
-             class: VortexEffect
+             class: HelixEffect
              particle: heart
     parameters:
         target_type: Player
-        target: any
         projectile: Snowball
         effect_speed: 600,5
         effect_jump: 600,5
@@ -194,14 +249,19 @@ blessing:
         effect_damage_resistance: 600,1
         effect_fire_resistance: 600,1
         effect_saturation: 600,5
-        radius: 32  
+        radius: 8
+        target_self: true
     costs:
         mana: 200
+
 boon:
+    alias: perk
     icon: red_rose:2
-    category: light
+    category: utility
     worth: 10
-    class: PotionEffectSpell
+    actions:
+        cast:
+        -  class: PotionEffectAction
     effects:
         cast:
         -  class: EffectSingle
@@ -216,48 +276,31 @@ boon:
              class: TraceEffect
              particle: redstone
     costs:
-        mana: 65
+        mana: 50
     parameters:
         target: any
         range: 32
+        duration: 10000
         target_type: LivingEntity
-        effect_speed: 600,5
-        effect_jump: 600,5
-        effect_water_breathing: 600,5
-        effect_night_vision: 600,5
-        effect_damage_resistance: 600,1
-        effect_fire_resistance: 600,1
-        effect_saturation: 600,5
-        effect_regeneration: 600,1
-perk:
-    icon: yellow_flower
-    category: light
-    class: PotionEffectSpell
-    worth: 5
-    effects:
-        cast:
-        -  class: EffectSingle
-           sound: orb_pickup
-        -  class: EffectTrail
-           particle: redstone
-           particle_data: 2
-           particle_count: 2
-        -  class: EffectRing
-           particle: redstone
-           location: target
-           particle_data: 2
+        effect_speed: 1
+        effect_night_vision: 5
+
+boon|2:
     costs:
-        mana: 30
+        mana: 80
     parameters:
-        target: any
-        range: 32
-        target_type: LivingEntity
-        effect_speed: 160,1
-        effect_night_vision: 160,5
-        effect_damage_resistance: 160,1
+        duration: 30000
+        effect_speed: 5
+        effect_jump: 5
+        effect_night_vision: 5
+        effect_damage_resistance: 1
+        effect_fire_resistance: 1
+        effect_saturation: 5
+        effect_regeneration: 1
+
 bounce:
     icon: red_rose:8
-    category: light
+    category: utility
     class: PotionEffectSpell
     worth: 8
     effects:
@@ -265,20 +308,24 @@ bounce:
         -  class: EffectSingle
            sound: orb_pickup
         -  class: EffectTrail
-           particle: redstone
-           particle_data: 1
+           particle: spell
+           particle_data: 2
            particle_count: 3
-        -  class: EffectRing
-           particle: redstone
-           location: target
-           particle_data: 1
+        -  class: EffectSingle
+           sound: enderdragon_wings
+           sound_volume: 1.1
+           effectlib:
+             class: TraceEffect
+             iterations: 200
+             particle: spell
     costs:
-        mana: 10
+        mana: 40
     parameters:
         target: any
         target_type: LivingEntity
-        effect_jump: 600,20
-        effect_damage_resistance: 600,5
+        effect_jump: 2
+        duration: 10000
+
 simulate:
     icon: double_plant:3
     category: automata
@@ -299,6 +346,7 @@ simulate:
         death_material: air
         commands: false
         check_destructible: true
+
 simulate3:
     icon: sapling:3
     category: automata
@@ -311,7 +359,7 @@ simulate3:
            sound_pitch: 1.5
            sound_volume: 0.8
     costs:
-        mana: 500
+        mana: 300
     parameters:
         range: 32
         radius: 4
@@ -322,6 +370,7 @@ simulate3:
         death_material: air
         commands: false
         check_destructible: true
+
 glider:
     icon: sapling:2
     category: automata
@@ -350,7 +399,8 @@ glider:
         commands:
           glider_simulate: cast simulate target self material obsidian animate true delay 500 radius 3
     costs:
-        mana: 500
+        mana: 400
+
 virus:
     icon: fermented_spider_eye
     category: automata
@@ -410,6 +460,7 @@ virus:
         diagonal_live_rules: 0,1
     costs:
         mana: 1000
+
 worm:
     icon: string
     category: automata
@@ -470,6 +521,7 @@ worm:
         message_type: evil
     costs:
         mana: 800
+
 hunter:
     icon: spider_eye
     category: automata
@@ -526,6 +578,7 @@ hunter:
         message_type: evil
     costs:
         mana: 600
+
 defender:
     icon: quartz
     category: automata
@@ -570,6 +623,7 @@ defender:
         message_type: good
     costs:
         mana: 400
+
 animate:
     icon: iron_ingot
     category: automata
@@ -612,6 +666,7 @@ animate:
         message_type: good
     costs:
         mana: 300
+
 life:
     icon: sapling:1
     category: automata
@@ -642,7 +697,8 @@ life:
           life_board: castp @p box odmax 1 odmin 3 tx ~2 ty ~-20 tz ~-68 radius 64 md 300 thickness 0 cd 60000 brush copy obx -2 oby 18 obz 68
           life_line: castp @p fill tx ~-16 ty ~-14 tz ~-32 t2x ~32 brush copy cd 10000 obx -15 oby 16 obz 36
     costs:
-        mana: 1500
+        mana: 1000
+
 life3:
     icon: sapling:1
     category: automata
@@ -674,9 +730,11 @@ life3:
           life_line: castp @p fill tx ~-8 tz ~-16 t2x ~8 brush copy cd 10000 obx -7 oby 2 obz 20
     costs:
         mana: 1500
+
 shell:
+    alias: dome
     icon: ender_pearl
-    category: earthbending
+    category: engineering
     class: ConstructSpell
     worth: 50
     effects:
@@ -693,8 +751,26 @@ shell:
         radius: 3
         type: sphere
         transparent: transparent_to_construction
+        undo: 4000
+        brush: stained_glass
     costs:
-        mana: 50
+        mana: 75
+
+shell|2:
+    parameters:
+        brush: stone
+        undo: 5000
+
+shell|3:
+    parameters:
+        brush: obsidian
+        undo: 10000
+
+shell|4:
+    parameters:
+        brush:
+        undo: 15000
+
 shields:
     icon: iron_helmet
     category: light
@@ -704,8 +780,6 @@ shields:
         cast:
         -  class: EffectSingle
            sound: level_up
-        -  class: EffectTrail
-           effect: step_sound
     parameters:
         radius: 3
         target: self
@@ -713,12 +787,12 @@ shields:
         brush: stained_glass
         transparent: transparent_to_construction
         destructible: air
-        check_destructible: true
         brushcolor: true
         undo: 10000
         breakable: 2
     costs:
         mana: 20
+
 reflect:
     icon: iron_helmet
     category: light
@@ -732,46 +806,47 @@ reflect:
            effect: step_sound
     parameters:
         allow_max_range: true
-        range: 4
-        radius: 2
+        range: 3
+        radius: 1
         type: sphere
         brush: stained_glass_pane
         orient_dimension_max: 0
         orient_dimension_min: 0
         orient: true
         transparent: transparent_to_construction
-        destructible: air
+        destructible: air,fire,water,stationary_water
         check_destructible: true
         brushcolor: true
-        undo: 5000
-        breakable: 2
-        reflect_chance: 1
+        undo: 800
+        cooldown: 1100
+        breakable: 3
+        reflect_chance: 0.25
+        bypass_confusion: true
+        bypass_backfire: true
     costs:
         mana: 40
-dome:
-    icon: bowl
-    category: earthbending
-    class: ConstructSpell
-    worth: 60
-    effects:
-        cast:
-        -  class: EffectSingle
-           sound: level_up
-        -  class: EffectTrail
-           effect: step_sound
+
+reflect|2:
     parameters:
-        allow_max_range: false
-        range: 32
-        thickness: 1
-        radius: 6
-        type: sphere
-        orient_dimension_min: 0
-        transparent: transparent_to_construction
+        radius: 1
+        undo: 900
+        reflect_chance: 0.5
+        breakable: 2
     costs:
-        mana: 60
+        mana: 50
+
+reflect|3:
+    parameters:
+        radius: 2
+        undo: 1000
+        reflect_chance: 0.75
+        breakable: 1
+    costs:
+        mana: 55
+
 disc:
     icon: ink_sack:8
-    category: earthbending
+    category: engineering
     class: ConstructSpell
     worth: 45
     effects:
@@ -788,8 +863,10 @@ disc:
         orient_dimension_max: 0
         orient_dimension_min: 0
         transparent: transparent_to_construction
+        undo: 20000
     costs:
-        mana: 45
+        mana: 60
+
 superdisc:
     icon: ink_sack:13
     category: engineering
@@ -811,7 +888,8 @@ superdisc:
         orient_dimension_min: 0
         transparent: transparent_to_construction
     costs:
-        mana: 150
+        mana: 200
+
 superring:
     icon: ink_sack:9
     category: engineering
@@ -834,7 +912,8 @@ superring:
         thickness: 1
         transparent: transparent_to_construction
     costs:
-        mana: 100
+        mana: 200
+
 supershell:
     icon: magma_cream
     category: engineering
@@ -855,7 +934,8 @@ supershell:
         type: sphere
         transparent: transparent_to_construction
     costs:
-        mana: 200
+        mana: 250
+
 superdome:
     icon: mushroom_soup
     category: engineering
@@ -877,7 +957,8 @@ superdome:
         orient_dimension_min: 0
         transparent: transparent_to_construction
     costs:
-        mana: 150
+        mana: 200
+
 tag:
     icon: sign
     category: dark
@@ -900,13 +981,14 @@ tag:
         target_type: Player
         allow_max_range: false
         range: 32
-        cooldown: 10000
+        cooldown: 30000
         transparent: transparent_to_construction
     costs:
         mana: 20
+
 toss:
     icon: wood_button
-    category: earthbending
+    category: engineering
     class: TossSpell
     worth: 20
     effects:
@@ -919,9 +1001,10 @@ toss:
       speed: 2
     costs:
         mana: 20
+
 volley:
     icon: stone_button
-    category: earthbending
+    category: engineering
     class: TossSpell
     pvp_restricted: true
     worth: 40
@@ -934,43 +1017,84 @@ volley:
       speed: 1.5
       count: 8
     costs:
-        mana: 40   
+        mana: 40
+
 push:
     icon: rails
-    category: airbending
-    class: PushSpell
+    category: elemental
     pvp_restricted: true
-    worth: 10
+    worth: 15
+    actions:
+        cast:
+        - class: VelocityAction
     effects:
         cast:
         -  class: EffectSingle
-           effectlib:
-             class: ConeEffect
-             iterations: 20
-             particle: spell
            sound: fizz
-        area:
+           sound_volume: 1
+           sound_pitch: -0.1
+           location: origin
+           effectlib:
+             class: DnaEffect
+             particlesBase: 0
+             particlesHelix: 7
+             particleHelix: spell
+             particleBase1: spell
+             particleBase2: spell
+             iterations: 10
+             lengthGrow: 20
+    parameters:
+        target_type: Entity
+        range: 8
+        fov: 1
+        target_count: 2
+        allow_max_range: true
+        item_speed: 2
+        living_entity_speed: 3
+        push: 1
+    costs:
+        mana: 40
+
+push|2:
+    actions:
+        cast:
+        - class: VelocityAction
+        alternate_down:
+        - class: VelocityAction
+          parameters:
+              fov: 3
+              range: 8
+    effects:
+        alternate_down:
         -  class: EffectSingle
            sound: fizz
+           sound_volume: 1
+           sound_pitch: -0.1
+           location: origin
            effectlib:
              class: VortexEffect
              particle: spell
     parameters:
-        target_type: Entity
-        range: 32
-        allow_area: true
-        item_force: 1
-        area_range: 8
-        entity_force: 3
-        type: push
-    costs:
-        mana: 5
+        living_entity_speed: 7
+        item_speed: 5
+        range: 16
+        target_count: 8
+
 pull:
     icon: fishing_rod
-    category: airbending
-    class: PushSpell
+    category: elemental
     pvp_restricted: true
     worth: 10
+    actions:
+        cast:
+        -  class: VelocityAction
+        -  class: FallProtectionAction
+        alternate_down:
+        - class: VelocityAction
+          parameters:
+              fov: 3
+              range: 16
+              count: 16
     effects:
         cast:
         -  class: EffectSingle
@@ -978,23 +1102,25 @@ pull:
         -  class: EffectTrail
            particle: spell
            reverse: true
-        area:
+           length: 16
+           particle_count: 6
+        alternate_down:
         -  class: EffectSingle
            sound: fizz
            effectlib:
-             class: VortexEffect
+             class: HelixEffect
              particle: spell
     parameters:
         target_type: Entity
         range: 32
-        allow_area: true
         item_force: 2
         area_range: 20
         entity_force: 3
         type: pull
         count: 1
     costs:
-        mana: 25
+        mana: 50
+
 boom:
     icon: melon_seeds
     category: firebending
@@ -1899,13 +2025,24 @@ cushion:
         -  class: EffectTrail
            particle: drip_water
            particle_count: 8
+        -  class: EffectSingle
+           location: target
+           effectlib:
+             class: SphereEffect
+             iterations: 10
+             period: .1
+             particle: drip_water
+             radius: 1.8
+             particles: 20
     parameters:
+        target_type: LivingEntity
         allow_max_range: false
-        height: 4
-        range: 128
+        height: 3
+        hitbox: true
+        range: 25
         width: 3
-        cooldown: 100
-        undo: 7000
+        cooldown: 1000
+        undo: 1000
         disable_physics: 8000
     costs:
         mana: 10
@@ -2528,25 +2665,39 @@ kamikazee:
     costs:
         mana: 5
 blast:
-    icon: iron_spade
+    icon: sulphur
     category: mining
     class: ConstructSpell
     worth: 12
+    cast_on_no_target: true
     effects:
         cast:
         -  class: EffectSingle
            sound: explode
-        -  class: EffectTrail
+           location: origin
+           effectlib:
+             class: ConeEffect
+             iterations: 10
+             particle: spell_mob
+             color: FACC2E
+             lengthGrow: 0.4
+        -  class: EffectSingle
+           target_offset: 0,0.5,0
+           location: target
+           color: FACC2E
+           firework: burst
            particle: explosion_large
     parameters:
         allow_max_range: false
-        range: 16
-        speed: 1.5
+        range: 32
+        speed: 0.9
         falling: true
         brush: air
-        radius: 2
+        radius: 1
         type: sphere
+        undo: 15000
         destructible: destructible_mining
+        select_self: false
     costs:
         mana: 45
 earthquake:
@@ -2725,6 +2876,7 @@ cloak:
         particle: redstone
         effect_invisibility: 600,5
 undo:
+    alias: rewind
     icon: book_and_quill
     category: engineering
     class: UndoSpell
@@ -3630,15 +3782,17 @@ wolfhouse:
 missile:
     icon: ink_sack:1
     category: combat
-    class: PotionEffectSpell
     pvp_restricted: true
-    cast_on_no_target: true
     worth: 40
+    actions:
+        cast:
+        - class: DamageAction
     effects:
         cast:
         -  class: EffectSingle
            sound: enderman_teleport
            sound_pitch: 0.1
+           sound_volume: 0.5
            location: origin
            particle_override: particle
            color_override: color
@@ -3657,6 +3811,7 @@ missile:
         -  class: EffectSingle
            sound: enderman_teleport
            sound_pitch: 0.1
+           sound_volume: 0.3
            location: origin
            particle_override: particle
            color_override: color
@@ -3675,6 +3830,7 @@ missile:
         -  class: EffectSingle
            sound: enderman_teleport
            sound_pitch: 0.1
+           sound_volume: 0.7
            location: origin
            entity_effect: hurt
            particle_override: particle
@@ -3685,11 +3841,10 @@ missile:
              particle: redstone
              lengthGrow: 0.3
     parameters:
-        range: 16
+        range: 48
         hitbox: true
         target_type: LivingEntity
         damage: 2
-        cooldown: 2500
         target_breakables: 0
         bypass_backfire: false
     costs:
