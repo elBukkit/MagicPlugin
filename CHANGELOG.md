@@ -2,9 +2,17 @@
 
 ## 4.0
 
- - Spells converted to new action system
  - All default spells, wands, and enchanting configs changed
- - Added level progression to default configs
+   - All world-modifying spells now auto-undo
+   - Rebalanced, with a focus on dueling and not being "Too OP"
+   - Brooms are now craftable
+   - Only one wand type is craftable, and it now levels up from Beginner to Master
+   - Added level progression to a variety of spells
+   - Engineering spells are unavailable naturally.
+     - A Master wand can be upgraded to an Engineering wand
+     - This requires some spells, ideally provided via a server tutorial
+     - Engineering wands can upgrade to Architect in the same way
+ - Many spells converted to new action system (WIP)
  - Add Lockette integration
  - Fixed/Updated Factions integration
  - Add "loud" configuration option for spells

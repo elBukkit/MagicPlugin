@@ -41,12 +41,7 @@ master:
   row_2: i
   row_3:
 
-# This is here to disable crafting of the "wolf wand" item
-# you can't craft the wand either, so there is no recipe.
-wolf:
-  output: wolf
-  output_type: wand
-  disable_default: true
+# Other default craftable items
 
 battle:
   output: battle
@@ -57,3 +52,27 @@ battle:
   row_1: o
   row_2: i
   row_3:
+
+broomstick:
+  disable_default: true
+  output: broomstick
+  output_type: wand
+  materials:
+    i: stick
+    o: nether_star
+    w: wheat
+  row_1: " i "
+  row_2: " i "
+  row_3: "wow"
+
+# This is here to disable crafting of other items, even if
+# they aren't craftable.
+wolf:
+  output: wolf
+  output_type: wand
+  disable_default: true
+
+architect:
+  output: architect
+  output_type: wand
+  disable_default: true

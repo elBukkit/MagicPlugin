@@ -47,9 +47,6 @@ public class MagicRecipe {
         // CompatibilityUtils.removeCustomData(wandItem);
         outputType = wandItem.getType();
         ShapedRecipe shaped = new ShapedRecipe(wandItem);
-        String recipeRow1 = configuration.getString("row_1", "");
-        String recipeRow2 = configuration.getString("row_2", "");
-        String recipeRow3 = configuration.getString("row_3", "");
         List<String> rows = new ArrayList<String>();
         for (int i = 1; i <= 3; i++) {
             String recipeRow = configuration.getString("row_" + i, "");

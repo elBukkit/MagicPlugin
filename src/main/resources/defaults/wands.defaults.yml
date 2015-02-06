@@ -200,7 +200,7 @@ architect:
     bound: true
     undroppable: true
     indestructible: true
-    icon: wood_axe
+    icon: gold_axe
     effect_color: '00FF00'
     hunger_regeneration: 1
     health_regeneration: 1
@@ -295,6 +295,7 @@ architect:
         - schematic:tech_tower
 
 elder:
+    icon: gold_axe
     path: master
     bound: true
     protection: 1
@@ -381,6 +382,7 @@ elder:
         - map
 
 admin:
+    icon: gold_axe
     path: master
     keep: true
     bound: true
@@ -652,6 +654,7 @@ master_upgrade:
     xp_regeneration: 50
 engineer_upgrade:
     upgrade: true
+    upgrade_icon: gold_axe
     indestructible: false
     icon: nether_star
     xp_max: 300
@@ -659,6 +662,7 @@ engineer_upgrade:
 architect_upgrade:
     upgrade: true
     indestructible: false
+    upgrade_icon: gold_axe
     icon: nether_star
     xp_max: 400
     xp_regeneration: 90
