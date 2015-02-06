@@ -176,7 +176,7 @@ wand:
     inventory_instructions: "&r&bYour wand now has more than one spell. Right-click to open/close the wand inventory. Use the hotbar buttons to select a spell."
     page_instructions: "&r&bYour wand now has more than one page of spells. Click outside the spell inventory to change pages."
     bound_instructions: "&r&3Your wand is bound to you, and is undroppable."
-    spell_instructions: "&r&bSwing your wand to cast its active spell. Spells require mana, shown in the XP bar."
+    spell_instructions: "&r&bSwing your wand to cast $spell. Spells require mana, shown in the XP bar."
     brush_instructions: "&r&bMaterial brushes have been added to your wand. Select these as you would a spell to modify your engineering magic."
 spell:
     brush: Uses Material Brushes
@@ -1189,7 +1189,7 @@ wands:
         description: An instant boost to 1000 Mana (or your max)
     recalltoken:
         name: Recall Token
-        description: Cast to return
+        description: Teleport to waypoints
     respawntoken:
         name: Respawn Token
         description: Cast to return to spawn
