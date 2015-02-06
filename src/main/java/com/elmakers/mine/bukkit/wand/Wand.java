@@ -572,6 +572,10 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 			keep = true;
 		}
 		updateLore();
+        if (mage != null)
+        {
+            mage.sendMessage(controller.getMessages().get("wand.bound_instructions", ""));
+        }
 	}
 	
 	public ItemStack getItem() {
@@ -1477,8 +1481,8 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         // one spell now, but may get more later. Since you
         // can't open the inventory in this state, you can not
         // otherwise see the spell lore.
-		if (spell != null && spellCount == 1 && !hasInventory && !isUpgrade && hasPath()) {
-            lore.add(getSpellDisplayName(spell, null));
+		if (spell != null && spellCount == 1 && !hasInventory && !isUpgrade && hasPath() && !spell.isHidden())
+        {
             addSpellLore(controller.getMessages(), spell, lore, this);
 		}
         if (materialCount == 1 && activeMaterial != null && activeMaterial.length() > 0)
@@ -3144,6 +3148,13 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
                 }
             }
         }
+        if (activeSpell == null || activeSpell.isEmpty()) {
+            activeSpell = spellKey.getKey();
+        }
+
+        int inventoryCount = inventories.size();
+        int spellCount = spells.size();
+
         spellLevels.put(spellKey.getBaseKey(), level);
         spells.put(template.getKey(), inventorySlot);
 		addToInventory(spellItem, inventorySlot);
@@ -3151,6 +3162,24 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		hasInventory = getSpells().size() + getBrushes().size() > 1;
         saveState();
 		updateLore();
+
+        if (mage != null)
+        {
+            if (spellCount == 0)
+            {
+                mage.sendMessage(controller.getMessages().get("wand.spell_instructions", ""));
+            }
+            else
+            if (spellCount == 1)
+            {
+                mage.sendMessage(controller.getMessages().get("wand.inventory_instructions", ""));
+            }
+            else
+            if (inventoryCount == 1 && inventories.size() > 1)
+            {
+                mage.sendMessage(controller.getMessages().get("wand.page_instructions", ""));
+            }
+        }
 		
 		return true;
 	}

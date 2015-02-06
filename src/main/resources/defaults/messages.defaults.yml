@@ -173,6 +173,10 @@ wand:
     randomized_lore: What kind of wand will you get?
     randomized_name: Wand Box
     upgrade_name: $name Upgrade
+    inventory_instructions: Your wand now has more than one spell. Right-click to open/close the wand inventory. Use the hotbar buttons to select a spell.
+    page_instructions: Your wand now has more than one page of spells. Click outside the spell inventory to change pages.
+    bound_instructions: Your wand is bound to you, and is undroppable.
+    spell_instructions: Swing your wand to cast its active spell. Spells require mana, shown in the XP bar.
 spell:
     brush: Uses Material Brushes
     undoable: Undoable with Rollback
