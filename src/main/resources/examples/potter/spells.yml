@@ -3608,51 +3608,8 @@ protegomaxima:
         mana: 100
 
 reducio:
-    icon: red_mushroom
+    inherit: shrink
     category: transfiguration
-    class: ShrinkSpell
-    pvp_restricted: true
-    cast_on_no_target: true
-    worth: 40
-    effects:
-        cast:
-        -  class: EffectSingle
-           sound: shoot_arrow
-           location: origin
-           effectlib:
-             class: ConeEffect
-             iterations: 11
-             particle: spell_instant
-             lengthGrow: 0.4
-        -  class: EffectSingle
-           location: target
-           color: "81F7D8"
-           firework: star
-        no_target:
-        -  class: EffectSingle
-           sound: shoot_arrow
-           location: origin
-           effectlib:
-             class: ConeEffect
-             iterations: 11
-             particle: spell_instant
-             lengthGrow: 0.4
-        -  class: EffectSingle
-           location: target
-           color: "FFFFFF"
-           firework: burst
-    parameters:
-        hitbox: true
-        target_type: LivingEntity
-        target: other_entity
-        allow_max_range: false
-        range: 16
-        player_damage: 1
-        entity_damage: 4
-        target_breakables: 1
-        cooldown: 4000
-    costs:
-        mana: 130
 
 reducio|2:
     parameters:

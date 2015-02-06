@@ -2,3 +2,6 @@
 # Bending spells
 #
 
+fireball:
+     category: firebending
+     enabled: true

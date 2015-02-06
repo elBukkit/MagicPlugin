@@ -154,7 +154,6 @@ beginner:
       cushion: 10,40,20
       fireball: 60,70,80
       flare: 110,80,60
-      tesseract: 80,50,40
       torch: 80,60,50
       push: 10,20,40
       pull: 10,20,40
@@ -208,6 +207,7 @@ student:
       2: 5,   30,  20
       3: 0,   5,   50
     spells:
+      blink: 80,50,40
       arrowrain: 10,30,50
       boom: 20,50,60
       shields: 1,15,50
@@ -231,6 +231,7 @@ student:
       shell: 1,20,30
       reflect|2: 0,1,5
       tag: 0,1,5
+      blob: 1,20,30
 
 apprentice:
     upgrade: master
@@ -277,7 +278,7 @@ apprentice:
       3: 0,   5,   50
     spells:
       boon|2: 0,5,10
-      blink: 1,5,10
+      blink|2: 1,5,10
       emp: 0,0,10
       blessing: 0,1,5
       breach: 5,20,30
@@ -291,7 +292,7 @@ apprentice:
       counterspell: 0,1,5
       tent: 0,0,5
       silence: 0,1,5
-      blob: 1,20,30
+      blob|2: 1,20,30
       shell|2: 1,20,30
       reflect|3: 0,1,5
       disc: 0,1,5
@@ -353,6 +354,7 @@ master:
       2: 5,   30,  20
       3: 0,   5,   50
     spells:
+      blink|3: 1,5,10
       alter: 0,10,20
       cluster: 0,0,5
       bomb: 0,0,1
@@ -372,6 +374,7 @@ master:
       meteor: 0,0,2
       pollinate: 0,0,10
       shell|3: 1,20,30
+      blob|3: 1,20,30
 
 #
 # The move from "master" to engineer requires the player to aquire some basic

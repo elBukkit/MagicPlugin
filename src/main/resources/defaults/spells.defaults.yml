@@ -1142,8 +1142,10 @@ boom:
         break_blocks: false
         size: 2
         cooldown: 2000
+        undo: 3000
     costs:
         mana: 20
+
 kaboom:
     icon: fireball
     category: dark
@@ -1163,8 +1165,10 @@ kaboom:
         cooldown: 7000
         size: 4
         break_blocks: true
+        undo: 5000
     costs:
         mana: 60
+
 nuke:
     icon: skull_item:4
     category: master
@@ -1193,10 +1197,12 @@ nuke:
         allow_max_range: true
         range: 64
         cooldown: 60000
-        size: 10
+        size: 8
+        undo: 50000
         break_blocks: true
     costs:
         mana: 500
+
 frost:
     icon: snow_ball
     category: waterbending
@@ -1220,8 +1226,11 @@ frost:
         vertical_search_distance: 8
         transparent: transparent_to_construction
         ice: ice
+        undo: 20000
+        cooldown: 2000
     costs:
         mana: 75
+
 lightning:
     icon: raw_fish:2
     category: firebending
@@ -1246,6 +1255,7 @@ lightning:
         range: 32
     costs:
         mana: 80
+
 storm:
     icon: raw_fish:3
     category: firebending
@@ -1271,6 +1281,7 @@ storm:
         radius: 6
     costs:
         mana: 200
+
 tree:
     icon: sapling
     category: elemental
@@ -1289,6 +1300,7 @@ tree:
         require_sapling: false
     costs:
         mana: 20
+
 disarm:
     icon: tripwire_hook
     category: light
@@ -1325,6 +1337,7 @@ disarm:
         keep_in_inventory: true
     costs:
         mana: 75
+
 cure:
     icon: cookie
     category: light
@@ -1354,6 +1367,7 @@ cure:
         heal_percentage: 0.1
     costs:
         mana: 20
+
 heal:
     icon: bread
     category: light
@@ -1381,6 +1395,7 @@ heal:
         heal: 10
     costs:
         mana: 100
+
 music:
     icon: gold_record
     category: light
@@ -1403,6 +1418,7 @@ music:
         cooldown: 120000
     costs:
         mana: 20
+
 gather:
     icon: glowstone_dust
     category: master
@@ -1426,6 +1442,7 @@ gather:
         range: 64
     costs:
         mana: 150
+
 mount:
     icon: saddle
     category: master
@@ -1446,6 +1463,7 @@ mount:
         range: 16
     costs:
         mana: 60
+
 icbm:
     icon: golden_carrot
     category: dark
@@ -1459,8 +1477,11 @@ icbm:
     parameters:
         size: 5
         projectile: LargeFireball
+        undo: 30000
+        cooldown: 10000
     costs:
         mana: 100
+
 neutron:
     icon: poisonous_potato
     category: dark
@@ -1483,6 +1504,7 @@ neutron:
         radius: 32  
     costs:
         mana: 80
+
 wither:
     icon: skull_item:1
     category: dark
@@ -1498,8 +1520,10 @@ wither:
         effect_wither: 160,2
         radius: 8
         count: 3
+        undo: 15000
     costs:
         mana: 60
+
 arrowrain:
     icon: bow
     category: combat
@@ -1518,8 +1542,10 @@ arrowrain:
         spread: 12
         dpy: 4
         ddy: -0.2
+        undo: 15000
     costs:
         mana: 30
+
 meteor:
     icon: double_plant:4
     category: dark
@@ -1535,7 +1561,7 @@ meteor:
            location: target
            particle_count: 4
     parameters:
-        projectile: LargeFireball
+        projectile: SmallFireball
         count: 12
         fire: true
         spread: 30
@@ -1543,8 +1569,10 @@ meteor:
         pdy: ~-0.2
         range: 64
         allow_max_range: true
+        undo: 40000
     costs:
         mana: 80
+
 arrow:
     icon: arrow
     category: combat
@@ -1563,6 +1591,7 @@ arrow:
       fire: false
     costs:
         mana: 25
+
 sniper:
     icon: gold_nugget
     category: combat
@@ -1587,6 +1616,7 @@ sniper:
       damage: 2
     costs:
         mana: 50
+
 weather:
     icon: water_bucket
     category: elemental
@@ -1611,9 +1641,10 @@ weather:
         cooldown: 30000
     costs:
         mana: 80
+
 fling:
     icon: feather
-    category: airbending
+    category: utility
     class: FlingSpell
     worth: 20
     effects:
@@ -1633,9 +1664,10 @@ fling:
     parameters:
     costs:
         mana: 45
+
 leap:
     icon: leather_boots
-    category: airbending
+    category: utility
     class: FlingSpell
     worth: 10
     effects:
@@ -1658,6 +1690,7 @@ leap:
         max_speed: 3
     costs:
         mana: 5
+
 torch:
     icon: torch
     category: engineering
@@ -1676,8 +1709,11 @@ torch:
         range: 32
         allow_day: false
         allow_glowstone: true
+        undo: 120000
+        cooldown: 500
     costs:
-        mana: 15
+        mana: 50
+
 familiar:
     icon: monster_egg
     category: elemental
@@ -1714,6 +1750,7 @@ familiar:
         range: 32
     costs:
         mana: 20
+
 monster:
     icon: pumpkin
     category: dark
@@ -1758,6 +1795,7 @@ monster:
         range: 32
     costs:
         mana: 40
+
 mob:
     icon: jack_o_lantern
     category: dark
@@ -1802,6 +1840,7 @@ mob:
         count: 20
     costs:
         mana: 100
+
 farm:
     icon: wheat
     category: elemental
@@ -1836,6 +1875,7 @@ farm:
         cooldown: 30000
     costs:
         mana: 50
+
 wolf:
     icon: raw_beef
     category: elemental
@@ -1865,6 +1905,7 @@ wolf:
         range: 32
     costs:
         mana: 50
+
 cat:
     icon: raw_fish
     category: elemental
@@ -1893,6 +1934,7 @@ cat:
         cooldown: 5000
     costs:
         mana: 30
+
 portal:
     icon: eye_of_ender
     category: master
@@ -1912,6 +1954,7 @@ portal:
         undo: 10000
     costs:
         mana: 20
+
 phase:
     icon: eye_of_ender
     category: master
@@ -1930,6 +1973,7 @@ phase:
         target: self
     costs:
         mana: 50
+
 invincible:
     icon: golden_apple
     category: master
@@ -1949,6 +1993,7 @@ invincible:
         mana: 100
     active_costs:
         mana: 50
+
 fire:
     icon: flint_and_steel
     category: demolition
@@ -1983,7 +2028,7 @@ fire:
         fov: 0.03
         radius: 0
         vertical_search_distance: 4
-#        undo: 1500
+        undo: 2000
         cooldown: 1000
         bypass_build: true
         target_breakables: 0
@@ -1992,7 +2037,7 @@ fire:
 
 inferno:
     icon: blaze_powder
-    category: firebending
+    category: demolition
     class: FireSpell
     pvp_restricted: true
     worth: 60
@@ -2010,11 +2055,13 @@ inferno:
         range: 64
         radius: 4
         vertical_search_distance: 8
+        undo: 30000
     costs:
         mana: 80
+
 cushion:
     icon: bed
-    category: waterbending
+    category: utility
     class: CushionSpell
     worth: 10
     effects:
@@ -2046,9 +2093,10 @@ cushion:
         disable_physics: 8000
     costs:
         mana: 10
+
 gasp:
     icon: glass_bottle
-    category: waterbending
+    category: utility
     class: ConstructSpell
     worth: 3
     effects:
@@ -2069,6 +2117,7 @@ gasp:
         undo: 2000
     costs:
         mana: 20
+
 regenerate:
     icon: gold_hoe
     category: engineering
@@ -2087,6 +2136,7 @@ regenerate:
         transparent: transparent_to_construction
     costs:
         mana: 500
+
 superregenerate:
     icon: diamond_hoe
     category: engineering
@@ -2106,6 +2156,7 @@ superregenerate:
         transparent: transparent_to_construction
     costs:
         mana: 1000
+
 paint:
     icon: painting
     category: engineering
@@ -2123,6 +2174,7 @@ paint:
         transparent: transparent_to_construction
     costs:
         mana: 5
+
 fill:
     icon: iron_hoe
     category: engineering
@@ -2141,6 +2193,7 @@ fill:
         transparent: transparent_to_construction
     costs:
         mana: 100
+
 recurse:
     icon: wood_spade
     category: engineering
@@ -2159,6 +2212,7 @@ recurse:
         transparent: transparent_to_construction
     costs:
         mana: 30
+
 gills:
     icon: cooked_fish
     category: light
@@ -2183,6 +2237,7 @@ gills:
         particle: water_bubble
         effect_water_breathing: 6000,5
         effect_night_vision: 6000,5
+
 day:
     icon: emerald
     category: master
@@ -2222,6 +2277,7 @@ day:
         weather: clear
     costs:
         mana: 50
+
 night:
     icon: coal
     category: master
@@ -2246,6 +2302,7 @@ night:
         cycle_moon_phase: true
     costs:
         mana: 40
+
 time:
     icon: watch
     category: master
@@ -2267,7 +2324,8 @@ time:
         cooldown: 120000
         time: toggle
     costs:
-        mana: 40        
+        mana: 40
+
 bridge:
     icon: stone_hoe
     category: engineering
@@ -2282,6 +2340,7 @@ bridge:
         transparent: transparent_to_construction
     costs:
         mana: 5
+
 pillar:
     icon: gold_axe
     category: engineering
@@ -2298,6 +2357,7 @@ pillar:
         transparent: transparent_to_construction
     costs:
         mana: 5
+
 place:
     icon: diamond_axe
     category: engineering
@@ -2314,6 +2374,7 @@ place:
         transparent: transparent_to_construction
     costs:
         mana: 10
+
 stalactite:
     icon: iron_axe
     category: engineering
@@ -2331,12 +2392,15 @@ stalactite:
         transparent: transparent_to_construction
     costs:
         mana: 5
+
 grenade:
     icon: tnt
-    category: firebending
+    category: combat
     pvp_restricted: true
-    class: GrenadeSpell
     worth: 25
+    actions:
+        cast:
+        -  class: TNTAction
     effects:
         cast:
         -  class: EffectSingle
@@ -2346,14 +2410,18 @@ grenade:
         range: 32
         size: 3
         fuse: 60
+        undo: 20000
     costs:
         mana: 40
+
 frag:
     icon: apple
     category: dark
-    class: GrenadeSpell
     pvp_restricted: true
     worth: 150
+    actions:
+        cast:
+        -  class: TNTAction
     effects:
         cast:
         -  class: EffectSingle
@@ -2364,14 +2432,18 @@ frag:
         size: 5
         fuse: 60
         fire: true
+        undo: 30000
     costs:
         mana: 120
+
 cluster:
     icon: red_rose:3
     category: dark
-    class: GrenadeSpell
     pvp_restricted: true
     worth: 160
+    actions:
+        cast:
+        -  class: TNTAction
     effects:
         cast:
         -  class: EffectSingle
@@ -2383,14 +2455,18 @@ cluster:
         fuse: 60
         fire: false
         count: 5
+        undo: 10000
     costs:
         mana: 150
+
 bomb:
     icon: double_plant:1
     category: dark
-    class: GrenadeSpell
     pvp_restricted: true
     worth: 250
+    actions:
+        cast:
+        -  class: TNTAction
     effects:
         cast:
         -  class: EffectSingle
@@ -2408,8 +2484,10 @@ bomb:
         count: 12
         py: ~20
         pdy: -0.75
+        undo: 10000
     costs:
         mana: 250
+
 superblob:
     icon: slime_ball
     category: engineering
@@ -2431,6 +2509,7 @@ superblob:
         transparent: transparent_to_construction
     costs:
         mana: 500
+
 superpyramid:
     icon: speckled_melon
     category: engineering
@@ -2452,9 +2531,10 @@ superpyramid:
         transparent: transparent_to_construction
     costs:
         mana: 500
+
 box:
     icon: gold_helmet
-    category: earthbending
+    category: engineering
     class: ConstructSpell
     worth: 100
     effects:
@@ -2474,6 +2554,7 @@ box:
         y_offset: 4
     costs:
         mana: 60
+
 superbox:
     icon: diamond_helmet
     category: engineering
@@ -2495,6 +2576,7 @@ superbox:
         transparent: transparent_to_construction
     costs:
         mana: 400
+
 supercube:
     icon: nether_brick_item
     category: engineering
@@ -2515,6 +2597,7 @@ supercube:
         transparent: transparent_to_construction
     costs:
         mana: 500
+
 backup:
     icon: diamond_pickaxe
     category: engineering
@@ -2542,6 +2625,7 @@ backup:
         bypass_undo: true
     costs:
         mana: 900
+
 repair:
     icon: gold_pickaxe
     category: engineering
@@ -2568,6 +2652,7 @@ repair:
         brushtarget: true
     costs:
         mana: 200
+
 superrepair:
     icon: gold_pickaxe
     category: engineering
@@ -2594,6 +2679,7 @@ superrepair:
         brushtarget: true
     costs:
         mana: 500
+
 workbench:
     icon: workbench
     category: engineering
@@ -2614,6 +2700,7 @@ workbench:
         brush: workbench
     costs:
         mana: 30
+
 stash:
     icon: ender_chest
     category: master
@@ -2630,6 +2717,7 @@ stash:
         target: self
     costs:
         mana: 50
+
 pickpocket:
     icon: shears
     category: dark
@@ -2648,6 +2736,7 @@ pickpocket:
         range: 4
     costs:
         mana: 75
+
 kamikazee:
     icon: skull_item:4
     category: dark
@@ -2662,8 +2751,10 @@ kamikazee:
         size: 8
         target: self
         break_blocks: false
+        undo: 20000
     costs:
         mana: 5
+
 blast:
     icon: sulphur
     category: mining
@@ -2700,9 +2791,10 @@ blast:
         select_self: false
     costs:
         mana: 45
+
 earthquake:
     icon: iron_spade
-    category: mining
+    category: combat
     class: ConstructSpell
     worth: 200
     effects:
@@ -2723,11 +2815,13 @@ earthquake:
         radius: 5
         type: sphere
         destructible: destructible_mining
+        undo: 10000
     costs:
         mana: 150
+
 tunnel:
     icon: iron_pickaxe
-    category: earthbending
+    category: engineering
     class: TunnelSpell
     worth: 15
     effects:
@@ -2741,9 +2835,10 @@ tunnel:
         range: 32
     costs:
         mana: 30
+
 superblast:
     icon: red_mushroom
-    category: mining
+    category: engineering
     class: ConstructSpell
     worth: 100
     effects:
@@ -2764,9 +2859,10 @@ superblast:
         destructible: destructible_mining
     costs:
         mana: 100
+
 convert:
     icon: gold_spade
-    category: earthbending
+    category: engineering
     class: ConstructSpell
     worth: 30
     effects:
@@ -2785,6 +2881,7 @@ convert:
         transparent: transparent_to_construction
     costs:
         mana: 100
+
 superconvert:
     icon: diamond_spade
     category: engineering
@@ -2808,9 +2905,10 @@ superconvert:
         transparent: transparent_to_construction
     costs:
         mana: 300
+
 collapse:
     icon: iron_plate
-    category: earthbending
+    category: combat
     class: ConstructSpell
     worth: 80
     effects:
@@ -2828,11 +2926,14 @@ collapse:
         indestructible: air
         radius: 2
         transparent: transparent_to_construction
+        undo: 10000
+        cooldown: 2000
     costs:
         mana: 50
+
 supercollapse:
     icon: gold_plate
-    category: master
+    category: engineering
     class: ConstructSpell
     worth: 800
     effects:
@@ -2855,9 +2956,10 @@ supercollapse:
         transparent: transparent_to_construction
     costs:
         mana: 250
+
 cloak:
     icon: chainmail_chestplate
-    category: master
+    category: utility
     class: PotionEffectSpell
     worth: 20
     effects:
@@ -2874,7 +2976,9 @@ cloak:
     parameters:
         target: any
         particle: redstone
-        effect_invisibility: 600,5
+        duration: 10000
+        effect_invisibility: 5
+
 undo:
     alias: rewind
     icon: book_and_quill
@@ -2915,7 +3019,7 @@ commit:
 
 counterspell:
     icon: diamond
-    category: master
+    category: combat
     class: UndoSpell
     worth: 250
     effects:
@@ -2935,10 +3039,11 @@ counterspell:
         bypass_confusion: true
         bypass_backfire: true
     costs:
-        mana: 150
+        mana: 75
+
 breach:
     icon: seeds
-    category: earthbending
+    category: mining
     class: ConstructSpell
     worth: 60
     effects:
@@ -2959,6 +3064,7 @@ breach:
         type: sphere
     costs:
         mana: 20
+
 peek:
     icon: sugar_cane
     category: mining
@@ -2983,9 +3089,10 @@ peek:
         type: sphere
     costs:
         mana: 5
+
 sandblast:
     icon: sandstone
-    category: earthbending
+    category: combat
     class: ConstructSpell
     pvp_restricted: true
     worth: 30
@@ -3002,8 +3109,11 @@ sandblast:
         radius: 2
         type: cuboid
         y_offset: 32
+        undo: 20000
+        cooldown: 5000
     costs:
         mana: 50
+
 mine:
     icon: wood_pickaxe
     category: mining
@@ -3023,6 +3133,7 @@ mine:
         drop: ores
     costs:
         mana: 10
+
 chop:
     icon: stone_axe
     category: elemental
@@ -3043,6 +3154,7 @@ chop:
         drop: trees
     costs:
         mana: 10
+
 alter:
     icon: ink_sack
     category: engineering
@@ -3063,6 +3175,7 @@ alter:
         check_destructible: false
     costs:
         mana: 3
+
 superalter:
     icon: ink_sack:1
     category: engineering
@@ -3082,6 +3195,7 @@ superalter:
         check_destructible: false
     costs:
         mana: 40
+
 sphere:
     icon: snow_ball
     category: master
@@ -3105,9 +3219,10 @@ sphere:
         transparent: transparent_to_construction
     costs:
         mana: 100
+
 blob:
     icon: clay_ball
-    category: earthbending
+    category: combat
     class: ConstructSpell
     worth: 20
     effects:
@@ -3120,14 +3235,32 @@ blob:
         target_type: LivingEntity
         allow_max_range: true
         range: 32
-        radius: 3
+        radius: 2
         type: sphere
         transparent: transparent_to_construction
+        undo: 2000
+        cooldown: 1000
+        brush: stained_glass
     costs:
         mana: 50
+
+blob|2:
+    parameters:
+        radius: 3
+        undo: 5000
+        cooldown: 2000
+        brush: stone
+
+blob|3:
+    parameters:
+        radius: 3
+        undo: 15000
+        cooldown: 5000
+        brush: obsidian
+
 pyramid:
     icon: melon
-    category: earthbending
+    category: engineering
     class: ConstructSpell
     worth: 20
     effects:
@@ -3145,6 +3278,7 @@ pyramid:
         transparent: transparent_to_construction
     costs:
         mana: 50
+
 emp:
     icon: daylight_detector
     category: automata
@@ -3174,6 +3308,7 @@ emp:
         undo: 200
     costs:
         mana: 45
+
 superemp:
     icon: diode
     category: automata
@@ -3200,6 +3335,7 @@ superemp:
         undo: 3000
     costs:
         mana: 200
+
 disintegrate:
     icon: bone
     category: combat
@@ -3221,59 +3357,95 @@ disintegrate:
         player_damage: 5
         entity_damage: 50
         check_destructible: false
+        undo: 5000
     costs:
         mana: 50
+
 blink:
+    alias: tesseract
+    category: utility
     icon: eye_of_ender
-    category: master
     class: BlinkSpell
     worth: 120
     effects:
         cast:
-           - class: EffectSingle
-             sound: enderman_teleport
-             location: both
-             particle_override: particleOrbital
-             effectlib:
-                 class: AtomEffect
-                 particleNucleus: portal
-                 particleOrbital: spell
-                 iterations: 8
-           - class: EffectSingle
-             particle_override: particle
-             effectlib:
-                 class: LineEffect
-                 particle: portal
-    parameters:
-        allow_max_range: false
-        allow_ascend: true
-        allow_passthrough: true
-        prevent_passthrough: indestructible
-        range: 64
-        passthrough_range: 4
-        allow_decend: true
-    costs:
-        mana: 75
-tesseract:
-    icon: web
-    category: airbending
-    class: BlinkSpell
-    worth: 30
-    effects:
-        cast:
-        -  class: EffectSingle
-           sound: enderman_teleport
-           particle: portal
-           location: both
+        -  class: EffectVariable
+           brightness:
+             '0.5':
+             - class: EffectSingle
+               sound: enderman_teleport
+               sound_volume: 1
+               location: both
+               particle_override: particleOrbital
+               color_override: colorOrbital
+               effectlib:
+                   class: AtomEffect
+                   particleNucleus: smoke_large
+                   particleOrbital: redstone
+                   iterations: 8
+             - class: EffectSingle
+               particle_override: particle
+               color_override: color
+               effectlib:
+                   class: LineEffect
+                   particle: redstone
+             '5':
+             -  class: EffectSingle
+                location: target
+                color: F5EFFB
+                firework: burst
+             - class: EffectSingle
+               sound: enderman_teleport
+               sound_volume: 1
+               location: both
+               particle_override: particleOrbital
+               color_override: colorOrbital
+               effectlib:
+                   class: AtomEffect
+                   particleNucleus: spell
+                   particleOrbital: redstone
+                   iterations: 8
+             - class: EffectSingle
+               particle_override: particle
+               color_override: color
+               effectlib:
+                   class: LineEffect
+                   particle: redstone
+             -  class: EffectSingle
+                location: self
+                color: F5EFFB
+                firework: burst
     parameters:
         allow_max_range: false
         allow_ascend: false
-        allow_descend: false
         allow_passthrough: false
-        transparent: transparent_to_construction
-        range: 14
+        allow_descend: false
+        range: 16
+        cooldown: 5000
+        prevent_passthrough: indestructible
     costs:
-        mana: 25
+        mana: 50
+
+blink|2:
+    parameters:
+        allow_passthrough: true
+        passthrough_range: 2
+        range: 64
+        cooldown: 2000
+    costs:
+        mana: 75
+
+blink|3:
+    parameters:
+        range: 128
+        allow_ascend: true
+        allow_decend: true
+        allow_passthrough: true
+        passthrough_range: 8
+        cooldown: 100
+    costs:
+        mana: 100
+
 absorb:
     icon: bucket
     category: engineering
@@ -3291,10 +3463,11 @@ absorb:
         range: 64
         transparent: transparent_to_construction
     costs:
-        mana: 30     
+        mana: 30
+
 hat:
     icon: leather_helmet
-    category: light
+    category: utility
     worth: 18
     actions:
         cast:
@@ -3309,13 +3482,15 @@ hat:
     parameters:
         allow_max_range: false
         range: 32
-        cooldown: 3000
+        cooldown: 30000
+        undo: 30000
         transparent: transparent_to_construction
     costs:
         mana: 30
+
 lava:
     icon: ink_sack:14
-    category: firebending
+    category: combat
     class: IterateSpell
     pvp_restricted: true
     worth: 80
@@ -3334,9 +3509,10 @@ lava:
         undo: 200
     costs:
         mana: 65
+
 stream:
     icon: ink_sack:6
-    category: waterbending
+    category: combat
     class: IterateSpell
     pvp_restricted: true
     worth: 60
@@ -3355,9 +3531,10 @@ stream:
         undo: 2000
     costs:
         mana: 30
+
 earth:
     icon: ink_sack:3
-    category: earthbending
+    category: combat
     class: IterateSpell
     pvp_restricted: true
     worth: 70
@@ -3373,8 +3550,10 @@ earth:
         size: 16
         increment_data: false
         undo: 2000
+        brush: dirt
     costs:
         mana: 20
+
 iterate:
     icon: ink_sack:2
     category: engineering
@@ -3388,6 +3567,7 @@ iterate:
         increment_data: false
     costs:
         mana: 50
+
 superiterate:
     icon: ink_sack:4
     category: engineering
@@ -3403,6 +3583,7 @@ superiterate:
         increment_data: false
     costs:
         mana: 200
+
 flamethrower:
     icon: blaze_powder
     category: firebending
@@ -3428,8 +3609,11 @@ flamethrower:
         increment_data: false
         require_blocks: true
         brush: fire
+        undo: 5000
+        cooldown: 2000
     costs:
         mana: 100
+
 laser:
     icon: ink_sack:11
     category: dark
@@ -3449,8 +3633,11 @@ laser:
         check_destructible: true
         brush: air
         radius: 3
+        undo: 15000
+        cooldown: 5000
     costs:
         mana: 120
+
 shrink:
     icon: skull_item
     category: combat
@@ -3466,13 +3653,18 @@ shrink:
              iterations: 20
              particle: villager_angry
     parameters:
+        hitbox: true
         target_type: LivingEntity
+        target: other_entity
         allow_max_range: false
         range: 16
-        player_damage: 4
+        player_damage: 2.5
         entity_damage: 10
+        target_breakables: 3
+        cooldown: 4000
     costs:
         mana: 20
+
 grow:
     icon: skull_item:1
     category: combat
@@ -3493,6 +3685,7 @@ grow:
         range: 16
     costs:
         mana: 10
+
 flare:
     icon: firework
     category: light
@@ -3508,6 +3701,7 @@ flare:
         range: 16
     costs:
         mana: 10
+
 recall:
     icon: redstone
     category: master
@@ -3560,32 +3754,13 @@ respawn:
         target: none
     costs:
         mana: 20
+
 levitate:
+    alias: fly
     icon: gold_boots
     category: master
     class: LevitateSpell
     worth: 100
-    effects:
-        cast:
-        -  class: EffectSingle
-           sound: enderdragon_wings
-        -  class: EffectRing
-           particle: spell
-           particle_count: 10
-        land:
-        -  class: EffectRing
-           effect: step_sound
-           period: 2
-    parameters:
-    costs:
-        mana: 45
-    active_costs:
-        mana: 20
-fly:
-    icon: diamond_boots
-    category: master
-    class: LevitateSpell
-    worth: 600
     effects:
         cast:
         -  class: EffectSingle
@@ -3602,20 +3777,11 @@ fly:
            effect: step_sound
            period: 2
     parameters:
-        speed: 2
-        thrust: 0.8
-        boost: 1
-        boost_ticks: 10
-        auto_deactivate: 3
-        auto_deactivate_ticks: 10
-        slow: 0.2
-        start_delay: 10
-        crash_distance: 0.5
-        effect_confusion: 120,2
     costs:
-        mana: 100
+        mana: 45
     active_costs:
-        mana: 50
+        mana: 20
+
 force:
     icon: leash
     category: airbending
@@ -3636,9 +3802,10 @@ force:
         entity_force: 3
     costs:
         mana: 10
+
 fireball:
     icon: ghast_tear
-    category: firebending
+    category: combat
     class: ProjectileSpell
     pvp_restricted: true
     worth: 35
@@ -3649,8 +3816,10 @@ fireball:
     parameters:
         projectile: SmallFireball
         size: 2
+        undo: 4000
     costs:
         mana: 15
+
 map:
     icon: map
     worth: 45
@@ -3660,6 +3829,7 @@ map:
         cooldown: 5000
     costs:
         mana: 15
+
 camera:
     icon: double_plant
     category: light
@@ -3679,6 +3849,7 @@ camera:
         range: 32
     costs:
         mana: 5
+
 tent:
     icon: sapling:4
     category: master
@@ -3698,11 +3869,13 @@ tent:
         range: 16
         radius: 8
         type: sphere
-        cooldown: 3600000
+        cooldown: 120000
+        undo: 60000
         brush: schematic|tent
         transparent: transparent_to_construction
     costs:
         mana: 150
+
 cage:
     icon: iron_fence
     category: master
@@ -3908,7 +4081,7 @@ blind:
 
 pollinate:
     icon: yellow_flower
-    category: earthbending
+    category: light
     class: FlowerSpell
     worth: 50
     flowers:
@@ -3945,7 +4118,7 @@ pollinate:
 
 broom:
     hidden: true
-    icon: blaze_rod
+    icon: gold_spade
     category: specialty
     class: LevitateSpell
     pvp_restricted: false
@@ -4040,3 +4213,5 @@ paste:
         target: block
         type: cuboid
         transparent: transparent_to_construction
+    casts:
+        mana: 300
