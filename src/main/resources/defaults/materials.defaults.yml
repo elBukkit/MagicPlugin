@@ -192,6 +192,7 @@ destructible_mining:
 - red_mushroom
 - leaves
 - sandstone
+- stained_clay
 
 # Materials that must attach to another material when cloning or replicating
 # These are done in a second pass so they attach properly after whatever they've
@@ -648,3 +649,25 @@ passthrough:
 - carpet
 - sign_post
 - wall_sign
+
+wearable:
+- gold_helmet
+- chainmail_helmet
+- iron_helmet
+- leather_helmet
+- diamond_helmet
+- gold_chestplate
+- chainmail_chestplate
+- iron_chestplate
+- leather_chestplate
+- diamond_chestplate
+- gold_boots
+- chainmail_boots
+- iron_boots
+- leather_boots
+- diamond_boots
+- gold_leggings
+- chainmail_leggings
+- iron_leggings
+- leather_leggings
+- diamond_leggings

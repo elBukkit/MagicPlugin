@@ -1657,6 +1657,9 @@ public class MagicController implements Listener, MageController {
         if (materialSets.containsKey("interactible")) {
             interactibleMaterials = materialSets.get("interactible");
         }
+        if (materialSets.containsKey("wearable")) {
+            wearableMaterials = materialSets.get("wearable");
+        }
 	}
 	
 	protected void loadProperties(ConfigurationSection properties)
@@ -2973,6 +2976,15 @@ public class MagicController implements Listener, MageController {
                 return;
             }
 
+            // Can't wear spells
+            Material itemType = clickedItem.getType();
+            boolean isWearable = wearableMaterials.contains(itemType);
+            if (event.getAction() == InventoryAction.MOVE_TO_OTHER_INVENTORY && isWearable)
+            {
+                event.setCancelled(true);
+                return;
+            }
+
             // Safety check for something that ought not to be possible
             // but perhaps happens with lag?
             if (Wand.isWand(event.getCursor()))
@@ -4109,6 +4121,7 @@ public class MagicController implements Listener, MageController {
     private Set<Material>                       restrictedMaterials	 	        = new HashSet<Material>();
     private Set<Material>                       destructibleMaterials           = new HashSet<Material>();
     private Set<Material>                       interactibleMaterials           = new HashSet<Material>();
+    private Set<Material>                       wearableMaterials               = new HashSet<Material>();
     private Map<String, Set<Material>>		    materialSets				    = new HashMap<String, Set<Material>>();
 
     private int								    undoTimeWindow				    = 6000;
