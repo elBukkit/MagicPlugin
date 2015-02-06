@@ -2126,11 +2126,11 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
                     if (currentSpell != null) {
                         String levelDescription = spell.getLevelDescription();
                         if (levelDescription == null || levelDescription.isEmpty()) {
-                            levelDescription = spell.getName();
+                            levelDescription = spellName;
                         }
                         mage.sendMessage(messages.get("wand.spell_upgraded").replace("$name", currentSpell.getName()).replace("$level", levelDescription));
                     } else {
-                        mage.sendMessage(messages.get("wand.spell_added").replace("$name", spell.getName()));
+                        mage.sendMessage(messages.get("wand.spell_added").replace("$name", spellName));
                     }
                 }
 			}
@@ -3174,7 +3174,6 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
             {
                 mage.sendMessage(controller.getMessages().get("wand.inventory_instructions", ""));
             }
-            else
             if (inventoryCount == 1 && inventories.size() > 1)
             {
                 mage.sendMessage(controller.getMessages().get("wand.page_instructions", ""));
@@ -3220,6 +3219,9 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		ItemStack itemStack = createBrushIcon(materialKey);
 		if (itemStack == null) return false;
 
+        int inventoryCount = inventories.size();
+        int brushCount = brushes.size();
+
         brushes.put(materialKey, null);
 		addToInventory(itemStack);
 		if (activeMaterial == null || activeMaterial.length() == 0) {
@@ -3231,7 +3233,20 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         saveState();
 		updateLore();
 
-		return true;
+        if (mage != null)
+        {
+            if (brushCount == 0)
+            {
+                mage.sendMessage(controller.getMessages().get("wand.brush_instructions", ""));
+            }
+            if (inventoryCount == 1 && inventories.size() > 1)
+            {
+                mage.sendMessage(controller.getMessages().get("wand.page_instructions", ""));
+            }
+        }
+
+
+        return true;
 	}
 	
 	@Override
