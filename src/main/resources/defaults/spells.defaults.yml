@@ -142,6 +142,7 @@ default:
 
 curse:
     icon: rotten_flesh
+    alias: silence
     category: dark
     pvp_restricted: true
     worth: 10
@@ -200,7 +201,7 @@ curse:
     costs:
         mana: 50
     parameters:
-        range: 32
+        range: 16
         deactivate_target_mage: true
         target_type: LivingEntity
         target_breakables: 1
@@ -209,6 +210,13 @@ curse:
         cooldown: 10000
         hitbox: true
         effect_confusion: 1
+
+curse|2:
+    parameters:
+        range: 32
+        duration: 6000
+        effect_confusion: 5
+        effect_slow: 1
 
 blessing:
     icon: double_plant:5
@@ -293,10 +301,8 @@ boon|2:
         effect_speed: 5
         effect_jump: 5
         effect_night_vision: 5
-        effect_damage_resistance: 1
         effect_fire_resistance: 1
         effect_saturation: 5
-        effect_regeneration: 1
 
 bounce:
     icon: red_rose:8
@@ -969,14 +975,16 @@ tag:
         -  class: EffectSingle
            sound: fizz
         -  class: EffectTrail
-           particle: note
+           particle: redstone
         -  class: EffectSingle
            location: target
            target_offset: 0,3,0
+           color_override: color
            effectlib:
              class: TextEffect
              text: $target
              iterations: 2
+             particle: redstone
     parameters:
         target_type: Player
         allow_max_range: false
@@ -1122,52 +1130,47 @@ pull:
         mana: 50
 
 boom:
-    icon: melon_seeds
-    category: firebending
+    alias: kaboom
+    icon: fireball
+    category: combat
     class: BoomSpell
     pvp_restricted: true
     worth: 30
     effects:
         cast:
         -  class: EffectSingle
-           sound: explode
-        -  class: EffectTrail
+           sound: enderdragon_hit
+           location: target
+        -  class: EffectSingle
+           location: target
            firework: burst
-           color: 'FF0000'
+           color: 'CC0000'
            color2: 'FF0088'
+        -  class: EffectSingle
+           target_offset: 0,0.5,0
+           location: target
+           color: FFFFFF
+           firework: ball_large
+           particle: explosion_large
     parameters:
-        target_type: LivingEntity
-        allow_max_range: true
+        target: block
+        allow_max_range: false
         range: 32
         break_blocks: false
         size: 2
         cooldown: 2000
         undo: 3000
     costs:
-        mana: 20
+        mana: 50
 
-kaboom:
-    icon: fireball
-    category: dark
-    class: BoomSpell
-    pvp_restricted: true
-    worth: 60
-    effects:
-        cast:
-        -  class: EffectSingle
-           sound: explode
-           location: target
-           effectlib:
-             class: HelixEffect
+boom|2:
     parameters:
-        target_type: LivingEntity
-        allow_max_range: true
         cooldown: 7000
         size: 4
         break_blocks: true
         undo: 5000
     costs:
-        mana: 60
+        mana: 75
 
 nuke:
     icon: skull_item:4
@@ -1193,11 +1196,11 @@ nuke:
            location: target
            size: 4
     parameters:
-        target_type: LivingEntity
+        target: block
         allow_max_range: true
         range: 64
         cooldown: 60000
-        size: 8
+        size: 6
         undo: 50000
         break_blocks: true
     costs:
@@ -1205,31 +1208,108 @@ nuke:
 
 frost:
     icon: snow_ball
-    category: waterbending
-    class: FrostSpell
+    category: combat
     pvp_restricted: true
+    worth: 80
+    actions:
+        cast:
+        - class: AreaOfEffectAction
+          actions:
+          - class: PotionEffectAction
+          - class: DamageAction
+        - class: CoverAction
+          actions:
+          - class: FreezeAction
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: burp
+           effectlib:
+             class: ConeEffect
+             iterations: 15
+             particle: snowball
+             particles: 5
+             lengthGrow: 0.4
+        -  class: EffectSingle
+           location: target
+           color: F5EFFB
+           firework: ball
+        - class: EffectSingle
+          location: target
+          target_offset: 0,2,0
+          effectlib:
+             class: SphereEffect
+             iterations: 10
+             period: 4
+             particle: snowball
+             radius: 5
+    parameters:
+        target_type: LivingEntity
+        allow_max_range: false
+        range: 48
+        hitbox: true
+        radius: 1
+        vertical_search_distance: 8
+        transparent: transparent_to_construction
+        damage: 1
+        duration: 1000
+        effect_slow: 1
+        ice: ice
+        undo: 4000
+        cooldown: 5000
+        entity_undo: false
+        bypass_build: true
+        freeze_lava: false
+    costs:
+        mana: 75
+
+frost|2:
     worth: 80
     effects:
         cast:
         -  class: EffectSingle
-           sound: glass
-        -  class: EffectSingle
+           sound: burp
            effectlib:
              class: ConeEffect
-             iterations: 20
+             iterations: 15
              particle: snowball
+             particles: 5
+             lengthGrow: 0.4
+        -  class: EffectSingle
+           location: target
+           color: F5EFFB
+           firework: ball
+        - class: EffectSingle
+          location: target
+          target_offset: 0,2,0
+          effectlib:
+             class: SphereEffect
+             iterations: 15
+             period: 3
+             particle: snowball
+             radius: 8
     parameters:
-        target_type: LivingEntity
-        allow_max_range: false
-        range: 24
         radius: 2
-        vertical_search_distance: 8
-        transparent: transparent_to_construction
-        ice: ice
-        undo: 20000
-        cooldown: 2000
+        player_damage: 2
+        entity_damage: 6
+        duration: 2000
+        effect_slow: 1
+        undo: 5000
     costs:
-        mana: 75
+        mana: 90
+
+frost|3:
+    worth: 120
+    parameters:
+        radius: 3
+        player_damage: 2.5
+        entity_damage: 8
+        duration: 3000
+        effect_slow: 1
+        undo: 6000
+        freeze_lava: true
+    costs:
+        mana: 125
 
 lightning:
     icon: raw_fish:2
@@ -1306,95 +1386,161 @@ disarm:
     category: light
     class: DisarmSpell
     pvp_restricted: true
+    cast_on_no_target: true
     worth: 110
     effects:
         cast:
         -  class: EffectSingle
-           sound: cat_hiss
+           sound: shoot_arrow
         -  class: EffectSingle
+           sound: wither_shoot
            effectlib:
              class: ConeEffect
-             iterations: 20
-             particle: spell_mob
+             iterations: 16
+             particle: redstone
+             color: FF0000
+             lengthGrow: 0.4
+        -  class: EffectSingle
+           location: target
+           color: DF0101
+           firework: star
+        no_target:
+        -  class: EffectSingle
+           sound: shoot_arrow
+        -  class: EffectSingle
+           sound: wither_shoot
+           effectlib:
+             class: ConeEffect
+             iterations: 16
+             particle: redstone
+             color: FF0000
+             lengthGrow: 0.4
+        -  class: EffectSingle
+           location: target
+           color: DF0101
+           firework: burst
         backfire:
         -  class: EffectSingle
            sound: hurt_flesh
         -  class: EffectRing
-           particle: redstone
-           location: origin
+           particle: spell_mob
+           color: FF0000
+           location: self
         fizzle:
         -  class: EffectSingle
            sound: explode
         -  class: EffectRing
            particle: redstone
-           location: origin
+           color: FF0000
+           location: self
     parameters:
+        min_slot: 0
+        max_slot: 8
         target_type: LivingEntity
         allow_max_range: false
-        range: 16
-        fizzle_chance: 0.2
-        backfire_chance: 0.05
+        range: 30
+        hitbox: true
+        fizzle_chance: 0.6
+        backfire_chance: 0.3
         keep_in_inventory: true
+        target_breakables: 0
+        cooldown: 10000
     costs:
-        mana: 75
+        mana: 60
+
+disarm|2:
+    parameters:
+        fizzle_chance: 0.3
+        backfire_chance: 0.1
+        cooldown: 8000
+        target_breakables: 1
+
+disarm|3:
+    parameters:
+        fizzle_chance: 0
+        backfire_chance: 0
+        cooldown: 6000
+        target_breakables: 2
 
 cure:
     icon: cookie
     category: light
-    class: PotionEffectSpell
-    worth: 30
+    worth: 20
+    actions:
+        cast:
+        -  class: PotionEffectAction
+    effects:
+        cast:
+        - class: EffectSingle
+          sound: fuse
+          location: target
+          particle_override: particleOrbital
+          effectlib:
+             class: AtomEffect
+             particleNucleus: water_wake
+             particleOrbital: crit_magic
+             iterations: 16
+    parameters:
+        target_type: LivingEntity
+        target: any
+        allow_max_range: false
+        range: 15
+        bypass_confusion: true
+        duration: 1000
+        effect_saturation: 4
+        remove_effects:
+        - confusion
+        - weakness
+        - poison
+        - slow
+        - damage_resistance
+        - jump
+    costs:
+        mana: 30
+
+heal:
+    icon: bread
+    category: light
+    actions:
+        cast:
+        -  class: PotionEffectAction
+        -  class: HealAction
     effects:
         cast:
         -  class: EffectSingle
-           sound: cat_purr
-        -  class: EffectSingle
+           sound: level_up
            effectlib:
              class: ConeEffect
-             iterations: 20
+             iterations: 5
+             lengthGrow: .14
              particle: heart
         -  class: EffectSingle
+           location: target
            effectlib:
              class: LoveEffect
-             iterations: 20
-           location: target
+             iterations: 5
+             period: 2
     parameters:
         target_type: LivingEntity
         target: any
         allow_max_range: false
         range: 16
-        feed: false
-        cure: true
-        heal_percentage: 0.1
+        duration: 1000
+        effect_saturation: 4
+        amount: 2
+        cooldown: 8000
     costs:
-        mana: 20
+        mana: 50
 
-heal:
-    icon: bread
-    category: light
-    class: PotionEffectSpell
-    worth: 200
-    effects:
-        cast:
-        -  class: EffectSingle
-           sound: cat_purr
-           effectlib:
-             class: ConeEffect
-             iterations: 20
-             particle: heart
-        -  class: EffectSingle
-           location: target
-           effectlib:
-             class: LoveEffect
-             iterations: 30
+heal|2:
     parameters:
-        target_type: LivingEntity
-        target: any
-        allow_max_range: false
-        range: 32
-        feed: true
-        heal: 10
-    costs:
-        mana: 100
+        heal: 4
+        cooldown: 9000
+
+heal|3:
+    parameters:
+        heal: 6
+        cooldown: 10000
 
 music:
     icon: gold_record
@@ -1574,128 +1720,159 @@ meteor:
         mana: 80
 
 arrow:
+    alias: sniper
     icon: arrow
     category: combat
-    class: ProjectileSpell
     pvp_restricted: true
     worth: 2
-    effects:
+    actions:
         cast:
-        -  class: EffectSingle
-           sound: shoot_arrow
-           location: origin
-    parameters:
-      projectile: Arrow
-      speed: 2
-      spread: 6
-      fire: false
-    costs:
-        mana: 25
-
-sniper:
-    icon: gold_nugget
-    category: combat
-    class: ProjectileSpell
-    pvp_restricted: true
-    worth: 70
+        - class: ProjectileAction
     effects:
         cast:
         -  class: EffectSingle
            sound: explode
            sound_pitch: 0.2
-           sound_volume: 0.4
+           sound_volume: 1
+           location: origin
         -  class: EffectSingle
+           location: origin
            effectlib:
-             class: LineEffect
+             class: ConeEffect
+             iterations: 8
+             lengthGrow: 1
+             particle: smoke_normal
+        hit:
+        -  class: EffectSingle
+           location: origin
+           color: CC9933
+           firework: ball
+           effect: explosion_large
+        projectile:
+        -  class: EffectSingle
+           location: origin
+           effectlib:
+             class: SmokeEffect
+             iterations: 8
              particle: smoke_normal
     parameters:
       projectile: Arrow
+      damage: .75
+      speed: 2
+      spread: 6
       fire: false
-      speed: 6
-      spread: 0
-      damage: 2
+      tick_increase: 1180
+      entity_undo: false
+      cooldown: 2000
+      undo: 5000
+      range: 50
     costs:
         mana: 50
+
+arrow|2:
+    parameters:
+      damage: .75
+      speed: 3
+      spread: 2
+      cooldown: 2500
+    costs:
+        mana: 60
+
+arrow|3:
+    parameters:
+      damage: .85
+      speed: 4
+      spread: 1
+      cooldown: 3000
+    costs:
+        mana: 70
+
+arrow|4:
+    parameters:
+      damage: 1
+      speed: 5
+      spread: 0
+      cooldown: 3500
+    costs:
+        mana: 80
 
 weather:
     icon: water_bucket
     category: elemental
-    class: WeatherSpell
     worth: 80
+    actions:
+        cast:
+        -  class: WeatherAction
     effects:
         cast:
         -  class: EffectSingle
            sound: ambience_rain
            effectlib:
+             offset: 0,4,0
              class: HelixEffect
-             iterations: 24
+             iterations: 1
              particle: drip_water
-        area:
+        alternate:
         -  class: EffectSingle
            sound: ambience_thunder
            effectlib:
+             offset: 0,4,0
              class: HelixEffect
-             iterations: 24
+             iterations: 1
              particle: drip_water
     parameters:
         cooldown: 30000
+        weather: cycle
     costs:
-        mana: 80
+        mana: 150
 
 fling:
+    alias: leap
     icon: feather
     category: utility
-    class: FlingSpell
-    worth: 20
+    worth: 80
+    pvp_restricted: false
+    actions:
+        cast:
+        - class: VelocityAction
     effects:
         cast:
         -  class: EffectSingle
            sound: enderdragon_wings
-           sound_volume: 1.1
-        -  class: EffectSingle
+           sound_volume: 1
            effectlib:
              class: TraceEffect
              iterations: 30
              particle: spell
         land:
         -  class: EffectRing
-           effect: step_sound
+           particle: spell
            period: 2
     parameters:
+        target: self
+        min_speed: 1.0
+        max_speed: 1.5
     costs:
-        mana: 45
+        mana: 60
 
-leap:
-    icon: leather_boots
-    category: utility
-    class: FlingSpell
-    worth: 10
-    effects:
+fling|2:
+    actions:
         cast:
-        -  class: EffectSingle
-           sound: fall_small
-        -  class: EffectSingle
-           effectlib:
-             class: TraceEffect
-             iterations: 20
-             particle: spell
-        land:
-        -  class: EffectRing
-           effect: step_sound
-           period: 2
+        - class: VelocityAction
+        - class: FallProtectionAction
     parameters:
-        cooldown: 5000
-        cruising_altitude: 0
-        min_speed: 3
-        max_speed: 3
-    costs:
-        mana: 5
+        duration: 20000
+        min_speed: 2
+        max_speed: 5
 
 torch:
     icon: torch
     category: engineering
-    class: TorchSpell
     worth: 80
+    hidden: true
+    actions:
+        cast:
+        -  class: TorchAction
     effects:
         cast:
         -  class: EffectSingle
@@ -1705,12 +1882,8 @@ torch:
            material: glowstone
     parameters:
         allow_max_range: false
-        allow_night: false
         range: 32
-        allow_day: false
         allow_glowstone: true
-        undo: 120000
-        cooldown: 500
     costs:
         mana: 50
 
@@ -1977,24 +2150,35 @@ phase:
 invincible:
     icon: golden_apple
     category: master
-    class: InvincibleSpell
-    worth: 150
+    worth: 10
+    actions:
+        cast:
+        -  class: PotionEffectAction
     effects:
         cast:
         -  class: EffectSingle
-           sound: enderdragon_growl
-           location: both
-        -  class: EffectRing
-           particle: town_aura
-           target: source
+           sound: fizz
+           location: target
+           effectlib:
+             class: SphereEffect
+             iterations: 70
+             period: .1
+             particle: redstone
+             color: 0A2A0A
+             radius: 2
+             particles: 20
     parameters:
+        target: self
         duration: 5000
+        cooldown: 15000
+        transparent: transparent_to_construction
+        effect_damage_resistance: 300
+        effect_slow: 1
     costs:
-        mana: 100
-    active_costs:
-        mana: 50
+        mana: 90
 
 fire:
+    alias: inferno
     icon: flint_and_steel
     category: demolition
     pvp_restricted: true
@@ -2035,29 +2219,23 @@ fire:
     costs:
         mana: 35
 
-inferno:
-    icon: blaze_powder
-    category: demolition
-    class: FireSpell
-    pvp_restricted: true
-    worth: 60
-    effects:
-        cast:
-        -  class: EffectSingle
-           sound: fire
-           location: both
-        -  class: EffectTrail
-           particle: flame
-           particle_count: 4
+fire|2:
     parameters:
-        target_type: LivingEntity
-        allow_max_range: false
-        range: 64
-        radius: 4
-        vertical_search_distance: 8
-        undo: 30000
+        radius: 1
+        cooldown: 3000
+        undo: 1600
+        target_breakables: 1
     costs:
-        mana: 80
+        mana: 75
+
+fire|3:
+    parameters:
+        radius: 2
+        cooldown: 5000
+        undo: 1700
+        target_breakables: 2
+    costs:
+        mana: 90
 
 cushion:
     icon: bed
@@ -2216,27 +2394,34 @@ recurse:
 gills:
     icon: cooked_fish
     category: light
-    class: PotionEffectSpell
-    worth: 20
+    worth: 30
+    pvp_restricted: false
+    actions:
+        cast:
+        -  class: PotionEffectAction
+        -  class: HatAction
     effects:
         cast:
         -  class: EffectSingle
-           sound: swim
-        -  class: EffectTrail
-           particle: water_bubble
-        -  class: EffectRing
-           particle: water_bubble
-           location: target
-           particle_count: 4
-    costs:
-        mana: 5
+           sound: water
+           location: origin
+           effectlib:
+             class: SphereEffect
+             iterations: 10
+             period: 4
+             particle: drip_water
+             radius: 0.5
     parameters:
-        range: 32
         target_type: LivingEntity
-        target: any
-        particle: water_bubble
-        effect_water_breathing: 6000,5
-        effect_night_vision: 6000,5
+        target: self
+        cooldown: 20000
+        duration: 20000
+        undo: 20000
+        effect_water_breathing: 1
+        effect_night_vision: 1
+        brush: stained_glass
+    costs:
+        mana: 15
 
 day:
     icon: emerald
@@ -2279,29 +2464,27 @@ day:
         mana: 50
 
 night:
-    icon: coal
-    category: master
-    class: TorchSpell
+    icon: ink_sack:0
+    category: staff
+    hidden: true
     worth: 130
+    actions:
+        cast:
+        -  class: TimeAction
     effects:
         cast:
         -  class: EffectSingle
-           sound: ambience_cave
-           location: origin
+           sound: fuse
            effectlib:
              class: HelixEffect
-             iterations: 24
-             particle: smoke_large_normal
+             iterations: 2
+             particle: smoke_large
     parameters:
-        allow_max_range: false
-        allow_night: false
-        allow_day: true
-        allow_glowstone: false
-        cooldown: 60000
+        cooldown: 5000
         time: night
         cycle_moon_phase: true
     costs:
-        mana: 40
+        mana: 150
 
 time:
     icon: watch
@@ -2342,7 +2525,7 @@ bridge:
         mana: 5
 
 pillar:
-    icon: gold_axe
+    icon: iron_axe
     category: engineering
     class: PillarSpell
     worth: 30
@@ -2715,8 +2898,6 @@ stash:
     parameters:
         target_type: Player
         target: self
-    costs:
-        mana: 50
 
 pickpocket:
     icon: shears
@@ -2792,17 +2973,41 @@ blast:
     costs:
         mana: 45
 
+blast|2:
+    parameters:
+        radius: 2
+        speed: 1.2
+        destructible: destructible
+
 earthquake:
-    icon: iron_spade
+    icon: sulphur
     category: combat
     class: ConstructSpell
     worth: 200
     effects:
         cast:
         -  class: EffectSingle
-           sound: explode
-        -  class: EffectTrail
-           particle: explosion_large
+           sound: ghast_fireball
+           sound_volume: 1
+           location: origin
+           effectlib:
+             class: ConeEffect
+             iterations: 10
+             particle: spell_witch
+             lengthGrow: 0.4
+        -  class: EffectSingle
+           target_offset: 0,0.5,0
+           location: target
+           color: FFFF00
+           firework: burst
+        -  class: EffectSingle
+           location: target
+           target_offset: 0,0.5,0
+           effectlib:
+             class: HelixEffect
+             iterations: 1
+             radius: 4
+             particle: flame
     parameters:
         allow_max_range: false
         range: 16
@@ -2861,7 +3066,7 @@ superblast:
         mana: 100
 
 convert:
-    icon: gold_spade
+    icon: iron_spade
     category: engineering
     class: ConstructSpell
     worth: 30
@@ -2914,20 +3119,37 @@ collapse:
     effects:
         cast:
         -  class: EffectSingle
-           sound: explode
-        -  class: EffectTrail
-           particle: explosion_large
+           sound: ghast_fireball
+           sound_volume: 1
+           location: origin
+           effectlib:
+             class: ConeEffect
+             iterations: 10
+             particle: spell_witch
+             lengthGrow: 0.4
+        -  class: EffectSingle
+           target_offset: 0,0.5,0
+           location: target
+           color: FFFF00
+           firework: burst
+        -  class: EffectSingle
+           location: target
+           target_offset: 0,0.5,0
+           effectlib:
+             class: HelixEffect
+             iterations: 1
+             radius: 4
+             particle: flame
     parameters:
         allow_max_range: false
         range: 16
         brush: air
         falling: true
-        check_destructible: false
-        indestructible: air
         radius: 2
         transparent: transparent_to_construction
         undo: 10000
         cooldown: 2000
+        select_self: false
     costs:
         mana: 50
 
@@ -2960,23 +3182,24 @@ supercollapse:
 cloak:
     icon: chainmail_chestplate
     category: utility
-    class: PotionEffectSpell
-    worth: 20
+    actions:
+        cast:
+        -  class: PotionEffectAction
     effects:
         cast:
         -  class: EffectSingle
-           sound: villager_idle
+           sound: portal_trigger
         -  class: EffectTrail
            particle: smoke_normal
         -  class: EffectRing
            particle: smoke_normal
            location: target
     costs:
-        mana: 10
+        mana: 50
     parameters:
         target: any
         particle: redstone
-        duration: 10000
+        duration: 8000
         effect_invisibility: 5
 
 undo:
@@ -3643,48 +3866,91 @@ shrink:
     category: combat
     class: ShrinkSpell
     pvp_restricted: true
+    cast_on_no_target: true
     worth: 40
     effects:
         cast:
         -  class: EffectSingle
-           sound: magmacube_jump
+           sound: shoot_arrow
+           location: origin
            effectlib:
              class: ConeEffect
-             iterations: 20
-             particle: villager_angry
+             iterations: 11
+             particle: spell_instant
+             lengthGrow: 0.4
+        -  class: EffectSingle
+           location: target
+           color: "81F7D8"
+           firework: star
+        no_target:
+        -  class: EffectSingle
+           sound: shoot_arrow
+           location: origin
+           effectlib:
+             class: ConeEffect
+             iterations: 11
+             particle: spell_instant
+             lengthGrow: 0.4
+        -  class: EffectSingle
+           location: target
+           color: "FFFFFF"
+           firework: burst
     parameters:
         hitbox: true
         target_type: LivingEntity
         target: other_entity
         allow_max_range: false
         range: 16
-        player_damage: 2.5
-        entity_damage: 10
-        target_breakables: 3
+        player_damage: 1
+        entity_damage: 4
+        target_breakables: 1
         cooldown: 4000
     costs:
-        mana: 20
+        mana: 130
 
 grow:
     icon: skull_item:1
     category: combat
     class: GrowSpell
-    pvp_restricted: false
+    pvp_restricted: true
+    cast_on_no_target: true
     worth: 40
     effects:
         cast:
         -  class: EffectSingle
-           sound: magmacube_jump
+           sound: shoot_arrow
+           location: origin
            effectlib:
              class: ConeEffect
-             iterations: 20
-             particle: villager_happy
+             iterations: 11
+             particle: spell_instant
+             lengthGrow: 0.32
+        -  class: EffectSingle
+           location: target
+           color: "81F7D8"
+           firework: ball_large
+        no_target:
+        -  class: EffectSingle
+           sound: shoot_arrow
+           location: origin
+           effectlib:
+             class: ConeEffect
+             iterations: 11
+             particle: spell_instant
+             lengthGrow: 0.32
+        -  class: EffectSingle
+           location: target
+           color: "FFFFFF"
+           firework: ball
     parameters:
         target_type: LivingEntity
+        target: other_entity
         allow_max_range: false
         range: 16
+        target_breakables: 1
+        cooldown: 7000
     costs:
-        mana: 10
+        mana: 110
 
 flare:
     icon: firework
@@ -3706,6 +3972,7 @@ recall:
     icon: redstone
     category: master
     worth: 25
+    cast_on_no_target: false
     actions:
         cast:
         -  class: RecallAction
@@ -3721,7 +3988,7 @@ recall:
              class: WarpEffect
              particle: portal
     parameters:
-        allow_spawn: true
+        allow_spawn: false
         allow_marker: true
         allow_death: true
         allow_wand: true
@@ -3733,7 +4000,7 @@ recall:
         icon_home: bed
         icon_marker: redstone_torch_on
         loud: true
-        cooldown: 30000
+        cooldown: 2000
 
 respawn:
     icon: compass
@@ -3762,11 +4029,14 @@ levitate:
     worth: 100
     effects:
         cast:
-        -  class: EffectSingle
-           sound: enderdragon_wings
-           effectlib:
-             class: ShieldEffect
-             particle: spell
+           - class: EffectSingle
+             sound: enderdragon_wings
+             location: both
+             color_override: color
+             effectlib:
+                 class: SphereEffect
+                 particle: redstone
+                 radius: 2.5
         deactivate:
         -  class: EffectSingle
            sound: enderdragon_wings
@@ -3776,6 +4046,7 @@ levitate:
            effect: step_sound
            period: 2
     parameters:
+        speed: 2
     costs:
         mana: 45
     active_costs:
@@ -3783,37 +4054,70 @@ levitate:
 
 force:
     icon: leash
-    category: airbending
+    category: elemental
     class: ForceSpell
     pvp_restricted: true
     worth: 200
     effects:
         cast:
         -  class: EffectSingle
-           sound: fizz
-        -  class: EffectTrail
-           particle: spell
-           length: 16
+           sound: wither_spawn
+           location: origin
+           effectlib:
+             class: DnaEffect
+             particlesBase: 0
+             particlesHelix: 7
+             particleHelix: spell_mob
+             particleBase1: spell_mob
+             particleBase2: spell_mob
+             iterations: 10
+             lengthGrow: 20
     parameters:
         target_type: LivingEntity
+        target_breakables: 1
+        target: other_entity
         range: 32
         item_force: 1
         entity_force: 3
+        cooldown: 4000
+        bypass_backfire: true
     costs:
-        mana: 10
+        mana: 50
 
 fireball:
     icon: ghast_tear
     category: combat
-    class: ProjectileSpell
     pvp_restricted: true
     worth: 35
+    actions:
+        cast:
+        -  class: ProjectileAction
     effects:
         cast:
         -  class: EffectSingle
+           effectlib:
+             class: ConeEffect
+             iterations: 15
+             particle: lava
+             lengthGrow: 0.4
            sound: ghast_fireball
+           sound_volume: 1
+           sound_pitch: -.25
+        projectile:
+        -  class: EffectSingle
+           location: origin
+           effectlib:
+             class: SmokeEffect
+             iterations: 8
+             particle: lava
+        hit:
+        -  class: EffectSingle
+           location: target
+           color: FE642E
+           firework: ball
     parameters:
-        projectile: SmallFireball
+        projectile: LargeFireball
+        fire: false
         size: 2
         undo: 4000
     costs:
@@ -3965,7 +4269,6 @@ missile:
            sound_pitch: 0.1
            sound_volume: 0.5
            location: origin
-           particle_override: particle
            color_override: color
            effectlib:
              class: ConeEffect
@@ -3984,7 +4287,6 @@ missile:
            sound_pitch: 0.1
            sound_volume: 0.3
            location: origin
-           particle_override: particle
            color_override: color
            effectlib:
              class: ConeEffect
@@ -4004,7 +4306,6 @@ missile:
            sound_volume: 0.7
            location: origin
            entity_effect: hurt
-           particle_override: particle
            color_override: color
            effectlib:
              class: ConeEffect
@@ -4021,61 +4322,60 @@ missile:
     costs:
         mana: 15
 
-silence:
-    icon: ink_sack
-    category: combat
-    class: PotionEffectSpell
-    worth: 70
-    effects:
-        cast:
-        -  class: EffectSingle
-           sound: cat_purr
-        -  class: EffectSingle
-           location: target
-           effectlib:
-             class: ShieldEffect
-             particle: villager_angry
-             iterations: 200
-             particles: 1
-    parameters:
-        target_type: LivingEntity
-        target: other
-        deactivate_target_mage: true
-        allow_max_range: false
-        range: 16
-        duration: 10000
-        effect_confusion: 100
-        cooldown: 20000
-    costs:
-        mana: 40
-
 blind:
     icon: ender_pearl
     category: combat
-    class: PotionEffectSpell
     pvp_restricted: true
     cast_on_no_target: true
     worth: 10
+    actions:
+        cast:
+        -  class: PotionEffectAction
     effects:
         cast:
         -  class: EffectSingle
            sound: burp
            effectlib:
              class: ConeEffect
-             iterations: 20
-             particle: town_aura
+             iterations: 15
+             particle: smoke_normal
+             lengthGrow: 0.3
+        -  class: EffectSingle
+           location: target
+           color: 2E2E2E
+           firework: ball
         -  class: EffectSingle
            location: target
            effectlib:
-             class: SmokeEffect
+             class: SphereEffect
+             iterations: 17
+             period: 4
+             particle: smoke_normal
+             radius: 0.5
+             particles: 20
+        no_target:
+        -  class: EffectSingle
+           sound: burp
+           effectlib:
+             class: ConeEffect
+             iterations: 15
+             particle: smoke_normal
+             lengthGrow: 0.3
+        -  class: EffectSingle
+           location: target
+           color: 2E2E2E
+           firework: ball
     costs:
-        mana: 25
+        mana: 45
     parameters:
         range: 32
         target_type: LivingEntity
+        target_breakables: 0
         target: other
-        duration: 3000
+        duration: 2000
+        cooldown: 10000
         effect_blindness: 5
+        hitbox: true
 
 pollinate:
     icon: yellow_flower
@@ -4185,12 +4485,16 @@ broom:
         stash_item: true
         mount_type: Horse
         mount_variant: undead_horse
-        mount_boost_ticks: 600
-        mount_health: 12
-        mount_boost: 2
         mount_invisible: false
-        slow_ticks: 120
+        mount_boost_ticks: 80
+        mount_health: 8
+        mount_boost: 0.5
+        slow_ticks: 1
         steer_speed: 0.6
+        slow_steer_speed: 0.1
+        effect_sound: horse_zombie_idle
+        effect_sound_interval: 40
+        effect_sound_volume: 32
 
 paste:
     icon: iron_pickaxe
@@ -4213,3 +4517,209 @@ paste:
         transparent: transparent_to_construction
     casts:
         mana: 300
+
+kill:
+    icon: skull_item:1
+    category: dark
+    pvp_restricted: true
+    worth: 1000
+    actions:
+        cast:
+        -  class: ProjectileAction
+           actions:
+           -  class: KillAction
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: creeper_death
+           sound_volume: 5
+           sound_pitch: -.25
+        -  class: EffectSingle
+           sound: wither_spawn
+           sound_volume: 10
+           location: origin
+           effectlib:
+             class: ConeEffect
+             iterations: 16
+             particle: spell_mob
+             color: 00FF00
+             lengthGrow: 0.4
+        hit:
+        -  class: EffectSingle
+           location: origin
+           color: "00FF00"
+           firework: ball_large
+        - class: EffectSingle
+          location: origin
+          particle_override: particleOrbital
+          effectlib:
+             class: AtomEffect
+             colorNucleus: "00FF00"
+             particleNucleus: redstone
+             colorOrbital: "00FF00"
+             particleOrbital: redstone
+             iterations: 16
+        no_target:
+        -  class: EffectSingle
+           sound: creeper_death
+           sound_volume: 5
+           sound_pitch: -.25
+        -  class: EffectSingle
+           sound: wither_spawn
+           sound_volume: 5
+           location: origin
+           effectlib:
+             class: ConeEffect
+             iterations: 16
+             particle: spell_mob
+             color: 00FF00
+             lengthGrow: 0.4
+        -  class: EffectSingle
+           location: target
+           color: "00FF00"
+           firework: ball_large
+    parameters:
+        projectile: WitherSkull
+        cooldown: 30000
+        target_breakables: 5
+        bypass_backfire: true
+        spread: 0
+        speed: 1
+        size: 0
+    costs:
+        mana: 150
+
+torture:
+    icon: quartz
+    category: dark
+    pvp_restricted: true
+    cast_on_no_target: true
+    worth: 300
+    actions:
+        cast:
+        -  class: PotionEffectAction
+        -  class: DamageAction
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: creeper_death
+           sound_volume: .5
+        -  class: EffectSingle
+           sound: irongolem_death
+           sound_volume: 1
+           effectlib:
+             class: ConeEffect
+             iterations: 15
+             particle: spell_mob
+             lengthGrow: 0.3
+        -  class: EffectSingle
+           location: target
+           color: 19070B
+           firework: ball
+        -  class: EffectSingle
+           particle: town_aura
+           location: target
+           effectlib:
+             class: BleedEffect
+             duration: 500
+        no_target:
+        -  class: EffectSingle
+           sound: creeper_death
+           sound_volume: .5
+        -  class: EffectSingle
+           sound: irongolem_death
+           sound_volume: 1
+           effectlib:
+             class: ConeEffect
+             iterations: 15
+             particle: spell_mob
+             lengthGrow: 0.3
+        -  class: EffectSingle
+           location: target
+           color: 19070B
+           firework: ball
+    costs:
+        mana: 100
+    parameters:
+        range: 32
+        target_type: LivingEntity
+        target_breakables: 3
+        target: other
+        duration: 5500
+        damage: 8
+        effect_slow: 20
+        effect_wither: 10
+        effect_confusion: 5
+        cooldown: 13000
+        hitbox: true
+
+rubberize:
+    icon: slime_block
+    category: transfiguration
+    class: RecurseSpell
+    worth: 150
+    cast_on_no_target: true
+    effects:
+        cast:
+        -  class: EffectTrail
+           effect: step_sound
+        -  class: EffectSingle
+           sound: fuse
+    parameters:
+        allow_max_range: false
+        range: 16
+        size: 3
+        brush: slime_block
+        transparent: transparent_to_construction
+        undo: 4000
+        cooldown: 2000
+        bypass_build: true
+        bypass_backfire: true
+        select_self: false
+    costs:
+        mana: 50
+
+count:
+    icon: watch
+    category: staff
+    worth: 120
+    hidden: true
+    actions:
+        cast:
+        -  class: AreaOfEffectAction
+           actions:
+           -  class: CountAction
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: fuse
+           effectlib:
+             class: HelixEffect
+             iterations: 1
+             particle: flame
+    parameters:
+        target: block
+        range: 64
+        target_type: Entity
+        target_self: false
+        radius: 64
+        target_count: 100000
+    costs:
+        mana: 200
+
+superfly:
+    hidden: true
+    icon: feather
+    category: staff
+    class: LevitateSpell
+    worth: 10000
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: enderdragon_wings
+        deactivate:
+        -  class: EffectSingle
+           sound: enderdragon_wings
+           sound_pitch: 0.2
+    parameters:
+        speed: 1

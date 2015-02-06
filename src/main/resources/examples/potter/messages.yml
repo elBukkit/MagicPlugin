@@ -314,11 +314,6 @@ spells:
         description: The Freezing Charm
         extended_description: Freezes an area
         cast: Glacius $target!
-    superfly:
-        name: SuperFly
-        description: For videographers
-        cast: You feel lighter
-        cost_free: You feel heavier
     immobulus:
         name: Immobulus
         description: Immobilizes your target

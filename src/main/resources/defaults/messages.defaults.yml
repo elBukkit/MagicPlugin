@@ -286,11 +286,6 @@ spells:
         description: Makes you temporarily superpowered
         cast_self: You give yourself a boon
         cast: You give $target a boon
-    perk:
-        name: Perk
-        description: Give a little boost
-        cast_self: You give yourself a perk
-        cast: You give $target a perk
     blessing:
         name: Blessing
         description: Bless a large area of followers
@@ -353,10 +348,6 @@ spells:
         description: Pull things toward you
         alternate: Gimme!
         cast: Yoink!
-    kaboom:
-        name: KaBoom
-        description: Create a big explosion
-        cast: Kaboom!
     frost:
         name: Frost
         description: Freeze water and create snow
@@ -1051,10 +1042,6 @@ spells:
         name: Magic Missile
         description: Fire a bolt of pure magic
         cast: You fire a missile at $target
-    silence:
-        name: Silence
-        description: Silence your target
-        cast: You silence $target
     blind:
         name: Blind
         description: Blind your target
@@ -1068,6 +1055,26 @@ spells:
         description: Pastes a full schematic
         usage: For use with schematic brushes
         cast_finish: Pasted $count blocks
+    kill:
+        name: Kill
+        description: Throw a deadly projectile
+        cast: DIE!
+    torture:
+        name: Torture
+        description: Mercicelly torture your enemy
+        cast: Feel my wrath!
+    rubberize:
+        name: Rubberize
+        description: Make the target area bouncy
+        cast: Time to bounce!
+    count:
+        name: Entity Counter
+        description: An admin tool to check for nearby entities
+    superfly:
+        name: SuperFly
+        description: For videographers
+        cast: You feel lighter
+        cost_free: You feel heavier
 
 wands:
     default:

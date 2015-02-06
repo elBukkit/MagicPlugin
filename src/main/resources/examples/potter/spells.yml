@@ -300,80 +300,17 @@ araniaexumai:
         mana: 25
 
 arrow:
-    icon: arrow
+    enabled: true
     category: dada
-    pvp_restricted: true
-    worth: 2
-    actions:
-        cast:
-        - class: ProjectileAction
-    effects:
-        cast:
-        -  class: EffectSingle
-           sound: explode
-           sound_pitch: 0.2
-           sound_volume: 1
-           location: origin
-        -  class: EffectSingle
-           location: origin
-           effectlib:
-             class: ConeEffect
-             iterations: 8
-             lengthGrow: 1
-             particle: smoke_normal
-        hit:
-        -  class: EffectSingle
-           location: origin
-           color: CC9933
-           firework: ball
-           effect: explosion_large
-        projectile:
-        -  class: EffectSingle
-           location: origin
-           effectlib:
-             class: SmokeEffect
-             iterations: 8
-             particle: smoke_normal
-    parameters:
-      projectile: Arrow
-      damage: .75
-      speed: 2
-      spread: 6
-      fire: false
-      tick_increase: 1180
-      entity_undo: false
-      cooldown: 2000
-      undo: 5000
-      range: 50
-    costs:
-        mana: 50
 
 arrow|2:
-    parameters:
-      damage: .75
-      speed: 3
-      spread: 2
-      cooldown: 2500
-    costs:
-        mana: 60
+    enabled: true
 
 arrow|3:
-    parameters:
-      damage: .85
-      speed: 4
-      spread: 1
-      cooldown: 3000
-    costs:
-        mana: 70
+    enabled: true
 
 arrow|4:
-    parameters:
-      damage: .75
-      speed: 5
-      spread: 0
-      cooldown: 3500
-    costs:
-        mana: 80
+    enabled: true
 
 snowball:
     icon: snow_ball
@@ -424,32 +361,8 @@ snowball:
         mana: 80
 
 ascendio:
-    icon: ink_sack:8
+    inherit: fling
     category: charms
-    worth: 80
-    pvp_restricted: false
-    actions:
-        cast:
-        - class: VelocityAction
-    effects:
-        cast:
-        -  class: EffectSingle
-           sound: enderdragon_wings
-           sound_volume: 1
-           effectlib:
-             class: TraceEffect
-             iterations: 30
-             particle: spell
-        land:
-        -  class: EffectRing
-           particle: spell
-           period: 2
-    parameters:
-        target: self
-        min_speed: 1.0
-        max_speed: 1.5
-    costs:
-        mana: 60
 
 ascendio|2:
     parameters:
@@ -493,186 +406,15 @@ arresto:
         mana: 5
 
 atmos:
-    icon: watch
+    inherit: weather
     category: herbology
-    worth: 80
-    actions:
-        cast:
-        -  class: WeatherAction
-    effects:
-        cast:
-        -  class: EffectSingle
-           sound: ambience_rain
-           effectlib:
-             offset: 0,4,0
-             class: HelixEffect
-             iterations: 1
-             particle: drip_water
-        alternate:
-        -  class: EffectSingle
-           sound: ambience_thunder
-           effectlib:
-             offset: 0,4,0
-             class: HelixEffect
-             iterations: 1
-             particle: drip_water
-    parameters:
-        cooldown: 30000
-        weather: cycle
-    costs:
-        mana: 150
 
 broom:
-    hidden: true
-    icon: gold_spade
-    category: specialty
-    class: LevitateSpell
-    pvp_restricted: false
-    worth: 50
-    effects:
-        cast:
-        -  class: EffectSingle
-           sound: enderdragon_wings
-           sound_volume: .1
-        -  class: EffectSingle
-           effectlib:
-             class: TraceEffect
-             iterations: 30
-             particle: spell
-        crash:
-        -  class: EffectSingle
-           location: origin
-           entity_effect: hurt
-           particle: explosion_large
-        -  class: EffectSingle
-           location: origin
-           effectlib:
-             class: SmokeEffect
-             iterations: 12
-        alternate:
-        -  class: EffectSingle
-           sound: enderdragon_wings
-           sound_volume: .25
-           effectlib:
-             class: TraceEffect
-             iterations: 30
-             particle: spell
-        -  class: EffectSingle
-           particle: spell
-           effectlib:
-             class: ShieldEffect
-             iterations: 30
-             particle: spell
-        boost:
-        -  class: EffectSingle
-           sound: enderdragon_wings
-           sound_volume: .25
-           effectlib:
-             class: TraceEffect
-             iterations: 30
-             particle: spell
-        -  class: EffectSingle
-           particle: spell
-           effectlib:
-             class: ShieldEffect
-             iterations: 30
-             particle: spell
-        land:
-        -  class: EffectRing
-           effect: step_sound
-           period: 2
-    parameters:
-        thrust: 1
-        auto_deactivate: 4
-        auto_deactivate_ticks: 10
-        slow: 0.2
-        start_delay: 20
-        crash_distance: 0.9
-        effect_confusion: 120,2
-        bypass_deactivate: true
-        mount_invisible: false
-        stash_item: true
-        mount_type: Horse
-        mount_horse_variant: horse
-        mount_boost_ticks: 80
-        mount_health: 8
-        mount_boost: 0.5
-        slow_ticks: 1
-        steer_speed: 0.6
-        slow_steer_speed: 0.1
-        effect_sound: portal_travel
-        effect_sound_interval: 120
-        effect_sound_volume: 32
+    enabled: true
 
 avadakedavra:
-    icon: ink_sack:10
+    inherit: kill
     category: unforgiveable
-    pvp_restricted: true
-    cast_on_no_target: true
-    worth: 1000
-    actions:
-        cast:
-        -  class: ProjectileAction
-           actions:
-           -  class: KillAction
-    effects:
-        cast:
-        -  class: EffectSingle
-           sound: creeper_death
-           sound_volume: 5
-           sound_pitch: -.25
-        -  class: EffectSingle
-           sound: wither_spawn
-           sound_volume: 10
-           location: origin
-           effectlib:
-             class: ConeEffect
-             iterations: 16
-             particle: spell_mob
-             color: 00FF00
-             lengthGrow: 0.4
-        hit:
-        -  class: EffectSingle
-           location: origin
-           color: "00FF00"
-           firework: ball_large
-        - class: EffectSingle
-          location: origin
-          particle_override: particleOrbital
-          effectlib:
-             class: AtomEffect
-             particleNucleus: villager_happy
-             particleOrbital: villager_happy
-             iterations: 16
-        no_target:
-        -  class: EffectSingle
-           sound: creeper_death
-           sound_volume: 5
-           sound_pitch: -.25
-        -  class: EffectSingle
-           sound: wither_spawn
-           sound_volume: 5
-           location: origin
-           effectlib:
-             class: ConeEffect
-             iterations: 16
-             particle: spell_mob
-             color: 00FF00
-             lengthGrow: 0.4
-        -  class: EffectSingle
-           location: target
-           color: "00FF00"
-           firework: ball_large
-    parameters:
-        projectile: WitherSkull
-        cooldown: 30000
-        target_breakables: 5
-        bypass_backfire: true
-        spread: 0
-        speed: 1
-        size: 0
-    costs:
-        mana: 180
 
 avadamaxima:
     icon: ink_sack:10
@@ -950,118 +692,20 @@ bogies|3:
         effect_poison: 3
 
 bombarda:
-    icon: ink_sack:7
+    inherit: boom
     category: dada
-    pvp_restricted: true
-    cast_on_no_target: true
-    worth: 40
-    actions:
-        cast:
-        -  class: VelocityAction
-        -  class: DamageAction
-    effects:
-        cast:
-        -  class: EffectSingle
-           sound: enderdragon_hit
-           location: target
-        -  class: EffectSingle
-           location: target
-           firework: burst
-           color: 'CC0000'
-           color2: 'FF0088'
-        -  class: EffectSingle
-           target_offset: 0,0.5,0
-           location: target
-           color: FFFFFF
-           firework: ball_large
-           particle: explosion_large
-    parameters:
-        hitbox: true
-        target_type: Entity
-        allow_max_range: true
-        range: 40
-        target_breakables: 3
-        damage: 5
-        radius: 10
-        item_speed: 1
-        living_entity_speed: 1
-        cooldown: 12000
-        bypass_backfire: true
-        push: 1
-        origin_at_target: true
-    costs:
-        mana: 100
 
 bombarda|2:
-    worth: 100
-    effects:
-        cast:
-        -  class: EffectSingle
-           sound: explode
-        -  class: EffectTrail
-           firework: burst
-           color: 'CC0000'
-           color2: 'FF0088'
-        -  class: EffectSingle
-           target_offset: 0,0.5,0
-           location: target
-           color: FFFFFF
-           firework: burst
-           particle: explosion_large
     parameters:
         range: 32
-        damage: 7
+        size: 4
 
 bubble:
-    icon: ender_pearl
+    inherit: gills
     category: transfiguration
-    worth: 30
-    pvp_restricted: false
-    actions:
-        cast:
-        -  class: PotionEffectAction
-        -  class: HatAction
-    effects:
-        cast:
-        -  class: EffectSingle
-           sound: water
-           location: origin
-           effectlib:
-             class: SphereEffect
-             iterations: 10
-             period: 4
-             particle: drip_water
-             radius: 0.5
-    parameters:
-        target_type: LivingEntity
-        target: self
-        cooldown: 20000
-        duration: 20000
-        undo: 20000
-        effect_water_breathing: 1
-        brush: stained_glass
-    costs:
-        mana: 15
 
 camera:
-    icon: tripwire_hook
-    category: specialty
-    class: CameraSpell
-    worth: 8
-    effects:
-        cast:
-        -  class: EffectSingle
-           effect: smoke
-           sound: fuse
-           location: origin
-    parameters:
-        target_type: LivingEntity
-        target_npc: true
-        cooldown: 5000
-        allow_max_range: false
-        range: 32
-    costs:
-        mana: 5
+    enabled: true
 
 confringoold:
     icon: clay_ball
@@ -1143,67 +787,14 @@ confundusmaxima:
         hitbox: true
 
 conjunctivitis:
-    alias: blind
-    icon: ender_pearl
+    inherit: blind
     category: dada
-    pvp_restricted: true
-    cast_on_no_target: true
-    worth: 10
-    actions:
-        cast:
-        -  class: PotionEffectAction
-    effects:
-        cast:
-        -  class: EffectSingle
-           sound: burp
-           effectlib:
-             class: ConeEffect
-             iterations: 15
-             particle: smoke_normal
-             lengthGrow: 0.3
-        -  class: EffectSingle
-           location: target
-           color: 2E2E2E
-           firework: ball
-        -  class: EffectSingle
-           location: target
-           effectlib:
-             class: SphereEffect
-             iterations: 17
-             period: 4
-             particle: smoke_normal
-             radius: 0.5
-             particles: 20
-        no_target:
-        -  class: EffectSingle
-           sound: burp
-           effectlib:
-             class: ConeEffect
-             iterations: 15
-             particle: smoke_normal
-             lengthGrow: 0.3
-        -  class: EffectSingle
-           location: target
-           color: 2E2E2E
-           firework: ball
-    costs:
-        mana: 45
-    parameters:
-        range: 32
-        target_type: LivingEntity
-        target_breakables: 0
-        target: other
-        duration: 2000
-        cooldown: 10000
-        effect_blindness: 5
-        hitbox: true
 
 conjunctivitis|2:
     parameters:
         duration: 4000
 
 obscuro:
-    alias: blind
     icon: ender_pearl
     category: dada
     pvp_restricted: true
@@ -1248,68 +839,8 @@ obscuro:
         hitbox: true
 
 crucio:
-    icon: quartz
+    inherit: torture
     category: unforgiveable
-    pvp_restricted: true
-    cast_on_no_target: true
-    worth: 300
-    actions:
-        cast:
-        -  class: PotionEffectAction
-        -  class: DamageAction
-    effects:
-        cast:
-        -  class: EffectSingle
-           sound: creeper_death
-           sound_volume: .5
-        -  class: EffectSingle
-           sound: irongolem_death
-           sound_volume: 1
-           effectlib:
-             class: ConeEffect
-             iterations: 15
-             particle: spell_mob
-             lengthGrow: 0.3
-        -  class: EffectSingle
-           location: target
-           color: 19070B
-           firework: ball
-        -  class: EffectSingle
-           particle: town_aura
-           location: target
-           effectlib:
-             class: BleedEffect
-             duration: 500
-        no_target:
-        -  class: EffectSingle
-           sound: creeper_death
-           sound_volume: .5
-        -  class: EffectSingle
-           sound: irongolem_death
-           sound_volume: 1
-           effectlib:
-             class: ConeEffect
-             iterations: 15
-             particle: spell_mob
-             lengthGrow: 0.3
-        -  class: EffectSingle
-           location: target
-           color: 19070B
-           firework: ball
-    costs:
-        mana: 150
-    parameters:
-        range: 32
-        target_type: LivingEntity
-        target_breakables: 3
-        target: other
-        duration: 5500
-        damage: 8
-        effect_slow: 20
-        effect_wither: 10
-        effect_confusion: 5
-        cooldown: 13000
-        hitbox: true
 
 dementor:
     icon: quartz
@@ -1366,50 +897,8 @@ deletrius:
         mana: 100
 
 deprimo:
-    icon: flint
+    inherit: collapse
     category: transfiguration
-    class: ConstructSpell
-    cast_on_no_target: true
-    worth: 80
-    effects:
-        cast:
-        -  class: EffectSingle
-           sound: ghast_fireball
-           sound_volume: 1
-           location: origin
-           effectlib:
-             class: ConeEffect
-             iterations: 10
-             particle: spell_witch
-             lengthGrow: 0.4
-        -  class: EffectSingle
-           target_offset: 0,0.5,0
-           location: target
-           color: FFFF00
-           firework: burst
-        -  class: EffectSingle
-           location: target
-           target_offset: 0,0.5,0
-           effectlib:
-             class: HelixEffect
-             iterations: 1
-             radius: 4
-             particle: flame
-    parameters:
-        target_breakables: 3
-        allow_max_range: false
-        range: 32
-        brush: air
-        falling: true
-        check_destructible: true
-        destructible: destructible
-        radius: 2
-        bypass_build: true
-        transparent: transparent_to_construction
-        undo: 15000
-        select_self: false
-    costs:
-        mana: 80
 
 deprimo|2:
     parameters:
@@ -1512,28 +1001,8 @@ diffindo|3:
         radius: 4
 
 disillusion:
-    icon: coal:1
+    inherit: cloak
     category: charms
-    worth: 20
-    actions:
-        cast:
-        -  class: PotionEffectAction
-    effects:
-        cast:
-        -  class: EffectSingle
-           sound: portal_trigger
-        -  class: EffectTrail
-           particle: smoke_normal
-        -  class: EffectRing
-           particle: smoke_normal
-           location: target
-    costs:
-        mana: 50
-    parameters:
-        target: any
-        particle: redstone
-        duration: 8000
-        effect_invisibility: 5
 
 duro:
     icon: flint
@@ -1574,32 +1043,8 @@ duro|3:
         undo: 8000
 
 spongify:
-    icon: slime_block
+    inherit: rubberize
     category: transfiguration
-    class: RecurseSpell
-    worth: 150
-    cast_on_no_target: true
-    effects:
-        cast:
-        -  class: EffectTrail
-           effect: step_sound
-        -  class: EffectSingle
-           sound: fuse
-    parameters:
-        allow_max_range: false
-        range: 16
-        size: 3
-        check_destructible: true
-        destructible: destructible
-        brush: slime_block
-        transparent: transparent_to_construction
-        undo: 4000
-        cooldown: 2000
-        bypass_build: true
-        bypass_backfire: true
-        select_self: false
-    costs:
-        mana: 50
 
 spongifymaxima:
     icon: slime_block
@@ -1629,30 +1074,7 @@ spongifymaxima:
         mana: 200
 
 erecto:
-    icon: sapling:4
-    category: staff
-    hidden: true
-    class: ConstructSpell
-    worth: 350
-    effects:
-        cast:
-        -  class: EffectSingle
-           sound: anvil_use
-        -  class: EffectTrail
-           effect: step_sound
-    parameters:
-        target_type: LivingEntity
-        target: any
-        allow_max_range: false
-        check_destructibe: false
-        range: 16
-        radius: 8
-        type: sphere
-        cooldown: 3600000
-        brush: schematic|tent
-        transparent: transparent_to_construction
-    costs:
-        mana: 200
+    inherit: tent
 
 evanesco:
     icon: firework_charge
@@ -1687,72 +1109,8 @@ evanesco:
         mana: 65
 
 expelliarmus:
-    alias: expel
-    icon: ink_sack:1
+    inherit: disarm
     category: dada
-    class: DisarmSpell
-    pvp_restricted: true
-    cast_on_no_target: true
-    worth: 110
-    effects:
-        cast:
-        -  class: EffectSingle
-           sound: shoot_arrow
-        -  class: EffectSingle
-           sound: wither_shoot
-           effectlib:
-             class: ConeEffect
-             iterations: 16
-             particle: redstone
-             color: FF0000
-             lengthGrow: 0.4
-        -  class: EffectSingle
-           location: target
-           color: DF0101
-           firework: star
-        no_target:
-        -  class: EffectSingle
-           sound: shoot_arrow
-        -  class: EffectSingle
-           sound: wither_shoot
-           effectlib:
-             class: ConeEffect
-             iterations: 16
-             particle: redstone
-             color: FF0000
-             lengthGrow: 0.4
-        -  class: EffectSingle
-           location: target
-           color: DF0101
-           firework: burst
-        backfire:
-        -  class: EffectSingle
-           sound: hurt_flesh
-        -  class: EffectRing
-           particle: spell_mob
-           color: FF0000
-           location: self
-        fizzle:
-        -  class: EffectSingle
-           sound: explode
-        -  class: EffectRing
-           particle: redstone
-           color: FF0000
-           location: self
-    parameters:
-        min_slot: 0
-        max_slot: 8
-        target_type: LivingEntity
-        allow_max_range: false
-        range: 30
-        hitbox: true
-        fizzle_chance: 0.6
-        backfire_chance: 0.3
-        keep_in_inventory: true
-        target_breakables: 0
-        cooldown: 6000
-    costs:
-        mana: 60
 
 expelliarmus|2:
     parameters:
@@ -1783,41 +1141,8 @@ expelliarmus|5:
         target_breakables: 2
 
 rennervate:
-    icon: ink_sack:9
+    inherit: cure
     category: charms
-    worth: 20
-    actions:
-        cast:
-        -  class: PotionEffectAction
-    effects:
-        cast:
-        - class: EffectSingle
-          sound: fuse
-          location: target
-          particle_override: particleOrbital
-          effectlib:
-             class: AtomEffect
-             particleNucleus: water_wake
-             particleOrbital: crit_magic
-             iterations: 16
-    parameters:
-        target_type: LivingEntity
-        target: any
-        allow_max_range: false
-        range: 15
-        bypass_confusion: true
-        duration: 1000
-        effect_saturation: 4
-        remove_effects:
-        - confusion
-        - weakness
-        - poison
-        - slow
-        - damage_resistance
-        - jump
-        cooldown: 7000
-    costs:
-        mana: 30
 
 reparifors:
     name: Reparifors
@@ -1855,85 +1180,12 @@ reparifors:
         mana: 30
 
 engorgio:
-    icon: brown_mushroom
+    inherit: grow
     category: transfiguration
-    class: GrowSpell
-    pvp_restricted: true
-    cast_on_no_target: true
-    worth: 40
-    effects:
-        cast:
-        -  class: EffectSingle
-           sound: shoot_arrow
-           location: origin
-           effectlib:
-             class: ConeEffect
-             iterations: 11
-             particle: spell_instant
-             lengthGrow: 0.32
-        -  class: EffectSingle
-           location: target
-           color: "81F7D8"
-           firework: ball_large
-        no_target:
-        -  class: EffectSingle
-           sound: shoot_arrow
-           location: origin
-           effectlib:
-             class: ConeEffect
-             iterations: 11
-             particle: spell_instant
-             lengthGrow: 0.32
-        -  class: EffectSingle
-           location: target
-           color: "FFFFFF"
-           firework: ball
-    parameters:
-        target_type: LivingEntity
-        target: other_entity
-        allow_max_range: false
-        range: 16
-        target_breakables: 1
-        cooldown: 7000
-    costs:
-        mana: 110
 
 episkey:
-    icon: ink_sack:9
+    inherit: heal
     category: charms
-    worth: 30
-    pvp_restricted: false
-    cast_on_no_target: true
-    actions:
-        cast:
-        -  class: PotionEffectAction
-        -  class: HealAction
-    effects:
-        cast:
-        -  class: EffectSingle
-           sound: level_up
-           effectlib:
-             class: ConeEffect
-             iterations: 5
-             lengthGrow: .14
-             particle: heart
-        -  class: EffectSingle
-           location: target
-           effectlib:
-             class: LoveEffect
-             iterations: 5
-             period: 2
-    parameters:
-        target_type: LivingEntity
-        target: any
-        allow_max_range: false
-        range: 16
-        duration: 1000
-        effect_saturation: 4
-        amount: 2
-        cooldown: 8000
-    costs:
-        mana: 50
 
 episkey|2:
     parameters:
@@ -2160,32 +1412,11 @@ finiteincantatem|4:
         fizzle_chance: 0
 
 flagrate:
-    icon: ink_sack:14
+    inherit: tag
     category: charms
     class: GenericSpell
-    worth: 20
-    effects:
-        cast:
-        -  class: EffectSingle
-           sound: level_up
-        -  class: EffectTrail
-           particle: flame
-        -  class: EffectSingle
-           location: target
-           target_offset: 0,3,0
-           color_override: color
-           effectlib:
-             class: TextEffect
-             text: $target
-             iterations: 2
-             particle: redstone
-    parameters:
         allow_max_range: true
         range: 3
-        cooldown: 10000
-        transparent: transparent_to_construction
-    costs:
-        mana: 5
 
 rictusempra:
     alias: Rictusempra
@@ -2373,92 +1604,12 @@ fourpoint:
         mana: 20
 
 fumos:
-    icon: ink_sack
+    inherit: invincible
     category: dada
-    worth: 10
-    actions:
-        cast:
-        -  class: PotionEffectAction
-    effects:
-        cast:
-        -  class: EffectSingle
-           sound: fizz
-           location: target
-           effectlib:
-             class: SphereEffect
-             iterations: 70
-             period: .1
-             particle: redstone
-             color: 0A2A0A
-             radius: 2
-             particles: 20
-    parameters:
-        target: self
-        duration: 5000
-        cooldown: 15000
-        transparent: transparent_to_construction
-        effect_damage_resistance: 300
-        effect_slow: 1
-    costs:
-        mana: 90
 
 glacius:
-    icon: snow_ball
+    inherit: frost
     category: transfiguration
-    pvp_restricted: true
-    cast_on_no_target: true
-    worth: 80
-    actions:
-        cast:
-        - class: AreaOfEffectAction
-          actions:
-          - class: PotionEffectAction
-          - class: DamageAction
-        - class: CoverAction
-          actions:
-          - class: FreezeAction
-    effects:
-        cast:
-        -  class: EffectSingle
-           sound: burp
-           effectlib:
-             class: ConeEffect
-             iterations: 15
-             particle: snowball
-             particles: 5
-             lengthGrow: 0.4
-        -  class: EffectSingle
-           location: target
-           color: F5EFFB
-           firework: ball
-        - class: EffectSingle
-          location: target
-          target_offset: 0,2,0
-          effectlib:
-             class: SphereEffect
-             iterations: 10
-             period: 4
-             particle: snowball
-             radius: 5
-    parameters:
-        target_type: LivingEntity
-        allow_max_range: false
-        range: 48
-        hitbox: true
-        radius: 1
-        vertical_search_distance: 8
-        transparent: transparent_to_construction
-        damage: 1
-        duration: 1000
-        effect_slow: 1
-        ice: ice
-        undo: 4000
-        cooldown: 5000
-        entity_undo: false
-        bypass_build: true
-        freeze_lava: false
-    costs:
-        mana: 75
 
 glacius|2:
     worth: 80
@@ -3624,48 +2775,14 @@ reducio|3:
         target_breakables: 3
 
 reducto:
-    icon: clay_brick
+    inherit: blast
     category: charms
-    class: ConstructSpell
-    worth: 12
-    cast_on_no_target: true
-    effects:
-        cast:
-        -  class: EffectSingle
-           sound: explode
-           location: origin
-           effectlib:
-             class: ConeEffect
-             iterations: 10
-             particle: spell_mob
-             color: FACC2E
-             lengthGrow: 0.4
-        -  class: EffectSingle
-           target_offset: 0,0.5,0
-           location: target
-           color: FACC2E
-           firework: burst
-           particle: explosion_large
-    parameters:
-        allow_max_range: false
-        range: 32
-        speed: 0.9
-        falling: true
-        brush: air
-        radius: 1
-        type: sphere
-        destructible: destructible
-        check_destructible: true
-        undo: 15000
-        bypass_build: true
-        select_self: false
-    costs:
-        mana: 60
 
 reducto|2:
     parameters:
         radius: 2
         speed: 1.2
+        destructible: destructible
 
 reductomaxima:
     icon: clay_brick
@@ -4570,483 +3687,64 @@ phase:
         mana: 50
 
 superblob:
-    hidden: true
-    icon: snow_ball
-    category: engineering
-    class: ConstructSpell
-    worth: 500
-    effects:
-        cast:
-        -  class: EffectSingle
-           sound: level_up
-        -  class: EffectTrail
-           effect: step_sound
-    parameters:
-        allow_max_range: false
-        check_destructible: false
-        range: 32
-        max_dimension: 64
-        target: select
-        type: sphere
-        transparent: transparent_to_construction
-    costs:
-        mana: 100
+    enabled: true
 
 paste:
-    hidden: true
-    icon: iron_pickaxe
-    category: engineering
-    class: ConstructSpell
-    worth: 500
-    effects:
-        cast:
-        -  class: EffectSingle
-           sound: level_up
-        -  class: EffectTrail
-           effect: step_sound
-    parameters:
-        allow_max_range: false
-        check_destructible: false
-        use_brush_size: true
-        max_dimension: 256
-        target: block
-        type: cuboid
-        transparent: transparent_to_construction
+    enabled: true
 
 superconvert:
-    hidden: true
-    icon: magma_cream
-    category: engineering
-    class: ConstructSpell
-    worth: 500
-    effects:
-        cast:
-        -  class: EffectSingle
-           sound: level_up
-        -  class: EffectTrail
-           effect: step_sound
-    parameters:
-        allow_max_range: false
-        range: 32
-        check_destructible: false
-        max_dimension: 64
-        indestructible: air
-        target: select
-        type: sphere
-        replace: true
-        transparent: transparent_to_construction
-    costs:
-        mana: 100
+    enabled: true
 
 recall:
-    hidden: true
-    icon: redstone
-    category: specialty
-    worth: 25
-    actions:
-        cast:
-        -  class: RecallAction
-    effects:
-        cast:
-        -  class: EffectVariable
-           brightness:
-             '0.5':
-             - class: EffectSingle
-               sound: enderman_teleport
-               location: both
-               particle_override: particleOrbital
-               effectlib:
-                   class: AtomEffect
-                   particleNucleus: smoke_normal
-                   particleOrbital: smoke_large
-                   iterations: 20
-             '5':
-             - class: EffectSingle
-               sound: enderman_teleport
-               location: both
-               particle_override: particleOrbital
-               effectlib:
-                   class: AtomEffect
-                   particleNucleus: spell_instant
-                   particleOrbital: spell
-                   iterations: 20
-    parameters:
-        cooldown: 1000
-        allow_spawn: true
-        allow_marker: true
-        allow_death: true
-        allow_wand: true
-        allow_home: true
-        allow_cross_world: true
+    enabled: true
+
 gather:
-    hidden: true
-    icon: glowstone_dust
-    category: staff
-    class: GotoSpell
-    worth: 150
-    effects:
-        cast:
-        -  class: EffectVariable
-           brightness:
-             '0.5':
-             - class: EffectSingle
-               sound: enderman_teleport
-               location: both
-               particle_override: particleOrbital
-               effectlib:
-                   class: AtomEffect
-                   particleNucleus: smoke_normal
-                   particleOrbital: smoke_large
-                   iterations: 20
-             '5':
-             - class: EffectSingle
-               sound: enderman_teleport
-               location: both
-               particle_override: particleOrbital
-               effectlib:
-                   class: AtomEffect
-                   particleNucleus: spell_instant
-                   particleOrbital: spell
-                   iterations: 20
-    parameters:
-        target_type: LivingEntity
-        allow_max_range: false
-        allow_selection: true
-        range: 64
-    costs:
-        mana: 150
+    enabled: true
 
 stash:
-    hidden: true
-    icon: ender_chest
-    category: specialty
-    class: StashSpell
-    worth: 20
-    effects:
-        cast:
-        -  class: EffectSingle
-           sound: enderman_hit
-        -  class: EffectTrail
-           effect: step_sound
-    parameters:
-        target: self
+    enabled: true
 
 absorb:
-    hidden: true
-    icon: bucket
-    category: engineering
-    worth: 1500
-    actions:
-        cast:
-        -  class: AbsorbAction
-    effects:
-        cast:
-        -  class: EffectSingle
-           sound: drink
-        -  class: EffectTrail
-           effect: step_sound
-           reverse: true
-    parameters:
-        allow_max_range: false
-        range: 64
-        transparent: transparent_to_construction
-    costs:
-        mana: 30
+    enabled: true
 
 fill:
-    hidden: true
-    icon: diamond_spade
-    category: engineering
-    class: FillSpell
-    worth: 200
-    effects:
-        cast:
-        -  class: EffectTrail
-           effect: step_sound
-    parameters:
-        allow_max_range: false
-        target: select
-        range: 64
-        max_dimension: 128
-        check_destructible: false
-        transparent: transparent_to_construction
-    costs:
-        mana: 100
+    enabled: true
 
 superdisc:
-    hidden: true
-    icon: egg
-    category: engineering
-    class: ConstructSpell
-    worth: 150
-    effects:
-        cast:
-        -  class: EffectSingle
-           sound: level_up
-        -  class: EffectTrail
-           effect: step_sound
-    parameters:
-        allow_max_range: false
-        range: 64
-        max_dimension: 128
-        target: select
-        type: sphere
-        orient_dimension_max: 0
-        orient_dimension_min: 0
-        transparent: transparent_to_construction
-        check_destructible: false
-    costs:
-        mana: 100
+    enabled: true
 
 superring:
-    hidden: true
-    icon: clay_ball
-    category: engineering
-    class: ConstructSpell
-    worth: 100
-    effects:
-        cast:
-        -  class: EffectSingle
-           sound: level_up
-        -  class: EffectTrail
-           effect: step_sound
-    parameters:
-        allow_max_range: false
-        range: 64
-        max_dimension: 128
-        target: select
-        type: sphere
-        orient_dimension_max: 0
-        orient_dimension_min: 0
-        thickness: 1
-        transparent: transparent_to_construction
-    costs:
-        mana: 100
-
+    enabled: true
 
 superbox:
-    icon: diamond_helmet
-    category: engineering
-    class: ConstructSpell
-    worth: 500
-    hidden: true
-    effects:
-        cast:
-        -  class: EffectSingle
-           sound: level_up
-        -  class: EffectTrail
-           effect: step_sound
-    parameters:
-        allow_max_range: false
-        range: 64
-        max_dimension: 128
-        thickness: 1
-        target: select
-        type: cuboid
-        transparent: transparent_to_construction
-    costs:
-        mana: 400
+    enabled: true
 
 superpyramid:
-    icon: speckled_melon
-    category: engineering
-    class: ConstructSpell
-    hidden: true
-    worth: 500
-    effects:
-        cast:
-        -  class: EffectSingle
-           sound: level_up
-        -  class: EffectTrail
-           effect: step_sound
-    parameters:
-        allow_max_range: false
-        range: 32
-        max_dimension: 128
-        target: select
-        thickness: 1
-        type: pyramid
-        transparent: transparent_to_construction
-    costs:
-        mana: 500
+    enabled: true
 
 supercube:
-    icon: nether_brick_item
-    category: engineering
-    class: ConstructSpell
-    worth: 500
-    hidden: true
-    effects:
-        cast:
-        -  class: EffectSingle
-           sound: level_up
-        -  class: EffectTrail
-           effect: step_sound
-    parameters:
-        allow_max_range: false
-        range: 64
-        max_dimension: 128
-        target: select
-        type: cuboid
-        transparent: transparent_to_construction
-    costs:
-        mana: 500
+    enabled: true
 
 superdome:
-    hidden: true
-    icon: mushroom_soup
-    category: engineering
-    class: ConstructSpell
-    worth: 150
-    effects:
-        cast:
-        -  class: EffectSingle
-           sound: level_up
-        -  class: EffectTrail
-           effect: step_sound
-    parameters:
-        allow_max_range: false
-        range: 64
-        max_dimension: 128
-        thickness: 1
-        target: select
-        type: sphere
-        orient_dimension_min: 0
-        transparent: transparent_to_construction
-    costs:
-        mana: 100
+    enabled: true
 
 bridge:
-    hidden: true
-    icon: stone_axe
-    category: engineering
-    class: BridgeSpell
-    worth: 30
-    effects:
-        cast:
-        -  class: EffectSingle
-           effect: step_sound
-           location: target
-    parameters:
-        transparent: transparent_to_construction
-    costs:
-        mana: 5
+    enabled: true
 
 pillar:
-    hidden: true
-    icon: iron_axe
-    category: engineering
-    class: PillarSpell
-    worth: 30
-    effects:
-        cast:
-        -  class: EffectSingle
-           effect: step_sound
-           location: target
-    parameters:
-        allow_max_range: false
-        range: 64
-        transparent: transparent_to_construction
-    costs:
-        mana: 5
+    enabled: true
 
 place:
-    hidden: true
-    icon: diamond_axe
-    category: engineering
-    class: PlaceSpell
-    worth: 40
-    effects:
-        cast:
-        -  class: EffectSingle
-           effect: step_sound
-           location: target
-    parameters:
-        allow_max_range: false
-        range: 64
-        transparent: transparent_to_construction
-    costs:
-        mana: 10
+    enabled: true
 
 superiterate:
-    hidden: true
-    icon: golden_carrot
-    category: engineering
-    class: IterateSpell
-    worth: 300
-    parameters:
-        transparent: transparent_to_construction
-        allow_max_range: true
-        range: 64
-        size: 32
-        radius: 3
-        reverse: true
-        increment_data: false
-    costs:
-        mana: 100
+    enabled: true
 
 iterate:
-    hidden: true
-    icon: carrot_item
-    category: engineering
-    class: IterateSpell
-    worth: 150
-    parameters:
-        transparent: transparent_to_construction
-        allow_max_range: true
-        range: 64
-        size: 32
-        increment_data: false
-    costs:
-        mana: 50
+    enabled: true
 
 superfly:
-    hidden: true
-    icon: feather
-    category: specialty
-    class: LevitateSpell
-    worth: 10000
-    effects:
-        cast:
-        -  class: EffectSingle
-           sound: enderdragon_wings
-        deactivate:
-        -  class: EffectSingle
-           sound: enderdragon_wings
-           sound_pitch: 0.2
-    parameters:
-        speed: 1
-
-vault:
-    hidden: true
-    icon: sapling:4
-    category: engineering
-    class: ConstructSpell
-    worth: 350
-    effects:
-        cast:
-        -  class: EffectSingle
-           sound: anvil_use
-        -  class: EffectTrail
-           effect: step_sound
-    parameters:
-        target_type: Player
-        target: any_entity
-        allow_max_range: false
-        check_destructibe: true
-        range: 16
-        radius: 16
-        max_dimension: 64
-        obz: -10
-        oby: -6
-        type: sphere
-        cooldown: 1200000
-        brush: schematic|vault
-        transparent: transparent_to_construction
-        signs:
-          $name: $target
-          $vault: [Vault]
-          $lock: [Lock]
+    enabled: true
 
 revelio:
     icon: iron_helmet
@@ -5107,388 +3805,52 @@ deluminate:
         mana: 100
 
 wolfhouse:
-    hidden: true
-    icon: sapling:5
-    category: engineering
-    class: ConstructSpell
-    worth: 2000
-    effects:
-        cast:
-        -  class: EffectSingle
-           sound: ambience_cave
-        -  class: EffectTrail
-           effect: step_sound
-    parameters:
-        target_type: LivingEntity
-        target: any
-        allow_max_range: false
-        check_destructible: false
-        range: 16
-        radius: 4
-        type: sphere
-        cooldown: 600000
-        brush: schematic|wolfhouse
-        obx: -3
-        oby: -22
-        obz: 10
-        otx: 1
-        oty: 1
-        brushmod: erase
-        transparent: transparent_to_construction
-        commands:
-          wolf_generate: castp @p[r=7] wolfhouse type sphere cd true md 150 tx ~-6 ty ~22 tz ~11 obx 0 oby -46 obz -1 r 52 brushmod dirt
-          wolf_underwater: castp @p[r=7] wolfhouse type sphere cd true md 150 tx ~-5 ty ~23 tz ~11 obx 0 oby -46 obz -1 r 52 id water,stationary_water
-          wolf_dome: castp @p[r=7] shell type sphere brush stained_glass:15 cd true md 100 tx ~-5 ty ~16 tz ~12 r 35
-          wolf_shields: castp @p[r=7] shell brush obsidian cd true md 100 tx ~-5 ty ~16 tz ~12 r 37
-          wolf_undo: castp @p[r=6] undo
-          wolf_commit: castp @p[r=6] commit
-          wolf_nothing: msg @p[r=6] Nothing here!
-          wolf_clear: castp @p[r=7] blob type sphere brush erase cd true md 100 tx ~-5 ty ~15 tz ~12 r 36
-          wolf_destruct: castp @p[r=7] blob brush erase cd false type sphere md 130 tx ~-5 ty ~24 tz ~11 r 60
-          wolf_convert: castp @p convert radius 64 md 128 ty ~-1 obx -1 obz 2 brush copy
-          wolf_phase: castp @p[r=2] phase
-          wolf_tp_living: tp @p[r=4] ~7 ~15 ~-13
-          wolf_tp_observation: tp @p[r=3] ~-17 ~62 ~0
-          wolf_tp_hub: tp @p[r=4] ~-3 ~-2 ~24
-          wolf_tp_booth: tp @p[r=4] ~9 ~2 ~-29
-          wolf_tp_enchanting: tp @p[r=3] ~-5 ~35 ~-17
-          wolf_recall_wand: castp @p[r=2] recall type wand
-          wolf_recall_death: castp @p[r=2] recall type death
-          wolf_recall_spawn: castp @p[r=2] recall type spawn
-    costs:
-        mana: 1000
+    enabled: true
 
 mount:
-    hidden: true
-    icon: saddle
-    category: staff
-    class: MountSpell
-    worth: 40
-    effects:
-        cast:
-        -  class: EffectSingle
-           sound: irongolem_hit
-        -  class: EffectSingle
-           effectlib:
-             class: ConeEffect
-             iterations: 15
-             particle: slime
-    parameters:
-        target_type: Entity
-        allow_max_range: false
-        range: 16
-    costs:
-        mana: 60
+    enabled: true
 
 life:
-    hidden: true
-    icon: sapling:1
-    category: automata
-    class: ConstructSpell
-    worth: 1500
-    effects:
-        cast:
-        -  class: EffectSingle
-           sound: ambience_cave
-        -  class: EffectTrail
-           effect: step_sound
-    parameters:
-        allow_max_range: true
-        check_destructible: false
-        range: 32
-        radius: 32
-        max_dimension: 64
-        orient_dimension_min: 0
-        type: sphere
-        cooldown: 120000
-        brush: schematic|life
-        transparent: transparent_to_construction
-        commands:
-          life_wiki: msg @p See http://en.wikipedia.org/wiki/Conway%27s_life for more info!
-          life_simulate: cast simulate bu true r 64 ty ~-14 tz ~-68 oby 16 obz 68 obcx -1 obcy 16 obcz 68 olcx 1 olcy 16 olcz 68
-          life_clear: castp @p box odmax 10 odmin 1 brush erase cd false tx ~2 ty ~-17 tz ~-68 radius 64 md 300 thickness 0 cooldown 10000
-          life_border: castp @p box odmax 2 odmin 2 tx ~3 ty ~-20 tz ~-68 radius 65 md 300 cd 60000 brush copy obx -3 oby 18 obz 68
-          life_board: castp @p box odmax 1 odmin 3 tx ~2 ty ~-20 tz ~-68 radius 64 md 300 thickness 0 cd 60000 brush copy obx -2 oby 18 obz 68
-          life_line: castp @p fill tx ~-16 ty ~-14 tz ~-32 t2x ~32 brush copy cd 10000 obx -15 oby 16 obz 36
-    costs:
-        mana: 1500
+    enabled: true
 
 box:
-    hidden: true
-    icon: gold_helmet
-    category: engineering
-    class: ConstructSpell
-    worth: 100
-    effects:
-        cast:
-        -  class: EffectSingle
-           sound: level_up
-        -  class: EffectTrail
-           effect: step_sound
-    parameters:
-        target_type: LivingEntity
-        allow_max_range: false
-        range: 32
-        thickness: 1
-        radius: 3
-        type: cuboid
-        transparent: transparent_to_construction
-        y_offset: 4
-    costs:
-        mana: 60
+    enabled: true
 
 simulate:
-    hidden: true
-    icon: double_plant:3
-    category: automata
-    class: SimulateSpell
-    worth: 100
-    effects:
-        cast:
-        -  class: EffectSingle
-           sound: enderdragon_wings
-           sound_pitch: 0.5
-           sound_volume: 0.7
-    costs:
-        mana: 100
-    parameters:
-        range: 32
-        radius: 8
-        allow_max_range: false
-        death_material: air
-        commands: false
-        check_destructible: true
+    enabled: true
 
 tree:
-    hidden: true
-    icon: sapling
-    category: engineering
-    class: TreeSpell
-    worth: 80
-    effects:
-        cast:
-        -  class: EffectSingle
-           sound: splash
-        -  class: EffectTrail
-           effect: step_sound
-           material: log
-    parameters:
-        allow_max_range: false
-        range: 64
-        require_sapling: false
-    costs:
-        mana: 20
+    enabled: true
 
 music:
-    hidden: true
-    icon: gold_record
-    category: elective
-    class: MusicSpell
-    worth: 10
-    effects:
-        cast:
-        -  class: EffectTrail
-           particle: note
-        -  class: EffectSingle
-           location: target
-           effectlib:
-             class: HelixEffect
-             particle: note
-             iterations: 2
-    parameters:
-        target_type: Player
-        target: any
-        allow_max_range: true
-        range: 16
-        cooldown: 120000
-    costs:
-        mana: 20
+    enabled: true
 
 paint:
-    icon: painting
-    hidden: true
-    category: engineering
-    class: FillSpell
-    worth: 20
-    effects:
-        cast:
-        -  class: EffectTrail
-           effect: step_sound
-    parameters:
-        target: block
-        allow_max_range: false
-        range: 64
-        check_destructible: false
-        transparent: transparent_to_construction
-    costs:
-        mana: 5
+    enabled: true
 
 torch:
-    icon: torch
-    category: engineering
-    worth: 80
-    hidden: true
-    actions:
-        cast:
-        -  class: TorchAction
-    effects:
-        cast:
-        -  class: EffectSingle
-           sound: fire_ignite
-        -  class: EffectTrail
-           particle: block_crack
-           material: glowstone
-    parameters:
-        allow_max_range: false
-        range: 32
-        allow_glowstone: true
-    costs:
-        mana: 15
+    enabled: true
 
 recurse:
-    icon: wood_spade
-    hidden: true
-    category: engineering
-    class: RecurseSpell
-    worth: 150
-    effects:
-        cast:
-        -  class: EffectTrail
-           effect: step_sound
-    parameters:
-        allow_max_range: false
-        range: 32
-        max_volume: 512
-        max_dimension: 128
-        check_destructible: false
-        transparent: transparent_to_construction
-    costs:
-        mana: 30
+    enabled: true
 
 alter:
-    icon: ink_sack
-    hidden: true
-    category: engineering
-    class: AlterSpell
-    worth: 8
-    effects:
-        cast:
-        -  class: EffectSingle
-           sound: dig_wool
-        -  class: EffectTrail
-           particle: block_crack
-    parameters:
-        target_type: Entity
-        allow_max_range: false
-        range: 32
-        depth: 0
-        transparent: transparent_to_construction
-    costs:
-        mana: 3
+    enabled: true
 
 superalter:
-    icon: ink_sack:1
-    hidden: true
-    category: engineering
-    class: AlterSpell
-    worth: 20
-    effects:
-        cast:
-        -  class: EffectSingle
-           sound: dig_wool
-        -  class: EffectTrail
-           particle: block_crack
-    parameters:
-        allow_max_range: false
-        range: 64
-        depth: 32
-        transparent: transparent_to_construction
-    costs:
-        mana: 40
+    enabled: true
 
 supershell:
-    icon: ink_sack:12
-    hidden: true
-    category: engineering
-    class: ConstructSpell
-    worth: 200
-    effects:
-        cast:
-        -  class: EffectSingle
-           sound: level_up
-        -  class: EffectTrail
-           effect: step_sound
-    parameters:
-        allow_max_range: false
-        range: 64
-        max_dimension: 128
-        thickness: 1
-        target: select
-        type: sphere
-        transparent: transparent_to_construction
-    costs:
-        mana: 200
+    enabled: true
 
 hat:
-    icon: leather_helmet
-    category: staff
-    worth: 18
-    hidden: true
-    actions:
-        cast:
-        -  class: HatAction
-    effects:
-        cast:
-        -  class: EffectSingle
-           sound: drink
-        -  class: EffectTrail
-           effect: step_sound
-           reverse: true
-    parameters:
-        allow_max_range: false
-        range: 32
-        cooldown: 3000
-        transparent: transparent_to_construction
-    costs:
-        mana: 30
+    enabled: true
 
 regenerate:
-    hidden: true
-    icon: fence
-    category: engineering
-    class: RegenerateSpell
-    worth: 500
-    effects:
-        cast:
-        -  class: EffectTrail
-           effect: step_sound
-           material: dirt
-    parameters:
-        allow_max_range: false
-        target: select
-        range: 64
-        max_dimension: 64
-        transparent: transparent_to_construction
+    enabled: true
 
 superregenerate:
-    hidden: true
-    icon: nether_fence
-    category: engineering
-    class: RegenerateSpell
-    worth: 1000
-    effects:
-        cast:
-        -  class: EffectTrail
-           effect: step_sound
-           material: dirt
-    parameters:
-        bypass_undo: true
-        allow_max_range: false
-        target: select
-        range: 1024
-        max_dimension: 1024
-        expand: true
-        transparent: transparent_to_construction
+    enabled: true
 
 pulsus:
     icon: ink_sack:5
@@ -6024,130 +4386,6 @@ animagus_armchair:
     costs:
         mana: 5
 
-unspeakable:
-    name: Unspeakadeath
-    description: Wound your target.
-    icon: ink_sack:14
-    category: dark
-    worth: 20
-    hidden: true
-    actions:
-        cast:
-        -  class: CommandAction
-    effects:
-        cast:
-        - class: EffectSingle
-          sound: enderman_teleport
-          location: origin
-          particle_override: particleOrbital
-          effectlib:
-            class: AtomEffect
-            particleNucleus: spell
-            particleOrbital: water_splash
-            iterations: 9
-    parameters:
-        target: self
-        cooldown: 60000
-        op: false
-        commands:
-        - castp @tn glacius|3
-        - castp @tn stupefy|3
-        - castp @tn expelliarmus|5
-        - castp @tn arrow|4
-        - castp @tn incendio|3
-        - castp @tn pulsus
-        - castp @tn bogies|3
-        - castp @tn levicorpus|3
-        - castp @tn flipendo|3
-        - castp @tn vermillious|3
-        - castp @tn lacarnum|3
-    costs:
-        mana: 100
-
-smite:
-    name: Smite
-    description: Wound your target.
-    icon: ink_sack:11
-    category: dark
-    worth: 20
-    hidden: true
-    pvp_restricted: true
-    cast_on_no_target: true
-    actions:
-        cast:
-        -  class: CommandAction
-    effects:
-        cast:
-        -  class: EffectSingle
-           sound: burp
-           location: origin
-           effectlib:
-             class: ConeEffect
-             iterations: 5
-             particle: fireworks_spark
-             lengthGrow: 0.32
-        -  class: EffectSingle
-           location: target
-           color: F5EFFB
-           firework: ball
-        -  class: EffectSingle
-           location: target
-           effectlib:
-             class: SmokeEffect
-             iterations: 30
-    parameters:
-        target: other
-        target_type: LivingEntity
-        allow_max_range: true
-        cooldown: 4000
-        hitbox: true
-        op: false
-        bypass_backfire: true
-        check_destructible: false
-        target_breakables: 3
-        bypass_protection: true
-        commands:
-        - smite @tn
-    costs:
-        mana: 120
-
-invis:
-    name: Spell of Invisibility
-    description: Vanish in a Spark!
-    icon: nether_star
-    category: dark
-    worth: 20
-    hidden: true
-    pvp_restricted: true
-    cast_on_no_target: true
-    actions:
-        cast:
-        -  class: CommandAction
-    effects:
-        cast:
-        -  class: EffectSingle
-           sound: enderman_teleport
-           location: origin
-        -  class: EffectSingle
-           location: target
-           color: F5EFFB
-           firework: star
-        -  class: EffectSingle
-           location: self
-           effectlib:
-             class: SmokeEffect
-             iterations: 30
-    parameters:
-        target: self
-        target_type: LivingEntity
-        allow_max_range: true
-        cooldown: 1000
-        bypass_protection: true
-        commands:
-        - vanish @pn
-    costs:
-        mana: 120
-
 confringo:
     description: Incinerate your target!
     icon: fireball
@@ -6384,31 +4622,4 @@ dungbomb:
         bypass_build: true
 
 count:
-    name: Entity Counter
-    description: An admin tool to check for nearby entities
-    icon: watch
-    category: staff
-    worth: 120
-    hidden: true
-    actions:
-        cast:
-        -  class: AreaOfEffectAction
-           actions:
-           -  class: CountAction
-    effects:
-        cast:
-        -  class: EffectSingle
-           sound: fuse
-           effectlib:
-             class: HelixEffect
-             iterations: 1
-             particle: flame
-    parameters:
-        target: block
-        range: 64
-        target_type: Entity
-        target_self: false
-        radius: 64
-        target_count: 100000
-    costs:
-        mana: 200
+    enabled: true

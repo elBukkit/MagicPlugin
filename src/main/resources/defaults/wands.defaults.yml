@@ -811,14 +811,20 @@ broomstick:
         - broom
 
 camera:
-    effect_color: 'FFFFFF'
-    xp_regeneration: 1
-    xp_max: 5
+    mode: cast
     active_spell: camera
+    icon: tripwire_hook
+    indestructible: false
+    locked: true
+    xp: 5
+    xp_max: 5
+    xp_regeneration: 2
+    effect_color: '888888'
     spells:
         - camera
 
 recalltoken:
+    mode: cast
     active_spell: recall
     icon: redstone
     indestructible: false
@@ -830,6 +836,7 @@ recalltoken:
         - recall
 
 respawntoken:
+    mode: cast
     active_spell: respawn
     icon: compass
     indestructible: false
@@ -841,6 +848,7 @@ respawntoken:
         - respawn
 
 wolfhouse:
+    mode: cast
     active_spell: wolfhouse
     icon: sapling:5
     indestructible: false

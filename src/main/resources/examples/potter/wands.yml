@@ -107,32 +107,6 @@ lignumvitae:
       - apparate
       - rennervate
 
-allis0n:
-    icon: wood_hoe,gold_axe,gold_pickaxe,gold_spade,stone_axe,stone_hoe,stone_pickaxe,stone_spade,wood_axe,wood_spade,wood_pickaxe
-    undroppable: true
-    path: graduate
-    bound: true
-    keep: true
-    fill: true
-    organize: true
-    quiet: 1
-    xp_max: 220
-    xp_regeneration: 40
-    effect_color: '00AACC'
-    effect_bubbles: true
-    active_spell: ascendio
-    hidden: true
-    overrides: patronus.type ocelot
-    spells:
-      - stupefy
-      - vermillious
-      - aguamenti
-      - levicorpus
-      - protego
-      - Rictusempra
-      - apparate
-      - rennervate
-
 elder:
     icon: diamond_hoe
     undroppable: true
@@ -405,35 +379,6 @@ squib:
       - deprimo
       - duro
 
-alochal:
-    icon: stick
-    indestructible: false
-    locked: true
-    xp: 100
-    xp_max: 100
-    xp_regeneration: 20
-    cost_reduction: 2
-    uses: 100
-    quiet: 2
-    effect_color: 'FF0000'
-    active_spell: alohomora
-    spells:
-      - alohomora
-
-wingchal:
-    icon: stick
-    indestructible: false
-    locked: true
-    xp: 100
-    xp_max: 100
-    xp_regeneration: 20
-    cost_reduction: 2
-    uses: 100
-    quiet: 2
-    effect_color: 'FF0000'
-    active_spell: wingardium
-    spells:
-      - wingardium
 #
 # ITEMS
 #
@@ -463,20 +408,6 @@ sorting:
     quiet: 2
     effect_color: 'FFFF00'
     overrides: warp sortinghat
-    spells:
-        - recall
-
-gamepass:
-    mode: cast
-    active_spell: recall
-    icon: paper
-    indestructible: true
-    locked: true
-    keep: true
-    uses: 1
-    quiet: 2
-    effect_color: 'FFFF00'
-    overrides: warp GameWorld
     spells:
         - recall
 
@@ -1017,13 +948,6 @@ graduate:
      - reducio|2
      - conjunctivitis|2
 
-restartyear:
-    upgrade: true
-    path: year7
-    upgrade_path: year1
-    indestructible: false
-    icon: firework_charge
-
 prefect:
     icon: firework_charge
     upgrade: true
@@ -1083,36 +1007,6 @@ staff:
      - lumos|3
      - conjunctivitis|2
      - flipendo|3
-
-gates:
-    icon: firework_charge
-    upgrade: true
-    upgrade_path: graduate
-    xp_max: 220
-    xp_regeneration: 40
-    spells:
-     - alohomora
-     - wingardium
-     - expelliarmus
-     - glacius
-     - araniaexumai
-     - aparecium
-     - Rictusempra
-     - diffindo
-     - deprimo
-     - duro
-     - bubble
-     - aguamenti
-     - ascendio
-     - reducto
-     - evanesco
-     - reparifors
-     - incarcerous
-     - confundus
-     - apparate
-     - confringo
-     - piertotum
-     - ventus
 
 headstaff:
     icon: firework_charge

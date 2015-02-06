@@ -218,7 +218,7 @@ student:
       gills: 10,11,20
       grenade: 30,50,70
       heal: 0,1,5
-      sniper: 0,0,30
+      arrow|2: 0,0,30
       monster: 5,20,30
       lightning: 40,50,30
       lava: 5,20,50
@@ -232,6 +232,7 @@ student:
       reflect|2: 0,1,5
       tag: 0,1,5
       blob: 1,20,30
+      disarm: 0,0,2
 
 apprentice:
     upgrade: master
@@ -297,6 +298,13 @@ apprentice:
       reflect|3: 0,1,5
       disc: 0,1,5
       push|2: 10,20,40
+      curse|2: 0,1,10
+      frost|2: 20,50,60
+      disarm|2: 0,0,2
+      heal|2: 0,1,5
+      arrow|3: 0,0,30
+      fire|2: 50,70,60
+      rubberize: 2,10,20
 
 master:
     upgrade: engineer
@@ -359,7 +367,6 @@ master:
       cluster: 0,0,5
       bomb: 0,0,1
       invincible: 0,0,10
-      levitate: 0,0,10
       laser: 0,0,10
       earthquake: 0,0,1
       undo: 1,5,10
@@ -368,13 +375,21 @@ master:
       nuke: 0,0,1
       day: 0,5,10
       night: 0,0,1
-      disarm: 0,0,2
+      disarm|3: 0,0,2
       weather: 0,0,5
       cage: 0,0,2
       meteor: 0,0,2
       pollinate: 0,0,10
       shell|3: 1,20,30
       blob|3: 1,20,30
+      boom|2: 20,50,60
+      frost|3: 20,50,60
+      heal|3: 0,1,5
+      arrow|4: 0,0,30
+      fling|2: 0,5,70
+      fire|3: 50,70,60
+      kill: 2,10,20
+      torture: 2,10,20
 
 #
 # The move from "master" to engineer requires the player to aquire some basic
@@ -457,6 +472,7 @@ engineer:
       place: 0,1,5
       stalactite: 0,5,10
       shell|4: 1,20,30
+      levitate: 0,0,10
     material_count:
       0: 50, 20, 20,    0,  0
       1: 1,  10,  30,   0,  0
@@ -738,7 +754,6 @@ battle:
       leap: 70,80,60
       push: 10,20,40
       pull: 10,20,40
-      sniper: 0,0,30
       monster: 5,20,30
       perk: 5,15,20
       lightning: 40,50,30
