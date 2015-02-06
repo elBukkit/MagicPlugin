@@ -5039,8 +5039,25 @@ recall:
         allow_wand: true
         allow_home: true
         allow_cross_world: true
-        allow_warps: dueling,flyinglessons,greathall,diagonalley,4privet,trainstation,arachnids,deatheaters,hub,arenahub
-
+        warps:
+          dueling:
+            name: Hogwart's Dueling Club
+          flyinglessons:
+            name: Flying Practice
+          greathall:
+            name: The Great Hall
+          diagonalley:
+            name: The Leaky Cauldron
+          4privetdrive:
+            name: "#4 Privet Drive"
+          trainstation:
+            name: "King's Cross"
+          arachnids:
+            name: Acromantula Infestation
+          deatheatercamp:
+            name: Deatheater Camp
+          hub:
+            name: The Ministry Hub
 gather:
     hidden: true
     icon: glowstone_dust
