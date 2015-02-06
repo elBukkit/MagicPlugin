@@ -725,23 +725,40 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		// Support YML-List-As-String format
 		spellString = spellString.replaceAll("[\\]\\[]", "");
 		String[] spellNames = StringUtils.split(spellString, ",");
-		for (String spellName : spellNames) {		
+		for (String spellName : spellNames)
+        {
 			String[] pieces = spellName.split("@");
 			Integer slot = parseSlot(pieces);
-            SpellKey spellKey = new SpellKey(pieces[0].trim());
-            spells.put(spellKey.getKey(), slot);
-            Integer currentLevel = spellLevels.get(spellKey.getBaseKey());
-            if (currentLevel == null || currentLevel < spellKey.getLevel()) {
-                spellLevels.put(spellKey.getBaseKey(), spellKey.getLevel());
+
+            // Handle aliases and upgrades smoothly
+            String loadedKey = pieces[0].trim();
+            SpellTemplate spell = controller.getSpellTemplate(loadedKey);
+            if (spell != null)
+            {
+                SpellKey spellKey = new SpellKey(spell.getKey());
+                Integer currentLevel = spellLevels.get(spellKey.getBaseKey());
+                if (currentLevel == null || currentLevel < spellKey.getLevel()) {
+                    spellLevels.put(spellKey.getBaseKey(), spellKey.getLevel());
+                    spells.put(spellKey.getKey(), slot);
+                    if (currentLevel != null)
+                    {
+                        SpellKey oldKey = new SpellKey(spellKey.getBaseKey(), currentLevel);
+                        spells.remove(oldKey.getKey());
+                    }
+                }
+                if (activeSpell == null || activeSpell.length() == 0)
+                {
+                    activeSpell = spellKey.getKey();
+                }
             }
-			ItemStack itemStack = createSpellIcon(spellKey.getKey());
-			if (itemStack == null) {
-				// controller.getPlugin().getLogger().warning("Unable to create spell icon for key " + spellKey);
+            ItemStack itemStack = createSpellItem(spell, controller, this, false);
+			if (itemStack == null)
+            {
+				controller.getPlugin().getLogger().warning("Unable to create spell icon for key " + loadedKey + " - someone has a dead spell");
 				itemStack = new ItemStack(item.getType(), 1);
-                CompatibilityUtils.setDisplayName(itemStack, spellKey.getKey());
-                CompatibilityUtils.setMeta(itemStack, "spell", spellKey.getKey());
+                CompatibilityUtils.setDisplayName(itemStack, loadedKey);
+                CompatibilityUtils.setMeta(itemStack, "spell", loadedKey);
             }
-			else if (activeSpell == null || activeSpell.length() == 0) activeSpell = spellKey.getKey();
 			addToInventory(itemStack, slot);
 		}
 		materialString = materialString.replaceAll("[\\]\\[]", "");
@@ -817,7 +834,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		if (brushData == null) return null;
 		
 		Material material = brushData.getMaterial();
-		if (material == null || material == Material.AIR) {
+        if (material == null || material == Material.AIR) {
 			return null;
 		}
 		
