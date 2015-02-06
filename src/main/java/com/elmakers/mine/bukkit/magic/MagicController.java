@@ -2977,12 +2977,15 @@ public class MagicController implements Listener, MageController {
             }
 
             // Can't wear spells
-            Material itemType = clickedItem.getType();
-            boolean isWearable = wearableMaterials.contains(itemType);
-            if (event.getAction() == InventoryAction.MOVE_TO_OTHER_INVENTORY && isWearable)
+            if (event.getAction() == InventoryAction.MOVE_TO_OTHER_INVENTORY && clickedItem != null)
             {
-                event.setCancelled(true);
-                return;
+
+                Material itemType = clickedItem.getType();
+                if (wearableMaterials.contains(itemType))
+                {
+                    event.setCancelled(true);
+                    return;
+                }
             }
 
             // Safety check for something that ought not to be possible
