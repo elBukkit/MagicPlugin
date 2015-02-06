@@ -8,6 +8,21 @@ public class SpellKey {
     private final int level;
     private final boolean isVariant;
 
+    public SpellKey(String baseKey, int level) {
+        this.baseKey = baseKey;
+        this.level = level;
+        if (this.level > 1)
+        {
+            isVariant = true;
+            this.key = baseKey + "|" + level;
+        }
+        else
+        {
+            isVariant = false;
+            this.key = baseKey;
+        }
+    }
+
     public SpellKey(String key) {
         this.key = key;
         if (key.contains("|")) {
