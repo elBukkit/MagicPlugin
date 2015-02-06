@@ -617,6 +617,23 @@ public class MagicController implements Listener, MageController {
             getLogger().warning("Failed to initialize EffectLib");
         }
 
+        // Try to link to WorldEdit
+        // Do this prior to load(), because the CraftingController
+        // May need to know whether or not schematics are enabled.
+        // TODO: Make wrapper class to avoid this reflection.
+        try {
+            cuboidClipboardClass = Class.forName("com.sk89q.worldedit.CuboidClipboard");
+            Method loadSchematicMethod = cuboidClipboardClass.getMethod("loadSchematic", File.class);
+            if (loadSchematicMethod != null) {
+                getLogger().info("WorldEdit found, schematic brushes enabled.");
+                MaterialBrush.SchematicsEnabled = true;
+                hasWorldEdit = true;
+            } else {
+                cuboidClipboardClass = null;
+            }
+        } catch (Throwable ex) {
+        }
+
         load();
 
         // Try to link to Essentials:
@@ -686,21 +703,6 @@ public class MagicController implements Listener, MageController {
 
         if (tradersController == null) {
             getLogger().info("dtlTraders not found, will not integrate.");
-        }
-
-        // Try to link to WorldEdit
-        // TODO: Make wrapper class to avoid this reflection.
-        try {
-            cuboidClipboardClass = Class.forName("com.sk89q.worldedit.CuboidClipboard");
-            Method loadSchematicMethod = cuboidClipboardClass.getMethod("loadSchematic", File.class);
-            if (loadSchematicMethod != null) {
-                getLogger().info("WorldEdit found, schematic brushes enabled.");
-                MaterialBrush.SchematicsEnabled = true;
-                hasWorldEdit = true;
-            } else {
-                cuboidClipboardClass = null;
-            }
-        } catch (Throwable ex) {
         }
 
         // Try to link to CommandBook
