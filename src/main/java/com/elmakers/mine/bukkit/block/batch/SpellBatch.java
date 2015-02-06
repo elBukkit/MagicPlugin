@@ -13,7 +13,7 @@ public abstract class SpellBatch extends UndoableBatch {
     @Override
     public void finish() {
         if (!finished) {
-            spell.sendMessage(spell.getMessage("cast_finish"));
+            spell.castMessage(spell.getMessage("cast_finish"));
             super.finish();
         }
     }
