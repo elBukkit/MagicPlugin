@@ -119,6 +119,17 @@ public class WandLevel {
             .replace("$wand", wand.getName());
         mage.sendMessage(message);
     }
+
+    public LinkedList<WeightedPair<String>> getRemainingSpells(Wand wand) {
+        LinkedList<WeightedPair<String>> remainingSpells = new LinkedList<WeightedPair<String>>();
+        for (WeightedPair<String> spell : spellProbability) {
+            if (spell.getRawThreshold() >= 1 && !wand.hasSpell(spell.getValue())) {
+                remainingSpells.add(spell);
+            }
+        }
+
+        return remainingSpells;
+    }
 	
 	public boolean randomizeWand(Mage mage, Wand wand, boolean additive) {
 		// Add random spells to the wand
@@ -127,12 +138,7 @@ public class WandLevel {
         }
         Messages messages = wand.getController().getMessages();
 		boolean addedSpells = false;
-		LinkedList<WeightedPair<String>> remainingSpells = new LinkedList<WeightedPair<String>>();
-        for (WeightedPair<String> spell : spellProbability) {
-            if (!wand.hasSpell(spell.getValue())) {
-                remainingSpells.add(spell);
-            }
-        }
+        LinkedList<WeightedPair<String>> remainingSpells = getRemainingSpells(wand);
 
 		SpellTemplate firstSpell = null;
 		if (remainingSpells.size() > 0) {

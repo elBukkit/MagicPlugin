@@ -5,6 +5,7 @@ import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.effect.EffectPlayer;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
+import com.elmakers.mine.bukkit.utility.WeightedPair;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -16,6 +17,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -192,7 +194,7 @@ public class WandUpgradePath {
                     break;
                 }
 
-                if (level > levels[levelIndex]) {
+                if (level < levels[levelIndex + 1]) {
                     nextLevelIndex = levelIndex + 1;
                     int previousLevel = levels[levelIndex];
                     int nextLevel = levels[nextLevelIndex];
@@ -463,6 +465,16 @@ public class WandUpgradePath {
         if (requiredSpells == null && requiredSpells.isEmpty()) return true;
 
         if (mage != null) {
+            // First check to see if the path has more spells available
+            WandLevel maxLevel = levelMap.get(levels[levels.length - 1]);
+            LinkedList<WeightedPair<String>> remainingSpells = maxLevel.getRemainingSpells(wand);
+            if (remainingSpells.size() > 0) {
+                String message = mage.getController().getMessages().get("wand.require_more_levels");
+                mage.sendMessage(message);
+                return false;
+            }
+
+            // Then check for spell requirements to advance
             for (String requiredKey : requiredSpells) {
                 if (!wand.hasSpell(requiredKey)) {
                     SpellTemplate spell = mage.getController().getSpellTemplate(requiredKey);

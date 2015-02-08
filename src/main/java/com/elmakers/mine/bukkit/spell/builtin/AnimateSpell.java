@@ -213,7 +213,7 @@ public class AnimateSpell extends SimulateSpell
 				float weight = level.getValue();
 				int levelIndex = (int)level.getIndex();
 				threshold += weight;
-				levelWeights.add(new WeightedPair<Integer>(threshold, levelIndex));
+				levelWeights.add(new WeightedPair<Integer>(threshold, weight, levelIndex));
 			}
 		} else {
 			levelWeights = null;
