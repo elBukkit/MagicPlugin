@@ -1050,7 +1050,6 @@ push:
              particleBase1: spell
              particleBase2: spell
              iterations: 10
-             lengthGrow: 20
     parameters:
         target_type: Entity
         range: 8
@@ -4071,7 +4070,6 @@ force:
              particleBase1: spell_mob
              particleBase2: spell_mob
              iterations: 10
-             lengthGrow: 20
     parameters:
         target_type: LivingEntity
         target_breakables: 1

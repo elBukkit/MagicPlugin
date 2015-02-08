@@ -123,13 +123,13 @@ wand:
     player_unmodifiable: $name's wand can not be modified
     bound_to_other: That wand is not bound to you
     bound: That wand is bound to $name
-    spell_added: "The &r&6$name &d&ospell has been added to your wand"
-    brush_added: "The &r&7$name &d&obrush has been added to your wand"
+    spell_added: "The &r&6$name &d&ospell has been added to your $wand"
+    brush_added: "The &r&7$name &d&obrush has been added to your $wand"
     player_spell_upgraded: "$players's &r&6$name &d&ohas been upgraded to &3$level"
     spell_upgraded: "&r&6$name &d&ohas been upgraded to &3$level"
     spell_override_upgraded: "&r&6$name &d&ohas been upgraded"
-    upgraded_property: "&r&dYour wand has been upgraded to &r&b$name"
-    hotbar_added: "&r&bYour wand's hotbar has been upgraded! &r&3Press Q while your wand is active"
+    upgraded_property: "&r&dYour $wand has been upgraded to &r&b$name"
+    hotbar_added: "&r&bYour $wand's hotbar has been upgraded! &r&3Press Q while your $wand is active"
     player_upgraded: $name's wand upgraded
     player_not_upgraded: $name's wand not upgraded
     no_item: You are not holding an item
@@ -140,9 +140,9 @@ wand:
     player_no_magic_item: $name is not holding a magic item
     no_magic_item: That is not a magic item
     player_no_item: $name is not holding an item
-    reorganized: Wand reorganized
+    reorganized: $wand reorganized
     player_reorganized: $name's wand reorganized
-    alphabetized: Wand alphabetized
+    alphabetized: $wand alphabetized
     player_alphabetized: $name's wand alphabetized
     already_enchanted: That $item is already enchanted
     enchanted: Your $item has been enchanted
@@ -150,7 +150,7 @@ wand:
     unenchanted: Your wand has been unenchanted
     no_path: That item can not be enchanted
     player_unenchanted: $name's wand has been unenchanted
-    level_up: "&r&bYour wand has been upgraded to &r&5$path"
+    level_up: "&r&bYour $wand has been upgraded to &r&5$path"
     duplicated: Your wand has been duplicated
     player_duplicated: $name's wand has been duplicated
     restored: Your wand has been restored
@@ -162,7 +162,7 @@ wand:
     unknown_template: Unknown wand name $name
     reconfigured: Wand reconfigured
     player_reconfigured: $name's wand reconfigured
-    filled: Your wand now contains all of your spells
+    filled: Your $wand now contains all of your spells
     player_filled: $name's wand filled
     renamed: Your wand has been renamed
     player_renamed: $name's wand renamed
@@ -173,11 +173,11 @@ wand:
     randomized_lore: What kind of wand will you get?
     randomized_name: Wand Box
     upgrade_name: $name Upgrade
-    inventory_instructions: "&r&bYour wand now has more than one spell. Right-click to open/close the wand inventory. Use the hotbar buttons to select a spell."
-    page_instructions: "&r&bYour wand now has more than one page of spells. Click outside the spell inventory to change pages."
-    bound_instructions: "&r&3Your wand is bound to you, and is undroppable."
-    spell_instructions: "&r&bSwing your wand to cast $spell. Spells require mana, shown in the XP bar."
-    brush_instructions: "&r&bMaterial brushes have been added to your wand. Select these as you would a spell to modify your engineering magic."
+    inventory_instructions: "&r&bYour $wand now has more than one spell. Right-click to open/close the wand inventory. Use the hotbar buttons to select a spell."
+    page_instructions: "&r&bYour $wand now has more than one page of spells. Click outside the spell inventory to change pages."
+    bound_instructions: "&r&3Your $wand is bound to you, and is undroppable."
+    spell_instructions: "&r&bSwing your $wand to cast $spell. Spells require mana, shown in the XP bar."
+    brush_instructions: "&r&bMaterial brushes have been added to your $wand. Select these as you would a spell to modify your engineering magic."
 spell:
     brush: Uses Material Brushes
     undoable: Undoable with Rollback

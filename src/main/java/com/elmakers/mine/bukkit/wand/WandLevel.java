@@ -111,10 +111,12 @@ public class WandLevel {
         this.hungerRegenerationProbability = hungerRegenerationProbability.isEmpty() ? other.hungerRegenerationProbability : hungerRegenerationProbability;
     }
 
-    protected void sendAddMessage(Mage mage, String messageKey, String nameParam) {
+    protected void sendAddMessage(Mage mage,  Wand wand, String messageKey, String nameParam) {
         if (mage == null) return;
 
-        String message = mage.getController().getMessages().get(messageKey).replace("$name", nameParam);
+        String message = mage.getController().getMessages().get(messageKey)
+            .replace("$name", nameParam)
+            .replace("$wand", wand.getName());
         mage.sendMessage(message);
     }
 	
@@ -146,9 +148,9 @@ public class WandLevel {
                             if (levelDescription == null || levelDescription.isEmpty()) {
                                 levelDescription = spell.getName();
                             }
-                            mage.sendMessage(messages.get("wand.spell_upgraded").replace("$name", currentSpell.getName()).replace("$level", levelDescription));
+                            mage.sendMessage(messages.get("wand.spell_upgraded").replace("$name", currentSpell.getName()).replace("$wand", wand.getName()).replace("$level", levelDescription));
                         } else {
-                            mage.sendMessage(messages.get("wand.spell_added").replace("$name", spell.getName()));
+                            mage.sendMessage(messages.get("wand.spell_added").replace("$name", spell.getName()).replace("$wand", wand.getName()));
                         }
                     }
 					if (firstSpell == null) {
@@ -212,7 +214,7 @@ public class WandLevel {
 				} else {
 					addedMaterials = true;
                     if (mage != null) {
-                        mage.sendMessage(messages.get("wand.brush_added").replace("$name", MaterialAndData.getMaterialName(materialKey)));
+                        mage.sendMessage(messages.get("wand.brush_added").replace("$wand", wand.getName()).replace("$name", MaterialAndData.getMaterialName(materialKey)));
                     }
 				}
 			}
@@ -232,7 +234,7 @@ public class WandLevel {
 					addedProperties = true;
 					costReduction = Math.min(path.getMaxCostReduction(), costReduction + RandomUtils.weightedRandom(costReductionProbability));
 					wandProperties.set("cost_reduction", costReduction);
-                    sendAddMessage(mage, "wand.upgraded_property", Wand.getLevelString(messages, "wand.cost_reduction", (float)costReduction));
+                    sendAddMessage(mage, wand, "wand.upgraded_property", Wand.getLevelString(messages, "wand.cost_reduction", (float)costReduction));
 				}
 				break;
 			case 1:
@@ -241,7 +243,7 @@ public class WandLevel {
 					addedProperties = true;
                     power = Math.min(path.getMaxPower(), power + RandomUtils.weightedRandom(powerProbability));
 					wandProperties.set("power", power);
-                    sendAddMessage(mage, "wand.upgraded_property", Wand.getLevelString(messages, "wand.power", (float)power));
+                    sendAddMessage(mage, wand, "wand.upgraded_property", Wand.getLevelString(messages, "wand.power", (float)power));
 				}
 				break;
 			case 2:
@@ -250,7 +252,7 @@ public class WandLevel {
 					addedProperties = true;
                     damageReduction = Math.min(path.getMaxDamageReduction(), damageReduction + RandomUtils.weightedRandom(damageReductionProbability));
 					wandProperties.set("protection", damageReduction);
-                    sendAddMessage(mage, "wand.upgraded_property", Wand.getLevelString(messages, "wand.protection", (float)damageReduction));
+                    sendAddMessage(mage, wand, "wand.upgraded_property", Wand.getLevelString(messages, "wand.protection", (float)damageReduction));
 				}
 				break;
 			case 3:
@@ -259,7 +261,7 @@ public class WandLevel {
 					addedProperties = true;
                     damageReductionPhysical = Math.min(path.getMaxDamageReductionPhysical(), damageReductionPhysical + RandomUtils.weightedRandom(damageReductionPhysicalProbability));
 					wandProperties.set("protection_physical", damageReductionPhysical);
-                    sendAddMessage(mage, "wand.upgraded_property", Wand.getLevelString(messages, "wand.protection_physical", (float)damageReductionPhysical));
+                    sendAddMessage(mage, wand, "wand.upgraded_property", Wand.getLevelString(messages, "wand.protection_physical", (float)damageReductionPhysical));
                 }
 				break;
 			case 4:
@@ -268,7 +270,7 @@ public class WandLevel {
 					addedProperties = true;
                     damageReductionProjectiles = Math.min(path.getMaxDamageReductionProjectiles(), damageReductionProjectiles + RandomUtils.weightedRandom(damageReductionProjectilesProbability));
 					wandProperties.set("protection_projectiles", damageReductionProjectiles);
-                    sendAddMessage(mage, "wand.upgraded_property", Wand.getLevelString(messages, "wand.protection_projectile", (float)damageReductionProjectiles));
+                    sendAddMessage(mage, wand, "wand.upgraded_property", Wand.getLevelString(messages, "wand.protection_projectile", (float)damageReductionProjectiles));
 				}
 				break;
 			case 5:
@@ -277,7 +279,7 @@ public class WandLevel {
 					addedProperties = true;
                     damageReductionFalling = Math.min(path.getMaxDamageReductionFalling(), damageReductionFalling + RandomUtils.weightedRandom(damageReductionFallingProbability));
 					wandProperties.set("protection_falling", damageReductionFalling);
-                    sendAddMessage(mage, "wand.upgraded_property", Wand.getLevelString(messages, "wand.protection_fall", (float)damageReductionFalling));
+                    sendAddMessage(mage, wand, "wand.upgraded_property", Wand.getLevelString(messages, "wand.protection_fall", (float)damageReductionFalling));
 				}
 				break;
 			case 6:
@@ -286,7 +288,7 @@ public class WandLevel {
 					addedProperties = true;
                     damageReductionFire = Math.min(path.getMaxDamageReductionFire(), damageReductionFire + RandomUtils.weightedRandom(damageReductionFireProbability));
 					wandProperties.set("protection_fire", damageReductionFire);
-                    sendAddMessage(mage, "wand.upgraded_property", Wand.getLevelString(messages, "wand.protection_fire", (float)damageReductionFire));
+                    sendAddMessage(mage, wand, "wand.upgraded_property", Wand.getLevelString(messages, "wand.protection_fire", (float)damageReductionFire));
 				}
 				break;
 			case 7:
@@ -295,7 +297,7 @@ public class WandLevel {
 					addedProperties = true;
                     damageReductionExplosions = Math.min(path.getMaxDamageReductionExplosions(), damageReductionExplosions + RandomUtils.weightedRandom(damageReductionExplosionsProbability));
 					wandProperties.set("protection_explosions", damageReductionExplosions);
-                    sendAddMessage(mage, "wand.upgraded_property", Wand.getLevelString(messages, "wand.protection_blast", (float)damageReductionExplosions));
+                    sendAddMessage(mage, wand, "wand.upgraded_property", Wand.getLevelString(messages, "wand.protection_blast", (float)damageReductionExplosions));
 				}
 				break;
 			case 8:
@@ -304,7 +306,7 @@ public class WandLevel {
 					addedProperties = true;
                     healthRegeneration = Math.min(path.getMaxHealthRegeneration(), healthRegeneration + RandomUtils.weightedRandom(healthRegenerationProbability));
 					wandProperties.set("health_regeneration", healthRegeneration);
-                    sendAddMessage(mage, "wand.upgraded_property", Wand.getLevelString(messages, "wand.health_regeneration", (float)healthRegeneration));
+                    sendAddMessage(mage, wand, "wand.upgraded_property", Wand.getLevelString(messages, "wand.health_regeneration", (float)healthRegeneration));
 				}
 				break;
 			case 9:
@@ -313,7 +315,7 @@ public class WandLevel {
 					addedProperties = true;
                     hungerRegeneration = Math.min(path.getMaxHungerRegeneration(), hungerRegeneration + RandomUtils.weightedRandom(hungerRegenerationProbability));
 					wandProperties.set("hunger_regeneration", hungerRegeneration);
-                    sendAddMessage(mage, "wand.upgraded_property", Wand.getLevelString(messages, "wand.hunger_regeneration", (float)hungerRegeneration));
+                    sendAddMessage(mage, wand, "wand.upgraded_property", Wand.getLevelString(messages, "wand.hunger_regeneration", (float)hungerRegeneration));
 				}
 				break;
             case 10:
@@ -322,7 +324,7 @@ public class WandLevel {
                     addedProperties = true;
                     haste = Math.min(path.getMaxHaste(), haste + RandomUtils.weightedRandom(hasteProbability));
                     wandProperties.set("haste", haste);
-                    sendAddMessage(mage, "wand.upgraded_property", Wand.getLevelString(messages, "wand.haste", (float)haste));
+                    sendAddMessage(mage, wand, "wand.upgraded_property", Wand.getLevelString(messages, "wand.haste", (float)haste));
                 }
                 break;
 			}
@@ -344,7 +346,7 @@ public class WandLevel {
 
                 String updateString = messages.get("wand.mana_regeneration");
                 updateString = updateString.replace("$amount", Integer.toString(xpRegeneration));
-                sendAddMessage(mage, "wand.upgraded_property", updateString);
+                sendAddMessage(mage, wand, "wand.upgraded_property", updateString);
 			}
 			int xpMax = wand.getXpMax();
 			if (xpMaxProbability.size() > 0 && xpMax < path.getMaxMaxXp()) {
@@ -358,7 +360,7 @@ public class WandLevel {
 
                 String updateString = messages.get("wand.mana_amount");
                 updateString = updateString.replace("$amount", Integer.toString(xpMax));
-                sendAddMessage(mage, "wand.upgraded_property", updateString);
+                sendAddMessage(mage, wand, "wand.upgraded_property", updateString);
 			}
 			
 			// Refill the wand's xp, why not
