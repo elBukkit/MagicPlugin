@@ -447,11 +447,11 @@ public class RecallAction extends BaseSpellAction implements GeneralAction, GUIA
 		registerForUndo(new UndoMarkerMove(mage, location));
 		if (location != null) 
 		{
-			castMessage(getMessage("cast_marker_move"));
+			sendMessage(getMessage("cast_marker_move"));
 		}
 		else
 		{
-			castMessage(getMessage("cast_marker_place"));
+            sendMessage(getMessage("cast_marker_place"));
 		}
 
 		location = getLocation();
