@@ -307,6 +307,11 @@ apprentice:
       rubberize: 2,10,20
 
 master:
+    required_spells:
+      - place
+      - pillar
+      - bridge
+      - convert
     upgrade: engineer
     upgrade_item: engineer_upgrade
     inherit: apprentice
@@ -404,10 +409,9 @@ master:
 
 engineer:
     required_spells:
-      - place
-      - pillar
-      - bridge
-      - convert
+      - superblob
+      - absorb
+      - fill
     upgrade: architect
     upgrade_item: architect_upgrade
     inherit: master
@@ -508,10 +512,6 @@ engineer:
       schematic|creeper_rug: 0,0,5,10,100
 
 architect:
-    required_spells:
-      - superblob
-      - absorb
-      - fill
     inherit: engineer
     property_count:
       0: 100, 100, 50

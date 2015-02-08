@@ -4586,6 +4586,7 @@ kill:
         spread: 0
         speed: 1
         size: 0
+        break_blocks: false
     costs:
         mana: 150
 

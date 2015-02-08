@@ -441,15 +441,13 @@ wolf:
     hotbar_count: 3
     effect_color: '00AACC'
     effect_particle: enchantment_table
-    effect_particle_count: 1
-    effect_particle_data: 1
-    effect_sound: ambience_cave,0.6,0.3
-    effect_sound_interval: 30
+    effect_particle_count: 0
     organize: true
     mode: inventory
-    active_spell: fly
+    active_spell: levitate
+    overrides: max_dimension 1024
     spells:
-        - fly
+        - levitate
         - fling
         - blink
         - superblob
