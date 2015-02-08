@@ -3633,10 +3633,6 @@ blink:
                effectlib:
                    class: LineEffect
                    particle: redstone
-             -  class: EffectSingle
-                location: self
-                color: F5EFFB
-                firework: burst
     parameters:
         allow_max_range: false
         allow_ascend: false
@@ -4654,7 +4650,7 @@ torture:
 
 rubberize:
     icon: slime_block
-    category: transfiguration
+    category: engineering
     class: RecurseSpell
     worth: 150
     cast_on_no_target: true

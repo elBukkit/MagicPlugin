@@ -503,9 +503,9 @@ public class WandCommandExecutor extends MagicTabExecutor {
         Mage mage = api.getMage(player);
         Wand wand = mage.getActiveWand();
         wand.alphabetizeInventory();
-        mage.sendMessage(api.getMessages().get("wand.alphabetized"));
+        mage.sendMessage(api.getMessages().get("wand.alphabetized").replace("$wand", wand.getName()));
         if (sender != player) {
-            sender.sendMessage(api.getMessages().getParameterized("wand.player_alphabetized", "$name", player.getName()));
+            sender.sendMessage(api.getMessages().getParameterized("wand.player_alphabetized", "$name", player.getName()).replace("$wand", wand.getName()));
         }
 
         return true;

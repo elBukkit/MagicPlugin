@@ -574,7 +574,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		updateLore();
         if (mage != null)
         {
-            mage.sendMessage(controller.getMessages().get("wand.bound_instructions", ""));
+            mage.sendMessage(controller.getMessages().get("wand.bound_instructions", "").replace("$wand", getName()));
         }
 	}
 	
@@ -3099,7 +3099,9 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		if (!isModifiable()) return false;
 
         SpellKey spellKey = new SpellKey(spellName);
-        if (hasSpell(spellKey)) return false;
+        if (hasSpell(spellKey)) {
+            return false;
+        }
 
         if (isInventoryOpen()) {
 			saveInventory();
