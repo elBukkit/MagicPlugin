@@ -4480,15 +4480,23 @@ broom:
         mount_type: Horse
         mount_variant: undead_horse
         mount_invisible: false
-        mount_boost_ticks: 80
+        mount_boost_ticks: 100
+        power_mount_boost_ticks: 500
         mount_health: 8
+        power_mount_health: 12
         mount_boost: 0.5
+        power_mount_boost: 3.5
         slow_ticks: 1
         steer_speed: 0.6
-        slow_steer_speed: 0.1
+        power_steer_speed: 0.6
+        slow_steer_speed: 0.05
+        mount_boost_per_jump: 0.5
+        power_mount_boost_per_jump: 1.5
         effect_sound: horse_zombie_idle
         effect_sound_interval: 40
         effect_sound_volume: 32
+
+
 
 paste:
     icon: iron_pickaxe

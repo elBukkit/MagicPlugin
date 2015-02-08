@@ -147,22 +147,22 @@ beginner:
       arrow: 30,20,10
       blast: 30,40,50
       boon: 0,5,10
-      cloak: 10,20,30
-      collapse: 0,5,30
+      cloak: 0,0,30
+      collapse: 0,0,30
       cure: 1,5,10
       curse: 0,1,10
       cushion: 10,40,20
       fireball: 60,70,80
       flare: 110,80,60
-      torch: 80,60,50
+      torch: 0,60,50
       push: 10,20,40
       pull: 10,20,40
       peek: 10,30,40
       recall: 0,5,15
       shrink: 5,20,30
-      stash: 0,1,5
+      stash: 0,0,5
       blind: 0,1,5
-      reflect: 0,1,5
+      reflect: 0,0,5
 
 student:
     upgrade: apprentice
@@ -207,22 +207,22 @@ student:
       2: 5,   30,  20
       3: 0,   5,   50
     spells:
-      blink: 80,50,40
+      blink: 0,0,10
       arrowrain: 10,30,50
       boom: 20,50,60
-      shields: 1,15,50
+      shields: 0,15,50
       familiar: 10,30,40
       fling: 0,5,70
       fire: 50,70,60
       frost: 80,70,50
       gills: 10,11,20
-      grenade: 30,50,70
+      grenade: 0,20,70
       heal: 0,1,5
       arrow|2: 0,0,30
       monster: 5,20,30
       lightning: 40,50,30
       lava: 5,20,50
-      portal: 0,5,25
+      portal: 0,0,25
       stream: 0,10,30
       flamethrower: 0,5,10
       wither: 5,10,20
@@ -292,7 +292,6 @@ apprentice:
       grow: 1,10,20
       counterspell: 0,1,5
       tent: 0,0,5
-      silence: 0,1,5
       blob|2: 1,20,30
       shell|2: 1,20,30
       reflect|3: 0,1,5
@@ -368,13 +367,11 @@ master:
       3: 0,   5,   50
     spells:
       blink|3: 1,5,10
-      alter: 0,10,20
       cluster: 0,0,5
       bomb: 0,0,1
       invincible: 0,0,10
       laser: 0,0,10
       earthquake: 0,0,1
-      undo: 1,5,10
       mount: 0,1,5
       icbm: 0,0,1
       nuke: 0,0,1
@@ -461,6 +458,7 @@ engineer:
       2: 5,   30,  20
       3: 0,   5,   50
     spells:
+      undo: 1,5,10
       alter: 0,10,20
       blob: 0,10,40
       bridge: 0,5,10
@@ -478,38 +476,37 @@ engineer:
       shell|4: 1,20,30
       levitate: 0,0,10
     material_count:
-      0: 50, 20, 20,    0,  0
-      1: 1,  10,  30,   0,  0
-      2: 0,  5,   40,   30, 0
-      4: 0,  1,   10,   50, 0
-      6: 0,  0,    5,   10, 100
+      0: 50, 20, 20
+      1: 1,  10,  30
+      2: 0,  5,   40
+      4: 0,  1,   10
     materials:
-      erase: 0,0,0,1,100
-      map: 0,0,0,1,100
-      stone: 50,70,80,100,100
-      dirt: 50,50,70,80,100
-      sand: 20,30,40,70,100
-      gravel: 20,30,40,60,100
-      glass: 10,20,30,50,100
-      glowstone: 5,10,20,40,100
-      stained_clay: 1,5,15,45,100
-      stained_glass: 0,5,15,45,100
-      stained_glass_pane: 0,5,15,45,100
-      soul_sand: 5,10,20,40,100
-      grass: 5,10,20,40,100
-      wood: 5,10,20,40 ,100
-      log: 5,10,20,40,100
-      vine: 0,5,10,30,100
-      mycel: 0,5,10,30,100
-      quartz_block: 0,0,25,35,100
-      lapis_block: 0,0,25,35,100
-      leaves: 0,5,10,30,100
-      ice: 10,20,25,30,100
-      packed_ice: 10,20,25,30,100
-      obsidian: 0,0,15,30,100
-      redstone_block: 0,0,5,10,100
-      schematic|rainbow: 0,2,5,10,100
-      schematic|creeper_rug: 0,0,5,10,100
+      erase: 0,0,1
+      map: 0,0,1
+      stone: 50,70,80
+      dirt: 50,50,70
+      sand: 20,30,40
+      gravel: 20,30,40
+      glass: 10,20,30
+      glowstone: 5,10,20
+      stained_clay: 1,5,15
+      stained_glass: 0,5,15
+      stained_glass_pane: 0,5,15
+      soul_sand: 5,10,20
+      grass: 5,10,20
+      wood: 5,10,20
+      log: 5,10,20
+      vine: 0,5,10
+      mycel: 0,5,10
+      quartz_block: 0,0,25
+      lapis_block: 0,0,25
+      leaves: 0,5,10
+      ice: 10,20,25
+      packed_ice: 10,20,25
+      obsidian: 0,0,15
+      redstone_block: 0,0,5
+      schematic|rainbow: 0,2,5
+      schematic|creeper_rug: 0,0,5
 
 architect:
     inherit: engineer
@@ -576,91 +573,91 @@ architect:
       paste: 0,0,10
       volley: 2,25,35
     material_count:
-      1: 50, 20, 20,    0,  0
-      3: 1,  10,  30,   0,  0
-      5: 0,  5,   40,   30, 0
-      8: 0,  1,   10,   50, 0
-      10: 0,  0,    5,   10, 100
+      1:  50, 20, 20
+      3:  1,  10, 30
+      5:  0,  5,  40
+      8:  0,  1,  10
+      10: 0,  0,  1
     materials:
       copy: 0,0,10
       clone: 0,0,1
       replicate: 0,0,1
-      lava: 0,0,15,30,100
-      water: 0,0,30,90,100
-      wool|0: 80,60,50,20,100
-      wool|1: 80,60,50,20,100
-      wool|2: 80,60,50,20,100
-      wool|3: 80,60,50,20,100
-      wool|4: 80,60,50,20,100
-      wool|5: 80,60,50,20,100
-      wool|6: 80,60,50,20,100
-      wool|7: 80,60,50,20,100
-      wool|8: 80,60,50,20,100
-      wool|9: 80,60,50,20,100
-      wool|10: 80,60,50,20,100
-      wool|11: 80,60,50,20,100
-      wool|12: 80,60,50,20,100
-      wool|13: 80,60,50,20,100
-      wool|14: 80,60,50,20,100
-      wool|15: 80,60,50,20,100
-      stained_clay|0: 80,60,50,20,100
-      stained_clay|1: 80,60,50,20,100
-      stained_clay|2: 80,60,50,20,100
-      stained_clay|3: 80,60,50,20,100
-      stained_clay|4: 80,60,50,20,100
-      stained_clay|5: 80,60,50,20,100
-      stained_clay|6: 80,60,50,20,100
-      stained_clay|7: 80,60,50,20,100
-      stained_clay|8: 80,60,50,20,100
-      stained_clay|9: 80,60,50,20,100
-      stained_clay|10: 80,60,50,20,100
-      stained_clay|11: 80,60,50,20,100
-      stained_clay|12: 80,60,50,20,100
-      stained_clay|13: 80,60,50,20,100
-      stained_clay|14: 80,60,50,20,100
-      stained_clay|15: 80,60,50,20,100
-      stained_glass|0: 60,40,30,20,100
-      stained_glass|1: 60,40,30,20,100
-      stained_glass|2: 60,40,30,20,100
-      stained_glass|3: 60,40,30,20,100
-      stained_glass|4: 60,40,30,20,100
-      stained_glass|5: 60,40,30,20,100
-      stained_glass|6: 60,40,30,20,100
-      stained_glass|7: 60,40,30,20,100
-      stained_glass|8: 60,40,30,20,100
-      stained_glass|9: 60,40,30,20,100
-      stained_glass|10: 60,40,30,20,100
-      stained_glass|11: 60,40,30,20,100
-      stained_glass|12: 60,40,30,20,100
-      stained_glass|13: 60,40,30,20,100
-      stained_glass|14: 60,40,30,20,100
-      stained_glass_pane|15: 60,40,30,20,100
-      stained_glass_pane|0: 60,40,30,20,100
-      stained_glass_pane|1: 60,40,30,20,100
-      stained_glass_pane|2: 60,40,30,20,100
-      stained_glass_pane|3: 60,40,30,20,100
-      stained_glass_pane|4: 60,40,30,20,100
-      stained_glass_pane|5: 60,40,30,20,100
-      stained_glass_pane|6: 60,40,30,20,100
-      stained_glass_pane|7: 60,40,30,20,100
-      stained_glass_pane|8: 60,40,30,20,100
-      stained_glass_pane|9: 60,40,30,20,100
-      stained_glass_pane|10: 60,40,30,20,100
-      stained_glass_pane|11: 60,40,30,20,100
-      stained_glass_pane|12: 60,40,30,20,100
-      stained_glass_pane|13: 60,40,30,20,100
-      stained_glass_pane|14: 60,40,30,20,100
-      stained_glass_pane|15: 60,40,30,20,100
-      schematic|rainbow: 0,2,5,10,100
-      schematic|lantern: 0,1,20,50,100
-      schematic|creeper_rug: 0,0,5,10,100
-      schematic|elder_tree: 0,0,0,1,100
-      schematic|church: 0,0,5,10,100
-      schematic|blacksmith: 0,0,5,10,100
-      schematic|garden_house: 0,5,10,15,100
-      schematic|compact_house: 5,10,15,20,100
-      schematic|small_house: 5,10,15,20,100
-      schematic|flare_beacon: 0,0,1,10,100
+      lava: 0,0,15
+      water: 0,0,30
+      wool|0: 80,60,50
+      wool|1: 80,60,50
+      wool|2: 80,60,50
+      wool|3: 80,60,50
+      wool|4: 80,60,50
+      wool|5: 80,60,50
+      wool|6: 80,60,50
+      wool|7: 80,60,50
+      wool|8: 80,60,50
+      wool|9: 80,60,50
+      wool|10: 80,60,50
+      wool|11: 80,60,50
+      wool|12: 80,60,50
+      wool|13: 80,60,50
+      wool|14: 80,60,50
+      wool|15: 80,60,50
+      stained_clay|0: 80,60,50
+      stained_clay|1: 80,60,50
+      stained_clay|2: 80,60,50
+      stained_clay|3: 80,60,50
+      stained_clay|4: 80,60,50
+      stained_clay|5: 80,60,50
+      stained_clay|6: 80,60,50
+      stained_clay|7: 80,60,50
+      stained_clay|8: 80,60,50
+      stained_clay|9: 80,60,50
+      stained_clay|10: 80,60,50
+      stained_clay|11: 80,60,50
+      stained_clay|12: 80,60,50
+      stained_clay|13: 80,60,50
+      stained_clay|14: 80,60,50
+      stained_clay|15: 80,60,50
+      stained_glass|0: 60,40,30
+      stained_glass|1: 60,40,30
+      stained_glass|2: 60,40,30
+      stained_glass|3: 60,40,30
+      stained_glass|4: 60,40,30
+      stained_glass|5: 60,40,30
+      stained_glass|6: 60,40,30
+      stained_glass|7: 60,40,30
+      stained_glass|8: 60,40,30
+      stained_glass|9: 60,40,30
+      stained_glass|10: 60,40,30
+      stained_glass|11: 60,40,30
+      stained_glass|12: 60,40,30
+      stained_glass|13: 60,40,30
+      stained_glass|14: 60,40,30
+      stained_glass_pane|15: 60,40,30
+      stained_glass_pane|0: 60,40,30
+      stained_glass_pane|1: 60,40,30
+      stained_glass_pane|2: 60,40,30
+      stained_glass_pane|3: 60,40,30
+      stained_glass_pane|4: 60,40,30
+      stained_glass_pane|5: 60,40,30
+      stained_glass_pane|6: 60,40,30
+      stained_glass_pane|7: 60,40,30
+      stained_glass_pane|8: 60,40,30
+      stained_glass_pane|9: 60,40,30
+      stained_glass_pane|10: 60,40,30
+      stained_glass_pane|11: 60,40,30
+      stained_glass_pane|12: 60,40,30
+      stained_glass_pane|13: 60,40,30
+      stained_glass_pane|14: 60,40,30
+      stained_glass_pane|15: 60,40,30
+      schematic|rainbow: 0,2,5
+      schematic|lantern: 0,1,20
+      schematic|creeper_rug: 0,0,5
+      schematic|elder_tree: 0,0,1
+      schematic|church: 0,0,5
+      schematic|blacksmith: 0,0,5
+      schematic|garden_house: 0,5,10
+      schematic|compact_house: 5,10,15
+      schematic|small_house: 5,10,15
+      schematic|flare_beacon: 0,0,1
 
 #
 # "Battle" Wand (sword-wands)
@@ -772,7 +769,6 @@ battle:
       wither: 5,10,20
       disarm: 0,0,1
       missile: 5,10,30
-      silence: 0,1,5
       blind: 1,5,10
 
 #
@@ -780,12 +776,10 @@ battle:
 #
 
 broom:
-    levels: 1,2,3
-    min_enchant_level: 1
-    max_enchant_level: 3
+    inherit: default
     max_power: 0.9
     power:
-      0:   100,100,80
-      0^1: 0,   0, 40
-      0^2: 0 ,  0, 20
-      0^3: 0 ,  0, 10
+      0:   100,100, 80
+      0^1: 0,   20, 40
+      0^2: 0 ,  10, 20
+      0^3: 0 ,  0,  10

@@ -66,7 +66,7 @@ public class EnchantingController implements Listener {
 			}
 			Wand wandItem = new Wand(controller, event.getItem());
 			Player player = event.getEnchanter();
-			if (!wandItem.isModifiable()) {
+			if (!wandItem.isModifiable() && wandItem.getPath() == null) {
 				event.setCancelled(true);
 				return;
 			}
