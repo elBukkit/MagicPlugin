@@ -14,11 +14,13 @@ package com.elmakers.mine.bukkit.utility;
  */
 public class WeightedPair<T extends Object> implements Comparable<WeightedPair<? extends Object>> {
     private final Float threshold;
+    private final Float rawThreshold;
     private final T value;
 
     @SuppressWarnings("unchecked")
-    public WeightedPair(Float threshold, String value, Class<T> parseAs) {
+    public WeightedPair(Float threshold, Float rawThreshold, String value, Class<T> parseAs) {
         this.threshold = threshold;
+        this.rawThreshold = rawThreshold;
         // This is pretty ugly, but not as ugly as trying to
         // infer the generic type argument.
         if (parseAs == Integer.class) {
@@ -34,13 +36,18 @@ public class WeightedPair<T extends Object> implements Comparable<WeightedPair<?
         }
     }
 
-    public WeightedPair(Float threshold, T value) {
+    public WeightedPair(Float threshold, Float rawThreshold, T value) {
         this.threshold = threshold;
         this.value = value;
+        this.rawThreshold = rawThreshold;
     }
 
     public Float getThreshold() {
         return threshold;
+    }
+
+    public Float getRawThreshold() {
+        return rawThreshold;
     }
 
     public T getValue() {

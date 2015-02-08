@@ -75,12 +75,14 @@ public class RandomUtils {
                 key = key.replace("^", ".");
 
                 String[] pieces = value.split(",");
+                float weight = 0;
                 if (pieces != null && pieces.length > 1) {
-                    currentThreshold += lerp(pieces, levelIndex, nextLevelIndex, distance);
+                    weight = lerp(pieces, levelIndex, nextLevelIndex, distance);
                 } else {
-                    currentThreshold += Float.parseFloat(value);
+                    weight = Float.parseFloat(value);
                 }
-                probabilityMap.add(new WeightedPair<T>(currentThreshold, key, valueClass));
+                currentThreshold += weight;
+                probabilityMap.add(new WeightedPair<T>(currentThreshold, weight, key, valueClass));
             }
         }
     }
@@ -98,8 +100,9 @@ public class RandomUtils {
             WeightedPair<T> lastPair = base.getLast();
             float threshold = lastPair.getThreshold();
             for (WeightedPair<T> inheritPair : inherit) {
-                threshold += inheritPair.getThreshold();
-                base.add(new WeightedPair<T>(threshold, inheritPair.getValue()));
+                float weight = inheritPair.getThreshold();
+                threshold += weight;
+                base.add(new WeightedPair<T>(threshold, inheritPair.getRawThreshold(), inheritPair.getValue()));
             }
         }
         return base;
