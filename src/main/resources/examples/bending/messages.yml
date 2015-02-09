@@ -29,6 +29,7 @@ categories:
     airbending:
         name: Airbending
         description: Spells for moving things with air
+        color: 'DDDDDD'
     waterbending:
         name: Waterbending
         description: Control the element of water
@@ -41,6 +42,10 @@ categories:
         name: Firebending
         description: Control the element of fire
         color: 'FF0000'
+    avatar:
+        name: Avatar
+        description: Avatar State spells
+        color: 'FFFFFF'
 
 wands:
     air_student:

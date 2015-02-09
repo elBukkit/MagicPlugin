@@ -2,6 +2,60 @@
 # Bending spells
 #
 
+### FIREBENDING
+
 fireball:
      category: firebending
+     enabled: true
+
+fire:
+     category: firebending
+     enabled: true
+
+lightning:
+     category: firebending
+     enabled: true
+
+flamethrower:
+     category: firebending
+     enabled: true
+
+### AIRBENDING
+
+push:
+     category: airbending
+     enabled: true
+
+pull:
+     category: airbending
+     enabled: true
+
+fling:
+     category: airbending
+     enabled: true
+
+### WATERBENDING
+
+stream:
+     category: waterbending
+     enabled: true
+
+cushion:
+     category: waterbending
+     enabled: true
+
+## EARTHBENDING
+
+blob:
+     category: earthbending
+     enabled: true
+
+breach:
+     category: earthbending
+     enabled: true
+
+### AVATAR
+
+levitate:
+     category: avatar
      enabled: true
