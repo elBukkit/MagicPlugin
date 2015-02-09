@@ -1309,7 +1309,7 @@ frost|3:
     costs:
         mana: 125
 
-lightning:
+elemental:
     icon: raw_fish:2
     category: firebending
     class: LightningSpell
@@ -1334,7 +1334,7 @@ lightning:
     costs:
         mana: 80
 
-storm:
+elemental:
     icon: raw_fish:3
     category: firebending
     class: LightningSpell
@@ -1610,7 +1610,7 @@ mount:
 
 icbm:
     icon: golden_carrot
-    category: dark
+    category: demolitions
     class: ProjectileSpell
     pvp_restricted: true
     worth: 500
@@ -1698,7 +1698,7 @@ arrowrain:
 
 meteor:
     icon: double_plant:4
-    category: dark
+    category: demolitions
     class: ProjectileSpell
     pvp_restricted: true
     worth: 90
@@ -2465,7 +2465,7 @@ day:
 
 night:
     icon: ink_sack:0
-    category: staff
+    category: elemental
     hidden: true
     worth: 130
     actions:
@@ -2487,6 +2487,7 @@ night:
         mana: 150
 
 time:
+    hidden: true
     icon: watch
     category: master
     class: TorchSpell
@@ -2578,7 +2579,7 @@ stalactite:
 
 grenade:
     icon: tnt
-    category: combat
+    category: demolitions
     pvp_restricted: true
     worth: 25
     actions:
@@ -2599,7 +2600,7 @@ grenade:
 
 frag:
     icon: apple
-    category: dark
+    category: demolitions
     pvp_restricted: true
     worth: 150
     actions:
@@ -2621,7 +2622,7 @@ frag:
 
 cluster:
     icon: red_rose:3
-    category: dark
+    category: demolitions
     pvp_restricted: true
     worth: 160
     actions:
@@ -2647,7 +2648,7 @@ cluster:
 
 bomb:
     icon: double_plant:1
-    category: dark
+    category: demolitions
     pvp_restricted: true
     worth: 250
     actions:
@@ -2903,8 +2904,9 @@ stash:
         target: self
 
 pickpocket:
+    hidden: true
     icon: shears
-    category: dark
+    category: staff
     class: StashSpell
     worth: 1000
     effects:
@@ -2917,7 +2919,7 @@ pickpocket:
         target_type: Player
         target: other
         type: inventory
-        range: 4
+        range: 32
     costs:
         mana: 75
 
@@ -3808,7 +3810,7 @@ superiterate:
 
 flamethrower:
     icon: blaze_powder
-    category: firebending
+    category: combat
     class: IterateSpell
     worth: 90
     effects:
@@ -3838,7 +3840,7 @@ flamethrower:
 
 laser:
     icon: ink_sack:11
-    category: dark
+    category: demolitions
     class: IterateSpell
     worth: 130
     effects:
@@ -4003,6 +4005,7 @@ recall:
         target: self
 
 respawn:
+    hidden: true
     icon: compass
     category: master
     class: CommandSpell
@@ -4122,6 +4125,7 @@ fireball:
         mana: 15
 
 map:
+    hidden: true
     icon: map
     worth: 45
     category: master
@@ -4132,8 +4136,9 @@ map:
         mana: 15
 
 camera:
+    hidden: true
     icon: double_plant
-    category: light
+    category: specialty
     class: CameraSpell
     worth: 8
     effects:
@@ -4203,6 +4208,7 @@ cage:
         mana: 50
 
 wolfhouse:
+    hidden: true
     icon: sapling:5
     category: master
     class: ConstructSpell

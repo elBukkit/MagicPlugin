@@ -66,6 +66,9 @@ paths:
     architect:
         name: Architect
         description: Has super-powerful engineering spells
+    battle:
+        name: Battle
+        description: Combat spells only
     broom:
         name: Broom
         description: Flying broom upgrades
