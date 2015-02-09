@@ -237,4 +237,14 @@ public abstract class UndoableSpell extends TargetingSpell {
         }
         return target;
     }
+
+    @Override
+    public long getDuration()
+    {
+        if (!bypassUndo && autoUndo != 0)
+        {
+            return autoUndo;
+        }
+        return super.getDuration();
+    }
 }

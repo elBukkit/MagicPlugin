@@ -778,6 +778,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
             bypassPvpRestriction = parameters.getBoolean("bp", bypassPvpRestriction);
             bypassPermissions = parameters.getBoolean("bypass_permissions", bypassPermissions);
             requirePassthrough = parameters.getBoolean("require_passthrough", requirePassthrough);
+            duration = parameters.getInt("duration", duration);
         }
 
         effects.clear();
@@ -1149,8 +1150,6 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     }
 
     protected void processParameters(ConfigurationSection parameters) {
-        duration = parameters.getInt("duration", duration);
-
         fizzleChance = (float)parameters.getDouble("fizzle_chance", fizzleChance);
         backfireChance = (float)parameters.getDouble("backfire_chance", backfireChance);
 
