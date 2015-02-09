@@ -378,10 +378,10 @@ public class LevitateSpell extends TargetingSpell implements Listener
         mountInvisible = parameters.getBoolean("mount_invisible", true);
         stashItem = parameters.getBoolean("stash_item", false);
 
-        mountBoostTicks += mage.getPower() * parameters.getInt("power_mount_boost_ticks", 40);
-        mountHealth += mage.getPower() * parameters.getDouble("power_mount_health", 2);
+        mountBoostTicks += mage.getPower() * parameters.getInt("power_mount_boost_ticks", 0);
+        mountHealth += mage.getPower() * parameters.getDouble("power_mount_health", 0);
         moveDistance -= mage.getPower() * parameters.getDouble("power_steer_speed", 0);
-        mountBoostPerJump += mage.getPower() * parameters.getDouble("power_mount_boost_per_jump", 0.5);
+        mountBoostPerJump += mage.getPower() * parameters.getDouble("power_mount_boost_per_jump", 0);
 
         if (moveDistance < 0) {
             moveDistance = 0;
@@ -468,9 +468,9 @@ public class LevitateSpell extends TargetingSpell implements Listener
 
         crashEffects = getPotionEffects(parameters);
 
-        double speedBonus = parameters.getDouble("power_speed", 1);
-        double boostBonus = parameters.getDouble("power_boost", 1);
-        double maxSpeedBonus = parameters.getDouble("power_mount_boost", 1);
+        double speedBonus = parameters.getDouble("power_speed", 0);
+        double boostBonus = parameters.getDouble("power_boost", 0);
+        double maxSpeedBonus = parameters.getDouble("power_mount_boost", 0);
         thrustSpeed += mage.getPower() * speedBonus;
         castBoost += mage.getPower() * boostBonus;
         maxMountBoost += mage.getPower() * maxSpeedBonus;
