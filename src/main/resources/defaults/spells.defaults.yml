@@ -4498,7 +4498,7 @@ broom:
         power_mount_boost: 3.5
         slow_ticks: 1
         steer_speed: 0.6
-        power_steer_speed: 0.6
+        power_steer_speed: 2
         slow_steer_speed: 0.05
         mount_boost_per_jump: 0.5
         power_mount_boost_per_jump: 1.5

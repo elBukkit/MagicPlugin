@@ -123,15 +123,16 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	private MaterialAndData icon = null;
     private MaterialAndData upgradeIcon = null;
 	
-	private float costReduction = 0;
-	private float cooldownReduction = 0;
-	private float damageReduction = 0;
-	private float damageReductionPhysical = 0;
-	private float damageReductionProjectiles = 0;
-	private float damageReductionFalling = 0;
-	private float damageReductionFire = 0;
-	private float damageReductionExplosions = 0;
-	private float power = 0;
+	protected float costReduction = 0;
+    protected float cooldownReduction = 0;
+    protected float damageReduction = 0;
+    protected float damageReductionPhysical = 0;
+    protected float damageReductionProjectiles = 0;
+    protected float damageReductionFalling = 0;
+    protected float damageReductionFire = 0;
+    protected float damageReductionExplosions = 0;
+    private float power = 0;
+
 	private boolean hasInventory = false;
 	private boolean locked = false;
     private boolean forceUpgrade = false;

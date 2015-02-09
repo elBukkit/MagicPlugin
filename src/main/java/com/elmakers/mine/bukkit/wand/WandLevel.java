@@ -238,12 +238,12 @@ public class WandLevel {
         List<Integer> propertiesAvailable = new ArrayList<Integer>();
 
         double power = wand.getPower();
-        double damageReduction = wand.getDamageReduction();
-        double damageReductionPhysical = wand.getDamageReductionPhysical();
-        double damageReductionProjectiles = wand.getDamageReductionProjectiles();
-        double damageReductionFalling = wand.getDamageReductionFalling();
-        double damageReductionFire = wand.getDamageReductionFire();
-        double damageReductionExplosions = wand.getDamageReductionExplosions();
+        double damageReduction = wand.damageReduction;
+        double damageReductionPhysical = wand.damageReductionPhysical;
+        double damageReductionProjectiles = wand.damageReductionProjectiles;
+        double damageReductionFalling = wand.damageReductionFalling;
+        double damageReductionFire = wand.damageReductionFire;
+        double damageReductionExplosions = wand.damageReductionExplosions;
         double healthRegeneration = wand.getHealthRegeneration();
         double hungerRegeneration = wand.getHungerRegeneration();
         double haste = wand.getHaste();
@@ -263,26 +263,28 @@ public class WandLevel {
         if (damageReductionProjectilesProbability.size() > 0 && damageReductionProjectiles < path.getMaxDamageReductionProjectiles()) {
             propertiesAvailable.add(4);
         }
-        if (damageReductionProjectilesProbability.size() > 0 && damageReductionProjectiles < path.getMaxDamageReductionProjectiles()) {
+        if (damageReductionFallingProbability.size() > 0 && damageReductionFalling < path.getMaxDamageReductionFalling()) {
             propertiesAvailable.add(5);
         }
-        if (damageReductionFallingProbability.size() > 0 && damageReductionFalling < path.getMaxDamageReductionFalling()) {
+        if (damageReductionFireProbability.size() > 0 && damageReductionFire < path.getMaxDamageReductionFire()) {
             propertiesAvailable.add(6);
         }
-        if (damageReductionFireProbability.size() > 0 && damageReductionFire < path.getMaxDamageReductionFire()) {
+        if (damageReductionExplosionsProbability.size() > 0 && damageReductionExplosions < path.getMaxDamageReductionExplosions()) {
             propertiesAvailable.add(7);
         }
-        if (damageReductionExplosionsProbability.size() > 0 && damageReductionExplosions < path.getMaxDamageReductionExplosions()) {
+        if (healthRegenerationProbability.size() > 0 && healthRegeneration < path.getMaxHealthRegeneration()) {
             propertiesAvailable.add(8);
         }
-        if (healthRegenerationProbability.size() > 0 && healthRegeneration < path.getMaxHealthRegeneration()) {
+        if (hungerRegenerationProbability.size() > 0 && hungerRegeneration < path.getMaxHungerRegeneration()) {
             propertiesAvailable.add(9);
         }
-        if (hungerRegenerationProbability.size() > 0 && hungerRegeneration < path.getMaxHungerRegeneration()) {
+        if (hasteProbability.size() > 0 && haste < path.getMaxHaste()) {
             propertiesAvailable.add(10);
         }
-        if (hasteProbability.size() > 0 && haste < path.getMaxHaste()) {
-            propertiesAvailable.add(11);
+
+        // Make sure we give them *something* if something is available
+        if (propertiesAvailable.size() > 0 && !addedMaterials && !addedSpells && propertyCount == 0) {
+            propertyCount = 1;
         }
 
         while (propertyCount != null && propertyCount-- > 0 && propertiesAvailable.size() > 0)
@@ -430,7 +432,7 @@ public class WandLevel {
 			wandProperties.set("uses", Math.min(path.getMaxUses(), RandomUtils.weightedRandom(useProbability)));
 		}
 
-		// Set properties.
+        // Set properties.
 		wand.loadProperties(wandProperties);
 		return addedMaterials || addedSpells || addedProperties;
 	}

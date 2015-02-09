@@ -380,7 +380,9 @@ public class LevitateSpell extends TargetingSpell implements Listener
 
         mountBoostTicks += mage.getPower() * parameters.getInt("power_mount_boost_ticks", 0);
         mountHealth += mage.getPower() * parameters.getDouble("power_mount_health", 0);
-        moveDistance -= mage.getPower() * parameters.getDouble("power_steer_speed", 0);
+        if (moveDistance != 0) {
+            moveDistance += mage.getPower() * parameters.getDouble("power_steer_speed", 0);
+        }
         mountBoostPerJump += mage.getPower() * parameters.getDouble("power_mount_boost_per_jump", 0);
 
         if (moveDistance < 0) {

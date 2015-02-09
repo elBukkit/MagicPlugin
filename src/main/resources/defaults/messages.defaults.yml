@@ -284,7 +284,8 @@ spells:
         cast: Your broom springs to life!
         deactivate: Your broom quiets down.
         crash: CRASH!
-        fail: Not enough room to take off
+        fail: Not enough room to take off!
+        cursed: You are too stunned to fly!
     boon:
         name: Boon
         description: Makes you temporarily superpowered
