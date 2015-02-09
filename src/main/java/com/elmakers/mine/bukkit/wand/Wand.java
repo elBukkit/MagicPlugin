@@ -563,6 +563,10 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
     }
 
      public void takeOwnership(Player player, boolean setBound, boolean setKeep) {
+        if (mage != null && (ownerId == null || ownerId.length() == 0))
+        {
+            mage.sendMessage(controller.getMessages().get("wand.bound_instructions", "").replace("$wand", getName()));
+        }
         owner = ChatColor.stripColor(player.getDisplayName());
         ownerId = player.getUniqueId().toString();
 		if (setBound) {
@@ -572,10 +576,6 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 			keep = true;
 		}
 		updateLore();
-        if (mage != null)
-        {
-            mage.sendMessage(controller.getMessages().get("wand.bound_instructions", "").replace("$wand", getName()));
-        }
 	}
 	
 	public ItemStack getItem() {
@@ -2456,11 +2456,13 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         }
 		
 		// Check for auto-bind
-        // Don't do this for op'd players, effectively, so
-        // they can create and give unbound wands.
 		if (bound)
         {
-            if (ownerId == null || ownerId.length() == 0 || owner == null || !owner.equals(mage.getPlayer().getDisplayName()))
+            String mageName = ChatColor.stripColor(mage.getPlayer().getDisplayName());
+            String mageId = mage.getPlayer().getUniqueId().toString();
+            boolean ownerRenamed = owner != null && ownerId != null && ownerId.equals(mageId) && !owner.equals(mageName);
+
+            if (ownerId == null || ownerId.length() == 0 || owner == null || ownerRenamed)
             {
                 takeOwnership(mage.getPlayer());
                 needsSave = true;
