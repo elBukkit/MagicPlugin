@@ -65,6 +65,16 @@ broomstick:
   row_2: " i "
   row_3: "wow"
 
+camera:
+  output: camera
+  output_type: wand
+  materials:
+    o: nether_star
+    i: dispenser
+  row_1: o
+  row_2: i
+  row_3:
+
 # This is here to disable crafting of other items, even if
 # they aren't craftable.
 wolf:
