@@ -533,24 +533,28 @@ wolf:
     active_spell: levitate
     overrides: max_dimension 1024
     spells:
-        - arrow|4
         - levitate
+        - arrow|4
         - fling|2
         - blink|3
+        - day
+        - recall
+        - gather
+        - blast
+        - absorb
+        - place
+        - fill
         - superblob
+        - supershell
         - backup
         - superrepair
-        - day
-        - gather
+        - superiterate
         - undo
         - stash
         - emp
         - force
-        - fill
         - pillar
-        - place
         - bridge
-        - absorb
         - recurse
         - boom|2
         - fireball
@@ -562,7 +566,6 @@ wolf:
         - wolfhouse
         - disarm
         - superconvert
-        - supershell
         - superpyramid
         - superbox
         - superdisc
@@ -582,7 +585,6 @@ wolf:
         - stalactite
         - blob
         - repair
-        - blast
         - alter
         - superalter
         - toss
@@ -597,7 +599,6 @@ wolf:
         - supercollapse
         - iterate
         - nuke
-        - recall
         - commit
         - familiar
         - monster
@@ -608,7 +609,6 @@ wolf:
         - phase
         - portal
         - disintegrate
-        - superiterate
         - neutron
         - laser
         - flamethrower
@@ -628,23 +628,23 @@ wolf:
         - mount
         - counterspell
     materials:
+        - erase|15
+        - copy|16
+        - replicate|17
+        - clone|18
+        - stained_clay|19
+        - stained_glass|20
+        - stationary_water|22
+        - stationary_lava|23
+        - stained_glass_pane
+        - wool
         - lapis_block
         - water
-        - stationary_water
-        - stationary_lava
         - lava
         - glowstone
         - glass
-        - erase
-        - copy
-        - clone
         - map
-        - replicate
         - soul_sand
-        - wool
-        - stained_clay
-        - stained_glass
-        - stained_glass_pane
         - dirt
         - grass
         - wood

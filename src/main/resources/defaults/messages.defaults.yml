@@ -710,10 +710,11 @@ spells:
         cast_self: You turn yourself invisible
     undo:
         name: Rollback
-        description: Undo your last spell
-        cast: "&5Your undo your &6$spell cast"
+        description: Undo the targeted spell
+        cast: "&5You undo &d&o$target's&r&6 $spell &5cast"
         alternate: "&5You cancel your &6$spell &5cast"
         fail: Nothing to undo
+        no_target: Nothing to undo there
     commit:
         name: Commit
         description: Make your spells permanent
@@ -721,13 +722,6 @@ spells:
         cast_player: You commit $target's spells
         cast: Your Rollback queue has been cleared
         fail: Nothing to commit
-    rewind:
-        name: Rewind
-        description: Undo the target spell
-        usage: Will undo the targeted spell
-        cast: "&5You undo &d&o$target's&r&6 $spell &5cast"
-        fail: Nothing to undo
-        no_target: Nothing to undo there
     counterspell:
         name: Counterspell
         description: Counter target player's spell

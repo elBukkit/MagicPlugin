@@ -2628,8 +2628,9 @@ cluster:
         cast:
         -  class: TNTAction
            actions:
-          -  class: TNTAction
-             count: 4
+           -  class: TNTAction
+              count: 4
+              origin_at_target: true
     effects:
         cast:
         -  class: EffectSingle
@@ -3999,6 +4000,7 @@ recall:
         icon_marker: redstone_torch_on
         loud: true
         cooldown: 2000
+        target: self
 
 respawn:
     icon: compass
