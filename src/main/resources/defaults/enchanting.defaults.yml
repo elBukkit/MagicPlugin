@@ -163,6 +163,7 @@ beginner:
       stash: 0,0,5
       blind: 0,1,5
       reflect: 0,0,5
+      stun: 0,5,15
 
 student:
     upgrade: apprentice
@@ -233,6 +234,8 @@ student:
       tag: 0,1,5
       blob: 1,20,30
       disarm: 0,0,2
+      entangle: 0,0,20
+      stun|2: 0,5,15
 
 apprentice:
     upgrade: master
@@ -304,6 +307,8 @@ apprentice:
       arrow|3: 0,0,30
       fire|2: 50,70,60
       rubberize: 2,10,20
+      wound: 0,10,20
+      stun|3: 0,5,15
 
 master:
     required_spells:
@@ -392,6 +397,8 @@ master:
       fire|3: 50,70,60
       kill: 2,10,20
       torture: 2,10,20
+      petrify: 0,10,30
+      lift: 1,5,10
 
 #
 # The move from "master" to engineer requires the player to aquire some basic

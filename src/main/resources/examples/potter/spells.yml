@@ -1767,72 +1767,12 @@ locomotomortus:
         hitbox: true
 
 incarcerous:
-    icon: gold_ingot
+    inherit: petrify
     category: dark
-    class: ConstructSpell
-    worth: 45
-    pvp_restricted: true
-    effects:
-        cast:
-        -  class: EffectSingle
-           sound: wither_shoot
-        -  class: EffectTrail
-           effect: step_sound
-    parameters:
-        target: other
-        target_type: LivingEntity
-        allow_max_range: true
-        range: 32
-        fov: .1
-        radius: 1
-        type: cuboid
-        brush: birch_fence
-        thickness: 1
-        orient_dimension_max: 0
-        orient_dimension_min: 0
-        orient: false
-        transparent: transparent_to_construction
-        check_destructible: true
-        destructible: air
-        undo: 5000
-        breakable: 1
-        bypass_build: true
-        cooldown: 8000
-    costs:
-        mana: 70
 
 imperio:
-    icon: ink_sack:0
+    inherit: force
     category: unforgiveable
-    class: ForceSpell
-    pvp_restricted: true
-    cast_on_no_target: true
-    worth: 200
-    effects:
-        cast:
-        -  class: EffectSingle
-           sound: wither_spawn
-           location: origin
-           effectlib:
-             class: DnaEffect
-             particlesBase: 0
-             particlesHelix: 7
-             particleHelix: spell_mob
-             particleBase1: spell_mob
-             particleBase2: spell_mob
-             iterations: 10
-             lengthGrow: 20
-    parameters:
-        target_type: LivingEntity
-        target_breakables: 1
-        target: other_entity
-        range: 32
-        item_force: 1
-        entity_force: 3
-        cooldown: 4000
-        bypass_backfire: true
-    costs:
-        mana: 170
 
 impervius:
     icon: bucket
@@ -2412,6 +2352,7 @@ periculum:
         range: 16
     costs:
         mana: 30
+
 periculux:
     name: Periculux
     description: Shoot a Rainbow Firework!
@@ -2458,69 +2399,8 @@ periculux:
         mana: 30
 
 petrificustotalus:
-    alias: petrificus
-    icon: nether_brick_item
+    inherit: petrify
     category: dada
-    pvp_restricted: true
-    cast_on_no_target: true
-    worth: 50
-    actions:
-        cast:
-        -  class: PotionEffectAction
-        -  class: FallProtectionAction
-    effects:
-        cast:
-        -  class: EffectSingle
-           sound: wither_spawn
-        -  class: EffectSingle
-           sound: burp
-           effectlib:
-             class: ConeEffect
-             iterations: 5
-             particle: fireworks_spark
-             lengthGrow: 0.32
-        -  class: EffectSingle
-           location: target
-           color: F5EFFB
-           firework: ball
-        - class: EffectSingle
-          sound: orb_pickup
-          location: target
-          particle_override: particleOrbital
-          effectlib:
-             class: AtomEffect
-             particleNucleus: fireworks_spark
-             particleOrbital: fireworks_spark
-             iterations: 40
-        no_target:
-        -  class: EffectSingle
-           sound: wither_spawn
-        -  class: EffectSingle
-           sound: burp
-           effectlib:
-             class: ConeEffect
-             iterations: 15
-             particle: fireworks_spark
-             lengthGrow: 0.4
-        -  class: EffectSingle
-           location: target
-           color: F5EFFB
-           firework: burst
-    costs:
-        mana: 100
-    parameters:
-        range: 48
-        target_type: LivingEntity
-        target_breakables: 1
-        target: other
-        duration: 4000
-        effect_slow: 20
-        effect_jump: -20
-        effect_confusion: 5
-        protection_count: 1000
-        cooldown: 10000
-        effect_absorption: 4
-        hitbox: true
 
 webbing:
     icon: web
@@ -2932,109 +2812,8 @@ reparomaxima:
         mana: 500
 
 sectumsempra:
-    alias: sectum
-    icon: quartz
+    inherit: wound
     category: dark
-    pvp_restricted: true
-    cast_on_no_target: true
-    worth: 25
-    actions:
-        cast:
-        -  class: DamageAction
-    effects:
-        cast:
-        -  class: EffectSingle
-           sound: wither_shoot
-           sound_volume: 1
-        -  class: EffectSingle
-           sound: creeper_death
-           sound_volume: 5
-           effectlib:
-             class: ConeEffect
-             iterations: 15
-             particle: spell_mob
-             color: 8A0829
-             lengthGrow: 0.4
-        -  class: EffectSingle
-           location: target
-           color: 8A0829
-           firework: burst
-           effectlib:
-             class: BleedEffect
-             iterations: 2
-             hurt: false
-           effectlib:
-             class: SphereEffect
-             iterations: 16
-             period: 1
-             particle: drip_lava
-             radius: .5
-             particles: 15
-        no_target:
-        -  class: EffectSingle
-           sound: wither_shoot
-           sound_volume: 1
-        -  class: EffectSingle
-           sound: creeper_death
-           sound_volume: 5
-           effectlib:
-             class: ConeEffect
-             iterations: 15
-             particle: spell_mob
-             color: 8A0829
-             lengthGrow: 0.4
-        -  class: EffectSingle
-           location: target
-           color: 8A0829
-           firework: burst
-    parameters:
-        target_type: LivingEntity
-        allow_max_range: false
-        range: 15
-        hitbox: true
-        fov: 0.2
-        damage: 6
-        cooldown: 10000
-        target_breakables: 3
-    costs:
-        mana: 120
-
-slash:
-    hidden: true
-    alias: slash
-    icon: quartz
-    category: melee
-    pvp_restricted: true
-    cast_on_no_target: true
-    worth: 25
-    actions:
-        cast:
-        -  class: DamageAction
-    effects:
-        cast:
-        -  class: EffectSingle
-           sound: irongolem_hit
-           effectlib:
-             class: ConeEffect
-             iterations: 15
-             particle: drip_lava
-        -  class: EffectSingle
-           location: target
-           effectlib:
-             class: BleedEffect
-             iterations: 2
-             hurt: false
-    parameters:
-        target_type: LivingEntity
-        allow_max_range: false
-        range: 4
-        target: other_entity
-        damage: 7
-        fov: 1
-        cooldown: 2000
-        target_breakables: 0
-    costs:
-        mana: 25
 
 silencio:
     icon: ink_sack:3
@@ -3230,104 +3009,13 @@ expulsion:
         cooldown: 1000
         check_protection: true
 
-jail:
-    icon: iron_fence
+cage:
+    enabled: true
     category: staff
-    class: ConstructSpell
-    worth: 250
-    effects:
-        cast:
-        -  class: EffectSingle
-           sound: anvil_use
-        -  class: EffectTrail
-           effect: step_sound
-    parameters:
-        target: other_entity
-        target_type: Player
-        allow_max_range: false
-        check_destructible: true
-        range: 48
-        radius: 8
-        type: sphere
-        cooldown: 5000
-        undo: 120000
-        brush: schematic|cage
-        transparent: transparent_to_construction
-        bypass_backfire: true
 
 stupefy:
-    icon: ink_sack:4
+    inherit: stun
     category: dada
-    pvp_restricted: true
-    worth: 40
-    actions:
-        cast:
-        - class: DamageAction
-        - class: PotionEffectAction
-    effects:
-        cast:
-        -  class: EffectSingle
-           sound: burp
-           sound_volume: .3
-        -  class: EffectSingle
-           sound: shoot_arrow
-           sound_volume: 1
-           location: origin
-           effectlib:
-             class: ConeEffect
-             iterations: 16
-             particle: redstone
-             color: 58D3F7
-             lengthGrow: 0.4
-        -  class: EffectSingle
-           location: target
-           color: 5FD2FF
-           firework: ball
-        no_target:
-        -  class: EffectSingle
-           sound: burp
-           sound_volume: .3
-        -  class: EffectSingle
-           sound: shoot_arrow
-           sound_volume: 1
-           location: origin
-           effectlib:
-             class: ConeEffect
-             iterations: 16
-             particle: redstone
-             color: 58D3F7
-             lengthGrow: 0.4
-        -  class: EffectSingle
-           location: target
-           color: 5FD2FF
-           firework: burst
-        backfire:
-        -  class: EffectSingle
-           sound: burp
-           sound_volume: .3
-        -  class: EffectSingle
-           sound: shoot_arrow
-           sound_volume: 1
-           location: origin
-           entity_effect: hurt
-           effectlib:
-             class: ConeEffect
-             iterations: 16
-             particle: redstone
-             color: 58D3F7
-             lengthGrow: 0.4
-    parameters:
-        hitbox: true
-        range: 48
-        target_type: LivingEntity
-        damage: 2.5
-        cooldown: 4000
-        target_breakables: 0
-        bypass_backfire: false
-        effect_confusion: 5
-        duration: 300
-    costs:
-        mana: 50
 
 stupefy|2:
     parameters:
@@ -3593,74 +3281,15 @@ ferula|3:
         effect_absorption: 4
 
 wingardium:
-    icon: ink_sack:8
+    inherit: lift
     category: charms
-    class: RaiseSpell
-    worth: 15
-    cast_on_no_target: true
-    pvp_restricted: false
-    effects:
-        cast:
-        -  class: EffectSingle
-           location: origin
-           sound: enderdragon_wings
-           sound_pitch: 2
-           effectlib:
-             class: ConeEffect
-             iterations: 8
-             particles: 2
-             particle: spell
-             lengthGrow: 0.4
-        -  class: EffectSingle
-           target_offset: 0.5,5.5,0.5
-           location: target
-           effectlib:
-             class: SphereEffect
-             iterations: 48
-             period: 2
-             particle: spell
-             radius: 0.8
-        -  class: EffectSingle
-           location: target
-           effectlib:
-             class: ConeEffect
-             iterations: 8
-             particle: spell
-             autoOrient: false
-        no_target:
-        -  class: EffectSingle
-           location: origin
-           sound: enderdragon_wings
-           sound_pitch: 2
-           effectlib:
-             class: ConeEffect
-             iterations: 8
-             particles: 2
-             particle: spell
-             lengthGrow: 0.4
-    parameters:
-        allow_max_range: false
-        range: 15
-        radius: 1
-        type: sphere
-        destructible: floatable
-        check_destructible: true
-        undo: 5000
-        bypass_build: true
-        target_breakables: 2
-        bypass_backfire: false
-        cooldown: 1000
-        otdy: 10
-        otdx: 0
-        otdz: 0
-    costs:
-        mana: 40
 
 # These are currently what I would classify as admin-only utility spells
 # But could be added in some form as canon spells eventually.
 
 phase:
     hidden: true
+    enabled: true
     icon: iron_helmet
     category: staff
     class: PhaseSpell
