@@ -226,8 +226,6 @@ architect:
         - recurse
         - undo
         - commit
-        - rewind
-        - commit
         - blob
         - pyramid
         - stalactite
@@ -317,8 +315,7 @@ elder:
         - fling
         - blink
         - recurse
-        - sniper
-        - kaboom
+        - boom|2
         - fireball
         - superblast
         - storm
@@ -403,8 +400,7 @@ admin:
         - blink
         - recurse
         - time
-        - sniper
-        - rewind
+        - arrow|4
         - fill
         - heal
         - phase
@@ -423,8 +419,98 @@ admin:
         - erase
         - copy
 
-wolf:
+ajwolf:
     path: master
+    icon: gold_hoe
+    keep: true
+    bound: true
+    undroppable: true
+    indestructible: true
+    quiet: 1
+    hotbar_count: 2
+    effect_color: '00AACC'
+    mode: chest
+    organize: true
+    active_spell: levitate
+    cost_reduction: 2
+    protection: 2
+    cooldown_reduction: 2
+    health_regeneration: 1
+    hunger_regeneration: 1
+    spells:
+        - levitate
+        - fling|2
+        - blink|3
+        - arrow|4
+        - boon|2
+        - push
+        - heal
+        - pull
+        - day
+        - shell
+        - blob
+        - blast
+        - curse
+        - collapse
+        - recall
+        - tag
+
+miniwolf:
+    path: master
+    icon: gold_hoe
+    keep: true
+    bound: true
+    undroppable: true
+    indestructible: true
+    quiet: 1
+    hotbar_count: 2
+    effect_color: '00AACC'
+    mode: inventory
+    active_spell: levitate
+    xp_max: 250
+    xp_regeneration: 50
+    spells:
+        - counterspell
+        - reflect|3
+        - levitate
+        - fling|2
+        - blink|3
+        - arrow|4
+        - day
+        - stash
+        - emp
+        - force
+        - boom|2
+        - fireball
+        - lightning
+        - torch
+        - fire
+        - disarm
+        - push
+        - pull
+        - shell
+        - shrink
+        - grenade
+        - blob
+        - blast
+        - curse
+        - boon|2
+        - blessing
+        - heal
+        - wither
+        - collapse
+        - recall
+        - phase
+        - portal
+        - disintegrate
+        - neutron
+        - laser
+        - flamethrower
+        - tag
+        - mount
+
+wolf:
+    path: architect
     icon: gold_hoe
     keep: true
     bound: true
@@ -437,7 +523,7 @@ wolf:
     hunger_regeneration: 1
     power: 2
     haste: 0.1
-    quiet: 1
+    quiet: 0
     hotbar_count: 3
     effect_color: '00AACC'
     effect_particle: enchantment_table
@@ -447,19 +533,18 @@ wolf:
     active_spell: levitate
     overrides: max_dimension 1024
     spells:
+        - arrow|4
         - levitate
-        - fling
-        - blink
+        - fling|2
+        - blink|3
         - superblob
         - backup
         - superrepair
         - day
         - gather
-        - rewind
         - undo
         - stash
         - emp
-        - sniper
         - force
         - fill
         - pillar
@@ -467,7 +552,7 @@ wolf:
         - bridge
         - absorb
         - recurse
-        - kaboom
+        - boom|2
         - fireball
         - superblast
         - storm
@@ -502,7 +587,7 @@ wolf:
         - superalter
         - toss
         - curse
-        - boon
+        - boon|2
         - blessing
         - convert
         - heal
@@ -811,7 +896,7 @@ broomstick:
 camera:
     mode: cast
     active_spell: camera
-    icon: tripwire_hook
+    icon: dispenser
     indestructible: false
     locked: true
     xp: 5
