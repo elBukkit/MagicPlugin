@@ -426,11 +426,9 @@ ajwolf:
     bound: true
     undroppable: true
     indestructible: true
-    quiet: 1
-    hotbar_count: 2
+    quiet: 2
     effect_color: '00AACC'
     mode: chest
-    organize: true
     active_spell: levitate
     cost_reduction: 2
     protection: 2
@@ -457,7 +455,7 @@ ajwolf:
 
 miniwolf:
     path: master
-    icon: gold_hoe
+    icon: gold_axe
     keep: true
     bound: true
     undroppable: true
@@ -533,23 +531,23 @@ wolf:
     active_spell: levitate
     overrides: max_dimension 1024
     spells:
-        - levitate
-        - arrow|4
-        - fling|2
-        - blink|3
-        - day
-        - recall
-        - gather
-        - blast
-        - absorb
-        - place
-        - fill
-        - superblob
-        - supershell
+        - levitate@0
+        - blink|3@1
+        - fling|2@2
+        - arrow|4@3
+        - day@4
+        - recall@5
+        - gather@6
+        - heal@7
+        - absorb@8
+        - place@9
+        - fill@10
+        - superblob@11
+        - superconvert@12
+        - supershell@13
+        - superrepair@14
+        - undo@15
         - backup
-        - superrepair
-        - superiterate
-        - undo
         - stash
         - emp
         - force
@@ -565,7 +563,6 @@ wolf:
         - inferno
         - wolfhouse
         - disarm
-        - superconvert
         - superpyramid
         - superbox
         - superdisc
@@ -592,7 +589,7 @@ wolf:
         - boon|2
         - blessing
         - convert
-        - heal
+        - blast
         - wither
         - camera
         - collapse
@@ -628,14 +625,14 @@ wolf:
         - mount
         - counterspell
     materials:
-        - erase|15
-        - copy|16
-        - replicate|17
-        - clone|18
-        - stained_clay|19
-        - stained_glass|20
-        - stationary_water|22
-        - stationary_lava|23
+        - erase@16
+        - copy@17
+        - replicate@18
+        - clone@19
+        - stained_clay@20
+        - stained_glass@21
+        - stationary_water@22
+        - stationary_lava@23
         - stained_glass_pane
         - wool
         - lapis_block
