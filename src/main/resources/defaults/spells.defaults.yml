@@ -3970,7 +3970,7 @@ flare:
         mana: 10
 
 recall:
-    icon: redstone
+    icon: compass
     category: master
     worth: 25
     cast_on_no_target: false

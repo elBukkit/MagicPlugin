@@ -824,7 +824,7 @@ camera:
 recalltoken:
     mode: cast
     active_spell: recall
-    icon: redstone
+    icon: compass
     indestructible: false
     locked: true
     uses: 5
