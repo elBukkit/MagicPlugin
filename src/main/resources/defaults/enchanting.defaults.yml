@@ -672,6 +672,7 @@ architect:
 #
 
 battle:
+    hidden: true
     inherit: default
     property_count:
       0: 100,100, 50

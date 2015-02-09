@@ -186,8 +186,8 @@ spell:
     brush: Uses Material Brushes
     undoable: Undoable with Rollback
     reactivate: Reactivating $name
-    available_path: Available on the $path path
-    required_path: Required to complete the $path path
+    available_path: Available at the $path level
+    required_path: Required to complete the $path level
     required_spell: "You must learn &r&4$spell &d&oto advance to &b$path"
     level_description: Level $level
 worlds:
@@ -1089,6 +1089,10 @@ spells:
         name: Stun
         description: Stun and damage your target
         cast: You stun $target.
+    lift:
+        name: Lift
+        description: Lift up the target block
+        cast: You lift $target.
 
 wands:
     default:

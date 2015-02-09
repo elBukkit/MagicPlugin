@@ -44,6 +44,7 @@ public class WandUpgradePath {
     private String upgradeItemKey;
     private String name;
     private String description;
+    private boolean hidden = false;
 
     private boolean matchSpellMana = true;
 
@@ -118,6 +119,7 @@ public class WandUpgradePath {
         requiredSpells.addAll(template.getStringList("required_spells"));
 
         matchSpellMana = template.getBoolean("match_spell_mana", matchSpellMana);
+        hidden = template.getBoolean("hidden", false);
 
         // Description information
         Messages messages = controller.getMessages();
@@ -499,5 +501,9 @@ public class WandUpgradePath {
     public float getBonusLevelMultiplier()
     {
         return bonusLevelMultiplier;
+    }
+
+    public boolean isHidden() {
+        return hidden;
     }
 }
