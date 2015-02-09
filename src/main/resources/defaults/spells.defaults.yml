@@ -1309,9 +1309,9 @@ frost|3:
     costs:
         mana: 125
 
-elemental:
+lightning:
     icon: raw_fish:2
-    category: firebending
+    category: elemental
     class: LightningSpell
     pvp_restricted: true
     worth: 100
@@ -1334,9 +1334,9 @@ elemental:
     costs:
         mana: 80
 
-elemental:
+storm:
     icon: raw_fish:3
-    category: firebending
+    category: elemental
     class: LightningSpell
     pvp_restricted: true
     worth: 200
