@@ -778,6 +778,8 @@ battle:
 broom:
     inherit: default
     max_power: 0.9
+    property_count:
+      1: 100, 100, 100
     power:
       0:   100,100, 80
       0^1: 0,   20, 40

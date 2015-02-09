@@ -1926,7 +1926,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
                     }
                 }
             } else if (enchanter != null) {
-                enchanter.sendMessage(controller.getMessages().get("wand.fully_enchanted"));
+                enchanter.sendMessage(controller.getMessages().get("wand.fully_enchanted").replace("$wand", getName()));
             }
 			addLevels = Math.min(totalLevels, maxLevel);
 			additive = true;

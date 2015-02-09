@@ -168,7 +168,7 @@ wand:
     player_renamed: $name's wand renamed
     self_destruct: Your wands did not survive the dimensional shift!
     single_spell: Wand of $spell
-    fully_enchanted: This wand is fully enchanted (for now)
+    fully_enchanted: This $wand is fully enchanted (for now)
     need_more_levels: "You need at least &r&4$levels &d&olevels to enchant"
     require_more_levels: "You must enchant at a higher level"
     randomized_lore: What kind of wand will you get?
