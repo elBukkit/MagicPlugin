@@ -1630,9 +1630,15 @@ icbm:
 neutron:
     icon: poisonous_potato
     category: dark
-    class: ProjectileSpell
     pvp_restricted: true
     worth: 100
+    actions:
+        cast:
+        -  class: ProjectileAction
+           actions:
+           -  class: AreaOfEffectAction
+              actions:
+              -  class: DamageAction
     effects:
         cast:
         -  class: EffectSingle
@@ -1644,8 +1650,8 @@ neutron:
              particle: flame
     parameters:
         projectile: Snowball
-        effect_harm: 10,5
-        effect_heal: 20,6
+        player_damage: 8
+        entity_damage: 15
         radius: 32  
     costs:
         mana: 80
@@ -4495,8 +4501,6 @@ broom:
         effect_sound: horse_zombie_idle
         effect_sound_interval: 40
         effect_sound_volume: 32
-
-
 
 paste:
     icon: iron_pickaxe
