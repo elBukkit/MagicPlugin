@@ -1782,25 +1782,25 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 			long seconds = duration / 1000;
 			if (seconds > 60 * 60 ) {
 				long hours = seconds / (60 * 60);
-				lore.add(messages.get("duration.lasts_hours").replace("$hours", ((Long)hours).toString()));
+				lore.add(ChatColor.GRAY + messages.get("duration.lasts_hours").replace("$hours", ((Long)hours).toString()));
 			} else if (seconds > 60) {
 				long minutes = seconds / 60;
-				lore.add(messages.get("duration.lasts_minutes").replace("$minutes", ((Long)minutes).toString()));
+				lore.add(ChatColor.GRAY + messages.get("duration.lasts_minutes").replace("$minutes", ((Long)minutes).toString()));
 			} else {
-				lore.add(messages.get("duration.lasts_seconds").replace("$seconds", ((Long)seconds).toString()));
+				lore.add(ChatColor.GRAY + messages.get("duration.lasts_seconds").replace("$seconds", ((Long)seconds).toString()));
 			}
 		}
+        else if (spell.isUndoable()) {
+            String undoableText = messages.get("spell.undoable");
+            if (!undoableText.isEmpty()) {
+                lore.add(ChatColor.GRAY + undoableText);
+            }
+        }
 		
 		if (spell.usesBrush()) {
 			String brushText = messages.get("spell.brush");
             if (!brushText.isEmpty()) {
                 lore.add(ChatColor.GOLD + brushText);
-            }
-		}
-		if (spell.isUndoable()) {
-            String undoableText = messages.get("spell.undoable");
-            if (!undoableText.isEmpty()) {
-                lore.add(ChatColor.GRAY + undoableText);
             }
 		}
 	}

@@ -4058,12 +4058,12 @@ public class MagicController implements Listener, MageController {
                         lines.add(ChatColor.DARK_GREEN + messages.get("duration.lasts_seconds").replace("$seconds", ((Long) seconds).toString()));
                     }
                 }
+                else if (spell.isUndoable()) {
+                    lines.add(ChatColor.GRAY + messages.get("spell.undoable"));
+                }
 
                 if (spell.usesBrush()) {
                     lines.add(ChatColor.DARK_GRAY + messages.get("spell.brush"));
-                }
-                if (spell.isUndoable()) {
-                    lines.add(ChatColor.GRAY + messages.get("spell.undoable"));
                 }
 
                 String usage = spell.getUsage();
