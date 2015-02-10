@@ -1737,7 +1737,7 @@ arrow:
         -  class: EffectSingle
            sound: explode
            sound_pitch: 0.2
-           sound_volume: 1
+           sound_volume: 0.3
            location: origin
         -  class: EffectSingle
            location: origin
@@ -1751,7 +1751,7 @@ arrow:
            location: origin
            color: CC9933
            firework: ball
-           effect: explosion_large
+           particle: explosion_large
         projectile:
         -  class: EffectSingle
            location: origin
@@ -3624,10 +3624,6 @@ blink:
                    class: LineEffect
                    particle: redstone
              '5':
-             -  class: EffectSingle
-                location: target
-                color: F5EFFB
-                firework: burst
              - class: EffectSingle
                sound: enderman_teleport
                sound_volume: 1

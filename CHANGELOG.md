@@ -5,7 +5,7 @@
  - All default spells, wands, and enchanting configs changed
    - All world-modifying spells now auto-undo
    - Rebalanced, with a focus on dueling and not being "Too OP"
-   - Brooms are now craftable
+   - Brooms and cameras are now craftable
    - Only one wand type is craftable, and it now levels up from Beginner to Master
    - Added level progression to a variety of spells
    - Engineering spells are unavailable naturally.

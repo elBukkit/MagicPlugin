@@ -6,6 +6,7 @@ import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MagicAPI;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.api.wand.Wand;
+import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import com.elmakers.mine.bukkit.utility.Messages;
 import com.elmakers.mine.bukkit.utility.RunnableJob;
 import org.bukkit.*;
@@ -82,7 +83,13 @@ public class MagicGiveCommandExecutor extends MagicTabExecutor {
             player = (Player)sender;
         }
 
-        if (itemName.equalsIgnoreCase("xp")) {
+        if (itemName.contains("skull:")) {
+            String skullURL = itemName.substring(6);
+            api.giveItemToPlayer(player, InventoryUtils.getURLSkull(skullURL));
+            sender.sendMessage("Gave " + count + " skull to " + player.getName() + " with a url of " + skullURL);
+            return true;
+        }
+        else if (itemName.equalsIgnoreCase("xp")) {
             api.giveExperienceToPlayer(player, count);
             sender.sendMessage("Gave " + count + " experience to " + player.getName());
             return true;
