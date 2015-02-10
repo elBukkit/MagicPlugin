@@ -120,9 +120,9 @@ beginner:
     upgrade_item: student_upgrade
     inherit: default
     property_count:
-      0: 100, 100, 50
-      1: 1,   5,   30
-    max_protection: 0.1
+      0: 100, 20, 10
+      1: 25,  50,  200
+    max_protection: 0.2
     protection:
       0^1: 100, 100, 90
       0^2: 0,   5,   10
@@ -170,9 +170,9 @@ student:
     upgrade_item: apprentice_upgrade
     inherit: beginner
     property_count:
-      0: 100, 100, 50
-      1: 1,   5,   30
-      2: 0,   1,   20
+      0: 100, 20, 10
+      1: 50,  50, 30
+      2: 0,   10, 100
     max_protection: 0.4
     protection:
       0^1: 100, 100, 90
@@ -236,6 +236,7 @@ student:
       disarm: 0,0,2
       entangle: 0,0,20
       stun|2: 0,5,15
+      missile|2: 0,5,15
 
 apprentice:
     upgrade: master
@@ -243,9 +244,9 @@ apprentice:
     inherit: student
     property_count:
       0: 100, 100, 50
-      1: 1,   5,   30
-      2: 0,   1,   20
-      3: 0,   0,    5
+      1: 50,  100, 100
+      2: 10,  50,  75
+      3: 0,   0,   50
     max_protection: 0.5
     protection:
       0^1: 100, 100, 90
@@ -309,6 +310,7 @@ apprentice:
       rubberize: 2,10,20
       wound: 0,10,20
       stun|3: 0,5,15
+      missile|3: 0,5,15
 
 master:
     required_spells:
@@ -321,9 +323,9 @@ master:
     inherit: apprentice
     property_count:
       0: 100, 100, 50
-      1: 1,   5,   30
-      2: 0,   1,   20
-      3: 0,   0,    5
+      1: 50,  100, 100
+      2: 10,  50,  75
+      3: 0,   0,   50
     max_protection: 0.75
     protection:
       0^1: 100,100,90
@@ -399,6 +401,7 @@ master:
       torture: 2,10,20
       petrify: 0,10,30
       lift: 1,5,10
+      missile|4: 0,5,15
 
 #
 # The move from "master" to engineer requires the player to aquire some basic
@@ -421,9 +424,9 @@ engineer:
     inherit: master
     property_count:
       0: 100, 100, 50
-      1: 1,   5,   30
-      2: 0,   1,   20
-      3: 0,   0,    5
+      1: 50,  100, 100
+      2: 10,  50,  75
+      3: 0,   0,   50
     max_protection: 0.9
     protection:
       0^1: 100, 100,  90
@@ -482,6 +485,7 @@ engineer:
       stalactite: 0,5,10
       shell|4: 1,20,30
       levitate: 0,0,10
+      torch|2: 50,70,90
     material_count:
       1: 50, 20, 20
       2: 1,  10,  30
@@ -519,9 +523,9 @@ architect:
     inherit: engineer
     property_count:
       0: 100, 100, 50
-      1: 1,   5,   30
-      2: 0,   1,   20
-      3: 0,   0,    5
+      1: 50,  100, 100
+      2: 10,  50,  75
+      3: 0,   0,   50
     max_protection: 1
     protection:
       0^1: 100,100,90

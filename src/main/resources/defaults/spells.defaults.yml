@@ -1870,7 +1870,6 @@ torch:
     icon: torch
     category: engineering
     worth: 80
-    hidden: true
     actions:
         cast:
         -  class: TorchAction
@@ -1885,8 +1884,15 @@ torch:
         allow_max_range: false
         range: 32
         allow_glowstone: true
+        undo: 30000
+        cooldown: 10000
     costs:
         mana: 50
+
+torch|2:
+    parameters:
+        undo: 0
+        cooldown: 0
 
 familiar:
     icon: monster_egg
@@ -4317,14 +4323,38 @@ missile:
              particle: redstone
              lengthGrow: 0.3
     parameters:
-        range: 48
+        range: 24
         hitbox: true
         target_type: LivingEntity
         damage: 2
-        target_breakables: 0
+        target_breakables: 1
         bypass_backfire: false
     costs:
         mana: 15
+
+missile|2:
+    parameters:
+        range: 32
+        damage: 3
+        target_breakables: 2
+    costs:
+        mana: 50
+
+missile|3:
+    parameters:
+        range: 48
+        damage: 4
+        target_breakables: 3
+    costs:
+        mana: 70
+
+missile|4:
+    parameters:
+        range: 64
+        damage: 6
+        target_breakables: 4
+    costs:
+        mana: 100
 
 blind:
     icon: ender_pearl

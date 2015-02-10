@@ -861,18 +861,18 @@ antihunger:
 loud:
     upgrade: true
     indestructible: false
-    icon: arrow
+    icon: nether_star
     organize: true
     quiet: -1
 quiet:
     upgrade: true
     indestructible: false
-    icon: arrow
+    icon: nether_star
     quiet: -2
 silent:
     upgrade: true
     indestructible: false
-    icon: arrow
+    icon: nether_star
     quiet: -3
 
  #
