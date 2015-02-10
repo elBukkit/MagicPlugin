@@ -414,10 +414,10 @@ public class WandUpgradePath {
     }
 
     public void upgraded(Wand wand, Mage mage) {
-        playEffects(mage, "upgrade");
         CommandSender sender = Bukkit.getConsoleSender();
         Location location = null;
         if (mage != null) {
+            playEffects(mage, "upgrade");
             location = mage.getLocation();
         }
         if (upgradeCommands != null) {
@@ -440,11 +440,11 @@ public class WandUpgradePath {
                 }
                 WandUpgradePath upgrade = getPath(upgradeKey);
                 command = command.replace("$path", upgrade.getName());
-                mage.getController().getPlugin().getServer().dispatchCommand(sender, command);
+                wand.getController().getPlugin().getServer().dispatchCommand(sender, command);
             }
         }
         if (upgradeItemKey != null && !upgradeItemKey.isEmpty()) {
-            com.elmakers.mine.bukkit.api.wand.Wand upgradeWand = mage.getController().createWand(upgradeItemKey);
+            com.elmakers.mine.bukkit.api.wand.Wand upgradeWand = wand.getController().createWand(upgradeItemKey);
             if (upgradeWand != null) {
                 wand.add(upgradeWand);
             }
@@ -463,35 +463,35 @@ public class WandUpgradePath {
         return matchSpellMana;
     }
 
-    public boolean checkUpgrade(Mage mage, Wand wand) {
+    public boolean checkEnchant(Wand wand) {
+        // First check to see if the path has more spells available
+        WandLevel maxLevel = levelMap.get(levels[levels.length - 1]);
+        LinkedList<WeightedPair<String>> remainingSpells = maxLevel.getRemainingSpells(wand);
+        LinkedList<WeightedPair<String>> remainingMaterials = maxLevel.getRemainingMaterials(wand);
+        return (remainingSpells.size() > 0 || remainingMaterials.size() > 0);
+    }
+
+    public boolean checkUpgradeRequirements(Mage mage, Wand wand) {
         if (requiredSpells == null && requiredSpells.isEmpty()) return true;
 
-        if (mage != null) {
-            // First check to see if the path has more spells available
-            WandLevel maxLevel = levelMap.get(levels[levels.length - 1]);
-            LinkedList<WeightedPair<String>> remainingSpells = maxLevel.getRemainingSpells(wand);
-            if (remainingSpells.size() > 0) {
-                String message = mage.getController().getMessages().get("wand.require_more_levels");
-                mage.sendMessage(message);
-                return false;
-            }
-
-            // Then check for spell requirements to advance
-            for (String requiredKey : requiredSpells) {
-                if (!wand.hasSpell(requiredKey)) {
-                    SpellTemplate spell = mage.getController().getSpellTemplate(requiredKey);
-                    if (spell == null) {
-                        mage.getController().getLogger().warning("Invalid spell required for upgrade: " + requiredKey);
-                        continue;
-                    }
-                    String message = mage.getController().getMessages().get("spell.required_spell").replace("$spell", spell.getName());
+        // Then check for spell requirements to advance
+        for (String requiredKey : requiredSpells) {
+            if (!wand.hasSpell(requiredKey)) {
+                SpellTemplate spell = wand.getController().getSpellTemplate(requiredKey);
+                if (spell == null) {
+                    wand.getController().getLogger().warning("Invalid spell required for upgrade: " + requiredKey);
+                    continue;
+                }
+                if (mage != null)
+                {
+                    String message = wand.getController().getMessages().get("spell.required_spell").replace("$spell", spell.getName());
                     WandUpgradePath upgradePath = getUpgrade();
                     if (upgradePath != null) {
                         message = message.replace("$path", upgradePath.getName());
                     }
                     mage.sendMessage(message);
-                    return false;
                 }
+                return false;
             }
         }
 

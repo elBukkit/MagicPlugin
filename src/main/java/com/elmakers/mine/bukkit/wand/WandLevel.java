@@ -133,6 +133,21 @@ public class WandLevel {
 
         return remainingSpells;
     }
+
+    public LinkedList<WeightedPair<String>> getRemainingMaterials(Wand wand) {
+        LinkedList<WeightedPair<String>> remainingMaterials = new LinkedList<WeightedPair<String>>();
+        for (WeightedPair<String> material : materialProbability) {
+            String materialKey = material.getValue();
+            // Fixup |'s to :'s .... kinda hacky, but I didn't think this through unfortunately. :\
+            // TODO: escape the keys as strings with '', which is probably the right way to do it.
+            materialKey = materialKey.replace("|", ":");
+            if (!wand.hasBrush(materialKey) && MaterialBrush.isValidMaterial(materialKey, false)) {
+                remainingMaterials.add(material);
+            }
+        }
+
+        return remainingMaterials;
+    }
 	
 	public boolean randomizeWand(Mage mage, Wand wand, boolean additive) {
 		// Add random spells to the wand
@@ -190,18 +205,7 @@ public class WandLevel {
 		
 		// Add random materials
 		boolean addedMaterials = false;
-		Set<String> wandMaterials = wand.getBrushes();
-		LinkedList<WeightedPair<String>> remainingMaterials = new LinkedList<WeightedPair<String>>();
-        for (WeightedPair<String> material : materialProbability) {
-            String materialKey = material.getValue();
-            // Fixup |'s to :'s .... kinda hacky, but I didn't think this through unfortunately. :\
-            // TODO: escape the keys as strings with '', which is probably the right way to do it.
-            materialKey = materialKey.replace("|", ":");
-            if (!wandMaterials.contains(material.getValue()) && MaterialBrush.isValidMaterial(materialKey, false)) {
-                remainingMaterials.add(material);
-            }
-        }
-
+        LinkedList<WeightedPair<String>> remainingMaterials = getRemainingMaterials(wand);
 		if (needsMaterials && remainingMaterials.size() > 0) {
 			int currentMaterialCount = wand.getBrushes().size();
 			Integer materialCount = RandomUtils.weightedRandom(materialCountProbability);
@@ -222,8 +226,16 @@ public class WandLevel {
 					if (retries-- > 0) i--;
 				} else {
 					addedMaterials = true;
-                    if (mage != null) {
-                        mage.sendMessage(messages.get("wand.brush_added").replace("$wand", wand.getName()).replace("$name", MaterialAndData.getMaterialName(materialKey)));
+                    if (mage != null)
+                    {
+                        String materialName = MaterialBrush.getMaterialName(materialKey);
+                        if (materialName == null)
+                        {
+                            mage.getController().getLogger().warning("Invalid material in enchanting configs: " + materialKey);
+                            materialName = materialKey;
+                        }
+
+                        mage.sendMessage(messages.get("wand.brush_added").replace("$wand", wand.getName()).replace("$name", materialName));
                     }
 				}
 			}

@@ -483,9 +483,9 @@ engineer:
       shell|4: 1,20,30
       levitate: 0,0,10
     material_count:
-      0: 50, 20, 20
-      1: 1,  10,  30
-      2: 0,  5,   40
+      1: 50, 20, 20
+      2: 1,  10,  30
+      3: 0,  5,   40
       4: 0,  1,   10
     materials:
       erase: 0,0,1
@@ -565,19 +565,19 @@ architect:
     spells:
       absorb: 0,1,2
       superalter: 0,1,5
-      superrepair: 0,0,1
-      supershell: 0,0,1
-      superblast: 0,0,1
-      superbox: 0,0,1
-      superpyramid: 0,0,1
-      superblob: 0,0,1
-      superemp: 0,0,1
-      superdisc: 0,0,1
-      superring: 0,0,1
-      superconvert: 0,0,1
-      superiterate: 0,0,1
-      superdome: 0,0,1
-      paste: 0,0,10
+      superrepair: 0,0,5
+      supershell: 0,0,5
+      superblast: 0,0,5
+      superbox: 0,0,5
+      superpyramid: 0,0,5
+      superblob: 0,1,10
+      superemp: 0,5,20
+      superdisc: 0,0,5
+      superring: 0,0,5
+      superconvert: 0,20,50
+      superiterate: 5,50,100
+      superdome: 0,0,2
+      paste: 0,1,10
       volley: 2,25,35
     material_count:
       1:  50, 20, 20

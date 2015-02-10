@@ -1203,7 +1203,7 @@ nuke:
         undo: 50000
         break_blocks: true
     costs:
-        mana: 500
+        mana: 400
 
 frost:
     icon: snow_ball
@@ -2313,7 +2313,7 @@ regenerate:
         max_dimension: 32
         transparent: transparent_to_construction
     costs:
-        mana: 500
+        mana: 400
 
 superregenerate:
     icon: diamond_hoe
@@ -2695,7 +2695,7 @@ superblob:
         type: sphere
         transparent: transparent_to_construction
     costs:
-        mana: 500
+        mana: 400
 
 superpyramid:
     icon: speckled_melon
@@ -2717,7 +2717,7 @@ superpyramid:
         type: pyramid
         transparent: transparent_to_construction
     costs:
-        mana: 500
+        mana: 400
 
 box:
     icon: gold_helmet
@@ -2783,7 +2783,7 @@ supercube:
         type: cuboid
         transparent: transparent_to_construction
     costs:
-        mana: 500
+        mana: 400
 
 backup:
     icon: diamond_pickaxe
@@ -2865,7 +2865,7 @@ superrepair:
         obworld: ~_backup
         brushtarget: true
     costs:
-        mana: 500
+        mana: 400
 
 workbench:
     icon: workbench
