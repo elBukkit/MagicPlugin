@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 2.1
+
+ - Add InventoryUtils.getURLSkull, for creating URL-based skulls
+
 ## 2.0
 
  - Add hitbox-based targeting.

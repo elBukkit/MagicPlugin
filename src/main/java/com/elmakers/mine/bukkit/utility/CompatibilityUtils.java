@@ -90,19 +90,6 @@ public class CompatibilityUtils extends NMSUtils {
         return true;
     }
 
-    protected static Object getTagString(String value) {
-        try {
-            if (class_NBTTagList_legacy_consructor != null) {
-                return class_NBTTagList_legacy_consructor.newInstance("", value);
-            }
-            return class_NBTTagList_consructor.newInstance(value);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-
-        }
-        return null;
-    }
-
     public static boolean setLore(ItemStack itemStack, Collection<String> lore) {
         Object handle = getHandle(itemStack);
         if (handle == null) return false;
@@ -111,22 +98,8 @@ public class CompatibilityUtils extends NMSUtils {
 
         Object displayNode = createNode(tag, "display");
         if (displayNode == null) return false;
-
-        try {
-            final Object loreList = class_NBTTagList.newInstance();
-
-            for (String value : lore) {
-                Object nbtString = getTagString(value);
-                class_NBTTagList_addMethod.invoke(loreList, nbtString);
-            }
-
-            class_NBTTagCompound_setMethod.invoke(displayNode, "Lore", loreList);
-        } catch (Throwable ex) {
-            ex.printStackTrace();
-            return false;
-        }
-
-        return true;
+        final Object loreList = setStringList(displayNode, "Lore", lore);
+        return loreList != null;
     }
 
     public static Inventory createInventory(InventoryHolder holder, final int size, final String name) {

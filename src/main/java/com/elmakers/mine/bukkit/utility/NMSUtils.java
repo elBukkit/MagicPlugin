@@ -4,6 +4,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Collection;
+import java.util.List;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -718,4 +719,37 @@ public class NMSUtils {
         }
         return replacement;
     }
+
+    protected static Object getTagString(String value) {
+        try {
+            if (class_NBTTagList_legacy_consructor != null) {
+                return class_NBTTagList_legacy_consructor.newInstance("", value);
+            }
+            return class_NBTTagList_consructor.newInstance(value);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+
+        }
+        return null;
+    }
+
+    public static Object setStringList(Object nbtBase, String tag, Collection<String> values) {
+        if (nbtBase == null) return null;
+        Object listMeta = null;
+        try {
+            listMeta = class_NBTTagList.newInstance();
+
+            for (String value : values) {
+                Object nbtString = getTagString(value);
+                class_NBTTagList_addMethod.invoke(listMeta, nbtString);
+            }
+
+            class_NBTTagCompound_setMethod.invoke(nbtBase, tag, listMeta);
+        } catch (Throwable ex) {
+            ex.printStackTrace();
+            return null;
+        }
+        return listMeta;
+    }
+
 }

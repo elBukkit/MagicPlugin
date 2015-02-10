@@ -1,8 +1,10 @@
 package com.elmakers.mine.bukkit.utility;
 
 import java.lang.reflect.Method;
+import java.util.UUID;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -12,11 +14,11 @@ public class InventoryUtils extends NMSUtils
     public static boolean saveTagsToNBT(ConfigurationSection tags, Object node, String[] tagNames)
     {
         if (node == null) {
-            Bukkit.getLogger().warning("Tring to save tags to a null node");
+            Bukkit.getLogger().warning("Trying to save tags to a null node");
             return false;
         }
         if (!class_NBTTagCompound.isAssignableFrom(node.getClass())) {
-            Bukkit.getLogger().warning("Tring to save tags to a non-CompoundTag");
+            Bukkit.getLogger().warning("Trying to save tags to a non-CompoundTag");
             return false;
         }
         for (String tagName : tagNames)
@@ -36,11 +38,11 @@ public class InventoryUtils extends NMSUtils
     public static boolean loadTagsFromNBT(ConfigurationSection tags, Object node, String[] tagNames)
     {
         if (node == null) {
-            Bukkit.getLogger().warning("Tring to load tags from a null node");
+            Bukkit.getLogger().warning("Trying to load tags from a null node");
             return false;
         }
         if (!class_NBTTagCompound.isAssignableFrom(node.getClass())) {
-            Bukkit.getLogger().warning("Tring to load tags from a non-CompoundTag");
+            Bukkit.getLogger().warning("Trying to load tags from a non-CompoundTag");
             return false;
         }
         for (String tagName : tagNames)
@@ -76,5 +78,31 @@ public class InventoryUtils extends NMSUtils
             ex.printStackTrace();
         }
         return false;
+    }
+
+    public static ItemStack getURLSkull(String url) {
+        ItemStack skull = new ItemStack(Material.SKULL_ITEM, 1, (short)0, (byte)3);
+        try {
+            skull = makeReal(skull);
+            Object skullOwner = createNode(skull, "SkullOwner");
+            UUID id = UUID.randomUUID();
+            setMeta(skullOwner, "Id", id.toString());
+            Object properties = createNode(skullOwner, "Properties");
+            setMeta(properties, "Id", id.toString());
+
+            Object listMeta = class_NBTTagList.newInstance();
+            Object textureNode = class_NBTTagCompound.newInstance();
+
+            String textureJSON = "{textures:{SKIN:{url:\"" + url + "\"}}}";
+            String encoded = Base64Coder.encodeString(textureJSON);
+
+            setMeta(textureNode, "Value", encoded);
+            class_NBTTagList_addMethod.invoke(listMeta, textureNode);
+            class_NBTTagCompound_setMethod.invoke(properties, "textures", listMeta);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return skull;
+        }
+        return skull;
     }
 }
