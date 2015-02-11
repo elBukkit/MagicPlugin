@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 2.1
+
+ - Add IconURL to SpellTemplate for 1.8 custom icons
+
 ## 2.0
 
  - Add Action API, the new way to create custom spells
