@@ -4,6 +4,7 @@ import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.UUID;
+import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -87,6 +88,7 @@ public class InventoryUtils extends NMSUtils
         try {
             new URL(url);
         } catch (MalformedURLException e) {
+            Bukkit.getLogger().log(Level.WARNING, "Malformed URL: " + url, e);
             return skull;
         }
 
