@@ -32,6 +32,7 @@ public class NMSUtils {
     protected static boolean failed = false;
 
     protected static String versionPrefix = "";
+    protected static boolean isLegacy = false;
 
     protected static Class<?> class_ItemStack;
     protected static Class<?> class_NBTBase;
@@ -165,11 +166,13 @@ public class NMSUtils {
             class_Firework_expectedLifespanField = class_EntityFirework.getDeclaredField("expectedLifespan");
             class_Firework_expectedLifespanField.setAccessible(true);
 
+            isLegacy = false;
             try {
                 class_NBTTagList_legacy_consructor = class_NBTTagString.getConstructor(String.class, String.class);
                 class_NBTTagByte_legacy_constructor = class_NBTTagByte.getConstructor(String.class, Byte.TYPE);
             }
             catch (Throwable legacy) {
+                isLegacy = false;
                 class_NBTTagList_consructor = class_NBTTagString.getConstructor(String.class);
                 class_NBTTagByte_constructor = class_NBTTagByte.getConstructor(Byte.TYPE);
             }
@@ -752,4 +755,11 @@ public class NMSUtils {
         return listMeta;
     }
 
+    public static boolean hasBannerSupport() {
+        return !isLegacy;
+    }
+
+    public static boolean hasURLSkullSupport() {
+        return !isLegacy;
+    }
 }

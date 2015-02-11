@@ -1,6 +1,8 @@
 package com.elmakers.mine.bukkit.utility;
 
 import java.lang.reflect.Method;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
@@ -82,6 +84,12 @@ public class InventoryUtils extends NMSUtils
 
     public static ItemStack getURLSkull(String url) {
         ItemStack skull = new ItemStack(Material.SKULL_ITEM, 1, (short)0, (byte)3);
+        try {
+            new URL(url);
+        } catch (MalformedURLException e) {
+            return skull;
+        }
+
         try {
             skull = makeReal(skull);
             Object skullOwner = createNode(skull, "SkullOwner");
