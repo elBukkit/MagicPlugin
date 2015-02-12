@@ -102,13 +102,19 @@ public class WorldGuardManager {
 	}
 
     public boolean hasCastPermission(Player player, SpellTemplate spell) {
-        if (player != null && worldGuard != null && customFlags != null) {
+        if (player != null && worldGuard != null && customFlags != null)
+        {
             Location location = player.getLocation();
             RegionManager regionManager = worldGuard.getRegionManager(location.getWorld());
             if (regionManager == null) return true;
 
             ApplicableRegionSet checkSet = regionManager.getApplicableRegions(location);
             if (checkSet == null) return true;
+
+            if (checkSet.isMemberOfAll(worldGuard.wrapPlayer(player)))
+            {
+                return true;
+            }
 
            return customFlags.canCast(checkSet, spell.getSpellKey().getBaseKey());
         }
