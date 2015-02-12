@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.logging.Level;
 
 import org.bukkit.Art;
 import org.bukkit.DyeColor;
@@ -71,8 +72,12 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
 
         if (entity instanceof Hanging) {
             Hanging hanging = (Hanging)entity;
-            facing = hanging.getFacing();
-            this.location = location.getBlock().getLocation();
+            try {
+                facing = hanging.getFacing();
+                this.location = location.getBlock().getLocation();
+            } catch (Exception ex) {
+                org.bukkit.Bukkit.getLogger().log(Level.WARNING, "Error reading HangingEntity " + entity + " of type " + (entity == null ? "null" : entity.getType()), ex);
+            }
         }
         if (entity instanceof ItemFrame) {
             this.rotation = ((ItemFrame)entity).getRotation();
