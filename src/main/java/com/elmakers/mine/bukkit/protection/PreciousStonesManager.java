@@ -54,9 +54,14 @@ public class PreciousStonesManager {
 
 	public boolean hasBuildPermission(Player player, Block block) {
 		boolean allowed = true;
-		if (enabled && block != null && preciousStones != null) {
-			if (PreciousStones.API().isFieldProtectingArea(FieldFlag.ALL,
-					block.getLocation())) {
+		if (enabled && block != null && preciousStones != null)
+        {
+			if (PreciousStones.API().isFieldProtectingArea(FieldFlag.ALL, block.getLocation()))
+            {
+                if (player == null)
+                {
+                    return false;
+                }
 				allowed = allowed && PreciousStones.API().canBreak(player, block.getLocation());
 				allowed = allowed && PreciousStones.API().canPlace(player, block.getLocation());
 				return allowed;
