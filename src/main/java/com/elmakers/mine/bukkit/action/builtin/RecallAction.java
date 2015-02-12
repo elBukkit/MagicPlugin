@@ -395,7 +395,7 @@ public class RecallAction extends BaseSpellAction implements GeneralAction, GUIA
 	
 	protected boolean tryTeleport(final Player player, final Waypoint waypoint) {
         Mage mage = getMage();
-        Location targetLocation = waypoint.location;
+        Location targetLocation = waypoint == null ? null : waypoint.location;
 		if (targetLocation == null) {
 			sendMessage(waypoint.failMessage);
 			return false;
