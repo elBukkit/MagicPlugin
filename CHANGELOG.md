@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## 4.1
+
+ - Added custom spell icons (!!!111oneone11!)
+ - Fixed Counterspell
+
 ## 4.0
 
  - All default spells, wands, and enchanting configs changed

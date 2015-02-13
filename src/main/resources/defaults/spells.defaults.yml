@@ -3278,24 +3278,58 @@ counterspell:
     category: combat
     class: UndoSpell
     worth: 250
+    cast_on_no_target: true
+    pvp_restricted: true
     effects:
         cast:
+        -  class: EffectVariable
+           brightness:
+             '0.5':
+             - class: EffectSingle
+               sound: fuse
+               sound_volume: 1
+               location: both
+               particle_override: particleOrbital
+               effectlib:
+                   class: AtomEffect
+                   particleNucleus: smoke_normal
+                   particleOrbital: spell_instant
+                   iterations: 8
+             '5':
+             - class: EffectSingle
+               sound: fuse
+               sound_volume: 1
+               location: both
+               particle_override: particleOrbital
+               effectlib:
+                   class: AtomEffect
+                   particleNucleus: spell_instant
+                   particleOrbital: spell
+                   iterations: 8
         -  class: EffectSingle
-           sound: anvil_break
-        -  class: EffectTrail
-           particle: smoke_normal
+           location: target
+           firework: star
     parameters:
         allow_max_range: false
         target: other
         target_type: LivingEntity
         target_blocks: false
-        target_timeout: 10000
-        range: 32
+        target_timeout: 4000
+        target_breakables: 3
+        range: 50
+        fov: 1
         bypass_protection: true
         bypass_confusion: true
         bypass_backfire: true
+        cooldown: 7000
+        fizzle_chance: 0.3
     costs:
-        mana: 75
+        mana: 70
+
+counterspell|2:
+    parameters:
+        fizzle_chance: 0
+        cooldown: 1000
 
 breach:
     icon: seeds
