@@ -578,6 +578,21 @@ wingchal:
 # ITEMS
 #
 
+maraudersmap:
+    name: Marauder's Map
+    description: Apparate to Previous Locations
+    mode: cast
+    active_spell: recall
+    icon: map:111
+    indestructible: true
+    locked: true
+    keep: true
+    quiet: 2
+    effect_color: 'FFFF00'
+    overrides: allow_marker false
+    spells:
+        - recall
+
 portkey:
     mode: cast
     active_spell: recall
