@@ -1,0 +1,263 @@
+SummonWraithlets:
+  Cooldown: 15
+  Conditions:
+  - TargetInLineOfSight
+  - TargetWithin 5
+  Skills:
+  - msg{m="$boss; &4MINIONS!",cooldown:20} @PlayersInRadius{r=40}
+  - delay 20
+  - summon{mob=Wraithlet,amount=1,noise=5} @Self
+  - delay 20
+  - summon{mob=Wraithlet,amount=1,noise=5} @Self
+SludgePoison:
+  Cooldown: 10
+  Conditions:
+  - TargetWithin 16
+  - TargetInLineOfSight true
+  Skills:
+  - potion{type=POISON,lvl=2,duration=100} @PlayersInRadius{r=15}
+  - effect:particles{p=happyVillager,amount=1000,hSpread=15,ySpread=1,speed=0,yOFfset=0.5} @Self
+  Cooldown: 80
+  Conditions:
+  - TargetWithin 4
+  - TargetInLineOfSight true
+  Skills:
+  - cmd{command="castp $world,$boss_x,$boss_z,$mobuuid push area true"}
+PullArea:
+  Cooldown: 100
+  Conditions:
+  - TargetWithin 16
+  - TargetInLineOfSight true
+  Skills:
+  - cmd{command="castp $world,$boss_x,$boss_z,$mobuuid pull area true"}
+Push:
+  Cooldown: 10
+  Conditions:
+  - TargetWithin 5
+  - TargetInLineOfSight true
+  Skills:
+  - cmd{command="castp $world,$boss_x,$boss_z,$mobuuid push"}
+Pull:
+  Cooldown: 10
+  Conditions:
+  - TargetWithin 16
+  - TargetInLineOfSight true
+  Skills:
+  - cmd{command="castp $world,$boss_x,$boss_z,$mobuuid pull"}
+Lightning:
+  Cooldown: 80
+  Conditions:
+  - TargetWithin 12
+  - TargetInLineOfSight true
+  Skills:
+  - cmd{command="castp $world,$boss_x,$boss_z,$mobuuid lightning"}
+Fireball:
+  Cooldown: 20
+  Conditions:
+  - TargetWithin 16
+  - TargetInLineOfSight true
+  Skills:
+  - cmd{command="castp $world,$boss_x,$boss_z,$mobuuid fireball"}
+Wither:
+  Cooldown: 40
+  Conditions:
+  - TargetWithin 16
+  - TargetInLineOfSight true
+  Skills:
+  - cmd{command="castp $world,$boss_x,$boss_z,$mobuuid wither"}
+Curse:
+  Cooldown: 120
+  Conditions:
+  - TargetWithin 8
+  - TargetInLineOfSight true
+  Skills:
+  - cmd{command="castp $world,$boss_x,$boss_z,$mobuuid curse"}
+ArrowRain:
+  Cooldown: 50
+  Conditions:
+  - TargetWithin 16
+  - TargetInLineOfSight true
+  Skills:
+  - cmd{command="castp $world,$boss_x,$boss_z,$mobuuid arrowrain"}
+Fling:
+  Cooldown: 4
+  Conditions:
+  - TargetInLineOfSight
+  Skills:
+  - cmd{command="castp $world,$boss_x,$boss_z,$mobuuid fling pdy 1"}
+Fire:
+  Cooldown: 8
+  Conditions:
+  - TargetInLineOfSight
+  Conditions:
+  - TargetWithin 16
+  - TargetInLineOfSight true
+  Skills:
+  - cmd{command="castp $world,$boss_x,$boss_z,$mobuuid fire"}
+Inferno:
+  Cooldown: 80
+  Conditions:
+  - TargetWithin 16
+  - TargetInLineOfSight true
+  Skills:
+  - cmd{command="castp $world,$boss_x,$boss_z,$mobuuid inferno"}
+Flamethrower:
+  Cooldown: 70
+  Conditions:
+  - TargetWithin 12
+  - TargetInLineOfSight true
+  Skills:
+  - cmd{command="castp $world,$boss_x,$boss_z,$mobuuid flamethrower"}
+Grenade:
+  Cooldown: 120
+  Conditions:
+  - TargetWithin 16
+  - TargetInLineOfSight true
+  Skills:
+  - cmd{command="castp $world,$boss_x,$boss_z,$mobuuid grenade"}
+Frag:
+  Cooldown: 200
+  Conditions:
+  - TargetWithin 16
+  - TargetInLineOfSight true
+  Skills:
+  - cmd{command="castp $world,$boss_x,$boss_z,$mobuuid frag"}
+Meteor:
+  Cooldown: 240
+  Conditions:
+  - TargetWithin 32
+  - TargetInLineOfSight true
+  Skills:
+  - cmd{command="castp $world,$boss_x,$boss_z,$mobuuid meteor"}
+Lava:
+  Cooldown: 110
+  Conditions:
+  - TargetWithin 8
+  - TargetInLineOfSight true
+  Skills:
+  - cmd{command="castp $world,$boss_x,$boss_z,$mobuuid lava"}
+Missile:
+  Cooldown: 20
+  Conditions:
+  - TargetWithin 24
+  - TargetInLineOfSight true
+  Skills:
+  - cmd{command="castp $world,$boss_x,$boss_z,$mobuuid missile"}
+Cushion:
+  Cooldown: 20
+  Conditions:
+  - TargetWithin 24
+  - TargetInLineOfSight true
+  Skills:
+  - cmd{command="castp $world,$boss_x,$boss_z,$mobuuid cushion"}
+Stream:
+  Cooldown: 30
+  Conditions:
+  - TargetWithin 12
+  - TargetInLineOfSight true
+  Skills:
+  - cmd{command="castp $world,$boss_x,$boss_z,$mobuuid stream"}
+Frost:
+  Cooldown: 40
+  Conditions:
+  - TargetWithin 24
+  - TargetInLineOfSight true
+  Skills:
+  - cmd{command="castp $world,$boss_x,$boss_z,$mobuuid frost"}
+IceShell:
+  Cooldown: 60
+  Conditions:
+  - TargetWithin 16
+  - TargetInLineOfSight true
+  Skills:
+  - cmd{command="castp $world,$boss_x,$boss_z,$mobuuid shell undo 5000 brush packed_ice"}
+IceBlob:
+  Cooldown: 100
+  Conditions:
+  - TargetWithin 16
+  - TargetInLineOfSight true
+  Skills:
+  - cmd{command="castp $world,$boss_x,$boss_z,$mobuuid blob undo 3000 brush packed_ice"}
+IceShields:
+  Cooldown: 100
+  Conditions:
+  - TargetWithin 16
+  - TargetInLineOfSight true
+  Skills:
+  - cmd{command="castp $world,$boss_x,$boss_z,$mobuuid shields brush packed_ice"}
+Blob:
+  Cooldown: 90
+  Conditions:
+  - TargetWithin 16
+  - TargetInLineOfSight true
+  Skills:
+  - cmd{command="castp $world,$boss_x,$boss_z,$mobuuid blob undo 5000 brush stone"}
+Earth:
+  Cooldown: 30
+  Conditions:
+  - TargetWithin 12
+  - TargetInLineOfSight true
+  Skills:
+  - cmd{command="castp $world,$boss_x,$boss_z,$mobuuid earth"}
+Breach:
+  Cooldown: 110
+  Conditions:
+  - TargetWithin 24
+  - TargetInLineOfSight true
+  Skills:
+  - cmd{command="castp $world,$boss_x,$boss_z,$mobuuid breach"}
+Toss:
+  Cooldown: 50
+  Conditions:
+  - TargetWithin 16
+  - TargetInLineOfSight true
+  Skills:
+  - cmd{command="castp $world,$boss_x,$boss_z,$mobuuid toss brush stone"}
+StoneShield:
+  Cooldown: 50
+  Conditions:
+  - TargetWithin 16
+  - TargetInLineOfSight true
+  Skills:
+  - cmd{command="castp $world,$boss_x,$boss_z,$mobuuid shields brush stone"}
+
+Firebending:
+  Cooldown: 5
+  Conditions:
+  - TargetWithin 32
+  - TargetInLineOfSight true
+  Skills:
+   - Fire
+#  - randomskill Fire,Fireball,Flamethrower,Lava,Inferno,Grenade,Meteor,Frag,Lightning >0 1
+Airbending:
+  Cooldown: 5
+  Conditions:
+  - TargetWithin 32
+  - TargetInLineOfSight true
+  Skills:
+  - PushArea
+#  - randomskill Fling,Pull,Push,PullArea,PushArea >0 1
+Waterbending:
+  Cooldown: 5
+  Conditions:
+  - TargetWithin 32
+  - TargetInLineOfSight true
+  Skills:
+  - Frost
+#  - randomskill Cushion,Stream,Frost,IceShell,IceShields >0 1
+Earthbending:
+  Cooldown: 5
+  Conditions:
+  - TargetWithin 32
+  - TargetInLineOfSight true
+  Skills:
+  - Blob
+#  - randomskill Blob,Earth,Breach,Toss,StoneShields >0 1
+MinorSpellAttack:
+  Cooldown: 5
+  Conditions:
+  - TargetWithin 32
+  - TargetInLineOfSight true
+  Skills:
+  - Missile
+#  - randomskill Curse,ArrowRain,Fireball,Wither,Lighting >0 1
