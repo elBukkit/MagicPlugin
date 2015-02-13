@@ -1,3 +1,10 @@
+Protection:
+  Id: 138
+  Data: 0
+  Display: '&bProtection &3Stone'
+  Lore:
+  - '&6Place on the ground to'
+  - '&6protect your home.'
 WraithSword:
   Id: 276
   Data: 0
@@ -107,10 +114,10 @@ Nothing:
   Id: 0
   Data: 0
 Fire:
-  Id: 51
+  Id: 385
   Data: 0
 Water:
-  Id: 8
+  Id: 326
   Data: 0
 Air:
   Id: 30

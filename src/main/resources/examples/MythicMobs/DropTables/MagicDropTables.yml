@@ -14,4 +14,10 @@ MegaBoss:
   Drops:
   - diamond 8
   - exp 300
-
+Warlock:
+  Drops:
+  - WarlockTunic 1 1
+  - ghast_tear 1 0.3
+  - blaze_powder 1 0.2
+  - redstone 1 0.1
+  - glowstone_dust 1 0.2
