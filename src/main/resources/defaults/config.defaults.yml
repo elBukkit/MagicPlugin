@@ -174,9 +174,19 @@ age_dropped_items: 0
 wand_item: wood_hoe
 wand_upgrade_item: nether_star
 wand_glow: false
+
+# Set this to false to turn off the player skull-based spell icons
+url_icons_enabled: true
+
+# Set this to true to turn on spell glow. May not work on all server versions.
 spell_glow: true
+
+# This will "punish" players for trying to melee with a wand item
+# and prevent damage dealt by smacking with a wand
+# sword-wands are exempt.
 wand_abuse_damage: 0.001
 prevent_melee_damage: false
+
 wand_inventory_open_sound: level_up,0.3,1.5
 wand_inventory_cycle_sound: orb_pickup,0.4,0.2
 wand_inventory_close_sound: level_up,0.4,0.2

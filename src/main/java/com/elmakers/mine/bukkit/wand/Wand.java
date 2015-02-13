@@ -795,23 +795,34 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
     @SuppressWarnings("deprecation")
 	public static ItemStack createSpellItem(SpellTemplate spell, MagicController controller, Wand wand, boolean isItem) {
 		if (spell == null) return null;
-		com.elmakers.mine.bukkit.api.block.MaterialAndData icon = spell.getIcon();
-		if (icon == null) {
-			controller.getPlugin().getLogger().warning("Unable to create spell icon for " + spell.getName() + ", missing material");	
-			return null;
-		}
-		ItemStack itemStack = null;
-		ItemStack originalItemStack = null;
-		try {
-			originalItemStack = new ItemStack(icon.getMaterial(), 1, (short)0, (byte)icon.getData());
-			itemStack = InventoryUtils.makeReal(originalItemStack);
-		} catch (Exception ex) {
-			itemStack = null;
-		}
-		if (itemStack == null) {
-			controller.getPlugin().getLogger().warning("Unable to create spell icon for " + spell.getKey() + " with material " + icon.getMaterial().name());
-			return originalItemStack;
-		}
+        String iconURL = spell.getIconURL();
+
+        ItemStack itemStack = null;
+        if (iconURL != null && controller.isUrlIconsEnabled())
+        {
+            itemStack = InventoryUtils.getURLSkull(iconURL);
+        }
+
+        if (itemStack == null)
+        {
+            ItemStack originalItemStack = null;
+            com.elmakers.mine.bukkit.api.block.MaterialAndData icon = spell.getIcon();
+            if (icon == null) {
+                controller.getPlugin().getLogger().warning("Unable to create spell icon for " + spell.getName() + ", missing material");
+                return null;
+            }
+            try {
+                originalItemStack = new ItemStack(icon.getMaterial(), 1, (short)0, (byte)icon.getData());
+                itemStack = InventoryUtils.makeReal(originalItemStack);
+            } catch (Exception ex) {
+                itemStack = null;
+            }
+
+            if (itemStack == null) {
+                controller.getPlugin().getLogger().warning("Unable to create spell icon for " + spell.getKey() + " with material " + icon.getMaterial().name());
+                return originalItemStack;
+            }
+        }
 		updateSpellItem(controller.getMessages(), itemStack, spell, wand, wand == null ? null : wand.activeMaterial, isItem);
 		return itemStack;
 	}

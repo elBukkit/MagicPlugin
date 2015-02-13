@@ -1681,6 +1681,7 @@ public class MagicController implements Listener, MageController {
         showActivateHoloText = properties.getBoolean("show_activate_holotext", showCastHoloText);
         castHoloTextRange = properties.getInt("cast_holotext_range", castHoloTextRange);
         activateHoloTextRange = properties.getInt("activate_holotext_range", activateHoloTextRange);
+        urlIconsEnabled = properties.getBoolean("url_icons_enabled", urlIconsEnabled);
 
 		loadDefaultSpells = properties.getBoolean("load_default_spells", loadDefaultSpells);
         disableDefaultSpells = properties.getBoolean("disable_default_spells", disableDefaultSpells);
@@ -4091,6 +4092,10 @@ public class MagicController implements Listener, MageController {
         return redstoneReplacement;
     }
 
+    public boolean isUrlIconsEnabled() {
+        return urlIconsEnabled && NMSUtils.hasURLSkullSupport();
+    }
+
 	/*
 	 * Private data
 	 */
@@ -4224,6 +4229,7 @@ public class MagicController implements Listener, MageController {
     private boolean                             showActivateHoloText        = false;
     private int                                 castHoloTextRange           = 0;
     private int                                 activateHoloTextRange       = 0;
+    private boolean							    urlIconsEnabled             = true;
 
     private boolean							    bypassBuildPermissions      = false;
     private boolean							    bypassPvpPermissions        = false;

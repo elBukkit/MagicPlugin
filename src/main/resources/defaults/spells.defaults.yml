@@ -141,6 +141,7 @@ default:
        no_action: fail
 
 curse:
+    icon_url: http://i.imgur.com/b0qYgvB.png
     icon: rotten_flesh
     alias: silence
     category: dark
@@ -263,6 +264,7 @@ blessing:
         mana: 200
 
 boon:
+    icon_url: http://i.imgur.com/MK272DM.png
     alias: perk
     icon: red_rose:2
     category: utility
@@ -778,6 +780,7 @@ shell|4:
         undo: 15000
 
 shields:
+    icon_url: http://i.imgur.com/VG9yNqE.png
     icon: iron_helmet
     category: light
     class: ConstructSpell
@@ -800,6 +803,7 @@ shields:
         mana: 20
 
 reflect:
+    icon_url: http://i.imgur.com/VG9yNqE.png
     icon: iron_helmet
     category: light
     class: ConstructSpell
@@ -1028,6 +1032,7 @@ volley:
         mana: 40
 
 push:
+    icon_url: http://i.imgur.com/QVdzC6k.png
     icon: rails
     category: elemental
     pvp_restricted: true
@@ -1088,6 +1093,7 @@ push|2:
         target_count: 8
 
 pull:
+    icon_url: http://i.imgur.com/QVdzC6k.png
     icon: fishing_rod
     category: elemental
     pvp_restricted: true
@@ -1129,6 +1135,7 @@ pull:
         mana: 50
 
 boom:
+    icon_url: http://i.imgur.com/64uE1b8.png
     alias: kaboom
     icon: fireball
     category: combat
@@ -1172,6 +1179,7 @@ boom|2:
         mana: 75
 
 nuke:
+    icon_url: http://i.imgur.com/64uE1b8.png
     icon: skull_item:4
     category: master
     class: BoomSpell
@@ -1206,6 +1214,7 @@ nuke:
         mana: 400
 
 frost:
+    icon_url: http://i.imgur.com/zgnVyKo.png
     icon: snow_ball
     category: combat
     pvp_restricted: true
@@ -1380,6 +1389,7 @@ tree:
         mana: 20
 
 disarm:
+    icon_url: http://i.imgur.com/rGmFdcu.png
     icon: tripwire_hook
     category: light
     class: DisarmSpell
@@ -1461,6 +1471,7 @@ disarm|3:
         target_breakables: 2
 
 cure:
+    icon_url: http://i.imgur.com/zpRwgqj.png
     icon: cookie
     category: light
     worth: 20
@@ -1497,6 +1508,7 @@ cure:
         mana: 30
 
 heal:
+    icon_url: http://i.imgur.com/zpRwgqj.png
     icon: bread
     category: light
     actions:
@@ -1609,6 +1621,7 @@ mount:
         mana: 60
 
 icbm:
+    icon_url: http://i.imgur.com/tW9Uo6M.png
     icon: golden_carrot
     category: demolitions
     class: ProjectileSpell
@@ -1833,6 +1846,7 @@ weather:
 fling:
     alias: leap
     icon: feather
+    icon_url: http://i.imgur.com/F6exk6z.png
     category: utility
     worth: 80
     pvp_restricted: false
@@ -2185,6 +2199,7 @@ invincible:
         mana: 90
 
 fire:
+    icon_url: http://i.imgur.com/mNtuvX6.png
     alias: inferno
     icon: flint_and_steel
     category: demolition
@@ -2244,7 +2259,7 @@ fire|3:
         mana: 90
 
 cushion:
-    icon: bed
+    icon: water_bucket
     category: utility
     class: CushionSpell
     worth: 10
@@ -2482,9 +2497,14 @@ night:
         -  class: EffectSingle
            sound: fuse
            effectlib:
+             offset: 0,4,0
              class: HelixEffect
-             iterations: 2
+             iterations: 1
              particle: smoke_large
+        -  class: EffectTrail
+           particle: smoke_large
+           particle_data: 2
+           particle_count: 5
     parameters:
         cooldown: 5000
         time: night
@@ -2948,6 +2968,7 @@ kamikazee:
         mana: 5
 
 blast:
+    icon_url: http://i.imgur.com/bCGsZYB.png
     icon: sulphur
     category: mining
     class: ConstructSpell
@@ -3123,6 +3144,7 @@ superconvert:
         mana: 300
 
 collapse:
+    icon_url: http://i.imgur.com/bCGsZYB.png
     icon: iron_plate
     category: combat
     class: ConstructSpell
@@ -3571,6 +3593,7 @@ superemp:
         mana: 200
 
 disintegrate:
+    icon_url: http://i.imgur.com/6DidRKq.png
     icon: bone
     category: combat
     pvp_restricted: true
@@ -3599,6 +3622,7 @@ blink:
     alias: tesseract
     category: utility
     icon: eye_of_ender
+    icon_url: http://i.imgur.com/n7UxOwJ.png
     class: BlinkSpell
     worth: 120
     effects:
@@ -3866,6 +3890,7 @@ laser:
 
 shrink:
     icon: skull_item
+    icon_url: http://i.imgur.com/gFhEwjj.png
     category: combat
     class: ShrinkSpell
     pvp_restricted: true
@@ -3956,6 +3981,7 @@ grow:
         mana: 110
 
 flare:
+    icon_url: http://i.imgur.com/SODRIj1.png
     icon: firework
     category: light
     class: FireworkSpell
@@ -4058,6 +4084,7 @@ levitate:
         mana: 20
 
 force:
+    icon_url: http://i.imgur.com/H3HUqPX.png
     icon: leash
     category: elemental
     class: ForceSpell
@@ -4088,6 +4115,7 @@ force:
         mana: 50
 
 fireball:
+    icon_url: http://i.imgur.com/tW9Uo6M.png
     icon: ghast_tear
     category: combat
     pvp_restricted: true
@@ -4263,8 +4291,10 @@ wolfhouse:
 
 missile:
     icon: ink_sack:1
+    icon_url: http://i.imgur.com/iKZvCW5.png
     category: combat
     worth: 40
+    pvp_restricted: true
     actions:
         cast:
         - class: DamageAction
@@ -4353,6 +4383,7 @@ missile|4:
         mana: 100
 
 blind:
+    icon_url: http://i.imgur.com/ueYCeJC.png
     icon: ender_pearl
     category: combat
     pvp_restricted: true
@@ -4523,11 +4554,12 @@ broom:
         mount_boost: 0.5
         power_mount_boost: 3.5
         slow_ticks: 1
+        power_slow_ticks: 19
         steer_speed: 0.6
         power_steer_speed: 2
         slow_steer_speed: 0.05
-        mount_boost_per_jump: 0.5
-        power_mount_boost_per_jump: 1.5
+        mount_boost_per_jump: 0.25
+        power_mount_boost_per_jump: 0.5
         effect_sound: horse_zombie_idle
         effect_sound_interval: 40
         effect_sound_volume: 32
@@ -4556,6 +4588,7 @@ paste:
 
 kill:
     icon: skull_item:1
+    icon_url: http://i.imgur.com/XdgheMr.png
     category: dark
     pvp_restricted: true
     worth: 1000
@@ -4627,6 +4660,7 @@ kill:
         mana: 150
 
 torture:
+    icon_url: http://i.imgur.com/TAaTz9J.png
     icon: quartz
     category: dark
     pvp_restricted: true
@@ -4761,6 +4795,7 @@ superfly:
         speed: 1
 
 petrify:
+    icon_url: http://i.imgur.com/FyULJYH.png
     icon: nether_brick_item
     category: combat
     pvp_restricted: true
@@ -4824,6 +4859,7 @@ petrify:
         hitbox: true
 
 entangle:
+    icon_url: http://i.imgur.com/tCzC5aJ.png
     icon: gold_ingot
     category: combat
     class: ConstructSpell
@@ -4858,6 +4894,7 @@ entangle:
         mana: 70
 
 wound:
+    icon_url: http://i.imgur.com/TAaTz9J.png
     icon: quartz
     category: combat
     pvp_restricted: true
@@ -4921,6 +4958,7 @@ wound:
         mana: 120
 
 stun:
+    icon_url: http://i.imgur.com/aqFmPeZ.png
     icon: ink_sack:4
     category: combat
     pvp_restricted: true
@@ -5006,6 +5044,86 @@ stun|3:
         damage: 2
         duration: 1500
         target_breakables: 2
+
+poison:
+    icon: ink_sack:15
+    icon_url: http://i.imgur.com/RxWheur.png
+    category: combat
+    pvp_restricted: true
+    worth: 20
+    actions:
+        cast:
+        -  class: PotionEffectAction
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: burp
+           effectlib:
+             class: ConeEffect
+             iterations: 15
+             particle: slime
+             lengthGrow: 0.2
+        -  class: EffectSingle
+           location: target
+           color: 088A08
+           firework: ball
+        -  class: EffectSingle
+           location: target
+           effectlib:
+             class: WarpEffect
+             particle: slime
+             iterations: 1
+        -  class: EffectSingle
+           location: target
+           effectlib:
+             class: SphereEffect
+             iterations: 60
+             period: .1
+             particle: slime
+             radius: .75
+             particles: 20
+        no_target:
+        -  class: EffectSingle
+           sound: burp
+           effectlib:
+             class: ConeEffect
+             iterations: 15
+             particle: slime
+             lengthGrow: 0.2
+        -  class: EffectSingle
+           location: target
+           color: 088A08
+           firework: ball
+        -  class: EffectSingle
+           location: target
+           effectlib:
+             class: WarpEffect
+             particle: slime
+             iterations: 1
+    costs:
+        mana: 50
+    parameters:
+        hitbox: true
+        range: 48
+        deactivate_target_mage: false
+        target_type: LivingEntity
+        target: other
+        target_breakables: 1
+        duration: 2500
+        effect_poison: 1.5
+        cooldown: 7000
+
+poison|2:
+    parameters:
+        range: 16
+        duration: 3000
+        effect_poison: 2
+
+poison|3:
+    parameters:
+        range: 24
+        duration: 3500
+        effect_poison: 3
 
 lift:
     icon: ink_sack:8

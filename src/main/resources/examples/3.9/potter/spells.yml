@@ -251,6 +251,7 @@ aparecium:
 
 apparate:
     icon: eye_of_ender
+    icon_url: http://i.imgur.com/n7UxOwJ.png
     category: elective
     class: BlinkSpell
     worth: 120
@@ -316,6 +317,7 @@ apparate:
 
 apparatemaxima:
     icon: eye_of_ender
+    icon_url: http://i.imgur.com/n7UxOwJ.png
     category: staff
     class: BlinkSpell
     worth: 120
@@ -372,6 +374,7 @@ apparatemaxima:
         mana: 200
 
 araniaexumai:
+    icon_url: http://i.imgur.com/W22870W.png
     icon: ink_sack:2
     category: creatures
     pvp_restricted: true
@@ -532,6 +535,7 @@ snowball:
 
 ascendio:
     icon: ink_sack:8
+    icon_url: http://i.imgur.com/F6exk6z.png
     category: charms
     worth: 80
     pvp_restricted: false
@@ -713,6 +717,7 @@ broom:
 
 avadakedavra:
     icon: ink_sack:10
+    icon_url: http://i.imgur.com/XdgheMr.png
     category: unforgiveable
     pvp_restricted: true
     cast_on_no_target: true
@@ -783,6 +788,7 @@ avadakedavra:
 
 avadamaxima:
     icon: ink_sack:10
+    icon_url: http://i.imgur.com/XdgheMr.png
     category: staff
     pvp_restricted: true
     worth: 1000
@@ -975,6 +981,7 @@ beat:
 
 bogies:
     icon: ink_sack:15
+    icon_url: http://i.imgur.com/RxWheur.png
     category: creatures
     pvp_restricted: true
     cast_on_no_target: true
@@ -1057,6 +1064,7 @@ bogies|3:
         effect_poison: 3
 
 bombarda:
+    icon_url: http://i.imgur.com/64uE1b8.png
     icon: ink_sack:7
     category: dada
     pvp_restricted: true
@@ -1201,6 +1209,7 @@ confringoold:
         mana: 75
 
 confundus:
+    icon_url: http://i.imgur.com/b0qYgvB.png
     icon: coal:1
     category: dada
     pvp_restricted: true
@@ -1424,6 +1433,7 @@ obscuro:
         hitbox: true
 
 crucio:
+    icon_url: http://i.imgur.com/TAaTz9J.png
     icon: quartz
     category: unforgiveable
     pvp_restricted: true
@@ -1543,6 +1553,7 @@ deletrius:
 
 deprimo:
     icon: flint
+    icon_url: http://i.imgur.com/bCGsZYB.png
     category: transfiguration
     class: ConstructSpell
     cast_on_no_target: true
@@ -1597,6 +1608,7 @@ deprimo|3:
 
 deprimomaxima:
     icon: flint
+    icon_url: http://i.imgur.com/bCGsZYB.png
     category: staff
     class: ConstructSpell
     cast_on_no_target: true
@@ -1634,6 +1646,7 @@ deprimomaxima:
         mana: 200
 
 diffindo:
+    icon_url: http://i.imgur.com/6DidRKq.png
     icon: coal
     category: transfiguration
     class: ConstructSpell
@@ -1863,6 +1876,7 @@ evanesco:
         mana: 65
 
 expelliarmus:
+    icon_url: http://i.imgur.com/rGmFdcu.png
     alias: expel
     icon: ink_sack:1
     category: dada
@@ -1959,6 +1973,7 @@ expelliarmus|5:
         target_breakables: 2
 
 rennervate:
+    icon_url: http://i.imgur.com/zpRwgqj.png
     icon: ink_sack:9
     category: charms
     worth: 20
@@ -1998,6 +2013,7 @@ rennervate:
 reparifors:
     name: Reparifors
     description: Cures blindness and slows!
+    icon_url: http://i.imgur.com/zpRwgqj.png
     icon: ink_sack:9
     category: charms
     worth: 20
@@ -2075,6 +2091,7 @@ engorgio:
         mana: 110
 
 episkey:
+    icon_url: http://i.imgur.com/zpRwgqj.png
     icon: ink_sack:9
     category: charms
     worth: 30
@@ -2123,6 +2140,7 @@ episkey|3:
 
 bandage:
     icon: ink_sack:9
+    icon_url: http://i.imgur.com/zpRwgqj.png
     category: charms
     worth: 30
     pvp_restricted: false
@@ -2365,6 +2383,7 @@ flagrate:
 
 rictusempra:
     alias: Rictusempra
+    icon_url: http://i.imgur.com/gFhEwjj.png
     icon: ink_sack:3
     category: dada
     pvp_restricted: true
@@ -2422,6 +2441,7 @@ rictusempra:
         mana: 40
 
 ventus:
+    icon_url: http://i.imgur.com/QVdzC6k.png
     icon: ink_sack:5
     category: dada
     pvp_restricted: true
@@ -2461,6 +2481,7 @@ ventus:
         mana: 112
 
 flipendo:
+    icon_url: http://i.imgur.com/QVdzC6k.png
     icon: ink_sack:5
     category: dada
     pvp_restricted: true
@@ -2614,6 +2635,7 @@ fumos:
         mana: 90
 
 glacius:
+    icon_url: http://i.imgur.com/zgnVyKo.png
     icon: snow_ball
     category: transfiguration
     pvp_restricted: true
@@ -2720,6 +2742,7 @@ glacius|3:
         mana: 125
 
 immobulus:
+    icon_url: http://i.imgur.com/FyULJYH.png
     icon: gold_ingot
     category: dada
     pvp_restricted: true
@@ -2827,6 +2850,7 @@ locomotomortus:
         hitbox: true
 
 incarcerous:
+    icon_url: http://i.imgur.com/tCzC5aJ.png
     icon: gold_ingot
     category: dark
     class: ConstructSpell
@@ -2862,6 +2886,7 @@ incarcerous:
         mana: 70
 
 imperio:
+    icon_url: http://i.imgur.com/H3HUqPX.png
     icon: ink_sack:0
     category: unforgiveable
     class: ForceSpell
@@ -2961,6 +2986,7 @@ phoenixfire:
         mana: 50
 
 incendio:
+    icon_url: http://i.imgur.com/mNtuvX6.png
     icon: clay_ball
     category: dark
     pvp_restricted: true
@@ -3092,6 +3118,7 @@ legilimens:
         mana: 100
 
 levicorpus:
+    icon_url: http://i.imgur.com/ueYCeJC.png
     icon: ink_sack:5
     category: charms
     class: GenericSpell
@@ -3183,6 +3210,7 @@ levicorpus|3:
         target_breakables: 2
 
 lumos:
+    icon_url: http://i.imgur.com/MK272DM.png
     icon: ink_sack:11
     category: charms
     worth: 10
@@ -3269,15 +3297,17 @@ morsmordre:
            sound: wither_hurt
         -  class: EffectTrail
            particle: flame
-        -  class: EffectRing
+        -  class: EffectSingle
            location: target
-           firework: creeper
-           radius: 12
-           target_offset: 0,16,0
-           color: '00FF00'
-           color2: '88FF88'
+           effectlib:
+             class: ColoredImageEffect
+             fileName: "morsmordre.gif"
+             enableRotation: false
+             size: 0.1
+             stepX: 1
+             stepY: 1
     parameters:
-        target: any
+        target: block
         allow_max_range: true
         range: 16
         cooldown: 60000
@@ -3438,7 +3468,7 @@ phoenixcrymaxima:
            target_offset: 0,4,0
         -  class: EffectSingle
            location: target
-           effectLib:
+           effectlib:
              class: TraceEffect
              particle: redstone
     parameters:
@@ -3501,6 +3531,7 @@ orchideous:
         mana: 40
 
 periculum:
+    icon_url: http://i.imgur.com/SODRIj1.png
     icon: firework
     category: charms
     class: FireworkSpell
@@ -3515,6 +3546,7 @@ periculum:
     costs:
         mana: 30
 periculux:
+    icon_url: http://i.imgur.com/SODRIj1.png
     name: Periculux
     description: Shoot a Rainbow Firework!
     icon: firework
@@ -3806,6 +3838,7 @@ piertotum:
         mana: 150
 
 protego:
+    icon_url: http://i.imgur.com/VG9yNqE.png
     icon: ink_sack:12
     category: dada
     class: ConstructSpell
@@ -3859,6 +3892,7 @@ protego|3:
         mana: 50
 
 protegomaxima:
+    icon_url: http://i.imgur.com/VG9yNqE.png
     icon: ink_sack:12
     category: dada
     class: ConstructSpell
@@ -3950,6 +3984,7 @@ reducio|3:
 
 reducto:
     icon: clay_brick
+    icon_url: http://i.imgur.com/bCGsZYB.png
     category: charms
     class: ConstructSpell
     worth: 12
@@ -3994,6 +4029,7 @@ reducto|2:
 
 reductomaxima:
     icon: clay_brick
+    icon_url: http://i.imgur.com/bCGsZYB.png
     category: staff
     class: ConstructSpell
     hidden: true
@@ -4140,6 +4176,7 @@ reparomaxima:
         mana: 500
 
 sectumsempra:
+    icon_url: http://i.imgur.com/TAaTz9J.png
     alias: sectum
     icon: quartz
     category: dark
@@ -4464,6 +4501,7 @@ jail:
         bypass_backfire: true
 
 stupefy:
+    icon_url: http://i.imgur.com/aqFmPeZ.png
     icon: ink_sack:4
     category: dada
     pvp_restricted: true
@@ -4550,6 +4588,7 @@ stupefy|3:
         target_breakables: 2
 
 vermillious:
+    icon_url: http://i.imgur.com/iKZvCW5.png
     icon: ink_sack:1
     category: charms
     pvp_restricted: true
@@ -4754,6 +4793,7 @@ noxmaxima:
 
 vulnera:
     icon: ink_sack:9
+    icon_url: http://i.imgur.com/zpRwgqj.png
     category: charms
     cast_on_no_target: true
     worth: 50
@@ -4798,6 +4838,7 @@ vulnera:
 
 ferula:
     icon: ink_sack:9
+    icon_url: http://i.imgur.com/zpRwgqj.png
     category: charms
     cast_on_no_target: true
     worth: 50
@@ -6529,7 +6570,7 @@ invis:
         mana: 120
 
 confringo:
-    description: Incinerate your target!
+    icon_url: http://i.imgur.com/tW9Uo6M.png
     icon: fireball
     category: dark
     pvp_restricted: true
@@ -6587,7 +6628,6 @@ confringo:
         mana: 100
 
 firestorm:
-    description: Incinerate your target!
     icon: clay_ball
     category: dark
     class: CommandSpell

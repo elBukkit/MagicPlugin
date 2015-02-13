@@ -609,84 +609,17 @@ beat:
         cooldown: 5000
 
 bogies:
-    icon: ink_sack:15
+    inherit: poison
     category: creatures
-    pvp_restricted: true
-    cast_on_no_target: true
-    worth: 20
-    actions:
-        cast:
-        -  class: PotionEffectAction
-    effects:
-        cast:
-        -  class: EffectSingle
-           sound: burp
-           effectlib:
-             class: ConeEffect
-             iterations: 15
-             particle: slime
-             lengthGrow: 0.2
-        -  class: EffectSingle
-           location: target
-           color: 088A08
-           firework: ball
-        -  class: EffectSingle
-           location: target
-           effectlib:
-             class: WarpEffect
-             particle: slime
-             iterations: 1
-        -  class: EffectSingle
-           location: target
-           effectlib:
-             class: SphereEffect
-             iterations: 60
-             period: .1
-             particle: slime
-             radius: .75
-             particles: 20
-        no_target:
-        -  class: EffectSingle
-           sound: burp
-           effectlib:
-             class: ConeEffect
-             iterations: 15
-             particle: slime
-             lengthGrow: 0.2
-        -  class: EffectSingle
-           location: target
-           color: 088A08
-           firework: ball
-        -  class: EffectSingle
-           location: target
-           effectlib:
-             class: WarpEffect
-             particle: slime
-             iterations: 1
-    costs:
-        mana: 50
-    parameters:
-        hitbox: true
-        fov: 0.12
-        range: 48
-        deactivate_target_mage: false
-        target_type: LivingEntity
-        target: other
-        target_breakables: 1
-        duration: 2500
-        effect_poison: 1.5
-        cooldown: 7000
 
 bogies|2:
     parameters:
-        hitbox: true
         range: 16
         duration: 3000
         effect_poison: 2
 
 bogies|3:
     parameters:
-        hitbox: true
         range: 24
         duration: 3500
         effect_poison: 3
@@ -947,6 +880,7 @@ deprimomaxima:
         mana: 200
 
 diffindo:
+    icon_url: http://i.imgur.com/6DidRKq.png
     icon: coal
     category: transfiguration
     class: ConstructSpell
@@ -1419,7 +1353,7 @@ flagrate:
         range: 3
 
 rictusempra:
-    alias: Rictusempra
+    icon_url: http://i.imgur.com/gFhEwjj.png
     icon: ink_sack:3
     category: dada
     pvp_restricted: true
@@ -1660,6 +1594,7 @@ glacius|3:
         mana: 125
 
 immobulus:
+    icon_url: http://i.imgur.com/FyULJYH.png
     icon: gold_ingot
     category: dada
     pvp_restricted: true
@@ -1767,7 +1702,7 @@ locomotomortus:
         hitbox: true
 
 incarcerous:
-    inherit: petrify
+    inherit: entangle
     category: dark
 
 imperio:
@@ -1930,6 +1865,7 @@ legilimens:
         mana: 100
 
 levicorpus:
+    icon_url: http://i.imgur.com/ueYCeJC.png
     icon: ink_sack:5
     category: charms
     class: GenericSpell
@@ -3030,6 +2966,7 @@ stupefy|3:
         target_breakables: 2
 
 vermillious:
+    icon_url: http://i.imgur.com/iKZvCW5.png
     icon: ink_sack:1
     category: charms
     pvp_restricted: true
@@ -4016,7 +3953,7 @@ animagus_armchair:
         mana: 5
 
 confringo:
-    description: Incinerate your target!
+    icon_url: http://i.imgur.com/tW9Uo6M.png
     icon: fireball
     category: dark
     pvp_restricted: true
