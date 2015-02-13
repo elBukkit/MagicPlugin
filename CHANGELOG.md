@@ -3,6 +3,7 @@
 ## 2.1
 
  - Add InventoryUtils.getURLSkull, for creating URL-based skulls
+ - Allow for transparency in images on maps
 
 ## 2.0
 

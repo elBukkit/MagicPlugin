@@ -169,7 +169,7 @@ public class URLMap extends MapRenderer implements com.elmakers.mine.bukkit.api.
         }
         if (image == null) {
             loading = true;
-            image = new BufferedImage(128, 128, BufferedImage.TYPE_INT_RGB);
+            image = new BufferedImage(128, 128, BufferedImage.TYPE_INT_ARGB);
             final Plugin plugin = controller.getPlugin();
             if (plugin == null) return null;
             final File cacheFolder = controller.getCacheFolder();
