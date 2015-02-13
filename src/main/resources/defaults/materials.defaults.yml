@@ -426,7 +426,6 @@ building:
 - dispenser
 - sandstone
 - note_block
-- bed_block
 - powered_rail
 - detector_rail
 - piston_sticky_base
