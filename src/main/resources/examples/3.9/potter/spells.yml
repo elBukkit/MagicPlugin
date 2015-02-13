@@ -5083,22 +5083,35 @@ recall:
         warps:
           dueling:
             name: Hogwart's Dueling Club
+            description: The only town we know of
+            locked: true
+            icon: iron_hoe
           flyinglessons:
             name: Flying Practice
+            description: A place to hone your flying skills
+            locked: true
+            icon: blaze_rod
           greathall:
             name: The Great Hall
+            locked: true
           diagonalley:
             name: The Leaky Cauldron
+            locked: true
           4privetdrive:
             name: "#4 Privet Drive"
+            locked: true
           trainstation:
             name: "King's Cross"
+            locked: true
           arachnids:
             name: Acromantula Infestation
+            locked: true
           deatheatercamp:
             name: Deatheater Camp
+            locked: true
           hub:
             name: The Ministry Hub
+            locked: true
 gather:
     hidden: true
     icon: glowstone_dust
