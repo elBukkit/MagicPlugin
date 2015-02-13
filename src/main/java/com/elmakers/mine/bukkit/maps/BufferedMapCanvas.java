@@ -1,9 +1,10 @@
-package com.elmakers.mine.bukkit.utility;
+package com.elmakers.mine.bukkit.maps;
 
 import java.awt.Image;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.elmakers.mine.bukkit.utility.ColorHD;
 import org.bukkit.Color;
 import org.bukkit.DyeColor;
 import org.bukkit.map.MapCanvas;

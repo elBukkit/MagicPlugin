@@ -22,7 +22,7 @@ import org.bukkit.util.Vector;
 import com.elmakers.mine.bukkit.api.block.Schematic;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.entity.EntityData;
-import com.elmakers.mine.bukkit.utility.BufferedMapCanvas;
+import com.elmakers.mine.bukkit.maps.BufferedMapCanvas;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 
 public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.bukkit.api.block.MaterialBrush {
