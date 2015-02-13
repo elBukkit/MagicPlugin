@@ -57,6 +57,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
     protected String customName = null;
     protected ItemStack[] inventoryContents = null;
     protected boolean isValid = true;
+    protected BlockFace rotation = null;
 
     public Material DEFAULT_MATERIAL = Material.AIR;
 
@@ -238,6 +239,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
             } else if (blockState instanceof Skull) {
                 Skull skull = (Skull)blockState;
                 customName = skull.getOwner();
+                rotation = skull.getRotation();
             } else if (blockState instanceof CreatureSpawner) {
                 CreatureSpawner spawner = (CreatureSpawner)blockState;
                 customName = spawner.getCreatureTypeName();
@@ -309,9 +311,14 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
                         newInventory.setItem(i, item);
                     }
                 }
-            } else if (blockState instanceof Skull && customName != null) {
+            } else if (blockState instanceof Skull) {
                 Skull skull = (Skull)blockState;
-                skull.setOwner(customName);
+                if (customName != null) {
+                    skull.setOwner(customName);
+                }
+                if (rotation != null) {
+                    skull.setRotation(rotation);
+                }
                 skull.update();
             } else if (blockState instanceof CreatureSpawner && customName != null && customName.length() > 0) {
                 CreatureSpawner spawner = (CreatureSpawner)blockState;
