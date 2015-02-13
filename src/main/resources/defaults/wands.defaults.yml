@@ -439,7 +439,7 @@ ajwolf:
         - levitate
         - fling|2
         - blink|3
-        - arrow|4
+        - missile|4
         - boon|2
         - push
         - heal
@@ -473,7 +473,7 @@ miniwolf:
         - levitate
         - fling|2
         - blink|3
-        - arrow|4
+        - missile|4
         - day
         - stash
         - emp
@@ -506,6 +506,7 @@ miniwolf:
         - flamethrower
         - tag
         - mount
+        - arrow|4
 
 wolf:
     path: architect
@@ -534,7 +535,7 @@ wolf:
         - levitate@0
         - blink|3@1
         - fling|2@2
-        - arrow|4@3
+        - missile|4@3
         - day@4
         - recall@5
         - gather@6
@@ -559,7 +560,7 @@ wolf:
         - superblast
         - storm
         - icbm
-        - torch
+        - torch|2
         - inferno
         - wolfhouse
         - disarm
@@ -589,7 +590,7 @@ wolf:
         - boon|2
         - blessing
         - convert
-        - blast
+        - blast|2
         - wither
         - camera
         - collapse
@@ -624,6 +625,13 @@ wolf:
         - animate
         - mount
         - counterspell
+        - arrow|4
+        - kill
+        - wound
+        - torture
+        - stun
+        - petrify
+        - entangle
     materials:
         - erase@16
         - copy@17
@@ -819,6 +827,11 @@ hotbar2:
     indestructible: false
     icon: nether_star
     hotbar_count: 2
+hotbar3:
+    upgrade: true
+    indestructible: false
+    icon: nether_star
+    hotbar_count: 3
 manaboost:
     upgrade: true
     indestructible: false

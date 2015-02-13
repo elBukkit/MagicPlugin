@@ -542,6 +542,10 @@ spells:
         name: Carpet Bomb
         description: Rain death from above
         cast: You call in an air strike
+    poison:
+        name: Poison
+        description: Poison your target
+        cast: You poison $target
     lightning:
         name: Lightning
         description: Strike lighting at your target
@@ -1185,8 +1189,11 @@ wands:
         name: Architect Upgrade
         description: Upgrade to Architect level
     hotbar2:
-        name: Hotbar Upgrade
+        name: Hotbar Level 2
         description: Add an extra hotbar to your wand!
+    hotbar3:
+        name: Hotbar Level 3
+        description: Three hotbars are better than two
     antihunger:
         name: Anti-Hunger Upgrade
         description: Never go hungry again!
