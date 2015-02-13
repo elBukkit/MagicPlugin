@@ -295,6 +295,11 @@ undo_frequency: 10
 # or Rewind a player's constructions after they log out.
 commit_on_quit: false
 
+# Enable this to persists Mage data on mobs.
+# This can generate quite a lot of save data if you have randomly spawning
+# Mages, but it would also let you undo their spells aftera restart.
+save_non_player_mages: false
+
 # Force any pending scheduled undo tasks to run on world save
 # this will ensure the world reverts to normal in the event of
 # a server crash.

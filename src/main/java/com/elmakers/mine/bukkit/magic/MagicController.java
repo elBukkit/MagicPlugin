@@ -1422,11 +1422,21 @@ public class MagicController implements Listener, MageController {
                 File playerData = new File(playerDataFolder, mageEntry.getKey() + ".dat");
                 DataStore playerConfig = new DataStore(getLogger(), playerData);
                 Mage mage = mageEntry.getValue();
+                if (!mage.isPlayer() && !saveNonPlayerMages)
+                {
+                    if (!mage.isValid())
+                    {
+                        forgetMages.put(mageEntry.getKey(), 0l);
+                    }
+                    continue;
+                }
+
                 mage.save(playerConfig);
                 stores.add(playerConfig);
 
                 // Check for players we can forget
-                if (!mage.isValid()) {
+                if (!mage.isValid())
+                {
                     getLogger().info("Forgetting Offline mage " + mage.getName());
                     forgetMages.put(mageEntry.getKey(), 0l);
                 }
@@ -1696,6 +1706,7 @@ public class MagicController implements Listener, MageController {
 		pendingQueueDepth = properties.getInt("pending_depth", pendingQueueDepth);
 		undoMaxPersistSize = properties.getInt("undo_max_persist_size", undoMaxPersistSize);
 		commitOnQuit = properties.getBoolean("commit_on_quit", commitOnQuit);
+        saveNonPlayerMages = properties.getBoolean("save_non_player_mages", saveNonPlayerMages);
         undoOnWorldSave = properties.getBoolean("undo_on_world_save", undoOnWorldSave);
         backupInventory = properties.getBoolean("backup_inventory", backupInventory);
         defaultWandPath = properties.getString("default_wand_path", "");
@@ -2808,23 +2819,26 @@ public class MagicController implements Listener, MageController {
             }
         }
 
-        final File playerData = new File(playerDataFolder, mage.getId() + ".dat");
-        getLogger().info("Player logged out, saving data to " + playerData.getName());
-        final DataStore playerConfig = new DataStore(getLogger(), playerData);
-        mage.save(playerConfig);
+        if (mage.isPlayer() || saveNonPlayerMages)
+        {
+            final File playerData = new File(playerDataFolder, mage.getId() + ".dat");
+            getLogger().info("Player logged out, saving data to " + playerData.getName());
+            final DataStore playerConfig = new DataStore(getLogger(), playerData);
+            mage.save(playerConfig);
 
-        Bukkit.getScheduler().runTaskAsynchronously(plugin, new Runnable() {
-            @Override
-            public void run() {
-                synchronized (saveLock) {
-                    try {
-                        playerConfig.save();
-                    } catch (Exception ex) {
-                        ex.printStackTrace();
+            Bukkit.getScheduler().runTaskAsynchronously(plugin, new Runnable() {
+                @Override
+                public void run() {
+                    synchronized (saveLock) {
+                        try {
+                            playerConfig.save();
+                        } catch (Exception ex) {
+                            ex.printStackTrace();
+                        }
                     }
                 }
-            }
-        });
+            });
+        }
 
 		// Close the wand inventory to make sure the player's normal inventory gets saved
 		Wand wand = mage.getActiveWand();
@@ -2835,8 +2849,13 @@ public class MagicController implements Listener, MageController {
 
 		// Let the GC collect the mage, unless they have some pending undo batches
 		// or an undo queue (for rewind)
-		if (undoQueue == null || undoQueue.isEmpty()) {
-			getLogger().info("Player has no pending undo actions, forgetting: " + mage.getName());
+        if (!mage.isPlayer())
+        {
+            mages.remove(player.getUniqueId().toString());
+        }
+        else if ((undoQueue == null || undoQueue.isEmpty()))
+        {
+			getLogger().info("Mage has no pending undo actions, forgetting: " + mage.getName());
 			mages.remove(player.getUniqueId().toString());
 		}
 	}
@@ -4141,7 +4160,8 @@ public class MagicController implements Listener, MageController {
     private boolean                             undoOnWorldSave                 = false;
     private boolean                             backupInventory                 = false;
     private boolean                             commitOnQuit             		= false;
-    private String                              defaultWandPath                 = "master";
+    private boolean                             saveNonPlayerMages              = false;
+    private String                              defaultWandPath                 = "";
     private WandMode							defaultWandMode				    = WandMode.INVENTORY;
     private boolean                             showMessages                    = true;
     private boolean                             showCastMessages                = false;
