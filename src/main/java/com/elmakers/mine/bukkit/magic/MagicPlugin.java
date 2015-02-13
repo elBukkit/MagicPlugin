@@ -2,9 +2,11 @@ package com.elmakers.mine.bukkit.magic;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.logging.Level;
 
 import com.elmakers.mine.bukkit.api.magic.Messages;
 import com.elmakers.mine.bukkit.api.spell.SpellCategory;
+import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.magic.command.*;
 import com.elmakers.mine.bukkit.utility.NMSUtils;
 import org.bukkit.Material;
@@ -301,7 +303,27 @@ public class MagicPlugin extends JavaPlugin implements MagicAPI
 
     @Override
     public ItemStack createItem(String magicItemKey) {
-        return Wand.createItem(controller, magicItemKey);
+        ItemStack item = null;
+        if (controller == null) {
+            getLogger().log(Level.WARNING, "Calling API before plugin is initialized");
+            return item;
+        }
+
+        try {
+            item = Wand.createItem(controller, magicItemKey);
+            if (item == null)
+            {
+                MaterialAndData material = new MaterialAndData(magicItemKey);
+                if (material.isValid())
+                {
+                    item = material.getItemStack(1);
+                }
+            }
+        } catch (Exception ex) {
+            getLogger().log(Level.WARNING, "Error creating item: " + magicItemKey, ex);
+        }
+
+        return item;
     }
 
     @Override
