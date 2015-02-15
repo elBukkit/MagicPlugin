@@ -67,6 +67,7 @@ default:
        no_action: fail
 
 accio:
+    icon_url: http://i.imgur.com/JOHBtUT.png
     icon: ink_sack:6
     category: charms
     pvp_restricted: true
@@ -117,6 +118,7 @@ accio|3:
         allow_area: true
 
 aguamenti:
+    icon_url: http://i.imgur.com/FMkCRh9.png
     icon: ghast_tear
     category: transfiguration
     class: CushionSpell
@@ -162,6 +164,7 @@ aguamenti|2:
         range: 40
 
 alohomora:
+    icon_url: http://i.imgur.com/Af56lYq.png
     icon: shears
     category: transfiguration
     class: ConstructSpell
@@ -191,6 +194,7 @@ alohomora:
         mana: 50
 
 colloportus:
+    icon_url: http://i.imgur.com/84Dq1nT.png
     icon: iron_door
     category: staff
     class: ConstructSpell
@@ -218,6 +222,7 @@ colloportus:
         mana: 110
 
 aparecium:
+    icon_url: http://i.imgur.com/byVXfY0.png
     icon: daylight_detector
     category: charms
     class: ConstructSpell
@@ -410,6 +415,7 @@ araniaexumai:
         mana: 25
 
 arrow:
+    icon_url: http://i.imgur.com/thIMVWy.png
     icon: arrow
     category: dada
     pvp_restricted: true
@@ -486,6 +492,7 @@ arrow|4:
         mana: 80
 
 snowball:
+    icon_url: http://i.imgur.com/NpYUt8y.png
     icon: snow_ball
     category: charms
     pvp_restricted: true
@@ -578,6 +585,7 @@ ascendio|3:
         max_speed: 5
 
 arresto:
+    icon_url: http://i.imgur.com/PHlfm7b.png
     icon: ink_sack:8
     category: charms
     class: FlingSpell
@@ -604,6 +612,7 @@ arresto:
         mana: 5
 
 atmos:
+    icon_url: http://i.imgur.com/IqmgaZ2.png
     icon: watch
     category: herbology
     worth: 80
@@ -839,6 +848,7 @@ avadamaxima:
         mana: 300
 
 unknown:
+    icon_url: http://i.imgur.com/bCGsZYB.png
     icon: coal
     category: unforgiveable
     pvp_restricted: true
@@ -912,6 +922,7 @@ unknown:
         mana: 180
 
 avis:
+    icon_url: http://i.imgur.com/eyM3n1d.png
     icon: monster_egg
     category: creatures
     class: FamiliarSpell
@@ -1128,6 +1139,7 @@ bombarda|2:
         damage: 7
 
 bubble:
+    icon_url: http://i.imgur.com/00ZNC1x.png
     icon: ender_pearl
     category: transfiguration
     worth: 30
@@ -1328,6 +1340,7 @@ confundusmaxima:
         hitbox: true
 
 conjunctivitis:
+    icon_url: http://i.imgur.com/Todo6d0.png
     alias: blind
     icon: ender_pearl
     category: dada
@@ -1388,6 +1401,7 @@ conjunctivitis|2:
         duration: 4000
 
 obscuro:
+    icon_url: http://i.imgur.com/Todo6d0.png
     alias: blind
     icon: ender_pearl
     category: dada
@@ -1646,7 +1660,7 @@ deprimomaxima:
         mana: 200
 
 diffindo:
-    icon_url: http://i.imgur.com/6DidRKq.png
+    icon_url: http://i.imgur.com/49rfXIY.png
     icon: coal
     category: transfiguration
     class: ConstructSpell
@@ -1701,6 +1715,7 @@ diffindo|3:
         radius: 4
 
 disillusion:
+    icon_url: http://i.imgur.com/e4Wygfl.png
     icon: coal:1
     category: charms
     worth: 20
@@ -1725,6 +1740,7 @@ disillusion:
         effect_invisibility: 5
 
 duro:
+    icon_url: http://i.imgur.com/bIiV9Xn.png
     icon: flint
     category: transfiguration
     class: RecurseSpell
@@ -1844,6 +1860,7 @@ erecto:
         mana: 200
 
 evanesco:
+    icon_url: http://i.imgur.com/zZKzDFS.png
     icon: firework_charge
     category: transfiguration
     class: ConstructSpell
@@ -2047,6 +2064,7 @@ reparifors:
         mana: 30
 
 engorgio:
+    icon_url: http://i.imgur.com/FlBmgua.png
     icon: brown_mushroom
     category: transfiguration
     class: GrowSpell
@@ -2254,6 +2272,7 @@ floo:
         cooldown: 7000
 
 fiendfyre:
+    icon_url: http://i.imgur.com/PSGSxEI.png
     icon: coal
     category: dark
     class: IterateSpell
@@ -2288,6 +2307,7 @@ fiendfyre:
         mana: 180
 
 finiteincantatem:
+    icon_url: http://i.imgur.com/bIiV9Xn.png
     alias: finite
     icon: ink_sack:13
     category: dada
@@ -2354,6 +2374,7 @@ finiteincantatem|4:
         fizzle_chance: 0
 
 flagrate:
+    icon_url: http://i.imgur.com/PSGSxEI.png
     icon: ink_sack:14
     category: charms
     class: GenericSpell
@@ -2557,6 +2578,7 @@ flipendo|3:
         mana: 100
 
 flight:
+    icon_url: http://i.imgur.com/PHlfm7b.png
     icon: feather
     category: staff
     hidden: true
@@ -2589,6 +2611,7 @@ flight:
         mana: 20
 
 fourpoint:
+    icon_url: http://i.imgur.com/DUCgoAF.png
     icon: compass
     category: elective
     class: OrientSpell
@@ -2605,6 +2628,7 @@ fourpoint:
         mana: 20
 
 fumos:
+    icon_url: http://i.imgur.com/e4Wygfl.png
     icon: ink_sack
     category: dada
     worth: 10
@@ -2804,6 +2828,7 @@ immobulus:
         hitbox: true
 
 locomotomortus:
+    icon_url: http://i.imgur.com/U53LH0P.png
     alias: locomoto
     icon: gold_ingot
     category: dada
@@ -2920,6 +2945,7 @@ imperio:
         mana: 170
 
 impervius:
+    icon_url: http://i.imgur.com/49rfXIY.png
     icon: bucket
     category: transfiguration
     class: ConstructSpell
@@ -2986,7 +3012,7 @@ phoenixfire:
         mana: 50
 
 incendio:
-    icon_url: http://i.imgur.com/mNtuvX6.png
+    icon_url: http://i.imgur.com/zG6k2gJ.png
     icon: clay_ball
     category: dark
     pvp_restricted: true
@@ -3051,6 +3077,7 @@ incendio|3:
         mana: 90
 
 lacarnum:
+    icon_url: http://i.imgur.com/OoxraNN.png
     icon: coal
     category: charms
     class: com.elmakers.mine.bukkit.spell.ActionSpell
@@ -3097,6 +3124,7 @@ lacarnum|3:
         target_breakables: 2
 
 legilimens:
+    icon_url: http://i.imgur.com/xzXPNcH.png
     icon: iron_helmet
     category: staff
     class: StashSpell
@@ -3258,6 +3286,7 @@ lumos|3:
         duration: 90000
 
 lumossolem:
+    icon_url: http://i.imgur.com/MK272DM.png
     icon: sea_lantern
     category: charms
     class: TossSpell
@@ -3285,6 +3314,7 @@ lumossolem:
         mana: 100
 
 morsmordre:
+    icon_url: http://i.imgur.com/7lS73cn.png
     icon: skull_item:4
     category: dark
     worth: 20
@@ -3297,17 +3327,15 @@ morsmordre:
            sound: wither_hurt
         -  class: EffectTrail
            particle: flame
-        -  class: EffectSingle
+        -  class: EffectRing
            location: target
-           effectlib:
-             class: ColoredImageEffect
-             fileName: "morsmordre.gif"
-             enableRotation: false
-             size: 0.1
-             stepX: 1
-             stepY: 1
+           firework: creeper
+           radius: 12
+           target_offset: 0,16,0
+           color: '00FF00'
+           color2: '88FF88'
     parameters:
-        target: block
+        target: any
         allow_max_range: true
         range: 16
         cooldown: 60000
@@ -3319,6 +3347,7 @@ morsmordre:
         mana: 55
 
 morsmordremaxima:
+    icon_url: http://i.imgur.com/7lS73cn.png
     icon: skull_item:4
     category: dark
     worth: 20
@@ -3352,6 +3381,7 @@ morsmordremaxima:
         mana: 100
 
 mayday:
+    icon_url: http://i.imgur.com/SWNaSEw.png
     icon: firework
     category: charms
     worth: 20
@@ -3382,6 +3412,7 @@ mayday:
         mana: 55
 
 phoenixcry:
+    icon_url: http://i.imgur.com/KxkG8GW.png
     name: Phoenix Cry
     description: Ca Caw!!!
     icon: firework
@@ -3414,6 +3445,7 @@ phoenixcry:
         mana: 55
 
 maydaymaxima:
+    icon_url: http://i.imgur.com/SWNaSEw.png
     icon: firework
     category: charms
     worth: 20
@@ -3446,6 +3478,7 @@ maydaymaxima:
         mana: 100
 
 phoenixcrymaxima:
+    icon_url: http://i.imgur.com/KxkG8GW.png
     name: Phoenix Cry Maxima
     description: CA CAWW CAWWWW!
     icon: firework
@@ -3496,6 +3529,7 @@ phoenixcrymaxima:
         mana: 100
 
 orchideous:
+    icon_url: http://i.imgur.com/kMiR9fB.png
     icon: yellow_flower
     category: herbology
     class: FlowerSpell
@@ -3592,6 +3626,7 @@ periculux:
         mana: 30
 
 petrificustotalus:
+    icon_url: http://i.imgur.com/2mXwuyL.png
     alias: petrificus
     icon: nether_brick_item
     category: dada
@@ -3704,6 +3739,7 @@ webbing:
         entity_undo: false
 
 patronus:
+    icon_url: http://i.imgur.com/33YW7Vh.png
     icon: ink_sack:12
     category: elective
     class: com.elmakers.mine.bukkit.potterspells.spell.PatronusSpell
@@ -3802,6 +3838,7 @@ patronus:
         mana: 150
 
 piertotum:
+    icon_url: http://i.imgur.com/eCq4rz3.png
     icon: skull_item:4
     category: master
     class: FamiliarSpell
@@ -3924,6 +3961,7 @@ protegomaxima:
         mana: 100
 
 reducio:
+    icon_url: http://i.imgur.com/60fhXwJ.png
     icon: red_mushroom
     category: transfiguration
     class: ShrinkSpell
@@ -3984,7 +4022,7 @@ reducio|3:
 
 reducto:
     icon: clay_brick
-    icon_url: http://i.imgur.com/bCGsZYB.png
+    icon_url: http://i.imgur.com/IqmgaZ2.png
     category: charms
     class: ConstructSpell
     worth: 12
@@ -4029,7 +4067,7 @@ reducto|2:
 
 reductomaxima:
     icon: clay_brick
-    icon_url: http://i.imgur.com/bCGsZYB.png
+    icon_url: http://i.imgur.com/IqmgaZ2.png
     category: staff
     class: ConstructSpell
     hidden: true
@@ -4097,6 +4135,7 @@ salviohexia:
         mana: 1000
 
 reparifarge:
+    icon_url: http://i.imgur.com/CAsiN3z.png
     icon: book_and_quill
     category: staff
     class: UndoSpell
@@ -4675,6 +4714,7 @@ vermillious|3:
         mana: 70
 
 colorvaria:
+    icon_url: http://i.imgur.com/eD3ne5u.png
     icon: ink_sack
     category: transfiguration
     class: AlterSpell
@@ -4701,6 +4741,7 @@ colorvaria:
         mana: 70
 
 meteo:
+    icon_url: http://i.imgur.com/NpYUt8y.png
     icon: watch
     category: staff
     worth: 120
@@ -4741,6 +4782,7 @@ meteo:
         mana: 200
 
 nox:
+    icon_url: http://i.imgur.com/Todo6d0.png
     icon: ink_sack:0
     category: charms
     cast_on_no_target: true
@@ -4769,6 +4811,7 @@ nox:
         mana: 55
 
 noxmaxima:
+    icon_url: http://i.imgur.com/Todo6d0.png
     icon: ink_sack:0
     category: staff
     hidden: true
@@ -4878,6 +4921,7 @@ ferula|3:
         effect_absorption: 4
 
 wingardium:
+    icon_url: http://i.imgur.com/PHlfm7b.png
     icon: ink_sack:8
     category: charms
     class: RaiseSpell
@@ -5083,7 +5127,7 @@ recall:
         warps:
           dueling:
             name: Hogwart's Dueling Club
-            description: The only town we know of
+            description: A place to hone your dueling skills
             locked: true
             icon: iron_hoe
           flyinglessons:
@@ -5483,6 +5527,7 @@ vault:
           $lock: [Lock]
 
 revelio:
+    icon_url: http://i.imgur.com/Ql8Ttkb.png
     icon: iron_helmet
     category: staff
     worth: 20
@@ -5925,6 +5970,7 @@ superregenerate:
         transparent: transparent_to_construction
 
 pulsus:
+    icon_url: http://i.imgur.com/sWkt9H2.png
     icon: ink_sack:5
     category: dada
     pvp_restricted: true
@@ -5992,6 +6038,7 @@ whomping:
         mana: 70
 
 animagus_phoenix:
+    icon_url: http://i.imgur.com/qzBsez2.png
     name: Phoenix Animagus
     description: Turn into a Phoenix
     icon: fireball
@@ -6051,6 +6098,7 @@ animagus_wolf:
         mana: 5
 
 humaculus:
+    icon_url: http://i.imgur.com/e4Wygfl.png
     name: Homorphus
     description: Reverts target back to a human!
     icon: eye_of_ender
@@ -6499,6 +6547,7 @@ unspeakable:
         mana: 100
 
 smite:
+    icon_url: http://i.imgur.com/pVL61is.png
     name: Smite
     description: Wound your target.
     icon: ink_sack:11
@@ -6546,6 +6595,7 @@ smite:
         mana: 120
 
 invis:
+    icon_url: http://i.imgur.com/nifpRxI.png
     name: Spell of Invisibility
     description: Vanish in a Spark!
     icon: nether_star
@@ -6670,6 +6720,7 @@ firestorm:
         mana: 100
 
 tripudio:
+    icon_url: http://i.imgur.com/PHlfm7b.png
     alias: Tripudio
     description: Gain the power to jump high
     name: Tripudio
@@ -6704,6 +6755,7 @@ tripudio:
         effect_jump: 2
 
 volo:
+    icon_url: http://i.imgur.com/3dzD68i.png
     name: Volo
     description: Quickens your speed
     icon: eye_of_ender
@@ -6738,6 +6790,7 @@ volo:
         effect_speed: 5
 
 fiantoduri:
+    icon_url: http://i.imgur.com/VG9yNqE.png
     description: Gain Protection at the cost of speed and jump.
     name: Fianto Duri
     icon: ink_sack:12
@@ -6778,6 +6831,7 @@ fiantoduri:
         effect_absorption: 4
 
 bombtastic:
+    icon_url: http://i.imgur.com/xl4nToM.png
     icon: magma_cream
     category: specialty
     pvp_restricted: true
@@ -6813,6 +6867,7 @@ bombtastic:
         bypass_build: true
 
 dungbomb:
+    icon_url: http://i.imgur.com/xl4nToM.png
     icon: magma_cream
     category: specialty
     pvp_restricted: true
@@ -6892,6 +6947,7 @@ wreckducto:
         mana: 150
 
 wrecktumsempra:
+    icon_url: http://i.imgur.com/PSGSxEI.png
     name: Wrecktumsempra
     description: Utterly destroy your enemies!
     icon: ink_sack:3

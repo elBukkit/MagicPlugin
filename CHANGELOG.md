@@ -4,6 +4,7 @@
 
  - Added custom spell icons (!!!111oneone11!)
  - Fixed Counterspell
+ - Allow for transparency in images on maps
 
 ## 4.0
 

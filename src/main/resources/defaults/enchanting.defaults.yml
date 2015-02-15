@@ -70,8 +70,8 @@
 default:
   hidden: true
   min_enchant_level: 5
-  max_enchant_level: 30
-  levels: 1,10,20
+  max_enchant_level: 35
+  levels: 1,15,25
   max_uses: 500
   max_mana: 1500
   max_mana_regeneration: 150
@@ -144,18 +144,19 @@ beginner:
       3: 0,   1,   50
     spells:
       missile: 100,90,80
-      arrow: 30,20,10
+      arrow: 0,20,10
       blast: 30,40,50
       boon: 0,5,10
       cloak: 0,0,30
       collapse: 0,0,30
       cure: 1,5,10
-      curse: 0,1,10
+      admission: 20,25,30
+      curse: 0,0,10
       cushion: 10,40,20
-      fireball: 60,70,80
+      fireball: 0,0,80
       flare: 110,80,60
       torch: 0,60,50
-      push: 10,20,40
+      push: 0,20,40
       pull: 10,20,40
       peek: 10,30,40
       recall: 0,5,15
@@ -227,11 +228,11 @@ student:
       stream: 0,10,30
       flamethrower: 0,5,10
       wither: 5,10,20
-      mine: 1,20,30
-      chop: 1,20,30
+      mine: 0,5,30
+      chop: 0,5,30
       shell: 1,20,30
-      reflect|2: 0,1,5
-      tag: 0,1,5
+      reflect|2: 0,0,5
+      tag: 1,4,5
       blob: 1,20,30
       disarm: 0,0,2
       entangle: 0,0,20
@@ -313,6 +314,7 @@ apprentice:
       stun|3: 0,5,15
       missile|3: 0,5,15
       poison|2: 0,5,15
+      harden: 0,0,15
 
 master:
     required_spells:
@@ -406,6 +408,7 @@ master:
       missile|4: 0,5,15
       poison|3: 0,5,15
       counterspell|2: 0,1,10
+      harden|2: 0,10,15
 
 #
 # The move from "master" to engineer requires the player to aquire some basic
@@ -792,6 +795,9 @@ battle:
 #
 
 broom:
+    min_enchant_level: 15
+    max_enchant_level: 35
+    levels: 15,20,30
     inherit: default
     max_power: 0.9
     property_count:

@@ -264,7 +264,7 @@ blessing:
         mana: 200
 
 boon:
-    icon_url: http://i.imgur.com/MK272DM.png
+    icon_url: http://i.imgur.com/3dzD68i.png
     alias: perk
     icon: red_rose:2
     category: utility
@@ -307,6 +307,7 @@ boon|2:
         effect_saturation: 5
 
 bounce:
+    icon_url: http://i.imgur.com/PHlfm7b.png
     icon: red_rose:8
     category: utility
     class: PotionEffectSpell
@@ -970,6 +971,7 @@ superdome:
         mana: 200
 
 tag:
+    icon_url: http://i.imgur.com/PSGSxEI.png
     icon: sign
     category: dark
     class: SignSpell
@@ -1093,7 +1095,7 @@ push|2:
         target_count: 8
 
 pull:
-    icon_url: http://i.imgur.com/QVdzC6k.png
+    icon_url: http://i.imgur.com/JOHBtUT.png
     icon: fishing_rod
     category: elemental
     pvp_restricted: true
@@ -1688,6 +1690,7 @@ wither:
         mana: 60
 
 arrowrain:
+    icon_url: http://i.imgur.com/thIMVWy.png
     icon: bow
     category: combat
     class: ProjectileSpell
@@ -1737,6 +1740,7 @@ meteor:
         mana: 80
 
 arrow:
+    icon_url: http://i.imgur.com/thIMVWy.png
     alias: sniper
     icon: arrow
     category: combat
@@ -1814,6 +1818,7 @@ arrow|4:
         mana: 80
 
 weather:
+    icon_url: http://i.imgur.com/IqmgaZ2.png
     icon: water_bucket
     category: elemental
     worth: 80
@@ -1909,6 +1914,7 @@ torch|2:
         cooldown: 0
 
 familiar:
+    icon_url: http://i.imgur.com/eyM3n1d.png
     icon: monster_egg
     category: elemental
     class: FamiliarSpell
@@ -1946,6 +1952,7 @@ familiar:
         mana: 20
 
 monster:
+    icon_url: http://i.imgur.com/eyM3n1d.png
     icon: pumpkin
     category: dark
     class: FamiliarSpell
@@ -1991,6 +1998,7 @@ monster:
         mana: 40
 
 mob:
+    icon_url: http://i.imgur.com/eyM3n1d.png
     icon: jack_o_lantern
     category: dark
     class: FamiliarSpell
@@ -2036,6 +2044,7 @@ mob:
         mana: 100
 
 farm:
+    icon_url: http://i.imgur.com/eyM3n1d.png
     icon: wheat
     category: elemental
     class: FamiliarSpell
@@ -2150,6 +2159,7 @@ portal:
         mana: 20
 
 phase:
+    icon_url: http://i.imgur.com/Ql8Ttkb.png
     icon: eye_of_ender
     category: master
     class: PhaseSpell
@@ -2169,6 +2179,7 @@ phase:
         mana: 50
 
 invincible:
+    icon_url: http://i.imgur.com/e4Wygfl.png
     icon: golden_apple
     category: master
     worth: 10
@@ -2199,7 +2210,7 @@ invincible:
         mana: 90
 
 fire:
-    icon_url: http://i.imgur.com/mNtuvX6.png
+    icon_url: http://i.imgur.com/zG6k2gJ.png
     alias: inferno
     icon: flint_and_steel
     category: demolition
@@ -2259,6 +2270,7 @@ fire|3:
         mana: 90
 
 cushion:
+    icon_url: http://i.imgur.com/FMkCRh9.png
     icon: water_bucket
     category: utility
     class: CushionSpell
@@ -2413,6 +2425,7 @@ recurse:
         mana: 30
 
 gills:
+    icon_url: http://i.imgur.com/00ZNC1x.png
     icon: cooked_fish
     category: light
     worth: 30
@@ -2445,6 +2458,7 @@ gills:
         mana: 15
 
 day:
+    icon_url: http://i.imgur.com/NpYUt8y.png
     icon: emerald
     category: master
     worth: 120
@@ -2485,6 +2499,7 @@ day:
         mana: 50
 
 night:
+    icon_url: http://i.imgur.com/Todo6d0.png
     icon: ink_sack:0
     category: elemental
     hidden: true
@@ -2497,14 +2512,9 @@ night:
         -  class: EffectSingle
            sound: fuse
            effectlib:
-             offset: 0,4,0
              class: HelixEffect
-             iterations: 1
+             iterations: 2
              particle: smoke_large
-        -  class: EffectTrail
-           particle: smoke_large
-           particle_data: 2
-           particle_count: 5
     parameters:
         cooldown: 5000
         time: night
@@ -2604,6 +2614,7 @@ stalactite:
         mana: 5
 
 grenade:
+    icon_url: http://i.imgur.com/xl4nToM.png
     icon: tnt
     category: demolitions
     pvp_restricted: true
@@ -2625,6 +2636,7 @@ grenade:
         mana: 40
 
 frag:
+    icon_url: http://i.imgur.com/xl4nToM.png
     icon: apple
     category: demolitions
     pvp_restricted: true
@@ -2930,6 +2942,7 @@ stash:
         target: self
 
 pickpocket:
+    icon_url: http://i.imgur.com/xzXPNcH.png
     hidden: true
     icon: shears
     category: staff
@@ -2946,6 +2959,8 @@ pickpocket:
         target: other
         type: inventory
         range: 32
+        bypass_backfire: true
+        check_protection: true
     costs:
         mana: 75
 
@@ -2968,7 +2983,7 @@ kamikazee:
         mana: 5
 
 blast:
-    icon_url: http://i.imgur.com/bCGsZYB.png
+    icon_url: http://i.imgur.com/IqmgaZ2.png
     icon: sulphur
     category: mining
     class: ConstructSpell
@@ -3213,6 +3228,7 @@ supercollapse:
         mana: 250
 
 cloak:
+    icon_url: http://i.imgur.com/e4Wygfl.png
     icon: chainmail_chestplate
     category: utility
     actions:
@@ -3236,6 +3252,7 @@ cloak:
         effect_invisibility: 5
 
 undo:
+    icon_url: http://i.imgur.com/CAsiN3z.png
     alias: rewind
     icon: book_and_quill
     category: engineering
@@ -3274,6 +3291,7 @@ commit:
         mana: 200
 
 counterspell:
+    icon_url: http://i.imgur.com/bIiV9Xn.png
     icon: diamond
     category: combat
     class: UndoSpell
@@ -3446,6 +3464,7 @@ chop:
         mana: 10
 
 alter:
+    icon_url: http://i.imgur.com/eD3ne5u.png
     icon: ink_sack
     category: engineering
     class: AlterSpell
@@ -3467,6 +3486,7 @@ alter:
         mana: 3
 
 superalter:
+    icon_url: http://i.imgur.com/eD3ne5u.png
     icon: ink_sack:1
     category: engineering
     class: AlterSpell
@@ -3570,6 +3590,7 @@ pyramid:
         mana: 50
 
 emp:
+    icon_url: http://i.imgur.com/byVXfY0.png
     icon: daylight_detector
     category: automata
     class: ConstructSpell
@@ -3600,6 +3621,7 @@ emp:
         mana: 45
 
 superemp:
+    icon_url: http://i.imgur.com/byVXfY0.png
     icon: diode
     category: automata
     class: ConstructSpell
@@ -3627,7 +3649,7 @@ superemp:
         mana: 200
 
 disintegrate:
-    icon_url: http://i.imgur.com/6DidRKq.png
+    icon_url: http://i.imgur.com/zZKzDFS.png
     icon: bone
     category: combat
     pvp_restricted: true
@@ -3773,6 +3795,7 @@ hat:
         mana: 30
 
 lava:
+    icon_url: http://i.imgur.com/PSGSxEI.png
     icon: ink_sack:14
     category: combat
     class: IterateSpell
@@ -3869,6 +3892,7 @@ superiterate:
         mana: 200
 
 flamethrower:
+    icon_url: http://i.imgur.com/PSGSxEI.png
     icon: blaze_powder
     category: combat
     class: IterateSpell
@@ -3924,7 +3948,7 @@ laser:
 
 shrink:
     icon: skull_item
-    icon_url: http://i.imgur.com/gFhEwjj.png
+    icon_url: http://i.imgur.com/60fhXwJ.png
     category: combat
     class: ShrinkSpell
     pvp_restricted: true
@@ -3971,6 +3995,7 @@ shrink:
         mana: 130
 
 grow:
+    icon_url: http://i.imgur.com/FlBmgua.png
     icon: skull_item:1
     category: combat
     class: GrowSpell
@@ -4087,6 +4112,7 @@ respawn:
         cooldown: 30000
 
 levitate:
+    icon_url: http://i.imgur.com/PHlfm7b.png
     alias: fly
     icon: gold_boots
     category: master
@@ -4417,7 +4443,7 @@ missile|4:
         mana: 100
 
 blind:
-    icon_url: http://i.imgur.com/ueYCeJC.png
+    icon_url: http://i.imgur.com/Todo6d0.png
     icon: ender_pearl
     category: combat
     pvp_restricted: true
@@ -4473,6 +4499,7 @@ blind:
         hitbox: true
 
 pollinate:
+    icon_url: http://i.imgur.com/kMiR9fB.png
     icon: yellow_flower
     category: light
     class: FlowerSpell
@@ -4829,7 +4856,7 @@ superfly:
         speed: 1
 
 petrify:
-    icon_url: http://i.imgur.com/FyULJYH.png
+    icon_url: http://i.imgur.com/2mXwuyL.png
     icon: nether_brick_item
     category: combat
     pvp_restricted: true
@@ -5160,6 +5187,7 @@ poison|3:
         effect_poison: 3
 
 lift:
+    icon_url: http://i.imgur.com/PHlfm7b.png
     icon: ink_sack:8
     category: utility
     class: RaiseSpell
@@ -5219,3 +5247,62 @@ lift:
         otdz: 0
     costs:
         mana: 40
+
+admission:
+    icon_url: http://i.imgur.com/Af56lYq.png
+    icon: wood_door
+    category: utility
+    class: DoorSpell
+    worth: 50
+    cast_on_no_target: true
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: fuse
+        -  class: EffectTrail
+           particle: redstone
+           color: FFFF00
+           particle_data: 2
+           particle_count: 5
+    parameters:
+        range: 16
+        radius: 3
+        destructible: wooden_door
+        transparent: transparent_to_construction
+        undo: 8000
+    costs:
+        mana: 50
+
+harden:
+    icon_url: http://i.imgur.com/bIiV9Xn.png
+    icon: flint
+    category: transfiguration
+    class: RecurseSpell
+    worth: 150
+    cast_on_no_target: true
+    effects:
+        cast:
+        -  class: EffectTrail
+           effect: step_sound
+        -  class: EffectSingle
+           sound: fuse
+    parameters:
+        allow_max_range: false
+        range: 16
+        size: 2
+        check_destructible: true
+        destructible: hardenable
+        brush: stone
+        transparent: transparent_to_construction
+        undo: 4000
+        cooldown: 1000
+        bypass_backfire: true
+        select_self: false
+    costs:
+        mana: 30
+
+harden|2:
+    parameters:
+        size: 3
+        undo: 6000
+        brush: obsidian

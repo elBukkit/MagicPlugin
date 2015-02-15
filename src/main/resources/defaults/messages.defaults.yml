@@ -274,6 +274,10 @@ spells:
         location_required: A location is required for this spell.
         world_required: A world is required for this spell.
         invalid_world: The specified world is not valid.
+    admission:
+        name: Admission
+        description: Opens the target door
+        cast: Let me in!
     curse:
         name: Curse
         description: Slows down and weakens the target
@@ -357,6 +361,10 @@ spells:
         name: Frost
         description: Freeze water and create snow
         cast: Frosted $count blocks
+    harden:
+        name: Harden
+        description: Make the target blocks stronger
+        cast: Hardened $count blocks
     storm:
         name: Storm
         description: Start a lightning storm
