@@ -3327,15 +3327,17 @@ morsmordre:
            sound: wither_hurt
         -  class: EffectTrail
            particle: flame
-        -  class: EffectRing
+        -  class: EffectSingle
            location: target
-           firework: creeper
-           radius: 12
-           target_offset: 0,16,0
-           color: '00FF00'
-           color2: '88FF88'
+           effectlib:
+             class: ColoredImageEffect
+             fileName: "morsmordre.gif"
+             enableRotation: false
+             size: 0.1
+             stepX: 1
+             stepY: 1
     parameters:
-        target: any
+        target: block
         allow_max_range: true
         range: 16
         cooldown: 60000
