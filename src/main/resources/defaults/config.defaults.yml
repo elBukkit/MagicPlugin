@@ -179,7 +179,7 @@ wand_glow: false
 url_icons_enabled: true
 
 # Set this to true to turn on spell glow. May not work on all server versions.
-spell_glow: true
+spell_glow: false
 
 # This will "punish" players for trying to melee with a wand item
 # and prevent damage dealt by smacking with a wand
