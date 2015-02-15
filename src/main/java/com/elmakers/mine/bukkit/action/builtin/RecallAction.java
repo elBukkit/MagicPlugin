@@ -397,7 +397,9 @@ public class RecallAction extends BaseSpellAction implements GeneralAction, GUIA
         Mage mage = getMage();
         Location targetLocation = waypoint == null ? null : waypoint.location;
 		if (targetLocation == null) {
-			sendMessage(waypoint.failMessage);
+            if (waypoint != null) {
+                sendMessage(waypoint.failMessage);
+            }
 			return false;
 		}
 		if (!allowCrossWorld && !mage.getLocation().getWorld().equals(targetLocation.getWorld())) {
