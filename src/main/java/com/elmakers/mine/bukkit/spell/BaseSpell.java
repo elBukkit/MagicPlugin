@@ -141,7 +141,6 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     protected boolean bypassPvpRestriction    	= false;
     protected boolean bypassConfusion             = false;
     protected boolean bypassPermissions           = false;
-    protected boolean requirePassthrough = false;
     protected boolean castOnNoTarget              = false;
     protected boolean bypassDeactivate            = false;
     protected boolean quiet                       = false;
@@ -779,7 +778,6 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
             bypassPvpRestriction = parameters.getBoolean("bypass_pvp", bypassPvpRestriction);
             bypassPvpRestriction = parameters.getBoolean("bp", bypassPvpRestriction);
             bypassPermissions = parameters.getBoolean("bypass_permissions", bypassPermissions);
-            requirePassthrough = parameters.getBoolean("require_passthrough", requirePassthrough);
             duration = parameters.getInt("duration", duration);
         }
 
@@ -866,7 +864,6 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         bypassPvpRestriction = parameters.getBoolean("bypass_pvp", false);
         bypassPvpRestriction = parameters.getBoolean("bp", bypassPvpRestriction);
         bypassPermissions = parameters.getBoolean("bypass_permissions", bypassPermissions);
-        requirePassthrough = parameters.getBoolean("require_passthrough", requirePassthrough);
 
         // Check cooldowns
         cooldown = parameters.getInt("cooldown", cooldown);
@@ -918,7 +915,6 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     public boolean canCast(Location location) {
         if (hasCastPermissionOverride(mage.getCommandSender())) return true;
         if (!hasCastPermission(mage.getCommandSender())) return false;
-        if (requirePassthrough && !controller.isPassthrough(location)) return false;
         return !pvpRestricted || bypassPvpRestriction || mage.isPVPAllowed(location) || mage.isSuperPowered();
     }
 
