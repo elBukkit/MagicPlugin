@@ -1,6 +1,10 @@
 package com.elmakers.mine.bukkit.protection;
 
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
+import com.sk89q.worldguard.bukkit.RegionContainer;
+import com.sk89q.worldguard.domains.Association;
+import com.sk89q.worldguard.protection.association.Associables;
+import com.sk89q.worldguard.protection.association.RegionAssociable;
 import com.sk89q.worldguard.protection.flags.StateFlag;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Location;
@@ -63,8 +67,19 @@ public class WorldGuardManager {
 			worldGuard = null;
 		}
 	}
+
+    protected RegionAssociable getAssociable(Player player) {
+        RegionAssociable associable;
+        if (player == null) {
+            associable = Associables.constant(Association.NON_MEMBER);
+        } else {
+            associable = worldGuard.wrapPlayer(player);
+        }
+
+        return associable;
+    }
 	
-	public boolean isPVPAllowed(Location location) {
+	public boolean isPVPAllowed(Player player, Location location) {
 		if (!enabled || worldGuard == null || location == null) return true;
 				 
 		RegionManager regionManager = worldGuard.getRegionManager(location.getWorld());
@@ -73,31 +88,16 @@ public class WorldGuardManager {
 		ApplicableRegionSet checkSet = regionManager.getApplicableRegions(location);
 		if (checkSet == null) return true;
 
-		return checkSet.queryState(null, DefaultFlag.PVP) != StateFlag.State.DENY;
-	}
-	
-	public boolean isPassthrough(Location location) {
-		if (!enabled || worldGuard == null || location == null) return true;
-				 
-		RegionManager regionManager = worldGuard.getRegionManager(location.getWorld());
-        if (regionManager == null) return true;
 
-		ApplicableRegionSet checkSet = regionManager.getApplicableRegions(location);
-		if (checkSet == null) return true;
-		return checkSet.size() == 0 || checkSet.testState(null, DefaultFlag.PASSTHROUGH);
+		return checkSet.queryState(getAssociable(player), DefaultFlag.PVP) != StateFlag.State.DENY;
 	}
-	
+
 	public boolean hasBuildPermission(Player player, Block block) {
 		if (enabled && block != null && worldGuard != null) {
-			
-			// Disallow building in non-passthrough regions from a command block or offline player
-			if (player == null) {
-				return isPassthrough(block.getLocation());
-			}
-			
-			return worldGuard.canBuild(player, block);
+            RegionContainer container = worldGuard.getRegionContainer();
+			return container.createQuery().testState(block.getLocation(), getAssociable(player), DefaultFlag.BUILD);
 		}
-		
+
 		return true;
 	}
 
@@ -111,13 +111,14 @@ public class WorldGuardManager {
             ApplicableRegionSet checkSet = regionManager.getApplicableRegions(location);
             if (checkSet == null) return true;
 
-            if (checkSet.isMemberOfAll(worldGuard.wrapPlayer(player)))
+            if (checkSet.size() > 0 && checkSet.isOwnerOfAll(worldGuard.wrapPlayer(player)))
             {
                 return true;
             }
 
-           return customFlags.canCast(checkSet, spell.getSpellKey().getBaseKey());
+           return customFlags.canCast(getAssociable(player), checkSet, spell.getSpellKey().getBaseKey());
         }
+
         return true;
     }
 
@@ -126,12 +127,16 @@ public class WorldGuardManager {
         {
             Location location = player.getLocation();
             RegionManager regionManager = worldGuard.getRegionManager(location.getWorld());
-            if (regionManager == null) return false;
+            if (regionManager == null) {
+                return false;
+            }
 
             ApplicableRegionSet checkSet = regionManager.getApplicableRegions(location);
-            if (checkSet == null) return false;
+            if (checkSet == null) {
+                return false;
+            }
 
-            return customFlags.canOverrideCast(checkSet, spell.getSpellKey().getBaseKey());
+            return customFlags.canOverrideCast(getAssociable(player), checkSet, spell.getSpellKey().getBaseKey());
         }
         return false;
     }

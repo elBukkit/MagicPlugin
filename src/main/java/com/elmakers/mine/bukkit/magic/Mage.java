@@ -948,12 +948,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
     @Override
     public boolean isPVPAllowed(Location location) {
-        Player player = getPlayer();
-        if (player != null) {
-            return controller.isPVPAllowed(player, location);
-        }
-
-        return controller.isPVPAllowed(location == null ? getLocation() : location);
+        return controller.isPVPAllowed(getPlayer(), location == null ? getLocation() : location);
     }
 
     @Override

@@ -423,10 +423,6 @@ public class MagicController implements Listener, MageController {
         return hasBuildPermission(player, location.getBlock());
     }
 
-    public boolean isPassthrough(Location location) {
-        return worldGuardManager.isPassthrough(location);
-    }
-
     public boolean hasBuildPermission(Player player, Block block) {
         // Check the region manager, or Factions
         boolean allowed = true;
@@ -3739,26 +3735,20 @@ public class MagicController implements Listener, MageController {
 		return undid;
 	}
 
+    @Override
     public boolean isPVPAllowed(Player player, Location location)
     {
         if (bypassPvpPermissions) return true;
         if (player != null && player.hasPermission("Magic.bypass_pvp")) return true;
-        return worldGuardManager.isPVPAllowed(player.getLocation())
-            && (location == null || worldGuardManager.isPVPAllowed(location))
+        if (location == null && player != null) location = player.getLocation();
+        return worldGuardManager.isPVPAllowed(player, location)
+            && (location == null || worldGuardManager.isPVPAllowed(player, location))
             && pvpManager.isPVPAllowed(player)
-            && multiverseManager.isPVPAllowed(player.getLocation().getWorld())
-            && preciousStonesManager.isPVPAllowed(player.getLocation())
-            && townyManager.isPVPAllowed(player.getLocation());
+            && multiverseManager.isPVPAllowed(location.getWorld())
+            && preciousStonesManager.isPVPAllowed(location)
+            && townyManager.isPVPAllowed(location);
     }
-	
-	@Override
-	public boolean isPVPAllowed(Location location)
-	{
-		if (bypassPvpPermissions) return true;
-		return location == null || worldGuardManager.isPVPAllowed(location);
-	}
-	
-	@Override
+
 	public Location getWarp(String warpName) {
         Location location = null;
 		if (warpController != null) {
