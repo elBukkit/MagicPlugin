@@ -1784,7 +1784,6 @@ arrow:
       fire: false
       tick_increase: 1180
       entity_undo: false
-      cooldown: 2000
       undo: 5000
       range: 50
     costs:
@@ -1795,7 +1794,6 @@ arrow|2:
       damage: .75
       speed: 3
       spread: 2
-      cooldown: 2500
     costs:
         mana: 60
 
@@ -1804,7 +1802,6 @@ arrow|3:
       damage: .85
       speed: 4
       spread: 1
-      cooldown: 3000
     costs:
         mana: 70
 
@@ -1813,7 +1810,6 @@ arrow|4:
       damage: 1
       speed: 5
       spread: 0
-      cooldown: 3500
     costs:
         mana: 80
 
@@ -1886,6 +1882,7 @@ fling|2:
         max_speed: 5
 
 torch:
+    icon_url: http://i.imgur.com/MK272DM.png
     icon: torch
     category: engineering
     worth: 80

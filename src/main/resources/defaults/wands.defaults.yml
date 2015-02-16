@@ -106,6 +106,7 @@ default:
     bound: true
     keep: true
     undroppable: true
+    indestructible: true
     effect_bubbles: false
 
 #
