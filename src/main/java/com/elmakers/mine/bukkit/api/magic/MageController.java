@@ -122,6 +122,7 @@ public interface MageController {
     public boolean hasCastPermission(CommandSender sender, SpellTemplate spell);
     public boolean hasCastPermissionOverride(CommandSender sender, SpellTemplate spell);
     public boolean isPVPAllowed(Player player, Location location);
+    public boolean isUrlIconsEnabled();
 
     public boolean sendMail(CommandSender sender, String fromPlayer, String toPlayer, String message);
 
