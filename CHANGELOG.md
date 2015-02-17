@@ -5,6 +5,7 @@
  - Added custom spell icons (!!!111oneone11!)
  - Fixed Counterspell
  - Allow for transparency in images on maps
+ - Improved WorldGuard integration to propertly handle flags set with -g member, -g nonmember, etc
 
 ## 4.0
 

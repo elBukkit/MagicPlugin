@@ -10,6 +10,7 @@ import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.spell.BaseSpellAction;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
+import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import com.elmakers.mine.bukkit.utility.Target;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
@@ -81,6 +82,7 @@ public class RecallAction extends BaseSpellAction implements GeneralAction, GUIA
         public final String message;
         public final String failMessage;
         public final MaterialAndData icon;
+        public final String iconURL;
 
         public Waypoint(Location location, String name, String message, String failMessage, String description, MaterialAndData icon) {
             this.name = name;
@@ -89,6 +91,17 @@ public class RecallAction extends BaseSpellAction implements GeneralAction, GUIA
             this.description = description;
             this.failMessage = failMessage;
             this.icon = icon == null ? defaultMaterial : icon;
+            this.iconURL = null;
+        }
+
+        public Waypoint(Location location, String name, String message, String failMessage, String description, MaterialAndData icon, String iconURL) {
+            this.name = name;
+            this.location = location;
+            this.message = message;
+            this.description = description;
+            this.failMessage = failMessage;
+            this.icon = icon;
+            this.iconURL = iconURL;
         }
 
         public Waypoint(Location location, String name, String message, String failMessage, MaterialAndData icon) {
@@ -98,6 +111,7 @@ public class RecallAction extends BaseSpellAction implements GeneralAction, GUIA
             this.description = "";
             this.failMessage = failMessage;
             this.icon = icon == null ? defaultMaterial : icon;
+            this.iconURL = null;
         }
 
         public Waypoint(Location location, String name, String message, String failMessage)
@@ -108,6 +122,7 @@ public class RecallAction extends BaseSpellAction implements GeneralAction, GUIA
             this.description = "";
             this.failMessage = failMessage;
             this.icon = defaultMaterial;
+            this.iconURL = null;
         }
 
         @Override
@@ -327,7 +342,12 @@ public class RecallAction extends BaseSpellAction implements GeneralAction, GUIA
         int index = 0;
         for (Waypoint waypoint : allWaypoints)
         {
-            ItemStack waypointItem = waypoint.icon.getItemStack(1);
+            ItemStack waypointItem = null;
+            if (controller.isUrlIconsEnabled() && waypoint.iconURL != null && !waypoint.iconURL.isEmpty()) {
+                waypointItem = InventoryUtils.getURLSkull(waypoint.iconURL);
+            } else {
+                waypointItem = waypoint.icon.getItemStack(1);
+            }
             ItemMeta meta = waypointItem.getItemMeta();
             meta.setDisplayName(waypoint.name);
             if (waypoint.description != null && waypoint.description.length() > 0)
@@ -359,8 +379,9 @@ public class RecallAction extends BaseSpellAction implements GeneralAction, GUIA
         String failMessage = getMessage("no_target_warp").replace("$name", warpName);
         String title = getMessage("title_warp").replace("$name", warpName);
         String description = config.getString("description");
+        String iconURL = config.getString("icon_url");
         MaterialAndData icon = ConfigurationUtils.getMaterialAndData(config, "icon");
-        return new Waypoint(controller.getWarp(warpKey), title, castMessage, failMessage, description, icon);
+        return new Waypoint(controller.getWarp(warpKey), title, castMessage, failMessage, description, icon, iconURL);
     }
 
 	protected Waypoint getWaypoint(Player player, RecallType type, int index, ConfigurationSection parameters) {

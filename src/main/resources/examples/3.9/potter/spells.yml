@@ -5133,6 +5133,7 @@ recall:
           greathall:
             name: The Great Hall
             locked: true
+            icon_url: http://i.imgur.com/BvEw7Fe.png
           diagonalley:
             name: The Leaky Cauldron
             locked: true
