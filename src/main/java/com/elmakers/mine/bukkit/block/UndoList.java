@@ -380,14 +380,14 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
         if (entities != null) {
             entities.remove(fallingBlock);
         }
-        add(block);
+        add(block, true);
         modifiedTime = System.currentTimeMillis();
     }
 
     public void fall(Entity fallingBlock, Block block)
     {
         add(fallingBlock);
-        add(block);
+        add(block, true);
         modifiedTime = System.currentTimeMillis();
     }
 
@@ -397,7 +397,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
             entities.remove(explodingEntity);
         }
         for (Block block : blocks) {
-            add(block);
+            add(block, true);
         }
         modifiedTime = System.currentTimeMillis();
     }
