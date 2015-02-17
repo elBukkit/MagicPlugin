@@ -17,6 +17,7 @@ default:
     effect_bubbles: false
     spells:
      - flagrate
+     - flipendo
 
 auroreye:
     locked: true

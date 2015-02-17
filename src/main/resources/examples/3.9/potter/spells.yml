@@ -426,9 +426,7 @@ arrow:
     effects:
         cast:
         -  class: EffectSingle
-           sound: explode
-           sound_pitch: 0.2
-           sound_volume: 1
+           sound: shoot_arrow
            location: origin
         -  class: EffectSingle
            location: origin
@@ -442,7 +440,6 @@ arrow:
            location: origin
            color: CC9933
            firework: ball
-           effect: explosion_large
         projectile:
         -  class: EffectSingle
            location: origin
@@ -1088,19 +1085,15 @@ bombarda:
     effects:
         cast:
         -  class: EffectSingle
-           sound: enderdragon_hit
-           location: target
-        -  class: EffectSingle
-           location: target
-           firework: burst
-           color: 'CC0000'
-           color2: 'FF0088'
+           sound: explode
+           sound_pitch: 0.2
+           sound_volume: 1
+           location: origin
         -  class: EffectSingle
            target_offset: 0,0.5,0
            location: target
-           color: FFFFFF
-           firework: ball_large
-           particle: explosion_large
+           color: DF0101
+           firework: burst
     parameters:
         hitbox: true
         target_type: Entity
@@ -1124,14 +1117,15 @@ bombarda|2:
         cast:
         -  class: EffectSingle
            sound: explode
-        -  class: EffectTrail
-           firework: burst
-           color: 'CC0000'
-           color2: 'FF0088'
+           sound_pitch: 0.2
+           sound_volume: 1
+           location: origin
+        -  class: EffectSingle
+           sound: explode
         -  class: EffectSingle
            target_offset: 0,0.5,0
            location: target
-           color: FFFFFF
+           color: DF0101
            firework: burst
            particle: explosion_large
     parameters:
@@ -2194,6 +2188,7 @@ bandage:
         mana: 1
 
 firestormbase:
+    icon_url: http://i.imgur.com/OoxraNN.png
     hidden: true
     icon: fire
     category: dark
@@ -3327,17 +3322,15 @@ morsmordre:
            sound: wither_hurt
         -  class: EffectTrail
            particle: flame
-        -  class: EffectSingle
+        -  class: EffectRing
            location: target
-           effectlib:
-             class: ColoredImageEffect
-             fileName: "morsmordre.gif"
-             enableRotation: false
-             size: 0.1
-             stepX: 1
-             stepY: 1
+           firework: creeper
+           radius: 12
+           target_offset: 0,16,0
+           color: '00FF00'
+           color2: '88FF88'
     parameters:
-        target: block
+        target: any
         allow_max_range: true
         range: 16
         cooldown: 60000
@@ -6071,6 +6064,7 @@ animagus_phoenix:
 
 
 animagus_wolf:
+    icon_url: http://i.imgur.com/rcTYOcI.png
     name: Wolf Animagus
     description: Turn into a Wolf
     icon: bone
@@ -6132,6 +6126,7 @@ humaculus:
         mana: 5
 
 animagus_cat:
+    icon_url: http://i.imgur.com/pJcO7At.png
     name: Cat Animagus
     description: Turn into a Cat
     icon: raw_fish
@@ -6161,6 +6156,7 @@ animagus_cat:
         mana: 5
 
 animagus_chicken:
+    icon_url: http://i.imgur.com/uCDjLNB.png
     name: Chicken Animagus
     description: Turn into a Chicken
     icon: monster_egg
@@ -6190,6 +6186,7 @@ animagus_chicken:
         mana: 5
 
 animagus_owl:
+    icon_url: http://i.imgur.com/0ayqdXC.png
     name: Owl Animagus
     description: Turn into a Owl
     icon: ink_sack:8
@@ -6219,6 +6216,7 @@ animagus_owl:
         mana: 5
 
 animagus_rat:
+    icon_url: http://i.imgur.com/iPcPlb1.png
     name: Rat Animagus
     description: Turn into a Rat
     icon: egg
@@ -6248,6 +6246,7 @@ animagus_rat:
         mana: 5
 
 animagus_horse:
+    icon_url: http://i.imgur.com/dSbDth8.png
     name: Horse Animagus
     description: Turn into a Horse
     icon: leash
@@ -6277,6 +6276,7 @@ animagus_horse:
         mana: 5
 
 animagus_donkey:
+    icon_url: http://i.imgur.com/JdmW5Um.png
     name: Donkey Animagus
     description: Turn into a Donkey
     icon: leash
@@ -6306,6 +6306,7 @@ animagus_donkey:
         mana: 5
 
 animagus_spider:
+    icon_url: http://i.imgur.com/IYF5Aoa.png
     name: Spider Animagus
     description: Turn into a Spider
     icon: web
@@ -6335,6 +6336,7 @@ animagus_spider:
         mana: 5
 
 animagus_sheep:
+    icon_url: http://i.imgur.com/6zO2hGN.png
     name: Sheep Animagus
     description: Turn into a Sheep
     icon: wool
@@ -6364,6 +6366,7 @@ animagus_sheep:
         mana: 5
 
 animagus_cow:
+    icon_url: http://i.imgur.com/i7E7LrV.png
     name: Cow Animagus
     description: Turn into a Cow
     icon: milk_bucket
@@ -6393,6 +6396,7 @@ animagus_cow:
         mana: 5
 
 animagus_pig:
+    icon_url: http://i.imgur.com/0lk9OWq.png
     name: Pig Animagus
     description: Turn into a Pig
     icon: pork
@@ -6422,6 +6426,7 @@ animagus_pig:
         mana: 5
 
 animagus_rabbit:
+    icon_url: http://i.imgur.com/9yuZlAN.png
     name: Rabbit Animagus
     description: Turn into a Rabbit
     icon: carrot_item
@@ -6451,6 +6456,7 @@ animagus_rabbit:
         mana: 5
 
 animagus_elf:
+    icon_url: http://i.imgur.com/5ynNwvK.png
     name: House Elf Animagus
     description: Turn into a House Elf
     icon: chainmail_boots
@@ -6463,7 +6469,7 @@ animagus_elf:
         cast:
         - class: EffectSingle
           sound: enderman_teleport
-          location: origin
+          location: origin 
           particle_override: particleOrbital
           effectlib:
             class: AtomEffect
@@ -6480,6 +6486,7 @@ animagus_elf:
         mana: 5
 
 animagus_armchair:
+    icon_url: http://i.imgur.com/BvEw7Fe.png
     name: Armchair Animagus
     description: Turn into a Armchair
     icon: spruce_wood_stairs
@@ -6693,6 +6700,7 @@ confringo:
         mana: 100
 
 firestorm:
+    icon_url: http://i.imgur.com/OoxraNN.png
     icon: clay_ball
     category: dark
     class: CommandSpell
