@@ -66,7 +66,13 @@
 	height: 32px;
 	background-repeat: no-repeat;
 	display: inline-block;
-	padding-right: 4px; 
+	margin-right: 4px;
+}
+
+.url_icon
+{
+    background-size: 256px 64px;
+    background-position: -32px -32px;
 }
 
 .navigation

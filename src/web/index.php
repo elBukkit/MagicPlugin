@@ -274,6 +274,10 @@ function printMaterial($materialKey, $iconOnly = null) {
 	return '<span class="material">' . $materialName . '</span>';
 }
 
+function printIcon($iconUrl, $title) {
+    return $icon = '<span title="' . $title . '" class="url_icon materal_icon" style="background-image: url(' . $iconUrl . ')">&nbsp;</span>';
+}
+
 ?>
 <html>
 	<head>
@@ -423,8 +427,15 @@ function printMaterial($materialKey, $iconOnly = null) {
 				<ol id="spellList">
 				<?php 
 					foreach ($spells as $key => $spell) {
-						$icon = isset($spell['icon']) ? printMaterial($spell['icon'], true) : '';
-						$name = isset($spell['name']) ? $spell['name'] : "($key)";
+                        $name = isset($spell['name']) ? $spell['name'] : "($key)";
+                        if (isset($spell['icon_url']))
+                        {
+                            $icon = printIcon($spell['icon_url'], $name);
+                        }
+                        else
+                        {
+                            $icon = isset($spell['icon']) ? printMaterial($spell['icon'], true) : '';
+                        }
 						echo '<li class="ui-widget-content" id="spell-' . $key . '">' . $icon . '<span class="spellTitle">' . $name . '</span></li>';
 					}
 				?>

@@ -1,4 +1,11 @@
 
+function getIcon(url)
+{
+    iconOnly = (typeof iconOnly === 'undefined') ? false : iconOnly;
+    var icon = $('<span class="materal_icon url_icon" style="background-image: url(' + url + ')">&nbsp;</span>');
+    return icon;
+}
+
 function getMaterial(materialKey, iconOnly)
 {
 	if (materialKey == null || materialKey.length == 0) return "";
@@ -96,7 +103,14 @@ function getSpellDetails(key, showTitle, useMana, costReduction, probabilityStri
 
     var icon = $('<div class="spellIcon"/>');
     icon.append($('<span/>').text('Icon: '));
-    icon.append(getMaterial(spell.icon));
+    if (spell.icon_url != null && spell.icon_url.length > 0)
+    {
+        icon.append(getIcon(spell.icon_url));
+    }
+    else
+    {
+        icon.append(getMaterial(spell.icon));
+    }
 	detailsDiv.append(icon);
 
     // Check for path availability
