@@ -34,4 +34,5 @@ public interface BlockData extends MaterialAndData {
     public void setPriorState(BlockData prior);
     public UndoList getUndoList();
     public void setUndoList(UndoList undoList);
+    public BlockVector getLocation();
 }
