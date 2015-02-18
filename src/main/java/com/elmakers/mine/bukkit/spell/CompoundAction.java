@@ -49,6 +49,13 @@ public abstract class CompoundAction extends BaseSpellAction
 		return actions.perform(parameters, targetLocation);
 	}
 
+    protected SpellResult perform(ConfigurationSection parameters, Entity targetEntity) {
+        if (actions == null || targetEntity == null) {
+            return SpellResult.FAIL;
+        }
+        return actions.perform(parameters, targetEntity.getLocation(), targetEntity);
+    }
+
 	@Override
 	public boolean isUndoable()
 	{

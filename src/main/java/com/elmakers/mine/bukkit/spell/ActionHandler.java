@@ -147,10 +147,10 @@ public class ActionHandler
 
     public SpellResult perform(ConfigurationSection parameters, Location targetLocation)
     {
-        return perform(parameters, targetLocation, null);
+        return perform(parameters, targetLocation, (Entity)null);
     }
 
-    public SpellResult perform(Location targetLocation, Entity targetEntity)
+    public SpellResult perform(ConfigurationSection parameters, Location targetLocation, Entity targetEntity)
     {
         Entity sourceEntity = null;
         Location sourceLocation = spell.getLocation();
@@ -160,8 +160,16 @@ public class ActionHandler
             sourceEntity = mage.getEntity();
         }
         List<Entity> targetEntities = new ArrayList<Entity>();
-        targetEntities.add(targetEntity);
-        return perform(null, sourceLocation, sourceEntity, targetLocation, targetEntities);
+        if (targetEntity != null)
+        {
+            targetEntities.add(targetEntity);
+        }
+        return perform(parameters, sourceLocation, sourceEntity, targetLocation, targetEntities);
+    }
+
+    public SpellResult perform(Location targetLocation, Entity targetEntity)
+    {
+        return perform(null, targetLocation, targetEntity);
     }
 
     public SpellResult perform(Location sourceLocation, Entity sourceEntity, Location targetLocation, Entity targetEntity)

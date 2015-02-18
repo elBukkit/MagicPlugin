@@ -353,6 +353,10 @@ public abstract class BaseSpellAction implements SpellAction
         return material.isTransparent();
     }
 
+    public boolean canTarget(Entity entity) {
+        return targetingSpell != null ? true : targetingSpell.canTarget(entity);
+    }
+
     public MaterialBrush getBrush() {
         return brushSpell == null ? null : brushSpell.getBrush();
     }
