@@ -269,6 +269,21 @@ attachable_double:
 - wooden_door
 - sugar_cane_block
 - double_plant
+- spruce_door
+- birch_door
+- jungle_door
+- acacia_door
+- dark_oak_door
+
+# All doors, for the DoorSpell generally
+doors:
+- iron_door_block
+- wooden_door
+- spruce_door
+- birch_door
+- jungle_door
+- acacia_door
+- dark_oak_door
 
 # blocks that should otherwise be delayed until the second pass
 delayed:
@@ -322,7 +337,6 @@ restricted_animate:
 - ender_stone
 - lava
 - stationary_lava
-- stained_clay
 - wood
 - sandstone
 - stone

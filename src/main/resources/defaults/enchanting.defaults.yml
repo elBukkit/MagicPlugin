@@ -165,6 +165,7 @@ beginner:
       blind: 0,1,5
       reflect: 0,0,5
       stun: 0,5,15
+      gather: 0,0,5
 
 student:
     upgrade: apprentice

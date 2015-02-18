@@ -567,6 +567,22 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         if (mage != null && (ownerId == null || ownerId.length() == 0))
         {
             mage.sendMessage(controller.getMessages().get("wand.bound_instructions", "").replace("$wand", getName()));
+            Spell spell = getActiveSpell();
+            if (spell != null)
+            {
+                String message = controller.getMessages().get("wand.spell_instructions", "").replace("$wand", getName());
+                mage.sendMessage(message.replace("$spell", spell.getName()));
+            }
+            if (spells.size() > 1)
+            {
+                mage.sendMessage(controller.getMessages().get("wand.inventory_instructions", "").replace("$wand", getName()));
+            }
+            WandUpgradePath path = getPath();
+            if (path != null)
+            {
+                String message = controller.getMessages().get("wand.enchant_instructions", "").replace("$wand", getName());
+                mage.sendMessage(message);
+            }
         }
         owner = ChatColor.stripColor(player.getDisplayName());
         ownerId = player.getUniqueId().toString();
@@ -2444,19 +2460,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         boolean needsSave = NMSUtils.getHandle(this.item) != NMSUtils.getHandle(wandItem);
 		this.item = wandItem;
 		this.mage = mage;
-		
-		// Check for spell or other special icons in the player's inventory
-		Player player = mage.getPlayer();
-        Inventory inventory = player.getInventory();
-		ItemStack[] items = inventory.getContents();
         boolean forceUpdate = false;
-		for (int i = 0; i < items.length; i++) {
-			ItemStack item = items[i];
-			if (addItem(item)) {
-                inventory.setItem(i, null);
-                forceUpdate = true;
-			}
-		}
 		
 		// Check for an empty wand and auto-fill
 		if (!isUpgrade && (controller.fillWands() || autoFill)) {
@@ -2471,6 +2475,18 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         // Check for auto-alphabetize
         if (autoAlphabetize && !isUpgrade) {
             alphabetizeInventory();
+        }
+
+        // Check for spell or other special icons in the player's inventory
+        Player player = mage.getPlayer();
+        Inventory inventory = player.getInventory();
+        ItemStack[] items = inventory.getContents();
+        for (int i = 0; i < items.length; i++) {
+            ItemStack item = items[i];
+            if (addItem(item)) {
+                inventory.setItem(i, null);
+                forceUpdate = true;
+            }
         }
 		
 		// Check for auto-bind
@@ -2576,6 +2592,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
                             mage.sendMessage(controller.getMessages().get("wand.spell_upgraded").replace("$wand", getName()).replace("$name", currentSpell.getName()).replace("$level", levelDescription));
                         } else {
                             mage.sendMessage(controller.getMessages().get("wand.spell_added").replace("$wand", getName()).replace("$name", spell.getName()));
+                            activeSpell = spell.getKey();
                         }
                     }
                     return true;
@@ -2743,7 +2760,6 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	public boolean cast() {
 		Spell spell = getActiveSpell();
 		if (spell != null) {
-            use();
             Collection<String> castParameters = null;
             if (castOverrides != null && castOverrides.size() > 0) {
                 castParameters = new ArrayList<String>();
@@ -2759,6 +2775,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
             }
 			if (spell.cast(castParameters == null ? null : castParameters.toArray(EMPTY_PARAMETERS))) {
 				Color spellColor = spell.getColor();
+                use();
 				if (spellColor != null && this.effectColor != null) {
 					this.effectColor = this.effectColor.mixColor(spellColor, effectColorSpellMixWeight);
 					// Note that we don't save this change.
