@@ -11,6 +11,7 @@ import java.util.Set;
 
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.maps.URLMap;
+import com.elmakers.mine.bukkit.block.UndoList;
 import com.elmakers.mine.bukkit.block.batch.SpellBatch;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.RunnableJob;
@@ -153,7 +154,8 @@ public class MagicCommandExecutor extends MagicTabExecutor {
 				sender.sendMessage(ChatColor.LIGHT_PURPLE + "Active mages: " + mages.size());
 				Collection<Mage> pending = api.getMagesWithPendingBatches();
 				sender.sendMessage(ChatColor.AQUA + "Pending construction batches (" + pending.size() + "): ");
-				for (Mage mage : pending) {
+                sender.sendMessage(ChatColor.AQUA + "Registered blocks (" + UndoList.getModified().size() + "): ");
+                for (Mage mage : pending) {
                     int totalSize = 0;
                     int totalRemaining = 0;
 					Collection<BlockBatch> pendingBatches = mage.getPendingBatches();

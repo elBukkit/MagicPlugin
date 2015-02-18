@@ -10,6 +10,7 @@ import java.util.Set;
 
 import com.elmakers.mine.bukkit.api.block.MaterialAndData;
 import com.elmakers.mine.bukkit.api.magic.Automaton;
+import com.elmakers.mine.bukkit.block.UndoList;
 import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -59,6 +60,7 @@ public class ConstructBatch extends BrushBatch {
 	private Integer maxOrientDimension = null;
 	private Integer minOrientDimension = null;
 	private boolean power = false;
+    private boolean commit = false;
     private int breakable = 0;
     private double backfireChance = 0;
     private Vector bounds = null;
@@ -466,7 +468,9 @@ public class ConstructBatch extends BrushBatch {
         byte previousData = block.getData();
 
         if (brush.isValid() && brush.isDifferent(block)) {
-            registerForUndo(block);
+            if (!commit) {
+                registerForUndo(block);
+            }
 
             // Check for command overrides
             if (commandMap != null && brush.getMaterial() == Material.COMMAND) {
@@ -510,6 +514,10 @@ public class ConstructBatch extends BrushBatch {
                     falling.setVelocity(direction);
                 }
                 registerForUndo(falling);
+            }
+            if (commit) {
+                com.elmakers.mine.bukkit.api.block.BlockData blockData = UndoList.register(block);
+                blockData.commit();
             }
         }
     }
@@ -560,4 +568,8 @@ public class ConstructBatch extends BrushBatch {
 	public void setApplyPhysics(boolean physics) {
 		this.applyPhysics = physics;
 	}
+
+    public void setCommit(boolean commit) {
+        this.commit = commit;
+    }
 }

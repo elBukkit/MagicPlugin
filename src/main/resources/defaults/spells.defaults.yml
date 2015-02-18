@@ -431,7 +431,7 @@ virus:
     live_range: 20,24,28
     move: 8,10,16
     delay: 3500,3000,2500
-    drop_xp: 800,900,1000
+    drop_xp: 200,250,300
     cast:
         "boom transparent air,$birth,command,redstone_block range 48": 100,100,100
         "arrowrain transparent air,$birth,command,redstone_block range 48": 50,70,90
@@ -458,7 +458,7 @@ virus:
         drop: virusheart
         restricted: restricted_animate
         message_type: evil
-        drop_xp: 900
+        drop_xp: 300
         concurrent: false
         target_types: any
         target_mode: hunt
@@ -468,7 +468,7 @@ virus:
         live_rules: 1,2,3
         diagonal_live_rules: 0,1
     costs:
-        xp: 1000
+        xp: 400
 
 worm:
     icon: string
@@ -491,10 +491,10 @@ worm:
     birth_range: 6,8,10
     live_range: 16,20,28
     delay: 1800,1500,1200
-    drop_xp: 600,700,900
+    drop_xp: 150,200,250
     death_cast:
-        "blast target self radius 12 speed -0^2 destructible $birth check_destructible true": 100,100,100
-        "blast target self radius 12 speed -0^5 destructible $birth check_destructible true": 20,50,200
+        "blast target self commit true radius 12 speed -0^2 destructible $birth check_destructible true": 100,100,100
+        "blast target self commit true radius 12 speed -0^5 destructible $birth check_destructible true": 20,50,200
     cast:
         "blob brush stained_glass:15 radius 3 type sphere check_destructible true undo 5000 transparent air,$birth,redstone_block": 50,100,200
         "curse transparent air,$birth,redstone_block": 100,100,200
@@ -524,12 +524,11 @@ worm:
         diagonal_live_rules: 0,1,2,3
         concurrent: true
         drop: wormheart
-        drop_xp: 700
         move: 4
         restricted: restricted_animate
         message_type: evil
     costs:
-        xp: 800
+        xp: 250
 
 hunter:
     icon: spider_eye
@@ -552,12 +551,12 @@ hunter:
     birth_range: 3,4,5
     live_range: 3,4,5
     delay: 1200,800,500
-    drop_xp: 300,500,700
+    drop_xp: 100,125,150
     death_cast:
-        "blast target self radius 7 speed 0^1 destructible $birth check_destructible true": 500,300,50
-        "blast target self radius 7 speed 0^5 destructible $birth check_destructible true": 300,200,100
-        "blast target self radius 7 speed 1^0 destructible $birth check_destructible true": 250,200,150
-        "blast target self radius 7 speed 1^5 destructible $birth check_destructible true": 100,100,200
+        "blast target self commit true radius 7 speed 0^1 destructible $birth check_destructible true": 500,300,50
+        "blast target self commit true radius 7 speed 0^5 destructible $birth check_destructible true": 300,200,100
+        "blast target self commit true radius 7 speed 1^0 destructible $birth check_destructible true": 250,200,150
+        "blast target self commit true radius 7 speed 1^5 destructible $birth check_destructible true": 100,100,200
     cast:
         "boom transparent air,$birth,command,redstone_block": 20,40,100
         "shrink transparent air,$birth,command,redstone_block": 30,40,50
@@ -586,7 +585,7 @@ hunter:
         restricted: restricted_animate
         message_type: evil
     costs:
-        xp: 600
+        xp: 200
 
 defender:
     icon: quartz
@@ -603,7 +602,7 @@ defender:
         "convert brush stained_glass|1 radius 3 check_destructible true undo 5000 transparent air,$birth,redstone_block": 100
         "none": 1000
     death_cast:
-        "collapse target self radius 7 check_destructible true destructible $birth": 100
+        "collapse target self commit true radius 7 check_destructible true destructible $birth": 100
     parameters:
         bypass_undo: true
         allow_max_range: false
@@ -627,11 +626,11 @@ defender:
         birth_rules: 4,5
         move: 4
         drop: defenderheart
-        drop_xp: 400
+        drop_xp: 30
         restricted: restricted_animate
         message_type: good
     costs:
-        xp: 400
+        xp: 50
 
 animate:
     icon: iron_ingot
@@ -648,7 +647,7 @@ animate:
         blessing: 100
         "none": 1000
     death_cast:
-        "collapse target self radius 4 check_destructible true destructible $birth": 100
+        "collapse target self commit true radius 4 check_destructible true destructible $birth": 100
     parameters:
         bypass_undo: true
         allow_max_range: false
@@ -667,14 +666,14 @@ animate:
         target_types: mage
         target_min_range: 0
         target_max_range: 16
-        drop_xp: 200
+        drop_xp: 20
         drop: golemheart
         live_rules: 5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26
         birth_rules: 5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26
         restricted: restricted_animate
         message_type: good
     costs:
-        xp: 300
+        xp: 50
 
 life:
     icon: sapling:1
@@ -5280,7 +5279,7 @@ admission:
     parameters:
         range: 16
         radius: 3
-        destructible: wooden_door
+        destructible: doors
         transparent: transparent_to_construction
         undo: 8000
     costs:

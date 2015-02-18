@@ -64,6 +64,7 @@ public class ConstructSpell extends BrushSpell
 		radius = parameters.getInt("size", radius);
 		boolean falling = parameters.getBoolean("falling", false);
 		boolean physics = parameters.getBoolean("physics", false);
+        boolean commit = parameters.getBoolean("commit", false);
         int breakable = parameters.getInt("breakable", 0);
         double backfireChance = parameters.getDouble("reflect_chance", 0);
 		Vector orientTo = null;
@@ -150,7 +151,9 @@ public class ConstructSpell extends BrushSpell
 		}
 
 		ConstructBatch batch = new ConstructBatch(this, target.getLocation(), conType, radius, thickness, falling, orientTo);
-		
+
+        batch.setCommit(commit);
+
 		if (parameters.getBoolean("replace", false)) {
 			List<com.elmakers.mine.bukkit.api.block.MaterialAndData> replaceMaterials = new ArrayList<com.elmakers.mine.bukkit.api.block.MaterialAndData>();
 			replaceMaterials.add(new MaterialAndData(target));

@@ -7,6 +7,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
+import com.elmakers.mine.bukkit.api.block.BlockData;
+import com.elmakers.mine.bukkit.block.UndoList;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -161,16 +163,26 @@ public class SimulateBatch extends UndoableBatch {
 		if (castCommandBlock == null) {
 			castCommandBlock = center.getBlock();
 		}
-		for (BlockFace powerFace : POWER_FACES) {
-			Block checkForPower = castCommandBlock.getRelative(powerFace);
-			if (checkForPower.getType() == POWER_MATERIAL) {
-				if (commandReload) {
-					controller.unregisterAutomata(checkForPower);
-				}
-				checkForPower.setType(Material.AIR);
-			}
-		}
-		
+
+        for (BlockFace powerFace : POWER_FACES) {
+            Block checkForPower = castCommandBlock.getRelative(powerFace);
+            if (commandReload) {
+                controller.unregisterAutomata(checkForPower);
+            }
+            if (checkForPower.getType() == POWER_MATERIAL) {
+                BlockData commitBlock = UndoList.register(checkForPower);
+                commitBlock.setMaterial(Material.AIR);
+                commitBlock.modify(checkForPower);
+                commitBlock.commit();
+            } else {
+                BlockData commitBlock = UndoList.getBlockData(checkForPower.getLocation());
+                if (commitBlock != null)
+                {
+                    commitBlock.setMaterial(Material.AIR);
+                }
+            }
+        }
+
 		// Drop item
 		if (dropItem != null && dropItem.length() > 0) {
 			Wand magicItem = controller.createWand(dropItem);
@@ -187,8 +199,11 @@ public class SimulateBatch extends UndoableBatch {
 				orb.setExperience(dropXp);
 			}
 		}
-		if (includeCommands && castCommandBlock != null && castCommandBlock.getType() == Material.COMMAND) {
-			castCommandBlock.setType(Material.AIR);
+		if (includeCommands && castCommandBlock != null) {
+            BlockData commitBlock = UndoList.register(castCommandBlock);
+            commitBlock.setMaterial(Material.AIR);
+            commitBlock.modify(castCommandBlock);
+            commitBlock.commit();
 		}
 		
 		if (level != null) {
