@@ -55,11 +55,21 @@ foreach ($spells as $key => $spell) {
         unset($spells[$key]);
         continue;
     }
+    if (strpos($key, '|') !== FALSE) {
+        unset($spells[$key]);
+        continue;
+    }
 
 	// TODO: Handle inheritance here!
 
-    $spell['name'] = isset($messages['spells'][$key]['name']) ? $messages['spells'][$key]['name'] : '';
-    $spell['description'] = isset($messages['spells'][$key]['description']) ? $messages['spells'][$key]['description'] : '';
+    if (!isset($spell['name']))
+    {
+        $spell['name'] = isset($messages['spells'][$key]['name']) ? $messages['spells'][$key]['name'] : $key;
+    }
+    if (!isset($spell['description']))
+    {
+        $spell['description'] = isset($messages['spells'][$key]['description']) ? $messages['spells'][$key]['description'] : '';
+    }
     $spell['extended_description'] = isset($messages['spells'][$key]['extended_description']) ? $messages['spells'][$key]['extended_description'] : '';
     $spell['usage'] = isset($messages['spells'][$key]['usage']) ? $messages['spells'][$key]['usage'] : '';
     $spells[$key] = $spell;
