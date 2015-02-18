@@ -14,10 +14,10 @@
 # - NathanWolf
 #
 
-master:
+beginner:
   # This defines the recipe output- a template wand will be created, and
   # then upgraded based on its enchanting path and the # of levels in parenthesis
-  output: default
+  output: beginner
   output_type: wand
 
   # Used as a substitute item when the wand item is naturally crafted

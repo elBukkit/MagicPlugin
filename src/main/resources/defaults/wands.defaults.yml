@@ -120,6 +120,26 @@ default:
 #
 
 #
+# The default crafted wand
+#
+
+beginner:
+    effect_color: random
+    path: beginner
+    xp_max: 50
+    xp: 50
+    xp_regeneration: 5
+    quiet: 1
+    bound: true
+    keep: true
+    undroppable: true
+    indestructible: true
+    effect_bubbles: false
+    active_spell: missile
+    spells:
+     - missile
+
+#
 # A sampling of "pre-levelled up" wands
 #
 student:
