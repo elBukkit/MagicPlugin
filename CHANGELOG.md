@@ -9,6 +9,7 @@
  - Add instructional messages to the wand to guide new players.
  - Undo system improvements, will now handle flowing lava/water, falling blocks (again),
    and broken attachments (signs, torches, etc)
+ - The Gather spell is now a wrapper for /tpa, to be less griefy
 
 ## 4.0
 

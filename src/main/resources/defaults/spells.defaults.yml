@@ -1581,10 +1581,17 @@ gather:
     icon_url: http://i.imgur.com/nBNOHSD.png
     icon: glowstone_dust
     category: master
-    class: GotoSpell
     worth: 150
+    actions:
+        cast:
+        -  class: PlayerSelectAction
+           actions:
+           -  class: CommandAction
     effects:
         cast:
+        -  class: EffectSingle
+           sound: level_up
+        player_selected:
         -  class: EffectSingle
            sound: enderman_idle
         -  class: EffectTrail
@@ -1596,9 +1603,7 @@ gather:
              class: WarpEffect
              particle: portal
     parameters:
-        target_type: LivingEntity
-        allow_max_range: false
-        range: 64
+        command: tpa @pn
     costs:
         mana: 150
 
@@ -4067,7 +4072,12 @@ recall:
            type: place
     effects:
         no_action: []
+        cast:
+        -  class: EffectSingle
+           sound: level_up
         target_selected:
+        -  class: EffectSingle
+           sound: level_up
         teleport:
         -  class: EffectSingle
            sound: portal_travel
