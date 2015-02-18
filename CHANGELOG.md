@@ -5,7 +5,10 @@
  - Added custom spell icons (!!!111oneone11!)
  - Fixed Counterspell
  - Allow for transparency in images on maps
- - Improved WorldGuard integration to propertly handle flags set with -g member, -g nonmember, etc
+ - Improved WorldGuard integration to properly handle flags set with -g member, -g nonmember, etc
+ - Add instructional messages to the wand to guide new players.
+ - Undo system improvements, will now handle flowing lava/water, falling blocks (again),
+   and broken attachments (signs, torches, etc)
 
 ## 4.0
 

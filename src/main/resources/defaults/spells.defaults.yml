@@ -4065,6 +4065,8 @@ recall:
         -  class: RecallAction
            type: place
     effects:
+        no_action: []
+        target_selected:
         teleport:
         -  class: EffectSingle
            sound: portal_travel

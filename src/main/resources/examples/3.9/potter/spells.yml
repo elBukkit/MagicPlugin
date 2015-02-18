@@ -5088,7 +5088,11 @@ recall:
         cast:
         -  class: RecallAction
     effects:
-        cast:
+        no_action: []
+        target_selected:
+        -  class: EffectSingle
+           sound: level_up
+        teleport:
         -  class: EffectVariable
            brightness:
              '0.5':
