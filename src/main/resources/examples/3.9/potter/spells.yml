@@ -5108,28 +5108,15 @@ recall:
         -  class: EffectSingle
            sound: level_up
         teleport:
-        -  class: EffectVariable
-           brightness:
-             '0.5':
-             - class: EffectSingle
-               sound: enderman_teleport
-               location: both
-               particle_override: particleOrbital
-               effectlib:
-                   class: AtomEffect
-                   particleNucleus: smoke_normal
-                   particleOrbital: smoke_large
-                   iterations: 20
-             '5':
-             - class: EffectSingle
-               sound: enderman_teleport
-               location: both
-               particle_override: particleOrbital
-               effectlib:
-                   class: AtomEffect
-                   particleNucleus: spell_instant
-                   particleOrbital: spell
-                   iterations: 20
+        -  class: EffectSingle
+           sound: enderman_teleport
+           location: both
+           particle_override: particleOrbital
+           effectlib:
+               class: AtomEffect
+               particleNucleus: smoke_normal
+               particleOrbital: smoke_large
+               iterations: 20
     parameters:
         cooldown: 1000
         allow_spawn: false
