@@ -44,6 +44,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockBurnEvent;
 import org.bukkit.event.block.BlockFromToEvent;
 import org.bukkit.event.block.BlockIgniteEvent;
@@ -1986,7 +1987,6 @@ public class MagicController implements Listener, MageController {
 		}
 	}
 
-
     @EventHandler
     public void onEntityCombust(EntityCombustEvent event)
     {
@@ -2272,10 +2272,22 @@ public class MagicController implements Listener, MageController {
 				event.setCancelled(true);
 				if (blockList != null) blockList.cancelExplosion(explodingEntity);
 			} else {
-				if (blockList != null) blockList.explode(explodingEntity, event.blockList());
+				if (blockList != null) {
+                    if (blockList.isScheduled()) {
+                        for (Block block : event.blockList()) {
+                            block.setType(Material.AIR);
+                        }
+                    }
+                    blockList.explode(explodingEntity, event.blockList());
+                }
 			}
 		} 
 		else if (blockList != null) {
+            if (blockList.isScheduled()) {
+                for (Block block : event.blockList()) {
+                    block.setType(Material.AIR);
+                }
+            }
 			blockList.explode(explodingEntity, event.blockList());
 		}
 	}

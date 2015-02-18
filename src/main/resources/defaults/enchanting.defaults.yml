@@ -240,6 +240,8 @@ student:
       stun|2: 0,5,15
       missile|2: 0,5,15
       poison: 5,10,20
+      blast|2: 30,40,50
+      laser: 0,0,10
 
 apprentice:
     upgrade: master
@@ -316,6 +318,7 @@ apprentice:
       missile|3: 0,5,15
       poison|2: 0,5,15
       harden: 0,0,15
+      laser|2: 0,0,10
 
 master:
     required_spells:
@@ -382,7 +385,6 @@ master:
       cluster: 0,0,5
       bomb: 0,0,1
       invincible: 0,0,10
-      laser: 0,0,10
       earthquake: 0,0,1
       mount: 0,1,5
       icbm: 0,0,1
@@ -410,6 +412,8 @@ master:
       poison|3: 0,5,15
       counterspell|2: 0,1,10
       harden|2: 0,10,15
+      blast|3: 30,40,50
+      laser|3: 0,0,20
 
 #
 # The move from "master" to engineer requires the player to aquire some basic

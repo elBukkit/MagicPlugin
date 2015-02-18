@@ -12,6 +12,7 @@
  - The Gather spell is now a wrapper for /tpa, to be less griefy
  - Fix Magic damage (magic missile, etc) against witches
  - Some fixes/improvements to Automata death behavior
+ - Auto-undo explosions won't drop blocks
 
 ## 4.0
 

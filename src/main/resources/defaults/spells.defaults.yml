@@ -3028,6 +3028,10 @@ blast|2:
         speed: 1.2
         destructible: destructible
 
+blast|3:
+    parameters:
+        radius: 3
+
 earthquake:
     icon: sulphur
     category: combat
@@ -3941,12 +3945,22 @@ laser:
         size: 32
         increment_data: false
         check_destructible: true
+        destructible: destructible_mining
         brush: air
-        radius: 3
+        radius: 1
         undo: 15000
         cooldown: 5000
     costs:
         mana: 120
+
+laser|2:
+    parameters:
+        radius: 2
+        destructible: destructible
+
+laser|3:
+    parameters:
+        radius: 3
 
 shrink:
     icon: skull_item
