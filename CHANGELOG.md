@@ -13,6 +13,7 @@
  - Fix Magic damage (magic missile, etc) against witches
  - Some fixes/improvements to Automata death behavior
  - Auto-undo explosions won't drop blocks
+ - Fix the camera spell (new Mojang skins location)
 
 ## 4.0
 

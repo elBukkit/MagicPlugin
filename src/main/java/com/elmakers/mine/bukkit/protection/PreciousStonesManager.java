@@ -45,11 +45,10 @@ public class PreciousStonesManager {
 		}
 	}
 
-	public boolean isPVPAllowed(Location location) {
+	public boolean isPVPAllowed(Player player, Location location) {
 		if (!enabled || preciousStones == null || location == null)
 			return true;
-		return !PreciousStones.API().isFieldProtectingArea(
-				FieldFlag.PREVENT_PVP, location);
+		return !PreciousStones.API().flagAppliesToPlayer(player, FieldFlag.PREVENT_PVP, location);
 	}
 
 	public boolean hasBuildPermission(Player player, Block block) {

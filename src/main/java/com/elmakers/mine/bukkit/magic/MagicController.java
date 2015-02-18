@@ -3774,10 +3774,9 @@ public class MagicController implements Listener, MageController {
         if (player != null && player.hasPermission("Magic.bypass_pvp")) return true;
         if (location == null && player != null) location = player.getLocation();
         return worldGuardManager.isPVPAllowed(player, location)
-            && (location == null || worldGuardManager.isPVPAllowed(player, location))
             && pvpManager.isPVPAllowed(player)
             && multiverseManager.isPVPAllowed(location.getWorld())
-            && preciousStonesManager.isPVPAllowed(location)
+            && preciousStonesManager.isPVPAllowed(player, location)
             && townyManager.isPVPAllowed(location);
     }
 
