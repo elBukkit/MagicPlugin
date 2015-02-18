@@ -250,7 +250,7 @@ public class MapController implements com.elmakers.mine.bukkit.api.maps.MapContr
     public ItemStack getPlayerPortrait(String worldName, String playerName, Integer priority, String photoName) {
         photoName = photoName == null ? playerName : photoName;
         String photoLabel = "Photo of " + photoName;
-        MapView mapView = getURL(worldName, "http://s3.amazonaws.com/MinecraftSkins/" + playerName + ".png", photoLabel, 8, 8, 40, 8, 8, 8, priority);
+        MapView mapView = getURL(worldName, "http://skins.minecraft.net/MinecraftSkins/" + playerName + ".png", photoLabel, 8, 8, 40, 8, 8, 8, priority);
         return getMapItem(photoLabel, mapView);
     }
 

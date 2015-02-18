@@ -4,6 +4,7 @@
 
  - Add InventoryUtils.getURLSkull, for creating URL-based skulls
  - Allow for transparency in images on maps
+ - Fix fetching player skins (use new address http://skins.minecraft.net/MinecraftSkins/username.png)
 
 ## 2.0
 
