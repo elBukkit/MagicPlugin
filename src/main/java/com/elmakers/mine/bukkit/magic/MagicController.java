@@ -45,6 +45,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBurnEvent;
+import org.bukkit.event.block.BlockFromToEvent;
 import org.bukkit.event.block.BlockIgniteEvent;
 import org.bukkit.event.block.BlockPhysicsEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
@@ -2004,6 +2005,25 @@ public class MagicController implements Listener, MageController {
             if (undoList != null)
             {
                 undoList.modify(entity);
+            }
+        }
+    }
+
+    @EventHandler
+    public void onBlockFromTo(BlockFromToEvent event) {
+        Block targetBlock = event.getToBlock();
+        Block sourceBlock = event.getBlock();
+        UndoList undoList = getPendingUndo(sourceBlock.getLocation());
+        if (undoList != null)
+        {
+            undoList.add(targetBlock, true);
+        }
+        else
+        {
+            undoList = getPendingUndo(targetBlock.getLocation());
+            if (undoList != null)
+            {
+                undoList.add(targetBlock, true);
             }
         }
     }
