@@ -98,7 +98,7 @@ public class PlayerSelectAction extends CompoundAction implements GeneralAction,
             if (!targetSelf && targetPlayer == player) continue;
             if (targetPlayer.hasPotionEffect(PotionEffectType.INVISIBILITY)) continue;
             if (!canTarget(targetPlayer)) continue;
-            players.put(index, new WeakReference<Player>(targetPlayer));
+            players.put(index++, new WeakReference<Player>(targetPlayer));
         }
         if (players.size() == 0) return SpellResult.NO_TARGET;
 

@@ -1602,7 +1602,7 @@ gather:
              class: WarpEffect
              particle: portal
     parameters:
-        command: tpa @pn
+        command: tpa @tn
     costs:
         mana: 150
 
@@ -2082,6 +2082,7 @@ farm:
         mana: 50
 
 wolf:
+    icon_url: http://i.imgur.com/rcTYOcI.png
     icon: raw_beef
     category: elemental
     class: WolfSpell
@@ -2112,6 +2113,7 @@ wolf:
         mana: 50
 
 cat:
+    icon_url: http://i.imgur.com/pJcO7At.png
     icon: raw_fish
     category: elemental
     class: OcelotSpell
@@ -4437,7 +4439,8 @@ missile:
         range: 24
         hitbox: true
         target_type: LivingEntity
-        damage: 2
+        player_damage: 2
+        entity_damage: 4
         target_breakables: 1
         bypass_backfire: false
     costs:
@@ -4446,7 +4449,8 @@ missile:
 missile|2:
     parameters:
         range: 32
-        damage: 3
+        player_damage: 3
+        entity_damage: 6
         target_breakables: 2
     costs:
         mana: 50
@@ -4454,7 +4458,8 @@ missile|2:
 missile|3:
     parameters:
         range: 48
-        damage: 4
+        player_damage: 4
+        entity_damage: 8
         target_breakables: 3
     costs:
         mana: 70
@@ -4462,7 +4467,8 @@ missile|3:
 missile|4:
     parameters:
         range: 64
-        damage: 6
+        player_damage: 6
+        entity_damage: 12
         target_breakables: 4
     costs:
         mana: 100
