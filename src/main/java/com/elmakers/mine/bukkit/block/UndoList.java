@@ -117,6 +117,20 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
         modifiedTime = System.currentTimeMillis();
         if (bypass) return true;
 
+        register(blockData);
+        blockData.setUndoList(this);
+        return true;
+    }
+
+    public static BlockData register(Block block)
+    {
+        BlockData blockData = new com.elmakers.mine.bukkit.block.BlockData(block);
+        register(blockData);
+        return blockData;
+    }
+
+    public static void register(BlockData blockData)
+    {
         BlockData priorState = modified.get(blockData.getId());
         if (priorState != null)
         {
@@ -124,9 +138,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
             blockData.setPriorState(priorState);
         }
 
-        blockData.setUndoList(this);
         modified.put(blockData.getId(), blockData);
-        return true;
     }
 
     public void commit()
@@ -136,14 +148,14 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
 
         for (BlockData block : blockList)
         {
-            BlockData currentState = modified.get(block.getId());
-            if (currentState == block)
-            {
-                modified.remove(block.getId());
-            }
-
-            block.commit();
+            commit(block);
         }
+    }
+
+    public void commit(BlockData block)
+    {
+        modified.remove(block.getId());
+        block.commit();
     }
 
     @Override
