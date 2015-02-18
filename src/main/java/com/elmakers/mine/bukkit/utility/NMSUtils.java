@@ -92,6 +92,7 @@ public class NMSUtils {
     protected static Field class_Entity_invulnerableField;
     protected static Field class_ItemStack_tagField;
     protected static Field class_DamageSource_MagicField;
+    protected static Field class_DamageSource_VoidField;
     protected static Field class_Firework_ticksFlownField;
     protected static Field class_Firework_expectedLifespanField;
 
@@ -160,6 +161,7 @@ public class NMSUtils {
             class_ItemStack_tagField = class_ItemStack.getDeclaredField("tag");
             class_ItemStack_tagField.setAccessible(true);
             class_DamageSource_MagicField = class_DamageSource.getField("MAGIC");
+            class_DamageSource_VoidField = class_DamageSource.getField("OUT_OF_WORLD");
 
             class_Firework_ticksFlownField = class_EntityFirework.getDeclaredField("ticksFlown");
             class_Firework_ticksFlownField.setAccessible(true);

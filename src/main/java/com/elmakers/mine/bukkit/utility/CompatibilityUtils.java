@@ -318,12 +318,21 @@ public class CompatibilityUtils extends NMSUtils {
 
     public static void magicDamage(LivingEntity target, double amount, Entity source) {
         try {
+
             if (target == null) return;
             Object targetHandle = getHandle(target);
             if (targetHandle == null) return;
 
-            // Bukkit won't allow magic damage from anything but a potion..
             Object sourceHandle = getHandle(source);
+
+            // Special-case for mobs .. witches are immune to magic damage :\
+            if (!(target instanceof Player))
+            {
+                Object voidSource = class_DamageSource_VoidField.get(null);
+                class_EntityLiving_damageEntityMethod.invoke(targetHandle, voidSource, (float) amount);
+            }
+
+            // Bukkit won't allow magic damage from anything but a potion..
             if (sourceHandle != null && source instanceof LivingEntity) {
                 if (potion == null) {
                     Location location = target.getLocation();
