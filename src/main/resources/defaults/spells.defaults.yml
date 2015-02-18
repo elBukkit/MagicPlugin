@@ -1631,7 +1631,7 @@ mount:
 icbm:
     icon_url: http://i.imgur.com/tW9Uo6M.png
     icon: golden_carrot
-    category: demolitions
+    category: demolition
     class: ProjectileSpell
     pvp_restricted: true
     worth: 500
@@ -1720,7 +1720,7 @@ arrowrain:
 
 meteor:
     icon: double_plant:4
-    category: demolitions
+    category: demolition
     class: ProjectileSpell
     pvp_restricted: true
     worth: 90
@@ -2619,7 +2619,7 @@ stalactite:
 grenade:
     icon_url: http://i.imgur.com/xl4nToM.png
     icon: tnt
-    category: demolitions
+    category: demolition
     pvp_restricted: true
     worth: 25
     actions:
@@ -2641,7 +2641,7 @@ grenade:
 frag:
     icon_url: http://i.imgur.com/xl4nToM.png
     icon: apple
-    category: demolitions
+    category: demolition
     pvp_restricted: true
     worth: 150
     actions:
@@ -2663,7 +2663,7 @@ frag:
 
 cluster:
     icon: red_rose:3
-    category: demolitions
+    category: demolition
     pvp_restricted: true
     worth: 160
     actions:
@@ -2689,7 +2689,7 @@ cluster:
 
 bomb:
     icon: double_plant:1
-    category: demolitions
+    category: demolition
     pvp_restricted: true
     worth: 250
     actions:
@@ -3927,7 +3927,7 @@ flamethrower:
 
 laser:
     icon: ink_sack:11
-    category: demolitions
+    category: demolition
     class: IterateSpell
     worth: 130
     effects:

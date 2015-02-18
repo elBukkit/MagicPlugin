@@ -86,7 +86,11 @@ function getSpellDetails(key, showTitle, useMana, costReduction, probabilityStri
     detailsDiv.append(description);
 
     if ('category' in spell) {
-        var category = categories[spell.category];
+        var category = spell.category;
+        if (category in categories)
+        {
+            category = categories[spell.category];
+        }
         var categoryDiv = $('<div class="spellCategory"/>').text(category.name);
         detailsDiv.append(categoryDiv);
     }
@@ -171,12 +175,10 @@ function getSpellDetails(key, showTitle, useMana, costReduction, probabilityStri
 				if (costReduction > 1) costReduction = 1;
 				amount = amount * (1 - costReduction);
 			}
-			if (costKey == 'xp') {
-				if (useMana) {
-					costList.append($('<li/>').text("Mana: " + amount));
-				} else {
-					costList.append($('<li/>').text("XP: " + amount));
-				}
+            if (costKey == 'mana') {
+                costList.append($('<li/>').text("Mana: " + amount));
+            } else if (costKey == 'xp') {
+                costList.append($('<li/>').text("XP: " + amount));
 			} else {
 				costList.append($('<li/>').append(getMaterial(costKey, true)).append($('<span/>').text(': ' + amount)));
 			}
@@ -432,6 +434,8 @@ function getWandItemDetails(key, wand)
 	for (var spellIndex in wandSpells)
 	{
 		var key = wand.spells[spellIndex];
+        key = key.split('|')[0];
+        if (!(key in spells)) continue;
 		var spell = spells[key];
 		var probabilityString = "";
 		if ('spell_probabilities' in wand && key in wand['spell_probabilities']) {

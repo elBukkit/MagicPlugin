@@ -325,7 +325,7 @@ function printIcon($iconUrl, $title) {
 				<li><a href="#spells">Spells</a></li>
 				<li><a href="#crafting">Crafting</a></li>
 				<li><a href="#enchanting">Enchanting</a></li>
-				<li><a href="#wands">Wands</a></li>
+				<li><a href="#wands">Wands and Items</a></li>
 				<li><a href="#upgrades">Upgrades</a></li>
 				<li id="booksTab"><a href="#books">Books</a></li>
 			</ul>
