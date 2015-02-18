@@ -970,7 +970,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
             }
         }
 
-        return success;
+        return result.isSuccess();
     }
 
     public String getMessage(String messageKey) {
