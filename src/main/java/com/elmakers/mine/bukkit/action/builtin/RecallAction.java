@@ -100,7 +100,7 @@ public class RecallAction extends BaseSpellAction implements GeneralAction, GUIA
             this.message = message;
             this.description = description;
             this.failMessage = failMessage;
-            this.icon = icon;
+            this.icon = icon == null ? defaultMaterial : icon;
             this.iconURL = iconURL;
         }
 
