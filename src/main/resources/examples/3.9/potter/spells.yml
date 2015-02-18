@@ -1165,6 +1165,7 @@ bubble:
         mana: 15
 
 camera:
+    icon_url: http://i.imgur.com/10cc73C.png
     icon: tripwire_hook
     category: specialty
     class: CameraSpell
@@ -1506,6 +1507,7 @@ crucio:
         hitbox: true
 
 dementor:
+    icon_url: http://i.imgur.com/58QlgxB.png
     icon: quartz
     category: hidden
     pvp_restricted: true
@@ -1773,6 +1775,7 @@ duro|3:
         undo: 8000
 
 spongify:
+    icon_url: http://i.imgur.com/3ogKLnG.png
     icon: slime_block
     category: transfiguration
     class: RecurseSpell
@@ -1801,6 +1804,7 @@ spongify:
         mana: 50
 
 spongifymaxima:
+    icon_url: http://i.imgur.com/3ogKLnG.png
     icon: slime_block
     category: transfiguration
     class: RecurseSpell
@@ -1887,7 +1891,7 @@ evanesco:
         mana: 65
 
 expelliarmus:
-    icon_url: http://i.imgur.com/rGmFdcu.png
+    icon_url: http://i.imgur.com/snEuvIc.png
     alias: expel
     icon: ink_sack:1
     category: dada
@@ -2399,7 +2403,7 @@ flagrate:
 
 rictusempra:
     alias: Rictusempra
-    icon_url: http://i.imgur.com/gFhEwjj.png
+    icon_url: http://i.imgur.com/wn5s7tV.png
     icon: ink_sack:3
     category: dada
     pvp_restricted: true
@@ -2648,7 +2652,7 @@ fumos:
         duration: 5000
         cooldown: 15000
         transparent: transparent_to_construction
-        effect_damage_resistance: 300
+        effect_damage_resistance: 1
         effect_slow: 1
     costs:
         mana: 90
@@ -2931,9 +2935,9 @@ imperio:
         target_type: LivingEntity
         target_breakables: 1
         target: other_entity
-        range: 32
+        range: 45
         item_force: 1
-        entity_force: 3
+        entity_force: 4
         cooldown: 4000
         bypass_backfire: true
     costs:
@@ -3141,7 +3145,7 @@ legilimens:
         mana: 100
 
 levicorpus:
-    icon_url: http://i.imgur.com/ueYCeJC.png
+    icon_url: http://i.imgur.com/v5FzbAV.png
     icon: ink_sack:5
     category: charms
     class: GenericSpell
@@ -3687,6 +3691,7 @@ petrificustotalus:
         hitbox: true
 
 webbing:
+    icon_url: http://i.imgur.com/XXi9kKk.png
     icon: web
     category: hidden
     class: ConstructSpell
@@ -3830,7 +3835,7 @@ patronus:
         bypass_backfire: true
         py: ~1.5
     costs:
-        mana: 150
+        mana: 130
 
 piertotum:
     icon_url: http://i.imgur.com/eCq4rz3.png
@@ -4316,6 +4321,7 @@ slash:
         mana: 25
 
 silencio:
+    icon_url: http://i.imgur.com/t44a9EJ.png
     icon: ink_sack:3
     category: staff
     hidden: true
@@ -4353,6 +4359,7 @@ silencio:
         check_protection: true
 
 silenciomaxima:
+    icon_url: http://i.imgur.com/t44a9EJ.png
     icon: ink_sack:3
     category: staff
     hidden: true
@@ -4390,6 +4397,7 @@ silenciomaxima:
         check_protection: true
 
 silenciototalus:
+    icon_url: http://i.imgur.com/t44a9EJ.png
     icon: ink_sack:3
     category: staff
     hidden: true
@@ -4424,6 +4432,7 @@ silenciototalus:
         check_protection: true
 
 amplify:
+    icon_url: http://i.imgur.com/t44a9EJ.png
     icon: ink_sack:3
     category: staff
     hidden: true
@@ -4451,6 +4460,7 @@ amplify:
         check_protection: true
 
 amplifytotalus:
+    icon_url: http://i.imgur.com/t44a9EJ.png
     icon: ink_sack:3
     category: staff
     hidden: true
@@ -4510,6 +4520,7 @@ expulsion:
         check_protection: true
 
 jail:
+    icon_url: http://i.imgur.com/rb2YaWu.png
     icon: iron_fence
     category: staff
     class: ConstructSpell
@@ -4535,7 +4546,7 @@ jail:
         bypass_backfire: true
 
 stupefy:
-    icon_url: http://i.imgur.com/aqFmPeZ.png
+    icon_url: http://i.imgur.com/1mmorJ8.png
     icon: ink_sack:4
     category: dada
     pvp_restricted: true
@@ -4622,7 +4633,7 @@ stupefy|3:
         target_breakables: 2
 
 vermillious:
-    icon_url: http://i.imgur.com/iKZvCW5.png
+    icon_url: http://i.imgur.com/i77svwG.png
     icon: ink_sack:1
     category: charms
     pvp_restricted: true
@@ -4870,6 +4881,7 @@ vulnera:
         remove_effects:
         - confusion
         - wither
+        - slow
         amount: 1
     costs:
         mana: 80
@@ -5089,6 +5101,9 @@ recall:
         -  class: RecallAction
     effects:
         no_action: []
+        cast:
+        -  class: EffectSingle
+           sound: level_up
         target_selected:
         -  class: EffectSingle
            sound: level_up
@@ -5117,11 +5132,11 @@ recall:
                    iterations: 20
     parameters:
         cooldown: 1000
-        allow_spawn: true
-        allow_marker: true
-        allow_death: true
-        allow_wand: true
-        allow_home: true
+        allow_spawn: false
+        allow_marker: false
+        allow_death: false
+        allow_wand: false
+        allow_home: false
         allow_cross_world: true
         warps:
           dueling:
@@ -5157,6 +5172,7 @@ recall:
             name: The Ministry Hub
             locked: true
 gather:
+    icon_url: http://i.imgur.com/nBNOHSD.png
     hidden: true
     icon: glowstone_dust
     category: staff
@@ -6563,50 +6579,32 @@ unspeakable:
 smite:
     icon_url: http://i.imgur.com/pVL61is.png
     name: Smite
-    description: Wound your target.
+    description: Casts Lightning on your target.
     icon: ink_sack:11
-    category: dark
-    worth: 20
-    hidden: true
+    category: elemental
+    class: LightningSpell
     pvp_restricted: true
-    cast_on_no_target: true
-    actions:
-        cast:
-        -  class: CommandAction
+    worth: 100
     effects:
         cast:
         -  class: EffectSingle
-           sound: burp
-           location: origin
-           effectlib:
-             class: ConeEffect
-             iterations: 5
-             particle: fireworks_spark
-             lengthGrow: 0.32
-        -  class: EffectSingle
-           location: target
-           color: F5EFFB
-           firework: ball
+           sound: firework_large_blast
+        -  class: EffectTrail
+           particle: smoke_normal
+           particle_count: 2
         -  class: EffectSingle
            location: target
            effectlib:
-             class: SmokeEffect
-             iterations: 30
+             class: HelixEffect
+             particle: smoke_normal
     parameters:
-        target: other
+        hitbox: true
         target_type: LivingEntity
         allow_max_range: true
-        cooldown: 4000
-        hitbox: true
-        op: false
-        bypass_backfire: true
-        check_destructible: false
-        target_breakables: 3
-        bypass_protection: true
-        commands:
-        - smite @tn
+        range: 48
+        cooldown: 11000
     costs:
-        mana: 120
+        mana: 90
 
 invis:
     icon_url: http://i.imgur.com/nifpRxI.png

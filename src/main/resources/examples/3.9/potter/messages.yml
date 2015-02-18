@@ -510,15 +510,37 @@ spells:
         cast: Reparo!
     recall:
         name: Recall
-        description: Apparate you to previous locations
-        fail: ""
+        description: Return you to previous locations
+        usage: ""
         no_target: ""
-        cast_marker: You apparate to your marker
-        cast_death: You apparate to your last death location
-        cast_spawn: You apparate to spawn
-        cast_home: You apparate home
-        cast_wand: You apparate to your lost wand
-        cast_warp: Apparating to $name
+        cast_marker_place: ""
+        cast_marker_move: ""
+        cast_marker: ""
+        cast_death: Returning you to your last death location
+        cast_spawn: Returning you to spawn
+        cast_home: Returning you home
+        cast_wand: Returning you to your lost wand
+        cast_warp: Warping you to $name
+        no_target_death: No recorded death location
+        no_target_wand: No recorded lost wands
+        no_target_home: No home set
+        no_target_warp: Invalid warp $name
+        no_target_marker: No marker set
+        no_target_spawn: Can't recall to spawn
+        title_marker: Marker
+        description_marker: Aim down to move your marker
+        title_death: Last Death
+        description_death: Your last death location
+        title_warp: $name
+        title_spawn: Spawn
+        description_spawn: The current world's spawn location
+        title_home: Home
+        description_home: Your last sleep location
+        title_wand: Lost Wand
+        description_wand: A wand you've dropped on the ground
+        cross_world_disallowed: You are not allowed to Recall to another world
+        title: Choose Destination
+        unlock_warp: "&bYou have unlocked &5$name &bon your &6Marauder's Map!"
     gather:
         name: Gather
         description: Apparates you to other players
@@ -683,6 +705,11 @@ wands:
         name: Auror Wand
         description: $wood and $core
         upgrade_description: Become an Auror!
+
+    spew:
+        name: Spew Wand
+        description: $wood and $core
+        upgrade_description: Become a Spew!
 
     phoenix:
         name: Phoenix Wand

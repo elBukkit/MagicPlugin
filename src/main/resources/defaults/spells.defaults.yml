@@ -1391,7 +1391,7 @@ tree:
         mana: 20
 
 disarm:
-    icon_url: http://i.imgur.com/rGmFdcu.png
+    icon_url: http://i.imgur.com/snEuvIc.png
     icon: tripwire_hook
     category: light
     class: DisarmSpell
@@ -1578,6 +1578,7 @@ music:
         mana: 20
 
 gather:
+    icon_url: http://i.imgur.com/nBNOHSD.png
     icon: glowstone_dust
     category: master
     class: GotoSpell
@@ -4166,9 +4167,9 @@ force:
         target_type: LivingEntity
         target_breakables: 1
         target: other_entity
-        range: 32
+        range: 48
         item_force: 1
-        entity_force: 3
+        entity_force: 4
         bypass_backfire: true
     costs:
         mana: 50
@@ -4225,6 +4226,7 @@ map:
         mana: 15
 
 camera:
+    icon_url: http://i.imgur.com/10cc73C.png
     hidden: true
     icon: double_plant
     category: specialty
@@ -4272,6 +4274,7 @@ tent:
         mana: 150
 
 cage:
+    icon_url: http://i.imgur.com/rb2YaWu.png
     icon: iron_fence
     category: master
     class: ConstructSpell
@@ -4350,7 +4353,7 @@ wolfhouse:
 
 missile:
     icon: ink_sack:1
-    icon_url: http://i.imgur.com/iKZvCW5.png
+    icon_url: http://i.imgur.com/i77svwG.png
     category: combat
     worth: 40
     pvp_restricted: true
@@ -4786,6 +4789,7 @@ torture:
 
 rubberize:
     icon: slime_block
+    icon_url: http://i.imgur.com/3ogKLnG.png
     category: engineering
     class: RecurseSpell
     worth: 150
@@ -5018,7 +5022,7 @@ wound:
         mana: 120
 
 stun:
-    icon_url: http://i.imgur.com/aqFmPeZ.png
+    icon_url: http://i.imgur.com/1mmorJ8.png
     icon: ink_sack:4
     category: combat
     pvp_restricted: true

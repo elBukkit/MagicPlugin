@@ -579,21 +579,6 @@ wingchal:
 # ITEMS
 #
 
-maraudersmap:
-    name: Marauder's Map
-    description: Apparate to Previous Locations
-    mode: cast
-    active_spell: recall
-    icon: map:111
-    indestructible: true
-    locked: true
-    keep: true
-    quiet: 2
-    effect_color: 'FFFF00'
-    overrides: allow_marker false
-    spells:
-        - recall
-
 portkey:
     mode: cast
     active_spell: recall
@@ -1020,6 +1005,17 @@ phoenix:
      - phoenixcry
      - animagus_phoenix
 
+spew:
+    icon: firework_charge
+    rename: true
+    upgrade: true
+    effect_color: ‘81DAF5’
+    effect_bubbles: true
+    active_spell: animagus_elf
+    spells:
+     - animagus_elf
+     - humaculus
+
 # Upgrade items copied from default config
 
 redeffects:
@@ -1437,3 +1433,18 @@ hotbar2:
     indestructible: false
     icon: firework_charge
     hotbar_count: 2
+
+maraudersmap:
+    name: Marauder's Map
+    description: Apparate to Previous Locations
+    mode: cast
+    active_spell: recall
+    icon: map:111
+    indestructible: true
+    locked: true
+    keep: true
+    quiet: 0
+    effect_color: 'FFFF00'
+    overrides: allow_marker false
+    spells:
+        - recall

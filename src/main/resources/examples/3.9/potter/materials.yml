@@ -47,7 +47,6 @@ transparent:
 - carrot
 - potato
 - wood_button
-- skull
 - restone_comparator_off
 - restone_comparator_on
 - activator_rail
@@ -202,6 +201,7 @@ apparatemaxima:
 - carrot
 - potato
 - wood_button
+- skull
 - restone_comparator_off
 - restone_comparator_on
 - activator_rail
@@ -216,6 +216,7 @@ apparatemaxima:
 # removal of attached block)
 indestructible:
 - chest
+- skull
 
 prevent_passthrough:
 - bedrock

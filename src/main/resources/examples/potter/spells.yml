@@ -783,6 +783,7 @@ crucio:
     category: unforgiveable
 
 dementor:
+    icon_url: http://i.imgur.com/58QlgxB.png
     icon: quartz
     category: hidden
     pvp_restricted: true
@@ -990,6 +991,7 @@ spongify:
 
 spongifymaxima:
     icon: slime_block
+    icon_url: http://i.imgur.com/3ogKLnG.png
     category: transfiguration
     class: RecurseSpell
     worth: 150
@@ -1313,7 +1315,7 @@ flagrate:
         range: 3
 
 rictusempra:
-    icon_url: http://i.imgur.com/gFhEwjj.png
+    icon_url: http://i.imgur.com/wn5s7tV.png
     icon: ink_sack:3
     category: dada
     pvp_restricted: true
@@ -1784,7 +1786,7 @@ legilimens:
     category: staff
 
 levicorpus:
-    icon_url: http://i.imgur.com/ueYCeJC.png
+    icon_url: http://i.imgur.com/v5FzbAV.png
     icon: ink_sack:5
     category: charms
     class: GenericSpell
@@ -2266,6 +2268,7 @@ petrificustotalus:
     category: dada
 
 webbing:
+    icon_url: http://i.imgur.com/XXi9kKk.png
     icon: web
     category: hidden
     class: ConstructSpell
@@ -2665,6 +2668,7 @@ sectumsempra:
     category: dark
 
 silencio:
+    icon_url: http://i.imgur.com/t44a9EJ.png
     icon: ink_sack:3
     category: staff
     hidden: true
@@ -2702,6 +2706,7 @@ silencio:
         check_protection: true
 
 silenciomaxima:
+    icon_url: http://i.imgur.com/t44a9EJ.png
     icon: ink_sack:3
     category: staff
     hidden: true
@@ -2739,6 +2744,7 @@ silenciomaxima:
         check_protection: true
 
 silenciototalus:
+    icon_url: http://i.imgur.com/t44a9EJ.png
     icon: ink_sack:3
     category: staff
     hidden: true
@@ -2773,6 +2779,7 @@ silenciototalus:
         check_protection: true
 
 amplify:
+    icon_url: http://i.imgur.com/t44a9EJ.png
     icon: ink_sack:3
     category: staff
     hidden: true
@@ -2800,6 +2807,7 @@ amplify:
         check_protection: true
 
 amplifytotalus:
+    icon_url: http://i.imgur.com/t44a9EJ.png
     icon: ink_sack:3
     category: staff
     hidden: true
@@ -3069,6 +3077,7 @@ vulnera:
         remove_effects:
         - confusion
         - wither
+        - slow
         amount: 1
     costs:
         mana: 80
