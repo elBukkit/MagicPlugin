@@ -562,6 +562,10 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
         return blockList;
     }
 
+    public static BlockData getBlockData(Location location) {
+        return modified.get(com.elmakers.mine.bukkit.block.BlockData.getBlockId(location.getBlock()));
+    }
+
     public static com.elmakers.mine.bukkit.api.block.UndoList getUndoList(Location location) {
         com.elmakers.mine.bukkit.api.block.UndoList blockList = null;
         BlockData modifiedBlock = modified.get(com.elmakers.mine.bukkit.block.BlockData.getBlockId(location.getBlock()));
@@ -569,5 +573,9 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
             blockList = modifiedBlock.getUndoList();
         }
         return blockList;
+    }
+
+    public static Map<Long, BlockData> getModified() {
+        return modified;
     }
 }
