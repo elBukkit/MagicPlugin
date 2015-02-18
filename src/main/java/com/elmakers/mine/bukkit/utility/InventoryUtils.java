@@ -9,8 +9,11 @@ import java.util.logging.Level;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.SkullMeta;
 
 public class InventoryUtils extends NMSUtils
 {	
@@ -114,5 +117,27 @@ public class InventoryUtils extends NMSUtils
             return skull;
         }
         return skull;
+    }
+
+    public static ItemStack getPlayerSkull(Player player)
+    {
+        return getPlayerSkull(player, null);
+    }
+
+    @SuppressWarnings("deprecation")
+    public static ItemStack getPlayerSkull(Player player, String itemName)
+    {
+        ItemStack head = new ItemStack(Material.SKULL_ITEM, 1, (short)0, (byte)3);
+        ItemMeta meta = head.getItemMeta();
+        if (itemName != null) {
+            meta.setDisplayName(itemName);
+        }
+        String ownerName = player.getName();
+        if (meta instanceof SkullMeta && ownerName != null) {
+            SkullMeta skullData = (SkullMeta)meta;
+            skullData.setOwner(ownerName);
+        }
+        head.setItemMeta(meta);
+        return head;
     }
 }
