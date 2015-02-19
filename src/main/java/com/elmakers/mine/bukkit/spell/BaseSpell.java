@@ -951,9 +951,9 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         }
         processResult(result);
 
-        boolean success = (castOnNoTarget && result == SpellResult.NO_TARGET);
-        boolean free = !success && result.isFree();
-        success = success || result.isSuccess();
+        boolean success = result.isSuccess();
+        boolean requiresCost = success || (castOnNoTarget && result == SpellResult.NO_TARGET);
+        boolean free = !requiresCost && result.isFree();
         if (!free) {
             lastCast = System.currentTimeMillis();
             if (costs != null && !mage.isCostFree()) {
@@ -970,7 +970,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
             }
         }
 
-        return result.isSuccess();
+        return success;
     }
 
     public String getMessage(String messageKey) {
