@@ -25,7 +25,7 @@ public class TossSpell extends BrushSpell
 		buildWith.setTarget(location);
 
 		Material material = buildWith.getMaterial();
-		byte data = buildWith.getData();
+		byte data = buildWith.getBlockData();
 		
 		int tossCount = 1;
 		tossCount = parameters.getInt("count", tossCount);

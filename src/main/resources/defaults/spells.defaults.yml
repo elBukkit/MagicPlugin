@@ -382,6 +382,7 @@ simulate3:
 
 glider:
     icon: sapling:2
+    icon_url: http://i.imgur.com/CUgSpoB.png
     category: automata
     class: ConstructSpell
     worth: 100
@@ -412,6 +413,7 @@ glider:
 
 virus:
     icon: fermented_spider_eye
+    icon_url: http://i.imgur.com/UtoaKXl.png
     category: automata
     class: AnimateSpell
     worth: 1000
@@ -472,6 +474,7 @@ virus:
 
 worm:
     icon: string
+    icon_url: http://i.imgur.com/UtoaKXl.png
     category: automata
     class: AnimateSpell
     worth: 800
@@ -532,6 +535,7 @@ worm:
 
 hunter:
     icon: spider_eye
+    icon_url: http://i.imgur.com/UtoaKXl.png
     category: automata
     class: AnimateSpell
     worth: 600
@@ -589,6 +593,7 @@ hunter:
 
 defender:
     icon: quartz
+    icon_url: http://i.imgur.com/UtoaKXl.png
     category: automata
     class: AnimateSpell
     worth: 400
@@ -634,6 +639,7 @@ defender:
 
 animate:
     icon: iron_ingot
+    icon_url: http://i.imgur.com/UtoaKXl.png
     category: automata
     class: AnimateSpell
     worth: 300
@@ -677,6 +683,7 @@ animate:
 
 life:
     icon: sapling:1
+    icon_url: http://i.imgur.com/CUgSpoB.png
     category: automata
     class: ConstructSpell
     worth: 1500
@@ -709,6 +716,7 @@ life:
 
 life3:
     icon: sapling:1
+    icon_url: http://i.imgur.com/CUgSpoB.png
     category: automata
     class: ConstructSpell
     worth: 1500
@@ -1917,7 +1925,7 @@ torch|2:
         cooldown: 0
 
 familiar:
-    icon_url: http://i.imgur.com/eyM3n1d.png
+    icon_url: http://s3.amazonaws.com/MinecraftSkins/MHF_Pig.png
     icon: monster_egg
     category: elemental
     class: FamiliarSpell
@@ -1955,7 +1963,7 @@ familiar:
         mana: 20
 
 monster:
-    icon_url: http://i.imgur.com/eyM3n1d.png
+    icon_url: http://s3.amazonaws.com/MinecraftSkins/MHF_Spider.png
     icon: pumpkin
     category: dark
     class: FamiliarSpell
@@ -2001,7 +2009,7 @@ monster:
         mana: 40
 
 mob:
-    icon_url: http://i.imgur.com/eyM3n1d.png
+    icon_url: http://s3.amazonaws.com/MinecraftSkins/MHF_Zombie.png
     icon: jack_o_lantern
     category: dark
     class: FamiliarSpell
@@ -2047,7 +2055,7 @@ mob:
         mana: 100
 
 farm:
-    icon_url: http://i.imgur.com/eyM3n1d.png
+    icon_url: http://s3.amazonaws.com/MinecraftSkins/MHF_Cow.png
     icon: wheat
     category: elemental
     class: FamiliarSpell
@@ -2619,7 +2627,7 @@ stalactite:
         mana: 5
 
 grenade:
-    icon_url: http://i.imgur.com/xl4nToM.png
+    icon_url: http://s3.amazonaws.com/MinecraftSkins/MHF_TNT.png
     icon: tnt
     category: demolition
     pvp_restricted: true
@@ -2641,7 +2649,7 @@ grenade:
         mana: 40
 
 frag:
-    icon_url: http://i.imgur.com/xl4nToM.png
+    icon_url: http://s3.amazonaws.com/MinecraftSkins/MHF_TNT2.png
     icon: apple
     category: demolition
     pvp_restricted: true
@@ -2664,6 +2672,7 @@ frag:
         mana: 120
 
 cluster:
+    icon_url: http://i.imgur.com/xl4nToM.png
     icon: red_rose:3
     category: demolition
     pvp_restricted: true
@@ -2690,6 +2699,7 @@ cluster:
         mana: 150
 
 bomb:
+    icon_url: http://i.imgur.com/xl4nToM.png
     icon: double_plant:1
     category: demolition
     pvp_restricted: true
@@ -2933,6 +2943,7 @@ workbench:
 
 stash:
     icon: ender_chest
+    icon_url: http://s3.amazonaws.com/MinecraftSkins/MHF_Chest.png
     category: master
     class: StashSpell
     worth: 20
@@ -3452,6 +3463,7 @@ mine:
         mana: 10
 
 chop:
+    icon_url: http://s3.amazonaws.com/MinecraftSkins/MHF_OakLog.png
     icon: stone_axe
     category: elemental
     class: DropSpell
@@ -3828,6 +3840,7 @@ lava:
 
 stream:
     icon: ink_sack:6
+    icon_url: http://i.imgur.com/FMkCRh9.png
     category: combat
     class: IterateSpell
     pvp_restricted: true

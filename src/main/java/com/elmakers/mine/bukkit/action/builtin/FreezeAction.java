@@ -73,7 +73,7 @@ public class FreezeAction extends BaseSpellAction implements BlockAction
 		{
 			if (block.getData() < 7)
 			{
-				applyMaterial.setData((byte)(block.getData() + 1));
+				applyMaterial.setData((short)(block.getData() + 1));
 			}
 		}
 		applyMaterial.modify(block);

@@ -7,7 +7,7 @@ function startsWith($haystack, $needle)
 }
 
 $inputFolder = dirname(__FILE__) . '/icons_scaled';
-$outputFolder = dirname(__FILE__) . '/icon_skulls';
+$outputFolder = dirname(__FILE__) . '/icons_skulls';
 $dir = new DirectoryIterator($inputFolder);
 
 foreach ($dir as $fileinfo)

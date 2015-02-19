@@ -562,7 +562,7 @@ public class WandCommandExecutor extends MagicTabExecutor {
             return false;
         }
 		
-		Wand wand = api.createWand(heldItem.getType(), heldItem.getDurability());
+		Wand wand = api.createWand(heldItem);
 		player.setItemInHand(wand.getItem());
 		wand.activate(mage);
 		

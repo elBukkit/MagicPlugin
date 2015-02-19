@@ -124,8 +124,8 @@ public class IterateSpell extends BrushSpell
 						buildWith.update(mage, currentTarget.getLocation());
 		
 						if (incrementData) {
-							byte data = buildWith.getData();
-							data = i > 15 ? 15 : (byte)i;
+							short data = buildWith.getData();
+							data = i > 15 ? 15 : (short)i;
 							buildWith.setData(data);
 						}
 

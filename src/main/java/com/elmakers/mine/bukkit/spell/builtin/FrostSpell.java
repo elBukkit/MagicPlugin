@@ -96,7 +96,7 @@ public class FrostSpell extends BlockSpell
             MaterialAndData applyMaterial = new MaterialAndData(material);
 			if (block.getType() == Material.SNOW && material == Material.SNOW) {
 				if (block.getData() < 7) {
-                    applyMaterial.setData((byte)(block.getData() + 1));
+                    applyMaterial.setData((short)(block.getData() + 1));
 				}
 			}
             applyMaterial.modify(block);

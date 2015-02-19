@@ -86,7 +86,7 @@ public class FlowerSpell extends BlockSpell
             if (tall) {
                 block = block.getRelative(BlockFace.UP);
                 super.perform(parameters, block);
-                material.setData((byte)8);
+                material.setData((short)8);
                 material.modify(block);
             }
 

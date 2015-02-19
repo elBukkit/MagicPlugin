@@ -75,19 +75,19 @@ public class TorchAction extends BaseSpellAction implements BlockAction
 			switch (direction)
 			{
 				case WEST:
-					targetMaterial.setData((byte)1);
+					targetMaterial.setData((short)1);
 					break;
 				case EAST:
-					targetMaterial.setData((byte)2);
+					targetMaterial.setData((short)2);
 					break;
 				case NORTH:
-					targetMaterial.setData((byte)3);
+					targetMaterial.setData((short)3);
 					break;
 				case SOUTH:
-					targetMaterial.setData((byte)4);
+					targetMaterial.setData((short)4);
 					break;
 				case DOWN:
-					targetMaterial.setData((byte)5);
+					targetMaterial.setData((short)5);
 					break;
 				default:
 					targetMaterial.setMaterial(Material.GLOWSTONE);

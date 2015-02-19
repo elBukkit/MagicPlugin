@@ -385,6 +385,11 @@ public class MagicPlugin extends JavaPlugin implements MagicAPI
 		return new Wand(controller, iconMaterial, iconData);
 	}
 
+    @Override
+    public com.elmakers.mine.bukkit.api.wand.Wand createWand(ItemStack item) {
+        return Wand.createWand(controller, item);
+    }
+
 	@Override
 	public SpellTemplate getSpellTemplate(String key) {
 		return controller.getSpellTemplate(key);

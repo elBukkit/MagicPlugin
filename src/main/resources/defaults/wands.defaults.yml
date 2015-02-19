@@ -979,7 +979,7 @@ wolfhouse:
 
 hunterheart:
     active_spell: hunter
-    icon: spider_eye
+    icon: 'skull_item:http://i.imgur.com/UtoaKXl.png'
     indestructible: false
     locked: true
     uses: 1
@@ -989,7 +989,7 @@ hunterheart:
 
 virusheart:
     active_spell: virus
-    icon: fermented_spider_eye
+    icon: 'skull_item:http://i.imgur.com/UtoaKXl.png'
     indestructible: false
     locked: true
     uses: 1
@@ -999,7 +999,7 @@ virusheart:
 
 wormheart:
     active_spell: worm
-    icon: string
+    icon: 'skull_item:http://i.imgur.com/UtoaKXl.png'
     indestructible: false
     locked: true
     uses: 1
@@ -1009,7 +1009,7 @@ wormheart:
 
 defenderheart:
     active_spell: defender
-    icon: quartz
+    icon: 'skull_item:http://i.imgur.com/UtoaKXl.png'
     indestructible: false
     locked: true
     uses: 1
@@ -1019,7 +1019,7 @@ defenderheart:
 
 golemheart:
     active_spell: animate
-    icon: iron_ingot
+    icon: 'skull_item:http://i.imgur.com/UtoaKXl.png'
     indestructible: false
     locked: true
     uses: 1

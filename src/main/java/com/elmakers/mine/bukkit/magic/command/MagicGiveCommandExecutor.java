@@ -83,10 +83,11 @@ public class MagicGiveCommandExecutor extends MagicTabExecutor {
             player = (Player)sender;
         }
 
-        if (itemName.contains("skull:")) {
-            String skullURL = itemName.substring(6);
-            api.giveItemToPlayer(player, InventoryUtils.getURLSkull(skullURL));
-            sender.sendMessage("Gave " + count + " skull to " + player.getName() + " with a url of " + skullURL);
+        if (itemName.contains("skull:") || itemName.contains("skull_item:")) {
+            itemName = itemName.replace("skull:", "skull_item:");
+            MaterialAndData skullData = new MaterialAndData(itemName);
+            api.giveItemToPlayer(player, skullData.getItemStack(count));
+            sender.sendMessage("Gave " + count + " skull to " + player.getName());
             return true;
         }
         else if (itemName.equalsIgnoreCase("xp")) {
@@ -163,7 +164,7 @@ public class MagicGiveCommandExecutor extends MagicTabExecutor {
             api.giveItemToPlayer(player, itemStack);
             sender.sendMessage("Gave item " + itemKey + " to " + player.getName());
             return true;
-        }else {
+        } else {
             Wand wand = api.createWand(itemName);
             if (wand != null) {
                 Mage mage = api.getMage(player);

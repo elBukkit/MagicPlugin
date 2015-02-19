@@ -24,8 +24,6 @@ import com.elmakers.mine.bukkit.block.MaterialBrush;
 import com.elmakers.mine.bukkit.effect.builtin.EffectRing;
 import com.elmakers.mine.bukkit.magic.Mage;
 import com.elmakers.mine.bukkit.magic.MagicController;
-import com.elmakers.mine.bukkit.spell.BrushSpell;
-import com.elmakers.mine.bukkit.spell.UndoableSpell;
 import com.elmakers.mine.bukkit.utility.ColorHD;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
@@ -204,9 +202,10 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 
 	public Wand(MagicController controller, ItemStack itemStack) {
 		this.controller = controller;
-		hotbars = new ArrayList<Inventory>();
+        wandName = controller.getMessages().get("wand.default_name");
+        hotbars = new ArrayList<Inventory>();
 		setHotbarCount(1);
-		this.icon = new MaterialAndData(itemStack.getType(), (byte)itemStack.getDurability());
+		this.icon = new MaterialAndData(itemStack);
 		inventories = new ArrayList<Inventory>();
         item = itemStack;
 		indestructible = controller.getIndestructibleWands();
@@ -303,7 +302,6 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	public Wand(MagicController controller, Material icon, short iconData) {
 		// This will make the Bukkit ItemStack into a real ItemStack with NBT data.
 		this(controller, InventoryUtils.makeReal(new ItemStack(icon, 1, iconData)));
-		wandName = controller.getMessages().get("wand.default_name");
         saveState();
 		updateName();
 	}
@@ -318,10 +316,9 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	
 	public void setIcon(MaterialAndData materialData) {
 		icon = materialData;
-		if (icon != null) {
-			item.setType(icon.getMaterial());
-			item.setDurability(icon.getData());
-		}
+        if (icon != null) {
+            icon.applyToItem(item);
+        }
 	}
 	
 	public void makeUpgrade() {
@@ -828,7 +825,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
                 return null;
             }
             try {
-                originalItemStack = new ItemStack(icon.getMaterial(), 1, (short)0, (byte)icon.getData());
+                originalItemStack = new ItemStack(icon.getMaterial(), 1, icon.getData());
                 itemStack = InventoryUtils.makeReal(originalItemStack);
             } catch (Exception ex) {
                 itemStack = null;
@@ -870,11 +867,11 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 			return null;
 		}
 		
-		byte dataId = brushData.getData();
-		ItemStack originalItemStack = new ItemStack(material, 1, (short)0, (byte)dataId);
+		short dataId = brushData.getData();
+		ItemStack originalItemStack = new ItemStack(material, 1, dataId);
 		ItemStack itemStack = InventoryUtils.makeReal(originalItemStack);
 		if (itemStack == null) {
-			itemStack = new ItemStack(DEFAULT_BRUSH_MATERIAL, 1, (short)0, (byte)dataId);
+			itemStack = new ItemStack(DEFAULT_BRUSH_MATERIAL, 1, dataId);
 			itemStack = InventoryUtils.makeReal(itemStack);
 			if (itemStack == null) {
 				return itemStack;
@@ -1026,7 +1023,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		} else {
 			node.set("mode", null);
 		}
-		if (icon != null) {
+		if (icon != null) {;
 			String iconKey = icon.getKey();
 			if (iconKey != null && iconKey.length() > 0) {
 				node.set("icon", iconKey);
@@ -1193,7 +1190,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 			}
 
             if (wandConfig.contains("randomize_icon")) {
-                setIcon(ConfigurationUtils.toMaterialAndData(wandConfig.getString("randomize_icon")));
+                setIcon(new MaterialAndData(wandConfig.getString("randomize_icon")));
                 randomize = true;
             } else if (!randomize && wandConfig.contains("icon")) {
                 String iconKey = wandConfig.getString("icon");
@@ -1202,11 +1199,11 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
                     String[] keys = StringUtils.split(iconKey, ',');
                     iconKey = keys[r.nextInt(keys.length)];
                 }
-				setIcon(ConfigurationUtils.toMaterialAndData(iconKey));
+                setIcon(new MaterialAndData(iconKey));
 			}
 
             if (wandConfig.contains("upgrade_icon")) {
-                upgradeIcon = ConfigurationUtils.toMaterialAndData(wandConfig.getString("upgrade_icon"));
+                upgradeIcon = new MaterialAndData(wandConfig.getString("upgrade_icon"));
             }
 
             if (wandConfig.contains("overrides")) {
@@ -2000,6 +1997,20 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		}
 		return wand; 
 	}
+
+    public static Wand createWand(MagicController controller, ItemStack itemStack) {
+        if (controller == null) return null;
+
+        Wand wand = null;
+        try {
+            wand = new Wand(controller, InventoryUtils.makeReal(itemStack));
+            wand.saveState();
+            wand.updateName();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return wand;
+    }
 	
 	protected void sendAddMessage(String messageKey, String nameParam) {
 		if (mage == null) return;
