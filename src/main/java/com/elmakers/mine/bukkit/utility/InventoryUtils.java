@@ -103,6 +103,9 @@ public class InventoryUtils extends NMSUtils
             Object properties = createNode(skullOwner, "Properties");
             setMeta(properties, "Id", id.toString());
 
+            // This is here so serialization doesn't cause an NPE
+            setMeta(properties, "Name", "MHF_Question");
+
             Object listMeta = class_NBTTagList.newInstance();
             Object textureNode = class_NBTTagCompound.newInstance();
 
