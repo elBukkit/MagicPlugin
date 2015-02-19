@@ -1603,6 +1603,7 @@ gather:
              particle: portal
     parameters:
         command: tpa @tn
+        target_self: false
     costs:
         mana: 150
 
@@ -4090,7 +4091,7 @@ recall:
         cast:
         -  class: EffectSingle
            sound: level_up
-        target_selected:
+        deactivate:
         -  class: EffectSingle
            sound: level_up
         teleport:

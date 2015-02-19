@@ -224,7 +224,8 @@ public class RecallAction extends BaseSpellAction implements GeneralAction, GUIA
             String unlockMessage = getMessage("unlock_warp").replace("$name", warpName);
             sendMessage(unlockMessage);
 
-            return SpellResult.TARGET_SELECTED;
+            // This is a little hacky :(
+            return SpellResult.DEACTIVATE;
         }
 
         Location playerLocation = mage.getLocation();
