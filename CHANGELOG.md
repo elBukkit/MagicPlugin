@@ -14,6 +14,9 @@
  - Some fixes/improvements to Automata death behavior
  - Auto-undo explosions won't drop blocks
  - Fix the camera spell (new Mojang skins location)
+ - Fixes/work-arounds for non-working player skulls (Shrink spell)
+ - Fix compatibility with WGKeepInventoryFlags plugin
+ - Fix locked wands (magic items) absorbing upgrades
 
 ## 4.0
 

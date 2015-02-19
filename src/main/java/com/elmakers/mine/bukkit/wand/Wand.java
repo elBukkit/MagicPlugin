@@ -2012,7 +2012,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		if (!isModifiable()) {
             // Only allow upgrading a modifiable wand via an upgrade item
             // and only if the paths match.
-            if (!other.isUpgrade() || other.path == null || path == null || !other.path.equals(path)) {
+            if (!other.isUpgrade() || other.path == null || path == null || other.path.isEmpty() || path.isEmpty() || !other.path.equals(path)) {
                 return false;
             }
         }
@@ -2576,7 +2576,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	public boolean addItem(ItemStack item) {
 		if (isUpgrade) return false;
 
-		if (isSpell(item)) {
+		if (isModifiable() && isSpell(item)) {
 			String spellKey = getSpell(item);
             SpellTemplate currentSpell = getBaseSpell(spellKey);
 			Set<String> spells = getSpells();
@@ -2598,7 +2598,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
                     return true;
 				}
 			}
-		} else if (isBrush(item)) {
+		} else if (isModifiable() && isBrush(item)) {
 			String materialKey = getBrush(item);
 			Set<String> materials = getBrushes();
 			if (!materials.contains(materialKey) && addBrush(materialKey)) {
