@@ -111,8 +111,8 @@ public class PlayerSelectAction extends CompoundAction implements GeneralAction,
             if (targetPlayer == null) continue;
 
             String name = targetPlayer.getName();
-            ItemStack playerItem = InventoryUtils.getPlayerSkull(targetPlayer, name);
             String displayName = targetPlayer.getDisplayName();
+            ItemStack playerItem = InventoryUtils.getPlayerSkull(targetPlayer, displayName);
             if (!name.equals(displayName))
             {
                 ItemMeta meta = playerItem.getItemMeta();
