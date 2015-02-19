@@ -328,8 +328,8 @@ public class CompatibilityUtils extends NMSUtils {
             // Special-case for mobs .. witches are immune to magic damage :\
             if (!(target instanceof Player))
             {
-                Object voidSource = class_DamageSource_VoidField.get(null);
-                class_EntityLiving_damageEntityMethod.invoke(targetHandle, voidSource, (float) amount);
+                target.damage(amount, source);
+                return;
             }
 
             // Bukkit won't allow magic damage from anything but a potion..
