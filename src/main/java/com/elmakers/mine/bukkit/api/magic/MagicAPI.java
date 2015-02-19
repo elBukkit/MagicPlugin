@@ -316,6 +316,14 @@ public interface MagicAPI {
     public Wand getWand(ItemStack item);
 
     /**
+     * Turn the given ItemStack into a wand
+     *
+     * @param item The item to use as the wand's icon.
+     * @return The wand instance, or null on error.
+     */
+    public Wand createWand(ItemStack item);
+
+    /**
      * Create a new Wand instance out of a given Material type.
      *
      * This will create a new ItemStack to represent the Wand.

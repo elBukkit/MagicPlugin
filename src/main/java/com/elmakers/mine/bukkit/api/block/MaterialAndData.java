@@ -39,13 +39,14 @@ import org.bukkit.inventory.ItemStack;
  */
 public interface MaterialAndData {
     public void updateFrom(MaterialAndData other);
-    public void setMaterial(Material material, byte data);
+    public void setMaterial(Material material, short data);
     public void setMaterial(Material material);
     public void updateFrom(Block block);
     public void modify(Block block);
     public void modify(Block block, boolean applyPhysics);
-    public Byte getData();
-    public void setData(Byte data);
+    public Short getData();
+    public Byte getBlockData();
+    public void setData(Short data);
     public Material getMaterial();
     public String getKey();
     public String getName();
