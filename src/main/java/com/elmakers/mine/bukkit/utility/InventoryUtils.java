@@ -87,7 +87,16 @@ public class InventoryUtils extends NMSUtils
     }
 
     public static ItemStack getURLSkull(String url) {
+        return getURLSkull(url, "MHF_Question", UUID.randomUUID(), null);
+    }
+
+    public static ItemStack getURLSkull(String url, String ownerName, UUID id, String itemName) {
         ItemStack skull = new ItemStack(Material.SKULL_ITEM, 1, (short)0, (byte)3);
+        if (itemName != null) {
+            ItemMeta meta = skull.getItemMeta();
+            meta.setDisplayName(itemName);
+            skull.setItemMeta(meta);
+        }
         try {
             new URL(url);
         } catch (MalformedURLException e) {
@@ -98,13 +107,12 @@ public class InventoryUtils extends NMSUtils
         try {
             skull = makeReal(skull);
             Object skullOwner = createNode(skull, "SkullOwner");
-            UUID id = UUID.randomUUID();
             setMeta(skullOwner, "Id", id.toString());
             Object properties = createNode(skullOwner, "Properties");
             setMeta(properties, "Id", id.toString());
 
             // This is here so serialization doesn't cause an NPE
-            setMeta(properties, "Name", "MHF_Question");
+            setMeta(properties, "Name", ownerName);
 
             Object listMeta = class_NBTTagList.newInstance();
             Object textureNode = class_NBTTagCompound.newInstance();
@@ -122,6 +130,16 @@ public class InventoryUtils extends NMSUtils
         return skull;
     }
 
+    public static ItemStack getPlayerSkull(String playerName, String itemName)
+    {
+        return getURLSkull("http://skins.minecraft.net/MinecraftSkins/" + playerName + ".png", playerName, UUID.randomUUID(), itemName);
+    }
+
+    public static ItemStack getPlayerSkull(String playerName, UUID uuid, String itemName)
+    {
+        return getURLSkull("http://skins.minecraft.net/MinecraftSkins/" + playerName + ".png", playerName, uuid, itemName);
+    }
+
     public static ItemStack getPlayerSkull(Player player)
     {
         return getPlayerSkull(player, null);
@@ -130,17 +148,6 @@ public class InventoryUtils extends NMSUtils
     @SuppressWarnings("deprecation")
     public static ItemStack getPlayerSkull(Player player, String itemName)
     {
-        ItemStack head = new ItemStack(Material.SKULL_ITEM, 1, (short)0, (byte)3);
-        ItemMeta meta = head.getItemMeta();
-        if (itemName != null) {
-            meta.setDisplayName(itemName);
-        }
-        String ownerName = player.getName();
-        if (meta instanceof SkullMeta && ownerName != null) {
-            SkullMeta skullData = (SkullMeta)meta;
-            skullData.setOwner(ownerName);
-        }
-        head.setItemMeta(meta);
-        return head;
+        return getPlayerSkull(player.getName(), player.getUniqueId(), itemName);
     }
 }
