@@ -27,7 +27,8 @@ public class AbsorbAction extends BaseSpellAction implements BlockAction
 		byte data = target.getData();
 
 		Set<Material> buildingMaterials = getController().getBuildingMaterials();
-		if (material == null || material == Material.AIR || !buildingMaterials.contains(material))
+        Set<Material> restrictedMaterials = getMage().getRestrictedMaterials();
+		if (material == null || material == Material.AIR || !buildingMaterials.contains(material) || restrictedMaterials.contains(material))
 		{
 			return SpellResult.NO_TARGET;
 		}
