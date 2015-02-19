@@ -2145,7 +2145,7 @@ public class MagicController implements Listener, MageController {
 
         ActionHandler.runActions(damager, entity.getLocation(), entity);
 
-        if (preventMeleeDamage && event.getCause() == EntityDamageEvent.DamageCause.ENTITY_ATTACK && damager instanceof Player )
+        if (preventMeleeDamage && event.getCause() == EntityDamageEvent.DamageCause.ENTITY_ATTACK && damager instanceof Player && entity instanceof Player)
         {
             Player player = (Player)damager;
             ItemStack itemInHand = player.getItemInHand();
@@ -2154,7 +2154,7 @@ public class MagicController implements Listener, MageController {
                 event.setCancelled(true);
             }
         }
-        else if (wandAbuseDamage > 0 && event.getCause() == EntityDamageEvent.DamageCause.ENTITY_ATTACK && damager instanceof Player && isMage(damager))
+        else if (wandAbuseDamage > 0 && event.getCause() == EntityDamageEvent.DamageCause.ENTITY_ATTACK && damager instanceof Player && isMage(damager) && entity instanceof Player)
         {
             Player player = (Player)damager;
             Mage mage = getMage(player);
