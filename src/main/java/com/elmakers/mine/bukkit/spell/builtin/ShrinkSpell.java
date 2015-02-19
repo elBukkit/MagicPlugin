@@ -1,6 +1,7 @@
 package com.elmakers.mine.bukkit.spell.builtin;
 
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -35,7 +36,13 @@ public class ShrinkSpell extends BlockSpell
 	{
 		String giveName = parameters.getString("name");
 		if (giveName != null) {
-			dropHead(getLocation(), giveName, null, (byte)3);
+            String itemName = giveName + "'s Head";
+            Player player = Bukkit.getPlayer(giveName);
+            if (player != null) {
+                dropPlayerHead(getLocation(), player, itemName);
+            } else {
+                dropPlayerHead(getLocation(), giveName, itemName);
+            }
 			return SpellResult.CAST;
 		}
 		
@@ -104,8 +111,8 @@ public class ShrinkSpell extends BlockSpell
 			Location targetLocation = targetEntity.getLocation();
 			if (li instanceof Player) {
                 CompatibilityUtils.magicDamage(li, damage, mage.getEntity());
-				if (ownerName != null && li.isDead() && !alreadyDead) {
-					dropHead(targetEntity.getLocation(), ownerName, itemName, data);
+				if (li.isDead() && !alreadyDead) {
+					dropPlayerHead(targetEntity.getLocation(), (Player)li, itemName);
 				}
 			}
 			else if (li.getType() == EntityType.GIANT) {
@@ -159,6 +166,16 @@ public class ShrinkSpell extends BlockSpell
 		
 		return SpellResult.CAST;
 	}
+
+    protected void dropPlayerHead(Location location, Player player, String itemName) {
+        ItemStack shrunkenHead = InventoryUtils.getPlayerSkull(player, itemName);
+        location.getWorld().dropItemNaturally(location, shrunkenHead);
+    }
+
+    protected void dropPlayerHead(Location location, String playerName, String itemName) {
+        ItemStack shrunkenHead = InventoryUtils.getPlayerSkull(playerName, itemName);
+        location.getWorld().dropItemNaturally(location, shrunkenHead);
+    }
 	
 	@SuppressWarnings("deprecation")
 	protected void dropHead(Location location, String ownerName, String itemName, byte data) {
