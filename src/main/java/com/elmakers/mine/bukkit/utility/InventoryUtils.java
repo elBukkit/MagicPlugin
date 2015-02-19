@@ -3,9 +3,12 @@ package com.elmakers.mine.bukkit.utility;
 import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Collection;
+import java.util.Map;
 import java.util.UUID;
 import java.util.logging.Level;
 
+import com.google.common.collect.Multimap;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
@@ -91,27 +94,36 @@ public class InventoryUtils extends NMSUtils
         return getURLSkull(url, "MHF_Question", UUID.randomUUID(), null);
     }
 
+    public static ItemStack getURLSkull(URL url) {
+        // The "MHF_Question" is here so serialization doesn't cause an NPE
+        return getURLSkull(url, "MHF_Question", UUID.randomUUID(), null);
+    }
+
+    @SuppressWarnings("deprecation")
     public static ItemStack getURLSkull(String url, String ownerName, UUID id, String itemName) {
+        try {
+            return getURLSkull(new URL(url), ownerName, id, itemName);
+        } catch (MalformedURLException e) {
+            Bukkit.getLogger().log(Level.WARNING, "Malformed URL: " + url, e);
+        }
+        return new ItemStack(Material.SKULL_ITEM, 1, (short)0, (byte)3);
+    }
+
+    @SuppressWarnings("deprecation")
+    public static ItemStack getURLSkull(URL url, String ownerName, UUID id, String itemName) {
         ItemStack skull = new ItemStack(Material.SKULL_ITEM, 1, (short)0, (byte)3);
         if (itemName != null) {
             ItemMeta meta = skull.getItemMeta();
             meta.setDisplayName(itemName);
             skull.setItemMeta(meta);
         }
-        try {
-            new URL(url);
-        } catch (MalformedURLException e) {
-            Bukkit.getLogger().log(Level.WARNING, "Malformed URL: " + url, e);
-            return skull;
-        }
 
         try {
             skull = makeReal(skull);
             Object skullOwner = createNode(skull, "SkullOwner");
             setMeta(skullOwner, "Id", id.toString());
+            setMeta(skullOwner, "Name", ownerName);
             Object properties = createNode(skullOwner, "Properties");
-            setMeta(properties, "Id", id.toString());
-            setMeta(properties, "Name", ownerName);
 
             Object listMeta = class_NBTTagList.newInstance();
             Object textureNode = class_NBTTagCompound.newInstance();
@@ -124,9 +136,32 @@ public class InventoryUtils extends NMSUtils
             class_NBTTagCompound_setMethod.invoke(properties, "textures", listMeta);
         } catch (Exception ex) {
             ex.printStackTrace();
-            return skull;
         }
         return skull;
+    }
+
+    public static String getProfileURL(Object profile)
+    {
+        String url = null;
+        try {
+            Multimap<String, Object> properties = (Multimap<String, Object>)class_GameProfile_properties.get(profile);
+            Collection<Object> textures = properties.get("textures");
+            if (textures != null && textures.size() > 0)
+            {
+                Object textureProperty = textures.iterator().next();
+                String texture = (String)class_GameProfileProperty_value.get(textureProperty);
+                String decoded = Base64Coder.decodeString(texture);
+                url = decoded.replace("{textures:{SKIN:{url:\"", "").replace("\"}}}", "").trim();
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return url;
+    }
+
+    public static ItemStack getPlayerSkull(String playerName)
+    {
+        return getPlayerSkull(playerName, null);
     }
 
     public static ItemStack getPlayerSkull(String playerName, String itemName)
@@ -148,5 +183,29 @@ public class InventoryUtils extends NMSUtils
     public static ItemStack getPlayerSkull(Player player, String itemName)
     {
         return getPlayerSkull(player.getName(), player.getUniqueId(), itemName);
+    }
+
+    public static Object getSkullProfile(ItemMeta itemMeta)
+    {
+        Object profile = null;
+        try {
+            if (itemMeta == null || !class_CraftMetaSkull.isInstance(itemMeta)) return false;
+            profile = class_CraftMetaSkull_profile.get(itemMeta);
+        } catch (Exception ex) {
+
+        }
+        return profile;
+    }
+
+    public static boolean setSkullProfile(ItemMeta itemMeta, Object data)
+    {
+        try {
+            if (itemMeta == null || !class_CraftMetaSkull.isInstance(itemMeta)) return false;
+            class_CraftMetaSkull_profile.set(itemMeta, data);
+            return true;
+        } catch (Exception ex) {
+
+        }
+        return false;
     }
 }

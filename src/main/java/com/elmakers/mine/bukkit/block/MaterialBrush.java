@@ -106,11 +106,11 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
         return materialKey;
     }
 
-    public static String getMaterialKey(Material material, byte data) {
+    public static String getMaterialKey(Material material, short data) {
         return getMaterialKey(material, data, true);
     }
 
-    public static String getMaterialKey(Material material, byte data, boolean allowItems) {
+    public static String getMaterialKey(Material material, short data, boolean allowItems) {
         String materialKey = MaterialBrush.getMaterialKey(material, allowItems);
         if (materialKey == null) {
             return null;
@@ -228,7 +228,7 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
     }
 
     @Override
-    public void setMaterial(Material material, byte data) {
+    public void setMaterial(Material material, short data) {
         if (!mage.isRestricted(material) && material.isBlock()) {
             super.setMaterial(material, data);
             mode = BrushMode.MATERIAL;
@@ -285,10 +285,6 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
             fillWithAir = this.mode == BrushMode.ERASE;
             this.mode = BrushMode.REPLICATE;
         }
-    }
-
-    public void setData(byte data) {
-        this.data = data;
     }
 
     public void setMapId(short mapId) {
@@ -486,7 +482,7 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
             schematicName = node.getString("schematic", schematicName);
             mapId = (short)node.getInt("map_id", mapId);
             material = ConfigurationUtils.getMaterial(node, "material", material);
-            data = (byte)node.getInt("data", data);
+            data = (short)node.getInt("data", data);
             customName = node.getString("extra_data", customName);
         } catch (Exception ex) {
             ex.printStackTrace();

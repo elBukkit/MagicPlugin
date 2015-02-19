@@ -363,9 +363,9 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
                 Material material = getWorkingMaterial().getMaterial();
 
                 if (useEffect == ParticleEffect.ITEM_CRACK) {
-                    data = new ParticleEffect.ItemData(material, getWorkingMaterial().getData());
+                    data = new ParticleEffect.ItemData(material, getWorkingMaterial().getBlockData());
                 } else {
-                    data = new ParticleEffect.BlockData(material, getWorkingMaterial().getData());
+                    data = new ParticleEffect.BlockData(material, getWorkingMaterial().getBlockData());
                 }
             }
 

@@ -78,7 +78,7 @@ public abstract class BrushSpell extends BlockSpell {
                     }
 
                     if (bestDyeColor != null) {
-                        brush.setData(bestDyeColor.getData());
+                        brush.setData((short)bestDyeColor.getData());
                     }
                 }
             }

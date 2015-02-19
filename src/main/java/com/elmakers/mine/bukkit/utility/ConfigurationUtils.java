@@ -209,35 +209,7 @@ public class ConfigurationUtils {
         }
         if (o instanceof String) {
             String matName = (String)o;
-            Material material = null;
-            byte data = 0;
-            String[] pieces = StringUtils.split(matName, ':');
-            if (pieces.length > 0) {
-                if (pieces.length > 1) {
-                    try {
-                        data = Byte.parseByte(pieces[1]);
-                    }
-                    catch(NumberFormatException ex)
-                    {
-                        data = 0;
-                    }
-                }
-                try
-                {
-                    Integer value = Integer.parseInt(pieces[0]);
-                    if (value != null)
-                    {
-                        material = Material.getMaterial(value);
-                    }
-                }
-                catch(NumberFormatException ex)
-                {
-                    material = Material.getMaterial(pieces[0].toUpperCase());
-                }
-            }
-
-            if (material == null) return null;
-            return new MaterialAndData(material, data);
+            return new MaterialAndData(matName);
         }
 
         return null;
