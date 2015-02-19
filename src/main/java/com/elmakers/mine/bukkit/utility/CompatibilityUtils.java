@@ -382,7 +382,6 @@ public class CompatibilityUtils extends NMSUtils {
         Object profile = null;
         try {
             if (state == null || !class_CraftSkull.isInstance(state)) return false;
-
             profile = class_CraftSkull_profile.get(state);
         } catch (Exception ex) {
 
@@ -394,7 +393,6 @@ public class CompatibilityUtils extends NMSUtils {
     {
         try {
             if (state == null || !class_CraftSkull.isInstance(state)) return false;
-
             class_CraftSkull_profile.set(state, data);
             return true;
         } catch (Exception ex) {

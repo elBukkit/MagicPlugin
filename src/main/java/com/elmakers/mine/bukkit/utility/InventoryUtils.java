@@ -87,6 +87,7 @@ public class InventoryUtils extends NMSUtils
     }
 
     public static ItemStack getURLSkull(String url) {
+        // The "MHF_Question" is here so serialization doesn't cause an NPE
         return getURLSkull(url, "MHF_Question", UUID.randomUUID(), null);
     }
 
@@ -110,8 +111,6 @@ public class InventoryUtils extends NMSUtils
             setMeta(skullOwner, "Id", id.toString());
             Object properties = createNode(skullOwner, "Properties");
             setMeta(properties, "Id", id.toString());
-
-            // This is here so serialization doesn't cause an NPE
             setMeta(properties, "Name", ownerName);
 
             Object listMeta = class_NBTTagList.newInstance();
