@@ -9,7 +9,10 @@ import java.util.List;
 
 import com.elmakers.mine.bukkit.api.block.MaterialAndData;
 import org.bukkit.*;
+import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.block.BlockState;
+import org.bukkit.block.Skull;
 import org.bukkit.entity.*;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.inventory.Inventory;
@@ -372,5 +375,32 @@ public class CompatibilityUtils extends NMSUtils {
     {
         // TODO: Config-driven
         return new BoundingBox(entity.getLocation().toVector(), -0.75, 0.75, 0, 2, -0.75, 0.75);
+    }
+
+    public static Object getSkullProfile(Skull state)
+    {
+        Object profile = null;
+        try {
+            if (state == null || !class_CraftSkull.isInstance(state)) return false;
+
+            profile = class_CraftSkull_profile.get(state);
+        } catch (Exception ex) {
+
+        }
+        return profile;
+    }
+
+    public static boolean setSkullProfile(Skull state, Object data)
+    {
+        try {
+            if (state == null || !class_CraftSkull.isInstance(state)) return false;
+
+            class_CraftSkull_profile.set(state, data);
+            return true;
+        } catch (Exception ex) {
+
+        }
+
+        return false;
     }
 }

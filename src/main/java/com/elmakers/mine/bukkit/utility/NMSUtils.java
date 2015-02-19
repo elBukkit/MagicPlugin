@@ -60,6 +60,7 @@ public class NMSUtils {
     protected static Class<?> class_PathPoint;
     protected static Class<?> class_PathEntity;
     protected static Class<?> class_EntityFirework;
+    protected static Class<?> class_CraftSkull;
 
     protected static Method class_NBTTagList_addMethod;
     protected static Method class_NBTTagCompound_setMethod;
@@ -94,6 +95,7 @@ public class NMSUtils {
     protected static Field class_DamageSource_MagicField;
     protected static Field class_Firework_ticksFlownField;
     protected static Field class_Firework_expectedLifespanField;
+    protected static Field class_CraftSkull_profile;
 
     static
     {
@@ -131,6 +133,7 @@ public class NMSUtils {
             class_PathEntity = fixBukkitClass("net.minecraft.server.PathEntity");
             class_PathPoint = fixBukkitClass("net.minecraft.server.PathPoint");
             class_EntityFirework = fixBukkitClass("net.minecraft.server.EntityFireworks");
+            class_CraftSkull = fixBukkitClass("org.bukkit.craftbukkit.block.CraftSkull");
 
             class_NBTTagList_addMethod = class_NBTTagList.getMethod("add", class_NBTBase);
             class_NBTTagCompound_setMethod = class_NBTTagCompound.getMethod("set", String.class, class_NBTBase);
@@ -165,6 +168,8 @@ public class NMSUtils {
             class_Firework_ticksFlownField.setAccessible(true);
             class_Firework_expectedLifespanField = class_EntityFirework.getDeclaredField("expectedLifespan");
             class_Firework_expectedLifespanField.setAccessible(true);
+            class_CraftSkull_profile = class_CraftSkull.getDeclaredField("profile");
+            class_CraftSkull_profile.setAccessible(true);
 
             isLegacy = false;
             try {

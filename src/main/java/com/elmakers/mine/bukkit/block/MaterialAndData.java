@@ -3,10 +3,12 @@ package com.elmakers.mine.bukkit.block;
 import java.util.Collection;
 import java.util.Set;
 
+import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.DyeColor;
 import org.bukkit.Material;
+import org.bukkit.SkullType;
 import org.bukkit.TreeSpecies;
 import org.bukkit.block.*;
 import org.bukkit.inventory.Inventory;
@@ -58,6 +60,8 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
     protected ItemStack[] inventoryContents = null;
     protected boolean isValid = true;
     protected BlockFace rotation = null;
+    protected Object customData = null;
+    protected SkullType skullType = null;
 
     public Material DEFAULT_MATERIAL = Material.AIR;
 
@@ -179,6 +183,8 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
             signLines = o.signLines;
             customName = o.customName;
             isValid = o.isValid;
+            skullType = o.skullType;
+            customData = o.customData;
         }
     }
 
@@ -189,6 +195,9 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         commandLine = null;
         inventoryContents = null;
         customName = null;
+        skullType = null;
+        customData = null;
+
         isValid = true;
     }
 
@@ -221,6 +230,8 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         commandLine = null;
         inventoryContents = null;
         customName = null;
+        skullType = null;
+        customData = null;
 
         try {
             BlockState blockState = block.getState();
@@ -238,8 +249,9 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
                 inventoryContents = holderInventory.getContents();
             } else if (blockState instanceof Skull) {
                 Skull skull = (Skull)blockState;
-                customName = skull.getOwner();
                 rotation = skull.getRotation();
+                skullType = skull.getSkullType();
+                customData = CompatibilityUtils.getSkullProfile(skull);
             } else if (blockState instanceof CreatureSpawner) {
                 CreatureSpawner spawner = (CreatureSpawner)blockState;
                 customName = spawner.getCreatureTypeName();
@@ -313,13 +325,16 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
                 }
             } else if (blockState instanceof Skull) {
                 Skull skull = (Skull)blockState;
-                if (customName != null) {
-                    skull.setOwner(customName);
+                if (skullType != null) {
+                    skull.setSkullType(skullType);
                 }
                 if (rotation != null) {
                     skull.setRotation(rotation);
                 }
-                skull.update();
+                if (customData != null) {
+                    CompatibilityUtils.setSkullProfile(skull, customData);
+                }
+                skull.update(true, false);
             } else if (blockState instanceof CreatureSpawner && customName != null && customName.length() > 0) {
                 CreatureSpawner spawner = (CreatureSpawner)blockState;
                 spawner.setCreatureTypeByName(customName);
