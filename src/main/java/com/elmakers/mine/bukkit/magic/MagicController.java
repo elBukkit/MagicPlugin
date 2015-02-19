@@ -2403,7 +2403,7 @@ public class MagicController implements Listener, MageController {
         }
 	}
 
-	@EventHandler
+	@EventHandler(priority = EventPriority.LOWEST)
 	public void onEntityDeath(EntityDeathEvent event)
 	{
         Entity entity = event.getEntity();
