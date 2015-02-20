@@ -927,7 +927,7 @@ broomstick:
 camera:
     mode: cast
     active_spell: camera
-    icon: dispenser
+    icon: skull_item:http://i.imgur.com/eyllYbl.png
     indestructible: false
     locked: true
     xp: 5

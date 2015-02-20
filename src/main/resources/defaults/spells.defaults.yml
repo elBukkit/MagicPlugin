@@ -221,6 +221,7 @@ curse|2:
 
 blessing:
     icon: double_plant:5
+    icon_url: http://i.imgur.com/B8RfZE3.png
     category: light
     worth: 100
     actions:
@@ -336,6 +337,7 @@ bounce:
         duration: 10000
 
 simulate:
+    icon_url: http://i.imgur.com/CUgSpoB.png
     icon: double_plant:3
     category: automata
     class: SimulateSpell
@@ -357,6 +359,7 @@ simulate:
         check_destructible: true
 
 simulate3:
+    icon_url: http://i.imgur.com/CUgSpoB.png
     icon: sapling:3
     category: automata
     class: SimulateSpell
@@ -748,6 +751,7 @@ life3:
         mana: 1500
 
 shell:
+    icon_url: http://i.imgur.com/VG9yNqE.png
     alias: dome
     icon: ender_pearl
     category: engineering
@@ -1329,6 +1333,7 @@ frost|3:
 
 lightning:
     icon: raw_fish:2
+    icon_url: http://i.imgur.com/pVL61is.png
     category: elemental
     class: LightningSpell
     pvp_restricted: true
@@ -1353,6 +1358,7 @@ lightning:
         mana: 80
 
 storm:
+    icon_url: http://i.imgur.com/33YW7Vh.png
     icon: raw_fish:3
     category: elemental
     class: LightningSpell
@@ -1480,7 +1486,7 @@ disarm|3:
         target_breakables: 2
 
 cure:
-    icon_url: http://i.imgur.com/zpRwgqj.png
+    icon_url: http://i.imgur.com/5pwbaxJ.png
     icon: cookie
     category: light
     worth: 20
@@ -1517,7 +1523,7 @@ cure:
         mana: 30
 
 heal:
-    icon_url: http://i.imgur.com/zpRwgqj.png
+    icon_url: http://i.imgur.com/3WX7D83.png
     icon: bread
     category: light
     actions:
@@ -1562,6 +1568,7 @@ heal|3:
         cooldown: 10000
 
 music:
+    icon_url: http://i.imgur.com/ZXwXE7y.png
     icon: gold_record
     category: light
     class: MusicSpell
@@ -1656,6 +1663,7 @@ icbm:
         mana: 100
 
 neutron:
+    icon_url: http://i.imgur.com/7lS73cn.png
     icon: poisonous_potato
     category: dark
     pvp_restricted: true
@@ -1680,11 +1688,13 @@ neutron:
         projectile: Snowball
         player_damage: 8
         entity_damage: 15
-        radius: 32  
+        radius: 32
+        cooldown: 10000
     costs:
-        mana: 80
+        mana: 150
 
 wither:
+    icon_url: http://i.imgur.com/2IR2x9e.png
     icon: skull_item:1
     category: dark
     class: ProjectileSpell
@@ -1728,6 +1738,7 @@ arrowrain:
 
 meteor:
     icon: double_plant:4
+    icon_url: http://i.imgur.com/KxkG8GW.png
     category: demolition
     class: ProjectileSpell
     pvp_restricted: true
@@ -2152,6 +2163,7 @@ cat:
         mana: 30
 
 portal:
+    icon_url: http://i.imgur.com/byVXfY0.png
     icon: eye_of_ender
     category: master
     class: PortalSpell
@@ -2317,30 +2329,6 @@ cushion:
         disable_physics: 8000
     costs:
         mana: 10
-
-gasp:
-    icon: glass_bottle
-    category: utility
-    class: ConstructSpell
-    worth: 3
-    effects:
-        cast:
-        -  class: EffectSingle
-           sound: splash
-           location: both
-        -  class: EffectRing
-           particle: drip_water
-           particle_count: 8
-    parameters:
-        target: any
-        range: 16
-        radius: 3
-        brush: air
-        destructible: water
-        check_destructible: true
-        undo: 2000
-    costs:
-        mana: 20
 
 regenerate:
     icon: gold_hoe
@@ -2607,6 +2595,29 @@ place:
         transparent: transparent_to_construction
     costs:
         mana: 10
+
+anvil:
+    icon: anvil
+    icon_url: http://i.imgur.com/CYQD586.png
+    category: utility
+    class: PlaceSpell
+    worth: 40
+    effects:
+        cast:
+        -  class: EffectSingle
+           effect: step_sound
+           location: target
+    parameters:
+        target: other
+        target_type: LivingEntity
+        allow_max_range: true
+        range: 16
+        oty: 4
+        undo: 30000
+        cooldown: 20000
+        brush: anvil
+    costs:
+        mana: 100
 
 stalactite:
     icon: iron_axe
@@ -2922,6 +2933,7 @@ superrepair:
 
 workbench:
     icon: workbench
+    icon_url: http://i.imgur.com/Zehnnn4.png
     category: engineering
     class: PillarSpell
     worth: 8
@@ -3047,6 +3059,7 @@ blast|3:
         radius: 3
 
 earthquake:
+    icon_url: http://i.imgur.com/bCGsZYB.png
     icon: sulphur
     category: combat
     class: ConstructSpell
@@ -3092,6 +3105,7 @@ earthquake:
         mana: 150
 
 tunnel:
+    icon_url: http://i.imgur.com/Ql8Ttkb.png
     icon: iron_pickaxe
     category: engineering
     class: TunnelSpell
@@ -3272,7 +3286,7 @@ cloak:
         effect_invisibility: 5
 
 undo:
-    icon_url: http://i.imgur.com/CAsiN3z.png
+    icon_url: http://i.imgur.com/Gn4H1Sk.png
     alias: rewind
     icon: book_and_quill
     category: engineering
@@ -3370,6 +3384,7 @@ counterspell|2:
         cooldown: 1000
 
 breach:
+    icon_url: http://i.imgur.com/XXi9kKk.png
     icon: seeds
     category: mining
     class: ConstructSpell
@@ -3394,6 +3409,7 @@ breach:
         mana: 20
 
 peek:
+    icon_url: http://i.imgur.com/XXi9kKk.png
     icon: sugar_cane
     category: mining
     class: ConstructSpell
@@ -3419,6 +3435,7 @@ peek:
         mana: 5
 
 sandblast:
+    icon_url: http://i.imgur.com/VhhlIC5.png
     icon: sandstone
     category: combat
     class: ConstructSpell
@@ -3461,6 +3478,13 @@ mine:
         drop: ores
     costs:
         mana: 10
+
+mine|2:
+    parameters:
+        allow_max_range: false
+        range: 32
+        recursion_depth: 16
+        drop: mining
 
 chop:
     icon_url: http://s3.amazonaws.com/MinecraftSkins/MHF_OakLog.png
@@ -3553,6 +3577,7 @@ sphere:
 
 blob:
     icon: clay_ball
+    icon_url: http://i.imgur.com/SWIxJqS.png
     category: combat
     class: ConstructSpell
     worth: 20
@@ -3611,7 +3636,7 @@ pyramid:
         mana: 50
 
 emp:
-    icon_url: http://i.imgur.com/byVXfY0.png
+    icon_url: http://i.imgur.com/33YW7Vh.png
     icon: daylight_detector
     category: automata
     class: ConstructSpell
@@ -3775,6 +3800,7 @@ blink|3:
 
 absorb:
     icon: bucket
+    icon_url: http://i.imgur.com/eCq4rz3.png
     category: engineering
     class: AbsorbSpell
     worth: 1500
@@ -3945,6 +3971,7 @@ flamethrower:
         mana: 100
 
 laser:
+    icon_url: http://i.imgur.com/SWNaSEw.png
     icon: ink_sack:11
     category: demolition
     class: IterateSpell
@@ -4089,6 +4116,7 @@ flare:
         mana: 10
 
 recall:
+    icon_url: http://i.imgur.com/DUCgoAF.png
     icon: compass
     category: master
     worth: 25
@@ -4265,7 +4293,7 @@ map:
         mana: 15
 
 camera:
-    icon_url: http://i.imgur.com/10cc73C.png
+    icon_url: http://i.imgur.com/eyllYbl.png
     hidden: true
     icon: double_plant
     category: specialty
@@ -5352,3 +5380,30 @@ harden|2:
         size: 3
         undo: 6000
         brush: obsidian
+
+sponge:
+    alias: gasp
+    icon_url: http://i.imgur.com/49rfXIY.png
+    icon: sponge
+    category: utility
+    class: ConstructSpell
+    worth: 30
+    cast_on_no_target: true
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: level_up
+        -  class: EffectTrail
+           effect: step_sound
+    parameters:
+        allow_max_range: false
+        range: 32
+        check_destructible: true
+        destructible: water
+        brush: erase
+        radius: 3
+        transparent: transparent_to_construction
+        undo: 10000
+        select_self: false
+    costs:
+        mana: 65

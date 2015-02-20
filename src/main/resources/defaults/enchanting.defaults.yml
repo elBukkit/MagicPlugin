@@ -319,6 +319,8 @@ apprentice:
       poison|2: 0,5,15
       harden: 0,0,15
       laser|2: 0,0,10
+      mine|2: 0,0,10
+      sponge: 0,0,10
 
 master:
     required_spells:
@@ -414,6 +416,7 @@ master:
       harden|2: 0,10,15
       blast|3: 30,40,50
       laser|3: 0,0,20
+      anvil: 0,0,10
 
 #
 # The move from "master" to engineer requires the player to aquire some basic

@@ -279,6 +279,10 @@ spells:
         name: Admission
         description: Opens the target door
         cast: Let me in!
+    anvil:
+        name: Anvil
+        description: Spawn an anvil
+        cast: So heavy!
     curse:
         name: Curse
         description: Slows down and weakens the target
@@ -528,11 +532,6 @@ spells:
         description: Create a safety bubble
         usage: Cast underneath yourself while falling
         cast: Happy landings!
-    gasp:
-        name: Gasp
-        description: A breath of fresh air
-        usage: Cast while underwater
-        cast: You create an air bubble
     paint:
         name: Paint
         description: Fill a single block
@@ -1266,6 +1265,10 @@ wands:
     broomstick:
         name: Broomstick
         description: You can fly!
+    sponge:
+        name: Sponge
+        description: Suck up water in an area
+        cast: Slurp!
 
 automata:
     awaken: "&c&o$name &r&5has awakened"

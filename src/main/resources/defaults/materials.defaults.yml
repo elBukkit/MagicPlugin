@@ -158,6 +158,20 @@ ores:
 - emerald_ore
 - quartz_ore
 
+mining:
+- gold_ore
+- iron_ore
+- coal_ore
+- lapis_ore
+- diamond_ore
+- redstone_ore
+- glowing_redstone_ore
+- emerald_ore
+- quartz_ore
+- stone
+- grass
+- dirt
+
 trees:
 - log
 - log_2
