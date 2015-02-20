@@ -102,6 +102,7 @@ public class NMSUtils {
     protected static Field class_CraftMetaSkull_profile;
     protected static Field class_GameProfile_properties;
     protected static Field class_GameProfileProperty_value;
+    protected static Field class_ItemStack_count;
 
     static
     {
@@ -178,6 +179,8 @@ public class NMSUtils {
 
             class_NBTTagList_consructor = class_NBTTagString.getConstructor(String.class);
             class_NBTTagByte_constructor = class_NBTTagByte.getConstructor(Byte.TYPE);
+            class_ItemStack_count = class_ItemStack.getDeclaredField("count");
+            class_ItemStack_count.setAccessible(true);
 
             isLegacy = false;
             try {

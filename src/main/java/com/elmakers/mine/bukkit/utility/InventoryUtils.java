@@ -224,4 +224,15 @@ public class InventoryUtils extends NMSUtils
         }
         return false;
     }
+
+    public static void setCount(ItemStack stack, int count) {
+        if (stack == null) return;
+        try {
+            Object handle = getHandle(stack);
+            if (handle == null) return;
+            class_ItemStack_count.set(handle, count);
+        } catch (Throwable ex) {
+            ex.printStackTrace();
+        }
+    }
 }
