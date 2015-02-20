@@ -17,6 +17,7 @@ import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.util.Vector;
 
@@ -74,6 +75,7 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
     protected Integer effectData = null;
 
     protected Sound sound = null;
+    protected String customSound = null;
     protected float soundVolume = 0.7f;
     protected float soundPitch = 1.5f;
 
@@ -176,6 +178,7 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
                 soundPitch = (float)configuration.getDouble("sound_pitch", soundPitch);
             }
         }
+        customSound = configuration.getString("custom_sound");
 
         if (configuration.contains("firework") || configuration.contains("firework_power")) {
             hasFirework = true;
@@ -351,6 +354,17 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
         }
         if (sound != null) {
             sourceLocation.getWorld().playSound(sourceLocation, sound, soundVolume, soundPitch);
+        }
+        if (customSound != null) {
+            double range = soundVolume > 1.0 ? (double) (16.0 * soundVolume) : 16.0;
+            List<Player> players = sourceLocation.getWorld().getPlayers();
+            for (Player player : players)
+            {
+                if (player.getLocation().distanceSquared(sourceLocation) <= range)
+                {
+                    player.playSound(sourceLocation, customSound, soundVolume, soundPitch);
+                }
+            }
         }
         if (fireworkEffect != null) {
             EffectUtils.spawnFireworkEffect(sourceLocation, fireworkEffect, fireworkPower);

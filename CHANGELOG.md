@@ -5,6 +5,7 @@
  - Add InventoryUtils.getURLSkull, for creating URL-based skulls
  - Allow for transparency in images on maps
  - Fix fetching player skins (use new address http://skins.minecraft.net/MinecraftSkins/username.png)
+ - Add custom sound support to EffectPlayer (one day...)
 
 ## 2.0
 
