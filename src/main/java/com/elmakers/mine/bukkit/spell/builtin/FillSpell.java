@@ -34,6 +34,10 @@ public class FillSpell extends BrushSpell
 		if (singleBlock)
 		{
 			deactivate();
+            if (isIndestructible(targetBlock))
+            {
+                return SpellResult.NO_TARGET;
+            }
 
 			registerForUndo(targetBlock);
 
