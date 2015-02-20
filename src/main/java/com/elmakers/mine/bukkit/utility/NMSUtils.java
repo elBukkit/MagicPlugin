@@ -176,11 +176,11 @@ public class NMSUtils {
             class_Firework_expectedLifespanField = class_EntityFirework.getDeclaredField("expectedLifespan");
             class_Firework_expectedLifespanField.setAccessible(true);
 
+            class_NBTTagList_consructor = class_NBTTagString.getConstructor(String.class);
+            class_NBTTagByte_constructor = class_NBTTagByte.getConstructor(Byte.TYPE);
+
             isLegacy = false;
             try {
-                class_NBTTagList_legacy_consructor = class_NBTTagString.getConstructor(String.class, String.class);
-                class_NBTTagByte_legacy_constructor = class_NBTTagByte.getConstructor(String.class, Byte.TYPE);
-
                 class_GameProfile = getClass("com.mojang.authlib.GameProfile");
                 class_GameProfileProperty = getClass("com.mojang.authlib.properties.Property");
                 class_CraftSkull_profile = class_CraftSkull.getDeclaredField("profile");
@@ -194,8 +194,6 @@ public class NMSUtils {
             }
             catch (Throwable legacy) {
                 isLegacy = true;
-                class_NBTTagList_consructor = class_NBTTagString.getConstructor(String.class);
-                class_NBTTagByte_constructor = class_NBTTagByte.getConstructor(Byte.TYPE);
             }
 
             class_PacketPlayOutMapChunkBulk = getVersionedBukkitClass("net.minecraft.server.PacketPlayOutMapChunkBulk", "net.minecraft.server.Packet56MapChunkBulk");
