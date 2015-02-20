@@ -1414,7 +1414,9 @@ disarm:
     effects:
         cast:
         -  class: EffectSingle
-           sound: shoot_arrow
+           sound: enderman_teleport
+           sound_pitch: 0.3
+           sound_volume: 0.5
         -  class: EffectSingle
            sound: wither_shoot
            effectlib:
@@ -1429,7 +1431,9 @@ disarm:
            firework: star
         no_target:
         -  class: EffectSingle
-           sound: shoot_arrow
+           sound: enderman_teleport
+           sound_pitch: 0.3
+           sound_volume: 0.5
         -  class: EffectSingle
            sound: wither_shoot
            effectlib:
@@ -4003,7 +4007,9 @@ shrink:
     effects:
         cast:
         -  class: EffectSingle
-           sound: shoot_arrow
+           sound: enderman_teleport
+           sound_pitch: 0.1
+           sound_volume: 0.5
            location: origin
            effectlib:
              class: ConeEffect
@@ -4016,7 +4022,9 @@ shrink:
            firework: star
         no_target:
         -  class: EffectSingle
-           sound: shoot_arrow
+           sound: enderman_teleport
+           sound_pitch: 0.1
+           sound_volume: 0.5
            location: origin
            effectlib:
              class: ConeEffect
@@ -4051,7 +4059,9 @@ grow:
     effects:
         cast:
         -  class: EffectSingle
-           sound: shoot_arrow
+           sound: enderman_teleport
+           sound_pitch: 0.1
+           sound_volume: 0.5
            location: origin
            effectlib:
              class: ConeEffect
@@ -4064,7 +4074,9 @@ grow:
            firework: ball_large
         no_target:
         -  class: EffectSingle
-           sound: shoot_arrow
+           sound: enderman_teleport
+           sound_pitch: 0.1
+           sound_volume: 0.5
            location: origin
            effectlib:
              class: ConeEffect
@@ -5093,11 +5105,9 @@ stun:
     effects:
         cast:
         -  class: EffectSingle
-           sound: burp
-           sound_volume: .3
-        -  class: EffectSingle
-           sound: shoot_arrow
-           sound_volume: 1
+           sound: enderman_teleport
+           sound_pitch: 0.1
+           sound_volume: 0.5
            location: origin
            effectlib:
              class: ConeEffect
@@ -5111,11 +5121,9 @@ stun:
            firework: ball
         no_target:
         -  class: EffectSingle
-           sound: burp
-           sound_volume: .3
-        -  class: EffectSingle
-           sound: shoot_arrow
-           sound_volume: 1
+           sound: enderman_teleport
+           sound_pitch: 0.1
+           sound_volume: 0.5
            location: origin
            effectlib:
              class: ConeEffect
@@ -5129,11 +5137,9 @@ stun:
            firework: burst
         backfire:
         -  class: EffectSingle
-           sound: burp
-           sound_volume: .3
-        -  class: EffectSingle
-           sound: shoot_arrow
-           sound_volume: 1
+           sound: enderman_teleport
+           sound_pitch: 0.1
+           sound_volume: 0.5
            location: origin
            entity_effect: hurt
            effectlib:

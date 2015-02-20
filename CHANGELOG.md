@@ -17,6 +17,7 @@
  - Fixes/work-arounds for non-working player skulls (Shrink spell)
  - Fix compatibility with WGKeepInventoryFlags plugin
  - Fix locked wands (magic items) absorbing upgrades
+ - Add "can't use" icons to spells in hotbar
 
 ## 4.0
 
