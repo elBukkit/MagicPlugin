@@ -1103,6 +1103,10 @@ spells:
         name: Lift
         description: Lift up the target block
         cast: You lift $target.
+    sponge:
+        name: Sponge
+        description: Suck up water in an area
+        cast: Slurp!
 
 wands:
     default:
@@ -1261,10 +1265,6 @@ wands:
     broomstick:
         name: Broomstick
         description: You can fly!
-    sponge:
-        name: Sponge
-        description: Suck up water in an area
-        cast: Slurp!
 
 automata:
     awaken: "&c&o$name &r&5has awakened"

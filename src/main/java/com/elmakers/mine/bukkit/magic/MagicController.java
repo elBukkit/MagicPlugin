@@ -3030,6 +3030,10 @@ public class MagicController implements Listener, MageController {
         boolean clickedWand = Wand.isWand(clickedItem);
         if (activeWand != null && activeWand.isInventoryOpen())
         {
+            if (Wand.isSpell(clickedItem) && clickedItem.getAmount() != 1)
+            {
+                clickedItem.setAmount(1);
+            }
             if (clickedWand)
             {
                 event.setCancelled(true);
