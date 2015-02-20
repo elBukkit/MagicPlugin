@@ -28,7 +28,7 @@ public class WorldGuardManager {
                     String[] versionPieces = StringUtils.split(wgPlugin.getDescription().getVersion(), '.');
                     int version = Integer.parseInt(versionPieces[0]);
                     if (version >= 6) {
-                        worldGuard = new WorldGuardAPI(plugin);
+                        worldGuard = new WorldGuardAPI(wgPlugin);
                     } else {
                         plugin.getLogger().warning("Only WorldGuard 6 and above are supported- please update! (WG version: " + wgPlugin.getDescription().getVersion() + ")");
                     }
