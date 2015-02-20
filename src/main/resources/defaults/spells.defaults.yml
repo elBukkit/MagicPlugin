@@ -1138,12 +1138,12 @@ pull:
              particle: spell
     parameters:
         target_type: Entity
-        range: 32
-        item_force: 2
-        area_range: 20
-        entity_force: 3
-        type: pull
         count: 1
+        range: 48
+        item_speed: 2
+        living_entity_speed: 1
+        push: -1
+        duration: 10000
     costs:
         mana: 50
 
