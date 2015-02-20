@@ -1,0 +1,1269 @@
+# This is localization file for Magic plugin
+# Edited by Chan / Minecraft nickname dboy510
+#
+# Launguage : "Korean/ko_KR/KR"
+
+general:
+    no_spells: "&6아직 어떤 마법도 배우지 않았습니다!"
+    no_spells_in_category: "&6당신은 $category 카테고리의 마법을 배우지 않았습니다!"
+    spell_list_page: "&6배운 마법: $count 개 [페이지 $pages 중 $page]"
+    spell_list: "&6배운 마법: $count 개"
+books:
+    default:
+        author: "&e버드나무"
+        title: "$category &e을(를) 배울 수 있다"
+    all:
+        title: "&6마스터리북"
+paths:
+    master:
+        name: "Master"
+        description: "has all the powerful spells"
+    engineer:
+        name: "Engineering"
+        description: "Has all the engineering spells"
+    apprentice:
+        name: "Apprentice"
+        description: "A good variety of spells"
+    student:
+        name: "Student"
+        description: "Ha a few starter spells"
+    battle:
+        name: "Battle"
+        description: "Has a combat and PvP spells"
+    broom:
+        name: "Broom"
+        description: "Flying broom upgrades"
+wand:
+    default_name: "완드"
+    upgrade_default_description: "은(는) 당신의 완드를 업그레이드 시킬 것입니다"
+    upgrade_item_description: "은(는) 당신의 완드에 흡수될 것입니다"
+    spell_item_description: "은(는) 당신의 완드에 흡수될 것입니다"
+    brush_item_description: "은(는) 당신의 완드에 흡수될 것입니다"
+    copy_material_description: "은(는) 타겟을 재료로 채웁니다"
+    erase_material_description: "은(는) 공기로 채워집니다"
+    clone_material_description: "타겟의 블럭을 복제합니다"
+    replicate_material_description: "타겟을 복사합니다"
+    clone_material_activated: "복제품 설정 완료"
+    replicate_material_activated: "모사품 설정 완료"
+    erase_modifier_activated: "삭제모드 적용"
+    map_material_description: "픽셀 아트를 만들어냅니다"
+    schematic_material_description: "$schematic 을(를) 사용하여 건설합니다"
+    building_material_description: "마법적인 건설용 물건"
+    building_material_info: "$material 을(를) 사용하여 건설합니다"
+    upgrade_uses: "$count 만큼 마법 한도를 늘립니다"
+    upgrade_uses_singular: "$count 만큼 마법 한도를 늘립니다"
+    uses_remaining_brief: "마법 용량: $count 만큼 남음"
+    uses_remaining_singular: "마법 용량: $count 만큼 남음"
+    uses_remaining: "$count 만큼 마법을 더 넣을 수 있습니다"
+    enchantment_level_1: "I"
+    enchantment_level_2: "II"
+    enchantment_level_3: "III"
+    enchantment_level_4: "IV"
+    enchantment_level_5: "V"
+    enchantment_level_max: "X"
+    spell_count: "마법 갯수 : $count 개"
+    material_count: "이(가) $count 개 있습니다"
+    upgrade_spell_count: "Adds $count Spells"
+    upgrade_material_count: "Adds $count Materials"
+    mana_amount: "Mana: $amount"
+    mana_regeneration: "Mana Regeneration: $amount/s"
+    cost_reduction: "Cost Reduction $roman"
+    cooldown_reduction: "Cooldown Reduction $roman"
+    power: "Power $roman"
+    haste: "Haste $roman"
+    protection: "Protection $roman"
+    protection_physical: "Physical Protection $roman"
+    protection_projectile: "Projectile Protection $roman"
+    protection_fall: "Fall Protection $roman"
+    protection_fire: "Fire Protection $roman"
+    protection_blast: "Blast Protection $roman"
+    health_regeneration: "Health Regeneration $roman"
+    hunger_regeneration: "Anti-Hunger $roman"
+    costs_description: "Costs $description"
+    active_costs_description: "Costs $description Per Second"
+    owner_description: "$name   's Wand"
+    bound_description: "Bound to $name"
+    unmodifiable: "That wand can not be modified"
+    player_unmodifiable: "$name   's wand can not be modified"
+    bound_to_other: "That wand is not bound to you"
+    bound: "That wand is bound to $name"
+    spell_added: "The &r&6$name    &d&ospell has been added to your wand"
+    brush_added: "The &r&7$name    &d&obrush has been added to your wand"
+    player_spell_upgraded: "$players's &r&6$name    &d&ohas been upgraded to &3$level"
+    spell_upgraded: "&r마법 &6$name    &d&o이(가) 성공적으로 강화되었습니다. 레벨 :&3$level "
+    spell_override_upgraded: "&r마법 &6$name    &d이(가) 성공적으로 강화되었습니다!"
+    upgraded_property: "&b당신의 완드가 &r&b$name    &b으로 강화되었습니다!"
+    player_upgraded: "&6$name   &e님이 완드 강화에 성공하셨습니다!"
+    player_not_upgraded: "&f$name   &7님이 완드 강화에 실패하셨습니다..."
+    no_item: "&b저런. 빈손인데요?"
+    player_no_item: "&b$name   님의 손이 빈손인데요?"
+    no_wand: "&b손에 완드를 들려있지 않네요"
+    player_no_wand: "&b$name    님의 손에 완드가 없어요"
+    no_magic_item: "&b저런, 빈손인데요?"
+    player_no_magic_item: "$name    님의 손에 마법"
+    reorganized: "&b완드를 정리합니다..."
+    player_reorganized: "&b$name   님의 완드가 정리되었습니다"
+    alphabetized: "&b완드를 알파벳 순으로 정리합니다..."
+    player_alphabetized: "&b$name   님의 완드가 알파벳 순서로 정리되었습니다"
+    already_enchanted: "&b $item 은(는) 더이상 강화하지 못합니다"
+    enchanted: "&b당신의 $item 에 신비로운 힘이 스며듭니다"
+    player_enchanted: "&b$name    님의 $item 이(가) 강화되었습니다!"
+    unenchanted: "&b당신의 완드의 강화가 무효처리 되었습니다"
+    no_path: "&b그 아이템은 인첸트 되지 않습니다"
+    player_unenchanted: "$name   님의 아이템의 강화가 무효처리 되었습니다"
+    level_up: "당신의 완드가 $path 으로 강화되었습니다!!"
+    duplicated: "당신의 완드가 복제되었습니다"
+    player_duplicated: "$name   님의 완드가 복제되었습니다"
+    restored: "당신의 완드를 되찾았군요!"
+    player_restored: "$name   님이 완드를 되찾았습니다"
+    not_restored: "어라? 기록에는 당신에게 귀속된 완드가 없는데요?"
+    player_not_restored: "$name   님에 대한 기록에는 귀속된 완드가 없군요."
+    unlocked: "완드와 연결이 해제되는 느낌이 듭니다"
+    player_unlocked: "$name   님의 완드가 귀속해제되었습니다"
+    unknown_template: "네? $name    라구요? 그런건 못찾겠군요."
+    reconfigured: "완드 재설정 완료"
+    player_reconfigured: "$name   님의 완드가 재설정되었습니다"
+    filled: "내가 알고 있던 마법이 완드로 스며듭니다...."
+    player_filled: "$name   님의 완드가 채워졌습니다"
+    renamed: "완드에게 새로운 이름을 부여합니다"
+    player_renamed: "$name   님의 완드가 개명되었습니다"
+    self_destruct: "차원이동중 완드가 버티지 못하고 파괴되었습니다..."
+    single_spell: "완드 오브 $spell"
+    fully_enchanted: "이 완드는 더 이상 강화되지 않는군요... 지금은요."
+    need_more_levels: "왠지 &r&4$levels &d&o 레벨이 더 필요할 것 같지 않아요?"
+    randomized_lore: "어떤 완드가 나올까요??"
+    randomized_name: "완드 박스"
+    upgrade_name: "강화 : $name"
+spell:
+    brush: "Uses Material Brushes"
+    undoable: "Undoable with Rollback"
+    reactivate: "Reactivating $name"
+    available_path: "Available on the $path path"
+    required_path: "Required to complete the $path path"
+    required_spell: "You must learn &r&4$spell &d&oto advance"
+    level_description: "Level $level"
+worlds:
+    world:
+        name: "The Overworld"
+    world_nether:
+        name: "The Nether"
+    world_the_end:
+        name: "The End"
+costs:
+    xp_amount: "$amount XP"
+    mana_amount: "$amount Mana"
+    mana: "Mana"
+    xp: "XP"
+    insufficient_resources: "Not enough $cost"
+cooldown:
+    wait_seconds: "재사용 대기시간 :  $seconds 초 ."
+    wait_minutes: "재사용 대기시간 :  $minutes 분."
+    wait_hours: "재사용 대기시간 :  $hours 시간."
+    wait_moment: "재사용 대기시간 : 잠깐"
+    wait_minute: "재사용 대기시간 : 1분."
+    wait_hour: "재사용 대기시간 : 1시간."
+    description_seconds: "$seconds 초"
+    description_minutes: "$minutes 분"
+    description_hours: "$hours 시간"
+    description_minute: "1분"
+    description_hour: "1시간"
+    description_moment: "잠깐"
+    description: "&e쿨다운: &6$time"
+duration:
+    lasts_seconds: "$seconds 초 동안 지속됩니다"
+    lasts_minutes: "$minutes 분 동안 지속됩니다"
+    lasts_hours: "$hours 시간 동안 지속됩니다"
+categories:
+    combat:
+        name: "전투"
+        description: "전투용 마법"
+    automata:
+        name: "창조"
+        description: "생명을 창조하세요!"
+        color: "FFA500"
+    master:
+        name: "마스터"
+        description: "강력한 마법"
+        color: "00AACC"
+    airbending:
+        name: "바람"
+        description: "공기 원소를 다룹니다"
+    waterbending:
+        name: "물"
+        description: "물 원소를 다룹니다"
+        color: "000088"
+    earthbending:
+        name: "흙"
+        description: "땅 원소를 다룹니다"
+        color: "A52A2A"
+    firebending:
+        name: "불"
+        description: "불 원소를 다룹니다"
+        color: "FF0000"
+    dark:
+        name: "흑마법"
+        description: "악한것"
+        color: "010101"
+    light:
+        name: "백마법"
+        description: "좋은것"
+        color: "DDDDDD"
+    engineering:
+        name: "공학"
+        description: "마법적인 건물 짓는데 필요한 마법"
+        color: "00FFFF"
+    elemental:
+        name: "원소"
+        description: "자연을 조종하세요"
+    mining:
+        name: "채굴"
+        description: "채굴을 도와줍니다"
+spells:
+    default:
+        fizzle: "Your spell fizzled!"
+        backfire: "Your spell backfired!"
+        fail: "Your spell failed!"
+        insufficient_permission: "You don't have permission to cast that here."
+        cast_player_message: "&d&o$player &r&5cast &3&o$spell &r&5on you!"
+    curse:
+        name: "Curse"
+        description: "일정시간동안 상대의 이동속도를 낮추고 저항력을 감소시킵니다"
+        cast: "You curse $target"
+    broom:
+        name: "Broom"
+        description: "마법의 빗자루"
+        cast: "당신의 빗자루가 가벼워집니다"
+        deactivate: "빗자루가 조용해집니다"
+        crash: "어우. 그것 아프겟네요"
+        fail: "떠오를 만한 공간이 부족해 보이네요"
+    boon:
+        name: "Boon"
+        description: "잠시동안 초월적인 힘이 생깁니다"
+        cast_self: "신비로운 힘이 몸을 휘감습니다"
+        cast: "$target 에게 Boon 을 시전!"
+    perk:
+        name: "Perk"
+        description: "잠시동안 부스트를 줍니다"
+        cast_self: "신비로운 힘이 몸을 가볍게 합니다"
+        cast: "$target 에게 Perk 를 시전!"
+    blessing:
+        name: "Blessing"
+        description: "꽃의 힘으로 땅을 축복합니다"
+        cast: "축복을 내립니다..."
+    bounce:
+        name: "Bounce"
+        description: "다리에 힘을 부여하여 점프력을 높힙니다"
+        cast_self: "신비로운 힘이 다리를 휘감습니다"
+        cast: "$target 에게 Bounce를 시전!"
+    mount:
+        name: "Mount"
+        description: "표적을 올라탑니다"
+        cast: "$target 을 올라탑니다"
+    disc:
+        name: "Disc"
+        description: "원판을 생성합니다"
+        cast_finish: "$count 블럭을 $material 로 채웁니다"
+    dome:
+        name: "Dome"
+        description: "큰 구체를 생성합니다"
+        cast_finish: "$count 개의 $material 로 구체를 생성합니다"
+    shields:
+        name: "Shields"
+        description: "방어막을 생성합니다"
+        cast_finish: "신비로운 힘이 주변을 둘러쌉니다"
+    reflect:
+        name: "Reflect"
+        description: "마법을 반사시킵니다"
+    shell:
+        name: "Shell"
+        description: "구형의 방어막을 생성시킵니다"
+        cast_finish: "신비로운 힘이 주변을 둘러쌉니다"
+    tag:
+        name: "Tag"
+        description: "당신의 이름이 새겨진 표지판을 생성합니다"
+        fail: "어이쿠. 조금만 잘 써 보시지"
+        cast: "태그를 남겼습니다"
+        cast_player: "$target 님에게 메세지를 보냈습니다"
+        cast_give: "표지판이 생겨납니다"
+        cast_player_message: "&어디선가 마법의 소리가 들립니다...&c&o$player &r&5님이 말하기를...... 안녕!"
+        sign_message: "여기 다녀감"
+    arrow:
+        name: "Arrow"
+        description: "마법의 화살을 발사합니다"
+    toss:
+        name: "Toss"
+        description: "블럭을 던집니다"
+        fail: "블럭이 흐지부지 사라져 버렸네요..."
+        cast: "신비로운 힘이 블럭을 던졌습니다!"
+    volley:
+        name: "Volley"
+        description: "블럭 여러개를 던집니다"
+        fail: "블럭이 흐지부지 사라져 버렸네요..."
+        cast: "신비로운 힘이 블럭들을 던집니다!"
+    sniper:
+        name: "Sniper"
+        description: "매우 빠른 마법을 발사합니다"
+    pull:
+        name: "Pull"
+        description: "마법의 힘이 많은것을 끌어옵니다"
+        area: "내놔!"
+        cast: "신비로운 힘이 물체를 움직입니다"
+    kaboom:
+        name: "KaBoom"
+        description: "큰 폭발을 일으킵니다"
+        cast: "펑!"
+    frost:
+        name: "Frost"
+        description: "물을 얼리고 눈을 생성합니다"
+        cast: "얼어버려라!"
+    storm:
+        name: "Storm"
+        description: "폭풍우를 일으킵니다"
+        cast: "우르릉 쾅쾅!"
+    tree:
+        name: "Tree"
+        description: "축복을 내려 생명을 자라게 합니다"
+        fail: "당신의 나무는 길러지지 못햇군요..."
+        cast: "$tree!"
+    disarm:
+        name: "Disarm"
+        description: "상대방을 무장해제 시킵니다"
+        cast: "상대방을 무장해제 시켰습니다!"
+        cast_self: "신비로운 힘이 갑옷을 벗겨냅니다"
+    heal:
+        name: "Heal"
+        description: "신비로운 힘으로 상처를 치유합니다"
+        cast: "신비로운 힘이 &target을 치유합니다"
+        cast_self: "신비로운 힘이 상처를 치유합니다"
+    cure:
+        name: "Cure"
+        description: "신비로운 힘으로 상처를 약간 치유합니다"
+        cast: "신비로운 힘이 $target 을 치유합니다"
+        cast_self: "신비로운 힘이 상처를 치유합니다"
+    music:
+        name: "Music"
+        description: "신비로운 힘으로 노래를 재생시킵니다"
+        cast_player: "신비로운 힘으로 $name 에게 노래를 재생시킵니다"
+        cast_self: "신비로운 힘으로 노래를 재생시킵니다"
+    gather:
+        name: "Gather"
+        description: "신비로운 힘으로 대상을 순간이동시킵니다"
+        cast_to_player: "신비로운 힘이 나를 $target 에게로 순간이동 시킵니다"
+        cast_entity: "$target 를 표적으로 이동 시킵니다"
+        cast_player_message: "&d&o$player &r&5님이 공간을 접어 이동합니다"
+        target_selected: "$target 을 성공적으로 포획했습니다"
+        cancel: "포획한 상대를 놓아줍니다"
+    icbm:
+        name: "ICBM"
+        description: "폭발하는 구체를 발사합니다"
+        cast: "조심해!"
+    neutron:
+        name: "Neutron Bomb"
+        description: "일정 범위에 있는 모든 엔티티를 폭발시켜 죽입니다"
+        cast: "이 근처는 초토화 되버렷군요 :("
+    weather:
+        name: "Weather"
+        description: "날씨를 바꿔버립니다"
+        cast: "날씨가 잔잔해집니다"
+        area: "하늘을 화나게 했군요"
+    fling:
+        name: "Fling"
+        description: "신비로운 힘이 몸을 바라보는 방향으로 밀어냅니다"
+    leap:
+        name: "Leap"
+        description: "Take a big leap"
+        cast: "예~~이!"
+    animate:
+        name: "Animate"
+        description: "Animate the target material"
+        cast: "You create a Magic Golem"
+        no_target: "You must target two blocks next to each other"
+        restricted: "You can not make a Golem out of $material"
+        cast_broadcast: "&c&o$name    &r&5was born"
+        death_broadcast: "&c&o$name    &r&5가 퇴치되었습니다"
+    virus:
+        name: "Virus"
+        description: "어... 사용 안하는게 좋을껄요?"
+        cast: "뭔짓을 해버린 건지 알고 계세요??"
+        cast_broadcast: "&c&o$name    &r&5was born"
+        death_broadcast: "&c&o$name    &r&5가 퇴치되었습니다"
+        no_target: "You must target two blocks next to each other"
+        restricted: "You can not make a Virus out of $material"
+    torch:
+        name: "Torch"
+        description: "횃불이나 발광석을 생성시킵니다"
+        no_target: "여기단 못짓겟는데요?"
+        cast: "불이다!"
+        area: "$time 으로 시간이 변경됩니다"
+    tunnel:
+        name: "Tunnel"
+        description: "터널을 뚫습니다"
+        no_target: "어딘가 서 있어야 해요!"
+        cast: "터널을 생성합니다"
+    monster:
+        name: "Monster"
+        description: "마술!"
+        cost_free: "괴물을 풀어주었습니다"
+        cast: "괴물을 소환하였습니다"
+    mob:
+        name: "Mob"
+        description: "마술!"
+        cost_free: "몬스터들을 놓아주었습니다"
+        cast: "몬스터(들!)을 소환합니다"
+    portal:
+        name: "Portal"
+        description: "지옥으로 가는 문을 엽니다..."
+        no_target: "거긴 안되요 :o"
+        cast: "차원의 문이 생성됩니다"
+    phase:
+        name: "Phase"
+        description: "다른 세계로 접어듭니다"
+        cast: "$world_name으로 접어들었습니다"
+    invincible:
+        name: "Invincible"
+        description: "몸이 매우 단단해져 데미지를 입지 않습니다"
+        cast: "무적이 된거 같아요!"
+        deactivate: "힘이 빠져 나간다...."
+    inferno:
+        name: "Inferno"
+        description: "태운다!"
+        cast: "태워버렸습니다."
+    gasp:
+        name: "Gasp"
+        description: "숨이 막힐 때 사용하세요"
+        usage: "여긴... 널린게 공기인데요?"
+        cast: "신비로운 힘이 호흡을 일시적으로 늘려줍니다"
+    paint:
+        name: "색칠"
+        description: "한 블럭을 칠하세요"
+    gills:
+        name: "Gills"
+        description: "숨이 막힐 때 사용하세요"
+        cast: "신비로운 힘이 호흡을 편한하게 해주고 눈을 밝혀줍니다"
+    arrowrain:
+        name: "Arrow Rain"
+        description: "Make it rain~♬"
+    meteor:
+        name: "Meteor"
+        description: "메테오!"
+        cast: "하늘에서 불이 떨어집니다"
+    bomb:
+        name: "Carpet Bomb"
+        description: "죽음이 비처럼 내립니다"
+        cast: "폭격을 요청하였습니다"
+    lightning:
+        name: "Lightning"
+        description: "토르가 되게 해 줍니다"
+        cast: "파지지직!"
+    nuke:
+        name: "Nuke"
+        description: "큰 폭발을 일으킵니다"
+        cast: "퍼엉!"
+    day:
+        name: "Sunny Day"
+        description: "아름다운 날로 만들어줍니다"
+        area: "이렇게 화창할 수가!"
+    night:
+        name: "Night"
+        description: "어두워지게 하세요"
+        area: "으스스스스스스스스하게"
+    time:
+        name: "Time"
+        description: "시간을 바꾸세요"
+        area: "시간이 $time 으로 조정됩니다..."
+    bridge:
+        name: "Bridge"
+        description: "땅을 앞으로 넓히세요"
+        usage: "공중에서 사용할 수 있습니다"
+        no_target: "여긴 못짓겟는데요?"
+        cast: "$material 로 다리를 생성합니다...."
+    grenade:
+        name: "Grenade"
+        description: "수류탄 투척!"
+    frag:
+        name: "Incendiary Grenade"
+        description: "소이탄 투척!"
+        cast: "소이탄 투척!"
+    cluster:
+        name: "Cluster Bomb"
+        description: "집속 수류탄을 던지세요"
+        cast: "수류탄 투척!"
+    convert:
+        name: "Convert"
+        description: "구형의 땅을 변화시킵니다"
+        usage: "공기를 채우진 않아요..."
+        cast_finish: "$count 개의 블럭이 $material 로 변화됩니다"
+    collapse:
+        name: "Collapse"
+        description: "구형의 땅을 붕괴시킵니다"
+        cast_finish: "$count 개의 블럭이 붕괴됩니다"
+    superconvert:
+        name: "SuperConvert"
+        description: "큰 땅을 변화시킵니다"
+        usage: "두번 사용하셔야 해요"
+        cancel: "마법이 취소되었습니다"
+        target_selected: "한번 더 사용하세요"
+        fail: "그 땅을 변화시키기엔 너무 큰 것 아닌가요?"
+        cast_finish: "$count 개의 블럭이 $material 로 변화됩니다"
+    supercollapse:
+        name: "SuperCollapse"
+        description: "큰 땅을 붕괴시킵니다"
+        usage: "두번 사용하셔야 해요"
+        cancel: "마법이 취소되었습니다"
+        target_selected: "한번 더 사용하세요"
+        fail: "그렇게 크게 하시기엔 마력이 부족해요"
+        cast_finish: "$count 개의 블럭이 붕괴됩니다"
+    superblob:
+        name: "SuperBlob"
+        description: "큰 구체를 소환합니다"
+        usage: "두번 사용하셔야 소환됩니다"
+        cancel: "마법이 취소되었습니다"
+        target_selected: "한번 더 사용하세요"
+        fail: "그건 너무 커요!"
+        cast_finish: "$count 개의 $material 이(가) 생성됩니다"
+    superrepair:
+        name: "SuperRepair"
+        description: "백업된 데이타로 땅을 복구합니다"
+        usage: "두번 사용하셔야 해요"
+        cancel: "마법이 취소되었습니다"
+        target_selected: "한번 더 사용하세요"
+        fail: "그렇게 큰 땅은...마력이 모자라요"
+        cast_finish: "$count 개의 블럭이 복구되었어요"
+    backup:
+        name: "Backup"
+        description: "땅을 복구하려면 먼저 백업을..."
+        usage: "두번 사용하셔야 해요"
+        cancel: "백업이 취소되었습니다"
+        fail: "그렇게 큰 땅은 데이터에 들어가지 않나봐요"
+        cast_finish: "$count 개의 블럭을 백업하였습니다"
+        target_selected: "한번 더 사용하세요"
+    superemp:
+        name: "SuperEMP"
+        description: "EMP!"
+        usage: "두번 사용하셔야 해요"
+        cancel: "EMP 가 취소되었습니다"
+        fail: "EMP는 거기까지 안 닿아요"
+        cast_finish: "$count 블럭이 전화되었습니다"
+        target_selected: "한번 더 사용하세요"
+    supershell:
+        name: "SuperShell"
+        description: "큰 방어막을 생성합니다"
+        usage: "두번 사용하셔야 해요"
+        cancel: "마법이 취소되었습니다"
+        target_selected: "한번 더 사용하세요"
+        fail: "그렇게 큰 방어막은 필요 없어 보이는데요"
+        cast_finish: "$count 개의 블럭을 $material 로 채웠습니다"
+    superdisc:
+        name: "SuperDisc"
+        description: "큰 원판을 생성합니다"
+        usage: "두번 사용하셔야 해요"
+        cancel: "마법이 취소되었습니다"
+        target_selected: "Cast again to build disc"
+        fail: "Too large!"
+        cast_finish: "Filled $count blocks with $material"
+    superring:
+        name: "SuperRing"
+        description: "큰 고리를 생성합니다"
+        usage: "두번 사용하셔야 해요"
+        cancel: "마법이 취소되었습니다"
+        target_selected: "한번 더 사용하세요"
+        fail: "너무 커요!"
+        cast_finish: "$count 개의 $material 이(가) 생성되었습니다"
+    superdome:
+        name: "SuperDome"
+        description: "Create a very large dome"
+        usage: "Cast twice to construct"
+        cancel: "Dome cancelled"
+        target_selected: "Cast again to build dome"
+        fail: "Too large!"
+        cast_finish: "Filled $count blocks with $material"
+    superpyramid:
+        name: "SuperPyramid"
+        description: "Create a large hollow pyramid"
+        usage: "Cast twice to construct"
+        cancel: "Pyramid cancelled"
+        target_selected: "Cast again to build pyramid"
+        fail: "Too large!"
+        cast_finish: "Filled $count blocks with $material"
+    superbox:
+        name: "SuperBox"
+        description: "Create a large hollow box"
+        usage: "Cast twice to construct"
+        cancel: "Box cancelled"
+        target_selected: "Cast again to build box"
+        fail: "Too large!"
+        cast_finish: "Filled $count blocks with $material"
+    supercube:
+        name: "SuperCube"
+        description: "Create a large solid cube"
+        usage: "Cast twice to construct"
+        cancel: "Cube cancelled"
+        target_selected: "Cast again to build cube"
+        fail: "Too large!"
+        cast_finish: "Filled $count blocks with $material"
+    kamikazee:
+        name: "카미카제"
+        description: "자폭 공격!"
+    superblast:
+        name: "SuperBlast"
+        description: "매우 큰 범위을 파괴합니다"
+        cast_finish: "퍼엉!"
+    blast:
+        name: "Blast"
+        description: "큰 범위를 파괴합니다"
+        cast_finish: "펑!"
+    earthquake:
+        name: "Earthquake"
+        description: "지진을 일으킵니다"
+        cast_finish: "$count 개의 블럭을 진동시켰습니다"
+    cloak:
+        name: "Cloak"
+        description: "투명 망토?"
+        cast: "상대가 투명해 집니다..."
+        cast_self: "몸이 투명해 집니다"
+    undo:
+        name: "Rollback"
+        description: "마지막으로 사용한 마법을 무효화 합니다"
+        cast: "&6$spell &5을(를) 무효하였습니다"
+        cast_self: "&6$spell &5을(를) 무효하였습니다"
+        cost_free: "&6$spell &5을(를) 취소하였습니다"
+        fail: "더이상 취소할 게 없어요"
+    commit:
+        name: "Commit"
+        description: "모든 마법을 영구적으로 적용시킵니다"
+        usage: "지금까지 사용한 마법을 돌이킬 수 없도록 만드세요"
+        cast_player: "$target 의 롤백기록이 지워집니다"
+        cast: "당신의 롤백 기록이 지워집니다"
+        fail: "에? 아무것도 없는데요?"
+    rewind:
+        name: "Rewind"
+        description: "시간을 되감아 마법을 무효화 시킵니다"
+        usage: "상대를 대상으로 한 마법을 무효화 시킵니다"
+        cast: "&5당신은 &d&o$target 에게 적용한&r&6 $spell &5을(를) 무효화 시켰습니다"
+        fail: "되돌릴게 없어요.."
+        no_target: "그건 아무것도 아닌데요?"
+    counterspell:
+        name: "Counterspell"
+        description: "마법을 반격시킵니다!"
+        usage: "최근에 사용된 마법에만 적용됩니다"
+        cast: "&5당신은 &d&o$target 의 &r&6 $spell &5을(를) 반격합니다"
+        cast_player_message: "&d&o$player &r&5님이 당신의 &3&o$spell &r&5를 반격했습니다!"
+        fail: "반격할 마법이 없어요"
+    push:
+        name: "Push"
+        description: "강력한 힘이 물체들을 밀어냅니다"
+        area: "Fus Ro Dah!"
+    farm:
+        name: "Herd"
+        description: "가축때를 소환하합니다"
+        cost_free: "가축들을 놓아주었습니다"
+        cast: "$count 마리를 소환하였습니다"
+    breach:
+        name: "Breach"
+        description: "잠시동안 블럭들을 제거합니다"
+        cast_finish: "$count 블럭을 제거하였습니다"
+    tesseract:
+        name: "Tesseract"
+        description: "공간을 접어 이동합니다"
+        no_target: "거긴 못가요"
+    mine:
+        name: "Mine"
+        description: "표적이 된 광물을 채굴합니다"
+        cast: "$count 개 블럭을 채굴하셨습니다"
+    chop:
+        name: "Chop"
+        description: "나무 한그루를 벌목합니다"
+        cast: "$count 개 블럭이 벌목되었습니다"
+    peek:
+        name: "Peek"
+        description: "블럭을 투시합니다"
+        cast_finish: "신비로운 힘이 눈을 감쌉니다"
+    sandblast:
+        name: "Sandblast"
+        description: "하늘에서 모래가 떨어집니다"
+        cast_finish: "조심해!"
+    fill:
+        name: "Fill"
+        description: "Fill a selected cuboid area"
+        usage: "Cast twice to fill"
+        cancel: "Fill cancelled"
+        target_selected: "Cast again to fill with $material"
+        fail: "Can't fill that much!"
+        cast_finish: "Filled $count blocks with $material"
+    superregenerate:
+        name: "SuperRegenerate"
+        description: "Regenerate full chunks"
+        usage: "Cast twice to regenerate"
+        fail: "Can't regenerate that much!"
+        cast: "Regenerating chunks"
+        target_selected: "Cast again to regenerate chunks"
+        cast_finish: "Regenerated $count blocks"
+    regenerate:
+        name: "Regenerate"
+        description: "Regenerate a selected area"
+        fail: "Can't regenerate that much!"
+        usage: "Cast twice to regenerate"
+        cast: "Regenerating area"
+        target_selected: "Cast again to regenerate area"
+        cast_finish: "Regenerated $count blocks"
+    recurse:
+        name: "Recurse"
+        description: "Recursively fill blocks"
+        cast: "Filled $count blocks with $material"
+    fire:
+        name: "Fire"
+        description: "마술!"
+        cast: "그리고 파이어볼!"
+    alter:
+        name: "Alter"
+        description: "Alter certain objects"
+        usage: "Use on wool, stairs, etc"
+        cast_entity: "You altered the target $target"
+        cast: "You altered your target"
+        fail: "Can't adjust that"
+    superalter:
+        name: "SuperAlter"
+        description: "Alter objects recursively"
+        usage: "Use on wool, stairs, etc"
+        cast: "Altered $count blocks"
+        fail: "Can't adjust that"
+    sphere:
+        name: "Sphere"
+        description: "Create a real sphere"
+        cast_finish: "Created a $material sphere"
+    blob:
+        name: "Blob"
+        description: "Create a solid blob"
+        cast_finish: "Blobbed $count blocks with $material"
+    pyramid:
+        name: "Pyramid"
+        description: "Create a solid pyramid"
+        cast_finish: "Made a pyramid out of $count blocks with $material"
+    repair:
+        name: "Repair"
+        description: "백업된 땅을 복구합니다"
+        cast_finish: "$count 개의 블럭이 복구되었습니다"
+    emp:
+        name: "EMP"
+        description: "EMP!"
+        cast_finish: "파지직!"
+    familiar:
+        name: "Familiar"
+        description: "우호적인 몹을 소환합니다"
+        cast: "소환되었습니다"
+        cost_free: "소환된 몹을 놓아주었습니다"
+    disintegrate:
+        name: "Disintegrate"
+        description: "표적을 파괴시킵니다"
+        usage: "타겟이 된 블럭이나 엔티티를 파괴시킵니다"
+        cast_entity: "지직!"
+        cast: "자잡!"
+    blink:
+        name: "Blink"
+        description: "비전이동!"
+        usage: "짧지만 블럭을 통과해 넘어갈 수 있습니다"
+        no_target: "거긴 안될 것 같은데요?"
+        cast: "슝!"
+    absorb:
+        name: "Absorb"
+        description: "타겟을 흡수합니다"
+        usage: "완드에 재료를 추가하셔야해요"
+        fail: "이 마법은 완드가 필요합니다"
+        cast: "$material 을(를) 흡수중..."
+    hat:
+        name: "Hat"
+        description: "타겟을 머리에 씁니다"
+        cast: "$material 을(를) 머리에 썻습니다"
+        removed: "마법의 모자를 벗습니다"
+        hat_name: "$material 모자"
+        hat_lore: "클릭하면 사라집니다"
+    stalactite:
+        name: "Stalactite"
+        description: "아래쪽으로 기둥을 생성합니다"
+        cast: "$material 으로 기둥을 생성합니다"
+        no_target: "더는 못짓겠는데요?"
+    lava:
+        name: "Lava"
+        description: "Fire a stream of lava"
+        cast: "You fire a stream of lava"
+    earth:
+        name: "Earth"
+        description: "일정시간동안 유지되는 땅을 생성합니다"
+        cast: "쿵!"
+    flamethrower:
+        name: "Flamethrower"
+        description: "탄다! 탄다구!"
+        cast: "불이다!"
+    stash:
+        name: "Stash"
+        description: "물건을 숨기기에 안전한 곳"
+        cast: "엔더상자를 열었습니다"
+        cast_player: "$target 's ender chest"
+    pickpocket:
+        name: "Pickpocket"
+        description: "Steal from nearby players"
+        cast_player: "You peek into $target 's inventory"
+    workbench:
+        name: "Workbench"
+        description: "조합대를 엽니다"
+        cast: "조합대 생성!"
+    laser:
+        name: "Laser"
+        description: "레이저를 발사해 많은 블럭을 제거합니다"
+        cast: "지이잉!"
+    stream:
+        name: "Stream"
+        description: "Spray a stream of water"
+        cast: "You spray a stream of water"
+    wolf:
+        name: "Wolf"
+        description: "우호적인 늑대를 소환합니다"
+        cast: "멍멍이를 소환합니다"
+        fail: "늑대가 살아 있거나 죽은것 같네요..."
+    wolfhouse:
+        name: "Wolf House"
+        description: "자동재생성되는 늑대기지를 생성합니다"
+    tent:
+        name: "Tent"
+        description: "아주 작은 집을 생성합니다"
+        cast: "짠!"
+    cage:
+        name: "Cage"
+        description: "상대방을 가두세요!"
+        cast: "타겟을 가둡니다"
+    cat:
+        name: "Cat"
+        description: "우호적인 오셀롯을 생성합니다"
+        cast: "고양이가 소환되었습니다!"
+        fail: "고양이가 살아 있거나 죽은것 같네요..."
+    shrink:
+        name: "Shrink"
+        description: "상대를 다치게 하고 말려버립니다"
+        usage: "이 마법으로 상대를 죽이면 머리를 얻습니다"
+        cast: "Shrink!"
+        cast_entity: "$target 에게 마법 발동!"
+    grow:
+        name: "Grow"
+        description: "특정 엔티티를 자라게 합니다"
+        cast: "커져라!"
+        cast_entity: "$target 를 커지게 하였습니다"
+        no_target: "전 이미 다 컸는데요!"
+    flare:
+        name: "Flare"
+        description: "확 타오르게 하세요!"
+        cast: "불이다!"
+    respawn:
+        name: "Respawn"
+        description: "스폰으로 돌아갑니다"
+        cast: "이동합니다..."
+    recall:
+        name: "Recall"
+        description: "이전 지역으로 돌아갑니다"
+        usage: "아래로 시전하여 지역을 저장합니다"
+        no_target: "거긴 안되겠는데요?"
+        cast_marker_place: "지역지정을 하였습니다"
+        cast_marker_move: "지정된 곳을 이동시켰습니다"
+        cast_marker: "지정된 곳으로 이동합니다"
+        cast_death: "마지막으로 죽은곳으로 이동합니다"
+        cast_spawn: "스폰으로 돌아갑니다"
+        cast_home: "집으로 돌아갑니다"
+        cast_wand: "잃어버린 완드를 찾아 돌아갑니다"
+        cast_warp: "$name 으로 워프합니다"
+        no_target_death: "죽은곳이 저장되지 않았는데요?"
+        no_target_wand: "잃어버린 완드가 없나봐요"
+        no_target_home: "집이 없으신것 같은데요?"
+        cross_world_disallowed: "다른 월드로 이동은 불가능합니다!"
+    levitate:
+        name: "Levitate"
+        description: "공중을 날아다닐 수 있습니다"
+        cast: "신비로운 힘이 몸을 감싸며 몸이 가벼워집니다"
+        cancel: "신비로운 힘이 떠나갑니다"
+    fly:
+        name: "Fly"
+        description: "새처럼 가볍게!"
+        cast: "보이지 않는 날개가 돋아납니다"
+        cancel: "더이상 날개가 느껴지지 않습니다"
+    boom:
+        name: "Boom"
+        description: "마법의 힘을 응축시켜 폭발을 일으킵니다"
+        cast: "붐!"
+    box:
+        name: "Box"
+        description: "Create a large hollow box"
+        cast_finish: "Filled $count blocks with $material"
+    pillar:
+        name: "Pillar"
+        description: "Raises a pillar up"
+        cast: "You create a pillar of $material"
+        no_target: "Can't pillar any further"
+        no_target: "Can't pillar any further"
+    place:
+        name: "Place"
+        description: "타겟에 블럭을 나둡니다"
+        cast: "$material 을 설치하셨습니다"
+    force:
+        name: "Force"
+        description: "염력"
+        usage: "엔티티를 지정하여 던질 수 있습니다"
+        cancel: "타겟을 놓아주었습니다"
+        target_selected: "$target 을(를) 잡았습니다!"
+    fireball:
+        name: "마술!"
+        description: "그리고 파이어볼!"
+    wither:
+        name: "Wither"
+        description: "위더머리를 던집니다"
+    map:
+        name: "Map"
+        description: "지도를 생성합니다"
+        cast: "지도따윈 필요없어!"
+    camera:
+        name: "Camera"
+        description: "셀카"
+        cast_entity: "$target 님의 사진을 찍었습니다"
+        fail: "저런. 사진이 흔들린거 같군요"
+        cast: "찰칵!"
+        cast_self: "셀카!"
+    transmute:
+        name: "Transmute"
+        description: "Convert your last construction"
+        no_target: "Nothing to transmute"
+        cast: "You transmute your structure to $material"
+    missile:
+        name: "Magic Missile"
+        description: "유도탄을 발사하여 기절과 함께 데미지를 입힙니다"
+        cast: "$target 에게 발사!"
+    silence:
+        name: "Silence"
+        description: "침묵!"
+        cast: "$target 에게 침묵을 시전!"
+    blind:
+        name: "Blind"
+        description: "실명!"
+        cast: "$target 에게 실명을 시전!"
+    pollinate:
+        name: "Pollinate"
+        description: "꽃을 심어요!"
+        cast: "꽃!"
+    paste:
+        name: "Paste"
+        description: "Pastes a full schematic"
+        usage: "For use with schematic brushes"
+        cast_finish: "Pasted $count blocks"
+
+wands:
+    master:
+        name: "Master Wand"
+        description: "The ultimate wand"
+    student:
+        name: "Student Wand"
+        description: "Has low-powered magic"
+    apprentice:
+        name: "Apprentice Wand"
+        description: "Has moderate power"
+    battle:
+        name: "Magic Sword"
+        description: "Has battle magic"
+    engineer:
+        name: "Engineering Wand"
+        description: "Has engineering magic"
+    architect:
+        name: "The Architect"
+        description: "Master Engineering Wand"
+    elder:
+        name: "Elder Wand"
+        description: "The Uber Wand"
+    admin:
+        name: "Admin Wand"
+        description: "For admins only"
+    random:
+        name: "Randomized Wand"
+        description: "This will randomly generate a wand"
+    demo:
+        name: "Demo Wand"
+        description: "Not for gameplay, for demo'ing the plugin."
+    explorer:
+        name: "Exploring Wand"
+        description: "For exploring"
+    psychic:
+        name: "Psychic Wand"
+        description: "Psychic stuff"
+    painter:
+        name: "Painting Wand"
+        description: "For the designer in all of us"
+    mining:
+        name: "Mining Wand"
+        description: "For mining"
+    farming:
+        name: "Farming Wand"
+        description: "For farming"
+    alchemist:
+        name: "Alchemist Wand"
+        description: "Full metal!"
+    elementalist:
+        name: "Elementalist Wand"
+        description: "A master of the elements"
+    necromancer:
+        name: "Necromancer Wand"
+        description: "Evil, evil stuff"
+    air_student:
+        name: "Airbending Student"
+    water_student:
+        name: "Waterbending Student"
+    earth_student:
+        name: "Earthbending Student"
+    fire_student:
+        name: "Firebending Student"
+    air_apprentice:
+        name: "Airbender"
+    water_apprentice:
+        name: "Waterbender"
+    earth_apprentice:
+        name: "Earthbender"
+    fire_apprentice:
+        name: "Firebender"
+    air:
+        name: "Airbending Master"
+    water:
+        name: "Waterbending Master"
+    earth:
+        name: "Earthbending Master"
+    fire:
+        name: "Firebending Master"
+    avatar:
+        name: "The Avatar Wand"
+        description: "Master of all four elements"
+    camera:
+        name: "Camera"
+        description: "Take a portrait of yourself or others"
+    default:
+        name: "Wand"
+        description: "A magic wand"
+    white:
+        name: "The White Wand"
+        description: "A wand for master white wizards"
+    black:
+        name: "The Black Wand"
+        description: "A wand for master dark wizards"
+    red:
+        name: "The Red Wand"
+        description: "A powerful destructive wand"
+    blue:
+        name: "The Blue Wand"
+        description: "A cool wand"
+    green:
+        name: "The Green Wand"
+        description: "A wand for nature lovers"
+    wolf:
+        name: "The Wolf"
+        description: "NathanWolf's Mega-Wand"
+    CoOoD3R:
+        name: "CoOoD3R's Wand"
+        description: "..."
+    Art10001:
+        name: "Art's Wand"
+        description: "One of the Oldest"
+    lathame:
+        name: "lathame's wand"
+        description: "Hail to the King, Baby!"
+    decorator:
+        name: "Decorator"
+        description: "Decorates large areas at a time"
+    guest:
+        name: "The Welcome Wand"
+        description: "A low-powered wand for new players"
+    villager:
+        name: "The Villager Wand"
+        description: "Some basic utility and defense spells"
+    knight:
+        name: "Enchanted Sword"
+        description: "A wand for knights"
+    baron:
+        name: "The Baron Sword"
+        description: "Rule with Power"
+    lord:
+        name: "The Lord Sword"
+        description: "Lord Over Them"
+    hero:
+        name: "The Hero Sword"
+        description: "Heroic!"
+    king:
+        name: "Excaliber"
+        description: "From The Lady"
+    legend:
+        name: "The Legendary Wand"
+        description: "It's legen ..."
+    overseer:
+        name: "The Overseer Wand"
+        description: "... DARY!"
+    wizard:
+        name: "The Wizard Wand"
+        description: "You're a real wizard, now."
+    nether:
+        name: "The Nether Wand"
+        description: "Spooky Power"
+    conway:
+        name: "Conway's Wand"
+        description: "The Game of Life"
+    ender:
+        name: "The Ender Wand"
+        description: "Super Power"
+    redeffects:
+        name: "Red Wand Effects"
+        description: "Tint your wand effects!"
+    greeneffects:
+        name: "Green Wand Effects"
+        description: "Tint your wand effects!"
+    blueeffects:
+        name: "Blue Wand Effects"
+        description: "Tint your wand effects!"
+    whiteeffects:
+        name: "White Wand Effects"
+        description: "Tint your wand effects!"
+    blackeffects:
+        name: "Black Wand Effects"
+        description: "Tint your wand effects!"
+    purpleeffects:
+        name: "Purple Wand Effects"
+        description: "Tint your wand effects!"
+    yelloweffects:
+        name: "Yellow Wand Effects"
+        description: "Tint your wand effects!"
+    aquaeffects:
+        name: "Aqua Wand Effects"
+        description: "Tint your wand effects!"
+    organgeeffects:
+        name: "Orange Wand Effects"
+        description: "Tint your wand effects!"
+    rainboweffects:
+        name: "Rainbow Wand Effects"
+        description: "Color-changing particles"
+    mana1:
+        name: "Mana Upgrade Level 1"
+        description: "Upgrade to 200 Mana"
+    mana2:
+        name: "Mana Upgrade Level 2"
+        description: "Upgrade to 400 Mana"
+    mana3:
+        name: "Mana Upgrade Level 3"
+        description: "Upgrade to 1000 Mana"
+    mana4:
+        name: "Mana Upgrade Level 4"
+        description: "Upgrade to 1500 Mana"
+    antihunger:
+        name: "Anti-Hunger Upgrade"
+        description: "Never go hungry again!"
+    undroppable:
+        name: "Undroppable Upgrade"
+        description: "Makes your wand undroppable"
+    chestmode:
+        name: "Chest Mode"
+        description: "A simpler wand mechanic"
+    cyclemode:
+        name: "Cycle Mode"
+        description: "The simplest wand mechanic"
+    inventorymode:
+        name: "Inventory Mode"
+        description: "For expert wizards"
+    loud:
+        name: "Loud Wand"
+        description: "Turn on all wand chat messages"
+    quiet:
+        name: "Quiet Wand"
+        description: "Turn off spell cast messages"
+    silent:
+        name: "Wand Silencer"
+        description: "Turn off all wand chat messages"
+    organizer:
+        name: "The Organizer"
+        description: "Re-organizes your wand inventory"
+    alphabetizer:
+        name: "The Alphabetizer"
+        description: "Alphabetizes your wand inventory"
+    manaboost:
+        name: "Mana Boost"
+        description: "An instant boost to 1000 Mana (or your max)"
+    recalltoken:
+        name: "Recall Token"
+        description: "Cast to return"
+    respawntoken:
+        name: "Respawn Token"
+        description: "Cast to return to spawn"
+    defenderheart:
+        name: "Heart of Defender"
+        description: "It pulsates with power"
+    virusheart:
+        name: "Heart of Virus"
+        description: "This should be destroyed"
+    hunterheart:
+        name: "Heart of Hunter"
+        description: "It wants to be reborn"
+    golemheart:
+        name: "Heart of Golem"
+        description: "Your new best friend"
+    wormheart:
+        name: "Heart of Worm"
+        description: "It will consume the world"
+    broomstick:
+        name: "Broomstick"
+        description: "You can fly!"
+automata:
+    awaken: "&c&o$name    &r&5has awakened"
+    default_name: "Automaton"
+    level: "Level $roman"
+    good:
+       prefixes:
+           - Holy
+           - Light
+           - Shiny
+           - Shimmering
+           - Stalwart
+           - Bright
+           - Savior
+           - Blessed
+           - Magic
+           - Enchanted
+           - Enlightened
+           - Magnificent
+           - Magnamous
+           - Brave
+           - Loyal
+       suffixes:
+           - of Holiness
+           - of Honor
+           - of Light
+           - of Lightness
+           - of Protection
+           - of The Sun
+           - of Magic
+           - of The Blessed
+           - of Forgiveness
+           - of Loyalty
+           - of Retribution
+           - of Resilliance
+    evil:
+       prefixes:
+           - Evil
+           - Dark
+           - Slimy
+           - Dreadful
+           - Dread
+           - Cursed
+           - Magic
+           - Enchanted
+           - Harbringer
+           - Nether
+           - Infamous
+           - Nefarious
+           - Distastrous
+       suffixes:
+           - of Darkness
+           - of Evil
+           - of The Night
+           - of Death
+           - of Doom
+           - of The Nether
+           - of Magic
+           - of Destruction
+           - of Desolation
+           - of Infamy
