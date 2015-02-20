@@ -103,7 +103,7 @@ load_default_enchanting: true
 # Set to false to skip loading defaults/crafting.defaults.yml entirely.
 load_default_crafting: true
 
-# Whether or not to show any messages (in chat) 
+# Whether or not to show any messages (in chat)
 show_messages: true
 
 # Whether or not to show messages on every spell cast (in chat)
@@ -163,12 +163,12 @@ metrics_level: 5
 # So to make items lived for only a second, use 299000.
 # To make items live for 1 minute, use 240000. (300000 - 60 * 1000)
 # Mathmatical!
-# 
+#
 age_dropped_items: 0
 
 #
 # Wand configuration
-# 
+#
 
 # Wand appearance
 wand_item: wood_hoe
@@ -178,8 +178,8 @@ wand_glow: false
 # Set this to false to turn off the player skull-based spell icons
 url_icons_enabled: true
 
-# Set this to true to turn on spell glow. May not work on all server versions.
-spell_glow: false
+# Set this to have the hotbar show what spells are castable
+live_hotbar: true
 
 # This will "punish" players for trying to melee with a wand item
 # and prevent damage dealt by smacking with a wand
@@ -258,7 +258,7 @@ map_item: map
 # schematic files
 schematic_item: paper
 
-# The folder and file path to use for loading schematics. This will be relative to 
+# The folder and file path to use for loading schematics. This will be relative to
 # The server's /plugins folder.
 # You can use WorldEdit's schematics folder for easy access to saved schematics.
 # You can use this folder to override the built-in schematics, such as replacing the schematics
@@ -318,14 +318,14 @@ redstone_replacement: obsidian
 # Wands have a power (from 0-1) that will change the effects of many spells:
 # - Direct-damage spells (arrow, disintegrate, shrink) will increase their damage
 # - "Super" construction spells (the two-click variants) will allow for larger dimension selections
-# - Radius-based spells (inferno, storm, blob, blast, arrowrain, mob) will have a larger radius, 
+# - Radius-based spells (inferno, storm, blob, blast, arrowrain, mob) will have a larger radius,
 #   generally meaning "more" of whatever they do. Be careful with this one.
 # - Additionally, all spells will have a longer range.
 # All of these aspects can be controlled individually.
 # Be aware that a wand can be "overclocked", meaning it has a power greater than 1. Spell properties
 # will continue to scale up. This will never happen naturally, only via the "wand configure" command
 # or a wand template with a pre-defined power greater than 1
-# 
+#
 # There are hard max limits defined for range and radius for this reason.
 #
 max_power_damage_multiplier: 2.0
@@ -486,15 +486,13 @@ activate_holotext_range: 0
 
 ## Deprecated configuration options
 
-# Wands are indestructible, regardless of their "indestructible" property
+# Wands are indestructible by default
 indestructible_wands: true
 
-# Generally this hack is required, due to Bukkit not supporting custom items.
-# But just in case, in the future, or if maybe you're running a custom CB....
-# you can turn this off.
+# This hack should not be required in 1.8 and up
 # This disables the item drag event interceptor
 enable_custom_item_hacks: false
-# This disabled wands ejecting themselves in creative mode
+# This disables wands ejecting themselves in creative mode
 enable_creative_mode_ejecting: false
 
 # Used as a work-around for enchanting since the main item may not be enchantable (client-side).
@@ -507,3 +505,6 @@ auto_undo: 0
 # Backup Inventory to wand data
 # This can cause some issues with item sizes, and is somewhat experimental
 backup_inventory: false
+
+# Set this to true to turn on spell glow. May not work on all server versions.
+spell_glow: false
