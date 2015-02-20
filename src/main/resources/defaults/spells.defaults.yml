@@ -1710,6 +1710,7 @@ wither:
         radius: 8
         count: 3
         undo: 15000
+        cooldown: 5000
     costs:
         mana: 60
 
@@ -2638,8 +2639,9 @@ stalactite:
         mana: 5
 
 grenade:
-    icon_url: http://s3.amazonaws.com/MinecraftSkins/MHF_TNT.png
+    icon_url: http://s3.amazonaws.com/MinecraftSkins/MHF_TNT2.png
     icon: tnt
+    alias: frag
     category: demolition
     pvp_restricted: true
     worth: 25
@@ -2653,34 +2655,19 @@ grenade:
     parameters:
         allow_max_range: true
         range: 32
-        size: 3
+        size: 2
         fuse: 60
         undo: 20000
+        cooldown: 2000
     costs:
         mana: 40
 
-frag:
-    icon_url: http://s3.amazonaws.com/MinecraftSkins/MHF_TNT2.png
-    icon: apple
-    category: demolition
-    pvp_restricted: true
-    worth: 150
-    actions:
-        cast:
-        -  class: TNTAction
-    effects:
-        cast:
-        -  class: EffectSingle
-           sound: creeper_hiss
+grenade|2:
     parameters:
-        allow_max_range: true
-        range: 32
-        size: 5
-        fuse: 60
+        size: 3
         fire: true
-        undo: 30000
     costs:
-        mana: 120
+        mana: 75
 
 cluster:
     icon_url: http://i.imgur.com/xl4nToM.png

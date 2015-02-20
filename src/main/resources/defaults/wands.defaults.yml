@@ -920,6 +920,7 @@ broomstick:
     icon: gold_spade
     indestructible: true
     locked: true
+    keep: true
     effect_color: '880088'
     spells:
         - broom

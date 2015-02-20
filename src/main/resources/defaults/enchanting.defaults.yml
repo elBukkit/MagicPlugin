@@ -417,6 +417,7 @@ master:
       blast|3: 30,40,50
       laser|3: 0,0,20
       anvil: 0,0,10
+      grenade|2: 0,10,30
 
 #
 # The move from "master" to engineer requires the player to aquire some basic

@@ -582,11 +582,7 @@ spells:
         cast: A bridge of $material extends
     grenade:
         name: Grenade
-        description: Place a primed grenade
-    frag:
-        name: Incendiary Grenade
-        description: Toss a fire grenade
-        cast: You toss an incendiary grenade
+        description: Toss a primed grenade
     cluster:
         name: Cluster Bomb
         description: Toss a splitting grenade
