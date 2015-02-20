@@ -3004,6 +3004,25 @@ public class MagicController implements Listener, MageController {
 			return;
 		}
 
+        // Check for wearing spells
+        ItemStack heldItem = event.getCursor();
+        if (heldItem != null && event.getSlotType() == SlotType.ARMOR && (Wand.isSpell(heldItem) || Wand.isWand(heldItem)))
+        {
+            event.setCancelled(true);
+            return;
+        }
+        boolean isHotbar = event.getAction() == InventoryAction.HOTBAR_SWAP || event.getAction() == InventoryAction.HOTBAR_MOVE_AND_READD;
+        if (event.getAction() == InventoryAction.HOTBAR_SWAP && event.getSlotType() == SlotType.ARMOR)
+        {
+            int slot = event.getHotbarButton();
+            ItemStack item =  mage.getPlayer().getInventory().getItem(slot);
+            if (item != null && (Wand.isSpell(item) || Wand.isWand(item)))
+            {
+                event.setCancelled(true);
+                return;
+            }
+        }
+
 		Wand activeWand = mage.getActiveWand();
 		InventoryType inventoryType = event.getInventory().getType();
 
@@ -3018,7 +3037,7 @@ public class MagicController implements Listener, MageController {
             }
 
             // So many ways to try and move the wand around, that we have to watch for!
-            if (event.getAction() == InventoryAction.HOTBAR_SWAP && Wand.isWand(player.getInventory().getItem(event.getHotbarButton())))
+            if (isHotbar && Wand.isWand(player.getInventory().getItem(event.getHotbarButton())))
             {
                 event.setCancelled(true);
                 return;
