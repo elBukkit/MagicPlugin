@@ -141,8 +141,6 @@ public class NMSUtils {
             class_EntityFirework = fixBukkitClass("net.minecraft.server.EntityFireworks");
             class_CraftSkull = fixBukkitClass("org.bukkit.craftbukkit.block.CraftSkull");
             class_CraftMetaSkull = fixBukkitClass("org.bukkit.craftbukkit.inventory.CraftMetaSkull");
-            class_GameProfile = getClass("com.mojang.authlib.GameProfile");
-            class_GameProfileProperty = getClass("com.mojang.authlib.properties.Property");
 
             class_NBTTagList_addMethod = class_NBTTagList.getMethod("add", class_NBTBase);
             class_NBTTagCompound_setMethod = class_NBTTagCompound.getMethod("set", String.class, class_NBTBase);
@@ -177,22 +175,25 @@ public class NMSUtils {
             class_Firework_ticksFlownField.setAccessible(true);
             class_Firework_expectedLifespanField = class_EntityFirework.getDeclaredField("expectedLifespan");
             class_Firework_expectedLifespanField.setAccessible(true);
-            class_CraftSkull_profile = class_CraftSkull.getDeclaredField("profile");
-            class_CraftSkull_profile.setAccessible(true);
-            class_CraftMetaSkull_profile = class_CraftMetaSkull.getDeclaredField("profile");
-            class_CraftMetaSkull_profile.setAccessible(true);
-            class_GameProfile_properties = class_GameProfile.getDeclaredField("properties");
-            class_GameProfile_properties.setAccessible(true);
-            class_GameProfileProperty_value = class_GameProfileProperty.getDeclaredField("value");
-            class_GameProfileProperty_value.setAccessible(true);
 
             isLegacy = false;
             try {
                 class_NBTTagList_legacy_consructor = class_NBTTagString.getConstructor(String.class, String.class);
                 class_NBTTagByte_legacy_constructor = class_NBTTagByte.getConstructor(String.class, Byte.TYPE);
+
+                class_GameProfile = getClass("com.mojang.authlib.GameProfile");
+                class_GameProfileProperty = getClass("com.mojang.authlib.properties.Property");
+                class_CraftSkull_profile = class_CraftSkull.getDeclaredField("profile");
+                class_CraftSkull_profile.setAccessible(true);
+                class_CraftMetaSkull_profile = class_CraftMetaSkull.getDeclaredField("profile");
+                class_CraftMetaSkull_profile.setAccessible(true);
+                class_GameProfile_properties = class_GameProfile.getDeclaredField("properties");
+                class_GameProfile_properties.setAccessible(true);
+                class_GameProfileProperty_value = class_GameProfileProperty.getDeclaredField("value");
+                class_GameProfileProperty_value.setAccessible(true);
             }
             catch (Throwable legacy) {
-                isLegacy = false;
+                isLegacy = true;
                 class_NBTTagList_consructor = class_NBTTagString.getConstructor(String.class);
                 class_NBTTagByte_constructor = class_NBTTagByte.getConstructor(Byte.TYPE);
             }

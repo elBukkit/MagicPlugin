@@ -11,6 +11,7 @@ import java.util.logging.Level;
 import com.google.common.collect.Multimap;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.block.Skull;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -112,10 +113,23 @@ public class InventoryUtils extends NMSUtils
     @SuppressWarnings("deprecation")
     public static ItemStack getURLSkull(URL url, String ownerName, UUID id, String itemName) {
         ItemStack skull = new ItemStack(Material.SKULL_ITEM, 1, (short)0, (byte)3);
-        if (itemName != null) {
+        if (itemName != null || isLegacy) {
+            if (isLegacy && ownerName == null) {
+                return skull;
+            }
             ItemMeta meta = skull.getItemMeta();
-            meta.setDisplayName(itemName);
+            if (itemName != null) {
+                meta.setDisplayName(itemName);
+            }
+            if (isLegacy && meta instanceof SkullMeta) {
+                SkullMeta skullMeta = (SkullMeta)meta;
+                skullMeta.setOwner(ownerName);
+            }
             skull.setItemMeta(meta);
+
+            if (isLegacy) {
+                return skull;
+            }
         }
 
         try {
@@ -187,6 +201,7 @@ public class InventoryUtils extends NMSUtils
 
     public static Object getSkullProfile(ItemMeta itemMeta)
     {
+        if (isLegacy) return null;
         Object profile = null;
         try {
             if (itemMeta == null || !class_CraftMetaSkull.isInstance(itemMeta)) return false;
@@ -199,6 +214,7 @@ public class InventoryUtils extends NMSUtils
 
     public static boolean setSkullProfile(ItemMeta itemMeta, Object data)
     {
+        if (isLegacy) return false;
         try {
             if (itemMeta == null || !class_CraftMetaSkull.isInstance(itemMeta)) return false;
             class_CraftMetaSkull_profile.set(itemMeta, data);

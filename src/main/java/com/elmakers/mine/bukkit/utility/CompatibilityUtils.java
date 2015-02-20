@@ -379,6 +379,7 @@ public class CompatibilityUtils extends NMSUtils {
 
     public static Object getSkullProfile(Skull state)
     {
+        if (isLegacy) return null;
         Object profile = null;
         try {
             if (state == null || !class_CraftSkull.isInstance(state)) return false;
@@ -391,6 +392,7 @@ public class CompatibilityUtils extends NMSUtils {
 
     public static boolean setSkullProfile(Skull state, Object data)
     {
+        if (isLegacy) return false;
         try {
             if (state == null || !class_CraftSkull.isInstance(state)) return false;
             class_CraftSkull_profile.set(state, data);
