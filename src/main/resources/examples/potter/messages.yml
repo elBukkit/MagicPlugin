@@ -101,9 +101,6 @@ spells:
     amplify:
         name: Amplify
         description: Un-mute the target player
-    amplifytotalus:
-        name: Amplify Totalus
-        description: Un-mute everyone
     aparecium:
         name: Aparecium
         description: Reveals concealed objects and paths
