@@ -4429,9 +4429,7 @@ missile:
     effects:
         cast:
         -  class: EffectSingle
-           sound: enderman_teleport
-           sound_pitch: 0.1
-           sound_volume: 0.5
+           custom_sound: magic.shoot
            location: origin
            color_override: color
            effectlib:
@@ -4447,9 +4445,7 @@ missile:
            firework: burst
         no_target:
         -  class: EffectSingle
-           sound: enderman_teleport
-           sound_pitch: 0.1
-           sound_volume: 0.3
+           custom_sound: magic.shoot
            location: origin
            color_override: color
            effectlib:
@@ -4465,9 +4461,7 @@ missile:
            firework: burst
         backfire:
         -  class: EffectSingle
-           sound: enderman_teleport
-           sound_pitch: 0.1
-           sound_volume: 0.7
+           custom_sound: magic.shoot
            location: origin
            entity_effect: hurt
            color_override: color

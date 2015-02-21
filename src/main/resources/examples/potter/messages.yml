@@ -550,6 +550,14 @@ spells:
         name: Arachnid Attack
         description: Encase your target in webbing
         cast: Webs!
+    spongify:
+        name: Spongify
+        description: Make your target bouncy
+        cast: Spongify!
+    spongifymaxima:
+        name: Spongify Maxima
+        description: Make your target bouncy
+        cast: Spongify Maxima!
 
 randomized:
    wood:

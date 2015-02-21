@@ -1,0 +1,20 @@
+{
+  "magic.shoot": {
+    "sounds": [
+      {
+        "name": "magic/shoot",
+        "stream": false
+      }
+    ],
+    "category": "player"
+  },
+  "magic.shoot2": {
+    "sounds": [
+      {
+        "name": "magic/shoot2",
+        "stream": false
+      }
+    ],
+    "category": "player"
+  }
+}
