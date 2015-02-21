@@ -4,7 +4,7 @@ require_once('config.inc.php');
 
 require_once('spyc.php');
 
-function parseConfigFile($name, $loadDefaults) {
+function parseConfigFile($name, $loadDefaults, $disableDefaults = false) {
 	global $magicDefaultsFolder;
 	global $magicRootFolder;
 
@@ -15,6 +15,11 @@ function parseConfigFile($name, $loadDefaults) {
 	    $config = spyc_load_file($baseFile);
 	    if (file_exists($overrideFile)) {
             $override = spyc_load_file($overrideFile);
+            if ($disableDefaults) {
+                foreach ($config as $key => &$spell) {
+                    $spell['enabled'] = false;
+                }
+            }
             $config = array_replace_recursive($config, $override);
         }
     } else {
@@ -38,7 +43,7 @@ try {
     }
 
 	$general = parseConfigFile('config', true);
-	$spells = parseConfigFile('spells', $general['load_default_spells']);
+	$spells = parseConfigFile('spells', $general['load_default_spells'], $general['disable_default_spells']);
 	$wands = parseConfigFile('wands', $general['load_default_wands']);
 	$crafting = parseConfigFile('crafting', $general['load_default_crafting']);
 	$enchantingConfig = parseConfigFile('enchanting', $general['load_default_enchanting']);
@@ -50,8 +55,9 @@ try {
 $upgrades = array();
 
 // Look up localizations
-foreach ($spells as $key => $spell) {
-    if ($key == 'default' || (isset($spell['hidden']) && $spell['hidden'])) {
+$allSpells = $spells;
+foreach ($spells as $key => &$spell) {
+    if ($key == 'default' || (isset($spell['hidden']) && $spell['hidden']) || (isset($spell['enabled']) && !$spell['enabled'])) {
         unset($spells[$key]);
         continue;
     }
@@ -60,7 +66,10 @@ foreach ($spells as $key => $spell) {
         continue;
     }
 
-	// TODO: Handle inheritance here!
+	if (isset($spell['inherit']) && $spell['inherit'])
+    {
+        $spell = array_merge($spell, $allSpells[$spell['inherit']]);
+    }
 
     if (!isset($spell['name']))
     {
@@ -72,7 +81,6 @@ foreach ($spells as $key => $spell) {
     }
     $spell['extended_description'] = isset($messages['spells'][$key]['extended_description']) ? $messages['spells'][$key]['extended_description'] : '';
     $spell['usage'] = isset($messages['spells'][$key]['usage']) ? $messages['spells'][$key]['usage'] : '';
-    $spells[$key] = $spell;
 }
 
 ksort($spells);
@@ -503,7 +511,7 @@ function printIcon($iconUrl, $title) {
 							}
 							$extraStyle = 'font-weight: bold; color: #' . $effectColor;
 						}
-						$name = isset($wand['name']) ? $wand['name'] : "($key)";
+						$name = isset($wand['name']) && $wand['name'] ? $wand['name'] : "($key)";
 						$wandClass = ($key == 'random') ? 'randomWandTitle' : 'wandTitle';
 						$icon = isset($wand['icon']) ? $wand['icon'] : 'wand';
 						$icon = printMaterial($icon, true);
@@ -531,7 +539,7 @@ function printIcon($iconUrl, $title) {
                             }
                             $extraStyle = 'font-weight: bold; color: #' . $effectColor;
                         }
-                        $name = isset($upgrade['name']) ? $upgrade['name'] : "($key)";
+                        $name = isset($upgrade['name']) && $upgrade['name'] ? $upgrade['name'] : "($key)";
                         $icon = isset($upgrade['icon']) ? $upgrade['icon'] : 'nether_star';
                         $icon = printMaterial($icon, true);
                         echo '<li class="ui-widget-content" style="' . $extraStyle . '" id="wand-' . $key . '">' . $icon . '<span class="wandTitle">' . $name . '</span></li>';

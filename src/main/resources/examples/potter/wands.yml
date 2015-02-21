@@ -18,28 +18,6 @@ default:
     spells:
      - flagrate
 
-auroreye:
-    locked: true
-    icon: iron_helmet
-    undroppable: true
-    keep: true
-    bound: true
-    quiet: true
-    protection_falling: 2
-    cost_reduction: 2
-    cooldown_reduction: 2
-    quiet: 1
-    power: 0
-    haste: 0.1
-    effect_color: '2FAACE'
-    effect_bubbles: true
-    active_spell: revelio
-    spells:
-      - revelio
-      - fumos
-      - protego|2
-      - pulsus
-
 elder:
     icon: diamond_hoe
     undroppable: true

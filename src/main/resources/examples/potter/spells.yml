@@ -2617,63 +2617,83 @@ phase:
 
 superblob:
     enabled: true
+    hidden: true
 
 paste:
     enabled: true
+    hidden: true
 
 superconvert:
     enabled: true
+    hidden: true
 
 recall:
     enabled: true
+    hidden: true
 
 gather:
     enabled: true
+    hidden: true
 
 stash:
     enabled: true
+    hidden: true
 
 absorb:
     enabled: true
+    hidden: true
 
 fill:
     enabled: true
+    hidden: true
 
 superdisc:
     enabled: true
+    hidden: true
 
 superring:
     enabled: true
+    hidden: true
 
 superbox:
     enabled: true
+    hidden: true
 
 superpyramid:
     enabled: true
+    hidden: true
 
 supercube:
     enabled: true
+    hidden: true
 
 superdome:
     enabled: true
+    hidden: true
 
 bridge:
     enabled: true
+    hidden: true
 
 pillar:
     enabled: true
+    hidden: true
 
 place:
     enabled: true
+    hidden: true
 
 superiterate:
     enabled: true
+    hidden: true
 
 iterate:
     enabled: true
+    hidden: true
 
 superfly:
     enabled: true
+    hidden: true
 
 revelio:
     icon_url: http://i.imgur.com/Ql8Ttkb.png
@@ -2736,51 +2756,67 @@ deluminate:
 
 wolfhouse:
     enabled: true
+    hidden: true
 
 mount:
     enabled: true
+    hidden: true
 
 life:
     enabled: true
+    hidden: true
 
 box:
     enabled: true
+    hidden: true
 
 simulate:
     enabled: true
+    hidden: true
 
 tree:
     enabled: true
+    hidden: true
 
 music:
     enabled: true
+    hidden: true
 
 paint:
     enabled: true
+    hidden: true
 
 torch:
     enabled: true
+    hidden: true
 
 recurse:
     enabled: true
+    hidden: true
 
 alter:
     enabled: true
+    hidden: true
 
 superalter:
     enabled: true
+    hidden: true
 
 supershell:
     enabled: true
+    hidden: true
 
 hat:
     enabled: true
+    hidden: true
 
 regenerate:
     enabled: true
+    hidden: true
 
 superregenerate:
     enabled: true
+    hidden: true
 
 pulsus:
     icon_url: http://i.imgur.com/sWkt9H2.png
