@@ -1418,7 +1418,7 @@ disarm:
            sound_pitch: 0.3
            sound_volume: 0.5
         -  class: EffectSingle
-           sound: magic.crack
+           custom_sound: magic.crack
            effectlib:
              class: ConeEffect
              iterations: 16
@@ -1435,7 +1435,7 @@ disarm:
            sound_pitch: 0.3
            sound_volume: 0.5
         -  class: EffectSingle
-           sound: magic.crack
+           custom_sound: magic.crack
            effectlib:
              class: ConeEffect
              iterations: 16
@@ -4737,7 +4737,7 @@ kill:
     effects:
         cast:
         -  class: EffectSingle
-           sound: magic.electrify
+           custom_sound: magic.electrify
            sound_volume: 5
            sound_pitch: -.25
         -  class: EffectSingle
@@ -4767,7 +4767,7 @@ kill:
              iterations: 16
         no_target:
         -  class: EffectSingle
-           sound: magic.electrify
+           custom_sound: magic.electrify
            sound_volume: 5
            sound_pitch: -.25
         -  class: EffectSingle
@@ -4810,7 +4810,7 @@ torture:
     effects:
         cast:
         -  class: EffectSingle
-           sound: magic.electrify
+           custom_sound: magic.electrify
            sound_volume: .5
         -  class: EffectSingle
            sound: irongolem_death
@@ -4832,7 +4832,7 @@ torture:
              duration: 500
         no_target:
         -  class: EffectSingle
-           sound: magic.electrify
+           custom_sound: magic.electrify
            sound_volume: .5
         -  class: EffectSingle
            sound: irongolem_death
@@ -5005,7 +5005,7 @@ entangle:
     effects:
         cast:
         -  class: EffectSingle
-           sound: magic.crack
+           custom_sound: magic.crack
         -  class: EffectTrail
            effect: step_sound
     parameters:
@@ -5042,10 +5042,10 @@ wound:
     effects:
         cast:
         -  class: EffectSingle
-           sound: magic.crack
+           custom_sound: magic.crack
            sound_volume: 1
         -  class: EffectSingle
-           sound: magic.electrify
+           custom_sound: magic.electrify
            sound_volume: 5
            effectlib:
              class: ConeEffect
@@ -5069,10 +5069,10 @@ wound:
              particles: 15
         no_target:
         -  class: EffectSingle
-           sound: magic.crack
+           custom_sound: magic.crack
            sound_volume: 1
         -  class: EffectSingle
-           sound: magic.electrify
+           custom_sound: magic.electrify
            sound_volume: 5
            effectlib:
              class: ConeEffect
