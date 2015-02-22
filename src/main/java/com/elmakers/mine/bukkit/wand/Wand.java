@@ -913,7 +913,8 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 			lore.add(ChatColor.YELLOW + controller.getMessages().get("wand.brush_item_description"));
 		}
         CompatibilityUtils.setLore(itemStack, lore);
-		updateBrushItem(itemStack, materialKey, wand);
+        CompatibilityUtils.addGlow(itemStack);
+        updateBrushItem(itemStack, materialKey, wand);
 		return itemStack;
 	}
 

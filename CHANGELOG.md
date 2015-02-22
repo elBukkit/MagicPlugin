@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## 4.2
+
+ - Custom sound effects (requires resource pack)
+ - Add glow to wand brush icons
+
 ## 4.1
 
  - Added custom spell icons (!!!111oneone11!)
