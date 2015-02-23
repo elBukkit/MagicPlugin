@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 2.2
+
+ - Fix some overlapping undo glitches
+
 ## 2.1
 
  - Add InventoryUtils.getURLSkull, for creating URL-based skulls

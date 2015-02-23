@@ -26,12 +26,8 @@ public abstract class UndoableBatch implements BlockBatch {
         mage.registerForUndo(this.undoList);
     }
 
-    public void registerForUndo(BlockData block) {
-        undoList.add(block);
-    }
-
     public void registerForUndo(Block block) {
-        undoList.add(block);
+        undoList.add(block, true);
     }
 
     public void registerForUndo(Entity entity) {
