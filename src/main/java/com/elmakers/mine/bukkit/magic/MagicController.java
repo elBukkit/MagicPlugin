@@ -2363,6 +2363,12 @@ public class MagicController implements Listener, MageController {
         if (!(apiMage instanceof com.elmakers.mine.bukkit.magic.Mage)) return;
         com.elmakers.mine.bukkit.magic.Mage mage = (com.elmakers.mine.bukkit.magic.Mage)apiMage;
 
+        // Catch lag-related glitches dropping items from GUIs
+        if (mage.getActiveGUI() != null) {
+            event.setCancelled(true);
+            return;
+        }
+
         final Wand activeWand = mage.getActiveWand();
         ItemStack droppedItem = event.getItemDrop().getItemStack();
 
