@@ -42,6 +42,7 @@ public class RecallAction extends BaseSpellAction implements GeneralAction, GUIA
 {
     private static String MARKER_KEY = "recall_marker";
     private static String UNLOCKED_WARPS = "recall_warps";
+    protected static Material DefaultWaypointMaterial = Material.BEACON;
 
     private class UndoMarkerMove implements Runnable
     {
@@ -72,7 +73,7 @@ public class RecallAction extends BaseSpellAction implements GeneralAction, GUIA
         //	FHOME,
     };
 
-    private static MaterialAndData defaultMaterial = new MaterialAndData(Material.BEACON);
+    private static MaterialAndData defaultMaterial = new MaterialAndData(DefaultWaypointMaterial);
 
     private class Waypoint implements Comparable<Waypoint>
     {
@@ -349,7 +350,12 @@ public class RecallAction extends BaseSpellAction implements GeneralAction, GUIA
             } else {
                 waypointItem = waypoint.icon.getItemStack(1);
             }
-            ItemMeta meta = waypointItem.getItemMeta();
+            ItemMeta meta = waypointItem == null ? null : waypointItem.getItemMeta();
+            if (meta == null) {
+                waypointItem = new ItemStack(DefaultWaypointMaterial);
+                meta = waypointItem.getItemMeta();
+                controller.getLogger().warning("Invalid waypoint icon for " + waypoint.name);
+            }
             meta.setDisplayName(waypoint.name);
             if (waypoint.description != null && waypoint.description.length() > 0)
             {
