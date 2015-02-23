@@ -193,14 +193,14 @@ public class BlockData extends MaterialAndData implements com.elmakers.mine.bukk
             return false;
         }
 
-        if (isDifferent(block))
+        // Pass state up the chain
+        if (nextState != null)
+        {
+            nextState.updateFrom(this);
+        }
+        else if (isDifferent(block))
         {
             modify(block, applyPhysics);
-        }
-
-        // Pass state up the chain
-        if (nextState != null) {
-            nextState.updateFrom(this);
         }
         unlink();
 

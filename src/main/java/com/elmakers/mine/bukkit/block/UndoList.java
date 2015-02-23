@@ -113,7 +113,9 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
     @Override
     public boolean add(BlockData blockData)
     {
-        if (!super.add(blockData)) return false;
+        if (!super.add(blockData)) {
+            return false;
+        }
         modifiedTime = System.currentTimeMillis();
         if (bypass) return true;
 
@@ -169,18 +171,17 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
         if (o instanceof BlockData)
         {
             BlockData block = (BlockData)o;
-            removeFromModified(block);
+            removeFromModified(block, block.getPriorState());
         }
 
         return super.remove(o);
     }
 
-    protected static void removeFromModified(BlockData block)
+    protected static void removeFromModified(BlockData block, BlockData priorState)
     {
         BlockData currentState = modified.get(block.getId());
         if (currentState == block)
         {
-            BlockData priorState = block.getPriorState();
             if (priorState == null)
             {
                 modified.remove(block.getId());
@@ -194,8 +195,9 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
 
     public static boolean undo(BlockData undoBlock, boolean applyPhysics)
     {
+        BlockData priorState = undoBlock.getPriorState();
         if (undoBlock.undo(applyPhysics)) {
-            removeFromModified(undoBlock);
+            removeFromModified(undoBlock, priorState);
             return true;
         }
 
@@ -468,7 +470,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
             if (block.isDifferent()) {
                 super.add(block);
             } else {
-                removeFromModified(block);
+                removeFromModified(block, block.getPriorState());
                 block.unlink();
             }
         }
