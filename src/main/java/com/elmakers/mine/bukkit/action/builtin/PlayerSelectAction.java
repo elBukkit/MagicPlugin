@@ -44,22 +44,14 @@ public class PlayerSelectAction extends CompoundAction implements GeneralAction,
     {
         int slot = event.getSlot();
         event.setCancelled(true);
-        org.bukkit.Bukkit.getLogger().info("CLick: " + slot + " out of " + players.size());
         if (event.getSlotType() == InventoryType.SlotType.CONTAINER)
         {
             WeakReference<Player> playerReference = players.get(slot);
             Player player = playerReference != null ? playerReference.get() : null;
-            Spell baseSpell = getSpell();
-
-            org.bukkit.Bukkit.getLogger().info("player: " + player);
-
             if (player != null)
             {
                 Mage mage = getMage();
                 mage.deactivateGUI();
-
-                org.bukkit.Bukkit.getLogger().info("player: " + player);
-
                 super.perform(castParameters, player);
                 playEffects("player_selected");
             }
