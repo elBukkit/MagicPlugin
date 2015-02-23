@@ -103,7 +103,7 @@ public class ProjectileAction  extends BaseSpellAction implements GeneralAction
 	{
 		checkReflection();
 		int count = parameters.getInt("count", 1);
-		int checkFrequency = parameters.getInt("check_frequency", 40);
+		int undoInterval = parameters.getInt("undo_interval", 200);
 		int size = parameters.getInt("size", defaultSize);
 		double damage = parameters.getDouble("damage", 0);
 		float speed = (float)parameters.getDouble("speed", 0.6f);
@@ -283,7 +283,7 @@ public class ProjectileAction  extends BaseSpellAction implements GeneralAction
 			}
 		}
 		if (projectiles.size() > 0) {
-			registerProjectiles(projectiles, actions, checkFrequency, 4);
+			registerProjectiles(projectiles, actions, undoInterval);
 		}
 
 		return SpellResult.CAST;
@@ -295,48 +295,30 @@ public class ProjectileAction  extends BaseSpellAction implements GeneralAction
 	}
 
 	protected void registerProjectiles(final Collection<Projectile> projectiles,
-			final ActionHandler actions, final int checkFrequency, final int retries) {
+			final ActionHandler actions, final int undoInterval) {
+
+        for (Projectile projectile : projectiles) {
+            ActionHandler.setActions(projectile, actions, "indirect_player_message");
+            ActionHandler.setEffects(projectile, getSpell(), "hit");
+        }
+
+        if (undoInterval > 0) {
+            Bukkit.getScheduler().scheduleSyncDelayedTask(getController().getPlugin(), new Runnable() {
+                public void run() {
+                    checkProjectiles(projectiles);
+                }
+            }, undoInterval);
+        }
+    }
+
+	protected void checkProjectiles(final Collection<Projectile> projectiles) {
 
 		for (Projectile projectile : projectiles)
 		{
-			ActionHandler.setActions(projectile, actions, "indirect_player_message");
-			ActionHandler.setEffects(projectile, getSpell(), "hit");
-		}
-		scheduleProjectileCheck(projectiles, checkFrequency, retries);
-	}
+            projectile.remove();
 
-	protected void scheduleProjectileCheck(final Collection<Projectile> projectiles,
-										   final int checkFrequency, final int retries) {
-
-		Bukkit.getScheduler().scheduleSyncDelayedTask(getController().getPlugin(), new Runnable() {
-			public void run() {
-				checkProjectiles(projectiles, checkFrequency, retries);
-			}
-		}, checkFrequency);
-	}
-
-	protected void checkProjectiles(final Collection<Projectile> projectiles,
-			int checkFrequency, int retries) {
-
-		final Collection<Projectile> remaining = new ArrayList<Projectile>();
-		for (Projectile projectile : projectiles)
-		{
-			if (retries == 0)
-			{
-				projectile.remove();
-			}
-			if (projectile.isDead() && ActionHandler.hasActions(projectile))
-			{
-				ActionHandler.runActions(projectile, projectile.getLocation(), null);
-			}
-			else
-			{
-				remaining.add(projectile);
-			}
-		}
-		if (remaining.size() > 0 && retries > 0)
-		{
-			scheduleProjectileCheck(remaining, checkFrequency, retries - 1);
+            // Don't run actions here, the spell may have been undone
+            // and removed the projectile!
 		}
 	}
 
@@ -356,7 +338,7 @@ public class ProjectileAction  extends BaseSpellAction implements GeneralAction
 
 	@Override
 	public void getParameterOptions(Collection<String> examples, String parameterKey) {
-		if (parameterKey.equals("check_frequency")) {
+		if (parameterKey.equals("undo_interval")) {
 			examples.addAll(Arrays.asList((BaseSpell.EXAMPLE_DURATIONS)));
 		} else if (parameterKey.equals("count") || parameterKey.equals("size") || parameterKey.equals("speed")
 				|| parameterKey.equals("spread") || parameterKey.equals("tick_increase") || parameterKey.equals("damage")) {
