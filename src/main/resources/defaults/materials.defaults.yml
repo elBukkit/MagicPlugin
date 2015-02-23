@@ -341,6 +341,7 @@ restricted:
 - anvil
 - chest
 - furnace
+- tnt
 
 # Which materials the AnimateSpell can't be cast on
 # This generally means Automata cannot be made out of these materials.
