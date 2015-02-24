@@ -625,7 +625,7 @@ public class ConfigurationUtils {
 
     public static SoundEffect toSoundEffect(String soundConfig) {
         SoundEffect soundEffect = null;
-        if (soundConfig.length() > 0) {
+        if (soundConfig != null && soundConfig.length() > 0) {
             String[] pieces = StringUtils.split(soundConfig, ',');
             try {
                 String soundName = pieces[0].toUpperCase();
