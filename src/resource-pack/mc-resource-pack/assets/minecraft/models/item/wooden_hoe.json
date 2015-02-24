@@ -15,8 +15,8 @@
   "elements": [
     {
       "comment": "rod",
-      "from": [ 6.5, -8.5, 6.5 ],
-      "to": [ 8.5, 23, 8.5 ],
+      "from": [ 7, -8.5, 7 ],
+      "to": [ 9, 23, 9 ],
       "rotation": { "origin": [ 8.0, 8.0, 8.0 ], "axis": "y", "angle": 45 },
       "faces": {
         "up":    { "uv": [ 0, 0, 15, 15 ], "texture": "#handle" },
@@ -32,7 +32,7 @@
       "comment": "core",
       "from": [ 6, 21, 6 ],
       "to": [ 10, 25, 10 ],
-      "rotation": { "origin": [ 8.0, 20.0, 8.0 ], "axis": "x", "angle": 45 },
+      "rotation": { "origin": [ 8.0, 23.0, 8.0 ], "axis": "x", "angle": 45 },
       "faces": {
         "up":    { "uv": [ 0, 0, 16, 16 ], "texture": "#core0" },
         "down":  { "uv": [ 0, 0, 16, 16 ], "texture": "#core0" },
@@ -46,7 +46,7 @@
       "comment": "core",
       "from": [ 6, 21, 6 ],
       "to": [ 10, 25, 10 ],
-      "rotation": { "origin": [ 8.0, 20.0, 8.0 ], "axis": "y", "angle": 45 },
+      "rotation": { "origin": [ 8.0, 23.0, 8.0 ], "axis": "y", "angle": 45 },
       "faces": {
         "up":    { "uv": [ 0, 0, 16, 16 ], "texture": "#core1" },
         "down":  { "uv": [ 0, 0, 16, 16 ], "texture": "#core1" },
@@ -60,7 +60,7 @@
       "comment": "core",
       "from": [ 6, 21, 6 ],
       "to": [ 10, 25, 10 ],
-      "rotation": { "origin": [ 8.0, 20.0, 8.0 ], "axis": "z", "angle": 45 },
+      "rotation": { "origin": [ 8.0, 23.0, 8.0 ], "axis": "z", "angle": 45 },
       "faces": {
         "up":    { "uv": [ 0, 0, 16, 16 ], "texture": "#core2" },
         "down":  { "uv": [ 0, 0, 16, 16 ], "texture": "#core2" },
@@ -74,7 +74,7 @@
       "comment": "core",
       "from": [ 6, 21, 6 ],
       "to": [ 10, 25, 10 ],
-      "rotation": { "origin": [ 8.0, 20.0, 8.0 ], "axis": "z", "angle": 45 },
+      "rotation": { "origin": [ 8.0, 23.0, 8.0 ], "axis": "z", "angle": 45 },
       "faces": {
         "up":    { "uv": [ 0, 0, 16, 16 ], "texture": "#core3" },
         "down":  { "uv": [ 0, 0, 16, 16 ], "texture": "#core3" },
@@ -89,7 +89,7 @@
       "comment": "shell",
       "from": [ 5, 20, 5 ],
       "to": [ 11, 26, 11 ],
-      "rotation": { "origin": [ 8.0, 20.0, 8.0 ], "axis": "x", "angle": 45 },
+      "rotation": { "origin": [ 8.0, 23.0, 8.0 ], "axis": "x", "angle": 45 },
       "faces": {
         "up":    { "uv": [ 0, 0, 16, 16 ], "texture": "#shell0" },
         "down":  { "uv": [ 0, 0, 16, 16 ], "texture": "#shell0" },
@@ -103,7 +103,7 @@
       "comment": "shell",
       "from": [ 5, 20, 5 ],
       "to": [ 11, 26, 11 ],
-      "rotation": { "origin": [ 8.0, 20.0, 8.0 ], "axis": "y", "angle": 45 },
+      "rotation": { "origin": [ 8.0, 23.0, 8.0 ], "axis": "y", "angle": 45 },
       "faces": {
         "up":    { "uv": [ 0, 0, 16, 16 ], "texture": "#shell1" },
         "down":  { "uv": [ 0, 0, 16, 16 ], "texture": "#shell1" },
@@ -117,7 +117,7 @@
       "comment": "shell",
       "from": [ 5, 20, 5 ],
       "to": [ 11, 26, 11 ],
-      "rotation": { "origin": [ 8.0, 20.0, 8.0 ], "axis": "z", "angle": 45 },
+      "rotation": { "origin": [ 8.0, 23.0, 8.0 ], "axis": "z", "angle": 45 },
       "faces": {
         "up":    { "uv": [ 0, 0, 16, 16 ], "texture": "#shell2" },
         "down":  { "uv": [ 0, 0, 16, 16 ], "texture": "#shell2" },
@@ -131,7 +131,7 @@
       "comment": "shell",
       "from": [ 5, 20, 5 ],
       "to": [ 11, 26, 11 ],
-      "rotation": { "origin": [ 8.0, 20.0, 8.0 ], "axis": "z", "angle": 45 },
+      "rotation": { "origin": [ 8.0, 23.0, 8.0 ], "axis": "z", "angle": 45 },
       "faces": {
         "up":    { "uv": [ 0, 0, 16, 16 ], "texture": "#shell3" },
         "down":  { "uv": [ 0, 0, 16, 16 ], "texture": "#shell3" },
