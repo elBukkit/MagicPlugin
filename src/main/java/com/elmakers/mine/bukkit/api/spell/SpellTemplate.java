@@ -25,6 +25,7 @@ public interface SpellTemplate extends Comparable<SpellTemplate>, CostReducer {
     public long getWorth();
     public SpellCategory getCategory();
     public long getCastCount();
+    public void setCastCount(long count);
     public String getUsage();
     public MaterialAndData getIcon();
     public String getIconURL();
