@@ -1225,9 +1225,15 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         this.controller = instance;
     }
 
+    @Override
     public long getCastCount()
     {
         return castCount;
+    }
+
+    @Override
+    public void setCastCount(long count) {
+        castCount = count;
     }
 
     public void onActivate() {
