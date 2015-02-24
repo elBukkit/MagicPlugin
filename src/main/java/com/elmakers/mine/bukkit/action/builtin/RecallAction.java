@@ -229,6 +229,21 @@ public class RecallAction extends BaseSpellAction implements GeneralAction, GUIA
             return SpellResult.DEACTIVATE;
         }
 
+        if (parameters.contains("lock"))
+        {
+            String lockWarp = parameters.getString("lock");
+            if (!unlockedWarps.contains(lockWarp))
+            {
+                return SpellResult.NO_ACTION;
+            }
+
+            unlockedWarps.remove(lockWarp);
+            unlockedString = StringUtils.join(unlockedWarps, ",");
+            mage.getData().set(UNLOCKED_WARPS, unlockedString);
+
+            return SpellResult.DEACTIVATE;
+        }
+
         Location playerLocation = mage.getLocation();
 		allowCrossWorld = parameters.getBoolean("cross_world", true);
 		for (RecallType testType : RecallType.values())
