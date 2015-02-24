@@ -24,6 +24,7 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitTask;
@@ -93,7 +94,7 @@ public class MagicCommandExecutor extends MagicTabExecutor {
 			}
 			return true;
 		}
-		if (subCommand.equalsIgnoreCase("give") || subCommand.equalsIgnoreCase("sell"))
+		if (subCommand.equalsIgnoreCase("give") || subCommand.equalsIgnoreCase("sell") || subCommand.equalsIgnoreCase("configure") || subCommand.equalsIgnoreCase("describe"))
 		{
 			Player player = null;
 			int argStart = 1;
@@ -101,20 +102,35 @@ public class MagicCommandExecutor extends MagicTabExecutor {
 			if (sender instanceof Player) {
 				player = (Player)sender;
 			} else {
+                if (args.length <= 0) {
+                    sender.sendMessage("Must specify a player name");
+                    return true;
+                }
 				argStart = 2;
-				player = Bukkit.getPlayer(args[0]);
+				player = Bukkit.getPlayer(args[1]);
 				if (player == null) {
-					sender.sendMessage("Can't find player " + args[0]);
+					sender.sendMessage("Can't find player " + args[1]);
 					return true;
 				}
 				if (!player.isOnline()) {
-					sender.sendMessage("Player " + args[0] + " is not online");
+					sender.sendMessage("Player " + args[1] + " is not online");
 					return true;
 				}
 			}
-            boolean showWorth = subCommand.equalsIgnoreCase("sell");
-			String[] args2 = Arrays.copyOfRange(args, argStart, args.length);
-			return onMagicGive(sender, player, subCommand, args2);
+            String[] args2 = Arrays.copyOfRange(args, argStart, args.length);
+            if (subCommand.equalsIgnoreCase("give") || subCommand.equalsIgnoreCase("sell"))
+            {
+                boolean showWorth = subCommand.equalsIgnoreCase("sell");
+                return onMagicGive(sender, player, subCommand, args2);
+            }
+            if (subCommand.equalsIgnoreCase("describe"))
+            {
+                return onMagicDescribe(sender, player, args2);
+            }
+            if (subCommand.equalsIgnoreCase("configure"))
+            {
+                return onMagicConfigure(sender, player, args2);
+            }
 		}
         if (subCommand.equalsIgnoreCase("worth"))
         {
@@ -519,12 +535,16 @@ public class MagicCommandExecutor extends MagicTabExecutor {
             addIfPermissible(sender, options, "Magic.commands.magic.", "worth");
             addIfPermissible(sender, options, "Magic.commands.magic.", "sell");
 			addIfPermissible(sender, options, "Magic.commands.magic.", "list");
+            addIfPermissible(sender, options, "Magic.commands.magic.", "describe");
+            addIfPermissible(sender, options, "Magic.commands.magic.", "configure");
 		} else if (args.length == 2) {
 			if (args[0].equalsIgnoreCase("list")) {
 				addIfPermissible(sender, options, "Magic.commands.magic.list", "maps");
 				addIfPermissible(sender, options, "Magic.commands.magic.list", "wands");
 				addIfPermissible(sender, options, "Magic.commands.magic.list", "automata");
-			} else if (args[0].equalsIgnoreCase("give") || args[0].equalsIgnoreCase("worth") || args[0].equalsIgnoreCase("sell")) {
+			} if (args[0].equalsIgnoreCase("configure") || args[0].equalsIgnoreCase("describe")) {
+                options.addAll(api.getPlayerNames());
+            } else if (args[0].equalsIgnoreCase("give") || args[0].equalsIgnoreCase("worth") || args[0].equalsIgnoreCase("sell")) {
 				options.add("wand");
 				options.add("material");
 				options.add("upgrade");
@@ -548,8 +568,62 @@ public class MagicCommandExecutor extends MagicTabExecutor {
 				} else if (args[1].equalsIgnoreCase("material")) {
 					options.addAll(api.getBrushes());
 				}
-			}
+			} else if (args[0].equalsIgnoreCase("configure") || args[0].equalsIgnoreCase("describe")) {
+                Player player = Bukkit.getPlayer(args[1]);
+                if (player != null) {
+                    Mage mage = api.getMage(player);
+                    ConfigurationSection data = mage.getData();
+                    options.addAll(data.getKeys(false));
+                }
+            }
 		}
 		return options;
 	}
+
+    public boolean onMagicDescribe(CommandSender sender, Player player, String[] args)
+    {
+        Mage mage = api.getMage(player);
+        ConfigurationSection data = mage.getData();
+        if (args != null && args.length > 0)
+        {
+            ConfigurationSection subSection = data.getConfigurationSection(args[0]);
+            if (subSection == null) {
+                sender.sendMessage(ChatColor.RED + "Unknown subsection: " + args[0]);
+                return true;
+            }
+            data = subSection;
+        }
+        Collection<String> keys = data.getKeys(false);
+        sender.sendMessage(ChatColor.GOLD + "Mage data for " + player.getDisplayName());
+        for (String key : keys) {
+            if (data.isConfigurationSection(key)) {
+                ConfigurationSection subSection = data.getConfigurationSection(key);
+                sender.sendMessage(ChatColor.AQUA + " " + key + ChatColor.DARK_AQUA + " (" + subSection.getKeys(true).size() + " items)");
+            } else {
+                String value = data.getString(key);
+                if (value != null) {
+                    sender.sendMessage(ChatColor.AQUA + " " + key + ChatColor.DARK_AQUA + " (" + value + ")");
+                } else {
+                    sender.sendMessage(ChatColor.AQUA + " " + key);
+                }
+            }
+        }
+        return true;
+    }
+
+    public boolean onMagicConfigure(CommandSender sender, Player player, String[] args)
+    {
+        if (args.length != 2)
+        {
+            sender.sendMessage(ChatColor.RED + "Usage: " + ChatColor.AQUA + "magic configure <player> <key> <value>");
+            return true;
+        }
+        Mage mage = api.getMage(player);
+        ConfigurationSection data = mage.getData();
+        String key = args[0];
+        String value = args[1];
+        data.set(key, value);
+        sender.sendMessage(ChatColor.GOLD + "Set " + ChatColor.AQUA + key + ChatColor.GOLD + " to " + ChatColor.AQUA + value + ChatColor.GOLD + " for " + ChatColor.DARK_AQUA + player.getDisplayName());
+        return true;
+    }
 }
