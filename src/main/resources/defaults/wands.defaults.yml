@@ -925,6 +925,18 @@ broomstick:
     spells:
         - broom
 
+crackedbroomstick:
+    mode: cast
+    uses: 10
+    active_spell: broom
+    icon: gold_spade
+    indestructible: false
+    locked: true
+    keep: true
+    effect_color: '220022'
+    spells:
+        - broom
+
 camera:
     mode: cast
     active_spell: camera

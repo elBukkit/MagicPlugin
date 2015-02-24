@@ -210,6 +210,7 @@ public class BlinkSpell extends UndoableSpell
             public void run() {
                 entity.teleport(location);
                 registerForUndo();
+                playEffects("teleport");
             }
         }, 1);
     }

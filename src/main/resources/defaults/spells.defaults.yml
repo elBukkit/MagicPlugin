@@ -3725,13 +3725,17 @@ blink:
     class: BlinkSpell
     worth: 120
     effects:
+        teleport:
+             - class: EffectSingle
+               custom_sound: magic.teleport
+               location: target
         cast:
         -  class: EffectVariable
            brightness:
              '0.5':
              - class: EffectSingle
                custom_sound: magic.teleport
-               location: both
+               location: origin
                particle_override: particleOrbital
                color_override: colorOrbital
                effectlib:
@@ -3748,7 +3752,7 @@ blink:
              '5':
              - class: EffectSingle
                custom_sound: magic.teleport
-               location: both
+               location: origin
                particle_override: particleOrbital
                color_override: colorOrbital
                effectlib:

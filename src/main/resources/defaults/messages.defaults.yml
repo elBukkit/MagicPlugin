@@ -1265,6 +1265,9 @@ wands:
     broomstick:
         name: Broomstick
         description: You can fly!
+    crackedbroomstick:
+        name: Cracked Broomstick
+        description: Good while it lasts!
 
 automata:
     awaken: "&c&o$name &r&5has awakened"
