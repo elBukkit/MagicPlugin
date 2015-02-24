@@ -251,19 +251,7 @@ ascendio:
     category: charms
 
 ascendio|2:
-    parameters:
-        min_speed: 1.5
-        max_speed: 3
-
-ascendio|3:
-    actions:
-        cast:
-        - class: VelocityAction
-        - class: FallProtectionAction
-    parameters:
-        duration: 20000
-        min_speed: 2
-        max_speed: 5
+    inherit: fling|2
 
 arresto:
     icon_url: http://i.imgur.com/PHlfm7b.png
@@ -966,8 +954,8 @@ flagrate:
     inherit: tag
     category: charms
     class: GenericSpell
-        allow_max_range: true
-        range: 3
+    allow_max_range: true
+    range: 3
 
 rictusempra:
     icon_url: http://i.imgur.com/wn5s7tV.png
@@ -1331,24 +1319,10 @@ impervius:
 incendio:
     category: dark
     inherit: fire
-
 incendio|2:
-    parameters:
-        radius: 1
-        cooldown: 3000
-        undo: 1600
-        target_breakables: 1
-    costs:
-        mana: 75
-
+    inherit: fire|2
 incendio|3:
-    parameters:
-        radius: 2
-        cooldown: 5000
-        undo: 1700
-        target_breakables: 2
-    costs:
-        mana: 90
+    inherit: fire|3
 
 lacarnum:
     icon_url: http://i.imgur.com/OoxraNN.png

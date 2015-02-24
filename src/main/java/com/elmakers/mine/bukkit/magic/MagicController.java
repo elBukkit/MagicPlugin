@@ -660,6 +660,10 @@ public class MagicController implements Listener, MageController {
                             Field itemDbField = essentialsClass.getDeclaredField("itemDb");
                             itemDbField.setAccessible(true);
                             Object oldEntry = itemDbField.get(essentials);
+                            if (oldEntry == null) {
+                                getLogger().info("Essentials integration failure");
+                                return;
+                            }
                             if (oldEntry instanceof MagicItemDb) {
                                 getLogger().info("Essentials integration already set up, skipping");
                                 return;
@@ -1058,6 +1062,17 @@ public class MagicController implements Listener, MageController {
         return loadConfigFile(fileName, loadDefaults, false);
     }
 
+    protected void enableAll(ConfigurationSection rootSection) {
+        Set<String> keys = rootSection.getKeys(false);
+        for (String key : keys)
+        {
+            ConfigurationSection section = rootSection.getConfigurationSection(key);
+            if (!section.isSet("enabled")) {
+                section.set("enabled", true);
+            }
+        }
+    }
+
     protected ConfigurationSection loadConfigFile(String fileName, boolean loadDefaults, boolean disableDefaults) {
         String configFileName = fileName + ".yml";
         File configFile = new File(configFolder, configFileName);
@@ -1078,6 +1093,7 @@ public class MagicController implements Listener, MageController {
         ConfigurationSection config = new MemoryConfiguration();
 
         if (loadDefaults) {
+            getLogger().info(" Based on defaults " + defaultsFileName);
             Configuration defaultConfig = YamlConfiguration.loadConfiguration(plugin.getResource(defaultsFileName));
             if (disableDefaults) {
                 Set<String> keys = defaultConfig.getKeys(false);
@@ -1085,37 +1101,44 @@ public class MagicController implements Listener, MageController {
                 {
                     defaultConfig.getConfigurationSection(key).set("enabled", false);
                 }
-                keys = overrides.getKeys(false);
-                for (String key : keys)
-                {
-                    ConfigurationSection section = overrides.getConfigurationSection(key);
-                    if (!section.isSet("enabled")) {
-                        section.set("enabled", true);
-                    }
-                }
+                enableAll(overrides);
             }
             config = ConfigurationUtils.addConfigurations(config, defaultConfig);
         }
 
         if (usingExample) {
-            /// Kinda fugly, but can't check for this in advance?
             try {
-                Configuration exampleConfig = YamlConfiguration.loadConfiguration(plugin.getResource(examplesFileName));
-                config = ConfigurationUtils.addConfigurations(config, exampleConfig);
-                getLogger().info(" Using " + examplesFileName);
+                InputStream input = plugin.getResource(examplesFileName);
+                if (input != null)
+                {
+                    Configuration exampleConfig = YamlConfiguration.loadConfiguration(input);
+                    if (disableDefaults) {
+                        enableAll(exampleConfig);
+                    }
+                    config = ConfigurationUtils.addConfigurations(config, exampleConfig);
+                    getLogger().info(" Using " + examplesFileName);
+                }
             } catch (Exception ex) {
                 getLogger().info(ex.getMessage());
             }
         }
+
         if (addExamples != null && addExamples.size() > 0) {
             for (String example : addExamples) {
                 try {
                     examplesFileName = "examples/" + example + "/" + fileName + ".yml";
                     plugin.saveResource(examplesFileName, true);
 
-                    Configuration exampleConfig = YamlConfiguration.loadConfiguration(plugin.getResource(examplesFileName));
-                    config = ConfigurationUtils.addConfigurations(config, exampleConfig);
-                    getLogger().info(" Added " + examplesFileName);
+                    InputStream input = plugin.getResource(examplesFileName);
+                    if (input != null)
+                    {
+                        Configuration exampleConfig = YamlConfiguration.loadConfiguration(input);
+                        if (disableDefaults) {
+                            enableAll(exampleConfig);
+                        }
+                        config = ConfigurationUtils.addConfigurations(config, exampleConfig);
+                        getLogger().info(" Added " + examplesFileName);
+                    }
                 } catch (Exception ex) {
                     getLogger().info(ex.getMessage());
                 }
@@ -1134,10 +1157,17 @@ public class MagicController implements Listener, MageController {
         // Load main configuration
         try {
             loadProperties(loadConfigFile(CONFIG_FILE, true));
-            if (exampleDefaults != null && exampleDefaults.length() > 0) {
+            if ((exampleDefaults != null && exampleDefaults.length() > 0) || (addExamples != null && addExamples.size() > 0)) {
                 // Reload config, example will be used this time.
-                getLogger().info("Overriding configuration with defaults: " + exampleDefaults);
-                loadProperties(loadConfigFile(CONFIG_FILE, false));
+                if (exampleDefaults != null && exampleDefaults.length() > 0)
+                {
+                    getLogger().info("Overriding configuration with example: " + exampleDefaults);
+                }
+                if (addExamples != null && addExamples.size() > 0)
+                {
+                    getLogger().info("Adding examples: " + StringUtils.join(addExamples, ","));
+                }
+                loadProperties(loadConfigFile(CONFIG_FILE, true));
             }
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -1496,7 +1526,12 @@ public class MagicController implements Listener, MageController {
 
     protected ConfigurationSection getSpellConfig(String key, ConfigurationSection config)
     {
-        ConfigurationSection spellNode = config.getConfigurationSection(key);
+        return getSpellConfig(key, config, true);
+    }
+
+    protected ConfigurationSection getSpellConfig(String key, ConfigurationSection config, boolean addInherited)
+    {
+        ConfigurationSection spellNode = ConfigurationUtils.addConfigurations(new MemoryConfiguration(), config.getConfigurationSection(key));
         if (spellNode == null)
         {
             getLogger().warning("Spell " + key + " not known");
@@ -1505,24 +1540,40 @@ public class MagicController implements Listener, MageController {
 
         SpellKey spellKey = new SpellKey(key);
         String inheritFrom = spellNode.getString("inherit");
+        String upgradeInheritsFrom = null;
         if (spellKey.isVariant()) {
             int level = spellKey.getLevel();
-            inheritFrom = spellKey.getBaseKey();
+            upgradeInheritsFrom = spellKey.getBaseKey();
             if (level != 2) {
-                inheritFrom += "|" + (level - 1);
+                upgradeInheritsFrom += "|" + (level - 1);
             }
         }
 
-        if (inheritFrom != null)
+        addInherited = addInherited && inheritFrom != null;
+        if (addInherited || upgradeInheritsFrom != null)
         {
-            ConfigurationSection inheritConfig = getSpellConfig(inheritFrom, config);
-            if (inheritConfig != null)
+            if (addInherited)
             {
-                spellNode = ConfigurationUtils.addConfigurations(spellNode, inheritConfig, false);
+                ConfigurationSection inheritConfig = getSpellConfig(inheritFrom, config);
+                if (inheritConfig != null)
+                {
+                    spellNode = ConfigurationUtils.addConfigurations(spellNode, inheritConfig, false);
+                }
+                else
+                {
+                    getLogger().warning("Spell " + key + " inherits from unknown ancestor " + inheritFrom);
+                }
             }
-            else
+
+            if (upgradeInheritsFrom != null)
             {
-                getLogger().warning("Spell " + key + " inherits from unknown ancestor " + inheritFrom);
+                if (config.contains(upgradeInheritsFrom))
+                {
+                    ConfigurationSection baseInheritConfig = getSpellConfig(upgradeInheritsFrom, config, inheritFrom == null);
+                    spellNode = ConfigurationUtils.addConfigurations(spellNode, baseInheritConfig, inheritFrom != null);
+                } else {
+                    getLogger().warning("Spell upgrade " + key + " inherits from unknown level " + upgradeInheritsFrom);
+                }
             }
         } else {
             ConfigurationSection defaults = config.getConfigurationSection("default");

@@ -75,14 +75,14 @@ wolf:
     effect_bubbles: false
     organize: true
     mode: inventory
-    active_spell: apparatemaxima
+    active_spell: apparate
     hidden: true
     effect_particle: crit_magic
     effect_particle_count: 2
     effect_particle_interval: 0
     overrides: patronus.type wolf,max_dimension 1024
     spells:
-      - apparatemaxima
+      - apparate
       - ascendio
       - flight
       - gather
