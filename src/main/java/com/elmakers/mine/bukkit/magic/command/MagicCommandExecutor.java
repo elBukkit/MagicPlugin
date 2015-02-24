@@ -11,6 +11,7 @@ import java.util.Set;
 
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.maps.URLMap;
+import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.block.UndoList;
 import com.elmakers.mine.bukkit.block.batch.SpellBatch;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
@@ -586,6 +587,13 @@ public class MagicCommandExecutor extends MagicTabExecutor {
         ConfigurationSection data = mage.getData();
         if (args != null && args.length > 0)
         {
+            Spell spell = mage.getSpell(args[0]);
+            if (spell != null)
+            {
+                sender.sendMessage(ChatColor.GOLD + "Mage data for " + ChatColor.AQUA + player.getDisplayName() + ChatColor.GOLD + ": " + ChatColor.LIGHT_PURPLE + spell.getName());
+                sender.sendMessage(ChatColor.AQUA + " Cast Count: " + spell.getCastCount());
+                return true;
+            }
             ConfigurationSection subSection = data.getConfigurationSection(args[0]);
             if (subSection == null) {
                 sender.sendMessage(ChatColor.RED + "Unknown subsection: " + args[0]);
@@ -594,7 +602,7 @@ public class MagicCommandExecutor extends MagicTabExecutor {
             data = subSection;
         }
         Collection<String> keys = data.getKeys(false);
-        sender.sendMessage(ChatColor.GOLD + "Mage data for " + player.getDisplayName());
+        sender.sendMessage(ChatColor.GOLD + "Mage data for " + ChatColor.AQUA + player.getDisplayName());
         for (String key : keys) {
             if (data.isConfigurationSection(key)) {
                 ConfigurationSection subSection = data.getConfigurationSection(key);
@@ -619,6 +627,21 @@ public class MagicCommandExecutor extends MagicTabExecutor {
             return true;
         }
         Mage mage = api.getMage(player);
+        Spell spell = mage.getSpell(args[0]);
+        if (spell != null)
+        {
+            long value = 0;
+            try {
+                value = Long.parseLong(args[1]);
+            } catch (Exception ex) {
+                sender.sendMessage(ChatColor.RED + "Cast count must be a number");
+                return true;
+            }
+            spell.setCastCount(value);
+            sender.sendMessage(ChatColor.GOLD + "Set " + ChatColor.AQUA + spell.getName() + ChatColor.GOLD + " cast count to " + ChatColor.AQUA + value + ChatColor.GOLD + " for " + ChatColor.DARK_AQUA + player.getDisplayName());
+            return true;
+        }
+
         ConfigurationSection data = mage.getData();
         String key = args[0];
         String value = args[1];
