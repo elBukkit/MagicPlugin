@@ -91,6 +91,7 @@ public abstract class BrushSpell extends BlockSpell {
     protected void loadTemplate(ConfigurationSection node)
     {
         super.loadTemplate(node);
+        ConfigurationSection parameters = node.getConfigurationSection("parameters");
         hasBrush = parameters.contains("brush");
         usesBrush = node.getBoolean("uses_brush", usesBrush);
     }
