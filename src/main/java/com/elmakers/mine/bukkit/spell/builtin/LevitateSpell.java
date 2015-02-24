@@ -499,6 +499,12 @@ public class LevitateSpell extends TargetingSpell implements Listener
             }
         }
 
+
+        if (stashItem) {
+            PlayerInventory inventory = player.getInventory();
+            heldItemSlot = inventory.getHeldItemSlot();
+        }
+
 		activate();
 
 		return SpellResult.CAST;
@@ -625,14 +631,19 @@ public class LevitateSpell extends TargetingSpell implements Listener
         boostTicksRemaining = 0;
 
         if (stashItem) {
-            com.elmakers.mine.bukkit.api.wand.Wand wand = mage.getActiveWand();
-            if (wand != null) {
-                wand.deactivate();
-            }
-            PlayerInventory inventory = player.getInventory();
-            heldItemSlot = inventory.getHeldItemSlot();
-            heldItem = inventory.getItemInHand();
-            inventory.setItemInHand(null);
+            Plugin plugin = controller.getPlugin();
+            plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
+                @Override
+                public void run() {
+                    com.elmakers.mine.bukkit.api.wand.Wand wand = mage.getActiveWand();
+                    if (wand != null) {
+                        wand.deactivate();
+                    }
+                    PlayerInventory inventory = player.getInventory();
+                    heldItem = inventory.getItem(heldItemSlot);
+                    inventory.setItem(heldItemSlot, null);
+                }
+            }, 1);
         } else {
             heldItem = null;
         }
