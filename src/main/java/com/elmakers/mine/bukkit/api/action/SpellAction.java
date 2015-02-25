@@ -16,6 +16,7 @@ public interface SpellAction
     public void getParameterOptions(Collection<String> examples, String parameterKey);
     public boolean usesBrush();
     public boolean isUndoable();
+    public boolean requiresBuildPermission();
     public String transformMessage(String message);
     public void load(ConfigurationSection node);
     public void save(ConfigurationSection node);
