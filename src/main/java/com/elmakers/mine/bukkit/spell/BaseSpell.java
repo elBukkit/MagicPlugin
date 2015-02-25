@@ -126,12 +126,16 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     private String description;
     private String extendedDescription;
     private String levelDescription;
+    private String upgradeDescription;
     private String usage;
     private long worth;
     private Color color;
     private String particle;
     private SpellCategory category;
     private BaseSpell template;
+    private MageSpell upgrade;
+    private long requiredUpgradeCasts;
+    private String requiredUpgradePath;
     private MaterialAndData icon = new MaterialAndData(Material.AIR);
     private String iconURL = null;
     private List<CastingCost> costs = null;
@@ -725,8 +729,14 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         extendedDescription = controller.getMessages().get("spells." + baseKey + ".extended_description", "");
         usage = controller.getMessages().get("spells." + baseKey + ".usage", "");
 
+        // Upgrade path information
+        // The actual upgrade spell will be set externally.
+        requiredUpgradePath = node.getString("upgrade_required_path");
+        requiredUpgradeCasts = node.getLong("upgrade_required_casts");
+
         // Can be overridden by the base spell, or the variant spell
         levelDescription = controller.getMessages().get("spells." + baseKey + ".level_description", levelDescription);
+        upgradeDescription = controller.getMessages().get("spells." + baseKey + ".upgrade_description", levelDescription);
 
         // Spell level variants can override
         if (spellKey.isVariant()) {
@@ -743,6 +753,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
             // Base spells must specify their own level in each spell config though,
             // they don't get an auto-generated one.
             levelDescription = controller.getMessages().get("spells." + variantKey + ".level_description", levelDescription);
+            upgradeDescription = controller.getMessages().get("spells." + variantKey + ".upgrade_description", upgradeDescription);
         }
 
         // Individual spell configuration overrides all
@@ -1714,5 +1725,30 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     @Override
     public String getIconURL() {
         return iconURL;
+    }
+
+    @Override
+    public String getRequiredUpgradePath() {
+        return requiredUpgradePath;
+    }
+
+    @Override
+    public long getRequiredUpgradeCasts() {
+        return requiredUpgradeCasts;
+    }
+
+    @Override
+    public String getUpgradeDescription() {
+        return upgradeDescription == null ? "" : upgradeDescription;
+    }
+
+    @Override
+    public MageSpell getUpgrade() {
+        return upgrade;
+    }
+
+    @Override
+    public void setUpgrade(MageSpell upgrade) {
+        this.upgrade = upgrade;
     }
 }
