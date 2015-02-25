@@ -1,6 +1,9 @@
 #
 # An example of how to custom a few different spells.
 #
+# You would add configuration blocks like this to plugins/Magic/spells.yml
+# to customize your spells.
+#
 # See defaults/spells.defaults.yml to see the default configurations.
 #
 
@@ -17,3 +20,9 @@ missile:
 blink:
   costs:
     mana: 100
+
+# Add a new version of blink
+superblink:
+  inherit: blink
+  parameters:
+     range: 512
