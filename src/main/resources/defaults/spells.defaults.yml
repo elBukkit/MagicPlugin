@@ -147,6 +147,8 @@ curse:
     category: dark
     pvp_restricted: true
     worth: 10
+    upgrade_required_path: apprentice
+    upgrade_required_casts: 50
     actions:
         cast:
         -  class: PotionEffectAction
@@ -270,6 +272,8 @@ boon:
     icon: red_rose:2
     category: utility
     worth: 10
+    upgrade_required_path: apprentice
+    upgrade_required_casts: 50
     actions:
         cast:
         -  class: PotionEffectAction
@@ -757,6 +761,8 @@ shell:
     category: engineering
     class: ConstructSpell
     worth: 50
+    upgrade_required_path: student
+    upgrade_required_casts: 50
     effects:
         cast:
         -  class: EffectSingle
@@ -778,11 +784,15 @@ shell:
         mana: 75
 
 shell|2:
+    upgrade_required_path: apprentice
+    upgrade_required_casts: 50
     parameters:
         brush: stone
         undo: 5000
 
 shell|3:
+    upgrade_required_path: master
+    upgrade_required_casts: 50
     parameters:
         brush: obsidian
         undo: 10000
@@ -821,6 +831,8 @@ reflect:
     category: light
     class: ConstructSpell
     worth: 20
+    upgrade_required_path: student
+    upgrade_required_casts: 25
     effects:
         cast:
         -  class: EffectSingle
@@ -849,6 +861,8 @@ reflect:
         mana: 40
 
 reflect|2:
+    upgrade_required_path: apprentice
+    upgrade_required_casts: 50
     parameters:
         radius: 1
         undo: 900
@@ -1051,6 +1065,8 @@ push:
     category: elemental
     pvp_restricted: true
     worth: 15
+    upgrade_required_path: student
+    upgrade_required_casts: 50
     actions:
         cast:
         - class: VelocityAction
@@ -1156,6 +1172,8 @@ boom:
     class: BoomSpell
     pvp_restricted: true
     worth: 30
+    upgrade_required_path: apprentice
+    upgrade_required_casts: 50
     effects:
         cast:
         -  class: EffectSingle
@@ -1233,6 +1251,8 @@ frost:
     category: combat
     pvp_restricted: true
     worth: 80
+    upgrade_required_path: student
+    upgrade_required_casts: 50
     actions:
         cast:
         - class: AreaOfEffectAction
@@ -1285,6 +1305,8 @@ frost:
         mana: 75
 
 frost|2:
+    upgrade_required_path: apprentice
+    upgrade_required_casts: 50
     worth: 80
     effects:
         cast:
@@ -1412,6 +1434,8 @@ disarm:
     pvp_restricted: true
     cast_on_no_target: true
     worth: 110
+    upgrade_required_path: student
+    upgrade_required_casts: 50
     effects:
         cast:
         -  class: EffectSingle
@@ -1477,6 +1501,8 @@ disarm:
         mana: 60
 
 disarm|2:
+    upgrade_required_path: apprentice
+    upgrade_required_casts: 50
     parameters:
         fizzle_chance: 0.3
         backfire_chance: 0.1
@@ -1531,6 +1557,8 @@ heal:
     icon_url: http://i.imgur.com/3WX7D83.png
     icon: bread
     category: light
+    upgrade_required_path: student
+    upgrade_required_casts: 50
     actions:
         cast:
         -  class: PotionEffectAction
@@ -1563,6 +1591,8 @@ heal:
         mana: 50
 
 heal|2:
+    upgrade_required_path: apprentice
+    upgrade_required_casts: 50
     parameters:
         heal: 4
         cooldown: 9000
@@ -1777,6 +1807,8 @@ arrow:
     category: combat
     pvp_restricted: true
     worth: 2
+    upgrade_required_path: student
+    upgrade_required_casts: 50
     actions:
         cast:
         - class: ProjectileAction
@@ -1821,6 +1853,8 @@ arrow:
         mana: 50
 
 arrow|2:
+    upgrade_required_path: apprentice
+    upgrade_required_casts: 50
     parameters:
       damage: .75
       speed: 3
@@ -1829,6 +1863,8 @@ arrow|2:
         mana: 60
 
 arrow|3:
+    upgrade_required_path: master
+    upgrade_required_casts: 50
     parameters:
       damage: .85
       speed: 4
@@ -1882,6 +1918,8 @@ fling:
     category: utility
     worth: 80
     pvp_restricted: false
+    upgrade_required_path: apprentice
+    upgrade_required_casts: 50
     actions:
         cast:
         - class: VelocityAction
@@ -1903,7 +1941,7 @@ fling:
         duration: 20000
         target: self
         min_speed: 1.0
-        max_speed: 1.5
+        max_speed: 2.0
     costs:
         mana: 60
 
@@ -1917,6 +1955,8 @@ torch:
     icon: torch
     category: engineering
     worth: 80
+    upgrade_required_path: engineer
+    upgrade_required_casts: 25
     actions:
         cast:
         -  class: TorchAction
@@ -2247,6 +2287,8 @@ fire:
     category: demolition
     pvp_restricted: true
     worth: 10
+    upgrade_required_path: student
+    upgrade_required_casts: 50
     actions:
         cast:
         - class: CoverAction
@@ -2283,6 +2325,8 @@ fire:
         mana: 35
 
 fire|2:
+    upgrade_required_path: apprentice
+    upgrade_required_casts: 50
     parameters:
         radius: 1
         cooldown: 3000
@@ -2653,6 +2697,8 @@ grenade:
     category: demolition
     pvp_restricted: true
     worth: 25
+    upgrade_required_path: apprentice
+    upgrade_required_casts: 50
     actions:
         cast:
         -  class: TNTAction
@@ -3012,6 +3058,8 @@ blast:
     class: ConstructSpell
     worth: 12
     cast_on_no_target: true
+    upgrade_required_path: student
+    upgrade_required_casts: 50
     effects:
         cast:
         -  class: EffectSingle
@@ -3044,6 +3092,8 @@ blast:
         mana: 45
 
 blast|2:
+    upgrade_required_path: apprentice
+    upgrade_required_casts: 50
     parameters:
         radius: 2
         speed: 1.2
@@ -3328,6 +3378,8 @@ counterspell:
     worth: 250
     cast_on_no_target: true
     pvp_restricted: true
+    upgrade_required_path: apprentice
+    upgrade_required_casts: 50
     effects:
         cast:
         -  class: EffectVariable
@@ -3460,6 +3512,8 @@ mine:
     category: mining
     class: DropSpell
     worth: 30
+    upgrade_required_path: apprentice
+    upgrade_required_casts: 50
     effects:
         cast:
         -  class: EffectSingle
@@ -3577,6 +3631,8 @@ blob:
     category: combat
     class: ConstructSpell
     worth: 20
+    upgrade_required_path: apprentice
+    upgrade_required_casts: 50
     effects:
         cast:
         -  class: EffectSingle
@@ -3598,6 +3654,8 @@ blob:
         mana: 50
 
 blob|2:
+    upgrade_required_path: master
+    upgrade_required_casts: 50
     parameters:
         radius: 3
         undo: 5000
@@ -3724,6 +3782,8 @@ blink:
     icon_url: http://i.imgur.com/n7UxOwJ.png
     class: BlinkSpell
     worth: 120
+    upgrade_required_path: student
+    upgrade_required_casts: 50
     effects:
         teleport:
              - class: EffectSingle
@@ -3778,6 +3838,8 @@ blink:
         mana: 50
 
 blink|2:
+    upgrade_required_path: master
+    upgrade_required_casts: 50
     parameters:
         allow_passthrough: true
         passthrough_range: 2
@@ -3975,6 +4037,8 @@ laser:
     category: demolition
     class: IterateSpell
     worth: 130
+    upgrade_required_path: apprentice
+    upgrade_required_casts: 50
     effects:
         cast:
         -  class: EffectSingle
@@ -3996,6 +4060,8 @@ laser:
         mana: 120
 
 laser|2:
+    upgrade_required_path: master
+    upgrade_required_casts: 50
     parameters:
         radius: 2
         destructible: destructible
@@ -4428,6 +4494,8 @@ wolfhouse:
 missile:
     icon: ink_sack:1
     icon_url: http://i.imgur.com/i77svwG.png
+    upgrade_required_path: student
+    upgrade_required_casts: 50
     category: combat
     worth: 40
     pvp_restricted: true
@@ -4497,6 +4565,8 @@ missile:
         mana: 15
 
 missile|2:
+    upgrade_required_path: beginner
+    upgrade_required_casts: 50
     parameters:
         range: 32
         player_damage: 3
@@ -4506,6 +4576,8 @@ missile|2:
         mana: 50
 
 missile|3:
+    upgrade_required_path: apprentice
+    upgrade_required_casts: 50
     parameters:
         range: 48
         player_damage: 4
@@ -5100,6 +5172,8 @@ wound:
         mana: 120
 
 stun:
+    upgrade_required_path: student
+    upgrade_required_casts: 50
     icon_url: http://i.imgur.com/1mmorJ8.png
     icon: ink_sack:4
     category: combat
@@ -5170,6 +5244,8 @@ stun:
         mana: 50
 
 stun|2:
+    upgrade_required_path: apprentice
+    upgrade_required_casts: 50
     parameters:
         damage: 1.5
         duration: 1000
@@ -5187,6 +5263,8 @@ poison:
     category: combat
     pvp_restricted: true
     worth: 20
+    upgrade_required_path: student
+    upgrade_required_casts: 50
     actions:
         cast:
         -  class: PotionEffectAction
@@ -5250,6 +5328,8 @@ poison:
         cooldown: 7000
 
 poison|2:
+    upgrade_required_path: master
+    upgrade_required_casts: 50
     parameters:
         range: 16
         duration: 3000
@@ -5355,6 +5435,8 @@ harden:
     class: RecurseSpell
     worth: 150
     cast_on_no_target: true
+    upgrade_required_path: apprentice
+    upgrade_required_casts: 50
     effects:
         cast:
         -  class: EffectTrail

@@ -101,9 +101,20 @@ public class MagicCommandExecutor extends MagicTabExecutor {
 			int argStart = 1;
 			
 			if (sender instanceof Player) {
-				player = (Player)sender;
+                if (args.length > 1)
+                {
+                    player = Bukkit.getPlayer(args[1]);
+                }
+                if (player == null)
+                {
+                    player = (Player)sender;
+                }
+                else
+                {
+                    argStart = 2;
+                }
 			} else {
-                if (args.length <= 0) {
+                if (args.length <= 1) {
                     sender.sendMessage("Must specify a player name");
                     return true;
                 }

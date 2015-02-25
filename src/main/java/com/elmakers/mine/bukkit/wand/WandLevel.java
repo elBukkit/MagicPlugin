@@ -173,6 +173,7 @@ public class WandLevel {
                                 levelDescription = spell.getName();
                             }
                             mage.sendMessage(messages.get("wand.spell_upgraded").replace("$name", currentSpell.getName()).replace("$wand", wand.getName()).replace("$level", levelDescription));
+                            mage.sendMessage(spell.getUpgradeDescription().replace("$name", currentSpell.getName()));
                         } else {
                             mage.sendMessage(messages.get("wand.spell_added").replace("$name", spell.getName()).replace("$wand", wand.getName()));
                         }

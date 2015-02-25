@@ -506,4 +506,13 @@ public class WandUpgradePath {
     public boolean isHidden() {
         return hidden;
     }
+
+    public boolean hasPath(String pathName) {
+        if (this.key.equalsIgnoreCase(pathName)) return true;
+        if (parent != null) {
+            return parent.hasPath(pathName);
+        }
+
+        return false;
+    }
 }

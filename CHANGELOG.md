@@ -5,6 +5,7 @@
  - Custom sound effects (requires resource pack)
  - Add glow to wand brush icons
  - Fix some overlapping undo glitches
+ - Spells now level up with use, not when enchanting
 
 ## 4.1
 

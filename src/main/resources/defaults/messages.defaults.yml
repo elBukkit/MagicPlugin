@@ -1050,6 +1050,7 @@ spells:
         name: Magic Missile
         description: Fire a bolt of pure magic
         cast: You fire a missile at $target
+        upgrade_description: "&r&6$name &5&rnow has increased damage and range"
     blind:
         name: Blind
         description: Blind your target

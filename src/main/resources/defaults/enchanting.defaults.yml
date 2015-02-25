@@ -221,7 +221,6 @@ student:
       gills: 10,11,20
       grenade: 0,20,70
       heal: 0,1,5
-      arrow|2: 0,0,30
       monster: 5,20,30
       lightning: 40,50,30
       lava: 5,20,50
@@ -232,15 +231,11 @@ student:
       mine: 0,5,30
       chop: 0,5,30
       shell: 1,20,30
-      reflect|2: 0,0,5
       tag: 1,4,5
       blob: 1,20,30
       disarm: 0,0,2
       entangle: 0,0,20
-      stun|2: 0,5,15
-      missile|2: 0,5,15
       poison: 5,10,20
-      blast|2: 30,40,50
       laser: 0,0,10
 
 apprentice:
@@ -287,8 +282,6 @@ apprentice:
       2: 0,   50,  10
       3: 0,   10,  50
     spells:
-      boon|2: 0,5,10
-      blink|2: 1,5,10
       emp: 0,0,10
       blessing: 0,0,1
       breach: 5,20,30
@@ -301,25 +294,10 @@ apprentice:
       grow: 1,10,20
       counterspell: 0,1,5
       tent: 0,0,1
-      blob|2: 1,20,30
-      shell|2: 1,20,30
-      reflect|3: 0,1,5
       disc: 0,1,5
-      push|2: 10,20,40
-      curse|2: 0,1,10
-      frost|2: 20,50,60
-      disarm|2: 0,0,2
-      heal|2: 0,1,5
-      arrow|3: 0,0,30
-      fire|2: 50,70,60
       rubberize: 2,10,20
       wound: 0,10,20
-      stun|3: 0,5,15
-      missile|3: 0,5,15
-      poison|2: 0,5,15
       harden: 0,0,15
-      laser|2: 0,0,10
-      mine|2: 0,0,10
       sponge: 0,0,10
 
 master:
@@ -383,7 +361,6 @@ master:
       2: 0,   50,  10
       3: 0,   0,   50
     spells:
-      blink|3: 1,5,10
       cluster: 0,0,5
       bomb: 0,0,1
       invincible: 0,0,10
@@ -393,31 +370,15 @@ master:
       nuke: 0,0,1
       day: 0,5,10
       night: 0,0,1
-      disarm|3: 0,0,2
       weather: 0,0,5
       cage: 0,0,2
       meteor: 0,0,2
       pollinate: 0,0,10
-      shell|3: 1,20,30
-      blob|3: 1,20,30
-      boom|2: 20,50,60
-      frost|3: 20,50,60
-      heal|3: 0,1,5
-      arrow|4: 0,0,30
-      fling|2: 0,5,70
-      fire|3: 50,70,60
       kill: 2,10,20
       torture: 2,10,20
       petrify: 0,10,30
       lift: 1,5,10
-      missile|4: 0,5,15
-      poison|3: 0,5,15
-      counterspell|2: 0,1,10
-      harden|2: 0,10,15
-      blast|3: 30,40,50
-      laser|3: 0,0,20
       anvil: 0,0,10
-      grenade|2: 0,10,30
 
 #
 # The move from "master" to engineer requires the player to aquire some basic
@@ -499,9 +460,7 @@ engineer:
       pillar: 0,5,10
       place: 0,1,5
       stalactite: 0,5,10
-      shell|4: 1,20,30
       levitate: 0,0,10
-      torch|2: 50,70,90
     material_count:
       1: 50, 20, 20
       2: 1,  10,  30

@@ -16,6 +16,7 @@ import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.magic.Messages;
 import com.elmakers.mine.bukkit.api.spell.CastingCost;
 import com.elmakers.mine.bukkit.api.spell.CostReducer;
+import com.elmakers.mine.bukkit.api.spell.MageSpell;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellKey;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
@@ -2176,6 +2177,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
                             levelDescription = spellName;
                         }
                         mage.sendMessage(messages.get("wand.spell_upgraded").replace("$name", currentSpell.getName()).replace("$level", levelDescription).replace("$wand", getName()));
+                        mage.sendMessage(spell.getUpgradeDescription().replace("$name", currentSpell.getName()));
                     } else {
                         mage.sendMessage(messages.get("wand.spell_added").replace("$name", spellName).replace("$wand", getName()));
                     }
@@ -2630,6 +2632,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
                                 levelDescription = spell.getName();
                             }
                             mage.sendMessage(controller.getMessages().get("wand.spell_upgraded").replace("$wand", getName()).replace("$name", currentSpell.getName()).replace("$level", levelDescription));
+                            mage.sendMessage(spell.getUpgradeDescription().replace("$name", currentSpell.getName()));
                         } else {
                             mage.sendMessage(controller.getMessages().get("wand.spell_added").replace("$wand", getName()).replace("$name", spell.getName()));
                             activeSpell = spell.getKey();
@@ -2824,6 +2827,27 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 					// And the effect color morphing isn't all that important if a few
 					// casts get lost.
 				}
+                if (spell instanceof MageSpell)
+                {
+                    MageSpell mageSpell = (MageSpell)spell;
+                    MageSpell upgrade = mageSpell.getUpgrade();
+                    if (upgrade != null && mageSpell.getCastCount() >= mageSpell.getRequiredUpgradeCasts())
+                    {
+                        String upgradePath = mageSpell.getRequiredUpgradePath();
+                        WandUpgradePath currentPath = getPath();
+                        if (upgradePath == null || upgradePath.isEmpty() || currentPath.hasPath(upgradePath))
+                        {
+                            addSpell(upgrade.getKey());
+                            Messages messages = controller.getMessages();
+                            String levelDescription = upgrade.getLevelDescription();
+                            if (levelDescription == null || levelDescription.isEmpty()) {
+                                levelDescription = upgrade.getName();
+                            }
+                            mage.sendMessage(messages.get("wand.spell_upgraded").replace("$name", upgrade.getName()).replace("$wand", getName()).replace("$level", levelDescription));
+                            mage.sendMessage(upgrade.getUpgradeDescription().replace("$name", upgrade.getName()));
+                        }
+                    }
+                }
 
                 updateHotbarStatus();
 				return true;
@@ -3202,6 +3226,8 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		}
         spellKey = template.getSpellKey();
         int level = spellKey.getLevel();
+        int inventoryCount = inventories.size();
+        int spellCount = spells.size();
 
         // Special handling for spell upgrades
         Integer inventorySlot = null;
@@ -3235,9 +3261,6 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
             activeSpell = spellKey.getKey();
         }
 
-        int inventoryCount = inventories.size();
-        int spellCount = spells.size();
-
         spellLevels.put(spellKey.getBaseKey(), level);
         spells.put(template.getKey(), inventorySlot);
 		addToInventory(spellItem, inventorySlot);
@@ -3246,7 +3269,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         saveState();
 		updateLore();
 
-        if (mage != null)
+        if (mage != null && spells.size() != spellCount)
         {
             if (spellCount == 0)
             {
