@@ -34,7 +34,7 @@ public class WGCustomFlagsManager {
         SpellCategory category = spell.getCategory();
 
         Set<String> blocked = checkSet.queryValue(source, BLOCKED_SPELLS);
-        if (blocked != null && (blocked.contains("*") || blocked.contains(spellKey))) return false;
+        if (blocked != null && blocked.contains(spellKey)) return false;
         Set<String> blockedCategories = checkSet.queryValue(source, BLOCKED_SPELL_CATEGORIES);
         if (blockedCategories != null && category != null && blockedCategories.contains(category.getKey())) return false;
 
@@ -43,6 +43,8 @@ public class WGCustomFlagsManager {
 
         Set<String> allowedCategories = checkSet.queryValue(source, ALLOWED_SPELL_CATEGORIES);
         if (allowedCategories != null && category != null && allowedCategories.contains(category.getKey())) return true;
+
+        if (blocked != null && blocked.contains("*")) return false;
 
         return null;
     }
