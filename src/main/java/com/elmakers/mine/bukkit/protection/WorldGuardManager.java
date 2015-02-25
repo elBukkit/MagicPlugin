@@ -59,17 +59,10 @@ public class WorldGuardManager {
         return true;
     }
 
-    public boolean hasCastPermission(Player player, SpellTemplate spell) {
+    public Boolean getCastPermission(Player player, SpellTemplate spell, Location location) {
         if (enabled && worldGuard != null) {
-            return worldGuard.hasCastPermission(player, spell);
+            return worldGuard.getCastPermission(player, spell, location);
         }
-        return true;
-    }
-
-    public boolean hasCastPermissionOverride(Player player, SpellTemplate spell) {
-        if (enabled && worldGuard != null) {
-            return worldGuard.hasCastPermissionOverride(player, spell);
-        }
-        return true;
+        return null;
     }
 }

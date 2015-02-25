@@ -43,4 +43,10 @@ public class BurnAction extends BaseSpellAction implements BlockAction
     {
         return true;
     }
+
+    @Override
+    public boolean requiresBuildPermission()
+    {
+        return true;
+    }
 }

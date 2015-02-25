@@ -1932,21 +1932,16 @@ public class MagicController implements Listener, MageController {
     {
         if (sender == null) return true;
 
-        if (sender instanceof Player) {
-            Player player = (Player)sender;
-            if (!player.hasPermission("Magic.bypass") && !worldGuardManager.hasCastPermission((Player)sender, spell)) {
-                return false;
-            }
+        if (sender instanceof Player && ((Player)sender).hasPermission("Magic.bypass")) {
+            return true;
         }
         return hasPermission(sender, spell.getPermissionNode(), true);
     }
 
-    public boolean hasCastPermissionOverride(CommandSender sender, SpellTemplate spell)
+    public Boolean getRegionCastPermission(Player player, SpellTemplate spell, Location location)
     {
-        if (sender == null || !(sender instanceof Player)) return false;
-
-        Player player = (Player)sender;
-        return (player.hasPermission("Magic.bypass") || worldGuardManager.hasCastPermissionOverride((Player) sender, spell));
+        if (player != null && player.hasPermission("Magic.bypass")) return true;
+        return worldGuardManager.getCastPermission(player, spell, location);
     }
 
 	public boolean hasPermission(Player player, String pNode, boolean defaultValue)

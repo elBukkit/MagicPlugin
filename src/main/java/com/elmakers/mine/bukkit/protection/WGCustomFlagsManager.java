@@ -29,31 +29,21 @@ public class WGCustomFlagsManager {
         customFlags.addCustomFlag(BLOCKED_SPELL_CATEGORIES);
     }
 
-    public boolean canCast(RegionAssociable source, ApplicableRegionSet checkSet, SpellTemplate spell) {
+    public Boolean getCastPermission(RegionAssociable source, ApplicableRegionSet checkSet, SpellTemplate spell) {
         String spellKey = spell.getSpellKey().getBaseKey();
-        Set<String> allowed = checkSet.queryValue(source, ALLOWED_SPELLS);
-        if (allowed != null && (allowed.contains("*") || allowed.contains(spellKey))) return true;
-
         SpellCategory category = spell.getCategory();
-        Set<String> allowedCategories = checkSet.queryValue(source, ALLOWED_SPELL_CATEGORIES);
-        if (allowedCategories != null && category != null && allowedCategories.contains(category.getKey())) return true;
 
         Set<String> blocked = checkSet.queryValue(source, BLOCKED_SPELLS);
         if (blocked != null && (blocked.contains("*") || blocked.contains(spellKey))) return false;
         Set<String> blockedCategories = checkSet.queryValue(source, BLOCKED_SPELL_CATEGORIES);
         if (blockedCategories != null && category != null && blockedCategories.contains(category.getKey())) return false;
 
-        return true;
-    }
+        Set<String> allowed = checkSet.queryValue(source, ALLOWED_SPELLS);
+        if (allowed != null && (allowed.contains("*") || allowed.contains(spellKey))) return true;
 
-    public boolean canOverrideCast(RegionAssociable source, ApplicableRegionSet checkSet, SpellTemplate spell) {
-        String spellKey = spell.getSpellKey().getBaseKey();
-        SpellCategory category = spell.getCategory();
-        Set<String> blockedCategories = checkSet.queryValue(source, BLOCKED_SPELL_CATEGORIES);
-        if (blockedCategories != null && category != null && blockedCategories.contains(category.getKey())) return false;
         Set<String> allowedCategories = checkSet.queryValue(source, ALLOWED_SPELL_CATEGORIES);
         if (allowedCategories != null && category != null && allowedCategories.contains(category.getKey())) return true;
-        Set<String> allowed = checkSet.queryValue(source, ALLOWED_SPELLS);
-        return (allowed != null && (allowed.contains("*") || allowed.contains(spellKey)));
+
+        return null;
     }
 }

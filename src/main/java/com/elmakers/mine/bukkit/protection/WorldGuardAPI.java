@@ -74,43 +74,21 @@ public class WorldGuardAPI {
 		return true;
 	}
 
-    public boolean hasCastPermission(Player player, SpellTemplate spell) {
-        if (player != null && worldGuard != null && customFlags != null)
+    public Boolean getCastPermission(Player player, SpellTemplate spell, Location location) {
+        if (location != null && worldGuard != null && customFlags != null)
         {
-            Location location = player.getLocation();
-            RegionManager regionManager = worldGuard.getRegionManager(location.getWorld());
-            if (regionManager == null) return true;
-
-            ApplicableRegionSet checkSet = regionManager.getApplicableRegions(location);
-            if (checkSet == null) return true;
-
-            if (checkSet.size() > 0 && checkSet.isOwnerOfAll(worldGuard.wrapPlayer(player)))
-            {
-                return true;
-            }
-
-           return customFlags.canCast(getAssociable(player), checkSet, spell);
-        }
-
-        return true;
-    }
-
-    public boolean hasCastPermissionOverride(Player player, SpellTemplate spell) {
-        if (player != null && worldGuard != null && customFlags != null)
-        {
-            Location location = player.getLocation();
             RegionManager regionManager = worldGuard.getRegionManager(location.getWorld());
             if (regionManager == null) {
-                return false;
+                return null;
             }
 
             ApplicableRegionSet checkSet = regionManager.getApplicableRegions(location);
             if (checkSet == null) {
-                return false;
+                return null;
             }
 
-            return customFlags.canOverrideCast(getAssociable(player), checkSet, spell);
+            return customFlags.getCastPermission(getAssociable(player), checkSet, spell);
         }
-        return false;
+        return null;
     }
 }

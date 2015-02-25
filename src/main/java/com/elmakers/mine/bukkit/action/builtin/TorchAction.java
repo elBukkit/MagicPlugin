@@ -132,4 +132,10 @@ public class TorchAction extends BaseSpellAction implements BlockAction
     {
         return true;
     }
+
+    @Override
+    public boolean requiresBuildPermission()
+    {
+        return true;
+    }
 }

@@ -105,4 +105,10 @@ public class FreezeAction extends BaseSpellAction implements BlockAction
     {
         return true;
     }
+
+    @Override
+    public boolean requiresBuildPermission()
+    {
+        return true;
+    }
 }
