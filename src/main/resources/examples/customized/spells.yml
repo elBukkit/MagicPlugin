@@ -1,0 +1,19 @@
+#
+# An example of how to custom a few different spells.
+#
+# See defaults/spells.defaults.yml to see the default configurations.
+#
+
+# Disable the Nuke spell completely
+nuke:
+  enabled: false
+
+# Increase the cooldown for Magic Missile
+missile:
+  parameters:
+    cooldown: 10000
+
+# Change the costs of blink
+blink:
+  costs:
+    mana: 100
