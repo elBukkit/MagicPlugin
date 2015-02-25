@@ -864,7 +864,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         }
 
         // Don't perform permission check until after processing parameters, in case of overrides
-        if (!canCast(defaultLocation)) {
+        if (!canCast(getLocation())) {
             processResult(SpellResult.INSUFFICIENT_PERMISSION);
             return false;
         }
@@ -924,9 +924,25 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     }
 
     public boolean canCast(Location location) {
-        if (hasCastPermissionOverride(mage.getCommandSender())) return true;
         if (!hasCastPermission(mage.getCommandSender())) return false;
-        return !pvpRestricted || bypassPvpRestriction || mage.isPVPAllowed(location) || mage.isSuperPowered();
+        Boolean regionPermission = controller.getRegionCastPermission(mage.getPlayer(), this, location);
+        if (regionPermission != null && regionPermission == true) return true;
+        if (regionPermission != null && regionPermission == false) return false;
+        if (requiresBuildPermission() && !hasBuildPermission(location.getBlock())) return false;
+        return !pvpRestricted || bypassPvpRestriction || mage.isPVPAllowed(location);
+    }
+
+    public boolean requiresBuildPermission() {
+        return false;
+    }
+
+    public boolean hasBuildPermission(Block block) {
+
+        // Cast permissions bypass
+        Boolean castPermission = controller.getRegionCastPermission(mage.getPlayer(), this, block.getLocation());
+        if (castPermission != null && castPermission == true) return true;
+        if (castPermission != null && castPermission == false) return false;
+        return mage.hasBuildPermission(block);
     }
 
     protected void onBackfire() {
@@ -1677,13 +1693,6 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         if (sender == null || bypassPermissions) return true;
 
         return controller.hasCastPermission(sender, this);
-    }
-
-    public boolean hasCastPermissionOverride(CommandSender sender)
-    {
-        if (sender == null || bypassPermissions) return true;
-
-        return controller.hasCastPermissionOverride(sender, this);
     }
 
     @Override

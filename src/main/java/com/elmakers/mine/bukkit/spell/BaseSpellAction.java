@@ -252,6 +252,12 @@ public abstract class BaseSpellAction implements SpellAction
         return false;
     }
 
+    @Override
+    public boolean requiresBuildPermission()
+    {
+        return false;
+    }
+
     public Spell getSpell() {
         return spell;
     }

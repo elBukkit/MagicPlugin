@@ -148,4 +148,8 @@ public abstract class BlockSpell extends UndoableSpell {
             return direction;
         }
     }
+
+    public boolean requiresBuildPermission() {
+        return true;
+    }
 }

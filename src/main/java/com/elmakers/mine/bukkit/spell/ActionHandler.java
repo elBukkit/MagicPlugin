@@ -33,6 +33,7 @@ public class ActionHandler
     private final Spell spell;
     private boolean undoable = false;
     private boolean usesBrush = false;
+    private boolean requiresBuildPermission = false;
 
     private ConfigurationSection parameters = null;
 
@@ -49,6 +50,7 @@ public class ActionHandler
     {
         undoable = false;
         usesBrush = false;
+        requiresBuildPermission = false;
         Collection<ConfigurationSection> actionNodes = ConfigurationUtils.getNodeList(root, key);
 
         if (actionNodes != null)
@@ -94,6 +96,7 @@ public class ActionHandler
         allActions.add(action);
         usesBrush = usesBrush || action.usesBrush();
         undoable = undoable || action.isUndoable();
+        requiresBuildPermission = requiresBuildPermission || action.requiresBuildPermission();
         if (action instanceof GeneralAction) {
             generalActions.add((GeneralAction)action);
         }
@@ -240,6 +243,10 @@ public class ActionHandler
     public boolean usesBrush()
     {
         return usesBrush;
+    }
+
+    public boolean requiresBuildPermission() {
+        return requiresBuildPermission;
     }
 
     public void getParameterNames(Collection<String> parameters)
