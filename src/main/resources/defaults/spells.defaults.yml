@@ -1654,6 +1654,7 @@ gather:
     parameters:
         command: tpa @tn
         target_self: false
+        cooldown: 30000
     costs:
         mana: 150
 
@@ -1797,6 +1798,7 @@ meteor:
         range: 64
         allow_max_range: true
         undo: 40000
+        cooldown: 3000
     costs:
         mana: 80
 
@@ -2747,6 +2749,7 @@ cluster:
         fuse: 60
         fire: false
         undo: 20000
+        cooldown: 1000
     costs:
         mana: 150
 
@@ -2777,6 +2780,7 @@ bomb:
         py: ~20
         pdy: -0.75
         undo: 10000
+        cooldown: 5000
     costs:
         mana: 250
 
@@ -2997,7 +3001,7 @@ workbench:
 stash:
     icon: ender_chest
     icon_url: http://s3.amazonaws.com/MinecraftSkins/MHF_Chest.png
-    category: master
+    category: utility
     class: StashSpell
     worth: 20
     effects:
@@ -3603,7 +3607,7 @@ superalter:
 
 sphere:
     icon: snow_ball
-    category: master
+    category: engineering
     class: ShapeSpell
     worth: 20
     effects:
@@ -3852,7 +3856,7 @@ blink|3:
     parameters:
         range: 128
         allow_ascend: true
-        allow_decend: true
+        allow_descend: true
         allow_passthrough: true
         passthrough_range: 8
         cooldown: 100
@@ -4191,7 +4195,7 @@ flare:
 recall:
     icon_url: http://i.imgur.com/DUCgoAF.png
     icon: compass
-    category: master
+    category: utility
     worth: 25
     cast_on_no_target: false
     actions:
@@ -4234,7 +4238,7 @@ recall:
 respawn:
     hidden: true
     icon: compass
-    category: master
+    category: utility
     class: CommandSpell
     worth: 20
     effects:
@@ -4358,7 +4362,7 @@ map:
     hidden: true
     icon: map
     worth: 45
-    category: master
+    category: utility
     class: MapSpell
     parameters:
         cooldown: 5000
@@ -5447,8 +5451,7 @@ harden:
         range: 16
         size: 2
         check_destructible: true
-        destructible: hardenable
-        brush: stone
+        brush: smooth_brick
         transparent: transparent_to_construction
         undo: 4000
         cooldown: 1000

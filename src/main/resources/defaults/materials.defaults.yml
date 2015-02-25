@@ -309,6 +309,8 @@ delayed:
 # removal of attached block)
 indestructible:
 - bedrock
+- barrier
+
 # if you don't want people destroying your end portals:
 #- ender_portal_frame 
 
@@ -321,6 +323,7 @@ indestructible:
 # It's a good idea to put any indestructibles in here, since they can't be removed.
 restricted:
 - bedrock
+- barrier
 - command
 - ender_portal
 - mob_spawner
