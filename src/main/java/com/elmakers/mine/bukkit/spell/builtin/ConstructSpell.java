@@ -59,6 +59,11 @@ public class ConstructSpell extends BrushSpell
 			return SpellResult.NO_TARGET;
 		}
 
+
+        if (!hasBuildPermission(target)) {
+            return SpellResult.INSUFFICIENT_PERMISSION;
+        }
+
 		int radius = parameters.getInt("radius", DEFAULT_RADIUS);
 		radius = parameters.getInt("r", radius);
 		radius = parameters.getInt("size", radius);
@@ -126,10 +131,6 @@ public class ConstructSpell extends BrushSpell
                 return SpellResult.FAIL;
             }
         }
-		
-		if (!hasBuildPermission(target)) {
-			return SpellResult.INSUFFICIENT_PERMISSION;
-		}
 		
 		// TODO : Is this needed? Or just use "ty"?
 		if (parameters.contains("y_offset")) {
