@@ -2831,7 +2831,8 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
                 {
                     MageSpell mageSpell = (MageSpell)spell;
                     MageSpell upgrade = mageSpell.getUpgrade();
-                    if (upgrade != null && mageSpell.getCastCount() >= mageSpell.getRequiredUpgradeCasts())
+                    long requiredCasts = mageSpell.getRequiredUpgradeCasts();
+                    if (upgrade != null && requiredCasts > 0 && mageSpell.getCastCount() >= requiredCasts)
                     {
                         String upgradePath = mageSpell.getRequiredUpgradePath();
                         WandUpgradePath currentPath = getPath();
