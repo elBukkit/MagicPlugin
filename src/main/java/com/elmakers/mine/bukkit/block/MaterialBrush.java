@@ -362,7 +362,7 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
             }
             if (cloneTarget == null) cloneTarget = target;
             materialTarget = toTargetLocation(target);
-            if (materialTarget.getY() < 0 || materialTarget.getY() > fromMage.getController().getMaxY()) {
+            if (materialTarget.getY() < 0 || materialTarget.getY() > fromMage.getController().getMaxY() || materialTarget.getWorld() == null) {
                 isValid = false;
             } else {
                 Block block = materialTarget.getBlock();
