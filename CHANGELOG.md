@@ -6,6 +6,7 @@
  - Add glow to wand brush icons
  - Fix some overlapping undo glitches
  - Spells now level up with use, not when enchanting
+ - Add allowed-spell-categories and blocked-spell-categories WGCustomFlags
 
 ## 4.1
 

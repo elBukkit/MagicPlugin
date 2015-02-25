@@ -89,7 +89,7 @@ public class WorldGuardAPI {
                 return true;
             }
 
-           return customFlags.canCast(getAssociable(player), checkSet, spell.getSpellKey().getBaseKey());
+           return customFlags.canCast(getAssociable(player), checkSet, spell);
         }
 
         return true;
@@ -109,7 +109,7 @@ public class WorldGuardAPI {
                 return false;
             }
 
-            return customFlags.canOverrideCast(getAssociable(player), checkSet, spell.getSpellKey().getBaseKey());
+            return customFlags.canOverrideCast(getAssociable(player), checkSet, spell);
         }
         return false;
     }
