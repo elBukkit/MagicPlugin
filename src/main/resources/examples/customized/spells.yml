@@ -26,3 +26,12 @@ superblink:
   inherit: blink
   parameters:
      range: 512
+
+# Make it so Torch doesn't level up
+torch:
+  upgrade_required_casts: 0
+
+# Make it so Toss will auto-undo
+toss:
+  parameters:
+     undo: 5000
