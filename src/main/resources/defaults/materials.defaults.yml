@@ -275,6 +275,7 @@ attachable_wall:
 - wall_sign
 - stone_button
 - lever
+- wall_banner
 
 # Things that double-stack like doors and tall plants
 attachable_double:
@@ -288,6 +289,7 @@ attachable_double:
 - jungle_door
 - acacia_door
 - dark_oak_door
+- standing_banner
 
 # All doors, for the DoorSpell generally
 doors:
