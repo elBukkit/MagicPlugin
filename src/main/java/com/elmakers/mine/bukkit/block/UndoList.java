@@ -10,6 +10,7 @@ import java.util.UUID;
 
 import com.elmakers.mine.bukkit.spell.UndoableSpell;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
@@ -414,6 +415,13 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
     {
         if (entities != null) {
             entities.remove(explodingEntity);
+        }
+
+        // Prevent dropping items if this is going to auto-undo
+        if (isScheduled()) {
+            for (Block block : blocks) {
+                block.setType(Material.AIR);
+            }
         }
         for (Block block : blocks) {
             add(block, true);
