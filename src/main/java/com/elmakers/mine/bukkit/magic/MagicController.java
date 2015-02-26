@@ -2322,22 +2322,12 @@ public class MagicController implements Listener, MageController {
 				if (blockList != null) blockList.cancelExplosion(explodingEntity);
 			} else {
 				if (blockList != null) {
-                    if (blockList.isScheduled()) {
-                        for (Block block : event.blockList()) {
-                            block.setType(Material.AIR);
-                        }
-                    }
                     blockList.explode(explodingEntity, event.blockList());
                 }
 			}
 		} 
 		else if (blockList != null) {
-            if (blockList.isScheduled()) {
-                for (Block block : event.blockList()) {
-                    block.setType(Material.AIR);
-                }
-            }
-			blockList.explode(explodingEntity, event.blockList());
+            blockList.explode(explodingEntity, event.blockList());
 		}
 	}
 	
