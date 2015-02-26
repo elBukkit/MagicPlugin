@@ -175,6 +175,9 @@ wand_item: wood_hoe
 wand_upgrade_item: nether_star
 wand_glow: false
 
+# Set this to true to turn on material brush blow.
+brush_glow: false
+
 # Set this to false to turn off the player skull-based spell icons
 url_icons_enabled: true
 

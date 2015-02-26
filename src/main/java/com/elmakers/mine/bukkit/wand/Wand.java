@@ -192,6 +192,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	public static Material EnchantableWandMaterial = null;
 	public static boolean EnableGlow = false;
     public static boolean SpellGlow = false;
+    public static boolean BrushGlow = true;
     public static boolean LiveHotbar = true;
     public static SoundEffect inventoryOpenSound = null;
     public static SoundEffect inventoryCloseSound = null;
@@ -914,7 +915,10 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 			lore.add(ChatColor.YELLOW + controller.getMessages().get("wand.brush_item_description"));
 		}
         CompatibilityUtils.setLore(itemStack, lore);
-        CompatibilityUtils.addGlow(itemStack);
+        if (BrushGlow)
+        {
+            CompatibilityUtils.addGlow(itemStack);
+        }
         updateBrushItem(itemStack, materialKey, wand);
 		return itemStack;
 	}

@@ -1822,7 +1822,7 @@ public class MagicController implements Listener, MageController {
 
 		messagePrefix = ChatColor.translateAlternateColorCodes('&', messagePrefix);
 		castMessagePrefix = ChatColor.translateAlternateColorCodes('&', castMessagePrefix);
-		
+
 		worldGuardManager.setEnabled(properties.getBoolean("region_manager_enabled", worldGuardManager.isEnabled()));
 		factionsManager.setEnabled(properties.getBoolean("factions_enabled", factionsManager.isEnabled()));
         pvpManager.setEnabled(properties.getBoolean("pvp_manager_enabled", pvpManager.isEnabled()));
@@ -1832,19 +1832,21 @@ public class MagicController implements Listener, MageController {
         locketteManager.setEnabled(properties.getBoolean("lockette_enabled", locketteManager.isEnabled()));
 
         metricsLevel = properties.getInt("metrics_level", metricsLevel);
-		
+
 		if (properties.contains("mana_display")) {
 			Wand.retainLevelDisplay = properties.getString("mana_display").equals("hybrid");
 			Wand.displayManaAsBar = !properties.getString("mana_display").equals("number");
             Wand.displayManaAsDurability = properties.getString("mana_display").equals("durability");
             Wand.displayManaAsGlow = properties.getString("mana_display").equals("glow");
 		}
-		
+
 		// Parse wand settings
 		Wand.DefaultUpgradeMaterial = ConfigurationUtils.getMaterial(properties, "wand_upgrade_item", Wand.DefaultUpgradeMaterial);
 		Wand.EnableGlow = properties.getBoolean("wand_glow", Wand.EnableGlow);
         Wand.SpellGlow = properties.getBoolean("spell_glow", Wand.SpellGlow);
         Wand.LiveHotbar = properties.getBoolean("live_hotbar", Wand.LiveHotbar);
+        Wand.BrushGlow = properties.getBoolean("brush_glow", Wand.BrushGlow);
+
         MaterialBrush.CopyMaterial = ConfigurationUtils.getMaterial(properties, "copy_item", MaterialBrush.CopyMaterial);
 		MaterialBrush.EraseMaterial = ConfigurationUtils.getMaterial(properties, "erase_item", MaterialBrush.EraseMaterial);
 		MaterialBrush.CloneMaterial = ConfigurationUtils.getMaterial(properties, "clone_item", MaterialBrush.CloneMaterial);
@@ -1860,19 +1862,19 @@ public class MagicController implements Listener, MageController {
 
 		// Set up other systems
 		EffectPlayer.SOUNDS_ENABLED = soundsEnabled;
-		
+
 		// Set up auto-save timer
 		final MagicController saveController = this;
 		int autoSaveIntervalTicks = properties.getInt("auto_save", 0) * 20 / 1000;;
 		if (autoSaveIntervalTicks > 1) {
-			autoSaveTaskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, 
+			autoSaveTaskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin,
 					new TimedRunnable("Auto Save") {
 						public void onRun() {
 							saveController.getLogger().info("Auto-saving Magic data");
 							saveController.save(true);
 							saveController.getLogger().info("... Done auto-saving.");
 						}
-					}, 
+					},
 					autoSaveIntervalTicks, autoSaveIntervalTicks);
 		}
 
