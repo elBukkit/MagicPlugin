@@ -416,15 +416,15 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
         if (entities != null) {
             entities.remove(explodingEntity);
         }
+        for (Block block : blocks) {
+            add(block, true);
+        }
 
         // Prevent dropping items if this is going to auto-undo
         if (isScheduled()) {
             for (Block block : blocks) {
                 block.setType(Material.AIR);
             }
-        }
-        for (Block block : blocks) {
-            add(block, true);
         }
         modifiedTime = System.currentTimeMillis();
     }
