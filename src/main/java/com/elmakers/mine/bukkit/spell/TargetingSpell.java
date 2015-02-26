@@ -178,7 +178,7 @@ public abstract class TargetingSpell extends BaseSpell {
 
     public boolean hasBuildPermission(Block block)
     {
-        return bypassBuildRestriction || mage.hasBuildPermission(block);
+        return bypassBuildRestriction || super.hasBuildPermission(block);
     }
 
     protected void offsetTarget(int dx, int dy, int dz) {
