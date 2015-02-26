@@ -2293,41 +2293,54 @@ public class MagicController implements Listener, MageController {
         ActionHandler.runActions(explodingEntity, explodingEntity.getLocation(), null);
         ActionHandler.runEffects(explodingEntity);
     }
+
+    @EventHandler(priority = EventPriority.LOWEST)
+    public void onEntityExplode(EntityExplodeEvent event) {
+        Entity explodingEntity = event.getEntity();
+        if (explodingEntity == null) return;
+
+        UndoList blockList = getEntityUndo(explodingEntity);
+        boolean cancel = event.isCancelled();
+        cancel = cancel || explodingEntity.hasMetadata("cancel_explosion");
+        if (cancel) {
+            event.setCancelled(true);
+        }
+        else if (maxTNTPerChunk > 0 && explodingEntity.getType() == EntityType.PRIMED_TNT) {
+            Chunk chunk = explodingEntity.getLocation().getChunk();
+            if (chunk == null || !chunk.isLoaded()) return;
+
+            int tntCount = 0;
+            Entity[] entities = chunk.getEntities();
+            for (Entity entity : entities) {
+                if (entity != null && entity.getType() == EntityType.PRIMED_TNT) {
+                    tntCount++;
+                }
+            }
+            if (tntCount > maxTNTPerChunk) {
+                event.setCancelled(true);
+            } else {
+                if (blockList != null) {
+                    blockList.explode(explodingEntity, event.blockList());
+                }
+            }
+        }
+        else if (blockList != null) {
+            blockList.explode(explodingEntity, event.blockList());
+        }
+    }
 	
 	@EventHandler(priority = EventPriority.HIGHEST)
-	public void onEntityExplode(EntityExplodeEvent event) {
+	public void onEntityFinalizeExplode(EntityExplodeEvent event) {
 		Entity explodingEntity = event.getEntity();
 		if (explodingEntity == null) return;
 
 		UndoList blockList = getEntityUndo(explodingEntity);
-		boolean cancel = event.isCancelled();
-        cancel = cancel || explodingEntity.hasMetadata("cancel_explosion");
-		if (cancel) {
-            event.setCancelled(true);
-			if (blockList != null) blockList.cancelExplosion(explodingEntity);
-		}
-		else if (maxTNTPerChunk > 0 && explodingEntity.getType() == EntityType.PRIMED_TNT) {
-			Chunk chunk = explodingEntity.getLocation().getChunk();
-			if (chunk == null || !chunk.isLoaded()) return;
-			
-			int tntCount = 0;
-			Entity[] entities = chunk.getEntities();
-			for (Entity entity : entities) {
-				if (entity != null && entity.getType() == EntityType.PRIMED_TNT) {
-					tntCount++;
-				}
-			}
-			if (tntCount > maxTNTPerChunk) {
-				event.setCancelled(true);
-				if (blockList != null) blockList.cancelExplosion(explodingEntity);
-			} else {
-				if (blockList != null) {
-                    blockList.explode(explodingEntity, event.blockList());
-                }
-			}
-		} 
-		else if (blockList != null) {
-            blockList.explode(explodingEntity, event.blockList());
+        if (blockList == null) return;
+
+		if (event.isCancelled()) {
+			blockList.cancelExplosion(explodingEntity);
+		} else {
+            blockList.finalizeExplosion(explodingEntity, event.blockList());
 		}
 	}
 	
