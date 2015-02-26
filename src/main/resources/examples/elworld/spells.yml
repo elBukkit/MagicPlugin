@@ -1,0 +1,186 @@
+#
+# Modify this file to change the available spells.
+# New spells can be added, existing spells modified or removed (disabled)
+#
+
+#
+# This is the Spell configuration file for the Magic plugin.
+#
+# Here you may alter default spell behavior, or add and remove spells.
+#
+# See https://github.com/elBukkit/MagicPlugin/blob/master/SPELLS.md for more information.
+#
+# To see the default spells and configurations, look in defaults/spells.defaults.yml
+# 
+# The name, description, and usage of a spell should be defined in messages.yml as
+#  messages.spells.<spellkey>.name
+#  messages.spells.<spellkey>.description
+#  messages.spells.<spellkey>.usage
+#  messages.spells.<spellkey>.cast
+#  ... etc.
+#
+# General format:
+#
+# <spellkey>:
+#       icon:  <material name>
+#       category: <anything>
+#       class: <Must be a class from the spells package.>
+#       costs:
+#           xp: <xp/mana amount>
+#           <material_name>: <reagent amount>#      
+#       parameters:
+#           <specific spell parameters- TODO: list common ones>
+#
+
+purge:
+    icon: grilled_pork
+    category: dark
+    class: com.elmakers.mine.bukkit.magicworlds.spell.PurgeSpell
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: creeper_hiss
+        -  class: EffectTrail
+           particle: smoke_normal
+        -  class: EffectRing
+           particle: smoke_normal
+           location: target
+    parameters:
+        target_type: LivingEntity
+        target: other
+        allow_max_range: false
+        range: 32
+    costs:
+        xp: 1000
+
+phase:
+   parameters:
+      worlds:
+          world:
+             target: world_other
+             scale: 1
+          world_other:
+             target: world
+             scale: 1
+          world_nether:
+             target: world
+             scale: 8
+          world_the_end:
+             target: world
+             scale: 1
+          world_backup:
+             target: world
+             scale: 1
+          world_other_backup:
+             target: world_other
+             scale: 1
+          world_nether_backup:
+             target: world_nether
+             scale: 1
+          world_the_end_backup:
+             target: world_the_end
+             scale: 1
+             
+recall:
+  parameters:
+    warps:
+      town:
+        name: The Capitol
+        description: The only town we know of
+        locked: true
+        icon: compass
+      lodge:
+        name: Old Town
+        description: The old city of yore
+        locked: true
+        icon: compass
+      battle:
+        name: Battle School
+        description: Buy your way to power
+        locked: true
+        icon: diamond_sword
+      engineer:
+        name: Engineering School
+        description: Buy your way to glory
+        locked: true
+        icon: wood_axe
+      other:
+        name: The Fallen Capital
+        description: Danger Lurks
+        locked: true
+        icon: eye_of_ender
+      bastion:
+        name: The Bastion
+        description: The last refuge
+        locked: true
+        icon: ender_pearl
+      black:
+        name: The Black Temple
+        description: The original spawn!
+        locked: true
+        icon: obsidian
+      white:
+        name: The White Temple
+        description: Spawn#2
+        locked: true
+        icon: quartz_block
+      blue:
+        name: The Blue Temple
+        description: Spawn#3
+        locked: true
+        icon: lapis_block
+      frozen:
+        name: The Frozen Temple
+        description: Spawn#4
+        locked: true
+        icon: packed_ice
+      iron:
+        name: The Iron Temple
+        description: Spawn#5
+        locked: true
+        icon: iron_block
+      redwood:
+        name: The Burning Temple
+        description: The Lost Spawn
+        locked: true
+        icon: log
+      gold:
+        name: The Gold Temple
+        description: The spawn of Heroes
+        locked: true
+        icon: gold_block
+      hall:
+        name: The Hall of Heroes
+        description: Our most (in)famous players
+        locked: true
+        icon: emerald
+      brick:
+        name: The Brick Temple
+        description: Spawn#6
+        locked: true
+        icon: brick
+      seaside:
+        name: Seaside
+        description: A quaint little town
+        locked: true
+        icon: boat
+      wolfcastle:
+        name: Wolf Castle
+        description: The castle of wolves
+        locked: true
+        icon: stone
+      dueling:
+        name: Dueling Arena
+        description: Wizard Duels!
+        locked: true
+        icon: wood_hoe
+      spleef:
+        name: Spleef Arena
+        description: Wizard Spleef!
+        locked: true
+        icon: wood_hoe
+      endtemple:
+        name: The End Temple
+        description: A little shortcut
+        locked: true
+        icon: ender_stone

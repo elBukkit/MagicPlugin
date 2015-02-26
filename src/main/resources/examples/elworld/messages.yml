@@ -1,0 +1,9 @@
+#
+# Use this to add "The Other Side" as a world label for Phase
+#
+
+worlds:
+    world_other:
+        name: The Other Side
+    world:
+        name: The Overworld

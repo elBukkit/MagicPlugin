@@ -1,0 +1,80 @@
+#
+# Modify this file to change the available default wands.
+# New wands can be added, existing wands modified or removed (disabled)
+#
+
+#
+# This is the Wand configuration file for the Magic plugin.
+#
+# This defines all of the wand "templates" that can be created with the
+# /wand and /wandp commands.
+#
+# To see the default wands and configurations, look in defaults/wands.defaults.yml
+#
+# See https://github.com/elBukkit/MagicPlugin/blob/master/WANDS.md for more information.
+#
+# Once a wand is created, it is its own unique item. It may be modified after that,
+# and may bear no direct relationship back to the template that created it.
+# 
+# The name and description, of a wand should be defined in messages.yml as
+#  messages.wands.<wandkey>.name
+#  messages.wands.<wandkey>.description
+#
+# Note that wands can also be renamed on an anvil.
+#
+# There are two special entries in here:
+# - The "default" wand is used as a template when creating a new and with /wand.
+# - The "random" wand has a different and specific configuration format.
+#
+# General format:
+#
+# <wandkey>:
+#
+#       # If true, this wand can not be enchanted, combined or otherwise modified
+#
+#       modifiable: true
+#
+#       # Set to false to disable a preset wand
+#       enabled: <true|false>
+#
+#       # Casting cost and cooldown reduction
+#
+#       cost_reduction: (0.0-1.0)
+#       cooldown_reduction: (0.0-1.0)
+#
+#       # Overall and specific protection
+#
+#       protection: (0.0-1.0)
+#       protection_physical: (0.0-1.0)
+#       protection_fire: (0.0-1.0)
+#       protection_falling: (0.0-1.0)
+#       protection_blast: (0.0-1.0)
+#
+#       # Regeneration values are added every second
+#
+#       health_regeneration: (0-20)
+#       hunger_regeneration: (0-20)
+#
+#       # If non-zero, this wand will use the Mana system instead of XP
+#
+#       xp_regeneration: (0-200)
+#       xp_max: (0-?)
+#
+#       # This provides bonus damage and effects to some spells
+#       # and increases the overall range of all targeted spells
+#
+#       power: (0.0-1.0)
+#
+#       # Increases player walk/fly speed- is limited by Bukkit
+#
+#       haste: (0.0 - 0.4-ish)
+#
+#       # Applies a potioneffect to the player while holding the wand
+#       # also used by many spells that have visual effects when cast with this wand
+#
+#       effect_color: <hex color, eg 'FF0000')
+#       spells:
+#           - <spellname>
+#       materials:
+#           - <materialname>
+#

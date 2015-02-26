@@ -491,33 +491,33 @@ miniwolf:
     xp_regeneration: 50
     spells:
         - blast|3@0
-        - collapse|3@0
-        - harden|3@3
-        - missile|4@4
-        - levitate@5
-        - fling|2@6
-        - blink|3@7
-        - counterspell|2@8
-        - reflect|3@9
-        - day@10
-        - arrow|4@11
+        - collapse|3@1
+        - harden|3@2
+        - missile|4@3
+        - levitate@4
+        - fling|2@5
+        - blink|3@6
+        - counterspell|2@7
+        - reflect|3@8
+        - day@9
+        - arrow|4@10
+        - boom|2@11
+        - disarm@12
+        - push@13
+        - grenade@14
+        - curse@15
+        - boon|2
+        - lightning
         - stash
         - emp
         - force
-        - boom|2
         - fireball
-        - lightning
         - torch
         - fire
-        - disarm
-        - push
         - pull
         - shell
         - shrink
-        - grenade
         - blob
-        - curse
-        - boon|2
         - blessing
         - heal
         - wither
