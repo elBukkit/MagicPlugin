@@ -3,11 +3,12 @@
 ## 4.2
 
  - Custom sound effects (requires resource pack)
- - Add glow to wand brush icons
+ - Add glow to wand brush icons (configurable)
  - Fix some overlapping undo glitches
  - Spells now level up with use, not when enchanting
  - Add allowed-spell-categories and blocked-spell-categories WGCustomFlags
- - Fix projectile block damage undo (e.g. Fireball)
+ - Some fixes to explosion undo, PreciousStones integration
+ - Add configurable (per-wand) item glow
 
 ## 4.1
 
