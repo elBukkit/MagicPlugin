@@ -1269,6 +1269,9 @@ wands:
     crackedbroomstick:
         name: Cracked Broomstick
         description: Good while it lasts!
+    spleef:
+        name: Spleef
+        description: For playing Wizard Spleef
 
 automata:
     awaken: "&c&o$name &r&5has awakened"

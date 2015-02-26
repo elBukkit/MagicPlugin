@@ -108,6 +108,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
     private String ownerId = "";
 	private String template = "";
     private String path = "";
+    private boolean glow = false;
 	private boolean bound = false;
 	private boolean indestructible = false;
     private boolean undroppable = false;
@@ -212,6 +213,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		inventories = new ArrayList<Inventory>();
         item = itemStack;
 		indestructible = controller.getIndestructibleWands();
+        glow = EnableGlow;
 		loadState();
         updateName();
         updateLore();
@@ -1001,6 +1003,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		node.set("bound", bound);
         node.set("force", forceUpgrade);
 		node.set("indestructible", indestructible);
+        node.set("glow", glow);
         node.set("undroppable", undroppable);
 		node.set("fill", autoFill);
 		node.set("upgrade", isUpgrade);
@@ -1154,6 +1157,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 			effectBubbles = wandConfig.getBoolean("effect_bubbles", effectBubbles);
 			keep = wandConfig.getBoolean("keep", keep);
             indestructible = wandConfig.getBoolean("indestructible", indestructible);
+            glow = wandConfig.getBoolean("glow", glow);
             undroppable = wandConfig.getBoolean("undroppable", undroppable);
 			bound = wandConfig.getBoolean("bound", bound);
             forceUpgrade = wandConfig.getBoolean("force", forceUpgrade);
@@ -1363,7 +1367,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         CompatibilityUtils.setDisplayName(item, isActive && !isUpgrade ? getActiveWandName() : ChatColor.GOLD + getDisplayName());
 
 		// Reset Enchantment glow
-		if (EnableGlow) {
+		if (glow) {
             CompatibilityUtils.addGlow(item);
 		}
 
@@ -1568,7 +1572,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	protected void updateLore() {
         CompatibilityUtils.setLore(item, getLore());
 
-		if (EnableGlow) {
+		if (glow) {
 			CompatibilityUtils.addGlow(item);
 		}
 	}
@@ -2102,10 +2106,12 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		modified = modified | (!effectBubbles && other.effectBubbles);
         modified = modified | (!undroppable && other.undroppable);
         modified = modified | (!indestructible && other.indestructible);
+        modified = modified | (!glow && other.glow);
 
 		keep = keep || other.keep;
 		bound = bound || other.bound;
         indestructible = indestructible || other.indestructible;
+        glow = glow || other.glow;
         undroppable = undroppable || other.undroppable;
         effectBubbles = effectBubbles || other.effectBubbles;
 		if (other.effectParticle != null && (other.isUpgrade || effectParticle == null)) {

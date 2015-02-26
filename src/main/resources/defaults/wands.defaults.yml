@@ -185,6 +185,7 @@ battle:
     xp_regeneration: 5
     indestructible: false
     xp_max: 50
+    glow: true
     spells:
       - missile
       - arrow
@@ -937,6 +938,21 @@ crackedbroomstick:
     effect_color: '220022'
     spells:
         - broom
+
+spleef:
+    locked: true
+    icon: stick
+    glow: true
+    uses: 100
+    effect_color: '880000'
+    indestructible: false;
+    xp_max: 100
+    xp_regeneration: 10
+    active_spell: blast
+    spells:
+      - blast
+      - collapse
+      - harden
 
 camera:
     mode: cast
