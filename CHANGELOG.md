@@ -7,6 +7,7 @@
  - Fix some overlapping undo glitches
  - Spells now level up with use, not when enchanting
  - Add allowed-spell-categories and blocked-spell-categories WGCustomFlags
+ - Fix projectile block damage undo (e.g. Fireball)
 
 ## 4.1
 
