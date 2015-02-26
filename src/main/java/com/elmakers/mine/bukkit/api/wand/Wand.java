@@ -73,4 +73,14 @@ public interface Wand extends CostReducer {
     public void removeOverride(String key);
     public void setOverride(String key, String value);
     public SpellTemplate getBaseSpell(String spellKey);
+
+    public boolean isSuperProtected();
+    public boolean isSuperPowered();
+    public boolean isCostFree();
+    public boolean isCooldownFree();
+    public float getPower();
+    public float getHealthRegeneration();
+    public float getHungerRegeneration();
+    public float getCooldownReduction();
+    public float getCostReduction();
 }
