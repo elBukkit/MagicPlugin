@@ -4499,8 +4499,8 @@ wolfhouse:
 missile:
     icon: ink_sack:1
     icon_url: http://i.imgur.com/i77svwG.png
-    upgrade_required_path: student
-    upgrade_required_casts: 50
+    upgrade_required_path: beginner
+    upgrade_required_casts: 15
     category: combat
     worth: 40
     pvp_restricted: true
@@ -4570,8 +4570,8 @@ missile:
         mana: 15
 
 missile|2:
-    upgrade_required_path: beginner
-    upgrade_required_casts: 50
+    upgrade_required_path: student
+    upgrade_required_casts: 30
     parameters:
         range: 32
         player_damage: 3

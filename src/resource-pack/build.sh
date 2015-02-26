@@ -24,3 +24,14 @@ cp -R ../../potter/* .
 find . -name ".DS_Store" -type f -delete
 zip -r -X ../Magic-potter-RP.zip *
 cd ..
+
+mkdir bending
+cd bending
+mkdir assets
+cd assets
+cp -R ../../../common/assets/* .
+cd ..
+cp -R ../../bending/* .
+find . -name ".DS_Store" -type f -delete
+zip -r -X ../Magic-bending-RP.zip *
+cd ..

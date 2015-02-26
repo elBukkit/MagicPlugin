@@ -20,6 +20,14 @@ flamethrower:
      category: firebending
      enabled: true
 
+boom:
+     category: firebending
+     enabled: true
+
+lava:
+     category: firebending
+     enabled: true
+
 ### AIRBENDING
 
 push:
@@ -44,6 +52,22 @@ cushion:
      category: waterbending
      enabled: true
 
+force:
+     category: waterbending
+     enabled: true
+
+heal:
+     category: waterbending
+     enabled: true
+
+cure:
+     category: waterbending
+     enabled: true
+
+frost:
+     category: waterbending
+     enabled: true
+
 ## EARTHBENDING
 
 blob:
@@ -51,6 +75,14 @@ blob:
      enabled: true
 
 breach:
+     category: earthbending
+     enabled: true
+
+sandblast:
+     category: earthbending
+     enabled: true
+
+iterate:
      category: earthbending
      enabled: true
 

@@ -1,0 +1,152 @@
+#
+# Add Avatar (Bending) themed progression
+#
+
+default:
+  match_spell_mana: false
+  hidden: true
+  min_enchant_level: 5
+  max_enchant_level: 35
+  levels: 1,15,25
+  max_uses: 500
+  max_mana: 1500
+  max_mana_regeneration: 150
+  max_health_regeneration: 0.1
+  max_hunger_regeneration: 0.1
+  max_damage_reduction: 0.1
+  max_damage_reduction_explosions: 0.1
+  max_damage_reduction_falling: 0.1
+  max_damage_reduction_fire: 0.1
+  max_damage_reduction_physical: 0.1
+  max_damage_reduction_projectiles: 0.1
+  max_cost_reduction: 0.5
+  max_cooldown_reduction: 0.5
+  max_haste: 0.5
+  max_power: 0.5
+  upgrade_commands:
+    - broadcast §6@pd §3has progressed to §b$path§3!
+  effects:
+      enchant:
+      -  class: EffectSingle
+         sound: level_up
+         effectlib:
+           class: SphereEffect
+           iterations: 10
+           period: 2
+           particle: enchantment_table
+           radius: 3
+      upgrade:
+      -  class: EffectSingle
+         sound: level_up
+      -  class: EffectRing
+         firework: star
+         radius: 4
+         size: 3
+      -  class: EffectRing
+         firework: ball_large
+         radius: 6
+         size: 5
+
+airbending:
+    inherit: default
+    max_mana: 200
+    max_mana_regeneration: 20
+    mana_regeneration:
+      1: 100
+    mana_max:
+      2: 100
+    spell_count:
+      1: 100
+    spells:
+      fling: 100
+      push: 80
+      pull: 10
+
+waterbending:
+    inherit: default
+    max_mana: 200
+    max_mana_regeneration: 20
+    mana_regeneration:
+      1: 100
+    mana_max:
+      2: 100
+    spell_count:
+      1: 100
+    spells:
+      frost: 80
+      cushion: 5
+      stream: 40
+      heal: 80
+      cure: 1
+      gills: 20
+      force: 10
+
+earthbending:
+    inherit: default
+    max_mana: 200
+    max_mana_regeneration: 20
+    mana_regeneration:
+      1: 100
+    mana_max:
+      2: 100
+    spell_count:
+      1: 100
+    spells:
+      blob: 5
+      iterate: 5
+      harden: 15
+      sandblast: 40
+      collapse: 5
+      blast: 5
+      breach: 1
+
+firebending:
+    inherit: default
+    max_mana: 200
+    max_mana_regeneration: 20
+    mana_regeneration:
+      1: 100
+    mana_max:
+      2: 100
+    spell_count:
+      1: 100
+    spells:
+      fireball: 40
+      fire: 90
+      lava: 20
+      flamethrower: 20
+      boom: 1
+
+avatar:
+    max_mana: 500
+    max_mana_regeneration: 50
+    mana_regeneration:
+      1: 100
+    mana_max:
+      2: 100
+    spell_count:
+      1: 100
+    spells:
+      levitate: 1
+      fireball: 40
+      fire: 90
+      lava: 20
+      flamethrower: 20
+      boom: 1
+      blob: 5
+      iterate: 5
+      harden: 15
+      sandblast: 40
+      collapse: 5
+      blast: 5
+      frost: 80
+      cushion: 5
+      stream: 40
+      heal: 80
+      cure: 1
+      gills: 20
+      force: 10
+      fling: 100
+      push: 80
+      pull: 10
+      breach: 1
