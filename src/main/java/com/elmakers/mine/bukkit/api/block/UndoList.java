@@ -36,6 +36,7 @@ public interface UndoList extends BlockList, Comparable<UndoList> {
     public void convert(Entity entity, Block block);
     public void fall(Entity entity, Block block);
     public void explode(Entity entity, List<Block> explodedBlocks);
+    public void finalizeExplosion(Entity entity, List<Block> explodedBlocks);
     public void cancelExplosion(Entity entity);
 
     public boolean contains(Location location, int threshold);
