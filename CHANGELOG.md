@@ -3,6 +3,7 @@
 ## 2.2
 
  - Fix some overlapping undo glitches
+ - Add support for banners
 
 ## 2.1
 

@@ -66,6 +66,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
     protected BlockFace rotation = null;
     protected Object customData = null;
     protected SkullType skullType = null;
+    protected DyeColor color = null;
 
     public Material DEFAULT_MATERIAL = Material.AIR;
 
@@ -84,6 +85,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         this.data = data;
     }
 
+    @SuppressWarnings("deprecation")
     public MaterialAndData(ItemStack item) {
         this.material = item.getType();
         this.data = item.getDurability();
@@ -96,6 +98,12 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
             } catch (Exception ex) {
 
             }
+        } else if (this.material.getId() == 425) {
+            // Banner
+            // TODO: Change to Material.BANNER when dropping 1.7 support
+            ItemMeta meta = item.getItemMeta();
+            this.customData = InventoryUtils.getBannerPatterns(meta);
+            this.color = InventoryUtils.getBannerBaseColor(meta);
         }
     }
 
@@ -219,6 +227,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
             isValid = o.isValid;
             skullType = o.skullType;
             customData = o.customData;
+            color = o.color;
         }
     }
 
@@ -231,6 +240,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         customName = null;
         skullType = null;
         customData = null;
+        color = null;
 
         isValid = true;
     }
@@ -266,6 +276,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         customName = null;
         skullType = null;
         customData = null;
+        color = null;
 
         try {
             BlockState blockState = block.getState();
@@ -289,6 +300,11 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
             } else if (blockState instanceof CreatureSpawner) {
                 CreatureSpawner spawner = (CreatureSpawner)blockState;
                 customName = spawner.getCreatureTypeName();
+            } else if (blockMaterial.getId() == 176 || blockMaterial.getId() == 177) {
+                // Banner
+                // TODO: Change to Material.BANNER when dropping 1.7 support
+                customData = CompatibilityUtils.getBannerPatterns(blockState);
+                color = CompatibilityUtils.getBannerBaseColor(blockState);
             }
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -333,7 +349,13 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
             }
 
             BlockState blockState = block.getState();
-            if (blockState instanceof Sign && signLines != null) {
+            if (blockState != null && material != null && material.getId() == 176 || material.getId() == 177) {
+                // Banner
+                // TODO: Change to Material.BANNER when dropping 1.7 support
+                CompatibilityUtils.setBannerPatterns(blockState, customData);
+                CompatibilityUtils.setBannerBaseColor(blockState, color);
+                blockState.update(true, false);
+            } else if (blockState instanceof Sign && signLines != null) {
                 Sign sign = (Sign)blockState;
                 for (int i = 0; i < signLines.length; i++) {
                     sign.setLine(i, signLines[i]);
@@ -429,6 +451,11 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         }
 
         // Special cases
+        if (material.getId() == 176 || material.getId() == 177) {
+            // Can't compare patterns for now
+            return true;
+        }
+
         BlockState blockState = block.getState();
         if (blockState instanceof Sign && signLines != null) {
             Sign sign = (Sign)blockState;
@@ -492,6 +519,12 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
                 InventoryUtils.setSkullProfile(skullMeta, customData);
                 stack.setItemMeta(meta);
             }
+        } else if (this.material.getId() == 425) {
+            // Banner
+            // TODO: Change to Material.BANNER when dropping 1.7 support
+            ItemMeta meta = stack.getItemMeta();
+            InventoryUtils.setBannerPatterns(meta, this.customData);
+            InventoryUtils.setBannerBaseColor(meta, this.color);
         }
         return stack;
     }

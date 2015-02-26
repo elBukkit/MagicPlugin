@@ -18,6 +18,7 @@ import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.scheduler.BukkitTask;
@@ -402,5 +403,56 @@ public class CompatibilityUtils extends NMSUtils {
         }
 
         return false;
+    }
+
+    public static Object getBannerPatterns(BlockState state)
+    {
+        if (isLegacy) return null;
+        Object data = null;
+        try {
+            if (state == null || !class_CraftBanner.isInstance(state)) return null;
+            data = class_CraftBanner_getPatternsMethod.invoke(state);
+        } catch (Exception ex) {
+
+        }
+        return data;
+    }
+
+    public static DyeColor getBannerBaseColor(BlockState state)
+    {
+        if (isLegacy) return null;
+        DyeColor color = null;
+        try {
+            if (state == null || !class_CraftBanner.isInstance(state)) return null;
+            color = (DyeColor)class_CraftBanner_getBaseColorMethod.invoke(state);
+        } catch (Exception ex) {
+
+        }
+        return color;
+    }
+
+    public static boolean setBannerPatterns(BlockState state, Object patterns)
+    {
+        if (isLegacy || patterns == null) return false;
+        Object data = null;
+        try {
+            if (state == null || !class_CraftBanner.isInstance(state)) return false;
+            data = class_CraftBanner_setPatternsMethod.invoke(state, patterns);
+        } catch (Exception ex) {
+            return false;
+        }
+        return true;
+    }
+
+    public static boolean setBannerBaseColor(BlockState state, DyeColor color)
+    {
+        if (isLegacy || color == null) return false;
+        try {
+            if (state == null || !class_CraftBanner.isInstance(state)) return false;
+            color = (DyeColor)class_CraftBanner_setBaseColorMethod.invoke(state, color);
+        } catch (Exception ex) {
+            return false;
+        }
+        return true;
     }
 }

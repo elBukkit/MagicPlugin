@@ -7,6 +7,7 @@ import java.util.Collection;
 import java.util.List;
 
 import org.bukkit.Bukkit;
+import org.bukkit.DyeColor;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.BlockFace;
@@ -61,7 +62,9 @@ public class NMSUtils {
     protected static Class<?> class_PathEntity;
     protected static Class<?> class_EntityFirework;
     protected static Class<?> class_CraftSkull;
+    protected static Class<?> class_CraftBanner;
     protected static Class<?> class_CraftMetaSkull;
+    protected static Class<?> class_CraftMetaBanner;
     protected static Class<?> class_GameProfile;
     protected static Class<?> class_GameProfileProperty;
 
@@ -81,6 +84,14 @@ public class NMSUtils {
     protected static Method class_NBTTagCompound_getMethod;
     protected static Method class_NBTTagCompound_getCompoundMethod;
     protected static Method class_World_addEntityMethod;
+    protected static Method class_CraftMetaBanner_getPatternsMethod;
+    protected static Method class_CraftMetaBanner_setPatternsMethod;
+    protected static Method class_CraftMetaBanner_getBaseColorMethod;
+    protected static Method class_CraftMetaBanner_setBaseColorMethod;
+    protected static Method class_CraftBanner_getPatternsMethod;
+    protected static Method class_CraftBanner_setPatternsMethod;
+    protected static Method class_CraftBanner_getBaseColorMethod;
+    protected static Method class_CraftBanner_setBaseColorMethod;
 
     protected static Method class_CraftItemStack_copyMethod;
     protected static Method class_CraftItemStack_mirrorMethod;
@@ -194,6 +205,18 @@ public class NMSUtils {
                 class_GameProfile_properties.setAccessible(true);
                 class_GameProfileProperty_value = class_GameProfileProperty.getDeclaredField("value");
                 class_GameProfileProperty_value.setAccessible(true);
+
+                class_CraftMetaBanner = fixBukkitClass("org.bukkit.craftbukkit.inventory.CraftMetaBanner");
+                class_CraftMetaBanner_getBaseColorMethod = class_CraftMetaBanner.getMethod("getBaseColor");
+                class_CraftMetaBanner_getPatternsMethod = class_CraftMetaBanner.getMethod("getPatterns");
+                class_CraftMetaBanner_setPatternsMethod = class_CraftMetaBanner.getMethod("setPatterns", List.class);
+                class_CraftMetaBanner_setBaseColorMethod = class_CraftMetaBanner.getMethod("setBaseColor", DyeColor.class);
+
+                class_CraftBanner = fixBukkitClass("org.bukkit.craftbukkit.block.CraftBanner");
+                class_CraftBanner_getBaseColorMethod = class_CraftBanner.getMethod("getBaseColor");
+                class_CraftBanner_getPatternsMethod = class_CraftBanner.getMethod("getPatterns");
+                class_CraftBanner_setPatternsMethod = class_CraftBanner.getMethod("setPatterns", List.class);
+                class_CraftBanner_setBaseColorMethod = class_CraftBanner.getMethod("setBaseColor", DyeColor.class);
             }
             catch (Throwable legacy) {
                 isLegacy = true;

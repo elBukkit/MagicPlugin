@@ -10,6 +10,7 @@ import java.util.logging.Level;
 
 import com.google.common.collect.Multimap;
 import org.bukkit.Bukkit;
+import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.block.Skull;
 import org.bukkit.configuration.ConfigurationSection;
@@ -204,7 +205,7 @@ public class InventoryUtils extends NMSUtils
         if (isLegacy) return null;
         Object profile = null;
         try {
-            if (itemMeta == null || !class_CraftMetaSkull.isInstance(itemMeta)) return false;
+            if (itemMeta == null || !class_CraftMetaSkull.isInstance(itemMeta)) return null;
             profile = class_CraftMetaSkull_profile.get(itemMeta);
         } catch (Exception ex) {
 
@@ -234,5 +235,56 @@ public class InventoryUtils extends NMSUtils
         } catch (Throwable ex) {
             ex.printStackTrace();
         }
+    }
+
+    public static Object getBannerPatterns(ItemMeta itemMeta)
+    {
+        if (isLegacy) return null;
+        Object data = null;
+        try {
+            if (itemMeta == null || !class_CraftMetaBanner.isInstance(itemMeta)) return null;
+            data = class_CraftMetaBanner_getPatternsMethod.invoke(itemMeta);
+        } catch (Exception ex) {
+
+        }
+        return data;
+    }
+
+    public static DyeColor getBannerBaseColor(ItemMeta itemMeta)
+    {
+        if (isLegacy) return null;
+        DyeColor color = null;
+        try {
+            if (itemMeta == null || !class_CraftMetaBanner.isInstance(itemMeta)) return null;
+            color = (DyeColor)class_CraftMetaBanner_getBaseColorMethod.invoke(itemMeta);
+        } catch (Exception ex) {
+
+        }
+        return color;
+    }
+
+    public static boolean setBannerPatterns(ItemMeta itemMeta, Object patterns)
+    {
+        if (isLegacy || patterns == null) return false;
+        Object data = null;
+        try {
+            if (itemMeta == null || !class_CraftMetaBanner.isInstance(itemMeta)) return false;
+            data = class_CraftMetaBanner_setPatternsMethod.invoke(itemMeta, patterns);
+        } catch (Exception ex) {
+            return false;
+        }
+        return true;
+    }
+
+    public static boolean setBannerBaseColor(ItemMeta itemMeta, DyeColor color)
+    {
+        if (isLegacy || color == null) return false;
+        try {
+            if (itemMeta == null || !class_CraftMetaBanner.isInstance(itemMeta)) return false;
+            color = (DyeColor)class_CraftMetaBanner_setBaseColorMethod.invoke(itemMeta, color);
+        } catch (Exception ex) {
+            return false;
+        }
+        return true;
     }
 }
