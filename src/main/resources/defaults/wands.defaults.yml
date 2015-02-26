@@ -489,13 +489,17 @@ miniwolf:
     xp_max: 250
     xp_regeneration: 50
     spells:
-        - counterspell
-        - reflect|3
-        - levitate
-        - fling|2
-        - blink|3
-        - missile|4
-        - day
+        - blast|3@0
+        - collapse|3@0
+        - harden|3@3
+        - missile|4@4
+        - levitate@5
+        - fling|2@6
+        - blink|3@7
+        - counterspell|2@8
+        - reflect|3@9
+        - day@10
+        - arrow|4@11
         - stash
         - emp
         - force
@@ -511,13 +515,11 @@ miniwolf:
         - shrink
         - grenade
         - blob
-        - blast
         - curse
         - boon|2
         - blessing
         - heal
         - wither
-        - collapse
         - recall
         - phase
         - portal
@@ -527,7 +529,6 @@ miniwolf:
         - flamethrower
         - tag
         - mount
-        - arrow|4
 
 wolf:
     path: architect

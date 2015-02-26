@@ -3090,6 +3090,7 @@ blast:
         radius: 1
         type: sphere
         undo: 15000
+        cooldown: 500
         destructible: destructible_mining
         select_self: false
     costs:
