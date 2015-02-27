@@ -3,7 +3,7 @@
 #
 
 default:
-    icon: wood_hoe,gold_axe,gold_pickaxe,gold_spade,stone_axe,stone_hoe,stone_pickaxe,stone_spade,wood_axe,wood_spade,wood_pickaxe
+    icon: wood_hoe,gold_axe,gold_pickaxe,gold_spade
     randomize_icon: wood_step
     path: year1
     bound: true
@@ -19,7 +19,7 @@ default:
      - flagrate
 
 elder:
-    icon: diamond_hoe
+    icon: iron_hoe
     undroppable: true
     path: master
     bound: true
@@ -93,7 +93,7 @@ wolf:
       - reductomaxima
 
 unspeakable:
-    icon: diamond_axe
+    icon: wood_hoe
     undroppable: true
     path: graduate
     bound: true
@@ -117,7 +117,7 @@ unspeakable:
     overrides: patronus.type sheep, patronus.variant blue
 
 slytherinwand:
-    icon: stone_pickaxe
+    icon: gold_axe
     undroppable: true
     path: graduate
     bound: true
@@ -145,7 +145,7 @@ architect:
     bound: true
     undroppable: true
     bound: true
-    icon: diamond_spade
+    icon: gold_axe
     effect_color: '00FF00'
     hunger_regeneration: 1
     health_regeneration: 1
@@ -245,7 +245,7 @@ crudwand:
 
 video:
     active_spell: superfly
-    icon: gold_pickaxe
+    icon: gold_axe
     indestructible: true
     bound: true
     locked: true
@@ -311,7 +311,7 @@ portkey:
 camera:
     mode: cast
     active_spell: camera
-    icon: tripwire_hook
+    icon: skull_item:http://i.imgur.com/eyllYbl.png
     indestructible: false
     locked: true
     xp: 5
@@ -417,7 +417,7 @@ minister:
     mode: cast
     path: broom
     active_spell: broom
-    icon: diamond_barding
+    icon: gold_shovel
     indestructible: true
     locked: true
     effect_color: '00AAFF'
@@ -429,7 +429,7 @@ unspeakabroom:
     mode: cast
     path: broom
     active_spell: broom
-    icon: diamond_barding
+    icon: gold_shovel
     indestructible: true
     locked: true
     effect_color: '00FFFF'
@@ -441,7 +441,7 @@ headmaster:
     mode: cast
     path: broom
     active_spell: broom
-    icon: diamond_barding
+    icon: gold_shovel
     indestructible: true
     locked: true
     effect_color: 'FF00FF'
@@ -453,7 +453,7 @@ firebolt:
     mode: cast
     path: broom
     active_spell: broom
-    icon: diamond_barding
+    icon: gold_shovel
     indestructible: true
     locked: true
     effect_color: 'FF00FF'
@@ -464,7 +464,7 @@ firebolt:
 crudfirebolt:
     mode: cast
     active_spell: broom
-    icon: diamond_barding
+    icon: gold_shovel
     indestructible: false
     locked: true
     effect_color: 'FF00FF'
@@ -477,7 +477,7 @@ nimbus:
     mode: cast
     path: broom
     active_spell: broom
-    icon: iron_barding
+    icon: gold_shovel
     indestructible: true
     locked: true
     effect_color: '880088'
@@ -488,7 +488,7 @@ nimbus:
 crudnimbus:
     mode: cast
     active_spell: broom
-    icon: iron_barding
+    icon: gold_shovel
     indestructible: false
     locked: true
     effect_color: '880088'
@@ -501,7 +501,7 @@ comet290:
     mode: cast
     path: broom
     active_spell: broom
-    icon: blaze_rod
+    icon: gold_shovel
     indestructible: true
     locked: true
     effect_color: 'FF00FF'
@@ -513,7 +513,7 @@ cleansweep1:
     mode: cast
     path: broom
     active_spell: broom
-    icon: gold_barding
+    icon: gold_shovel
     indestructible: false
     locked: true
     effect_color: 'FFFF00'
@@ -525,7 +525,7 @@ bluebottle:
     mode: cast
     path: broom
     active_spell: broom
-    icon: blaze_rod
+    icon: gold_shovel
     indestructible: false
     locked: true
     effect_color: '0000FF'
@@ -537,7 +537,7 @@ crudbroom:
     mode: cast
     path: broom
     active_spell: broom
-    icon: blaze_rod
+    icon: gold_shovel
     indestructible: false
     locked: true
     uses: 10
@@ -561,91 +561,91 @@ beater:
 
 # Patronus upgrades
 patronus_wolf:
-    icon: firework_charge
+    icon: nether_star
     upgrade: true
     overrides: patronus.type wolf,patronus.sound wolf_howl,patronus.name Wolfie
 
 patronus_horse:
-    icon: firework_charge
+    icon: nether_star
     upgrade: true
     overrides: patronus.type horse, patronus.variant undead_horse
 
 patronus_chicken:
-    icon: firework_charge
+    icon: nether_star
     upgrade: true
     overrides: patronus.type chicken
 
 patronus_spider:
-    icon: firework_charge
+    icon: nether_star
     upgrade: true
     overrides: patronus.type spider
 
 patronus_cow:
-    icon: firework_charge
+    icon: nether_star
     upgrade: true
     overrides: patronus.type cow
 
 patronus_sheep:
-    icon: firework_charge
+    icon: nether_star
     upgrade: true
     overrides: patronus.type sheep
 
 patronus_pig:
-    icon: firework_charge
+    icon: nether_star
     upgrade: true
     overrides: patronus.type pig
 
 patronus_cat_siamese:
-    icon: firework_charge
+    icon: nether_star
     upgrade: true
     overrides: patronus.type ocelot, patronus.variant siamese_cat
 
 patronus_cat_black:
-    icon: firework_charge
+    icon: nether_star
     upgrade: true
     overrides: patronus.type ocelot, patronus.variant black_cat
 
 patronus_cat_red:
-    icon: firework_charge
+    icon: nether_star
     upgrade: true
     overrides: patronus.type ocelot, patronus.variant red_cat
 
 patronus_thestral:
-    icon: firework_charge
+    icon: nether_star
     upgrade: true
     overrides: patronus.type horse, patronus.variant skeleton_horse
 
 patronus_slime:
-    icon: firework_charge
+    icon: nether_star
     upgrade: true
     overrides: patronus.type slime
 
 patronus_bat:
-    icon: firework_charge
+    icon: nether_star
     upgrade: true
     overrides: patronus.type bat
 
 # Broom upgrades
 stabilizer:
-    icon: firework_charge
+    icon: nether_star
     path: broom
     upgrade: true
     overrides: broom.steer_speed 3, broom.mount_item iron_barding
 
 booster:
-    icon: firework_charge
+    icon: nether_star
     path: broom
     upgrade: true
     overrides: broom.mount_boost 2, broom.mount_item gold_barding
 
 brakes:
-    icon: firework_charge
+    icon: nether_star
     path: broom
     upgrade: true
     overrides: broom.slow_ticks 10, mount_item diamond_barding
 
 cleanbroom:
-    icon: firework_charge
+    icon: nether_star
     path: broom
     upgrade: true
     overrides: broom.mount_item
@@ -723,7 +723,7 @@ year1:
     path: master
     upgrade_path: year1
     indestructible: false
-    icon: firework_charge
+    icon: nether_star
     xp_max: 50
     xp_regeneration: 6
 year2:
@@ -731,7 +731,7 @@ year2:
     path: year1
     upgrade_path: year2
     indestructible: false
-    icon: firework_charge
+    icon: nether_star
     xp_max: 75
     xp_regeneration: 10
 year3:
@@ -739,7 +739,7 @@ year3:
     path: year2
     upgrade_path: year3
     indestructible: false
-    icon: firework_charge
+    icon: nether_star
     xp_max: 100
     xp_regeneration: 15
 year4:
@@ -747,7 +747,7 @@ year4:
     path: year3
     upgrade_path: year4
     indestructible: false
-    icon: firework_charge
+    icon: nether_star
     xp_max: 120
     xp_regeneration: 20
 year5:
@@ -755,7 +755,7 @@ year5:
     path: year4
     upgrade_path: year5
     indestructible: false
-    icon: firework_charge
+    icon: nether_star
     xp_max: 140
     xp_regeneration: 25
 year6:
@@ -763,7 +763,7 @@ year6:
     path: year5
     upgrade_path: year6
     indestructible: false
-    icon: firework_charge
+    icon: nether_star
     xp_max: 160
     xp_regeneration: 30
 year7:
@@ -771,7 +771,7 @@ year7:
     path: year6
     upgrade_path: year7
     indestructible: false
-    icon: firework_charge
+    icon: nether_star
     xp_max: 180
     xp_regeneration: 35
 graduate:
@@ -779,7 +779,7 @@ graduate:
     path: year7
     upgrade_path: graduate
     indestructible: false
-    icon: firework_charge
+    icon: nether_star
     xp_max: 200
     xp_regeneration: 40
     spells:
@@ -804,7 +804,7 @@ graduate:
      - conjunctivitis|2
 
 prefect:
-    icon: firework_charge
+    icon: nether_star
     upgrade: true
     spells:
      - protego|3
@@ -830,7 +830,7 @@ prefect:
      - flipendo|3
 
 staff:
-    icon: firework_charge
+    icon: nether_star
     upgrade: true
     upgrade_path: graduate
     xp_max: 220
@@ -864,7 +864,7 @@ staff:
      - flipendo|3
 
 headstaff:
-    icon: firework_charge
+    icon: nether_star
     upgrade: true
     upgrade_path: graduate
     xp_max: 200
@@ -912,68 +912,58 @@ manaboost:
 antihunger:
     upgrade: true
     hunger_regeneration: 0.5
-    icon: firework_charge
+    icon: nether_star
 chestmode:
     upgrade: true
     indestructible: false
-    icon: firework_charge
+    icon: nether_star
     mode: chest
 undroppable:
     upgrade: true
     indestructible: false
     undroppable: true
-    icon: firework_charge
+    icon: nether_star
 inventorymode:
     upgrade: true
     indestructible: false
-    icon: firework_charge
+    icon: nether_star
     mode: inventory
 cyclemode:
     upgrade: true
     indestructible: false
-    icon: firework_charge
+    icon: nether_star
     mode: cycle
 organizer:
     upgrade: true
     indestructible: false
-    icon: firework_charge
+    icon: nether_star
     organize: true
 alphabetizer:
     upgrade: true
     indestructible: false
-    icon: firework_charge
+    icon: nether_star
     alphabetize: true
 loud:
     upgrade: true
     indestructible: false
-    icon: firework_charge
+    icon: nether_star
     organize: true
     quiet: -1
 quiet:
     upgrade: true
     indestructible: false
-    icon: firework_charge
+    icon: nether_star
     quiet: -2
 silent:
     upgrade: true
     indestructible: false
-    icon: firework_charge
+    icon: nether_star
     quiet: -3
 
 wood_hoe_upgrade:
     upgrade: true
     icon: wood_hoe
     upgrade_icon: wood_hoe
-
-iron_spade_upgrade:
-    upgrade: true
-    icon: iron_spade
-    upgrade_icon: iron_spade
-
-wood_hoe_upgrade:
-    upgrade: true
-    icon: gold_axe
-    upgrade_icon: gold_axe
 
 gold_pickaxe_upgrade:
     upgrade: true
@@ -985,48 +975,8 @@ gold_axe_upgrade:
     icon: gold_axe
     upgrade_icon: gold_axe
 
-gold_spade_upgrade:
-    upgrade: true
-    icon: gold_spade
-    upgrade_icon: gold_spade
-
-stone_axe_upgrade:
-    upgrade: true
-    icon: stone_axe
-    upgrade_icon: stone_axe
-
-stone_hoe_upgrade:
-    upgrade: true
-    icon: stone_hoe
-    upgrade_icon: stone_hoe
-
-stone_pickaxe_upgrade:
-    upgrade: true
-    icon: stone_pickaxe
-    upgrade_icon: stone_pickaxe
-
-stone_spade_upgrade:
-    upgrade: true
-    icon: stone_spade
-    upgrade_icon: stone_spade
-
-wood_axe_upgrade:
-    upgrade: true
-    icon: wood_axe
-    upgrade_icon: wood_axe
-
-wood_spade_upgrade:
-    upgrade: true
-    icon: wood_spade
-    upgrade_icon: wood_spade
-
-wood_pickaxe_upgrade:
-    upgrade: true
-    icon: wood_pickaxe
-    upgrade_icon: wood_pickaxe
-
 hotbar2:
     upgrade: true
     indestructible: false
-    icon: firework_charge
+    icon: nether_star
     hotbar_count: 2
