@@ -2,6 +2,11 @@
 # Edited by Chan / Minecraft nickname dboy510
 #
 # Launguage : "Korean/ko_KR/KR"
+# 
+# 안내 - 
+# 모든 게임 내 메세지는 이곳에 있습니다!
+# 메세지만 바꾸실 것이라면 다른 콘피그는 만지실 필요가 없습니다
+# - 제작자 NathanWolf
 
 general:
     no_spells: "&6아직 어떤 마법도 배우지 않았습니다!"
@@ -10,37 +15,43 @@ general:
     spell_list: "&6배운 마법: $count 개"
 books:
     default:
-        author: "&e버드나무"
+        author: "&eNathanWolf"
         title: "$category &e을(를) 배울 수 있다"
     all:
         title: "&6마스터리북"
 paths:
-    master:
-        name: "Master"
-        description: "has all the powerful spells"
-    engineer:
-        name: "Engineering"
-        description: "Has all the engineering spells"
-    apprentice:
-        name: "Apprentice"
-        description: "A good variety of spells"
+    beginner:
+        name: "초보자"
+        description: "처음 마법을 배우는 자"
     student:
-        name: "Student"
-        description: "Ha a few starter spells"
+        name: "학생"
+        description: "기초마법을 배우는 자"
+    apprentice:
+        name: "견습생"
+        description: "마법에 능통한 자"
+    master:
+        name: "마법사"
+        description: "모든 마법에 능통한 마법사"
+    engineer:
+        name: "엔지니어"
+        description: "기술 마법을 가지고 있음"
+    architect:
+        name: "건축가"
+        description: "매우 강력한 마법을 가지고 있음"
     battle:
-        name: "Battle"
-        description: "Has a combat and PvP spells"
+        name: "전투"
+        description: "전투와 관련된 마법만 사용가능"
     broom:
-        name: "Broom"
-        description: "Flying broom upgrades"
+        name: "빗자루"
+        description: "날아다니는 빗자루"
 wand:
     default_name: "완드"
-    upgrade_default_description: "은(는) 당신의 완드를 업그레이드 시킬 것입니다"
-    upgrade_item_description: "은(는) 당신의 완드에 흡수될 것입니다"
-    spell_item_description: "은(는) 당신의 완드에 흡수될 것입니다"
-    brush_item_description: "은(는) 당신의 완드에 흡수될 것입니다"
-    copy_material_description: "은(는) 타겟을 재료로 채웁니다"
-    erase_material_description: "은(는) 공기로 채워집니다"
+    upgrade_default_description: "당신의 완드를 업그레이드 시킬 것입니다"
+    upgrade_item_description: "당신의 완드에 흡수될 것입니다"
+    spell_item_description: "당신의 완드에 흡수될 것입니다"
+    brush_item_description: "당신의 완드에 흡수될 것입니다"
+    copy_material_description: "타겟을 재료로 채웁니다"
+    erase_material_description: "공기로 채워집니다"
     clone_material_description: "타겟의 블럭을 복제합니다"
     replicate_material_description: "타겟을 복사합니다"
     clone_material_activated: "복제품 설정 완료"
@@ -63,48 +74,49 @@ wand:
     enchantment_level_max: "X"
     spell_count: "마법 갯수 : $count 개"
     material_count: "이(가) $count 개 있습니다"
-    upgrade_spell_count: "Adds $count Spells"
-    upgrade_material_count: "Adds $count Materials"
-    mana_amount: "Mana: $amount"
-    mana_regeneration: "Mana Regeneration: $amount/s"
-    cost_reduction: "Cost Reduction $roman"
-    cooldown_reduction: "Cooldown Reduction $roman"
-    power: "Power $roman"
-    haste: "Haste $roman"
-    protection: "Protection $roman"
-    protection_physical: "Physical Protection $roman"
-    protection_projectile: "Projectile Protection $roman"
-    protection_fall: "Fall Protection $roman"
-    protection_fire: "Fire Protection $roman"
-    protection_blast: "Blast Protection $roman"
-    health_regeneration: "Health Regeneration $roman"
-    hunger_regeneration: "Anti-Hunger $roman"
-    costs_description: "Costs $description"
-    active_costs_description: "Costs $description Per Second"
-    owner_description: "$name   's Wand"
-    bound_description: "Bound to $name"
-    unmodifiable: "That wand can not be modified"
-    player_unmodifiable: "$name   's wand can not be modified"
-    bound_to_other: "That wand is not bound to you"
-    bound: "That wand is bound to $name"
-    spell_added: "The &r&6$name    &d&ospell has been added to your wand"
-    brush_added: "The &r&7$name    &d&obrush has been added to your wand"
-    player_spell_upgraded: "$players's &r&6$name    &d&ohas been upgraded to &3$level"
-    spell_upgraded: "&r마법 &6$name    &d&o이(가) 성공적으로 강화되었습니다. 레벨 :&3$level "
-    spell_override_upgraded: "&r마법 &6$name    &d이(가) 성공적으로 강화되었습니다!"
-    upgraded_property: "&b당신의 완드가 &r&b$name    &b으로 강화되었습니다!"
-    player_upgraded: "&6$name   &e님이 완드 강화에 성공하셨습니다!"
-    player_not_upgraded: "&f$name   &7님이 완드 강화에 실패하셨습니다..."
-    no_item: "&b저런. 빈손인데요?"
-    player_no_item: "&b$name   님의 손이 빈손인데요?"
-    no_wand: "&b손에 완드를 들려있지 않네요"
-    player_no_wand: "&b$name    님의 손에 완드가 없어요"
-    no_magic_item: "&b저런, 빈손인데요?"
-    player_no_magic_item: "$name    님의 손에 마법"
-    reorganized: "&b완드를 정리합니다..."
-    player_reorganized: "&b$name   님의 완드가 정리되었습니다"
-    alphabetized: "&b완드를 알파벳 순으로 정리합니다..."
-    player_alphabetized: "&b$name   님의 완드가 알파벳 순서로 정리되었습니다"
+    upgrade_spell_count: "마법을 $count 개 늘립니다"
+    upgrade_material_count: "재료를 $count 개 늘립니다"
+    mana_amount: "마나 최대치: $amount"
+    mana_regeneration: "마나 회복량: 초당 $amount"
+    cost_reduction: "마나 소모 감소량 : $roman"
+    cooldown_reduction: "재사용 대기시간 감소량 : $roman"
+    power: "힘 : $roman"
+    haste: "신속 : $roman"
+    protection: "보호 : $roman"
+    protection_physical: "물리 보호 : $roman"
+    protection_projectile: "발사체 보호 : $roman"
+    protection_fall: "가벼운 착지 : $roman"
+    protection_fire: "화염 보호 : $roman"
+    protection_blast: "폭발 보호 : $roman"
+    health_regeneration: "체력 회복 : $roman"
+    hunger_regeneration: "배고픔 방지 : $roman"
+    costs_description: "$description 을(를) 요구합니다"
+    active_costs_description: "초당 $description 을(를) 요구합니다"
+    owner_description: "$name 님의 완드"
+    bound_description: "$name 님에게 귀속됨"
+    unmodifiable: "그 완드는 수정이 불가능합니다"
+    player_unmodifiable: "$name 님의 완드는 수정이 불가능합니다"
+    bound_to_other: "그 완드는 당신에게 귀속되지 않았습니다!"
+    bound: "그 완드는 $name 님에게 귀속되어 있습니다"
+    spell_added: "마법 &r&6$name &d이(가) 당신의 완드에 추가되었습니다!"
+    brush_added: "브러쉬 &r&7$name &d이(가) 당신의 완드에 추가되었습니다!"
+    player_spell_upgraded: "$플레이어 &r&6$name &d님의 완드가&3$level&d 으로 업그레이드 되었습니다!"
+    spell_upgraded: "&r마법 &6$name &d&o이(가) 성공적으로 강화되었습니다. 레벨 :&3$level "
+    spell_override_upgraded: "&r마법 &6$name &d이(가) 성공적으로 강화되었습니다!"
+    upgraded_property: "&b당신의 완드가 &r&b$name &b으로 강화되었습니다!"
+    hotbar_added: "&r&b당신의 $wand 의 단축기가 업그레이드 되었습니다! &r&3$wand 가 활성화 되있을때 Q를 눌러보세요"
+    player_upgraded: "&6$name&e님이 완드 강화에 성공하셨습니다!"
+    player_not_upgraded: "&f$name&7님이 완드 강화에 실패하셨습니다..."
+    no_item: "&b저런. 빈손이에요"
+    player_no_item: "&b$name 님의 손이 빈손이에요"
+    no_wand: "&b손에 완드가 들려있지 않습니다"
+    player_no_wand: "&b$name 님의 손에 완드가 들려있지 않습니다"
+    no_magic_item: "&b저런, 손에 매직 아이템이 없어요"
+    player_no_magic_item: "$name 님의 손에 매직 아이템이 없어요"
+    reorganized: "&b완드가 정리됩니다"
+    player_reorganized: "&b$name 님의 완드가 정리되었습니다"
+    alphabetized: "&b완드가 알파벳 순으로 정리됩니다"
+    player_alphabetized: "&b$name 님의 완드가 알파벳 순서로 정리되었습니다"
     already_enchanted: "&b $item 은(는) 더이상 강화하지 못합니다"
     enchanted: "&b당신의 $item 에 신비로운 힘이 스며듭니다"
     player_enchanted: "&b$name    님의 $item 이(가) 강화되었습니다!"
@@ -116,11 +128,11 @@ wand:
     player_duplicated: "$name   님의 완드가 복제되었습니다"
     restored: "당신의 완드를 되찾았군요!"
     player_restored: "$name   님이 완드를 되찾았습니다"
-    not_restored: "어라? 기록에는 당신에게 귀속된 완드가 없는데요?"
-    player_not_restored: "$name   님에 대한 기록에는 귀속된 완드가 없군요."
-    unlocked: "완드와 연결이 해제되는 느낌이 듭니다"
+    not_restored: "기록에는 당신에게 귀속된 완드가 없군요"
+    player_not_restored: "$name   님에 대한 기록에는 귀속된 완드가 없군요"
+    unlocked: "완드가 잠금해제 되었습니다"
     player_unlocked: "$name   님의 완드가 귀속해제되었습니다"
-    unknown_template: "네? $name    라구요? 그런건 못찾겠군요."
+    unknown_template: "$name 라는 완드를 찾지 못하겠습니다"
     reconfigured: "완드 재설정 완료"
     player_reconfigured: "$name   님의 완드가 재설정되었습니다"
     filled: "내가 알고 있던 마법이 완드로 스며듭니다...."
@@ -131,30 +143,35 @@ wand:
     single_spell: "완드 오브 $spell"
     fully_enchanted: "이 완드는 더 이상 강화되지 않는군요... 지금은요."
     need_more_levels: "왠지 &r&4$levels &d&o 레벨이 더 필요할 것 같지 않아요?"
-    randomized_lore: "어떤 완드가 나올까요??"
+    randomized_lore: "어떤 완드가 나올까요"
     randomized_name: "완드 박스"
     upgrade_name: "강화 : $name"
+    inventory_instructions: "&r&b당신의$wand 은(는) 마법을 여러개 배웠습니다! 우클릭으로 완드를 열고, 단축키로 마법을 선택하세요. 인벤토리를 열어 단축키를 설정할 수 있습니다"
+    page_instructions: "&r&b당신의$wand 은(는) 이제 인벤을 꽉 채웠네요! 인벤토리 바깥을 클릭해 페이지를 넘기실 수 있습니다"
+    bound_instructions: "&r&3당신의$wand 은(는) 당신에게 귀속되었고, 드랍이 불가능합니다"
+    spell_instructions: "&r&b당신의$wand 을(를) 휘둘러 $spell 를 사용해 보세요. 마법은 마나를 사용하며, 마나는 XP바에 표시됩니다"
+    brush_instructions: "&r&b재료를 사용하는 툴이 $wand 에 추가되었습니다. 이것들을 사용해 
 spell:
-    brush: "Uses Material Brushes"
-    undoable: "Undoable with Rollback"
-    reactivate: "Reactivating $name"
-    available_path: "Available on the $path path"
-    required_path: "Required to complete the $path path"
-    required_spell: "You must learn &r&4$spell &d&oto advance"
-    level_description: "Level $level"
+    brush: "재료 툴을 사용합니다"
+    undoable: "롤백으로 무효처리 가능합니다"
+    reactivate: "$name 을(를) 재작동합니다"
+    available_path: "$path 에서 사용가능"
+    required_path: "$path 의 길을 마스터 하셔야 합니다"
+    required_spell: "&d당신은 반드시&r&4$spell &d을(를) 배워야&b$path (으)로 나아가실 수 있습니다"
+    level_description: "레벨 $level"
 worlds:
     world:
-        name: "The Overworld"
+        name: "야생"
     world_nether:
-        name: "The Nether"
+        name: "지옥"
     world_the_end:
-        name: "The End"
+        name: "엔더"
 costs:
-    xp_amount: "$amount XP"
-    mana_amount: "$amount Mana"
-    mana: "Mana"
-    xp: "XP"
-    insufficient_resources: "Not enough $cost"
+    xp_amount: "$amount 경험치"
+    mana_amount: "$amount 마나"
+    mana: "마나"
+    xp: "경험치"
+    insufficient_resources: "$cost 만큼 부족합니다"
 cooldown:
     wait_seconds: "재사용 대기시간 :  $seconds 초 ."
     wait_minutes: "재사용 대기시간 :  $minutes 분."
@@ -220,21 +237,31 @@ categories:
         description: "채굴을 도와줍니다"
 spells:
     default:
-        fizzle: "Your spell fizzled!"
-        backfire: "Your spell backfired!"
-        fail: "Your spell failed!"
-        insufficient_permission: "You don't have permission to cast that here."
-        cast_player_message: "&d&o$player &r&5cast &3&o$spell &r&5on you!"
+        fizzle: "마법이 피식 하고 사라졌습니다!"
+        backfire: "마법이 역효과를 내버렸습니다!"
+        fail: "마법이 실패하였습니다!"
+        insufficient_permission: "당신은 그 마법을 여기서 사용할 권한이 없습니다!"
+        cast_player_message: "&d&o$player &r&5님이&3&o$spell &r&5을(를) 당신에게 시전!"
+        indirect_player_message: "&d&o$player &r&5님이&3&o$spell &r&5을(를) 당신에게 시전!"
+        insufficient_resources: "$cost 이(가) 부족합니다"
+        cooldown: "$time 만큼 기다리셔야 합니다".
+        cancelled: "당신의 마법이 취소되었습니다!"
+        entity_required: "이 마법을 사용하기 위해선 엔티티가 필요합니다"
+        living_entity_required: "이 마법을 사용하기 위해선 살아있는 엔티티가 필요합니다"
+        player_required: "이 마법을 사용하기 위해선 다른 플레이어가 필요합니다"
+        location_required: "이 마법을 사용하기 위해선 로케이션 지정을 해주셔야 합니다"
+        world_required: "이 마법을 사용하기 위해선 다른 월드가 필요합니다"
+        invalid_world: "그 월드는 존재하지 않습니다"
     curse:
         name: "Curse"
         description: "일정시간동안 상대의 이동속도를 낮추고 저항력을 감소시킵니다"
-        cast: "You curse $target"
+        cast: "$target 를 저주합니다...."
     broom:
         name: "Broom"
         description: "마법의 빗자루"
         cast: "당신의 빗자루가 가벼워집니다"
         deactivate: "빗자루가 조용해집니다"
-        crash: "어우. 그것 아프겟네요"
+        crash: "어우, 그것 참 아프겠군요"
         fail: "떠오를 만한 공간이 부족해 보이네요"
     boon:
         name: "Boon"
@@ -359,7 +386,7 @@ spells:
         cast: "조심해!"
     neutron:
         name: "Neutron Bomb"
-        description: "일정 범위에 있는 모든 엔티티를 폭발시켜 죽입니다"
+        description: "큰 범위내의 모든 엔티티를 죽입니다"
         cast: "이 근처는 초토화 되버렷군요 :("
     weather:
         name: "Weather"
@@ -368,27 +395,43 @@ spells:
         area: "하늘을 화나게 했군요"
     fling:
         name: "Fling"
-        description: "신비로운 힘이 몸을 바라보는 방향으로 밀어냅니다"
+        description: "바라보는 방향으로 몸이 밀려납니다"
     leap:
         name: "Leap"
-        description: "Take a big leap"
+        description: "높이 뛰어오릅니다"
         cast: "예~~이!"
     animate:
         name: "Animate"
-        description: "Animate the target material"
-        cast: "You create a Magic Golem"
-        no_target: "You must target two blocks next to each other"
-        restricted: "You can not make a Golem out of $material"
-        cast_broadcast: "&c&o$name    &r&5was born"
-        death_broadcast: "&c&o$name    &r&5가 퇴치되었습니다"
+        description: "골렘을 소환하세요!"
+        cast: "골렘을 소환하셨습니다!"
+        no_target: "인접한 두 블럭을 지정하셔야 합니다"
+        restricted: "당신은 $material (으)로 골렘을 소한하실 수 없습니다!"
+        cast_broadcast: "&c&o$name &r&5(이)가 소환되었습니다"
+        death_broadcast: "&c&o$name &r&5(이)가 퇴치되었습니다"
+    simulate3:
+        name: "Simulate 3D'
+        description: "생명을 불어넣습니다"
+        cast: "생명을 불어넣었습니다"
+    glider:
+        name: "Glider"
+        description: "강력한 괴물을 소한합니다"
+        cast: "그거 살아있어!"
     virus:
         name: "Virus"
-        description: "어... 사용 안하는게 좋을껄요?"
-        cast: "뭔짓을 해버린 건지 알고 계세요??"
-        cast_broadcast: "&c&o$name    &r&5was born"
-        death_broadcast: "&c&o$name    &r&5가 퇴치되었습니다"
-        no_target: "You must target two blocks next to each other"
-        restricted: "You can not make a Virus out of $material"
+        description: "어... 사용 안하는게 좋을껄요"
+        cast: "진짜로 사용하다니"
+        cast_broadcast: "&c&o$name &r&5이(가) 소환되었습니다"
+        death_broadcast: "&c&o$name &r&5이(가) 퇴치되었습니다"
+        no_target: "인접한 두 블럭을 지정하셔야 합니다"
+        restricted: "당신은 $material (으)로 바이러스를 소한하실 수 없습니다!"
+    worm:
+        name: "Worm"
+        description: "강력하고 위험한 지렁이를 소환합니다"
+        cast: "그런거 소환하지 마세요!"
+        cast_broadcast: "&c&o$name &r&5이(가) 소환되었습니다"
+        death_broadcast: "&c&o$name &r&5이(가) 퇴치되었습니다"
+        no_target: "인접한 두 블럭을 지정하셔야 합니다"
+        fail: "당신은 $material (으)로 지렁이를 소한하실 수 없습니다!"
     torch:
         name: "Torch"
         description: "횃불이나 발광석을 생성시킵니다"
@@ -400,6 +443,30 @@ spells:
         description: "터널을 뚫습니다"
         no_target: "어딘가 서 있어야 해요!"
         cast: "터널을 생성합니다"
+    hunter:
+        name: Hunter
+        description: "아무도 막을 수 없는 새로운 생명을 소환하세요"
+        no_target: "서로 인접한 두 블럭을 지정하셔야 합니다"
+        fail: "$material 으로는 헌터를 소환하실 수 없습니다!"
+        cast: "모두 파괴하라!"
+        cast_broadcast: "&c&o$name &r&5이(가) 소환되었습니다!"
+        death_broadcast: "&c&o$name &r&5이(가) 퇴치되었습니다"
+    defender:
+        name: Defender
+        description: "인간을 사냥하는 새로운 생명을 소환하세요"
+        cast: "어둠에 빠진 자들을 사냥해 볼까"
+        no_target: "서로 인접한 두 블럭을 지정하셔야 합니다"
+        fail: "$material 으로는 디펜더를 소환하실 수 없습니다!"
+        cast_broadcast: "&c&o$name &r&5이(가) 소환되었습니다!"
+        death_broadcast: "&c&o$name &r&5이(가) 퇴치되었습니다"
+    life:
+        name: Life
+        description: Create a HUGE Life board
+        cast: Time to experiment!
+    life3:
+        name: Life 3D
+        description: Create a large 3D Life board
+        cast: Mad science!
     monster:
         name: "Monster"
         description: "마술!"
@@ -442,7 +509,7 @@ spells:
         cast: "신비로운 힘이 호흡을 편한하게 해주고 눈을 밝혀줍니다"
     arrowrain:
         name: "Arrow Rain"
-        description: "Make it rain~♬"
+        description: "화살을 비처럼 쏟아 붇습니다" 
     meteor:
         name: "Meteor"
         description: "메테오!"
@@ -558,8 +625,8 @@ spells:
         description: "큰 원판을 생성합니다"
         usage: "두번 사용하셔야 해요"
         cancel: "마법이 취소되었습니다"
-        target_selected: "Cast again to build disc"
-        fail: "Too large!"
+        target_selected: "한번 더 사용하세요"
+        fail: "너무 커요!"
         cast_finish: "Filled $count blocks with $material"
     superring:
         name: "SuperRing"
@@ -571,38 +638,38 @@ spells:
         cast_finish: "$count 개의 $material 이(가) 생성되었습니다"
     superdome:
         name: "SuperDome"
-        description: "Create a very large dome"
-        usage: "Cast twice to construct"
-        cancel: "Dome cancelled"
-        target_selected: "Cast again to build dome"
-        fail: "Too large!"
-        cast_finish: "Filled $count blocks with $material"
+        description: "큰 돔을 생성합니다"
+        usage: "두번 사용하셔야 해요"
+        cancel: "마법이 취소되었습니다"
+        target_selected: "한번 더 사용하세요"
+        fail: "너무 커요!"
+        cast_finish: "$count 개의 $material 이(가) 생성되었습니다"
     superpyramid:
         name: "SuperPyramid"
-        description: "Create a large hollow pyramid"
-        usage: "Cast twice to construct"
-        cancel: "Pyramid cancelled"
-        target_selected: "Cast again to build pyramid"
-        fail: "Too large!"
-        cast_finish: "Filled $count blocks with $material"
+        description: "속이 빈 큰 피라미드를 생성합니다"
+        usage: "두번 사용하셔야 해요"
+        cancel: "마법이 취소되었습니다"
+        target_selected: "한번 더 사용하세요"
+        fail: "너무 커요!"
+        cast_finish: "$count 개의 $material 이(가) 생성되었습니다"
     superbox:
         name: "SuperBox"
-        description: "Create a large hollow box"
-        usage: "Cast twice to construct"
-        cancel: "Box cancelled"
-        target_selected: "Cast again to build box"
-        fail: "Too large!"
-        cast_finish: "Filled $count blocks with $material"
+        description: "속이 빈 큰 상자를 생성합니다"
+        usage: "두번 사용하셔야 해요"
+        cancel: "마법이 취소되었습니다"
+        target_selected: "한번 더 사용하세요"
+        fail: "너무 커요!"
+        cast_finish: "$count 개의 $material 이(가) 생성되었습니다"
     supercube:
         name: "SuperCube"
-        description: "Create a large solid cube"
-        usage: "Cast twice to construct"
-        cancel: "Cube cancelled"
-        target_selected: "Cast again to build cube"
-        fail: "Too large!"
-        cast_finish: "Filled $count blocks with $material"
+        description: "큰 상자를 생성합니다"
+        usage: "두번 사용하셔야 해요"
+        cancel: "마법이 취소되었습니다"
+        target_selected: "한번 더 사용하세요"
+        fail: "너무 커요!"
+        cast_finish: "$count 개의 $material 이(가) 생성되었습니다"
     kamikazee:
-        name: "카미카제"
+        name: "Kamikazee"
         description: "자폭 공격!"
     superblast:
         name: "SuperBlast"
@@ -684,28 +751,28 @@ spells:
         cast_finish: "조심해!"
     fill:
         name: "Fill"
-        description: "Fill a selected cuboid area"
-        usage: "Cast twice to fill"
-        cancel: "Fill cancelled"
-        target_selected: "Cast again to fill with $material"
-        fail: "Can't fill that much!"
-        cast_finish: "Filled $count blocks with $material"
+        description: "선택된 직육면체의 공간을 블럭으로 채웁니다"
+        usage: "두번 사용하셔야 해요"
+        cancel: "마법이 취소되었습니다"
+        target_selected: "한번 더 사용하여 $material 으로 채우세요"
+        fail: "그렇게나 많이 채울수는 없습니다"
+        cast_finish: "$count 개의 $material 이(가) 채워졌습니다"
     superregenerate:
         name: "SuperRegenerate"
-        description: "Regenerate full chunks"
-        usage: "Cast twice to regenerate"
-        fail: "Can't regenerate that much!"
-        cast: "Regenerating chunks"
-        target_selected: "Cast again to regenerate chunks"
-        cast_finish: "Regenerated $count blocks"
+        description: "청크정보를 불러와 블럭을 재생성합니다"
+        usage: "두번 사용하셔야 해요"
+        fail: "그렇게나 많이 채울 수는 없습니다"
+        cast: "재생성중..."
+        target_selected: "한번 더 사용하세요"
+        cast_finish: "$count개의 블럭이 재생성되었습니다"
     regenerate:
         name: "Regenerate"
-        description: "Regenerate a selected area"
-        fail: "Can't regenerate that much!"
-        usage: "Cast twice to regenerate"
-        cast: "Regenerating area"
-        target_selected: "Cast again to regenerate area"
-        cast_finish: "Regenerated $count blocks"
+        description: "선택된 공간을 청크정보를 불러와 재생성합니다"
+        fail: "그렇게나 많이 채울 수는 없습니다"
+        usage: "두번 사용하셔야 해요"
+        cast: "재생성중..."
+        target_selected: "한번 더 사용하세요"
+        cast_finish: "$count개의 블럭이 재생성되었습니다"
     recurse:
         name: "Recurse"
         description: "Recursively fill blocks"
@@ -729,8 +796,8 @@ spells:
         fail: "Can't adjust that"
     sphere:
         name: "Sphere"
-        description: "Create a real sphere"
-        cast_finish: "Created a $material sphere"
+        description: "구체를 생성합니다"
+        cast_finish: "$material 로 만들어진 구체를 생성합니다"
     blob:
         name: "Blob"
         description: "Create a solid blob"
@@ -889,14 +956,13 @@ spells:
         cast: "붐!"
     box:
         name: "Box"
-        description: "Create a large hollow box"
-        cast_finish: "Filled $count blocks with $material"
+        description: "속이 빈 큰 상자를 생성합니다"
+        cast_finish: "$count 개의 $material 이(가) 소환되었습니다"
     pillar:
         name: "Pillar"
-        description: "Raises a pillar up"
-        cast: "You create a pillar of $material"
-        no_target: "Can't pillar any further"
-        no_target: "Can't pillar any further"
+        description: "기둥을 세웁니다"
+        cast: "$material 으로 만들어진 기둥을 세웠습니다"
+        no_target: "그건 안될거 같아요!"
     place:
         name: "Place"
         description: "타겟에 블럭을 나둡니다"
@@ -947,323 +1013,324 @@ spells:
         cast: "꽃!"
     paste:
         name: "Paste"
-        description: "Pastes a full schematic"
-        usage: "For use with schematic brushes"
-        cast_finish: "Pasted $count blocks"
+        description: "schematic 을 붙여넣습니다"
+        usage: "schematic 브러쉬를 사용합니다 "
+        cast_finish: "$count 개의 블럭이 생성되었습니다"
 
 wands:
     master:
         name: "Master Wand"
-        description: "The ultimate wand"
+        description: "완벽한 완드"
     student:
         name: "Student Wand"
-        description: "Has low-powered magic"
+        description: "낮은 레벨의 완드"
     apprentice:
         name: "Apprentice Wand"
-        description: "Has moderate power"
+        description: "쓸만한 완드"
     battle:
         name: "Magic Sword"
-        description: "Has battle magic"
+        description: "전투용 마법을 담은 완드"
     engineer:
         name: "Engineering Wand"
-        description: "Has engineering magic"
+        description: "건축 완드"
     architect:
         name: "The Architect"
-        description: "Master Engineering Wand"
+        description: "완벽한 건축 완드!"
     elder:
         name: "Elder Wand"
-        description: "The Uber Wand"
+        description: "장로의 완드!"
     admin:
         name: "Admin Wand"
-        description: "For admins only"
+        description: "어드민 전용"
     random:
         name: "Randomized Wand"
-        description: "This will randomly generate a wand"
+        description: "랜덤 완드를 생성합니다!"
     demo:
         name: "Demo Wand"
-        description: "Not for gameplay, for demo'ing the plugin."
+        description: "게임 플레이를 위한것이 아닌, 데모를 위한 완드."
     explorer:
         name: "Exploring Wand"
-        description: "For exploring"
+        description: "탐험 전용 완드"
     psychic:
         name: "Psychic Wand"
-        description: "Psychic stuff"
+        description: "초자연적인 것들"
     painter:
         name: "Painting Wand"
-        description: "For the designer in all of us"
+        description: "우리속에 있는 디자이너를 위한 완드"
     mining:
         name: "Mining Wand"
-        description: "For mining"
+        description: "채굴용"
     farming:
         name: "Farming Wand"
-        description: "For farming"
+        description: "농사용"
     alchemist:
         name: "Alchemist Wand"
-        description: "Full metal!"
+        description: "풀 메탈!"
     elementalist:
         name: "Elementalist Wand"
-        description: "A master of the elements"
+        description: "원소술사의 완드"
     necromancer:
         name: "Necromancer Wand"
-        description: "Evil, evil stuff"
+        description: "악하고, 악한것들"
     air_student:
-        name: "Airbending Student"
+        name: "에어밴딩 수련자"
     water_student:
-        name: "Waterbending Student"
+        name: "워터밴딩 수련자"
     earth_student:
-        name: "Earthbending Student"
+        name: "얼스밴딩 수련자"
     fire_student:
-        name: "Firebending Student"
+        name: "파이어밴딩 수련자"
     air_apprentice:
-        name: "Airbender"
+        name: "에어밴더"
     water_apprentice:
-        name: "Waterbender"
+        name: "워터밴더"
     earth_apprentice:
-        name: "Earthbender"
+        name: "얼스밴더"
     fire_apprentice:
-        name: "Firebender"
+        name: "파이어밴더"
     air:
-        name: "Airbending Master"
+        name: "에어밴딩 마스터"
     water:
-        name: "Waterbending Master"
+        name: "워터밴딩 마스터"
     earth:
-        name: "Earthbending Master"
+        name: "얼스밴딩 마스터"
     fire:
-        name: "Firebending Master"
+        name: "파이어밴딩 마스터"
     avatar:
         name: "The Avatar Wand"
-        description: "Master of all four elements"
+        description: "4개의 원소를 모두 가진 아바타"
     camera:
         name: "Camera"
-        description: "Take a portrait of yourself or others"
+        description: "사진기!"
     default:
         name: "Wand"
-        description: "A magic wand"
+        description: "마법의 완드"
     white:
         name: "The White Wand"
-        description: "A wand for master white wizards"
+        description: "백마법사를 위한 완드"
     black:
         name: "The Black Wand"
-        description: "A wand for master dark wizards"
+        description: "흑마법사를 위한 완드"
     red:
         name: "The Red Wand"
-        description: "A powerful destructive wand"
+        description: "강력하고 파괴적인 완드"
     blue:
         name: "The Blue Wand"
-        description: "A cool wand"
+        description: "쿨한 완드"
     green:
         name: "The Green Wand"
-        description: "A wand for nature lovers"
+        description: "자연을 사랑하는 이를 위한 완드"
     wolf:
         name: "The Wolf"
-        description: "NathanWolf's Mega-Wand"
+        description: "NathanWolf의 메가-완드"
     CoOoD3R:
         name: "CoOoD3R's Wand"
-        description: "..."
+        description: "음..."
     Art10001:
         name: "Art's Wand"
-        description: "One of the Oldest"
+        description: "가장 오래된 것중 하나"
     lathame:
         name: "lathame's wand"
-        description: "Hail to the King, Baby!"
+        description: "왕을 찬양해, 다같이!"
     decorator:
         name: "Decorator"
-        description: "Decorates large areas at a time"
+        description: "넓은 지형을 꾸미는 완드"
     guest:
         name: "The Welcome Wand"
-        description: "A low-powered wand for new players"
+        description: "새로운 뉴비들을 위한 완드"
     villager:
         name: "The Villager Wand"
-        description: "Some basic utility and defense spells"
+        description: "기본적인 방어 완드"
     knight:
         name: "Enchanted Sword"
-        description: "A wand for knights"
+        description: "기사들을 위한 완드"
     baron:
         name: "The Baron Sword"
-        description: "Rule with Power"
+        description: "힘으로 지배하는 완드"
     lord:
         name: "The Lord Sword"
-        description: "Lord Over Them"
+        description: "그들의 왕의 완드"
     hero:
         name: "The Hero Sword"
-        description: "Heroic!"
+        description: "영웅적인!"
     king:
         name: "Excaliber"
-        description: "From The Lady"
+        description: "아씨로부터"
     legend:
         name: "The Legendary Wand"
-        description: "It's legen ..."
+        description: "그건 전설.. ..."
     overseer:
         name: "The Overseer Wand"
-        description: "... DARY!"
+        description: "... 적이야!"
     wizard:
         name: "The Wizard Wand"
-        description: "You're a real wizard, now."
+        description: "당신은 이제 진짜..마법사입니다"
     nether:
         name: "The Nether Wand"
-        description: "Spooky Power"
+        description: "으스스한 힘!"
     conway:
         name: "Conway's Wand"
-        description: "The Game of Life"
+        description: "삶의 게임!"
     ender:
         name: "The Ender Wand"
-        description: "Super Power"
+        description: "강력한 힘!"
     redeffects:
         name: "Red Wand Effects"
-        description: "Tint your wand effects!"
+        description: "효과에 색을 입히세요!"
     greeneffects:
         name: "Green Wand Effects"
-        description: "Tint your wand effects!"
+        description: "효과에 색을 입히세요!"
     blueeffects:
         name: "Blue Wand Effects"
-        description: "Tint your wand effects!"
+        description: "효과에 색을 입히세요!"
     whiteeffects:
         name: "White Wand Effects"
-        description: "Tint your wand effects!"
+        description: "효과에 색을 입히세요!"
     blackeffects:
         name: "Black Wand Effects"
-        description: "Tint your wand effects!"
+        description: "효과에 색을 입히세요!"
     purpleeffects:
         name: "Purple Wand Effects"
-        description: "Tint your wand effects!"
+        description: "효과에 색을 입히세요!"
     yelloweffects:
         name: "Yellow Wand Effects"
-        description: "Tint your wand effects!"
+        description: "효과에 색을 입히세요!"
     aquaeffects:
         name: "Aqua Wand Effects"
-        description: "Tint your wand effects!"
+        description: "효과에 색을 입히세요!"
     organgeeffects:
         name: "Orange Wand Effects"
-        description: "Tint your wand effects!"
+        description: "효과에 색을 입히세요!"
     rainboweffects:
         name: "Rainbow Wand Effects"
-        description: "Color-changing particles"
+        description: "입자들이 색이 바뀝니다"
     mana1:
         name: "Mana Upgrade Level 1"
-        description: "Upgrade to 200 Mana"
+        description: "마나 최대치가 200으로 강화됩니다"
     mana2:
         name: "Mana Upgrade Level 2"
-        description: "Upgrade to 400 Mana"
+        description: "마나 최대치가 400으로 강화됩니다"
     mana3:
         name: "Mana Upgrade Level 3"
-        description: "Upgrade to 1000 Mana"
+        description: "마나 최대치가 1000으로 강화됩니다"
     mana4:
         name: "Mana Upgrade Level 4"
-        description: "Upgrade to 1500 Mana"
+        description: "마나 최대치가 1500으로 강화됩니다"
     antihunger:
         name: "Anti-Hunger Upgrade"
-        description: "Never go hungry again!"
+        description: "배고픔이 줄어들지 않도록 강화됩니다"
     undroppable:
         name: "Undroppable Upgrade"
-        description: "Makes your wand undroppable"
+        description: "완드가 교환불가 상태로 강화됩니다"
     chestmode:
         name: "Chest Mode"
-        description: "A simpler wand mechanic"
+        description: "좀더 간단한 완드 모드!"
     cyclemode:
         name: "Cycle Mode"
-        description: "The simplest wand mechanic"
+        description: "가장 간단한 완드 모드!"
     inventorymode:
         name: "Inventory Mode"
-        description: "For expert wizards"
+        description: "마법 전문가드를 위한 모드!"
     loud:
         name: "Loud Wand"
-        description: "Turn on all wand chat messages"
+        description: "완드의 모든 채팅 메세지를 활성화합니다"
     quiet:
         name: "Quiet Wand"
-        description: "Turn off spell cast messages"
+        description: "완드의 모든 채팅 메세지를 비활성화합니다"
     silent:
         name: "Wand Silencer"
-        description: "Turn off all wand chat messages"
+        description: "완드의 모든 채팅 메세지를 비활성화합니다"
     organizer:
         name: "The Organizer"
-        description: "Re-organizes your wand inventory"
+        description: "당신의 마법을 정렬합니다"
     alphabetizer:
         name: "The Alphabetizer"
-        description: "Alphabetizes your wand inventory"
+        description: "알파벳 순서로 마법을 정렬합니다"
     manaboost:
         name: "Mana Boost"
-        description: "An instant boost to 1000 Mana (or your max)"
+        description: "마나를 순식간에 1000을 채워줍니다. 최대치를 초과하진 않습니다"
     recalltoken:
         name: "Recall Token"
-        description: "Cast to return"
+        description: "사용하여 돌아가세요"
     respawntoken:
         name: "Respawn Token"
-        description: "Cast to return to spawn"
+        description: "사용하여 스폰으로 돌아가세요"
     defenderheart:
         name: "Heart of Defender"
-        description: "It pulsates with power"
+        description: "힘있게 진동합니다"
     virusheart:
         name: "Heart of Virus"
-        description: "This should be destroyed"
+        description: "이건 반드시 파괴되어야해요"
     hunterheart:
         name: "Heart of Hunter"
-        description: "It wants to be reborn"
+        description: "다시 살아나고 싶어합니다"
     golemheart:
         name: "Heart of Golem"
-        description: "Your new best friend"
+        description: "당신의 새로운 절친!"
     wormheart:
         name: "Heart of Worm"
-        description: "It will consume the world"
+        description: "세상을 집어삼킬 것입니다"
     broomstick:
         name: "Broomstick"
-        description: "You can fly!"
+        description: "날 수 있어요!"
 automata:
-    awaken: "&c&o$name    &r&5has awakened"
+    awaken: "&c&o$name    &r&5이(가) 깨어났습니다!"
     default_name: "Automaton"
-    level: "Level $roman"
+    level: "레벨 : $roman"
     good:
        prefixes:
-           - Holy
-           - Light
-           - Shiny
-           - Shimmering
-           - Stalwart
-           - Bright
-           - Savior
-           - Blessed
-           - Magic
-           - Enchanted
-           - Enlightened
-           - Magnificent
-           - Magnamous
-           - Brave
-           - Loyal
-       suffixes:
-           - of Holiness
-           - of Honor
-           - of Light
-           - of Lightness
-           - of Protection
-           - of The Sun
-           - of Magic
-           - of The Blessed
-           - of Forgiveness
-           - of Loyalty
-           - of Retribution
-           - of Resilliance
+           - "거룩한"
+           - "빛의"
+           - "빛나는"
+           - "아른거리는"
+           - "충실한"
+           - "밝은"
+           - "구원의"
+           - "축복된"
+           - "마법의"
+           - "강화된"
+           - "깨우친"
+           - "참으로 아름다운"
+           - "용감한"
+# Suffixes won't fit in Korean language because of syntax difference
+# In order to get these in names, it has to turn into prefix
+#       suffixes:
+#           - of Holiness
+#           - of Honor
+#           - of Light
+#           - of Lightness
+#           - of Protection
+#           - of The Sun
+#           - of Magic
+#           - of The Blessed
+#           - of Forgiveness
+#           - of Loyalty
+#           - of Retribution
+#           - of Resilliance
     evil:
        prefixes:
-           - Evil
-           - Dark
-           - Slimy
-           - Dreadful
-           - Dread
-           - Cursed
-           - Magic
-           - Enchanted
-           - Harbringer
-           - Nether
-           - Infamous
-           - Nefarious
-           - Distastrous
-       suffixes:
-           - of Darkness
-           - of Evil
-           - of The Night
-           - of Death
-           - of Doom
-           - of The Nether
-           - of Magic
-           - of Destruction
-           - of Desolation
-           - of Infamy
+           - 악한
+           - 어두운
+           - 끈적끈적한
+           - 끔찍한
+           - 무서운
+           - 저주받은
+           - 마법의
+           - 강화된
+           - 예언된
+           - 지옥의
+           - 악명높은
+           - 범죄적인
+# Suffixes won't fit in Korean language because of syntax difference
+# In order to get these in names, it has to turn into prefix
+#       suffixes:
+#           - of Darkness
+#           - of Evil
+#           - of The Night
+#           - of Death
+#           - of Doom
+#           - of The Nether
+#           - of Magic
+#           - of Destruction
+#           - of Desolation
+#           - of Infamy

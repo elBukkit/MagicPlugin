@@ -443,7 +443,7 @@ admin:
 
 ajwolf:
     path: master
-    icon: gold_hoe
+    icon: gold_axe
     keep: true
     bound: true
     undroppable: true
