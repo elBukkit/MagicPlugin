@@ -10,79 +10,14 @@ accio:
     inherit: pull
 
 aguamenti:
-    icon: ghast_tear
-    category: transfiguration
-    class: CushionSpell
-    pvp_restricted: true
-    worth: 10
-    effects:
-        cast:
-        -  class: EffectSingle
-           sound: splash
-           location: both
-        -  class: EffectTrail
-           particle: drip_water
-           particle_count: 8
-        -  class: EffectSingle
-           location: target
-           effectlib:
-             class: SphereEffect
-             iterations: 10
-             period: .1
-             particle: drip_water
-             radius: 1.8
-             particles: 20
-    parameters:
-        target_type: LivingEntity
-        allow_max_range: false
-        height: 3
-        hitbox: true
-        range: 25
-        width: 3
-        cooldown: 1000
-        undo: 1000
-        disable_physics: 8000
-        bypass_build: true
-        entity_undo: false
-        bypass_backfire: true
-    costs:
-        mana: 30
+    inherit: bubble
 
 aguamenti|2:
-    parameters:
-        width: 4
-        height: 4
-        range: 40
+    inherit: bubble|2
 
 alohomora:
-    icon_url: http://i.imgur.com/Af56lYq.png
-    icon: shears
+    inherit: admission
     category: transfiguration
-    class: ConstructSpell
-    worth: 50
-    cast_on_no_target: true
-    effects:
-        cast:
-        -  class: EffectSingle
-           sound: fuse
-        -  class: EffectTrail
-           particle: redstone
-           color: FFFF00
-           particle_data: 2
-           particle_count: 5
-    parameters:
-        allow_max_range: true
-        range: 32
-        check_destructible: true
-        destructible: iron_door_block
-        preserve_data: true
-        brush: wooden_door
-        radius: 3
-        bypass_build: true
-        transparent: transparent_to_construction
-        undo: 8000
-    costs:
-        mana: 50
 
 colloportus:
     icon_url: http://i.imgur.com/84Dq1nT.png
@@ -257,9 +192,12 @@ arresto:
     icon_url: http://i.imgur.com/PHlfm7b.png
     icon: ink_sack:8
     category: charms
-    class: FlingSpell
     worth: 20
     pvp_restricted: false
+    actions:
+        cast:
+        - class: VelocityAction
+        - class: FallProtectionAction
     effects:
         cast:
         -  class: EffectSingle
@@ -714,43 +652,11 @@ disillusion:
     category: charms
 
 duro:
-    icon_url: http://i.imgur.com/bIiV9Xn.png
-    icon: flint
+    inherit: harden
     category: transfiguration
-    class: RecurseSpell
-    worth: 150
-    cast_on_no_target: true
-    effects:
-        cast:
-        -  class: EffectTrail
-           effect: step_sound
-        -  class: EffectSingle
-           sound: fuse
-    parameters:
-        allow_max_range: false
-        range: 16
-        size: 1
-        check_destructible: true
-        destructible: hardenable
-        brush: obsidian
-        transparent: transparent_to_construction
-        undo: 4000
-        cooldown: 1000
-        bypass_build: true
-        bypass_backfire: true
-        select_self: false
-    costs:
-        mana: 30
 
 duro|2:
-    parameters:
-        size: 2
-        undo: 6000
-
-duro|3:
-    parameters:
-        size: 3
-        undo: 8000
+    inherit: harden|2
 
 spongify:
     inherit: rubberize
@@ -2471,86 +2377,6 @@ phase:
     costs:
         mana: 50
 
-superblob:
-    enabled: true
-    hidden: true
-
-paste:
-    enabled: true
-    hidden: true
-
-superconvert:
-    enabled: true
-    hidden: true
-
-recall:
-    enabled: true
-    hidden: true
-
-gather:
-    enabled: true
-    hidden: true
-
-stash:
-    enabled: true
-    hidden: true
-
-absorb:
-    enabled: true
-    hidden: true
-
-fill:
-    enabled: true
-    hidden: true
-
-superdisc:
-    enabled: true
-    hidden: true
-
-superring:
-    enabled: true
-    hidden: true
-
-superbox:
-    enabled: true
-    hidden: true
-
-superpyramid:
-    enabled: true
-    hidden: true
-
-supercube:
-    enabled: true
-    hidden: true
-
-superdome:
-    enabled: true
-    hidden: true
-
-bridge:
-    enabled: true
-    hidden: true
-
-pillar:
-    enabled: true
-    hidden: true
-
-place:
-    enabled: true
-    hidden: true
-
-superiterate:
-    enabled: true
-    hidden: true
-
-iterate:
-    enabled: true
-    hidden: true
-
-superfly:
-    enabled: true
-    hidden: true
-
 revelio:
     icon_url: http://i.imgur.com/Ql8Ttkb.png
     icon: iron_helmet
@@ -2609,70 +2435,6 @@ deluminate:
         undo: 20000
     costs:
         mana: 100
-
-wolfhouse:
-    enabled: true
-    hidden: true
-
-mount:
-    enabled: true
-    hidden: true
-
-life:
-    enabled: true
-    hidden: true
-
-box:
-    enabled: true
-    hidden: true
-
-simulate:
-    enabled: true
-    hidden: true
-
-tree:
-    enabled: true
-    hidden: true
-
-music:
-    enabled: true
-    hidden: true
-
-paint:
-    enabled: true
-    hidden: true
-
-torch:
-    enabled: true
-    hidden: true
-
-recurse:
-    enabled: true
-    hidden: true
-
-alter:
-    enabled: true
-    hidden: true
-
-superalter:
-    enabled: true
-    hidden: true
-
-supershell:
-    enabled: true
-    hidden: true
-
-hat:
-    enabled: true
-    hidden: true
-
-regenerate:
-    enabled: true
-    hidden: true
-
-superregenerate:
-    enabled: true
-    hidden: true
 
 pulsus:
     icon_url: http://i.imgur.com/sWkt9H2.png
@@ -2950,3 +2712,153 @@ dungbomb:
 
 count:
     enabled: true
+
+## ENGINEERING
+
+box:
+    enabled: true
+    hidden: true
+
+tree:
+    enabled: true
+    hidden: true
+
+paint:
+    enabled: true
+    hidden: true
+
+torch:
+    enabled: true
+    hidden: true
+    parameters:
+       undo: 0
+
+recurse:
+    enabled: true
+    hidden: true
+
+alter:
+    enabled: true
+    hidden: true
+
+superalter:
+    enabled: true
+    hidden: true
+
+supershell:
+    enabled: true
+    hidden: true
+
+regenerate:
+    enabled: true
+    hidden: true
+
+superregenerate:
+    enabled: true
+    hidden: true
+
+superblob:
+    enabled: true
+    hidden: true
+
+paste:
+    enabled: true
+    hidden: true
+
+superconvert:
+    enabled: true
+    hidden: true
+
+absorb:
+    enabled: true
+    hidden: true
+
+fill:
+    enabled: true
+    hidden: true
+
+superdisc:
+    enabled: true
+    hidden: true
+
+superring:
+    enabled: true
+    hidden: true
+
+superbox:
+    enabled: true
+    hidden: true
+
+superpyramid:
+    enabled: true
+    hidden: true
+
+supercube:
+    enabled: true
+    hidden: true
+
+superdome:
+    enabled: true
+    hidden: true
+
+bridge:
+    enabled: true
+    hidden: true
+
+pillar:
+    enabled: true
+    hidden: true
+
+place:
+    enabled: true
+    hidden: true
+
+superiterate:
+    enabled: true
+    hidden: true
+
+iterate:
+    enabled: true
+    hidden: true
+
+## OTHER CARRYOVER SPELLS
+
+hat:
+    enabled: true
+    hidden: true
+
+simulate:
+    enabled: true
+    hidden: true
+
+music:
+    enabled: true
+    hidden: true
+
+wolfhouse:
+    enabled: true
+    hidden: true
+
+mount:
+    enabled: true
+    hidden: true
+
+life:
+    enabled: true
+    hidden: true
+
+superfly:
+    enabled: true
+    hidden: true
+
+recall:
+    enabled: true
+    hidden: true
+
+gather:
+    enabled: true
+    hidden: true
+
+stash:
+    enabled: true
+    hidden: true

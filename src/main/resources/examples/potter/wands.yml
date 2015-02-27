@@ -157,7 +157,7 @@ architect:
     effect_color: '8B008B'
     effect_bubbles: true
     organize: true
-    active_spell: fly
+    active_spell: levitate
     spells:
         - flight
         - paste

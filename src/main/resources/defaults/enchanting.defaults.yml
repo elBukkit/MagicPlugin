@@ -152,7 +152,7 @@ beginner:
       cure: 1,5,10
       admission: 20,25,30
       curse: 0,0,10
-      cushion: 10,40,20
+      bubble: 10,40,20
       fireball: 0,0,80
       flare: 110,80,60
       torch: 0,60,50
@@ -715,7 +715,7 @@ battle:
       breach: 5,20,30
       cloak: 10,20,30
       curse: 0,1,10
-      cushion: 10,40,20
+      bubble: 10,40,20
       disintegrate: 0,10,40
       shields: 1,15,50
       earth: 5,20,50

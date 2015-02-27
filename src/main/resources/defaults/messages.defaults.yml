@@ -279,6 +279,8 @@ spells:
         name: Admission
         description: Opens the target door
         cast: Let me in!
+    admission|2:
+        upgrade_description: "&r&b• &6Now opens iron doors"
     anvil:
         name: Anvil
         description: Spawn an anvil
@@ -547,11 +549,12 @@ spells:
         name: Inferno
         description: Burn a wide area
         cast: You burn $count blocks
-    cushion:
-        name: Cushion
+    bubble:
+        name: Bubble
         description: Create a safety bubble
         usage: Cast underneath yourself while falling
-        cast: Happy landings!
+        cast: Sploosh
+        upgrade_description: "&r&b• &6Larger water bubble"
     paint:
         name: Paint
         description: Fill a single block

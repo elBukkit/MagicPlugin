@@ -2346,12 +2346,15 @@ fire|3:
     costs:
         mana: 90
 
-cushion:
+bubble:
+    alias: cushion
     icon_url: http://i.imgur.com/FMkCRh9.png
     icon: water_bucket
     category: utility
     class: CushionSpell
     worth: 10
+    upgrade_required_path: student
+    upgrade_required_casts: 50
     effects:
         cast:
         -  class: EffectSingle
@@ -2381,6 +2384,12 @@ cushion:
         disable_physics: 8000
     costs:
         mana: 10
+
+cushion|2:
+    parameters:
+        width: 4
+        height: 4
+        range: 40
 
 regenerate:
     icon: gold_hoe
@@ -5415,6 +5424,8 @@ admission:
     class: DoorSpell
     worth: 50
     cast_on_no_target: true
+    upgrade_required_path: master
+    upgrade_required_casts: 20
     effects:
         cast:
         -  class: EffectSingle
@@ -5427,16 +5438,21 @@ admission:
     parameters:
         range: 16
         radius: 3
-        destructible: doors
+        destructible: unlocked_doors
         transparent: transparent_to_construction
         undo: 8000
     costs:
         mana: 50
 
+admission|2:
+   parameters:
+        range: 32
+        destructible: doors
+
 harden:
     icon_url: http://i.imgur.com/bIiV9Xn.png
     icon: flint
-    category: transfiguration
+    category: utility
     class: RecurseSpell
     worth: 150
     cast_on_no_target: true

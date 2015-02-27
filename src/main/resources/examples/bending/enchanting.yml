@@ -74,7 +74,7 @@ waterbending:
       1: 100
     spells:
       frost: 80
-      cushion: 5
+      bubble: 5
       stream: 40
       heal: 80
       cure: 1
@@ -140,7 +140,7 @@ avatar:
       collapse: 5
       blast: 5
       frost: 80
-      cushion: 5
+      bubble: 5
       stream: 40
       heal: 80
       cure: 1
@@ -150,3 +150,4 @@ avatar:
       push: 80
       pull: 10
       breach: 1
+      boon: 20
