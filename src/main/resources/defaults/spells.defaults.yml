@@ -297,7 +297,7 @@ boon:
         range: 32
         duration: 10000
         target_type: LivingEntity
-        effect_speed: 1
+        effect_speed: 2
         effect_night_vision: 5
 
 boon|2:
@@ -794,12 +794,12 @@ shell|3:
     upgrade_required_path: master
     upgrade_required_casts: 50
     parameters:
-        brush: obsidian
+        brush: smooth_brick
         undo: 10000
 
 shell|4:
     parameters:
-        brush:
+        brush: obsidian
         undo: 15000
 
 shields:
@@ -1492,8 +1492,8 @@ disarm:
         allow_max_range: false
         range: 30
         hitbox: true
-        fizzle_chance: 0.6
-        backfire_chance: 0.3
+        fizzle_chance: 0.4
+        backfire_chance: 0.2
         keep_in_inventory: true
         target_breakables: 0
         cooldown: 10000
