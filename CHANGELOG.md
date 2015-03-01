@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## 4.3
+
+ - Fix Reflect
+ - Updates to Potter and Bending configs
+
 ## 4.2
 
  - Custom sound effects (requires resource pack)
