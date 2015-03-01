@@ -35,3 +35,12 @@ torch:
 toss:
   parameters:
      undo: 5000
+
+# Make levitate cost more to cast
+# and more to keep activated
+levitate:
+    costs:
+        mana: 100
+# These are in mana per second
+    active_costs:
+        mana: 50
