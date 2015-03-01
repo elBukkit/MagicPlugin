@@ -95,6 +95,10 @@ iterate:
        undo: 5000
        brush: dirt
 
+earthquake:
+     category: earthbending
+     enabled: true
+
 collapse:
      category: earthbending
      enabled: true

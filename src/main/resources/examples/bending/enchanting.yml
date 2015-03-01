@@ -99,6 +99,7 @@ earthbending:
       collapse: 5
       blast: 5
       breach: 1
+      earthquake: 1
 
 firebending:
     inherit: default

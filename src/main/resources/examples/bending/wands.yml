@@ -23,7 +23,7 @@ airbending:
         - pull
 
 waterbending:
-    path: airbending
+    path: waterbending
     icon: gold_spade
     xp_max: 50
     xp: 50
