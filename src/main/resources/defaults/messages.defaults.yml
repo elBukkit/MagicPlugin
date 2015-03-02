@@ -185,7 +185,7 @@ wand:
     brush_instructions: "&r&bMaterial brushes have been added to your $wand. Select these as you would a spell to modify your engineering magic."
 spell:
     brush: Uses Material Brushes
-    undoable: Undoable with Rollback
+    undoable: Undoable
     reactivate: Reactivating $name
     available_path: Available at the $path level
     required_path: Required to complete the $path level
@@ -1229,6 +1229,9 @@ wands:
     rainboweffects:
         name: Rainbow Wand Effects
         description: Color-changing particles
+    haloeffects:
+        name: Halo Effects
+        description: A personalized halo
     student_upgrade:
         name: Student Upgrade
         description: Upgrade to Student level

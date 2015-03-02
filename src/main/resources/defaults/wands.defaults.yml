@@ -843,8 +843,21 @@ rainboweffects:
     effect_color: random
     effect_bubbles: false
     effect_particle: spell_mob
-    effect_parcticle_data: 2
-    effect_particle_count: 3
+    effect_particle_data: 2
+    effect_particle_count: 10
+    effect_particle_radius: 2
+    effect_particle_interval: 1
+    effect_particle_offset: 0.5
+haloeffects:
+    upgrade: true
+    indestructible: false
+    icon: magma_cream
+    effect_particle: redstone
+    effect_particle_count: 6
+    effect_particle_interval: 1
+    effect_particle_data: 0
+    effect_particle_radius: 0.4
+    effect_particle_offset: 0.5
 hotbar2:
     upgrade: true
     indestructible: false

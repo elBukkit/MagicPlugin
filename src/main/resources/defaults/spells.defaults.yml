@@ -2385,7 +2385,7 @@ bubble:
     costs:
         mana: 10
 
-cushion|2:
+bubble|2:
     parameters:
         width: 4
         height: 4

@@ -72,8 +72,9 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		"xp", "xp_regeneration", "xp_max",
 		"bound", "uses", "upgrade", "indestructible", "undroppable",
 		"cost_reduction", "cooldown_reduction", "effect_bubbles", "effect_color", 
-		"effect_particle", "effect_particle_count", "effect_particle_data", "effect_particle_interval", 
-		"effect_sound", "effect_sound_interval", "effect_sound_pitch", "effect_sound_volume",
+		"effect_particle", "effect_particle_count", "effect_particle_data", "effect_particle_interval",
+        "effect_particle_radius", "effect_particle_offset",
+        "effect_sound", "effect_sound_interval", "effect_sound_pitch", "effect_sound_volume",
 		"haste", "hotbar_count", "hotbar",
 		"health_regeneration", "hunger_regeneration", 
 		"icon", "mode", "keep", "locked", "quiet", "force", "randomize", "rename",
@@ -154,6 +155,8 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	private int effectParticleCount = 0;
 	private int effectParticleInterval = 0;
 	private int effectParticleCounter = 0;
+    private double effectParticleRadius = 0.2;
+    private double effectParticleOffset = 0.3;
 	private boolean effectBubbles = false;
 	private EffectRing effectPlayer = null;
 	
@@ -995,6 +998,8 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		node.set("effect_particle_data", Float.toString(effectParticleData));
 		node.set("effect_particle_count", effectParticleCount);
 		node.set("effect_particle_interval", effectParticleInterval);
+        node.set("effect_particle_radius", effectParticleRadius);
+        node.set("effect_particle_offset", effectParticleOffset);
 		node.set("effect_sound_interval", effectSoundInterval);
 		node.set("quiet", quietLevel);
 		node.set("keep", keep);
@@ -1176,6 +1181,8 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 			}
 			effectParticleData = (float)wandConfig.getDouble("effect_particle_data", effectParticleData);
 			effectParticleCount = wandConfig.getInt("effect_particle_count", effectParticleCount);
+            effectParticleRadius = wandConfig.getDouble("effect_particle_radius", effectParticleRadius);
+            effectParticleOffset = wandConfig.getDouble("effect_particle_offset", effectParticleOffset);
 			effectParticleInterval = wandConfig.getInt("effect_particle_interval", effectParticleInterval);
 			effectSoundInterval =  wandConfig.getInt("effect_sound_interval", effectSoundInterval);
 			
@@ -2123,6 +2130,10 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 			effectParticleCount = other.effectParticleCount;
 			modified = modified | (effectParticleInterval != other.effectParticleInterval);
 			effectParticleInterval = other.effectParticleInterval;
+            modified = modified | (effectParticleRadius != other.effectParticleRadius);
+            effectParticleRadius = other.effectParticleRadius;
+            modified = modified | (effectParticleOffset != other.effectParticleOffset);
+            effectParticleOffset = other.effectParticleOffset;
 		}
 		
 		if (other.effectSound != null && (other.isUpgrade || effectSound == null)) {
@@ -2681,19 +2692,29 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		Location location = mage.getLocation();
 		
 		if (effectParticle != null && location != null && effectParticleInterval > 0 && effectParticleCount > 0) {
+            Location effectLocation = player.getEyeLocation();
+            effectLocation.setY(effectLocation.getY() + effectParticleOffset);
 			if ((effectParticleCounter++ % effectParticleInterval) == 0) {
 				if (effectPlayer == null) {
 					effectPlayer = new EffectRing(controller.getPlugin());
-					effectPlayer.setParticleCount(2);
-					effectPlayer.setIterations(2);
-					effectPlayer.setRadius(2);
-					effectPlayer.setSize(5);
-					effectPlayer.setMaterial(location.getBlock().getRelative(BlockFace.DOWN));
+					effectPlayer.setParticleCount(1);
+					effectPlayer.setIterations(1);
+                    effectPlayer.setParticleOffset(0, 0, 0);
 				}
+                effectPlayer.setMaterial(location.getBlock().getRelative(BlockFace.DOWN));
+                if (effectParticleData == 0)
+                {
+                    effectPlayer.setColor(getEffectColor());
+                }
+                else
+                {
+                    effectPlayer.setColor(null);
+                }
 				effectPlayer.setParticleType(effectParticle);
 				effectPlayer.setParticleData(effectParticleData);
-				effectPlayer.setParticleCount(effectParticleCount);
-				effectPlayer.start(player.getEyeLocation(), null);
+				effectPlayer.setSize(effectParticleCount);
+                effectPlayer.setRadius((float)effectParticleRadius);
+				effectPlayer.start(effectLocation, null);
 			}
 		}
 		
