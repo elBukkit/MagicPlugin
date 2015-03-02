@@ -192,12 +192,10 @@
       		<id>citizens</id>
       		<url>http://repo.citizensnpcs.co</url>
       </repository>
-      <!-- Down? :(
       <repository>
       		<id>dtlTraders</id>
       		<url>http://dandielo.net:8081/nexus/content/repositories/snapshots/</url>
       </repository>
-      -->
       <repository>
             <id>Plugin Metrics</id>
             <url>http://repo.mcstats.org/content/repositories/public</url>
