@@ -48,13 +48,13 @@ categories:
         color: 'FFFFFF'
 
 wands:
-    air:
+    airbending:
         name: Airbending
-    water:
+    waterbending:
         name: Waterbending
-    earth:
+    earthbending:
         name: Earthbending
-    fire:
+    firebending:
         name: Firebending
     avatar:
         name: Avatar Powers

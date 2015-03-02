@@ -179,6 +179,11 @@ recall:
         description: Wizard Spleef!
         locked: true
         icon: wood_hoe
+      refugee:
+        name: Refugee Camp
+        description: OP Dueling!
+        locked: true
+        icon: wood_hoe
       endtemple:
         name: The End Temple
         description: A little shortcut

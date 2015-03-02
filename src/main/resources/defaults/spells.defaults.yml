@@ -4586,8 +4586,6 @@ missile|2:
         player_damage: 3
         entity_damage: 6
         target_breakables: 2
-    costs:
-        mana: 50
 
 missile|3:
     upgrade_required_path: apprentice
@@ -4598,7 +4596,7 @@ missile|3:
         entity_damage: 8
         target_breakables: 3
     costs:
-        mana: 70
+        mana: 30
 
 missile|4:
     parameters:
@@ -4607,7 +4605,7 @@ missile|4:
         entity_damage: 12
         target_breakables: 4
     costs:
-        mana: 100
+        mana: 40
 
 blind:
     icon_url: http://i.imgur.com/Todo6d0.png

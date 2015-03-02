@@ -10,6 +10,7 @@ region flag magic_spawn3 -w world server-enter-command /castp @p recall unlock b
 region flag magic_spawn5 -w world server-enter-command /castp @p recall unlock iron
 region flag magic_spawn4 -w world server-enter-command /castp @p recall unlock frozen
 region flag magic_spawn6 -w world server-enter-command /castp @p recall unlock brick
+region flag refugee -w world server-enter-command /castp @p recall unlock refugee
 region flag redwood -w world server-enter-command /castp @p recall unlock redwood
 region flag gold -w world server-enter-command /castp @p recall unlock gold
 region flag hall -w world server-enter-command /castp @p recall unlock hall
