@@ -736,7 +736,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
 
         // Can be overridden by the base spell, or the variant spell
         levelDescription = controller.getMessages().get("spells." + baseKey + ".level_description", levelDescription);
-        upgradeDescription = controller.getMessages().get("spells." + baseKey + ".upgrade_description", levelDescription);
+        upgradeDescription = controller.getMessages().get("spells." + baseKey + ".upgrade_description", upgradeDescription);
 
         // Spell level variants can override
         if (spellKey.isVariant()) {
