@@ -82,6 +82,9 @@ public class MagicTraitCommandExecutor extends MagicTabExecutor {
         {
             String key = args[0];
             String value = args.length > 1 ? args[1] : null;
+            for (int i = 2; i < args.length; i++) {
+                value = value + " " + args[i];
+            }
             trait.configure(sender, key, value);
         }
 
