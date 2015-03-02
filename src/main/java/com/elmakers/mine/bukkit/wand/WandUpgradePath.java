@@ -29,7 +29,7 @@ import java.util.TreeMap;
  *
  * Upgrading is generally done by spending XP on an enchanting table.
  */
-public class WandUpgradePath {
+public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUpgradePath {
     private static Map<String, WandUpgradePath> paths = new HashMap<String, WandUpgradePath>();
 
     private TreeMap<Integer, WandLevel> levelMap = null;
@@ -217,6 +217,7 @@ public class WandUpgradePath {
         }
     }
 
+    @Override
     public String getKey() {
         return key;
     }
@@ -359,18 +360,22 @@ public class WandUpgradePath {
         return minLevel;
     }
 
+    @Override
     public boolean requiresSpell(String spellKey) {
         return requiredSpells.contains(spellKey);
     }
 
+    @Override
     public boolean hasSpell(String spellKey) {
         return spells.contains(spellKey);
     }
 
+    @Override
     public String getName() {
         return name;
     }
 
+    @Override
     public String getDescription() {
         return description;
     }
@@ -507,6 +512,7 @@ public class WandUpgradePath {
         return hidden;
     }
 
+    @Override
     public boolean hasPath(String pathName) {
         if (this.key.equalsIgnoreCase(pathName)) return true;
         if (parent != null) {

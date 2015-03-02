@@ -5508,3 +5508,11 @@ sponge:
         select_self: false
     costs:
         mana: 65
+
+upgrades:
+    icon: compass
+    category: utility
+    hidden: true
+    actions:
+        cast:
+        -  class: SpellProgressAction

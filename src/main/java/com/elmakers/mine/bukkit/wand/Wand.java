@@ -541,7 +541,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		return this.template;
 	}
 
-    public WandUpgradePath getPath() {
+    public com.elmakers.mine.bukkit.api.wand.WandUpgradePath getPath() {
         String pathKey = path;
         if (pathKey == null || pathKey.length() == 0) {
             pathKey = controller.getDefaultWandPath();
@@ -582,7 +582,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
             {
                 mage.sendMessage(controller.getMessages().get("wand.inventory_instructions", "").replace("$wand", getName()));
             }
-            WandUpgradePath path = getPath();
+            com.elmakers.mine.bukkit.api.wand.WandUpgradePath path = getPath();
             if (path != null)
             {
                 String message = controller.getMessages().get("wand.enchant_instructions", "").replace("$wand", getName());
@@ -1496,7 +1496,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         if (description.length() > 0) {
             if (description.contains("$path")) {
                 String pathName = "Unknown";
-                WandUpgradePath path = getPath();
+                com.elmakers.mine.bukkit.api.wand.WandUpgradePath path = getPath();
                 if (path != null) {
                     pathName = path.getName();
                 }
@@ -1919,7 +1919,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         if (enchanter == null && mage != null) {
             enchanter = mage;
         }
-        WandUpgradePath path = getPath();
+        WandUpgradePath path = (WandUpgradePath)getPath();
 		if (path == null) {
             if (enchanter != null) {
                 enchanter.sendMessage(controller.getMessages().get("wand.no_path"));
@@ -2866,7 +2866,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
                     if (upgrade != null && requiredCasts > 0 && mageSpell.getCastCount() >= requiredCasts)
                     {
                         String upgradePath = mageSpell.getRequiredUpgradePath();
-                        WandUpgradePath currentPath = getPath();
+                        WandUpgradePath currentPath = (WandUpgradePath)getPath();
                         if (upgradePath == null || upgradePath.isEmpty() || (currentPath != null && currentPath.hasPath(upgradePath)))
                         {
                             addSpell(upgrade.getKey());

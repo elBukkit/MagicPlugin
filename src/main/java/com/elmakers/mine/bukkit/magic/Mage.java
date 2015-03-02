@@ -790,7 +790,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     }
 
     @Override
-    public Spell getSpell(String key) {
+    public MageSpell getSpell(String key) {
         if (loading) return null;
 
         MageSpell playerSpell = spells.get(key);

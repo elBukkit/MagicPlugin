@@ -84,7 +84,7 @@ public class MagicCitizensTrait extends Trait {
                 ChatColor.WHITE + "(" + ChatColor.GRAY + npc.getId() + ChatColor.WHITE + ")");
         String spellDescription = spellKey == null ? (ChatColor.RED + "(None)") : (ChatColor.LIGHT_PURPLE + spellKey);
         sender.sendMessage(ChatColor.DARK_PURPLE + "Spell: " + spellDescription);
-        String parameterDescription = spellKey == null ? (ChatColor.GRAY + "(None)") : (ChatColor.LIGHT_PURPLE + StringUtils.join(parameters, ""));
+        String parameterDescription = parameters == null ? (ChatColor.GRAY + "(None)") : (ChatColor.LIGHT_PURPLE + StringUtils.join(parameters, ""));
         sender.sendMessage(ChatColor.DARK_PURPLE + "Parameters: " + parameterDescription);
         String casterDescription = npcCaster ? (ChatColor.GRAY + "NPC") : (ChatColor.LIGHT_PURPLE + "Player");
         sender.sendMessage(ChatColor.DARK_PURPLE + "Caster: " + casterDescription);

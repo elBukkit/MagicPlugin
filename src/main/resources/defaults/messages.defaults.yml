@@ -1152,6 +1152,12 @@ spells:
         name: Sponge
         description: Suck up water in an area
         cast: Slurp!
+    upgrades:
+        name: Spell Upgrades
+        descriptions: Shows available upgrades
+        fail: You must be holding a wand!
+        level_requirement: "&r&cRequires: &6$path"
+        cast_requirement: "Casts: &6$current&f/&e$required"
 
 wands:
     default:
