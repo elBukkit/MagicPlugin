@@ -83,4 +83,5 @@ public interface Wand extends CostReducer {
     public float getHungerRegeneration();
     public float getCooldownReduction();
     public float getCostReduction();
+    public WandUpgradePath getPath();
 }
