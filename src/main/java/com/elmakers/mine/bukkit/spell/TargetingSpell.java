@@ -594,9 +594,6 @@ public abstract class TargetingSpell extends BaseSpell {
         while (block != null)
         {
             if (targetMinOffset <= 0) {
-                if (!bypassProtection && block.hasMetadata("breakable")) {
-                    break;
-                }
                 if (targetSpaceRequired) {
                     if (!allowPassThrough(block.getType())) {
                         break;
@@ -605,6 +602,9 @@ public abstract class TargetingSpell extends BaseSpell {
                         break;
                     }
                 } else {
+                    if (!bypassProtection && block.hasMetadata("breakable")) {
+                        break;
+                    }
                     if (isTargetable(block.getType())) {
                         break;
                     }
