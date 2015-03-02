@@ -384,7 +384,7 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
             }
 
             try {
-                useEffect.display(data, sourceLocation, PARTICLE_RANGE, particleXOffset, particleYOffset, particleZOffset, particleData, particleCount);
+                useEffect.display(data, sourceLocation, getColor1(), PARTICLE_RANGE, particleXOffset, particleYOffset, particleZOffset, particleData, particleCount);
             } catch (Exception ex) {
             }
         }
