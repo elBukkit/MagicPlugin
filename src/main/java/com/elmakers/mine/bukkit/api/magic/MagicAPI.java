@@ -459,7 +459,7 @@ public interface MagicAPI {
      * @param spellName The key name of the Spell to cast
      * @param parameters A list of parameters, as if cast from the command-line.
      * @param sender The CommandSender that originated this Spell
-     * @param entity The Enttiy this Spell is cast on behalf of, may be Player or differ from sender
+     * @param entity The Entity this Spell is cast on behalf of, may be Player or differ from sender
      */
     public void cast(String spellName, String[] parameters, CommandSender sender, Entity entity);
 
