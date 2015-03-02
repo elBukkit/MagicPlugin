@@ -1524,14 +1524,16 @@ public class MagicController implements Listener, MageController {
         Bukkit.getPluginManager().callEvent(saveEvent);
 	}
 
-    protected ConfigurationSection getSpellConfig(String key, ConfigurationSection config)
+    protected ConfigurationSection getSpellConfig(String key, ConfigurationSection config, ConfigurationSection originalConfig)
     {
-        return getSpellConfig(key, config, true);
+        return getSpellConfig(key, config, originalConfig, true);
     }
 
-    protected ConfigurationSection getSpellConfig(String key, ConfigurationSection config, boolean addInherited)
+    protected ConfigurationSection getSpellConfig(String key, ConfigurationSection config, ConfigurationSection originalConfig, boolean addInherited)
     {
-        ConfigurationSection spellNode = ConfigurationUtils.addConfigurations(new MemoryConfiguration(), config.getConfigurationSection(key));
+        ConfigurationSection spellNode = addInherited ?
+                config.getConfigurationSection(key) :
+                ConfigurationUtils.addConfigurations(new MemoryConfiguration(), originalConfig.getConfigurationSection(key));
         if (spellNode == null)
         {
             getLogger().warning("Spell " + key + " not known");
@@ -1554,7 +1556,7 @@ public class MagicController implements Listener, MageController {
         {
             if (addInherited)
             {
-                ConfigurationSection inheritConfig = getSpellConfig(inheritFrom, config);
+                ConfigurationSection inheritConfig = getSpellConfig(inheritFrom, config, originalConfig);
                 if (inheritConfig != null)
                 {
                     spellNode = ConfigurationUtils.addConfigurations(spellNode, inheritConfig, false);
@@ -1569,7 +1571,7 @@ public class MagicController implements Listener, MageController {
             {
                 if (config.contains(upgradeInheritsFrom))
                 {
-                    ConfigurationSection baseInheritConfig = getSpellConfig(upgradeInheritsFrom, config, inheritFrom == null);
+                    ConfigurationSection baseInheritConfig = getSpellConfig(upgradeInheritsFrom, config, originalConfig, inheritFrom == null);
                     spellNode = ConfigurationUtils.addConfigurations(spellNode, baseInheritConfig, inheritFrom != null);
                 } else {
                     getLogger().warning("Spell upgrade " + key + " inherits from unknown level " + upgradeInheritsFrom);
@@ -1593,12 +1595,16 @@ public class MagicController implements Listener, MageController {
 		spells.clear();
         spellAliases.clear();
 
-		Set<String> spellKeys = config.getKeys(false);
+        // Configuration will be modified in-place, but inherited spells
+        // need access to the original configs
+        ConfigurationSection originalConfig = ConfigurationUtils.addConfigurations(new MemoryConfiguration(), config);
+
+        Set<String> spellKeys = config.getKeys(false);
 		for (String key : spellKeys)
 		{
             if (key.equals("default")) continue;
 
-            ConfigurationSection spellNode = getSpellConfig(key, config);
+            ConfigurationSection spellNode = getSpellConfig(key, config, originalConfig);
             if (spellNode == null || !spellNode.getBoolean("enabled", true)) {
                 continue;
             }
