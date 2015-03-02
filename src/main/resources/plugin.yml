@@ -4,7 +4,7 @@ version: ${project.version}
 website: http://mine.elmakers.com
 author: NathanWolf
 description : Mmmmmmaaaaagic!
-softdepend: [WorldGuard,WorldEdit,Essentials,dynmap,dtlTraders,Factions,CommandBook,PvPManager,Multiverse-Core,WGCustomFlags]
+softdepend: [WorldGuard,WorldEdit,Essentials,dynmap,dtlTraders,Factions,CommandBook,PvPManager,Multiverse-Core,WGCustomFlags,Citizens]
 commands:
   cast:
     aliases: [mcast]
@@ -34,9 +34,13 @@ commands:
     usage: /magic [load|save|cancel|clearcache|commit|list|give]
     permission: Magic.commands.magic
   mgive:
-    description: Player players items
-    usage: /magic <Player> [itemname]
+    description: Give players items
+    usage: /mgive <Player> [itemname] <amount>
     permission: Magic.commands.mgive
+  mtrait:
+    description: Manage Magic NPCs
+    usage: /mtrait <id#> <property> <value>
+    permission: Magic.commands.mtrait
 permissions:
   Magic.commands.spells:
     description: Player may list spells
@@ -44,6 +48,10 @@ permissions:
     default: op
   Magic.commands.mgive:
     description: Player may give out magic items
+    type: boolean
+    default: op
+  Magic.commands.mtrait:
+    description: Player may manage Magic NPCs
     type: boolean
     default: op
   Magic.commands.cast:

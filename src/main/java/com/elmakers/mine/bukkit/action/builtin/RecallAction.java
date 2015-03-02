@@ -154,7 +154,6 @@ public class RecallAction extends BaseSpellAction implements GeneralAction, GUIA
 	private Map<String, ConfigurationSection> warps = new HashMap<String, ConfigurationSection>();
 	private List<RecallType> enabledTypes = new ArrayList<RecallType>();
     private Map<Integer, Waypoint> options = new HashMap<Integer, Waypoint>();
-    private Inventory inventory = null;
 
     @Override
     public void deactivated() {

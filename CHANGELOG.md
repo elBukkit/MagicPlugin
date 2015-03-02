@@ -4,6 +4,9 @@
 
  - Fix Reflect
  - Updates to Potter and Bending configs
+ - Fix reloading configs with customizations and spell levels
+ - Fix some spell balancing issues (Magic Missile Level 2)
+ - Add Citizens trait for casting spells
 
 ## 4.2
 

@@ -18,6 +18,7 @@ import com.elmakers.mine.bukkit.api.action.GUIAction;
 import com.elmakers.mine.bukkit.api.event.SaveEvent;
 import com.elmakers.mine.bukkit.api.spell.*;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
+import com.elmakers.mine.bukkit.citizens.CitizensController;
 import com.elmakers.mine.bukkit.maps.MapController;
 import com.elmakers.mine.bukkit.protection.LocketteManager;
 import com.elmakers.mine.bukkit.protection.MultiverseManager;
@@ -784,6 +785,26 @@ public class MagicController implements Listener, MageController {
             getLogger().info("Elementals found, integrating.");
         }
 
+        // Try to link to Citizens
+        if (citizensEnabled) {
+            try {
+                Plugin citizensPlugin = plugin.getServer().getPluginManager().getPlugin("Citizens");
+                if (citizensPlugin != null) {
+                    citizens = new CitizensController(citizensPlugin);
+                } else {
+                    citizens = null;
+                    getLogger().info("Citizens not found, Magic trait unavailable.");
+                }
+            } catch (Throwable ex) {
+                citizens = null;
+                getLogger().warning("Error integrating with Citizens");
+                plugin.getLogger().warning(ex.getMessage());
+            }
+        } else {
+            citizens = null;
+            getLogger().info("Citizens integration disabled.");
+        }
+
         // Activate Metrics
         activateMetrics();
 
@@ -884,6 +905,12 @@ public class MagicController implements Listener, MageController {
                         @Override
                         public int getValue() {
                             return controller.elementalsEnabled() ? 1 : 0;
+                        }
+                    });
+                    integrationGraph.addPlotter(new Metrics.Plotter("Citizens") {
+                        @Override
+                        public int getValue() {
+                            return controller.citizens != null ? 1 : 0;
                         }
                     });
                     integrationGraph.addPlotter(new Metrics.Plotter("Traders") {
@@ -1811,6 +1838,7 @@ public class MagicController implements Listener, MageController {
 		bindingEnabled = properties.getBoolean("enable_binding", bindingEnabled);
 		keepingEnabled = properties.getBoolean("enable_keeping", keepingEnabled);
 		essentialsSignsEnabled = properties.getBoolean("enable_essentials_signs", essentialsSignsEnabled);
+        citizensEnabled = properties.getBoolean("enable_citizens", citizensEnabled);
 		dynmapShowWands = properties.getBoolean("dynmap_show_wands", dynmapShowWands);
 		dynmapShowSpells = properties.getBoolean("dynmap_show_spells", dynmapShowSpells);
         dynmapOnlyPlayerSpells = properties.getBoolean("dynmap_only_player_spells", dynmapOnlyPlayerSpells);
@@ -3919,6 +3947,10 @@ public class MagicController implements Listener, MageController {
         return null;
     }
 
+    public CitizensController getCitizens() {
+        return citizens;
+    }
+
 	@Override
 	public com.elmakers.mine.bukkit.api.wand.Wand createWand(String wandKey) 
 	{
@@ -4397,6 +4429,8 @@ public class MagicController implements Listener, MageController {
     private TradersController					tradersController			= null;
     private DynmapController					dynmap						= null;
     private ElementalsController				elementals					= null;
+    private CitizensController                  citizens					= null;
+    private boolean                             citizensEnabled			    = true;
 
     private FactionsManager					    factionsManager				= new FactionsManager();
     private LocketteManager                     locketteManager				= new LocketteManager();

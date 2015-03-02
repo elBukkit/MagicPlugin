@@ -7,6 +7,7 @@ import java.util.logging.Level;
 import com.elmakers.mine.bukkit.api.magic.Messages;
 import com.elmakers.mine.bukkit.api.spell.SpellCategory;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
+import com.elmakers.mine.bukkit.citizens.CitizensController;
 import com.elmakers.mine.bukkit.magic.command.*;
 import com.elmakers.mine.bukkit.utility.NMSUtils;
 import org.bukkit.Material;
@@ -110,7 +111,12 @@ import com.elmakers.mine.bukkit.wand.Wand;
  *
  */
 public class MagicPlugin extends JavaPlugin implements MagicAPI
-{	
+{
+    /*
+     * Singleton Plugin instance
+     */
+    private static MagicPlugin instance;
+
 	/*
 	 * Private data
 	 */	
@@ -119,6 +125,11 @@ public class MagicPlugin extends JavaPlugin implements MagicAPI
 	/*
 	 * Plugin interface
 	 */
+
+    public MagicPlugin()
+    {
+        instance = this;
+    }
 
 	public void onEnable() 
 	{
@@ -156,6 +167,13 @@ public class MagicPlugin extends JavaPlugin implements MagicAPI
 		getCommand("wandp").setTabCompleter(wandCommand);
 		TabExecutor spellsCommand = new SpellsCommandExecutor(this);
 		getCommand("spells").setExecutor(spellsCommand);
+        CitizensController citizens = controller.getCitizens();
+        if (citizens != null)
+        {
+            TabExecutor magicTraitCommand = new MagicTraitCommandExecutor(this, citizens);
+            getCommand("mtrait").setExecutor(magicTraitCommand);
+            getCommand("mtrait").setTabCompleter(magicTraitCommand);
+        }
 	}
 
 	/* 
@@ -418,5 +436,9 @@ public class MagicPlugin extends JavaPlugin implements MagicAPI
     @Override
     public Messages getMessages() {
         return controller.getMessages();
+    }
+
+    public static MagicAPI getAPI() {
+        return instance;
     }
 }

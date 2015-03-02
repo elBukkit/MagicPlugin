@@ -158,6 +158,12 @@
             <version>1.6.1</version>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>net.citizensnpcs</groupId>
+            <artifactId>citizens</artifactId>
+            <version>2.0.5</version>
+            <scope>provided</scope>
+        </dependency>
 	</dependencies>
 	<repositories>
 	  <repository>
@@ -181,7 +187,12 @@
       		<id>dynmap</id>
       		<url>http://repo.mikeprimm.com/</url>
       </repository>
-		<!-- Down? :(
+      <repository>
+      		<name>Citizens2 repository</name>
+      		<id>citizens</id>
+      		<url>http://repo.citizensnpcs.co</url>
+      </repository>
+      <!-- Down? :(
       <repository>
       		<id>dtlTraders</id>
       		<url>http://dandielo.net:8081/nexus/content/repositories/snapshots/</url>
