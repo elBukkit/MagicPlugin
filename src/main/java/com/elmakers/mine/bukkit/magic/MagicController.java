@@ -3497,7 +3497,11 @@ public class MagicController implements Listener, MageController {
                     targetLocation = entity.getLocation();
                 }
             }
-			mage = getMage(mageController);
+            if (mageController == null) {
+                mage = getMage(entity);
+            } else {
+                mage = getMage(mageController);
+            }
 		}
 
         // This is a bit of a hack to make automata maintain direction
