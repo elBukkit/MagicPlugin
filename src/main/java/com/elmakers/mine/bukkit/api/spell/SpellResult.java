@@ -15,8 +15,8 @@ public enum SpellResult {
     ALTERNATE_DOWN(true, false, false, true),
     ALTERNATE_SNEAK(true, false, false, true),
 
-    FIZZLE(true, true, false),
-    BACKFIRE(true, true, false),
+    FIZZLE(false, true, false),
+    BACKFIRE(false, true, false),
 
     DEACTIVATE(false, false, true),
     TARGET_SELECTED(false, false, true),
