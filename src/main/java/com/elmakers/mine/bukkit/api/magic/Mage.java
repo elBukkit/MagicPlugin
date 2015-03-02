@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Set;
 
 import com.elmakers.mine.bukkit.api.action.GUIAction;
+import com.elmakers.mine.bukkit.api.spell.MageSpell;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -244,7 +245,7 @@ public interface Mage extends CostReducer {
      * @param key The key of the Spell to retrieve.
      * @return The Spell instance for this Mage, or null if the Mage does not have access to this Spell.
      */
-    public Spell getSpell(String key);
+    public MageSpell getSpell(String key);
 
     /**
      * Return all of the Spell objects registered to this Mage.
