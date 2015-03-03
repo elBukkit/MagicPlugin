@@ -54,5 +54,5 @@ public interface UndoQueue {
     public int getSize();
 
     public boolean isEmpty();
-    public void commit();
+    public boolean commit();
 }
