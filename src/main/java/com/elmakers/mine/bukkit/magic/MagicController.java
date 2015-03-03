@@ -4230,6 +4230,20 @@ public class MagicController implements Listener, MageController {
                     lines.add(ChatColor.DARK_GRAY + messages.get("spell.brush"));
                 }
 
+                SpellKey baseKey = spell.getSpellKey();
+                SpellKey upgradeKey = new SpellKey(baseKey.getBaseKey(), baseKey.getLevel() + 1);
+                SpellTemplate upgradeSpell = getSpellTemplate(upgradeKey.getKey());
+                int spellLevels = 0;
+                while (upgradeSpell != null) {
+                    spellLevels++;
+                    upgradeKey = new SpellKey(upgradeKey.getBaseKey(), upgradeKey.getLevel() + 1);
+                    upgradeSpell = getSpellTemplate(upgradeKey.getKey());
+                }
+                if (spellLevels > 0) {
+                    spellLevels++;
+                    lines.add(ChatColor.DARK_AQUA + messages.get("spell.levels_available").replace("$levels", Integer.toString(spellLevels)));
+                }
+
                 String usage = spell.getUsage();
                 if (usage != null && usage.length() > 0) {
                     lines.add("" + ChatColor.GRAY + ChatColor.ITALIC + usage + ChatColor.RESET);
