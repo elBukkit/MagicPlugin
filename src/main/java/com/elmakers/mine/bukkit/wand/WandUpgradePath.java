@@ -418,7 +418,7 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
         }
     }
 
-    public void upgraded(Wand wand, Mage mage) {
+    public void upgraded(com.elmakers.mine.bukkit.api.wand.Wand wand, Mage mage) {
         CommandSender sender = Bukkit.getConsoleSender();
         Location location = null;
         if (mage != null) {
@@ -456,10 +456,12 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
         }
     }
 
+    @Override
     public boolean hasUpgrade() {
         return upgradeKey != null && !upgradeKey.isEmpty();
     }
 
+    @Override
     public WandUpgradePath getUpgrade() {
         return getPath(upgradeKey);
     }
@@ -476,7 +478,8 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
         return (remainingSpells.size() > 0 || remainingMaterials.size() > 0);
     }
 
-    public boolean checkUpgradeRequirements(Mage mage, Wand wand) {
+    @Override
+    public boolean checkUpgradeRequirements(com.elmakers.mine.bukkit.api.wand.Wand wand, com.elmakers.mine.bukkit.api.magic.Mage mage) {
         if (requiredSpells == null && requiredSpells.isEmpty()) return true;
 
         // Then check for spell requirements to advance
@@ -490,7 +493,7 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
                 if (mage != null)
                 {
                     String message = wand.getController().getMessages().get("spell.required_spell").replace("$spell", spell.getName());
-                    WandUpgradePath upgradePath = getUpgrade();
+                    com.elmakers.mine.bukkit.api.wand.WandUpgradePath upgradePath = getUpgrade();
                     if (upgradePath != null) {
                         message = message.replace("$path", upgradePath.getName());
                     }
@@ -520,5 +523,15 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
         }
 
         return false;
+    }
+
+    @Override
+    public void upgrade(com.elmakers.mine.bukkit.api.wand.Wand wand, com.elmakers.mine.bukkit.api.magic.Mage mage) {
+        if (mage != null) {
+            MageController controller = mage.getController();
+            mage.sendMessage(controller.getMessages().get("wand.level_up").replace("$wand", getName()).replace("$path", this.getName()));
+        }
+        this.upgraded(wand, mage);
+        wand.setPath(this.getKey());
     }
 }

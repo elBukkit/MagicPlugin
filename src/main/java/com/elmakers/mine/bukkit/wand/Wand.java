@@ -1962,15 +1962,13 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
                     enchanter.sendMessage(message);
                 }
             } else if (path.hasUpgrade()) {
-                if (path.checkUpgradeRequirements(enchanter, this)) {
-                    WandUpgradePath newPath = path.getUpgrade();
+                if (path.checkUpgradeRequirements(this, enchanter)) {
+                    com.elmakers.mine.bukkit.api.wand.WandUpgradePath newPath = path.getUpgrade();
                     if (newPath == null) {
                         if (enchanter != null) enchanter.sendMessage("Configuration issue, please check logs");
                         controller.getLogger().warning("Invalid upgrade path: " + path.getUpgrade());
                     } else {
-                        if (enchanter != null) enchanter.sendMessage(controller.getMessages().get("wand.level_up").replace("$wand", getName()).replace("$path", newPath.getName()));
-                        path.upgraded(this, enchanter);
-                        this.path = newPath.getKey();
+                        newPath.upgrade(this, enchanter);
                         levels += addLevels;
                     }
                 }
@@ -3118,6 +3116,11 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         return quietLevel > 2;
     }
 
+    @Override
+    public void setPath(String path) {
+        this.path = path;
+    }
+
 	/*
 	 * Public API Implementation
 	 */
@@ -3613,6 +3616,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         return playerInventorySlot;
     }
 
+    @Override
     public MageController getController() {
         return controller;
     }
