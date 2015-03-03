@@ -3,6 +3,7 @@ package com.elmakers.mine.bukkit.api.wand;
 import java.util.Collection;
 import java.util.Map;
 
+import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import org.bukkit.Location;
@@ -61,6 +62,7 @@ public interface Wand extends CostReducer {
     public void setActiveSpell(String key);
     public void setName(String name);
     public void setDescription(String description);
+    public void setPath(String path);
 
     public LostWand makeLost(Location location);
     public boolean isLost();
@@ -84,4 +86,5 @@ public interface Wand extends CostReducer {
     public float getCooldownReduction();
     public float getCostReduction();
     public WandUpgradePath getPath();
+    public MageController getController();
 }
