@@ -303,6 +303,7 @@ public interface Mage extends CostReducer {
     public boolean isPlayer();
     public boolean isOnline();
     public boolean isDead();
+    public boolean isLoading();
     public boolean hasLocation();
 
     public void setLocation(Location location);

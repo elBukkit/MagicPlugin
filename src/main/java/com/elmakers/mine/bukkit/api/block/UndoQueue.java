@@ -52,4 +52,7 @@ public interface UndoQueue {
      * @return The queue depth.
      */
     public int getSize();
+
+    public boolean isEmpty();
+    public void commit();
 }
