@@ -189,6 +189,7 @@ spell:
     reactivate: Reactivating $name
     available_path: Available at the $path level
     required_path: Required to complete the $path level
+    levels_available: Has $levels levels
     required_spell: "You must learn &r&4$spell &d&oto advance to &b$path"
     level_description: Level $level
 worlds:
@@ -565,6 +566,8 @@ spells:
     arrowrain:
         name: Arrow Rain
         description: Fire a volley of arrows
+    arrowrain|2:
+        upgrade_description: "&r&b• &6More, flaming arrows"
     meteor:
         name: Meteor Shower
         description: Fire death from above
@@ -1070,9 +1073,16 @@ spells:
     fireball:
         name: Fireball
         description: Cast an exploding fireball
+    fireball|2:
+        upgrade_description: "&r&b• &6Increased accuracy and damage"
+    fireball|3:
+        upgrade_description: "&r&b• &6Pinpoint accuracy and speed"
+    fireball|4:
+        upgrade_description: "&r&b• &6Now starts fires"
     wither:
         name: Wither
         description: Shoot wither skulls
+        upgrade_description: "&r&b• &6More wither skulls"
     map:
         name: Map
         description: Generate a map

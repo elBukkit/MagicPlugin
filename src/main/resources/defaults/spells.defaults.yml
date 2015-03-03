@@ -1730,6 +1730,8 @@ neutron:
         mana: 150
 
 wither:
+    upgrade_required_path: apprentice
+    upgrade_required_casts: 50
     icon_url: http://i.imgur.com/2IR2x9e.png
     icon: skull_item:1
     category: dark
@@ -1743,14 +1745,28 @@ wither:
     parameters:
         projectile: WitherSkull
         effect_wither: 160,2
-        radius: 8
-        count: 3
+        radius: 2
+        count: 1
         undo: 15000
         cooldown: 5000
     costs:
         mana: 60
 
+wither|2:
+    upgrade_required_path: master
+    upgrade_required_casts: 50
+    parameters:
+       count: 3
+       radius: 3
+
+wither|3:
+    parameters:
+       count: 4
+       radius: 4
+
 arrowrain:
+    upgrade_required_path: apprentice
+    upgrade_required_casts: 50
     icon_url: http://i.imgur.com/thIMVWy.png
     icon: bow
     category: combat
@@ -1763,15 +1779,21 @@ arrowrain:
            sound: shoot_arrow
     parameters:
         projectile: Arrow
-        count: 6
-        fire: true
+        count: 4
+        fire: false
         speed: 3
         spread: 12
         dpy: 4
         ddy: -0.2
         undo: 15000
+        cooldown: 5000
     costs:
         mana: 30
+
+arrowrain|2:
+    parameters:
+       count: 8
+       fire: true
 
 meteor:
     icon: double_plant:4
@@ -4329,6 +4351,8 @@ force:
         mana: 50
 
 fireball:
+    upgrade_required_path: beginner
+    upgrade_required_casts: 15
     icon_url: http://i.imgur.com/tW9Uo6M.png
     icon: ghast_tear
     category: combat
@@ -4363,10 +4387,29 @@ fireball:
     parameters:
         projectile: LargeFireball
         fire: false
-        size: 2
+        size: 1
         undo: 4000
+        cooldown: 2000
     costs:
-        mana: 15
+        mana: 40
+
+fireball|2:
+    upgrade_required_path: student
+    upgrade_required_casts: 30
+    parameters:
+        size: 3
+        spread: 4
+
+fireball|3:
+    upgrade_required_path: master
+    upgrade_required_casts: 40
+    parameters:
+        spread: 0
+        speed: 0.8
+
+fireball|4:
+    parameters:
+        fire: true
 
 map:
     hidden: true
