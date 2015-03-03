@@ -351,6 +351,7 @@ public class LevitateSpell extends TargetingSpell implements Listener
             return SpellResult.PLAYER_REQUIRED;
         }
 
+        int checkHeight = parameters.getInt("check_height", 4);
         startDelay = parameters.getInt("start_delay", 0);
         flyDelay = parameters.getInt("fly_delay", 2);
         slowMultiplier = parameters.getDouble("slow", 1);
@@ -497,8 +498,14 @@ public class LevitateSpell extends TargetingSpell implements Listener
                     return SpellResult.FAIL;
                 }
             }
+            Block block = testLocation.getBlock();
+            for (int i = 0; i < checkHeight; i++) {
+                if (!isOkToStandIn(block.getType())) {
+                    return SpellResult.FAIL;
+                }
+                block = block.getRelative(BlockFace.UP);
+            }
         }
-
 
         if (stashItem) {
             PlayerInventory inventory = player.getInventory();
