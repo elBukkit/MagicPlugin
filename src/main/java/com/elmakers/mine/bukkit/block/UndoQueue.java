@@ -254,6 +254,7 @@ public class UndoQueue implements com.elmakers.mine.bukkit.api.block.UndoQueue
         return size;
     }
 
+    @Override
     public boolean commit()
     {
         UndoList nextList = tail;
