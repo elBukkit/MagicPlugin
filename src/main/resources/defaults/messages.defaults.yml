@@ -1163,7 +1163,7 @@ spells:
         description: Suck up water in an area
         cast: Slurp!
     upgrades:
-        name: Spell Upgrades
+        name: Spell Progress
         descriptions: Shows available upgrades
         fail: You must be holding a wand!
         level_requirement: "&r&cRequires: &6$path"

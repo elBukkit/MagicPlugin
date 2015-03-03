@@ -770,6 +770,7 @@ shell:
         -  class: EffectTrail
            effect: step_sound
     parameters:
+        target: any
         target_type: LivingEntity
         allow_max_range: false
         range: 32

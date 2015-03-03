@@ -1321,6 +1321,10 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         this.loading = loading;
     }
 
+    public boolean isLoading() {
+        return loading;
+    }
+
     public boolean isValid() {
         if (!hasEntity) return true;
         Entity entity = getEntity();

@@ -173,12 +173,14 @@ public class MagicController implements Listener, MageController {
                     });
                 } else {
                     getLogger().info("Loading mage data from file " + playerFile.getName() + " synchronously");
-                    try {
-                        final Configuration playerData = YamlConfiguration.loadConfiguration(playerFile);
-                        mage.load(playerData);
-                    } catch (Exception ex) {
-                        getLogger().warning("Failed to load mage data from file " + playerFile.getName());
-                        ex.printStackTrace();
+                    synchronized (saveLock) {
+                        try {
+                            final Configuration playerData = YamlConfiguration.loadConfiguration(playerFile);
+                            mage.load(playerData);
+                        } catch (Exception ex) {
+                            getLogger().warning("Failed to load mage data from file " + playerFile.getName());
+                            ex.printStackTrace();
+                        }
                     }
                 }
             } else {
@@ -241,17 +243,6 @@ public class MagicController implements Listener, MageController {
         }
 
         return getMage(mageId, commandSender, null);
-    }
-
-    protected void loadMage(String playerId, ConfigurationSection node) {
-        Mage mage = getMage(playerId, null, null);
-        try {
-            if (mage instanceof com.elmakers.mine.bukkit.magic.Mage) {
-                ((com.elmakers.mine.bukkit.magic.Mage) mage).load(node);
-            }
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
     }
 
     public void addSpell(Spell variant) {
@@ -818,7 +809,6 @@ public class MagicController implements Listener, MageController {
                 }
                 forgetMages.clear();
 
-
                 for (Mage mage : mages.values()) {
                     if (mage instanceof com.elmakers.mine.bukkit.magic.Mage) {
                         try {
@@ -859,6 +849,17 @@ public class MagicController implements Listener, MageController {
             }
         }, 0, undoFrequency);
         registerListeners();
+
+        // Activate/load any active player Mages
+        Player[] players = plugin.getServer().getOnlinePlayers();
+        for (Player player : players) {
+            getMage(player);
+        }
+
+        // Register crafting recipes
+        crafting.register(plugin);
+
+        initialized = true;
     }
 
     protected void activateMetrics() {
@@ -1486,8 +1487,10 @@ public class MagicController implements Listener, MageController {
                     continue;
                 }
 
-                mage.save(playerConfig);
-                stores.add(playerConfig);
+                if (!mage.isLoading()) {
+                    mage.save(playerConfig);
+                    stores.add(playerConfig);
+                }
 
                 // Check for players we can forget
                 if (!mage.isValid())
@@ -1542,8 +1545,10 @@ public class MagicController implements Listener, MageController {
                 }
             });
         } else {
-            for (DataStore config : saveData) {
-                config.save();
+            synchronized (saveLock) {
+                for (DataStore config : saveData) {
+                    config.save();
+                }
             }
         }
 
@@ -1936,6 +1941,13 @@ public class MagicController implements Listener, MageController {
 
 	protected void clear()
 	{
+        initialized = false;
+        Collection<Mage> saveMages = new ArrayList<Mage>(mages.values());
+        for (Mage mage : saveMages)
+        {
+            playerQuit(mage);
+        }
+
 		mages.clear();
 		pendingConstruction.clear();
         pendingConstructionRemoval.clear();
@@ -2902,27 +2914,33 @@ public class MagicController implements Listener, MageController {
     @EventHandler
     public void onPlayerKick(PlayerKickEvent event)
     {
-        playerQuit(event);
+        handlePlayerQuitEvent(event);
     }
 
 	@EventHandler
 	public void onPlayerQuit(PlayerQuitEvent event)
     {
-        playerQuit(event);
+        handlePlayerQuitEvent(event);
     }
 
-    protected void playerQuit(PlayerEvent event) {
+    protected void handlePlayerQuitEvent(PlayerEvent event) {
         Player player = event.getPlayer();
+        if (isMage(player)) {
+            Mage mage = getMage(player);
+            if (mage instanceof com.elmakers.mine.bukkit.magic.Mage)
+            {
+                ((com.elmakers.mine.bukkit.magic.Mage)mage).onPlayerQuit(event);
+            }
+            playerQuit(mage);
+        }
+    }
+
+    protected void playerQuit(Mage mage) {
+
 		// Make sure they get their portraits re-rendered on relogin.
-        maps.resend(player.getName());
+        maps.resend(mage.getName());
 
-        Mage apiMage = getMage(player);
-
-        if (!(apiMage instanceof com.elmakers.mine.bukkit.magic.Mage)) return;
-        final com.elmakers.mine.bukkit.magic.Mage mage = (com.elmakers.mine.bukkit.magic.Mage)apiMage;
-
-        mage.onPlayerQuit(event);
-		UndoQueue undoQueue = mage.getUndoQueue();
+		com.elmakers.mine.bukkit.api.block.UndoQueue undoQueue = mage.getUndoQueue();
         if (undoQueue != null) {
             int undid = undoQueue.undoScheduled();
             if (undid != 0) {
@@ -2939,82 +2957,50 @@ public class MagicController implements Listener, MageController {
             }
         }
 
-        if (mage.isPlayer() || saveNonPlayerMages)
+        if (!mage.isLoading() && (mage.isPlayer() || saveNonPlayerMages))
         {
             final File playerData = new File(playerDataFolder, mage.getId() + ".dat");
             getLogger().info("Player logged out, saving data to " + playerData.getName());
             final DataStore playerConfig = new DataStore(getLogger(), playerData);
             mage.save(playerConfig);
 
-            Bukkit.getScheduler().runTaskAsynchronously(plugin, new Runnable() {
-                @Override
-                public void run() {
-                    synchronized (saveLock) {
-                        try {
-                            playerConfig.save();
-                        } catch (Exception ex) {
-                            ex.printStackTrace();
+            // Save synchronously on shutdown
+            if (initialized)
+            {
+                Bukkit.getScheduler().runTaskAsynchronously(plugin, new Runnable() {
+                    @Override
+                    public void run() {
+                        synchronized (saveLock) {
+                            try {
+                                playerConfig.save();
+                            } catch (Exception ex) {
+                                ex.printStackTrace();
+                            }
                         }
                     }
+                });
+            }
+            else
+            {
+                synchronized (saveLock) {
+                    try {
+                        playerConfig.save();
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
                 }
-            });
+            }
         }
 
 		// Close the wand inventory to make sure the player's normal inventory gets saved
-		Wand wand = mage.getActiveWand();
+		com.elmakers.mine.bukkit.api.wand.Wand wand = mage.getActiveWand();
 		if (wand != null) {
 			wand.deactivate();
 		}
         mage.deactivateAllSpells(true, true);
 
-		// Let the GC collect the mage, unless they have some pending undo batches
-		// or an undo queue (for rewind)
-        if (!mage.isPlayer())
-        {
-            mages.remove(player.getUniqueId().toString());
-        }
-        else if ((undoQueue == null || undoQueue.isEmpty()))
-        {
-			getLogger().info("Mage has no pending undo actions, forgetting: " + mage.getName());
-			mages.remove(player.getUniqueId().toString());
-		}
-	}
-
-	@SuppressWarnings("deprecation")
-	@EventHandler
-	public void onPluginDisable(PluginDisableEvent event)
-	{
-        if (!initialized) return;
-        initialized = false;
-
-        Collection<Mage> saveMages = new ArrayList<Mage>(mages.values());
-		for (Mage mage : saveMages)
-        {
-            Player player = mage.getPlayer();
-            if (player == null) continue;
-
-            playerQuit(new PlayerQuitEvent(player, "Disabling Plugin"));
-			player.updateInventory();
-		}
-        mages.clear();
-	}
-
-	@EventHandler
-	public void onPluginEnable(PluginEnableEvent event)
-	{
-        if (initialized) return;
-        initialized = true;
-
-		Player[] players = plugin.getServer().getOnlinePlayers();
-		for (Player player : players) {
-			Wand wand = Wand.getActiveWand(this, player);
-			if (wand != null) {
-				Mage mage = getMage(player);
-				wand.activate(mage);
-				player.updateInventory();
-			}
-		}
-		crafting.register(plugin);
+		// Let the GC collect the mage
+        mages.remove(mage.getId());
 	}
 
 	@EventHandler
