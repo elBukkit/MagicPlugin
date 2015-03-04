@@ -461,7 +461,7 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
         if (upgradeItemKey != null && !upgradeItemKey.isEmpty()) {
             com.elmakers.mine.bukkit.api.wand.Wand upgradeWand = wand.getController().createWand(upgradeItemKey);
             if (upgradeWand != null) {
-                wand.add(upgradeWand);
+                wand.add(upgradeWand, mage);
             }
         }
     }

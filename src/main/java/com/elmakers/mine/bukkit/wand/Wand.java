@@ -2019,14 +2019,27 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         return wand;
     }
 	
-	protected void sendAddMessage(String messageKey, String nameParam) {
+	protected void sendAddMessage(com.elmakers.mine.bukkit.api.magic.Mage mage, String messageKey, String nameParam) {
 		if (mage == null) return;
 		
 		String message = controller.getMessages().get(messageKey).replace("$name", nameParam).replace("$wand", getName());
 		mage.sendMessage(message);
 	}
-	
-	public boolean add(Wand other) {
+
+    public boolean add(Wand other) {
+        return add(other, this.mage);
+    }
+
+    @Override
+    public boolean add(com.elmakers.mine.bukkit.api.wand.Wand other, com.elmakers.mine.bukkit.api.magic.Mage mage) {
+        if (other instanceof Wand) {
+            return add((Wand)other, mage);
+        }
+
+        return false;
+    }
+
+	public boolean add(Wand other, com.elmakers.mine.bukkit.api.magic.Mage mage) {
 		if (!isModifiable()) {
             // Only allow upgrading a modifiable wand via an upgrade item
             // and only if the paths match.
@@ -2043,17 +2056,17 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		boolean modified = false;
 
         Messages messages = controller.getMessages();
-		if (other.isForcedUpgrade() || other.costReduction > costReduction) { costReduction = other.costReduction; modified = true; if (costReduction > 0) sendAddMessage("wand.upgraded_property", getLevelString(messages, "wand.cost_reduction", costReduction)); }
-		if (other.isForcedUpgrade() || other.power > power) { power = other.power; modified = true; if (power > 0) sendAddMessage("wand.upgraded_property", getLevelString(messages, "wand.power", power)); }
-		if (other.isForcedUpgrade() || other.damageReduction > damageReduction) { damageReduction = other.damageReduction; modified = true; if (damageReduction > 0) sendAddMessage("wand.upgraded_property", getLevelString(messages, "wand.protection", damageReduction)); }
-		if (other.isForcedUpgrade() || other.damageReductionPhysical > damageReductionPhysical) { damageReductionPhysical = other.damageReductionPhysical; modified = true; if (damageReductionPhysical > 0) sendAddMessage("wand.upgraded_property", getLevelString(messages, "wand.protection_physical", damageReductionPhysical)); }
-		if (other.isForcedUpgrade() || other.damageReductionProjectiles > damageReductionProjectiles) { damageReductionProjectiles = other.damageReductionProjectiles; modified = true; if (damageReductionProjectiles > 0) sendAddMessage("wand.upgraded_property", getLevelString(messages, "wand.protection_projectile", damageReductionProjectiles)); }
-		if (other.isForcedUpgrade() || other.damageReductionFalling > damageReductionFalling) { damageReductionFalling = other.damageReductionFalling; modified = true; if (damageReductionFalling > 0) sendAddMessage("wand.upgraded_property", getLevelString(messages, "wand.protection_fall", damageReductionFalling)); }
-		if (other.isForcedUpgrade() || other.damageReductionFire > damageReductionFire) { damageReductionFire = other.damageReductionFire; modified = true; if (damageReductionFire > 0) sendAddMessage("wand.upgraded_property", getLevelString(messages, "wand.protection_fire", damageReductionFire)); }
-		if (other.isForcedUpgrade() || other.damageReductionExplosions > damageReductionExplosions) { damageReductionExplosions = other.damageReductionExplosions; modified = true; if (damageReductionExplosions > 0) sendAddMessage("wand.upgraded_property", getLevelString(messages, "wand.protection_blast", damageReductionExplosions)); }
-		if (other.isForcedUpgrade() || other.healthRegeneration > healthRegeneration) { healthRegeneration = other.healthRegeneration; modified = true; if (healthRegeneration > 0) sendAddMessage("wand.upgraded_property", getLevelString(messages, "wand.health_regeneration", healthRegeneration)); }
-		if (other.isForcedUpgrade() || other.hungerRegeneration > hungerRegeneration) { hungerRegeneration = other.hungerRegeneration; modified = true; if (hungerRegeneration > 0) sendAddMessage("wand.upgraded_property", getLevelString(messages, "wand.hunger_regeneration", hungerRegeneration)); }
-		if (other.isForcedUpgrade() || other.speedIncrease > speedIncrease) { speedIncrease = other.speedIncrease; modified = true; if (speedIncrease > 0) sendAddMessage("wand.upgraded_property", getLevelString(messages, "wand.haste", speedIncrease)); }
+		if (other.isForcedUpgrade() || other.costReduction > costReduction) { costReduction = other.costReduction; modified = true; if (costReduction > 0) sendAddMessage(mage, "wand.upgraded_property", getLevelString(messages, "wand.cost_reduction", costReduction)); }
+		if (other.isForcedUpgrade() || other.power > power) { power = other.power; modified = true; if (power > 0) sendAddMessage(mage, "wand.upgraded_property", getLevelString(messages, "wand.power", power)); }
+		if (other.isForcedUpgrade() || other.damageReduction > damageReduction) { damageReduction = other.damageReduction; modified = true; if (damageReduction > 0) sendAddMessage(mage, "wand.upgraded_property", getLevelString(messages, "wand.protection", damageReduction)); }
+		if (other.isForcedUpgrade() || other.damageReductionPhysical > damageReductionPhysical) { damageReductionPhysical = other.damageReductionPhysical; modified = true; if (damageReductionPhysical > 0) sendAddMessage(mage, "wand.upgraded_property", getLevelString(messages, "wand.protection_physical", damageReductionPhysical)); }
+		if (other.isForcedUpgrade() || other.damageReductionProjectiles > damageReductionProjectiles) { damageReductionProjectiles = other.damageReductionProjectiles; modified = true; if (damageReductionProjectiles > 0) sendAddMessage(mage, "wand.upgraded_property", getLevelString(messages, "wand.protection_projectile", damageReductionProjectiles)); }
+		if (other.isForcedUpgrade() || other.damageReductionFalling > damageReductionFalling) { damageReductionFalling = other.damageReductionFalling; modified = true; if (damageReductionFalling > 0) sendAddMessage(mage, "wand.upgraded_property", getLevelString(messages, "wand.protection_fall", damageReductionFalling)); }
+		if (other.isForcedUpgrade() || other.damageReductionFire > damageReductionFire) { damageReductionFire = other.damageReductionFire; modified = true; if (damageReductionFire > 0) sendAddMessage(mage, "wand.upgraded_property", getLevelString(messages, "wand.protection_fire", damageReductionFire)); }
+		if (other.isForcedUpgrade() || other.damageReductionExplosions > damageReductionExplosions) { damageReductionExplosions = other.damageReductionExplosions; modified = true; if (damageReductionExplosions > 0) sendAddMessage(mage, "wand.upgraded_property", getLevelString(messages, "wand.protection_blast", damageReductionExplosions)); }
+		if (other.isForcedUpgrade() || other.healthRegeneration > healthRegeneration) { healthRegeneration = other.healthRegeneration; modified = true; if (healthRegeneration > 0) sendAddMessage(mage, "wand.upgraded_property", getLevelString(messages, "wand.health_regeneration", healthRegeneration)); }
+		if (other.isForcedUpgrade() || other.hungerRegeneration > hungerRegeneration) { hungerRegeneration = other.hungerRegeneration; modified = true; if (hungerRegeneration > 0) sendAddMessage(mage, "wand.upgraded_property", getLevelString(messages, "wand.hunger_regeneration", hungerRegeneration)); }
+		if (other.isForcedUpgrade() || other.speedIncrease > speedIncrease) { speedIncrease = other.speedIncrease; modified = true; if (speedIncrease > 0) sendAddMessage(mage, "wand.upgraded_property", getLevelString(messages, "wand.haste", speedIncrease)); }
 
 		if (other.isForcedUpgrade() || other.hotbars.size() > hotbars.size()) {
 			int newCount = Math.max(1, other.hotbars.size());
@@ -2068,7 +2081,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 					parseInventoryStrings(wandSpells, wandMaterials);
 				}
 				modified = true;
-				sendAddMessage("wand.hotbar_added", Integer.toString(newCount));
+				sendAddMessage(mage, "wand.hotbar_added", Integer.toString(newCount));
 			}
 		}
 
@@ -2155,8 +2168,8 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 			xpMax = 0;
 			xp = 0;
 		} else {
-			if (other.isForcedUpgrade() || other.xpRegeneration > xpRegeneration) { xpRegeneration = other.xpRegeneration; modified = true; sendAddMessage("wand.upgraded_property", getLevelString(messages, "wand.mana_regeneration", xpRegeneration, controller.getMaxManaRegeneration())); }
-			if (other.isForcedUpgrade() || other.xpMax > xpMax) { xpMax = other.xpMax; modified = true; sendAddMessage("wand.upgraded_property", getLevelString(messages, "wand.mana_amount", xpMax, controller.getMaxMana())); }
+			if (other.isForcedUpgrade() || other.xpRegeneration > xpRegeneration) { xpRegeneration = other.xpRegeneration; modified = true; sendAddMessage(mage, "wand.upgraded_property", getLevelString(messages, "wand.mana_regeneration", xpRegeneration, controller.getMaxManaRegeneration())); }
+			if (other.isForcedUpgrade() || other.xpMax > xpMax) { xpMax = other.xpMax; modified = true; sendAddMessage(mage, "wand.upgraded_property", getLevelString(messages, "wand.mana_amount", xpMax, controller.getMaxMana())); }
 			if (other.isForcedUpgrade() || other.xp > xp) {
                 int previousXP = xp;
                 xp = Math.min(xpMax, other.xp);
@@ -3336,8 +3349,8 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		
 		return false;
 	}
-	
-	@Override
+
+    @Override
 	public boolean hasBrush(String materialKey) {
 		return getBrushes().contains(materialKey);
 	}
