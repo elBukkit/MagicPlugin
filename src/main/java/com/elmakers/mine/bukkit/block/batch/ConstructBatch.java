@@ -467,7 +467,7 @@ public class ConstructBatch extends BrushBatch {
         Material previousMaterial = block.getType();
         byte previousData = block.getData();
 
-        if (brush.isValid() && brush.isDifferent(block)) {
+        if (brush.isValid() && (brush.isDifferent(block) || commit)) {
             if (!commit) {
                 registerForUndo(block);
             }

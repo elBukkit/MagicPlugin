@@ -11,6 +11,7 @@
  - Some fixes to player data saving
  - Fix Architect levelling and some general OP-wand enchanting issues
  - PS fields now allow the owners to cast any spell, regardless of pvp flag
+ - Fix destroying Shell, Blob with spells leaving permanent damage
 
 ## 4.2
 
