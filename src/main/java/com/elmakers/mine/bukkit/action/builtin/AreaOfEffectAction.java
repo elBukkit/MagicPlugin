@@ -4,6 +4,7 @@ import com.elmakers.mine.bukkit.api.action.BlockAction;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
+import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.spell.CompoundAction;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.Target;
@@ -13,6 +14,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -69,4 +71,23 @@ public class AreaOfEffectAction extends CompoundAction implements BlockAction
 
 		return perform(parameters, block.getLocation(), targetEntities);
 	}
+
+    @Override
+    public void getParameterNames(Collection<String> parameters) {
+        super.getParameterNames(parameters);
+        parameters.add("radius");
+        parameters.add("target_count");
+        parameters.add("target_self");
+    }
+
+    @Override
+    public void getParameterOptions(Collection<String> examples, String parameterKey) {
+        if (parameterKey.equals("target_self")) {
+            examples.addAll(Arrays.asList((BaseSpell.EXAMPLE_BOOLEANS)));
+        } else if (parameterKey.equals("target_count") || parameterKey.equals("radius")) {
+            examples.addAll(Arrays.asList((BaseSpell.EXAMPLE_SIZES)));
+        } else {
+            super.getParameterOptions(examples, parameterKey);
+        }
+    }
 }
