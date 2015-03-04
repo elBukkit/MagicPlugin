@@ -3,8 +3,10 @@ package com.elmakers.mine.bukkit.spell;
 import java.util.*;
 
 import com.elmakers.mine.bukkit.api.action.BlockAction;
+import com.elmakers.mine.bukkit.api.block.UndoList;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import org.bukkit.Bukkit;
+import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -47,6 +49,7 @@ public abstract class TargetingSpell extends BaseSpell {
     private Vector								targetDirectionOverride;
     private String								targetLocationWorldName;
     protected Location                          targetLocation2;
+    private double 		                        targetBreakables	    = 0;
     private Entity								targetEntity = null;
     private boolean								bypassBuildRestriction  = false;
     private boolean                             bypassProtection        = false;
@@ -307,6 +310,22 @@ public abstract class TargetingSpell extends BaseSpell {
             }
         }
 
+        if (targetBreakables > 0 && target.isValid()) {
+            if (block != null && block.hasMetadata("breakable")) {
+                int breakable = (int)(targetBreakables > 1 ? targetBreakables :
+                        (random.nextDouble() < targetBreakables ? 1 : 0));
+                if (breakable > 0) {
+                    List<MetadataValue> metadata = block.getMetadata("breakable");
+                    for (MetadataValue value : metadata) {
+                        if (value.getOwningPlugin().equals(controller.getPlugin())) {
+                            breakBlock(block, value.asInt() + breakable - 1);
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
         if (targetLocationOffset != null) {
             target.add(targetLocationOffset);
         }
@@ -548,7 +567,7 @@ public abstract class TargetingSpell extends BaseSpell {
     protected int getMaxRange()
     {
         if (allowMaxRange) return Math.min(MAX_RANGE, range);
-        return Math.min(MAX_RANGE, (int)(mage.getRangeMultiplier() * range));
+        return Math.min(MAX_RANGE, (int) (mage.getRangeMultiplier() * range));
     }
 
     protected int getMaxRangeSquared()
@@ -697,6 +716,30 @@ public abstract class TargetingSpell extends BaseSpell {
         this.initializeTargeting();
     }
 
+    protected void breakBlock(Block block, int recursion) {
+        if (!block.hasMetadata("breakable")) return;
+
+        Location blockLocation = block.getLocation();
+        Location effectLocation = blockLocation.add(0.5, 0.5, 0.5);
+        effectLocation.getWorld().playEffect(effectLocation, Effect.STEP_SOUND, block.getType().getId());
+        UndoList undoList = com.elmakers.mine.bukkit.block.UndoList.getUndoList(blockLocation);
+        if (undoList != null) {
+            undoList.add(block);
+        }
+        block.removeMetadata("breakable", mage.getController().getPlugin());
+        block.removeMetadata("backfire", mage.getController().getPlugin());
+        block.setType(Material.AIR);
+
+        if (--recursion > 0) {
+            breakBlock(block.getRelative(BlockFace.UP), recursion);
+            breakBlock(block.getRelative(BlockFace.DOWN), recursion);
+            breakBlock(block.getRelative(BlockFace.EAST), recursion);
+            breakBlock(block.getRelative(BlockFace.WEST), recursion);
+            breakBlock(block.getRelative(BlockFace.NORTH), recursion);
+            breakBlock(block.getRelative(BlockFace.SOUTH), recursion);
+        }
+    }
+
     @SuppressWarnings("unchecked")
     @Override
     protected void processParameters(ConfigurationSection parameters) {
@@ -711,6 +754,7 @@ public abstract class TargetingSpell extends BaseSpell {
         bypassProtection = parameters.getBoolean(("bypass_protection"));
         bypassProtection = parameters.getBoolean("bp", bypassProtection);
         checkProtection = parameters.getBoolean("check_protection", checkProtection);
+        targetBreakables = parameters.getDouble("target_breakables", 0);
 
         bypassBuildRestriction = parameters.getBoolean("bypass_build", false);
         bypassBuildRestriction = parameters.getBoolean("bb", bypassBuildRestriction);
