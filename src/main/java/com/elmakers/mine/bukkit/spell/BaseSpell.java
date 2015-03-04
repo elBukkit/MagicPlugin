@@ -927,6 +927,8 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         if (!hasCastPermission(mage.getCommandSender())) return false;
         Boolean regionPermission = controller.getRegionCastPermission(mage.getPlayer(), this, location);
         if (regionPermission != null && regionPermission == true) return true;
+        Boolean personalPermission = controller.getPersonalCastPermission(mage.getPlayer(), this, location);
+        if (personalPermission != null && personalPermission == true) return true;
         if (regionPermission != null && regionPermission == false) return false;
         if (requiresBuildPermission() && !hasBuildPermission(location.getBlock())) return false;
         return !pvpRestricted || bypassPvpRestriction || mage.isPVPAllowed(location);
