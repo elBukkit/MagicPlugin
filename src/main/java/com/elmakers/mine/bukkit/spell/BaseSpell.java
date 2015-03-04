@@ -86,7 +86,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     protected final static Set<String> vectorParameterMap = new HashSet<String>(Arrays.asList(VECTOR_PARAMETERS));
 
     public final static String[] BOOLEAN_PARAMETERS = {
-        "allow_max_range", "prevent_passthrough", "passthrough", "bypass_build", "bypass_pvp", "target_npc"
+        "allow_max_range", "prevent_passthrough", "reverse_targeting", "passthrough", "bypass_build", "bypass_pvp", "target_npc"
     };
 
     protected final static Set<String> booleanParameterMap = new HashSet<String>(Arrays.asList(BOOLEAN_PARAMETERS));
@@ -1327,12 +1327,12 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     {
         BaseSpell spell = null;
         try {
-            spell = (BaseSpell) this.getClass().newInstance();
+            spell = this.getClass().newInstance();
             spell.initialize(controller);
             spell.loadTemplate(spellKey.getKey(), configuration);
             spell.template = this;
-        } catch (Exception ex) {
-            controller.getLogger().log(Level.WARNING, "Error creating spell", ex);
+        } catch (Throwable ex) {
+            controller.getLogger().log(Level.WARNING, "Error creating spell " + spellKey.getKey(), ex);
         }
         return spell;
     }

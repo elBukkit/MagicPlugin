@@ -12,6 +12,7 @@ public abstract class CompoundAction extends BaseSpellAction
 {
 	private boolean usesBrush = false;
 	private boolean undoable = false;
+    private boolean requiresBuildPermission = false;
 	protected ActionHandler actions = null;
 
 	@Override
@@ -21,15 +22,19 @@ public abstract class CompoundAction extends BaseSpellAction
 
 		usesBrush = false;
 		undoable = false;
-		if (template != null && template.contains("actions"))
-		{
-			actions = new ActionHandler(getSpell());
-			actions.load(template, "actions");
-			usesBrush = usesBrush || actions.usesBrush();
-			undoable = undoable || actions.isUndoable();
-		}
-		undoable = template.getBoolean("undoable", undoable);
-	}
+        if (template != null)
+        {
+            if (template.contains("actions"))
+            {
+                actions = new ActionHandler(getSpell());
+                actions.load(template, "actions");
+                usesBrush = usesBrush || actions.usesBrush();
+                undoable = undoable || actions.isUndoable();
+                requiresBuildPermission = requiresBuildPermission || actions.requiresBuildPermission();
+            }
+            undoable = template.getBoolean("undoable", undoable);
+        }
+    }
 
 	protected SpellResult perform(ConfigurationSection parameters, Location targetLocation, Collection<Entity> targetEntities) {
 		if (actions == null) {
@@ -67,6 +72,12 @@ public abstract class CompoundAction extends BaseSpellAction
 	{
 		return usesBrush;
 	}
+
+    @Override
+    public boolean requiresBuildPermission()
+    {
+        return requiresBuildPermission;
+    }
 
 	@Override
 	public void getParameterNames(Collection<String> parameters)

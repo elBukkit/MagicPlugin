@@ -182,8 +182,7 @@ public abstract class BaseSpellAction implements SpellAction
 
     }
 
-    @Override
-    public void initialize(Spell spell, ConfigurationSection parameters)
+    public void setSpell(Spell spell)
     {
         this.spell = spell;
         if (spell instanceof BaseSpell)
@@ -214,6 +213,12 @@ public abstract class BaseSpellAction implements SpellAction
         {
             this.brushSpell = (BrushSpell)spell;
         }
+    }
+
+    @Override
+    public void initialize(Spell spell, ConfigurationSection parameters)
+    {
+        this.setSpell(spell);
         this.parameters = parameters;
     }
 
@@ -357,6 +362,24 @@ public abstract class BaseSpellAction implements SpellAction
             return targetingSpell.isTransparent(material);
         }
         return material.isTransparent();
+    }
+
+    public boolean isDestructible(Block block)
+    {
+        if (blockSpell != null)
+        {
+            return blockSpell.isDestructible(block);
+        }
+        return true;
+    }
+
+    public boolean isTargetable(Material material)
+    {
+        if (targetingSpell != null)
+        {
+            return targetingSpell.isTargetable(material);
+        }
+        return true;
     }
 
     public boolean canTarget(Entity entity) {
