@@ -2264,6 +2264,7 @@ phase:
         cast:
         -  class: EffectSingle
            sound: portal_travel
+           sound_volume: 0.1
            location: both
            effectlib:
              class: WarpEffect
