@@ -171,7 +171,7 @@ public class WandLevel {
         return remainingMaterials;
     }
 	
-	public boolean randomizeWand(Mage mage, Wand wand, boolean additive) {
+	public boolean randomizeWand(Mage mage, Wand wand, boolean additive, boolean hasUpgrade) {
 		// Add random spells to the wand
         if (mage == null) {
             mage = wand.getActivePlayer();
@@ -263,6 +263,12 @@ public class WandLevel {
 				}
 			}
 		}
+
+        // Let them upgrade if they aren't getting any new spells or brushes
+        if (hasUpgrade && !addedMaterials && !addedSpells && ((getSpellCount() > 0 && spellProbability.size() > 0) || (getMaterialCount() > 0 && materialProbability.size() > 0)))
+        {
+            return false;
+        }
 		
 		// Add random wand properties
 		boolean addedProperties = false;

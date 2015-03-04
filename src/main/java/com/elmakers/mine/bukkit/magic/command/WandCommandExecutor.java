@@ -32,7 +32,7 @@ import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.api.wand.Wand;
 import com.elmakers.mine.bukkit.block.MaterialBrush;
-import com.elmakers.mine.bukkit.utility.Messages;
+import com.elmakers.mine.bukkit.api.magic.Messages;
 
 public class WandCommandExecutor extends MagicTabExecutor {
 	
@@ -851,6 +851,7 @@ public class WandCommandExecutor extends MagicTabExecutor {
 
 		Mage mage = api.getMage(player);
 		Wand wand = mage.getActiveWand();
+        Messages messages = api.getMessages();
 
 		String spellName = parameters[0];
 		if (spellName.equals("material")) {
@@ -867,7 +868,7 @@ public class WandCommandExecutor extends MagicTabExecutor {
 
 			if (wand.addBrush(materialKey)) {
 				wand.setActiveBrush(materialKey);
-				mage.sendMessage("Material '" + materialKey + "' has been added to your wand");
+                mage.sendMessage(messages.get("wand.brush_added").replace("$wand", wand.getName()).replace("$name", MaterialBrush.getMaterialName(materialKey)));
 				if (sender != player) {
 					sender.sendMessage("Added material '" + materialKey + "' to " + player.getName() + "'s wand");
 				}
@@ -901,7 +902,7 @@ public class WandCommandExecutor extends MagicTabExecutor {
                     sender.sendMessage(api.getMessages().get("wand.player_spell_upgraded").replace("$player", player.getName()).replace("$name", currentSpell.getName()).replace("$level", levelDescription));
                 }
             } else {
-                mage.sendMessage("Spell '" + spell.getName() + "' has been added to your wand");
+                mage.sendMessage(messages.get("wand.spell_added").replace("$name", spellName).replace("$wand", wand.getName()));
                 if (sender != player) {
                     sender.sendMessage("Added '" + spell.getName() + "' to " + player.getName() + "'s wand");
                 }

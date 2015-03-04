@@ -1947,8 +1947,9 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         int levels = 0;
         boolean modified = true;
 		while (addLevels >= minLevel && modified) {
+            boolean hasUpgrade = path.hasUpgrade();
             WandLevel level = path.getLevel(addLevels);
-            modified = level.randomizeWand(enchanter, this, additive);
+            modified = level.randomizeWand(enchanter, this, additive, hasUpgrade);
 			totalLevels -= maxLevel;
             if (modified) {
                 if (enchanter != null) {
@@ -1961,7 +1962,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
                     String message = controller.getMessages().get("wand.require_more_levels");
                     enchanter.sendMessage(message);
                 }
-            } else if (path.hasUpgrade()) {
+            } else if (hasUpgrade) {
                 if (path.checkUpgradeRequirements(this, enchanter)) {
                     path.upgrade(this, enchanter);
                     levels += addLevels;
