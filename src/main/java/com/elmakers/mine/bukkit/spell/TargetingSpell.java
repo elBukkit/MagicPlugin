@@ -36,6 +36,7 @@ public abstract class TargetingSpell extends BaseSpell {
     private String								targetName			    = null;
     private TargetType							targetType				= TargetType.OTHER;
     private boolean								targetNPCs				= false;
+    private boolean								targetUnknown			= true;
     private int                                 verticalSearchDistance  = 8;
     private boolean                             targetingComplete		= false;
     private boolean                             targetSpaceRequired     = false;
@@ -484,6 +485,7 @@ public abstract class TargetingSpell extends BaseSpell {
         for (Entity entity : entities)
         {
             if (entity == mage.getEntity()) continue;
+            if (!targetUnknown && entity.getType() == EntityType.UNKNOWN) continue;
             if (!targetNPCs && controller.isNPC(entity)) continue;
             if (entity.hasMetadata("notarget")) continue;
             if (entity.getLocation().distanceSquared(sourceLocation) > rangeSquared) continue;
@@ -515,7 +517,7 @@ public abstract class TargetingSpell extends BaseSpell {
     @Override
     public boolean canTarget(Entity entity) {
         // This is mainly here to ignore pets...
-        if (entity.getType() == EntityType.UNKNOWN) {
+        if (!targetUnknown && entity.getType() == EntityType.UNKNOWN) {
             return false;
         }
         if (!targetNPCs && controller.isNPC(entity)) return false;
@@ -737,6 +739,7 @@ public abstract class TargetingSpell extends BaseSpell {
         }
 
         targetNPCs = parameters.getBoolean("target_npc", false);
+        targetUnknown = parameters.getBoolean("target_unknown", true);
 
         if (parameters.contains("target_type")) {
             String entityTypeName = parameters.getString("target_type");
