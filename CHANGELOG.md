@@ -6,7 +6,11 @@
  - Updates to Potter and Bending configs
  - Fix reloading configs with customizations and spell levels
  - Fix some spell balancing issues (Magic Missile Level 2)
- - Add Citizens trait for casting spells
+ - Add Citizens "magic" trait for casting spells
+ - Fix the manaboost item (though it's still kinda wonky and useless)
+ - Some fixes to player data saving
+ - Fix Architect levelling and some general OP-wand enchanting issues
+ - PS fields now allow the owners to cast any spell, regardless of pvp flag
 
 ## 4.2
 

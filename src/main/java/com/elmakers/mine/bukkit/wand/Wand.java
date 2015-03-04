@@ -1271,10 +1271,6 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		if (effectParticle == null) {
 			effectParticleInterval = 0;
 		}
-		
-		if (xp > xpMax) {
-			xp = xpMax;
-		}
 
 		checkActiveMaterial();
 	}
@@ -2161,7 +2157,18 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		} else {
 			if (other.isForcedUpgrade() || other.xpRegeneration > xpRegeneration) { xpRegeneration = other.xpRegeneration; modified = true; sendAddMessage("wand.upgraded_property", getLevelString(messages, "wand.mana_regeneration", xpRegeneration, controller.getMaxManaRegeneration())); }
 			if (other.isForcedUpgrade() || other.xpMax > xpMax) { xpMax = other.xpMax; modified = true; sendAddMessage("wand.upgraded_property", getLevelString(messages, "wand.mana_amount", xpMax, controller.getMaxMana())); }
-			if (other.isForcedUpgrade() || other.xp > xp) { xp = other.xp; modified = true; }
+			if (other.isForcedUpgrade() || other.xp > xp) {
+                int previousXP = xp;
+                xp = Math.min(xpMax, other.xp);
+                if (xp > previousXP) {
+                    if (mage != null)
+                    {
+                        String message = controller.getMessages().get("wand.mana_added").replace("$value", Integer.toString(xp)).replace("$wand", getName());
+                        mage.sendMessage(message);
+                    }
+                    modified = true;
+                }
+            }
 		}
 		
 		// Eliminate limited-use wands
