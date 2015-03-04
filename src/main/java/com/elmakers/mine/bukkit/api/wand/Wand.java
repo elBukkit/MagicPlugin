@@ -49,6 +49,7 @@ public interface Wand extends CostReducer {
     public boolean canUse(Player player);
     public boolean fill(Player player);
     public boolean add(Wand other);
+    public boolean add(Wand other, Mage mage);
     public boolean configure(Map<String, Object> properties);
     public boolean upgrade(Map<String, Object> properties);
     public boolean addBrush(String key);
