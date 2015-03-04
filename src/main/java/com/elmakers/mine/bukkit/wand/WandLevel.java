@@ -123,6 +123,28 @@ public class WandLevel {
         mage.sendMessage(message);
     }
 
+    public int getSpellCount() {
+        int count = 0;
+        for (WeightedPair<Integer> spellCount : spellCountProbability) {
+            if (spellCount.getValue() > count) {
+                count = spellCount.getValue();
+            }
+        }
+
+        return count;
+    }
+
+    public int getMaterialCount() {
+        int count = 0;
+        for (WeightedPair<Integer> materialCount : materialCountProbability) {
+            if (materialCount.getValue() > count) {
+                count = materialCount.getValue();
+            }
+        }
+
+        return count;
+    }
+
     public LinkedList<WeightedPair<String>> getRemainingSpells(Wand wand) {
         LinkedList<WeightedPair<String>> remainingSpells = new LinkedList<WeightedPair<String>>();
         for (WeightedPair<String> spell : spellProbability) {
