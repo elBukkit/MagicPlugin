@@ -48,4 +48,5 @@ public interface SpellTemplate extends Comparable<SpellTemplate>, CostReducer {
     public String getRequiredUpgradePath();
     public long getRequiredUpgradeCasts();
     public String getUpgradeDescription();
+    public ConfigurationSection getConfiguration();
 }
