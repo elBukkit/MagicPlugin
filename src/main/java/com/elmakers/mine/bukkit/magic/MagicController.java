@@ -1986,10 +1986,18 @@ public class MagicController implements Listener, MageController {
         return hasPermission(sender, spell.getPermissionNode(), true);
     }
 
+    @Override
     public Boolean getRegionCastPermission(Player player, SpellTemplate spell, Location location)
     {
         if (player != null && player.hasPermission("Magic.bypass")) return true;
         return worldGuardManager.getCastPermission(player, spell, location);
+    }
+
+    @Override
+    public Boolean getPersonalCastPermission(Player player, SpellTemplate spell, Location location)
+    {
+        if (player != null && player.hasPermission("Magic.bypass")) return true;
+        return preciousStonesManager.getCastPermission(player, spell, location);
     }
 
 	public boolean hasPermission(Player player, String pNode, boolean defaultValue)

@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.protection;
 
+import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import net.sacredlabyrinth.Phaed.PreciousStones.FieldFlag;
 import net.sacredlabyrinth.Phaed.PreciousStones.PreciousStones;
 
@@ -55,17 +56,37 @@ public class PreciousStonesManager {
 		boolean allowed = true;
 		if (enabled && block != null && preciousStones != null)
         {
-			if (PreciousStones.API().isFieldProtectingArea(FieldFlag.ALL, block.getLocation()))
+            Location location = block.getLocation();
+			if (PreciousStones.API().isFieldProtectingArea(FieldFlag.ALL, location))
             {
                 if (player == null)
                 {
                     return false;
                 }
-				allowed = allowed && PreciousStones.API().canBreak(player, block.getLocation());
-				allowed = allowed && PreciousStones.API().canPlace(player, block.getLocation());
+				allowed = allowed && PreciousStones.API().canBreak(player, location);
+				allowed = allowed && PreciousStones.API().canPlace(player, location);
 				return allowed;
 			}
 		}
 		return allowed;
 	}
+
+    public Boolean getCastPermission(Player player, SpellTemplate spell, Location location) {
+        Boolean overridePermission = null;
+        if (enabled && location != null && preciousStones != null)
+        {
+            if (PreciousStones.API().isFieldProtectingArea(FieldFlag.ALL, location))
+            {
+                if (player == null)
+                {
+                    return null;
+                }
+                if (PreciousStones.API().canBreak(player, location) && PreciousStones.API().canPlace(player, location))
+                {
+                    overridePermission = true;
+                }
+            }
+        }
+        return overridePermission;
+    }
 }
