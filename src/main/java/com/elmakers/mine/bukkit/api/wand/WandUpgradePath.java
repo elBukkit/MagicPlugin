@@ -2,6 +2,8 @@ package com.elmakers.mine.bukkit.api.wand;
 
 import com.elmakers.mine.bukkit.api.magic.Mage;
 
+import java.util.Collection;
+
 public interface WandUpgradePath {
     public String getKey();
     public String getName();
@@ -13,4 +15,6 @@ public interface WandUpgradePath {
     public boolean checkUpgradeRequirements(Wand wand, Mage mage);
     public WandUpgradePath getUpgrade();
     public void upgrade(Wand wand, Mage mage);
+    public Collection<String> getSpells();
+    public Collection<String> getRequiredSpells();
 }
