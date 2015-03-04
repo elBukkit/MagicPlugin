@@ -1760,4 +1760,9 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     public void setUpgrade(MageSpell upgrade) {
         this.upgrade = upgrade;
     }
+
+    @Override
+    public ConfigurationSection getConfiguration() {
+        return this.configuration;
+    }
 }
