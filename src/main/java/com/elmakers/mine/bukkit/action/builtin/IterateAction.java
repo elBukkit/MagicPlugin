@@ -1,5 +1,11 @@
-package com.elmakers.mine.bukkit.spell.builtin;
+package com.elmakers.mine.bukkit.action.builtin;
 
+import com.elmakers.mine.bukkit.api.action.BlockAction;
+import com.elmakers.mine.bukkit.api.block.MaterialBrush;
+import com.elmakers.mine.bukkit.api.magic.Mage;
+import com.elmakers.mine.bukkit.api.spell.SpellResult;
+import com.elmakers.mine.bukkit.spell.BaseSpell;
+import com.elmakers.mine.bukkit.spell.CompoundAction;
 import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -8,19 +14,18 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.util.Vector;
 
-import com.elmakers.mine.bukkit.api.block.MaterialBrush;
-import com.elmakers.mine.bukkit.api.spell.SpellResult;
-import com.elmakers.mine.bukkit.spell.BrushSpell;
+import java.util.Arrays;
+import java.util.Collection;
 
-@Deprecated
-public class IterateSpell extends BrushSpell
+public class IterateAction extends CompoundAction implements BlockAction
 {
 	private int				DEFAULT_SIZE			= 16;
 	
 	@SuppressWarnings("deprecation")
 	@Override
-	public SpellResult onCast(ConfigurationSection parameters) 
-	{
+    public SpellResult perform(ConfigurationSection parameters, Block target)
+    {
+        Mage mage = getMage();
 		boolean incrementData = parameters.getBoolean("increment_data", false);
 		int radius = parameters.getInt("radius", 0);
 		// radius = (int)(radius * mage.getRadiusMultiplier());
@@ -28,20 +33,6 @@ public class IterateSpell extends BrushSpell
 		boolean reverse = parameters.getBoolean("reverse", false);
         boolean requireBlock = parameters.getBoolean("require_block", false);
 		size = (int)(mage.getConstructionMultiplier() * (float)size);
-		
-		boolean reverseTargeting = parameters.getBoolean("transparent_reverse", false);
-		if (reverseTargeting) {
-			setReverseTargeting(true);
-		}
-		
-		Block target = getTargetBlock();
-		if (target == null) 
-		{
-			return SpellResult.NO_TARGET;
-		}
-		if (!hasBuildPermission(target) || !hasBuildPermission(getLocation().getBlock())) {
-			return SpellResult.INSUFFICIENT_PERMISSION;
-		}
 
 		int iterateBlocks = (int)getLocation().distance(target.getLocation());
 		if (iterateBlocks <= 0) return SpellResult.NO_TARGET;
@@ -120,13 +111,10 @@ public class IterateSpell extends BrushSpell
 					Block currentTarget = target.getWorld().getBlockAt(currentLoc.getBlockX(), currentLoc.getBlockY(), currentLoc.getBlockZ());
 					if (!isTargetable(currentTarget.getType()) && isDestructible(currentTarget) && hasBuildPermission(currentTarget))
 					{
-						registerForUndo(currentTarget);
-
 						buildWith.update(mage, currentTarget.getLocation());
 		
 						if (incrementData) {
-							short data = buildWith.getData();
-							data = i > 15 ? 15 : (short)i;
+							short data = i > 15 ? 15 : (short)i;
 							buildWith.setData(data);
 						}
 
@@ -137,14 +125,10 @@ public class IterateSpell extends BrushSpell
                                 continue;
                             }
                         }
-						buildWith.modify(currentTarget);
-						
-						controller.updateBlock(currentTarget);
-						
-						Location effectLocation = currentTarget.getLocation();	
-						effectLocation.add(0.5f, 0.5f, 0.5f);
-						
-						if (dr == 0) {
+                        SpellResult result = perform(parameters, currentTarget.getLocation());
+						if (dr == 0 && usesBrush()) {
+                            Location effectLocation = currentTarget.getLocation();
+                            effectLocation.add(0.5f, 0.5f, 0.5f);
 							Material material = buildWith.getMaterial();
 							// Kinda hacky.
 							// TODO: Customize with effects system
@@ -153,15 +137,34 @@ public class IterateSpell extends BrushSpell
 							} else {
 								effectLocation.getWorld().playEffect(effectLocation, Effect.STEP_SOUND, material.getId());
 							}
-						}	
+						}
 					}					
 					currentLoc.add(aim);
 				}
 			}
 		}
 
-		registerForUndo();
-
 		return SpellResult.CAST;
 	}
+
+    @Override
+    public void getParameterNames(Collection<String> parameters) {
+        super.getParameterNames(parameters);
+        parameters.add("radius");
+        parameters.add("size");
+        parameters.add("increment_data");
+        parameters.add("require_block");
+        parameters.add("reverse");
+    }
+
+    @Override
+    public void getParameterOptions(Collection<String> examples, String parameterKey) {
+        if (parameterKey.equals("increment_data") || parameterKey.equals("reverse") || parameterKey.equals("require_block")) {
+            examples.addAll(Arrays.asList((BaseSpell.EXAMPLE_BOOLEANS)));
+        } else if (parameterKey.equals("radius") || parameterKey.equals("size")) {
+            examples.addAll(Arrays.asList((BaseSpell.EXAMPLE_SIZES)));
+        } else {
+            super.getParameterOptions(examples, parameterKey);
+        }
+    }
 }

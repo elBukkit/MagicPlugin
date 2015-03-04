@@ -1,19 +1,20 @@
 # TODO
 
-PsychoFad - could add GriefPrevention checks in a future version
-
-## Transitioning
-
-This list is being transitioned to the issue tracker:
-
-http://jira.elmakers.com/browse/MAGIC
+ - Fix blink when passing through transparent blocks
+ - battle wand stuck at "enchant at higher level"
  
-## For 3.0.0
- 
- - Tweaking/Balancing - haste, cooldowns, etc
- - Finish localization
- 
-## To Add to JIRA
+ - Spell levelling FX
+ - Undo FX
+ - Custom icon support for special brushes
+ - Fix recall home spawning in the ground?
+ - Fix spells getting lost on config load failure
+ - Add spellbook-choosing action 
+ - Add spell-choosing action
+ - Add Vault integration for the above
+ - Add Cylinder construct (SuperWalls, Walls, SuperCylinder)
+ - Persist erasemod
+
+## Old Stuff
 
  - Arena spell/schematic
  - A way to /wand enchant with auto-fill but not filling wand... ?
@@ -27,13 +28,6 @@ http://jira.elmakers.com/browse/MAGIC
  - Async player data loading/saving
  - Add upgrade paths for wands, maybe a "combine" requirement of one or more wands
  
-## DOCUMENTATION / DEMO STUFF
-
- - Thank Aireesan for NodeCraft recommendation
-
- - Add "wand properties" infobook, other admin-oriented books?
- - Update web site wand instructions
-
 ## NEW SPELLS
 
  - level - levels the ground
@@ -53,10 +47,8 @@ http://jira.elmakers.com/browse/MAGIC
 ## OTHER STUFF
  
  - Customize map wand pop-ups? Red with black shadows looked cool.. use wand effect color?
- - Add fall protection to bounce spell (generalize it)
- - Make volley multi-sample?
+= - Make volley multi-sample?
  - Alter names sheep "jeb_", - others "Dinnerbone" ?
- - Separate material list for "super" building materials?
  
  - Fix up alter spell, remove id-based lists
  
@@ -68,20 +60,12 @@ http://jira.elmakers.com/browse/MAGIC
  
  - Show active spells in a different color
  
- - Add location to /magic populate when used in-game
  - Add /magic depopulate, to remove all wands from chests
- 
- - See if you can disable the fire from a fireball when not incendiary
 
- - Persist player spell data
+  - Persist player spell data
    - familiar
  
- - Fix populate command to detect a full ring of broken chunks, or some other method to get all chunks.
- - Add chunk generate and stop options to "populate" for creating square maps.. ?
- 
- - Continue work on combining wands on avils
- - Specific protection for suffocation damage, underwater breathing (air regeneration)
- - Maybe make wands regenerate while you're not holding them (timer-based)?
+ - Continue work on combining wands on anvils
  
 ## TESTING / TWEAKING:
  
@@ -117,7 +101,6 @@ alek123222
 Can you make it compatible so when a user has over 20 health he can still be healed because at the moment the plugin just sets them back to 20 again.
 I am using a custom plugin thats based of this one: http://dev.bukkit.org/bukkit-plugins/lore-attrubites-revival/ 
 
-Also cool downs seem not to work at all and also a message would be nice that when a spell is on cool down should pop up saying "Cool-down blah"
 ----
 
 Gitpw3d

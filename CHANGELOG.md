@@ -22,6 +22,7 @@
  - Add allowed-spell-categories and blocked-spell-categories WGCustomFlags
  - Some fixes to explosion undo, PreciousStones integration
  - Add configurable (per-wand) item glow
+ - Earth, Stream and Laser all do entity damage
 
 ## 4.1
 

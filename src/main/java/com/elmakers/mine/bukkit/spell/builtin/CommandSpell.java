@@ -40,6 +40,7 @@ import java.util.List;
  * @tuuid - target entity uuid
  * @tworld, @tx, @ty, @tz - target location
  */
+@Deprecated
 public class CommandSpell extends TargetingSpell {
     public final static String[] PARAMETERS = {
             "command", "console", "op", "radius"

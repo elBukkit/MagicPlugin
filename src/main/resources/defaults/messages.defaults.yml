@@ -956,7 +956,7 @@ spells:
         name: Laser
         description: Destroy a line of blocks
         cast: Lasered $count blocks
-        upgrade_description: "&r&b• &6Larger radius, breaks more block types"
+        upgrade_description: "&r&b• &6Larger radius, breaks more block types, increased damage"
     stream:
         name: Stream
         description: Spray a stream of water
@@ -1302,7 +1302,7 @@ wands:
         description: Alphabetizes your wand inventory
     manaboost:
         name: Mana Boost
-        description: An instant boost to 1000 Mana (or your max)
+        description: Instantly refill your wand's mana
     recalltoken:
         name: Recall Token
         description: Teleport to waypoints

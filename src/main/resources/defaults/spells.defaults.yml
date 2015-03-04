@@ -3944,9 +3944,11 @@ lava:
     icon_url: http://i.imgur.com/PSGSxEI.png
     icon: ink_sack:14
     category: combat
-    class: IterateSpell
     pvp_restricted: true
     worth: 80
+    actions:
+        cast:
+        -  class: IterateAction
     effects:
         cast:
         -  class: EffectSingle
@@ -3967,9 +3969,14 @@ stream:
     icon: ink_sack:6
     icon_url: http://i.imgur.com/FMkCRh9.png
     category: combat
-    class: IterateSpell
     pvp_restricted: true
     worth: 60
+    actions:
+        cast:
+        -  class: IterateAction
+           actions:
+           -  class: ReplaceMaterialAction
+        -  class: DamageAction
     effects:
         cast:
         -  class: EffectSingle
@@ -3983,15 +3990,22 @@ stream:
         brush: water
         increment_data: true
         undo: 2000
+        player_damage: 2
+        entity_damage: 4
     costs:
         mana: 30
 
 earth:
     icon: ink_sack:3
     category: combat
-    class: IterateSpell
     pvp_restricted: true
     worth: 70
+    actions:
+        cast:
+        -  class: IterateAction
+           actions:
+           -  class: ReplaceMaterialAction
+        -  class: DamageAction
     effects:
         cast:
         -  class: EffectSingle
@@ -4005,14 +4019,20 @@ earth:
         increment_data: false
         undo: 2000
         brush: dirt
+        player_damage: 4
+        entity_damage: 6
     costs:
         mana: 20
 
 iterate:
     icon: ink_sack:2
     category: engineering
-    class: IterateSpell
     worth: 150
+    actions:
+        cast:
+        -  class: IterateAction
+           actions:
+           -  class: ReplaceMaterialAction
     parameters:
         transparent: transparent_to_construction
         allow_max_range: true
@@ -4025,8 +4045,12 @@ iterate:
 superiterate:
     icon: ink_sack:4
     category: engineering
-    class: IterateSpell
     worth: 300
+    actions:
+        cast:
+        -  class: IterateAction
+           actions:
+           -  class: ReplaceMaterialAction
     parameters:
         transparent: transparent_to_construction
         allow_max_range: true
@@ -4042,8 +4066,16 @@ flamethrower:
     icon_url: http://i.imgur.com/PSGSxEI.png
     icon: blaze_powder
     category: combat
-    class: IterateSpell
     worth: 90
+    actions:
+        cast:
+        -  class: IterateAction
+           actions:
+           -  class: CoverAction
+              parameters:
+                  radius: 0
+              actions:
+              -  class: BurnAction
     effects:
         cast:
         -  class: EffectSingle
@@ -4061,9 +4093,7 @@ flamethrower:
         size: 8
         radius: 1
         reverse: false
-        increment_data: false
         require_blocks: true
-        brush: fire
         undo: 5000
         cooldown: 2000
     costs:
@@ -4073,18 +4103,29 @@ laser:
     icon_url: http://i.imgur.com/SWNaSEw.png
     icon: ink_sack:11
     category: demolition
-    class: IterateSpell
     worth: 130
     upgrade_required_path: apprentice
     upgrade_required_casts: 50
+    actions:
+        cast:
+        -  class: IterateAction
+           actions:
+           -  class: ReplaceMaterialAction
+        -  class: DamageAction
     effects:
         cast:
         -  class: EffectSingle
            sound: piston_extend
     parameters:
+        target: other
+        target_type: LivingEntity
+        fov: 0.3
         transparent: none
-        transparent_reverse: true
+        reverse_targeting: true
         allow_max_range: true
+        player_damage: 4
+        entity_damage: 6
+        target_count: 10
         range: 32
         size: 32
         increment_data: false
@@ -4103,6 +4144,8 @@ laser|2:
     parameters:
         radius: 2
         destructible: destructible
+        player_damage: 6
+        entity_damage: 8
 
 laser|3:
     parameters:
