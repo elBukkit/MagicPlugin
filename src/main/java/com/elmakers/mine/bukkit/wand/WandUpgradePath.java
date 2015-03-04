@@ -361,6 +361,16 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
     }
 
     @Override
+    public Collection<String> getSpells() {
+        return new ArrayList(spells);
+    }
+
+    @Override
+    public Collection<String> getRequiredSpells() {
+        return new ArrayList(requiredSpells);
+    }
+
+    @Override
     public boolean requiresSpell(String spellKey) {
         return requiredSpells.contains(spellKey);
     }
@@ -473,9 +483,11 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
     public boolean checkEnchant(Wand wand) {
         // First check to see if the path has more spells available
         WandLevel maxLevel = levelMap.get(levels[levels.length - 1]);
+        int spellCount = maxLevel.getSpellCount();
+        int materialCount = maxLevel.getMaterialCount();
         LinkedList<WeightedPair<String>> remainingSpells = maxLevel.getRemainingSpells(wand);
         LinkedList<WeightedPair<String>> remainingMaterials = maxLevel.getRemainingMaterials(wand);
-        return (remainingSpells.size() > 0 || remainingMaterials.size() > 0);
+        return ((spellCount > 0 && remainingSpells.size() > 0) || (materialCount > 0 && remainingMaterials.size() > 0));
     }
 
     @Override
@@ -527,11 +539,18 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
 
     @Override
     public void upgrade(com.elmakers.mine.bukkit.api.wand.Wand wand, com.elmakers.mine.bukkit.api.magic.Mage mage) {
+        com.elmakers.mine.bukkit.api.wand.WandUpgradePath newPath = getUpgrade();
+        if (newPath == null) {
+            if (mage != null) mage.sendMessage("Configuration issue, please check logs");
+            wand.getController().getLogger().warning("Invalid upgrade path: " + this.getUpgrade());
+            return;
+        }
+
         if (mage != null) {
             MageController controller = mage.getController();
-            mage.sendMessage(controller.getMessages().get("wand.level_up").replace("$wand", getName()).replace("$path", this.getName()));
+            mage.sendMessage(controller.getMessages().get("wand.level_up").replace("$wand", getName()).replace("$path", newPath.getName()));
         }
         this.upgraded(wand, mage);
-        wand.setPath(this.getKey());
+        wand.setPath(newPath.getKey());
     }
 }
