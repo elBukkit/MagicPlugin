@@ -3,7 +3,7 @@
 #
 
 default:
-    icon: wood_hoe,gold_axe,gold_pickaxe,gold_spade
+    icon: wood_hoe,gold_axe,gold_pickaxe
     randomize_icon: wood_step
     path: year1
     bound: true
