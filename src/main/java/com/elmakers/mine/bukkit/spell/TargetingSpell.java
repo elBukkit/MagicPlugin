@@ -755,6 +755,7 @@ public abstract class TargetingSpell extends BaseSpell {
         bypassProtection = parameters.getBoolean("bp", bypassProtection);
         checkProtection = parameters.getBoolean("check_protection", checkProtection);
         targetBreakables = parameters.getDouble("target_breakables", 0);
+        reverseTargeting = parameters.getBoolean("reverse_targeting", false);
 
         bypassBuildRestriction = parameters.getBoolean("bypass_build", false);
         bypassBuildRestriction = parameters.getBoolean("bb", bypassBuildRestriction);
