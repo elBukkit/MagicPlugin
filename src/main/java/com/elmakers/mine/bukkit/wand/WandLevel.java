@@ -426,7 +426,7 @@ public class WandLevel {
 		
 		// The mana system is considered separate from other properties
 
-		if (costReduction > 1) {
+		if (costReduction >= 1) {
 			// Cost-Free wands don't need mana.
 			wandProperties.set("xp_regeneration", 0);
 			wandProperties.set("xp_max", 0);
