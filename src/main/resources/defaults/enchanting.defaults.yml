@@ -538,6 +538,7 @@ architect:
       3: 0,   5,   50
     spells:
       absorb: 0,1,2
+      backup: 0,0,1
       superalter: 0,1,5
       superrepair: 0,0,5
       supershell: 0,0,5

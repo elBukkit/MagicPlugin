@@ -2953,7 +2953,7 @@ backup:
         brushtarget: true
         bypass_undo: true
     costs:
-        mana: 900
+        mana: 400
 
 repair:
     icon: gold_pickaxe
