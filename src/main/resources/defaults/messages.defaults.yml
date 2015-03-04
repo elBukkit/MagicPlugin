@@ -753,7 +753,7 @@ spells:
     undo:
         name: Rollback
         description: Undo the targeted spell
-        cast: "&5You undo your &r&6$spell &5cast"
+        cast: "&5You undo &d&o$target's &r&6$spell &5cast"
         cast_player: "&5You undo &d&o$target's&r&6 $spell &5cast"
         alternate: "&5You cancel your &6$spell &5cast"
         fail: Nothing to undo
