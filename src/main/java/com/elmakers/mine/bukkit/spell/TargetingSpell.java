@@ -17,7 +17,9 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.ItemFrame;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.MetadataValue;
 import org.bukkit.util.BlockIterator;
 import org.bukkit.util.Vector;
@@ -44,6 +46,7 @@ public abstract class TargetingSpell extends BaseSpell {
     private boolean                             targetSpaceRequired     = false;
     private int                                 targetMinOffset         = 0;
     protected Class<? extends Entity>           targetEntityType        = null;
+    protected Material                          targetContents          = null;
     private Location                            targetLocation;
     private Vector								targetLocationOffset;
     private Vector								targetDirectionOverride;
@@ -548,6 +551,12 @@ public abstract class TargetingSpell extends BaseSpell {
         }
 
         if (targetEntityType == null) return true;
+        if (targetContents != null && entity instanceof ItemFrame)
+        {
+            ItemFrame itemFrame = (ItemFrame)entity;
+            ItemStack item = itemFrame.getItem();
+            if (item == null || item.getType() != targetContents) return false;
+        }
         return targetEntityType.isAssignableFrom(entity.getClass());
     }
 
@@ -800,6 +809,8 @@ public abstract class TargetingSpell extends BaseSpell {
                 targetEntityType = null;
             }
         }
+
+        targetContents = ConfigurationUtils.getMaterial(parameters, "target_contents", null);
 
         originAtTarget = parameters.getBoolean("origin_at_target", false);
 
