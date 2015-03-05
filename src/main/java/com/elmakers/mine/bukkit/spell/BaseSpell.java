@@ -86,7 +86,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     protected final static Set<String> vectorParameterMap = new HashSet<String>(Arrays.asList(VECTOR_PARAMETERS));
 
     public final static String[] BOOLEAN_PARAMETERS = {
-        "allow_max_range", "prevent_passthrough", "reverse_targeting", "passthrough", "bypass_build", "bypass_pvp", "target_npc"
+        "allow_max_range", "prevent_passthrough", "reverse_targeting", "passthrough", "bypass_build", "bypass_pvp", "target_npc", "ignore_blocks"
     };
 
     protected final static Set<String> booleanParameterMap = new HashSet<String>(Arrays.asList(BOOLEAN_PARAMETERS));

@@ -70,6 +70,7 @@ public abstract class TargetingSpell extends BaseSpell {
     private Set<Material>                       targetThroughMaterials  = new HashSet<Material>();
     private boolean                             reverseTargeting        = false;
     private boolean                             originAtTarget          = false;
+    private boolean                             ignoreBlocks            = false;
 
     private BlockIterator						blockIterator = null;
     private	Block								currentBlock = null;
@@ -396,8 +397,11 @@ public abstract class TargetingSpell extends BaseSpell {
             return new Target(location);
         }
 
-        findTargetBlock();
-        final Block block = getCurBlock();
+        Block block = null;
+        if (!ignoreBlocks) {
+            findTargetBlock();
+            block = getCurBlock();
+        }
 
         if (targetType == TargetType.BLOCK) {
             return new Target(location, block);
@@ -811,8 +815,8 @@ public abstract class TargetingSpell extends BaseSpell {
         }
 
         targetContents = ConfigurationUtils.getMaterial(parameters, "target_contents", null);
-
         originAtTarget = parameters.getBoolean("origin_at_target", false);
+        ignoreBlocks = parameters.getBoolean("ignore_blocks", false);
 
         Location defaultLocation = getLocation();
         targetLocation = ConfigurationUtils.overrideLocation(parameters, "t", defaultLocation, controller.canCreateWorlds());
