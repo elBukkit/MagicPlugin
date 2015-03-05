@@ -1110,6 +1110,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         playEffects(effectName, scale, getEffectLocation(), mage.getEntity(), getTargetLocation(), getTargetEntity());
     }
 
+    @Override
     public void playEffects(String effectName)
     {
         playEffects(effectName, 1);
