@@ -441,7 +441,7 @@ admin:
         - erase
         - copy
 
-ajwolf:
+borealis:
     path: master
     icon: gold_axe
     keep: true
@@ -474,6 +474,7 @@ ajwolf:
         - collapse
         - recall
         - tag
+        - pollinate
 
 miniwolf:
     path: master

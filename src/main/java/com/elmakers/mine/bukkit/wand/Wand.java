@@ -2888,6 +2888,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
                             if (levelDescription == null || levelDescription.isEmpty()) {
                                 levelDescription = upgrade.getName();
                             }
+                            upgrade.playEffects("upgrade");
                             mage.sendMessage(messages.get("wand.spell_upgraded").replace("$name", upgrade.getName()).replace("$wand", getName()).replace("$level", levelDescription));
                             mage.sendMessage(upgrade.getUpgradeDescription().replace("$name", upgrade.getName()));
                         }

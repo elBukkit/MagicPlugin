@@ -125,6 +125,11 @@ default:
        - class: EffectSingle
          location: origin
          entity_effect: hurt
+       upgrade:
+       - class: EffectSingle
+         location: origin
+         sound: level_up
+         firework: ball_large
        no_target: cast
        alternate: cast
        alternate_up: cast
@@ -1379,6 +1384,7 @@ lightning:
         target_type: LivingEntity
         allow_max_range: true
         range: 32
+        cooldown: 10000
     costs:
         mana: 80
 
@@ -1406,6 +1412,7 @@ storm:
         allow_max_range: true
         range: 64
         radius: 6
+        cooldown: 30000
     costs:
         mana: 200
 
@@ -3950,6 +3957,8 @@ lava:
     actions:
         cast:
         -  class: IterateAction
+           actions:
+           -  class: ReplaceMaterialAction
     effects:
         cast:
         -  class: EffectSingle

@@ -2,8 +2,10 @@
 
  - Fix blink when passing through transparent blocks
  - battle wand stuck at "enchant at higher level"
- 
- - Spell levelling FX
+ - Upgrade GUI should select spell and close on click
+ - /magic describe should show info about current spell?
+ - Fix Chop on data variants..?
+
  - Undo FX
  - Custom icon support for special brushes
  - Fix recall home spawning in the ground?
