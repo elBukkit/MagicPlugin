@@ -598,11 +598,24 @@ public class MagicCommandExecutor extends MagicTabExecutor {
         ConfigurationSection data = mage.getData();
         if (args != null && args.length > 0)
         {
+            if (args[0].equals("*"))
+            {
+                sender.sendMessage(ChatColor.GOLD + "Mage data for " + ChatColor.AQUA + player.getDisplayName() + ChatColor.GOLD + ": ");
+                Collection<Spell> spells = mage.getSpells();
+                if (spells.size() == 0) {
+                    sender.sendMessage(ChatColor.RED + "No spell casts!");
+                    return true;
+                }
+                for (Spell spell : spells) {
+                    sender.sendMessage(ChatColor.LIGHT_PURPLE + spell.getName() + ChatColor.AQUA + " Cast Count: " + ChatColor.GOLD + spell.getCastCount());
+                }
+                return true;
+            }
             Spell spell = mage.getSpell(args[0]);
             if (spell != null)
             {
                 sender.sendMessage(ChatColor.GOLD + "Mage data for " + ChatColor.AQUA + player.getDisplayName() + ChatColor.GOLD + ": " + ChatColor.LIGHT_PURPLE + spell.getName());
-                sender.sendMessage(ChatColor.AQUA + " Cast Count: " + spell.getCastCount());
+                sender.sendMessage(ChatColor.AQUA + " Cast Count: " + ChatColor.GOLD + spell.getCastCount());
                 return true;
             }
             ConfigurationSection subSection = data.getConfigurationSection(args[0]);
@@ -638,6 +651,23 @@ public class MagicCommandExecutor extends MagicTabExecutor {
             return true;
         }
         Mage mage = api.getMage(player);
+        if (args[0].equals("*"))
+        {
+            long value = 0;
+            try {
+                value = Long.parseLong(args[1]);
+            } catch (Exception ex) {
+                sender.sendMessage(ChatColor.RED + "Cast count must be a number");
+                return true;
+            }
+            Collection<Spell> spells = mage.getSpells();
+            for (Spell spell : spells)
+            {
+                spell.setCastCount(value);
+            }
+            sender.sendMessage(ChatColor.GOLD + "Set all spell cast counts to " + ChatColor.AQUA + value + ChatColor.GOLD + " for " + ChatColor.DARK_AQUA + player.getDisplayName());
+            return true;
+        }
         Spell spell = mage.getSpell(args[0]);
         if (spell != null)
         {
