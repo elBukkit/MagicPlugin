@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Set;
 
+import com.elmakers.mine.bukkit.api.spell.Spell;
 import org.apache.commons.lang.ArrayUtils;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -114,6 +115,10 @@ public class UndoBatch implements com.elmakers.mine.bukkit.api.block.UndoBatch {
             undoList.undoEntityEffects();
             finished = true;
             controller.update(trackUndoBlocks);
+            Spell spell = undoList.getSpell();
+            if (spell != null) {
+                spell.playEffects("undo");
+            }
         }
     }
 
