@@ -1095,6 +1095,7 @@ push:
         item_speed: 2
         living_entity_speed: 3
         push: 1
+        y_offset: 0.2
     costs:
         mana: 40
 
@@ -5621,7 +5622,7 @@ tracking:
            custom_sound: magic.zap
            location: origin
         -  class: EffectSingle
-           location: targets
+           location: target
            effectlib:
                class: LineEffect
                particle: redstone

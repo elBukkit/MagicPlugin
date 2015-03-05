@@ -67,9 +67,14 @@ public class VelocityAction extends BaseSpellAction implements EntityAction
             velocity.normalize().multiply(direction);
         }
 
+        int yOffset = parameters.getInt("y_offset", 0);
         if (getLocation().getBlockY() >= 256)
         {
             velocity.setY(0);
+        }
+        else if (yOffset != 0)
+        {
+            velocity.setY(velocity.getY() + yOffset);
         }
 
         velocity.multiply(magnitude);
