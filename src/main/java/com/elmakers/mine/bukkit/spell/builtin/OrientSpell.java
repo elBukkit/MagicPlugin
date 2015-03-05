@@ -8,6 +8,7 @@ import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 
+@Deprecated
 public class OrientSpell extends TargetingSpell
 {
 	@Override
