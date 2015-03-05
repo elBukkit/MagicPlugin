@@ -237,6 +237,7 @@ student:
       entangle: 0,0,20
       poison: 5,10,20
       laser: 0,0,10
+      tracking: 5,10,30
 
 apprentice:
     upgrade: master

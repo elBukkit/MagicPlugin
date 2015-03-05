@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 4.4
+
+ - Add Tracking Sense spell
+
 ## 4.3
 
  - Fix Reflect

@@ -1169,6 +1169,12 @@ spells:
         fail: You must be holding a wand!
         level_requirement: "&r&cRequires: &6$path"
         cast_requirement: "Casts: &6$current&f/&e$required"
+    tracking:
+        name: Tracking Sense
+        description: Find nearby life
+        cast: You sense a nearby $target
+        no_target: It's quiet ... too quiet!
+        upgrade_description: "&r&b• &6Larger search radius"
 
 wands:
     default:

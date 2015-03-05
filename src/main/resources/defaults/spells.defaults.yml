@@ -5604,3 +5604,44 @@ upgrades:
     actions:
         cast:
         -  class: SpellProgressAction
+
+tracking:
+    upgrade_required_path: apprentice
+    upgrade_required_casts: 50
+    icon_url: http://i.imgur.com/xzXPNcH.png
+    icon: compass
+    category: utility
+    worth: 20
+    actions:
+        cast:
+         -  class: OrientAction
+    effects:
+        cast:
+        -  class: EffectSingle
+           custom_sound: magic.zap
+           location: origin
+        -  class: EffectSingle
+           location: targets
+           effectlib:
+               class: LineEffect
+               particle: redstone
+    parameters:
+        range: 32
+        fov: 3
+        close_fov: 3
+        target: other_entity
+        target_type: LivingEntity
+        cooldown: 5000
+        ignore_blocks: true
+    costs:
+        mana: 20
+
+tracking|2:
+    upgrade_required_path: master
+    upgrade_required_casts: 50
+    parameters:
+        range: 64
+
+tracking|3:
+    parameters:
+        range: 128
