@@ -3,6 +3,7 @@
 ## 4.4
 
  - Add Tracking Sense spell
+ - Add FX for spell level up and undo
 
 ## 4.3
 

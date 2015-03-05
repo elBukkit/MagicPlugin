@@ -3122,6 +3122,15 @@ blast:
            color: FACC2E
            firework: burst
            particle: explosion_large
+        undo:
+        -  class: EffectSingle
+           custom_sound: magic.shimmer
+           location: target
+           effectlib:
+               class: AtomEffect
+               particleNucleus: smoke_large
+               particleOrbital: redstone
+               iterations: 8
     parameters:
         allow_max_range: false
         range: 32
@@ -3313,6 +3322,15 @@ collapse:
              iterations: 1
              radius: 4
              particle: flame
+        undo:
+        -  class: EffectSingle
+           custom_sound: magic.shimmer
+           location: target
+           effectlib:
+               class: AtomEffect
+               particleNucleus: smoke_large
+               particleOrbital: redstone
+               iterations: 8
     parameters:
         allow_max_range: false
         range: 16
