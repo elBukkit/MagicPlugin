@@ -36,5 +36,6 @@ public interface Spell extends SpellTemplate {
     public long getRemainingCooldown();
     public CastingCost getRequiredCost();
     public void messageTargets(String messageKey);
+    public void playEffects(String effectName);
     public void playEffects(String effectName, float scale, Location source, Entity sourceEntity, Location target, Entity targetEntity);
 }
