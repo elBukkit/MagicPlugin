@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.spell;
 
+import com.elmakers.mine.bukkit.action.ActionHandler;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import org.bukkit.configuration.ConfigurationSection;
 
@@ -23,27 +24,45 @@ public class ActionSpell extends BrushSpell
         ActionHandler downHandler = actions.get("alternate_down");
         if (downHandler != null && isLookingDown())
         {
-            return SpellResult.ALTERNATE_DOWN.max(downHandler.perform(parameters));
+            return SpellResult.ALTERNATE_DOWN.max(downHandler.perform(this, parameters));
         }
         ActionHandler upHandler = actions.get("alternate_up");
         if (upHandler != null && isLookingUp())
         {
-            return SpellResult.ALTERNATE_UP.max(upHandler.perform(parameters));
+            return SpellResult.ALTERNATE_UP.max(upHandler.perform(this, parameters));
         }
         ActionHandler sneakHandler = actions.get("alternate_sneak");
         if (sneakHandler != null && mage.isSneaking())
         {
-            return SpellResult.ALTERNATE_SNEAK.max(sneakHandler.perform(parameters));
+            return SpellResult.ALTERNATE_SNEAK.max(sneakHandler.perform(this, parameters));
         }
 
         ActionHandler castHandler = actions.get("cast");
         if (castHandler != null)
         {
-            return castHandler.perform(parameters);
+            return castHandler.perform(this, parameters);
         }
 
         // Allow for effect-only spells
         return SpellResult.CAST;
+    }
+
+    @Override
+    public void load(ConfigurationSection data)
+    {
+        for (ActionHandler handler : actions.values())
+        {
+            handler.loadData(getMage(), data);
+        }
+    }
+
+    @Override
+    public void save(ConfigurationSection data)
+    {
+        for (ActionHandler handler : actions.values())
+        {
+            handler.saveData(getMage(), data);
+        }
     }
 
     @Override
@@ -55,12 +74,14 @@ public class ActionSpell extends BrushSpell
         castOnNoTarget = true;
         if (template.contains("actions"))
         {
+            ConfigurationSection parameters = template.getConfigurationSection("parameters");
             ConfigurationSection actionsNode = template.getConfigurationSection("actions");
             Collection<String> actionKeys = actionsNode.getKeys(false);
             for (String actionKey : actionKeys)
             {
-                ActionHandler handler = new ActionHandler(this);
+                ActionHandler handler = new ActionHandler();
                 handler.load(actionsNode, actionKey);
+                handler.initialize(parameters);
                 usesBrush = usesBrush || handler.usesBrush();
                 undoable = undoable || handler.isUndoable();
                 requiresBuildPermission = requiresBuildPermission || handler.requiresBuildPermission();
@@ -75,11 +96,6 @@ public class ActionSpell extends BrushSpell
     public boolean isUndoable()
     {
         return undoable;
-    }
-
-    public ActionHandler getActions(String key)
-    {
-        return actions.get(key);
     }
 
     @Override

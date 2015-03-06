@@ -9,9 +9,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
-import java.util.UUID;
 import java.util.logging.Level;
 
+import com.elmakers.mine.bukkit.action.CastContext;
 import com.elmakers.mine.bukkit.api.event.CastEvent;
 import com.elmakers.mine.bukkit.api.event.PreCastEvent;
 import com.elmakers.mine.bukkit.api.spell.MageSpell;
@@ -48,7 +48,6 @@ import com.elmakers.mine.bukkit.api.spell.SpellCategory;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.effect.EffectPlayer;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
-import com.elmakers.mine.bukkit.utility.Messages;
 
 public abstract class BaseSpell implements MageSpell, Cloneable {
     protected static final double VIEW_HEIGHT = 1.65;
@@ -116,6 +115,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     protected MageController				controller;
     protected Mage 							mage;
     protected Location    					location;
+    protected CastContext currentCast;
 
     /*
      * Variant properties
@@ -157,7 +157,6 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     protected ConfigurationSection configuration = null;
 
     protected static Random random            = new Random();
-    protected Set<UUID> targetMessagesSent = new HashSet<UUID>();
 
     /*
      * private data
@@ -419,12 +418,16 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         return null;
     }
 
+    @Override
     public Location getEyeLocation()
     {
-        Location location = getLocation();
-        if (location == null) return null;
-        location.setY(location.getY() + 1.5);
-        return location;
+        if (this.location != null)
+        {
+            Location location = this.location.clone();
+            location.setY(location.getY() + 1.5);
+            return location;
+        }
+        return mage.getEyeLocation();
     }
 
     public Vector getDirection()
@@ -833,7 +836,6 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     public boolean cast(String[] extraParameters, Location defaultLocation)
     {
         this.reset();
-        targetMessagesSent.clear();
 
         // Allow other plugins to cancel this cast
         PreCastEvent preCast = new PreCastEvent(mage, this);
@@ -843,6 +845,8 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
             processResult(SpellResult.CANCELLED);
             return false;
         }
+
+        this.currentCast = new CastContext(this);
 
         if (this.parameters == null) {
             this.parameters = new MemoryConfiguration();
@@ -1087,27 +1091,14 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
 
     public void messageTargets(String messageKey)
     {
-        LivingEntity sourceEntity = mage == null ? null : mage.getLivingEntity();
-        String playerMessage = getMessage(messageKey);
-        if (!mage.isStealth() && playerMessage.length() > 0)
+        if (currentCast != null)
         {
-            Collection<Entity> targets = getTargetEntities();
-            for (Entity target : targets)
-            {
-                UUID targetUUID = target.getUniqueId();
-                if (target instanceof Player && target != sourceEntity && !targetMessagesSent.contains(targetUUID))
-                {
-                    targetMessagesSent.add(targetUUID);
-                    playerMessage = playerMessage.replace("$spell", getName());
-                    Mage targetMage = controller.getMage(target);
-                    targetMage.sendMessage(playerMessage);
-                }
-            }
+            currentCast.messageTargets(messageKey);
         }
     }
 
     public void playEffects(String effectName, float scale) {
-        playEffects(effectName, scale, getEffectLocation(), mage.getEntity(), getTargetLocation(), getTargetEntity());
+        playEffects(effectName, getCurrentCast(), scale);
     }
 
     @Override
@@ -1117,14 +1108,22 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     }
 
     @Override
-    public void playEffects(String effectName, float scale, Location source, Entity sourceEntity, Location targetLocation, Entity targetEntity)
+    public void playEffects(String effectName, com.elmakers.mine.bukkit.api.action.CastContext context)
     {
+        playEffects(effectName, context, 1);
+    }
+
+    @Override
+    public void playEffects(String effectName, com.elmakers.mine.bukkit.api.action.CastContext context, float scale) {
+        Location source = context.getEyeLocation();
         if (effects.containsKey(effectName) && source != null)
         {
             cancelEffects();
             currentEffects = effects.get(effectName);
-            Collection<Entity> targeted = getTargetEntities();
-
+            Collection<Entity> targeted = context.getTargetEntities();
+            Entity sourceEntity = context.getEntity();
+            Entity targetEntity = context.getTargetEntity();
+            Location targetLocation = context.getTargetLocation();
             for (EffectPlayer player : currentEffects)
             {
                 // Set scale
@@ -1149,6 +1148,15 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     }
 
     @Override
+    public void playEffects(String effectName, float scale, Location source, Entity sourceEntity, Location targetLocation, Entity targetEntity)
+    {
+        CastContext context = new CastContext(this, sourceEntity, source);
+        context.setTargetLocation(targetLocation);
+        context.setTargetEntity(targetEntity);
+        playEffects(effectName, context, scale);
+    }
+
+    @Override
     public void target() {
 
     }
@@ -1165,10 +1173,6 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
 
     @Override
     public Entity getTargetEntity() {
-        return null;
-    }
-
-    public Collection<Entity> getTargetEntities() {
         return null;
     }
 
@@ -1767,5 +1771,13 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     @Override
     public ConfigurationSection getConfiguration() {
         return this.configuration;
+    }
+
+    @Override
+    public com.elmakers.mine.bukkit.api.action.CastContext getCurrentCast() {
+        if (currentCast == null) {
+            currentCast = new CastContext(this);
+        }
+        return currentCast;
     }
 }

@@ -2,7 +2,7 @@ package com.elmakers.mine.bukkit.spell;
 
 import java.util.*;
 
-import com.elmakers.mine.bukkit.api.action.BlockAction;
+import com.elmakers.mine.bukkit.api.action.SpellAction;
 import com.elmakers.mine.bukkit.api.block.UndoList;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import org.bukkit.Bukkit;
@@ -76,8 +76,6 @@ public abstract class TargetingSpell extends BaseSpell {
     private	Block								currentBlock = null;
     private	Block								previousBlock = null;
     private	Block								previousPreviousBlock = null;
-
-    private Collection<Entity>                  targetedEntities = new HashSet<Entity>();
 
     protected void initializeTargeting()
     {
@@ -269,11 +267,6 @@ public abstract class TargetingSpell extends BaseSpell {
         if (target == null)
         {
             getTarget();
-            Entity targetEntity = target != null ? target.getEntity() : null;
-            if (targetEntity != null)
-            {
-                targetedEntities.add(targetEntity);
-            }
         }
     }
 
@@ -353,6 +346,14 @@ public abstract class TargetingSpell extends BaseSpell {
                 location.setPitch(previous.getPitch());
                 location.setYaw(previous.getYaw());
             }
+        }
+
+        if (currentCast != null)
+        {
+            Entity targetEntity = target != null ? target.getEntity() : null;
+            Location targetLocation = target != null ? target.getLocation() : null;
+            currentCast.setTargetLocation(targetLocation);
+            currentCast.setTargetEntity(targetEntity);
         }
 
         return target;
@@ -461,7 +462,6 @@ public abstract class TargetingSpell extends BaseSpell {
         targets = null;
         targetName = null;
         targetLocation = null;
-        targetedEntities.clear();
     }
 
     public Block getTargetBlock()
@@ -491,6 +491,11 @@ public abstract class TargetingSpell extends BaseSpell {
     }
 
     protected List<Target> getAllTargetEntities(double range) {
+
+        return getAllTargetEntities(getEyeLocation(), mage.getEntity(), range, fov, closeRange, closeFOV, useHitbox);
+    }
+
+    public List<Target> getAllTargetEntities(Location sourceLocation, Entity sourceEntity, double range, double fov, double closeRange, double closeFOV, boolean useHitbox) {
         if (targets != null) {
             return targets;
         }
@@ -498,11 +503,9 @@ public abstract class TargetingSpell extends BaseSpell {
 
         int rangeSquared = (int)Math.floor(range * range);
         List<Entity> entities = null;
-        Entity mageEntity = mage.getEntity();
         int maxRange = getMaxRange();
-        Location sourceLocation = getEyeLocation();
-        if (location == null && mageEntity != null) {
-            entities = mageEntity.getNearbyEntities(maxRange, maxRange, maxRange);
+        if (sourceLocation == null && sourceEntity != null) {
+            entities = sourceEntity.getNearbyEntities(maxRange, maxRange, maxRange);
         } else if (sourceLocation != null) {
             entities = CompatibilityUtils.getNearbyEntities(sourceLocation, maxRange, maxRange, maxRange);
         }
@@ -525,7 +528,7 @@ public abstract class TargetingSpell extends BaseSpell {
             // if (entity instanceof LivingEntity && ((LivingEntity)entity).hasPotionEffect(PotionEffectType.INVISIBILITY)) continue;
 
             Target newScore = null;
-            if (this.useHitbox) {
+            if (useHitbox) {
                 newScore = new Target(sourceLocation, entity, maxRange, useHitbox);
             } else {
                 newScore = new Target(sourceLocation, entity, maxRange, fov, closeRange, closeFOV);
@@ -600,7 +603,7 @@ public abstract class TargetingSpell extends BaseSpell {
         this.range = range;
     }
 
-    protected boolean isTransparent(Material material)
+    public boolean isTransparent(Material material)
     {
         return targetThroughMaterials.contains(material);
     }
@@ -697,29 +700,6 @@ public abstract class TargetingSpell extends BaseSpell {
             block = block.getRelative(BlockFace.UP);
         }
         return block;
-    }
-
-    public void coverSurface(Location center, int radius, BlockAction action)
-    {
-        int y = center.getBlockY();
-        for (int dx = -radius; dx < radius; ++dx)
-        {
-            for (int dz = -radius; dz < radius; ++dz)
-            {
-                if (isInCircle(dx, dz, radius))
-                {
-                    int x = center.getBlockX() + dx;
-                    int z = center.getBlockZ() + dz;
-                    Block block = getWorld().getBlockAt(x, y, z);
-                    block = findBlockUnder(block);
-                    Block coveringBlock = block.getRelative(BlockFace.UP);
-                    if (!targetThroughMaterials.contains(block.getType()) && targetThroughMaterials.contains(coveringBlock.getType()))
-                    {
-                        action.perform(null, block);
-                    }
-                }
-            }
-        }
     }
 
     @Override
@@ -915,15 +895,5 @@ public abstract class TargetingSpell extends BaseSpell {
 
     public Class<? extends Entity> getTargetEntityType() {
         return targetEntityType;
-    }
-
-    protected void addTargetEntity(Entity entity)
-    {
-        targetedEntities.add(entity);
-    }
-
-    public Collection<Entity> getTargetEntities()
-    {
-        return targetedEntities;
     }
 }

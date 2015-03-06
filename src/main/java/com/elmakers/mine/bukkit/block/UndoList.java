@@ -359,6 +359,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
         return entityData;
     }
 
+    @Override
     public void move(Entity entity)
     {
         EntityData entityData = modify(entity);
@@ -367,6 +368,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
         }
     }
 
+    @Override
     public void modifyVelocity(Entity entity)
     {
         EntityData entityData = modify(entity);
@@ -375,6 +377,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
         }
     }
 
+    @Override
     public void addPotionEffects(Entity entity)
     {
         EntityData entityData = modify(entity);
