@@ -49,6 +49,10 @@ public class PreciousStonesManager {
 	public boolean isPVPAllowed(Player player, Location location) {
 		if (!enabled || preciousStones == null || location == null)
 			return true;
+        if (player == null && PreciousStones.API().isFieldProtectingArea(FieldFlag.ALL, location))
+        {
+            return false;
+        }
 		return !PreciousStones.API().flagAppliesToPlayer(player, FieldFlag.PREVENT_PVP, location);
 	}
 
