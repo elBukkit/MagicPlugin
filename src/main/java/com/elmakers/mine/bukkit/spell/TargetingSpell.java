@@ -111,7 +111,7 @@ public abstract class TargetingSpell extends BaseSpell {
             }
         }
         if (useTargetName == null) {
-            message = message.replace(" $target", "");
+            message = message.replace("$target", "?");
         } else {
             message = message.replace("$target", useTargetName);
         }
