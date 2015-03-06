@@ -176,12 +176,17 @@ public class InventoryUtils extends NMSUtils
 
     public static ItemStack getPlayerSkull(String playerName)
     {
-        return getPlayerSkull(playerName, null);
+        return getPlayerSkull(playerName, UUID.randomUUID(), null);
     }
 
     public static ItemStack getPlayerSkull(String playerName, String itemName)
     {
-        return getURLSkull("http://skins.minecraft.net/MinecraftSkins/" + playerName + ".png", playerName, UUID.randomUUID(), itemName);
+        return getPlayerSkull(playerName, UUID.randomUUID(), itemName);
+    }
+
+    public static ItemStack getPlayerSkull(String playerName, UUID uuid)
+    {
+        return getPlayerSkull(playerName, uuid, null);
     }
 
     public static ItemStack getPlayerSkull(String playerName, UUID uuid, String itemName)

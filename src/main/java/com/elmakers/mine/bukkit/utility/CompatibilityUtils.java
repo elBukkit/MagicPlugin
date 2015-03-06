@@ -6,6 +6,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.List;
+import java.util.UUID;
 
 import com.elmakers.mine.bukkit.api.block.MaterialAndData;
 import org.bukkit.*;
@@ -403,6 +404,23 @@ public class CompatibilityUtils extends NMSUtils {
         }
 
         return false;
+    }
+
+    public static boolean setSkullOwner(Skull state, String playerName, UUID playerId)
+    {
+        // TODO: This could be done directly, but is kind of tricky.
+        ItemStack skullItem = InventoryUtils.getPlayerSkull(playerName, playerId);
+        if (skullItem == null) {
+            return false;
+        }
+
+        return setSkullProfile(state, InventoryUtils.getSkullProfile(skullItem.getItemMeta()));
+
+    }
+
+    public static boolean setSkullOwner(Skull state, Player owner)
+    {
+        return setSkullOwner(state, owner.getName(), owner.getUniqueId());
     }
 
     public static Object getBannerPatterns(BlockState state)
