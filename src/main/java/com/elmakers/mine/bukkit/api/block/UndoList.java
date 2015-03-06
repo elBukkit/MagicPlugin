@@ -32,6 +32,9 @@ public interface UndoList extends BlockList, Comparable<UndoList> {
     public void remove(Entity entity);
     public EntityData modify(Entity entity);
     public void add(Runnable runnable);
+    public void move(Entity entity);
+    public void modifyVelocity(Entity entity);
+    public void addPotionEffects(Entity entity);
 
     public void convert(Entity entity, Block block);
     public void fall(Entity entity, Block block);
