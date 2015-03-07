@@ -91,6 +91,7 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
         this.matchSpellMana = inherit.matchSpellMana;
         this.levelMap = new TreeMap<Integer, WandLevel>(inherit.levelMap);
         effects.putAll(inherit.effects);
+        requiredSpells.addAll(inherit.requiredSpells);
         load(controller, key, template);
 
         if ((this.upgradeCommands == null || this.upgradeCommands.size() == 0) && inherit.upgradeCommands != null)
