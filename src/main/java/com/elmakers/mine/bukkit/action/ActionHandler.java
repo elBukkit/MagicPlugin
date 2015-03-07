@@ -25,12 +25,14 @@ public class ActionHandler
     private boolean undoable = false;
     private boolean usesBrush = false;
     private boolean requiresBuildPermission = false;
+    private boolean isConditional = false;
 
     public void load(ConfigurationSection root, String key)
     {
         undoable = false;
         usesBrush = false;
         requiresBuildPermission = false;
+        isConditional = root.getBoolean("conditional", false);
         Collection<ConfigurationSection> actionNodes = ConfigurationUtils.getNodeList(root, key);
 
         if (actionNodes != null)
@@ -127,7 +129,6 @@ public class ActionHandler
 
     public SpellResult perform(CastContext context)
     {
-        Location sourceLocation = context.getLocation();
         Location targetLocation = context.getTargetLocation();
         Entity targetEntity = context.getTargetEntity();
 
@@ -142,7 +143,11 @@ public class ActionHandler
                 result = result.min(SpellResult.NO_TARGET);
                 continue;
             }
-            result = result.min(action.perform(context));
+            SpellResult actionResult = action.perform(context);
+            result = result.min(actionResult);
+            if (isConditional && !actionResult.isSuccess()) {
+                break;
+            }
         }
         return result;
     }
