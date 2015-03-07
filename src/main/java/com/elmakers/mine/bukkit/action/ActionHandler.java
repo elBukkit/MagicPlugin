@@ -6,6 +6,7 @@ import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
@@ -62,7 +63,7 @@ public class ActionHandler
                         }
                         loadAction(action, actionConfiguration);
                     } catch (Exception ex) {
-                        ex.printStackTrace();
+                        Bukkit.getLogger().warning("Error loading class " + actionClassName + ": " + ex.getMessage());
                     }
                 }
             }
