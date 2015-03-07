@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.action.builtin;
 
+import com.elmakers.mine.bukkit.action.DelayedCompoundAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
@@ -19,10 +20,8 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Random;
 
-public class TNTAction extends BaseSpellAction
+public class TNTAction extends DelayedCompoundAction
 {
-	private ActionHandler actions = null;
-    private ConfigurationSection parameters;
     private int size;
     private int count;
     private int fuse;
@@ -83,19 +82,6 @@ public class TNTAction extends BaseSpellAction
 		
 		return SpellResult.CAST;
 	}
-
-	@Override
-	public void initialize(ConfigurationSection parameters)
-	{
-		super.initialize(parameters);
-
-		if (parameters != null && parameters.contains("actions"))
-		{
-			actions = new ActionHandler();
-			actions.load(parameters, "actions");
-            actions.initialize(parameters);
-        }
-    }
 
     @Override
     public void getParameterNames(Collection<String> parameters) {

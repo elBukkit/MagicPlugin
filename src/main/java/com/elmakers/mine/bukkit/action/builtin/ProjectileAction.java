@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.action.builtin;
 
+import com.elmakers.mine.bukkit.action.DelayedCompoundAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.effect.EffectPlayer;
 import com.elmakers.mine.bukkit.api.magic.Mage;
@@ -28,15 +29,13 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Random;
 
-public class ProjectileAction  extends BaseSpellAction
+public class ProjectileAction  extends DelayedCompoundAction
 {
 	private int defaultSize = 1;
 	private Random random = new Random();
 	private static Field lifeField = null;
 	private static Method getHandleMethod = null;
 	private static boolean reflectionInitialized = false;
-	private ActionHandler actions = null;
-    private ConfigurationSection parameters;
 
     private int count;
     private int undoInterval;
@@ -96,24 +95,10 @@ public class ProjectileAction  extends BaseSpellAction
 		}
 	}
 
-	@Override
-	public void initialize(ConfigurationSection parameters)
-	{
-		super.initialize(parameters);
-
-		if (parameters != null && parameters.contains("actions"))
-		{
-			actions = new ActionHandler();
-			actions.load(parameters, "actions");
-            actions.initialize(parameters);
-		}
-	}
-
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters)
     {
         super.prepare(context, parameters);
-        this.parameters = parameters;
         count = parameters.getInt("count", 1);
         undoInterval = parameters.getInt("undo_interval", 200);
         size = parameters.getInt("size", defaultSize);
