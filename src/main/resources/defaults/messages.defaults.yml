@@ -387,10 +387,6 @@ spells:
         cast: Hardened $count blocks
     harden|2:
         upgrade_description: "&r&b• &6Now converts to obsidian"
-    storm:
-        name: Storm
-        description: Start a lightning storm
-        cast: Ka-POW!
     tree:
         name: Tree
         description: Instantly grow a tree
@@ -586,6 +582,11 @@ spells:
         name: Lightning
         description: Strike lighting at your target
         cast: Ka-Zap!
+    lightning|2:
+        upgrade_description: "&r&b• &6Increased accuracy"
+    lightning|3:
+        upgrade_description: "&r&b• &6More lightning"
+        cast: Ka-POW!
     nuke:
         name: Nuke
         description: Create a huge explosion
@@ -756,6 +757,7 @@ spells:
         description: Undo the targeted spell
         cast: "&5You undo &d&o$target's &r&6$spell &5cast"
         cast_player: "&5You undo &d&o$target's&r&6 $spell &5cast"
+        alternate_up: "&5You undo your previous&r&6 $spell &5cast"
         alternate: "&5You cancel your &6$spell &5cast"
         fail: Nothing to undo
         no_target: Nothing to undo there

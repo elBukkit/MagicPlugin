@@ -33,11 +33,6 @@ public class CoverAction extends CompoundAction
 	@Override
 	public SpellResult perform(CastContext context) {
         Block block = context.getTargetBlock();
-		if (!context.hasBuildPermission(block))
-		{
-			return SpellResult.INSUFFICIENT_PERMISSION;
-		}
-
 		Mage mage = context.getMage();
 		int radius = (int)(mage.getRadiusMultiplier() * this.radius);
 		block = context.findSpaceAbove(block);

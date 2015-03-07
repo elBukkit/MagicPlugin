@@ -1075,7 +1075,9 @@ push:
     upgrade_required_casts: 50
     actions:
         cast:
-        - class: VelocityAction
+        -  class: ConeOfEffectAction
+           actions:
+           -  class: VelocityAction
     effects:
         cast:
         -  class: EffectSingle
@@ -1106,13 +1108,10 @@ push:
 
 push|2:
     actions:
-        cast:
-        - class: VelocityAction
         alternate_down:
         - class: VelocityAction
-          parameters:
-              fov: 3
-              range: 8
+          fov: 3
+          range: 8
     effects:
         alternate_down:
         -  class: EffectSingle
@@ -1141,10 +1140,9 @@ pull:
         -  class: FallProtectionAction
         alternate_down:
         - class: VelocityAction
-          parameters:
-              fov: 3
-              range: 16
-              count: 16
+          fov: 3
+          range: 16
+          count: 16
     effects:
         cast:
         -  class: EffectSingle
@@ -1162,7 +1160,6 @@ pull:
              particle: spell
     parameters:
         target_type: Entity
-        count: 1
         range: 48
         item_speed: 2
         living_entity_speed: 1
@@ -1362,12 +1359,19 @@ frost|3:
         mana: 125
 
 lightning:
+    alias: storm
+    upgrade_required_path: apprentice
+    upgrade_required_casts: 50
     icon: raw_fish:2
     icon_url: http://i.imgur.com/pVL61is.png
     category: elemental
-    class: LightningSpell
     pvp_restricted: true
     worth: 100
+    actions:
+        cast:
+        -  class: SpreadAction
+           actions:
+           -  class: LightningAction
     effects:
         cast:
         -  class: EffectSingle
@@ -1384,37 +1388,27 @@ lightning:
         target_type: LivingEntity
         allow_max_range: true
         range: 32
+        radius: 8
         cooldown: 10000
     costs:
         mana: 80
 
-storm:
-    icon_url: http://i.imgur.com/33YW7Vh.png
-    icon: raw_fish:3
-    category: elemental
-    class: LightningSpell
-    pvp_restricted: true
-    worth: 200
-    effects:
-        cast:
-        -  class: EffectSingle
-           sound: ambience_thunder
-        -  class: EffectTrail
-           particle: smoke_normal
-           particle_count: 4
-        -  class: EffectSingle
-           location: target
-           effectlib:
-             class: HelixEffect
-             particle: smoke_normal
+lightning|2:
+    upgrade_required_path: master
+    upgrade_required_casts: 50
     parameters:
-        target_type: LivingEntity
-        allow_max_range: true
-        range: 64
         radius: 6
-        cooldown: 30000
-    costs:
-        mana: 200
+
+lightning|3:
+    actions:
+        cast:
+        -  class: SpreadAction
+           actions:
+           -  class: RepeatAction
+              actions:
+              -  class: LightningAction
+    parameters:
+        count: 2
 
 tree:
     icon: sapling
@@ -4139,7 +4133,9 @@ laser:
         -  class: IterateAction
            actions:
            -  class: ReplaceMaterialAction
-        -  class: DamageAction
+        -  class: ConeOfEffectAction
+           actions:
+           -  class: DamageAction
     effects:
         cast:
         -  class: EffectSingle
@@ -4786,23 +4782,6 @@ pollinate:
     category: light
     class: FlowerSpell
     worth: 50
-    flowers:
-    - yellow_flower
-    - red_rose
-    - red_rose:1
-    - red_rose:2
-    - red_rose:3
-    - red_rose:4
-    - red_rose:5
-    - red_rose:6
-    - red_rose:7
-    - red_rose:8
-    tall_flowers:
-    - double_plant
-    - double_plant:1
-    - double_plant:3
-    - double_plant:4
-    - double_plant:5
     effects:
         cast:
         -  class: EffectSingle
@@ -4815,6 +4794,23 @@ pollinate:
         vertical_search_distance: 8
         cooldown: 5000
         item_speed: 0
+        flowers:
+        - yellow_flower
+        - red_rose
+        - red_rose:1
+        - red_rose:2
+        - red_rose:3
+        - red_rose:4
+        - red_rose:5
+        - red_rose:6
+        - red_rose:7
+        - red_rose:8
+        tall_flowers:
+        - double_plant
+        - double_plant:1
+        - double_plant:3
+        - double_plant:4
+        - double_plant:5
     costs:
         mana: 40
 
@@ -5116,7 +5112,6 @@ count:
         target_type: Entity
         target_self: false
         radius: 64
-        target_count: 100000
     costs:
         mana: 200
 
