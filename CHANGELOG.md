@@ -4,6 +4,8 @@
 
  - Add Tracking Sense spell
  - Add FX for spell level up and undo
+ - Fix PVP flag check in PreciousStones fields
+ - Add "/magic check" command for debugging permissions
 
 ## 4.3
 

@@ -282,6 +282,10 @@ permissions:
     description: Player may modify Mage attributes
     type: boolean
     default: op
+  Magic.commands.magic.check:
+    description: Player may check permissions
+    type: boolean
+    default: op
   Magic.wand.use:
     description: The player may use a wand
     default: true

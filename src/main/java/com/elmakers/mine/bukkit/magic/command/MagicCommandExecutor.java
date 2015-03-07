@@ -14,6 +14,7 @@ import com.elmakers.mine.bukkit.api.maps.URLMap;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.block.UndoList;
 import com.elmakers.mine.bukkit.block.batch.SpellBatch;
+import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.RunnableJob;
 import com.elmakers.mine.bukkit.utility.TimedRunnable;
@@ -95,7 +96,9 @@ public class MagicCommandExecutor extends MagicTabExecutor {
 			}
 			return true;
 		}
-		if (subCommand.equalsIgnoreCase("give") || subCommand.equalsIgnoreCase("sell") || subCommand.equalsIgnoreCase("configure") || subCommand.equalsIgnoreCase("describe"))
+		if (subCommand.equalsIgnoreCase("give") || subCommand.equalsIgnoreCase("sell")
+            || subCommand.equalsIgnoreCase("configure") || subCommand.equalsIgnoreCase("describe")
+            || subCommand.equalsIgnoreCase("check"))
 		{
 			Player player = null;
 			int argStart = 1;
@@ -134,6 +137,10 @@ public class MagicCommandExecutor extends MagicTabExecutor {
             {
                 boolean showWorth = subCommand.equalsIgnoreCase("sell");
                 return onMagicGive(sender, player, subCommand, args2);
+            }
+            if (subCommand.equalsIgnoreCase("check"))
+            {
+                return onMagicCheck(sender, player, args2);
             }
             if (subCommand.equalsIgnoreCase("describe"))
             {
@@ -591,6 +598,49 @@ public class MagicCommandExecutor extends MagicTabExecutor {
 		}
 		return options;
 	}
+
+    public static String formatBoolean(Boolean flag)
+    {
+        if (flag == null) {
+            return ChatColor.GRAY + "none";
+        }
+        return flag ? ChatColor.GREEN + "true" : ChatColor.RED + "false";
+    }
+
+    public boolean onMagicCheck(CommandSender sender, Player player, String[] args)
+    {
+        Mage mage = api.getMage(player);
+        Wand wand = mage.getActiveWand();
+        Location location = player.getLocation();
+        MageController controller = api.getController();
+        Spell spell = wand == null ? null : wand.getActiveSpell();
+        sender.sendMessage(ChatColor.GOLD + "Permission check for " + ChatColor.AQUA + player.getDisplayName());
+        sender.sendMessage(ChatColor.GOLD + " at " + ChatColor.AQUA
+                + location.getWorld().getName() + "|"
+                + location.getBlockX() + "," + location.getBlockY() + "," + location.getBlockZ()
+                + ChatColor.GOLD + ": ");
+
+        sender.sendMessage(ChatColor.AQUA + " Has bypass: " + formatBoolean(player.hasPermission("Magic.bypass")));
+        sender.sendMessage(ChatColor.AQUA + " Has PVP bypass: " + formatBoolean(player.hasPermission("Magic.bypass_pvp")));
+        sender.sendMessage(ChatColor.AQUA + " Has Build bypass: " + formatBoolean(player.hasPermission("Magic.bypass_build")));
+        sender.sendMessage(ChatColor.AQUA + " Can build: " + formatBoolean(mage.hasBuildPermission(location.getBlock())));
+        sender.sendMessage(ChatColor.AQUA + " Can pvp: " + formatBoolean(mage.isPVPAllowed(location)));
+        if (spell != null)
+        {
+            sender.sendMessage(ChatColor.AQUA + " Has pnode " + ChatColor.GOLD + spell.getName() + ChatColor.AQUA + ": " + formatBoolean(spell.hasCastPermission(player)));
+            sender.sendMessage(ChatColor.AQUA + " Region override: " + formatBoolean(controller.getRegionCastPermission(mage.getPlayer(), spell, location)));
+            sender.sendMessage(ChatColor.AQUA + " Field override: " + formatBoolean(controller.getPersonalCastPermission(mage.getPlayer(), spell, location)));
+            sender.sendMessage(ChatColor.GOLD + " " + spell.getName() + ChatColor.AQUA + " requires build: " + formatBoolean(spell.requiresBuildPermission()));
+            sender.sendMessage(ChatColor.GOLD + " " + spell.getName() + ChatColor.AQUA + " requires pvp: " + formatBoolean(spell.isPvpRestricted()));
+            if (spell instanceof BaseSpell)
+            {
+                boolean buildPermission = ((BaseSpell)spell).hasBuildPermission(location.getBlock());
+                sender.sendMessage(ChatColor.GOLD + " " + spell.getName() + ChatColor.AQUA + " has build: " + formatBoolean(buildPermission));
+            }
+            sender.sendMessage(ChatColor.AQUA + " Can cast " + ChatColor.GOLD + spell.getName() + ChatColor.AQUA + ": " + formatBoolean(spell.canCast(location)));
+        }
+        return true;
+    }
 
     public boolean onMagicDescribe(CommandSender sender, Player player, String[] args)
     {
