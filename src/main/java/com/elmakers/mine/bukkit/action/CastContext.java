@@ -33,7 +33,6 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
     protected static Random random;
 
     private final Location location;
-    private final Location eyeLocation;
     private final Entity entity;
     private Location targetLocation;
     private Entity targetEntity;
@@ -53,7 +52,6 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
     public CastContext(Spell spell) {
         this.setSpell(spell);
         this.location = spell.getLocation();
-        this.eyeLocation = spell.getEyeLocation();
         Mage mage = this.getMage();
         this.entity = mage != null ? mage.getEntity() : null;
     }
@@ -62,9 +60,6 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
         this.setSpell(spell);
         this.entity = sourceEntity;
         this.location = sourceLocation == null ? spell.getLocation() : sourceLocation;
-        this.eyeLocation = (sourceEntity != null && sourceEntity instanceof LivingEntity) ?
-            ((LivingEntity)sourceEntity).getEyeLocation() :
-            (sourceLocation == null ? spell.getEyeLocation() : sourceLocation);
     }
 
     public CastContext(com.elmakers.mine.bukkit.api.action.CastContext copy) {
@@ -72,7 +67,6 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
         this.entity = copy.getEntity();
         this.targetEntity = copy.getTargetEntity();
         this.location = copy.getLocation();
-        this.eyeLocation = copy.getEyeLocation();
         this.targetLocation = copy.getTargetLocation();
         this.targetedEntities = copy.getTargetEntities();
         this.undoList = copy.getUndoList();
@@ -94,9 +88,6 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
         {
             this.targetMessagesSent = ((CastContext)copy).targetMessagesSent;
         }
-        this.eyeLocation = (sourceEntity != null && sourceEntity instanceof LivingEntity) ?
-                ((LivingEntity)sourceEntity).getEyeLocation() :
-                (sourceLocation == null ? spell.getEyeLocation() : sourceLocation);
     }
 
     public void setSpell(Spell spell)
@@ -131,7 +122,11 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
 
     @Override
     public Location getEyeLocation() {
-        return eyeLocation;
+        if (entity != null && entity instanceof LivingEntity) {
+            return ((LivingEntity) entity).getEyeLocation();
+        }
+
+        return getLocation();
     }
 
     @Override
@@ -141,7 +136,7 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
 
     @Override
     public Location getLocation() {
-        return location;
+        return entity != null ? entity.getLocation() : (location == null ? spell.getLocation() : location);
     }
 
     @Override

@@ -268,7 +268,7 @@ public class ActionHandler
     {
         if (key != null && context != null && entity != null)
         {
-            EffectContext effects = new EffectContext(key, context);
+            EffectContext effects = new EffectContext(key, context, entity);
             entity.setMetadata("effects", new FixedMetadataValue(context.getController().getPlugin(), effects));
         }
     }
