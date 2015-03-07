@@ -938,6 +938,12 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         return !pvpRestricted || bypassPvpRestriction || mage.isPVPAllowed(location);
     }
 
+    @Override
+    public boolean isPvpRestricted() {
+        return pvpRestricted && !bypassPvpRestriction;
+    }
+
+    @Override
     public boolean requiresBuildPermission() {
         return false;
     }
