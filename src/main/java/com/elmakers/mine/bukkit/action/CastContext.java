@@ -88,6 +88,12 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
         this.targetLocation = copy.getTargetLocation();
         this.location = sourceLocation;
         this.entity = sourceEntity;
+        this.targetedEntities = copy.getTargetEntities();
+        this.undoList = copy.getUndoList();
+        if (copy instanceof CastContext)
+        {
+            this.targetMessagesSent = ((CastContext)copy).targetMessagesSent;
+        }
         this.eyeLocation = (sourceEntity != null && sourceEntity instanceof LivingEntity) ?
                 ((LivingEntity)sourceEntity).getEyeLocation() :
                 (sourceLocation == null ? spell.getEyeLocation() : sourceLocation);

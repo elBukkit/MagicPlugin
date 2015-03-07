@@ -4,7 +4,9 @@ import com.elmakers.mine.bukkit.api.action.SpellAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
+import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Entity;
 
 import java.util.Collection;
 
@@ -140,5 +142,9 @@ public abstract class CompoundAction extends BaseSpellAction
 
     public CastContext createContext(CastContext context) {
         return new com.elmakers.mine.bukkit.action.CastContext(context);
+    }
+
+    public CastContext createContext(CastContext context, Entity sourceEntity, Location sourceLocation) {
+        return new com.elmakers.mine.bukkit.action.CastContext(context, sourceEntity, sourceLocation);
     }
 }
