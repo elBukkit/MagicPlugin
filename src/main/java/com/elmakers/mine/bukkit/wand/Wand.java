@@ -2409,6 +2409,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 			if (inventoryCycleSound != null) {
 				mage.playSound(inventoryCycleSound.getSound(), inventoryCycleSound.getVolume(), inventoryCycleSound.getPitch());
 			}
+            updateHotbarStatus();
 			mage.getPlayer().updateInventory();
 		}
 	}
@@ -2439,6 +2440,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
                     mage.playSound(inventoryOpenSound.getSound(), inventoryOpenSound.getVolume(), inventoryOpenSound.getPitch());
                 }
 				updateInventory();
+                updateHotbarStatus();
 				mage.getPlayer().updateInventory();
 			}
 		}
