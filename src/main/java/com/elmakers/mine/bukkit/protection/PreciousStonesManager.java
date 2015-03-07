@@ -4,10 +4,13 @@ import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import net.sacredlabyrinth.Phaed.PreciousStones.FieldFlag;
 import net.sacredlabyrinth.Phaed.PreciousStones.PreciousStones;
 
+import net.sacredlabyrinth.Phaed.PreciousStones.vectors.Field;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
+
+import java.util.List;
 
 public class PreciousStonesManager {
 	private boolean enabled = false;
@@ -53,7 +56,8 @@ public class PreciousStonesManager {
         {
             return false;
         }
-		return !PreciousStones.API().flagAppliesToPlayer(player, FieldFlag.PREVENT_PVP, location);
+        List<Field> fields = PreciousStones.API().getFieldsProtectingArea(FieldFlag.PREVENT_PVP, location);
+		return fields.size() == 0;
 	}
 
 	public boolean hasBuildPermission(Player player, Block block) {
