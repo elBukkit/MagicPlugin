@@ -1,65 +1,70 @@
 package com.elmakers.mine.bukkit.action.builtin;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
-
-import com.elmakers.mine.bukkit.api.action.BlockAction;
-import com.elmakers.mine.bukkit.api.spell.Spell;
+import com.elmakers.mine.bukkit.action.BaseSpellAction;
+import com.elmakers.mine.bukkit.api.action.CastContext;
+import com.elmakers.mine.bukkit.api.block.MaterialBrush;
+import com.elmakers.mine.bukkit.api.magic.Mage;
+import com.elmakers.mine.bukkit.api.spell.SpellResult;
+import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
-import com.elmakers.mine.bukkit.spell.BaseSpellAction;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.FallingBlock;
 import org.bukkit.util.Vector;
 
-import com.elmakers.mine.bukkit.api.block.MaterialBrush;
-import com.elmakers.mine.bukkit.api.magic.Mage;
-import com.elmakers.mine.bukkit.api.spell.SpellResult;
-import com.elmakers.mine.bukkit.block.MaterialAndData;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
-public class ReplaceMaterialAction extends BaseSpellAction implements BlockAction {
+public class ReplaceMaterialAction extends BaseSpellAction {
     protected Set<MaterialAndData> replaceable = null;
 
-    private boolean spawnFallingBlocks = false;
-    private Vector fallingBlockVelocity = null;
+    private boolean spawnFallingBlocks;
+    private Vector fallingBlockVelocity;
 
-    // TOOD: Remove these constructors once Recursespell is Actionized
-    public ReplaceMaterialAction() {
-
-    }
-
-    public ReplaceMaterialAction(Spell spell, Block targetBlock)
-    {
-        this.setSpell(spell);
-        if (targetBlock != null) {
-            replaceable.add(new MaterialAndData(targetBlock));
+    @Override
+    public void prepare(CastContext context, ConfigurationSection parameters) {
+        super.prepare(context, parameters);
+        spawnFallingBlocks = parameters.getBoolean("falling", false);
+        if (spawnFallingBlocks && parameters.contains("falling_direction"))
+        {
+            double speed = parameters.getDouble("speed", 1.0);
+            Vector direction = parameters.getVector("falling_direction");
+            fallingBlockVelocity = direction.normalize().multiply(speed);
+        }
+        else
+        {
+            fallingBlockVelocity = null;
         }
     }
 
-    public void addReplaceable(Material material) {
-        replaceable.add(new MaterialAndData(material));
+    public void addReplaceable(MaterialAndData material) {
+        if (replaceable == null) {
+            replaceable = new HashSet<MaterialAndData>();
+        }
+        replaceable.add(material);
     }
 
     public void addReplaceable(Material material, byte data) {
-        replaceable.add(new MaterialAndData(material, data));
+        addReplaceable(new MaterialAndData(material, data));
     }
 
     @SuppressWarnings("deprecation")
     @Override
-    public SpellResult perform(ConfigurationSection parameters, Block block) {
-        MaterialBrush brush = getBrush();
+    public SpellResult perform(CastContext context) {
+        MaterialBrush brush = context.getBrush();
         if (brush == null) {
             return SpellResult.FAIL;
         }
 
-        if (!hasBuildPermission(block)) {
+        Block block = context.getTargetBlock();
+        if (!context.hasBuildPermission(block)) {
             return SpellResult.INSUFFICIENT_PERMISSION;
         }
 
-        if (!isDestructible(block)) {
+        if (!context.isDestructible(block)) {
             return SpellResult.FAIL;
         }
 
@@ -68,11 +73,11 @@ public class ReplaceMaterialAction extends BaseSpellAction implements BlockActio
             byte previousData = block.getData();
 
             if (brush.isDifferent(block)) {
-                registerForUndo(block);
-                Mage mage = getMage();
+                context.registerForUndo(block);
+                Mage mage = context.getMage();
                 brush.update(mage, block.getLocation());
                 brush.modify(block);
-                updateBlock(block);
+                context.updateBlock(block);
 
                 if (spawnFallingBlocks) {
                     FallingBlock falling = block.getWorld().spawnFallingBlock(block.getLocation(), previousMaterial, previousData);
@@ -85,7 +90,7 @@ public class ReplaceMaterialAction extends BaseSpellAction implements BlockActio
             return SpellResult.CAST;
         }
 
-        return SpellResult.FAIL;
+        return SpellResult.NO_TARGET;
     }
 
     @Override
@@ -111,6 +116,11 @@ public class ReplaceMaterialAction extends BaseSpellAction implements BlockActio
 
     @Override
     public boolean requiresBuildPermission() {
+        return true;
+    }
+
+    @Override
+    public boolean requiresTarget() {
         return true;
     }
 

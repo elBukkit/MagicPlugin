@@ -1,28 +1,31 @@
 package com.elmakers.mine.bukkit.action.builtin;
 
-import com.elmakers.mine.bukkit.api.action.GeneralAction;
+import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
-import com.elmakers.mine.bukkit.spell.BaseSpell;
-import com.elmakers.mine.bukkit.spell.BaseSpellAction;
+import com.elmakers.mine.bukkit.action.BaseSpellAction;
 import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
 
-import java.util.Arrays;
 import java.util.Collection;
 
-public class WeatherAction extends BaseSpellAction implements GeneralAction
+public class WeatherAction extends BaseSpellAction
 {
-	private boolean makeStorm = true;
+	private String weatherString = "";
+
+    @Override
+    public void prepare(CastContext context, ConfigurationSection parameters) {
+        super.prepare(context, parameters);
+        weatherString = parameters.getString("weather", "");
+    }
 
 	@Override
-	public SpellResult perform(ConfigurationSection parameters) {
-		World world = getWorld();
+	public SpellResult perform(CastContext context) {
+		World world = context.getWorld();
 		if (world == null) {
 			return SpellResult.WORLD_REQUIRED;
 		}
-		String weatherString = parameters.getString("weather", "");
 		boolean hasStorm = world.hasStorm();
-		makeStorm = weatherString.equals("storm");
+		boolean makeStorm = weatherString.equals("storm");
 		if (weatherString.equals("cycle")) {
 			makeStorm = !hasStorm;
 		}

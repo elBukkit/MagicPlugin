@@ -25,8 +25,11 @@ public class UndoSpell extends TargetingSpell
         boolean targetSelf = parameters.getBoolean("target_up_self", false);
         boolean targetDown = parameters.getBoolean("target_down_block", false);
         Entity targetEntity = target.getEntity();
+        SpellResult result = SpellResult.CAST;
         if (targetSelf && isLookingUp()) {
             targetEntity = mage.getEntity();
+            setTargetName(mage.getName());
+            result = SpellResult.ALTERNATE_UP;
         }
 		if (targetEntity != null && controller.isMage(targetEntity))
 		{
@@ -43,7 +46,7 @@ public class UndoSpell extends TargetingSpell
 			if (undoList != null) {
 				undoListName = undoList.getName();
 			}
-			return undoList != null ? SpellResult.CAST : SpellResult.NO_TARGET;
+			return undoList != null ? result : SpellResult.NO_TARGET;
 		}
 
         if (!parameters.getBoolean("target_blocks", true)) {
@@ -65,7 +68,7 @@ public class UndoSpell extends TargetingSpell
 					Mage targetMage = undid.getOwner();
 					undoListName = undid.getName();
 					setTargetName(targetMage.getName());
-					return SpellResult.CAST;
+					return result;
 				}
 			}
 			else
@@ -74,7 +77,7 @@ public class UndoSpell extends TargetingSpell
 				UndoList undoList = mage.undo(targetBlock);
                 if (undoList != null) {
                     undoListName = undoList.getName();
-                    return SpellResult.CAST;
+                    return result;
                 }
 			}
 		}

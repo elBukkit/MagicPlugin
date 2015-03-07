@@ -1,8 +1,8 @@
 package com.elmakers.mine.bukkit.action.builtin;
 
-import com.elmakers.mine.bukkit.api.action.EntityAction;
+import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
-import com.elmakers.mine.bukkit.spell.BaseSpellAction;
+import com.elmakers.mine.bukkit.action.BaseSpellAction;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
@@ -11,14 +11,15 @@ import org.bukkit.entity.Entity;
 import java.util.Map;
 import java.util.TreeMap;
 
-public class CountAction extends BaseSpellAction implements EntityAction
+public class CountAction extends BaseSpellAction
 {
 	private Map<String, Integer> counts = new TreeMap<String, Integer>();
 	private int totalCount = 0;
 
 	@Override
-	public SpellResult perform(ConfigurationSection parameters, Entity entity)
+	public SpellResult perform(CastContext context)
 	{
+        Entity entity = context.getTargetEntity();
 		String typeString = entity.getType().toString().toLowerCase();
 		Integer count = counts.get(typeString);
 		count = (count == null) ? 1 : count + 1;
@@ -29,9 +30,9 @@ public class CountAction extends BaseSpellAction implements EntityAction
 	}
 
 	@Override
-	public void finish(ConfigurationSection parameters) {
-		super.finish(parameters);
-		CommandSender sender = getMage().getCommandSender();
+	public void finish(CastContext context) {
+		super.finish(context);
+		CommandSender sender = context.getMage().getCommandSender();
 		if (sender != null)
 		{
 			sender.sendMessage(ChatColor.DARK_AQUA + "Found " + ChatColor.AQUA + totalCount + ChatColor.DARK_AQUA + " entities in the area");
@@ -46,9 +47,14 @@ public class CountAction extends BaseSpellAction implements EntityAction
 	}
 
 	@Override
-	public void prepare(ConfigurationSection parameters) {
-		super.prepare(parameters);
+	public void prepare(CastContext context, ConfigurationSection parameters) {
+		super.prepare(context, parameters);
 		totalCount = 0;
 		counts.clear();
 	}
+
+    @Override
+    public boolean requiresTargetEntity() {
+        return true;
+    }
 }

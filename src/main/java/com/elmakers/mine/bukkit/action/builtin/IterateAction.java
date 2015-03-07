@@ -1,11 +1,11 @@
 package com.elmakers.mine.bukkit.action.builtin;
 
-import com.elmakers.mine.bukkit.api.action.BlockAction;
+import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.block.MaterialBrush;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
-import com.elmakers.mine.bukkit.spell.CompoundAction;
+import com.elmakers.mine.bukkit.action.CompoundAction;
 import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -17,29 +17,42 @@ import org.bukkit.util.Vector;
 import java.util.Arrays;
 import java.util.Collection;
 
-public class IterateAction extends CompoundAction implements BlockAction
+public class IterateAction extends CompoundAction
 {
-	private int				DEFAULT_SIZE			= 16;
-	
+	private int	DEFAULT_SIZE = 16;
+    private boolean incrementData;
+    private int radius;
+    private int size;
+    private boolean reverse;
+    private boolean requireBlock;
+
+    @Override
+    public void prepare(CastContext context, ConfigurationSection parameters)
+    {
+        super.prepare(context, parameters);
+        incrementData = parameters.getBoolean("increment_data", false);
+        radius = parameters.getInt("radius", 0);
+        size = parameters.getInt("size", DEFAULT_SIZE);
+        reverse = parameters.getBoolean("reverse", false);
+        requireBlock = parameters.getBoolean("require_block", false);
+    }
+
 	@SuppressWarnings("deprecation")
 	@Override
-    public SpellResult perform(ConfigurationSection parameters, Block target)
+    public SpellResult perform(CastContext context)
     {
-        Mage mage = getMage();
-		boolean incrementData = parameters.getBoolean("increment_data", false);
-		int radius = parameters.getInt("radius", 0);
-		// radius = (int)(radius * mage.getRadiusMultiplier());
-		int size = parameters.getInt("size", DEFAULT_SIZE);
-		boolean reverse = parameters.getBoolean("reverse", false);
-        boolean requireBlock = parameters.getBoolean("require_block", false);
-		size = (int)(mage.getConstructionMultiplier() * (float)size);
+        Mage mage = context.getMage();
+		int size = (int)(mage.getConstructionMultiplier() * (float)this.size);
+        //int radius = (int)(this.radius * mage.getRadiusMultiplier());
+        Location startLocation = context.getEyeLocation();
+        Location targetLocation = context.getTargetLocation();
 
-		int iterateBlocks = (int)getLocation().distance(target.getLocation());
-		if (iterateBlocks <= 0) return SpellResult.NO_TARGET;
+		int iterateBlocks = (int)startLocation.distance(targetLocation);
+        if (iterateBlocks <= 0) return SpellResult.NO_TARGET;
 		iterateBlocks = Math.min(iterateBlocks, size);
 
-		Vector targetLoc = new Vector(target.getX(), target.getY(), target.getZ());
-		Vector playerLoc = getEyeLocation().toVector();
+		Vector targetLoc = new Vector(targetLocation.getX(), targetLocation.getY(), targetLocation.getZ());
+		Vector playerLoc = startLocation.toVector();
 
 		Vector aim = null;
 		if (reverse) {
@@ -58,9 +71,11 @@ public class IterateAction extends CompoundAction implements BlockAction
 			targetLoc.add(aim);
 		}
 
-		MaterialBrush buildWith = getBrush();
-		buildWith.setTarget(target.getLocation());
-		buildWith.update(mage, target.getLocation());
+		MaterialBrush buildWith = context.getBrush();
+		buildWith.setTarget(targetLocation);
+		buildWith.update(mage, targetLocation);
+        CastContext actionContext = createContext(context);
+        SpellResult result = SpellResult.NO_ACTION;
 		for (int dr = 0; dr <= radius; dr++) {
 			int spokes = 1;
 			// TODO: Handle radius > 1 algorithmically....
@@ -108,8 +123,8 @@ public class IterateAction extends CompoundAction implements BlockAction
 				}
 				for (int i = 0; i < iterateBlocks; i++)
 				{
-					Block currentTarget = target.getWorld().getBlockAt(currentLoc.getBlockX(), currentLoc.getBlockY(), currentLoc.getBlockZ());
-					if (!isTargetable(currentTarget.getType()) && isDestructible(currentTarget) && hasBuildPermission(currentTarget))
+					Block currentTarget = targetLocation.getWorld().getBlockAt(currentLoc.getBlockX(), currentLoc.getBlockY(), currentLoc.getBlockZ());
+					if (!context.isTargetable(currentTarget.getType()) && context.isDestructible(currentTarget) && context.hasBuildPermission(currentTarget))
 					{
 						buildWith.update(mage, currentTarget.getLocation());
 		
@@ -125,7 +140,8 @@ public class IterateAction extends CompoundAction implements BlockAction
                                 continue;
                             }
                         }
-                        SpellResult result = perform(parameters, currentTarget.getLocation());
+                        actionContext.setTargetLocation(currentTarget.getLocation());
+                        result = result.min(performActions(actionContext));
 						if (dr == 0 && usesBrush()) {
                             Location effectLocation = currentTarget.getLocation();
                             effectLocation.add(0.5f, 0.5f, 0.5f);
@@ -144,8 +160,13 @@ public class IterateAction extends CompoundAction implements BlockAction
 			}
 		}
 
-		return SpellResult.CAST;
+		return result;
 	}
+
+    @Override
+    public boolean requiresTarget() {
+        return true;
+    }
 
     @Override
     public void getParameterNames(Collection<String> parameters) {

@@ -1,17 +1,17 @@
 package com.elmakers.mine.bukkit.action.builtin;
 
+import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.action.GUIAction;
-import com.elmakers.mine.bukkit.api.action.GeneralAction;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.spell.MageSpell;
+import com.elmakers.mine.bukkit.api.spell.SpellKey;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.api.wand.Wand;
 import com.elmakers.mine.bukkit.magic.MagicPlugin;
-import com.elmakers.mine.bukkit.spell.BaseSpellAction;
+import com.elmakers.mine.bukkit.action.BaseSpellAction;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.api.wand.WandUpgradePath;
 import org.bukkit.ChatColor;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
@@ -22,8 +22,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public class SpellProgressAction extends BaseSpellAction implements GeneralAction, GUIAction
+public class SpellProgressAction extends BaseSpellAction implements GUIAction
 {
+    private CastContext context;
+    private Wand wand;
+
     @Override
     public void deactivated() {
 
@@ -32,18 +35,30 @@ public class SpellProgressAction extends BaseSpellAction implements GeneralActio
     @Override
     public void clicked(InventoryClickEvent event)
     {
-        int slot = event.getSlot();
         event.setCancelled(true);
+        if (context != null)
+        {
+            Mage mage = context.getMage();
+            ItemStack item = event.getCurrentItem();
+            if (wand != null && com.elmakers.mine.bukkit.wand.Wand.isSpell(item))
+            {
+                String spellKey = com.elmakers.mine.bukkit.wand.Wand.getSpell(item);
+                SpellKey upgradeKey = new SpellKey(spellKey);
+                wand.setActiveSpell(upgradeKey.getBaseKey());
+            }
+            mage.deactivateGUI();
+        }
     }
 
     @Override
-    public SpellResult perform(ConfigurationSection parameters) {
-        Mage mage = getMage();
+    public SpellResult perform(CastContext context) {
+        Mage mage = context.getMage();
+        this.wand = mage.getActiveWand();
+        this.context = context;
 		Player player = mage.getPlayer();
 		if (player == null) {
             return SpellResult.PLAYER_REQUIRED;
         }
-        Wand wand = mage.getActiveWand();
         if (wand == null) {
             return SpellResult.FAIL;
         }
@@ -75,15 +90,15 @@ public class SpellProgressAction extends BaseSpellAction implements GeneralActio
                     {
                         com.elmakers.mine.bukkit.wand.WandUpgradePath upgradePath = com.elmakers.mine.bukkit.wand.WandUpgradePath.getPath(requiredPathKey);
                         if (upgradePath == null) continue;
-                        lore.add(getMessage("level_requirement").replace("$path", upgradePath.getName()));
+                        lore.add(context.getMessage("level_requirement").replace("$path", upgradePath.getName()));
                     }
                     long castCount = Math.min(spell.getCastCount(), requiredCastCount);
                     if (castCount == requiredCastCount) {
-                        lore.add(ChatColor.GREEN + getMessage("cast_requirement")
+                        lore.add(ChatColor.GREEN + context.getMessage("cast_requirement")
                                 .replace("$current", Long.toString(castCount))
                                 .replace("$required", Long.toString(requiredCastCount)));
                     } else {
-                        lore.add(ChatColor.RED + getMessage("cast_requirement")
+                        lore.add(ChatColor.RED + context.getMessage("cast_requirement")
                                 .replace("$current", Long.toString(castCount))
                                 .replace("$required", Long.toString(requiredCastCount)));
                     }
@@ -95,7 +110,7 @@ public class SpellProgressAction extends BaseSpellAction implements GeneralActio
             }
         }
 
-        String inventoryTitle = getMessage("title", "Spell Upgrades");
+        String inventoryTitle = context.getMessage("title", "Spell Upgrades");
         int invSize = ((upgrades.size() + 9) / 9) * 9;
         Inventory displayInventory = CompatibilityUtils.createInventory(null, invSize, inventoryTitle);
         for (ItemStack item : upgrades)

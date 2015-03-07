@@ -1,11 +1,11 @@
 package com.elmakers.mine.bukkit.action.builtin;
 
-import com.elmakers.mine.bukkit.api.action.EntityAction;
+import com.elmakers.mine.bukkit.action.BaseSpellAction;
+import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
-import com.elmakers.mine.bukkit.spell.BaseSpellAction;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
@@ -15,31 +15,46 @@ import org.bukkit.entity.Player;
 import java.util.Arrays;
 import java.util.Collection;
 
-public class DamageAction extends BaseSpellAction implements EntityAction
+public class DamageAction extends BaseSpellAction
 {
+    private double entityDamage;
+    private double playerDamage;
+    private double elementalDamage;
+
+    @Override
+    public void prepare(CastContext context, ConfigurationSection parameters)
+    {
+        super.prepare(context, parameters);
+        double damage = parameters.getDouble("damage", 1);
+        entityDamage = parameters.getDouble("entity_damage", damage);
+        playerDamage = parameters.getDouble("player_damage", damage);
+        elementalDamage = parameters.getDouble("elemental_damage", damage);
+    }
+
 	@Override
-	public SpellResult perform(ConfigurationSection parameters, Entity entity)
+	public SpellResult perform(CastContext context)
 	{
-		if (!(entity instanceof LivingEntity))
+        Entity entity = context.getTargetEntity();
+		if (entity != null && !(entity instanceof LivingEntity))
 		{
 			return SpellResult.NO_TARGET;
 		}
 
-		double damage = parameters.getDouble("damage", 1);
+		double damage = 1;
 
         LivingEntity targetEntity = (LivingEntity)entity;
-        registerModified(targetEntity);
-		Mage mage = getMage();
-		MageController controller = getController();
+        context.registerModified(targetEntity);
+		Mage mage = context.getMage();
+		MageController controller = context.getController();
 
 		if (controller.isElemental(entity)) {
-			damage = parameters.getDouble("elemental_damage", damage);
-			controller.damageElemental(entity, damage, 0, mage.getCommandSender());
+			damage = elementalDamage;
+			controller.damageElemental(entity, damage * mage.getDamageMultiplier(), 0, mage.getCommandSender());
 		} else {
 			if (targetEntity instanceof Player) {
-				damage = parameters.getDouble("player_damage", damage);
+				damage = playerDamage;
 			} else {
-				damage = parameters.getDouble("entity_damage", damage);
+				damage = entityDamage;
 			}
 			CompatibilityUtils.magicDamage(targetEntity, damage * mage.getDamageMultiplier(), mage.getEntity());
 		}
@@ -71,4 +86,10 @@ public class DamageAction extends BaseSpellAction implements EntityAction
 			super.getParameterOptions(examples, parameterKey);
 		}
 	}
+
+    @Override
+    public boolean requiresTargetEntity()
+    {
+        return true;
+    }
 }

@@ -1,30 +1,38 @@
 package com.elmakers.mine.bukkit.action.builtin;
 
-import com.elmakers.mine.bukkit.api.action.EntityAction;
+import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
-import com.elmakers.mine.bukkit.spell.BaseSpellAction;
+import com.elmakers.mine.bukkit.action.BaseSpellAction;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 
 import java.util.Arrays;
 import java.util.Collection;
 
-public class IgniteAction extends BaseSpellAction implements EntityAction
+public class IgniteAction extends BaseSpellAction
 {
+    private int duration;
+
+    @Override
+    public void prepare(CastContext context, ConfigurationSection parameters)
+    {
+        super.prepare(context, parameters);
+        duration = parameters.getInt("duration", 5000);
+    }
+
 	@Override
-	public SpellResult perform(ConfigurationSection parameters, Entity entity)
+	public SpellResult perform(CastContext context)
 	{
-        int duration = parameters.getInt("duration", 5000);
         int ticks = duration * 20 / 1000;
+        Entity entity = context.getTargetEntity();
+        context.registerModified(entity);
 
-        registerModified(entity);
-
-		MageController controller = getController();
-		Mage mage = getMage();
+		MageController controller = context.getController();
 		if (controller.isElemental(entity)) {
+            Mage mage = context.getMage();
 			controller.damageElemental(entity, 0, ticks, mage.getCommandSender());
 		} else {
 			entity.setFireTicks(ticks);
@@ -37,6 +45,12 @@ public class IgniteAction extends BaseSpellAction implements EntityAction
 	{
 		return true;
 	}
+
+    @Override
+    public boolean requiresTargetEntity()
+    {
+        return true;
+    }
 
 	@Override
 	public void getParameterNames(Collection<String> parameters) {

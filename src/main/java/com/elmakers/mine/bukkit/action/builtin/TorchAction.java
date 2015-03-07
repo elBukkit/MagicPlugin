@@ -1,14 +1,11 @@
 package com.elmakers.mine.bukkit.action.builtin;
 
-import com.elmakers.mine.bukkit.api.action.BlockAction;
-import com.elmakers.mine.bukkit.api.action.GeneralAction;
+import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
-import com.elmakers.mine.bukkit.spell.BaseSpellAction;
-import com.elmakers.mine.bukkit.spell.BlockSpell;
+import com.elmakers.mine.bukkit.action.BaseSpellAction;
 import org.bukkit.Material;
-import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.ConfigurationSection;
@@ -16,34 +13,45 @@ import org.bukkit.configuration.ConfigurationSection;
 import java.util.Arrays;
 import java.util.Collection;
 
-public class TorchAction extends BaseSpellAction implements BlockAction
+public class TorchAction extends BaseSpellAction
 {
+    private Material torchType;
+    private boolean allowLightstone;
+    private boolean useLightstone;
+
+    @Override
+    public void prepare(CastContext context, ConfigurationSection parameters) {
+        super.prepare(context, parameters);
+        torchType = parameters.getBoolean("redstone_torch", false) ? Material.REDSTONE_TORCH_ON : Material.TORCH;
+        allowLightstone = parameters.getBoolean("allow_glowstone", false);
+        useLightstone = parameters.getBoolean("glowstone_torch", false);
+    }
+
 	@Override
-	public SpellResult perform(ConfigurationSection parameters, Block target) {
-		Block face = getPreviousBlock();
+	public SpellResult perform(CastContext context) {
+		Block face = context.getPreviousBlock();
 
 		if (face == null)
 		{
 			return SpellResult.NO_TARGET;
 		}
-		if (!hasBuildPermission(target))
+        Block target = context.getTargetBlock();
+		if (!context.hasBuildPermission(target))
 		{
 			return SpellResult.INSUFFICIENT_PERMISSION;
 		}
+
 		boolean isAttachmentSlippery = target.getType() == Material.GLASS || target.getType() == Material.ICE;
 		if (isAttachmentSlippery)
 		{
 			return SpellResult.NO_TARGET;
 		}
 
-		Material torchType = parameters.getBoolean("redstone_torch", false) ? Material.REDSTONE_TORCH_ON : Material.TORCH;
 		boolean isAir = face.getType() == Material.AIR;
 		boolean replaceAttachment = target.getType() == Material.SNOW || target.getType() == Material.SNOW_BLOCK;
 		boolean isWater = face.getType() == Material.STATIONARY_WATER || face.getType() == Material.WATER;
 		boolean isNether = target.getType() == Material.NETHERRACK || target.getType() == Material.SOUL_SAND;
 		MaterialAndData targetMaterial = new MaterialAndData(torchType);
-
-		boolean allowLightstone = parameters.getBoolean("allow_glowstone", false);
 
 		// Don't replace blocks unless allow_glowstone is explicitly set
 		if (isNether && allowLightstone)
@@ -53,7 +61,7 @@ public class TorchAction extends BaseSpellAction implements BlockAction
 		}
 
 		// Otherwise use glowstone as the torch
-		boolean useLightstone = parameters.getBoolean("glowstone_torch", false);
+        boolean allowLightstone = this.allowLightstone;
 		if (useLightstone)
 		{
 			targetMaterial.setMaterial(Material.GLOWSTONE);
@@ -104,9 +112,9 @@ public class TorchAction extends BaseSpellAction implements BlockAction
 			target = face;
 		}
 
-		registerForUndo(target);
+		context.registerForUndo(target);
 		targetMaterial.modify(target);
-		updateBlock(target);
+        context.updateBlock(target);
 
 		return SpellResult.CAST;
 	}
@@ -135,6 +143,12 @@ public class TorchAction extends BaseSpellAction implements BlockAction
 
     @Override
     public boolean requiresBuildPermission()
+    {
+        return true;
+    }
+
+    @Override
+    public boolean requiresTarget()
     {
         return true;
     }

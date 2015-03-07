@@ -1,5 +1,8 @@
 package com.elmakers.mine.bukkit.spell.builtin;
 
+import com.elmakers.mine.bukkit.action.ActionContext;
+import com.elmakers.mine.bukkit.api.action.CastContext;
+import com.elmakers.mine.bukkit.block.MaterialAndData;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
@@ -36,7 +39,9 @@ public class RecurseSpell extends BrushSpell
 		size = (int)(mage.getRadiusMultiplier() * size);
 		blockRecurse.setMaxRecursion(size);
 
-		ReplaceMaterialAction action = new ReplaceMaterialAction(this, targetBlock);
+		ReplaceMaterialAction action = new ReplaceMaterialAction();
+        action.initialize(parameters);
+        action.addReplaceable(new MaterialAndData(targetBlock));
         Material targetMaterial = targetBlock.getType();
 
 		// A bit hacky, but is very handy!
@@ -59,7 +64,9 @@ public class RecurseSpell extends BrushSpell
 				action.addReplaceable(Material.SNOW, i);
 			}
 		}
-		blockRecurse.recurse(targetBlock, action, parameters, getUndoList());
+        CastContext context = getCurrentCast();
+        context.setTargetLocation(targetBlock.getLocation());
+		blockRecurse.recurse(new ActionContext(action, parameters), context);
 		registerForUndo();
 		controller.updateBlock(targetBlock);
 		

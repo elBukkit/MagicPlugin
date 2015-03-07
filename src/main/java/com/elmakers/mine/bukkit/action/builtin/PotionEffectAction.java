@@ -1,9 +1,9 @@
 package com.elmakers.mine.bukkit.action.builtin;
 
-import com.elmakers.mine.bukkit.api.action.EntityAction;
+import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
-import com.elmakers.mine.bukkit.spell.BaseSpellAction;
+import com.elmakers.mine.bukkit.action.BaseSpellAction;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
@@ -15,29 +15,69 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
-public class PotionEffectAction extends BaseSpellAction implements EntityAction
+public class PotionEffectAction extends BaseSpellAction
 {
+    private List<String> removeEffects;
+    private Collection<PotionEffect> addEffects;
+    private Integer duration;
+
+    @Override
+    public void initialize(ConfigurationSection parameters)
+    {
+        if (parameters.contains("remove_effects"))
+        {
+            removeEffects = parameters.getStringList("remove_effects");
+        }
+        else
+        {
+            removeEffects = null;
+        }
+
+        if (parameters.contains("duration"))
+        {
+            duration = parameters.getInt("duration");
+        }
+        else
+        {
+            duration = null;
+        }
+        addEffects = BaseSpell.getPotionEffects(parameters, duration);
+    }
+
+    @Override
+    public void prepare(CastContext context, ConfigurationSection parameters)
+    {
+        super.prepare(context, parameters);
+        if (parameters.contains("duration"))
+        {
+            int durationOverride = parameters.getInt("duration");
+            if (duration == null || durationOverride != duration)
+            {
+                addEffects = BaseSpell.getPotionEffects(parameters, durationOverride);
+            }
+        }
+    }
+
 	@Override
-	public SpellResult perform(ConfigurationSection parameters, Entity entity)
+	public SpellResult perform(CastContext context)
 	{
+        Entity entity = context.getTargetEntity();
 		if (!(entity instanceof LivingEntity))
 		{
 			return SpellResult.NO_TARGET;
 		}
 
-        Integer duration = null;
-        if (parameters.contains("duration"))
-        {
-            duration = parameters.getInt("duration");
-        }
         LivingEntity targetEntity = (LivingEntity)entity;
-        registerPotionEffects(targetEntity);
-		Collection<PotionEffect> effects = getPotionEffects(parameters, duration);
-        CompatibilityUtils.applyPotionEffects(targetEntity, effects);
+        context.registerPotionEffects(targetEntity);
+        if (addEffects != null)
+        {
+            CompatibilityUtils.applyPotionEffects(targetEntity, addEffects);
+        }
 
-        if (parameters.contains("remove_effects")) {
-            List<String> removeKeys = parameters.getStringList("remove_effects");
-            for (String removeKey : removeKeys) {
+        if (removeEffects != null)
+        {
+            for (String removeKey : removeEffects)
+            {
                 PotionEffectType removeType = PotionEffectType.getByName(removeKey);
                 targetEntity.removePotionEffect(removeType);
             }
@@ -48,6 +88,12 @@ public class PotionEffectAction extends BaseSpellAction implements EntityAction
 
     @Override
     public boolean isUndoable()
+    {
+        return true;
+    }
+
+    @Override
+    public boolean requiresTargetEntity()
     {
         return true;
     }

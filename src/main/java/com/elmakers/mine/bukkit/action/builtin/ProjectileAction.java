@@ -1,14 +1,13 @@
 package com.elmakers.mine.bukkit.action.builtin;
 
-import com.elmakers.mine.bukkit.api.action.GeneralAction;
+import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.effect.EffectPlayer;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
-import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
-import com.elmakers.mine.bukkit.spell.ActionHandler;
+import com.elmakers.mine.bukkit.action.ActionHandler;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
-import com.elmakers.mine.bukkit.spell.BaseSpellAction;
+import com.elmakers.mine.bukkit.action.BaseSpellAction;
 import com.elmakers.mine.bukkit.utility.NMSUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -29,7 +28,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Random;
 
-public class ProjectileAction  extends BaseSpellAction implements GeneralAction
+public class ProjectileAction  extends BaseSpellAction
 {
 	private int defaultSize = 1;
 	private Random random = new Random();
@@ -37,6 +36,17 @@ public class ProjectileAction  extends BaseSpellAction implements GeneralAction
 	private static Method getHandleMethod = null;
 	private static boolean reflectionInitialized = false;
 	private ActionHandler actions = null;
+    private ConfigurationSection parameters;
+
+    private int count;
+    private int undoInterval;
+    private int size;
+    private double damage;
+    private float speed;
+    private float spread;
+    private boolean useFire;
+    private int tickIncrease;
+    private String projectileTypeName;
 
 	private static Class<?> projectileClass;
 	private static Class<?> fireballClass;
@@ -45,7 +55,7 @@ public class ProjectileAction  extends BaseSpellAction implements GeneralAction
 	private static Class<?> entityClass;
 	private static Class<?> craftArrowClass;
 
-	private void checkReflection()
+	private void checkReflection(MageController controller)
 	{
 		if (!reflectionInitialized)
 		{
@@ -77,7 +87,7 @@ public class ProjectileAction  extends BaseSpellAction implements GeneralAction
 			} catch (Throwable ex) {
 				lifeField = null;
 				getHandleMethod = null;
-				getController().getLogger().warning("Failed to create short-lived arrow. Set tick_increase to 0 to avoid this message");
+				controller.getLogger().warning("Failed to create short-lived arrow. Set tick_increase to 0 to avoid this message");
 			}
 			if (lifeField != null)
 			{
@@ -87,48 +97,50 @@ public class ProjectileAction  extends BaseSpellAction implements GeneralAction
 	}
 
 	@Override
-	public void initialize(Spell spell, ConfigurationSection template)
+	public void initialize(ConfigurationSection parameters)
 	{
-		super.initialize(spell, template);
+		super.initialize(parameters);
 
-		if (template != null && template.contains("actions"))
+		if (parameters != null && parameters.contains("actions"))
 		{
-			actions = new ActionHandler(getSpell());
-			actions.load(template, "actions");
+			actions = new ActionHandler();
+			actions.load(parameters, "actions");
+            actions.initialize(parameters);
 		}
 	}
 
+    @Override
+    public void prepare(CastContext context, ConfigurationSection parameters)
+    {
+        super.prepare(context, parameters);
+        this.parameters = parameters;
+        count = parameters.getInt("count", 1);
+        undoInterval = parameters.getInt("undo_interval", 200);
+        size = parameters.getInt("size", defaultSize);
+        damage = parameters.getDouble("damage", 0);
+        speed = (float)parameters.getDouble("speed", 0.6f);
+        spread = (float)parameters.getDouble("spread", 12);
+        useFire = parameters.getBoolean("fire", true);
+        tickIncrease = parameters.getInt("tick_increase", 1180);
+        projectileTypeName = parameters.getString("projectile", "Arrow");
+    }
+
 	@Override
-	public SpellResult perform(ConfigurationSection parameters)
+	public SpellResult perform(CastContext context)
 	{
-		checkReflection();
-		int count = parameters.getInt("count", 1);
-		int undoInterval = parameters.getInt("undo_interval", 200);
-		int size = parameters.getInt("size", defaultSize);
-		double damage = parameters.getDouble("damage", 0);
-		float speed = (float)parameters.getDouble("speed", 0.6f);
-		float spread = (float)parameters.getDouble("spread", 12);
+        MageController controller = context.getController();
+		checkReflection(controller);
 
-		Mage mage = getMage();
-		MageController controller = getController();
-
-		if (actions != null) {
-			actions.setParameters(parameters);
-		}
+		Mage mage = context.getMage();
 
 		// Modify with wand power
 		// Turned some of this off for now
-		// count *= mage.getRadiusMultiplier();
-		size = (int)(mage.getRadiusMultiplier() * size);
+		// int count = this.count * mage.getRadiusMultiplier();
+        // int speed = this.speed * damageMultiplier;
+		int size = (int)(mage.getRadiusMultiplier() * this.size);
 		float damageMultiplier = mage.getDamageMultiplier();
-		// speed *= damageMultiplier;
-		damage *= damageMultiplier;
-		spread /= damageMultiplier;
-		
-		boolean useFire = parameters.getBoolean("fire", true);
-		int tickIncrease = parameters.getInt("tick_increase", 1180);
-		
-		String projectileTypeName = parameters.getString("projectile", "Arrow");
+        double damage = damageMultiplier * this.damage;
+		float spread = this.spread / damageMultiplier;
 		
 		if (projectileClass == null || worldClass == null || fireballClass == null || arrowClass == null || craftArrowClass == null) {
 			controller.getLogger().warning("Can't find NMS classess");
@@ -172,8 +184,8 @@ public class ProjectileAction  extends BaseSpellAction implements GeneralAction
 		}
 		
 		// Prepare parameters
-		Location location = getEyeLocation();
-		Vector direction = getDirection().normalize();
+		Location location = context.getEyeLocation();
+		Vector direction = context.getDirection().normalize();
 
 		// Track projectiles to remove them after some time.
 		List<Projectile> projectiles = new ArrayList<Projectile>();
@@ -273,17 +285,17 @@ public class ProjectileAction  extends BaseSpellAction implements GeneralAction
 						ex.printStackTrace();
 					}
 				}
-                Collection<EffectPlayer> projectileEffects = getEffects("projectile");
+                Collection<EffectPlayer> projectileEffects = context.getEffects("projectile");
                 for (EffectPlayer effectPlayer : projectileEffects) {
                     effectPlayer.start(projectile.getLocation(), projectile, null, null);
                 }
-				registerForUndo(projectile);
+                context.registerForUndo(projectile);
 			} catch(Exception ex) {
 				ex.printStackTrace();
 			}
 		}
 		if (projectiles.size() > 0) {
-			registerProjectiles(projectiles, actions, undoInterval);
+			registerProjectiles(projectiles, actions, context, parameters, undoInterval);
 		}
 
 		return SpellResult.CAST;
@@ -295,15 +307,17 @@ public class ProjectileAction  extends BaseSpellAction implements GeneralAction
 	}
 
 	protected void registerProjectiles(final Collection<Projectile> projectiles,
-			final ActionHandler actions, final int undoInterval) {
+			final ActionHandler actions,
+            final CastContext context, final ConfigurationSection parameters,
+            final int undoInterval) {
 
         for (Projectile projectile : projectiles) {
-            ActionHandler.setActions(projectile, actions, "indirect_player_message");
-            ActionHandler.setEffects(projectile, getSpell(), "hit");
+            ActionHandler.setActions(projectile, actions, context, parameters, "indirect_player_message");
+            ActionHandler.setEffects(projectile, context, "hit");
         }
 
         if (undoInterval > 0) {
-            Bukkit.getScheduler().scheduleSyncDelayedTask(getController().getPlugin(), new Runnable() {
+            Bukkit.getScheduler().scheduleSyncDelayedTask(context.getController().getPlugin(), new Runnable() {
                 public void run() {
                     checkProjectiles(projectiles);
                 }

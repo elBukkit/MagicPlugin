@@ -1,19 +1,19 @@
 package com.elmakers.mine.bukkit.action.builtin;
 
-import com.elmakers.mine.bukkit.api.action.BlockAction;
+import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
-import com.elmakers.mine.bukkit.spell.BaseSpellAction;
+import com.elmakers.mine.bukkit.action.BaseSpellAction;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
-import org.bukkit.configuration.ConfigurationSection;
 
-public class BurnAction extends BaseSpellAction implements BlockAction
+public class BurnAction extends BaseSpellAction
 {
-	public SpellResult perform(ConfigurationSection parameters, Block block)
+	public SpellResult perform(CastContext context)
 	{
-		if (block.getType() == Material.AIR || block.getType() == Material.FIRE || block.getType() == Material.WATER || block.getType() == Material.STATIONARY_WATER)
+        Block block = context.getTargetBlock();
+		if (block == null || block.getType() == Material.AIR || block.getType() == Material.FIRE || block.getType() == Material.WATER || block.getType() == Material.STATIONARY_WATER)
 		{
 			return SpellResult.NO_TARGET;
 		}
@@ -30,8 +30,8 @@ public class BurnAction extends BaseSpellAction implements BlockAction
 		{
 			return SpellResult.NO_TARGET;
 		}
-		updateBlock(block);
-		registerForUndo(block, true);
+		context.updateBlock(block);
+        context.registerForUndo(block, true);
 		MaterialAndData applyMaterial = new MaterialAndData(material);
 		applyMaterial.modify(block);
 
@@ -46,6 +46,12 @@ public class BurnAction extends BaseSpellAction implements BlockAction
 
     @Override
     public boolean requiresBuildPermission()
+    {
+        return true;
+    }
+
+    @Override
+    public boolean requiresTarget()
     {
         return true;
     }

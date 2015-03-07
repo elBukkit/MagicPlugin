@@ -1,17 +1,13 @@
 package com.elmakers.mine.bukkit.action.builtin;
 
-import com.elmakers.mine.bukkit.api.action.BlockAction;
-import com.elmakers.mine.bukkit.api.action.EntityAction;
-import com.elmakers.mine.bukkit.api.block.MaterialBrush;
-import com.elmakers.mine.bukkit.api.magic.Mage;
+import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
-import com.elmakers.mine.bukkit.block.MaterialAndData;
-import com.elmakers.mine.bukkit.spell.BaseSpellAction;
+import com.elmakers.mine.bukkit.api.block.MaterialAndData;
+import com.elmakers.mine.bukkit.action.BaseSpellAction;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import com.elmakers.mine.bukkit.utility.NMSUtils;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -20,7 +16,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HatAction extends BaseSpellAction implements BlockAction, EntityAction
+public class HatAction extends BaseSpellAction
 {
 	private class HatUndoAction implements Runnable
 	{
@@ -41,51 +37,38 @@ public class HatAction extends BaseSpellAction implements BlockAction, EntityAct
 	}
 
 	@Override
-	public SpellResult perform(ConfigurationSection parameters, Entity entity)
+	public SpellResult perform(CastContext context)
 	{
-		MaterialBrush brush = getBrush();
-		boolean usesBrush = getSpell().usesBrush() || getSpell().hasBrushOverride();
-		if (brush == null || !usesBrush)
+        Entity entity = context.getTargetEntity();
+        if (entity == null) {
+            entity = context.getEntity();
+        }
+		MaterialAndData material = context.getBrush();
+		boolean usesBrush = context.getSpell().usesBrush() || context.getSpell().hasBrushOverride();
+		if (material == null || !usesBrush)
 		{
-			return SpellResult.NO_ACTION;
+			Block targetBlock = context.getTargetBlock();
+            if (targetBlock != null)
+            {
+                material = new com.elmakers.mine.bukkit.block.MaterialAndData(targetBlock);
+            }
 		}
 
-		return equip(entity, brush);
-	}
-
-	@Override
-	public SpellResult perform(ConfigurationSection parameters, Block block)
-	{
-		boolean usesBrush = getSpell().usesBrush() || getSpell().hasBrushOverride();
-		if (usesBrush)
-		{
-			return SpellResult.NO_ACTION;
-		}
-		return equip(getMage().getEntity(), new MaterialAndData(block));
-	}
-
-	protected SpellResult equip(Entity entity,com.elmakers.mine.bukkit.api.block.MaterialAndData material)
-	{
-		if (entity == null || !(entity instanceof Player))
-		{
-			return SpellResult.NO_TARGET;
-		}
-
-		if (material.getMaterial() == Material.AIR)
-		{
-			return SpellResult.NO_TARGET;
-		}
+        if (entity == null || !(entity instanceof Player) || material == null || material.getMaterial() == Material.AIR)
+        {
+            return SpellResult.NO_TARGET;
+        }
 
 		Player player = (Player)entity;
 		ItemStack hatItem = material.getItemStack(1);
 		ItemMeta meta = hatItem.getItemMeta();
-		meta.setDisplayName(getMessage("hat_name").replace("$material", material.getName()));
+		meta.setDisplayName(context.getMessage("hat_name").replace("$material", material.getName()));
 		List<String> lore = new ArrayList<String>();
-		lore.add(getMessage("hat_lore"));
+		lore.add(context.getMessage("hat_lore"));
 		meta.setLore(lore);
 		hatItem.setItemMeta(meta);
 		hatItem = InventoryUtils.makeReal(hatItem);
-		NMSUtils.makeTemporary(hatItem, getMessage("removed").replace("$material", material.getName()));
+		NMSUtils.makeTemporary(hatItem, context.getMessage("removed").replace("$material", material.getName()));
 
 		ItemStack itemStack = player.getInventory().getHelmet();
 		if (itemStack != null && itemStack.getType() != Material.AIR)
@@ -102,7 +85,7 @@ public class HatAction extends BaseSpellAction implements BlockAction, EntityAct
 		}
 
 		player.getInventory().setHelmet(hatItem);
-		registerForUndo(new HatUndoAction(player));
+        context.registerForUndo(new HatUndoAction(player));
 		return SpellResult.CAST;
 	}
 

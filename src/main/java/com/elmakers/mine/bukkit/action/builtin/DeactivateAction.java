@@ -1,19 +1,19 @@
 package com.elmakers.mine.bukkit.action.builtin;
 
-import com.elmakers.mine.bukkit.api.action.EntityAction;
+import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
-import com.elmakers.mine.bukkit.spell.BaseSpellAction;
-import org.bukkit.configuration.ConfigurationSection;
+import com.elmakers.mine.bukkit.action.BaseSpellAction;
 import org.bukkit.entity.Entity;
 
-public class DeactivateAction extends BaseSpellAction implements EntityAction
+public class DeactivateAction extends BaseSpellAction
 {
 	@Override
-	public SpellResult perform(ConfigurationSection parameters, Entity targetEntity)
+	public SpellResult perform(CastContext context)
 	{
-        MageController controller = getController();
+        Entity targetEntity = context.getTargetEntity();
+        MageController controller = context.getController();
         Mage targetMage = controller.isMage(targetEntity) ? controller.getMage(targetEntity) : null;
 
         if (targetMage == null)
@@ -24,4 +24,10 @@ public class DeactivateAction extends BaseSpellAction implements EntityAction
         targetMage.deactivateAllSpells(true, false);
 		return SpellResult.CAST;
 	}
+
+    @Override
+    public boolean requiresTargetEntity()
+    {
+        return true;
+    }
 }

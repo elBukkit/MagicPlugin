@@ -1,9 +1,9 @@
 package com.elmakers.mine.bukkit.action.builtin;
 
-import com.elmakers.mine.bukkit.api.action.EntityAction;
+import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
-import com.elmakers.mine.bukkit.spell.BaseSpellAction;
+import com.elmakers.mine.bukkit.action.BaseSpellAction;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -18,30 +18,50 @@ import org.bukkit.util.Vector;
 import java.util.Arrays;
 import java.util.Collection;
 
-public class VelocityAction extends BaseSpellAction implements EntityAction
+public class VelocityAction extends BaseSpellAction
 {
+    private double livingEntitySpeed;
+    private double itemSpeed;
+    private double defaultSpeed;
+    private double minSpeed;
+    private double maxSpeed;
+    private int maxSpeedAtElevation;
+    private double pushDirection;
+    private int yOffset;
+
     @Override
-    public SpellResult perform(ConfigurationSection parameters, Entity entity) {
+    public void prepare(CastContext context, ConfigurationSection parameters) {
+        super.prepare(context, parameters);
+        defaultSpeed = parameters.getDouble("speed", 1);
+        livingEntitySpeed = parameters.getDouble("living_entity_speed", defaultSpeed);
+        itemSpeed = parameters.getDouble("item_speed", defaultSpeed);
+
+        maxSpeedAtElevation = parameters.getInt("max_altitude", 64);
+        minSpeed = parameters.getDouble("min_speed", 0);
+        maxSpeed = parameters.getDouble("max_speed", 0);
+        pushDirection = parameters.getDouble("push", 0);
+        yOffset = parameters.getInt("y_offset", 0);
+    }
+
+    @Override
+    public SpellResult perform(CastContext context) {
+        Entity entity = context.getTargetEntity();
         if (entity instanceof Hanging)
         {
             return SpellResult.NO_TARGET;
         }
 
-        double magnitude = parameters.getDouble("speed", 1);
-        if (entity instanceof LivingEntity && parameters.contains("living_entity_speed")) {
-            magnitude = parameters.getDouble("living_entity_speed");
-        } else if (entity instanceof Item && parameters.contains("item_speed")) {
-            magnitude = parameters.getDouble("item_speed");
+        double magnitude = defaultSpeed;
+        if (entity instanceof LivingEntity) {
+            magnitude = livingEntitySpeed;
+        } else if (entity instanceof Item) {
+            magnitude = itemSpeed;
         }
 
-        if (parameters.contains("min_speed") || parameters.contains("max_speed"))
+        if (minSpeed > 0 || maxSpeed > 0)
         {
-            int maxSpeedAtElevation = parameters.getInt("max_altitude", 64);
-            double minMagnitude = parameters.getDouble("min_speed", magnitude);
-            double maxMagnitude = parameters.getDouble("max_speed", magnitude);
-
             int height = 0;
-            Block playerBlock = getLocation().getBlock();
+            Block playerBlock = context.getLocation().getBlock();
             while (height < maxSpeedAtElevation && playerBlock.getType() == Material.AIR)
             {
                 playerBlock = playerBlock.getRelative(BlockFace.DOWN);
@@ -49,26 +69,29 @@ public class VelocityAction extends BaseSpellAction implements EntityAction
             }
 
             double heightModifier = maxSpeedAtElevation > 0 ? ((double)height / maxSpeedAtElevation) : 1;
-            magnitude = (minMagnitude + ((maxMagnitude - minMagnitude) * heightModifier));
+            magnitude = (minSpeed + ((maxSpeed - minSpeed) * heightModifier));
         }
 
-        // TODO: Fix push = -1? Seems to toggle or something?
-        Vector velocity = getDirection();
-        if (parameters.contains("push"))
+        Vector velocity = context.getDirection();
+        if (pushDirection != 0)
         {
-            double direction = parameters.getDouble("push");
             Location to = entity.getLocation();
-            Location from = getLocation();
+            Location from = context.getLocation();
+
             Vector toVector = new Vector(to.getBlockX(), to.getBlockY(), to.getBlockZ());
             Vector fromVector = new Vector(from.getBlockX(), from.getBlockY(), from.getBlockZ());
 
             velocity = toVector;
             velocity.subtract(fromVector);
-            velocity.normalize().multiply(direction);
+            if (velocity.lengthSquared() < Double.MIN_NORMAL)
+            {
+                velocity = context.getDirection();
+            }
+
+            velocity.normalize().multiply(pushDirection);
         }
 
-        int yOffset = parameters.getInt("y_offset", 0);
-        if (getLocation().getBlockY() >= 256)
+        if (context.getLocation().getBlockY() >= 256)
         {
             velocity.setY(0);
         }
@@ -78,9 +101,8 @@ public class VelocityAction extends BaseSpellAction implements EntityAction
         }
 
         velocity.multiply(magnitude);
-
-        registerVelocity(entity);
-        registerMoved(entity);
+        context.registerVelocity(entity);
+        context.registerMoved(entity);
         entity.setVelocity(velocity);
 
         return SpellResult.CAST;
@@ -114,6 +136,12 @@ public class VelocityAction extends BaseSpellAction implements EntityAction
 
     @Override
     public boolean isUndoable()
+    {
+        return true;
+    }
+
+    @Override
+    public boolean requiresTargetEntity()
     {
         return true;
     }

@@ -1,29 +1,30 @@
 package com.elmakers.mine.bukkit.block.batch;
 
-import com.elmakers.mine.bukkit.api.action.BlockAction;
+import com.elmakers.mine.bukkit.action.ActionContext;
+import com.elmakers.mine.bukkit.api.action.CastContext;
+import com.elmakers.mine.bukkit.api.block.UndoList;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.block.BlockData;
-import com.elmakers.mine.bukkit.block.UndoList;
-import org.bukkit.configuration.ConfigurationSection;
 
 public class BlockRecurse
 {
 	protected int maxRecursion = 8;
 
-	public void recurse(Block startBlock, BlockAction recurseAction, ConfigurationSection parameters, UndoList undoList)
+	public void recurse(ActionContext action, CastContext context)
 	{
-		recurse(startBlock, recurseAction, parameters, undoList, null, 0);
+		recurse(context.getTargetBlock(), action, context, null, 0);
 	}
 
-	protected void recurse(Block block, BlockAction recurseAction, ConfigurationSection parameters, UndoList undoList, BlockFace nextFace, int rDepth)
+	protected void recurse(Block block, ActionContext recurseAction, CastContext context, BlockFace nextFace, int rDepth)
 	{
 		if (nextFace != null)
 		{
 			block = block.getRelative(nextFace);
 		}
+        UndoList undoList = context.getUndoList();
 		if (undoList != null)
 		{
 			if (undoList.contains(block))
@@ -33,7 +34,8 @@ public class BlockRecurse
 			undoList.add(block);
 		}
 
-		if (recurseAction.perform(parameters, block) != SpellResult.CAST)
+        context.setTargetLocation(block.getLocation());
+		if (recurseAction.perform(context) != SpellResult.CAST)
 		{
 			return;
 		}
@@ -44,7 +46,7 @@ public class BlockRecurse
 			{
 				if (nextFace == null || nextFace != BlockData.getReverseFace(face))
 				{
-					recurse(block, recurseAction, parameters, undoList, face, rDepth + 1);
+					recurse(block, recurseAction, context, face, rDepth + 1);
 				}
 			}
 		}

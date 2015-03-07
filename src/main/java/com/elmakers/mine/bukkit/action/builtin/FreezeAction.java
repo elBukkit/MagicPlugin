@@ -1,10 +1,10 @@
 package com.elmakers.mine.bukkit.action.builtin;
 
-import com.elmakers.mine.bukkit.api.action.BlockAction;
+import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
-import com.elmakers.mine.bukkit.spell.BaseSpellAction;
+import com.elmakers.mine.bukkit.action.BaseSpellAction;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -14,17 +14,28 @@ import org.bukkit.configuration.ConfigurationSection;
 import java.util.Arrays;
 import java.util.Collection;
 
-public class FreezeAction extends BaseSpellAction implements BlockAction
+public class FreezeAction extends BaseSpellAction
 {
+    private boolean freezeWater;
+    private boolean freezeLava;
+    private boolean freezeFire;
+    private Material iceMaterial;
+
+
+    public void prepare(CastContext context, ConfigurationSection parameters)
+    {
+        super.prepare(context, parameters);
+        freezeWater = parameters.getBoolean("freeze_water", true);
+        freezeLava = parameters.getBoolean("freeze_lava", true);
+        freezeFire = parameters.getBoolean("freeze_fire", true);
+        iceMaterial = ConfigurationUtils.getMaterial(parameters, "ice", Material.ICE);
+    }
+
 	@SuppressWarnings("deprecation")
 	@Override
-	public SpellResult perform(ConfigurationSection parameters, Block block)
+	public SpellResult perform(CastContext context)
 	{
-		boolean freezeWater = parameters.getBoolean("freeze_water", true);
-		boolean freezeLava = parameters.getBoolean("freeze_lava", true);
-		boolean freezeFire = parameters.getBoolean("freeze_fire", true);
-		Material iceMaterial = ConfigurationUtils.getMaterial(parameters, "ice", Material.ICE);
-
+        Block block = context.getTargetBlock();
 		Material material = Material.SNOW;
 		if (block.getType() == Material.WATER || block.getType() == Material.STATIONARY_WATER)
 		{
@@ -66,8 +77,7 @@ public class FreezeAction extends BaseSpellAction implements BlockAction
 		{
 			block = block.getRelative(BlockFace.UP);
 		}
-		updateBlock(block);
-		registerForUndo(block);
+        context.registerForUndo(block);
 		MaterialAndData applyMaterial = new MaterialAndData(material);
 		if (block.getType() == Material.SNOW && material == Material.SNOW)
 		{
@@ -77,6 +87,7 @@ public class FreezeAction extends BaseSpellAction implements BlockAction
 			}
 		}
 		applyMaterial.modify(block);
+        context.updateBlock(block);
 		return SpellResult.CAST;
 	}
 
@@ -84,7 +95,9 @@ public class FreezeAction extends BaseSpellAction implements BlockAction
 	public void getParameterNames(Collection<String> parameters)
 	{
 		super.getParameterNames(parameters);
-		parameters.add("time");
+		parameters.add("freeze_water");
+        parameters.add("ice");
+        parameters.add("freeze_lava");
 	}
 
 	@Override
@@ -108,6 +121,12 @@ public class FreezeAction extends BaseSpellAction implements BlockAction
 
     @Override
     public boolean requiresBuildPermission()
+    {
+        return true;
+    }
+
+    @Override
+    public boolean requiresTarget()
     {
         return true;
     }

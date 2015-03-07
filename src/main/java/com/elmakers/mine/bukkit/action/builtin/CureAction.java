@@ -1,9 +1,8 @@
 package com.elmakers.mine.bukkit.action.builtin;
 
-import com.elmakers.mine.bukkit.api.action.EntityAction;
+import com.elmakers.mine.bukkit.action.BaseSpellAction;
+import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
-import com.elmakers.mine.bukkit.spell.BaseSpellAction;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.potion.PotionEffect;
@@ -14,7 +13,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-public class CureAction extends BaseSpellAction implements EntityAction
+public class CureAction extends BaseSpellAction
 {
 	private final static PotionEffectType[] _negativeEffects =
 			{PotionEffectType.BLINDNESS, PotionEffectType.CONFUSION, PotionEffectType.HARM,
@@ -23,9 +22,10 @@ public class CureAction extends BaseSpellAction implements EntityAction
 	protected final static Set<PotionEffectType> negativeEffects = new HashSet<PotionEffectType>(Arrays.asList(_negativeEffects));
 
 	@Override
-	public SpellResult perform(ConfigurationSection parameters, Entity entity)
+	public SpellResult perform(CastContext context)
 	{
-		if (!(entity instanceof LivingEntity))
+        Entity entity = context.getTargetEntity();
+		if (entity == null || !(entity instanceof LivingEntity))
 		{
 			return SpellResult.NO_TARGET;
 		}
@@ -36,7 +36,7 @@ public class CureAction extends BaseSpellAction implements EntityAction
 		{
 			if (negativeEffects.contains(effect.getType()))
 			{
-				registerPotionEffects(targetEntity);
+				context.registerPotionEffects(targetEntity);
 				targetEntity.removePotionEffect(effect.getType());
 			}
 		}
@@ -48,4 +48,10 @@ public class CureAction extends BaseSpellAction implements EntityAction
 	{
 		return true;
 	}
+
+    @Override
+    public boolean requiresTargetEntity()
+    {
+        return true;
+    }
 }

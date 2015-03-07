@@ -1,17 +1,17 @@
 package com.elmakers.mine.bukkit.action.builtin;
 
-import com.elmakers.mine.bukkit.api.action.EntityAction;
+import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
-import com.elmakers.mine.bukkit.spell.BaseSpellAction;
-import org.bukkit.configuration.ConfigurationSection;
+import com.elmakers.mine.bukkit.action.BaseSpellAction;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
-public class FeedAction extends BaseSpellAction implements EntityAction
+public class FeedAction extends BaseSpellAction
 {
 	@Override
-	public SpellResult perform(ConfigurationSection parameters, Entity targetEntity)
+	public SpellResult perform(CastContext context)
 	{
+        Entity targetEntity = context.getTargetEntity();
 		if (!(targetEntity instanceof Player))
 		{
 			return SpellResult.NO_TARGET;
@@ -23,4 +23,10 @@ public class FeedAction extends BaseSpellAction implements EntityAction
 
 		return SpellResult.CAST;
 	}
+
+    @Override
+    public boolean requiresTargetEntity()
+    {
+        return true;
+    }
 }

@@ -1,5 +1,10 @@
 # Migration Notes
 
+## 4.4
+
+ * FlowerSpell flower lists moved to parameters section
+ * Multi-target base spells no longer supported, must use ConeOfEffectAction (see: laser, push)
+
 ## 4.0
 
  * Many default spells migrated to the new "action" system.

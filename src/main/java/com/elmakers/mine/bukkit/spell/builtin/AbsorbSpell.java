@@ -1,7 +1,7 @@
 package com.elmakers.mine.bukkit.spell.builtin;
 
 import com.elmakers.mine.bukkit.action.builtin.AbsorbAction;
-import com.elmakers.mine.bukkit.spell.ActionHandler;
+import com.elmakers.mine.bukkit.action.ActionHandler;
 import org.bukkit.configuration.ConfigurationSection;
 
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
@@ -14,9 +14,9 @@ public class AbsorbSpell extends BrushSpell
 	@Override
 	public SpellResult onCast(ConfigurationSection parameters) 
 	{
-		ActionHandler handler = new ActionHandler(this);
+		ActionHandler handler = new ActionHandler();
 		handler.loadAction(new AbsorbAction());
-		return handler.perform(parameters);
+		return handler.perform(this, parameters);
 	}
 	
 	@Override

@@ -1,13 +1,13 @@
 package com.elmakers.mine.bukkit.action.builtin;
 
-import com.elmakers.mine.bukkit.api.action.GeneralAction;
+import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
-import com.elmakers.mine.bukkit.spell.ActionHandler;
+import com.elmakers.mine.bukkit.action.ActionHandler;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
-import com.elmakers.mine.bukkit.spell.BaseSpellAction;
+import com.elmakers.mine.bukkit.action.BaseSpellAction;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.EntityType;
@@ -19,30 +19,38 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Random;
 
-public class TNTAction extends BaseSpellAction implements GeneralAction
+public class TNTAction extends BaseSpellAction
 {
 	private ActionHandler actions = null;
+    private ConfigurationSection parameters;
+    private int size;
+    private int count;
+    private int fuse;
+    private boolean useFire;
+    private boolean breakBlocks;
+
+    @Override
+    public void prepare(CastContext context, ConfigurationSection parameters) {
+        super.prepare(context, parameters);
+        this.parameters = parameters;
+        size = parameters.getInt("size", 6);
+        count = parameters.getInt("count", 1);
+        fuse = parameters.getInt("fuse", 80);
+        useFire = parameters.getBoolean("fire", false);
+        breakBlocks = parameters.getBoolean("break_blocks", true);
+    }
 
 	@Override
-	public SpellResult perform(ConfigurationSection parameters) {
-		Mage mage = getMage();
-		MageController controller = getController();
-		int size = parameters.getInt("size", 6);
-		int count = parameters.getInt("count", 1);
-		size = (int)(mage.getRadiusMultiplier() * size);		
-		int fuse = parameters.getInt("fuse", 80);
-		boolean useFire = parameters.getBoolean("fire", false);
-		boolean breakBlocks = parameters.getBoolean("break_blocks", true);
+	public SpellResult perform(CastContext context) {
+		Mage mage = context.getMage();
+		MageController controller = context.getController();
+        int size = (int)(mage.getRadiusMultiplier() * this.size);
 
-		if (actions != null) {
-			actions.setParameters(parameters);
-		}
-
-		Location loc = getEyeLocation();
+		Location loc = context.getEyeLocation();
 		if (loc == null) {
 			return SpellResult.LOCATION_REQUIRED;
 		}
-		if (!hasBuildPermission(loc.getBlock())) {
+		if (!context.hasBuildPermission(loc.getBlock())) {
 			return SpellResult.INSUFFICIENT_PERMISSION;
 		}
 
@@ -55,41 +63,42 @@ public class TNTAction extends BaseSpellAction implements GeneralAction
 				targetLoc.setX(targetLoc.getX() + rand.nextInt(2 * count) - count);
 				targetLoc.setZ(targetLoc.getZ() + rand.nextInt(2 * count) - count);
 			}
-			TNTPrimed grenade = (TNTPrimed)getWorld().spawnEntity(targetLoc, EntityType.PRIMED_TNT);
+			TNTPrimed grenade = (TNTPrimed)context.getWorld().spawnEntity(targetLoc, EntityType.PRIMED_TNT);
 			if (grenade == null) {
 				return SpellResult.FAIL;
 			}
-			Vector aim = getDirection();
+			Vector aim = context.getDirection();
 			grenade.setVelocity(aim);
 			grenade.setYield(size);
 			grenade.setFuseTicks(fuse);
 			grenade.setIsIncendiary(useFire);
-			registerForUndo(grenade);
+            context.registerForUndo(grenade);
 			if (!breakBlocks)
 			{
 				grenade.setMetadata("cancel_explosion", new FixedMetadataValue(controller.getPlugin(), true));
 			}
-			ActionHandler.setActions(grenade, actions, "indirect_player_message");
-			ActionHandler.setEffects(grenade, getSpell(), "explode");
+			ActionHandler.setActions(grenade, actions, context, parameters, "indirect_player_message");
+			ActionHandler.setEffects(grenade, context, "explode");
 		}
 		
 		return SpellResult.CAST;
 	}
 
 	@Override
-	public void initialize(Spell spell, ConfigurationSection template)
+	public void initialize(ConfigurationSection parameters)
 	{
-		super.initialize(spell, template);
+		super.initialize(parameters);
 
-		if (template != null && template.contains("actions"))
+		if (parameters != null && parameters.contains("actions"))
 		{
-			actions = new ActionHandler(getSpell());
-			actions.load(template, "actions");
-		}
-	}
+			actions = new ActionHandler();
+			actions.load(parameters, "actions");
+            actions.initialize(parameters);
+        }
+    }
 
-	@Override
-	public void getParameterNames(Collection<String> parameters) {
+    @Override
+    public void getParameterNames(Collection<String> parameters) {
 		super.getParameterNames(parameters);
 		parameters.add("size");
 		parameters.add("count");
@@ -111,6 +120,12 @@ public class TNTAction extends BaseSpellAction implements GeneralAction
 
     @Override
     public boolean isUndoable()
+    {
+        return true;
+    }
+
+    @Override
+    public boolean requiresBuildPermission()
     {
         return true;
     }

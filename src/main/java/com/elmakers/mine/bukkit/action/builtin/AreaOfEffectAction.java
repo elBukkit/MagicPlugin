@@ -1,15 +1,14 @@
 package com.elmakers.mine.bukkit.action.builtin;
 
-import com.elmakers.mine.bukkit.api.action.BlockAction;
+import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
-import com.elmakers.mine.bukkit.spell.CompoundAction;
+import com.elmakers.mine.bukkit.action.CompoundAction;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.Target;
 import org.bukkit.Location;
-import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 
@@ -19,19 +18,30 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-public class AreaOfEffectAction extends CompoundAction implements BlockAction
+public class AreaOfEffectAction extends CompoundAction
 {
-	@Override
-	public SpellResult perform(ConfigurationSection parameters, Block block)
-	{
-		int radius = parameters.getInt("radius", 8);
-		boolean targetSelf = parameters.getBoolean("target_self", false);
-		int targetCount = parameters.getInt("target_count", -1);
-		Mage mage = getMage();
-		Entity sourceEntity = null;
-		Spell spell = getSpell();
-		Location sourceLocation = block.getLocation();
+    private int radius;
+    private boolean targetSelf;
+    private int targetCount;
 
+    @Override
+    public void prepare(CastContext context, ConfigurationSection parameters)
+    {
+        super.prepare(context, parameters);
+        radius = parameters.getInt("radius", 8);
+        targetSelf = parameters.getBoolean("target_self", false);
+        targetCount = parameters.getInt("target_count", -1);
+    }
+
+	@Override
+    public SpellResult perform(CastContext context)
+	{
+		Mage mage = context.getMage();
+		Entity sourceEntity = context.getEntity();
+		Location sourceLocation = context.getTargetLocation();
+        Spell spell = context.getSpell();
+
+        int radius = this.radius;
 		if (mage != null)
 		{
 			radius = (int)(mage.getRadiusMultiplier() * radius);
@@ -39,8 +49,8 @@ public class AreaOfEffectAction extends CompoundAction implements BlockAction
 		}
 
 		List<Entity> entities = CompatibilityUtils.getNearbyEntities(sourceLocation, radius, radius, radius);
-		List<Entity> targetEntities = new ArrayList<Entity>();
-
+        SpellResult result = SpellResult.NO_ACTION;
+        CastContext actionContext = createContext(context);
 		if (targetCount > 0)
 		{
 			List<Target> targets = new ArrayList<Target>();
@@ -52,10 +62,13 @@ public class AreaOfEffectAction extends CompoundAction implements BlockAction
 				}
 			}
 			Collections.sort(targets);
-			for (Target target : targets)
+            for (int i = 0; i < targetCount && i < targets.size(); i++)
 			{
-				if (targetEntities.size() >= targetCount) break;
-				targetEntities.add(target.getEntity());
+                Target target = targets.get(i);
+                actionContext.setTargetEntity(target.getEntity());
+                actionContext.setTargetLocation(target.getLocation());
+                SpellResult entityResult = performActions(actionContext);
+                result = result.min(entityResult);
 			}
 		}
 		else
@@ -64,12 +77,15 @@ public class AreaOfEffectAction extends CompoundAction implements BlockAction
 			{
 				if ((targetSelf || entity != sourceEntity) && spell.canTarget(entity))
 				{
-					targetEntities.add(entity);
+                    actionContext.setTargetEntity(entity);
+                    actionContext.setTargetLocation(entity.getLocation());
+                    SpellResult entityResult = performActions(actionContext);
+                    result = result.min(entityResult);
 				}
 			}
 		}
 
-		return perform(parameters, block.getLocation(), targetEntities);
+		return result;
 	}
 
     @Override

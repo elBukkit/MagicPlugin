@@ -1,10 +1,10 @@
 package com.elmakers.mine.bukkit.action.builtin;
 
-import com.elmakers.mine.bukkit.api.action.GeneralAction;
-import com.elmakers.mine.bukkit.api.magic.Mage;
+import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
-import com.elmakers.mine.bukkit.spell.CompoundAction;
+import com.elmakers.mine.bukkit.spell.BaseSpell;
+import com.elmakers.mine.bukkit.action.CompoundAction;
 import com.elmakers.mine.bukkit.spell.TargetingSpell;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -14,19 +14,27 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
-public class AllEntitiesAction extends CompoundAction implements GeneralAction
+public class AllEntitiesAction extends CompoundAction
 {
+    private boolean targetSelf;
+    private boolean targetAllWorlds;
+
 	@Override
-	public SpellResult perform(ConfigurationSection parameters) {
-		boolean targetSelf = parameters.getBoolean("target_self", false);
-		boolean targetAllWorlds = parameters.getBoolean("target_all_worlds", false);
-		Spell spell = getSpell();
-		Mage mage = getMage();
-		Entity sourceEntity = mage == null ? null : mage.getEntity();
-		Location sourceLocation = getLocation();
-		List<Entity> targetEntities = new ArrayList<Entity>();
+	public void prepare(CastContext context, ConfigurationSection parameters) {
+        super.prepare(context, parameters);
+        targetSelf = parameters.getBoolean("target_self", false);
+        targetAllWorlds = parameters.getBoolean("target_all_worlds", false);
+    }
+
+    @Override
+    public SpellResult perform(CastContext context) {
+        Spell spell = context.getSpell();
+		Entity sourceEntity = context.getEntity();
+		Location sourceLocation = context.getLocation();
 
 		if (sourceLocation == null && !targetAllWorlds)
 		{
@@ -38,6 +46,9 @@ public class AllEntitiesAction extends CompoundAction implements GeneralAction
 		{
 			targetType = ((TargetingSpell)spell).getTargetEntityType();
 		}
+
+        SpellResult result = SpellResult.NO_ACTION;
+        CastContext actionContext = createContext(context);
 		if (targetType == Player.class)
 		{
 			Player[] players = Bukkit.getOnlinePlayers();
@@ -45,13 +56,16 @@ public class AllEntitiesAction extends CompoundAction implements GeneralAction
 			{
 				if ((targetSelf || player != sourceEntity) && (targetAllWorlds || (sourceLocation != null && sourceLocation.getWorld().equals(player.getWorld()))) && spell.canTarget(player))
 				{
-					targetEntities.add(player);
+                    actionContext.setTargetEntity(player);
+                    actionContext.setTargetLocation(player.getLocation());
+                    SpellResult entityResult = performActions(actionContext);
+                    result = result.min(entityResult);
 				}
 			}
 		}
 		else if (sourceLocation != null)
 		{
-			List<World> worlds = null;
+			List<World> worlds;
 			if (targetAllWorlds) {
 				worlds = Bukkit.getWorlds();
 			} else {
@@ -65,12 +79,28 @@ public class AllEntitiesAction extends CompoundAction implements GeneralAction
 				{
 					if (spell.canTarget(entity) && (targetSelf || entity != sourceEntity))
 					{
-						targetEntities.add(entity);
+                        actionContext.setTargetEntity(entity);
+                        actionContext.setTargetLocation(entity.getLocation());
+                        SpellResult entityResult = performActions(actionContext);
+                        result = result.min(entityResult);
 					}
 				}
 			}
 		}
 
-		return perform(parameters, sourceLocation, targetEntities);
+		return result;
 	}
+
+    @Override
+    public void getParameterNames(Collection<String> parameters) {
+        parameters.add("target_self");
+        parameters.add("target_all_worlds");
+    }
+
+    @Override
+    public void getParameterOptions(Collection<String> examples, String parameterKey) {
+        if (parameterKey.equals("target_self") || parameterKey.equals("target_all_worlds")) {
+            examples.addAll(Arrays.asList((BaseSpell.EXAMPLE_BOOLEANS)));
+        }
+    }
 }

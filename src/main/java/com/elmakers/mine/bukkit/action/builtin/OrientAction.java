@@ -1,10 +1,10 @@
 package com.elmakers.mine.bukkit.action.builtin;
 
-import com.elmakers.mine.bukkit.api.action.EntityAction;
+import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
-import com.elmakers.mine.bukkit.spell.BaseSpellAction;
+import com.elmakers.mine.bukkit.action.BaseSpellAction;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
@@ -12,27 +12,53 @@ import org.bukkit.entity.Entity;
 import java.util.Arrays;
 import java.util.Collection;
 
-public class OrientAction extends BaseSpellAction implements EntityAction {
+public class OrientAction extends BaseSpellAction {
+    private Float pitch;
+    private Float yaw;
+
     @Override
-    public SpellResult perform(ConfigurationSection parameters, Entity target) {
-        Mage mage = getMage();
+    public void prepare(CastContext context, ConfigurationSection parameters) {
+        super.prepare(context, parameters);
+        if (parameters.contains("pitch")) {
+            pitch = (float)parameters.getDouble("pitch");
+        } else {
+            pitch = null;
+        }
+        if (parameters.contains("yaw")) {
+            yaw = (float)parameters.getDouble("yaw");
+        } else {
+            yaw = null;
+        }
+    }
+
+    @Override
+    public SpellResult perform(CastContext context) {
+        Mage mage = context.getMage();
         Entity entity = mage.getEntity();
-        if (entity == null) {
+        if (entity == null)
+        {
             return SpellResult.ENTITY_REQUIRED;
         }
 
-        registerMoved(entity);
+        context.registerMoved(entity);
         Location location = entity.getLocation();
-        if (parameters.contains("pitch") || parameters.contains("yaw"))
+        if (pitch != null || yaw != null)
         {
-            float pitch = location.getPitch();
-            float yaw = location.getPitch();
-            location.setPitch((float)parameters.getDouble("pitch", pitch));
-            location.setYaw((float)parameters.getDouble("yaw", yaw));
+            if (pitch != null) {
+                location.setPitch(pitch);
+            }
+            if (yaw != null) {
+                location.setYaw(yaw);
+            }
         }
         else
         {
-            Location direction = target.getLocation().subtract(location);
+            Entity targetEntity = context.getTargetEntity();
+            if (targetEntity == null)
+            {
+                return SpellResult.NO_TARGET;
+            }
+            Location direction = targetEntity.getLocation().subtract(location);
             location.setDirection(direction.toVector());
         }
         entity.teleport(location);
