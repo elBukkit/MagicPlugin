@@ -11,6 +11,7 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.UUID;
 
+import com.elmakers.mine.bukkit.action.CastContext;
 import com.elmakers.mine.bukkit.api.block.BrushMode;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.magic.Messages;
@@ -3419,7 +3420,14 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 
 	@Override
 	public void setActiveSpell(String activeSpell) {
-		this.activeSpell = activeSpell;
+        SpellKey spellKey = new SpellKey(activeSpell);
+        activeSpell = spellKey.getBaseKey();
+        if (!spellLevels.containsKey(activeSpell))
+        {
+            return;
+        }
+        spellKey = new SpellKey(spellKey.getBaseKey(), spellLevels.get(activeSpell));
+		this.activeSpell = spellKey.getKey();
         saveState();
 		updateName();
 	}
