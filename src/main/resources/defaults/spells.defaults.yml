@@ -449,15 +449,14 @@ virus:
     cast:
         "boom transparent air,$birth,command,redstone_block range 48": 100,100,100
         "arrowrain transparent air,$birth,command,redstone_block range 48": 50,70,90
-        "sniper transparent air,$birth,command,redstone_block range 48": 50,90,200
+        "arrow|4 transparent air,$birth,command,redstone_block range 48": 50,90,200
         "neutron transparent air,$birth,command,redstone_block range 48": 5,10,20
         "mob transparent air,$birth,command,redstone_block range 48": 5,10,10
         "lightning transparent air,$birth,command,redstone_block range 48": 50,70,90
-        "storm transparent air,$birth,command,redstone_block range 48": 10,20,50
         "none": 100,80,50
     death_cast:
         neutron: 100,200,300
-        storm: 100,100,100
+        lightning|3: 100,100,100
     parameters:
         allow_max_range: false
         bypass_undo: true
@@ -1363,7 +1362,7 @@ lightning:
     upgrade_required_path: apprentice
     upgrade_required_casts: 50
     icon: raw_fish:2
-    icon_url: http://i.imgur.com/pVL61is.png
+    icon_url: http://i.imgur.com/QNSFbvs.png
     category: elemental
     pvp_restricted: true
     worth: 100
@@ -1965,6 +1964,7 @@ flashbang:
       effect_blindness: 1
       effect_night_vision: 1
       radius: 5
+      target_self: true
     costs:
         mana: 50
 

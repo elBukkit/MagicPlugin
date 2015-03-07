@@ -202,6 +202,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
     public static SoundEffect inventoryOpenSound = null;
     public static SoundEffect inventoryCloseSound = null;
     public static SoundEffect inventoryCycleSound = null;
+    public static String WAND_KEY = "wand";
 
     private Inventory storedInventory = null;
     private Integer playerInventorySlot = null;
@@ -942,7 +943,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         ConfigurationSection stateNode = new MemoryConfiguration();
         saveProperties(stateNode);
 
-		Object wandNode = InventoryUtils.createNode(item, "wand");
+		Object wandNode = InventoryUtils.createNode(item, WAND_KEY);
 		if (wandNode == null) {
 			controller.getLogger().warning("Failed to save wand state for wand to : " + item + " in slot " + playerInventorySlot);
 		} else {
@@ -953,7 +954,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	protected void loadState() {
 		if (item == null) return;
 
-        Object wandNode = InventoryUtils.getNode(item, "wand");
+        Object wandNode = InventoryUtils.getNode(item, WAND_KEY);
         if (wandNode == null) {
             return;
         }
@@ -1277,7 +1278,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	}
 
 	public void describe(CommandSender sender) {
-		Object wandNode = InventoryUtils.getNode(item, "wand");
+		Object wandNode = InventoryUtils.getNode(item, WAND_KEY);
 		if (wandNode == null) {
 			sender.sendMessage("Found a wand with missing NBT data. This may be an old wand, or something may have wiped its data");
             return;
@@ -1617,12 +1618,12 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	}
 
 	public static boolean isWand(ItemStack item) {
-        return item != null && InventoryUtils.hasMeta(item, "wand") && !isUpgrade(item);
+        return item != null && InventoryUtils.hasMeta(item, WAND_KEY) && !isUpgrade(item);
 	}
 
     public static boolean isUpgrade(ItemStack item) {
         if (item == null) return false;
-        Object wandNode = InventoryUtils.getNode(item, "wand");
+        Object wandNode = InventoryUtils.getNode(item, WAND_KEY);
 
         if (wandNode == null) return false;
         String upgradeData = InventoryUtils.getMeta(wandNode, "upgrade");
