@@ -2076,6 +2076,7 @@ public class MagicController implements Listener, MageController {
 		Entity entity = event.getEntity();
 
 		if (entity instanceof FallingBlock) {
+            ActionHandler.runActions(entity, entity.getLocation(), null);
             UndoList blockList = com.elmakers.mine.bukkit.block.UndoList.getUndoList(entity);
 			if (blockList != null) {
                 blockList.convert(entity, event.getBlock());

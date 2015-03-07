@@ -1,12 +1,11 @@
 # TODO
 
+ - Can't cast day from command-line - clean up params? Fix target world?
  - Fix blink when passing through transparent blocks
  - battle wand stuck at "enchant at higher level"
- - Upgrade GUI should select spell and close on click
  - /magic describe should show info about current spell?
  - Fix Chop on data variants..?
 
- - Undo FX
  - Custom icon support for special brushes
  - Fix recall home spawning in the ground?
  - Fix spells getting lost on config load failure
@@ -15,6 +14,8 @@
  - Add Vault integration for the above
  - Add Cylinder construct (SuperWalls, Walls, SuperCylinder)
  - Persist erasemod
+ - Support for locking/unlocking chests
+ - Configurable FOV weight for targeting (Survival Sense)
 
 ## Old Stuff
 

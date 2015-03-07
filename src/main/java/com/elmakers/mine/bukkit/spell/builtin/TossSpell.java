@@ -10,6 +10,7 @@ import com.elmakers.mine.bukkit.api.block.MaterialBrush;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.BrushSpell;
 
+@Deprecated
 public class TossSpell extends BrushSpell
 {
 	@Override
