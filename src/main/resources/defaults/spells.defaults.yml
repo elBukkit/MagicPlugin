@@ -1907,6 +1907,67 @@ arrow|4:
     costs:
         mana: 80
 
+flashbang:
+    icon_url: http://i.imgur.com/SWIxJqS.png
+    icon: sea_lantern
+    category: combat
+    pvp_restricted: true
+    worth: 2
+    upgrade_required_path: student
+    upgrade_required_casts: 50
+    actions:
+        cast:
+        - class: TossAction
+          actions:
+          - class: AreaOfEffectAction
+            actions:
+            - class: PotionEffectAction
+    effects:
+        cast:
+        -  class: EffectSingle
+           custom_sound: magic.bonk
+           sound_pitch: 0.2
+           sound_volume: 0.3
+           location: origin
+        -  class: EffectSingle
+           location: origin
+           effectlib:
+             class: ConeEffect
+             iterations: 8
+             lengthGrow: 1
+             particle: smoke_normal
+        hit:
+        -  class: EffectSingle
+           location: origin
+           color: CC9933
+           firework: burst
+           sound: explode
+           custom_sound: magic.hit
+           effectlib:
+             class: SphereEffect
+             iterations: 70
+             period: .1
+             particle: redstone
+             color: 0A2A0A
+             radius: 2
+             particles: 20
+        projectile:
+        -  class: EffectSingle
+           location: origin
+           effectlib:
+             class: SmokeEffect
+             iterations: 16
+             particle: smoke_normal
+    parameters:
+      brush: sea_lantern
+      undo: 10000
+      duration: 8000
+      effect_blindness: 1
+      effect_night_vision: 1
+      radius: 5
+    costs:
+        mana: 50
+
 weather:
     icon_url: http://i.imgur.com/IqmgaZ2.png
     icon: water_bucket

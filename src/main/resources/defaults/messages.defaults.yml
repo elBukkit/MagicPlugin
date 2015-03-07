@@ -354,6 +354,10 @@ spells:
         cast_give: Have some signs!
         cast_player_message: "&5You hear a mysterious voice from &c&o$player &r&5... it says ... Hi!"
         sign_message: was here
+    flashbang:
+        name: Flash Bang
+        description: Toss a ball of light and fury
+        cast_player_message: "You were hit by $player's flash bang"
     arrow:
         name: Arrow
         description: Fire a magic arrow

@@ -2,6 +2,7 @@ package com.elmakers.mine.bukkit.action.builtin;
 
 import com.elmakers.mine.bukkit.action.DelayedCompoundAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
+import com.elmakers.mine.bukkit.api.effect.EffectPlayer;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.spell.Spell;
@@ -71,6 +72,10 @@ public class TNTAction extends DelayedCompoundAction
 			grenade.setYield(size);
 			grenade.setFuseTicks(fuse);
 			grenade.setIsIncendiary(useFire);
+            Collection<EffectPlayer> projectileEffects = context.getEffects("projectile");
+            for (EffectPlayer effectPlayer : projectileEffects) {
+                effectPlayer.start(grenade.getLocation(), grenade, null, null);
+            }
             context.registerForUndo(grenade);
 			if (!breakBlocks)
 			{

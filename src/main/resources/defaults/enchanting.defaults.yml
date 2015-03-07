@@ -300,6 +300,7 @@ apprentice:
       wound: 0,10,20
       harden: 0,0,15
       sponge: 0,0,10
+      flashbang: 20,30,50
 
 master:
     required_spells:

@@ -4,6 +4,7 @@ import com.elmakers.mine.bukkit.action.ActionHandler;
 import com.elmakers.mine.bukkit.action.DelayedCompoundAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.block.MaterialBrush;
+import com.elmakers.mine.bukkit.api.effect.EffectPlayer;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import org.bukkit.Location;
@@ -56,6 +57,11 @@ public class TossAction extends DelayedCompoundAction
         {
             return SpellResult.FAIL;
         }
+        Collection<EffectPlayer> projectileEffects = context.getEffects("projectile");
+        for (EffectPlayer effectPlayer : projectileEffects) {
+            effectPlayer.start(block.getLocation(), block, null, null);
+        }
+        ActionHandler.setEffects(block, context, "hit");
         context.registerForUndo(block);
         block.setDropItem(false);
         block.setVelocity(direction);
