@@ -52,7 +52,7 @@ public class ConeOfEffectAction extends CompoundAction
             targetCount = entities.size();
         }
 
-        SpellResult result = SpellResult.NO_ACTION;
+        SpellResult result = SpellResult.NO_TARGET;
         CastContext actionContext = createContext(context);
         for (int i = 0; i < targetCount && i < entities.size(); i++)
         {

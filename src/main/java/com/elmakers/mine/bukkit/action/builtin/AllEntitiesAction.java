@@ -47,7 +47,7 @@ public class AllEntitiesAction extends CompoundAction
 			targetType = ((TargetingSpell)spell).getTargetEntityType();
 		}
 
-        SpellResult result = SpellResult.NO_ACTION;
+        SpellResult result = SpellResult.NO_TARGET;
         CastContext actionContext = createContext(context);
 		if (targetType == Player.class)
 		{

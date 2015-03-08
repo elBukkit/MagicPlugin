@@ -49,7 +49,7 @@ public class AreaOfEffectAction extends CompoundAction
 		}
 
 		List<Entity> entities = CompatibilityUtils.getNearbyEntities(sourceLocation, radius, radius, radius);
-        SpellResult result = SpellResult.NO_ACTION;
+        SpellResult result = SpellResult.NO_TARGET;
         CastContext actionContext = createContext(context);
 		if (targetCount > 0)
 		{
