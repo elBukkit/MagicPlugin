@@ -166,6 +166,7 @@ public interface Mage extends CostReducer {
      * @param message The message to send.
      */
     public void sendMessage(String message);
+    public void sendDebugMessage(String message);
 
     /**
      * Send a message to this Mage.
@@ -371,4 +372,6 @@ public interface Mage extends CostReducer {
     public void deactivateGUI();
 
     public void showHoloText(Location location, String text, int duration);
+    public boolean isDebugEnabled();
+    public void setDebugEnabled(boolean debug);
 }
