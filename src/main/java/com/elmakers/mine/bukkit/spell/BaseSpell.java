@@ -20,6 +20,7 @@ import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.api.spell.TargetType;
 import org.apache.commons.lang.ArrayUtils;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Color;
 import org.bukkit.FireworkEffect;
 import org.bukkit.Location;
@@ -843,6 +844,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
 
         if (preCast.isCancelled()) {
             processResult(SpellResult.CANCELLED);
+            mage.sendDebugMessage(ChatColor.WHITE + "Cast " + ChatColor.GOLD + getName() + ChatColor.WHITE  + ": " + ChatColor.AQUA + SpellResult.CANCELLED + ChatColor.DARK_AQUA + " (no cast)");
             return false;
         }
 
@@ -864,12 +866,14 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         LivingEntity livingEntity = mage.getLivingEntity();
         if (livingEntity != null && !bypassConfusion && !mage.isSuperPowered() && livingEntity.hasPotionEffect(PotionEffectType.CONFUSION)) {
             processResult(SpellResult.CURSED);
+            mage.sendDebugMessage(ChatColor.WHITE + "Cast " + ChatColor.GOLD + getName() + ChatColor.WHITE + ": " + ChatColor.AQUA + SpellResult.CURSED + ChatColor.DARK_AQUA + " (no cast)");
             return false;
         }
 
         // Don't perform permission check until after processing parameters, in case of overrides
         if (!canCast(getLocation())) {
             processResult(SpellResult.INSUFFICIENT_PERMISSION);
+            mage.sendDebugMessage(ChatColor.WHITE + "Cast " + ChatColor.GOLD + getName() + ChatColor.WHITE  + ": " + ChatColor.AQUA + SpellResult.INSUFFICIENT_PERMISSION + ChatColor.DARK_AQUA + " (no cast)");
             return false;
         }
 
@@ -912,6 +916,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
             }
             sendMessage(getMessage("cooldown").replace("$time", timeDescription));
             processResult(SpellResult.COOLDOWN);
+            mage.sendDebugMessage(ChatColor.WHITE + "Cast " + ChatColor.GOLD + getName() + ChatColor.WHITE  + ": " + ChatColor.AQUA + SpellResult.COOLDOWN + ChatColor.DARK_AQUA + " (no cast)");
             return false;
         }
 
@@ -921,6 +926,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
             String costDescription = required.getDescription(controller.getMessages(), mage);
             sendMessage(baseMessage.replace("$cost", costDescription));
             processResult(SpellResult.INSUFFICIENT_RESOURCES);
+            mage.sendDebugMessage(ChatColor.WHITE + "Cast " + ChatColor.GOLD + getName() + ChatColor.WHITE  + ": " + ChatColor.AQUA + SpellResult.INSUFFICIENT_RESOURCES + ChatColor.DARK_AQUA + " (no cast)");
             return false;
         }
 
@@ -991,7 +997,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         processResult(result);
 
         boolean success = result.isSuccess();
-        boolean requiresCost = success || (castOnNoTarget && result == SpellResult.NO_TARGET);
+        boolean requiresCost = success || (castOnNoTarget && (result == SpellResult.NO_TARGET || result == SpellResult.NO_ACTION));
         boolean free = !requiresCost && result.isFree();
         if (!free) {
             lastCast = System.currentTimeMillis();
@@ -1009,9 +1015,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
             }
         }
 
-        // TODO: Wand debug option?
-        // org.bukkit.Bukkit.getLogger().info("Cast " + getName() + ": " + result + " (" + success + ")");
-
+        mage.sendDebugMessage(ChatColor.WHITE + "Cast " + ChatColor.GOLD + getName() + ChatColor.WHITE  + ": " + ChatColor.AQUA + result + ChatColor.DARK_AQUA + " (" + success + ")");
         return success;
     }
 
