@@ -131,6 +131,7 @@ default:
          sound: level_up
          firework: ball_large
        no_target: cast
+       no_action: cast
        alternate: cast
        alternate_up: cast
        alternate_down: cast
@@ -143,7 +144,6 @@ default:
        location_required: fail
        world_required: fail
        invalid_world: fail
-       no_action: fail
 
 curse:
     icon_url: http://i.imgur.com/b0qYgvB.png
