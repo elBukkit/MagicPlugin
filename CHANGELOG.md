@@ -6,6 +6,7 @@
  - Add FX for spell level up and undo
  - Fix PVP flag check in PreciousStones fields
  - Add "/magic check" command for debugging permissions
+ - Add "/magic debug" command for debugging spell casts
 
 ## 4.3
 

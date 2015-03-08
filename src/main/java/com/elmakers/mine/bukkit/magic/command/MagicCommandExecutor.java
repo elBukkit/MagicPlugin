@@ -98,7 +98,7 @@ public class MagicCommandExecutor extends MagicTabExecutor {
 		}
 		if (subCommand.equalsIgnoreCase("give") || subCommand.equalsIgnoreCase("sell")
             || subCommand.equalsIgnoreCase("configure") || subCommand.equalsIgnoreCase("describe")
-            || subCommand.equalsIgnoreCase("check"))
+            || subCommand.equalsIgnoreCase("check") || subCommand.equalsIgnoreCase("debug"))
 		{
 			Player player = null;
 			int argStart = 1;
@@ -141,6 +141,10 @@ public class MagicCommandExecutor extends MagicTabExecutor {
             if (subCommand.equalsIgnoreCase("check"))
             {
                 return onMagicCheck(sender, player, args2);
+            }
+            if (subCommand.equalsIgnoreCase("debug"))
+            {
+                return onMagicDebug(sender, player, args2);
             }
             if (subCommand.equalsIgnoreCase("describe"))
             {
@@ -556,12 +560,14 @@ public class MagicCommandExecutor extends MagicTabExecutor {
 			addIfPermissible(sender, options, "Magic.commands.magic.", "list");
             addIfPermissible(sender, options, "Magic.commands.magic.", "describe");
             addIfPermissible(sender, options, "Magic.commands.magic.", "configure");
+            addIfPermissible(sender, options, "Magic.commands.magic.", "check");
+            addIfPermissible(sender, options, "Magic.commands.magic.", "debug");
 		} else if (args.length == 2) {
 			if (args[0].equalsIgnoreCase("list")) {
 				addIfPermissible(sender, options, "Magic.commands.magic.list", "maps");
 				addIfPermissible(sender, options, "Magic.commands.magic.list", "wands");
 				addIfPermissible(sender, options, "Magic.commands.magic.list", "automata");
-			} if (args[0].equalsIgnoreCase("configure") || args[0].equalsIgnoreCase("describe")) {
+			} if (args[0].equalsIgnoreCase("configure") || args[0].equalsIgnoreCase("describe") || args[0].equalsIgnoreCase("check") || args[0].equalsIgnoreCase("debug")) {
                 options.addAll(api.getPlayerNames());
             } else if (args[0].equalsIgnoreCase("give") || args[0].equalsIgnoreCase("worth") || args[0].equalsIgnoreCase("sell")) {
 				options.add("wand");
@@ -638,6 +644,19 @@ public class MagicCommandExecutor extends MagicTabExecutor {
                 sender.sendMessage(ChatColor.GOLD + " " + spell.getName() + ChatColor.AQUA + " has build: " + formatBoolean(buildPermission));
             }
             sender.sendMessage(ChatColor.AQUA + " Can cast " + ChatColor.GOLD + spell.getName() + ChatColor.AQUA + ": " + formatBoolean(spell.canCast(location)));
+        }
+        return true;
+    }
+
+    public boolean onMagicDebug(CommandSender sender, Player player, String[] args)
+    {
+        Mage mage = api.getMage(player);
+        if (mage.isDebugEnabled()) {
+            sender.sendMessage(ChatColor.GOLD + "Disabling debug for  " + ChatColor.AQUA + player.getDisplayName());
+            mage.setDebugEnabled(false);
+        } else {
+            sender.sendMessage(ChatColor.AQUA + "Enabling debug for  " + ChatColor.AQUA + player.getDisplayName());
+            mage.setDebugEnabled(true);
         }
         return true;
     }

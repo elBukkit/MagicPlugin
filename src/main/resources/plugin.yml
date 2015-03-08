@@ -286,6 +286,10 @@ permissions:
     description: Player may check permissions
     type: boolean
     default: op
+  Magic.commands.magic.debug:
+    description: Player may toggle debug
+    type: boolean
+    default: op
   Magic.wand.use:
     description: The player may use a wand
     default: true
