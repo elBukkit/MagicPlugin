@@ -1009,6 +1009,9 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
             }
         }
 
+        // TODO: Wand debug option?
+        // org.bukkit.Bukkit.getLogger().info("Cast " + getName() + ": " + result + " (" + success + ")");
+
         return success;
     }
 
