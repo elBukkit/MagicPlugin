@@ -68,7 +68,7 @@ public class CoverAction extends CompoundAction
 
                         if (probability >= 1 || context.getRandom().nextDouble() <= probability) {
                             actionContext.setTargetLocation(targetBlock.getLocation());
-                            actions.perform(actionContext);
+                            result = result.min(actions.perform(actionContext));
                         }
 					}
 				}
