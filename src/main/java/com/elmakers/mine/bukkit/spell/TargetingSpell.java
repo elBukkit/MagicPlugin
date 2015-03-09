@@ -37,7 +37,6 @@ public abstract class TargetingSpell extends BaseSpell {
 
     private Target								target					= null;
     private List<Target>                        targets                 = null;
-    private String								targetName			    = null;
     private TargetType							targetType				= TargetType.OTHER;
     private boolean								targetNPCs				= false;
     private boolean								targetUnknown			= true;
@@ -99,7 +98,10 @@ public abstract class TargetingSpell extends BaseSpell {
         String message = super.getMessage(messageKey, def);
 
         // Escape targeting parameters
-        String useTargetName = targetName;
+        String useTargetName = null;
+        if (currentCast != null) {
+            useTargetName = currentCast.getTargetName();
+        }
         if (useTargetName == null) {
             if (target != null) {
                 if (target.hasEntity() && getTargetType() != TargetType.BLOCK) {
@@ -117,10 +119,6 @@ public abstract class TargetingSpell extends BaseSpell {
         }
 
         return message;
-    }
-
-    protected void setTargetName(String name) {
-        targetName = name;
     }
 
     public void clearTargetThrough()
@@ -460,7 +458,6 @@ public abstract class TargetingSpell extends BaseSpell {
     {
         target = null;
         targets = null;
-        targetName = null;
         targetLocation = null;
     }
 

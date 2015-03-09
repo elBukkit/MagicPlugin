@@ -37,6 +37,7 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
     private Location targetLocation;
     private Entity targetEntity;
     private UndoList undoList;
+    private String targetName = null;
 
     private Collection<Entity> targetedEntities = Collections.newSetFromMap(new WeakHashMap<Entity, Boolean>());
     private Set<UUID> targetMessagesSent = new HashSet<UUID>();
@@ -70,6 +71,7 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
         this.targetLocation = copy.getTargetLocation();
         this.targetedEntities = copy.getTargetEntities();
         this.undoList = copy.getUndoList();
+        this.targetName = copy.getTargetName();
         if (copy instanceof CastContext)
         {
             this.targetMessagesSent = ((CastContext)copy).targetMessagesSent;
@@ -465,5 +467,15 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
     @Override
     public UndoList getUndoList() {
         return undoList;
+    }
+
+    @Override
+    public String getTargetName() {
+        return targetName;
+    }
+
+    @Override
+    public void setTargetName(String name) {
+        targetName = name;
     }
 }
