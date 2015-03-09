@@ -2,7 +2,6 @@ package com.elmakers.mine.bukkit.action.builtin;
 
 import com.elmakers.mine.bukkit.action.CompoundAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
-import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.RandomUtils;
@@ -36,11 +35,12 @@ public class SpreadAction extends CompoundAction
 
 	@Override
 	public SpellResult perform(CastContext context) {
-        Location sourceLocation = context.getLocation();
+        Location sourceLocation = context.getEyeLocation();
         Entity source = context.getEntity();
         Random random = context.getRandom();
         if (pitchMax > 0 || yawMax > 0)
         {
+            sourceLocation = sourceLocation.clone();
             if (pitchMax > 0)
             {
                 sourceLocation.setPitch(sourceLocation.getPitch() + pitchMax * random.nextFloat());
@@ -51,16 +51,18 @@ public class SpreadAction extends CompoundAction
             }
         }
         CastContext actionContext = createContext(context, source, sourceLocation);
-        Location location = actionContext.getTargetLocation();
-        double xOffset = radius * RandomUtils.lerp(centerProbability - outerProbability, centerProbability + outerProbability, random.nextFloat());
-        xOffset = xOffset - (xOffset / 2);
-        double zOffset = radius * RandomUtils.lerp(centerProbability - outerProbability, centerProbability + outerProbability, random.nextFloat());
-        xOffset = zOffset - (zOffset / 2);
+        Location targetLocation = actionContext.getTargetLocation();
+        if (targetLocation != null)
+        {
+            double xOffset = radius * RandomUtils.lerp(centerProbability - outerProbability, centerProbability + outerProbability, random.nextFloat());
+            xOffset = xOffset - (xOffset / 2);
+            double zOffset = radius * RandomUtils.lerp(centerProbability - outerProbability, centerProbability + outerProbability, random.nextFloat());
+            zOffset = zOffset - (zOffset / 2);
 
-        location.setX(location.getX() + xOffset);
-        location.setZ(location.getZ() + zOffset);
-        actionContext.setTargetLocation(location);
-
+            targetLocation.setX(targetLocation.getX() + xOffset);
+            targetLocation.setZ(targetLocation.getZ() + zOffset);
+            actionContext.setTargetLocation(targetLocation);
+        }
         return performActions(actionContext);
 	}
 
