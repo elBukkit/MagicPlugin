@@ -323,8 +323,7 @@ public class CompatibilityUtils extends NMSUtils {
 
     public static void magicDamage(LivingEntity target, double amount, Entity source) {
         try {
-
-            if (target == null) return;
+            if (target == null || target.isDead()) return;
             Object targetHandle = getHandle(target);
             if (targetHandle == null) return;
 
