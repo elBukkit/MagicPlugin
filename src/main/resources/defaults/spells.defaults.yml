@@ -156,8 +156,8 @@ curse:
     upgrade_required_casts: 50
     actions:
         cast:
-        -  class: PotionEffectAction
-        -  class: DeactivateAction
+        -  class: PotionEffect
+        -  class: Deactivate
     effects:
         cast:
         -  class: EffectSingle
@@ -233,11 +233,11 @@ blessing:
     worth: 100
     actions:
         cast:
-        -  class: ProjectileAction
+        -  class: Projectile
            actions:
-           -  class: AreaOfEffectAction
+           -  class: AreaOfEffect
               actions:
-              -  class: PotionEffectAction
+              -  class: PotionEffect
     effects:
         projectile:
         -  class: EffectSingle
@@ -281,7 +281,7 @@ boon:
     upgrade_required_casts: 50
     actions:
         cast:
-        -  class: PotionEffectAction
+        -  class: PotionEffect
     effects:
         cast:
         -  class: EffectSingle
@@ -1074,9 +1074,9 @@ push:
     upgrade_required_casts: 50
     actions:
         cast:
-        -  class: ConeOfEffectAction
+        -  class: ConeOfEffect
            actions:
-           -  class: VelocityAction
+           -  class: Velocity
     effects:
         cast:
         -  class: EffectSingle
@@ -1108,7 +1108,7 @@ push:
 push|2:
     actions:
         alternate_down:
-        - class: VelocityAction
+        - class: Velocity
           fov: 3
           range: 8
     effects:
@@ -1135,10 +1135,10 @@ pull:
     worth: 10
     actions:
         cast:
-        -  class: VelocityAction
-        -  class: FallProtectionAction
+        -  class: Velocity
+        -  class: FallProtection
         alternate_down:
-        - class: VelocityAction
+        - class: Velocity
           fov: 3
           range: 16
           count: 16
@@ -1258,13 +1258,13 @@ frost:
     upgrade_required_casts: 50
     actions:
         cast:
-        - class: AreaOfEffectAction
+        - class: AreaOfEffect
           actions:
-          - class: PotionEffectAction
-          - class: DamageAction
-        - class: CoverAction
+          - class: PotionEffect
+          - class: Damage
+        - class: Cover
           actions:
-          - class: FreezeAction
+          - class: Freeze
     effects:
         cast:
         -  class: EffectSingle
@@ -1368,9 +1368,9 @@ lightning:
     worth: 100
     actions:
         cast:
-        -  class: SpreadAction
+        -  class: Spread
            actions:
-           -  class: LightningAction
+           -  class: Lightning
     effects:
         cast:
         -  class: EffectSingle
@@ -1401,11 +1401,11 @@ lightning|2:
 lightning|3:
     actions:
         cast:
-        -  class: SpreadAction
+        -  class: Spread
            actions:
-           -  class: RepeatAction
+           -  class: Repeat
               actions:
-              -  class: LightningAction
+              -  class: Lightning
     parameters:
         count: 2
 
@@ -1525,7 +1525,7 @@ cure:
     worth: 20
     actions:
         cast:
-        -  class: PotionEffectAction
+        -  class: PotionEffect
     effects:
         cast:
         - class: EffectSingle
@@ -1563,8 +1563,8 @@ heal:
     upgrade_required_casts: 50
     actions:
         cast:
-        -  class: PotionEffectAction
-        -  class: HealAction
+        -  class: PotionEffect
+        -  class: Heal
     effects:
         cast:
         -  class: EffectSingle
@@ -1635,9 +1635,9 @@ gather:
     worth: 150
     actions:
         cast:
-        -  class: PlayerSelectAction
+        -  class: PlayerSelect
            actions:
-           -  class: CommandAction
+           -  class: Command
     effects:
         cast:
         -  class: EffectSingle
@@ -1708,11 +1708,11 @@ neutron:
     worth: 100
     actions:
         cast:
-        -  class: ProjectileAction
+        -  class: Projectile
            actions:
-           -  class: AreaOfEffectAction
+           -  class: AreaOfEffect
               actions:
-              -  class: DamageAction
+              -  class: Damage
     effects:
         cast:
         -  class: EffectSingle
@@ -1837,7 +1837,7 @@ arrow:
     upgrade_required_casts: 50
     actions:
         cast:
-        - class: ProjectileAction
+        - class: Projectile
     effects:
         cast:
         -  class: EffectSingle
@@ -1916,11 +1916,11 @@ flashbang:
     upgrade_required_casts: 50
     actions:
         cast:
-        - class: TossAction
+        - class: Toss
           actions:
-          - class: AreaOfEffectAction
+          - class: AreaOfEffect
             actions:
-            - class: PotionEffectAction
+            - class: PotionEffect
     effects:
         cast:
         -  class: EffectSingle
@@ -1975,7 +1975,7 @@ weather:
     worth: 80
     actions:
         cast:
-        -  class: WeatherAction
+        -  class: Weather
     effects:
         cast:
         -  class: EffectSingle
@@ -2010,8 +2010,8 @@ fling:
     upgrade_required_casts: 50
     actions:
         cast:
-        - class: VelocityAction
-        - class: FallProtectionAction
+        - class: Velocity
+        - class: FallProtection
     effects:
         cast:
         -  class: EffectSingle
@@ -2047,7 +2047,7 @@ torch:
     upgrade_required_casts: 25
     actions:
         cast:
-        -  class: TorchAction
+        -  class: Torch
     effects:
         cast:
         -  class: EffectSingle
@@ -2345,7 +2345,7 @@ invincible:
     worth: 10
     actions:
         cast:
-        -  class: PotionEffectAction
+        -  class: PotionEffect
     effects:
         cast:
         -  class: EffectSingle
@@ -2380,9 +2380,9 @@ fire:
     upgrade_required_casts: 50
     actions:
         cast:
-        - class: CoverAction
+        - class: Cover
           actions:
-          - class: BurnAction
+          - class: Burn
     effects:
         cast:
         -  class: EffectSingle
@@ -2581,8 +2581,8 @@ gills:
     pvp_restricted: false
     actions:
         cast:
-        -  class: PotionEffectAction
-        -  class: HatAction
+        -  class: PotionEffect
+        -  class: Hat
     effects:
         cast:
         -  class: EffectSingle
@@ -2613,8 +2613,8 @@ day:
     worth: 120
     actions:
         cast:
-        -  class: TimeAction
-        -  class: WeatherAction
+        -  class: Time
+        -  class: Weather
     effects:
         cast:
         -  class: EffectSingle
@@ -2655,7 +2655,7 @@ night:
     worth: 130
     actions:
         cast:
-        -  class: TimeAction
+        -  class: Time
     effects:
         cast:
         -  class: EffectSingle
@@ -2676,8 +2676,10 @@ time:
     hidden: true
     icon: watch
     category: master
-    class: TorchSpell
     worth: 150
+    actions:
+        cast:
+        -  class: Time
     effects:
         cast:
         -  class: EffectSingle
@@ -2799,7 +2801,7 @@ grenade:
     upgrade_required_casts: 50
     actions:
         cast:
-        -  class: TNTAction
+        -  class: TNT
     effects:
         cast:
         -  class: EffectSingle
@@ -2829,9 +2831,9 @@ cluster:
     worth: 160
     actions:
         cast:
-        -  class: TNTAction
+        -  class: TNT
            actions:
-           -  class: TNTAction
+           -  class: TNT
               count: 4
               origin_at_target: true
     effects:
@@ -2857,7 +2859,7 @@ bomb:
     worth: 250
     actions:
         cast:
-        -  class: TNTAction
+        -  class: TNT
     effects:
         cast:
         -  class: EffectSingle
@@ -3431,7 +3433,7 @@ cloak:
     category: utility
     actions:
         cast:
-        -  class: PotionEffectAction
+        -  class: PotionEffect
     effects:
         cast:
         -  class: EffectSingle
@@ -3457,12 +3459,12 @@ rollback:
     worth: 80
     actions:
         cast:
-        -  class: UndoAction
+        -  class: Undo
         alternate_up:
-        -  class: UndoAction
+        -  class: Undo
            target_self: true
         alternate_down:
-        -  class: UndoAction
+        -  class: Undo
            target_down: true
     effects:
         cast:
@@ -3506,7 +3508,7 @@ counterspell:
     upgrade_required_casts: 50
     actions:
         cast:
-        -  class: UndoAction
+        -  class: Undo
     effects:
         cast:
         -  class: EffectVariable
@@ -4013,7 +4015,7 @@ hat:
     worth: 18
     actions:
         cast:
-        -  class: HatAction
+        -  class: Hat
     effects:
         cast:
         -  class: EffectSingle
@@ -4038,9 +4040,9 @@ lava:
     worth: 80
     actions:
         cast:
-        -  class: IterateAction
+        -  class: Iterate
            actions:
-           -  class: ReplaceMaterialAction
+           -  class: ReplaceMaterial
     effects:
         cast:
         -  class: EffectSingle
@@ -4065,10 +4067,10 @@ stream:
     worth: 60
     actions:
         cast:
-        -  class: IterateAction
+        -  class: Iterate
            actions:
-           -  class: ReplaceMaterialAction
-        -  class: DamageAction
+           -  class: ReplaceMaterial
+        -  class: Damage
     effects:
         cast:
         -  class: EffectSingle
@@ -4094,10 +4096,10 @@ earth:
     worth: 70
     actions:
         cast:
-        -  class: IterateAction
+        -  class: Iterate
            actions:
-           -  class: ReplaceMaterialAction
-        -  class: DamageAction
+           -  class: ReplaceMaterial
+        -  class: Damage
     effects:
         cast:
         -  class: EffectSingle
@@ -4122,9 +4124,9 @@ iterate:
     worth: 150
     actions:
         cast:
-        -  class: IterateAction
+        -  class: Iterate
            actions:
-           -  class: ReplaceMaterialAction
+           -  class: ReplaceMaterial
     parameters:
         transparent: transparent_to_construction
         allow_max_range: true
@@ -4140,9 +4142,9 @@ superiterate:
     worth: 300
     actions:
         cast:
-        -  class: IterateAction
+        -  class: Iterate
            actions:
-           -  class: ReplaceMaterialAction
+           -  class: ReplaceMaterial
     parameters:
         transparent: transparent_to_construction
         allow_max_range: true
@@ -4161,13 +4163,13 @@ flamethrower:
     worth: 90
     actions:
         cast:
-        -  class: IterateAction
+        -  class: Iterate
            actions:
-           -  class: CoverAction
+           -  class: Cover
               parameters:
                   radius: 0
               actions:
-              -  class: BurnAction
+              -  class: Burn
     effects:
         cast:
         -  class: EffectSingle
@@ -4200,12 +4202,12 @@ laser:
     upgrade_required_casts: 50
     actions:
         cast:
-        -  class: IterateAction
+        -  class: Iterate
            actions:
-           -  class: ReplaceMaterialAction
-        -  class: ConeOfEffectAction
+           -  class: ReplaceMaterial
+        -  class: ConeOfEffect
            actions:
-           -  class: DamageAction
+           -  class: Damage
     effects:
         cast:
         -  class: EffectSingle
@@ -4371,9 +4373,9 @@ recall:
     cast_on_no_target: false
     actions:
         cast:
-        -  class: RecallAction
+        -  class: Recall
         alternate_down:
-        -  class: RecallAction
+        -  class: Recall
            type: place
     effects:
         no_action: []
@@ -4499,7 +4501,7 @@ fireball:
     worth: 35
     actions:
         cast:
-        -  class: ProjectileAction
+        -  class: Projectile
     effects:
         cast:
         -  class: EffectSingle
@@ -4697,7 +4699,7 @@ missile:
     pvp_restricted: true
     actions:
         cast:
-        - class: DamageAction
+        - class: Damage
     effects:
         cast:
         -  class: EffectSingle
@@ -4799,7 +4801,7 @@ blind:
     worth: 10
     actions:
         cast:
-        -  class: PotionEffectAction
+        -  class: PotionEffect
     effects:
         cast:
         -  class: EffectSingle
@@ -5003,9 +5005,9 @@ kill:
     worth: 1000
     actions:
         cast:
-        -  class: ProjectileAction
+        -  class: Projectile
            actions:
-           -  class: KillAction
+           -  class: Kill
     effects:
         cast:
         -  class: EffectSingle
@@ -5077,8 +5079,8 @@ torture:
     worth: 300
     actions:
         cast:
-        -  class: PotionEffectAction
-        -  class: DamageAction
+        -  class: PotionEffect
+        -  class: Damage
     effects:
         cast:
         -  class: EffectSingle
@@ -5165,9 +5167,9 @@ count:
     hidden: true
     actions:
         cast:
-        -  class: AreaOfEffectAction
+        -  class: AreaOfEffect
            actions:
-           -  class: CountAction
+           -  class: Count
     effects:
         cast:
         -  class: EffectSingle
@@ -5211,8 +5213,8 @@ petrify:
     worth: 50
     actions:
         cast:
-        -  class: PotionEffectAction
-        -  class: FallProtectionAction
+        -  class: PotionEffect
+        -  class: FallProtection
     effects:
         cast:
         -  class: EffectSingle
@@ -5309,7 +5311,7 @@ wound:
     worth: 25
     actions:
         cast:
-        -  class: DamageAction
+        -  class: Damage
     effects:
         cast:
         -  class: EffectSingle
@@ -5375,9 +5377,9 @@ stun:
     worth: 40
     actions:
         cast:
-        - class: DamageAction
-        - class: PotionEffectAction
-        - class: DeactivateAction
+        - class: Damage
+        - class: PotionEffect
+        - class: Deactivate
     effects:
         cast:
         -  class: EffectSingle
@@ -5461,7 +5463,7 @@ poison:
     upgrade_required_casts: 50
     actions:
         cast:
-        -  class: PotionEffectAction
+        -  class: PotionEffect
     effects:
         cast:
         -  class: EffectSingle
@@ -5696,7 +5698,7 @@ upgrades:
     hidden: true
     actions:
         cast:
-        -  class: SpellProgressAction
+        -  class: SpellProgress
 
 tracking:
     upgrade_required_path: apprentice
@@ -5707,7 +5709,7 @@ tracking:
     worth: 20
     actions:
         cast:
-         -  class: OrientAction
+         -  class: Orient
     effects:
         cast:
         -  class: EffectSingle
