@@ -18,6 +18,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Fireball;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Projectile;
+import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.util.Vector;
 
 import java.lang.reflect.Constructor;
@@ -44,6 +45,7 @@ public class ProjectileAction  extends DelayedCompoundAction
     private float speed;
     private float spread;
     private boolean useFire;
+    private boolean breakBlocks;
     private int tickIncrease;
     private String projectileTypeName;
 
@@ -68,20 +70,23 @@ public class ProjectileAction  extends DelayedCompoundAction
 			reflectionInitialized = true;
 			try {
 				// This is kinda hacky, like fer reals :\
-				try {
-					// 1.8
-					lifeField = arrowClass.getDeclaredField("ap");
-				}
-				catch (Throwable ignore2)
-				{
-					try {
-						// 1.7
-						lifeField = arrowClass.getDeclaredField("at");
-					} catch (Throwable ignore) {
-						// Prior
-						lifeField = arrowClass.getDeclaredField("j");
-					}
-				}
+                try {
+                    // 1.8.3
+                    lifeField = arrowClass.getDeclaredField("ar");
+                } catch (Throwable ignore3) {
+                    try {
+                        // 1.8
+                        lifeField = arrowClass.getDeclaredField("ap");
+                    } catch (Throwable ignore2) {
+                        try {
+                            // 1.7
+                            lifeField = arrowClass.getDeclaredField("at");
+                        } catch (Throwable ignore) {
+                            // Prior
+                            lifeField = arrowClass.getDeclaredField("j");
+                        }
+                    }
+                }
 				getHandleMethod = craftArrowClass.getMethod("getHandle");
 			} catch (Throwable ex) {
 				lifeField = null;
@@ -108,6 +113,7 @@ public class ProjectileAction  extends DelayedCompoundAction
         useFire = parameters.getBoolean("fire", true);
         tickIncrease = parameters.getInt("tick_increase", 1180);
         projectileTypeName = parameters.getString("projectile", "Arrow");
+        breakBlocks = parameters.getBoolean("break_blocks", true);
     }
 
 	@Override
@@ -275,6 +281,9 @@ public class ProjectileAction  extends DelayedCompoundAction
                     effectPlayer.start(projectile.getLocation(), projectile, null, null);
                 }
                 context.registerForUndo(projectile);
+                if (!breakBlocks) {
+                    projectile.setMetadata("cancel_explosion", new FixedMetadataValue(controller.getPlugin(), true));
+                }
 			} catch(Exception ex) {
 				ex.printStackTrace();
 			}

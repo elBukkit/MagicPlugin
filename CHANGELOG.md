@@ -7,6 +7,8 @@
  - Fix PVP flag check in PreciousStones fields
  - Add "/magic check" command for debugging permissions
  - Add "/magic debug" command for debugging spell casts
+ - Fix Kill perma-breaking blocks
+ - Update Arrow to work with 1.8.3
 
 ## 4.3
 
