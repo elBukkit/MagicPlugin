@@ -52,38 +52,28 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
 
     public CastContext(Spell spell) {
         this.setSpell(spell);
-        this.location = spell.getLocation();
-        Mage mage = this.getMage();
-        this.entity = mage != null ? mage.getEntity() : null;
-    }
-
-    public CastContext(Spell spell, Entity sourceEntity, Location sourceLocation) {
-        this.setSpell(spell);
-        this.entity = sourceEntity;
-        this.location = sourceLocation == null ? spell.getLocation() : sourceLocation;
+        this.location = null;
+        this.entity = null;
     }
 
     public CastContext(com.elmakers.mine.bukkit.api.action.CastContext copy) {
-        this.setSpell(copy.getSpell());
-        this.entity = copy.getEntity();
-        this.targetEntity = copy.getTargetEntity();
-        this.location = copy.getLocation();
-        this.targetLocation = copy.getTargetLocation();
-        this.targetedEntities = copy.getTargetEntities();
-        this.undoList = copy.getUndoList();
-        this.targetName = copy.getTargetName();
-        if (copy instanceof CastContext)
-        {
-            this.targetMessagesSent = ((CastContext)copy).targetMessagesSent;
-        }
+        this(copy, copy.getEntity(), copy.getLocation());
+    }
+
+    public CastContext(com.elmakers.mine.bukkit.api.action.CastContext copy, Entity sourceEntity) {
+        this(copy, sourceEntity, null);
+    }
+
+    public CastContext(com.elmakers.mine.bukkit.api.action.CastContext copy, Location sourceLocation) {
+        this(copy, null, sourceLocation);
     }
 
     public CastContext(com.elmakers.mine.bukkit.api.action.CastContext copy, Entity sourceEntity, Location sourceLocation) {
+        this.location = sourceLocation;
+        this.entity = sourceEntity;
         this.setSpell(copy.getSpell());
         this.targetEntity = copy.getTargetEntity();
         this.targetLocation = copy.getTargetLocation();
-        this.location = sourceLocation;
-        this.entity = sourceEntity;
         this.targetedEntities = copy.getTargetEntities();
         this.undoList = copy.getUndoList();
         this.targetName = copy.getTargetName();
@@ -125,21 +115,37 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
 
     @Override
     public Location getEyeLocation() {
-        if (entity != null && entity instanceof LivingEntity) {
-            return ((LivingEntity) entity).getEyeLocation();
+        if (location != null) {
+            return location;
+        }
+        if (entity != null) {
+            if (entity instanceof  LivingEntity) {
+                return ((LivingEntity) entity).getEyeLocation();
+            }
+            return entity.getLocation();
         }
 
-        return getLocation();
+        return spell.getEyeLocation();
     }
 
     @Override
     public Entity getEntity() {
-        return entity;
+        if (entity != null) {
+            return entity;
+        }
+
+        return spell.getEntity();
     }
 
     @Override
     public Location getLocation() {
-        return entity != null ? entity.getLocation() : (location == null ? spell.getLocation() : location);
+        if (location != null) {
+            return location;
+        }
+        if (entity != null) {
+            return entity.getLocation();
+        }
+        return spell.getLocation();
     }
 
     @Override
@@ -159,12 +165,12 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
 
     @Override
     public Vector getDirection() {
-        return location.getDirection();
+        return getLocation().getDirection();
     }
 
     @Override
     public World getWorld() {
-        return location.getWorld();
+        return getLocation().getWorld();
     }
 
     @Override

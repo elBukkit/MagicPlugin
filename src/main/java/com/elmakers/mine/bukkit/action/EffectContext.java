@@ -9,7 +9,7 @@ public class EffectContext {
 
     public EffectContext(String effectKey, CastContext context, Entity source) {
         this.effectKey = effectKey;
-        this.context = new com.elmakers.mine.bukkit.action.CastContext(context, source, source.getLocation());
+        this.context = new com.elmakers.mine.bukkit.action.CastContext(context, source);
     }
 
     public EffectContext(String effectKey, CastContext context) {

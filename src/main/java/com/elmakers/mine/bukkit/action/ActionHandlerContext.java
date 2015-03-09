@@ -30,10 +30,6 @@ public class ActionHandlerContext {
         return perform(newContext);
     }
 
-    public SpellResult perform(Entity sourceEntity, Location sourceLocation) {
-        return perform(new com.elmakers.mine.bukkit.action.CastContext(context, sourceEntity, sourceLocation));
-    }
-
     public SpellResult perform(CastContext context) {
         SpellResult result = this.actions.perform(context, parameters);
         if (messageKey != null) {

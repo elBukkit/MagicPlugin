@@ -1784,4 +1784,9 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         }
         return currentCast;
     }
+
+    @Override
+    public Entity getEntity() {
+        return mage.getEntity();
+    }
 }
