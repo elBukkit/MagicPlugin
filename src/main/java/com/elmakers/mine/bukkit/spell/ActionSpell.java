@@ -15,6 +15,19 @@ public class ActionSpell extends BrushSpell
     private boolean requiresBuildPermission = false;
 
     @Override
+    protected void processResult(SpellResult result) {
+        if (!result.isSuccess())
+        {
+            ActionHandler handler = actions.get(result.name().toLowerCase());
+            if (handler != null)
+            {
+                handler.perform(getCurrentCast(), parameters);
+            }
+        }
+        super.processResult(result);
+    }
+
+    @Override
     public SpellResult onCast(ConfigurationSection parameters)
     {
         if (undoable)
@@ -44,20 +57,10 @@ public class ActionSpell extends BrushSpell
 
         if (handler != null)
         {
-            SpellResult actionResult = handler.perform(this, parameters);
-            result = result.max(actionResult);
-            if (!result.isSuccess())
-            {
-                handler = actions.get(actionResult.name().toLowerCase());
-                if (handler != null)
-                {
-                    handler.perform(getCurrentCast(), parameters);
-                }
-            }
+            result = result.max(handler.perform(this, parameters));
         }
 
-        // Allow for effect-only spells
-        return SpellResult.CAST;
+        return result;
     }
 
     @Override
