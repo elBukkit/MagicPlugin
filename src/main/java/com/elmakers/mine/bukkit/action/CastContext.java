@@ -49,6 +49,7 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
     private BrushSpell brushSpell;
     private TargetingSpell targetingSpell;
     private UndoableSpell undoSpell;
+    private MaterialBrush brush;
 
     public CastContext(Spell spell) {
         this.setSpell(spell);
@@ -77,6 +78,7 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
         this.targetedEntities = copy.getTargetEntities();
         this.undoList = copy.getUndoList();
         this.targetName = copy.getTargetName();
+        this.brush = copy.getBrush();
         if (copy instanceof CastContext)
         {
             this.targetMessagesSent = ((CastContext)copy).targetMessagesSent;
@@ -411,7 +413,15 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
 
     @Override
     public MaterialBrush getBrush() {
+        if (brush != null) {
+            return brush;
+        }
         return brushSpell == null ? null : brushSpell.getBrush();
+    }
+
+    @Override
+    public void setBrush(MaterialBrush brush) {
+        this.brush = brush;
     }
 
     @Override
