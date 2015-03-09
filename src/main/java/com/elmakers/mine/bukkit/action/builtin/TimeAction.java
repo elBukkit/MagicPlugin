@@ -70,7 +70,7 @@ public class TimeAction extends BaseSpellAction
 	
 	@Override
 	public String transformMessage(String message) {
-		return message.replace("$time", timeSet);
+		return message.replace("$newtime", timeSet);
 	}
 
 	@Override

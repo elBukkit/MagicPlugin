@@ -515,7 +515,6 @@ spells:
         description: Creates a torch or glowstone
         no_target: Can't put a torch there
         cast: Flame on!
-        alternate: Changed time to $time
     torch|2:
         upgrade_description: "&r&b• &6Torches are now permanent"
     tunnel:
@@ -606,7 +605,7 @@ spells:
     time:
         name: Time
         description: Change the time of day
-        alternate: Changed time to $time
+        alternate: Changed time to $newtime
     bridge:
         name: Bridge
         description: Extend the ground underneath you
