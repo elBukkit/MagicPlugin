@@ -2607,9 +2607,12 @@ public class MagicController implements Listener, MageController {
 	@EventHandler
 	public void onItemDespawn(ItemDespawnEvent event)
 	{
+        Item entity = event.getEntity();
+        ActionHandler.runEffects(entity);
+        ActionHandler.runActions(entity, entity.getLocation(), null);
 		if (Wand.isWand(event.getEntity().getItemStack()))
 		{
-			Wand wand = new Wand(this, event.getEntity().getItemStack());			
+			Wand wand = new Wand(this, entity.getItemStack());
 			if (wand.isIndestructible()) {
 				event.getEntity().setTicksLived(1);
 				event.setCancelled(true);
