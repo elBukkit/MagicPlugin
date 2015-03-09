@@ -4,6 +4,7 @@
 
  * FlowerSpell flower lists moved to parameters section
  * Multi-target base spells no longer supported, must use ConeOfEffectAction (see: laser, push)
+ * API Change: Spell.playEffects changed to use a CastContext
 
 ## 4.0
 

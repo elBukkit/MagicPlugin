@@ -2066,10 +2066,10 @@ public class MagicController implements Listener, MageController {
                 @Override
                 public void run() {
                     ActionHandler.runActions(projectile, projectile.getLocation(), null);
+                    ActionHandler.runEffects(projectile);
                 }
             }, 1L);
         }
-        ActionHandler.runEffects(projectile);
     }
 
 	@EventHandler
@@ -2244,6 +2244,7 @@ public class MagicController implements Listener, MageController {
             }
 		}
 
+        ActionHandler.targetEffects(damager, entity);
         ActionHandler.runActions(damager, entity.getLocation(), entity);
 
         if (preventMeleeDamage && event.getCause() == EntityDamageEvent.DamageCause.ENTITY_ATTACK && damager instanceof Player && entity instanceof Player)
@@ -2517,7 +2518,6 @@ public class MagicController implements Listener, MageController {
 	public void onEntityDeath(EntityDeathEvent event)
 	{
         Entity entity = event.getEntity();
-
         if (entity.hasMetadata("nodrops")) {
             event.setDroppedExp(0);
             event.getDrops().clear();

@@ -1772,9 +1772,11 @@ arrowrain:
     icon_url: http://i.imgur.com/thIMVWy.png
     icon: bow
     category: combat
-    class: ProjectileSpell
     pvp_restricted: true
     worth: 30
+    actions:
+        cast:
+        -  class: ProjectileAction
     effects:
         cast:
         -  class: EffectSingle
@@ -5025,10 +5027,10 @@ kill:
              color: 00FF00
              lengthGrow: 0.4
         hit:
-        -  class: EffectSingle
-           location: origin
-           color: "00FF00"
-           firework: ball_large
+        - class: EffectSingle
+          location: targets
+          color: "00FF00"
+          firework: ball_large
         - class: EffectSingle
           location: origin
           particle_override: particleOrbital
