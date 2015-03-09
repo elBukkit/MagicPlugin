@@ -21,26 +21,39 @@ public class ActionSpell extends BrushSpell
         {
             registerForUndo();
         }
+        SpellResult result = SpellResult.CAST;
+        ActionHandler handler = actions.get("cast");
         ActionHandler downHandler = actions.get("alternate_down");
+        ActionHandler upHandler = actions.get("alternate_up");
+        ActionHandler sneakHandler = actions.get("alternate_sneak");
         if (downHandler != null && isLookingDown())
         {
-            return SpellResult.ALTERNATE_DOWN.max(downHandler.perform(this, parameters));
+            result = SpellResult.ALTERNATE_DOWN;
+            handler = downHandler;
         }
-        ActionHandler upHandler = actions.get("alternate_up");
-        if (upHandler != null && isLookingUp())
+        else if (upHandler != null && isLookingUp())
         {
-            return SpellResult.ALTERNATE_UP.max(upHandler.perform(this, parameters));
+            result = SpellResult.ALTERNATE_UP;
+            handler = upHandler;
         }
-        ActionHandler sneakHandler = actions.get("alternate_sneak");
-        if (sneakHandler != null && mage.isSneaking())
+        else if (sneakHandler != null && mage.isSneaking())
         {
-            return SpellResult.ALTERNATE_SNEAK.max(sneakHandler.perform(this, parameters));
+            result = SpellResult.ALTERNATE_SNEAK;
+            handler = sneakHandler;
         }
 
-        ActionHandler castHandler = actions.get("cast");
-        if (castHandler != null)
+        if (handler != null)
         {
-            return castHandler.perform(this, parameters);
+            SpellResult actionResult = handler.perform(this, parameters);
+            result = result.max(actionResult);
+            if (!result.isSuccess())
+            {
+                handler = actions.get(actionResult.name().toLowerCase());
+                if (handler != null)
+                {
+                    handler.perform(getCurrentCast(), parameters);
+                }
+            }
         }
 
         // Allow for effect-only spells
