@@ -1161,15 +1161,6 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     }
 
     @Override
-    public void playEffects(String effectName, float scale, Location source, Entity sourceEntity, Location targetLocation, Entity targetEntity)
-    {
-        CastContext context = new CastContext(this, sourceEntity, source);
-        context.setTargetLocation(targetLocation);
-        context.setTargetEntity(targetEntity);
-        playEffects(effectName, context, scale);
-    }
-
-    @Override
     public void target() {
 
     }
