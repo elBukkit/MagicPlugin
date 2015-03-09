@@ -1,9 +1,6 @@
 # TODO
 
- - Rollback messaging on alternate_up
  - Glitching Fill behavior
- - Wither Skulls from kill doing block damage
-
  - Fix blink when passing through transparent blocks
  - Can't cast day from command-line - clean up params? Fix target world?
  - battle wand stuck at "enchant at higher level"

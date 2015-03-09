@@ -9,6 +9,7 @@
  - Add "/magic debug" command for debugging spell casts
  - Fix Kill perma-breaking blocks
  - Update Arrow to work with 1.8.3
+ - Improved "keep" behavior for wands
 
 ## 4.3
 

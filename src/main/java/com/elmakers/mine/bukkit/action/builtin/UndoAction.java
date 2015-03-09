@@ -27,7 +27,7 @@ public class UndoAction extends BaseSpellAction
     {
         timeout = parameters.getInt("target_timeout", 0);
 
-        // TODO: Generalize this
+        // TODO: Use a ContextAction instead?
         targetSelf = parameters.getBoolean("target_self", false);
         targetDown = parameters.getBoolean("target_down", false);
         targetBlocks = parameters.getBoolean("target_blocks", true);

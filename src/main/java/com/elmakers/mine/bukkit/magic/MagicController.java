@@ -2596,7 +2596,7 @@ public class MagicController implements Listener, MageController {
 		}
 	}
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGH)
     public void onPlayerRespawn(PlayerRespawnEvent event) {
         Mage apiMage = getMage(event.getPlayer());
         if (!(apiMage instanceof com.elmakers.mine.bukkit.magic.Mage)) return;
