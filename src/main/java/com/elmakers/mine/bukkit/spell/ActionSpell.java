@@ -13,6 +13,7 @@ public class ActionSpell extends BrushSpell
     private Map<String, ActionHandler> actions = new HashMap<String, ActionHandler>();
     private boolean undoable = false;
     private boolean requiresBuildPermission = false;
+    private ActionHandler currentHandler = null;
 
     @Override
     protected void processResult(SpellResult result, ConfigurationSection castParameters) {
@@ -35,29 +36,29 @@ public class ActionSpell extends BrushSpell
             registerForUndo();
         }
         SpellResult result = SpellResult.CAST;
-        ActionHandler handler = actions.get("cast");
+        currentHandler = actions.get("cast");
         ActionHandler downHandler = actions.get("alternate_down");
         ActionHandler upHandler = actions.get("alternate_up");
         ActionHandler sneakHandler = actions.get("alternate_sneak");
         if (downHandler != null && isLookingDown())
         {
             result = SpellResult.ALTERNATE_DOWN;
-            handler = downHandler;
+            currentHandler = downHandler;
         }
         else if (upHandler != null && isLookingUp())
         {
             result = SpellResult.ALTERNATE_UP;
-            handler = upHandler;
+            currentHandler = upHandler;
         }
         else if (sneakHandler != null && mage.isSneaking())
         {
             result = SpellResult.ALTERNATE_SNEAK;
-            handler = sneakHandler;
+            currentHandler = sneakHandler;
         }
 
-        if (handler != null)
+        if (currentHandler != null)
         {
-            result = result.max(handler.perform(this, parameters));
+            result = result.max(currentHandler.perform(this, parameters));
         }
 
         return result;
@@ -133,8 +134,8 @@ public class ActionSpell extends BrushSpell
     @Override
     public String getMessage(String messageKey, String def) {
         String message = super.getMessage(messageKey, def);
-        for (ActionHandler handler : actions.values()) {
-            message = handler.transformMessage(message);
+        if (currentHandler != null) {
+            message = currentHandler.transformMessage(message);
         }
         return message;
     }
