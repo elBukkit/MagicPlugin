@@ -49,7 +49,12 @@ public class ActionHandler
                         {
                             actionClassName = ACTION_BUILTIN_CLASSPATH + "." + actionClassName;
                         }
-                        Class<?> genericClass = Class.forName(actionClassName);
+                        Class<?> genericClass = null;
+                        try {
+                            genericClass = Class.forName(actionClassName + "Action");
+                        } catch (Exception ex) {
+                            genericClass = Class.forName(actionClassName);
+                        }
                         if (!BaseSpellAction.class.isAssignableFrom(genericClass)) {
                             throw new Exception("Must extend SpellAction");
                         }
