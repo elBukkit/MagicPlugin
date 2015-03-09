@@ -2572,8 +2572,11 @@ public class MagicController implements Listener, MageController {
 		List<ItemStack> oldDrops = new ArrayList<ItemStack>(drops);
 		final List<ItemStack> keepWands = new ArrayList<ItemStack>();
 		drops.clear();
-		for (ItemStack itemStack : oldDrops)
+        PlayerInventory inventory = player.getInventory();
+        ItemStack[] contents = inventory.getContents();
+		for (int index = 0; index < contents.length; index++)
 		{
+            ItemStack itemStack = contents[index];
 			boolean keepItem = false;
 			if (Wand.isWand(itemStack)) {
 				keepItem = keepWandsOnDeath;	
@@ -2584,24 +2587,22 @@ public class MagicController implements Listener, MageController {
 			}
 			if (keepItem)
 			{
-				keepWands.add(itemStack);
+				mage.addToRespawnInventory(index, itemStack);
 			}
 			else
 			{
 				drops.add(itemStack);
 			}
 		}
-		if (keepWands.size() > 0)
-		{
-			Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
-				public void run() {
-					for (ItemStack itemStack : keepWands)
-						player.getInventory().addItem(itemStack);
-					}
-				}
-			, 5);
-		}
 	}
+
+    @EventHandler
+    public void onPlayerRespawn(PlayerRespawnEvent event) {
+        Mage apiMage = getMage(event.getPlayer());
+        if (!(apiMage instanceof com.elmakers.mine.bukkit.magic.Mage)) return;
+        com.elmakers.mine.bukkit.magic.Mage mage = (com.elmakers.mine.bukkit.magic.Mage)apiMage;
+        mage.restoreRespawnInventories();
+    }
 	
 	@EventHandler
 	public void onItemDespawn(ItemDespawnEvent event)

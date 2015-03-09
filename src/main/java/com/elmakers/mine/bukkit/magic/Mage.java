@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import com.elmakers.mine.bukkit.api.action.GUIAction;
@@ -36,6 +37,7 @@ import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.player.PlayerEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitScheduler;
@@ -104,6 +106,9 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     private Hologram hologram;
     private Integer hologramTaskId = null;
     private boolean hologramIsVisible = false;
+
+    private HashMap<Integer, ItemStack> respawnInventory;
+    private HashMap<Integer, ItemStack> respawnArmor;
 
     public Mage(String id, MagicController controller) {
         this.id = id;
@@ -551,6 +556,34 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                     }
                 }
             }
+            ConfigurationSection respawnData = configNode.getConfigurationSection("respawn_inventory");
+            if (respawnData != null) {
+                Collection<String> keys = respawnData.getKeys(false);
+                respawnInventory = new HashMap<Integer, ItemStack>();
+                for (String key : keys) {
+                    try {
+                        int index = Integer.parseInt(key);
+                        ItemStack item = respawnData.getItemStack(key);
+                        respawnInventory.put(index, item);
+
+                    } catch (Exception ex) {
+                    }
+                }
+            }
+            ConfigurationSection respawnArmorData = configNode.getConfigurationSection("respawn_armor");
+            if (respawnArmorData != null) {
+                Collection<String> keys = respawnArmorData.getKeys(false);
+                respawnArmor = new HashMap<Integer, ItemStack>();
+                for (String key : keys) {
+                    try {
+                        int index = Integer.parseInt(key);
+                        ItemStack item = respawnArmorData.getItemStack(key);
+                        respawnArmor.put(index, item);
+
+                    } catch (Exception ex) {
+                    }
+                }
+            }
 
             if (configNode.contains("brush")) {
                 brush.load(configNode.getConfigurationSection("brush"));
@@ -586,6 +619,12 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             if (boundWand != null) {
                 ConfigurationSection wandConfig = configNode.createSection("bound_wand");
                 boundWand.saveProperties(wandConfig);
+            }
+            if (respawnArmor != null) {
+                configNode.set("respawn_armor", respawnArmor);
+            }
+            if (respawnInventory != null) {
+                configNode.set("respawn_inventory", respawnInventory);
             }
 
             ConfigurationSection dataSection = configNode.createSection("data");
@@ -1417,6 +1456,46 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         if (this.isDebugEnabled()) {
             sendMessage(message);
         }
+    }
+
+    public void clearRespawnInventories() {
+        respawnArmor = null;
+        respawnInventory = null;
+    }
+
+    public void restoreRespawnInventories() {
+        Player player = getPlayer();
+        if (player == null) {
+            return;
+        }
+        PlayerInventory inventory = player.getInventory();
+        if (respawnArmor != null) {
+            ItemStack[] armor = inventory.getArmorContents();
+            for (Map.Entry<Integer, ItemStack> entry : respawnArmor.entrySet()) {
+                armor[entry.getKey()] = entry.getValue();
+            }
+            player.getInventory().setArmorContents(armor);
+        }
+        if (respawnInventory != null) {
+            for (Map.Entry<Integer, ItemStack> entry : respawnInventory.entrySet()) {
+                inventory.setItem(entry.getKey(), entry.getValue());
+            }
+        }
+        clearRespawnInventories();
+    }
+
+    public void addToRespawnInventory(int slot, ItemStack item) {
+        if (respawnInventory == null) {
+            respawnInventory = new HashMap<Integer, ItemStack>();
+        }
+        respawnInventory.put(slot, item);
+    }
+
+    public void addToRespawnArmor(int slot, ItemStack item) {
+        if (respawnArmor == null) {
+            respawnArmor = new HashMap<Integer, ItemStack>();
+        }
+        respawnArmor.put(slot, item);
     }
 }
 

@@ -1,12 +1,14 @@
 # TODO
 
- - Configurable fizzle/backfire actions
- - Can't cast day from command-line - clean up params? Fix target world?
+ - Rollback messaging on alternate_up
+ - Glitching Fill behavior
+ - Wither Skulls from kill doing block damage
+
  - Fix blink when passing through transparent blocks
+ - Can't cast day from command-line - clean up params? Fix target world?
  - battle wand stuck at "enchant at higher level"
  - /magic describe should show info about current spell?
  - Fix Chop on data variants..?
- - Wither Skulls from kill doing block damage
 
  - Custom icon support for special brushes
  - Fix recall home spawning in the ground?
