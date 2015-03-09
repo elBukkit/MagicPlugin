@@ -63,4 +63,6 @@ public interface CastContext {
     public void messageTargets(String messageKey);
     public Random getRandom();
     public UndoList getUndoList();
+    public void setTargetName(String name);
+    public String getTargetName();
 }
