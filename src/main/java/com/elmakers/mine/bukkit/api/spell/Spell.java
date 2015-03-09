@@ -26,6 +26,7 @@ public interface Spell extends SpellTemplate {
     public boolean cast(String[] parameters);
     public boolean cast(String[] parameters, Location defaultLocation);
     public Location getLocation();
+    public Entity getEntity();
     public Location getEyeLocation();
     public void target();
     public Location getTargetLocation();
