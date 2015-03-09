@@ -44,8 +44,4 @@ public interface Spell extends SpellTemplate {
     public void playEffects(String effectName, CastContext context, float scale);
     public boolean requiresBuildPermission();
     public boolean isPvpRestricted();
-
-    @Deprecated
-    public void playEffects(String effectName, float scale, Location source, Entity sourceEntity, Location target, Entity targetEntity);
-
 }
