@@ -58,6 +58,7 @@ public interface CastContext {
     public boolean isTargetable(Material material);
     public boolean canTarget(Entity entity);
     public MaterialBrush getBrush();
+    public void setBrush(MaterialBrush brush);
     public void addTargetEntity(Entity entity);
     public Collection<Entity> getTargetEntities();
     public void messageTargets(String messageKey);
