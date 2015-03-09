@@ -15,16 +15,16 @@ public class ActionSpell extends BrushSpell
     private boolean requiresBuildPermission = false;
 
     @Override
-    protected void processResult(SpellResult result) {
+    protected void processResult(SpellResult result, ConfigurationSection castParameters) {
         if (!result.isSuccess())
         {
             ActionHandler handler = actions.get(result.name().toLowerCase());
             if (handler != null)
             {
-                handler.perform(getCurrentCast(), parameters);
+                handler.perform(getCurrentCast(), castParameters);
             }
         }
-        super.processResult(result);
+        super.processResult(result, castParameters);
     }
 
     @Override

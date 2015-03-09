@@ -86,6 +86,7 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
         this.entity = sourceEntity;
         this.targetedEntities = copy.getTargetEntities();
         this.undoList = copy.getUndoList();
+        this.targetName = copy.getTargetName();
         if (copy instanceof CastContext)
         {
             this.targetMessagesSent = ((CastContext)copy).targetMessagesSent;

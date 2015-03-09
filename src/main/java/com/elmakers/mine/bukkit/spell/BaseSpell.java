@@ -838,16 +838,6 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     {
         this.reset();
 
-        // Allow other plugins to cancel this cast
-        PreCastEvent preCast = new PreCastEvent(mage, this);
-        Bukkit.getPluginManager().callEvent(preCast);
-
-        if (preCast.isCancelled()) {
-            processResult(SpellResult.CANCELLED);
-            mage.sendDebugMessage(ChatColor.WHITE + "Cast " + ChatColor.GOLD + getName() + ChatColor.WHITE  + ": " + ChatColor.AQUA + SpellResult.CANCELLED + ChatColor.DARK_AQUA + " (no cast)");
-            return false;
-        }
-
         this.currentCast = new CastContext(this);
 
         if (this.parameters == null) {
@@ -861,18 +851,28 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         ConfigurationUtils.addParameters(extraParameters, parameters);
         processParameters(parameters);
 
+        // Allow other plugins to cancel this cast
+        PreCastEvent preCast = new PreCastEvent(mage, this);
+        Bukkit.getPluginManager().callEvent(preCast);
+
+        if (preCast.isCancelled()) {
+            processResult(SpellResult.CANCELLED, parameters);
+            mage.sendDebugMessage(ChatColor.WHITE + "Cast " + ChatColor.GOLD + getName() + ChatColor.WHITE  + ": " + ChatColor.AQUA + SpellResult.CANCELLED + ChatColor.DARK_AQUA + " (no cast)");
+            return false;
+        }
+
         // Don't allow casting if the player is confused
         bypassConfusion = parameters.getBoolean("bypass_confusion", bypassConfusion);
         LivingEntity livingEntity = mage.getLivingEntity();
         if (livingEntity != null && !bypassConfusion && !mage.isSuperPowered() && livingEntity.hasPotionEffect(PotionEffectType.CONFUSION)) {
-            processResult(SpellResult.CURSED);
+            processResult(SpellResult.CURSED, parameters);
             mage.sendDebugMessage(ChatColor.WHITE + "Cast " + ChatColor.GOLD + getName() + ChatColor.WHITE + ": " + ChatColor.AQUA + SpellResult.CURSED + ChatColor.DARK_AQUA + " (no cast)");
             return false;
         }
 
         // Don't perform permission check until after processing parameters, in case of overrides
         if (!canCast(getLocation())) {
-            processResult(SpellResult.INSUFFICIENT_PERMISSION);
+            processResult(SpellResult.INSUFFICIENT_PERMISSION, parameters);
             mage.sendDebugMessage(ChatColor.WHITE + "Cast " + ChatColor.GOLD + getName() + ChatColor.WHITE  + ": " + ChatColor.AQUA + SpellResult.INSUFFICIENT_PERMISSION + ChatColor.DARK_AQUA + " (no cast)");
             return false;
         }
@@ -915,7 +915,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
                 timeDescription = controller.getMessages().get("cooldown.wait_moment");
             }
             sendMessage(getMessage("cooldown").replace("$time", timeDescription));
-            processResult(SpellResult.COOLDOWN);
+            processResult(SpellResult.COOLDOWN, parameters);
             mage.sendDebugMessage(ChatColor.WHITE + "Cast " + ChatColor.GOLD + getName() + ChatColor.WHITE  + ": " + ChatColor.AQUA + SpellResult.COOLDOWN + ChatColor.DARK_AQUA + " (no cast)");
             return false;
         }
@@ -925,7 +925,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
             String baseMessage = getMessage("insufficient_resources");
             String costDescription = required.getDescription(controller.getMessages(), mage);
             sendMessage(baseMessage.replace("$cost", costDescription));
-            processResult(SpellResult.INSUFFICIENT_RESOURCES);
+            processResult(SpellResult.INSUFFICIENT_RESOURCES, parameters);
             mage.sendDebugMessage(ChatColor.WHITE + "Cast " + ChatColor.GOLD + getName() + ChatColor.WHITE  + ": " + ChatColor.AQUA + SpellResult.INSUFFICIENT_RESOURCES + ChatColor.DARK_AQUA + " (no cast)");
             return false;
         }
@@ -994,7 +994,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         if (backfired) {
             result = SpellResult.BACKFIRE;
         }
-        processResult(result);
+        processResult(result, parameters);
 
         boolean success = result.isSuccess();
         boolean requiresCost = success || (castOnNoTarget && (result == SpellResult.NO_TARGET || result == SpellResult.NO_ACTION));
@@ -1049,7 +1049,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         return "None";
     }
 
-    protected void processResult(SpellResult result) {
+    protected void processResult(SpellResult result, ConfigurationSection parameters) {
         // Notify other plugins of this spell cast
         CastEvent castEvent = new CastEvent(mage, this, result);
         Bukkit.getPluginManager().callEvent(castEvent);

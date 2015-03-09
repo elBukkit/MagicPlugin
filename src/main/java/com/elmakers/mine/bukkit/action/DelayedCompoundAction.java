@@ -144,4 +144,11 @@ public abstract class DelayedCompoundAction extends BaseSpellAction
     public CastContext createContext(CastContext context, Entity sourceEntity, Location sourceLocation) {
         return new com.elmakers.mine.bukkit.action.CastContext(context, sourceEntity, sourceLocation);
     }
+
+    public CastContext createContext(CastContext context, Entity sourceEntity, Location sourceLocation, Entity targetEntity, Location targetLocation) {
+        CastContext newContext = new com.elmakers.mine.bukkit.action.CastContext(context, sourceEntity, sourceLocation);
+        newContext.setTargetEntity(targetEntity);
+        newContext.setTargetLocation(targetLocation);
+        return newContext;
+    }
 }
