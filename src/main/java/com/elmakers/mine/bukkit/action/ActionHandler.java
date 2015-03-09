@@ -269,6 +269,26 @@ public class ActionHandler
         entity.removeMetadata("effects", effects.getContext().getController().getPlugin());
     }
 
+    public static void targetEffects(Entity entity, Entity targetEntity)
+    {
+        if (!hasEffects(entity)) return;
+
+        EffectContext effects = null;
+        for (MetadataValue metadata : entity.getMetadata("effects"))
+        {
+            Object value = metadata.value();
+            if (value instanceof EffectContext)
+            {
+                effects = (EffectContext)value;
+                break;
+            }
+        }
+        if (effects == null) return;
+
+        effects.getContext().setTargetEntity(targetEntity);
+        entity.setMetadata("effects", new FixedMetadataValue(effects.getContext().getController().getPlugin(), effects));
+    }
+
     public static void setEffects(Entity entity, CastContext context, String key)
     {
         if (key != null && context != null && entity != null)
