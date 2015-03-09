@@ -13,6 +13,7 @@ import com.elmakers.mine.bukkit.block.batch.SpellBatch;
 import com.elmakers.mine.bukkit.spell.TargetingSpell;
 import com.elmakers.mine.bukkit.utility.Target;
 
+@Deprecated
 public class UndoSpell extends TargetingSpell
 {
 	private String undoListName;
@@ -28,7 +29,7 @@ public class UndoSpell extends TargetingSpell
         SpellResult result = SpellResult.CAST;
         if (targetSelf && isLookingUp()) {
             targetEntity = mage.getEntity();
-            setTargetName(mage.getName());
+            getCurrentCast().setTargetName(mage.getName());
             result = SpellResult.ALTERNATE_UP;
         }
 		if (targetEntity != null && controller.isMage(targetEntity))
@@ -67,13 +68,13 @@ public class UndoSpell extends TargetingSpell
 				{
 					Mage targetMage = undid.getOwner();
 					undoListName = undid.getName();
-					setTargetName(targetMage.getName());
+                    getCurrentCast().setTargetName(targetMage.getName());
 					return result;
 				}
 			}
 			else
 			{
-				setTargetName(mage.getName());
+                getCurrentCast().setTargetName(mage.getName());
 				UndoList undoList = mage.undo(targetBlock);
                 if (undoList != null) {
                     undoListName = undoList.getName();

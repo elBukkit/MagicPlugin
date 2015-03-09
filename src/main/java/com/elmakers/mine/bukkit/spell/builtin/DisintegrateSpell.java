@@ -77,7 +77,7 @@ public class DisintegrateSpell extends BlockSpell
         // This makes $target messaging work properly, otherwise
         // it always displays air or water
         MaterialAndData targetMaterial = new MaterialAndData(targetBlock);
-        setTargetName(targetMaterial.getName());
+        getCurrentCast().setTargetName(targetMaterial.getName());
 		
 		if (isUnderwater())
 		{
