@@ -26,9 +26,9 @@ public class ChangeContextAction extends CompoundAction {
     @Override
     public SpellResult perform(CastContext context) {
         Entity sourceEntity = context.getEntity();
-        Location sourceLocation = context.getLocation();
-        Entity targetEntity = context.getEntity();
-        Location targetLocation = context.getLocation();
+        Location sourceLocation = context.getEyeLocation();
+        Entity targetEntity = context.getTargetEntity();
+        Location targetLocation = context.getTargetLocation();
         if (sourceLocation == null)
         {
             return SpellResult.LOCATION_REQUIRED;

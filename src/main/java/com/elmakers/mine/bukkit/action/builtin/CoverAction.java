@@ -17,17 +17,17 @@ public class CoverAction extends CompoundAction
 {
 	private static final int DEFAULT_RADIUS	= 2;
     private int radius;
-    private double centerProbability;
-    private double outerProbability;
+    private float centerProbability;
+    private float outerProbability;
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters) {
         super.prepare(context, parameters);
         radius = parameters.getInt("radius", DEFAULT_RADIUS);
-        centerProbability = parameters.getDouble("probability", 1);
-        outerProbability = parameters.getDouble("probability", 1);
-        centerProbability = parameters.getDouble("center_probability", centerProbability);
-        outerProbability = parameters.getDouble("outer_probability", outerProbability);
+        centerProbability = (float)parameters.getDouble("probability", 1);
+        outerProbability = (float)parameters.getDouble("probability", 1);
+        centerProbability = (float)parameters.getDouble("center_probability", centerProbability);
+        outerProbability = (float)parameters.getDouble("outer_probability", outerProbability);
     }
 
 	@Override
@@ -61,9 +61,10 @@ public class CoverAction extends CompoundAction
 					Block coveringBlock = targetBlock.getRelative(BlockFace.UP);
 					if (!context.isTransparent(targetBlock.getType()) && context.isTransparent(coveringBlock.getType()))
 					{
-                        double probability = centerProbability;
+                        float probability = centerProbability;
                         if (centerProbability != outerProbability) {
-                            probability = RandomUtils.lerp(centerProbability, outerProbability, (dx * dz) / (radius * radius));
+                            float weight = Math.abs((float)dx + dz) / ((float)radius * 2);
+                            probability = RandomUtils.lerp(centerProbability, outerProbability, weight);
                         }
 
                         if (probability >= 1 || context.getRandom().nextDouble() <= probability) {
