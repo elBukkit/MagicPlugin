@@ -921,7 +921,7 @@ superdisc:
         -  class: EffectTrail
            effect: step_sound
     parameters:
-        allow_max_range: false
+        allow_max_range: true
         range: 64
         max_dimension: 16
         target: select
@@ -944,7 +944,7 @@ superring:
         -  class: EffectTrail
            effect: step_sound
     parameters:
-        allow_max_range: false
+        allow_max_range: true
         range: 64
         max_dimension: 16
         target: select
@@ -968,7 +968,7 @@ supershell:
         -  class: EffectTrail
            effect: step_sound
     parameters:
-        allow_max_range: false
+        allow_max_range: true
         range: 64
         max_dimension: 16
         thickness: 1
@@ -990,7 +990,7 @@ superdome:
         -  class: EffectTrail
            effect: step_sound
     parameters:
-        allow_max_range: false
+        allow_max_range: true
         range: 64
         max_dimension: 16
         thickness: 1
@@ -2892,7 +2892,7 @@ superblob:
         -  class: EffectTrail
            effect: step_sound
     parameters:
-        allow_max_range: false
+        allow_max_range: true
         check_destructible: false
         range: 32
         max_dimension: 16
@@ -2914,7 +2914,7 @@ superpyramid:
         -  class: EffectTrail
            effect: step_sound
     parameters:
-        allow_max_range: false
+        allow_max_range: true
         range: 32
         max_dimension: 16
         target: select
@@ -2959,7 +2959,7 @@ superbox:
         -  class: EffectTrail
            effect: step_sound
     parameters:
-        allow_max_range: false
+        allow_max_range: true
         range: 64
         max_dimension: 16
         thickness: 1
@@ -2981,7 +2981,7 @@ supercube:
         -  class: EffectTrail
            effect: step_sound
     parameters:
-        allow_max_range: false
+        allow_max_range: true
         range: 64
         max_dimension: 16
         target: select
@@ -3002,7 +3002,7 @@ backup:
         -  class: EffectTrail
            effect: ender_signal
     parameters:
-        allow_max_range: false
+        allow_max_range: true
         range: 32
         max_dimension: 32
         target: select
@@ -3058,7 +3058,7 @@ superrepair:
            effect: ender_signal
     parameters:
         target: select
-        allow_max_range: false
+        allow_max_range: true
         max_dimension: 32
         range: 32
         type: sphere
@@ -3449,24 +3449,30 @@ cloak:
         duration: 8000
         effect_invisibility: 5
 
-undo:
+rollback:
+    alias: undo
     icon_url: http://i.imgur.com/Gn4H1Sk.png
-    alias: rewind
     icon: book_and_quill
     category: engineering
-    class: UndoSpell
     worth: 80
+    actions:
+        cast:
+        -  class: UndoAction
+        alternate_up:
+        -  class: UndoAction
+           target_self: true
+        alternate_down:
+        -  class: UndoAction
+           target_down: true
     effects:
         cast:
         -  class: EffectSingle
            custom_sound: magic.shimmer
     parameters:
         target: block
-        target_down_block: true
-        target_up_self: true
-        allow_max_range: false
+        allow_max_range: true
         range: 64
-        transparent: transparent_to_construction
+        transparent: air
         bypass_backfire: true
         loud: true
     costs:
@@ -3493,12 +3499,14 @@ counterspell:
     icon_url: http://i.imgur.com/bIiV9Xn.png
     icon: diamond
     category: combat
-    class: UndoSpell
     worth: 250
     cast_on_no_target: true
     pvp_restricted: true
     upgrade_required_path: apprentice
     upgrade_required_casts: 50
+    actions:
+        cast:
+        -  class: UndoAction
     effects:
         cast:
         -  class: EffectVariable
@@ -3535,6 +3543,7 @@ counterspell:
         target_blocks: false
         target_timeout: 4000
         target_breakables: 3
+        cancel: false
         range: 50
         fov: 1
         bypass_protection: true
