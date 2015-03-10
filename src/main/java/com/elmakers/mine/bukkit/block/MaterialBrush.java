@@ -53,6 +53,14 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
     public static Material SchematicMaterial = Material.PAPER;
     public static Material DefaultBrushMaterial = Material.SULPHUR;
 
+    public static String EraseCustomIcon;
+    public static String CopyCustomIcon;
+    public static String CloneCustomIcon;
+    public static String ReplicateCustomIcon;
+    public static String MapCustomIcon;
+    public static String SchematicCustomIcon;
+    public static String DefaultBrushCustomIcon;
+
     public static boolean SchematicsEnabled = false;
 
     public static final Material DEFAULT_MATERIAL = Material.DIRT;
@@ -697,29 +705,49 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
         return fillWithAir;
     }
 
-    public ItemStack getItem(Messages messages, boolean isItem) {
+    public ItemStack getItem(MageController controller, boolean isItem) {
+        Messages messages = controller.getMessages();
         Material material = this.getMaterial();
         short dataId = this.getData();
         String extraLore = null;
         String customName = getName(messages);
+        ItemStack itemStack = null;
 
         if (mode == BrushMode.ERASE) {
             material = MaterialBrush.EraseMaterial;
+            if (EraseCustomIcon != null && !EraseCustomIcon.isEmpty() && controller.isUrlIconsEnabled()) {
+                itemStack = InventoryUtils.getURLSkull(EraseCustomIcon);
+            }
             extraLore = messages.get("wand.erase_material_description");
         } else if (mode == BrushMode.COPY) {
             material = MaterialBrush.CopyMaterial;
+            if (CopyCustomIcon != null && !CopyCustomIcon.isEmpty() && controller.isUrlIconsEnabled()) {
+                itemStack = InventoryUtils.getURLSkull(CopyCustomIcon);
+            }
             extraLore = messages.get("wand.copy_material_description");
         } else if (mode == BrushMode.CLONE) {
             material = MaterialBrush.CloneMaterial;
+            if (CloneCustomIcon != null && !CloneCustomIcon.isEmpty() && controller.isUrlIconsEnabled()) {
+                itemStack = InventoryUtils.getURLSkull(CloneCustomIcon);
+            }
             extraLore = messages.get("wand.clone_material_description");
         } else if (mode == BrushMode.REPLICATE) {
             material = MaterialBrush.ReplicateMaterial;
+            if (ReplicateCustomIcon != null && !ReplicateCustomIcon.isEmpty() && controller.isUrlIconsEnabled()) {
+                itemStack = InventoryUtils.getURLSkull(ReplicateCustomIcon);
+            }
             extraLore = messages.get("wand.replicate_material_description");
         } else if (mode == BrushMode.MAP) {
             material = MaterialBrush.MapMaterial;
+            if (MapCustomIcon != null && !MapCustomIcon.isEmpty() && controller.isUrlIconsEnabled()) {
+                itemStack = InventoryUtils.getURLSkull(MapCustomIcon);
+            }
             extraLore = messages.get("wand.map_material_description");
         } else if (mode == BrushMode.SCHEMATIC) {
             material = MaterialBrush.SchematicMaterial;
+            if (SchematicCustomIcon != null && !SchematicCustomIcon.isEmpty() && controller.isUrlIconsEnabled()) {
+                itemStack = InventoryUtils.getURLSkull(SchematicCustomIcon);
+            }
             extraLore = messages.get("wand.schematic_material_description").replace("$schematic", schematicName);
         } else {
             if (material == Material.WATER || material == Material.STATIONARY_WATER || material == Material.LAVA || material == Material.STATIONARY_LAVA) {
@@ -732,13 +760,20 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
             extraLore = messages.get("wand.building_material_description").replace("$material", customName);
         }
 
-        ItemStack originalItemStack = new ItemStack(material, 1, dataId);
-        ItemStack itemStack = InventoryUtils.makeReal(originalItemStack);
         if (itemStack == null) {
-            itemStack = new ItemStack(DefaultBrushMaterial, 1, dataId);
+            itemStack = new ItemStack(material, 1, dataId);
             itemStack = InventoryUtils.makeReal(itemStack);
             if (itemStack == null) {
-                return itemStack;
+                if (DefaultBrushCustomIcon != null && !DefaultBrushCustomIcon.isEmpty() && controller.isUrlIconsEnabled()) {
+                    itemStack = InventoryUtils.getURLSkull(DefaultBrushCustomIcon);
+                }
+                if (itemStack == null) {
+                    itemStack = new ItemStack(DefaultBrushMaterial, 1, dataId);
+                    itemStack = InventoryUtils.makeReal(itemStack);
+                    if (itemStack == null) {
+                        return itemStack;
+                    }
+                }
             }
         }
         ItemMeta meta = itemStack.getItemMeta();

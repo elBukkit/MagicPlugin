@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## 2.5
+
+ - Add support for custom icons for special brushes (copy, clone, etc)
+ - Localize/fix brush names
+
 ## 2.2
 
  - Fix some overlapping undo glitches
