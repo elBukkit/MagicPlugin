@@ -61,7 +61,6 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	public final static float DEFAULT_SPELL_COLOR_MIX_WEIGHT = 0.0001f;
 	public final static float DEFAULT_WAND_COLOR_MIX_WEIGHT = 1.0f;
     public final static int POTION_EFFECT_DURATION = 240;
-	public final static Material DEFAULT_BRUSH_MATERIAL = Material.SULPHUR;
 
     public final static String[] EMPTY_PARAMETERS = new String[0];
 	
@@ -796,7 +795,8 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 			Integer slot = parseSlot(pieces);
 			String materialKey = pieces[0].trim();
             brushes.put(materialKey, slot);
-			ItemStack itemStack = createBrushIcon(materialKey);
+
+            ItemStack itemStack = createBrushIcon(materialKey);
 			if (itemStack == null) {
 				controller.getPlugin().getLogger().warning("Unable to create material icon for key " + materialKey);
 				continue;
@@ -849,19 +849,6 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		updateSpellItem(controller.getMessages(), itemStack, spell, wand, wand == null ? null : wand.activeMaterial, isItem);
 		return itemStack;
 	}
-
-	protected ItemStack createSpellIcon(String spellKey) {
-		return createSpellItem(spellKey, controller, this, false);
-	}
-	
-	private String getActiveWandName(String materialKey) {
-        SpellTemplate spell = null;
-        if (activeSpell != null && activeSpell.length() > 0) {
-            spell = controller.getSpellTemplate(activeSpell);
-        }
-
-		return getActiveWandName(spell, materialKey);
-	}
 	
 	protected ItemStack createBrushIcon(String materialKey) {
 		return createBrushItem(materialKey, controller, this, false);
@@ -869,64 +856,15 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	
 	@SuppressWarnings("deprecation")
 	public static ItemStack createBrushItem(String materialKey, MagicController controller, Wand wand, boolean isItem) {
-		MaterialAndData brushData = MaterialBrush.parseMaterialKey(materialKey, false);
+		MaterialBrush brushData = MaterialBrush.parseMaterialKey(materialKey);
 		if (brushData == null) return null;
-		
-		Material material = brushData.getMaterial();
-        if (material == null || material == Material.AIR) {
-			return null;
-		}
-		
-		short dataId = brushData.getData();
-		ItemStack originalItemStack = new ItemStack(material, 1, dataId);
-		ItemStack itemStack = InventoryUtils.makeReal(originalItemStack);
-		if (itemStack == null) {
-			itemStack = new ItemStack(DEFAULT_BRUSH_MATERIAL, 1, dataId);
-			itemStack = InventoryUtils.makeReal(itemStack);
-			if (itemStack == null) {
-				return itemStack;
-			}
-		}
-		List<String> lore = new ArrayList<String>();
-		if (material != null) {
-			lore.add(ChatColor.GRAY + controller.getMessages().get("wand.building_material_info").replace("$material", MaterialBrush.getMaterialName(materialKey)));
-			if (material == MaterialBrush.EraseMaterial) {
-				lore.add(controller.getMessages().get("wand.erase_material_description"));
-			} else if (material == MaterialBrush.CopyMaterial) {
-				lore.add(controller.getMessages().get("wand.copy_material_description"));
-			} else if (material == MaterialBrush.CloneMaterial) {
-				lore.add(controller.getMessages().get("wand.clone_material_description"));
-			} else if (material == MaterialBrush.ReplicateMaterial) {
-				lore.add(controller.getMessages().get("wand.replicate_material_description"));
-			} else if (material == MaterialBrush.MapMaterial) {
-				lore.add(controller.getMessages().get("wand.map_material_description"));
-			} else if (material == MaterialBrush.SchematicMaterial) {
-				lore.add(controller.getMessages().get("wand.schematic_material_description").replace("$schematic", brushData.getCustomName()));
-			} else {
-				if (material == Material.WATER || material == Material.STATIONARY_WATER || material == Material.LAVA || material == Material.STATIONARY_LAVA) {
-					ItemMeta meta = itemStack.getItemMeta();
-					meta.setDisplayName(material.name().toLowerCase().replace('_', ' '));
-					itemStack.setItemMeta(meta);
-					if (material == Material.WATER || material == Material.STATIONARY_WATER) {
-						itemStack.setType(Material.WATER_BUCKET);
-					} else if (material == Material.LAVA || material == Material.STATIONARY_LAVA) {
-						itemStack.setType(Material.LAVA_BUCKET);
-					}
-				}
 
-				lore.add(ChatColor.LIGHT_PURPLE + controller.getMessages().get("wand.building_material_description"));
-			}
-		}
-		
-		if (isItem) {
-			lore.add(ChatColor.YELLOW + controller.getMessages().get("wand.brush_item_description"));
-		}
-        CompatibilityUtils.setLore(itemStack, lore);
-        if (BrushGlow)
+        ItemStack itemStack = brushData.getItem(controller.getMessages(), isItem);
+        if (BrushGlow || isItem)
         {
             CompatibilityUtils.addGlow(itemStack);
         }
-        updateBrushItem(itemStack, materialKey, wand);
+        updateBrushItem(controller.getMessages(), itemStack, brushData, wand);
 		return itemStack;
 	}
 
@@ -1051,7 +989,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 			node.set("icon", null);
 		}
         if (upgradeIcon != null) {
-            String iconKey = MaterialBrush.getMaterialKey(upgradeIcon);
+            String iconKey = upgradeIcon.getKey();
             if (iconKey != null && iconKey.length() > 0) {
                 node.set("upgrade_icon", iconKey);
             } else {
@@ -1196,7 +1134,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 			description = wandConfig.getString("description", description);
 			template = wandConfig.getString("template", template);
             path = wandConfig.getString("path", path);
-			
+
 			activeSpell = wandConfig.getString("active_spell", activeSpell);
 			activeMaterial = wandConfig.getString("active_material", activeMaterial);
 
@@ -1307,19 +1245,19 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		}
 	}
 
-    private static String getBrushDisplayName(String materialKey) {
-        String materialName = MaterialBrush.getMaterialName(materialKey);
+    private static String getBrushDisplayName(Messages messages, MaterialBrush brush) {
+        String materialName = brush.getName(messages);
         if (materialName == null) {
             materialName = "none";
         }
         return ChatColor.GRAY + materialName;
     }
 
-    private static String getSpellDisplayName(SpellTemplate spell, String materialKey) {
+    private static String getSpellDisplayName(Messages messages, SpellTemplate spell, MaterialBrush brush) {
 		String name = "";
 		if (spell != null) {
-			if (materialKey != null && spell.usesBrush()) {
-				name = ChatColor.GOLD + spell.getName() + " " + getBrushDisplayName(materialKey) + ChatColor.WHITE;
+			if (brush != null && spell.usesBrush()) {
+				name = ChatColor.GOLD + spell.getName() + " " + getBrushDisplayName(messages, brush) + ChatColor.WHITE;
 			} else {
 				name = ChatColor.GOLD + spell.getName() + ChatColor.WHITE;
 			}
@@ -1328,7 +1266,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		return name;
 	}
 
-	private String getActiveWandName(SpellTemplate spell, String materialKey) {
+	private String getActiveWandName(SpellTemplate spell, MaterialBrush brush) {
 		// Build wand name
         int remaining = getRemainingUses();
 		ChatColor wandColor = remaining > 0 ? ChatColor.DARK_RED : isModifiable()
@@ -1340,21 +1278,30 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         Set<String> spells = getSpells();
 
         // Add active spell to description
+        Messages messages = controller.getMessages();
         boolean showSpell = isModifiable() && hasPath();
         if (spell != null && (spells.size() > 1 || showSpell)) {
-            name = getSpellDisplayName(spell, materialKey) + " (" + name + ChatColor.WHITE + ")";
+            name = getSpellDisplayName(messages, spell, brush) + " (" + name + ChatColor.WHITE + ")";
         }
 
 		if (remaining > 0) {
-			String message = (remaining == 1) ? controller.getMessages().get("wand.uses_remaining_singular") : controller.getMessages().get("wand.uses_remaining_brief");
+			String message = (remaining == 1) ? messages.get("wand.uses_remaining_singular") : controller.getMessages().get("wand.uses_remaining_brief");
 			name = name + ChatColor.DARK_RED + " (" + ChatColor.RED + message.replace("$count", ((Integer)remaining).toString()) + ChatColor.DARK_RED + ")";
 		}
 		return name;
 	}
 	
 	private String getActiveWandName(SpellTemplate spell) {
-		return getActiveWandName(spell, activeMaterial);
+		return getActiveWandName(spell, MaterialBrush.parseMaterialKey(activeMaterial));
 	}
+
+    private String getActiveWandName(MaterialBrush brush) {
+        SpellTemplate spell = null;
+        if (activeSpell != null && activeSpell.length() > 0) {
+            spell = controller.getSpellTemplate(activeSpell);
+        }
+        return getActiveWandName(spell, brush);
+    }
 	
 	private String getActiveWandName() {
 		SpellTemplate spell = null;
@@ -1517,6 +1464,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         }
 
 		SpellTemplate spell = controller.getSpellTemplate(activeSpell);
+        Messages messages = controller.getMessages();
 
         // This is here specifically for a wand that only has
         // one spell now, but may get more later. Since you
@@ -1524,19 +1472,19 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         // otherwise see the spell lore.
 		if (spell != null && spellCount == 1 && !hasInventory && !isUpgrade && hasPath() && !spell.isHidden())
         {
-            addSpellLore(controller.getMessages(), spell, lore, this);
+            addSpellLore(messages, spell, lore, this);
 		}
         if (materialCount == 1 && activeMaterial != null && activeMaterial.length() > 0)
         {
-            lore.add(getBrushDisplayName(activeMaterial));
+            lore.add(getBrushDisplayName(messages, MaterialBrush.parseMaterialKey(activeMaterial)));
         }
         if (!isUpgrade) {
             if (owner.length() > 0) {
                 if (bound) {
-                    String ownerDescription = controller.getMessages().get("wand.bound_description", "$name").replace("$name", owner);
+                    String ownerDescription = messages.get("wand.bound_description", "$name").replace("$name", owner);
                     lore.add(ChatColor.ITALIC + "" + ChatColor.DARK_AQUA + ownerDescription);
                 } else {
-                    String ownerDescription = controller.getMessages().get("wand.owner_description", "$name").replace("$name", owner);
+                    String ownerDescription = messages.get("wand.owner_description", "$name").replace("$name", owner);
                     lore.add(ChatColor.ITALIC + "" + ChatColor.DARK_GREEN + ownerDescription);
                 }
             }
@@ -1544,32 +1492,32 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 
         if (spellCount > 0) {
             if (isUpgrade) {
-                lore.add(controller.getMessages().get("wand.upgrade_spell_count").replace("$count", ((Integer)spellCount).toString()));
+                lore.add(messages.get("wand.upgrade_spell_count").replace("$count", ((Integer)spellCount).toString()));
             } else if (spellCount > 1) {
-                lore.add(controller.getMessages().get("wand.spell_count").replace("$count", ((Integer)spellCount).toString()));
+                lore.add(messages.get("wand.spell_count").replace("$count", ((Integer)spellCount).toString()));
             }
         }
         if (materialCount > 0) {
             if (isUpgrade) {
-                lore.add(controller.getMessages().get("wand.upgrade_material_count").replace("$count", ((Integer)materialCount).toString()));
+                lore.add(messages.get("wand.upgrade_material_count").replace("$count", ((Integer)materialCount).toString()));
             } else if (materialCount > 1) {
-                lore.add(controller.getMessages().get("wand.material_count").replace("$count", ((Integer)materialCount).toString()));
+                lore.add(messages.get("wand.material_count").replace("$count", ((Integer)materialCount).toString()));
             }
         }
 
 		int remaining = getRemainingUses();
 		if (remaining > 0) {
 			if (isUpgrade) {
-				String message = (remaining == 1) ? controller.getMessages().get("wand.upgrade_uses_singular") : controller.getMessages().get("wand.upgrade_uses");
+				String message = (remaining == 1) ? messages.get("wand.upgrade_uses_singular") : messages.get("wand.upgrade_uses");
 				lore.add(ChatColor.RED + message.replace("$count", ((Integer)remaining).toString()));
 			} else {
-				String message = (remaining == 1) ? controller.getMessages().get("wand.uses_remaining_singular") : controller.getMessages().get("wand.uses_remaining_brief");
+				String message = (remaining == 1) ? messages.get("wand.uses_remaining_singular") : messages.get("wand.uses_remaining_brief");
 				lore.add(ChatColor.RED + message.replace("$count", ((Integer)remaining).toString()));
 			}
 		}
 		addPropertyLore(lore);
 		if (isUpgrade) {
-			lore.add(ChatColor.YELLOW + controller.getMessages().get("wand.upgrade_item_description"));
+			lore.add(ChatColor.YELLOW + messages.get("wand.upgrade_item_description"));
 		}
 		return lore;
 	}
@@ -1658,7 +1606,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 				updateSpellItem(controller.getMessages(), item, spell, activeName ? this : null, activeMaterial, false);
 			}
 		} else if (isBrush(item)) {
-			updateBrushItem(item, getBrush(item), activeName ? this : null);
+			updateBrushItem(controller.getMessages(), item, getBrush(item), activeName ? this : null);
 		}
 	}
 	
@@ -1667,7 +1615,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		if (wand != null) {
 			displayName = wand.getActiveWandName(spell);
 		} else {
-			displayName = getSpellDisplayName(spell, activeMaterial);
+			displayName = getSpellDisplayName(messages, spell, MaterialBrush.parseMaterialKey(activeMaterial));
 		}
         CompatibilityUtils.setDisplayName(itemStack, displayName);
 		List<String> lore = new ArrayList<String>();
@@ -1682,17 +1630,21 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
             CompatibilityUtils.addGlow(itemStack);
         }
 	}
+
+    public static void updateBrushItem(Messages messages, ItemStack itemStack, String materialKey, Wand wand) {
+        updateBrushItem(messages, itemStack, MaterialBrush.parseMaterialKey(materialKey), wand);
+    }
 	
-	public static void updateBrushItem(ItemStack itemStack, String materialKey, Wand wand) {
-		String displayName = null;
+	public static void updateBrushItem(Messages messages, ItemStack itemStack, MaterialBrush brush, Wand wand) {
+		String displayName;
 		if (wand != null) {
-			displayName = wand.getActiveWandName(materialKey);
-		} else {
-			displayName = MaterialBrush.getMaterialName(materialKey);
-		}
+			displayName = wand.getActiveWandName(brush);
+        } else {
+            displayName = brush.getName(messages);
+        }
         CompatibilityUtils.setDisplayName(itemStack, displayName);
         Object brushNode = CompatibilityUtils.createNode(itemStack, "brush");
-        CompatibilityUtils.setMeta(brushNode, "key", materialKey);
+        CompatibilityUtils.setMeta(brushNode, "key", brush.getKey());
 	}
 
     public void updateHotbar() {
@@ -2226,7 +2178,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		for (String materialKey : materials) {
 			if (addBrush(materialKey)) {
 				modified = true;
-				if (mage != null) mage.sendMessage(messages.get("wand.brush_added").replace("$wand", getName()).replace("$name", MaterialBrush.getMaterialName(materialKey)));
+				if (mage != null) mage.sendMessage(messages.get("wand.brush_added").replace("$wand", getName()).replace("$name", MaterialBrush.getMaterialName(messages, materialKey)));
 			}
 		}
 
@@ -2684,7 +2636,8 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 			Set<String> materials = getBrushes();
 			if (!materials.contains(materialKey) && addBrush(materialKey)) {
                 if (mage != null) {
-                    mage.sendMessage(controller.getMessages().get("wand.brush_added").replace("$wand", getName()).replace("$name", MaterialBrush.getMaterialName(materialKey)));
+                    Messages messages = controller.getMessages();
+                    mage.sendMessage(messages.get("wand.brush_added").replace("$wand", getName()).replace("$name", MaterialBrush.getMaterialName(messages, materialKey)));
                 }
                 return true;
 			}

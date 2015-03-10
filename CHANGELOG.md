@@ -2,13 +2,15 @@
 
 ## 4.4
 
+ - Update Arrow to work with 1.8.3
  - Add Tracking Sense spell
+ - Add Flash Bang spell
+ - Update/Improve Pollinate spell
  - Add FX for spell level up and undo
  - Fix PVP flag check in PreciousStones fields
  - Add "/magic check" command for debugging permissions
  - Add "/magic debug" command for debugging spell casts
  - Fix Kill perma-breaking blocks
- - Update Arrow to work with 1.8.3
  - Improved "keep" behavior for wands
 
 ## 4.3

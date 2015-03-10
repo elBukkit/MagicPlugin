@@ -558,7 +558,7 @@ public class WandCommandExecutor extends MagicTabExecutor {
 			return false;
 		}
         if (api.isWand(heldItem) || api.isSpell(heldItem) || api.isBrush(heldItem)) {
-            sender.sendMessage(api.getMessages().getParameterized("wand.already_enchanted", "$item", MaterialBrush.getMaterialName(heldItem.getType(), (byte)heldItem.getDurability())));
+            sender.sendMessage(api.getMessages().getParameterized("wand.already_enchanted", "$item", MaterialAndData.getMaterialName(heldItem)));
             return false;
         }
 		
@@ -566,11 +566,11 @@ public class WandCommandExecutor extends MagicTabExecutor {
 		player.setItemInHand(wand.getItem());
 		wand.activate(mage);
 		
-		mage.sendMessage(api.getMessages().getParameterized("wand.enchanted", "$item", MaterialBrush.getMaterialName(heldItem.getType(), (byte)heldItem.getDurability())));
+		mage.sendMessage(api.getMessages().getParameterized("wand.enchanted", "$item", MaterialAndData.getMaterialName(heldItem)));
 				
 		if (sender != player) {
 			sender.sendMessage(api.getMessages().getParameterized("wand.player_enchanted",
-					"$item", MaterialBrush.getMaterialName(heldItem.getType(), (byte)heldItem.getDurability()),
+					"$item", MaterialAndData.getMaterialName(heldItem),
 					"$name", player.getName()
 			));
 		}
@@ -868,7 +868,7 @@ public class WandCommandExecutor extends MagicTabExecutor {
 
 			if (wand.addBrush(materialKey)) {
 				wand.setActiveBrush(materialKey);
-                mage.sendMessage(messages.get("wand.brush_added").replace("$wand", wand.getName()).replace("$name", MaterialBrush.getMaterialName(materialKey)));
+                mage.sendMessage(messages.get("wand.brush_added").replace("$wand", wand.getName()).replace("$name", MaterialBrush.getMaterialName(messages, materialKey)));
 				if (sender != player) {
 					sender.sendMessage("Added material '" + materialKey + "' to " + player.getName() + "'s wand");
 				}

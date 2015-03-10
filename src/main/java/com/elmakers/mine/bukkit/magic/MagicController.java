@@ -3053,7 +3053,7 @@ public class MagicController implements Listener, MageController {
 			wand.removeBrush(brushKey);
 
 			// Update the item for proper naming and lore
-			Wand.updateBrushItem(droppedItem, brushKey, null);
+			Wand.updateBrushItem(getMessages(), droppedItem, brushKey, null);
 		}
 		return droppedItem;
 	}

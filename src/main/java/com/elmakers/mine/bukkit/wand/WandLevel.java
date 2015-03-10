@@ -251,7 +251,7 @@ public class WandLevel {
 					addedMaterials = true;
                     if (mage != null)
                     {
-                        String materialName = MaterialBrush.getMaterialName(materialKey);
+                        String materialName = MaterialBrush.getMaterialName(messages,materialKey);
                         if (materialName == null)
                         {
                             mage.getController().getLogger().warning("Invalid material in enchanting configs: " + materialKey);

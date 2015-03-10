@@ -78,17 +78,22 @@ wand:
     upgrade_item_description: Will be absorbed by your wand
     spell_item_description: Will be absorbed by your wand
     brush_item_description: Will be absorbed by your wand
+    copy_material_name: Copy
     copy_material_description: Fills with the target material
+    erase_material_name: Erase
     erase_material_description: Fills with Air
+    clone_material_name: Clone
     clone_material_description: Copies blocks from a target
+    replicate_material_name: Replicate
     replicate_material_description: Replicates the clone target
     clone_material_activated: Clone source selected
     replicate_material_activated: Replicate source selected
     erase_modifier_activated: Erase modifier active
+    map_material_name: Map
+    map_material_name_scaled: Map $sizex$size
     map_material_description: Creates pixel art from last held map
     schematic_material_description: Uses $schematic to build.
-    building_material_description: Magic material
-    building_material_info: Uses the $material brush
+    building_material_description: Build with $material
     upgrade_uses: Adds $count Uses
     upgrade_uses_singular: Adds $count Use
     uses_remaining_brief: $count Uses
