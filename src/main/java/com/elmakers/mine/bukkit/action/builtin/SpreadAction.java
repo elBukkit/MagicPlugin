@@ -43,11 +43,11 @@ public class SpreadAction extends CompoundAction
             sourceLocation = sourceLocation.clone();
             if (pitchMax > 0)
             {
-                sourceLocation.setPitch(sourceLocation.getPitch() + pitchMax * random.nextFloat());
+                sourceLocation.setPitch(sourceLocation.getPitch() + pitchMax * random.nextFloat() - pitchMax / 2);
             }
             if (yawMax > 0)
             {
-                sourceLocation.setYaw(sourceLocation.getYaw() + yawMax * random.nextFloat());
+                sourceLocation.setYaw(sourceLocation.getYaw() + yawMax * random.nextFloat() - yawMax / 2);
             }
         }
         CastContext actionContext = createContext(context, source, sourceLocation);

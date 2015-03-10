@@ -16,15 +16,18 @@ import org.bukkit.util.Vector;
 import java.util.Arrays;
 import java.util.Collection;
 
-public class TossAction extends DelayedCompoundAction
+public class ThrowBlockAction extends DelayedCompoundAction
 {
-    private double speed;
+    private double speedMin;
+    private double speedMax;
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters)
     {
         super.prepare(context, parameters);
-        speed = (float)parameters.getDouble("speed", 0.6f);
+        double itemSpeed = parameters.getDouble("speed", 0.6f);
+        speedMin = parameters.getDouble("speed_min", itemSpeed);
+        speedMax = parameters.getDouble("speed_max", itemSpeed);
     }
 
 	@Override
@@ -43,7 +46,8 @@ public class TossAction extends DelayedCompoundAction
 		byte data = buildWith.getBlockData();
 
 		Vector direction = context.getDirection();
-		direction.normalize().multiply(speed);
+        double speed = context.getRandom().nextDouble() * (speedMax - speedMin) + speedMin;
+        direction.normalize().multiply(speed);
 		Vector up = new Vector(0, 1, 0);
 		Vector perp = new Vector();
 		perp.copy(direction);
@@ -89,11 +93,13 @@ public class TossAction extends DelayedCompoundAction
     public void getParameterNames(Collection<String> parameters) {
         super.getParameterNames(parameters);
         parameters.add("speed");
+        parameters.add("speed_min");
+        parameters.add("speed_max");
     }
 
     @Override
     public void getParameterOptions(Collection<String> examples, String parameterKey) {
-        if (parameterKey.equals("speed")) {
+        if (parameterKey.equals("speed") || parameterKey.equals("speed_max") || parameterKey.equals("speed_min")) {
             examples.addAll(Arrays.asList((BaseSpell.EXAMPLE_SIZES)));
         }
     }

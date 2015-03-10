@@ -1034,33 +1034,44 @@ tag:
 toss:
     icon: wood_button
     category: engineering
-    class: TossSpell
     worth: 20
-    effects:
+    actions:
         cast:
-        -  class: EffectRing
+        -  class: ThrowBlock
+    effects:
+        hit:
+        -  class: EffectSingle
            effect: step_sound
            location: origin
     pvp_restricted: true
     parameters:
-      speed: 2
+      speed_min: 1.2
+      speed_max: 2.2
     costs:
         mana: 20
 
 volley:
     icon: stone_button
     category: engineering
-    class: TossSpell
     pvp_restricted: true
     worth: 40
-    effects:
+    actions:
         cast:
-        -  class: EffectRing
+        -  class: Repeat
+           actions:
+           -  class: Spread
+              actions:
+              -  class: ThrowBlock
+    effects:
+        hit:
+        -  class: EffectSingle
            effect: step_sound
            location: origin
     parameters:
       speed: 1.5
       count: 8
+      pitch_max: 5
+      yaw_max: 45
     costs:
         mana: 40
 
@@ -1918,7 +1929,7 @@ flashbang:
     upgrade_required_casts: 50
     actions:
         cast:
-        - class: Toss
+        - class: ThrowBlock
           actions:
           - class: AreaOfEffect
             actions:
