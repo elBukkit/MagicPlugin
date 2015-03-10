@@ -28,9 +28,9 @@ public class ThrowItemAction extends DelayedCompoundAction {
     public void prepare(CastContext context, ConfigurationSection parameters)
     {
         super.prepare(context, parameters);
-        double itemSpeed = parameters.getDouble("item_speed", 1);
-        itemSpeedMin = parameters.getDouble("item_speed_min", itemSpeed);
-        itemSpeedMax = parameters.getDouble("item_speed_max", itemSpeed);
+        double itemSpeed = parameters.getDouble("speed", 1);
+        itemSpeedMin = parameters.getDouble("speed_min", itemSpeed);
+        itemSpeedMax = parameters.getDouble("speed_max", itemSpeed);
         ageItems = parameters.getInt("age_items", 5500);
     }
 
@@ -71,9 +71,9 @@ public class ThrowItemAction extends DelayedCompoundAction {
     public void getParameterNames(Collection<String> parameters)
     {
         super.getParameterNames(parameters);
-        parameters.add("item_speed");
-        parameters.add("item_speed_min");
-        parameters.add("item_speed_max");
+        parameters.add("speed");
+        parameters.add("speed_min");
+        parameters.add("speed_max");
         parameters.add("age_items");
     }
 
@@ -82,8 +82,8 @@ public class ThrowItemAction extends DelayedCompoundAction {
     {
         super.getParameterOptions(examples, parameterKey);
 
-        if (parameterKey.equals("item_speed") || parameterKey.equals("age_items")
-        || parameterKey.equals("item_speed_max") || parameterKey.equals("item_speed_min"))
+        if (parameterKey.equals("speed") || parameterKey.equals("age_items")
+        || parameterKey.equals("speed_max") || parameterKey.equals("speed_min"))
         {
             examples.addAll(Arrays.asList(BaseSpell.EXAMPLE_SIZES));
         }
