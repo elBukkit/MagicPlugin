@@ -847,7 +847,7 @@ public abstract class TargetingSpell extends BaseSpell {
     protected String getDisplayMaterialName()
     {
         if (target != null && target.isValid()) {
-            return MaterialBrush.getMaterialName(target.getBlock().getType(), target.getBlock().getData());
+            return MaterialBrush.getMaterialName(target.getBlock());
         }
 
         return super.getDisplayMaterialName();

@@ -5,7 +5,11 @@ import java.util.Collection;
 import java.util.List;
 
 import com.elmakers.mine.bukkit.api.block.BrushMode;
+import com.elmakers.mine.bukkit.api.magic.MageController;
+import com.elmakers.mine.bukkit.api.magic.Messages;
+import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.DyeColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -15,6 +19,8 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.map.MapRenderer;
 import org.bukkit.map.MapView;
 import org.bukkit.util.Vector;
@@ -33,6 +39,7 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
     public static final String REPLICATE_MATERIAL_KEY = "replicate";
     public static final String MAP_MATERIAL_KEY = "map";
     public static final String SCHEMATIC_MATERIAL_KEY = "schematic";
+    public static final int DEFAULT_MAP_SIZE = 16;
 
     // This does not include schematics
     public static final String[] SPECIAL_MATERIAL_KEYS = {ERASE_MATERIAL_KEY, COPY_MATERIAL_KEY,
@@ -44,6 +51,7 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
     public static Material ReplicateMaterial = Material.PUMPKIN_SEEDS;
     public static Material MapMaterial = Material.MAP;
     public static Material SchematicMaterial = Material.PAPER;
+    public static Material DefaultBrushMaterial = Material.SULPHUR;
 
     public static boolean SchematicsEnabled = false;
 
@@ -63,6 +71,7 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
     private String schematicName = "";
     private boolean fillWithAir = true;
     private Vector orientVector = null;
+    private double scale = 1;
 
     public MaterialBrush(final Mage mage, final Material material, final  byte data) {
         super(material, data);
@@ -76,58 +85,40 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
         activate(location, materialKey);
     }
 
-    public static String getMaterialKey(Material material) {
-        return getMaterialKey(material, true);
+    // Used only for generating names
+    private MaterialBrush(final String materialKey) {
+        super(DEFAULT_MATERIAL, (byte)0);
+        this.mage = null;
+        update(materialKey);
     }
 
-    public static String getMaterialKey(Material material, boolean allowItems) {
+    public String getKey() {
         String materialKey = null;
-        if (material == null) return null;
-
-        if (material == EraseMaterial) {
+        if (mode == BrushMode.ERASE) {
             materialKey = ERASE_MATERIAL_KEY;
-        } else if (material == CopyMaterial) {
+        } else if (mode == BrushMode.COPY) {
             materialKey = COPY_MATERIAL_KEY;
-        } else if (material == CloneMaterial) {
+        } else if (mode == BrushMode.CLONE) {
             materialKey = CLONE_MATERIAL_KEY;
-        } else if (material == MapMaterial) {
+        } else if (mode == BrushMode.MAP) {
             materialKey = MAP_MATERIAL_KEY;
-        } else if (material == ReplicateMaterial) {
+            int mapSize = (int)((float)128 / scale);
+            if (mapSize != DEFAULT_MAP_SIZE)
+            {
+                materialKey = materialKey + ":" + mapSize;
+            }
+        } else if (mode == BrushMode.REPLICATE) {
             materialKey = REPLICATE_MATERIAL_KEY;
-        } else if (SchematicsEnabled && material == SchematicMaterial) {
+        } else if (SchematicsEnabled && mode == BrushMode.SCHEMATIC) {
             // This would be kinda broken.. might want to revisit all this.
             // This method is only called by addMaterial at this point,
             // which should only be called with real materials anyway.
-            materialKey = SCHEMATIC_MATERIAL_KEY;
-        } else if (allowItems || material.isBlock()) {
-            materialKey = material.name().toLowerCase();
+            materialKey = SCHEMATIC_MATERIAL_KEY + ":" + schematicName;
+        } else {
+            materialKey = super.getKey();
         }
 
         return materialKey;
-    }
-
-    public static String getMaterialKey(Material material, short data) {
-        return getMaterialKey(material, data, true);
-    }
-
-    public static String getMaterialKey(Material material, short data, boolean allowItems) {
-        String materialKey = MaterialBrush.getMaterialKey(material, allowItems);
-        if (materialKey == null) {
-            return null;
-        }
-        if (data != 0) {
-            materialKey += ":" + data;
-        }
-
-        return materialKey;
-    }
-
-    public static String getMaterialKey(MaterialAndData materialData) {
-        return getMaterialKey(materialData.getMaterial(), materialData.getData(), true);
-    }
-
-    public static String getMaterialKey(MaterialAndData materialData, boolean allowItems) {
-        return getMaterialKey(materialData.getMaterial(), materialData.getData(), allowItems);
     }
 
     public static boolean isSpecialMaterialKey(String materialKey) {
@@ -138,98 +129,93 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
                MAP_MATERIAL_KEY.equals(materialKey) || (SchematicsEnabled && SCHEMATIC_MATERIAL_KEY.equals(materialKey));
     }
 
-    public static String getMaterialName(MaterialAndData material) {
-        return getMaterialName(getMaterialKey(material));
-    }
-
-    public static String getMaterialName(Material material, byte data) {
-        return getMaterialName(getMaterialKey(material, data));
-    }
-
-    public static String getMaterialName(String materialKey) {
-        if (materialKey == null) return null;
-        String materialName = materialKey;
-        String[] namePieces = splitMaterialKey(materialName);
-
-        if (namePieces.length == 0) return null;
-
-        materialName = namePieces[0];
-
-        if (materialName.startsWith(MaterialBrush.SCHEMATIC_MATERIAL_KEY) && namePieces.length > 1) {
-            materialName = namePieces[1];
-        } else if (!MaterialBrush.isSpecialMaterialKey(materialKey)) {
-            return MaterialAndData.getMaterialName(materialKey);
-        }
-
-        materialName = materialName.toLowerCase().replace('_', ' ');
-
-        return materialName;
+    public static String getMaterialName(Messages messages, String materialKey) {
+        MaterialBrush brush = new MaterialBrush(materialKey);
+        return brush.getName(messages);
     }
 
     public String getName() {
-        String brushKey = getKey();
+        Messages messages = mage != null ? mage.getController().getMessages() : null;
+        return getName(messages);
+    }
+
+    public String getName(Messages messages) {
+        String brushKey;
         switch (mode) {
-        case CLONE: brushKey = CLONE_MATERIAL_KEY; break;
-        case REPLICATE: brushKey = REPLICATE_MATERIAL_KEY; break;
-        case COPY: brushKey = COPY_MATERIAL_KEY; break;
-        case MAP: brushKey = MAP_MATERIAL_KEY; break;
-        case SCHEMATIC: brushKey = SCHEMATIC_MATERIAL_KEY + ":" + schematicName; break;
-            default: break;
-        }
-        return getMaterialName(brushKey);
-    }
-
-    public static MaterialAndData parseMaterialKey(String materialKey) {
-        return parseMaterialKey(materialKey, true);
-    }
-
-    public static MaterialAndData parseMaterialKey(String materialKey, boolean allowItems) {
-        if (materialKey == null || materialKey.length() == 0) return null;
-
-        Material material = DEFAULT_MATERIAL;
-        byte data = 0;
-        String customName = "";
-        String[] pieces = splitMaterialKey(materialKey);
-
-        if (materialKey.equals(ERASE_MATERIAL_KEY)) {
-            material = EraseMaterial;
-        } else if (materialKey.equals(COPY_MATERIAL_KEY)) {
-            material = CopyMaterial;
-        } else if (materialKey.equals(CLONE_MATERIAL_KEY)) {
-            material = CloneMaterial;
-        } else if (materialKey.equals(REPLICATE_MATERIAL_KEY)) {
-            material = ReplicateMaterial;
-        } else if (materialKey.equals(MAP_MATERIAL_KEY)) {
-            material = MapMaterial;
-        } else if (SchematicsEnabled && pieces[0].equals(SCHEMATIC_MATERIAL_KEY) && pieces.length > 1) {
-            material = SchematicMaterial;
-            // TODO: Kind of a hack, but I think I did this for display reasons? Need to circle back on it.
-            customName = pieces[1];
-        } else {
-            MaterialAndData basic = new MaterialAndData(materialKey);
-
-            // Prevent building with items
-            if (!allowItems && !basic.getMaterial().isBlock()) {
-                return null;
+        case ERASE:
+            brushKey = ERASE_MATERIAL_KEY;
+            if (messages != null) {
+                brushKey = messages.get("wand.erase_material_name");
             }
-
-            return basic;
+            break;
+        case CLONE:
+            brushKey = CLONE_MATERIAL_KEY;
+            if (messages != null) {
+                brushKey = messages.get("wand.clone_material_name");
+            }
+            break;
+        case REPLICATE:
+            brushKey = REPLICATE_MATERIAL_KEY;
+            if (messages != null) {
+                brushKey = messages.get("wand.replicate_material_name");
+            }
+            break;
+        case COPY:
+            brushKey = COPY_MATERIAL_KEY;
+            if (messages != null) {
+                brushKey = messages.get("wand.copy_material_name");
+            }
+            break;
+        case MAP:
+            brushKey = MAP_MATERIAL_KEY;
+            int mapSize = (int)((float)128 / scale);
+            if (mapSize != DEFAULT_MAP_SIZE)
+            {
+                if (messages != null) {
+                    brushKey = messages.get("wand.map_material_name_scaled");
+                    brushKey = brushKey.replace("$size", Integer.toString(mapSize));
+                } else {
+                    brushKey = brushKey + " " + mapSize + "x" + mapSize;
+                }
+            } else if (messages != null) {
+                brushKey = messages.get("wand.map_material_name");
+            }
+            break;
+        case SCHEMATIC:
+            brushKey = schematicName;
+            brushKey = brushKey.toLowerCase().replace('_', ' ');
+            break;
+        default:
+            brushKey = super.getName(messages);
         }
 
-        return new MaterialAndData(material, data, customName);
+        return brushKey;
     }
 
-    public static boolean isValidMaterial(String materialKey) {
-        return parseMaterialKey(materialKey) != null;
+    public static MaterialBrush parseMaterialKey(String materialKey) {
+        return parseMaterialKey(materialKey, false);
+    }
+
+    public static MaterialBrush parseMaterialKey(String materialKey, boolean allowItems) {
+        if (materialKey == null || materialKey.length() == 0) return null;
+        MaterialBrush brush = new MaterialBrush(materialKey);
+        return brush.isValid(allowItems) ? brush : null;
     }
 
     public static boolean isValidMaterial(String materialKey, boolean allowItems) {
-        return parseMaterialKey(materialKey, allowItems) != null;
+        MaterialBrush brush = new MaterialBrush(materialKey);
+        return brush.isValid(allowItems);
+    }
+
+    public boolean isValid(boolean allowItems) {
+        if (!isValid()) return false;
+        if (mode != BrushMode.MATERIAL) return true;
+        return allowItems || material.isBlock();
     }
 
     @Override
     public void setMaterial(Material material, short data) {
-        if (!mage.isRestricted(material) && material.isBlock()) {
+        if (material.isBlock() && (mage == null || !mage.isRestricted(material))) {
             super.setMaterial(material, data);
             mode = BrushMode.MATERIAL;
             isValid = true;
@@ -255,8 +241,12 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
     }
 
     @SuppressWarnings("deprecation")
-    public void enableMap() {
+    public void enableMap(int size) {
         fillWithAir = false;
+        if (size <= 0) {
+            size = DEFAULT_MAP_SIZE;
+        }
+        this.scale = (float)128 / size;
         this.mode = BrushMode.MAP;
         if (this.material == Material.WOOL || this.material == Material.STAINED_CLAY
             // Use raw id's for 1.6 backwards compatibility.
@@ -424,17 +414,17 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
                 if (orientVector.getBlockY() > orientVector.getBlockZ() || orientVector.getBlockY() > orientVector.getBlockX()) {
                     if (orientVector.getBlockX() > orientVector.getBlockZ()) {
                         mapColor = mapCanvas.getDyeColor(
-                                Math.abs(diff.getBlockX() * 8 + BufferedMapCanvas.CANVAS_WIDTH / 2) % BufferedMapCanvas.CANVAS_WIDTH,
-                                Math.abs(-diff.getBlockY() * 8 + BufferedMapCanvas.CANVAS_HEIGHT / 2) % BufferedMapCanvas.CANVAS_HEIGHT);
+                                Math.abs((int)(diff.getBlockX() * scale + BufferedMapCanvas.CANVAS_WIDTH / 2) % BufferedMapCanvas.CANVAS_WIDTH),
+                                Math.abs((int)(-diff.getBlockY() * scale + BufferedMapCanvas.CANVAS_HEIGHT / 2) % BufferedMapCanvas.CANVAS_HEIGHT));
                     } else {
                         mapColor = mapCanvas.getDyeColor(
-                                Math.abs(diff.getBlockZ() * 8 + BufferedMapCanvas.CANVAS_WIDTH / 2) % BufferedMapCanvas.CANVAS_WIDTH,
-                                Math.abs(-diff.getBlockY() * 8 + BufferedMapCanvas.CANVAS_HEIGHT / 2) % BufferedMapCanvas.CANVAS_HEIGHT);
+                                Math.abs((int)(diff.getBlockZ() * scale + BufferedMapCanvas.CANVAS_WIDTH / 2) % BufferedMapCanvas.CANVAS_WIDTH),
+                                Math.abs((int)(-diff.getBlockY() * scale + BufferedMapCanvas.CANVAS_HEIGHT / 2) % BufferedMapCanvas.CANVAS_HEIGHT));
                     }
                 } else {
-                    mapColor = mapCanvas.getDyeColor(
-                        Math.abs(diff.getBlockX() * 8 + BufferedMapCanvas.CANVAS_WIDTH / 2) % BufferedMapCanvas.CANVAS_WIDTH,
-                        Math.abs(diff.getBlockZ() * 8 + BufferedMapCanvas.CANVAS_HEIGHT / 2) % BufferedMapCanvas.CANVAS_HEIGHT);
+                    mapColor = mapCanvas.getDyeColor((int)(
+                        Math.abs((int)(diff.getBlockX() * scale + BufferedMapCanvas.CANVAS_WIDTH / 2) % BufferedMapCanvas.CANVAS_WIDTH)),
+                        Math.abs((int)(diff.getBlockZ() * scale + BufferedMapCanvas.CANVAS_HEIGHT / 2) % BufferedMapCanvas.CANVAS_HEIGHT));
                 }
                 if (mapColor != null) {
                     super.setMaterial(mapMaterialBase, mapColor.getData());
@@ -484,6 +474,8 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
             material = ConfigurationUtils.getMaterial(node, "material", material);
             data = (short)node.getInt("data", data);
             customName = node.getString("extra_data", customName);
+            scale = node.getDouble("scale", scale);
+            fillWithAir = node.getBoolean("erase", fillWithAir);
         } catch (Exception ex) {
             ex.printStackTrace();
             mage.getController().getLogger().warning("Failed to load brush data: " + ex.getMessage());
@@ -507,6 +499,8 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
             node.set("data", data);
             node.set("extra_data", customName);
             node.set("schematic", schematicName);
+            node.set("scale", scale);
+            node.set("erase", fillWithAir);
         } catch (Exception ex) {
             ex.printStackTrace();
             mage.getController().getLogger().warning("Failed to save brush data: " + ex.getMessage());
@@ -599,17 +593,22 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
             enableCloning();
         } else if (activeMaterial.equals(REPLICATE_MATERIAL_KEY)) {
             enableReplication();
-        } else if (activeMaterial.equals(MAP_MATERIAL_KEY)) {
-            enableMap();
+        } else if (pieces[0].equals(MAP_MATERIAL_KEY)) {
+            int size = DEFAULT_MAP_SIZE;
+            if (pieces.length > 1) {
+                try {
+                    size = Integer.parseInt(pieces[1]);
+                } catch (Exception ex) {
+                }
+            }
+            enableMap(size);
         } else if (activeMaterial.equals(ERASE_MATERIAL_KEY)) {
             enableErase();
         } else if (pieces.length > 1 && pieces[0].equals(SCHEMATIC_MATERIAL_KEY)) {
             enableSchematic(pieces[1]);
         } else {
-            MaterialAndData material = parseMaterialKey(activeMaterial);
-            if (material != null) {
-                setMaterial(material.getMaterial(), material.getData());
-            }
+            mode = BrushMode.MATERIAL;
+            super.update(activeMaterial);
         }
     }
 
@@ -696,5 +695,65 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
     public boolean isEraseModifierActive()
     {
         return fillWithAir;
+    }
+
+    public ItemStack getItem(Messages messages, boolean isItem) {
+        Material material = this.getMaterial();
+        short dataId = this.getData();
+        String extraLore = null;
+        String customName = getName(messages);
+
+        if (mode == BrushMode.ERASE) {
+            material = MaterialBrush.EraseMaterial;
+            extraLore = messages.get("wand.erase_material_description");
+        } else if (mode == BrushMode.COPY) {
+            material = MaterialBrush.CopyMaterial;
+            extraLore = messages.get("wand.copy_material_description");
+        } else if (mode == BrushMode.CLONE) {
+            material = MaterialBrush.CloneMaterial;
+            extraLore = messages.get("wand.clone_material_description");
+        } else if (mode == BrushMode.REPLICATE) {
+            material = MaterialBrush.ReplicateMaterial;
+            extraLore = messages.get("wand.replicate_material_description");
+        } else if (mode == BrushMode.MAP) {
+            material = MaterialBrush.MapMaterial;
+            extraLore = messages.get("wand.map_material_description");
+        } else if (mode == BrushMode.SCHEMATIC) {
+            material = MaterialBrush.SchematicMaterial;
+            extraLore = messages.get("wand.schematic_material_description").replace("$schematic", schematicName);
+        } else {
+            if (material == Material.WATER || material == Material.STATIONARY_WATER || material == Material.LAVA || material == Material.STATIONARY_LAVA) {
+                if (material == Material.WATER || material == Material.STATIONARY_WATER) {
+                    material = Material.WATER_BUCKET;
+                } else if (material == Material.LAVA || material == Material.STATIONARY_LAVA) {
+                    material = Material.LAVA_BUCKET;
+                }
+            }
+            extraLore = messages.get("wand.building_material_description").replace("$material", customName);
+        }
+
+        ItemStack originalItemStack = new ItemStack(material, 1, dataId);
+        ItemStack itemStack = InventoryUtils.makeReal(originalItemStack);
+        if (itemStack == null) {
+            itemStack = new ItemStack(DefaultBrushMaterial, 1, dataId);
+            itemStack = InventoryUtils.makeReal(itemStack);
+            if (itemStack == null) {
+                return itemStack;
+            }
+        }
+        ItemMeta meta = itemStack.getItemMeta();
+        List<String> lore = new ArrayList<String>();
+        if (extraLore != null) {
+            lore.add(ChatColor.LIGHT_PURPLE + extraLore);
+        }
+        if (isItem) {
+            lore.add(ChatColor.YELLOW + messages.get("wand.brush_item_description"));
+        }
+        meta.setLore(lore);
+        if (customName != null) {
+            meta.setDisplayName(customName);
+        }
+        itemStack.setItemMeta(meta);
+        return itemStack;
     }
 }

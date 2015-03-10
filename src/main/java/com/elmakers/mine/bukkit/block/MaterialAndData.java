@@ -4,6 +4,7 @@ import java.net.URL;
 import java.util.Collection;
 import java.util.Set;
 
+import com.elmakers.mine.bukkit.api.magic.Messages;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import org.apache.commons.lang.StringUtils;
@@ -123,6 +124,10 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
     @SuppressWarnings("deprecation")
     public MaterialAndData(String materialKey) {
         this();
+        update(materialKey);
+    }
+
+    public void update(String materialKey) {
         if (materialKey == null || materialKey.length() == 0) {
             isValid = false;
             return;
@@ -544,22 +549,28 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         return isValid;
     }
 
-    public String getName() {
-        return getMaterialName(getKey());
+    public static String getMaterialName(ItemStack item) {
+        MaterialAndData material = new MaterialAndData(item.getType(), item.getDurability());
+        return material.getName();
     }
 
     @SuppressWarnings("deprecation")
-    public static String getMaterialName(String materialKey) {
-        if (materialKey == null) return null;
-        String[] namePieces = splitMaterialKey(materialKey);
-        if (namePieces.length == 0) return null;
+    public static String getMaterialName(Block block) {
+        MaterialAndData material = new MaterialAndData(block.getType(), block.getData());
+        return material.getName();
+    }
 
-        MaterialAndData materialAndData = new MaterialAndData(materialKey);
-        if (!materialAndData.isValid()) return null;
+    public String getName() {
+        return getName(null);
+    }
 
-        Material material = materialAndData.getMaterial();
-        Short data = materialAndData.getData();
-        String customName = materialAndData.getCustomName();
+        @SuppressWarnings("deprecation")
+    public String getName(Messages messages) {
+        if (!isValid()) return null;
+
+        Material material = getMaterial();
+        Short data = getData();
+        String customName = getCustomName();
         String materialName = material.name();
 
         // This is the "right" way to do this, but relies on Bukkit actually updating Material in a timely fashion :P
@@ -578,12 +589,10 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         }
         */
 
-        // Using raw id's for 1.6 support, but still trying to give them nice names.
         // TODO: I don't think these colors are right... is DyeColor correct here?
 
-        // if (material == Material.CARPET || material == Material.STAINED_GLASS || material == Material.STAINED_CLAY || material == Material.STAINED_GLASS_PANE || material == Material.WOOL) {
         if (data != null) {
-            if (material == Material.CARPET || material.getId() == 95 || material.getId() == 159 || material.getId() == 160 || material == Material.WOOL) {
+             if (material == Material.CARPET || material == Material.STAINED_GLASS || material == Material.STAINED_CLAY || material == Material.STAINED_GLASS_PANE || material == Material.WOOL) {
                 // Note that getByDyeData doesn't work for stained glass or clay. Kind of misleading?
                 DyeColor color = DyeColor.getByWoolData((byte)(short)data);
                 if (color != null) {
@@ -600,7 +609,6 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         }
 
         materialName = materialName.toLowerCase().replace('_', ' ');
-
         return materialName;
     }
 
