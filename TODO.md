@@ -7,7 +7,6 @@
  - /magic describe should show info about current spell?
  - Fix Chop on data variants..?
 
- - Custom icon support for special brushes
  - Fix recall home spawning in the ground?
  - Fix spells getting lost on config load failure
  - Add spellbook-choosing action 

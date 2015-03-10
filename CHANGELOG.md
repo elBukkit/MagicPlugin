@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 4.5
+ - Allow different map scales (/mgive brush:map:128)
+ - Add custom icons for special brushes
+
 ## 4.4
 
  - Update Arrow to work with 1.8.3

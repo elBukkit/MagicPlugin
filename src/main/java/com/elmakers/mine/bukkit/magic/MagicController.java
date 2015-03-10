@@ -1880,6 +1880,7 @@ public class MagicController implements Listener, MageController {
         Wand.SpellGlow = properties.getBoolean("spell_glow", Wand.SpellGlow);
         Wand.LiveHotbar = properties.getBoolean("live_hotbar", Wand.LiveHotbar);
         Wand.BrushGlow = properties.getBoolean("brush_glow", Wand.BrushGlow);
+        Wand.BrushItemGlow = properties.getBoolean("brush_item_glow", Wand.BrushItemGlow);
         Wand.WAND_KEY = properties.getString("wand_key", "wand");
 
         MaterialBrush.CopyMaterial = ConfigurationUtils.getMaterial(properties, "copy_item", MaterialBrush.CopyMaterial);
@@ -1888,6 +1889,16 @@ public class MagicController implements Listener, MageController {
 		MaterialBrush.ReplicateMaterial = ConfigurationUtils.getMaterial(properties, "replicate_item", MaterialBrush.ReplicateMaterial);
 		MaterialBrush.SchematicMaterial = ConfigurationUtils.getMaterial(properties, "schematic_item", MaterialBrush.SchematicMaterial);
 		MaterialBrush.MapMaterial = ConfigurationUtils.getMaterial(properties, "map_item", MaterialBrush.MapMaterial);
+        MaterialBrush.DefaultBrushMaterial = ConfigurationUtils.getMaterial(properties, "default_brush_item", MaterialBrush.DefaultBrushMaterial);
+
+        MaterialBrush.CopyCustomIcon = properties.getString("copy_custom_icon", MaterialBrush.CopyCustomIcon);
+        MaterialBrush.EraseCustomIcon = properties.getString("erase_custom_icon", MaterialBrush.EraseCustomIcon);
+        MaterialBrush.CloneCustomIcon = properties.getString("clone_custom_icon", MaterialBrush.CloneCustomIcon);
+        MaterialBrush.ReplicateCustomIcon = properties.getString("replicate_custom_icon", MaterialBrush.ReplicateCustomIcon);
+        MaterialBrush.SchematicCustomIcon = properties.getString("schematic_custom_icon", MaterialBrush.SchematicCustomIcon);
+        MaterialBrush.MapCustomIcon = properties.getString("map_custom_icon", MaterialBrush.MapCustomIcon);
+        MaterialBrush.DefaultBrushCustomIcon = properties.getString("default_brush_custom_icon", MaterialBrush.DefaultBrushCustomIcon);
+
         Wand.inventoryOpenSound = ConfigurationUtils.toSoundEffect(properties.getString("wand_inventory_open_sound"));
         Wand.inventoryCloseSound = ConfigurationUtils.toSoundEffect(properties.getString("wand_inventory_close_sound"));
         Wand.inventoryCycleSound = ConfigurationUtils.toSoundEffect(properties.getString("wand_inventory_cycle_sound"));
