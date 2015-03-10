@@ -1,4 +1,5 @@
 region flag welcome_mobs -w world server-enter-command /castp @p recall unlock town
+region flag capital -w world server-enter-command /castp @p recall unlock town
 region flag lodge -w world server-enter-command /castp @p recall unlock lodge
 region flag battle -w world server-enter-command /castp @p recall unlock battle
 region flag engineering -w world server-enter-command /castp @p recall unlock engineering
@@ -18,4 +19,13 @@ region flag seaside -w world server-enter-command /castp @p recall unlock seasid
 region flag wolfcastle -w world server-enter-command /castp @p recall unlock wolfcastle
 region flag spleef -w world server-enter-command /castp @p recall unlock spleef
 region flag dueling -w world server-enter-command /castp @p recall unlock dueling
-region flag endtemple -w world server-enter-command /castp @p recall unlock endtemple
+region flag end_temple -w world server-enter-command /castp @p recall unlock endtemple
+region flag welcome -w world allowed-spells missile,recall,blast
+region flag arena -w world blocked-spell-categories master,engineering
+region flag arena -w world allowed-spells * blocked-spell-categories master,engineering
+region flag dueling -w world allowed-spells *
+region flag dueling -w world blocked-spell-categories master,engineering
+region flag spleef -w world allowed-spells recall,day
+region flag spleef -w world blocked-spells *
+region flag spleef_arena -w world allowed-spells recall,blast,collapse,harden,laser,earthquake
+region flag refugees -w world allowed-spells *
