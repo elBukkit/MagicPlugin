@@ -200,6 +200,8 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
             material = DEFAULT_MATERIAL;
             data = 0;
             customName = "";
+        } else {
+            setMaterial(material, data);
         }
     }
 

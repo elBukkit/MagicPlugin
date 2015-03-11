@@ -601,6 +601,7 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
     @Override
     public void update(String activeMaterial) {
         String pieces[] = splitMaterialKey(activeMaterial);
+        isValid = true;
         if (activeMaterial.equals(COPY_MATERIAL_KEY)) {
             enableCopying();
         } else if (activeMaterial.equals(CLONE_MATERIAL_KEY)) {
