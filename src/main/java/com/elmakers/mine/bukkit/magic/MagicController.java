@@ -1891,13 +1891,13 @@ public class MagicController implements Listener, MageController {
 		MaterialBrush.MapMaterial = ConfigurationUtils.getMaterial(properties, "map_item", MaterialBrush.MapMaterial);
         MaterialBrush.DefaultBrushMaterial = ConfigurationUtils.getMaterial(properties, "default_brush_item", MaterialBrush.DefaultBrushMaterial);
 
-        MaterialBrush.CopyCustomIcon = properties.getString("copy_custom_icon", MaterialBrush.CopyCustomIcon);
-        MaterialBrush.EraseCustomIcon = properties.getString("erase_custom_icon", MaterialBrush.EraseCustomIcon);
-        MaterialBrush.CloneCustomIcon = properties.getString("clone_custom_icon", MaterialBrush.CloneCustomIcon);
-        MaterialBrush.ReplicateCustomIcon = properties.getString("replicate_custom_icon", MaterialBrush.ReplicateCustomIcon);
-        MaterialBrush.SchematicCustomIcon = properties.getString("schematic_custom_icon", MaterialBrush.SchematicCustomIcon);
-        MaterialBrush.MapCustomIcon = properties.getString("map_custom_icon", MaterialBrush.MapCustomIcon);
-        MaterialBrush.DefaultBrushCustomIcon = properties.getString("default_brush_custom_icon", MaterialBrush.DefaultBrushCustomIcon);
+        MaterialBrush.CopyCustomIcon = properties.getString("copy_icon_url", MaterialBrush.CopyCustomIcon);
+        MaterialBrush.EraseCustomIcon = properties.getString("erase_icon_url", MaterialBrush.EraseCustomIcon);
+        MaterialBrush.CloneCustomIcon = properties.getString("clone_icon_url", MaterialBrush.CloneCustomIcon);
+        MaterialBrush.ReplicateCustomIcon = properties.getString("replicate_icon_url", MaterialBrush.ReplicateCustomIcon);
+        MaterialBrush.SchematicCustomIcon = properties.getString("schematic_icon_url", MaterialBrush.SchematicCustomIcon);
+        MaterialBrush.MapCustomIcon = properties.getString("map_icon_url", MaterialBrush.MapCustomIcon);
+        MaterialBrush.DefaultBrushCustomIcon = properties.getString("default_brush_icon_url", MaterialBrush.DefaultBrushCustomIcon);
 
         Wand.inventoryOpenSound = ConfigurationUtils.toSoundEffect(properties.getString("wand_inventory_open_sound"));
         Wand.inventoryCloseSound = ConfigurationUtils.toSoundEffect(properties.getString("wand_inventory_close_sound"));

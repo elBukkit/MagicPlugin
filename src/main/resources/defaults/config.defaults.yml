@@ -247,29 +247,29 @@ max_block_updates: 1000
 
 # Represents erase (fill with air)
 erase_item: sulphur
-erase_custom_icon: http://i.imgur.com/Z2A0ZWB.png
+erase_icon_url: http://i.imgur.com/Z2A0ZWB.png
 # Represents copy (fill with the target material)
 copy_item: sugar
-copy_custom_icon: http://i.imgur.com/IePbJSz.png
+copy_icon_url: http://i.imgur.com/IePbJSz.png
 # Clone will copy the area you are standing in when the clone material is activated
 clone_item: melon_seeds
-clone_custom_icon: http://i.imgur.com/1Zak7xQ.png
+clone_icon_url: http://i.imgur.com/1Zak7xQ.png
 # Replicate works like clone, but will sample a moving area, allowing you to "paint"
 # in a section of the world across multiple spell casts.
 replicate_item: pumpkin_seeds
-replicate_custom_icon: http://i.imgur.com/zM0JkaI.png
+replicate_icon_url: http://i.imgur.com/zM0JkaI.png
 # The map material brush will fill in blocks from the last Map item you held. (Pixel art)
 # It will use stained clay, wool or stained glass. The default is stained clay, but it will
 # use one of the other types if it was the last material on your brush.
 map_item: map
-map_custom_icon: http://i.imgur.com/4aYF0NF.png
+map_icon_url: http://i.imgur.com/4aYF0NF.png
 # The schematic material brush can be used (if WorldEdit is present) to construct with
 # schematic files
 schematic_item: paper
-schematic_custom_icon: http://i.imgur.com/dpyttHm.png
+schematic_icon_url: http://i.imgur.com/dpyttHm.png
 # This icon will be used for any material that fails to create as an item
 default_brush_item: sulphur
-default_brush_custom_icon: http://s3.amazonaws.com/MinecraftSkins/MHF_Question.png
+default_brush_icon_url: http://s3.amazonaws.com/MinecraftSkins/MHF_Question.png
 
 # The folder and file path to use for loading schematics. This will be relative to
 # The server's /plugins folder.
