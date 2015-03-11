@@ -2550,6 +2550,7 @@ paint:
 
 fill:
     icon: iron_hoe
+    icon_url: http://i.imgur.com/jmITrfc.png
     category: engineering
     class: FillSpell
     worth: 200
@@ -2897,6 +2898,7 @@ bomb:
 
 superblob:
     icon: slime_ball
+    icon_url: http://i.imgur.com/a8MRmxf.png
     category: engineering
     class: ConstructSpell
     worth: 500
@@ -3317,6 +3319,7 @@ superblast:
         mana: 100
 
 convert:
+    icon_url: http://i.imgur.com/f2HeXWJ.png
     icon: iron_spade
     category: engineering
     class: ConstructSpell
@@ -3340,6 +3343,7 @@ convert:
 
 superconvert:
     icon: diamond_spade
+    icon_url: http://i.imgur.com/uUdb1cP.png
     category: engineering
     class: ConstructSpell
     worth: 500
@@ -4004,7 +4008,7 @@ blink|3:
 
 absorb:
     icon: bucket
-    icon_url: http://i.imgur.com/eCq4rz3.png
+    icon_url: http://i.imgur.com/bOxKmEI.png
     category: engineering
     class: AbsorbSpell
     worth: 1500
