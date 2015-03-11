@@ -9,19 +9,25 @@ import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.api.wand.Wand;
 import com.elmakers.mine.bukkit.block.MaterialBrush;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
+import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class BrushSelectAction extends BaseSpellAction implements GUIAction
 {
     private CastContext context;
+    private List<ItemStack> schematics = new ArrayList<ItemStack>();
+    private Map<String, List<ItemStack>> variants = new HashMap<String, List<ItemStack>>();
 
     @Override
     public void deactivated() {
@@ -35,9 +41,26 @@ public class BrushSelectAction extends BaseSpellAction implements GUIAction
         if (context != null)
         {
             Mage mage = context.getMage();
+            ItemStack item = event.getCurrentItem();
+            String set = InventoryUtils.getMeta(item, "brush_set", null);
+            if (set != null) {
+                if (set.equals("schematics")) {
+                    String inventoryTitle = context.getMessage("schematics_title", "Schematics");
+                    int invSize = ((schematics.size() + 9) / 9) * 9;
+                    Inventory displayInventory = CompatibilityUtils.createInventory(null, invSize, inventoryTitle);
+                    for (ItemStack schematicItem : schematics)
+                    {
+                        displayInventory.addItem(schematicItem);
+                    }
+                    mage.deactivateGUI();
+                    mage.activateGUI(this);
+                    mage.getPlayer().openInventory(displayInventory);
+                    return;
+                }
+            }
+
             mage.deactivateGUI();
             Wand wand = mage.getActiveWand();
-            ItemStack item = event.getCurrentItem();
             if (wand != null && com.elmakers.mine.bukkit.wand.Wand.isBrush(item))
             {
                 String brushKey = com.elmakers.mine.bukkit.wand.Wand.getBrush(item);
@@ -51,6 +74,8 @@ public class BrushSelectAction extends BaseSpellAction implements GUIAction
         Mage mage = context.getMage();
         MageController controller = context.getController();
         Wand wand = mage.getActiveWand();
+        schematics.clear();
+        variants.clear();
         this.context = context;
 		Player player = mage.getPlayer();
 		if (player == null) {
@@ -64,11 +89,8 @@ public class BrushSelectAction extends BaseSpellAction implements GUIAction
         Collection<ItemStack> brushes = new ArrayList<ItemStack>();
         for (String brushKey : brushKeys) {
             if (MaterialBrush.isSchematic(brushKey)) {
-                // TODO :: Grouping
                 ItemStack brushItem = com.elmakers.mine.bukkit.wand.Wand.createBrushItem(brushKey, controller, null, false);
-                if (brushItem != null) {
-                    brushes.add(brushItem);
-                }
+                schematics.add(brushItem);
                 continue;
             }
             if (MaterialBrush.isSpecialMaterialKey(brushKey)) continue;
@@ -76,6 +98,23 @@ public class BrushSelectAction extends BaseSpellAction implements GUIAction
             if (brushItem != null) {
                 brushes.add(brushItem);
             }
+        }
+
+        ItemStack schematicItem = null;
+        if (schematics.size() == 1) {
+            schematicItem = schematics.get(0);
+        } else if (schematics.size() > 0) {
+            schematicItem = InventoryUtils.getCopy(schematics.get(0));
+            ItemMeta meta = schematicItem.getItemMeta();
+            meta.setDisplayName(context.getMessage("schematics_name", "[Schematics]"));
+            List<String> lore = new ArrayList<String>();
+            lore.add(context.getMessage("schematics_description", "Click to choose schematics"));
+            meta.setLore(lore);
+            schematicItem.setItemMeta(meta);
+            InventoryUtils.setMeta(schematicItem, "brush_set", "schematics");
+        }
+        if (schematicItem != null) {
+            brushes.add(schematicItem);
         }
 
         String inventoryTitle = context.getMessage("title", "Brushes");

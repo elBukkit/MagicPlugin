@@ -1,6 +1,7 @@
 # CHANGELOG
 
 ## 4.5
+ - Implement brush selection. Shift+right click to change brushes.
  - Allow different map scales (/mgive brush:map:128)
  - Add custom icons for special brushes
  - More custom icons
