@@ -656,10 +656,12 @@ wolf:
         - copy@17
         - replicate@18
         - clone@19
-        - stained_clay@20
-        - stained_glass@21
-        - stationary_water@22
-        - stationary_lava@23
+        - map@20
+        - map:128@21
+        - stained_clay
+        - stained_glass
+        - stationary_water
+        - stationary_lava
         - stained_glass_pane
         - wool
         - lapis_block
@@ -667,7 +669,6 @@ wolf:
         - lava
         - glowstone
         - glass
-        - map
         - soul_sand
         - dirt
         - grass

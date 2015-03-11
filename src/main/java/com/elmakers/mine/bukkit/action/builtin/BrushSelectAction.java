@@ -11,6 +11,7 @@ import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.block.MaterialBrush;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -127,7 +128,7 @@ public class BrushSelectAction extends BaseSpellAction implements GUIAction
                         brushes.remove(brushes.size() - 1);
                         ItemStack category = InventoryUtils.getCopy(lastAdded);
                         ItemMeta meta = category.getItemMeta();
-                        String name = context.getMessage("variant_name", "[$variant]");
+                        String name = context.getMessage("variant_name", "" + ChatColor.AQUA + "$variant");
                         meta.setDisplayName(name.replace("$variant", baseName));
                         List<String> lore = new ArrayList<String>();
                         String description = context.getMessage("variant_description", "Choose a type of $variant");
@@ -154,7 +155,7 @@ public class BrushSelectAction extends BaseSpellAction implements GUIAction
         } else if (schematics.size() > 0) {
             schematicItem = InventoryUtils.getCopy(schematics.get(0));
             ItemMeta meta = schematicItem.getItemMeta();
-            meta.setDisplayName(context.getMessage("schematics_name", "[Schematics]"));
+            meta.setDisplayName(context.getMessage("schematics_name", "" + ChatColor.AQUA + "Schematics"));
             List<String> lore = new ArrayList<String>();
             lore.add(context.getMessage("schematics_description", "Choose a schematic"));
             meta.setLore(lore);

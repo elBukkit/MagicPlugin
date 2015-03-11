@@ -3055,7 +3055,8 @@ public class MagicController implements Listener, MageController {
         com.elmakers.mine.bukkit.magic.Mage mage = (com.elmakers.mine.bukkit.magic.Mage)apiMage;
 
         Wand wand = mage.getActiveWand();
-		if (wand != null) {
+        GUIAction gui = mage.getActiveGUI();
+		if (wand != null && gui == null) {
 			// NOTE: The type will never actually be CRAFTING, at least for now.
 			// But we can hope for server-side player inventory open notification one day, right?
 			// Anyway, check for opening another inventory and close the wand.
