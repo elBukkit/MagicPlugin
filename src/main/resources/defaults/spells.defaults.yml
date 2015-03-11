@@ -933,6 +933,7 @@ superdisc:
         mana: 200
 
 superring:
+    icon_url: http://i.imgur.com/KQXYZ5r.png
     icon: ink_sack:9
     category: engineering
     class: ConstructSpell
@@ -980,6 +981,7 @@ supershell:
 
 superdome:
     icon: mushroom_soup
+    icon_url: http://i.imgur.com/RVqBJkm.png
     category: engineering
     class: ConstructSpell
     worth: 150
@@ -2531,6 +2533,7 @@ superregenerate:
         mana: 1000
 
 paint:
+    icon_url: http://i.imgur.com/KR7lCZl.png
     icon: painting
     category: engineering
     class: FillSpell
@@ -2747,6 +2750,7 @@ pillar:
         mana: 5
 
 place:
+    icon_url: http://i.imgur.com/87qrrmv.png
     icon: diamond_axe
     category: engineering
     class: PlaceSpell
@@ -2805,7 +2809,7 @@ stalactite:
         mana: 5
 
 grenade:
-    icon_url: http://s3.amazonaws.com/MinecraftSkins/MHF_TNT2.png
+    icon_url: http://i.imgur.com/kXuv8pE.png
     icon: tnt
     alias: frag
     category: demolition
@@ -2898,7 +2902,7 @@ bomb:
 
 superblob:
     icon: slime_ball
-    icon_url: http://i.imgur.com/a8MRmxf.png
+    icon_url: http://i.imgur.com/SLmmZ3r.png
     category: engineering
     class: ConstructSpell
     worth: 500
@@ -2942,6 +2946,7 @@ superpyramid:
         mana: 400
 
 box:
+    icon_url: http://i.imgur.com/Zg5ehRA.png
     icon: gold_helmet
     category: engineering
     class: ConstructSpell
@@ -2965,6 +2970,7 @@ box:
         mana: 60
 
 superbox:
+    icon_url: http://i.imgur.com/Zg5ehRA.png
     icon: diamond_helmet
     category: engineering
     class: ConstructSpell
@@ -2987,6 +2993,7 @@ superbox:
         mana: 400
 
 supercube:
+    icon_url: http://i.imgur.com/Zg5ehRA.png
     icon: nether_brick_item
     category: engineering
     class: ConstructSpell
@@ -3008,6 +3015,7 @@ supercube:
         mana: 400
 
 backup:
+    icon_url: http://i.imgur.com/qngcIEC.png
     icon: diamond_pickaxe
     category: engineering
     class: ConstructSpell
@@ -3037,6 +3045,7 @@ backup:
 
 repair:
     icon: gold_pickaxe
+    icon_url: http://i.imgur.com/JJpGoSN.png
     category: engineering
     class: ConstructSpell
     worth: 100
@@ -3063,6 +3072,7 @@ repair:
         mana: 200
 
 superrepair:
+    icon_url: http://i.imgur.com/zyG97fX.png
     icon: gold_pickaxe
     category: engineering
     class: ConstructSpell
@@ -3684,7 +3694,7 @@ mine|2:
         drop: mining
 
 chop:
-    icon_url: http://s3.amazonaws.com/MinecraftSkins/MHF_OakLog.png
+    icon_url: http://i.imgur.com/YI7aybZ.png
     icon: stone_axe
     category: elemental
     class: DropSpell
@@ -4008,7 +4018,7 @@ blink|3:
 
 absorb:
     icon: bucket
-    icon_url: http://i.imgur.com/bOxKmEI.png
+    icon_url: http://i.imgur.com/bNCtxr7.png
     category: engineering
     class: AbsorbSpell
     worth: 1500
