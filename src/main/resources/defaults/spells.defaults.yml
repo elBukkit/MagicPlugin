@@ -3981,6 +3981,7 @@ absorb:
     category: engineering
     class: AbsorbSpell
     worth: 1500
+    brush_selection: true
     effects:
         cast:
         -  class: EffectSingle

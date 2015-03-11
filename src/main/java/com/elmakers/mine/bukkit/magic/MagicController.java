@@ -2877,7 +2877,7 @@ public class MagicController implements Listener, MageController {
                     wand.cast();
 				} else {
                     Spell currentSpell = wand.getActiveSpell();
-                    if (wand.getBrushMode() == WandMode.CHEST && brushSelectSpell != null && !brushSelectSpell.isEmpty() && player.isSneaking() && currentSpell != null && currentSpell.usesBrush())
+                    if (wand.getBrushMode() == WandMode.CHEST && brushSelectSpell != null && !brushSelectSpell.isEmpty() && player.isSneaking() && currentSpell != null && currentSpell.usesBrushSelection())
                     {
                         Spell brushSelect = mage.getSpell(brushSelectSpell);
                         if (brushSelect == null)
