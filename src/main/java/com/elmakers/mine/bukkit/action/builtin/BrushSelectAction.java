@@ -7,9 +7,11 @@ import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.api.wand.Wand;
+import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.block.MaterialBrush;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
@@ -17,7 +19,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
-import java.util.Collection;
+
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -27,7 +29,7 @@ public class BrushSelectAction extends BaseSpellAction implements GUIAction
 {
     private CastContext context;
     private List<ItemStack> schematics = new ArrayList<ItemStack>();
-    private Map<String, List<ItemStack>> variants = new HashMap<String, List<ItemStack>>();
+    private Map<Material, List<ItemStack>> variants = new HashMap<Material, List<ItemStack>>();
 
     @Override
     public void deactivated() {
@@ -51,6 +53,21 @@ public class BrushSelectAction extends BaseSpellAction implements GUIAction
                     for (ItemStack schematicItem : schematics)
                     {
                         displayInventory.addItem(schematicItem);
+                    }
+                    mage.deactivateGUI();
+                    mage.activateGUI(this);
+                    mage.getPlayer().openInventory(displayInventory);
+                    return;
+                } else if (set.equals("variants")) {
+                    MaterialAndData baseMaterial = new MaterialAndData(item);
+                    String baseName = baseMaterial.getBaseName();
+                    String inventoryTitle = context.getMessage("variants_title", "$variant Variants").replace("$variant", baseName);
+                    List<ItemStack> variantList = variants.get(baseMaterial.getMaterial());
+                    int invSize = ((variantList.size() + 9) / 9) * 9;
+                    Inventory displayInventory = CompatibilityUtils.createInventory(null, invSize, inventoryTitle);
+                    for (ItemStack variantItem : variantList)
+                    {
+                        displayInventory.addItem(variantItem);
                     }
                     mage.deactivateGUI();
                     mage.activateGUI(this);
@@ -86,7 +103,8 @@ public class BrushSelectAction extends BaseSpellAction implements GUIAction
         }
         List<String> brushKeys = new ArrayList(wand.getBrushes());
         Collections.sort(brushKeys);
-        Collection<ItemStack> brushes = new ArrayList<ItemStack>();
+        List<ItemStack> brushes = new ArrayList<ItemStack>();
+        MaterialAndData previous = null;
         for (String brushKey : brushKeys) {
             if (MaterialBrush.isSchematic(brushKey)) {
                 ItemStack brushItem = com.elmakers.mine.bukkit.wand.Wand.createBrushItem(brushKey, controller, null, false);
@@ -96,7 +114,37 @@ public class BrushSelectAction extends BaseSpellAction implements GUIAction
             if (MaterialBrush.isSpecialMaterialKey(brushKey)) continue;
             ItemStack brushItem = com.elmakers.mine.bukkit.wand.Wand.createBrushItem(brushKey, controller, null, false);
             if (brushItem != null) {
-                brushes.add(brushItem);
+                MaterialAndData material = new MaterialAndData(brushItem);
+                if (previous != null && material.getMaterial() == previous.getMaterial())
+                {
+                    List<ItemStack> variantList = variants.get(material.getMaterial());
+                    ItemStack lastAdded = brushes.get(brushes.size() - 1);
+                    if (variantList == null)
+                    {
+                        String baseName = material.getBaseName();
+                        variantList = new ArrayList<ItemStack>();
+                        variantList.add(lastAdded);
+                        brushes.remove(brushes.size() - 1);
+                        ItemStack category = InventoryUtils.getCopy(lastAdded);
+                        ItemMeta meta = category.getItemMeta();
+                        String name = context.getMessage("variant_name", "[$variant]");
+                        meta.setDisplayName(name.replace("$variant", baseName));
+                        List<String> lore = new ArrayList<String>();
+                        String description = context.getMessage("variant_description", "Click to choose a variant of $variant");
+                        lore.add(description.replace("$variant", baseName));
+                        meta.setLore(lore);
+                        category.setItemMeta(meta);
+                        InventoryUtils.setMeta(category, "brush_set", "variants");
+                        variants.put(material.getMaterial(), variantList);
+                        brushes.add(category);
+                    }
+                    variantList.add(brushItem);
+                }
+                else
+                {
+                    brushes.add(brushItem);
+                }
+                previous = material;
             }
         }
 
