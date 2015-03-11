@@ -1,5 +1,9 @@
 # Migration Notes
 
+## 4.5
+
+ * The "undo" spell changed its key to "rollback" to match the spell's name.
+
 ## 4.4
 
  * FlowerSpell flower lists moved to parameters section

@@ -3,6 +3,9 @@
 ## 4.5
  - Allow different map scales (/mgive brush:map:128)
  - Add custom icons for special brushes
+ - More custom icons
+ - Fix progression to Engineer/Architect (undo spell changed to rollback)
+ - Removed the Kamikazee, Pyramid and Stalactite spells
 
 ## 4.4
 

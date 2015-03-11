@@ -887,6 +887,7 @@ reflect|3:
 
 disc:
     icon: ink_sack:8
+    icon_url: http://i.imgur.com/gPP9BIr.png
     category: engineering
     class: ConstructSpell
     worth: 45
@@ -910,6 +911,7 @@ disc:
         mana: 60
 
 superdisc:
+    icon_url: http://i.imgur.com/5FFGaKy.png
     icon: ink_sack:13
     category: engineering
     class: ConstructSpell
@@ -1034,6 +1036,7 @@ tag:
         mana: 20
 
 toss:
+    icon_url: http://i.imgur.com/iGH35Be.png
     icon: wood_button
     category: engineering
     worth: 20
@@ -1053,6 +1056,7 @@ toss:
         mana: 20
 
 volley:
+    icon_url: http://i.imgur.com/DIPfxvx.png
     icon: stone_button
     category: engineering
     pvp_restricted: true
@@ -1141,7 +1145,7 @@ push|2:
         target_count: 8
 
 pull:
-    icon_url: http://i.imgur.com/JOHBtUT.png
+    icon_url: http://i.imgur.com/JhUqJ85.png
     icon: fishing_rod
     category: elemental
     pvp_restricted: true
@@ -1424,6 +1428,7 @@ lightning|3:
 
 tree:
     icon: sapling
+    icon_url: http://s3.amazonaws.com/MinecraftSkins/MHF_OakLog.png
     category: elemental
     class: TreeSpell
     worth: 80
@@ -1442,7 +1447,7 @@ tree:
         mana: 20
 
 disarm:
-    icon_url: http://i.imgur.com/snEuvIc.png
+    icon_url: http://i.imgur.com/JOHBtUT.png
     icon: tripwire_hook
     category: light
     class: DisarmSpell
@@ -1569,7 +1574,7 @@ cure:
         mana: 30
 
 heal:
-    icon_url: http://i.imgur.com/3WX7D83.png
+    icon_url: http://i.imgur.com/B8RfZE3.png
     icon: bread
     category: light
     upgrade_required_path: student
@@ -1674,6 +1679,7 @@ gather:
         mana: 150
 
 mount:
+    icon_url: http://i.imgur.com/9NfETun.png
     icon: saddle
     category: master
     class: MountSpell
@@ -2169,7 +2175,7 @@ monster:
         mana: 40
 
 mob:
-    icon_url: http://s3.amazonaws.com/MinecraftSkins/MHF_Zombie.png
+    icon_url: http://s3.amazonaws.com/MinecraftSkins/MHF_PigZombie.png
     icon: jack_o_lantern
     category: dark
     class: FamiliarSpell
@@ -2494,6 +2500,7 @@ bubble|2:
         range: 40
 
 regenerate:
+    icon_url: http://i.imgur.com/0j2hnro.png
     icon: gold_hoe
     category: engineering
     class: RegenerateSpell
@@ -2513,6 +2520,7 @@ regenerate:
         mana: 400
 
 superregenerate:
+    icon_url: http://i.imgur.com/qH2BPpG.png
     icon: diamond_hoe
     category: engineering
     class: RegenerateSpell
@@ -2573,6 +2581,7 @@ fill:
 
 recurse:
     icon: wood_spade
+    icon_url: http://i.imgur.com/jmITrfc.png
     category: engineering
     class: RecurseSpell
     worth: 150
@@ -2718,6 +2727,7 @@ time:
         mana: 40
 
 bridge:
+    icon_url: http://i.imgur.com/Xus8NGF.png
     icon: stone_hoe
     category: engineering
     class: BridgeSpell
@@ -2733,6 +2743,7 @@ bridge:
         mana: 5
 
 pillar:
+    icon_url: http://i.imgur.com/0Z2VP5r.png
     icon: iron_axe
     category: engineering
     class: PillarSpell
@@ -2789,24 +2800,6 @@ anvil:
         brush: anvil
     costs:
         mana: 100
-
-stalactite:
-    icon: iron_axe
-    category: engineering
-    class: PillarSpell
-    worth: 30
-    effects:
-        cast:
-        -  class: EffectSingle
-           effect: step_sound
-           location: target
-    parameters:
-        allow_max_range: false
-        range: 64
-        type: down
-        transparent: transparent_to_construction
-    costs:
-        mana: 5
 
 grenade:
     icon_url: http://i.imgur.com/kXuv8pE.png
@@ -2924,6 +2917,7 @@ superblob:
         mana: 400
 
 superpyramid:
+    icon_url: http://i.imgur.com/cw3NojE.png
     icon: speckled_melon
     category: engineering
     class: ConstructSpell
@@ -3160,24 +3154,6 @@ pickpocket:
     costs:
         mana: 75
 
-kamikazee:
-    icon: skull_item:4
-    category: dark
-    class: BoomSpell
-    worth: 100
-    effects:
-        cast:
-        -  class: EffectSingle
-           sound: explode
-    parameters:
-        cooldown: 60000
-        size: 8
-        target: self
-        break_blocks: false
-        undo: 20000
-    costs:
-        mana: 5
-
 blast:
     icon_url: http://i.imgur.com/IqmgaZ2.png
     icon: sulphur
@@ -3305,6 +3281,7 @@ tunnel:
         mana: 30
 
 superblast:
+    icon_url: http://i.imgur.com/yCMj6OM.png
     icon: red_mushroom
     category: engineering
     class: ConstructSpell
@@ -3430,6 +3407,7 @@ collapse:
 
 supercollapse:
     icon: gold_plate
+    icon_url: http://i.imgur.com/Z1Pq4RM.png
     category: engineering
     class: ConstructSpell
     worth: 800
@@ -3666,6 +3644,7 @@ sandblast:
 
 mine:
     icon: wood_pickaxe
+    icon_url: http://i.imgur.com/1tXKqr2.png
     category: mining
     class: DropSpell
     worth: 30
@@ -3759,6 +3738,7 @@ superalter:
         mana: 40
 
 sphere:
+    icon_url: http://i.imgur.com/a8MRmxf.png
     icon: snow_ball
     category: engineering
     class: ShapeSpell
@@ -3825,27 +3805,6 @@ blob|3:
         undo: 15000
         cooldown: 5000
         brush: obsidian
-
-pyramid:
-    icon: melon
-    category: engineering
-    class: ConstructSpell
-    worth: 20
-    effects:
-        cast:
-        -  class: EffectSingle
-           sound: slime_walk
-        -  class: EffectTrail
-           effect: step_sound
-    parameters:
-        target_type: LivingEntity
-        allow_max_range: true
-        range: 32
-        radius: 4
-        type: pyramid
-        transparent: transparent_to_construction
-    costs:
-        mana: 50
 
 emp:
     icon_url: http://i.imgur.com/33YW7Vh.png
@@ -4037,6 +3996,7 @@ absorb:
         mana: 30
 
 hat:
+    icon_url: http://i.imgur.com/CsPmF87.png
     icon: leather_helmet
     category: utility
     worth: 18
@@ -4060,7 +4020,7 @@ hat:
         mana: 30
 
 lava:
-    icon_url: http://i.imgur.com/PSGSxEI.png
+    icon_url: http://i.imgur.com/OoxraNN.png
     icon: ink_sack:14
     category: combat
     pvp_restricted: true
@@ -4117,6 +4077,7 @@ stream:
         mana: 30
 
 earth:
+    icon_url: http://i.imgur.com/IFo5z5r.png
     icon: ink_sack:3
     category: combat
     pvp_restricted: true
@@ -4146,6 +4107,7 @@ earth:
         mana: 20
 
 iterate:
+    icon_url: http://i.imgur.com/vkFJitg.png
     icon: ink_sack:2
     category: engineering
     worth: 150
@@ -4164,6 +4126,7 @@ iterate:
         mana: 50
 
 superiterate:
+    icon_url: http://i.imgur.com/qbXbYej.png
     icon: ink_sack:4
     category: engineering
     worth: 300
@@ -4184,7 +4147,7 @@ superiterate:
         mana: 200
 
 flamethrower:
-    icon_url: http://i.imgur.com/PSGSxEI.png
+    icon_url: http://i.imgur.com/OoxraNN.png
     icon: blaze_powder
     category: combat
     worth: 90
@@ -4614,6 +4577,7 @@ camera:
 
 tent:
     icon: sapling:4
+    icon_url: http://i.imgur.com/nrpoumA.png
     category: master
     class: ConstructSpell
     worth: 350
@@ -4666,6 +4630,7 @@ cage:
 
 wolfhouse:
     hidden: true
+    icon_url: http://i.imgur.com/z149vKa.png
     icon: sapling:5
     category: master
     class: ConstructSpell
@@ -5050,6 +5015,7 @@ broom:
         effect_sound_volume: 15
 
 paste:
+    icon_url: http://i.imgur.com/dpyttHm.png
     icon: iron_pickaxe
     category: engineering
     class: ConstructSpell
