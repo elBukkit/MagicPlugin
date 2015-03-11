@@ -921,7 +921,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
             } else {
                 timeDescription = controller.getMessages().get("cooldown.wait_moment");
             }
-            sendMessage(getMessage("cooldown").replace("$time", timeDescription));
+            castMessage(getMessage("cooldown").replace("$time", timeDescription));
             processResult(SpellResult.COOLDOWN, parameters);
             mage.sendDebugMessage(ChatColor.WHITE + "Cast " + ChatColor.GOLD + getName() + ChatColor.WHITE  + ": " + ChatColor.AQUA + SpellResult.COOLDOWN + ChatColor.DARK_AQUA + " (no cast)");
             return false;
@@ -931,7 +931,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         if (required != null) {
             String baseMessage = getMessage("insufficient_resources");
             String costDescription = required.getDescription(controller.getMessages(), mage);
-            sendMessage(baseMessage.replace("$cost", costDescription));
+            castMessage(baseMessage.replace("$cost", costDescription));
             processResult(SpellResult.INSUFFICIENT_RESOURCES, parameters);
             mage.sendDebugMessage(ChatColor.WHITE + "Cast " + ChatColor.GOLD + getName() + ChatColor.WHITE  + ": " + ChatColor.AQUA + SpellResult.INSUFFICIENT_RESOURCES + ChatColor.DARK_AQUA + " (no cast)");
             return false;
