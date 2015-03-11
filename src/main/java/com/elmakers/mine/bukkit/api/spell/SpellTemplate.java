@@ -44,6 +44,7 @@ public interface SpellTemplate extends Comparable<SpellTemplate>, CostReducer {
     public String getPermissionNode();
     public boolean isHidden();
     public boolean usesBrush();
+    public boolean usesBrushSelection();
     public boolean isUndoable();
     public String getRequiredUpgradePath();
     public long getRequiredUpgradeCasts();
