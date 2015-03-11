@@ -11,7 +11,6 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.UUID;
 
-import com.elmakers.mine.bukkit.action.CastContext;
 import com.elmakers.mine.bukkit.api.block.BrushMode;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.magic.Messages;
@@ -50,7 +49,6 @@ import org.bukkit.event.player.PlayerExpChangeEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
@@ -176,6 +174,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	// Inventory functionality
 	
 	private WandMode mode = null;
+    private WandMode brushMode = null;
 	private int openInventoryPage = 0;
 	private boolean inventoryIsOpen = false;
 	private Inventory displayInventory = null;
@@ -346,36 +345,6 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
             updateName(true);
             updateLore();
         }
-	}
-	
-	protected void activateBrush(String materialKey) {
-		setActiveBrush(materialKey);
-		if (materialKey != null) {
-			com.elmakers.mine.bukkit.api.block.MaterialBrush brush = mage.getBrush();
-			if (brush != null)
-			{
-				boolean eraseWasActive = brush.isEraseModifierActive();
-				brush.activate(mage.getLocation(), materialKey);
-
-                if (mage != null) {
-                    BrushMode mode = brush.getMode();
-                    if (mode == BrushMode.CLONE) {
-                        mage.sendMessage(controller.getMessages().get("wand.clone_material_activated"));
-                    } else if (mode == BrushMode.REPLICATE) {
-                        mage.sendMessage(controller.getMessages().get("wand.replicate_material_activated"));
-                    }
-                    if (!eraseWasActive && brush.isEraseModifierActive()) {
-                        mage.sendMessage(controller.getMessages().get("wand.erase_modifier_activated"));
-                    }
-                }
-
-			}
-		}
-	}
-	
-	public void activateBrush(ItemStack itemStack) {
-		if (!isBrush(itemStack)) return;
-		activateBrush(getBrush(itemStack));
 	}
 
     public String getLostId() { return id; }
@@ -666,6 +635,13 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         if (itemStack == null || itemStack.getType() == Material.AIR) {
             return;
         }
+        if (getBrushMode() == WandMode.CHEST && isBrush(itemStack)) {
+            String brushKey = getBrush(itemStack);
+            if (!MaterialBrush.isSpecialMaterialKey(brushKey) || MaterialBrush.isSchematic(brushKey))
+            {
+                return;
+            }
+        }
 		List<Inventory> checkInventories = getAllInventories();
 		boolean added = false;
 
@@ -791,19 +767,23 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		}
 		materialString = materialString.replaceAll("[\\]\\[]", "");
 		String[] materialNames = StringUtils.split(materialString, ",");
+        WandMode brushMode = getBrushMode();
 		for (String materialName : materialNames) {
 			String[] pieces = materialName.split("@");
 			Integer slot = parseSlot(pieces);
 			String materialKey = pieces[0].trim();
             brushes.put(materialKey, slot);
-
-            ItemStack itemStack = createBrushIcon(materialKey);
-			if (itemStack == null) {
-				controller.getPlugin().getLogger().warning("Unable to create material icon for key " + materialKey);
-				continue;
-			}
-			if (activeMaterial == null || activeMaterial.length() == 0) activeMaterial = materialKey;
-			addToInventory(itemStack, slot);
+            boolean addToInventory = brushMode != WandMode.CHEST || (MaterialBrush.isSpecialMaterialKey(materialKey) && !MaterialBrush.isSchematic(materialKey));
+            if (addToInventory)
+            {
+                ItemStack itemStack = createBrushIcon(materialKey);
+                if (itemStack == null) {
+                    controller.getPlugin().getLogger().warning("Unable to create material icon for key " + materialKey);
+                    continue;
+                }
+                if (activeMaterial == null || activeMaterial.length() == 0) activeMaterial = materialKey;
+                addToInventory(itemStack, slot);
+            }
 		}
 		hasInventory = spellNames.length + materialNames.length > 1;
 	}
@@ -856,7 +836,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	}
 	
 	@SuppressWarnings("deprecation")
-	public static ItemStack createBrushItem(String materialKey, MagicController controller, Wand wand, boolean isItem) {
+	public static ItemStack createBrushItem(String materialKey, com.elmakers.mine.bukkit.api.magic.MageController controller, Wand wand, boolean isItem) {
 		MaterialBrush brushData = MaterialBrush.parseMaterialKey(materialKey);
 		if (brushData == null) return null;
 
@@ -979,6 +959,11 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		} else {
 			node.set("mode", null);
 		}
+        if (brushMode != null) {
+            node.set("brush_mode", brushMode.name());
+        } else {
+            node.set("brush_mode", null);
+        }
 		if (icon != null) {;
 			String iconKey = icon.getKey();
 			if (iconKey != null && iconKey.length() > 0) {
@@ -1126,8 +1111,9 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
             effectParticleOffset = wandConfig.getDouble("effect_particle_offset", effectParticleOffset);
 			effectParticleInterval = wandConfig.getInt("effect_particle_interval", effectParticleInterval);
 			effectSoundInterval =  wandConfig.getInt("effect_sound_interval", effectSoundInterval);
-			
-			setMode(parseWandMode(wandConfig.getString("mode"), mode));
+
+            setMode(parseWandMode(wandConfig.getString("mode"), mode));
+            setBrushMode(parseWandMode(wandConfig.getString("brush_mode"), brushMode));
 
 			owner = wandConfig.getString("owner", owner);
             ownerId = wandConfig.getString("owner_id", ownerId);
@@ -2110,6 +2096,11 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 			setMode(other.mode);
 		}
 
+        if (other.isUpgrade && other.brushMode != null) {
+            modified = modified | (brushMode != other.brushMode);
+            setBrushMode(other.brushMode);
+        }
+
         if (other.upgradeIcon != null && (this.icon == null
                || this.icon.getMaterial() != other.upgradeIcon.getMaterial()
                || this.icon.getData() != other.upgradeIcon.getData())) {
@@ -3043,7 +3034,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		}
 		
 		materialIndex = (materialIndex + 1) % materials.size();
-		activateBrush(materials.get(materialIndex).split("@")[0]);
+		setActiveBrush(materials.get(materialIndex).split("@")[0]);
 	}
 
 	public Mage getActivePlayer() {
@@ -3073,10 +3064,18 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	public WandMode getMode() {
 		return mode != null ? mode : controller.getDefaultWandMode();
 	}
+
+    public WandMode getBrushMode() {
+        return brushMode != null ? brushMode : controller.getDefaultBrushMode();
+    }
 	
 	public void setMode(WandMode mode) {
 		this.mode = mode;
 	}
+
+    public void setBrushMode(WandMode mode) {
+        this.brushMode = mode;
+    }
 	
 	public boolean showCastMessages() {
 		return quietLevel == 0;
@@ -3342,7 +3341,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         brushes.put(materialKey, null);
 		addToInventory(itemStack);
 		if (activeMaterial == null || activeMaterial.length() == 0) {
-			setActiveBrush(materialKey);
+			activateBrush(materialKey);
 		} else {
 			updateInventory();
 		}
@@ -3365,9 +3364,39 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 
         return true;
 	}
-	
-	@Override
-	public void setActiveBrush(String materialKey) {
+
+    @Override
+    public void setActiveBrush(String materialKey) {
+        activateBrush(materialKey);
+        if (materialKey != null && mage != null) {
+            com.elmakers.mine.bukkit.api.block.MaterialBrush brush = mage.getBrush();
+            if (brush != null)
+            {
+                boolean eraseWasActive = brush.isEraseModifierActive();
+                brush.activate(mage.getLocation(), materialKey);
+
+                if (mage != null) {
+                    BrushMode mode = brush.getMode();
+                    if (mode == BrushMode.CLONE) {
+                        mage.sendMessage(controller.getMessages().get("wand.clone_material_activated"));
+                    } else if (mode == BrushMode.REPLICATE) {
+                        mage.sendMessage(controller.getMessages().get("wand.replicate_material_activated"));
+                    }
+                    if (!eraseWasActive && brush.isEraseModifierActive()) {
+                        mage.sendMessage(controller.getMessages().get("wand.erase_modifier_activated"));
+                    }
+                }
+
+            }
+        }
+    }
+
+    public void setActiveBrush(ItemStack itemStack) {
+        if (!isBrush(itemStack)) return;
+        setActiveBrush(getBrush(itemStack));
+    }
+
+	public void activateBrush(String materialKey) {
 		this.activeMaterial = materialKey;
         saveState();
 		updateName();

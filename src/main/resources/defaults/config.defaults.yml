@@ -219,6 +219,12 @@ welcome_wand:
 # "chest" : Bring up a Wand inventory on right-click.
 # "cycle" : Right-click will cycle to the next active spell (no inventory or icons)
 default_wand_mode: inventory
+# Options for brush mode are inventory and chest
+# In inventory mode, brushes appear along with spells
+# in Chest mode, shift+right-click to select a brush
+default_brush_mode: chest
+# The spell to cast on shift+right-click
+brush_select_spell: brushselect
 
 # The default enchanting path.
 # The default default is "master" for backwards compatibility reasons
@@ -266,7 +272,7 @@ map_icon_url: http://i.imgur.com/4aYF0NF.png
 # The schematic material brush can be used (if WorldEdit is present) to construct with
 # schematic files
 schematic_item: paper
-schematic_icon_url: http://i.imgur.com/dMpmX3G.png
+schematic_icon_url: http://i.imgur.com/dpyttHm.png
 # This icon will be used for any material that fails to create as an item
 default_brush_item: sulphur
 default_brush_icon_url: http://s3.amazonaws.com/MinecraftSkins/MHF_Question.png

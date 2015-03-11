@@ -1788,7 +1788,7 @@ wither|3:
 arrowrain:
     upgrade_required_path: apprentice
     upgrade_required_casts: 50
-    icon_url: http://i.imgur.com/thIMVWy.png
+    icon_url: http://i.imgur.com/y8HrXab.png
     icon: bow
     category: combat
     pvp_restricted: true
@@ -3838,7 +3838,7 @@ emp:
         mana: 45
 
 superemp:
-    icon_url: http://i.imgur.com/byVXfY0.png
+    icon_url: http://i.imgur.com/33YW7Vh.png
     icon: diode
     category: automata
     class: ConstructSpell
@@ -5739,6 +5739,15 @@ upgrades:
     actions:
         cast:
         -  class: SpellProgress
+
+brushselect:
+    icon: painting
+    icon_url: http://i.imgur.com/wDV1U2e.png
+    category: utility
+    hidden: true
+    actions:
+        cast:
+        -  class: BrushSelect
 
 tracking:
     upgrade_required_path: apprentice

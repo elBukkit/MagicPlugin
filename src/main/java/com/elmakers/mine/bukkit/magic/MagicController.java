@@ -1463,6 +1463,10 @@ public class MagicController implements Listener, MageController {
         return defaultWandMode;
     }
 
+    public WandMode getDefaultBrushMode() {
+        return defaultBrushMode;
+    }
+
     public String getDefaultWandPath() {
         return defaultWandPath;
     }
@@ -1793,6 +1797,8 @@ public class MagicController implements Listener, MageController {
         backupInventory = properties.getBoolean("backup_inventory", backupInventory);
         defaultWandPath = properties.getString("default_wand_path", "");
         defaultWandMode = Wand.parseWandMode(properties.getString("default_wand_mode", ""), defaultWandMode);
+        defaultBrushMode = Wand.parseWandMode(properties.getString("default_brush_mode", ""), defaultBrushMode);
+        brushSelectSpell = properties.getString("brush_select_spell", brushSelectSpell);
 		showMessages = properties.getBoolean("show_messages", showMessages);
 		showCastMessages = properties.getBoolean("show_cast_messages", showCastMessages);
 		clickCooldown = properties.getInt("click_cooldown", clickCooldown);
@@ -2416,7 +2422,7 @@ public class MagicController implements Listener, MageController {
 			if (spell != null) {
 				activeWand.setActiveSpell(spell.getKey());
             } else if (Wand.isBrush(icon)){
-				activeWand.activateBrush(icon);
+				activeWand.setActiveBrush(icon);
 			}
 		} else {
 			activeWand.setActiveSpell("");
@@ -2870,7 +2876,23 @@ public class MagicController implements Listener, MageController {
 				} else if (wandMode == WandMode.CAST) {
                     wand.cast();
 				} else {
-                    wand.toggleInventory();
+                    Spell currentSpell = wand.getActiveSpell();
+                    if (wand.getBrushMode() == WandMode.CHEST && brushSelectSpell != null && !brushSelectSpell.isEmpty() && player.isSneaking() && currentSpell != null && currentSpell.usesBrush())
+                    {
+                        Spell brushSelect = mage.getSpell(brushSelectSpell);
+                        if (brushSelect == null)
+                        {
+                            wand.toggleInventory();
+                        }
+                        else
+                        {
+                            brushSelect.cast();
+                        }
+                    }
+                    else
+                    {
+                        wand.toggleInventory();
+                    }
                 }
 				event.setCancelled(true);
 			} else {
@@ -4328,6 +4350,8 @@ public class MagicController implements Listener, MageController {
     private boolean                             saveNonPlayerMages              = false;
     private String                              defaultWandPath                 = "";
     private WandMode							defaultWandMode				    = WandMode.INVENTORY;
+    private WandMode							defaultBrushMode				= WandMode.CHEST;
+    private String                              brushSelectSpell                = "";
     private boolean                             showMessages                    = true;
     private boolean                             showCastMessages                = false;
     private String								messagePrefix					= "";

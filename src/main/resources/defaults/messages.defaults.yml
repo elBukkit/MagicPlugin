@@ -188,7 +188,7 @@ wand:
     bound_instructions: "&r&3Your $wand is bound to you, and is undroppable."
     spell_instructions: "&r&bSwing your $wand to cast &r&6$spell&d&o. Spells require mana, shown in the XP bar."
     enchant_instructions: "&r&bEnchant your $wand to upgrade its abilities."
-    brush_instructions: "&r&bMaterial brushes have been added to your $wand. Select these as you would a spell to modify your engineering magic."
+    brush_instructions: "&r&bMaterial brushes have been added to your $wand. Shift+Right Click to select a brush."
 spell:
     brush: Uses Material Brushes
     undoable: Undoable
@@ -1173,6 +1173,10 @@ spells:
         fail: You must be holding a wand!
         level_requirement: "&r&cRequires: &6$path"
         cast_requirement: "Casts: &6$current&f/&e$required"
+    brushselect:
+        name: Brush Selector
+        descriptions: Chooses your active brush
+        fail: You must be holding a wand!
     tracking:
         name: Tracking Sense
         description: Find nearby life
