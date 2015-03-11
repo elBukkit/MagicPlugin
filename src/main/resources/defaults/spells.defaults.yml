@@ -907,6 +907,8 @@ disc:
         transparent: transparent_to_construction
         undo: 20000
         breakable: 2
+        brush: stained_glass
+        brushcolor: true
     costs:
         mana: 60
 
@@ -961,6 +963,7 @@ superring:
 
 supershell:
     icon: magma_cream
+    icon_url: http://i.imgur.com/XpdIfFm.png
     category: engineering
     class: ConstructSpell
     worth: 200
