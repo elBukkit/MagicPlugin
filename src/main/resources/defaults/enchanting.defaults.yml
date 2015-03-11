@@ -456,7 +456,6 @@ engineer:
       commit: 0,0,1
       pillar: 0,5,10
       place: 0,1,5
-      stalactite: 0,5,10
       levitate: 0,0,10
     material_count:
       1: 50, 20, 20
