@@ -463,6 +463,8 @@ building:
 - coal_ore
 - log
 - leaves
+- log_2
+- leaves_2
 - sponge
 - glass
 - lapis_ore

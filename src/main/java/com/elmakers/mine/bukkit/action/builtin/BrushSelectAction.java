@@ -61,7 +61,7 @@ public class BrushSelectAction extends BaseSpellAction implements GUIAction
                 } else if (set.equals("variants")) {
                     MaterialAndData baseMaterial = new MaterialAndData(item);
                     String baseName = baseMaterial.getBaseName();
-                    String inventoryTitle = context.getMessage("variants_title", "$variant Variants").replace("$variant", baseName);
+                    String inventoryTitle = context.getMessage("variants_title", "$variant Types").replace("$variant", baseName);
                     List<ItemStack> variantList = variants.get(baseMaterial.getMaterial());
                     int invSize = ((variantList.size() + 9) / 9) * 9;
                     Inventory displayInventory = CompatibilityUtils.createInventory(null, invSize, inventoryTitle);
@@ -130,7 +130,7 @@ public class BrushSelectAction extends BaseSpellAction implements GUIAction
                         String name = context.getMessage("variant_name", "[$variant]");
                         meta.setDisplayName(name.replace("$variant", baseName));
                         List<String> lore = new ArrayList<String>();
-                        String description = context.getMessage("variant_description", "Click to choose a variant of $variant");
+                        String description = context.getMessage("variant_description", "Choose a type of $variant");
                         lore.add(description.replace("$variant", baseName));
                         meta.setLore(lore);
                         category.setItemMeta(meta);
@@ -156,7 +156,7 @@ public class BrushSelectAction extends BaseSpellAction implements GUIAction
             ItemMeta meta = schematicItem.getItemMeta();
             meta.setDisplayName(context.getMessage("schematics_name", "[Schematics]"));
             List<String> lore = new ArrayList<String>();
-            lore.add(context.getMessage("schematics_description", "Click to choose schematics"));
+            lore.add(context.getMessage("schematics_description", "Choose a schematic"));
             meta.setLore(lore);
             schematicItem.setItemMeta(meta);
             InventoryUtils.setMeta(schematicItem, "brush_set", "schematics");
