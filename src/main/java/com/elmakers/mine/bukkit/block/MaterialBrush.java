@@ -137,6 +137,12 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
                MAP_MATERIAL_KEY.equals(materialKey) || (SchematicsEnabled && SCHEMATIC_MATERIAL_KEY.equals(materialKey));
     }
 
+    public static boolean isSchematic(String materialKey) {
+        if (materialKey == null || materialKey.length() == 0) return false;
+        materialKey = splitMaterialKey(materialKey)[0];
+        return SCHEMATIC_MATERIAL_KEY.equals(materialKey);
+    }
+
     public static String getMaterialName(Messages messages, String materialKey) {
         MaterialBrush brush = new MaterialBrush(materialKey);
         return brush.getName(messages);

@@ -564,6 +564,12 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         return getName(null);
     }
 
+
+    @SuppressWarnings("deprecation")
+    public String getBaseName() {
+        return material.name().toLowerCase().replace('_', ' ');
+    }
+
         @SuppressWarnings("deprecation")
     public String getName(Messages messages) {
         if (!isValid()) return null;
