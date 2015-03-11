@@ -249,8 +249,6 @@ architect:
         - undo
         - commit
         - blob
-        - pyramid
-        - stalactite
         - shell
         - iterate
         - box
@@ -361,10 +359,8 @@ elder:
         - cluster
         - bomb
         - volley
-        - stalactite
         - fill
         - blob
-        - pyramid
         - blast
         - pillar
         - place
@@ -604,7 +600,6 @@ wolf:
         - box
         - frag
         - volley
-        - stalactite
         - blob
         - repair
         - alter
@@ -1010,7 +1005,7 @@ respawntoken:
 wolfhouse:
     mode: cast
     active_spell: wolfhouse
-    icon: sapling:5
+    icon: skull_item:http://i.imgur.com/z149vKa.png
     indestructible: false
     cost_reduction: 2
     locked: true

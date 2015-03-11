@@ -739,9 +739,6 @@ spells:
         target_selected: Cast again to build cube
         fail: Too large!
         cast_finish: Filled $count blocks with $material
-    kamikazee:
-        name: Kamikazee
-        description: Kill yourself with an explosion
     superblast:
         name: SuperBlast
         description: Mine out a very large area
@@ -879,10 +876,6 @@ spells:
         upgrade_description: "&r&b• &6Now builds with stone"
     blob|3:
         upgrade_description: "&r&b• &6Now builds with obsidian"
-    pyramid:
-        name: Pyramid
-        description: Create a solid pyramid
-        cast_finish: Made a pyramid out of $count blocks with $material
     repair:
         name: Repair
         description: Repair an area saved with Backup
