@@ -4755,7 +4755,7 @@ missile:
         entity_damage: 4
         target_breakables: 1
         bypass_backfire: false
-        cooldown: 500
+        cooldown: 1500
     costs:
         mana: 15
 
@@ -4782,8 +4782,8 @@ missile|3:
 missile|4:
     parameters:
         range: 64
-        player_damage: 6
-        entity_damage: 12
+        player_damage: 4
+        entity_damage: 10
         target_breakables: 4
     costs:
         mana: 40
