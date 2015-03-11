@@ -581,21 +581,24 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
 
         // This is the "right" way to do this, but relies on Bukkit actually updating Material in a timely fashion :P
         /*
-        Class<? extends MaterialData> materialData = material.getData();
-        Bukkit.getLogger().info("Material " + material + " has " + materialData);
-        if (Wool.class.isAssignableFrom(materialData)) {
-            Wool wool = new Wool(material, data);
-            materialName += " " + wool.getColor().name();
-        } else if (Dye.class.isAssignableFrom(materialData)) {
-            Dye dye = new Dye(material, data);
-            materialName += " " + dye.getColor().name();
-        } else if (Dye.class.isAssignableFrom(materialData)) {
-            Dye dye = new Dye(material, data);
-            materialName += " " + dye.getColor().name();
+        MaterialData materialData = material.getNewData((byte)(short)data);
+        if (materialData instanceof Colorable) {
+            materialName += " " + ((Colorable)materialData).getColor().name();
+        }
+        if (materialData instanceof Tree) {
+            Tree tree = (Tree)materialData;
+            materialName += " " + tree.getSpecies().name() + " " + tree.getDirection().name();
+        }
+        if (materialData instanceof Stairs) {
+            Stairs stairs = (Stairs)materialData;
+            materialName += " " + stairs.getFacing().name();
+            // TODO: Ascending/descending directions?
+        }
+        if (materialData instanceof WoodenStep) {
+            WoodenStep step = (WoodenStep)materialData;
+            materialName += " " + step.getSpecies().name();
         }
         */
-
-        // TODO: I don't think these colors are right... is DyeColor correct here?
 
         if (data != null) {
              if (material == Material.CARPET || material == Material.STAINED_GLASS || material == Material.STAINED_CLAY || material == Material.STAINED_GLASS_PANE || material == Material.WOOL) {
@@ -604,7 +607,8 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
                 if (color != null) {
                     materialName = color.name().toLowerCase().replace('_', ' ') + " " + materialName;
                 }
-            } else if (material == Material.WOOD || material == Material.LOG || material == Material.SAPLING || material == Material.LEAVES) {
+            } else if (material == Material.WOOD || material == Material.LOG || material == Material.SAPLING || material == Material.LEAVES
+                     || material == Material.LOG_2 || material == Material.LEAVES_2) {
                 TreeSpecies treeSpecies = TreeSpecies.getByData((byte)(short)data);
                 if (treeSpecies != null) {
                     materialName = treeSpecies.name().toLowerCase().replace('_', ' ') + " " + materialName;
