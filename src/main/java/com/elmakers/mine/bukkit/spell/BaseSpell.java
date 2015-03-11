@@ -143,6 +143,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     private List<CastingCost> activeCosts = null;
 
     protected boolean pvpRestricted           	= false;
+    protected boolean usesBrushSelection        = false;
     protected boolean bypassPvpRestriction    	= false;
     protected boolean bypassConfusion             = false;
     protected boolean bypassPermissions           = false;
@@ -681,6 +682,11 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     }
 
     @Override
+    public boolean usesBrushSelection() {
+        return usesBrushSelection || usesBrush();
+    }
+
+    @Override
     public boolean isUndoable()
     {
         return false;
@@ -782,6 +788,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         costs = parseCosts(node.getConfigurationSection("costs"));
         activeCosts = parseCosts(node.getConfigurationSection("active_costs"));
         pvpRestricted = node.getBoolean("pvp_restricted", pvpRestricted);
+        usesBrushSelection = node.getBoolean("brush_selection", usesBrushSelection);
         castOnNoTarget = node.getBoolean("cast_on_no_target", castOnNoTarget);
         hidden = node.getBoolean("hidden", false);
 
