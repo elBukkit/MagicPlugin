@@ -32,7 +32,8 @@ import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.Target;
 
 public abstract class TargetingSpell extends BaseSpell {
-
+    // This differs from CompatibilityUtils.MAX_ENTITY_RANGE,
+    // block targeting can theoretically go farther
     private static final int  MAX_RANGE  = 511;
 
     private Target								target					= null;
@@ -501,6 +502,7 @@ public abstract class TargetingSpell extends BaseSpell {
         int rangeSquared = (int)Math.floor(range * range);
         List<Entity> entities = null;
         int maxRange = getMaxRange();
+        maxRange = Math.min(maxRange, CompatibilityUtils.MAX_ENTITY_RANGE);
         if (sourceLocation == null && sourceEntity != null) {
             entities = sourceEntity.getNearbyEntities(maxRange, maxRange, maxRange);
         } else if (sourceLocation != null) {

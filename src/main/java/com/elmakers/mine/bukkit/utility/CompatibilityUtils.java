@@ -39,6 +39,7 @@ import org.bukkit.util.Vector;
  * official release.
  */
 public class CompatibilityUtils extends NMSUtils {
+    public final static int MAX_ENTITY_RANGE = 72;
 
     /**
      * This is shamelessly copied from org.bukkit.Location.setDirection.
@@ -227,6 +228,8 @@ public class CompatibilityUtils extends NMSUtils {
     public static List<Entity> getNearbyEntities(Location location, double x, double y, double z) {
         Object worldHandle = getHandle(location.getWorld());
         try {
+            x = Math.min(x, CompatibilityUtils.MAX_ENTITY_RANGE);
+            z = Math.min(z, CompatibilityUtils.MAX_ENTITY_RANGE);
             Object bb = class_AxisAlignedBB_createBBMethod.invoke(null, location.getX() - x, location.getY() - y, location.getZ() - z,
                     location.getX() + x, location.getY() + y, location.getZ() + z);
 
