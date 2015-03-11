@@ -50,6 +50,7 @@ public interface MaterialAndData {
     public Material getMaterial();
     public String getKey();
     public String getName();
+    public String getBaseName();
     public boolean is(Block block);
     public boolean isDifferent(Block block);
     public ItemStack getItemStack(int amount);
