@@ -304,7 +304,7 @@ apprentice:
 
 master:
     required_spells:
-      - undo
+      - rollback
     upgrade: engineer
     upgrade_item: engineer_upgrade
     inherit: apprentice
@@ -442,7 +442,7 @@ engineer:
       2: 0,   50,  10
       3: 0,   1,   50
     spells:
-      undo: 1,5,10
+      rollback: 1,5,10
       alter: 0,10,20
       blob: 0,10,40
       bridge: 0,5,10
