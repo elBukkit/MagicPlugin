@@ -239,6 +239,10 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
     }
 
     public void setMaterial(Material material, short data) {
+        setMaterial(material, (Short)data);
+    }
+
+    public void setMaterial(Material material, Short data) {
         this.material = material;
         this.data = data;
         signLines = null;
