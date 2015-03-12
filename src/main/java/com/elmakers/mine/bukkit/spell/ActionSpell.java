@@ -67,6 +67,7 @@ public class ActionSpell extends BrushSpell
     @Override
     public void load(ConfigurationSection data)
     {
+        super.load(data);
         for (ActionHandler handler : actions.values())
         {
             handler.loadData(getMage(), data);
@@ -76,6 +77,7 @@ public class ActionSpell extends BrushSpell
     @Override
     public void save(ConfigurationSection data)
     {
+        super.save(data);
         for (ActionHandler handler : actions.values())
         {
             handler.saveData(getMage(), data);
