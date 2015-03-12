@@ -1489,6 +1489,8 @@ public class MagicController implements Listener, MageController {
                 if (!mage.isLoading()) {
                     mage.save(playerConfig);
                     stores.add(playerConfig);
+                } else {
+                    getLogger().info("Skipping save of mage, already loading: " + mage.getName());
                 }
 
                 // Check for players we can forget
@@ -1516,20 +1518,13 @@ public class MagicController implements Listener, MageController {
 
 	public void save(boolean asynchronous)
 	{
-        getLogger().info("Saving image map data");
         maps.save(asynchronous);
 
         final List<DataStore> saveData = new ArrayList<DataStore>();
-		getLogger().info("Saving player data");
 		savePlayerData(saveData);
-		
-		getLogger().info("Saving spell data");
+        getLogger().info("Saving " + saveData.size() + " players");
 		saveSpellData(saveData);
-
-		getLogger().info("Saving lost wands data");
 		saveLostWands(saveData);
-
-		getLogger().info("Saving automata data");
 		saveAutomata(saveData);
 
         if (asynchronous) {
@@ -1540,6 +1535,7 @@ public class MagicController implements Listener, MageController {
                         for (DataStore config : saveData) {
                             config.save();
                         }
+                        getLogger().info("Finished saving");
                     }
                 }
             });
@@ -1548,6 +1544,7 @@ public class MagicController implements Listener, MageController {
                 for (DataStore config : saveData) {
                     config.save();
                 }
+                getLogger().info("Finished saving");
             }
         }
 
@@ -1922,9 +1919,8 @@ public class MagicController implements Listener, MageController {
 			autoSaveTaskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin,
 					new TimedRunnable("Auto Save") {
 						public void onRun() {
-							saveController.getLogger().info("Auto-saving Magic data");
+                            saveController.getLogger().info("Auto-saving Magic data");
 							saveController.save(true);
-							saveController.getLogger().info("... Done auto-saving.");
 						}
 					},
 					autoSaveIntervalTicks, autoSaveIntervalTicks);

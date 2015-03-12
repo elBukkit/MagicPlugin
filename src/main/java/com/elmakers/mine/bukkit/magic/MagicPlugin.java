@@ -183,8 +183,8 @@ public class MagicPlugin extends JavaPlugin implements MagicAPI
 	public void onDisable() 
 	{
         if (controller != null) {
-            controller.save();
             controller.clear();
+            controller.save();
         }
 	}
 

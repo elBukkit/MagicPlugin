@@ -4755,7 +4755,7 @@ missile:
         entity_damage: 4
         target_breakables: 1
         bypass_backfire: false
-        cooldown: 1500
+        cooldown: 1000
     costs:
         mana: 15
 
@@ -4767,6 +4767,8 @@ missile|2:
         player_damage: 3
         entity_damage: 6
         target_breakables: 2
+    costs:
+        mana: 20
 
 missile|3:
     upgrade_required_path: apprentice
@@ -4777,7 +4779,7 @@ missile|3:
         entity_damage: 8
         target_breakables: 3
     costs:
-        mana: 30
+        mana: 40
 
 missile|4:
     parameters:
@@ -4786,7 +4788,7 @@ missile|4:
         entity_damage: 10
         target_breakables: 4
     costs:
-        mana: 40
+        mana: 50
 
 blind:
     icon_url: http://i.imgur.com/Todo6d0.png
