@@ -79,7 +79,6 @@ public class HatAction extends BaseSpellAction
 			}
 			if (itemStack != null)
 			{
-				org.bukkit.Bukkit.getLogger().info("Setting replacement: " + itemStack);
 				NMSUtils.setReplacement(hatItem, itemStack);
 			}
 		}
