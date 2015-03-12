@@ -328,28 +328,18 @@ spells:
         name: Disc
         description: Create a platform in front of you
         cast_finish: Filled $count blocks with $material
-    dome:
-        name: Dome
-        description: Create a large dome
-        cast_finish: Filled $count blocks with $material
-    shields:
-        name: Shields
-        description: Create a temporary shell
-        cast_finish: Shields Up!
+    disc|2:
+        upgrade_description: "&r&b• &6Increased size"
+    disc|3:
+        upgrade_description: "&r&b• &6Now builds with your brush"
     reflect:
         name: Reflect
         description: Reflect spells cast against you
         upgrade_description: "&r&b• &6Increased size and reflectivity"
     shell:
         name: Shell
-        description: Create a large spherical shell
-        cast_finish: Filled $count blocks with $material
-    shell|2:
-        upgrade_description: "&r&b• &6Now builds with stone"
-    shell|3:
-        upgrade_description: "&r&b• &6Now builds with smooth brick"
-    shell|4:
-        upgrade_description: "&r&b• &6Now builds with obsidian"
+        description: Create a reflective shell
+        upgrade_description: "&r&b• &6Increased durability and reflectibity"
     tag:
         name: Tag
         description: Leave a sign with your name
@@ -873,9 +863,11 @@ spells:
         description: Create a solid blob
         cast_finish: Blobbed $count blocks with $material
     blob|2:
-        upgrade_description: "&r&b• &6Now builds with stone"
+        upgrade_description: "&r&b• &6Now builds with clay"
     blob|3:
         upgrade_description: "&r&b• &6Now builds with obsidian"
+    blob|4:
+        upgrade_description: "&r&b• &6Now builds with your brush"
     repair:
         name: Repair
         description: Repair an area saved with Backup

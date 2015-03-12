@@ -4,9 +4,11 @@
  - Implement brush selection. Shift+right click to change brushes.
  - Allow different map scales (/mgive brush:map:128)
  - Add custom icons for special brushes
- - More custom icons
+ - Add custom icons for all spells
  - Fix progression to Engineer/Architect (undo spell changed to rollback)
- - Removed the Kamikazee, Pyramid and Stalactite spells
+ - Removed the Kamikazee, Pyramid, Stalactite, Storm and Shields spells
+ - Some fixes to tracking of spell casts for upgrades
+ - Add config option to enable/disable PS field "cast anything" for owner
 
 ## 4.4
 

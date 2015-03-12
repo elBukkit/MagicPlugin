@@ -228,7 +228,7 @@ curse|2:
 
 blessing:
     icon: double_plant:5
-    icon_url: http://i.imgur.com/B8RfZE3.png
+    icon_url: http://i.imgur.com/5pwbaxJ.png
     category: light
     worth: 100
     actions:
@@ -762,7 +762,7 @@ shell:
     icon_url: http://i.imgur.com/VG9yNqE.png
     alias: dome
     icon: ender_pearl
-    category: engineering
+    category: combat
     class: ConstructSpell
     worth: 50
     upgrade_required_path: student
@@ -782,9 +782,14 @@ shell:
         radius: 3
         type: sphere
         transparent: transparent_to_construction
+        destructible: air,fire,water,stationary_water
+        check_destructible: true
         undo: 4000
         brush: stained_glass
-        breakable: 3
+        brushcolor: true
+        cooldown: 5000
+        breakable: 4
+        reflect_chance: 0.25
     costs:
         mana: 75
 
@@ -792,43 +797,21 @@ shell|2:
     upgrade_required_path: apprentice
     upgrade_required_casts: 50
     parameters:
-        brush: stone
+        reflect_chance: 0.5
         undo: 5000
+        breakable: 3
 
 shell|3:
     upgrade_required_path: master
     upgrade_required_casts: 50
     parameters:
-        brush: smooth_brick
-        undo: 10000
+        reflect_chance: 0.75
+        breakable: 2
 
 shell|4:
     parameters:
-        brush: obsidian
-        undo: 15000
-
-shields:
-    icon_url: http://i.imgur.com/VG9yNqE.png
-    icon: iron_helmet
-    category: light
-    class: ConstructSpell
-    worth: 20
-    effects:
-        cast:
-        -  class: EffectSingle
-           sound: level_up
-    parameters:
-        radius: 3
-        target: self
-        type: sphere
-        brush: stained_glass
-        transparent: transparent_to_construction
-        destructible: air
-        brushcolor: true
-        undo: 10000
-        breakable: 2
-    costs:
-        mana: 20
+        reflect_chance: 0.9
+        breakable: 1
 
 reflect:
     icon_url: http://i.imgur.com/VG9yNqE.png
@@ -886,9 +869,11 @@ reflect|3:
         mana: 55
 
 disc:
+    upgrade_required_path: master
+    upgrade_required_casts: 50
     icon: ink_sack:8
-    icon_url: http://i.imgur.com/gPP9BIr.png
-    category: engineering
+    icon_url: http://i.imgur.com/qYdIeMs.png
+    category: utility
     class: ConstructSpell
     worth: 45
     effects:
@@ -900,7 +885,7 @@ disc:
     parameters:
         allow_max_range: true
         range: 8
-        radius: 3
+        radius: 2
         type: sphere
         orient_dimension_max: 0
         orient_dimension_min: 0
@@ -909,8 +894,19 @@ disc:
         breakable: 2
         brush: stained_glass
         brushcolor: true
+        cooldown: 5000
     costs:
         mana: 60
+
+disc|2:
+    upgrade_required_path: architect
+    upgrade_required_casts: 50
+    parameters:
+        radius: 3
+
+disc|3:
+    parameters:
+        brush: ""
 
 superdisc:
     icon_url: http://i.imgur.com/5FFGaKy.png
@@ -3789,6 +3785,7 @@ blob:
         undo: 2000
         cooldown: 1000
         brush: stained_glass
+        brushcolor: true
         breakable: 3
     costs:
         mana: 50
@@ -3800,14 +3797,20 @@ blob|2:
         radius: 3
         undo: 5000
         cooldown: 2000
-        brush: stone
+        brush: stained_clay
 
 blob|3:
+    upgrade_required_path: architect
+    upgrade_required_casts: 50
     parameters:
         radius: 3
         undo: 15000
         cooldown: 5000
         brush: obsidian
+
+blob|4:
+    parameters:
+        brush: ""
 
 emp:
     icon_url: http://i.imgur.com/33YW7Vh.png
