@@ -1670,7 +1670,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         try {
             node.set("cast_count", castCount);
             node.set("last_cast", lastCast);
-            node.set("active", isActive);
+            node.set("active", isActive ? true : null);
             onSave(node);
         } catch (Exception ex) {
             controller.getPlugin().getLogger().warning("Failed to save data for spell " + name);
