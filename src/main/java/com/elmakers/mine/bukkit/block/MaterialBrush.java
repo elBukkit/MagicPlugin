@@ -441,7 +441,8 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
                         Math.abs((int)(diff.getBlockZ() * scale + BufferedMapCanvas.CANVAS_HEIGHT / 2) % BufferedMapCanvas.CANVAS_HEIGHT));
                 }
                 if (mapColor != null) {
-                    super.setMaterial(mapMaterialBase, mapColor.getData());
+                    this.material = mapMaterialBase;
+                    this.data = (short)mapColor.getData();
                     isValid = true;
                 }
             }

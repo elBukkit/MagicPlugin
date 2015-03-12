@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 2.6
+
+ - Fix the Map brushes
+
 ## 2.5
 
  - Add support for custom icons for special brushes (copy, clone, etc)
