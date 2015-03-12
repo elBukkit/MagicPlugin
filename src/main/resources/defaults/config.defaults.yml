@@ -404,6 +404,9 @@ towny_enabled: true
 
 # Enable PreciousStones integration for Build and PVP checks
 precious_stones_enabled: true
+# Players who can build in a field can cast ANY spell in that field,
+# regardless of other region perms
+precious_stones_override: true
 
 # Enable Lockette integration for Build checks
 lockette_enabled: true

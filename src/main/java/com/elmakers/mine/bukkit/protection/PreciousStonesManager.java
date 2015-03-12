@@ -14,11 +14,16 @@ import java.util.List;
 
 public class PreciousStonesManager {
 	private boolean enabled = false;
+    private boolean override = true;
 	private PreciousStones preciousStones = null;
 
 	public void setEnabled(boolean enabled) {
 		this.enabled = enabled;
 	}
+
+    public void setOverride(boolean override) {
+        this.override = override;
+    }
 
 	public boolean isEnabled() {
 		return enabled && preciousStones != null;
@@ -77,7 +82,7 @@ public class PreciousStonesManager {
 
     public Boolean getCastPermission(Player player, SpellTemplate spell, Location location) {
         Boolean overridePermission = null;
-        if (enabled && location != null && preciousStones != null)
+        if (override && enabled && location != null && preciousStones != null)
         {
             if (PreciousStones.API().isFieldProtectingArea(FieldFlag.ALL, location))
             {

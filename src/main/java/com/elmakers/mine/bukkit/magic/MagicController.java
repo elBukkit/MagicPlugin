@@ -1865,6 +1865,7 @@ public class MagicController implements Listener, MageController {
         pvpManager.setEnabled(properties.getBoolean("pvp_manager_enabled", pvpManager.isEnabled()));
         multiverseManager.setEnabled(properties.getBoolean("multiverse_enabled", multiverseManager.isEnabled()));
         preciousStonesManager.setEnabled(properties.getBoolean("precious_stones_enabled", preciousStonesManager.isEnabled()));
+        preciousStonesManager.setOverride(properties.getBoolean("precious_stones_override", true));
         townyManager.setEnabled(properties.getBoolean("towny_enabled", townyManager.isEnabled()));
         locketteManager.setEnabled(properties.getBoolean("lockette_enabled", locketteManager.isEnabled()));
 
