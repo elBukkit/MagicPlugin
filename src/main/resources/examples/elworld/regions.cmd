@@ -1,3 +1,4 @@
+region flag __global__ -w world blocked-spell-categories automata
 region flag welcome_mobs -w world server-enter-command /castp @p recall unlock town
 region flag capital -w world server-enter-command /castp @p recall unlock town
 region flag lodge -w world server-enter-command /castp @p recall unlock lodge
