@@ -32,7 +32,7 @@ public abstract class BrushSpell extends BlockSpell {
 
         String materialKey = parameters.getString("brush", null);
 
-        if (materialKey != null) {
+        if (materialKey != null && !materialKey.isEmpty()) {
             brush = new MaterialBrush(mage, getLocation(), materialKey);
 
             if (parameters.getBoolean("preserve_data", false)) {
@@ -92,7 +92,7 @@ public abstract class BrushSpell extends BlockSpell {
     {
         super.loadTemplate(node);
         ConfigurationSection parameters = node.getConfigurationSection("parameters");
-        hasBrush = parameters != null && parameters.contains("brush");
+        hasBrush = parameters != null && parameters.contains("brush") && !parameters.getString("brush").isEmpty();
         usesBrush = node.getBoolean("uses_brush", usesBrush);
     }
 
