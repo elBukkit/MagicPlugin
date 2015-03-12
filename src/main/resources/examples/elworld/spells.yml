@@ -189,16 +189,3 @@ recall:
         description: A little shortcut
         locked: true
         icon: ender_stone
-
-missile:
-   parameters:
-       cooldown: 1500
-
-missile|4:
-    parameters:
-        range: 64
-        player_damage: 4
-        entity_damage: 10
-        target_breakables: 4
-    costs:
-        mana: 40
