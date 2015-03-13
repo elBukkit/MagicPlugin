@@ -74,8 +74,6 @@ public class MagicCitizensTrait extends Trait {
                 sender.sendMessage(api.getMessages().get("economy.insufficient").replace("$cost", vault.format(cost)));
                 return;
             }
-            sender.sendMessage(api.getMessages().get("economy.deducted").replace("$cost", vault.format(cost)));
-            vault.withdrawPlayer(player, cost);
         }
 
         String[] parameters = this.parameters;
@@ -93,7 +91,8 @@ public class MagicCitizensTrait extends Trait {
             }
         }
 
-        if (api.cast(spellKey, parameters, sender, entity) && cost > 0) {
+        boolean result = api.cast(spellKey, parameters, sender, entity);
+        if (result && cost > 0) {
             VaultController vault = VaultController.getInstance();
             sender.sendMessage(api.getMessages().get("economy.deducted").replace("$cost", vault.format(cost)));
             vault.withdrawPlayer(player, cost);
