@@ -28,6 +28,7 @@ import java.util.Random;
 import java.util.Set;
 import java.util.UUID;
 import java.util.WeakHashMap;
+import java.util.logging.Logger;
 
 public class CastContext implements com.elmakers.mine.bukkit.api.action.CastContext {
     protected static Random random;
@@ -494,5 +495,10 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
     @Override
     public void setTargetName(String name) {
         targetName = name;
+    }
+
+    @Override
+    public Logger getLogger() {
+        return getController().getLogger();
     }
 }
