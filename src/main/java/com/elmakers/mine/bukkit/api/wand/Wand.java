@@ -88,4 +88,6 @@ public interface Wand extends CostReducer {
     public float getCostReduction();
     public WandUpgradePath getPath();
     public MageController getController();
+    public boolean showCastMessages();
+    public boolean showMessages();
 }
