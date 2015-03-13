@@ -101,14 +101,17 @@ public class WandOrganizer {
 			}
 		}
 
-		Map<String, String> materials = new TreeMap<String, String>();
-		for (String materialKey : brushes.keySet()) {
-			if (MaterialBrush.isSpecialMaterialKey(materialKey)) {
-				materials.put(" " + materialKey, materialKey);
-			} else {
-				materials.put(materialKey, materialKey);
-			}
-		}
+        Map<String, String> materials = new TreeMap<String, String>();
+        if (wand.getBrushMode() == WandMode.INVENTORY)
+        {
+            for (String materialKey : brushes.keySet()) {
+                if (MaterialBrush.isSpecialMaterialKey(materialKey)) {
+                    materials.put(" " + materialKey, materialKey);
+                } else {
+                    materials.put(materialKey, materialKey);
+                }
+            }
+        }
 
 		currentInventoryIndex = 0;
 		currentInventoryCount = 0;
@@ -160,7 +163,9 @@ public class WandOrganizer {
 		}
 
         wand.updateSpellInventory(spells);
-        wand.updateBrushInventory(brushes);
+        if (materials.size() > 0) {
+            wand.updateBrushInventory(brushes);
+        }
 	}
 
     public void alphabetize() {
@@ -170,11 +175,13 @@ public class WandOrganizer {
         removeHotbar(spells, brushes);
 
         Map<String, String> materials = new TreeMap<String, String>();
-        for (String materialKey : brushes.keySet()) {
-            if (MaterialBrush.isSpecialMaterialKey(materialKey)) {
-                materials.put(" " + materialKey, materialKey);
-            } else {
-                materials.put(materialKey, materialKey);
+        if (wand.getBrushMode() == WandMode.INVENTORY) {
+            for (String materialKey : brushes.keySet()) {
+                if (MaterialBrush.isSpecialMaterialKey(materialKey)) {
+                    materials.put(" " + materialKey, materialKey);
+                } else {
+                    materials.put(materialKey, materialKey);
+                }
             }
         }
 
@@ -204,7 +211,9 @@ public class WandOrganizer {
         }
 
         wand.updateSpellInventory(spells);
-        wand.updateBrushInventory(brushes);
+        if (materials.size() > 0) {
+            wand.updateBrushInventory(brushes);
+        }
     }
 
     protected int getNextSlot() {

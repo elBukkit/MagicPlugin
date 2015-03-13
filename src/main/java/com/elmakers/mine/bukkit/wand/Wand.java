@@ -773,7 +773,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 			Integer slot = parseSlot(pieces);
 			String materialKey = pieces[0].trim();
             brushes.put(materialKey, slot);
-            boolean addToInventory = brushMode != WandMode.CHEST || (MaterialBrush.isSpecialMaterialKey(materialKey) && !MaterialBrush.isSchematic(materialKey));
+            boolean addToInventory = brushMode == WandMode.INVENTORY || (MaterialBrush.isSpecialMaterialKey(materialKey) && !MaterialBrush.isSchematic(materialKey));
             if (addToInventory)
             {
                 ItemStack itemStack = createBrushIcon(materialKey);
@@ -1059,26 +1059,6 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		if (wandConfig.contains("effect_color") && !safe) {
 			setEffectColor(wandConfig.getString("effect_color"));
 		}
-
-		if (wandConfig.contains("hotbar_count")) {
-			int newCount = Math.max(1, wandConfig.getInt("hotbar_count"));
-			if ((!safe && newCount != hotbars.size()) || newCount > hotbars.size()) {
-				if (isInventoryOpen()) {
-					closeInventory();
-				}
-				String wandSpells = getSpellString();
-				String wandMaterials = getMaterialString();
-				setHotbarCount(newCount);
-				if (wandMaterials.length() > 0 || wandSpells.length() > 0) {
-					parseInventoryStrings(wandSpells, wandMaterials);
-				}
-			}
-		}
-
-		if (wandConfig.contains("hotbar")) {
-			int hotbar = wandConfig.getInt("hotbar");
-			currentHotbar = hotbar < 0 || hotbar >= hotbars.size() ? 0 : hotbar;
-		}
 		
 		// Don't change any of this stuff in safe mode
 		if (!safe) {
@@ -1125,8 +1105,28 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 			activeSpell = wandConfig.getString("active_spell", activeSpell);
 			activeMaterial = wandConfig.getString("active_material", activeMaterial);
 
-			String wandMaterials = wandConfig.getString("materials", "");
-			String wandSpells = wandConfig.getString("spells", "");
+            String wandMaterials = "";
+            String wandSpells = "";
+            if (wandConfig.contains("hotbar_count")) {
+                int newCount = Math.max(1, wandConfig.getInt("hotbar_count"));
+                if ((!safe && newCount != hotbars.size()) || newCount > hotbars.size()) {
+                    if (isInventoryOpen()) {
+                        closeInventory();
+                    }
+                    // Force a re-parse of materials and spells
+                    wandSpells = getSpellString();
+                    wandMaterials = getMaterialString();
+                    setHotbarCount(newCount);
+                }
+            }
+
+            if (wandConfig.contains("hotbar")) {
+                int hotbar = wandConfig.getInt("hotbar");
+                currentHotbar = hotbar < 0 || hotbar >= hotbars.size() ? 0 : hotbar;
+            }
+
+			wandMaterials = wandConfig.getString("materials", wandMaterials);
+			wandSpells = wandConfig.getString("spells", wandSpells);
 
 			if (wandMaterials.length() > 0 || wandSpells.length() > 0) {
 				wandMaterials = wandMaterials.length() == 0 ? getMaterialString() : wandMaterials;
