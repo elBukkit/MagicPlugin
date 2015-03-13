@@ -3481,6 +3481,7 @@ rollback:
         transparent: air
         bypass_backfire: true
         loud: true
+        cancel: true
     costs:
         mana: 100
 

@@ -105,15 +105,18 @@ public class BrushSelectAction extends BaseSpellAction implements GUIAction
         List<String> brushKeys = new ArrayList(wand.getBrushes());
         Collections.sort(brushKeys);
         List<ItemStack> brushes = new ArrayList<ItemStack>();
+        List<ItemStack> specials = new ArrayList<ItemStack>();
         MaterialAndData previous = null;
         for (String brushKey : brushKeys) {
+            ItemStack brushItem = com.elmakers.mine.bukkit.wand.Wand.createBrushItem(brushKey, controller, null, false);
             if (MaterialBrush.isSchematic(brushKey)) {
-                ItemStack brushItem = com.elmakers.mine.bukkit.wand.Wand.createBrushItem(brushKey, controller, null, false);
                 schematics.add(brushItem);
                 continue;
             }
-            if (MaterialBrush.isSpecialMaterialKey(brushKey)) continue;
-            ItemStack brushItem = com.elmakers.mine.bukkit.wand.Wand.createBrushItem(brushKey, controller, null, false);
+            if (MaterialBrush.isSpecialMaterialKey(brushKey)) {
+                specials.add(brushItem);
+                continue;
+            }
             if (brushItem != null) {
                 MaterialAndData material = new MaterialAndData(brushItem);
                 if (previous != null && material.getMaterial() == previous.getMaterial())
@@ -165,6 +168,7 @@ public class BrushSelectAction extends BaseSpellAction implements GUIAction
         if (schematicItem != null) {
             brushes.add(schematicItem);
         }
+        brushes.addAll(specials);
 
         String inventoryTitle = context.getMessage("title", "Brushes");
         int invSize = ((brushes.size() + 9) / 9) * 9;
