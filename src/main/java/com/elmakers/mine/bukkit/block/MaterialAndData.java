@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.Set;
 
 import com.elmakers.mine.bukkit.api.magic.Messages;
+import com.elmakers.mine.bukkit.integration.VaultController;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import org.apache.commons.lang.StringUtils;
@@ -587,9 +588,14 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         @SuppressWarnings("deprecation")
     public String getName(Messages messages) {
         if (!isValid()) return null;
+        VaultController controller = VaultController.getInstance();
+        if (controller != null && data != null) {
+            String vaultName = controller.getItemName(material, data);
+            if (vaultName != null && !vaultName.isEmpty()) {
+                return vaultName;
+            }
+        }
 
-        Material material = getMaterial();
-        Short data = getData();
         String customName = getCustomName();
         String materialName = material.name();
 
@@ -630,6 +636,8 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
             } else if (material == Material.MOB_SPAWNER && customName != null && customName.length() > 0) {
                 materialName = materialName + " (" + customName + ")";
             }
+        } else {
+            materialName = materialName + messages.get("material.wildcard");
         }
 
         materialName = materialName.toLowerCase().replace('_', ' ');

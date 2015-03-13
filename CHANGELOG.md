@@ -3,6 +3,7 @@
 ## 2.6
 
  - Fix the Map brushes
+ - Add Vault integration
 
 ## 2.5
 
