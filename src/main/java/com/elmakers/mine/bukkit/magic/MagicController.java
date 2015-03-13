@@ -3570,21 +3570,17 @@ public class MagicController implements Listener, MageController {
 
 		// Make it free and skip cooldowns, if configured to do so.
 		toggleCastCommandOverrides(mage, true);
+        boolean success = false;
         try {
-            spell.cast(parameters, targetLocation);
+            success = spell.cast(parameters, targetLocation);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
 		toggleCastCommandOverrides(mage, false);
-		if (sender != entity && sender != null) {
-			String castMessage = "Cast " + spellName;
-			if (entity != null) {
-				castMessage += " on " + getEntityDisplayName(entity);
-			}
-			sender.sendMessage(castMessage);
-		}
+        // Removed sending messages here due to the log spam in WG region messages
+        // Maybe should be a parameter option or something?
 
-		return true;
+		return success;
 	}
 	
 	public void onCast(Mage mage, com.elmakers.mine.bukkit.api.spell.Spell spell, SpellResult result) {

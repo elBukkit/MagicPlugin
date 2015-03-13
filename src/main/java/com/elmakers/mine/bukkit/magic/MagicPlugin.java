@@ -374,8 +374,8 @@ public class MagicPlugin extends JavaPlugin implements MagicAPI
 	}
 
 	@Override
-	public void cast(String spellName, String[] parameters) {
-		controller.cast(null, spellName, parameters, null, null);
+	public boolean cast(String spellName, String[] parameters) {
+		return controller.cast(null, spellName, parameters, null, null);
 	}
 
 	@Override
@@ -389,8 +389,8 @@ public class MagicPlugin extends JavaPlugin implements MagicAPI
 	}
 
 	@Override
-	public void cast(String spellName, String[] parameters, CommandSender sender, Entity entity) {
-		controller.cast(null, spellName, parameters, sender, entity);
+	public boolean cast(String spellName, String[] parameters, CommandSender sender, Entity entity) {
+		return controller.cast(null, spellName, parameters, sender, entity);
 	}
 
 	@Override
