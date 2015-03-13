@@ -1893,7 +1893,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
                     path.enchanted(enchanter);
                 }
                 levels += addLevels;
-            } else if (path.checkEnchant(this)) {
+            } else if (path.canEnchant(this)) {
                 if (enchanter != null)
                 {
                     String message = controller.getMessages().get("wand.require_more_levels");

@@ -2863,3 +2863,12 @@ gather:
 stash:
     enabled: true
     hidden: true
+
+upgrades:
+    enabled: true
+
+addspell:
+    enabled: true
+
+enchantwand:
+    enabled: true

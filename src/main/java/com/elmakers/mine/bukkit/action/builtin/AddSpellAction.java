@@ -7,15 +7,23 @@ import com.elmakers.mine.bukkit.api.magic.Messages;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.api.wand.Wand;
+import com.elmakers.mine.bukkit.api.wand.WandUpgradePath;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 
 public class AddSpellAction extends BaseSpellAction
 {
     private String spellKey;
+    private String requiredPath = null;
+    private String requiresCompletedPath = null;
 
     public void prepare(CastContext context, ConfigurationSection parameters) {
         spellKey = parameters.getString("spell");
+        requiredPath = parameters.getString("path", null);
+        requiresCompletedPath = parameters.getString("path_end", null);
+        if (requiresCompletedPath != null) {
+            requiredPath = requiresCompletedPath;
+        }
     }
 
     @Override
@@ -27,11 +35,36 @@ public class AddSpellAction extends BaseSpellAction
             return SpellResult.PLAYER_REQUIRED;
         }
         if (wand == null || spellKey == null || spellKey.isEmpty()) {
+            mage.sendMessage(context.getMessage("no_wand"));
             return SpellResult.FAIL;
         }
         if (wand.hasSpell(spellKey)) {
             return SpellResult.NO_TARGET;
         }
+        if (requiredPath != null) {
+            WandUpgradePath path = wand.getPath();
+            if (requiredPath != null && !path.hasPath(requiredPath)) {
+                WandUpgradePath requiresPath = com.elmakers.mine.bukkit.wand.WandUpgradePath.getPath(requiredPath);
+                if (requiresPath != null) {
+                    mage.sendMessage(context.getMessage("no_path").replace("$path", requiresPath.getName()));
+                } else {
+                    context.getLogger().warning("Invalid path specified in AddSpell action: " + requiredPath);
+                }
+                return SpellResult.FAIL;
+            }
+            if (requiresCompletedPath != null) {
+                WandUpgradePath pathUpgrade = path.getUpgrade();
+                if (pathUpgrade == null) {
+                    mage.sendMessage(context.getMessage("no_upgrade").replace("$wand", wand.getName()));
+                    return SpellResult.FAIL;
+                }
+                if (path.canEnchant(wand)) {
+                    mage.sendMessage(context.getMessage("no_path_end").replace("$path", pathUpgrade.getName()));
+                    return SpellResult.FAIL;
+                }
+            }
+        }
+
         SpellTemplate currentSpell = wand.getBaseSpell(spellKey);
         if (!wand.addSpell(spellKey)) {
             return SpellResult.NO_TARGET;

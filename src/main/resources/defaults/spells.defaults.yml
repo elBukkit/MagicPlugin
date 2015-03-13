@@ -5769,6 +5769,7 @@ enchantwand:
         -  class: EnchantWand
     parameters:
         levels: 30
+        cooldown: 7200000
 
 brushselect:
     icon: painting

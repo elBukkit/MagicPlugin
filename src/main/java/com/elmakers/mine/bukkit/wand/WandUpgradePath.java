@@ -481,8 +481,11 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
         return matchSpellMana;
     }
 
-    public boolean checkEnchant(Wand wand) {
+    @Override
+    public boolean canEnchant(com.elmakers.mine.bukkit.api.wand.Wand apiWand) {
         // First check to see if the path has more spells available
+        if (!(apiWand instanceof Wand)) return false;
+        Wand wand = (Wand)apiWand;
         WandLevel maxLevel = levelMap.get(levels[levels.length - 1]);
         int spellCount = maxLevel.getSpellCount();
         int materialCount = maxLevel.getMaterialCount();

@@ -1192,7 +1192,11 @@ spells:
         describe: Add a spell to your wand
         cast: ""
         cast_player_message: ""
-        fail: You must be holding a wand!
+        fail: ""
+        no_upgrade: You may not learn with that $wand.
+        no_path: You must be at least $path!
+        no_path_end: You must be ready to advance to $path!
+        no_wand: You must be holding a wand!
         no_target: You already know that spell
 
 wands:
