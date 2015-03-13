@@ -3,9 +3,7 @@ package com.elmakers.mine.bukkit.api.spell;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import org.bukkit.Location;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
 /**
@@ -45,4 +43,6 @@ public interface Spell extends SpellTemplate {
     public void playEffects(String effectName, CastContext context, float scale);
     public boolean requiresBuildPermission();
     public boolean isPvpRestricted();
+    public void sendMessage(String message);
+    public void castMessage(String message);
 }
