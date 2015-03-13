@@ -15,6 +15,7 @@ import org.bukkit.util.Vector;
 
 import java.util.Collection;
 import java.util.Random;
+import java.util.logging.Logger;
 
 public interface CastContext {
     public Entity getEntity();
@@ -66,4 +67,5 @@ public interface CastContext {
     public UndoList getUndoList();
     public void setTargetName(String name);
     public String getTargetName();
+    public Logger getLogger();
 }

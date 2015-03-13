@@ -17,4 +17,5 @@ public interface WandUpgradePath {
     public void upgrade(Wand wand, Mage mage);
     public Collection<String> getSpells();
     public Collection<String> getRequiredSpells();
+    public boolean canEnchant(Wand wand);
 }
