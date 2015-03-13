@@ -1,12 +1,12 @@
 # TODO
 
- - Rollback "cancel" message broken?
  - Glitching Fill behavior
  - Fix blink when passing through transparent blocks
  - Can't cast day from command-line - clean up params? Fix target world?
  - battle wand stuck at "enchant at higher level"
  - /magic describe should show info about current spell?
  - Fix Chop on data variants..?
+ - Add repeat option for schematic brushes
 
  - Fix recall home spawning in the ground?
  - Fix spells getting lost on config load failure

@@ -760,7 +760,7 @@ spells:
         cast_player: "&5You undo &d&o$target's&r&6 $spell &5cast"
         alternate_up: "&5You undo your previous&r&6 $spell &5cast"
         alternate_down: "&5You undo &d&o$target's &r&6$spell &5cast"
-        alternate: "&5You cancel your &6$spell &5cast"
+        deactivate: "&5You cancel your &6$spell &5cast"
         fail: Nothing to undo
         no_target: Nothing to undo there
     commit:

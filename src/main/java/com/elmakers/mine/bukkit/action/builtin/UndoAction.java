@@ -56,7 +56,7 @@ public class UndoAction extends BaseSpellAction
                 undoListName = (batch instanceof SpellBatch) ? ((SpellBatch)batch).getSpell().getName() : null;
                 if (cancel)
                 {
-                    return SpellResult.ALTERNATE;
+                    return SpellResult.DEACTIVATE;
                 }
             }
 
