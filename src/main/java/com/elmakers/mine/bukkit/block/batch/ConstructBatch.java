@@ -358,8 +358,8 @@ public class ConstructBatch extends BrushBatch {
 
         if (replace != null && replace.size() > 0)
         {
-            MaterialAndData check = new com.elmakers.mine.bukkit.block.MaterialAndData(block);
-            if (!replace.contains(check.getKey())) {
+            com.elmakers.mine.bukkit.block.MaterialAndData check = new com.elmakers.mine.bukkit.block.MaterialAndData(block);
+            if (!replace.contains(check.getKey()) && !replace.contains(check.getWildDataKey())) {
                 return true;
             }
         }

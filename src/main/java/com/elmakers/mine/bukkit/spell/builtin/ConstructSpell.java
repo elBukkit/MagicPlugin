@@ -157,27 +157,19 @@ public class ConstructSpell extends BrushSpell
 
 		if (parameters.getBoolean("replace", false)) {
 			List<com.elmakers.mine.bukkit.api.block.MaterialAndData> replaceMaterials = new ArrayList<com.elmakers.mine.bukkit.api.block.MaterialAndData>();
-			replaceMaterials.add(new MaterialAndData(target));
-
-			// A bit hacky, but is very handy!
+            MaterialAndData wildReplace = new MaterialAndData(target);
+            if (!parameters.getBoolean("match_data", true)) {
+                wildReplace.setData(null);
+            }
+            // Hacky, but generally desired - maybe abstract to a parameterized list?
             Material targetMaterial = target.getType();
-			if (targetMaterial == Material.STATIONARY_WATER || targetMaterial == Material.WATER)
-			{
-                for (byte data = 0; data < 16; data++) {
-                    replaceMaterials.add(new MaterialAndData(Material.WATER, data));
-                    replaceMaterials.add(new MaterialAndData(Material.STATIONARY_WATER, data));
-                }
-			}
-			else if (targetMaterial == Material.STATIONARY_LAVA || targetMaterial == Material.LAVA)
-			{
-
-                for (byte data = 0; data < 16; data++) {
-                    replaceMaterials.add(new MaterialAndData(Material.LAVA, data));
-                    replaceMaterials.add(new MaterialAndData(Material.STATIONARY_LAVA, data));
-                }
-			}
-			
-			batch.setReplace(replaceMaterials);
+            if (targetMaterial == Material.STATIONARY_WATER || targetMaterial == Material.WATER
+                || targetMaterial == Material.STATIONARY_LAVA || targetMaterial == Material.LAVA)
+            {
+                wildReplace.setData(null);
+            }
+			replaceMaterials.add(wildReplace);
+            batch.setReplace(replaceMaterials);
 		}
 		
 		// Check for command block overrides
