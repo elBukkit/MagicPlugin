@@ -7,6 +7,7 @@
  - /magic describe should show info about current spell?
  - Fix Chop on data variants..?
  - Add repeat option for schematic brushes
+ - Test Clone with entities?
 
  - Fix recall home spawning in the ground?
  - Fix spells getting lost on config load failure

@@ -6,6 +6,7 @@
  - Add Vault integration for economy and item/block names
  - Add "cost" option to Magic citizens trait
  - Add "addspell" and "enchantwand" spells for simple one-spell NPC "shops"
+ - Add support for Factions 1.8.2 build
 
 ## 4.5
  - Implement brush selection. Shift+right click to change brushes.

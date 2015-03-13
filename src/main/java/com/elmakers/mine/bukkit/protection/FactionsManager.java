@@ -1,6 +1,7 @@
 package com.elmakers.mine.bukkit.protection;
 
 import java.lang.reflect.Method;
+import java.util.logging.Level;
 
 import org.bukkit.Location;
 import org.bukkit.block.Block;
@@ -37,7 +38,21 @@ public class FactionsManager {
 						psFactoryMethod = null;
 					}
 				} catch (Throwable ex) {
-					ex.printStackTrace();
+					// Try for Factions "Limited"
+					psFactoryMethod = null;
+                    try {
+                        factionsManager = Class.forName("com.massivecraft.factions.listeners.FactionsBlockListener");
+                        factionsCanBuildMethod = factionsManager.getMethod("playerCanBuildDestroyBlock", Player.class, Block.class, String.class, Boolean.TYPE);
+                        if (factionsManager == null || factionsCanBuildMethod == null) {
+                            factionsManager = null;
+                            factionsCanBuildMethod = null;
+                        } else {
+                            plugin.getLogger().info("Factions 1.8.2+ build found");
+                        }
+                    } catch(Throwable ex2) {
+                        plugin.getLogger().log(Level.WARNING, "Failed to find mcore", ex);
+                        plugin.getLogger().log(Level.WARNING, "Failed to find FactionsBlockListener", ex2);
+                    }
 				}
 
 				if (factionsManager == null) {
@@ -54,14 +69,17 @@ public class FactionsManager {
 	}
 	
 	public boolean hasBuildPermission(Player player, Block block) {
-		if (enabled && block != null && factionsManager != null && factionsCanBuildMethod != null && psFactoryMethod != null) {
+		if (enabled && block != null && factionsManager != null && factionsCanBuildMethod != null) {
 			
 			// Disallows building via command blocks, or while offline, when Factions is present.
 			if (player == null) return false;
 			
 			try {
-				Object loc = psFactoryMethod.invoke(null, block.getLocation());
-				return loc != null && (Boolean)factionsCanBuildMethod.invoke(null, player, loc, false);
+                if (psFactoryMethod != null) {
+                    Object loc = psFactoryMethod.invoke(null, block.getLocation());
+                    return loc != null && (Boolean)factionsCanBuildMethod.invoke(null, player, loc, false);
+                }
+                return (Boolean)factionsCanBuildMethod.invoke(null, player, block, true);
 			} catch (Throwable ex) {
 				ex.printStackTrace();
 				return false;
