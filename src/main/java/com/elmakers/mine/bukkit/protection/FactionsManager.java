@@ -79,7 +79,7 @@ public class FactionsManager {
                     Object loc = psFactoryMethod.invoke(null, block.getLocation());
                     return loc != null && (Boolean)factionsCanBuildMethod.invoke(null, player, loc, false);
                 }
-                return (Boolean)factionsCanBuildMethod.invoke(null, player, block, true);
+                return (Boolean)factionsCanBuildMethod.invoke(null, player, block, "destroy", true);
 			} catch (Throwable ex) {
 				ex.printStackTrace();
 				return false;
