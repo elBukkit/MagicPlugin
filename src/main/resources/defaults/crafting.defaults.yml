@@ -78,11 +78,9 @@ camera:
 # This is here to disable crafting of other items, even if
 # they aren't craftable.
 wolf:
-  output: wolf
-  output_type: wand
+  input: gold_hoe
   disable_default: true
 
 architect:
-  output: architect
-  output_type: wand
+  input: gold_axe
   disable_default: true

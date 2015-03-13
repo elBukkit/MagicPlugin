@@ -190,10 +190,10 @@ public class MagicCommandExecutor extends MagicTabExecutor {
 				sender.sendMessage(ChatColor.GRAY + "For more specific information, add 'tasks', 'wands', 'maps' or 'automata' parameter.");
 
 				Collection<Mage> mages = api.getMages();
+                sender.sendMessage(ChatColor.AQUA + "Registered blocks (" + UndoList.getModified().size() + "): ");
 				sender.sendMessage(ChatColor.LIGHT_PURPLE + "Active mages: " + mages.size());
 				Collection<Mage> pending = api.getMagesWithPendingBatches();
-				sender.sendMessage(ChatColor.AQUA + "Pending construction batches (" + pending.size() + "): ");
-                sender.sendMessage(ChatColor.AQUA + "Registered blocks (" + UndoList.getModified().size() + "): ");
+				sender.sendMessage(ChatColor.AQUA + "Pending batches (" + pending.size() + "): ");
                 for (Mage mage : pending) {
                     int totalSize = 0;
                     int totalRemaining = 0;

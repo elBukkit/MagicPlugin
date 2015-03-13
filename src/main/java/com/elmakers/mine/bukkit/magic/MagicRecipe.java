@@ -2,9 +2,7 @@ package com.elmakers.mine.bukkit.magic;
 
 import com.elmakers.mine.bukkit.api.wand.Wand;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
-import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
-import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
@@ -39,36 +37,38 @@ public class MagicRecipe {
         substitue = ConfigurationUtils.getMaterial(configuration, "substitue", null);
         disableDefaultRecipe = configuration.getBoolean("disable_default", false);
 
-        Wand wand = controller.createWand(outputKey);
-        if (wand == null) {
-            return false;
-        }
-        ItemStack wandItem = wand.getItem();
-        // CompatibilityUtils.removeCustomData(wandItem);
-        outputType = wandItem.getType();
-        ShapedRecipe shaped = new ShapedRecipe(wandItem);
-        List<String> rows = new ArrayList<String>();
-        for (int i = 1; i <= 3; i++) {
-            String recipeRow = configuration.getString("row_" + i, "");
-            if (recipeRow.length() > 0) {
-                rows.add(recipeRow);
+        Wand wand = (outputKey != null && !outputKey.isEmpty()) ? controller.createWand(outputKey) : null;
+        if (wand != null) {
+            ItemStack wandItem = wand.getItem();
+            // CompatibilityUtils.removeCustomData(wandItem);
+            outputType = wandItem.getType();
+            ShapedRecipe shaped = new ShapedRecipe(wandItem);
+            List<String> rows = new ArrayList<String>();
+            for (int i = 1; i <= 3; i++) {
+                String recipeRow = configuration.getString("row_" + i, "");
+                if (recipeRow.length() > 0) {
+                    rows.add(recipeRow);
+                }
+            }
+            if (rows.size() > 0) {
+                shaped = shaped.shape(rows.toArray(new String[0]));
+
+                ConfigurationSection materials = configuration.getConfigurationSection("materials");
+                Set<String> keys = materials.getKeys(false);
+                for (String key : keys) {
+                    MaterialAndData mat = new MaterialAndData(materials.getString(key));
+                    ingredients.add(mat.getMaterial());
+                    shaped.setIngredient(key.charAt(0), mat.getMaterial());
+                }
+
+                recipe = shaped;
             }
         }
-        if (rows.size() > 0) {
-            shaped = shaped.shape(rows.toArray(new String[0]));
 
-            ConfigurationSection materials = configuration.getConfigurationSection("materials");
-            Set<String> keys = materials.getKeys(false);
-            for (String key : keys) {
-                MaterialAndData mat = new MaterialAndData(materials.getString(key));
-                ingredients.add(mat.getMaterial());
-                shaped.setIngredient(key.charAt(0), mat.getMaterial());
-            }
-
-            recipe = shaped;
+        if (outputType == null) {
+            outputType = ConfigurationUtils.getMaterial(configuration, "input", null);
         }
-
-        return true;
+        return outputType != null;
     }
 
     public void register(Plugin plugin)
@@ -107,6 +107,9 @@ public class MagicRecipe {
     }
 
     public ItemStack craft() {
+        if (outputKey == null) {
+            return null;
+        }
         ItemStack item = controller.createWand(outputKey).getItem();
         // CompatibilityUtils.removeCustomData(item);
         // CompatibilityUtils.addGlow(item);

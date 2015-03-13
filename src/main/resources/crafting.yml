@@ -6,6 +6,6 @@
 #
 # If you want to disable any of the default recipes, simply add two lines as follows:
 #
-# master:
+# beginner:
 #   enabled: false
 #

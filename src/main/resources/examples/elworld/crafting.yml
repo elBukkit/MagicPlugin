@@ -6,6 +6,11 @@
 #
 # If you want to disable any of the default recipes, simply add two lines as follows:
 #
-# master:
+# beginner:
 #   enabled: false
 #
+
+# No crafting any more protection stones!
+protection:
+  input: beacon
+  disable_default: true
