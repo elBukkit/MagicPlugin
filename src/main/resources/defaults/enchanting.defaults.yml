@@ -213,7 +213,6 @@ student:
       blink: 0,0,10
       arrowrain: 10,30,50
       boom: 20,50,60
-      shields: 0,15,50
       familiar: 10,30,40
       fling: 0,5,70
       fire: 50,70,60
@@ -718,7 +717,6 @@ battle:
       curse: 0,1,10
       bubble: 10,40,20
       disintegrate: 0,10,40
-      shields: 1,15,50
       earth: 5,20,50
       familiar: 10,30,40
       fire: 50,70,60

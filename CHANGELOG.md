@@ -5,6 +5,7 @@
  - Add match_data option to Construct spell to turn on replacing variants
  - Add Vault integration for economy and item/block names
  - Add "cost" option to Magic citizens trait
+ - Add "addspell" and "enchantwand" spells for simple one-spell NPC "shops"
 
 ## 4.5
  - Implement brush selection. Shift+right click to change brushes.

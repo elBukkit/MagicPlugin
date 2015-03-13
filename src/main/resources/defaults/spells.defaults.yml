@@ -5749,6 +5749,26 @@ upgrades:
         cast:
         -  class: SpellProgress
 
+addspell:
+    icon: iron_hoe
+    category: utility
+    hidden: true
+    actions:
+        cast:
+        -  class: AddSpell
+    parameters:
+        spell: flare
+
+enchantwand:
+    icon: iron_hoe
+    category: utility
+    hidden: true
+    actions:
+        cast:
+        -  class: EnchantWand
+    parameters:
+        levels: 30
+
 brushselect:
     icon: painting
     icon_url: http://i.imgur.com/wDV1U2e.png

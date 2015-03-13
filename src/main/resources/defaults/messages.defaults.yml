@@ -1181,6 +1181,19 @@ spells:
         cast: You sense a nearby $target
         no_target: It's quiet ... too quiet!
         upgrade_description: "&r&b• &6Larger search radius"
+    enchantwand:
+        name: Upgrade Wand
+        describe: Add levels to your wand
+        cast: ""
+        cast_player_message: ""
+        fail: You must be holding a wand!
+    addspell:
+        name: Add Spell
+        describe: Add a spell to your wand
+        cast: ""
+        cast_player_message: ""
+        fail: You must be holding a wand!
+        no_target: You already know that spell
 
 wands:
     default:
