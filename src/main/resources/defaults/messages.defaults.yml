@@ -191,6 +191,10 @@ wand:
     brush_instructions: "&r&bMaterial brushes have been added to your $wand. Shift+Right Click to select a brush."
 material:
     wildcard: " (All Types)"
+economy:
+    missing: "&cMy shop is closed, sorry!"
+    insufficient: "Costs: &6$cost"
+    deducted: "Deducted: &6$cost"
 spell:
     brush: Uses Material Brushes
     undoable: Undoable

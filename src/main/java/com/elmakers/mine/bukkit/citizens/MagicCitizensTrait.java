@@ -1,13 +1,16 @@
 package com.elmakers.mine.bukkit.citizens;
 
 import com.elmakers.mine.bukkit.api.magic.MagicAPI;
+import com.elmakers.mine.bukkit.integration.VaultController;
 import com.elmakers.mine.bukkit.magic.MagicPlugin;
 import net.citizensnpcs.api.trait.Trait;
 import net.citizensnpcs.api.util.DataKey;
+import net.milkbowl.vault.Vault;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 
 public class MagicCitizensTrait extends Trait {
@@ -15,6 +18,7 @@ public class MagicCitizensTrait extends Trait {
     private String spellKey;
     private boolean npcCaster = true;
     private String[] parameters = null;
+    private double cost = 0;
     private MagicAPI api;
 
 	public MagicCitizensTrait() {
@@ -24,6 +28,7 @@ public class MagicCitizensTrait extends Trait {
 	public void load(DataKey data) {
         spellKey = data.getString("spell", null);
         npcCaster = data.getBoolean("caster", false);
+        cost = data.getDouble("cost", 0);
         String parameterString = data.getString("parameters", null);
         parameters = null;
         if (parameterString != null && !parameterString.isEmpty()) {
@@ -39,6 +44,7 @@ public class MagicCitizensTrait extends Trait {
         data.setBoolean("caster", npcCaster);
         String parameterString = parameters != null && parameters.length > 0 ? StringUtils.join(parameters, " ") : null;
         data.setString("parameters", parameterString);
+        data.setDouble("cost", cost);
 	}
 
 	@Override
@@ -55,9 +61,24 @@ public class MagicCitizensTrait extends Trait {
     public void onClick(net.citizensnpcs.api.event.NPCRightClickEvent event){
         if (event.getNPC() != this.getNPC() || spellKey == null || spellKey.isEmpty()) return;
 
+        CommandSender sender = event.getClicker();
+        Player player = event.getClicker();
+        Entity entity = event.getClicker();
+        if (cost > 0) {
+            if (!VaultController.hasEconomy()) {
+                sender.sendMessage(api.getMessages().get("economy.missing"));
+                return;
+            }
+            VaultController vault = VaultController.getInstance();
+            if (!vault.has(player, cost)) {
+                sender.sendMessage(api.getMessages().get("economy.insufficient").replace("$cost", vault.format(cost)));
+                return;
+            }
+            sender.sendMessage(api.getMessages().get("economy.deducted").replace("$cost", vault.format(cost)));
+            vault.withdrawPlayer(player, cost);
+        }
+
         String[] parameters = this.parameters;
-        Entity entity = null;
-        CommandSender sender = null;
         if (npcCaster) {
             if (event.getNPC().isSpawned()) {
                 entity = event.getNPC().getBukkitEntity();
@@ -70,12 +91,13 @@ public class MagicCitizensTrait extends Trait {
                 parameters[0] = "player";
                 parameters[1] = event.getClicker().getName();
             }
-        } else {
-            entity = event.getClicker();
-            sender = event.getClicker();
         }
 
-        api.cast(spellKey, parameters, sender, entity);
+        if (api.cast(spellKey, parameters, sender, entity) && cost > 0) {
+            VaultController vault = VaultController.getInstance();
+            sender.sendMessage(api.getMessages().get("economy.deducted").replace("$cost", vault.format(cost)));
+            vault.withdrawPlayer(player, cost);
+        }
     }
 
     public void describe(CommandSender sender)
@@ -88,6 +110,10 @@ public class MagicCitizensTrait extends Trait {
         sender.sendMessage(ChatColor.DARK_PURPLE + "Parameters: " + parameterDescription);
         String casterDescription = npcCaster ? (ChatColor.GRAY + "NPC") : (ChatColor.LIGHT_PURPLE + "Player");
         sender.sendMessage(ChatColor.DARK_PURPLE + "Caster: " + casterDescription);
+        if (VaultController.hasEconomy()) {
+            VaultController vault = VaultController.getInstance();
+            sender.sendMessage(ChatColor.DARK_PURPLE + "Cost: " + ChatColor.GOLD + vault.format(cost));
+        }
     }
 
     public void configure(CommandSender sender, String key, String value)
@@ -131,6 +157,28 @@ public class MagicCitizensTrait extends Trait {
             {
                 npcCaster = true;
                 sender.sendMessage(ChatColor.DARK_PURPLE + "Set caster as NPC");
+            }
+        }
+        else if (key.equalsIgnoreCase("cost"))
+        {
+            if (value == null)
+            {
+                sender.sendMessage(ChatColor.DARK_PURPLE + "Cleared cost");
+                cost = 0;
+            }
+            else
+            {
+                try {
+                    cost = Double.parseDouble(value);
+                    if (VaultController.hasEconomy()) {
+                        VaultController vault = VaultController.getInstance();
+                        sender.sendMessage(ChatColor.DARK_PURPLE + "Set cost to: " + ChatColor.GOLD + vault.format(cost));
+                    } else {
+                        sender.sendMessage(ChatColor.DARK_PURPLE + "Set cost to " + value);
+                    }
+                } catch (Exception ex) {
+                    sender.sendMessage(ChatColor.RED + "Invalid cost: " + value);
+                }
             }
         }
         else

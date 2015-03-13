@@ -112,6 +112,10 @@ public class MagicTraitCommandExecutor extends MagicTabExecutor {
         {
             options.addAll(Arrays.asList(BaseSpell.COMMON_PARAMETERS));
         }
+        else if (lastParameter.equalsIgnoreCase("cost"))
+        {
+            options.addAll(Arrays.asList(BaseSpell.EXAMPLE_SIZES));
+        }
         else if (lastParameter.equalsIgnoreCase("caster"))
         {
             options.addAll(Arrays.asList(BaseSpell.EXAMPLE_BOOLEANS));
@@ -121,6 +125,7 @@ public class MagicTraitCommandExecutor extends MagicTabExecutor {
             options.add("spell");
             options.add("parameters");
             options.add("caster");
+            options.add("cost");
         }
 
 		return options;

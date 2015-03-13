@@ -1,5 +1,9 @@
 # Migration Notes
 
+## 4.6
+
+ * Changed API cast() methods to return success/failure
+
 ## 4.5
 
  * The "undo" spell changed its key to "rollback" to match the spell's name.
