@@ -35,7 +35,7 @@ public class AddSpellAction extends BaseSpellAction
             return SpellResult.PLAYER_REQUIRED;
         }
         if (wand == null || spellKey == null || spellKey.isEmpty()) {
-            mage.sendMessage(context.getMessage("no_wand"));
+            context.sendMessage(context.getMessage("no_wand"));
             return SpellResult.FAIL;
         }
         if (wand.hasSpell(spellKey)) {
@@ -46,7 +46,7 @@ public class AddSpellAction extends BaseSpellAction
             if (requiredPath != null && !path.hasPath(requiredPath)) {
                 WandUpgradePath requiresPath = com.elmakers.mine.bukkit.wand.WandUpgradePath.getPath(requiredPath);
                 if (requiresPath != null) {
-                    mage.sendMessage(context.getMessage("no_path").replace("$path", requiresPath.getName()));
+                    context.sendMessage(context.getMessage("no_path").replace("$path", requiresPath.getName()));
                 } else {
                     context.getLogger().warning("Invalid path specified in AddSpell action: " + requiredPath);
                 }
@@ -55,11 +55,11 @@ public class AddSpellAction extends BaseSpellAction
             if (requiresCompletedPath != null) {
                 WandUpgradePath pathUpgrade = path.getUpgrade();
                 if (pathUpgrade == null) {
-                    mage.sendMessage(context.getMessage("no_upgrade").replace("$wand", wand.getName()));
+                    context.sendMessage(context.getMessage("no_upgrade").replace("$wand", wand.getName()));
                     return SpellResult.FAIL;
                 }
                 if (path.canEnchant(wand)) {
-                    mage.sendMessage(context.getMessage("no_path_end").replace("$path", pathUpgrade.getName()));
+                    context.sendMessage(context.getMessage("no_path_end").replace("$path", pathUpgrade.getName()));
                     return SpellResult.FAIL;
                 }
             }
@@ -78,10 +78,10 @@ public class AddSpellAction extends BaseSpellAction
                 if (levelDescription == null || levelDescription.isEmpty()) {
                     levelDescription = spell.getName();
                 }
-                mage.sendMessage(messages.get("wand.spell_upgraded").replace("$name", currentSpell.getName()).replace("$wand", wand.getName()).replace("$level", levelDescription));
-                mage.sendMessage(spell.getUpgradeDescription().replace("$name", currentSpell.getName()));
+                context.sendMessage(messages.get("wand.spell_upgraded").replace("$name", currentSpell.getName()).replace("$wand", wand.getName()).replace("$level", levelDescription));
+                context.sendMessage(spell.getUpgradeDescription().replace("$name", currentSpell.getName()));
             } else {
-                mage.sendMessage(messages.get("wand.spell_added").replace("$name", spell.getName()).replace("$wand", wand.getName()));
+                context.sendMessage(messages.get("wand.spell_added").replace("$name", spell.getName()).replace("$wand", wand.getName()));
             }
         }
 

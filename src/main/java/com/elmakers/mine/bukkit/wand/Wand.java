@@ -635,7 +635,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         if (itemStack == null || itemStack.getType() == Material.AIR) {
             return;
         }
-        if (getBrushMode() == WandMode.CHEST && isBrush(itemStack)) {
+        if (getBrushMode() != WandMode.INVENTORY && isBrush(itemStack)) {
             String brushKey = getBrush(itemStack);
             if (!MaterialBrush.isSpecialMaterialKey(brushKey) || MaterialBrush.isSchematic(brushKey))
             {

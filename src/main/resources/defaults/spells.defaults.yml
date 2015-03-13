@@ -5759,6 +5759,7 @@ addspell:
         -  class: AddSpell
     parameters:
         spell: flare
+        loud: true
 
 enchantwand:
     icon: iron_hoe
@@ -5770,6 +5771,7 @@ enchantwand:
     parameters:
         levels: 30
         cooldown: 7200000
+        loud: true
 
 brushselect:
     icon: painting

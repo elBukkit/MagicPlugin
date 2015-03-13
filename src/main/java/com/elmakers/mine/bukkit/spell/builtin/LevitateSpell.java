@@ -417,7 +417,7 @@ public class LevitateSpell extends TargetingSpell implements Listener
             try {
                 mountSpawnReason = CreatureSpawnEvent.SpawnReason.valueOf(reasonText);
             } catch (Exception ex) {
-                mage.sendMessage("Unknown spawn reason: " + reasonText);
+                sendMessage("Unknown spawn reason: " + reasonText);
                 return SpellResult.FAIL;
             }
         }

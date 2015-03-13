@@ -16,3 +16,7 @@ recall:
         description: To Practice Flying
         locked: true
         icon: gold_spade
+
+enchantwand:
+  parameters:
+    cooldown: 1200000

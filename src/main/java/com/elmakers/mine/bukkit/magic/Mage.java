@@ -352,9 +352,6 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     public void castMessage(String message) {
         if (message == null || message.length() == 0) return;
 
-        // First check wand
-        if (activeWand != null && !activeWand.showCastMessages()) return;
-
         CommandSender sender = getCommandSender();
         if (sender != null && controller.showCastMessages() && controller.showMessages()) {
             sender.sendMessage(controller.getCastMessagePrefix() + message);
@@ -370,9 +367,6 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
      */
     public void sendMessage(String message) {
         if (message == null || message.length() == 0) return;
-
-        // First check wand
-        if (activeWand != null && !activeWand.showMessages()) return;
 
         CommandSender sender = getCommandSender();
         if (sender != null && controller.showMessages()) {

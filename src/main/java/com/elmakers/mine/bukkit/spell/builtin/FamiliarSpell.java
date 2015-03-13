@@ -169,7 +169,7 @@ public class FamiliarSpell extends UndoableSpell implements Listener
             try {
                 famType = EntityType.valueOf(famTypeName.toUpperCase());
             } catch (Throwable ex) {
-                mage.sendMessage("Unknown entity type: " + famTypeName);
+                sendMessage("Unknown entity type: " + famTypeName);
                 return SpellResult.FAIL;
             }
         }
@@ -191,7 +191,7 @@ public class FamiliarSpell extends UndoableSpell implements Listener
                 try {
                     entityType = EntityType.fromName(randomType);
                 } catch (Throwable ex) {
-                    mage.sendMessage("Unknown entity type: " + randomType);
+                    sendMessage("Unknown entity type: " + randomType);
                     return SpellResult.FAIL;
                 }
 			}
@@ -201,7 +201,7 @@ public class FamiliarSpell extends UndoableSpell implements Listener
                 try {
                     spawnReason = CreatureSpawnEvent.SpawnReason.valueOf(reasonText);
                 } catch (Exception ex) {
-                    mage.sendMessage("Unknown spawn reason: " + reasonText);
+                    sendMessage("Unknown spawn reason: " + reasonText);
                     return SpellResult.FAIL;
                 }
             }
