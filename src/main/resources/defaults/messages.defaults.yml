@@ -1184,9 +1184,10 @@ spells:
     enchantwand:
         name: Upgrade Wand
         describe: Add levels to your wand
+        no_wand: You must be holding a wand!
         cast: ""
         cast_player_message: ""
-        fail: You must be holding a wand!
+        fail: ""
     addspell:
         name: Add Spell
         describe: Add a spell to your wand

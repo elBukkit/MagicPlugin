@@ -24,11 +24,15 @@ public class EnchantWandAction extends BaseSpellAction
 		if (player == null) {
             return SpellResult.PLAYER_REQUIRED;
         }
-        if (wand == null || levels <= 0) {
+        if (levels <= 0) {
+            return SpellResult.FAIL;
+        }
+        if (wand == null) {
+            context.sendMessage(context.getMessage("no_wand"));
             return SpellResult.FAIL;
         }
         if (wand.enchant(levels, mage) == 0) {
-            return SpellResult.NO_TARGET;
+            return SpellResult.FAIL;
         }
         return SpellResult.CAST;
 	}
