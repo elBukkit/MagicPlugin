@@ -428,6 +428,10 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
     }
 
     public String getKey() {
+        return getKey(data);
+    }
+
+    public String getKey(Short data) {
         String materialKey = material == null ? "*" : material.name().toLowerCase();
         if (data == null) {
             materialKey += ":*";
@@ -445,6 +449,10 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         }
 
         return materialKey;
+    }
+
+    public String getWildDataKey() {
+        return getKey(null);
     }
 
     // TODO: Should this just be !isDifferent .. ? It's fast right now.
