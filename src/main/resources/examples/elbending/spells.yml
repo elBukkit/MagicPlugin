@@ -1,0 +1,23 @@
+recall:
+  parameters:
+    warps:
+      fire:
+        name: The Fire Nation Capitol
+        description: Home of Firebenders
+        locked: true
+        icon: lava_bucket
+      earth:
+        name: Ba Singh Sei
+        description: Home of Earthbenders
+        locked: true
+        icon: dirt
+      water_north:
+        name: The Northern Water Tribe
+        description: Home of Waterbenders
+        locked: true
+        icon: water_bucket
+      air_south:
+        name: The Southern Air Temple
+        description: Home of Airbenders
+        locked: true
+        icon: web

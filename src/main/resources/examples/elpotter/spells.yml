@@ -1,0 +1,18 @@
+recall:
+  parameters:
+    warps:
+      kingscross:
+        name: King's Cross
+        description: Platform 9 3/4
+        locked: true
+        icon: compass
+      greathall:
+        name: The Great Hall
+        description: Level up here
+        locked: true
+        icon: torch
+      quidditch:
+        name: Quidditch Pitch
+        description: To Practice Flying
+        locked: true
+        icon: gold_spade
