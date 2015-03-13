@@ -19,6 +19,7 @@ import com.elmakers.mine.bukkit.api.event.SaveEvent;
 import com.elmakers.mine.bukkit.api.spell.*;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.citizens.CitizensController;
+import com.elmakers.mine.bukkit.integration.VaultController;
 import com.elmakers.mine.bukkit.maps.MapController;
 import com.elmakers.mine.bukkit.protection.LocketteManager;
 import com.elmakers.mine.bukkit.protection.MultiverseManager;
@@ -620,6 +621,18 @@ public class MagicController implements Listener, MageController {
         }
 
         load();
+
+        // Vault integration is handled internally in MagicLib
+        Plugin vaultPlugin = plugin.getServer().getPluginManager().getPlugin("Vault");
+        if (vaultPlugin == null) {
+            getLogger().info("Vault not found, virtual economy unavailable");
+        } else {
+            if (VaultController.initialize(plugin, vaultPlugin)) {
+                getLogger().info("Integrated with Vault, virtual economy and descriptive item names available");
+            } else {
+                getLogger().warning("Vault integration failed");
+            }
+        }
 
         // Try to link to Essentials:
         Plugin essentials = plugin.getServer().getPluginManager().getPlugin("Essentials");

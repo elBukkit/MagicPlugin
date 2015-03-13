@@ -189,6 +189,8 @@ wand:
     spell_instructions: "&r&bSwing your $wand to cast &r&6$spell&d&o. Spells require mana, shown in the XP bar."
     enchant_instructions: "&r&bEnchant your $wand to upgrade its abilities."
     brush_instructions: "&r&bMaterial brushes have been added to your $wand. Shift+Right Click to select a brush."
+material:
+    wildcard: " (All Types)"
 spell:
     brush: Uses Material Brushes
     undoable: Undoable

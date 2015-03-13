@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## 4.6
+ - Fix Map brushes (broken in 4.5)
+ - Add match_data option to Construct spell to turn on replacing variants
+ - Add Vault integration for economy and item/block names
+
 ## 4.5
  - Implement brush selection. Shift+right click to change brushes.
  - Allow different map scales (/mgive brush:map:128)
