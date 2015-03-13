@@ -386,6 +386,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
      *
      * @param message The message to send
      */
+    @Override
     public void castMessage(String message)
     {
         if (!quiet && canSendMessage() && message != null && message.length() > 0)
@@ -402,6 +403,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
      *
      * @param message The message to send
      */
+    @Override
     public void sendMessage(String message)
     {
         if (!quiet && message != null && message.length() > 0)

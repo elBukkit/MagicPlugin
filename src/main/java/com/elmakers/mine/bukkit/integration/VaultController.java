@@ -39,6 +39,14 @@ public class VaultController {
         return true;
     }
 
+    public static boolean hasEconomy() {
+        if (instance == null) {
+            return false;
+        }
+
+        return instance.economy != null;
+    }
+
     private VaultController(Plugin owner, Economy economy) {
         this.owningPlugin = owner;
         this.economy = economy;
