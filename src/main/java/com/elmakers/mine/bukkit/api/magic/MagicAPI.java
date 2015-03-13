@@ -444,8 +444,9 @@ public interface MagicAPI {
      *
      * @param spellName The key name of the Spell to cast
      * @param parameters A list of parameters, as if cast from the command-line.
+     * @return true if the spell succeeds, else false
      */
-    public void cast(String spellName, String[] parameters);
+    public boolean cast(String spellName, String[] parameters);
 
     /**
      * Cast a specific Spell, with optional parameters, using a specific CommandSender and/or Player.
@@ -460,8 +461,9 @@ public interface MagicAPI {
      * @param parameters A list of parameters, as if cast from the command-line.
      * @param sender The CommandSender that originated this Spell
      * @param entity The Entity this Spell is cast on behalf of, may be Player or differ from sender
+     * @return true if the spell succeeds, else false
      */
-    public void cast(String spellName, String[] parameters, CommandSender sender, Entity entity);
+    public boolean cast(String spellName, String[] parameters, CommandSender sender, Entity entity);
 
     /**
      * Get a list of all currently loaded SpellTemplate records, as defined in spells.defaults.yml
