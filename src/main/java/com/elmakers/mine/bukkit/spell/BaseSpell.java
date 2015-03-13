@@ -18,6 +18,7 @@ import com.elmakers.mine.bukkit.api.spell.MageSpell;
 import com.elmakers.mine.bukkit.api.spell.SpellKey;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.api.spell.TargetType;
+import com.elmakers.mine.bukkit.api.wand.Wand;
 import org.apache.commons.lang.ArrayUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -389,6 +390,10 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     @Override
     public void castMessage(String message)
     {
+        Wand activeWand = mage.getActiveWand();
+        // First check wand
+        if (!loud && activeWand != null && !activeWand.showCastMessages()) return;
+
         if (!quiet && canSendMessage() && message != null && message.length() > 0)
         {
             mage.castMessage(message);
@@ -406,6 +411,11 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     @Override
     public void sendMessage(String message)
     {
+        Wand activeWand = mage.getActiveWand();
+
+        // First check wand
+        if (!loud && activeWand != null && !activeWand.showMessages()) return;
+
         if (!quiet && message != null && message.length() > 0)
         {
             mage.sendMessage(message);
