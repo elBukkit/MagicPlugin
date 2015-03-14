@@ -436,7 +436,7 @@ public class RecallAction extends BaseSpellAction implements GUIAction
 			return false;
 		}
 		if (!allowCrossWorld && !mage.getLocation().getWorld().equals(targetLocation.getWorld())) {
-            context.sendMessage(context.getMessage("cross_world_disallowed"));
+            context.sendMessage("cross_world_disallowed");
 			return false;
 		}
 
@@ -483,11 +483,11 @@ public class RecallAction extends BaseSpellAction implements GUIAction
         context.registerForUndo(new UndoMarkerMove(mage, location));
 		if (location != null) 
 		{
-            context.sendMessage(context.getMessage("cast_marker_move"));
+            context.sendMessage("cast_marker_move");
 		}
 		else
 		{
-            context.sendMessage(context.getMessage("cast_marker_place"));
+            context.sendMessage("cast_marker_place");
 		}
 
 		location = context.getLocation();

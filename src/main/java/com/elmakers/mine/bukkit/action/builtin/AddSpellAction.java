@@ -42,7 +42,7 @@ public class AddSpellAction extends BaseSpellAction
             return SpellResult.PLAYER_REQUIRED;
         }
         if (wand == null || spellKey == null || spellKey.isEmpty()) {
-            context.sendMessage(context.getMessage("no_wand"));
+            context.sendMessage("no_wand");
             return SpellResult.FAIL;
         }
         if (wand.hasSpell(spellKey)) {

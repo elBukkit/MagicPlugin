@@ -111,7 +111,7 @@ public class SpellShopAction extends BaseSpellAction implements GUIAction
             return SpellResult.PLAYER_REQUIRED;
         }
         if (wand == null) {
-            context.sendMessage(context.getMessage("no_wand"));
+            context.sendMessage("no_wand");
             return SpellResult.FAIL;
         }
         WandUpgradePath path = wand.getPath();
@@ -175,7 +175,7 @@ public class SpellShopAction extends BaseSpellAction implements GUIAction
                 path.upgrade(wand, mage);
                 return SpellResult.CAST;
             }
-            context.sendMessage(context.getMessage("no_spells"));
+            context.sendMessage("no_spells");
             return SpellResult.FAIL;
         }
 

@@ -32,7 +32,7 @@ public class EnchantWandAction extends BaseSpellAction
             return SpellResult.FAIL;
         }
         if (wand == null) {
-            context.sendMessage(context.getMessage("no_wand"));
+            context.sendMessage("no_wand");
             return SpellResult.FAIL;
         }
         if (wand.enchant(levels, mage) == 0) {
