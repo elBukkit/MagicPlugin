@@ -335,7 +335,7 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
     {
         if (baseSpell != null)
         {
-            baseSpell.castMessage(message);
+            baseSpell.castMessage(getMessage(message));
         }
     }
 
@@ -344,7 +344,7 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
     {
         if (baseSpell != null)
         {
-            baseSpell.sendMessage(message);
+            baseSpell.sendMessage(getMessage(message));
         }
     }
 
