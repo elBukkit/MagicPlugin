@@ -231,7 +231,6 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
     public void setMaterial(Material material, Short data) {
         if (material.isBlock() && (mage == null || !mage.isRestricted(material))) {
             super.setMaterial(material, data);
-            mode = BrushMode.MATERIAL;
             isValid = true;
         } else {
             isValid = false;
