@@ -10,6 +10,7 @@ import net.dandielo.citizens.traders_v3.utils.items.Attribute;
 import net.dandielo.citizens.traders_v3.utils.items.ItemAttr;
 import org.bukkit.Bukkit;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 @Attribute(name="Magic Material Brush", key="magic_brush", priority = 5)
 public class BrushAttr extends ItemAttr
@@ -75,7 +76,13 @@ public class BrushAttr extends ItemAttr
         if (brushKey != null && !brushKey.isEmpty())
         {
             MagicAPI api = MagicPlugin.getAPI();
+            ItemMeta meta = itemStack.getItemMeta();
             itemStack = api.createBrushItem(brushKey);
+            if (!endItem && meta != null) {
+                ItemMeta newMeta = itemStack.getItemMeta();
+                newMeta.setLore(meta.getLore());
+                itemStack.setItemMeta(newMeta);
+            }
 
             if (TradersController.DEBUG) Bukkit.getLogger().info("[BRUSH] onReturnAssign for: " + brushKey);
 		}

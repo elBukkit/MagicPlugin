@@ -8,7 +8,7 @@ import org.bukkit.plugin.Plugin;
 import com.elmakers.mine.bukkit.magic.MagicController;
 
 public class TradersController {
-    protected static final boolean DEBUG = true;
+    protected static final boolean DEBUG = false;
     private static MagicController controller;
 	
 	public void initialize(MagicController controller, Plugin tradersPlugin) throws AttributeInvalidClassException {

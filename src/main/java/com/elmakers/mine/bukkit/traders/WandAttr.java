@@ -13,6 +13,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.logging.Level;
 
@@ -71,21 +72,7 @@ public class WandAttr extends ItemAttr
 	@Override
 	public void onAssign(ItemStack itemStack) throws InvalidItemException
 	{
-		if (itemStack == null) throw new InvalidItemException();
-		
-		if (wandData != null && !wandData.isEmpty())
-		{
-            Wand wand = Wand.createWand(TradersController.getController(), itemStack);
-            YamlConfiguration saveData = new YamlConfiguration();
-            try {
-                saveData.loadFromString(wandData);
-                wand.loadProperties(saveData);
-                wand.save();
-            } catch (InvalidConfigurationException ex) {
-                TradersController.getController().getLogger().log(Level.WARNING, "Error deserializing wand data", ex);
-            }
-            if (TradersController.DEBUG) Bukkit.getLogger().info("[WAND] onAssign for: " + wandData);
-		}
+		onReturnAssign(itemStack, false);
 	}
 	
 	@Override
@@ -98,11 +85,17 @@ public class WandAttr extends ItemAttr
             Wand wand = Wand.createWand(TradersController.getController(), itemStack);
             YamlConfiguration saveData = new YamlConfiguration();
             try {
+                ItemMeta meta = itemStack.getItemMeta();
                 saveData.loadFromString(wandData);
                 if (TradersController.DEBUG) Bukkit.getLogger().info("[WAND] loading keys: " + StringUtils.join(saveData.getKeys(false), ","));
                 wand.loadProperties(saveData);
                 wand.save();
                 itemStack = wand.getItem();
+                if (!endItem && meta != null) {
+                    ItemMeta newMeta = itemStack.getItemMeta();
+                    newMeta.setLore(meta.getLore());
+                    itemStack.setItemMeta(newMeta);
+                }
             } catch (InvalidConfigurationException ex) {
                 TradersController.getController().getLogger().log(Level.WARNING, "Error deserializing wand data", ex);
             }
