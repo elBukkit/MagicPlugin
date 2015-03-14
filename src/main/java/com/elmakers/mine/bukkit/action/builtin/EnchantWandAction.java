@@ -17,6 +17,7 @@ public class EnchantWandAction extends BaseSpellAction
     private int levels;
 
     public void prepare(CastContext context, ConfigurationSection parameters) {
+        super.prepare(context, parameters);
         levels = parameters.getInt("levels", 30);
     }
 

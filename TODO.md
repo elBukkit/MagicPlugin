@@ -1,6 +1,7 @@
 # TODO
 
  - Glitching Fill behavior
+ - ActionHandler break on success flag as well as failure
  - Nerf Force (shift to break free? Fall protection?)
  - Make map work like replicate, clone - with start point set on activate
  - Fix blink when passing through transparent blocks

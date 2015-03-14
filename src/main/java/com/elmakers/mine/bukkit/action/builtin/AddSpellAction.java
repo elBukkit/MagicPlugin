@@ -9,11 +9,9 @@ import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.api.wand.Wand;
 import com.elmakers.mine.bukkit.api.wand.WandUpgradePath;
 import com.elmakers.mine.bukkit.magic.MagicPlugin;
-import com.elmakers.mine.bukkit.spell.BaseSpell;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 
-import java.util.Arrays;
 import java.util.Collection;
 
 public class AddSpellAction extends BaseSpellAction
@@ -24,6 +22,7 @@ public class AddSpellAction extends BaseSpellAction
     private String exactPath = null;
 
     public void prepare(CastContext context, ConfigurationSection parameters) {
+        super.prepare(context, parameters);
         spellKey = parameters.getString("spell");
         requiredPath = parameters.getString("path", null);
         requiresCompletedPath = parameters.getString("path_end", null);

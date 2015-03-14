@@ -25,6 +25,7 @@ public class UndoAction extends BaseSpellAction
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters)
     {
+        super.prepare(context, parameters);
         timeout = parameters.getInt("target_timeout", 0);
 
         // TODO: Use a ContextAction instead?

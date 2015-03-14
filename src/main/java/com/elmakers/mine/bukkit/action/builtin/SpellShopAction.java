@@ -89,6 +89,7 @@ public class SpellShopAction extends BaseSpellAction implements GUIAction
     }
 
     public void prepare(CastContext context, ConfigurationSection parameters) {
+        super.prepare(context, parameters);
         requiredPath = parameters.getString("path", null);
         exactPath = parameters.getString("path_exact", null);
         requiresCompletedPath = parameters.getString("path_end", null);
