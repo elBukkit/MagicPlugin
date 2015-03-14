@@ -7,6 +7,7 @@
  - Add "cost" option to Magic citizens trait
  - Add "spellshop", "addspell" and "enchantwand" spells for simple one-spell NPC shops
  - Add support for Factions 1.8.2 build
+ - Updated/Fixed dtlTraders integration
 
 ## 4.5
  - Implement brush selection. Shift+right click to change brushes.

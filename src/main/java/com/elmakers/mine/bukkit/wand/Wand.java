@@ -1516,6 +1516,12 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 			CompatibilityUtils.addGlow(item);
 		}
 	}
+
+    public void save() {
+        saveState();
+        updateName();
+        updateLore();
+    }
 	
 	public int getRemainingUses() {
 		return uses;

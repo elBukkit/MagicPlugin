@@ -1,6 +1,8 @@
 # TODO
 
  - Glitching Fill behavior
+ - Nerf Force (shift to break free? Fall protection?)
+ - Make map work like replicate, clone - with start point set on activate
  - Fix blink when passing through transparent blocks
  - Can't cast day from command-line - clean up params? Fix target world?
  - battle wand stuck at "enchant at higher level"
