@@ -22,7 +22,7 @@ public interface SpellTemplate extends Comparable<SpellTemplate>, CostReducer {
     public String getKey();
     public SpellKey getSpellKey();
     public Color getColor();
-    public long getWorth();
+    public double getWorth();
     public SpellCategory getCategory();
     public long getCastCount();
     public void setCastCount(long count);
