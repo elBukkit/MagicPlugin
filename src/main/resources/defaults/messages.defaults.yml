@@ -1199,6 +1199,23 @@ spells:
         no_path_end: You must be ready to advance to $path!
         no_wand: You must be holding a wand!
         no_target: You already know that spell
+    spellshop:
+        name: Spell Shop
+        describe: Buy spells for your current level
+        cost_lore: "Costs: $cost"
+        cost_xp_lore: "Costs: $cost XP"
+        cast: ""
+        cast_player_message: ""
+        fail: ""
+        no_spells: There are no spells for you to buy here
+        no_upgrade: You may not learn with that $wand.
+        no_path: You must be at least $path!
+        no_path_end: You must be ready to advance to $path!
+        no_wand: You must be holding a wand!
+        insufficient_money: Costs $cost
+        insufficient_xp: Costs $cost XP
+        deducted_money: "&d&oYou bought &r&6$spell &r&d&ofor &r&a$cost"
+        deducted_xp: "&d&oYou bought &r&6$spell &r&d&ofor &r&a$cost &r&d&oXP"
 
 wands:
     default:

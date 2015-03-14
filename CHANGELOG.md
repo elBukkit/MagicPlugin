@@ -5,7 +5,7 @@
  - Add match_data option to Construct spell to turn on replacing variants
  - Add Vault integration for economy and item/block names
  - Add "cost" option to Magic citizens trait
- - Add "addspell" and "enchantwand" spells for simple one-spell NPC "shops"
+ - Add "spellshop", "addspell" and "enchantwand" spells for simple one-spell NPC shops
  - Add support for Factions 1.8.2 build
 
 ## 4.5

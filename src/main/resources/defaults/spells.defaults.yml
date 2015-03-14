@@ -5750,6 +5750,16 @@ upgrades:
         cast:
         -  class: SpellProgress
 
+spellshop:
+    icon: iron_hoe
+    category: utility
+    hidden: true
+    actions:
+        cast:
+        -  class: SpellShop
+    parameters:
+        loud: true
+
 addspell:
     icon: iron_hoe
     category: utility

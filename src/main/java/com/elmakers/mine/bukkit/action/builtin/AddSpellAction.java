@@ -8,19 +8,26 @@ import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.api.wand.Wand;
 import com.elmakers.mine.bukkit.api.wand.WandUpgradePath;
+import com.elmakers.mine.bukkit.magic.MagicPlugin;
+import com.elmakers.mine.bukkit.spell.BaseSpell;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
+
+import java.util.Arrays;
+import java.util.Collection;
 
 public class AddSpellAction extends BaseSpellAction
 {
     private String spellKey;
     private String requiredPath = null;
     private String requiresCompletedPath = null;
+    private String exactPath = null;
 
     public void prepare(CastContext context, ConfigurationSection parameters) {
         spellKey = parameters.getString("spell");
         requiredPath = parameters.getString("path", null);
         requiresCompletedPath = parameters.getString("path_end", null);
+        exactPath = parameters.getString("path_exact", null);
         if (requiresCompletedPath != null) {
             requiredPath = requiresCompletedPath;
         }
@@ -41,9 +48,13 @@ public class AddSpellAction extends BaseSpellAction
         if (wand.hasSpell(spellKey)) {
             return SpellResult.NO_TARGET;
         }
-        if (requiredPath != null) {
+        if (requiredPath != null || exactPath != null) {
             WandUpgradePath path = wand.getPath();
-            if (requiredPath != null && !path.hasPath(requiredPath)) {
+            if (path == null) {
+                context.sendMessage(context.getMessage("no_upgrade").replace("$wand", wand.getName()));
+                return SpellResult.FAIL;
+            }
+            if ((requiredPath != null && !path.hasPath(requiredPath)) || (exactPath != null && !exactPath.equals(path.getKey()))) {
                 WandUpgradePath requiresPath = com.elmakers.mine.bukkit.wand.WandUpgradePath.getPath(requiredPath);
                 if (requiresPath != null) {
                     context.sendMessage(context.getMessage("no_path").replace("$path", requiresPath.getName()));
@@ -87,4 +98,29 @@ public class AddSpellAction extends BaseSpellAction
 
         return SpellResult.CAST;
 	}
+
+    @Override
+    public void getParameterNames(Collection<String> parameters)
+    {
+        super.getParameterNames(parameters);
+        parameters.add("spell");
+        parameters.add("path");
+        parameters.add("path_end");
+        parameters.add("path_exact");
+    }
+
+    @Override
+    public void getParameterOptions(Collection<String> examples, String parameterKey)
+    {
+        super.getParameterOptions(examples, parameterKey);
+
+        if (parameterKey.equals("spell")) {
+            Collection<SpellTemplate> spellList = MagicPlugin.getAPI().getSpellTemplates();
+            for (SpellTemplate spell : spellList) {
+                examples.add(spell.getKey());
+            }
+        } else if (parameterKey.equals("path") || parameterKey.equals("path_exact") || parameterKey.equals("path_end")) {
+            examples.addAll(com.elmakers.mine.bukkit.wand.WandUpgradePath.getPathKeys());
+        }
+    }
 }

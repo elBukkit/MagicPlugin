@@ -2872,3 +2872,6 @@ addspell:
 
 enchantwand:
     enabled: true
+
+spellshop:
+    enabled: true

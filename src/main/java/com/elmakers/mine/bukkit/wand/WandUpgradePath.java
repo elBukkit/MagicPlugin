@@ -40,6 +40,8 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
     private final WandUpgradePath parent;
     private final Set<String> spells = new HashSet<String>();
     private final Set<String> requiredSpells = new HashSet<String>();
+    private final Set<String> allSpells = new HashSet<String>();
+    private final Set<String> allRequiredSpells = new HashSet<String>();
     private String upgradeKey;
     private String upgradeItemKey;
     private String name;
@@ -91,7 +93,8 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
         this.matchSpellMana = inherit.matchSpellMana;
         this.levelMap = new TreeMap<Integer, WandLevel>(inherit.levelMap);
         effects.putAll(inherit.effects);
-        requiredSpells.addAll(inherit.requiredSpells);
+        allRequiredSpells.addAll(inherit.allRequiredSpells);
+        allSpells.addAll(inherit.allSpells);
         load(controller, key, template);
 
         if ((this.upgradeCommands == null || this.upgradeCommands.size() == 0) && inherit.upgradeCommands != null)
@@ -113,11 +116,13 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
         if (spellSection != null) {
             spells.addAll(spellSection.getKeys(false));
         }
+        allSpells.addAll(spells);
 
         // Upgrade information
         upgradeKey = template.getString("upgrade");
         upgradeItemKey = template.getString("upgrade_item");
         requiredSpells.addAll(template.getStringList("required_spells"));
+        allRequiredSpells.addAll(requiredSpells);
 
         matchSpellMana = template.getBoolean("match_spell_mana", matchSpellMana);
         hidden = template.getBoolean("hidden", false);
@@ -363,12 +368,12 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
 
     @Override
     public Collection<String> getSpells() {
-        return new ArrayList(spells);
+        return new ArrayList(allSpells);
     }
 
     @Override
     public Collection<String> getRequiredSpells() {
-        return new ArrayList(requiredSpells);
+        return new ArrayList(allRequiredSpells);
     }
 
     @Override

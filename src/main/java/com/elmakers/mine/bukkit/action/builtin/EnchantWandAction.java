@@ -5,8 +5,12 @@ import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.api.wand.Wand;
+import com.elmakers.mine.bukkit.spell.BaseSpell;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
+
+import java.util.Arrays;
+import java.util.Collection;
 
 public class EnchantWandAction extends BaseSpellAction
 {
@@ -36,4 +40,21 @@ public class EnchantWandAction extends BaseSpellAction
         }
         return SpellResult.CAST;
 	}
+
+    @Override
+    public void getParameterNames(Collection<String> parameters)
+    {
+        super.getParameterNames(parameters);
+        parameters.add("levels");
+    }
+
+    @Override
+    public void getParameterOptions(Collection<String> examples, String parameterKey)
+    {
+        super.getParameterOptions(examples, parameterKey);
+
+        if (parameterKey.equals("levels")) {
+            examples.addAll(Arrays.asList(BaseSpell.EXAMPLE_SIZES));
+        }
+    }
 }

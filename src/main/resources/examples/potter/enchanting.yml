@@ -118,7 +118,6 @@ year3:
     spell_count:
       1: 100
     spells:
-      flipendo|3: 5
       bombarda: 5
       snowball: 15
       colorvaria: 40
@@ -149,7 +148,6 @@ year4:
       accio: 40
       locomotomortus: 1
       orchideous: 1
-      deprimo|2: 10
       bubble: 15
       aguamenti: 50
     required_spells:
