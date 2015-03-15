@@ -1,6 +1,8 @@
 package com.elmakers.mine.bukkit.action.builtin;
 
 import com.elmakers.mine.bukkit.api.action.CastContext;
+import com.elmakers.mine.bukkit.api.magic.Mage;
+import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.action.BaseSpellAction;
 import org.bukkit.entity.Entity;
@@ -18,6 +20,13 @@ public class KillAction extends BaseSpellAction
 		}
 
         LivingEntity targetEntity = (LivingEntity)entity;
+        MageController controller = context.getController();
+        if (controller.isMage(targetEntity)) {
+            Mage mage = controller.getMage(targetEntity);
+            if (mage.isSuperProtected()) {
+                return SpellResult.NO_TARGET;
+            }
+        }
         // Overkill to bypass protection
         if (!targetEntity.isDead()) {
             targetEntity.damage(targetEntity.getMaxHealth() * 100);
