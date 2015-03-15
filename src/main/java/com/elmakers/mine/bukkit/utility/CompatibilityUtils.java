@@ -226,6 +226,7 @@ public class CompatibilityUtils extends NMSUtils {
     }
 
     public static List<Entity> getNearbyEntities(Location location, double x, double y, double z) {
+        if (location == null) return null;
         Object worldHandle = getHandle(location.getWorld());
         try {
             x = Math.min(x, CompatibilityUtils.MAX_ENTITY_RANGE);
