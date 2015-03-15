@@ -3939,6 +3939,7 @@ public class MagicController implements Listener, MageController {
     @Override
     public boolean isPVPAllowed(Player player, Location location)
     {
+        if (location == null) return true;
         if (bypassPvpPermissions) return true;
         if (player != null && player.hasPermission("Magic.bypass_pvp")) return true;
         if (location == null && player != null) location = player.getLocation();
