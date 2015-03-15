@@ -1,6 +1,8 @@
 # CHANGELOG
 
 ## 4.6
+
+## 4.5.5
  - Fix Map and schematic brushes (broken in 4.5)
  - Add match_data option to Construct spell to turn on replacing variants
  - Add Vault integration for economy and item/block names
