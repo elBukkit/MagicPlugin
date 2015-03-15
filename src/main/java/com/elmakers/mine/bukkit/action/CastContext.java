@@ -173,7 +173,8 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
 
     @Override
     public World getWorld() {
-        return getLocation().getWorld();
+        Location location = getLocation();
+        return location == null ? null : location.getWorld();
     }
 
     @Override

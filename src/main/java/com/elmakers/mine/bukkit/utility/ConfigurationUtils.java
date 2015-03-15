@@ -402,7 +402,7 @@ public class ConfigurationUtils {
         if (!hasPosition && !hasDirection && worldOverride == null) return null;
 
         if (location == null) {
-            if (worldOverride == null || !hasPosition) return null;
+            if (worldOverride == null) return null;
             location = new Location(worldOverride, 0, 0, 0);
         } else {
             location = location.clone();
