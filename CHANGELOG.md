@@ -8,6 +8,7 @@
  - Add "spellshop", "addspell" and "enchantwand" spells for simple one-spell NPC shops
  - Add support for Factions 1.8.2 build
  - Updated/Fixed dtlTraders integration
+ - Some fixes to casting from console
 
 ## 4.5
  - Implement brush selection. Shift+right click to change brushes.
