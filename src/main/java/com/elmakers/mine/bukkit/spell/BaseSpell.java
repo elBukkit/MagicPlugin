@@ -953,6 +953,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     }
 
     public boolean canCast(Location location) {
+        if (location == null) return true;
         if (!hasCastPermission(mage.getCommandSender())) return false;
         Boolean regionPermission = controller.getRegionCastPermission(mage.getPlayer(), this, location);
         if (regionPermission != null && regionPermission == true) return true;
@@ -971,6 +972,12 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     @Override
     public boolean requiresBuildPermission() {
         return false;
+    }
+
+
+    public boolean hasBuildPermission(Location location) {
+        if (location == null) return true;
+        return hasBuildPermission(location.getBlock());
     }
 
     public boolean hasBuildPermission(Block block) {
