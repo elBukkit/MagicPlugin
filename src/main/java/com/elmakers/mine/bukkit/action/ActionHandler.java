@@ -37,10 +37,10 @@ public class ActionHandler
         String conditionalTest = root.getString("conditional");
         if (conditionalTest != null && !conditionalTest.isEmpty()) {
             if (conditionalTest.equalsIgnoreCase("success")) {
-                isConditionalOnSuccess = false;
+                isConditionalOnSuccess = true;
             } else {
 
-                isConditionalOnFailure = false;
+                isConditionalOnFailure = true;
             }
         } else {
             isConditionalOnSuccess = false;
