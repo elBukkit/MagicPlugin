@@ -26,14 +26,26 @@ public class ActionHandler
     private boolean undoable = false;
     private boolean usesBrush = false;
     private boolean requiresBuildPermission = false;
-    private boolean isConditional = false;
+    private boolean isConditionalOnSuccess = false;
+    private boolean isConditionalOnFailure = false;
 
     public void load(ConfigurationSection root, String key)
     {
         undoable = false;
         usesBrush = false;
         requiresBuildPermission = false;
-        isConditional = root.getBoolean("conditional", false);
+        String conditionalTest = root.getString("conditional");
+        if (conditionalTest != null && !conditionalTest.isEmpty()) {
+            if (conditionalTest.equalsIgnoreCase("success")) {
+                isConditionalOnSuccess = false;
+            } else {
+
+                isConditionalOnFailure = false;
+            }
+        } else {
+            isConditionalOnSuccess = false;
+            isConditionalOnFailure = false;
+        }
         Collection<ConfigurationSection> actionNodes = ConfigurationUtils.getNodeList(root, key);
 
         if (actionNodes != null)
@@ -151,7 +163,10 @@ public class ActionHandler
             }
             SpellResult actionResult = action.perform(context);
             result = result.min(actionResult);
-            if (isConditional && !actionResult.isSuccess()) {
+            if (isConditionalOnSuccess && actionResult.isSuccess()) {
+                break;
+            }
+            if (isConditionalOnFailure && !actionResult.isSuccess()) {
                 break;
             }
         }
