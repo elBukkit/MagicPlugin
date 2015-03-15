@@ -106,4 +106,9 @@ public class AreaOfEffectAction extends CompoundAction
             super.getParameterOptions(examples, parameterKey);
         }
     }
+
+    @Override
+    public boolean requiresTarget() {
+        return true;
+    }
 }
