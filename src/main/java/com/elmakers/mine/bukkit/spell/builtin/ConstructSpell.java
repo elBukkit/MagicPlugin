@@ -46,7 +46,8 @@ public class ConstructSpell extends BrushSpell
 	{
         Block target = null;
         Entity targetEntity;
-        if (parameters.getBoolean("select_self", true) && isLookingDown()) {
+        boolean finalCast = getTargetType() != TargetType.SELECT || this.targetBlock != null;
+        if (finalCast && parameters.getBoolean("select_self", true) && isLookingDown()) {
             targetEntity = mage.getEntity();
             target = mage.getLocation().getBlock().getRelative(BlockFace.DOWN);
         } else {
@@ -58,7 +59,6 @@ public class ConstructSpell extends BrushSpell
 		{
 			return SpellResult.NO_TARGET;
 		}
-
 
         if (!hasBuildPermission(target)) {
             return SpellResult.INSUFFICIENT_PERMISSION;
