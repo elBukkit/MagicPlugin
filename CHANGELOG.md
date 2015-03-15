@@ -1,7 +1,7 @@
 # CHANGELOG
 
 ## 4.6
- - Fix Map brushes (broken in 4.5)
+ - Fix Map and schematic brushes (broken in 4.5)
  - Add match_data option to Construct spell to turn on replacing variants
  - Add Vault integration for economy and item/block names
  - Add "cost" option to Magic citizens trait

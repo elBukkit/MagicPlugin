@@ -830,15 +830,29 @@ public class MagicController implements Listener, MageController {
         }, 0, mageUpdateFrequency);
 
         // Set up the Block update timer
+        final Set<Mage> pending = new HashSet<Mage>();
         Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, new TimedRunnable("Block Updates") {
             public void onRun() {
-                for (Mage mage : pendingConstruction) {
-                    if (mage instanceof com.elmakers.mine.bukkit.magic.Mage) {
-                        ((com.elmakers.mine.bukkit.magic.Mage) mage).processPendingBatches(maxBlockUpdates);
+                pending.clear();
+                pending.addAll(pendingConstruction);
+                int remainingWork = maxBlockUpdates;
+                while (remainingWork > 0 && pending.size() > 0) {
+                    int workPerMage = Math.max(10, remainingWork / pending.size());
+                    for (Mage apiMage : pendingConstruction) {
+                        if (apiMage instanceof com.elmakers.mine.bukkit.magic.Mage) {
+                            com.elmakers.mine.bukkit.magic.Mage mage = ((com.elmakers.mine.bukkit.magic.Mage) apiMage);
+                            int workPerformed = mage.processPendingBatches(workPerMage);
+                            if (workPerformed == 0) {
+                                pending.remove(apiMage);
+                            } else {
+                                remainingWork -= workPerformed;
+                            }
+                        }
                     }
+                    pending.removeAll(pendingConstructionRemoval);
+                    pendingConstruction.removeAll(pendingConstructionRemoval);
+                    pendingConstructionRemoval.clear();
                 }
-                pendingConstruction.removeAll(pendingConstructionRemoval);
-                pendingConstructionRemoval.clear();
             }
         }, 0, blockUpdateFrequency);
 

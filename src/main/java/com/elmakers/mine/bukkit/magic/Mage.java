@@ -656,9 +656,9 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         }
     }
 
-    public void processPendingBatches(int maxBlockUpdates) {
+    public int processPendingBatches(int maxBlockUpdates) {
+        int updated = 0;
         if (pendingBatches.size() > 0) {
-            int updated = 0;
             List<BlockBatch> processBatches = new ArrayList<BlockBatch>(pendingBatches);
             pendingBatches.clear();
             for (BlockBatch batch : processBatches) {
@@ -675,6 +675,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         if (pendingBatches.size() == 0) {
             controller.removePending(this);
         }
+        return updated;
     }
 
     public void setLastHeldMapId(short mapId) {

@@ -108,7 +108,7 @@ Airbender:
   - skill Airbending ~onTimer:20 >0 0.8
 Waterbender:
   Mobtype: villagezombie
-  Display: Airbender
+  Display: Waterbender
   Health: 70
   Damage: 4
   Equipment:
