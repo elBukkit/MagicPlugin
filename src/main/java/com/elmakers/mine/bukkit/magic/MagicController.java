@@ -2285,8 +2285,14 @@ public class MagicController implements Listener, MageController {
             }
 		}
 
-        ActionHandler.targetEffects(damager, entity);
-        ActionHandler.runActions(damager, entity.getLocation(), entity);
+        boolean isProtected = false;
+        if (isMage(entity)) {
+            isProtected = getMage(entity).isSuperProtected();
+        }
+        if (!isProtected) {
+            ActionHandler.targetEffects(damager, entity);
+            ActionHandler.runActions(damager, entity.getLocation(), entity);
+        }
 
         if (preventMeleeDamage && event.getCause() == EntityDamageEvent.DamageCause.ENTITY_ATTACK && damager instanceof Player && entity instanceof Player)
         {
