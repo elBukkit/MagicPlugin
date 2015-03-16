@@ -344,7 +344,7 @@ public interface Mage extends CostReducer {
     public int getLevel();
     public void setLevel(int level);
 
-    public boolean addPendingBlockBatch(Batch batch);
+    public boolean addBatch(Batch batch);
     public void addUndoBatch(UndoBatch batch);
 
     public void registerEvent(SpellEventType type, Listener spell);
