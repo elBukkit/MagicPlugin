@@ -1741,6 +1741,7 @@ neutron:
              class: HelixEffect
              particle: flame
     parameters:
+        target_type: LivingEntity
         projectile: Snowball
         player_damage: 8
         entity_damage: 15

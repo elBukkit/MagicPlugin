@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.action.builtin;
 
+import com.elmakers.mine.bukkit.action.ActionHandler;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.spell.Spell;
@@ -12,6 +13,7 @@ import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -23,6 +25,9 @@ public class AreaOfEffectAction extends CompoundAction
     private int radius;
     private boolean targetSelf;
     private int targetCount;
+    private List<WeakReference<Entity>> entities = new ArrayList<WeakReference<Entity>>();
+    private int currentEntity = 0;
+    private CastContext actionContext;
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters)
@@ -31,59 +36,80 @@ public class AreaOfEffectAction extends CompoundAction
         radius = parameters.getInt("radius", 8);
         targetSelf = parameters.getBoolean("target_self", false);
         targetCount = parameters.getInt("target_count", -1);
+
+        Mage mage = context.getMage();
+        if (mage != null)
+        {
+            radius = (int)(mage.getRadiusMultiplier() * radius);
+        }
+
+        entities.clear();
+        Entity sourceEntity = context.getEntity();
+        Location sourceLocation = context.getTargetLocation();
+        List<Entity> candidates = CompatibilityUtils.getNearbyEntities(sourceLocation, radius, radius, radius);
+        if (targetCount > 0)
+        {
+            List<Target> targets = new ArrayList<Target>();
+            for (Entity entity : candidates)
+            {
+                if ((targetSelf || entity != sourceEntity) && context.canTarget(entity))
+                {
+                    targets.add(new Target(sourceLocation, entity, radius));
+                }
+            }
+            Collections.sort(targets);
+            for (int i = 0; i < targetCount && i < targets.size(); i++)
+            {
+                Target target = targets.get(i);
+                entities.add(new WeakReference<Entity>(target.getEntity()));
+            }
+        }
+        else
+        {
+            for (Entity entity : candidates)
+            {
+                if ((targetSelf || entity != sourceEntity) && context.canTarget(entity))
+                {
+                    entities.add(new WeakReference<Entity>(entity));
+                }
+            }
+        }
+
+    }
+
+    @Override
+    public void reset(CastContext context)
+    {
+        super.reset(context);
+        actionContext = createContext(context);
+        currentEntity = 0;
     }
 
 	@Override
     public SpellResult perform(CastContext context)
 	{
-		Mage mage = context.getMage();
-		Entity sourceEntity = context.getEntity();
-		Location sourceLocation = context.getTargetLocation();
-        Spell spell = context.getSpell();
-
-        int radius = this.radius;
-		if (mage != null)
-		{
-			radius = (int)(mage.getRadiusMultiplier() * radius);
-			sourceEntity = mage.getEntity();
-		}
-
-		List<Entity> entities = CompatibilityUtils.getNearbyEntities(sourceLocation, radius, radius, radius);
         SpellResult result = SpellResult.NO_TARGET;
-        CastContext actionContext = createContext(context);
-		if (targetCount > 0)
-		{
-			List<Target> targets = new ArrayList<Target>();
-			for (Entity entity : entities)
-			{
-				if ((targetSelf || entity != sourceEntity) && spell.canTarget(entity))
-				{
-					targets.add(new Target(sourceLocation, entity, radius));
-				}
-			}
-			Collections.sort(targets);
-            for (int i = 0; i < targetCount && i < targets.size(); i++)
-			{
-                Target target = targets.get(i);
-                actionContext.setTargetEntity(target.getEntity());
-                actionContext.setTargetLocation(target.getLocation());
-                SpellResult entityResult = performActions(actionContext);
-                result = result.min(entityResult);
-			}
-		}
-		else
-		{
-			for (Entity entity : entities)
-			{
-				if ((targetSelf || entity != sourceEntity) && spell.canTarget(entity))
-				{
-                    actionContext.setTargetEntity(entity);
-                    actionContext.setTargetLocation(entity.getLocation());
-                    SpellResult entityResult = performActions(actionContext);
-                    result = result.min(entityResult);
-				}
-			}
-		}
+        while (currentEntity < entities.size())
+        {
+            Entity entity = entities.get(currentEntity).get();
+            if (entity == null)
+            {
+                skippedActions(context);
+                continue;
+            }
+            actionContext.setTargetEntity(entity);
+            actionContext.setTargetLocation(entity.getLocation());
+            SpellResult entityResult = performActions(actionContext);
+            result = result.min(entityResult);
+            if (entityResult == SpellResult.PENDING) {
+                break;
+            }
+            currentEntity++;
+            if (currentEntity < entities.size())
+            {
+                super.reset(context);
+            }
+        }
 
 		return result;
 	}
@@ -110,5 +136,15 @@ public class AreaOfEffectAction extends CompoundAction
     @Override
     public boolean requiresTarget() {
         return true;
+    }
+
+    @Override
+    public Object clone()
+    {
+        AreaOfEffectAction action = (AreaOfEffectAction)super.clone();
+        if (action != null) {
+            action.entities = new ArrayList<WeakReference<Entity>>(this.entities);
+        }
+        return action;
     }
 }
