@@ -32,8 +32,6 @@ public class UndoQueue implements com.elmakers.mine.bukkit.api.block.UndoQueue
         if (!(blocks instanceof UndoList)) return;
         UndoList addList = (UndoList)blocks;
         if (addList.hasUndoQueue()) {
-            owner.getController().getLogger().warning("UndoList is already in a queue!");
-            Thread.dumpStack();
             return;
         }
 
