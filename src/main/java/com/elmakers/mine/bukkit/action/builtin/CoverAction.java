@@ -25,7 +25,6 @@ public class CoverAction extends CompoundAction
     private int xDirection;
     private int zDirection;
     private boolean checked;
-    private CastContext actionContext;
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters) {
@@ -47,7 +46,6 @@ public class CoverAction extends CompoundAction
         xDirection = 1;
         zDirection = 0;
         checked = false;
-        actionContext = createContext(context);
     }
 
 	@Override

@@ -9,49 +9,38 @@ import org.bukkit.configuration.ConfigurationSection;
 import java.util.Arrays;
 import java.util.Collection;
 
-public class RepeatAction extends CompoundAction
+public class DelayAction extends CompoundAction
 {
-    private int count;
-    private int current;
+    private int delay;
+    private long targetTime;
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters) {
         super.prepare(context, parameters);
-        count = parameters.getInt("count", 1);
+        delay = parameters.getInt("delay", 1);
     }
 
     @Override
     public void reset(CastContext context)
     {
         super.reset(context);
-        current = 0;
+        targetTime = System.currentTimeMillis() + delay;
     }
 
 	@Override
 	public SpellResult perform(CastContext context) {
-        SpellResult result = SpellResult.NO_ACTION;
-        while (current < count)
+        if (System.currentTimeMillis() < targetTime)
         {
-            SpellResult actionResult = performActions(context);
-            result = result.min(actionResult);
-            if (actionResult == SpellResult.PENDING)
-            {
-                break;
-            }
-            current++;
-            if (current < count)
-            {
-                super.reset(context);
-            }
+            return SpellResult.PENDING;
         }
-
-		return result;
+		return performActions(context);
 	}
+
     @Override
     public void getParameterNames(Collection<String> parameters)
     {
         super.getParameterNames(parameters);
-        parameters.add("count");
+        parameters.add("delay");
     }
 
     @Override
@@ -59,8 +48,8 @@ public class RepeatAction extends CompoundAction
     {
         super.getParameterOptions(examples, parameterKey);
 
-        if (parameterKey.equals("count")) {
-            examples.addAll(Arrays.asList(BaseSpell.EXAMPLE_SIZES));
+        if (parameterKey.equals("delay")) {
+            examples.addAll(Arrays.asList(BaseSpell.EXAMPLE_DURATIONS));
         }
     }
 }
