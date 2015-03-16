@@ -1,7 +1,6 @@
-package com.elmakers.mine.bukkit.block.batch;
+package com.elmakers.mine.bukkit.batch;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.Set;
 
@@ -10,13 +9,12 @@ import org.apache.commons.lang.ArrayUtils;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 
-import com.elmakers.mine.bukkit.api.block.BlockBatch;
 import com.elmakers.mine.bukkit.api.block.BlockData;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.block.UndoList;
 
-public class UndoBatch implements com.elmakers.mine.bukkit.api.block.UndoBatch {
+public class UndoBatch implements com.elmakers.mine.bukkit.api.batch.UndoBatch {
     protected final MageController controller;
     private UndoList trackUndoBlocks;
     private static final BlockData[] template = new BlockData[0];

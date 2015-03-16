@@ -1,13 +1,13 @@
-package com.elmakers.mine.bukkit.block.batch;
+package com.elmakers.mine.bukkit.batch;
 
 import org.bukkit.block.Block;
 import org.bukkit.util.BlockVector;
 
-import com.elmakers.mine.bukkit.api.block.BlockBatch;
+import com.elmakers.mine.bukkit.api.batch.Batch;
 import com.elmakers.mine.bukkit.api.block.BlockData;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 
-public abstract class VolumeBatch implements BlockBatch {
+public abstract class VolumeBatch implements Batch {
     protected final MageController controller;
     private String worldName;
 

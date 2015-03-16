@@ -14,6 +14,7 @@ public class ActionSpell extends BrushSpell
     private boolean undoable = false;
     private boolean requiresBuildPermission = false;
     private ActionHandler currentHandler = null;
+    private int workThreshold = 100;
 
     @Override
     protected void processResult(SpellResult result, ConfigurationSection castParameters) {
@@ -40,6 +41,7 @@ public class ActionSpell extends BrushSpell
         ActionHandler downHandler = actions.get("alternate_down");
         ActionHandler upHandler = actions.get("alternate_up");
         ActionHandler sneakHandler = actions.get("alternate_sneak");
+        workThreshold = parameters.getInt("work_threshold", 100);
         if (downHandler != null && isLookingDown())
         {
             result = SpellResult.ALTERNATE_DOWN;
@@ -58,7 +60,12 @@ public class ActionSpell extends BrushSpell
 
         if (currentHandler != null)
         {
-            result = result.max(currentHandler.perform(this, parameters));
+            SpellResult handlerResult = currentHandler.perform(this, parameters);
+            if (handlerResult == SpellResult.PENDING)
+            {
+
+            }
+            result = result.max(handlerResult);
         }
 
         return result;

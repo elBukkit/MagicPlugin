@@ -1,15 +1,14 @@
-package com.elmakers.mine.bukkit.block.batch;
+package com.elmakers.mine.bukkit.batch;
 
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 
-import com.elmakers.mine.bukkit.api.block.BlockBatch;
-import com.elmakers.mine.bukkit.api.block.BlockData;
+import com.elmakers.mine.bukkit.api.batch.Batch;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.block.UndoList;
 
-public abstract class UndoableBatch implements BlockBatch {
+public abstract class UndoableBatch implements Batch {
     protected final MageController controller;
     protected final UndoList undoList;
     protected final Mage mage;

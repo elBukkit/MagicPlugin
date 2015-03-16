@@ -20,7 +20,7 @@ import org.bukkit.plugin.Plugin;
 
 import com.elmakers.mine.bukkit.api.block.BlockData;
 import com.elmakers.mine.bukkit.api.magic.Mage;
-import com.elmakers.mine.bukkit.block.batch.UndoBatch;
+import com.elmakers.mine.bukkit.batch.UndoBatch;
 import com.elmakers.mine.bukkit.entity.EntityData;
 
 /**
