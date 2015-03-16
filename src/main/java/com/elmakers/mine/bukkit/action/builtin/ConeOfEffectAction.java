@@ -1,19 +1,20 @@
 package com.elmakers.mine.bukkit.action.builtin;
 
+import com.elmakers.mine.bukkit.action.CompoundEntityAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.spell.Spell;
-import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
-import com.elmakers.mine.bukkit.action.CompoundAction;
 import com.elmakers.mine.bukkit.spell.TargetingSpell;
 import com.elmakers.mine.bukkit.utility.Target;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Entity;
 
+import java.lang.ref.WeakReference;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
-public class ConeOfEffectAction extends CompoundAction
+public class ConeOfEffectAction extends CompoundEntityAction
 {
     private int targetCount;
     private boolean useHitbox;
@@ -25,7 +26,6 @@ public class ConeOfEffectAction extends CompoundAction
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters)
     {
-        super.prepare(context, parameters);
         targetCount = parameters.getInt("target_count", -1);
         useHitbox = parameters.getBoolean("hitbox", false);
         range = parameters.getInt("range", 32);
@@ -37,34 +37,26 @@ public class ConeOfEffectAction extends CompoundAction
             closeFOV = fov;
         }
         closeFOV = parameters.getDouble("close_fov", closeFOV);
+        super.prepare(context, parameters);
     }
 
-	@Override
-	public SpellResult perform(CastContext context)
-	{
+    @Override
+    public void prepareEntities(CastContext context, ConfigurationSection parameters, List<WeakReference<Entity>> entities) {
         Spell spell = context.getSpell();
         if (!(spell instanceof TargetingSpell)) {
-            return SpellResult.FAIL;
+            return;
         }
 
-        List<Target> entities = ((TargetingSpell)spell).getAllTargetEntities(context.getLocation(), context.getEntity(), range, fov, closeRange, closeFOV, useHitbox);
+        List<Target> candidates = ((TargetingSpell) spell).getAllTargetEntities(context.getLocation(), context.getEntity(), range, fov, closeRange, closeFOV, useHitbox);
         if (targetCount < 0) {
             targetCount = entities.size();
         }
 
-        SpellResult result = SpellResult.NO_TARGET;
-        CastContext actionContext = createContext(context);
-        for (int i = 0; i < targetCount && i < entities.size(); i++)
-        {
-            Target target = entities.get(i);
-            actionContext.setTargetEntity(target.getEntity());
-            actionContext.setTargetLocation(target.getLocation());
-            SpellResult entityResult = performActions(actionContext);
-            result = result.min(entityResult);
+        for (int i = 0; i < targetCount && i < candidates.size(); i++) {
+            Target target = candidates.get(i);
+            entities.add(new WeakReference<Entity>(target.getEntity()));
         }
-
-        return result;
-	}
+    }
 
     @Override
     public void getParameterNames(Collection<String> parameters) {

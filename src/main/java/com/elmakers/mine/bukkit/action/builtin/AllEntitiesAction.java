@@ -60,8 +60,6 @@ public class AllEntitiesAction extends CompoundEntityAction
 			targetType = ((TargetingSpell)spell).getTargetEntityType();
 		}
 
-        SpellResult result = SpellResult.NO_TARGET;
-        CastContext actionContext = createContext(context);
 		if (targetType == Player.class)
 		{
 			Player[] players = Bukkit.getOnlinePlayers();
