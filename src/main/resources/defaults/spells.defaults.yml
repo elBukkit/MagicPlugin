@@ -5594,9 +5594,21 @@ lift:
     icon_url: http://i.imgur.com/PHlfm7b.png
     icon: ink_sack:8
     category: utility
-    class: RaiseSpell
     worth: 15
-    cast_on_no_target: true
+    pvp_restricted: true
+    actions:
+        cast:
+        -  class: VelocityAction
+           requires_entity_target: true
+           item_speed: 2
+           living_entity_speed: 3
+        -  class: RepeatAction
+           requires_entity_target: true
+           actions:
+           -  class: DelayAction
+              actions:
+              -  class: VelocityAction
+        -  class: MoveBlockAction
     effects:
         cast:
         -  class: EffectSingle
@@ -5637,18 +5649,22 @@ lift:
              particle: spell
              lengthGrow: 0.4
     parameters:
+        hitbox: true
+        target: other
+        target_type: LivingEntity
         allow_max_range: false
         range: 15
-        radius: 1
-        type: sphere
         check_destructible: true
         undo: 5000
         target_breakables: 2
         bypass_backfire: false
         cooldown: 1000
-        otdy: 10
-        otdx: 0
-        otdz: 0
+        offset: 0,5,0
+        delay: 100
+        direction: 0,1,0
+        living_entity_speed: 0.1
+        item_speed: 0.05
+        count: 50
     costs:
         mana: 40
 

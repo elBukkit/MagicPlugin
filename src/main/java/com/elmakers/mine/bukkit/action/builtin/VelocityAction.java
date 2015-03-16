@@ -4,6 +4,7 @@ import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.action.BaseSpellAction;
+import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -28,6 +29,7 @@ public class VelocityAction extends BaseSpellAction
     private int maxSpeedAtElevation;
     private double pushDirection;
     private int yOffset;
+    private Vector direction;
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters) {
@@ -41,6 +43,7 @@ public class VelocityAction extends BaseSpellAction
         maxSpeed = parameters.getDouble("max_speed", 0);
         pushDirection = parameters.getDouble("push", 0);
         yOffset = parameters.getInt("y_offset", 0);
+        direction = ConfigurationUtils.getVector(parameters, "direction");
     }
 
     @Override
@@ -72,7 +75,7 @@ public class VelocityAction extends BaseSpellAction
             magnitude = (minSpeed + ((maxSpeed - minSpeed) * heightModifier));
         }
 
-        Vector velocity = context.getDirection();
+        Vector velocity = direction == null ? context.getDirection() : direction.clone();
         if (pushDirection != 0)
         {
             Location to = entity.getLocation();

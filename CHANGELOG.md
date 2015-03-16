@@ -1,6 +1,8 @@
 # CHANGELOG
 
 ## 4.6
+ - Big under-the-hood changes to support batched actions
+ - Lift spell works on entities
 
 ## 4.5.5
  - Fix Map and schematic brushes (broken in 4.5)
