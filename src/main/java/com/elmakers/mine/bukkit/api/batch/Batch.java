@@ -1,4 +1,4 @@
-package com.elmakers.mine.bukkit.api.block;
+package com.elmakers.mine.bukkit.api.batch;
 
 /**
  * Represents a batched Block update, usually started by a construction Spell.
@@ -12,7 +12,7 @@ package com.elmakers.mine.bukkit.api.block;
  * A BlockBatch must also report when it is finished, and perform any required
  * actions on finish, such as registering an UndoBatch for undo.
  */
-public interface BlockBatch {
+public interface Batch {
     /**
      * Process one iteration of this batch.
      *

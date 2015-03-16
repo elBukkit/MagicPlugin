@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 2.6
+
+ - Implemented/Re-Worked Action API
+
 ## 2.1
 
  - Add IconURL to SpellTemplate for 1.8 custom icons

@@ -8,7 +8,8 @@ package com.elmakers.mine.bukkit.api.spell;
  * A Spell that fails to cast will not consume costs or register for cooldown.
  */
 public enum SpellResult {
-    // Cast should always be first
+    // Order is important here
+    PENDING(true, false, false),
     CAST(true, false, false),
     ALTERNATE(true, false, false, true),
     ALTERNATE_UP(true, false, false, true),

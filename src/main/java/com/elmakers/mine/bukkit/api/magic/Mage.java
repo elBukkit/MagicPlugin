@@ -19,9 +19,9 @@ import org.bukkit.event.Listener;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.util.Vector;
 
-import com.elmakers.mine.bukkit.api.block.BlockBatch;
+import com.elmakers.mine.bukkit.api.batch.Batch;
 import com.elmakers.mine.bukkit.api.block.MaterialBrush;
-import com.elmakers.mine.bukkit.api.block.UndoBatch;
+import com.elmakers.mine.bukkit.api.batch.UndoBatch;
 import com.elmakers.mine.bukkit.api.block.UndoList;
 import com.elmakers.mine.bukkit.api.block.UndoQueue;
 
@@ -62,7 +62,7 @@ public interface Mage extends CostReducer {
      *
      * @return Collection<BlockBatch> pending construction batches
      */
-    public Collection<BlockBatch> getPendingBatches();
+    public Collection<Batch> getPendingBatches();
 
     /**
      * Get the name of this mage. This may be the Player's display name, or
@@ -185,7 +185,7 @@ public interface Mage extends CostReducer {
      *
      * @return The batch that was cancelled, or null if nothing was pending.
      */
-    public BlockBatch cancelPending();
+    public Batch cancelPending();
 
     /**
      * Undo the last construction performed by this Mage.
@@ -344,7 +344,7 @@ public interface Mage extends CostReducer {
     public int getLevel();
     public void setLevel(int level);
 
-    public boolean addPendingBlockBatch(BlockBatch batch);
+    public boolean addPendingBlockBatch(Batch batch);
     public void addUndoBatch(UndoBatch batch);
 
     public void registerEvent(SpellEventType type, Listener spell);
