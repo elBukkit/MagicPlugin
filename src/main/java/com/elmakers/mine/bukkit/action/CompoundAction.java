@@ -20,7 +20,7 @@ public abstract class CompoundAction extends ParallelCompoundAction
     public void reset(CastContext context)
     {
         super.reset(context);
-        actions.reset(context);
+        actions.reset(actionContext);
     }
 
     protected SpellResult performActions(CastContext context) {

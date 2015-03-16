@@ -16,6 +16,7 @@ public abstract class ParallelCompoundAction extends BaseSpellAction implements 
     private boolean requiresBuildPermission = false;
 	protected ActionHandler actions = null;
     protected ConfigurationSection parameters;
+    protected CastContext actionContext;
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters)
@@ -163,5 +164,12 @@ public abstract class ParallelCompoundAction extends BaseSpellAction implements 
             action.actions = (ActionHandler)this.actions.clone();
         }
         return action;
+    }
+
+    @Override
+    public void reset(CastContext context)
+    {
+        super.reset(context);
+        actionContext = createContext(context);
     }
 }

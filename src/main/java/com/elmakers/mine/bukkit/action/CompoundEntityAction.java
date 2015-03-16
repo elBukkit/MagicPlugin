@@ -17,7 +17,6 @@ public abstract class CompoundEntityAction extends CompoundAction
     protected boolean targetSelf;
     private List<WeakReference<Entity>> entities = new ArrayList<WeakReference<Entity>>();
     private int currentEntity = 0;
-    private CastContext actionContext;
 
     public abstract void prepareEntities(CastContext context, ConfigurationSection parameters, List<WeakReference<Entity>> entities);
 
@@ -34,7 +33,6 @@ public abstract class CompoundEntityAction extends CompoundAction
     public void reset(CastContext context)
     {
         super.reset(context);
-        actionContext = createContext(context);
         currentEntity = 0;
     }
 
