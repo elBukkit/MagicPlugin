@@ -17,8 +17,15 @@ public class CoverAction extends CompoundAction
 {
 	private static final int DEFAULT_RADIUS	= 2;
     private int radius;
+    private int currentRadius;
     private float centerProbability;
     private float outerProbability;
+    private int dx;
+    private int dz;
+    private int xDirection;
+    private int zDirection;
+    private boolean checked;
+    private CastContext actionContext;
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters) {
@@ -28,52 +35,101 @@ public class CoverAction extends CompoundAction
         outerProbability = (float)parameters.getDouble("probability", 1);
         centerProbability = (float)parameters.getDouble("center_probability", centerProbability);
         outerProbability = (float)parameters.getDouble("outer_probability", outerProbability);
+        radius = (int)(context.getMage().getRadiusMultiplier() * this.radius);
+    }
+
+    @Override
+    public void reset(CastContext context) {
+        super.reset(context);
+        currentRadius = 0;
+        dx = 0;
+        dz = 0;
+        xDirection = 1;
+        zDirection = 0;
+        checked = false;
+        actionContext = createContext(context);
     }
 
 	@Override
 	public SpellResult perform(CastContext context) {
         Block block = context.getTargetBlock();
-		Mage mage = context.getMage();
-		int radius = (int)(mage.getRadiusMultiplier() * this.radius);
 		block = context.findSpaceAbove(block);
 
-        CastContext actionContext = createContext(context);
 		if (radius < 1)
 		{
-            if (centerProbability >= 1 || context.getRandom().nextDouble() <= centerProbability) {
-                actionContext.setTargetLocation(context.findBlockUnder(block).getLocation());
+            if (!checked && centerProbability < 1 && context.getRandom().nextDouble() <= centerProbability)
+            {
+                return SpellResult.NO_ACTION;
             }
+            checked = true;
+            actionContext.setTargetLocation(context.findBlockUnder(block).getLocation());
 			return performActions(actionContext);
 		}
 
 		SpellResult result = SpellResult.NO_ACTION;
 		int y = block.getY();
-		for (int dx = -radius; dx < radius; ++dx)
+        while (currentRadius <= radius)
 		{
-			for (int dz = -radius; dz < radius; ++dz)
-			{
-				if (isInCircle(dx, dz, radius))
-				{
-					int x = block.getX() + dx;
-					int z = block.getZ() + dz;
-					Block targetBlock = context.getWorld().getBlockAt(x, y, z);
-					targetBlock = context.findBlockUnder(targetBlock);
-					Block coveringBlock = targetBlock.getRelative(BlockFace.UP);
-					if (!context.isTransparent(targetBlock.getType()) && context.isTransparent(coveringBlock.getType()))
-					{
-                        float probability = centerProbability;
-                        if (centerProbability != outerProbability) {
-                            float weight = Math.abs((float)dx + dz) / ((float)radius * 2);
-                            probability = RandomUtils.lerp(centerProbability, outerProbability, weight);
-                        }
+            if (!checked) {
+                checked = isInCircle(dx, dz, radius);
+                float probability = centerProbability;
+                if (centerProbability != outerProbability) {
+                    float weight = Math.abs((float) dx + dz) / ((float) radius * 2);
+                    probability = RandomUtils.lerp(centerProbability, outerProbability, weight);
+                }
+                checked = checked && (probability >= 1 || context.getRandom().nextDouble() <= probability);
+            }
+            if (checked) {
 
-                        if (probability >= 1 || context.getRandom().nextDouble() <= probability) {
-                            actionContext.setTargetLocation(targetBlock.getLocation());
-                            result = result.min(actions.perform(actionContext));
-                        }
-					}
-				}
-			}
+                int x = block.getX() + dx;
+                int z = block.getZ() + dz;
+                Block targetBlock = context.getWorld().getBlockAt(x, y, z);
+                targetBlock = context.findBlockUnder(targetBlock);
+                Block coveringBlock = targetBlock.getRelative(BlockFace.UP);
+                actionContext.setTargetLocation(targetBlock.getLocation());
+                if (!context.isTransparent(targetBlock.getType()) && context.isTransparent(coveringBlock.getType())) {
+                    SpellResult actionResult = performActions(actionContext);
+                    result = result.min(actionResult);
+                    if (actionResult == SpellResult.PENDING) {
+                        break;
+                    }
+                } else {
+                    skippedActions(context);
+                }
+            }
+            else
+            {
+                skippedActions(context);
+            }
+            int nextX = dx + xDirection;
+            int nextZ = dz + zDirection;
+            if ((xDirection == 0 && zDirection == -1 && nextX == -currentRadius && nextZ == -currentRadius) || currentRadius == 0) {
+                currentRadius++;
+                dx = -currentRadius;
+                dz = -currentRadius;
+                xDirection = 1;
+                zDirection = 0;
+            }
+            else if (nextX > currentRadius || nextZ > currentRadius || nextX < -currentRadius || nextZ < -currentRadius) {
+                if (xDirection == 1 && zDirection == 0)  {
+                    xDirection = 0;
+                    zDirection = 1;
+                    dz += zDirection;
+                } else if (xDirection == 0 && zDirection == 1)  {
+                    xDirection = -1;
+                    zDirection = 0;
+                    dx += xDirection;
+                } else  {
+                    xDirection = 0;
+                    zDirection = -1;
+                    dz += zDirection;
+                }
+            } else {
+                dx = nextX;
+                dz = nextZ;
+            }
+            checked = false;
+            super.reset(context);
 		}
 
 		return result;
@@ -109,5 +165,11 @@ public class CoverAction extends CompoundAction
         } else if (parameterKey.equals("probability") || parameterKey.equals("center_probability") || parameterKey.equals("outer_probability")) {
             examples.addAll(Arrays.asList(BaseSpell.EXAMPLE_PERCENTAGES));
         }
+    }
+
+    @Override
+    public int getActionCount() {
+        int diameter = 1 + radius * 2;
+        return diameter * diameter * actions.getActionCount();
     }
 }

@@ -3986,9 +3986,11 @@ absorb:
     icon: bucket
     icon_url: http://i.imgur.com/bNCtxr7.png
     category: engineering
-    class: AbsorbSpell
     worth: 1500
     brush_selection: true
+    actions:
+        cast:
+        -  class: AbsorbAction
     effects:
         cast:
         -  class: EffectSingle
