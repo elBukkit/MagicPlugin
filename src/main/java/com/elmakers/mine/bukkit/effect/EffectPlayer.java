@@ -499,10 +499,10 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
 
     protected void checkLocations() {
         if (origin != null && originOffset != null) {
-            origin = origin.add(originOffset);
+            origin = origin.clone().add(originOffset);
         }
         if (target != null && targetOffset != null) {
-            target = target.add(targetOffset);
+            target = target.clone().add(targetOffset);
         }
     }
 
