@@ -3,8 +3,8 @@ package com.elmakers.mine.bukkit.action;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.action.SpellAction;
 import com.elmakers.mine.bukkit.api.magic.Mage;
-import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
+import com.elmakers.mine.bukkit.batch.ActionBatch;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public class ActionHandler
+public class ActionHandler implements Cloneable
 {
     private static final String ACTION_BUILTIN_CLASSPATH = "com.elmakers.mine.bukkit.action.builtin";
 
@@ -28,6 +28,27 @@ public class ActionHandler
     private boolean requiresBuildPermission = false;
     private boolean isConditionalOnSuccess = false;
     private boolean isConditionalOnFailure = false;
+    private Integer currentAction = null;
+    private SpellResult result = SpellResult.NO_ACTION;
+
+    public ActionHandler()
+    {
+
+    }
+
+    public ActionHandler(ActionHandler copy)
+    {
+        this.undoable = copy.undoable;
+        this.usesBrush = copy.usesBrush;
+        this.requiresBuildPermission = copy.requiresBuildPermission;
+        this.isConditionalOnSuccess = copy.isConditionalOnSuccess;
+        this.isConditionalOnFailure = copy.isConditionalOnFailure;
+        this.currentAction = copy.currentAction;
+        for (ActionContext context : copy.actions)
+        {
+            actions.add((ActionContext)context.clone());
+        }
+    }
 
     public void load(ConfigurationSection root, String key)
     {
@@ -129,20 +150,28 @@ public class ActionHandler
         }
     }
 
-    public SpellResult perform(Spell spell, ConfigurationSection parameters)
+    public void reset(CastContext context)
     {
-        spell.target();
-        return perform(spell.getCurrentCast(), parameters);
+        this.currentAction = actions != null && actions.size() > 0 ? 0 : null;
     }
 
-    public SpellResult perform(CastContext context, ConfigurationSection parameters)
+    public SpellResult start(CastContext context, ConfigurationSection parameters)
     {
-        initialize(parameters);
         prepare(context, parameters);
-        SpellResult result = perform(context);
-        finish(context);
-
-        return result;
+        reset(context);
+        SpellResult handlerResult = perform(context);
+        if (handlerResult == SpellResult.PENDING)
+        {
+            ActionBatch batch = new ActionBatch(context, this);
+            if (!context.getMage().addBatch(batch)) {
+                handlerResult = SpellResult.FAIL;
+            }
+        }
+        else
+        {
+            finish(context);
+        }
+        return handlerResult;
     }
 
     public SpellResult perform(CastContext context)
@@ -151,26 +180,64 @@ public class ActionHandler
         Entity targetEntity = context.getTargetEntity();
 
         SpellResult result = SpellResult.NO_ACTION;
-        for (ActionContext action : actions)
+        if (actions == null || actions.size() == 0)
         {
+            return result;
+        }
+        while (currentAction != null)
+        {
+            ActionContext action = actions.get(currentAction);
             if (action.getAction().requiresTargetEntity() && targetEntity == null) {
                 result = result.min(SpellResult.NO_TARGET);
+                advance(context);
                 continue;
             }
             if (action.getAction().requiresTarget() && targetLocation == null) {
                 result = result.min(SpellResult.NO_TARGET);
+                advance(context);
                 continue;
             }
             SpellResult actionResult = action.perform(context);
+            context.addWork(1);
             result = result.min(actionResult);
+            if (actionResult == SpellResult.PENDING) {
+                break;
+            }
             if (isConditionalOnSuccess && actionResult.isSuccess()) {
+                cancel(context);
                 break;
             }
             if (isConditionalOnFailure && !actionResult.isSuccess()) {
+                cancel(context);
                 break;
             }
+
+            advance(context);
+            if (context.getWorkAllowed() <= 0) {
+                return SpellResult.PENDING;
+            }
         }
+
         return result;
+    }
+
+    protected void advance(CastContext context) {
+        currentAction++;
+        context.performedActions(1);
+        if (currentAction >= actions.size()) {
+            currentAction = null;
+        } else {
+            actions.get(currentAction).getAction().reset(context);
+        }
+    }
+
+    public void cancel(CastContext context)
+    {
+        if (currentAction != null && currentAction < actions.size())
+        {
+            context.performedActions(actions.size() - currentAction);
+        }
+        currentAction = null;
     }
 
     public void finish(CastContext context)
@@ -317,5 +384,24 @@ public class ActionHandler
     public String toString()
     {
         return "ActionHandler [" + actions.size() + "]";
+    }
+
+    public int getActionCount() {
+        int count = 0;
+        for (ActionContext context : actions)
+        {
+            count += context.getAction().getActionCount();
+        }
+        return count;
+    }
+
+    @Override
+    public Object clone()
+    {
+        return new ActionHandler(this);
+    }
+
+    public boolean isFinished() {
+        return currentAction == null;
     }
 }

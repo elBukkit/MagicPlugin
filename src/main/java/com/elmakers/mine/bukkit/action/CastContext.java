@@ -51,11 +51,17 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
     private TargetingSpell targetingSpell;
     private UndoableSpell undoSpell;
     private MaterialBrush brush;
+    private CastContext base;
+
+    // Base Context
+    private int workAllowed = 500;
+    private int actionsPerformed;
 
     public CastContext(Spell spell) {
         this.setSpell(spell);
         this.location = null;
         this.entity = null;
+        this.base = this;
     }
 
     public CastContext(com.elmakers.mine.bukkit.api.action.CastContext copy) {
@@ -82,7 +88,10 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
         this.brush = copy.getBrush();
         if (copy instanceof CastContext)
         {
+            this.base = ((CastContext)copy).base;
             this.targetMessagesSent = ((CastContext)copy).targetMessagesSent;
+        } else {
+            this.base = this;
         }
     }
 
@@ -212,6 +221,7 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
     @Override
     public void registerForUndo(Runnable runnable)
     {
+        addWork(1);
         if (undoList != null)
         {
             undoList.add(runnable);
@@ -221,6 +231,7 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
     @Override
     public void registerModified(Entity entity)
     {
+        addWork(5);
         if (undoList != null)
         {
             undoList.modify(entity);
@@ -230,6 +241,7 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
     @Override
     public void registerForUndo(Entity entity)
     {
+        addWork(5);
         if (undoList != null)
         {
             undoList.add(entity);
@@ -239,6 +251,7 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
     @Override
     public void registerForUndo(Block block)
     {
+        addWork(10);
         if (undoList != null)
         {
             undoList.add(block);
@@ -248,6 +261,7 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
     @Override
     public void registerForUndo(Block block, boolean addNeighbors)
     {
+        addWork(10);
         if (undoList != null)
         {
             undoList.add(block, addNeighbors);
@@ -267,6 +281,7 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
     @Override
     public void registerVelocity(Entity entity)
     {
+        addWork(5);
         if (undoList != null)
         {
             undoList.modifyVelocity(entity);
@@ -276,6 +291,7 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
     @Override
     public void registerMoved(Entity entity)
     {
+        addWork(5);
         if (undoList != null)
         {
             undoList.move(entity);
@@ -285,6 +301,7 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
     @Override
     public void registerPotionEffects(Entity entity)
     {
+        addWork(5);
         if (undoList != null)
         {
             undoList.addPotionEffects(entity);
@@ -501,5 +518,30 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
     @Override
     public Logger getLogger() {
         return getController().getLogger();
+    }
+
+    @Override
+    public int getWorkAllowed() {
+        return this.base.workAllowed;
+    }
+
+    @Override
+    public void setWorkAllowed(int work) {
+        this.base.workAllowed = work;
+    }
+
+    @Override
+    public void addWork(int work) {
+        this.base.workAllowed -= work;
+    }
+
+    @Override
+    public void performedActions(int count) {
+        this.base.actionsPerformed += count;
+    }
+
+    @Override
+    public int getActionsPerformed() {
+        return base.actionsPerformed;
     }
 }

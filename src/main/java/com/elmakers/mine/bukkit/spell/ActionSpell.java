@@ -2,6 +2,7 @@ package com.elmakers.mine.bukkit.spell;
 
 import com.elmakers.mine.bukkit.action.ActionHandler;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
+import com.elmakers.mine.bukkit.batch.ActionBatch;
 import org.bukkit.configuration.ConfigurationSection;
 
 import java.util.Collection;
@@ -14,7 +15,7 @@ public class ActionSpell extends BrushSpell
     private boolean undoable = false;
     private boolean requiresBuildPermission = false;
     private ActionHandler currentHandler = null;
-    private int workThreshold = 100;
+    private int workThreshold = 500;
 
     @Override
     protected void processResult(SpellResult result, ConfigurationSection castParameters) {
@@ -23,7 +24,7 @@ public class ActionSpell extends BrushSpell
             ActionHandler handler = actions.get(result.name().toLowerCase());
             if (handler != null)
             {
-                handler.perform(getCurrentCast(), castParameters);
+                handler.start(currentCast, castParameters);
             }
         }
         super.processResult(result, castParameters);
@@ -32,16 +33,13 @@ public class ActionSpell extends BrushSpell
     @Override
     public SpellResult onCast(ConfigurationSection parameters)
     {
-        if (undoable)
-        {
-            registerForUndo();
-        }
+        currentCast.setWorkAllowed(workThreshold);
         SpellResult result = SpellResult.CAST;
         currentHandler = actions.get("cast");
         ActionHandler downHandler = actions.get("alternate_down");
         ActionHandler upHandler = actions.get("alternate_up");
         ActionHandler sneakHandler = actions.get("alternate_sneak");
-        workThreshold = parameters.getInt("work_threshold", 100);
+        workThreshold = parameters.getInt("work_threshold", 500);
         if (downHandler != null && isLookingDown())
         {
             result = SpellResult.ALTERNATE_DOWN;
@@ -58,16 +56,16 @@ public class ActionSpell extends BrushSpell
             currentHandler = sneakHandler;
         }
 
+        target();
         if (currentHandler != null)
         {
-            SpellResult handlerResult = currentHandler.perform(this, parameters);
-            if (handlerResult == SpellResult.PENDING)
-            {
-
-            }
-            result = result.max(handlerResult);
+            result = result.max(currentHandler.start(currentCast, parameters));
         }
 
+        if (undoable)
+        {
+            registerForUndo();
+        }
         return result;
     }
 

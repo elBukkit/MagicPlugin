@@ -13,7 +13,7 @@ public class ActionHandlerContext {
     private final String messageKey;
 
     public ActionHandlerContext(ActionHandler handler, CastContext context, ConfigurationSection parameters, String messageKey) {
-        this.actions = handler;
+        this.actions = (ActionHandler)handler.clone();
         this.context = context;
         this.parameters = parameters;
         this.messageKey = messageKey;
@@ -31,7 +31,7 @@ public class ActionHandlerContext {
     }
 
     public SpellResult perform(CastContext context) {
-        SpellResult result = this.actions.perform(context, parameters);
+        SpellResult result = this.actions.start(context, parameters);
         if (messageKey != null) {
             context.messageTargets(messageKey);
         }

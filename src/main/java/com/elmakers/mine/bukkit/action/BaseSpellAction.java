@@ -85,7 +85,32 @@ public abstract class BaseSpellAction implements SpellAction
         }
     }
 
+    @Override
     public String transformMessage(String message) {
         return message;
+    }
+
+    @Override
+    public int getActionCount() {
+        return 1;
+    }
+
+    @Override
+    public Object clone()
+    {
+        try
+        {
+            return super.clone();
+        }
+        catch (CloneNotSupportedException ex)
+        {
+            return null;
+        }
+    }
+
+    @Override
+    public void reset(CastContext context)
+    {
+
     }
 }

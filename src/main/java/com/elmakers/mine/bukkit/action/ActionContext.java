@@ -7,7 +7,7 @@ import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemoryConfiguration;
 
-public class ActionContext {
+public class ActionContext implements Cloneable {
     private final ConfigurationSection parameters;
     private final SpellAction action;
 
@@ -51,5 +51,11 @@ public class ActionContext {
 
     public void finish(CastContext context) {
         action.finish(context);
+    }
+
+    @Override
+    public Object clone()
+    {
+        return new ActionContext(action, parameters);
     }
 }

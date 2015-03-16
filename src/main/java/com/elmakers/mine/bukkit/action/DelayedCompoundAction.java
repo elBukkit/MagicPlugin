@@ -3,7 +3,6 @@ package com.elmakers.mine.bukkit.action;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.action.SpellAction;
 import com.elmakers.mine.bukkit.api.magic.Mage;
-import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
@@ -65,13 +64,6 @@ public abstract class DelayedCompoundAction extends BaseSpellAction
         actions.loadAction(action, parameters);
         updateFlags();
     }
-
-	protected SpellResult performActions(CastContext context) {
-		if (actions == null) {
-			return SpellResult.FAIL;
-		}
-		return actions.perform(context);
-	}
 
     @Override
     public void load(Mage mage, ConfigurationSection data)
@@ -150,5 +142,16 @@ public abstract class DelayedCompoundAction extends BaseSpellAction
         newContext.setTargetEntity(targetEntity);
         newContext.setTargetLocation(targetLocation);
         return newContext;
+    }
+
+    @Override
+    public int getActionCount() {
+        return actions.getActionCount();
+    }
+
+    protected void skippedActions(CastContext context) {
+        int actionCount = actions.getActionCount();
+        context.performedActions(actionCount);
+        context.addWork(actionCount);
     }
 }
