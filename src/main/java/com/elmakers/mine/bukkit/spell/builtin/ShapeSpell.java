@@ -100,7 +100,7 @@ public class ShapeSpell extends BrushSpell
 			batch.setOrientDimensionMin(parameters.getInt("odmin"));
 		}
 
-		boolean success = mage.addPendingBlockBatch(batch);		
+		boolean success = mage.addBatch(batch);
 		deactivate();
 		return success ? SpellResult.CAST : SpellResult.FAIL;
 	}

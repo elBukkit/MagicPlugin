@@ -215,11 +215,11 @@ public class SimulateSpell extends BlockSpell {
 		if (delay > 0) {
 			Bukkit.getScheduler().scheduleSyncDelayedTask(controller.getPlugin(), new Runnable() {
 				public void run() {
-					mage.addPendingBlockBatch(batch);
+					mage.addBatch(batch);
 				}
 			}, delay);
 		} else {
-			success = mage.addPendingBlockBatch(batch);
+			success = mage.addBatch(batch);
 		}
 		
 		// This is a bit of a hack, but it forces dynmap to show the spell cast direction

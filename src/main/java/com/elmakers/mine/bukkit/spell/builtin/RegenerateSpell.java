@@ -46,7 +46,7 @@ public class RegenerateSpell extends BlockSpell
 			
 			batch.setExpand(parameters.getBoolean("expand", false));
 
-			boolean success = mage.addPendingBlockBatch(batch);
+			boolean success = mage.addBatch(batch);
 			
 			deactivate();
 			return success ? SpellResult.CAST : SpellResult.FAIL;

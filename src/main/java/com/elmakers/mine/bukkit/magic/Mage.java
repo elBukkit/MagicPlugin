@@ -1203,7 +1203,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     }
 
     @Override
-    public boolean addPendingBlockBatch(Batch batch) {
+    public boolean addBatch(Batch batch) {
         if (pendingBatches.size() >= controller.getPendingQueueDepth()) {
             controller.getLogger().info("Rejected construction for " + getName() + ", already has " + pendingBatches.size()
                     + " pending, limit: " + controller.getPendingQueueDepth());
