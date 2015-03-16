@@ -30,8 +30,9 @@ public class FlowerSpell extends BlockSpell
         cover.addAction(new FlowerAction());
         ActionHandler handler = new ActionHandler();
         handler.loadAction(cover);
+        handler.initialize(parameters);
 		registerForUndo();
 
-        return handler.perform(getCurrentCast(), parameters);
+        return handler.start(getCurrentCast(), parameters);
 	}
 }

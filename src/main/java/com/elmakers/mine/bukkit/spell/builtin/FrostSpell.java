@@ -35,7 +35,8 @@ public class FrostSpell extends BlockSpell
         cover.addAction(new PotionEffectAction());
         ActionHandler handler = new ActionHandler();
         handler.loadAction(cover);
+        handler.initialize(parameters);
         registerForUndo();
-        return handler.perform(getCurrentCast(), parameters);
+        return handler.start(getCurrentCast(), parameters);
 	}
 }

@@ -1205,7 +1205,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     @Override
     public boolean addBatch(Batch batch) {
         if (pendingBatches.size() >= controller.getPendingQueueDepth()) {
-            controller.getLogger().info("Rejected construction for " + getName() + ", already has " + pendingBatches.size()
+            controller.getLogger().info("Rejected spell batch for " + getName() + ", already has " + pendingBatches.size()
                     + " pending, limit: " + controller.getPendingQueueDepth());
 
             return false;

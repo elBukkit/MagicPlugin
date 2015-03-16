@@ -14,9 +14,11 @@ public class AbsorbSpell extends BrushSpell
 	@Override
 	public SpellResult onCast(ConfigurationSection parameters) 
 	{
+        target();
 		ActionHandler handler = new ActionHandler();
 		handler.loadAction(new AbsorbAction());
-		return handler.perform(this, parameters);
+        handler.initialize(parameters);
+		return handler.start(getCurrentCast(), parameters);
 	}
 	
 	@Override
