@@ -68,4 +68,9 @@ public interface CastContext {
     public void setTargetName(String name);
     public String getTargetName();
     public Logger getLogger();
+    public int getWorkAllowed();
+    public void setWorkAllowed(int work);
+    public void addWork(int work);
+    public void performedActions(int count);
+    public int getActionsPerformed();
 }
