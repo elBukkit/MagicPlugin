@@ -9,6 +9,7 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.metadata.FixedMetadataValue;
 
+@Deprecated
 public class RaiseSpell extends BlockSpell
 {
 	@Override
