@@ -1,6 +1,6 @@
 package com.elmakers.mine.bukkit.action.builtin;
 
-import com.elmakers.mine.bukkit.action.DelayedCompoundAction;
+import com.elmakers.mine.bukkit.action.ParallelCompoundAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.effect.EffectPlayer;
 import com.elmakers.mine.bukkit.api.magic.Mage;
@@ -8,7 +8,6 @@ import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.action.ActionHandler;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
-import com.elmakers.mine.bukkit.action.BaseSpellAction;
 import com.elmakers.mine.bukkit.utility.NMSUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -30,7 +29,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Random;
 
-public class ProjectileAction  extends DelayedCompoundAction
+public class ProjectileAction  extends ParallelCompoundAction
 {
 	private int defaultSize = 1;
 	private Random random = new Random();

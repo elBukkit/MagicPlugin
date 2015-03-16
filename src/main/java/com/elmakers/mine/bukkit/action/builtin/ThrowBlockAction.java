@@ -1,7 +1,7 @@
 package com.elmakers.mine.bukkit.action.builtin;
 
 import com.elmakers.mine.bukkit.action.ActionHandler;
-import com.elmakers.mine.bukkit.action.DelayedCompoundAction;
+import com.elmakers.mine.bukkit.action.ParallelCompoundAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.block.MaterialBrush;
 import com.elmakers.mine.bukkit.api.effect.EffectPlayer;
@@ -16,7 +16,7 @@ import org.bukkit.util.Vector;
 import java.util.Arrays;
 import java.util.Collection;
 
-public class ThrowBlockAction extends DelayedCompoundAction
+public class ThrowBlockAction extends ParallelCompoundAction
 {
     private double speedMin;
     private double speedMax;
