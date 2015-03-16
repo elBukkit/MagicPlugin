@@ -544,4 +544,12 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
     public int getActionsPerformed() {
         return base.actionsPerformed;
     }
+
+    @Override
+    public void finish() {
+        if (undoSpell != null && undoSpell.isUndoable())
+        {
+            undoSpell.registerForUndo();
+        }
+    }
 }

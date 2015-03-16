@@ -170,6 +170,7 @@ public class ActionHandler implements Cloneable
         else
         {
             finish(context);
+            context.finish();
         }
         return handlerResult;
     }

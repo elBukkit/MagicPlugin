@@ -61,11 +61,6 @@ public class ActionSpell extends BrushSpell
         {
             result = result.max(currentHandler.start(currentCast, parameters));
         }
-
-        if (undoable)
-        {
-            registerForUndo();
-        }
         return result;
     }
 

@@ -21,6 +21,7 @@ public class ActionBatch implements Batch {
         handler.perform(context);
         if (handler.isFinished()) {
             handler.finish(context);
+            context.finish();
         }
         return maxBlocks - context.getWorkAllowed();
     }
@@ -32,7 +33,9 @@ public class ActionBatch implements Batch {
 
     @Override
     public void finish() {
+        handler.cancel(context);
         handler.finish(context);
+        context.finish();
     }
 
     @Override
