@@ -9,7 +9,7 @@ import org.bukkit.entity.Entity;
 
 import java.util.Collection;
 
-public abstract class DelayedCompoundAction extends BaseSpellAction implements Cloneable
+public abstract class ParallelCompoundAction extends BaseSpellAction implements Cloneable
 {
 	private boolean usesBrush = false;
 	private boolean undoable = false;
@@ -158,7 +158,7 @@ public abstract class DelayedCompoundAction extends BaseSpellAction implements C
     @Override
     public Object clone()
     {
-        DelayedCompoundAction action = (DelayedCompoundAction)super.clone();
+        ParallelCompoundAction action = (ParallelCompoundAction)super.clone();
         if (action != null) {
             action.actions = (ActionHandler)this.actions.clone();
         }
