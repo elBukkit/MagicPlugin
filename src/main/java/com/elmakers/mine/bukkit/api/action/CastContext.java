@@ -73,4 +73,5 @@ public interface CastContext {
     public void addWork(int work);
     public void performedActions(int count);
     public int getActionsPerformed();
+    public void finish();
 }
