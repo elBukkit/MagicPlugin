@@ -77,6 +77,10 @@ public class FreezeAction extends BaseSpellAction
 		{
 			block = block.getRelative(BlockFace.UP);
 		}
+        if (!context.isDestructible(block))
+        {
+            return SpellResult.NO_TARGET;
+        }
         context.registerForUndo(block);
 		MaterialAndData applyMaterial = new MaterialAndData(material);
 		if (block.getType() == Material.SNOW && material == Material.SNOW)
@@ -87,7 +91,6 @@ public class FreezeAction extends BaseSpellAction
 			}
 		}
 		applyMaterial.modify(block);
-        context.updateBlock(block);
 		return SpellResult.CAST;
 	}
 
