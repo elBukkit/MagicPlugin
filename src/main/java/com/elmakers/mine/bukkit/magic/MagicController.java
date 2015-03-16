@@ -2615,10 +2615,9 @@ public class MagicController implements Listener, MageController {
 				wand.deactivate();
 			}
 		}
-		
-		List<ItemStack> oldDrops = new ArrayList<ItemStack>(drops);
-		final List<ItemStack> keepWands = new ArrayList<ItemStack>();
-		drops.clear();
+
+        boolean modifiedDrops = false;
+        List<ItemStack> newDrops = new ArrayList<ItemStack>();
         PlayerInventory inventory = player.getInventory();
         ItemStack[] contents = inventory.getContents();
 		for (int index = 0; index < contents.length; index++)
@@ -2635,12 +2634,25 @@ public class MagicController implements Listener, MageController {
 			if (keepItem)
 			{
 				mage.addToRespawnInventory(index, itemStack);
+                modifiedDrops = true;
 			}
 			else
 			{
-				drops.add(itemStack);
+                newDrops.add(itemStack);
 			}
 		}
+        if (modifiedDrops) {
+            drops.clear();
+            drops.addAll(newDrops);
+
+            // Drop armor also
+            ItemStack[] armor = player.getInventory().getArmorContents();
+            for (ItemStack stack : armor) {
+                if (stack != null) {
+                    drops.add(stack);
+                }
+            }
+        }
 	}
 
     @EventHandler(priority = EventPriority.HIGH)
