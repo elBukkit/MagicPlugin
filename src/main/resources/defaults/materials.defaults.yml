@@ -338,24 +338,6 @@ restricted:
 - command
 - ender_portal
 - mob_spawner
-- iron_block
-- gold_block
-- diamond_block
-- emerald_block
-- coal_block
-- lapis_block
-- iron_ore
-- gold_ore
-- diamond_ore
-- emerald_ore
-- coal_ore
-- redstone_ore
-- lapis_ore
-- quartz_ore
-- anvil
-- chest
-- furnace
-- tnt
 
 # Which materials the AnimateSpell can't be cast on
 # This generally means Automata cannot be made out of these materials.

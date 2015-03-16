@@ -8,3 +8,29 @@
 #
 # You only need to edit this file if you want to change the default configuration.
 #
+
+restricted:
+- bedrock
+- barrier
+- command
+- ender_portal
+- mob_spawner
+- iron_block
+- gold_block
+- diamond_block
+- emerald_block
+- coal_block
+- lapis_block
+- iron_ore
+- gold_ore
+- diamond_ore
+- emerald_ore
+- coal_ore
+- redstone_ore
+- lapis_ore
+- quartz_ore
+- anvil
+- chest
+- furnace
+- tnt
+- beacon
