@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.action.builtin;
 
+import com.elmakers.mine.bukkit.action.CompoundEntityAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
@@ -13,32 +14,44 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
-public class AllEntitiesAction extends CompoundAction
+public class AllEntitiesAction extends CompoundEntityAction
 {
-    private boolean targetSelf;
     private boolean targetAllWorlds;
 
 	@Override
 	public void prepare(CastContext context, ConfigurationSection parameters) {
         super.prepare(context, parameters);
-        targetSelf = parameters.getBoolean("target_self", false);
         targetAllWorlds = parameters.getBoolean("target_all_worlds", false);
     }
 
     @Override
-    public SpellResult perform(CastContext context) {
+    public SpellResult perform(CastContext context)
+    {
+        Location sourceLocation = context.getLocation();
+        if (sourceLocation == null && !targetAllWorlds)
+        {
+            return SpellResult.LOCATION_REQUIRED;
+        }
+
+        return super.perform(context);
+    }
+
+    @Override
+    public void prepareEntities(CastContext context, ConfigurationSection parameters, List<WeakReference<Entity>> entities)
+    {
         Spell spell = context.getSpell();
 		Entity sourceEntity = context.getEntity();
 		Location sourceLocation = context.getLocation();
 
 		if (sourceLocation == null && !targetAllWorlds)
 		{
-			return SpellResult.LOCATION_REQUIRED;
+			return;
 		}
 
 		Class<?> targetType = Player.class;
@@ -56,10 +69,7 @@ public class AllEntitiesAction extends CompoundAction
 			{
 				if ((targetSelf || player != sourceEntity) && (targetAllWorlds || (sourceLocation != null && sourceLocation.getWorld().equals(player.getWorld()))) && spell.canTarget(player))
 				{
-                    actionContext.setTargetEntity(player);
-                    actionContext.setTargetLocation(player.getLocation());
-                    SpellResult entityResult = performActions(actionContext);
-                    result = result.min(entityResult);
+                    entities.add(new WeakReference<Entity>(player));
 				}
 			}
 		}
@@ -74,33 +84,30 @@ public class AllEntitiesAction extends CompoundAction
 			}
 			for (World world : worlds)
 			{
-				List<Entity> entities = world.getEntities();
-				for (Entity entity : entities)
+				List<Entity> candidates = world.getEntities();
+				for (Entity entity : candidates)
 				{
 					if (spell.canTarget(entity) && (targetSelf || entity != sourceEntity))
 					{
-                        actionContext.setTargetEntity(entity);
-                        actionContext.setTargetLocation(entity.getLocation());
-                        SpellResult entityResult = performActions(actionContext);
-                        result = result.min(entityResult);
+                        entities.add(new WeakReference<Entity>(entity));
 					}
 				}
 			}
 		}
-
-		return result;
 	}
 
     @Override
     public void getParameterNames(Collection<String> parameters) {
-        parameters.add("target_self");
+        super.getParameterNames(parameters);
         parameters.add("target_all_worlds");
     }
 
     @Override
     public void getParameterOptions(Collection<String> examples, String parameterKey) {
-        if (parameterKey.equals("target_self") || parameterKey.equals("target_all_worlds")) {
+        if (parameterKey.equals("target_all_worlds")) {
             examples.addAll(Arrays.asList((BaseSpell.EXAMPLE_BOOLEANS)));
+        } else {
+            super.getParameterOptions(examples, parameterKey);
         }
     }
 }

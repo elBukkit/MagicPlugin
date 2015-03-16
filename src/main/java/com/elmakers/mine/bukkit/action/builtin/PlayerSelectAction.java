@@ -138,12 +138,15 @@ public class PlayerSelectAction extends CompoundAction implements GUIAction
     public void getParameterNames(Collection<String> parameters) {
         parameters.add("target_self");
         parameters.add("cross_world");
+        super.getParameterNames(parameters);
     }
 
     @Override
     public void getParameterOptions(Collection<String> examples, String parameterKey) {
         if (parameterKey.equals("target_self") || parameterKey.equals("cross_world")) {
             examples.addAll(Arrays.asList((BaseSpell.EXAMPLE_BOOLEANS)));
+        } else {
+            super.getParameterOptions(examples, parameterKey);
         }
     }
 }
