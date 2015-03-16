@@ -152,7 +152,12 @@ public class ActionHandler implements Cloneable
 
     public void reset(CastContext context)
     {
-        this.currentAction = actions != null && actions.size() > 0 ? 0 : null;
+        if (actions.size() > 0) {
+            this.currentAction = 0;
+            actions.get(0).getAction().reset(context);
+        } else {
+            this.currentAction = null;
+        }
     }
 
     public SpellResult start(CastContext context, ConfigurationSection parameters)
