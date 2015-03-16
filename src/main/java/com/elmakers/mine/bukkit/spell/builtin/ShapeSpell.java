@@ -4,7 +4,7 @@ import com.elmakers.mine.bukkit.api.block.MaterialBrush;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.api.spell.TargetType;
 import com.elmakers.mine.bukkit.block.ConstructionType;
-import com.elmakers.mine.bukkit.block.batch.ShapeBatch;
+import com.elmakers.mine.bukkit.batch.ShapeBatch;
 import com.elmakers.mine.bukkit.spell.BrushSpell;
 import com.elmakers.mine.bukkit.utility.Target;
 import org.bukkit.Location;

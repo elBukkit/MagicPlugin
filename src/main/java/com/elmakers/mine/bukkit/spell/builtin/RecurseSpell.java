@@ -8,7 +8,7 @@ import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
-import com.elmakers.mine.bukkit.block.batch.BlockRecurse;
+import com.elmakers.mine.bukkit.batch.BlockRecurse;
 import com.elmakers.mine.bukkit.action.builtin.ReplaceMaterialAction;
 import com.elmakers.mine.bukkit.spell.BrushSpell;
 

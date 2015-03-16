@@ -5,11 +5,11 @@ import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 
-import com.elmakers.mine.bukkit.api.block.BlockBatch;
+import com.elmakers.mine.bukkit.api.batch.Batch;
 import com.elmakers.mine.bukkit.api.block.UndoList;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
-import com.elmakers.mine.bukkit.block.batch.SpellBatch;
+import com.elmakers.mine.bukkit.batch.SpellBatch;
 import com.elmakers.mine.bukkit.spell.TargetingSpell;
 import com.elmakers.mine.bukkit.utility.Target;
 
@@ -36,7 +36,7 @@ public class UndoSpell extends TargetingSpell
 		{
 			Mage targetMage = controller.getMage(targetEntity);
 
-            BlockBatch batch = targetMage.cancelPending();
+            Batch batch = targetMage.cancelPending();
             if (batch != null) {
                 undoListName = (batch instanceof SpellBatch) ? ((SpellBatch)batch).getSpell().getName() : null;
                 return SpellResult.ALTERNATE;

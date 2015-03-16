@@ -2,13 +2,13 @@ package com.elmakers.mine.bukkit.action.builtin;
 
 import com.elmakers.mine.bukkit.action.BaseSpellAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
-import com.elmakers.mine.bukkit.api.block.BlockBatch;
+import com.elmakers.mine.bukkit.api.batch.Batch;
 import com.elmakers.mine.bukkit.api.block.UndoList;
 import com.elmakers.mine.bukkit.api.block.UndoQueue;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
-import com.elmakers.mine.bukkit.block.batch.SpellBatch;
+import com.elmakers.mine.bukkit.batch.SpellBatch;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
@@ -52,7 +52,7 @@ public class UndoAction extends BaseSpellAction
 		{
 			Mage targetMage = controller.getMage(targetEntity);
 
-            BlockBatch batch = targetMage.cancelPending();
+            Batch batch = targetMage.cancelPending();
             if (batch != null) {
                 undoListName = (batch instanceof SpellBatch) ? ((SpellBatch)batch).getSpell().getName() : null;
                 if (cancel)

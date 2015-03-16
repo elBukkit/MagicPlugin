@@ -241,13 +241,6 @@ click_cooldown: 150
 auto_save: 3600000
 
 #
-# Construction System Tweaking
-#
-
-# How many blocks to update per tick
-max_block_updates: 1000
-
-#
 # Special materials used to represent icons in the material brush system
 #
 
@@ -293,11 +286,20 @@ pending_depth: 8
 # The largest thing we'll persist in the undo queue (to a file)
 undo_max_persist_size: 16384
 
-# How often to check for pending construction jobs.
-# Anything higher than "1" in here may cause noticable delays when
-# construction spells, and in particular affect some blockchange-based PvP
+# How often to process batched spells.
+# Anything higher than "1" in here may cause noticable delays for
+# engineering spells, and in particular affect some blockchange-based PvP
 # spells in a negative way
-block_update_frequency: 1
+# If you want to tune down the amount of work Magic does, it is better
+# to start with work_per_update below.
+# Units of work are roughly defined as:
+# 1 - Inspecting a block or other trivial action
+# 5 - Modifying an entity
+# 10 - Making block changes
+work_frequency: 1
+
+# How many units of work to perform per the interval defined above
+work_per_update: 5000
 
 # How often to "tick" a Mage. By default this is once per second,
 # changing this value will have affects on frequency values for Wand

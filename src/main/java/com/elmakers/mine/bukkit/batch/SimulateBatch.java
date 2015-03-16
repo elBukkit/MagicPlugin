@@ -1,4 +1,4 @@
-package com.elmakers.mine.bukkit.block.batch;
+package com.elmakers.mine.bukkit.batch;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Set;
 
 import com.elmakers.mine.bukkit.api.block.BlockData;
+import com.elmakers.mine.bukkit.batch.UndoableBatch;
 import com.elmakers.mine.bukkit.block.UndoList;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -30,7 +31,6 @@ import com.elmakers.mine.bukkit.block.AutomatonLevel;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.spell.BlockSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
-import com.elmakers.mine.bukkit.utility.Messages;
 import com.elmakers.mine.bukkit.utility.Target;
 
 public class SimulateBatch extends UndoableBatch {

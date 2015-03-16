@@ -835,7 +835,7 @@ public class MagicController implements Listener, MageController {
             public void onRun() {
                 pending.clear();
                 pending.addAll(pendingConstruction);
-                int remainingWork = maxBlockUpdates;
+                int remainingWork = workPerUpdate;
                 while (remainingWork > 0 && pending.size() > 0) {
                     int workPerMage = Math.max(10, remainingWork / pending.size());
                     for (Mage apiMage : pendingConstruction) {
@@ -854,7 +854,7 @@ public class MagicController implements Listener, MageController {
                     pendingConstructionRemoval.clear();
                 }
             }
-        }, 0, blockUpdateFrequency);
+        }, 0, workFrequency);
 
         // Set up the Update check timer
         Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, new TimedRunnable("Undo Scheduler") {
@@ -1810,7 +1810,8 @@ public class MagicController implements Listener, MageController {
         loadDefaultEnchanting = properties.getBoolean("load_default_enchanting", loadDefaultEnchanting);
         maxTNTPerChunk = properties.getInt("max_tnt_per_chunk", maxTNTPerChunk);
 		undoQueueDepth = properties.getInt("undo_depth", undoQueueDepth);
-        blockUpdateFrequency = properties.getInt("block_update_frequency", blockUpdateFrequency);
+        workPerUpdate = properties.getInt("work_per_update", workPerUpdate);
+        workFrequency = properties.getInt("work_frequency", workFrequency);
         mageUpdateFrequency = properties.getInt("mage_update_frequency", mageUpdateFrequency);
         undoFrequency = properties.getInt("undo_frequency", undoFrequency);
 		pendingQueueDepth = properties.getInt("pending_depth", pendingQueueDepth);
@@ -1824,10 +1825,9 @@ public class MagicController implements Listener, MageController {
         defaultBrushMode = Wand.parseWandMode(properties.getString("default_brush_mode", ""), defaultBrushMode);
         brushSelectSpell = properties.getString("brush_select_spell", brushSelectSpell);
 		showMessages = properties.getBoolean("show_messages", showMessages);
-		showCastMessages = properties.getBoolean("show_cast_messages", showCastMessages);
+        showCastMessages = properties.getBoolean("show_cast_messages", showCastMessages);
 		clickCooldown = properties.getInt("click_cooldown", clickCooldown);
 		messageThrottle = properties.getInt("message_throttle", 0);
-		maxBlockUpdates = properties.getInt("max_block_updates", maxBlockUpdates);
 		ageDroppedItems = properties.getInt("age_dropped_items", ageDroppedItems);
 		enableItemHacks = properties.getBoolean("enable_custom_item_hacks", enableItemHacks);
         enableCreativeModeEjecting = properties.getBoolean("enable_creative_mode_ejecting", enableCreativeModeEjecting);
@@ -4427,7 +4427,6 @@ public class MagicController implements Listener, MageController {
     private float								castCommandPowerMultiplier      = 0.0f;
     private float							 	costReduction	    			= 0.0f;
     private float							 	cooldownReduction				= 0.0f;
-    private int								    maxBlockUpdates				    = 100;
     private int								    ageDroppedItems				    = 0;
     private int								    autoUndo						= 0;
     private int								    autoSaveTaskId					= 0;
@@ -4459,8 +4458,9 @@ public class MagicController implements Listener, MageController {
     private int								    toggleMessageRange			= 1024;
 
     private int                                 mageUpdateFrequency         = 20;
-    private int                                 blockUpdateFrequency        = 1;
+    private int                                 workFrequency               = 1;
     private int                                 undoFrequency               = 10;
+    private int								    workPerUpdate				= 5000;
 
     private boolean                             showCastHoloText            = false;
     private boolean                             showActivateHoloText        = false;

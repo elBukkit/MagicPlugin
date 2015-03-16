@@ -2,6 +2,7 @@
 
 ## 4.6
 
+ * Changed configuration options related to construction interval / max blocks
  * Changed API cast() methods to return success/failure
  * Updated and fixed dtlTraders integration.
    - You will need to fix your spell and wand shops- sorry

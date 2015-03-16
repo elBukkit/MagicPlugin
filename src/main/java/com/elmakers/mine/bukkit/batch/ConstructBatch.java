@@ -1,4 +1,4 @@
-package com.elmakers.mine.bukkit.block.batch;
+package com.elmakers.mine.bukkit.batch;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -10,6 +10,7 @@ import java.util.Set;
 
 import com.elmakers.mine.bukkit.api.block.MaterialAndData;
 import com.elmakers.mine.bukkit.api.magic.Automaton;
+import com.elmakers.mine.bukkit.batch.BrushBatch;
 import com.elmakers.mine.bukkit.block.UndoList;
 import org.bukkit.Effect;
 import org.bukkit.Location;

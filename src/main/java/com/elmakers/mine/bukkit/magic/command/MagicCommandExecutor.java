@@ -3,17 +3,15 @@ package com.elmakers.mine.bukkit.magic.command;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
-import java.util.Set;
 
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.maps.URLMap;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.block.UndoList;
-import com.elmakers.mine.bukkit.block.batch.SpellBatch;
+import com.elmakers.mine.bukkit.batch.SpellBatch;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.RunnableJob;
@@ -32,7 +30,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.BlockVector;
 
-import com.elmakers.mine.bukkit.api.block.BlockBatch;
+import com.elmakers.mine.bukkit.api.batch.Batch;
 import com.elmakers.mine.bukkit.api.magic.Automaton;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MagicAPI;
@@ -197,10 +195,10 @@ public class MagicCommandExecutor extends MagicTabExecutor {
                 for (Mage mage : pending) {
                     int totalSize = 0;
                     int totalRemaining = 0;
-					Collection<BlockBatch> pendingBatches = mage.getPendingBatches();
+					Collection<Batch> pendingBatches = mage.getPendingBatches();
                     String names = "";
 					if (pendingBatches.size() > 0) {
-                        for (BlockBatch batch : pendingBatches) {
+                        for (Batch batch : pendingBatches) {
                             if (batch instanceof SpellBatch) {
                                 names = names + ((SpellBatch)batch).getSpell().getName() + " ";
                             }

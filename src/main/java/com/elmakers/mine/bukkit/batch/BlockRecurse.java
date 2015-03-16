@@ -1,4 +1,4 @@
-package com.elmakers.mine.bukkit.block.batch;
+package com.elmakers.mine.bukkit.batch;
 
 import com.elmakers.mine.bukkit.action.ActionContext;
 import com.elmakers.mine.bukkit.api.action.CastContext;

@@ -1,6 +1,15 @@
 # TODO
 
+ - Increase wand tick rate, time-lock effects
  - Glitching Fill behavior
+ - Spell shop improvements:
+   - Configurable list of spells + prices
+   - Balance in title
+   - Confirmation screen
+   - Color spells player can't afford
+ - Trait improvements
+   - Add /parameter command for inspecting single param
+   - Cleaner list of list parameters
  - ActionHandler break on success flag as well as failure
  - Nerf Force (shift to break free? Fall protection?)
  - Make map work like replicate, clone - with start point set on activate

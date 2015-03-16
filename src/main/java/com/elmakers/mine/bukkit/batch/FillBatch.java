@@ -1,5 +1,6 @@
-package com.elmakers.mine.bukkit.block.batch;
+package com.elmakers.mine.bukkit.batch;
 
+import com.elmakers.mine.bukkit.batch.BrushBatch;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;

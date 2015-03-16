@@ -43,7 +43,7 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitScheduler;
 import org.bukkit.util.Vector;
 
-import com.elmakers.mine.bukkit.api.block.BlockBatch;
+import com.elmakers.mine.bukkit.api.batch.Batch;
 import com.elmakers.mine.bukkit.api.block.UndoList;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.spell.CostReducer;
@@ -55,7 +55,7 @@ import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.api.wand.LostWand;
 import com.elmakers.mine.bukkit.block.MaterialBrush;
 import com.elmakers.mine.bukkit.block.UndoQueue;
-import com.elmakers.mine.bukkit.block.batch.UndoBatch;
+import com.elmakers.mine.bukkit.batch.UndoBatch;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.wand.Wand;
 
@@ -82,7 +82,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     private final Collection<Listener> damageListeners = new HashSet<Listener>();
     private final Set<MageSpell> activeSpells = new HashSet<MageSpell>();
     private UndoQueue undoQueue = null;
-    private LinkedList<BlockBatch> pendingBatches = new LinkedList<BlockBatch>();
+    private LinkedList<Batch> pendingBatches = new LinkedList<Batch>();
     private boolean loading = false;
     private boolean debug = false;
 
@@ -420,7 +420,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     }
 
     @Override
-    public void addUndoBatch(com.elmakers.mine.bukkit.api.block.UndoBatch batch) {
+    public void addUndoBatch(com.elmakers.mine.bukkit.api.batch.UndoBatch batch) {
         pendingBatches.addLast(batch);
         controller.addPending(this);
     }
@@ -659,9 +659,9 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     public int processPendingBatches(int maxBlockUpdates) {
         int updated = 0;
         if (pendingBatches.size() > 0) {
-            List<BlockBatch> processBatches = new ArrayList<BlockBatch>(pendingBatches);
+            List<Batch> processBatches = new ArrayList<Batch>(pendingBatches);
             pendingBatches.clear();
-            for (BlockBatch batch : processBatches) {
+            for (Batch batch : processBatches) {
                 if (updated < maxBlockUpdates) {
                     int batchUpdated = batch.process(maxBlockUpdates - updated);
                     updated += batchUpdated;
@@ -726,8 +726,8 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 	 */
 
     @Override
-    public Collection<com.elmakers.mine.bukkit.api.block.BlockBatch> getPendingBatches() {
-        Collection<com.elmakers.mine.bukkit.api.block.BlockBatch> pending = new ArrayList<com.elmakers.mine.bukkit.api.block.BlockBatch>();
+    public Collection<Batch> getPendingBatches() {
+        Collection<Batch> pending = new ArrayList<Batch>();
         pending.addAll(pendingBatches);
         return pending;
     }
@@ -793,12 +793,12 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     }
 
     @Override
-    public BlockBatch cancelPending() {
-        BlockBatch stoppedPending = null;
+    public Batch cancelPending() {
+        Batch stoppedPending = null;
         if (pendingBatches.size() > 0) {
-            List<BlockBatch> batches = new ArrayList<BlockBatch>();
+            List<Batch> batches = new ArrayList<Batch>();
             batches.addAll(pendingBatches);
-            for (BlockBatch batch : batches) {
+            for (Batch batch : batches) {
                 if (!(batch instanceof UndoBatch)) {
                     batch.finish();
                     pendingBatches.remove(batch);
@@ -1203,7 +1203,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     }
 
     @Override
-    public boolean addPendingBlockBatch(com.elmakers.mine.bukkit.api.block.BlockBatch batch) {
+    public boolean addPendingBlockBatch(Batch batch) {
         if (pendingBatches.size() >= controller.getPendingQueueDepth()) {
             controller.getLogger().info("Rejected construction for " + getName() + ", already has " + pendingBatches.size()
                     + " pending, limit: " + controller.getPendingQueueDepth());
