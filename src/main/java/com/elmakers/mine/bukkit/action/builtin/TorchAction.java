@@ -114,7 +114,6 @@ public class TorchAction extends BaseSpellAction
 
 		context.registerForUndo(target);
 		targetMaterial.modify(target);
-        context.updateBlock(target);
 
 		return SpellResult.CAST;
 	}

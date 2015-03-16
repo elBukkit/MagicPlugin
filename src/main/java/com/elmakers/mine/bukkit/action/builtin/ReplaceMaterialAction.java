@@ -77,7 +77,6 @@ public class ReplaceMaterialAction extends BaseSpellAction {
                 Mage mage = context.getMage();
                 brush.update(mage, block.getLocation());
                 brush.modify(block);
-                context.updateBlock(block);
 
                 if (spawnFallingBlocks) {
                     FallingBlock falling = block.getWorld().spawnFallingBlock(block.getLocation(), previousMaterial, previousData);

@@ -67,14 +67,12 @@ public class FlowerAction extends BaseSpellAction {
 
         context.registerForUndo(block);
         material.modify(block);
-        context.updateBlock(block);
 
         if (tall) {
             block = block.getRelative(BlockFace.UP);
             context.registerForUndo(block);
             material.setData((short)8);
             material.modify(block);
-            context.updateBlock(block);
         }
         return SpellResult.CAST;
     }
