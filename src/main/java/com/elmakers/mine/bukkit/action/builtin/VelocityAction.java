@@ -53,7 +53,11 @@ public class VelocityAction extends BaseSpellAction
         {
             return SpellResult.NO_TARGET;
         }
-
+        Entity mountEntity = entity.getVehicle();
+        while (mountEntity != null) {
+            entity = mountEntity;
+            mountEntity = entity.getVehicle();
+        }
         double magnitude = defaultSpeed;
         if (entity instanceof LivingEntity) {
             magnitude = livingEntitySpeed;
