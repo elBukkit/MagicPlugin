@@ -2,6 +2,8 @@
 
 ## 2.6
 
+ - Implement batched action system
+
 ## 2.5.5
 
  - Fix the Map brushes

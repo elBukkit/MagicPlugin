@@ -11,6 +11,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
 
 public class ActionSpell extends BrushSpell
 {
@@ -69,7 +70,17 @@ public class ActionSpell extends BrushSpell
         }
         if (currentHandler != null)
         {
-            result = result.max(currentHandler.start(currentCast, parameters));
+            try {
+                result = result.max(currentHandler.start(currentCast, parameters));
+            } catch (Exception ex) {
+                controller.getLogger().log(Level.WARNING, "Spell cast failed", ex);
+                result = SpellResult.FAIL;
+                try {
+                    currentHandler.finish(currentCast);
+                } catch (Exception finishException) {
+                    controller.getLogger().log(Level.WARNING, "Failed to clean up failed spell", finishException);
+                }
+            }
         }
         return result;
     }
