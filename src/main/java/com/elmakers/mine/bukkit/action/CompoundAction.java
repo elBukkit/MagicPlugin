@@ -8,19 +8,25 @@ public abstract class CompoundAction extends ParallelCompoundAction
 {
     @Override
     public void finish(CastContext context) {
-        actions.finish(context);
+        if (actions != null) {
+            actions.finish(context);
+        }
     }
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters) {
         super.prepare(context, parameters);
-        actions.prepare(context, parameters);
+        if (actions != null) {
+            actions.prepare(context, parameters);
+        }
     }
 
     public void reset(CastContext context)
     {
         super.reset(context);
-        actions.reset(actionContext);
+        if (actions != null) {
+            actions.reset(actionContext);
+        }
     }
 
     protected SpellResult performActions(CastContext context) {
