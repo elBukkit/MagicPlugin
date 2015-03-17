@@ -551,5 +551,16 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
         {
             undoSpell.registerForUndo();
         }
+        castMessage("cast_finish");
+    }
+
+    @Override
+    public void retarget(int range, double fov, double closeRange, double closeFOV, boolean useHitbox) {
+        if (targetingSpell != null)
+        {
+            targetingSpell.retarget(range, fov, closeRange, closeFOV, useHitbox);
+            setTargetEntity(targetingSpell.getTargetEntity());
+            setTargetLocation(targetingSpell.getTargetLocation());
+        }
     }
 }

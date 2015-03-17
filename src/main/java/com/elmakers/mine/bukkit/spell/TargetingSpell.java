@@ -260,6 +260,17 @@ public abstract class TargetingSpell extends BaseSpell {
         return targetType;
     }
 
+    public void retarget(int range, double fov, double closeRange, double closeFOV, boolean useHitbox)
+    {
+        this.range = range;
+        this.fov = fov;
+        this.closeRange = closeRange;
+        this.closeFOV = closeFOV;
+        this.useHitbox = useHitbox;
+        initializeTargeting();
+        target();
+    }
+
     @Override
     public void target()
     {
