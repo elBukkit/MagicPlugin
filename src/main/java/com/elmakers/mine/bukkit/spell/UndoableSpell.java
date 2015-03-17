@@ -65,7 +65,10 @@ public abstract class UndoableSpell extends TargetingSpell {
     {
         // Must add empty lists here since they may get added to later!
         UndoList list = getUndoList();
-        controller.update(list);
+        if (!list.isScheduled())
+        {
+            controller.update(list);
+        }
         mage.registerForUndo(list);
     }
 
