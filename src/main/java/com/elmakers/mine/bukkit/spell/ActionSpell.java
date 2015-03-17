@@ -1,8 +1,11 @@
 package com.elmakers.mine.bukkit.spell;
 
 import com.elmakers.mine.bukkit.action.ActionHandler;
+import com.elmakers.mine.bukkit.api.block.MaterialBrush;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.batch.ActionBatch;
+import com.elmakers.mine.bukkit.utility.Target;
+import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 
 import java.util.Collection;
@@ -56,7 +59,14 @@ public class ActionSpell extends BrushSpell
             currentHandler = sneakHandler;
         }
 
-        target();
+        Target target = getTarget();
+        Location targetLocation = target.getLocation();
+        if (targetLocation != null && currentHandler.usesBrush())
+        {
+            MaterialBrush brush = currentCast.getBrush();
+            brush.setTarget(targetLocation);
+            brush.update(getMage(), targetLocation);
+        }
         if (currentHandler != null)
         {
             result = result.max(currentHandler.start(currentCast, parameters));
