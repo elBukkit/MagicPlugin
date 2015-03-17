@@ -3224,8 +3224,17 @@ earthquake:
     icon_url: http://i.imgur.com/bCGsZYB.png
     icon: sulphur
     category: combat
-    class: ConstructSpell
     worth: 200
+    actions:
+        cast:
+        - class: AreaOfEffect
+          actions:
+          - class: Velocity
+        - class: Disc
+          actions:
+          - class: Cover
+            actions:
+            - class: ReplaceMaterial
     effects:
         cast:
         -  class: EffectSingle
@@ -3256,11 +3265,8 @@ earthquake:
         speed: 0.5
         falling: true
         brush: air
-        falling_direction: 0,1,0
-        orient_dimension_max: 1
-        orient_dimension_min: 1
+        direction: 0,1,0
         radius: 5
-        type: sphere
         destructible: destructible_mining
         undo: 10000
     costs:

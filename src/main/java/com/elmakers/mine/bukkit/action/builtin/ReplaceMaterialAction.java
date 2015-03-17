@@ -7,6 +7,8 @@ import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
+import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
@@ -22,21 +24,25 @@ public class ReplaceMaterialAction extends BaseSpellAction {
     protected Set<MaterialAndData> replaceable = null;
 
     private boolean spawnFallingBlocks;
-    private Vector fallingBlockVelocity;
+    private double fallingBlockSpeed;
+    private Vector fallingBlockDirection;
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters) {
         super.prepare(context, parameters);
         spawnFallingBlocks = parameters.getBoolean("falling", false);
-        if (spawnFallingBlocks && parameters.contains("falling_direction"))
+        if (spawnFallingBlocks && parameters.contains("direction"))
         {
-            double speed = parameters.getDouble("speed", 1.0);
-            Vector direction = parameters.getVector("falling_direction");
-            fallingBlockVelocity = direction.normalize().multiply(speed);
+            fallingBlockSpeed = parameters.getDouble("speed", 1.0);
+            fallingBlockDirection = ConfigurationUtils.getVector(parameters, "direction");
+            if (fallingBlockDirection != null)
+            {
+                fallingBlockDirection.normalize();
+            }
         }
         else
         {
-            fallingBlockVelocity = null;
+            fallingBlockSpeed = 0;
         }
     }
 
@@ -78,10 +84,20 @@ public class ReplaceMaterialAction extends BaseSpellAction {
                 brush.update(mage, block.getLocation());
                 brush.modify(block);
 
-                if (spawnFallingBlocks) {
+                if (spawnFallingBlocks)
+                {
                     FallingBlock falling = block.getWorld().spawnFallingBlock(block.getLocation(), previousMaterial, previousData);
                     falling.setDropItem(false);
-                    if (fallingBlockVelocity != null) {
+                    if (fallingBlockSpeed > 0) {
+                        Vector fallingBlockVelocity = fallingBlockDirection;
+                        if (fallingBlockVelocity == null) {
+                            Location source = context.getLocation();
+                            fallingBlockVelocity = block.getLocation().toVector().subtract(source.toVector());
+                            fallingBlockVelocity.normalize();
+                        } else {
+                            fallingBlockVelocity = fallingBlockVelocity.clone();
+                        }
+                        fallingBlockVelocity.multiply(fallingBlockSpeed);
                         falling.setVelocity(fallingBlockVelocity);
                     }
                 }
