@@ -43,8 +43,8 @@ public class BrushAction extends CompoundAction {
             return performActions(context);
         }
         MaterialBrush brush = brushes.get(context.getRandom().nextInt(brushes.size()));
-        context.setBrush(brush);
-        return performActions(context);
+        actionContext.setBrush(brush);
+        return performActions(actionContext);
     }
 
     @Override

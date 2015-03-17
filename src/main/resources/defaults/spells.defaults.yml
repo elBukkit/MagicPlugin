@@ -1278,9 +1278,11 @@ frost:
           actions:
           - class: PotionEffect
           - class: Damage
-        - class: Cover
+        - class: Disc
           actions:
-          - class: Freeze
+          - class: Cover
+            actions:
+            - class: Freeze
     effects:
         cast:
         -  class: EffectSingle
@@ -2401,9 +2403,11 @@ fire:
     upgrade_required_casts: 50
     actions:
         cast:
-        - class: Cover
+        - class: Disc
           actions:
-          - class: Burn
+          - class: Cover
+            actions:
+            - class: Burn
     effects:
         cast:
         -  class: EffectSingle
@@ -4174,8 +4178,6 @@ flamethrower:
         -  class: Line
            actions:
            -  class: Cover
-              parameters:
-                  radius: 0
               actions:
               -  class: Burn
     effects:
@@ -4880,9 +4882,11 @@ pollinate:
            actions:
            -  class: ThrowItem
               actions:
-              - class: Cover
+              - class: Disc
                 actions:
-                - class: Flower
+                - class: Cover
+                  actions:
+                  - class: Flower
     effects:
         cast:
         -  class: EffectSingle

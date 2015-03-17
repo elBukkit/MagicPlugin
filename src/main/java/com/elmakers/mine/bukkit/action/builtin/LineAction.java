@@ -53,10 +53,6 @@ public class LineAction extends CompoundAction
 
         if (startLocation == null || targetLocation == null) return;
 
-        MaterialBrush brush = context.getBrush();
-        brush.setTarget(targetLocation);
-        brush.update(context.getMage(), targetLocation);
-
         Vector targetLoc = new Vector(targetLocation.getX(), targetLocation.getY(), targetLocation.getZ());
         Vector playerLoc = startLocation.toVector();
 
