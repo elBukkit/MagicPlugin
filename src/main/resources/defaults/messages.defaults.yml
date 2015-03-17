@@ -384,7 +384,7 @@ spells:
     frost:
         name: Frost
         description: Freeze water and create snow
-        cast: Frosted $count blocks
+        cast_finish: Frosted $count blocks
         upgrade_description: "&r&b• &6Larger radius"
     harden:
         name: Harden

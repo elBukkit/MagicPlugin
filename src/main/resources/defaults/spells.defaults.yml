@@ -4038,13 +4038,16 @@ lava:
     worth: 80
     actions:
         cast:
-        -  class: Iterate
+        -  class: Line
            actions:
            -  class: ReplaceMaterial
     effects:
         cast:
         -  class: EffectSingle
            sound: lava
+        iterate:
+        -  class: EffectSingle
+           particle: lava
     parameters:
         target_type: LivingEntity
         transparent: transparent_to_construction
@@ -4065,7 +4068,7 @@ stream:
     worth: 60
     actions:
         cast:
-        -  class: Iterate
+        -  class: Line
            actions:
            -  class: ReplaceMaterial
         -  class: Damage
@@ -4095,7 +4098,7 @@ earth:
     worth: 70
     actions:
         cast:
-        -  class: Iterate
+        -  class: Line
            actions:
            -  class: ReplaceMaterial
         -  class: Damage
@@ -4103,6 +4106,10 @@ earth:
         cast:
         -  class: EffectSingle
            sound: step_grass
+        iterate:
+        -  class: EffectSingle
+           effect: step_sound
+           location: target
     parameters:
         target_type: LivingEntity
         transparent: transparent_to_construction
@@ -4124,7 +4131,7 @@ iterate:
     worth: 150
     actions:
         cast:
-        -  class: Iterate
+        -  class: Line
            actions:
            -  class: ReplaceMaterial
     parameters:
@@ -4143,7 +4150,7 @@ superiterate:
     worth: 300
     actions:
         cast:
-        -  class: Iterate
+        -  class: Line
            actions:
            -  class: ReplaceMaterial
     parameters:
@@ -4164,7 +4171,7 @@ flamethrower:
     worth: 90
     actions:
         cast:
-        -  class: Iterate
+        -  class: Line
            actions:
            -  class: Cover
               parameters:
@@ -4203,7 +4210,7 @@ laser:
     upgrade_required_casts: 50
     actions:
         cast:
-        -  class: Iterate
+        -  class: Line
            actions:
            -  class: ReplaceMaterial
         -  class: ConeOfEffect
@@ -4519,7 +4526,8 @@ fireball:
            location: origin
            effectlib:
              class: SmokeEffect
-             iterations: 8
+             iterations: 4
+             period: 5
              particle: lava
         hit:
         -  class: EffectSingle

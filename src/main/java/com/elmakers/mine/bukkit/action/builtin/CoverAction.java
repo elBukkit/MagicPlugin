@@ -2,10 +2,12 @@ package com.elmakers.mine.bukkit.action.builtin;
 
 import com.elmakers.mine.bukkit.action.CompoundAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
+import com.elmakers.mine.bukkit.api.block.MaterialBrush;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.RandomUtils;
+import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.ConfigurationSection;
@@ -46,6 +48,14 @@ public class CoverAction extends CompoundAction
         xDirection = 1;
         zDirection = 0;
         checked = false;
+
+        Location targetLocation = context.getTargetLocation();
+        if (targetLocation != null)
+        {
+            MaterialBrush brush = context.getBrush();
+            brush.setTarget(targetLocation);
+            brush.update(context.getMage(), targetLocation);
+        }
     }
 
 	@Override
