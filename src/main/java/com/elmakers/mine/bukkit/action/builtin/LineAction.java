@@ -23,6 +23,7 @@ public class LineAction extends CompoundAction
     private int size;
     private int startDistance;
     private boolean reverse;
+    private boolean startAtTarget;
     private boolean requireBlock;
 
     private int destination;
@@ -36,6 +37,7 @@ public class LineAction extends CompoundAction
         incrementData = parameters.getBoolean("increment_data", false);
         size = parameters.getInt("size", DEFAULT_SIZE);
         startDistance = parameters.getInt("start", 2);
+        startAtTarget = parameters.getBoolean("start_at_target", false);
         reverse = parameters.getBoolean("reverse", false);
         requireBlock = parameters.getBoolean("require_block", false);
 
@@ -60,21 +62,25 @@ public class LineAction extends CompoundAction
         direction.subtract(playerLoc);
         direction.normalize();
 
-        if (startDistance > 0) {
-            playerLoc.add(direction.clone().multiply(startDistance));
-        }
-
-        destination = (int)playerLoc.distance(targetLoc);
-        if (destination <= 0) return;
-        destination = Math.min(destination, size);
-
-        if (reverse) {
-            direction = direction.multiply(-1);
+        if (startAtTarget && !reverse) {
+            destination = size;
         } else {
-            targetLocation.setX(playerLoc.getX());
-            targetLocation.setY(playerLoc.getY());
-            targetLocation.setZ(playerLoc.getZ());
-            actionContext.setTargetLocation(targetLocation);
+            if (startDistance > 0) {
+                playerLoc.add(direction.clone().multiply(startDistance));
+            }
+
+            destination = (int) playerLoc.distance(targetLoc);
+            if (destination <= 0) return;
+            destination = Math.min(destination, size);
+
+            if (reverse) {
+                direction = direction.multiply(-1);
+            } else {
+                targetLocation.setX(playerLoc.getX());
+                targetLocation.setY(playerLoc.getY());
+                targetLocation.setZ(playerLoc.getZ());
+                actionContext.setTargetLocation(targetLocation);
+            }
         }
     }
 
@@ -132,16 +138,22 @@ public class LineAction extends CompoundAction
         parameters.add("increment_data");
         parameters.add("require_block");
         parameters.add("reverse");
+        parameters.add("start");
     }
 
     @Override
     public void getParameterOptions(Collection<String> examples, String parameterKey) {
         if (parameterKey.equals("increment_data") || parameterKey.equals("reverse") || parameterKey.equals("require_block")) {
             examples.addAll(Arrays.asList((BaseSpell.EXAMPLE_BOOLEANS)));
-        } else if (parameterKey.equals("size")) {
+        } else if (parameterKey.equals("size") || parameterKey.equals("start")) {
             examples.addAll(Arrays.asList((BaseSpell.EXAMPLE_SIZES)));
         } else {
             super.getParameterOptions(examples, parameterKey);
         }
+    }
+
+    @Override
+    public int getActionCount() {
+        return destination * actions.getActionCount();
     }
 }

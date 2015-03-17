@@ -189,3 +189,31 @@ recall:
         description: A little shortcut
         locked: true
         icon: ender_stone
+
+
+laser:
+    icon_url: http://i.imgur.com/SWNaSEw.png
+    icon: ink_sack:11
+    category: demolition
+    worth: 130
+    upgrade_required_path: apprentice
+    upgrade_required_casts: 50
+    effects:
+        cast:
+        -  class: EffectSingle
+           custom_sound: magic.zap_crack
+           location: origin
+           color_override: colorHelix
+           effectlib:
+             class: DnaEffect
+             particlesBase: 0
+             particlesHelix: 7
+             particleHelix: redstone
+             particleBase1: drip_lava
+             particleBase2: smoke_normal
+             iterations: 80
+             radius: 0.5
+             grow: 0.2
+             baseInterval: 5
+             length: 16
+             particlesBase: 5

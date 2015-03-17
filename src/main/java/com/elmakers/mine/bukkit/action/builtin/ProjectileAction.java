@@ -47,6 +47,7 @@ public class ProjectileAction  extends ParallelCompoundAction
     private boolean breakBlocks;
     private int tickIncrease;
     private String projectileTypeName;
+    private int startDistance;
 
 	private static Class<?> projectileClass;
 	private static Class<?> fireballClass;
@@ -113,6 +114,7 @@ public class ProjectileAction  extends ParallelCompoundAction
         tickIncrease = parameters.getInt("tick_increase", 1180);
         projectileTypeName = parameters.getString("projectile", "Arrow");
         breakBlocks = parameters.getBoolean("break_blocks", true);
+        startDistance = parameters.getInt("start", 0);
     }
 
 	@Override
@@ -176,6 +178,10 @@ public class ProjectileAction  extends ParallelCompoundAction
 		// Prepare parameters
 		Location location = context.getEyeLocation();
 		Vector direction = context.getDirection().normalize();
+
+        if (startDistance > 0) {
+            location = location.clone().add(direction.clone().multiply(startDistance));
+        }
 
 		// Track projectiles to remove them after some time.
 		List<Projectile> projectiles = new ArrayList<Projectile>();
@@ -330,7 +336,7 @@ public class ProjectileAction  extends ParallelCompoundAction
 	}
 
 	@Override
-	public void getParameterNames(Collection<String> parameters) {
+    public void getParameterNames(Collection<String> parameters) {
 		super.getParameterNames(parameters);
 		parameters.add("count");
 		parameters.add("check_frequency");
@@ -338,6 +344,7 @@ public class ProjectileAction  extends ParallelCompoundAction
 		parameters.add("damage");
 		parameters.add("speed");
 		parameters.add("spread");
+        parameters.add("start");
 		parameters.add("projectile");
 		parameters.add("fire");
 		parameters.add("tick_increase");
@@ -348,7 +355,8 @@ public class ProjectileAction  extends ParallelCompoundAction
 		if (parameterKey.equals("undo_interval")) {
 			examples.addAll(Arrays.asList((BaseSpell.EXAMPLE_DURATIONS)));
 		} else if (parameterKey.equals("count") || parameterKey.equals("size") || parameterKey.equals("speed")
-				|| parameterKey.equals("spread") || parameterKey.equals("tick_increase") || parameterKey.equals("damage")) {
+				|| parameterKey.equals("spread") || parameterKey.equals("tick_increase")
+                || parameterKey.equals("damage") || parameterKey.equals("start")) {
 			examples.addAll(Arrays.asList((BaseSpell.EXAMPLE_SIZES)));
 		} else if (parameterKey.equals("fire")) {
 			examples.addAll(Arrays.asList((BaseSpell.EXAMPLE_BOOLEANS)));

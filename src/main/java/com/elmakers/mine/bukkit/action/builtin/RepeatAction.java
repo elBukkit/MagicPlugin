@@ -17,7 +17,7 @@ public class RepeatAction extends CompoundAction
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters) {
         super.prepare(context, parameters);
-        count = parameters.getInt("count", 1);
+        count = parameters.getInt("count", 2);
     }
 
     @Override
@@ -62,5 +62,10 @@ public class RepeatAction extends CompoundAction
         if (parameterKey.equals("count")) {
             examples.addAll(Arrays.asList(BaseSpell.EXAMPLE_SIZES));
         }
+    }
+
+    @Override
+    public int getActionCount() {
+        return count * actions.getActionCount();
     }
 }

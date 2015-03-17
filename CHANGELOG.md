@@ -5,6 +5,7 @@
  - Lift spell works on entities
  - Fling works while mounted
  - Earthquake throws entities
+ - Laser lasts for a few seconds
 
 ## 4.5.5
  - Fix Map and schematic brushes (broken in 4.5)

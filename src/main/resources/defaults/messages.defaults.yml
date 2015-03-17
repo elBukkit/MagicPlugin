@@ -957,7 +957,7 @@ spells:
     laser:
         name: Laser
         description: Destroy a line of blocks
-        cast: Lasered $count blocks
+        cast_finish: Lasered $count blocks
         upgrade_description: "&r&b• &6Larger radius, breaks more block types, increased damage"
     stream:
         name: Stream
