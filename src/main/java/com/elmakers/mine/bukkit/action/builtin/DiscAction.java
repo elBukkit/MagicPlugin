@@ -2,21 +2,22 @@ package com.elmakers.mine.bukkit.action.builtin;
 
 import com.elmakers.mine.bukkit.action.CompoundAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
-import com.elmakers.mine.bukkit.api.block.MaterialBrush;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.RandomUtils;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.util.Vector;
 
 import java.util.Arrays;
 import java.util.Collection;
 
 public class DiscAction extends CompoundAction
 {
+    public static final float DEGTORAD = 0.017453293F;
 	private static final int DEFAULT_RADIUS	= 2;
+    private boolean autoOrient;
     private int radius;
     private int currentRadius;
     private float centerProbability;
@@ -31,6 +32,7 @@ public class DiscAction extends CompoundAction
     public void prepare(CastContext context, ConfigurationSection parameters) {
         super.prepare(context, parameters);
         radius = parameters.getInt("radius", DEFAULT_RADIUS);
+        autoOrient = parameters.getBoolean("orient", false);
         centerProbability = (float)parameters.getDouble("probability", 1);
         outerProbability = (float)parameters.getDouble("probability", 1);
         centerProbability = (float)parameters.getDouble("center_probability", centerProbability);
@@ -49,6 +51,35 @@ public class DiscAction extends CompoundAction
         checked = false;
     }
 
+    public static Vector rotate(float yaw, float pitch, double x, double y, double z){
+        float angle;
+        angle = -yaw * DEGTORAD;
+        double sinYaw = Math.sin(angle);
+        double cosYaw = Math.cos(angle);
+        angle = pitch * DEGTORAD;
+        double sinPitch = Math.sin(angle);
+        double cosPitch = Math.cos(angle);
+
+        // X-axis rotation
+        // The way the plane is built, we don't need to worry about Z-axis rotation
+        double pitchedX = x;
+        double pitchedY = y * cosPitch - z * sinPitch; // y cos θ - z sin θ
+        double pitchedZ = y * sinPitch + z * cosPitch; // y sin θ + z cos θ
+
+        // Z-axis rotation
+        // Here for posterity. If there were any z-components to this shape
+        // we might need to use this.
+        // pitchedX = x * cosPitch - y * sinPitch; // x cos θ - y sin θ
+        // pitchedY = x * sinPitch + y * cosPitch; // x sin θ + y cos θ
+
+        // Rotate around Y
+        double finalX = pitchedX * cosYaw + pitchedZ * sinYaw; // x cos θ + z sin θ
+        double finalY = pitchedY; // y
+        double finalZ = -pitchedX * sinYaw + pitchedZ * cosYaw; // -x sin θ + z cos θ
+
+        return new Vector(finalX + 0.5, finalY + 0.5, finalZ + 0.5);
+    }
+
 	@Override
 	public SpellResult perform(CastContext context) {
         Block block = context.getTargetBlock();
@@ -64,8 +95,9 @@ public class DiscAction extends CompoundAction
 			return performActions(actionContext);
 		}
 
+        Location location = context.getLocation();
 		SpellResult result = SpellResult.NO_ACTION;
-		int y = block.getY();
+        Vector offset = new Vector();
         while (currentRadius <= radius)
 		{
             if (!checked) {
@@ -79,9 +111,17 @@ public class DiscAction extends CompoundAction
             }
             if (checked)
             {
-                int x = block.getX() + dx;
-                int z = block.getZ() + dz;
-                Block targetBlock = context.getWorld().getBlockAt(x, y, z);
+                if (autoOrient) {
+                    offset.setX(dx);
+                    offset.setY(dz);
+                    offset.setZ(0);
+                    offset = rotate(location.getYaw(), location.getPitch(), offset.getX(), offset.getY(), offset.getZ());
+                } else {
+                    offset.setX(dx);
+                    offset.setY(0);
+                    offset.setZ(dz);
+                }
+                Block targetBlock = block.getRelative(offset.getBlockX(), offset.getBlockY(), offset.getBlockZ());
                 actionContext.setTargetLocation(targetBlock.getLocation());
 
                 SpellResult actionResult = performActions(actionContext);
