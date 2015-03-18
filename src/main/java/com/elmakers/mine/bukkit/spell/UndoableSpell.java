@@ -31,6 +31,8 @@ public abstract class UndoableSpell extends TargetingSpell {
         autoUndo = parameters.getInt("undo", 0);
         autoUndo = parameters.getInt("u", autoUndo);
         bypassUndo = parameters.getBoolean("bypass_undo", false);
+
+        configureUndoList();
     }
 
     @Override
@@ -122,11 +124,17 @@ public abstract class UndoableSpell extends TargetingSpell {
     {
         if (modifiedBlocks == null) {
             modifiedBlocks = new UndoList(mage, this, this.getName());
+            configureUndoList();
+        }
+        return modifiedBlocks;
+    }
+
+    protected void configureUndoList() {
+        if (modifiedBlocks != null) {
             modifiedBlocks.setEntityUndo(undoEntityEffects);
             modifiedBlocks.setBypass(bypassUndo);
             modifiedBlocks.setScheduleUndo(autoUndo);
         }
-        return modifiedBlocks;
     }
 
     public boolean contains(Block block)
