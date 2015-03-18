@@ -15,6 +15,7 @@ This applies if you have customized spells, or use MagicWorlds or dtlTraders.
    - Added customized spell shops via "spells" parameter
    - See engineershop and architectshop
    - Add balance to inventory title
+   - Has confirmation screen
 
 ## 4.5.5
  - Fix Map and schematic brushes (broken in 4.5)
