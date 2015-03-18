@@ -1,5 +1,9 @@
 package com.elmakers.mine.bukkit.utility;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.Array;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
@@ -14,6 +18,9 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Skull;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.InvalidConfigurationException;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.*;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.inventory.Inventory;
@@ -475,5 +482,38 @@ public class CompatibilityUtils extends NMSUtils {
             return false;
         }
         return true;
+    }
+
+    public static ConfigurationSection loadConfiguration(String fileName) throws IOException, InvalidConfigurationException
+    {
+        YamlConfiguration configuration = new YamlConfiguration();
+        try {
+            configuration.load(fileName);
+        } catch (FileNotFoundException fileNotFound) {
+
+        }
+        return configuration;
+    }
+
+    public static ConfigurationSection loadConfiguration(InputStream stream) throws IOException, InvalidConfigurationException
+    {
+        YamlConfiguration configuration = new YamlConfiguration();
+        try {
+            configuration.load(stream);
+        } catch (FileNotFoundException fileNotFound) {
+
+        }
+        return configuration;
+    }
+
+    public static ConfigurationSection loadConfiguration(File file) throws IOException, InvalidConfigurationException
+    {
+        YamlConfiguration configuration = new YamlConfiguration();
+        try {
+            configuration.load(file);
+        } catch (FileNotFoundException fileNotFound) {
+
+        }
+        return configuration;
     }
 }
