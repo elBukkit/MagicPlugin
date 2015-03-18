@@ -63,19 +63,19 @@ public class DiscAction extends CompoundAction
 		// X-axis rotation
 		// The way the plane is built, we don't need to worry about Z-axis rotation
 		double pitchedX = x;
-		double pitchedY = y * cosPitch - z * sinPitch; // y cos θ - z sin θ
-		double pitchedZ = y * sinPitch + z * cosPitch; // y sin θ + z cos θ
+		double pitchedY = y * cosPitch - z * sinPitch;
+		double pitchedZ = y * sinPitch + z * cosPitch;
 
 		// Z-axis rotation
 		// Here for posterity. If there were any z-components to this shape
 		// we might need to use this.
-		// pitchedX = x * cosPitch - y * sinPitch; // x cos θ - y sin θ
-		// pitchedY = x * sinPitch + y * cosPitch; // x sin θ + y cos θ
+		// pitchedX = x * cosPitch - y * sinPitch;
+		// pitchedY = x * sinPitch + y * cosPitch;
 
 		// Rotate around Y
-		double finalX = pitchedX * cosYaw + pitchedZ * sinYaw; // x cos θ + z sin θ
+		double finalX = pitchedX * cosYaw + pitchedZ * sinYaw;
 		double finalY = pitchedY; // y
-		double finalZ = -pitchedX * sinYaw + pitchedZ * cosYaw; // -x sin θ + z cos θ
+		double finalZ = -pitchedX * sinYaw + pitchedZ * cosYaw;
 
 		return new Vector(finalX + 0.5, finalY + 0.5, finalZ + 0.5);
 	}
