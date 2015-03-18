@@ -134,6 +134,8 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
             return;
         }
         String[] pieces = splitMaterialKey(materialKey);
+        Short data = 0;
+        Material material = null;
 
         try {
             if (pieces.length > 0) {
