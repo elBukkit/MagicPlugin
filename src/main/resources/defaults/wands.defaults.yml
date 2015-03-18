@@ -264,7 +264,7 @@ architect:
         - superdome
         - superdisc
         - superring
-        - superiterate
+        - column
         - levitate
         - superalter
         - repair
@@ -345,7 +345,7 @@ elder:
         - superconvert
         - supershell
         - superpyramid
-        - superiterate
+        - column
         - push
         - pull
         - force

@@ -20,7 +20,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-public class ReplaceMaterialAction extends BaseSpellAction {
+public class ModifyBlockAction extends BaseSpellAction {
     protected Set<MaterialAndData> replaceable = null;
 
     private boolean spawnFallingBlocks;
@@ -71,7 +71,7 @@ public class ReplaceMaterialAction extends BaseSpellAction {
         }
 
         if (!context.isDestructible(block)) {
-            return SpellResult.FAIL;
+            return SpellResult.NO_TARGET;
         }
 
         if (replaceable == null || replaceable.contains(new MaterialAndData(block))) {

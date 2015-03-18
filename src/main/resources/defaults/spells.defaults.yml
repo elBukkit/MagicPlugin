@@ -817,10 +817,14 @@ reflect:
     icon_url: http://i.imgur.com/VG9yNqE.png
     icon: iron_helmet
     category: light
-    class: ConstructSpell
     worth: 20
     upgrade_required_path: student
     upgrade_required_casts: 25
+    actions:
+        cast:
+        -  class: Disc
+           actions:
+           -  class: ModifyBlock
     effects:
         cast:
         -  class: EffectSingle
@@ -830,10 +834,7 @@ reflect:
         allow_max_range: true
         range: 3
         radius: 1
-        type: sphere
-        brush: stained_glass_pane
-        orient_dimension_max: 0
-        orient_dimension_min: 0
+        brush: stained_glass
         orient: true
         transparent: transparent_to_construction
         destructible: air,fire,water,stationary_water
@@ -1685,6 +1686,7 @@ mount:
     category: master
     class: MountSpell
     worth: 40
+    pvp_restricted: true
     effects:
         cast:
         -  class: EffectSingle
@@ -3236,7 +3238,7 @@ earthquake:
           actions:
           - class: Cover
             actions:
-            - class: ReplaceMaterial
+            - class: ModifyBlock
     effects:
         cast:
         -  class: EffectSingle
@@ -3265,6 +3267,7 @@ earthquake:
         allow_max_range: false
         range: 16
         speed: 0.5
+        entity_speed: 1
         falling: true
         brush: air
         direction: 0,1,0
@@ -4052,7 +4055,7 @@ lava:
         cast:
         -  class: Line
            actions:
-           -  class: ReplaceMaterial
+           -  class: ModifyBlock
     effects:
         cast:
         -  class: EffectSingle
@@ -4082,7 +4085,7 @@ stream:
         cast:
         -  class: Line
            actions:
-           -  class: ReplaceMaterial
+           -  class: ModifyBlock
         -  class: Damage
     effects:
         cast:
@@ -4112,7 +4115,7 @@ earth:
         cast:
         -  class: Line
            actions:
-           -  class: ReplaceMaterial
+           -  class: ModifyBlock
         -  class: Damage
     effects:
         cast:
@@ -4145,7 +4148,7 @@ iterate:
         cast:
         -  class: Line
            actions:
-           -  class: ReplaceMaterial
+           -  class: ModifyBlock
     parameters:
         transparent: transparent_to_construction
         allow_max_range: true
@@ -4155,7 +4158,8 @@ iterate:
     costs:
         mana: 50
 
-superiterate:
+column:
+    alias: superiterate
     icon_url: http://i.imgur.com/qbXbYej.png
     icon: ink_sack:4
     category: engineering
@@ -4164,7 +4168,7 @@ superiterate:
         cast:
         -  class: Line
            actions:
-           -  class: ReplaceMaterial
+           -  class: ModifyBlock
     parameters:
         transparent: transparent_to_construction
         allow_max_range: true
@@ -4222,7 +4226,7 @@ laser:
         cast:
         -  class: Line
            actions:
-           -  class: ReplaceMaterial
+           -  class: ModifyBlock
         -  class: Repeat
            actions:
            -  class: Delay
@@ -4231,7 +4235,7 @@ laser:
                 actions:
                 - class: Line
                   actions:
-                  -  class: ReplaceMaterial
+                  -  class: ModifyBlock
                 - class: ConeOfEffect
                   actions:
                   -  class: Damage

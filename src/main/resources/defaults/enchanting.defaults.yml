@@ -550,7 +550,7 @@ architect:
       superdisc: 0,0,5
       superring: 0,0,5
       superconvert: 0,20,50
-      superiterate: 5,50,100
+      column: 5,50,100
       superdome: 0,0,2
       paste: 0,1,10
       volley: 2,25,35

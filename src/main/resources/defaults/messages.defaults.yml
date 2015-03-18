@@ -288,6 +288,7 @@ spells:
         location_required: A location is required for this spell.
         world_required: A world is required for this spell.
         invalid_world: The specified world is not valid.
+        cast_finish: ""
     admission:
         name: Admission
         description: Opens the target door
@@ -933,7 +934,7 @@ spells:
         name: Iterate
         description: Construct a line of blocks
         cast: Filled $count blocks
-    superiterate:
+    column:
         name: Column
         description: Construct a large column of blocks
         cast: Filled $count blocks

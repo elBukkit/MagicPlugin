@@ -9,7 +9,7 @@ import org.bukkit.configuration.ConfigurationSection;
 
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.batch.BlockRecurse;
-import com.elmakers.mine.bukkit.action.builtin.ReplaceMaterialAction;
+import com.elmakers.mine.bukkit.action.builtin.ModifyBlockAction;
 import com.elmakers.mine.bukkit.spell.BrushSpell;
 
 public class RecurseSpell extends BrushSpell 
@@ -39,7 +39,7 @@ public class RecurseSpell extends BrushSpell
 		size = (int)(mage.getRadiusMultiplier() * size);
 		blockRecurse.setMaxRecursion(size);
 
-		ReplaceMaterialAction action = new ReplaceMaterialAction();
+		ModifyBlockAction action = new ModifyBlockAction();
         action.initialize(parameters);
         action.addReplaceable(new MaterialAndData(targetBlock));
         Material targetMaterial = targetBlock.getType();
