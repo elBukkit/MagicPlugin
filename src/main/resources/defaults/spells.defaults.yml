@@ -2430,7 +2430,7 @@ fire:
            firework: ball
     parameters:
         target_type: LivingEntity
-        allow_max_range: false
+        allow_max_range: true
         range: 48
         hitbox: true
         fov: 0.03
