@@ -845,7 +845,7 @@ rainboweffects:
     effect_particle_data: 2
     effect_particle_count: 10
     effect_particle_radius: 2
-    effect_particle_interval: 1
+    effect_particle_interval: 500
     effect_particle_offset: 0.5
 haloeffects:
     upgrade: true
@@ -853,7 +853,7 @@ haloeffects:
     icon: magma_cream
     effect_particle: redstone
     effect_particle_count: 6
-    effect_particle_interval: 1
+    effect_particle_interval: 100
     effect_particle_data: 0
     effect_particle_radius: 0.4
     effect_particle_offset: 0.5

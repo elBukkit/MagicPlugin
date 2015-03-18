@@ -301,10 +301,16 @@ work_frequency: 1
 # How many units of work to perform per the interval defined above
 work_per_update: 5000
 
-# How often to "tick" a Mage. By default this is once per second,
-# changing this value will have affects on frequency values for Wand
-# effects.
-mage_update_frequency: 20
+# How often to "tick" a Mage. By default this is 4x per second
+# This effects visual fill rate of XP, and visual/potion effects
+# This value is in ticks
+mage_update_frequency: 5
+
+# How many ticks to make wand potion effects cover
+# This value is in ticks
+# This should be longer than the update frequency by a margin
+# to cover lag, or potion effects will "bounce" on and off
+wand_potion_effect_duration: 60
 
 # How often to check for scheduled undo batches. Changing this will
 # make the scheduled undo times less accurate, though they will

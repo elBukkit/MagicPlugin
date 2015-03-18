@@ -1813,6 +1813,7 @@ public class MagicController implements Listener, MageController {
         workPerUpdate = properties.getInt("work_per_update", workPerUpdate);
         workFrequency = properties.getInt("work_frequency", workFrequency);
         mageUpdateFrequency = properties.getInt("mage_update_frequency", mageUpdateFrequency);
+        Wand.PotionEffectDuration = properties.getInt("wand_potion_effect_duration", Wand.PotionEffectDuration);
         undoFrequency = properties.getInt("undo_frequency", undoFrequency);
 		pendingQueueDepth = properties.getInt("pending_depth", pendingQueueDepth);
 		undoMaxPersistSize = properties.getInt("undo_max_persist_size", undoMaxPersistSize);

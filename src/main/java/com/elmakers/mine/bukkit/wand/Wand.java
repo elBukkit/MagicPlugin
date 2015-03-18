@@ -58,7 +58,6 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	public final static int HOTBAR_INVENTORY_SIZE = HOTBAR_SIZE - 1;
 	public final static float DEFAULT_SPELL_COLOR_MIX_WEIGHT = 0.0001f;
 	public final static float DEFAULT_WAND_COLOR_MIX_WEIGHT = 1.0f;
-    public final static int POTION_EFFECT_DURATION = 240;
 
     public final static String[] EMPTY_PARAMETERS = new String[0];
 	
@@ -152,7 +151,6 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	private float effectParticleData = 0;
 	private int effectParticleCount = 0;
 	private int effectParticleInterval = 0;
-	private int effectParticleCounter = 0;
     private double effectParticleRadius = 0.2;
     private double effectParticleOffset = 0.3;
 	private boolean effectBubbles = false;
@@ -160,16 +158,21 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	
 	private SoundEffect effectSound = null;
 	private int effectSoundInterval = 0;
-	private int effectSoundCounter = 0;
 	
 	private float speedIncrease = 0;
 	private PotionEffect hasteEffect = null;
 
     private int quietLevel = 0;
     private Map<String, String> castOverrides = null;
-	
+
+
+    // Transient state
+
 	private int storedXpLevel = 0;
 	private float storedXpProgress = 0;
+
+    private long lastSoundEffect;
+    private long lastParticleEffect;
 	
 	// Inventory functionality
 	
@@ -202,6 +205,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
     public static SoundEffect inventoryCloseSound = null;
     public static SoundEffect inventoryCycleSound = null;
     public static String WAND_KEY = "wand";
+    public static int PotionEffectDuration = 240;
 
     private Inventory storedInventory = null;
     private Integer playerInventorySlot = null;
@@ -2555,7 +2559,9 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		updateActiveMaterial();
 		updateName();
 		updateLore();
-		
+
+        lastSoundEffect = 0;
+        lastParticleEffect = 0;
 		updateEffects();
         if (forceUpdate) {
             player.updateInventory();
@@ -2658,12 +2664,13 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		}
 		
 		Location location = mage.getLocation();
-		
+		long now = System.currentTimeMillis();
 		if (effectParticle != null && location != null && effectParticleInterval > 0 && effectParticleCount > 0) {
             Location effectLocation = player.getLocation();
             Location eyeLocation = player.getEyeLocation();
             effectLocation.setY(eyeLocation.getY() + effectParticleOffset);
-			if ((effectParticleCounter++ % effectParticleInterval) == 0) {
+			if (lastParticleEffect == 0 || now > lastParticleEffect + effectParticleInterval) {
+                lastParticleEffect = now;
 				if (effectPlayer == null) {
 					effectPlayer = new EffectRing(controller.getPlugin());
 					effectPlayer.setParticleCount(1);
@@ -2687,8 +2694,9 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 			}
 		}
 		
-		if (effectSound != null && location != null && controller.soundsEnabled()) {
-			if ((effectSoundCounter++ % effectSoundInterval) == 0) {
+		if (effectSound != null && location != null && controller.soundsEnabled() && effectSoundInterval > 0) {
+			if (lastSoundEffect == 0 || now > lastSoundEffect + effectSoundInterval) {
+                lastSoundEffect = now;
 				mage.getLocation().getWorld().playSound(location, effectSound.getSound(), effectSound.getVolume(), effectSound.getPitch());
 			}
 		}
@@ -2963,7 +2971,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		if (speedIncrease > 0) {
 			int hasteLevel = (int)(speedIncrease * controller.getMaxHaste());
 			if (hasteEffect == null || hasteEffect.getAmplifier() != hasteLevel) {
-				hasteEffect = new PotionEffect(PotionEffectType.SPEED, POTION_EFFECT_DURATION, hasteLevel, true);
+				hasteEffect = new PotionEffect(PotionEffectType.SPEED, PotionEffectDuration, hasteLevel, true);
 			}
 			
 			CompatibilityUtils.applyPotionEffect(player, hasteEffect);
@@ -2971,7 +2979,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		if (healthRegeneration > 0) {
 			int regenLevel = (int)(healthRegeneration * controller.getMaxHealthRegeneration());
 			if (healthRegenEffect == null || healthRegenEffect.getAmplifier() != regenLevel) {
-				healthRegenEffect = new PotionEffect(PotionEffectType.REGENERATION, POTION_EFFECT_DURATION, regenLevel, true);
+				healthRegenEffect = new PotionEffect(PotionEffectType.REGENERATION, PotionEffectDuration, regenLevel, true);
 			}
 			
 			CompatibilityUtils.applyPotionEffect(player, healthRegenEffect);
@@ -2979,7 +2987,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		if (hungerRegeneration > 0) {
 			int regenLevel = (int)(hungerRegeneration * controller.getMaxHungerRegeneration());
 			if (hungerRegenEffect == null || hungerRegenEffect.getAmplifier() != regenLevel) {
-				hungerRegenEffect = new PotionEffect(PotionEffectType.SATURATION, POTION_EFFECT_DURATION, regenLevel, true);
+				hungerRegenEffect = new PotionEffect(PotionEffectType.SATURATION, PotionEffectDuration, regenLevel, true);
 			}
 			
 			CompatibilityUtils.applyPotionEffect(player, hungerRegenEffect);
