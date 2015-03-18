@@ -4168,7 +4168,9 @@ column:
         cast:
         -  class: Line
            actions:
-           -  class: ModifyBlock
+           -  class: Disc
+              actions:
+              -  class: ModifyBlock
     parameters:
         transparent: transparent_to_construction
         allow_max_range: true
@@ -4177,6 +4179,7 @@ column:
         radius: 3
         reverse: true
         increment_data: false
+        orient: true
     costs:
         mana: 200
 
@@ -4207,7 +4210,6 @@ flamethrower:
         allow_max_range: true
         range: 32
         size: 8
-        radius: 1
         reverse: false
         require_blocks: true
         undo: 5000
@@ -4226,7 +4228,9 @@ laser:
         cast:
         -  class: Line
            actions:
-           -  class: ModifyBlock
+           -  class: Disc
+              actions:
+              -  class: ModifyBlock
         -  class: Repeat
            actions:
            -  class: Delay
@@ -4235,7 +4239,9 @@ laser:
                 actions:
                 - class: Line
                   actions:
-                  -  class: ModifyBlock
+                  -  class: Disc
+                     actions:
+                     -  class: ModifyBlock
                 - class: ConeOfEffect
                   actions:
                   -  class: Damage

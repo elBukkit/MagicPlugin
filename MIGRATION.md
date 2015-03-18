@@ -2,14 +2,33 @@
 
 ## 4.6
 
+4.6 is a major change under the hood, the biggest since 4.0. I've tried to keep everything
+mostly the same, but there are some changes to be aware of.
+
+### General updates
+
  * MagicWorlds will need to be updated to 1.2
  * Changed configuration options related to construction interval / max blocks
- * Changed API cast() methods to return success/failure
- * Iterate action renamed to Line
  * The default restricted material list is much less restrictive. Building with TNT, emeralds, ore, etc is now allowed.
  * Updated and fixed dtlTraders integration.
    - You will need to fix your spell and wand shops- sorry
    - You may need to disable brush/spell/wand glow until an issue in dtlTraders is resolved
+
+### Custom spell configurations
+
+If you have a custom spell configuration with "actions:" in it, you may need to update:
+
+ * Iterate action renamed to Line
+ * ReplaceMaterial action renamed to ModifyBlock
+ * CoverAction split into Disc and Cover
+   * To reproduce previous behavior, change "Cover" to "Disc" and add a "Cover" under it
+   * Disc builds a Disc, Cover searches for the topmost block, up or down, on one block
+
+### API
+
+Just in case anyone is actually using the API:
+
+ * Changed API cast() methods to return success/failure
 
 ## 4.5
 

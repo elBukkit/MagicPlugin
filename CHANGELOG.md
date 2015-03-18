@@ -1,11 +1,16 @@
 # CHANGELOG
 
 ## 4.6
+
+Check MIGRATION notes for important information on this release.
+This applies if you have customized spells, or use MagicWorlds or dtlTraders.
+
  - Big under-the-hood changes to support batched actions
  - Lift spell works on entities
  - Fling works while mounted
  - Earthquake throws entities
- - Laser lasts for a few seconds
+ - Laser lasts for a few seconds, has continuous effect
+ - Reflect works at arbitrary angles
 
 ## 4.5.5
  - Fix Map and schematic brushes (broken in 4.5)
