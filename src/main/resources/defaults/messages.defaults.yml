@@ -1215,6 +1215,7 @@ spells:
         no_path_end: You must be ready to advance to $path!
         no_wand: You must be holding a wand!
         insufficient_resources: Costs $cost
+        confirm_title: "Buy $spell"
         deducted: "&d&oYou bought &r&6$spell &r&d&ofor &r&a$cost"
     engineershop:
         name: Engineer Shop
@@ -1230,6 +1231,7 @@ spells:
         no_required_path: You must be at least $path!
         no_path_end: You must be ready to advance to $path!
         no_wand: You must be holding a wand!
+        confirm_title: "Upgrade to Engineer"
         insufficient_resources: Costs $cost
         deducted: "&d&oYou bought &r&6$spell &r&d&ofor &r&a$cost"
     architectshop:
@@ -1247,6 +1249,7 @@ spells:
         no_path_end: You must be ready to advance to $path!
         no_wand: You must be holding a wand!
         insufficient_resources: Costs $cost
+        confirm_title: "Upgrade to Architect"
         deducted: "&d&oYou bought &r&6$spell &r&d&ofor &r&a$cost"
 
 wands:

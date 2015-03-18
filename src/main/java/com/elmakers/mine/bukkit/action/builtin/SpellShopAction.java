@@ -15,7 +15,10 @@ import com.elmakers.mine.bukkit.integration.VaultController;
 import com.elmakers.mine.bukkit.magic.MagicPlugin;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
+import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
+import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -41,6 +44,8 @@ public class SpellShopAction extends BaseSpellAction implements GUIAction
     private boolean autoUpgrade = false;
     private boolean showFree = false;
     private boolean useXP = false;
+    private boolean showConfirmation = true;
+    private MaterialAndData confirmFillMaterial;
     private CastContext context;
     private Wand wand;
     private Map<String, Double> spells = new HashMap<String, Double>();
@@ -98,6 +103,24 @@ public class SpellShopAction extends BaseSpellAction implements GUIAction
                 }
                 context.sendMessage(costString);
             } else {
+                if (InventoryUtils.hasMeta(item, "confirm")) {
+                    String inventoryTitle = context.getMessage("confirm_title", "Buy $spell").replace("$spell", item.getItemMeta().getDisplayName());
+                    Inventory confirmInventory = CompatibilityUtils.createInventory(null, 9, inventoryTitle);
+                    InventoryUtils.removeMeta(item, "confirm");
+                    for (int i = 0; i < 9; i++)
+                    {
+                        if (i != 4) {
+                            confirmInventory.setItem(i, confirmFillMaterial.getItemStack(1));
+                        } else {
+                            confirmInventory.setItem(i, item);
+                        }
+                    }
+                    mage.deactivateGUI();
+                    mage.activateGUI(this);
+                    mage.getPlayer().openInventory(confirmInventory);
+                    return;
+                }
+
                 String costString = context.getMessage("deducted");
                 if (isXP) {
                     String xpAmount = Integer.toString((int)(double)worth);
@@ -113,6 +136,8 @@ public class SpellShopAction extends BaseSpellAction implements GUIAction
                 } else {
                     VaultController.getInstance().withdrawPlayer(mage.getPlayer(), worth);
                 }
+
+
                 wand.addSpell(spellKey);
                 com.elmakers.mine.bukkit.api.wand.WandUpgradePath path = wand.getPath();
                 WandUpgradePath nextPath = path != null ? path.getUpgrade(): null;
@@ -133,9 +158,11 @@ public class SpellShopAction extends BaseSpellAction implements GUIAction
         showFree = parameters.getBoolean("show_free", false);
         autoUpgrade = parameters.getBoolean("auto_upgrade", false);
         useXP = parameters.getBoolean("use_xp", false);
+        showConfirmation = parameters.getBoolean("confirm", true);
         if (requiresCompletedPath != null) {
             requiredPath = requiresCompletedPath;
         }
+        confirmFillMaterial = ConfigurationUtils.getMaterialAndData(parameters, "confirm_filler", new MaterialAndData(Material.AIR));
     }
 
     @Override
@@ -238,6 +265,9 @@ public class SpellShopAction extends BaseSpellAction implements GUIAction
             lore.add(ChatColor.GOLD + costs);
             meta.setLore(lore);
             spellItem.setItemMeta(meta);
+            if (showConfirmation) {
+                InventoryUtils.setMeta(spellItem, "confirm", "true");
+            }
             spellItems.add(spellItem);
         }
 
@@ -278,6 +308,7 @@ public class SpellShopAction extends BaseSpellAction implements GUIAction
         parameters.add("show_free");
         parameters.add("show_required");
         parameters.add("auto_upgrade");
+        parameters.add("confirm");
     }
 
     @Override
@@ -287,7 +318,8 @@ public class SpellShopAction extends BaseSpellAction implements GUIAction
 
         if (parameterKey.equals("path") || parameterKey.equals("path_exact") || parameterKey.equals("path_end")) {
             examples.addAll(com.elmakers.mine.bukkit.wand.WandUpgradePath.getPathKeys());
-        } else if (parameterKey.equals("show_free") || parameterKey.equals("show_required") || parameterKey.equals("auto_upgrade")) {
+        } else if (parameterKey.equals("show_free") || parameterKey.equals("show_required")
+                || parameterKey.equals("auto_upgrade") || parameterKey.equals("confirm")) {
             examples.addAll(Arrays.asList((BaseSpell.EXAMPLE_BOOLEANS)));
         }
     }

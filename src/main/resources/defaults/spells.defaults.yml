@@ -5838,6 +5838,8 @@ spellshop:
         -  class: SpellShop
     parameters:
         loud: true
+        confirm_filler: stained_glass:5
+        auto_upgrade: true
 
 engineershop:
     icon: iron_hoe
@@ -5850,6 +5852,7 @@ engineershop:
         loud: true
         path_end: master
         auto_upgrade: true
+        confirm_filler: stained_glass:2
         spells:
           rollback: 1000
 
@@ -5864,6 +5867,7 @@ architectshop:
         loud: true
         path_end: engineer
         auto_upgrade: true
+        confirm_filler: stained_glass:9
         spells:
           absorb: 5000
 

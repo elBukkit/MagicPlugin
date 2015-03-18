@@ -1,9 +1,7 @@
 # TODO
 
- - Increase wand tick rate, time-lock effects
  - Glitching Fill behavior
  - Spell shop improvements:
-   - Confirmation screen
    - Color spells player can't afford
  - Trait improvements
    - Add /parameter command for inspecting single param
@@ -19,11 +17,9 @@
 
  - Fix recall home spawning in the ground?
  - Fix spells getting lost on config load failure
- - Add spellbook-choosing action 
- - Add spell-choosing action
- - Add Vault integration for the above
+ - Add spellbook-choosing action
+ - Add general shop action (?)
  - Add Cylinder construct (SuperWalls, Walls, SuperCylinder)
- - Persist erasemod
  - Support for locking/unlocking chests
  - Configurable FOV weight for targeting (Survival Sense)
 
