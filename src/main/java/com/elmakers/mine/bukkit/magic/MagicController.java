@@ -1,6 +1,7 @@
 package com.elmakers.mine.bukkit.magic;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.lang.ref.WeakReference;
 import java.lang.reflect.Field;
@@ -39,6 +40,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.*;
@@ -130,6 +132,9 @@ public class MagicController implements Listener, MageController {
 
     protected Mage getMage(String mageId, String mageName, CommandSender commandSender, Entity entity) {
         Mage apiMage = null;
+        if (!loaded) {
+            return null;
+        }
         if (!mages.containsKey(mageId)) {
             final com.elmakers.mine.bukkit.magic.Mage mage = new com.elmakers.mine.bukkit.magic.Mage(mageId, this);
             mages.put(mageId, mage);
@@ -1108,7 +1113,8 @@ public class MagicController implements Listener, MageController {
         DataStore configuration = new DataStore(getLogger(), dataFile);
         return configuration;
     }
-    protected ConfigurationSection loadConfigFile(String fileName, boolean loadDefaults) {
+    protected ConfigurationSection loadConfigFile(String fileName, boolean loadDefaults)
+        throws IOException, InvalidConfigurationException {
         return loadConfigFile(fileName, loadDefaults, false);
     }
 
@@ -1123,7 +1129,8 @@ public class MagicController implements Listener, MageController {
         }
     }
 
-    protected ConfigurationSection loadConfigFile(String fileName, boolean loadDefaults, boolean disableDefaults) {
+    protected ConfigurationSection loadConfigFile(String fileName, boolean loadDefaults, boolean disableDefaults)
+        throws IOException, InvalidConfigurationException {
         String configFileName = fileName + ".yml";
         File configFile = new File(configFolder, configFileName);
         if (!configFile.exists()) {
@@ -1139,12 +1146,12 @@ public class MagicController implements Listener, MageController {
         plugin.saveResource(defaultsFileName, true);
 
         getLogger().info("Loading " + configFile.getName());
-        ConfigurationSection overrides = YamlConfiguration.loadConfiguration(configFile);
+        ConfigurationSection overrides = CompatibilityUtils.loadConfiguration(configFile);
         ConfigurationSection config = new MemoryConfiguration();
 
         if (loadDefaults) {
             getLogger().info(" Based on defaults " + defaultsFileName);
-            Configuration defaultConfig = YamlConfiguration.loadConfiguration(plugin.getResource(defaultsFileName));
+            ConfigurationSection defaultConfig = CompatibilityUtils.loadConfiguration(plugin.getResource(defaultsFileName));
             if (disableDefaults) {
                 Set<String> keys = defaultConfig.getKeys(false);
                 for (String key : keys)
@@ -1157,40 +1164,32 @@ public class MagicController implements Listener, MageController {
         }
 
         if (usingExample) {
-            try {
-                InputStream input = plugin.getResource(examplesFileName);
-                if (input != null)
-                {
-                    Configuration exampleConfig = YamlConfiguration.loadConfiguration(input);
-                    if (disableDefaults) {
-                        enableAll(exampleConfig);
-                    }
-                    config = ConfigurationUtils.addConfigurations(config, exampleConfig);
-                    getLogger().info(" Using " + examplesFileName);
+            InputStream input = plugin.getResource(examplesFileName);
+            if (input != null)
+            {
+                ConfigurationSection exampleConfig = CompatibilityUtils.loadConfiguration(input);
+                if (disableDefaults) {
+                    enableAll(exampleConfig);
                 }
-            } catch (Exception ex) {
-                getLogger().info(ex.getMessage());
+                config = ConfigurationUtils.addConfigurations(config, exampleConfig);
+                getLogger().info(" Using " + examplesFileName);
             }
         }
 
         if (addExamples != null && addExamples.size() > 0) {
             for (String example : addExamples) {
-                try {
-                    examplesFileName = "examples/" + example + "/" + fileName + ".yml";
-                    plugin.saveResource(examplesFileName, true);
+                examplesFileName = "examples/" + example + "/" + fileName + ".yml";
+                plugin.saveResource(examplesFileName, true);
 
-                    InputStream input = plugin.getResource(examplesFileName);
-                    if (input != null)
-                    {
-                        Configuration exampleConfig = YamlConfiguration.loadConfiguration(input);
-                        if (disableDefaults) {
-                            enableAll(exampleConfig);
-                        }
-                        config = ConfigurationUtils.addConfigurations(config, exampleConfig);
-                        getLogger().info(" Added " + examplesFileName);
+                InputStream input = plugin.getResource(examplesFileName);
+                if (input != null)
+                {
+                    ConfigurationSection exampleConfig = CompatibilityUtils.loadConfiguration(input);
+                    if (disableDefaults) {
+                        enableAll(exampleConfig);
                     }
-                } catch (Exception ex) {
-                    getLogger().info(ex.getMessage());
+                    config = ConfigurationUtils.addConfigurations(config, exampleConfig);
+                    getLogger().info(" Added " + examplesFileName);
                 }
             }
         }
@@ -1201,7 +1200,9 @@ public class MagicController implements Listener, MageController {
     }
 
     public void loadConfiguration() {
-        // Clear some cache stuff... mainly this is for debuggin/testing.
+        loaded = true;
+
+        // Clear some cache stuff... mainly this is for debugging/testing.
         schematics.clear();
 
         // Load main configuration
@@ -1220,7 +1221,8 @@ public class MagicController implements Listener, MageController {
                 loadProperties(loadConfigFile(CONFIG_FILE, true));
             }
         } catch (Exception ex) {
-            ex.printStackTrace();
+            getLogger().log(Level.WARNING, "Error loading config.yml", ex);
+            loaded = false;
         }
 
         // Load localizations
@@ -1228,21 +1230,24 @@ public class MagicController implements Listener, MageController {
             messages.reset();
             messages.load(loadConfigFile(MESSAGES_FILE, true));
         } catch (Exception ex) {
-            ex.printStackTrace();
+            getLogger().log(Level.WARNING, "Error loading messages.yml", ex);
+            loaded = false;
         }
 
         // Load materials configuration
         try {
             loadMaterials(loadConfigFile(MATERIALS_FILE, true));
         } catch (Exception ex) {
-            ex.printStackTrace();
+            getLogger().log(Level.WARNING, "Error loading material.yml", ex);
+            loaded = false;
         }
 
         // Load spells
         try {
             loadSpells(loadConfigFile(SPELLS_FILE, loadDefaultSpells, disableDefaultSpells));
         } catch (Exception ex) {
-            ex.printStackTrace();
+            getLogger().log(Level.WARNING, "Error loading spells.yml", ex);
+            loaded = false;
         }
 
         getLogger().info("Loaded " + spells.size() + " spells");
@@ -1251,7 +1256,8 @@ public class MagicController implements Listener, MageController {
         try {
             enchanting.load(loadConfigFile(ENCHANTING_FILE, loadDefaultEnchanting));
         } catch (Exception ex) {
-            ex.printStackTrace();
+            getLogger().log(Level.WARNING, "Error loading enchanting.yml", ex);
+            loaded = false;
         }
 
         getLogger().info("Loaded " + enchanting.getCount() + " enchanting paths");
@@ -1260,7 +1266,8 @@ public class MagicController implements Listener, MageController {
         try {
             Wand.loadTemplates(loadConfigFile(WANDS_FILE, loadDefaultWands));
         } catch (Exception ex) {
-            ex.printStackTrace();
+            getLogger().log(Level.WARNING, "Error loading wands.yml", ex);
+            loaded = false;
         }
 
         getLogger().info("Loaded " + Wand.getWandTemplates().size() + " wands");
@@ -1269,10 +1276,26 @@ public class MagicController implements Listener, MageController {
         try {
             crafting.load(loadConfigFile(CRAFTING_FILE, loadDefaultCrafting));
         } catch (Exception ex) {
-            ex.printStackTrace();
+            getLogger().log(Level.WARNING, "Error loading crafting.yml", ex);
+            loaded = false;
         }
 
         getLogger().info("Loaded " + crafting.getCount() + " crafting recipes");
+
+        if (!loaded) {
+            getLogger().warning("*** An error occurred while loading configurations ***");
+            getLogger().warning("***         Magic is temporarily disabled          ***");
+            getLogger().warning("***   Please check the errors above, fix configs   ***");
+            getLogger().warning("***    And '/magic load' or restart the server     ***");
+            for (Mage mage : mages.values()) {
+                com.elmakers.mine.bukkit.api.wand.Wand wand = mage.getActiveWand();
+                if (wand != null) {
+                    wand.deactivate();
+                }
+                mage.deactivateAllSpells(true, true);
+            }
+            mages.clear();
+        }
     }
 
     protected void loadSpellData() {
@@ -2464,6 +2487,8 @@ public class MagicController implements Listener, MageController {
 	@EventHandler
 	public void onPlayerEquip(PlayerItemHeldEvent event)
 	{
+        if (!loaded) return;
+
 		Player player = event.getPlayer();
 		PlayerInventory inventory = player.getInventory();
 		ItemStack next = inventory.getItem(event.getNewSlot());
@@ -2812,6 +2837,7 @@ public class MagicController implements Listener, MageController {
 	@EventHandler(priority=EventPriority.HIGHEST)
 	public void onPlayerInteract(PlayerInteractEvent event)
 	{
+        if (!loaded) return;
 		// Note that an interact on air event will arrive pre-cancelled
 		// So this is kind of useless. :\
 		//if (event.isCancelled()) return;
@@ -3043,7 +3069,7 @@ public class MagicController implements Listener, MageController {
             }
         }
 
-        if (!mage.isLoading() && (mage.isPlayer() || saveNonPlayerMages))
+        if (!mage.isLoading() && (mage.isPlayer() || saveNonPlayerMages) && loaded)
         {
             final File playerData = new File(playerDataFolder, mage.getId() + ".dat");
             getLogger().info("Player logged out, saving data to " + playerData.getName());
@@ -4346,7 +4372,6 @@ public class MagicController implements Listener, MageController {
 	/*
 	 * Private data
 	 */
-
     private final static int                    MAX_Y = 255;
     private static final String                 BUILTIN_SPELL_CLASSPATH = "com.elmakers.mine.bukkit.spell.builtin";
     private static int                          VOLUME_UPDATE_THRESHOLD = 32;
@@ -4506,6 +4531,7 @@ public class MagicController implements Listener, MageController {
     private String                              exampleDefaults             = null;
     private Collection<String>                  addExamples                 = null;
     private boolean                             initialized                 = false;
+    private boolean                             loaded                      = false;
 
     // Synchronization
     private final Object                        saveLock                    = new Object();

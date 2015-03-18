@@ -11,6 +11,7 @@ This applies if you have customized spells, or use MagicWorlds or dtlTraders.
  - Earthquake throws entities
  - Laser lasts for a few seconds, has continuous effect
  - Reflect works at arbitrary angles
+ - Improved handling of config file errors
  - Spell shop improvements:
    - Added customized spell shops via "spells" parameter
    - See engineershop and architectshop

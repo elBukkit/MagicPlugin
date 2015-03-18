@@ -16,7 +16,6 @@
  - Test Clone with entities?
 
  - Fix recall home spawning in the ground?
- - Fix spells getting lost on config load failure
  - Add spellbook-choosing action
  - Add general shop action (?)
  - Add Cylinder construct (SuperWalls, Walls, SuperCylinder)
