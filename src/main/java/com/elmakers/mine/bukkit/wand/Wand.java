@@ -2660,8 +2660,9 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		Location location = mage.getLocation();
 		
 		if (effectParticle != null && location != null && effectParticleInterval > 0 && effectParticleCount > 0) {
-            Location effectLocation = player.getEyeLocation();
-            effectLocation.setY(effectLocation.getY() + effectParticleOffset);
+            Location effectLocation = player.getLocation();
+            Location eyeLocation = player.getEyeLocation();
+            effectLocation.setY(eyeLocation.getY() + effectParticleOffset);
 			if ((effectParticleCounter++ % effectParticleInterval) == 0) {
 				if (effectPlayer == null) {
 					effectPlayer = new EffectRing(controller.getPlugin());
