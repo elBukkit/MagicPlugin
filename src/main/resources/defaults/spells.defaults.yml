@@ -1314,7 +1314,7 @@ frost:
         hitbox: true
         radius: 1
         vertical_search_distance: 8
-        transparent: transparent_to_construction
+        transparent: air,snow
         damage: 1
         duration: 1000
         effect_slow: 1
@@ -4293,12 +4293,15 @@ laser|2:
     parameters:
         radius: 2
         destructible: destructible
-        player_damage: 6
-        entity_damage: 8
+        player_damage: 2
+        entity_damage: 4
+        count: 15
 
 laser|3:
     parameters:
+        check_destructible: false
         radius: 3
+        count: 20
 
 shrink:
     icon: skull_item
@@ -4609,6 +4612,7 @@ fireball|4:
 
 map:
     hidden: true
+    icon_url: http://i.imgur.com/4aYF0NF.png
     icon: map
     worth: 45
     category: utility
@@ -5834,6 +5838,34 @@ spellshop:
         -  class: SpellShop
     parameters:
         loud: true
+
+engineershop:
+    icon: iron_hoe
+    category: utility
+    hidden: true
+    actions:
+        cast:
+        -  class: SpellShop
+    parameters:
+        loud: true
+        path_end: master
+        auto_upgrade: true
+        spells:
+          rollback: 1000
+
+architectshop:
+    icon: gold_axe
+    category: utility
+    hidden: true
+    actions:
+        cast:
+        -  class: SpellShop
+    parameters:
+        loud: true
+        path_end: engineer
+        auto_upgrade: true
+        spells:
+          absorb: 5000
 
 addspell:
     icon: iron_hoe
