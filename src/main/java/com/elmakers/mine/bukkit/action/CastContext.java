@@ -563,4 +563,10 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
             setTargetLocation(targetingSpell.getTargetLocation());
         }
     }
+
+    @Override
+    public com.elmakers.mine.bukkit.api.action.CastContext getBaseContext()
+    {
+        return base;
+    }
 }
