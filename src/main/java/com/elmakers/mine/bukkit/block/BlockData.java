@@ -193,6 +193,10 @@ public class BlockData extends MaterialAndData implements com.elmakers.mine.bukk
             return false;
         }
 
+        // Remove any tagged metadata
+        removeMetadata(block, "breakable");
+        removeMetadata(block, "backfire");
+
         // Pass state up the chain
         if (nextState != null)
         {

@@ -345,9 +345,6 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         if (!isValid) return;
 
         try {
-            removeMetadata(block, "breakable");
-            removeMetadata(block, "backfire");
-
             // Clear chests so they don't dump their contents.
             BlockState oldState = block.getState();
             if (oldState instanceof InventoryHolder) {
