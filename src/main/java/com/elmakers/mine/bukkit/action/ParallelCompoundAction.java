@@ -151,10 +151,11 @@ public abstract class ParallelCompoundAction extends BaseSpellAction implements 
 
     @Override
     public int getActionCount() {
-        return actions.getActionCount();
+        return actions == null ? 0 : actions.getActionCount();
     }
 
     protected void skippedActions(CastContext context) {
+        if (actions == null) return;
         int actionCount = actions.getActionCount();
         context.performedActions(actionCount);
         context.addWork(actionCount);
@@ -164,8 +165,9 @@ public abstract class ParallelCompoundAction extends BaseSpellAction implements 
     public Object clone()
     {
         ParallelCompoundAction action = (ParallelCompoundAction)super.clone();
-        if (action != null) {
-            action.actions = (ActionHandler)this.actions.clone();
+        if (action != null)
+        {
+            action.actions = this.actions == null ? null : (ActionHandler)this.actions.clone();
         }
         return action;
     }
