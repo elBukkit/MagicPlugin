@@ -83,122 +83,21 @@ public class MagicGiveCommandExecutor extends MagicTabExecutor {
             player = (Player)sender;
         }
 
-        if (itemName.contains("skull:") || itemName.contains("skull_item:")) {
-            itemName = itemName.replace("skull:", "skull_item:");
-            MaterialAndData skullData = new MaterialAndData(itemName);
-            api.giveItemToPlayer(player, skullData.getItemStack(count));
-            sender.sendMessage("Gave " + count + " skull to " + player.getName());
-            return true;
-        }
-        else if (itemName.equalsIgnoreCase("xp")) {
+        if (itemName.equalsIgnoreCase("xp")) {
             api.giveExperienceToPlayer(player, count);
             sender.sendMessage("Gave " + count + " experience to " + player.getName());
             return true;
-        } else if (itemName.contains("book:")) {
-            String bookCategory = itemName.substring(5);
-            SpellCategory category = null;
-
-            if (!bookCategory.isEmpty() && !bookCategory.equalsIgnoreCase("all")) {
-                category = api.getController().getCategory(bookCategory);
-                if (category == null) {
-                    sender.sendMessage("Unknown spell category " + bookCategory);
-                    return true;
-                }
-            }
-            ItemStack bookItem = api.getSpellBook(category, count);
-            if (bookItem == null) {
-                sender.sendMessage("Failed to create book item for " + bookCategory);
-                return true;
-            }
-            api.giveItemToPlayer(player, bookItem);
-            return true;
-        } else if (itemName.contains("spell:")) {
-            String spellKey = itemName.substring(6);
-            ItemStack itemStack = api.createSpellItem(spellKey);
-            if (itemStack == null) {
-                sender.sendMessage("Failed to create spell item for " + spellKey);
-                return true;
-            }
-
-            itemStack.setAmount(count);
-            api.giveItemToPlayer(player, itemStack);
-            sender.sendMessage("Gave spell " + spellKey + " to " + player.getName());
-            return true;
-        } else if (itemName.contains("wand:")) {
-            String wandKey = itemName.substring(5);
-            giveWand(sender, player, wandKey, false, true, false, false);
-            return true;
-        } else if (itemName.contains("upgrade:")) {
-            String wandKey = itemName.substring(8);
-            Wand wand = api.createWand(wandKey);
-            if (wand == null) {
-                sender.sendMessage("Failed to create upgrade item for " + wandKey);
-                return true;
-            }
-
-            wand.makeUpgrade();
-            api.giveItemToPlayer(player, wand.getItem());
-            sender.sendMessage("Gave upgrade " + wand.getName() + " to " + player.getName());
-            return true;
-        } else if (itemName.contains("brush:")) {
-            String brushKey = itemName.substring(6);
-            ItemStack itemStack = api.createBrushItem(brushKey);
-            if (itemStack == null) {
-                sender.sendMessage("Failed to create brush item for " + brushKey);
-                return false;
-            }
-
-            itemStack.setAmount(count);
-            api.giveItemToPlayer(player, itemStack);
-            sender.sendMessage("Gave brush " + brushKey + " to " + player.getName());
-            return true;
-        } else if (itemName.contains("item:")) {
-            String itemKey = itemName.substring(5);
-            ItemStack itemStack = api.createGenericItem(itemKey);
-            if (itemStack == null) {
-                sender.sendMessage("Failed to create item for " + itemKey);
-                return false;
-            }
-
-            itemStack.setAmount(count);
-            api.giveItemToPlayer(player, itemStack);
-            sender.sendMessage("Gave item " + itemKey + " to " + player.getName());
-            return true;
         } else {
-            Wand wand = api.createWand(itemName);
-            if (wand != null) {
-                Mage mage = api.getMage(player);
-                Wand currentWand =  mage.getActiveWand();
-                if (currentWand != null) {
-                    currentWand.closeInventory();
-                }
-                api.giveItemToPlayer(player, wand.getItem());
-                sender.sendMessage("Gave wand " + wand.getName() + " to " + player.getName());
+            ItemStack item = api.createItem(itemName);
+            if (item == null) {
+                sender.sendMessage(ChatColor.RED + "Unknown item type " + itemName);
                 return true;
             }
-            ItemStack itemStack = api.createSpellItem(itemName);
-            if (itemStack != null) {
-                itemStack.setAmount(count);
-                api.giveItemToPlayer(player, itemStack);
-                sender.sendMessage("Gave spell " + itemName + " to " + player.getName());
-                return true;
-            }
-            MaterialAndData item = new MaterialAndData(itemName);
-            if (item.isValid()) {
-                api.giveItemToPlayer(player, item.getItemStack(count));
-                sender.sendMessage("Gave " + count + " of " + item.getName() + " to " + player.getName());
-                return true;
-            }
-            itemStack = api.createBrushItem(itemName);
-            if (itemStack != null) {
-                itemStack.setAmount(count);
-                api.giveItemToPlayer(player, itemStack);
-                sender.sendMessage("Gave brush " + itemName + " to " + player.getName());
-                return true;
-            }
+            item.setAmount(count);
+            String displayName = api.describeItem(item);
+            sender.sendMessage("Gave " + count + " " + displayName + " to " + player.getName());
+            api.giveItemToPlayer(player, item);
         }
-
-        sender.sendMessage(ChatColor.RED + "Unknown item type " + itemName);
 
         return true;
 	}

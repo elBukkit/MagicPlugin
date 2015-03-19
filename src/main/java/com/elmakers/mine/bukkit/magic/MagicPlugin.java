@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.logging.Level;
 
-import com.elmakers.mine.bukkit.api.magic.Messages;
+import com.elmakers.mine.bukkit.api.magic.*;
 import com.elmakers.mine.bukkit.api.spell.SpellCategory;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.citizens.CitizensController;
@@ -16,12 +16,11 @@ import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.BookMeta;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import com.elmakers.mine.bukkit.api.magic.Automaton;
-import com.elmakers.mine.bukkit.api.magic.MageController;
-import com.elmakers.mine.bukkit.api.magic.MagicAPI;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.api.wand.LostWand;
 import com.elmakers.mine.bukkit.wand.Wand;
@@ -320,28 +319,93 @@ public class MagicPlugin extends JavaPlugin implements MagicAPI
 	}
 
     @Override
+    public String describeItem(ItemStack item) {
+        String displayName = null;
+        if (item.hasItemMeta()) {
+            ItemMeta meta = item.getItemMeta();
+            displayName = meta.getDisplayName();
+            if ((displayName == null || displayName.isEmpty()) && meta instanceof BookMeta) {
+                BookMeta book = (BookMeta)meta;
+                displayName = book.getTitle();
+            }
+        }
+        if (displayName == null || displayName.isEmpty()) {
+            MaterialAndData material = new MaterialAndData(item);
+            displayName = material.getName();
+        }
+        return displayName;
+    }
+
+    @Override
     public ItemStack createItem(String magicItemKey) {
-        ItemStack item = null;
+        ItemStack itemStack = null;
         if (controller == null) {
             getLogger().log(Level.WARNING, "Calling API before plugin is initialized");
-            return item;
+            return itemStack;
         }
 
+        // Handle : or | as delimiter
+        magicItemKey = magicItemKey.replace("|", ":");
+
         try {
-            item = Wand.createItem(controller, magicItemKey);
-            if (item == null)
-            {
-                MaterialAndData material = new MaterialAndData(magicItemKey);
-                if (material.isValid())
-                {
-                    item = material.getItemStack(1);
+            if (magicItemKey.contains("skull:") || magicItemKey.contains("skull_item:")) {
+                magicItemKey = magicItemKey.replace("skull:", "skull_item:");
+                MaterialAndData skullData = new MaterialAndData(magicItemKey);
+                itemStack = skullData.getItemStack(1);
+            } else if (magicItemKey.contains("book:")) {
+                String bookCategory = magicItemKey.substring(5);
+                SpellCategory category = null;
+
+                if (!bookCategory.isEmpty() && !bookCategory.equalsIgnoreCase("all")) {
+                    category = controller.getCategory(bookCategory);
+                    if (category == null) {
+                        return null;
+                    }
                 }
+                itemStack = getSpellBook(category, 1);
+            } else if (magicItemKey.contains("spell:")) {
+                String spellKey = magicItemKey.substring(6);
+                itemStack = createSpellItem(spellKey);
+            } else if (magicItemKey.contains("wand:")) {
+                String wandKey = magicItemKey.substring(5);
+                com.elmakers.mine.bukkit.api.wand.Wand wand = createWand(wandKey);
+                if (wand != null) {
+                    itemStack = wand.getItem();
+                }
+            } else if (magicItemKey.contains("upgrade:")) {
+                String wandKey = magicItemKey.substring(8);
+                com.elmakers.mine.bukkit.api.wand.Wand wand = createWand(wandKey);
+                if (wand != null) {
+                    wand.makeUpgrade();
+                    itemStack = wand.getItem();
+                }
+            } else if (magicItemKey.contains("brush:")) {
+                String brushKey = magicItemKey.substring(6);
+                itemStack = createBrushItem(brushKey);
+            } else if (magicItemKey.contains("item:")) {
+                String itemKey = magicItemKey.substring(5);
+                itemStack = createGenericItem(itemKey);
+            } else {
+                com.elmakers.mine.bukkit.api.wand.Wand wand = createWand(magicItemKey);
+                if (wand != null) {
+                    return wand.getItem();
+                }
+                itemStack = createSpellItem(magicItemKey);
+                if (itemStack != null) {
+                    return itemStack;
+                }
+                MaterialAndData item = new MaterialAndData(magicItemKey);
+                if (item.isValid()) {
+                    return item.getItemStack(1);
+                }
+                itemStack = createBrushItem(magicItemKey);
             }
+
         } catch (Exception ex) {
             getLogger().log(Level.WARNING, "Error creating item: " + magicItemKey, ex);
         }
 
-        return item;
+        return itemStack;
     }
 
     @Override

@@ -1252,6 +1252,18 @@ spells:
         insufficient_resources: Costs $cost
         confirm_title: "Upgrade to Architect"
         deducted: "&d&oYou bought &r&6$spell &r&d&ofor &r&a$cost"
+    bookshop:
+        name: Spellbook Shop
+        title: "Spell Books"
+        describe: Get some spell books
+        cost_lore: "Free!"
+        cast: ""
+        cast_player_message: ""
+        fail: ""
+        no_items: There is nothing to buy here!
+        insufficient_resources: Costs $cost
+        confirm_title: "Get $item"
+        deducted: "&d&oYou received &r&6$item"
 
 wands:
     default:

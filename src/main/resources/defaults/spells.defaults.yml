@@ -5889,6 +5889,28 @@ architectshop:
         spells:
           absorb: 5000
 
+bookshop:
+    icon: book
+    category: utility
+    hidden: true
+    actions:
+        cast:
+        -  class: ItemShop
+    parameters:
+        loud: true
+        confirm: false
+        items:
+          book|combat: 0
+          book|automata: 0
+          book|master: 0
+          book|utility: 0
+          book|demolition: 0
+          book|dark: 0
+          book|light: 0
+          book|engineering: 0
+          book|elemental: 0
+          book|mining: 0
+
 addspell:
     icon: iron_hoe
     category: utility
