@@ -415,4 +415,12 @@ public class ActionHandler implements Cloneable
     public boolean isFinished() {
         return currentAction == null;
     }
+
+    public int size() {
+        return actions.size();
+    }
+
+    public List<ActionContext> getActions() {
+        return actions;
+    }
 }
