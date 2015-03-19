@@ -24,4 +24,5 @@ public interface SpellAction extends Cloneable
     public void load(Mage mage, ConfigurationSection data);
     public void save(Mage mage, ConfigurationSection data);
     public int getActionCount();
+    public Object clone();
 }
