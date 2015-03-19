@@ -35,11 +35,7 @@ public class ModifyBreakable extends BaseSpellAction {
 
         MageController controller = context.getController();
         context.registerForUndo(block);
-        if (breakable > 0) {
-            block.setMetadata("breakable", new FixedMetadataValue(controller.getPlugin(), breakable));
-        } else {
-            block.removeMetadata("breakable", controller.getPlugin());
-        }
+        context.registerBreakable(block, breakable);
         return SpellResult.CAST;
     }
 

@@ -85,7 +85,6 @@ public class ModifyBlockAction extends BaseSpellAction {
         if (replaceable == null || replaceable.contains(new MaterialAndData(block))) {
             Material previousMaterial = block.getType();
             byte previousData = block.getData();
-            MageController controller = context.getController();
 
             if (brush.isDifferent(block)) {
                 context.registerForUndo(block);
@@ -114,10 +113,10 @@ public class ModifyBlockAction extends BaseSpellAction {
             }
 
             if (breakable > 0) {
-                block.setMetadata("breakable", new FixedMetadataValue(controller.getPlugin(), breakable));
+                context.registerBreakable(block, breakable);
             }
             if (backfireChance > 0) {
-                block.setMetadata("backfire", new FixedMetadataValue(controller.getPlugin(), backfireChance));
+                context.registerReflective(block, backfireChance);
             }
             return SpellResult.CAST;
         }

@@ -35,11 +35,7 @@ public class ModifyReflectiveAction extends BaseSpellAction {
 
         MageController controller = context.getController();
         context.registerForUndo(block);
-        if (backfireChance > 0) {
-            block.setMetadata("backfire", new FixedMetadataValue(controller.getPlugin(), backfireChance));
-        } else {
-            block.removeMetadata("backfire", controller.getPlugin());
-        }
+        context.registerReflective(block, backfireChance);
         return SpellResult.CAST;
     }
 
