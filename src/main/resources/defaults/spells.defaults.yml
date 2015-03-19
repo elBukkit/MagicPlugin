@@ -822,7 +822,7 @@ reflect:
     upgrade_required_casts: 25
     actions:
         cast:
-        -  class: Disc
+        -  class: Plane
            actions:
            -  class: ModifyBlock
     effects:
@@ -833,7 +833,7 @@ reflect:
     parameters:
         allow_max_range: true
         range: 3
-        radius: 1
+        radius: 0
         brush: stained_glass
         orient: true
         transparent: transparent_to_construction
@@ -862,7 +862,7 @@ reflect|2:
 
 reflect|3:
     parameters:
-        radius: 2
+        radius: 1
         undo: 1000
         reflect_chance: 0.75
         breakable: 1
@@ -875,8 +875,12 @@ disc:
     icon: ink_sack:8
     icon_url: http://i.imgur.com/qYdIeMs.png
     category: utility
-    class: ConstructSpell
     worth: 45
+    actions:
+        cast:
+        -  class: Disc
+           actions:
+           -  class: ModifyBlock
     effects:
         cast:
         -  class: EffectSingle
@@ -887,9 +891,6 @@ disc:
         allow_max_range: true
         range: 8
         radius: 2
-        type: sphere
-        orient_dimension_max: 0
-        orient_dimension_min: 0
         transparent: transparent_to_construction
         undo: 20000
         breakable: 2
@@ -1279,11 +1280,9 @@ frost:
           actions:
           - class: PotionEffect
           - class: Damage
-        - class: Disc
+        - class: Sphere
           actions:
-          - class: Cover
-            actions:
-            - class: Freeze
+          - class: Freeze
     effects:
         cast:
         -  class: EffectSingle
@@ -1313,8 +1312,8 @@ frost:
         range: 48
         hitbox: true
         radius: 1
-        vertical_search_distance: 8
         transparent: air,snow
+        destructible: freezeable
         damage: 1
         duration: 1000
         effect_slow: 1
@@ -3166,11 +3165,14 @@ blast:
     icon_url: http://i.imgur.com/IqmgaZ2.png
     icon: sulphur
     category: mining
-    class: ConstructSpell
     worth: 12
-    cast_on_no_target: true
     upgrade_required_path: student
     upgrade_required_casts: 50
+    actions:
+        cast:
+        -  class: Sphere
+           actions:
+           -  class: ModifyBlock
     effects:
         cast:
         -  class: EffectSingle
@@ -3204,7 +3206,6 @@ blast:
         falling: true
         brush: air
         radius: 1
-        type: sphere
         undo: 15000
         cooldown: 500
         destructible: destructible_mining
@@ -3372,8 +3373,12 @@ collapse:
     icon_url: http://i.imgur.com/bCGsZYB.png
     icon: iron_plate
     category: combat
-    class: ConstructSpell
     worth: 80
+    actions:
+        cast:
+        -  class: Sphere
+           actions:
+           -  class: ModifyBlock
     effects:
         cast:
         -  class: EffectSingle
@@ -3782,10 +3787,14 @@ blob:
     icon: clay_ball
     icon_url: http://i.imgur.com/SWIxJqS.png
     category: combat
-    class: ConstructSpell
     worth: 20
     upgrade_required_path: apprentice
     upgrade_required_casts: 50
+    actions:
+        cast:
+        -  class: Sphere
+           actions:
+           -  class: ModifyBlock
     effects:
         cast:
         -  class: EffectSingle
@@ -3797,7 +3806,6 @@ blob:
         allow_max_range: true
         range: 32
         radius: 2
-        type: sphere
         transparent: transparent_to_construction
         undo: 2000
         cooldown: 1000
