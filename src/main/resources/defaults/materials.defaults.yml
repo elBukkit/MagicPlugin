@@ -160,6 +160,18 @@ freezeable:
 - double_plant
 - snow
 
+freeze_transparent:
+- air
+- fire
+- long_grass
+- dead_bush
+- yellow_flower
+- red_rose
+- brown_mushroom
+- red_mushroom
+- double_plant
+- snow
+
 # Which materials are defined as ores
 # This can be used to make "erasure" spells that avoid destroying ore,
 # or otherwise make spells that act specifically on ores.

@@ -80,11 +80,46 @@ public class FreezeAction extends BaseSpellAction
         else
 		{
 			block = block.getRelative(BlockFace.UP);
+
+            // This is kind of ugly, maybe clean it up somehow?
+            if (block.getType() == Material.WATER || block.getType() == Material.STATIONARY_WATER)
+            {
+                if (!freezeWater)
+                {
+                    return SpellResult.NO_TARGET;
+                }
+                material = iceMaterial;
+            }
+            else if (block.getType() == Material.LAVA)
+            {
+                if (!freezeLava)
+                {
+                    return SpellResult.NO_TARGET;
+                }
+                material = Material.COBBLESTONE;
+            }
+            else if (block.getType() == Material.STATIONARY_LAVA)
+            {
+                if (!freezeLava)
+                {
+                    return SpellResult.NO_TARGET;
+                }
+                material = Material.OBSIDIAN;
+            }
+            else if (block.getType() == Material.FIRE)
+            {
+                if (!freezeFire)
+                {
+                    return SpellResult.NO_TARGET;
+                }
+                material = Material.AIR;
+            }
 		}
         if (!context.isDestructible(block))
         {
             return SpellResult.NO_TARGET;
         }
+
         context.registerForUndo(block);
 		MaterialAndData applyMaterial = new MaterialAndData(material);
 		if (block.getType() == Material.SNOW && material == Material.SNOW)

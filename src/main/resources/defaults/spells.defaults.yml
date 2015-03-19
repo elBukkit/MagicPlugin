@@ -1282,6 +1282,7 @@ frost:
           - class: Damage
         - class: Sphere
           actions:
+          - class: ModifyBreakable
           - class: Freeze
     effects:
         cast:
@@ -1312,7 +1313,7 @@ frost:
         range: 48
         hitbox: true
         radius: 1
-        transparent: freezeable
+        transparent: freeze_transparent
         destructible: freezeable
         damage: 1
         duration: 1000
