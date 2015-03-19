@@ -130,6 +130,10 @@ public abstract class ParallelCompoundAction extends BaseSpellAction implements 
 		return actions.transformMessage(message);
 	}
 
+    public void createActionContext(CastContext context) {
+        actionContext = createContext(context);
+    }
+
     public CastContext createContext(CastContext context) {
         return new com.elmakers.mine.bukkit.action.CastContext(context);
     }
@@ -166,10 +170,11 @@ public abstract class ParallelCompoundAction extends BaseSpellAction implements 
         return action;
     }
 
-    @Override
-    public void reset(CastContext context)
-    {
-        super.reset(context);
-        actionContext = createContext(context);
+    public CastContext getActionContext(CastContext context) {
+        if (actionContext == null)
+        {
+            actionContext = context;
+        }
+        return actionContext;
     }
 }

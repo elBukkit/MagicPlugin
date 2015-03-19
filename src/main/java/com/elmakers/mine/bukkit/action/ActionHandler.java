@@ -29,6 +29,7 @@ public class ActionHandler implements Cloneable
     private boolean isConditionalOnSuccess = false;
     private boolean isConditionalOnFailure = false;
     private Integer currentAction = null;
+    private boolean started = false;
     private SpellResult result = SpellResult.NO_ACTION;
 
     public ActionHandler()
@@ -152,9 +153,9 @@ public class ActionHandler implements Cloneable
 
     public void reset(CastContext context)
     {
+        started = false;
         if (actions.size() > 0) {
             this.currentAction = 0;
-            actions.get(0).getAction().reset(context);
         } else {
             this.currentAction = null;
         }
@@ -193,6 +194,10 @@ public class ActionHandler implements Cloneable
         while (currentAction != null)
         {
             ActionContext action = actions.get(currentAction);
+            if (!started) {
+                started = true;
+                action.getAction().reset(context);
+            }
             if (action.getAction().requiresTargetEntity() && targetEntity == null) {
                 result = result.min(SpellResult.NO_TARGET);
                 advance(context);

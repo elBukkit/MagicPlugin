@@ -9,7 +9,7 @@ public abstract class CompoundAction extends ParallelCompoundAction
     @Override
     public void finish(CastContext context) {
         if (actions != null) {
-            actions.finish(context);
+            actions.finish(getActionContext(context));
         }
     }
 
@@ -17,7 +17,7 @@ public abstract class CompoundAction extends ParallelCompoundAction
     public void prepare(CastContext context, ConfigurationSection parameters) {
         super.prepare(context, parameters);
         if (actions != null) {
-            actions.prepare(context, parameters);
+            actions.prepare(getActionContext(context), parameters);
         }
     }
 
@@ -25,7 +25,7 @@ public abstract class CompoundAction extends ParallelCompoundAction
     {
         super.reset(context);
         if (actions != null) {
-            actions.reset(actionContext);
+            actions.reset(getActionContext(context));
         }
     }
 
