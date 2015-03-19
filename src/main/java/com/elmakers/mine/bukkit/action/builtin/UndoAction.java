@@ -16,11 +16,12 @@ import org.bukkit.entity.Entity;
 public class UndoAction extends BaseSpellAction
 {
 	private String undoListName;
-    int timeout;
-    boolean targetSelf;
-    boolean targetDown;
-    boolean targetBlocks;
-    boolean cancel;
+    private int timeout;
+    private String targetSpellKey;
+    private boolean targetSelf;
+    private boolean targetDown;
+    private boolean targetBlocks;
+    private boolean cancel;
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters)
@@ -33,6 +34,7 @@ public class UndoAction extends BaseSpellAction
         targetDown = parameters.getBoolean("target_down", false);
         targetBlocks = parameters.getBoolean("target_blocks", true);
         cancel = parameters.getBoolean("cancel", true);
+        targetSpellKey = parameters.getString("target_spell", null);
     }
 
     @Override
@@ -52,7 +54,7 @@ public class UndoAction extends BaseSpellAction
 		{
 			Mage targetMage = controller.getMage(targetEntity);
 
-            Batch batch = targetMage.cancelPending();
+            Batch batch = targetMage.cancelPending(targetSpellKey);
             if (batch != null) {
                 undoListName = (batch instanceof SpellBatch) ? ((SpellBatch)batch).getSpell().getName() : null;
                 if (cancel)
@@ -62,7 +64,7 @@ public class UndoAction extends BaseSpellAction
             }
 
             UndoQueue queue = targetMage.getUndoQueue();
-			UndoList undoList = queue.undoRecent(timeout);
+			UndoList undoList = queue.undoRecent(timeout, targetSpellKey);
 			if (undoList != null) {
 				undoListName = undoList.getName();
 			}

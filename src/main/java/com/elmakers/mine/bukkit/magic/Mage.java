@@ -12,6 +12,7 @@ import java.util.Map;
 import java.util.Set;
 
 import com.elmakers.mine.bukkit.api.action.GUIAction;
+import com.elmakers.mine.bukkit.api.batch.SpellBatch;
 import com.elmakers.mine.bukkit.api.spell.SpellKey;
 import com.elmakers.mine.bukkit.effect.HoloUtils;
 import com.elmakers.mine.bukkit.effect.Hologram;
@@ -792,11 +793,26 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
     @Override
     public Batch cancelPending() {
+        return cancelPending(null);
+    }
+
+    @Override
+    public Batch cancelPending(String spellKey) {
         Batch stoppedPending = null;
         if (pendingBatches.size() > 0) {
             List<Batch> batches = new ArrayList<Batch>();
             batches.addAll(pendingBatches);
             for (Batch batch : batches) {
+                if (spellKey != null) {
+                    if (!(batch instanceof SpellBatch)) {
+                        continue;
+                    }
+                    SpellBatch spellBatch = (SpellBatch)batch;
+                    Spell spell = spellBatch.getSpell();
+                    if (spell == null || !spell.getSpellKey().getBaseKey().equalsIgnoreCase(spellKey)) {
+                        continue;
+                    }
+                }
                 if (!(batch instanceof UndoBatch)) {
                     batch.finish();
                     pendingBatches.remove(batch);
