@@ -3,8 +3,9 @@ package com.elmakers.mine.bukkit.batch;
 import com.elmakers.mine.bukkit.action.ActionHandler;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.batch.Batch;
+import com.elmakers.mine.bukkit.api.spell.Spell;
 
-public class ActionBatch implements Batch {
+public class ActionBatch implements com.elmakers.mine.bukkit.api.batch.SpellBatch {
     private final int actionCount;
     private final CastContext context;
     private final ActionHandler handler;
@@ -46,5 +47,10 @@ public class ActionBatch implements Batch {
     @Override
     public int remaining() {
         return Math.max(0, actionCount - context.getActionsPerformed());
+    }
+
+    @Override
+    public Spell getSpell() {
+        return context.getSpell();
     }
 }

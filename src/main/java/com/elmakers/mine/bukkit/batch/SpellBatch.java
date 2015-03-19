@@ -1,8 +1,9 @@
 package com.elmakers.mine.bukkit.batch;
 
+import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.spell.UndoableSpell;
 
-public abstract class SpellBatch extends UndoableBatch {
+public abstract class SpellBatch extends UndoableBatch implements com.elmakers.mine.bukkit.api.batch.SpellBatch {
     protected final UndoableSpell spell;
 
     public SpellBatch(UndoableSpell spell) {
@@ -18,7 +19,7 @@ public abstract class SpellBatch extends UndoableBatch {
         }
     }
 
-    public UndoableSpell getSpell() {
+    public Spell getSpell() {
         return spell;
     }
 }
