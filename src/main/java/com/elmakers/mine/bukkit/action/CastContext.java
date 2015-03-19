@@ -573,6 +573,7 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
 
     @Override
     public void registerBreakable(Block block, int breakable) {
+        if (block == null || block.getType() == Material.AIR) return;
         MageController controller = getController();
         if (breakable > 0) {
             block.setMetadata("breakable", new FixedMetadataValue(controller.getPlugin(), breakable));
@@ -584,6 +585,7 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
 
     @Override
     public void registerReflective(Block block, double reflectivity) {
+        if (block == null || block.getType() == Material.AIR) return;
         MageController controller = getController();
         if (reflectivity > 0) {
             block.setMetadata("backfire", new FixedMetadataValue(controller.getPlugin(), reflectivity));
