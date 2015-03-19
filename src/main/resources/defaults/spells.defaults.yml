@@ -5901,7 +5901,6 @@ bookshop:
         confirm: false
         items:
           book|combat: 0
-          book|automata: 0
           book|master: 0
           book|utility: 0
           book|demolition: 0
