@@ -285,6 +285,17 @@ public interface MagicAPI {
     public ItemStack createGenericItem(String magicItemKey);
 
     /**
+     * Return a string description of an item.
+     *
+     * This will use the display name if set, then Vault if
+     * present, then falling back to the Material name.
+     *
+     * @param item
+     * @return A description of this item
+     */
+    public String describeItem(ItemStack item);
+
+    /**
      * Create a new Wand from a template.
      *
      * Once created, a Wand is a unique item. It "remembers" which template
