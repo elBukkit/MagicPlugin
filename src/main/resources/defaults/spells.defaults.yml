@@ -1280,6 +1280,8 @@ frost:
           actions:
           - class: PotionEffect
           - class: Damage
+          - class: Ignite
+            duration: 0
         - class: Sphere
           actions:
           - class: ModifyBreakable
