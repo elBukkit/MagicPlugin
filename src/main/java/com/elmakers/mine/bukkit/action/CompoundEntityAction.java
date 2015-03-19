@@ -18,15 +18,13 @@ public abstract class CompoundEntityAction extends CompoundAction
     private List<WeakReference<Entity>> entities = new ArrayList<WeakReference<Entity>>();
     private int currentEntity = 0;
 
-    public abstract void prepareEntities(CastContext context, ConfigurationSection parameters, List<WeakReference<Entity>> entities);
+    public abstract void addEntities(CastContext context, List<WeakReference<Entity>> entities);
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters)
     {
         super.prepare(context, parameters);
         targetSelf = parameters.getBoolean("target_self", false);
-        entities.clear();
-        prepareEntities(context, parameters, entities);
     }
 
     @Override
@@ -39,6 +37,9 @@ public abstract class CompoundEntityAction extends CompoundAction
 	@Override
     public SpellResult perform(CastContext context)
 	{
+        entities.clear();
+        addEntities(context, entities);
+
         SpellResult result = SpellResult.NO_TARGET;
         while (currentEntity < entities.size())
         {
