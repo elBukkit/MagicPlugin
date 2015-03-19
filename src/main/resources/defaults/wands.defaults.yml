@@ -651,6 +651,7 @@ wolf:
         - stun
         - petrify
         - entangle
+        - singularity
     materials:
         - erase@16
         - copy@17

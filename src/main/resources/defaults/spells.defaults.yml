@@ -3238,11 +3238,30 @@ earthquake:
         - class: AreaOfEffect
           actions:
           - class: Velocity
-        - class: Disc
+        - class: Delay
+          delay: 500
           actions:
-          - class: Cover
+          - class: Parallel
             actions:
-            - class: ModifyBlock
+            - class: Repeat
+              count: 10
+              actions:
+              - class: Delay
+                delay: 250
+                actions:
+                - class: AreaOfEffect
+                  actions:
+                  - class: Velocity
+                    living_entity_speed: 0.3
+            - class: Disc
+              actions:
+              - class: Skip
+                actions:
+                - class: Delay
+                  delay: 10
+              - class: Cover
+                actions:
+                - class: ModifyBlock
     effects:
         cast:
         -  class: EffectSingle
@@ -3268,9 +3287,11 @@ earthquake:
              radius: 4
              particle: flame
     parameters:
+        target_type: LivingEntity
         allow_max_range: false
         range: 16
         speed: 0.5
+        item_speed: 0.2
         entity_speed: 1.2
         falling: true
         brush: air
@@ -3278,6 +3299,7 @@ earthquake:
         radius: 5
         destructible: destructible_mining
         undo: 10000
+        skip: 10
     costs:
         mana: 150
 
@@ -4283,7 +4305,7 @@ laser:
              length: 16
              particlesBase: 5
     parameters:
-        target: other
+        target: block
         target_type: LivingEntity
         fov: 0.3
         allow_max_range: true
@@ -5982,3 +6004,84 @@ tracking|2:
 tracking|3:
     parameters:
         range: 128
+
+singularity:
+    icon_url: http://i.imgur.com/Todo6d0.png
+    icon: obsidian
+    category: combat
+    pvp_restricted: true
+    worth: 2
+    upgrade_required_path: student
+    upgrade_required_casts: 50
+    actions:
+        cast:
+        - class: ThrowBlock
+          actions:
+          - class: Brush
+            brush: erase
+            actions:
+            - class: Sphere
+              actions:
+              - class: ModifyBlock
+                direction: 0,1,0
+          - class: Repeat
+            actions:
+            - class: Delay
+              actions:
+              - class: AreaOfEffect
+                actions:
+                - class: Velocity
+                  push: -1
+                  entity_speed: 0.7
+            - class: Delay
+              actions:
+              - class: AreaOfEffect
+                actions:
+                - class: Velocity
+                  push: 1
+                  entity_speed: 0.1
+    effects:
+        cast:
+        -  class: EffectSingle
+           custom_sound: magic.bonk
+           sound_pitch: 0.2
+           sound_volume: 0.3
+           location: origin
+        hit:
+        -  class: EffectSingle
+           location: origin
+           color: CC9933
+           firework: burst
+           sound: explode
+           custom_sound: magic.hit
+           effectlib:
+             class: SphereEffect
+             iterations: 70
+             period: .1
+             particle: redstone
+             color: 010101
+             radius: 2
+             particles: 20
+        projectile:
+        -  class: EffectSingle
+           location: origin
+           effectlib:
+             class: SmokeEffect
+             iterations: 16
+             particle: smoke_normal
+    parameters:
+      target_type: Entity
+      brush: obsidian
+      undo: 15000
+      radius: 5
+      count: 10
+      delay: 250
+      target_self: true
+      speed: 0.5
+      item_speed: 0.5
+      entity_speed: 0.5
+      falling: true
+      radius: 5
+      check_destructible: false
+    costs:
+        mana: 50

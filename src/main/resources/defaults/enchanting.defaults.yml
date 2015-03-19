@@ -377,6 +377,7 @@ master:
       petrify: 0,10,30
       lift: 1,5,10
       anvil: 0,0,10
+      singularity: 0,1,5
 
 #
 # The move from "master" to engineer requires the player to aquire some basic

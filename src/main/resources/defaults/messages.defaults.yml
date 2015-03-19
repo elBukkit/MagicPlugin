@@ -360,6 +360,10 @@ spells:
         name: Flash Bang
         description: Toss a ball of light and fury
         cast_player_message: "You were hit by $player's flash bang"
+    singularity:
+        name: Singularity
+        description: Create a black hole
+        cast_player_message: "You got sucked into a black hole"
     arrow:
         name: Arrow
         description: Fire a magic arrow
