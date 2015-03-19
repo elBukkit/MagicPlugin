@@ -21,6 +21,7 @@ public interface UndoQueue {
      * @return The UndoList that was undone, or null if none.
      */
     public UndoList undoRecent(int timeout);
+    public UndoList undoRecent(int timeout, String spellKey);
 
     /**
      * Undo a recent construction performed by this Mage against the
