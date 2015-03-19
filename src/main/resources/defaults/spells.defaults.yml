@@ -1307,12 +1307,12 @@ frost:
              particle: snowball
              radius: 5
     parameters:
-        target_type: LivingEntity
+        target: block
         allow_max_range: false
         range: 48
         hitbox: true
         radius: 1
-        transparent: air,snow
+        transparent: freezeable
         destructible: freezeable
         damage: 1
         duration: 1000
@@ -3374,6 +3374,8 @@ collapse:
     icon: iron_plate
     category: combat
     worth: 80
+    upgrade_required_path: master
+    upgrade_required_casts: 50
     actions:
         cast:
         -  class: Sphere
@@ -3424,6 +3426,11 @@ collapse:
         select_self: false
     costs:
         mana: 50
+
+collapse|2:
+    parameters:
+       check_destructible: false
+       radius: 3
 
 supercollapse:
     icon: gold_plate

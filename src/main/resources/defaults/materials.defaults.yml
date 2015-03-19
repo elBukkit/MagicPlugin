@@ -636,6 +636,7 @@ interactible:
 - jungle_door
 - acacia_door
 - dark_oak_door
+- fence_gate
 - spruce_fence_gate
 - birch_fence_gate
 - jungle_fence_gate

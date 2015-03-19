@@ -632,6 +632,7 @@ spells:
         name: Collapse
         description: Collapse a spherical area of blocks
         cast_finish: Collapsed $count blocks
+        upgrade_description: "&r&b• &6Increased radius, breaks more types of blocks"
     superconvert:
         name: SuperConvert
         description: Convert a large sphere of blocks
