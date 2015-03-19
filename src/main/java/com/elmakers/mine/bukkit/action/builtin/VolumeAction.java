@@ -53,6 +53,7 @@ public class VolumeAction extends CompoundAction
 	@Override
 	public void reset(CastContext context) {
 		super.reset(context);
+        createActionContext(context);
 		currentRadius = 0;
 		dx = 0;
         dy = -ySize;

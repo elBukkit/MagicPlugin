@@ -38,7 +38,7 @@ public class AreaOfEffectAction extends CompoundEntityAction
     }
 
     @Override
-    public void prepareEntities(CastContext context, ConfigurationSection parameters, List<WeakReference<Entity>> entities)
+    public void addEntities(CastContext context, List<WeakReference<Entity>> entities)
     {
         Entity sourceEntity = context.getEntity();
         Location sourceLocation = context.getTargetLocation();

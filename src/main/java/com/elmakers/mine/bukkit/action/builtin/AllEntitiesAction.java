@@ -43,7 +43,7 @@ public class AllEntitiesAction extends CompoundEntityAction
     }
 
     @Override
-    public void prepareEntities(CastContext context, ConfigurationSection parameters, List<WeakReference<Entity>> entities)
+    public void addEntities(CastContext context, List<WeakReference<Entity>> entities)
     {
         Spell spell = context.getSpell();
 		Entity sourceEntity = context.getEntity();

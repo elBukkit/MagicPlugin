@@ -48,6 +48,7 @@ public class LineAction extends CompoundAction
     @Override
     public void reset(CastContext context) {
         super.reset(context);
+        createActionContext(context);
         current = 0;
 
         Location startLocation = context.getEyeLocation();

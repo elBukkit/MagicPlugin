@@ -41,7 +41,7 @@ public class ConeOfEffectAction extends CompoundEntityAction
     }
 
     @Override
-    public void prepareEntities(CastContext context, ConfigurationSection parameters, List<WeakReference<Entity>> entities) {
+    public void addEntities(CastContext context, List<WeakReference<Entity>> entities) {
         Spell spell = context.getSpell();
         if (!(spell instanceof TargetingSpell)) {
             return;

@@ -18,6 +18,7 @@ public class CoverAction extends CompoundAction
             skippedActions(context);
             return SpellResult.NO_TARGET;
         }
+        createActionContext(context);
         actionContext.setTargetLocation(targetBlock.getLocation());
 		return performActions(actionContext);
 	}

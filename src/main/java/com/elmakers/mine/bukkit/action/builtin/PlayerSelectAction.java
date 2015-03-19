@@ -58,7 +58,7 @@ public class PlayerSelectAction extends CompoundAction implements GUIAction
             {
                 Mage mage = context.getMage();
                 mage.deactivateGUI();
-                CastContext actionContext = createContext(context);
+                createActionContext(context);
                 actionContext.setTargetEntity(player);
                 actionContext.setTargetLocation(player.getLocation());
                 performActions(actionContext);
