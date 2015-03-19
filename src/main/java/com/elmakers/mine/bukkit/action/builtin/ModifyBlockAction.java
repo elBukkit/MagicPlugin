@@ -39,18 +39,15 @@ public class ModifyBlockAction extends BaseSpellAction {
         applyPhysics = parameters.getBoolean("physics", false);
         breakable = parameters.getInt("breakable", 0);
         backfireChance = parameters.getDouble("reflect_chance", 0);
+        fallingBlockSpeed = parameters.getDouble("speed", 1.0);
+        fallingBlockDirection = null;
         if (spawnFallingBlocks && parameters.contains("direction"))
         {
-            fallingBlockSpeed = parameters.getDouble("speed", 1.0);
             fallingBlockDirection = ConfigurationUtils.getVector(parameters, "direction");
             if (fallingBlockDirection != null)
             {
                 fallingBlockDirection.normalize();
             }
-        }
-        else
-        {
-            fallingBlockSpeed = 0;
         }
     }
 
@@ -100,8 +97,8 @@ public class ModifyBlockAction extends BaseSpellAction {
                     if (fallingBlockSpeed > 0) {
                         Vector fallingBlockVelocity = fallingBlockDirection;
                         if (fallingBlockVelocity == null) {
-                            Location source = context.getLocation();
-                            fallingBlockVelocity = block.getLocation().toVector().subtract(source.toVector());
+                            Location source = context.getBaseContext().getTargetLocation();
+                            fallingBlockVelocity = falling.getLocation().subtract(source).toVector();
                             fallingBlockVelocity.normalize();
                         } else {
                             fallingBlockVelocity = fallingBlockVelocity.clone();
@@ -109,6 +106,7 @@ public class ModifyBlockAction extends BaseSpellAction {
                         fallingBlockVelocity.multiply(fallingBlockSpeed);
                         falling.setVelocity(fallingBlockVelocity);
                     }
+                    context.registerForUndo(falling);
                 }
             }
 
