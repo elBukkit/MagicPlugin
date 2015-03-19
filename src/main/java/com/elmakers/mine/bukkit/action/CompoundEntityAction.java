@@ -45,6 +45,7 @@ public abstract class CompoundEntityAction extends CompoundAction
             Entity entity = entities.get(currentEntity).get();
             if (entity == null)
             {
+                currentEntity++;
                 skippedActions(context);
                 continue;
             }
