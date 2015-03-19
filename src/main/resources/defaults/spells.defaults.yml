@@ -6008,7 +6008,7 @@ tracking|3:
 singularity:
     icon_url: http://i.imgur.com/Todo6d0.png
     icon: obsidian
-    category: combat
+    category: master
     pvp_restricted: true
     worth: 2
     upgrade_required_path: student
