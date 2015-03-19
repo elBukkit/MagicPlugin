@@ -73,7 +73,11 @@ public class FreezeAction extends BaseSpellAction
 		{
 			material = Material.SNOW;
 		}
-		else
+		else if (context.isTransparent(block.getType()))
+        {
+            return SpellResult.NO_TARGET;
+        }
+        else
 		{
 			block = block.getRelative(BlockFace.UP);
 		}
@@ -85,10 +89,12 @@ public class FreezeAction extends BaseSpellAction
 		MaterialAndData applyMaterial = new MaterialAndData(material);
 		if (block.getType() == Material.SNOW && material == Material.SNOW)
 		{
-			if (block.getData() < 7)
+            short data = block.getData();
+			if (data < 7)
 			{
-				applyMaterial.setData((short)(block.getData() + 1));
+				data++;
 			}
+            applyMaterial.setData(data);
 		}
 		applyMaterial.modify(block);
 		return SpellResult.CAST;
