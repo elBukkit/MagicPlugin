@@ -26,6 +26,9 @@ public interface UndoList extends BlockList, Comparable<UndoList> {
     public long getScheduledTime();
     public boolean isScheduled();
 
+    public void setUndoBreakable(boolean breakable);
+    public void setUndoReflective(boolean reflective);
+
     public void prune();
 
     public void add(Entity entity);

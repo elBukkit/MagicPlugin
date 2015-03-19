@@ -39,6 +39,8 @@ public interface CastContext {
     public void registerVelocity(Entity entity);
     public void registerMoved(Entity entity);
     public void registerPotionEffects(Entity entity);
+    public void registerBreakable(Block block, int breakable);
+    public void registerReflective(Block block, double reflectivity);
     public Block getPreviousBlock();
     public Vector getDirection();
     public World getWorld();
