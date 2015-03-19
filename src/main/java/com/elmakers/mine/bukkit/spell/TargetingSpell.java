@@ -81,6 +81,9 @@ public abstract class TargetingSpell extends BaseSpell {
     {
         clearTarget();
         blockIterator = null;
+        currentBlock = null;
+        previousBlock = null;
+        previousPreviousBlock = null;
         targetSpaceRequired = false;
         reverseTargeting = false;
         targetingComplete = false;
@@ -419,7 +422,7 @@ public abstract class TargetingSpell extends BaseSpell {
         }
 
         Target targetBlock = block == null ? null : new Target(location, block);
-        Target entityTarget = getEntityTarget(targetBlock);
+        Target entityTarget = getEntityTarget();
 
         // Don't allow targeting entities in an area you couldn't cast the spell in
         if (entityTarget != null && !canCast(entityTarget.getLocation())) {
@@ -478,25 +481,16 @@ public abstract class TargetingSpell extends BaseSpell {
         return getTarget().getBlock();
     }
 
-    protected Target getEntityTarget(Target blockTarget)
+    protected Target getEntityTarget()
     {
         if (targetEntityType == null) return null;
-        List<Target> scored = getAllTargetEntities(blockTarget);
+        List<Target> scored = getAllTargetEntities();
         if (scored.size() <= 0) return null;
         return scored.get(0);
     }
 
     protected List<Target> getAllTargetEntities() {
-        return getAllTargetEntities(null);
-    }
-
-    protected List<Target> getAllTargetEntities(Target target) {
-        double range = this.range;
-        if (target != null)
-        {
-            range = target.getDistanceSquared();
-        }
-        return getAllTargetEntities(range);
+        return getAllTargetEntities(this.getMaxRange());
     }
 
     protected List<Target> getAllTargetEntities(double range) {
@@ -510,14 +504,18 @@ public abstract class TargetingSpell extends BaseSpell {
         }
         targets = new ArrayList<Target>();
 
+        if (currentBlock != null && sourceLocation != null && sourceLocation.getWorld().equals(currentBlock.getWorld()))
+        {
+            range = Math.min(range, sourceLocation.distance(currentBlock.getLocation()));
+        }
+
         int rangeSquared = (int)Math.floor(range * range);
         List<Entity> entities = null;
-        int maxRange = getMaxRange();
-        maxRange = Math.min(maxRange, CompatibilityUtils.MAX_ENTITY_RANGE);
+        range = Math.min(range, CompatibilityUtils.MAX_ENTITY_RANGE);
         if (sourceLocation == null && sourceEntity != null) {
-            entities = sourceEntity.getNearbyEntities(maxRange, maxRange, maxRange);
+            entities = sourceEntity.getNearbyEntities(range, range, range);
         } else if (sourceLocation != null) {
-            entities = CompatibilityUtils.getNearbyEntities(sourceLocation, maxRange, maxRange, maxRange);
+            entities = CompatibilityUtils.getNearbyEntities(sourceLocation, range, range, range);
         }
 
         if (entities == null) return targets;
@@ -539,9 +537,9 @@ public abstract class TargetingSpell extends BaseSpell {
 
             Target newScore = null;
             if (useHitbox) {
-                newScore = new Target(sourceLocation, entity, maxRange, useHitbox);
+                newScore = new Target(sourceLocation, entity, (int)range, useHitbox);
             } else {
-                newScore = new Target(sourceLocation, entity, maxRange, fov, closeRange, closeFOV);
+                newScore = new Target(sourceLocation, entity, (int)range, fov, closeRange, closeFOV);
             }
             if (newScore.getScore() > 0)
             {
