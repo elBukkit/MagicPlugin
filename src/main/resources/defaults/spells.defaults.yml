@@ -3271,7 +3271,7 @@ earthquake:
         allow_max_range: false
         range: 16
         speed: 0.5
-        entity_speed: 1
+        entity_speed: 1.2
         falling: true
         brush: air
         direction: 0,1,0

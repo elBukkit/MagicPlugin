@@ -4100,6 +4100,9 @@ public class MagicController implements Listener, MageController {
 	@Override
 	public com.elmakers.mine.bukkit.api.spell.SpellCategory getCategory(String key) 
 	{
+        if (key == null || key.isEmpty()) {
+            return null;
+        }
 		SpellCategory category = categories.get(key);
 		if (category == null) {
 			category = new com.elmakers.mine.bukkit.spell.SpellCategory(key, this);

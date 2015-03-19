@@ -159,6 +159,7 @@ freezeable:
 - red_mushroom
 - double_plant
 - snow
+- ice
 
 freeze_transparent:
 - air
