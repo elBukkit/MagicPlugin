@@ -329,13 +329,6 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         isValid = true;
     }
 
-    public static void removeMetadata(Block block, String key) {
-        Collection<MetadataValue> metadata = block.getMetadata(key);
-        for (MetadataValue value : metadata) {
-            block.removeMetadata(key, value.getOwningPlugin());
-        }
-    }
-
     public void modify(Block block) {
         modify(block, false);
     }

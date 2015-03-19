@@ -91,7 +91,7 @@ public class UndoBatch implements com.elmakers.mine.bukkit.api.batch.UndoBatch {
                     || attachablesDouble.contains(material) || delayed.contains(material);
             if ((isAttachable && !finishedAttachables) || (!isAttachable && finishedAttachables)) {
                 trackUndoBlocks.add(blockData);
-                if (!UndoList.undo(blockData, applyPhysics)) {
+                if (!undoList.undo(blockData, applyPhysics)) {
                     break;
                 }
             }

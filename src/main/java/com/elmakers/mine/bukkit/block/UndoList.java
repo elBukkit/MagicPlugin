@@ -61,6 +61,8 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
     protected String				name;
 
     private boolean                 undoEntityEffects = true;
+    protected boolean               undoBreakable = false;
+    protected boolean               undoReflective = false;
 
     public UndoList(Mage mage, UndoableSpell spell, String name)
     {
@@ -194,9 +196,18 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
         }
     }
 
-    public static boolean undo(BlockData undoBlock, boolean applyPhysics)
+    public boolean undo(BlockData undoBlock, boolean applyPhysics)
     {
         BlockData priorState = undoBlock.getPriorState();
+
+        // Remove any tagged metadata
+        if (undoBreakable) {
+            undoBlock.getBlock().removeMetadata("breakable", plugin);
+        }
+        if (undoReflective) {
+            undoBlock.getBlock().removeMetadata("backfire", plugin);
+        }
+
         if (undoBlock.undo(applyPhysics)) {
             removeFromModified(undoBlock, priorState);
             return true;
@@ -611,5 +622,13 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
 
     public static Map<Long, BlockData> getModified() {
         return modified;
+    }
+
+    public void setUndoBreakable(boolean breakable) {
+        this.undoBreakable = breakable;
+    }
+
+    public void setUndoReflective(boolean reflective) {
+        this.undoReflective = reflective;
     }
 }

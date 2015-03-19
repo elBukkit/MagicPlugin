@@ -19,6 +19,7 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.util.Vector;
 
 import java.util.Collection;
@@ -568,5 +569,27 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
     public com.elmakers.mine.bukkit.api.action.CastContext getBaseContext()
     {
         return base;
+    }
+
+    @Override
+    public void registerBreakable(Block block, int breakable) {
+        MageController controller = getController();
+        if (breakable > 0) {
+            block.setMetadata("breakable", new FixedMetadataValue(controller.getPlugin(), breakable));
+        } else {
+            block.removeMetadata("breakable", controller.getPlugin());
+        }
+        undoList.setUndoReflective(true);
+    }
+
+    @Override
+    public void registerReflective(Block block, double reflectivity) {
+        MageController controller = getController();
+        if (reflectivity > 0) {
+            block.setMetadata("backfire", new FixedMetadataValue(controller.getPlugin(), reflectivity));
+        } else {
+            block.removeMetadata("backfire", controller.getPlugin());
+        }
+        undoList.setUndoReflective(true);
     }
 }
