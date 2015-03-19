@@ -169,6 +169,8 @@ public class ItemShopAction extends BaseSpellAction implements GUIAction
             double worth = items.get(itemKey);
 
             ItemStack item = api.createItem(itemKey);
+            if (item == null) continue;
+
             ItemMeta meta = item.getItemMeta();
             List<String> lore = meta.getLore();
             if (lore == null) {
