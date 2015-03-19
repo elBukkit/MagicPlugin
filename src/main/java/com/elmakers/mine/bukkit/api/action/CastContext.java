@@ -75,4 +75,5 @@ public interface CastContext {
     public int getActionsPerformed();
     public void finish();
     public void retarget(int range, double fov, double closeRange, double closeFOV, boolean useHitbox);
+    public CastContext getBaseContext();
 }
