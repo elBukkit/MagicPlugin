@@ -33,7 +33,7 @@ public class DelayAction extends CompoundAction
         {
             return SpellResult.PENDING;
         }
-		return performActions(context);
+		return performActions(actionContext);
 	}
 
     @Override

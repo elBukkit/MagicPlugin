@@ -32,7 +32,7 @@ public class RepeatAction extends CompoundAction
         SpellResult result = SpellResult.NO_ACTION;
         while (current < count)
         {
-            SpellResult actionResult = performActions(context);
+            SpellResult actionResult = performActions(actionContext);
             result = result.min(actionResult);
             if (actionResult == SpellResult.PENDING)
             {
