@@ -39,10 +39,13 @@ public class ModifyBlockAction extends BaseSpellAction {
         applyPhysics = parameters.getBoolean("physics", false);
         breakable = parameters.getInt("breakable", 0);
         backfireChance = parameters.getDouble("reflect_chance", 0);
-        fallingBlockSpeed = parameters.getDouble("speed", 1.0);
+        fallingBlockSpeed = parameters.getDouble("speed", 0);
         fallingBlockDirection = null;
         if (spawnFallingBlocks && parameters.contains("direction"))
         {
+            if (fallingBlockSpeed == 0) {
+                fallingBlockSpeed = 1;
+            }
             fallingBlockDirection = ConfigurationUtils.getVector(parameters, "direction");
             if (fallingBlockDirection != null)
             {
