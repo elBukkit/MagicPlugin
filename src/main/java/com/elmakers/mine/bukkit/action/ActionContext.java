@@ -56,6 +56,6 @@ public class ActionContext implements Cloneable {
     @Override
     public Object clone()
     {
-        return new ActionContext(action, parameters);
+        return new ActionContext((SpellAction)action.clone(), parameters);
     }
 }
