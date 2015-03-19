@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+import com.elmakers.mine.bukkit.api.spell.Spell;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemoryConfiguration;
@@ -150,19 +151,31 @@ public class UndoQueue implements com.elmakers.mine.bukkit.api.block.UndoQueue
      */
     public UndoList undoRecent(int timeout)
     {
-        if (head == null)
-        {
-            return null;
-        }
+        return undoRecent(timeout, null);
+    }
 
-        if (timeout > 0 && System.currentTimeMillis() - timeout > head.getModifiedTime())
+    public UndoList undoRecent(int timeout, String spellKey)
+    {
+        UndoList undo = head;
+        while (undo != null)
         {
-            return null;
-        }
+            if (timeout > 0 && System.currentTimeMillis() - timeout > undo.getModifiedTime())
+            {
+                return null;
+            }
 
-        UndoList undid = head;
-        undid.undo();
-        return undid;
+            if (spellKey != null) {
+                Spell spell = undo.getSpell();
+                if (spell == null || !spell.getSpellKey().getBaseKey().equalsIgnoreCase(spellKey)) {
+                    undo = head.getNext();
+                    continue;
+                }
+            }
+
+            undo.undo();
+            return undo;
+        }
+        return null;
     }
 
     /**
