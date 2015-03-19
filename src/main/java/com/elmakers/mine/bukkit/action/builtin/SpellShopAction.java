@@ -49,6 +49,7 @@ public class SpellShopAction extends BaseSpellAction implements GUIAction
     private CastContext context;
     private Wand wand;
     private Map<String, Double> spells = new HashMap<String, Double>();
+    private Map<String, Double> spellPrices = new HashMap<String, Double>();
 
     @Override
     public void initialize(ConfigurationSection parameters)
@@ -81,7 +82,7 @@ public class SpellShopAction extends BaseSpellAction implements GUIAction
             String spellKey = com.elmakers.mine.bukkit.wand.Wand.getSpell(item);
             SpellTemplate template = context.getController().getSpellTemplate(spellKey);
             boolean isXP = useXP || !VaultController.hasEconomy();
-            Double worth = spells.get(spellKey);
+            Double worth = spellPrices.get(spellKey);
             worth = worth == null ? template.getWorth() : worth;
             boolean hasCosts = false;
             if (worth > 0) {
@@ -110,7 +111,11 @@ public class SpellShopAction extends BaseSpellAction implements GUIAction
                     for (int i = 0; i < 9; i++)
                     {
                         if (i != 4) {
-                            confirmInventory.setItem(i, confirmFillMaterial.getItemStack(1));
+                            ItemStack filler = confirmFillMaterial.getItemStack(1);
+                            ItemMeta meta = filler.getItemMeta();
+                            meta.setDisplayName(ChatColor.DARK_GRAY + (i < 4 ? "-->" : "<--"));
+                            filler.setItemMeta(meta);
+                            confirmInventory.setItem(i, filler);
                         } else {
                             confirmInventory.setItem(i, item);
                         }
@@ -141,7 +146,7 @@ public class SpellShopAction extends BaseSpellAction implements GUIAction
                 wand.addSpell(spellKey);
                 com.elmakers.mine.bukkit.api.wand.WandUpgradePath path = wand.getPath();
                 WandUpgradePath nextPath = path != null ? path.getUpgrade(): null;
-                if (nextPath != null && autoUpgrade && path.checkUpgradeRequirements(wand, null)) {
+                if (nextPath != null && autoUpgrade && path.checkUpgradeRequirements(wand, null) && !path.canEnchant(wand)) {
                     path.upgrade(wand, mage);
                 }
             }
@@ -211,10 +216,10 @@ public class SpellShopAction extends BaseSpellAction implements GUIAction
         }
 
         // Load spells
-        Map<String, Double> availableSpells = new TreeMap<String, Double>();
+        spellPrices.clear();
         if (spells.size() > 0)
         {
-            availableSpells.putAll(spells);
+            spellPrices.putAll(spells);
         }
         else
         {
@@ -225,12 +230,12 @@ public class SpellShopAction extends BaseSpellAction implements GUIAction
 
             Collection<String> pathSpells = path.getSpells();
             for (String pathSpell : pathSpells) {
-                availableSpells.put(pathSpell, null);
+                spellPrices.put(pathSpell, null);
             }
             if (showRequired) {
                 Collection<String> requiredSpells = path.getRequiredSpells();
                 for (String requiredSpell : requiredSpells) {
-                    availableSpells.put(requiredSpell, null);
+                    spellPrices.put(requiredSpell, null);
                 }
             }
         }
@@ -239,7 +244,7 @@ public class SpellShopAction extends BaseSpellAction implements GUIAction
         MagicAPI api = MagicPlugin.getAPI();
         boolean isXP = useXP || !VaultController.hasEconomy();
         String costString = context.getMessage("cost_lore");
-        for (Map.Entry<String, Double> spellValue : availableSpells.entrySet()) {
+        for (Map.Entry<String, Double> spellValue : spellPrices.entrySet()) {
             String spellKey = spellValue.getKey();
             if (wand.hasSpell(spellKey)) continue;
 
@@ -247,7 +252,7 @@ public class SpellShopAction extends BaseSpellAction implements GUIAction
             Double worth = spellValue.getValue();
             if (worth == null) {
                 worth = spell.getWorth();
-                spells.put(spellKey, worth);
+                spellPrices.put(spellKey, worth);
             }
             if (worth <= 0 && !showFree) continue;
 
