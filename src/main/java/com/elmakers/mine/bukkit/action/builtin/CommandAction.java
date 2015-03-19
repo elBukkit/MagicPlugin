@@ -160,13 +160,13 @@ public class CommandAction extends BaseSpellAction {
     @Override
     public void getParameterOptions(Collection<String> examples, String parameterKey)
     {
-        super.getParameterOptions(examples, parameterKey);
-
         if (parameterKey.equals("command")) {
             examples.add("spawn");
             examples.add("clear");
         } else if (parameterKey.equals("op") || parameterKey.equals("console")) {
             examples.addAll(Arrays.asList(BaseSpell.EXAMPLE_BOOLEANS));
+        } else {
+            super.getParameterOptions(examples, parameterKey);
         }
     }
 }

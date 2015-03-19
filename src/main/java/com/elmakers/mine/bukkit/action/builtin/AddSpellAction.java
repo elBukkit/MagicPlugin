@@ -111,8 +111,6 @@ public class AddSpellAction extends BaseSpellAction
     @Override
     public void getParameterOptions(Collection<String> examples, String parameterKey)
     {
-        super.getParameterOptions(examples, parameterKey);
-
         if (parameterKey.equals("spell")) {
             Collection<SpellTemplate> spellList = MagicPlugin.getAPI().getSpellTemplates();
             for (SpellTemplate spell : spellList) {
@@ -120,6 +118,8 @@ public class AddSpellAction extends BaseSpellAction
             }
         } else if (parameterKey.equals("path") || parameterKey.equals("path_exact") || parameterKey.equals("path_end")) {
             examples.addAll(com.elmakers.mine.bukkit.wand.WandUpgradePath.getPathKeys());
+        } else {
+            super.getParameterOptions(examples, parameterKey);
         }
     }
 }

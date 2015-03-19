@@ -52,10 +52,10 @@ public class EnchantWandAction extends BaseSpellAction
     @Override
     public void getParameterOptions(Collection<String> examples, String parameterKey)
     {
-        super.getParameterOptions(examples, parameterKey);
-
         if (parameterKey.equals("levels")) {
             examples.addAll(Arrays.asList(BaseSpell.EXAMPLE_SIZES));
+        } else {
+            super.getParameterOptions(examples, parameterKey);
         }
     }
 }

@@ -79,12 +79,12 @@ public class ThrowItemAction extends ParallelCompoundAction {
     @Override
     public void getParameterOptions(Collection<String> examples, String parameterKey)
     {
-        super.getParameterOptions(examples, parameterKey);
-
         if (parameterKey.equals("speed") || parameterKey.equals("age_items")
         || parameterKey.equals("speed_max") || parameterKey.equals("speed_min"))
         {
             examples.addAll(Arrays.asList(BaseSpell.EXAMPLE_SIZES));
+        } else {
+            super.getParameterOptions(examples, parameterKey);
         }
     }
 }
