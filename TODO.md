@@ -1,5 +1,10 @@
 # TODO
 
+ - Reflected laser didn't undo while fighting automata?
+   - Or.. something like this. Couldn't reproduce
+ - Glitchy wand inventory, Death had an issue
+ - Automata aren't cleaning up cmd block + redstone
+
  - Glitching Fill behavior
  - Spell shop improvements:
    - Color spells player can't afford

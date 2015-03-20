@@ -13,6 +13,6 @@ public class DiscAction extends VolumeAction
 
 	protected boolean containsPoint(int x, int y, int z)
 	{
-		return ((x * x) +  (z * z) - (radius * radius)) <= 0;
+		return ((x * x) + (z * z) - (radius * radius)) <= 0;
 	}
 }

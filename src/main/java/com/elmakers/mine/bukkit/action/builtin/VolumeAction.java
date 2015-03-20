@@ -111,7 +111,7 @@ public class VolumeAction extends CompoundAction
 				return SpellResult.NO_ACTION;
 			}
 			checked = true;
-			actionContext.setTargetLocation(context.findBlockUnder(block).getLocation());
+			actionContext.setTargetLocation(block.getLocation());
 			return performActions(actionContext);
 		}
 
