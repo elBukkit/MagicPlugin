@@ -31,7 +31,7 @@ public class SkipAction extends CompoundAction
 	public SpellResult perform(CastContext context) {
         if (skipCounter++ <= skipCount)
         {
-            return SpellResult.PENDING;
+            return SpellResult.NO_ACTION;
         }
 		return performActions(context);
 	}
