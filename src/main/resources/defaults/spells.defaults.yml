@@ -3236,13 +3236,22 @@ earthquake:
     worth: 200
     actions:
         cast:
+        # First thing it does is AOE Velocity
+        # To throw entities into the air
         - class: AreaOfEffect
           actions:
           - class: Velocity
+        # Then delay 1/2 second
         - class: Delay
           delay: 500
+        # The Parallel action runs its actions in Parallel
+        # Generally actions are run in sequence, so one must
+        # finish completely before moving on to the next
+        # This includes the Delay action - so important for animations
         - class: Parallel
           actions:
+          # Repat an AOE effect five times to apply a velocity to
+          # surrounding entities, continously tossing them into the air
           - class: Repeat
             repeat: 5
             actions:
@@ -3252,8 +3261,15 @@ earthquake:
               actions:
               - class: Velocity
                 speed: 0.2
+          # Create a disc, do this in parallel with the Repeating
+          # AOE above
           - class: Disc
             actions:
+            # The "Skip" action skips the actions below it
+            # every "skip" run (skip: 8 in params)
+            # What this does here is allows Disc to build 8 blocks,
+            # then the Delay runs- then the Delay is skipped 8 more times,
+            # etc- giving the Disc a "radiating outward" effect
             - class: Skip
               actions:
               - class: Delay
@@ -6073,24 +6089,47 @@ singularity:
     upgrade_required_casts: 50
     actions:
         cast:
+        # Throw a block, and attach actions to block hit
+        # TNT, Projectile and ThrowItem can all work the same way
         - class: ThrowBlock
           actions:
+            # This switches the "brush" to erase
+            # Needed since the original brush was obsidian for ThrowBlock
           - class: Brush
             brush: erase
             actions:
+            # First build a sphere
+            # Actions happen in order, so it stays here until
+            # the sphere finishes building
             - class: Sphere
               actions:
+              # Erase the block and spawn a falling block with an
+              # upward velocity
               - class: ModifyBlock
                 direction: 0,1,0
+            # Once the sphere is complete, we start a Repat action
+            # This will perform the actions below "repeat" number of
+            # times (see parameters - repeat: 10)
+            #
+            # Note that you can mix parameters in here or in the main
+            # spell parameters. Once in here will override.
+            # However, you can only override the ones in the base
+            # parameter list with /cast or /wand override
+            # so it's best to use those so you can tweak in-game.
           - class: Repeat
             actions:
+            # Delay for a while
             - class: Delay
+            # Do an AOE
             - class: AreaOfEffect
               actions:
+              # Pull (push: -1) entities inward
               - class: Velocity
                 push: -1
                 entity_speed: 0.7
+              # Delay a bit more
             - class: Delay
+              # AOE, push entities outward slightly
             - class: AreaOfEffect
               actions:
               - class: Velocity
