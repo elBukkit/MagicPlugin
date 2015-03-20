@@ -94,13 +94,7 @@ public class PushSpell extends UndoableSpell
 		}
 
         Target directTarget = getTarget();
-        Block targetBlock = directTarget.getBlock();
-        Location sourceLocation = getLocation();
-        double blockDistanceSquared = 0;
-        if (targetBlock != null && sourceLocation != null) {
-            blockDistanceSquared = targetBlock.getLocation().distanceSquared(sourceLocation) - 0.5;
-        }
-        List<Target> targets = getAllTargetEntities(blockDistanceSquared);
+        List<Target> targets = getAllTargetEntities();
 
         if (directTarget.hasEntity() && targets.size() == 0)
         {
