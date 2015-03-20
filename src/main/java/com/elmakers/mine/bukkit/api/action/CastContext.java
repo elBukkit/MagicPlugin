@@ -21,6 +21,10 @@ public interface CastContext {
     public Entity getEntity();
     public Location getLocation();
     public Location getTargetLocation();
+    public Vector getDirection();
+    public World getWorld();
+    public Location getEyeLocation();
+    public Location getWandLocation();
     public Block getTargetBlock();
     public Block getInteractBlock();
     public Entity getTargetEntity();
@@ -42,9 +46,6 @@ public interface CastContext {
     public void registerBreakable(Block block, int breakable);
     public void registerReflective(Block block, double reflectivity);
     public Block getPreviousBlock();
-    public Vector getDirection();
-    public World getWorld();
-    public Location getEyeLocation();
     public boolean isIndestructible(Block block);
     public boolean hasBuildPermission(Block block);
     public void playEffects(String key);
