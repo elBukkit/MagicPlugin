@@ -13,27 +13,30 @@ public class SkipAction extends CompoundAction
 {
     private int skipCount;
     private int skipCounter;
+    private boolean pending = false;
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters) {
         super.prepare(context, parameters);
         skipCount = parameters.getInt("skip", 1);
-    }
-
-    @Override
-    public void reset(CastContext context)
-    {
-        super.reset(context);
         skipCounter = 0;
+        pending = false;
     }
 
 	@Override
 	public SpellResult perform(CastContext context) {
-        if (skipCounter++ <= skipCount)
+        if (!pending && skipCounter++ <= skipCount)
         {
             return SpellResult.NO_ACTION;
         }
-		return performActions(context);
+        skipCounter = 0;
+        if (!pending)
+        {
+            super.reset(context);
+        }
+        SpellResult result = performActions(context);
+        pending = result == SpellResult.PENDING;
+		return result;
 	}
 
     @Override

@@ -3244,14 +3244,14 @@ earthquake:
         - class: Parallel
           actions:
           - class: Repeat
-            repeat: 10
+            repeat: 5
             actions:
             - class: Delay
-              delay: 250
+              delay: 1000
             - class: AreaOfEffect
               actions:
               - class: Velocity
-                living_entity_speed: 0.3
+                speed: 0.2
           - class: Disc
             actions:
             - class: Skip
@@ -3298,7 +3298,7 @@ earthquake:
         radius: 5
         destructible: destructible_mining
         undo: 10000
-        skip: 10
+        skip: 8
     costs:
         mana: 150
 
@@ -6084,6 +6084,6 @@ singularity:
       entity_speed: 0.5
       falling: true
       radius: 5
-      check_destructible: false
+      check_destructible: true
     costs:
         mana: 50
