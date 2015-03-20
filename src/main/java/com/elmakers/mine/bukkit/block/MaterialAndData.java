@@ -163,6 +163,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
                 else if (material == Material.MOB_SPAWNER) {
                     customName = pieces[1];
                     setMaterial(Material.MOB_SPAWNER, (short) 0);
+                    return;
                 }
                 else if (material == Material.SKULL_ITEM) {
                     if (pieces.length > 2) {
@@ -185,13 +186,13 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
                             customData = InventoryUtils.getSkullProfile(item.getItemMeta());
                         }
                     }
+                    return;
                 } else {
                     try {
                         data = Short.parseShort(pieces[1]);
                     } catch (Exception ex) {
                         data = 0;
                     }
-                    setMaterial(material, data);
                 }
             }
         } catch (Exception ex) {
@@ -201,6 +202,8 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         if (material == null) {
             this.setMaterial(null, null);
             isValid = false;
+        } else {
+            setMaterial(material, data);
         }
     }
 
