@@ -4277,6 +4277,8 @@ laser:
               actions:
               - class: Retarget
                 actions:
+                - class: PlayEffects
+                  effect: beam
                 - class: Line
                   actions:
                   -  class: Disc
@@ -4286,6 +4288,11 @@ laser:
                   actions:
                   -  class: Damage
     effects:
+        beam:
+        -  class: EffectSingle
+           custom_sound: magic.zap
+           location: both
+           sound_volume: 0.1
         cast:
         -  class: EffectSingle
            custom_sound: magic.zap_crack
