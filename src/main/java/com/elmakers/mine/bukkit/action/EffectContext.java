@@ -24,4 +24,9 @@ public class EffectContext {
     public CastContext getContext() {
         return context;
     }
+
+    @Override
+    public String toString() {
+        return "FX: " + effectKey + " on " + context;
+    }
 }
