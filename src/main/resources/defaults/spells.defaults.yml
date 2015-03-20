@@ -4289,12 +4289,8 @@ laser:
         beam:
         -  class: EffectSingle
            custom_sound: magic.zap
-           location: both
-           sound_volume: 0.1
-        cast:
-        -  class: EffectSingle
-           custom_sound: magic.zap_crack
            location: origin
+           sound_volume: 0.1
            color_override: colorHelix
            effectlib:
              class: DnaEffect
@@ -4303,12 +4299,16 @@ laser:
              particleHelix: redstone
              particleBase1: drip_lava
              particleBase2: smoke_normal
-             iterations: 80
+             iterations: 10
              radius: 0.5
              grow: 0.2
              baseInterval: 5
              length: 16
              particlesBase: 5
+        cast:
+        -  class: EffectSingle
+           custom_sound: magic.zap_crack
+           location: origin
     parameters:
         target: block
         target_type: LivingEntity
