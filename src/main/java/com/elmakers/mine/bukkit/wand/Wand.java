@@ -2444,6 +2444,15 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	}
 	
 	public boolean fill(Player player) {
+        Collection<String> currentSpells = new ArrayList<String>(getSpells());
+        for (String spellKey : currentSpells) {
+            SpellTemplate spell = controller.getSpellTemplate(spellKey);
+            if (!spell.hasCastPermission(player))
+            {
+                removeSpell(spellKey);
+            }
+        }
+
 		Collection<SpellTemplate> allSpells = controller.getPlugin().getSpellTemplates();
 		for (SpellTemplate spell : allSpells)
 		{

@@ -830,7 +830,7 @@ public class WandCommandExecutor extends MagicTabExecutor {
 		Wand wand = mage.getActiveWand();
 		
 		wand.fill(player);
-		mage.sendMessage(api.getMessages().get("wand.filled"));
+		mage.sendMessage(api.getMessages().get("wand.filled").replace("$wand", wand.getName()));
 		if (sender != player) {
 			sender.sendMessage(api.getMessages().getParameterized("wand.player_filled", "$name", player.getName()));
 		}
