@@ -2126,9 +2126,8 @@ public class MagicController implements Listener, MageController {
     @EventHandler
     public void onProjectileHit(ProjectileHitEvent event) {
         final Projectile projectile = event.getEntity();
-
         // This is delayed so that the EntityDamage version takes precedence
-        if (ActionHandler.hasActions(projectile))
+        if (ActionHandler.hasActions(projectile) || ActionHandler.hasEffects(projectile))
         {
             Bukkit.getScheduler().scheduleSyncDelayedTask(getPlugin(), new Runnable() {
                 @Override

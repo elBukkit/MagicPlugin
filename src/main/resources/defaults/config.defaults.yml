@@ -311,7 +311,7 @@ mage_update_frequency: 5
 # This value is in ticks
 # This should be longer than the update frequency by a margin
 # to cover lag, or potion effects will "bounce" on and off
-wand_potion_effect_duration: 60
+wand_potion_effect_duration: 120
 
 # How often to check for scheduled undo batches. Changing this will
 # make the scheduled undo times less accurate, though they will

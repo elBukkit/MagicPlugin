@@ -1,5 +1,8 @@
 # TODO
 
+ - Arrow hit FX broken
+ - Blink destination FX broken
+
  - Reflected laser didn't undo while fighting automata?
    - Or.. something like this. Couldn't reproduce
  - Glitchy wand inventory, Death had an issue
