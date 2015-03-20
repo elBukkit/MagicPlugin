@@ -165,7 +165,6 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
     private int quietLevel = 0;
     private Map<String, String> castOverrides = null;
 
-
     // Transient state
 
 	private int storedXpLevel = 0;
