@@ -3486,7 +3486,7 @@ supercollapse:
 cloak:
     icon_url: http://i.imgur.com/e4Wygfl.png
     icon: chainmail_chestplate
-    category: utility
+    category: master
     actions:
         cast:
         -  class: PotionEffect
@@ -3505,6 +3505,7 @@ cloak:
         target: any
         particle: redstone
         duration: 8000
+        cooldown: 30000
         effect_invisibility: 5
 
 rollback:
