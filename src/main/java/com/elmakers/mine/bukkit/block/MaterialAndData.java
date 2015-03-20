@@ -156,11 +156,17 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         }
         try {
             if (pieces.length > 1) {
+                // Some special-cases
                 if (pieces[1].equals("*")) {
                     data = null;
-                } else if (material == Material.SKULL_ITEM) {
+                }
+                else if (material == Material.MOB_SPAWNER) {
+                    customName = pieces[1];
+                    setMaterial(Material.MOB_SPAWNER, (short) 0);
+                }
+                else if (material == Material.SKULL_ITEM) {
                     if (pieces.length > 2) {
-                        data = 3;
+                        setMaterial(Material.SKULL_ITEM, (short)3);
                         skullType = SkullType.PLAYER;
                         String dataString = pieces[1];
                         for (int i = 2; i < pieces.length; i++) {
@@ -171,8 +177,9 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
                     } else {
                         try {
                             data = Short.parseShort(pieces[1]);
+                            setMaterial(Material.SKULL_ITEM, data);
                         } catch (Exception ex) {
-                            data = 3;
+                            setMaterial(Material.SKULL_ITEM, (short)3);
                             skullType = SkullType.PLAYER;
                             ItemStack item = InventoryUtils.getPlayerSkull(pieces[1]);
                             customData = InventoryUtils.getSkullProfile(item.getItemMeta());
@@ -184,27 +191,16 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
                     } catch (Exception ex) {
                         data = 0;
                     }
+                    setMaterial(material, data);
                 }
             }
         } catch (Exception ex) {
-            // Some special-cases
-            if (material == Material.MOB_SPAWNER) {
-                customName = pieces[1];
-            } else {
-                data = 0;
-                customName = "";
-            }
+            material = null;
         }
 
         if (material == null) {
+            this.setMaterial(null, null);
             isValid = false;
-
-            // TODO: null these out?
-            material = DEFAULT_MATERIAL;
-            data = 0;
-            customName = "";
-        } else {
-            setMaterial(material, data);
         }
     }
 
@@ -574,6 +570,9 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
 
     @SuppressWarnings("deprecation")
     public String getBaseName() {
+        if (material == null) {
+            return null;
+        }
         return material.name().toLowerCase().replace('_', ' ');
     }
 
