@@ -1,7 +1,7 @@
 Wraith:
   Mobtype: witherskeleton
   Display: '&6Wraith'
-  Health: 500
+  Health: 50
   Damage: 10
   Skills:
   - skill SummonWraithlets >0 0.1
@@ -38,7 +38,7 @@ DreadKnight:
 Sludge:
   Mobtype: slime
   Display: Sludge
-  Health: 60
+  Health: 30
   Damage: 2
   Drops:
   - MinorBoss
@@ -54,7 +54,7 @@ Sludge:
 Warlock:
   Mobtype: witch
   Display: Warlock
-  Health: 120
+  Health: 50
   Damage: 4
   Equipment:
   - Wand:0
@@ -69,7 +69,7 @@ Warlock:
 Firebender:
   Mobtype: pigzombie
   Display: Firebender
-  Health: 100
+  Health: 40
   Damage: 4
   DamageModifiers:
   - FIRE 0
@@ -91,7 +91,7 @@ Firebender:
 Airbender:
   Mobtype: skeleton
   Display: Airbender
-  Health: 50
+  Health: 40
   Damage: 2
   Equipment:
   - Air:0
@@ -109,7 +109,7 @@ Airbender:
 Waterbender:
   Mobtype: villagezombie
   Display: Waterbender
-  Health: 70
+  Health: 40
   Damage: 4
   Equipment:
   - Water:0
@@ -125,9 +125,9 @@ Waterbender:
   Skills:
   - skill Waterbending ~onTimer:30 >0 0.8
 Earthbender:
-  Mobtype: pigzombievillager
+  Mobtype: pigzombie
   Display: Earthbender
-  Health: 150
+  Health: 50
   Damage: 5
   Equipment:
   - Earth:0
