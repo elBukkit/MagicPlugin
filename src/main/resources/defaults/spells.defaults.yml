@@ -4274,7 +4274,7 @@ laser:
            actions:
            - class: Delay
            - class: Retarget
-              actions:
+             actions:
               - class: PlayEffects
                 effect: beam
               - class: Line
