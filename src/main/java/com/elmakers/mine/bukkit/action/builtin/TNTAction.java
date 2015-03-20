@@ -1,6 +1,6 @@
 package com.elmakers.mine.bukkit.action.builtin;
 
-import com.elmakers.mine.bukkit.action.ParallelCompoundAction;
+import com.elmakers.mine.bukkit.action.TriggeredCompoundAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.effect.EffectPlayer;
 import com.elmakers.mine.bukkit.api.magic.Mage;
@@ -19,7 +19,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Random;
 
-public class TNTAction extends ParallelCompoundAction
+public class TNTAction extends TriggeredCompoundAction
 {
     private int size;
     private int count;

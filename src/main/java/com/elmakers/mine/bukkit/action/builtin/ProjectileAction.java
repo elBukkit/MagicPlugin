@@ -1,6 +1,6 @@
 package com.elmakers.mine.bukkit.action.builtin;
 
-import com.elmakers.mine.bukkit.action.ParallelCompoundAction;
+import com.elmakers.mine.bukkit.action.TriggeredCompoundAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.effect.EffectPlayer;
 import com.elmakers.mine.bukkit.api.magic.Mage;
@@ -29,7 +29,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Random;
 
-public class ProjectileAction  extends ParallelCompoundAction
+public class ProjectileAction  extends TriggeredCompoundAction
 {
 	private int defaultSize = 1;
 	private Random random = new Random();
