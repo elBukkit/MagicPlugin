@@ -33,7 +33,6 @@ public class ModifyBreakable extends BaseSpellAction {
             return SpellResult.NO_TARGET;
         }
 
-        MageController controller = context.getController();
         context.registerForUndo(block);
         context.registerBreakable(block, breakable);
         return SpellResult.CAST;

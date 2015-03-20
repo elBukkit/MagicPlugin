@@ -33,7 +33,6 @@ public class ModifyReflectiveAction extends BaseSpellAction {
             return SpellResult.NO_TARGET;
         }
 
-        MageController controller = context.getController();
         context.registerForUndo(block);
         context.registerReflective(block, backfireChance);
         return SpellResult.CAST;

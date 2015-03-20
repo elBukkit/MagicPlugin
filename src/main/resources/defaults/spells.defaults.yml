@@ -3257,7 +3257,7 @@ earthquake:
             - class: Skip
               actions:
               - class: Delay
-                delay: 10
+                delay: 500
             - class: Cover
               actions:
               - class: ModifyBlock
