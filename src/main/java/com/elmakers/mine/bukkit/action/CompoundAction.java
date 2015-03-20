@@ -4,7 +4,7 @@ import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import org.bukkit.configuration.ConfigurationSection;
 
-public abstract class CompoundAction extends ParallelCompoundAction
+public abstract class CompoundAction extends TriggeredCompoundAction
 {
     @Override
     public void finish(CastContext context) {

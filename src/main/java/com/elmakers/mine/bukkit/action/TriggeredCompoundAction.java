@@ -9,7 +9,7 @@ import org.bukkit.entity.Entity;
 
 import java.util.Collection;
 
-public abstract class ParallelCompoundAction extends BaseSpellAction implements Cloneable
+public abstract class TriggeredCompoundAction extends BaseSpellAction implements Cloneable
 {
 	private boolean usesBrush = false;
 	private boolean undoable = false;
@@ -164,7 +164,7 @@ public abstract class ParallelCompoundAction extends BaseSpellAction implements 
     @Override
     public Object clone()
     {
-        ParallelCompoundAction action = (ParallelCompoundAction)super.clone();
+        TriggeredCompoundAction action = (TriggeredCompoundAction)super.clone();
         if (action != null)
         {
             action.actions = this.actions == null ? null : (ActionHandler)this.actions.clone();
