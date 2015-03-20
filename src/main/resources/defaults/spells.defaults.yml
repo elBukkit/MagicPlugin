@@ -1284,8 +1284,8 @@ frost:
             duration: 0
         - class: Sphere
           actions:
-          - class: ModifyBreakable
           - class: Freeze
+          - class: ModifyBreakable
     effects:
         cast:
         -  class: EffectSingle
@@ -1325,6 +1325,7 @@ frost:
         cooldown: 5000
         entity_undo: false
         freeze_lava: false
+        breakable: 4
     costs:
         mana: 75
 
@@ -3240,28 +3241,26 @@ earthquake:
           - class: Velocity
         - class: Delay
           delay: 500
+        - class: Parallel
           actions:
-          - class: Parallel
+          - class: Repeat
+            repeat: 10
             actions:
-            - class: Repeat
-              repeat: 10
+            - class: Delay
+              delay: 250
+            - class: AreaOfEffect
+              actions:
+              - class: Velocity
+                living_entity_speed: 0.3
+          - class: Disc
+            actions:
+            - class: Skip
               actions:
               - class: Delay
-                delay: 250
-                actions:
-                - class: AreaOfEffect
-                  actions:
-                  - class: Velocity
-                    living_entity_speed: 0.3
-            - class: Disc
+                delay: 10
+            - class: Cover
               actions:
-              - class: Skip
-                actions:
-                - class: Delay
-                  delay: 10
-              - class: Cover
-                actions:
-                - class: ModifyBlock
+              - class: ModifyBlock
     effects:
         cast:
         -  class: EffectSingle
@@ -4273,20 +4272,19 @@ laser:
               -  class: ModifyBlock
         -  class: Repeat
            actions:
-           -  class: Delay
+           - class: Delay
+           - class: Retarget
               actions:
-              - class: Retarget
+              - class: PlayEffects
+                effect: beam
+              - class: Line
                 actions:
-                - class: PlayEffects
-                  effect: beam
-                - class: Line
-                  actions:
-                  -  class: Disc
-                     actions:
-                     -  class: ModifyBlock
-                - class: ConeOfEffect
-                  actions:
-                  -  class: Damage
+                -  class: Disc
+                   actions:
+                   -  class: ModifyBlock
+              - class: ConeOfEffect
+                actions:
+                -  class: Damage
     effects:
         beam:
         -  class: EffectSingle
@@ -5712,9 +5710,8 @@ lift:
         -  class: Repeat
            requires_entity_target: true
            actions:
-           -  class: Delay
-              actions:
-              -  class: Velocity
+           - class: Delay
+           - class: Velocity
         -  class: MoveBlock
     effects:
         cast:
@@ -6034,19 +6031,17 @@ singularity:
           - class: Repeat
             actions:
             - class: Delay
+            - class: AreaOfEffect
               actions:
-              - class: AreaOfEffect
-                actions:
-                - class: Velocity
-                  push: -1
-                  entity_speed: 0.7
+              - class: Velocity
+                push: -1
+                entity_speed: 0.7
             - class: Delay
+            - class: AreaOfEffect
               actions:
-              - class: AreaOfEffect
-                actions:
-                - class: Velocity
-                  push: 1
-                  entity_speed: 0.1
+              - class: Velocity
+                push: 1
+                entity_speed: 0.1
     effects:
         cast:
         -  class: EffectSingle

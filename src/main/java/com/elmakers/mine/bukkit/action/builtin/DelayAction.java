@@ -1,6 +1,6 @@
 package com.elmakers.mine.bukkit.action.builtin;
 
-import com.elmakers.mine.bukkit.action.CompoundAction;
+import com.elmakers.mine.bukkit.action.BaseSpellAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
@@ -9,7 +9,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import java.util.Arrays;
 import java.util.Collection;
 
-public class DelayAction extends CompoundAction
+public class DelayAction extends BaseSpellAction
 {
     private int delay;
     private long targetTime;
@@ -33,7 +33,7 @@ public class DelayAction extends CompoundAction
         {
             return SpellResult.PENDING;
         }
-		return performActions(context);
+		return SpellResult.NO_ACTION;
 	}
 
     @Override
