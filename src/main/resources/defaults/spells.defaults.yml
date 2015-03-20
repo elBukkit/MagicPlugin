@@ -4530,8 +4530,10 @@ respawn:
     hidden: true
     icon: compass
     category: utility
-    class: CommandSpell
     worth: 20
+    actions:
+        cast:
+        -  class: Command
     effects:
         cast:
         -  class: EffectSingle
