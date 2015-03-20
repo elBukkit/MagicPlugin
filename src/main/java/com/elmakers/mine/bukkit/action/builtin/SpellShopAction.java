@@ -75,6 +75,7 @@ public class SpellShopAction extends BaseSpellAction implements GUIAction
     public void clicked(InventoryClickEvent event)
     {
         event.setCancelled(true);
+        Messages messages = context.getController().getMessages();
         ItemStack item = event.getCurrentItem();
         if (context != null && wand != null && com.elmakers.mine.bukkit.wand.Wand.isSpell(item))
         {
@@ -97,7 +98,7 @@ public class SpellShopAction extends BaseSpellAction implements GUIAction
                 String costString = context.getMessage("insufficient_resources");
                 if (isXP) {
                     String xpAmount = Integer.toString((int)(double)worth);
-                    xpAmount = context.getMessage("costs.xp_amount").replace("$amount", xpAmount);
+                    xpAmount = messages.get("costs.xp_amount").replace("$amount", xpAmount);
                     costString = costString.replace("$cost", xpAmount);
                 } else {
                     costString = costString.replace("$cost", VaultController.getInstance().format(worth));
@@ -113,8 +114,11 @@ public class SpellShopAction extends BaseSpellAction implements GUIAction
                         if (i != 4) {
                             ItemStack filler = confirmFillMaterial.getItemStack(1);
                             ItemMeta meta = filler.getItemMeta();
-                            meta.setDisplayName(ChatColor.DARK_GRAY + (i < 4 ? "-->" : "<--"));
-                            filler.setItemMeta(meta);
+                            if (meta != null)
+                            {
+                                meta.setDisplayName(ChatColor.DARK_GRAY + (i < 4 ? "-->" : "<--"));
+                                filler.setItemMeta(meta);
+                            }
                             confirmInventory.setItem(i, filler);
                         } else {
                             confirmInventory.setItem(i, item);
@@ -129,7 +133,7 @@ public class SpellShopAction extends BaseSpellAction implements GUIAction
                 String costString = context.getMessage("deducted");
                 if (isXP) {
                     String xpAmount = Integer.toString((int)(double)worth);
-                    xpAmount = context.getMessage("costs.xp_amount").replace("$amount", xpAmount);
+                    xpAmount = messages.get("costs.xp_amount").replace("$amount", xpAmount);
                     costString = costString.replace("$cost", xpAmount);
                 } else {
                     costString = costString.replace("$cost", VaultController.getInstance().format(worth));
@@ -244,6 +248,7 @@ public class SpellShopAction extends BaseSpellAction implements GUIAction
         MagicAPI api = MagicPlugin.getAPI();
         boolean isXP = useXP || !VaultController.hasEconomy();
         String costString = context.getMessage("cost_lore");
+        Messages messages = context.getController().getMessages();
         for (Map.Entry<String, Double> spellValue : spellPrices.entrySet()) {
             String spellKey = spellValue.getKey();
             if (wand.hasSpell(spellKey)) continue;
@@ -262,7 +267,7 @@ public class SpellShopAction extends BaseSpellAction implements GUIAction
             String costs;
             if (isXP) {
                 String xpAmount = Integer.toString((int)(double)worth);
-                xpAmount = context.getMessage("costs.xp_amount").replace("$amount", xpAmount);
+                xpAmount = messages.get("costs.xp_amount").replace("$amount", xpAmount);
                 costs = costString.replace("$cost", xpAmount);
             } else {
                 costs = costString.replace("$cost", VaultController.getInstance().format(worth));
@@ -284,7 +289,7 @@ public class SpellShopAction extends BaseSpellAction implements GUIAction
         String inventoryTitle = context.getMessage("title", "Spells ($balance)");
         if (isXP) {
             String xpAmount = Integer.toString(mage.getExperience());
-            xpAmount = context.getMessage("costs.xp_amount").replace("$amount", xpAmount);
+            xpAmount = messages.get("costs.xp_amount").replace("$amount", xpAmount);
             inventoryTitle = inventoryTitle.replace("$balance", xpAmount);
         } else {
             double balance = VaultController.getInstance().getBalance(player);
