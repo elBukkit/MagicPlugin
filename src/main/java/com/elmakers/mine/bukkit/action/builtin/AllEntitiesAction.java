@@ -5,7 +5,6 @@ import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
-import com.elmakers.mine.bukkit.action.CompoundAction;
 import com.elmakers.mine.bukkit.spell.TargetingSpell;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -28,6 +27,12 @@ public class AllEntitiesAction extends CompoundEntityAction
 	public void prepare(CastContext context, ConfigurationSection parameters) {
         super.prepare(context, parameters);
         targetAllWorlds = parameters.getBoolean("target_all_worlds", false);
+    }
+
+    @Override
+    public void reset(CastContext context) {
+        super.reset(context);
+        createActionContext(context);
     }
 
     @Override

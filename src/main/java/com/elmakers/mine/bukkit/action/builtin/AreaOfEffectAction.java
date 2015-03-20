@@ -23,6 +23,12 @@ public class AreaOfEffectAction extends CompoundEntityAction
     private int targetCount;
 
     @Override
+    public void reset(CastContext context) {
+        super.reset(context);
+        createActionContext(context, context.getTargetEntity(), context.getTargetLocation());
+    }
+
+    @Override
     public void prepare(CastContext context, ConfigurationSection parameters)
     {
         radius = parameters.getInt("radius", 8);
