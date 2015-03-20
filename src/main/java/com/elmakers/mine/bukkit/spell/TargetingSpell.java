@@ -489,7 +489,7 @@ public abstract class TargetingSpell extends BaseSpell {
         return scored.get(0);
     }
 
-    protected List<Target> getAllTargetEntities() {
+    public List<Target> getAllTargetEntities() {
         return getAllTargetEntities(this.getMaxRange());
     }
 

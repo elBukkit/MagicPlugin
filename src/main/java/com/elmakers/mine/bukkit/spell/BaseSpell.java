@@ -1159,7 +1159,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         {
             cancelEffects();
             currentEffects = effects.get(effectName);
-            Collection<Entity> targeted = context.getTargetEntities();
+            Collection<Entity> targeted = context.getTargetedEntities();
             Entity sourceEntity = context.getEntity();
             Entity targetEntity = context.getTargetEntity();
             Location targetLocation = context.getTargetLocation();

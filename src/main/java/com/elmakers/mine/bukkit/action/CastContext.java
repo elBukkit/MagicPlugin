@@ -12,6 +12,7 @@ import com.elmakers.mine.bukkit.spell.BlockSpell;
 import com.elmakers.mine.bukkit.spell.BrushSpell;
 import com.elmakers.mine.bukkit.spell.TargetingSpell;
 import com.elmakers.mine.bukkit.spell.UndoableSpell;
+import com.elmakers.mine.bukkit.utility.Target;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -22,9 +23,11 @@ import org.bukkit.entity.Player;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.util.Vector;
 
+import java.lang.ref.WeakReference;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Random;
 import java.util.Set;
 import java.util.UUID;
@@ -85,7 +88,7 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
         this.setSpell(copy.getSpell());
         this.targetEntity = copy.getTargetEntity();
         this.targetLocation = copy.getTargetLocation();
-        this.targetedEntities = copy.getTargetEntities();
+        this.targetedEntities = copy.getTargetedEntities();
         this.undoList = copy.getUndoList();
         this.targetName = copy.getTargetName();
         this.brush = copy.getBrush();
@@ -470,9 +473,27 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
     }
 
     @Override
-    public Collection<Entity> getTargetEntities()
+    public Collection<Entity> getTargetedEntities()
     {
         return targetedEntities;
+    }
+
+    @Override
+    public void getTargetEntities(int targetCount, Collection<WeakReference<Entity>> entities)
+    {
+        if (targetingSpell == null)
+        {
+            return;
+        }
+        List<Target> candidates = ((TargetingSpell) spell).getAllTargetEntities();
+        if (targetCount < 0) {
+            targetCount = entities.size();
+        }
+
+        for (int i = 0; i < targetCount && i < candidates.size(); i++) {
+            Target target = candidates.get(i);
+            entities.add(new WeakReference<Entity>(target.getEntity()));
+        }
     }
 
     @Override
@@ -484,7 +505,7 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
         String playerMessage = getMessage(messageKey);
         if (!mage.isStealth() && playerMessage.length() > 0)
         {
-            Collection<Entity> targets = getTargetEntities();
+            Collection<Entity> targets = getTargetedEntities();
             for (Entity target : targets)
             {
                 UUID targetUUID = target.getUniqueId();
