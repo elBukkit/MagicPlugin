@@ -13,6 +13,7 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.util.Vector;
 
+import java.lang.ref.WeakReference;
 import java.util.Collection;
 import java.util.Random;
 import java.util.logging.Logger;
@@ -64,7 +65,8 @@ public interface CastContext {
     public MaterialBrush getBrush();
     public void setBrush(MaterialBrush brush);
     public void addTargetEntity(Entity entity);
-    public Collection<Entity> getTargetEntities();
+    public Collection<Entity> getTargetedEntities();
+    public void getTargetEntities(int count, Collection<WeakReference<Entity>> entities);
     public void messageTargets(String messageKey);
     public Random getRandom();
     public UndoList getUndoList();
