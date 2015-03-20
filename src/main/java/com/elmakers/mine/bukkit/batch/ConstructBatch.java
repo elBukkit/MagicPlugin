@@ -500,10 +500,10 @@ public class ConstructBatch extends BrushBatch {
 
             brush.modify(block, applyPhysics);
             if (breakable > 0) {
-                block.setMetadata("breakable", new FixedMetadataValue(controller.getPlugin(), breakable));
+                spell.getCurrentCast().registerBreakable(block, breakable);
             }
             if (backfireChance > 0) {
-                block.setMetadata("backfire", new FixedMetadataValue(controller.getPlugin(), backfireChance));
+                spell.getCurrentCast().registerReflective(block, backfireChance);
             }
             if (spawnFallingBlocks) {
                 FallingBlock falling = block.getWorld().spawnFallingBlock(block.getLocation(), previousMaterial, previousData);
