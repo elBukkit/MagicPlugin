@@ -1421,6 +1421,9 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
     @Override
     public ConfigurationSection getData() {
+        if (loading) {
+            return new MemoryConfiguration();
+        }
         return data;
     }
 
