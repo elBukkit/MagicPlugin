@@ -264,3 +264,27 @@
 {
 	color: red;
 }
+
+.craftingTable
+{
+    background-image: url('../image/crafting.png');
+    width: 350px;
+    height: 141px;
+}
+
+.craftingSlot
+{
+    position: absolute;
+}
+
+.craftingOutput
+{
+    position: absolute;
+    left: 280px;
+    top: 125px;
+}
+
+.craftingContainer
+{
+    margin: 2em;
+}

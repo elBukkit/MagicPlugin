@@ -9,6 +9,11 @@ function getIcon(url)
 function getMaterial(materialKey, iconOnly)
 {
 	if (materialKey == null || materialKey.length == 0) return "";
+
+    if (materialKey.indexOf("skull_item:") != -1)
+    {
+        return getIcon(materialKey.substring(11).trim());
+    }
 	
 	iconOnly = (typeof iconOnly === 'undefined') ? false : iconOnly;
 	var materialName = materialKey.replace(/_/g, ' ');
@@ -330,13 +335,65 @@ function getPathDetails(key)
     return getWandItemDetails(key, wand);
 }
 
+function formatRecipeLine(line) {
+    if (line == "" || line == null) {
+        return "   ";
+    }
+    var line = line.trim();
+    if (line.length == 1) {
+        return " " + line + " ";
+    }
+    if (line.length == 2) {
+        return line + " ";
+    }
+    return line;
+}
+
 function getRecipeDetails(key)
 {
     if (!(key in recipes)) {
         return $('<span/>').text("Sorry, something went wrong!");
     }
     var recipe = recipes[key];
-    return $('<span/>').text("WIP: " + recipe['output']);
+    var wand = recipe['wand'];
+    return getWandItemDetails(recipe['output'], wand, recipe);
+}
+
+function createCraftingTable(recipe)
+{
+    var wand = recipe['wand'];
+    var craftingContainer = $('<div class="craftingContainer"/>');
+    var craftingTable = $('<div class="craftingTable"/>');
+    craftingContainer.append(craftingTable);
+    var craftingOutput = $('<div class="craftingOutput"/>');
+    var wandIcon = wand['icon'];
+    wandIcon = getMaterial(wandIcon == null || wandIcon == "" ? "wand" : wandIcon, true);
+    craftingOutput.append(wandIcon);
+    craftingContainer.append(craftingOutput);
+
+    var rows = [
+        formatRecipeLine(recipe['row_1']),
+        formatRecipeLine(recipe['row_2']),
+        formatRecipeLine(recipe['row_3'])
+    ];
+
+    var materials = recipe['materials'];
+
+    for (var y = 0; y < 3; y++) {
+        for (var x = 0; x < 3; x++)
+        {
+            var ingredient = rows[y].substring(x, x + 1);
+            var left = 92 + x * 36;
+            var top = 90 + y * 36;
+            var input = $('<div class="craftingSlot" style="left:' + left + 'px; top: ' + top + 'px"/>');
+            if (ingredient)
+            {
+                input.append(getMaterial(materials[ingredient], true));
+            }
+            craftingContainer.append(input);
+        }
+    }
+    return craftingContainer;
 }
 
 function getWandDetails(key)
@@ -357,7 +414,7 @@ function getWandUpgradeDetails(key)
 	return getWandItemDetails(key, wand);
 }
 
-function getWandItemDetails(key, wand)
+function getWandItemDetails(key, wand, recipe)
 {
 	var detailsDiv = $('<div/>');
 	var title = $('<div class="wandTitleBanner"/>').text(wand.name);
@@ -382,6 +439,10 @@ function getWandItemDetails(key, wand)
 	
 	detailsDiv.append(title);
 	scrollingContainer.append(description);
+
+    if (recipe) {
+        scrollingContainer.append(createCraftingTable(recipe));
+    }
 
     // List worth, if present
     if ('worth' in wand && wand.worth > 0) {

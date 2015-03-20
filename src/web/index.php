@@ -244,6 +244,17 @@ foreach ($wands as $key => $wand) {
 ksort($wands);
 ksort($upgrades);
 
+// Look up craftable wands
+foreach ($crafting as $key => &$recipe) {
+    if (!isset($recipe['output_type']) || $recipe['output_type'] != 'wand')
+    {
+        $recipe['wand'] = null;
+        continue;
+    }
+
+    $recipe['wand'] = $wands[$recipe['output']];
+}
+
 $enchantingEnabled = isset($general['enable_enchanting']) ? $general['enable_enchanting'] : false;
 $combiningEnabled = isset($general['enable_combining']) ? $general['enable_combining'] : false;
 
@@ -469,8 +480,14 @@ function printIcon($iconUrl, $title) {
 			  	<div class="navigation">
 				<ol id="craftingList">
 				<?php
-					foreach ($crafting as $key => $recipe) {
-						echo '<li class="ui-widget-content" id="recipe-' . $key . '"><span class="recipeTitle">' . $key . '</span></li>';
+					foreach ($crafting as $key => $recipe)
+                    {
+                        if ($recipe['wand'])
+                        {
+                            $wand = $recipe['wand'];
+                            $name = isset($wand['name']) && $wand['name'] ? $wand['name'] : "($key)";
+                            echo '<li class="ui-widget-content" id="recipe-' . $key . '"><span class="recipeTitle">' . $name . '</span></li>';
+                        }
 					}
 				?>
 				</ol>
@@ -513,8 +530,21 @@ function printIcon($iconUrl, $title) {
 						}
 						$name = isset($wand['name']) && $wand['name'] ? $wand['name'] : "($key)";
 						$wandClass = ($key == 'random') ? 'randomWandTitle' : 'wandTitle';
-						$icon = isset($wand['icon']) ? $wand['icon'] : 'wand';
-						$icon = printMaterial($icon, true);
+
+                        $icon = 'wand';
+                        if (isset($wand['icon']))
+                        {
+                            $icon = $wand['icon'];
+                            if (strpos($icon, 'skull_item:') !== FALSE) {
+                                $icon = trim(substr($icon, 11));
+                                $icon = printIcon($icon, $name);
+                            } else {
+                                $icon = printMaterial($icon, true);
+                            }
+                        } else {
+                            $icon = printMaterial($icon, true);
+                        }
+
 						echo '<li class="ui-widget-content" style="' . $extraStyle . '" id="wand-' . $key . '">' . $icon . '<span class="' . $wandClass . '">' . $name . '</span></li>';
 					}
 				?>
