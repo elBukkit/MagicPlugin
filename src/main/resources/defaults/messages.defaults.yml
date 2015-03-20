@@ -1205,6 +1205,13 @@ spells:
         no_path_end: You must be ready to advance to $path!
         no_wand: You must be holding a wand!
         no_target: You already know that spell
+    fillwand:
+        name: Fill Wand
+        describe: Fill up your wand with all spells
+        cast: ""
+        cast_player_message: ""
+        fail: ""
+        no_wand: You must be holding a wand!
     spellshop:
         name: Spell Shop
         title: "Spells ($balance)"
@@ -1268,6 +1275,30 @@ spells:
         insufficient_resources: Costs $cost
         confirm_title: "Get $item"
         deducted: "&d&oYou received &r&6$item"
+    tweakshop:
+        name: Wand Tweak Shop
+        title: "Wand Tweaks"
+        describe: Tweak Your Wand
+        cost_lore: "Free!"
+        cast: ""
+        cast_player_message: ""
+        fail: ""
+        no_items: There is nothing to buy here!
+        insufficient_resources: Costs $cost
+        confirm_title: "Get $item"
+        deducted: "&d&oYou received &r&6$item"
+    colorshop:
+        name: Wand Color Shop
+        title: "Wand Color ($balance)"
+        describe: Colorize Your Wand
+        cost_lore: "Costs: $cost"
+        cast: ""
+        cast_player_message: ""
+        fail: ""
+        no_items: There is nothing to buy here!
+        insufficient_resources: Costs $cost
+        confirm_title: "Buy $item"
+        deducted: "&d&oYou bought &r&6$item &r&d&ofor &r&a$cost"
 
 wands:
     default:

@@ -5937,6 +5937,49 @@ bookshop:
           book|elemental: 0
           book|mining: 0
 
+tweakshop:
+    icon: nether_star
+    category: utility
+    hidden: true
+    actions:
+        cast:
+        -  class: ItemShop
+    parameters:
+        loud: true
+        confirm: false
+        items:
+          wand|inventorymode: 0
+          wand|chestmode: 0
+          wand|cyclemode: 0
+          wand|organizer: 0
+          wand|alphabetizer: 0
+          wand|loud: 0
+          wand|quiet: 0
+          wand|silent: 0
+
+colorshop:
+    icon: ink_sack
+    category: utility
+    hidden: true
+    actions:
+        cast:
+        -  class: ItemShop
+    parameters:
+        loud: true
+        confirm_filler: stained_glass:9
+        confirm: true
+        items:
+          wand|redeffects: 100
+          wand|greeneffects: 100
+          wand|blueeffects: 100
+          wand|whiteeffects: 100
+          wand|blackeffects: 100
+          wand|purpleeffects: 100
+          wand|yelloweffects: 100
+          wand|aquaeffects: 100
+          wand|orangeeffects: 100
+          wand|haloeffects: 1000
+
 addspell:
     icon: iron_hoe
     category: utility
@@ -5946,6 +5989,16 @@ addspell:
         -  class: AddSpell
     parameters:
         spell: flare
+        loud: true
+
+fillwand:
+    icon: iron_hoe
+    category: utility
+    hidden: true
+    actions:
+        cast:
+        -  class: FillWand
+    parameters:
         loud: true
 
 enchantwand:
