@@ -30,6 +30,7 @@ public class VolumeAction extends CompoundAction
 	private int dz;
 	private int xDirection;
 	private int zDirection;
+    private int startRadius;
 	private boolean checked;
 
 	@Override
@@ -39,6 +40,7 @@ public class VolumeAction extends CompoundAction
         xSize = parameters.getInt("x_size", radius);
         ySize = parameters.getInt("y_size", radius);
         zSize = parameters.getInt("z_size", radius);
+        int thickness = parameters.getInt("thickness", 0);
 		autoOrient = parameters.getBoolean("orient", false);
 		centerProbability = (float)parameters.getDouble("probability", 1);
 		outerProbability = (float)parameters.getDouble("probability", 1);
@@ -48,16 +50,21 @@ public class VolumeAction extends CompoundAction
         ySize = (int)(context.getMage().getRadiusMultiplier() * this.ySize);
         zSize = (int)(context.getMage().getRadiusMultiplier() * this.zSize);
         radius = Math.max(xSize, zSize);
+        if (thickness > 0) {
+            startRadius = radius - thickness;
+        } else {
+            startRadius = 0;
+        }
 	}
 
 	@Override
 	public void reset(CastContext context) {
 		super.reset(context);
         createActionContext(context);
-		currentRadius = 0;
-		dx = 0;
+		currentRadius = startRadius;
+		dx = -startRadius;
         dy = -ySize;
-		dz = 0;
+		dz = -startRadius;
 		xDirection = 1;
 		zDirection = 0;
 		checked = false;
@@ -151,6 +158,9 @@ public class VolumeAction extends CompoundAction
 			}
 
             dy++;
+            if (dy < startRadius && dy >= -startRadius) {
+                dy = startRadius;
+            }
             if (dy > ySize) {
                 dy = -ySize;
                 int nextX = dx + xDirection;
