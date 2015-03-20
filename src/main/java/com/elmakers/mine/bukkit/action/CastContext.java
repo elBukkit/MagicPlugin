@@ -58,6 +58,8 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
     private int workAllowed = 500;
     private int actionsPerformed;
 
+    public static double WAND_LOCATION_OFFSET = 0.5;
+
     public CastContext(Spell spell) {
         this.setSpell(spell);
         this.location = null;
@@ -124,6 +126,20 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
         {
             this.brushSpell = (BrushSpell)spell;
         }
+    }
+
+    @Override
+    public Location getWandLocation() {
+        Location wandLocation = getEyeLocation();
+        if (wandLocation == null) {
+            return null;
+        }
+        Location toTheRight = wandLocation.clone();
+        toTheRight.setYaw(toTheRight.getYaw() + 90);
+        Vector wandDirection = toTheRight.getDirection();
+        wandLocation = wandLocation.clone();
+        wandLocation.add(wandDirection.multiply(WAND_LOCATION_OFFSET));
+        return wandLocation;
     }
 
     @Override

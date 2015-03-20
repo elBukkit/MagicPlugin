@@ -1154,7 +1154,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
 
     @Override
     public void playEffects(String effectName, com.elmakers.mine.bukkit.api.action.CastContext context, float scale) {
-        Location source = context.getEyeLocation();
+        Location source = context.getWandLocation();
         if (effects.containsKey(effectName) && source != null)
         {
             cancelEffects();
