@@ -18,9 +18,11 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.ItemFrame;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.MetadataValue;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.BlockIterator;
 import org.bukkit.util.Vector;
 
@@ -40,6 +42,7 @@ public abstract class TargetingSpell extends BaseSpell {
     private List<Target>                        targets                 = null;
     private TargetType							targetType				= TargetType.OTHER;
     private boolean								targetNPCs				= false;
+    private boolean								targetInvisible			= false;
     private boolean								targetUnknown			= true;
     private int                                 verticalSearchDistance  = 8;
     private boolean                             targetingComplete		= false;
@@ -533,7 +536,7 @@ public abstract class TargetingSpell extends BaseSpell {
             // check for Superprotected Mages
             if (isSuperProtected(entity)) continue;
             // Ignore invisible entities
-            // if (entity instanceof LivingEntity && ((LivingEntity)entity).hasPotionEffect(PotionEffectType.INVISIBILITY)) continue;
+            if (!targetInvisible && entity instanceof LivingEntity && ((LivingEntity)entity).hasPotionEffect(PotionEffectType.INVISIBILITY)) continue;
 
             Target newScore = null;
             if (useHitbox) {
@@ -785,6 +788,7 @@ public abstract class TargetingSpell extends BaseSpell {
         }
 
         targetNPCs = parameters.getBoolean("target_npc", false);
+        targetInvisible = parameters.getBoolean("target_invisible", false);
         targetUnknown = parameters.getBoolean("target_unknown", true);
 
         if (parameters.contains("target_type")) {
