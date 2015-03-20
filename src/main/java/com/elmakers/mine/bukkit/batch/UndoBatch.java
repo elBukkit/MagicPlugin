@@ -35,7 +35,7 @@ public class UndoBatch implements com.elmakers.mine.bukkit.api.batch.UndoBatch {
         controller = mage.getController();
 
         // We're going to track the blocks we undo
-        // But this doens't get put back in the undo queue, or
+        // But this doesn't get put back in the undo queue, or
         // it will just flip-flop forever between these two actions.
         // Maybe eventually we'll have a "redo" queue.
         trackUndoBlocks = new UndoList(mage, blockList.getSpell(), "Undo");

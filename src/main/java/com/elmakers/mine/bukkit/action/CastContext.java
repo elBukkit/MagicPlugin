@@ -596,7 +596,7 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
         } else {
             block.removeMetadata("breakable", controller.getPlugin());
         }
-        undoList.setUndoReflective(true);
+        undoList.setUndoBreakable(true);
     }
 
     @Override
