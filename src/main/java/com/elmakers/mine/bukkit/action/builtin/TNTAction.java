@@ -44,7 +44,7 @@ public class TNTAction extends ParallelCompoundAction
 		MageController controller = context.getController();
         int size = (int)(mage.getRadiusMultiplier() * this.size);
 
-		Location loc = context.getEyeLocation();
+		Location loc = context.getWandLocation();
 		if (loc == null) {
 			return SpellResult.LOCATION_REQUIRED;
 		}

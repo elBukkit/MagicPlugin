@@ -54,7 +54,7 @@ public class ThrowBlockAction extends ParallelCompoundAction
 		perp.crossProduct(up);
 
         FallingBlock block = null;
-        location = context.getEyeLocation();
+        location = context.getWandLocation();
         block = context.getWorld().spawnFallingBlock(location, material, data);
 
         if (block == null)

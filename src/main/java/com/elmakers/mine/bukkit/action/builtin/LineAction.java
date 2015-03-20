@@ -51,7 +51,7 @@ public class LineAction extends CompoundAction
         createActionContext(context);
         current = 0;
 
-        Location startLocation = context.getEyeLocation();
+        Location startLocation = context.getWandLocation();
         Location targetLocation = context.getTargetLocation();
 
         if (startLocation == null || targetLocation == null) return;

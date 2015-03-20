@@ -37,7 +37,7 @@ public class ThrowItemAction extends ParallelCompoundAction {
     public SpellResult perform(CastContext context)
     {
         MaterialAndData material = context.getBrush();
-        Location spawnLocation = context.getEyeLocation();
+        Location spawnLocation = context.getWandLocation();
         if (spawnLocation == null)
         {
             return SpellResult.NO_TARGET;

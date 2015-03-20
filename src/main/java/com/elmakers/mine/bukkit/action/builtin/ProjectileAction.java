@@ -176,7 +176,7 @@ public class ProjectileAction  extends ParallelCompoundAction
 		}
 		
 		// Prepare parameters
-		Location location = context.getEyeLocation();
+		Location location = context.getWandLocation();
 		Vector direction = context.getDirection().normalize();
 
         if (startDistance > 0) {
