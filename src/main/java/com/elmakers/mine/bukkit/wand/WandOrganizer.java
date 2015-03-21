@@ -9,6 +9,7 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
+import com.elmakers.mine.bukkit.api.spell.SpellCategory;
 import org.bukkit.Material;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -88,7 +89,8 @@ public class WandOrganizer {
 					}
 					favorites.add(spellName);
 				}
-                String category = spell.getCategory().getKey();
+                SpellCategory spellCategory = spell.getCategory();
+                String category = spellCategory == null ? null : spellCategory.getKey();
                 if (category == null || category.length() == 0) {
                     category = "default";
                 }

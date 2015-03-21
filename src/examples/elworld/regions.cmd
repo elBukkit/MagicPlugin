@@ -30,7 +30,6 @@ region flag spleef -w world allowed-spells recall,day
 region flag spleef -w world blocked-spells *
 region flag spleef_arena -w world allowed-spells recall,blast,collapse,harden,laser,earthquake
 region flag refugees -w world allowed-spells *
-
 region flag dueling -w world  keep-inventory allow
 region flag dueling -w world  keep-level allow
 region flag arena -w world  keep-inventory allow
