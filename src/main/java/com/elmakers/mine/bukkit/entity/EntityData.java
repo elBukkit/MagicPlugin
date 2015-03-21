@@ -68,7 +68,14 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         this.type = entity.getType();
         this.location = location;
         this.fireTicks = entity.getFireTicks();
-        this.velocity = entity.getVelocity();
+
+        // This can sometimes throw an exception on an invalid
+        // entity velocity!
+        try {
+            this.velocity = entity.getVelocity();
+        } catch (Exception ex) {
+            this.velocity = null;
+        }
 
         if (entity instanceof Hanging) {
             Hanging hanging = (Hanging)entity;
@@ -385,7 +392,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
             entity.teleport(location);
         }
 
-        if (hasVelocity) {
+        if (hasVelocity && velocity != null) {
             entity.setVelocity(velocity);
         }
 
