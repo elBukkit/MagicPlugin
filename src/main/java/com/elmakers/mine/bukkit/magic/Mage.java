@@ -413,6 +413,8 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         int autoUndo = controller.getAutoUndoInterval();
         if (autoUndo > 0 && undoList.getScheduledUndo() == 0) {
             undoList.setScheduleUndo(autoUndo);
+        } else {
+            undoList.updateScheduledUndo();
         }
         queue.add(undoList);
         controller.registerForUndo(this);
