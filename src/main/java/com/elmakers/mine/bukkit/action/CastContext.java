@@ -587,7 +587,11 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
     public void finish() {
         if (undoSpell != null && undoSpell.isUndoable())
         {
-            undoSpell.registerForUndo();
+            if (!undoList.isScheduled())
+            {
+                getController().update(undoList);
+            }
+            getMage().registerForUndo(undoList);
         }
         castMessage("cast_finish");
     }

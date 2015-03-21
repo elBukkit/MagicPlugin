@@ -105,7 +105,13 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
     public void setScheduleUndo(int ttl)
     {
         timeToLive = ttl;
-        scheduledTime = System.currentTimeMillis() + timeToLive;
+        updateScheduledUndo();
+    }
+
+    public void updateScheduledUndo() {
+        if (timeToLive > 0) {
+            scheduledTime = System.currentTimeMillis() + timeToLive;
+        }
     }
 
     public int getScheduledUndo()
