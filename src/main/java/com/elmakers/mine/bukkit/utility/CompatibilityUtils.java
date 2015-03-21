@@ -118,7 +118,11 @@ public class CompatibilityUtils extends NMSUtils {
     public static Inventory createInventory(InventoryHolder holder, final int size, final String name) {
         Inventory inventory = null;
         try {
-            inventory = (Inventory)class_CraftInventoryCustom_constructor.newInstance(holder, size, ChatColor.translateAlternateColorCodes('&', name));
+            String shorterName = name;
+            if (shorterName.length() > 32) {
+                shorterName = shorterName.substring(0, 31);
+            }
+            inventory = (Inventory)class_CraftInventoryCustom_constructor.newInstance(holder, size, ChatColor.translateAlternateColorCodes('&', shorterName));
         } catch (Throwable ex) {
             ex.printStackTrace();
         }
