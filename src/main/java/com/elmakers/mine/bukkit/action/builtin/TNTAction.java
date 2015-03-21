@@ -44,7 +44,7 @@ public class TNTAction extends TriggeredCompoundAction
 		MageController controller = context.getController();
         int size = (int)(mage.getRadiusMultiplier() * this.size);
 
-		Location loc = context.getWandLocation();
+		Location loc = context.getEyeLocation();
 		if (loc == null) {
 			return SpellResult.LOCATION_REQUIRED;
 		}

@@ -37,7 +37,7 @@ public class ThrowItemAction extends TriggeredCompoundAction {
     public SpellResult perform(CastContext context)
     {
         MaterialAndData material = context.getBrush();
-        Location spawnLocation = context.getWandLocation();
+        Location spawnLocation = context.getEyeLocation();
         if (spawnLocation == null)
         {
             return SpellResult.NO_TARGET;

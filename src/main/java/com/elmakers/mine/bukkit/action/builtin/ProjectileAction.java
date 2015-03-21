@@ -176,7 +176,7 @@ public class ProjectileAction  extends TriggeredCompoundAction
 		}
 		
 		// Prepare parameters
-		Location location = context.getWandLocation();
+		Location location = context.getEyeLocation();
 		Vector direction = context.getDirection().normalize();
 
         if (startDistance > 0) {

@@ -3315,6 +3315,7 @@ earthquake:
         destructible: destructible_mining
         undo: 10000
         skip: 8
+        target_self: true
     costs:
         mana: 150
 

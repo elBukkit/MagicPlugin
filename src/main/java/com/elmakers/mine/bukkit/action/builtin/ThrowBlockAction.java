@@ -54,7 +54,7 @@ public class ThrowBlockAction extends TriggeredCompoundAction
 		perp.crossProduct(up);
 
         FallingBlock block = null;
-        location = context.getWandLocation();
+        location = context.getEyeLocation();
         block = context.getWorld().spawnFallingBlock(location, material, data);
 
         if (block == null)
