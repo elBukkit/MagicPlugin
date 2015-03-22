@@ -10,6 +10,7 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.commons.lang.StringEscapeUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
 
@@ -37,7 +38,9 @@ public class Messages implements com.elmakers.mine.bukkit.api.magic.Messages {
                     randomized.put(randomKey, randomSection.getStringList(randomKey));
                 }
             } else if (messages.isString(key)) {
-                messageMap.put(key, messages.getString(key));
+                String value = messages.getString(key);
+                value = StringEscapeUtils.unescapeHtml(value);
+                messageMap.put(key, value);
             }
         }
     }

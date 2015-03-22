@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 2.7
+
+ - Allow HTML escape codes in messages
+
 ## 2.6
 
  - Implement batched action system
