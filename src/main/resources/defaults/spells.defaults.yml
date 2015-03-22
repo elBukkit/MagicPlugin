@@ -4471,16 +4471,16 @@ flare:
     icon_url: http://i.imgur.com/SODRIj1.png
     icon: firework
     category: light
-    class: FireworkSpell
     worth: 2
+    actions:
+        cast:
+        -  class: Firework
     effects:
         cast:
         -  class: EffectSingle
            sound: firework_launch
     parameters:
-        target_type: LivingEntity
-        allow_max_range: true
-        range: 16
+        launch: true
     costs:
         mana: 10
 

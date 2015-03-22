@@ -13,6 +13,7 @@ import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.effect.EffectUtils;
 import com.elmakers.mine.bukkit.spell.TargetingSpell;
 
+@Deprecated
 public class FireworkSpell extends TargetingSpell
 {	
 	@Override
