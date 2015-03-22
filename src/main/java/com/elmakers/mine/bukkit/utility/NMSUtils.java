@@ -105,6 +105,9 @@ public class NMSUtils {
     protected static Constructor class_EntityFireworkConstructor;
 
     protected static Field class_Entity_invulnerableField;
+    protected static Field class_Entity_motXField;
+    protected static Field class_Entity_motYField;
+    protected static Field class_Entity_motZField;
     protected static Field class_ItemStack_tagField;
     protected static Field class_DamageSource_MagicField;
     protected static Field class_Firework_ticksFlownField;
@@ -179,6 +182,12 @@ public class NMSUtils {
 
             class_Entity_invulnerableField = class_Entity.getDeclaredField("invulnerable");
             class_Entity_invulnerableField.setAccessible(true);
+            class_Entity_motXField = class_Entity.getDeclaredField("motX");
+            class_Entity_motXField.setAccessible(true);
+            class_Entity_motYField = class_Entity.getDeclaredField("motY");
+            class_Entity_motYField.setAccessible(true);
+            class_Entity_motZField = class_Entity.getDeclaredField("motZ");
+            class_Entity_motZField.setAccessible(true);
             class_ItemStack_tagField = class_ItemStack.getDeclaredField("tag");
             class_ItemStack_tagField.setAccessible(true);
             class_DamageSource_MagicField = class_DamageSource.getField("MAGIC");
