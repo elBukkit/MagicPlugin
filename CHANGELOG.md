@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## 4.7
+
+ - Remove special characters from messages.defaults.yml files
+   (Seems to be causing issues on Windows servers)
+
 ## 4.6
 
 Check MIGRATION notes for important information on this release.
