@@ -1192,11 +1192,13 @@ boom:
     alias: kaboom
     icon: fireball
     category: combat
-    class: BoomSpell
     pvp_restricted: true
     worth: 30
     upgrade_required_path: apprentice
     upgrade_required_casts: 50
+    actions:
+        cast:
+        - class: Explosion
     effects:
         cast:
         -  class: EffectSingle
@@ -1237,9 +1239,11 @@ nuke:
     icon_url: http://i.imgur.com/64uE1b8.png
     icon: skull_item:4
     category: master
-    class: BoomSpell
     worth: 500
     pvp_restricted: true
+    actions:
+        cast:
+        - class: Explosion
     effects:
         cast:
         -  class: EffectSingle
@@ -1437,8 +1441,10 @@ tree:
     icon: sapling
     icon_url: http://s3.amazonaws.com/MinecraftSkins/MHF_OakLog.png
     category: elemental
-    class: TreeSpell
     worth: 80
+    actions:
+        cast:
+        - class: Tree
     effects:
         cast:
         -  class: EffectSingle
@@ -1689,9 +1695,14 @@ mount:
     icon_url: http://i.imgur.com/9NfETun.png
     icon: saddle
     category: master
-    class: MountSpell
     worth: 40
     pvp_restricted: true
+    actions:
+        cast:
+        - class: Mount
+        alternate_up:
+        - class: Mount
+          eject: true
     effects:
         cast:
         -  class: EffectSingle
@@ -2517,10 +2528,15 @@ bubble:
     icon_url: http://i.imgur.com/FMkCRh9.png
     icon: water_bucket
     category: utility
-    class: CushionSpell
     worth: 10
     upgrade_required_path: student
     upgrade_required_casts: 50
+    actions:
+        cast:
+        - class: DisablePhysics
+        - class: Volume
+          actions:
+          - class: ModifyBlock
     effects:
         cast:
         -  class: EffectSingle
@@ -2541,21 +2557,21 @@ bubble:
     parameters:
         target_type: LivingEntity
         allow_max_range: false
-        height: 3
-        hitbox: true
+        radius: 1
         range: 25
-        width: 3
-        cooldown: 1000
+        cooldown: 2000
         undo: 1000
-        disable_physics: 8000
+        duration: 3000
+        destructible: fire,air
+        brush: stationary_water
     costs:
         mana: 10
 
 bubble|2:
     parameters:
-        width: 4
-        height: 4
+        radius: 2
         range: 40
+        undo: 2000
 
 regenerate:
     icon_url: http://i.imgur.com/0j2hnro.png
@@ -2804,8 +2820,12 @@ pillar:
     icon_url: http://i.imgur.com/0Z2VP5r.png
     icon: iron_axe
     category: engineering
-    class: PillarSpell
     worth: 30
+    actions:
+        cast:
+        - class: BlockSearch
+          actions:
+          - class: ModifyBlock
     effects:
         cast:
         -  class: EffectSingle
@@ -2815,6 +2835,7 @@ pillar:
         allow_max_range: false
         range: 64
         transparent: transparent_to_construction
+        direction: up
     costs:
         mana: 5
 
@@ -2822,8 +2843,13 @@ place:
     icon_url: http://i.imgur.com/87qrrmv.png
     icon: diamond_axe
     category: engineering
-    class: PlaceSpell
     worth: 40
+    actions:
+        cast:
+        - class: ChangeContext
+          target_attachment: true
+          actions:
+          - class: ModifyBlock
     effects:
         cast:
         -  class: EffectSingle
@@ -3997,8 +4023,11 @@ disintegrate:
     icon: bone
     category: combat
     pvp_restricted: true
-    class: DisintegrateSpell
     worth: 25
+    actions:
+        cast:
+        - class: Damage
+        - class: ModifyBlock
     effects:
         cast:
         -  class: EffectSingle
@@ -4007,14 +4036,17 @@ disintegrate:
            particle: drip_lava
            particle_data: 1
     parameters:
+        conditional: fail
         target_type: LivingEntity
         allow_max_range: false
         range: 4
         target: other
-        player_damage: 5
+        brush: erase
+        player_damage: 6
         entity_damage: 50
         check_destructible: false
         undo: 5000
+        cooldown: 500
     costs:
         mana: 50
 
@@ -5631,7 +5663,6 @@ stun:
              iterations: 16
              particle: spell
     parameters:
-        hitbox: true
         target_type: LivingEntity
         radius: 4
         damage: 1
@@ -6261,8 +6292,6 @@ tornado:
            sound_volume: 1
            sound_pitch: 0.2
            location: origin
-           effectlib:
-             class: TurnEffect
     parameters:
         target_type: Entity
         range: 8
@@ -6278,9 +6307,38 @@ tornado:
         delay: 250
         brush: erase
         falling: true
-        random_target_offset: 2,0,2
-        target_direction_speed: 1
+        random_target_offset: 0.2,0,0.2
+        target_direction_speed: 0.5
         source_direction_offset: 0,0.5,0
         undo: 15000
     costs:
         mana: 150
+
+rocket:
+    icon_url: http://i.imgur.com/SODRIj1.png
+    icon: ink_sack:4
+    category: utility
+    worth: 60
+    actions:
+        cast:
+        - class: FallProtection
+        - class: Firework
+        - class: Mount
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: firework_launch
+           sound_pitch: 0.1
+           sound_volume: 0.5
+           location: origin
+    parameters:
+        target: self
+        launch: true
+        cooldown: 5000
+        power: 0
+        speed: 0.2
+        expected_lifespan: 35
+        set_target: true
+        duration: 20000
+    costs:
+        mana: 75

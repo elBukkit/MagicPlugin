@@ -7,6 +7,7 @@ import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.RandomUtils;
 import org.bukkit.Location;
+import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.util.Vector;
@@ -26,6 +27,7 @@ public class ChangeContextAction extends CompoundAction {
     private Vector sourceDirectionOffset;
     private Vector targetDirectionOffset;
     private boolean persistTarget;
+    private boolean attachBlock;
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters) {
@@ -43,6 +45,7 @@ public class ChangeContextAction extends CompoundAction {
         sourceDirectionOffset = ConfigurationUtils.getVector(parameters, "source_direction_offset");
         targetDirectionOffset = ConfigurationUtils.getVector(parameters, "source_direction_offset");
         persistTarget = parameters.getBoolean("persist_target", false);
+        attachBlock = parameters.getBoolean("target_attachment", false);
         if (parameters.contains("target_direction_speed"))
         {
             targetDirectionSpeed = parameters.getDouble("target_direction_speed");
@@ -75,6 +78,14 @@ public class ChangeContextAction extends CompoundAction {
         if (targetSelf)
         {
             targetEntity = sourceEntity;
+            targetLocation = sourceLocation;
+        }
+        if (attachBlock)
+        {
+            Block previousBlock = context.getPreviousBlock();
+            if (previousBlock != null) {
+                targetLocation = previousBlock.getLocation();
+            }
         }
         if (sourceOffset != null)
         {
@@ -119,7 +130,6 @@ public class ChangeContextAction extends CompoundAction {
         }
         if (persistTarget)
         {
-            org.bukkit.Bukkit.getLogger().info("Changing location from " + context.getTargetLocation().toVector() + " to " + targetLocation.toVector());
             context.setTargetLocation(targetLocation);
         }
         CastContext newContext = createContext(context, sourceEntity, sourceLocation, targetEntity, targetLocation);

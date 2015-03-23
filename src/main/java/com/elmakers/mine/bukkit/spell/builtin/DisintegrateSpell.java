@@ -13,6 +13,7 @@ import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.BlockSpell;
 import com.elmakers.mine.bukkit.utility.Target;
 
+@Deprecated
 public class DisintegrateSpell extends BlockSpell
 {
 	private final static int             DEFAULT_PLAYER_DAMAGE = 1;

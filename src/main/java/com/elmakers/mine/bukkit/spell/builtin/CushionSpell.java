@@ -8,6 +8,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.BlockSpell;
 
+@Deprecated
 public class CushionSpell extends BlockSpell
 {
 	private static final int DEFAULT_CUSHION_WIDTH = 3;

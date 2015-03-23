@@ -36,6 +36,7 @@ public class FireworkAction extends TriggeredCompoundAction
     private double speed;
     private double dyOffset;
     private int checkInterval;
+    private boolean setTarget;
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters) {
@@ -65,6 +66,7 @@ public class FireworkAction extends TriggeredCompoundAction
         speed = parameters.getDouble("speed", 0.1);
         dyOffset = parameters.getDouble("dy_offset", 0);
         checkInterval = parameters.getInt("check_interval", 10);
+        setTarget = parameters.getBoolean("set_target", false);
         if (parameters.contains("ticks_flown")) {
             ticksFlown = parameters.getInt("ticks_flown");
         } else {
@@ -106,6 +108,9 @@ public class FireworkAction extends TriggeredCompoundAction
         ActionHandler.setEffects(firework, context, "hit");
 
         scheduleEntityCheck(context, firework, checkInterval);
+        if (setTarget) {
+            context.setTargetEntity(firework);
+        }
 
 		return SpellResult.CAST;
 	}

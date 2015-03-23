@@ -8,6 +8,7 @@ import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.BrushSpell;
 import com.elmakers.mine.bukkit.utility.Target;
 
+@Deprecated
 public class PlaceSpell extends BrushSpell 
 {
 	@Override

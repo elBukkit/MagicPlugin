@@ -11,6 +11,7 @@ import com.elmakers.mine.bukkit.spell.BlockSpell;
 import com.elmakers.mine.bukkit.utility.NMSUtils;
 import com.elmakers.mine.bukkit.utility.Target;
 
+@Deprecated
 public class BoomSpell extends BlockSpell {
 
 	protected int defaultSize = 1;

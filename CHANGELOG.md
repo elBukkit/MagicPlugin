@@ -1,6 +1,6 @@
 # CHANGELOG
 
-## 4.6.2
+## 4.7
 
  - Remove special characters from messages.defaults.yml files
    (Seems to be causing issues on Windows servers)
@@ -8,6 +8,9 @@
  - Re-balance Laser, Stun and Curse
  - Add Gatling Gun spell
  - Add Tornado spell
+ - Add Rocket spell
+ - Action-ize several more spells
+ - Allow overlapping spell FX
 
 ## 4.6.1
 
