@@ -341,7 +341,7 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
 
     @Override
     public boolean hasBuildPermission(Block block) {
-        return blockSpell != null ? blockSpell.hasBuildPermission(block) : false;
+        return baseSpell != null ? baseSpell.hasBuildPermission(block) : false;
     }
 
     @Override

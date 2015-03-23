@@ -648,40 +648,6 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         return getEyeLocation();
     }
 
-    public FireworkEffect getFireworkEffect() {
-        return getFireworkEffect(null, null, null, null, null);
-    }
-
-    public FireworkEffect getFireworkEffect(Color color1, Color color2, org.bukkit.FireworkEffect.Type fireworkType) {
-            return getFireworkEffect(color1, color2, fireworkType, null, null);
-    }
-
-    public FireworkEffect getFireworkEffect(Color color1, Color color2, org.bukkit.FireworkEffect.Type fireworkType, Boolean flicker, Boolean trail) {
-        Color wandColor = mage == null ? null : mage.getEffectColor();
-        if (wandColor != null) {
-            color1 = wandColor;
-            color2 = wandColor.mixColors(color1, Color.WHITE);
-        } else {
-            if (color1 == null) {
-                color1 = Color.fromRGB(random.nextInt(255), random.nextInt(255), random.nextInt(255));
-            }
-            if (color2 == null) {
-                color2 = Color.fromRGB(random.nextInt(255), random.nextInt(255), random.nextInt(255));
-            }
-        }
-        if (fireworkType == null) {
-            fireworkType = org.bukkit.FireworkEffect.Type.values()[random.nextInt(org.bukkit.FireworkEffect.Type.values().length)];
-        }
-        if (flicker == null) {
-            flicker = random.nextBoolean();
-        }
-        if (trail == null) {
-            trail = random.nextBoolean();
-        }
-
-        return FireworkEffect.builder().flicker(flicker).withColor(color1).withFade(color2).with(fireworkType).trail(trail).build();
-    }
-
     public boolean hasBrushOverride()
     {
         return false;

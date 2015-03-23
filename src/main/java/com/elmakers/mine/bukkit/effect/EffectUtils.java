@@ -1,8 +1,12 @@
 package com.elmakers.mine.bukkit.effect;
 
+import com.elmakers.mine.bukkit.api.action.CastContext;
+import com.elmakers.mine.bukkit.api.magic.Mage;
+import org.bukkit.Color;
 import org.bukkit.FireworkEffect;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.entity.Entity;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.FireworkMeta;
@@ -10,13 +14,16 @@ import org.bukkit.inventory.meta.FireworkMeta;
 import com.elmakers.mine.bukkit.utility.NMSUtils;
 import org.bukkit.util.Vector;
 
+import java.util.Random;
+
 public class EffectUtils extends NMSUtils {
 
     public static void spawnFireworkEffect(Location location, FireworkEffect effect, int power) {
-        spawnFireworkEffect(location, effect, power, null);
+        spawnFireworkEffect(location, effect, power, null, 2, 1);
     }
 
-    public static void spawnFireworkEffect(Location location, FireworkEffect effect, int power, Vector direction) {
+    public static Entity spawnFireworkEffect(Location location, FireworkEffect effect, int power, Vector direction, Integer expectedLifespan, Integer ticksFlown) {
+        Entity entity = null;
         try {
             Object world = getHandle(location.getWorld());
             ItemStack itemStack = new ItemStack(Material.FIREWORK);
@@ -33,14 +40,50 @@ public class EffectUtils extends NMSUtils {
                 class_Entity_motXField.set(fireworkHandle, direction.getX());
                 class_Entity_motYField.set(fireworkHandle, direction.getY());
                 class_Entity_motZField.set(fireworkHandle, direction.getZ());
-            } else {
-                class_Firework_ticksFlownField.set(fireworkHandle, 2);
-                class_Firework_expectedLifespanField.set(fireworkHandle, 1);
+            }
+
+            if (ticksFlown != null) {
+                class_Firework_ticksFlownField.set(fireworkHandle, ticksFlown);
+            }
+            if (expectedLifespan != null) {
+                class_Firework_expectedLifespanField.set(fireworkHandle, expectedLifespan);
             }
 
             class_World_addEntityMethod.invoke(world, fireworkHandle, CreatureSpawnEvent.SpawnReason.CUSTOM);
+            entity = (Entity)class_Entity_getBukkitEntityMethod.invoke(fireworkHandle);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+
+        return entity;
     }
+
+    public static FireworkEffect getFireworkEffect(CastContext context, Color color1, Color color2, org.bukkit.FireworkEffect.Type fireworkType, Boolean flicker, Boolean trail) {
+        Mage mage = context.getMage();
+        Random random = context.getRandom();
+        Color wandColor = mage == null ? null : mage.getEffectColor();
+        if (wandColor != null) {
+            color1 = wandColor;
+            color2 = wandColor.mixColors(color1, Color.WHITE);
+        } else {
+            if (color1 == null) {
+                color1 = Color.fromRGB(random.nextInt(255), random.nextInt(255), random.nextInt(255));
+            }
+            if (color2 == null) {
+                color2 = Color.fromRGB(random.nextInt(255), random.nextInt(255), random.nextInt(255));
+            }
+        }
+        if (fireworkType == null) {
+            fireworkType = org.bukkit.FireworkEffect.Type.values()[random.nextInt(org.bukkit.FireworkEffect.Type.values().length)];
+        }
+        if (flicker == null) {
+            flicker = random.nextBoolean();
+        }
+        if (trail == null) {
+            trail = random.nextBoolean();
+        }
+
+        return FireworkEffect.builder().flicker(flicker).withColor(color1).withFade(color2).with(fireworkType).trail(trail).build();
+    }
+
 }
