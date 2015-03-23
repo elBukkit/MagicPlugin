@@ -109,7 +109,7 @@ public class ProjectileAction  extends TriggeredCompoundAction
         damage = parameters.getDouble("damage", 0);
         speed = (float)parameters.getDouble("speed", 0.6f);
         spread = (float)parameters.getDouble("spread", 12);
-        useFire = parameters.getBoolean("fire", true);
+        useFire = parameters.getBoolean("fire", false);
         tickIncrease = parameters.getInt("tick_increase", 1180);
         projectileTypeName = parameters.getString("projectile", "Arrow");
         breakBlocks = parameters.getBoolean("break_blocks", true);

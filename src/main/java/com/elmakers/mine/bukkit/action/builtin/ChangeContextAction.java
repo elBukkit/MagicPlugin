@@ -5,15 +5,27 @@ import com.elmakers.mine.bukkit.action.CompoundAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
+import com.elmakers.mine.bukkit.utility.RandomUtils;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.util.Vector;
 
+import java.util.Random;
+
 public class ChangeContextAction extends CompoundAction {
     private Vector sourceOffset;
     private Vector targetOffset;
     private boolean targetSelf;
+    private Vector randomSourceOffset;
+    private Vector randomTargetOffset;
+    private Double targetDirectionSpeed;
+    private Double sourceDirectionSpeed;
+    private Vector sourceDirection;
+    private Vector targetDirection;
+    private Vector sourceDirectionOffset;
+    private Vector targetDirectionOffset;
+    private boolean persistTarget;
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters) {
@@ -21,14 +33,41 @@ public class ChangeContextAction extends CompoundAction {
         targetSelf = parameters.getBoolean("target_caster");
         targetOffset = ConfigurationUtils.getVector(parameters, "target_offset");
         sourceOffset = ConfigurationUtils.getVector(parameters, "source_offset");
+        targetOffset = ConfigurationUtils.getVector(parameters, "random_target_offset");
+        sourceOffset = ConfigurationUtils.getVector(parameters, "random_source_offset");
+        randomTargetOffset = ConfigurationUtils.getVector(parameters, "random_target_offset");
+        randomSourceOffset = ConfigurationUtils.getVector(parameters, "random_source_offset");
+        sourceDirection = ConfigurationUtils.getVector(parameters, "source_direction");
+        targetDirection = ConfigurationUtils.getVector(parameters, "target_direction");
+        targetDirection = ConfigurationUtils.getVector(parameters, "target_direction");
+        sourceDirectionOffset = ConfigurationUtils.getVector(parameters, "source_direction_offset");
+        targetDirectionOffset = ConfigurationUtils.getVector(parameters, "source_direction_offset");
+        persistTarget = parameters.getBoolean("persist_target", false);
+        if (parameters.contains("target_direction_speed"))
+        {
+            targetDirectionSpeed = parameters.getDouble("target_direction_speed");
+        }
+        else
+        {
+            targetDirectionSpeed = null;
+        }
+        if (parameters.contains("source_direction_speed"))
+        {
+            sourceDirectionSpeed = parameters.getDouble("source_direction_speed");
+        }
+        else
+        {
+            sourceDirectionSpeed = null;
+        }
     }
 
     @Override
     public SpellResult perform(CastContext context) {
         Entity sourceEntity = context.getEntity();
-        Location sourceLocation = context.getEyeLocation();
+        Location sourceLocation = context.getEyeLocation().clone();
         Entity targetEntity = context.getTargetEntity();
-        Location targetLocation = context.getTargetLocation();
+        Location targetLocation = context.getTargetLocation().clone();
+        Vector direction = context.getDirection().normalize();
         if (sourceLocation == null)
         {
             return SpellResult.LOCATION_REQUIRED;
@@ -39,11 +78,49 @@ public class ChangeContextAction extends CompoundAction {
         }
         if (sourceOffset != null)
         {
-            sourceLocation = sourceLocation.clone().add(sourceOffset);
+            sourceLocation = sourceLocation.add(sourceOffset);
         }
         if (targetOffset != null)
         {
-            targetLocation = targetLocation.clone().add(targetOffset);
+            targetLocation = targetLocation.add(targetOffset);
+        }
+        if (randomSourceOffset != null)
+        {
+            sourceLocation = RandomUtils.randomizeLocation(sourceLocation, randomSourceOffset);
+        }
+        if (randomTargetOffset != null)
+        {
+            targetLocation = RandomUtils.randomizeLocation(targetLocation, randomTargetOffset);
+        }
+        if (targetDirection != null)
+        {
+            targetLocation.setDirection(targetDirection);
+        }
+        if (sourceDirection != null)
+        {
+            sourceLocation.setDirection(sourceDirection);
+            direction = sourceDirection.clone();
+        }
+        if (targetDirectionOffset != null)
+        {
+            targetLocation.setDirection(targetLocation.getDirection().add(targetDirectionOffset));
+        }
+        if (sourceDirectionOffset != null)
+        {
+            sourceLocation.setDirection(direction.add(sourceDirectionOffset));
+        }
+        if (sourceDirectionSpeed != null)
+        {
+            sourceLocation = sourceLocation.add(direction.clone().multiply(sourceDirectionSpeed));
+        }
+        if (targetDirectionSpeed != null)
+        {
+            targetLocation = targetLocation.add(direction.clone().multiply(targetDirectionSpeed));
+        }
+        if (persistTarget)
+        {
+            org.bukkit.Bukkit.getLogger().info("Changing location from " + context.getTargetLocation().toVector() + " to " + targetLocation.toVector());
+            context.setTargetLocation(targetLocation);
         }
         CastContext newContext = createContext(context, sourceEntity, sourceLocation, targetEntity, targetLocation);
         return performActions(newContext);

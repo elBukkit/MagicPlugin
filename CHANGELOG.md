@@ -1,9 +1,17 @@
 # CHANGELOG
 
-## 4.7
+## 4.6.2
 
  - Remove special characters from messages.defaults.yml files
    (Seems to be causing issues on Windows servers)
+ - Add Firework action for launched fireworks with effects
+ - Re-balance Laser, Stun and Curse
+ - Add Gatling Gun spell
+ - Add Tornado spell
+
+## 4.6.1
+
+ - Fix for Laser not undoing when double-cast
 
 ## 4.6
 
