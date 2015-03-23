@@ -463,8 +463,6 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
         if (targets == null || targets.size() == 0) return;
 
         this.originEntity = new WeakReference<Entity>(originEntity);
-        currentEffects.clear();
-
         for (Entity targetEntity : targets)
         {
             if (targetEntity == null) continue;
@@ -475,7 +473,6 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
 
     @Override
     public void start(Location origin, Location target) {
-        currentEffects.clear();
         startEffects(origin, target);
     }
 
