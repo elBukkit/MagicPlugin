@@ -1,7 +1,9 @@
 package com.elmakers.mine.bukkit.api.spell;
 
 import com.elmakers.mine.bukkit.api.action.CastContext;
+import com.elmakers.mine.bukkit.api.block.MaterialAndData;
 import com.elmakers.mine.bukkit.api.magic.MageController;
+import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.util.Vector;
@@ -45,4 +47,7 @@ public interface Spell extends SpellTemplate {
     public boolean isPvpRestricted();
     public void sendMessage(String message);
     public void castMessage(String message);
+    public MaterialAndData getEffectMaterial();
+    public String getEffectParticle();
+    public Color getEffectColor();
 }

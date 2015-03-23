@@ -50,6 +50,8 @@ public interface CastContext {
     public boolean isIndestructible(Block block);
     public boolean hasBuildPermission(Block block);
     public void playEffects(String key);
+    public void playEffects(String key, float scale);
+    public void cancelEffects();
     public String getMessage(String key);
     public String getMessage(String key, String def);
     public Location tryFindPlaceToStand(Location location);

@@ -9,9 +9,13 @@ import org.bukkit.block.Block;
 import com.elmakers.mine.bukkit.api.block.MaterialAndData;
 import org.bukkit.entity.Entity;
 
+import java.util.Collection;
+
 public interface EffectPlayer {
+    public void setEffectPlayList(Collection<EffectPlay> plays);
     public void setEffect(Effect effect);
     public void setEffectData(int data);
+    public void setScale(float scale);
 
     public void setSound(Sound sound);
     public void setSound(Sound sound, float volume, float pitch);
@@ -22,9 +26,10 @@ public interface EffectPlayer {
     public void setMaterial(MaterialAndData material);
     public void setMaterial(Block block);
     public void setColor(Color color);
-    public void setOffset(float x, float y, float z) ;
+    public void setOffset(float x, float y, float z);
 
     public void start(Location origin, Location target);
     public void start(Entity origin, Entity target);
     public void start(Location origin, Entity originEntity, Location target, Entity targetEntity);
+    public void start(Location origin, Entity originEntity, Location target, Entity targetEntity, Collection<Entity> targets);
 }

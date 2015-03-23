@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 2.7
+
+ - Extend/change effect API to allow for overlapping effects
+
 ## 2.6
 
  - Implemented/Re-Worked Action API
