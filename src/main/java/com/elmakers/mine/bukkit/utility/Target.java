@@ -2,6 +2,7 @@ package com.elmakers.mine.bukkit.utility;
 
 import java.lang.ref.WeakReference;
 
+import com.elmakers.mine.bukkit.block.MaterialAndData;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
@@ -26,6 +27,7 @@ public class Target implements Comparable<Target>
 
     private Location source;
     private Location location;
+    private MaterialAndData locationMaterial;
     private WeakReference<Entity>   _entity;
     private Mage	 mage;
     private boolean  reverseDistance = false;
@@ -44,6 +46,7 @@ public class Target implements Comparable<Target>
     public Target(Location sourceLocation, Block block)
     {
         this.source = sourceLocation;
+        this.locationMaterial = new MaterialAndData(block);
         if (block != null) this.location = block.getLocation();
         calculateScore();
     }
@@ -65,6 +68,7 @@ public class Target implements Comparable<Target>
         this.reverseDistance = reverseDistance;
         this.source = sourceLocation;
         if (block != null) this.location = block.getLocation();
+        this.locationMaterial = new MaterialAndData(block);
         calculateScore();
     }
 
@@ -76,6 +80,7 @@ public class Target implements Comparable<Target>
         this.reverseDistance = reverseDistance;
         this.source = sourceLocation;
         if (block != null) this.location = block.getLocation();
+        this.locationMaterial = new MaterialAndData(block);
         calculateScore();
     }
 
@@ -372,5 +377,9 @@ public class Target implements Comparable<Target>
             this.location = entity.getLocation();
         }
         this.calculateScore();
+    }
+
+    public MaterialAndData getTargetedMaterial() {
+        return locationMaterial;
     }
 }
