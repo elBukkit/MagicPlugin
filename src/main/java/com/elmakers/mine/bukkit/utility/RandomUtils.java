@@ -6,7 +6,9 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
+import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.util.Vector;
 
 /**
  * Contains some general Randomization utitilies, including
@@ -144,5 +146,14 @@ public class RandomUtils {
                 list.add(index, inserted);
             }
         }
+    }
+
+    public static Location randomizeLocation(Location origin, Vector range)
+    {
+        double xRange = range.getX();
+        double yRange = range.getY();
+        double zRange = range.getZ();
+        origin.add(random.nextDouble() * xRange - xRange / 2, random.nextDouble() * yRange - yRange / 2, random.nextDouble() * zRange - zRange / 2);
+        return origin;
     }
 }
