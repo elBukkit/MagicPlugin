@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.spell.UndoableSpell;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -53,7 +54,8 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
     protected long                  scheduledTime;
 
     // Doubly-linked list
-    protected final UndoableSpell   spell;
+    protected UndoableSpell         spell;
+    protected CastContext           context;
     protected UndoQueue             undoQueue;
     protected UndoList              next;
     protected UndoList              previous;
@@ -64,19 +66,24 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
     protected boolean               undoBreakable = false;
     protected boolean               undoReflective = false;
 
-    public UndoList(Mage mage, UndoableSpell spell, String name)
+    public UndoList(Mage mage, String name)
     {
-        this(mage, spell);
+        this(mage);
         this.name = name;
     }
 
-    public UndoList(Mage mage, UndoableSpell spell)
+    public UndoList(Mage mage)
     {
         this.owner = mage;
-        this.spell = spell;
         this.plugin = owner.getController().getPlugin();
         createdTime = System.currentTimeMillis();
         modifiedTime = createdTime;
+    }
+
+    public void setSpell(UndoableSpell spell)
+    {
+        this.spell = spell;
+        this.context = spell == null ? null : spell.getCurrentCast();
     }
 
     @Override
@@ -272,9 +279,9 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
         if (isComplete()) return;
         undone = true;
 
-        if (spell != null)
+        if (context != null)
         {
-            spell.cancelEffects();
+            context.cancelEffects();
         }
 
         if (runnables != null) {

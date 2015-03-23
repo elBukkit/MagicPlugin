@@ -4,6 +4,7 @@ import java.lang.ref.WeakReference;
 import java.security.InvalidParameterException;
 import java.util.*;
 
+import com.elmakers.mine.bukkit.api.effect.EffectPlay;
 import de.slikey.effectlib.util.ParticleEffect;
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
@@ -42,7 +43,7 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
 
     private static EffectLibManager effectLib = null;
     private ConfigurationSection effectLibConfig = null;
-    private List<de.slikey.effectlib.Effect> currentEffects = new ArrayList<de.slikey.effectlib.Effect>();
+    private Collection<EffectPlay> currentEffects = null;
 
     public static boolean SOUNDS_ENABLED = true;
 
@@ -334,7 +335,7 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
         }
 
         if (effectLib != null && effectLibConfig != null) {
-            currentEffects.add(effectLib.play(effectLibConfig, this, sourceLocation, sourceEntity, targetLocation, targetEntity));
+            currentEffects.add(new EffectLibPlay(effectLib.play(effectLibConfig, this, sourceLocation, sourceEntity, targetLocation, targetEntity)));
         }
         if (effect != null) {
             int data = effectData == null ? 0 : effectData;
@@ -416,14 +417,17 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
         this.particleZOffset = zOffset;
     }
 
+    @Override
     public void setScale(float scale) {
         this.scale = scale;
     }
 
+    @Override
     public void setSound(Sound sound) {
         this.sound = sound;
     }
 
+    @Override
     public void setSound(Sound sound, float volume, float pitch) {
         this.sound = sound;
         this.soundVolume = volume;
@@ -444,6 +448,15 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
         this.originEntity = new WeakReference<Entity>(originEntity);
         this.targetEntity = new WeakReference<Entity>(targetEntity);
         start(origin, target);
+    }
+
+    @Override
+    public void start(Location origin, Entity originEntity, Location target, Entity targetEntity, Collection<Entity> targets) {
+        if (shouldPlayAtAllTargets()) {
+            start(origin, originEntity, targets);
+        } else {
+            start(origin, originEntity, target, targetEntity);
+        }
     }
 
     public void start(Location origin, Entity originEntity, Collection<Entity> targets) {
@@ -554,9 +567,9 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
     }
 
     public void cancel() {
-        if (currentEffects.size() > 0) {
-            if (effectLib != null) {
-                effectLib.cancel(currentEffects);
+        if (currentEffects != null) {
+            for (EffectPlay effect : currentEffects) {
+                effect.cancel();
             }
             currentEffects.clear();
         }
@@ -598,5 +611,10 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
     public boolean shouldPlayAtAllTargets()
     {
         return playAtAllTargets;
+    }
+
+    @Override
+    public void setEffectPlayList(Collection<EffectPlay> plays) {
+        this.currentEffects = plays;
     }
 }

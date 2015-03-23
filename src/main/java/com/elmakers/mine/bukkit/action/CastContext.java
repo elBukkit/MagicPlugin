@@ -1,6 +1,7 @@
 package com.elmakers.mine.bukkit.action;
 
 import com.elmakers.mine.bukkit.api.block.MaterialBrush;
+import com.elmakers.mine.bukkit.api.effect.EffectPlay;
 import com.elmakers.mine.bukkit.api.effect.EffectPlayer;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
@@ -24,6 +25,7 @@ import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.util.Vector;
 
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
@@ -46,6 +48,7 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
 
     private Collection<Entity> targetedEntities = Collections.newSetFromMap(new WeakHashMap<Entity, Boolean>());
     private Set<UUID> targetMessagesSent = new HashSet<UUID>();
+    private Collection<EffectPlay> currentEffects = new ArrayList<EffectPlay>();
 
     private Spell spell;
     private BaseSpell baseSpell;
@@ -68,6 +71,10 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
         this.location = null;
         this.entity = null;
         this.base = this;
+        targetedEntities = Collections.newSetFromMap(new WeakHashMap<Entity, Boolean>());
+        targetMessagesSent = new HashSet<UUID>();
+        currentEffects = new ArrayList<EffectPlay>();
+
     }
 
     public CastContext(com.elmakers.mine.bukkit.api.action.CastContext copy) {
@@ -92,11 +99,14 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
         this.undoList = copy.getUndoList();
         this.targetName = copy.getTargetName();
         this.brush = copy.getBrush();
+        this.targetMessagesSent = copy.getTargetMessagesSent();
+        this.currentEffects = copy.getCurrentEffects();
         if (copy instanceof CastContext)
         {
             this.base = ((CastContext)copy).base;
-            this.targetMessagesSent = ((CastContext)copy).targetMessagesSent;
-        } else {
+        }
+        else
+        {
             this.base = this;
         }
     }
@@ -347,10 +357,46 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
     @Override
     public void playEffects(String key)
     {
-        if (baseSpell != null)
+        playEffects(key, 1.0f);
+    }
+
+    @Override
+    public void playEffects(String effectName, float scale)
+    {
+        Location source = getWandLocation();
+        Collection<EffectPlayer> effects = getEffects(effectName);
+        Mage mage = getMage();
+        if (effects.size() > 0)
         {
-            baseSpell.playEffects(key, this);
+            Collection<Entity> targeted = getTargetedEntities();
+            Entity sourceEntity = getEntity();
+            Entity targetEntity = getTargetEntity();
+            Location targetLocation = getTargetLocation();
+            for (EffectPlayer player : effects)
+            {
+                // Track effect plays for cancelling
+                player.setEffectPlayList(currentEffects);
+
+                // Set scale
+                player.setScale(scale);
+
+                // Set material and color
+                player.setMaterial(spell.getEffectMaterial());
+                player.setColor(spell.getEffectColor());
+                String overrideParticle = spell.getEffectParticle();
+                player.setParticleOverride(overrideParticle);
+
+                player.start(source, sourceEntity, targetLocation, targetEntity, targeted);
+            }
         }
+    }
+
+    @Override
+    public void cancelEffects() {
+        for (EffectPlay player : currentEffects) {
+            player.cancel();
+        }
+        currentEffects.clear();
     }
 
     @Override
@@ -610,6 +656,16 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
     public com.elmakers.mine.bukkit.api.action.CastContext getBaseContext()
     {
         return base;
+    }
+
+    @Override
+    public Set<UUID> getTargetMessagesSent() {
+        return targetMessagesSent;
+    }
+
+    @Override
+    public Collection<EffectPlay> getCurrentEffects() {
+        return currentEffects;
     }
 
     @Override

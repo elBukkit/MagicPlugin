@@ -21,7 +21,7 @@ public abstract class UndoableBatch implements Batch {
     public UndoableBatch(Mage mage, UndoList undoList) {
         this.controller = mage.getController();
         this.mage = mage;
-        this.undoList = undoList == null ?  new UndoList(mage, null, "Undo") : undoList;
+        this.undoList = undoList == null ?  new UndoList(mage, "Undo") : undoList;
         mage.registerForUndo(this.undoList);
     }
 

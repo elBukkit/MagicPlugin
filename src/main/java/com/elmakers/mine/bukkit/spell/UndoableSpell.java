@@ -123,7 +123,8 @@ public abstract class UndoableSpell extends TargetingSpell {
     public UndoList getUndoList()
     {
         if (modifiedBlocks == null) {
-            modifiedBlocks = new UndoList(mage, this, this.getName());
+            modifiedBlocks = new UndoList(mage, this.getName());
+            modifiedBlocks.setSpell(this);
             configureUndoList();
         }
         return modifiedBlocks;

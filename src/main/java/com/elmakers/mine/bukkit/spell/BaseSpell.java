@@ -183,7 +183,6 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     private long 								lastMessageSent 			= 0;
     private Set<Material>						preventPassThroughMaterials = null;
     private Set<Material>                       passthroughMaterials = null;
-    private Collection<EffectPlayer>            currentEffects              = null;
 
     public boolean allowPassThrough(Material mat)
     {
@@ -816,7 +815,6 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         }
 
         backfired = false;
-        cancelEffects();
     }
 
     public boolean cast(String[] extraParameters, Location defaultLocation)
@@ -1120,36 +1118,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
 
     @Override
     public void playEffects(String effectName, com.elmakers.mine.bukkit.api.action.CastContext context, float scale) {
-        Location source = context.getWandLocation();
-        if (effects.containsKey(effectName) && source != null)
-        {
-            cancelEffects();
-            currentEffects = effects.get(effectName);
-            Collection<Entity> targeted = context.getTargetedEntities();
-            Entity sourceEntity = context.getEntity();
-            Entity targetEntity = context.getTargetEntity();
-            Location targetLocation = context.getTargetLocation();
-            for (EffectPlayer player : currentEffects)
-            {
-                // Set scale
-                player.setScale(scale);
-
-                // Set material and color
-                player.setMaterial(getEffectMaterial());
-                player.setColor(mage.getEffectColor());
-                String overrideParticle = particle != null ? particle : mage.getEffectParticleName();
-                player.setParticleOverride(overrideParticle);
-
-                if (player.shouldPlayAtAllTargets())
-                {
-                    player.start(source, sourceEntity, targeted);
-                }
-                else
-                {
-                    player.start(source, sourceEntity, targetLocation, targetEntity);
-                }
-            }
-        }
+        context.playEffects(effectName, scale);
     }
 
     @Override
@@ -1172,6 +1141,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         return null;
     }
 
+    @Override
     public com.elmakers.mine.bukkit.api.block.MaterialAndData getEffectMaterial()
     {
         return new MaterialAndData(DEFAULT_EFFECT_MATERIAL);
@@ -1425,6 +1395,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     public Collection<com.elmakers.mine.bukkit.api.effect.EffectPlayer> getEffects(SpellResult result) {
         return getEffects(result.name().toLowerCase());
     }
+
     @Override
     public Collection<com.elmakers.mine.bukkit.api.effect.EffectPlayer> getEffects(String key) {
         Collection<EffectPlayer> effectList = effects.get(key);
@@ -1615,19 +1586,12 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
             if (!quiet) {
                 sendMessage(getMessage("deactivate"));
             }
-            cancelEffects();
+            if (currentCast != null) {
+                currentCast.cancelEffects();
+            }
         }
 
         return true;
-    }
-
-    public void cancelEffects() {
-        if (currentEffects != null) {
-            for (EffectPlayer player : currentEffects) {
-                player.cancel();
-            }
-            currentEffects = null;
-        }
     }
 
     @Override
@@ -1780,5 +1744,22 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     @Override
     public Entity getEntity() {
         return mage.getEntity();
+    }
+
+    @Override
+    public String getEffectParticle() {
+        if (particle == null) {
+            return mage.getEffectParticleName();
+        }
+        return particle;
+    }
+
+    @Override
+    public Color getEffectColor() {
+        if (color == null) {
+            return mage.getEffectColor();
+        }
+
+        return color;
     }
 }
