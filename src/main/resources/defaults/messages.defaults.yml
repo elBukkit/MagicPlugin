@@ -1161,7 +1161,7 @@ spells:
     stun:
         name: Stun
         description: Stun and damage your target
-        cast: You stun $target.
+        cast: You throw a stun ball
         upgrade_description: "&r&b&bull; &6Increased damage and stun duration"
     lift:
         name: Lift

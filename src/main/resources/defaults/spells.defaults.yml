@@ -215,9 +215,11 @@ curse:
         target_breakables: 1
         target: other
         duration: 4000
-        cooldown: 10000
+        cooldown: 6000
         hitbox: true
-        effect_confusion: 1
+        effect_weakness: 4
+        slow: 3
+        hunger: 1
 
 curse|2:
     parameters:
@@ -4332,8 +4334,8 @@ laser:
         target_type: LivingEntity
         fov: 0.3
         allow_max_range: true
-        player_damage: 1
-        entity_damage: 2
+        player_damage: 0.2
+        entity_damage: 1
         target_count: 10
         range: 32
         size: 4
@@ -4356,15 +4358,17 @@ laser|2:
     parameters:
         radius: 2
         destructible: destructible
-        player_damage: 2
-        entity_damage: 4
-        count: 15
+        player_damage: 0.5
+        entity_damage: 2
+        repeat: 12
 
 laser|3:
     parameters:
         check_destructible: false
         radius: 3
-        count: 20
+        player_damage: 1
+        entity_damage: 3
+        repeat: 15
 
 shrink:
     icon: skull_item
@@ -4480,7 +4484,11 @@ flare:
         -  class: EffectSingle
            sound: firework_launch
     parameters:
-        launch: true
+        target_type: LivingEntity
+        allow_max_range: true
+        range: 16
+        ticks_flown: 2
+        expected_lifespan: 1
     costs:
         mana: 10
 
@@ -5555,65 +5563,44 @@ stun:
     worth: 40
     actions:
         cast:
-        - class: Damage
-        - class: PotionEffect
-        - class: Deactivate
+        - class: Firework
+          actions:
+          - class: AreaOfEffect
+            actions:
+            - class: Damage
+            - class: PotionEffect
+            - class: Deactivate
     effects:
         cast:
         -  class: EffectSingle
-           sound: enderman_teleport
+           custom_sound: magic.zap_crack
            sound_pitch: 0.1
            sound_volume: 0.5
            location: origin
-           effectlib:
-             class: ConeEffect
-             iterations: 16
-             particle: redstone
-             color: 58D3F7
-             lengthGrow: 0.4
+        projectile:
         -  class: EffectSingle
-           location: target
-           color: 5FD2FF
-           firework: ball
-        no_target:
-        -  class: EffectSingle
-           sound: enderman_teleport
-           sound_pitch: 0.1
-           sound_volume: 0.5
            location: origin
+           colorOverride: color
            effectlib:
-             class: ConeEffect
+             class: SmokeEffect
              iterations: 16
-             particle: redstone
-             color: 58D3F7
-             lengthGrow: 0.4
-        -  class: EffectSingle
-           location: target
-           color: 5FD2FF
-           firework: burst
-        backfire:
-        -  class: EffectSingle
-           sound: enderman_teleport
-           sound_pitch: 0.1
-           sound_volume: 0.5
-           location: origin
-           entity_effect: hurt
-           effectlib:
-             class: ConeEffect
-             iterations: 16
-             particle: redstone
-             color: 58D3F7
-             lengthGrow: 0.4
+             particle: spell
     parameters:
         hitbox: true
-        range: 48
         target_type: LivingEntity
+        radius: 4
         damage: 1
         target_breakables: 0
         bypass_backfire: false
         effect_confusion: 5
         effect_slow: 1
-        duration: 500
+        duration: 1500
+        launch: true
+        cooldown: 3000
+        firework: ball
+        power: 0
+        speed: 0.5
+        expected_lifespan: 10
     costs:
         mana: 50
 

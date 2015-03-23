@@ -32,7 +32,6 @@ import java.util.Random;
 public class ProjectileAction  extends TriggeredCompoundAction
 {
 	private int defaultSize = 1;
-	private Random random = new Random();
 	private static Field lifeField = null;
 	private static Method getHandleMethod = null;
 	private static boolean reflectionInitialized = false;
@@ -133,6 +132,7 @@ public class ProjectileAction  extends TriggeredCompoundAction
 		float damageMultiplier = mage.getDamageMultiplier();
         double damage = damageMultiplier * this.damage;
 		float spread = this.spread / damageMultiplier;
+        Random random = context.getRandom();
 		
 		if (projectileClass == null || worldClass == null || fireballClass == null || arrowClass == null || craftArrowClass == null) {
 			controller.getLogger().warning("Can't find NMS classess");

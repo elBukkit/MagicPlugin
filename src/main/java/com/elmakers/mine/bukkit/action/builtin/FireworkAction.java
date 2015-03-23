@@ -1,23 +1,31 @@
 package com.elmakers.mine.bukkit.action.builtin;
 
+import com.elmakers.mine.bukkit.action.ActionHandler;
 import com.elmakers.mine.bukkit.action.BaseSpellAction;
+import com.elmakers.mine.bukkit.action.TriggeredCompoundAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
+import com.elmakers.mine.bukkit.api.effect.EffectPlayer;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.effect.EffectUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.FireworkEffect;
 import org.bukkit.FireworkEffect.Type;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Entity;
 import org.bukkit.util.Vector;
 
 import java.lang.reflect.Field;
+import java.util.Collection;
 import java.util.Random;
 
-public class FireworkAction extends BaseSpellAction
+public class FireworkAction extends TriggeredCompoundAction
 {
     private int power;
+    private Integer ticksFlown;
+    private Integer expectedLifespan;
     private Color color1 = null;
     private Color color2 = null;
     private Type fireworkType = null;
@@ -26,6 +34,8 @@ public class FireworkAction extends BaseSpellAction
     private boolean launch = false;
     private int startDistance;
     private double speed;
+    private double dyOffset;
+    private int checkInterval;
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters) {
@@ -35,17 +45,17 @@ public class FireworkAction extends BaseSpellAction
         Mage mage = context.getMage();
 
         // Configuration overrides
-        power = parameters.getInt("size", power);
-        if (parameters.contains("color1")) {
-            color1 = getColor(parameters.getString("color1"));
+        power = parameters.getInt("power", power);
+        if (parameters.contains("color")) {
+            color1 = getColor(parameters.getString("color"));
         } else if (mage.getEffectColor() != null) {
             color1 = mage.getEffectColor();
         }
         if (parameters.contains("color2")) {
             color2 = getColor(parameters.getString("color2"));
         }
-        if (parameters.contains("type")) {
-            fireworkType = getType(parameters.getString("type"));
+        if (parameters.contains("firework")) {
+            fireworkType = getType(parameters.getString("firework"));
         }
         flicker = parameters.getBoolean("flicker");
         trail = parameters.getBoolean("trail");
@@ -53,6 +63,18 @@ public class FireworkAction extends BaseSpellAction
         launch = parameters.getBoolean("launch", false);
         startDistance = parameters.getInt("start", 0);
         speed = parameters.getDouble("speed", 0.1);
+        dyOffset = parameters.getDouble("dy_offset", 0);
+        checkInterval = parameters.getInt("check_interval", 10);
+        if (parameters.contains("ticks_flown")) {
+            ticksFlown = parameters.getInt("ticks_flown");
+        } else {
+            ticksFlown = null;
+        }
+        if (parameters.contains("expected_lifespan")) {
+            expectedLifespan = parameters.getInt("expected_lifespan");
+        } else {
+            expectedLifespan = null;
+        }
     }
 
     @Override
@@ -65,44 +87,48 @@ public class FireworkAction extends BaseSpellAction
                 location = location.add(direction.clone().multiply(startDistance));
             }
             direction = direction.multiply(speed);
+            if (dyOffset != 0) {
+                direction.setY(direction.getY() + dyOffset);
+            }
         } else {
             location = context.getTargetLocation();
         }
 	     
-        FireworkEffect effect = getFireworkEffect(context, color1, color2, fireworkType, flicker, trail);
-        EffectUtils.spawnFireworkEffect(location, effect, power, direction);
+        FireworkEffect effect = EffectUtils.getFireworkEffect(context, color1, color2, fireworkType, flicker, trail);
+        Entity firework = EffectUtils.spawnFireworkEffect(location, effect, power, direction, expectedLifespan, ticksFlown);
+
+        Collection<EffectPlayer> projectileEffects = context.getEffects("projectile");
+        for (EffectPlayer effectPlayer : projectileEffects) {
+            effectPlayer.start(firework.getLocation(), firework, null, null);
+        }
+
+        ActionHandler.setActions(firework, actions, context, parameters, "indirect_player_message");
+        ActionHandler.setEffects(firework, context, "hit");
+
+        scheduleEntityCheck(context, firework, checkInterval);
 
 		return SpellResult.CAST;
 	}
 
-    public FireworkEffect getFireworkEffect(CastContext context, Color color1, Color color2, org.bukkit.FireworkEffect.Type fireworkType, Boolean flicker, Boolean trail) {
-        Mage mage = context.getMage();
-        Random random = context.getRandom();
-        Color wandColor = mage == null ? null : mage.getEffectColor();
-        if (wandColor != null) {
-            color1 = wandColor;
-            color2 = wandColor.mixColors(color1, Color.WHITE);
-        } else {
-            if (color1 == null) {
-                color1 = Color.fromRGB(random.nextInt(255), random.nextInt(255), random.nextInt(255));
-            }
-            if (color2 == null) {
-                color2 = Color.fromRGB(random.nextInt(255), random.nextInt(255), random.nextInt(255));
-            }
+    protected void scheduleEntityCheck(final CastContext context, final Entity entity, final int interval) {
+        if (interval > 0) {
+            Bukkit.getScheduler().scheduleSyncDelayedTask(context.getController().getPlugin(), new Runnable() {
+                public void run() {
+                    checkEntity(context, entity, interval);
+                }
+            }, interval);
         }
-        if (fireworkType == null) {
-            fireworkType = org.bukkit.FireworkEffect.Type.values()[random.nextInt(org.bukkit.FireworkEffect.Type.values().length)];
-        }
-        if (flicker == null) {
-            flicker = random.nextBoolean();
-        }
-        if (trail == null) {
-            trail = random.nextBoolean();
-        }
-
-        return FireworkEffect.builder().flicker(flicker).withColor(color1).withFade(color2).with(fireworkType).trail(trail).build();
     }
-	
+
+    protected void checkEntity(final CastContext context, final Entity entity, final int interval) {
+        if (entity.isDead() || !entity.isValid()) {
+            ActionHandler.runActions(entity, entity.getLocation(), entity);
+            ActionHandler.runEffects(entity);
+        } else {
+            scheduleEntityCheck(context, entity, interval);
+        }
+    }
+
 	protected Color getColor(String name) {
 		try {
 			Field colorConstant = Color.class.getField(name.toUpperCase());
