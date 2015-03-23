@@ -2,6 +2,7 @@ package com.elmakers.mine.bukkit.api.action;
 
 import com.elmakers.mine.bukkit.api.block.MaterialBrush;
 import com.elmakers.mine.bukkit.api.block.UndoList;
+import com.elmakers.mine.bukkit.api.effect.EffectPlay;
 import com.elmakers.mine.bukkit.api.effect.EffectPlayer;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
@@ -16,6 +17,8 @@ import org.bukkit.util.Vector;
 import java.lang.ref.WeakReference;
 import java.util.Collection;
 import java.util.Random;
+import java.util.Set;
+import java.util.UUID;
 import java.util.logging.Logger;
 
 public interface CastContext {
@@ -83,4 +86,6 @@ public interface CastContext {
     public void finish();
     public void retarget(int range, double fov, double closeRange, double closeFOV, boolean useHitbox);
     public CastContext getBaseContext();
+    public Set<UUID> getTargetMessagesSent();
+    public Collection<EffectPlay> getCurrentEffects();
 }
