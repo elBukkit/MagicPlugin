@@ -237,6 +237,7 @@ student:
       poison: 5,10,20
       laser: 0,0,10
       tracking: 5,10,30
+      rocket: 0,10,20
 
 apprentice:
     upgrade: master

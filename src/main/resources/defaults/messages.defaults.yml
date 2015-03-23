@@ -1176,6 +1176,10 @@ spells:
         name: Lift
         description: Lift up the target block
         cast: You lift $target.
+    rocket:
+        name: Rocket
+        description: Go for a wild ride
+        cast: Liftoff!
     sponge:
         name: Sponge
         description: Suck up water in an area
