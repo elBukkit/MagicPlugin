@@ -52,6 +52,8 @@ public class FactionsManager {
                     } catch(Throwable ex2) {
                         plugin.getLogger().log(Level.WARNING, "Failed to find mcore", ex);
                         plugin.getLogger().log(Level.WARNING, "Failed to find FactionsBlockListener", ex2);
+                        factionsManager = null;
+                        factionsCanBuildMethod = null;
                     }
 				}
 
