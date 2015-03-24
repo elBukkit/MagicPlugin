@@ -42,10 +42,9 @@ public class RecallAction extends BaseSpellAction implements GUIAction
     private final static Material DefaultWaypointMaterial = Material.BEACON;
     private final static String MARKER_KEY = "recall_marker";
     private final static String UNLOCKED_WARPS = "recall_warps";
-    private final static int MAX_RETRY_COUNT = 8;
-    private final static int RETRY_INTERVAL = 10;
 
     private boolean allowCrossWorld = true;
+    private boolean maintainDirection = false;
     private Map<String, ConfigurationSection> warps = new HashMap<String, ConfigurationSection>();
     private List<RecallType> enabledTypes = new ArrayList<RecallType>();
     private Map<Integer, Waypoint> options = new HashMap<Integer, Waypoint>();
@@ -166,6 +165,9 @@ public class RecallAction extends BaseSpellAction implements GUIAction
         super.prepare(context, parameters);
         this.parameters = parameters;
         this.context = context;
+
+        allowCrossWorld = parameters.getBoolean("cross_world", true);
+        maintainDirection = parameters.getBoolean("maintain_direction", false);
     }
 
     @Override
@@ -235,7 +237,6 @@ public class RecallAction extends BaseSpellAction implements GUIAction
         }
 
         Location playerLocation = mage.getLocation();
-		allowCrossWorld = parameters.getBoolean("cross_world", true);
 		for (RecallType testType : RecallType.values())
         {
 			// Special-case for warps
@@ -440,32 +441,13 @@ public class RecallAction extends BaseSpellAction implements GUIAction
 			return false;
 		}
 
-        MageController controller = context.getController();
-		Chunk chunk = targetLocation.getBlock().getChunk();
-        int retryCount = 0;
-        if (!chunk.isLoaded()) {
-			chunk.load(true);
-			if (retryCount < MAX_RETRY_COUNT) {
-				Plugin plugin = controller.getPlugin();
-				final RecallAction me = this;
-				Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
-					public void run() {
-						me.tryTeleport(player, waypoint);
-					}
-				}, RETRY_INTERVAL);
-				
-				return true;
-			}
-		}
-
-        context.setTargetedLocation(targetLocation);
-        context.playEffects("teleport");
-
-        context.registerMoved(player);
-        Location playerLocation = player.getLocation();
-        targetLocation.setYaw(playerLocation.getYaw());
-        targetLocation.setPitch(playerLocation.getPitch());
-        player.teleport(context.tryFindPlaceToStand(targetLocation));
+        if (maintainDirection)
+        {
+            Location playerLocation = player.getLocation();
+            targetLocation.setYaw(playerLocation.getYaw());
+            targetLocation.setPitch(playerLocation.getPitch());
+        }
+        context.teleport(player, targetLocation);
         context.castMessage(waypoint.message);
 		return true;
 	}
