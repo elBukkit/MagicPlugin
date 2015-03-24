@@ -57,8 +57,6 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
 
     // TODO: Config-drive
     protected static final int MIN_Y = 1;
-    protected static final int MAX_Y = 255;
-    protected static final int MAX_NETHER_Y = 120;
 
     // TODO: Configurable default? this does look cool, though.
     protected final static Material DEFAULT_EFFECT_MATERIAL = Material.STATIONARY_WATER;
@@ -220,7 +218,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
             return false;
         }
 
-        if (block.getY() > MAX_Y) {
+        if (block.getY() > block.getWorld().getMaxHeight()) {
             return false;
         }
 
@@ -241,7 +239,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
 
     public Location tryFindPlaceToStand(Location targetLoc)
     {
-        return tryFindPlaceToStand(targetLoc, MAX_Y, MAX_Y);
+        return tryFindPlaceToStand(targetLoc, targetLoc.getWorld().getMaxHeight(), targetLoc.getWorld().getMaxHeight());
     }
 
     public Location tryFindPlaceToStand(Location targetLoc, int maxDownDelta, int maxUpDelta)
@@ -254,7 +252,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     {
         if (!targetLoc.getBlock().getChunk().isLoaded()) return null;
         int minY = MIN_Y;
-        int maxY = targetLoc.getWorld().getEnvironment() == Environment.NETHER ? MAX_NETHER_Y : MAX_Y;
+        int maxY = targetLoc.getWorld().getMaxHeight();
 
         int targetY = targetLoc.getBlockY();
         if (targetY >= minY && targetY <= maxY && isSafeLocation(targetLoc)) return targetLoc;
@@ -288,7 +286,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
 
     public Location findPlaceToStand(Location target, boolean goUp)
     {
-        return findPlaceToStand(target, goUp, MAX_Y);
+        return findPlaceToStand(target, goUp, target.getWorld().getMaxHeight());
     }
 
     public Location findPlaceToStand(Location target, boolean goUp, int maxDelta)
@@ -299,7 +297,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         Location targetLocation = target.clone();
         int yDelta = 0;
         int minY = MIN_Y;
-        int maxY = targetLocation.getWorld().getEnvironment() == Environment.NETHER ? MAX_NETHER_Y : MAX_Y;
+        int maxY = targetLocation.getWorld().getMaxHeight();
 
         while (minY <= targetLocation.getY() && targetLocation.getY() <= maxY && yDelta < maxDelta)
         {
