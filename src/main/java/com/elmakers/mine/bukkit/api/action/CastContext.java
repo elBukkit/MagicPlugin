@@ -12,6 +12,8 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.util.Vector;
 
 import java.lang.ref.WeakReference;
@@ -27,6 +29,7 @@ public interface CastContext {
     public Location getTargetLocation();
     public Vector getDirection();
     public World getWorld();
+    public Plugin getPlugin();
     public Location getEyeLocation();
     public Location getWandLocation();
     public Block getTargetBlock();
@@ -58,6 +61,7 @@ public interface CastContext {
     public String getMessage(String key);
     public String getMessage(String key, String def);
     public Location tryFindPlaceToStand(Location location);
+    public Location findPlaceToStand(Location target, boolean goUp);
     public void castMessage(String message);
     public void sendMessage(String message);
     public void setTargetedLocation(Location location);
@@ -85,7 +89,14 @@ public interface CastContext {
     public int getActionsPerformed();
     public void finish();
     public void retarget(int range, double fov, double closeRange, double closeFOV, boolean useHitbox);
+    public void retarget(int range, double fov, double closeRange, double closeFOV, boolean useHitbox, Vector offset, boolean targetSpaceRequired, int targetMinOffset);
     public CastContext getBaseContext();
     public Set<UUID> getTargetMessagesSent();
     public Collection<EffectPlay> getCurrentEffects();
+    public void teleport(final Entity entity, final Location location);
+    public boolean allowPassThrough(Material material);
+    public int getVerticalSearchDistance();
+    public boolean isOkToStandIn(Material mat);
+    public boolean isWater(Material mat);
+    public boolean isOkToStandOn(Material mat);
 }
