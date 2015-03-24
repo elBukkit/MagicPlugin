@@ -370,7 +370,6 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
     {
         Location source = getWandLocation();
         Collection<EffectPlayer> effects = getEffects(effectName);
-        Mage mage = getMage();
         if (effects.size() > 0)
         {
             Collection<Entity> targeted = getTargetedEntities();
@@ -786,5 +785,10 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
 
         registerMoved(entity);
         entity.teleport(tryFindPlaceToStand(location));
+    }
+
+    @Override
+    public Set<Material> getMaterialSet(String key) {
+        return getController().getMaterialSet(key);
     }
 }
