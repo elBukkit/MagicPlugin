@@ -1543,7 +1543,7 @@ orchideous:
         allow_max_range: false
         range: 32
         radius: 3
-        vertical_search_distance: 8
+        vertical_range: 8
         undo: 10000
         cooldown: 2000
         bypass_build: true
@@ -2513,7 +2513,7 @@ confringo:
         range: 32
         allow_max_range: true
         hitbox: true
-        vertical_search_distance: 8
+        vertical_range: 8
         bypass_build: true
         target_breakables: 0
         radius: 2

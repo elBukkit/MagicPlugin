@@ -2496,7 +2496,7 @@ fire:
         hitbox: true
         fov: 0.03
         radius: 0
-        vertical_search_distance: 4
+        vertical_range: 4
         undo: 2000
         cooldown: 1000
         target_breakables: 0
@@ -4055,15 +4055,17 @@ blink:
     category: utility
     icon: eye_of_ender
     icon_url: http://i.imgur.com/n7UxOwJ.png
-    class: BlinkSpell
     worth: 120
     upgrade_required_path: student
     upgrade_required_casts: 50
+    actions:
+        cast:
+        - class: Teleport
     effects:
         teleport:
-             - class: EffectSingle
-               custom_sound: magic.teleport
-               location: target
+        - class: EffectSingle
+          custom_sound: magic.teleport
+          location: target
         cast:
         -  class: EffectVariable
            brightness:
@@ -4103,9 +4105,7 @@ blink:
                    particle: redstone
     parameters:
         allow_max_range: false
-        allow_ascend: false
         allow_passthrough: false
-        allow_descend: false
         range: 16
         cooldown: 5000
         prevent_passthrough: indestructible
@@ -4124,10 +4124,15 @@ blink|2:
         mana: 75
 
 blink|3:
+    actions:
+        cast:
+        - class: Teleport
+        alternate_up:
+        - class: Ascend
+        alternate_down:
+        - class: Descend
     parameters:
         range: 128
-        allow_ascend: true
-        allow_descend: true
         allow_passthrough: true
         passthrough_range: 8
         cooldown: 100
@@ -5105,7 +5110,7 @@ pollinate:
         radius: 3
         center_probability: 0.9
         outer_probability: 0.1
-        vertical_search_distance: 8
+        vertical_range: 8
         cooldown: 5000
         age_items: 5940
         item_speed_min: 0.75
