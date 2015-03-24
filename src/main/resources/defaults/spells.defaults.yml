@@ -256,6 +256,7 @@ blessing:
            effectlib:
              class: HelixEffect
              particle: heart
+             iterations: 2
     parameters:
         target_type: Player
         projectile: Snowball
@@ -1177,6 +1178,7 @@ pull:
            effectlib:
              class: HelixEffect
              particle: spell
+             iterations: 2
     parameters:
         target_type: Entity
         range: 48
@@ -1254,8 +1256,6 @@ nuke:
            color2: '88FF88'
            iterations: 5
         -  class: EffectRing
-           effect_lib:
-             class: HelixEffect
            particle: explosion_huge
            radius: 16
            iterations: 8
@@ -1411,6 +1411,7 @@ lightning:
            effectlib:
              class: HelixEffect
              particle: smoke_normal
+             iterations: 3
     parameters:
         target_type: LivingEntity
         allow_max_range: true
@@ -1639,8 +1640,10 @@ music:
     icon_url: http://i.imgur.com/ZXwXE7y.png
     icon: gold_record
     category: light
-    class: MusicSpell
     worth: 10
+    actions:
+        cast:
+        -  class: PlayRecord
     effects:
         cast:
         -  class: EffectTrail
@@ -1650,6 +1653,7 @@ music:
            effectlib:
              class: HelixEffect
              particle: note
+             iterations: 2
     parameters:
         target_type: Player
         target: any
@@ -1756,11 +1760,13 @@ neutron:
         cast:
         -  class: EffectSingle
            sound: creeper_hiss
+        hit:
         -  class: EffectSingle
            location: target
            effectlib:
              class: HelixEffect
              particle: flame
+             iterations: 1
     parameters:
         target_type: LivingEntity
         projectile: Snowball

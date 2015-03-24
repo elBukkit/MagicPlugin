@@ -608,15 +608,15 @@ spells:
     day:
         name: Sunny Day
         description: Make it a lovely day
-        alternate: What a pretty day!
+        cast: What a pretty day!
     night:
         name: Night
         description: Make it dark
-        alternate: Spoooooky
+        cast: Spoooooky
     time:
         name: Time
         description: Change the time of day
-        alternate: Changed time to $newtime
+        cast: Changed time to $newtime
     bridge:
         name: Bridge
         description: Extend the ground underneath you
