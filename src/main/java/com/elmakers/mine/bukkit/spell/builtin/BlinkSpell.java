@@ -14,9 +14,9 @@ import org.bukkit.entity.Player;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.TargetingSpell;
 
+@Deprecated
 public class BlinkSpell extends UndoableSpell
 {
-	private int verticalSearchDistance = 255;
 	private static int DEFAULT_PASSTHROUGH_RANGE = 4;
 
 	protected SpellResult ascend(Entity entity)
@@ -66,7 +66,6 @@ public class BlinkSpell extends UndoableSpell
 		boolean autoAscend = parameters.getBoolean("allow_ascend", true);
 		boolean autoDescend = parameters.getBoolean("allow_descend", true);
 		boolean autoPassthrough = parameters.getBoolean("allow_passthrough", true);
-        verticalSearchDistance = parameters.getInt("vertical_range", 8);
 
         boolean isPassthrough = false;
 

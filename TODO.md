@@ -2,6 +2,9 @@
 
  - Clean up MaterialBrush target system, automate somehow?
  - Copy target brush action for tandem replication
+ - SuperAlter isn't so super
+ - Adding neighbors to undo seems to keep them from undo'ing,
+   even if no blocks were changed (supershell + alter + rollback)
 
  - Glitchy wand inventory, Death had an issue
  - Automata aren't cleaning up cmd block + redstone
@@ -14,7 +17,6 @@
    - Cleaner list of list parameters
  - Nerf Force (shift to break free? Fall protection?)
  - Make map work like replicate, clone - with start point set on activate
- - Fix blink when passing through transparent blocks
  - battle wand stuck at "enchant at higher level"
  - /magic describe should show info about current spell?
  - Fix Chop on data variants..?
@@ -22,8 +24,6 @@
  - Test Clone with entities?
 
  - Fix recall home spawning in the ground?
- - Add spellbook-choosing action
- - Add general shop action (?)
  - Add Cylinder construct (SuperWalls, Walls, SuperCylinder)
  - Support for locking/unlocking chests
  - Configurable FOV weight for targeting (Survival Sense)
