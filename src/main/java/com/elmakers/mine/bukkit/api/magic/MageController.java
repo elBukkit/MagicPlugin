@@ -90,8 +90,6 @@ public interface MageController {
     public Schematic loadSchematic(String name);
     public Set<Material> getMaterialSet(String name);
 
-    public int getMaxY();
-
     public void sendToMages(String message, Location location);
     public Collection<Mage> getMages();
 
