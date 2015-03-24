@@ -778,6 +778,7 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
                     }
                 }, TELEPORT_RETRY_INTERVAL);
             }
+            return;
         }
 
         setTargetedLocation(targetLocation);
