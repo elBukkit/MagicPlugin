@@ -368,7 +368,7 @@ public class ConfigurationUtils {
 
         World worldOverride = Bukkit.getWorld(worldName);
         if (worldOverride == null) {
-            if (canCreateWorlds) {
+            if (canCreateWorlds && world != null) {
                 Bukkit.getLogger().info("Creating/Loading world: " + worldName);
                 worldOverride = Bukkit.createWorld(new WorldCreator(worldName).copy(world));
                 if (worldOverride == null) {
