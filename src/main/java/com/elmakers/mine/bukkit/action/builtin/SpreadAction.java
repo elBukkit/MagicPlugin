@@ -51,14 +51,15 @@ public class SpreadAction extends CompoundAction
             }
         }
         CastContext actionContext = createContext(context, source, sourceLocation);
-        Location targetLocation = actionContext.getTargetLocation();
+        Location targetLocation = actionContext.getTargetLocation().clone();
         if (targetLocation != null)
         {
-            double xOffset = radius * RandomUtils.lerp(centerProbability - outerProbability, centerProbability + outerProbability, random.nextFloat());
-            xOffset = xOffset - (xOffset / 2);
-            double zOffset = radius * RandomUtils.lerp(centerProbability - outerProbability, centerProbability + outerProbability, random.nextFloat());
-            zOffset = zOffset - (zOffset / 2);
-
+            double weight = RandomUtils.lerp(centerProbability - outerProbability, centerProbability + outerProbability, random.nextFloat());
+            double xOffset = (double)radius * weight;
+            xOffset = xOffset - (double)radius;
+            weight = RandomUtils.lerp(centerProbability - outerProbability, centerProbability + outerProbability, random.nextFloat());
+            double zOffset = (double)radius * weight;
+            zOffset = zOffset - (double)radius;
             targetLocation.setX(targetLocation.getX() + xOffset);
             targetLocation.setZ(targetLocation.getZ() + zOffset);
             actionContext.setTargetLocation(targetLocation);
