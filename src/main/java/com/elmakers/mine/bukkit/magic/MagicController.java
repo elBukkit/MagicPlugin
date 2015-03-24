@@ -2990,6 +2990,15 @@ public class MagicController implements Listener, MageController {
             mage.addToStoredInventory(itemStack);
             return;
         }
+
+        // Check for wand upgrades if appropriate
+        Wand activeWand = mage.getActiveWand();
+        if (activeWand != null) {
+            if (activeWand.addItem(itemStack)) {
+                return;
+            }
+        }
+
 		// Place directly in hand if possible
 		PlayerInventory inventory = player.getInventory();
 		ItemStack inHand = inventory.getItemInHand();
