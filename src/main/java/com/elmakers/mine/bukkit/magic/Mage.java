@@ -989,7 +989,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     @Override
     public boolean isRestricted(Material material) {
         Player player = getPlayer();
-        if (player != null && player.hasPermission("Magic.bypass")) return false;
+        if (player != null && player.hasPermission("Magic.bypass_restricted")) return false;
         return controller.isRestricted(material);
     }
 

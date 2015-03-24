@@ -318,6 +318,10 @@ permissions:
     description: A player always bypasses other permission checks
     default: op
     type: boolean
+  Magic.bypass_restricted:
+    description: A player may bypass restricted material checks
+    default: op
+    type: boolean
   Magic.cast:
     description: The spells a player may cast
     type: list

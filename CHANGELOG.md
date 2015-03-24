@@ -10,6 +10,7 @@
  - Add Tornado spell
  - Add Rocket spell
  - Action-ize several more spells
+ - Add Magic.bypass_restricted permission
  - Allow overlapping spell FX
 
 ## 4.6.1
