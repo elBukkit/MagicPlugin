@@ -59,14 +59,6 @@ public class ActionSpell extends BrushSpell
             currentHandler = sneakHandler;
         }
 
-        Target target = getTarget();
-        Location targetLocation = target.getLocation();
-        if (targetLocation != null && currentHandler.usesBrush())
-        {
-            MaterialBrush brush = currentCast.getBrush();
-            brush.setTarget(targetLocation);
-            brush.update(getMage(), targetLocation);
-        }
         if (currentHandler != null)
         {
             try {
