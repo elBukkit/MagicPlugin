@@ -37,7 +37,7 @@ public class EffectTrail extends EffectRepeating {
     public void play() {
         if (length != null) {
             size = length;
-        } else if (target != null) {
+        } else if (target != null && origin != null) {
             size = origin.distance(target);
         } else {
             size = 0;
@@ -54,6 +54,7 @@ public class EffectTrail extends EffectRepeating {
     }
 
     public void iterate() {
+        if (origin == null) return;
         Vector delta = direction.clone();
         Location source = origin.clone();
         Location target = this.target;
@@ -67,7 +68,7 @@ public class EffectTrail extends EffectRepeating {
 
     @Override
     protected void checkLocations() {
-        if (target == null) {
+        if (target == null && origin != null) {
             Vector delta = origin.getDirection().clone().normalize();
             target = origin.clone();
             target.add(delta.multiply(size + 1));

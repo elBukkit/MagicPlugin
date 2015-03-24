@@ -313,7 +313,7 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
     }
 
     protected void playEffect(Location sourceLocation, Entity sourceEntity, Location targetLocation, Entity targetEntity) {
-        if (playAtOrigin) {
+        if (playAtOrigin && sourceLocation != null) {
             performEffect(sourceLocation, sourceEntity, targetLocation, targetEntity);
         }
         if (playAtTarget && targetLocation != null) {
@@ -481,12 +481,8 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
     }
 
     public void startEffects(Location origin, Location target) {
-        if (origin == null) {
-            throw new InvalidParameterException("Origin cannot be null");
-        }
-
         // Kinda hacky, but makes cross-world trails (e.g. Repair, Backup) work
-        if (target != null && !origin.getWorld().equals(target.getWorld())) {
+        if (target != null && origin != null && !origin.getWorld().equals(target.getWorld())) {
             target.setWorld(origin.getWorld());
         }
         this.origin = origin;
@@ -527,6 +523,7 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
     }
 
     protected Vector getDirection() {
+        if (origin == null) return new Vector(0, 1, 0);
         Vector direction = target == null ? origin.getDirection() : target.toVector().subtract(origin.toVector());
         return direction.normalize();
     }
