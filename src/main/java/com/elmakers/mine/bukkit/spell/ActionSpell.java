@@ -59,6 +59,7 @@ public class ActionSpell extends BrushSpell
             currentHandler = sneakHandler;
         }
 
+        target();
         if (currentHandler != null)
         {
             try {
