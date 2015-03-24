@@ -30,7 +30,6 @@ public class ActionHandler implements Cloneable
     private boolean isConditionalOnFailure = false;
     private Integer currentAction = null;
     private boolean started = false;
-    private SpellResult result = SpellResult.NO_ACTION;
 
     public ActionHandler()
     {
@@ -39,6 +38,7 @@ public class ActionHandler implements Cloneable
 
     public ActionHandler(ActionHandler copy)
     {
+        this.started = copy.started;
         this.undoable = copy.undoable;
         this.usesBrush = copy.usesBrush;
         this.requiresBuildPermission = copy.requiresBuildPermission;
