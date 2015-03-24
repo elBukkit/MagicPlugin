@@ -222,7 +222,7 @@ public class ConstructBatch extends BrushBatch {
             if (bounds != null) {
                 yBounds = Math.min(yBounds, (int)bounds.getY());
             }
-			yBounds = Math.min(yBounds, controller.getMaxY());
+			yBounds = Math.min(yBounds, center.getWorld().getMaxHeight());
 
 			while (processedBlocks <= maxBlocks && !finishedNonAttached) {
 				if (!fillBlock(x, y, z)) {
@@ -342,7 +342,7 @@ public class ConstructBatch extends BrushBatch {
 		int y = center.getBlockY() + dy;
 		int z = center.getBlockZ() + dz;
 
-		if (y < 0 || y > controller.getMaxY()) return true;
+		if (y < 0 || y > center.getWorld().getMaxHeight()) return true;
 
 		// Make sure the block is loaded.
 		Block block = center.getWorld().getBlockAt(x, y, z);

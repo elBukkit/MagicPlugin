@@ -192,7 +192,7 @@ public class ShapeBatch extends BrushBatch {
 		int y = center.getBlockY() + dy;
 		int z = center.getBlockZ() + dz;
 		
-		if (y < 0 || y > controller.getMaxY()) return true;
+		if (y < 0 || y > center.getWorld().getMaxHeight()) return true;
 		
 		// Make sure the block is loaded.
 		Block block = center.getWorld().getBlockAt(x, y, z);
