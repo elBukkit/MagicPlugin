@@ -2805,7 +2805,7 @@ time:
              offset: 0,4,0
              class: HelixEffect
              iterations: 2
-             particle: magic_runes
+             particle: enchantment_table
     parameters:
         allow_max_range: false
         allow_night: true
