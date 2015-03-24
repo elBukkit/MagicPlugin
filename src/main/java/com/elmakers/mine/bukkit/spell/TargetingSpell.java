@@ -44,7 +44,6 @@ public abstract class TargetingSpell extends BaseSpell {
     private boolean								targetNPCs				= false;
     private boolean								targetInvisible			= false;
     private boolean								targetUnknown			= true;
-    private int                                 verticalSearchDistance  = 8;
     private boolean                             targetingComplete		= false;
     private boolean                             targetSpaceRequired     = false;
     private int                                 targetMinOffset         = 0;
@@ -55,6 +54,7 @@ public abstract class TargetingSpell extends BaseSpell {
     private Vector								targetDirectionOverride;
     private String								targetLocationWorldName;
     protected Location                          targetLocation2;
+    protected int                               verticalSearchDistance  = 8;
     private double 		                        targetBreakables	    = 0;
     private Entity								targetEntity = null;
     private boolean								bypassBuildRestriction  = false;
@@ -195,7 +195,7 @@ public abstract class TargetingSpell extends BaseSpell {
         return bypassBuildRestriction || super.hasBuildPermission(block);
     }
 
-    protected void offsetTarget(int dx, int dy, int dz) {
+    public void offsetTarget(int dx, int dy, int dz) {
         Location location = getLocation();
         if (location == null) {
             return;
@@ -205,6 +205,9 @@ public abstract class TargetingSpell extends BaseSpell {
     }
 
     protected boolean initializeBlockIterator(Location location) {
+        if (blockIterator != null) {
+            return true;
+        }
         if (location.getBlockY() < 0) {
             location = location.clone();
             location.setY(0);
@@ -763,6 +766,7 @@ public abstract class TargetingSpell extends BaseSpell {
         checkProtection = parameters.getBoolean("check_protection", checkProtection);
         targetBreakables = parameters.getDouble("target_breakables", 0);
         reverseTargeting = parameters.getBoolean("reverse_targeting", false);
+        verticalSearchDistance = parameters.getInt("vertical_range", 8);
 
         bypassBuildRestriction = parameters.getBoolean("bypass_build", false);
         bypassBuildRestriction = parameters.getBoolean("bb", bypassBuildRestriction);
@@ -910,5 +914,9 @@ public abstract class TargetingSpell extends BaseSpell {
 
     public Class<? extends Entity> getTargetEntityType() {
         return targetEntityType;
+    }
+
+    public int getVerticalSearchDistance() {
+        return verticalSearchDistance;
     }
 }

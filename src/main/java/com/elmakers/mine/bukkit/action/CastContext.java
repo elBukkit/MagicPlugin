@@ -14,6 +14,8 @@ import com.elmakers.mine.bukkit.spell.BrushSpell;
 import com.elmakers.mine.bukkit.spell.TargetingSpell;
 import com.elmakers.mine.bukkit.spell.UndoableSpell;
 import com.elmakers.mine.bukkit.utility.Target;
+import org.bukkit.Bukkit;
+import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -22,6 +24,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.util.Vector;
 
 import java.lang.ref.WeakReference;
@@ -38,6 +41,8 @@ import java.util.logging.Logger;
 
 public class CastContext implements com.elmakers.mine.bukkit.api.action.CastContext {
     protected static Random random;
+    protected final static int TELEPORT_RETRY_COUNT = 8;
+    protected final static int TELEPORT_RETRY_INTERVAL = 10;
 
     private final Location location;
     private final Entity entity;
@@ -415,6 +420,40 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
     }
 
     @Override
+    public Location findPlaceToStand(Location target, boolean goUp) {
+        return baseSpell != null ? baseSpell.findPlaceToStand(target, goUp) : location;
+    }
+
+    @Override
+    public int getVerticalSearchDistance()  {
+        return targetingSpell != null ? targetingSpell.getVerticalSearchDistance() : 4;
+    }
+
+    @Override
+    public boolean isOkToStandIn(Material material)
+    {
+        return baseSpell != null ? baseSpell.isOkToStandIn(material) : true;
+    }
+
+    @Override
+    public boolean isWater(Material mat)
+    {
+        return (mat == Material.WATER || mat == Material.STATIONARY_WATER);
+    }
+
+    @Override
+    public boolean isOkToStandOn(Material material)
+    {
+        return (material != Material.AIR && material != Material.LAVA && material != Material.STATIONARY_LAVA);
+    }
+
+    @Override
+    public boolean allowPassThrough(Material material)
+    {
+        return baseSpell != null ? baseSpell.allowPassThrough(material) : true;
+    }
+
+    @Override
     public void castMessage(String message)
     {
         if (baseSpell != null)
@@ -653,6 +692,21 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
     }
 
     @Override
+    public void retarget(int range, double fov, double closeRange, double closeFOV, boolean useHitbox, Vector offset, boolean targetSpaceRequired, int targetMinOffset) {
+        if (targetingSpell != null)
+        {
+            targetingSpell.offsetTarget(offset.getBlockX(), offset.getBlockY(), offset.getBlockZ());
+            if (targetSpaceRequired) {
+                targetingSpell.setTargetSpaceRequired();
+            }
+            targetingSpell.setTargetMinOffset(targetMinOffset);
+            targetingSpell.retarget(range, fov, closeRange, closeFOV, useHitbox);
+            setTargetEntity(targetingSpell.getTargetEntity());
+            setTargetLocation(targetingSpell.getTargetLocation());
+        }
+    }
+
+    @Override
     public com.elmakers.mine.bukkit.api.action.CastContext getBaseContext()
     {
         return base;
@@ -690,5 +744,46 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
             block.removeMetadata("backfire", controller.getPlugin());
         }
         undoList.setUndoReflective(true);
+    }
+
+    @Override
+    public Plugin getPlugin() {
+        MageController controller = getController();
+        return controller == null ? null : controller.getPlugin();
+    }
+
+    @Override
+    public void teleport(final Entity entity, final Location location)
+    {
+        Plugin plugin = getPlugin();
+        Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
+            public void run() {
+                delayedTeleport(entity, location);
+            }
+        }, 1);
+    }
+
+    protected void delayedTeleport(final Entity entity, final Location location)
+    {
+        MageController controller = getController();
+        Chunk chunk = location.getBlock().getChunk();
+        int retryCount = 0;
+        if (!chunk.isLoaded()) {
+            chunk.load(true);
+            if (retryCount < TELEPORT_RETRY_COUNT) {
+                Plugin plugin = controller.getPlugin();
+                Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
+                    public void run() {
+                        delayedTeleport(entity, location);
+                    }
+                }, TELEPORT_RETRY_INTERVAL);
+            }
+        }
+
+        setTargetedLocation(targetLocation);
+        playEffects("teleport");
+
+        registerMoved(entity);
+        entity.teleport(tryFindPlaceToStand(location));
     }
 }
