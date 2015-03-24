@@ -99,4 +99,5 @@ public interface CastContext {
     public boolean isOkToStandIn(Material mat);
     public boolean isWater(Material mat);
     public boolean isOkToStandOn(Material mat);
+    public Set<Material> getMaterialSet(String key);
 }
