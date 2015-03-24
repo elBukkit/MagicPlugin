@@ -1,5 +1,6 @@
 # TODO
 
+ - Clean up MaterialBrush target system, automate somehow?
  - Copy target brush action for tandem replication
 
  - Glitchy wand inventory, Death had an issue

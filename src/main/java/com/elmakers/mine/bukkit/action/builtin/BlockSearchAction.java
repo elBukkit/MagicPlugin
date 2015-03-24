@@ -47,6 +47,7 @@ public class BlockSearchAction extends CompoundAction
 
         createActionContext(context);
         actionContext.setTargetLocation(targetBlock.getLocation());
+        context.getBrush().setTarget(attachBlock.getLocation(), targetBlock.getLocation());
 		return performActions(actionContext);
 	}
 
