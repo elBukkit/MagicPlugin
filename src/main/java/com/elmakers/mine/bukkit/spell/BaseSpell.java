@@ -821,7 +821,10 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     {
         this.reset();
 
-        this.currentCast = new CastContext(this);
+        if (this.currentCast == null || !this.isActive)
+        {
+            this.currentCast = new CastContext(this);
+        }
 
         if (this.parameters == null) {
             this.parameters = new MemoryConfiguration();
