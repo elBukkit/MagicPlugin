@@ -137,6 +137,8 @@ public interface MageController {
     public String getEntityName(Entity entity);
     public String getEntityDisplayName(Entity entity);
 
+    public int getMaxWandFillLevel();
+
     /**
      * Check to see if the Elementals plugin is present an enabled.
      *
