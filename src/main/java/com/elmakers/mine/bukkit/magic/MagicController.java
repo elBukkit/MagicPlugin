@@ -3866,10 +3866,6 @@ public class MagicController implements Listener, MageController {
 		return materialSets.get(name);
 	}
 	
-	@Override public int getMaxY() {
-		return MAX_Y;
-	}
-	
 	@Override
 	public void sendToMages(String message, Location location) {
 		sendToMages(message, location, toggleMessageRange);
