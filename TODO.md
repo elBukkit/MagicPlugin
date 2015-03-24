@@ -1,5 +1,7 @@
 # TODO
 
+ - Levitate FX piling up, not removing on deactivate
+
  - Clean up MaterialBrush target system, automate somehow?
  - Copy target brush action for tandem replication
 

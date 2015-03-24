@@ -2,6 +2,7 @@ package com.elmakers.mine.bukkit.action.builtin;
 
 import com.elmakers.mine.bukkit.action.CompoundAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
+import com.elmakers.mine.bukkit.api.block.MaterialBrush;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.RandomUtils;
@@ -68,6 +69,8 @@ public class VolumeAction extends CompoundAction
 		xDirection = 1;
 		zDirection = 0;
 		checked = false;
+        MaterialBrush brush = context.getBrush();
+        brush.setTarget(context.getTargetLocation());
 	}
 
 	public static Vector rotate(float yaw, float pitch, double x, double y, double z){
