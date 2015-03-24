@@ -8,7 +8,8 @@
  - Re-balance Laser, Stun and Curse
  - Add Gatling Gun spell
  - Add Tornado spell
- - Add Rocket spell
+ - Add Rocket spell - ride a firework
+ - Add Forest spell - biome-specific forests
  - Action-ize several more spells
  - Add Magic.bypass_restricted permission
  - Allow overlapping spell FX

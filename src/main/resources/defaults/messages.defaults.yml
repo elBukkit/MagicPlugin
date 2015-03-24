@@ -402,6 +402,11 @@ spells:
         description: Instantly grow a tree
         fail: Your tree didn't grow
         cast: You grow a $tree!
+    forest:
+        name: Forest
+        description: Instantly grow a forest
+        fail: No trees grew
+        cast: You grow a forest!
     disarm:
         name: Disarm
         description: Disarm your opponent
