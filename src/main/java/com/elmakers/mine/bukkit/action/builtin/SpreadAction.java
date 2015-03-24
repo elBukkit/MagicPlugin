@@ -86,14 +86,14 @@ public class SpreadAction extends CompoundAction
     @Override
     public void getParameterOptions(Collection<String> examples, String parameterKey)
     {
-        super.getParameterOptions(examples, parameterKey);
-
         if (parameterKey.equals("radius")) {
             examples.addAll(Arrays.asList(BaseSpell.EXAMPLE_SIZES));
         } else if (parameterKey.equals("probability") || parameterKey.equals("center_probability") || parameterKey.equals("outer_probability")) {
             examples.addAll(Arrays.asList(BaseSpell.EXAMPLE_PERCENTAGES));
         } else if (parameterKey.equals("yaw_max") || parameterKey.equals("pitch_max")) {
             examples.addAll(Arrays.asList(BaseSpell.EXAMPLE_VECTOR_COMPONENTS));
+        } else {
+            super.getParameterOptions(examples, parameterKey);
         }
     }
 }

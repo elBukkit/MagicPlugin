@@ -10,8 +10,8 @@ import org.bukkit.plugin.Plugin;
 
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.TargetingSpell;
-import com.elmakers.mine.bukkit.utility.Messages;
 
+@Deprecated
 public class PhaseSpell extends TargetingSpell
 {
 	private static int MAX_RETRY_COUNT = 8;

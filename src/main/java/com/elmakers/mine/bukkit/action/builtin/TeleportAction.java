@@ -22,6 +22,7 @@ public class TeleportAction extends BaseSpellAction
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters)
     {
+        super.prepare(context, parameters);
         Mage mage = context.getMage();
         autoPassthrough = parameters.getBoolean("allow_passthrough", true);
         passthroughRange = (int)Math.floor(mage.getRangeMultiplier() * parameters.getInt("passthrough_range", DEFAULT_PASSTHROUGH_RANGE));
@@ -46,8 +47,7 @@ public class TeleportAction extends BaseSpellAction
 			{
 				return SpellResult.NO_TARGET;
 			}
-			if (firstBlock != null && !context.isTransparent(firstBlock.getType()))
-			{
+			if (firstBlock != null && !context.isTransparent(firstBlock.getType())) {
                 context.retarget(passthroughRange, 0, passthroughRange, 0, false, new Vector(0, -1, 0), true, 1);
                 isPassthrough = true;
 			}

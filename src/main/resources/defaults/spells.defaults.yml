@@ -2409,14 +2409,24 @@ phase:
     icon_url: http://i.imgur.com/Ql8Ttkb.png
     icon: eye_of_ender
     category: master
-    class: PhaseSpell
     worth: 10
+    actions:
+        cast:
+        - class: ChangeWorld
     effects:
         cast:
         -  class: EffectSingle
            sound: portal_travel
            sound_volume: 0.1
-           location: both
+           location: source
+           effectlib:
+             class: WarpEffect
+             particle: portal
+        teleport:
+        -  class: EffectSingle
+           sound: portal_travel
+           sound_volume: 0.1
+           location: target
            effectlib:
              class: WarpEffect
              particle: portal
