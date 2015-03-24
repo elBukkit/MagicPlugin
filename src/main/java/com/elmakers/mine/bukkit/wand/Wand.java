@@ -2223,7 +2223,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		
 		Player player = (mage == null) ? null : mage.getPlayer();
 		if (other.autoFill && player != null) {
-			this.fill(player);
+			this.fill(player, controller.getMaxWandFillLevel());
 			modified = true;
 			if (mage != null) mage.sendMessage(controller.getMessages().get("wand.filled").replace("$wand", getName()));
 		}
@@ -2442,8 +2442,14 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
             }
 		}
 	}
-	
-	public boolean fill(Player player) {
+
+    @Override
+    public boolean fill(Player player) {
+        return fill(player, 0);
+    }
+
+    @Override
+	public boolean fill(Player player, int maxLevel) {
         Collection<String> currentSpells = new ArrayList<String>(getSpells());
         for (String spellKey : currentSpells) {
             SpellTemplate spell = controller.getSpellTemplate(spellKey);
@@ -2456,6 +2462,10 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		Collection<SpellTemplate> allSpells = controller.getPlugin().getSpellTemplates();
 		for (SpellTemplate spell : allSpells)
 		{
+            if (maxLevel > 0 && spell.getSpellKey().getLevel() > maxLevel)
+            {
+                continue;
+            }
 			if (spell.hasCastPermission(player) && spell.hasIcon() && !spell.isHidden())
 			{
 				addSpell(spell.getKey());
@@ -2506,7 +2516,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		
 		// Check for an empty wand and auto-fill
 		if (!isUpgrade && (controller.fillWands() || autoFill)) {
-            fill(mage.getPlayer());
+            fill(mage.getPlayer(), controller.getMaxWandFillLevel());
 		}
 		
 		// Check for auto-organize
