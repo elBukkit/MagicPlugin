@@ -384,6 +384,11 @@ public class MagicController implements Listener, MageController {
         return fillingEnabled;
     }
 
+    @Override
+    public int getMaxWandFillLevel() {
+        return maxFillLevel;
+    }
+
     public boolean bindWands() {
         return bindingEnabled;
     }
@@ -1858,7 +1863,8 @@ public class MagicController implements Listener, MageController {
         enableCreativeModeEjecting = properties.getBoolean("enable_creative_mode_ejecting", enableCreativeModeEjecting);
 		soundsEnabled = properties.getBoolean("sounds", soundsEnabled);
 		fillingEnabled = properties.getBoolean("fill_wands", fillingEnabled);
-		indestructibleWands = properties.getBoolean("indestructible_wands", indestructibleWands);
+        maxFillLevel = properties.getInt("fill_wand_level", maxFillLevel);
+        indestructibleWands = properties.getBoolean("indestructible_wands", indestructibleWands);
 		keepWandsOnDeath = properties.getBoolean("keep_wands_on_death", keepWandsOnDeath);
 		welcomeWand = properties.getString("welcome_wand", "");
 		maxDamagePowerMultiplier = (float)properties.getDouble("max_power_damage_multiplier", maxDamagePowerMultiplier);
@@ -4442,6 +4448,7 @@ public class MagicController implements Listener, MageController {
     private boolean							    spellDroppingEnabled			= false;
     private boolean							    keepingEnabled					= false;
     private boolean                             fillingEnabled                  = false;
+    private int                                 maxFillLevel                    = 0;
     private boolean							    essentialsSignsEnabled			= false;
     private boolean							    dynmapUpdate					= true;
     private boolean							    dynmapShowWands				    = true;

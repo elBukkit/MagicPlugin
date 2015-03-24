@@ -199,6 +199,11 @@ wand_inventory_close_sound: level_up,0.4,0.2
 # If true, fill wands with all known spells on creation
 fill_wands: false
 
+# Max fill level to fill wands to
+# 0 means put the max level of each spell on the wand,
+# 1 would be only the level 1 versions
+fill_wand_level: 0
+
 # If true, wands will automatically bind to their owners
 enable_binding: true
 

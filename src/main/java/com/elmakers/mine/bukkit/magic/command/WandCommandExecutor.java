@@ -358,8 +358,20 @@ public class WandCommandExecutor extends MagicTabExecutor {
 		if (subCommand.equalsIgnoreCase("fill"))
 		{
 			if (!api.hasPermission(sender, "Magic.commands." + command + "." + subCommand)) return true;
-
-			onWandFill(sender, player);
+            int maxLevel = api.getController().getMaxWandFillLevel();
+            if (args2.length > 0) {
+                if (args2[0].equalsIgnoreCase("max")) {
+                    maxLevel = 0;
+                } else {
+                    try {
+                        maxLevel = Integer.parseInt(args2[0]);
+                    } catch (Exception ex) {
+                        sender.sendMessage("Invalid level: " + args2[0]);
+                        return true;
+                    }
+                }
+            }
+            onWandFill(sender, player, maxLevel);
 			return true;
 		}
 		if (subCommand.equalsIgnoreCase("remove"))
@@ -820,7 +832,7 @@ public class WandCommandExecutor extends MagicTabExecutor {
 		return true;
 	}
 
-	public boolean onWandFill(CommandSender sender, Player player)
+	public boolean onWandFill(CommandSender sender, Player player, int maxLevel)
 	{
 		if (!checkWand(sender, player)) {
 			return true;
@@ -829,7 +841,7 @@ public class WandCommandExecutor extends MagicTabExecutor {
 		Mage mage = api.getMage(player);
 		Wand wand = mage.getActiveWand();
 		
-		wand.fill(player);
+		wand.fill(player, maxLevel);
 		mage.sendMessage(api.getMessages().get("wand.filled").replace("$wand", wand.getName()));
 		if (sender != player) {
 			sender.sendMessage(api.getMessages().getParameterized("wand.player_filled", "$name", player.getName()));
