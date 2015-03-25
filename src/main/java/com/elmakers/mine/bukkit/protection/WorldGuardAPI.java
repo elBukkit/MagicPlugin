@@ -24,7 +24,7 @@ public class WorldGuardAPI {
 		return worldGuard != null;
 	}
 	
-	public WorldGuardAPI(Plugin plugin) {
+	public WorldGuardAPI(Plugin plugin, Plugin owningPlugin) {
         if (plugin instanceof WorldGuardPlugin) {
             worldGuard = (WorldGuardPlugin)plugin;
             try {
@@ -36,7 +36,7 @@ public class WorldGuardAPI {
             }
 
             if (customFlags != null) {
-                plugin.getLogger().info("WGCustomFlags found, adding allowed-spells and blocked-spells flags");
+                owningPlugin.getLogger().info("WGCustomFlags found, added custom flags");
             }
         }
 	}
