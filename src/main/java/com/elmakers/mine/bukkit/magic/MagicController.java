@@ -2381,42 +2381,45 @@ public class MagicController implements Listener, MageController {
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onHangingBreak(HangingBreakEvent event) {
-        Hanging entity = event.getEntity();
+        final Hanging entity = event.getEntity();
         // Early-out for performance, if we already detected the Entity
         if (entity.hasMetadata("broken")) return;
 
-        Location location = entity.getLocation();
-        location = location.getBlock().getRelative(entity.getAttachedFace()).getLocation();
-
-        UndoList undoList = getPendingUndo(location);
-        if (undoList != null) {
-            // Prevent item drops, but still remove it
-            // Else it'll probably just break again.
-            event.setCancelled(true);
-            undoList.modify(entity);
-            entity.remove();
-        }
+        Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
+            @Override
+            public void run() {
+                Location location = entity.getLocation();
+                location = location.getBlock().getRelative(entity.getAttachedFace()).getLocation();
+                UndoList undoList = getPendingUndo(location);
+                if (undoList != null) {
+                    undoList.modify(entity);
+                }
+            }
+        }, 1);
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onHangingBreakByEntity(HangingBreakByEntityEvent event) {
-        Entity breakingEntity = event.getRemover();
+        final Entity breakingEntity = event.getRemover();
         if (breakingEntity == null) return;
 
-        Hanging entity = event.getEntity();
-        Location location = entity.getLocation();
-        location = location.getBlock().getRelative(entity.getAttachedFace()).getLocation();
-        UndoList undoList = getPendingUndo(location);
-        if (undoList != null) {
-            entity.setMetadata("broken", new FixedMetadataValue(plugin, true));
-            undoList.modify(entity);
+        final Hanging entity = event.getEntity();
+        Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
+            @Override
+            public void run() {
+                Location location = entity.getLocation();
+                location = location.getBlock().getRelative(entity.getAttachedFace()).getLocation();
 
-            // Prevent item drops, but still remove it
-            // Else it'll probably just break again.
-            event.setCancelled(true);
-            undoList.modify(entity);
-            entity.remove();
-        }
+                UndoList undoList = getEntityUndo(breakingEntity);
+                if (undoList == null) {
+                    undoList = getPendingUndo(location);
+                }
+                if (undoList != null) {
+                    entity.setMetadata("broken", new FixedMetadataValue(plugin, true));
+                    undoList.modify(entity);
+                }
+            }
+        }, 1);
     }
 
     @EventHandler
