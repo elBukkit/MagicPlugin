@@ -4,6 +4,7 @@
 
  - Remove special characters from messages.defaults.yml files
    (Seems to be causing issues on Windows servers)
+ - Various fixes for copying and restoring paintings and item frames
  - Add Firework action for launched fireworks with effects
  - Re-balance Laser, Stun and Curse
  - Add Gatling Gun spell
