@@ -45,14 +45,24 @@ public class BlockList implements com.elmakers.mine.bukkit.api.block.BlockList {
         boolean allAdded = add(block);
         if (includeNeighbors)
         {
-            allAdded = add(block.getRelative(BlockFace.EAST)) && allAdded;
-            allAdded = add(block.getRelative(BlockFace.NORTH)) && allAdded;
-            allAdded = add(block.getRelative(BlockFace.WEST)) && allAdded;
-            allAdded = add(block.getRelative(BlockFace.SOUTH)) && allAdded;
-            allAdded = add(block.getRelative(BlockFace.UP)) && allAdded;
-            allAdded = add(block.getRelative(BlockFace.DOWN)) && allAdded;
+            allAdded = addIfNew(block.getRelative(BlockFace.EAST)) && allAdded;
+            allAdded = addIfNew(block.getRelative(BlockFace.NORTH)) && allAdded;
+            allAdded = addIfNew(block.getRelative(BlockFace.WEST)) && allAdded;
+            allAdded = addIfNew(block.getRelative(BlockFace.SOUTH)) && allAdded;
+            allAdded = addIfNew(block.getRelative(BlockFace.UP)) && allAdded;
+            allAdded = addIfNew(block.getRelative(BlockFace.DOWN)) && allAdded;
         }
         return allAdded;
+    }
+
+    public boolean addIfNew(Block block)
+    {
+        if (UndoList.getModified().containsKey(com.elmakers.mine.bukkit.block.BlockData.getBlockId(block)))
+        {
+            return false;
+        }
+
+        return add(block);
     }
 
     @Override
