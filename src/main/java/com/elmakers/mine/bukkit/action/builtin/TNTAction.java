@@ -8,9 +8,11 @@ import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.action.ActionHandler;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
+import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.TNTPrimed;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.util.Vector;
@@ -41,6 +43,7 @@ public class TNTAction extends TriggeredCompoundAction
 	@Override
 	public SpellResult perform(CastContext context) {
 		Mage mage = context.getMage();
+        LivingEntity living = mage.getLivingEntity();
 		MageController controller = context.getController();
         int size = (int)(mage.getRadiusMultiplier() * this.size);
 
@@ -65,6 +68,9 @@ public class TNTAction extends TriggeredCompoundAction
 			if (grenade == null) {
 				return SpellResult.FAIL;
 			}
+            if (living != null) {
+                CompatibilityUtils.setTNTSource(grenade, living);
+            }
 			Vector aim = context.getDirection();
 			grenade.setVelocity(aim);
 			grenade.setYield(size);
