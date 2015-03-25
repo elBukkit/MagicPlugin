@@ -245,7 +245,6 @@ public class NMSUtils {
             }
             catch (Throwable legacy) {
                 isLegacy = true;
-                legacy.printStackTrace();
                 class_EntityPaintingConstructor = class_EntityPainting.getConstructor(class_World, Integer.TYPE, Integer.TYPE, Integer.TYPE, Integer.TYPE);
                 class_EntityItemFrameConstructor = class_EntityItemFrame.getConstructor(class_World, Integer.TYPE, Integer.TYPE, Integer.TYPE, Integer.TYPE);
             }
@@ -261,6 +260,11 @@ public class NMSUtils {
     public static boolean getFailed() {
         return failed;
     }
+
+    public static boolean isLegacy() {
+        return isLegacy;
+    }
+
 
     public static Class<?> getVersionedBukkitClass(String newVersion, String oldVersion) {
         Class<?> c = getBukkitClass(newVersion);
