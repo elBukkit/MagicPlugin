@@ -1810,9 +1810,11 @@ icbm:
     icon_url: http://i.imgur.com/tW9Uo6M.png
     icon: golden_carrot
     category: demolition
-    class: ProjectileSpell
     pvp_restricted: true
     worth: 500
+    actions:
+        cast:
+        - class: Projectile
     effects:
         cast:
         -  class: EffectSingle
@@ -1866,9 +1868,11 @@ wither:
     icon_url: http://i.imgur.com/2IR2x9e.png
     icon: skull_item:1
     category: dark
-    class: ProjectileSpell
     pvp_restricted: true
     worth: 50
+    action:
+        cast:
+        -  class: Projectile
     effects:
         cast:
         -  class: EffectSingle
@@ -1978,9 +1982,11 @@ meteor:
     icon: double_plant:4
     icon_url: http://i.imgur.com/KxkG8GW.png
     category: demolition
-    class: ProjectileSpell
     pvp_restricted: true
     worth: 90
+    actions:
+        cast:
+        -  class: Projectile
     effects:
         cast:
         -  class: EffectSingle

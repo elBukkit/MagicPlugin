@@ -93,7 +93,7 @@ public class ProjectileAction  extends TriggeredCompoundAction
                 } catch (Throwable ex) {
                     lifeField = null;
                     getHandleMethod = null;
-                    controller.getLogger().warning("Failed to create short-lived arrow. Set tick_increase to 0 to avoid this message");
+                    controller.getLogger().log(Level.WARNING, "Failed to create short-lived arrow. Set tick_increase to 0 to avoid this message", ex);
                 }
                 if (lifeField != null)
                 {
