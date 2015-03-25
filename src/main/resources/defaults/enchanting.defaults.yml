@@ -655,19 +655,18 @@ battle:
     hidden: true
     inherit: default
     property_count:
-      0: 100,100, 50
-      1: 5,  10,  100
-      2: 0,   5,   60
-      3: 0,   0,    0
+      1: 100,100, 50
+      2: 5,  10,  100
+      3: 0,   5,   60
     max_protection: 0.5
     protection:
-      0^1:   100,100,90
+      0^1: 100,100,90
       0^2: 0,   5, 10
       0^3: 0 ,  1, 5
       0^4: 0 ,  0, 1
     max_protection_physical: 0.5
     protection_physical:
-      0^1:   100, 100, 90
+      0^1: 100, 100, 90
       0^2: 1,   10,  20
       0^3: 0 ,  15,  15
       0^4: 0 ,  0,   10
@@ -734,12 +733,9 @@ battle:
       grenade: 30,50,70
       cure: 1,5,10
       heal: 0,1,5
-      tesseract: 80,50,40
-      leap: 70,80,60
       push: 10,20,40
       pull: 10,20,40
       monster: 5,20,30
-      perk: 5,15,20
       lightning: 40,50,30
       sandblast: 20,30,40
       lava: 5,20,50

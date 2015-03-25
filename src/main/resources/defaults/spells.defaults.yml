@@ -2005,7 +2005,7 @@ meteor:
         range: 64
         allow_max_range: true
         undo: 40000
-        cooldown: 3000
+        cooldown: 10000
     costs:
         mana: 80
 
@@ -2775,6 +2775,7 @@ recurse:
         max_dimension: 128
         check_destructible: false
         transparent: transparent_to_construction
+        cooldown: 500
     costs:
         mana: 30
 
@@ -5641,6 +5642,7 @@ petrify:
         protection_count: 1000
         effect_absorption: 4
         hitbox: true
+        cooldown: 10000
 
 entangle:
     icon_url: http://i.imgur.com/tCzC5aJ.png

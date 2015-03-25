@@ -1,14 +1,10 @@
 # TODO
 
+ - Better handling for invalid spells in enchanting.yml
  - Clean up MaterialBrush target system, automate somehow?
  - Copy target brush action for tandem replication
- - SuperAlter isn't so super
- - Adding neighbors to undo seems to keep them from undo'ing,
-   even if no blocks were changed (supershell + alter + rollback)
-
  - Glitchy wand inventory, Death had an issue
  - Automata aren't cleaning up cmd block + redstone
-
  - Glitching Fill behavior
  - Spell shop improvements:
    - Color spells player can't afford
@@ -17,12 +13,9 @@
    - Cleaner list of list parameters
  - Nerf Force (shift to break free? Fall protection?)
  - Make map work like replicate, clone - with start point set on activate
- - battle wand stuck at "enchant at higher level"
  - /magic describe should show info about current spell?
- - Fix Chop on data variants..?
+ - Fix Chop on data variants
  - Add repeat option for schematic brushes
- - Test Clone with entities?
-
  - Fix recall home spawning in the ground?
  - Add Cylinder construct (SuperWalls, Walls, SuperCylinder)
  - Support for locking/unlocking chests
@@ -31,17 +24,12 @@
 ## Old Stuff
 
  - Arena spell/schematic
- - A way to /wand enchant with auto-fill but not filling wand... ?
  - Magic stats (that persist) - block modified, etc. (Statistics API?)
- - Peek wiped a chest - I couldn't repro, but saw the results from ap_bagel.
  - Collapse blocklist chains on save (?)
- - Walls spell
  - Enchant count limit for wands
  - Support schematic entity import for paintings and item frames (at least)
  - EnderDragon familiars that don't do block damage or spawn a portal on death?
- - Async player data loading/saving
- - Add upgrade paths for wands, maybe a "combine" requirement of one or more wands
- 
+
 ## NEW SPELLS
 
  - level - levels the ground
@@ -54,14 +42,13 @@
  - Fix tunnel spell
  - Some kind of "ramp" version of fill, like stairs but with arbitrary blocks?
  - Disguise spells / clone spell
- - vortex type spells.. singularity, black hole, tornado - fun ideas there.
  - Biome modification (mega-frost).
  - Decorate, places paintings at target
 
 ## OTHER STUFF
  
- - Customize map wand pop-ups? Red with black shadows looked cool.. use wand effect color?
-= - Make volley multi-sample?
+ - Customize dynmap map wand pop-ups? Red with black shadows looked cool.. use wand effect color?
+ - Make volley multi-sample?
  - Alter names sheep "jeb_", - others "Dinnerbone" ?
  
  - Fix up alter spell, remove id-based lists
@@ -73,12 +60,7 @@
  - Add locale option to suffix messages.yml
  
  - Show active spells in a different color
- 
- - Add /magic depopulate, to remove all wands from chests
 
-  - Persist player spell data
-   - familiar
- 
  - Continue work on combining wands on anvils
  
 ## TESTING / TWEAKING:
