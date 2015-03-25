@@ -86,9 +86,6 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
                 org.bukkit.Bukkit.getLogger().log(Level.WARNING, "Error reading HangingEntity " + entity + " of type " + (entity == null ? "null" : entity.getType()), ex);
             }
         }
-        if (entity instanceof ItemFrame) {
-            this.rotation = ((ItemFrame)entity).getRotation();
-        }
 
         if (entity instanceof LivingEntity) {
             LivingEntity li = (LivingEntity)entity;
@@ -113,6 +110,10 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         } else if (entity instanceof ItemFrame) {
             ItemFrame itemFrame = (ItemFrame)entity;
             item = itemFrame.getItem();
+            this.rotation = ((ItemFrame)entity).getRotation();
+        } else if (entity instanceof Item) {
+            Item droppedItem = (Item)entity;
+            item = droppedItem.getItemStack();
         } else if (entity instanceof Horse) {
             Horse horse = (Horse)entity;
             horseVariant = horse.getVariant();
@@ -183,18 +184,10 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
                 spawned = CompatibilityUtils.spawnPainting(location, facing, art);
             break;
             case ITEM_FRAME:
-                Location frameAttach = location.getBlock().getRelative(facing.getOppositeFace()).getLocation();
-                spawned = location.getWorld().spawn(frameAttach, ItemFrame.class);
-                ItemFrame frame = (ItemFrame)spawned;
-
-                frame.teleport(location);
-                frame.setRotation(rotation);
-                frame.setFacingDirection(facing, true);
-                frame.setItem(item);
+                spawned = CompatibilityUtils.spawnItemFrame(location, facing, rotation, item);
                 break;
             case DROPPED_ITEM:
-                // TODO: Handle this, would need to store item data.
-                spawned = null;
+                spawned = location.getWorld().spawn(location, Item.class);
                 break;
             default:
                 spawned = location.getWorld().spawnEntity(location, type);
@@ -266,6 +259,9 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
             ItemFrame itemFrame = (ItemFrame)entity;
             itemFrame.setItem(item);
             itemFrame.setFacingDirection(facing, true);
+        } else if (entity instanceof Item) {
+            Item droppedItem = (Item)entity;
+            droppedItem.setItemStack(item);
         } else if (entity instanceof Horse) {
             Horse horse = (Horse)entity;
             horse.setVariant(horseVariant);

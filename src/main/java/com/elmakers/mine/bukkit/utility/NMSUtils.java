@@ -106,6 +106,7 @@ public class NMSUtils {
     protected static Constructor class_NBTTagByte_legacy_constructor;
     protected static Constructor class_EntityFireworkConstructor;
     protected static Constructor class_EntityPaintingConstructor;
+    protected static Constructor class_EntityItemFrameConstructor;
     protected static Constructor class_BlockPositionConstructor;
 
     protected static Field class_Entity_invulnerableField;
@@ -235,11 +236,13 @@ public class NMSUtils {
                 class_EnumDirection = (Class<Enum>)fixBukkitClass("net.minecraft.server.EnumDirection");
                 class_BlockPositionConstructor = class_BlockPosition.getConstructor(Double.TYPE, Double.TYPE, Double.TYPE);
                 class_EntityPaintingConstructor = class_EntityPainting.getConstructor(class_World, class_BlockPosition, class_EnumDirection);
+                class_EntityItemFrameConstructor = class_EntityItemFrame.getConstructor(class_World, class_BlockPosition, class_EnumDirection);
             }
             catch (Throwable legacy) {
                 isLegacy = true;
                 legacy.printStackTrace();
                 class_EntityPaintingConstructor = class_EntityPainting.getConstructor(class_World, Integer.TYPE, Integer.TYPE, Integer.TYPE, Integer.TYPE);
+                class_EntityItemFrameConstructor = class_EntityItemFrame.getConstructor(class_World, Integer.TYPE, Integer.TYPE, Integer.TYPE, Integer.TYPE);
             }
 
             class_PacketPlayOutMapChunkBulk = getVersionedBukkitClass("net.minecraft.server.PacketPlayOutMapChunkBulk", "net.minecraft.server.Packet56MapChunkBulk");

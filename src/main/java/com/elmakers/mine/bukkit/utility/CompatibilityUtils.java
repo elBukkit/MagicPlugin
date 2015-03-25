@@ -235,7 +235,6 @@ public class CompatibilityUtils extends NMSUtils {
     {
         Painting newPainting = null;
         try {
-            Method addEntity = class_World.getMethod("addEntity", class_Entity, CreatureSpawnEvent.SpawnReason.class);
             location = getPaintingOffset(location, facing, art);
             Object worldHandle = getHandle(location.getWorld());
             Object newEntity = null;
@@ -253,25 +252,28 @@ public class CompatibilityUtils extends NMSUtils {
                 newPainting = (Painting)bukkitEntity;
                 newPainting.setFacingDirection(facing, true);
                 newPainting.setArt(art, true);
-                addEntity.invoke(worldHandle, newEntity, CreatureSpawnEvent.SpawnReason.CUSTOM);
+                class_World_addEntityMethod.invoke(worldHandle, newEntity, CreatureSpawnEvent.SpawnReason.CUSTOM);
             }
         } catch (Throwable ex) {
             ex.printStackTrace();
+            newPainting = null;
         }
         return newPainting;
     }
 
-    @Deprecated
     public static ItemFrame spawnItemFrame(Location location, BlockFace facing, Rotation rotation, ItemStack item)
     {
         ItemFrame newItemFrame = null;
         try {
-            // entity = new EntityItemFrame(world, (int) x, (int) y, (int) z, dir);
-            Constructor<?> itemFrameConstructor = class_EntityItemFrame.getConstructor(class_World, Integer.TYPE, Integer.TYPE, Integer.TYPE, Integer.TYPE);
-            Method addEntity = class_World.getMethod("addEntity", class_Entity, CreatureSpawnEvent.SpawnReason.class);
-
             Object worldHandle = getHandle(location.getWorld());
-            Object newEntity = itemFrameConstructor.newInstance(worldHandle, location.getBlockX(), location.getBlockY(), location.getBlockZ(), getFacing(facing));
+            Object newEntity = null;
+            if (!isLegacy) {
+                Enum<?> directionEnum = Enum.valueOf(class_EnumDirection, facing.name());
+                Object blockLocation = class_BlockPositionConstructor.newInstance(location.getX(), location.getY(), location.getZ());
+                newEntity = class_EntityItemFrameConstructor.newInstance(worldHandle, blockLocation, directionEnum);
+            } else {
+                newEntity = class_EntityItemFrameConstructor.newInstance(worldHandle, location.getBlockX(), location.getBlockY(), location.getBlockZ(), getFacing(facing));
+            }
             if (newEntity != null) {
                 Entity bukkitEntity = getBukkitEntity(newEntity);
                 if (bukkitEntity == null || !(bukkitEntity instanceof ItemFrame)) return null;
@@ -283,9 +285,9 @@ public class CompatibilityUtils extends NMSUtils {
 
                 // This will fail sometimes ... the entity is already tracked?
                 try {
-                    addEntity.invoke(worldHandle, newEntity, CreatureSpawnEvent.SpawnReason.CUSTOM);
+                    class_World_addEntityMethod.invoke(worldHandle, newEntity, CreatureSpawnEvent.SpawnReason.CUSTOM);
                 } catch (Exception ex) {
-
+                    newItemFrame = null;
                 }
             }
         } catch (Throwable ex) {

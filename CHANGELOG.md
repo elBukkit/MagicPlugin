@@ -3,6 +3,7 @@
 ## 2.7
 
  - Allow HTML escape codes in messages
+ - Update methods for spawning hanging entities
 
 ## 2.6
 
