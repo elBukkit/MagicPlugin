@@ -16,6 +16,7 @@
  - Add Magic.bypass_restricted permission
  - Allow overlapping spell FX
  - Fix SuperAlter
+ - Allow wearing Banners with Hat spell
 
 ## 4.6.1
 

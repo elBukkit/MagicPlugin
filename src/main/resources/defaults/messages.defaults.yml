@@ -197,7 +197,7 @@ economy:
     deducted: "Deducted: &6$cost"
 spell:
     brush: Uses Material Brushes
-    undoable:
+    undoable: ""
     not_undoable: "&4Not Undoable"
     reactivate: Reactivating $name
     available_path: Available at the $path level
@@ -931,7 +931,7 @@ spells:
         description: Wear your target
         cast: You put $material on your head
         removed: You remove your magical hat
-        hat_name: Hat of $material
+        hat_name: Hat of $hat
         hat_lore: Will disappear if clicked
     stalactite:
         name: Stalactite
