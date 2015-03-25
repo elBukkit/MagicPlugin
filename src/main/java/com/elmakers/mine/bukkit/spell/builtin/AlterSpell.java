@@ -100,7 +100,6 @@ public class AlterSpell extends BlockSpell
 		byte data = (byte)((((originalData - minValue) + 1) % dataSize) + minValue);
 
 		boolean recursive = recurseDistance > 0;
-
 		adjust(targetBlock, data, recursive, recurseDistance, 0);
 		registerForUndo();
 		return SpellResult.CAST;
@@ -109,7 +108,7 @@ public class AlterSpell extends BlockSpell
 	@SuppressWarnings("deprecation")
 	protected void adjust(Block block, byte dataValue, boolean recursive, int recurseDistance, int rDepth)
 	{
-		registerForUndo(block);
+		registerForUndo(block, false);
 		block.setData(dataValue);
 
 		if (recursive && rDepth < recurseDistance)

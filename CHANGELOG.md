@@ -15,6 +15,7 @@
  - Action-ize several more spells
  - Add Magic.bypass_restricted permission
  - Allow overlapping spell FX
+ - Fix SuperAlter
 
 ## 4.6.1
 
