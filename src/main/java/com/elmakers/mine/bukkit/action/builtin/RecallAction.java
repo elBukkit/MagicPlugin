@@ -12,8 +12,6 @@ import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import org.apache.commons.lang.StringUtils;
-import org.bukkit.Bukkit;
-import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -24,7 +22,6 @@ import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.plugin.Plugin;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -166,7 +163,7 @@ public class RecallAction extends BaseSpellAction implements GUIAction
         this.parameters = parameters;
         this.context = context;
 
-        allowCrossWorld = parameters.getBoolean("cross_world", true);
+        allowCrossWorld = parameters.getBoolean("allow_cross_world", true);
         maintainDirection = parameters.getBoolean("maintain_direction", false);
     }
 
