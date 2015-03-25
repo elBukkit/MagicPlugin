@@ -197,7 +197,8 @@ economy:
     deducted: "Deducted: &6$cost"
 spell:
     brush: Uses Material Brushes
-    undoable: Undoable
+    undoable:
+    not_undoable: "&4Not Undoable"
     reactivate: Reactivating $name
     available_path: Available at the $path level
     required_path: Required to complete the $path level

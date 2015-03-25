@@ -204,6 +204,11 @@ public class RecallAction extends BaseSpellAction implements GUIAction
                 return SpellResult.NO_ACTION;
             }
 
+            if (warpConfig == null)
+            {
+                return SpellResult.FAIL;
+            }
+
             unlockedWarps.add(unlockWarp);
             unlockedString = StringUtils.join(unlockedWarps, ",");
             mage.getData().set(UNLOCKED_WARPS, unlockedString);

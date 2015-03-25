@@ -1,6 +1,5 @@
 package com.elmakers.mine.bukkit.batch;
 
-import com.elmakers.mine.bukkit.batch.SpellBatch;
 import com.elmakers.mine.bukkit.spell.UndoableSpell;
 import org.bukkit.Chunk;
 import org.bukkit.Location;

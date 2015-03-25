@@ -1782,7 +1782,12 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         else if (spell.isUndoable()) {
             String undoableText = messages.get("spell.undoable");
             if (!undoableText.isEmpty()) {
-                lore.add(ChatColor.GRAY + undoableText);
+                lore.add(undoableText);
+            }
+        } else {
+            String undoableText = messages.get("spell.not_undoable");
+            if (!undoableText.isEmpty()) {
+                lore.add(undoableText);
             }
         }
 		
