@@ -405,19 +405,24 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         return undoQueue.getLast();
     }
 
-    public boolean registerForUndo(com.elmakers.mine.bukkit.api.block.UndoList undoList) {
+    public boolean prepareForUndo(com.elmakers.mine.bukkit.api.block.UndoList undoList) {
         if (undoList == null) return false;
         if (undoList.bypass()) return true;
-
         UndoQueue queue = getUndoQueue();
+        queue.add(undoList);
+        controller.registerForUndo(this);
+        return true;
+    }
+
+    public boolean registerForUndo(com.elmakers.mine.bukkit.api.block.UndoList undoList) {
+        if (!prepareForUndo(undoList)) return false;
+
         int autoUndo = controller.getAutoUndoInterval();
         if (autoUndo > 0 && undoList.getScheduledUndo() == 0) {
             undoList.setScheduleUndo(autoUndo);
         } else {
             undoList.updateScheduledUndo();
         }
-        queue.add(undoList);
-        controller.registerForUndo(this);
 
         return true;
     }
