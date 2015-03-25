@@ -185,6 +185,12 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
     }
 
     @Override
+    public LivingEntity getLivingEntity() {
+        Entity entity = getEntity();
+        return entity instanceof LivingEntity ? (LivingEntity)entity : null;
+    }
+
+    @Override
     public Location getLocation() {
         if (location != null) {
             return location;

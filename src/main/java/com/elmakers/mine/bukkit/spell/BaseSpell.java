@@ -150,6 +150,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     protected boolean bypassDeactivate            = false;
     protected boolean quiet                       = false;
     protected boolean loud                        = false;
+    protected boolean showUndoable              = true;
 
     private boolean backfired                   = false;
     private boolean hidden                      = false;
@@ -766,6 +767,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         usesBrushSelection = node.getBoolean("brush_selection", usesBrushSelection);
         castOnNoTarget = node.getBoolean("cast_on_no_target", castOnNoTarget);
         hidden = node.getBoolean("hidden", false);
+        showUndoable = node.getBoolean("show_undoable", true);
 
         // Preload some parameters
         ConfigurationSection parameters = node.getConfigurationSection("parameters");
@@ -1762,5 +1764,10 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         }
 
         return color;
+    }
+
+    @Override
+    public boolean showUndoable() {
+        return showUndoable;
     }
 }
