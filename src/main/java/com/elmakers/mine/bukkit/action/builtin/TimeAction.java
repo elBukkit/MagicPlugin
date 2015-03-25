@@ -1,9 +1,12 @@
 package com.elmakers.mine.bukkit.action.builtin;
 
 import com.elmakers.mine.bukkit.api.action.CastContext;
+import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.action.BaseSpellAction;
+import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
+import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
 
@@ -15,6 +18,24 @@ public class TimeAction extends BaseSpellAction
 	private String timeType = "day";
     private String timeSet = "day";
     private boolean cycleMoonPhase;
+
+    private class UndoTimeChange implements Runnable
+    {
+        private final World world;
+        private final long time;
+
+        public UndoTimeChange(World world)
+        {
+            this.world = world;
+            this.time = world.getFullTime();
+        }
+
+        @Override
+        public void run()
+        {
+            world.setFullTime(time);
+        }
+    }
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters) {
@@ -56,6 +77,8 @@ public class TimeAction extends BaseSpellAction
 				targetTime = 0;
 			}
 		}
+
+        context.registerForUndo(new UndoTimeChange(world));
 		if (cycleMoonPhase)
 		{
 			long currentTime = world.getFullTime();
@@ -63,7 +86,6 @@ public class TimeAction extends BaseSpellAction
 			world.setFullTime(currentTime);
 			return SpellResult.CAST;
 		}
-
 		world.setTime(targetTime);
 		return SpellResult.CAST;
 	}
@@ -93,4 +115,9 @@ public class TimeAction extends BaseSpellAction
 			super.getParameterOptions(examples, parameterKey);
 		}
 	}
+
+    @Override
+    public boolean isUndoable() {
+        return true;
+    }
 }

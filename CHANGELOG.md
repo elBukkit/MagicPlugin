@@ -5,12 +5,13 @@
  - Remove special characters from messages.defaults.yml files
    (Seems to be causing issues on Windows servers)
  - Various fixes for copying and restoring paintings and item frames
- - Add Firework action for launched fireworks with effects
- - Re-balance Laser, Stun and Curse
  - Add Gatling Gun spell
  - Add Tornado spell
  - Add Rocket spell - ride a firework
  - Add Forest spell - biome-specific forests
+ - Add Firework action for launched fireworks with effects
+ - Time spells are now undoable
+ - Re-balance Laser, Stun and Curse
  - Action-ize several more spells
  - Add Magic.bypass_restricted permission
  - Allow overlapping spell FX
