@@ -1870,7 +1870,7 @@ wither:
     category: dark
     pvp_restricted: true
     worth: 50
-    action:
+    actions:
         cast:
         -  class: Projectile
     effects:
@@ -1919,10 +1919,10 @@ arrowrain:
         projectile: Arrow
         count: 4
         fire: false
-        speed: 3
+        speed: 1
         spread: 12
-        dpy: 4
-        ddy: -0.2
+        py: ~4
+        pdy: ~-0.2
         undo: 15000
         cooldown: 5000
     costs:

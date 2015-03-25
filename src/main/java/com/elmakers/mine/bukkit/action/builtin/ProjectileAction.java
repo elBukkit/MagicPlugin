@@ -35,7 +35,6 @@ public class ProjectileAction  extends TriggeredCompoundAction
 {
 	private int defaultSize = 1;
 	private static Field lifeField = null;
-	private static Method getHandleMethod = null;
 	private static boolean reflectionInitialized = false;
 
     private int count;
@@ -89,10 +88,8 @@ public class ProjectileAction  extends TriggeredCompoundAction
                             }
                         }
                     }
-                    getHandleMethod = craftArrowClass.getMethod("getHandle");
                 } catch (Throwable ex) {
                     lifeField = null;
-                    getHandleMethod = null;
                     controller.getLogger().log(Level.WARNING, "Failed to create short-lived arrow. Set tick_increase to 0 to avoid this message", ex);
                 }
                 if (lifeField != null)
