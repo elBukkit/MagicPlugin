@@ -270,6 +270,11 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         isValid = true;
     }
 
+    @SuppressWarnings("deprecation")
+    public void setMaterialId(int id) {
+        this.material = Material.getMaterial(id);
+    }
+
     public void setMaterial(Material material) {
         setMaterial(material, (byte)0);
     }
@@ -303,6 +308,9 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         customData = null;
         color = null;
 
+        material = blockMaterial;
+        data = (short)block.getData();
+
         try {
             BlockState blockState = block.getState();
             if (blockState instanceof Sign) {
@@ -330,13 +338,12 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
                 // TODO: Change to Material.BANNER when dropping 1.7 support
                 customData = CompatibilityUtils.getBannerPatterns(blockState);
                 color = CompatibilityUtils.getBannerBaseColor(blockState);
+                data = (short)color.getDyeData();
             }
         } catch (Exception ex) {
             ex.printStackTrace();
         }
 
-        material = blockMaterial;
-        data = (short)block.getData();
         isValid = true;
     }
 
