@@ -13,24 +13,33 @@ import java.util.List;
 import java.util.UUID;
 
 import com.elmakers.mine.bukkit.api.block.MaterialAndData;
-import org.bukkit.*;
-import org.bukkit.block.Block;
+import org.bukkit.Art;
+import org.bukkit.ChatColor;
+import org.bukkit.Color;
+import org.bukkit.DyeColor;
+import org.bukkit.Location;
+import org.bukkit.Rotation;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Skull;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.entity.*;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Item;
+import org.bukkit.entity.ItemFrame;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Minecart;
+import org.bukkit.entity.Painting;
+import org.bukkit.entity.Player;
+import org.bukkit.entity.ThrownPotion;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.scheduler.BukkitTask;
-import org.bukkit.util.NumberConversions;
 import org.bukkit.util.Vector;
 
 /**
@@ -150,17 +159,93 @@ public class CompatibilityUtils extends NMSUtils {
         watch(entity, 7, 0);
     }
 
-    @Deprecated
+
+
+    /**
+     * Thanks you, Chilinot!
+     * @param loc
+     * @param art
+     * @param facing
+     * @return
+     */
+    private static Location getPaintingOffset(Location loc, BlockFace facing, Art art) {
+        switch(art) {
+
+            // 1x1
+            case ALBAN:
+            case AZTEC:
+            case AZTEC2:
+            case BOMB:
+            case KEBAB:
+            case PLANT:
+            case WASTELAND:
+                return loc; // No calculation needed.
+
+            // 1x2
+            case GRAHAM:
+            case WANDERER:
+                return loc.getBlock().getLocation().add(0, -1, 0);
+
+            // 2x1
+            case CREEBET:
+            case COURBET:
+            case POOL:
+            case SEA:
+            case SUNSET:	// Use same as 4x3
+
+                // 4x3
+            case DONKEYKONG:
+            case SKELETON:
+                if(facing == BlockFace.WEST)
+                    return loc.getBlock().getLocation().add(0, 0, -1);
+                else if(facing == BlockFace.SOUTH)
+                    return loc.getBlock().getLocation().add(-1, 0, 0);
+                else
+                    return loc;
+
+                // 2x2
+            case BUST:
+            case MATCH:
+            case SKULL_AND_ROSES:
+            case STAGE:
+            case VOID:
+            case WITHER:	// Use same as 4x2
+
+                // 4x2
+            case FIGHTERS:  // Use same as 4x4
+
+                // 4x4
+            case BURNINGSKULL:
+            case PIGSCENE:
+            case POINTER:
+                if(facing == BlockFace.WEST)
+                    return loc.getBlock().getLocation().add(0, -1, -1);
+                else if(facing == BlockFace.SOUTH)
+                    return loc.getBlock().getLocation().add(-1, -1, 0);
+                else
+                    return loc.add(0, -1, 0);
+
+                // Unsupported artwork
+            default:
+                return loc;
+        }
+    }
+
     public static Painting spawnPainting(Location location, BlockFace facing, Art art)
     {
         Painting newPainting = null;
         try {
-            //                entity = new EntityPainting(world, (int) x, (int) y, (int) z, dir);
-            Constructor<?> paintingConstructor = class_EntityPainting.getConstructor(class_World, Integer.TYPE, Integer.TYPE, Integer.TYPE, Integer.TYPE);
             Method addEntity = class_World.getMethod("addEntity", class_Entity, CreatureSpawnEvent.SpawnReason.class);
-
+            location = getPaintingOffset(location, facing, art);
             Object worldHandle = getHandle(location.getWorld());
-            Object newEntity = paintingConstructor.newInstance(worldHandle, location.getBlockX(), location.getBlockY(), location.getBlockZ(), getFacing(facing));
+            Object newEntity = null;
+            if (!isLegacy) {
+                Enum<?> directionEnum = Enum.valueOf(class_EnumDirection, facing.name());
+                Object blockLocation = class_BlockPositionConstructor.newInstance(location.getX(), location.getY(), location.getZ());
+                newEntity = class_EntityPaintingConstructor.newInstance(worldHandle, blockLocation, directionEnum);
+            } else {
+                newEntity = class_EntityPaintingConstructor.newInstance(worldHandle, location.getBlockX(), location.getBlockY(), location.getBlockZ(), getFacing(facing));
+            }
             if (newEntity != null) {
                 Entity bukkitEntity = getBukkitEntity(newEntity);
                 if (bukkitEntity == null || !(bukkitEntity instanceof Painting)) return null;

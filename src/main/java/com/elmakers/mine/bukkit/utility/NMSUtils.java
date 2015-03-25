@@ -67,6 +67,8 @@ public class NMSUtils {
     protected static Class<?> class_CraftMetaBanner;
     protected static Class<?> class_GameProfile;
     protected static Class<?> class_GameProfileProperty;
+    protected static Class<?> class_BlockPosition;
+    protected static Class<Enum> class_EnumDirection;
 
     protected static Method class_NBTTagList_addMethod;
     protected static Method class_NBTTagCompound_setMethod;
@@ -103,6 +105,8 @@ public class NMSUtils {
     protected static Constructor class_NBTTagByte_constructor;
     protected static Constructor class_NBTTagByte_legacy_constructor;
     protected static Constructor class_EntityFireworkConstructor;
+    protected static Constructor class_EntityPaintingConstructor;
+    protected static Constructor class_BlockPositionConstructor;
 
     protected static Field class_Entity_invulnerableField;
     protected static Field class_Entity_motXField;
@@ -226,9 +230,16 @@ public class NMSUtils {
                 class_CraftBanner_getPatternsMethod = class_CraftBanner.getMethod("getPatterns");
                 class_CraftBanner_setPatternsMethod = class_CraftBanner.getMethod("setPatterns", List.class);
                 class_CraftBanner_setBaseColorMethod = class_CraftBanner.getMethod("setBaseColor", DyeColor.class);
+
+                class_BlockPosition = fixBukkitClass("net.minecraft.server.BlockPosition");
+                class_EnumDirection = (Class<Enum>)fixBukkitClass("net.minecraft.server.EnumDirection");
+                class_BlockPositionConstructor = class_BlockPosition.getConstructor(Double.TYPE, Double.TYPE, Double.TYPE);
+                class_EntityPaintingConstructor = class_EntityPainting.getConstructor(class_World, class_BlockPosition, class_EnumDirection);
             }
             catch (Throwable legacy) {
                 isLegacy = true;
+                legacy.printStackTrace();
+                class_EntityPaintingConstructor = class_EntityPainting.getConstructor(class_World, Integer.TYPE, Integer.TYPE, Integer.TYPE, Integer.TYPE);
             }
 
             class_PacketPlayOutMapChunkBulk = getVersionedBukkitClass("net.minecraft.server.PacketPlayOutMapChunkBulk", "net.minecraft.server.Packet56MapChunkBulk");
