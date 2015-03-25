@@ -330,6 +330,7 @@ public interface Mage extends CostReducer {
     public boolean isDestructible(Block block);
 
     public boolean registerForUndo(UndoList blocks);
+    public boolean prepareForUndo(UndoList blocks);
 
     public Inventory getInventory();
 
