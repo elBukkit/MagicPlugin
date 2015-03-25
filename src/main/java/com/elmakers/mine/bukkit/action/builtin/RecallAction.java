@@ -184,7 +184,8 @@ public class RecallAction extends BaseSpellAction implements GUIAction
         }
 
         Set<String> unlockedWarps = new HashSet<String>();
-        String unlockedString = mage.getData().getString(UNLOCKED_WARPS);
+        ConfigurationSection mageData = mage.getData();
+        String unlockedString = mageData.getString(UNLOCKED_WARPS);
         if (unlockedString != null && !unlockedString.isEmpty())
         {
             unlockedWarps.addAll(Arrays.asList(StringUtils.split(unlockedString, ",")));
@@ -211,7 +212,7 @@ public class RecallAction extends BaseSpellAction implements GUIAction
 
             unlockedWarps.add(unlockWarp);
             unlockedString = StringUtils.join(unlockedWarps, ",");
-            mage.getData().set(UNLOCKED_WARPS, unlockedString);
+            mageData.set(UNLOCKED_WARPS, unlockedString);
 
             String warpName = unlockWarp;
             ConfigurationSection config = warpConfig.getConfigurationSection(unlockWarp);
@@ -236,7 +237,7 @@ public class RecallAction extends BaseSpellAction implements GUIAction
 
             unlockedWarps.remove(lockWarp);
             unlockedString = StringUtils.join(unlockedWarps, ",");
-            mage.getData().set(UNLOCKED_WARPS, unlockedString);
+            mageData.set(UNLOCKED_WARPS, unlockedString);
 
             return SpellResult.DEACTIVATE;
         }
@@ -426,9 +427,10 @@ public class RecallAction extends BaseSpellAction implements GUIAction
 	protected boolean removeMarker()
 	{
         Mage mage = context.getMage();
-        Location location = ConfigurationUtils.getLocation(mage.getData(), MARKER_KEY);
+        ConfigurationSection mageData = mage.getData();
+        Location location = ConfigurationUtils.getLocation(mageData, MARKER_KEY);
 		if (location == null) return false;
-        context.getMage().getData().set(MARKER_KEY, null);
+        mageData.set(MARKER_KEY, null);
 		return true;
 	}
 	
@@ -465,7 +467,8 @@ public class RecallAction extends BaseSpellAction implements GUIAction
 		}
 
         Mage mage = context.getMage();
-        Location location = ConfigurationUtils.getLocation(mage.getData(), MARKER_KEY);
+        ConfigurationSection mageData = mage.getData();
+        Location location = ConfigurationUtils.getLocation(mageData, MARKER_KEY);
 
         context.registerForUndo(new UndoMarkerMove(mage, location));
 		if (location != null) 
@@ -482,7 +485,7 @@ public class RecallAction extends BaseSpellAction implements GUIAction
 		location.setY(target.getY());
 		location.setZ(target.getZ());
 
-        context.getMage().getData().set(MARKER_KEY, ConfigurationUtils.fromLocation(location));
+        mageData.set(MARKER_KEY, ConfigurationUtils.fromLocation(location));
         return true;
 	}
 	
