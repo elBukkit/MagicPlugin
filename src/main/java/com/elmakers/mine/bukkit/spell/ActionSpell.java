@@ -59,6 +59,11 @@ public class ActionSpell extends BrushSpell
             currentHandler = sneakHandler;
         }
 
+        if (isUndoable())
+        {
+            getMage().prepareForUndo(getUndoList());
+        }
+
         target();
         if (currentHandler != null)
         {
