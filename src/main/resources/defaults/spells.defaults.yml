@@ -1749,6 +1749,7 @@ gather:
     icon: glowstone_dust
     category: master
     worth: 150
+    show_undoable: false
     actions:
         cast:
         -  class: PlayerSelect
@@ -1782,6 +1783,7 @@ mount:
     category: master
     worth: 40
     pvp_restricted: true
+    show_undoable: false
     actions:
         cast:
         - class: Mount
@@ -4743,6 +4745,7 @@ levitate:
     category: master
     class: LevitateSpell
     worth: 100
+    show_undoable: false
     effects:
         cast:
            - class: EffectSingle

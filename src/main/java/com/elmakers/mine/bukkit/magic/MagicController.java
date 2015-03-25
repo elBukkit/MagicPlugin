@@ -4339,17 +4339,20 @@ public class MagicController implements Listener, MageController {
                         lines.add(ChatColor.DARK_GREEN + messages.get("duration.lasts_seconds").replace("$seconds", ((Long) seconds).toString()));
                     }
                 }
-                else if (spell.isUndoable()) {
-                    String undoable = messages.get("spell.undoable", "");
-                    if (undoable != null && !undoable.isEmpty())
-                    {
-                        lines.add(undoable);
-                    }
-                } else {
-                    String notUndoable = messages.get("spell.not_undoable", "");
-                    if (notUndoable != null && !notUndoable.isEmpty())
-                    {
-                        lines.add(notUndoable);
+                else if (spell.showUndoable())
+                {
+                    if (spell.isUndoable()) {
+                        String undoable = messages.get("spell.undoable", "");
+                        if (undoable != null && !undoable.isEmpty())
+                        {
+                            lines.add(undoable);
+                        }
+                    } else {
+                        String notUndoable = messages.get("spell.not_undoable", "");
+                        if (notUndoable != null && !notUndoable.isEmpty())
+                        {
+                            lines.add(notUndoable);
+                        }
                     }
                 }
 
