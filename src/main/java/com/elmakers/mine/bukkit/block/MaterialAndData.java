@@ -100,7 +100,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
             } catch (Exception ex) {
 
             }
-        } else if (this.material.getId() == 425) {
+        } else if (this.material.getId() == 176 || this.material.getId() == 177 || this.material.getId() == 425) {
             // Banner
             // TODO: Change to Material.BANNER when dropping 1.7 support
             ItemMeta meta = item.getItemMeta();
@@ -185,6 +185,18 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
                             ItemStack item = InventoryUtils.getPlayerSkull(pieces[1]);
                             customData = InventoryUtils.getSkullProfile(item.getItemMeta());
                         }
+                    }
+                    return;
+                }
+                else if (material.getId() == 176 || material.getId() == 177 || material.getId() == 425) {
+                    color = null;
+                    try {
+                        short colorIndex = Short.parseShort(pieces[1]);
+                        setMaterial(material, colorIndex);
+                        color = DyeColor.values()[colorIndex];
+                    }
+                    catch (Exception ex) {
+                        color = null;
                     }
                     return;
                 } else {
@@ -435,6 +447,9 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
             else if (material == Material.MOB_SPAWNER && customName != null && customName.length() > 0) {
                 materialKey += ":" + customName;
             }
+            else if ((material.getId() == 176 || material.getId() == 177 || material.getId() == 425) && color != null) {
+                materialKey += ":" + color.ordinal();
+            }
             else if (data != 0) {
                 materialKey += ":" + data;
             }
@@ -530,7 +545,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
                 InventoryUtils.setSkullProfile(skullMeta, customData);
                 stack.setItemMeta(meta);
             }
-        } else if (this.material.getId() == 425) {
+        } else if (material.getId() == 176 || material.getId() == 177 || material.getId() == 425) {
             // Banner
             // TODO: Change to Material.BANNER when dropping 1.7 support
             ItemMeta meta = stack.getItemMeta();
@@ -556,13 +571,13 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
     }
 
     public static String getMaterialName(ItemStack item) {
-        MaterialAndData material = new MaterialAndData(item.getType(), item.getDurability());
+        MaterialAndData material = new MaterialAndData(item);
         return material.getName();
     }
 
     @SuppressWarnings("deprecation")
     public static String getMaterialName(Block block) {
-        MaterialAndData material = new MaterialAndData(block.getType(), block.getData());
+        MaterialAndData material = new MaterialAndData(block);
         return material.getName();
     }
 
@@ -629,6 +644,8 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
                 }
             } else if (material == Material.MOB_SPAWNER && customName != null && customName.length() > 0) {
                 materialName = materialName + " (" + customName + ")";
+            } else if ((material.getId() == 176 || material.getId() == 177 || material.getId() == 425) && color != null) {
+                 materialName = color.name().toLowerCase() + " " + materialName;
             }
         } else {
             materialName = materialName + messages.get("material.wildcard");

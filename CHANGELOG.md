@@ -4,6 +4,7 @@
 
  - Allow HTML escape codes in messages
  - Update methods for spawning hanging entities
+ - Add some more Banner support
 
 ## 2.6
 

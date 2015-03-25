@@ -271,10 +271,9 @@ public class InventoryUtils extends NMSUtils
     public static boolean setBannerPatterns(ItemMeta itemMeta, Object patterns)
     {
         if (isLegacy || patterns == null) return false;
-        Object data = null;
         try {
             if (itemMeta == null || !class_CraftMetaBanner.isInstance(itemMeta)) return false;
-            data = class_CraftMetaBanner_setPatternsMethod.invoke(itemMeta, patterns);
+            class_CraftMetaBanner_setPatternsMethod.invoke(itemMeta, patterns);
         } catch (Exception ex) {
             return false;
         }
@@ -286,7 +285,7 @@ public class InventoryUtils extends NMSUtils
         if (isLegacy || color == null) return false;
         try {
             if (itemMeta == null || !class_CraftMetaBanner.isInstance(itemMeta)) return false;
-            color = (DyeColor)class_CraftMetaBanner_setBaseColorMethod.invoke(itemMeta, color);
+            class_CraftMetaBanner_setBaseColorMethod.invoke(itemMeta, color);
         } catch (Exception ex) {
             return false;
         }
