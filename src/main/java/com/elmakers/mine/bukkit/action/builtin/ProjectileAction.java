@@ -18,6 +18,7 @@ import org.bukkit.entity.Fireball;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Projectile;
 import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.projectiles.ProjectileSource;
 import org.bukkit.util.Vector;
 
 import java.lang.reflect.Constructor;
@@ -28,6 +29,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Random;
+import java.util.logging.Level;
 
 public class ProjectileAction  extends TriggeredCompoundAction
 {
@@ -59,43 +61,50 @@ public class ProjectileAction  extends TriggeredCompoundAction
 	{
 		if (!reflectionInitialized)
 		{
-			projectileClass = NMSUtils.getBukkitClass("net.minecraft.server.EntityProjectile");
-			fireballClass = NMSUtils.getBukkitClass("net.minecraft.server.EntityFireball");
-			arrowClass = NMSUtils.getBukkitClass("net.minecraft.server.EntityArrow");
-			worldClass = NMSUtils.getBukkitClass("net.minecraft.server.World");
-			entityClass = NMSUtils.getBukkitClass("net.minecraft.server.Entity");
-			craftArrowClass = NMSUtils.getBukkitClass("org.bukkit.craftbukkit.entity.CraftArrow");
+            try
+            {
+                projectileClass = NMSUtils.getBukkitClass("net.minecraft.server.EntityProjectile");
+                fireballClass = NMSUtils.getBukkitClass("net.minecraft.server.EntityFireball");
+                arrowClass = NMSUtils.getBukkitClass("net.minecraft.server.EntityArrow");
+                worldClass = NMSUtils.getBukkitClass("net.minecraft.server.World");
+                entityClass = NMSUtils.getBukkitClass("net.minecraft.server.Entity");
+                craftArrowClass = NMSUtils.getBukkitClass("org.bukkit.craftbukkit.entity.CraftArrow");
 
-			reflectionInitialized = true;
-			try {
-				// This is kinda hacky, like fer reals :\
                 try {
-                    // 1.8.3
-                    lifeField = arrowClass.getDeclaredField("ar");
-                } catch (Throwable ignore3) {
+                    // This is kinda hacky, like fer reals :\
                     try {
-                        // 1.8
-                        lifeField = arrowClass.getDeclaredField("ap");
-                    } catch (Throwable ignore2) {
+                        // 1.8.3
+                        lifeField = arrowClass.getDeclaredField("ar");
+                    } catch (Throwable ignore3) {
                         try {
-                            // 1.7
-                            lifeField = arrowClass.getDeclaredField("at");
-                        } catch (Throwable ignore) {
-                            // Prior
-                            lifeField = arrowClass.getDeclaredField("j");
+                            // 1.8
+                            lifeField = arrowClass.getDeclaredField("ap");
+                        } catch (Throwable ignore2) {
+                            try {
+                                // 1.7
+                                lifeField = arrowClass.getDeclaredField("at");
+                            } catch (Throwable ignore) {
+                                // Prior
+                                lifeField = arrowClass.getDeclaredField("j");
+                            }
                         }
                     }
+                    getHandleMethod = craftArrowClass.getMethod("getHandle");
+                } catch (Throwable ex) {
+                    lifeField = null;
+                    getHandleMethod = null;
+                    controller.getLogger().warning("Failed to create short-lived arrow. Set tick_increase to 0 to avoid this message");
                 }
-				getHandleMethod = craftArrowClass.getMethod("getHandle");
-			} catch (Throwable ex) {
-				lifeField = null;
-				getHandleMethod = null;
-				controller.getLogger().warning("Failed to create short-lived arrow. Set tick_increase to 0 to avoid this message");
-			}
-			if (lifeField != null)
-			{
-				lifeField.setAccessible(true);
-			}
+                if (lifeField != null)
+                {
+                    lifeField.setAccessible(true);
+                }
+            }
+            catch (Throwable failure)
+            {
+                controller.getLogger().log(Level.WARNING, "Failed to bind to NMS projectile objects, ProjectileAction will not work", failure);
+            }
+            reflectionInitialized = true;
 		}
 	}
 
@@ -135,7 +144,6 @@ public class ProjectileAction  extends TriggeredCompoundAction
         Random random = context.getRandom();
 		
 		if (projectileClass == null || worldClass == null || fireballClass == null || arrowClass == null || craftArrowClass == null) {
-			controller.getLogger().warning("Can't find NMS classess");
 			return SpellResult.FAIL;
 		}
 		
@@ -151,6 +159,7 @@ public class ProjectileAction  extends TriggeredCompoundAction
 		Constructor<? extends Object> constructor = null;
 		Method shootMethod = null;
 		Method setPositionRotationMethod = null;
+        Field projectileSourceField = null;
 		Field dirXField = null;
 		Field dirYField = null;
 		Field dirZField = null;
@@ -170,6 +179,7 @@ public class ProjectileAction  extends TriggeredCompoundAction
 			
 			setPositionRotationMethod = projectileType.getMethod("setPositionRotation", Double.TYPE, Double.TYPE, Double.TYPE, Float.TYPE, Float.TYPE);
 			addEntityMethod = worldClass.getMethod("addEntity", entityClass);
+            projectileSourceField = projectileType.getField("projectileSource");
 	    } catch (Throwable ex) {
 			ex.printStackTrace();
 			return SpellResult.FAIL;
@@ -188,8 +198,13 @@ public class ProjectileAction  extends TriggeredCompoundAction
 		
 		// Spawn projectiles
 		Object nmsWorld = NMSUtils.getHandle(location.getWorld());
-        LivingEntity player = mage.getLivingEntity();
-		for (int i = 0; i < count; i++) {
+        LivingEntity shootingEntity = context.getLivingEntity();
+        ProjectileSource source = null;
+        if (shootingEntity != null && shootingEntity instanceof ProjectileSource)
+        {
+            source = (ProjectileSource)shootingEntity;
+        }
+        for (int i = 0; i < count; i++) {
 			try {
 				// Spawn a new projectile
 				Object nmsProjectile = null;
@@ -230,10 +245,13 @@ public class ProjectileAction  extends TriggeredCompoundAction
 					throw new Exception("Got invalid bukkit entity from projectile of class " + projectileTypeName);
 				}
 				Projectile projectile = (Projectile)entity;
-
-				if (player != null) {
-					projectile.setShooter(player);
+				if (shootingEntity != null) {
+					projectile.setShooter(shootingEntity);
 				}
+                if (source != null) {
+                    Object projectileEntity = NMSUtils.getHandle(projectile);
+                    projectileSourceField.set(projectileEntity, source);
+                }
 				
 				projectiles.add(projectile);
 				
