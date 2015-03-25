@@ -3093,13 +3093,14 @@ public class MagicController implements Listener, MageController {
 
         if (!mage.isLoading() && (mage.isPlayer() || saveNonPlayerMages) && loaded)
         {
+            // Save synchronously on shutdown
+            boolean asynchronousSaving = initialized;
             final File playerData = new File(playerDataFolder, mage.getId() + ".dat");
-            getLogger().info("Player logged out, saving data to " + playerData.getName());
+            getLogger().info("Player logged out, saving data to " + playerData.getName() + (asynchronousSaving ? "" : " synchronously"));
             final DataStore playerConfig = new DataStore(getLogger(), playerData);
             mage.save(playerConfig);
 
-            // Save synchronously on shutdown
-            if (initialized)
+            if (asynchronousSaving)
             {
                 Bukkit.getScheduler().runTaskAsynchronously(plugin, new Runnable() {
                     @Override
