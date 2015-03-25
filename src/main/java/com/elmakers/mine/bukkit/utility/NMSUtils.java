@@ -57,6 +57,7 @@ public class NMSUtils {
     protected static Class<?> class_EntityPainting;
     protected static Class<?> class_EntityItemFrame;
     protected static Class<?> class_EntityMinecartRideable;
+    protected static Class<?> class_EntityTNTPrimed;
     protected static Class<?> class_AxisAlignedBB;
     protected static Class<?> class_PathPoint;
     protected static Class<?> class_PathEntity;
@@ -122,6 +123,7 @@ public class NMSUtils {
     protected static Field class_GameProfile_properties;
     protected static Field class_GameProfileProperty_value;
     protected static Field class_ItemStack_count;
+    protected static Field class_EntityTNTPrimed_source;
 
     static
     {
@@ -154,6 +156,7 @@ public class NMSUtils {
             class_EntityCreature = fixBukkitClass("net.minecraft.server.EntityCreature");
             class_EntityItemFrame = fixBukkitClass("net.minecraft.server.EntityItemFrame");
             class_EntityMinecartRideable = fixBukkitClass("net.minecraft.server.EntityMinecartRideable");
+            class_EntityTNTPrimed = fixBukkitClass("net.minecraft.server.EntityTNTPrimed");
             class_AxisAlignedBB = fixBukkitClass("net.minecraft.server.AxisAlignedBB");
             class_DamageSource = fixBukkitClass("net.minecraft.server.DamageSource");
             class_PathEntity = fixBukkitClass("net.minecraft.server.PathEntity");
@@ -196,6 +199,8 @@ public class NMSUtils {
             class_ItemStack_tagField = class_ItemStack.getDeclaredField("tag");
             class_ItemStack_tagField.setAccessible(true);
             class_DamageSource_MagicField = class_DamageSource.getField("MAGIC");
+            class_EntityTNTPrimed_source = class_EntityTNTPrimed.getDeclaredField("source");
+            class_EntityTNTPrimed_source.setAccessible(true);
 
             class_Firework_ticksFlownField = class_EntityFirework.getDeclaredField("ticksFlown");
             class_Firework_ticksFlownField.setAccessible(true);

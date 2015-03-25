@@ -11,9 +11,11 @@ import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
+import java.util.logging.Level;
 
 import com.elmakers.mine.bukkit.api.block.MaterialAndData;
 import org.bukkit.Art;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
 import org.bukkit.DyeColor;
@@ -33,6 +35,7 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Minecart;
 import org.bukkit.entity.Painting;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.TNTPrimed;
 import org.bukkit.entity.ThrownPotion;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.inventory.Inventory;
@@ -606,5 +609,16 @@ public class CompatibilityUtils extends NMSUtils {
 
         }
         return configuration;
+    }
+
+    public static void setTNTSource(TNTPrimed tnt, LivingEntity source)
+    {
+        try {
+            Object tntHandle = getHandle(tnt);
+            Object sourceHandle = getHandle(source);
+            class_EntityTNTPrimed_source.set(tntHandle, sourceHandle);
+        } catch (Exception ex) {
+            Bukkit.getLogger().log(Level.WARNING, "Unable to set TNT source", ex);
+        }
     }
 }
