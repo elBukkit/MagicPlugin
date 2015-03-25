@@ -157,4 +157,14 @@ public class TeleportAction extends BaseSpellAction
         context.teleport(entity, targetLocation);
 		return SpellResult.CAST;
 	}
+
+    @Override
+    public boolean isUndoable() {
+        return true;
+    }
+
+    @Override
+    public boolean requiresTarget() {
+        return true;
+    }
 }

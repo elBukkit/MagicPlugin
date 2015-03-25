@@ -28,4 +28,9 @@ public class AscendAction extends BaseSpellAction
 		}
 		return SpellResult.NO_TARGET;
 	}
+
+    @Override
+    public boolean isUndoable() {
+        return true;
+    }
 }
