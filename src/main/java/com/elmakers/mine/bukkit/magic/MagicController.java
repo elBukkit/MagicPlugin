@@ -2297,26 +2297,32 @@ public class MagicController implements Listener, MageController {
 		}
 	}
 	
-	@EventHandler(priority = EventPriority.LOWEST)
+	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
 	public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
-		if (event.isCancelled()) return;
-		Entity entity = event.getEntity();
+        Entity entity = event.getEntity();
 
-		if (entity instanceof Projectile || entity instanceof TNTPrimed) return;
+        if (entity instanceof Projectile || entity instanceof TNTPrimed) return;
 
-		Entity damager = event.getDamager();
-		UndoList undoList = getEntityUndo(damager);
-		if (undoList != null)
-        {
+        Entity damager = event.getDamager();
+        UndoList undoList = getEntityUndo(damager);
+        if (undoList != null) {
             // Prevent dropping items from frames,
             undoList.modify(entity);
-            if (entity instanceof ItemFrame && event.getCause() != EntityDamageEvent.DamageCause.ENTITY_ATTACK)
-            {
-                ItemFrame frame = (ItemFrame)entity;
-                frame.setItem(null);
+            if (entity instanceof ItemFrame && event.getCause() != EntityDamageEvent.DamageCause.ENTITY_ATTACK) {
+                // In fact, just remove it.
+                // Otherwise, a subsequent action may save the undo state with
+                // an empty item
+                entity.remove();
             }
-		}
+        }
+    }
 
+
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
+    public void onEntityPreDamageByEntity(EntityDamageByEntityEvent event) {
+        Entity entity = event.getEntity();
+        if (entity instanceof Projectile || entity instanceof TNTPrimed) return;
+        Entity damager = event.getDamager();
         boolean isProtected = false;
         if (isMage(entity)) {
             isProtected = getMage(entity).isSuperProtected();
