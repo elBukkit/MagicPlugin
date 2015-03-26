@@ -74,7 +74,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         "effect_sound", "effect_sound_interval", "effect_sound_pitch", "effect_sound_volume",
 		"haste", "hotbar_count", "hotbar",
 		"health_regeneration", "hunger_regeneration", 
-		"icon", "mode", "keep", "locked", "quiet", "force", "randomize", "rename",
+		"icon", "mode", "brush_mode", "keep", "locked", "quiet", "force", "randomize", "rename",
 		"power", "overrides",
 		"protection", "protection_physical", "protection_projectiles", 
 		"protection_falling", "protection_fire", "protection_explosions",
@@ -82,7 +82,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	};
 	public final static String[] HIDDEN_PROPERTY_KEYS = {
 		"id", "owner", "owner_id", "name", "description", "template",
-		"organize", "alphabetize", "fill", "stored", "upgrade_icon"
+		"organize", "alphabetize", "fill", "stored", "upgrade_icon", "xp_timestamp"
 	};
 	public final static String[] ALL_PROPERTY_KEYS = (String[])ArrayUtils.addAll(PROPERTY_KEYS, HIDDEN_PROPERTY_KEYS);
 	
@@ -135,10 +135,11 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	private boolean locked = false;
     private boolean forceUpgrade = false;
 	private int uses = 0;
-	private int xp = 0;
+	private float xp = 0;
 	
 	private int xpRegeneration = 0;
 	private int xpMax = 0;
+    private long lastXpRegeneration = 0;
 	private float healthRegeneration = 0;
 	private PotionEffect healthRegenEffect = null;
 	private float hungerRegeneration = 0;
@@ -367,7 +368,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	}
 	
 	public int getMana() {
-		return xp;
+		return (int)xp;
 	}
 
 	public void removeMana(int amount) {
@@ -913,6 +914,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		node.set("xp", xp);
 		node.set("xp_regeneration", xpRegeneration);
 		node.set("xp_max", xpMax);
+        node.set("xp_timestamp", lastXpRegeneration);
 		node.set("health_regeneration", healthRegeneration);
 		node.set("hunger_regeneration", hungerRegeneration);
 		node.set("uses", uses);
@@ -1048,7 +1050,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		xpRegeneration = safe ? Math.max(_xpRegeneration, xpRegeneration) : _xpRegeneration;
 		int _xpMax = wandConfig.getInt("xp_max", xpMax);
 		xpMax = safe ? Math.max(_xpMax, xpMax) : _xpMax;
-		int _xp = wandConfig.getInt("xp", xp);
+		int _xp = wandConfig.getInt("xp", (int)xp);
 		xp = safe ? Math.max(_xp, xp) : _xp;
 		float _healthRegeneration = (float)wandConfig.getDouble("health_regeneration", healthRegeneration);
 		healthRegeneration = safe ? Math.max(_healthRegeneration, healthRegeneration) : _healthRegeneration;
@@ -1058,7 +1060,9 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		uses = safe ? Math.max(_uses, uses) : _uses;
 		float _speedIncrease = (float)wandConfig.getDouble("haste", speedIncrease);
 		speedIncrease = safe ? Math.max(_speedIncrease, speedIncrease) : _speedIncrease;
-		
+
+        lastXpRegeneration = wandConfig.getLong("xp_timestamp");
+
 		if (wandConfig.contains("effect_color") && !safe) {
 			setEffectColor(wandConfig.getString("effect_color"));
 		}
@@ -2134,12 +2138,12 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 			if (other.isForcedUpgrade() || other.xpRegeneration > xpRegeneration) { xpRegeneration = other.xpRegeneration; modified = true; sendAddMessage(mage, "wand.upgraded_property", getLevelString(messages, "wand.mana_regeneration", xpRegeneration, controller.getMaxManaRegeneration())); }
 			if (other.isForcedUpgrade() || other.xpMax > xpMax) { xpMax = other.xpMax; modified = true; sendAddMessage(mage, "wand.upgraded_property", getLevelString(messages, "wand.mana_amount", xpMax, controller.getMaxMana())); }
 			if (other.isForcedUpgrade() || other.xp > xp) {
-                int previousXP = xp;
+                float previousXP = xp;
                 xp = Math.min(xpMax, other.xp);
                 if (xp > previousXP) {
                     if (mage != null)
                     {
-                        String message = controller.getMessages().get("wand.mana_added").replace("$value", Integer.toString(xp)).replace("$wand", getName());
+                        String message = controller.getMessages().get("wand.mana_added").replace("$value", Integer.toString((int)xp)).replace("$wand", getName());
                         mage.sendMessage(message);
                     }
                     modified = true;
@@ -2577,9 +2581,10 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
                 storedXpLevel = player.getLevel();
                 storedXpProgress = player.getExp();
             }
-			updateMana();
 		}
-        if (needsSave) {
+
+        // Tick might save state, but it returns true to let us know when it does.
+        if (!tick() && needsSave) {
             saveState();
         }
 		updateActiveMaterial();
@@ -2588,7 +2593,6 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 
         lastSoundEffect = 0;
         lastParticleEffect = 0;
-		updateEffects();
         if (forceUpdate) {
             player.updateInventory();
         }
@@ -2692,12 +2696,12 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		Location location = mage.getLocation();
 		long now = System.currentTimeMillis();
 		if (effectParticle != null && location != null && effectParticleInterval > 0 && effectParticleCount > 0) {
-            Location effectLocation = player.getLocation();
-            Location eyeLocation = player.getEyeLocation();
-            effectLocation.setY(eyeLocation.getY() + effectParticleOffset);
 			if (lastParticleEffect == 0 || now > lastParticleEffect + effectParticleInterval) {
                 lastParticleEffect = now;
-				if (effectPlayer == null) {
+                Location effectLocation = player.getLocation();
+                Location eyeLocation = player.getEyeLocation();
+                effectLocation.setY(eyeLocation.getY() + effectParticleOffset);
+                if (effectPlayer == null) {
 					effectPlayer = new EffectRing(controller.getPlugin());
 					effectPlayer.setParticleCount(1);
 					effectPlayer.setIterations(1);
@@ -2765,9 +2769,9 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
                     if (!retainLevelDisplay) {
                         player.setLevel(0);
                     }
-                    player.setExp((float)xp / (float)xpMax);
+                    player.setExp(xp / (float)xpMax);
                 } else {
-                    player.setLevel(xp);
+                    player.setLevel((int)xp);
                     player.setExp(0);
                 }
             }
@@ -2977,11 +2981,11 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         }
     }
 	
-	public void tick() {
-		if (mage == null || item == null) return;
+	public boolean tick() {
+		if (mage == null || item == null) return false;
 		
 		Player player = mage.getPlayer();
-		if (player == null) return;
+		if (player == null) return false;
 
         boolean modified = checkWandItem();
         int maxDurability = item.getType().getMaxDurability();
@@ -3019,8 +3023,14 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 			CompatibilityUtils.applyPotionEffect(player, hungerRegenEffect);
 		}
 		if (usesMana()) {
-			xp = Math.min(xpMax, xp + xpRegeneration);
-			updateMana();
+            long now = System.currentTimeMillis();
+            if (lastXpRegeneration > 0)
+            {
+                long delta = now - lastXpRegeneration;
+                xp = Math.min(xpMax, xp + (float)xpRegeneration * (float)delta / 1000);
+                updateMana();
+            }
+            lastXpRegeneration = now;
 		}
 		if (damageReductionFire > 0 && player.getFireTicks() > 0) {
 			player.setFireTicks(0);
@@ -3030,6 +3040,8 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         if (modified) {
             saveState();
         }
+
+        return modified;
 	}
 	
 	public MagicController getMaster() {
