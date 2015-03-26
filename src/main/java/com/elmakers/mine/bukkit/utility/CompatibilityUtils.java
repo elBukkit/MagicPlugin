@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.lang.reflect.Array;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -619,6 +618,17 @@ public class CompatibilityUtils extends NMSUtils {
             class_EntityTNTPrimed_source.set(tntHandle, sourceHandle);
         } catch (Exception ex) {
             Bukkit.getLogger().log(Level.WARNING, "Unable to set TNT source", ex);
+        }
+    }
+
+    public static void setEntityMotion(Entity entity, Vector motion) {
+        try {
+            Object handle = getHandle(entity);
+            class_Entity_motXField.set(handle, motion.getX());
+            class_Entity_motYField.set(handle, motion.getY());
+            class_Entity_motZField.set(handle, motion.getZ());
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
     }
 }
