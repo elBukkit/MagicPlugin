@@ -5,11 +5,12 @@ import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
+import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
+import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.RandomUtils;
 import com.elmakers.mine.bukkit.utility.WeightedPair;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.TreeType;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -22,6 +23,7 @@ import org.bukkit.entity.Skeleton;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.util.Vector;
 
 import java.lang.ref.WeakReference;
 import java.lang.reflect.Method;
@@ -42,6 +44,9 @@ public class SpawnEntityAction extends BaseSpellAction
     private String entityName;
     private EntityType entityType;
     private boolean spawnBaby = false;
+    private Vector direction = null;
+    private double speed;
+    private double dyOffset;
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters) {
@@ -50,6 +55,9 @@ public class SpawnEntityAction extends BaseSpellAction
         entityName = parameters.getString("name", "");
         spawnBaby = parameters.getBoolean("baby", false);
         setTarget = parameters.getBoolean("set_target", false);
+        speed = parameters.getDouble("speed", 0);
+        direction = ConfigurationUtils.getVector(parameters, "direction");
+        dyOffset = parameters.getDouble("dy_offset", 0);
         try {
             String entityTypeName = parameters.getString("type", "");
             if (!entityTypeName.isEmpty())
@@ -123,13 +131,33 @@ public class SpawnEntityAction extends BaseSpellAction
             Ageable ageable = (Ageable)spawnedEntity;
             ageable.setBaby();
         }
+        if (speed > 0)
+        {
+            Vector motion = direction;
+            if (motion == null)
+            {
+                motion = context.getDirection();
+            }
+            else
+            {
+                motion = motion.clone();
+            }
+
+            if (dyOffset != 0) {
+                motion.setY(motion.getY() + dyOffset);
+            }
+            motion.normalize();
+            motion.multiply(speed);
+            CompatibilityUtils.setEntityMotion(spawnedEntity, motion);
+        }
         context.registerForUndo(spawnedEntity);
 
         if (track)
         {
             current = new WeakReference<Entity>(spawnedEntity);
         }
-        if (setTarget) {
+        if (setTarget)
+        {
             context.setTargetEntity(spawnedEntity);
         }
 		return SpellResult.CAST;
@@ -188,6 +216,7 @@ public class SpawnEntityAction extends BaseSpellAction
         parameters.add("baby");
         parameters.add("name");
         parameters.add("type");
+        parameters.add("speed");
     }
 
     @Override
@@ -200,6 +229,8 @@ public class SpawnEntityAction extends BaseSpellAction
             examples.addAll(Arrays.asList((BaseSpell.EXAMPLE_BOOLEANS)));
         } else if (parameterKey.equals("name")) {
             examples.add("Philbert");
+        } else if (parameterKey.equals("speed")) {
+            examples.addAll(Arrays.asList((BaseSpell.EXAMPLE_SIZES)));
         } else {
             super.getParameterOptions(examples, parameterKey);
         }

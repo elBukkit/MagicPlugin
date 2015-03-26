@@ -3529,7 +3529,7 @@ superblast:
         -  class: EffectTrail
            particle: explosion_huge
     parameters:
-        allow_max_range: false
+        allow_max_range: true
         range: 32
         speed: 3
         falling: false
@@ -3537,7 +3537,7 @@ superblast:
         radius: 5
         type: sphere
         transparent: transparent_to_construction
-        destructible: destructible_mining
+        check_destructible: false
     costs:
         mana: 100
 
@@ -3577,7 +3577,7 @@ superconvert:
         -  class: EffectTrail
            effect: step_sound
     parameters:
-        allow_max_range: false
+        allow_max_range: true
         range: 32
         check_destructible: false
         max_dimension: 16
@@ -3665,7 +3665,7 @@ supercollapse:
         -  class: EffectTrail
            particle: explosion_huge
     parameters:
-        allow_max_range: false
+        allow_max_range: true
         range: 32
         cooldown: 10000
         max_dimension: 5

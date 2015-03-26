@@ -84,14 +84,15 @@ public class FireworkAction extends TriggeredCompoundAction
         Location location = context.getEyeLocation();
         Vector direction = null;
         if (launch) {
-            direction = context.getDirection().normalize();
+            direction = context.getDirection();
+            if (dyOffset != 0) {
+                direction.setY(direction.getY() + dyOffset);
+            }
+            direction = direction.normalize();
             if (startDistance > 0) {
                 location = location.add(direction.clone().multiply(startDistance));
             }
             direction = direction.multiply(speed);
-            if (dyOffset != 0) {
-                direction.setY(direction.getY() + dyOffset);
-            }
         } else {
             location = context.getTargetLocation();
         }

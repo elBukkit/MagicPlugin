@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## 4.7.1
+
+ - Fix mana regen rate (it's 4x what it should be)
+ - Allow mana to regen while not holding a wand
+ - Add Magic Hat item
+
 ## 4.7
 
  - Remove special characters from messages.defaults.yml files

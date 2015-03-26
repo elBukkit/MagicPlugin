@@ -1,5 +1,8 @@
 # TODO
 
+ - Recall spawning people in the ground
+ - Magic Hats randomly disappear
+
  - Better handling for invalid spells in enchanting.yml
  - Clean up MaterialBrush target system, automate somehow?
  - Copy target brush action for tandem replication
@@ -16,7 +19,6 @@
  - /magic describe should show info about current spell?
  - Fix Chop on data variants
  - Add repeat option for schematic brushes
- - Fix recall home spawning in the ground?
  - Add Cylinder construct (SuperWalls, Walls, SuperCylinder)
  - Support for locking/unlocking chests
  - Configurable FOV weight for targeting (Survival Sense)

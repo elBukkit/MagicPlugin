@@ -1,9 +1,11 @@
 package com.elmakers.mine.bukkit.action.builtin;
 
 import com.elmakers.mine.bukkit.api.action.CastContext;
+import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.api.block.MaterialAndData;
 import com.elmakers.mine.bukkit.action.BaseSpellAction;
+import com.elmakers.mine.bukkit.api.wand.Wand;
 import com.elmakers.mine.bukkit.magic.MagicPlugin;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
@@ -66,6 +68,11 @@ public class HatAction extends BaseSpellAction
 		MaterialAndData material = this.material;
         if (useItem)
         {
+            Mage mage = context.getMage();
+            Wand activeWand = mage.getActiveWand();
+            if (activeWand != null) {
+                activeWand.deactivate();;
+            }
             ItemStack itemInHand = player.getItemInHand();
             if (itemInHand == null || itemInHand.getType() == Material.AIR)
             {
