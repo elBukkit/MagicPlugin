@@ -24,6 +24,7 @@ public class PotionEffectAction extends BaseSpellAction
     @Override
     public void initialize(ConfigurationSection parameters)
     {
+        super.initialize(parameters);
         if (parameters.contains("remove_effects"))
         {
             removeEffects = parameters.getStringList("remove_effects");

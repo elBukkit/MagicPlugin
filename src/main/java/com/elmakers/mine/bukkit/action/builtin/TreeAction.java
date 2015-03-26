@@ -35,6 +35,7 @@ public class TreeAction extends BaseSpellAction
     @Override
     public void initialize(ConfigurationSection parameters)
     {
+        super.initialize(parameters);
         if (parameters.contains("biomes"))
         {
             ConfigurationSection biomeConfig = parameters.getConfigurationSection("biomes");

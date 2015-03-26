@@ -23,6 +23,7 @@ import java.util.List;
 public class HatAction extends BaseSpellAction
 {
     private MaterialAndData material;
+    private boolean useItem;
 
 	private class HatUndoAction implements Runnable
 	{
@@ -46,6 +47,7 @@ public class HatAction extends BaseSpellAction
     public void prepare(CastContext context, ConfigurationSection parameters)
     {
         material = ConfigurationUtils.getMaterialAndData(parameters, "material");
+        useItem = parameters.getBoolean("use_item", false);
     }
 
 	@Override
@@ -55,7 +57,25 @@ public class HatAction extends BaseSpellAction
         if (entity == null) {
             entity = context.getEntity();
         }
+        if (entity == null || !(entity instanceof Player))
+        {
+            return SpellResult.NO_TARGET;
+        }
+
+        Player player = (Player)entity;
 		MaterialAndData material = this.material;
+        if (useItem)
+        {
+            ItemStack itemInHand = player.getItemInHand();
+            if (itemInHand == null || itemInHand.getType() == Material.AIR)
+            {
+                return SpellResult.FAIL;
+            }
+            ItemStack currentItem = player.getInventory().getHelmet();
+            player.getInventory().setHelmet(itemInHand);
+            player.setItemInHand(currentItem);
+            return SpellResult.CAST;
+        }
         if (material == null && (context.getSpell().usesBrush() || context.getSpell().hasBrushOverride())) {
             material = context.getBrush();
         }
@@ -79,7 +99,6 @@ public class HatAction extends BaseSpellAction
             return SpellResult.NO_TARGET;
         }
 
-		Player player = (Player)entity;
 		ItemStack hatItem = material.getItemStack(1);
 		ItemMeta meta = hatItem.getItemMeta();
         String hatName = context.getMessage("hat_name", "");

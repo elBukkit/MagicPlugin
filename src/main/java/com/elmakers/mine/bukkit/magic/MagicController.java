@@ -2680,17 +2680,32 @@ public class MagicController implements Listener, MageController {
                 newDrops.add(itemStack);
 			}
 		}
+        ItemStack[] armor = player.getInventory().getArmorContents();
+        for (int index = 0; index < armor.length; index++)
+        {
+            ItemStack itemStack = armor[index];
+            boolean keepItem = false;
+            if (Wand.isWand(itemStack)) {
+                keepItem = keepWandsOnDeath;
+                if (!keepItem) {
+                    Wand testWand = new Wand(this, itemStack);
+                    keepItem = testWand.keepOnDeath();
+                }
+            }
+            if (keepItem)
+            {
+                mage.addToRespawnArmor(index, itemStack);
+                modifiedDrops = true;
+            }
+            else
+            {
+                newDrops.add(itemStack);
+            }
+        }
+
         if (modifiedDrops) {
             drops.clear();
             drops.addAll(newDrops);
-
-            // Drop armor also
-            ItemStack[] armor = player.getInventory().getArmorContents();
-            for (ItemStack stack : armor) {
-                if (stack != null) {
-                    drops.add(stack);
-                }
-            }
         }
 	}
 

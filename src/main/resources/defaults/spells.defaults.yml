@@ -4292,6 +4292,44 @@ hat:
     costs:
         mana: 30
 
+wear:
+    hidden: true
+    icon_url: http://i.imgur.com/CsPmF87.png
+    icon: leather_helmet
+    category: utility
+    worth: 18
+    actions:
+        cast:
+        -  class: Hat
+    parameters:
+        use_item: true
+
+magichat:
+    hidden: true
+    icon_url: http://i.imgur.com/CsPmF87.png
+    icon: ender_portal_frame
+    category: utility
+    worth: 18
+    actions:
+      alternate_up:
+      - class: Hat
+      cast:
+      - class: SpawnEntity
+    effects:
+      cast:
+      -  class: EffectSingle
+         location: target
+         effectlib:
+           class: SphereEffect
+           iterations: 4
+           particle: smoke_large
+    parameters:
+      use_item: true
+      type: rabbit
+      undo: 30000
+      range: 4
+      allow_max_range: true
+
 lava:
     icon_url: http://i.imgur.com/OoxraNN.png
     icon: ink_sack:14
@@ -6455,3 +6493,4 @@ rocket:
         duration: 20000
     costs:
         mana: 75
+

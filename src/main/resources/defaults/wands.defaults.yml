@@ -980,6 +980,17 @@ camera:
     spells:
         - camera
 
+magichat:
+    mode: cast
+    active_spell: magichat
+    icon: ender_portal_frame
+    indestructible: true
+    locked: true
+    keep: true
+    effect_color: '888888'
+    spells:
+        - magichat
+
 recalltoken:
     mode: cast
     active_spell: recall

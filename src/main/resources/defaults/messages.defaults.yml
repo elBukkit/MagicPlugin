@@ -933,6 +933,14 @@ spells:
         removed: You remove your magical hat
         hat_name: Hat of $hat
         hat_lore: Will disappear if clicked
+    wear:
+        name: Wear
+        description: Wear the item in your hand
+        cast: You put your item on your head
+    magichat:
+        name: Magic Hat
+        cast: A bunny pops out!
+        alternate: Your magic hat jumps onto your head
     stalactite:
         name: Stalactite
         description: Create a downward pillar
@@ -1353,6 +1361,9 @@ wands:
     camera:
         name: Camera
         description: Take a portrait of yourself or others
+    magichat:
+        name: Magic Hat
+        description: A true wizard's hat
     wolf:
         name: The Wolf
         description: NathanWolf's Mega-Wand
