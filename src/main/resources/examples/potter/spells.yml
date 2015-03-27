@@ -1852,7 +1852,7 @@ salviohexia:
         mana: 1000
 
 reparifarge:
-    inherit: undo
+    inherit: rollback
     category: staff
 
 reparo:
@@ -2657,7 +2657,7 @@ bombtastic:
         explode:
         -  class: EffectSingle
            location: origin
-           effect: explosion_huge
+           particle: explosion_huge
     parameters:
         size: 0
         fuse: 60
