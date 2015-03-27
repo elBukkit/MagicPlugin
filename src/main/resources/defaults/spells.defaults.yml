@@ -1775,7 +1775,7 @@ gather:
         target_self: false
         cooldown: 30000
     costs:
-        mana: 150
+        mana: 50
 
 mount:
     icon_url: http://i.imgur.com/9NfETun.png

@@ -710,6 +710,9 @@ passthrough:
 - carpet
 - sign_post
 - wall_sign
+- step
+- wood_step
+- web
 
 wearable:
 - gold_helmet

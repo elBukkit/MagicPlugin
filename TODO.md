@@ -1,8 +1,8 @@
 # TODO
 
  - Recall spawning people in the ground
- - Restore entity inventories (armor stands!)
 
+ - Support for restoring armor stands- might have to drop 1.7 support for this.
  - Better handling for invalid spells in enchanting.yml
  - Clean up MaterialBrush target system, automate somehow?
  - Copy target brush action for tandem replication
