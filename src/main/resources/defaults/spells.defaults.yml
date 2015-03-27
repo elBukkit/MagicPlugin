@@ -4326,6 +4326,7 @@ magichat:
     parameters:
       use_item: true
       type: rabbit
+      reason: custom
       undo: 30000
       range: 4
       allow_max_range: true

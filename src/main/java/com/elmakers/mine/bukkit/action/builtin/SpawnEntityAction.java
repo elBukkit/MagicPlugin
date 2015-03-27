@@ -2,6 +2,7 @@ package com.elmakers.mine.bukkit.action.builtin;
 
 import com.elmakers.mine.bukkit.action.BaseSpellAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
+import com.elmakers.mine.bukkit.api.effect.EffectPlayer;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
@@ -9,6 +10,7 @@ import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.RandomUtils;
 import com.elmakers.mine.bukkit.utility.WeightedPair;
+import org.bukkit.DyeColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -18,8 +20,15 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Ageable;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Horse;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Ocelot;
+import org.bukkit.entity.PigZombie;
+import org.bukkit.entity.Sheep;
 import org.bukkit.entity.Skeleton;
+import org.bukkit.entity.Slime;
+import org.bukkit.entity.Wolf;
+import org.bukkit.entity.Zombie;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
@@ -47,6 +56,12 @@ public class SpawnEntityAction extends BaseSpellAction
     private Vector direction = null;
     private double speed;
     private double dyOffset;
+    private Horse.Variant horseVariant = null;
+    private Horse.Color horseColor = null;
+    private Horse.Style horseStyle = null;
+    private Ocelot.Type ocelotType = null;
+    private DyeColor color = null;
+    private Double health;
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters) {
@@ -76,6 +91,59 @@ public class SpawnEntityAction extends BaseSpellAction
             } catch (Exception ex) {
                 spawnReason = CreatureSpawnEvent.SpawnReason.EGG;
             }
+        }
+
+        horseVariant = null;
+        if (parameters.contains("horse_variant")) {
+            try {
+                String variantString = parameters.getString("horse_variant");
+                horseVariant = Horse.Variant.valueOf(variantString.toUpperCase());
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
+
+        horseColor = null;
+        if (parameters.contains("horse_color")) {
+            try {
+                String colorString = parameters.getString("horse_color");
+                horseColor = Horse.Color.valueOf(colorString.toUpperCase());
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
+
+        horseStyle = null;
+        if (parameters.contains("horse_style")) {
+            try {
+                String styleString = parameters.getString("horse_style");
+                horseStyle = Horse.Style.valueOf(styleString.toUpperCase());
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
+
+        ocelotType = null;
+        if (parameters.contains("ocelot_type")) {
+            try {
+                String variantString = parameters.getString("ocelot_type");
+                ocelotType = Ocelot.Type.valueOf(variantString.toUpperCase());
+            } catch (Exception ex) {
+            }
+        }
+
+        color = null;
+        if (parameters.contains("color")) {
+            try {
+                String colorString = parameters.getString("color");
+                color = DyeColor.valueOf(colorString.toUpperCase());
+            } catch (Exception ex) {
+            }
+        }
+
+        health = null;
+        if (parameters.contains("health")) {
+            health = parameters.getDouble("health");
         }
     }
 
@@ -126,11 +194,50 @@ public class SpawnEntityAction extends BaseSpellAction
         {
             livingEntity.setMetadata("nodrops", new FixedMetadataValue(controller.getPlugin(), true));
         }
-        if (spawnBaby && spawnedEntity instanceof Ageable)
-        {
-            Ageable ageable = (Ageable)spawnedEntity;
-            ageable.setBaby();
+        if (spawnedEntity instanceof Ageable) {
+            if (spawnBaby) {
+                ((Ageable)spawnedEntity).setBaby();
+            } else {
+                ((Ageable)spawnedEntity).setAdult();
+            }
+        } else if (spawnedEntity instanceof Zombie) {
+            ((Zombie)spawnedEntity).setBaby(spawnBaby);
+        } else if (spawnedEntity instanceof PigZombie) {
+            ((PigZombie)spawnedEntity).setBaby(spawnBaby);
+        } else if (spawnedEntity instanceof Slime && spawnBaby) {
+            Slime slime = (Slime)spawnedEntity;
+            slime.setSize(slime.getSize() - 2);
         }
+
+        if (spawnedEntity instanceof Horse) {
+            if (horseVariant != null) {
+                ((Horse)spawnedEntity).setVariant(horseVariant);
+            }
+            if (horseColor != null) {
+                ((Horse)spawnedEntity).setColor(horseColor);
+            }
+            if (horseStyle != null) {
+                ((Horse)spawnedEntity).setStyle(horseStyle);
+            }
+        }
+
+        if (spawnedEntity instanceof Ocelot && ocelotType != null) {
+            Ocelot ocelot = (Ocelot)spawnedEntity;
+            ocelot.setCatType(ocelotType);
+        }
+        if (spawnedEntity instanceof Sheep && color != null) {
+            Sheep sheep = (Sheep)spawnedEntity;
+            sheep.setColor(color);
+        }
+        if (spawnedEntity instanceof Wolf && color != null) {
+            Wolf wolf = (Wolf)spawnedEntity;
+            wolf.setCollarColor(color);
+        }
+        if (spawnedEntity instanceof LivingEntity && health != null) {
+            ((LivingEntity)spawnedEntity).setMaxHealth(health);
+            ((LivingEntity)spawnedEntity).setHealth(health);
+        }
+
         if (speed > 0)
         {
             Vector motion = direction;
@@ -149,6 +256,11 @@ public class SpawnEntityAction extends BaseSpellAction
             motion.normalize();
             motion.multiply(speed);
             CompatibilityUtils.setEntityMotion(spawnedEntity, motion);
+        }
+
+        Collection<EffectPlayer> projectileEffects = context.getEffects("spawned");
+        for (EffectPlayer effectPlayer : projectileEffects) {
+            effectPlayer.start(spawnedEntity.getLocation(), spawnedEntity, null, null);
         }
         context.registerForUndo(spawnedEntity);
 
