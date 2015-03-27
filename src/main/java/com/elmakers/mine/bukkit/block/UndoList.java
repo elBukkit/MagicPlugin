@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 
 import com.elmakers.mine.bukkit.api.action.CastContext;
@@ -15,6 +16,7 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.metadata.MetadataValue;
 import org.bukkit.plugin.Plugin;
@@ -63,6 +65,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
     protected String				name;
 
     private boolean                 undoEntityEffects = true;
+    private Set<EntityType>         undoEntityTypes = null;
     protected boolean               undoBreakable = false;
     protected boolean               undoReflective = false;
 
@@ -244,7 +247,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
             }
             if (modifiedEntities != null) {
                 for (EntityData data : modifiedEntities.values()) {
-                    if (!undoEntityEffects && !data.isHanging() && !data.isProjectile()) continue;
+                    if (!undoEntityEffects && undoEntityTypes != null && !undoEntityTypes.contains(data.getType())) continue;
                     data.undo();
                 }
                 modifiedEntities = null;
@@ -549,8 +552,14 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
         return (int)(scheduledTime - o.getScheduledTime());
     }
 
+    @Override
     public void setEntityUndo(boolean undoEntityEffects) {
         this.undoEntityEffects = undoEntityEffects;
+    }
+
+    @Override
+    public void setEntityUndoTypes(Set<EntityType> undoTypes) {
+        this.undoEntityTypes = undoTypes;
     }
 
     public void setNext(UndoList next) {

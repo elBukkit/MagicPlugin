@@ -1,12 +1,16 @@
 package com.elmakers.mine.bukkit.spell;
 
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
+import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.potion.PotionEffect;
 
@@ -18,6 +22,7 @@ import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 public abstract class UndoableSpell extends TargetingSpell {
     private UndoList 		modifiedBlocks 			= null;
     private boolean 		undoEntityEffects		= false;
+    private Set<EntityType> undoEntityTypes     	= null;
     private boolean 		bypassUndo				= false;
     private int	 			autoUndo				= 0;
 
@@ -31,6 +36,23 @@ public abstract class UndoableSpell extends TargetingSpell {
         autoUndo = parameters.getInt("undo", 0);
         autoUndo = parameters.getInt("u", autoUndo);
         bypassUndo = parameters.getBoolean("bypass_undo", false);
+        if (parameters.contains("entity_undo_types"))
+        {
+            undoEntityTypes = new HashSet<EntityType>();
+            Collection<String> typeStrings = ConfigurationUtils.getStringList(parameters, "entity_undo_types");
+            for (String typeString : typeStrings)
+            {
+                try {
+                    undoEntityTypes.add(EntityType.valueOf(typeString.toUpperCase()));
+                } catch (Exception ex) {
+                    controller.getLogger().warning("Unknown entity type: " + typeString);
+                }
+            }
+        }
+        else
+        {
+            undoEntityTypes = controller.getUndoEntityTypes();
+        }
 
         configureUndoList();
     }
@@ -133,6 +155,7 @@ public abstract class UndoableSpell extends TargetingSpell {
     protected void configureUndoList() {
         if (modifiedBlocks != null) {
             modifiedBlocks.setEntityUndo(undoEntityEffects);
+            modifiedBlocks.setEntityUndoTypes(undoEntityTypes);
             modifiedBlocks.setBypass(bypassUndo);
             modifiedBlocks.setScheduleUndo(autoUndo);
         }
