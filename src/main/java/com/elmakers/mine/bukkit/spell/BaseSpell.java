@@ -224,6 +224,12 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         }
 
         Block blockOneUp = block.getRelative(BlockFace.UP);
+
+        // This is a hack, but data-driving would be a pain.
+        if ((block.getType() == Material.STEP || block.getType() == Material.WOOD_STEP) && isOkToStandIn(blockOneUp.getType())) {
+            return true;
+        }
+
         Block blockOneDown = block.getRelative(BlockFace.DOWN);
         Player player = mage.getPlayer();
         return (
@@ -268,11 +274,17 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
             location.setY(maxY);
             location = findPlaceToStand(location, false, maxDownDelta);
         } else {
-            // First look down just a little bit
-            int testMinY = Math.min(maxDownDelta, 4);
-            location = findPlaceToStand(targetLoc, false, testMinY);
+            // First look up just a little bit
+            int testMaxY = Math.min(maxUpDelta, 3);
+            location = findPlaceToStand(targetLoc, true, testMaxY);
 
-            // Then look up
+            // Then  look down just a little bit
+            if (location == null) {
+                int testMinY = Math.min(maxDownDelta, 4);
+                location = findPlaceToStand(targetLoc, false, testMinY);
+            }
+
+            // Then look all the way up
             if (location == null) {
                 location = findPlaceToStand(targetLoc, true, maxUpDelta);
             }
