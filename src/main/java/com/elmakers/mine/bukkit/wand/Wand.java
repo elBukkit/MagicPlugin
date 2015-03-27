@@ -2429,25 +2429,25 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
             // Check for items the player might've glitched onto their body...
             PlayerInventory inventory = mage.getPlayer().getInventory();
             ItemStack testItem = inventory.getHelmet();
-            if (isSpell(testItem) || isWand(testItem) || isBrush(testItem))
+            if (isSpell(testItem) || isBrush(testItem))
             {
                 inventory.setHelmet(new ItemStack(Material.AIR));
                 mage.getPlayer().updateInventory();
             }
             testItem = inventory.getBoots();
-            if (isSpell(testItem) || isWand(testItem) || isBrush(testItem))
+            if (isSpell(testItem) || isBrush(testItem))
             {
                 inventory.setBoots(new ItemStack(Material.AIR));
                 mage.getPlayer().updateInventory();
             }
             testItem = inventory.getLeggings();
-            if (isSpell(testItem) || isWand(testItem) || isBrush(testItem))
+            if (isSpell(testItem) || isBrush(testItem))
             {
                 inventory.setLeggings(new ItemStack(Material.AIR));
                 mage.getPlayer().updateInventory();
             }
             testItem = inventory.getChestplate();
-            if (isSpell(testItem) || isWand(testItem) || isBrush(testItem))
+            if (isSpell(testItem) || isBrush(testItem))
             {
                 inventory.setChestplate(new ItemStack(Material.AIR));
                 mage.getPlayer().updateInventory();

@@ -5243,6 +5243,7 @@ pollinate:
         despawn:
         -  class: EffectSingle
            sound: splash
+           sound_volume: 0.2
            location: source
            effectlib:
               class: AtomEffect
