@@ -1,6 +1,6 @@
 # TODO
 
- - Recall spawning people in the ground
+ - Try to Paste the elder tree
 
  - Support for restoring armor stands- might have to drop 1.7 support for this.
  - Better handling for invalid spells in enchanting.yml
