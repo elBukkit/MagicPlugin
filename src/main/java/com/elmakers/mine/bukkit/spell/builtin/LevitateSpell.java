@@ -195,7 +195,6 @@ public class LevitateSpell extends TargetingSpell implements Listener
         public void onVehicleExit(VehicleExitEvent event)
         {
             Entity vehicle = event.getVehicle();
-            org.bukkit.Bukkit.getLogger().info("Vehicle exit: " + vehicle);
             if (vehicle.hasMetadata("broom"))
             {
                 event.setCancelled(true);
