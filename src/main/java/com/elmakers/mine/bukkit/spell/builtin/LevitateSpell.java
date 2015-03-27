@@ -74,7 +74,7 @@ public class LevitateSpell extends TargetingSpell implements Listener
 
     private Material mountItem = null;
     private EntityType mountType = null;
-    private LivingEntity mountEntity = null;
+    private Entity mountEntity = null;
     private Horse.Variant mountHorseVariant = null;
     private Horse.Color mountHorseColor = null;
     private Horse.Style mountHorseStyle = null;
@@ -195,6 +195,7 @@ public class LevitateSpell extends TargetingSpell implements Listener
         public void onVehicleExit(VehicleExitEvent event)
         {
             Entity vehicle = event.getVehicle();
+            org.bukkit.Bukkit.getLogger().info("Vehicle exit: " + vehicle);
             if (vehicle.hasMetadata("broom"))
             {
                 event.setCancelled(true);
@@ -555,10 +556,11 @@ public class LevitateSpell extends TargetingSpell implements Listener
     }
 
     protected void updateMountHealth() {
-        if (mountEntity != null && mountBoostTicks > 0) {
-            double maxHealth = mountEntity.getMaxHealth();
+        if (mountEntity != null && mountBoostTicks > 0 && mountEntity instanceof LivingEntity) {
+            LivingEntity living = (LivingEntity)mountEntity;
+            double maxHealth = living.getMaxHealth();
             double health = Math.min(0.5 + maxHealth * mountBoostTicksRemaining / mountBoostTicks, maxHealth);
-            mountEntity.setHealth(health);
+            living.setHealth(health);
         }
     }
 
@@ -594,7 +596,9 @@ public class LevitateSpell extends TargetingSpell implements Listener
             mountEntity.removeMetadata("notarget", plugin);
             mountEntity.removeMetadata("broom", plugin);
             CompatibilityUtils.setInvulnerable(mountEntity, false);
-            mountEntity.setHealth(0);
+            if (mountEntity instanceof LivingEntity) {
+                ((LivingEntity)mountEntity).setHealth(0);
+            }
             mountEntity.remove();
             mountEntity = null;
         }
@@ -671,7 +675,11 @@ public class LevitateSpell extends TargetingSpell implements Listener
             World world = location.getWorld();
             Entity entity = null;
             try {
-                Class<?> mountClass = NMSUtils.getBukkitClass("net.minecraft.server." + mountType.getName());
+                String mountName = mountType.getName();
+                if (mountName.indexOf("Entity") != 0) {
+                    mountName = "Entity" + mountName;
+                }
+                Class<?> mountClass = NMSUtils.getBukkitClass("net.minecraft.server." + mountName);
                 if (mountClass != null) {
                     final Class<?> worldClass = NMSUtils.getBukkitClass("net.minecraft.server.World");
                     final Class<?> entityClass = NMSUtils.getBukkitClass("net.minecraft.server.Entity");
@@ -687,13 +695,19 @@ public class LevitateSpell extends TargetingSpell implements Listener
                         setLocationMethod.invoke(nmsEntity, location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch());
                         Method addEntityMethod = worldClass.getMethod("addEntity", entityClass, CreatureSpawnEvent.SpawnReason.class);
                         addEntityMethod.invoke(nmsWorld, nmsEntity, mountSpawnReason);
+                    } else {
+                        mage.sendMessage("Failed to spawn entity of type: " + mountType + " (" + mountType.getName() + ")");
+                        return;
                     }
+                } else {
+                    mage.sendMessage("Invalid entity type: " + mountType + " (" + mountType.getName() + ")");
+                    return;
                 }
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
-            if (entity != null && entity instanceof LivingEntity) {
-                mountEntity = (LivingEntity)entity;
+            if (entity != null) {
+                mountEntity = entity;
                 CompatibilityUtils.setInvulnerable(mountEntity);
 
                 if (entity instanceof Horse) {
@@ -713,8 +727,11 @@ public class LevitateSpell extends TargetingSpell implements Listener
                     Pig pig = (Pig) entity;
                     pig.setSaddle(true);
                 }
-                mountEntity.setHealth(0.5);
-                mountEntity.setMaxHealth(mountHealth);
+                if (entity instanceof LivingEntity) {
+                    LivingEntity living = (LivingEntity)mountEntity;
+                    living.setHealth(0.5);
+                    living.setMaxHealth(mountHealth);
+                }
                 mountEntity.setPassenger(mage.getEntity());
 
                 mountEntity.setMetadata("notarget", new FixedMetadataValue(controller.getPlugin(), true));

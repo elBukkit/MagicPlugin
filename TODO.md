@@ -1,7 +1,7 @@
 # TODO
 
  - Recall spawning people in the ground
- - Magic Hats randomly disappear
+ - Configurable list of entities to always undo? (Armor stands, dropped items have been requested)
 
  - Better handling for invalid spells in enchanting.yml
  - Clean up MaterialBrush target system, automate somehow?
