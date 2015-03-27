@@ -11,6 +11,7 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
@@ -122,6 +123,7 @@ public interface MageController {
     public Boolean getPersonalCastPermission(Player player, SpellTemplate spell, Location location);
     public boolean isPVPAllowed(Player player, Location location);
     public boolean isUrlIconsEnabled();
+    public Set<EntityType> getUndoEntityTypes();
 
     public boolean sendMail(CommandSender sender, String fromPlayer, String toPlayer, String message);
 

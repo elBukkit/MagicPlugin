@@ -1,6 +1,7 @@
 package com.elmakers.mine.bukkit.api.block;
 
 import java.util.List;
+import java.util.Set;
 
 import com.elmakers.mine.bukkit.api.entity.EntityData;
 import org.bukkit.Location;
@@ -8,6 +9,7 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 
 import com.elmakers.mine.bukkit.api.magic.Mage;
+import org.bukkit.entity.EntityType;
 
 public interface UndoList extends BlockList, Comparable<UndoList> {
     public void commit();
@@ -17,6 +19,7 @@ public interface UndoList extends BlockList, Comparable<UndoList> {
     public void undoScheduled(boolean blocking);
 
     public void setEntityUndo(boolean undoEntityEffects);
+    public void setEntityUndoTypes(Set<EntityType> undoTypes);
 
     public void setScheduleUndo(int ttl);
     public int getScheduledUndo();
