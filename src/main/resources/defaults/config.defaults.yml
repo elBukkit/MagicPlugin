@@ -286,8 +286,25 @@ schematic_files: WorldEdit/schematics/
 # How many casts to track in the undo queue
 undo_depth: 128
 
-# How many pending constructions a player may have at one time
-pending_depth: 8
+# How many pending spells a player may have at one time
+pending_depth: 16
+
+# What entity types to always undo when auto-undoing a spell.
+# A spell that is countered or manually undone will undo all entity types.
+entity_undo_types:
+- item_frame
+- painting
+- fireball
+- small_fireball
+- wither_skull
+- arrow
+- snowball
+- egg
+- firework
+- primed_tnt
+- falling_block
+- armor_stand
+- dropped_item
 
 # The largest thing we'll persist in the undo queue (to a file)
 undo_max_persist_size: 16384

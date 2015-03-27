@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## 4.8
+
+ - Fix Magic Hats disappearing
+ - Add configurable list of entities to auto-undo. Now includes armor stands and dropped items.
+
 ## 4.7.1
 
  - Fix mana regen rate (it's 4x what it should be)

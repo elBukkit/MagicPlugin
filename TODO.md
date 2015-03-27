@@ -1,7 +1,7 @@
 # TODO
 
  - Recall spawning people in the ground
- - Configurable list of entities to always undo? (Armor stands, dropped items have been requested)
+ - Restore entity inventories (armor stands!)
 
  - Better handling for invalid spells in enchanting.yml
  - Clean up MaterialBrush target system, automate somehow?
@@ -11,6 +11,8 @@
  - Glitching Fill behavior
  - Spell shop improvements:
    - Color spells player can't afford
+   - Some sort of ability to set up in-game?
+   - Sellable/tradeable items?
  - Trait improvements
    - Add /parameter command for inspecting single param
    - Cleaner list of list parameters

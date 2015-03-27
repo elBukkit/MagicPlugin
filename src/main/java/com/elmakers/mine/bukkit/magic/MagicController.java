@@ -1936,6 +1936,21 @@ public class MagicController implements Listener, MageController {
             Wand.displayManaAsGlow = properties.getString("mana_display").equals("glow");
 		}
 
+        undoEntityTypes.clear();
+        if (properties.contains("entity_undo_types"))
+        {
+            undoEntityTypes = new HashSet<EntityType>();
+            Collection<String> typeStrings = ConfigurationUtils.getStringList(properties, "entity_undo_types");
+            for (String typeString : typeStrings)
+            {
+                try {
+                    undoEntityTypes.add(EntityType.valueOf(typeString.toUpperCase()));
+                } catch (Exception ex) {
+                    getLogger().warning("Unknown entity type: " + typeString);
+                }
+            }
+        }
+
 		// Parse wand settings
 		Wand.DefaultUpgradeMaterial = ConfigurationUtils.getMaterial(properties, "wand_upgrade_item", Wand.DefaultUpgradeMaterial);
 		Wand.EnableGlow = properties.getBoolean("wand_glow", Wand.EnableGlow);
@@ -4419,6 +4434,10 @@ public class MagicController implements Listener, MageController {
         return urlIconsEnabled && NMSUtils.hasURLSkullSupport();
     }
 
+    public Set<EntityType> getUndoEntityTypes() {
+        return undoEntityTypes;
+    }
+
 	/*
 	 * Private data
 	 */
@@ -4565,6 +4584,7 @@ public class MagicController implements Listener, MageController {
     private Class<?>							cuboidClipboardClass        = null;
     private Mailer								mailer						= null;
     private Material							defaultMaterial				= Material.DIRT;
+    private Set<EntityType>                     undoEntityTypes             = new HashSet<EntityType>();
 
     private PhysicsHandler						physicsHandler				= null;
 
