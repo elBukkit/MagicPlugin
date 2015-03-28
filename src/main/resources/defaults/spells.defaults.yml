@@ -1748,7 +1748,7 @@ gather:
     icon_url: http://i.imgur.com/nBNOHSD.png
     icon: glowstone_dust
     category: master
-    worth: 150
+    worth: 30
     show_undoable: false
     actions:
         cast:

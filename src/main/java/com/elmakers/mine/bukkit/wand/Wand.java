@@ -1263,7 +1263,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	private String getActiveWandName(SpellTemplate spell, MaterialBrush brush) {
 		// Build wand name
         int remaining = getRemainingUses();
-		ChatColor wandColor = remaining > 0 ? ChatColor.DARK_RED : isModifiable()
+		ChatColor wandColor = remaining == 1 ? ChatColor.DARK_RED : isModifiable()
                 ? (bound ? ChatColor.DARK_AQUA : ChatColor.AQUA) :
                   (path != null && path.length() > 0 ? ChatColor.LIGHT_PURPLE : ChatColor.GOLD);
 		String name = wandColor + getDisplayName();
@@ -1278,8 +1278,8 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
             name = getSpellDisplayName(messages, spell, brush) + " (" + name + ChatColor.WHITE + ")";
         }
 
-		if (remaining > 0) {
-			String message = (remaining == 1) ? messages.get("wand.uses_remaining_singular") : controller.getMessages().get("wand.uses_remaining_brief");
+		if (remaining > 1) {
+			String message = controller.getMessages().get("wand.uses_remaining_brief");
 			name = name + ChatColor.DARK_RED + " (" + ChatColor.RED + message.replace("$count", ((Integer)remaining).toString()) + ChatColor.DARK_RED + ")";
 		}
 		return name;
@@ -1638,7 +1638,12 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	public static void updateBrushItem(Messages messages, ItemStack itemStack, MaterialBrush brush, Wand wand) {
 		String displayName;
 		if (wand != null) {
-			displayName = wand.getActiveWandName(brush);
+            Spell activeSpell = wand.getActiveSpell();
+            if (activeSpell != null && activeSpell.usesBrush()) {
+                displayName = wand.getActiveWandName(brush);
+            } else {
+                displayName = ChatColor.RED + brush.getName(messages);
+            }
         } else {
             displayName = brush.getName(messages);
         }
@@ -1914,6 +1919,12 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
                     path.enchanted(enchanter);
                 }
                 levels += addLevels;
+
+                // Check for level up
+                WandUpgradePath nextPath = path.getUpgrade();
+                if (nextPath != null && path.checkUpgradeRequirements(this, null) && !path.canEnchant(this)) {
+                    path.upgrade(this, mage);
+                }
             } else if (path.canEnchant(this)) {
                 if (enchanter != null)
                 {
