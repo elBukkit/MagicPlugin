@@ -417,7 +417,7 @@ minister:
     mode: cast
     path: broom
     active_spell: broom
-    icon: gold_shovel
+    icon: gold_spade
     indestructible: true
     locked: true
     effect_color: '00AAFF'
@@ -429,7 +429,7 @@ unspeakabroom:
     mode: cast
     path: broom
     active_spell: broom
-    icon: gold_shovel
+    icon: gold_spade
     indestructible: true
     locked: true
     effect_color: '00FFFF'
@@ -441,7 +441,7 @@ headmaster:
     mode: cast
     path: broom
     active_spell: broom
-    icon: gold_shovel
+    icon: gold_spade
     indestructible: true
     locked: true
     effect_color: 'FF00FF'
@@ -453,7 +453,7 @@ firebolt:
     mode: cast
     path: broom
     active_spell: broom
-    icon: gold_shovel
+    icon: gold_spade
     indestructible: true
     locked: true
     effect_color: 'FF00FF'
@@ -464,7 +464,7 @@ firebolt:
 crudfirebolt:
     mode: cast
     active_spell: broom
-    icon: gold_shovel
+    icon: gold_spade
     indestructible: false
     locked: true
     effect_color: 'FF00FF'
@@ -477,7 +477,7 @@ nimbus:
     mode: cast
     path: broom
     active_spell: broom
-    icon: gold_shovel
+    icon: gold_spade
     indestructible: true
     locked: true
     effect_color: '880088'
@@ -488,7 +488,7 @@ nimbus:
 crudnimbus:
     mode: cast
     active_spell: broom
-    icon: gold_shovel
+    icon: gold_spade
     indestructible: false
     locked: true
     effect_color: '880088'
@@ -501,7 +501,7 @@ comet290:
     mode: cast
     path: broom
     active_spell: broom
-    icon: gold_shovel
+    icon: gold_spade
     indestructible: true
     locked: true
     effect_color: 'FF00FF'
@@ -513,7 +513,7 @@ cleansweep1:
     mode: cast
     path: broom
     active_spell: broom
-    icon: gold_shovel
+    icon: gold_spade
     indestructible: false
     locked: true
     effect_color: 'FFFF00'
@@ -525,7 +525,7 @@ bluebottle:
     mode: cast
     path: broom
     active_spell: broom
-    icon: gold_shovel
+    icon: gold_spade
     indestructible: false
     locked: true
     effect_color: '0000FF'
@@ -537,7 +537,7 @@ crudbroom:
     mode: cast
     path: broom
     active_spell: broom
-    icon: gold_shovel
+    icon: gold_spade
     indestructible: false
     locked: true
     uses: 10

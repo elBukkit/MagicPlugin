@@ -175,7 +175,6 @@ year5:
       ferula: 50
       lacarnum: 5
       evanesco: 15
-      reparifors: 5
       incarcerous: 20
     required_spells:
       - reducto
@@ -243,7 +242,6 @@ graduate:
       reducio|3: 10
       episkey|3: 20
       ferula|3: 50
-      ascendio|3: 10
       arrow|4: 50
       bogies|3: 20
       lacarnum|3: 20
