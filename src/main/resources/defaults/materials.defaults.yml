@@ -641,6 +641,9 @@ interactible:
 - enchantment_table
 - workbench
 - furnace
+- burning_furnace
+- dispenser
+- hopper
 - stone_button
 - wood_button
 - lever

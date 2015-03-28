@@ -424,7 +424,7 @@ spells:
         upgrade_description: "&r&b&bull; &6Heal amount increased"
     cure:
         name: Cure
-        description: Heal yourself or others a little bit
+        description: Remove negative effects
         cast: You cure $target
         cast_self: You cure yourself
     music:

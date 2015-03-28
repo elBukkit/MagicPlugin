@@ -3311,6 +3311,7 @@ stash:
     category: utility
     class: StashSpell
     worth: 20
+    show_undoable: false
     effects:
         cast:
         -  class: EffectSingle
@@ -3328,6 +3329,7 @@ pickpocket:
     category: staff
     class: StashSpell
     worth: 1000
+    show_undoable: false
     effects:
         cast:
         -  class: EffectSingle
@@ -3683,6 +3685,7 @@ cloak:
     icon_url: http://i.imgur.com/e4Wygfl.png
     icon: chainmail_chestplate
     category: master
+    worth: 30
     actions:
         cast:
         -  class: PotionEffect
@@ -4647,7 +4650,7 @@ shrink:
         target_breakables: 1
         cooldown: 4000
     costs:
-        mana: 130
+        mana: 75
 
 grow:
     icon_url: http://i.imgur.com/FlBmgua.png
@@ -4703,6 +4706,7 @@ flare:
     icon: firework
     category: light
     worth: 2
+    show_undoable: false
     actions:
         cast:
         -  class: Firework

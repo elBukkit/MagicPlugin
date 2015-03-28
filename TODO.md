@@ -1,6 +1,9 @@
 # TODO
 
  - Try to Paste the elder tree
+ - Grief prevention plugin support (?)
+ - Recall still putting mark in the ground at his bed!
+ - Backup not working for some? Deleted science's chest?
 
  - Support for restoring armor stands- might have to drop 1.7 support for this.
  - Better handling for invalid spells in enchanting.yml

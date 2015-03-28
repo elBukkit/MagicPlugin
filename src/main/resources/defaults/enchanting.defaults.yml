@@ -160,7 +160,6 @@ beginner:
       pull: 10,20,40
       peek: 10,30,40
       recall: 0,5,15
-      shrink: 5,20,30
       stash: 0,0,5
       blind: 0,1,5
       reflect: 0,0,5
@@ -238,6 +237,7 @@ student:
       laser: 0,0,10
       tracking: 5,10,30
       rocket: 0,10,20
+      shrink: 5,20,30
 
 apprentice:
     upgrade: master
