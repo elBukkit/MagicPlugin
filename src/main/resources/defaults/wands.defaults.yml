@@ -753,15 +753,16 @@ apprentice_upgrade:
     upgrade: true
     indestructible: false
     icon: nether_star
+    hotbar_count: 2
     xp_max: 150
     xp_regeneration: 30
 master_upgrade:
     upgrade: true
-    hotbar_count: 2
     indestructible: false
     icon: nether_star
     xp_max: 250
     xp_regeneration: 50
+    hotbar_count: 3
 engineer_upgrade:
     upgrade: true
     upgrade_icon: gold_axe
@@ -771,7 +772,6 @@ engineer_upgrade:
     xp_regeneration: 70
 architect_upgrade:
     upgrade: true
-    hotbar_count: 3
     indestructible: false
     upgrade_icon: gold_axe
     icon: nether_star
