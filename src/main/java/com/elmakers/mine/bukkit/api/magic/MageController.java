@@ -140,6 +140,7 @@ public interface MageController {
     public String getEntityDisplayName(Entity entity);
 
     public int getMaxWandFillLevel();
+    public double getWorthBase();
 
     /**
      * Check to see if the Elementals plugin is present an enabled.
