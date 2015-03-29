@@ -17,6 +17,7 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.api.batch.Batch;
@@ -376,4 +377,5 @@ public interface Mage extends CostReducer {
     public void showHoloText(Location location, String text, int duration);
     public boolean isDebugEnabled();
     public void setDebugEnabled(boolean debug);
+    public void giveItem(ItemStack item);
 }
