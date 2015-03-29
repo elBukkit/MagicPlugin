@@ -1122,8 +1122,8 @@ push:
         fov: 1
         target_count: 2
         allow_max_range: true
-        item_speed: 2
-        living_entity_speed: 3
+        item_speed: 0.1
+        living_entity_speed: 0.3
         push: 1
         y_offset: 0.4
         repeat: 3
@@ -1148,8 +1148,7 @@ push|2:
              class: VortexEffect
              particle: spell
     parameters:
-        living_entity_speed: 7
-        item_speed: 5
+        living_entity_speed: 0.6
         range: 16
         target_count: 8
         repeat: 4
