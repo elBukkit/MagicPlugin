@@ -1397,7 +1397,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     @Override
     public final double getWorth()
     {
-        return worth;
+        return worth * controller.getWorthBase();
     }
 
     @Override
