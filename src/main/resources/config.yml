@@ -68,6 +68,9 @@
 # Whether or not using a wand on an anvil will organize its inventory
 #enable_organizing: true
 
+# Enable/Disable automatic spell upgrades
+# enable_spell_upgrades: true
+
 # This can be used to scale spell and wand prices up and down without
 # Having to invidivudally configure "worth" for each spell.
 #

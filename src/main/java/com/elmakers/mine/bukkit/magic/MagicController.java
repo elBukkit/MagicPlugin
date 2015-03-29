@@ -1638,6 +1638,9 @@ public class MagicController implements Listener, MageController {
         String inheritFrom = spellNode.getString("inherit");
         String upgradeInheritsFrom = null;
         if (spellKey.isVariant()) {
+            if (!spellUpgradesEnabled) {
+                return null;
+            }
             int level = spellKey.getLevel();
             upgradeInheritsFrom = spellKey.getBaseKey();
             if (level != 2) {
@@ -1841,6 +1844,7 @@ public class MagicController implements Listener, MageController {
         castHoloTextRange = properties.getInt("cast_holotext_range", castHoloTextRange);
         activateHoloTextRange = properties.getInt("activate_holotext_range", activateHoloTextRange);
         urlIconsEnabled = properties.getBoolean("url_icons_enabled", urlIconsEnabled);
+        spellUpgradesEnabled = properties.getBoolean("enable_spell_upgrades", spellUpgradesEnabled);
 
 		loadDefaultSpells = properties.getBoolean("load_default_spells", loadDefaultSpells);
         disableDefaultSpells = properties.getBoolean("disable_default_spells", disableDefaultSpells);
@@ -4589,6 +4593,7 @@ public class MagicController implements Listener, MageController {
     private int                                 castHoloTextRange           = 0;
     private int                                 activateHoloTextRange       = 0;
     private boolean							    urlIconsEnabled             = true;
+    private boolean                             spellUpgradesEnabled        = true;
 
     private boolean							    bypassBuildPermissions      = false;
     private boolean							    bypassPvpPermissions        = false;

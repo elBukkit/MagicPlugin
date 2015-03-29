@@ -127,6 +127,9 @@ enable_crafting: true
 # Whether wands can be upgraded on an enchanting table
 enable_enchanting: true
 
+# Enable automatic spell upgrades
+enable_spell_upgrades: true
+
 # Whether wands can be combined on an anvil
 enable_combining: true
 
