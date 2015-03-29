@@ -4,6 +4,7 @@ import com.elmakers.mine.bukkit.action.BaseSpellAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.action.GUIAction;
 import com.elmakers.mine.bukkit.api.magic.Mage;
+import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.magic.MagicAPI;
 import com.elmakers.mine.bukkit.api.magic.Messages;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
@@ -68,7 +69,8 @@ public class ItemShopAction extends BaseSpellAction implements GUIAction
         ItemStack item = event.getCurrentItem();
         if (context != null && InventoryUtils.hasMeta(item, "shop"))
         {
-            Messages messages = context.getController().getMessages();
+            MageController controller = context.getController();
+            Messages messages = controller.getMessages();
             Mage mage = context.getMage();
             String itemKey = InventoryUtils.getMeta(item, "shop");
             boolean isXP = useXP || !VaultController.hasEconomy();
@@ -76,8 +78,10 @@ public class ItemShopAction extends BaseSpellAction implements GUIAction
             boolean hasCosts = true;
             if (worth > 0) {
                 if (isXP) {
+                    worth = worth * controller.getWorthXP();
                     hasCosts = mage.getExperience() > (int)(double)worth;
                 } else {
+                    worth = worth * controller.getWorthBase();
                     hasCosts = VaultController.getInstance().has(mage.getPlayer(), worth);
                 }
             }
@@ -163,7 +167,9 @@ public class ItemShopAction extends BaseSpellAction implements GUIAction
 		if (player == null) {
             return SpellResult.PLAYER_REQUIRED;
         }
-        Messages messages = context.getController().getMessages();
+
+        MageController controller = context.getController();
+        Messages messages = controller.getMessages();
 
         // Load items
         List<ItemStack> itemStacks = new ArrayList<ItemStack>();
@@ -184,10 +190,12 @@ public class ItemShopAction extends BaseSpellAction implements GUIAction
             }
             String costs;
             if (isXP) {
+                worth = worth * controller.getWorthXP();
                 String xpAmount = Integer.toString((int)(double)worth);
                 xpAmount = messages.get("costs.xp_amount").replace("$amount", xpAmount);
                 costs = costString.replace("$cost", xpAmount);
             } else {
+                worth = worth * controller.getWorthBase();
                 costs = costString.replace("$cost", VaultController.getInstance().format(worth));
             }
             lore.add(ChatColor.GOLD + costs);
