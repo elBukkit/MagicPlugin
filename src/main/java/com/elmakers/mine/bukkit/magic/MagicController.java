@@ -348,6 +348,11 @@ public class MagicController implements Listener, MageController {
     public double getWorthBase() {
         return worthBase;
     }
+
+    @Override
+    public double getWorthXP() {
+        return worthXP;
+    }
 	
 	/*
 	 * Undo system
@@ -1894,6 +1899,7 @@ public class MagicController implements Listener, MageController {
         maxMana = properties.getInt("max_mana", maxMana);
         maxManaRegeneration = properties.getInt("max_mana_regeneration", maxManaRegeneration);
         worthBase = properties.getDouble("worth_base", 1);
+        worthXP = properties.getDouble("worth_xp", 1);
 
         costReduction = (float)properties.getDouble("cost_reduction", costReduction);
 		cooldownReduction = (float)properties.getDouble("cooldown_reduction", cooldownReduction);
@@ -4536,6 +4542,7 @@ public class MagicController implements Listener, MageController {
     private int								    maxMana        	                = 1000;
     private int								    maxManaRegeneration        	    = 100;
     private double                              worthBase                       = 1;
+    private double                              worthXP                         = 1;
 
     private float							 	castCommandCostReduction	    = 1.0f;
     private float							 	castCommandCooldownReduction	= 1.0f;

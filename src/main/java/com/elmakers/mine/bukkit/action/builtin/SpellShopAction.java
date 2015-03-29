@@ -4,6 +4,7 @@ import com.elmakers.mine.bukkit.action.BaseSpellAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.action.GUIAction;
 import com.elmakers.mine.bukkit.api.magic.Mage;
+import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.magic.MagicAPI;
 import com.elmakers.mine.bukkit.api.magic.Messages;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
@@ -75,7 +76,8 @@ public class SpellShopAction extends BaseSpellAction implements GUIAction
     public void clicked(InventoryClickEvent event)
     {
         event.setCancelled(true);
-        Messages messages = context.getController().getMessages();
+        MageController controller = context.getController();
+        Messages messages = controller.getMessages();
         ItemStack item = event.getCurrentItem();
         if (context != null && wand != null && com.elmakers.mine.bukkit.wand.Wand.isSpell(item))
         {
@@ -88,8 +90,10 @@ public class SpellShopAction extends BaseSpellAction implements GUIAction
             boolean hasCosts = true;
             if (worth > 0) {
                 if (isXP) {
+                    worth = worth * controller.getWorthXP();
                     hasCosts = mage.getExperience() > (int)(double)worth;
                 } else {
+                    worth = worth * controller.getWorthBase();
                     hasCosts = VaultController.getInstance().has(mage.getPlayer(), worth);
                 }
             }
@@ -248,7 +252,8 @@ public class SpellShopAction extends BaseSpellAction implements GUIAction
         MagicAPI api = MagicPlugin.getAPI();
         boolean isXP = useXP || !VaultController.hasEconomy();
         String costString = context.getMessage("cost_lore");
-        Messages messages = context.getController().getMessages();
+        MageController controller = context.getController();
+        Messages messages = controller.getMessages();
         for (Map.Entry<String, Double> spellValue : spellPrices.entrySet()) {
             String spellKey = spellValue.getKey();
             if (wand.hasSpell(spellKey)) continue;
@@ -266,10 +271,12 @@ public class SpellShopAction extends BaseSpellAction implements GUIAction
             List<String> lore = meta.getLore();
             String costs;
             if (isXP) {
+                worth = worth * controller.getWorthXP();
                 String xpAmount = Integer.toString((int)(double)worth);
                 xpAmount = messages.get("costs.xp_amount").replace("$amount", xpAmount);
                 costs = costString.replace("$cost", xpAmount);
             } else {
+                worth = worth * controller.getWorthBase();
                 costs = costString.replace("$cost", VaultController.getInstance().format(worth));
             }
             lore.add(ChatColor.GOLD + costs);

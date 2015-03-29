@@ -132,7 +132,7 @@ public abstract class MagicTabExecutor implements TabExecutor {
                sender.sendMessage("I'm not sure what that's worth, sorry!");
                return;
            }
-           sender.sendMessage(ChatColor.AQUA + "WIP: Spell " + ChatColor.GOLD + template.getName()
+           sender.sendMessage(ChatColor.AQUA + "Spell " + ChatColor.GOLD + template.getName()
                 + ChatColor.AQUA + " is worth " + ChatColor.GREEN + template.getWorth());
        } else if (api.isBrush(item)) {
            String materialBrush = api.getBrush(item);

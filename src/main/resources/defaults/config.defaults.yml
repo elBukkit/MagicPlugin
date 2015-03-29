@@ -513,6 +513,9 @@ worth_effect_sound: 8
 # match up.
 worth_base: 1
 
+# If using XP as a currency, how much one XP is worth
+worth_xp: 1
+
 # By default the Magic ecnonomy is set up for a physical, item-based ecnonomy. I have chosen to use a tiered
 # set of items: emerald, diamond, gold_nugget.
 #
