@@ -4,6 +4,7 @@
 
  - Fix Magic Hats disappearing, make them craftable (nether star + leather helmet)
  - Add configurable list of entities to auto-undo. Now includes armor stands and dropped items.
+ - Re-balance enchanting and economy a bit
 
 ## 4.7.1
 

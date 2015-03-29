@@ -70,7 +70,7 @@
 default:
   hidden: true
   min_enchant_level: 5
-  max_enchant_level: 35
+  max_enchant_level: 30
   levels: 1,15,25
   max_uses: 500
   max_mana: 1500
@@ -136,12 +136,12 @@ beginner:
       2: 20,  30, 40
     max_mana: 100
     mana_max:
-      5:  100, 10,  0
-      10: 20,  30, 50
+      2: 100, 10,  0
+      5: 20,  30, 50
     spell_count:
-      1: 100, 20,  1
-      2: 0,   50,  10
-      3: 0,   1,   50
+      1: 100, 5,   1
+      2: 0,   50,  40
+      3: 0,   10,  90
     spells:
       missile: 100,90,80
       arrow: 0,20,10
@@ -179,7 +179,7 @@ student:
       0^1: 100, 100, 90
       0^2: 0,   5,   10
       0^3: 0 ,  1,   5
-    max_protection_falling: 0.75
+    max_protection_falling: 0.5
     protection_falling:
       0^1: 100, 100, 90
       0^2: 1,   10,  20
@@ -202,12 +202,12 @@ student:
     max_mana: 150
     mana_max:
       5:  100,10,  0
-      10: 20, 30, 50
-      15: 5 , 20, 30
+      7: 20, 30, 50
+      10: 5 , 20, 30
     spell_count:
       1: 100, 10,  1
-      2: 0,   50,  20
-      3: 0,   1,   50
+      2: 0,   70,  40
+      3: 0,   1,   90
     spells:
       blink: 0,0,10
       arrowrain: 10,30,50
@@ -253,7 +253,7 @@ apprentice:
       0^1: 100, 100, 90
       0^2: 0,   5,   10
       0^3: 0 ,  1,   5
-    max_protection_falling: 0.9
+    max_protection_falling: 0.75
     protection_falling:
       0^1: 100, 100, 90
       0^2: 1,   10,  20
@@ -276,12 +276,12 @@ apprentice:
     max_mana: 200
     mana_max:
       5:  100, 10,  0
-      10: 20,  30, 50
-      15: 5 ,  20, 30
+      7: 20,  30, 50
+      10: 5 ,  20, 30
     spell_count:
-      1: 100, 10,  0
-      2: 0,   50,  10
-      3: 0,   10,  50
+      1: 100, 5,   0
+      2: 0,   80,  30
+      3: 0,   10,  80
     spells:
       emp: 0,0,10
       blessing: 0,0,1
@@ -358,8 +358,8 @@ master:
       20: 0 , 0,   5
     spell_count:
       1: 100, 10,  0
-      2: 0,   50,  10
-      3: 0,   0,   50
+      2: 0,   70,  10
+      3: 0,   10,   90
     spells:
       cluster: 0,0,5
       bomb: 0,0,1
@@ -443,7 +443,7 @@ engineer:
     spell_count:
       1: 100, 20,  0
       2: 0,   50,  10
-      3: 0,   1,   50
+      3: 0,   10,  90
     spells:
       rollback: 1,5,10
       alter: 0,10,20
@@ -536,9 +536,9 @@ architect:
       30: 5 , 20, 30
       50: 0 , 0,   5
     spell_count:
-      1: 100, 10,  0
+      1: 100, 0,   0
       2: 0,   50,  10
-      3: 0,   5,   50
+      3: 0,   5,   90
     spells:
       absorb: 0,1,2
       backup: 0,0,1

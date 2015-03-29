@@ -151,7 +151,7 @@ curse:
     alias: silence
     category: dark
     pvp_restricted: true
-    worth: 10
+    worth: 800
     upgrade_required_path: apprentice
     upgrade_required_casts: 50
     actions:
@@ -232,7 +232,7 @@ blessing:
     icon: double_plant:5
     icon_url: http://i.imgur.com/5pwbaxJ.png
     category: light
-    worth: 100
+    worth: 2000
     actions:
         cast:
         -  class: Projectile
@@ -279,7 +279,7 @@ boon:
     alias: perk
     icon: red_rose:2
     category: utility
-    worth: 10
+    worth: 600
     upgrade_required_path: apprentice
     upgrade_required_casts: 50
     actions:
@@ -324,7 +324,7 @@ bounce:
     icon: red_rose:8
     category: utility
     class: PotionEffectSpell
-    worth: 8
+    worth: 800
     effects:
         cast:
         -  class: EffectSingle
@@ -353,7 +353,7 @@ simulate:
     icon: double_plant:3
     category: automata
     class: SimulateSpell
-    worth: 100
+    worth: 10000
     effects:
         cast:
         -  class: EffectSingle
@@ -375,7 +375,7 @@ simulate3:
     icon: sapling:3
     category: automata
     class: SimulateSpell
-    worth: 100
+    worth: 10000
     effects:
         cast:
         -  class: EffectSingle
@@ -400,7 +400,7 @@ glider:
     icon_url: http://i.imgur.com/CUgSpoB.png
     category: automata
     class: ConstructSpell
-    worth: 100
+    worth: 8000
     effects:
         cast:
         -  class: EffectSingle
@@ -431,7 +431,7 @@ virus:
     icon_url: http://i.imgur.com/UtoaKXl.png
     category: automata
     class: AnimateSpell
-    worth: 1000
+    worth: 100000
     effects:
         cast:
         -  class: EffectSingle
@@ -491,7 +491,7 @@ worm:
     icon_url: http://i.imgur.com/UtoaKXl.png
     category: automata
     class: AnimateSpell
-    worth: 800
+    worth: 80000
     effects:
         cast:
         -  class: EffectSingle
@@ -552,7 +552,7 @@ hunter:
     icon_url: http://i.imgur.com/UtoaKXl.png
     category: automata
     class: AnimateSpell
-    worth: 600
+    worth: 60000
     effects:
         cast:
         -  class: EffectSingle
@@ -610,7 +610,7 @@ defender:
     icon_url: http://i.imgur.com/UtoaKXl.png
     category: automata
     class: AnimateSpell
-    worth: 400
+    worth: 40000
     effects:
         cast:
         -  class: EffectSingle
@@ -656,7 +656,7 @@ animate:
     icon_url: http://i.imgur.com/UtoaKXl.png
     category: automata
     class: AnimateSpell
-    worth: 300
+    worth: 30000
     effects:
         cast:
         -  class: EffectSingle
@@ -700,7 +700,7 @@ life:
     icon_url: http://i.imgur.com/CUgSpoB.png
     category: automata
     class: ConstructSpell
-    worth: 1500
+    worth: 150000
     effects:
         cast:
         -  class: EffectSingle
@@ -733,7 +733,7 @@ life3:
     icon_url: http://i.imgur.com/CUgSpoB.png
     category: automata
     class: ConstructSpell
-    worth: 1500
+    worth: 150000
     effects:
         cast:
         -  class: EffectSingle
@@ -767,7 +767,7 @@ shell:
     icon: ender_pearl
     category: combat
     class: ConstructSpell
-    worth: 50
+    worth: 1500
     upgrade_required_path: student
     upgrade_required_casts: 50
     effects:
@@ -820,7 +820,7 @@ reflect:
     icon_url: http://i.imgur.com/VG9yNqE.png
     icon: iron_helmet
     category: light
-    worth: 20
+    worth: 2000
     upgrade_required_path: student
     upgrade_required_casts: 25
     actions:
@@ -878,7 +878,7 @@ disc:
     icon: ink_sack:8
     icon_url: http://i.imgur.com/qYdIeMs.png
     category: utility
-    worth: 45
+    worth: 1500
     actions:
         cast:
         -  class: Disc
@@ -918,7 +918,7 @@ superdisc:
     icon: ink_sack:13
     category: engineering
     class: ConstructSpell
-    worth: 150
+    worth: 8000
     effects:
         cast:
         -  class: EffectSingle
@@ -942,7 +942,7 @@ superring:
     icon: ink_sack:9
     category: engineering
     class: ConstructSpell
-    worth: 100
+    worth: 6000
     effects:
         cast:
         -  class: EffectSingle
@@ -967,7 +967,7 @@ supershell:
     icon_url: http://i.imgur.com/XpdIfFm.png
     category: engineering
     class: ConstructSpell
-    worth: 200
+    worth: 10000
     effects:
         cast:
         -  class: EffectSingle
@@ -990,7 +990,7 @@ superdome:
     icon_url: http://i.imgur.com/RVqBJkm.png
     category: engineering
     class: ConstructSpell
-    worth: 150
+    worth: 9000
     effects:
         cast:
         -  class: EffectSingle
@@ -1014,7 +1014,7 @@ tag:
     icon: sign
     category: dark
     class: SignSpell
-    worth: 20
+    worth: 200
     effects:
         cast:
         -  class: EffectSingle
@@ -1043,7 +1043,7 @@ toss:
     icon_url: http://i.imgur.com/iGH35Be.png
     icon: wood_button
     category: engineering
-    worth: 20
+    worth: 1000
     actions:
         cast:
         -  class: ThrowBlock
@@ -1064,7 +1064,7 @@ volley:
     icon: stone_button
     category: engineering
     pvp_restricted: true
-    worth: 40
+    worth: 3000
     actions:
         cast:
         -  class: Repeat
@@ -1090,14 +1090,17 @@ push:
     icon: rails
     category: elemental
     pvp_restricted: true
-    worth: 15
+    worth: 500
     upgrade_required_path: student
     upgrade_required_casts: 50
     actions:
         cast:
-        -  class: ConeOfEffect
-           actions:
-           -  class: Velocity
+        - class: Repeat
+          actions:
+          - class: Delay
+          - class: ConeOfEffectAction
+            actions:
+            - class: VelocityAction
     effects:
         cast:
         -  class: EffectSingle
@@ -1122,7 +1125,9 @@ push:
         item_speed: 2
         living_entity_speed: 3
         push: 1
-        y_offset: 0.2
+        y_offset: 0.4
+        repeat: 3
+        delay: 250
     costs:
         mana: 40
 
@@ -1147,13 +1152,14 @@ push|2:
         item_speed: 5
         range: 16
         target_count: 8
+        repeat: 4
 
 pull:
     icon_url: http://i.imgur.com/JhUqJ85.png
     icon: fishing_rod
     category: elemental
     pvp_restricted: true
-    worth: 10
+    worth: 200
     actions:
         cast:
         -  class: Velocity
@@ -1195,7 +1201,7 @@ boom:
     icon: fireball
     category: combat
     pvp_restricted: true
-    worth: 30
+    worth: 1000
     upgrade_required_path: apprentice
     upgrade_required_casts: 50
     actions:
@@ -1241,7 +1247,7 @@ nuke:
     icon_url: http://i.imgur.com/64uE1b8.png
     icon: skull_item:4
     category: master
-    worth: 500
+    worth: 10000
     pvp_restricted: true
     actions:
         cast:
@@ -1277,7 +1283,7 @@ frost:
     icon: snow_ball
     category: combat
     pvp_restricted: true
-    worth: 80
+    worth: 1500
     upgrade_required_path: student
     upgrade_required_casts: 50
     actions:
@@ -1338,7 +1344,6 @@ frost:
 frost|2:
     upgrade_required_path: apprentice
     upgrade_required_casts: 50
-    worth: 80
     effects:
         cast:
         -  class: EffectSingle
@@ -1373,7 +1378,6 @@ frost|2:
         mana: 90
 
 frost|3:
-    worth: 120
     parameters:
         radius: 3
         player_damage: 2.5
@@ -1393,7 +1397,7 @@ lightning:
     icon_url: http://i.imgur.com/QNSFbvs.png
     category: elemental
     pvp_restricted: true
-    worth: 100
+    worth: 3000
     actions:
         cast:
         -  class: Spread
@@ -1442,7 +1446,7 @@ tree:
     icon: sapling
     icon_url: http://s3.amazonaws.com/MinecraftSkins/MHF_OakLog.png
     category: elemental
-    worth: 80
+    worth: 2000
     actions:
         cast:
         - class: Tree
@@ -1464,7 +1468,7 @@ forest:
     icon: sapling
     icon_url: http://s3.amazonaws.com/MinecraftSkins/MHF_OakLog.png
     category: elemental
-    worth: 80
+    worth: 4000
     actions:
         cast:
         - class: Repeat
@@ -1548,7 +1552,7 @@ disarm:
     class: DisarmSpell
     pvp_restricted: true
     cast_on_no_target: true
-    worth: 110
+    worth: 2000
     upgrade_required_path: student
     upgrade_required_casts: 50
     effects:
@@ -1635,7 +1639,7 @@ cure:
     icon_url: http://i.imgur.com/5pwbaxJ.png
     icon: cookie
     category: light
-    worth: 20
+    worth: 800
     actions:
         cast:
         -  class: PotionEffect
@@ -1674,6 +1678,7 @@ heal:
     category: light
     upgrade_required_path: student
     upgrade_required_casts: 50
+    worth: 1500
     actions:
         cast:
         -  class: PotionEffect
@@ -1721,7 +1726,8 @@ music:
     icon_url: http://i.imgur.com/ZXwXE7y.png
     icon: gold_record
     category: light
-    worth: 10
+    worth: 500
+    show_undoable: false
     actions:
         cast:
         -  class: PlayRecord
@@ -1748,7 +1754,7 @@ gather:
     icon_url: http://i.imgur.com/nBNOHSD.png
     icon: glowstone_dust
     category: master
-    worth: 30
+    worth: 1500
     show_undoable: false
     actions:
         cast:
@@ -1781,7 +1787,7 @@ mount:
     icon_url: http://i.imgur.com/9NfETun.png
     icon: saddle
     category: master
-    worth: 40
+    worth: 1500
     pvp_restricted: true
     show_undoable: false
     actions:
@@ -1811,7 +1817,7 @@ icbm:
     icon: golden_carrot
     category: demolition
     pvp_restricted: true
-    worth: 500
+    worth: 8000
     actions:
         cast:
         - class: Projectile
@@ -1833,7 +1839,7 @@ neutron:
     icon: poisonous_potato
     category: dark
     pvp_restricted: true
-    worth: 100
+    worth: 7500
     actions:
         cast:
         -  class: Projectile
@@ -1869,7 +1875,7 @@ wither:
     icon: skull_item:1
     category: dark
     pvp_restricted: true
-    worth: 50
+    worth: 2500
     actions:
         cast:
         -  class: Projectile
@@ -1907,7 +1913,7 @@ arrowrain:
     icon: bow
     category: combat
     pvp_restricted: true
-    worth: 30
+    worth: 1000
     actions:
         cast:
         -  class: Projectile
@@ -1940,7 +1946,7 @@ gatling:
     icon: bow
     category: combat
     pvp_restricted: true
-    worth: 30
+    worth: 1500
     actions:
         cast:
         - class: Delay
@@ -1983,7 +1989,7 @@ meteor:
     icon_url: http://i.imgur.com/KxkG8GW.png
     category: demolition
     pvp_restricted: true
-    worth: 90
+    worth: 2500
     actions:
         cast:
         -  class: Projectile
@@ -2015,7 +2021,7 @@ arrow:
     icon: arrow
     category: combat
     pvp_restricted: true
-    worth: 2
+    worth: 900
     upgrade_required_path: student
     upgrade_required_casts: 50
     actions:
@@ -2094,7 +2100,7 @@ flashbang:
     icon: sea_lantern
     category: combat
     pvp_restricted: true
-    worth: 2
+    worth: 500
     upgrade_required_path: student
     upgrade_required_casts: 50
     actions:
@@ -2155,7 +2161,7 @@ weather:
     icon_url: http://i.imgur.com/IqmgaZ2.png
     icon: water_bucket
     category: elemental
-    worth: 80
+    worth: 1500
     actions:
         cast:
         -  class: Weather
@@ -2187,7 +2193,7 @@ fling:
     icon: feather
     icon_url: http://i.imgur.com/F6exk6z.png
     category: utility
-    worth: 80
+    worth: 1000
     pvp_restricted: false
     upgrade_required_path: apprentice
     upgrade_required_casts: 50
@@ -2225,7 +2231,7 @@ torch:
     icon_url: http://i.imgur.com/MK272DM.png
     icon: torch
     category: engineering
-    worth: 80
+    worth: 2000
     upgrade_required_path: engineer
     upgrade_required_casts: 25
     actions:
@@ -2257,7 +2263,7 @@ familiar:
     icon: monster_egg
     category: elemental
     class: FamiliarSpell
-    worth: 40
+    worth: 1000
     entity_types:
         chicken: 30
         cow: 100
@@ -2296,7 +2302,7 @@ monster:
     category: dark
     class: FamiliarSpell
     pvp_restricted: true
-    worth: 70
+    worth: 1500
     entity_types:
         zombie: 100
         skeleton: 100
@@ -2342,7 +2348,7 @@ mob:
     category: dark
     class: FamiliarSpell
     pvp_restricted: true
-    worth: 120
+    worth: 3000
     entity_types:
         zombie: 100
         skeleton: 100
@@ -2387,7 +2393,7 @@ farm:
     icon: wheat
     category: elemental
     class: FamiliarSpell
-    worth: 100
+    worth: 3000
     entity_types:
         chicken: 30
         cow: 100
@@ -2424,7 +2430,7 @@ wolf:
     category: elemental
     class: WolfSpell
     pvp_restricted: true
-    worth: 50
+    worth: 1500
     effects:
         cast:
         -  class: EffectSingle
@@ -2454,7 +2460,7 @@ cat:
     icon: raw_fish
     category: elemental
     class: OcelotSpell
-    worth: 40
+    worth: 1500
     effects:
         cast:
         -  class: EffectSingle
@@ -2484,7 +2490,7 @@ portal:
     icon: eye_of_ender
     category: master
     class: PortalSpell
-    worth: 60
+    worth: 3000
     effects:
         cast:
         -  class: EffectSingle
@@ -2504,7 +2510,7 @@ phase:
     icon_url: http://i.imgur.com/Ql8Ttkb.png
     icon: eye_of_ender
     category: master
-    worth: 10
+    worth: 2000
     actions:
         cast:
         - class: ChangeWorld
@@ -2535,7 +2541,7 @@ invincible:
     icon_url: http://i.imgur.com/e4Wygfl.png
     icon: golden_apple
     category: master
-    worth: 10
+    worth: 5000
     actions:
         cast:
         -  class: PotionEffect
@@ -2568,7 +2574,7 @@ fire:
     icon: flint_and_steel
     category: demolition
     pvp_restricted: true
-    worth: 10
+    worth: 1000
     upgrade_required_path: student
     upgrade_required_casts: 50
     actions:
@@ -2633,7 +2639,7 @@ bubble:
     icon_url: http://i.imgur.com/FMkCRh9.png
     icon: water_bucket
     category: utility
-    worth: 10
+    worth: 500
     upgrade_required_path: student
     upgrade_required_casts: 50
     actions:
@@ -2683,7 +2689,7 @@ regenerate:
     icon: gold_hoe
     category: engineering
     class: RegenerateSpell
-    worth: 500
+    worth: 10000
     effects:
         cast:
         -  class: EffectTrail
@@ -2703,7 +2709,7 @@ superregenerate:
     icon: diamond_hoe
     category: engineering
     class: RegenerateSpell
-    worth: 1000
+    worth: 15000
     effects:
         cast:
         -  class: EffectTrail
@@ -2724,7 +2730,7 @@ paint:
     icon: painting
     category: engineering
     class: FillSpell
-    worth: 20
+    worth: 1000
     effects:
         cast:
         -  class: EffectTrail
@@ -2743,7 +2749,7 @@ fill:
     icon_url: http://i.imgur.com/jmITrfc.png
     category: engineering
     class: FillSpell
-    worth: 200
+    worth: 5000
     effects:
         cast:
         -  class: EffectTrail
@@ -2763,7 +2769,7 @@ recurse:
     icon_url: http://i.imgur.com/jmITrfc.png
     category: engineering
     class: RecurseSpell
-    worth: 150
+    worth: 4000
     effects:
         cast:
         -  class: EffectTrail
@@ -2783,7 +2789,7 @@ gills:
     icon_url: http://i.imgur.com/00ZNC1x.png
     icon: cooked_fish
     category: light
-    worth: 30
+    worth: 1000
     pvp_restricted: false
     actions:
         cast:
@@ -2816,7 +2822,7 @@ day:
     icon_url: http://i.imgur.com/NpYUt8y.png
     icon: emerald
     category: master
-    worth: 120
+    worth: 3000
     actions:
         cast:
         -  class: Time
@@ -2858,7 +2864,7 @@ night:
     icon: ink_sack:0
     category: elemental
     hidden: true
-    worth: 130
+    worth: 2500
     actions:
         cast:
         -  class: Time
@@ -2882,7 +2888,7 @@ time:
     hidden: true
     icon: watch
     category: master
-    worth: 150
+    worth: 4000
     actions:
         cast:
         -  class: Time
@@ -2911,7 +2917,7 @@ bridge:
     icon: stone_hoe
     category: engineering
     class: BridgeSpell
-    worth: 30
+    worth: 2000
     effects:
         cast:
         -  class: EffectSingle
@@ -2926,7 +2932,7 @@ pillar:
     icon_url: http://i.imgur.com/0Z2VP5r.png
     icon: iron_axe
     category: engineering
-    worth: 30
+    worth: 2000
     actions:
         cast:
         - class: BlockSearch
@@ -2949,7 +2955,7 @@ place:
     icon_url: http://i.imgur.com/87qrrmv.png
     icon: diamond_axe
     category: engineering
-    worth: 40
+    worth: 2500
     actions:
         cast:
         - class: ChangeContext
@@ -2973,7 +2979,7 @@ anvil:
     icon_url: http://i.imgur.com/CYQD586.png
     category: utility
     class: PlaceSpell
-    worth: 40
+    worth: 1000
     effects:
         cast:
         -  class: EffectSingle
@@ -2997,7 +3003,7 @@ grenade:
     alias: frag
     category: demolition
     pvp_restricted: true
-    worth: 25
+    worth: 1500
     upgrade_required_path: apprentice
     upgrade_required_casts: 50
     actions:
@@ -3029,7 +3035,7 @@ cluster:
     icon: red_rose:3
     category: demolition
     pvp_restricted: true
-    worth: 160
+    worth: 2500
     actions:
         cast:
         -  class: TNT
@@ -3057,7 +3063,7 @@ bomb:
     icon: double_plant:1
     category: demolition
     pvp_restricted: true
-    worth: 250
+    worth: 3000
     actions:
         cast:
         -  class: TNT
@@ -3088,7 +3094,7 @@ superblob:
     icon_url: http://i.imgur.com/SLmmZ3r.png
     category: engineering
     class: ConstructSpell
-    worth: 500
+    worth: 8000
     effects:
         cast:
         -  class: EffectSingle
@@ -3111,7 +3117,7 @@ superpyramid:
     icon: speckled_melon
     category: engineering
     class: ConstructSpell
-    worth: 500
+    worth: 7000
     effects:
         cast:
         -  class: EffectSingle
@@ -3134,7 +3140,7 @@ box:
     icon: gold_helmet
     category: engineering
     class: ConstructSpell
-    worth: 100
+    worth: 3000
     effects:
         cast:
         -  class: EffectSingle
@@ -3158,7 +3164,7 @@ superbox:
     icon: diamond_helmet
     category: engineering
     class: ConstructSpell
-    worth: 500
+    worth: 6000
     effects:
         cast:
         -  class: EffectSingle
@@ -3181,7 +3187,7 @@ supercube:
     icon: nether_brick_item
     category: engineering
     class: ConstructSpell
-    worth: 500
+    worth: 6500
     effects:
         cast:
         -  class: EffectSingle
@@ -3203,7 +3209,7 @@ backup:
     icon: diamond_pickaxe
     category: engineering
     class: ConstructSpell
-    worth: 2000
+    worth: 10000
     effects:
         cast:
         -  class: EffectSingle
@@ -3232,7 +3238,7 @@ repair:
     icon_url: http://i.imgur.com/JJpGoSN.png
     category: engineering
     class: ConstructSpell
-    worth: 100
+    worth: 3000
     effects:
         cast:
         -  class: EffectSingle
@@ -3260,7 +3266,7 @@ superrepair:
     icon: gold_pickaxe
     category: engineering
     class: ConstructSpell
-    worth: 500
+    worth: 5000
     effects:
         cast:
         -  class: EffectSingle
@@ -3288,7 +3294,7 @@ workbench:
     icon_url: http://i.imgur.com/Zehnnn4.png
     category: engineering
     class: PillarSpell
-    worth: 8
+    worth: 800
     effects:
         cast:
         -  class: EffectSingle
@@ -3310,7 +3316,7 @@ stash:
     icon_url: http://s3.amazonaws.com/MinecraftSkins/MHF_Chest.png
     category: utility
     class: StashSpell
-    worth: 20
+    worth: 1000
     show_undoable: false
     effects:
         cast:
@@ -3328,7 +3334,7 @@ pickpocket:
     icon: shears
     category: staff
     class: StashSpell
-    worth: 1000
+    worth: 20000
     show_undoable: false
     effects:
         cast:
@@ -3350,7 +3356,7 @@ blast:
     icon_url: http://i.imgur.com/IqmgaZ2.png
     icon: sulphur
     category: mining
-    worth: 12
+    worth: 800
     upgrade_required_path: student
     upgrade_required_casts: 50
     actions:
@@ -3414,7 +3420,7 @@ earthquake:
     icon_url: http://i.imgur.com/bCGsZYB.png
     icon: sulphur
     category: combat
-    worth: 200
+    worth: 2000
     actions:
         cast:
         # First thing it does is AOE Velocity
@@ -3505,7 +3511,7 @@ tunnel:
     icon: iron_pickaxe
     category: engineering
     class: TunnelSpell
-    worth: 15
+    worth: 2000
     effects:
         cast:
         -  class: EffectSingle
@@ -3523,7 +3529,7 @@ superblast:
     icon: red_mushroom
     category: engineering
     class: ConstructSpell
-    worth: 100
+    worth: 4000
     effects:
         cast:
         -  class: EffectSingle
@@ -3548,7 +3554,7 @@ convert:
     icon: iron_spade
     category: engineering
     class: ConstructSpell
-    worth: 30
+    worth: 2500
     effects:
         cast:
         -  class: EffectSingle
@@ -3571,7 +3577,7 @@ superconvert:
     icon_url: http://i.imgur.com/uUdb1cP.png
     category: engineering
     class: ConstructSpell
-    worth: 500
+    worth: 7000
     effects:
         cast:
         -  class: EffectSingle
@@ -3595,7 +3601,7 @@ collapse:
     icon_url: http://i.imgur.com/bCGsZYB.png
     icon: iron_plate
     category: combat
-    worth: 80
+    worth: 1500
     upgrade_required_path: master
     upgrade_required_casts: 50
     actions:
@@ -3659,7 +3665,7 @@ supercollapse:
     icon_url: http://i.imgur.com/Z1Pq4RM.png
     category: engineering
     class: ConstructSpell
-    worth: 800
+    worth: 9000
     effects:
         cast:
         -  class: EffectSingle
@@ -3685,7 +3691,7 @@ cloak:
     icon_url: http://i.imgur.com/e4Wygfl.png
     icon: chainmail_chestplate
     category: master
-    worth: 30
+    worth: 1000
     actions:
         cast:
         -  class: PotionEffect
@@ -3712,7 +3718,7 @@ rollback:
     icon_url: http://i.imgur.com/Gn4H1Sk.png
     icon: book_and_quill
     category: engineering
-    worth: 80
+    worth: 5000
     actions:
         cast:
         -  class: Undo
@@ -3742,7 +3748,7 @@ commit:
     icon: enchanted_book
     category: engineering
     class: CommitSpell
-    worth: 150
+    worth: 4000
     effects:
         cast:
         -  class: EffectSingle
@@ -3758,7 +3764,7 @@ counterspell:
     icon_url: http://i.imgur.com/bIiV9Xn.png
     icon: diamond
     category: combat
-    worth: 250
+    worth: 2500
     cast_on_no_target: true
     pvp_restricted: true
     upgrade_required_path: apprentice
@@ -3823,7 +3829,7 @@ breach:
     icon: seeds
     category: mining
     class: ConstructSpell
-    worth: 60
+    worth: 1500
     effects:
         cast:
         -  class: EffectSingle
@@ -3848,7 +3854,7 @@ peek:
     icon: sugar_cane
     category: mining
     class: ConstructSpell
-    worth: 50
+    worth: 1000
     effects:
         cast:
         -  class: EffectSingle
@@ -3875,7 +3881,7 @@ sandblast:
     category: combat
     class: ConstructSpell
     pvp_restricted: true
-    worth: 30
+    worth: 1500
     effects:
         cast:
         -  class: EffectSingle
@@ -3899,7 +3905,7 @@ mine:
     icon_url: http://i.imgur.com/1tXKqr2.png
     category: mining
     class: DropSpell
-    worth: 30
+    worth: 1000
     upgrade_required_path: apprentice
     upgrade_required_casts: 50
     effects:
@@ -3929,7 +3935,7 @@ chop:
     icon: stone_axe
     category: elemental
     class: DropSpell
-    worth: 50
+    worth: 1500
     effects:
         cast:
         -  class: EffectSingle
@@ -3951,7 +3957,7 @@ alter:
     icon: ink_sack
     category: engineering
     class: AlterSpell
-    worth: 8
+    worth: 800
     effects:
         cast:
         -  class: EffectSingle
@@ -3973,7 +3979,7 @@ superalter:
     icon: ink_sack:1
     category: engineering
     class: AlterSpell
-    worth: 20
+    worth: 2000
     effects:
         cast:
         -  class: EffectSingle
@@ -3994,7 +4000,7 @@ sphere:
     icon: snow_ball
     category: engineering
     class: ShapeSpell
-    worth: 20
+    worth: 2000
     effects:
         cast:
         -  class: EffectSingle
@@ -4018,7 +4024,7 @@ blob:
     icon: clay_ball
     icon_url: http://i.imgur.com/SWIxJqS.png
     category: combat
-    worth: 20
+    worth: 1000
     upgrade_required_path: apprentice
     upgrade_required_casts: 50
     actions:
@@ -4073,7 +4079,7 @@ emp:
     icon: daylight_detector
     category: automata
     class: ConstructSpell
-    worth: 15
+    worth: 1500
     effects:
         cast:
         -  class: EffectSingle
@@ -4104,7 +4110,7 @@ superemp:
     icon: diode
     category: automata
     class: ConstructSpell
-    worth: 80
+    worth: 8000
     effects:
         cast:
         -  class: EffectSingle
@@ -4132,7 +4138,7 @@ disintegrate:
     icon: bone
     category: combat
     pvp_restricted: true
-    worth: 25
+    worth: 2500
     actions:
         cast:
         - class: Damage
@@ -4164,7 +4170,7 @@ blink:
     category: utility
     icon: eye_of_ender
     icon_url: http://i.imgur.com/n7UxOwJ.png
-    worth: 120
+    worth: 3000
     upgrade_required_path: student
     upgrade_required_casts: 50
     actions:
@@ -4252,7 +4258,7 @@ absorb:
     icon: bucket
     icon_url: http://i.imgur.com/bNCtxr7.png
     category: engineering
-    worth: 1500
+    worth: 6000
     brush_selection: true
     actions:
         cast:
@@ -4275,7 +4281,7 @@ hat:
     icon_url: http://i.imgur.com/CsPmF87.png
     icon: leather_helmet
     category: utility
-    worth: 18
+    worth: 1500
     actions:
         cast:
         -  class: Hat
@@ -4300,7 +4306,7 @@ wear:
     icon_url: http://i.imgur.com/CsPmF87.png
     icon: leather_helmet
     category: utility
-    worth: 18
+    worth: 1500
     actions:
         cast:
         -  class: Hat
@@ -4312,7 +4318,7 @@ magichat:
     icon_url: http://i.imgur.com/CsPmF87.png
     icon: ender_portal_frame
     category: utility
-    worth: 18
+    worth: 1000
     actions:
       alternate_up:
       - class: Hat
@@ -4339,7 +4345,7 @@ lava:
     icon: ink_sack:14
     category: combat
     pvp_restricted: true
-    worth: 80
+    worth: 2000
     actions:
         cast:
         -  class: Line
@@ -4369,7 +4375,7 @@ stream:
     icon_url: http://i.imgur.com/FMkCRh9.png
     category: combat
     pvp_restricted: true
-    worth: 60
+    worth: 1500
     actions:
         cast:
         -  class: Line
@@ -4399,7 +4405,7 @@ earth:
     icon: ink_sack:3
     category: combat
     pvp_restricted: true
-    worth: 70
+    worth: 1500
     actions:
         cast:
         -  class: Line
@@ -4432,7 +4438,7 @@ iterate:
     icon_url: http://i.imgur.com/vkFJitg.png
     icon: ink_sack:2
     category: engineering
-    worth: 150
+    worth: 2500
     actions:
         cast:
         -  class: Line
@@ -4452,7 +4458,7 @@ column:
     icon_url: http://i.imgur.com/qbXbYej.png
     icon: ink_sack:4
     category: engineering
-    worth: 300
+    worth: 4000
     actions:
         cast:
         -  class: Line
@@ -4476,7 +4482,7 @@ flamethrower:
     icon_url: http://i.imgur.com/OoxraNN.png
     icon: blaze_powder
     category: combat
-    worth: 90
+    worth: 2500
     actions:
         cast:
         -  class: Line
@@ -4510,7 +4516,7 @@ laser:
     icon_url: http://i.imgur.com/SWNaSEw.png
     icon: ink_sack:11
     category: demolition
-    worth: 130
+    worth: 3500
     upgrade_required_path: apprentice
     upgrade_required_casts: 50
     actions:
@@ -4607,7 +4613,7 @@ shrink:
     class: ShrinkSpell
     pvp_restricted: true
     cast_on_no_target: true
-    worth: 40
+    worth: 1500
     effects:
         cast:
         -  class: EffectSingle
@@ -4659,7 +4665,7 @@ grow:
     class: GrowSpell
     pvp_restricted: true
     cast_on_no_target: true
-    worth: 40
+    worth: 1000
     effects:
         cast:
         -  class: EffectSingle
@@ -4705,7 +4711,7 @@ flare:
     icon_url: http://i.imgur.com/SODRIj1.png
     icon: firework
     category: light
-    worth: 2
+    worth: 200
     show_undoable: false
     actions:
         cast:
@@ -4727,7 +4733,7 @@ recall:
     icon_url: http://i.imgur.com/DUCgoAF.png
     icon: compass
     category: utility
-    worth: 25
+    worth: 1000
     cast_on_no_target: false
     actions:
         cast:
@@ -4770,7 +4776,7 @@ respawn:
     hidden: true
     icon: compass
     category: utility
-    worth: 20
+    worth: 500
     actions:
         cast:
         -  class: Command
@@ -4794,7 +4800,7 @@ levitate:
     icon: gold_boots
     category: master
     class: LevitateSpell
-    worth: 100
+    worth: 7000
     show_undoable: false
     effects:
         cast:
@@ -4827,7 +4833,7 @@ force:
     category: elemental
     class: ForceSpell
     pvp_restricted: true
-    worth: 200
+    worth: 5000
     effects:
         cast:
         -  class: EffectSingle
@@ -4859,7 +4865,7 @@ fireball:
     icon: ghast_tear
     category: combat
     pvp_restricted: true
-    worth: 35
+    worth: 1500
     actions:
         cast:
         -  class: Projectile
@@ -4919,7 +4925,7 @@ map:
     hidden: true
     icon_url: http://i.imgur.com/4aYF0NF.png
     icon: map
-    worth: 45
+    worth: 500
     category: utility
     class: MapSpell
     parameters:
@@ -4933,7 +4939,7 @@ camera:
     icon: double_plant
     category: specialty
     class: CameraSpell
-    worth: 8
+    worth: 800
     effects:
         cast:
         -  class: EffectSingle
@@ -4954,7 +4960,7 @@ tent:
     icon_url: http://i.imgur.com/nrpoumA.png
     category: master
     class: ConstructSpell
-    worth: 350
+    worth: 7000
     effects:
         cast:
         -  class: EffectSingle
@@ -4981,7 +4987,7 @@ cage:
     icon: iron_fence
     category: master
     class: ConstructSpell
-    worth: 250
+    worth: 6000
     effects:
         cast:
         -  class: EffectSingle
@@ -5008,7 +5014,7 @@ wolfhouse:
     icon: sapling:5
     category: master
     class: ConstructSpell
-    worth: 2000
+    worth: 10000
     effects:
         cast:
         -  class: EffectSingle
@@ -5061,7 +5067,7 @@ missile:
     upgrade_required_path: beginner
     upgrade_required_casts: 15
     category: combat
-    worth: 40
+    worth: 1500
     pvp_restricted: true
     actions:
         cast:
@@ -5166,7 +5172,7 @@ blind:
     category: combat
     pvp_restricted: true
     cast_on_no_target: true
-    worth: 10
+    worth: 700
     actions:
         cast:
         -  class: PotionEffect
@@ -5220,7 +5226,7 @@ pollinate:
     icon_url: http://i.imgur.com/kMiR9fB.png
     icon: yellow_flower
     category: light
-    worth: 50
+    worth: 1000
     actions:
         cast:
         -  class: Repeat
@@ -5310,7 +5316,7 @@ broom:
     category: specialty
     class: LevitateSpell
     pvp_restricted: false
-    worth: 50
+    worth: 6000
     effects:
         cast:
         -  class: EffectSingle
@@ -5398,7 +5404,7 @@ paste:
     icon: iron_pickaxe
     category: engineering
     class: ConstructSpell
-    worth: 500
+    worth: 8500
     effects:
         cast:
         -  class: EffectSingle
@@ -5421,7 +5427,7 @@ kill:
     icon_url: http://i.imgur.com/XdgheMr.png
     category: dark
     pvp_restricted: true
-    worth: 1000
+    worth: 5500
     actions:
         cast:
         -  class: Projectile
@@ -5495,7 +5501,7 @@ torture:
     category: dark
     pvp_restricted: true
     cast_on_no_target: true
-    worth: 300
+    worth: 4000
     actions:
         cast:
         -  class: PotionEffect
@@ -5559,7 +5565,7 @@ rubberize:
     icon_url: http://i.imgur.com/3ogKLnG.png
     category: engineering
     class: RecurseSpell
-    worth: 150
+    worth: 1500
     cast_on_no_target: true
     effects:
         cast:
@@ -5582,7 +5588,7 @@ rubberize:
 count:
     icon: watch
     category: staff
-    worth: 120
+    worth: 500
     hidden: true
     actions:
         cast:
@@ -5611,7 +5617,7 @@ superfly:
     icon: feather
     category: staff
     class: LevitateSpell
-    worth: 10000
+    worth: 15000
     effects:
         cast:
         -  class: EffectSingle
@@ -5629,7 +5635,7 @@ petrify:
     category: combat
     pvp_restricted: true
     cast_on_no_target: true
-    worth: 50
+    worth: 2000
     actions:
         cast:
         -  class: PotionEffect
@@ -5693,7 +5699,7 @@ entangle:
     icon: gold_ingot
     category: combat
     class: ConstructSpell
-    worth: 45
+    worth: 1500
     pvp_restricted: true
     effects:
         cast:
@@ -5728,7 +5734,7 @@ wound:
     icon: quartz
     category: combat
     pvp_restricted: true
-    worth: 25
+    worth: 1000
     actions:
         cast:
         -  class: Damage
@@ -5794,7 +5800,7 @@ stun:
     icon: ink_sack:4
     category: combat
     pvp_restricted: true
-    worth: 40
+    worth: 800
     actions:
         cast:
         - class: Firework
@@ -5856,7 +5862,7 @@ poison:
     icon_url: http://i.imgur.com/RxWheur.png
     category: combat
     pvp_restricted: true
-    worth: 20
+    worth: 1000
     upgrade_required_path: student
     upgrade_required_casts: 50
     actions:
@@ -5939,7 +5945,7 @@ lift:
     icon_url: http://i.imgur.com/PHlfm7b.png
     icon: ink_sack:8
     category: utility
-    worth: 15
+    worth: 1500
     pvp_restricted: true
     actions:
         cast:
@@ -6017,7 +6023,7 @@ admission:
     icon: wood_door
     category: utility
     class: DoorSpell
-    worth: 50
+    worth: 1000
     cast_on_no_target: true
     upgrade_required_path: master
     upgrade_required_casts: 20
@@ -6049,7 +6055,7 @@ harden:
     icon: flint
     category: utility
     class: RecurseSpell
-    worth: 150
+    worth: 1500
     cast_on_no_target: true
     upgrade_required_path: apprentice
     upgrade_required_casts: 50
@@ -6084,7 +6090,7 @@ sponge:
     icon: sponge
     category: utility
     class: ConstructSpell
-    worth: 30
+    worth: 1000
     cast_on_no_target: true
     effects:
         cast:
@@ -6138,7 +6144,7 @@ engineershop:
         auto_upgrade: true
         confirm_filler: stained_glass:2
         spells:
-          rollback: 500
+          rollback: 5000
 
 architectshop:
     icon: gold_axe
@@ -6153,7 +6159,7 @@ architectshop:
         auto_upgrade: true
         confirm_filler: stained_glass:9
         spells:
-          absorb: 1000
+          absorb: 6000
 
 bookshop:
     icon: book
@@ -6267,7 +6273,7 @@ tracking:
     icon_url: http://i.imgur.com/xzXPNcH.png
     icon: compass
     category: utility
-    worth: 20
+    worth: 500
     actions:
         cast:
          -  class: Orient
@@ -6307,7 +6313,7 @@ singularity:
     icon: obsidian
     category: master
     pvp_restricted: true
-    worth: 2
+    worth: 5000
     upgrade_required_path: student
     upgrade_required_casts: 50
     actions:
@@ -6409,7 +6415,7 @@ tornado:
     icon: feather
     category: elemental
     pvp_restricted: true
-    worth: 30
+    worth: 4000
     actions:
         cast:
         -  class: Repeat
@@ -6475,7 +6481,7 @@ rocket:
     icon_url: http://i.imgur.com/SODRIj1.png
     icon: ink_sack:4
     category: utility
-    worth: 60
+    worth: 1000
     actions:
         cast:
         - class: FallProtection

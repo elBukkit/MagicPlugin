@@ -508,27 +508,31 @@ worth_effect_sound: 8
 # This will be used as a base multiplier for all values. Once spells and wand properties are balanced relative
 # to each other (which will hopefully be the default...) you can use this to scale the overall worth of Magic
 # items relative to the rest of your economy.
-worth_base: 8
+#
+# If you have a default Gringott's install, you may want to change this to "0.01" to make the emeralds
+# match up.
+worth_base: 1
 
 # By default the Magic ecnonomy is set up for a physical, item-based ecnonomy. I have chosen to use a tiered
 # set of items: emerald, diamond, gold_nugget.
+#
 # I did some research into various economies- looked at MC item distribution statistics, Essentials' item db valuations,
 # anything I could find. I think this may over-value emeralds given the variable of Villager trading, but
 # I figure there are plugins that can re-balance that if you wish.
+#
 # Other than via trading, emeralds are incredibly rare so I feel like is a good choice for the "top tier" currency.
 # I've tried to balance them against diamonds and gold in a natural way, but also in a way that will hopefully result
 # in item prices that stack well.
 #
+# I also decide to make the values even multiples of 10 for convenicence.
+#
 # This setup will work very well with the Shopkeepers plugin, or any other item-based trading shop. It could also
 # be used as a basis for player trading of wands, spells, and items.
 #
-# This could also be used to help facilitate dtlTraders setup. Change the values below to the respective amounts
-# of cobblestone/stone/wood that dtlTraders uses as currency icons, and (eventually..) Magic will be able to
-# give you the proper amounts of each to set up the price of your item in the Trader, using the in-game menu.
 worth_items:
   gold_nugget: 1
-  diamond: 16
-  emerald: 256
+  diamond: 10
+  emerald: 100
 
 ## Work-in-Progress or not-fully-functional options
 

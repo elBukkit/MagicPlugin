@@ -67,3 +67,10 @@
 
 # Whether or not using a wand on an anvil will organize its inventory
 #enable_organizing: true
+
+# This can be used to scale spell and wand prices up and down without
+# Having to invidivudally configure "worth" for each spell.
+#
+# If you have a default Gringott's install, you may want to change this to "0.01" to make the emeralds
+# match up.
+# worth_base: 1

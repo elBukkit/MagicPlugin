@@ -1,5 +1,10 @@
 # Migration Notes
 
+## 4.8
+
+Spell shops were re-balanced. You can now tweak the "worth_base" value in config.yml to scale
+spell prices up or down.
+
 ## 4.6
 
 4.6 is a major change under the hood, the biggest since 4.0. I've tried to keep everything
