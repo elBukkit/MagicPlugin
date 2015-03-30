@@ -168,6 +168,7 @@ public interface Mage extends CostReducer {
      */
     public void sendMessage(String message);
     public void sendDebugMessage(String message);
+    public void sendDebugMessage(String message, int level);
 
     /**
      * Send a message to this Mage.
@@ -375,7 +376,7 @@ public interface Mage extends CostReducer {
     public void deactivateGUI();
 
     public void showHoloText(Location location, String text, int duration);
-    public boolean isDebugEnabled();
-    public void setDebugEnabled(boolean debug);
+    public int getDebugLevel();
+    public void setDebugLevel(int level);
     public void giveItem(ItemStack item);
 }
