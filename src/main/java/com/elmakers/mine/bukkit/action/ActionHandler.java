@@ -7,6 +7,7 @@ import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.batch.ActionBatch;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
@@ -191,6 +192,8 @@ public class ActionHandler implements Cloneable
         {
             return result;
         }
+        Mage mage = context.getMage();
+        boolean showDebug = mage.getDebugLevel() > 1;
         while (currentAction != null)
         {
             ActionContext action = actions.get(currentAction);
@@ -213,6 +216,9 @@ public class ActionHandler implements Cloneable
             result = result.min(actionResult);
             if (actionResult == SpellResult.PENDING) {
                 break;
+            }
+            if (showDebug) {
+                mage.sendDebugMessage(ChatColor.WHITE + " Action " + ChatColor.GOLD + action.getAction().getClass().getSimpleName() + ChatColor.WHITE  + ": " + ChatColor.AQUA + result);
             }
             if (isConditionalOnSuccess && actionResult.isSuccess()) {
                 cancel(context);
