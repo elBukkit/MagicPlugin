@@ -1933,7 +1933,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
                 // Check for level up
                 WandUpgradePath nextPath = path.getUpgrade();
                 if (nextPath != null && path.checkUpgradeRequirements(this, null) && !path.canEnchant(this)) {
-                    path.upgrade(this, mage);
+                    path.upgrade(this, enchanter);
                     path = nextPath;
                 }
             } else if (path.canEnchant(this)) {
