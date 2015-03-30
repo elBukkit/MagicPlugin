@@ -324,7 +324,16 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
             } else if (blockState instanceof InventoryHolder) {
                 InventoryHolder holder = (InventoryHolder)blockState;
                 Inventory holderInventory = holder.getInventory();
-                inventoryContents = holderInventory.getContents();
+                ItemStack[] contents = holderInventory.getContents();
+                if (contents != null && contents.length > 0) {
+                    inventoryContents = new ItemStack[contents.length];
+                    for (int i = 0; i < contents.length; i++) {
+                        ItemStack stack = contents[i];
+                        if (stack != null && stack.getType() != Material.AIR && stack.getAmount() > 0) {
+                            inventoryContents[i] = NMSUtils.getCopy(stack);
+                        }
+                    }
+                }
             } else if (blockState instanceof Skull) {
                 Skull skull = (Skull)blockState;
                 rotation = skull.getRotation();
@@ -396,7 +405,6 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
                 int maxSize = Math.min(newInventory.getSize(), inventoryContents.length);
                 for (int i = 0; i < maxSize; i++) {
                     ItemStack item = inventoryContents[i];
-                    item = NMSUtils.getCopy(item);
                     if (item != null) {
                         newInventory.setItem(i, item);
                     }
