@@ -3042,35 +3042,7 @@ public class MagicController implements Listener, MageController {
         Mage apiMage = getMage(player);
         if (!(apiMage instanceof com.elmakers.mine.bukkit.magic.Mage)) return;
         com.elmakers.mine.bukkit.magic.Mage mage = (com.elmakers.mine.bukkit.magic.Mage)apiMage;
-
-        if (mage.hasStoredInventory()) {
-            mage.addToStoredInventory(itemStack);
-            return;
-        }
-
-        // Check for wand upgrades if appropriate
-        Wand activeWand = mage.getActiveWand();
-        if (activeWand != null) {
-            if (activeWand.addItem(itemStack)) {
-                return;
-            }
-        }
-
-		// Place directly in hand if possible
-		PlayerInventory inventory = player.getInventory();
-		ItemStack inHand = inventory.getItemInHand();
-		if (inHand == null || inHand.getType() == Material.AIR) {
-			inventory.setItem(inventory.getHeldItemSlot(), itemStack);
-			if (Wand.isWand(itemStack)) {
-				Wand wand = new Wand(this, itemStack);
-				wand.activate(this.getMage((CommandSender)player));
-			}
-		} else {
-			HashMap<Integer, ItemStack> returned = player.getInventory().addItem(itemStack);
-			if (returned.size() > 0) {
-				player.getWorld().dropItem(player.getLocation(), itemStack);
-			}
-		}
+        mage.giveItem(itemStack);
 	}
 
 	@EventHandler

@@ -1516,5 +1516,40 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         }
         respawnArmor.put(slot, item);
     }
+
+    public void giveItem(ItemStack itemStack) {
+
+        if (hasStoredInventory()) {
+            addToStoredInventory(itemStack);
+            return;
+        }
+
+        // Check for wand upgrades if appropriate
+        Wand activeWand = getActiveWand();
+        if (activeWand != null) {
+            if (activeWand.addItem(itemStack)) {
+                return;
+            }
+        }
+
+        // Place directly in hand if possible
+        Player player = getPlayer();
+        if (player == null) return;
+
+        PlayerInventory inventory = player.getInventory();
+        ItemStack inHand = inventory.getItemInHand();
+        if (inHand == null || inHand.getType() == Material.AIR) {
+            inventory.setItem(inventory.getHeldItemSlot(), itemStack);
+            if (Wand.isWand(itemStack)) {
+                Wand wand = new Wand(controller, itemStack);
+                wand.activate(this);
+            }
+        } else {
+            HashMap<Integer, ItemStack> returned = player.getInventory().addItem(itemStack);
+            if (returned.size() > 0) {
+                player.getWorld().dropItem(player.getLocation(), itemStack);
+            }
+        }
+    }
 }
 

@@ -1,6 +1,7 @@
 # TODO
 
  - Try to Paste the elder tree
+ - Can't blink through doors?
  - Grief prevention plugin support (?)
  - Recall still putting mark in the ground at his bed!
  - Backup not working for some? Deleted science's chest?

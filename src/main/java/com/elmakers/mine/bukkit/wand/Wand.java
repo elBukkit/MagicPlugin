@@ -1845,7 +1845,9 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 				break;
 			}
 			hotbar.setItem(i + saveOffset, playerItem);
-            updateSlot(i + saveOffset + currentHotbar * HOTBAR_INVENTORY_SIZE, playerItem);
+            if (!updateSlot(i + saveOffset + currentHotbar * HOTBAR_INVENTORY_SIZE, playerItem)) {
+                hotbar.setItem(i + saveOffset, new ItemStack(Material.AIR));
+            }
 		}
 		
 		// Fill in the active inventory page
@@ -1854,11 +1856,13 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		for (int i = 0; i < openInventory.getSize(); i++) {
             ItemStack playerItem = playerInventory.getItem(i + HOTBAR_SIZE);
 			openInventory.setItem(i, playerItem);
-            updateSlot(i + hotbarOffset + openInventoryPage * Wand.INVENTORY_SIZE, playerItem);
+            if (!updateSlot(i + hotbarOffset + openInventoryPage * Wand.INVENTORY_SIZE, playerItem)) {
+                openInventory.setItem(i, new ItemStack(Material.AIR));
+            }
 		}
 	}
 
-    protected void updateSlot(int slot, ItemStack item) {
+    protected boolean updateSlot(int slot, ItemStack item) {
         String spellKey = getSpell(item);
         if (spellKey != null) {
             spells.put(spellKey, slot);
@@ -1866,8 +1870,14 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
             String brushKey = getBrush(item);
             if (brushKey != null) {
                 brushes.put(brushKey, slot);
+            } else if (mage != null && item != null && item.getType() != Material.AIR) {
+                // Must have been an item inserted directly into player's inventory?
+                mage.giveItem(item);
+                return false;
             }
         }
+
+        return true;
     }
 
     public int enchant(int totalLevels, com.elmakers.mine.bukkit.api.magic.Mage mage) {
@@ -2426,45 +2436,45 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	
 	public void closeInventory() {
 		if (!isInventoryOpen()) return;
-		saveInventory();
-		inventoryIsOpen = false;
-		if (mage != null) {
-            if (inventoryCloseSound != null) {
-                mage.playSound(inventoryCloseSound.getSound(), inventoryCloseSound.getVolume(), inventoryCloseSound.getPitch());
-            }
-			if (getMode() == WandMode.INVENTORY) {
-				restoreInventory();
-			} else {
-				mage.getPlayer().closeInventory();
-			}
+        try {
+            saveInventory();
+            inventoryIsOpen = false;
+            if (mage != null) {
+                if (inventoryCloseSound != null) {
+                    mage.playSound(inventoryCloseSound.getSound(), inventoryCloseSound.getVolume(), inventoryCloseSound.getPitch());
+                }
+                if (getMode() == WandMode.INVENTORY) {
+                    restoreInventory();
+                } else {
+                    mage.getPlayer().closeInventory();
+                }
 
-            // Check for items the player might've glitched onto their body...
-            PlayerInventory inventory = mage.getPlayer().getInventory();
-            ItemStack testItem = inventory.getHelmet();
-            if (isSpell(testItem) || isBrush(testItem))
-            {
-                inventory.setHelmet(new ItemStack(Material.AIR));
-                mage.getPlayer().updateInventory();
+                // Check for items the player might've glitched onto their body...
+                PlayerInventory inventory = mage.getPlayer().getInventory();
+                ItemStack testItem = inventory.getHelmet();
+                if (isSpell(testItem) || isBrush(testItem)) {
+                    inventory.setHelmet(new ItemStack(Material.AIR));
+                    mage.getPlayer().updateInventory();
+                }
+                testItem = inventory.getBoots();
+                if (isSpell(testItem) || isBrush(testItem)) {
+                    inventory.setBoots(new ItemStack(Material.AIR));
+                    mage.getPlayer().updateInventory();
+                }
+                testItem = inventory.getLeggings();
+                if (isSpell(testItem) || isBrush(testItem)) {
+                    inventory.setLeggings(new ItemStack(Material.AIR));
+                    mage.getPlayer().updateInventory();
+                }
+                testItem = inventory.getChestplate();
+                if (isSpell(testItem) || isBrush(testItem)) {
+                    inventory.setChestplate(new ItemStack(Material.AIR));
+                    mage.getPlayer().updateInventory();
+                }
             }
-            testItem = inventory.getBoots();
-            if (isSpell(testItem) || isBrush(testItem))
-            {
-                inventory.setBoots(new ItemStack(Material.AIR));
-                mage.getPlayer().updateInventory();
-            }
-            testItem = inventory.getLeggings();
-            if (isSpell(testItem) || isBrush(testItem))
-            {
-                inventory.setLeggings(new ItemStack(Material.AIR));
-                mage.getPlayer().updateInventory();
-            }
-            testItem = inventory.getChestplate();
-            if (isSpell(testItem) || isBrush(testItem))
-            {
-                inventory.setChestplate(new ItemStack(Material.AIR));
-                mage.getPlayer().updateInventory();
-            }
-		}
+        } catch (Throwable ex) {
+            restoreInventory();
+        }
 	}
 
     @Override
