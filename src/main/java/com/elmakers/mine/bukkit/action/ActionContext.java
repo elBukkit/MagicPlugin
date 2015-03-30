@@ -32,6 +32,11 @@ public class ActionContext implements Cloneable {
         return action.perform(context);
     }
 
+    public ConfigurationSection getActionParameters()
+    {
+        return parameters;
+    }
+
     public ConfigurationSection getEffectiveParameters(ConfigurationSection baseParameters)
     {
         ConfigurationSection effectiveParameters = baseParameters;
