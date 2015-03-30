@@ -3251,6 +3251,7 @@ repair:
         radius: 4
         type: sphere
         check_destructible: false
+        indestructible: restricted
         transparent: transparent_to_construction
         brush: clone
         brushmod: erase
@@ -3279,6 +3280,7 @@ superrepair:
         range: 32
         type: sphere
         check_destructible: false
+        indestructible: restricted
         transparent: transparent_to_construction
         brush: clone
         brushmod: erase
