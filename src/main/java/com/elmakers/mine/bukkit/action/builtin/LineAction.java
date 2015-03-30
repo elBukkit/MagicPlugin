@@ -107,7 +107,7 @@ public class LineAction extends CompoundAction
                     continue;
                 }
             }
-            SpellResult actionResult = performActions(actionContext);
+            SpellResult actionResult = super.perform(actionContext);
             result = result.min(actionResult);
             if (actionResult == SpellResult.PENDING) {
                 break;

@@ -34,7 +34,7 @@ public class SkipAction extends CompoundAction
         {
             super.reset(context);
         }
-        SpellResult result = performActions(context);
+        SpellResult result = super.perform(context);
         pending = result == SpellResult.PENDING;
 		return result;
 	}

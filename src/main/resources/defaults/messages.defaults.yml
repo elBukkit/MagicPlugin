@@ -939,7 +939,9 @@ spells:
         cast: You put your item on your head
     magichat:
         name: Magic Hat
-        cast: A bunny pops out!
+        cast: ""
+        cast_nightvision: Your hat lights the way
+        cast_bunny: A bunny pops out!
         alternate: Your magic hat jumps onto your head
     stalactite:
         name: Stalactite

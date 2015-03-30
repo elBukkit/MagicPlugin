@@ -61,7 +61,7 @@ public class PlayerSelectAction extends CompoundAction implements GUIAction
                 createActionContext(context);
                 actionContext.setTargetEntity(player);
                 actionContext.setTargetLocation(player.getLocation());
-                performActions(actionContext);
+                super.perform(actionContext);
                 actionContext.playEffects("player_selected");
             }
 

@@ -4282,7 +4282,7 @@ hat:
     icon_url: http://i.imgur.com/CsPmF87.png
     icon: leather_helmet
     category: utility
-    worth: 1500
+    worth: 800
     actions:
         cast:
         -  class: Hat
@@ -4324,7 +4324,25 @@ magichat:
       alternate_up:
       - class: Hat
       cast:
-      - class: SpawnEntity
+      - class: Random
+        actions:
+        - class: Serial
+          weight: 100
+          actions:
+          - class: SpawnEntity
+            type: rabbit
+          - class: Message
+            message: cast_bunny
+        - class: Serial
+          weight: 20
+          actions:
+          - class: AreaOfEffect
+            radius: 5
+            actions:
+            - class: PotionEffect
+              effect_night_vision: 2
+          - class: Message
+            message: cast_nightvision
     effects:
       cast:
       -  class: EffectSingle
@@ -4335,9 +4353,10 @@ magichat:
            particle: smoke_large
     parameters:
       use_item: true
-      type: rabbit
       reason: custom
-      undo: 30000
+      undo: 31000
+      duration: 30000
+      cooldown: 10000
       range: 4
       allow_max_range: true
 

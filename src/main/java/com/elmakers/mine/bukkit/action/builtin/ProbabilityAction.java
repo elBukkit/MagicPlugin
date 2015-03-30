@@ -25,7 +25,7 @@ public class ProbabilityAction extends CompoundAction
 	{
 		SpellResult result = SpellResult.NO_ACTION;
         if (context.getRandom().nextDouble() <= probability) {
-            result = result.min(performActions(context));
+            result = result.min(super.perform(context));
         }
 
 		return result;

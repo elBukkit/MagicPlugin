@@ -40,12 +40,12 @@ public class BrushAction extends CompoundAction {
     @Override
     public SpellResult perform(CastContext context) {
         if (brushes.size() == 0) {
-            return performActions(context);
+            return super.perform(context);
         }
         createActionContext(context);
         MaterialBrush brush = brushes.get(context.getRandom().nextInt(brushes.size()));
         actionContext.setBrush(brush);
-        return performActions(actionContext);
+        return super.perform(actionContext);
     }
 
     @Override

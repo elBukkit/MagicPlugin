@@ -31,7 +31,7 @@ public class RetargetAction extends CompoundAction {
         createActionContext(context);
         actionContext.addWork(range);
         actionContext.retarget(range, fov, closeRange, closeFOV, useHitbox);
-        return performActions(actionContext);
+        return super.perform(actionContext);
     }
 
     @Override

@@ -64,7 +64,7 @@ public class SpreadAction extends CompoundAction
             targetLocation.setZ(targetLocation.getZ() + zOffset);
             actionContext.setTargetLocation(targetLocation);
         }
-        return performActions(actionContext);
+        return super.perform(actionContext);
 	}
 
     @Override

@@ -20,7 +20,7 @@ public class CoverAction extends CompoundAction
         }
         createActionContext(context);
         actionContext.setTargetLocation(targetBlock.getLocation());
-		return performActions(actionContext);
+		return super.perform(actionContext);
 	}
 
     @Override

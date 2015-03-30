@@ -115,7 +115,7 @@ public class VolumeAction extends CompoundAction
 			}
 			checked = true;
 			actionContext.setTargetLocation(block.getLocation());
-			return performActions(actionContext);
+			return super.perform(actionContext);
 		}
 
 		Location location = context.getLocation();
@@ -149,7 +149,7 @@ public class VolumeAction extends CompoundAction
 				Block targetBlock = block.getRelative(offset.getBlockX(), offset.getBlockY(), offset.getBlockZ());
 				actionContext.setTargetLocation(targetBlock.getLocation());
 
-				SpellResult actionResult = performActions(actionContext);
+				SpellResult actionResult = super.perform(actionContext);
 				result = result.min(actionResult);
 				if (actionResult == SpellResult.PENDING) {
 					break;
