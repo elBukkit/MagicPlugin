@@ -7,6 +7,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
+import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.magic.Messages;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import org.bukkit.configuration.ConfigurationSection;
@@ -45,12 +46,19 @@ public class WandLevel {
 	
 	private LinkedList<WeightedPair<Float>> hasteProbability = new LinkedList<WeightedPair<Float>>();
 
-	protected WandLevel(WandUpgradePath path, ConfigurationSection template, int levelIndex, int nextLevelIndex, float distance) {
+	protected WandLevel(WandUpgradePath path, MageController controller, ConfigurationSection template, int levelIndex, int nextLevelIndex, float distance) {
         this.path = path;
 
-		// Fetch spell probabilities
-		com.elmakers.mine.bukkit.utility.RandomUtils.populateStringProbabilityMap(spellProbability, template.getConfigurationSection("spells"), levelIndex, nextLevelIndex, distance);
-		
+		// Fetch spell probabilities, and filter out invalid/unknown spells
+        LinkedList<WeightedPair<String>> spells = new LinkedList<WeightedPair<String>>();
+		com.elmakers.mine.bukkit.utility.RandomUtils.populateStringProbabilityMap(spells, template.getConfigurationSection("spells"), levelIndex, nextLevelIndex, distance);
+
+        for (WeightedPair<String> spellValue : spells) {
+            if (controller.getSpellTemplate(spellValue.getValue()) != null) {
+                spellProbability.add(spellValue);
+            }
+        }
+
 		// Fetch spell count probabilities
 		com.elmakers.mine.bukkit.utility.RandomUtils.populateIntegerProbabilityMap(spellCountProbability, template.getConfigurationSection("spell_count"), levelIndex, nextLevelIndex, distance);
 		

@@ -1,5 +1,10 @@
 # TODO
 
+ - Better enchanting/shops behavior for disabled/removed spells
+ - Undoing a chest glitches it with 0's? (SmallSansSerif reported)
+ - Missing level up messages (only on CerealCraft?)
+ - Commands for Recall
+
  - Try to Paste the elder tree
  - Can't blink through doors?
  - Grief prevention plugin support (?)

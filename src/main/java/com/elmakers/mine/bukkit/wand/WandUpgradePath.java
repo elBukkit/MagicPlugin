@@ -114,7 +114,14 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
         // Cache spells, mainly used for spellbooks
         ConfigurationSection spellSection = template.getConfigurationSection("spells");
         if (spellSection != null) {
-            spells.addAll(spellSection.getKeys(false));
+            Collection<String> spellKeys = spellSection.getKeys(false);
+            for (String spellKey : spellKeys) {
+                if (controller.getSpellTemplate(spellKey) != null) {
+                    spells.add(spellKey);
+                } else {
+                    controller.getLogger().warning("Unknown or disabled spell " + spellKey + " in enchanting path " + key +", ignoring");
+                }
+            }
         }
         allSpells.addAll(spells);
 
@@ -212,7 +219,7 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
             }
 
             WandLevel wandLevel = levelMap.get(level);
-            WandLevel newLevel = new WandLevel(this, template, levelIndex, nextLevelIndex, distance);
+            WandLevel newLevel = new WandLevel(this, controller, template, levelIndex, nextLevelIndex, distance);
             if (wandLevel == null) {
                 wandLevel = newLevel;
             } else {
