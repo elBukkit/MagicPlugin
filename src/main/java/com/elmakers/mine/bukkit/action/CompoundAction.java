@@ -21,6 +21,7 @@ public abstract class CompoundAction extends TriggeredCompoundAction
         }
     }
 
+    @Override
     public void reset(CastContext context)
     {
         super.reset(context);
@@ -29,7 +30,8 @@ public abstract class CompoundAction extends TriggeredCompoundAction
         }
     }
 
-    protected SpellResult performActions(CastContext context) {
+    @Override
+    public SpellResult perform(CastContext context) {
         if (actions == null) {
             return SpellResult.FAIL;
         }

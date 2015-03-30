@@ -52,7 +52,7 @@ public abstract class CompoundEntityAction extends CompoundAction
             }
             actionContext.setTargetEntity(entity);
             actionContext.setTargetLocation(entity.getLocation());
-            SpellResult entityResult = performActions(actionContext);
+            SpellResult entityResult = super.perform(actionContext);
             result = result.min(entityResult);
             if (entityResult == SpellResult.PENDING) {
                 break;
