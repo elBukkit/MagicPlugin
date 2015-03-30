@@ -1,7 +1,5 @@
 # TODO
 
- - Undoing a chest glitches it with 0's? (SmallSansSerif reported)
- - Commands for Recall
  - Try to Paste the elder tree
  - Can't blink through doors?
  - Grief prevention plugin support (?)

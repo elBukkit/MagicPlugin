@@ -8,6 +8,7 @@
  - Fix restoring chest contents creating glitched "0" amount items
  - Fix items sometimes dropping from exploded chests set to roll back
  - Remove "bounce" spell
+ - Add support for commands in Recall (for /f home, /spawn with warmup, etc)
 
 ## 4.7.1
 

@@ -80,9 +80,16 @@ phase:
           world_the_end_backup:
              target: world_the_end
              scale: 1
-             
+
 recall:
   parameters:
+    commands:
+      hub:
+        name: elMakers Hub
+        description: Return to the Hub
+        icon: nether_star
+        command: server hub
+        op: true
     warps:
       town:
         name: The Capitol

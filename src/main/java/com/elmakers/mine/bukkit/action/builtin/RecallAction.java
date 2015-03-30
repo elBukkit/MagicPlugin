@@ -15,6 +15,7 @@ import org.apache.commons.lang.StringUtils;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -33,6 +34,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Level;
 
 public class RecallAction extends BaseSpellAction implements GUIAction
 {
@@ -43,6 +45,7 @@ public class RecallAction extends BaseSpellAction implements GUIAction
     private boolean allowCrossWorld = true;
     private boolean maintainDirection = false;
     private Map<String, ConfigurationSection> warps = new HashMap<String, ConfigurationSection>();
+    private Map<String, ConfigurationSection> commands = new HashMap<String, ConfigurationSection>();
     private List<RecallType> enabledTypes = new ArrayList<RecallType>();
     private Map<Integer, Waypoint> options = new HashMap<Integer, Waypoint>();
     private CastContext context;
@@ -68,19 +71,20 @@ public class RecallAction extends BaseSpellAction implements GUIAction
 
     private enum RecallType
     {
-        MARKER,
+        COMMAND,
+        WARP,
         DEATH,
         SPAWN,
         HOME,
         WAND,
-        WARP
-        //	FHOME,
+        MARKER
     }
 
     private static MaterialAndData defaultMaterial = new MaterialAndData(DefaultWaypointMaterial);
 
     private class Waypoint implements Comparable<Waypoint>
     {
+        public final RecallType type;
         public final String name;
         public final String description;
         public final Location location;
@@ -88,39 +92,75 @@ public class RecallAction extends BaseSpellAction implements GUIAction
         public final String failMessage;
         public final MaterialAndData icon;
         public final String iconURL;
+        public final String command;
+        public final boolean opPlayer;
 
-        public Waypoint(Location location, String name, String message, String failMessage, String description, MaterialAndData icon) {
+        public Waypoint(RecallType type, Location location, String name, String message, String failMessage, String description, MaterialAndData icon) {
             this.name = name;
+            this.type = type;
             this.location = location;
             this.message = message;
             this.description = description;
             this.failMessage = failMessage;
             this.icon = icon == null ? defaultMaterial : icon;
             this.iconURL = null;
+            this.command = null;
+            this.opPlayer = false;
         }
 
-        public Waypoint(Location location, String name, String message, String failMessage, String description, MaterialAndData icon, String iconURL) {
+        public Waypoint(RecallType type, Location location, String name, String message, String failMessage, String description, MaterialAndData icon, String iconURL) {
             this.name = name;
+            this.type = type;
             this.location = location;
             this.message = message;
             this.description = description;
             this.failMessage = failMessage;
             this.icon = icon == null ? defaultMaterial : icon;
             this.iconURL = iconURL;
+            this.command = null;
+            this.opPlayer = false;
+        }
+
+        public Waypoint(RecallType type, String command, boolean opPlayer, String name, String message, String failMessage, String description, MaterialAndData icon, String iconURL) {
+            this.name = name;
+            this.type = type;
+            this.location = null;
+            this.message = message;
+            this.description = description;
+            this.failMessage = failMessage;
+            this.icon = icon == null ? defaultMaterial : icon;
+            this.iconURL = iconURL;
+            this.command = command;
+            this.opPlayer = opPlayer;
         }
 
         @Override
         public int compareTo(Waypoint o) {
+            if (type != o.type)
+            {
+                if (type == RecallType.COMMAND) return -1;
+                if (o.type == RecallType.COMMAND) return 1;
+                if (type == RecallType.WARP) return -1;
+                if (o.type == RecallType.WARP) return 1;
+            }
             return name.compareTo(o.name);
         }
 
         public boolean isValid(boolean crossWorld, Location source)
         {
+            if (isCommand())
+            {
+                return true;
+            }
             if (location == null || location.getWorld() == null)
             {
                 return false;
             }
             return crossWorld || source.getWorld().equals(location.getWorld());
+        }
+
+        public boolean isCommand() {
+            return command != null;
         }
     };
 
@@ -172,6 +212,7 @@ public class RecallAction extends BaseSpellAction implements GUIAction
         this.context = context;
 		enabledTypes.clear();
         warps.clear();
+        commands.clear();
 
         Mage mage = context.getMage();
         MageController controller = context.getController();
@@ -182,6 +223,7 @@ public class RecallAction extends BaseSpellAction implements GUIAction
 
         Set<String> unlockedWarps = new HashSet<String>();
         ConfigurationSection mageData = mage.getData();
+
         String unlockedString = mageData.getString(UNLOCKED_WARPS);
         if (unlockedString != null && !unlockedString.isEmpty())
         {
@@ -192,6 +234,12 @@ public class RecallAction extends BaseSpellAction implements GUIAction
         if (parameters.contains("warps"))
         {
             warpConfig = parameters.getConfigurationSection("warps");
+        }
+
+        ConfigurationSection commandConfig = null;
+        if (parameters.contains("commands"))
+        {
+            commandConfig = parameters.getConfigurationSection("commands");
         }
 
         if (parameters.contains("unlock"))
@@ -259,6 +307,23 @@ public class RecallAction extends BaseSpellAction implements GUIAction
                     }
 				}
 			}
+            // Special-case for warps
+            else if (testType == RecallType.COMMAND)
+            {
+                if (commandConfig != null)
+                {
+                    Collection<String> commandKeys = commandConfig.getKeys(false);
+                    for (String commandKey : commandKeys)
+                    {
+                        ConfigurationSection config = commandConfig.getConfigurationSection(commandKey);
+                        boolean isLocked = config.getBoolean("locked", false);
+                        if (!isLocked || unlockedWarps.contains(commandKey))
+                        {
+                            commands.put(commandKey, config);
+                        }
+                    }
+                }
+            }
             else
             {
 				if (parameters.getBoolean("allow_" + testType.name().toLowerCase(), true))
@@ -273,10 +338,25 @@ public class RecallAction extends BaseSpellAction implements GUIAction
             enabledTypes.add(RecallType.WARP);
         }
 
+        if (commands.size() > 0)
+        {
+            enabledTypes.add(RecallType.COMMAND);
+        }
+
         if (parameters.contains("warp"))
         {
             String warpName = parameters.getString("warp");
             Waypoint waypoint = getWarp(warpName);
+            if (tryTeleport(player, waypoint)) {
+                return SpellResult.CAST;
+            }
+            return SpellResult.FAIL;
+        }
+        else
+        if (parameters.contains("command"))
+        {
+            String commandName = parameters.getString("command");
+            Waypoint waypoint = getCommand(commandName);
             if (tryTeleport(player, waypoint)) {
                 return SpellResult.CAST;
             }
@@ -322,6 +402,13 @@ public class RecallAction extends BaseSpellAction implements GUIAction
             if (selectedType == RecallType.WARP) {
                 for (String warpKey : warps.keySet()) {
                     Waypoint targetLocation = getWarp(warpKey);
+                    if (targetLocation != null && targetLocation.isValid(allowCrossWorld, playerLocation)) {
+                        allWaypoints.add(targetLocation);
+                    }
+                }
+            } else if (selectedType == RecallType.COMMAND) {
+                for (String commandKey : commands.keySet()) {
+                    Waypoint targetLocation = getCommand(commandKey);
                     if (targetLocation != null && targetLocation.isValid(allowCrossWorld, playerLocation)) {
                         allWaypoints.add(targetLocation);
                     }
@@ -397,7 +484,25 @@ public class RecallAction extends BaseSpellAction implements GUIAction
         String description = config.getString("description");
         String iconURL = config.getString("icon_url");
         MaterialAndData icon = ConfigurationUtils.getMaterialAndData(config, "icon");
-        return new Waypoint(controller.getWarp(warpKey), title, castMessage, failMessage, description, icon, iconURL);
+        return new Waypoint(RecallType.WARP, controller.getWarp(warpKey), title, castMessage, failMessage, description, icon, iconURL);
+    }
+
+    protected Waypoint getCommand(String commandKey)
+    {
+        if (commands == null) return null;
+        ConfigurationSection config = commands.get(commandKey);
+        if (config == null) return null;
+
+        String commandName = config.getString("name", commandKey);
+        String castMessage = context.getMessage("cast_warp").replace("$name", commandName);
+        String failMessage = context.getMessage("no_target_warp").replace("$name", commandName);
+        String title = context.getMessage("title_warp").replace("$name", commandName);
+        String description = config.getString("description");
+        String iconURL = config.getString("icon_url");
+        String command = config.getString("command");
+        boolean op = config.getBoolean("op", false);
+        MaterialAndData icon = ConfigurationUtils.getMaterialAndData(config, "icon");
+        return new Waypoint(RecallType.COMMAND, command, op, title, castMessage, failMessage, description, icon, iconURL);
     }
 
 	protected Waypoint getWaypoint(Player player, RecallType type, int index, ConfigurationSection parameters) {
@@ -405,17 +510,17 @@ public class RecallAction extends BaseSpellAction implements GUIAction
 		switch (type) {
 		case MARKER:
             Location location = ConfigurationUtils.getLocation(mage.getData(), MARKER_KEY);
-			return new Waypoint(location, context.getMessage("title_marker"), context.getMessage("cast_marker"), context.getMessage("no_target_marker"), context.getMessage("description_marker", ""), ConfigurationUtils.getMaterialAndData(parameters, "icon_marker"));
+			return new Waypoint(type, location, context.getMessage("title_marker"), context.getMessage("cast_marker"), context.getMessage("no_target_marker"), context.getMessage("description_marker", ""), ConfigurationUtils.getMaterialAndData(parameters, "icon_marker"));
 		case DEATH:
-            return new Waypoint(mage.getLastDeathLocation(), "Last Death", context.getMessage("cast_death"), context.getMessage("no_target_death"), context.getMessage("description_death", ""), ConfigurationUtils.getMaterialAndData(parameters, "icon_death"));
+            return new Waypoint(type, mage.getLastDeathLocation(), "Last Death", context.getMessage("cast_death"), context.getMessage("no_target_death"), context.getMessage("description_death", ""), ConfigurationUtils.getMaterialAndData(parameters, "icon_death"));
 		case SPAWN:
-			return new Waypoint(context.getWorld().getSpawnLocation(), context.getMessage("title_spawn"), context.getMessage("cast_spawn"), context.getMessage("no_target_spawn"), context.getMessage("description_spawn", ""), ConfigurationUtils.getMaterialAndData(parameters, "icon_spawn"));
+			return new Waypoint(type, context.getWorld().getSpawnLocation(), context.getMessage("title_spawn"), context.getMessage("cast_spawn"), context.getMessage("no_target_spawn"), context.getMessage("description_spawn", ""), ConfigurationUtils.getMaterialAndData(parameters, "icon_spawn"));
         case HOME:
-            return new Waypoint(player == null ? null : player.getBedSpawnLocation(), context.getMessage("title_home"), context.getMessage("cast_home"), context.getMessage("no_target_home"), context.getMessage("description_home", ""), ConfigurationUtils.getMaterialAndData(parameters, "icon_home"));
+            return new Waypoint(type, player == null ? null : player.getBedSpawnLocation(), context.getMessage("title_home"), context.getMessage("cast_home"), context.getMessage("no_target_home"), context.getMessage("description_home", ""), ConfigurationUtils.getMaterialAndData(parameters, "icon_home"));
 		case WAND:
             List<LostWand> lostWands = mage.getLostWands();
 			if (lostWands == null || index < 0 || index >= lostWands.size()) return null;
-			return new Waypoint(lostWands.get(index).getLocation(), context.getMessage("title_wand"), context.getMessage("cast_wand"), context.getMessage("no_target_wand"), context.getMessage("description_wand", ""), ConfigurationUtils.getMaterialAndData(parameters, "icon_wand"));
+			return new Waypoint(type, lostWands.get(index).getLocation(), context.getMessage("title_wand"), context.getMessage("cast_wand"), context.getMessage("no_target_wand"), context.getMessage("description_wand", ""), ConfigurationUtils.getMaterialAndData(parameters, "icon_wand"));
 		}
 		
 		return null;
@@ -433,6 +538,24 @@ public class RecallAction extends BaseSpellAction implements GUIAction
 	
 	protected boolean tryTeleport(final Player player, final Waypoint waypoint) {
         Mage mage = context.getMage();
+        if (waypoint.isCommand()) {
+            CommandSender sender = mage.getCommandSender();
+            boolean isOp = sender.isOp();
+            if (waypoint.opPlayer && !isOp) {
+                sender.setOp(true);
+            }
+            try {
+                player.getServer().dispatchCommand(sender, waypoint.command);
+            } catch (Exception ex) {
+                context.getLogger().log(Level.WARNING, "Error running command " + waypoint.command, ex);
+            }
+            if (waypoint.opPlayer && !isOp) {
+                sender.setOp(false);
+            }
+
+            return true;
+        }
+
         Location targetLocation = waypoint == null ? null : waypoint.location;
 		if (targetLocation == null) {
             if (waypoint != null) {
