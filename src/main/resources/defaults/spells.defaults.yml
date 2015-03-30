@@ -4343,6 +4343,16 @@ magichat:
               effect_night_vision: 2
           - class: Message
             message: cast_nightvision
+        - class: Serial
+          weight: 20
+          actions:
+          - class: AreaOfEffect
+            radius: 5
+            actions:
+            - class: PotionEffect
+              effect_absorption: 2
+          - class: Message
+            message: cast_absorption
     effects:
       cast:
       -  class: EffectSingle
@@ -4352,6 +4362,7 @@ magichat:
            iterations: 4
            particle: smoke_large
     parameters:
+      target_self: true
       use_item: true
       reason: custom
       undo: 31000

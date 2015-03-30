@@ -26,7 +26,8 @@ public class MessageAction extends BaseSpellAction
 		if (player == null) {
 			return SpellResult.PLAYER_REQUIRED;
 		}
-        mage.sendMessage(message.replace("$spell", context.getSpell().getName()));
+        String message = context.getMessage(this.message);
+        context.sendMessage(message.replace("$spell", context.getSpell().getName()));
 		return SpellResult.CAST;
 	}
 
