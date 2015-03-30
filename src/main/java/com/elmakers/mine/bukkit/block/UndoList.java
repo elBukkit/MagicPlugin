@@ -14,9 +14,11 @@ import com.elmakers.mine.bukkit.spell.UndoableSpell;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockState;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
+import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.metadata.MetadataValue;
 import org.bukkit.plugin.Plugin;
@@ -457,6 +459,12 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
         // Prevent dropping items if this is going to auto-undo
         if (isScheduled()) {
             for (Block block : blocks) {
+                BlockState state = block.getState();
+                if (state instanceof InventoryHolder) {
+                    InventoryHolder holder = (InventoryHolder)state;
+                    holder.getInventory().clear();
+                    state.update();
+                }
                 block.setType(Material.AIR);
             }
         }
