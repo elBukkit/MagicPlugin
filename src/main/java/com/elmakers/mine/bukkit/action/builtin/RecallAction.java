@@ -516,7 +516,12 @@ public class RecallAction extends BaseSpellAction implements GUIAction
 		case SPAWN:
 			return new Waypoint(type, context.getWorld().getSpawnLocation(), context.getMessage("title_spawn"), context.getMessage("cast_spawn"), context.getMessage("no_target_spawn"), context.getMessage("description_spawn", ""), ConfigurationUtils.getMaterialAndData(parameters, "icon_spawn"));
         case HOME:
-            return new Waypoint(type, player == null ? null : player.getBedSpawnLocation(), context.getMessage("title_home"), context.getMessage("cast_home"), context.getMessage("no_target_home"), context.getMessage("description_home", ""), ConfigurationUtils.getMaterialAndData(parameters, "icon_home"));
+            Location bedLocation = player == null ? null : player.getBedSpawnLocation();
+            if (bedLocation != null) {
+                bedLocation.setX(bedLocation.getX() + 0.5);
+                bedLocation.setZ(bedLocation.getZ() + 0.5);
+            }
+            return new Waypoint(type, bedLocation, context.getMessage("title_home"), context.getMessage("cast_home"), context.getMessage("no_target_home"), context.getMessage("description_home", ""), ConfigurationUtils.getMaterialAndData(parameters, "icon_home"));
 		case WAND:
             List<LostWand> lostWands = mage.getLostWands();
 			if (lostWands == null || index < 0 || index >= lostWands.size()) return null;

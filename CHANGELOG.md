@@ -9,6 +9,7 @@
  - Fix items sometimes dropping from exploded chests set to roll back
  - Remove "bounce" spell
  - Add support for commands in Recall (for /f home, /spawn with warmup, etc)
+ - Fix Recall putting you in the ground/walls sometimes
 
 ## 4.7.1
 
