@@ -85,7 +85,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     private UndoQueue undoQueue = null;
     private LinkedList<Batch> pendingBatches = new LinkedList<Batch>();
     private boolean loading = false;
-    private boolean debug = false;
+    private int debugLevel = 0;
 
     private Location location;
     private float costReduction = 0;
@@ -1461,18 +1461,23 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     }
 
     @Override
-    public boolean isDebugEnabled() {
-        return debug;
+    public int getDebugLevel() {
+        return debugLevel;
     }
 
     @Override
-    public void setDebugEnabled(boolean debug) {
-        this.debug = debug;
+    public void setDebugLevel(int debugLevel) {
+        this.debugLevel = debugLevel;
     }
 
     @Override
     public void sendDebugMessage(String message) {
-        if (this.isDebugEnabled()) {
+        sendDebugMessage(message, 1);
+    }
+
+    @Override
+    public void sendDebugMessage(String message, int level) {
+        if (debugLevel >= level) {
             sendMessage(message);
         }
     }

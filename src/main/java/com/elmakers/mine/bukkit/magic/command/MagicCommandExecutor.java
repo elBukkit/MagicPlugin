@@ -649,12 +649,22 @@ public class MagicCommandExecutor extends MagicTabExecutor {
     public boolean onMagicDebug(CommandSender sender, Player player, String[] args)
     {
         Mage mage = api.getMage(player);
-        if (mage.isDebugEnabled()) {
+        if (args.length > 0) {
+            try {
+                int level = Integer.parseInt(args[0]);
+                mage.setDebugLevel(level);
+                sender.sendMessage(ChatColor.GOLD + "Setting debug level for  " + ChatColor.AQUA + player.getDisplayName() + ChatColor.GOLD + " to " + ChatColor.GREEN + Integer.toString(level));
+            } catch (Exception ex) {
+                sender.sendMessage("Expecting integer, got: " + args[0]);
+            }
+            return true;
+        }
+        if (mage.getDebugLevel() > 0) {
             sender.sendMessage(ChatColor.GOLD + "Disabling debug for  " + ChatColor.AQUA + player.getDisplayName());
-            mage.setDebugEnabled(false);
+            mage.setDebugLevel(0);
         } else {
             sender.sendMessage(ChatColor.AQUA + "Enabling debug for  " + ChatColor.AQUA + player.getDisplayName());
-            mage.setDebugEnabled(true);
+            mage.setDebugLevel(1);
         }
         return true;
     }
