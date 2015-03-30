@@ -429,6 +429,10 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
         return baseSpell != null ? baseSpell.findPlaceToStand(target, goUp) : location;
     }
 
+    public Location findPlaceToStand(Location targetLoc) {
+        return baseSpell != null ? baseSpell.findPlaceToStand(targetLoc) : location;
+    }
+
     @Override
     public int getVerticalSearchDistance()  {
         return targetingSpell != null ? targetingSpell.getVerticalSearchDistance() : 4;
@@ -790,7 +794,10 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
         playEffects("teleport");
 
         registerMoved(entity);
-        entity.teleport(tryFindPlaceToStand(location));
+        Location targetLocation = findPlaceToStand(location);
+        if (targetLocation != null) {
+            entity.teleport(targetLocation);
+        }
     }
 
     @Override

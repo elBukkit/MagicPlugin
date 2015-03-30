@@ -249,6 +249,11 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         return tryFindPlaceToStand(targetLoc, targetLoc.getWorld().getMaxHeight(), targetLoc.getWorld().getMaxHeight());
     }
 
+    public Location findPlaceToStand(Location targetLoc)
+    {
+        return findPlaceToStand(targetLoc, targetLoc.getWorld().getMaxHeight(), targetLoc.getWorld().getMaxHeight());
+    }
+
     public Location tryFindPlaceToStand(Location targetLoc, int maxDownDelta, int maxUpDelta)
     {
         Location location = findPlaceToStand(targetLoc, maxDownDelta, maxUpDelta);
