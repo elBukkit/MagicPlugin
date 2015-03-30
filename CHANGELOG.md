@@ -7,6 +7,7 @@
  - Re-balance enchanting and economy a bit
  - Fix restoring chest contents creating glitched "0" amount items
  - Fix items sometimes dropping from exploded chests set to roll back
+ - Remove "bounce" spell
 
 ## 4.7.1
 

@@ -309,6 +309,11 @@ boon:
         effect_night_vision: 5
 
 boon|2:
+    actions:
+        cast:
+        -  class: PotionEffect
+        -  class: FallProtection
+           duration: 35000
     costs:
         mana: 80
     parameters:
@@ -318,35 +323,6 @@ boon|2:
         effect_night_vision: 5
         effect_fire_resistance: 1
         effect_saturation: 5
-
-bounce:
-    icon_url: http://i.imgur.com/PHlfm7b.png
-    icon: red_rose:8
-    category: utility
-    class: PotionEffectSpell
-    worth: 800
-    effects:
-        cast:
-        -  class: EffectSingle
-           sound: orb_pickup
-        -  class: EffectTrail
-           particle: spell
-           particle_data: 2
-           particle_count: 3
-        -  class: EffectSingle
-           sound: enderdragon_wings
-           sound_volume: 1.1
-           effectlib:
-             class: TraceEffect
-             iterations: 200
-             particle: spell
-    costs:
-        mana: 40
-    parameters:
-        target: any
-        target_type: LivingEntity
-        effect_jump: 2
-        duration: 10000
 
 simulate:
     icon_url: http://i.imgur.com/CUgSpoB.png

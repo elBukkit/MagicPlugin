@@ -323,11 +323,6 @@ spells:
         name: Blessing
         description: Bless a large area of followers
         cast: You bless the area
-    bounce:
-        name: Bounce
-        description: Gives super jump power
-        cast_self: You give yourself high jumping
-        cast: You give $target high jumping
     mount:
         name: Mount
         description: Mount your target
