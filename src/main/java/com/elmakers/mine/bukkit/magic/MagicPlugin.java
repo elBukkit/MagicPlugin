@@ -323,20 +323,7 @@ public class MagicPlugin extends JavaPlugin implements MagicAPI
 
     @Override
     public String describeItem(ItemStack item) {
-        String displayName = null;
-        if (item.hasItemMeta()) {
-            ItemMeta meta = item.getItemMeta();
-            displayName = meta.getDisplayName();
-            if ((displayName == null || displayName.isEmpty()) && meta instanceof BookMeta) {
-                BookMeta book = (BookMeta)meta;
-                displayName = book.getTitle();
-            }
-        }
-        if (displayName == null || displayName.isEmpty()) {
-            MaterialAndData material = new MaterialAndData(item);
-            displayName = material.getName();
-        }
-        return displayName;
+        return controller.describeItem(item);
     }
 
     @Override
@@ -344,7 +331,7 @@ public class MagicPlugin extends JavaPlugin implements MagicAPI
         ItemStack itemStack = null;
         if (controller == null) {
             getLogger().log(Level.WARNING, "Calling API before plugin is initialized");
-            return itemStack;
+            return null;
         }
 
         // Handle : or | as delimiter
