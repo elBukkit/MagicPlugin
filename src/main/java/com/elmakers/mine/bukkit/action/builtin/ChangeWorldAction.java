@@ -1,6 +1,6 @@
 package com.elmakers.mine.bukkit.action.builtin;
 
-import com.elmakers.mine.bukkit.action.BaseSpellAction;
+import com.elmakers.mine.bukkit.action.BaseTeleportAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
@@ -18,7 +18,7 @@ import org.bukkit.entity.LivingEntity;
 import java.util.Arrays;
 import java.util.Collection;
 
-public class ChangeWorldAction extends BaseSpellAction
+public class ChangeWorldAction extends BaseTeleportAction
 {
 	private String targetWorldMessage = "";
     private Location targetLocation = null;
@@ -117,7 +117,7 @@ public class ChangeWorldAction extends BaseSpellAction
         targetLocation.setYaw(playerLocation.getYaw());
         targetLocation.setPitch(playerLocation.getPitch());
         setTargetWorldName(context, targetLocation.getWorld().getName());
-        context.teleport(entity, targetLocation);
+        context.teleport(entity, targetLocation, verticalSearchDistance);
 		
 		return SpellResult.CAST;
 	}

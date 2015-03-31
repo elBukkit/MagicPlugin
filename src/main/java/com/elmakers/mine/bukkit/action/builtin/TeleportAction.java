@@ -1,6 +1,6 @@
 package com.elmakers.mine.bukkit.action.builtin;
 
-import com.elmakers.mine.bukkit.action.BaseSpellAction;
+import com.elmakers.mine.bukkit.action.BaseTeleportAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
@@ -13,7 +13,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
-public class TeleportAction extends BaseSpellAction
+public class TeleportAction extends BaseTeleportAction
 {
 	private static int DEFAULT_PASSTHROUGH_RANGE = 4;
     private boolean autoPassthrough = true;
@@ -42,7 +42,7 @@ public class TeleportAction extends BaseSpellAction
 		{
             Block firstBlock = context.getInteractBlock();
 			if (firstBlock == null) return SpellResult.NO_TARGET;
-			
+
 			if (!context.allowPassThrough(firstBlock.getType()))
 			{
 				return SpellResult.NO_TARGET;
@@ -56,7 +56,7 @@ public class TeleportAction extends BaseSpellAction
 		Block target = context.getTargetBlock();
 		Block face = context.getPreviousBlock();
 
-		if (target == null) 
+		if (target == null)
 		{
 			return SpellResult.NO_TARGET;
 		}
@@ -79,7 +79,7 @@ public class TeleportAction extends BaseSpellAction
 		
 		// Don't drop the player too far, and make sure there is somewhere to stand - unless they are flying
 		if (!(entity instanceof Player && ((Player)entity).isFlying())) {
-            Location safeLocation = context.findPlaceToStand(destination.getLocation(), false);
+            Location safeLocation = context.findPlaceToStand(destination.getLocation(), verticalSearchDistance, false);
 			if (safeLocation != null)
             {
                 destination = safeLocation.getBlock();
@@ -154,7 +154,7 @@ public class TeleportAction extends BaseSpellAction
 			entity.getLocation().getYaw(),
             entity.getLocation().getPitch()
 		);
-        context.teleport(entity, targetLocation);
+        context.teleport(entity, targetLocation, verticalSearchDistance);
 		return SpellResult.CAST;
 	}
 

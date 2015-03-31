@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.action.builtin;
 
+import com.elmakers.mine.bukkit.action.BaseTeleportAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.action.GUIAction;
 import com.elmakers.mine.bukkit.api.magic.Mage;
@@ -7,7 +8,6 @@ import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.api.wand.LostWand;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
-import com.elmakers.mine.bukkit.action.BaseSpellAction;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
@@ -36,7 +36,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 
-public class RecallAction extends BaseSpellAction implements GUIAction
+public class RecallAction extends BaseTeleportAction implements GUIAction
 {
     private final static Material DefaultWaypointMaterial = Material.BEACON;
     private final static String MARKER_KEY = "recall_marker";
@@ -579,7 +579,7 @@ public class RecallAction extends BaseSpellAction implements GUIAction
             targetLocation.setYaw(playerLocation.getYaw());
             targetLocation.setPitch(playerLocation.getPitch());
         }
-        context.teleport(player, targetLocation);
+        context.teleport(player, targetLocation, verticalSearchDistance);
         context.castMessage(waypoint.message);
 		return true;
 	}
