@@ -62,8 +62,8 @@ public interface CastContext {
     public void cancelEffects();
     public String getMessage(String key);
     public String getMessage(String key, String def);
-    public Location tryFindPlaceToStand(Location location);
-    public Location findPlaceToStand(Location target, boolean goUp);
+    public Location findPlaceToStand(Location target, int verticalSearchDistance);
+    public Location findPlaceToStand(Location target, int verticalSearchDistance, boolean goUp);
     public void castMessage(String message);
     public void sendMessage(String message);
     public void setTargetedLocation(Location location);
@@ -95,7 +95,7 @@ public interface CastContext {
     public CastContext getBaseContext();
     public Set<UUID> getTargetMessagesSent();
     public Collection<EffectPlay> getCurrentEffects();
-    public void teleport(final Entity entity, final Location location);
+    public void teleport(final Entity entity, final Location location, final int verticalSearchDistance);
     public boolean allowPassThrough(Material material);
     public int getVerticalSearchDistance();
     public boolean isOkToStandIn(Material mat);
