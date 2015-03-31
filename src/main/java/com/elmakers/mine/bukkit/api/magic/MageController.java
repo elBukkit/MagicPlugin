@@ -71,6 +71,13 @@ public interface MageController {
      * @return A new Wand instance, with a useable ItemStack.
      */
     public Wand createWand(String wandKey);
+    public ItemStack createItem(String magicItemKey);
+    public ItemStack createGenericItem(String itemKey);
+    public Wand createUpgrade(String wandKey);
+    public ItemStack createSpellItem(String spellKey);
+    public ItemStack createBrushItem(String brushKey);
+
+    public String describeItem(ItemStack item);
 
     public SpellCategory getCategory(String key);
     public Collection<SpellCategory> getCategories();
