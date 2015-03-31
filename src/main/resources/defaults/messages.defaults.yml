@@ -1252,8 +1252,8 @@ spells:
         no_path_end: You must be ready to advance to $path!
         no_wand: You must be holding a wand!
         insufficient_resources: Costs $cost
-        confirm_title: "Buy $spell"
-        deducted: "&d&oYou bought &r&6$spell &r&d&ofor &r&a$cost"
+        confirm_title: "Buy $item"
+        deducted: "&d&oYou bought &r&6$item &r&d&ofor &r&a$cost"
     engineershop:
         name: Engineer Shop
         title: "Rollback ($balance)"
@@ -1270,7 +1270,7 @@ spells:
         no_wand: You must be holding a wand!
         confirm_title: "Upgrade to Engineer"
         insufficient_resources: Costs $cost
-        deducted: "&d&oYou bought &r&6$spell &r&d&ofor &r&a$cost"
+        deducted: "&d&oYou bought &r&6$item &r&d&ofor &r&a$cost"
     architectshop:
         name: Architect Shop
         title: "Absorb ($balance)"
@@ -1287,7 +1287,7 @@ spells:
         no_wand: You must be holding a wand!
         insufficient_resources: Costs $cost
         confirm_title: "Upgrade to Architect"
-        deducted: "&d&oYou bought &r&6$spell &r&d&ofor &r&a$cost"
+        deducted: "&d&oYou bought &r&6$item &r&d&ofor &r&a$cost"
     bookshop:
         name: Spellbook Shop
         title: "Spell Books"

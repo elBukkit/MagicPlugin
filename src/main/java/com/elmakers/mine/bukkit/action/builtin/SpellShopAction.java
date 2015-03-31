@@ -1,42 +1,26 @@
 package com.elmakers.mine.bukkit.action.builtin;
 
-import com.elmakers.mine.bukkit.action.BaseSpellAction;
+import com.elmakers.mine.bukkit.action.BaseShopAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
-import com.elmakers.mine.bukkit.api.action.GUIAction;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
-import com.elmakers.mine.bukkit.api.magic.MagicAPI;
-import com.elmakers.mine.bukkit.api.magic.Messages;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.api.wand.Wand;
 import com.elmakers.mine.bukkit.api.wand.WandUpgradePath;
-import com.elmakers.mine.bukkit.block.MaterialAndData;
-import com.elmakers.mine.bukkit.integration.VaultController;
-import com.elmakers.mine.bukkit.magic.MagicPlugin;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
-import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
-import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
-import com.elmakers.mine.bukkit.utility.InventoryUtils;
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
-import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
 
-public class SpellShopAction extends BaseSpellAction implements GUIAction
+public class SpellShopAction extends BaseShopAction
 {
     private String requiredPath = null;
     private String requiresCompletedPath = null;
@@ -44,13 +28,7 @@ public class SpellShopAction extends BaseSpellAction implements GUIAction
     private boolean showRequired = false;
     private boolean autoUpgrade = false;
     private boolean showFree = false;
-    private boolean useXP = false;
-    private boolean showConfirmation = true;
-    private MaterialAndData confirmFillMaterial;
-    private CastContext context;
-    private Wand wand;
     private Map<String, Double> spells = new HashMap<String, Double>();
-    private Map<String, Double> spellPrices = new HashMap<String, Double>();
 
     @Override
     public void initialize(ConfigurationSection parameters)
@@ -73,92 +51,15 @@ public class SpellShopAction extends BaseSpellAction implements GUIAction
     }
 
     @Override
-    public void clicked(InventoryClickEvent event)
-    {
-        event.setCancelled(true);
-        MageController controller = context.getController();
-        Messages messages = controller.getMessages();
-        ItemStack item = event.getCurrentItem();
-        if (context != null && wand != null && com.elmakers.mine.bukkit.wand.Wand.isSpell(item))
-        {
-            Mage mage = context.getMage();
-            String spellKey = com.elmakers.mine.bukkit.wand.Wand.getSpell(item);
-            SpellTemplate template = context.getController().getSpellTemplate(spellKey);
-            boolean isXP = useXP || !VaultController.hasEconomy();
-            Double worth = spellPrices.get(spellKey);
-            worth = worth == null ? template.getWorth() : worth;
-            boolean hasCosts = true;
-            if (worth > 0) {
-                if (isXP) {
-                    worth = worth * controller.getWorthXP();
-                    hasCosts = mage.getExperience() > (int)(double)worth;
-                } else {
-                    worth = worth * controller.getWorthBase();
-                    hasCosts = VaultController.getInstance().has(mage.getPlayer(), worth);
-                }
-            }
+    protected void onPurchase(CastContext context) {
+        Mage mage = context.getMage();
+        Wand wand = mage.getActiveWand();
+        if (wand == null) return;
 
-            if (!hasCosts) {
-                String costString = context.getMessage("insufficient_resources");
-                if (isXP) {
-                    String xpAmount = Integer.toString((int)(double)worth);
-                    xpAmount = messages.get("costs.xp_amount").replace("$amount", xpAmount);
-                    costString = costString.replace("$cost", xpAmount);
-                } else {
-                    costString = costString.replace("$cost", VaultController.getInstance().format(worth));
-                }
-                context.sendMessage(costString);
-            } else {
-                if (InventoryUtils.hasMeta(item, "confirm")) {
-                    String inventoryTitle = context.getMessage("confirm_title", "Buy $spell").replace("$spell", template.getName());
-                    Inventory confirmInventory = CompatibilityUtils.createInventory(null, 9, inventoryTitle);
-                    InventoryUtils.removeMeta(item, "confirm");
-                    for (int i = 0; i < 9; i++)
-                    {
-                        if (i != 4) {
-                            ItemStack filler = confirmFillMaterial.getItemStack(1);
-                            ItemMeta meta = filler.getItemMeta();
-                            if (meta != null)
-                            {
-                                meta.setDisplayName(ChatColor.DARK_GRAY + (i < 4 ? "-->" : "<--"));
-                                filler.setItemMeta(meta);
-                            }
-                            confirmInventory.setItem(i, filler);
-                        } else {
-                            confirmInventory.setItem(i, item);
-                        }
-                    }
-                    mage.deactivateGUI();
-                    mage.activateGUI(this);
-                    mage.getPlayer().openInventory(confirmInventory);
-                    return;
-                }
-
-                String costString = context.getMessage("deducted");
-                if (isXP) {
-                    String xpAmount = Integer.toString((int)(double)worth);
-                    xpAmount = messages.get("costs.xp_amount").replace("$amount", xpAmount);
-                    costString = costString.replace("$cost", xpAmount);
-                } else {
-                    costString = costString.replace("$cost", VaultController.getInstance().format(worth));
-                }
-                costString = costString.replace("$spell", template.getName());
-                context.sendMessage(costString);
-                if (isXP) {
-                    mage.removeExperience((int)(double)worth);
-                } else {
-                    VaultController.getInstance().withdrawPlayer(mage.getPlayer(), worth);
-                }
-
-
-                wand.addSpell(spellKey);
-                com.elmakers.mine.bukkit.api.wand.WandUpgradePath path = wand.getPath();
-                WandUpgradePath nextPath = path != null ? path.getUpgrade(): null;
-                if (nextPath != null && autoUpgrade && path.checkUpgradeRequirements(wand, null) && !path.canEnchant(wand)) {
-                    path.upgrade(wand, mage);
-                }
-            }
-            mage.deactivateGUI();
+        com.elmakers.mine.bukkit.api.wand.WandUpgradePath path = wand.getPath();
+        WandUpgradePath nextPath = path != null ? path.getUpgrade(): null;
+        if (nextPath != null && autoUpgrade && path.checkUpgradeRequirements(wand, null) && !path.canEnchant(wand)) {
+            path.upgrade(wand, mage);
         }
     }
 
@@ -170,23 +71,20 @@ public class SpellShopAction extends BaseSpellAction implements GUIAction
         showRequired = parameters.getBoolean("show_required", false);
         showFree = parameters.getBoolean("show_free", false);
         autoUpgrade = parameters.getBoolean("auto_upgrade", false);
-        useXP = parameters.getBoolean("use_xp", false);
-        showConfirmation = parameters.getBoolean("confirm", true);
         if (requiresCompletedPath != null) {
             requiredPath = requiresCompletedPath;
         }
-        confirmFillMaterial = ConfigurationUtils.getMaterialAndData(parameters, "confirm_filler", new MaterialAndData(Material.AIR));
     }
 
     @Override
     public SpellResult perform(CastContext context) {
         Mage mage = context.getMage();
-        this.wand = mage.getActiveWand();
-        this.context = context;
+        MageController controller = context.getController();
 		Player player = mage.getPlayer();
 		if (player == null) {
             return SpellResult.PLAYER_REQUIRED;
         }
+        Wand wand = mage.getActiveWand();
         if (wand == null) {
             context.sendMessage("no_wand");
             return SpellResult.FAIL;
@@ -224,7 +122,7 @@ public class SpellShopAction extends BaseSpellAction implements GUIAction
         }
 
         // Load spells
-        spellPrices.clear();
+        Map<String, Double> spellPrices = new HashMap<String, Double>();
         if (spells.size() > 0)
         {
             spellPrices.putAll(spells);
@@ -248,17 +146,12 @@ public class SpellShopAction extends BaseSpellAction implements GUIAction
             }
         }
 
-        List<ItemStack> spellItems = new ArrayList<ItemStack>();
-        MagicAPI api = MagicPlugin.getAPI();
-        boolean isXP = useXP || !VaultController.hasEconomy();
-        String costString = context.getMessage("cost_lore");
-        MageController controller = context.getController();
-        Messages messages = controller.getMessages();
+        List<ShopItem> shopItems = new ArrayList<ShopItem>();
         for (Map.Entry<String, Double> spellValue : spellPrices.entrySet()) {
             String spellKey = spellValue.getKey();
             if (wand.hasSpell(spellKey)) continue;
 
-            SpellTemplate spell = api.getSpellTemplate(spellKey);
+            SpellTemplate spell = controller.getSpellTemplate(spellKey);
             Double worth = spellValue.getValue();
             if (worth == null) {
                 worth = spell.getWorth();
@@ -266,53 +159,11 @@ public class SpellShopAction extends BaseSpellAction implements GUIAction
             }
             if (worth <= 0 && !showFree) continue;
 
-            ItemStack spellItem = api.createSpellItem(spellKey);
-            ItemMeta meta = spellItem.getItemMeta();
-            List<String> lore = meta.getLore();
-            String costs;
-            if (isXP) {
-                worth = worth * controller.getWorthXP();
-                String xpAmount = Integer.toString((int)(double)worth);
-                xpAmount = messages.get("costs.xp_amount").replace("$amount", xpAmount);
-                costs = costString.replace("$cost", xpAmount);
-            } else {
-                worth = worth * controller.getWorthBase();
-                costs = costString.replace("$cost", VaultController.getInstance().format(worth));
-            }
-            lore.add(ChatColor.GOLD + costs);
-            meta.setLore(lore);
-            spellItem.setItemMeta(meta);
-            if (showConfirmation) {
-                InventoryUtils.setMeta(spellItem, "confirm", "true");
-            }
-            spellItems.add(spellItem);
+            ItemStack spellItem = controller.createSpellItem(spellKey);
+            shopItems.add(new ShopItem(spellItem, worth));
         }
 
-        if (spellItems.size() == 0) {
-            context.sendMessage("no_spells");
-            return SpellResult.FAIL;
-        }
-
-        String inventoryTitle = context.getMessage("title", "Spells ($balance)");
-        if (isXP) {
-            String xpAmount = Integer.toString(mage.getExperience());
-            xpAmount = messages.get("costs.xp_amount").replace("$amount", xpAmount);
-            inventoryTitle = inventoryTitle.replace("$balance", xpAmount);
-        } else {
-            double balance = VaultController.getInstance().getBalance(player);
-            inventoryTitle = inventoryTitle.replace("$balance", VaultController.getInstance().format(balance));
-        }
-
-        int invSize = ((spellItems.size() + 9) / 9) * 9;
-        Inventory displayInventory = CompatibilityUtils.createInventory(null, invSize, inventoryTitle);
-        for (ItemStack item : spellItems)
-        {
-            displayInventory.addItem(item);
-        }
-        mage.activateGUI(this);
-        mage.getPlayer().openInventory(displayInventory);
-
-        return SpellResult.CAST;
+        return showItems(context, shopItems);
 	}
 
     @Override
@@ -325,7 +176,6 @@ public class SpellShopAction extends BaseSpellAction implements GUIAction
         parameters.add("show_free");
         parameters.add("show_required");
         parameters.add("auto_upgrade");
-        parameters.add("confirm");
     }
 
     @Override
@@ -334,7 +184,7 @@ public class SpellShopAction extends BaseSpellAction implements GUIAction
         if (parameterKey.equals("path") || parameterKey.equals("path_exact") || parameterKey.equals("path_end")) {
             examples.addAll(com.elmakers.mine.bukkit.wand.WandUpgradePath.getPathKeys());
         } else if (parameterKey.equals("show_free") || parameterKey.equals("show_required")
-                || parameterKey.equals("auto_upgrade") || parameterKey.equals("confirm")) {
+                || parameterKey.equals("auto_upgrade")) {
             examples.addAll(Arrays.asList((BaseSpell.EXAMPLE_BOOLEANS)));
         } else {
             super.getParameterOptions(examples, parameterKey);
