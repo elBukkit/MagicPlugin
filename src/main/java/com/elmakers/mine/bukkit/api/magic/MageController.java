@@ -149,6 +149,8 @@ public interface MageController {
     public int getMaxWandFillLevel();
     public double getWorthBase();
     public double getWorthXP();
+    public ItemStack getWorthItem();
+    public double getWorthItemAmount();
 
     /**
      * Check to see if the Elementals plugin is present an enabled.
