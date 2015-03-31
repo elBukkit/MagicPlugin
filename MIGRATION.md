@@ -5,6 +5,9 @@
 Spell shops were re-balanced. You can now tweak the "worth_base" value in config.yml to scale
 spell prices up or down.
 
+Spell shops now default to an emerald-based economy (rather than XP) if Vault is not found.
+This is configurable via worth_items in config.yml.
+
 ## 4.6
 
 4.6 is a major change under the hood, the biggest since 4.0. I've tried to keep everything

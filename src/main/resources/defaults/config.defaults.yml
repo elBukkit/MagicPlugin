@@ -535,10 +535,12 @@ worth_xp: 1
 # This setup will work very well with the Shopkeepers plugin, or any other item-based trading shop. It could also
 # be used as a basis for player trading of wands, spells, and items.
 #
+# Currently only the first entry is used by shops.
+#
 worth_items:
-  gold_nugget: 1
-  diamond: 10
   emerald: 100
+#  diamond: 10
+#  gold_nugget: 1
 
 ## Work-in-Progress or not-fully-functional options
 

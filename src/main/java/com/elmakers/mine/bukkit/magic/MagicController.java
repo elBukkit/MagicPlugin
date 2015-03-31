@@ -353,6 +353,16 @@ public class MagicController implements Listener, MageController {
     public double getWorthXP() {
         return worthXP;
     }
+
+    @Override
+    public ItemStack getWorthItem() {
+        return worthItem;
+    }
+
+    @Override
+    public double getWorthItemAmount() {
+        return worthItemAmount;
+    }
 	
 	/*
 	 * Undo system
@@ -1904,6 +1914,25 @@ public class MagicController implements Listener, MageController {
         maxManaRegeneration = properties.getInt("max_mana_regeneration", maxManaRegeneration);
         worthBase = properties.getDouble("worth_base", 1);
         worthXP = properties.getDouble("worth_xp", 1);
+        ConfigurationSection worthItems = properties.getConfigurationSection("worth_items");
+        if (worthItems != null)
+        {
+            Collection<String> worthItemKeys = worthItems.getKeys(true);
+            for (String worthItemKey : worthItemKeys) {
+                MaterialAndData material = new MaterialAndData(worthItemKey);
+                if (material == null) {
+                    getLogger().warning("Invalid item in worth_items: " + worthItemKey);
+                    continue;
+                }
+                worthItem = material.getItemStack(1);
+                worthItemAmount = worthItems.getDouble(worthItemKey);
+                break;
+            }
+        }
+        else
+        {
+            worthItem = null;
+        }
 
         costReduction = (float)properties.getDouble("cost_reduction", costReduction);
 		cooldownReduction = (float)properties.getDouble("cooldown_reduction", cooldownReduction);
@@ -4624,6 +4653,8 @@ public class MagicController implements Listener, MageController {
     private int								    maxManaRegeneration        	    = 100;
     private double                              worthBase                       = 1;
     private double                              worthXP                         = 1;
+    private ItemStack                           worthItem                       = null;
+    private double                              worthItemAmount                 = 0;
 
     private float							 	castCommandCostReduction	    = 1.0f;
     private float							 	castCommandCooldownReduction	= 1.0f;

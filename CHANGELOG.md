@@ -10,6 +10,7 @@
  - Remove "bounce" spell
  - Add support for commands in Recall (for /f home, /spawn with warmup, etc)
  - Fix Recall putting you in the ground/walls sometimes
+ - Add basic physical economy to shops (defaults to emeralds if Vault is not found!)
 
 ## 4.7.1
 
