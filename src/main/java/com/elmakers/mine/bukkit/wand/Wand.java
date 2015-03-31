@@ -511,7 +511,8 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	public void setTemplate(String templateName) {
 		this.template = templateName;
 	}
-	
+
+    @Override
 	public String getTemplate() {
 		return this.template;
 	}

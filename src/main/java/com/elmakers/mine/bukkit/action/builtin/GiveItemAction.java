@@ -1,0 +1,136 @@
+package com.elmakers.mine.bukkit.action.builtin;
+
+import com.elmakers.mine.bukkit.action.BaseSpellAction;
+import com.elmakers.mine.bukkit.api.action.CastContext;
+import com.elmakers.mine.bukkit.api.magic.Mage;
+import com.elmakers.mine.bukkit.api.magic.MageController;
+import com.elmakers.mine.bukkit.api.magic.MagicAPI;
+import com.elmakers.mine.bukkit.api.spell.SpellResult;
+import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
+import com.elmakers.mine.bukkit.api.wand.Wand;
+import com.elmakers.mine.bukkit.magic.MagicPlugin;
+import com.elmakers.mine.bukkit.utility.InventoryUtils;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+
+import java.util.Collection;
+
+public class GiveItemAction extends BaseSpellAction
+{
+    private ItemStack item = null;
+    private ItemStack requireItem = null;
+
+    public void prepare(CastContext context, ConfigurationSection parameters) {
+        super.prepare(context, parameters);
+        MageController controller = context.getController();
+
+        String itemKey = parameters.getString("item");
+        item = controller.createItem(itemKey);
+        if (item == null) {
+            context.getLogger().warning("Invalid item: " + itemKey);
+        }
+        String costKey = parameters.getString("requires");
+        if (costKey != null && !costKey.isEmpty())
+        {
+            requireItem = controller.createItem(costKey);
+            if (requireItem == null) {
+                context.getLogger().warning("Invalid required item: " + costKey);
+            }
+        }
+    }
+
+    @Override
+    public SpellResult perform(CastContext context) {
+        if (item == null) {
+            return SpellResult.FAIL;
+        }
+
+        Mage mage = context.getMage();
+        MagicAPI api = MagicPlugin.getAPI();
+		Player player = mage.getPlayer();
+		if (player == null) {
+            return SpellResult.PLAYER_REQUIRED;
+        }
+        if (requireItem != null) {
+            boolean foundItem = false;
+            ItemStack[] contents = player.getInventory().getContents();
+            String requiredWandKey = null;
+
+            if (api.isWand(requireItem)) {
+                Wand wand = api.getWand(requireItem);
+                requiredWandKey = wand.getTemplate();
+            }
+            for (int i = 0; i < contents.length; i++) {
+                ItemStack item = contents[i];
+                if (item != null && item.getType() == requireItem.getType() && item.getDurability() == requireItem.getDurability()) {
+                    org.bukkit.Bukkit.getLogger().info("items equal: " + requiredWandKey);
+                    if (requiredWandKey != null && !requiredWandKey.isEmpty())
+                    {
+                        String itemWandKey = null;
+                        if (api.isWand(item)) {
+                            Wand wand = api.getWand(item);
+                            itemWandKey = wand.getTemplate();
+                        }
+                        org.bukkit.Bukkit.getLogger().info(" item: " + itemWandKey);
+                        if (itemWandKey == null || !itemWandKey.equalsIgnoreCase(requiredWandKey))
+                        {
+                            continue;
+                        }
+                    }
+                    player.getInventory().setItem(i, null);
+                    foundItem = true;
+                    break;
+                }
+            }
+            if (!foundItem) {
+                org.bukkit.Bukkit.getLogger().info("Not found");
+                context.sendMessage("insufficient_resources");
+                return SpellResult.INSUFFICIENT_RESOURCES;
+            }
+        }
+        org.bukkit.Bukkit.getLogger().info("CAST");
+
+        mage.giveItem(InventoryUtils.getCopy(item));
+        return SpellResult.CAST;
+	}
+
+    @Override
+    public String transformMessage(String message) {
+        MagicAPI api = MagicPlugin.getAPI();
+        if (this.requireItem != null) {
+            message = message.replace("$requires", api.describeItem(requireItem));
+        }
+        if (item != null) {
+            message = message.replace("$item", api.describeItem(item));
+        }
+        return message;
+    }
+
+    @Override
+    public void getParameterNames(Collection<String> parameters)
+    {
+        super.getParameterNames(parameters);
+        parameters.add("item");
+        parameters.add("require");
+    }
+
+    @Override
+    public void getParameterOptions(Collection<String> examples, String parameterKey)
+    {
+        if (parameterKey.equals("item") || parameterKey.equals("require")) {
+            MagicAPI api = MagicPlugin.getAPI();
+            Collection<SpellTemplate> spellList = api.getSpellTemplates();
+            for (SpellTemplate spell : spellList) {
+                examples.add(spell.getKey());
+            }
+            Collection<String> allWands = api.getWandKeys();
+            for (String wandKey : allWands) {
+                examples.add(wandKey);
+            }
+            examples.addAll(api.getBrushes());
+        } else {
+            super.getParameterOptions(examples, parameterKey);
+        }
+    }
+}
