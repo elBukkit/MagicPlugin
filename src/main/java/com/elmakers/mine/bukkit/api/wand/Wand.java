@@ -91,4 +91,5 @@ public interface Wand extends CostReducer {
     public MageController getController();
     public boolean showCastMessages();
     public boolean showMessages();
+    public String getTemplate();
 }
