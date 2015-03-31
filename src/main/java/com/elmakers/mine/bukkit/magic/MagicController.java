@@ -2991,7 +2991,7 @@ public class MagicController implements Listener, MageController {
 						com.elmakers.mine.bukkit.api.spell.Spell activeSpell = wand.getActiveSpell();
 						boolean cycleMaterials = false;
 						if (activeSpell != null) {
-							cycleMaterials = activeSpell.hasBrushOverride() && wand.getBrushes().size() > 0;
+							cycleMaterials = activeSpell.usesBrushSelection();
 						}
 						if (cycleMaterials) {
 							wand.cycleMaterials();

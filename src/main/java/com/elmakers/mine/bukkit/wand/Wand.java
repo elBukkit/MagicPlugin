@@ -2699,6 +2699,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 			}
 		} else if (isUpgrade(item)) {
 			Wand wand = new Wand(controller, item);
+            this.closeInventory();
 			return this.add(wand);
 		}
 		
