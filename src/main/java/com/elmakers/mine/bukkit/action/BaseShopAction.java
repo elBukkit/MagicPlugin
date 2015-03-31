@@ -144,8 +144,13 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
             }
 
             context.getController().giveItemToPlayer(mage.getPlayer(), item);
+            onPurchase(context);
         }
         mage.deactivateGUI();
+    }
+
+    protected void onPurchase(CastContext context) {
+
     }
 
     public void prepare(CastContext context, ConfigurationSection parameters) {
