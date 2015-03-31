@@ -113,16 +113,19 @@ public class ActionSpell extends BrushSpell
         {
             ConfigurationSection parameters = template.getConfigurationSection("parameters");
             ConfigurationSection actionsNode = template.getConfigurationSection("actions");
-            Collection<String> actionKeys = actionsNode.getKeys(false);
-            for (String actionKey : actionKeys)
+            if (actionsNode != null)
             {
-                ActionHandler handler = new ActionHandler();
-                handler.load(actionsNode, actionKey);
-                handler.initialize(parameters);
-                usesBrush = usesBrush || handler.usesBrush();
-                undoable = undoable || handler.isUndoable();
-                requiresBuildPermission = requiresBuildPermission || handler.requiresBuildPermission();
-                actions.put(actionKey, handler);
+                Collection<String> actionKeys = actionsNode.getKeys(false);
+                for (String actionKey : actionKeys)
+                {
+                    ActionHandler handler = new ActionHandler();
+                    handler.load(actionsNode, actionKey);
+                    handler.initialize(parameters);
+                    usesBrush = usesBrush || handler.usesBrush();
+                    undoable = undoable || handler.isUndoable();
+                    requiresBuildPermission = requiresBuildPermission || handler.requiresBuildPermission();
+                    actions.put(actionKey, handler);
+                }
             }
         }
         undoable = template.getBoolean("undoable", undoable);
