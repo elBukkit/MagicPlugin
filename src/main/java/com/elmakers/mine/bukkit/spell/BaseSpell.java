@@ -151,6 +151,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     protected boolean quiet                       = false;
     protected boolean loud                        = false;
     protected boolean showUndoable              = true;
+    protected int                               verticalSearchDistance  = 8;
 
     private boolean backfired                   = false;
     private boolean hidden                      = false;
@@ -209,7 +210,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
 
     public boolean isOkToStandOn(Material mat)
     {
-        return (mat != Material.AIR && mat != Material.LAVA && mat != Material.STATIONARY_LAVA);
+        return (mat != Material.AIR && mat != Material.LAVA && mat != Material.STATIONARY_LAVA && !passthroughMaterials.contains(mat));
     }
 
     public boolean isSafeLocation(Block block)
@@ -251,7 +252,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
 
     public Location findPlaceToStand(Location targetLoc)
     {
-        return findPlaceToStand(targetLoc, targetLoc.getWorld().getMaxHeight(), targetLoc.getWorld().getMaxHeight());
+        return findPlaceToStand(targetLoc, verticalSearchDistance, verticalSearchDistance);
     }
 
     public Location tryFindPlaceToStand(Location targetLoc, int maxDownDelta, int maxUpDelta)
@@ -304,7 +305,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
 
     public Location findPlaceToStand(Location target, boolean goUp)
     {
-        return findPlaceToStand(target, goUp, target.getWorld().getMaxHeight());
+        return findPlaceToStand(target, goUp, verticalSearchDistance);
     }
 
     public Location findPlaceToStand(Location target, boolean goUp, int maxDelta)
@@ -1194,6 +1195,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         bypassDeactivate = parameters.getBoolean("bypass_deactivate", false);
         quiet = parameters.getBoolean("quiet", false);
         loud = parameters.getBoolean("loud", false);
+        verticalSearchDistance = parameters.getInt("vertical_range", 8);
     }
 
 
@@ -1786,5 +1788,9 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     @Override
     public boolean showUndoable() {
         return showUndoable;
+    }
+
+    public int getVerticalSearchDistance() {
+        return verticalSearchDistance;
     }
 }

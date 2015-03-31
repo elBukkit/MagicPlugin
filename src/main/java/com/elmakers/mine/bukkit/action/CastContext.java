@@ -420,22 +420,17 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
     }
 
     @Override
-    public Location tryFindPlaceToStand(Location location) {
-        return baseSpell != null ? baseSpell.tryFindPlaceToStand(location) : location;
+    public Location findPlaceToStand(Location target, int verticalSearchDistance, boolean goUp) {
+        return baseSpell != null ? baseSpell.findPlaceToStand(target, goUp, verticalSearchDistance) : location;
     }
 
-    @Override
-    public Location findPlaceToStand(Location target, boolean goUp) {
-        return baseSpell != null ? baseSpell.findPlaceToStand(target, goUp) : location;
-    }
-
-    public Location findPlaceToStand(Location targetLoc) {
-        return baseSpell != null ? baseSpell.findPlaceToStand(targetLoc) : location;
+    public Location findPlaceToStand(Location targetLoc, int verticalSearchDistance) {
+        return baseSpell != null ? baseSpell.findPlaceToStand(targetLoc, verticalSearchDistance, verticalSearchDistance) : location;
     }
 
     @Override
     public int getVerticalSearchDistance()  {
-        return targetingSpell != null ? targetingSpell.getVerticalSearchDistance() : 4;
+        return baseSpell != null ? baseSpell.getVerticalSearchDistance() : 4;
     }
 
     @Override
@@ -704,12 +699,7 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
     public void retarget(int range, double fov, double closeRange, double closeFOV, boolean useHitbox, Vector offset, boolean targetSpaceRequired, int targetMinOffset) {
         if (targetingSpell != null)
         {
-            targetingSpell.offsetTarget(offset.getBlockX(), offset.getBlockY(), offset.getBlockZ());
-            if (targetSpaceRequired) {
-                targetingSpell.setTargetSpaceRequired();
-            }
-            targetingSpell.setTargetMinOffset(targetMinOffset);
-            targetingSpell.retarget(range, fov, closeRange, closeFOV, useHitbox);
+            targetingSpell.retarget(range, fov, closeRange, closeFOV, useHitbox, offset, targetSpaceRequired, targetMinOffset);
             setTargetEntity(targetingSpell.getTargetEntity());
             setTargetLocation(targetingSpell.getTargetLocation());
         }
@@ -762,17 +752,17 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
     }
 
     @Override
-    public void teleport(final Entity entity, final Location location)
+    public void teleport(final Entity entity, final Location location, final int verticalSearchDistance)
     {
         Plugin plugin = getPlugin();
         Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
             public void run() {
-                delayedTeleport(entity, location);
+                delayedTeleport(entity, location, verticalSearchDistance);
             }
         }, 1);
     }
 
-    protected void delayedTeleport(final Entity entity, final Location location)
+    protected void delayedTeleport(final Entity entity, final Location location, final int verticalSearchDistance)
     {
         MageController controller = getController();
         Chunk chunk = location.getBlock().getChunk();
@@ -783,7 +773,7 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
                 Plugin plugin = controller.getPlugin();
                 Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
                     public void run() {
-                        delayedTeleport(entity, location);
+                        delayedTeleport(entity, location, verticalSearchDistance);
                     }
                 }, TELEPORT_RETRY_INTERVAL);
             }
@@ -794,7 +784,7 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
         playEffects("teleport");
 
         registerMoved(entity);
-        Location targetLocation = findPlaceToStand(location);
+        Location targetLocation = findPlaceToStand(location, verticalSearchDistance);
         if (targetLocation != null) {
             entity.teleport(targetLocation);
         }
