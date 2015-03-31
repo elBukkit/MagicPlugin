@@ -677,7 +677,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
 
     @Override
     public boolean usesBrushSelection() {
-        return usesBrushSelection || usesBrush();
+        return (usesBrushSelection || usesBrush()) && !hasBrushOverride();
     }
 
     @Override
