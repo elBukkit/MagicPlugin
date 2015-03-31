@@ -1,7 +1,8 @@
 # TODO
 
- - Try to Paste the elder tree
- - Can't blink through doors?
+ - Recall still losing waypoints
+
+ - Try to Paste the elder tree .. schematic bounds seem broken in general
  - Grief prevention plugin support (?)
  - Backup not working for some? Deleted science's chest?
 
