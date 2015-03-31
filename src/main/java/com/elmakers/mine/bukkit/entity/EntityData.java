@@ -187,7 +187,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
                 spawned = CompatibilityUtils.spawnItemFrame(location, facing, rotation, item);
                 break;
             case DROPPED_ITEM:
-                spawned = location.getWorld().spawn(location, Item.class);
+                spawned = location.getWorld().dropItem(location, item);
                 break;
             default:
                 spawned = location.getWorld().spawnEntity(location, type);
