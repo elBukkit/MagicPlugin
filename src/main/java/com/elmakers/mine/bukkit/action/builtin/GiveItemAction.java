@@ -69,6 +69,7 @@ public class GiveItemAction extends BaseSpellAction
         }
 
         mage.giveItem(InventoryUtils.getCopy(item));
+        mage.getPlayer().updateInventory();
         return SpellResult.CAST;
 	}
 
