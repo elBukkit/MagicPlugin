@@ -1,8 +1,14 @@
 # CHANGELOG
 
+## 4.9
+
+ - Add GriefPrevention support
+ - Add support for custom-named physical currency
+
 ## 4.8
 
  - Fix Magic Hats disappearing, make them craftable (nether star + leather helmet)
+ - Magic hats now perform one of a random set of actions
  - Add configurable list of entities to auto-undo. Now includes armor stands and dropped items.
  - Re-balance enchanting and economy a bit
  - Fix restoring chest contents creating glitched "0" amount items

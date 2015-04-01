@@ -736,13 +736,9 @@ battle:
       phase: 0,0,1
       recall: 0,5,15
       shrink: 5,20,30
-      invincible: 0,0,10
-      levitate: 0,0,10
       stream: 0,10,30
       flamethrower: 0,5,10
-      counterspell: 0,1,5
       stash: 0,1,5
-      neutron: 0,0,10
       wither: 5,10,20
       disarm: 0,0,1
       missile: 5,10,30

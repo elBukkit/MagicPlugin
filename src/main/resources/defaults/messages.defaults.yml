@@ -1214,14 +1214,14 @@ spells:
         upgrade_description: "&r&b&bull; &6Larger search radius"
     enchantwand:
         name: Upgrade Wand
-        describe: Add levels to your wand
+        description: Add levels to your wand
         no_wand: You must be holding a wand!
         cast: ""
         cast_player_message: ""
         fail: ""
     addspell:
         name: Add Spell
-        describe: Add a spell to your wand
+        description: Add a spell to your wand
         cast: ""
         cast_player_message: ""
         fail: ""
@@ -1232,7 +1232,7 @@ spells:
         no_target: You already know that spell
     fillwand:
         name: Fill Wand
-        describe: Fill up your wand with all spells
+        description: Fill up your wand with all spells
         cast: ""
         cast_player_message: ""
         fail: ""
@@ -1240,7 +1240,7 @@ spells:
     spellshop:
         name: Spell Shop
         title: "Spells ($balance)"
-        describe: Buy spells for your current level
+        description: Buy spells for your current level
         cost_lore: "Costs: $cost"
         cast: ""
         cast_player_message: ""
@@ -1257,7 +1257,7 @@ spells:
     engineershop:
         name: Engineer Shop
         title: "Rollback ($balance)"
-        describe: Unlock the Engineering level
+        description: Unlock the Engineering level
         cost_lore: "Costs: $cost"
         cast: ""
         cast_player_message: ""
@@ -1274,7 +1274,7 @@ spells:
     architectshop:
         name: Architect Shop
         title: "Absorb ($balance)"
-        describe: Unlock the Architect level
+        description: Unlock the Architect level
         cost_lore: "Costs: $cost"
         cast: ""
         cast_player_message: ""
@@ -1291,7 +1291,7 @@ spells:
     bookshop:
         name: Spellbook Shop
         title: "Spell Books"
-        describe: Get some spell books
+        description: Get some spell books
         cost_lore: "Free!"
         cast: ""
         cast_player_message: ""
@@ -1303,7 +1303,7 @@ spells:
     tweakshop:
         name: Wand Tweak Shop
         title: "Wand Tweaks"
-        describe: Tweak Your Wand
+        description: Tweak Your Wand
         cost_lore: "Free!"
         cast: ""
         cast_player_message: ""
@@ -1315,7 +1315,7 @@ spells:
     colorshop:
         name: Wand Color Shop
         title: "Wand Color ($balance)"
-        describe: Colorize Your Wand
+        description: Colorize Your Wand
         cost_lore: "Costs: $cost"
         cast: ""
         cast_player_message: ""
@@ -1327,7 +1327,7 @@ spells:
     broomshop:
         name: Broom Shop
         title: "Brooms ($balance)"
-        describe: Buy Brooms
+        description: Buy Brooms
         cost_lore: "Costs: $cost"
         cast: ""
         cast_player_message: ""
@@ -1339,7 +1339,7 @@ spells:
     automatashop:
         name: Automata Shop
         title: "Sell Automata Hearts"
-        describe: Sell Automata Hearts
+        description: Sell Automata Hearts
         cost_lore: "Earns: $cost"
         cast: ""
         cast_player_message: ""

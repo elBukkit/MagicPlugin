@@ -537,8 +537,12 @@ worth_xp: 1
 #
 # Currently only the first entry is used by shops.
 #
-worth_items:
-  emerald: 100
+currency:
+  emerald:
+    worth: 100
+    name: Emerald
+    name_plural: Emeralds
+
 #  diamond: 10
 #  gold_nugget: 1
 
