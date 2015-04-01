@@ -1099,9 +1099,9 @@ push:
         target_count: 2
         allow_max_range: true
         item_speed: 0.1
-        living_entity_speed: 0.3
+        living_entity_speed: 0.4
         push: 1
-        y_offset: 0.4
+        y_offset: 0.75
         repeat: 3
         delay: 250
     costs:
@@ -1124,9 +1124,10 @@ push|2:
              class: VortexEffect
              particle: spell
     parameters:
-        living_entity_speed: 0.6
+        living_entity_speed: 0.8
         range: 16
         target_count: 8
+        y_offset: 1
         repeat: 4
 
 pull:
@@ -6202,6 +6203,39 @@ bookshop:
           book|engineering: 0
           book|elemental: 0
           book|mining: 0
+
+broomshop:
+    icon: gold_spade
+    category: utility
+    hidden: true
+    actions:
+        cast:
+        -  class: ItemShop
+    parameters:
+        loud: true
+        confirm: true
+        confirm_filler: stained_glass:3
+        items:
+          wand|crackedbroomstick: 100
+          wand|broomstick: 5000
+
+automatashop:
+    icon: command
+    category: utility
+    hidden: true
+    actions:
+        cast:
+        -  class: ItemShop
+    parameters:
+        loud: true
+        confirm: true
+        confirm_filler: stained_glass:14
+        sell: true
+        items:
+          wand|hunterheart: 500
+          wand|wormheart: 1500
+          wand|virusheart: 3000
+          wand|defenderheart: 100
 
 tweakshop:
     icon: nether_star

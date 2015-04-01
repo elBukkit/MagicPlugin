@@ -6,11 +6,12 @@
  - Add configurable list of entities to auto-undo. Now includes armor stands and dropped items.
  - Re-balance enchanting and economy a bit
  - Fix restoring chest contents creating glitched "0" amount items
- - Fix items sometimes dropping from exploded chests set to roll back
+ - Fix items sometimes dropping from exploded chests set to auto-undo
  - Remove "bounce" spell
  - Add support for commands in Recall (for /f home, /spawn with warmup, etc)
  - Fix Recall putting you in the ground/walls sometimes
  - Add basic physical economy to shops (defaults to emeralds if Vault is not found!)
+ - Add Broom shop and Automata Heart buyback shop
 
 ## 4.7.1
 

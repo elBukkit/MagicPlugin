@@ -1245,7 +1245,7 @@ spells:
         cast: ""
         cast_player_message: ""
         fail: ""
-        no_spells: There are no spells for you to buy here
+        no_items: There are no spells for you to buy here
         no_path: You may not learn with that $wand.
         no_upgrade: There is nothing more for you here.
         no_required_path: You must be at least $path!
@@ -1262,7 +1262,7 @@ spells:
         cast: ""
         cast_player_message: ""
         fail: ""
-        no_spells: There are no spells for you to buy here
+        no_items: There are no spells for you to buy here
         no_path: You may not learn with that $wand.
         no_upgrade: There is nothing more for you here.
         no_required_path: You must be at least $path!
@@ -1279,7 +1279,7 @@ spells:
         cast: ""
         cast_player_message: ""
         fail: ""
-        no_spells: There are no spells for you to buy here
+        no_items: There are no spells for you to buy here
         no_path: You may not learn with that $wand.
         no_upgrade: There is nothing more for you here.
         no_required_path: You must be at least $path!
@@ -1324,6 +1324,30 @@ spells:
         insufficient_resources: Costs $cost
         confirm_title: "Buy $item"
         deducted: "&d&oYou bought &r&6$item &r&d&ofor &r&a$cost"
+    broomshop:
+        name: Broom Shop
+        title: "Brooms ($balance)"
+        describe: Buy Brooms
+        cost_lore: "Costs: $cost"
+        cast: ""
+        cast_player_message: ""
+        fail: ""
+        no_items: There is nothing to buy here!
+        insufficient_resources: Costs $cost
+        confirm_title: "Buy $item"
+        deducted: "&d&oYou bought &r&6$item &r&d&ofor &r&a$cost"
+    automatashop:
+        name: Automata Shop
+        title: "Sell Automata Hearts"
+        describe: Sell Automata Hearts
+        cost_lore: "Earns: $cost"
+        cast: ""
+        cast_player_message: ""
+        fail: ""
+        no_items: There is nothing to sell here!
+        insufficient_resources: Requires $cost
+        confirm_title: "Sell $item"
+        deducted: "&d&oYou sold &r&6$item &r&d&ofor &r&a$cost"
 
 wands:
     default:
