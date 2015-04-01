@@ -3,8 +3,22 @@
 #
 
 default:
+    icon: wood_hoe
+    path: year1
+    bound: true
+    keep: true
+    undroppable: true
+    quiet: 1
+    xp_max: 50
+    xp: 50
+    xp_regeneration: 6
+    effect_color: '888888'
+    effect_bubbles: false
+
+wandbox:
     icon: wood_hoe,gold_axe,gold_pickaxe
     randomize_icon: wood_step
+    active_spell: flagrate
     path: year1
     bound: true
     keep: true
@@ -980,3 +994,28 @@ hotbar2:
     indestructible: false
     icon: nether_star
     hotbar_count: 2
+
+# Special items
+
+ticket:
+    bound: true
+    undroppable: true
+    icon: paper
+    indestructible: true
+    locked: true
+    keep: true
+    quiet: 2
+
+sorting:
+    mode: cast
+    active_spell: recall
+    icon: paper
+    indestructible: true
+    locked: true
+    keep: true
+    uses: 1
+    quiet: 2
+    effect_color: 'FFFF00'
+    overrides: warp sortinghat
+    spells:
+        - recall

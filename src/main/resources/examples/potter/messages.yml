@@ -558,6 +558,9 @@ spells:
         name: Spongify Maxima
         description: Make your target bouncy
         cast: Spongify Maxima!
+    ollivander:
+        cast: You exchanged $requires for $item
+        insufficient_resources: You must have a $requires
 
 randomized:
    wood:
@@ -611,6 +614,10 @@ randomized:
 wands:
 
     default:
+        name: Wand
+        description: $wood and $core
+
+    wandbox:
         name: Wand
         description: $wood and $core
 
@@ -691,7 +698,7 @@ wands:
         name: Letter from Hogwarts
         description: Use this to get sorted into a house!
 
-    ollivander:
+    ticket:
         name: Ticket from Ollivander
         description: Exchange this for something wondrous
 

@@ -2875,3 +2875,25 @@ enchantwand:
 
 spellshop:
     enabled: true
+
+ollivander:
+  hidden: true
+  actions:
+    cast:
+    - class: GiveItem
+  parameters:
+    item: wand:wandbox
+    requires: wand:ticket
+    loud: true
+  effects:
+      cast:
+      -  class: EffectSingle
+         sound: level_up
+      -  class: EffectRing
+         firework: star
+         radius: 4
+         size: 3
+      -  class: EffectRing
+         firework: ball_large
+         radius: 6
+         size: 5
