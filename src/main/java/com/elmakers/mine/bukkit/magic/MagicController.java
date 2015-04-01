@@ -4559,6 +4559,42 @@ public class MagicController implements Listener, MageController {
         return Wand.createBrushItem(brushKey, this, null, true);
     }
 
+    @Override
+    public boolean itemsAreEqual(ItemStack first, ItemStack second) {
+        if (first == null || second == null) return false;
+        if (first.getType() != second.getType() || first.getDurability() != second.getDurability()) return false;
+
+        boolean firstIsWand = Wand.isWand(first);
+        boolean secondIsWand = Wand.isWand(second);
+        if (firstIsWand || secondIsWand)
+        {
+            if (!firstIsWand || !secondIsWand) return false;
+            Wand firstWand = new Wand(this, InventoryUtils.getCopy(first));
+            Wand secondWand = new Wand(this, InventoryUtils.getCopy(second));
+            String firstTemplate = firstWand.getTemplate();
+            String secondTemplate = secondWand.getTemplate();
+            if (firstTemplate == null || secondTemplate == null) return false;
+            return firstTemplate.equalsIgnoreCase(secondTemplate);
+        }
+
+        String firstSpellKey = Wand.getSpell(first);
+        String secondSpellKey = Wand.getSpell(second);
+        if (firstSpellKey != null || secondSpellKey != null)
+        {
+            if (firstSpellKey == null || secondSpellKey == null) return false;
+            return firstSpellKey.equalsIgnoreCase(secondSpellKey);
+        }
+
+        String firstBrushKey = Wand.getBrush(first);
+        String secondBrushKey = Wand.getBrush(second);
+        if (firstBrushKey != null || secondBrushKey != null)
+        {
+            if (firstBrushKey == null || secondBrushKey == null) return false;
+            return firstBrushKey.equalsIgnoreCase(secondBrushKey);
+        }
+
+        return true;
+    }
 
     /*
 	 * Private data

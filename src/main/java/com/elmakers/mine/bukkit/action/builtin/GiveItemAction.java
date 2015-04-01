@@ -7,7 +7,6 @@ import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.magic.MagicAPI;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
-import com.elmakers.mine.bukkit.api.wand.Wand;
 import com.elmakers.mine.bukkit.magic.MagicPlugin;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import org.bukkit.configuration.ConfigurationSection;
@@ -47,7 +46,7 @@ public class GiveItemAction extends BaseSpellAction
         }
 
         Mage mage = context.getMage();
-        MagicAPI api = MagicPlugin.getAPI();
+        MageController controller = context.getController();
 		Player player = mage.getPlayer();
 		if (player == null) {
             return SpellResult.PLAYER_REQUIRED;
@@ -55,29 +54,9 @@ public class GiveItemAction extends BaseSpellAction
         if (requireItem != null) {
             boolean foundItem = false;
             ItemStack[] contents = player.getInventory().getContents();
-            String requiredWandKey = null;
-
-            if (api.isWand(requireItem)) {
-                Wand wand = api.getWand(requireItem);
-                requiredWandKey = wand.getTemplate();
-            }
             for (int i = 0; i < contents.length; i++) {
                 ItemStack item = contents[i];
-                if (item != null && item.getType() == requireItem.getType() && item.getDurability() == requireItem.getDurability()) {
-                    org.bukkit.Bukkit.getLogger().info("items equal: " + requiredWandKey);
-                    if (requiredWandKey != null && !requiredWandKey.isEmpty())
-                    {
-                        String itemWandKey = null;
-                        if (api.isWand(item)) {
-                            Wand wand = api.getWand(item);
-                            itemWandKey = wand.getTemplate();
-                        }
-                        org.bukkit.Bukkit.getLogger().info(" item: " + itemWandKey);
-                        if (itemWandKey == null || !itemWandKey.equalsIgnoreCase(requiredWandKey))
-                        {
-                            continue;
-                        }
-                    }
+                if (controller.itemsAreEqual(item, requireItem)) {
                     player.getInventory().setItem(i, null);
                     foundItem = true;
                     break;
