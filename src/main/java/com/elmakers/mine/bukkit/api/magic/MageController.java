@@ -151,6 +151,7 @@ public interface MageController {
     public double getWorthXP();
     public ItemStack getWorthItem();
     public double getWorthItemAmount();
+    public boolean itemsAreEqual(ItemStack first, ItemStack second);
 
     /**
      * Check to see if the Elementals plugin is present an enabled.
