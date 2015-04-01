@@ -63,12 +63,10 @@ public class GiveItemAction extends BaseSpellAction
                 }
             }
             if (!foundItem) {
-                org.bukkit.Bukkit.getLogger().info("Not found");
                 context.sendMessage("insufficient_resources");
                 return SpellResult.INSUFFICIENT_RESOURCES;
             }
         }
-        org.bukkit.Bukkit.getLogger().info("CAST");
 
         mage.giveItem(InventoryUtils.getCopy(item));
         return SpellResult.CAST;
