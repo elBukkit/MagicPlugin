@@ -780,12 +780,12 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
             return;
         }
 
-        setTargetedLocation(targetLocation);
         playEffects("teleport");
 
         registerMoved(entity);
         Location targetLocation = findPlaceToStand(location, verticalSearchDistance);
         if (targetLocation != null) {
+            setTargetedLocation(targetLocation);
             entity.teleport(targetLocation);
         }
     }
