@@ -1,6 +1,18 @@
 recall:
   parameters:
+    commands:
+      hub:
+        name: elMakers Hub
+        description: Return to the Hub
+        icon: nether_star
+        command: server hub
+        op: true
     warps:
+      diagon:
+        name: Diagon Alley
+        description: Wizard shops!
+        locked: true
+        icon: wood_hoe
       kingscross:
         name: King's Cross
         description: Platform 9 3/4

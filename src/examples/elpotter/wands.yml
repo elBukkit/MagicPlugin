@@ -1,0 +1,19 @@
+# Give them a few more starter spells
+wandbox:
+    icon: wood_hoe,gold_axe,gold_pickaxe
+    randomize_icon: wood_step
+    active_spell: flagrate
+    path: year1
+    bound: true
+    keep: true
+    undroppable: true
+    quiet: 1
+    xp_max: 50
+    xp: 50
+    xp_regeneration: 6
+    effect_color: '888888'
+    effect_bubbles: false
+    spells:
+     - flagrate
+     - recall
+     - flipendo
