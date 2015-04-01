@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.Set;
 import java.util.logging.Logger;
 
+import com.elmakers.mine.bukkit.api.block.CurrencyItem;
 import com.elmakers.mine.bukkit.api.block.MaterialAndData;
 import com.elmakers.mine.bukkit.api.maps.MapController;
 import org.bukkit.Location;
@@ -151,6 +152,7 @@ public interface MageController {
     public double getWorthXP();
     public ItemStack getWorthItem();
     public double getWorthItemAmount();
+    public CurrencyItem getCurrency();
     public boolean itemsAreEqual(ItemStack first, ItemStack second);
 
     /**
