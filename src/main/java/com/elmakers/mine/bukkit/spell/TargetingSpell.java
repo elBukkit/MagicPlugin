@@ -186,7 +186,7 @@ public abstract class TargetingSpell extends BaseSpell {
     }
 
     public void setTarget(Location location) {
-        target = new Target(getEyeLocation(), location.getBlock());
+        target = new Target(getEyeLocation(), location == null ? null : location.getBlock());
     }
 
     public boolean hasBuildPermission(Block block)
