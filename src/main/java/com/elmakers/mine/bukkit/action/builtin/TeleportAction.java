@@ -18,12 +18,14 @@ public class TeleportAction extends BaseTeleportAction
 	private static int DEFAULT_PASSTHROUGH_RANGE = 4;
     private boolean autoPassthrough = true;
     private int passthroughRange;
+    private int ledgeSearchDistance = 2;
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters)
     {
         super.prepare(context, parameters);
         Mage mage = context.getMage();
+        ledgeSearchDistance = parameters.getInt("ledge_range", 2);
         autoPassthrough = parameters.getBoolean("allow_passthrough", true);
         passthroughRange = (int)Math.floor(mage.getRangeMultiplier() * parameters.getInt("passthrough_range", DEFAULT_PASSTHROUGH_RANGE));
     }
@@ -68,8 +70,6 @@ public class TeleportAction extends BaseTeleportAction
 
 		World world = context.getWorld();
 		Block destination = face;
-		int distanceUp = 0;
-		int distanceDown = 0;
         int verticalSearchDistance = context.getVerticalSearchDistance();
 
 		if (isPassthrough || destination == null)
@@ -90,6 +90,7 @@ public class TeleportAction extends BaseTeleportAction
 		Block ledge = null;
 		if (!isPassthrough && (!face.equals(target.getRelative(BlockFace.DOWN)) || autoPassthrough))
 		{
+            int distanceUp = 0;
 			ledge = target;
 			Block inFront = face;
 			Block oneUp = ledge.getRelative(BlockFace.UP);
@@ -114,7 +115,7 @@ public class TeleportAction extends BaseTeleportAction
                             &&  context.isTransparent(faceTwoUp.getType())
                             )
                         )
-					&&	distanceUp < verticalSearchDistance
+					&&	distanceUp < ledgeSearchDistance
 					&&	context.isOkToStandIn(inFront.getType())
 					&&	(
 								!context.isOkToStandOn(ledge.getType())
@@ -134,7 +135,7 @@ public class TeleportAction extends BaseTeleportAction
 			ledge = null;
 		}
 
-		if (ledge != null && distanceUp < distanceDown && context.isOkToStandOn(ledge.getType()))
+		if (ledge != null && context.isOkToStandOn(ledge.getType()))
 		{
 			destination = ledge.getRelative(BlockFace.UP);
 		}
