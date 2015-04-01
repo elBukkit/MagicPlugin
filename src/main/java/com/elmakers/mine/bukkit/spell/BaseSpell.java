@@ -53,7 +53,7 @@ import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 
 public abstract class BaseSpell implements MageSpell, Cloneable {
     protected static final double VIEW_HEIGHT = 1.65;
-    protected static final double LOOK_THRESHOLD_RADIANS = 0.8;
+    protected static final double LOOK_THRESHOLD_RADIANS = 0.9;
 
     // TODO: Config-drive
     protected static final int MIN_Y = 1;
@@ -208,6 +208,17 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         return (mat == Material.WATER || mat == Material.STATIONARY_WATER);
     }
 
+    public boolean isOkToStandOn(Block block)
+    {
+        // This is a hack, but data-driving would be a pain.
+        if (block.getType() == Material.STEP || block.getType() == Material.WOOD_STEP) {
+            // Upper steps are ok to stand on
+            if (block.getData() >= 8) return true;
+        }
+
+        return isOkToStandOn(block.getType());
+    }
+
     public boolean isOkToStandOn(Material mat)
     {
         return (mat != Material.AIR && mat != Material.LAVA && mat != Material.STATIONARY_LAVA && !passthroughMaterials.contains(mat));
@@ -228,13 +239,13 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
 
         // This is a hack, but data-driving would be a pain.
         if ((block.getType() == Material.STEP || block.getType() == Material.WOOD_STEP) && isOkToStandIn(blockOneUp.getType())) {
-            return true;
+            if (block.getData() < 8) return true;
         }
 
         Block blockOneDown = block.getRelative(BlockFace.DOWN);
         Player player = mage.getPlayer();
         return (
-                (isOkToStandOn(blockOneDown.getType()) || (player != null && player.isFlying()))
+                (isOkToStandOn(blockOneDown) || (player != null && player.isFlying()))
                 &&	isOkToStandIn(blockOneUp.getType())
                 && 	isOkToStandIn(block.getType())
         );
