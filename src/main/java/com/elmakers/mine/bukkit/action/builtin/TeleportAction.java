@@ -141,8 +141,7 @@ public class TeleportAction extends BaseTeleportAction
 		}
 
 		Block oneUp = destination.getRelative(BlockFace.UP);
-		Block twoUp = oneUp.getRelative(BlockFace.UP);
-		if (!context.isOkToStandIn(oneUp.getType()) || !context.isOkToStandIn(twoUp.getType()))
+		if (!context.isOkToStandIn(destination.getType()) || !context.isOkToStandIn(oneUp.getType()))
 		{
 			return SpellResult.NO_TARGET;
 		}
