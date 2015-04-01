@@ -31,6 +31,7 @@ import java.util.Map;
 public abstract class BaseShopAction extends BaseSpellAction implements GUIAction
 {
     private boolean useXP = false;
+    private boolean sell = false;
     private boolean useItems = false;
     private boolean showConfirmation = true;
     private MaterialAndData confirmFillMaterial;
@@ -73,9 +74,9 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
         MageController controller = context.getController();
         Messages messages = controller.getMessages();
         Mage mage = context.getMage();
-        Player player = mage.getPlayer();
         boolean isItems = (useItems || !VaultController.hasEconomy()) && controller.getWorthItem() != null;
-        boolean isXP = (useXP || (!VaultController.hasEconomy() && controller.getWorthItem() == null));        ShopItem shopItem = showingItems.get(slotIndex);
+        boolean isXP = (useXP || (!VaultController.hasEconomy() && controller.getWorthItem() == null));
+        ShopItem shopItem = showingItems.get(slotIndex);
         if (shopItem == null) {
             return;
         }
@@ -87,17 +88,24 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
                 hasCosts = mage.getExperience() > (int)(double)worth;
             } else if (isItems) {
                 worth = worth * controller.getWorthBase() / controller.getWorthItemAmount();
-                int hasAmount = getItemAmount(controller, player);
+                int hasAmount = getItemAmount(controller, mage);
                 hasCosts = hasAmount >= worth;
             } else {
                 worth = worth * controller.getWorthBase();
                 hasCosts = VaultController.getInstance().has(mage.getPlayer(), worth);
             }
         }
+        if (sell) {
+            hasCosts = getItemAmount(controller, item, mage) > 0;
+        }
 
         if (!hasCosts) {
             String costString = context.getMessage("insufficient_resources");
-            if (isXP) {
+            if (sell) {
+                String amountString = formatItemAmount(controller, item, 1);
+                costString = costString.replace("$cost", amountString);
+            }
+            else if (isXP) {
                 String xpAmount = Integer.toString((int)(double)worth);
                 xpAmount = messages.get("costs.xp_amount").replace("$amount", xpAmount);
                 costString = costString.replace("$cost", xpAmount);
@@ -140,7 +148,11 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
             }
 
             String costString = context.getMessage("deducted");
-            if (isXP) {
+            if (sell) {
+                String amountString = formatItemAmount(controller, worth);
+                costString = costString.replace("$cost", amountString);
+            }
+            else if (isXP) {
                 String xpAmount = Integer.toString((int)(double)worth);
                 xpAmount = messages.get("costs.xp_amount").replace("$amount", xpAmount);
                 costString = costString.replace("$cost", xpAmount);
@@ -155,19 +167,43 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
 
             costString = costString.replace("$item", itemName);
             context.sendMessage(costString);
-            if (isXP) {
-                mage.removeExperience((int)(double)worth);
-            }
-            else if (isItems)
-            {
-                removeItems(controller, player, (int)Math.ceil(worth));
+            if (sell) {
+                removeItems(controller, mage, item, 1);
+                if (isXP) {
+                    mage.giveExperience((int) (double) worth);
+                }
+                else if (isItems)
+                {
+                    int amount = (int)Math.ceil(worth);
+                    ItemStack worthItem = controller.getWorthItem();
+                    while (amount > 0) {
+                        worthItem = InventoryUtils.getCopy(worthItem);
+                        worthItem.setAmount(Math.min(amount, 64));
+                        amount -= worthItem.getAmount();
+                        mage.giveItem(worthItem);
+                    }
+                }
+                else
+                {
+                    VaultController.getInstance().depositPlayer(mage.getPlayer(), worth);
+                }
             }
             else
             {
-                VaultController.getInstance().withdrawPlayer(mage.getPlayer(), worth);
-            }
+                if (isXP) {
+                    mage.removeExperience((int)(double)worth);
+                }
+                else if (isItems)
+                {
+                    removeItems(controller, mage, (int)Math.ceil(worth));
+                }
+                else
+                {
+                    VaultController.getInstance().withdrawPlayer(mage.getPlayer(), worth);
+                }
 
-            context.getController().giveItemToPlayer(mage.getPlayer(), item);
+                context.getController().giveItemToPlayer(mage.getPlayer(), item);
+            }
             onPurchase(context);
         }
         mage.deactivateGUI();
@@ -180,6 +216,7 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
     public void prepare(CastContext context, ConfigurationSection parameters) {
         super.prepare(context, parameters);
         useXP = parameters.getBoolean("use_xp", false);
+        sell = parameters.getBoolean("sell", false);
         useItems = parameters.getBoolean("use_items", false);
         showConfirmation = parameters.getBoolean("confirm", true);
         confirmFillMaterial = ConfigurationUtils.getMaterialAndData(parameters, "confirm_filler", new MaterialAndData(Material.AIR));
@@ -221,8 +258,8 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
                 costs = costString.replace("$cost", xpAmount);
             } else if (isItems) {
                 worth = worth * controller.getWorthBase() / controller.getWorthItemAmount();
-                costString = formatItemAmount(controller, worth);
-                costs = costString.replace("$cost", costString);
+                String itemWorth = formatItemAmount(controller, worth);
+                costs = costString.replace("$cost", itemWorth);
             } else {
                 worth = worth * controller.getWorthBase();
                 costs = costString.replace("$cost", VaultController.getInstance().format(worth));
@@ -251,7 +288,7 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
             xpAmount = messages.get("costs.xp_amount").replace("$amount", xpAmount);
             inventoryTitle = inventoryTitle.replace("$balance", xpAmount);
         } else if (isItems) {
-            int itemAmount = getItemAmount(controller, player);
+            int itemAmount = getItemAmount(controller, mage);
             inventoryTitle = inventoryTitle.replace("$balance", formatItemAmount(controller, itemAmount));
         } else {
             double balance = VaultController.getInstance().getBalance(player);
@@ -271,15 +308,22 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
 	}
 
     protected String formatItemAmount(MageController controller, double amount) {
-        return Integer.toString((int)Math.ceil(amount)) + " " + controller.describeItem(controller.getWorthItem());
+        return formatItemAmount(controller, controller.getWorthItem(), amount);
     }
 
-    protected int getItemAmount(MageController controller, Player player) {
+    protected String formatItemAmount(MageController controller, ItemStack item, double amount) {
+        return Integer.toString((int)Math.ceil(amount)) + " " + controller.describeItem(item);
+    }
+
+    protected int getItemAmount(MageController controller, Mage mage) {
+        return getItemAmount(controller, controller.getWorthItem(), mage);
+    }
+
+    protected int getItemAmount(MageController controller, ItemStack worthItem, Mage mage) {
         int itemAmount = 0;
-        ItemStack worthItem = controller.getWorthItem();
-        ItemStack[] contents = player.getInventory().getContents();
+        ItemStack[] contents = mage.getInventory().getContents();
         for (int i = 0; i < contents.length; i++) {
-            if (contents[i] != null && contents[i].getType() == worthItem.getType() && contents[i].getDurability() == worthItem.getDurability())
+            if (contents[i] != null && controller.itemsAreEqual(contents[i], worthItem))
             {
                 itemAmount += contents[i].getAmount();
             }
@@ -288,13 +332,17 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
         return itemAmount;
     }
 
-    protected void removeItems(MageController controller, Player player, int amount) {
+    protected void removeItems(MageController controller, Mage mage, int amount) {
+        removeItems(controller, mage, controller.getWorthItem(), amount);
+    }
+
+    protected void removeItems(MageController controller, Mage mage, ItemStack worthItem, int amount) {
         int remainingAmount = amount;
-        ItemStack worthItem = controller.getWorthItem();
-        ItemStack[] contents = player.getInventory().getContents();
+        Inventory inventory = mage.getInventory();
+        ItemStack[] contents = inventory.getContents();
         for (int i = 0; i < contents.length; i++)
         {
-            if (contents[i] != null && contents[i].getType() == worthItem.getType() && contents[i].getDurability() == worthItem.getDurability())
+            if (contents[i] != null && controller.itemsAreEqual(contents[i], worthItem))
             {
                 if (contents[i].getAmount() <= remainingAmount) {
                     remainingAmount -= contents[i].getAmount();
@@ -308,7 +356,7 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
                 break;
             }
         }
-        player.getInventory().setContents(contents);
+        inventory.setContents(contents);
     }
 
     @Override
