@@ -2225,7 +2225,12 @@ public class MagicController implements Listener, MageController {
             ActionHandler.runEffects(entity);
             UndoList blockList = com.elmakers.mine.bukkit.block.UndoList.getUndoList(entity);
 			if (blockList != null) {
-                blockList.convert(entity, event.getBlock());
+                com.elmakers.mine.bukkit.api.action.CastContext context = blockList.getContext();
+                if (context != null && !context.hasBuildPermission(entity.getLocation().getBlock())) {
+                    event.setCancelled(true);
+                } else {
+                    blockList.convert(entity, event.getBlock());
+                }
 			} else {
 				registerFallingBlock(entity, event.getBlock());
 			}
@@ -2510,6 +2515,10 @@ public class MagicController implements Listener, MageController {
         UndoList blockList = getEntityUndo(explodingEntity);
         boolean cancel = event.isCancelled();
         cancel = cancel || explodingEntity.hasMetadata("cancel_explosion");
+        com.elmakers.mine.bukkit.api.action.CastContext context = blockList.getContext();
+        if (!cancel && context != null && !context.hasBuildPermission(explodingEntity.getLocation().getBlock())) {
+            cancel = true;
+        }
         if (cancel) {
             event.setCancelled(true);
         }
