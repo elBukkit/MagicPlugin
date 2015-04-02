@@ -3,6 +3,7 @@ package com.elmakers.mine.bukkit.api.block;
 import java.util.List;
 import java.util.Set;
 
+import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.entity.EntityData;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
@@ -53,4 +54,5 @@ public interface UndoList extends BlockList, Comparable<UndoList> {
 
     public String getName();
     public Mage getOwner();
+    public CastContext getContext();
 }
