@@ -2,7 +2,6 @@
 
 ## 4.9
 
- - Add GriefPrevention support
  - Add support for custom-named physical currency
 
 ## 4.8

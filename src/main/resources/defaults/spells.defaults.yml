@@ -4028,6 +4028,7 @@ blob:
         brush: stained_glass
         brushcolor: true
         breakable: 3
+        destructible: air,fire
     costs:
         mana: 50
 
@@ -6511,6 +6512,7 @@ tornado:
            sound_pitch: 0.2
            location: origin
     parameters:
+        target: block
         target_type: Entity
         range: 8
         radius: 2
