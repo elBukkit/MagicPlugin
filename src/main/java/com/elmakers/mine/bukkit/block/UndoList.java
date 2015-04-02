@@ -546,6 +546,11 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
     }
 
     @Override
+    public CastContext getContext() {
+        return context;
+    }
+
+    @Override
     public long getScheduledTime() {
         return scheduledTime;
     }
