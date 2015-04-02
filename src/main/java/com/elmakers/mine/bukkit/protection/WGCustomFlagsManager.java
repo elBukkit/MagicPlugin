@@ -5,6 +5,7 @@ import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.mewin.WGCustomFlags.WGCustomFlagsPlugin;
 import com.sk89q.worldguard.protection.ApplicableRegionSet;
 import com.sk89q.worldguard.protection.association.RegionAssociable;
+import com.sk89q.worldguard.protection.flags.RegionGroup;
 import com.sk89q.worldguard.protection.flags.SetFlag;
 import com.sk89q.worldguard.protection.flags.StringFlag;
 
@@ -16,10 +17,10 @@ public class WGCustomFlagsManager {
 
     private final WGCustomFlagsPlugin customFlags;
 
-    public static SetFlag<String> ALLOWED_SPELLS = new SetFlag<String>("allowed-spells", new StringFlag(null));
-    public static SetFlag<String> BLOCKED_SPELLS = new SetFlag<String>("blocked-spells", new StringFlag(null));
-    public static SetFlag<String> ALLOWED_SPELL_CATEGORIES = new SetFlag<String>("allowed-spell-categories", new StringFlag(null));
-    public static SetFlag<String> BLOCKED_SPELL_CATEGORIES = new SetFlag<String>("blocked-spell-categories", new StringFlag(null));
+    public static SetFlag<String> ALLOWED_SPELLS = new SetFlag<String>("allowed-spells", RegionGroup.ALL, new StringFlag(null));
+    public static SetFlag<String> BLOCKED_SPELLS = new SetFlag<String>("blocked-spells", RegionGroup.ALL, new StringFlag(null));
+    public static SetFlag<String> ALLOWED_SPELL_CATEGORIES = new SetFlag<String>("allowed-spell-categories", RegionGroup.ALL, new StringFlag(null));
+    public static SetFlag<String> BLOCKED_SPELL_CATEGORIES = new SetFlag<String>("blocked-spell-categories", RegionGroup.ALL, new StringFlag(null));
 
     public WGCustomFlagsManager(Plugin wgCustomFlags) {
         customFlags = (WGCustomFlagsPlugin)wgCustomFlags;
