@@ -813,11 +813,14 @@ spells:
         name: Mine
         description: Mines and drops the targeted ores
         cast: Mined $count blocks
+        upgrade_description: "&r&b&bull; &6Mines more blocks"
+    mine|3:
         upgrade_description: "&r&b&bull; &6Now mines stone"
     chop:
         name: Chop
         description: Fell a tree in one cast
         cast: Chopped $count blocks
+        upgrade_description: "&r&b&bull; &6Chops more blocks"
     peek:
         name: Peek
         description: Temporarily glass the target surface

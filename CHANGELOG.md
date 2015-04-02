@@ -5,6 +5,8 @@
  - Add support for custom-named physical currency
  - TNT, fireballs and thrown blocks won't affect a protection region
  - Add GriefPrevention support
+ - Fix Chop and Mine recursion, add more levels
+ - Some fixes to WGCustomFlags integration (?)
 
 ## 4.8
 

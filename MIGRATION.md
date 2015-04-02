@@ -5,6 +5,9 @@
  * The worth_items list in config.yml has changed to "currency", and the format is different.
    If you have a customized physical economy, please take note!
 
+ * I changed the type of flags used in the WGCustomFlags integration. It seems like they may or
+   may not migrate- if you lose all your custom spell flags, I apologize!
+
 ## 4.8
 
 Spell shops were re-balanced. You can now tweak the "worth_base" value in config.yml to scale
