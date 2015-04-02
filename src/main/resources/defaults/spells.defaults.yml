@@ -504,7 +504,7 @@ worm:
         transparent: transparent_to_construction
         check_destructible: false
         range: 32
-        cooldown: 120000
+        cooldown: 60000
         name: Worm
         target_min_range: 3
         target_max_range: 128
@@ -566,7 +566,7 @@ hunter:
         transparent: transparent_to_construction
         check_destructible: false
         range: 32
-        cooldown: 60000
+        cooldown: 10000
         name: Hunter
         target_min_range: 1
         target_max_range: 128
@@ -604,7 +604,7 @@ defender:
         transparent: transparent_to_construction
         check_destructible: false
         range: 32
-        cooldown: 60000
+        cooldown: 5000
         name: Defender
         radius: 12
         yradius: 12
