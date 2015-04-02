@@ -164,6 +164,12 @@
             <version>2.0.5</version>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>me.ryanhamshire</groupId>
+            <artifactId>GriefPrevention</artifactId>
+            <version>11.2</version>
+            <scope>provided</scope>
+        </dependency>
 	</dependencies>
 	<repositories>
         <repository>

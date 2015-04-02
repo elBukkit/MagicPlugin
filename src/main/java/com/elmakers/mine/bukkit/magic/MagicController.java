@@ -24,6 +24,7 @@ import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.citizens.CitizensController;
 import com.elmakers.mine.bukkit.integration.VaultController;
 import com.elmakers.mine.bukkit.maps.MapController;
+import com.elmakers.mine.bukkit.protection.GriefPreventionManager;
 import com.elmakers.mine.bukkit.protection.LocketteManager;
 import com.elmakers.mine.bukkit.protection.MultiverseManager;
 import com.elmakers.mine.bukkit.protection.PreciousStonesManager;
@@ -461,6 +462,7 @@ public class MagicController implements Listener, MageController {
         allowed = allowed && locketteManager.hasBuildPermission(player, block);
         allowed = allowed && preciousStonesManager.hasBuildPermission(player, block);
         allowed = allowed && townyManager.hasBuildPermission(player, block);
+        allowed = allowed && griefPreventionManager.hasBuildPermission(player, block);
 
         return allowed;
     }
@@ -787,6 +789,9 @@ public class MagicController implements Listener, MageController {
         // Link to Lockette
         locketteManager.initialize(plugin);
 
+        // Link to GriefPrevention
+        griefPreventionManager.initialize(plugin);
+
         // Try to link to dynmap:
         try {
             Plugin dynmapPlugin = plugin.getServer().getPluginManager().getPlugin("dynmap");
@@ -1001,6 +1006,12 @@ public class MagicController implements Listener, MageController {
                         @Override
                         public int getValue() {
                             return controller.townyManager.isEnabled() ? 1 : 0;
+                        }
+                    });
+                    integrationGraph.addPlotter(new Metrics.Plotter("GriefPrevention") {
+                        @Override
+                        public int getValue() {
+                            return controller.griefPreventionManager.isEnabled() ? 1 : 0;
                         }
                     });
                     integrationGraph.addPlotter(new Metrics.Plotter("PreciousStones") {
@@ -1982,6 +1993,7 @@ public class MagicController implements Listener, MageController {
         preciousStonesManager.setOverride(properties.getBoolean("precious_stones_override", true));
         townyManager.setEnabled(properties.getBoolean("towny_enabled", townyManager.isEnabled()));
         locketteManager.setEnabled(properties.getBoolean("lockette_enabled", locketteManager.isEnabled()));
+        griefPreventionManager.setEnabled(properties.getBoolean("grief_prevention_enabled", griefPreventionManager.isEnabled()));
 
         metricsLevel = properties.getInt("metrics_level", metricsLevel);
 
@@ -4811,4 +4823,5 @@ public class MagicController implements Listener, MageController {
     private MultiverseManager                   multiverseManager           = new MultiverseManager();
     private PreciousStonesManager				preciousStonesManager		= new PreciousStonesManager();
     private TownyManager						townyManager				= new TownyManager();
+    private GriefPreventionManager              griefPreventionManager		= new GriefPreventionManager();
 }

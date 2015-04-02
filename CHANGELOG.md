@@ -3,6 +3,8 @@
 ## 4.9
 
  - Add support for custom-named physical currency
+ - TNT, fireballs and thrown blocks won't affect a protection region
+ - Add GriefPrevention support
 
 ## 4.8
 

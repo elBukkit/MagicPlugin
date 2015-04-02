@@ -436,6 +436,9 @@ pvp_manager_enabled: true
 # Enable Towny integration for Build checks
 towny_enabled: true
 
+# Enable GriefPrevention integration for Build checks
+grief_prevention_enabled: true
+
 # Enable PreciousStones integration for Build and PVP checks
 precious_stones_enabled: true
 # Players who can build in a field can cast ANY spell in that field,

@@ -1,7 +1,5 @@
 # TODO
 
- - Add GriefPrevention support
-
  - Recall still losing waypoints
 
  - Try to Paste the elder tree .. schematic bounds seem broken in general
