@@ -4853,7 +4853,7 @@ levitate:
 force:
     icon_url: http://i.imgur.com/H3HUqPX.png
     icon: leash
-    category: elemental
+    category: master
     class: ForceSpell
     pvp_restricted: true
     worth: 5000
