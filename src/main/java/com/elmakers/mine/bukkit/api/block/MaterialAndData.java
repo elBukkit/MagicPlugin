@@ -57,6 +57,8 @@ public interface MaterialAndData {
     public boolean isValid();
     public String getCommandLine();
     public void setCommandLine(String commandLine);
+    public void setCustomName(String customName);
     public void setSignLines(String[] lines);
+    public void setInventoryContents(ItemStack[] contents);
     public String[] getSignLines();
 }
