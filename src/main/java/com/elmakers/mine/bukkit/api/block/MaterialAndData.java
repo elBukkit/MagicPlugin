@@ -60,5 +60,6 @@ public interface MaterialAndData {
     public void setCustomName(String customName);
     public void setSignLines(String[] lines);
     public void setInventoryContents(ItemStack[] contents);
+    public void setRawData(Object data);
     public String[] getSignLines();
 }
