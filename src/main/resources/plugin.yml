@@ -294,6 +294,14 @@ permissions:
     description: The player may use a wand
     default: true
     type: boolean
+  Magic.wand.enchant:
+    description: The player may enchant a wand
+    default: true
+    type: boolean
+  Magic.wand.craft:
+    description: The player may craft a wand
+    default: true
+    type: boolean
   Magic.wand.destruct:
     description: A wand will self-destruct if the players tries to use it without permission.
     default: false

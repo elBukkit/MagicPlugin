@@ -3,9 +3,9 @@ package com.elmakers.mine.bukkit.magic.listener;
 import java.util.ArrayList;
 import java.util.Set;
 
-import com.elmakers.mine.bukkit.utility.Messages;
 import com.elmakers.mine.bukkit.wand.WandUpgradePath;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -17,7 +17,6 @@ import org.bukkit.event.inventory.InventoryType.SlotType;
 import org.bukkit.inventory.ItemStack;
 
 import com.elmakers.mine.bukkit.magic.MagicController;
-import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.wand.Wand;
 
 public class EnchantingController implements Listener {
@@ -35,7 +34,13 @@ public class EnchantingController implements Listener {
 	@EventHandler
 	public void onEnchantItem(EnchantItemEvent event) {
 		if (enchantingEnabled && Wand.isWand(event.getItem())) {
-			event.getEnchantsToAdd().clear();
+            Player player = event.getEnchanter();
+            if (player == null || !controller.hasPermission(player, "Magic.wand.enchant")) {
+                event.setCancelled(true);
+                return;
+            }
+
+            event.getEnchantsToAdd().clear();
 			int level = event.getExpLevelCost();
 			Wand wand = new Wand(controller, event.getItem());
 			if (wand.enchant(level, controller.getMage(event.getEnchanter())) <= 0) {
@@ -64,8 +69,12 @@ public class EnchantingController implements Listener {
 				event.setCancelled(true);
 				return;
 			}
+            Player player = event.getEnchanter();
+            if (player == null || !controller.hasPermission(player, "Magic.wand.enchant")) {
+                event.setCancelled(true);
+                return;
+            }
 			Wand wandItem = new Wand(controller, event.getItem());
-			Player player = event.getEnchanter();
 			if (!wandItem.isModifiable() && wandItem.getPath() == null) {
 				event.setCancelled(true);
 				return;
@@ -107,7 +116,6 @@ public class EnchantingController implements Listener {
 
 	@EventHandler
 	public void onInventoryClick(InventoryClickEvent event) {
-		if (!(event.getWhoClicked() instanceof Player)) return;
 		if (event.isCancelled()) return;
 		
 		InventoryType inventoryType = event.getInventory().getType();
@@ -116,6 +124,12 @@ public class EnchantingController implements Listener {
 		if (enchantingEnabled && inventoryType == InventoryType.ENCHANTING)
 		{
 			if (slotType == SlotType.CRAFTING) {
+                HumanEntity clicker = event.getWhoClicked();
+                Player player = clicker instanceof Player ? (Player)clicker : null;
+                if (player == null || !controller.hasPermission(player, "Magic.wand.enchant")) {
+                    return;
+                }
+
 				ItemStack cursor = event.getCursor();
 				ItemStack current = event.getCurrentItem();
 				

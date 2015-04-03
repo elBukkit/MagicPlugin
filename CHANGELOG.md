@@ -6,6 +6,7 @@
  - TNT, fireballs and thrown blocks won't affect a protected region
  - Fix Chop and Mine recursion, add more levels
  - Add support for custom-named physical currency
+ - Add Magic.wand.enchant Magic.wand.craft permissions (true by default)
 
 ## 4.8
 

@@ -3,6 +3,7 @@ package com.elmakers.mine.bukkit.magic.listener;
 import com.elmakers.mine.bukkit.magic.MagicRecipe;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -18,7 +19,6 @@ import org.bukkit.plugin.Plugin;
 
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.magic.MagicController;
-import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.wand.Wand;
 
 import java.util.ArrayList;
@@ -98,6 +98,13 @@ public class CraftingController implements Listener {
 
             Material substitute = candidate.getSubstitute();
             if (ingredientsMatch) {
+                for (HumanEntity human : event.getViewers()) {
+                    if (human instanceof Player && !controller.hasPermission((Player)human, "Magic.wand.craft")) {
+                        inventory.setResult(new ItemStack(Material.AIR));
+                        return;
+                    }
+                }
+
                 ItemStack crafted = candidate.craft();
                 inventory.setResult(crafted);
                 break;
