@@ -6,6 +6,7 @@ import java.io.InputStream;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -38,6 +39,12 @@ public class NMSUtils {
 
     protected static String versionPrefix = "";
     protected static boolean isLegacy = false;
+
+    protected final static int NBT_TYPE_COMPOUND = 10;
+    protected final static int NBT_TYPE_INT_ARRAY= 11;
+    protected final static int NBT_TYPE_DOUBLE = 6;
+    protected final static int NBT_TYPE_FLOAT = 5;
+    protected final static int NBT_TYPE_STRING = 8;
 
     protected static Class<?> class_ItemStack;
     protected static Class<?> class_NBTBase;
@@ -77,6 +84,8 @@ public class NMSUtils {
     protected static Class<Enum> class_EnumDirection;
 
     protected static Method class_NBTTagList_addMethod;
+    protected static Method class_NBTTagList_getMethod;
+    protected static Method class_NBTTagList_sizeMethod;
     protected static Method class_NBTTagCompound_setMethod;
     protected static Method class_DataWatcher_watchMethod;
     protected static Method class_World_getEntitiesMethod;
@@ -89,10 +98,13 @@ public class NMSUtils {
     protected static Method class_NBTTagCompound_setStringMethod;
     protected static Method class_NBTTagCompound_removeMethod;
     protected static Method class_NBTTagCompound_getStringMethod;
+    protected static Method class_NBTTagCompound_getIntMethod;
+    protected static Method class_NBTTagCompound_getByteMethod;
     protected static Method class_NBTTagCompound_getMethod;
     protected static Method class_NBTTagCompound_getCompoundMethod;
     protected static Method class_NBTTagCompound_getShortMethod;
     protected static Method class_NBTTagCompound_getByteArrayMethod;
+    protected static Method class_NBTTagCompound_getListMethod;
     protected static Method class_World_addEntityMethod;
     protected static Method class_CraftMetaBanner_getPatternsMethod;
     protected static Method class_CraftMetaBanner_setPatternsMethod;
@@ -103,7 +115,8 @@ public class NMSUtils {
     protected static Method class_CraftBanner_getBaseColorMethod;
     protected static Method class_CraftBanner_setBaseColorMethod;
     protected static Method class_NBTCompressedStreamTools_loadFileMethod;
-
+    protected static Method class_ItemStack_createStackMethod;
+    protected static Method class_CraftItemStack_asBukkitCopyMethod;
     protected static Method class_CraftItemStack_copyMethod;
     protected static Method class_CraftItemStack_mirrorMethod;
     protected static Method class_NBTTagCompound_hasKeyMethod;
@@ -175,6 +188,8 @@ public class NMSUtils {
             class_NBTCompressedStreamTools = fixBukkitClass("net.minecraft.server.NBTCompressedStreamTools");
 
             class_NBTTagList_addMethod = class_NBTTagList.getMethod("add", class_NBTBase);
+            class_NBTTagList_getMethod = class_NBTTagList.getMethod("get", Integer.TYPE);
+            class_NBTTagList_sizeMethod = class_NBTTagList.getMethod("size");
             class_NBTTagCompound_setMethod = class_NBTTagCompound.getMethod("set", String.class, class_NBTBase);
             class_DataWatcher_watchMethod = class_DataWatcher.getMethod("watch", Integer.TYPE, Object.class);
             class_World_getEntitiesMethod = class_World.getMethod("getEntities", class_Entity, class_AxisAlignedBB);
@@ -186,9 +201,14 @@ public class NMSUtils {
             class_NBTTagCompound_removeMethod = class_NBTTagCompound.getMethod("remove", String.class);
             class_NBTTagCompound_getStringMethod = class_NBTTagCompound.getMethod("getString", String.class);
             class_NBTTagCompound_getShortMethod = class_NBTTagCompound.getMethod("getShort", String.class);
+            class_NBTTagCompound_getIntMethod = class_NBTTagCompound.getMethod("getInt", String.class);
+            class_NBTTagCompound_getByteMethod = class_NBTTagCompound.getMethod("getByte", String.class);
             class_NBTTagCompound_getByteArrayMethod = class_NBTTagCompound.getMethod("getByteArray", String.class);
+            class_NBTTagCompound_getListMethod = class_NBTTagCompound.getMethod("getList", String.class, Integer.TYPE);
             class_CraftItemStack_copyMethod = class_CraftItemStack.getMethod("asNMSCopy", org.bukkit.inventory.ItemStack.class);
+            class_CraftItemStack_asBukkitCopyMethod = class_CraftItemStack.getMethod("asBukkitCopy", class_ItemStack);
             class_CraftItemStack_mirrorMethod = class_CraftItemStack.getMethod("asCraftMirror", class_ItemStack);
+            class_ItemStack_createStackMethod = class_ItemStack.getMethod("createStack", class_NBTTagCompound);
             class_NBTTagCompound_hasKeyMethod = class_NBTTagCompound.getMethod("hasKey", String.class);
             class_NBTTagCompound_getMethod = class_NBTTagCompound.getMethod("get", String.class);
             class_NBTTagCompound_getCompoundMethod = class_NBTTagCompound.getMethod("getCompound", String.class);
@@ -618,6 +638,28 @@ public class NMSUtils {
         return meta;
     }
 
+    public static Byte getMetaByte(Object node, String tag) {
+        if (node == null || !class_NBTTagCompound.isInstance(node)) return null;
+        Byte meta = null;
+        try {
+            meta = (Byte)class_NBTTagCompound_getByteMethod.invoke(node, tag);
+        } catch (Throwable ex) {
+            ex.printStackTrace();
+        }
+        return meta;
+    }
+
+    public static Integer getMetaInt(Object node, String tag) {
+        if (node == null || !class_NBTTagCompound.isInstance(node)) return null;
+        Integer meta = null;
+        try {
+            meta = (Integer)class_NBTTagCompound_getIntMethod.invoke(node, tag);
+        } catch (Throwable ex) {
+            ex.printStackTrace();
+        }
+        return meta;
+    }
+
     public static void setMeta(Object node, String tag, String value) {
         if (node == null|| !class_NBTTagCompound.isInstance(node)) return;
         try {
@@ -863,6 +905,39 @@ public class NMSUtils {
         return !isLegacy;
     }
 
+    public static ItemStack getItem(Object itemTag) {
+        ItemStack item = null;
+        try {
+            Object nmsStack = class_ItemStack_createStackMethod.invoke(null, itemTag);
+            item = (ItemStack)class_CraftItemStack_mirrorMethod.invoke(null, nmsStack);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return item;
+    }
+
+    public static ItemStack[] getItems(Object rootTag, String tagName) {
+        try {
+            Object itemList = class_NBTTagCompound_getListMethod.invoke(rootTag, tagName, NBT_TYPE_COMPOUND);
+            Integer size = (Integer)class_NBTTagList_sizeMethod.invoke(itemList);
+            ItemStack[] items = new ItemStack[size];
+            for (int i = 0; i < size; i++) {
+                try {
+                    Object itemData = class_NBTTagList_getMethod.invoke(itemList, i);
+                    if (itemData != null) {
+                        items[i] = getItem(itemData);
+                    }
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
+            return items;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return null;
+    }
+
     public static Schematic loadSchematic(File inputFile) {
         if (inputFile == null || !inputFile.exists()) {
             return null;
@@ -886,14 +961,64 @@ public class NMSUtils {
             if (nbtData == null) {
                 return null;
             }
+
+            // Version check
+            String materials = (String)class_NBTTagCompound_getStringMethod.invoke(nbtData, "Materials");
+            if (!materials.equals("Alpha")) {
+                Bukkit.getLogger().warning("Schematic is not in Alpha format");
+               return null;
+            }
+
             short width = (Short)class_NBTTagCompound_getShortMethod.invoke(nbtData, "Width");
             short height = (Short)class_NBTTagCompound_getShortMethod.invoke(nbtData, "Height");
             short length = (Short)class_NBTTagCompound_getShortMethod.invoke(nbtData, "Length");
 
-            byte[] blocks = (byte[])class_NBTTagCompound_getByteArrayMethod.invoke(nbtData, "Blocks");
+            byte[] blockIds = (byte[])class_NBTTagCompound_getByteArrayMethod.invoke(nbtData, "Blocks");
+
+            // Have to combine block ids to get 12 bits of ids
+            // Thanks to the WorldEdit team for showing me how to do this.
+            short[] blocks = new short[blockIds.length];
+            byte[] addBlocks = new byte[0];
+            if ((Boolean)class_NBTTagCompound_hasKeyMethod.invoke(nbtData, "AddBlocks")) {
+                addBlocks = (byte[])class_NBTTagCompound_getByteArrayMethod.invoke(nbtData, "AddBlocks");
+            }
+            for (int index = 0; index < blocks.length; index++) {
+                if ((index >> 1) >= addBlocks.length) {
+                    blocks[index] = (short) (blockIds[index] & 0xFF);
+                } else {
+                    if ((index & 1) == 0) {
+                        blocks[index] = (short) (((addBlocks[index >> 1] & 0x0F) << 8) + (blockIds[index] & 0xFF));
+                    } else {
+                        blocks[index] = (short) (((addBlocks[index >> 1] & 0xF0) << 4) + (blockIds[index] & 0xFF));
+                    }
+                }
+            }
+
             byte[] data = (byte[])class_NBTTagCompound_getByteArrayMethod.invoke(nbtData, "Data");
 
-            return new Schematic(width, height, length, blocks, data);
+            Collection<Object> tileEntityData = new ArrayList<Object>();
+            Collection<Object> entityData = new ArrayList<Object>();
+
+            Object entityList = class_NBTTagCompound_getListMethod.invoke(nbtData, "Entities", NBT_TYPE_COMPOUND);
+            Object tileEntityList = class_NBTTagCompound_getListMethod.invoke(nbtData, "TileEntities", NBT_TYPE_COMPOUND);
+
+            if (entityList != null) {
+                int size = (Integer)class_NBTTagList_sizeMethod.invoke(entityList);
+                for (int i = 0; i < size; i++) {
+                    Object entity = class_NBTTagList_getMethod.invoke(entityList, i);
+                    entityData.add(entity);
+                }
+            }
+
+            if (tileEntityList != null) {
+                int size = (Integer)class_NBTTagList_sizeMethod.invoke(tileEntityList);
+                for (int i = 0; i < size; i++) {
+                    Object tileEntity = class_NBTTagList_getMethod.invoke(tileEntityList, i);
+                    tileEntityData.add(tileEntity);
+                }
+            }
+
+            return new Schematic(width, height, length, blocks, data, tileEntityData, entityData);
         } catch (Exception ex) {
             ex.printStackTrace();
         }

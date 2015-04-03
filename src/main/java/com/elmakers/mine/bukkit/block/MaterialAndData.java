@@ -519,6 +519,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         return false;
     }
 
+    @Override
     public void setSignLines(String[] lines) {
         signLines = lines.clone();
     }
@@ -527,6 +528,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         return signLines.clone();
     }
 
+    @Override
     public void setCustomName(String customName) {
         this.customName = customName;
     }
@@ -535,6 +537,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         return customName;
     }
 
+    @Override
     public void setInventoryContents(ItemStack[] contents) {
         inventoryContents = contents;
     }
