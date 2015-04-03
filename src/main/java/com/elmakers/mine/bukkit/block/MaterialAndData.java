@@ -69,6 +69,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
     protected Object customData = null;
     protected SkullType skullType = null;
     protected DyeColor color = null;
+    protected Object tileEntityData = null;
 
     public Material DEFAULT_MATERIAL = Material.AIR;
 
@@ -249,6 +250,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
             skullType = o.skullType;
             customData = o.customData;
             color = o.color;
+            tileEntityData = o.tileEntityData;
         }
     }
 
@@ -266,6 +268,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         skullType = null;
         customData = null;
         color = null;
+        tileEntityData = null;
 
         isValid = true;
     }
@@ -307,13 +310,16 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         skullType = null;
         customData = null;
         color = null;
+        tileEntityData = null;
 
         material = blockMaterial;
         data = (short)block.getData();
 
         try {
             BlockState blockState = block.getState();
-            if (blockState instanceof Sign) {
+            if (material == Material.FLOWER_POT) {
+                tileEntityData = NMSUtils.getTileEntityData(block.getLocation());
+            } else if (blockState instanceof Sign) {
                 Sign sign = (Sign)blockState;
                 signLines = sign.getLines();
             } else if (blockState instanceof CommandBlock){
@@ -380,7 +386,11 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
             }
 
             BlockState blockState = block.getState();
-            if (blockState != null && material != null && material.getId() == 176 || material.getId() == 177) {
+
+            // Set tile entity data first
+            if (tileEntityData != null) {
+                NMSUtils.setTileEntityData(block.getLocation(), tileEntityData);
+            } else if (blockState != null && material != null && material.getId() == 176 || material.getId() == 177) {
                 // Banner
                 // TODO: Change to Material.BANNER when dropping 1.7 support
                 CompatibilityUtils.setBannerPatterns(blockState, customData);
@@ -686,5 +696,10 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
     @Override
     public void setData(Short data) {
         this.data = data;
+    }
+
+    @Override
+    public void setRawData(Object data) {
+        this.tileEntityData = data;
     }
 }

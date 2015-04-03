@@ -16,6 +16,7 @@ import org.bukkit.DyeColor;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.BlockFace;
+import org.bukkit.block.BlockState;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Entity;
@@ -55,7 +56,9 @@ public class NMSUtils {
     protected static Class<?> class_CraftTask;
     protected static Class<?> class_CraftInventoryCustom;
     protected static Class<?> class_CraftItemStack;
+    protected static Class<?> class_CraftBlockState;
     protected static Class<?> class_CraftLivingEntity;
+    protected static Class<?> class_CraftWorld;
     protected static Class<?> class_Entity;
     protected static Class<?> class_EntityCreature;
     protected static Class<?> class_EntityLiving;
@@ -81,6 +84,7 @@ public class NMSUtils {
     protected static Class<?> class_GameProfileProperty;
     protected static Class<?> class_BlockPosition;
     protected static Class<?> class_NBTCompressedStreamTools;
+    protected static Class<?> class_TileEntity;
     protected static Class<Enum> class_EnumDirection;
 
     protected static Method class_NBTTagList_addMethod;
@@ -96,6 +100,7 @@ public class NMSUtils {
     protected static Method class_World_explodeMethod;
     protected static Method class_NBTTagCompound_setBooleanMethod;
     protected static Method class_NBTTagCompound_setStringMethod;
+    protected static Method class_NBTTagCompound_setIntMethod;
     protected static Method class_NBTTagCompound_removeMethod;
     protected static Method class_NBTTagCompound_getStringMethod;
     protected static Method class_NBTTagCompound_getIntMethod;
@@ -105,6 +110,9 @@ public class NMSUtils {
     protected static Method class_NBTTagCompound_getShortMethod;
     protected static Method class_NBTTagCompound_getByteArrayMethod;
     protected static Method class_NBTTagCompound_getListMethod;
+    protected static Method class_TileEntity_loadMethod;
+    protected static Method class_TileEntity_saveMethod;
+    protected static Method class_TileEntity_updateMethod;
     protected static Method class_World_addEntityMethod;
     protected static Method class_CraftMetaBanner_getPatternsMethod;
     protected static Method class_CraftMetaBanner_setPatternsMethod;
@@ -120,6 +128,7 @@ public class NMSUtils {
     protected static Method class_CraftItemStack_copyMethod;
     protected static Method class_CraftItemStack_mirrorMethod;
     protected static Method class_NBTTagCompound_hasKeyMethod;
+    protected static Method class_CraftWorld_getTileEntityAtMethod;
 
     protected static Constructor class_NBTTagList_consructor;
     protected static Constructor class_NBTTagList_legacy_consructor;
@@ -166,8 +175,10 @@ public class NMSUtils {
             class_NBTTagList = fixBukkitClass("net.minecraft.server.NBTTagList");
             class_NBTTagString = fixBukkitClass("net.minecraft.server.NBTTagString");
             class_NBTTagByte = fixBukkitClass("net.minecraft.server.NBTTagByte");
+            class_CraftWorld = fixBukkitClass("org.bukkit.craftbukkit.CraftWorld");
             class_CraftInventoryCustom = fixBukkitClass("org.bukkit.craftbukkit.inventory.CraftInventoryCustom");
             class_CraftItemStack = fixBukkitClass("org.bukkit.craftbukkit.inventory.CraftItemStack");
+            class_CraftBlockState = fixBukkitClass("org.bukkit.craftbukkit.block.CraftBlockState");
             class_CraftTask = fixBukkitClass("org.bukkit.craftbukkit.scheduler.CraftTask");
             class_CraftLivingEntity = fixBukkitClass("org.bukkit.craftbukkit.entity.CraftLivingEntity");
             class_Packet = fixBukkitClass("net.minecraft.server.Packet");
@@ -186,6 +197,7 @@ public class NMSUtils {
             class_CraftSkull = fixBukkitClass("org.bukkit.craftbukkit.block.CraftSkull");
             class_CraftMetaSkull = fixBukkitClass("org.bukkit.craftbukkit.inventory.CraftMetaSkull");
             class_NBTCompressedStreamTools = fixBukkitClass("net.minecraft.server.NBTCompressedStreamTools");
+            class_TileEntity = fixBukkitClass("net.minecraft.server.TileEntity");
 
             class_NBTTagList_addMethod = class_NBTTagList.getMethod("add", class_NBTBase);
             class_NBTTagList_getMethod = class_NBTTagList.getMethod("get", Integer.TYPE);
@@ -193,11 +205,13 @@ public class NMSUtils {
             class_NBTTagCompound_setMethod = class_NBTTagCompound.getMethod("set", String.class, class_NBTBase);
             class_DataWatcher_watchMethod = class_DataWatcher.getMethod("watch", Integer.TYPE, Object.class);
             class_World_getEntitiesMethod = class_World.getMethod("getEntities", class_Entity, class_AxisAlignedBB);
+            class_CraftWorld_getTileEntityAtMethod = class_CraftWorld.getMethod("getTileEntityAt", Integer.TYPE, Integer.TYPE, Integer.TYPE);
             class_Entity_getBukkitEntityMethod = class_Entity.getMethod("getBukkitEntity");
             class_AxisAlignedBB_createBBMethod = class_AxisAlignedBB.getMethod("a", Double.TYPE, Double.TYPE, Double.TYPE, Double.TYPE, Double.TYPE, Double.TYPE);
             class_World_explodeMethod = class_World.getMethod("createExplosion", class_Entity, Double.TYPE, Double.TYPE, Double.TYPE, Float.TYPE, Boolean.TYPE, Boolean.TYPE);
             class_NBTTagCompound_setBooleanMethod = class_NBTTagCompound.getMethod("setBoolean", String.class, Boolean.TYPE);
             class_NBTTagCompound_setStringMethod = class_NBTTagCompound.getMethod("setString", String.class, String.class);
+            class_NBTTagCompound_setIntMethod = class_NBTTagCompound.getMethod("setInt", String.class, Integer.TYPE);
             class_NBTTagCompound_removeMethod = class_NBTTagCompound.getMethod("remove", String.class);
             class_NBTTagCompound_getStringMethod = class_NBTTagCompound.getMethod("getString", String.class);
             class_NBTTagCompound_getShortMethod = class_NBTTagCompound.getMethod("getShort", String.class);
@@ -216,6 +230,9 @@ public class NMSUtils {
             class_DamageSource_getMagicSourceMethod = class_DamageSource.getMethod("b", class_Entity, class_Entity);
             class_World_addEntityMethod = class_World.getMethod("addEntity", class_Entity, CreatureSpawnEvent.SpawnReason.class);
             class_NBTCompressedStreamTools_loadFileMethod = class_NBTCompressedStreamTools.getMethod("a", InputStream.class);
+            class_TileEntity_loadMethod = class_TileEntity.getMethod("a", class_NBTTagCompound);
+            class_TileEntity_saveMethod = class_TileEntity.getMethod("b", class_NBTTagCompound);
+            class_TileEntity_updateMethod = class_TileEntity.getMethod("update");
 
             class_CraftInventoryCustom_constructor = class_CraftInventoryCustom.getConstructor(InventoryHolder.class, Integer.TYPE, String.class);
             class_EntityFireworkConstructor = class_EntityFirework.getConstructor(class_World, Double.TYPE, Double.TYPE, Double.TYPE, class_ItemStack);
@@ -1023,5 +1040,35 @@ public class NMSUtils {
             ex.printStackTrace();
         }
         return null;
+    }
+
+    public static Object getTileEntityData(Location location) {
+        Object data = null;
+        try {
+            World world = location.getWorld();
+            Object tileEntity = class_CraftWorld_getTileEntityAtMethod.invoke(world, location.getBlockX(), location.getBlockY(), location.getBlockZ());
+            if (tileEntity != null) {
+                data = class_NBTTagCompound.newInstance();
+                class_TileEntity_saveMethod.invoke(tileEntity, data);
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return data;
+    }
+
+    public static void setTileEntityData(Location location, Object data) {
+        try {
+            World world = location.getWorld();
+            Object tileEntity = class_CraftWorld_getTileEntityAtMethod.invoke(world, location.getBlockX(), location.getBlockY(), location.getBlockZ());
+            class_NBTTagCompound_setIntMethod.invoke(data, "x", location.getBlockX());
+            class_NBTTagCompound_setIntMethod.invoke(data, "y", location.getBlockY());
+            class_NBTTagCompound_setIntMethod.invoke(data, "z", location.getBlockZ());
+
+            class_TileEntity_loadMethod.invoke(tileEntity, data);
+            class_TileEntity_updateMethod.invoke(tileEntity);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 }

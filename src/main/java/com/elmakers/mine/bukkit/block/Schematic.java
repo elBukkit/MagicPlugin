@@ -82,23 +82,13 @@ public class Schematic implements com.elmakers.mine.bukkit.api.block.Schematic {
                                         block.setCustomName(customName);
                                     }
                                     block.setCommandLine(NMSUtils.getMeta(tileEntity, "Command"));
-                                } else if (material == Material.FLOWER_POT) {
-                                    Integer itemId = NMSUtils.getMetaInt(tileEntity, "Item");
-                                    if (itemId != null) {
-                                        Byte itemData = NMSUtils.getMetaByte(tileEntity, "Data");
-                                        if (itemData == null) {
-                                            itemData = 0;
-                                        }
-                                        ItemStack[] contents = new ItemStack[1];
-                                        contents[0] = new ItemStack(itemId, itemData);
-                                        block.setInventoryContents(contents);
-                                    }
-                                    block.setCommandLine(NMSUtils.getMeta(tileEntity, "Command"));
                                 } else if (NMSUtils.containsNode(tileEntity, "Items")) {
                                     ItemStack[] items = NMSUtils.getItems(tileEntity, "Items");
                                     if (items != null) {
                                         block.setInventoryContents(items);
                                     }
+                                } else {
+                                    block.setRawData(tileEntity);
                                 }
                             } catch (Exception ex) {
                                 ex.printStackTrace();
