@@ -18,6 +18,7 @@ import java.util.zip.ZipInputStream;
 import com.elmakers.mine.bukkit.action.CastContext;
 import com.elmakers.mine.bukkit.api.action.GUIAction;
 import com.elmakers.mine.bukkit.api.block.CurrencyItem;
+import com.elmakers.mine.bukkit.api.block.Schematic;
 import com.elmakers.mine.bukkit.api.event.SaveEvent;
 import com.elmakers.mine.bukkit.api.spell.*;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
@@ -83,7 +84,6 @@ import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.block.Automaton;
 import com.elmakers.mine.bukkit.block.BlockData;
 import com.elmakers.mine.bukkit.block.MaterialBrush;
-import com.elmakers.mine.bukkit.block.WorldEditSchematic;
 import com.elmakers.mine.bukkit.dynmap.DynmapController;
 import com.elmakers.mine.bukkit.effect.EffectPlayer;
 import com.elmakers.mine.bukkit.elementals.ElementalsController;
@@ -467,10 +467,6 @@ public class MagicController implements Listener, MageController {
         return allowed;
     }
 
-    public boolean schematicsEnabled() {
-        return cuboidClipboardClass != null;
-    }
-
     public void clearCache() {
         // Only delete schematics that we have builtins for.
         String[] schematicFiles = schematicFolder.list();
@@ -493,13 +489,14 @@ public class MagicController implements Listener, MageController {
         maps.clearCache();
     }
 
-    public WorldEditSchematic loadSchematic(String schematicName) {
-        if (schematicName == null || schematicName.length() == 0 || !schematicsEnabled()) return null;
+    @Override
+    public Schematic loadSchematic(String schematicName) {
+        if (schematicName == null || schematicName.length() == 0) return null;
 
         if (schematics.containsKey(schematicName)) {
-            WeakReference<WorldEditSchematic> schematic = schematics.get(schematicName);
+            WeakReference<Schematic> schematic = schematics.get(schematicName);
             if (schematic != null) {
-                WorldEditSchematic cached = schematic.get();
+                Schematic cached = schematic.get();
                 if (cached != null) {
                     return cached;
                 }
@@ -536,10 +533,9 @@ public class MagicController implements Listener, MageController {
         }
 
         try {
-            Method loadSchematicMethod = cuboidClipboardClass.getMethod("loadSchematic", File.class);
             getLogger().info("Loading schematic file: " + schematicFile.getAbsolutePath());
-            WorldEditSchematic schematic = new WorldEditSchematic(loadSchematicMethod.invoke(null, schematicFile));
-            schematics.put(schematicName, new WeakReference<WorldEditSchematic>(schematic));
+            Schematic schematic = NMSUtils.loadSchematic(schematicFile);
+            schematics.put(schematicName, new WeakReference<Schematic>(schematic));
             return schematic;
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -575,7 +571,6 @@ public class MagicController implements Listener, MageController {
 
     public Collection<String> getSchematicNames() {
         Collection<String> schematicNames = new ArrayList<String>();
-        if (!MaterialBrush.SchematicsEnabled) return schematicNames;
 
         // Load internal schematics.. this may be a bit expensive.
         try {
@@ -640,23 +635,6 @@ public class MagicController implements Listener, MageController {
             getLogger().info("EffectLib initialized");
         } else {
             getLogger().warning("Failed to initialize EffectLib");
-        }
-
-        // Try to link to WorldEdit
-        // Do this prior to load(), because the CraftingController
-        // May need to know whether or not schematics are enabled.
-        // TODO: Make wrapper class to avoid this reflection.
-        try {
-            cuboidClipboardClass = Class.forName("com.sk89q.worldedit.CuboidClipboard");
-            Method loadSchematicMethod = cuboidClipboardClass.getMethod("loadSchematic", File.class);
-            if (loadSchematicMethod != null) {
-                getLogger().info("WorldEdit found, schematic brushes enabled.");
-                MaterialBrush.SchematicsEnabled = true;
-                hasWorldEdit = true;
-            } else {
-                cuboidClipboardClass = null;
-            }
-        } catch (Throwable ex) {
         }
 
         load();
@@ -760,12 +738,6 @@ public class MagicController implements Listener, MageController {
             }
         } catch (Throwable ex) {
 
-        }
-
-        if (cuboidClipboardClass == null) {
-            getLogger().info("WorldEdit not found, schematic brushes will not work.");
-            MaterialBrush.SchematicsEnabled = false;
-            hasWorldEdit = false;
         }
 
         // Link to factions
@@ -940,12 +912,6 @@ public class MagicController implements Listener, MageController {
                         @Override
                         public int getValue() {
                             return controller.hasEssentials ? 1 : 0;
-                        }
-                    });
-                    integrationGraph.addPlotter(new Metrics.Plotter("WorldEdit") {
-                        @Override
-                        public int getValue() {
-                            return controller.hasWorldEdit ? 1 : 0;
                         }
                     });
                     integrationGraph.addPlotter(new Metrics.Plotter("Dynmap") {
@@ -4747,7 +4713,7 @@ public class MagicController implements Listener, MageController {
     private final Set<Mage>                     pendingConstructionRemoval  = new HashSet<Mage>();
     private final PriorityQueue<UndoList>       scheduledUndo               = new PriorityQueue<UndoList>();
     private final Set<String>  	 			    pendingUndo					= new HashSet<String>();
-    private final Map<String, WeakReference<WorldEditSchematic>> schematics	= new HashMap<String, WeakReference<WorldEditSchematic>>();
+    private final Map<String, WeakReference<Schematic>> schematics	= new HashMap<String, WeakReference<Schematic>>();
 
     private MagicPlugin                         plugin                      = null;
     private final File							configFolder;
@@ -4778,7 +4744,6 @@ public class MagicController implements Listener, MageController {
     private boolean							    allPvpRestricted            = false;
 
     private String								extraSchematicFilePath		= null;
-    private Class<?>							cuboidClipboardClass        = null;
     private Mailer								mailer						= null;
     private Material							defaultMaterial				= Material.DIRT;
     private Set<EntityType>                     undoEntityTypes             = new HashSet<EntityType>();
@@ -4794,7 +4759,6 @@ public class MagicController implements Listener, MageController {
     private boolean							    hasDynmap					= false;
     private boolean							    hasEssentials				= false;
     private boolean							    hasCommandBook				= false;
-    private boolean							    hasWorldEdit				= false;
 
     private String                              exampleDefaults             = null;
     private Collection<String>                  addExamples                 = null;

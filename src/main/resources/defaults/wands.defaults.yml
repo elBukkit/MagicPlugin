@@ -208,7 +208,7 @@ engineer:
     path: engineer
     undroppable: true
     indestructible: true
-    icon: wood_axe
+    icon: gold_axe
     xp_regeneration: 5
     xp_max: 50
 
