@@ -132,19 +132,19 @@ public class MagicPlugin extends JavaPlugin implements MagicAPI
 
 	public void onEnable() 
 	{
-        if (NMSUtils.getFailed()) {
-            getLogger().warning("Something went wrong with some Deep Magic, disabling plugin.");
-            getLogger().warning("Please make sure you are running a compatibile version of CraftBukkit.");
-            getServer().getPluginManager().disablePlugin(this);
-            return;
-        }
         if (NMSUtils.isLegacy()) {
             getLogger().info("Enabling 1.7 support - Magic may stop supporting 1.7 in version 5!");
         }
 		if (controller == null) {
 			controller = new MagicController(this);
 		}
-		initialize();
+
+        if (NMSUtils.getFailed()) {
+            getLogger().warning("Something went wrong with some Deep Magic, plugin will not load.");
+            getLogger().warning("Please make sure you are running a compatible version of CraftBukkit or Spigot!");
+        } else {
+            initialize();
+        }
 	}
 
 	protected void initialize()
