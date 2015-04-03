@@ -1,13 +1,9 @@
 # TODO
 
  - Recall still losing waypoints
-
  - Try to Paste the elder tree .. schematic bounds seem broken in general
- - Grief prevention plugin support (?)
- - Backup not working for some? Deleted science's chest?
 
  - Support for restoring armor stands- might have to drop 1.7 support for this.
- - Better handling for invalid spells in enchanting.yml
  - Clean up MaterialBrush target system, automate somehow?
  - Copy target brush action for tandem replication
  - Glitchy wand inventory, Death had an issue
@@ -16,14 +12,12 @@
  - Spell shop improvements:
    - Color spells player can't afford
    - Some sort of ability to set up in-game?
-   - Sellable/tradeable items?
  - Trait improvements
    - Add /parameter command for inspecting single param
    - Cleaner list of list parameters
  - Nerf Force (shift to break free? Fall protection?)
  - Make map work like replicate, clone - with start point set on activate
  - /magic describe should show info about current spell?
- - Fix Chop on data variants
  - Add repeat option for schematic brushes
  - Add Cylinder construct (SuperWalls, Walls, SuperCylinder)
  - Support for locking/unlocking chests

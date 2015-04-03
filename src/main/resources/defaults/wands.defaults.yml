@@ -465,9 +465,9 @@ borealis:
         - day
         - shell
         - blob
-        - blast
+        - blast|4
         - curse
-        - collapse
+        - collapse|2
         - recall
         - tag
         - pollinate

@@ -3392,8 +3392,16 @@ blast|2:
         destructible: destructible
 
 blast|3:
+    upgrade_required_path: master
+    upgrade_required_casts: 50
     parameters:
         radius: 3
+
+blast|4:
+    parameters:
+        check_destructible: false
+        radius: 4
+        undo: 30000
 
 earthquake:
     icon_url: http://i.imgur.com/bCGsZYB.png
@@ -4217,6 +4225,7 @@ blink:
                    class: LineEffect
                    particle: redstone
     parameters:
+        target: block
         allow_max_range: false
         allow_passthrough: false
         range: 16
