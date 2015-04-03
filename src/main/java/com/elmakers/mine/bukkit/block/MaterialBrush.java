@@ -61,8 +61,6 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
     public static String SchematicCustomIcon;
     public static String DefaultBrushCustomIcon;
 
-    public static boolean SchematicsEnabled = false;
-
     public static final Material DEFAULT_MATERIAL = Material.DIRT;
 
     private BrushMode mode = BrushMode.MATERIAL;
@@ -117,7 +115,7 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
             }
         } else if (mode == BrushMode.REPLICATE) {
             materialKey = REPLICATE_MATERIAL_KEY;
-        } else if (SchematicsEnabled && mode == BrushMode.SCHEMATIC) {
+        } else if (mode == BrushMode.SCHEMATIC) {
             // This would be kinda broken.. might want to revisit all this.
             // This method is only called by addMaterial at this point,
             // which should only be called with real materials anyway.
@@ -134,7 +132,7 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
         materialKey = splitMaterialKey(materialKey)[0];
         return COPY_MATERIAL_KEY.equals(materialKey) || ERASE_MATERIAL_KEY.equals(materialKey) ||
                REPLICATE_MATERIAL_KEY.equals(materialKey) || CLONE_MATERIAL_KEY.equals(materialKey) ||
-               MAP_MATERIAL_KEY.equals(materialKey) || (SchematicsEnabled && SCHEMATIC_MATERIAL_KEY.equals(materialKey));
+               MAP_MATERIAL_KEY.equals(materialKey) || SCHEMATIC_MATERIAL_KEY.equals(materialKey);
     }
 
     public static boolean isSchematic(String materialKey) {

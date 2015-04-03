@@ -1,11 +1,15 @@
 package com.elmakers.mine.bukkit.utility;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.List;
 
+import com.elmakers.mine.bukkit.block.Schematic;
 import org.bukkit.Bukkit;
 import org.bukkit.DyeColor;
 import org.bukkit.Location;
@@ -69,6 +73,7 @@ public class NMSUtils {
     protected static Class<?> class_GameProfile;
     protected static Class<?> class_GameProfileProperty;
     protected static Class<?> class_BlockPosition;
+    protected static Class<?> class_NBTCompressedStreamTools;
     protected static Class<Enum> class_EnumDirection;
 
     protected static Method class_NBTTagList_addMethod;
@@ -86,6 +91,8 @@ public class NMSUtils {
     protected static Method class_NBTTagCompound_getStringMethod;
     protected static Method class_NBTTagCompound_getMethod;
     protected static Method class_NBTTagCompound_getCompoundMethod;
+    protected static Method class_NBTTagCompound_getShortMethod;
+    protected static Method class_NBTTagCompound_getByteArrayMethod;
     protected static Method class_World_addEntityMethod;
     protected static Method class_CraftMetaBanner_getPatternsMethod;
     protected static Method class_CraftMetaBanner_setPatternsMethod;
@@ -95,6 +102,7 @@ public class NMSUtils {
     protected static Method class_CraftBanner_setPatternsMethod;
     protected static Method class_CraftBanner_getBaseColorMethod;
     protected static Method class_CraftBanner_setBaseColorMethod;
+    protected static Method class_NBTCompressedStreamTools_loadFileMethod;
 
     protected static Method class_CraftItemStack_copyMethod;
     protected static Method class_CraftItemStack_mirrorMethod;
@@ -164,6 +172,7 @@ public class NMSUtils {
             class_EntityFirework = fixBukkitClass("net.minecraft.server.EntityFireworks");
             class_CraftSkull = fixBukkitClass("org.bukkit.craftbukkit.block.CraftSkull");
             class_CraftMetaSkull = fixBukkitClass("org.bukkit.craftbukkit.inventory.CraftMetaSkull");
+            class_NBTCompressedStreamTools = fixBukkitClass("net.minecraft.server.NBTCompressedStreamTools");
 
             class_NBTTagList_addMethod = class_NBTTagList.getMethod("add", class_NBTBase);
             class_NBTTagCompound_setMethod = class_NBTTagCompound.getMethod("set", String.class, class_NBTBase);
@@ -176,6 +185,8 @@ public class NMSUtils {
             class_NBTTagCompound_setStringMethod = class_NBTTagCompound.getMethod("setString", String.class, String.class);
             class_NBTTagCompound_removeMethod = class_NBTTagCompound.getMethod("remove", String.class);
             class_NBTTagCompound_getStringMethod = class_NBTTagCompound.getMethod("getString", String.class);
+            class_NBTTagCompound_getShortMethod = class_NBTTagCompound.getMethod("getShort", String.class);
+            class_NBTTagCompound_getByteArrayMethod = class_NBTTagCompound.getMethod("getByteArray", String.class);
             class_CraftItemStack_copyMethod = class_CraftItemStack.getMethod("asNMSCopy", org.bukkit.inventory.ItemStack.class);
             class_CraftItemStack_mirrorMethod = class_CraftItemStack.getMethod("asCraftMirror", class_ItemStack);
             class_NBTTagCompound_hasKeyMethod = class_NBTTagCompound.getMethod("hasKey", String.class);
@@ -184,6 +195,7 @@ public class NMSUtils {
             class_EntityLiving_damageEntityMethod = class_EntityLiving.getMethod("damageEntity", class_DamageSource, Float.TYPE);
             class_DamageSource_getMagicSourceMethod = class_DamageSource.getMethod("b", class_Entity, class_Entity);
             class_World_addEntityMethod = class_World.getMethod("addEntity", class_Entity, CreatureSpawnEvent.SpawnReason.class);
+            class_NBTCompressedStreamTools_loadFileMethod = class_NBTCompressedStreamTools.getMethod("a", InputStream.class);
 
             class_CraftInventoryCustom_constructor = class_CraftInventoryCustom.getConstructor(InventoryHolder.class, Integer.TYPE, String.class);
             class_EntityFireworkConstructor = class_EntityFirework.getConstructor(class_World, Double.TYPE, Double.TYPE, Double.TYPE, class_ItemStack);
@@ -849,5 +861,42 @@ public class NMSUtils {
 
     public static boolean hasURLSkullSupport() {
         return !isLegacy;
+    }
+
+    public static Schematic loadSchematic(File inputFile) {
+        if (inputFile == null || !inputFile.exists()) {
+            return null;
+        }
+
+        InputStream inputStream = null;
+        try {
+            inputStream = new FileInputStream(inputFile);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+        return loadSchematic(inputStream);
+    }
+
+    public static Schematic loadSchematic(InputStream input) {
+        if (input == null) return null;
+
+        try {
+            Object nbtData = class_NBTCompressedStreamTools_loadFileMethod.invoke(null, input);
+            if (nbtData == null) {
+                return null;
+            }
+            short width = (Short)class_NBTTagCompound_getShortMethod.invoke(nbtData, "Width");
+            short height = (Short)class_NBTTagCompound_getShortMethod.invoke(nbtData, "Height");
+            short length = (Short)class_NBTTagCompound_getShortMethod.invoke(nbtData, "Length");
+
+            byte[] blocks = (byte[])class_NBTTagCompound_getByteArrayMethod.invoke(nbtData, "Blocks");
+            byte[] data = (byte[])class_NBTTagCompound_getByteArrayMethod.invoke(nbtData, "Data");
+
+            return new Schematic(width, height, length, blocks, data);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return null;
     }
 }
