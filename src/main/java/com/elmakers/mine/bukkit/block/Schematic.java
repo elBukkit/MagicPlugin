@@ -3,7 +3,11 @@ package com.elmakers.mine.bukkit.block;
 import com.elmakers.mine.bukkit.api.block.MaterialAndData;
 import com.elmakers.mine.bukkit.api.entity.EntityData;
 import com.elmakers.mine.bukkit.utility.NMSUtils;
+import org.bukkit.Art;
+import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Rotation;
+import org.bukkit.block.BlockFace;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.BlockVector;
 import org.bukkit.util.Vector;
@@ -20,12 +24,54 @@ public class Schematic implements com.elmakers.mine.bukkit.api.block.Schematic {
     private final MaterialAndData blocks[][][];
     private final Collection<EntityData> entities;
 
+    // WorldEdit tags
+    private final Vector offset;
+    private final Vector origin;
+
     @SuppressWarnings("deprecation")
-    public Schematic(short width, short height, short length, short[] blockTypes, byte[] data, Collection<Object> tileEntityData, Collection<Object> entityData) {
+    public Schematic(short width, short height, short length, short[] blockTypes, byte[] data, Collection<Object> tileEntityData, Collection<Object> entityData, Vector origin, Vector offset) {
         size = new Vector(width, height, length);
         center = new Vector(Math.floor(size.getBlockX() / 2), 0, Math.floor(size.getBlockZ() / 2));
         blocks = new MaterialAndData[width][height][length];
         entities = new ArrayList<EntityData>();
+
+        this.origin = origin;
+        this.offset = offset;
+
+        // Load entities
+        for (Object entity : entityData) {
+            String type = NMSUtils.getMeta(entity, "id");
+            Vector position = NMSUtils.getPosition(entity, "Pos");
+            position = position.subtract(origin).subtract(center);
+
+            if (type == null || position == null) continue;
+
+            // Only doing paintings and item frames for now.
+            if (type.equals("Painting")) {
+                String motive = NMSUtils.getMeta(entity, "Motive");
+                motive = motive.toLowerCase();
+                Art art = Art.ALBAN;
+                for (Art test : Art.values()) {
+                    if (test.name().toLowerCase().replace("_", "").equals(motive)) {
+                        art = test;
+                        break;
+                    }
+                }
+                byte facing = NMSUtils.getMetaByte(entity, "Facing");
+                EntityData painting = com.elmakers.mine.bukkit.entity.EntityData.loadPainting(position, art, getFacing(facing));
+                entities.add(painting);
+            } else if (type.equals("ItemFrame")) {
+                byte facing = NMSUtils.getMetaByte(entity, "Facing");
+                byte rotation = NMSUtils.getMetaByte(entity, "ItemRotation");
+                Rotation rot = Rotation.NONE;
+                if (rotation < Rotation.values().length) {
+                    rot = Rotation.values()[rotation];
+                }
+                ItemStack item = NMSUtils.getItem(NMSUtils.getNode(entity, "Item"));
+                EntityData itemFrame = com.elmakers.mine.bukkit.entity.EntityData.loadItemFrame(position, item, getFacing(facing), rot);
+                entities.add(itemFrame);
+            }
+        }
 
         // Map tile entity data
         Map<BlockVector, Object> tileEntityMap = new HashMap<BlockVector, Object>();
@@ -71,10 +117,10 @@ public class Schematic implements com.elmakers.mine.bukkit.api.block.Schematic {
                             try {
                                 if (material == Material.SIGN_POST || material == Material.WALL_SIGN) {
                                     String[] lines = new String[4];
-                                    lines[0] = NMSUtils.getMeta(tileEntity, "Text1");
-                                    lines[1] = NMSUtils.getMeta(tileEntity, "Text2");
-                                    lines[2] = NMSUtils.getMeta(tileEntity, "Text3");
-                                    lines[3] = NMSUtils.getMeta(tileEntity, "Text4");
+                                    lines[0] = getSignText(tileEntity, "Text1");
+                                    lines[1] = getSignText(tileEntity, "Text2");
+                                    lines[2] = getSignText(tileEntity, "Text3");
+                                    lines[3] = getSignText(tileEntity, "Text4");
                                     block.setSignLines(lines);
                                 } else if (material == Material.COMMAND) {
                                     String customName = NMSUtils.getMeta(tileEntity, "CustomName");
@@ -102,6 +148,23 @@ public class Schematic implements com.elmakers.mine.bukkit.api.block.Schematic {
         }
     }
 
+    protected BlockFace getFacing(byte dir) {
+        switch (dir) {
+            case 0: return BlockFace.SOUTH;
+            case 1: return BlockFace.WEST;
+            case 2: return BlockFace.NORTH;
+            case 3: return BlockFace.EAST;
+        }
+        return BlockFace.UP;
+    }
+
+    protected String getSignText(Object data, String key) {
+        String line = NMSUtils.getMeta(data, key);
+        // .. Why do empty values get stored as "null" .. is that a WorldEdit thing?
+        if (line == null || line.length() < 2 || line.equals("null")) return "";
+        return line.substring(1, line.length() - 1);
+    }
+
     @Override
     public boolean contains(Vector v) {
         int x = v.getBlockX() + center.getBlockX();
@@ -113,7 +176,6 @@ public class Schematic implements com.elmakers.mine.bukkit.api.block.Schematic {
 
     @Override
     public MaterialAndData getBlock(Vector v) {
-
         int x = v.getBlockX() + center.getBlockX();
         int y = v.getBlockY() + center.getBlockY();
         int z = v.getBlockZ() + center.getBlockZ();
@@ -126,8 +188,15 @@ public class Schematic implements com.elmakers.mine.bukkit.api.block.Schematic {
     }
 
     @Override
-    public Collection<EntityData> getEntities() {
-        return entities;
+    public Collection<EntityData> getEntities(Location center) {
+        List<EntityData> translated = new ArrayList<EntityData>();
+        for (EntityData data : entities) {
+            EntityData relative = data == null ? null : data.getRelativeTo(center);
+            if (relative != null) {
+                translated.add(relative);
+            }
+        }
+        return translated;
     }
 
     @Override

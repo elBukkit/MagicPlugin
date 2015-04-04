@@ -24,6 +24,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.util.Vector;
 
 /**
  * Contains some raw methods for doing some simple NMS utilities.
@@ -89,6 +90,7 @@ public class NMSUtils {
 
     protected static Method class_NBTTagList_addMethod;
     protected static Method class_NBTTagList_getMethod;
+    protected static Method class_NBTTagList_getDoubleMethod;
     protected static Method class_NBTTagList_sizeMethod;
     protected static Method class_NBTTagCompound_setMethod;
     protected static Method class_DataWatcher_watchMethod;
@@ -201,6 +203,7 @@ public class NMSUtils {
 
             class_NBTTagList_addMethod = class_NBTTagList.getMethod("add", class_NBTBase);
             class_NBTTagList_getMethod = class_NBTTagList.getMethod("get", Integer.TYPE);
+            class_NBTTagList_getDoubleMethod = class_NBTTagList.getMethod("d", Integer.TYPE);
             class_NBTTagList_sizeMethod = class_NBTTagList.getMethod("size");
             class_NBTTagCompound_setMethod = class_NBTTagCompound.getMethod("set", String.class, class_NBTBase);
             class_DataWatcher_watchMethod = class_DataWatcher.getMethod("watch", Integer.TYPE, Object.class);
@@ -1035,7 +1038,15 @@ public class NMSUtils {
                 }
             }
 
-            return new Schematic(width, height, length, blocks, data, tileEntityData, entityData);
+            int originX = (Integer)class_NBTTagCompound_getIntMethod.invoke(nbtData, "WEOriginX");
+            int originY = (Integer)class_NBTTagCompound_getIntMethod.invoke(nbtData, "WEOriginY");
+            int originZ = (Integer)class_NBTTagCompound_getIntMethod.invoke(nbtData, "WEOriginZ");
+
+            int offsetX = (Integer)class_NBTTagCompound_getIntMethod.invoke(nbtData, "WEOffsetX");
+            int offsetY = (Integer)class_NBTTagCompound_getIntMethod.invoke(nbtData, "WEOffsetY");
+            int offsetZ = (Integer)class_NBTTagCompound_getIntMethod.invoke(nbtData, "WEOffsetZ");
+
+            return new Schematic(width, height, length, blocks, data, tileEntityData, entityData, new Vector(originX, originY, originZ), new Vector(offsetX, offsetY, offsetZ));
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -1070,5 +1081,20 @@ public class NMSUtils {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+    }
+
+    public static Vector getPosition(Object entityData, String tag) {
+        try {
+            Object posList = class_NBTTagCompound_getListMethod.invoke(entityData, "Pos", NBT_TYPE_DOUBLE);
+            Double x = (Double)class_NBTTagList_getDoubleMethod.invoke(posList, 0);
+            Double y = (Double)class_NBTTagList_getDoubleMethod.invoke(posList, 1);
+            Double z = (Double)class_NBTTagList_getDoubleMethod.invoke(posList, 2);
+            if (x != null && y != null && z != null) {
+                return new Vector(x, y, z);
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return null;
     }
 }

@@ -17,6 +17,7 @@ import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.Hanging;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -522,8 +523,7 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
     @Override
     public boolean hasEntities()
     {
-        // return mode == BrushMode.CLONE || mode == BrushMode.REPLICATE || mode == BrushMode.SCHEMATIC;
-        return mode == BrushMode.CLONE || mode == BrushMode.REPLICATE;
+        return mode == BrushMode.CLONE || mode == BrushMode.REPLICATE || mode == BrushMode.SCHEMATIC;
     }
 
     @Override
@@ -531,15 +531,16 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
     {
         if (cloneTarget == null) return null;
 
-        // TODO: Add SCHEMATIC here once we're adding schematic entities
-        if (mode == BrushMode.CLONE || mode == BrushMode.REPLICATE)
+        if (mode == BrushMode.CLONE || mode == BrushMode.REPLICATE || mode == BrushMode.SCHEMATIC)
         {
             List<Entity> targetData = new ArrayList<Entity>();
             World targetWorld = cloneTarget.getWorld();
             List<Entity> targetEntities = targetWorld.getEntities();
             for (Entity entity : targetEntities) {
-                // Note that we'll clear Item entities even though we can't respawn them!
-                // Also note that we ignore players and NPCs
+                // Schematics currently only deal with Hanging entities
+                if (mode == BrushMode.SCHEMATIC && !(entity instanceof Hanging)) continue;
+
+                // Note that we ignore players and NPCs
                 if (!(entity instanceof Player) && !mage.getController().isNPC(entity)) {
                     targetData.add(entity);
                 }
@@ -554,9 +555,9 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
     @Override
     public Collection<com.elmakers.mine.bukkit.api.entity.EntityData> getEntities()
     {
-        if (cloneTarget == null || cloneSource == null) return null;
+        if (cloneTarget == null) return null;
 
-        if (mode == BrushMode.CLONE || mode == BrushMode.REPLICATE)
+        if ((mode == BrushMode.CLONE || mode == BrushMode.REPLICATE) && cloneSource != null)
         {
             List<com.elmakers.mine.bukkit.api.entity.EntityData> copyEntities = new ArrayList<com.elmakers.mine.bukkit.api.entity.EntityData>();
 
@@ -577,7 +578,7 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
         {
             if (schematic != null)
             {
-                return schematic.getEntities();
+                return schematic.getEntities(cloneTarget);
             }
         }
 

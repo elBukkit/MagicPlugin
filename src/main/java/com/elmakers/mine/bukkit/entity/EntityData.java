@@ -24,12 +24,13 @@ import org.bukkit.util.Vector;
  * This class stores information about an Entity.
  *
  */
-public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityData {
+public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityData, Cloneable {
     protected static Map<UUID, WeakReference<Entity>> respawned = new HashMap<UUID, WeakReference<Entity>>();
 
     protected WeakReference<Entity> entity = null;
     protected UUID uuid = null;
     protected Location location;
+    protected Vector relativeLocation;
     protected boolean hasMoved = false;
     protected boolean isTemporary = false;
     protected String name = null;
@@ -134,6 +135,27 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         }
     }
 
+    private EntityData(EntityType type) {
+        this.type = type;
+    }
+
+    public static EntityData loadPainting(Vector location, Art art, BlockFace direction) {
+        EntityData data = new EntityData(EntityType.PAINTING);
+        data.facing = direction;
+        data.relativeLocation = location.clone();
+        data.art = art;
+        return data;
+    }
+
+    public static EntityData loadItemFrame(Vector location, ItemStack item, BlockFace direction, Rotation rotation) {
+        EntityData data = new EntityData(EntityType.ITEM_FRAME);
+        data.facing = direction;
+        data.relativeLocation = location.clone();
+        data.rotation = rotation;
+        data.item = item;
+        return data;
+    }
+
     public void setEntity(Entity entity) {
         this.entity = entity == null ? null : new WeakReference<Entity>(entity);
         this.uuid = entity == null ? null : entity.getUniqueId();
@@ -199,7 +221,22 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     }
 
     @Override
+    public EntityData getRelativeTo(Location center) {
+        EntityData copy = this.clone();
+        if (copy != null)
+        {
+            if (relativeLocation != null) {
+                copy.location = center.clone().add(relativeLocation);
+            } else if (location != null) {
+                copy.location = location.clone();
+            }
+        }
+        return copy;
+    }
+
+    @Override
     public Entity spawn() {
+        if (location == null) return null;
         Entity spawned = trySpawn();
         if (spawned != null) {
             modify(spawned);
@@ -305,7 +342,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
             }
         }
 
-        if (hasMoved) {
+        if (hasMoved && location != null) {
             entity.teleport(location);
         }
 
@@ -342,5 +379,15 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
 
     public Entity getEntity() {
         return entity == null ? null : entity.get();
+    }
+
+    public EntityData clone() {
+        try {
+            return (EntityData)super.clone();
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 }
