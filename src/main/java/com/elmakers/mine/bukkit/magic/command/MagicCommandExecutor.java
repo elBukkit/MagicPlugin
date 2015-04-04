@@ -82,7 +82,7 @@ public class MagicCommandExecutor extends MagicTabExecutor {
 		if (subCommand.equalsIgnoreCase("clearcache"))
 		{		
 			api.clearCache();
-			sender.sendMessage("Image map and schematic caches cleared.");
+			sender.sendMessage("Image map cache cleared.");
 			return true;
 		}
 		if (subCommand.equalsIgnoreCase("commit"))

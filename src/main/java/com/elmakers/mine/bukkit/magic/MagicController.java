@@ -1,6 +1,7 @@
 package com.elmakers.mine.bukkit.magic;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.ref.WeakReference;
@@ -112,9 +113,6 @@ public class MagicController implements Listener, MageController {
 
         dataFolder = new File(configFolder, "data");
         dataFolder.mkdirs();
-
-        schematicFolder = new File(configFolder, "schematics");
-        schematicFolder.mkdirs();
 
         playerDataFolder = new File(dataFolder, "players");
         playerDataFolder.mkdirs();
@@ -467,17 +465,6 @@ public class MagicController implements Listener, MageController {
     }
 
     public void clearCache() {
-        // Only delete schematics that we have builtins for.
-        String[] schematicFiles = schematicFolder.list();
-        for (String schematicFilename : schematicFiles) {
-            if (!schematicFilename.endsWith(".schematic")) continue;
-            InputStream builtin = plugin.getResource("schematics/" + schematicFilename);
-            if (builtin == null) continue;
-            File schematicFile = new File(schematicFolder, schematicFilename);
-            schematicFile.delete();
-            plugin.getLogger().info("Deleted file " + schematicFile.getAbsolutePath());
-        }
-
         schematics.clear();
         for (Mage mage : mages.values()) {
             if (mage instanceof com.elmakers.mine.bukkit.magic.Mage) {
@@ -486,6 +473,7 @@ public class MagicController implements Listener, MageController {
         }
 
         maps.clearCache();
+        maps.resetAll();
     }
 
     @Override
@@ -502,38 +490,35 @@ public class MagicController implements Listener, MageController {
             }
         }
 
-        String fileName = schematicName + ".schematic";
-        File schematicFile = new File(schematicFolder, fileName);
-        if (!schematicFile.exists()) {
-            try {
-                // Check extra path first
-                File extraSchematicFile = null;
-                if (extraSchematicFilePath != null && extraSchematicFilePath.length() > 0) {
-                    File schematicFolder = new File(configFolder, "../" + extraSchematicFilePath);
-                    extraSchematicFile = new File(schematicFolder, schematicName + ".schematic");
-                    getLogger().info("Checking for external schematic: " + extraSchematicFile.getAbsolutePath());
-                }
-
-                if (extraSchematicFile != null && extraSchematicFile.exists()) {
-                    schematicFile = extraSchematicFile;
-                    getLogger().info("Loading file: " + extraSchematicFile.getAbsolutePath());
-                } else {
-                    plugin.saveResource("schematics/" + fileName, true);
-                    getLogger().info("Adding builtin schematic: schematics/" + fileName);
-                }
-            } catch (Exception ex) {
-
+        InputStream inputSchematic = null;
+        try {
+            // Check extra path first
+            File extraSchematicFile = null;
+            if (extraSchematicFilePath != null && extraSchematicFilePath.length() > 0) {
+                File schematicFolder = new File(configFolder, "../" + extraSchematicFilePath);
+                extraSchematicFile = new File(schematicFolder, schematicName + ".schematic");
+                getLogger().info("Checking for external schematic: " + extraSchematicFile.getAbsolutePath());
             }
+
+            if (extraSchematicFile != null && extraSchematicFile.exists()) {
+                inputSchematic = new FileInputStream(extraSchematicFile);
+                getLogger().info("Loading file: " + extraSchematicFile.getAbsolutePath());
+            } else {
+                String fileName = schematicName + ".schematic";
+                inputSchematic = plugin.getResource("schematics/" + fileName);
+                getLogger().info("Loading builtin schematic: " + fileName);
+            }
+        } catch (Exception ex) {
+
         }
 
-        if (!schematicFile.exists()) {
-            getLogger().warning("Could not load file: " + schematicFile.getAbsolutePath());
+        if (inputSchematic == null) {
+            getLogger().warning("Could not load schematic: " + schematicName);
             return null;
         }
 
         try {
-            getLogger().info("Loading schematic file: " + schematicFile.getAbsolutePath());
-            Schematic schematic = NMSUtils.loadSchematic(schematicFile);
+            Schematic schematic = NMSUtils.loadSchematic(inputSchematic);
             schematics.put(schematicName, new WeakReference<Schematic>(schematic));
             return schematic;
         } catch (Exception ex) {
@@ -4717,7 +4702,6 @@ public class MagicController implements Listener, MageController {
     private MagicPlugin                         plugin                      = null;
     private final File							configFolder;
     private final File							dataFolder;
-    private final File							schematicFolder;
     private final File							defaultsFolder;
     private final File							playerDataFolder;
     private boolean							    enableItemHacks			 	= true;
