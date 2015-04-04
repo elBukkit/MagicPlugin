@@ -7,6 +7,8 @@
  - Fix Chop and Mine recursion, add more levels
  - Add support for custom-named physical currency
  - Add Magic.wand.enchant Magic.wand.craft permissions (true by default)
+ - Add native schematic loading- supports paintings, item frames, flower pots, and more.
+ - Removed WorldEdit soft-dependency
 
 ## 4.8
 
