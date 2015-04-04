@@ -78,6 +78,18 @@ public class CraftingController implements Listener {
 	@EventHandler
 	public void onPrepareCraftItem(PrepareItemCraftEvent event) 
 	{
+        CraftingInventory inventory = event.getInventory();
+        ItemStack[] contents = inventory.getMatrix();
+
+        // Check for wands glitched into the crafting inventor
+        for (int i = 0; i < 9 && i < contents.length; i++) {
+            ItemStack item = contents[i];
+            if (Wand.isUpgrade(item) || Wand.isWand(item) || Wand.isBrush(item) || Wand.isSpell(item)) {
+                inventory.setResult(new ItemStack(Material.AIR));
+                return;
+            }
+        }
+
         if (!craftingEnabled) return;
 
         Recipe recipe = event.getRecipe();
@@ -85,7 +97,6 @@ public class CraftingController implements Listener {
         List<MagicRecipe> candidates = recipes.get(resultType);
         if (candidates == null || candidates.size() == 0) return;
 
-        CraftingInventory inventory = event.getInventory();
         for (MagicRecipe candidate : candidates) {
             Set<Material> ingredients = candidate.getIngredients();
             boolean ingredientsMatch = true;
@@ -121,7 +132,6 @@ public class CraftingController implements Listener {
 		
 		InventoryType inventoryType = event.getInventory().getType();
 		SlotType slotType = event.getSlotType();
-		
 		// Check for wand clicks to prevent grinding them to dust, or whatever.
 		if (slotType == SlotType.CRAFTING && (inventoryType == InventoryType.CRAFTING || inventoryType == InventoryType.WORKBENCH)) {
 			ItemStack cursor = event.getCursor();
