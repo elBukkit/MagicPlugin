@@ -3,7 +3,7 @@ region flag welcome_mobs -w world server-enter-command /castp @p recall unlock t
 region flag capital -w world server-enter-command /castp @p recall unlock town
 region flag lodge -w world server-enter-command /castp @p recall unlock lodge
 region flag battle -w world server-enter-command /castp @p recall unlock battle
-region flag engineering -w world server-enter-command /castp @p recall unlock engineering
+region flag engineering -w world server-enter-command /castp @p recall unlock engineer
 region flag other -w world_other server-enter-command /castp @p recall unlock other
 region flag bastion -w world_other server-enter-command /castp @p recall unlock bastion
 region flag magic_spawn -w world server-enter-command /castp @p recall unlock black

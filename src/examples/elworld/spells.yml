@@ -110,7 +110,7 @@ recall:
         name: Engineering School
         description: Buy your way to glory
         locked: true
-        icon: wood_axe
+        icon: gold_axe
       other:
         name: The Fallen Capital
         description: Danger Lurks

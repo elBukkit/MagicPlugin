@@ -1918,7 +1918,7 @@ arrowrain|2:
 gatling:
     upgrade_required_path: master
     upgrade_required_casts: 50
-    icon_url: http://i.imgur.com/y8HrXab.png
+    icon_url: http://i.imgur.com/GbyxXSi.png
     icon: bow
     category: combat
     pvp_restricted: true
@@ -2837,7 +2837,7 @@ day:
         mana: 50
 
 night:
-    icon_url: http://i.imgur.com/Todo6d0.png
+    icon_url: http://i.imgur.com/4gKQRPl.png
     icon: ink_sack:0
     category: elemental
     hidden: true
@@ -3980,7 +3980,7 @@ alter:
         mana: 3
 
 superalter:
-    icon_url: http://i.imgur.com/eD3ne5u.png
+    icon_url: http://i.imgur.com/Lnf858R.png
     icon: ink_sack:1
     category: engineering
     class: AlterSpell
@@ -5217,7 +5217,7 @@ missile|4:
         mana: 50
 
 blind:
-    icon_url: http://i.imgur.com/Todo6d0.png
+    icon_url: http://i.imgur.com/vvsWhbx.png
     icon: ender_pearl
     category: combat
     pvp_restricted: true
@@ -6494,7 +6494,7 @@ singularity:
         mana: 50
 
 tornado:
-    icon_url: http://i.imgur.com/QVdzC6k.png
+    icon_url: http://i.imgur.com/efomUd1.png
     icon: feather
     category: elemental
     pvp_restricted: true

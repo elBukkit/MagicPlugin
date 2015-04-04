@@ -854,10 +854,12 @@ haloeffects:
     effect_particle_radius: 0.4
     effect_particle_offset: 0.5
 hotbar2:
+    icon: skull_item:http://i.imgur.com/F9yszii.png
     upgrade: true
     indestructible: false
     hotbar_count: 2
 hotbar3:
+    icon: skull_item:http://i.imgur.com/c5PFSc2.png
     upgrade: true
     indestructible: false
     hotbar_count: 3
@@ -867,6 +869,7 @@ manaboost:
     icon: glass_bottle
     xp: 1000
 chestmode:
+    icon: skull_item:http://i.imgur.com/ewUs89Q.png
     upgrade: true
     indestructible: false
     mode: chest
@@ -875,18 +878,22 @@ undroppable:
     indestructible: false
     undroppable: true
 inventorymode:
+    icon: skull_item:http://i.imgur.com/iO5a9ZB.png
     upgrade: true
     indestructible: false
     mode: inventory
 cyclemode:
+    icon: skull_item:http://i.imgur.com/Ld8vrqQ.png
     upgrade: true
     indestructible: false
     mode: cycle
 organizer:
+    icon: skull_item:http://i.imgur.com/PMIPAxO.png
     upgrade: true
     indestructible: false
     organize: true
 alphabetizer:
+    icon: skull_item:http://i.imgur.com/b58xEHm.png
     upgrade: true
     indestructible: false
     alphabetize: true
@@ -894,15 +901,18 @@ antihunger:
     upgrade: true
     hunger_regeneration: 0.5
 loud:
+    icon: skull_item:http://i.imgur.com/1x70Wzz.png
     upgrade: true
     indestructible: false
     organize: true
     quiet: -1
 quiet:
+    icon: skull_item:http://i.imgur.com/QlDfHxJ.png
     upgrade: true
     indestructible: false
     quiet: -2
 silent:
+    icon: skull_item:http://i.imgur.com/JHmV4uV.png
     upgrade: true
     indestructible: false
     quiet: -3
