@@ -746,20 +746,17 @@ conway:
 student_upgrade:
     upgrade: true
     indestructible: false
-    icon: nether_star
     xp_max: 100
     xp_regeneration: 10
 apprentice_upgrade:
     upgrade: true
     indestructible: false
-    icon: nether_star
     hotbar_count: 2
     xp_max: 150
     xp_regeneration: 30
 master_upgrade:
     upgrade: true
     indestructible: false
-    icon: nether_star
     xp_max: 250
     xp_regeneration: 50
     hotbar_count: 3
@@ -767,14 +764,12 @@ engineer_upgrade:
     upgrade: true
     upgrade_icon: gold_axe
     indestructible: false
-    icon: nether_star
     xp_max: 300
     xp_regeneration: 70
 architect_upgrade:
     upgrade: true
     indestructible: false
     upgrade_icon: gold_axe
-    icon: nether_star
     xp_max: 400
     xp_regeneration: 90
 
@@ -861,12 +856,10 @@ haloeffects:
 hotbar2:
     upgrade: true
     indestructible: false
-    icon: nether_star
     hotbar_count: 2
 hotbar3:
     upgrade: true
     indestructible: false
-    icon: nether_star
     hotbar_count: 3
 manaboost:
     upgrade: true
@@ -876,52 +869,42 @@ manaboost:
 chestmode:
     upgrade: true
     indestructible: false
-    icon: nether_star
     mode: chest
 undroppable:
     upgrade: true
     indestructible: false
     undroppable: true
-    icon: nether_star
 inventorymode:
     upgrade: true
     indestructible: false
-    icon: nether_star
     mode: inventory
 cyclemode:
     upgrade: true
     indestructible: false
-    icon: nether_star
     mode: cycle
 organizer:
     upgrade: true
     indestructible: false
-    icon: nether_star
     organize: true
 alphabetizer:
     upgrade: true
     indestructible: false
-    icon: nether_star
     alphabetize: true
 antihunger:
     upgrade: true
     hunger_regeneration: 0.5
-    icon: nether_star
 loud:
     upgrade: true
     indestructible: false
-    icon: nether_star
     organize: true
     quiet: -1
 quiet:
     upgrade: true
     indestructible: false
-    icon: nether_star
     quiet: -2
 silent:
     upgrade: true
     indestructible: false
-    icon: nether_star
     quiet: -3
 
  #

@@ -175,7 +175,7 @@ age_dropped_items: 0
 
 # Wand appearance
 wand_item: wood_hoe
-wand_upgrade_item: nether_star
+wand_upgrade_item: stick
 wand_glow: false
 wand_location_offset: 0.5
 
