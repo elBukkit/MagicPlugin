@@ -18,4 +18,5 @@ public interface EntityData {
     public Entity spawn();
     public Entity undo();
     public boolean modify(Entity entity);
+    public EntityData getRelativeTo(Location center);
 }
