@@ -21,6 +21,7 @@ import com.elmakers.mine.bukkit.api.block.CurrencyItem;
 import com.elmakers.mine.bukkit.api.block.Schematic;
 import com.elmakers.mine.bukkit.api.event.SaveEvent;
 import com.elmakers.mine.bukkit.api.spell.*;
+import com.elmakers.mine.bukkit.api.wand.*;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.citizens.CitizensController;
 import com.elmakers.mine.bukkit.integration.VaultController;
@@ -36,6 +37,7 @@ import com.elmakers.mine.bukkit.utility.*;
 import com.elmakers.mine.bukkit.wand.*;
 import com.elmakers.mine.bukkit.wand.LostWand;
 import com.elmakers.mine.bukkit.wand.Wand;
+import com.elmakers.mine.bukkit.wand.WandUpgradePath;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.*;
 import org.bukkit.block.Block;
@@ -4579,6 +4581,16 @@ public class MagicController implements Listener, MageController {
         }
 
         return true;
+    }
+
+    @Override
+    public Set<String> getWandPathKeys() {
+        return WandUpgradePath.getPathKeys();
+    }
+
+    @Override
+    public com.elmakers.mine.bukkit.api.wand.WandUpgradePath getPath(String key) {
+        return WandUpgradePath.getPath(key);
     }
 
     /*

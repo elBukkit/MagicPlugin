@@ -2663,7 +2663,8 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 			}
 		}
 	}
-	
+
+    @Override
 	public boolean addItem(ItemStack item) {
 		if (isUpgrade) return false;
 
