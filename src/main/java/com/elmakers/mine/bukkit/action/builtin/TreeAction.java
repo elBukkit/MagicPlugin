@@ -2,7 +2,7 @@ package com.elmakers.mine.bukkit.action.builtin;
 
 import com.elmakers.mine.bukkit.action.BaseSpellAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
-import com.elmakers.mine.bukkit.api.block.MaterialAndData;
+import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.block.UndoList;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
@@ -190,14 +190,14 @@ public class TreeAction extends BaseSpellAction
     }
 
     @Override
-    public void getParameterNames(Collection<String> parameters) {
-        super.getParameterNames(parameters);
+    public void getParameterNames(Spell spell, Collection<String> parameters) {
+        super.getParameterNames(spell, parameters);
         parameters.add("requires_sapling");
         parameters.add("type");
     }
 
     @Override
-    public void getParameterOptions(Collection<String> examples, String parameterKey) {
+    public void getParameterOptions(Spell spell, String parameterKey, Collection<String> examples) {
         if (parameterKey.equals("type")) {
             for (TreeType type : TreeType.values()) {
                 examples.add(type.name().toLowerCase());
@@ -205,7 +205,7 @@ public class TreeAction extends BaseSpellAction
         } else if (parameterKey.equals("requires_sapling")) {
             examples.addAll(Arrays.asList((BaseSpell.EXAMPLE_BOOLEANS)));
         } else {
-            super.getParameterOptions(examples, parameterKey);
+            super.getParameterOptions(spell, parameterKey, examples);
         }
     }
 }

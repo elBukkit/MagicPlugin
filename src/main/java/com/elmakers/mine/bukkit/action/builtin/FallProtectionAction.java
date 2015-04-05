@@ -3,6 +3,7 @@ package com.elmakers.mine.bukkit.action.builtin;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
+import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.action.BaseSpellAction;
@@ -38,20 +39,20 @@ public class FallProtectionAction extends BaseSpellAction {
     }
 
     @Override
-    public void getParameterNames(Collection<String> parameters) {
-        super.getParameterNames(parameters);
+    public void getParameterNames(Spell spell, Collection<String> parameters) {
+        super.getParameterNames(spell, parameters);
         parameters.add("duration");
         parameters.add("protection_count");
     }
 
     @Override
-    public void getParameterOptions(Collection<String> examples, String parameterKey) {
+    public void getParameterOptions(Spell spell, String parameterKey, Collection<String> examples) {
         if (parameterKey.equals("duration")) {
             examples.addAll(Arrays.asList((BaseSpell.EXAMPLE_DURATIONS)));
         } else if (parameterKey.equals("protection_count")) {
             examples.addAll(Arrays.asList((BaseSpell.EXAMPLE_SIZES)));
         } else {
-            super.getParameterOptions(examples, parameterKey);
+            super.getParameterOptions(spell, parameterKey, examples);
         }
     }
 

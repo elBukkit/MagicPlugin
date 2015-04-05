@@ -5,6 +5,7 @@ import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.effect.EffectPlayer;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
+import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.action.ActionHandler;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
@@ -351,8 +352,8 @@ public class ProjectileAction  extends TriggeredCompoundAction
 	}
 
 	@Override
-    public void getParameterNames(Collection<String> parameters) {
-		super.getParameterNames(parameters);
+    public void getParameterNames(Spell spell, Collection<String> parameters) {
+		super.getParameterNames(spell, parameters);
 		parameters.add("count");
 		parameters.add("check_frequency");
 		parameters.add("size");
@@ -366,7 +367,7 @@ public class ProjectileAction  extends TriggeredCompoundAction
 	}
 
 	@Override
-	public void getParameterOptions(Collection<String> examples, String parameterKey) {
+	public void getParameterOptions(Spell spell, String parameterKey, Collection<String> examples) {
 		if (parameterKey.equals("undo_interval")) {
 			examples.addAll(Arrays.asList((BaseSpell.EXAMPLE_DURATIONS)));
 		} else if (parameterKey.equals("count") || parameterKey.equals("size") || parameterKey.equals("speed")
@@ -382,7 +383,7 @@ public class ProjectileAction  extends TriggeredCompoundAction
 			examples.add("Arrow");
 			examples.add("Snowball");
 		} else {
-			super.getParameterOptions(examples, parameterKey);
+			super.getParameterOptions(spell, parameterKey, examples);
 		}
 	}
 }

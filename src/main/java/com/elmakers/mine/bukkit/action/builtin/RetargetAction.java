@@ -2,6 +2,7 @@ package com.elmakers.mine.bukkit.action.builtin;
 
 import com.elmakers.mine.bukkit.action.CompoundAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
+import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import org.bukkit.configuration.ConfigurationSection;
@@ -35,8 +36,8 @@ public class RetargetAction extends CompoundAction {
     }
 
     @Override
-    public void getParameterNames(Collection<String> parameters) {
-        super.getParameterNames(parameters);
+    public void getParameterNames(Spell spell, Collection<String> parameters) {
+        super.getParameterNames(spell, parameters);
         parameters.add("fov");
         parameters.add("target_count");
         parameters.add("hitbox");
@@ -46,14 +47,14 @@ public class RetargetAction extends CompoundAction {
     }
 
     @Override
-    public void getParameterOptions(Collection<String> examples, String parameterKey) {
+    public void getParameterOptions(Spell spell, String parameterKey, Collection<String> examples) {
         if (parameterKey.equals("hitbox")) {
             examples.addAll(Arrays.asList((BaseSpell.EXAMPLE_BOOLEANS)));
         } else if (parameterKey.equals("target_count") || parameterKey.equals("range") || parameterKey.equals("fov")
                 || parameterKey.equals("close_range") || parameterKey.equals("close_fov")) {
             examples.addAll(Arrays.asList((BaseSpell.EXAMPLE_SIZES)));
         } else {
-            super.getParameterOptions(examples, parameterKey);
+            super.getParameterOptions(spell, parameterKey, examples);
         }
     }
 }

@@ -5,6 +5,7 @@ import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.magic.MagicAPI;
+import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.magic.MagicPlugin;
@@ -86,21 +87,21 @@ public class GiveItemAction extends BaseSpellAction
     }
 
     @Override
-    public void getParameterNames(Collection<String> parameters)
+    public void getParameterNames(Spell spell, Collection<String> parameters)
     {
-        super.getParameterNames(parameters);
+        super.getParameterNames(spell, parameters);
         parameters.add("item");
         parameters.add("require");
     }
 
     @Override
-    public void getParameterOptions(Collection<String> examples, String parameterKey)
+    public void getParameterOptions(Spell spell, String parameterKey, Collection<String> examples)
     {
         if (parameterKey.equals("item") || parameterKey.equals("require")) {
             MagicAPI api = MagicPlugin.getAPI();
             Collection<SpellTemplate> spellList = api.getSpellTemplates();
-            for (SpellTemplate spell : spellList) {
-                examples.add(spell.getKey());
+            for (SpellTemplate spellTemplate : spellList) {
+                examples.add(spellTemplate.getKey());
             }
             Collection<String> allWands = api.getWandKeys();
             for (String wandKey : allWands) {
@@ -108,7 +109,7 @@ public class GiveItemAction extends BaseSpellAction
             }
             examples.addAll(api.getBrushes());
         } else {
-            super.getParameterOptions(examples, parameterKey);
+            super.getParameterOptions(spell, parameterKey, examples);
         }
     }
 }

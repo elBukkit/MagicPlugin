@@ -1,6 +1,7 @@
 package com.elmakers.mine.bukkit.action.builtin;
 
 import com.elmakers.mine.bukkit.api.action.CastContext;
+import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
@@ -119,18 +120,18 @@ public class TorchAction extends BaseSpellAction
 	}
 
 	@Override
-	public void getParameterNames(Collection<String> parameters) {
-		super.getParameterNames(parameters);
+	public void getParameterNames(Spell spell, Collection<String> parameters) {
+		super.getParameterNames(spell, parameters);
 		parameters.add("redstone_torch");
 		parameters.add("allow_glowstone");
 	}
 
 	@Override
-	public void getParameterOptions(Collection<String> examples, String parameterKey) {
+	public void getParameterOptions(Spell spell, String parameterKey, Collection<String> examples) {
 		if (parameterKey.equals("redstone_torch") || parameterKey.equals("allow_glowstone")) {
 			examples.addAll(Arrays.asList((BaseSpell.EXAMPLE_BOOLEANS)));
 		} else {
-			super.getParameterOptions(examples, parameterKey);
+			super.getParameterOptions(spell, parameterKey, examples);
 		}
 	}
 

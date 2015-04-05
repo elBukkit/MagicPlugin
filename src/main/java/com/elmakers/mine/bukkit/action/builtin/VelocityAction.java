@@ -1,6 +1,7 @@
 package com.elmakers.mine.bukkit.action.builtin;
 
 import com.elmakers.mine.bukkit.api.action.CastContext;
+import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.action.BaseSpellAction;
@@ -116,8 +117,8 @@ public class VelocityAction extends BaseSpellAction
     }
 
     @Override
-    public void getParameterNames(Collection<String> parameters) {
-        super.getParameterNames(parameters);
+    public void getParameterNames(Spell spell, Collection<String> parameters) {
+        super.getParameterNames(spell, parameters);
 
         parameters.add("push");
         parameters.add("speed");
@@ -129,7 +130,7 @@ public class VelocityAction extends BaseSpellAction
     }
 
     @Override
-    public void getParameterOptions(Collection<String> examples, String parameterKey) {
+    public void getParameterOptions(Spell spell, String parameterKey, Collection<String> examples) {
         if (parameterKey.equals("push")) {
             examples.addAll(Arrays.asList((BaseSpell.EXAMPLE_BOOLEANS)));
         } else if (parameterKey.equals("speed") || parameterKey.equals("living_entity_speed")
@@ -137,7 +138,7 @@ public class VelocityAction extends BaseSpellAction
             || parameterKey.equals("max_speed") || parameterKey.equals("max_altitude")) {
             examples.addAll(Arrays.asList((BaseSpell.EXAMPLE_SIZES)));
         } else {
-            super.getParameterOptions(examples, parameterKey);
+            super.getParameterOptions(spell, parameterKey, examples);
         }
     }
 

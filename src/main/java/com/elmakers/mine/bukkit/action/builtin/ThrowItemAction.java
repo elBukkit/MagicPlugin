@@ -3,6 +3,7 @@ package com.elmakers.mine.bukkit.action.builtin;
 import com.elmakers.mine.bukkit.action.ActionHandler;
 import com.elmakers.mine.bukkit.action.TriggeredCompoundAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
+import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.api.block.MaterialAndData;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
@@ -67,9 +68,9 @@ public class ThrowItemAction extends TriggeredCompoundAction {
     }
 
     @Override
-    public void getParameterNames(Collection<String> parameters)
+    public void getParameterNames(Spell spell, Collection<String> parameters)
     {
-        super.getParameterNames(parameters);
+        super.getParameterNames(spell, parameters);
         parameters.add("speed");
         parameters.add("speed_min");
         parameters.add("speed_max");
@@ -77,14 +78,14 @@ public class ThrowItemAction extends TriggeredCompoundAction {
     }
 
     @Override
-    public void getParameterOptions(Collection<String> examples, String parameterKey)
+    public void getParameterOptions(Spell spell, String parameterKey, Collection<String> examples)
     {
         if (parameterKey.equals("speed") || parameterKey.equals("age_items")
         || parameterKey.equals("speed_max") || parameterKey.equals("speed_min"))
         {
             examples.addAll(Arrays.asList(BaseSpell.EXAMPLE_SIZES));
         } else {
-            super.getParameterOptions(examples, parameterKey);
+            super.getParameterOptions(spell, parameterKey, examples);
         }
     }
 }

@@ -4,6 +4,7 @@ import com.elmakers.mine.bukkit.action.BaseSpellAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
+import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
@@ -69,8 +70,8 @@ public class DamageAction extends BaseSpellAction
 	}
 
 	@Override
-	public void getParameterNames(Collection<String> parameters) {
-		super.getParameterNames(parameters);
+	public void getParameterNames(Spell spell, Collection<String> parameters) {
+		super.getParameterNames(spell, parameters);
 		parameters.add("damage");
 		parameters.add("player_damage");
 		parameters.add("entity_damage");
@@ -78,12 +79,12 @@ public class DamageAction extends BaseSpellAction
 	}
 
 	@Override
-	public void getParameterOptions(Collection<String> examples, String parameterKey) {
+	public void getParameterOptions(Spell spell, String parameterKey, Collection<String> examples) {
 		if (parameterKey.equals("damage") || parameterKey.equals("player_damage")
 			|| parameterKey.equals("entity_damage") || parameterKey.equals("elemental_damage")) {
 			examples.addAll(Arrays.asList((BaseSpell.EXAMPLE_SIZES)));
 		} else {
-			super.getParameterOptions(examples, parameterKey);
+			super.getParameterOptions(spell, parameterKey, examples);
 		}
 	}
 

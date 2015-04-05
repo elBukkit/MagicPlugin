@@ -2,6 +2,7 @@ package com.elmakers.mine.bukkit.action.builtin;
 
 import com.elmakers.mine.bukkit.action.CompoundAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
+import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.RandomUtils;
@@ -73,9 +74,9 @@ public class SpreadAction extends CompoundAction
     }
 
     @Override
-    public void getParameterNames(Collection<String> parameters)
+    public void getParameterNames(Spell spell, Collection<String> parameters)
     {
-        super.getParameterNames(parameters);
+        super.getParameterNames(spell, parameters);
         parameters.add("radius");
         parameters.add("probability");
         parameters.add("center_probability");
@@ -85,7 +86,7 @@ public class SpreadAction extends CompoundAction
     }
 
     @Override
-    public void getParameterOptions(Collection<String> examples, String parameterKey)
+    public void getParameterOptions(Spell spell, String parameterKey, Collection<String> examples)
     {
         if (parameterKey.equals("radius")) {
             examples.addAll(Arrays.asList(BaseSpell.EXAMPLE_SIZES));
@@ -94,7 +95,7 @@ public class SpreadAction extends CompoundAction
         } else if (parameterKey.equals("yaw_max") || parameterKey.equals("pitch_max")) {
             examples.addAll(Arrays.asList(BaseSpell.EXAMPLE_VECTOR_COMPONENTS));
         } else {
-            super.getParameterOptions(examples, parameterKey);
+            super.getParameterOptions(spell, parameterKey, examples);
         }
     }
 }

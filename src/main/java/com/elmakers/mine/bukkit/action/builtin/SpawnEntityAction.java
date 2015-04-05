@@ -4,6 +4,7 @@ import com.elmakers.mine.bukkit.action.BaseSpellAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.effect.EffectPlayer;
 import com.elmakers.mine.bukkit.api.magic.MageController;
+import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
@@ -321,8 +322,8 @@ public class SpawnEntityAction extends BaseSpellAction
     }
 
     @Override
-    public void getParameterNames(Collection<String> parameters) {
-        super.getParameterNames(parameters);
+    public void getParameterNames(Spell spell, Collection<String> parameters) {
+        super.getParameterNames(spell, parameters);
         parameters.add("track");
         parameters.add("loot");
         parameters.add("baby");
@@ -332,7 +333,7 @@ public class SpawnEntityAction extends BaseSpellAction
     }
 
     @Override
-    public void getParameterOptions(Collection<String> examples, String parameterKey) {
+    public void getParameterOptions(Spell spell, String parameterKey, Collection<String> examples) {
         if (parameterKey.equals("type")) {
             for (EntityType type : EntityType.values()) {
                 examples.add(type.name().toLowerCase());
@@ -344,7 +345,7 @@ public class SpawnEntityAction extends BaseSpellAction
         } else if (parameterKey.equals("speed")) {
             examples.addAll(Arrays.asList((BaseSpell.EXAMPLE_SIZES)));
         } else {
-            super.getParameterOptions(examples, parameterKey);
+            super.getParameterOptions(spell, parameterKey, examples);
         }
     }
 }

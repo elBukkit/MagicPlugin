@@ -1,12 +1,10 @@
 package com.elmakers.mine.bukkit.action.builtin;
 
 import com.elmakers.mine.bukkit.api.action.CastContext;
-import com.elmakers.mine.bukkit.api.magic.Mage;
+import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.action.BaseSpellAction;
-import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
-import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
 
@@ -96,13 +94,13 @@ public class TimeAction extends BaseSpellAction
 	}
 
 	@Override
-	public void getParameterNames(Collection<String> parameters) {
-		super.getParameterNames(parameters);
+	public void getParameterNames(Spell spell, Collection<String> parameters) {
+		super.getParameterNames(spell, parameters);
 		parameters.add("time");
 	}
 
 	@Override
-	public void getParameterOptions(Collection<String> examples, String parameterKey) {
+	public void getParameterOptions(Spell spell, String parameterKey, Collection<String> examples) {
 		if (parameterKey.equals("time")) {
 			examples.add("day");
 			examples.add("night");
@@ -112,7 +110,7 @@ public class TimeAction extends BaseSpellAction
 		} else if (parameterKey.equals("cycle_moon_phase")) {
 			examples.addAll(Arrays.asList((BaseSpell.EXAMPLE_BOOLEANS)));
 		} else {
-			super.getParameterOptions(examples, parameterKey);
+			super.getParameterOptions(spell, parameterKey, examples);
 		}
 	}
 

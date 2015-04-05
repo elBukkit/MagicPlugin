@@ -4,6 +4,7 @@ import com.elmakers.mine.bukkit.action.BaseSpellAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.Messages;
+import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.api.wand.Wand;
@@ -99,9 +100,9 @@ public class AddSpellAction extends BaseSpellAction
 	}
 
     @Override
-    public void getParameterNames(Collection<String> parameters)
+    public void getParameterNames(Spell spell, Collection<String> parameters)
     {
-        super.getParameterNames(parameters);
+        super.getParameterNames(spell, parameters);
         parameters.add("spell");
         parameters.add("path");
         parameters.add("path_end");
@@ -109,17 +110,17 @@ public class AddSpellAction extends BaseSpellAction
     }
 
     @Override
-    public void getParameterOptions(Collection<String> examples, String parameterKey)
+    public void getParameterOptions(Spell spell, String parameterKey, Collection<String> examples)
     {
         if (parameterKey.equals("spell")) {
             Collection<SpellTemplate> spellList = MagicPlugin.getAPI().getSpellTemplates();
-            for (SpellTemplate spell : spellList) {
-                examples.add(spell.getKey());
+            for (SpellTemplate spellTemplate : spellList) {
+                examples.add(spellTemplate.getKey());
             }
         } else if (parameterKey.equals("path") || parameterKey.equals("path_exact") || parameterKey.equals("path_end")) {
             examples.addAll(com.elmakers.mine.bukkit.wand.WandUpgradePath.getPathKeys());
         } else {
-            super.getParameterOptions(examples, parameterKey);
+            super.getParameterOptions(spell, parameterKey, examples);
         }
     }
 }

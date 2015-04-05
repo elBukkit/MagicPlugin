@@ -1,6 +1,7 @@
 package com.elmakers.mine.bukkit.action.builtin;
 
 import com.elmakers.mine.bukkit.api.action.CastContext;
+import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
@@ -136,16 +137,16 @@ public class FreezeAction extends BaseSpellAction
 	}
 
 	@Override
-	public void getParameterNames(Collection<String> parameters)
+	public void getParameterNames(Spell spell, Collection<String> parameters)
 	{
-		super.getParameterNames(parameters);
+		super.getParameterNames(spell, parameters);
 		parameters.add("freeze_water");
         parameters.add("ice");
         parameters.add("freeze_lava");
 	}
 
 	@Override
-	public void getParameterOptions(Collection<String> examples, String parameterKey)
+	public void getParameterOptions(Spell spell, String parameterKey, Collection<String> examples)
 	{
 		if (parameterKey.equals("ice")) {
 			examples.add("ice");
@@ -153,7 +154,7 @@ public class FreezeAction extends BaseSpellAction
 		} else if (parameterKey.equals("freeze_water") || parameterKey.equals("freeze_lava") || parameterKey.equals("freeze_fire")) {
 			examples.addAll(Arrays.asList((BaseSpell.EXAMPLE_BOOLEANS)));
 		} else {
-			super.getParameterOptions(examples, parameterKey);
+			super.getParameterOptions(spell, parameterKey, examples);
 		}
 	}
 
