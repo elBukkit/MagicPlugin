@@ -3,6 +3,7 @@ package com.elmakers.mine.bukkit.action;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.action.SpellAction;
 import com.elmakers.mine.bukkit.api.magic.Mage;
+import com.elmakers.mine.bukkit.api.spell.Spell;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
@@ -103,20 +104,22 @@ public abstract class TriggeredCompoundAction extends BaseSpellAction implements
     }
 
 	@Override
-	public void getParameterNames(Collection<String> parameters)
+	public void getParameterNames(Spell spell, Collection<String> parameters)
 	{
+        super.getParameterNames(spell, parameters);
 		if (actions != null)
 		{
-			actions.getParameterNames(parameters);
+			actions.getParameterNames(spell, parameters);
 		}
 	}
 
 	@Override
-	public void getParameterOptions(Collection<String> examples, String parameterKey)
+	public void getParameterOptions(Spell spell, String parameterKey, Collection<String> examples)
 	{
+        super.getParameterOptions(spell, parameterKey, examples);
 		if (actions != null)
 		{
-			actions.getParameterOptions(examples, parameterKey);
+			actions.getParameterOptions(spell, parameterKey, examples);
 		}
 	}
 

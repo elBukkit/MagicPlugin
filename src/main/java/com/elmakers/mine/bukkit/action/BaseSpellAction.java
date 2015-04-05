@@ -3,6 +3,7 @@ package com.elmakers.mine.bukkit.action;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.action.SpellAction;
 import com.elmakers.mine.bukkit.api.magic.Mage;
+import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import org.bukkit.configuration.ConfigurationSection;
 
@@ -72,13 +73,13 @@ public abstract class BaseSpellAction implements SpellAction
     }
 
     @Override
-    public void getParameterNames(Collection<String> parameters) {
+    public void getParameterNames(Spell spell, Collection<String> parameters) {
         parameters.add("requires_target");
         parameters.add("requires_entity_target");
     }
 
     @Override
-    public void getParameterOptions(Collection<String> examples, String parameterKey) {
+    public void getParameterOptions(Spell spell, String parameterKey, Collection<String> examples) {
         if (parameterKey.equals("requires_target") || parameterKey.equals("requires_entity_target"))
         {
             examples.addAll(Arrays.asList((BaseSpell.EXAMPLE_BOOLEANS)));

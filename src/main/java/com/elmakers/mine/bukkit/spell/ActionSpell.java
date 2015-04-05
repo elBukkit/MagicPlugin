@@ -1,10 +1,7 @@
 package com.elmakers.mine.bukkit.spell;
 
 import com.elmakers.mine.bukkit.action.ActionHandler;
-import com.elmakers.mine.bukkit.api.block.MaterialBrush;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
-import com.elmakers.mine.bukkit.utility.Target;
-import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 
 import java.util.Collection;
@@ -142,7 +139,7 @@ public class ActionSpell extends BrushSpell
     public void getParameters(Collection<String> parameters) {
         super.getParameters(parameters);
         for (ActionHandler handler : actions.values()) {
-            handler.getParameterNames(parameters);
+            handler.getParameterNames(this, parameters);
         }
     }
 
@@ -150,7 +147,7 @@ public class ActionSpell extends BrushSpell
     public void getParameterOptions(Collection<String> examples, String parameterKey) {
         super.getParameterOptions(examples, parameterKey);
         for (ActionHandler handler : actions.values()) {
-            handler.getParameterOptions(examples, parameterKey);
+            handler.getParameterOptions(this, parameterKey, examples);
         }
     }
 

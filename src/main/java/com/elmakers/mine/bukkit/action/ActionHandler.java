@@ -3,6 +3,7 @@ package com.elmakers.mine.bukkit.action;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.action.SpellAction;
 import com.elmakers.mine.bukkit.api.magic.Mage;
+import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.batch.ActionBatch;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
@@ -279,19 +280,19 @@ public class ActionHandler implements Cloneable
         return requiresBuildPermission;
     }
 
-    public void getParameterNames(Collection<String> parameters)
+    public void getParameterNames(Spell spell, Collection<String> parameters)
     {
         for (ActionContext context : actions)
         {
-            context.getAction().getParameterNames(parameters);
+            context.getAction().getParameterNames(spell, parameters);
         }
     }
 
-    public void getParameterOptions(Collection<String> examples, String parameterKey)
+    public void getParameterOptions(Spell spell, String parameterKey, Collection<String> examples)
     {
         for (ActionContext context : actions)
         {
-            context.getAction().getParameterOptions(examples, parameterKey);
+            context.getAction().getParameterOptions(spell, parameterKey, examples);
         }
     }
 
