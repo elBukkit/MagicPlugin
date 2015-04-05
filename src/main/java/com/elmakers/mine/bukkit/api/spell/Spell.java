@@ -5,6 +5,7 @@ import com.elmakers.mine.bukkit.api.block.MaterialAndData;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import org.bukkit.Color;
 import org.bukkit.Location;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.util.Vector;
 
@@ -25,6 +26,7 @@ public interface Spell extends SpellTemplate {
     public boolean cast();
     public boolean cast(String[] parameters);
     public boolean cast(String[] parameters, Location defaultLocation);
+    public boolean cast(ConfigurationSection parameters, Location defaultLocation);
     public Location getLocation();
     public Entity getEntity();
     public Location getEyeLocation();

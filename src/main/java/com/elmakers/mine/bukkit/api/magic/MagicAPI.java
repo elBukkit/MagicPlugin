@@ -6,6 +6,7 @@ import java.util.logging.Logger;
 import com.elmakers.mine.bukkit.api.spell.SpellCategory;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -475,6 +476,7 @@ public interface MagicAPI {
      * @return true if the spell succeeds, else false
      */
     public boolean cast(String spellName, String[] parameters, CommandSender sender, Entity entity);
+    public boolean cast(String spellName, ConfigurationSection parameters, CommandSender sender, Entity entity);
 
     /**
      * Get a list of all currently loaded SpellTemplate records, as defined in spells.defaults.yml
