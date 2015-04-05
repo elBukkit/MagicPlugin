@@ -1311,8 +1311,10 @@ spells:
         cast: ""
         cast_player_message: ""
         fail: ""
+        not_applicable: Your wand already has $item
         no_items: There is nothing to buy here!
         insufficient_resources: Costs $cost
+        no_wand: You must be holding a wand!
         confirm_title: "Get $item"
         deducted: "&d&oYou received &r&6$item"
     colorshop:
@@ -1326,6 +1328,7 @@ spells:
         no_items: There is nothing to buy here!
         insufficient_resources: Costs $cost
         confirm_title: "Buy $item"
+        no_wand: You must be holding a wand!
         deducted: "&d&oYou bought &r&6$item &r&d&ofor &r&a$cost"
     broomshop:
         name: Broom Shop

@@ -6275,6 +6275,7 @@ tweakshop:
     parameters:
         loud: true
         confirm: false
+        require_wand: true
         items:
           wand|inventorymode: 0
           wand|chestmode: 0
@@ -6296,6 +6297,7 @@ colorshop:
         loud: true
         confirm_filler: stained_glass:9
         confirm: true
+        require_wand: true
         items:
           wand|redeffects: 100
           wand|greeneffects: 100

@@ -1,5 +1,9 @@
 # TODO
 
+ - Add alphabetize option to base shop
+ - Allow air as filler blocks
+ - new icons for: earthquake, forest, tree
+
  - Recall still losing waypoints
  - Try to Paste the elder tree .. schematic bounds seem broken in general
 

@@ -34,6 +34,10 @@ public class ItemShopAction extends BaseShopAction
 
     @Override
     public SpellResult perform(CastContext context) {
+        SpellResult contextResult = checkContext(context);
+        if (!contextResult.isSuccess()) {
+            return contextResult;
+        }
         List<ShopItem> shopItems = new ArrayList<ShopItem>();
         MageController controller = context.getController();
         for (Map.Entry<String, Double> itemValue : items.entrySet()) {
