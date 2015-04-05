@@ -846,7 +846,16 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         backfired = false;
     }
 
-    public boolean cast(String[] extraParameters, Location defaultLocation)
+    public boolean cast(String[] extraParameters, Location defaultLocation) {
+        ConfigurationSection parameters = null;
+        if (extraParameters != null && extraParameters.length > 0) {
+            parameters = new MemoryConfiguration();
+            ConfigurationUtils.addParameters(extraParameters, parameters);
+        }
+        return cast(parameters, defaultLocation);
+    }
+
+    public boolean cast(ConfigurationSection extraParameters, Location defaultLocation)
     {
         this.reset();
 
@@ -863,7 +872,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
 
         final ConfigurationSection parameters = new MemoryConfiguration();
         ConfigurationUtils.addConfigurations(parameters, this.parameters);
-        ConfigurationUtils.addParameters(extraParameters, parameters);
+        ConfigurationUtils.addConfigurations(parameters, extraParameters);
         processParameters(parameters);
 
         // Allow other plugins to cancel this cast
@@ -1344,7 +1353,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     @Override
     public boolean cast()
     {
-        return cast(null, null);
+        return cast((ConfigurationSection)null, null);
     }
 
     @Override
