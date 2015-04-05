@@ -4331,6 +4331,8 @@ magichat:
     actions:
       # Aim up and cast, and the hat goes on your head
       alternate_up:
+      - class: Delay
+        delay: 1
       - class: Hat
       cast:
       # Otherwise, we'll choose one from a random set of actions
