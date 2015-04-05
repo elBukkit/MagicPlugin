@@ -1,8 +1,6 @@
 # TODO
 
- - Add alphabetize option to base shop
- - Allow air as filler blocks
- - new icons for: earthquake, forest, tree
+ - right-click with magic hat glitches out on wearing it?
 
  - Recall still losing waypoints
  - Try to Paste the elder tree .. schematic bounds seem broken in general
@@ -16,6 +14,8 @@
  - Spell shop improvements:
    - Color spells player can't afford
    - Some sort of ability to set up in-game?
+   - Add alphabetize option to base shop (hrm, no, config is a map.. bleh)
+   - Allow air as filler blocks
  - Trait improvements
    - Add /parameter command for inspecting single param
    - Cleaner list of list parameters
@@ -33,7 +33,6 @@
  - Magic stats (that persist) - block modified, etc. (Statistics API?)
  - Collapse blocklist chains on save (?)
  - Enchant count limit for wands
- - Support schematic entity import for paintings and item frames (at least)
  - EnderDragon familiars that don't do block damage or spawn a portal on death?
 
 ## NEW SPELLS

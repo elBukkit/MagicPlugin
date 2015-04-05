@@ -1420,7 +1420,7 @@ lightning|3:
 
 tree:
     icon: sapling
-    icon_url: http://s3.amazonaws.com/MinecraftSkins/MHF_OakLog.png
+    icon_url: http://i.imgur.com/WmA6CtP.png
     category: elemental
     worth: 2000
     actions:
@@ -1442,7 +1442,7 @@ tree:
 
 forest:
     icon: sapling
-    icon_url: http://s3.amazonaws.com/MinecraftSkins/MHF_OakLog.png
+    icon_url: http://i.imgur.com/UGSl8xa.png
     category: elemental
     worth: 4000
     actions:
@@ -1918,7 +1918,7 @@ arrowrain|2:
 gatling:
     upgrade_required_path: master
     upgrade_required_casts: 50
-    icon_url: http://i.imgur.com/GbyxXSi.png
+    icon_url: http://i.imgur.com/M11J25I.png
     icon: bow
     category: combat
     pvp_restricted: true
@@ -3404,7 +3404,7 @@ blast|4:
         undo: 30000
 
 earthquake:
-    icon_url: http://i.imgur.com/bCGsZYB.png
+    icon_url: http://i.imgur.com/kAs9rr8.png
     icon: sulphur
     category: combat
     worth: 2000
