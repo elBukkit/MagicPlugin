@@ -340,6 +340,10 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
             if (item == null) continue;
 
             ItemMeta meta = item.getItemMeta();
+            if (meta == null) {
+                itemStacks.add(item);
+                continue;
+            }
             List<String> lore = meta.getLore();
             if (lore == null) {
                 lore = new ArrayList<String>();
@@ -364,10 +368,10 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
             item = InventoryUtils.makeReal(item);
             int currentSlot = itemStacks.size();
             InventoryUtils.setMeta(item, "shop", Integer.toString(currentSlot));
-            this.showingItems.put(currentSlot, shopItem);
             if (showConfirmation) {
                 InventoryUtils.setMeta(item, "confirm", "true");
             }
+            this.showingItems.put(currentSlot, shopItem);
             itemStacks.add(item);
         }
 
