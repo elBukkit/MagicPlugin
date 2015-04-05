@@ -7,6 +7,7 @@ import java.util.logging.Logger;
 import com.elmakers.mine.bukkit.api.block.CurrencyItem;
 import com.elmakers.mine.bukkit.api.block.MaterialAndData;
 import com.elmakers.mine.bukkit.api.maps.MapController;
+import com.elmakers.mine.bukkit.api.wand.WandUpgradePath;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -84,6 +85,8 @@ public interface MageController {
     public Collection<SpellCategory> getCategories();
     public Collection<SpellTemplate> getSpellTemplates();
     public SpellTemplate getSpellTemplate(String key);
+    public Set<String> getWandPathKeys();
+    public WandUpgradePath getPath(String key);
 
     public void registerAutomata(Block block, String name, String message);
     public boolean unregisterAutomata(Block block);

@@ -1,6 +1,7 @@
 package com.elmakers.mine.bukkit.api.action;
 
 import com.elmakers.mine.bukkit.api.magic.Mage;
+import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import org.bukkit.configuration.ConfigurationSection;
 
@@ -13,8 +14,8 @@ public interface SpellAction extends Cloneable
     public void prepare(CastContext context, ConfigurationSection parameters);
     public void finish(CastContext context);
     public void reset(CastContext context);
-    public void getParameterNames(Collection<String> parameters);
-    public void getParameterOptions(Collection<String> examples, String parameterKey);
+    public void getParameterNames(Spell spell, Collection<String> parameters);
+    public void getParameterOptions(Spell spell, String parameterKey, Collection<String> examples);
     public boolean usesBrush();
     public boolean isUndoable();
     public boolean requiresBuildPermission();
