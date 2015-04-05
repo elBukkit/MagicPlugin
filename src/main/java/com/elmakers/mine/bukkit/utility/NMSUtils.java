@@ -16,7 +16,6 @@ import org.bukkit.DyeColor;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.BlockFace;
-import org.bukkit.block.BlockState;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Entity;
@@ -156,6 +155,7 @@ public class NMSUtils {
     protected static Field class_GameProfileProperty_value;
     protected static Field class_ItemStack_count;
     protected static Field class_EntityTNTPrimed_source;
+    protected static Field class_NBTTagList_list;
 
     static
     {
@@ -263,6 +263,9 @@ public class NMSUtils {
             class_NBTTagByte_constructor = class_NBTTagByte.getConstructor(Byte.TYPE);
             class_ItemStack_count = class_ItemStack.getDeclaredField("count");
             class_ItemStack_count.setAccessible(true);
+
+            class_NBTTagList_list = class_NBTTagList.getDeclaredField("list");
+            class_NBTTagList_list.setAccessible(true);
 
             isLegacy = false;
             try {
@@ -1066,6 +1069,26 @@ public class NMSUtils {
             ex.printStackTrace();
         }
         return data;
+    }
+
+    public static void clearItems(Location location) {
+        try {
+            World world = location.getWorld();
+            Object tileEntity = class_CraftWorld_getTileEntityAtMethod.invoke(world, location.getBlockX(), location.getBlockY(), location.getBlockZ());
+            if (tileEntity != null) {
+                Object entityData = class_NBTTagCompound.newInstance();
+                class_TileEntity_saveMethod.invoke(tileEntity, entityData);
+                Object itemList = class_NBTTagCompound_getListMethod.invoke(entityData, "Items", NBT_TYPE_COMPOUND);
+                if (itemList != null) {
+                    List items = (List)class_NBTTagList_list.get(itemList);
+                    items.clear();
+                    class_TileEntity_loadMethod.invoke(tileEntity, entityData);
+                    class_TileEntity_updateMethod.invoke(tileEntity);
+                }
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 
     public static void setTileEntityData(Location location, Object data) {

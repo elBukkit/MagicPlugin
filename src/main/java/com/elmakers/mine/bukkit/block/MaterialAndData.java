@@ -15,7 +15,6 @@ import org.bukkit.Material;
 import org.bukkit.SkullType;
 import org.bukkit.TreeSpecies;
 import org.bukkit.block.*;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 
@@ -317,7 +316,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
 
         try {
             BlockState blockState = block.getState();
-            if (material == Material.FLOWER_POT) {
+            if (material == Material.FLOWER_POT || blockState instanceof InventoryHolder) {
                 tileEntityData = NMSUtils.getTileEntityData(block.getLocation());
             } else if (blockState instanceof Sign) {
                 Sign sign = (Sign)blockState;
@@ -327,19 +326,6 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
                 CommandBlock command = (CommandBlock)blockState;
                 commandLine = command.getCommand();
                 customName = command.getName();
-            } else if (blockState instanceof InventoryHolder) {
-                InventoryHolder holder = (InventoryHolder)blockState;
-                Inventory holderInventory = holder.getInventory();
-                ItemStack[] contents = holderInventory.getContents();
-                if (contents != null && contents.length > 0) {
-                    inventoryContents = new ItemStack[contents.length];
-                    for (int i = 0; i < contents.length; i++) {
-                        ItemStack stack = contents[i];
-                        if (stack != null && stack.getType() != Material.AIR && stack.getAmount() > 0) {
-                            inventoryContents[i] = NMSUtils.getCopy(stack);
-                        }
-                    }
-                }
             } else if (blockState instanceof Skull) {
                 Skull skull = (Skull)blockState;
                 rotation = skull.getRotation();
@@ -371,21 +357,16 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         if (!isValid) return;
 
         try {
+            BlockState blockState = block.getState();
             // Clear chests so they don't dump their contents.
-            BlockState oldState = block.getState();
-            if (oldState instanceof InventoryHolder) {
-                InventoryHolder holder = (InventoryHolder)oldState;
-                Inventory inventory = holder.getInventory();
-                inventory.clear();
-                oldState.update();
+            if (blockState instanceof InventoryHolder) {
+                NMSUtils.clearItems(block.getLocation());
             }
 
             if (material != null) {
                 byte blockData = data != null ? (byte)(short)data : block.getData();
                 block.setTypeIdAndData(material.getId(), blockData, applyPhysics);
             }
-
-            BlockState blockState = block.getState();
 
             // Set tile entity data first
             if (tileEntityData != null) {
@@ -409,16 +390,6 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
                     command.setName(customName);
                 }
                 command.update();
-            } else if (blockState instanceof InventoryHolder && inventoryContents != null) {
-                InventoryHolder holder = (InventoryHolder)blockState;
-                Inventory newInventory = holder.getInventory();
-                int maxSize = Math.min(newInventory.getSize(), inventoryContents.length);
-                for (int i = 0; i < maxSize; i++) {
-                    ItemStack item = inventoryContents[i];
-                    if (item != null) {
-                        newInventory.setItem(i, item);
-                    }
-                }
             } else if (blockState instanceof Skull) {
                 Skull skull = (Skull)blockState;
                 if (skullType != null) {
