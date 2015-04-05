@@ -3,7 +3,6 @@
  - right-click with magic hat glitches out on wearing it?
 
  - Recall still losing waypoints
- - Try to Paste the elder tree .. schematic bounds seem broken in general
 
  - Support for restoring armor stands- might have to drop 1.7 support for this.
  - Clean up MaterialBrush target system, automate somehow?
@@ -18,7 +17,6 @@
    - Allow air as filler blocks
  - Trait improvements
    - Add /parameter command for inspecting single param
-   - Cleaner list of list parameters
  - Nerf Force (shift to break free? Fall protection?)
  - Make map work like replicate, clone - with start point set on activate
  - /magic describe should show info about current spell?

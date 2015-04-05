@@ -3,21 +3,28 @@ package com.elmakers.mine.bukkit.citizens;
 import com.elmakers.mine.bukkit.api.magic.MagicAPI;
 import com.elmakers.mine.bukkit.integration.VaultController;
 import com.elmakers.mine.bukkit.magic.MagicPlugin;
+import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import net.citizensnpcs.api.trait.Trait;
 import net.citizensnpcs.api.util.DataKey;
 import net.milkbowl.vault.Vault;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.MemoryConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+
+import javax.security.auth.login.Configuration;
+import java.util.Collection;
 
 public class MagicCitizensTrait extends Trait {
 
     private String spellKey;
     private boolean npcCaster = true;
-    private String[] parameters = null;
+    private YamlConfiguration parameters = null;
     private double cost = 0;
     private MagicAPI api;
 
@@ -30,11 +37,19 @@ public class MagicCitizensTrait extends Trait {
         npcCaster = data.getBoolean("caster", false);
         cost = data.getDouble("cost", 0);
         String parameterString = data.getString("parameters", null);
-        parameters = null;
+        parameters = new YamlConfiguration();
         if (parameterString != null && !parameterString.isEmpty()) {
-            parameters = StringUtils.split(parameterString, " ");
-            if (parameters.length == 0) {
-                parameters = null;
+            if (!parameterString.contains(":")) {
+                String[] simple = StringUtils.split(parameterString, " ");
+                if (simple.length > 0) {
+                    ConfigurationUtils.addParameters(simple, parameters);
+                }
+            } else {
+                try {
+                    parameters.loadFromString(parameterString);
+                } catch(Exception ex) {
+                    ex.printStackTrace();
+                }
             }
         }
 	}
@@ -42,7 +57,7 @@ public class MagicCitizensTrait extends Trait {
 	public void save(DataKey data) {
         data.setString("spell", spellKey);
         data.setBoolean("caster", npcCaster);
-        String parameterString = parameters != null && parameters.length > 0 ? StringUtils.join(parameters, " ") : null;
+        String parameterString = parameters.saveToString();
         data.setString("parameters", parameterString);
         data.setDouble("cost", cost);
 	}
@@ -76,18 +91,12 @@ public class MagicCitizensTrait extends Trait {
             }
         }
 
-        String[] parameters = this.parameters;
+        ConfigurationSection config = this.parameters;
         if (npcCaster) {
             if (event.getNPC().isSpawned()) {
-                entity = event.getNPC().getBukkitEntity();
-                if (parameters == null) {
-                    parameters = new String[2];
-                } else {
-                    parameters = new String[parameters.length + 2];
-                    System.arraycopy(this.parameters, 0, parameters, 2, this.parameters.length);
-                }
-                parameters[0] = "player";
-                parameters[1] = event.getClicker().getName();
+                config = new MemoryConfiguration();
+                ConfigurationUtils.addConfigurations(config, parameters);
+                config.set("player", event.getClicker().getName());
             }
         }
 
@@ -105,13 +114,30 @@ public class MagicCitizensTrait extends Trait {
                 ChatColor.WHITE + "(" + ChatColor.GRAY + npc.getId() + ChatColor.WHITE + ")");
         String spellDescription = spellKey == null ? (ChatColor.RED + "(None)") : (ChatColor.LIGHT_PURPLE + spellKey);
         sender.sendMessage(ChatColor.DARK_PURPLE + "Spell: " + spellDescription);
-        String parameterDescription = parameters == null ? (ChatColor.GRAY + "(None)") : (ChatColor.LIGHT_PURPLE + StringUtils.join(parameters, " "));
-        sender.sendMessage(ChatColor.DARK_PURPLE + "Parameters: " + parameterDescription);
         String casterDescription = npcCaster ? (ChatColor.GRAY + "NPC") : (ChatColor.LIGHT_PURPLE + "Player");
         sender.sendMessage(ChatColor.DARK_PURPLE + "Caster: " + casterDescription);
         if (VaultController.hasEconomy()) {
             VaultController vault = VaultController.getInstance();
             sender.sendMessage(ChatColor.DARK_PURPLE + "Cost: " + ChatColor.GOLD + vault.format(cost));
+        }
+        sender.sendMessage(ChatColor.DARK_PURPLE + "Parameters: ");
+        describeParameters(sender);
+    }
+
+    protected void describeParameters(CommandSender sender) {
+        Collection<String> keys = parameters.getKeys(false);
+        if (keys.size() == 0) {
+            sender.sendMessage(ChatColor.GRAY + " (None)");
+        }
+        for (String key : keys) {
+            String value = null;
+            if (parameters.isConfigurationSection(key)) {
+                ConfigurationSection child = parameters.getConfigurationSection(key);
+                value = "(" + child.getKeys(false).size() + " values)";
+            } else {
+                value = parameters.getString(key);
+            }
+            sender.sendMessage(ChatColor.LIGHT_PURPLE + " " + key + ": " + value);
         }
     }
 
@@ -141,8 +167,11 @@ public class MagicCitizensTrait extends Trait {
             }
             else
             {
-                parameters = StringUtils.split(value, " ");
-                sender.sendMessage(ChatColor.DARK_PURPLE + "Set parameters to: " + ChatColor.LIGHT_PURPLE + value);
+                String[] params = StringUtils.split(value, " ");
+                parameters = new YamlConfiguration();
+                ConfigurationUtils.addParameters(params, parameters);
+                sender.sendMessage(ChatColor.DARK_PURPLE + "Set parameters to: ");
+                describeParameters(sender);
             }
         }
         else if (key.equalsIgnoreCase("caster"))

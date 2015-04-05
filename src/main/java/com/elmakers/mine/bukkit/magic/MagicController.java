@@ -3636,7 +3636,7 @@ public class MagicController implements Listener, MageController {
 		return all;
 	}
 	
-	public boolean cast(Mage mage, String spellName, String[] parameters, CommandSender sender, Entity entity)
+	public boolean cast(Mage mage, String spellName, ConfigurationSection parameters, CommandSender sender, Entity entity)
 	{
 		Player usePermissions = (sender == entity && entity instanceof Player) ? (Player)entity
                 : (sender instanceof Player ? (Player)sender : null);

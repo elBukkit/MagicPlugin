@@ -9,10 +9,14 @@ import com.elmakers.mine.bukkit.api.spell.SpellCategory;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.citizens.CitizensController;
 import com.elmakers.mine.bukkit.magic.command.*;
+import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.NMSUtils;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.MemoryConfiguration;
+import org.bukkit.configuration.MemorySection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -429,7 +433,7 @@ public class MagicPlugin extends JavaPlugin implements MagicAPI
 
 	@Override
 	public boolean cast(String spellName, String[] parameters) {
-		return controller.cast(null, spellName, parameters, null, null);
+		return cast(spellName, parameters, null, null);
 	}
 
 	@Override
@@ -444,10 +448,21 @@ public class MagicPlugin extends JavaPlugin implements MagicAPI
 
 	@Override
 	public boolean cast(String spellName, String[] parameters, CommandSender sender, Entity entity) {
-		return controller.cast(null, spellName, parameters, sender, entity);
+		ConfigurationSection config = null;
+        if (parameters != null && parameters.length > 0) {
+            config = new MemoryConfiguration();
+            ConfigurationUtils.addParameters(parameters, config);
+        }
+        return controller.cast(null, spellName, config, sender, entity);
 	}
 
-	@Override
+    @Override
+    public boolean cast(String spellName, ConfigurationSection parameters, CommandSender sender, Entity entity) {
+        return controller.cast(null, spellName, parameters, sender, entity);
+    }
+
+
+    @Override
 	public Collection<String> getPlayerNames() {
 		return controller.getPlayerNames();
 	}

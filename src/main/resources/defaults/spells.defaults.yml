@@ -5075,8 +5075,7 @@ wolfhouse:
            effect: step_sound
     parameters:
         target_type: LivingEntity
-        target: any
-        allow_max_range: false
+        allow_max_range: true
         check_destructible: false
         range: 16
         radius: 4
