@@ -59,7 +59,7 @@ public class DropSpell extends BlockSpell
 
 	protected void drop(Block block, Set<Material> dropTypes, Collection<ItemStack> drops, int maxRecursion, int rDepth)
 	{
-		registerForUndo(block, false);
+		registerForUndo(block);
         drops.addAll(block.getDrops());
 		block.setType(Material.AIR);
 		

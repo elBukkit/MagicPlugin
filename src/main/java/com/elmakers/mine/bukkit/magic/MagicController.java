@@ -21,7 +21,7 @@ import com.elmakers.mine.bukkit.api.block.CurrencyItem;
 import com.elmakers.mine.bukkit.api.block.Schematic;
 import com.elmakers.mine.bukkit.api.event.SaveEvent;
 import com.elmakers.mine.bukkit.api.spell.*;
-import com.elmakers.mine.bukkit.api.wand.*;
+import com.elmakers.mine.bukkit.block.BlockList;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.citizens.CitizensController;
 import com.elmakers.mine.bukkit.integration.VaultController;
@@ -41,6 +41,7 @@ import com.elmakers.mine.bukkit.wand.WandUpgradePath;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.*;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.command.BlockCommandSender;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
@@ -1801,6 +1802,12 @@ public class MagicController implements Listener, MageController {
         if (materialSets.containsKey("wearable")) {
             wearableMaterials = materialSets.get("wearable");
         }
+        if (materialSets.containsKey("attachable")) {
+            com.elmakers.mine.bukkit.block.UndoList.attachables = materialSets.get("attachable");
+        }
+        if (materialSets.containsKey("attachable_wall")) {
+            com.elmakers.mine.bukkit.block.UndoList.attachablesWall = materialSets.get("attachable_wall");
+        }
 	}
 	
 	protected void loadProperties(ConfigurationSection properties)
@@ -2230,14 +2237,14 @@ public class MagicController implements Listener, MageController {
         UndoList undoList = getPendingUndo(sourceBlock.getLocation());
         if (undoList != null)
         {
-            undoList.add(targetBlock, true);
+            undoList.add(targetBlock);
         }
         else
         {
             undoList = getPendingUndo(targetBlock.getLocation());
             if (undoList != null)
             {
-                undoList.add(targetBlock, true);
+                undoList.add(targetBlock);
             }
         }
     }
@@ -2248,7 +2255,7 @@ public class MagicController implements Listener, MageController {
         UndoList undoList = getPendingUndo(targetBlock.getLocation());
         if (undoList != null)
         {
-            undoList.add(targetBlock, true);
+            undoList.add(targetBlock);
         }
     }
 
@@ -2264,7 +2271,7 @@ public class MagicController implements Listener, MageController {
         UndoList entityList = getEntityUndo(entity);
         if (entityList != null)
         {
-            entityList.add(event.getBlock(), true);
+            entityList.add(event.getBlock());
             return;
         }
 
@@ -2275,7 +2282,7 @@ public class MagicController implements Listener, MageController {
             UndoList undoList = getPendingUndo(ignitingBlock.getLocation());
             if (undoList != null)
             {
-                undoList.add(event.getBlock(), true);
+                undoList.add(event.getBlock());
                 return;
             }
         }
@@ -2283,7 +2290,7 @@ public class MagicController implements Listener, MageController {
         UndoList undoList = getPendingUndo(targetBlock.getLocation());
         if (undoList != null)
         {
-            undoList.add(targetBlock, true);
+            undoList.add(targetBlock);
         }
     }
 
@@ -2430,18 +2437,22 @@ public class MagicController implements Listener, MageController {
         final Hanging entity = event.getEntity();
         // Early-out for performance, if we already detected the Entity
         if (entity.hasMetadata("broken")) return;
-
-        Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
-            @Override
-            public void run() {
-                Location location = entity.getLocation();
-                location = location.getBlock().getRelative(entity.getAttachedFace()).getLocation();
-                UndoList undoList = getPendingUndo(location);
-                if (undoList != null) {
-                    undoList.modify(entity);
+        try {
+            final BlockFace attachedFace = entity.getAttachedFace();
+            Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
+                @Override
+                public void run() {
+                    Location location = entity.getLocation();
+                    location = location.getBlock().getRelative(attachedFace).getLocation();
+                    UndoList undoList = getPendingUndo(location);
+                    if (undoList != null) {
+                        undoList.modify(entity);
+                    }
                 }
-            }
-        }, 1);
+            }, 1);
+        } catch (Exception ex) {
+            getLogger().log(Level.WARNING, "Failed to handle HangingBreakEvent", ex);
+        }
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)

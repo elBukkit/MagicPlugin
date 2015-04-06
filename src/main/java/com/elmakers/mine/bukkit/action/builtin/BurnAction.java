@@ -34,7 +34,7 @@ public class BurnAction extends BaseSpellAction
         {
             return SpellResult.NO_TARGET;
         }
-        context.registerForUndo(block, true);
+        context.registerForUndo(block);
 		MaterialAndData applyMaterial = new MaterialAndData(material);
 		applyMaterial.modify(block);
 

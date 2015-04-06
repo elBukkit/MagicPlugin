@@ -1,5 +1,11 @@
 # TODO
 
+ - Only store neighbors if they are attachable
+ - Fix double chest item duplication on east-facing chests
+ - Add carpet to half-block test, fix half-block test
+ - Rollback didn't work on aj's casts
+ - Get rid of hotbars in chest mode completely
+
  - right-click with magic hat glitches out on wearing it?
 
  - Recall still losing waypoints

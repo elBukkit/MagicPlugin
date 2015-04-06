@@ -3,6 +3,7 @@
 ## 4.9
 
  - Add GriefPrevention support
+ - Some fixes to prevent exploits and bugs with double chest rollback
  - TNT, fireballs and thrown blocks won't affect a protected region
  - Fix Chop and Mine recursion, add more levels
  - Add support for custom-named physical currency

@@ -108,7 +108,7 @@ public class AlterSpell extends BlockSpell
 	@SuppressWarnings("deprecation")
 	protected void adjust(Block block, byte dataValue, boolean recursive, int recurseDistance, int rDepth)
 	{
-		registerForUndo(block, false);
+		registerForUndo(block);
 		block.setData(dataValue);
 
 		if (recursive && rDepth < recurseDistance)
