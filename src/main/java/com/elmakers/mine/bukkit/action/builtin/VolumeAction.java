@@ -162,9 +162,6 @@ public class VolumeAction extends CompoundAction
 			}
 
             dy++;
-            if (dy < startRadius && dy >= -startRadius) {
-                dy = startRadius;
-            }
             if (dy > ySize) {
                 dy = -ySize;
                 int nextX = dx + xDirection;

@@ -5,6 +5,7 @@ public enum ConstructionType
 	SPHERE,
 	CUBOID,
 	PYRAMID,
+    CYLINDER,
 	UNKNOWN;
 
 	public static ConstructionType parseString(String s, ConstructionType defaultType)

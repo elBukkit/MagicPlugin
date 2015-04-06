@@ -5,7 +5,6 @@
  - Support for restoring armor stands- might have to drop 1.7 support for this.
  - Clean up MaterialBrush target system, automate somehow?
  - Copy target brush action for tandem replication
- - Glitchy wand inventory, Death had an issue
  - Automata aren't cleaning up cmd block + redstone
  - Glitching Fill behavior
  - Spell shop improvements:
@@ -19,7 +18,6 @@
  - Make map work like replicate, clone - with start point set on activate
  - /magic describe should show info about current spell?
  - Add repeat option for schematic brushes
- - Add Cylinder construct (SuperWalls, Walls, SuperCylinder)
  - Support for locking/unlocking chests
  - Configurable FOV weight for targeting (Survival Sense)
 

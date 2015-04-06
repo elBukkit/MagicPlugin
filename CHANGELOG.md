@@ -3,6 +3,7 @@
 ## 4.9
 
  - Add GriefPrevention support
+ - Add Walls and SuperCylinder spells
  - Some fixes to prevent exploits and bugs with double chest rollback
  - TNT, fireballs and thrown blocks won't affect a protected region
  - Fix Chop and Mine recursion, add more levels

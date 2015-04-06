@@ -274,14 +274,19 @@ public class ConstructBatch extends BrushBatch {
 	public boolean fillBlock(int x, int y, int z)
 	{
 		boolean fillBlock = false;
-		switch(type) {
+        int maxDistanceSquared = radius * radius;
+        int distanceSquared;
+        int outerDistanceSquared;
+        float mx;
+        float my;
+        float mz;
+        switch(type) {
 			case SPHERE:
-				int maxDistanceSquared = radius * radius;
-				float mx = (float)x - 0.1f;
-				float my = (float)y - 0.1f;
-				float mz = (float)z - 0.1f;
+				mx = (float)x - 0.1f;
+				my = (float)y - 0.1f;
+				mz = (float)z - 0.1f;
 
-				int distanceSquared = (int)((mx * mx) + (my * my) + (mz * mz));
+				distanceSquared = (int)((mx * mx) + (my * my) + (mz * mz));
 				if (thickness == 0)
 				{
 					fillBlock = distanceSquared <= maxDistanceSquared;
@@ -291,10 +296,27 @@ public class ConstructBatch extends BrushBatch {
 					mx++;
 					my++;
 					mz++;
-					int outerDistanceSquared = (int)((mx * mx) + (my * my) + (mz * mz));
+					outerDistanceSquared = (int)((mx * mx) + (my * my) + (mz * mz));
 					fillBlock = maxDistanceSquared >= distanceSquared - thickness && maxDistanceSquared <= outerDistanceSquared;
 				}
 				break;
+            case CYLINDER:
+                mx = (float)x - 0.1f;
+                mz = (float)z - 0.1f;
+
+                distanceSquared = (int)((mx * mx) + (mz * mz));
+                if (thickness == 0)
+                {
+                    fillBlock = distanceSquared <= maxDistanceSquared;
+                }
+                else
+                {
+                    mx++;
+                    mz++;
+                    outerDistanceSquared = (int)((mx * mx) + (mz * mz));
+                    fillBlock = maxDistanceSquared >= distanceSquared - thickness && maxDistanceSquared <= outerDistanceSquared;
+                }
+                break;
 			case PYRAMID:
 				int elevation = radius - y;
 				if (thickness == 0) {

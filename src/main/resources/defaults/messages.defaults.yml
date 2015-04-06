@@ -667,6 +667,14 @@ spells:
         target_selected: Cast again to build sphere
         fail: Too large!
         cast_finish: Filled $count blocks with $material
+    supercylinder:
+        name: SuperCylinder
+        description: Create a large cylinder
+        usage: Cast twice to construct
+        cancel: Cylinder cancelled
+        target_selected: Cast again to build cylinder
+        fail: Too large!
+        cast_finish: Filled $count blocks with $material
     superrepair:
         name: SuperRepair
         description: Repairs a large area saved with Backup
@@ -889,6 +897,10 @@ spells:
         upgrade_description: "&r&b&bull; &6Now builds with obsidian"
     blob|4:
         upgrade_description: "&r&b&bull; &6Now builds with your brush"
+    walls:
+        name: Walls
+        description: Create some walls around your target
+        cast_finish: Filled $count blocks with $material
     repair:
         name: Repair
         description: Repair an area saved with Backup

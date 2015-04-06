@@ -3112,6 +3112,29 @@ superpyramid:
     costs:
         mana: 400
 
+supercylinder:
+    icon_url: http://i.imgur.com/cAi8KbJ.png
+    icon: speckled_melon
+    category: engineering
+    class: ConstructSpell
+    worth: 7000
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: level_up
+        -  class: EffectTrail
+           effect: step_sound
+    parameters:
+        allow_max_range: true
+        range: 32
+        max_dimension: 16
+        target: select
+        thickness: 1
+        type: cylinder
+        transparent: transparent_to_construction
+    costs:
+        mana: 400
+
 box:
     icon_url: http://i.imgur.com/Zg5ehRA.png
     icon: gold_helmet
@@ -4080,6 +4103,38 @@ blob|3:
 blob|4:
     parameters:
         brush: ""
+
+walls:
+    icon: clay_ball
+    icon_url: http://i.imgur.com/zPe59Ui.png
+    category: combat
+    worth: 1000
+    actions:
+        cast:
+        -  class: Cylinder
+           actions:
+           -  class: ModifyBlock
+    effects:
+        cast:
+        -  class: EffectSingle
+           custom_sound: magic.shield
+        -  class: EffectTrail
+           effect: step_sound
+    parameters:
+        target_type: LivingEntity
+        allow_max_range: true
+        range: 32
+        radius: 5
+        thickness: 1
+        transparent: transparent_to_construction
+        undo: 10000
+        cooldown: 1000
+        brush: stained_clay
+        brushcolor: true
+        breakable: 3
+        destructible: air,fire
+    costs:
+        mana: 75
 
 emp:
     icon_url: http://i.imgur.com/33YW7Vh.png

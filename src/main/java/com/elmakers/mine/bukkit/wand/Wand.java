@@ -2071,7 +2071,9 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
                 setHotbarCount(newCount);
                 needsInventoryUpdate = true;
 				modified = true;
-				sendAddMessage(mage, "wand.hotbar_added", Integer.toString(newCount));
+                if (mode == WandMode.INVENTORY) {
+                    sendAddMessage(mage, "wand.hotbar_added", Integer.toString(newCount));
+                }
 			}
 		}
 
