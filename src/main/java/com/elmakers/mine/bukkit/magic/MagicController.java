@@ -2818,27 +2818,13 @@ public class MagicController implements Listener, MageController {
 	}
 
 	protected void registerEntityForUndo(Entity entity) {
-		long now = System.currentTimeMillis();
-		Collection<String> keys = new ArrayList<String>(pendingUndo);
-		
-		for (String key : keys) {
-			if (mages.containsKey(key)) {
-				Mage apiMage = mages.get(key);
-
-                if (!(apiMage instanceof com.elmakers.mine.bukkit.magic.Mage)) continue;
-                com.elmakers.mine.bukkit.magic.Mage mage = (com.elmakers.mine.bukkit.magic.Mage)apiMage;
-
-                UndoList lastUndo = mage.getLastUndoList();
-				if (lastUndo == null || lastUndo.getModifiedTime() < now - undoTimeWindow) {
-					pendingUndo.remove(key);
-				} else if (lastUndo.contains(entity.getLocation(), undoBlockBorderSize)) {
-					lastUndo.add(entity);
-                    break;
-				}
-			} else {
-				pendingUndo.remove(key);
-			}
-		}
+        UndoList lastUndo = getPendingUndo(entity.getLocation());
+        if (lastUndo != null) {
+            long now = System.currentTimeMillis();
+            if (lastUndo.getModifiedTime() >= now - undoTimeWindow) {
+                lastUndo.add(entity);
+            }
+        }
 	}
 	
 	@EventHandler
