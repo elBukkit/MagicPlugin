@@ -6304,6 +6304,21 @@ broomshop:
           wand|crackedbroomstick: 100
           wand|broomstick: 5000
 
+magicitemshop:
+    icon: ender_portal_frame
+    category: utility
+    hidden: true
+    actions:
+        cast:
+        -  class: ItemShop
+    parameters:
+        loud: true
+        confirm: true
+        confirm_filler: stained_glass:3
+        items:
+          wand|magichat: 500
+          wand|camera: 200
+
 automatashop:
     icon: command
     category: utility

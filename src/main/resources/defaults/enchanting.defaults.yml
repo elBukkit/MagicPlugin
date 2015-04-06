@@ -641,6 +641,7 @@ architect:
       schematic|compact_house: 5,10,15
       schematic|small_house: 5,10,15
       schematic|flare_beacon: 0,0,1
+      schematic|nathanwolf: 0,0,1
 
 #
 # "Battle" Wand (sword-wands)
