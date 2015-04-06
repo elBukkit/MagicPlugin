@@ -54,7 +54,7 @@ public abstract class TargetingSpell extends BaseSpell {
     private Vector								targetDirectionOverride;
     private String								targetLocationWorldName;
     protected Location                          targetLocation2;
-    private double 		                        targetBreakables	    = 0;
+    protected double 		                    targetBreakables	    = 0;
     private Entity								targetEntity = null;
     private boolean								bypassBuildRestriction  = false;
     private boolean                             bypassProtection        = false;
