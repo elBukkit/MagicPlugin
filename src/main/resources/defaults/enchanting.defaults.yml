@@ -302,6 +302,7 @@ apprentice:
       sponge: 0,0,10
       flashbang: 20,30,50
       gatling: 0,20,30
+      walls: 5,30,50
 
 master:
     required_spells:
@@ -548,6 +549,7 @@ architect:
       superdisc: 0,0,5
       superring: 0,0,5
       superconvert: 0,20,50
+      supercylinder: 0,20,50
       column: 5,50,100
       superdome: 0,0,2
       paste: 0,1,10
