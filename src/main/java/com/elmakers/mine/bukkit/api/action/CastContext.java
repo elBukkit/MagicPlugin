@@ -13,7 +13,6 @@ import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.util.Vector;
 
@@ -47,7 +46,6 @@ public interface CastContext {
     public void registerModified(Entity entity);
     public void registerForUndo(Entity entity);
     public void registerForUndo(Block block);
-    public void registerForUndo(Block block, boolean addNeighbors);
     public void updateBlock(Block block);
     public void registerVelocity(Entity entity);
     public void registerMoved(Entity entity);
