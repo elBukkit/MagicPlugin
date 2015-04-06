@@ -138,7 +138,6 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
         return timeToLive;
     }
 
-
     @Override
     public boolean contains(Block block)
     {
