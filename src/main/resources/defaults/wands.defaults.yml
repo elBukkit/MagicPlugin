@@ -492,8 +492,8 @@ miniwolf:
     xp_regeneration: 50
     spells:
         - blast|3@0
-        - collapse|3@1
-        - harden|3@2
+        - collapse|2@1
+        - harden|2@2
         - missile|4@3
         - levitate@4
         - fling|2@5
