@@ -22,6 +22,7 @@ public class UndoAction extends BaseSpellAction
     private boolean targetDown;
     private boolean targetBlocks;
     private boolean cancel;
+    private String adminPermission;
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters)
@@ -35,6 +36,7 @@ public class UndoAction extends BaseSpellAction
         targetBlocks = parameters.getBoolean("target_blocks", true);
         cancel = parameters.getBoolean("cancel", true);
         targetSpellKey = parameters.getString("target_spell", null);
+        adminPermission = parameters.getString("admin_permission", null);
     }
 
     @Override
@@ -82,8 +84,7 @@ public class UndoAction extends BaseSpellAction
         Mage mage = context.getMage();
 		if (targetBlock != null)
 		{
-			boolean targetAll = mage.isSuperPowered();
-			if (targetAll)
+			if (adminPermission != null && context.getController().hasPermission(context.getMage().getCommandSender(), adminPermission, false))
 			{
 				UndoList undid = controller.undoRecent(targetBlock, timeout);
 				if (undid != null) 

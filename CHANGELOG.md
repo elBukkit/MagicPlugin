@@ -11,6 +11,7 @@
  - Add native schematic loading- supports paintings, item frames, flower pots, and more.
  - Removed WorldEdit soft-dependency
  - Fix some chest mode issues, remove "fake hotbar"
+ - Add Magic.undo_others permission node for Rollback spell
 
 ## 4.8
 
