@@ -39,7 +39,6 @@ public class TeleportAction extends BaseTeleportAction
 		}
 
         boolean isPassthrough = false;
-
 		if (autoPassthrough)
 		{
             Block firstBlock = context.getInteractBlock();
@@ -76,7 +75,7 @@ public class TeleportAction extends BaseTeleportAction
 		{
 			destination = target;
 		}
-		
+
 		// Don't drop the player too far, and make sure there is somewhere to stand - unless they are flying
 		if (!(entity instanceof Player && ((Player)entity).isFlying())) {
             Location safeLocation = context.findPlaceToStand(destination.getLocation(), verticalSearchDistance, false);
@@ -131,6 +130,10 @@ public class TeleportAction extends BaseTeleportAction
 					distanceUp++;
 				}
 			}
+
+            if (distanceUp >= ledgeSearchDistance) {
+                ledge = null;
+            }
 		} else {
 			ledge = null;
 		}
