@@ -1,7 +1,5 @@
 # TODO
 
- - Add carpet to half-block test, fix half-block test
-
  - Recall still losing waypoints
 
  - Support for restoring armor stands- might have to drop 1.7 support for this.
