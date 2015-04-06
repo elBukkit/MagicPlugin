@@ -180,28 +180,6 @@ public class ConstructSpell extends BrushSpell
 			}
 		}
 
-        // Check for sign overrides
-        if (parameters.contains("signs"))
-        {
-            ConfigurationSection signMap = parameters.getConfigurationSection("signs");
-            Set<String> keys = signMap.getKeys(false);
-            for (String key : keys) {
-                String text = signMap.getString(key);
-                Player targetPlayer = null;
-                if (text.equals("$target")) {
-                    if (targetEntity != null && targetEntity instanceof Player) {
-                        targetPlayer = (Player)targetEntity;
-                    }
-                } else if (text.equals("$name")) {
-                    targetPlayer = mage.getPlayer();
-                }
-                if (targetPlayer != null) {
-                    text = targetPlayer.getName();
-                }
-                batch.addSignMapping(key, text);
-            }
-        }
-
         if (falling) {
             float force = (float)parameters.getDouble("speed", 0);
             batch.setFallingDirection(ConfigurationUtils.getVector(parameters, "falling_direction"));

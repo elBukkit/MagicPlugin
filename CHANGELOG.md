@@ -13,6 +13,7 @@
  - Fix some chest mode issues, remove "fake hotbar"
  - Add Magic.undo_others permission node for Rollback spell
  - Some additional protection for dragging items in a GUI
+ - Remove unused "signs" parameter from ConstructSpell, using raw NBT for sign updates now
 
 ## 4.8
 

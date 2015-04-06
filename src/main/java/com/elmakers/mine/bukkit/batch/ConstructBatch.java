@@ -52,7 +52,6 @@ public class ConstructBatch extends BrushBatch {
 	private final Set<Material> delayed;
 	private Set<String> replace;
 	private Map<String, String> commandMap;
-    private Map<String, String> signMap;
 
 	private boolean finishedNonAttached = false;
 	private boolean finishedAttached = false;
@@ -481,23 +480,6 @@ public class ConstructBatch extends BrushBatch {
                 }
             }
 
-            // Check for sign overrides
-            if (signMap != null && (brush.getMaterial() == Material.SIGN_POST || brush.getMaterial() == Material.WALL_SIGN)) {
-                String[] lines = brush.getSignLines();
-                if (lines != null && lines.length > 0 && !signMap.isEmpty())
-                {
-                    for (int i = 0; i < lines.length; i++)
-                    {
-                        String line = lines[i];
-                        if (line != null && line.length() > 0 && signMap.containsKey(line)) {
-                            lines[i] = signMap.get(line);
-                        }
-                    }
-
-                    brush.setSignLines(lines);
-                }
-            }
-
             brush.modify(block, applyPhysics);
             if (breakable > 0) {
                 spell.getCurrentCast().registerBreakable(block, breakable);
@@ -530,14 +512,6 @@ public class ConstructBatch extends BrushBatch {
 
 		commandMap.put(key,  command);
 	}
-
-    public void addSignMapping(String key, String text) {
-        if (signMap == null) {
-            signMap = new HashMap<String, String>();
-        }
-
-        signMap.put(key,  text);
-    }
 
     public void setReplace(Collection<MaterialAndData> replace) {
 		this.replace = new HashSet<String>();
