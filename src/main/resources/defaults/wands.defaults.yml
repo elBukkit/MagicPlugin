@@ -183,8 +183,12 @@ battle:
     path: battle
     icon: diamond_sword
     xp_regeneration: 5
-    indestructible: false
     xp_max: 50
+    quiet: 1
+    bound: true
+    keep: true
+    undroppable: true
+    indestructible: true
     glow: true
     spells:
       - missile

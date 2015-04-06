@@ -10,6 +10,7 @@
  - Add Magic.wand.enchant Magic.wand.craft permissions (true by default)
  - Add native schematic loading- supports paintings, item frames, flower pots, and more.
  - Removed WorldEdit soft-dependency
+ - Fix some chest mode issues, remove "fake hotbar"
 
 ## 4.8
 
