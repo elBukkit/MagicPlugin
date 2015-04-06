@@ -3,6 +3,7 @@ package com.elmakers.mine.bukkit.block;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -44,6 +45,8 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
     public static Set<Material>         attachablesWall;
 
     protected static Map<Long, BlockData> modified = new HashMap<Long, BlockData>();
+
+    protected HashSet<Long>         attached;
 
     protected List<WeakReference<Entity>> 	entities;
     protected List<Runnable>				runnables;
@@ -135,11 +138,36 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
         return timeToLive;
     }
 
+
+    @Override
+    public boolean contains(Block block)
+    {
+        if (blockIdMap == null) return false;
+        Long blockId = com.elmakers.mine.bukkit.block.BlockData.getBlockId(block);
+        if (attached != null && attached.contains(blockId)) return false;
+        return blockIdMap.contains(blockId);
+    }
+
+    @Override
+    public boolean contains(BlockData blockData)
+    {
+        if (blockIdMap == null || blockData == null)
+        {
+            return false;
+        }
+        Long blockId = blockData.getId();
+        if (attached != null && attached.contains(blockId)) return false;
+        return blockIdMap.contains(blockData.getId());
+    }
+
     @Override
     public boolean add(BlockData blockData)
     {
         if (!super.add(blockData)) {
             return false;
+        }
+        if (attached != null) {
+            attached.remove(blockData.getId());
         }
         modifiedTime = System.currentTimeMillis();
         if (bypass) return true;
@@ -160,22 +188,34 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
     protected boolean addAttachable(BlockData block, BlockFace direction, Set<Material> materials)
     {
         Block testBlock = block.getBlock().getRelative(direction);
+        Long blockId = com.elmakers.mine.bukkit.block.BlockData.getBlockId(testBlock);
+
         // This gets called recursively, so don't re-process anything
-        if (contains(testBlock))
+        if (blockIdMap != null && blockIdMap.contains(blockId))
+        {
+            return false;
+        }
+        if (attached != null && attached.contains(blockId))
         {
             return false;
         }
         Material material = testBlock.getType();
         if (material.isBurnable() || (materials != null && materials.contains(material)))
         {
-            return add(testBlock);
+            BlockData newBlock = new com.elmakers.mine.bukkit.block.BlockData(testBlock);
+            if (super.add(newBlock))
+            {
+                register(newBlock);
+                newBlock.setUndoList(this);
+                if (attached == null)
+                {
+                    attached = new HashSet<Long>();
+                }
+                attached.add(blockId);
+                return true;
+            }
         }
         return false;
-    }
-
-    @Override
-    public boolean add(Block block) {
-        return add(block);
     }
 
     public static BlockData register(Block block)
