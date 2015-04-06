@@ -59,10 +59,8 @@ import org.bukkit.metadata.MetadataValue;
 public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.MaterialAndData {
     protected Material material;
     protected Short data;
-    protected String[] signLines = null;
     protected String commandLine = null;
     protected String customName = null;
-    protected ItemStack[] inventoryContents = null;
     protected boolean isValid = true;
     protected BlockFace rotation = null;
     protected Object customData = null;
@@ -242,8 +240,6 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         if (other instanceof MaterialAndData) {
             MaterialAndData o = (MaterialAndData)other;
             commandLine = o.commandLine;
-            inventoryContents = o.inventoryContents;
-            signLines = o.signLines;
             customName = o.customName;
             isValid = o.isValid;
             skullType = o.skullType;
@@ -260,9 +256,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
     public void setMaterial(Material material, Short data) {
         this.material = material;
         this.data = data;
-        signLines = null;
         commandLine = null;
-        inventoryContents = null;
         customName = null;
         skullType = null;
         customData = null;
@@ -302,9 +296,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
             return;
         }
         // Look for special block states
-        signLines = null;
         commandLine = null;
-        inventoryContents = null;
         customName = null;
         skullType = null;
         customData = null;
@@ -316,11 +308,8 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
 
         try {
             BlockState blockState = block.getState();
-            if (material == Material.FLOWER_POT || blockState instanceof InventoryHolder) {
+            if (material == Material.FLOWER_POT || blockState instanceof InventoryHolder || blockState instanceof Sign) {
                 tileEntityData = NMSUtils.getTileEntityData(block.getLocation());
-            } else if (blockState instanceof Sign) {
-                Sign sign = (Sign)blockState;
-                signLines = sign.getLines();
             } else if (blockState instanceof CommandBlock){
                 // This seems to occasionally throw exceptions...
                 CommandBlock command = (CommandBlock)blockState;
@@ -366,31 +355,24 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
             if (material != null) {
                 byte blockData = data != null ? (byte)(short)data : block.getData();
                 block.setTypeIdAndData(material.getId(), blockData, applyPhysics);
+                blockState = block.getState();
             }
 
             // Set tile entity data first
-            if (tileEntityData != null) {
-                NMSUtils.setTileEntityData(block.getLocation(), tileEntityData);
-            } else if (blockState != null && material != null && material.getId() == 176 || material.getId() == 177) {
+            if (blockState != null && material != null && material.getId() == 176 || material.getId() == 177) {
                 // Banner
                 // TODO: Change to Material.BANNER when dropping 1.7 support
                 CompatibilityUtils.setBannerPatterns(blockState, customData);
                 CompatibilityUtils.setBannerBaseColor(blockState, color);
                 blockState.update(true, false);
-            } else if (blockState instanceof Sign && signLines != null) {
-                Sign sign = (Sign)blockState;
-                for (int i = 0; i < signLines.length; i++) {
-                    sign.setLine(i, signLines[i]);
-                }
-                sign.update();
-            } else if (blockState instanceof CommandBlock && commandLine != null) {
+            } else if (blockState != null && blockState instanceof CommandBlock && commandLine != null) {
                 CommandBlock command = (CommandBlock)blockState;
                 command.setCommand(commandLine);
                 if (customName != null) {
                     command.setName(customName);
                 }
                 command.update();
-            } else if (blockState instanceof Skull) {
+            } else if (blockState != null && blockState instanceof Skull) {
                 Skull skull = (Skull)blockState;
                 if (skullType != null) {
                     skull.setSkullType(skullType);
@@ -402,10 +384,12 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
                     CompatibilityUtils.setSkullProfile(skull, customData);
                 }
                 skull.update(true, false);
-            } else if (blockState instanceof CreatureSpawner && customName != null && customName.length() > 0) {
+            } else if (blockState != null && blockState instanceof CreatureSpawner && customName != null && customName.length() > 0) {
                 CreatureSpawner spawner = (CreatureSpawner)blockState;
                 spawner.setCreatureTypeByName(customName);
                 spawner.update();
+            } else if (tileEntityData != null) {
+                NMSUtils.setTileEntityData(block.getLocation(), tileEntityData);
             }
         } catch (Exception ex) {
             Bukkit.getLogger().warning("Error updating block state: " + ex.getMessage());
@@ -479,34 +463,20 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         }
 
         BlockState blockState = block.getState();
-        if (blockState instanceof Sign && signLines != null) {
-            Sign sign = (Sign)blockState;
-            String[] currentLines = sign.getLines();
-            for (int i = 0; i < signLines.length; i++) {
-                if (!currentLines[i].equals(signLines[i])) {
-                    return true;
-                }
-            }
+        if (blockState instanceof Sign) {
+            // Not digging into sign text
+            return true;
         } else if (blockState instanceof CommandBlock && commandLine != null) {
             CommandBlock command = (CommandBlock)blockState;
             if (!command.getCommand().equals(commandLine)) {
                 return true;
             }
-        } else if (blockState instanceof InventoryHolder && inventoryContents != null) {
+        } else if (blockState instanceof InventoryHolder) {
             // Just copy it over.... not going to compare inventories :P
             return true;
         }
 
         return false;
-    }
-
-    @Override
-    public void setSignLines(String[] lines) {
-        signLines = lines.clone();
-    }
-
-    public String[] getSignLines() {
-        return signLines.clone();
     }
 
     @Override
@@ -516,11 +486,6 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
 
     public String getCustomName() {
         return customName;
-    }
-
-    @Override
-    public void setInventoryContents(ItemStack[] contents) {
-        inventoryContents = contents;
     }
 
     @SuppressWarnings("deprecation")

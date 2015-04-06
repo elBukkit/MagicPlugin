@@ -115,24 +115,12 @@ public class Schematic implements com.elmakers.mine.bukkit.api.block.Schematic {
                         Object tileEntity = tileEntityMap.get(blockLocation);
                         if (tileEntity != null) {
                             try {
-                                if (material == Material.SIGN_POST || material == Material.WALL_SIGN) {
-                                    String[] lines = new String[4];
-                                    lines[0] = getSignText(tileEntity, "Text1");
-                                    lines[1] = getSignText(tileEntity, "Text2");
-                                    lines[2] = getSignText(tileEntity, "Text3");
-                                    lines[3] = getSignText(tileEntity, "Text4");
-                                    block.setSignLines(lines);
-                                } else if (material == Material.COMMAND) {
+                                if (material == Material.COMMAND) {
                                     String customName = NMSUtils.getMeta(tileEntity, "CustomName");
                                     if (!customName.isEmpty()) {
                                         block.setCustomName(customName);
                                     }
                                     block.setCommandLine(NMSUtils.getMeta(tileEntity, "Command"));
-                                } else if (NMSUtils.containsNode(tileEntity, "Items")) {
-                                    ItemStack[] items = NMSUtils.getItems(tileEntity, "Items");
-                                    if (items != null) {
-                                        block.setInventoryContents(items);
-                                    }
                                 } else {
                                     block.setRawData(tileEntity);
                                 }
@@ -156,13 +144,6 @@ public class Schematic implements com.elmakers.mine.bukkit.api.block.Schematic {
             case 3: return BlockFace.EAST;
         }
         return BlockFace.UP;
-    }
-
-    protected String getSignText(Object data, String key) {
-        String line = NMSUtils.getMeta(data, key);
-        // .. Why do empty values get stored as "null" .. is that a WorldEdit thing?
-        if (line == null || line.length() < 2 || line.equals("null")) return "";
-        return line.substring(1, line.length() - 1);
     }
 
     @Override
