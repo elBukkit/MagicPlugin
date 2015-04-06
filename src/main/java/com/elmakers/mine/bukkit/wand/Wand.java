@@ -681,7 +681,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	}
 
 	protected int getHotbarSize() {
-        if (mode != WandMode.INVENTORY) return 0;
+        if (getMode() != WandMode.INVENTORY) return 0;
 		return hotbars.size() * HOTBAR_INVENTORY_SIZE;
 	}
 	
@@ -2071,7 +2071,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
                 setHotbarCount(newCount);
                 needsInventoryUpdate = true;
 				modified = true;
-                if (mode == WandMode.INVENTORY) {
+                if (getMode() == WandMode.INVENTORY) {
                     sendAddMessage(mage, "wand.hotbar_added", Integer.toString(newCount));
                 }
 			}
@@ -2408,7 +2408,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	}
 
 	public void cycleHotbar(int direction) {
-		if (!hasInventory || mode != WandMode.INVENTORY) {
+		if (!hasInventory || getMode() != WandMode.INVENTORY) {
 			return;
 		}
 		if (isInventoryOpen() && mage != null && hotbars.size() > 1) {
@@ -3484,7 +3484,6 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
                         mage.sendMessage(controller.getMessages().get("wand.erase_modifier_activated"));
                     }
                 }
-
             }
         }
     }
