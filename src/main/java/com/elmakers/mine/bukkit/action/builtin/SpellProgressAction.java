@@ -14,6 +14,7 @@ import com.elmakers.mine.bukkit.api.wand.WandUpgradePath;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -30,6 +31,11 @@ public class SpellProgressAction extends BaseSpellAction implements GUIAction
     @Override
     public void deactivated() {
 
+    }
+
+    @Override
+    public void dragged(InventoryDragEvent event) {
+        event.setCancelled(true);
     }
 
     @Override

@@ -2306,9 +2306,15 @@ public class MagicController implements Listener, MageController {
         }
 	}
 	
-	@EventHandler
+	@EventHandler(ignoreCancelled = true)
 	public void onInventoryDrag(InventoryDragEvent event) {
-		if (!enableItemHacks || event.isCancelled()) return;
+        Mage mage = getMage(event.getWhoClicked());
+        GUIAction activeGUI = mage == null ? null : mage.getActiveGUI();
+        if (activeGUI != null) {
+            activeGUI.dragged(event);
+            return;
+        }
+		if (!enableItemHacks) return;
 		
 		// this is a huge hack! :\
 		// I apologize for any weird behavior this causes.

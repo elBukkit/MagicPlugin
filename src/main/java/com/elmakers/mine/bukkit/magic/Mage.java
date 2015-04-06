@@ -1455,6 +1455,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         activateGUI(null);
     }
 
+    @Override
     public GUIAction getActiveGUI()
     {
         return gui;

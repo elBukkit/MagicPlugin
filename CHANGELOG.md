@@ -12,6 +12,7 @@
  - Removed WorldEdit soft-dependency
  - Fix some chest mode issues, remove "fake hotbar"
  - Add Magic.undo_others permission node for Rollback spell
+ - Some additional protection for dragging items in a GUI
 
 ## 4.8
 

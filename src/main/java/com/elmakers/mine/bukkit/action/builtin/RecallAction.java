@@ -19,6 +19,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -172,6 +173,11 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
     @Override
     public void deactivated() {
 
+    }
+
+    @Override
+    public void dragged(InventoryDragEvent event) {
+        event.setCancelled(true);
     }
 
     @Override
