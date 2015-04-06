@@ -241,6 +241,7 @@ public interface Mage extends CostReducer {
      * @return The Mage's active Wand.
      */
     public Wand getActiveWand();
+    public GUIAction getActiveGUI();
 
     /**
      * Return a Spell for this Mage, which can be used to programatically
