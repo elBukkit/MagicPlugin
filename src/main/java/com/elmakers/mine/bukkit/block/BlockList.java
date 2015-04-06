@@ -9,7 +9,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.util.BlockVector;
 import org.bukkit.util.Vector;
@@ -40,37 +39,11 @@ public class BlockList implements com.elmakers.mine.bukkit.api.block.BlockList {
     }
 
     @Override
-    public boolean add(Block block, boolean includeNeighbors)
-    {
-        boolean allAdded = add(block);
-        if (includeNeighbors)
-        {
-            allAdded = addIfNew(block.getRelative(BlockFace.EAST)) && allAdded;
-            allAdded = addIfNew(block.getRelative(BlockFace.NORTH)) && allAdded;
-            allAdded = addIfNew(block.getRelative(BlockFace.WEST)) && allAdded;
-            allAdded = addIfNew(block.getRelative(BlockFace.SOUTH)) && allAdded;
-            allAdded = addIfNew(block.getRelative(BlockFace.UP)) && allAdded;
-            allAdded = addIfNew(block.getRelative(BlockFace.DOWN)) && allAdded;
-        }
-        return allAdded;
-    }
-
-    public boolean addIfNew(Block block)
-    {
-        if (UndoList.getModified().containsKey(com.elmakers.mine.bukkit.block.BlockData.getBlockId(block)))
-        {
-            return false;
-        }
-
-        return add(block);
-    }
-
-    @Override
     public boolean add(Block block)
     {
         if (contains(block))
         {
-            return true;
+            return false;
         }
         BlockData newBlock = new com.elmakers.mine.bukkit.block.BlockData(block);
         return add(newBlock);
@@ -80,7 +53,7 @@ public class BlockList implements com.elmakers.mine.bukkit.api.block.BlockList {
     {
         // First do a sanity check with the map
         // Currently, we don't replace blocks!
-        if (contains(blockData)) return true;
+        if (contains(blockData)) return false;
 
         // Check the world name
         if (worldName != null && !worldName.equals(blockData.getWorldName())) return false;

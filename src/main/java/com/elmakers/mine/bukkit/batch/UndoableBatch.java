@@ -26,7 +26,7 @@ public abstract class UndoableBatch implements Batch {
     }
 
     public void registerForUndo(Block block) {
-        undoList.add(block, true);
+        undoList.add(block);
     }
 
     public void registerForUndo(Entity entity) {

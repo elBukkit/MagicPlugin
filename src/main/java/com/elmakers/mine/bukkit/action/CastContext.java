@@ -300,16 +300,6 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
     }
 
     @Override
-    public void registerForUndo(Block block, boolean addNeighbors)
-    {
-        addWork(10);
-        if (undoList != null)
-        {
-            undoList.add(block, addNeighbors);
-        }
-    }
-
-    @Override
     public void updateBlock(Block block)
     {
         MageController controller = getController();

@@ -14,6 +14,7 @@ import com.elmakers.mine.bukkit.spell.UndoableSpell;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
@@ -39,6 +40,9 @@ import com.elmakers.mine.bukkit.entity.EntityData;
  */
 public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.block.UndoList
 {
+    public static Set<Material>         attachables;
+    public static Set<Material>         attachablesWall;
+
     protected static Map<Long, BlockData> modified = new HashMap<Long, BlockData>();
 
     protected List<WeakReference<Entity>> 	entities;
@@ -142,7 +146,36 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
 
         register(blockData);
         blockData.setUndoList(this);
+
+        addAttachable(blockData, BlockFace.NORTH, attachablesWall);
+        addAttachable(blockData, BlockFace.SOUTH, attachablesWall);
+        addAttachable(blockData, BlockFace.EAST, attachablesWall);
+        addAttachable(blockData, BlockFace.WEST, attachablesWall);
+        addAttachable(blockData, BlockFace.UP, attachables);
+        addAttachable(blockData, BlockFace.DOWN, attachables);
+
         return true;
+    }
+
+    protected boolean addAttachable(BlockData block, BlockFace direction, Set<Material> materials)
+    {
+        Block testBlock = block.getBlock().getRelative(direction);
+        // This gets called recursively, so don't re-process anything
+        if (contains(testBlock))
+        {
+            return false;
+        }
+        Material material = testBlock.getType();
+        if (material.isBurnable() || (materials != null && materials.contains(material)))
+        {
+            return add(testBlock);
+        }
+        return false;
+    }
+
+    @Override
+    public boolean add(Block block) {
+        return add(block);
     }
 
     public static BlockData register(Block block)
@@ -432,21 +465,21 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
         if (entities != null) {
             entities.remove(fallingBlock);
         }
-        add(block, true);
+        add(block);
         modifiedTime = System.currentTimeMillis();
     }
 
     public void fall(Entity fallingBlock, Block block)
     {
         add(fallingBlock);
-        add(block, true);
+        add(block);
         modifiedTime = System.currentTimeMillis();
     }
 
     public void explode(Entity explodingEntity, List<Block> blocks)
     {
         for (Block block : blocks) {
-            add(block, true);
+            add(block);
         }
         modifiedTime = System.currentTimeMillis();
     }
