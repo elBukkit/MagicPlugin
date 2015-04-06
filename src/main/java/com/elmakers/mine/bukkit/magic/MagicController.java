@@ -2808,7 +2808,9 @@ public class MagicController implements Listener, MageController {
 				getLogger().info("Wand " + wand.getName() + ", id " + wand.getLostId() + " spawned at " + dropLocation.getBlockX() + " " + dropLocation.getBlockY() + " " + dropLocation.getBlockZ());
 			}
 		} else  {
-			registerEntityForUndo(event.getEntity());
+            // Don't do this, no way to differentiate between a dropped item from a broken block
+            // versus a dead player
+			// registerEntityForUndo(event.getEntity());
 			if (ageDroppedItems > 0) {
 				int ticks = ageDroppedItems * 20 / 1000;
 				Item item = event.getEntity();
@@ -4626,7 +4628,6 @@ public class MagicController implements Listener, MageController {
     private Map<String, Set<Material>>		    materialSets				    = new HashMap<String, Set<Material>>();
 
     private int								    undoTimeWindow				    = 6000;
-    private int								    undoBlockBorderSize			    = 2;
     private int								    maxTNTPerChunk					= 0;
     private int                                 undoQueueDepth                  = 256;
     private int								    pendingQueueDepth				= 16;
