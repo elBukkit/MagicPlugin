@@ -243,6 +243,13 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
 
         Block blockOneUp = block.getRelative(BlockFace.UP);
         Block blockOneDown = block.getRelative(BlockFace.DOWN);
+
+        // Ascend to top of water
+        if (isUnderwater() && (blockOneDown.getType() == Material.STATIONARY_WATER || blockOneDown.getType() == Material.WATER)
+            && blockOneUp.getType() == Material.AIR && block.getType() == Material.AIR) {
+            return true;
+        }
+
         Player player = mage.getPlayer();
         return (
                 (isOkToStandOn(blockOneDown) || (player != null && player.isFlying()))
@@ -334,11 +341,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         while (minY <= targetLocation.getY() && targetLocation.getY() <= maxY && yDelta < maxDelta)
         {
             Block block = targetLocation.getBlock();
-            if
-            (
-                isSafeLocation(block)
-            &&   !(goUp && isUnderwater() && isWater(block.getType())) // rise to surface of water
-            )
+            if (isSafeLocation(block))
             {
                 // spot found - return location
                 return checkForHalfBlock(targetLocation);
