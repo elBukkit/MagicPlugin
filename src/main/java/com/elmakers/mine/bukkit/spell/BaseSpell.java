@@ -200,6 +200,9 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
      */
     public boolean isOkToStandIn(Material mat)
     {
+        if (isHalfBlock(mat)) {
+            return false;
+        }
         return passthroughMaterials.contains(mat);
     }
 
@@ -210,17 +213,20 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
 
     public boolean isOkToStandOn(Block block)
     {
-        // This is a hack, but data-driving would be a pain.
-        if (block.getType() == Material.STEP || block.getType() == Material.WOOD_STEP) {
-            // Upper steps are ok to stand on
-            if (block.getData() >= 8) return true;
-        }
-
         return isOkToStandOn(block.getType());
+    }
+
+    protected boolean isHalfBlock(Material mat) {
+
+        // TODO: Data-driven half-block list
+        return (mat == Material.STEP || mat == Material.WOOD_STEP || mat == Material.CARPET || mat == Material.SNOW);
     }
 
     public boolean isOkToStandOn(Material mat)
     {
+        if (isHalfBlock(mat)) {
+            return true;
+        }
         return (mat != Material.AIR && mat != Material.LAVA && mat != Material.STATIONARY_LAVA && !passthroughMaterials.contains(mat));
     }
 
@@ -236,12 +242,6 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         }
 
         Block blockOneUp = block.getRelative(BlockFace.UP);
-
-        // This is a hack, but data-driving would be a pain.
-        if ((block.getType() == Material.STEP || block.getType() == Material.WOOD_STEP) && isOkToStandIn(blockOneUp.getType())) {
-            if (block.getData() < 8) return true;
-        }
-
         Block blockOneDown = block.getRelative(BlockFace.DOWN);
         Player player = mage.getPlayer();
         return (
@@ -279,7 +279,9 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         int maxY = targetLoc.getWorld().getMaxHeight();
 
         int targetY = targetLoc.getBlockY();
-        if (targetY >= minY && targetY <= maxY && isSafeLocation(targetLoc)) return targetLoc;
+        if (targetY >= minY && targetY <= maxY && isSafeLocation(targetLoc)) {
+            return checkForHalfBlock(targetLoc);
+        }
 
         Location location = null;
         if (targetY < minY) {
@@ -339,7 +341,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
             )
             {
                 // spot found - return location
-                return targetLocation;
+                return checkForHalfBlock(targetLocation);
             }
 
             if (!allowPassThrough(block.getType())) {
@@ -352,6 +354,24 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
 
         // no spot found
         return null;
+    }
+
+    protected Location checkForHalfBlock(Location location) {
+        // This is a hack, but data-driving would be a pain.
+        boolean isHalfBlock = false;
+        Block downBlock = location.getBlock().getRelative(BlockFace.DOWN);
+        Material material = downBlock.getType();
+        if (material == Material.STEP || material == Material.WOOD_STEP) {
+            // Drop down to half-steps
+            isHalfBlock = (downBlock.getData() < 8);
+        } else {
+            isHalfBlock = isHalfBlock(material);
+        }
+        if (isHalfBlock) {
+            location.setY(location.getY() - 0.5);
+        }
+
+        return location;
     }
 
     /**
