@@ -1041,7 +1041,7 @@ invisiblecloak:
     xp_regeneration_boost: -0.5
     potion_effects: invisibility
     spells:
-    - invisiblecloak
+        - invisiblecloak
 
 recalltoken:
     mode: cast
