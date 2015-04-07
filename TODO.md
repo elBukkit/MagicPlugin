@@ -1,6 +1,7 @@
 # TODO
 
  - Recall still losing waypoints
+ - Wands stored for death restore get wiped.. or something?
 
  - Banners don't work from schematics
  - Support for restoring armor stands- might have to drop 1.7 support for this.

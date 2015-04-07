@@ -989,6 +989,38 @@ magichat:
     spells:
         - magichat
 
+wizardchestplate:
+    mode: cast
+    icon: chainmail_chestplate
+    indestructible: true
+    locked: true
+    keep: true
+    xp_max_boost: 0.1
+
+wizardhelmet:
+    mode: cast
+    icon: chainmail_helmet
+    indestructible: true
+    locked: true
+    keep: true
+    xp_max_boost: 0.1
+
+wizardleggings:
+    mode: cast
+    icon: chainmail_leggings
+    indestructible: true
+    locked: true
+    keep: true
+    xp_max_boost: 0.1
+
+wizardboots:
+    mode: cast
+    icon: chainmail_boots
+    indestructible: true
+    locked: true
+    keep: true
+    xp_max_boost: 0.1
+
 recalltoken:
     mode: cast
     active_spell: recall

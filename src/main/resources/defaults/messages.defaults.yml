@@ -110,6 +110,7 @@ wand:
     upgrade_spell_count: Adds $count Spells
     upgrade_material_count: Adds $count Materials
     mana_amount: "Mana: $amount"
+    mana_amount_boosted: "Mana: $amount &f(&b$mana&f)"
     mana_regeneration: "Mana Regeneration: $amount/s"
     mana_boost: "Mana Boost: $amount%"
     cost_reduction: Cost Reduction $roman
@@ -1418,6 +1419,14 @@ wands:
     magichat:
         name: Magic Hat
         description: A true wizard's hat
+    wizardhelmet:
+        name: Wizard's Scarf
+    wizardchestplate:
+        name: Wizard's Robes
+    wizardleggings:
+        name: Wizard's Pants
+    wizardboots:
+        name: Wizard's Boots
     wolf:
         name: The Wolf
         description: NathanWolf's Mega-Wand

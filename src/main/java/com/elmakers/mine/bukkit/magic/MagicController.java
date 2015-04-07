@@ -3222,7 +3222,19 @@ public class MagicController implements Listener, MageController {
 		}
 		return droppedItem;
 	}
-	
+
+    protected void onArmorUpdated(final Mage mage) {
+        plugin.getServer().getScheduler().runTaskLater(plugin, new Runnable() {
+           @Override
+           public void run() {
+               com.elmakers.mine.bukkit.api.wand.Wand wand = mage.getActiveWand();
+               if (wand != null && wand instanceof Wand) {
+                   ((Wand)wand).armorUpdated();
+               }
+           }
+        }, 1);
+    }
+
 	@EventHandler
 	public void onInventoryClick(InventoryClickEvent event) {
 		// getLogger().info("CLICK: " + event.getAction() + ", " + event.getClick() + " on " + event.getSlotType() + " in "+ event.getInventory().getType() + " slots: " + event.getSlot() + ":" + event.getRawSlot());
@@ -3234,7 +3246,7 @@ public class MagicController implements Listener, MageController {
         Mage apiMage = getMage(player);
 
         if (!(apiMage instanceof com.elmakers.mine.bukkit.magic.Mage)) return;
-        com.elmakers.mine.bukkit.magic.Mage mage = (com.elmakers.mine.bukkit.magic.Mage)apiMage;
+        final com.elmakers.mine.bukkit.magic.Mage mage = (com.elmakers.mine.bukkit.magic.Mage)apiMage;
 
         GUIAction gui = mage.getActiveGUI();
         if (gui != null)
@@ -3259,21 +3271,26 @@ public class MagicController implements Listener, MageController {
 
         // Check for wearing spells
         ItemStack heldItem = event.getCursor();
-        if (heldItem != null && event.getSlotType() == SlotType.ARMOR && (Wand.isSpell(heldItem) || Wand.isWand(heldItem)))
+        if (heldItem != null && event.getSlotType() == SlotType.ARMOR)
         {
-            event.setCancelled(true);
-            return;
+            if (Wand.isSpell(heldItem)) {
+                event.setCancelled(true);
+            }
+            if (Wand.isWand(clickedItem) || Wand.isWand(heldItem)) {
+                onArmorUpdated(mage);
+            }
         }
         boolean isHotbar = event.getAction() == InventoryAction.HOTBAR_SWAP || event.getAction() == InventoryAction.HOTBAR_MOVE_AND_READD;
         if (event.getAction() == InventoryAction.HOTBAR_SWAP && event.getSlotType() == SlotType.ARMOR)
         {
             int slot = event.getHotbarButton();
             ItemStack item =  mage.getPlayer().getInventory().getItem(slot);
-            if (item != null && (Wand.isSpell(item) || Wand.isWand(item)))
+            if (item != null && Wand.isSpell(item))
             {
                 event.setCancelled(true);
                 return;
             }
+            onArmorUpdated(mage);
         }
 
 		Wand activeWand = mage.getActiveWand();

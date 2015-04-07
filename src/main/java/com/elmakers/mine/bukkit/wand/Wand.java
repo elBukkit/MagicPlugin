@@ -1400,7 +1400,12 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	protected void addPropertyLore(List<String> lore)
 	{
 		if (usesMana()) {
-			lore.add(ChatColor.LIGHT_PURPLE + "" + ChatColor.ITALIC + getLevelString(controller.getMessages(), "wand.mana_amount", xpMax, controller.getMaxMana()));
+            if (effectiveXpMax != xpMax) {
+                String fullMessage = getLevelString(controller.getMessages(), "wand.mana_amount_boosted", xpMax, controller.getMaxMana());
+                lore.add(ChatColor.LIGHT_PURPLE + "" + ChatColor.ITALIC + fullMessage.replace("$mana", Integer.toString(effectiveXpMax)));
+            } else {
+                lore.add(ChatColor.LIGHT_PURPLE + "" + ChatColor.ITALIC + getLevelString(controller.getMessages(), "wand.mana_amount", xpMax, controller.getMaxMana()));
+            }
 			lore.add(ChatColor.RESET + "" + ChatColor.LIGHT_PURPLE + getLevelString(controller.getMessages(), "wand.mana_regeneration", xpRegeneration, controller.getMaxManaRegeneration()));
 		}
         if (xpMaxBoost > 0) {
@@ -3113,6 +3118,14 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 
         return modified;
 	}
+
+    public void armorUpdated() {
+        int currentMana = effectiveXpMax;
+        updateMaxMana();
+        if (currentMana != effectiveXpMax) {
+            updateLore();
+        }
+    }
 
     protected void updateMaxMana() {
         float effectiveBoost = xpMaxBoost;

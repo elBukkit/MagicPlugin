@@ -2,6 +2,9 @@
 
 ## 4.9
 
+ - Add Wizards' Robes set (chainmail armor, grants +10% mana each)
+ - Fix item shop "price" lore not being removed when purchasing
+
 ## 4.8.5
 
  - Add GriefPrevention support

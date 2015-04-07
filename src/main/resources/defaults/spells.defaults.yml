@@ -6318,7 +6318,11 @@ magicitemshop:
         confirm: true
         confirm_filler: stained_glass:3
         items:
-          wand|magichat: 500
+          wand|magichat: 2000
+          wand|wizardhelmet: 1000
+          wand|wizardchestplate: 1000
+          wand|wizardleggings: 1000
+          wand|wizardboots: 1000
           wand|camera: 200
           wand|wolfhouse: 100000
 
