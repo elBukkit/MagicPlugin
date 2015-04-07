@@ -256,6 +256,7 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
             }
             else
             {
+                item = shopItem.getItem();
                 if (requireWand) {
                     if (wand == null) {
                         context.sendMessage("no_wand");
@@ -342,7 +343,7 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
         String costString = context.getMessage("cost_lore");
         for (ShopItem shopItem : items) {
             double worth = shopItem.getWorth();
-            ItemStack item = shopItem.getItem();
+            ItemStack item = InventoryUtils.getCopy(shopItem.getItem());
             if (item == null) continue;
 
             ItemMeta meta = item.getItemMeta();
