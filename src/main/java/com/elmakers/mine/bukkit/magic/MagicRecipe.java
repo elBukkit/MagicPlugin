@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -25,7 +26,7 @@ public class MagicRecipe {
     private Material outputType;
     private Material substitue;
     private boolean disableDefaultRecipe;
-    private Recipe recipe;
+    private ShapedRecipe recipe;
     private final MagicController controller;
 
     public MagicRecipe(MagicController controller) {
@@ -56,9 +57,16 @@ public class MagicRecipe {
                 ConfigurationSection materials = configuration.getConfigurationSection("materials");
                 Set<String> keys = materials.getKeys(false);
                 for (String key : keys) {
-                    MaterialAndData mat = new MaterialAndData(materials.getString(key));
+                    String materialKey = materials.getString(key);
+                    MaterialAndData mat = new MaterialAndData(materialKey);
                     ingredients.add(mat.getMaterial());
-                    shaped.setIngredient(key.charAt(0), mat.getMaterial());
+                    Material material = mat.getMaterial();
+                    if (material == null) {
+                        outputType = null;
+                        controller.getLogger().warning("Unable to load recipe ingredient " + materialKey);
+                        return false;
+                    }
+                    shaped.setIngredient(key.charAt(0), material);
                 }
 
                 recipe = shaped;
@@ -114,5 +122,34 @@ public class MagicRecipe {
         // CompatibilityUtils.removeCustomData(item);
         // CompatibilityUtils.addGlow(item);
         return item;
+    }
+
+    public boolean isMatch(ItemStack[] matrix) {
+        if (recipe == null || matrix.length < 9) return false;
+        String[] shape = recipe.getShape();
+        if (shape == null || shape.length < 3) return false;
+
+        Map<Character, ItemStack> itemMap = recipe.getIngredientMap();
+        for (int i = 0; i < 9; i++) {
+            String row = shape[i / 3];
+            int charIndex = i % 3;
+            char charAt = ' ';
+            if (charIndex < row.length()) {
+                charAt = row.charAt(charIndex);
+            }
+            ItemStack item = itemMap.get(charAt);
+            ItemStack ingredient = matrix[i];
+            if (ingredient != null && ingredient.getType() == Material.AIR) {
+                ingredient = null;
+            }
+            if (item == null && ingredient == null) continue;
+            if (item == null && ingredient != null) return false;
+            if (ingredient == null && item != null) return false;
+
+            if (ingredient.getType() != item.getType()) {
+                return false;
+            }
+        }
+        return true;
     }
 }

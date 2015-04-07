@@ -78,6 +78,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     protected HashMap<String, MageSpell> spells = new HashMap<String, MageSpell>();
     private Wand activeWand = null;
     private Wand boundWand = null;
+    private Map<PotionEffectType, Integer> effectivePotionEffects = new HashMap<PotionEffectType, Integer>();
     private final Collection<Listener> quitListeners = new HashSet<Listener>();
     private final Collection<Listener> deathListeners = new HashSet<Listener>();
     private final Collection<Listener> damageListeners = new HashSet<Listener>();
@@ -339,6 +340,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             this.boundWand = activeWand;
         }
         blockPlaceTimeout = System.currentTimeMillis() + 200;
+        updatePotionEffects();
     }
 
     public long getBlockPlaceTimeout() {
@@ -649,6 +651,11 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         if (player != null && player.isOnline()) {
             if (activeWand != null) {
                 activeWand.tick();
+            }
+
+            for (Map.Entry<PotionEffectType, Integer> effects : effectivePotionEffects.entrySet()) {
+                PotionEffect effect = new PotionEffect(effects.getKey(), Wand.PotionEffectDuration, effects.getValue(), true);
+                CompatibilityUtils.applyPotionEffect(player, effect);
             }
 
             // Copy this set since spells may get removed while iterating!
@@ -1554,6 +1561,30 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             HashMap<Integer, ItemStack> returned = player.getInventory().addItem(itemStack);
             if (returned.size() > 0) {
                 player.getWorld().dropItem(player.getLocation(), itemStack);
+            }
+        }
+    }
+
+    public void armorUpdated() {
+        if (activeWand != null) {
+            activeWand.armorUpdated();
+        }
+        updatePotionEffects();
+    }
+
+    protected void updatePotionEffects() {
+        effectivePotionEffects.clear();
+        if (activeWand != null && !activeWand.isLocked()) {
+            effectivePotionEffects.putAll(activeWand.getPotionEffects());
+        }
+
+        Player player = getPlayer();
+        if (player != null) {
+            ItemStack[] armor = player.getInventory().getArmorContents();
+            for (ItemStack armorItem : armor) {
+                if (Wand.isWand(armorItem)) {
+                    Wand.addPotionEffects(effectivePotionEffects, armorItem);
+                }
             }
         }
     }

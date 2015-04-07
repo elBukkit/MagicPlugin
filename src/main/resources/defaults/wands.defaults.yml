@@ -1022,6 +1022,27 @@ wizardboots:
     keep: true
     xp_max_boost: 0.1
 
+rabbitboots:
+    mode: cast
+    icon: chainmail_boots
+    indestructible: true
+    locked: true
+    keep: true
+    xp_regeneration_boost: -0.1
+    potion_effects: speed:2,jump:2
+
+invisiblecloak:
+    mode: cast
+    active_spell: invisiblecloak
+    icon: ender_pearl
+    indestructible: true
+    locked: true
+    keep: true
+    xp_regeneration_boost: -0.5
+    potion_effects: invisibility
+    spells:
+    - invisiblecloak
+
 recalltoken:
     mode: cast
     active_spell: recall

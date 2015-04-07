@@ -10,6 +10,7 @@ import java.util.Random;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.UUID;
+import java.util.logging.Level;
 
 import com.elmakers.mine.bukkit.api.block.BrushMode;
 import com.elmakers.mine.bukkit.api.magic.MageController;
@@ -34,6 +35,7 @@ import com.elmakers.mine.bukkit.utility.SoundEffect;
 import de.slikey.effectlib.util.ParticleEffect;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
 import org.bukkit.Location;
@@ -78,6 +80,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		"power", "overrides",
 		"protection", "protection_physical", "protection_projectiles", 
 		"protection_falling", "protection_fire", "protection_explosions",
+        "potion_effects",
 		"materials", "spells"
 	};
 	public final static String[] HIDDEN_PROPERTY_KEYS = {
@@ -160,8 +163,10 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
     private double effectParticleOffset = 0.3;
 	private boolean effectBubbles = false;
 	private EffectRing effectPlayer = null;
-	
-	private SoundEffect effectSound = null;
+
+    private Map<PotionEffectType, Integer> potionEffects = new HashMap<PotionEffectType, Integer>();
+
+    private SoundEffect effectSound = null;
 	private int effectSoundInterval = 0;
 	
 	private float speedIncrease = 0;
@@ -897,10 +902,24 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         loadProperties(stateNode);
 	}
 
+    protected String getPotionEffectString() {
+        if (potionEffects.size() == 0) return null;
+        Collection<String> effectStrings = new ArrayList<String>();
+        for (Map.Entry<PotionEffectType, Integer> entry : potionEffects.entrySet()) {
+            String effectString = entry.getKey().getName();
+            if (entry.getValue() > 1) {
+                effectString += ":" + entry.getValue();
+            }
+            effectStrings.add(effectString);
+        }
+        return StringUtils.join(effectStrings, ",");
+    }
+
 	public void saveProperties(ConfigurationSection node) {
 		node.set("id", id);
 		node.set("materials", getMaterialString());
 		node.set("spells", getSpellString());
+        node.set("potion_effects", getPotionEffectString());
 		node.set("hotbar_count", hotbars.size());
 		node.set("hotbar", currentHotbar);
 		node.set("active_spell", activeSpell);
@@ -909,7 +928,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		node.set("description", description);
 		node.set("owner", owner);
         node.set("owner_id", ownerId);
-	
+
 		node.set("cost_reduction", costReduction);
 		node.set("cooldown_reduction", cooldownReduction);
 		node.set("power", power);
@@ -1036,6 +1055,36 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		}
 		effectColor = new ColorHD(hexColor);
 	}
+
+    public static void addPotionEffects(Map<PotionEffectType, Integer> effects, ItemStack item) {
+        addPotionEffects(effects, getWandString(item, "potion_effects"));
+    }
+
+    protected static void addPotionEffects(Map<PotionEffectType, Integer> effects, String effectsString) {
+        if (effectsString == null || effectsString.isEmpty()) {
+            return;
+        }
+        String[] effectStrings = StringUtils.split(effectsString, ",");
+        for (String effectString : effectStrings) {
+            try {
+                PotionEffectType type;
+                int power = 1;
+                if (effectString.contains(":")) {
+                    String[] pieces = effectString.split(":");
+                    type = PotionEffectType.getByName(pieces[0].toUpperCase());
+                    power = Integer.parseInt(pieces[1]);
+                } else {
+                    type = PotionEffectType.getByName(effectString.toUpperCase());
+                }
+                Integer existing = effects.get(type);
+                if (existing == null || existing < power) {
+                    effects.put(type, power);
+                }
+            } catch (Exception ex) {
+                Bukkit.getLogger().log(Level.WARNING, "Invalid potion effect: " + effectString, ex);
+            }
+        }
+    }
 	
 	public void loadProperties(ConfigurationSection wandConfig, boolean safe) {
 		locked = wandConfig.getBoolean("locked", locked);
@@ -1200,6 +1249,11 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
                         }
                     }
                 }
+            }
+
+            if (wandConfig.contains("potion_effects")) {
+                potionEffects.clear();
+                addPotionEffects(potionEffects, wandConfig.getString("potion_effects", null));
             }
 
             if (wandConfig.contains("stored")) {
@@ -1418,11 +1472,18 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
                 lore.add(ChatColor.RESET + "" + ChatColor.LIGHT_PURPLE + getLevelString(controller.getMessages(), "wand.mana_regeneration", xpRegeneration, controller.getMaxManaRegeneration()));
             }
 		}
-        if (xpMaxBoost > 0) {
+        if (xpMaxBoost != 0) {
             lore.add(ChatColor.LIGHT_PURPLE + "" + ChatColor.ITALIC + getPercentageString(controller.getMessages(), "wand.mana_boost", xpMaxBoost));
         }
-        if (xpRegenerationBoost > 0) {
+        if (xpRegenerationBoost != 0) {
             lore.add(ChatColor.LIGHT_PURPLE + "" + ChatColor.ITALIC + getPercentageString(controller.getMessages(), "wand.mana_regeneration_boost", xpRegenerationBoost));
+        }
+        for (PotionEffectType effect : potionEffects.keySet()) {
+            String effectName = effect.getName();
+            String effectFirst = effectName.substring(0, 1);
+            effectName = effectName.substring(1).toLowerCase().replace("_", " ");
+            effectName = effectFirst + effectName;
+            lore.add(ChatColor.AQUA + effectName);
         }
 		if (costReduction > 0) lore.add(ChatColor.AQUA + getLevelString(controller.getMessages(), "wand.cost_reduction", costReduction));
 		if (cooldownReduction > 0) lore.add(ChatColor.AQUA + getLevelString(controller.getMessages(), "wand.cooldown_reduction", cooldownReduction));
@@ -2135,6 +2196,14 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
             int quiet = -other.quietLevel - 1;
             modified = quietLevel != quiet;
             quietLevel = quiet;
+        }
+
+        for (Map.Entry<PotionEffectType, Integer> otherEffects : other.potionEffects.entrySet()) {
+            Integer current = potionEffects.get(otherEffects.getKey());
+            if (current == null || current < otherEffects.getValue()) {
+                potionEffects.put(otherEffects.getKey(), otherEffects.getValue());
+                modified = true;
+            }
         }
 
 		modified = modified | (!keep && other.keep);
@@ -3163,11 +3232,11 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
             }
         }
         effectiveXpMax = xpMax;
-        if (effectiveBoost > 0) {
+        if (effectiveBoost != 0) {
             effectiveXpMax += Math.ceil(effectiveBoost * effectiveXpMax);
         }
         effectiveXpRegeneration = xpRegeneration;
-        if (effectiveRegenBoost > 0) {
+        if (effectiveRegenBoost != 0) {
             effectiveXpRegeneration += Math.ceil(effectiveRegenBoost * effectiveXpRegeneration);
         }
     }
@@ -3180,6 +3249,18 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
                 if (value != null && !value.isEmpty()) {
                     return Float.parseFloat(value);
                 }
+            }
+        } catch (Exception ex) {
+
+        }
+        return null;
+    }
+
+    public static String getWandString(ItemStack item, String key) {
+        try {
+            Object wandNode = InventoryUtils.getNode(item, WAND_KEY);
+            if (wandNode != null) {
+                return InventoryUtils.getMeta(wandNode, key);
             }
         } catch (Exception ex) {
 
@@ -3852,5 +3933,9 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
                 brushEntry.setValue(slot);
             }
         }
+    }
+
+    public Map<PotionEffectType, Integer> getPotionEffects() {
+        return potionEffects;
     }
 }

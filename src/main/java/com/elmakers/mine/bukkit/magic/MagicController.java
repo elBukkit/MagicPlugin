@@ -21,7 +21,6 @@ import com.elmakers.mine.bukkit.api.block.CurrencyItem;
 import com.elmakers.mine.bukkit.api.block.Schematic;
 import com.elmakers.mine.bukkit.api.event.SaveEvent;
 import com.elmakers.mine.bukkit.api.spell.*;
-import com.elmakers.mine.bukkit.block.BlockList;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.citizens.CitizensController;
 import com.elmakers.mine.bukkit.integration.VaultController;
@@ -191,6 +190,7 @@ public class MagicController implements Listener, MageController {
                 mage.load(null);
             }
 
+            mage.armorUpdated();
             apiMage = mage;
         } else {
             apiMage = mages.get(mageId);
@@ -204,6 +204,7 @@ public class MagicController implements Listener, MageController {
                 if (commandSender instanceof Player) {
                     mage.setPlayer((Player) commandSender);
                 }
+                mage.armorUpdated();
             }
         }
         return apiMage;
@@ -3223,14 +3224,11 @@ public class MagicController implements Listener, MageController {
 		return droppedItem;
 	}
 
-    protected void onArmorUpdated(final Mage mage) {
+    protected void onArmorUpdated(final com.elmakers.mine.bukkit.magic.Mage mage) {
         plugin.getServer().getScheduler().runTaskLater(plugin, new Runnable() {
            @Override
            public void run() {
-               com.elmakers.mine.bukkit.api.wand.Wand wand = mage.getActiveWand();
-               if (wand != null && wand instanceof Wand) {
-                   ((Wand)wand).armorUpdated();
-               }
+               mage.armorUpdated();
            }
         }, 1);
     }
@@ -3281,7 +3279,7 @@ public class MagicController implements Listener, MageController {
             }
         }
         boolean isHotbar = event.getAction() == InventoryAction.HOTBAR_SWAP || event.getAction() == InventoryAction.HOTBAR_MOVE_AND_READD;
-        if (event.getAction() == InventoryAction.HOTBAR_SWAP && event.getSlotType() == SlotType.ARMOR)
+        if (isHotbar && event.getSlotType() == SlotType.ARMOR)
         {
             int slot = event.getHotbarButton();
             ItemStack item =  mage.getPlayer().getInventory().getItem(slot);
@@ -3291,6 +3289,13 @@ public class MagicController implements Listener, MageController {
                 return;
             }
             onArmorUpdated(mage);
+        }
+        if (event.getAction() == InventoryAction.MOVE_TO_OTHER_INVENTORY && clickedItem != null)
+        {
+            Material itemType = clickedItem.getType();
+            if (wearableMaterials.contains(itemType)) {
+                onArmorUpdated(mage);
+            }
         }
 
 		Wand activeWand = mage.getActiveWand();
@@ -3320,7 +3325,6 @@ public class MagicController implements Listener, MageController {
             // Can't wear spells
             if (event.getAction() == InventoryAction.MOVE_TO_OTHER_INVENTORY && clickedItem != null)
             {
-
                 Material itemType = clickedItem.getType();
                 if (wearableMaterials.contains(itemType))
                 {
@@ -3682,8 +3686,10 @@ public class MagicController implements Listener, MageController {
             }
 		}
 
+        if (mage == null) return false;
+
         // This is a bit of a hack to make automata maintain direction
-        if (mage != null && targetLocation != null) {
+        if (targetLocation != null) {
             Location mageLocation = mage.getLocation();
             targetLocation.setPitch(mageLocation.getPitch());
             targetLocation.setYaw(mageLocation.getYaw());

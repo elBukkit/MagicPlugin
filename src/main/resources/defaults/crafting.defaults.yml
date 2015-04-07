@@ -95,6 +95,17 @@ wizardhelmet:
   row_2: ioi
   row_3:
 
+invisiblecloak:
+  output: invisiblecloak
+  output_type: wand
+  materials:
+    o: nether_star
+    i: wool
+    e: ender_pearl
+  row_1: "iii"
+  row_2: "ioi"
+  row_3: " e "
+
 wizardchestplate:
   output: wizardchestplate
   output_type: wand
@@ -123,6 +134,17 @@ wizardboots:
     i: wool
   row_1:
   row_2: i i
+  row_3: ioi
+
+rabbitboots:
+  output: rabbitboots
+  output_type: wand
+  materials:
+    o: nether_star
+    i: wool
+    r: rabbit_foot
+  row_1:
+  row_2: iri
   row_3: ioi
 
 # This is here to disable crafting of other items, even if

@@ -30,19 +30,25 @@ public class HatAction extends BaseSpellAction
 
 	private class HatUndoAction implements Runnable
 	{
-		private final Player player;
+		private final Mage mage;
 
-		public HatUndoAction(Player player) {
-			this.player = player;
+		public HatUndoAction(Mage mage) {
+			this.mage = mage;
 		}
 
 		@Override
 		public void run() {
+            Player player = mage.getPlayer();
+            if (player == null) return;
+
 			ItemStack helmetItem = player.getInventory().getHelmet();
 			if (NMSUtils.isTemporary(helmetItem)) {
 				ItemStack replacement = NMSUtils.getReplacement(helmetItem);
 				player.getInventory().setHelmet(replacement);
 			}
+            if (mage instanceof com.elmakers.mine.bukkit.magic.Mage) {
+                ((com.elmakers.mine.bukkit.magic.Mage)mage).armorUpdated();
+            }
 		}
 	}
 
@@ -67,9 +73,9 @@ public class HatAction extends BaseSpellAction
 
         Player player = (Player)entity;
 		MaterialAndData material = this.material;
+        Mage mage = context.getMage();
         if (useItem)
         {
-            Mage mage = context.getMage();
             Wand activeWand = mage.getActiveWand();
             if (activeWand != null) {
                 activeWand.deactivate();;
@@ -82,6 +88,10 @@ public class HatAction extends BaseSpellAction
             ItemStack currentItem = player.getInventory().getHelmet();
             player.getInventory().setHelmet(itemInHand);
             player.setItemInHand(currentItem);
+
+            if (mage instanceof com.elmakers.mine.bukkit.magic.Mage) {
+                ((com.elmakers.mine.bukkit.magic.Mage)mage).armorUpdated();
+            }
             return SpellResult.CAST;
         }
         if (material == null && (context.getSpell().usesBrush() || context.getSpell().hasBrushOverride())) {
@@ -140,7 +150,11 @@ public class HatAction extends BaseSpellAction
 		}
 
 		player.getInventory().setHelmet(hatItem);
-        context.registerForUndo(new HatUndoAction(player));
+        context.registerForUndo(new HatUndoAction(mage));
+
+        if (mage instanceof com.elmakers.mine.bukkit.magic.Mage) {
+            ((com.elmakers.mine.bukkit.magic.Mage)mage).armorUpdated();
+        }
 		return SpellResult.CAST;
 	}
 

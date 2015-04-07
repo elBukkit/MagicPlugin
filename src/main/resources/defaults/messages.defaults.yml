@@ -958,6 +958,9 @@ spells:
         cast_absorption: Your hat gives you a boost
         cast_bunny: A bunny pops out!
         alternate: Your magic hat jumps onto your head
+    invisiblecloak:
+        name: Invisible Cloak
+        cast: You disappear in a puff of smoke!
     stalactite:
         name: Stalactite
         description: Create a downward pillar
@@ -1433,6 +1436,12 @@ wands:
     wizardboots:
         name: Wizard's Boots
         description: Magical boots
+    rabbitboots:
+        name: Rabbit Boots
+        description: Spirit of the hare
+    invisiblecloak:
+        name: Cloak of Invisibility
+        description: One of the fabled hallows
     wolf:
         name: The Wolf
         description: NathanWolf's Mega-Wand

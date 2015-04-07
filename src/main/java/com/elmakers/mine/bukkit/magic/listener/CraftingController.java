@@ -98,15 +98,7 @@ public class CraftingController implements Listener {
         if (candidates == null || candidates.size() == 0) return;
 
         for (MagicRecipe candidate : candidates) {
-            Set<Material> ingredients = candidate.getIngredients();
-            boolean ingredientsMatch = true;
-            for (Material ingredient : ingredients) {
-                if (!inventory.contains(ingredient)) {
-                    ingredientsMatch = false;
-                    break;
-                }
-            }
-
+            boolean ingredientsMatch = candidate.isMatch(contents);
             Material substitute = candidate.getSubstitute();
             if (ingredientsMatch) {
                 for (HumanEntity human : event.getViewers()) {
