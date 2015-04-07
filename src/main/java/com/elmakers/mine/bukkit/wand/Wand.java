@@ -3164,11 +3164,11 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         }
         effectiveXpMax = xpMax;
         if (effectiveBoost > 0) {
-            effectiveXpMax += effectiveXpMax * effectiveBoost;
+            effectiveXpMax += Math.ceil(effectiveBoost * effectiveXpMax);
         }
         effectiveXpRegeneration = xpRegeneration;
         if (effectiveRegenBoost > 0) {
-            effectiveXpRegeneration += effectiveXpRegeneration * effectiveRegenBoost;
+            effectiveXpRegeneration += Math.ceil(effectiveRegenBoost * effectiveXpRegeneration);
         }
     }
 
