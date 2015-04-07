@@ -331,7 +331,7 @@ public class MagicPlugin extends JavaPlugin implements MagicAPI
     }
 
     @Override
-    public ItemStack createItem(String magicItemKey) {
+    public ItemStack createItem(String magicKey) {
         ItemStack itemStack = null;
         if (controller == null) {
             getLogger().log(Level.WARNING, "Calling API before plugin is initialized");
@@ -339,7 +339,7 @@ public class MagicPlugin extends JavaPlugin implements MagicAPI
         }
 
         // Handle : or | as delimiter
-        magicItemKey = magicItemKey.replace("|", ":");
+        String magicItemKey = magicKey.replace("|", ":");
 
         try {
             if (magicItemKey.contains("skull:") || magicItemKey.contains("skull_item:")) {
@@ -358,7 +358,7 @@ public class MagicPlugin extends JavaPlugin implements MagicAPI
                 }
                 itemStack = getSpellBook(category, 1);
             } else if (magicItemKey.contains("spell:")) {
-                String spellKey = magicItemKey.substring(6);
+                String spellKey = magicKey.substring(6);
                 itemStack = createSpellItem(spellKey);
             } else if (magicItemKey.contains("wand:")) {
                 String wandKey = magicItemKey.substring(5);
@@ -380,11 +380,11 @@ public class MagicPlugin extends JavaPlugin implements MagicAPI
                 String itemKey = magicItemKey.substring(5);
                 itemStack = createGenericItem(itemKey);
             } else {
-                com.elmakers.mine.bukkit.api.wand.Wand wand = createWand(magicItemKey);
+                com.elmakers.mine.bukkit.api.wand.Wand wand = createWand(magicKey);
                 if (wand != null) {
                     return wand.getItem();
                 }
-                itemStack = createSpellItem(magicItemKey);
+                itemStack = createSpellItem(magicKey);
                 if (itemStack != null) {
                     return itemStack;
                 }
