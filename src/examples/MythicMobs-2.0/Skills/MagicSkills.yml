@@ -227,37 +227,32 @@ Firebending:
   - TargetWithin 32
   - TargetInLineOfSight true
   Skills:
-   - Fire
-#  - randomskill Fire,Fireball,Flamethrower,Lava,Inferno,Grenade,Meteor,Frag,Lightning >0 1
+   - randomskill{skills=Fire,Fireball,Flamethrower,Lava,Inferno,Grenade,Meteor,Frag,Lightning} @Target
 Airbending:
   Cooldown: 5
   Conditions:
   - TargetWithin 32
   - TargetInLineOfSight true
   Skills:
-  - PushArea
-#  - randomskill Fling,Pull,Push,PullArea,PushArea >0 1
+  - randomskill{skills=Fling,Pull,Push,PullArea,PushArea} @Target
 Waterbending:
   Cooldown: 5
   Conditions:
   - TargetWithin 32
   - TargetInLineOfSight true
   Skills:
-  - Frost
-#  - randomskill Cushion,Stream,Frost,IceShell,IceShields >0 1
+  - randomskill{skills=Cushion,Stream,Frost,IceShell,IceShields} @Target
 Earthbending:
   Cooldown: 5
   Conditions:
   - TargetWithin 32
   - TargetInLineOfSight true
   Skills:
-  - Blob
-#  - randomskill Blob,Earth,Breach,Toss,StoneShields >0 1
+  - randomskill{skills=Blob,Earth,Breach,Toss,StoneShields} @Target
 MinorSpellAttack:
   Cooldown: 5
   Conditions:
   - TargetWithin 32
   - TargetInLineOfSight true
   Skills:
-  - Missile
-#  - randomskill Curse,ArrowRain,Fireball,Wither,Lighting >0 1
+  - randomskill{skills=Missile,Curse,ArrowRain,Fireball,Wither,Lighting} @Target
