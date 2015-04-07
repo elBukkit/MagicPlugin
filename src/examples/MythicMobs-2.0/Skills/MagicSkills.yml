@@ -22,69 +22,69 @@ SludgePoison:
   - TargetWithin 4
   - TargetInLineOfSight true
   Skills:
-  - cmd{command="castp $world,$boss_x,$boss_z,$mobuuid push area true"}
+  - cmd{command="castp <mob.l.w>,<mob.l.x>,<mob.l.z>,<mob.uuid> push area true"}
 PullArea:
   Cooldown: 100
   Conditions:
   - TargetWithin 16
   - TargetInLineOfSight true
   Skills:
-  - cmd{command="castp $world,$boss_x,$boss_z,$mobuuid pull area true"}
+  - cmd{command="castp <mob.l.w>,<mob.l.x>,<mob.l.z>,<mob.uuid> pull area true"}
 Push:
   Cooldown: 10
   Conditions:
   - TargetWithin 5
   - TargetInLineOfSight true
   Skills:
-  - cmd{command="castp $world,$boss_x,$boss_z,$mobuuid push"}
+  - cmd{command="castp <mob.l.w>,<mob.l.x>,<mob.l.z>,<mob.uuid> push"}
 Pull:
   Cooldown: 10
   Conditions:
   - TargetWithin 16
   - TargetInLineOfSight true
   Skills:
-  - cmd{command="castp $world,$boss_x,$boss_z,$mobuuid pull"}
+  - cmd{command="castp <mob.l.w>,<mob.l.x>,<mob.l.z>,<mob.uuid> pull"}
 Lightning:
   Cooldown: 80
   Conditions:
   - TargetWithin 12
   - TargetInLineOfSight true
   Skills:
-  - cmd{command="castp $world,$boss_x,$boss_z,$mobuuid lightning"}
+  - cmd{command="castp <mob.l.w>,<mob.l.x>,<mob.l.z>,<mob.uuid> lightning"}
 Fireball:
   Cooldown: 20
   Conditions:
   - TargetWithin 16
   - TargetInLineOfSight true
   Skills:
-  - cmd{command="castp $world,$boss_x,$boss_z,$mobuuid fireball"}
+  - cmd{command="castp <mob.l.w>,<mob.l.x>,<mob.l.z>,<mob.uuid> fireball"}
 Wither:
   Cooldown: 40
   Conditions:
   - TargetWithin 16
   - TargetInLineOfSight true
   Skills:
-  - cmd{command="castp $world,$boss_x,$boss_z,$mobuuid wither"}
+  - cmd{command="castp <mob.l.w>,<mob.l.x>,<mob.l.z>,<mob.uuid> wither"}
 Curse:
   Cooldown: 120
   Conditions:
   - TargetWithin 8
   - TargetInLineOfSight true
   Skills:
-  - cmd{command="castp $world,$boss_x,$boss_z,$mobuuid curse"}
+  - cmd{command="castp <mob.l.w>,<mob.l.x>,<mob.l.z>,<mob.uuid> curse"}
 ArrowRain:
   Cooldown: 50
   Conditions:
   - TargetWithin 16
   - TargetInLineOfSight true
   Skills:
-  - cmd{command="castp $world,$boss_x,$boss_z,$mobuuid arrowrain"}
+  - cmd{command="castp <mob.l.w>,<mob.l.x>,<mob.l.z>,<mob.uuid> arrowrain"}
 Fling:
   Cooldown: 4
   Conditions:
   - TargetInLineOfSight
   Skills:
-  - cmd{command="castp $world,$boss_x,$boss_z,$mobuuid fling pdy 1"}
+  - cmd{command="castp <mob.l.w>,<mob.l.x>,<mob.l.z>,<mob.uuid> fling pdy 1"}
 Fire:
   Cooldown: 8
   Conditions:
@@ -93,133 +93,133 @@ Fire:
   - TargetWithin 16
   - TargetInLineOfSight true
   Skills:
-  - cmd{command="castp $world,$boss_x,$boss_z,$mobuuid fire"}
+  - cmd{command="castp <mob.l.w>,<mob.l.x>,<mob.l.z>,<mob.uuid> fire"}
 Inferno:
   Cooldown: 80
   Conditions:
   - TargetWithin 16
   - TargetInLineOfSight true
   Skills:
-  - cmd{command="castp $world,$boss_x,$boss_z,$mobuuid inferno"}
+  - cmd{command="castp <mob.l.w>,<mob.l.x>,<mob.l.z>,<mob.uuid> inferno"}
 Flamethrower:
   Cooldown: 70
   Conditions:
   - TargetWithin 12
   - TargetInLineOfSight true
   Skills:
-  - cmd{command="castp $world,$boss_x,$boss_z,$mobuuid flamethrower"}
+  - cmd{command="castp <mob.l.w>,<mob.l.x>,<mob.l.z>,<mob.uuid> flamethrower"}
 Grenade:
   Cooldown: 120
   Conditions:
   - TargetWithin 16
   - TargetInLineOfSight true
   Skills:
-  - cmd{command="castp $world,$boss_x,$boss_z,$mobuuid grenade"}
+  - cmd{command="castp <mob.l.w>,<mob.l.x>,<mob.l.z>,<mob.uuid> grenade"}
 Frag:
   Cooldown: 200
   Conditions:
   - TargetWithin 16
   - TargetInLineOfSight true
   Skills:
-  - cmd{command="castp $world,$boss_x,$boss_z,$mobuuid frag"}
+  - cmd{command="castp <mob.l.w>,<mob.l.x>,<mob.l.z>,<mob.uuid> frag"}
 Meteor:
   Cooldown: 240
   Conditions:
   - TargetWithin 32
   - TargetInLineOfSight true
   Skills:
-  - cmd{command="castp $world,$boss_x,$boss_z,$mobuuid meteor"}
+  - cmd{command="castp <mob.l.w>,<mob.l.x>,<mob.l.z>,<mob.uuid> meteor"}
 Lava:
   Cooldown: 110
   Conditions:
   - TargetWithin 8
   - TargetInLineOfSight true
   Skills:
-  - cmd{command="castp $world,$boss_x,$boss_z,$mobuuid lava"}
+  - cmd{command="castp <mob.l.w>,<mob.l.x>,<mob.l.z>,<mob.uuid> lava"}
 Missile:
   Cooldown: 20
   Conditions:
   - TargetWithin 24
   - TargetInLineOfSight true
   Skills:
-  - cmd{command="castp $world,$boss_x,$boss_z,$mobuuid missile"}
+  - cmd{command="castp <mob.l.w>,<mob.l.x>,<mob.l.z>,<mob.uuid> missile"}
 Cushion:
   Cooldown: 20
   Conditions:
   - TargetWithin 24
   - TargetInLineOfSight true
   Skills:
-  - cmd{command="castp $world,$boss_x,$boss_z,$mobuuid cushion"}
+  - cmd{command="castp <mob.l.w>,<mob.l.x>,<mob.l.z>,<mob.uuid> cushion"}
 Stream:
   Cooldown: 30
   Conditions:
   - TargetWithin 12
   - TargetInLineOfSight true
   Skills:
-  - cmd{command="castp $world,$boss_x,$boss_z,$mobuuid stream"}
+  - cmd{command="castp <mob.l.w>,<mob.l.x>,<mob.l.z>,<mob.uuid> stream"}
 Frost:
   Cooldown: 40
   Conditions:
   - TargetWithin 24
   - TargetInLineOfSight true
   Skills:
-  - cmd{command="castp $world,$boss_x,$boss_z,$mobuuid frost"}
+  - cmd{command="castp <mob.l.w>,<mob.l.x>,<mob.l.z>,<mob.uuid> frost"}
 IceShell:
   Cooldown: 60
   Conditions:
   - TargetWithin 16
   - TargetInLineOfSight true
   Skills:
-  - cmd{command="castp $world,$boss_x,$boss_z,$mobuuid shell undo 5000 brush packed_ice"}
+  - cmd{command="castp <mob.l.w>,<mob.l.x>,<mob.l.z>,<mob.uuid> shell undo 5000 brush packed_ice"}
 IceBlob:
   Cooldown: 100
   Conditions:
   - TargetWithin 16
   - TargetInLineOfSight true
   Skills:
-  - cmd{command="castp $world,$boss_x,$boss_z,$mobuuid blob undo 3000 brush packed_ice"}
+  - cmd{command="castp <mob.l.w>,<mob.l.x>,<mob.l.z>,<mob.uuid> blob undo 3000 brush packed_ice"}
 IceShields:
   Cooldown: 100
   Conditions:
   - TargetWithin 16
   - TargetInLineOfSight true
   Skills:
-  - cmd{command="castp $world,$boss_x,$boss_z,$mobuuid shields brush packed_ice"}
+  - cmd{command="castp <mob.l.w>,<mob.l.x>,<mob.l.z>,<mob.uuid> shields brush packed_ice"}
 Blob:
   Cooldown: 90
   Conditions:
   - TargetWithin 16
   - TargetInLineOfSight true
   Skills:
-  - cmd{command="castp $world,$boss_x,$boss_z,$mobuuid blob undo 5000 brush stone"}
+  - cmd{command="castp <mob.l.w>,<mob.l.x>,<mob.l.z>,<mob.uuid> blob undo 5000 brush stone"}
 Earth:
   Cooldown: 30
   Conditions:
   - TargetWithin 12
   - TargetInLineOfSight true
   Skills:
-  - cmd{command="castp $world,$boss_x,$boss_z,$mobuuid earth"}
+  - cmd{command="castp <mob.l.w>,<mob.l.x>,<mob.l.z>,<mob.uuid> earth"}
 Breach:
   Cooldown: 110
   Conditions:
   - TargetWithin 24
   - TargetInLineOfSight true
   Skills:
-  - cmd{command="castp $world,$boss_x,$boss_z,$mobuuid breach"}
+  - cmd{command="castp <mob.l.w>,<mob.l.x>,<mob.l.z>,<mob.uuid> breach"}
 Toss:
   Cooldown: 50
   Conditions:
   - TargetWithin 16
   - TargetInLineOfSight true
   Skills:
-  - cmd{command="castp $world,$boss_x,$boss_z,$mobuuid toss brush stone"}
+  - cmd{command="castp <mob.l.w>,<mob.l.x>,<mob.l.z>,<mob.uuid> toss brush stone"}
 StoneShield:
   Cooldown: 50
   Conditions:
   - TargetWithin 16
   - TargetInLineOfSight true
   Skills:
-  - cmd{command="castp $world,$boss_x,$boss_z,$mobuuid shields brush stone"}
+  - cmd{command="castp <mob.l.w>,<mob.l.x>,<mob.l.z>,<mob.uuid> shields brush stone"}
 
 Firebending:
   Cooldown: 5
