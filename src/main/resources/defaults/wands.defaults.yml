@@ -985,6 +985,7 @@ magichat:
     locked: true
     keep: true
     effect_color: '888888'
+    xp_max_boost: 0.2
     spells:
         - magichat
 

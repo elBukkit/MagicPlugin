@@ -16,6 +16,7 @@
  - Some additional protection for dragging items in a GUI
  - Remove unused "signs" parameter from ConstructSpell, using raw NBT for sign updates now
  - Some fixes/improvements to Blink
+ - Magic hat now grants a 20% max mana boost
 
 ## 4.8
 

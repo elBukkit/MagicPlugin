@@ -111,6 +111,7 @@ wand:
     upgrade_material_count: Adds $count Materials
     mana_amount: "Mana: $amount"
     mana_regeneration: "Mana Regeneration: $amount/s"
+    mana_boost: "Mana Boost: $amount%"
     cost_reduction: Cost Reduction $roman
     cooldown_reduction: Cooldown Reduction $roman
     power: Power $roman

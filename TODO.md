@@ -2,6 +2,7 @@
 
  - Recall still losing waypoints
 
+ - Banners don't work from schematics
  - Support for restoring armor stands- might have to drop 1.7 support for this.
  - Clean up MaterialBrush target system, automate somehow?
  - Copy target brush action for tandem replication

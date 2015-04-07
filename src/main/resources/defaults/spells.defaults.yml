@@ -231,7 +231,7 @@ curse|2:
 blessing:
     icon: double_plant:5
     icon_url: http://i.imgur.com/5pwbaxJ.png
-    category: light
+    category: master
     worth: 2000
     actions:
         cast:
@@ -2195,6 +2195,7 @@ fling:
         target: self
         min_speed: 1.0
         max_speed: 2.0
+        bypass_confusion: true
     costs:
         mana: 60
 
@@ -4287,6 +4288,7 @@ blink:
         range: 16
         cooldown: 5000
         prevent_passthrough: indestructible
+        bypass_confusion: true
     costs:
         mana: 50
 
@@ -5532,7 +5534,7 @@ paste:
 kill:
     icon: skull_item:1
     icon_url: http://i.imgur.com/XdgheMr.png
-    category: dark
+    category: master
     pvp_restricted: true
     worth: 5500
     actions:
@@ -5605,7 +5607,7 @@ kill:
 torture:
     icon_url: http://i.imgur.com/TAaTz9J.png
     icon: quartz
-    category: dark
+    category: master
     pvp_restricted: true
     cast_on_no_target: true
     worth: 4000

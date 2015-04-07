@@ -66,7 +66,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	public final static String[] PROPERTY_KEYS = {
 		"active_spell", "active_material",
         "path",
-		"xp", "xp_regeneration", "xp_max",
+		"xp", "xp_regeneration", "xp_max", "xp_max_boost",
 		"bound", "uses", "upgrade", "indestructible", "undroppable",
 		"cost_reduction", "cooldown_reduction", "effect_bubbles", "effect_color", 
 		"effect_particle", "effect_particle_count", "effect_particle_data", "effect_particle_interval",
@@ -136,10 +136,12 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
     private boolean forceUpgrade = false;
 	private int uses = 0;
 	private float xp = 0;
-	
+
+    private float xpMaxBoost = 0;
 	private int xpRegeneration = 0;
 	private int xpMax = 0;
     private long lastXpRegeneration = 0;
+    private int effectiveXpMax = 0;
 	private float healthRegeneration = 0;
 	private PotionEffect healthRegenEffect = null;
 	private float hungerRegeneration = 0;
@@ -919,6 +921,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		node.set("xp", xp);
 		node.set("xp_regeneration", xpRegeneration);
 		node.set("xp_max", xpMax);
+        node.set("xp_max_boost", xpMaxBoost);
         node.set("xp_timestamp", lastXpRegeneration);
 		node.set("health_regeneration", healthRegeneration);
 		node.set("hunger_regeneration", hungerRegeneration);
@@ -1057,6 +1060,8 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		xpMax = safe ? Math.max(_xpMax, xpMax) : _xpMax;
 		int _xp = wandConfig.getInt("xp", (int)xp);
 		xp = safe ? Math.max(_xp, xp) : _xp;
+        float _xpMaxBoost = (float)wandConfig.getDouble("xp_max_boost", xpMaxBoost);
+        xpMaxBoost = safe ? Math.max(_xpMaxBoost, xpMaxBoost) : _xpMaxBoost;
 		float _healthRegeneration = (float)wandConfig.getDouble("health_regeneration", healthRegeneration);
 		healthRegeneration = safe ? Math.max(_healthRegeneration, healthRegeneration) : _healthRegeneration;
 		float _hungerRegeneration = (float)wandConfig.getDouble("hunger_regeneration", hungerRegeneration);
@@ -1224,6 +1229,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 			effectParticleInterval = 0;
 		}
 
+        updateMaxMana();
 		checkActiveMaterial();
 	}
 
@@ -1397,6 +1403,9 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 			lore.add(ChatColor.LIGHT_PURPLE + "" + ChatColor.ITALIC + getLevelString(controller.getMessages(), "wand.mana_amount", xpMax, controller.getMaxMana()));
 			lore.add(ChatColor.RESET + "" + ChatColor.LIGHT_PURPLE + getLevelString(controller.getMessages(), "wand.mana_regeneration", xpRegeneration, controller.getMaxManaRegeneration()));
 		}
+        if (xpMaxBoost > 0) {
+            lore.add(ChatColor.LIGHT_PURPLE + "" + ChatColor.ITALIC + getPercentageString(controller.getMessages(), "wand.mana_boost", xpMaxBoost));
+        }
 		if (costReduction > 0) lore.add(ChatColor.AQUA + getLevelString(controller.getMessages(), "wand.cost_reduction", costReduction));
 		if (cooldownReduction > 0) lore.add(ChatColor.AQUA + getLevelString(controller.getMessages(), "wand.cooldown_reduction", cooldownReduction));
 		if (power > 0) lore.add(ChatColor.AQUA + getLevelString(controller.getMessages(), "wand.power", power));
@@ -1424,8 +1433,14 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		if (templateString.contains("$roman")) {
 			templateString = templateString.replace("$roman", getRomanString(messages, amount));
 		}
-		return templateString.replace("$amount", Integer.toString((int)amount));
+		return templateString.replace("$amount", Integer.toString((int) amount));
 	}
+
+    public static String getPercentageString(Messages messages, String templateName, float amount)
+    {
+        String templateString = messages.get(templateName);
+        return templateString.replace("$amount", Integer.toString((int)(amount * 100)));
+    }
 
 	private static String getRomanString(Messages messages, float amount) {
 		String roman = "";
@@ -2299,6 +2314,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		saveState();
 		updateName();
 		updateLore();
+        updateMaxMana();
 
 		return modified;
 	}
@@ -2630,6 +2646,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
                 storedXpLevel = player.getLevel();
                 storedXpProgress = player.getExp();
             }
+            updateMaxMana();
 		}
 
         // Tick might save state, but it returns true to let us know when it does.
@@ -2784,8 +2801,8 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 
     protected void updateDurability() {
         int maxDurability = item.getType().getMaxDurability();
-        if (maxDurability > 0) {
-            int durability = (short)(xp * maxDurability / xpMax);
+        if (maxDurability > 0 && effectiveXpMax > 0) {
+            int durability = (short)(xp * maxDurability / effectiveXpMax);
             durability = maxDurability - durability;
             if (durability >= maxDurability) {
                 durability = maxDurability - 1;
@@ -2802,10 +2819,10 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
     }
 
 	protected void updateMana() {
-		if (mage != null && xpMax > 0 && xpRegeneration > 0) {
+		if (mage != null && effectiveXpMax > 0 && xpRegeneration > 0) {
 			Player player = mage.getPlayer();
             if (displayManaAsGlow) {
-                if (xp == xpMax) {
+                if (xp == effectiveXpMax) {
                     CompatibilityUtils.addGlow(item);
                 } else {
                     CompatibilityUtils.removeGlow(item);
@@ -2819,7 +2836,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
                     if (!retainLevelDisplay) {
                         player.setLevel(0);
                     }
-                    player.setExp(xp / (float)xpMax);
+                    player.setExp(xp / (float)effectiveXpMax);
                 } else {
                     player.setLevel((int)xp);
                     player.setExp(0);
@@ -3077,7 +3094,10 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
             if (lastXpRegeneration > 0)
             {
                 long delta = now - lastXpRegeneration;
-                xp = Math.min(xpMax, xp + (float)xpRegeneration * (float)delta / 1000);
+                if (effectiveXpMax == 0 && xpMax > 0) {
+                    effectiveXpMax = xpMax;
+                }
+                xp = Math.min(effectiveXpMax, xp + (float)xpRegeneration * (float)delta / 1000);
                 updateMana();
             }
             lastXpRegeneration = now;
@@ -3093,6 +3113,41 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 
         return modified;
 	}
+
+    protected void updateMaxMana() {
+        float effectiveBoost = xpMaxBoost;
+        Player player = mage != null ? mage.getPlayer() : null;
+        if (player != null) {
+            ItemStack[] armor = player.getInventory().getArmorContents();
+            for (ItemStack armorItem : armor) {
+                if (isWand(armorItem)) {
+                    Float boost = getWandFloat(armorItem, "xp_max_boost");
+                    if (boost != null) {
+                        effectiveBoost += boost;
+                    }
+                }
+            }
+        }
+        effectiveXpMax = xpMax;
+        if (effectiveBoost > 0) {
+            effectiveXpMax += effectiveXpMax * effectiveBoost;
+        }
+    }
+
+    public static Float getWandFloat(ItemStack item, String key) {
+        try {
+            Object wandNode = InventoryUtils.getNode(item, WAND_KEY);
+            if (wandNode != null) {
+                String value = InventoryUtils.getMeta(wandNode, key);
+                if (value != null && !value.isEmpty()) {
+                    return Float.parseFloat(value);
+                }
+            }
+        } catch (Exception ex) {
+
+        }
+        return null;
+    }
 	
 	public MagicController getMaster() {
 		return controller;
