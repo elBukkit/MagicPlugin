@@ -986,6 +986,7 @@ magichat:
     keep: true
     effect_color: '888888'
     xp_max_boost: 0.2
+    xp_regeneration_boost: 0.1
     spells:
         - magichat
 

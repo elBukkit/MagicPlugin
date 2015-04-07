@@ -3,6 +3,7 @@
 ## 4.9
 
  - Add Wizards' Robes set (chainmail armor, grants +10% mana each)
+ - Magic Hat grants +10% mana regen and +20% max mana
  - Fix item shop "price" lore not being removed when purchasing
 
 ## 4.8.5
