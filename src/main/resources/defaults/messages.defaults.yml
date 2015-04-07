@@ -1421,12 +1421,16 @@ wands:
         description: A true wizard's hat
     wizardhelmet:
         name: Wizard's Scarf
+        description: A magical scarf
     wizardchestplate:
         name: Wizard's Robes
+        description: Magical robes
     wizardleggings:
         name: Wizard's Pants
+        description: Magical pants
     wizardboots:
         name: Wizard's Boots
+        description: Magical boots
     wolf:
         name: The Wolf
         description: NathanWolf's Mega-Wand

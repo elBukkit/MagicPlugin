@@ -85,6 +85,46 @@ magichat:
   row_2: i
   row_3:
 
+wizardhelmet:
+  output: wizardhelmet
+  output_type: wand
+  materials:
+    o: nether_star
+    i: wool
+  row_1: iii
+  row_2: ioi
+  row_3:
+
+wizardchestplate:
+  output: wizardchestplate
+  output_type: wand
+  materials:
+    o: nether_star
+    i: wool
+  row_1: ioi
+  row_2: iii
+  row_3: iii
+
+wizardleggings:
+  output: wizardleggings
+  output_type: wand
+  materials:
+    o: nether_star
+    i: wool
+  row_1: iii
+  row_2: i i
+  row_3: ioi
+
+wizardboots:
+  output: wizardboots
+  output_type: wand
+  materials:
+    o: nether_star
+    i: wool
+  row_1:
+  row_2: i i
+  row_3: ioi
+
 # This is here to disable crafting of other items, even if
 # they aren't craftable.
 wolf:
