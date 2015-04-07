@@ -1140,6 +1140,7 @@ spells:
         name: Tornado
         description: Spawn a destructive whirlwind
         cast: Duck and cover!
+        upgrade_description: "&r&b&bull; &6Now destroys structures"
     transmute:
         name: Transmute
         description: Convert your last construction

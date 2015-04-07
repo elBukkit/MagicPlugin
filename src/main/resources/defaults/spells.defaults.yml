@@ -6320,6 +6320,7 @@ magicitemshop:
         items:
           wand|magichat: 500
           wand|camera: 200
+          wand|wolfhouse: 100000
 
 automatashop:
     icon: command
@@ -6570,6 +6571,8 @@ singularity:
         mana: 50
 
 tornado:
+    upgrade_required_path: master
+    upgrade_required_casts: 50
     icon_url: http://i.imgur.com/efomUd1.png
     icon: feather
     category: elemental
@@ -6588,9 +6591,11 @@ tornado:
                effect: whirl
              - class: Sphere
                actions:
-               - class: ModifyBlock
-                 direction: 0,1,0
-                 speed: 0.2
+               - class: Volume
+                 actions:
+                 - class: ModifyBlock
+                   direction: 0,1,0
+                   speed: 0.2
              - class: AreaOfEffect
                actions:
                 - class: Velocity
@@ -6634,8 +6639,22 @@ tornado:
         target_direction_speed: 0.5
         source_direction_offset: 0,0.5,0
         undo: 15000
+        oty: 2
+        x_size: 0
+        z_size: 0
+        y_size: 2
     costs:
         mana: 150
+
+tornado|2:
+    parameters:
+        check_destructible: false
+        oty: 4
+        y_offset: 1
+        x_size: 1
+        z_size: 1
+        y_size: 8
+        radius: 4
 
 rocket:
     icon_url: http://i.imgur.com/SODRIj1.png

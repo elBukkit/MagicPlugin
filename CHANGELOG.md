@@ -17,6 +17,7 @@
  - Remove unused "signs" parameter from ConstructSpell, using raw NBT for sign updates now
  - Some fixes/improvements to Blink
  - Magic hat now grants a 20% max mana boost
+ - Added Tornado Level 2
 
 ## 4.8
 
