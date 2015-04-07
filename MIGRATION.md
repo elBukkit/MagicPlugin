@@ -1,6 +1,6 @@
 # Migration Notes
 
-## 4.9
+## 4.8.5
 
  * The worth_items list in config.yml has changed to "currency", and the format is different.
    If you have a customized physical economy, please take note!

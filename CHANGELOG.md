@@ -2,21 +2,23 @@
 
 ## 4.9
 
+## 4.8.5
+
  - Add GriefPrevention support
  - Add Walls and SuperCylinder spells
  - Some fixes to prevent exploits and bugs with double chest rollback
  - TNT, fireballs and thrown blocks won't affect a protected region
  - Fix Chop and Mine recursion, add more levels
  - Add support for custom-named physical currency
- - Add Magic.wand.enchant Magic.wand.craft permissions (true by default)
+ - Add Magic.wand.enchant and Magic.wand.craft permissions (true by default)
  - Add native schematic loading- supports paintings, item frames, flower pots, and more.
  - Removed WorldEdit soft-dependency
  - Fix some chest mode issues, remove "fake hotbar"
  - Add Magic.undo_others permission node for Rollback spell
- - Some additional protection for dragging items in a GUI
+ - Some additional protection for dragging items in a GUI (still needs work)
  - Remove unused "signs" parameter from ConstructSpell, using raw NBT for sign updates now
  - Some fixes/improvements to Blink
- - Magic hat now grants a 20% max mana boost
+ - Magic Hat now grants a 20% max mana boost
  - Added Tornado Level 2
 
 ## 4.8
