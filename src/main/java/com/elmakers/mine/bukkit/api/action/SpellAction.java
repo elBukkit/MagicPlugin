@@ -10,7 +10,7 @@ import java.util.Collection;
 public interface SpellAction extends Cloneable
 {
     public SpellResult perform(CastContext context);
-    public void initialize(ConfigurationSection baseParameters);
+    public void initialize(Spell spell, ConfigurationSection baseParameters);
     public void prepare(CastContext context, ConfigurationSection parameters);
     public void finish(CastContext context);
     public void reset(CastContext context);
