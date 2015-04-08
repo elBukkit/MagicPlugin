@@ -6,6 +6,7 @@
  - Magic Hat grants +10% mana regen and +20% max mana
  - Fix item shop "price" lore not being removed when purchasing
  - Removed wand health/hunger regen and haste properties. Replaced by potion effects, wands should auto-migrate.
+ - Renamed Gills to Diving Helmet, improved underwater behavior
 
 ## 4.8.5
 

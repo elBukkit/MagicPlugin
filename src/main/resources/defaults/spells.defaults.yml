@@ -2763,7 +2763,8 @@ recurse:
     costs:
         mana: 30
 
-gills:
+diving:
+    alias: gills
     icon_url: http://i.imgur.com/00ZNC1x.png
     icon: cooked_fish
     category: light
@@ -2787,12 +2788,16 @@ gills:
     parameters:
         target_type: LivingEntity
         target: self
-        cooldown: 20000
-        duration: 20000
-        undo: 20000
+        cooldown: 30000
+        duration: 30000
+        undo: 30000
         effect_water_breathing: 1
-        effect_night_vision: 1
+        enchantments:
+          oxygen: 3
+          water_worker: 1
+          depth_strider: 3
         brush: stained_glass
+        brushcolor: true
     costs:
         mana: 15
 
@@ -4376,7 +4381,8 @@ wear:
     worth: 1500
     actions:
         cast:
-        -  class: Hat
+        - class: Delay
+        - class: Hat
     parameters:
         use_item: true
 

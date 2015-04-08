@@ -213,7 +213,7 @@ student:
       fling: 0,5,70
       fire: 50,70,60
       frost: 80,70,50
-      gills: 10,11,20
+      diving: 10,11,20
       grenade: 0,20,70
       heal: 0,1,5
       monster: 5,20,30
@@ -723,7 +723,6 @@ battle:
       fling: 0,5,70
       force: 5,10,20
       frost: 80,70,50
-      gills: 10,11,20
       grenade: 30,50,70
       cure: 1,5,10
       heal: 0,1,5

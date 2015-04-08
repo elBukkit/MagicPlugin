@@ -14,6 +14,7 @@ import com.elmakers.mine.bukkit.utility.NMSUtils;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -21,12 +22,36 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class HatAction extends BaseSpellAction
 {
     private MaterialAndData material;
     private boolean useItem;
+    private Map<Enchantment, Integer> enchantments;
+
+    @Override
+    public void initialize(Spell spell, ConfigurationSection parameters)
+    {
+        super.initialize(spell, parameters);
+        if (parameters.contains("enchantments"))
+        {
+            enchantments = new HashMap<Enchantment, Integer>();
+            ConfigurationSection enchantConfig = parameters.getConfigurationSection("enchantments");
+            Collection<String> enchantKeys = enchantConfig.getKeys(false);
+            for (String enchantKey : enchantKeys)
+            {
+                try {
+                    Enchantment enchantment = Enchantment.getByName(enchantKey.toUpperCase());
+                    enchantments.put(enchantment, enchantConfig.getInt(enchantKey));
+                } catch (Exception ex) {
+                    spell.getController().getLogger().warning("Invalid enchantment: " + enchantKey);
+                }
+            }
+        }
+    }
 
 	private class HatUndoAction implements Runnable
 	{
@@ -135,7 +160,9 @@ public class HatAction extends BaseSpellAction
 		hatItem.setItemMeta(meta);
 		hatItem = InventoryUtils.makeReal(hatItem);
 		NMSUtils.makeTemporary(hatItem, context.getMessage("removed").replace("$hat", materialName));
-
+        if (enchantments != null) {
+            hatItem.addUnsafeEnchantments(enchantments);
+        }
 		ItemStack itemStack = player.getInventory().getHelmet();
 		if (itemStack != null && itemStack.getType() != Material.AIR)
 		{

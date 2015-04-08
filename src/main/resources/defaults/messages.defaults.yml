@@ -567,10 +567,12 @@ spells:
     paint:
         name: Paint
         description: Fill a single block
-    gills:
-        name: Gills
+    diving:
+        name: Diving Helmet
         description: Work freely underwater
-        cast: You can now breathe and see underwater
+        cast: You put on your diving helmet
+        hat_name: Diving Helmet
+        hat_lore: Click to Remove
     arrowrain:
         name: Arrow Rain
         description: Fire a volley of arrows
