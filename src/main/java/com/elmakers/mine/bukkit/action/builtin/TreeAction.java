@@ -33,9 +33,9 @@ public class TreeAction extends BaseSpellAction
     private Map<Biome, List<TreeType>> biomeMap = null;
 
     @Override
-    public void initialize(ConfigurationSection parameters)
+    public void initialize(Spell spell, ConfigurationSection parameters)
     {
-        super.initialize(parameters);
+        super.initialize(spell, parameters);
         if (parameters.contains("biomes"))
         {
             ConfigurationSection biomeConfig = parameters.getConfigurationSection("biomes");

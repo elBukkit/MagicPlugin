@@ -1,9 +1,9 @@
 package com.elmakers.mine.bukkit.action.builtin;
 
 import com.elmakers.mine.bukkit.action.ActionContext;
-import com.elmakers.mine.bukkit.action.ActionHandler;
 import com.elmakers.mine.bukkit.action.TriggeredCompoundAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
+import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.utility.RandomUtils;
 import com.elmakers.mine.bukkit.utility.WeightedPair;
@@ -18,9 +18,9 @@ public class RandomAction extends TriggeredCompoundAction
     private ActionContext currentAction = null;
 
     @Override
-    public void initialize(ConfigurationSection parameters)
+    public void initialize(Spell spell, ConfigurationSection parameters)
     {
-        super.initialize(parameters);
+        super.initialize(spell, parameters);
         mapActions();
     }
 

@@ -2,6 +2,7 @@ package com.elmakers.mine.bukkit.action.builtin;
 
 import com.elmakers.mine.bukkit.action.BaseSpellAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
+import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import org.bukkit.Material;
@@ -18,9 +19,9 @@ public class FlowerAction extends BaseSpellAction {
     private final ArrayList<MaterialAndData> tallFlowers = new ArrayList<MaterialAndData>();
 
     @Override
-    public void initialize(ConfigurationSection parameters)
+    public void initialize(Spell spell, ConfigurationSection parameters)
     {
-        super.initialize(parameters);
+        super.initialize(spell, parameters);
         flowers.clear();
         tallFlowers.clear();
         Collection<String> flowerKeys = parameters.getStringList("flowers");

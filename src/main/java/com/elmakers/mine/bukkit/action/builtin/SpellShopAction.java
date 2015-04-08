@@ -11,7 +11,6 @@ import com.elmakers.mine.bukkit.api.wand.Wand;
 import com.elmakers.mine.bukkit.api.wand.WandUpgradePath;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
@@ -28,9 +27,9 @@ public class SpellShopAction extends BaseShopAction
     private Map<String, Double> spells = new HashMap<String, Double>();
 
     @Override
-    public void initialize(ConfigurationSection parameters)
+    public void initialize(Spell spell, ConfigurationSection parameters)
     {
-        super.initialize(parameters);
+        super.initialize(spell, parameters);
         spells.clear();
         if (parameters.contains("spells"))
         {

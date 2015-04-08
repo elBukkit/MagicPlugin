@@ -299,9 +299,9 @@ public class SpawnEntityAction extends BaseSpellAction
 	}
 
     @Override
-    public void initialize(ConfigurationSection parameters)
+    public void initialize(Spell spell, ConfigurationSection parameters)
     {
-        super.initialize(parameters);
+        super.initialize(spell, parameters);
 
         if (parameters.contains("entity_types"))
         {

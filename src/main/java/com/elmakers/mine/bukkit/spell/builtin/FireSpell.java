@@ -35,7 +35,7 @@ public class FireSpell extends BlockSpell
         cover.addAction(new BurnAction());
         ActionHandler handler = new ActionHandler();
         handler.loadAction(cover);
-        handler.initialize(parameters);
+        handler.initialize(this, parameters);
         registerForUndo();
         return handler.start(getCurrentCast(), parameters);
 	}

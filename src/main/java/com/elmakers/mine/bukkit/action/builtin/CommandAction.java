@@ -59,8 +59,8 @@ public class CommandAction extends BaseSpellAction {
     }
 
     @Override
-    public void initialize(ConfigurationSection parameters) {
-        super.initialize(parameters);
+    public void initialize(Spell spell, ConfigurationSection parameters) {
+        super.initialize(spell, parameters);
         commands.clear();
 
         if (parameters.contains("command"))

@@ -31,7 +31,7 @@ public class LightningSpell extends BlockSpell
         cover.addAction(new LightningAction());
         ActionHandler handler = new ActionHandler();
         handler.loadAction(cover);
-        handler.initialize(parameters);
+        handler.initialize(this, parameters);
         registerForUndo();
         return handler.start(getCurrentCast(), parameters);
 	}

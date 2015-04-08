@@ -17,7 +17,7 @@ public class AbsorbSpell extends BrushSpell
         target();
 		ActionHandler handler = new ActionHandler();
 		handler.loadAction(new AbsorbAction());
-        handler.initialize(parameters);
+        handler.initialize(this, parameters);
 		return handler.start(getCurrentCast(), parameters);
 	}
 	

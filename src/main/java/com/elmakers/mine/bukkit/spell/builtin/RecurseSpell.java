@@ -40,7 +40,7 @@ public class RecurseSpell extends BrushSpell
 		blockRecurse.setMaxRecursion(size);
 
 		ModifyBlockAction action = new ModifyBlockAction();
-        action.initialize(parameters);
+        action.initialize(this, parameters);
         action.addReplaceable(new MaterialAndData(targetBlock));
         Material targetMaterial = targetBlock.getType();
 
