@@ -815,7 +815,7 @@ public class NMSUtils {
         removeMeta(stack, "Unbreakable");
     }
 
-    public static void hideFlags(ItemStack stack) {
+    public static void hideFlags(ItemStack stack, byte flags) {
         if (stack == null) return;
 
         try {
@@ -826,9 +826,9 @@ public class NMSUtils {
 
             Object hideFlag = null;
             if (class_NBTTagByte_constructor != null) {
-                hideFlag = class_NBTTagByte_constructor.newInstance((byte) 63);
+                hideFlag = class_NBTTagByte_constructor.newInstance(flags);
             } else {
-                hideFlag = class_NBTTagByte_legacy_constructor.newInstance("", (byte) 63);
+                hideFlag = class_NBTTagByte_legacy_constructor.newInstance("", flags);
             }
             class_NBTTagCompound_setMethod.invoke(tagObject, "HideFlags", hideFlag);
         } catch (Throwable ex) {
