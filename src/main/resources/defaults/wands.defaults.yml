@@ -1029,7 +1029,7 @@ rabbitboots:
     locked: true
     keep: true
     xp_regeneration_boost: -0.1
-    potion_effects: speed:2,jump:2
+    potion_effects: speed:5,jump:5
 
 invisiblecloak:
     mode: cast

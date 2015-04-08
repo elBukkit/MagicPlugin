@@ -1076,12 +1076,16 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
                 } else {
                     type = PotionEffectType.getByName(effectString.toUpperCase());
                 }
+                if (type == null) {
+                    throw new Exception("Invalid potion effect");
+                }
+
                 Integer existing = effects.get(type);
                 if (existing == null || existing < power) {
                     effects.put(type, power);
                 }
             } catch (Exception ex) {
-                Bukkit.getLogger().log(Level.WARNING, "Invalid potion effect: " + effectString, ex);
+                Bukkit.getLogger().log(Level.WARNING, "Invalid potion effect: " + effectString);
             }
         }
     }
