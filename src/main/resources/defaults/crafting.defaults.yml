@@ -150,9 +150,9 @@ rabbitboots:
 # This is here to disable crafting of other items, even if
 # they aren't craftable.
 wolf:
-  input: gold_hoe
+  output: gold_hoe
   disable_default: true
 
 architect:
-  input: gold_axe
+  output: gold_axe
   disable_default: true

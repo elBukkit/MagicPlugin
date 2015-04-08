@@ -12,5 +12,5 @@
 
 # No crafting any more protection stones!
 protection:
-  input: beacon
+  output: beacon
   disable_default: true
