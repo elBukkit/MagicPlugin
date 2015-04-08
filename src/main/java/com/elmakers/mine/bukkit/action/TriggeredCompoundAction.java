@@ -27,9 +27,9 @@ public abstract class TriggeredCompoundAction extends BaseSpellAction implements
     }
 
     @Override
-	public void initialize(ConfigurationSection parameters)
+	public void initialize(Spell spell, ConfigurationSection parameters)
 	{
-		super.initialize(parameters);
+		super.initialize(spell, parameters);
 
 		usesBrush = false;
 		undoable = false;
@@ -44,7 +44,7 @@ public abstract class TriggeredCompoundAction extends BaseSpellAction implements
         }
         if (actions != null)
         {
-            actions.initialize(parameters);
+            actions.initialize(spell, parameters);
             updateFlags();
         }
     }

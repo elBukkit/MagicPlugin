@@ -32,7 +32,7 @@ public abstract class BaseSpellAction implements SpellAction
     }
 
     @Override
-    public void initialize(ConfigurationSection actionParameters) {
+    public void initialize(Spell spell, ConfigurationSection actionParameters) {
         requiresTarget = actionParameters.getBoolean("requires_target", false);
         requiresTargetEntity = actionParameters.getBoolean("requires_entity_target", false);
     }

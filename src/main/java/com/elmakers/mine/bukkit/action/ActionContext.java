@@ -2,6 +2,7 @@ package com.elmakers.mine.bukkit.action;
 
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.action.SpellAction;
+import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import org.bukkit.configuration.ConfigurationSection;
@@ -17,9 +18,9 @@ public class ActionContext implements Cloneable {
         this.parameters = actionParameters;
     }
 
-    public void initialize(ConfigurationSection baseParameters)
+    public void initialize(Spell spell, ConfigurationSection baseParameters)
     {
-        action.initialize(getEffectiveParameters(baseParameters));
+        action.initialize(spell, getEffectiveParameters(baseParameters));
     }
 
     public void prepare(CastContext context, ConfigurationSection parameters)

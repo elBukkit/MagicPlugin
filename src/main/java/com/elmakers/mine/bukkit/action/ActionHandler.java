@@ -111,9 +111,9 @@ public class ActionHandler implements Cloneable
         }
     }
 
-    public void initialize(ConfigurationSection baseParameters) {
+    public void initialize(Spell spell, ConfigurationSection baseParameters) {
         for (ActionContext action : actions) {
-            action.initialize(baseParameters);
+            action.initialize(spell, baseParameters);
             usesBrush = usesBrush || action.getAction().usesBrush();
             undoable = undoable || action.getAction().isUndoable();
             requiresBuildPermission = requiresBuildPermission || action.getAction().requiresBuildPermission();

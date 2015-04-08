@@ -117,7 +117,7 @@ public class ActionSpell extends BrushSpell
                 {
                     ActionHandler handler = new ActionHandler();
                     handler.load(actionsNode, actionKey);
-                    handler.initialize(parameters);
+                    handler.initialize(this, parameters);
                     usesBrush = usesBrush || handler.usesBrush();
                     undoable = undoable || handler.isUndoable();
                     requiresBuildPermission = requiresBuildPermission || handler.requiresBuildPermission();
