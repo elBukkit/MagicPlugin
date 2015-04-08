@@ -534,6 +534,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
             boundWand = null;
             if (configNode.contains("bound_wand")) {
+                // TODO: Store item as well, to preserve enchantments and attributes
                 boundWand = new Wand(controller, configNode.getConfigurationSection("bound_wand"));
             }
             if (configNode.contains("data")) {

@@ -46,6 +46,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerExpChangeEvent;
 import org.bukkit.inventory.Inventory;
@@ -293,6 +294,22 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 
 			// Load all properties
 			loadProperties(wandConfig);
+
+            // Add vanilla enchantments
+            if (wandConfig.contains("enchantments") && item != null)
+            {
+                ConfigurationSection enchantConfig = wandConfig.getConfigurationSection("enchantments");
+                Collection<String> enchantKeys = enchantConfig.getKeys(false);
+                for (String enchantKey : enchantKeys)
+                {
+                    try {
+                        Enchantment enchantment = Enchantment.getByName(enchantKey.toUpperCase());
+                        item.addUnsafeEnchantment(enchantment, enchantConfig.getInt(enchantKey));
+                    } catch (Exception ex) {
+                        controller.getLogger().warning("Invalid enchantment: " + enchantKey);
+                    }
+                }
+            }
 
             // Enchant, if an enchanting level was provided
             if (level > 0) {
