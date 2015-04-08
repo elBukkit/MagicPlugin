@@ -67,7 +67,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	// destroy the corresponding data.
 	public final static String[] PROPERTY_KEYS = {
 		"active_spell", "active_material",
-        "path",
+        "path", "passive",
 		"xp", "xp_regeneration", "xp_max", "xp_max_boost", "xp_regeneration_boost",
 		"bound", "uses", "upgrade", "indestructible", "undroppable",
 		"cost_reduction", "cooldown_reduction", "effect_bubbles", "effect_color", 
@@ -114,6 +114,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	private boolean indestructible = false;
     private boolean undroppable = false;
 	private boolean keep = false;
+    private boolean passive = false;
 	private boolean autoOrganize = false;
     private boolean autoAlphabetize = false;
 	private boolean autoFill = false;
@@ -958,6 +959,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         node.set("effect_particle_offset", effectParticleOffset);
 		node.set("effect_sound_interval", effectSoundInterval);
 		node.set("quiet", quietLevel);
+        node.set("passive", passive);
 		node.set("keep", keep);
         node.set("randomize", randomize);
         node.set("rename", rename);
@@ -1142,6 +1144,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
             quietLevel = wandConfig.getInt("quiet", quietLevel);
 			effectBubbles = wandConfig.getBoolean("effect_bubbles", effectBubbles);
 			keep = wandConfig.getBoolean("keep", keep);
+            passive = wandConfig.getBoolean("passive", passive);
             indestructible = wandConfig.getBoolean("indestructible", indestructible);
             glow = wandConfig.getBoolean("glow", glow);
             undroppable = wandConfig.getBoolean("undroppable", undroppable);
@@ -3479,6 +3482,10 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
     @Override
     public void unlock() {
         locked = false;
+    }
+
+    public boolean isPassive() {
+        return passive;
     }
 
 	@Override

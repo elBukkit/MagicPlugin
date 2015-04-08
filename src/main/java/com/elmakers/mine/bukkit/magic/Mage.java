@@ -1574,7 +1574,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
     protected void updatePotionEffects() {
         effectivePotionEffects.clear();
-        if (activeWand != null && !activeWand.isLocked()) {
+        if (activeWand != null && !activeWand.isPassive()) {
             effectivePotionEffects.putAll(activeWand.getPotionEffects());
         }
 
