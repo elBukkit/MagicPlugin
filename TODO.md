@@ -2,6 +2,7 @@
 
  - Recall still losing waypoints
  - Wands stored for death restore get wiped.. or something?
+ - Maximum enchant count for wands
 
  - Banners don't work from schematics
  - Support for restoring armor stands- might have to drop 1.7 support for this.

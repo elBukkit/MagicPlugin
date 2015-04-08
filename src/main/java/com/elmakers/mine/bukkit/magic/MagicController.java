@@ -2939,10 +2939,6 @@ public class MagicController implements Listener, MageController {
         if (!(apiMage instanceof com.elmakers.mine.bukkit.magic.Mage)) return;
         com.elmakers.mine.bukkit.magic.Mage mage = (com.elmakers.mine.bukkit.magic.Mage)apiMage;
 
-        if (!mage.checkLastClick(clickCooldown)) {
-			return;
-		}
-
 		Wand wand = mage.getActiveWand();
         boolean hasWand = Wand.hasActiveWand(player);
 
@@ -2954,6 +2950,19 @@ public class MagicController implements Listener, MageController {
             return;
         }
 
+        // Check for wearing via right-click
+        Action action = event.getAction();
+        if (itemInHand != null
+            && (action == Action.RIGHT_CLICK_AIR || action == Action.RIGHT_CLICK_BLOCK)
+            && wearableMaterials.contains(itemInHand.getType()))
+        {
+            if (wand != null)
+            {
+                wand.deactivate();
+            }
+            onArmorUpdated(mage);
+            return;
+        }
 
         // Hacky check for immediately activating a wand if for some reason it was
 		// not active
@@ -2984,15 +2993,19 @@ public class MagicController implements Listener, MageController {
 			return;
 		}
 
-		if (event.getAction() == Action.LEFT_CLICK_AIR || event.getAction() == Action.LEFT_CLICK_BLOCK && !wand.isUpgrade())
+        if (!mage.checkLastClick(clickCooldown)) {
+            return;
+        }
+
+        if (action == Action.LEFT_CLICK_AIR || action == Action.LEFT_CLICK_BLOCK && !wand.isUpgrade())
 		{
 			wand.cast();
 			event.setCancelled(true);
 			return;
 		}
 
-		boolean toggleInventory = (event.getAction() == Action.RIGHT_CLICK_AIR);
-		if (!toggleInventory && event.getAction() == Action.RIGHT_CLICK_BLOCK) {
+		boolean toggleInventory = (action == Action.RIGHT_CLICK_AIR);
+		if (!toggleInventory && action == Action.RIGHT_CLICK_BLOCK) {
 			Material material = event.getClickedBlock().getType();
 			toggleInventory = !interactibleMaterials.contains(material);
 
