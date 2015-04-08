@@ -179,6 +179,12 @@ wand_upgrade_item: stick
 wand_glow: false
 wand_location_offset: 0.5
 
+# This will hide all flags on a wand except for
+# - Enchantments
+# - Attributes
+# See: http://minecraft.gamepedia.com/Tutorials/Command_NBT_Tags
+wand_hide_flags: 60
+
 # Set this to true to turn on material brush glow.
 brush_glow: false
 brush_item_glow: true
