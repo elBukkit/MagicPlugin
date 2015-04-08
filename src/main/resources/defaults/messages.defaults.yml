@@ -118,15 +118,12 @@ wand:
     cost_reduction: Cost Reduction $roman
     cooldown_reduction: Cooldown Reduction $roman
     power: Power $roman
-    haste: Haste $roman
     protection: Protection $roman
     protection_physical: Physical Protection $roman
     protection_projectile: Projectile Protection $roman
     protection_fall: Fall Protection $roman
     protection_fire: Fire Protection $roman
     protection_blast: Blast Protection $roman
-    health_regeneration: Health Regeneration $roman
-    hunger_regeneration: Anti-Hunger $roman
     costs_description: Costs $description
     active_costs_description: Costs $description Per Second
     owner_description: $name's Wand

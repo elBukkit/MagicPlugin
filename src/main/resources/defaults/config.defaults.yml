@@ -388,9 +388,6 @@ max_power_radius_multiplier_max: 4.0
 max_power_range_multiplier: 2.0
 max_power_range_multiplier_max: 5.0
 max_power: 100.0
-max_haste: 4
-max_health_regeneration: 5
-max_hunger_regeneration: 5
 max_damage_reduction: 0.3
 max_damage_reduction_explosions: 0.2
 max_damage_reduction_falling: 0.9

@@ -1,5 +1,9 @@
 # Migration Notes
 
+## 4.9
+
+ * Haste, health regen and hunger regen were removed in place of potion effects.
+
 ## 4.8.5
 
  * The worth_items list in config.yml has changed to "currency", and the format is different.

@@ -2,7 +2,6 @@ package com.elmakers.mine.bukkit.wand;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
@@ -41,10 +40,6 @@ public class WandLevel {
 	
 	private LinkedList<WeightedPair<Integer>> xpRegenerationProbability = new LinkedList<WeightedPair<Integer>>();
 	private LinkedList<WeightedPair<Integer>> xpMaxProbability = new LinkedList<WeightedPair<Integer>>();
-	private LinkedList<WeightedPair<Integer>> healthRegenerationProbability = new LinkedList<WeightedPair<Integer>>();
-	private LinkedList<WeightedPair<Integer>> hungerRegenerationProbability = new LinkedList<WeightedPair<Integer>>();
-	
-	private LinkedList<WeightedPair<Float>> hasteProbability = new LinkedList<WeightedPair<Float>>();
 
 	protected WandLevel(WandUpgradePath path, MageController controller, ConfigurationSection template, int levelIndex, int nextLevelIndex, float distance) {
         this.path = path;
@@ -87,11 +82,6 @@ public class WandLevel {
 		// Fetch regeneration
 		com.elmakers.mine.bukkit.utility.RandomUtils.populateIntegerProbabilityMap(xpRegenerationProbability, template.getConfigurationSection("mana_regeneration"), levelIndex, nextLevelIndex, distance);
 		com.elmakers.mine.bukkit.utility.RandomUtils.populateIntegerProbabilityMap(xpMaxProbability, template.getConfigurationSection("mana_max"), levelIndex, nextLevelIndex, distance);
-		com.elmakers.mine.bukkit.utility.RandomUtils.populateIntegerProbabilityMap(healthRegenerationProbability, template.getConfigurationSection("health_regeneration"), levelIndex, nextLevelIndex, distance);
-		com.elmakers.mine.bukkit.utility.RandomUtils.populateIntegerProbabilityMap(hungerRegenerationProbability, template.getConfigurationSection("hunger_regeneration"), levelIndex, nextLevelIndex, distance);
-		
-		// Fetch haste
-		com.elmakers.mine.bukkit.utility.RandomUtils.populateFloatProbabilityMap(hasteProbability, template.getConfigurationSection("haste"), levelIndex, nextLevelIndex, distance);
 		
 		// Fetch power
 		com.elmakers.mine.bukkit.utility.RandomUtils.populateFloatProbabilityMap(powerProbability, template.getConfigurationSection("power"), levelIndex, nextLevelIndex, distance);		
@@ -116,8 +106,6 @@ public class WandLevel {
         this.damageReductionExplosionsProbability = damageReductionExplosionsProbability.isEmpty() ? other.damageReductionExplosionsProbability : damageReductionExplosionsProbability;
         this.xpRegenerationProbability = xpRegenerationProbability.isEmpty() ? other.xpRegenerationProbability : xpRegenerationProbability;
         this.xpMaxProbability = xpMaxProbability.isEmpty() ? other.xpMaxProbability : xpMaxProbability;
-        this.healthRegenerationProbability = healthRegenerationProbability.isEmpty() ? other.healthRegenerationProbability : healthRegenerationProbability;
-        this.hungerRegenerationProbability = hungerRegenerationProbability.isEmpty() ? other.hungerRegenerationProbability : hungerRegenerationProbability;
     }
 
     protected void sendAddMessage(Mage mage,  Wand wand, String messageKey, String nameParam) {
@@ -291,9 +279,6 @@ public class WandLevel {
         double damageReductionFalling = wand.damageReductionFalling;
         double damageReductionFire = wand.damageReductionFire;
         double damageReductionExplosions = wand.damageReductionExplosions;
-        double healthRegeneration = wand.getHealthRegeneration();
-        double hungerRegeneration = wand.getHungerRegeneration();
-        double haste = wand.getHaste();
 
         if (costReductionProbability.size() > 0 && costReduction < path.getMaxCostReduction()) {
             propertiesAvailable.add(0);
@@ -318,15 +303,6 @@ public class WandLevel {
         }
         if (damageReductionExplosionsProbability.size() > 0 && damageReductionExplosions < path.getMaxDamageReductionExplosions()) {
             propertiesAvailable.add(7);
-        }
-        if (healthRegenerationProbability.size() > 0 && healthRegeneration < path.getMaxHealthRegeneration()) {
-            propertiesAvailable.add(8);
-        }
-        if (hungerRegenerationProbability.size() > 0 && hungerRegeneration < path.getMaxHungerRegeneration()) {
-            propertiesAvailable.add(9);
-        }
-        if (hasteProbability.size() > 0 && haste < path.getMaxHaste()) {
-            propertiesAvailable.add(10);
         }
 
         // Make sure we give them *something* if something is available
@@ -403,30 +379,6 @@ public class WandLevel {
                     sendAddMessage(mage, wand, "wand.upgraded_property", Wand.getLevelString(messages, "wand.protection_blast", (float)damageReductionExplosions));
 				}
 				break;
-			case 8:
-				if (healthRegenerationProbability.size() > 0 && healthRegeneration < path.getMaxHealthRegeneration()) {
-					addedProperties = true;
-                    healthRegeneration = Math.min(path.getMaxHealthRegeneration(), healthRegeneration + RandomUtils.weightedRandom(healthRegenerationProbability));
-					wandProperties.set("health_regeneration", healthRegeneration);
-                    sendAddMessage(mage, wand, "wand.upgraded_property", Wand.getLevelString(messages, "wand.health_regeneration", (float)healthRegeneration));
-				}
-				break;
-			case 9:
-				if (hungerRegenerationProbability.size() > 0 && hungerRegeneration < path.getMaxHungerRegeneration()) {
-					addedProperties = true;
-                    hungerRegeneration = Math.min(path.getMaxHungerRegeneration(), hungerRegeneration + RandomUtils.weightedRandom(hungerRegenerationProbability));
-					wandProperties.set("hunger_regeneration", hungerRegeneration);
-                    sendAddMessage(mage, wand, "wand.upgraded_property", Wand.getLevelString(messages, "wand.hunger_regeneration", (float)hungerRegeneration));
-				}
-				break;
-            case 10:
-                if (hasteProbability.size() > 0 && haste < path.getMaxHaste()) {
-                    addedProperties = true;
-                    haste = Math.min(path.getMaxHaste(), haste + RandomUtils.weightedRandom(hasteProbability));
-                    wandProperties.set("haste", haste);
-                    sendAddMessage(mage, wand, "wand.upgraded_property", Wand.getLevelString(messages, "wand.haste", (float)haste));
-                }
-                break;
 			}
 		}
 		

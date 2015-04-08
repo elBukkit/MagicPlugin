@@ -62,10 +62,9 @@
 #       protection_falling: (0.0-1.0)
 #       protection_blast: (0.0-1.0)
 #
-#       # Regeneration values are added every second
+#       # Potion effects are applied when held or worn
 #
-#       health_regeneration: (0-20)
-#       hunger_regeneration: (0-20)
+#       potion_effects: <list,of,effects>
 #
 #       # If non-zero, this wand will use the Mana system instead of XP
 #
@@ -77,13 +76,9 @@
 #
 #       power: (0.0-1.0)
 #
-#       # Increases player walk/fly speed- is limited by Bukkit
-#
-#       haste: (0.0 - 0.4-ish)
-#
-#       # Applies a potioneffect to the player while holding the wand
+#       # Applies a visual "potion" effect to the player while holding the wand
+#       effect_bubbles: true
 #       # also used by many spells that have visual effects when cast with this wand
-#
 #       effect_color: <hex color, eg 'FF0000')
 #       spells:
 #           - <spellname>
@@ -228,8 +223,6 @@ architect:
     indestructible: true
     icon: gold_axe
     effect_color: '00FF00'
-    hunger_regeneration: 1
-    health_regeneration: 1
     protection_falling: 1
     protection: 0.2
     xp_max: 1000
@@ -325,10 +318,7 @@ elder:
     undroppable: true
     indestructible: true
     xp_regeneration: 200
-    health_regeneration: 1
-    hunger_regeneration: 1
     power: 1
-    haste: 0.5
     effect_color: '8B008B'
     effect_bubbles: true
     organize: true
@@ -410,10 +400,7 @@ admin:
     cost_reduction: 2
     protection: 2
     cooldown_reduction: 2
-    health_regeneration: 2
-    hunger_regeneration: 2
     power: 1
-    haste: 0.5
     effect_color: '888888'
     effect_bubbles: true
     active_spell: fly
@@ -455,8 +442,6 @@ borealis:
     cost_reduction: 2
     protection: 2
     cooldown_reduction: 2
-    health_regeneration: 1
-    hunger_regeneration: 1
     spells:
         - levitate
         - fling|2
@@ -542,10 +527,7 @@ wolf:
     cost_reduction: 2
     protection: 2
     cooldown_reduction: 2
-    health_regeneration: 1
-    hunger_regeneration: 1
     power: 0
-    haste: 0.1
     quiet: 0
     hotbar_count: 3
     effect_color: '00AACC'
@@ -903,7 +885,7 @@ alphabetizer:
     alphabetize: true
 antihunger:
     upgrade: true
-    hunger_regeneration: 0.5
+    potion_effects: saturation
 loud:
     icon: skull_item:http://i.imgur.com/1x70Wzz.png
     upgrade: true

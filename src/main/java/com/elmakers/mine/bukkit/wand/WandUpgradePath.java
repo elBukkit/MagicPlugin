@@ -53,8 +53,6 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
     private int maxUses = 500;
     private int maxMaxXp = 1500;
     private int maxXpRegeneration = 150;
-    private float maxHungerRegeneration = 2;
-    private float maxHealthRegeneration = 2;
     private float maxDamageReduction = 0.4f;
     private float maxDamageReductionExplosions = 0.3f;
     private float maxDamageReductionFalling = 0.9f;
@@ -63,7 +61,6 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
     private float maxDamageReductionProjectiles = 0.2f;
     private float maxCostReduction = 0.5f;
     private float maxCooldownReduction = 0.5f;
-    private float maxHaste = 1;
     private float maxPower = 1;
     private int minLevel = 10;
     private int maxLevel = 50;
@@ -77,8 +74,6 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
         this.levels = inherit.levels;
         this.maxMaxXp = inherit.maxMaxXp;
         this.maxXpRegeneration = inherit.maxXpRegeneration;
-        this.maxHungerRegeneration = inherit.maxHungerRegeneration;
-        this.maxHealthRegeneration = inherit.maxHealthRegeneration;
         this.maxDamageReduction = inherit.maxDamageReduction;
         this.maxDamageReductionExplosions = inherit.maxDamageReductionExplosions;
         this.maxDamageReductionFalling = inherit.maxDamageReductionFalling;
@@ -86,7 +81,6 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
         this.maxDamageReductionPhysical = inherit.maxDamageReductionPhysical;
         this.maxDamageReductionProjectiles = inherit.maxDamageReductionProjectiles;
         this.maxCostReduction = inherit.maxCostReduction;
-        this.maxHaste = inherit.maxHaste;
         this.maxPower = inherit.maxPower;
         this.minLevel = inherit.minLevel;
         this.maxLevel = inherit.maxLevel;
@@ -165,8 +159,6 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
         maxUses = template.getInt("max_uses", maxUses);
         maxMaxXp = template.getInt("max_mana", maxMaxXp);
         maxXpRegeneration = template.getInt("max_mana_regeneration", maxXpRegeneration);
-        maxHealthRegeneration = (float)template.getDouble("max_health_regeneration", maxHealthRegeneration);
-        maxHungerRegeneration = (float)template.getDouble("max_hunger_regeneration", maxHungerRegeneration);
 
         minLevel = template.getInt("min_enchant_level", minLevel);
         maxLevel = template.getInt("max_enchant_level", maxLevel);
@@ -179,7 +171,6 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
         maxDamageReduction = (float)template.getDouble("max_damage_reduction_projectiles", maxDamageReductionProjectiles);
         maxCostReduction = (float)template.getDouble("max_cost_reduction", maxCostReduction);
         maxCooldownReduction = (float)template.getDouble("max_cooldown_reduction", maxCooldownReduction);
-        maxHaste = (float)template.getDouble("max_haste", maxHaste);
 
         // Parse defined levels
         if (levelMap == null) {
@@ -321,14 +312,6 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
         return maxXpRegeneration;
     }
 
-    public float getMaxHungerRegeneration() {
-        return maxHungerRegeneration;
-    }
-
-    public float getMaxHealthRegeneration() {
-        return maxHealthRegeneration;
-    }
-
     public float getMaxDamageReduction() {
         return maxDamageReduction;
     }
@@ -359,10 +342,6 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
 
     public float getMaxCooldownReduction() {
         return maxCooldownReduction;
-    }
-
-    public float getMaxHaste() {
-        return maxHaste;
     }
 
     public float getMaxPower() {

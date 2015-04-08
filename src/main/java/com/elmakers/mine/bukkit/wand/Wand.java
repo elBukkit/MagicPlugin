@@ -51,7 +51,6 @@ import org.bukkit.event.player.PlayerExpChangeEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
-import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand {
@@ -74,8 +73,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		"effect_particle", "effect_particle_count", "effect_particle_data", "effect_particle_interval",
         "effect_particle_radius", "effect_particle_offset",
         "effect_sound", "effect_sound_interval", "effect_sound_pitch", "effect_sound_volume",
-		"haste", "hotbar_count", "hotbar",
-		"health_regeneration", "hunger_regeneration", 
+		"hotbar_count", "hotbar",
 		"icon", "mode", "brush_mode", "keep", "locked", "quiet", "force", "randomize", "rename",
 		"power", "overrides",
 		"protection", "protection_physical", "protection_projectiles", 
@@ -85,8 +83,11 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	};
 	public final static String[] HIDDEN_PROPERTY_KEYS = {
 		"id", "owner", "owner_id", "name", "description", "template",
-		"organize", "alphabetize", "fill", "stored", "upgrade_icon", "xp_timestamp"
-	};
+		"organize", "alphabetize", "fill", "stored", "upgrade_icon", "xp_timestamp",
+        // For legacy wands
+        "haste",
+        "health_regeneration", "hunger_regeneration",
+    };
 	public final static String[] ALL_PROPERTY_KEYS = (String[])ArrayUtils.addAll(PROPERTY_KEYS, HIDDEN_PROPERTY_KEYS);
 	
 	protected ItemStack item;
@@ -148,10 +149,6 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
     private long lastXpRegeneration = 0;
     private int effectiveXpMax = 0;
     private int effectiveXpRegeneration = 0;
-	private float healthRegeneration = 0;
-	private PotionEffect healthRegenEffect = null;
-	private float hungerRegeneration = 0;
-	private PotionEffect hungerRegenEffect = null;
 	
 	private ColorHD effectColor = null;
 	private float effectColorSpellMixWeight = DEFAULT_SPELL_COLOR_MIX_WEIGHT;
@@ -169,9 +166,6 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 
     private SoundEffect effectSound = null;
 	private int effectSoundInterval = 0;
-	
-	private float speedIncrease = 0;
-	private PotionEffect hasteEffect = null;
 
     private int quietLevel = 0;
     private Map<String, String> castOverrides = null;
@@ -385,14 +379,6 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		xp = Math.max(0,  xp - amount);
 		updateMana();
 	}
-
-	public float getHealthRegeneration() {
-		return healthRegeneration;
-	}
-
-	public float getHungerRegeneration() {
-		return hungerRegeneration;
-	}
 	
 	public boolean isModifiable() {
 		return !locked;
@@ -435,10 +421,6 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	public float getPower() {
 		return power;
 	}
-
-    public float getHaste() {
-        return speedIncrease;
-    }
 	
 	public boolean isSuperProtected() {
 		return damageReduction > 1;
@@ -939,15 +921,12 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		node.set("protection_falling", damageReductionFalling);
 		node.set("protection_fire", damageReductionFire);
 		node.set("protection_explosions", damageReductionExplosions);
-		node.set("haste", speedIncrease);
 		node.set("xp", xp);
 		node.set("xp_regeneration", xpRegeneration);
 		node.set("xp_max", xpMax);
         node.set("xp_max_boost", xpMaxBoost);
         node.set("xp_regeneration_boost", xpRegenerationBoost);
         node.set("xp_timestamp", lastXpRegeneration);
-		node.set("health_regeneration", healthRegeneration);
-		node.set("hunger_regeneration", hungerRegeneration);
 		node.set("uses", uses);
 		node.set("locked", locked);
 		node.set("effect_color", effectColor == null ? "none" : effectColor.toString());
@@ -1122,14 +1101,23 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         xpMaxBoost = safe ? Math.max(_xpMaxBoost, xpMaxBoost) : _xpMaxBoost;
         float _xpRegenerationBoost = (float)wandConfig.getDouble("xp_regeneration_boost", xpRegenerationBoost);
         xpRegenerationBoost = safe ? Math.max(_xpRegenerationBoost, xpRegenerationBoost) : _xpRegenerationBoost;
-		float _healthRegeneration = (float)wandConfig.getDouble("health_regeneration", healthRegeneration);
-		healthRegeneration = safe ? Math.max(_healthRegeneration, healthRegeneration) : _healthRegeneration;
-		float _hungerRegeneration = (float)wandConfig.getDouble("hunger_regeneration", hungerRegeneration);
-		hungerRegeneration = safe ? Math.max(_hungerRegeneration, hungerRegeneration) : _hungerRegeneration;
-		int _uses = wandConfig.getInt("uses", uses);
-		uses = safe ? Math.max(_uses, uses) : _uses;
-		float _speedIncrease = (float)wandConfig.getDouble("haste", speedIncrease);
-		speedIncrease = safe ? Math.max(_speedIncrease, speedIncrease) : _speedIncrease;
+        int _uses = wandConfig.getInt("uses", uses);
+        uses = safe ? Math.max(_uses, uses) : _uses;
+
+        // Convert some legacy properties to potion effects
+        float healthRegeneration = (float)wandConfig.getDouble("health_regeneration", 0);
+		float hungerRegeneration = (float)wandConfig.getDouble("hunger_regeneration", 0);
+		float speedIncrease = (float)wandConfig.getDouble("haste", 0);
+
+        if (speedIncrease > 0) {
+            potionEffects.put(PotionEffectType.SPEED, 1);
+        }
+        if (healthRegeneration > 0) {
+            potionEffects.put(PotionEffectType.REGENERATION, 1);
+        }
+        if (hungerRegeneration > 0) {
+            potionEffects.put(PotionEffectType.SATURATION, 1);
+        }
 
         lastXpRegeneration = wandConfig.getLong("xp_timestamp");
 
@@ -1495,7 +1483,6 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		if (costReduction > 0) lore.add(ChatColor.AQUA + getLevelString(controller.getMessages(), "wand.cost_reduction", costReduction));
 		if (cooldownReduction > 0) lore.add(ChatColor.AQUA + getLevelString(controller.getMessages(), "wand.cooldown_reduction", cooldownReduction));
 		if (power > 0) lore.add(ChatColor.AQUA + getLevelString(controller.getMessages(), "wand.power", power));
-		if (speedIncrease > 0) lore.add(ChatColor.AQUA + getLevelString(controller.getMessages(), "wand.haste", speedIncrease));
 		if (damageReduction > 0) lore.add(ChatColor.AQUA + getLevelString(controller.getMessages(), "wand.protection", damageReduction));
 		if (damageReduction < 1) {
 			if (damageReductionPhysical > 0) lore.add(ChatColor.AQUA + getLevelString(controller.getMessages(), "wand.protection_physical", damageReductionPhysical));
@@ -1504,8 +1491,6 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 			if (damageReductionFire > 0) lore.add(ChatColor.AQUA + getLevelString(controller.getMessages(), "wand.protection_fire", damageReductionFire));
 			if (damageReductionExplosions > 0) lore.add(ChatColor.AQUA + getLevelString(controller.getMessages(), "wand.protection_blast", damageReductionExplosions));
 		}
-		if (healthRegeneration > 0) lore.add(ChatColor.AQUA + getLevelString(controller.getMessages(), "wand.health_regeneration", healthRegeneration));
-		if (hungerRegeneration > 0) lore.add(ChatColor.AQUA + getLevelString(controller.getMessages(), "wand.hunger_regeneration", hungerRegeneration));
 	}
 	
 	public static String getLevelString(Messages messages, String templateName, float amount)
@@ -2158,9 +2143,6 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		if (other.isForcedUpgrade() || other.damageReductionFalling > damageReductionFalling) { damageReductionFalling = other.damageReductionFalling; modified = true; if (damageReductionFalling > 0) sendAddMessage(mage, "wand.upgraded_property", getLevelString(messages, "wand.protection_fall", damageReductionFalling)); }
 		if (other.isForcedUpgrade() || other.damageReductionFire > damageReductionFire) { damageReductionFire = other.damageReductionFire; modified = true; if (damageReductionFire > 0) sendAddMessage(mage, "wand.upgraded_property", getLevelString(messages, "wand.protection_fire", damageReductionFire)); }
 		if (other.isForcedUpgrade() || other.damageReductionExplosions > damageReductionExplosions) { damageReductionExplosions = other.damageReductionExplosions; modified = true; if (damageReductionExplosions > 0) sendAddMessage(mage, "wand.upgraded_property", getLevelString(messages, "wand.protection_blast", damageReductionExplosions)); }
-		if (other.isForcedUpgrade() || other.healthRegeneration > healthRegeneration) { healthRegeneration = other.healthRegeneration; modified = true; if (healthRegeneration > 0) sendAddMessage(mage, "wand.upgraded_property", getLevelString(messages, "wand.health_regeneration", healthRegeneration)); }
-		if (other.isForcedUpgrade() || other.hungerRegeneration > hungerRegeneration) { hungerRegeneration = other.hungerRegeneration; modified = true; if (hungerRegeneration > 0) sendAddMessage(mage, "wand.upgraded_property", getLevelString(messages, "wand.hunger_regeneration", hungerRegeneration)); }
-		if (other.isForcedUpgrade() || other.speedIncrease > speedIncrease) { speedIncrease = other.speedIncrease; modified = true; if (speedIncrease > 0) sendAddMessage(mage, "wand.upgraded_property", getLevelString(messages, "wand.haste", speedIncrease)); }
         if (other.isForcedUpgrade() || other.xpRegenerationBoost > xpRegenerationBoost) { xpRegenerationBoost = other.xpRegenerationBoost; modified = true; if (xpRegenerationBoost > 0) sendAddMessage(mage, "wand.upgraded_property", getLevelString(messages, "wand.mana_regeneration_boost", xpRegenerationBoost)); }
         if (other.isForcedUpgrade() || other.xpMaxBoost > xpMaxBoost) { xpMaxBoost = other.xpMaxBoost; modified = true; if (xpMaxBoost > 0) sendAddMessage(mage, "wand.upgraded_property", getLevelString(messages, "wand.mana_boost", xpMaxBoost)); }
 
@@ -3161,30 +3143,6 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         // Update hotbar glow
         updateHotbarStatus();
 
-		if (speedIncrease > 0) {
-			int hasteLevel = (int)(speedIncrease * controller.getMaxHaste());
-			if (hasteEffect == null || hasteEffect.getAmplifier() != hasteLevel) {
-				hasteEffect = new PotionEffect(PotionEffectType.SPEED, PotionEffectDuration, hasteLevel, true);
-			}
-			
-			CompatibilityUtils.applyPotionEffect(player, hasteEffect);
-		}
-		if (healthRegeneration > 0) {
-			int regenLevel = (int)(healthRegeneration * controller.getMaxHealthRegeneration());
-			if (healthRegenEffect == null || healthRegenEffect.getAmplifier() != regenLevel) {
-				healthRegenEffect = new PotionEffect(PotionEffectType.REGENERATION, PotionEffectDuration, regenLevel, true);
-			}
-			
-			CompatibilityUtils.applyPotionEffect(player, healthRegenEffect);
-		}
-		if (hungerRegeneration > 0) {
-			int regenLevel = (int)(hungerRegeneration * controller.getMaxHungerRegeneration());
-			if (hungerRegenEffect == null || hungerRegenEffect.getAmplifier() != regenLevel) {
-				hungerRegenEffect = new PotionEffect(PotionEffectType.SATURATION, PotionEffectDuration, regenLevel, true);
-			}
-			
-			CompatibilityUtils.applyPotionEffect(player, hungerRegenEffect);
-		}
 		if (usesMana()) {
             long now = System.currentTimeMillis();
             if (lastXpRegeneration > 0)
@@ -3948,5 +3906,17 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 
     public Map<PotionEffectType, Integer> getPotionEffects() {
         return potionEffects;
+    }
+
+    @Override
+    public float getHealthRegeneration() {
+        Integer level = potionEffects.get(PotionEffectType.REGENERATION);
+        return level != null && level > 0 ? (float)level : 0;
+    }
+
+    @Override
+    public float getHungerRegeneration()  {
+        Integer level = potionEffects.get(PotionEffectType.SATURATION);
+        return level != null && level > 0 ? (float)level : 0;
     }
 }

@@ -295,18 +295,6 @@ public class MagicController implements Listener, MageController {
         return maxPower;
     }
 
-    public float getMaxHaste() {
-        return maxHaste;
-    }
-
-    public float getMaxHealthRegeneration() {
-        return maxHealthRegeneration;
-    }
-
-    public float getMaxHungerRegeneration() {
-        return maxHungerRegeneration;
-    }
-
     public float getMaxDamageReduction() {
         return maxDamageReduction;
     }
@@ -1876,9 +1864,6 @@ public class MagicController implements Listener, MageController {
 		maxRadiusPowerMultiplierMax = (float)properties.getDouble("max_power_radius_multiplier_max", maxRadiusPowerMultiplierMax);
 
         maxPower = (float)properties.getDouble("max_power", maxPower);
-        maxHaste = (float)properties.getDouble("max_haste", maxHaste);
-        maxHealthRegeneration = (float)properties.getDouble("max_health_regeneration", maxHealthRegeneration);
-        maxHungerRegeneration = (float)properties.getDouble("max_hunger_regeneration", maxHungerRegeneration);
         maxDamageReduction = (float)properties.getDouble("max_damage_reduction", maxDamageReduction);
         maxDamageReductionExplosions = (float)properties.getDouble("max_damage_reduction_explosions", maxDamageReductionExplosions);
         maxDamageReductionFalling = (float)properties.getDouble("max_damage_reduction_falling", maxDamageReductionFalling);
@@ -4711,9 +4696,6 @@ public class MagicController implements Listener, MageController {
     private float								maxRangePowerMultiplierMax 	    = 5.0f;
 
     private float								maxPower						= 100.0f;
-    private float								maxHaste						= 5.0f;
-    private float								maxHealthRegeneration			= 1.0f;
-    private float								maxHungerRegeneration			= 1.0f;
     private float								maxDamageReduction 			    = 0.2f;
     private float								maxDamageReductionExplosions 	= 0.2f;
     private float								maxDamageReductionFalling   	= 0.2f;
