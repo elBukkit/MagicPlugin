@@ -32,9 +32,8 @@ public class DataStore extends YamlConfiguration {
 		try {
             File tempFile = new File(file.getAbsolutePath() + ".tmp");
             if (tempFile.exists()) {
-                logger.warning("Not saving file " + file.getName() + ", temp file exists");
-                tempFile.deleteOnExit();
-                return;
+                logger.warning("Temp file for " + file.getName() + "exists, deleting");
+                tempFile.delete();
             }
             File backupFile = new File(file.getAbsolutePath() + ".bak");
 			save(tempFile);
