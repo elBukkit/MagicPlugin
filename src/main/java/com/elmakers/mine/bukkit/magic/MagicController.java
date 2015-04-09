@@ -1522,8 +1522,9 @@ public class MagicController implements Listener, MageController {
                 }
 
                 if (!mage.isLoading()) {
-                    mage.save(playerConfig);
-                    stores.add(playerConfig);
+                    if (mage.save(playerConfig)) {
+                        stores.add(playerConfig);
+                    }
                 } else {
                     getLogger().info("Skipping save of mage, already loading: " + mage.getName());
                 }
@@ -3145,30 +3146,27 @@ public class MagicController implements Listener, MageController {
             final File playerData = new File(playerDataFolder, mage.getId() + ".dat");
             getLogger().info("Player logged out, saving data to " + playerData.getName() + (asynchronousSaving ? "" : " synchronously"));
             final DataStore playerConfig = new DataStore(getLogger(), playerData);
-            mage.save(playerConfig);
-
-            if (asynchronousSaving)
-            {
-                Bukkit.getScheduler().runTaskAsynchronously(plugin, new Runnable() {
-                    @Override
-                    public void run() {
-                        synchronized (saveLock) {
-                            try {
-                                playerConfig.save();
-                            } catch (Exception ex) {
-                                ex.printStackTrace();
+            if (mage.save(playerConfig)) {
+                if (asynchronousSaving) {
+                    Bukkit.getScheduler().runTaskAsynchronously(plugin, new Runnable() {
+                        @Override
+                        public void run() {
+                            synchronized (saveLock) {
+                                try {
+                                    playerConfig.save();
+                                } catch (Exception ex) {
+                                    ex.printStackTrace();
+                                }
                             }
                         }
-                    }
-                });
-            }
-            else
-            {
-                synchronized (saveLock) {
-                    try {
-                        playerConfig.save();
-                    } catch (Exception ex) {
-                        ex.printStackTrace();
+                    });
+                } else {
+                    synchronized (saveLock) {
+                        try {
+                            playerConfig.save();
+                        } catch (Exception ex) {
+                            ex.printStackTrace();
+                        }
                     }
                 }
             }
@@ -4626,6 +4624,60 @@ public class MagicController implements Listener, MageController {
     @Override
     public com.elmakers.mine.bukkit.api.wand.WandUpgradePath getPath(String key) {
         return WandUpgradePath.getPath(key);
+    }
+
+    @Override
+    public ItemStack deserialize(ConfigurationSection root, String key)
+    {
+        ConfigurationSection itemSection = root.getConfigurationSection(key);
+        if (itemSection == null) {
+            return null;
+        }
+        ItemStack item = itemSection.getItemStack("item");
+        if (item == null) {
+            return null;
+        }
+        if (itemSection.contains("wand"))
+        {
+            item = InventoryUtils.makeReal(item);
+            ConfigurationSection stateNode = itemSection.getConfigurationSection("wand");
+            Object wandNode = InventoryUtils.createNode(item, Wand.WAND_KEY);
+            if (wandNode != null) {
+                InventoryUtils.saveTagsToNBT(stateNode, wandNode, Wand.ALL_PROPERTY_KEYS);
+            }
+        }
+        else if (itemSection.contains("spell"))
+        {
+            item = InventoryUtils.makeReal(item);
+            InventoryUtils.setMeta(item, "spell", itemSection.getString("spell"));
+        }
+        else if (itemSection.contains("brush"))
+        {
+            item = InventoryUtils.makeReal(item);
+            InventoryUtils.setMeta(item, "brush", itemSection.getString("brush"));
+        }
+        return item;
+    }
+
+    @Override
+    public void serialize(ConfigurationSection root, String key, ItemStack item)
+    {
+        ConfigurationSection itemSection = root.createSection(key);
+        itemSection.set("item", item);
+        if (Wand.isWand(item))
+        {
+            ConfigurationSection stateNode = itemSection.createSection("wand");
+            Object wandNode = InventoryUtils.getNode(item, Wand.WAND_KEY);
+            InventoryUtils.loadTagsFromNBT(stateNode, wandNode, Wand.ALL_PROPERTY_KEYS);
+        }
+        else if(Wand.isSpell(item))
+        {
+            itemSection.set("spell", Wand.getSpell(item));
+        }
+        else if (Wand.isBrush(item))
+        {
+            itemSection.set("brush", Wand.getBrush(item));
+        }
     }
 
     /*

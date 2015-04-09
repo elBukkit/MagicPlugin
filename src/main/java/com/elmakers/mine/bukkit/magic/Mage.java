@@ -10,6 +10,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Level;
 
 import com.elmakers.mine.bukkit.api.action.GUIAction;
 import com.elmakers.mine.bukkit.api.batch.SpellBatch;
@@ -525,17 +526,18 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         }
     }
 
-    protected void load(ConfigurationSection configNode) {
+    protected boolean load(ConfigurationSection configNode) {
         try {
             if (configNode == null) {
                 onLoad();
-                return;
+                return true;
             }
 
             boundWand = null;
             if (configNode.contains("bound_wand")) {
-                // TODO: Store item as well, to preserve enchantments and attributes
                 boundWand = new Wand(controller, configNode.getConfigurationSection("bound_wand"));
+            } else if (configNode.contains("wand")) {
+                boundWand = new Wand(controller, controller.deserialize(configNode, "wand"));
             }
             if (configNode.contains("data")) {
                 data = configNode.getConfigurationSection("data");
@@ -566,9 +568,8 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                 for (String key : keys) {
                     try {
                         int index = Integer.parseInt(key);
-                        ItemStack item = respawnData.getItemStack(key);
+                        ItemStack item = controller.deserialize(respawnData, key);
                         respawnInventory.put(index, item);
-
                     } catch (Exception ex) {
                     }
                 }
@@ -580,7 +581,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                 for (String key : keys) {
                     try {
                         int index = Integer.parseInt(key);
-                        ItemStack item = respawnArmorData.getItemStack(key);
+                        ItemStack item = controller.deserialize(respawnArmorData, key);
                         respawnArmor.put(index, item);
 
                     } catch (Exception ex) {
@@ -593,13 +594,15 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             }
         } catch (Exception ex) {
             controller.getPlugin().getLogger().warning("Failed to load player data for " + playerName + ": " + ex.getMessage());
+            return false;
         }
 
         onLoad();
+        return true;
     }
 
     @Override
-    public void save(ConfigurationSection configNode) {
+    public boolean save(ConfigurationSection configNode) {
         try {
             configNode.set("name", playerName);
             configNode.set("last_cast", lastCast);
@@ -620,21 +623,30 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             }
 
             if (boundWand != null) {
-                ConfigurationSection wandConfig = configNode.createSection("bound_wand");
-                boundWand.saveProperties(wandConfig);
+                controller.serialize(configNode, "wand", boundWand.getItem());
             }
             if (respawnArmor != null) {
-                configNode.set("respawn_armor", respawnArmor);
+                ConfigurationSection armorSection = configNode.createSection("respawn_armor");
+                for (Map.Entry<Integer, ItemStack> entry : respawnArmor.entrySet())
+                {
+                    controller.serialize(armorSection, Integer.toString(entry.getKey()), entry.getValue());
+                }
             }
             if (respawnInventory != null) {
-                configNode.set("respawn_inventory", respawnInventory);
+                ConfigurationSection inventorySection = configNode.createSection("respawn_inventory");
+                for (Map.Entry<Integer, ItemStack> entry : respawnInventory.entrySet())
+                {
+                    controller.serialize(inventorySection, Integer.toString(entry.getKey()), entry.getValue());
+                }
             }
 
             ConfigurationSection dataSection = configNode.createSection("data");
             ConfigurationUtils.addConfigurations(dataSection, data);
         } catch (Exception ex) {
-            controller.getPlugin().getLogger().warning("Failed to save player data for " + playerName + ": " + ex.getMessage());
+            controller.getPlugin().getLogger().log(Level.WARNING, "Failed to save player data for " + playerName, ex);
+            return false;
         }
+        return true;
     }
 
     protected boolean checkLastClick(long maxInterval) {
@@ -1508,6 +1520,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                 armor[entry.getKey()] = entry.getValue();
             }
             player.getInventory().setArmorContents(armor);
+            armorUpdated();
         }
         if (respawnInventory != null) {
             for (Map.Entry<Integer, ItemStack> entry : respawnInventory.entrySet()) {
