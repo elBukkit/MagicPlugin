@@ -63,24 +63,7 @@
 #       # This provides bonus damage and effects to some spells
 #       # and increases the overall range of all targeted spells
 #
-#       power: (0.0-1.
-divinghelmet:
-    mode: cast
-    active_spell: wear
-    icon: stained_glass:3
-    indestructible: true
-    locked: true
-    keep: true
-    quiet: 2
-    xp_regeneration_boost: -0.5
-    potion_effects: water_breathing
-    passive: true
-    enchantments:
-      oxygen: 3
-      water_worker: 1
-      depth_strider: 3
-    spells:
-        - wear0)
+#       power: (0.0-1.0)
 #
 #       # Increases player walk/fly speed- is limited by Bukkit
 #
