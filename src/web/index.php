@@ -146,10 +146,10 @@ ksort($enchanting);
 // Process economy data
 $worthItems = array();
 
-if (isset($general['worth_items'])) {
+if (isset($general['currency'])) {
     $tempWorth = array();
-    foreach ($general['worth_items'] as $item => $amount) {
-      $tempWorth[$amount] = $item;
+    foreach ($general['currency'] as $item => $data) {
+      $tempWorth[$data['worth']] = $item;
     }
     krsort($tempWorth);
     foreach ($tempWorth as $amount => $item) {
@@ -168,8 +168,6 @@ $worthBrush = isset($general['worth_brush']) ? $general['worth_brush'] : 0;
 $worthMana = isset($general['worth_mana']) ? $general['worth_mana'] : 0;
 $worthManaMax = isset($general['worth_mana_max']) ? $general['worth_mana_max'] : 0;
 $worthManaRegeneration = isset($general['worth_mana_regeneration']) ? $general['worth_mana_regeneration'] : 0;
-$worthHealthRegeneration = isset($general['worth_health_regeneration']) ? $general['worth_health_regeneration'] : 0;
-$worthHungerRegeneration = isset($general['worth_hunger_regeneration']) ? $general['worth_hunger_regeneration'] : 0;
 $worthDamageReduction = isset($general['worth_damage_reduction']) ? $general['worth_damage_reduction'] : 0;
 $worthDamageReductionExplosions = isset($general['worth_damage_reduction_explosions']) ? $general['worth_damage_reduction_explosions'] : 0;
 $worthDamageReductionFalling = isset($general['worth_damage_reduction_falling']) ? $general['worth_damage_reduction_falling'] : 0;
@@ -178,7 +176,6 @@ $worthDamageReductionFire = isset($general['worth_damage_reduction_fire']) ? $ge
 $worthDamageReductionProjectiles = isset($general['worth_damage_reduction_projectiles']) ? $general['worth_damage_reduction_projectiles'] : 0;
 $worthCostReduction = isset($general['worth_cost_reduction']) ? $general['worth_cost_reduction'] : 0;
 $worthCooldownReduction = isset($general['worth_cooldown_reduction']) ? $general['worth_cooldown_reduction'] : 0;
-$worthHaste = isset($general['worth_haste']) ? $general['worth_haste'] : 0;
 $worthEffectColor = isset($general['worth_effect_color']) ? $general['worth_effect_color'] : 0;
 $worthEffectParticle = isset($general['worth_effect_particle']) ? $general['worth_effect_particle'] : 0;
 $worthEffectSound = isset($general['worth_effect_sound']) ? $general['worth_effect_sound'] : 0;
@@ -213,8 +210,6 @@ foreach ($wands as $key => $wand) {
     $worth += (isset($wand['xp']) ? $wand['xp'] : 0) * $worthMana;
     $worth += (isset($wand['xp_max']) ? $wand['xp_max'] : 0) * $worthManaMax;
     $worth += (isset($wand['xp_regeneration']) ? $wand['xp_regeneration'] : 0) * $worthManaRegeneration;
-    $worth += (isset($wand['hunger_regeneration']) ? $wand['hunger_regeneration'] : 0) * $worthHungerRegeneration;
-    $worth += (isset($wand['health_regeneration']) ? $wand['health_regeneration'] : 0) * $worthHealthRegeneration;
     $worth += (isset($wand['damage_reduction']) ? $wand['damage_reduction'] : 0) * $worthDamageReduction;
     $worth += (isset($wand['damage_reduction_physical']) ? $wand['damage_reduction_physical'] : 0) * $worthDamageReductionPhysical;
     $worth += (isset($wand['damage_reduction_falling']) ? $wand['damage_reduction_falling'] : 0) * $worthDamageReductionFalling;
@@ -486,7 +481,20 @@ function printIcon($iconUrl, $title) {
                         {
                             $wand = $recipe['wand'];
                             $name = isset($wand['name']) && $wand['name'] ? $wand['name'] : "($key)";
-                            echo '<li class="ui-widget-content" id="recipe-' . $key . '"><span class="recipeTitle">' . $name . '</span></li>';
+                            $icon = 'wand';
+                            if (isset($wand['icon']))
+                            {
+                                $icon = $wand['icon'];
+                                if (strpos($icon, 'skull_item:') !== FALSE) {
+                                    $icon = trim(substr($icon, 11));
+                                    $icon = printIcon($icon, $name);
+                                } else {
+                                    $icon = printMaterial($icon, true);
+                                }
+                            } else {
+                                $icon = printMaterial($icon, true);
+                            }
+                            echo '<li class="ui-widget-content" id="recipe-' . $key . '">' . $icon . '<span class="recipeTitle">' . $name . '</span></li>';
                         }
 					}
 				?>
@@ -504,6 +512,7 @@ function printIcon($iconUrl, $title) {
 				<?php
 					foreach ($enchanting as $key => $path) {
                         $name = isset($path['name']) ? $path['name'] : "($key)";
+
 						echo '<li class="ui-widget-content" id="path-' . $key . '"><span class="pathTitle">' . $name . '</span></li>';
 					}
 				?>

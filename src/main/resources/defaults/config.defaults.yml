@@ -488,20 +488,17 @@ debug_effects: false
 # costs fall along even item stack limits. (64)
 
 worth_use_multiplier: 0.125
-worth_mana: 0.0078125
-worth_mana_max: 1
-worth_mana_regeneration: 8
-worth_health_regeneration: 512
-worth_hunger_regeneration: 512
-worth_damage_reduction: 1024
-worth_damage_reduction_explosions: 768
-worth_damage_reduction_falling: 256
-worth_damage_reduction_fire: 512
-worth_damage_reduction_physical: 1024
-worth_damage_reduction_projectiles: 768
-worth_cost_reduction: 1024
-worth_cooldown_reduction: 1024
-worth_haste: 512
+worth_mana:1
+worth_mana_max: 100
+worth_mana_regeneration: 800
+worth_damage_reduction: 10000
+worth_damage_reduction_explosions: 7000
+worth_damage_reduction_falling: 3000
+worth_damage_reduction_fire: 5000
+worth_damage_reduction_physical: 5000
+worth_damage_reduction_projectiles: 6000
+worth_cost_reduction: 100000
+worth_cooldown_reduction: 100000
 
 # A wand may have additional value for each brush it contains
 # Brushes are currently not able to have specific values, though this may be a future addition.
