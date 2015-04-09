@@ -12,6 +12,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -244,4 +245,22 @@ public interface MageController {
      * image maps.
      */
     public MapController getMaps();
+
+    /**
+     * Use this to safely load a Magic ItemStack from a config.
+     *
+     * @param root
+     * @param key
+     * @return
+     */
+    public ItemStack deserialize(ConfigurationSection root, String key);
+
+    /**
+     * Use this to safely save a Magic ItemStack to a config.
+     *
+     * @param root
+     * @param key
+     * @param item
+     */
+    public void serialize(ConfigurationSection root, String key, ItemStack item);
 }
