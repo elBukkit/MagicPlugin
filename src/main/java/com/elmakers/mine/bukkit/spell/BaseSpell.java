@@ -195,6 +195,11 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         return preventPassThroughMaterials == null || !preventPassThroughMaterials.contains(mat);
     }
 
+    public boolean isPassThrough(Material mat)
+    {
+        return passthroughMaterials != null && passthroughMaterials.contains(mat);
+    }
+
     /*
      * Ground / location search and test functions
      */
