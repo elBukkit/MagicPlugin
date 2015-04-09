@@ -2713,6 +2713,10 @@ public class MagicController implements Listener, MageController {
 		for (int index = 0; index < contents.length; index++)
 		{
             ItemStack itemStack = contents[index];
+            if (NMSUtils.isTemporary(itemStack)) {
+                modifiedDrops = true;
+                continue;
+            }
 			boolean keepItem = false;
 			if (Wand.isWand(itemStack)) {
 				keepItem = keepWandsOnDeath;	
@@ -2735,6 +2739,10 @@ public class MagicController implements Listener, MageController {
         for (int index = 0; index < armor.length; index++)
         {
             ItemStack itemStack = armor[index];
+            if (NMSUtils.isTemporary(itemStack)) {
+                modifiedDrops = true;
+                continue;
+            }
             boolean keepItem = false;
             if (Wand.isWand(itemStack)) {
                 keepItem = keepWandsOnDeath;
