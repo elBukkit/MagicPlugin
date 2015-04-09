@@ -6351,10 +6351,16 @@ magicitemshop:
           wand|wizardleggings: 4000
           wand|wizardboots: 4000
           wand|invisiblecloak: 10000
-          wand|rabbitboots: 4000
+          wand|rabbitboots: 300
+          wand|rocketboots: 4000
+          wand|flashboots: 4000
           wand|camera: 200
           wand|divinghelmet: 1000
           wand|wolfhouse: 200000
+          wand|apprenticehelmet: 500
+          wand|apprenticechestplate: 500
+          wand|apprenticeleggings: 500
+          wand|apprenticeboots: 500
 
 automatashop:
     icon: command

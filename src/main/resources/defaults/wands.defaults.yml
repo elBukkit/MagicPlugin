@@ -440,8 +440,8 @@ borealis:
     mode: chest
     active_spell: levitate
     cost_reduction: 2
-    protection: 2
     cooldown_reduction: 2
+    protected: true
     spells:
         - levitate
         - fling|2
@@ -525,8 +525,9 @@ wolf:
     undroppable: true
     indestructible: true
     cost_reduction: 2
-    protection: 2
     cooldown_reduction: 2
+    protected: true
+    powered: true
     power: 0
     quiet: 0
     hotbar_count: 3
@@ -973,6 +974,38 @@ magichat:
     spells:
         - magichat
 
+apprenticechestplate:
+    mode: cast
+    icon: chainmail_chestplate
+    indestructible: false
+    locked: true
+    keep: true
+    xp_max_boost: 0.05
+
+apprenticehelmet:
+    mode: cast
+    icon: chainmail_helmet
+    indestructible: false
+    locked: true
+    keep: true
+    xp_max_boost: 0.05
+
+apprenticeleggings:
+    mode: cast
+    icon: chainmail_leggings
+    indestructible: false
+    locked: true
+    keep: true
+    xp_max_boost: 0.05
+
+apprenticeboots:
+    mode: cast
+    icon: chainmail_boots
+    indestructible: false
+    locked: true
+    keep: true
+    xp_max_boost: 0.05
+
 wizardchestplate:
     mode: cast
     icon: chainmail_chestplate
@@ -980,6 +1013,9 @@ wizardchestplate:
     locked: true
     keep: true
     xp_max_boost: 0.1
+    enchantments:
+      protection_explosions: 4
+      protection_environmental: 5
 
 wizardhelmet:
     mode: cast
@@ -988,6 +1024,8 @@ wizardhelmet:
     locked: true
     keep: true
     xp_max_boost: 0.1
+    enchantments:
+      protection_projectile: 4
 
 wizardleggings:
     mode: cast
@@ -996,6 +1034,8 @@ wizardleggings:
     locked: true
     keep: true
     xp_max_boost: 0.1
+    enchantments:
+      protection_fire: 4
 
 wizardboots:
     mode: cast
@@ -1004,18 +1044,43 @@ wizardboots:
     locked: true
     keep: true
     xp_max_boost: 0.1
+    enchantments:
+      protection_fall: 5
 
 rabbitboots:
+    mode: cast
+    icon: leather_boots
+    indestructible: false
+    locked: true
+    keep: false
+    passive: true
+    xp_regeneration_boost: -0.1
+    potion_effects: speed:4,jump:4
+    enchantments:
+      protection_fall: 5
+
+rocketboots:
+    mode: cast
+    icon: diamond_boots
+    indestructible: true
+    locked: true
+    keep: true
+    passive: true
+    xp_regeneration_boost: -0.1
+    potion_effects: speed:2,jump:20
+    glow: true
+    protection_falling: 1
+
+flashboots:
     mode: cast
     icon: chainmail_boots
     indestructible: true
     locked: true
     keep: true
     passive: true
-    xp_regeneration_boost: -0.1
-    potion_effects: speed:5,jump:5
-    enchantments:
-      protection_fall: 5
+    xp_regeneration_boost: -0.5
+    potion_effects: speed:10,jump:2
+    glow: true
 
 invisiblecloak:
     mode: cast

@@ -141,12 +141,33 @@ rabbitboots:
   output: rabbitboots
   output_type: wand
   materials:
-    o: nether_star
-    i: wool
+    i: rabbit_hide
     r: rabbit_foot
   row_1:
-  row_2: iri
-  row_3: ioi
+  row_2: i i
+  row_3: r r
+
+rocketboots:
+  output: rocketboots
+  output_type: wand
+  materials:
+    o: nether_star
+    i: diamond
+    f: firework
+  row_1:
+  row_2: ioi
+  row_3: ifi
+
+flashboots:
+  output: flashboots
+  output_type: wand
+  materials:
+    o: nether_star
+    i: wool
+    f: feather
+  row_1:
+  row_2: i i
+  row_3: fof
 
 # This is here to disable crafting of other items, even if
 # they aren't craftable.

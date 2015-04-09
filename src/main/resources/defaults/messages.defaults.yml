@@ -124,6 +124,8 @@ wand:
     protection_fall: Fall Protection $roman
     protection_fire: Fire Protection $roman
     protection_blast: Blast Protection $roman
+    super_powered: Superpowered
+    super_protected: Invulnerability
     costs_description: Costs $description
     active_costs_description: Costs $description Per Second
     owner_description: $name's Wand
@@ -1435,9 +1437,27 @@ wands:
     wizardboots:
         name: Wizard's Boots
         description: Magical boots
+    apprenticehelmet:
+        name: Apprentice Scarf
+        description: For new wizards
+    apprenticechestplate:
+        name: Wizard's Robes
+        description: For new wizards
+    apprenticeleggings:
+        name: Apprentice Pants
+        description: For new wizards
+    apprenticeboots:
+        name: Apprentice Boots
+        description: For new wizards
     rabbitboots:
         name: Rabbit Boots
         description: Spirit of the hare
+    flashboots:
+        name: Flash Boots
+        description: Zoooooooom
+    rocketboots:
+        name: Rocket Boots
+        description: In a single bound!
     invisiblecloak:
         name: Cloak of Invisibility
         description: One of the fabled hallows
