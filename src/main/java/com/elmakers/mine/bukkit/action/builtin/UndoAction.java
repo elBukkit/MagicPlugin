@@ -84,7 +84,9 @@ public class UndoAction extends BaseSpellAction
         Mage mage = context.getMage();
 		if (targetBlock != null)
 		{
-			if (adminPermission != null && context.getController().hasPermission(context.getMage().getCommandSender(), adminPermission, false))
+            boolean undoAny = adminPermission != null && context.getController().hasPermission(context.getMage().getCommandSender(), adminPermission, false);
+            undoAny = undoAny || context.getMage().isSuperPowered();
+            if (undoAny)
 			{
 				UndoList undid = controller.undoRecent(targetBlock, timeout);
 				if (undid != null) 

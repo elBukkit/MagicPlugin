@@ -89,6 +89,13 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     private int debugLevel = 0;
 
     private Map<PotionEffectType, Integer> effectivePotionEffects = new HashMap<PotionEffectType, Integer>();
+    protected float damageReduction = 0;
+    protected float damageReductionPhysical = 0;
+    protected float damageReductionProjectiles = 0;
+    protected float damageReductionFalling = 0;
+    protected float damageReductionFire = 0;
+    protected float damageReductionExplosions = 0;
+
     private Map<Integer, Wand> activeArmor = new HashMap<Integer, Wand>();
 
     private Location location;
@@ -294,37 +301,33 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
         // First check for damage reduction
         float reduction = 0;
-        if (activeWand != null) {
-            reduction = activeWand.getDamageReduction();
-            float damageReductionFire = activeWand.getDamageReductionFire();
-            switch (cause) {
-                case CONTACT:
-                case ENTITY_ATTACK:
-                    reduction += activeWand.getDamageReductionPhysical();
-                    break;
-                case PROJECTILE:
-                    reduction += activeWand.getDamageReductionProjectiles();
-                    break;
-                case FALL:
-                    reduction += activeWand.getDamageReductionFalling();
-                    break;
-                case FIRE:
-                case FIRE_TICK:
-                case LAVA:
-                    // Also put out fire if they have fire protection of any kind.
-                    if (damageReductionFire > 0 && player.getFireTicks() > 0) {
-                        player.setFireTicks(0);
-                    }
-                    reduction += damageReductionFire;
-                    break;
-                case BLOCK_EXPLOSION:
-                case ENTITY_EXPLOSION:
-                    reduction += activeWand.getDamageReductionExplosions();
-                default:
-                    break;
-            }
+        reduction = damageReduction * controller.getMaxDamageReduction();
+        switch (cause) {
+            case CONTACT:
+            case ENTITY_ATTACK:
+                reduction += damageReductionPhysical * controller.getMaxDamageReductionPhysical();
+                break;
+            case PROJECTILE:
+                reduction += damageReductionProjectiles * controller.getMaxDamageReductionProjectiles();
+                break;
+            case FALL:
+                reduction += damageReductionFalling * controller.getMaxDamageReductionFalling();
+                break;
+            case FIRE:
+            case FIRE_TICK:
+            case LAVA:
+                // Also put out fire if they have fire protection of any kind.
+                if (damageReductionFire > 0 && player.getFireTicks() > 0) {
+                    player.setFireTicks(0);
+                }
+                reduction += damageReductionFire * controller.getMaxDamageReductionFire();
+                break;
+            case BLOCK_EXPLOSION:
+            case ENTITY_EXPLOSION:
+                reduction += damageReductionExplosions * controller.getMaxDamageReductionExplosions();
+            default:
+                break;
         }
-
         if (reduction > 1) {
             event.setCancelled(true);
             return;
@@ -343,7 +346,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             this.boundWand = activeWand;
         }
         blockPlaceTimeout = System.currentTimeMillis() + 200;
-        updatePotionEffects();
+        updateEquipmentEffects();
     }
 
     public long getBlockPlaceTimeout() {
@@ -1603,20 +1606,45 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         if (activeWand != null) {
             activeWand.armorUpdated();
         }
-        updatePotionEffects();
+        updateEquipmentEffects();
     }
 
-    protected void updatePotionEffects() {
+    protected void updateEquipmentEffects() {
+        damageReduction = 0;
+        damageReductionPhysical = 0;
+        damageReductionProjectiles = 0;
+        damageReductionFalling = 0;
+        damageReductionFire = 0;
+        damageReductionExplosions = 0;
         effectivePotionEffects.clear();
-        if (activeWand != null && !activeWand.isPassive()) {
+        if (activeWand != null && !activeWand.isPassive())
+        {
+            damageReduction += activeWand.getDamageReduction();
+            damageReductionPhysical += activeWand.getDamageReductionPhysical();
+            damageReductionProjectiles += activeWand.getDamageReductionProjectiles();
+            damageReductionFalling += activeWand.getDamageReductionFalling();
+            damageReductionFire += activeWand.getDamageReductionFire();
+            damageReductionExplosions += activeWand.getDamageReductionExplosions();
             effectivePotionEffects.putAll(activeWand.getPotionEffects());
         }
         for (Wand armorWand : activeArmor.values())
         {
             if (armorWand != null) {
+                damageReduction += armorWand.getDamageReduction();
+                damageReductionPhysical += armorWand.getDamageReductionPhysical();
+                damageReductionProjectiles += armorWand.getDamageReductionProjectiles();
+                damageReductionFalling += armorWand.getDamageReductionFalling();
+                damageReductionFire += armorWand.getDamageReductionFire();
+                damageReductionExplosions += armorWand.getDamageReductionExplosions();
                 effectivePotionEffects.putAll(armorWand.getPotionEffects());
             }
         }
+        damageReduction = Math.min(damageReduction, 1);
+        damageReductionPhysical = Math.min(damageReductionPhysical, 1);
+        damageReductionProjectiles = Math.min(damageReductionProjectiles, 1);
+        damageReductionFalling = Math.min(damageReductionFalling, 1);
+        damageReductionFire = Math.min(damageReductionFire, 1);
+        damageReductionExplosions = Math.min(damageReductionExplosions, 1);
     }
 
     public Collection<Wand> getActiveArmor()

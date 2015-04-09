@@ -80,7 +80,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		"protection", "protection_physical", "protection_projectiles", 
 		"protection_falling", "protection_fire", "protection_explosions",
         "potion_effects",
-		"materials", "spells"
+		"materials", "spells", "powered", "protected"
 	};
 	public final static String[] HIDDEN_PROPERTY_KEYS = {
 		"id", "owner", "owner_id", "name", "description", "template",
@@ -111,6 +111,8 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
     private String ownerId = "";
 	private String template = "";
     private String path = "";
+    private boolean superProtected = false;
+    private boolean superPowered = false;
     private boolean glow = false;
 	private boolean bound = false;
 	private boolean indestructible = false;
@@ -449,11 +451,11 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	}
 	
 	public boolean isSuperProtected() {
-		return damageReduction > 1;
+		return superProtected;
 	}
 	
 	public boolean isSuperPowered() {
-		return power > 1;
+		return superPowered;
 	}
 	
 	public boolean isCostFree() {
@@ -465,27 +467,27 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	}
 
 	public float getDamageReduction() {
-		return damageReduction * controller.getMaxDamageReduction();
+		return damageReduction;
 	}
 
 	public float getDamageReductionPhysical() {
-		return damageReductionPhysical * controller.getMaxDamageReductionPhysical();
+		return damageReductionPhysical;
 	}
 	
 	public float getDamageReductionProjectiles() {
-		return damageReductionProjectiles * controller.getMaxDamageReductionProjectiles();
+		return damageReductionProjectiles;
 	}
 
 	public float getDamageReductionFalling() {
-		return damageReductionFalling * controller.getMaxDamageReductionFalling();
+		return damageReductionFalling;
 	}
 
 	public float getDamageReductionFire() {
-		return damageReductionFire * controller.getMaxDamageReductionFire();
+		return damageReductionFire;
 	}
 
 	public float getDamageReductionExplosions() {
-		return damageReductionExplosions * controller.getMaxDamageReductionExplosions();
+		return damageReductionExplosions;
 	}
 
 	public int getUses() {
@@ -971,6 +973,8 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		node.set("bound", bound);
         node.set("force", forceUpgrade);
 		node.set("indestructible", indestructible);
+        node.set("protected", superProtected);
+        node.set("powered", superPowered);
         node.set("glow", glow);
         node.set("undroppable", undroppable);
 		node.set("fill", autoFill);
@@ -1160,6 +1164,8 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 			keep = wandConfig.getBoolean("keep", keep);
             passive = wandConfig.getBoolean("passive", passive);
             indestructible = wandConfig.getBoolean("indestructible", indestructible);
+            superPowered = wandConfig.getBoolean("powered", superPowered);
+            superProtected = wandConfig.getBoolean("protected", superProtected);
             glow = wandConfig.getBoolean("glow", glow);
             undroppable = wandConfig.getBoolean("undroppable", undroppable);
 			bound = wandConfig.getBoolean("bound", bound);
@@ -1493,6 +1499,9 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
                 lore.add(ChatColor.RESET + "" + ChatColor.LIGHT_PURPLE + getLevelString(controller.getMessages(), "wand.mana_regeneration", xpRegeneration, controller.getMaxManaRegeneration()));
             }
 		}
+        if (superPowered) {
+            lore.add(ChatColor.DARK_AQUA + controller.getMessages().get("wand.super_powered"));
+        }
         if (xpMaxBoost != 0) {
             lore.add(ChatColor.LIGHT_PURPLE + "" + ChatColor.ITALIC + getPercentageString(controller.getMessages(), "wand.mana_boost", xpMaxBoost));
         }
@@ -1509,14 +1518,16 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		if (costReduction > 0) lore.add(ChatColor.AQUA + getLevelString(controller.getMessages(), "wand.cost_reduction", costReduction));
 		if (cooldownReduction > 0) lore.add(ChatColor.AQUA + getLevelString(controller.getMessages(), "wand.cooldown_reduction", cooldownReduction));
 		if (power > 0) lore.add(ChatColor.AQUA + getLevelString(controller.getMessages(), "wand.power", power));
-		if (damageReduction > 0) lore.add(ChatColor.AQUA + getLevelString(controller.getMessages(), "wand.protection", damageReduction));
-		if (damageReduction < 1) {
-			if (damageReductionPhysical > 0) lore.add(ChatColor.AQUA + getLevelString(controller.getMessages(), "wand.protection_physical", damageReductionPhysical));
-			if (damageReductionProjectiles > 0) lore.add(ChatColor.AQUA + getLevelString(controller.getMessages(), "wand.protection_projectile", damageReductionProjectiles));
-			if (damageReductionFalling > 0) lore.add(ChatColor.AQUA + getLevelString(controller.getMessages(), "wand.protection_fall", damageReductionFalling));
-			if (damageReductionFire > 0) lore.add(ChatColor.AQUA + getLevelString(controller.getMessages(), "wand.protection_fire", damageReductionFire));
-			if (damageReductionExplosions > 0) lore.add(ChatColor.AQUA + getLevelString(controller.getMessages(), "wand.protection_blast", damageReductionExplosions));
-		}
+        if (superProtected) {
+            lore.add(ChatColor.DARK_AQUA + controller.getMessages().get("wand.super_protected"));
+        } else {
+            if (damageReduction > 0) lore.add(ChatColor.AQUA + getLevelString(controller.getMessages(), "wand.protection", damageReduction));
+            if (damageReductionPhysical > 0) lore.add(ChatColor.AQUA + getLevelString(controller.getMessages(), "wand.protection_physical", damageReductionPhysical));
+            if (damageReductionProjectiles > 0) lore.add(ChatColor.AQUA + getLevelString(controller.getMessages(), "wand.protection_projectile", damageReductionProjectiles));
+            if (damageReductionFalling > 0) lore.add(ChatColor.AQUA + getLevelString(controller.getMessages(), "wand.protection_fall", damageReductionFalling));
+            if (damageReductionFire > 0) lore.add(ChatColor.AQUA + getLevelString(controller.getMessages(), "wand.protection_fire", damageReductionFire));
+            if (damageReductionExplosions > 0) lore.add(ChatColor.AQUA + getLevelString(controller.getMessages(), "wand.protection_blast", damageReductionExplosions));
+        }
 	}
 	
 	public static String getLevelString(Messages messages, String templateName, float amount)
@@ -2226,11 +2237,15 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		modified = modified | (!effectBubbles && other.effectBubbles);
         modified = modified | (!undroppable && other.undroppable);
         modified = modified | (!indestructible && other.indestructible);
+        modified = modified | (!superPowered && other.superPowered);
+        modified = modified | (!superProtected && other.superProtected);
         modified = modified | (!glow && other.glow);
 
 		keep = keep || other.keep;
 		bound = bound || other.bound;
         indestructible = indestructible || other.indestructible;
+        superPowered = superPowered || other.superPowered;
+        superProtected = superProtected || other.superProtected;
         glow = glow || other.glow;
         undroppable = undroppable || other.undroppable;
         effectBubbles = effectBubbles || other.effectBubbles;

@@ -3,6 +3,8 @@
 ## 4.9
 
  * Haste, health regen and hunger regen were removed in place of potion effects.
+ * You may have (Admin, Wolf) wands that made you invulnerable but no longer do.
+   You'll need to get a new one, or do "/wand configure protected true"
 
 ## 4.8.5
 

@@ -3,7 +3,8 @@
 ## 4.9
 
  - Add Wizards' Robes set (chainmail armor, grants +10% mana each)
- - Add Rabbit Boots, Invisible Cloak
+ - Add Apprentice Robes set (chainmail armor, grants +5% mana each)
+ - Add Rabbit Boots, Rocket Boots, Flash Boots, Invisible Cloak
  - Magic Hat grants +10% mana regen and +20% max mana
  - Fix item shop "price" lore not being removed when purchasing
  - Removed wand health/hunger regen and haste properties. Replaced by potion effects, wands should auto-migrate.
