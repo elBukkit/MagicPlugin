@@ -4691,7 +4691,7 @@ public class MagicController implements Listener, MageController {
 
     public void enableItemSpawn()
     {
-        disableItemSpawn = true;
+        disableItemSpawn = false;
     }
 
     /*
