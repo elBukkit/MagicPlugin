@@ -50,7 +50,7 @@ Sludge:
     MaxCombatDistance: 30
     KnockbackResistance: 1
   Skills:
-  - skill{skill=SludgePoison} @Target
+  - skill{skill=SludgePoison} @Target ~onTimer:20 >0 0.9
 Warlock:
   Mobtype: witch
   Display: Warlock
@@ -65,7 +65,7 @@ Warlock:
     MaxCombatDistance: 32
     KnockbackResistance: 1
   Skills:
-  - skill{skill=MinorSpellAttack} @Target
+  - skill{skill=MinorSpellAttack} @Target ~onTimer:20 >0 0.9
 Firebender:
   Mobtype: pigzombie
   Display: Firebender
@@ -87,7 +87,7 @@ Firebender:
     MaxCombatDistance: 40
     KnockbackResistance: 1
   Skills:
-  - skill{skill=Firebending} @Target
+  - skill{skill=Firebending} @Target ~onTimer:20 >0 0.9
 Airbender:
   Mobtype: skeleton
   Display: Airbender
@@ -105,7 +105,7 @@ Airbender:
     MaxCombatDistance: 40
     KnockbackResistance: 1
   Skills:
-  - skill{skill=Airbending} @Target
+  - skill{skill=Airbending} @Target ~onTimer:20 >0 0.9
 Waterbender:
   Mobtype: villagezombie
   Display: Airbender
@@ -123,9 +123,9 @@ Waterbender:
     MaxCombatDistance: 40
     KnockbackResistance: 1
   Skills:
-  - skill{skill=Waterbending} @Target
+  - skill{skill=Waterbending} @Target ~onTimer:20 >0 0.9
 Earthbender:
-  Mobtype: angrypigzombievillager
+  Mobtype: villagezombie
   Display: Earthbender
   Health: 150
   Damage: 5
@@ -141,4 +141,4 @@ Earthbender:
     MaxCombatDistance: 40
     KnockbackResistance: 1
   Skills:
-  - skill{skill=Earthbending} @Target
+  - skill{skill=Earthbending} @Target ~onTimer:20 >0 0.9
