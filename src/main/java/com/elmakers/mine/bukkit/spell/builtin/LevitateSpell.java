@@ -317,7 +317,8 @@ public class LevitateSpell extends TargetingSpell implements Listener
     {
         Block facingBlock = source.getBlock();
         Block targetBlock = source.add(threshold).getBlock();
-        if (!targetBlock.equals(facingBlock) && !allowPassThrough(targetBlock.getType())) {
+
+        if (!targetBlock.equals(facingBlock) && !isPassThrough(targetBlock.getType())) {
             deactivate(true, false);
             sendMessage(getMessage("crash"));
             mage.deactivateAllSpells();
