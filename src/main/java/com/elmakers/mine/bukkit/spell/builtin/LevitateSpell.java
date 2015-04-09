@@ -135,6 +135,11 @@ public class LevitateSpell extends TargetingSpell implements Listener
 
         public void run()
         {
+            if (!spell.canCast(spell.getLocation()))
+            {
+                spell.land();
+                return;
+            }
             if (!spell.checkActive())
             {
                 return;
