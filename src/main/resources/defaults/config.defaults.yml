@@ -488,7 +488,7 @@ debug_effects: false
 # costs fall along even item stack limits. (64)
 
 worth_use_multiplier: 0.125
-worth_mana:1
+worth_mana: 1
 worth_mana_max: 100
 worth_mana_regeneration: 800
 worth_damage_reduction: 10000

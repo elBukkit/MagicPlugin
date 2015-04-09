@@ -102,14 +102,6 @@ public class ChangeWorldAction extends BaseTeleportAction
             return SpellResult.NO_TARGET;
         }
 
-        Mage mage = context.getMage();
-        MageController controller = context.getController();
-        if (entity != mage.getEntity() && controller.isMage(entity)) {
-            Mage targetMage = controller.getMage(entity);
-            if (targetMage.isSuperProtected()) {
-                return SpellResult.NO_TARGET;
-            }
-        }
         Location playerLocation = entity.getLocation();
 		if (targetLocation == null) {
 			return SpellResult.NO_TARGET;
