@@ -2798,6 +2798,11 @@ public class MagicController implements Listener, MageController {
 	@EventHandler
 	public void onItemSpawn(ItemSpawnEvent event)
 	{
+        if (disableItemSpawn)
+        {
+            event.setCancelled(true);
+            return;
+        }
 		if (Wand.isWand(event.getEntity().getItemStack()))
 		{
 			Wand wand = new Wand(this, event.getEntity().getItemStack());
@@ -4680,6 +4685,16 @@ public class MagicController implements Listener, MageController {
         }
     }
 
+    public void disableItemSpawn()
+    {
+        disableItemSpawn = true;
+    }
+
+    public void enableItemSpawn()
+    {
+        disableItemSpawn = true;
+    }
+
     /*
 	 * Private data
 	 */
@@ -4801,6 +4816,7 @@ public class MagicController implements Listener, MageController {
     private final File							playerDataFolder;
     private boolean							    enableItemHacks			 	= true;
     private boolean                             enableCreativeModeEjecting  = true;
+    private boolean							    disableItemSpawn			= false;
 
     private int								    toggleCooldown				= 1000;
     private int								    toggleMessageRange			= 1024;

@@ -2570,6 +2570,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	
 	public void closeInventory() {
 		if (!isInventoryOpen()) return;
+        controller.disableItemSpawn();
         WandMode mode = getMode();
         try {
             saveInventory();
@@ -2612,8 +2613,13 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         }
 
         if (mode == WandMode.INVENTORY && mage != null) {
-            mage.getPlayer().closeInventory();
+            try {
+                mage.getPlayer().closeInventory();
+            } catch (Throwable ex) {
+                ex.printStackTrace();
+            }
         }
+        controller.enableItemSpawn();
 	}
 
     @Override
