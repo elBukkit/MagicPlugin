@@ -1,7 +1,7 @@
 # TODO
 
+ - Fix prices on web site
  - Recall still losing waypoints
- - Wands stored for death restore get wiped.. or something?
  - Maximum enchant count for wands
 
  - Banners don't work from schematics
