@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.logging.Level;
 
+import com.elmakers.mine.bukkit.api.block.UndoList;
 import com.elmakers.mine.bukkit.api.magic.*;
 import com.elmakers.mine.bukkit.api.spell.SpellCategory;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
@@ -245,6 +246,13 @@ public class MagicPlugin extends JavaPlugin implements MagicAPI
 		mages.addAll(internal);
 		return mages;
 	}
+
+    @Override
+    public Collection<UndoList> getPendingUndo() {
+        Collection<UndoList> undo = new ArrayList<UndoList>();
+        undo.addAll(controller.getPendingUndo());
+        return undo;
+    }
 	
 	@Override
 	public Collection<LostWand> getLostWands() {

@@ -190,6 +190,17 @@ public class MagicCommandExecutor extends MagicTabExecutor {
 				Collection<Mage> mages = api.getMages();
                 sender.sendMessage(ChatColor.AQUA + "Registered blocks (" + UndoList.getModified().size() + "): ");
 				sender.sendMessage(ChatColor.LIGHT_PURPLE + "Active mages: " + mages.size());
+                Collection<com.elmakers.mine.bukkit.api.block.UndoList> pendingUndo = api.getPendingUndo();
+                sender.sendMessage(ChatColor.AQUA + "Pending undo (" + pendingUndo.size() + "): ");
+                long now = System.currentTimeMillis();
+                for (com.elmakers.mine.bukkit.api.block.UndoList undo : pendingUndo) {
+                    long remainingTime = (undo.getScheduledTime() - now) / 1000;
+
+                    sender.sendMessage(ChatColor.AQUA + undo.getName() + ChatColor.GRAY + " will undo in "
+                            + ChatColor.WHITE + "" + remainingTime + "" + ChatColor.GRAY
+                            + " seconds");
+                }
+
 				Collection<Mage> pending = api.getMagesWithPendingBatches();
 				sender.sendMessage(ChatColor.AQUA + "Pending batches (" + pending.size() + "): ");
                 for (Mage mage : pending) {

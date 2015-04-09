@@ -1054,6 +1054,10 @@ public class MagicController implements Listener, MageController {
         return pendingConstruction;
     }
 
+    public Collection<UndoList> getPendingUndo() {
+        return scheduledUndo;
+    }
+
     protected void addPending(Mage mage) {
         pendingConstruction.add(mage);
     }
@@ -2058,11 +2062,6 @@ public class MagicController implements Listener, MageController {
 	{
 		BlockPhysicsEvent.getHandlerList().unregister(listener);
 		physicsHandler = null;
-	}
-	
-	protected void registerForUndo(Mage mage)
-	{
-		pendingUndo.add(mage.getId());
 	}
 
     @Override
@@ -4806,7 +4805,6 @@ public class MagicController implements Listener, MageController {
     private final Set<Mage>		 	            pendingConstruction			= new HashSet<Mage>();
     private final Set<Mage>                     pendingConstructionRemoval  = new HashSet<Mage>();
     private final PriorityQueue<UndoList>       scheduledUndo               = new PriorityQueue<UndoList>();
-    private final Set<String>  	 			    pendingUndo					= new HashSet<String>();
     private final Map<String, WeakReference<Schematic>> schematics	= new HashMap<String, WeakReference<Schematic>>();
 
     private MagicPlugin                         plugin                      = null;

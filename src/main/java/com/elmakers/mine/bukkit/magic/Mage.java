@@ -413,7 +413,6 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         if (undoList.bypass()) return true;
         UndoQueue queue = getUndoQueue();
         queue.add(undoList);
-        controller.registerForUndo(this);
         return true;
     }
 
