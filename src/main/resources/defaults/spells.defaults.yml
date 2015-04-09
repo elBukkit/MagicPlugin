@@ -6357,10 +6357,10 @@ magicitemshop:
           wand|camera: 200
           wand|divinghelmet: 1000
           wand|wolfhouse: 200000
-          wand|apprenticehelmet: 500
-          wand|apprenticechestplate: 500
-          wand|apprenticeleggings: 500
-          wand|apprenticeboots: 500
+          wand|apprenticehelmet: 200
+          wand|apprenticechestplate: 200
+          wand|apprenticeleggings: 200
+          wand|apprenticeboots: 200
 
 automatashop:
     icon: command
