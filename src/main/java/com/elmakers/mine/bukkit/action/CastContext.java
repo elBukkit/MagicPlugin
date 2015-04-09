@@ -526,7 +526,7 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
 
     @Override
     public boolean canTarget(Entity entity) {
-        return targetingSpell != null ? true : targetingSpell.canTarget(entity);
+        return targetingSpell == null ? true : targetingSpell.canTarget(entity);
     }
 
     @Override
@@ -564,7 +564,7 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
         {
             return;
         }
-        List<Target> candidates = ((TargetingSpell) spell).getAllTargetEntities();
+        List<Target> candidates = ((TargetingSpell)spell).getAllTargetEntities();
         if (targetCount < 0) {
             targetCount = entities.size();
         }

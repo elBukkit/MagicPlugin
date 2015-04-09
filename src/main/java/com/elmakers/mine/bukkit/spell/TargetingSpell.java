@@ -770,7 +770,7 @@ public abstract class TargetingSpell extends BaseSpell {
         closeFOV = parameters.getDouble("close_fov", closeFOV);
         allowMaxRange = parameters.getBoolean("allow_max_range", allowMaxRange);
         bypassBackfire = parameters.getBoolean("bypass_backfire", bypassBackfire);
-        bypassProtection = parameters.getBoolean(("bypass_protection"));
+        bypassProtection = parameters.getBoolean("bypass_protection", bypassProtection);
         bypassProtection = parameters.getBoolean("bp", bypassProtection);
         checkProtection = parameters.getBoolean("check_protection", checkProtection);
         targetBreakables = parameters.getDouble("target_breakables", 0);
