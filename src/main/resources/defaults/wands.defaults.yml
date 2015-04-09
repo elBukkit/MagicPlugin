@@ -537,6 +537,7 @@ wolf:
     mode: inventory
     active_spell: levitate
     overrides: max_dimension 1024
+    potion_effects: saturation,regeneration
     spells:
         - levitate@0
         - blink|3@1

@@ -380,6 +380,14 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
             saveState();
         }
     }
+
+    public float getXpRegenerationBoost() {
+        return xpRegenerationBoost;
+    }
+
+    public float getXpMaxBoost() {
+        return xpMaxBoost;
+    }
 	
 	public int getXpRegeneration() {
 		return xpRegeneration;
@@ -3204,20 +3212,12 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
     protected void updateMaxMana() {
         float effectiveBoost = xpMaxBoost;
         float effectiveRegenBoost = xpRegenerationBoost;
-        Player player = mage != null ? mage.getPlayer() : null;
-        if (player != null) {
-            ItemStack[] armor = player.getInventory().getArmorContents();
-            for (ItemStack armorItem : armor) {
-                if (isWand(armorItem)) {
-                    Float boost = getWandFloat(armorItem, "xp_max_boost");
-                    if (boost != null) {
-                        effectiveBoost += boost;
-                    }
-                    boost = getWandFloat(armorItem, "xp_regeneration_boost");
-                    if (boost != null) {
-                        effectiveRegenBoost += boost;
-                    }
-                }
+        if (mage != null)
+        {
+            Collection<Wand> activeArmor = mage.getActiveArmor();
+            for (Wand armorWand : activeArmor) {
+                effectiveBoost += armorWand.getXpMaxBoost();
+                effectiveRegenBoost += armorWand.getXpRegenerationBoost();
             }
         }
         effectiveXpMax = xpMax;
