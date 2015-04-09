@@ -567,7 +567,7 @@ spells:
     paint:
         name: Paint
         description: Fill a single block
-    diving:
+    gills:
         name: Diving Helmet
         description: Work freely underwater
         cast: You put on your diving helmet
@@ -1573,6 +1573,9 @@ wands:
     spleef:
         name: Spleef
         description: For playing Wizard Spleef
+    divinghelmet:
+        name: Diving Helmet
+        description: Work freely underwater
 
 automata:
     awaken: "&c&o$name &r&5has awakened"

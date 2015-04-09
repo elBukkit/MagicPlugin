@@ -2763,8 +2763,7 @@ recurse:
     costs:
         mana: 30
 
-diving:
-    alias: gills
+gills:
     icon_url: http://i.imgur.com/00ZNC1x.png
     icon: cooked_fish
     category: light
@@ -6332,7 +6331,7 @@ broomshop:
         confirm_filler: stained_glass:3
         items:
           wand|crackedbroomstick: 100
-          wand|broomstick: 5000
+          wand|broomstick: 4000
 
 magicitemshop:
     icon: ender_portal_frame
@@ -6346,15 +6345,16 @@ magicitemshop:
         confirm: true
         confirm_filler: stained_glass:3
         items:
-          wand|magichat: 2000
-          wand|wizardhelmet: 1000
-          wand|wizardchestplate: 1000
-          wand|wizardleggings: 1000
-          wand|wizardboots: 1000
+          wand|magichat: 4000
+          wand|wizardhelmet: 4000
+          wand|wizardchestplate: 4000
+          wand|wizardleggings: 4000
+          wand|wizardboots: 4000
           wand|invisiblecloak: 10000
-          wand|rabbitboots: 2000
+          wand|rabbitboots: 4000
           wand|camera: 200
-          wand|wolfhouse: 20000
+          wand|divinghelmet: 1000
+          wand|wolfhouse: 200000
 
 automatashop:
     icon: command

@@ -213,7 +213,6 @@ student:
       fling: 0,5,70
       fire: 50,70,60
       frost: 80,70,50
-      diving: 10,11,20
       grenade: 0,20,70
       heal: 0,1,5
       monster: 5,20,30
