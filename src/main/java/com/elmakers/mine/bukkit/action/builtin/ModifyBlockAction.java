@@ -6,7 +6,6 @@ import com.elmakers.mine.bukkit.api.block.MaterialBrush;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
-import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import org.bukkit.Location;
@@ -18,12 +17,8 @@ import org.bukkit.util.Vector;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
 
 public class ModifyBlockAction extends BaseSpellAction {
-    protected Set<MaterialAndData> replaceable = null;
-
     private boolean spawnFallingBlocks;
     private double fallingBlockSpeed;
     private Vector fallingBlockDirection;
@@ -53,17 +48,6 @@ public class ModifyBlockAction extends BaseSpellAction {
         }
     }
 
-    public void addReplaceable(MaterialAndData material) {
-        if (replaceable == null) {
-            replaceable = new HashSet<MaterialAndData>();
-        }
-        replaceable.add(material);
-    }
-
-    public void addReplaceable(Material material, byte data) {
-        addReplaceable(new MaterialAndData(material, data));
-    }
-
     @SuppressWarnings("deprecation")
     @Override
     public SpellResult perform(CastContext context) {
@@ -81,46 +65,42 @@ public class ModifyBlockAction extends BaseSpellAction {
             return SpellResult.NO_TARGET;
         }
 
-        if (replaceable == null || replaceable.contains(new MaterialAndData(block))) {
-            Material previousMaterial = block.getType();
-            byte previousData = block.getData();
+        Material previousMaterial = block.getType();
+        byte previousData = block.getData();
 
-            if (brush.isDifferent(block)) {
-                context.registerForUndo(block);
-                Mage mage = context.getMage();
-                brush.update(mage, block.getLocation());
-                brush.modify(block, applyPhysics);
+        if (brush.isDifferent(block)) {
+            context.registerForUndo(block);
+            Mage mage = context.getMage();
+            brush.update(mage, block.getLocation());
+            brush.modify(block, applyPhysics);
 
-                if (spawnFallingBlocks)
-                {
-                    FallingBlock falling = block.getWorld().spawnFallingBlock(block.getLocation(), previousMaterial, previousData);
-                    falling.setDropItem(false);
-                    if (fallingBlockSpeed > 0) {
-                        Vector fallingBlockVelocity = fallingBlockDirection;
-                        if (fallingBlockVelocity == null) {
-                            Location source = context.getBaseContext().getTargetLocation();
-                            fallingBlockVelocity = falling.getLocation().subtract(source).toVector();
-                            fallingBlockVelocity.normalize();
-                        } else {
-                            fallingBlockVelocity = fallingBlockVelocity.clone();
-                        }
-                        fallingBlockVelocity.multiply(fallingBlockSpeed);
-                        falling.setVelocity(fallingBlockVelocity);
+            if (spawnFallingBlocks)
+            {
+                FallingBlock falling = block.getWorld().spawnFallingBlock(block.getLocation(), previousMaterial, previousData);
+                falling.setDropItem(false);
+                if (fallingBlockSpeed > 0) {
+                    Vector fallingBlockVelocity = fallingBlockDirection;
+                    if (fallingBlockVelocity == null) {
+                        Location source = context.getBaseContext().getTargetLocation();
+                        fallingBlockVelocity = falling.getLocation().subtract(source).toVector();
+                        fallingBlockVelocity.normalize();
+                    } else {
+                        fallingBlockVelocity = fallingBlockVelocity.clone();
                     }
-                    context.registerForUndo(falling);
+                    fallingBlockVelocity.multiply(fallingBlockSpeed);
+                    falling.setVelocity(fallingBlockVelocity);
                 }
+                context.registerForUndo(falling);
             }
-
-            if (breakable > 0) {
-                context.registerBreakable(block, breakable);
-            }
-            if (backfireChance > 0) {
-                context.registerReflective(block, backfireChance);
-            }
-            return SpellResult.CAST;
         }
 
-        return SpellResult.NO_TARGET;
+        if (breakable > 0) {
+            context.registerBreakable(block, breakable);
+        }
+        if (backfireChance > 0) {
+            context.registerReflective(block, backfireChance);
+        }
+        return SpellResult.CAST;
     }
 
     @Override

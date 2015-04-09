@@ -41,27 +41,27 @@ public class RecurseSpell extends BrushSpell
 
 		ModifyBlockAction action = new ModifyBlockAction();
         action.initialize(this, parameters);
-        action.addReplaceable(new MaterialAndData(targetBlock));
+        blockRecurse.addReplaceable(new MaterialAndData(targetBlock));
         Material targetMaterial = targetBlock.getType();
 
 		// A bit hacky, but is very handy!
 		if (targetMaterial == Material.STATIONARY_WATER || targetMaterial == Material.WATER)
 		{
 			for (byte i = 0; i < 9; i++) {
-				action.addReplaceable(Material.STATIONARY_WATER, i);
-				action.addReplaceable(Material.WATER, i);
+                blockRecurse.addReplaceable(Material.STATIONARY_WATER, i);
+                blockRecurse.addReplaceable(Material.WATER, i);
 			}
 		}
 		else if (targetMaterial == Material.STATIONARY_LAVA || targetMaterial == Material.LAVA)
 		{
 			for (byte i = 0; i < 9; i++) {
-				action.addReplaceable(Material.STATIONARY_LAVA, i);
-				action.addReplaceable(Material.LAVA, i);
+                blockRecurse.addReplaceable(Material.STATIONARY_LAVA, i);
+                blockRecurse.addReplaceable(Material.LAVA, i);
 			}
 		}
 		else if (targetMaterial == Material.SNOW) {
 			for (byte i = 0; i < 8; i++) {
-				action.addReplaceable(Material.SNOW, i);
+                blockRecurse.addReplaceable(Material.SNOW, i);
 			}
 		}
         CastContext context = getCurrentCast();

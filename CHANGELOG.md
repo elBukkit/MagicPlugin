@@ -3,10 +3,14 @@
 ## 4.9
 
  - Add Wizards' Robes set (chainmail armor, grants +10% mana each)
+ - Add Rabbit Boots, Invisible Cloak
  - Magic Hat grants +10% mana regen and +20% max mana
  - Fix item shop "price" lore not being removed when purchasing
  - Removed wand health/hunger regen and haste properties. Replaced by potion effects, wands should auto-migrate.
  - Renamed Gills to Diving Helmet, improved underwater behavior
+ - Fix another Rollback exploit (Thanks, LordBoos!)
+ - Fix wands wiped if logout on death
+ - Some general safety precautions for saving player data, not sure if it fixes anything
 
 ## 4.8.5
 

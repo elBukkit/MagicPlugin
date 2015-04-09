@@ -3,15 +3,21 @@ package com.elmakers.mine.bukkit.batch;
 import com.elmakers.mine.bukkit.action.ActionContext;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.block.UndoList;
+import com.elmakers.mine.bukkit.block.MaterialAndData;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.block.BlockData;
 
+import java.util.HashSet;
+import java.util.Set;
+
 public class BlockRecurse
 {
-	protected int maxRecursion = 8;
+    protected Set<MaterialAndData> replaceable = null;
+    protected int maxRecursion = 8;
 
 	public void recurse(ActionContext action, CastContext context)
 	{
@@ -24,6 +30,10 @@ public class BlockRecurse
 		{
 			block = block.getRelative(nextFace);
 		}
+        if (replaceable != null && !replaceable.contains(new MaterialAndData(block)))
+        {
+            return;
+        }
         UndoList undoList = context.getUndoList();
 		if (undoList != null)
 		{
@@ -52,7 +62,18 @@ public class BlockRecurse
 		}
 	}
 
-	public int getMaxRecursion() {
+    public void addReplaceable(MaterialAndData material) {
+        if (replaceable == null) {
+            replaceable = new HashSet<MaterialAndData>();
+        }
+        replaceable.add(material);
+    }
+
+    public void addReplaceable(Material material, byte data) {
+        addReplaceable(new MaterialAndData(material, data));
+    }
+
+    public int getMaxRecursion() {
 		return maxRecursion;
 	}
 
