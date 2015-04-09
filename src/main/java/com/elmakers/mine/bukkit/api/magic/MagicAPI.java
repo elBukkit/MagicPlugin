@@ -3,6 +3,7 @@ package com.elmakers.mine.bukkit.api.magic;
 import java.util.Collection;
 import java.util.logging.Logger;
 
+import com.elmakers.mine.bukkit.api.block.UndoList;
 import com.elmakers.mine.bukkit.api.spell.SpellCategory;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
@@ -198,6 +199,7 @@ public interface MagicAPI {
      * @return The list of Mages that have pending constructions in progress.
      */
     public Collection<Mage> getMagesWithPendingBatches();
+    public Collection<UndoList> getPendingUndo();
 
     /**
      * Retrieve or create a Mage for a particular CommandSender.
