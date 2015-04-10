@@ -886,6 +886,7 @@ alphabetizer:
     indestructible: false
     alphabetize: true
 antihunger:
+    icon: skull_item:http://i.imgur.com/hlVqxiF.png
     upgrade: true
     potion_effects: saturation
 loud:
