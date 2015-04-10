@@ -1,8 +1,8 @@
 # TODO
 
  - Recall still losing waypoints .. also can grab items out?
- - Maximum enchant count for wands
 
+ - Maximum enchant count for wands
  - Banners don't work from schematics
  - Support for restoring armor stands- might have to drop 1.7 support for this.
  - Clean up MaterialBrush target system, automate somehow?
