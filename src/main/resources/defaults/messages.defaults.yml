@@ -1365,6 +1365,18 @@ spells:
         confirm_title: "Buy $item"
         no_wand: You must be holding a wand!
         deducted: "&d&oYou bought &r&6$item &r&d&ofor &r&a$cost"
+    emeraldshop:
+        name: Emerald Exchange
+        title: "Emeralds ($balance)"
+        description: Trade XP for Emeralds
+        cost_lore: "Costs: $cost"
+        cast: ""
+        cast_player_message: ""
+        fail: ""
+        no_items: There is nothing to buy here!
+        insufficient_resources: Costs $cost
+        confirm_title: "Buy $item"
+        deducted: "&d&oYou bought &r&6$item &r&d&ofor &r&a$cost"
     broomshop:
         name: Broom Shop
         title: "Brooms ($balance)"

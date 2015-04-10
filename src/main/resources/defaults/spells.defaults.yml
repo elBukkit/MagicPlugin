@@ -6443,6 +6443,21 @@ upgradeshop:
           wand|hotbar2: 500
           wand|hotbar3: 500
 
+emeraldshop:
+    icon: emerald
+    category: utility
+    hidden: true
+    actions:
+        cast:
+        -  class: ItemShop
+    parameters:
+        loud: true
+        confirm: true
+        use_xp: true
+        confirm_filler: stained_glass:5
+        items:
+          emerald: 500
+
 addspell:
     icon: iron_hoe
     category: utility
