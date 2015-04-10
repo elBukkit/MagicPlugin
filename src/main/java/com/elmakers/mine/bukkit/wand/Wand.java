@@ -1515,12 +1515,12 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         if (xpRegenerationBoost != 0) {
             lore.add(ChatColor.LIGHT_PURPLE + "" + ChatColor.ITALIC + getPercentageString(controller.getMessages(), "wand.mana_regeneration_boost", xpRegenerationBoost));
         }
-        for (PotionEffectType effect : potionEffects.keySet()) {
-            String effectName = effect.getName();
+        for (Map.Entry<PotionEffectType, Integer> effect : potionEffects.entrySet()) {
+            String effectName = effect.getKey().getName();
             String effectFirst = effectName.substring(0, 1);
             effectName = effectName.substring(1).toLowerCase().replace("_", " ");
             effectName = effectFirst + effectName;
-            lore.add(ChatColor.AQUA + effectName);
+            lore.add(ChatColor.AQUA + getLevelString(controller.getMessages(), "wand.potion_effect", effect.getValue(), 5).replace("$effect", effectName));
         }
 		if (costReduction > 0) lore.add(ChatColor.AQUA + getLevelString(controller.getMessages(), "wand.cost_reduction", costReduction));
 		if (cooldownReduction > 0) lore.add(ChatColor.AQUA + getLevelString(controller.getMessages(), "wand.cooldown_reduction", cooldownReduction));
@@ -1544,6 +1544,9 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	
 	public static String getLevelString(Messages messages, String templateName, float amount, float max)
 	{
+        if (max != 1) {
+            amount = amount / max;
+        }
 		String templateString = messages.get(templateName);
 		if (templateString.contains("$roman")) {
 			templateString = templateString.replace("$roman", getRomanString(messages, amount));

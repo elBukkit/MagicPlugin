@@ -124,6 +124,7 @@ wand:
     protection_fall: Fall Protection $roman
     protection_fire: Fire Protection $roman
     protection_blast: Blast Protection $roman
+    potion_effect: $effect $roman
     super_powered: Superpowered
     super_protected: Invulnerability
     costs_description: Costs $description
