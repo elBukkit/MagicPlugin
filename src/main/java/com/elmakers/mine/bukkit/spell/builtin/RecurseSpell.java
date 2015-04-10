@@ -14,8 +14,6 @@ import com.elmakers.mine.bukkit.spell.BrushSpell;
 
 public class RecurseSpell extends BrushSpell 
 {
-	private final BlockRecurse blockRecurse = new BlockRecurse();
-
 	@Override
 	public SpellResult onCast(ConfigurationSection parameters) 
 	{
@@ -34,7 +32,8 @@ public class RecurseSpell extends BrushSpell
         {
             return SpellResult.NO_TARGET;
         }
-		
+
+        BlockRecurse blockRecurse = new BlockRecurse();
 		int size = parameters.getInt("size", 8);
 		size = (int)(mage.getRadiusMultiplier() * size);
 		blockRecurse.setMaxRecursion(size);
