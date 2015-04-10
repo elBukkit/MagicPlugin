@@ -30,6 +30,11 @@ public class ActionContext implements Cloneable {
 
     public SpellResult perform(CastContext context)
     {
+        boolean hasTarget = context.getTargetLocation() != null;
+        boolean hasEntityTarget = context.getTargetEntity() != null;
+        if (action.requiresTarget() && !hasTarget) return SpellResult.NO_TARGET;
+        if (action.requiresTargetEntity() && !hasEntityTarget) return SpellResult.NO_TARGET;
+
         return action.perform(context);
     }
 
