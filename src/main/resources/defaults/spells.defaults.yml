@@ -6441,7 +6441,7 @@ upgradeshop:
         items:
           wand|antihunger: 2000
           wand|hotbar2: 500
-          wand|hotbar3: 500
+          wand|hotbar3: 1000
 
 emeraldshop:
     icon: emerald
