@@ -204,7 +204,6 @@ public class MagicController implements Listener, MageController {
                 if (commandSender instanceof Player) {
                     mage.setPlayer((Player) commandSender);
                 }
-                mage.armorUpdated();
             }
         }
         return apiMage;
