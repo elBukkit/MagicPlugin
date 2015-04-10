@@ -164,13 +164,13 @@ public class MagicController implements Listener, MageController {
                                         @Override
                                         public void run() {
                                             mage.load(playerData);
+                                            mage.setLoading(false);
                                         }
                                     }, 1);
                                 } catch (Exception ex) {
                                     getLogger().warning("Failed to load mage data from file " + playerFile.getName());
                                     ex.printStackTrace();
                                 }
-                                mage.setLoading(false);
                             }
                         }
                     });
