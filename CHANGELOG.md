@@ -2,13 +2,17 @@
 
 ## 4.9
 
- - Add Wizards' Robes set (chainmail armor, grants +10% mana each)
- - Add Apprentice Robes set (chainmail armor, grants +5% mana each)
- - Add Rabbit Boots, Rocket Boots, Flash Boots, Invisible Cloak
+ - Added tons of new items (available in the "magicitemshop")
+   - Add Wizards' Robes set (chainmail armor, grants +10% mana each)
+   - Add Apprentice Robes set (chainmail armor, grants +5% mana each)
+   - Add Rabbit Boots, Rocket Boots, Flash Boots
+   - Add Invisible Cloak
+   - Add Night Vision Goggles
+   - Add Diving Helmet
  - Magic Hat grants +10% mana regen and +20% max mana
  - Fix item shop "price" lore not being removed when purchasing
  - Removed wand health/hunger regen and haste properties. Replaced by potion effects, wands should auto-migrate.
- - Replaced Gills with Diving Helmet item
+ - Removed Gills from the enchanting path (in favor of Diving Helmet item)
  - Fix another Rollback exploit (Thanks, LordBoos!)
  - Fix wands wiped if logout on death
  - Some general safety precautions for saving player data, not sure if it fixes anything

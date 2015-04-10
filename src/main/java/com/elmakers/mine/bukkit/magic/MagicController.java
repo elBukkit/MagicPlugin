@@ -1836,7 +1836,6 @@ public class MagicController implements Listener, MageController {
         workPerUpdate = properties.getInt("work_per_update", workPerUpdate);
         workFrequency = properties.getInt("work_frequency", workFrequency);
         mageUpdateFrequency = properties.getInt("mage_update_frequency", mageUpdateFrequency);
-        Wand.PotionEffectDuration = properties.getInt("wand_potion_effect_duration", Wand.PotionEffectDuration);
         undoFrequency = properties.getInt("undo_frequency", undoFrequency);
 		pendingQueueDepth = properties.getInt("pending_depth", pendingQueueDepth);
 		undoMaxPersistSize = properties.getInt("undo_max_persist_size", undoMaxPersistSize);
@@ -3176,12 +3175,7 @@ public class MagicController implements Listener, MageController {
             }
         }
 
-		// Close the wand inventory to make sure the player's normal inventory gets saved
-		com.elmakers.mine.bukkit.api.wand.Wand wand = mage.getActiveWand();
-		if (wand != null) {
-			wand.deactivate();
-		}
-        mage.deactivateAllSpells(true, true);
+        mage.deactivate();
 
 		// Let the GC collect the mage
         mages.remove(mage.getId());

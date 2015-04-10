@@ -338,12 +338,6 @@ work_per_update: 5000
 # This value is in ticks
 mage_update_frequency: 5
 
-# How many ticks to make wand potion effects cover
-# This value is in ticks
-# This should be longer than the update frequency by a margin
-# to cover lag, or potion effects will "bounce" on and off
-wand_potion_effect_duration: 120
-
 # How often to check for scheduled undo batches. Changing this will
 # make the scheduled undo times less accurate, though they will
 # always occur in the correct order

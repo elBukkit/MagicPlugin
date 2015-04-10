@@ -217,7 +217,6 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
     public static SoundEffect inventoryCloseSound = null;
     public static SoundEffect inventoryCycleSound = null;
     public static String WAND_KEY = "wand";
-    public static int PotionEffectDuration = 240;
     public static byte HIDE_FLAGS = 60;
 
     private Inventory storedInventory = null;

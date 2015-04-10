@@ -660,6 +660,20 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         return (previous <= 0 || previous + maxInterval < now);
     }
 
+    protected void removeActiveEffects() {
+        LivingEntity entity = getLivingEntity();
+        if (entity == null) return;
+
+        Collection<PotionEffect> activeEffects = entity.getActivePotionEffects();
+        for (PotionEffect effect : activeEffects)
+        {
+            if (effect.getDuration() > Integer.MAX_VALUE / 2)
+            {
+                entity.removePotionEffect(effect.getType());
+            }
+        }
+    }
+
     // This gets called every second (or so - 20 ticks)
     protected void tick() {
         Player player = getPlayer();
@@ -673,11 +687,6 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             for (Wand armorWand : activeArmor.values())
             {
                 armorWand.updateEffects(this);
-            }
-
-            for (Map.Entry<PotionEffectType, Integer> effects : effectivePotionEffects.entrySet()) {
-                PotionEffect effect = new PotionEffect(effects.getKey(), Wand.PotionEffectDuration, effects.getValue(), true);
-                CompatibilityUtils.applyPotionEffect(player, effect);
             }
 
             // Copy this set since spells may get removed while iterating!
@@ -1636,11 +1645,38 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         damageReductionFalling = Math.min(damageReductionFalling, 1);
         damageReductionFire = Math.min(damageReductionFire, 1);
         damageReductionExplosions = Math.min(damageReductionExplosions, 1);
+
+
+        LivingEntity entity = getLivingEntity();
+        if (entity != null)
+        {
+            Collection<PotionEffect> activeEffects = entity.getActivePotionEffects();
+            for (PotionEffect effect : activeEffects)
+            {
+                if (!effectivePotionEffects.containsKey(effect.getType()) && effect.getDuration() > Integer.MAX_VALUE / 2)
+                {
+                    entity.removePotionEffect(effect.getType());
+                }
+            }
+            for (Map.Entry<PotionEffectType, Integer> effects : effectivePotionEffects.entrySet()) {
+                PotionEffect effect = new PotionEffect(effects.getKey(), Integer.MAX_VALUE, effects.getValue(), true);
+                CompatibilityUtils.applyPotionEffect(entity, effect);
+            }
+        }
     }
 
     public Collection<Wand> getActiveArmor()
     {
         return activeArmor.values();
+    }
+
+    public void deactivate() {
+        // Close the wand inventory to make sure the player's normal inventory gets saved
+        if (activeWand != null) {
+            activeWand.deactivate();
+        }
+        deactivateAllSpells(true, true);
+        removeActiveEffects();
     }
 }
 
