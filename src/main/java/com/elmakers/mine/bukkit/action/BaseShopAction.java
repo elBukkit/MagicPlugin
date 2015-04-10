@@ -68,7 +68,10 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
 
     @Override
     public void deactivated() {
-
+        // Check for shop items glitched into the player's inventory
+        if (context != null) {
+            context.getMage().removeItemsWithTag("shop");
+        }
     }
 
     @Override
