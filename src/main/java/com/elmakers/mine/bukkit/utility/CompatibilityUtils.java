@@ -7,6 +7,7 @@ import java.io.InputStream;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
@@ -20,6 +21,8 @@ import org.bukkit.Color;
 import org.bukkit.DyeColor;
 import org.bukkit.Location;
 import org.bukkit.Rotation;
+import org.bukkit.Server;
+import org.bukkit.World;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Skull;
@@ -630,5 +633,16 @@ public class CompatibilityUtils extends NMSUtils {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+    }
+
+    public static List<Player> getOnlinePlayers(Server server)
+    {
+        List<Player> allPlayers = new ArrayList<Player>();
+        List<World> worlds = server.getWorlds();
+        for (World world : worlds) {
+            allPlayers.addAll(world.getPlayers());
+        }
+
+        return allPlayers;
     }
 }
