@@ -80,6 +80,7 @@ public class AddSpellAction extends BaseSpellAction
         if (!wand.addSpell(spellKey)) {
             return SpellResult.NO_TARGET;
         }
+        wand.setActiveSpell(spellKey);
 
         Messages messages = context.getController().getMessages();
         SpellTemplate spell = context.getController().getSpellTemplate(spellKey);
