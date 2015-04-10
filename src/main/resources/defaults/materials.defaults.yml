@@ -547,6 +547,8 @@ building:
 - cake_block
 - diode_block_off
 - diode_block_on
+- redstone_comparator_off
+- redstone_comparator_on
 - locked_chest
 - trap_door
 - smooth_brick
