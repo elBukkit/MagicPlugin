@@ -1,7 +1,5 @@
 # TODO
 
- - Cure shouldn't remove infinite-effects
-
  - Recall still losing waypoints .. also can grab items out?
  - Maximum enchant count for wands
 

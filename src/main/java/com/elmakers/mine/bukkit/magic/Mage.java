@@ -1656,7 +1656,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             Collection<PotionEffect> activeEffects = entity.getActivePotionEffects();
             for (PotionEffect effect : activeEffects)
             {
-                if (!effectivePotionEffects.containsKey(effect.getType()) && effect.getDuration() > Integer.MAX_VALUE / 2)
+                if (!effectivePotionEffects.containsKey(effect.getType()) && effect.getDuration() > Integer.MAX_VALUE / 4)
                 {
                     entity.removePotionEffect(effect.getType());
                 }

@@ -3604,7 +3604,6 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
             if (spellCount == 0)
             {
                 String message = controller.getMessages().get("wand.spell_instructions", "").replace("$wand", getName());
-
                 mage.sendMessage(message.replace("$spell", template.getName()));
             }
             else

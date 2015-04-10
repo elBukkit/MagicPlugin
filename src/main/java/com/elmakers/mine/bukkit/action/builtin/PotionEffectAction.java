@@ -14,11 +14,14 @@ import org.bukkit.potion.PotionEffectType;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.logging.Level;
 
 public class PotionEffectAction extends BaseSpellAction
 {
-    private List<String> removeEffects;
+    private Set<PotionEffectType> removeEffects;
     private Collection<PotionEffect> addEffects;
     private Integer duration;
 
@@ -28,7 +31,19 @@ public class PotionEffectAction extends BaseSpellAction
         super.initialize(spell, parameters);
         if (parameters.contains("remove_effects"))
         {
-            removeEffects = parameters.getStringList("remove_effects");
+            removeEffects = new HashSet<PotionEffectType>();
+            Collection<String> removeEffectKeys = parameters.getStringList("remove_effects");
+            for (String removeKey : removeEffectKeys)
+            {
+                try {
+                    PotionEffectType removeType = PotionEffectType.getByName(removeKey);
+                    if (removeType != null) {
+                        removeEffects.add(removeType);
+                    }
+                } catch (Exception ex) {
+                    spell.getController().getLogger().log(Level.WARNING, "Invalid potion effect type: " + removeKey, ex);
+                }
+            }
         }
         else
         {
@@ -78,10 +93,14 @@ public class PotionEffectAction extends BaseSpellAction
 
         if (removeEffects != null)
         {
-            for (String removeKey : removeEffects)
+            Collection<PotionEffect> currentEffects = targetEntity.getActivePotionEffects();
+            for (PotionEffect effect : currentEffects)
             {
-                PotionEffectType removeType = PotionEffectType.getByName(removeKey);
-                targetEntity.removePotionEffect(removeType);
+                PotionEffectType removeType = effect.getType();
+                if (removeEffects.contains(removeType) && effect.getDuration() < Integer.MAX_VALUE / 4)
+                {
+                    targetEntity.removePotionEffect(removeType);
+                }
             }
         }
 
