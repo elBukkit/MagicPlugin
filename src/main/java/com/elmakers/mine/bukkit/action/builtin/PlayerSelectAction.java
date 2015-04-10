@@ -10,6 +10,7 @@ import com.elmakers.mine.bukkit.action.CompoundAction;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
+import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -94,9 +95,17 @@ public class PlayerSelectAction extends CompoundAction implements GUIAction
             return SpellResult.PLAYER_REQUIRED;
         }
 
-        List<Player> allPlayers = allowCrossWorld
-                ? Arrays.asList(controller.getPlugin().getServer().getOnlinePlayers())
-                : context.getLocation().getWorld().getPlayers();
+        List<Player> allPlayers = null;
+
+        if (allowCrossWorld) {
+            allPlayers = new ArrayList<Player>();
+            List<World> worlds = controller.getPlugin().getServer().getWorlds();
+            for (World world : worlds) {
+                allPlayers.addAll(context.getLocation().getWorld().getPlayers());
+            }
+        } else {
+            allPlayers = context.getLocation().getWorld().getPlayers();
+        }
 
         Collections.sort(allPlayers, new Comparator<Player>() {
             @Override

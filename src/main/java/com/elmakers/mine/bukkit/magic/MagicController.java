@@ -862,8 +862,7 @@ public class MagicController implements Listener, MageController {
         registerListeners();
 
         // Activate/load any active player Mages
-        Player[] players = plugin.getServer().getOnlinePlayers();
-        for (Player player : players) {
+        for (Player player : plugin.getServer().getOnlinePlayers()) {
             getMage(player);
         }
 

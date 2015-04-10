@@ -2,6 +2,7 @@
 
 ## 4.9
 
+ - Fix running on CraftBukkit 1.8
  - Added tons of new items (available in the "magicitemshop")
    - Add Wizards' Robes set (chainmail armor, grants +10% mana each)
    - Add Apprentice Robes set (chainmail armor, grants +5% mana each)
