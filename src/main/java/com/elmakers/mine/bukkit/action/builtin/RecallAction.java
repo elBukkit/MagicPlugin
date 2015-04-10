@@ -172,7 +172,10 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
 
     @Override
     public void deactivated() {
-
+// Check for shop items glitched into the player's inventory
+        if (context != null) {
+            context.getMage().removeItemsWithTag("waypoint");
+        }
     }
 
     @Override
@@ -465,6 +468,8 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
                 meta.setLore(lore);
             }
             waypointItem.setItemMeta(meta);
+            waypointItem = InventoryUtils.makeReal(waypointItem);
+            InventoryUtils.setMeta(waypointItem, "waypoint", "true");
             displayInventory.setItem(index, waypointItem);
             options.put(index, waypoint);
             index++;

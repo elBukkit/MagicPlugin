@@ -20,6 +20,7 @@ import com.elmakers.mine.bukkit.effect.Hologram;
 import com.elmakers.mine.bukkit.spell.ActionSpell;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
+import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import de.slikey.effectlib.util.ParticleEffect;
 import org.bukkit.*;
 import org.bukkit.block.Block;
@@ -1461,10 +1462,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     @Override
     public void activateGUI(GUIAction action)
     {
-        if (gui != null)
-        {
-            gui.deactivated();
-        }
+        GUIAction previousGUI = gui;
         gui = action;
         Player player = getPlayer();
         if (gui == null && player != null)
@@ -1476,6 +1474,11 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                 ex.printStackTrace();
             }
             controller.enableItemSpawn();
+        }
+
+        if (previousGUI != null)
+        {
+            previousGUI.deactivated();
         }
     }
 
@@ -1670,6 +1673,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         return activeArmor.values();
     }
 
+    @Override
     public void deactivate() {
         // Close the wand inventory to make sure the player's normal inventory gets saved
         if (activeWand != null) {
@@ -1677,6 +1681,39 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         }
         deactivateAllSpells(true, true);
         removeActiveEffects();
+    }
+
+    @Override
+    public void removeItemsWithTag(String tag) {
+        Player player = getPlayer();
+        if (player == null) return;
+
+        PlayerInventory inventory = player.getInventory();
+        ItemStack[] contents = inventory.getContents();
+        for (int index = 0; index < contents.length; index++)
+        {
+            ItemStack item = contents[index];
+            if (item != null && item.getType() != Material.AIR && InventoryUtils.hasMeta(item, tag))
+            {
+                inventory.setItem(index, null);
+            }
+        }
+
+        boolean modified = false;
+        ItemStack[] armor = inventory.getArmorContents();
+        for (int index = 0; index < armor.length; index++)
+        {
+            ItemStack item = armor[index];
+            if (item != null && item.getType() != Material.AIR && InventoryUtils.hasMeta(item, tag))
+            {
+                modified = true;
+                armor[index] = null;
+            }
+        }
+        if (modified)
+        {
+            inventory.setArmorContents(armor);
+        }
     }
 }
 
