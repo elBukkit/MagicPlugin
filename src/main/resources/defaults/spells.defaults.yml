@@ -6426,6 +6426,23 @@ colorshop:
           wand|orangeeffects: 100
           wand|haloeffects: 1000
 
+upgradeshop:
+    icon: gold_axe
+    category: utility
+    hidden: true
+    actions:
+        cast:
+        -  class: ItemShop
+    parameters:
+        loud: true
+        confirm_filler: stained_glass:2
+        confirm: true
+        require_wand: true
+        items:
+          wand|antihunger: 2000
+          wand|hotbar2: 500
+          wand|hotbar3: 500
+
 addspell:
     icon: iron_hoe
     category: utility
