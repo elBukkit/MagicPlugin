@@ -1,7 +1,6 @@
 # TODO
 
- - Fix volume action with uneven x/z sizes (!!)
- - Recall still losing waypoints
+ - Recall still losing waypoints .. also can grab items out?
  - Maximum enchant count for wands
 
  - Banners don't work from schematics

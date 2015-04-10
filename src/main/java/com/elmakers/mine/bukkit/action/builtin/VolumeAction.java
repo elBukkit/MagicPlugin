@@ -64,9 +64,10 @@ public class VolumeAction extends CompoundAction
 		super.reset(context);
         createActionContext(context);
 		currentRadius = startRadius;
-		dx = -startRadius;
+
+		dx = -Math.min(startRadius, xSize);
         dy = -ySize;
-		dz = -startRadius;
+		dz = -Math.min(startRadius, zSize);
 		xDirection = 1;
 		zDirection = 0;
 		checked = false;
@@ -168,7 +169,7 @@ public class VolumeAction extends CompoundAction
                 int nextZ = dz + zDirection;
                 int endX = Math.min(currentRadius, xSize);
                 int endZ = Math.min(currentRadius, zSize);
-                if ((xDirection == 0 && zDirection == -1 && nextX == -endX && nextZ == -endZ) || currentRadius == 0) {
+                if ((xDirection == 0 && zDirection == -1 && nextX <= -endX && nextZ <= -endZ) || currentRadius == 0) {
                     currentRadius++;
                     dx = -currentRadius;
                     dz = -currentRadius;
