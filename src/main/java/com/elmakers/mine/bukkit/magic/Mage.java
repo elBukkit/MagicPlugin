@@ -328,7 +328,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             default:
                 break;
         }
-        if (reduction > 1) {
+        if (reduction >= 1) {
             event.setCancelled(true);
             return;
         }

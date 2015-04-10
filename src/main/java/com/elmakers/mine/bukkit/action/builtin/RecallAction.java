@@ -183,13 +183,12 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
     @Override
     public void clicked(InventoryClickEvent event)
     {
+        event.setCancelled(true);
         if (context == null) {
-            event.setCancelled(true);
             event.getWhoClicked().closeInventory();
             return;
         }
         int slot = event.getSlot();
-        event.setCancelled(true);
         if (event.getSlotType() == InventoryType.SlotType.CONTAINER)
         {
             Waypoint waypoint = options.get(slot);
