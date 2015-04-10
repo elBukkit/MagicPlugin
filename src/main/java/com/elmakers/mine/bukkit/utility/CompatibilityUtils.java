@@ -94,7 +94,7 @@ public class CompatibilityUtils extends NMSUtils {
                     applyEffect = false;
                     entity.removePotionEffect(effect.getType());
                     break;
-                } else if (currentEffect.getAmplifier() > effect.getAmplifier()) {
+                } else if (currentEffect.getAmplifier() > effect.getAmplifier() || effect.getDuration() > Integer.MAX_VALUE / 4) {
                     applyEffect = false;
                     break;
                 }
