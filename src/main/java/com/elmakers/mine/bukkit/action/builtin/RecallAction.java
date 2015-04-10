@@ -44,7 +44,6 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
     private final static String UNLOCKED_WARPS = "recall_warps";
 
     private boolean allowCrossWorld = true;
-    private boolean maintainDirection = false;
     private Map<String, ConfigurationSection> warps = new HashMap<String, ConfigurationSection>();
     private Map<String, ConfigurationSection> commands = new HashMap<String, ConfigurationSection>();
     private List<RecallType> enabledTypes = new ArrayList<RecallType>();
@@ -95,8 +94,9 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
         public final String iconURL;
         public final String command;
         public final boolean opPlayer;
+        public final boolean maintainDirection;
 
-        public Waypoint(RecallType type, Location location, String name, String message, String failMessage, String description, MaterialAndData icon) {
+        public Waypoint(RecallType type, Location location, String name, String message, String failMessage, String description, MaterialAndData icon, boolean maintainDirection) {
             this.name = name;
             this.type = type;
             this.location = location;
@@ -107,6 +107,7 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
             this.iconURL = null;
             this.command = null;
             this.opPlayer = false;
+            this.maintainDirection = maintainDirection;
         }
 
         public Waypoint(RecallType type, Location location, String name, String message, String failMessage, String description, MaterialAndData icon, String iconURL) {
@@ -120,6 +121,7 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
             this.iconURL = iconURL;
             this.command = null;
             this.opPlayer = false;
+            this.maintainDirection = false;
         }
 
         public Waypoint(RecallType type, String command, boolean opPlayer, String name, String message, String failMessage, String description, MaterialAndData icon, String iconURL) {
@@ -133,6 +135,7 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
             this.iconURL = iconURL;
             this.command = command;
             this.opPlayer = opPlayer;
+            this.maintainDirection = false;
         }
 
         @Override
@@ -212,7 +215,6 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
         this.context = context;
 
         allowCrossWorld = parameters.getBoolean("allow_cross_world", true);
-        maintainDirection = parameters.getBoolean("maintain_direction", false);
     }
 
     @Override
@@ -520,22 +522,22 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
 		switch (type) {
 		case MARKER:
             Location location = ConfigurationUtils.getLocation(mage.getData(), MARKER_KEY);
-			return new Waypoint(type, location, context.getMessage("title_marker"), context.getMessage("cast_marker"), context.getMessage("no_target_marker"), context.getMessage("description_marker", ""), ConfigurationUtils.getMaterialAndData(parameters, "icon_marker"));
+			return new Waypoint(type, location, context.getMessage("title_marker"), context.getMessage("cast_marker"), context.getMessage("no_target_marker"), context.getMessage("description_marker", ""), ConfigurationUtils.getMaterialAndData(parameters, "icon_marker"), true);
 		case DEATH:
-            return new Waypoint(type, mage.getLastDeathLocation(), "Last Death", context.getMessage("cast_death"), context.getMessage("no_target_death"), context.getMessage("description_death", ""), ConfigurationUtils.getMaterialAndData(parameters, "icon_death"));
+            return new Waypoint(type, mage.getLastDeathLocation(), "Last Death", context.getMessage("cast_death"), context.getMessage("no_target_death"), context.getMessage("description_death", ""), ConfigurationUtils.getMaterialAndData(parameters, "icon_death"), true);
 		case SPAWN:
-			return new Waypoint(type, context.getWorld().getSpawnLocation(), context.getMessage("title_spawn"), context.getMessage("cast_spawn"), context.getMessage("no_target_spawn"), context.getMessage("description_spawn", ""), ConfigurationUtils.getMaterialAndData(parameters, "icon_spawn"));
+			return new Waypoint(type, context.getWorld().getSpawnLocation(), context.getMessage("title_spawn"), context.getMessage("cast_spawn"), context.getMessage("no_target_spawn"), context.getMessage("description_spawn", ""), ConfigurationUtils.getMaterialAndData(parameters, "icon_spawn"), false);
         case HOME:
             Location bedLocation = player == null ? null : player.getBedSpawnLocation();
             if (bedLocation != null) {
                 bedLocation.setX(bedLocation.getX() + 0.5);
                 bedLocation.setZ(bedLocation.getZ() + 0.5);
             }
-            return new Waypoint(type, bedLocation, context.getMessage("title_home"), context.getMessage("cast_home"), context.getMessage("no_target_home"), context.getMessage("description_home", ""), ConfigurationUtils.getMaterialAndData(parameters, "icon_home"));
+            return new Waypoint(type, bedLocation, context.getMessage("title_home"), context.getMessage("cast_home"), context.getMessage("no_target_home"), context.getMessage("description_home", ""), ConfigurationUtils.getMaterialAndData(parameters, "icon_home"), false);
 		case WAND:
             List<LostWand> lostWands = mage.getLostWands();
 			if (lostWands == null || index < 0 || index >= lostWands.size()) return null;
-			return new Waypoint(type, lostWands.get(index).getLocation(), context.getMessage("title_wand"), context.getMessage("cast_wand"), context.getMessage("no_target_wand"), context.getMessage("description_wand", ""), ConfigurationUtils.getMaterialAndData(parameters, "icon_wand"));
+			return new Waypoint(type, lostWands.get(index).getLocation(), context.getMessage("title_wand"), context.getMessage("cast_wand"), context.getMessage("no_target_wand"), context.getMessage("description_wand", ""), ConfigurationUtils.getMaterialAndData(parameters, "icon_wand"), true);
 		}
 		
 		return null;
@@ -583,7 +585,7 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
 			return false;
 		}
 
-        if (maintainDirection)
+        if (waypoint.maintainDirection)
         {
             Location playerLocation = player.getLocation();
             targetLocation.setYaw(playerLocation.getYaw());
