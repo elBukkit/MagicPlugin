@@ -1543,11 +1543,11 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	
 	public static String getLevelString(Messages messages, String templateName, float amount, float max)
 	{
-        if (max != 1) {
-            amount = amount / max;
-        }
 		String templateString = messages.get(templateName);
 		if (templateString.contains("$roman")) {
+            if (max != 1) {
+                amount = amount / max;
+            }
 			templateString = templateString.replace("$roman", getRomanString(messages, amount));
 		}
 		return templateString.replace("$amount", Integer.toString((int) amount));
@@ -2976,7 +2976,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
     }
 
 	protected void updateMana() {
-		if (mage != null && effectiveXpMax > 0 && xpRegeneration > 0) {
+		if (mage != null && effectiveXpMax > 0 && effectiveXpRegeneration > 0) {
 			Player player = mage.getPlayer();
             if (displayManaAsGlow) {
                 if (xp == effectiveXpMax) {
@@ -3274,11 +3274,11 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         }
         effectiveXpMax = xpMax;
         if (effectiveBoost != 0) {
-            effectiveXpMax += Math.ceil(effectiveBoost * effectiveXpMax);
+            effectiveXpMax = (int)Math.ceil(effectiveXpMax + effectiveBoost * effectiveXpMax);
         }
         effectiveXpRegeneration = xpRegeneration;
         if (effectiveRegenBoost != 0) {
-            effectiveXpRegeneration += Math.ceil(effectiveRegenBoost * effectiveXpRegeneration);
+            effectiveXpRegeneration = (int)Math.ceil(effectiveXpRegeneration + effectiveRegenBoost * effectiveXpRegeneration);
         }
     }
 
