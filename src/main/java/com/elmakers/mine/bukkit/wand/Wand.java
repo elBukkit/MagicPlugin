@@ -53,6 +53,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.potion.PotionEffectType;
+import org.bukkit.util.Vector;
 
 public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand {
 	public final static int INVENTORY_SIZE = 27;
@@ -72,6 +73,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		"bound", "uses", "upgrade", "indestructible", "undroppable",
 		"cost_reduction", "cooldown_reduction", "effect_bubbles", "effect_color", 
 		"effect_particle", "effect_particle_count", "effect_particle_data", "effect_particle_interval",
+        "effect_particle_min_velocity",
         "effect_particle_radius", "effect_particle_offset",
         "effect_sound", "effect_sound_interval", "effect_sound_pitch", "effect_sound_volume",
 		"hotbar_count", "hotbar",
@@ -160,6 +162,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	private float effectParticleData = 0;
 	private int effectParticleCount = 0;
 	private int effectParticleInterval = 0;
+    private double effectParticleMinVelocity = 0;
     private double effectParticleRadius = 0.2;
     private double effectParticleOffset = 0.3;
 	private boolean effectBubbles = false;
@@ -180,6 +183,8 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 
     private long lastSoundEffect;
     private long lastParticleEffect;
+    private long lastEffectLocationTime;
+    private Vector lastEffectLocation;
 	
 	// Inventory functionality
 	
@@ -961,6 +966,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		node.set("effect_bubbles", effectBubbles);
 		node.set("effect_particle_data", Float.toString(effectParticleData));
 		node.set("effect_particle_count", effectParticleCount);
+        node.set("effect_particle_min_velocity", effectParticleMinVelocity);
 		node.set("effect_particle_interval", effectParticleInterval);
         node.set("effect_particle_radius", effectParticleRadius);
         node.set("effect_particle_offset", effectParticleOffset);
@@ -1188,6 +1194,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
             effectParticleRadius = wandConfig.getDouble("effect_particle_radius", effectParticleRadius);
             effectParticleOffset = wandConfig.getDouble("effect_particle_offset", effectParticleOffset);
 			effectParticleInterval = wandConfig.getInt("effect_particle_interval", effectParticleInterval);
+            effectParticleMinVelocity = wandConfig.getDouble("effect_particle_min_velocity", effectParticleMinVelocity);
 			effectSoundInterval =  wandConfig.getInt("effect_sound_interval", effectSoundInterval);
 
             boolean needsInventoryUpdate = false;
@@ -2262,6 +2269,8 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
             effectParticleRadius = other.effectParticleRadius;
             modified = modified | (effectParticleOffset != other.effectParticleOffset);
             effectParticleOffset = other.effectParticleOffset;
+            modified = modified | (effectParticleMinVelocity < other.effectParticleOffset);
+            effectParticleMinVelocity = Math.max(effectParticleMinVelocity, other.effectParticleMinVelocity);
 		}
 		
 		if (other.effectSound != null && (other.isUpgrade || effectSound == null)) {
@@ -2784,6 +2793,8 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 
         lastSoundEffect = 0;
         lastParticleEffect = 0;
+        lastEffectLocationTime = 0;
+        lastEffectLocation = null;
         if (forceUpdate) {
             player.updateInventory();
         }
@@ -2874,8 +2885,12 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		
 		return false;
 	}
+
+    protected void updateEffects() {
+        updateEffects(mage);
+    }
 	
-	protected void updateEffects() {
+	public void updateEffects(Mage mage) {
 		if (mage == null) return;
 		Player player = mage.getPlayer();
 		if (player == null) return;
@@ -2888,7 +2903,22 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		Location location = mage.getLocation();
 		long now = System.currentTimeMillis();
 		if (effectParticle != null && location != null && effectParticleInterval > 0 && effectParticleCount > 0) {
-			if (lastParticleEffect == 0 || now > lastParticleEffect + effectParticleInterval) {
+            boolean velocityCheck = true;
+            if (effectParticleMinVelocity > 0) {
+                Vector mageLocation = location.toVector();
+                mageLocation.setY(0);
+                if (lastEffectLocation != null && lastEffectLocationTime != 0) {
+                    double velocitySquared = effectParticleMinVelocity * effectParticleMinVelocity;
+                    Vector velocity = lastEffectLocation.subtract(mageLocation);
+                    double speedSquared = velocity.lengthSquared() * 1000 / (now - lastEffectLocationTime);
+                    velocityCheck = (speedSquared > velocitySquared);
+                } else {
+                    velocityCheck = false;
+                }
+                lastEffectLocation = mageLocation;
+                lastEffectLocationTime = now;
+            }
+			if (velocityCheck && (lastParticleEffect == 0 || now > lastParticleEffect + effectParticleInterval)) {
                 lastParticleEffect = now;
                 Location effectLocation = player.getLocation();
                 Location eyeLocation = player.getEyeLocation();
@@ -3183,7 +3213,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         int maxDurability = item.getType().getMaxDurability();
 
         // Auto-repair wands
-        if (!displayManaAsDurability && maxDurability > 0) {
+        if (!displayManaAsDurability && maxDurability > 0 && indestructible) {
             item.setDurability((short)0);
         }
 
@@ -3203,11 +3233,16 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
             }
             lastXpRegeneration = now;
 		}
-		if (damageReductionFire > 0 && player.getFireTicks() > 0) {
-			player.setFireTicks(0);
-		}
-		
-		updateEffects();
+
+        if (!passive)
+        {
+            if (damageReductionFire > 0 && player.getFireTicks() > 0) {
+                player.setFireTicks(0);
+            }
+
+            updateEffects();
+        }
+
         if (modified) {
             saveState();
         }

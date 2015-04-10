@@ -670,6 +670,11 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                 activeWand.tick();
             }
 
+            for (Wand armorWand : activeArmor.values())
+            {
+                armorWand.updateEffects(this);
+            }
+
             for (Map.Entry<PotionEffectType, Integer> effects : effectivePotionEffects.entrySet()) {
                 PotionEffect effect = new PotionEffect(effects.getKey(), Wand.PotionEffectDuration, effects.getValue(), true);
                 CompatibilityUtils.applyPotionEffect(player, effect);
