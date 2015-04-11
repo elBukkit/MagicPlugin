@@ -1171,6 +1171,44 @@ pull:
     costs:
         mana: 50
 
+grab:
+    icon_url: http://i.imgur.com/JhUqJ85.png
+    icon: fishing_rod
+    category: elemental
+    pvp_restricted: true
+    worth: 200
+    actions:
+        cast:
+        - class: AreaOfEffect
+          actions:
+          - class: Velocity
+            direction: 0,1,0
+            item_speed: 0.5
+        - class: Delay
+          delay: 500
+        - class: AreaOfEffect
+          actions:
+          - class: Velocity
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: fizz
+           effectlib:
+             class: HelixEffect
+             particle: spell
+             iterations: 2
+             y_offset: -1
+    parameters:
+        target: self
+        target_type: Item
+        fov: 3
+        count: 16
+        range: 16
+        item_speed: 2
+        push: -1
+    costs:
+        mana: 50
+
 boom:
     icon_url: http://i.imgur.com/64uE1b8.png
     alias: kaboom
@@ -5565,26 +5603,41 @@ kill:
     pvp_restricted: true
     worth: 5500
     actions:
-        cast:
-        -  class: Projectile
-           actions:
-           -  class: Kill
+      cast:
+        - class: Delay
+          delay: 2000
+        - class: PlayEffects
+          effect: launch_projectile
+        - class: Projectile
+          actions:
+          - class: Damage
     effects:
         cast:
-        -  class: EffectSingle
-           custom_sound: magic.electrify
-           sound_volume: 5
-           sound_pitch: -.25
+        - class: EffectSingle
+          custom_sound: magic.electrify
+          sound_volume: 5
+          sound_pitch: -0.25
+          location: origin
+          effectlib:
+             class: AtomEffect
+             particleNucleus: spell_mob
+             colorNucleus: "00FF00"
+             particleOrbital: redstone
+             colorOrbital: "00FF00"
+             iterations: 16
+             radius: 5
+        launch_projectile:
         -  class: EffectSingle
            custom_sound: magic.zap_big
-           sound_volume: 10
+           sound_volume: 1
+           location: origin
+        projectile:
+        -  class: EffectSingle
            location: origin
            effectlib:
-             class: ConeEffect
-             iterations: 16
-             particle: spell_mob
-             color: 00FF00
-             lengthGrow: 0.4
+             class: SmokeEffect
+             iterations: 8
+             particle: smoke_normal
         hit:
         - class: EffectSingle
           location: targets
@@ -5592,7 +5645,6 @@ kill:
           firework: ball_large
         - class: EffectSingle
           location: origin
-          particle_override: particleOrbital
           effectlib:
              class: AtomEffect
              colorNucleus: "00FF00"
@@ -5600,25 +5652,6 @@ kill:
              colorOrbital: "00FF00"
              particleOrbital: redstone
              iterations: 16
-        no_target:
-        -  class: EffectSingle
-           custom_sound: magic.electrify
-           sound_volume: 5
-           sound_pitch: -.25
-        -  class: EffectSingle
-           custom_sound: magic.zap_big
-           sound_volume: 5
-           location: origin
-           effectlib:
-             class: ConeEffect
-             iterations: 16
-             particle: spell_mob
-             color: 00FF00
-             lengthGrow: 0.4
-        -  class: EffectSingle
-           location: target
-           color: "00FF00"
-           firework: ball_large
     parameters:
         projectile: WitherSkull
         cooldown: 30000
@@ -5627,6 +5660,7 @@ kill:
         spread: 0
         speed: 1
         size: 0
+        damage: 40
         break_blocks: false
     costs:
         mana: 150

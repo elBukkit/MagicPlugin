@@ -198,3 +198,41 @@ recall:
         icon: ender_stone
 
 
+grab:
+    icon_url: http://i.imgur.com/JhUqJ85.png
+    icon: fishing_rod
+    category: elemental
+    pvp_restricted: true
+    worth: 200
+    actions:
+        cast:
+        - class: AreaOfEffect
+          actions:
+          - class: Velocity
+            direction: 0,1,0
+            item_speed: 0.5
+        - class: Delay
+          delay: 500
+        - class: AreaOfEffect
+          actions:
+          - class: Velocity
+            push: -1
+            item_speed: 0.9
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: fizz
+           effectlib:
+             class: HelixEffect
+             particle: spell
+             iterations: 2
+             offset: 0,-1,0
+    parameters:
+        target: self
+        target_type: Item
+        fov: 3
+        count: 16
+        range: 16
+        push: 0
+    costs:
+        mana: 50

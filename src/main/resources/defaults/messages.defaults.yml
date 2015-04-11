@@ -386,6 +386,10 @@ spells:
         description: Pull things toward you
         alternate: Gimme!
         cast: Yoink!
+    grab:
+        name: Grab
+        description: Pull items toward you
+        cast: Yoink!
     frost:
         name: Frost
         description: Freeze water and create snow
