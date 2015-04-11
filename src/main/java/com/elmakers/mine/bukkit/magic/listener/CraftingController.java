@@ -93,7 +93,10 @@ public class CraftingController implements Listener {
         if (!craftingEnabled) return;
 
         Recipe recipe = event.getRecipe();
-        Material resultType = recipe.getResult().getType();
+        if (recipe == null) return;
+        ItemStack result = recipe.getResult();
+        if (result == null) return;
+        Material resultType = result.getType();
         List<MagicRecipe> candidates = recipes.get(resultType);
         if (candidates == null || candidates.size() == 0) return;
 
