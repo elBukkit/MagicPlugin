@@ -69,12 +69,33 @@ camera:
   output: camera
   output_type: wand
   materials:
-    o: diamond
+    o: emerald
     i: dispenser
     d: daylight_detector
   row_1: o
   row_2: i
   row_3: d
+
+divinghelmet:
+  output: divinghelmet
+  output_type: wand
+  materials:
+    o: emerald
+    i: stained_glass
+  row_1: iii
+  row_2: ioi
+  row_3: iii
+
+goggles:
+  output: goggles
+  output_type: wand
+  materials:
+    o: emerald
+    i: stick
+    d: nether_fence
+  row_1: oio
+  row_2: d d
+  row_3: d d
 
 magichat:
   output: magichat
