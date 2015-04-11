@@ -244,11 +244,15 @@ supercollapse:
     enabled: true
     hidden: true
 
-undo:
+rollback:
     enabled: true
     hidden: true
 
 commit:
+    enabled: true
+    hidden: true
+
+brushselect:
     enabled: true
     hidden: true
 
