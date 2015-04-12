@@ -252,7 +252,6 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
         }
     }
 
-    @SuppressWarnings("deprecation")
     public void enableMap(int size) {
         fillWithAir = false;
         if (size <= 0) {
@@ -261,9 +260,7 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
         this.scale = (float)128 / size;
         this.mode = BrushMode.MAP;
         if (this.material == Material.WOOL || this.material == Material.STAINED_CLAY
-            // Use raw id's for 1.6 backwards compatibility.
-            || this.material.getId() == 95 || this.material.getId() == 160
-            // || this.material == Material.STAINED_GLASS || this.material == Material.STAINED_GLASS_PANE
+            || this.material == Material.STAINED_GLASS || this.material == Material.STAINED_GLASS_PANE
             || this.material == Material.CARPET) {
             this.mapMaterialBase = this.material;
         }
