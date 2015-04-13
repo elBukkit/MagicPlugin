@@ -71,6 +71,25 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
 
     public static double WAND_LOCATION_OFFSET = 0.5;
 
+    protected class TeleportTask implements Runnable {
+        private final CastContext context;
+        private final Entity entity;
+        private final Location location;
+        private final int verticalSearchDistance;
+
+        protected TeleportTask(CastContext context, final Entity entity, final Location location, final int verticalSearchDistance) {
+            this.context = context;
+            this.entity = entity;
+            this.location = location;
+            this.verticalSearchDistance = verticalSearchDistance;
+        }
+
+        @Override
+        public void run() {
+            context.delayedTeleport(entity, location, verticalSearchDistance);
+        }
+    }
+
     public CastContext(Spell spell) {
         this.setSpell(spell);
         this.location = null;
