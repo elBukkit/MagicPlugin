@@ -797,68 +797,16 @@ public class MagicController implements Listener, MageController {
         activateMetrics();
 
         // Set up the PlayerSpells timer
-        Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, new TimedRunnable("Mage Tick") {
-            public void onRun() {
-                long threshold = System.currentTimeMillis() - MAGE_FORGET_THRESHOLD;
-                for (Entry<String, Long> mageEntry : forgetMages.entrySet()) {
-                    if (mageEntry.getValue() < threshold)
-                        mages.remove(mageEntry.getKey());
-                }
-                forgetMages.clear();
-
-                for (Mage mage : mages.values()) {
-                    if (mage instanceof com.elmakers.mine.bukkit.magic.Mage) {
-                        try {
-                            ((com.elmakers.mine.bukkit.magic.Mage) mage).tick();
-                        } catch (Exception ex) {
-                            getLogger().log(Level.WARNING, "Error ticking Mage " + mage.getName(), ex);
-                        }
-                    }
-                }
-            }
-        }, 0, mageUpdateFrequency);
+        final MageUpdateTask mageTask = new MageUpdateTask(this);
+        Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, mageTask, 0, mageUpdateFrequency);
 
         // Set up the Block update timer
-        final Set<Mage> pending = new HashSet<Mage>();
-        Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, new TimedRunnable("Block Updates") {
-            public void onRun() {
-                pending.clear();
-                pending.addAll(pendingConstruction);
-                int remainingWork = workPerUpdate;
-                while (remainingWork > 0 && pending.size() > 0) {
-                    int workPerMage = Math.max(10, remainingWork / pending.size());
-                    for (Mage apiMage : pendingConstruction) {
-                        if (apiMage instanceof com.elmakers.mine.bukkit.magic.Mage) {
-                            com.elmakers.mine.bukkit.magic.Mage mage = ((com.elmakers.mine.bukkit.magic.Mage) apiMage);
-                            int workPerformed = mage.processPendingBatches(workPerMage);
-                            if (workPerformed == 0) {
-                                pending.remove(apiMage);
-                            } else {
-                                remainingWork -= workPerformed;
-                            }
-                        }
-                    }
-                    pending.removeAll(pendingConstructionRemoval);
-                    pendingConstruction.removeAll(pendingConstructionRemoval);
-                    pendingConstructionRemoval.clear();
-                }
-            }
-        }, 0, workFrequency);
+        final BlockUpdateTask blockTask = new BlockUpdateTask(this);
+        Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, blockTask, 0, workFrequency);
 
         // Set up the Update check timer
-        Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, new TimedRunnable("Undo Scheduler") {
-            public void onRun() {
-                long now = System.currentTimeMillis();
-                while (scheduledUndo.size() > 0) {
-                    UndoList undo = scheduledUndo.peek();
-                    if (now < undo.getScheduledTime()) {
-                        break;
-                    }
-                    scheduledUndo.poll();
-                    undo.undoScheduled();
-                }
-            }
-        }, 0, undoFrequency);
+        final UndoUpdateTask undoTask = new UndoUpdateTask(this);
+        Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, undoTask, 0, undoFrequency);
         registerListeners();
 
         // Activate/load any active player Mages
@@ -872,6 +820,43 @@ public class MagicController implements Listener, MageController {
         crafting.register(plugin);
 
         initialized = true;
+    }
+
+    protected void processUndo()
+    {
+        long now = System.currentTimeMillis();
+        while (scheduledUndo.size() > 0) {
+            UndoList undo = scheduledUndo.peek();
+            if (now < undo.getScheduledTime()) {
+                break;
+            }
+            scheduledUndo.poll();
+            undo.undoScheduled();
+        }
+    }
+
+    protected void processBlockUpdates()
+    {
+        pendingScratchpad.clear();
+        pendingScratchpad.addAll(pendingConstruction);
+        int remainingWork = workPerUpdate;
+        while (remainingWork > 0 && pendingScratchpad.size() > 0) {
+            int workPerMage = Math.max(10, remainingWork / pendingScratchpad.size());
+            for (Mage apiMage : pendingConstruction) {
+                if (apiMage instanceof com.elmakers.mine.bukkit.magic.Mage) {
+                    com.elmakers.mine.bukkit.magic.Mage mage = ((com.elmakers.mine.bukkit.magic.Mage) apiMage);
+                    int workPerformed = mage.processPendingBatches(workPerMage);
+                    if (workPerformed == 0) {
+                        pendingScratchpad.remove(apiMage);
+                    } else {
+                        remainingWork -= workPerformed;
+                    }
+                }
+            }
+            pendingScratchpad.removeAll(pendingConstructionRemoval);
+            pendingConstruction.removeAll(pendingConstructionRemoval);
+            pendingConstructionRemoval.clear();
+        }
     }
 
     protected void activateMetrics() {
@@ -1520,7 +1505,7 @@ public class MagicController implements Listener, MageController {
                 {
                     if (!mage.isValid())
                     {
-                        forgetMages.put(mageEntry.getKey(), 0l);
+                        forgetMages.add(mageEntry.getKey());
                     }
                     continue;
                 }
@@ -1537,7 +1522,7 @@ public class MagicController implements Listener, MageController {
                 if (!mage.isValid())
                 {
                     getLogger().info("Forgetting Offline mage " + mage.getName());
-                    forgetMages.put(mageEntry.getKey(), 0l);
+                    forgetMages.add(mageEntry.getKey());
                 }
             }
         } catch (Exception ex) {
@@ -1545,7 +1530,7 @@ public class MagicController implements Listener, MageController {
         }
 
         // Forget players we don't need to keep in memory
-        for (String forgetId : forgetMages.keySet()) {
+        for (String forgetId : forgetMages) {
             mages.remove(forgetId);
         }
         forgetMages.clear();
@@ -3816,7 +3801,7 @@ public class MagicController implements Listener, MageController {
 	}
 	
 	public void forgetMage(Mage mage) {
-		forgetMages.put(mage.getId(), System.currentTimeMillis());
+		forgetMages.add(mage.getId());
 	}
 
     public Automaton getAutomaton(Block block) {
@@ -4688,13 +4673,19 @@ public class MagicController implements Listener, MageController {
         disableItemSpawn = false;
     }
 
+    protected void forgetMages() {
+        for (String mageEntry : forgetMages) {
+            mages.remove(mageEntry);
+        }
+        forgetMages.clear();
+    }
+
     /*
 	 * Private data
 	 */
     private final static int                    MAX_Y = 255;
     private static final String                 BUILTIN_SPELL_CLASSPATH = "com.elmakers.mine.bukkit.spell.builtin";
     private static int                          VOLUME_UPDATE_THRESHOLD = 32;
-    private static int                          MAGE_FORGET_THRESHOLD = 30000;
 
     private final String                        SPELLS_FILE                 = "spells";
     private final String                        CONFIG_FILE             	= "config";
@@ -4795,9 +4786,10 @@ public class MagicController implements Listener, MageController {
     private final Map<String, SpellTemplate>    spellAliases                = new HashMap<String, SpellTemplate>();
     private final Map<String, SpellCategory>    categories              	= new HashMap<String, SpellCategory>();
     private final Map<String, Mage> 		    mages                  		= new HashMap<String, Mage>();
-    private final Map<String, Long>			    forgetMages					= new HashMap<String, Long>();
+    private final Set<String>			        forgetMages					= new HashSet<String>();
     private final Set<Mage>		 	            pendingConstruction			= new HashSet<Mage>();
     private final Set<Mage>                     pendingConstructionRemoval  = new HashSet<Mage>();
+    private final Set<Mage>                     pendingScratchpad           = new HashSet<Mage>();
     private final PriorityQueue<UndoList>       scheduledUndo               = new PriorityQueue<UndoList>();
     private final Map<String, WeakReference<Schematic>> schematics	= new HashMap<String, WeakReference<Schematic>>();
 

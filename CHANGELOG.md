@@ -4,6 +4,7 @@
 
  - Firework effects are produced entirely client-side.
    Hoping this addresses some "entity tracker" lag a few servers have been seeing. It might not.
+ - EffectLib now runs effects asynchronously. Should help with lag from spamming complex effects like Helix.
 
 ## 4.9.1
 
