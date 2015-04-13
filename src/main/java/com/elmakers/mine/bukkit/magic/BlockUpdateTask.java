@@ -1,20 +1,14 @@
 package com.elmakers.mine.bukkit.magic;
 
-import com.elmakers.mine.bukkit.utility.TimedRunnable;
-
-import java.util.Collection;
-import java.util.logging.Level;
-
-public class BlockUpdateTask extends TimedRunnable {
+public class BlockUpdateTask implements Runnable {
     private final MagicController controller;
 
     public BlockUpdateTask(MagicController controller) {
-        super("Block Updates");
         this.controller = controller;
     }
 
     @Override
-    public void onRun() {
+    public void run() {
         controller.processBlockUpdates();
     }
 }

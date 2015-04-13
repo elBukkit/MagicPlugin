@@ -1992,16 +1992,10 @@ public class MagicController implements Listener, MageController {
 		EffectPlayer.SOUNDS_ENABLED = soundsEnabled;
 
 		// Set up auto-save timer
-		final MagicController saveController = this;
+        final AutoSaveTask autoSave = new AutoSaveTask(this);
 		int autoSaveIntervalTicks = properties.getInt("auto_save", 0) * 20 / 1000;;
 		if (autoSaveIntervalTicks > 1) {
-			autoSaveTaskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin,
-					new TimedRunnable("Auto Save") {
-						public void onRun() {
-                            saveController.getLogger().info("Auto-saving Magic data");
-							saveController.save(true);
-						}
-					},
+			autoSaveTaskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, autoSave,
 					autoSaveIntervalTicks, autoSaveIntervalTicks);
 		}
 

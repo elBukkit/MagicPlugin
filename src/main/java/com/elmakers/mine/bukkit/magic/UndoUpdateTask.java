@@ -1,17 +1,14 @@
 package com.elmakers.mine.bukkit.magic;
 
-import com.elmakers.mine.bukkit.utility.TimedRunnable;
-
-public class UndoUpdateTask extends TimedRunnable {
+public class UndoUpdateTask implements Runnable {
     private final MagicController controller;
 
     public UndoUpdateTask(MagicController controller) {
-        super("Rollback Scheduler");
         this.controller = controller;
     }
 
     @Override
-    public void onRun() {
+    public void run() {
         controller.processUndo();
     }
 }

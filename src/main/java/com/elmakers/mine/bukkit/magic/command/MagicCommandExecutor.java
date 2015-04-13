@@ -15,7 +15,6 @@ import com.elmakers.mine.bukkit.api.batch.SpellBatch;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.RunnableJob;
-import com.elmakers.mine.bukkit.utility.TimedRunnable;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Chunk;
@@ -241,17 +240,9 @@ public class MagicCommandExecutor extends MagicTabExecutor {
                     String className = "(Unknown)";
                     Runnable taskRunnable = CompatibilityUtils.getTaskRunnable(task);
                     if (taskRunnable != null) {
-                        if (taskRunnable instanceof TimedRunnable) {
-                            TimedRunnable timed = (TimedRunnable)taskRunnable;
-                            long count = timed.getCount();
-                            long totalTime = timed.getTotalTime();
-                            long avg = count == 0 ? 0 : totalTime / count;
-                            className = timed.getName() + "(" + totalTime + ", " + count + ", " + avg + ")";
-                        } else {
-                            Class<? extends Runnable> taskClass = taskRunnable.getClass();
-                            if (taskClass != null) {
-                                className = taskClass.getName();
-                            }
+                        Class<? extends Runnable> taskClass = taskRunnable.getClass();
+                        if (taskClass != null) {
+                            className = taskClass.getName();
                         }
                     }
                     Integer count = pluginTaskCounts.get(className);
