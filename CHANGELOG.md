@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## 4.9.2
+
+ - Firework effects are produced entirely client-side.
+   Hoping this addresses some "entity tracker" lag a few servers have been seeing. It might not.
+
 ## 4.9.1
 
  - Fix chest mode (some spells not showing up)
