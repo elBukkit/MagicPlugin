@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## 4.9.1
+
+ - Fix chest mode (some spells not showing up)
+ - Fix a potential conflict with other crafting plugins
+
 ## 4.9
 
  - Fix running on CraftBukkit 1.8

@@ -20,8 +20,6 @@ import com.elmakers.mine.bukkit.block.ConstructionType;
 import com.elmakers.mine.bukkit.batch.ConstructBatch;
 import com.elmakers.mine.bukkit.spell.BrushSpell;
 import com.elmakers.mine.bukkit.utility.Target;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
 public class ConstructSpell extends BrushSpell
@@ -43,15 +41,12 @@ public class ConstructSpell extends BrushSpell
 	public SpellResult onCast(ConfigurationSection parameters) 
 	{
         Block target = null;
-        Entity targetEntity;
         boolean finalCast = getTargetType() != TargetType.SELECT || this.targetBlock != null;
         if (finalCast && parameters.getBoolean("select_self", true) && isLookingDown()) {
-            targetEntity = mage.getEntity();
             target = mage.getLocation().getBlock().getRelative(BlockFace.DOWN);
         } else {
             Target t = getTarget();
             target = t.getBlock();
-            targetEntity = t.getEntity();
         }
 		if (target == null)
 		{
