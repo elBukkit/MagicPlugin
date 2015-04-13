@@ -2059,13 +2059,6 @@ arrow:
            color: CC9933
            firework: ball
            custom_sound: magic.hit
-        projectile:
-        -  class: EffectSingle
-           location: origin
-           effectlib:
-             class: SmokeEffect
-             iterations: 8
-             particle: smoke_normal
     parameters:
       projectile: Arrow
       damage: .75

@@ -3,6 +3,7 @@
  - Map brush was acting wonky.
  - Recall still losing waypoints .. also can grab items out?
  - op'd superrepair should remove chests and such
+ - Fix Life and Life 3D - something weird with cmd block casting, or something?
 
  - Maximum enchant count for wands
  - Banners don't work from schematics

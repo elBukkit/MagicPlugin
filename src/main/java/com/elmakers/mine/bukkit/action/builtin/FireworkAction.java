@@ -100,17 +100,20 @@ public class FireworkAction extends TriggeredCompoundAction
         FireworkEffect effect = EffectUtils.getFireworkEffect(context, color1, color2, fireworkType, flicker, trail);
         Entity firework = EffectUtils.spawnFireworkEffect(location, effect, power, direction, expectedLifespan, ticksFlown);
 
-        Collection<EffectPlayer> projectileEffects = context.getEffects("projectile");
-        for (EffectPlayer effectPlayer : projectileEffects) {
-            effectPlayer.start(firework.getLocation(), firework, null, null);
-        }
+        if (firework != null)
+        {
+            Collection<EffectPlayer> projectileEffects = context.getEffects("projectile");
+            for (EffectPlayer effectPlayer : projectileEffects) {
+                effectPlayer.start(firework.getLocation(), firework, null, null);
+            }
 
-        ActionHandler.setActions(firework, actions, context, parameters, "indirect_player_message");
-        ActionHandler.setEffects(firework, context, "hit");
+            ActionHandler.setActions(firework, actions, context, parameters, "indirect_player_message");
+            ActionHandler.setEffects(firework, context, "hit");
 
-        scheduleEntityCheck(context, firework, checkInterval);
-        if (setTarget) {
-            context.setTargetEntity(firework);
+            scheduleEntityCheck(context, firework, checkInterval);
+            if (setTarget) {
+                context.setTargetEntity(firework);
+            }
         }
 
 		return SpellResult.CAST;
