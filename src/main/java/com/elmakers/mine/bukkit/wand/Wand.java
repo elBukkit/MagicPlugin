@@ -100,6 +100,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	// Cached state
 	private String id = "";
 	private List<Inventory> hotbars;
+    private int hotbarCount = 1;
 	private List<Inventory> inventories;
     private Map<String, Integer> spells = new HashMap<String, Integer>();
     private Map<String, Integer> spellLevels = new HashMap<String, Integer>();
@@ -241,6 +242,9 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 
 	protected void setHotbarCount(int count) {
 		hotbars.clear();
+        hotbarCount = count;
+        if (getMode() != WandMode.INVENTORY) return;
+
 		while (hotbars.size() < count) {
 			hotbars.add(CompatibilityUtils.createInventory(null, HOTBAR_INVENTORY_SIZE, "Wand"));
 		}
@@ -691,7 +695,11 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	
 	protected Inventory getDisplayInventory() {
 		if (displayInventory == null) {
-			displayInventory = CompatibilityUtils.createInventory(null, INVENTORY_SIZE + HOTBAR_SIZE, "Wand");
+            int inventorySize = INVENTORY_SIZE;
+            if (getMode() == WandMode.INVENTORY) {
+                inventorySize += HOTBAR_SIZE;
+            }
+			displayInventory = CompatibilityUtils.createInventory(null, inventorySize, "Wand");
 		}
 		
 		return displayInventory;
@@ -748,6 +756,9 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	}
 	
 	protected void parseInventoryStrings(String spellString, String materialString) {
+        // Force an update of the display inventory since chest mode is a different size
+        displayInventory = null;
+
 		for (Inventory hotbar : hotbars) {
 			hotbar.clear();
 		}
@@ -935,7 +946,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		node.set("materials", getMaterialString());
 		node.set("spells", getSpellString());
         node.set("potion_effects", getPotionEffectString());
-		node.set("hotbar_count", hotbars.size());
+		node.set("hotbar_count", hotbarCount);
 		node.set("hotbar", currentHotbar);
 		node.set("active_spell", activeSpell);
 		node.set("active_material", activeMaterial);
@@ -1220,7 +1231,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
             String wandSpells = "";
             if (wandConfig.contains("hotbar_count")) {
                 int newCount = Math.max(1, wandConfig.getInt("hotbar_count"));
-                if ((!safe && newCount != hotbars.size()) || newCount > hotbars.size()) {
+                if ((!safe && newCount != hotbarCount) || newCount > hotbarCount) {
                     if (isInventoryOpen()) {
                         closeInventory();
                     }
@@ -1842,9 +1853,11 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	}
 	
 	private void updateHotbar(PlayerInventory playerInventory) {
-		// Check for an item already in the player's held slot, which
-		// we are about to replace with the wand.
 		Inventory hotbar = getHotbar();
+        if (hotbar == null) return;
+
+        // Check for an item already in the player's held slot, which
+        // we are about to replace with the wand.
 		int currentSlot = playerInventory.getHeldItemSlot();
 
         // Set hotbar items from remaining list
@@ -1973,31 +1986,34 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		Player player = mage.getPlayer();
 		PlayerInventory playerInventory = player.getInventory();
 		Inventory hotbar = getHotbar();
-		int saveOffset = 0;
-		for (int i = 0; i < HOTBAR_SIZE; i++) {
-			ItemStack playerItem = playerInventory.getItem(i);
-			if (isWand(playerItem)) {
-				saveOffset = -1;
-				continue;
-			}
-			int hotbarOffset = i + saveOffset;
-			if (hotbarOffset >= hotbar.getSize()) {
-				// This can happen if there is somehow no wand in the wand inventory.
-				break;
-			}
-			hotbar.setItem(i + saveOffset, playerItem);
-            if (!updateSlot(i + saveOffset + currentHotbar * HOTBAR_INVENTORY_SIZE, playerItem)) {
-                hotbar.setItem(i + saveOffset, new ItemStack(Material.AIR));
+        if (hotbar != null)
+        {
+            int saveOffset = 0;
+            for (int i = 0; i < HOTBAR_SIZE; i++) {
+                ItemStack playerItem = playerInventory.getItem(i);
+                if (isWand(playerItem)) {
+                    saveOffset = -1;
+                    continue;
+                }
+                int hotbarOffset = i + saveOffset;
+                if (hotbarOffset >= hotbar.getSize()) {
+                    // This can happen if there is somehow no wand in the wand inventory.
+                    break;
+                }
+                hotbar.setItem(i + saveOffset, playerItem);
+                if (!updateSlot(i + saveOffset + currentHotbar * HOTBAR_INVENTORY_SIZE, playerItem)) {
+                    hotbar.setItem(i + saveOffset, new ItemStack(Material.AIR));
+                }
             }
-		}
-		
+        }
+
 		// Fill in the active inventory page
 		int hotbarOffset = getHotbarSize();
 		Inventory openInventory = getOpenInventory();
 		for (int i = 0; i < openInventory.getSize(); i++) {
             ItemStack playerItem = playerInventory.getItem(i + HOTBAR_SIZE);
 			openInventory.setItem(i, playerItem);
-            if (!updateSlot(i + hotbarOffset + openInventoryPage * Wand.INVENTORY_SIZE, playerItem)) {
+            if (!updateSlot(i + hotbarOffset + openInventoryPage * INVENTORY_SIZE, playerItem)) {
                 openInventory.setItem(i, new ItemStack(Material.AIR));
             }
 		}
@@ -2193,9 +2209,9 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         if (other.isForcedUpgrade() || other.xpMaxBoost > xpMaxBoost) { xpMaxBoost = other.xpMaxBoost; modified = true; if (xpMaxBoost > 0) sendAddMessage(mage, "wand.upgraded_property", getLevelString(messages, "wand.mana_boost", xpMaxBoost)); }
 
         boolean needsInventoryUpdate = false;
-		if (other.isForcedUpgrade() || other.hotbars.size() > hotbars.size()) {
-			int newCount = Math.max(1, other.hotbars.size());
-			if (newCount != hotbars.size()) {
+		if (other.isForcedUpgrade() || other.hotbarCount > hotbarCount) {
+			int newCount = Math.max(1, other.hotbarCount);
+			if (newCount != hotbarCount) {
 				if (isInventoryOpen()) {
 					closeInventory();
 				}
@@ -2588,8 +2604,6 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 			mage.getPlayer().openInventory(getDisplayInventory());
 		} else if (wandMode == WandMode.INVENTORY) {
 			if (hasStoredInventory()) return;
-            ItemStack debugStack = mage.getPlayer().getInventory().getItem(mage.getPlayer().getInventory().getHeldItemSlot());
-
             if (storeInventory()) {
 				inventoryIsOpen = true;
                 if (inventoryOpenSound != null) {
@@ -3368,6 +3382,8 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
     }
 
 	public Inventory getHotbar() {
+        if (this.hotbars.size() == 0) return null;
+
 		if (currentHotbar < 0 || currentHotbar >= this.hotbars.size())
 		{
 			currentHotbar = 0;
@@ -3681,7 +3697,6 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
                 mage.sendMessage(controller.getMessages().get("wand.page_instructions", "").replace("$wand", getName()));
             }
         }
-
 
         return true;
 	}

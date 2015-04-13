@@ -3900,8 +3900,9 @@ breach:
         brush: air
         radius: 4
         type: sphere
+        cooldown: 15000
     costs:
-        mana: 20
+        mana: 50
 
 peek:
     icon_url: http://i.imgur.com/XXi9kKk.png
@@ -3926,8 +3927,9 @@ peek:
         brush: glass
         radius: 3
         type: sphere
+        cooldown: 5000
     costs:
-        mana: 5
+        mana: 30
 
 sandblast:
     icon_url: http://i.imgur.com/VhhlIC5.png
