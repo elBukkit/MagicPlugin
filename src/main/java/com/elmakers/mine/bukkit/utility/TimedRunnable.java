@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.utility;
 
+@Deprecated
 public abstract class TimedRunnable implements Runnable {
     private int count = 0;
     private long totalTime = 0;
