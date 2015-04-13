@@ -1,13 +1,8 @@
 package com.elmakers.mine.bukkit.effect;
 
 import com.elmakers.mine.bukkit.utility.NMSUtils;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.plugin.Plugin;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
@@ -17,33 +12,8 @@ import java.lang.reflect.Method;
  */
 public class HoloUtils extends NMSUtils
 {
-    private static int WITHER_SKULL_TYPE = 66;
     private static int HORSE_AGE_OFFSET = -1700000; // Magic number for horse rendering glitch
     private static int Y_OFFSET = 55; // Offset to account for above
-
-    protected static boolean enabled = true;
-    protected static Class<?> class_EntityHorse;
-    protected static Class<?> class_EntityWitherSkull;
-    protected static Class<?> class_PacketPlayOutAttachEntity;
-    protected static Class<?> class_PacketPlayOutEntityDestroy;
-    protected static Class<?> class_PacketPlayOutSpawnEntity;
-    protected static Class<?> class_PacketPlayOutSpawnEntityLiving;
-
-    static
-    {
-        try {
-            class_EntityHorse = fixBukkitClass("net.minecraft.server.EntityHorse");
-            class_EntityWitherSkull = fixBukkitClass("net.minecraft.server.EntityWitherSkull");
-            class_PacketPlayOutAttachEntity = fixBukkitClass("net.minecraft.server.PacketPlayOutAttachEntity");
-            class_PacketPlayOutEntityDestroy = fixBukkitClass("net.minecraft.server.PacketPlayOutEntityDestroy");
-            class_PacketPlayOutSpawnEntity = fixBukkitClass("net.minecraft.server.PacketPlayOutSpawnEntity");
-            class_PacketPlayOutSpawnEntityLiving = fixBukkitClass("net.minecraft.server.PacketPlayOutSpawnEntityLiving");
-        }
-        catch (Throwable ex) {
-            enabled = false;
-            ex.printStackTrace();
-        }
-    }
 
     protected static Object createSkull(Location location)
     {
@@ -121,10 +91,8 @@ public class HoloUtils extends NMSUtils
     protected static boolean sendToPlayer(Player player, Object skull, Object horse)
     {
         try {
-            Constructor packetSpawnLivingEntityConstructor = class_PacketPlayOutSpawnEntityLiving.getConstructor(class_EntityLiving);
-            Object horsePacket = packetSpawnLivingEntityConstructor.newInstance(horse);
-            Constructor packetSpawnEntityConstructor = class_PacketPlayOutSpawnEntity.getConstructor(class_Entity, Integer.TYPE);
-            Object skullPacket = packetSpawnEntityConstructor.newInstance(skull, WITHER_SKULL_TYPE);
+            Object horsePacket = class_PacketSpawnLivingEntityConstructor.newInstance(horse);
+            Object skullPacket = class_PacketSpawnEntityConstructor.newInstance(skull, WITHER_SKULL_TYPE);
             Constructor packetAttachEntityConstructor = class_PacketPlayOutAttachEntity.getConstructor(Integer.TYPE, class_Entity, class_Entity);
             Object attachPacket = packetAttachEntityConstructor.newInstance(0, horse, skull);
 
@@ -161,8 +129,6 @@ public class HoloUtils extends NMSUtils
 
     public static Hologram createHoloText(Location location, String text)
     {
-        if (!enabled) return null;
-
         return new Hologram(location, text);
     }
 }

@@ -47,6 +47,9 @@ public class NMSUtils {
     protected final static int NBT_TYPE_FLOAT = 5;
     protected final static int NBT_TYPE_STRING = 8;
 
+    protected static int WITHER_SKULL_TYPE = 66;
+    protected static int FIREWORK_TYPE = 76;
+
     protected static Class<?> class_ItemStack;
     protected static Class<?> class_NBTBase;
     protected static Class<?> class_NBTTagCompound;
@@ -86,6 +89,14 @@ public class NMSUtils {
     protected static Class<?> class_NBTCompressedStreamTools;
     protected static Class<?> class_TileEntity;
     protected static Class<Enum> class_EnumDirection;
+    protected static Class<?> class_EntityHorse;
+    protected static Class<?> class_EntityWitherSkull;
+    protected static Class<?> class_PacketPlayOutAttachEntity;
+    protected static Class<?> class_PacketPlayOutEntityDestroy;
+    protected static Class<?> class_PacketPlayOutSpawnEntity;
+    protected static Class<?> class_PacketPlayOutSpawnEntityLiving;
+    protected static Class<?> class_PacketPlayOutEntityMetadata;
+    protected static Class<?> class_PacketPlayOutEntityStatus;
 
     protected static Method class_NBTTagList_addMethod;
     protected static Method class_NBTTagList_getMethod;
@@ -130,6 +141,9 @@ public class NMSUtils {
     protected static Method class_CraftItemStack_mirrorMethod;
     protected static Method class_NBTTagCompound_hasKeyMethod;
     protected static Method class_CraftWorld_getTileEntityAtMethod;
+    protected static Method class_Entity_setLocationMethod;
+    protected static Method class_Entity_getIdMethod;
+    protected static Method class_Entity_getDataWatcherMethod;
 
     protected static Constructor class_NBTTagList_consructor;
     protected static Constructor class_NBTTagList_legacy_consructor;
@@ -140,6 +154,11 @@ public class NMSUtils {
     protected static Constructor class_EntityPaintingConstructor;
     protected static Constructor class_EntityItemFrameConstructor;
     protected static Constructor class_BlockPositionConstructor;
+    protected static Constructor class_PacketSpawnEntityConstructor;
+    protected static Constructor class_PacketSpawnLivingEntityConstructor;
+    protected static Constructor class_PacketPlayOutEntityMetadata_Constructor;
+    protected static Constructor class_PacketPlayOutEntityStatus_Constructor;
+    protected static Constructor class_PacketPlayOutEntityDestroy_Constructor;
 
     protected static Field class_Entity_invulnerableField;
     protected static Field class_Entity_motXField;
@@ -200,6 +219,14 @@ public class NMSUtils {
             class_CraftMetaSkull = fixBukkitClass("org.bukkit.craftbukkit.inventory.CraftMetaSkull");
             class_NBTCompressedStreamTools = fixBukkitClass("net.minecraft.server.NBTCompressedStreamTools");
             class_TileEntity = fixBukkitClass("net.minecraft.server.TileEntity");
+            class_EntityHorse = fixBukkitClass("net.minecraft.server.EntityHorse");
+            class_EntityWitherSkull = fixBukkitClass("net.minecraft.server.EntityWitherSkull");
+            class_PacketPlayOutAttachEntity = fixBukkitClass("net.minecraft.server.PacketPlayOutAttachEntity");
+            class_PacketPlayOutEntityDestroy = fixBukkitClass("net.minecraft.server.PacketPlayOutEntityDestroy");
+            class_PacketPlayOutSpawnEntity = fixBukkitClass("net.minecraft.server.PacketPlayOutSpawnEntity");
+            class_PacketPlayOutSpawnEntityLiving = fixBukkitClass("net.minecraft.server.PacketPlayOutSpawnEntityLiving");
+            class_PacketPlayOutEntityMetadata = fixBukkitClass("net.minecraft.server.PacketPlayOutEntityMetadata");
+            class_PacketPlayOutEntityStatus = fixBukkitClass("net.minecraft.server.PacketPlayOutEntityStatus");
 
             class_NBTTagList_addMethod = class_NBTTagList.getMethod("add", class_NBTBase);
             class_NBTTagList_getMethod = class_NBTTagList.getMethod("get", Integer.TYPE);
@@ -236,9 +263,17 @@ public class NMSUtils {
             class_TileEntity_loadMethod = class_TileEntity.getMethod("a", class_NBTTagCompound);
             class_TileEntity_saveMethod = class_TileEntity.getMethod("b", class_NBTTagCompound);
             class_TileEntity_updateMethod = class_TileEntity.getMethod("update");
+            class_Entity_setLocationMethod = class_Entity.getMethod("setLocation", Double.TYPE, Double.TYPE, Double.TYPE, Float.TYPE, Float.TYPE);
+            class_Entity_getIdMethod = class_Entity.getMethod("getId");
+            class_Entity_getDataWatcherMethod = class_Entity.getMethod("getDataWatcher");
 
             class_CraftInventoryCustom_constructor = class_CraftInventoryCustom.getConstructor(InventoryHolder.class, Integer.TYPE, String.class);
             class_EntityFireworkConstructor = class_EntityFirework.getConstructor(class_World, Double.TYPE, Double.TYPE, Double.TYPE, class_ItemStack);
+            class_PacketSpawnEntityConstructor = class_PacketPlayOutSpawnEntity.getConstructor(class_Entity, Integer.TYPE);
+            class_PacketSpawnLivingEntityConstructor = class_PacketPlayOutSpawnEntityLiving.getConstructor(class_EntityLiving);
+            class_PacketPlayOutEntityMetadata_Constructor = class_PacketPlayOutEntityMetadata.getConstructor(Integer.TYPE, class_DataWatcher, Boolean.TYPE);
+            class_PacketPlayOutEntityStatus_Constructor = class_PacketPlayOutEntityStatus.getConstructor(class_Entity, Byte.TYPE);
+            class_PacketPlayOutEntityDestroy_Constructor = class_PacketPlayOutEntityDestroy.getConstructor(int[].class);
 
             class_Entity_invulnerableField = class_Entity.getDeclaredField("invulnerable");
             class_Entity_invulnerableField.setAccessible(true);

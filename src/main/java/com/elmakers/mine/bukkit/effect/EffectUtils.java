@@ -14,10 +14,11 @@ import org.bukkit.inventory.meta.FireworkMeta;
 import com.elmakers.mine.bukkit.utility.NMSUtils;
 import org.bukkit.util.Vector;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
 import java.util.Random;
 
 public class EffectUtils extends NMSUtils {
-
     public static void spawnFireworkEffect(Location location, FireworkEffect effect, int power) {
         spawnFireworkEffect(location, effect, power, null, 2, 1);
     }
@@ -27,7 +28,6 @@ public class EffectUtils extends NMSUtils {
         try {
             Object world = getHandle(location.getWorld());
             ItemStack itemStack = new ItemStack(Material.FIREWORK);
-
             FireworkMeta meta = (FireworkMeta) itemStack.getItemMeta();
             meta.addEffect(effect);
             meta.setPower(power);
@@ -47,6 +47,24 @@ public class EffectUtils extends NMSUtils {
             }
             if (expectedLifespan != null) {
                 class_Firework_expectedLifespanField.set(fireworkHandle, expectedLifespan);
+            }
+
+            if (direction == null)
+            {
+                Object fireworkPacket = class_PacketSpawnEntityConstructor.newInstance(fireworkHandle, FIREWORK_TYPE);
+                Object fireworkId = class_Entity_getIdMethod.invoke(fireworkHandle);
+                Object watcher = class_Entity_getDataWatcherMethod.invoke(fireworkHandle);
+                Object metadataPacket = class_PacketPlayOutEntityMetadata_Constructor.newInstance(fireworkId, watcher, true);
+                Object statusPacket = class_PacketPlayOutEntityStatus_Constructor.newInstance(fireworkHandle, (byte)17);
+
+                Constructor packetDestroyEntityConstructor = class_PacketPlayOutEntityDestroy.getConstructor(int[].class);
+                Object destroyPacket = packetDestroyEntityConstructor.newInstance(new int[] {(Integer)fireworkId});
+
+                sendPacket(location, null, fireworkPacket);
+                sendPacket(location, null, metadataPacket);
+                sendPacket(location, null, statusPacket);
+                sendPacket(location, null, destroyPacket);
+                return null;
             }
 
             class_World_addEntityMethod.invoke(world, fireworkHandle, CreatureSpawnEvent.SpawnReason.CUSTOM);
