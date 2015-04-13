@@ -7,6 +7,7 @@ import org.bukkit.FireworkEffect;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.FireworkMeta;
@@ -16,6 +17,7 @@ import org.bukkit.util.Vector;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
+import java.util.Collection;
 import java.util.Random;
 
 public class EffectUtils extends NMSUtils {
@@ -60,10 +62,12 @@ public class EffectUtils extends NMSUtils {
                 Constructor packetDestroyEntityConstructor = class_PacketPlayOutEntityDestroy.getConstructor(int[].class);
                 Object destroyPacket = packetDestroyEntityConstructor.newInstance(new int[] {(Integer)fireworkId});
 
-                sendPacket(location, null, fireworkPacket);
-                sendPacket(location, null, metadataPacket);
-                sendPacket(location, null, statusPacket);
-                sendPacket(location, null, destroyPacket);
+                Collection<Player> players = location.getWorld().getPlayers();
+
+                sendPacket(location, players, fireworkPacket);
+                sendPacket(location, players, metadataPacket);
+                sendPacket(location, players, statusPacket);
+                sendPacket(location, players, destroyPacket);
                 return null;
             }
 
