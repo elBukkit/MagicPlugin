@@ -4,7 +4,7 @@ Wraith:
   Health: 500
   Damage: 10
   Skills:
-  - skill SummonWraithlets >0 0.1
+  - skill{skill=SummonWraithlets} @Target >0 0.1
   Equipment:
   - WraithSword:0
   Drops:
