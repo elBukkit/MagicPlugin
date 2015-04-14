@@ -69,6 +69,7 @@ public interface CastContext {
     public Block findSpaceAbove(Block block);
     public boolean isTransparent(Material material);
     public boolean isDestructible(Block block);
+    public boolean areAnyDestructible(Block block);
     public boolean isTargetable(Material material);
     public boolean canTarget(Entity entity);
     public MaterialBrush getBrush();
