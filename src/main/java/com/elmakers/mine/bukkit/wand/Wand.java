@@ -209,7 +209,6 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	public static Material DefaultUpgradeMaterial = Material.NETHER_STAR;
 	public static Material DefaultWandMaterial = Material.BLAZE_ROD;
 	public static Material EnchantableWandMaterial = null;
-	public static boolean EnableGlow = false;
     public static boolean SpellGlow = false;
     public static boolean BrushGlow = false;
     public static boolean BrushItemGlow = true;
@@ -233,8 +232,6 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		this.icon = new MaterialAndData(itemStack);
 		inventories = new ArrayList<Inventory>();
         item = itemStack;
-		indestructible = controller.getIndestructibleWands();
-        glow = EnableGlow;
 		loadState();
         updateName();
         updateLore();

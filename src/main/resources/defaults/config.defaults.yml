@@ -176,7 +176,6 @@ age_dropped_items: 0
 # Wand appearance
 wand_item: wood_hoe
 wand_upgrade_item: stick
-wand_glow: false
 wand_location_offset: 0.5
 
 # This will hide all flags on a wand except for
@@ -554,9 +553,6 @@ show_activate_holotext: false
 activate_holotext_range: 0
 
 ## Deprecated configuration options
-
-# Wands are indestructible by default
-indestructible_wands: true
 
 # This hack should not be required in 1.8 and up
 # This disables the item drag event interceptor

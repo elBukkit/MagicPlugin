@@ -5,6 +5,8 @@
  - Firework effects are produced entirely client-side.
    Hoping this addresses some "entity tracker" lag a few servers have been seeing. It might not.
  - EffectLib now runs effects asynchronously. Should help with lag from spamming complex effects like Helix.
+ - Fix "indestructible: false" on wands not working
+ - Hunters will mostly usually clean up after themselves on death
 
 ## 4.9.1
 

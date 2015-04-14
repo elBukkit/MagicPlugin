@@ -1842,7 +1842,6 @@ public class MagicController implements Listener, MageController {
 		soundsEnabled = properties.getBoolean("sounds", soundsEnabled);
 		fillingEnabled = properties.getBoolean("fill_wands", fillingEnabled);
         maxFillLevel = properties.getInt("fill_wand_level", maxFillLevel);
-        indestructibleWands = properties.getBoolean("indestructible_wands", indestructibleWands);
 		keepWandsOnDeath = properties.getBoolean("keep_wands_on_death", keepWandsOnDeath);
 		welcomeWand = properties.getString("welcome_wand", "");
 		maxDamagePowerMultiplier = (float)properties.getDouble("max_power_damage_multiplier", maxDamagePowerMultiplier);
@@ -1955,7 +1954,6 @@ public class MagicController implements Listener, MageController {
 
 		// Parse wand settings
 		Wand.DefaultUpgradeMaterial = ConfigurationUtils.getMaterial(properties, "wand_upgrade_item", Wand.DefaultUpgradeMaterial);
-		Wand.EnableGlow = properties.getBoolean("wand_glow", Wand.EnableGlow);
         Wand.SpellGlow = properties.getBoolean("spell_glow", Wand.SpellGlow);
         Wand.LiveHotbar = properties.getBoolean("live_hotbar", Wand.LiveHotbar);
         Wand.BrushGlow = properties.getBoolean("brush_glow", Wand.BrushGlow);
@@ -3790,10 +3788,6 @@ public class MagicController implements Listener, MageController {
 		}
 	}
 	
-	public boolean getIndestructibleWands() {
-		return indestructibleWands;
-	}
-	
 	public void forgetMage(Mage mage) {
 		forgetMages.add(mage.getId());
 	}
@@ -4726,7 +4720,6 @@ public class MagicController implements Listener, MageController {
     private String								messagePrefix					= "";
     private String								castMessagePrefix				= "";
     private boolean                             soundsEnabled                   = true;
-    private boolean                             indestructibleWands             = true;
     private boolean                             keepWandsOnDeath	            = true;
     private String								welcomeWand					    = "";
     private int								    messageThrottle				    = 0;

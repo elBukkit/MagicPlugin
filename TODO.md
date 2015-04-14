@@ -12,7 +12,7 @@
  - Clean up MaterialBrush target system, automate somehow?
  - Copy target brush action for tandem replication
  - Automata aren't cleaning up cmd block + redstone
- - Automata don't re-activate un chunk load?eventu
+ - Automata don't re-activate un chunk load events
  - Glitching Fill behavior
  - Spell shop improvements:
    - Color spells player can't afford
