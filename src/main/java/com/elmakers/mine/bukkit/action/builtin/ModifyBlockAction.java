@@ -6,6 +6,7 @@ import com.elmakers.mine.bukkit.api.block.MaterialBrush;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
+import com.elmakers.mine.bukkit.block.UndoList;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import org.bukkit.Location;
@@ -25,12 +26,14 @@ public class ModifyBlockAction extends BaseSpellAction {
     private int breakable = 0;
     private double backfireChance = 0;
     private boolean applyPhysics = false;
+    private boolean commit = false;
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters) {
         super.prepare(context, parameters);
         spawnFallingBlocks = parameters.getBoolean("falling", false);
         applyPhysics = parameters.getBoolean("physics", false);
+        commit = parameters.getBoolean("commit", false);
         breakable = parameters.getInt("breakable", 0);
         backfireChance = parameters.getDouble("reflect_chance", 0);
         fallingBlockSpeed = parameters.getDouble("speed", 0);
@@ -61,7 +64,13 @@ public class ModifyBlockAction extends BaseSpellAction {
             return SpellResult.INSUFFICIENT_PERMISSION;
         }
 
-        if (!context.isDestructible(block)) {
+        if (commit)
+        {
+            if (!context.areAnyDestructible(block)) {
+                return SpellResult.NO_TARGET;
+            }
+        }
+        else if (!context.isDestructible(block)) {
             return SpellResult.NO_TARGET;
         }
 
@@ -69,12 +78,14 @@ public class ModifyBlockAction extends BaseSpellAction {
         byte previousData = block.getData();
 
         if (brush.isDifferent(block)) {
-            context.registerForUndo(block);
+            if (!commit) {
+                context.registerForUndo(block);
+            }
             Mage mage = context.getMage();
             brush.update(mage, block.getLocation());
             brush.modify(block, applyPhysics);
 
-            if (spawnFallingBlocks)
+            if (spawnFallingBlocks && previousMaterial != Material.AIR)
             {
                 FallingBlock falling = block.getWorld().spawnFallingBlock(block.getLocation(), previousMaterial, previousData);
                 falling.setDropItem(false);
@@ -100,6 +111,11 @@ public class ModifyBlockAction extends BaseSpellAction {
         if (backfireChance > 0) {
             context.registerReflective(block, backfireChance);
         }
+
+        if (commit) {
+            com.elmakers.mine.bukkit.api.block.BlockData blockData = UndoList.register(block);
+            blockData.commit();
+        }
         return SpellResult.CAST;
     }
 
@@ -112,11 +128,12 @@ public class ModifyBlockAction extends BaseSpellAction {
         parameters.add("reflect_chance");
         parameters.add("breakable");
         parameters.add("physics");
+        parameters.add("commit");
     }
 
     @Override
     public void getParameterOptions(Spell spell, String parameterKey, Collection<String> examples) {
-        if (parameterKey.equals("falling") || parameterKey.equals("physics")) {
+        if (parameterKey.equals("falling") || parameterKey.equals("physics") || parameterKey.equals("commit")) {
             examples.addAll(Arrays.asList((BaseSpell.EXAMPLE_BOOLEANS)));
         } else if (parameterKey.equals("speed") || parameterKey.equals("breakable")) {
             examples.addAll(Arrays.asList((BaseSpell.EXAMPLE_SIZES)));
