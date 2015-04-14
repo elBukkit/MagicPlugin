@@ -43,3 +43,20 @@ spells:
     confirm_title: "Buy $item"
     insufficient_resources: Costs $cost
     deducted: "&d&oYou bought &r&6$item &r&d&ofor &r&a$cost"
+  madscienceshop:
+    name: Mad Science Shop
+    title: "Mad Science ($balance)"
+    description: Mess with electricity
+    cost_lore: "Costs: $cost"
+    cast: ""
+    cast_player_message: ""
+    fail: ""
+    no_items: There are no spells for you to buy here
+    no_path: You may not learn with that $wand.
+    no_upgrade: There is nothing more for you here.
+    no_required_path: You must be at least $path!
+    no_path_end: You must be ready to advance to $path!
+    no_wand: You must be holding a wand!
+    confirm_title: "Buy $item"
+    insufficient_resources: Costs $cost
+    deducted: "&d&oYou bought &r&6$item &r&d&ofor &r&a$cost"
