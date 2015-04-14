@@ -534,6 +534,16 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
     }
 
     @Override
+    public boolean areAnyDestructible(Block block)
+    {
+        if (blockSpell != null)
+        {
+            return blockSpell.areAnyDestructible(block);
+        }
+        return true;
+    }
+
+    @Override
     public boolean isTargetable(Material material)
     {
         if (targetingSpell != null)

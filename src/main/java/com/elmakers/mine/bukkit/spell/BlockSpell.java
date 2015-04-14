@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.elmakers.mine.bukkit.block.UndoList;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -38,6 +39,27 @@ public abstract class BlockSpell extends UndoableSpell {
             return mage.isDestructible(block);
         }
         return destructible.contains(block.getType());
+    }
+
+    public boolean areAnyDestructible(Block block)
+    {
+        if (isIndestructible(block)) return false;
+
+        if (!checkDestructible) return true;
+        if (targetBreakables > 0 && block.hasMetadata("breakable")) return true;
+        Set<Material> allDestructible = destructible;
+        if (allDestructible == null) {
+            allDestructible = controller.getDestructibleMaterials();
+        }
+        if (allDestructible == null) {
+            return true;
+        }
+        if (allDestructible.contains(block.getType())) return true;
+        com.elmakers.mine.bukkit.api.block.BlockData blockData = UndoList.getBlockData(block.getLocation());
+        if (blockData == null || !blockData.containsAny(allDestructible)) {
+            return false;
+        }
+        return true;
     }
 
     protected void setDestructible(Set<Material> materials) {
