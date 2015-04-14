@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -186,7 +187,8 @@ public class SpellsCommandExecutor extends MagicTabExecutor {
 						description = name + " : " + description;
 					}
 					MaterialAndData spellIcon = spell.getIcon();
-					String icon = spellIcon == null ? "None" : spellIcon.getMaterial().name().toLowerCase();
+                    Material material = spellIcon == null ? null : spellIcon.getMaterial();
+					String icon = material == null ? "None" : material.name().toLowerCase();
 					sender.sendMessage(ChatColor.AQUA + spell.getKey() + ChatColor.BLUE + " [" + icon + "] : " + ChatColor.YELLOW + description);
 					printedCount++;
 				}
