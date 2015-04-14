@@ -3883,7 +3883,7 @@ breach:
            particle: smoke_normal
     parameters:
         allow_max_range: false
-        check_destructible: false
+        check_destructible: true
         range: 32
         indestructible: air
         transparent: transparent_to_construction
@@ -3910,7 +3910,7 @@ peek:
     parameters:
         target: block
         allow_max_range: false
-        check_destructible: false
+        check_destructible: true
         range: 32
         indestructible: air
         transparent: transparent
