@@ -325,7 +325,7 @@ boon|2:
 simulate:
     icon_url: http://i.imgur.com/CUgSpoB.png
     icon: double_plant:3
-    category: automata
+    category: electrical
     class: SimulateSpell
     worth: 10000
     effects:
@@ -347,7 +347,7 @@ simulate:
 simulate3:
     icon_url: http://i.imgur.com/CUgSpoB.png
     icon: sapling:3
-    category: automata
+    category: electrical
     class: SimulateSpell
     worth: 10000
     effects:
@@ -672,7 +672,7 @@ animate:
 life:
     icon: sapling:1
     icon_url: http://i.imgur.com/CUgSpoB.png
-    category: automata
+    category: electrical
     class: ConstructSpell
     worth: 150000
     effects:
@@ -705,7 +705,7 @@ life:
 life3:
     icon: sapling:1
     icon_url: http://i.imgur.com/CUgSpoB.png
-    category: automata
+    category: electrical
     class: ConstructSpell
     worth: 150000
     effects:
@@ -4175,7 +4175,7 @@ walls:
 emp:
     icon_url: http://i.imgur.com/33YW7Vh.png
     icon: daylight_detector
-    category: automata
+    category: electrical
     class: ConstructSpell
     worth: 1500
     effects:
@@ -4206,7 +4206,7 @@ emp:
 superemp:
     icon_url: http://i.imgur.com/33YW7Vh.png
     icon: diode
-    category: automata
+    category: electrical
     class: ConstructSpell
     worth: 8000
     effects:
@@ -6344,6 +6344,7 @@ bookshop:
           book|engineering: 0
           book|elemental: 0
           book|mining: 0
+          book|electrical: 0
 
 broomshop:
     icon: gold_spade

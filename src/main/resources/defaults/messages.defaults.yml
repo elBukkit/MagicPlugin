@@ -247,6 +247,10 @@ categories:
         name: Automata
         description: Create Life!
         color: 'FFA500'
+    electrical:
+        name: Electrical
+        description: Mad Science
+        color: '888800'
     master:
         name: Master
         description: All the Really Powerful Stuff
