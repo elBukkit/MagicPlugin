@@ -4176,8 +4176,12 @@ emp:
     icon_url: http://i.imgur.com/33YW7Vh.png
     icon: daylight_detector
     category: electrical
-    class: ConstructSpell
     worth: 1500
+    actions:
+        cast:
+        -  class: Sphere
+           actions:
+           -  class: PowerBlock
     effects:
         cast:
         -  class: EffectSingle
@@ -4193,13 +4197,13 @@ emp:
         target_type: LivingEntity
         allow_max_range: true
         range: 8
-        radius: 3
-        type: sphere
-        power: true
-        physics: true
+        radius: 5
         cooldown: 1000
-        check_destructible: false
+        check_destructible: true
+        destructible: powerable
+        physics: true
         undo: 200
+        entity_undo_types: ""
     costs:
         mana: 45
 
@@ -4225,9 +4229,12 @@ superemp:
         allow_max_range: false
         range: 32
         type: sphere
-        power: true
+        check_destructible: true
+        destructible: powerable
+        physics: true
         cooldown: 5000
         undo: 3000
+        entity_undo_types: ""
     costs:
         mana: 200
 

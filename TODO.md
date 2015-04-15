@@ -1,7 +1,5 @@
 # TODO
 
- - SuperEMP is broken?
-
  - Map brush was acting wonky.
  - Recall still losing waypoints .. also can grab items out?
 

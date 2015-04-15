@@ -643,6 +643,13 @@ enchantable:
 - diamond_pickaxe
 - bow
 
+powerable:
+- stone_button
+- wood_button
+- lever
+- redstone_block
+- tnt
+
 interactible:
 - chest
 - wooden_door
