@@ -6669,7 +6669,7 @@ singularity:
       entity_speed: 0.5
       falling: true
       radius: 5
-      check_destructible: true
+      check_destructible: false
     costs:
         mana: 50
 

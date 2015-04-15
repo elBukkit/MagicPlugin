@@ -1181,6 +1181,7 @@ hunterheart:
     indestructible: false
     locked: true
     uses: 1
+    mode: cast
     effect_color: 'FF0000'
     spells:
         - hunter
@@ -1190,6 +1191,7 @@ virusheart:
     icon: 'skull_item:http://i.imgur.com/UtoaKXl.png'
     indestructible: false
     locked: true
+    mode: cast
     uses: 1
     effect_color: 'FF0000'
     spells:
@@ -1201,6 +1203,7 @@ wormheart:
     indestructible: false
     locked: true
     uses: 1
+    mode: cast
     effect_color: 'FF8800'
     spells:
         - worm
@@ -1211,6 +1214,7 @@ defenderheart:
     indestructible: false
     locked: true
     uses: 1
+    mode: cast
     effect_color: 'FF0000'
     spells:
         - defender
@@ -1221,6 +1225,7 @@ golemheart:
     indestructible: false
     locked: true
     uses: 1
+    mode: cast
     effect_color: '8888FF'
     spells:
         - animate
