@@ -563,9 +563,14 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         if (!isValid()) return null;
         VaultController controller = VaultController.getInstance();
         if (controller != null && data != null) {
-            String vaultName = controller.getItemName(material, data);
-            if (vaultName != null && !vaultName.isEmpty()) {
-                return vaultName;
+            try {
+                String vaultName = controller.getItemName(material, data);
+                if (vaultName != null && !vaultName.isEmpty()) {
+                    return vaultName;
+                }
+            } catch (Exception ex) {
+                // Vault apparently throws exceptions on invalid item types
+                // So we're just going to ignore it.
             }
         }
 
