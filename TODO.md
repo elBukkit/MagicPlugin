@@ -4,7 +4,6 @@
 
  - Map brush was acting wonky.
  - Recall still losing waypoints .. also can grab items out?
- - Blink acting weird on snow, can't handle glass oceans of TOS
 
  - Maximum enchant count for wands
  - Banners don't work from schematics
