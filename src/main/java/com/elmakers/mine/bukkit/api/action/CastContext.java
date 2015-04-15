@@ -68,6 +68,7 @@ public interface CastContext {
     public Block findBlockUnder(Block block);
     public Block findSpaceAbove(Block block);
     public boolean isTransparent(Material material);
+    public boolean isPassthrough(Material material);
     public boolean isDestructible(Block block);
     public boolean areAnyDestructible(Block block);
     public boolean isTargetable(Material material);
