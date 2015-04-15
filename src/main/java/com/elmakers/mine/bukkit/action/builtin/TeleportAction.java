@@ -48,7 +48,7 @@ public class TeleportAction extends BaseTeleportAction
 			{
 				return SpellResult.NO_TARGET;
 			}
-			if (firstBlock != null && !context.isTransparent(firstBlock.getType())) {
+			if (firstBlock != null) {
                 context.retarget(passthroughRange, 0, passthroughRange, 0, false, new Vector(0, -1, 0), true, 1);
                 isPassthrough = true;
 			}

@@ -4,7 +4,6 @@
 
  - Map brush was acting wonky.
  - Recall still losing waypoints .. also can grab items out?
- - op'd superrepair should remove chests and such
  - Blink acting weird on snow, can't handle glass oceans of TOS
 
  - Maximum enchant count for wands
