@@ -524,6 +524,16 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
     }
 
     @Override
+    public boolean isPassthrough(Material material)
+    {
+        if (baseSpell != null)
+        {
+            return baseSpell.isPassthrough(material);
+        }
+        return material.isTransparent();
+    }
+
+    @Override
     public boolean isDestructible(Block block)
     {
         if (blockSpell != null)
