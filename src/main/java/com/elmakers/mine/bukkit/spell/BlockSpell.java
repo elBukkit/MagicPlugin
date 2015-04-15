@@ -23,6 +23,7 @@ public abstract class BlockSpell extends UndoableSpell {
 
     public boolean isIndestructible(Block block)
     {
+        if (mage.isSuperPowered()) return false;
         if (indestructible == null) {
             return mage.isIndestructible(block);
         }
