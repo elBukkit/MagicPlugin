@@ -54,6 +54,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockBurnEvent;
 import org.bukkit.event.block.BlockFromToEvent;
 import org.bukkit.event.block.BlockIgniteEvent;
@@ -3572,6 +3573,17 @@ public class MagicController implements Listener, MageController {
 			} 
 		}
 	}
+
+    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
+    public void onBlockBreak(BlockBreakEvent event)
+    {
+        Block block = event.getBlock();
+        UndoList blockList = com.elmakers.mine.bukkit.block.UndoList.getUndoList(block.getLocation());
+        if (blockList != null) {
+            event.setCancelled(true);
+            block.setType(Material.AIR);
+        }
+    }
 
 	@EventHandler
 	public void onBlockPlace(BlockPlaceEvent event)

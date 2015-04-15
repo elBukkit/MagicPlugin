@@ -12,6 +12,9 @@
 
  - Fix chest mode (some spells not showing up)
  - Fix a potential conflict with other crafting plugins
+ - Magically created blocks won't drop items when broken
+   * This is not a 100% exploit fix with engineering magic
+   * But it should cover auto-undo spells.
 
 ## 4.9
 
