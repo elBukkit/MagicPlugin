@@ -195,7 +195,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         return preventPassThroughMaterials == null || !preventPassThroughMaterials.contains(mat);
     }
 
-    public boolean isPassThrough(Material mat)
+    public boolean isPassthrough(Material mat)
     {
         return passthroughMaterials != null && passthroughMaterials.contains(mat);
     }
@@ -224,7 +224,8 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     protected boolean isHalfBlock(Material mat) {
 
         // TODO: Data-driven half-block list
-        return (mat == Material.STEP || mat == Material.WOOD_STEP || mat == Material.CARPET || mat == Material.SNOW);
+        // Don't put carpet and snow in here, acts weird. Not sure why though.
+        return (mat == Material.STEP || mat == Material.WOOD_STEP);
     }
 
     public boolean isOkToStandOn(Material mat)
