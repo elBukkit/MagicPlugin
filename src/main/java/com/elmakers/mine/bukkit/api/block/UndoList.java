@@ -26,6 +26,7 @@ public interface UndoList extends BlockList, Comparable<UndoList> {
     public int getScheduledUndo();
     public void updateScheduledUndo();
     public boolean bypass();
+    public void setApplyPhysics(boolean physics);
     public long getCreatedTime();
     public long getModifiedTime();
     public long getScheduledTime();
