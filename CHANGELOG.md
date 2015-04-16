@@ -10,6 +10,7 @@
  - Some fixes to EMP and SuperEMP
  - Add allowed-wands and blocked-wands custom region flags
  - Added Hulk Boots
+ - Add Cleric's Robes
 
 ## 4.9.1
 

@@ -431,6 +431,10 @@ spells:
         cast: You heal $target
         cast_self: You heal yourself
         upgrade_description: "&r&b&bull; &6Heal amount increased"
+    healing:
+        name: Healing
+        description: Heal everyone around you
+        cast: You heal $target
     cure:
         name: Cure
         description: Remove negative effects
@@ -1485,6 +1489,9 @@ wands:
     apprenticeboots:
         name: Apprentice Boots
         description: For new wizards
+    clericchestplate:
+        name: Cleric's Robes
+        description: Heals nearby players
     rabbitboots:
         name: Rabbit Boots
         description: Spirit of the hare

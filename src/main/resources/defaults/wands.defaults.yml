@@ -1013,6 +1013,15 @@ wizardchestplate:
       protection_explosions: 4
       protection_environmental: 5
 
+clericchestplate:
+    icon: chainmail_chestplate
+    indestructible: true
+    locked: true
+    keep: true
+    xp_regeneration_boost: -0.2
+    cast_spell: healing
+    cast_interval: 2000
+
 wizardhelmet:
     icon: chainmail_helmet
     indestructible: true

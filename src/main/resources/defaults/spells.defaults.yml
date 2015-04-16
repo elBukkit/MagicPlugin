@@ -1734,6 +1734,31 @@ heal|3:
         heal: 6
         cooldown: 10000
 
+healing:
+    icon_url: http://i.imgur.com/B8RfZE3.png
+    icon: bread
+    category: light
+    worth: 1500
+    actions:
+        cast:
+        - class: AreaOfEffect
+          actions:
+          - class: Heal
+    effects:
+        cast:
+        -  class: EffectSingle
+           location: targets
+           effectlib:
+             class: LoveEffect
+             iterations: 5
+             period: 2
+    parameters:
+        target_type: LivingEntity
+        target: self
+        target_self: true
+        radius: 5
+        amount: 1
+
 music:
     icon_url: http://i.imgur.com/ZXwXE7y.png
     icon: gold_record
@@ -6392,6 +6417,7 @@ magicitemshop:
           wand|goggles: 500
           wand|rocketboots: 4000
           wand|hulkboots: 8000
+          wand|clericchestplate: 9000
           wand|flashboots: 4000
           wand|camera: 200
           wand|divinghelmet: 1000
