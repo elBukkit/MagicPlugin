@@ -385,5 +385,5 @@ public interface Mage extends CostReducer {
     public void setTrackCasts(boolean track);
     public boolean getTrackCasts();
     public void setQuiet(boolean quiet);
-    public boolean getQuiet();
+    public boolean isQuiet();
 }
