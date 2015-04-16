@@ -9,6 +9,7 @@
  - Hunters will mostly usually clean up after themselves on death
  - Some fixes to EMP and SuperEMP
  - Add allowed-wands and blocked-wands custom region flags
+ - Added Hulk Boots
 
 ## 4.9.1
 

@@ -88,6 +88,8 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     private LinkedList<Batch> pendingBatches = new LinkedList<Batch>();
     private boolean loading = false;
     private int debugLevel = 0;
+    private boolean trackSpellCasts = true;
+    private boolean quiet = false;
 
     private Map<PotionEffectType, Integer> effectivePotionEffects = new HashMap<PotionEffectType, Integer>();
     protected float damageReduction = 0;
@@ -360,7 +362,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
      * @param message The message to send
      */
     public void castMessage(String message) {
-        if (message == null || message.length() == 0) return;
+        if (message == null || message.length() == 0 || quiet) return;
 
         CommandSender sender = getCommandSender();
         if (sender != null && controller.showCastMessages() && controller.showMessages()) {
@@ -376,7 +378,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
      * @param message The message to send
      */
     public void sendMessage(String message) {
-        if (message == null || message.length() == 0) return;
+        if (message == null || message.length() == 0 || quiet) return;
 
         CommandSender sender = getCommandSender();
         if (sender != null && controller.showMessages()) {
@@ -1714,6 +1716,26 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         {
             inventory.setArmorContents(armor);
         }
+    }
+
+    @Override
+    public void setTrackCasts(boolean track) {
+        this.trackSpellCasts = track;
+    }
+
+    @Override
+    public boolean getTrackCasts() {
+        return trackSpellCasts;
+    }
+
+    @Override
+    public void setQuiet(boolean quiet) {
+        this.quiet = quiet;
+    }
+
+    @Override
+    public boolean getQuiet() {
+        return quiet;
     }
 }
 

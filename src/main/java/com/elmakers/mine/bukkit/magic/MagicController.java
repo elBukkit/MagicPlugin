@@ -2967,7 +2967,8 @@ public class MagicController implements Listener, MageController {
 				ItemStack[] items = inventory.getContents();
 				for (int i = 0; i < items.length; i++) {
 					ItemStack item = items[i];
-					if (Wand.isWand(item) || Wand.isSpell(item) || Wand.isBrush(item) || Wand.isUpgrade(item)) {
+					if (Wand.isWand(item
+                    ) || Wand.isSpell(item) || Wand.isBrush(item) || Wand.isUpgrade(item)) {
 						items[i] = null;
 					}
 				}
@@ -3634,12 +3635,14 @@ public class MagicController implements Listener, MageController {
 	}
 	
 	public void toggleCastCommandOverrides(Mage apiMage, boolean override) {
-		// Reach into internals a bit here.
+        // Don't track command-line casts
+        apiMage.setTrackCasts(!override);
+        // Reach into internals a bit here.
 		if (apiMage instanceof com.elmakers.mine.bukkit.magic.Mage) {
             com.elmakers.mine.bukkit.magic.Mage mage = (com.elmakers.mine.bukkit.magic.Mage)apiMage;
 			mage.setCostReduction(override ? castCommandCostReduction : 0);
 			mage.setCooldownReduction(override ? castCommandCooldownReduction : 0);
-			mage.setPowerMultiplier(override ? castCommandPowerMultiplier : 1);	
+			mage.setPowerMultiplier(override ? castCommandPowerMultiplier : 1);
 		}
 	}
 	

@@ -76,6 +76,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         "effect_particle_min_velocity",
         "effect_particle_radius", "effect_particle_offset",
         "effect_sound", "effect_sound_interval", "effect_sound_pitch", "effect_sound_volume",
+        "cast_spell", "cast_parameters", "cast_interval", "cast_min_velocity", "cast_velocity_direction",
 		"hotbar_count", "hotbar",
 		"icon", "mode", "brush_mode", "keep", "locked", "quiet", "force", "randomize", "rename",
 		"power", "overrides",
@@ -84,6 +85,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         "potion_effects",
 		"materials", "spells", "powered", "protected"
 	};
+
 	public final static String[] HIDDEN_PROPERTY_KEYS = {
 		"id", "owner", "owner_id", "name", "description", "template",
 		"organize", "alphabetize", "fill", "stored", "upgrade_icon", "xp_timestamp",
@@ -169,6 +171,12 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	private boolean effectBubbles = false;
 	private EffectRing effectPlayer = null;
 
+    private int castInterval = 0;
+    private double castMinVelocity = 0;
+    private Vector castVelocityDirection = null;
+    private String castSpell = null;
+    private String[] castParameters = null;
+
     private Map<PotionEffectType, Integer> potionEffects = new HashMap<PotionEffectType, Integer>();
 
     private SoundEffect effectSound = null;
@@ -182,10 +190,12 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	private int storedXpLevel = 0;
 	private float storedXpProgress = 0;
 
+    private long lastLocationTime;
+    private Vector lastLocation;
+
     private long lastSoundEffect;
     private long lastParticleEffect;
-    private long lastEffectLocationTime;
-    private Vector lastEffectLocation;
+    private long lastSpellCast;
 	
 	// Inventory functionality
 	
@@ -979,6 +989,21 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         node.set("effect_particle_radius", effectParticleRadius);
         node.set("effect_particle_offset", effectParticleOffset);
 		node.set("effect_sound_interval", effectSoundInterval);
+
+        node.set("cast_interval", castInterval);
+        node.set("cast_min_velocity", castMinVelocity);
+        String directionString = null;
+        if (castVelocityDirection != null) {
+            directionString = ConfigurationUtils.fromVector(castVelocityDirection);
+        }
+        node.set("cast_velocity_direction", directionString);
+        node.set("cast_spell", castSpell);
+        String castParameterString = null;
+        if (castParameters != null && castParameters.length > 0) {
+            castParameterString = StringUtils.join(castParameters, " ");
+        }
+        node.set("cast_parameters", castParameterString);
+
 		node.set("quiet", quietLevel);
         node.set("passive", passive);
 		node.set("keep", keep);
@@ -1204,6 +1229,15 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 			effectParticleInterval = wandConfig.getInt("effect_particle_interval", effectParticleInterval);
             effectParticleMinVelocity = wandConfig.getDouble("effect_particle_min_velocity", effectParticleMinVelocity);
 			effectSoundInterval =  wandConfig.getInt("effect_sound_interval", effectSoundInterval);
+
+            castInterval = wandConfig.getInt("cast_interval", castInterval);
+            castMinVelocity = wandConfig.getDouble("cast_min_velocity", castMinVelocity);
+            castVelocityDirection = ConfigurationUtils.getVector(wandConfig, "cast_velocity_direction", castVelocityDirection);
+            castSpell = wandConfig.getString("cast_spell", castSpell);
+            String castParameterString = wandConfig.getString("cast_parameters", null);
+            if (castParameterString != null && !castParameterString.isEmpty()) {
+                castParameters = StringUtils.split(castParameterString, " ");
+            }
 
             boolean needsInventoryUpdate = false;
             if (wandConfig.contains("mode")) {
@@ -1522,6 +1556,13 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         }
         if (xpRegenerationBoost != 0) {
             lore.add(ChatColor.LIGHT_PURPLE + "" + ChatColor.ITALIC + getPercentageString(controller.getMessages(), "wand.mana_regeneration_boost", xpRegenerationBoost));
+        }
+        if (castSpell != null) {
+            SpellTemplate spell = controller.getSpellTemplate(castSpell);
+            if (spell != null)
+            {
+                lore.add(ChatColor.AQUA + controller.getMessages().get("wand.spell_aura").replace("$spell", spell.getName()));
+            }
         }
         for (Map.Entry<PotionEffectType, Integer> effect : potionEffects.entrySet()) {
             String effectName = effect.getKey().getName();
@@ -2288,6 +2329,15 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
             modified = modified | (effectParticleMinVelocity < other.effectParticleOffset);
             effectParticleMinVelocity = Math.max(effectParticleMinVelocity, other.effectParticleMinVelocity);
 		}
+
+        if (other.castSpell != null && (other.isUpgrade || castSpell == null || !castSpell.equals(other.castSpell))) {
+            modified = true;
+            castSpell = other.castSpell;
+            castParameters = other.castParameters;
+            castInterval = other.castInterval;
+            castVelocityDirection = other.castVelocityDirection;
+            castMinVelocity = other.castMinVelocity;
+        }
 		
 		if (other.effectSound != null && (other.isUpgrade || effectSound == null)) {
 			modified = modified | (effectSound == null || !effectSound.equals(other.effectSound));
@@ -2807,8 +2857,9 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 
         lastSoundEffect = 0;
         lastParticleEffect = 0;
-        lastEffectLocationTime = 0;
-        lastEffectLocation = null;
+        lastSpellCast = 0;
+        lastLocationTime = 0;
+        lastLocation = null;
         if (forceUpdate) {
             player.updateInventory();
         }
@@ -2916,21 +2967,19 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		
 		Location location = mage.getLocation();
 		long now = System.currentTimeMillis();
+        Vector mageLocation = location.toVector();
 		if (effectParticle != null && location != null && effectParticleInterval > 0 && effectParticleCount > 0) {
             boolean velocityCheck = true;
             if (effectParticleMinVelocity > 0) {
-                Vector mageLocation = location.toVector();
-                mageLocation.setY(0);
-                if (lastEffectLocation != null && lastEffectLocationTime != 0) {
+                if (lastLocation != null && lastLocationTime != 0) {
                     double velocitySquared = effectParticleMinVelocity * effectParticleMinVelocity;
-                    Vector velocity = lastEffectLocation.subtract(mageLocation);
-                    double speedSquared = velocity.lengthSquared() * 1000 / (now - lastEffectLocationTime);
+                    Vector velocity = lastLocation.subtract(mageLocation);
+                    velocity.setY(0);
+                    double speedSquared = velocity.lengthSquared() * 1000 / (now - lastLocationTime);
                     velocityCheck = (speedSquared > velocitySquared);
                 } else {
                     velocityCheck = false;
                 }
-                lastEffectLocation = mageLocation;
-                lastEffectLocationTime = now;
             }
 			if (velocityCheck && (lastParticleEffect == 0 || now > lastParticleEffect + effectParticleInterval)) {
                 lastParticleEffect = now;
@@ -2959,6 +3008,50 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 				effectPlayer.start(effectLocation, null);
 			}
 		}
+
+        if (castSpell != null && location != null && castInterval > 0) {
+            boolean velocityCheck = true;
+            if (castMinVelocity > 0) {
+                if (lastLocation != null && lastLocationTime != 0) {
+                    double velocitySquared = castMinVelocity * castMinVelocity;
+                    Vector velocity = lastLocation.subtract(mageLocation).multiply(-1);
+                    if (castVelocityDirection != null) {
+                        velocity = velocity.multiply(castVelocityDirection);
+
+                        // This is kind of a hack to make jump-detection work.
+                        if (castVelocityDirection.getY() < 0) {
+                            velocityCheck = velocity.getY() < 0;
+                        } else {
+                            velocityCheck = velocity.getY() > 0;
+                        }
+                    }
+                    if (velocityCheck)
+                    {
+                        double speedSquared = velocity.lengthSquared() * 1000 / (now - lastLocationTime);
+                        velocityCheck = (speedSquared > velocitySquared);
+                    }
+                } else {
+                    velocityCheck = false;
+                }
+            }
+            if (velocityCheck && (lastSpellCast == 0 || now > lastSpellCast + castInterval)) {
+                lastSpellCast = now;
+                Spell spell = mage.getSpell(castSpell);
+                if (spell != null) {
+                    mage.setTrackCasts(false);
+                    mage.setCostReduction(100);
+                    mage.setQuiet(true);
+                    try {
+                        spell.cast(castParameters);
+                    } catch (Exception ex) {
+                        controller.getLogger().log(Level.WARNING, "Error casting aura spell " + spell.getKey(), ex);
+                    }
+                    mage.setQuiet(false);
+                    mage.setTrackCasts(true);
+                    mage.setCostReduction(0);
+                }
+            }
+        }
 		
 		if (effectSound != null && location != null && controller.soundsEnabled() && effectSoundInterval > 0) {
 			if (lastSoundEffect == 0 || now > lastSoundEffect + effectSoundInterval) {
@@ -2966,6 +3059,9 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 				mage.getLocation().getWorld().playSound(location, effectSound.getSound(), effectSound.getVolume(), effectSound.getPitch());
 			}
 		}
+
+        lastLocation = mageLocation;
+        lastLocationTime = now;
 	}
 
     protected void updateDurability() {
