@@ -864,7 +864,8 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
             }
 
             if (itemStack == null) {
-                controller.getPlugin().getLogger().warning("Unable to create spell icon for " + spell.getKey() + " with material " + icon.getMaterial().name());
+                String iconName = icon == null ? "Unknown" : icon.getName();
+                controller.getPlugin().getLogger().warning("Unable to create spell icon for " + spell.getKey() + " with material " + iconName);
                 return originalItemStack;
             }
         }
