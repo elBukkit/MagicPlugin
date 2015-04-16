@@ -1753,7 +1753,7 @@ healing:
              iterations: 5
              period: 2
     parameters:
-        target_type: LivingEntity
+        target_type: Player
         target: self
         target_self: true
         radius: 5
