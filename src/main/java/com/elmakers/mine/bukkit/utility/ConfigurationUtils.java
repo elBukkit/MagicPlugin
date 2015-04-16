@@ -53,9 +53,13 @@ public class ConfigurationUtils {
     }
 
     public static Vector getVector(ConfigurationSection node, String path) {
-        String stringData = node.getString(path);
+       return getVector(node, path, null);
+    }
+
+    public static Vector getVector(ConfigurationSection node, String path, Vector def) {
+        String stringData = node.getString(path, null);
         if (stringData == null) {
-            return null;
+            return def;
         }
 
         return toVector(stringData);

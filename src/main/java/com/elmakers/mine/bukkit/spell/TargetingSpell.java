@@ -763,16 +763,16 @@ public abstract class TargetingSpell extends BaseSpell {
     @Override
     protected void processParameters(ConfigurationSection parameters) {
         super.processParameters(parameters);
-        useHitbox = parameters.getBoolean("hitbox", useHitbox);
-        range = parameters.getInt("range", range);
-        fov = parameters.getDouble("fov", fov);
-        closeRange = parameters.getDouble("close_range", closeRange);
-        closeFOV = parameters.getDouble("close_fov", closeFOV);
-        allowMaxRange = parameters.getBoolean("allow_max_range", allowMaxRange);
-        bypassBackfire = parameters.getBoolean("bypass_backfire", bypassBackfire);
-        bypassProtection = parameters.getBoolean("bypass_protection", bypassProtection);
+        useHitbox = parameters.getBoolean("hitbox", false);
+        range = parameters.getInt("range", 32);
+        fov = parameters.getDouble("fov", 0.3);
+        closeRange = parameters.getDouble("close_range", 1);
+        closeFOV = parameters.getDouble("close_fov", 0.5);
+        allowMaxRange = parameters.getBoolean("allow_max_range", false);
+        bypassBackfire = parameters.getBoolean("bypass_backfire", false);
+        bypassProtection = parameters.getBoolean("bypass_protection", false);
         bypassProtection = parameters.getBoolean("bp", bypassProtection);
-        checkProtection = parameters.getBoolean("check_protection", checkProtection);
+        checkProtection = parameters.getBoolean("check_protection", false);
         targetBreakables = parameters.getDouble("target_breakables", 0);
         reverseTargeting = parameters.getBoolean("reverse_targeting", false);
 
@@ -787,7 +787,7 @@ public abstract class TargetingSpell extends BaseSpell {
             targetThroughMaterials.addAll(controller.getMaterialSet("transparent"));
         }
 
-        targetMinOffset = parameters.getInt("target_min_offset", targetMinOffset);
+        targetMinOffset = parameters.getInt("target_min_offset", 0);
         targetMinOffset = parameters.getInt("tmo", targetMinOffset);
 
         if (parameters.contains("target")) {

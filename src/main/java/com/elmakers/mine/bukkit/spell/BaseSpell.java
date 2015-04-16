@@ -1068,7 +1068,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
                 }
             }
         }
-        if (success) {
+        if (success && mage.getTrackCasts()) {
             castCount++;
             if (template != null) {
                 template.castCount++;
@@ -1218,8 +1218,8 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     }
 
     protected void processParameters(ConfigurationSection parameters) {
-        fizzleChance = (float)parameters.getDouble("fizzle_chance", fizzleChance);
-        backfireChance = (float)parameters.getDouble("backfire_chance", backfireChance);
+        fizzleChance = (float)parameters.getDouble("fizzle_chance", 0);
+        backfireChance = (float)parameters.getDouble("backfire_chance", 0);
 
         Location defaultLocation = location == null ? mage.getLocation() : location;
         Location locationOverride = ConfigurationUtils.overrideLocation(parameters, "p", defaultLocation, controller.canCreateWorlds());
@@ -1245,6 +1245,13 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         quiet = parameters.getBoolean("quiet", false);
         loud = parameters.getBoolean("loud", false);
         verticalSearchDistance = parameters.getInt("vertical_range", 8);
+
+        cooldown = parameters.getInt("cooldown", 0);
+        cooldown = parameters.getInt("cool", cooldown);
+        bypassPvpRestriction = parameters.getBoolean("bypass_pvp", false);
+        bypassPvpRestriction = parameters.getBoolean("bp", bypassPvpRestriction);
+        bypassPermissions = parameters.getBoolean("bypass_permissions", false);
+        duration = parameters.getInt("duration", 0);
     }
 
 
