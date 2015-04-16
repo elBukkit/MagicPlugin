@@ -384,4 +384,6 @@ public interface Mage extends CostReducer {
     public void removeItemsWithTag(String tag);
     public void setTrackCasts(boolean track);
     public boolean getTrackCasts();
+    public void setQuiet(boolean quiet);
+    public boolean getQuiet();
 }
