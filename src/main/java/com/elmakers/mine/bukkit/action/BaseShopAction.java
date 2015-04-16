@@ -403,7 +403,7 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
             inventoryTitle = inventoryTitle.replace("$balance", VaultController.getInstance().format(balance));
         }
 
-        int invSize = (itemStacks.size() / 10 + 1) * 9;
+        int invSize = (int)Math.ceil((float)itemStacks.size() / 9.0f) * 9;
         Inventory displayInventory = CompatibilityUtils.createInventory(null, invSize, inventoryTitle);
         for (ItemStack item : itemStacks)
         {
