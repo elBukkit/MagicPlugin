@@ -2102,7 +2102,7 @@ arrow|4:
 
 flashbang:
     icon_url: http://i.imgur.com/SWIxJqS.png
-    icon: sea_lantern
+    icon: glowstone
     category: combat
     pvp_restricted: true
     worth: 500
@@ -5731,7 +5731,7 @@ torture:
         hitbox: true
 
 rubberize:
-    icon: slime_block
+    icon: slime_ball
     icon_url: http://i.imgur.com/3ogKLnG.png
     category: engineering
     class: RecurseSpell
