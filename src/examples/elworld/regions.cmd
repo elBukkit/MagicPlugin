@@ -38,3 +38,4 @@ region flag spleef -w world  keep-inventory allow
 region flag spleef -w world  keep-level allow
 region flag refugees -w world  keep-inventory allow
 region flag refugees -w world  keep-level allow
+region flag atlantis server-enter-command /castp @p recall unlock atlantis

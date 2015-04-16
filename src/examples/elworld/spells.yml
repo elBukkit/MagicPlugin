@@ -196,6 +196,11 @@ recall:
         description: A little shortcut
         locked: true
         icon: ender_stone
+      atlantis:
+        name: Grim's Atlantis
+        description: Evil Underwater
+        locked: true
+        icon: skull_item
 
 othershop:
     icon: ender_pearl

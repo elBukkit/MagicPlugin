@@ -1,6 +1,7 @@
 package com.elmakers.mine.bukkit.protection;
 
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
+import com.elmakers.mine.bukkit.api.wand.Wand;
 import com.sk89q.worldguard.bukkit.RegionContainer;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import com.sk89q.worldguard.domains.Association;
@@ -88,6 +89,24 @@ public class WorldGuardAPI {
             }
 
             return customFlags.getCastPermission(getAssociable(player), checkSet, spell);
+        }
+        return null;
+    }
+
+    public Boolean getWandPermission(Player player, Wand wand, Location location) {
+        if (location != null && worldGuard != null && customFlags != null)
+        {
+            RegionManager regionManager = worldGuard.getRegionManager(location.getWorld());
+            if (regionManager == null) {
+                return null;
+            }
+
+            ApplicableRegionSet checkSet = regionManager.getApplicableRegions(location);
+            if (checkSet == null) {
+                return null;
+            }
+
+            return customFlags.getWandPermission(getAssociable(player), checkSet, wand);
         }
         return null;
     }

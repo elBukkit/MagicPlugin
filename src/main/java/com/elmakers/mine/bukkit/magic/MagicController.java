@@ -2052,6 +2052,14 @@ public class MagicController implements Listener, MageController {
 		return hasPermission(player, "Magic.wand.use", true);
 	}
 
+    public boolean hasWandPermission(Player player, Wand wand)
+    {
+        if (player.hasPermission("Magic.bypass")) return true;
+        Location location = player.getLocation();
+        Boolean override = worldGuardManager.getWandPermission(player, wand, location);
+        return override == null || override;
+    }
+
     public boolean hasCastPermission(CommandSender sender, SpellTemplate spell)
     {
         if (sender == null) return true;
@@ -2975,6 +2983,11 @@ public class MagicController implements Listener, MageController {
 
         if (action == Action.LEFT_CLICK_AIR || action == Action.LEFT_CLICK_BLOCK && !wand.isUpgrade())
 		{
+            if (!hasWandPermission(player, wand))
+            {
+                mage.sendMessage(messages.get("wand.no_permission").replace("$wand", wand.getName()));
+                return;
+            }
 			wand.cast();
 			event.setCancelled(true);
 			return;

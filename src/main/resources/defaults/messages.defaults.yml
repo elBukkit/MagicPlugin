@@ -180,6 +180,7 @@ wand:
     renamed: Your wand has been renamed
     player_renamed: $name's wand renamed
     self_destruct: Your wands did not survive the dimensional shift!
+    no_permission: "&r&4You may not use that $wand &r&4here."
     single_spell: Wand of $spell
     fully_enchanted: "&cThis $wand is fully enchanted &4(for now)"
     need_more_levels: "You need at least &r&4$levels &d&olevels to enchant"

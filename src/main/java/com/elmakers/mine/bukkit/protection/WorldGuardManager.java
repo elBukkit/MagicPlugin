@@ -1,6 +1,7 @@
 package com.elmakers.mine.bukkit.protection;
 
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
+import com.elmakers.mine.bukkit.api.wand.Wand;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
@@ -62,6 +63,13 @@ public class WorldGuardManager {
     public Boolean getCastPermission(Player player, SpellTemplate spell, Location location) {
         if (enabled && worldGuard != null) {
             return worldGuard.getCastPermission(player, spell, location);
+        }
+        return null;
+    }
+
+    public Boolean getWandPermission(Player player, Wand wand, Location location) {
+        if (enabled && worldGuard != null) {
+            return worldGuard.getWandPermission(player, wand, location);
         }
         return null;
     }
