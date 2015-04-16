@@ -382,4 +382,6 @@ public interface Mage extends CostReducer {
     public void setDebugLevel(int level);
     public void giveItem(ItemStack item);
     public void removeItemsWithTag(String tag);
+    public void setTrackCasts(boolean track);
+    public boolean getTrackCasts();
 }
