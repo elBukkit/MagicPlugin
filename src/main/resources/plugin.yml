@@ -4,7 +4,7 @@ version: ${project.version}
 website: http://mine.elmakers.com
 author: NathanWolf
 description : Mmmmmmaaaaagic!
-softdepend: [WorldGuard,Essentials,dynmap,dtlTraders,Factions,CommandBook,PvPManager,Multiverse-Core,WGCustomFlags,Citizens,Vault,GriefPrevention]
+softdepend: [WorldGuard,Essentials,dynmap,dtlTraders,Factions,CommandBook,PvPManager,Multiverse-Core,WGCustomFlags,Citizens,Vault,GriefPrevention,Heroes]
 commands:
   cast:
     aliases: [mcast]

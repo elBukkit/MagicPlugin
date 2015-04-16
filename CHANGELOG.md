@@ -11,6 +11,7 @@
  - Add allowed-wands and blocked-wands custom region flags
  - Added Hulk Boots
  - Add Cleric's Robes
+ - Added Heroes integration (can use Heroes skills with the "heroes" wand)
 
 ## 4.9.1
 

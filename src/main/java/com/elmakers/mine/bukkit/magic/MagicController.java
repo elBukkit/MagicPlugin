@@ -23,6 +23,7 @@ import com.elmakers.mine.bukkit.api.event.SaveEvent;
 import com.elmakers.mine.bukkit.api.spell.*;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.citizens.CitizensController;
+import com.elmakers.mine.bukkit.heroes.HeroesManager;
 import com.elmakers.mine.bukkit.integration.VaultController;
 import com.elmakers.mine.bukkit.maps.MapController;
 import com.elmakers.mine.bukkit.protection.GriefPreventionManager;
@@ -739,6 +740,18 @@ public class MagicController implements Listener, MageController {
 
         // Link to GriefPrevention
         griefPreventionManager.initialize(plugin);
+
+        // Try to link to Heroes:
+        try {
+            Plugin heroesPlugin = plugin.getServer().getPluginManager().getPlugin("Heroes");
+            if (heroesPlugin != null) {
+                heroesManager = new HeroesManager(plugin, heroesPlugin);
+            } else {
+                heroesManager = null;
+            }
+        } catch (Throwable ex) {
+            plugin.getLogger().warning(ex.getMessage());
+        }
 
         // Try to link to dynmap:
         try {
@@ -4188,7 +4201,13 @@ public class MagicController implements Listener, MageController {
 		if (name == null || name.length() == 0) return null;
         SpellTemplate spell = spells.get(name);
         if (spell == null) {
-            spell = spellAliases.get(name);
+            if (name.startsWith("heroes*")) {
+                if (heroesManager == null) return null;
+                spell = heroesManager.createSkillSpell(this, name.substring(7));
+                spells.put(name, spell);
+            } else {
+                spell = spellAliases.get(name);
+            }
         }
 		return spell;
 	}
@@ -4696,6 +4715,10 @@ public class MagicController implements Listener, MageController {
         forgetMages.clear();
     }
 
+    public HeroesManager getHeroes() {
+        return heroesManager;
+    }
+
     /*
 	 * Private data
 	 */
@@ -4881,4 +4904,5 @@ public class MagicController implements Listener, MageController {
     private PreciousStonesManager				preciousStonesManager		= new PreciousStonesManager();
     private TownyManager						townyManager				= new TownyManager();
     private GriefPreventionManager              griefPreventionManager		= new GriefPreventionManager();
+    private HeroesManager                       heroesManager       		= null;
 }

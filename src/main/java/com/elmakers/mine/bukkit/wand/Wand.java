@@ -24,6 +24,7 @@ import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.block.MaterialBrush;
 import com.elmakers.mine.bukkit.effect.builtin.EffectRing;
+import com.elmakers.mine.bukkit.heroes.HeroesManager;
 import com.elmakers.mine.bukkit.magic.Mage;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.utility.ColorHD;
@@ -83,7 +84,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		"protection", "protection_physical", "protection_projectiles", 
 		"protection_falling", "protection_fire", "protection_explosions",
         "potion_effects",
-		"materials", "spells", "powered", "protected"
+		"materials", "spells", "powered", "protected", "heroes"
 	};
 
 	public final static String[] HIDDEN_PROPERTY_KEYS = {
@@ -147,6 +148,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	private boolean hasInventory = false;
 	private boolean locked = false;
     private boolean forceUpgrade = false;
+    private boolean isHeroes = false;
 	private int uses = 0;
 	private float xp = 0;
 
@@ -1016,6 +1018,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         node.set("powered", superPowered);
         node.set("glow", glow);
         node.set("undroppable", undroppable);
+        node.set("heroes", isHeroes);
 		node.set("fill", autoFill);
 		node.set("upgrade", isUpgrade);
 		node.set("organize", autoOrganize);
@@ -1207,6 +1210,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
             superProtected = wandConfig.getBoolean("protected", superProtected);
             glow = wandConfig.getBoolean("glow", glow);
             undroppable = wandConfig.getBoolean("undroppable", undroppable);
+            isHeroes = wandConfig.getBoolean("heroes", isHeroes);
 			bound = wandConfig.getBoolean("bound", bound);
             forceUpgrade = wandConfig.getBoolean("force", forceUpgrade);
             autoOrganize = wandConfig.getBoolean("organize", autoOrganize);
@@ -2232,6 +2236,10 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         if (other.isUpgrade() && other.path != null && !other.path.isEmpty() && (this.path == null || !this.path.equals(other.path))) {
             return false;
         }
+
+        if (isHeroes || other.isHeroes) {
+            return false;
+        }
 		
 		boolean modified = false;
 
@@ -2771,7 +2779,8 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		if (mage == null || wandItem == null) return;
         id = null;
 
-        if (!canUse(mage.getPlayer())) {
+        Player player = mage.getPlayer();
+        if (!canUse(player)) {
             mage.sendMessage(controller.getMessages().get("wand.bound").replace("$name", getOwner()));
             mage.setActiveWand(null);
             return;
@@ -2793,6 +2802,35 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		if (!isUpgrade && (controller.fillWands() || autoFill)) {
             fill(mage.getPlayer(), controller.getMaxWandFillLevel());
 		}
+
+        if (isHeroes && player != null) {
+            org.bukkit.Bukkit.getLogger().info("Filling with skills");
+            HeroesManager heroes = controller.getHeroes();
+            if (heroes != null) {
+                Set<String> skills = heroes.getSkills(player);
+
+                org.bukkit.Bukkit.getLogger().info("Player skills: " + skills.size());
+                Collection<String> currentSpells = new ArrayList<String>(getSpells());
+                for (String spellKey : currentSpells) {
+                    if (!skills.contains(spellKey.substring(7)))
+                    {
+                        removeSpell(spellKey);
+                    }
+                }
+
+                // Hack to prevent messaging
+                this.mage = null;
+                for (String skillKey : skills)
+                {
+                    String heroesKey = "heroes*" + skillKey;
+                    if (!spells.containsKey(heroesKey))
+                    {
+                        addSpell(heroesKey);
+                    }
+                }
+                this.mage = mage;
+            }
+        }
 		
 		// Check for auto-organize
 		if (autoOrganize && !isUpgrade) {
@@ -2805,7 +2843,6 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         }
 
         // Check for spell or other special icons in the player's inventory
-        Player player = mage.getPlayer();
         Inventory inventory = player.getInventory();
         ItemStack[] items = inventory.getContents();
         for (int i = 0; i < items.length; i++) {

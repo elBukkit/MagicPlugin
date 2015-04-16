@@ -1645,6 +1645,9 @@ wands:
     divinghelmet:
         name: Diving Helmet
         description: Work freely underwater
+    heroes:
+        name: Skills
+        description: Right-click to use skills
 
 automata:
     awaken: "&c&o$name &r&5has awakened"
