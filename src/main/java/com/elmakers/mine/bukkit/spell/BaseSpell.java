@@ -1120,42 +1120,45 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
 
         // Show messaging
         String resultName = result.name().toLowerCase();
-        if (result.isSuccess()) {
-            String message = null;
-            if (result != SpellResult.CAST) {
-                message = getMessage("cast");
-            }
-            if (result.isAlternate() && result != SpellResult.ALTERNATE) {
-                message = getMessage("alternate", message);
-            }
-            message = getMessage(resultName, message);
-            LivingEntity sourceEntity = mage.getLivingEntity();
-            Entity targetEntity = getTargetEntity();
-            if (targetEntity == sourceEntity) {
-                message = getMessage("cast_self", message);
-            } else if (targetEntity instanceof Player) {
-                message = getMessage("cast_player", message);
-            } else if (targetEntity instanceof LivingEntity) {
-                message = getMessage("cast_livingentity", message);
-            } else if (targetEntity instanceof Entity) {
-                message = getMessage("cast_entity", message);
-            }
-            if (loud) {
-                sendMessage(message);
-            } else {
-                castMessage(message);
-            }
-            messageTargets("cast_player_message");
-        } else
-        // Special cases where messaging is handled elsewhere
-        if (result != SpellResult.INSUFFICIENT_RESOURCES && result != SpellResult.COOLDOWN)
+        if (!mage.isQuiet())
         {
-            String message = null;
-            if (result.isFailure() && result != SpellResult.FAIL) {
-                message = getMessage("fail");
-            }
+            if (result.isSuccess()) {
+                String message = null;
+                if (result != SpellResult.CAST) {
+                    message = getMessage("cast");
+                }
+                if (result.isAlternate() && result != SpellResult.ALTERNATE) {
+                    message = getMessage("alternate", message);
+                }
+                message = getMessage(resultName, message);
+                LivingEntity sourceEntity = mage.getLivingEntity();
+                Entity targetEntity = getTargetEntity();
+                if (targetEntity == sourceEntity) {
+                    message = getMessage("cast_self", message);
+                } else if (targetEntity instanceof Player) {
+                    message = getMessage("cast_player", message);
+                } else if (targetEntity instanceof LivingEntity) {
+                    message = getMessage("cast_livingentity", message);
+                } else if (targetEntity instanceof Entity) {
+                    message = getMessage("cast_entity", message);
+                }
+                if (loud) {
+                    sendMessage(message);
+                } else {
+                    castMessage(message);
+                }
+                messageTargets("cast_player_message");
+            } else
+            // Special cases where messaging is handled elsewhere
+            if (result != SpellResult.INSUFFICIENT_RESOURCES && result != SpellResult.COOLDOWN)
+            {
+                String message = null;
+                if (result.isFailure() && result != SpellResult.FAIL) {
+                    message = getMessage("fail");
+                }
 
-            sendMessage(getMessage(resultName, message));
+                sendMessage(getMessage(resultName, message));
+            }
         }
 
         // Play effects
