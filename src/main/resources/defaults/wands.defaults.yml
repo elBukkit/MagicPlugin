@@ -952,7 +952,7 @@ spleef:
 camera:
     mode: cast
     active_spell: camera
-    icon: skull_item:http://i.imgur.com/eyllYbl.png
+    icon: skull_item:http://textures.minecraft.net/texture/e49b4f3261328c05350ee4031212d2fc7555f211af91c0f0278a5aaf9cec65
     indestructible: false
     locked: true
     xp: 5

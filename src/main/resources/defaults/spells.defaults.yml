@@ -5134,7 +5134,7 @@ map:
         mana: 15
 
 camera:
-    icon_url: http://i.imgur.com/eyllYbl.png
+    icon_url: http://textures.minecraft.net/texture/e49b4f3261328c05350ee4031212d2fc7555f211af91c0f0278a5aaf9cec65
     hidden: true
     icon: double_plant
     category: specialty
