@@ -223,6 +223,7 @@ costs:
     mana_amount: $amount Mana
     mana: Mana
     xp: XP
+    heroes_mana: $amount Heroes Mana
 cooldown:
     wait_seconds: another $seconds seconds
     wait_minutes: another $minutes minutes

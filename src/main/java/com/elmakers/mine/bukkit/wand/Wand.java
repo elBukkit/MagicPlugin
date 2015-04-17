@@ -1937,75 +1937,8 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         }
 	}
 	
-	protected static void addSpellLore(Messages messages, SpellTemplate spell, List<String> lore, CostReducer reducer) {
-		String description = spell.getDescription();
-		String usage = spell.getUsage();
-        String levelString = spell.getLevelDescription();
-
-        if (levelString != null && levelString.length() > 0) {
-            lore.add(ChatColor.GOLD + levelString);
-        }
-		if (description != null && description.length() > 0) {
-			lore.add(description);
-		}
-		if (usage != null && usage.length() > 0) {
-			lore.add(usage);
-		}
-        String cooldownDescription = spell.getCooldownDescription();
-        if (cooldownDescription != null && !cooldownDescription.isEmpty()) {
-            lore.add(messages.get("cooldown.description").replace("$time", cooldownDescription));
-        }
-		Collection<CastingCost> costs = spell.getCosts();
-		if (costs != null) {
-			for (CastingCost cost : costs) {
-				if (cost.hasCosts(reducer)) {
-					lore.add(ChatColor.YELLOW + messages.get("wand.costs_description").replace("$description", cost.getFullDescription(messages, reducer)));
-				}
-			}
-		}
-		Collection<CastingCost> activeCosts = spell.getActiveCosts();
-		if (activeCosts != null) {
-			for (CastingCost cost : activeCosts) {
-				if (cost.hasCosts(reducer)) {
-					lore.add(ChatColor.YELLOW + messages.get("wand.active_costs_description").replace("$description", cost.getFullDescription(messages, reducer)));
-				}
-			}
-		}
-		
-		long duration = spell.getDuration();
-		if (duration > 0) {
-			long seconds = duration / 1000;
-			if (seconds > 60 * 60 ) {
-				long hours = seconds / (60 * 60);
-				lore.add(ChatColor.GRAY + messages.get("duration.lasts_hours").replace("$hours", ((Long)hours).toString()));
-			} else if (seconds > 60) {
-				long minutes = seconds / 60;
-				lore.add(ChatColor.GRAY + messages.get("duration.lasts_minutes").replace("$minutes", ((Long)minutes).toString()));
-			} else {
-				lore.add(ChatColor.GRAY + messages.get("duration.lasts_seconds").replace("$seconds", ((Long)seconds).toString()));
-			}
-		}
-        else if (spell.showUndoable())
-        {
-            if (spell.isUndoable()) {
-                String undoableText = messages.get("spell.undoable", "");
-                if (!undoableText.isEmpty()) {
-                    lore.add(undoableText);
-                }
-            } else {
-                String undoableText = messages.get("spell.not_undoable", "");
-                if (!undoableText.isEmpty()) {
-                    lore.add(undoableText);
-                }
-            }
-        }
-
-		if (spell.usesBrush()) {
-			String brushText = messages.get("spell.brush");
-            if (!brushText.isEmpty()) {
-                lore.add(ChatColor.GOLD + brushText);
-            }
-		}
+	protected static void addSpellLore(Messages messages, SpellTemplate spell, List<String> lore, Wand wand) {
+        spell.addSpellLore(messages, wand, lore);
 	}
 	
 	protected Inventory getOpenInventory() {
@@ -3369,6 +3302,9 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
                 if (heroes != null)
                 {
                     effectiveXpMax = heroes.getMaxMana(player);
+                    effectiveXpRegeneration = heroes.getManaRegen(player);
+                    xpMax = effectiveXpMax;
+                    xpRegeneration = effectiveXpRegeneration;
                     xp = heroes.getMana(player);
                     updateMana();
                 }
@@ -3414,6 +3350,8 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
     }
 
     protected void updateMaxMana() {
+        if (isHeroes) return;
+
         float effectiveBoost = xpMaxBoost;
         float effectiveRegenBoost = xpRegenerationBoost;
         if (mage != null)

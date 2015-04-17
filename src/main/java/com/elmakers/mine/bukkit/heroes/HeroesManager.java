@@ -44,6 +44,7 @@ public class HeroesManager {
     }
 
     public Set<String> getSkills(Player player) {
+        if (skills == null) return emptySkills;
         Hero hero = getHero(player);
         if (hero == null) return emptySkills;
         HeroClass heroClass = hero.getHeroClass();
@@ -54,8 +55,10 @@ public class HeroesManager {
             Set<String> classSkills = heroClass.getSkillNames();
             for (String classSkill : classSkills)
             {
-                if (hero.canUseSkill(classSkill))
-                {
+                Skill skill = skills.getSkill(classSkill);
+                // getRaw's boolean default value is ignored! :(
+                if (hero.canUseSkill(skill) && SkillConfigManager.getRaw(skill, "wand", "true").equalsIgnoreCase("true"))
+                {;
                     skillSet.add(classSkill);
                 }
             }
@@ -66,7 +69,8 @@ public class HeroesManager {
             Set<String> classSkills = secondClass.getSkillNames();
             for (String classSkill : classSkills)
             {
-                if (hero.canUseSkill(classSkill))
+                Skill skill = skills.getSkill(classSkill);
+                if (hero.canUseSkill(skill) && SkillConfigManager.getRaw(skill, "wand", "true").equalsIgnoreCase("true"))
                 {
                     skillSet.add(classSkill);
                 }
@@ -84,11 +88,16 @@ public class HeroesManager {
         newSpell.initialize(controller);
         ConfigurationSection config = new MemoryConfiguration();
         config.set("icon", SkillConfigManager.getRaw(skill, "icon", "nether_star"));
-        config.set("icon_url", SkillConfigManager.getRaw(skill, "icon_url", null));
+        config.set("icon_url", SkillConfigManager.getRaw(skill, "icon-url", null));
         config.set("name", skill.getName());
-        config.set("description", skill.getDescription());
+        config.set("description", SkillConfigManager.getRaw(skill, "description", null));
         newSpell.loadTemplate("heroes*" + skillName, config);
         return newSpell;
+    }
+
+    public Skill getSkill(String key) {
+        if (skills == null) return null;
+        return skills.getSkill(key);
     }
 
     public Hero getHero(Player player) {
@@ -100,6 +109,12 @@ public class HeroesManager {
         Hero hero = getHero(player);
         if (hero == null) return 0;
         return hero.getMaxMana();
+    }
+
+    public int getManaRegen(Player player) {
+        Hero hero = getHero(player);
+        if (hero == null) return 0;
+        return hero.getManaRegen();
     }
 
     public int getMana(Player player) {
