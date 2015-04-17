@@ -25,6 +25,7 @@ public class MagicRecipe {
     private Set<Material> ingredients = new HashSet<Material>();
     private Material outputType;
     private Material substitue;
+    private String outputItemType;
     private boolean disableDefaultRecipe;
     private ShapedRecipe recipe;
     private final MagicController controller;
@@ -38,8 +39,28 @@ public class MagicRecipe {
         substitue = ConfigurationUtils.getMaterial(configuration, "substitue", null);
         disableDefaultRecipe = configuration.getBoolean("disable_default", false);
 
-        String outputTypeString = configuration.getString("output_type", "");
-        if (!outputTypeString.equalsIgnoreCase("wand"))
+        outputItemType = configuration.getString("output_type", "");
+        ItemStack item = null;
+
+        if (outputItemType.equalsIgnoreCase("wand"))
+        {
+            Wand wand = (outputKey != null && !outputKey.isEmpty()) ? controller.createWand(outputKey) : null;
+            item = wand.getItem();
+        }
+        else if (outputItemType.equalsIgnoreCase("spell"))
+        {
+            item = controller.createSpellItem(outputKey);
+        }
+        else if (outputItemType.equalsIgnoreCase("brush"))
+        {
+            item = controller.createBrushItem(outputKey);
+        }
+        else if (outputItemType.equalsIgnoreCase("item"))
+        {
+            MaterialAndData material = new MaterialAndData(outputKey);
+            item = material.getItemStack(1);
+        }
+        else
         {
             // Backwards-compatibility
             outputType = ConfigurationUtils.getMaterial(configuration, "input", null);
@@ -47,12 +68,10 @@ public class MagicRecipe {
             return outputType != null;
         }
 
-        Wand wand = (outputKey != null && !outputKey.isEmpty()) ? controller.createWand(outputKey) : null;
-        if (wand != null) {
-            ItemStack wandItem = wand.getItem();
+        if (item != null) {
             // CompatibilityUtils.removeCustomData(wandItem);
-            outputType = wandItem.getType();
-            ShapedRecipe shaped = new ShapedRecipe(wandItem);
+            outputType = item.getType();
+            ShapedRecipe shaped = new ShapedRecipe(item);
             List<String> rows = new ArrayList<String>();
             for (int i = 1; i <= 3; i++) {
                 String recipeRow = configuration.getString("row_" + i, "");
@@ -123,9 +142,26 @@ public class MagicRecipe {
         if (outputKey == null) {
             return null;
         }
-        ItemStack item = controller.createWand(outputKey).getItem();
-        // CompatibilityUtils.removeCustomData(item);
-        // CompatibilityUtils.addGlow(item);
+        ItemStack item = null;
+        if (outputItemType.equalsIgnoreCase("wand"))
+        {
+            Wand wand = (outputKey != null && !outputKey.isEmpty()) ? controller.createWand(outputKey) : null;
+            item = wand.getItem();
+        }
+        else if (outputItemType.equalsIgnoreCase("spell"))
+        {
+            item = controller.createSpellItem(outputKey);
+        }
+        else if (outputItemType.equalsIgnoreCase("brush"))
+        {
+            item = controller.createBrushItem(outputKey);
+        }
+        else if (outputItemType.equalsIgnoreCase("item"))
+        {
+            MaterialAndData material = new MaterialAndData(outputKey);
+            item = material.getItemStack(1);
+        }
+
         return item;
     }
 

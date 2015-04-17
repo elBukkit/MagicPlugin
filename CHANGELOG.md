@@ -2,6 +2,10 @@
 
 ## 4.9.2
 
+ - Added Heroes integration (can use Heroes skills with the "heroes" wand or /mskills items)
+ - Added Hulk Boots
+ - Add Cleric's Robes
+ - Allow crafting recipes for spells, brushes and normal items
  - Firework effects are produced entirely client-side.
    Hoping this addresses some "entity tracker" lag a few servers have been seeing. It might not.
  - EffectLib now runs effects asynchronously. Should help with lag from spamming complex effects like Helix.
@@ -9,9 +13,6 @@
  - Hunters will mostly usually clean up after themselves on death
  - Some fixes to EMP and SuperEMP
  - Add allowed-wands and blocked-wands custom region flags
- - Added Hulk Boots
- - Add Cleric's Robes
- - Added Heroes integration (can use Heroes skills with the "heroes" wand)
 
 ## 4.9.1
 
