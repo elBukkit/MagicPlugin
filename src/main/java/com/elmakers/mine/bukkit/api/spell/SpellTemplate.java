@@ -1,7 +1,10 @@
 package com.elmakers.mine.bukkit.api.spell;
 
 import java.util.Collection;
+import java.util.List;
 
+import com.elmakers.mine.bukkit.api.magic.Messages;
+import com.elmakers.mine.bukkit.api.wand.Wand;
 import org.bukkit.Color;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
@@ -51,4 +54,5 @@ public interface SpellTemplate extends Comparable<SpellTemplate>, CostReducer {
     public long getRequiredUpgradeCasts();
     public String getUpgradeDescription();
     public ConfigurationSection getConfiguration();
+    public void addSpellLore(Messages messages, Wand wand, List<String> lore);
 }
