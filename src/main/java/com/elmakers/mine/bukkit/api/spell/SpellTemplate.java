@@ -55,5 +55,5 @@ public interface SpellTemplate extends Comparable<SpellTemplate>, CostReducer {
     public long getRequiredUpgradeCasts();
     public String getUpgradeDescription();
     public ConfigurationSection getConfiguration();
-    public void addSpellLore(Messages messages, Mage mage, Wand wand, List<String> lore);
+    public void addLore(Messages messages, Mage mage, Wand wand, List<String> lore);
 }
