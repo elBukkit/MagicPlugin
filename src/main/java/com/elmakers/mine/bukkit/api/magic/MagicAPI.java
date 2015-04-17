@@ -279,6 +279,7 @@ public interface MagicAPI {
      * @return An ItemStack representing the magic item.
      */
     public ItemStack createItem(String magicItemKey);
+    public ItemStack createItem(String magicItemKey, Mage mage);
 
     /**
      * Create a generic version of an item with no extra data.
