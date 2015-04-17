@@ -402,7 +402,7 @@ glider:
 
 virus:
     icon: fermented_spider_eye
-    icon_url: http://i.imgur.com/UtoaKXl.png
+    icon_url: http://textures.minecraft.net/texture/744e11fddeff88dd749ae5ff8fe80f46b9f659817d43d673e4af3759d59ae0
     category: automata
     class: AnimateSpell
     worth: 100000
@@ -462,7 +462,7 @@ virus:
 
 worm:
     icon: string
-    icon_url: http://i.imgur.com/UtoaKXl.png
+    icon_url: http://textures.minecraft.net/texture/744e11fddeff88dd749ae5ff8fe80f46b9f659817d43d673e4af3759d59ae0
     category: automata
     class: AnimateSpell
     worth: 80000
@@ -523,7 +523,7 @@ worm:
 
 hunter:
     icon: spider_eye
-    icon_url: http://i.imgur.com/UtoaKXl.png
+    icon_url: http://textures.minecraft.net/texture/744e11fddeff88dd749ae5ff8fe80f46b9f659817d43d673e4af3759d59ae0
     category: automata
     class: AnimateSpell
     worth: 60000
@@ -581,7 +581,7 @@ hunter:
 
 defender:
     icon: quartz
-    icon_url: http://i.imgur.com/UtoaKXl.png
+    icon_url: http://textures.minecraft.net/texture/744e11fddeff88dd749ae5ff8fe80f46b9f659817d43d673e4af3759d59ae0
     category: automata
     class: AnimateSpell
     worth: 40000
@@ -627,7 +627,7 @@ defender:
 
 animate:
     icon: iron_ingot
-    icon_url: http://i.imgur.com/UtoaKXl.png
+    icon_url: http://textures.minecraft.net/texture/744e11fddeff88dd749ae5ff8fe80f46b9f659817d43d673e4af3759d59ae0
     category: automata
     class: AnimateSpell
     worth: 30000

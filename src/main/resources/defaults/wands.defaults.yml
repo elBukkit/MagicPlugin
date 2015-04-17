@@ -1190,7 +1190,7 @@ wolfhouse:
 
 hunterheart:
     active_spell: hunter
-    icon: 'skull_item:http://i.imgur.com/UtoaKXl.png'
+    icon: 'skull_item:http://textures.minecraft.net/texture/744e11fddeff88dd749ae5ff8fe80f46b9f659817d43d673e4af3759d59ae0'
     indestructible: false
     locked: true
     uses: 1
@@ -1201,7 +1201,7 @@ hunterheart:
 
 virusheart:
     active_spell: virus
-    icon: 'skull_item:http://i.imgur.com/UtoaKXl.png'
+    icon: 'skull_item:http://textures.minecraft.net/texture/744e11fddeff88dd749ae5ff8fe80f46b9f659817d43d673e4af3759d59ae0'
     indestructible: false
     locked: true
     mode: cast
@@ -1212,7 +1212,7 @@ virusheart:
 
 wormheart:
     active_spell: worm
-    icon: 'skull_item:http://i.imgur.com/UtoaKXl.png'
+    icon: 'skull_item:http://textures.minecraft.net/texture/744e11fddeff88dd749ae5ff8fe80f46b9f659817d43d673e4af3759d59ae0'
     indestructible: false
     locked: true
     uses: 1
@@ -1223,7 +1223,7 @@ wormheart:
 
 defenderheart:
     active_spell: defender
-    icon: 'skull_item:http://i.imgur.com/UtoaKXl.png'
+    icon: 'skull_item:http://textures.minecraft.net/texture/744e11fddeff88dd749ae5ff8fe80f46b9f659817d43d673e4af3759d59ae0'
     indestructible: false
     locked: true
     uses: 1
@@ -1234,7 +1234,7 @@ defenderheart:
 
 golemheart:
     active_spell: animate
-    icon: 'skull_item:http://i.imgur.com/UtoaKXl.png'
+    icon: 'skull_item:http://textures.minecraft.net/texture/744e11fddeff88dd749ae5ff8fe80f46b9f659817d43d673e4af3759d59ae0'
     indestructible: false
     locked: true
     uses: 1
