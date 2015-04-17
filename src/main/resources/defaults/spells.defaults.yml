@@ -5808,6 +5808,7 @@ count:
         target_type: Entity
         target_self: false
         radius: 64
+        messsage_targets: false
 
 superfly:
     hidden: true
