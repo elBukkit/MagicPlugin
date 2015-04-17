@@ -3,6 +3,9 @@ package com.elmakers.mine.bukkit.heroes;
 import com.elmakers.mine.bukkit.api.spell.MageSpell;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.magic.MagicController;
+import com.google.common.collect.Multimap;
+import com.google.common.collect.Ordering;
+import com.google.common.collect.TreeMultimap;
 import com.herocraftonline.heroes.Heroes;
 import com.herocraftonline.heroes.characters.CharacterManager;
 import com.herocraftonline.heroes.characters.Hero;
@@ -64,7 +67,12 @@ public class HeroesManager {
         Set<String> skillSet = getSkills(player, showUnuseable);
         if (skillSet.size() == 0) return emptySkillList;
 
-        TreeMap<Integer, Skill> skillMap = new TreeMap<Integer, Skill>();
+        Multimap<Integer, Skill> skillMap = TreeMultimap.create(Ordering.natural(), new Comparator<Skill>() {
+            @Override
+            public int compare(Skill skill1, Skill skill2) {
+                return skill1.getName().compareTo(skill2.getName());
+            }
+        });
         for (String skillName : skillSet)
         {
             Skill skill = skills.getSkill(skillName);
@@ -164,5 +172,11 @@ public class HeroesManager {
         Hero hero = getHero(player);
         if (hero == null) return 0;
         return hero.getMana();
+    }
+
+    public void removeMana(Player player, int amount) {
+        Hero hero = getHero(player);
+        if (hero == null) return;
+        hero.setMana(Math.max(0, hero.getMana() - amount));
     }
 }
