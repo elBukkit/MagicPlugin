@@ -420,6 +420,12 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	}
 
 	public void removeMana(int amount) {
+        if (isHeroes && mage != null) {
+            HeroesManager heroes = controller.getHeroes();
+            if (heroes != null) {
+                heroes.removeMana(mage.getPlayer(), amount);
+            }
+        }
 		xp = Math.max(0,  xp - amount);
 		updateMana();
 	}
@@ -2753,7 +2759,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
                 Set<String> skills = heroes.getSkills(player);
                 Collection<String> currentSpells = new ArrayList<String>(getSpells());
                 for (String spellKey : currentSpells) {
-                    if (!skills.contains(spellKey.substring(7)))
+                    if (spellKey.startsWith("heroes*") && !skills.contains(spellKey.substring(7)))
                     {
                         removeSpell(spellKey);
                     }
