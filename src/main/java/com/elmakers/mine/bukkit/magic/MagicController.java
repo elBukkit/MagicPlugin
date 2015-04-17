@@ -1923,6 +1923,7 @@ public class MagicController implements Listener, MageController {
         allPvpRestricted = properties.getBoolean("pvp_restricted", allPvpRestricted);
 		extraSchematicFilePath = properties.getString("schematic_files", extraSchematicFilePath);
 		createWorldsEnabled = properties.getBoolean("enable_world_creation", createWorldsEnabled);
+        defaultSkillIcon = properties.getString("default_skill_icon", defaultSkillIcon);
 
 		messagePrefix = properties.getString("message_prefix", messagePrefix);
 		castMessagePrefix = properties.getString("cast_message_prefix", castMessagePrefix);
@@ -4739,6 +4740,10 @@ public class MagicController implements Listener, MageController {
         return heroesManager;
     }
 
+    public String getDefaultSkillIcon() {
+        return defaultSkillIcon;
+    }
+
     /*
 	 * Private data
 	 */
@@ -4900,6 +4905,7 @@ public class MagicController implements Listener, MageController {
     private Collection<String>                  addExamples                 = null;
     private boolean                             initialized                 = false;
     private boolean                             loaded                      = false;
+    private String                              defaultSkillIcon            = "stick";
 
     // Synchronization
     private final Object                        saveLock                    = new Object();

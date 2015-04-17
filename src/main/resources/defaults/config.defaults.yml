@@ -177,6 +177,7 @@ age_dropped_items: 0
 wand_item: wood_hoe
 wand_upgrade_item: stick
 wand_location_offset: 0.5
+default_skill_icon: stick
 
 # This will hide all flags on a wand except for
 # - Enchantments

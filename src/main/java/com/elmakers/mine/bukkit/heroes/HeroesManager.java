@@ -87,7 +87,7 @@ public class HeroesManager {
         MageSpell newSpell = new HeroesSkillSpell();
         newSpell.initialize(controller);
         ConfigurationSection config = new MemoryConfiguration();
-        config.set("icon", SkillConfigManager.getRaw(skill, "icon", "nether_star"));
+        config.set("icon", SkillConfigManager.getRaw(skill, "icon", controller.getDefaultSkillIcon()));
         config.set("icon_url", SkillConfigManager.getRaw(skill, "icon-url", null));
         config.set("name", skill.getName());
         config.set("description", SkillConfigManager.getRaw(skill, "description", null));
