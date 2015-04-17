@@ -1,6 +1,12 @@
 # CHANGELOG
 
+## 4.9.3
+
+ - Try to work-around other plugins (/hat) putting the temporary hat in the player's inv.
+
 ## 4.9.2
+
+ - Temporarily turned off custom item icons due to complications with 1.8.4 client changes.
 
  - Added Heroes integration (can use Heroes skills with the "heroes" wand or /mskills items)
  - Added Hulk Boots

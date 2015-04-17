@@ -2557,6 +2557,11 @@ public class MagicController implements Listener, MageController {
 		ItemStack next = inventory.getItem(event.getNewSlot());
 		ItemStack previous = inventory.getItem(event.getPreviousSlot());
 
+        if (NMSUtils.isTemporary(next)) {
+            inventory.setItem(event.getNewSlot(), null);
+            return;
+        }
+
 		Mage apiMage = getMage(player);
         if (!(apiMage instanceof com.elmakers.mine.bukkit.magic.Mage)) return;
         com.elmakers.mine.bukkit.magic.Mage mage = (com.elmakers.mine.bukkit.magic.Mage)apiMage;
@@ -3631,6 +3636,14 @@ public class MagicController implements Listener, MageController {
 	public void onBlockPlace(BlockPlaceEvent event)
 	{
 		Player player = event.getPlayer();
+        ItemStack itemStack = event.getItemInHand();
+
+        if (NMSUtils.isTemporary(itemStack)) {
+            event.setCancelled(true);
+            player.setItemInHand(null);
+            return;
+        }
+
         Mage apiMage = getMage(player);
 
         if (!(apiMage instanceof com.elmakers.mine.bukkit.magic.Mage)) return;
@@ -3639,8 +3652,7 @@ public class MagicController implements Listener, MageController {
         if (mage.hasStoredInventory() || mage.getBlockPlaceTimeout() > System.currentTimeMillis()) {
 			event.setCancelled(true);
 		}
-		
-		ItemStack itemStack = event.getItemInHand();
+
 		if (Wand.isWand(itemStack) || Wand.isBrush(itemStack) || Wand.isSpell(itemStack) || Wand.isUpgrade(itemStack)) {
 			event.setCancelled(true);
 		}
