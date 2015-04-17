@@ -1,0 +1,12 @@
+
+
+# Heroes Integration
+heroes:
+    effect_color: random
+    quiet: 1
+    bound: true
+    keep: true
+    undroppable: true
+    indestructible: true
+    effect_bubbles: false
+    heroes: true
