@@ -25,11 +25,9 @@ import org.apache.commons.lang.ArrayUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
-import org.bukkit.FireworkEffect;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
-import org.bukkit.World.Environment;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.command.CommandSender;
@@ -1861,7 +1859,8 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     }
 
     @Override
-    public void addSpellLore(Messages messages, Wand wand, List<String> lore) {
+    public void addSpellLore(Messages messages, Mage mage, Wand wand, List<String> lore) {
+        CostReducer reducer = wand == null ? mage : wand;
         if (levelDescription != null && levelDescription.length() > 0) {
             lore.add(ChatColor.GOLD + levelDescription);
         }
@@ -1877,15 +1876,15 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         }
         if (costs != null) {
             for (com.elmakers.mine.bukkit.api.spell.CastingCost cost : costs) {
-                if (cost.hasCosts(wand)) {
-                    lore.add(ChatColor.YELLOW + messages.get("wand.costs_description").replace("$description", cost.getFullDescription(messages, wand)));
+                if (cost.hasCosts(reducer)) {
+                    lore.add(ChatColor.YELLOW + messages.get("wand.costs_description").replace("$description", cost.getFullDescription(messages, reducer)));
                 }
             }
         }
         if (activeCosts != null) {
             for (com.elmakers.mine.bukkit.api.spell.CastingCost cost : activeCosts) {
-                if (cost.hasCosts(wand)) {
-                    lore.add(ChatColor.YELLOW + messages.get("wand.active_costs_description").replace("$description", cost.getFullDescription(messages, wand)));
+                if (cost.hasCosts(reducer)) {
+                    lore.add(ChatColor.YELLOW + messages.get("wand.active_costs_description").replace("$description", cost.getFullDescription(messages, reducer)));
                 }
             }
         }
