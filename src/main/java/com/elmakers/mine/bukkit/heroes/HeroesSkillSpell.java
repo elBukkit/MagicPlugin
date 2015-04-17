@@ -46,10 +46,7 @@ public class HeroesSkillSpell extends BaseSpell {
     }
 
     @Override
-    public void addSpellLore(Messages messages, com.elmakers.mine.bukkit.api.wand.Wand apiWand, List<String> lore) {
-        if (skill == null || !(apiWand instanceof Wand)) return;
-        Wand wand = (Wand)apiWand;
-        Mage mage = wand.getActivePlayer();
+    public void addSpellLore(Messages messages, Mage mage, com.elmakers.mine.bukkit.api.wand.Wand apiWand, List<String> lore) {
         if (mage == null || !mage.isPlayer()) return;
         Hero hero = heroes.getHero(mage.getPlayer());
         if (hero == null) return;

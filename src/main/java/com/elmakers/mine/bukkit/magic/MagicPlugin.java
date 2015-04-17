@@ -11,6 +11,7 @@ import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.citizens.CitizensController;
 import com.elmakers.mine.bukkit.magic.command.*;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
+import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import com.elmakers.mine.bukkit.utility.NMSUtils;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
@@ -340,6 +341,11 @@ public class MagicPlugin extends JavaPlugin implements MagicAPI
 
     @Override
     public ItemStack createItem(String magicKey) {
+        return createItem(magicKey, null);
+    }
+
+    @Override
+    public ItemStack createItem(String magicKey, com.elmakers.mine.bukkit.api.magic.Mage mage) {
         ItemStack itemStack = null;
         if (controller == null) {
             getLogger().log(Level.WARNING, "Calling API before plugin is initialized");
@@ -368,6 +374,10 @@ public class MagicPlugin extends JavaPlugin implements MagicAPI
             } else if (magicItemKey.contains("spell:")) {
                 String spellKey = magicKey.substring(6);
                 itemStack = createSpellItem(spellKey);
+            } else if (magicItemKey.contains("skill:")) {
+                String spellKey = magicKey.substring(6);
+                itemStack =  Wand.createSpellItem(spellKey, controller, mage, null, false);
+                InventoryUtils.setMeta(itemStack, "skill", "true");
             } else if (magicItemKey.contains("wand:")) {
                 String wandKey = magicItemKey.substring(5);
                 com.elmakers.mine.bukkit.api.wand.Wand wand = createWand(wandKey);

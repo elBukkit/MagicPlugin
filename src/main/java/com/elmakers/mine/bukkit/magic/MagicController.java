@@ -2560,6 +2560,14 @@ public class MagicController implements Listener, MageController {
         if (!(apiMage instanceof com.elmakers.mine.bukkit.magic.Mage)) return;
         com.elmakers.mine.bukkit.magic.Mage mage = (com.elmakers.mine.bukkit.magic.Mage)apiMage;
 
+        if (Wand.isSkill(next))
+        {
+            Spell spell = mage.getSpell(Wand.getSpell(next));
+            spell.cast();
+            event.setCancelled(true);
+            return;
+        }
+
 		Wand activeWand = mage.getActiveWand();
 		
 		// Check for active Wand
@@ -2800,7 +2808,13 @@ public class MagicController implements Listener, MageController {
             event.setCancelled(true);
             return;
         }
-		if (Wand.isWand(event.getEntity().getItemStack()))
+        ItemStack spawnedItem = event.getEntity().getItemStack();
+        if (Wand.isSkill(spawnedItem))
+        {
+            event.setCancelled(true);
+            return;
+        }
+		if (Wand.isWand(spawnedItem))
 		{
 			Wand wand = new Wand(this, event.getEntity().getItemStack());
 			if (wand.isIndestructible()) {
@@ -4668,6 +4682,9 @@ public class MagicController implements Listener, MageController {
         {
             item = InventoryUtils.makeReal(item);
             InventoryUtils.setMeta(item, "spell", itemSection.getString("spell"));
+            if (itemSection.contains("skill")) {
+                InventoryUtils.setMeta(item, "skill", "true");
+            }
         }
         else if (itemSection.contains("brush"))
         {
@@ -4691,6 +4708,9 @@ public class MagicController implements Listener, MageController {
         else if(Wand.isSpell(item))
         {
             itemSection.set("spell", Wand.getSpell(item));
+            if (Wand.isSkill(item)) {
+                itemSection.set("skill", "true");
+            }
         }
         else if (Wand.isBrush(item))
         {

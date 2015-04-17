@@ -88,7 +88,8 @@ public class MagicGiveCommandExecutor extends MagicTabExecutor {
             sender.sendMessage("Gave " + count + " experience to " + player.getName());
             return true;
         } else {
-            ItemStack item = api.createItem(itemName);
+            Mage mage = api.getMage(player);
+            ItemStack item = api.createItem(itemName, mage);
             if (item == null) {
                 sender.sendMessage(ChatColor.RED + "Unknown item type " + itemName);
                 return true;
