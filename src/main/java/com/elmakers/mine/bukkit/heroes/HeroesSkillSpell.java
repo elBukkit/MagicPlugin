@@ -4,6 +4,7 @@ import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.Messages;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.CastingCost;
+import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import com.elmakers.mine.bukkit.wand.Wand;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
@@ -46,7 +47,7 @@ public class HeroesSkillSpell extends BaseSpell {
     }
 
     @Override
-    public void addSpellLore(Messages messages, Mage mage, com.elmakers.mine.bukkit.api.wand.Wand apiWand, List<String> lore) {
+    public void addLore(Messages messages, Mage mage, com.elmakers.mine.bukkit.api.wand.Wand apiWand, List<String> lore) {
         if (mage == null || !mage.isPlayer()) return;
         Hero hero = heroes.getHero(mage.getPlayer());
         if (hero == null) return;
@@ -64,7 +65,7 @@ public class HeroesSkillSpell extends BaseSpell {
         }
 
         if (description != null && description.length() > 0) {
-            lore.add(description);
+            InventoryUtils.wrapText(description, MAX_LORE_LENGTH, lore);
         }
 
         int cooldown = SkillConfigManager.getUseSetting(hero, skill, SkillSetting.COOLDOWN, 0, true);

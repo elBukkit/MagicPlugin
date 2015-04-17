@@ -1949,7 +1949,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	}
 	
 	protected static void addSpellLore(Messages messages, SpellTemplate spell, List<String> lore, com.elmakers.mine.bukkit.api.magic.Mage mage, Wand wand) {
-        spell.addSpellLore(messages, mage, wand, lore);
+        spell.addLore(messages, mage, wand, lore);
 	}
 	
 	protected Inventory getOpenInventory() {
