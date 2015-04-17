@@ -568,7 +568,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
                 if (vaultName != null && !vaultName.isEmpty()) {
                     return vaultName;
                 }
-            } catch (Exception ex) {
+            } catch (Throwable ex) {
                 // Vault apparently throws exceptions on invalid item types
                 // So we're just going to ignore it.
             }
