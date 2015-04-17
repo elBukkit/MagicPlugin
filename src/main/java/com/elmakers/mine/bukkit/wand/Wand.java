@@ -443,7 +443,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	}
 	
 	public boolean usesMana() {
-		return xpMax > 0 && xpRegeneration > 0 && !isCostFree();
+		return (xpMax > 0 && xpRegeneration > 0 && !isCostFree()) || isHeroes;
 	}
 
 	public float getCooldownReduction() {
@@ -2804,12 +2804,9 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		}
 
         if (isHeroes && player != null) {
-            org.bukkit.Bukkit.getLogger().info("Filling with skills");
             HeroesManager heroes = controller.getHeroes();
             if (heroes != null) {
                 Set<String> skills = heroes.getSkills(player);
-
-                org.bukkit.Bukkit.getLogger().info("Player skills: " + skills.size());
                 Collection<String> currentSpells = new ArrayList<String>(getSpells());
                 for (String spellKey : currentSpells) {
                     if (!skills.contains(spellKey.substring(7)))
@@ -3121,7 +3118,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
     }
 
 	protected void updateMana() {
-		if (mage != null && effectiveXpMax > 0 && effectiveXpRegeneration > 0) {
+		if (mage != null && effectiveXpMax > 0) {
 			Player player = mage.getPlayer();
             if (displayManaAsGlow) {
                 if (xp == effectiveXpMax) {
@@ -3364,12 +3361,19 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
             item.setDurability((short)0);
         }
 
-        // Update hotbar glow
-        updateHotbarStatus();
-
 		if (usesMana()) {
             long now = System.currentTimeMillis();
-            if (lastXpRegeneration > 0)
+            if (isHeroes)
+            {
+                HeroesManager heroes = controller.getHeroes();
+                if (heroes != null)
+                {
+                    effectiveXpMax = heroes.getMaxMana(player);
+                    xp = heroes.getMana(player);
+                    updateMana();
+                }
+            }
+            else if (lastXpRegeneration > 0)
             {
                 long delta = now - lastXpRegeneration;
                 if (effectiveXpMax == 0 && xpMax > 0) {
@@ -3380,6 +3384,9 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
             }
             lastXpRegeneration = now;
 		}
+
+        // Update hotbar glow
+        updateHotbarStatus();
 
         if (!passive)
         {

@@ -95,4 +95,16 @@ public class HeroesManager {
         if (characters == null) return null;
         return characters.getHero(player);
     }
+
+    public int getMaxMana(Player player) {
+        Hero hero = getHero(player);
+        if (hero == null) return 0;
+        return hero.getMaxMana();
+    }
+
+    public int getMana(Player player) {
+        Hero hero = getHero(player);
+        if (hero == null) return 0;
+        return hero.getMana();
+    }
 }
