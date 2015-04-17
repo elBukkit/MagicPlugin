@@ -41,6 +41,10 @@ commands:
     description: Manage Magic NPCs
     usage: /mtrait <id#> <property> <value>
     permission: Magic.commands.mtrait
+  mskills:
+    description: Get Heroes skills
+    usage: /mskills
+    permission: Magic.commands.mskills
 permissions:
   Magic.commands.spells:
     description: Player may list spells
