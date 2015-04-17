@@ -14,6 +14,8 @@ import java.util.logging.Level;
 import com.elmakers.mine.bukkit.action.CastContext;
 import com.elmakers.mine.bukkit.api.event.CastEvent;
 import com.elmakers.mine.bukkit.api.event.PreCastEvent;
+import com.elmakers.mine.bukkit.api.magic.Messages;
+import com.elmakers.mine.bukkit.api.spell.CostReducer;
 import com.elmakers.mine.bukkit.api.spell.MageSpell;
 import com.elmakers.mine.bukkit.api.spell.SpellKey;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
@@ -1548,26 +1550,31 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         }
     }
 
+
     @Override
     public String getCooldownDescription() {
+        return getCooldownDescription(controller.getMessages(), cooldown);
+    }
+
+    public static String getCooldownDescription(Messages messages, int cooldown) {
         if (cooldown > 0) {
             int cooldownInSeconds = cooldown / 1000;
             if (cooldownInSeconds > 60 * 60 ) {
                 int hours = cooldownInSeconds / (60 * 60);
                 if (hours == 1) {
-                    return controller.getMessages().get("cooldown.description_hour");
+                    return messages.get("cooldown.description_hour");
                 }
-                return controller.getMessages().get("cooldown.description_hours").replace("$hours", ((Integer)hours).toString());
+                return messages.get("cooldown.description_hours").replace("$hours", ((Integer)hours).toString());
             } else if (cooldownInSeconds > 60) {
                 int minutes = cooldownInSeconds / 60;
                 if (minutes == 1) {
-                    return controller.getMessages().get("cooldown.description_minute");
+                    return messages.get("cooldown.description_minute");
                 }
-                return controller.getMessages().get("cooldown.description_minutes").replace("$minutes", ((Integer)minutes).toString());
+                return messages.get("cooldown.description_minutes").replace("$minutes", ((Integer)minutes).toString());
             } else if (cooldownInSeconds > 1) {
-                return controller.getMessages().get("cooldown.description_seconds").replace("$seconds", ((Integer)cooldownInSeconds).toString());
+                return messages.get("cooldown.description_seconds").replace("$seconds", ((Integer)cooldownInSeconds).toString());
             } else {
-                return controller.getMessages().get("cooldown.description_moment");
+                return messages.get("cooldown.description_moment");
             }
         }
         return null;
@@ -1851,5 +1858,69 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
 
     public int getVerticalSearchDistance() {
         return verticalSearchDistance;
+    }
+
+    @Override
+    public void addSpellLore(Messages messages, Wand wand, List<String> lore) {
+        if (levelDescription != null && levelDescription.length() > 0) {
+            lore.add(ChatColor.GOLD + levelDescription);
+        }
+        if (description != null && description.length() > 0) {
+            lore.add(description);
+        }
+        if (usage != null && usage.length() > 0) {
+            lore.add(usage);
+        }
+        String cooldownDescription = getCooldownDescription();
+        if (cooldownDescription != null && !cooldownDescription.isEmpty()) {
+            lore.add(messages.get("cooldown.description").replace("$time", cooldownDescription));
+        }
+        if (costs != null) {
+            for (com.elmakers.mine.bukkit.api.spell.CastingCost cost : costs) {
+                if (cost.hasCosts(wand)) {
+                    lore.add(ChatColor.YELLOW + messages.get("wand.costs_description").replace("$description", cost.getFullDescription(messages, wand)));
+                }
+            }
+        }
+        if (activeCosts != null) {
+            for (com.elmakers.mine.bukkit.api.spell.CastingCost cost : activeCosts) {
+                if (cost.hasCosts(wand)) {
+                    lore.add(ChatColor.YELLOW + messages.get("wand.active_costs_description").replace("$description", cost.getFullDescription(messages, wand)));
+                }
+            }
+        }
+
+        if (duration > 0) {
+            long seconds = duration / 1000;
+            if (seconds > 60 * 60 ) {
+                long hours = seconds / (60 * 60);
+                lore.add(ChatColor.GRAY + messages.get("duration.lasts_hours").replace("$hours", ((Long)hours).toString()));
+            } else if (seconds > 60) {
+                long minutes = seconds / 60;
+                lore.add(ChatColor.GRAY + messages.get("duration.lasts_minutes").replace("$minutes", ((Long)minutes).toString()));
+            } else {
+                lore.add(ChatColor.GRAY + messages.get("duration.lasts_seconds").replace("$seconds", ((Long)seconds).toString()));
+            }
+        }
+        else if (showUndoable()) {
+            if (isUndoable()) {
+                String undoableText = messages.get("spell.undoable", "");
+                if (!undoableText.isEmpty()) {
+                    lore.add(undoableText);
+                }
+            } else {
+                String undoableText = messages.get("spell.not_undoable", "");
+                if (!undoableText.isEmpty()) {
+                    lore.add(undoableText);
+                }
+            }
+        }
+
+        if (usesBrush()) {
+            String brushText = messages.get("spell.brush");
+            if (!brushText.isEmpty()) {
+                lore.add(ChatColor.GOLD + brushText);
+            }
+        }
     }
 }
