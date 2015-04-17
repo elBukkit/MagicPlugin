@@ -152,6 +152,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     protected boolean bypassDeactivate            = false;
     protected boolean quiet                       = false;
     protected boolean loud                        = false;
+    protected boolean messageTargets              = true;
     protected boolean showUndoable              = true;
     protected int                               verticalSearchDistance  = 8;
 
@@ -1169,7 +1170,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
 
     public void messageTargets(String messageKey)
     {
-        if (currentCast != null)
+        if (messageTargets && currentCast != null)
         {
             currentCast.messageTargets(messageKey);
         }
@@ -1249,6 +1250,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         bypassDeactivate = parameters.getBoolean("bypass_deactivate", false);
         quiet = parameters.getBoolean("quiet", false);
         loud = parameters.getBoolean("loud", false);
+        messageTargets = parameters.getBoolean("message_targets", true);
         verticalSearchDistance = parameters.getInt("vertical_range", 8);
 
         cooldown = parameters.getInt("cooldown", 0);
