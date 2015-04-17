@@ -190,7 +190,9 @@ brush_glow: false
 brush_item_glow: true
 
 # Set this to false to turn off the player skull-based spell icons
-url_icons_enabled: true
+#url_icons_enabled: true
+# Temporarily disabled due to complications with 1.8.4 client
+url_icons_enabled: false
 
 # Set this to have the hotbar show what spells are castable
 live_hotbar: true
