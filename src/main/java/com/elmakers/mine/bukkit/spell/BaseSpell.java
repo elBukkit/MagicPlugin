@@ -21,6 +21,7 @@ import com.elmakers.mine.bukkit.api.spell.SpellKey;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.api.spell.TargetType;
 import com.elmakers.mine.bukkit.api.wand.Wand;
+import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import org.apache.commons.lang.ArrayUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -54,6 +55,7 @@ import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 public abstract class BaseSpell implements MageSpell, Cloneable {
     protected static final double VIEW_HEIGHT = 1.65;
     protected static final double LOOK_THRESHOLD_RADIANS = 0.9;
+    protected static final int MAX_LORE_LENGTH = 24;
 
     // TODO: Config-drive
     protected static final int MIN_Y = 1;
@@ -1859,16 +1861,16 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     }
 
     @Override
-    public void addSpellLore(Messages messages, Mage mage, Wand wand, List<String> lore) {
+    public void addLore(Messages messages, Mage mage, Wand wand, List<String> lore) {
         CostReducer reducer = wand == null ? mage : wand;
         if (levelDescription != null && levelDescription.length() > 0) {
-            lore.add(ChatColor.GOLD + levelDescription);
+            InventoryUtils.wrapText(ChatColor.GOLD + levelDescription, MAX_LORE_LENGTH, lore);
         }
         if (description != null && description.length() > 0) {
-            lore.add(description);
+            InventoryUtils.wrapText(description, MAX_LORE_LENGTH, lore);
         }
         if (usage != null && usage.length() > 0) {
-            lore.add(usage);
+            InventoryUtils.wrapText(usage, MAX_LORE_LENGTH, lore);
         }
         String cooldownDescription = getCooldownDescription();
         if (cooldownDescription != null && !cooldownDescription.isEmpty()) {

@@ -291,4 +291,20 @@ public class InventoryUtils extends NMSUtils
         }
         return true;
     }
+
+    public static void wrapText(String text, int maxLength, Collection<String> list)
+    {
+        while (text.length() > maxLength)
+        {
+            int spaceIndex = text.lastIndexOf(' ', maxLength);
+            if (spaceIndex <= 0) {
+                list.add(text);
+                return;
+            }
+            list.add(text.substring(0, spaceIndex));
+            text = text.substring(spaceIndex);
+        }
+
+        list.add(text);
+    }
 }
