@@ -13,11 +13,13 @@ import com.herocraftonline.heroes.characters.skill.Skill;
 import com.herocraftonline.heroes.characters.skill.SkillConfigManager;
 import com.herocraftonline.heroes.characters.skill.SkillSetting;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 
 import java.util.List;
+import java.util.logging.Level;
 
 public class HeroesSkillSpell extends BaseSpell {
     private String skillKey;
@@ -25,6 +27,25 @@ public class HeroesSkillSpell extends BaseSpell {
     private HeroesManager heroes;
     private MagicController magic;
     private CastingCost manaCost = new CastingCost("mana", 1);
+    private boolean isCasting = false;
+
+    @Override
+    public boolean cast(ConfigurationSection extraParameters, Location defaultLocation) {
+        // This is a bit of hack to bypass cooldown, cost and other checks
+        // and just let Heroes manage that.
+        // We still want them overridden for the hotbar to work.
+        // TODO: Find out why these are out of sync- cooldown/cost reductions, etc?
+        boolean success = false;
+        isCasting = true;
+        try {
+            success = super.cast(extraParameters, defaultLocation);
+        } catch (Exception ex) {
+            controller.getLogger().log(Level.WARNING, "Error using Heroes skill", ex);
+        }
+        isCasting = false;
+
+        return success;
+    }
 
     @Override
     public void loadTemplate(String key, ConfigurationSection template) {
@@ -87,7 +108,7 @@ public class HeroesSkillSpell extends BaseSpell {
 
     @Override
     public long getRemainingCooldown() {
-        if (skill == null || mage == null) return 0;
+        if (isCasting || skill == null || mage == null) return 0;
         Player player = mage.getPlayer();
         if (player == null) return 0;
         Hero hero = heroes.getHero(mage.getPlayer());
@@ -100,7 +121,7 @@ public class HeroesSkillSpell extends BaseSpell {
 
     @Override
     public CastingCost getRequiredCost() {
-        if (skill == null || mage == null) return null;
+        if (isCasting || skill == null || mage == null) return null;
         Player player = mage.getPlayer();
         if (player == null) return null;
         Hero hero = heroes.getHero(mage.getPlayer());
