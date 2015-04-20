@@ -5,6 +5,7 @@
  - Try to work-around other plugins (/hat) putting the temporary hat in the player's inv.
  - More fixes to chest mode
  - Fix blocks not dropping when placed inside a magically constructed house
+ - Some fixes to death behavior that may have interfered with other plugins
 
 ## 4.9.2
 

@@ -2725,6 +2725,7 @@ public class MagicController implements Listener, MageController {
 		for (int index = 0; index < contents.length; index++)
 		{
             ItemStack itemStack = contents[index];
+            if (itemStack == null || itemStack.getType() == Material.AIR) continue;
             if (NMSUtils.isTemporary(itemStack) || Wand.isSkill(itemStack)) {
                 modifiedDrops = true;
                 continue;
@@ -2751,6 +2752,7 @@ public class MagicController implements Listener, MageController {
         for (int index = 0; index < armor.length; index++)
         {
             ItemStack itemStack = armor[index];
+            if (itemStack == null || itemStack.getType() == Material.AIR) continue;
             if (NMSUtils.isTemporary(itemStack) || Wand.isSkill(itemStack)) {
                 modifiedDrops = true;
                 continue;
