@@ -2569,8 +2569,10 @@ public class MagicController implements Listener, MageController {
         if (Wand.isSkill(next))
         {
             Spell spell = mage.getSpell(Wand.getSpell(next));
-            spell.cast();
-            event.setCancelled(true);
+            if (spell != null) {
+                spell.cast();
+                event.setCancelled(true);
+            }
             return;
         }
 
@@ -3265,7 +3267,7 @@ public class MagicController implements Listener, MageController {
 
 	@EventHandler
 	public void onInventoryClick(InventoryClickEvent event) {
-		// getLogger().info("CLICK: " + event.getAction() + ", " + event.getClick() + " on " + event.getSlotType() + " in "+ event.getInventory().getType() + " slots: " + event.getSlot() + ":" + event.getRawSlot());
+		getLogger().info("CLICK: " + event.getAction() + ", " + event.getClick() + " on " + event.getSlotType() + " in "+ event.getInventory().getType() + " slots: " + event.getSlot() + ":" + event.getRawSlot());
 
 		if (event.isCancelled()) return;
 		if (!(event.getWhoClicked() instanceof Player)) return;
@@ -3284,7 +3286,17 @@ public class MagicController implements Listener, MageController {
         }
 
         // Check for temporary items and skill items
-		ItemStack clickedItem = event.getCurrentItem();
+        InventoryAction action = event.getAction();
+        InventoryType inventoryType = event.getInventory().getType();
+        ItemStack clickedItem = event.getCurrentItem();
+        if (clickedItem != null && Wand.isSkill(clickedItem) && inventoryType != InventoryType.CRAFTING) {
+            if (action != InventoryAction.DROP_ALL_CURSOR && action != InventoryAction.DROP_ONE_CURSOR &&
+                action != InventoryAction.DROP_ALL_SLOT && action != InventoryAction.DROP_ONE_SLOT) {
+                event.setCancelled(true);
+            }
+            return;
+        }
+
 		if (clickedItem != null && NMSUtils.isTemporary(clickedItem)) {
 			String message = NMSUtils.getTemporaryMessage(clickedItem);
 			if (message != null && message.length() > 1) {
@@ -3328,7 +3340,6 @@ public class MagicController implements Listener, MageController {
         }
 
 		Wand activeWand = mage.getActiveWand();
-		InventoryType inventoryType = event.getInventory().getType();
 
         boolean clickedWand = Wand.isWand(clickedItem);
         if (activeWand != null && activeWand.isInventoryOpen())

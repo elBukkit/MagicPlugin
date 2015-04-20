@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.magic.command;
 
+import com.elmakers.mine.bukkit.api.action.GUIAction;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.magic.MagicAPI;
@@ -11,6 +12,8 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -20,7 +23,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
-public class MagicSkillsCommandExecutor extends MagicTabExecutor {
+public class MagicSkillsCommandExecutor extends MagicTabExecutor implements GUIAction {
     public static int INVENTORY_SIZE = 27;
 
 	public MagicSkillsCommandExecutor(MagicAPI api) {
@@ -99,6 +102,7 @@ public class MagicSkillsCommandExecutor extends MagicTabExecutor {
             displayInventory.addItem(skillItem);
         }
 
+        mage.activateGUI(this);
         player.openInventory(displayInventory);
 
         return true;
@@ -108,4 +112,19 @@ public class MagicSkillsCommandExecutor extends MagicTabExecutor {
 	public Collection<String> onTabComplete(CommandSender sender, String commandName, String[] args) {
 		return new ArrayList<String>();
 	}
+
+    @Override
+    public void deactivated() {
+
+    }
+
+    @Override
+    public void clicked(InventoryClickEvent event) {
+
+    }
+
+    @Override
+    public void dragged(InventoryDragEvent event) {
+
+    }
 }

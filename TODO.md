@@ -2,15 +2,12 @@
 
  - Map brush was acting wonky.
  - Recall still losing waypoints .. also can grab items out?
- - Make sure to remove Unbreakable tag when a wand is changed to indestructible=false
 
- - Maximum enchant count for wands
- - Banners don't work from schematics
  - Support for restoring armor stands- might have to drop 1.7 support for this.
  - Clean up MaterialBrush target system, automate somehow?
  - Copy target brush action for tandem replication
  - Automata aren't cleaning up cmd block + redstone
- - Automata don't re-activate un chunk load events
+ - Automata don't re-activate un chunk load events (?)
  - Glitching Fill behavior
  - Spell shop improvements:
    - Color spells player can't afford
@@ -25,6 +22,7 @@
  - Add repeat option for schematic brushes
  - Support for locking/unlocking chests
  - Configurable FOV weight for targeting (Survival Sense)
+ - Maximum enchant count for wands
 
 ## Old Stuff
 
