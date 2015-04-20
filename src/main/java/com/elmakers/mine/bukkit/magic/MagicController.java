@@ -1212,6 +1212,11 @@ public class MagicController implements Listener, MageController {
             getLogger().log(Level.WARNING, "Error loading config.yml", ex);
             loaded = false;
         }
+        if (isUrlIconsEnabled()) {
+            getLogger().info("Skin-based custom icons enabled");
+        } else {
+            getLogger().info("Skin-based custom icons disabled");
+        }
 
         // Load localizations
         try {

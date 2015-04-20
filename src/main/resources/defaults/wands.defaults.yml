@@ -842,12 +842,12 @@ haloeffects:
     effect_particle_radius: 0.4
     effect_particle_offset: 0.5
 hotbar2:
-    icon: skull_item:http://i.imgur.com/F9yszii.png
+    icon: skull_item:http://textures.minecraft.net/texture/1cd3a0e36d2fdbabf7fb4add48c26094636e77a5da1c61ae5d2e6974936
     upgrade: true
     indestructible: false
     hotbar_count: 2
 hotbar3:
-    icon: skull_item:http://i.imgur.com/c5PFSc2.png
+    icon: skull_item:http://textures.minecraft.net/texture/ed5a7d21e7da22c4dc2d52d4fcc2554a7c6bcfb5a9426c9cec473e185553c592
     upgrade: true
     indestructible: false
     hotbar_count: 3
@@ -857,7 +857,7 @@ manaboost:
     icon: glass_bottle
     xp: 1000
 chestmode:
-    icon: skull_item:http://i.imgur.com/ewUs89Q.png
+    icon: skull_item:http://textures.minecraft.net/texture/f6d6ac2ee323f6497c6e2663a7e56ed9523567b68d18a17f8f39736b06ac3cd
     upgrade: true
     indestructible: false
     mode: chest
@@ -866,7 +866,7 @@ undroppable:
     indestructible: false
     undroppable: true
 inventorymode:
-    icon: skull_item:http://i.imgur.com/iO5a9ZB.png
+    icon: skull_item:http://textures.minecraft.net/texture/c16952d9b5a5d7cb3b62ec6ebab76737aa9863019cc9e387522a18df306856
     upgrade: true
     indestructible: false
     mode: inventory
@@ -881,16 +881,16 @@ organizer:
     indestructible: false
     organize: true
 alphabetizer:
-    icon: skull_item:http://i.imgur.com/b58xEHm.png
+    icon: skull_item:http://textures.minecraft.net/texture/324d644a9e844c23ac9ae5efe0807d881e8ca5ce193c3268308770aea7774e
     upgrade: true
     indestructible: false
     alphabetize: true
 antihunger:
-    icon: skull_item:http://i.imgur.com/hlVqxiF.png
+    icon: skull_item:http://textures.minecraft.net/texture/9e14fc8907686faee3e8975bf8261ead1062128cf0c3f04f343298977fd75
     upgrade: true
     potion_effects: saturation
 loud:
-    icon: skull_item:http://i.imgur.com/1x70Wzz.png
+    icon: skull_item:http://textures.minecraft.net/texture/b8468a85999823db7b326625612451d2ea1c3d76108093318419e1e6690ab
     upgrade: true
     indestructible: false
     organize: true
@@ -901,7 +901,7 @@ quiet:
     indestructible: false
     quiet: -2
 silent:
-    icon: skull_item:http://i.imgur.com/JHmV4uV.png
+    icon: skull_item:http://textures.minecraft.net/texture/50208aaffe55d5fdf195e9f24ef9ef07113ea1f3d0b65322b57659ffdcda45
     upgrade: true
     indestructible: false
     quiet: -3
