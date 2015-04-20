@@ -3267,7 +3267,7 @@ public class MagicController implements Listener, MageController {
 
 	@EventHandler
 	public void onInventoryClick(InventoryClickEvent event) {
-		getLogger().info("CLICK: " + event.getAction() + ", " + event.getClick() + " on " + event.getSlotType() + " in "+ event.getInventory().getType() + " slots: " + event.getSlot() + ":" + event.getRawSlot());
+		// getLogger().info("CLICK: " + event.getAction() + ", " + event.getClick() + " on " + event.getSlotType() + " in "+ event.getInventory().getType() + " slots: " + event.getSlot() + ":" + event.getRawSlot());
 
 		if (event.isCancelled()) return;
 		if (!(event.getWhoClicked() instanceof Player)) return;
