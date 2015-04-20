@@ -5,10 +5,8 @@ ini_set('display_errors', 1);
 
 require_once('../../../web/spyc.php');
 
-//$inputFile = dirname(__FILE__) . '/../../../main/resources/defaults/spells.defaults.yml';
-//$inputFile = '/Users/nathan/Documents/Code/Bukkit/PotterSpells/src/main/resources/magic/spells.yml';
+$inputFile = dirname(__FILE__) . '/../../../main/resources/defaults/spells.defaults.yml';
 //$inputFile = dirname(__FILE__) . '/../../../main/resources/defaults/wands.defaults.yml';
-$inputFile = '/Users/nathan/Documents/Code/Bukkit/PotterSpells/src/main/resources/magic/wands.yml';
 $outputFolder = dirname(__FILE__) . '/imgur_skins';
 
 if (!file_exists($inputFile))

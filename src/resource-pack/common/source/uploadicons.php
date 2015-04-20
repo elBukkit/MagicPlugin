@@ -5,60 +5,23 @@ ini_set('display_errors', 1);
 
 require_once('../../../web/spyc.php');
 
-function startsWith($haystack, $needle)
-{
-    // search backwards starting from haystack length characters from the end
-    return $needle === "" || strrpos($haystack, $needle, -strlen($haystack)) !== FALSE;
-}
-
+// Replace this with a file that looks like this:
+/*
+<?php
+define('USER_UUID', '<your player's uuid>');
+define('AUTH_TOKEN', '<find this in a hidden form element on profile upload page>');
+define('USER_COOKIE', '<grab cookies from network inspector on profile upload page>');
+?>
+ */
 require_once('/Users/nathan/mc_creds.php');
 
 $mapFile = dirname(__FILE__) . '/imgur_map.yml';
 $inputFolder = dirname(__FILE__) . '/imgur_skins';
-$cookieJar = '/Users/nathan/cookie.wolf';
 
 if (!file_exists($mapFile))
 {
     die("File not found: $mapFile\n");
 }
-
-// Login
-/*
-$post = array
-(
-    'agent' => array("name" => 'Minecraft', 'version' => 1),
-    'username' => USER_LOGIN,
-    'password' => USER_PASSWORD,
-    'clientToken' => CLIENT_TOKEN
-);
-$postString = json_encode($post);
-
-$ch = curl_init();
-curl_setopt($ch, CURLOPT_URL, 'https://authserver.mojang.com/authenticate');
-curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
-curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-        'Content-Type: application/json',
-        'Content-Length: ' . strlen($postString))
-);
-curl_setopt($ch, CURLOPT_POSTFIELDS, $postString);
-curl_setopt($ch, CURLOPT_COOKIESESSION, true);
-curl_setopt($ch, CURLOPT_COOKIEJAR, $cookieJar);
-curl_setopt($ch, CURLOPT_COOKIEFILE, $cookieJar);
-curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-$result = curl_exec($ch);
-$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-if ($httpcode != 200) {
-    die("Failed to authenticate\n");
-}
-curl_close($ch);
-$result = json_decode($result, true);
-if (!isset($result['accessToken']))
-{
-    die("Failed to look up accessToken\n");
-}
-$accessToken = $result['accessToken'];
-echo "Authenticated as " . USER_LOGIN .  ": $accessToken\n";
-*/
 
 function getCurrentSkin()
 {
@@ -97,7 +60,6 @@ function getCurrentSkin()
         die("Failed to find profile texture\n");
     }
     return $textureURL;
-    //return curl_getinfo($skinChecker, CURLINFO_REDIRECT_URL);
 }
 
 $images = spyc_load_file($mapFile);
@@ -126,16 +88,11 @@ foreach ($dir as $fileinfo) {
     );
 
     $ch = curl_init();
-    // curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-type: application/x-www-form-urlencoded'));
     curl_setopt($ch, CURLOPT_URL, 'https://minecraft.net/profile/skin');
-    //curl_setopt($ch, CURLOPT_URL, 'http://localhost/debug.php');
     curl_setopt($ch, CURLOPT_COOKIE, USER_COOKIE);
     curl_setopt($ch, CURLOPT_POST, 1);
-    // curl_setopt($ch, CURLOPT_VERBOSE, 1);
     curl_setopt($ch, CURLOPT_POSTFIELDS, $post);
     curl_setopt($ch, CURLOPT_COOKIESESSION, true);
-    //curl_setopt($ch, CURLOPT_COOKIEJAR, $cookieJar);
-    //curl_setopt($ch, CURLOPT_COOKIEFILE, $cookieJar);
     curl_setopt($ch, CURLOPT_HEADER, true);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     $result = curl_exec($ch);
@@ -144,7 +101,6 @@ foreach ($dir as $fileinfo) {
         die("Failed to upload skin\n");
     }
     curl_close($ch);
-    // echo $result;
 
     echo("Uploaded.\n");
     $waitedTime = 0;
