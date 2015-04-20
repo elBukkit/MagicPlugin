@@ -247,7 +247,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
         }
     }
 
-    public void commit(BlockData block)
+    public static void commit(com.elmakers.mine.bukkit.api.block.BlockData block)
     {
         modified.remove(block.getId());
         BlockData currentState = modified.get(block.getId());
