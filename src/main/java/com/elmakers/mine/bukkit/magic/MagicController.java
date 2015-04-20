@@ -3625,10 +3625,11 @@ public class MagicController implements Listener, MageController {
     public void onBlockBreak(BlockBreakEvent event)
     {
         Block block = event.getBlock();
-        UndoList blockList = com.elmakers.mine.bukkit.block.UndoList.getUndoList(block.getLocation());
-        if (blockList != null) {
+        com.elmakers.mine.bukkit.api.block.BlockData modifiedBlock = com.elmakers.mine.bukkit.block.UndoList.getBlockData(block.getLocation());
+        if (modifiedBlock != null) {
             event.setCancelled(true);
             block.setType(Material.AIR);
+            com.elmakers.mine.bukkit.block.UndoList.commit(modifiedBlock);
         }
     }
 
@@ -3656,6 +3657,14 @@ public class MagicController implements Listener, MageController {
 		if (Wand.isWand(itemStack) || Wand.isBrush(itemStack) || Wand.isSpell(itemStack) || Wand.isUpgrade(itemStack)) {
 			event.setCancelled(true);
 		}
+
+        if (!event.isCancelled()) {
+            Block block = event.getBlock();
+            com.elmakers.mine.bukkit.api.block.BlockData modifiedBlock = com.elmakers.mine.bukkit.block.UndoList.getBlockData(block.getLocation());
+            if (modifiedBlock != null) {
+                com.elmakers.mine.bukkit.block.UndoList.commit(modifiedBlock);
+            }
+        }
 	}
 	
 	protected boolean addLostWandMarker(LostWand lostWand) {
