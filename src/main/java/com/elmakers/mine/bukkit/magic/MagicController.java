@@ -3283,9 +3283,8 @@ public class MagicController implements Listener, MageController {
             return;
         }
 
-        // Check for temporary items
+        // Check for temporary items and skill items
 		ItemStack clickedItem = event.getCurrentItem();
-		
 		if (clickedItem != null && NMSUtils.isTemporary(clickedItem)) {
 			String message = NMSUtils.getTemporaryMessage(clickedItem);
 			if (message != null && message.length() > 1) {
@@ -4242,7 +4241,9 @@ public class MagicController implements Listener, MageController {
             if (name.startsWith("heroes*")) {
                 if (heroesManager == null) return null;
                 spell = heroesManager.createSkillSpell(this, name.substring(7));
-                spells.put(name, spell);
+                if (spell != null) {
+                    spells.put(name, spell);
+                }
             } else {
                 spell = spellAliases.get(name);
             }
