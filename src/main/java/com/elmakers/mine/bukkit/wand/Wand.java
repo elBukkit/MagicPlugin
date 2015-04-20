@@ -623,8 +623,12 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	}
 	
 	protected List<Inventory> getAllInventories() {
-		List<Inventory> allInventories = new ArrayList<Inventory>(inventories.size() + hotbars.size());
-		allInventories.addAll(hotbars);
+        WandMode mode = getMode();
+        int hotbarCount = mode == WandMode.INVENTORY ? hotbars.size() : 0;
+		List<Inventory> allInventories = new ArrayList<Inventory>(inventories.size() + hotbarCount);
+        if (mode == WandMode.INVENTORY) {
+            allInventories.addAll(hotbars);
+        }
 		allInventories.addAll(inventories);
 		return allInventories;
 	}
@@ -3475,7 +3479,8 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
     }
 
 	public Inventory getHotbar() {
-        if (this.hotbars.size() == 0) return null;
+        WandMode mode = getMode();
+        if (this.hotbars.size() == 0 || mode != WandMode.INVENTORY) return null;
 
 		if (currentHotbar < 0 || currentHotbar >= this.hotbars.size())
 		{
