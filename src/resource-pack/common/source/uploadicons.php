@@ -23,6 +23,12 @@ if (!file_exists($mapFile))
     die("File not found: $mapFile\n");
 }
 
+function startsWith($haystack, $needle)
+{
+    // search backwards starting from haystack length characters from the end
+    return $needle === "" || strrpos($haystack, $needle, -strlen($haystack)) !== FALSE;
+}
+
 function getCurrentSkin()
 {
     $skinChecker = curl_init();

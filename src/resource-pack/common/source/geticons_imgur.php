@@ -6,6 +6,7 @@ ini_set('display_errors', 1);
 require_once('../../../web/spyc.php');
 
 $inputFile = dirname(__FILE__) . '/../../../main/resources/defaults/spells.defaults.yml';
+//$inputFile = dirname(__FILE__) . '/../../../main/resources/examples/potter/spells.yml';
 //$inputFile = dirname(__FILE__) . '/../../../main/resources/defaults/wands.defaults.yml';
 $outputFolder = dirname(__FILE__) . '/imgur_skins';
 
