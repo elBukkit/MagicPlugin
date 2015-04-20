@@ -56,17 +56,19 @@ public class MagicSkillsCommandExecutor extends MagicTabExecutor {
             sender.sendMessage(ChatColor.RED + "You have no skills");
             return true;
         }
-        int page = 0;
+        int page = 1;
         if (args.length > 0) {
             try {
-                page = Integer.parseInt(args[0]) - 1;
+                page = Integer.parseInt(args[0]);
             } catch (Exception ex) {
                 sender.sendMessage(ChatColor.RED + "Expect page number, got " + args[0]);
                 return true;
             }
         }
-        int startIndex = page * INVENTORY_SIZE;
-        int maxIndex = (page + 1) * INVENTORY_SIZE - 1;
+        int pageIndex = page - 1;
+        int startIndex = pageIndex * INVENTORY_SIZE;
+        int maxIndex = (pageIndex + 1) * INVENTORY_SIZE - 1;
+        int numPages = (int)Math.ceil((float)allSkills.size() / INVENTORY_SIZE);
 
         List<String> skills = new ArrayList<String>();
         for (int i = startIndex; i <= maxIndex && i < allSkills.size(); i++) {
@@ -79,7 +81,7 @@ public class MagicSkillsCommandExecutor extends MagicTabExecutor {
         }
 
         Mage mage = controller.getMage(player);
-        String inventoryTitle = "Skills";
+        String inventoryTitle = "Skills (" + page + "/" + numPages + ")";
         int invSize = (int)Math.ceil((float)skills.size() / 9.0f) * 9;
         Inventory displayInventory = CompatibilityUtils.createInventory(null, invSize, inventoryTitle);
         for (String skill : skills)

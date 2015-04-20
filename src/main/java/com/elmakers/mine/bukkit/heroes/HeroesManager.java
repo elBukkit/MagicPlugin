@@ -139,7 +139,8 @@ public class HeroesManager {
         newSpell.initialize(controller);
         ConfigurationSection config = new MemoryConfiguration();
         config.set("icon", SkillConfigManager.getRaw(skill, "icon", controller.getDefaultSkillIcon()));
-        config.set("icon_url", SkillConfigManager.getRaw(skill, "icon-url", null));
+        String iconURL = SkillConfigManager.getRaw(skill, "icon_url", null);
+        config.set("icon_url", SkillConfigManager.getRaw(skill, "icon-url", iconURL));
         config.set("name", skill.getName());
         config.set("description", SkillConfigManager.getRaw(skill, "description", null));
         newSpell.loadTemplate("heroes*" + skillName, config);
