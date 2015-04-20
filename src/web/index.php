@@ -276,6 +276,12 @@ if (file_exists($infoBookRootConfig)) {
 	}
 }
 
+$textures = array();
+$textureConfig = 'textures.txt';
+if (file_exists($textureConfig)) {
+    $textures = file($textureConfig);
+}
+
 function underscoreToReadable($s) {
 	if (!$s) return $s;
 	$convertFunction = create_function('$c', 'return " " . strtoupper($c[1]);');
@@ -342,6 +348,7 @@ function printIcon($iconUrl, $title) {
 				<li><a href="#wands">Wands and Items</a></li>
 				<li><a href="#upgrades">Upgrades</a></li>
 				<li id="booksTab"><a href="#books">Books</a></li>
+                <li><a href="#textures">Textures</a></li>
 			</ul>
 			<div id="overview">
 			  <div class="scrollingTab">
@@ -608,6 +615,23 @@ function printIcon($iconUrl, $title) {
 			  	Select a book to read.
 			  </div>
 			</div>
+            <div id="textures">
+                <div class="scrollingTab">
+                    <div>
+                        <div class="title">
+                            You can use any player skin for spell icons, here are the ones that have been made specifically for Magic.
+                        </div>
+                        <ul id="textureList">
+                            <?php
+                            foreach ($textures as $texture) {
+                                $icon = printIcon($texture, $texture);
+                                echo '<li class="ui-widget-content">' . $icon . '<span class="textureURL">' . $texture . '</span></li>';
+                            }
+                            ?>
+                        </ul>
+                    </div>
+                </div>
+            </div>
 		</div>
 	</body>
 </html>
