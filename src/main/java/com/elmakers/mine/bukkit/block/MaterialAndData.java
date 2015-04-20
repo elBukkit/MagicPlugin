@@ -359,19 +359,23 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
             }
 
             // Set tile entity data first
-            if (blockState != null && material != null && material.getId() == 176 || material.getId() == 177) {
-                // Banner
-                // TODO: Change to Material.BANNER when dropping 1.7 support
-                CompatibilityUtils.setBannerPatterns(blockState, customData);
-                CompatibilityUtils.setBannerBaseColor(blockState, color);
-                blockState.update(true, false);
-            } else if (blockState != null && blockState instanceof CommandBlock && commandLine != null) {
+            // Command blocks still prefer internal data for parameterized commands
+            if (blockState != null && blockState instanceof CommandBlock && commandLine != null) {
                 CommandBlock command = (CommandBlock)blockState;
                 command.setCommand(commandLine);
                 if (customName != null) {
                     command.setName(customName);
                 }
                 command.update();
+            } else if (tileEntityData != null) {
+                // Tile entity data overrides everything else, and may replace all of this in the future.
+                NMSUtils.setTileEntityData(block.getLocation(), tileEntityData);
+            } else if (blockState != null && material != null && (material.getId() == 176 || material.getId() == 177) && (customData != null || color != null)) {
+                // Banner
+                // TODO: Change to Material.BANNER when dropping 1.7 support
+                CompatibilityUtils.setBannerPatterns(blockState, customData);
+                CompatibilityUtils.setBannerBaseColor(blockState, color);
+                blockState.update(true, false);
             } else if (blockState != null && blockState instanceof Skull) {
                 Skull skull = (Skull)blockState;
                 if (skullType != null) {
@@ -388,8 +392,6 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
                 CreatureSpawner spawner = (CreatureSpawner)blockState;
                 spawner.setCreatureTypeByName(customName);
                 spawner.update();
-            } else if (tileEntityData != null) {
-                NMSUtils.setTileEntityData(block.getLocation(), tileEntityData);
             }
         } catch (Exception ex) {
             Bukkit.getLogger().warning("Error updating block state: " + ex.getMessage());
