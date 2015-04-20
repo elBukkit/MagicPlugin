@@ -496,9 +496,12 @@ public class NMSUtils {
         players = ((players != null && players.size() > 0) ? players : source.getWorld().getPlayers());
 
         int viewDistanceSquared = Bukkit.getServer().getViewDistance() * Bukkit.getServer().getViewDistance();
-        for(Player p1 : players) {
-            if(p1.getLocation().distanceSquared(source) <= viewDistanceSquared) {
-                sendPacket(p1, packet);
+        World sourceWorld = source.getWorld();
+        for (Player player : players) {
+            Location location = player.getLocation();
+            if (!location.getWorld().equals(sourceWorld)) continue;
+            if (location.distanceSquared(source) <= viewDistanceSquared) {
+                sendPacket(player, packet);
             }
         }
     }
