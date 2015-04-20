@@ -6,6 +6,8 @@
  - More fixes to chest mode
  - Fix blocks not dropping when placed inside a magically constructed house
  - Some fixes to death behavior that may have interfered with other plugins
+ - Fix loading banners from schematics
+ - Add page# to /mskills command
 
 ## 4.9.2
 

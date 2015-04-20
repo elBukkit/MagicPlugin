@@ -21,6 +21,8 @@ import java.util.List;
 import java.util.Set;
 
 public class MagicSkillsCommandExecutor extends MagicTabExecutor {
+    public static int INVENTORY_SIZE = 27;
+
 	public MagicSkillsCommandExecutor(MagicAPI api) {
 		super(api);
 	}
@@ -48,10 +50,31 @@ public class MagicSkillsCommandExecutor extends MagicTabExecutor {
             return true;
         }
 
-        List<String> skills = heroes.getSkillList(player, true);
-        if (skills.size() == 0)
+        List<String> allSkills = heroes.getSkillList(player, true);
+        if (allSkills.size() == 0)
         {
             sender.sendMessage(ChatColor.RED + "You have no skills");
+            return true;
+        }
+        int page = 0;
+        if (args.length > 0) {
+            try {
+                page = Integer.parseInt(args[0]) - 1;
+            } catch (Exception ex) {
+                sender.sendMessage(ChatColor.RED + "Expect page number, got " + args[0]);
+                return true;
+            }
+        }
+        int startIndex = page * INVENTORY_SIZE;
+        int maxIndex = (page + 1) * INVENTORY_SIZE - 1;
+
+        List<String> skills = new ArrayList<String>();
+        for (int i = startIndex; i <= maxIndex && i < allSkills.size(); i++) {
+            skills.add(allSkills.get(i));
+        }
+        if (skills.size() == 0)
+        {
+            sender.sendMessage(ChatColor.RED + "No skills on page " + page);
             return true;
         }
 
