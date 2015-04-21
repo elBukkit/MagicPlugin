@@ -1013,15 +1013,6 @@ wizardchestplate:
       protection_explosions: 4
       protection_environmental: 5
 
-clericchestplate:
-    icon: chainmail_chestplate
-    indestructible: true
-    locked: true
-    keep: true
-    xp_regeneration_boost: -0.2
-    cast_spell: healing
-    cast_interval: 2000
-
 wizardhelmet:
     icon: chainmail_helmet
     indestructible: true
@@ -1100,6 +1091,24 @@ flashboots:
     effect_particle_interval: 100
     effect_particle_min_velocity: 5
     effect_particle_offset: -1.5
+
+clericchestplate:
+    icon: chainmail_chestplate
+    indestructible: true
+    locked: true
+    keep: true
+    xp_regeneration_boost: -0.2
+    cast_spell: healing
+    cast_interval: 2000
+
+magneticleggings:
+    icon: iron_leggings
+    indestructible: true
+    locked: true
+    keep: true
+    xp_regeneration_boost: -0.3
+    cast_spell: grab
+    cast_interval: 5000
 
 goggles:
     mode: cast

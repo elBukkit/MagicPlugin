@@ -1493,6 +1493,9 @@ wands:
     clericchestplate:
         name: Cleric's Robes
         description: Heals nearby players
+    magneticleggings:
+        name: Magnetic Leggings
+        description: Pulls in nearby items and XP
     rabbitboots:
         name: Rabbit Boots
         description: Spirit of the hare

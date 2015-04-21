@@ -984,7 +984,7 @@ superdome:
         mana: 200
 
 tag:
-    icon_url: http://i.imgur.com/PSGSxEI.png
+    icon_url: http://textures.minecraft.net/texture/a9e073da36aaf2c844da428cd4a19dfde32c8cdc2404eed4a135f6095b17c
     icon: sign
     category: dark
     class: SignSpell
@@ -1169,6 +1169,8 @@ pull:
     costs:
         mana: 50
 
+
+
 grab:
     icon_url: http://textures.minecraft.net/texture/e13e9af0957a9dd4995811ef3e869b4ad8fbb59ca7474e4c84ce7f6019b079
     icon: fishing_rod
@@ -1191,17 +1193,18 @@ grab:
         cast:
         -  class: EffectSingle
            sound: fizz
+           location: targets
            effectlib:
-             class: HelixEffect
-             particle: spell
+             class: SphereEffect
              iterations: 2
-             y_offset: -1
+             period: 1
+             particle: spell
+             radius: 0.8
     parameters:
-        target: self
-        target_type: Item
-        fov: 3
+        target: none
+        target_types: Item,XPOrb
         count: 16
-        range: 16
+        radius: 8
         item_speed: 2
         push: -1
     costs:
@@ -2487,7 +2490,7 @@ wolf:
         mana: 50
 
 cat:
-    icon_url: http://i.imgur.com/pJcO7At.png
+    icon_url: http://textures.minecraft.net/texture/c87fd886605b6aaf6af2b2ea5b205bcdcb60b453b0353ceece0861cfc67ada4
     icon: raw_fish
     category: elemental
     class: OcelotSpell
@@ -4167,7 +4170,7 @@ blob|4:
 
 walls:
     icon: clay_ball
-    icon_url: http://i.imgur.com/zPe59Ui.png
+    icon_url: http://textures.minecraft.net/texture/4fed122b86ffaeaee36ab4a8c1c27f46fb5bddc83322c8a165d0f27aeb1830
     category: combat
     worth: 1000
     actions:
@@ -4995,7 +4998,7 @@ respawn:
         cooldown: 30000
 
 levitate:
-    icon_url: http://i.imgur.com/PHlfm7b.png
+    icon_url: http://textures.minecraft.net/texture/4a23ccd51565d2e246675c86aef11b5412662c15ecc2e9f3ef425adc91d1
     alias: fly
     icon: gold_boots
     category: master
@@ -6140,7 +6143,7 @@ poison|3:
         effect_poison: 3
 
 lift:
-    icon_url: http://i.imgur.com/PHlfm7b.png
+    icon_url: http://textures.minecraft.net/texture/4a23ccd51565d2e246675c86aef11b5412662c15ecc2e9f3ef425adc91d1
     icon: ink_sack:8
     category: utility
     worth: 1500
@@ -6419,6 +6422,7 @@ magicitemshop:
           wand|rocketboots: 4000
           wand|hulkboots: 8000
           wand|clericchestplate: 9000
+          wand|magneticleggings: 10000
           wand|flashboots: 4000
           wand|camera: 200
           wand|divinghelmet: 1000

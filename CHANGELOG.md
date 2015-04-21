@@ -2,12 +2,14 @@
 
 ## 4.9.3
 
+ - Add Magnetic Leggings
  - Try to work-around other plugins (/hat) putting the temporary hat in the player's inv.
  - More fixes to chest mode
  - Fix blocks not dropping when placed inside a magically constructed house
  - Some fixes to death behavior that may have interfered with other plugins
  - Fix loading banners from schematics
  - Add page# to /mskills command
+ - Fix errors sending firework effects to other worlds
 
 ## 4.9.2
 
