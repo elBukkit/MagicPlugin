@@ -48,6 +48,7 @@ public abstract class TargetingSpell extends BaseSpell {
     private boolean                             targetSpaceRequired     = false;
     private int                                 targetMinOffset         = 0;
     protected Class<? extends Entity>           targetEntityType        = null;
+    protected Set<EntityType>                   targetEntityTypes       = null;
     protected Material                          targetContents          = null;
     private Location                            targetLocation;
     private Vector								targetLocationOffset;
@@ -413,7 +414,7 @@ public abstract class TargetingSpell extends BaseSpell {
             return new Target(commandBlock.getBlock().getLocation(), commandBlock.getBlock());
         }
 
-        if (targetType == TargetType.SELF && location != null) {
+        if ((targetType == TargetType.SELF || targetType == TargetType.NONE) && location != null) {
             return new Target(location, location.getBlock());
         }
 
@@ -501,7 +502,7 @@ public abstract class TargetingSpell extends BaseSpell {
 
     protected Target getEntityTarget()
     {
-        if (targetEntityType == null) return null;
+        if (targetEntityType == null && targetEntityTypes == null) return null;
         List<Target> scored = getAllTargetEntities();
         if (scored.size() <= 0) return null;
         return scored.get(0);
@@ -583,12 +584,15 @@ public abstract class TargetingSpell extends BaseSpell {
             if (controller.isMage(entity) && controller.getMage(entity).isSuperProtected()) return false;
         }
 
-        if (targetEntityType == null) return true;
         if (targetContents != null && entity instanceof ItemFrame)
         {
             ItemFrame itemFrame = (ItemFrame)entity;
             ItemStack item = itemFrame.getItem();
             if (item == null || item.getType() != targetContents) return false;
+        }
+        if (targetEntityType == null && targetEntityTypes == null) return true;
+        if (targetEntityTypes != null) {
+            return targetEntityTypes.contains(entity.getType());
         }
         return targetEntityType.isAssignableFrom(entity.getClass());
     }
@@ -819,6 +823,23 @@ public abstract class TargetingSpell extends BaseSpell {
                 controller.getLogger().warning("Unknown entity type: " + entityTypeName);
                 targetEntityType = null;
             }
+        } else if (parameters.contains("target_types")) {
+            targetEntityType = null;
+            targetEntityTypes = new HashSet<EntityType>();
+            Collection<String> typeKeys = ConfigurationUtils.getStringList(parameters, "target_types");
+            for (String typeKey : typeKeys) {
+                try {
+                    EntityType entityType = EntityType.fromName(typeKey.toUpperCase());
+                    if (entityType == null) {
+                        throw new Exception("Bad entity type");
+                    }
+                    targetEntityTypes.add(entityType);
+                } catch (Throwable ex) {
+                    controller.getLogger().warning("Unknown entity type: " + typeKey);
+                }
+            }
+        } else {
+            targetEntityTypes = null;
         }
 
         targetContents = ConfigurationUtils.getMaterial(parameters, "target_contents", null);
