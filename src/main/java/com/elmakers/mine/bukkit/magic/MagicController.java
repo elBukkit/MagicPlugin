@@ -165,8 +165,13 @@ public class MagicController implements Listener, MageController {
                                     Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
                                         @Override
                                         public void run() {
-                                            mage.load(playerData);
-                                            mage.setLoading(false);
+                                            try {
+                                                mage.setLoading(false);
+                                                mage.load(playerData);
+                                            } catch (Exception ex) {
+                                                getLogger().warning("Failed to load mage data from file " + playerFile.getName());
+                                                mage.setLoading(true);
+                                            }
                                         }
                                     }, 1);
                                 } catch (Exception ex) {
