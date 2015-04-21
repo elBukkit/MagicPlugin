@@ -288,6 +288,7 @@ categories:
         descriptions: Skills being used from Heroes
 skills:
     inventory_title: "$class Skills ($page/$pages)"
+    inventory_title_secondary: "$class-$class2 Skills ($page/$pages)"
     item_name: "$skill"
 spells:
     default:

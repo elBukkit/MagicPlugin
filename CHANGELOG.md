@@ -1,7 +1,12 @@
 # CHANGELOG
 
+## 4.9.4
+
+ - Group /mskills skills by class
+
 ## 4.9.3
 
+ - Restore custom icons!
  - Add Magnetic Leggings
  - Try to work-around other plugins (/hat) putting the temporary hat in the player's inv.
  - More fixes to chest mode

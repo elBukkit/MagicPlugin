@@ -20,10 +20,12 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
@@ -64,8 +66,30 @@ public class HeroesManager {
         if (skills == null) return emptySkillList;
         Hero hero = getHero(player);
         if (hero == null) return emptySkillList;
-        Set<String> skillSet = getSkills(player, showUnuseable);
-        if (skillSet.size() == 0) return emptySkillList;
+
+        HeroClass heroClass = hero.getHeroClass();
+        HeroClass secondClass = hero.getSecondClass();
+        Set<String> primarySkills = new HashSet<String>();
+        Set<String> secondarySkills = new HashSet<String>();
+        addSkills(hero, heroClass, primarySkills, showUnuseable);
+        addSkills(hero, secondClass, secondarySkills, showUnuseable);
+        secondarySkills.removeAll(primarySkills);
+
+        Multimap<Integer, Skill> primaryMap = mapSkillsByLevel(hero, primarySkills);
+        Multimap<Integer, Skill> secondaryMap = mapSkillsByLevel(hero, secondarySkills);
+        List<String> skillNames = new ArrayList<String>();
+        for (Skill skill : primaryMap.values())
+        {
+            skillNames.add(skill.getName());
+        }
+        for (Skill skill : secondaryMap.values())
+        {
+            skillNames.add(skill.getName());
+        }
+        return skillNames;
+    }
+
+    private Multimap<Integer, Skill> mapSkillsByLevel(Hero hero, Collection<String> skillNames) {
 
         Multimap<Integer, Skill> skillMap = TreeMultimap.create(Ordering.natural(), new Comparator<Skill>() {
             @Override
@@ -73,32 +97,22 @@ public class HeroesManager {
                 return skill1.getName().compareTo(skill2.getName());
             }
         });
-        for (String skillName : skillSet)
+        for (String skillName : skillNames)
         {
             Skill skill = skills.getSkill(skillName);
             if (skill == null) continue;
             int level = SkillConfigManager.getUseSetting(hero, skill, SkillSetting.LEVEL, 1, true);
             skillMap.put(level, skill);
         }
-        List<String> skillNames = new ArrayList<String>();
-        for (Skill skill : skillMap.values())
-        {
-            skillNames.add(skill.getName());
-        }
-        return skillNames;
+        return skillMap;
     }
 
     public Set<String> getSkills(Player player) {
         return getSkills(player, false);
     }
 
-    public Set<String> getSkills(Player player, boolean showUnuseable) {
-        if (skills == null) return emptySkills;
-        Hero hero = getHero(player);
-        if (hero == null) return emptySkills;
-        HeroClass heroClass = hero.getHeroClass();
-        if (heroClass == null) return emptySkills;
-        Set<String> skillSet = new HashSet<String>();
+    private void addSkills(Hero hero, HeroClass heroClass, Collection<String> skillSet, boolean showUnuseable)
+    {
         if (heroClass != null)
         {
             Set<String> classSkills = heroClass.getSkillNames();
@@ -113,20 +127,18 @@ public class HeroesManager {
                 }
             }
         }
+    }
+
+    public Set<String> getSkills(Player player, boolean showUnuseable) {
+        if (skills == null) return emptySkills;
+        Hero hero = getHero(player);
+        if (hero == null) return emptySkills;
+        Set<String> skillSet = new HashSet<String>();
+
+        HeroClass heroClass = hero.getHeroClass();
         HeroClass secondClass = hero.getSecondClass();
-        if (secondClass != null)
-        {
-            Set<String> classSkills = secondClass.getSkillNames();
-            for (String classSkill : classSkills)
-            {
-                Skill skill = skills.getSkill(classSkill);
-                if (!showUnuseable && !hero.canUseSkill(skill)) continue;
-                if (SkillConfigManager.getRaw(skill, "wand", "true").equalsIgnoreCase("true"))
-                {
-                    skillSet.add(classSkill);
-                }
-            }
-        }
+        addSkills(hero, heroClass, skillSet, showUnuseable);
+        addSkills(hero, secondClass, skillSet, showUnuseable);
         return skillSet;
     }
 
