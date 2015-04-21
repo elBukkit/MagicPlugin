@@ -2815,7 +2815,7 @@ public class MagicController implements Listener, MageController {
 		}
 	}
 	
-	@EventHandler
+	@EventHandler(priority=EventPriority.LOWEST)
 	public void onItemSpawn(ItemSpawnEvent event)
 	{
         if (disableItemSpawn)
