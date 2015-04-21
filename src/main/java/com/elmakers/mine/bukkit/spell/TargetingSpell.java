@@ -820,7 +820,7 @@ public abstract class TargetingSpell extends BaseSpell {
                      controller.getLogger().warning("Entity type: " + entityTypeName + " not assignable to Entity");
                  }
             } catch (Throwable ex) {
-                controller.getLogger().warning("Unknown entity type: " + entityTypeName);
+                controller.getLogger().warning("Unknown entity type in target_type of " + getKey() + ": " + entityTypeName);
                 targetEntityType = null;
             }
         } else if (parameters.contains("target_types")) {
@@ -829,13 +829,13 @@ public abstract class TargetingSpell extends BaseSpell {
             Collection<String> typeKeys = ConfigurationUtils.getStringList(parameters, "target_types");
             for (String typeKey : typeKeys) {
                 try {
-                    EntityType entityType = EntityType.fromName(typeKey.toUpperCase());
+                    EntityType entityType = EntityType.valueOf(typeKey.toUpperCase());
                     if (entityType == null) {
                         throw new Exception("Bad entity type");
                     }
                     targetEntityTypes.add(entityType);
                 } catch (Throwable ex) {
-                    controller.getLogger().warning("Unknown entity type: " + typeKey);
+                    controller.getLogger().warning("Unknown entity type in target_types of " + getKey() + ": " + typeKey);
                 }
             }
         } else {
