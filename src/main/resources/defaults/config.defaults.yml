@@ -271,7 +271,7 @@ clone_icon_url: http://textures.minecraft.net/texture/b635f01b8b4cd9f44436154be3
 # Replicate works like clone, but will sample a moving area, allowing you to "paint"
 # in a section of the world across multiple spell casts.
 replicate_item: pumpkin_seeds
-replicate_icon_url: http://i.imgur.com/zM0JkaI.png
+replicate_icon_url: http://textures.minecraft.net/texture/f92839237f03534717246a81656961781a8a79e8f6497bcfd2894fb16ad14d
 # The map material brush will fill in blocks from the last Map item you held. (Pixel art)
 # It will use stained clay, wool or stained glass. The default is stained clay, but it will
 # use one of the other types if it was the last material on your brush.

@@ -1294,7 +1294,7 @@ nuke:
         mana: 400
 
 frost:
-    icon_url: http://i.imgur.com/zgnVyKo.png
+    icon_url: http://textures.minecraft.net/texture/ff39da1c8acc158ee5aa7f0352e4738aefe3365f28841badd603e2ffe42a
     icon: snow_ball
     category: combat
     pvp_restricted: true
@@ -1763,7 +1763,7 @@ healing:
         amount: 1
 
 music:
-    icon_url: http://i.imgur.com/ZXwXE7y.png
+    icon_url: http://textures.minecraft.net/texture/a2ea21c79fa115b9a63625a2c9c5ec3dd92e1d1a7024162790237da9d98ee28
     icon: gold_record
     category: light
     worth: 500
@@ -1949,7 +1949,7 @@ wither|3:
 arrowrain:
     upgrade_required_path: apprentice
     upgrade_required_casts: 50
-    icon_url: http://i.imgur.com/y8HrXab.png
+    icon_url: http://textures.minecraft.net/texture/7d89462020cc12f63d5117d37b52e642536de7fa774d2d96e80c72e1d4ff6
     icon: bow
     category: combat
     pvp_restricted: true
@@ -2604,7 +2604,7 @@ invincible:
         mana: 90
 
 fire:
-    icon_url: http://i.imgur.com/zG6k2gJ.png
+    icon_url: http://textures.minecraft.net/texture/7dbb7f75e74ad4218d2af7191752b5952144436ce8aa2bb6fb27168e6f28af
     alias: inferno
     icon: flint_and_steel
     category: demolition
@@ -3198,7 +3198,7 @@ supercylinder:
         mana: 400
 
 box:
-    icon_url: http://i.imgur.com/Zg5ehRA.png
+    icon_url: http://textures.minecraft.net/texture/35b7d887a08bb8eb927b58f452becf8d349cd46e6a2ea18dffb2776d676df5
     icon: gold_helmet
     category: engineering
     class: ConstructSpell
@@ -3222,7 +3222,7 @@ box:
         mana: 60
 
 superbox:
-    icon_url: http://i.imgur.com/Zg5ehRA.png
+    icon_url: http://textures.minecraft.net/texture/35b7d887a08bb8eb927b58f452becf8d349cd46e6a2ea18dffb2776d676df5
     icon: diamond_helmet
     category: engineering
     class: ConstructSpell
@@ -3245,7 +3245,7 @@ superbox:
         mana: 400
 
 supercube:
-    icon_url: http://i.imgur.com/Zg5ehRA.png
+    icon_url: http://textures.minecraft.net/texture/35b7d887a08bb8eb927b58f452becf8d349cd46e6a2ea18dffb2776d676df5
     icon: nether_brick_item
     category: engineering
     class: ConstructSpell
@@ -3325,7 +3325,7 @@ repair:
         mana: 200
 
 superrepair:
-    icon_url: http://i.imgur.com/zyG97fX.png
+    icon_url: http://textures.minecraft.net/texture/2298724dfb9d1599590f4e8c3647c2c5532e8fae48fca12fe32a410bb4437a9
     icon: gold_pickaxe
     category: engineering
     class: ConstructSpell
@@ -3355,7 +3355,7 @@ superrepair:
 
 workbench:
     icon: workbench
-    icon_url: http://i.imgur.com/Zehnnn4.png
+    icon_url: http://textures.minecraft.net/texture/a5bf87cdeeefecb473472dc7c858ffa2e3ec5bd48c3718df49e2798e4aeff
     category: engineering
     class: PillarSpell
     worth: 800
@@ -3393,7 +3393,7 @@ stash:
         target: self
 
 pickpocket:
-    icon_url: http://i.imgur.com/xzXPNcH.png
+    icon_url: http://textures.minecraft.net/texture/3bc9de58822a3f7c6c23e212cf954fc728a6b2e45c54a89b4af5e453d39b1
     hidden: true
     icon: shears
     category: staff
@@ -3597,7 +3597,7 @@ tunnel:
         mana: 30
 
 superblast:
-    icon_url: http://i.imgur.com/yCMj6OM.png
+    icon_url: http://textures.minecraft.net/texture/eab81081362ed39651bb47e8650dc6bbc3d8a1db56827c186267e546df0743f
     icon: red_mushroom
     category: engineering
     class: ConstructSpell
@@ -3734,7 +3734,7 @@ collapse|2:
 
 supercollapse:
     icon: gold_plate
-    icon_url: http://i.imgur.com/Z1Pq4RM.png
+    icon_url: http://textures.minecraft.net/texture/a4cdbaa4de8eecc6363d760442688762daf588238f83a9da624eaa51e82bbb
     category: engineering
     class: ConstructSpell
     worth: 9000
@@ -3898,7 +3898,7 @@ counterspell|2:
         cooldown: 1000
 
 breach:
-    icon_url: http://i.imgur.com/XXi9kKk.png
+    icon_url: http://textures.minecraft.net/texture/672e0c305074a7acf671e7644291d7f745baecf05743395e28d1f04cbbb4
     icon: seeds
     category: mining
     class: ConstructSpell
@@ -3924,7 +3924,7 @@ breach:
         mana: 50
 
 peek:
-    icon_url: http://i.imgur.com/XXi9kKk.png
+    icon_url: http://textures.minecraft.net/texture/672e0c305074a7acf671e7644291d7f745baecf05743395e28d1f04cbbb4
     icon: sugar_cane
     category: mining
     class: ConstructSpell
@@ -4010,7 +4010,7 @@ mine|3:
         drop: mining
 
 chop:
-    icon_url: http://i.imgur.com/YI7aybZ.png
+    icon_url: http://textures.minecraft.net/texture/7033deb4e25f57413fb15bd3f7019d4ea659a4637d75597248590d746778f
     icon: stone_axe
     category: elemental
     class: DropSpell
@@ -4267,7 +4267,7 @@ superemp:
         mana: 200
 
 disintegrate:
-    icon_url: http://i.imgur.com/zZKzDFS.png
+    icon_url: http://textures.minecraft.net/texture/89f9399aceb3211c3ca1259d5b1bb1f3fb61a4d5626a757ee1a1ccec28a0ae
     icon: bone
     category: combat
     pvp_restricted: true
@@ -5213,7 +5213,7 @@ cage:
 
 wolfhouse:
     hidden: true
-    icon_url: http://i.imgur.com/z149vKa.png
+    icon_url: http://textures.minecraft.net/texture/98abd2beac47ec40be793f4ceacf32eac91322557aedf19a81f43ad28355f8b
     icon: sapling:5
     category: master
     class: ConstructSpell
@@ -6572,7 +6572,7 @@ brushselect:
 tracking:
     upgrade_required_path: apprentice
     upgrade_required_casts: 50
-    icon_url: http://i.imgur.com/xzXPNcH.png
+    icon_url: http://textures.minecraft.net/texture/3bc9de58822a3f7c6c23e212cf954fc728a6b2e45c54a89b4af5e453d39b1
     icon: compass
     category: utility
     worth: 500
@@ -6712,6 +6712,36 @@ singularity:
     costs:
         mana: 50
 
+rocket:
+    icon_url: http://textures.minecraft.net/texture/aa7e54c1c7634bdf1118db91da9e12b6b4d17f7fb7b7d5b0d06d554feb737bf
+    icon: ink_sack:4
+    category: utility
+    worth: 1000
+    actions:
+        cast:
+        - class: FallProtection
+        - class: Firework
+        - class: Mount
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: firework_launch
+           sound_pitch: 0.1
+           sound_volume: 0.5
+           location: origin
+    parameters:
+        target: self
+        launch: true
+        cooldown: 5000
+        power: 0
+        speed: 0.2
+        expected_lifespan: 35
+        set_target: true
+        duration: 20000
+    costs:
+        mana: 75
+
+
 tornado:
     upgrade_required_path: master
     upgrade_required_casts: 50
@@ -6797,32 +6827,3 @@ tornado|2:
         z_size: 1
         y_size: 8
         radius: 4
-
-rocket:
-    icon_url: http://textures.minecraft.net/texture/aa7e54c1c7634bdf1118db91da9e12b6b4d17f7fb7b7d5b0d06d554feb737bf
-    icon: ink_sack:4
-    category: utility
-    worth: 1000
-    actions:
-        cast:
-        - class: FallProtection
-        - class: Firework
-        - class: Mount
-    effects:
-        cast:
-        -  class: EffectSingle
-           sound: firework_launch
-           sound_pitch: 0.1
-           sound_volume: 0.5
-           location: origin
-    parameters:
-        target: self
-        launch: true
-        cooldown: 5000
-        power: 0
-        speed: 0.2
-        expected_lifespan: 35
-        set_target: true
-        duration: 20000
-    costs:
-        mana: 75
