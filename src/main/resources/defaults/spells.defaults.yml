@@ -736,7 +736,7 @@ life3:
         mana: 1500
 
 shell:
-    icon_url: http://i.imgur.com/VG9yNqE.png
+    icon_url: http://textures.minecraft.net/texture/3dbb78853b526f9b712b4e431fb332eae0e6cd3dea9a610e9ecf54c31f7c6d
     alias: dome
     icon: ender_pearl
     category: combat
@@ -791,7 +791,7 @@ shell|4:
         breakable: 1
 
 reflect:
-    icon_url: http://i.imgur.com/VG9yNqE.png
+    icon_url: http://textures.minecraft.net/texture/3dbb78853b526f9b712b4e431fb332eae0e6cd3dea9a610e9ecf54c31f7c6d
     icon: iron_helmet
     category: light
     worth: 2000
@@ -1459,7 +1459,7 @@ lightning|3:
 
 tree:
     icon: sapling
-    icon_url: http://i.imgur.com/WmA6CtP.png
+    icon_url: http://textures.minecraft.net/texture/789e28cfb955a3bf9eafee3eabeca3e8bec87fc7e7489abb6281860289cec43
     category: elemental
     worth: 2000
     actions:
@@ -1481,7 +1481,7 @@ tree:
 
 forest:
     icon: sapling
-    icon_url: http://i.imgur.com/UGSl8xa.png
+    icon_url: http://textures.minecraft.net/texture/31d45096a315b2ebe6239cbb16e7348ba8d5f93a9a37592434faeec7a5
     category: elemental
     worth: 4000
     actions:
@@ -1853,7 +1853,7 @@ mount:
         mana: 60
 
 icbm:
-    icon_url: http://i.imgur.com/tW9Uo6M.png
+    icon_url: http://textures.minecraft.net/texture/e511624fac75f03cf2f3a56d5fe4582d6e74fc9f5e1e1160af1941ee144928
     icon: golden_carrot
     category: demolition
     pvp_restricted: true
@@ -2056,7 +2056,7 @@ meteor:
         mana: 80
 
 arrow:
-    icon_url: http://i.imgur.com/thIMVWy.png
+    icon_url: http://textures.minecraft.net/texture/ea96e1b8c4d458f8f5443fa66eb376981f7b2ec385386db67faf3f1589094
     alias: sniper
     icon: arrow
     category: combat
@@ -2129,7 +2129,7 @@ arrow|4:
         mana: 80
 
 flashbang:
-    icon_url: http://i.imgur.com/SWIxJqS.png
+    icon_url: http://textures.minecraft.net/texture/bc8e7e971bbac56883fe9bfe1b38c5f568ece6cbe09ca59d85f6dab4688d14
     icon: glowstone
     category: combat
     pvp_restricted: true
@@ -3070,7 +3070,7 @@ grenade|2:
         mana: 75
 
 cluster:
-    icon_url: http://i.imgur.com/xl4nToM.png
+    icon_url: http://textures.minecraft.net/texture/e474575ab89654506a3928a03f70e5e0c11849dd1451e24e19c678cb1294e
     icon: red_rose:3
     category: demolition
     pvp_restricted: true
@@ -3098,7 +3098,7 @@ cluster:
         mana: 150
 
 bomb:
-    icon_url: http://i.imgur.com/xl4nToM.png
+    icon_url: http://textures.minecraft.net/texture/e474575ab89654506a3928a03f70e5e0c11849dd1451e24e19c678cb1294e
     icon: double_plant:1
     category: demolition
     pvp_restricted: true
@@ -3130,7 +3130,7 @@ bomb:
 
 superblob:
     icon: slime_ball
-    icon_url: http://i.imgur.com/SLmmZ3r.png
+    icon_url: http://textures.minecraft.net/texture/812a772ef923c597e12f41986d7bea9a9387055eb17eeebb1d8c6de3ca25f
     category: engineering
     class: ConstructSpell
     worth: 8000
@@ -3646,7 +3646,7 @@ convert:
 
 superconvert:
     icon: diamond_spade
-    icon_url: http://i.imgur.com/uUdb1cP.png
+    icon_url: http://textures.minecraft.net/texture/2734f67095a837ec19069f23cae3e82516fab4e29afc157bd99d370179ca0c3
     category: engineering
     class: ConstructSpell
     worth: 7000
@@ -3951,7 +3951,7 @@ peek:
         mana: 30
 
 sandblast:
-    icon_url: http://i.imgur.com/VhhlIC5.png
+    icon_url: http://textures.minecraft.net/texture/c1dc6e8c5e3da4aed0ca478e195b8fe3a438fd8cb775b9d10fa1ff7d2dcf714
     icon: sandstone
     category: combat
     class: ConstructSpell
@@ -4115,7 +4115,7 @@ sphere:
 
 blob:
     icon: clay_ball
-    icon_url: http://i.imgur.com/SWIxJqS.png
+    icon_url: http://textures.minecraft.net/texture/bc8e7e971bbac56883fe9bfe1b38c5f568ece6cbe09ca59d85f6dab4688d14
     category: combat
     worth: 1000
     upgrade_required_path: apprentice
@@ -4638,7 +4638,7 @@ earth:
         mana: 20
 
 iterate:
-    icon_url: http://i.imgur.com/vkFJitg.png
+    icon_url: http://textures.minecraft.net/texture/ce5eef24e2cf406bcd9d2b44f418ac72e26731b9a7e7402490e473af8145e0ba
     icon: ink_sack:2
     category: engineering
     worth: 2500
@@ -4716,7 +4716,7 @@ flamethrower:
         mana: 100
 
 laser:
-    icon_url: http://i.imgur.com/SWNaSEw.png
+    icon_url: http://textures.minecraft.net/texture/7cc8e096a2ac99bf264b3e827f1e3aa07ba688d7b4f470128f741132625e
     icon: ink_sack:11
     category: demolition
     worth: 3500
@@ -4911,7 +4911,7 @@ grow:
         mana: 110
 
 flare:
-    icon_url: http://i.imgur.com/SODRIj1.png
+    icon_url: http://textures.minecraft.net/texture/aa7e54c1c7634bdf1118db91da9e12b6b4d17f7fb7b7d5b0d06d554feb737bf
     icon: firework
     category: light
     worth: 200
@@ -5064,7 +5064,7 @@ force:
 fireball:
     upgrade_required_path: beginner
     upgrade_required_casts: 15
-    icon_url: http://i.imgur.com/tW9Uo6M.png
+    icon_url: http://textures.minecraft.net/texture/e511624fac75f03cf2f3a56d5fe4582d6e74fc9f5e1e1160af1941ee144928
     icon: ghast_tear
     category: combat
     pvp_restricted: true
@@ -5369,7 +5369,7 @@ missile|4:
         mana: 50
 
 blind:
-    icon_url: http://i.imgur.com/vvsWhbx.png
+    icon_url: http://textures.minecraft.net/texture/c7a8e7c9d3375135e39aa6d57b4e60539cf8f6efc5b58c83a13caf40561560
     icon: ender_pearl
     category: combat
     pvp_restricted: true
@@ -5626,7 +5626,7 @@ paste:
 
 kill:
     icon: skull_item:1
-    icon_url: http://i.imgur.com/XdgheMr.png
+    icon_url: http://textures.minecraft.net/texture/71a235c48123b487e864fa21016e223ad4070c6d977b0a519f7dd743d39e47c
     category: master
     pvp_restricted: true
     worth: 5500
@@ -5694,7 +5694,7 @@ kill:
         mana: 150
 
 torture:
-    icon_url: http://i.imgur.com/TAaTz9J.png
+    icon_url: http://textures.minecraft.net/texture/df19b39e565b16cbdabe364b91e35894d1e9bac0ad3fa4b0905ec4f366627
     icon: quartz
     category: master
     pvp_restricted: true
@@ -5896,7 +5896,7 @@ petrify:
         cooldown: 10000
 
 entangle:
-    icon_url: http://i.imgur.com/tCzC5aJ.png
+    icon_url: http://textures.minecraft.net/texture/b2545861d5871f75caa3b378ec44655bcb3d6cabe697b27303dbdaa8b5b5
     icon: gold_ingot
     category: combat
     class: ConstructSpell
@@ -5931,7 +5931,7 @@ entangle:
         mana: 70
 
 wound:
-    icon_url: http://i.imgur.com/TAaTz9J.png
+    icon_url: http://textures.minecraft.net/texture/df19b39e565b16cbdabe364b91e35894d1e9bac0ad3fa4b0905ec4f366627
     icon: quartz
     category: combat
     pvp_restricted: true
@@ -6060,7 +6060,7 @@ stun|3:
 
 poison:
     icon: ink_sack:15
-    icon_url: http://i.imgur.com/RxWheur.png
+    icon_url: http://textures.minecraft.net/texture/f441923eb636b6fbc4cfba5475fd6abae52a41593a63d99bfecdd4d845b91a
     category: combat
     pvp_restricted: true
     worth: 1000
@@ -6562,7 +6562,7 @@ enchantwand:
 
 brushselect:
     icon: painting
-    icon_url: http://i.imgur.com/wDV1U2e.png
+    icon_url: http://textures.minecraft.net/texture/a653c2daf990459d641e5b8f6e62ef8af24b1a2da49c9ce8d9f68ab682905112
     category: utility
     hidden: true
     actions:
@@ -6611,7 +6611,7 @@ tracking|3:
         range: 128
 
 singularity:
-    icon_url: http://i.imgur.com/Todo6d0.png
+    icon_url: http://textures.minecraft.net/texture/ac60643368ba49652b36989878bf296e25d5b3d7526f283ef8cd7470a7a51e8
     icon: obsidian
     category: master
     pvp_restricted: true
@@ -6799,7 +6799,7 @@ tornado|2:
         radius: 4
 
 rocket:
-    icon_url: http://i.imgur.com/SODRIj1.png
+    icon_url: http://textures.minecraft.net/texture/aa7e54c1c7634bdf1118db91da9e12b6b4d17f7fb7b7d5b0d06d554feb737bf
     icon: ink_sack:4
     category: utility
     worth: 1000

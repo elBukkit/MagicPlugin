@@ -871,12 +871,12 @@ inventorymode:
     indestructible: false
     mode: inventory
 cyclemode:
-    icon: skull_item:http://i.imgur.com/Ld8vrqQ.png
+    icon: skull_item:http://textures.minecraft.net/texture/d0347fcef38a2fd59eefafb5e969f8536c7c13783b822a12d02f43a9a21d56
     upgrade: true
     indestructible: false
     mode: cycle
 organizer:
-    icon: skull_item:http://i.imgur.com/PMIPAxO.png
+    icon: skull_item:http://textures.minecraft.net/texture/15d64eaee565d25a83a88e187ad492af9a14b4eaa59fa0a43c237690594020
     upgrade: true
     indestructible: false
     organize: true
@@ -895,7 +895,7 @@ loud:
     indestructible: false
     quiet: -1
 quiet:
-    icon: skull_item:http://i.imgur.com/QlDfHxJ.png
+    icon: skull_item:http://textures.minecraft.net/texture/5e1097685f8554b1b0ad72deb5b1732a38a638cec55dd8801ef613bb1a12b57
     upgrade: true
     indestructible: false
     quiet: -2
