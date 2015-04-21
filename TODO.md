@@ -1,5 +1,7 @@
 # TODO
 
+ - Logout on death still buggy?
+
  - Map brush was acting wonky.
  - Recall still losing waypoints .. also can grab items out?
 

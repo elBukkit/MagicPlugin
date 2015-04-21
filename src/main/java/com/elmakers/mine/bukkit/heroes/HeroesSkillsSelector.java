@@ -9,17 +9,19 @@ import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.ClickType;
+import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class HeroesSkillsSelector implements GUIAction {
-    private int inventorySize = 54;
+    private int page;
+    private List<String> allSkills;
     private final MagicAPI api;
     private final Player player;
 
@@ -29,26 +31,42 @@ public class HeroesSkillsSelector implements GUIAction {
     }
 
     public void show(int page) {
+        this.page = page;
         MageController apiController = api.getController();
         if (!(apiController instanceof MagicController)) return;
-        MagicController controller = (MagicController)apiController;
+        MagicController controller = (MagicController) apiController;
         HeroesManager heroes = controller.getHeroes();
         if (heroes == null) {
             player.sendMessage(ChatColor.RED + "This command requires Heroes");
             return;
         }
 
-        List<String> allSkills = heroes.getSkillList(player, true);
-        if (allSkills.size() == 0)
-        {
+        allSkills = heroes.getSkillList(player, true);
+        if (allSkills.size() == 0) {
             player.sendMessage(ChatColor.RED + "You have no skills");
             return;
         }
-        inventorySize = 9 * controller.getSkillInventoryRows();
+
+        openInventory();
+    }
+
+    protected void openInventory() {
+        MageController apiController = api.getController();
+        if (!(apiController instanceof MagicController)) return;
+        MagicController controller = (MagicController) apiController;
+        HeroesManager heroes = controller.getHeroes();
+        if (heroes == null) {
+            return;
+        }
+
+        int inventorySize = 9 * controller.getSkillInventoryRows();
+        int numPages = (int)Math.ceil((float)allSkills.size() / inventorySize);
+        if (page < 1) page = numPages;
+        else if (page > numPages) page = 1;
+        Mage mage = controller.getMage(player);
         int pageIndex = page - 1;
         int startIndex = pageIndex * inventorySize;
         int maxIndex = (pageIndex + 1) * inventorySize - 1;
-        int numPages = (int)Math.ceil((float)allSkills.size() / inventorySize);
 
         List<String> skills = new ArrayList<String>();
         for (int i = startIndex; i <= maxIndex && i < allSkills.size(); i++) {
@@ -59,8 +77,6 @@ public class HeroesSkillsSelector implements GUIAction {
             player.sendMessage(ChatColor.RED + "No skills on page " + page);
             return;
         }
-
-        Mage mage = controller.getMage(player);
         String classString = heroes.getClassName(player);
         String class2String = heroes.getSecondaryClassName(player);
         String messageKey = class2String != null && !class2String.isEmpty() ? "skills.inventory_title_secondary" : "skills.inventory_title";
@@ -85,6 +101,7 @@ public class HeroesSkillsSelector implements GUIAction {
             displayInventory.addItem(skillItem);
         }
 
+        mage.deactivateGUI();
         mage.activateGUI(this);
         player.openInventory(displayInventory);
     }
@@ -96,7 +113,13 @@ public class HeroesSkillsSelector implements GUIAction {
 
     @Override
     public void clicked(InventoryClickEvent event) {
-
+        if (event.getAction() == InventoryAction.NOTHING) {
+            int direction = event.getClick() == ClickType.LEFT ? 1 : -1;
+            page = page + direction;
+            openInventory();
+            event.setCancelled(true);
+            return;
+        }
     }
 
     @Override
