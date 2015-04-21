@@ -1319,6 +1319,13 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
                     String[] keys = StringUtils.split(iconKey, ',');
                     iconKey = keys[r.nextInt(keys.length)];
                 }
+                // Port old custom wand icons
+                if (template != null && !template.isEmpty() && iconKey.contains("i.imgur.com")) {
+                    ConfigurationSection templateConfig = getWandTemplate(template);
+                    if (templateConfig != null) {
+                        iconKey = templateConfig.getString("icon");
+                    }
+                }
                 setIcon(new MaterialAndData(iconKey));
 			} else if (isUpgrade) {
                 setIcon(new MaterialAndData(DefaultUpgradeMaterial));
