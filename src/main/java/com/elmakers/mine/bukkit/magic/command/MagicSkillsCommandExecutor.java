@@ -24,7 +24,7 @@ import java.util.List;
 import java.util.Set;
 
 public class MagicSkillsCommandExecutor extends MagicTabExecutor implements GUIAction {
-    public static int INVENTORY_SIZE = 27;
+    public static int INVENTORY_SIZE = 54;
 
 	public MagicSkillsCommandExecutor(MagicAPI api) {
 		super(api);
