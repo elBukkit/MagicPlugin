@@ -938,7 +938,7 @@ superring:
 
 supershell:
     icon: magma_cream
-    icon_url: http://i.imgur.com/XpdIfFm.png
+    icon_url: http://textures.minecraft.net/texture/281923adf47a8ca699f6d09593e36d154acc707735eb25fd89d282f1f3bb2078
     category: engineering
     class: ConstructSpell
     worth: 10000
@@ -1202,7 +1202,7 @@ grab:
              radius: 0.8
     parameters:
         target: none
-        target_types: Item,XPOrb
+        target_types: droped_item,experience_orb
         count: 16
         radius: 8
         item_speed: 2
@@ -2952,7 +2952,7 @@ time:
         mana: 40
 
 bridge:
-    icon_url: http://i.imgur.com/Xus8NGF.png
+    icon_url: http://textures.minecraft.net/texture/328d3a15afbc7f95d64179bb6154aa2e9ce7212462145c3344fda754b12c61e7
     icon: stone_hoe
     category: engineering
     class: BridgeSpell

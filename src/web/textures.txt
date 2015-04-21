@@ -171,3 +171,7 @@ http://textures.minecraft.net/texture/5374b64589d779ac4bf7293ba44dba5630a649a028
 http://textures.minecraft.net/texture/7f4f1b4c6661ab552b21df8ed841a221296512de46c86e8dee891efbd2fba6
 http://textures.minecraft.net/texture/af1891a5e313754b8637951b08ebe2e135919e245288257e561707c9cfb26b2
 http://textures.minecraft.net/texture/71a235c48123b487e864fa21016e223ad4070c6d977b0a519f7dd743d39e47c
+http://textures.minecraft.net/texture/e474575ab89654506a3928a03f70e5e0c11849dd1451e24e19c678cb1294e
+http://textures.minecraft.net/texture/281923adf47a8ca699f6d09593e36d154acc707735eb25fd89d282f1f3bb2078
+http://textures.minecraft.net/texture/328d3a15afbc7f95d64179bb6154aa2e9ce7212462145c3344fda754b12c61e7
+http://textures.minecraft.net/texture/37e0a66637a43edf6587b36c3283542c08b101759933bfc8f584d38f0c94e
