@@ -893,7 +893,6 @@ loud:
     icon: skull_item:http://textures.minecraft.net/texture/b8468a85999823db7b326625612451d2ea1c3d76108093318419e1e6690ab
     upgrade: true
     indestructible: false
-    organize: true
     quiet: -1
 quiet:
     icon: skull_item:http://i.imgur.com/QlDfHxJ.png

@@ -84,7 +84,14 @@ public class MagicSkillsCommandExecutor extends MagicTabExecutor implements GUIA
         }
 
         Mage mage = controller.getMage(player);
-        String inventoryTitle = "Skills (" + page + "/" + numPages + ")";
+        String classString = heroes.getClassName(player);
+        String class2String = heroes.getSecondaryClassName(player);
+        String inventoryTitle = api.getMessages().get("skills.inventory_title", "Skills ($page/$pages)");
+        inventoryTitle = inventoryTitle
+                .replace("$pages", Integer.toString(numPages))
+                .replace("$page", Integer.toString(page))
+                .replace("$class", classString)
+                .replace("$class2", class2String);
         int invSize = (int)Math.ceil((float)skills.size() / 9.0f) * 9;
         Inventory displayInventory = CompatibilityUtils.createInventory(null, invSize, inventoryTitle);
         for (String skill : skills)

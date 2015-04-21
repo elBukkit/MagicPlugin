@@ -850,7 +850,7 @@ disc:
     upgrade_required_path: master
     upgrade_required_casts: 50
     icon: ink_sack:8
-    icon_url: http://i.imgur.com/qYdIeMs.png
+    icon_url: http://textures.minecraft.net/texture/48e69c5a76182441d98326284e9342c1dac2a786ba47e8226884f65594c3bd3a
     category: utility
     worth: 1500
     actions:
@@ -961,7 +961,7 @@ supershell:
 
 superdome:
     icon: mushroom_soup
-    icon_url: http://i.imgur.com/RVqBJkm.png
+    icon_url: http://textures.minecraft.net/texture/e468c9623ed74bc829f985d46d4646241daa2a682fec5f2343d55cd7a63693d
     category: engineering
     class: ConstructSpell
     worth: 9000
@@ -1060,7 +1060,7 @@ volley:
         mana: 40
 
 push:
-    icon_url: http://i.imgur.com/QVdzC6k.png
+    icon_url: http://textures.minecraft.net/texture/44a760e06345bd9edd2475d6469dfb952278ca3ec7634aa334e1d7bfcc8644f
     icon: rails
     category: elemental
     pvp_restricted: true
@@ -1409,7 +1409,7 @@ lightning:
     upgrade_required_path: apprentice
     upgrade_required_casts: 50
     icon: raw_fish:2
-    icon_url: http://i.imgur.com/QNSFbvs.png
+    icon_url: http://textures.minecraft.net/texture/c0d34b6c68eca9dae0f9dabeadeb5f72536fa20ab4ecf669be895baf1c17
     category: elemental
     pvp_restricted: true
     worth: 3000
@@ -2459,7 +2459,7 @@ farm:
         mana: 50
 
 wolf:
-    icon_url: http://i.imgur.com/rcTYOcI.png
+    icon_url: http://textures.minecraft.net/texture/f73d8d925fd45eee331437cc496403f96516a5d35a8e62189990d8beee6a14
     icon: raw_beef
     category: elemental
     class: WolfSpell
@@ -2541,7 +2541,7 @@ portal:
         mana: 20
 
 phase:
-    icon_url: http://i.imgur.com/Ql8Ttkb.png
+    icon_url: http://textures.minecraft.net/texture/3186699cf52cb2f732b7948784b262a49d43a57c801368f776e3c9a88151d
     icon: eye_of_ender
     category: master
     worth: 2000
@@ -2740,7 +2740,7 @@ regenerate:
         mana: 400
 
 superregenerate:
-    icon_url: http://i.imgur.com/qH2BPpG.png
+    icon_url: http://textures.minecraft.net/texture/a98cd720917c3d48a165c0418515e58d52c81f4b5271ff8d23790cca43f9b
     icon: diamond_hoe
     category: engineering
     class: RegenerateSpell
@@ -3267,7 +3267,7 @@ supercube:
         mana: 400
 
 backup:
-    icon_url: http://i.imgur.com/qngcIEC.png
+    icon_url: http://textures.minecraft.net/texture/1ba8664ebb95136081e296baa6b384b975ee864e61398a6dfe4915fcafd1f3eb
     icon: diamond_pickaxe
     category: engineering
     class: ConstructSpell
@@ -3579,7 +3579,7 @@ earthquake:
         mana: 150
 
 tunnel:
-    icon_url: http://i.imgur.com/Ql8Ttkb.png
+    icon_url: http://textures.minecraft.net/texture/3186699cf52cb2f732b7948784b262a49d43a57c801368f776e3c9a88151d
     icon: iron_pickaxe
     category: engineering
     class: TunnelSpell
@@ -4658,7 +4658,7 @@ iterate:
 
 column:
     alias: superiterate
-    icon_url: http://i.imgur.com/qbXbYej.png
+    icon_url: http://textures.minecraft.net/texture/58c328c062df8bb125e7bb2cca6dce38c24236733a9f95ca75b04c162c64cb8
     icon: ink_sack:4
     category: engineering
     worth: 4000
@@ -5186,7 +5186,7 @@ tent:
         mana: 150
 
 cage:
-    icon_url: http://i.imgur.com/rb2YaWu.png
+    icon_url: http://textures.minecraft.net/texture/862a3ecb44ccf65458b5413a909cd68bb76cef8d397827eaace2d59635b9943
     icon: iron_fence
     category: master
     class: ConstructSpell

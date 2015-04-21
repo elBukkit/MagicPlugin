@@ -283,6 +283,12 @@ categories:
     mining:
         name: Mining
         description: Spells to help you mine
+    skills:
+        name: Heroes Skills
+        descriptions: Skills being used from Heroes
+skills:
+    inventory_title: "$class Skills ($page/$pages)"
+    item_name: "$skill"
 spells:
     default:
         fizzle: Your spell fizzled!

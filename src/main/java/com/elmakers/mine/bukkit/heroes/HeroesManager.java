@@ -141,10 +141,28 @@ public class HeroesManager {
         config.set("icon", SkillConfigManager.getRaw(skill, "icon", controller.getDefaultSkillIcon()));
         String iconURL = SkillConfigManager.getRaw(skill, "icon_url", null);
         config.set("icon_url", SkillConfigManager.getRaw(skill, "icon-url", iconURL));
-        config.set("name", skill.getName());
+        String nameTemplate = controller.getMessages().get("skills.item_name", "$skill");
+        config.set("name", nameTemplate.replace("$skill", skill.getName()));
+        config.set("category", "skills");
         config.set("description", SkillConfigManager.getRaw(skill, "description", null));
         newSpell.loadTemplate("heroes*" + skillName, config);
         return newSpell;
+    }
+
+    public String getClassName(Player player) {
+        Hero hero = getHero(player);
+        if (hero == null) return "";
+        HeroClass heroClass = hero.getHeroClass();
+        if (heroClass == null) return "";
+        return heroClass.getName();
+    }
+
+    public String getSecondaryClassName(Player player) {
+        Hero hero = getHero(player);
+        if (hero == null) return "";
+        HeroClass heroClass = hero.getSecondClass();
+        if (heroClass == null) return "";
+        return heroClass.getName();
     }
 
     protected Skill getSkill(String key) {
