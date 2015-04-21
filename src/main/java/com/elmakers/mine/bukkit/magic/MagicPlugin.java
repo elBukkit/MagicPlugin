@@ -482,7 +482,6 @@ public class MagicPlugin extends JavaPlugin implements MagicAPI
         return controller.cast(null, spellName, parameters, sender, entity);
     }
 
-
     @Override
 	public Collection<String> getPlayerNames() {
 		return controller.getPlayerNames();
