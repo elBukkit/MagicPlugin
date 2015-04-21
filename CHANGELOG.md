@@ -3,6 +3,7 @@
 ## 4.9.4
 
  - Group /mskills skills by class
+ - Fix very short visibility range of firework effects
 
 ## 4.9.3
 
