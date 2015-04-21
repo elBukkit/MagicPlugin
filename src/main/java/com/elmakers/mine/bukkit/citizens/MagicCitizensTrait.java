@@ -94,6 +94,7 @@ public class MagicCitizensTrait extends Trait {
         ConfigurationSection config = this.parameters;
         if (npcCaster) {
             if (event.getNPC().isSpawned()) {
+                entity = event.getNPC().getBukkitEntity();
                 config = new MemoryConfiguration();
                 ConfigurationUtils.addConfigurations(config, parameters);
                 config.set("player", event.getClicker().getName());
