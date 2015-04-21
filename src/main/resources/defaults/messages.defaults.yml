@@ -290,6 +290,9 @@ skills:
     inventory_title: "$class Skills ($page/$pages)"
     inventory_title_secondary: "$class-$class2 Skills ($page/$pages)"
     item_name: "$skill"
+    item_name_unavailable: "&c$skill"
+    item_description: "$description"
+    passive_description: "&1PASSIVE"
 spells:
     default:
         fizzle: Your spell fizzled!

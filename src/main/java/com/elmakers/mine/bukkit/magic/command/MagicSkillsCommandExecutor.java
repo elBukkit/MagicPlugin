@@ -5,6 +5,7 @@ import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.magic.MagicAPI;
 import com.elmakers.mine.bukkit.heroes.HeroesManager;
+import com.elmakers.mine.bukkit.heroes.HeroesSkillsSelector;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
@@ -23,8 +24,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
-public class MagicSkillsCommandExecutor extends MagicTabExecutor implements GUIAction {
-    public static int INVENTORY_SIZE = 54;
+public class MagicSkillsCommandExecutor extends MagicTabExecutor {
 
 	public MagicSkillsCommandExecutor(MagicAPI api) {
 		super(api);
@@ -43,22 +43,7 @@ public class MagicSkillsCommandExecutor extends MagicTabExecutor implements GUIA
             return true;
         }
         Player player = (Player)sender;
-
-        MageController apiController = api.getController();
-        if (!(apiController instanceof MagicController)) return true;
-        MagicController controller = (MagicController)apiController;
-        HeroesManager heroes = controller.getHeroes();
-        if (heroes == null) {
-            sender.sendMessage(ChatColor.RED + "This command requires Heroes");
-            return true;
-        }
-
-        List<String> allSkills = heroes.getSkillList(player, true);
-        if (allSkills.size() == 0)
-        {
-            sender.sendMessage(ChatColor.RED + "You have no skills");
-            return true;
-        }
+        HeroesSkillsSelector selector = new HeroesSkillsSelector(api, player);
         int page = 1;
         if (args.length > 0) {
             try {
@@ -68,71 +53,12 @@ public class MagicSkillsCommandExecutor extends MagicTabExecutor implements GUIA
                 return true;
             }
         }
-        int pageIndex = page - 1;
-        int startIndex = pageIndex * INVENTORY_SIZE;
-        int maxIndex = (pageIndex + 1) * INVENTORY_SIZE - 1;
-        int numPages = (int)Math.ceil((float)allSkills.size() / INVENTORY_SIZE);
-
-        List<String> skills = new ArrayList<String>();
-        for (int i = startIndex; i <= maxIndex && i < allSkills.size(); i++) {
-            skills.add(allSkills.get(i));
-        }
-        if (skills.size() == 0)
-        {
-            sender.sendMessage(ChatColor.RED + "No skills on page " + page);
-            return true;
-        }
-
-        Mage mage = controller.getMage(player);
-        String classString = heroes.getClassName(player);
-        String class2String = heroes.getSecondaryClassName(player);
-        String messageKey = class2String != null && !class2String.isEmpty() ? "skills.inventory_title_secondary" : "skills.inventory_title";
-        String inventoryTitle = api.getMessages().get(messageKey, "Skills ($page/$pages)");
-        inventoryTitle = inventoryTitle
-                .replace("$pages", Integer.toString(numPages))
-                .replace("$page", Integer.toString(page))
-                .replace("$class2", class2String)
-                .replace("$class", classString);
-        int invSize = (int)Math.ceil((float)skills.size() / 9.0f) * 9;
-        Inventory displayInventory = CompatibilityUtils.createInventory(null, invSize, inventoryTitle);
-        for (String skill : skills)
-        {
-            ItemStack skillItem = api.createItem("skill:heroes*" + skill, mage);
-            if (!heroes.canUseSkill(player, skill))
-            {
-                ItemMeta meta = skillItem.getItemMeta();
-                String displayName = meta.getDisplayName();
-                displayName = ChatColor.RED + ChatColor.stripColor(displayName);
-                meta.setDisplayName(displayName);
-                CompatibilityUtils.setDisplayName(skillItem, displayName);
-                InventoryUtils.setCount(skillItem, 0);
-            }
-            displayInventory.addItem(skillItem);
-        }
-
-        mage.activateGUI(this);
-        player.openInventory(displayInventory);
-
+        selector.show(page);
         return true;
 	}
 
-	@Override
-	public Collection<String> onTabComplete(CommandSender sender, String commandName, String[] args) {
-		return new ArrayList<String>();
-	}
-
     @Override
-    public void deactivated() {
-
-    }
-
-    @Override
-    public void clicked(InventoryClickEvent event) {
-
-    }
-
-    @Override
-    public void dragged(InventoryDragEvent event) {
-
+    public Collection<String> onTabComplete(CommandSender sender, String commandName, String[] args) {
+        return new ArrayList<String>();
     }
 }

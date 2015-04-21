@@ -177,7 +177,13 @@ age_dropped_items: 0
 wand_item: wood_hoe
 wand_upgrade_item: stick
 wand_location_offset: 0.5
+
+# Skill configuration
 default_skill_icon: stick
+skill_inventory_max_rows: 6
+
+# Control word-wrapping in various lore texts
+lore_wrap_limit: 32
 
 # This will hide all flags on a wand except for
 # - Enchantments

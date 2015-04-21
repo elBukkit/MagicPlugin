@@ -33,6 +33,7 @@ import com.elmakers.mine.bukkit.protection.PreciousStonesManager;
 import com.elmakers.mine.bukkit.protection.PvPManagerManager;
 import com.elmakers.mine.bukkit.protection.TownyManager;
 import com.elmakers.mine.bukkit.action.ActionHandler;
+import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.*;
 import com.elmakers.mine.bukkit.wand.*;
 import com.elmakers.mine.bukkit.wand.LostWand;
@@ -1934,6 +1935,8 @@ public class MagicController implements Listener, MageController {
 		extraSchematicFilePath = properties.getString("schematic_files", extraSchematicFilePath);
 		createWorldsEnabled = properties.getBoolean("enable_world_creation", createWorldsEnabled);
         defaultSkillIcon = properties.getString("default_skill_icon", defaultSkillIcon);
+        skillInventoryRows = properties.getInt("skill_inventory_max_rows", skillInventoryRows);
+        BaseSpell.MAX_LORE_LENGTH = properties.getInt("lore_wrap_limit", BaseSpell.MAX_LORE_LENGTH);
 
 		messagePrefix = properties.getString("message_prefix", messagePrefix);
 		castMessagePrefix = properties.getString("cast_message_prefix", castMessagePrefix);
@@ -4789,6 +4792,10 @@ public class MagicController implements Listener, MageController {
         return defaultSkillIcon;
     }
 
+    public int getSkillInventoryRows() {
+        return skillInventoryRows;
+    }
+
     /*
 	 * Private data
 	 */
@@ -4951,6 +4958,7 @@ public class MagicController implements Listener, MageController {
     private boolean                             initialized                 = false;
     private boolean                             loaded                      = false;
     private String                              defaultSkillIcon            = "stick";
+    private int                                 skillInventoryRows          = 6;
 
     // Synchronization
     private final Object                        saveLock                    = new Object();

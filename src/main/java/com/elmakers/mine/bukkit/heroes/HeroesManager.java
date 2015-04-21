@@ -156,7 +156,9 @@ public class HeroesManager {
         String nameTemplate = controller.getMessages().get("skills.item_name", "$skill");
         config.set("name", nameTemplate.replace("$skill", skill.getName()));
         config.set("category", "skills");
-        config.set("description", SkillConfigManager.getRaw(skill, "description", null));
+        String descriptionTemplate = controller.getMessages().get("skills.item_description", "$description");
+        descriptionTemplate = descriptionTemplate.replace("$description", SkillConfigManager.getRaw(skill, "description", ""));
+        config.set("description", descriptionTemplate);
         newSpell.loadTemplate("heroes*" + skillName, config);
         return newSpell;
     }

@@ -8,6 +8,7 @@ import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.herocraftonline.heroes.characters.Hero;
+import com.herocraftonline.heroes.characters.skill.PassiveSkill;
 import com.herocraftonline.heroes.characters.skill.Skill;
 import com.herocraftonline.heroes.characters.skill.SkillConfigManager;
 import com.herocraftonline.heroes.characters.skill.SkillSetting;
@@ -71,6 +72,11 @@ public class HeroesSkillSpell extends BaseSpell {
         if (mage == null || !mage.isPlayer()) return;
         Hero hero = heroes.getHero(mage.getPlayer());
         if (hero == null) return;
+
+        if (skill instanceof PassiveSkill)
+        {
+            lore.add(messages.get("skills.passive_description", "Passive"));
+        }
 
         int level = SkillConfigManager.getUseSetting(hero, skill, SkillSetting.LEVEL, 1, true);
 
