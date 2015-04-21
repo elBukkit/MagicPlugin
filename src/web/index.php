@@ -619,7 +619,7 @@ function printIcon($iconUrl, $title) {
                 <div class="scrollingTab">
                     <div>
                         <div class="title">
-                            You can use any player skin for spell icons, here are <?= count($textures) ?> that have been made specifically for Magic.
+                            You can use any player skin for spell icons, here are <?= count($textures) ?> that have been made or chosen specifically for Magic.
                         </div>
                         <ul id="textureList">
                             <?php

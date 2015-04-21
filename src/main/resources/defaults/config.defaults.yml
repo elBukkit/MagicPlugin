@@ -283,7 +283,7 @@ schematic_item: paper
 schematic_icon_url: http://textures.minecraft.net/texture/6eb68dc909b12ef5fb397c23fdecbc416d9a76825170c106b1faeb97b4749
 # This icon will be used for any material that fails to create as an item
 default_brush_item: sulphur
-default_brush_icon_url: http://s3.amazonaws.com/MinecraftSkins/MHF_Question.png
+default_brush_icon_url: http://textures.minecraft.net/texture/5163dafac1d91a8c91db576caac784336791a6e18d8f7f62778fc47bf146b6
 
 # The folder and file path to use for loading schematics. This will be relative to
 # The server's /plugins folder.
