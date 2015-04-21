@@ -1202,7 +1202,7 @@ grab:
              radius: 0.8
     parameters:
         target: none
-        target_types: droped_item,experience_orb
+        target_types: dropped_item,experience_orb
         count: 16
         radius: 8
         item_speed: 2
