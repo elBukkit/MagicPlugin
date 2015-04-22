@@ -20,11 +20,13 @@ public class GiveItemAction extends BaseSpellAction
 {
     private ItemStack item = null;
     private ItemStack requireItem = null;
+    private String permissionNode = null;
 
     public void prepare(CastContext context, ConfigurationSection parameters) {
         super.prepare(context, parameters);
         MageController controller = context.getController();
 
+        permissionNode = parameters.getString("permission", null);
         String itemKey = parameters.getString("item");
         item = controller.createItem(itemKey);
         if (item == null) {
@@ -51,6 +53,9 @@ public class GiveItemAction extends BaseSpellAction
 		Player player = mage.getPlayer();
 		if (player == null) {
             return SpellResult.PLAYER_REQUIRED;
+        }
+        if (permissionNode != null && !player.hasPermission(permissionNode)) {
+            return SpellResult.INSUFFICIENT_PERMISSION;
         }
         if (requireItem != null) {
             boolean foundItem = false;
@@ -92,6 +97,7 @@ public class GiveItemAction extends BaseSpellAction
         super.getParameterNames(spell, parameters);
         parameters.add("item");
         parameters.add("require");
+        parameters.add("permission");
     }
 
     @Override

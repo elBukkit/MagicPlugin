@@ -21,9 +21,11 @@ public class AddSpellAction extends BaseSpellAction
     private String requiredPath = null;
     private String requiresCompletedPath = null;
     private String exactPath = null;
+    private String permissionNode = null;
 
     public void prepare(CastContext context, ConfigurationSection parameters) {
         super.prepare(context, parameters);
+        permissionNode = parameters.getString("permission", null);
         spellKey = parameters.getString("spell");
         requiredPath = parameters.getString("path", null);
         requiresCompletedPath = parameters.getString("path_end", null);
@@ -40,6 +42,9 @@ public class AddSpellAction extends BaseSpellAction
 		Player player = mage.getPlayer();
 		if (player == null) {
             return SpellResult.PLAYER_REQUIRED;
+        }
+        if (permissionNode != null && !player.hasPermission(permissionNode)) {
+            return SpellResult.INSUFFICIENT_PERMISSION;
         }
         if (wand == null || spellKey == null || spellKey.isEmpty()) {
             context.sendMessage("no_wand");
@@ -108,6 +113,7 @@ public class AddSpellAction extends BaseSpellAction
         parameters.add("path");
         parameters.add("path_end");
         parameters.add("path_exact");
+        parameters.add("permission");
     }
 
     @Override

@@ -23,6 +23,7 @@ import java.util.Collection;
 public class MagicCitizensTrait extends Trait {
 
     private String spellKey;
+    private String permissionNode;
     private boolean npcCaster = true;
     private YamlConfiguration parameters = null;
     private double cost = 0;
@@ -34,6 +35,7 @@ public class MagicCitizensTrait extends Trait {
 
 	public void load(DataKey data) {
         spellKey = data.getString("spell", null);
+        permissionNode = data.getString("permission", null);
         npcCaster = data.getBoolean("caster", false);
         cost = data.getDouble("cost", 0);
         String parameterString = data.getString("parameters", null);
@@ -56,6 +58,7 @@ public class MagicCitizensTrait extends Trait {
 
 	public void save(DataKey data) {
         data.setString("spell", spellKey);
+        data.setString("permission", permissionNode);
         data.setBoolean("caster", npcCaster);
         String parameterString = parameters.saveToString();
         data.setString("parameters", parameterString);
@@ -78,6 +81,9 @@ public class MagicCitizensTrait extends Trait {
 
         CommandSender sender = event.getClicker();
         Player player = event.getClicker();
+        if (permissionNode != null && !player.hasPermission(permissionNode)) {
+            return;
+        }
         Entity entity = event.getClicker();
         if (cost > 0) {
             if (!VaultController.hasEconomy()) {
@@ -116,6 +122,8 @@ public class MagicCitizensTrait extends Trait {
                 ChatColor.WHITE + "(" + ChatColor.GRAY + npc.getId() + ChatColor.WHITE + ")");
         String spellDescription = spellKey == null ? (ChatColor.RED + "(None)") : (ChatColor.LIGHT_PURPLE + spellKey);
         sender.sendMessage(ChatColor.DARK_PURPLE + "Spell: " + spellDescription);
+        String permissionDescription = permissionNode == null ? (ChatColor.GRAY + "(None)") : (ChatColor.LIGHT_PURPLE + permissionNode);
+        sender.sendMessage(ChatColor.DARK_PURPLE + "Permission: " + permissionDescription);
         String casterDescription = npcCaster ? (ChatColor.GRAY + "NPC") : (ChatColor.LIGHT_PURPLE + "Player");
         sender.sendMessage(ChatColor.DARK_PURPLE + "Caster: " + casterDescription);
         if (VaultController.hasEconomy()) {
@@ -151,14 +159,26 @@ public class MagicCitizensTrait extends Trait {
         }
         if (key.equalsIgnoreCase("spell"))
         {
+            spellKey = value;
             if (value == null)
             {
                 sender.sendMessage(ChatColor.RED + "Cleared spell");
             }
             else
             {
-                spellKey = value;
                 sender.sendMessage(ChatColor.DARK_PURPLE + "Set spell to: " + ChatColor.LIGHT_PURPLE + spellKey);
+            }
+        }
+        if (key.equalsIgnoreCase("permission"))
+        {
+            permissionNode = value;
+            if (value == null)
+            {
+                sender.sendMessage(ChatColor.RED + "Cleared permission node");
+            }
+            else
+            {
+                sender.sendMessage(ChatColor.DARK_PURPLE + "Set required permission to: " + ChatColor.LIGHT_PURPLE + permissionNode);
             }
         }
         else if (key.equalsIgnoreCase("parameters"))
@@ -166,6 +186,7 @@ public class MagicCitizensTrait extends Trait {
             if (value == null)
             {
                 sender.sendMessage(ChatColor.RED + "Cleared parameters");
+                parameters = null;
             }
             else
             {

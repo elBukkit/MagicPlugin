@@ -126,6 +126,7 @@ public class MagicTraitCommandExecutor extends MagicTabExecutor {
             options.add("parameters");
             options.add("caster");
             options.add("cost");
+            options.add("permission");
         }
 
 		return options;
