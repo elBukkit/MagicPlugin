@@ -1255,6 +1255,7 @@ golemheart:
 heroes:
     effect_color: random
     quiet: 1
+    icon: blaze_rod
     bound: true
     keep: true
     undroppable: true
