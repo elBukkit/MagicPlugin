@@ -38,8 +38,11 @@ public abstract class CompoundEntityAction extends CompoundAction
 	@Override
     public SpellResult perform(CastContext context)
 	{
-        entities.clear();
-        addEntities(context, entities);
+        if (currentEntity == 0)
+        {
+            entities.clear();
+            addEntities(context, entities);
+        }
 
         SpellResult result = SpellResult.NO_TARGET;
         while (currentEntity < entities.size())
