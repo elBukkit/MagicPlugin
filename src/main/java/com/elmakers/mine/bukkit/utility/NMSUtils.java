@@ -7,6 +7,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
@@ -14,6 +15,7 @@ import com.elmakers.mine.bukkit.block.Schematic;
 import org.bukkit.Bukkit;
 import org.bukkit.DyeColor;
 import org.bukkit.Location;
+import org.bukkit.Server;
 import org.bukkit.World;
 import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -144,6 +146,7 @@ public class NMSUtils {
     protected static Method class_Entity_setLocationMethod;
     protected static Method class_Entity_getIdMethod;
     protected static Method class_Entity_getDataWatcherMethod;
+    protected static Method class_Server_getOnlinePlayers;
 
     protected static Constructor class_NBTTagList_consructor;
     protected static Constructor class_NBTTagList_legacy_consructor;
@@ -266,6 +269,7 @@ public class NMSUtils {
             class_Entity_setLocationMethod = class_Entity.getMethod("setLocation", Double.TYPE, Double.TYPE, Double.TYPE, Float.TYPE, Float.TYPE);
             class_Entity_getIdMethod = class_Entity.getMethod("getId");
             class_Entity_getDataWatcherMethod = class_Entity.getMethod("getDataWatcher");
+            class_Server_getOnlinePlayers = Server.class.getMethod("getOnlinePlayers");
 
             class_CraftInventoryCustom_constructor = class_CraftInventoryCustom.getConstructor(InventoryHolder.class, Integer.TYPE, String.class);
             class_EntityFireworkConstructor = class_EntityFirework.getConstructor(class_World, Double.TYPE, Double.TYPE, Double.TYPE, class_ItemStack);
@@ -492,8 +496,8 @@ public class NMSUtils {
         return handle;
     }
 
-    protected static void sendPacket(Location source, Collection<Player> players, Object packet) throws Exception  {
-        players = ((players != null && players.size() > 0) ? players : source.getWorld().getPlayers());
+    protected static void sendPacket(Server server, Location source, Collection<Player> players, Object packet) throws Exception  {
+        players = ((players != null && players.size() > 0) ? players : CompatibilityUtils.getOnlinePlayers(server));
 
         int viewDistance = Bukkit.getServer().getViewDistance() * 16;
         int viewDistanceSquared =  viewDistance * viewDistance;
@@ -1154,6 +1158,21 @@ public class NMSUtils {
             if (x != null && y != null && z != null) {
                 return new Vector(x, y, z);
             }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return null;
+    }
+
+    public static Collection<Player> getOnlinePlayers(Server server)
+    {
+        try {
+            Object players = class_Server_getOnlinePlayers.invoke(server);
+            if (players instanceof Collection) {
+                return (List<Player>)players;
+            }
+            Player[] playerArray = (Player[])players;
+            return new ArrayList<Player>(Arrays.asList(playerArray));
         } catch (Exception ex) {
             ex.printStackTrace();
         }

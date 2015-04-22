@@ -5,6 +5,7 @@ import java.security.InvalidParameterException;
 import java.util.*;
 
 import com.elmakers.mine.bukkit.api.effect.EffectPlay;
+import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import de.slikey.effectlib.util.ParticleEffect;
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
@@ -362,17 +363,18 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
         }
         if (customSound != null) {
             double range = soundVolume > 1.0 ? (double) (16.0 * soundVolume) : 16.0;
-            List<Player> players = sourceLocation.getWorld().getPlayers();
+            Collection<Player> players = CompatibilityUtils.getOnlinePlayers(plugin.getServer());
             for (Player player : players)
             {
-                if (player.getLocation().distanceSquared(sourceLocation) <= range)
+                Location location = player.getLocation();
+                if (location.getWorld().equals(sourceLocation.getWorld()) && location.distanceSquared(sourceLocation) <= range)
                 {
                     player.playSound(sourceLocation, customSound, soundVolume, soundPitch);
                 }
             }
         }
         if (fireworkEffect != null) {
-            EffectUtils.spawnFireworkEffect(sourceLocation, fireworkEffect, fireworkPower);
+            EffectUtils.spawnFireworkEffect(plugin.getServer(), sourceLocation, fireworkEffect, fireworkPower);
         }
 
         if (particleType != null) {

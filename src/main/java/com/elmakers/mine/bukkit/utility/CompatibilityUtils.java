@@ -1,18 +1,5 @@
 package com.elmakers.mine.bukkit.utility;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.UUID;
-import java.util.logging.Level;
-
 import com.elmakers.mine.bukkit.api.block.MaterialAndData;
 import org.bukkit.Art;
 import org.bukkit.Bukkit;
@@ -21,8 +8,6 @@ import org.bukkit.Color;
 import org.bukkit.DyeColor;
 import org.bukkit.Location;
 import org.bukkit.Rotation;
-import org.bukkit.Server;
-import org.bukkit.World;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Skull;
@@ -46,6 +31,18 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.util.Collection;
+import java.util.List;
+import java.util.UUID;
+import java.util.logging.Level;
 
 /**
  * A generic place to put compatibility-based utilities.
@@ -633,16 +630,5 @@ public class CompatibilityUtils extends NMSUtils {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-    }
-
-    public static List<Player> getOnlinePlayers(Server server)
-    {
-        List<Player> allPlayers = new ArrayList<Player>();
-        List<World> worlds = server.getWorlds();
-        for (World world : worlds) {
-            allPlayers.addAll(world.getPlayers());
-        }
-
-        return allPlayers;
     }
 }

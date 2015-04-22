@@ -2,10 +2,13 @@ package com.elmakers.mine.bukkit.effect;
 
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.magic.Mage;
+import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import org.bukkit.Color;
 import org.bukkit.FireworkEffect;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Server;
+import org.bukkit.World;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.CreatureSpawnEvent;
@@ -21,11 +24,11 @@ import java.util.Collection;
 import java.util.Random;
 
 public class EffectUtils extends NMSUtils {
-    public static void spawnFireworkEffect(Location location, FireworkEffect effect, int power) {
-        spawnFireworkEffect(location, effect, power, null, 2, 1);
+    public static void spawnFireworkEffect(Server server, Location location, FireworkEffect effect, int power) {
+        spawnFireworkEffect(server, location, effect, power, null, 2, 1);
     }
 
-    public static Entity spawnFireworkEffect(Location location, FireworkEffect effect, int power, Vector direction, Integer expectedLifespan, Integer ticksFlown) {
+    public static Entity spawnFireworkEffect(Server server, Location location, FireworkEffect effect, int power, Vector direction, Integer expectedLifespan, Integer ticksFlown) {
         Entity entity = null;
         try {
             Object world = getHandle(location.getWorld());
@@ -62,12 +65,11 @@ public class EffectUtils extends NMSUtils {
                 Constructor packetDestroyEntityConstructor = class_PacketPlayOutEntityDestroy.getConstructor(int[].class);
                 Object destroyPacket = packetDestroyEntityConstructor.newInstance(new int[] {(Integer)fireworkId});
 
-                Collection<Player> players = location.getWorld().getPlayers();
-
-                sendPacket(location, players, fireworkPacket);
-                sendPacket(location, players, metadataPacket);
-                sendPacket(location, players, statusPacket);
-                sendPacket(location, players, destroyPacket);
+                Collection<Player> players = CompatibilityUtils.getOnlinePlayers(server);
+                sendPacket(server, location, players, fireworkPacket);
+                sendPacket(server, location, players, metadataPacket);
+                sendPacket(server, location, players, statusPacket);
+                sendPacket(server, location, players, destroyPacket);
                 return null;
             }
 
