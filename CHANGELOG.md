@@ -4,6 +4,7 @@
 
  - Group /mskills skills by class
  - Fix very short visibility range of firework effects
+ - Fix losing your broom if you die while riding
 
 ## 4.9.3
 

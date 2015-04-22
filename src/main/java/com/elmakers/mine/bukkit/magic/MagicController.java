@@ -2694,6 +2694,7 @@ public class MagicController implements Listener, MageController {
         com.elmakers.mine.bukkit.magic.Mage mage = (com.elmakers.mine.bukkit.magic.Mage)apiMage;
 
         mage.onPlayerDeath(event);
+        mage.deactivateAllSpells();
 
         if (!(entity instanceof Player)) {
             return;
