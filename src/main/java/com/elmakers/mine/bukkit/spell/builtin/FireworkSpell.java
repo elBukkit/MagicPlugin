@@ -52,8 +52,7 @@ public class FireworkSpell extends TargetingSpell
 		for (int i = 0; i < flareCount; i++)
 		{
 			// TODO: Spread locations
-			EffectUtils.spawnFireworkEffect(target.getLocation(), effect, power);
-			//spawnFirework(target.getLocation(), flareCount);
+			EffectUtils.spawnFireworkEffect(controller.getPlugin().getServer(), target.getLocation(), effect, power);
 		}
 
 		return SpellResult.CAST;

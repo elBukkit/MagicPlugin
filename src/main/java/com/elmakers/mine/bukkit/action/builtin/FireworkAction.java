@@ -98,7 +98,7 @@ public class FireworkAction extends TriggeredCompoundAction
         }
 	     
         FireworkEffect effect = EffectUtils.getFireworkEffect(context, color1, color2, fireworkType, flicker, trail);
-        Entity firework = EffectUtils.spawnFireworkEffect(location, effect, power, direction, expectedLifespan, ticksFlown);
+        Entity firework = EffectUtils.spawnFireworkEffect(context.getPlugin().getServer(), location, effect, power, direction, expectedLifespan, ticksFlown);
 
         if (firework != null)
         {

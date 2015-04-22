@@ -98,7 +98,7 @@ public class PlayerSelectAction extends CompoundAction implements GUIAction
         List<Player> allPlayers = null;
 
         if (allowCrossWorld) {
-            allPlayers = CompatibilityUtils.getOnlinePlayers(controller.getPlugin().getServer());
+            allPlayers = new ArrayList<Player>(CompatibilityUtils.getOnlinePlayers(controller.getPlugin().getServer()));
         } else {
             allPlayers = context.getLocation().getWorld().getPlayers();
         }

@@ -2156,9 +2156,9 @@ public class MagicController implements Listener, MageController {
         if (!undoOnWorldSave) return;
 
         World world = event.getWorld();
-        List<Player> players = world.getPlayers();
+        Collection<Player> players = CompatibilityUtils.getOnlinePlayers(plugin.getServer());
         for (Player player : players) {
-            if (isMage(player)) {
+            if (world.equals(player.getWorld()) && isMage(player)) {
                 com.elmakers.mine.bukkit.api.block.UndoQueue queue = getMage(player).getUndoQueue();
                 if (queue != null) {
                     int undone = queue.undoScheduled();
@@ -4078,14 +4078,12 @@ public class MagicController implements Listener, MageController {
 	public Collection<String> getPlayerNames() 
 	{
 		List<String> playerNames = new ArrayList<String>();
-		List<World> worlds = Bukkit.getWorlds();
-		for (World world : worlds) {
-			List<Player> players = world.getPlayers();
-			for (Player player : players) {
-				if (isNPC(player)) continue;
-				playerNames.add(player.getName());
-			}
-		}
+        Collection<Player> players = CompatibilityUtils.getOnlinePlayers(plugin.getServer());
+
+        for (Player player : players) {
+            if (isNPC(player)) continue;
+            playerNames.add(player.getName());
+        }
 		return playerNames;
 	}
 
