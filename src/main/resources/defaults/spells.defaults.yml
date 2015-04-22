@@ -5790,6 +5790,10 @@ count:
     worth: 500
     hidden: true
     actions:
+        alternate_down:
+        -  class: TileEntities
+           actions:
+           -  class: Count
         alternate_up:
         -  class: AllEntities
            actions:

@@ -4,6 +4,7 @@ import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.action.BaseSpellAction;
 import org.bukkit.ChatColor;
+import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
@@ -20,7 +21,16 @@ public class CountAction extends BaseSpellAction
 	public SpellResult perform(CastContext context)
 	{
         Entity entity = context.getTargetEntity();
-		String typeString = entity.getType().toString().toLowerCase();
+        String typeString = "";
+        if (entity == null)
+        {
+            Block block = context.getTargetBlock();
+            typeString = block.getType().toString().toLowerCase();
+        }
+        else
+        {
+            typeString = entity.getType().toString().toLowerCase();
+        }
 		Integer count = counts.get(typeString);
 		count = (count == null) ? 1 : count + 1;
 		counts.put(typeString, count);
@@ -54,7 +64,7 @@ public class CountAction extends BaseSpellAction
 	}
 
     @Override
-    public boolean requiresTargetEntity() {
+    public boolean requiresTarget() {
         return true;
     }
 }

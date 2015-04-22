@@ -1,27 +1,28 @@
 package com.elmakers.mine.bukkit.action.builtin;
 
-import com.elmakers.mine.bukkit.action.CompoundEntityAction;
+import com.elmakers.mine.bukkit.action.CompoundAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
-import com.elmakers.mine.bukkit.spell.TargetingSpell;
 import org.bukkit.Bukkit;
+import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.block.BlockState;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.Player;
 
-import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
-public class AllEntitiesAction extends CompoundEntityAction
+public class TileEntitiesAction extends CompoundAction
 {
     private boolean targetAllWorlds;
+
+    private List<BlockState> tiles = new ArrayList<BlockState>();
+    private int currentTile = 0;
 
 	@Override
 	public void prepare(CastContext context, ConfigurationSection parameters) {
@@ -33,6 +34,7 @@ public class AllEntitiesAction extends CompoundEntityAction
     public void reset(CastContext context) {
         super.reset(context);
         createActionContext(context);
+        currentTile = 0;
     }
 
     @Override
@@ -44,14 +46,34 @@ public class AllEntitiesAction extends CompoundEntityAction
             return SpellResult.LOCATION_REQUIRED;
         }
 
-        return super.perform(context);
+        if (currentTile == 0)
+        {
+            tiles.clear();
+            addTiles(context, tiles);
+        }
+
+        SpellResult result = SpellResult.NO_TARGET;
+        while (currentTile < tiles.size())
+        {
+            BlockState tile = tiles.get(currentTile);
+            actionContext.setTargetLocation(tile.getLocation());
+            SpellResult entityResult = super.perform(actionContext);
+            result = result.min(entityResult);
+            if (entityResult == SpellResult.PENDING) {
+                break;
+            }
+            currentTile++;
+            if (currentTile < tiles.size())
+            {
+                super.reset(context);
+            }
+        }
+
+        return result;
     }
 
-    @Override
-    public void addEntities(CastContext context, List<WeakReference<Entity>> entities)
+    public void addTiles(CastContext context, List<BlockState> tiles)
     {
-        Spell spell = context.getSpell();
-		Entity sourceEntity = context.getEntity();
 		Location sourceLocation = context.getLocation();
 
 		if (sourceLocation == null && !targetAllWorlds)
@@ -59,43 +81,19 @@ public class AllEntitiesAction extends CompoundEntityAction
 			return;
 		}
 
-		Class<?> targetType = Player.class;
-		if (spell instanceof TargetingSpell)
-		{
-			targetType = ((TargetingSpell)spell).getTargetEntityType();
-		}
-
-		if (targetType == Player.class)
-		{
-			Player[] players = Bukkit.getOnlinePlayers();
-			for (Player player : players)
-			{
-				if ((targetSelf || player != sourceEntity) && (targetAllWorlds || (sourceLocation != null && sourceLocation.getWorld().equals(player.getWorld()))) && spell.canTarget(player))
-				{
-                    entities.add(new WeakReference<Entity>(player));
-				}
-			}
-		}
-		else
-		{
-			List<World> worlds;
-			if (targetAllWorlds) {
-				worlds = Bukkit.getWorlds();
-			} else {
-				worlds = new ArrayList<World>();
-				worlds.add(sourceLocation.getWorld());
-			}
-			for (World world : worlds)
-			{
-				List<Entity> candidates = world.getEntities();
-				for (Entity entity : candidates)
-				{
-					if (spell.canTarget(entity) && (targetSelf || entity != sourceEntity))
-					{
-                        entities.add(new WeakReference<Entity>(entity));
-					}
-				}
-			}
+        List<World> worlds;
+        if (targetAllWorlds) {
+            worlds = Bukkit.getWorlds();
+        } else {
+            worlds = new ArrayList<World>();
+            worlds.add(sourceLocation.getWorld());
+        }
+        for (World world : worlds)
+        {
+            Chunk[] chunks = world.getLoadedChunks();
+            for (Chunk chunk : chunks) {
+                tiles.addAll(Arrays.asList(chunk.getTileEntities()));
+            }
 		}
 	}
 
