@@ -36,6 +36,7 @@ import java.util.Map;
 public abstract class BaseShopAction extends BaseSpellAction implements GUIAction
 {
     protected boolean requireWand = false;
+    private String permissionNode = null;
     private String requiredPath = null;
     private String requiresCompletedPath = null;
     private String exactPath = null;
@@ -85,6 +86,9 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
         Player player = mage.getPlayer();
         if (player == null) {
             return SpellResult.PLAYER_REQUIRED;
+        }
+        if (permissionNode != null && !player.hasPermission(permissionNode)) {
+            return SpellResult.INSUFFICIENT_PERMISSION;
         }
         if (!requireWand) {
             return SpellResult.CAST;
@@ -308,6 +312,7 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
 
     public void prepare(CastContext context, ConfigurationSection parameters) {
         super.prepare(context, parameters);
+        permissionNode = parameters.getString("permission", null);
         useXP = parameters.getBoolean("use_xp", false);
         sell = parameters.getBoolean("sell", false);
         useItems = parameters.getBoolean("use_items", false);
@@ -493,6 +498,7 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
         parameters.add("path_exact");
         parameters.add("auto_upgrade");
         parameters.add("require_wand");
+        parameters.add("permission");
     }
 
     @Override
