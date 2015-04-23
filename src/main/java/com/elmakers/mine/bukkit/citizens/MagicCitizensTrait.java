@@ -169,6 +169,7 @@ public class MagicCitizensTrait extends Trait {
                 sender.sendMessage(ChatColor.DARK_PURPLE + "Set spell to: " + ChatColor.LIGHT_PURPLE + spellKey);
             }
         }
+        else
         if (key.equalsIgnoreCase("permission"))
         {
             permissionNode = value;
@@ -234,7 +235,7 @@ public class MagicCitizensTrait extends Trait {
         }
         else
         {
-            sender.sendMessage(ChatColor.RED + "Expecting: spell, parameters or caster");
+            sender.sendMessage(ChatColor.RED + "Expecting: spell, parameters, permission or caster");
         }
     }
 }
