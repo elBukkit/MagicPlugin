@@ -14,8 +14,11 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 import javax.security.auth.login.Configuration;
 import java.util.Collection;
@@ -25,6 +28,7 @@ public class MagicCitizensTrait extends Trait {
     private String spellKey;
     private String permissionNode;
     private boolean npcCaster = true;
+    private boolean invisible = false;
     private YamlConfiguration parameters = null;
     private double cost = 0;
     private MagicAPI api;
@@ -37,6 +41,7 @@ public class MagicCitizensTrait extends Trait {
         spellKey = data.getString("spell", null);
         permissionNode = data.getString("permission", null);
         npcCaster = data.getBoolean("caster", false);
+        invisible = data.getBoolean("invisible", false);
         cost = data.getDouble("cost", 0);
         String parameterString = data.getString("parameters", null);
         parameters = new YamlConfiguration();
@@ -60,6 +65,7 @@ public class MagicCitizensTrait extends Trait {
         data.setString("spell", spellKey);
         data.setString("permission", permissionNode);
         data.setBoolean("caster", npcCaster);
+        data.setBoolean("invisible", invisible);
         String parameterString = parameters.saveToString();
         data.setString("parameters", parameterString);
         data.setDouble("cost", cost);
@@ -74,6 +80,27 @@ public class MagicCitizensTrait extends Trait {
         load(new net.citizensnpcs.api.util.MemoryDataKey());
         api = MagicPlugin.getAPI();
 	}
+
+    @Override
+    public void onSpawn() {
+        updatePotionEffects();
+    }
+
+    protected void updatePotionEffects() {
+        LivingEntity li = null;
+        try {
+            li = npc.getBukkitEntity();
+        } catch (Exception ex) {
+
+        }
+        if (li != null) {
+            if (invisible) {
+                li.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, Integer.MAX_VALUE, 1));
+            } else {
+                li.removePotionEffect(PotionEffectType.INVISIBILITY);
+            }
+        }
+    }
 
     @EventHandler
     public void onClick(net.citizensnpcs.api.event.NPCRightClickEvent event){
@@ -124,6 +151,8 @@ public class MagicCitizensTrait extends Trait {
         sender.sendMessage(ChatColor.DARK_PURPLE + "Spell: " + spellDescription);
         String permissionDescription = permissionNode == null ? (ChatColor.GRAY + "(None)") : (ChatColor.LIGHT_PURPLE + permissionNode);
         sender.sendMessage(ChatColor.DARK_PURPLE + "Permission: " + permissionDescription);
+        String invisibleDescription = invisible ? (ChatColor.GREEN + "YES") : (ChatColor.GRAY + "NO");
+        sender.sendMessage(ChatColor.DARK_PURPLE + "Invisible: " + invisibleDescription);
         String casterDescription = npcCaster ? (ChatColor.GRAY + "NPC") : (ChatColor.LIGHT_PURPLE + "Player");
         sender.sendMessage(ChatColor.DARK_PURPLE + "Caster: " + casterDescription);
         if (VaultController.hasEconomy()) {
@@ -198,18 +227,19 @@ public class MagicCitizensTrait extends Trait {
                 describeParameters(sender);
             }
         }
-        else if (key.equalsIgnoreCase("caster"))
+        else if (key.equalsIgnoreCase("invisible"))
         {
             if (value == null || !value.equalsIgnoreCase("true"))
             {
-                sender.sendMessage(ChatColor.DARK_PURPLE + "Set caster as player");
-                npcCaster = false;
+                sender.sendMessage(ChatColor.DARK_PURPLE + "Set NPC visible");
+                invisible = false;
             }
             else
             {
-                npcCaster = true;
-                sender.sendMessage(ChatColor.DARK_PURPLE + "Set caster as NPC");
+                invisible = true;
+                sender.sendMessage(ChatColor.DARK_PURPLE + "Set NPC invisible");
             }
+            updatePotionEffects();
         }
         else if (key.equalsIgnoreCase("cost"))
         {
@@ -235,7 +265,7 @@ public class MagicCitizensTrait extends Trait {
         }
         else
         {
-            sender.sendMessage(ChatColor.RED + "Expecting: spell, parameters, permission or caster");
+            sender.sendMessage(ChatColor.RED + "Expecting: spell, parameters, permission, invisible or caster");
         }
     }
 }
