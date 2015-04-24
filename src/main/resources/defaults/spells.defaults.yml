@@ -450,7 +450,7 @@ virus:
         message_type: evil
         drop_xp: 300
         concurrent: false
-        target_types: any
+        targets: any
         target_mode: hunt
         concurrent: true
         birth_rules: 1,2,3
@@ -508,7 +508,7 @@ worm:
         target_max_range: 128
         delay: 1500
         target_mode: hunt
-        target_types: mage
+        targets: mage
         birth_rules: 1,2,3,4,5,6,7
         diagonal_birth_rules: 0,1,2,3
         live_rules: 1,2,3,4,5,6,7
@@ -569,7 +569,7 @@ hunter:
         target_min_range: 1
         target_max_range: 128
         target_mode: hunt
-        target_types: player
+        targets: player
         live_rules: 5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26
         birth_rules: 5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26
         concurrent: true
@@ -612,7 +612,7 @@ defender:
         target_max_range: 0
         delay: 1000
         target_mode: hunt
-        target_types: automaton
+        targets: automaton
         target_min_range: 0
         target_max_range: 128
         live_rules: 3,4,5,6,7,8,9
@@ -657,7 +657,7 @@ animate:
         move: 2
         delay: 1000
         target_mode: directed
-        target_types: mage
+        targets: mage
         target_min_range: 0
         target_max_range: 16
         drop_xp: 20

@@ -184,7 +184,7 @@ public class SimulateSpell extends BlockSpell {
 			batch.setCommandMoveRange(parameters.getInt("move", 3),  parameters.getBoolean("reload", true));
 			
 			SimulateBatch.TargetType targetType = null;
-			String targetTypeString = parameters.getString("target_types", "");
+			String targetTypeString = parameters.getString("targets", "");
 			if (targetTypeString.length() > 0) {
 				try {
 					targetType = SimulateBatch.TargetType.valueOf(targetTypeString.toUpperCase());
