@@ -7,6 +7,7 @@
  - Fix losing your broom if you die while riding
  - Add "/mtrait invisible" for invisible NPCs
  - Add configurable entity hitbox dimensions
+ - Some fixes the player death / inventory handling for compatibility
 
 ## 4.9.3
 

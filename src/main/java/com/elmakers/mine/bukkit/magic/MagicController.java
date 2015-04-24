@@ -2739,8 +2739,7 @@ public class MagicController implements Listener, MageController {
 			}
 		}
 
-        boolean modifiedDrops = false;
-        List<ItemStack> newDrops = new ArrayList<ItemStack>();
+        List<ItemStack> removeDrops = new ArrayList<ItemStack>();
         PlayerInventory inventory = player.getInventory();
         ItemStack[] contents = inventory.getContents();
 		for (int index = 0; index < contents.length; index++)
@@ -2748,7 +2747,7 @@ public class MagicController implements Listener, MageController {
             ItemStack itemStack = contents[index];
             if (itemStack == null || itemStack.getType() == Material.AIR) continue;
             if (NMSUtils.isTemporary(itemStack) || Wand.isSkill(itemStack)) {
-                modifiedDrops = true;
+                removeDrops.add(itemStack);
                 continue;
             }
 			boolean keepItem = false;
@@ -2762,11 +2761,7 @@ public class MagicController implements Listener, MageController {
 			if (keepItem)
 			{
 				mage.addToRespawnInventory(index, itemStack);
-                modifiedDrops = true;
-			}
-			else
-			{
-                newDrops.add(itemStack);
+                removeDrops.add(itemStack);
 			}
 		}
         ItemStack[] armor = player.getInventory().getArmorContents();
@@ -2775,7 +2770,7 @@ public class MagicController implements Listener, MageController {
             ItemStack itemStack = armor[index];
             if (itemStack == null || itemStack.getType() == Material.AIR) continue;
             if (NMSUtils.isTemporary(itemStack) || Wand.isSkill(itemStack)) {
-                modifiedDrops = true;
+                removeDrops.add(itemStack);
                 continue;
             }
             boolean keepItem = false;
@@ -2789,18 +2784,11 @@ public class MagicController implements Listener, MageController {
             if (keepItem)
             {
                 mage.addToRespawnArmor(index, itemStack);
-                modifiedDrops = true;
-            }
-            else
-            {
-                newDrops.add(itemStack);
+                removeDrops.add(itemStack);
             }
         }
 
-        if (modifiedDrops) {
-            drops.clear();
-            drops.addAll(newDrops);
-        }
+        drops.removeAll(removeDrops);
 	}
 
     @EventHandler(priority = EventPriority.HIGH)
