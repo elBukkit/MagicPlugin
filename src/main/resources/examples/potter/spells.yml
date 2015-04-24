@@ -375,7 +375,7 @@ bombarda|2:
         range: 32
         size: 4
 
-bubble:
+bubblehead:
     inherit: gills
     category: transfiguration
 

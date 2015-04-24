@@ -163,7 +163,7 @@ spells:
         cast: Your broom springs to life!
         deactivate: Your broom quiets down.
         crash: CRASH!
-    bubble:
+    bubblehead:
         name: Bubble-Head Charm
         description: Underwater breathing charm
     colorvaria:
