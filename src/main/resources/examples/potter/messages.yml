@@ -396,6 +396,9 @@ spells:
         name: Periculum
         description: Shoot fireworks from your wand
         cast: Periculum!
+    periculux:
+        name: Periculux
+        description: Shoot a Rainbow Firework!
     petrificustotalus:
         name: Petrificus Totalus
         description: Paralyzes your target

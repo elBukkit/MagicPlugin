@@ -21,7 +21,7 @@ alohomora:
     category: transfiguration
 
 colloportus:
-    icon_url: http://i.imgur.com/84Dq1nT.png
+    icon_url: http://textures.minecraft.net/texture/dea4155d3f45e95c71b441d1a233586dd2efd99e0d85a286e41dea2a5231ab7
     icon: iron_door
     category: staff
     class: ConstructSpell
@@ -42,14 +42,13 @@ colloportus:
         destructible: wooden_door
         brush: iron_door_block
         radius: 3
-        bypass_build: true
         preserve_data: true
         transparent: transparent_to_construction
     costs:
         mana: 110
 
 aparecium:
-    icon_url: http://i.imgur.com/byVXfY0.png
+    icon_url: http://textures.minecraft.net/texture/65627b236b77eef7b4f31726ed5dbb8f3cdf29a7f8cf820fa34c6cae82f9
     icon: daylight_detector
     category: charms
     class: ConstructSpell
@@ -134,7 +133,7 @@ arrow|4:
     enabled: true
 
 snowball:
-    icon_url: http://i.imgur.com/NpYUt8y.png
+    icon_url: http://textures.minecraft.net/texture/cd76c83453ba48a6aceac090ef4e2c8918ecd8891e91621bed2e03fad8a7f6
     icon: snow_ball
     category: charms
     pvp_restricted: true
@@ -190,7 +189,7 @@ ascendio|2:
     inherit: fling|2
 
 arresto:
-    icon_url: http://i.imgur.com/PHlfm7b.png
+    icon_url: http://textures.minecraft.net/texture/4a23ccd51565d2e246675c86aef11b5412662c15ecc2e9f3ef425adc91d1
     icon: ink_sack:8
     category: charms
     worth: 20
@@ -282,7 +281,7 @@ avadamaxima:
         mana: 300
 
 avis:
-    icon_url: http://i.imgur.com/eyM3n1d.png
+    icon_url: http://textures.minecraft.net/texture/8dd5ea25877fc4f2973e9ae746e77326b9b9dd735ca811cba3bdfb4e47108970
     icon: monster_egg
     category: creatures
     class: FamiliarSpell
@@ -440,7 +439,7 @@ conjunctivitis|2:
         duration: 4000
 
 obscuro:
-    icon_url: http://i.imgur.com/Todo6d0.png
+    icon_url: http://textures.minecraft.net/texture/ac60643368ba49652b36989878bf296e25d5b3d7526f283ef8cd7470a7a51e8
     icon: ender_pearl
     category: dada
     pvp_restricted: true
@@ -489,7 +488,7 @@ crucio:
     category: unforgiveable
 
 dementor:
-    icon_url: http://i.imgur.com/58QlgxB.png
+    icon_url: http://textures.minecraft.net/texture/c8471a90c7b0d6ba70ddf0ea8daf2f8ee999a1efe95f2198d8352e42bd43d1
     icon: quartz
     category: hidden
     pvp_restricted: true
@@ -594,7 +593,7 @@ deprimomaxima:
         mana: 200
 
 diffindo:
-    icon_url: http://i.imgur.com/49rfXIY.png
+    icon_url: http://textures.minecraft.net/texture/5aacdf52fae9b3c03bf0ab4b705a44ceddb9a9df57bda0b863d0b7bc84c27e
     icon: coal
     category: transfiguration
     class: ConstructSpell
@@ -651,10 +650,14 @@ diffindo|3:
 disillusion:
     inherit: cloak
     category: charms
+    parameters:
+        target: self
 
 duro:
     inherit: harden
     category: transfiguration
+    parameters:
+      destructible: hardenable
 
 duro|2:
     inherit: harden|2
@@ -665,7 +668,7 @@ spongify:
 
 spongifymaxima:
     icon: slime_block
-    icon_url: http://i.imgur.com/3ogKLnG.png
+    icon_url: http://textures.minecraft.net/texture/fced4114232f1aff90c5fbb3535e89c546858b14bae3fea7ecc896b2bd51
     category: transfiguration
     class: RecurseSpell
     worth: 150
@@ -695,37 +698,29 @@ erecto:
     inherit: tent
 
 evanesco:
-    icon_url: http://i.imgur.com/zZKzDFS.png
+    icon_url: http://textures.minecraft.net/texture/89f9399aceb3211c3ca1259d5b1bb1f3fb61a4d5626a757ee1a1ccec28a0ae
     icon: firework_charge
     category: transfiguration
-    class: ConstructSpell
     worth: 30
-    cast_on_no_target: true
+    actions:
+        cast:
+        -  class: PotionEffect
     effects:
         cast:
         -  class: EffectSingle
-           sound: fuse
+           custom_sound: magic.shimmer_quiet
         -  class: EffectTrail
-           particle: flame
-           particle_data: 2
-           particle_count: 20
+           particle: smoke_normal
         -  class: EffectRing
-           particle: flame
-           particle_count: 20
+           particle: smoke_normal
            location: target
-    parameters:
-        allow_max_range: false
-        range: 32
-        check_destructible: true
-        destructible: iron_ore
-        brush: erase
-        radius: 3
-        bypass_build: true
-        transparent: transparent_to_construction
-        undo: 10000
-        select_self: false
     costs:
-        mana: 65
+        mana: 50
+    parameters:
+        target: other
+        duration: 8000
+        cooldown: 30000
+        effect_invisibility: 5
 
 expelliarmus:
     inherit: disarm
@@ -807,7 +802,7 @@ floo:
         cooldown: 7000
 
 fiendfyre:
-    icon_url: http://i.imgur.com/PSGSxEI.png
+    icon_url: http://textures.minecraft.net/texture/a9e073da36aaf2c844da428cd4a19dfde32c8cdc2404eed4a135f6095b17c
     icon: coal
     category: dark
     class: IterateSpell
@@ -865,7 +860,7 @@ flagrate:
     range: 3
 
 rictusempra:
-    icon_url: http://i.imgur.com/wn5s7tV.png
+    icon_url: http://textures.minecraft.net/texture/5374b64589d779ac4bf7293ba44dba5630a649a02877a39f4c05e94911ff96a
     icon: ink_sack:3
     category: dada
     pvp_restricted: true
@@ -1007,7 +1002,7 @@ flight:
     hidden: true
 
 fourpoint:
-    icon_url: http://i.imgur.com/DUCgoAF.png
+    icon_url: http://textures.minecraft.net/texture/58c573cefdc8cc1b8c894340cb54ab343523ec2ffa0afc7536968391ae1e7
     icon: compass
     category: elective
     class: OrientSpell
@@ -1080,7 +1075,7 @@ glacius|3:
         mana: 125
 
 immobulus:
-    icon_url: http://i.imgur.com/FyULJYH.png
+    icon_url: http://textures.minecraft.net/texture/6120acda66c3d37a2952a7622a4a7c7b5a4f5626ecc90179976c1915f30b39f
     icon: gold_ingot
     category: dada
     pvp_restricted: true
@@ -1142,7 +1137,7 @@ immobulus:
         hitbox: true
 
 locomotomortus:
-    icon_url: http://i.imgur.com/U53LH0P.png
+    icon_url: http://textures.minecraft.net/texture/2e67b7afcdb3bfe70cb33d1e384f11f8dc81f3dc9677cc64cb51ba0eb8f3f
     alias: locomoto
     icon: gold_ingot
     category: dada
@@ -1197,7 +1192,7 @@ imperio:
     category: unforgiveable
 
 impervius:
-    icon_url: http://i.imgur.com/49rfXIY.png
+    icon_url: http://textures.minecraft.net/texture/5aacdf52fae9b3c03bf0ab4b705a44ceddb9a9df57bda0b863d0b7bc84c27e
     icon: bucket
     category: transfiguration
     class: ConstructSpell
@@ -1232,7 +1227,7 @@ incendio|3:
     inherit: fire|3
 
 lacarnum:
-    icon_url: http://i.imgur.com/OoxraNN.png
+    icon_url: http://textures.minecraft.net/texture/92d331289b5e527c540652d61561a2e90f52a8755c1c7d0cd1a1a98f49de450
     icon: coal
     category: charms
     pvp_restricted: true
@@ -1282,7 +1277,7 @@ legilimens:
     category: staff
 
 levicorpus:
-    icon_url: http://i.imgur.com/v5FzbAV.png
+    icon_url: http://textures.minecraft.net/texture/3f6c497d587c1398ae29cb648a9707fbe974a651cf88c6a2296442db4f6fa5c
     icon: ink_sack:5
     category: charms
     class: GenericSpell
@@ -1422,7 +1417,7 @@ lumos|3:
         duration: 90000
 
 lumossolem:
-    icon_url: http://i.imgur.com/MK272DM.png
+    icon_url: http://textures.minecraft.net/texture/4abfe52d50f710f4103bc650b5e972d49832ea419841d9fa24e16ce617c716
     icon: sea_lantern
     category: charms
     class: TossSpell
@@ -1450,7 +1445,7 @@ lumossolem:
         mana: 100
 
 morsmordre:
-    icon_url: http://i.imgur.com/7lS73cn.png
+    icon_url: http://textures.minecraft.net/texture/1eed1e4d70522ccd538b75ded4baa680e3dfe55426c560ff7b521be5cdf614f
     icon: skull_item:4
     category: dark
     worth: 20
@@ -1483,7 +1478,7 @@ morsmordre:
         mana: 55
 
 morsmordremaxima:
-    icon_url: http://i.imgur.com/7lS73cn.png
+    icon_url: http://textures.minecraft.net/texture/1eed1e4d70522ccd538b75ded4baa680e3dfe55426c560ff7b521be5cdf614f
     icon: skull_item:4
     category: dark
     worth: 20
@@ -1517,50 +1512,18 @@ morsmordremaxima:
         mana: 100
 
 orchideous:
-    icon_url: http://i.imgur.com/kMiR9fB.png
-    icon: yellow_flower
     category: herbology
-    class: FlowerSpell
-    cast_on_no_target: true
-    worth: 50
-    flowers:
-    - yellow_flower
-    - red_rose
-    - red_rose:1
-    - red_rose:2
-    - red_rose:3
-    - red_rose:4
-    - red_rose:5
-    - red_rose:6
-    - red_rose:7
-    - red_rose:8
-    effects:
-        cast:
-        -  class: EffectSingle
-           sound: splash
-           location: both
-    parameters:
-        allow_max_range: false
-        range: 32
-        radius: 3
-        vertical_range: 8
-        undo: 10000
-        cooldown: 2000
-        bypass_build: true
-        item_speed: 1.5
-        age_items: 5500
-    costs:
-        mana: 40
+    inherit: pollinate
 
 periculum:
     icon: firework
     category: charms
     class: FireworkSpell
     worth: 2
-    effects:
+    show_undoable: false
+    actions:
         cast:
-        -  class: EffectSingle
-           sound: firework_launch
+        -  class: Firework
     parameters:
         allow_max_range: true
         range: 16
@@ -1568,11 +1531,12 @@ periculum:
         mana: 30
 
 periculux:
-    name: Periculux
-    description: Shoot a Rainbow Firework!
     icon: firework
     category: charms
-    class: FireworkSpell
+    show_undoable: false
+    actions:
+        cast:
+        -  class: Firework
     worth: 2
     effects:
         cast:
@@ -1617,7 +1581,7 @@ petrificustotalus:
     category: dada
 
 webbing:
-    icon_url: http://i.imgur.com/XXi9kKk.png
+    icon_url: http://textures.minecraft.net/texture/672e0c305074a7acf671e7644291d7f745baecf05743395e28d1f04cbbb4
     icon: web
     category: hidden
     class: ConstructSpell
@@ -1665,7 +1629,7 @@ webbing:
         entity_undo: false
 
 piertotum:
-    icon_url: http://i.imgur.com/eCq4rz3.png
+    icon_url: http://textures.minecraft.net/texture/b47685bb689895deea831ce92bc339d1b1d63b7782f98f252abc09447fbcf8f
     icon: skull_item:4
     category: master
     class: FamiliarSpell
@@ -1783,7 +1747,7 @@ reducto|2:
         destructible: destructible
 
 reductomaxima:
-    icon_url: http://i.imgur.com/IqmgaZ2.png
+    icon_url: http://textures.minecraft.net/texture/4a458a62561a9e6ab960b9bdccaddbf039429c836dfacdd39ff7c7085c9e9b9
     icon: clay_brick
     category: staff
     class: ConstructSpell
@@ -1918,7 +1882,7 @@ sectumsempra:
     category: dark
 
 silencio:
-    icon_url: http://i.imgur.com/t44a9EJ.png
+    icon_url: http://textures.minecraft.net/texture/ad7e09a7af7af5acc286e6a4dd3c2f69b55ace33b7838ca899545570e946ee
     icon: ink_sack:3
     category: staff
     hidden: true
@@ -1956,7 +1920,7 @@ silencio:
         check_protection: true
 
 silenciomaxima:
-    icon_url: http://i.imgur.com/t44a9EJ.png
+    icon_url: http://textures.minecraft.net/texture/ad7e09a7af7af5acc286e6a4dd3c2f69b55ace33b7838ca899545570e946ee
     icon: ink_sack:3
     category: staff
     hidden: true
@@ -1994,7 +1958,7 @@ silenciomaxima:
         check_protection: true
 
 silenciototalus:
-    icon_url: http://i.imgur.com/t44a9EJ.png
+    icon_url: http://textures.minecraft.net/texture/ad7e09a7af7af5acc286e6a4dd3c2f69b55ace33b7838ca899545570e946ee
     icon: ink_sack:3
     category: staff
     hidden: true
@@ -2029,7 +1993,7 @@ silenciototalus:
         check_protection: true
 
 amplify:
-    icon_url: http://i.imgur.com/t44a9EJ.png
+    icon_url: http://textures.minecraft.net/texture/ad7e09a7af7af5acc286e6a4dd3c2f69b55ace33b7838ca899545570e946ee
     icon: ink_sack:3
     category: staff
     hidden: true
@@ -2108,7 +2072,7 @@ stupefy|3:
         target_breakables: 2
 
 vermillious:
-    icon_url: http://i.imgur.com/iKZvCW5.png
+    icon_url: http://textures.minecraft.net/texture/73b6fd4699e7c8c4ce3024b7882b38ff47f1a249fb8be67992707ec2b8d59c
     icon: ink_sack:1
     category: charms
     pvp_restricted: true
@@ -2195,7 +2159,7 @@ vermillious|3:
         mana: 70
 
 colorvaria:
-    icon_url: http://i.imgur.com/eD3ne5u.png
+    icon_url: http://textures.minecraft.net/texture/4e693cf3b7bf83248527aacc2714638b55587cde593963d1f861884f5be1638
     icon: ink_sack
     category: transfiguration
     class: AlterSpell
@@ -2226,7 +2190,7 @@ meteo:
     inherit: day
 
 nox:
-    icon_url: http://i.imgur.com/Todo6d0.png
+    icon_url: http://textures.minecraft.net/texture/ac60643368ba49652b36989878bf296e25d5b3d7526f283ef8cd7470a7a51e8
     icon: ink_sack:0
     category: charms
     cast_on_no_target: true
@@ -2379,7 +2343,7 @@ phase:
         mana: 50
 
 revelio:
-    icon_url: http://i.imgur.com/Ql8Ttkb.png
+    icon_url: http://textures.minecraft.net/texture/3186699cf52cb2f732b7948784b262a49d43a57c801368f776e3c9a88151d
     icon: iron_helmet
     category: staff
     worth: 20
@@ -2438,7 +2402,7 @@ deluminate:
         mana: 100
 
 pulsus:
-    icon_url: http://i.imgur.com/sWkt9H2.png
+    icon_url: http://textures.minecraft.net/texture/2418aee9b8d2702b5d75cfeabf19edf4b4bb83832fda7324c27781beb1e212f
     icon: ink_sack:5
     category: dada
     pvp_restricted: true
@@ -2472,7 +2436,7 @@ pulsus:
         mana: 70
 
 confringo:
-    icon_url: http://i.imgur.com/tW9Uo6M.png
+    icon_url: http://textures.minecraft.net/texture/e511624fac75f03cf2f3a56d5fe4582d6e74fc9f5e1e1160af1941ee144928
     icon: fireball
     category: dark
     pvp_restricted: true
@@ -2529,7 +2493,7 @@ confringo:
         mana: 100
 
 firestorm:
-    icon_url: http://i.imgur.com/OoxraNN.png
+    icon_url: http://textures.minecraft.net/texture/92d331289b5e527c540652d61561a2e90f52a8755c1c7d0cd1a1a98f49de450
     description: Incinerate your target!
     icon: clay_ball
     category: dark
@@ -2592,7 +2556,7 @@ tripudio:
         effect_jump: 5
 
 volo:
-    icon_url: http://i.imgur.com/3dzD68i.png
+    icon_url: http://textures.minecraft.net/texture/15987e49e7ed16df536f4dbf685e7720b88b4de6deaf614d84ab9f9884725c
     icon: eye_of_ender
     category: light
     worth: 10
@@ -2625,7 +2589,7 @@ volo:
         effect_speed: 5
 
 fiantoduri:
-    icon_url: http://i.imgur.com/VG9yNqE.png
+    icon_url: http://textures.minecraft.net/texture/3dbb78853b526f9b712b4e431fb332eae0e6cd3dea9a610e9ecf54c31f7c6d
     icon: ink_sack:12
     category: light
     worth: 10
@@ -2664,7 +2628,7 @@ fiantoduri:
         effect_absorption: 4
 
 bombtastic:
-    icon_url: http://i.imgur.com/xl4nToM.png
+    icon_url: http://textures.minecraft.net/texture/e474575ab89654506a3928a03f70e5e0c11849dd1451e24e19c678cb1294e
     icon: magma_cream
     category: specialty
     pvp_restricted: true
@@ -2700,7 +2664,7 @@ bombtastic:
         bypass_build: true
 
 dungbomb:
-    icon_url: http://i.imgur.com/xl4nToM.png
+    icon_url: http://textures.minecraft.net/texture/e474575ab89654506a3928a03f70e5e0c11849dd1451e24e19c678cb1294e
     icon: magma_cream
     category: specialty
     pvp_restricted: true
