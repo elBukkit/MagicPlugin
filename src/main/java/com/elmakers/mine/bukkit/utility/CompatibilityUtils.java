@@ -645,13 +645,13 @@ public class CompatibilityUtils extends NMSUtils {
         Collection<String> keys = config.getKeys(false);
         for (String key : keys) {
             try {
-                ConfigurationSection hitboxSection = config.getConfigurationSection(key);
                 EntityType entityType = EntityType.valueOf(key.toUpperCase());
-                Vector min = ConfigurationUtils.getVector(hitboxSection, "min");
-                Vector max = ConfigurationUtils.getVector(hitboxSection, "max");
-                if (min != null && max != null && entityType != null)
+                Vector bounds = ConfigurationUtils.getVector(config, key);
+                if (bounds != null && entityType != null)
                 {
-                    hitboxes.put(entityType, new BoundingBox(min, max));
+                    double halfX = bounds.getX() / 2;
+                    double halfZ = bounds.getZ() / 2;
+                    hitboxes.put(entityType, new BoundingBox(-halfX, halfX, 0, bounds.getY(), -halfZ, halfZ));
                 }
             } catch (Exception ex) {
                 org.bukkit.Bukkit.getLogger().log(Level.WARNING, "Invalid entity type: " + key, ex);
