@@ -41,7 +41,7 @@ public class HeroesSkillsSelector implements GUIAction {
             return;
         }
 
-        allSkills = heroes.getSkillList(player, true);
+        allSkills = heroes.getSkillList(player, true, true);
         if (allSkills.size() == 0) {
             player.sendMessage(ChatColor.RED + "You have no skills");
             return;

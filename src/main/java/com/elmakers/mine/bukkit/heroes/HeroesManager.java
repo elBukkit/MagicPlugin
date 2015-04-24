@@ -10,6 +10,7 @@ import com.herocraftonline.heroes.Heroes;
 import com.herocraftonline.heroes.characters.CharacterManager;
 import com.herocraftonline.heroes.characters.Hero;
 import com.herocraftonline.heroes.characters.classes.HeroClass;
+import com.herocraftonline.heroes.characters.skill.ActiveSkill;
 import com.herocraftonline.heroes.characters.skill.Skill;
 import com.herocraftonline.heroes.characters.skill.SkillConfigManager;
 import com.herocraftonline.heroes.characters.skill.SkillManager;
@@ -61,7 +62,7 @@ public class HeroesManager {
         return hero.canUseSkill(skillName);
     }
 
-    public List<String> getSkillList(Player player, boolean showUnuseable)
+    public List<String> getSkillList(Player player, boolean showUnuseable, boolean showPassive)
     {
         if (skills == null) return emptySkillList;
         Hero hero = getHero(player);
@@ -71,8 +72,8 @@ public class HeroesManager {
         HeroClass secondClass = hero.getSecondClass();
         Set<String> primarySkills = new HashSet<String>();
         Set<String> secondarySkills = new HashSet<String>();
-        addSkills(hero, heroClass, primarySkills, showUnuseable);
-        addSkills(hero, secondClass, secondarySkills, showUnuseable);
+        addSkills(hero, heroClass, primarySkills, showUnuseable, showPassive);
+        addSkills(hero, secondClass, secondarySkills, showUnuseable, showPassive);
         secondarySkills.removeAll(primarySkills);
 
         Multimap<Integer, Skill> primaryMap = mapSkillsByLevel(hero, primarySkills);
@@ -108,10 +109,10 @@ public class HeroesManager {
     }
 
     public Set<String> getSkills(Player player) {
-        return getSkills(player, false);
+        return getSkills(player, false, false);
     }
 
-    private void addSkills(Hero hero, HeroClass heroClass, Collection<String> skillSet, boolean showUnuseable)
+    private void addSkills(Hero hero, HeroClass heroClass, Collection<String> skillSet, boolean showUnuseable, boolean showPassive)
     {
         if (heroClass != null)
         {
@@ -120,6 +121,7 @@ public class HeroesManager {
             {
                 Skill skill = skills.getSkill(classSkill);
                 if (!showUnuseable && !hero.canUseSkill(skill)) continue;
+                if (!showPassive && !(skill instanceof ActiveSkill)) continue;
                 // getRaw's boolean default value is ignored! :(
                 if (SkillConfigManager.getRaw(skill, "wand", "true").equalsIgnoreCase("true"))
                 {
@@ -129,7 +131,7 @@ public class HeroesManager {
         }
     }
 
-    public Set<String> getSkills(Player player, boolean showUnuseable) {
+    public Set<String> getSkills(Player player, boolean showUnuseable, boolean showPassive) {
         if (skills == null) return emptySkills;
         Hero hero = getHero(player);
         if (hero == null) return emptySkills;
@@ -137,8 +139,8 @@ public class HeroesManager {
 
         HeroClass heroClass = hero.getHeroClass();
         HeroClass secondClass = hero.getSecondClass();
-        addSkills(hero, heroClass, skillSet, showUnuseable);
-        addSkills(hero, secondClass, skillSet, showUnuseable);
+        addSkills(hero, heroClass, skillSet, showUnuseable, showPassive);
+        addSkills(hero, secondClass, skillSet, showUnuseable, showPassive);
         return skillSet;
     }
 
