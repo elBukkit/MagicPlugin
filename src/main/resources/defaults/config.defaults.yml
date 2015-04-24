@@ -466,6 +466,33 @@ pvp_restricted: false
 # Debug EffectLib issues
 debug_effects: false
 
+# Entity-specific hitboxes for targeting purposes
+hitboxes:
+  player:
+    min: -0.75, 0, -0.75
+    max: 0.75, 2, 0.75
+  spider:
+    min: -1, 0, -1
+    max: 1, 1, 1
+  chicken:
+    min: -0.5, 0, -0.5
+    max: 0.5, 1, 0.5
+  enderman:
+    min: -0.75, 0, -0.75
+    max: 0.75, 3, 0.75
+  ghast:
+    min: -2, 0, -2
+    max: 2, 4, 2
+  wither:
+    min: -2, 0, -2
+    max: 2, 4, 2
+  ender_dragon:
+    min: -3, 0, -3
+    max: 3, 4, 3
+  giant:
+    min: -3, 0, -3
+    max: 3, 13, 3
+
 ### Economy Helpers
 
 # These values are used to help create a balanced economy if you plan on selling wands, spells, or upgrades.

@@ -1914,6 +1914,11 @@ public class MagicController implements Listener, MageController {
             currencyItem = null;
         }
 
+        if (properties.contains("hitboxes"))
+        {
+            CompatibilityUtils.configureHitboxes(properties.getConfigurationSection("hitboxes"));
+        }
+
         costReduction = (float)properties.getDouble("cost_reduction", costReduction);
 		cooldownReduction = (float)properties.getDouble("cooldown_reduction", cooldownReduction);
 		castCommandCostReduction = (float)properties.getDouble("cast_command_cost_reduction", castCommandCostReduction);
