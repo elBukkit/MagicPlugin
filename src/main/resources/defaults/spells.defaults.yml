@@ -4581,6 +4581,7 @@ stream:
     worth: 1500
     actions:
         cast:
+        -  class: DisablePhysics
         -  class: Line
            actions:
            -  class: ModifyBlock
@@ -4595,9 +4596,10 @@ stream:
         allow_max_range: true
         range: 64
         size: 16
-        brush: water
-        increment_data: true
+        brush: stationary_water
+        increment_data: false
         undo: 2000
+        duration: 3000
         player_damage: 2
         entity_damage: 4
     costs:
@@ -6643,12 +6645,12 @@ singularity:
               # upward velocity
               - class: ModifyBlock
                 direction: 0,1,0
-            # Once the sphere is complete, we start a Repat action
+            # Once the sphere is complete, we start a Repeat action
             # This will perform the actions below "repeat" number of
             # times (see parameters - repeat: 10)
             #
             # Note that you can mix parameters in here or in the main
-            # spell parameters. Once in here will override.
+            # spell parameters. Ones in here will override.
             # However, you can only override the ones in the base
             # parameter list with /cast or /wand override
             # so it's best to use those so you can tweak in-game.
