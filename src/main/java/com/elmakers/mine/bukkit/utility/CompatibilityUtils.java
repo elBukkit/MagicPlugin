@@ -61,7 +61,7 @@ import java.util.logging.Level;
 public class CompatibilityUtils extends NMSUtils {
     public final static int MAX_ENTITY_RANGE = 72;
     private final static Map<EntityType, BoundingBox> hitboxes = new HashMap<EntityType, BoundingBox>();
-    private final static BoundingBox defaultHitbox = new BoundingBox(-0.75, 0.75, 0, 2, -0.75, 0.75);
+    private static BoundingBox defaultHitbox = new BoundingBox(-0.75, 0.75, 0, 2, -0.75, 0.75);
 
     /**
      * This is shamelessly copied from org.bukkit.Location.setDirection.
@@ -645,13 +645,19 @@ public class CompatibilityUtils extends NMSUtils {
         Collection<String> keys = config.getKeys(false);
         for (String key : keys) {
             try {
-                EntityType entityType = EntityType.valueOf(key.toUpperCase());
                 Vector bounds = ConfigurationUtils.getVector(config, key);
+                String upperKey = key.toUpperCase();
+                double halfX = bounds.getX() / 2;
+                double halfZ = bounds.getZ() / 2;
+                BoundingBox bb = new BoundingBox(-halfX, halfX, 0, bounds.getY(), -halfZ, halfZ);
+                if (upperKey.equals("DEFAULT")) {
+                    defaultHitbox = bb;
+                    continue;
+                }
+                EntityType entityType = EntityType.valueOf(upperKey);
                 if (bounds != null && entityType != null)
                 {
-                    double halfX = bounds.getX() / 2;
-                    double halfZ = bounds.getZ() / 2;
-                    hitboxes.put(entityType, new BoundingBox(-halfX, halfX, 0, bounds.getY(), -halfZ, halfZ));
+                    hitboxes.put(entityType, bb);
                 }
             } catch (Exception ex) {
                 org.bukkit.Bukkit.getLogger().log(Level.WARNING, "Invalid entity type: " + key, ex);
