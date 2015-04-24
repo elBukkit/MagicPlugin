@@ -9,14 +9,28 @@ public class BoundingBox
 
     public BoundingBox(Vector min, Vector max)
     {
-        this.min = min;
-        this.max = max;
+        this.min = min.clone();
+        this.max = max.clone();
+    }
+
+    public BoundingBox(double dMinX, double dMaxX, double dMinY, double dMaxY, double dMinZ, double dMaxZ)
+    {
+        this.min = new Vector(dMinX, dMinY, dMinZ);
+        this.max = new Vector(dMaxX, dMaxY, dMaxZ);
     }
 
     public BoundingBox(Vector center, double dMinX, double dMaxX, double dMinY, double dMaxY, double dMinZ, double dMaxZ)
     {
         this.min = new Vector(center.getX() + dMinX, center.getY() + dMinY, center.getZ() + dMinZ);
         this.max = new Vector(center.getX() + dMaxX, center.getY() + dMaxY, center.getZ() + dMaxZ);
+    }
+
+    public BoundingBox center(Vector center)
+    {
+        BoundingBox results = new BoundingBox(min, max);
+        results.min.add(center);
+        results.max.add(center);
+        return results;
     }
 
     // Source:

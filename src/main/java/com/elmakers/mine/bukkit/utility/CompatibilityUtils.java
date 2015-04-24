@@ -40,7 +40,9 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import java.util.logging.Level;
 
@@ -58,6 +60,8 @@ import java.util.logging.Level;
  */
 public class CompatibilityUtils extends NMSUtils {
     public final static int MAX_ENTITY_RANGE = 72;
+    private final static Map<EntityType, BoundingBox> hitboxes = new HashMap<EntityType, BoundingBox>();
+    private final static BoundingBox defaultHitbox = new BoundingBox(-0.75, 0.75, 0, 2, -0.75, 0.75);
 
     /**
      * This is shamelessly copied from org.bukkit.Location.setDirection.
@@ -476,12 +480,6 @@ public class CompatibilityUtils extends NMSUtils {
         return entity.getLocation();
     }
 
-    public static BoundingBox getHitbox(Entity entity)
-    {
-        // TODO: Config-driven
-        return new BoundingBox(entity.getLocation().toVector(), -0.75, 0.75, 0, 2, -0.75, 0.75);
-    }
-
     public static Object getSkullProfile(Skull state)
     {
         if (isLegacy) return null;
@@ -629,6 +627,35 @@ public class CompatibilityUtils extends NMSUtils {
             class_Entity_motZField.set(handle, motion.getZ());
         } catch (Exception ex) {
             ex.printStackTrace();
+        }
+    }
+
+    public static BoundingBox getHitbox(Entity entity)
+    {
+        BoundingBox hitbox = entity == null ? null : hitboxes.get(entity.getType());
+        if (hitbox == null) {
+            hitbox = defaultHitbox;
+        }
+
+        return hitbox.center(entity.getLocation().toVector());
+    }
+
+    public static void configureHitboxes(ConfigurationSection config) {
+        hitboxes.clear();
+        Collection<String> keys = config.getKeys(false);
+        for (String key : keys) {
+            try {
+                ConfigurationSection hitboxSection = config.getConfigurationSection(key);
+                EntityType entityType = EntityType.valueOf(key.toUpperCase());
+                Vector min = ConfigurationUtils.getVector(hitboxSection, "min");
+                Vector max = ConfigurationUtils.getVector(hitboxSection, "max");
+                if (min != null && max != null && entityType != null)
+                {
+                    hitboxes.put(entityType, new BoundingBox(min, max));
+                }
+            } catch (Exception ex) {
+                org.bukkit.Bukkit.getLogger().log(Level.WARNING, "Invalid entity type: " + key, ex);
+            }
         }
     }
 }
