@@ -468,30 +468,23 @@ debug_effects: false
 
 # Entity-specific hitboxes for targeting purposes
 hitboxes:
-  player:
-    min: -0.75, 0, -0.75
-    max: 0.75, 2, 0.75
-  spider:
-    min: -1, 0, -1
-    max: 1, 1, 1
-  chicken:
-    min: -0.5, 0, -0.5
-    max: 0.5, 1, 0.5
-  enderman:
-    min: -0.75, 0, -0.75
-    max: 0.75, 3, 0.75
-  ghast:
-    min: -2, 0, -2
-    max: 2, 4, 2
-  wither:
-    min: -2, 0, -2
-    max: 2, 4, 2
-  ender_dragon:
-    min: -3, 0, -3
-    max: 3, 4, 3
-  giant:
-    min: -3, 0, -3
-    max: 3, 13, 3
+  default: 1.25,1.5,1.25
+  player: 1.5,2,1.5
+  spider: 2, 1, 2
+  chicken: 1, 1, 1
+  rabbit: 1, 1, 1
+  silverfish: 1, 1, 1
+  bat: 1, 1, 1
+  slime: 2, 2, 2
+  magma_cube: 2, 2, 2
+  enderman: 1.5,3,1.5
+  ghast: 4,4,4
+  wither: 4,4,4
+  ender_dragon: 6,4,6
+  giant: 6,13,6
+  pig: 1.25, 1.25, 1.25
+  sheep: 1.25, 1.25, 1.25
+  cow: 1.5, 1.5, 1.5
 
 ### Economy Helpers
 
