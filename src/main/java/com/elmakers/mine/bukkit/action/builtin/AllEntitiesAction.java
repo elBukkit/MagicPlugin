@@ -51,7 +51,7 @@ public class AllEntitiesAction extends CompoundEntityAction
     public void addEntities(CastContext context, List<WeakReference<Entity>> entities)
     {
         Spell spell = context.getSpell();
-		Entity sourceEntity = context.getEntity();
+		Entity sourceEntity = context.getMage().getEntity();
 		Location sourceLocation = context.getLocation();
 
 		if (sourceLocation == null && !targetAllWorlds)

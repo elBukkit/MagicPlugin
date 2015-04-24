@@ -47,7 +47,7 @@ public class AreaOfEffectAction extends CompoundEntityAction
     @Override
     public void addEntities(CastContext context, List<WeakReference<Entity>> entities)
     {
-        Entity sourceEntity = context.getEntity();
+        Entity sourceEntity = context.getMage().getEntity();
         Location sourceLocation = context.getTargetLocation();
         List<Entity> candidates = CompatibilityUtils.getNearbyEntities(sourceLocation, radius, radius, radius);
         if (targetCount > 0)
