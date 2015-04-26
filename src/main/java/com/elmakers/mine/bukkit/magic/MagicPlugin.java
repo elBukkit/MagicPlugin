@@ -401,6 +401,10 @@ public class MagicPlugin extends JavaPlugin implements MagicAPI
                 String itemKey = magicItemKey.substring(5);
                 itemStack = createGenericItem(itemKey);
             } else {
+                MaterialAndData item = new MaterialAndData(magicItemKey);
+                if (item.isValid()) {
+                    return item.getItemStack(1);
+                }
                 com.elmakers.mine.bukkit.api.wand.Wand wand = createWand(magicKey);
                 if (wand != null) {
                     return wand.getItem();
@@ -408,10 +412,6 @@ public class MagicPlugin extends JavaPlugin implements MagicAPI
                 itemStack = createSpellItem(magicKey);
                 if (itemStack != null) {
                     return itemStack;
-                }
-                MaterialAndData item = new MaterialAndData(magicItemKey);
-                if (item.isValid()) {
-                    return item.getItemStack(1);
                 }
                 itemStack = createBrushItem(magicItemKey);
             }
