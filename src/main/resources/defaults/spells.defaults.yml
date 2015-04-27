@@ -1729,12 +1729,13 @@ heal|2:
     upgrade_required_path: apprentice
     upgrade_required_casts: 50
     parameters:
-        heal: 4
+        range: 32
+        amount: 4
         cooldown: 9000
 
 heal|3:
     parameters:
-        heal: 6
+        amount: 6
         cooldown: 10000
 
 healing:

@@ -13,8 +13,10 @@ import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.Collection;
+import java.util.List;
 
 public class GiveItemAction extends BaseSpellAction
 {
@@ -31,6 +33,24 @@ public class GiveItemAction extends BaseSpellAction
         item = controller.createItem(itemKey);
         if (item == null) {
             context.getLogger().warning("Invalid item: " + itemKey);
+        }
+        else
+        {
+            String name = parameters.getString("name", null);
+            List<String> lore = parameters.getStringList("lore");
+            if ((name != null && !name.isEmpty()) || (lore != null && !lore.isEmpty()))
+            {
+                ItemMeta meta = item.getItemMeta();
+                if (name != null && !name.isEmpty())
+                {
+                    meta.setDisplayName(name);
+                }
+                if (lore != null && !lore.isEmpty())
+                {
+                    meta.setLore(lore);
+                }
+                item.setItemMeta(meta);
+            }
         }
         String costKey = parameters.getString("requires");
         if (costKey != null && !costKey.isEmpty())
