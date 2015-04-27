@@ -69,7 +69,10 @@ public class ChangeContextAction extends CompoundAction {
         Entity sourceEntity = context.getEntity();
         Location sourceLocation = context.getEyeLocation().clone();
         Entity targetEntity = context.getTargetEntity();
-        Location targetLocation = context.getTargetLocation().clone();
+        Location targetLocation = context.getTargetLocation();
+        if (targetLocation != null) {
+            targetLocation = targetLocation.clone();
+        }
         Vector direction = context.getDirection().normalize();
         if (sourceLocation == null)
         {
@@ -93,7 +96,7 @@ public class ChangeContextAction extends CompoundAction {
         {
             sourceLocation = sourceLocation.add(sourceOffset);
         }
-        if (targetOffset != null)
+        if (targetOffset != null && targetLocation != null)
         {
             targetLocation = targetLocation.add(targetOffset);
         }
@@ -101,11 +104,11 @@ public class ChangeContextAction extends CompoundAction {
         {
             sourceLocation = RandomUtils.randomizeLocation(sourceLocation, randomSourceOffset);
         }
-        if (randomTargetOffset != null)
+        if (randomTargetOffset != null && targetLocation != null)
         {
             targetLocation = RandomUtils.randomizeLocation(targetLocation, randomTargetOffset);
         }
-        if (targetDirection != null)
+        if (targetDirection != null && targetLocation != null)
         {
             targetLocation.setDirection(targetDirection);
         }
@@ -114,7 +117,7 @@ public class ChangeContextAction extends CompoundAction {
             sourceLocation.setDirection(sourceDirection);
             direction = sourceDirection.clone();
         }
-        if (targetDirectionOffset != null)
+        if (targetDirectionOffset != null && targetLocation != null)
         {
             targetLocation.setDirection(targetLocation.getDirection().add(targetDirectionOffset));
         }
@@ -126,7 +129,7 @@ public class ChangeContextAction extends CompoundAction {
         {
             sourceLocation = sourceLocation.add(direction.clone().multiply(sourceDirectionSpeed));
         }
-        if (targetDirectionSpeed != null)
+        if (targetDirectionSpeed != null && targetLocation != null)
         {
             targetLocation = targetLocation.add(direction.clone().multiply(targetDirectionSpeed));
         }
