@@ -9,6 +9,7 @@ import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.magic.MagicPlugin;
+import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
@@ -37,7 +38,7 @@ public class GiveItemAction extends BaseSpellAction
         else
         {
             String name = parameters.getString("name", null);
-            List<String> lore = parameters.getStringList("lore");
+            List<String> lore = ConfigurationUtils.getStringList(parameters, "lore");
             if ((name != null && !name.isEmpty()) || (lore != null && !lore.isEmpty()))
             {
                 ItemMeta meta = item.getItemMeta();
