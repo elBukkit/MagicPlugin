@@ -29,7 +29,7 @@ public class HealAction extends BaseSpellAction
 	@Override
 	public SpellResult perform(CastContext context)
 	{
-        Entity entity = context.getEntity();
+        Entity entity = context.getTargetEntity();
 		if (!(entity instanceof LivingEntity))
 		{
 			return SpellResult.NO_TARGET;
