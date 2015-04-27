@@ -3650,6 +3650,12 @@ public class MagicController implements Listener, MageController {
             block.setType(Material.AIR);
             com.elmakers.mine.bukkit.block.UndoList.commit(modifiedBlock);
         }
+        Mage mage = getMage(event.getPlayer());
+        com.elmakers.mine.bukkit.api.wand.Wand wand = mage.getActiveWand();
+        if (wand != null && wand.isIndestructible())
+        {
+            wand.getItem().setDurability((short)0);
+        }
     }
 
 	@EventHandler
