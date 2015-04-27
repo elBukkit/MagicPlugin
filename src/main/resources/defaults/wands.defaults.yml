@@ -140,34 +140,170 @@ beginner:
 student:
     effect_color: '00FF00'
     path: student
-    icon: stick
     indestructible: false
-    xp_regeneration: 5
-    xp_max: 50
+    xp_regeneration: 30
+    protection_falling: 0.5
+    xp_max: 150
+    xp: 150
+    spells:
+      - missile
+      - blink
+      - arrowrain
+      - boom
+      - familiar
+      - fling
+      - fire
+      - frost
+      - grenade
+      - heal
+      - monster
+      - lightning
+      - lava
+      - portal
+      - stream
+      - flamethrower
+      - wither
+      - mine
+      - chop
+      - shell
+      - tag
+      - blob
+      - disarm
+      - entangle
+      - poison
+      - laser
+      - tracking
+      - rocket
+      - shrink
 
 apprentice:
     effect_color: '22FF22'
     path: apprentice
     indestructible: false
-    xp_regeneration: 10
-    xp_max: 100
+    xp_regeneration: 40
+    xp_max: 200
+    xp: 200
     protection_falling: 0.8
     protection_physical: 0.8
     protection_fire: 0.5
     protection_explosions: 0.5
     effect_bubbles: true
     undroppable: true
+    spells:
+      - missile
+      - blink
+      - arrowrain
+      - boom
+      - familiar
+      - fling
+      - fire
+      - frost
+      - grenade
+      - heal
+      - monster
+      - lightning
+      - lava
+      - portal
+      - stream
+      - flamethrower
+      - wither
+      - mine
+      - chop
+      - shell
+      - tag
+      - blob
+      - disarm
+      - entangle
+      - poison
+      - laser
+      - tracking
+      - rocket
+      - shrink
+      - emp
+      - blessing
+      - breach
+      - disintegrate
+      - force
+      - hat
+      - music
+      - sandblast
+      - phase
+      - grow
+      - counterspell
+      - tent
+      - disc
+      - rubberize
+      - wound
+      - harden
+      - sponge
+      - flashbang
+      - gatling
+      - walls
 
 master:
     path: master
-    xp_regeneration: 20
-    xp_max: 200
+    xp_regeneration: 50
+    xp_max: 250
+    xp: 250
     effect_particle: town_aura
     effect_particle_count: 2
     keep: true
     bound: true
     undroppable: true
     indestructible: true
+    protection_falling: 1
+    protection_physical: 0.8
+    protection_fire: 0.8
+    protection_explosions: 0.8
+    spells:
+      - missile
+      - blink
+      - arrowrain
+      - boom
+      - familiar
+      - fling
+      - fire
+      - frost
+      - grenade
+      - heal
+      - monster
+      - lightning
+      - lava
+      - portal
+      - stream
+      - flamethrower
+      - wither
+      - mine
+      - chop
+      - shell
+      - tag
+      - blob
+      - disarm
+      - entangle
+      - poison
+      - laser
+      - tracking
+      - rocket
+      - shrink
+      - emp
+      - blessing
+      - breach
+      - disintegrate
+      - force
+      - hat
+      - music
+      - sandblast
+      - phase
+      - grow
+      - counterspell
+      - tent
+      - disc
+      - rubberize
+      - wound
+      - harden
+      - sponge
+      - flashbang
+      - gatling
 
 #
 # A starter battle wand
@@ -179,6 +315,7 @@ battle:
     icon: diamond_sword
     xp_regeneration: 5
     xp_max: 50
+    xp: 50
     quiet: 1
     bound: true
     keep: true
@@ -208,8 +345,51 @@ engineer:
     undroppable: true
     indestructible: true
     icon: gold_axe
-    xp_regeneration: 5
-    xp_max: 50
+    xp_regeneration: 90
+    xp_max: 400
+    xp: 400
+    spells:
+      - rollback
+      - alter
+      - blob
+      - bridge
+      - convert
+      - recurse
+      - paint
+      - toss
+      - iterate
+      - repair
+      - tunnel
+      - commit
+      - pillar
+      - place
+      - levitate
+    materials:
+      - erase
+      - map
+      - stone
+      - dirt
+      - sand
+      - gravel
+      - glass
+      - glowstone
+      - stained_clay
+      - stained_glass
+      - stained_glass_pane
+      - soul_sand
+      - grass
+      - wood
+      - log
+      - vine
+      - mycel
+      - quartz_block
+      - leaves
+      - ice
+      - packed_ice
+      - obsidian
+      - redstone_block
+      - schematic|rainbow
+      - schematic|creeper_rug
 
 #
 # Super powered wands
@@ -226,14 +406,15 @@ architect:
     protection_falling: 1
     protection: 0.2
     xp_max: 1000
+    xp: 1000
     xp_regeneration: 100
     power: 0
     effect_color: '8B008B'
     effect_bubbles: true
     organize: true
-    active_spell: fly
+    active_spell: levitate
     spells:
-        - fly
+        - levitate
         - paint
         - alter
         - torch
@@ -310,85 +491,163 @@ architect:
         - schematic:tech_tower
 
 elder:
-    icon: gold_axe
-    path: master
+    path: architect
+    icon: gold_hoe
+    keep: true
     bound: true
-    protection: 1
-    xp_max: 1000
     undroppable: true
     indestructible: true
-    xp_regeneration: 200
+    xp_regeneration: 100
+    xp_max: 1000
+    xp: 1000
     power: 1
+    hotbar_count: 3
     effect_color: '8B008B'
     effect_bubbles: true
     organize: true
-    active_spell: fling
+    active_spell: levitate
+    potion_effects: saturation,regeneration
     spells:
-        - time
-        - tent
-        - fling
-        - blink
+        - levitate@0
+        - blink|3@1
+        - fling|2@2
+        - missile|4@3
+        - day@4
+        - recall@5
+        - gather@6
+        - heal@7
+        - absorb@8
+        - place@9
+        - fill@10
+        - superblob@11
+        - superconvert@12
+        - supershell@13
+        - superrepair@14
+        - undo@15
+        - stash
+        - emp
+        - force
+        - pillar
+        - bridge
         - recurse
         - boom|2
         - fireball
         - superblast
         - storm
         - icbm
+        - torch|2
         - inferno
-        - superblob
-        - superconvert
-        - supershell
+        - disarm
         - superpyramid
-        - column
+        - superbox
+        - superdisc
+        - superring
+        - disc
+        - superdome
+        - dome
         - push
         - pull
-        - force
-        - fly
         - mob
         - farm
         - shell
         - shrink
         - box
         - frag
-        - cluster
-        - bomb
         - volley
-        - fill
         - blob
-        - blast
-        - pillar
-        - place
-        - bridge
-        - absorb
+        - repair
         - alter
         - superalter
-        - undo
         - toss
         - curse
-        - boon
+        - boon|2
         - blessing
         - convert
-        - commit
-        - heal
+        - blast|2
         - wither
+        - camera
+        - collapse
+        - supercollapse
+        - iterate
+        - nuke
+        - commit
+        - familiar
+        - monster
+        - arrow
+        - arrowrain
+        - flare
+        - tree
         - phase
         - portal
+        - disintegrate
         - neutron
         - laser
-        - day
-        - disarm
-        - camera
+        - flamethrower
+        - regenerate
+        - superregenerate
+        - tag
+        - glider
+        - simulate
+        - simulate3
+        - mount
         - counterspell
+        - arrow|4
+        - kill
+        - wound
+        - torture
+        - stun
+        - petrify
+        - entangle
+        - singularity
     materials:
+        - erase@16
+        - copy@17
+        - replicate@18
+        - clone@19
+        - map@20
+        - map:128@21
+        - stained_clay
+        - stained_glass
+        - stained_glass_pane
+        - wool
+        - lapis_block
+        - water
+        - lava
         - glowstone
         - glass
-        - erase
         - soul_sand
-        - stained_glass
-        - copy
-        - clone
-        - replicate
-        - map
+        - dirt
+        - grass
+        - wood
+        - log
+        - vine
+        - mycel
+        - quartz_block
+        - quartz_block:1
+        - quartz_block:2
+        - wool
+        - emerald_block
+        - leaves
+        - ice
+        - packed_ice
+        - diamond_block
+        - gold_block
+        - emerald_block
+        - iron_block
+        - obsidian
+        - bedrock
+        - redstone_block
+        - schematic:rainbow
+        - schematic:creeper_rug
+        - schematic:church
+        - schematic:blacksmith
+        - schematic:compact_house
+        - schematic:small_house
+        - schematic:elder_tree
+        - schematic:garden_house
+        - schematic:stash_chest
+        - schematic:lantern
+        - schematic:beacon
 
 admin:
     icon: gold_axe

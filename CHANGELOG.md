@@ -8,6 +8,9 @@
  - Add "/mtrait invisible" for invisible NPCs
  - Add configurable entity hitbox dimensions
  - Some fixes the player death / inventory handling for compatibility
+ - Update Elder wand to be more like the Wolf
+ - Update Student,Apprentice,Master,Engineer and Architect wands to match enchanting paths
+ - Add Wand Shop
 
 ## 4.9.3
 

@@ -1402,6 +1402,18 @@ spells:
         insufficient_resources: Costs $cost
         confirm_title: "Buy $item"
         deducted: "&d&oYou bought &r&6$item &r&d&ofor &r&a$cost"
+    wandshop:
+        name: Wand Shop
+        title: "Wands ($balance)"
+        description: Buy Wands
+        cost_lore: "Costs: $cost"
+        cast: ""
+        cast_player_message: ""
+        fail: ""
+        no_items: There is nothing to buy here!
+        insufficient_resources: Costs $cost
+        confirm_title: "Buy $item"
+        deducted: "&d&oYou bought &r&6$item &r&d&ofor &r&a$cost"
     broomshop:
         name: Broom Shop
         title: "Brooms ($balance)"

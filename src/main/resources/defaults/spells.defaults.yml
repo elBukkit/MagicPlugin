@@ -6406,6 +6406,27 @@ broomshop:
           wand|crackedbroomstick: 100
           wand|broomstick: 4000
 
+wandshop:
+    icon: wooden_hoe
+    category: utility
+    hidden: true
+    actions:
+        cast:
+        -  class: ItemShop
+    parameters:
+        loud: true
+        confirm: true
+        confirm_filler: stained_glass:3
+        items:
+          wand|beginner: 4000
+          wand|student: 80000
+          wand|apprentice: 135000
+          wand|master: 150000
+          wand|elder: 400000
+          wand|broomstick: 4000
+          wand|architect: 330000
+          wand|battle: 24000
+
 magicitemshop:
     icon: ender_portal_frame
     category: utility
