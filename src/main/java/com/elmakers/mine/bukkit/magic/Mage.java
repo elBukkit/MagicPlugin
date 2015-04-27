@@ -1436,7 +1436,9 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         if (boundWand == null) return false;
         Player player = getPlayer();
         if (player == null) return false;
-        controller.giveItemToPlayer(player, boundWand.duplicate().getItem());
+        ItemStack wandItem = boundWand.duplicate().getItem();
+        wandItem.setAmount(1);
+        controller.giveItemToPlayer(player, wandItem);
         return true;
     }
 
