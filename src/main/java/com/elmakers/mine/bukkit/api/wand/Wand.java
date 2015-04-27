@@ -93,4 +93,5 @@ public interface Wand extends CostReducer {
     public boolean showCastMessages();
     public boolean showMessages();
     public String getTemplate();
+    public boolean isIndestructible();
 }
