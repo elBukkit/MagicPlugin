@@ -3230,17 +3230,22 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		if (uses > 0) {
 			uses--;
 			if (uses <= 0) {
-                // Safety thing... ?
                 uses = 1;
+                ItemStack item = getItem();
+                if (item.getAmount() > 1)
+                {
+                    item.setAmount(item.getAmount() - 1);
+                }
+                else
+                {
+                    Player player = mage.getPlayer();
 
-                Player player = mage.getPlayer();
-                mage.playSound(Sound.ITEM_BREAK, 1.0f, 0.8f);
+                    deactivate();
 
-                deactivate();
-
-				PlayerInventory playerInventory = player.getInventory();
-				playerInventory.setItemInHand(new ItemStack(Material.AIR, 1));
-				player.updateInventory();
+                    PlayerInventory playerInventory = player.getInventory();
+                    playerInventory.setItemInHand(new ItemStack(Material.AIR, 1));
+                    player.updateInventory();
+                }
 			} else {
                 saveState();
 				updateName();
