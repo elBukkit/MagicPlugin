@@ -972,6 +972,7 @@ public class NMSUtils {
     }
 
     public static ItemStack getItem(Object itemTag) {
+        if (itemTag == null) return null;
         ItemStack item = null;
         try {
             Object nmsStack = class_ItemStack_createStackMethod.invoke(null, itemTag);
