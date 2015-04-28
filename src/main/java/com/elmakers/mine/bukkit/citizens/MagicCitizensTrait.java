@@ -1,12 +1,7 @@
 package com.elmakers.mine.bukkit.citizens;
 
-import com.elmakers.mine.bukkit.api.magic.MagicAPI;
-import com.elmakers.mine.bukkit.integration.VaultController;
-import com.elmakers.mine.bukkit.magic.MagicPlugin;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
-import net.citizensnpcs.api.trait.Trait;
 import net.citizensnpcs.api.util.DataKey;
-import net.milkbowl.vault.Vault;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
@@ -14,35 +9,24 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
 
-import javax.security.auth.login.Configuration;
 import java.util.Collection;
 
-public class MagicCitizensTrait extends Trait {
+public class MagicCitizensTrait extends CitizensTrait {
 
     private String spellKey;
-    private String permissionNode;
     private boolean npcCaster = true;
-    private boolean invisible = false;
     private YamlConfiguration parameters = null;
-    private double cost = 0;
-    private MagicAPI api;
 
 	public MagicCitizensTrait() {
 		super("magic");
 	}
 
 	public void load(DataKey data) {
+        super.load(data);
         spellKey = data.getString("spell", null);
-        permissionNode = data.getString("permission", null);
         npcCaster = data.getBoolean("caster", false);
-        invisible = data.getBoolean("invisible", false);
-        cost = data.getDouble("cost", 0);
         String parameterString = data.getString("parameters", null);
         parameters = new YamlConfiguration();
         if (parameterString != null && !parameterString.isEmpty()) {
@@ -62,68 +46,18 @@ public class MagicCitizensTrait extends Trait {
 	}
 
 	public void save(DataKey data) {
+        super.save(data);
         data.setString("spell", spellKey);
-        data.setString("permission", permissionNode);
         data.setBoolean("caster", npcCaster);
-        data.setBoolean("invisible", invisible);
         String parameterString = parameters.saveToString();
         data.setString("parameters", parameterString);
-        data.setDouble("cost", cost);
 	}
 
-	@Override
-	public void onRemove() {
-	}
-
-	@Override
-	public void onAttach() {
-        load(new net.citizensnpcs.api.util.MemoryDataKey());
-        api = MagicPlugin.getAPI();
-	}
-
-    @Override
-    public void onSpawn() {
-        updatePotionEffects();
-    }
-
-    protected void updatePotionEffects() {
-        LivingEntity li = null;
-        try {
-            li = npc.getBukkitEntity();
-        } catch (Exception ex) {
-
-        }
-        if (li != null) {
-            if (invisible) {
-                li.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, Integer.MAX_VALUE, 1));
-            } else {
-                li.removePotionEffect(PotionEffectType.INVISIBILITY);
-            }
-        }
-    }
-
-    @EventHandler
-    public void onClick(net.citizensnpcs.api.event.NPCRightClickEvent event){
-        if (event.getNPC() != this.getNPC() || spellKey == null || spellKey.isEmpty()) return;
+    public boolean perform(net.citizensnpcs.api.event.NPCRightClickEvent event){
+        if (spellKey == null || spellKey.isEmpty()) return false;
 
         CommandSender sender = event.getClicker();
-        Player player = event.getClicker();
-        if (permissionNode != null && !player.hasPermission(permissionNode)) {
-            return;
-        }
         Entity entity = event.getClicker();
-        if (cost > 0) {
-            if (!VaultController.hasEconomy()) {
-                sender.sendMessage(api.getMessages().get("economy.missing"));
-                return;
-            }
-            VaultController vault = VaultController.getInstance();
-            if (!vault.has(player, cost)) {
-                sender.sendMessage(api.getMessages().get("economy.insufficient").replace("$cost", vault.format(cost)));
-                return;
-            }
-        }
-
         ConfigurationSection config = this.parameters;
         if (npcCaster) {
             if (event.getNPC().isSpawned()) {
@@ -135,30 +69,16 @@ public class MagicCitizensTrait extends Trait {
             }
         }
 
-        boolean result = api.cast(spellKey, parameters, sender, entity);
-        if (result && cost > 0) {
-            VaultController vault = VaultController.getInstance();
-            sender.sendMessage(api.getMessages().get("economy.deducted").replace("$cost", vault.format(cost)));
-            vault.withdrawPlayer(player, cost);
-        }
+        return api.cast(spellKey, config, sender, entity);
     }
 
     public void describe(CommandSender sender)
     {
-        sender.sendMessage(ChatColor.AQUA + "Magic NPC: " + ChatColor.GOLD + npc.getName() +
-                ChatColor.WHITE + "(" + ChatColor.GRAY + npc.getId() + ChatColor.WHITE + ")");
+        super.describe(sender);
         String spellDescription = spellKey == null ? (ChatColor.RED + "(None)") : (ChatColor.LIGHT_PURPLE + spellKey);
         sender.sendMessage(ChatColor.DARK_PURPLE + "Spell: " + spellDescription);
-        String permissionDescription = permissionNode == null ? (ChatColor.GRAY + "(None)") : (ChatColor.LIGHT_PURPLE + permissionNode);
-        sender.sendMessage(ChatColor.DARK_PURPLE + "Permission: " + permissionDescription);
-        String invisibleDescription = invisible ? (ChatColor.GREEN + "YES") : (ChatColor.GRAY + "NO");
-        sender.sendMessage(ChatColor.DARK_PURPLE + "Invisible: " + invisibleDescription);
         String casterDescription = npcCaster ? (ChatColor.GRAY + "NPC") : (ChatColor.LIGHT_PURPLE + "Player");
         sender.sendMessage(ChatColor.DARK_PURPLE + "Caster: " + casterDescription);
-        if (VaultController.hasEconomy()) {
-            VaultController vault = VaultController.getInstance();
-            sender.sendMessage(ChatColor.DARK_PURPLE + "Cost: " + ChatColor.GOLD + vault.format(cost));
-        }
         sender.sendMessage(ChatColor.DARK_PURPLE + "Parameters: ");
         describeParameters(sender);
     }
@@ -198,19 +118,6 @@ public class MagicCitizensTrait extends Trait {
                 sender.sendMessage(ChatColor.DARK_PURPLE + "Set spell to: " + ChatColor.LIGHT_PURPLE + spellKey);
             }
         }
-        else
-        if (key.equalsIgnoreCase("permission"))
-        {
-            permissionNode = value;
-            if (value == null)
-            {
-                sender.sendMessage(ChatColor.RED + "Cleared permission node");
-            }
-            else
-            {
-                sender.sendMessage(ChatColor.DARK_PURPLE + "Set required permission to: " + ChatColor.LIGHT_PURPLE + permissionNode);
-            }
-        }
         else if (key.equalsIgnoreCase("parameters"))
         {
             if (value == null)
@@ -227,45 +134,9 @@ public class MagicCitizensTrait extends Trait {
                 describeParameters(sender);
             }
         }
-        else if (key.equalsIgnoreCase("invisible"))
-        {
-            if (value == null || !value.equalsIgnoreCase("true"))
-            {
-                sender.sendMessage(ChatColor.DARK_PURPLE + "Set NPC visible");
-                invisible = false;
-            }
-            else
-            {
-                invisible = true;
-                sender.sendMessage(ChatColor.DARK_PURPLE + "Set NPC invisible");
-            }
-            updatePotionEffects();
-        }
-        else if (key.equalsIgnoreCase("cost"))
-        {
-            if (value == null)
-            {
-                sender.sendMessage(ChatColor.DARK_PURPLE + "Cleared cost");
-                cost = 0;
-            }
-            else
-            {
-                try {
-                    cost = Double.parseDouble(value);
-                    if (VaultController.hasEconomy()) {
-                        VaultController vault = VaultController.getInstance();
-                        sender.sendMessage(ChatColor.DARK_PURPLE + "Set cost to: " + ChatColor.GOLD + vault.format(cost));
-                    } else {
-                        sender.sendMessage(ChatColor.DARK_PURPLE + "Set cost to " + value);
-                    }
-                } catch (Exception ex) {
-                    sender.sendMessage(ChatColor.RED + "Invalid cost: " + value);
-                }
-            }
-        }
         else
         {
-            sender.sendMessage(ChatColor.RED + "Expecting: spell, parameters, permission, invisible or caster");
+            super.configure(sender, key, value);
         }
     }
 }

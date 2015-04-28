@@ -1,24 +1,18 @@
 package com.elmakers.mine.bukkit.magic.command;
 
-import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MagicAPI;
-import com.elmakers.mine.bukkit.api.spell.SpellCategory;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
-import com.elmakers.mine.bukkit.api.wand.Wand;
-import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.citizens.CitizensController;
+import com.elmakers.mine.bukkit.citizens.CitizensTrait;
+import com.elmakers.mine.bukkit.citizens.CommandCitizensTrait;
 import com.elmakers.mine.bukkit.citizens.MagicCitizensTrait;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
-import com.elmakers.mine.bukkit.utility.RunnableJob;
 import net.citizensnpcs.Citizens;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -63,15 +57,19 @@ public class MagicTraitCommandExecutor extends MagicTabExecutor {
 			return true;
 		}
 
-        MagicCitizensTrait trait = null;
-        if (!npc.hasTrait(MagicCitizensTrait.class))
+        CitizensTrait trait = null;
+        if (npc.hasTrait(MagicCitizensTrait.class))
         {
-            sender.sendMessage(ChatColor.RED + "You must add the \"magic\" trait first");
-            return true;
+            trait = npc.getTrait(MagicCitizensTrait.class);
+        }
+        else if (npc.hasTrait(CommandCitizensTrait.class))
+        {
+            trait = npc.getTrait(CommandCitizensTrait.class);
         }
         else
         {
-            trait = npc.getTrait(MagicCitizensTrait.class);
+            sender.sendMessage(ChatColor.RED + "You must add a \"magic\" or \"command\" trait first");
+            return true;
         }
 
         if (args.length == 0)

@@ -2,6 +2,7 @@
 
 ## 4.9.4
 
+ - Add "command" trait for simple command NPCs
  - Group /mskills skills by class
  - Fix very short visibility range of firework effects
  - Fix losing your broom if you die while riding

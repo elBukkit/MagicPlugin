@@ -10,6 +10,7 @@ public class CitizensController {
         citizensPlugin = (Citizens)plugin;
 
         net.citizensnpcs.api.CitizensAPI.getTraitFactory().registerTrait(net.citizensnpcs.api.trait.TraitInfo.create(MagicCitizensTrait.class).withName("magic"));
+        net.citizensnpcs.api.CitizensAPI.getTraitFactory().registerTrait(net.citizensnpcs.api.trait.TraitInfo.create(CommandCitizensTrait.class).withName("command"));
     }
 
     public Citizens getCitizensPlugin() {
