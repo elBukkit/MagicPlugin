@@ -21,6 +21,7 @@ public class ThrowBlockAction extends TriggeredCompoundAction
 {
     private double speedMin;
     private double speedMax;
+    private boolean setTarget;
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters)
@@ -29,6 +30,7 @@ public class ThrowBlockAction extends TriggeredCompoundAction
         double itemSpeed = parameters.getDouble("speed", 0.6f);
         speedMin = parameters.getDouble("speed_min", itemSpeed);
         speedMax = parameters.getDouble("speed_max", itemSpeed);
+        setTarget = parameters.getBoolean("set_target", false);
     }
 
 	@Override
@@ -61,6 +63,10 @@ public class ThrowBlockAction extends TriggeredCompoundAction
         if (block == null)
         {
             return SpellResult.FAIL;
+        }
+        if (setTarget)
+        {
+            context.setTargetEntity(block);
         }
         Collection<EffectPlayer> projectileEffects = context.getEffects("projectile");
         for (EffectPlayer effectPlayer : projectileEffects) {

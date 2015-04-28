@@ -16,11 +16,13 @@ import org.bukkit.util.Vector;
 public class MoveBlockAction extends BaseSpellAction
 {
     private Vector offset;
+    private boolean setTarget;
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters) {
         super.prepare(context, parameters);
         offset = ConfigurationUtils.getVector(parameters, "offset");
+        setTarget = parameters.getBoolean("set_target", false);
     }
 
 	@Override
@@ -56,10 +58,18 @@ public class MoveBlockAction extends BaseSpellAction
         context.registerForUndo(targetBlock);
         context.registerForUndo(moveToBlock);
 
-        // Mainly for FX
-        Location targetLocation = context.getTargetLocation();
-        targetLocation.setDirection(moveToBlock.getLocation().toVector().subtract(targetLocation.toVector()));
-        context.setTargetLocation(targetLocation);
+        if (setTarget) {
+            Location sourceLocation = context.getTargetLocation();
+            Location targetLocation = moveToBlock.getLocation();
+            targetLocation.setDirection(sourceLocation.toVector().subtract(targetLocation.toVector()));
+            context.setTargetLocation(targetLocation);
+        } else {
+            // Kind of hack for the way some current spells use FX
+            // They play effects from the source to the target
+            Location targetLocation = context.getTargetLocation();
+            targetLocation.setDirection(moveToBlock.getLocation().toVector().subtract(targetLocation.toVector()));
+            context.setTargetLocation(targetLocation);
+        }
 
         targetBlock.setType(Material.AIR);
         blockState.modify(moveToBlock);
