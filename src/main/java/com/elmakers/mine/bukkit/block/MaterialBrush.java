@@ -92,6 +92,11 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
         activate(location, materialKey);
     }
 
+    public MaterialBrush(final Mage mage, final Block block) {
+        super(block);
+        this.mage = mage;
+    }
+
     // Used only for generating names
     private MaterialBrush(final String materialKey) {
         super(DEFAULT_MATERIAL, (byte)0);
