@@ -47,10 +47,10 @@ public class DelayAction extends BaseSpellAction
     @Override
     public void getParameterOptions(Spell spell, String parameterKey, Collection<String> examples)
     {
-        super.getParameterOptions(spell, parameterKey, examples);
-
         if (parameterKey.equals("delay")) {
             examples.addAll(Arrays.asList(BaseSpell.EXAMPLE_DURATIONS));
+        } else {
+            super.getParameterOptions(spell, parameterKey, examples);
         }
     }
 }

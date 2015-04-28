@@ -2,9 +2,9 @@
 
 ## 4.9.4
 
+ - Fix very short visibility range of firework effects
  - Add "command" trait for simple command NPCs
  - Group /mskills skills by class
- - Fix very short visibility range of firework effects
  - Fix losing your broom if you die while riding
  - Add "/mtrait invisible" for invisible NPCs
  - Add configurable entity hitbox dimensions

@@ -6230,11 +6230,13 @@ admission:
     icon_url: http://textures.minecraft.net/texture/3944e12e8e67fd67a55359df56c3c59c99550f6eaccb23813769afb2f1992
     icon: wood_door
     category: utility
-    class: DoorSpell
     worth: 1000
     cast_on_no_target: true
     upgrade_required_path: master
     upgrade_required_casts: 20
+    actions:
+        cast:
+        - class: Door
     effects:
         cast:
         -  class: EffectSingle

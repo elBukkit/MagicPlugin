@@ -7,6 +7,7 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.ConfigurationSection;
 
+@Deprecated
 public class DoorSpell extends BlockSpell
 {
 	@Override
