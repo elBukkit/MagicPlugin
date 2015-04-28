@@ -59,3 +59,8 @@ wands:
     avatar:
         name: Avatar Powers
         description: Master of all four elements
+
+spells:
+  block:
+    name: Earth Block
+    description: Raise a block of earth and throw it at your foes

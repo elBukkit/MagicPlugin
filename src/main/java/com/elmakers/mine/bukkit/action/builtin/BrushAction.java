@@ -6,6 +6,7 @@ import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.block.MaterialBrush;
 import org.bukkit.Location;
+import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 
 import java.util.ArrayList;
@@ -13,6 +14,7 @@ import java.util.List;
 
 public class BrushAction extends CompoundAction {
     private List<MaterialBrush> brushes = new ArrayList<MaterialBrush>();
+    private boolean sample = false;
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters) {
@@ -31,6 +33,7 @@ public class BrushAction extends CompoundAction {
                 addBrush(mage, location, brushKey);
             }
         }
+        sample = parameters.getBoolean("sample");
     }
 
     protected void addBrush(Mage mage, Location location, String brushKey) {
@@ -39,12 +42,25 @@ public class BrushAction extends CompoundAction {
 
     @Override
     public SpellResult perform(CastContext context) {
-        if (brushes.size() == 0) {
+        if (brushes.size() == 0 && !sample) {
             return super.perform(context);
         }
         createActionContext(context);
-        MaterialBrush brush = brushes.get(context.getRandom().nextInt(brushes.size()));
-        actionContext.setBrush(brush);
+        if (sample)
+        {
+            Block targetBlock = context.getTargetBlock();
+            if (targetBlock != null)
+            {
+                Mage mage = context.getMage();
+                MaterialBrush brush = new MaterialBrush(mage, targetBlock);
+                actionContext.setBrush(brush);
+            }
+        }
+        else
+        {
+            MaterialBrush brush = brushes.get(context.getRandom().nextInt(brushes.size()));
+            actionContext.setBrush(brush);
+        }
         return super.perform(actionContext);
     }
 

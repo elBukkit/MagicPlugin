@@ -18,6 +18,7 @@ public class ChangeContextAction extends CompoundAction {
     private Vector sourceOffset;
     private Vector targetOffset;
     private boolean targetSelf;
+    private boolean sourceAtTarget;
     private Vector randomSourceOffset;
     private Vector randomTargetOffset;
     private Double targetDirectionSpeed;
@@ -33,14 +34,12 @@ public class ChangeContextAction extends CompoundAction {
     public void prepare(CastContext context, ConfigurationSection parameters) {
         super.prepare(context, parameters);
         targetSelf = parameters.getBoolean("target_caster");
+        sourceAtTarget = parameters.getBoolean("source_at_target");
         targetOffset = ConfigurationUtils.getVector(parameters, "target_offset");
         sourceOffset = ConfigurationUtils.getVector(parameters, "source_offset");
-        targetOffset = ConfigurationUtils.getVector(parameters, "random_target_offset");
-        sourceOffset = ConfigurationUtils.getVector(parameters, "random_source_offset");
         randomTargetOffset = ConfigurationUtils.getVector(parameters, "random_target_offset");
         randomSourceOffset = ConfigurationUtils.getVector(parameters, "random_source_offset");
         sourceDirection = ConfigurationUtils.getVector(parameters, "source_direction");
-        targetDirection = ConfigurationUtils.getVector(parameters, "target_direction");
         targetDirection = ConfigurationUtils.getVector(parameters, "target_direction");
         sourceDirectionOffset = ConfigurationUtils.getVector(parameters, "source_direction_offset");
         targetDirectionOffset = ConfigurationUtils.getVector(parameters, "source_direction_offset");
@@ -132,6 +131,13 @@ public class ChangeContextAction extends CompoundAction {
         if (targetDirectionSpeed != null && targetLocation != null)
         {
             targetLocation = targetLocation.add(direction.clone().multiply(targetDirectionSpeed));
+        }
+        if (sourceAtTarget && targetLocation != null)
+        {
+            sourceLocation.setX(targetLocation.getX());
+            sourceLocation.setY(targetLocation.getY());
+            sourceLocation.setZ(targetLocation.getZ());
+            sourceLocation.setWorld(targetLocation.getWorld());
         }
         if (persistTarget)
         {

@@ -78,7 +78,6 @@ waterbending:
       stream: 40
       heal: 80
       cure: 1
-      gills: 20
       force: 10
 
 earthbending:
