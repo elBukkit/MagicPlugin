@@ -11,6 +11,7 @@ import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.magic.MagicPlugin;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
+import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -44,10 +45,14 @@ public class GiveItemAction extends BaseSpellAction
                 ItemMeta meta = item.getItemMeta();
                 if (name != null && !name.isEmpty())
                 {
-                    meta.setDisplayName(name);
+                    meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', name));
                 }
                 if (lore != null && !lore.isEmpty())
                 {
+                    for (int i = 0; i < lore.size(); i++)
+                    {
+                        lore.set(i, ChatColor.translateAlternateColorCodes('&', lore.get(i)));
+                    }
                     meta.setLore(lore);
                 }
                 item.setItemMeta(meta);
