@@ -91,6 +91,7 @@ earthbending:
     spell_count:
       1: 100
     spells:
+      block: 20
       blob: 5
       iterate: 5
       harden: 15

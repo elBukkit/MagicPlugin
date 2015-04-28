@@ -59,7 +59,7 @@ earthbending:
     active_spell: earth
     spells:
         - blob
-        - iterate
+        - block
 
 firebending:
     path: firebending

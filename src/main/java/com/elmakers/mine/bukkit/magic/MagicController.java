@@ -1732,7 +1732,7 @@ public class MagicController implements Listener, MageController {
 	public static Spell loadSpell(String name, ConfigurationSection node, MageController controller)
 	{
 		String className = node.getString("class");
-		if (className == null)
+		if (className == null || className.equalsIgnoreCase("action") || className.equalsIgnoreCase("actionspell") )
         {
             className = "com.elmakers.mine.bukkit.spell.ActionSpell";
         }
