@@ -201,10 +201,8 @@ url_icons_enabled: true
 # Set this to have the hotbar show what spells are castable
 live_hotbar: true
 
-# This will "punish" players for trying to melee with a wand item
-# and prevent damage dealt by smacking with a wand
-# sword-wands are exempt.
-wand_abuse_damage: 0.001
+# Turn this on if you don't want players to be able to deal damage
+# other than with a wand
 prevent_melee_damage: false
 
 wand_inventory_open_sound: level_up,0.3,1.5

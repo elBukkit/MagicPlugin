@@ -2016,7 +2016,6 @@ public class MagicController implements Listener, MageController {
         Wand.inventoryCloseSound = ConfigurationUtils.toSoundEffect(properties.getString("wand_inventory_close_sound"));
         Wand.inventoryCycleSound = ConfigurationUtils.toSoundEffect(properties.getString("wand_inventory_cycle_sound"));
 
-        wandAbuseDamage = properties.getDouble("wand_abuse_damage", 0);
         preventMeleeDamage = properties.getBoolean("prevent_melee_damage", false);
 
 		// Set up other systems
@@ -2396,16 +2395,6 @@ public class MagicController implements Listener, MageController {
             Player player = (Player)damager;
             ItemStack itemInHand = player.getItemInHand();
             if (!isSword(itemInHand))
-            {
-                event.setDamage(0);
-            }
-        }
-        else if (wandAbuseDamage > 0 && event.getCause() == EntityDamageEvent.DamageCause.ENTITY_ATTACK && damager instanceof Player && isMage(damager) && entity instanceof Player)
-        {
-            Player player = (Player)damager;
-            Mage mage = getMage(player);
-            com.elmakers.mine.bukkit.api.wand.Wand wand = mage.getActiveWand();
-            if (wand != null && !isSword(wand.getItem()))
             {
                 event.setDamage(0);
             }
@@ -4891,7 +4880,6 @@ public class MagicController implements Listener, MageController {
     private int								    ageDroppedItems				    = 0;
     private int								    autoUndo						= 0;
     private int								    autoSaveTaskId					= 0;
-    private double                              wandAbuseDamage                 = 0;
     private boolean                             preventMeleeDamage              = false;
     private WarpController						warpController					= null;
 
