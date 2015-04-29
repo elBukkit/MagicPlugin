@@ -125,11 +125,6 @@ public class WandCommandExecutor extends MagicTabExecutor {
             addIfPermissible(sender, options, "Magic.commands." + permissionKey + ".", "duplicate");
             addIfPermissible(sender, options, "Magic.commands." + permissionKey + ".", "restore");
             addIfPermissible(sender, options, "Magic.commands." + permissionKey + ".", "unlock");
-
-            Collection<String> allWands = api.getWandKeys();
-			for (String wandKey : allWands) {
-				addIfPermissible(sender, options, "Magic.commands." + permissionKey + ".wand.", wandKey, true);
-			}
 		}
 		
 		if (args.length == 2) {
