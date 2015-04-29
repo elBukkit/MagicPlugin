@@ -1,5 +1,7 @@
 # TODO
 
+ - Prevent damaging wands on entity damage/interact
+
  - Logout on death still buggy?
 
  - Map brush was acting wonky.

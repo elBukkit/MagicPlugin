@@ -37,6 +37,10 @@ commands:
     description: Give players items
     usage: /mgive <Player> [itemname] <amount>
     permission: Magic.commands.mgive
+  mmap:
+    description: Create and manage Magic image maps
+    usage: /mmaps
+    permission: Magic.commands.mmap
   mtrait:
     description: Manage Magic NPCs
     usage: /mtrait <id#> <property> <value>
@@ -292,6 +296,30 @@ permissions:
     default: op
   Magic.commands.magic.debug:
     description: Player may toggle debug
+    type: boolean
+    default: op
+  Magic.commands.mskills:
+    description: Player may use the /mskills menu
+    type: boolean
+    default: true
+  Magic.commands.mmap:
+    description: Player may use the /mmap command
+    type: boolean
+    default: op
+  Magic.commands.mmap.list:
+    description: Player may use the /mmap list command
+    type: boolean
+    default: op
+  Magic.commands.mmap.give:
+    description: Player may use the /mmap give command
+    type: boolean
+    default: op
+  Magic.commands.mmap.load:
+    description: Player may use the /mmap load command
+    type: boolean
+    default: op
+  Magic.commands.mmap.import:
+    description: Player may use the /mmap import command
     type: boolean
     default: op
   Magic.wand.use:

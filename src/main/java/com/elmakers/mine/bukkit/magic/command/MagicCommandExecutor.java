@@ -314,7 +314,6 @@ public class MagicCommandExecutor extends MagicTabExecutor {
 				}
 
 				int shown = 0;
-                MageController apiController = api.getController();
                 Collection<URLMap> maps = api.getController().getMaps().getAll();
 				for (URLMap map : maps) {
 					Short mapId = map.getId();

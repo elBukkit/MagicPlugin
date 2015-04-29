@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## 4.9.5
+
+ - Add "mmap" command for dealing with image maps (load, give, list)
+ - Add ability to import Pixelator images into Magic
+
 ## 4.9.4
 
  - Fix very short visibility range of firework effects
