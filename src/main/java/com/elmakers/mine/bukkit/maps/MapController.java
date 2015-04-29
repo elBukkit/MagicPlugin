@@ -335,7 +335,8 @@ public class MapController implements com.elmakers.mine.bukkit.api.maps.MapContr
     @Override
     public void loadMap(String world, short id, String url, String name, int x, int y, int width, int height, Integer priority)
     {
-        get(world, id, url, name, x, y, null, null, width, height, priority);
+        URLMap map = get(world, id, url, name, x, y, null, null, width, height, priority);
+        map.getMapView();
     }
 
     @Override
