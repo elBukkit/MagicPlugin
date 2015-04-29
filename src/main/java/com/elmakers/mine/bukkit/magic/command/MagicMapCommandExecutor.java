@@ -24,7 +24,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.zip.InflaterInputStream;
 
-public class MagicMapCommandExecutor extends MagicTabExecutor {
+public class MagicMapCommandExecutor extends MagicMapExecutor {
 	public MagicMapCommandExecutor(MagicAPI api) {
 		super(api);
 	}
@@ -174,29 +174,6 @@ public class MagicMapCommandExecutor extends MagicTabExecutor {
         }
         return true;
 	}
-
-    protected void onMapList(CommandSender sender, String keyword)
-    {
-        int shown = 0;
-        Collection<URLMap> maps = api.getController().getMaps().getAll();
-        for (URLMap map : maps) {
-            Short mapId = map.getId();
-            if (map == null || mapId == null) continue;
-
-            if (map.matches(keyword)) {
-                shown++;
-                String name = map.getName();
-                name = (name == null ? "(None)" : name);
-                sender.sendMessage(ChatColor.AQUA + "" + mapId + ChatColor.WHITE + ": " +
-                        name + " => " + ChatColor.GRAY + map.getURL());
-            }
-        }
-        if (shown == 0) {
-            sender.sendMessage("No maps found" + (keyword.length() > 0 ? " matching " + keyword : "") + ", use /mmap load to add more maps");
-        } else {
-            sender.sendMessage(shown + " maps found matching " + keyword);
-        }
-    }
 
     protected void onMapLoad(CommandSender sender, World world, String url, String mapName, int width, int height, int x, int y, Integer priority)
     {

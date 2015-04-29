@@ -4323,6 +4323,7 @@ blink:
                location: origin
                particle_override: particleOrbital
                color_override: colorOrbital
+               use_wand_location: false
                effectlib:
                    class: AtomEffect
                    particleNucleus: smoke_large
@@ -4340,6 +4341,7 @@ blink:
                location: origin
                particle_override: particleOrbital
                color_override: colorOrbital
+               use_wand_location: false
                effectlib:
                    class: AtomEffect
                    particleNucleus: spell

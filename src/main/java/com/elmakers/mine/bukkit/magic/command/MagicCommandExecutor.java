@@ -38,7 +38,7 @@ import com.elmakers.mine.bukkit.api.wand.LostWand;
 import com.elmakers.mine.bukkit.api.wand.Wand;
 import com.elmakers.mine.bukkit.wand.WandCleanupRunnable;
 
-public class MagicCommandExecutor extends MagicTabExecutor {
+public class MagicCommandExecutor extends MagicMapExecutor {
 
 	private RunnableJob runningTask = null;
 	
@@ -312,26 +312,7 @@ public class MagicCommandExecutor extends MagicTabExecutor {
 				if (args.length > 2) {
 					keyword = args[2];
 				}
-
-				int shown = 0;
-                Collection<URLMap> maps = api.getController().getMaps().getAll();
-				for (URLMap map : maps) {
-					Short mapId = map.getId();
-					if (map == null || mapId == null) continue;
-
-					if (map.matches(keyword)) {
-						shown++;
-						String name = map.getName();
-						name = (name == null ? "(None)" : name);
-						sender.sendMessage(ChatColor.AQUA + "" + mapId + ChatColor.WHITE + ": " +
-								name + " => " + ChatColor.GRAY + map.getURL());
-					}
-				}
-				if (shown == 0) {
-					sender.sendMessage("No maps found" + (keyword.length() > 0 ? " matching " + keyword : "") + ", use /castp <player> camera [url|player] [...]");
-				} else {
-					sender.sendMessage(shown + " maps found matching " + keyword);
-				}
+                onMapList(sender, keyword);
 				return true;
 			}
 		
