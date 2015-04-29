@@ -101,16 +101,12 @@ public class URLMap extends MapRenderer implements com.elmakers.mine.bukkit.api.
         return url;
     }
 
-    protected MapView getMapView() {
-        return getMapView(true);
-    }
-
     public short getId() {
         return id;
     }
 
     @SuppressWarnings("deprecation")
-    protected MapView getMapView(boolean recreateIfNecessary) {
+    protected MapView getMapView() {
         if (!enabled) {
             return null;
         }
@@ -120,7 +116,7 @@ public class URLMap extends MapRenderer implements com.elmakers.mine.bukkit.api.
             enabled = false;
             controller.warning("Failed to get map id " + id + " for key " + getKey() + ", disabled, re-enable in config and fix id");
             controller.save();
-            return mapView;
+            return null;
         }
         List<MapRenderer> renderers = mapView.getRenderers();
         boolean needsRenderer = false;
@@ -177,37 +173,47 @@ public class URLMap extends MapRenderer implements com.elmakers.mine.bukkit.api.
             Bukkit.getScheduler().runTaskAsynchronously(plugin, new Runnable() {
                 public void run() {
                     try {
-                        BufferedImage rawImage = null;
-                        @SuppressWarnings("deprecation")
-                        String cacheFileName = URLEncoder.encode(url);
-                        File cacheFile = cacheFolder != null ? new File(cacheFolder, cacheFileName) : null;
-                        if (cacheFile != null) {
-                            if (cacheFile.exists()) {
-                                controller.info("Loading from cache: " + cacheFile.getName());
-                                rawImage = ImageIO.read(cacheFile);
+                        BufferedImage rawImage;
+                        if (!url.startsWith("http"))
+                        {
+                            File baseFolder = plugin.getDataFolder().getParentFile().getParentFile();
+                            File fileName = new File(baseFolder, url);
+                            controller.info("Loading map file: " + fileName.getName());
+                            rawImage = ImageIO.read(fileName);
+                        }
+                        else
+                        {
+                            @SuppressWarnings("deprecation")
+                            String cacheFileName = URLEncoder.encode(url);
+                            File cacheFile = cacheFolder != null ? new File(cacheFolder, cacheFileName) : null;
+                            if (cacheFile != null) {
+                                if (cacheFile.exists()) {
+                                    controller.info("Loading from cache: " + cacheFile.getName());
+                                    rawImage = ImageIO.read(cacheFile);
+                                } else {
+                                    controller.info("Loading " + url);
+                                    URL imageUrl = new URL(url);
+                                    HttpURLConnection conn = (HttpURLConnection)imageUrl.openConnection();
+                                    conn.setConnectTimeout(30000);
+                                    conn.setReadTimeout(30000);
+                                    conn.setInstanceFollowRedirects(true);
+                                    InputStream in = conn.getInputStream();
+                                    OutputStream out = new FileOutputStream(cacheFile);
+                                    byte[] buffer = new byte[10 * 1024];
+                                    int len;
+                                    while ((len = in.read(buffer)) != -1) {
+                                        out.write(buffer, 0, len);
+                                    }
+                                    out.close();
+                                    in.close();
+
+                                    rawImage = ImageIO.read(cacheFile);
+                                }
                             } else {
                                 controller.info("Loading " + url);
                                 URL imageUrl = new URL(url);
-                                HttpURLConnection conn = (HttpURLConnection)imageUrl.openConnection();
-                                conn.setConnectTimeout(30000);
-                                conn.setReadTimeout(30000);
-                                conn.setInstanceFollowRedirects(true);
-                                InputStream in = conn.getInputStream();
-                                OutputStream out = new FileOutputStream(cacheFile);
-                                byte[] buffer = new byte[10 * 1024];
-                                int len;
-                                while ((len = in.read(buffer)) != -1) {
-                                    out.write(buffer, 0, len);
-                                }
-                                out.close();
-                                in.close();
-
-                                rawImage = ImageIO.read(cacheFile);
+                                rawImage = ImageIO.read(imageUrl);
                             }
-                        } else {
-                            controller.info("Loading " + url);
-                            URL imageUrl = new URL(url);
-                            rawImage = ImageIO.read(imageUrl);
                         }
 
                         width = width <= 0 ? rawImage.getWidth() + width : width;
@@ -224,7 +230,7 @@ public class URLMap extends MapRenderer implements com.elmakers.mine.bukkit.api.
 
                         loading = false;
                     } catch (Exception ex) {
-                        controller.warning("Failed to load url " + url + ": " + ex.getMessage());
+                        controller.warning("Failed to load map " + url + ": " + ex.getMessage());
                     }
                 }
             });

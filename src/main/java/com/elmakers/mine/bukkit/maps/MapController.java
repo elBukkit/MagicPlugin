@@ -259,6 +259,25 @@ public class MapController implements com.elmakers.mine.bukkit.api.maps.MapContr
         return map.getMapView();
     }
 
+    @Override
+    public ItemStack getMapItem(short id)
+    {
+        ItemStack newMapItem = new ItemStack(Material.MAP, 1, id);
+        URLMap loadedMap = idMap.get(id);
+        if (loadedMap != null)
+        {
+            String mapName = loadedMap.getName();
+            if (mapName != null)
+            {
+                ItemMeta meta = newMapItem.getItemMeta();
+                meta.setDisplayName(mapName);
+                newMapItem.setItemMeta(meta);
+            }
+        }
+
+        return newMapItem;
+    }
+
     /**
      * Get a new ItemStack for the specified url with a specific cropping.
      *
@@ -311,6 +330,18 @@ public class MapController implements com.elmakers.mine.bukkit.api.maps.MapContr
         for (URLMap map : keyMap.values()) {
             map.resendTo(playerName);
         }
+    }
+
+    @Override
+    public void loadMap(String world, short id, String url, String name, int x, int y, int width, int height, Integer priority)
+    {
+        get(world, id, url, name, x, y, null, null, width, height, priority);
+    }
+
+    @Override
+    public boolean hasMap(short id)
+    {
+        return idMap.containsKey(id);
     }
 
     private URLMap get(String world, short mapId, String url, String name, int x, int y, Integer xOverlay, Integer yOverlay, int width, int height, Integer priority) {
