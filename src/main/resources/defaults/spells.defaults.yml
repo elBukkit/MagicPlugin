@@ -5012,8 +5012,9 @@ levitate:
         cast:
            - class: EffectSingle
              sound: enderdragon_wings
-             location: both
+             location: origin
              color_override: color
+             use_wand_location: false
              effectlib:
                  class: SphereEffect
                  particle: redstone
@@ -5396,6 +5397,7 @@ blind:
            firework: ball
         -  class: EffectSingle
            location: target
+           use_hit_location: false
            effectlib:
              class: SphereEffect
              iterations: 17
