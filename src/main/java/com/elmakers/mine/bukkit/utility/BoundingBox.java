@@ -63,6 +63,37 @@ public class BoundingBox
         return true;
     }
 
+    protected Vector getIntersection(double fDst1, double fDst2, Vector P1, Vector P2) {
+        if ((fDst1 * fDst2) >= 0.0f) return null;
+        if (fDst1 == fDst2) return null;
+        Vector P2_clone = P2.clone();
+        return P1.clone().add(P2_clone.subtract(P1).multiply(-fDst1 / (fDst2 - fDst1)));
+    }
+
+    protected boolean inBox(Vector hit, int axis) {
+    if (axis==1 && hit.getZ() > min.getZ() && hit.getZ() < max.getZ() && hit.getY() > min.getY() && hit.getY() < max.getY()) return true;
+    if (axis==2 && hit.getZ() > min.getZ() && hit.getZ() < max.getZ() && hit.getX() > min.getX() && hit.getX() < max.getX()) return true;
+    if (axis==3 && hit.getX() > min.getX() && hit.getX() < max.getX() && hit.getY() > min.getY() && hit.getY() < max.getY()) return true;
+    return false;
+}
+
+    public Vector getIntersection(Vector p1, Vector p2)
+    {
+        Vector hit = getIntersection(p1.getX() - min.getX(), p2.getX() - min.getX(), p1, p2);
+        if (hit != null && inBox(hit, 1)) return hit;
+        hit = getIntersection(p1.getY() - min.getY(), p2.getY() - min.getY(), p1, p2);
+        if (hit != null && inBox(hit, 2)) return hit;
+        hit = getIntersection(p1.getZ() - min.getZ(), p2.getZ() - min.getZ(), p1, p2);
+        if (hit != null && inBox(hit, 3)) return hit;
+        hit = getIntersection(p1.getX() - max.getX(), p2.getX() - max.getX(), p1, p2);
+        if (hit != null && inBox(hit, 1)) return hit;
+        hit = getIntersection(p1.getY() - max.getY(), p2.getY() - max.getY(), p1, p2);
+        if (hit != null && inBox(hit, 2)) return hit;
+        hit = getIntersection(p1.getZ() - max.getZ(), p2.getZ() - max.getZ(), p1, p2);
+        if (hit != null && inBox(hit, 3)) return hit;
+        return null;
+    }
+
     @Override
     public String toString()
     {

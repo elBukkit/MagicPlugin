@@ -228,6 +228,17 @@ public class Target implements Comparable<Target>
             {
                 return;
             }
+            Vector hit = hitbox.getIntersection(playerLoc, playerMaxRange);
+            if (hit != null)
+            {
+                location.setX(hit.getX());
+                location.setY(hit.getY());
+                location.setZ(hit.getZ());
+            }
+            if (DEBUG_TARGETING)
+            {
+                org.bukkit.Bukkit.getLogger().info("HIT: " + hit);
+            }
         }
         else
         {
