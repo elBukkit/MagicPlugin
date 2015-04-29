@@ -2384,10 +2384,12 @@ public class MagicController implements Listener, MageController {
         if (isMage(entity)) {
             isProtected = getMage(entity).isSuperProtected();
         }
-        if (!isProtected) {
-            ActionHandler.targetEffects(damager, entity);
-            ActionHandler.runActions(damager, entity.getLocation(), entity);
+        if (isProtected) {
+            event.setDamage(0);
+            return;
         }
+        ActionHandler.targetEffects(damager, entity);
+        ActionHandler.runActions(damager, entity.getLocation(), entity);
 
         if (preventMeleeDamage && event.getCause() == EntityDamageEvent.DamageCause.ENTITY_ATTACK && damager instanceof Player && entity instanceof Player)
         {
@@ -2395,7 +2397,7 @@ public class MagicController implements Listener, MageController {
             ItemStack itemInHand = player.getItemInHand();
             if (!isSword(itemInHand))
             {
-                event.setCancelled(true);
+                event.setDamage(0);
             }
         }
         else if (wandAbuseDamage > 0 && event.getCause() == EntityDamageEvent.DamageCause.ENTITY_ATTACK && damager instanceof Player && isMage(damager) && entity instanceof Player)
@@ -2405,9 +2407,7 @@ public class MagicController implements Listener, MageController {
             com.elmakers.mine.bukkit.api.wand.Wand wand = mage.getActiveWand();
             if (wand != null && !isSword(wand.getItem()))
             {
-                event.setCancelled(true);
-                player.playEffect(EntityEffect.HURT);
-                player.damage(wandAbuseDamage);
+                event.setDamage(0);
             }
         }
 	}
@@ -2969,6 +2969,12 @@ public class MagicController implements Listener, MageController {
 
 		Wand wand = mage.getActiveWand();
         boolean hasWand = Wand.hasActiveWand(player);
+
+        // Reset indestructible wand durability
+        if (wand != null && wand.isIndestructible())
+        {
+            wand.getItem().setDurability((short)0);
+        }
 
         // Safety check for a wand getting removed from the player's inventory
         if ((itemInHand == null || itemInHand.getType() == Material.AIR) && wand != null)
@@ -3649,12 +3655,6 @@ public class MagicController implements Listener, MageController {
             event.setCancelled(true);
             block.setType(Material.AIR);
             com.elmakers.mine.bukkit.block.UndoList.commit(modifiedBlock);
-        }
-        Mage mage = getMage(event.getPlayer());
-        com.elmakers.mine.bukkit.api.wand.Wand wand = mage.getActiveWand();
-        if (wand != null && wand.isIndestructible())
-        {
-            wand.getItem().setDurability((short)0);
         }
     }
 

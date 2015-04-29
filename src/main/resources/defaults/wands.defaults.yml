@@ -140,7 +140,7 @@ beginner:
 student:
     effect_color: '00FF00'
     path: student
-    indestructible: false
+    indestructible: true
     xp_regeneration: 30
     protection_falling: 0.5
     xp_max: 150
@@ -179,7 +179,7 @@ student:
 apprentice:
     effect_color: '22FF22'
     path: apprentice
-    indestructible: false
+    indestructible: true
     xp_regeneration: 40
     xp_max: 200
     xp: 200
