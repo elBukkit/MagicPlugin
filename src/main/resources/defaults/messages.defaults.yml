@@ -1208,10 +1208,12 @@ spells:
         name: Kill
         description: Throw a deadly projectile
         cast: DIE!
+        upgrade_description: "&r&b&bull; &6Increased damage, reduced cooldown"
     torture:
         name: Torture
         description: Mercicelly torture your enemy
         cast: Feel my wrath!
+        upgrade_description: "&r&b&bull; &6Increased damage and duration"
     rubberize:
         name: Rubberize
         description: Make the target area bouncy
@@ -1236,6 +1238,7 @@ spells:
         name: Wound
         description: A short-range damage spell
         cast: You slash $target.
+        upgrade_description: "&r&b&bull; &6Increased damage"
     stun:
         name: Stun
         description: Stun and damage your target

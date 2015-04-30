@@ -5669,10 +5669,11 @@ kill:
     category: master
     pvp_restricted: true
     worth: 5500
+    upgrade_required_path: master
+    upgrade_required_casts: 50
     actions:
       cast:
         - class: Delay
-          delay: 2000
         - class: PlayEffects
           effect: launch_projectile
         - class: Projectile
@@ -5728,12 +5729,27 @@ kill:
         spread: 0
         speed: 1
         size: 0
-        damage: 40
+        damage: 20
         break_blocks: false
+        delay: 3000
     costs:
         mana: 150
 
+kill|2:
+    upgrade_required_path: master
+    upgrade_required_casts: 50
+    parameters:
+        delay: 2000
+        damage: 40
+
+kill|3:
+    parameters:
+        delay: 1000
+        damage: 60
+
 torture:
+    upgrade_required_path: master
+    upgrade_required_casts: 50
     icon_url: http://textures.minecraft.net/texture/df19b39e565b16cbdabe364b91e35894d1e9bac0ad3fa4b0905ec4f366627
     icon: quartz
     category: master
@@ -5790,13 +5806,27 @@ torture:
         target_type: LivingEntity
         target_breakables: 3
         target: other
-        duration: 5500
-        damage: 8
+        duration: 3000
+        damage: 4
         effect_slow: 20
-        effect_wither: 10
+        effect_wither: 1
         effect_confusion: 5
         cooldown: 13000
         hitbox: true
+
+torture|2:
+    upgrade_required_path: master
+    upgrade_required_casts: 50
+    parameters:
+        duration: 5000
+        effect_wither: 5
+        damage: 6
+
+torture|3:
+    parameters:
+        duration: 7000
+        effect_wither: 10
+        damage: 8
 
 rubberize:
     icon: slime_ball
@@ -5975,6 +6005,8 @@ entangle:
         mana: 70
 
 wound:
+    upgrade_required_path: master
+    upgrade_required_casts: 50
     icon_url: http://textures.minecraft.net/texture/df19b39e565b16cbdabe364b91e35894d1e9bac0ad3fa4b0905ec4f366627
     icon: quartz
     category: combat
@@ -5995,7 +6027,7 @@ wound:
              class: ConeEffect
              iterations: 15
              particle: drip_lava
-             lengthGrow: 0.4
+             lengthGrow: 0.05
         -  class: EffectSingle
            location: target
            color: 8A0829
@@ -6022,7 +6054,7 @@ wound:
              class: ConeEffect
              iterations: 15
              particle: drip_lava
-             lengthGrow: 0.4
+             lengthGrow: 0.05
         -  class: EffectSingle
            location: target
            color: 8A0829
@@ -6030,13 +6062,22 @@ wound:
     parameters:
         target_type: LivingEntity
         allow_max_range: false
-        range: 15
-        hitbox: true
-        fov: 0.2
-        damage: 6
+        range: 5
+        hitbox: false
+        fov: 0.4
+        damage: 4
         target_breakables: 3
+        cooldown: 2000
     costs:
         mana: 120
+
+wound|2:
+  parameters:
+    damage: 6
+
+wound|3:
+  parameters:
+    damage: 8
 
 stun:
     upgrade_required_path: student

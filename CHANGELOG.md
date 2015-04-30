@@ -9,6 +9,7 @@
  - Fix issue with inventory-mode wands when the default mode is chest
  - Fix glitchy Admission behavior
  - Add Secure spell
+ - Add Levels 2 and 3 to Wound, Kill and Torture spells
 
 ## 4.9.4
 
