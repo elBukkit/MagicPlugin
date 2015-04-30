@@ -1681,7 +1681,7 @@ cure:
         target_type: LivingEntity
         target: any_entity
         allow_max_range: false
-        range: 15
+        range: 5
         bypass_confusion: true
         duration: 1000
         effect_saturation: 4
@@ -1735,7 +1735,7 @@ heal:
         target_type: LivingEntity
         target: any_entity
         allow_max_range: false
-        range: 16
+        range: 5
         duration: 1000
         effect_saturation: 4
         amount: 2
@@ -1836,6 +1836,7 @@ gather:
              class: WarpEffect
              particle: portal
     parameters:
+        target: none
         command: tpa @tn
         target_self: false
         cooldown: 30000
@@ -1885,6 +1886,7 @@ icbm:
         -  class: EffectSingle
            sound: ghast_fireball
     parameters:
+        target: none
         size: 5
         projectile: LargeFireball
         undo: 30000
@@ -1918,6 +1920,7 @@ neutron:
              particle: flame
              iterations: 1
     parameters:
+        target: none
         target_type: LivingEntity
         projectile: Snowball
         player_damage: 8
@@ -1943,6 +1946,7 @@ wither:
         -  class: EffectSingle
            sound: wither_shoot
     parameters:
+        target: none
         projectile: WitherSkull
         effect_wither: 160,2
         radius: 2
@@ -1981,6 +1985,7 @@ arrowrain:
         -  class: EffectSingle
            sound: shoot_arrow
     parameters:
+        target: none
         projectile: Arrow
         count: 4
         fire: false
@@ -2028,6 +2033,7 @@ gatling:
            sound_pitch: 0.3
            particle: smoke_normal
     parameters:
+      target: none
       projectile: Arrow
       speed: 3
       spread: 12
@@ -2107,6 +2113,7 @@ arrow:
            firework: ball
            custom_sound: magic.hit
     parameters:
+      target: none
       projectile: Arrow
       damage: .75
       speed: 2
@@ -2199,6 +2206,7 @@ flashbang:
              iterations: 16
              particle: smoke_normal
     parameters:
+      target: none
       brush: sea_lantern
       undo: 10000
       duration: 8000
@@ -2235,6 +2243,7 @@ weather:
              iterations: 1
              particle: drip_water
     parameters:
+        target: none
         cooldown: 30000
         weather: cycle
     costs:
@@ -2911,6 +2920,7 @@ day:
            particle_data: 2
            particle_count: 5
     parameters:
+        target: none
         cooldown: 5000
         time: day
         weather: clear
@@ -2936,6 +2946,7 @@ night:
              iterations: 2
              particle: smoke_large
     parameters:
+        target: none
         cooldown: 5000
         time: night
         cycle_moon_phase: true
@@ -2961,6 +2972,7 @@ time:
              iterations: 2
              particle: enchantment_table
     parameters:
+        target: none
         allow_max_range: false
         allow_night: true
         allow_day: true
@@ -2982,6 +2994,7 @@ bridge:
            effect: step_sound
            location: target
     parameters:
+        target: none
         transparent: transparent_to_construction
     costs:
         mana: 5
@@ -3072,6 +3085,7 @@ grenade:
         -  class: EffectSingle
            sound: lava_pop
     parameters:
+        target: none
         allow_max_range: true
         range: 32
         size: 2
@@ -3106,8 +3120,7 @@ cluster:
         -  class: EffectSingle
            sound: creeper_hiss
     parameters:
-        allow_max_range: true
-        range: 32
+        target: none
         size: 2
         fuse: 60
         fire: false
@@ -3134,8 +3147,7 @@ bomb:
            location: target
            particle_count: 4
     parameters:
-        allow_max_range: true
-        range: 32
+        target: none
         size: 1
         fuse: 60
         fire: true
@@ -3845,6 +3857,7 @@ commit:
         -  class: EffectSingle
            custom_sound: magic.disillusion
     parameters:
+        target: none
         target: self
         bypass_backfire: true
         loud: true
@@ -5491,6 +5504,7 @@ pollinate:
               iterations: 16
               radius: 4
     parameters:
+        target: none
         radius: 3
         center_probability: 0.9
         outer_probability: 0.1
@@ -5706,6 +5720,7 @@ kill:
              particleOrbital: redstone
              iterations: 16
     parameters:
+        target: none
         projectile: WitherSkull
         cooldown: 30000
         target_breakables: 5

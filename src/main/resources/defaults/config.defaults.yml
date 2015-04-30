@@ -465,24 +465,26 @@ pvp_restricted: false
 debug_effects: false
 
 # Entity-specific hitboxes for targeting purposes
-hitboxes:
-  default: 1.25,1.5,1.25
-  player: 1.5,2,1.5
-  spider: 2, 1, 2
-  chicken: 1, 1, 1
-  rabbit: 1, 1, 1
-  silverfish: 1, 1, 1
-  bat: 1, 1, 1
-  slime: 2, 2, 2
-  magma_cube: 2, 2, 2
-  enderman: 1.5,3,1.5
-  ghast: 4,4,4
-  wither: 4,4,4
-  ender_dragon: 6,4,6
-  giant: 6,13,6
-  pig: 1.25, 1.25, 1.25
-  sheep: 1.25, 1.25, 1.25
-  cow: 1.5, 1.5, 1.5
+# Magic uses the vanilla hitboxes by default, but you
+# can override that per-entity here.
+#
+# hitboxes:
+#   player: 1.5,2,1.5
+#   spider: 2, 1, 2
+#   chicken: 1, 1, 1
+#   rabbit: 1, 1, 1
+#   silverfish: 1, 1, 1
+#   bat: 1, 1, 1
+#   slime: 2, 2, 2
+#   magma_cube: 2, 2, 2
+#   enderman: 1.5,3,1.5
+#   ghast: 4,4,4
+#   wither: 4,4,4
+#   ender_dragon: 6,4,6
+#   giant: 6,13,6
+#   pig: 1.25, 1.25, 1.25
+#   sheep: 1.25, 1.25, 1.25
+#   cow: 1.5, 1.5, 1.5
 
 ### Economy Helpers
 

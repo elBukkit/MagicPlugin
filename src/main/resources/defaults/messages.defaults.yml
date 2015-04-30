@@ -130,6 +130,7 @@ wand:
     spell_aura: "Aura: &6$spell"
     costs_description: Costs $description
     active_costs_description: Costs $description Per Second
+    range_description: "&9Range: &6$range &9meters"
     owner_description: $name's Wand
     bound_description: Bound to $name
     unmodifiable: That wand can not be modified
