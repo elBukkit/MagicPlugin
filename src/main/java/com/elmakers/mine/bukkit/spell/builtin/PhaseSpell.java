@@ -48,7 +48,11 @@ public class PhaseSpell extends TargetingSpell
 			}
 			float scale = (float)parameters.getDouble("scale", 1.0f);
 			if (targetWorld != null) {
-				targetLocation = new Location(targetWorld, playerLocation.getX() * scale, playerLocation.getY(), playerLocation.getZ() * scale);
+                if (targetWorld.getEnvironment() == World.Environment.THE_END) {
+                    targetLocation = targetWorld.getSpawnLocation();
+                } else {
+                    targetLocation = new Location(targetWorld, playerLocation.getX() * scale, playerLocation.getY(), playerLocation.getZ() * scale);
+                }
 			}
 		}
 		else

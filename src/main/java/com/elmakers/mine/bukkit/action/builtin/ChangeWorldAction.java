@@ -37,12 +37,16 @@ public class ChangeWorldAction extends BaseTeleportAction
 
         String worldName = world.getName();
         if (parameters.contains("target_world")) {
-            World  targetWorld = getWorld(context, parameters.getString("target_world"), parameters.getBoolean("load", true));
+            World targetWorld = getWorld(context, parameters.getString("target_world"), parameters.getBoolean("load", true));
             if (targetWorld == null) {
                 return;
             }
-            double scale = parameters.getDouble("scale", 1);
-            targetLocation = new Location(targetWorld, playerLocation.getX() * scale, playerLocation.getY(), playerLocation.getZ() * scale);
+            if (targetWorld.getEnvironment() == World.Environment.THE_END) {
+                targetLocation = targetWorld.getSpawnLocation();
+            } else {
+                double scale = parameters.getDouble("scale", 1);
+                targetLocation = new Location(targetWorld, playerLocation.getX() * scale, playerLocation.getY(), playerLocation.getZ() * scale);
+            }
         }
         else if (parameters.contains("worlds"))
         {

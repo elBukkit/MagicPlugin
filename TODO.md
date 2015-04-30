@@ -1,7 +1,6 @@
 # TODO
 
- - Logout on death still buggy?
- - Is phasing to the end broken?
+ - Logout on death still buggy? (can not reproduce)
 
  - Wand dupe issue:
    If your ein inventory mode, press E to open inv,
