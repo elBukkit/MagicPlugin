@@ -3,6 +3,7 @@
  - Logout on death still buggy? (can not reproduce)
 
  - Wand dupe issue:
+   (can not reproduce, but certainly lag-related. Probably same issue as Recall and the other GUIs have)
    If your ein inventory mode, press E to open inv,
    left click the wand does nothing but sometimes if you right
    click you can move the wand up into your inventory, leave it there,
@@ -11,7 +12,6 @@
    i just duped about four wands but now i cant dupe them anymore as i can no
    longer move the wand out of my hotbar and into my inv.. idk if this was a one time
    thing but should be looked into.
-
 
  - Map brush was acting wonky.
  - Recall still losing waypoints .. also can grab items out?
@@ -31,8 +31,10 @@
    - Add /parameter command for inspecting single param
  - Nerf Force (shift to break free? Fall protection?)
  - Make map work like replicate, clone - with start point set on activate
- - /magic describe should show info about current spell?
+   - and maybe not repeat
  - Add repeat option for schematic brushes
+   - or generalized option that works with map, too
+ - /magic describe should show info about current spell?
  - Support for locking/unlocking chests
  - Configurable FOV weight for targeting (Survival Sense)
  - Maximum enchant count for wands

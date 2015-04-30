@@ -6297,6 +6297,33 @@ admission|2:
         range: 32
         destructible: doors
 
+secure:
+    icon_url: http://textures.minecraft.net/texture/dea4155d3f45e95c71b441d1a233586dd2efd99e0d85a286e41dea2a5231ab7
+    icon: iron_door
+    category: utility
+    worth: 5000
+    actions:
+       cast:
+       - class: Lock
+    effects:
+        cast:
+        -  class: EffectSingle
+           custom_sound: magic.shimmer
+           location: origin
+        -  class: EffectTrail
+           particle: smoke_normal
+           particle_data: 1
+           particle_count: 5
+    parameters:
+        range: 4
+        check_destructible: true
+        destructible: chest
+        transparent: transparent_to_construction
+        cooldown: 10000
+        key_icon: "skull_item:http://textures.minecraft.net/texture/3944e12e8e67fd67a55359df56c3c59c99550f6eaccb23813769afb2f1992"
+    costs:
+        mana: 100
+
 harden:
     icon_url: http://textures.minecraft.net/texture/36cf36693ac95c88c8dd92e1d5a54c92f593e802b3ae834c6bd87628b1b83
     icon: flint

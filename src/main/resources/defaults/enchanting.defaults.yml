@@ -372,6 +372,7 @@ master:
       anvil: 0,0,10
       singularity: 0,1,5
       tornado: 1,10,15
+      secure: 0,0,5
 
 #
 # The move from "master" to engineer requires the player to aquire some basic

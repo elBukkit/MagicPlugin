@@ -318,6 +318,12 @@ spells:
         cast: Let me in!
     admission|2:
         upgrade_description: "&r&b&bull; &6Now opens iron doors"
+    secure:
+        name: Secure
+        description: Secures containers
+        cast: Lock it up!
+        key_name: "&6$name's &eKey"
+        key_description: "Needed to open your locked containers"
     anvil:
         name: Anvil
         description: Spawn an anvil
