@@ -15,6 +15,7 @@ import org.bukkit.block.Skull;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Enderman;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Item;
@@ -440,7 +441,9 @@ public class CompatibilityUtils extends NMSUtils {
             Object sourceHandle = getHandle(source);
 
             // Special-case for witches .. witches are immune to magic damage :\
-            if (target instanceof Witch)
+            // And endermen are immune to indirect damage .. or something.
+            // Might need to config-drive this, or just go back to defaulting to normal damage
+            if (target instanceof Witch || target instanceof Enderman)
             {
                 target.damage(amount, source);
                 return;
