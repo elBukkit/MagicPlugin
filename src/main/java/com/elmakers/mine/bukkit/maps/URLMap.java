@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.maps;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
@@ -10,11 +11,16 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 import javax.imageio.ImageIO;
+import javax.imageio.ImageReader;
+import javax.imageio.metadata.IIOMetadataNode;
+import javax.imageio.stream.ImageInputStream;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -27,7 +33,11 @@ public class URLMap extends MapRenderer implements com.elmakers.mine.bukkit.api.
 
     // Private and Protected Members
     private final MapController controller;
-    private BufferedImage image;
+    private List<BufferedImage> frames = null;
+    private List<Long> frameTimes = null;
+    private int frame = 0;
+    private boolean animated = false;
+    private long lastFrameChange = 0;
 
     protected String world;
     protected Short id;
@@ -64,6 +74,19 @@ public class URLMap extends MapRenderer implements com.elmakers.mine.bukkit.api.
     // Render method override
     @Override
     public void render(MapView mapView, MapCanvas canvas, Player player) {
+        if (animated && frameTimes != null)
+        {
+            long now = System.currentTimeMillis();
+            long delay = frameTimes.get(frame);
+            if (now > lastFrameChange + delay)
+            {
+                frame = (frame + 1) % frameTimes.size();
+                sentToPlayers.clear();
+                rendered = false;
+                lastFrameChange = now;
+            }
+        }
+
         if (rendered) {
             if (priority != null) {
                 sendToPlayer(player, mapView);
@@ -156,16 +179,44 @@ public class URLMap extends MapRenderer implements com.elmakers.mine.bukkit.api.
         sentToPlayers.clear();
         rendered = false;
         loading = false;
-        image = null;
+        frames = null;
+    }
+
+    protected Collection<BufferedImage> loadImages(ImageInputStream in)
+    {
+        List<BufferedImage> images = new ArrayList<BufferedImage>();
+        try {
+            if (animated) {
+                ImageReader reader = ImageIO.getImageReadersBySuffix("GIF").next();
+                reader.setInput(in);
+                frameTimes = new ArrayList<Long>();
+                lastFrameChange = System.currentTimeMillis();
+                for (int i = 0, count = reader.getNumImages(true); i < count; i++){
+                    BufferedImage image = reader.read(i);
+                    images.add(image);
+
+                    IIOMetadataNode root = (IIOMetadataNode) reader.getImageMetadata(i).getAsTree("javax_imageio_gif_image_1.0");
+                    IIOMetadataNode gce = (IIOMetadataNode) root.getElementsByTagName("GraphicControlExtension").item(0);
+                    frameTimes.add(10 * Long.valueOf(gce.getAttribute("delayTime")));
+                }
+                reader.dispose();
+            } else {
+                images.add(ImageIO.read(in));
+            }
+        } catch (Exception ex) {
+           ex.printStackTrace();
+        }
+
+        return images;
     }
 
     protected BufferedImage getImage() {
         if (loading || !enabled) {
             return null;
         }
-        if (image == null) {
+        if (frames == null) {
             loading = true;
-            image = new BufferedImage(128, 128, BufferedImage.TYPE_INT_ARGB);
+            frames = new ArrayList<BufferedImage>();
             final Plugin plugin = controller.getPlugin();
             if (plugin == null) return null;
             final File cacheFolder = controller.getCacheFolder();
@@ -173,13 +224,14 @@ public class URLMap extends MapRenderer implements com.elmakers.mine.bukkit.api.
             Bukkit.getScheduler().runTaskAsynchronously(plugin, new Runnable() {
                 public void run() {
                     try {
-                        BufferedImage rawImage;
+                        animated = url.endsWith(".gif");
+                        Collection<BufferedImage> images = null;
                         if (!url.startsWith("http"))
                         {
                             File baseFolder = plugin.getDataFolder().getParentFile().getParentFile();
                             File fileName = new File(baseFolder, url);
                             controller.info("Loading map file: " + fileName.getName());
-                            rawImage = ImageIO.read(fileName);
+                            images = loadImages(ImageIO.createImageInputStream(fileName));
                         }
                         else
                         {
@@ -189,7 +241,7 @@ public class URLMap extends MapRenderer implements com.elmakers.mine.bukkit.api.
                             if (cacheFile != null) {
                                 if (cacheFile.exists()) {
                                     controller.info("Loading from cache: " + cacheFile.getName());
-                                    rawImage = ImageIO.read(cacheFile);
+                                    images = loadImages(ImageIO.createImageInputStream(cacheFile));
                                 } else {
                                     controller.info("Loading " + url);
                                     URL imageUrl = new URL(url);
@@ -206,41 +258,62 @@ public class URLMap extends MapRenderer implements com.elmakers.mine.bukkit.api.
                                     }
                                     out.close();
                                     in.close();
-
-                                    rawImage = ImageIO.read(cacheFile);
+                                    images = loadImages(ImageIO.createImageInputStream(cacheFile));
                                 }
                             } else {
                                 controller.info("Loading " + url);
                                 URL imageUrl = new URL(url);
-                                rawImage = ImageIO.read(imageUrl);
+                                images = loadImages(ImageIO.createImageInputStream(imageUrl));
                             }
                         }
 
-                        width = width <= 0 ? rawImage.getWidth() + width : width;
-                        height = height <= 0 ? rawImage.getHeight() + height : height;
-                        BufferedImage croppedImage = rawImage.getSubimage(x, y, width, height);
-                        Graphics2D graphics = image.createGraphics();
-                        AffineTransform transform = AffineTransform.getScaleInstance((float)128 / width, (float)128 / height);
-                        graphics.drawRenderedImage(croppedImage, transform);
+                        for (BufferedImage rawImage : images)
+                        {
+                            int imageWidth = width <= 0 ? rawImage.getWidth() + width : width;
+                            int imageHeight = height <= 0 ? rawImage.getHeight() + height : height;
+                            if (imageWidth > rawImage.getWidth()) {
+                                imageWidth = rawImage.getWidth();
+                            }
+                            if (imageHeight > rawImage.getHeight()) {
+                                imageHeight = rawImage.getHeight();
+                            }
+                            int imageX = x + rawImage.getMinX();
+                            int imageY = y + rawImage.getMinY();
 
-                        if (xOverlay != null && yOverlay != null) {
-                            BufferedImage croppedOverlay = rawImage.getSubimage(xOverlay, yOverlay, width, height);
-                            graphics.drawRenderedImage(croppedOverlay, transform);
+                            BufferedImage croppedImage = rawImage.getSubimage(imageX, imageY, imageWidth, imageHeight);
+                            BufferedImage image = new BufferedImage(128, 128, animated ? BufferedImage.TYPE_INT_RGB : BufferedImage.TYPE_INT_ARGB);
+                            Graphics2D graphics = image.createGraphics();
+
+                            // This is hack, not sure how to handled animated gifs with transparency!
+                            if (animated) {
+                                graphics.setBackground(new Color(0, 0, 0, 0));
+                                graphics.clearRect(0, 0, 128, 128);
+                            }
+
+                            AffineTransform transform = AffineTransform.getScaleInstance((float)128 / imageWidth, (float)128 / imageHeight);
+                            graphics.drawRenderedImage(croppedImage, transform);
+
+                            if (xOverlay != null && yOverlay != null) {
+                                BufferedImage croppedOverlay = rawImage.getSubimage(xOverlay, yOverlay, imageWidth, imageHeight);
+                                graphics.drawRenderedImage(croppedOverlay, transform);
+                            }
+
+                            frames.add(image);
                         }
-
                         loading = false;
                     } catch (Exception ex) {
                         controller.warning("Failed to load map " + url + ": " + ex.getMessage());
+                        ex.printStackTrace();
                     }
                 }
             });
             return null;
         }
-        return image;
+        return frames.get(frame);
     }
 
     protected void reset() {
-        image = null;
+        frames = null;
         rendered = false;
         loading = false;
         sentToPlayers.clear();
