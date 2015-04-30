@@ -44,6 +44,7 @@ public class WandOrganizer {
     }
 
     protected void removeHotbar(Map<String, Integer> spells, Map<String, Integer> brushes) {
+        if (wand.getHotbarCount() == 0) return;
         List<Inventory> hotbars = wand.getHotbars();
         for (Inventory hotbar : hotbars) {
             int hotbarSize = hotbar.getSize();
