@@ -613,7 +613,15 @@ public abstract class TargetingSpell extends BaseSpell {
     protected int getMaxRange()
     {
         if (allowMaxRange) return Math.min(MAX_RANGE, range);
-        return Math.min(MAX_RANGE, (int) (mage.getRangeMultiplier() * range));
+        float multiplier = (mage == null) ? 1 : mage.getRangeMultiplier();
+        return Math.min(MAX_RANGE, (int)(multiplier * range));
+    }
+
+    @Override
+    public int getRange()
+    {
+        if (targetType == TargetType.NONE || targetType == TargetType.SELF) return 0;
+        return getMaxRange();
     }
 
     protected int getMaxRangeSquared()
@@ -760,6 +768,31 @@ public abstract class TargetingSpell extends BaseSpell {
             breakBlock(block.getRelative(BlockFace.WEST), recursion);
             breakBlock(block.getRelative(BlockFace.NORTH), recursion);
             breakBlock(block.getRelative(BlockFace.SOUTH), recursion);
+        }
+    }
+
+
+    @SuppressWarnings("unchecked")
+    protected void loadTemplate(ConfigurationSection node)
+    {
+        super.loadTemplate(node);
+
+        // Preload some parameters that may appear in spell lore
+        ConfigurationSection parameters = node.getConfigurationSection("parameters");
+        if (parameters != null)
+        {
+            range = parameters.getInt("range", 32);
+            if (parameters.contains("target")) {
+                String targetTypeName = parameters.getString("target");
+                try {
+                    targetType = TargetType.valueOf(targetTypeName.toUpperCase());
+                } catch (Exception ex) {
+                    controller.getLogger().warning("Invalid target_type: " + targetTypeName);
+                    targetType = TargetType.OTHER;
+                }
+            } else {
+                targetType = TargetType.OTHER;
+            }
         }
     }
 

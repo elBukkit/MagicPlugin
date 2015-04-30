@@ -1639,6 +1639,12 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     }
 
     @Override
+    public int getRange()
+    {
+        return 0;
+    }
+
+    @Override
     public void setMage(Mage mage)
     {
         this.mage = mage;
@@ -1899,6 +1905,11 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
                     lore.add(ChatColor.YELLOW + messages.get("wand.active_costs_description").replace("$description", cost.getFullDescription(messages, reducer)));
                 }
             }
+        }
+
+        int range = getRange();
+        if (range > 0) {
+            lore.add(ChatColor.GRAY + messages.get("wand.range_description").replace("$range", Integer.toString(range)));
         }
 
         if (duration > 0) {
