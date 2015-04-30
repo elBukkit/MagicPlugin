@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 2.9.5
+
+ - Add support for locking chests in 1.8
+
 ## 2.7
 
  - Allow HTML escape codes in messages

@@ -8,6 +8,7 @@ import org.bukkit.Color;
 import org.bukkit.DyeColor;
 import org.bukkit.Location;
 import org.bukkit.Rotation;
+import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Skull;
@@ -694,5 +695,34 @@ public class CompatibilityUtils extends NMSUtils {
                 org.bukkit.Bukkit.getLogger().log(Level.WARNING, "Invalid entity type: " + key, ex);
             }
         }
+    }
+
+    public static boolean setLock(Location location, String lockName)
+    {
+        Object tileEntity = getTileEntity(location);
+        if (tileEntity == null) return false;
+        try {
+            Object lock = class_ChestLock_Constructor.newInstance(lockName);
+            class_TileEntityContainer_setLock.invoke(tileEntity, lock);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return false;
+        }
+
+        return true;
+    }
+
+    public static boolean clearLock(Location location)
+    {
+        Object tileEntity = getTileEntity(location);
+        if (tileEntity == null) return false;
+        try {
+            class_TileEntityContainer_setLock.invoke(tileEntity, null);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return false;
+        }
+
+        return true;
     }
 }

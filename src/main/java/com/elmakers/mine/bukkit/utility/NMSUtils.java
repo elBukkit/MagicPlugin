@@ -91,6 +91,8 @@ public class NMSUtils {
     protected static Class<?> class_BlockPosition;
     protected static Class<?> class_NBTCompressedStreamTools;
     protected static Class<?> class_TileEntity;
+    protected static Class<?> class_TileEntityContainer;
+    protected static Class<?> class_ChestLock;
     protected static Class<Enum> class_EnumDirection;
     protected static Class<?> class_EntityHorse;
     protected static Class<?> class_EntityWitherSkull;
@@ -150,6 +152,7 @@ public class NMSUtils {
     protected static Method class_Entity_getDataWatcherMethod;
     protected static Method class_Server_getOnlinePlayers;
     protected static Method class_Entity_getBoundingBox;
+    protected static Method class_TileEntityContainer_setLock;
 
     protected static Constructor class_NBTTagList_consructor;
     protected static Constructor class_NBTTagList_legacy_consructor;
@@ -165,6 +168,7 @@ public class NMSUtils {
     protected static Constructor class_PacketPlayOutEntityMetadata_Constructor;
     protected static Constructor class_PacketPlayOutEntityStatus_Constructor;
     protected static Constructor class_PacketPlayOutEntityDestroy_Constructor;
+    protected static Constructor class_ChestLock_Constructor;
 
     protected static Field class_Entity_invulnerableField;
     protected static Field class_Entity_motXField;
@@ -232,6 +236,7 @@ public class NMSUtils {
             class_CraftMetaSkull = fixBukkitClass("org.bukkit.craftbukkit.inventory.CraftMetaSkull");
             class_NBTCompressedStreamTools = fixBukkitClass("net.minecraft.server.NBTCompressedStreamTools");
             class_TileEntity = fixBukkitClass("net.minecraft.server.TileEntity");
+            class_TileEntityContainer = fixBukkitClass("net.minecraft.server.TileEntityContainer");
             class_EntityHorse = fixBukkitClass("net.minecraft.server.EntityHorse");
             class_EntityWitherSkull = fixBukkitClass("net.minecraft.server.EntityWitherSkull");
             class_PacketPlayOutAttachEntity = fixBukkitClass("net.minecraft.server.PacketPlayOutAttachEntity");
@@ -325,6 +330,8 @@ public class NMSUtils {
 
             isLegacy = false;
             try {
+                class_ChestLock = fixBukkitClass("net.minecraft.server.ChestLock");
+                class_TileEntityContainer_setLock = class_TileEntityContainer.getMethod("a", class_ChestLock);
                 class_GameProfile = getClass("com.mojang.authlib.GameProfile");
                 class_GameProfileProperty = getClass("com.mojang.authlib.properties.Property");
                 class_CraftSkull_profile = class_CraftSkull.getDeclaredField("profile");
@@ -347,13 +354,14 @@ public class NMSUtils {
                 class_CraftBanner_getPatternsMethod = class_CraftBanner.getMethod("getPatterns");
                 class_CraftBanner_setPatternsMethod = class_CraftBanner.getMethod("setPatterns", List.class);
                 class_CraftBanner_setBaseColorMethod = class_CraftBanner.getMethod("setBaseColor", DyeColor.class);
+                class_EntityDamageSource_setThornsMethod = class_EntityDamageSource.getMethod("v");
 
                 class_BlockPosition = fixBukkitClass("net.minecraft.server.BlockPosition");
                 class_EnumDirection = (Class<Enum>)fixBukkitClass("net.minecraft.server.EnumDirection");
                 class_BlockPositionConstructor = class_BlockPosition.getConstructor(Double.TYPE, Double.TYPE, Double.TYPE);
                 class_EntityPaintingConstructor = class_EntityPainting.getConstructor(class_World, class_BlockPosition, class_EnumDirection);
                 class_EntityItemFrameConstructor = class_EntityItemFrame.getConstructor(class_World, class_BlockPosition, class_EnumDirection);
-                class_EntityDamageSource_setThornsMethod = class_EntityDamageSource.getMethod("v");
+                class_ChestLock_Constructor = class_ChestLock.getConstructor(String.class);
             }
             catch (Throwable legacy) {
                 isLegacy = true;
@@ -1131,6 +1139,17 @@ public class NMSUtils {
             ex.printStackTrace();
         }
         return data;
+    }
+
+    public static Object getTileEntity(Location location) {
+        Object tileEntity = null;
+        try {
+            World world = location.getWorld();
+            tileEntity = class_CraftWorld_getTileEntityAtMethod.invoke(world, location.getBlockX(), location.getBlockY(), location.getBlockZ());
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return tileEntity;
     }
 
     public static void clearItems(Location location) {
