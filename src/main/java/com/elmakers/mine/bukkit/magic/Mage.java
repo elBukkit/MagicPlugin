@@ -729,14 +729,14 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         brush.setMapId(mapId);
     }
 
-    protected void loadSpells(ConfigurationSection config) {
-        if (config == null) return;
+    protected void loadSpells(Map<String, ConfigurationSection> spellConfiguration) {
+        if (spellConfiguration == null) return;
 
         Collection<MageSpell> currentSpells = new ArrayList<MageSpell>(spells.values());
         for (MageSpell spell : currentSpells) {
             String key = spell.getKey();
-            if (config.contains(key)) {
-                ConfigurationSection template = config.getConfigurationSection(key);
+            if (spellConfiguration.containsKey(key)) {
+                ConfigurationSection template = spellConfiguration.get(key);
                 String className = template.getString("class");
                 if (className == null)
                 {

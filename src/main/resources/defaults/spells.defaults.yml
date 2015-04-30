@@ -130,6 +130,7 @@ default:
          location: origin
          sound: level_up
          firework: ball_large
+       cast_self: cast
        no_target: cast
        no_action: cast
        alternate: cast
@@ -299,7 +300,7 @@ boon:
     costs:
         mana: 50
     parameters:
-        target: any
+        target: any_entity
         range: 32
         duration: 10000
         target_type: LivingEntity
@@ -1666,12 +1667,19 @@ cure:
           particle_override: particleOrbital
           effectlib:
              class: AtomEffect
-             particleNucleus: water_wake
-             particleOrbital: crit_magic
-             iterations: 16
+             particleNucleus: heart
+             particleOrbital: crit
+             iterations: 5
+        -  class: EffectSingle
+           location: target
+           use_hit_location: false
+           effectlib:
+             class: LoveEffect
+             iterations: 5
+             period: 2
     parameters:
         target_type: LivingEntity
-        target: any
+        target: any_entity
         allow_max_range: false
         range: 15
         bypass_confusion: true
@@ -1702,6 +1710,7 @@ heal:
         cast:
         -  class: EffectSingle
            sound: level_up
+           custom_sound: magic.shimmer
            effectlib:
              class: ConeEffect
              iterations: 5
@@ -1713,9 +1722,18 @@ heal:
              class: LoveEffect
              iterations: 5
              period: 2
+        cast_self:
+        - class: EffectSingle
+          sound: level_up
+          custom_sound: magic.shimmer
+          effectlib:
+             class: AtomEffect
+             particleNucleus: heart
+             particleOrbital: crit
+             iterations: 5
     parameters:
         target_type: LivingEntity
-        target: any
+        target: any_entity
         allow_max_range: false
         range: 16
         duration: 1000
@@ -3780,7 +3798,7 @@ cloak:
     costs:
         mana: 50
     parameters:
-        target: any
+        target: any_entity
         duration: 8000
         cooldown: 30000
         effect_invisibility: 5

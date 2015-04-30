@@ -1737,7 +1737,7 @@ public class MagicController implements Listener, MageController {
 		// Update registered mages so their spells are current
 		for (Mage mage : mages.values()) {
             if (mage instanceof com.elmakers.mine.bukkit.magic.Mage) {
-                ((com.elmakers.mine.bukkit.magic.Mage)mage).loadSpells(config);
+                ((com.elmakers.mine.bukkit.magic.Mage)mage).loadSpells(spellConfigurations);
             }
 		}
 	}
@@ -2975,7 +2975,11 @@ public class MagicController implements Listener, MageController {
         // Reset indestructible wand durability
         if (wand != null && wand.isIndestructible())
         {
-            wand.getItem().setDurability((short)0);
+            ItemStack item = wand.getItem();
+            if (item.getType().getMaxDurability() > 0)
+            {
+                wand.getItem().setDurability((short)0);
+            }
         }
 
         // Safety check for a wand getting removed from the player's inventory

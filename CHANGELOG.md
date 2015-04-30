@@ -4,6 +4,8 @@
 
  - Add "mmap" command for dealing with image maps (load, give, list)
  - Add ability to import Pixelator images into Magic
+ - Optimize '/magic load'
+ - Tweak spell FX so they originate at the wand and end at the actual hit location
 
 ## 4.9.4
 
