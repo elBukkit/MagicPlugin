@@ -24,6 +24,7 @@ public class DoorSpell extends BlockSpell
         byte data = targetBlock.getData();
         if ((data & 0x8) != 0) {
             targetBlock = targetBlock.getRelative(BlockFace.DOWN);
+            data = targetBlock.getData();
         }
 
         if (!hasBuildPermission(targetBlock))

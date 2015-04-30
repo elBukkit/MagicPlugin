@@ -2,7 +2,6 @@
 
  - Logout on death still buggy?
  - Is phasing to the end broken?
- - DoorAction acting wonky
 
  - Wand dupe issue:
    If your ein inventory mode, press E to open inv,

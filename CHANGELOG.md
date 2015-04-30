@@ -7,6 +7,7 @@
  - Optimize '/magic load'
  - Tweak spell FX so they originate at the wand and end at the actual hit location
  - Fix issue with inventory-mode wands when the default mode is chest
+ - Fix glitchy Admission behavior
 
 ## 4.9.4
 

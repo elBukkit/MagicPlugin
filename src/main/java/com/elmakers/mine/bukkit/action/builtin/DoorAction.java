@@ -27,6 +27,7 @@ public class DoorAction extends BaseSpellAction
         byte data = targetBlock.getData();
         if ((data & 0x8) != 0) {
             targetBlock = targetBlock.getRelative(BlockFace.DOWN);
+            data = targetBlock.getData();
         }
 
         if (!context.hasBuildPermission(targetBlock))
