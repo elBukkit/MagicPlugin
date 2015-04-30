@@ -1058,6 +1058,13 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         if (backfired) {
             result = SpellResult.BACKFIRE;
         }
+        if (result == SpellResult.CAST) {
+            LivingEntity sourceEntity = mage.getLivingEntity();
+            Entity targetEntity = getTargetEntity();
+            if (sourceEntity == targetEntity) {
+                result = SpellResult.CAST_SELF;
+            }
+        }
         processResult(result, parameters);
 
         boolean success = result.isSuccess();
