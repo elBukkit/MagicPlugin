@@ -147,6 +147,7 @@ public class NMSUtils {
     protected static Method class_Entity_getIdMethod;
     protected static Method class_Entity_getDataWatcherMethod;
     protected static Method class_Server_getOnlinePlayers;
+    protected static Method class_Entity_getBoundingBox;
 
     protected static Constructor class_NBTTagList_consructor;
     protected static Constructor class_NBTTagList_legacy_consructor;
@@ -178,6 +179,12 @@ public class NMSUtils {
     protected static Field class_ItemStack_count;
     protected static Field class_EntityTNTPrimed_source;
     protected static Field class_NBTTagList_list;
+    protected static Field class_AxisAlignedBB_minXField;
+    protected static Field class_AxisAlignedBB_minYField;
+    protected static Field class_AxisAlignedBB_minZField;
+    protected static Field class_AxisAlignedBB_maxXField;
+    protected static Field class_AxisAlignedBB_maxYField;
+    protected static Field class_AxisAlignedBB_maxZField;
 
     static
     {
@@ -270,6 +277,7 @@ public class NMSUtils {
             class_Entity_getIdMethod = class_Entity.getMethod("getId");
             class_Entity_getDataWatcherMethod = class_Entity.getMethod("getDataWatcher");
             class_Server_getOnlinePlayers = Server.class.getMethod("getOnlinePlayers");
+            class_Entity_getBoundingBox = class_Entity.getMethod("getBoundingBox");
 
             class_CraftInventoryCustom_constructor = class_CraftInventoryCustom.getConstructor(InventoryHolder.class, Integer.TYPE, String.class);
             class_EntityFireworkConstructor = class_EntityFirework.getConstructor(class_World, Double.TYPE, Double.TYPE, Double.TYPE, class_ItemStack);
@@ -292,6 +300,12 @@ public class NMSUtils {
             class_DamageSource_MagicField = class_DamageSource.getField("MAGIC");
             class_EntityTNTPrimed_source = class_EntityTNTPrimed.getDeclaredField("source");
             class_EntityTNTPrimed_source.setAccessible(true);
+            class_AxisAlignedBB_minXField = class_AxisAlignedBB.getField("a");
+            class_AxisAlignedBB_minYField = class_AxisAlignedBB.getField("b");
+            class_AxisAlignedBB_minZField = class_AxisAlignedBB.getField("c");
+            class_AxisAlignedBB_maxXField = class_AxisAlignedBB.getField("d");
+            class_AxisAlignedBB_maxYField = class_AxisAlignedBB.getField("e");
+            class_AxisAlignedBB_maxZField = class_AxisAlignedBB.getField("f");
 
             class_Firework_ticksFlownField = class_EntityFirework.getDeclaredField("ticksFlown");
             class_Firework_ticksFlownField.setAccessible(true);

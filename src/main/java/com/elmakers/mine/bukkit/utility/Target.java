@@ -15,7 +15,7 @@ import com.elmakers.mine.bukkit.api.magic.Mage;
 
 public class Target implements Comparable<Target>
 {
-    private static final boolean DEBUG_TARGETING = false;
+    public static boolean DEBUG_TARGETING = false;
 
     protected int    maxDistanceSquared = 128 * 128;
     protected int    minDistanceSquared = 0;
@@ -211,19 +211,24 @@ public class Target implements Comparable<Target>
         {
             Vector playerMaxRange = playerLoc.clone().add(playerFacing.multiply(maxDistanceSquared));
             BoundingBox hitbox = null;
-            if (entity == null)
-            {
-                hitbox =  new BoundingBox(targetLoc, -0.5, 0.5, 0, 1, -0.5, 0.5);
-            }
-            else
+            if (entity != null)
             {
                 hitbox = CompatibilityUtils.getHitbox(entity);
-
-                if (DEBUG_TARGETING)
+            }
+            if (hitbox == null)
+            {
+                hitbox =  new BoundingBox(targetLoc, -0.5, 0.5, 0, 1, -0.5, 0.5);
+                if (DEBUG_TARGETING && entity != null)
                 {
-                    org.bukkit.Bukkit.getLogger().info("CHECKING " + getEntity().getType() + ": " + hitbox + ", " + playerLoc + " - " + playerMaxRange + ": " + hitbox.intersectsLine(playerLoc, playerMaxRange));
+                    org.bukkit.Bukkit.getLogger().info(" failed to get hitbox for " + entity.getType() + " : " + targetLoc);
                 }
             }
+
+            if (DEBUG_TARGETING && entity != null)
+            {
+                org.bukkit.Bukkit.getLogger().info("CHECKING " + entity.getType() + ": " + hitbox + ", " + playerLoc + " - " + playerMaxRange + ": " + hitbox.intersectsLine(playerLoc, playerMaxRange));
+            }
+
             if (!hitbox.intersectsLine(playerLoc, playerMaxRange))
             {
                 return;

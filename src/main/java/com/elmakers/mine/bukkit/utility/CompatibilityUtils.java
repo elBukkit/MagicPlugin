@@ -61,7 +61,7 @@ import java.util.logging.Level;
 public class CompatibilityUtils extends NMSUtils {
     public final static int MAX_ENTITY_RANGE = 72;
     private final static Map<EntityType, BoundingBox> hitboxes = new HashMap<EntityType, BoundingBox>();
-    private static BoundingBox defaultHitbox = new BoundingBox(-0.75, 0.75, 0, 2, -0.75, 0.75);
+    private static BoundingBox defaultHitbox;
 
     /**
      * This is shamelessly copied from org.bukkit.Location.setDirection.
@@ -633,11 +633,34 @@ public class CompatibilityUtils extends NMSUtils {
     public static BoundingBox getHitbox(Entity entity)
     {
         BoundingBox hitbox = entity == null ? null : hitboxes.get(entity.getType());
-        if (hitbox == null) {
+        if (hitbox == null)
+        {
             hitbox = defaultHitbox;
         }
 
-        return hitbox.center(entity.getLocation().toVector());
+        if (hitbox != null)
+        {
+            return hitbox.center(entity.getLocation().toVector());
+        }
+
+        try {
+            Object entityHandle = getHandle(entity);
+            Object aabb = class_Entity_getBoundingBox.invoke(entityHandle);
+            if (aabb == null) {
+                return null;
+            }
+            return new BoundingBox(
+                    class_AxisAlignedBB_minXField.getDouble(aabb),
+                    class_AxisAlignedBB_maxXField.getDouble(aabb),
+                    class_AxisAlignedBB_minYField.getDouble(aabb),
+                    class_AxisAlignedBB_maxYField.getDouble(aabb),
+                    class_AxisAlignedBB_minZField.getDouble(aabb),
+                    class_AxisAlignedBB_maxZField.getDouble(aabb)
+            );
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return null;
     }
 
     public static void configureHitboxes(ConfigurationSection config) {
