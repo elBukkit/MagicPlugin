@@ -45,7 +45,11 @@ public class MagicRecipe {
         if (outputItemType.equalsIgnoreCase("wand"))
         {
             Wand wand = (outputKey != null && !outputKey.isEmpty()) ? controller.createWand(outputKey) : null;
-            item = wand.getItem();
+            if (wand != null) {
+                item = wand.getItem();
+            } else {
+                controller.getLogger().warning("Unable to load recipe output wand: " + outputKey);
+            }
         }
         else if (outputItemType.equalsIgnoreCase("spell"))
         {
