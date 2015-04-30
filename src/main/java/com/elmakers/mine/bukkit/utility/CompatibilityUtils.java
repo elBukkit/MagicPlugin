@@ -24,6 +24,7 @@ import org.bukkit.entity.Painting;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.TNTPrimed;
 import org.bukkit.entity.ThrownPotion;
+import org.bukkit.entity.Witch;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
@@ -437,8 +438,8 @@ public class CompatibilityUtils extends NMSUtils {
 
             Object sourceHandle = getHandle(source);
 
-            // Special-case for mobs .. witches are immune to magic damage :\
-            if (!(target instanceof Player))
+            // Special-case for witches .. witches are immune to magic damage :\
+            if (target instanceof Witch)
             {
                 target.damage(amount, source);
                 return;
@@ -454,6 +455,13 @@ public class CompatibilityUtils extends NMSUtils {
                 potion.setShooter((LivingEntity)source);
                 Object potionHandle = getHandle(potion);
                 Object damageSource = class_DamageSource_getMagicSourceMethod.invoke(null, potionHandle, sourceHandle);
+
+                // This is a bit of hack that lets us damage the ender dragon, who is a weird and annoying collection
+                // of various non-living entity pieces.
+                if (!isLegacy) {
+                    class_EntityDamageSource_setThornsMethod.invoke(damageSource);
+                }
+
                 class_EntityLiving_damageEntityMethod.invoke(targetHandle, damageSource, (float)amount);
             } else {
                 Object magicSource = class_DamageSource_MagicField.get(null);

@@ -69,6 +69,7 @@ public class NMSUtils {
     protected static Class<?> class_EntityLiving;
     protected static Class<?> class_DataWatcher;
     protected static Class<?> class_DamageSource;
+    protected static Class<?> class_EntityDamageSource;
     protected static Class<?> class_World;
     protected static Class<?> class_Packet;
     protected static Class<Enum> class_EnumSkyBlock;
@@ -110,6 +111,7 @@ public class NMSUtils {
     protected static Method class_Entity_getBukkitEntityMethod;
     protected static Method class_EntityLiving_damageEntityMethod;
     protected static Method class_DamageSource_getMagicSourceMethod;
+    protected static Method class_EntityDamageSource_setThornsMethod;
     protected static Method class_AxisAlignedBB_createBBMethod;
     protected static Method class_World_explodeMethod;
     protected static Method class_NBTTagCompound_setBooleanMethod;
@@ -222,6 +224,7 @@ public class NMSUtils {
             class_EntityTNTPrimed = fixBukkitClass("net.minecraft.server.EntityTNTPrimed");
             class_AxisAlignedBB = fixBukkitClass("net.minecraft.server.AxisAlignedBB");
             class_DamageSource = fixBukkitClass("net.minecraft.server.DamageSource");
+            class_EntityDamageSource = fixBukkitClass("net.minecraft.server.EntityDamageSource");
             class_PathEntity = fixBukkitClass("net.minecraft.server.PathEntity");
             class_PathPoint = fixBukkitClass("net.minecraft.server.PathPoint");
             class_EntityFirework = fixBukkitClass("net.minecraft.server.EntityFireworks");
@@ -350,6 +353,7 @@ public class NMSUtils {
                 class_BlockPositionConstructor = class_BlockPosition.getConstructor(Double.TYPE, Double.TYPE, Double.TYPE);
                 class_EntityPaintingConstructor = class_EntityPainting.getConstructor(class_World, class_BlockPosition, class_EnumDirection);
                 class_EntityItemFrameConstructor = class_EntityItemFrame.getConstructor(class_World, class_BlockPosition, class_EnumDirection);
+                class_EntityDamageSource_setThornsMethod = class_EntityDamageSource.getMethod("v");
             }
             catch (Throwable legacy) {
                 isLegacy = true;
