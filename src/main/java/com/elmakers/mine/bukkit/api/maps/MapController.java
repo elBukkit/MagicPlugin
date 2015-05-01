@@ -12,4 +12,5 @@ public interface MapController {
     public ItemStack getPlayerPortrait(String worldName, String playerName, Integer priority, String photoName);
     public ItemStack getMapItem(short id);
     public boolean hasMap(short id);
+    public boolean remove(short id);
 }
