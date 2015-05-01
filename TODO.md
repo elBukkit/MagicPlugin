@@ -1,5 +1,6 @@
 # TODO
 
+ - Make Portal spell portals avoid creating a frame on the other side (maybe handle TP'ing on portal event?)
  - Logout on death still buggy? (can not reproduce)
 
  - Wand dupe issue:

@@ -157,6 +157,16 @@ public class MagicMapCommandExecutor extends MagicMapExecutor {
                 sender.sendMessage("Map id " + parsedId + " is not registered");
             }
         }
+        else if (subCommand.equalsIgnoreCase("player"))
+        {
+            if (args.length == 1) {
+                sender.sendMessage("Usage: mmap player <name>");
+                return true;
+            }
+
+            String playerName = args[1];
+            onMapPlayer(sender, world, playerName);
+        }
         else if (subCommand.equalsIgnoreCase("load"))
         {
             if (args.length == 1)
@@ -216,6 +226,24 @@ public class MagicMapCommandExecutor extends MagicMapExecutor {
         if (item == null)
         {
             sender.sendMessage("Failed to load map: " + url);
+            return;
+        }
+        short mapId = item.getDurability();
+        sender.sendMessage("Loaded map id " + mapId);
+        if (sender instanceof Player)
+        {
+            ItemStack mapItem = maps.getMapItem(mapId);
+            api.giveItemToPlayer((Player)sender, mapItem);
+        }
+    }
+
+    protected void onMapPlayer(CommandSender sender, World world, String playerName)
+    {
+        MapController maps = api.getController().getMaps();
+        ItemStack item = maps.getPlayerPortrait(world.getName(), playerName, null, "Photo of " + playerName);
+        if (item == null)
+        {
+            sender.sendMessage("Failed to load player skin: " + playerName);
             return;
         }
         short mapId = item.getDurability();
@@ -316,6 +344,7 @@ public class MagicMapCommandExecutor extends MagicMapExecutor {
             options.add("list");
             options.add("load");
             options.add("remove");
+            options.add("player");
 		}
 		return options;
 	}
