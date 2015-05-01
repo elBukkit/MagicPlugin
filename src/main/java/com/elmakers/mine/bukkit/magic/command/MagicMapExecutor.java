@@ -17,7 +17,12 @@ public abstract class MagicMapExecutor extends MagicTabExecutor {
     protected void onMapList(CommandSender sender, String keyword)
     {
         Pattern pattern = null;
+        boolean positive = true;
         if (!keyword.isEmpty()) {
+            if (keyword.startsWith("-")) {
+                keyword = keyword.substring(1);
+                positive = false;
+            }
             pattern = Pattern.compile(keyword);
         }
         int shown = 0;
@@ -28,7 +33,7 @@ public abstract class MagicMapExecutor extends MagicTabExecutor {
             if (map == null || mapId == null) continue;
             String source = map.getName() + " " + map.getURL() + " " + map.getId();
             Matcher matcher = pattern == null ? null : pattern.matcher(source);
-            if (matcher == null || matcher.find()) {
+            if (matcher == null || matcher.find() == positive) {
                 shown++;
                 String name = map.getName();
                 name = (name == null ? "(None)" : name);
