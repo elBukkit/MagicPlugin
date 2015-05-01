@@ -4,6 +4,7 @@
 
  - /mmap list supports regex searching
  - Add /mmap player command for creating player portraits without the Camera spell
+ - Add Lockpick spell (admin-only)
 
 ## 4.9.5
 

@@ -101,6 +101,10 @@ public class LockAction extends BaseSpellAction
                 }
             }
         } else {
+            if (!CompatibilityUtils.isLocked(targetBlock.getLocation()))
+            {
+                return SpellResult.FAIL;
+            }
             result = CompatibilityUtils.clearLock(targetBlock.getLocation());
         }
 		

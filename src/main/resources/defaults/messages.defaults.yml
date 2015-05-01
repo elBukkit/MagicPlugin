@@ -325,6 +325,11 @@ spells:
         key_name: "&6$name's &eKey"
         key_description: "Needed to open your locked containers"
         fail: You can't lock that!
+    lockpick:
+        name: Lockpick
+        description: Unlocks locked containers
+        cast: Open Sesame!
+        fail: You can't unlock that!
     anvil:
         name: Anvil
         description: Spawn an anvil
@@ -1030,6 +1035,7 @@ spells:
         name: Pickpocket
         description: Steal from nearby players
         cast_player: You peek into $target's inventory
+        cast_player_message: ""
     workbench:
         name: Workbench
         description: Crafting on the go
