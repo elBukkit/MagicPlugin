@@ -344,7 +344,9 @@ public class MagicMapCommandExecutor extends MagicMapExecutor {
             options.add("load");
             options.add("remove");
             options.add("player");
-		}
+		} else if (args.length == 2 && args[0].equals("give")) {
+            options.addAll(api.getPlayerNames());
+        }
 		return options;
 	}
 }
