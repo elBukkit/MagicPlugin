@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 4.9.6
+
+ - /mmap list supports regex searching
+
 ## 4.9.5
 
  - Add "mmap" command for dealing with image maps (load, give, list)

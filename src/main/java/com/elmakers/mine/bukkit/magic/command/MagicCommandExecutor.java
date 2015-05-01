@@ -309,9 +309,11 @@ public class MagicCommandExecutor extends MagicMapExecutor {
 			}
 			else if (listCommand.equalsIgnoreCase("maps")) {
 				String keyword = "";
-				if (args.length > 2) {
-					keyword = args[2];
-				}
+                for (int i = 2; i < args.length; i++)
+                {
+                    if (i != 2) keyword = keyword + " ";
+                    keyword = keyword + args[i];
+                }
                 onMapList(sender, keyword);
 				return true;
 			}

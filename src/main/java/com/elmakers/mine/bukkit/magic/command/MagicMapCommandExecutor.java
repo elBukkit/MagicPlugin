@@ -61,10 +61,12 @@ public class MagicMapCommandExecutor extends MagicMapExecutor {
         if (subCommand.equalsIgnoreCase("list"))
         {
             String keyword = "";
-            if (args.length > 1)
+            for (int i = 1; i < args.length; i++)
             {
-                keyword = args[1];
+                if (i != 1) keyword = keyword + " ";
+                keyword = keyword + args[i];
             }
+            org.bukkit.Bukkit.getLogger().info("Args: " + args.length + ": " + keyword);
             onMapList(sender, keyword);
         }
         else if (subCommand.equalsIgnoreCase("give"))
