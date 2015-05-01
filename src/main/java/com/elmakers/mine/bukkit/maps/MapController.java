@@ -409,4 +409,13 @@ public class MapController implements com.elmakers.mine.bukkit.api.maps.MapContr
     protected File getCacheFolder() {
         return cacheFolder;
     }
+
+    public void remove(short id) {
+        URLMap map = idMap.get(id);
+        if (map != null) {
+            map.enabled = false;
+            keyMap.remove(map.getKey());
+            idMap.remove(id);
+        }
+    }
 }
