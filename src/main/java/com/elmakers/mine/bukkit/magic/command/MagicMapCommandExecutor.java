@@ -216,7 +216,13 @@ public class MagicMapCommandExecutor extends MagicMapExecutor {
             sender.sendMessage("Failed to load map: " + url);
             return;
         }
-        sender.sendMessage("Loaded map id " + item.getDurability());
+        short mapId = item.getDurability();
+        sender.sendMessage("Loaded map id " + mapId);
+        if (sender instanceof Player)
+        {
+            ItemStack mapItem = maps.getMapItem(mapId);
+            api.giveItemToPlayer((Player)sender, mapItem);
+        }
     }
 
     protected void onMapImport(CommandSender sender, World world, String rendererFile)
