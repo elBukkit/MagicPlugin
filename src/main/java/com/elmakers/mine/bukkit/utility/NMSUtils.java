@@ -153,6 +153,8 @@ public class NMSUtils {
     protected static Method class_Server_getOnlinePlayers;
     protected static Method class_Entity_getBoundingBox;
     protected static Method class_TileEntityContainer_setLock;
+    protected static Method class_TileEntityContainer_getLock;
+    protected static Method class_ChestLock_isEmpty;
 
     protected static Constructor class_NBTTagList_consructor;
     protected static Constructor class_NBTTagList_legacy_consructor;
@@ -332,6 +334,8 @@ public class NMSUtils {
             try {
                 class_ChestLock = fixBukkitClass("net.minecraft.server.ChestLock");
                 class_TileEntityContainer_setLock = class_TileEntityContainer.getMethod("a", class_ChestLock);
+                class_TileEntityContainer_getLock = class_TileEntityContainer.getMethod("i");
+                class_ChestLock_isEmpty = class_ChestLock.getMethod("a");
                 class_GameProfile = getClass("com.mojang.authlib.GameProfile");
                 class_GameProfileProperty = getClass("com.mojang.authlib.properties.Property");
                 class_CraftSkull_profile = class_CraftSkull.getDeclaredField("profile");

@@ -728,4 +728,18 @@ public class CompatibilityUtils extends NMSUtils {
 
         return true;
     }
+
+    public static boolean isLocked(Location location)
+    {
+        Object tileEntity = getTileEntity(location);
+        if (tileEntity == null) return false;
+        try {
+            Object lock = class_TileEntityContainer_getLock.invoke(tileEntity, null);
+            if (lock == null) return false;
+            return !(Boolean)class_ChestLock_isEmpty.invoke(lock);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return false;
+    }
 }
