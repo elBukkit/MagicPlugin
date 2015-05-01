@@ -199,7 +199,11 @@ public class URLMap extends MapRenderer implements com.elmakers.mine.bukkit.api.
                 loadGIFImages(reader, images);
                 reader.dispose();
             } else {
-                images.add(ImageIO.read(in));
+                BufferedImage frame = ImageIO.read(in);
+                if (frame != null)
+                {
+                    images.add(frame);
+                }
             }
         } catch (Exception ex) {
            ex.printStackTrace();
@@ -236,6 +240,9 @@ public class URLMap extends MapRenderer implements com.elmakers.mine.bukkit.api.
             try {
                 image = reader.read(frameIndex);
             } catch (IndexOutOfBoundsException io) {
+                break;
+            }
+            if (image == null) {
                 break;
             }
 
@@ -349,6 +356,10 @@ public class URLMap extends MapRenderer implements com.elmakers.mine.bukkit.api.
                             }
                         }
 
+                        if (images.size() == 0)
+                        {
+                            enabled = false;
+                        }
                         for (BufferedImage rawImage : images)
                         {
                             int imageWidth = width <= 0 ? rawImage.getWidth() + width : width;
