@@ -196,7 +196,7 @@ public class URLMap extends MapRenderer implements com.elmakers.mine.bukkit.api.
                 reader.setInput(in);
                 frameTimes = new ArrayList<Long>();
                 lastFrameChange = System.currentTimeMillis();
-                loadGIFImages(reader);
+                loadGIFImages(reader, images);
                 reader.dispose();
             } else {
                 images.add(ImageIO.read(in));
@@ -208,7 +208,7 @@ public class URLMap extends MapRenderer implements com.elmakers.mine.bukkit.api.
         return images;
     }
 
-    private void loadGIFImages(ImageReader reader) throws IOException {
+    private void loadGIFImages(ImageReader reader, Collection<BufferedImage> images) throws IOException {
         int width = -1;
         int height = -1;
 
@@ -270,7 +270,7 @@ public class URLMap extends MapRenderer implements com.elmakers.mine.bukkit.api.
             masterGraphics.drawImage(image, x, y, null);
 
             BufferedImage copy = new BufferedImage(master.getColorModel(), master.copyData(null), master.isAlphaPremultiplied(), null);
-            frames.add(copy);
+            images.add(copy);
             frameTimes.add((long)10 * delay);
             frameDisposals.add(disposal);
 
