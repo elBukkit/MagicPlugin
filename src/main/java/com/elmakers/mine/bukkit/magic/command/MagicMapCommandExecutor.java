@@ -123,6 +123,38 @@ public class MagicMapCommandExecutor extends MagicMapExecutor {
             }
             onMapGive(sender, recipient, parsedId);
         }
+        else if (subCommand.equalsIgnoreCase("remove"))
+        {
+            if (args.length == 1)
+            {
+                sender.sendMessage("Usage: mmap delete [id]");
+                return true;
+            }
+            String mapId = args[1];
+            Short parsedId = null;
+            if (mapId != null)
+            {
+                try {
+                    parsedId = Short.parseShort(mapId);
+                } catch (Exception ex) {
+
+                }
+            }
+            if (parsedId == null)
+            {
+                sender.sendMessage("Invalid map id, expecting integer: " + mapId);
+                return true;
+            }
+            MapController maps = api.getController().getMaps();
+            if (maps.remove(parsedId))
+            {
+                sender.sendMessage("Unregistered map id: " + parsedId);
+            }
+            else
+            {
+                sender.sendMessage("Map id " + parsedId + " is not registered");
+            }
+        }
         else if (subCommand.equalsIgnoreCase("load"))
         {
             if (args.length == 1)
@@ -170,7 +202,7 @@ public class MagicMapCommandExecutor extends MagicMapExecutor {
         }
         else
         {
-            sender.sendMessage("Usage: mmap [list|give|load|import]");
+            sender.sendMessage("Usage: mmap [list|remove|give|load|import]");
         }
         return true;
 	}
@@ -275,6 +307,7 @@ public class MagicMapCommandExecutor extends MagicMapExecutor {
             options.add("import");
             options.add("list");
             options.add("load");
+            options.add("remove");
 		}
 		return options;
 	}

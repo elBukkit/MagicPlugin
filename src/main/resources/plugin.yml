@@ -322,6 +322,10 @@ permissions:
     description: Player may use the /mmap import command
     type: boolean
     default: op
+  Magic.commands.mmap.remove:
+    description: Player may use the /mmap remove command
+    type: boolean
+    default: op
   Magic.wand.use:
     description: The player may use a wand
     default: true
