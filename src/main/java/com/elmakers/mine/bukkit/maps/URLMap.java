@@ -359,6 +359,7 @@ public class URLMap extends MapRenderer implements com.elmakers.mine.bukkit.api.
                         if (images.size() == 0)
                         {
                             enabled = false;
+                            controller.warning("Failed to load map " + url);
                         }
                         for (BufferedImage rawImage : images)
                         {
