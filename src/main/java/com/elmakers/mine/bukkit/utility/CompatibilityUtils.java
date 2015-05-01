@@ -720,7 +720,7 @@ public class CompatibilityUtils extends NMSUtils {
         Object tileEntity = getTileEntity(location);
         if (tileEntity == null) return false;
         try {
-            class_TileEntityContainer_setLock.invoke(tileEntity, null);
+            class_TileEntityContainer_setLock.invoke(tileEntity, new Object[] {null});
         } catch (Exception ex) {
             ex.printStackTrace();
             return false;
@@ -734,7 +734,7 @@ public class CompatibilityUtils extends NMSUtils {
         Object tileEntity = getTileEntity(location);
         if (tileEntity == null) return false;
         try {
-            Object lock = class_TileEntityContainer_getLock.invoke(tileEntity, null);
+            Object lock = class_TileEntityContainer_getLock.invoke(tileEntity);
             if (lock == null) return false;
             return !(Boolean)class_ChestLock_isEmpty.invoke(lock);
         } catch (Exception ex) {
