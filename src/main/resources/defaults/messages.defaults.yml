@@ -324,6 +324,7 @@ spells:
         cast: Lock it up!
         key_name: "&6$name's &eKey"
         key_description: "Needed to open your locked containers"
+        fail: You can't lock that!
     anvil:
         name: Anvil
         description: Spawn an anvil

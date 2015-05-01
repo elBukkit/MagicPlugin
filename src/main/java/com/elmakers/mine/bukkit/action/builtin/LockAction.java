@@ -5,6 +5,7 @@ import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
+import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import org.bukkit.Material;
@@ -15,6 +16,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
@@ -29,6 +31,7 @@ public class LockAction extends BaseSpellAction
     private MaterialAndData iconType;
     private String keyName;
     private String keyDescription;
+    private boolean override;
 
     @Override
     public SpellResult perform(CastContext context)
@@ -45,6 +48,10 @@ public class LockAction extends BaseSpellAction
 
         boolean result = false;
         if (actionType == LockActionType.LOCK) {
+            if (!override && CompatibilityUtils.isLocked(targetBlock.getLocation()))
+            {
+                return SpellResult.FAIL;
+            }
             String keyName = this.keyName;
             if (keyName.isEmpty())
             {
@@ -127,6 +134,7 @@ public class LockAction extends BaseSpellAction
         keyName = parameters.getString("key_name", "");
         keyDescription = parameters.getString("key_description", "");
         iconType = ConfigurationUtils.getMaterialAndData(parameters, "key_icon", new MaterialAndData(Material.TRIPWIRE_HOOK));
+        override = parameters.getBoolean("override", false);
     }
 
     @Override
@@ -137,6 +145,7 @@ public class LockAction extends BaseSpellAction
         parameters.add("key_icon");
         parameters.add("key_name");
         parameters.add("key_description");
+        parameters.add("override");
     }
 
     @Override
@@ -145,6 +154,8 @@ public class LockAction extends BaseSpellAction
         if (parameterKey.equals("type")) {
             examples.add("lock");
             examples.add("unlock");
+        } else if (parameterKey.equals("override")) {
+            examples.addAll(Arrays.asList(BaseSpell.EXAMPLE_BOOLEANS));
         } else {
             super.getParameterOptions(spell, parameterKey, examples);
         }

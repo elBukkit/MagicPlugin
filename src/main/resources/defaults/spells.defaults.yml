@@ -6356,7 +6356,7 @@ secure:
            particle_data: 1
            particle_count: 5
     parameters:
-        range: 4
+        range: 8
         check_destructible: true
         destructible: chest
         transparent: transparent_to_construction
