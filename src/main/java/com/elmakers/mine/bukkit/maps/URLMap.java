@@ -6,6 +6,7 @@ import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
@@ -19,6 +20,7 @@ import java.util.Set;
 
 import javax.imageio.ImageIO;
 import javax.imageio.ImageReader;
+import javax.imageio.metadata.IIOMetadata;
 import javax.imageio.metadata.IIOMetadataNode;
 import javax.imageio.stream.ImageInputStream;
 
@@ -28,6 +30,9 @@ import org.bukkit.map.MapCanvas;
 import org.bukkit.map.MapRenderer;
 import org.bukkit.map.MapView;
 import org.bukkit.plugin.Plugin;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 public class URLMap extends MapRenderer implements com.elmakers.mine.bukkit.api.maps.URLMap {
 
@@ -74,7 +79,7 @@ public class URLMap extends MapRenderer implements com.elmakers.mine.bukkit.api.
     // Render method override
     @Override
     public void render(MapView mapView, MapCanvas canvas, Player player) {
-        if (animated && frameTimes != null)
+        if (animated && frameTimes != null && frameTimes.size() > 0)
         {
             long now = System.currentTimeMillis();
             long delay = frameTimes.get(frame);
@@ -191,14 +196,7 @@ public class URLMap extends MapRenderer implements com.elmakers.mine.bukkit.api.
                 reader.setInput(in);
                 frameTimes = new ArrayList<Long>();
                 lastFrameChange = System.currentTimeMillis();
-                for (int i = 0, count = reader.getNumImages(true); i < count; i++){
-                    BufferedImage image = reader.read(i);
-                    images.add(image);
-
-                    IIOMetadataNode root = (IIOMetadataNode) reader.getImageMetadata(i).getAsTree("javax_imageio_gif_image_1.0");
-                    IIOMetadataNode gce = (IIOMetadataNode) root.getElementsByTagName("GraphicControlExtension").item(0);
-                    frameTimes.add(10 * Long.valueOf(gce.getAttribute("delayTime")));
-                }
+                loadGIFImages(reader);
                 reader.dispose();
             } else {
                 images.add(ImageIO.read(in));
@@ -208,6 +206,90 @@ public class URLMap extends MapRenderer implements com.elmakers.mine.bukkit.api.
         }
 
         return images;
+    }
+
+    private void loadGIFImages(ImageReader reader) throws IOException {
+        int width = -1;
+        int height = -1;
+
+        IIOMetadata metadata = reader.getStreamMetadata();
+        if (metadata != null) {
+            IIOMetadataNode globalRoot = (IIOMetadataNode) metadata.getAsTree(metadata.getNativeMetadataFormatName());
+            NodeList globalScreenDescriptor = globalRoot.getElementsByTagName("LogicalScreenDescriptor");
+
+            if (globalScreenDescriptor != null && globalScreenDescriptor.getLength() > 0) {
+                IIOMetadataNode screenDescriptor = (IIOMetadataNode) globalScreenDescriptor.item(0);
+
+                if (screenDescriptor != null) {
+                    width = Integer.parseInt(screenDescriptor.getAttribute("logicalScreenWidth"));
+                    height = Integer.parseInt(screenDescriptor.getAttribute("logicalScreenHeight"));
+                }
+            }
+        }
+
+        BufferedImage master = null;
+        Graphics2D masterGraphics = null;
+        List<String> frameDisposals = new ArrayList<String>();
+
+        for (int frameIndex = 0;; frameIndex++) {
+            BufferedImage image;
+            try {
+                image = reader.read(frameIndex);
+            } catch (IndexOutOfBoundsException io) {
+                break;
+            }
+
+            if (width == -1 || height == -1) {
+                width = image.getWidth();
+                height = image.getHeight();
+            }
+
+            IIOMetadataNode root = (IIOMetadataNode) reader.getImageMetadata(frameIndex).getAsTree("javax_imageio_gif_image_1.0");
+            IIOMetadataNode gce = (IIOMetadataNode) root.getElementsByTagName("GraphicControlExtension").item(0);
+            int delay = Integer.valueOf(gce.getAttribute("delayTime"));
+            String disposal = gce.getAttribute("disposalMethod");
+
+            int x = 0;
+            int y = 0;
+
+            if (master == null) {
+                master = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+                masterGraphics = master.createGraphics();
+                masterGraphics.setBackground(new Color(0, 0, 0, 0));
+            } else {
+                NodeList children = root.getChildNodes();
+                for (int nodeIndex = 0; nodeIndex < children.getLength(); nodeIndex++) {
+                    Node nodeItem = children.item(nodeIndex);
+                    if (nodeItem.getNodeName().equals("ImageDescriptor")) {
+                        NamedNodeMap map = nodeItem.getAttributes();
+                        x = Integer.valueOf(map.getNamedItem("imageLeftPosition").getNodeValue());
+                        y = Integer.valueOf(map.getNamedItem("imageTopPosition").getNodeValue());
+                    }
+                }
+            }
+            masterGraphics.drawImage(image, x, y, null);
+
+            BufferedImage copy = new BufferedImage(master.getColorModel(), master.copyData(null), master.isAlphaPremultiplied(), null);
+            frames.add(copy);
+            frameTimes.add((long)10 * delay);
+            frameDisposals.add(disposal);
+
+            if (disposal.equals("restoreToPrevious")) {
+                BufferedImage from = null;
+                for (int i = frameIndex - 1; i >= 0; i--) {
+                    if (!frameDisposals.get(i).equals("restoreToPrevious") || frameIndex == 0) {
+                        from = frames.get(i);
+                        break;
+                    }
+                }
+
+                master = new BufferedImage(from.getColorModel(), from.copyData(null), from.isAlphaPremultiplied(), null);
+                masterGraphics = master.createGraphics();
+                masterGraphics.setBackground(new Color(0, 0, 0, 0));
+            } else if (disposal.equals("restoreToBackgroundColor")) {
+                masterGraphics.clearRect(x, y, image.getWidth(), image.getHeight());
+            }
+        }
     }
 
     protected BufferedImage getImage() {
@@ -281,14 +363,8 @@ public class URLMap extends MapRenderer implements com.elmakers.mine.bukkit.api.
                             int imageY = y + rawImage.getMinY();
 
                             BufferedImage croppedImage = rawImage.getSubimage(imageX, imageY, imageWidth, imageHeight);
-                            BufferedImage image = new BufferedImage(128, 128, animated ? BufferedImage.TYPE_INT_RGB : BufferedImage.TYPE_INT_ARGB);
+                            BufferedImage image = new BufferedImage(128, 128, BufferedImage.TYPE_INT_ARGB);
                             Graphics2D graphics = image.createGraphics();
-
-                            // This is hack, not sure how to handled animated gifs with transparency!
-                            if (animated) {
-                                graphics.setBackground(new Color(0, 0, 0, 0));
-                                graphics.clearRect(0, 0, 128, 128);
-                            }
 
                             AffineTransform transform = AffineTransform.getScaleInstance((float)128 / imageWidth, (float)128 / imageHeight);
                             graphics.drawRenderedImage(croppedImage, transform);
