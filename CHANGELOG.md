@@ -10,6 +10,7 @@
  - Fix glitchy Admission behavior
  - Add Secure spell
  - Add Levels 2 and 3 to Wound, Kill and Torture spells
+ - Support animated GIFs in image maps (though you may not want to use it, bandwidth hog!)
 
 ## 4.9.4
 
