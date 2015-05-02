@@ -467,8 +467,8 @@ debug_effects: false
 # Entity-specific hitboxes for targeting purposes
 # Magic uses the vanilla hitboxes by default, but you
 # can override that per-entity here.
-#
-# hitboxes:
+hitboxes:
+   default: 1.5,2,1.5
 #   player: 1.5,2,1.5
 #   spider: 2, 1, 2
 #   chicken: 1, 1, 1
