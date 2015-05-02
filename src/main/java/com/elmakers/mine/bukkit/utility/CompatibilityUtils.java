@@ -644,35 +644,37 @@ public class CompatibilityUtils extends NMSUtils {
 
     public static BoundingBox getHitbox(Entity entity)
     {
-        BoundingBox hitbox = entity == null ? null : hitboxes.get(entity.getType());
-        if (hitbox == null)
+        if (entity == null)
         {
-            hitbox = defaultHitbox;
+            return null;
         }
-
+        BoundingBox hitbox = hitboxes.get(entity.getType());
         if (hitbox != null)
         {
             return hitbox.center(entity.getLocation().toVector());
         }
 
-        try {
-            Object entityHandle = getHandle(entity);
-            Object aabb = class_Entity_getBoundingBox.invoke(entityHandle);
-            if (aabb == null) {
-                return null;
+        if (!isLegacy)
+        {
+            try {
+                Object entityHandle = getHandle(entity);
+                Object aabb = class_Entity_getBoundingBox.invoke(entityHandle);
+                if (aabb == null) {
+                    return defaultHitbox.center(entity.getLocation().toVector());
+                }
+                return new BoundingBox(
+                        class_AxisAlignedBB_minXField.getDouble(aabb),
+                        class_AxisAlignedBB_maxXField.getDouble(aabb),
+                        class_AxisAlignedBB_minYField.getDouble(aabb),
+                        class_AxisAlignedBB_maxYField.getDouble(aabb),
+                        class_AxisAlignedBB_minZField.getDouble(aabb),
+                        class_AxisAlignedBB_maxZField.getDouble(aabb)
+                );
+            } catch (Exception ex) {
+                ex.printStackTrace();
             }
-            return new BoundingBox(
-                    class_AxisAlignedBB_minXField.getDouble(aabb),
-                    class_AxisAlignedBB_maxXField.getDouble(aabb),
-                    class_AxisAlignedBB_minYField.getDouble(aabb),
-                    class_AxisAlignedBB_maxYField.getDouble(aabb),
-                    class_AxisAlignedBB_minZField.getDouble(aabb),
-                    class_AxisAlignedBB_maxZField.getDouble(aabb)
-            );
-        } catch (Exception ex) {
-            ex.printStackTrace();
         }
-        return null;
+        return defaultHitbox.center(entity.getLocation().toVector());
     }
 
     public static void configureHitboxes(ConfigurationSection config) {
@@ -702,6 +704,7 @@ public class CompatibilityUtils extends NMSUtils {
 
     public static boolean setLock(Location location, String lockName)
     {
+        if (isLegacy) return false;
         Object tileEntity = getTileEntity(location);
         if (tileEntity == null) return false;
         try {
@@ -717,6 +720,7 @@ public class CompatibilityUtils extends NMSUtils {
 
     public static boolean clearLock(Location location)
     {
+        if (isLegacy) return false;
         Object tileEntity = getTileEntity(location);
         if (tileEntity == null) return false;
         try {
@@ -731,6 +735,7 @@ public class CompatibilityUtils extends NMSUtils {
 
     public static boolean isLocked(Location location)
     {
+        if (isLegacy) return false;
         Object tileEntity = getTileEntity(location);
         if (tileEntity == null) return false;
         try {

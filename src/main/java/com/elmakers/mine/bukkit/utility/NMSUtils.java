@@ -238,7 +238,6 @@ public class NMSUtils {
             class_CraftMetaSkull = fixBukkitClass("org.bukkit.craftbukkit.inventory.CraftMetaSkull");
             class_NBTCompressedStreamTools = fixBukkitClass("net.minecraft.server.NBTCompressedStreamTools");
             class_TileEntity = fixBukkitClass("net.minecraft.server.TileEntity");
-            class_TileEntityContainer = fixBukkitClass("net.minecraft.server.TileEntityContainer");
             class_EntityHorse = fixBukkitClass("net.minecraft.server.EntityHorse");
             class_EntityWitherSkull = fixBukkitClass("net.minecraft.server.EntityWitherSkull");
             class_PacketPlayOutAttachEntity = fixBukkitClass("net.minecraft.server.PacketPlayOutAttachEntity");
@@ -287,7 +286,6 @@ public class NMSUtils {
             class_Entity_getIdMethod = class_Entity.getMethod("getId");
             class_Entity_getDataWatcherMethod = class_Entity.getMethod("getDataWatcher");
             class_Server_getOnlinePlayers = Server.class.getMethod("getOnlinePlayers");
-            class_Entity_getBoundingBox = class_Entity.getMethod("getBoundingBox");
 
             class_CraftInventoryCustom_constructor = class_CraftInventoryCustom.getConstructor(InventoryHolder.class, Integer.TYPE, String.class);
             class_EntityFireworkConstructor = class_EntityFirework.getConstructor(class_World, Double.TYPE, Double.TYPE, Double.TYPE, class_ItemStack);
@@ -332,10 +330,12 @@ public class NMSUtils {
 
             isLegacy = false;
             try {
+                class_TileEntityContainer = fixBukkitClass("net.minecraft.server.TileEntityContainer");
                 class_ChestLock = fixBukkitClass("net.minecraft.server.ChestLock");
                 class_TileEntityContainer_setLock = class_TileEntityContainer.getMethod("a", class_ChestLock);
                 class_TileEntityContainer_getLock = class_TileEntityContainer.getMethod("i");
                 class_ChestLock_isEmpty = class_ChestLock.getMethod("a");
+                class_Entity_getBoundingBox = class_Entity.getMethod("getBoundingBox");
                 class_GameProfile = getClass("com.mojang.authlib.GameProfile");
                 class_GameProfileProperty = getClass("com.mojang.authlib.properties.Property");
                 class_CraftSkull_profile = class_CraftSkull.getDeclaredField("profile");
