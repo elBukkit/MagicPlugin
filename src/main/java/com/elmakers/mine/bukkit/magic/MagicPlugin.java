@@ -1,35 +1,41 @@
 package com.elmakers.mine.bukkit.magic;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.logging.Level;
-
 import com.elmakers.mine.bukkit.api.block.UndoList;
-import com.elmakers.mine.bukkit.api.magic.*;
+import com.elmakers.mine.bukkit.api.magic.Automaton;
+import com.elmakers.mine.bukkit.api.magic.MageController;
+import com.elmakers.mine.bukkit.api.magic.MagicAPI;
+import com.elmakers.mine.bukkit.api.magic.Messages;
 import com.elmakers.mine.bukkit.api.spell.SpellCategory;
+import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
+import com.elmakers.mine.bukkit.api.wand.LostWand;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.citizens.CitizensController;
-import com.elmakers.mine.bukkit.magic.command.*;
+import com.elmakers.mine.bukkit.magic.command.CastCommandExecutor;
+import com.elmakers.mine.bukkit.magic.command.MagicCommandExecutor;
+import com.elmakers.mine.bukkit.magic.command.MagicGiveCommandExecutor;
+import com.elmakers.mine.bukkit.magic.command.MagicMapCommandExecutor;
+import com.elmakers.mine.bukkit.magic.command.MagicSkillsCommandExecutor;
+import com.elmakers.mine.bukkit.magic.command.MagicTraitCommandExecutor;
+import com.elmakers.mine.bukkit.magic.command.SpellsCommandExecutor;
+import com.elmakers.mine.bukkit.magic.command.WandCommandExecutor;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import com.elmakers.mine.bukkit.utility.NMSUtils;
+import com.elmakers.mine.bukkit.wand.Wand;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemoryConfiguration;
-import org.bukkit.configuration.MemorySection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.BookMeta;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
-import com.elmakers.mine.bukkit.api.wand.LostWand;
-import com.elmakers.mine.bukkit.wand.Wand;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.logging.Level;
 
 /*! \mainpage Magic Bukkit Plugin
 *

@@ -1558,6 +1558,7 @@ public class MagicController implements Listener, MageController {
 
 	public void save(boolean asynchronous)
 	{
+        if (!initialized) return;
         maps.save(asynchronous);
 
         final List<DataStore> saveData = new ArrayList<DataStore>();
