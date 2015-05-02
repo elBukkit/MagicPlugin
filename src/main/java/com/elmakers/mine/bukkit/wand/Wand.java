@@ -364,6 +364,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	}
 	
 	public void setIcon(MaterialAndData materialData) {
+        if (materialData == null || !materialData.isValid()) return;
 		icon = materialData;
         if (icon != null) {
             icon.applyToItem(item);
