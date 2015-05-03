@@ -92,7 +92,8 @@ public class CameraSpell extends TargetingSpell
 			if (parameters.contains("reload")) {
 				maps.forceReloadPlayerPortrait(getWorld().getName(), playerName);
 			}
-			newMapItem = maps.getPlayerPortrait(getWorld().getName(), playerName, priority, metaName);
+            metaName = (metaName == null) ? playerName : metaName;
+			newMapItem = maps.getPlayerPortrait(getWorld().getName(), playerName, priority, "Photo of " + metaName);
 		}
 		if (newMapItem == null) {
 			return SpellResult.FAIL;
