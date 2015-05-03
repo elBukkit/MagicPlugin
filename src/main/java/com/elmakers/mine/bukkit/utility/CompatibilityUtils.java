@@ -8,7 +8,6 @@ import org.bukkit.Color;
 import org.bukkit.DyeColor;
 import org.bukkit.Location;
 import org.bukkit.Rotation;
-import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Skull;
@@ -64,6 +63,7 @@ import java.util.logging.Level;
 public class CompatibilityUtils extends NMSUtils {
     public final static int MAX_ENTITY_RANGE = 72;
     private final static Map<EntityType, BoundingBox> hitboxes = new HashMap<EntityType, BoundingBox>();
+    private static double hitboxScale = 1.0;
     private static BoundingBox defaultHitbox;
 
     /**
@@ -669,12 +669,16 @@ public class CompatibilityUtils extends NMSUtils {
                         class_AxisAlignedBB_maxYField.getDouble(aabb),
                         class_AxisAlignedBB_minZField.getDouble(aabb),
                         class_AxisAlignedBB_maxZField.getDouble(aabb)
-                );
+                ).scale(hitboxScale);
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
         }
         return defaultHitbox.center(entity.getLocation().toVector());
+    }
+
+    public static void setHitboxScale(double scale) {
+        hitboxScale = scale;
     }
 
     public static void configureHitboxes(ConfigurationSection config) {
@@ -686,7 +690,7 @@ public class CompatibilityUtils extends NMSUtils {
                 String upperKey = key.toUpperCase();
                 double halfX = bounds.getX() / 2;
                 double halfZ = bounds.getZ() / 2;
-                BoundingBox bb = new BoundingBox(-halfX, halfX, 0, bounds.getY(), -halfZ, halfZ);
+                BoundingBox bb = new BoundingBox(-halfX, halfX, 0, bounds.getY(), -halfZ, halfZ).scale(hitboxScale);
                 if (upperKey.equals("DEFAULT")) {
                     defaultHitbox = bb;
                     continue;

@@ -33,6 +33,26 @@ public class BoundingBox
         return results;
     }
 
+    public Vector center()
+    {
+        return this.max.clone().add(this.min).multiply(0.5);
+    }
+
+    public BoundingBox scale(double scale)
+    {
+        // Note that this intentionally uses the min Y as the "center point" - only
+        // scaling the maxY up and down.
+        if (scale <= 0 || scale == 1) return this;
+        Vector center = this.center();
+        this.max.setY((this.max.getY() - this.min.getY()) * scale + this.min.getY());
+        this.min.setX((this.min.getX() - center.getX()) * scale + center.getX());
+        this.min.setZ((this.min.getZ() - center.getZ()) * scale + center.getZ());
+        this.max.setX((this.max.getX() - center.getX()) * scale + center.getX());
+        this.max.setZ((this.max.getZ() - center.getZ()) * scale + center.getZ());
+        return this;
+    }
+
+
     // Source:
     // [url]http://www.gamedev.net/topic/338987-aabb---line-segment-intersection-test/[/url]
     public boolean intersectsLine(Vector p1, Vector p2)
