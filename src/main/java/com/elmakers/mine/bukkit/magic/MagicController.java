@@ -1918,6 +1918,7 @@ public class MagicController implements Listener, MageController {
             currencyItem = null;
         }
 
+        CompatibilityUtils.setHitboxScale(properties.getDouble("hitbox_scale", 1.0));
         if (properties.contains("hitboxes"))
         {
             CompatibilityUtils.configureHitboxes(properties.getConfigurationSection("hitboxes"));

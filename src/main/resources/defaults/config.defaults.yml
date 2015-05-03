@@ -464,11 +464,16 @@ pvp_restricted: false
 # Debug EffectLib issues
 debug_effects: false
 
+# use this to make all hitboxes larger or smaller
+# for targeting purposes.
+# I find the vanilla ones all felt a little small, though I'm not sure why.
+hitbox_scale: 1.1
+
 # Entity-specific hitboxes for targeting purposes
 # Magic uses the vanilla hitboxes by default, but you
 # can override that per-entity here.
 hitboxes:
-   default: 1.5,2,1.5
+   default: 1,1.6,1
 #   player: 1.5,2,1.5
 #   spider: 2, 1, 2
 #   chicken: 1, 1, 1
@@ -480,7 +485,6 @@ hitboxes:
 #   enderman: 1.5,3,1.5
 #   ghast: 4,4,4
 #   wither: 4,4,4
-#   ender_dragon: 6,4,6
 #   giant: 6,13,6
 #   pig: 1.25, 1.25, 1.25
 #   sheep: 1.25, 1.25, 1.25
