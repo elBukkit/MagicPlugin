@@ -3027,6 +3027,7 @@ public class MagicController implements Listener, MageController {
 		}
 
         if (!mage.checkLastClick(clickCooldown)) {
+            event.setCancelled(true);
             return;
         }
 
