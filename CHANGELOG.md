@@ -2,6 +2,9 @@
 
 ## 4.9.6
 
+## 4.9.5.1
+
+ - Hotfix for 1.7 compatibilitiy
  - /mmap list supports regex searching
  - Add /mmap player command for creating player portraits without the Camera spell
  - Add Lockpick spell (admin-only)
