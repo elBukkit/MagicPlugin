@@ -243,13 +243,12 @@ public class MapController implements com.elmakers.mine.bukkit.api.maps.MapContr
      * @param worldName
      * @param playerName
      * @param priority
-     * @param photoName
+     * @param photoLabel
      * @return
      */
     @Override
-    public ItemStack getPlayerPortrait(String worldName, String playerName, Integer priority, String photoName) {
-        photoName = photoName == null ? playerName : photoName;
-        String photoLabel = "Photo of " + photoName;
+    public ItemStack getPlayerPortrait(String worldName, String playerName, Integer priority, String photoLabel) {
+        photoLabel = photoLabel == null ? playerName : photoLabel;
         MapView mapView = getURL(worldName, "http://skins.minecraft.net/MinecraftSkins/" + playerName + ".png", photoLabel, 8, 8, 40, 8, 8, 8, priority);
         return getMapItem(photoLabel, mapView);
     }
