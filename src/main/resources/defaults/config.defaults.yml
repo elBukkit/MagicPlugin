@@ -362,10 +362,6 @@ save_non_player_mages: false
 # a server crash.
 undo_on_world_save: false
 
-# Throttle TNT explosions
-# this is important if you allow building with tnt, especially with griefers.
-max_tnt_per_chunk: 16
-
 # When redstone is toggled, what block should replace? Note that air is glitchy
 redstone_replacement: obsidian
 
@@ -604,3 +600,7 @@ backup_inventory: false
 
 # Set this to true to turn on spell glow. May not work on all server versions.
 spell_glow: false
+
+# Throttle TNT explosions
+# This is built-in to Spigot, so generally not needed here.
+max_tnt_per_chunk: 0
