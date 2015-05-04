@@ -14,6 +14,8 @@ import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.ClickType;
+import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.inventory.Inventory;
@@ -29,9 +31,11 @@ import java.util.Map;
 
 public class BrushSelectAction extends BaseSpellAction implements GUIAction
 {
+    private static int INVENTORY_ROWS = 6;
     private CastContext context;
     private List<ItemStack> schematics = new ArrayList<ItemStack>();
     private Map<Material, List<ItemStack>> variants = new HashMap<Material, List<ItemStack>>();
+    private int page;
 
     @Override
     public void deactivated() {
@@ -47,9 +51,20 @@ public class BrushSelectAction extends BaseSpellAction implements GUIAction
     public void clicked(InventoryClickEvent event)
     {
         event.setCancelled(true);
+        InventoryAction action = event.getAction();
         if (context != null)
         {
             Mage mage = context.getMage();
+            if (action == InventoryAction.NOTHING)
+            {
+                int direction = event.getClick() == ClickType.LEFT ? 1 : -1;
+                page = page + direction;
+                mage.deactivateGUI();
+                perform(context);
+                event.setCancelled(true);
+                return;
+            }
+
             ItemStack item = event.getCurrentItem();
             String set = InventoryUtils.getMeta(item, "brush_set", null);
             if (set != null) {
@@ -176,12 +191,29 @@ public class BrushSelectAction extends BaseSpellAction implements GUIAction
         }
         brushes.addAll(specials);
 
-        String inventoryTitle = context.getMessage("title", "Brushes");
-        int invSize = ((brushes.size() + 9) / 9) * 9;
-        Inventory displayInventory = CompatibilityUtils.createInventory(null, invSize, inventoryTitle);
-        for (ItemStack item : brushes)
+        int inventorySize = 9 * INVENTORY_ROWS;
+        int numPages = (int)Math.ceil((float)brushes.size() / inventorySize);
+        if (page < 1) page = numPages;
+        else if (page > numPages) page = 1;
+        int pageIndex = page - 1;
+        int startIndex = pageIndex * inventorySize;
+        int maxIndex = (pageIndex + 1) * inventorySize - 1;
+        List<ItemStack> showBrushes = new ArrayList<ItemStack>();
+        for (int i = startIndex; i <= maxIndex && i < brushes.size(); i++)
         {
-            displayInventory.addItem(item);
+            showBrushes.add(brushes.get(i));
+        }
+
+        String inventoryTitle = context.getMessage("title", "Brushes");
+        if (numPages > 1) {
+            inventoryTitle += " (" + page + "/" + numPages + ")";
+        }
+        int invSize = (int)Math.ceil((float)showBrushes.size() / 9.0f) * 9;
+
+        Inventory displayInventory = CompatibilityUtils.createInventory(null, invSize, inventoryTitle);
+        for (ItemStack brush : showBrushes)
+        {
+            displayInventory.addItem(brush);
         }
         mage.activateGUI(this);
         mage.getPlayer().openInventory(displayInventory);
