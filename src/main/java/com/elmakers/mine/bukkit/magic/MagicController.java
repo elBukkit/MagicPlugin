@@ -3301,9 +3301,10 @@ public class MagicController implements Listener, MageController {
         InventoryAction action = event.getAction();
         InventoryType inventoryType = event.getInventory().getType();
         ItemStack clickedItem = event.getCurrentItem();
+
+        boolean isDrop = event.getClick() == ClickType.DROP || event.getClick() == ClickType.CONTROL_DROP;
         if (clickedItem != null && Wand.isSkill(clickedItem) && inventoryType != InventoryType.CRAFTING) {
-            if (action != InventoryAction.DROP_ALL_CURSOR && action != InventoryAction.DROP_ONE_CURSOR &&
-                action != InventoryAction.DROP_ALL_SLOT && action != InventoryAction.DROP_ONE_SLOT) {
+            if (!isDrop) {
                 event.setCancelled(true);
             }
             return;
@@ -3409,7 +3410,7 @@ public class MagicController implements Listener, MageController {
 
 		// Check for dropping items out of a wand's inventory
         // or dropping undroppable wands
-		if (event.getAction() == InventoryAction.DROP_ONE_SLOT) {
+		if (isDrop) {
             if (clickedWand) {
                 Wand wand = new Wand(this, clickedItem);
                 if (wand.isUndroppable()) {
@@ -3423,11 +3424,52 @@ public class MagicController implements Listener, MageController {
                 }
             }
             if (activeWand != null && activeWand.isInventoryOpen()) {
+
+                ItemStack droppedItem = clickedItem;
+
+                // This is a hack to deal with spells on cooldown disappearing,
+                // Since the event handler doesn't match the zero-count itemstacks
+                Integer slot = event.getSlot();
+                int heldSlot = player.getInventory().getHeldItemSlot();
+                Inventory hotbar = activeWand.getHotbar();
+                if (hotbar != null && slot >= 0 && slot <= hotbar.getSize() && slot != heldSlot)
+                {
+                    if (slot > heldSlot) slot--;
+                    if (slot < hotbar.getSize())
+                    {
+                        droppedItem = hotbar.getItem(slot);
+                    }
+                    else
+                    {
+                        slot = null;
+                    }
+                }
+                else
+                {
+                    slot = null;
+                }
+
                 if (!spellDroppingEnabled) {
+                    String spellName = Wand.getSpell(droppedItem);
+                    if (spellName != null) {
+                        Spell spell = mage.getSpell(spellName);
+                        if (spell != null) {
+                            activeWand.cast(spell);
+                            // Just in case a spell has levelled up... jeez!
+                            if (hotbar != null && slot != null)
+                            {
+                                droppedItem = hotbar.getItem(slot);
+                            }
+                        }
+                    }
                     event.setCancelled(true);
+
+                    // This is needed to avoid spells on cooldown disappearing
+                    player.getInventory().setItem(event.getSlot(), droppedItem);
+                    player.updateInventory();
+
                     return;
                 }
-                ItemStack droppedItem = clickedItem;
                 ItemStack newDrop = removeItemFromWand(activeWand, droppedItem);
 
                 if (newDrop != null) {

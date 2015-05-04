@@ -3161,9 +3161,12 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
     public String getActiveBrushKey() {
         return activeMaterial;
     }
-	
-	public boolean cast() {
-		Spell spell = getActiveSpell();
+
+    public boolean cast() {
+        return cast(getActiveSpell());
+    }
+
+	public boolean cast(Spell spell) {
 		if (spell != null) {
             Collection<String> castParameters = null;
             if (castOverrides != null && castOverrides.size() > 0) {

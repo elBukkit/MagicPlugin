@@ -2,6 +2,8 @@
 
 ## 4.9.6
 
+ - Add quick-cast from inventory, hit Q on a spell.
+
 ## 4.9.5.1
 
  - Hotfix for 1.7 compatibilitiy
