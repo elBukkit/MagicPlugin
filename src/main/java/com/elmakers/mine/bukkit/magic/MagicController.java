@@ -160,7 +160,7 @@ public class MagicController implements Listener, MageController {
                         @Override
                         public void run() {
                             synchronized (saveLock) {
-                                getLogger().info("Loading mage data from file " + playerFile.getName());
+                                info("Loading mage data from file " + playerFile.getName());
                                 try {
                                     final Configuration playerData = YamlConfiguration.loadConfiguration(playerFile);
                                     MageLoadTask loadTask = new MageLoadTask(mage, playerData);
@@ -173,7 +173,7 @@ public class MagicController implements Listener, MageController {
                         }
                     });
                 } else {
-                    getLogger().info("Loading mage data from file " + playerFile.getName() + " synchronously");
+                    info("Loading mage data from file " + playerFile.getName() + " synchronously");
                     synchronized (saveLock) {
                         try {
                             final Configuration playerData = YamlConfiguration.loadConfiguration(playerFile);
@@ -205,6 +205,19 @@ public class MagicController implements Listener, MageController {
             }
         }
         return apiMage;
+    }
+
+    public void info(String message)
+    {
+        info(message, 1);
+    }
+
+    public void info(String message, int verbosity)
+    {
+        if (logVerbosity >= verbosity)
+        {
+            getLogger().info(message);
+        }
     }
 
     @Override
@@ -486,16 +499,16 @@ public class MagicController implements Listener, MageController {
             if (extraSchematicFilePath != null && extraSchematicFilePath.length() > 0) {
                 File schematicFolder = new File(configFolder, "../" + extraSchematicFilePath);
                 extraSchematicFile = new File(schematicFolder, schematicName + ".schematic");
-                getLogger().info("Checking for external schematic: " + extraSchematicFile.getAbsolutePath());
+                info("Checking for external schematic: " + extraSchematicFile.getAbsolutePath(), 2);
             }
 
             if (extraSchematicFile != null && extraSchematicFile.exists()) {
                 inputSchematic = new FileInputStream(extraSchematicFile);
-                getLogger().info("Loading file: " + extraSchematicFile.getAbsolutePath());
+                info("Loading file: " + extraSchematicFile.getAbsolutePath());
             } else {
                 String fileName = schematicName + ".schematic";
                 inputSchematic = plugin.getResource("schematics/" + fileName);
-                getLogger().info("Loading builtin schematic: " + fileName);
+                info("Loading builtin schematic: " + fileName);
             }
         } catch (Exception ex) {
 
@@ -1491,7 +1504,7 @@ public class MagicController implements Listener, MageController {
 
         if (dynmapShowWands) {
             if (removeMarker("wand-" + wandId, "Wands")) {
-                getLogger().info("Wand removed from map");
+                info("Wand removed from map");
             }
         }
 
@@ -1536,7 +1549,7 @@ public class MagicController implements Listener, MageController {
                 // Check for players we can forget
                 if (!mage.isValid())
                 {
-                    getLogger().info("Forgetting Offline mage " + mage.getName());
+                    info("Forgetting Offline mage " + mage.getName());
                     forgetMages.add(mageEntry.getKey());
                 }
             }
@@ -1563,7 +1576,7 @@ public class MagicController implements Listener, MageController {
 
         final List<DataStore> saveData = new ArrayList<DataStore>();
 		savePlayerData(saveData);
-        getLogger().info("Saving " + saveData.size() + " players");
+        info("Saving " + saveData.size() + " players");
 		saveSpellData(saveData);
 		saveLostWands(saveData);
 		saveAutomata(saveData);
@@ -1576,7 +1589,7 @@ public class MagicController implements Listener, MageController {
                         for (DataStore config : saveData) {
                             config.save();
                         }
-                        getLogger().info("Finished saving");
+                        info("Finished saving");
                     }
                 }
             });
@@ -1585,7 +1598,7 @@ public class MagicController implements Listener, MageController {
                 for (DataStore config : saveData) {
                     config.save();
                 }
-                getLogger().info("Finished saving");
+                info("Finished saving");
             }
         }
 
@@ -1830,6 +1843,7 @@ public class MagicController implements Listener, MageController {
 
         EffectPlayer.debugEffects(properties.getBoolean("debug_effects", false));
 
+        logVerbosity = properties.getInt("log_verbosity", 0);
         exampleDefaults = properties.getString("example", exampleDefaults);
         addExamples = properties.getStringList("add_examples");
 
@@ -2172,7 +2186,7 @@ public class MagicController implements Listener, MageController {
                 if (queue != null) {
                     int undone = queue.undoScheduled();
                     if (undone  > 0) {
-                        getLogger().info("Undid " + undone + " spells for " + player.getName() + "prior to save of world " + world.getName());
+                        info("Undid " + undone + " spells for " + player.getName() + "prior to save of world " + world.getName());
                     }
                 }
             }
@@ -2834,7 +2848,7 @@ public class MagicController implements Listener, MageController {
 				// Don't show non-indestructible wands on dynmap
 				addLostWand(wand, event.getEntity().getLocation());		
 				Location dropLocation = event.getLocation();
-				getLogger().info("Wand " + wand.getName() + ", id " + wand.getLostId() + " spawned at " + dropLocation.getBlockX() + " " + dropLocation.getBlockY() + " " + dropLocation.getBlockZ());
+				info("Wand " + wand.getName() + ", id " + wand.getLostId() + " spawned at " + dropLocation.getBlockX() + " " + dropLocation.getBlockY() + " " + dropLocation.getBlockZ());
 			}
 		} else  {
             // Don't do this, no way to differentiate between a dropped item from a broken block
@@ -2883,7 +2897,7 @@ public class MagicController implements Listener, MageController {
 	                     event.setCancelled(true);
 	            	} else if (event.getDamage() >= itemStack.getDurability()) {
 	                	if (removeLostWand(wand.getLostId())) {
-	                		plugin.getLogger().info("Wand " + wand.getName() + ", id " + wand.getLostId() + " destroyed");
+	                		info("Wand " + wand.getName() + ", id " + wand.getLostId() + " destroyed");
 	                	}
 	                }
 				}  
@@ -3170,15 +3184,15 @@ public class MagicController implements Listener, MageController {
         if (undoQueue != null) {
             int undid = undoQueue.undoScheduled();
             if (undid != 0) {
-                getLogger().info("Player " + mage.getName() + " logged out, auto-undid " + undid + " spells");
+                info("Player " + mage.getName() + " logged out, auto-undid " + undid + " spells");
             }
 
             if (!undoQueue.isEmpty()) {
                 if (commitOnQuit) {
-                    getLogger().info("Player logged out, committing constructions: " + mage.getName());
+                    info("Player logged out, committing constructions: " + mage.getName());
                     undoQueue.commit();
                 } else {
-                    getLogger().info("Player " + mage.getName() + " logged out with " + undoQueue.getSize() + " spells in their undo queue");
+                    info("Player " + mage.getName() + " logged out with " + undoQueue.getSize() + " spells in their undo queue");
                 }
             }
         }
@@ -3188,7 +3202,7 @@ public class MagicController implements Listener, MageController {
             // Save synchronously on shutdown
             boolean asynchronousSaving = initialized;
             final File playerData = new File(playerDataFolder, mage.getId() + ".dat");
-            getLogger().info("Player logged out, saving data to " + playerData.getName() + (asynchronousSaving ? "" : " synchronously"));
+            info("Player logged out, saving data to " + playerData.getName() + (asynchronousSaving ? "" : " synchronously"));
             final DataStore playerConfig = new DataStore(getLogger(), playerData);
             if (mage.save(playerConfig)) {
                 if (asynchronousSaving) {
@@ -3669,7 +3683,7 @@ public class MagicController implements Listener, MageController {
             }
 
             if (removeLostWand(wand.getLostId())) {
-                plugin.getLogger().info("Player " + mage.getName() + " picked up wand " + wand.getName() + ", id " + wand.getLostId());
+                info("Player " + mage.getName() + " picked up wand " + wand.getName() + ", id " + wand.getLostId());
             }
             wand.clearLostId();
         }
@@ -3909,7 +3923,7 @@ public class MagicController implements Listener, MageController {
 					Block current = toggleBlock.getBlock();
 					// Don't toggle the block if it has changed to something else.
 					if (current.getType() == toggleBlock.getMaterial()) {
-                        getLogger().info("Resuming block at " + toggleBlock.getPosition() + ": " + toggleBlock.getName() + " with " + toggleBlock.getMaterial());
+                        info("Resuming block at " + toggleBlock.getPosition() + ": " + toggleBlock.getName() + " with " + toggleBlock.getMaterial());
 
                         redstoneReplacement.modify(current, true);
 						restored.add(toggleBlock);
@@ -4982,6 +4996,7 @@ public class MagicController implements Listener, MageController {
     private int                                 workFrequency               = 1;
     private int                                 undoFrequency               = 10;
     private int								    workPerUpdate				= 5000;
+    private int                                 logVerbosity                = 0;
 
     private boolean                             showCastHoloText            = false;
     private boolean                             showActivateHoloText        = false;

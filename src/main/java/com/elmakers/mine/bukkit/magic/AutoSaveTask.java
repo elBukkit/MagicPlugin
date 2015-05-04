@@ -9,7 +9,7 @@ public class AutoSaveTask implements Runnable {
 
     @Override
     public void run() {
-        controller.getLogger().info("Auto-saving Magic data");
+        controller.info("Auto-saving Magic data");
         controller.save(true);
     }
 }

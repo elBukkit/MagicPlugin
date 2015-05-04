@@ -109,6 +109,10 @@ show_messages: true
 # Whether or not to show messages on every spell cast (in chat)
 show_cast_messages: true
 
+# Changes log verbosity- set to a higher number (like 10) if you're having issues
+# with Magic, the extra log info may help me find problems.
+log_verbosity: 0
+
 # Prevent rapid sending of chat messages from the plugin (in milliseconds)
 message_throttle: 500
 
