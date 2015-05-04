@@ -251,3 +251,28 @@ madscienceshop:
           emp: 500
           superemp: 4000
           glider: 5000
+
+
+cleanup:
+    icon_url: http://textures.minecraft.net/texture/b55a449b825c375ab91571e7e8a67856d212f756824bdfe43178eaea035bc
+    icon: iron_spade
+    category: engineering
+    class: ConstructSpell
+    worth: 2500
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: level_up
+        -  class: EffectTrail
+           effect: step_sound
+    parameters:
+        allow_max_range: false
+        range: 32
+        check_destructible: true
+        destructible: cleanup
+        radius: 32
+        replace: true
+        transparent: transparent_to_construction
+        cooldown: 2000
+    costs:
+        mana: 100

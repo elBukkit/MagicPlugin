@@ -60,3 +60,6 @@ spells:
     confirm_title: "Buy $item"
     insufficient_resources: Costs $cost
     deducted: "&d&oYou bought &r&6$item &r&d&ofor &r&a$cost"
+  cleanup:
+    name: Anomaly Cleanup
+    description: We thank you for your service!

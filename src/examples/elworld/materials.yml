@@ -33,3 +33,15 @@ restricted:
 - furnace
 - tnt
 - beacon
+
+cleanup:
+- iron_block
+- gold_block
+- diamond_block
+- emerald_block
+- lapis_block
+- quartz_ore
+- diamond_ore
+- emerald_ore
+- lapis_ore
+- gold_ore
