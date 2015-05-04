@@ -191,6 +191,11 @@ public class BrushSelectAction extends BaseSpellAction implements GUIAction
         }
         brushes.addAll(specials);
 
+        if (brushes.size() == 0)
+        {
+            return SpellResult.NO_TARGET;
+        }
+
         int inventorySize = 9 * INVENTORY_ROWS;
         int numPages = (int)Math.ceil((float)brushes.size() / inventorySize);
         if (page < 1) page = numPages;
