@@ -262,6 +262,9 @@ categories:
     utility:
         name: Utility
         description: Utility and movement spells
+    utility:
+        name: Utility
+        description: Utility and movement spells
     demolition:
         name: Demolitions
         description: Highly destructive magic
@@ -287,6 +290,12 @@ categories:
     skills:
         name: Heroes Skills
         descriptions: Skills being used from Heroes
+    staff:
+        name: Staff
+        description: Staff-only spells
+    specialty:
+        name: Specialty
+        description: Spells meant for item or npc use
 skills:
     inventory_title: "$class Skills ($page/$pages)"
     inventory_title_secondary: "$class-$class2 Skills ($page/$pages)"

@@ -6455,7 +6455,7 @@ sponge:
 
 upgrades:
     icon: compass
-    category: utility
+    category: specialty
     hidden: true
     actions:
         cast:
@@ -6463,7 +6463,7 @@ upgrades:
 
 spellshop:
     icon: iron_hoe
-    category: utility
+    category: specialty
     hidden: true
     actions:
         cast:
@@ -6475,7 +6475,7 @@ spellshop:
 
 engineershop:
     icon: iron_hoe
-    category: utility
+    category: specialty
     hidden: true
     actions:
         cast:
@@ -6490,7 +6490,7 @@ engineershop:
 
 architectshop:
     icon: gold_axe
-    category: utility
+    category: specialty
     hidden: true
     actions:
         cast:
@@ -6505,7 +6505,7 @@ architectshop:
 
 bookshop:
     icon: book
-    category: utility
+    category: specialty
     hidden: true
     actions:
         cast:
@@ -6527,7 +6527,7 @@ bookshop:
 
 broomshop:
     icon: gold_spade
-    category: utility
+    category: specialty
     hidden: true
     actions:
         cast:
@@ -6542,7 +6542,7 @@ broomshop:
 
 wandshop:
     icon: wooden_hoe
-    category: utility
+    category: specialty
     hidden: true
     actions:
         cast:
@@ -6562,7 +6562,7 @@ wandshop:
 
 magicitemshop:
     icon: ender_portal_frame
-    category: utility
+    category: specialty
     hidden: true
     actions:
         cast:
@@ -6595,7 +6595,7 @@ magicitemshop:
 
 automatashop:
     icon: command
-    category: utility
+    category: specialty
     hidden: true
     actions:
         cast:
@@ -6613,7 +6613,7 @@ automatashop:
 
 tweakshop:
     icon: nether_star
-    category: utility
+    category: specialty
     hidden: true
     actions:
         cast:
@@ -6634,7 +6634,7 @@ tweakshop:
 
 colorshop:
     icon: ink_sack
-    category: utility
+    category: specialty
     hidden: true
     actions:
         cast:
@@ -6658,7 +6658,7 @@ colorshop:
 
 upgradeshop:
     icon: gold_axe
-    category: utility
+    category: specialty
     hidden: true
     actions:
         cast:
@@ -6675,7 +6675,7 @@ upgradeshop:
 
 emeraldshop:
     icon: emerald
-    category: utility
+    category: specialty
     hidden: true
     actions:
         cast:
@@ -6690,7 +6690,7 @@ emeraldshop:
 
 addspell:
     icon: iron_hoe
-    category: utility
+    category: specialty
     hidden: true
     actions:
         cast:
@@ -6701,7 +6701,7 @@ addspell:
 
 fillwand:
     icon: iron_hoe
-    category: utility
+    category: specialty
     hidden: true
     actions:
         cast:
@@ -6711,7 +6711,7 @@ fillwand:
 
 enchantwand:
     icon: iron_hoe
-    category: utility
+    category: specialty
     hidden: true
     actions:
         cast:
@@ -6724,7 +6724,7 @@ enchantwand:
 brushselect:
     icon: painting
     icon_url: http://textures.minecraft.net/texture/a653c2daf990459d641e5b8f6e62ef8af24b1a2da49c9ce8d9f68ab682905112
-    category: utility
+    category: specialty
     hidden: true
     actions:
         cast:
