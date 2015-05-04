@@ -3470,6 +3470,7 @@ public class MagicController implements Listener, MageController {
                         player.getInventory().setItem(event.getSlot(), droppedItem);
                         player.updateInventory();
                     }
+                    player.closeInventory();
 
                     return;
                 }
