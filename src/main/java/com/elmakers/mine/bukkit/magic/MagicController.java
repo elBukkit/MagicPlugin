@@ -3464,9 +3464,12 @@ public class MagicController implements Listener, MageController {
                     }
                     event.setCancelled(true);
 
-                    // This is needed to avoid spells on cooldown disappearing
-                    player.getInventory().setItem(event.getSlot(), droppedItem);
-                    player.updateInventory();
+                    // This is needed to avoid spells on cooldown disappearing from the hotbar
+                    if (hotbar != null && slot != null)
+                    {
+                        player.getInventory().setItem(event.getSlot(), droppedItem);
+                        player.updateInventory();
+                    }
 
                     return;
                 }
