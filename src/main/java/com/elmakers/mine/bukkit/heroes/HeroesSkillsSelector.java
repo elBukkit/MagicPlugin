@@ -4,9 +4,11 @@ import com.elmakers.mine.bukkit.api.action.GUIAction;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.magic.MagicAPI;
+import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
+import com.elmakers.mine.bukkit.wand.Wand;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
@@ -113,12 +115,24 @@ public class HeroesSkillsSelector implements GUIAction {
 
     @Override
     public void clicked(InventoryClickEvent event) {
-        if (event.getAction() == InventoryAction.NOTHING) {
+        InventoryAction action = event.getAction();
+        if (action == InventoryAction.NOTHING) {
             int direction = event.getClick() == ClickType.LEFT ? 1 : -1;
             page = page + direction;
             openInventory();
             event.setCancelled(true);
             return;
+        }
+        Mage mage = api.getMage(player);
+        if (action == InventoryAction.PICKUP_HALF && mage != null)
+        {
+            ItemStack clickedItem = event.getCurrentItem();
+            Spell spell = mage.getSpell(Wand.getSpell(clickedItem));
+            if (spell != null) {
+                spell.cast();
+            }
+            player.closeInventory();
+            event.setCancelled(true);
         }
     }
 

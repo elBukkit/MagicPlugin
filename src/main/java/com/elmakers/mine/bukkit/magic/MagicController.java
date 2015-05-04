@@ -3303,10 +3303,24 @@ public class MagicController implements Listener, MageController {
         ItemStack clickedItem = event.getCurrentItem();
 
         boolean isDrop = event.getClick() == ClickType.DROP || event.getClick() == ClickType.CONTROL_DROP;
-        if (clickedItem != null && Wand.isSkill(clickedItem) && inventoryType != InventoryType.CRAFTING) {
+        boolean isSkill = clickedItem != null && Wand.isSkill(clickedItem);
+        // Preventing putting skills in containers
+        if (isSkill && inventoryType != InventoryType.CRAFTING) {
             if (!isDrop) {
                 event.setCancelled(true);
             }
+            return;
+        }
+
+        // Check for right-click-to-use
+        if (isSkill && action == InventoryAction.PICKUP_HALF)
+        {
+            Spell spell = mage.getSpell(Wand.getSpell(clickedItem));
+            if (spell != null) {
+                spell.cast();
+            }
+            player.closeInventory();
+            event.setCancelled(true);
             return;
         }
 
