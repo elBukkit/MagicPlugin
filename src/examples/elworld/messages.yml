@@ -60,6 +60,18 @@ spells:
     confirm_title: "Buy $item"
     insufficient_resources: Costs $cost
     deducted: "&d&oYou bought &r&6$item &r&d&ofor &r&a$cost"
+  beaconshop:
+      name: Beacon Shop
+      title: "Protection ($balance)"
+      description: Trade XP for Beacons
+      cost_lore: "Costs: $cost"
+      cast: ""
+      cast_player_message: ""
+      fail: ""
+      no_items: There is nothing to buy here!
+      insufficient_resources: Costs $cost
+      confirm_title: "Buy $item"
+      deducted: "&d&oYou bought &r&6$item &r&d&ofor &r&a$cost"
   cleanup:
     name: Anomaly Cleanup
     description: We thank you for your service!

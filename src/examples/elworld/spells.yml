@@ -32,27 +32,6 @@
 #           <specific spell parameters- TODO: list common ones>
 #
 
-purge:
-    icon: grilled_pork
-    category: dark
-    class: com.elmakers.mine.bukkit.magicworlds.spell.PurgeSpell
-    effects:
-        cast:
-        -  class: EffectSingle
-           sound: creeper_hiss
-        -  class: EffectTrail
-           particle: smoke_normal
-        -  class: EffectRing
-           particle: smoke_normal
-           location: target
-    parameters:
-        target_type: LivingEntity
-        target: other
-        allow_max_range: false
-        range: 32
-    costs:
-        xp: 1000
-
 phase:
    parameters:
       worlds:
@@ -252,7 +231,6 @@ madscienceshop:
           superemp: 4000
           glider: 5000
 
-
 cleanup:
     icon_url: http://textures.minecraft.net/texture/b55a449b825c375ab91571e7e8a67856d212f756824bdfe43178eaea035bc
     icon: iron_spade
@@ -276,3 +254,18 @@ cleanup:
         cooldown: 2000
     costs:
         mana: 100
+
+beaconshop:
+    icon: beacon
+    category: specialty
+    hidden: true
+    actions:
+        cast:
+        -  class: ItemShop
+    parameters:
+        loud: true
+        confirm: true
+        use_xp: true
+        confirm_filler: stained_glass:5
+        items:
+          beacon: 1200

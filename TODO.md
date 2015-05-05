@@ -1,9 +1,11 @@
 # TODO
 
+ - Fix XP calculation for 1.8
+ - Check Regenerate - got stuck, couldn't cancel?
+
  - Make Portal spell portals avoid creating a frame on the other side (maybe handle TP'ing on portal event?)
  - Logout on death still buggy? (can not reproduce)
  - Make locked chests unbreakable
- - Add Lockpick spell, make this and Pickpocket admin-only. Remove target messaging from Pickpocket (?)
 
  - Wand dupe issue:
    (can not reproduce, but certainly lag-related. Probably same issue as Recall and the other GUIs have)
