@@ -27,6 +27,7 @@ public class TownyAPI
         if (towny == null || location == null)
             return true;
         TownBlock townBlock = TownyUniverse.getTownBlock(location);
+        if (townBlock == null) return true;
         Town town = null;
         try {
             if (townBlock.hasTown()) {
