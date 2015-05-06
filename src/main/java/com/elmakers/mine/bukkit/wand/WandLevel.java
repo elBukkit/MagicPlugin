@@ -422,7 +422,7 @@ public class WandLevel {
 		// Add or set uses to the wand
 		if (additive) {
 			// Only add uses to a wand if it already has some.
-			int wandUses = wand.getUses();
+			int wandUses = wand.getRemainingUses();
 			if (wandUses > 0 && wandUses < path.getMaxUses() && addUseProbability.size() > 0) {
 				wandProperties.set("uses", Math.min(path.getMaxUses(), wandUses + RandomUtils.weightedRandom(addUseProbability)));
 				addedProperties = true;

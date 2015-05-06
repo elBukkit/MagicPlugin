@@ -70,7 +70,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		"active_spell", "active_material",
         "path", "passive",
 		"xp", "xp_regeneration", "xp_max", "xp_max_boost", "xp_regeneration_boost",
-		"bound", "uses", "upgrade", "indestructible", "undroppable",
+		"bound", "has_uses", "uses", "upgrade", "indestructible", "undroppable",
 		"cost_reduction", "cooldown_reduction", "effect_bubbles", "effect_color", 
 		"effect_particle", "effect_particle_count", "effect_particle_data", "effect_particle_interval",
         "effect_particle_min_velocity",
@@ -148,6 +148,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
     private boolean forceUpgrade = false;
     private boolean isHeroes = false;
 	private int uses = 0;
+    private boolean hasUses = false;
 	private float xp = 0;
 
     private float xpMaxBoost = 0;
@@ -507,10 +508,6 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 
 	public float getDamageReductionExplosions() {
 		return damageReductionExplosions;
-	}
-
-	public int getUses() {
-		return uses;
 	}
 	
 	public String getName() {
@@ -991,6 +988,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         node.set("xp_regeneration_boost", xpRegenerationBoost);
         node.set("xp_timestamp", lastXpRegeneration);
 		node.set("uses", uses);
+        node.set("has_uses", hasUses);
 		node.set("locked", locked);
 		node.set("effect_color", effectColor == null ? "none" : effectColor.toString());
 		node.set("effect_bubbles", effectBubbles);
@@ -1185,6 +1183,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         xpRegenerationBoost = safe ? Math.max(_xpRegenerationBoost, xpRegenerationBoost) : _xpRegenerationBoost;
         int _uses = wandConfig.getInt("uses", uses);
         uses = safe ? Math.max(_uses, uses) : _uses;
+        hasUses = wandConfig.getBoolean("has_uses", hasUses) || uses > 0;
 
         // Convert some legacy properties to potion effects
         float healthRegeneration = (float)wandConfig.getDouble("health_regeneration", 0);
@@ -1443,7 +1442,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	private String getActiveWandName(SpellTemplate spell, MaterialBrush brush) {
 		// Build wand name
         int remaining = getRemainingUses();
-		ChatColor wandColor = remaining == 1 ? ChatColor.DARK_RED : isModifiable()
+		ChatColor wandColor = (hasUses && remaining <= 1) ? ChatColor.DARK_RED : isModifiable()
                 ? (bound ? ChatColor.DARK_AQUA : ChatColor.AQUA) :
                   (path != null && path.length() > 0 ? ChatColor.LIGHT_PURPLE : ChatColor.GOLD);
 		String name = wandColor + getDisplayName();
@@ -2190,6 +2189,12 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
             }
         }
 
+        // Can't combine limited-use wands
+        if (hasUses || other.hasUses)
+        {
+            return false;
+        }
+
         // Don't allow upgrades from an item on a different path
         if (other.isUpgrade() && other.path != null && !other.path.isEmpty() && (this.path == null || !this.path.equals(other.path))) {
             return false;
@@ -2368,16 +2373,6 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
                     modified = true;
                 }
             }
-		}
-		
-		// Eliminate limited-use wands
-		if (uses == 0 || other.uses == 0) {
-			modified = modified | (uses != 0);
-			uses = 0;
-		} else {
-			// Otherwise add them
-			modified = modified | (other.uses != 0);
-			uses = uses + other.uses;
 		}
 		
 		// Add spells
@@ -3167,6 +3162,10 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
     }
 
 	public boolean cast(Spell spell) {
+        if (hasUses && uses <= 0) {
+            use();
+            return false;
+        }
 		if (spell != null) {
             Collection<String> castParameters = null;
             if (castOverrides != null && castOverrides.size() > 0) {
@@ -3227,10 +3226,12 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	@SuppressWarnings("deprecation")
 	protected void use() {
 		if (mage == null) return;
-		if (uses > 0) {
-			uses--;
+		if (hasUses) {
+            if (uses > 0)
+            {
+                uses--;
+            }
 			if (uses <= 0) {
-                uses = 1;
                 ItemStack item = getItem();
                 if (item.getAmount() > 1)
                 {
