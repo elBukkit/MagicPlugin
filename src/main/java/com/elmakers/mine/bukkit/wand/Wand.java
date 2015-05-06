@@ -3120,10 +3120,8 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         storedInventory = null;
 		
 		if (usesMana() && displayManaAsXp() && player != null) {
+            player.setLevel(storedXpLevel);
             player.setExp(storedXpProgress);
-            if (!retainLevelDisplay) {
-                player.setLevel(storedXpLevel);
-            }
 			storedXpProgress = 0;
 			storedXpLevel = 0;
 		}
@@ -3263,17 +3261,26 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		}
 	}
 
+    // Taken from NMS HumanEntity
+    public static int getExpToLevel(int expLevel) {
+        return expLevel >= 30 ? 112 + (expLevel - 30) * 9 : (expLevel >= 15 ? 37 + (expLevel - 15) * 5 : 7 + expLevel * 2);
+    }
+
     public boolean addExperience(int xp) {
         if (usesMana() && displayManaAsXp()) {
+            this.storedXpProgress += (float)xp / (float)getExpToLevel(this.storedXpLevel);
+
+            for (; this.storedXpProgress >= 1.0F; this.storedXpProgress /= (float)getExpToLevel(this.storedXpLevel)) {
+                this.storedXpProgress = (this.storedXpProgress - 1.0F) * (float)getExpToLevel(this.storedXpLevel);
+                this.storedXpLevel++;
+            }
+
             Player player = mage == null ? null : mage.getPlayer();
             if (player != null) {
-                player.setExp(storedXpProgress);
-                if (!retainLevelDisplay) {
+                if (retainLevelDisplay) {
                     player.setLevel(storedXpLevel);
                 }
-                player.giveExp(xp);
-                storedXpProgress = player.getExp();
-                storedXpLevel = player.getLevel();
+                player.setExp(storedXpProgress);
             }
             return true;
         }
@@ -3992,6 +3999,10 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 
     public int getStoredXpLevel() {
         return storedXpLevel;
+    }
+
+    public float getStoredXpProgress() {
+        return storedXpProgress;
     }
 
     public boolean hasStoredInventory() {

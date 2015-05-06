@@ -7,6 +7,7 @@
  - Fix wand duplication glitch on certain death cases
  - Fix compatibility with Scavenger plugin
  - Add "use_magic_damage" config option to turn off "magic" (splash potion) damage source
+ - Fix XP scale to 1.8 standards (effects XP-based shops)
 
 ## 4.9.5.1
 

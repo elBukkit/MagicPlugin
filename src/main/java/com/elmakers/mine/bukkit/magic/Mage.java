@@ -135,11 +135,6 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         hasEntity = false;
     }
 
-    // Taken from NMS Player
-    public static int getExpToLevel(int expLevel) {
-        return expLevel >= 30 ? 62 + (expLevel - 30) * 7 : (expLevel >= 15 ? 17 + (expLevel - 15) * 3 : 17);
-    }
-
     public void setCostReduction(float reduction) {
         costReduction = reduction;
     }
@@ -1177,7 +1172,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                 if (expAtLevel > xp) {
                     expAtLevel -= xp;
                     xp = 0;
-                    expProgress = (float) expAtLevel / (float) getExpToLevel(expLevel);
+                    expProgress = (float) expAtLevel / (float)Wand.getExpToLevel(expLevel);
                 } else {
                     expProgress = 0;
                     xp -= expAtLevel;
@@ -1186,7 +1181,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                 xp -= player.getExpToLevel();
                 expLevel--;
                 if (xp < 0) {
-                    expProgress = (float) (-xp) / getExpToLevel(expLevel);
+                    expProgress = (float) (-xp) / Wand.getExpToLevel(expLevel);
                     xp = 0;
                 }
             }
@@ -1232,10 +1227,16 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         int xp = 0;
         float expProgress = player.getExp();
         int expLevel = player.getLevel();
-        for (int level = 0; level < expLevel; level++) {
-            xp += getExpToLevel(level);
+
+        if (activeWand != null && activeWand.usesMana() && activeWand.displayManaAsXp()) {
+            expLevel = activeWand.getStoredXpLevel();
+            expProgress = activeWand.getStoredXpProgress();
         }
-        return xp + (int) (expProgress * getExpToLevel(expLevel));
+
+        for (int level = 0; level < expLevel; level++) {
+            xp += Wand.getExpToLevel(level);
+        }
+        return xp + (int) (expProgress * Wand.getExpToLevel(expLevel));
     }
 
     @Override
