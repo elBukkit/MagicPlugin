@@ -151,7 +151,9 @@ public class MapController implements com.elmakers.mine.bukkit.api.maps.MapContr
                         mapConfig.set("y_overlay", map.yOverlay);
                     }
                 }
-                configuration.save(configurationFile);
+                File tempFile = new File(configurationFile.getAbsolutePath() + ".tmp");
+                configuration.save(tempFile);
+                tempFile.renameTo(configurationFile);
             } catch (Exception ex) {
                 warning("Failed to save file " + configurationFile.getAbsolutePath());
             }
