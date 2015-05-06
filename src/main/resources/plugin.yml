@@ -5,6 +5,7 @@ website: http://mine.elmakers.com
 author: NathanWolf
 description : Mmmmmmaaaaagic!
 softdepend: [WorldGuard,Essentials,dynmap,dtlTraders,Factions,CommandBook,PvPManager,Multiverse-Core,WGCustomFlags,Citizens,Vault,GriefPrevention,Heroes]
+loadbefore: [Scavenger]
 commands:
   cast:
     aliases: [mcast]

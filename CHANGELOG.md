@@ -5,6 +5,7 @@
  - Add quick-cast from inventory, hit Q on a spell.
  - Add brush selector paging
  - Fix wand duplication glitch on certain death cases
+ - Fix compatibility with Scavenger plugin
 
 ## 4.9.5.1
 
