@@ -61,6 +61,7 @@ import java.util.logging.Level;
  * official release.
  */
 public class CompatibilityUtils extends NMSUtils {
+    public static boolean USE_MAGIC_DAMAGE = true;
     public final static int MAX_ENTITY_RANGE = 72;
     private final static Map<EntityType, BoundingBox> hitboxes = new HashMap<EntityType, BoundingBox>();
     private static double hitboxScale = 1.0;
@@ -435,19 +436,20 @@ public class CompatibilityUtils extends NMSUtils {
     public static void magicDamage(LivingEntity target, double amount, Entity source) {
         try {
             if (target == null || target.isDead()) return;
-            Object targetHandle = getHandle(target);
-            if (targetHandle == null) return;
-
-            Object sourceHandle = getHandle(source);
 
             // Special-case for witches .. witches are immune to magic damage :\
             // And endermen are immune to indirect damage .. or something.
             // Might need to config-drive this, or just go back to defaulting to normal damage
-            if (target instanceof Witch || target instanceof Enderman)
+            if (!USE_MAGIC_DAMAGE || target instanceof Witch || target instanceof Enderman)
             {
                 target.damage(amount, source);
                 return;
             }
+
+            Object targetHandle = getHandle(target);
+            if (targetHandle == null) return;
+
+            Object sourceHandle = getHandle(source);
 
             // Bukkit won't allow magic damage from anything but a potion..
             if (sourceHandle != null && source instanceof LivingEntity) {
