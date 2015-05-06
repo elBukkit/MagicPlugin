@@ -1027,7 +1027,6 @@ toss:
         -  class: EffectSingle
            effect: step_sound
            location: origin
-    pvp_restricted: true
     parameters:
       speed_min: 1.2
       speed_max: 2.2
@@ -1038,7 +1037,6 @@ volley:
     icon_url: http://textures.minecraft.net/texture/c7c963831339c9e82e91cd29bfa36ab616d78555dfbe7e72983e2e254180a2ab
     icon: stone_button
     category: engineering
-    pvp_restricted: true
     worth: 3000
     actions:
         cast:
@@ -1170,13 +1168,10 @@ pull:
     costs:
         mana: 50
 
-
-
 grab:
     icon_url: http://textures.minecraft.net/texture/e13e9af0957a9dd4995811ef3e869b4ad8fbb59ca7474e4c84ce7f6019b079
     icon: fishing_rod
     category: elemental
-    pvp_restricted: true
     worth: 200
     actions:
         cast:
@@ -1975,7 +1970,6 @@ arrowrain:
     icon_url: http://textures.minecraft.net/texture/7d89462020cc12f63d5117d37b52e642536de7fa774d2d96e80c72e1d4ff6
     icon: bow
     category: combat
-    pvp_restricted: true
     worth: 1000
     actions:
         cast:
@@ -2009,7 +2003,6 @@ gatling:
     icon_url: http://textures.minecraft.net/texture/7134aed98232d9946f9dbd738a37e68f36a9a773a863dde206bb9115b993d78
     icon: bow
     category: combat
-    pvp_restricted: true
     worth: 1500
     actions:
         cast:
@@ -2085,7 +2078,6 @@ arrow:
     alias: sniper
     icon: arrow
     category: combat
-    pvp_restricted: true
     worth: 900
     upgrade_required_path: student
     upgrade_required_casts: 50
@@ -2255,7 +2247,6 @@ fling:
     icon_url: http://textures.minecraft.net/texture/7cc2fb583d1762a16a50fa5ac37bc09b46def63e68205116d650391f9233ed
     category: utility
     worth: 1000
-    pvp_restricted: false
     upgrade_required_path: apprentice
     upgrade_required_casts: 50
     actions:
@@ -2853,7 +2844,6 @@ gills:
     icon: cooked_fish
     category: light
     worth: 1000
-    pvp_restricted: false
     actions:
         cast:
         -  class: PotionEffect
@@ -4301,7 +4291,6 @@ disintegrate:
     icon_url: http://textures.minecraft.net/texture/89f9399aceb3211c3ca1259d5b1bb1f3fb61a4d5626a757ee1a1ccec28a0ae
     icon: bone
     category: combat
-    pvp_restricted: true
     worth: 2500
     actions:
         cast:
@@ -4849,7 +4838,6 @@ shrink:
     icon_url: http://textures.minecraft.net/texture/dd91c092cb93f6f4152629a02ddf617557381a16694a46eba3468446363c08e
     category: combat
     class: ShrinkSpell
-    pvp_restricted: true
     cast_on_no_target: true
     worth: 1500
     effects:
@@ -4901,7 +4889,6 @@ grow:
     icon: skull_item:1
     category: combat
     class: GrowSpell
-    pvp_restricted: true
     cast_on_no_target: true
     worth: 1000
     effects:
@@ -5104,7 +5091,6 @@ fireball:
     icon_url: http://textures.minecraft.net/texture/e511624fac75f03cf2f3a56d5fe4582d6e74fc9f5e1e1160af1941ee144928
     icon: ghast_tear
     category: combat
-    pvp_restricted: true
     worth: 1500
     actions:
         cast:
@@ -5147,7 +5133,7 @@ fireball|2:
     upgrade_required_path: student
     upgrade_required_casts: 30
     parameters:
-        size: 3
+        size: 2
         spread: 4
 
 fireball|3:
@@ -5307,7 +5293,6 @@ missile:
     upgrade_required_casts: 15
     category: combat
     worth: 1500
-    pvp_restricted: true
     actions:
         cast:
         - class: Damage
@@ -6010,7 +5995,6 @@ wound:
     icon_url: http://textures.minecraft.net/texture/df19b39e565b16cbdabe364b91e35894d1e9bac0ad3fa4b0905ec4f366627
     icon: quartz
     category: combat
-    pvp_restricted: true
     worth: 1000
     actions:
         cast:
