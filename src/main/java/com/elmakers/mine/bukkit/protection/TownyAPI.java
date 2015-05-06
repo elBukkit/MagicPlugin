@@ -2,6 +2,8 @@ package com.elmakers.mine.bukkit.protection;
 
 import com.palmergames.bukkit.towny.Towny;
 import com.palmergames.bukkit.towny.exceptions.NotRegisteredException;
+import com.palmergames.bukkit.towny.object.Town;
+import com.palmergames.bukkit.towny.object.TownBlock;
 import com.palmergames.bukkit.towny.object.TownBlockOwner;
 import com.palmergames.bukkit.towny.object.TownyUniverse;
 import org.bukkit.Location;
@@ -24,7 +26,18 @@ public class TownyAPI
     public boolean isPVPAllowed(Location location) {
         if (towny == null || location == null)
             return true;
-        return TownyUniverse.isWilderness(location.getBlock());
+        TownBlock townBlock = TownyUniverse.getTownBlock(location);
+        Town town = null;
+        try {
+            if (townBlock.hasTown()) {
+                town = townBlock.getTown();
+            }
+        } catch (NotRegisteredException ex){
+
+        }
+        if (town == null) return true;
+
+        return town.isPVP();
     }
 
     public boolean hasBuildPermission(Player player, Block block) {
