@@ -1983,6 +1983,7 @@ public class MagicController implements Listener, MageController {
 
         metricsLevel = properties.getInt("metrics_level", metricsLevel);
 
+        Wand.regenWhileInactive = properties.getBoolean("regenerate_while_inactive", Wand.regenWhileInactive);
 		if (properties.contains("mana_display")) {
 			Wand.retainLevelDisplay = properties.getString("mana_display").equals("hybrid");
 			Wand.displayManaAsBar = !properties.getString("mana_display").equals("number");

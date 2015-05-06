@@ -262,6 +262,9 @@ default_wand_path:
 # How to display Mana. Options are "bar", "number" and "hybrid"
 mana_display: hybrid
 
+# Control whether wands regenerate mana while they are not being held
+regenerate_while_inactive: true
+
 # A cooldown value in milliseconds between clicks. Mainly used to prevent Bukkit/MC double-event bugs.
 click_cooldown: 150
 

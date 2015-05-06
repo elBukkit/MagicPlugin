@@ -217,6 +217,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
     public static boolean displayManaAsDurability = true;
     public static boolean displayManaAsGlow = true;
 	public static boolean retainLevelDisplay = true;
+    public static boolean regenWhileInactive = true;
 	public static Material DefaultUpgradeMaterial = Material.NETHER_STAR;
 	public static Material DefaultWandMaterial = Material.BLAZE_ROD;
 	public static Material EnchantableWandMaterial = null;
@@ -1200,7 +1201,11 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
             potionEffects.put(PotionEffectType.SATURATION, 1);
         }
 
-        lastXpRegeneration = wandConfig.getLong("xp_timestamp");
+        if (regenWhileInactive) {
+            lastXpRegeneration = wandConfig.getLong("xp_timestamp");
+        } else {
+            lastXpRegeneration = System.currentTimeMillis();
+        }
 
 		if (wandConfig.contains("effect_color") && !safe) {
 			setEffectColor(wandConfig.getString("effect_color"));
