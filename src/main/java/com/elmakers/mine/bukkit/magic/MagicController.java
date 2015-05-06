@@ -2713,8 +2713,7 @@ public class MagicController implements Listener, MageController {
             return;
         }
         final Player player = (Player)entity;
-
-		String rule = entity.getWorld().getGameRuleValue("keepInventory");
+        String rule = entity.getWorld().getGameRuleValue("keepInventory");
 		if (rule.equals("true")) return;
 
         List<ItemStack> drops = event.getDrops();
@@ -2722,22 +2721,15 @@ public class MagicController implements Listener, MageController {
 		if (wand != null) {
 			// Retrieve stored inventory before deactivating the wand
 			if (mage.hasStoredInventory()) {
-				drops.clear();
+                // Remove the wand inventory from drops
+				drops.removeAll(Arrays.asList(player.getInventory().getContents()));
 
-				ItemStack[] stored = mage.getStoredInventory().getContents();
-				
 				// Deactivate the wand.
 				wand.deactivate();
-	
+
+	            // Add restored inventory back to drops
+                ItemStack[] stored = player.getInventory().getContents();
 				for (ItemStack stack : stored) {
-					if (stack != null) {
-						drops.add(stack);
-					}
-				}
-				
-				// Drop armor also
-				ItemStack[] armor = player.getInventory().getArmorContents();
-				for (ItemStack stack : armor) {
 					if (stack != null) {
 						drops.add(stack);
 					}

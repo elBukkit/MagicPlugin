@@ -4,6 +4,7 @@
 
  - Add quick-cast from inventory, hit Q on a spell.
  - Add brush selector paging
+ - Fix wand duplication glitch on certain death cases
 
 ## 4.9.5.1
 

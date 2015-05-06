@@ -140,6 +140,9 @@ beginner:
 student:
     effect_color: '00FF00'
     path: student
+    bound: true
+    keep: true
+    undroppable: true
     indestructible: true
     xp_regeneration: 30
     protection_falling: 0.5
@@ -180,6 +183,9 @@ apprentice:
     effect_color: '22FF22'
     path: apprentice
     indestructible: true
+    bound: true
+    keep: true
+    undroppable: true
     xp_regeneration: 40
     xp_max: 200
     xp: 200
@@ -188,7 +194,6 @@ apprentice:
     protection_fire: 0.5
     protection_explosions: 0.5
     effect_bubbles: true
-    undroppable: true
     spells:
       - missile
       - blink
