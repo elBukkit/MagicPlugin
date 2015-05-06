@@ -1178,7 +1178,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                     xp -= expAtLevel;
                 }
             } else {
-                xp -= player.getExpToLevel();
+                xp -= Wand.getExpToLevel(expLevel - 1);
                 expLevel--;
                 if (xp < 0) {
                     expProgress = (float) (-xp) / Wand.getExpToLevel(expLevel);
@@ -1187,8 +1187,9 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             }
         }
 
-        player.setExp(expProgress);
+        player.setExp(Math.min(1.0f, expProgress));
         player.setLevel(expLevel);
+
         if (activeWand != null) {
             activeWand.updateExperience();
         }
