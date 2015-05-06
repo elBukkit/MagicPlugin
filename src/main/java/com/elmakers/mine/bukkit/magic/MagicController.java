@@ -1842,6 +1842,7 @@ public class MagicController implements Listener, MageController {
 		}
 
         EffectPlayer.debugEffects(properties.getBoolean("debug_effects", false));
+        CompatibilityUtils.USE_MAGIC_DAMAGE = properties.getBoolean("use_magic_damage", CompatibilityUtils.USE_MAGIC_DAMAGE);
 
         logVerbosity = properties.getInt("log_verbosity", 0);
         exampleDefaults = properties.getString("example", exampleDefaults);

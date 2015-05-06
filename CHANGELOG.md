@@ -6,6 +6,7 @@
  - Add brush selector paging
  - Fix wand duplication glitch on certain death cases
  - Fix compatibility with Scavenger plugin
+ - Add "use_magic_damage" config option to turn off "magic" (splash potion) damage source
 
 ## 4.9.5.1
 
