@@ -158,7 +158,7 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
         if (worth > 0) {
             if (isXP) {
                 worth = worth * controller.getWorthXP();
-                hasCosts = mage.getExperience() > (int)(double)worth;
+                hasCosts = mage.getExperience() >= (int)(double)worth;
             } else if (isItems) {
                 worth = worth * controller.getWorthBase() / controller.getWorthItemAmount();
                 int hasAmount = getItemAmount(controller, mage);
