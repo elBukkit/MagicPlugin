@@ -875,7 +875,7 @@ spells:
         description: Mines and drops the targeted ores
         cast: Mined $count blocks
         upgrade_description: "&r&b&bull; &6Mines more blocks"
-    mine|3:
+    mine|4:
         upgrade_description: "&r&b&bull; &6Now mines stone"
     chop:
         name: Chop
