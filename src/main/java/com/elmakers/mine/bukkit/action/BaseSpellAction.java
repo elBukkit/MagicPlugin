@@ -73,6 +73,12 @@ public abstract class BaseSpellAction implements SpellAction
     }
 
     @Override
+    public boolean requiresBreakPermission()
+    {
+        return false;
+    }
+
+    @Override
     public void getParameterNames(Spell spell, Collection<String> parameters) {
         parameters.add("requires_target");
         parameters.add("requires_entity_target");

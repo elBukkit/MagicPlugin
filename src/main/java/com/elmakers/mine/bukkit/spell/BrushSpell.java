@@ -91,9 +91,32 @@ public abstract class BrushSpell extends BlockSpell {
     protected void loadTemplate(ConfigurationSection node)
     {
         super.loadTemplate(node);
-        ConfigurationSection parameters = node.getConfigurationSection("parameters");
-        hasBrush = parameters != null && parameters.contains("brush") && !parameters.getString("brush").isEmpty();
         usesBrush = node.getBoolean("uses_brush", usesBrush);
+
+        ConfigurationSection parameters = node.getConfigurationSection("parameters");
+        if (parameters != null)
+        {
+            String materialKey = parameters.getString("brush", null);
+            hasBrush = materialKey != null && !materialKey.isEmpty();
+            if (materialKey != null && !materialKey.isEmpty()) {
+                brush = new MaterialBrush(materialKey);
+            }
+        }
+    }
+
+    public boolean brushIsErase() {
+        com.elmakers.mine.bukkit.api.block.MaterialBrush brush = getBrush();
+        return brush != null && brush.isErase();
+    }
+
+    @Override
+    public boolean requiresBuildPermission() {
+        return !brushIsErase();
+    }
+
+    @Override
+    public boolean requiresBreakPermission() {
+        return brushIsErase();
     }
 
     public com.elmakers.mine.bukkit.api.block.MaterialBrush getBrush()
@@ -103,7 +126,7 @@ public abstract class BrushSpell extends BlockSpell {
             return brush;
         }
 
-        return mage.getBrush();
+        return super.getBrush();
     }
 
     @Override

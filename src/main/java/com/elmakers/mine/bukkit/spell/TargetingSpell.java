@@ -57,7 +57,6 @@ public abstract class TargetingSpell extends BaseSpell {
     protected Location                          targetLocation2;
     protected double 		                    targetBreakables	    = 0;
     private Entity								targetEntity = null;
-    private boolean								bypassBuildRestriction  = false;
     private boolean                             bypassProtection        = false;
     private boolean                             checkProtection         = false;
 
@@ -188,11 +187,6 @@ public abstract class TargetingSpell extends BaseSpell {
 
     public void setTarget(Location location) {
         target = new Target(getEyeLocation(), location == null ? null : location.getBlock());
-    }
-
-    public boolean hasBuildPermission(Block block)
-    {
-        return bypassBuildRestriction || super.hasBuildPermission(block);
     }
 
     public void offsetTarget(int dx, int dy, int dz) {
@@ -812,9 +806,6 @@ public abstract class TargetingSpell extends BaseSpell {
         checkProtection = parameters.getBoolean("check_protection", false);
         targetBreakables = parameters.getDouble("target_breakables", 0);
         reverseTargeting = parameters.getBoolean("reverse_targeting", false);
-
-        bypassBuildRestriction = parameters.getBoolean("bypass_build", false);
-        bypassBuildRestriction = parameters.getBoolean("bb", bypassBuildRestriction);
 
         if (parameters.contains("transparent")) {
             targetThroughMaterials.clear();

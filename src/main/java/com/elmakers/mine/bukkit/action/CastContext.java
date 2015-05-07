@@ -375,6 +375,11 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
     }
 
     @Override
+    public boolean hasBreakPermission(Block block) {
+        return baseSpell != null ? baseSpell.hasBreakPermission(block) : false;
+    }
+
+    @Override
     public void playEffects(String key)
     {
         playEffects(key, 1.0f);

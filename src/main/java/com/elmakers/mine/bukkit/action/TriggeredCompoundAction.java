@@ -15,6 +15,7 @@ public abstract class TriggeredCompoundAction extends BaseSpellAction implements
 	private boolean usesBrush = false;
 	private boolean undoable = false;
     private boolean requiresBuildPermission = false;
+    private boolean requiresBreakPermission = false;
 	protected ActionHandler actions = null;
     protected ConfigurationSection parameters;
     protected CastContext actionContext;
@@ -34,6 +35,7 @@ public abstract class TriggeredCompoundAction extends BaseSpellAction implements
 		usesBrush = false;
 		undoable = false;
         requiresBuildPermission = false;
+        requiresBreakPermission = false;
         if (parameters != null)
         {
             if (parameters.contains("actions"))
@@ -53,6 +55,7 @@ public abstract class TriggeredCompoundAction extends BaseSpellAction implements
         usesBrush = usesBrush || actions.usesBrush();
         undoable = undoable || actions.isUndoable();
         requiresBuildPermission = requiresBuildPermission || actions.requiresBuildPermission();
+        requiresBreakPermission = requiresBreakPermission || actions.requiresBreakPermission();
     }
 
     public void addAction(SpellAction action) {
@@ -101,6 +104,12 @@ public abstract class TriggeredCompoundAction extends BaseSpellAction implements
     public boolean requiresBuildPermission()
     {
         return requiresBuildPermission;
+    }
+
+    @Override
+    public boolean requiresBreakPermission()
+    {
+        return requiresBreakPermission;
     }
 
 	@Override

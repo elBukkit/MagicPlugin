@@ -175,4 +175,8 @@ public abstract class BlockSpell extends UndoableSpell {
     public boolean requiresBuildPermission() {
         return true;
     }
+
+    public boolean requiresBreakPermission() {
+        return false;
+    }
 }

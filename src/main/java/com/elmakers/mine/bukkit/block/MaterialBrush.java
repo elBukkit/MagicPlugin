@@ -97,8 +97,7 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
         this.mage = mage;
     }
 
-    // Used only for generating names
-    private MaterialBrush(final String materialKey) {
+    public MaterialBrush(final String materialKey) {
         super(DEFAULT_MATERIAL, (byte)0);
         this.mage = null;
         update(materialKey);
@@ -452,7 +451,7 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
     }
 
     protected boolean checkSchematic() {
-        if (schematic == null) {
+        if (schematic == null && mage != null) {
             if (schematicName.length() == 0) {
                 isValid = false;
                 return false;
@@ -493,7 +492,9 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
             fillWithAir = node.getBoolean("erase", fillWithAir);
         } catch (Exception ex) {
             ex.printStackTrace();
-            mage.getController().getLogger().warning("Failed to load brush data: " + ex.getMessage());
+            if (mage != null) {
+                mage.getController().getLogger().warning("Failed to load brush data: " + ex.getMessage());
+            }
         }
     }
 
@@ -518,7 +519,9 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
             node.set("erase", fillWithAir);
         } catch (Exception ex) {
             ex.printStackTrace();
-            mage.getController().getLogger().warning("Failed to save brush data: " + ex.getMessage());
+            if (mage != null) {
+                mage.getController().getLogger().warning("Failed to save brush data: " + ex.getMessage());
+            }
         }
     }
 
@@ -531,7 +534,7 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
     @Override
     public Collection<Entity> getTargetEntities()
     {
-        if (cloneTarget == null) return null;
+        if (cloneTarget == null || mage == null) return null;
 
         if (mode == BrushMode.CLONE || mode == BrushMode.REPLICATE || mode == BrushMode.SCHEMATIC)
         {
@@ -635,7 +638,7 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
 
     @Override
     public void setTarget(Location target, Location center) {
-        if (target == null || center == null) return;
+        if (target == null || center == null || mage == null) return;
         orientVector = target.toVector().subtract(center.toVector());
         orientVector.setX(Math.abs(orientVector.getX()));
         orientVector.setY(Math.abs(orientVector.getY()));
@@ -712,6 +715,12 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
     public boolean isEraseModifierActive()
     {
         return fillWithAir;
+    }
+
+    @Override
+    public boolean isErase()
+    {
+        return mode == BrushMode.ERASE || material == Material.AIR;
     }
 
     public ItemStack getItem(MageController controller, boolean isItem) {

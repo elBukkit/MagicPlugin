@@ -88,7 +88,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     protected final static Set<String> vectorParameterMap = new HashSet<String>(Arrays.asList(VECTOR_PARAMETERS));
 
     public final static String[] BOOLEAN_PARAMETERS = {
-        "allow_max_range", "prevent_passthrough", "reverse_targeting", "passthrough", "bypass_build", "bypass_pvp", "target_npc", "ignore_blocks"
+        "allow_max_range", "prevent_passthrough", "reverse_targeting", "passthrough", "bypass_build", "bypass_break", "bypass_pvp", "target_npc", "ignore_blocks"
     };
 
     protected final static Set<String> booleanParameterMap = new HashSet<String>(Arrays.asList(BOOLEAN_PARAMETERS));
@@ -147,6 +147,8 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     protected boolean pvpRestricted           	= false;
     protected boolean usesBrushSelection        = false;
     protected boolean bypassPvpRestriction    	= false;
+    protected boolean bypassBuildRestriction    = false;
+    protected boolean bypassBreakRestriction    = false;
     protected boolean bypassConfusion             = false;
     protected boolean bypassPermissions           = false;
     protected boolean castOnNoTarget              = false;
@@ -825,8 +827,8 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         parameters = node.getConfigurationSection("parameters");
         costs = parseCosts(node.getConfigurationSection("costs"));
         activeCosts = parseCosts(node.getConfigurationSection("active_costs"));
-        pvpRestricted = node.getBoolean("pvp_restricted", pvpRestricted);
-        usesBrushSelection = node.getBoolean("brush_selection", usesBrushSelection);
+        pvpRestricted = node.getBoolean("pvp_restricted", false);
+        usesBrushSelection = node.getBoolean("brush_selection", false);
         castOnNoTarget = node.getBoolean("cast_on_no_target", castOnNoTarget);
         hidden = node.getBoolean("hidden", false);
         showUndoable = node.getBoolean("show_undoable", true);
@@ -834,12 +836,15 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         // Preload some parameters
         ConfigurationSection parameters = node.getConfigurationSection("parameters");
         if (parameters != null) {
-            cooldown = parameters.getInt("cooldown", cooldown);
+            cooldown = parameters.getInt("cooldown", 0);
             cooldown = parameters.getInt("cool", cooldown);
-            bypassPvpRestriction = parameters.getBoolean("bypass_pvp", bypassPvpRestriction);
+            bypassPvpRestriction = parameters.getBoolean("bypass_pvp", false);
             bypassPvpRestriction = parameters.getBoolean("bp", bypassPvpRestriction);
-            bypassPermissions = parameters.getBoolean("bypass_permissions", bypassPermissions);
-            duration = parameters.getInt("duration", duration);
+            bypassPermissions = parameters.getBoolean("bypass_permissions", false);
+            bypassBuildRestriction = parameters.getBoolean("bypass_build", false);
+            bypassBuildRestriction = parameters.getBoolean("bb", bypassBuildRestriction);
+            bypassBreakRestriction = parameters.getBoolean("bypass_break", false);
+            duration = parameters.getInt("duration", 0);
         }
 
         effects.clear();
@@ -999,6 +1004,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         if (personalPermission != null && personalPermission == true) return true;
         if (regionPermission != null && regionPermission == false) return false;
         if (requiresBuildPermission() && !hasBuildPermission(location.getBlock())) return false;
+        if (requiresBreakPermission() && !hasBreakPermission(location.getBlock())) return false;
         return !pvpRestricted || bypassPvpRestriction || mage.isPVPAllowed(location);
     }
 
@@ -1012,6 +1018,24 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         return false;
     }
 
+    @Override
+    public boolean requiresBreakPermission() {
+        return false;
+    }
+
+    public boolean hasBreakPermission(Location location) {
+        if (location == null) return true;
+        return hasBreakPermission(location.getBlock());
+    }
+
+    public boolean hasBreakPermission(Block block) {
+        // Cast permissions bypass
+        if (bypassBreakRestriction) return true;
+        Boolean castPermission = controller.getRegionCastPermission(mage.getPlayer(), this, block.getLocation());
+        if (castPermission != null && castPermission == true) return true;
+        if (castPermission != null && castPermission == false) return false;
+        return mage.hasBreakPermission(block);
+    }
 
     public boolean hasBuildPermission(Location location) {
         if (location == null) return true;
@@ -1019,8 +1043,8 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     }
 
     public boolean hasBuildPermission(Block block) {
-
         // Cast permissions bypass
+        if (bypassBuildRestriction) return true;
         Boolean castPermission = controller.getRegionCastPermission(mage.getPlayer(), this, block.getLocation());
         if (castPermission != null && castPermission == true) return true;
         if (castPermission != null && castPermission == false) return false;
@@ -1266,6 +1290,9 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         bypassPvpRestriction = parameters.getBoolean("bypass_pvp", false);
         bypassPvpRestriction = parameters.getBoolean("bp", bypassPvpRestriction);
         bypassPermissions = parameters.getBoolean("bypass_permissions", false);
+        bypassBuildRestriction = parameters.getBoolean("bypass_build", false);
+        bypassBuildRestriction = parameters.getBoolean("bb", bypassBuildRestriction);
+        bypassBreakRestriction = parameters.getBoolean("bypass_break", false);
         duration = parameters.getInt("duration", 0);
     }
 
@@ -1944,5 +1971,14 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
                 lore.add(ChatColor.GOLD + brushText);
             }
         }
+    }
+
+    @Override
+    public com.elmakers.mine.bukkit.api.block.MaterialBrush getBrush()
+    {
+        if (mage == null) {
+            return null;
+        }
+        return mage.getBrush();
     }
 }

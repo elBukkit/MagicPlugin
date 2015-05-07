@@ -2,6 +2,7 @@ package com.elmakers.mine.bukkit.action;
 
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.action.SpellAction;
+import com.elmakers.mine.bukkit.api.block.MaterialBrush;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
@@ -28,6 +29,7 @@ public class ActionHandler implements Cloneable
     private boolean undoable = false;
     private boolean usesBrush = false;
     private boolean requiresBuildPermission = false;
+    private boolean requiresBreakPermission = false;
     private boolean isConditionalOnSuccess = false;
     private boolean isConditionalOnFailure = false;
     private Integer currentAction = null;
@@ -44,6 +46,7 @@ public class ActionHandler implements Cloneable
         this.undoable = copy.undoable;
         this.usesBrush = copy.usesBrush;
         this.requiresBuildPermission = copy.requiresBuildPermission;
+        this.requiresBreakPermission = copy.requiresBreakPermission;
         this.isConditionalOnSuccess = copy.isConditionalOnSuccess;
         this.isConditionalOnFailure = copy.isConditionalOnFailure;
         this.currentAction = copy.currentAction;
@@ -58,6 +61,7 @@ public class ActionHandler implements Cloneable
         undoable = false;
         usesBrush = false;
         requiresBuildPermission = false;
+        requiresBreakPermission = false;
         String conditionalTest = root.getString("conditional");
         if (conditionalTest != null && !conditionalTest.isEmpty()) {
             if (conditionalTest.equalsIgnoreCase("success")) {
@@ -112,11 +116,22 @@ public class ActionHandler implements Cloneable
     }
 
     public void initialize(Spell spell, ConfigurationSection baseParameters) {
+        MaterialBrush brush = spell.getBrush();
         for (ActionContext action : actions) {
             action.initialize(spell, baseParameters);
             usesBrush = usesBrush || action.getAction().usesBrush();
             undoable = undoable || action.getAction().isUndoable();
-            requiresBuildPermission = requiresBuildPermission || action.getAction().requiresBuildPermission();
+
+            boolean actionRequiresBreakPermission = action.getAction().requiresBreakPermission();
+            boolean actionRequiresBuildPermission = action.getAction().requiresBuildPermission();
+            if (usesBrush && brush != null && brush.isErase() && actionRequiresBuildPermission && !actionRequiresBreakPermission)
+            {
+                actionRequiresBreakPermission = true;
+                actionRequiresBuildPermission = false;
+            }
+
+            requiresBuildPermission = requiresBuildPermission || actionRequiresBuildPermission;
+            requiresBreakPermission = requiresBreakPermission || actionRequiresBreakPermission;
         }
     }
 
@@ -278,6 +293,10 @@ public class ActionHandler implements Cloneable
 
     public boolean requiresBuildPermission() {
         return requiresBuildPermission;
+    }
+
+    public boolean requiresBreakPermission() {
+        return requiresBreakPermission;
     }
 
     public void getParameterNames(Spell spell, Collection<String> parameters)

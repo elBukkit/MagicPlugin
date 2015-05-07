@@ -14,6 +14,7 @@ public class ActionSpell extends BrushSpell
     private Map<String, ActionHandler> actions = new HashMap<String, ActionHandler>();
     private boolean undoable = false;
     private boolean requiresBuildPermission = false;
+    private boolean requiresBreakPermission = false;
     private ActionHandler currentHandler = null;
     private int workThreshold = 500;
 
@@ -102,10 +103,13 @@ public class ActionSpell extends BrushSpell
     @Override
     protected void loadTemplate(ConfigurationSection template)
     {
+        castOnNoTarget = true;
+        super.loadTemplate(template);
+
         usesBrush = false;
         undoable = false;
         requiresBuildPermission = false;
-        castOnNoTarget = true;
+        requiresBreakPermission = false;
         if (template.contains("actions"))
         {
             ConfigurationSection parameters = template.getConfigurationSection("parameters");
@@ -121,12 +125,12 @@ public class ActionSpell extends BrushSpell
                     usesBrush = usesBrush || handler.usesBrush();
                     undoable = undoable || handler.isUndoable();
                     requiresBuildPermission = requiresBuildPermission || handler.requiresBuildPermission();
+                    requiresBreakPermission = requiresBreakPermission || handler.requiresBreakPermission();
                     actions.put(actionKey, handler);
                 }
             }
         }
         undoable = template.getBoolean("undoable", undoable);
-        super.loadTemplate(template);
     }
 
     @Override
@@ -163,5 +167,10 @@ public class ActionSpell extends BrushSpell
     @Override
     public boolean requiresBuildPermission() {
         return requiresBuildPermission;
+    }
+
+    @Override
+    public boolean requiresBreakPermission() {
+        return requiresBreakPermission;
     }
 }
