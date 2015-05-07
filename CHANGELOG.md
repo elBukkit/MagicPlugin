@@ -4,6 +4,7 @@
 
  - Separate break/build permissions- check MIGRATION log.
  - Expanded Towny integration, added "towny_wilderness_bypass" flag.
+ - Add ability to apply damage directly via a FallingBlock hit to ThrowBlock and ModifyBlock
 
 ## 4.9.6
 

@@ -8,6 +8,7 @@ import com.elmakers.mine.bukkit.api.effect.EffectPlayer;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
+import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
@@ -22,6 +23,8 @@ public class ThrowBlockAction extends TriggeredCompoundAction
     private double speedMin;
     private double speedMax;
     private boolean setTarget;
+    private float fallDamage;
+    private int maxDamage;
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters)
@@ -31,6 +34,9 @@ public class ThrowBlockAction extends TriggeredCompoundAction
         speedMin = parameters.getDouble("speed_min", itemSpeed);
         speedMax = parameters.getDouble("speed_max", itemSpeed);
         setTarget = parameters.getBoolean("set_target", false);
+        int damage = parameters.getInt("damage", 0);
+        fallDamage = (float)parameters.getDouble("fall_damage", damage);
+        maxDamage = parameters.getInt("max_damage", damage);
     }
 
 	@Override
@@ -76,6 +82,9 @@ public class ThrowBlockAction extends TriggeredCompoundAction
         context.registerForUndo(block);
         block.setDropItem(false);
         block.setVelocity(direction);
+        if (maxDamage > 0 && fallDamage > 0) {
+            CompatibilityUtils.setFallingBlockDamage(block, fallDamage, maxDamage);
+        }
         ActionHandler.setActions(block, actions, context, parameters, "indirect_player_message");
 
 		return SpellResult.CAST;
@@ -102,11 +111,15 @@ public class ThrowBlockAction extends TriggeredCompoundAction
         parameters.add("speed");
         parameters.add("speed_min");
         parameters.add("speed_max");
+        parameters.add("damage");
+        parameters.add("max_damage");
+        parameters.add("fall_damage");
     }
 
     @Override
     public void getParameterOptions(Spell spell, String parameterKey, Collection<String> examples) {
-        if (parameterKey.equals("speed") || parameterKey.equals("speed_max") || parameterKey.equals("speed_min")) {
+        if (parameterKey.equals("speed") || parameterKey.equals("speed_max") || parameterKey.equals("speed_min")
+            || parameterKey.equals("damage") || parameterKey.equals("max_damage") || parameterKey.equals("fall_damage")) {
             examples.addAll(Arrays.asList((BaseSpell.EXAMPLE_SIZES)));
         } else {
             super.getParameterOptions(spell, parameterKey, examples);

@@ -616,7 +616,7 @@ public class MagicCommandExecutor extends MagicMapExecutor {
         sender.sendMessage(ChatColor.AQUA + " Can pvp: " + formatBoolean(mage.isPVPAllowed(location)));
         if (spell != null)
         {
-            sender.sendMessage(ChatColor.AQUA + " Has pnode " + ChatColor.GOLD + spell.getName() + ChatColor.AQUA + ": " + formatBoolean(spell.hasCastPermission(player)));
+            sender.sendMessage(ChatColor.AQUA + " Has pnode " + ChatColor.GOLD + spell.getPermissionNode() + ChatColor.AQUA + ": " + formatBoolean(spell.hasCastPermission(player)));
             sender.sendMessage(ChatColor.AQUA + " Region override: " + formatBoolean(controller.getRegionCastPermission(mage.getPlayer(), spell, location)));
             sender.sendMessage(ChatColor.AQUA + " Field override: " + formatBoolean(controller.getPersonalCastPermission(mage.getPlayer(), spell, location)));
             sender.sendMessage(ChatColor.GOLD + " " + spell.getName() + ChatColor.AQUA + " requires build: " + formatBoolean(spell.requiresBuildPermission()));
@@ -626,6 +626,8 @@ public class MagicCommandExecutor extends MagicMapExecutor {
             {
                 boolean buildPermission = ((BaseSpell)spell).hasBuildPermission(location.getBlock());
                 sender.sendMessage(ChatColor.GOLD + " " + spell.getName() + ChatColor.AQUA + " has build: " + formatBoolean(buildPermission));
+                boolean breakPermission = ((BaseSpell)spell).hasBreakPermission(location.getBlock());
+                sender.sendMessage(ChatColor.GOLD + " " + spell.getName() + ChatColor.AQUA + " has break: " + formatBoolean(breakPermission));
             }
             sender.sendMessage(ChatColor.AQUA + " Can cast " + ChatColor.GOLD + spell.getName() + ChatColor.AQUA + ": " + formatBoolean(spell.canCast(location)));
         }

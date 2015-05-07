@@ -8,6 +8,7 @@ import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.block.UndoList;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
+import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -23,6 +24,8 @@ public class ModifyBlockAction extends BaseSpellAction {
     private boolean spawnFallingBlocks;
     private double fallingBlockSpeed;
     private Vector fallingBlockDirection;
+    private float fallingBlockFallDamage;
+    private int fallingBlockMaxDamage;
     private int breakable = 0;
     private double backfireChance = 0;
     private boolean applyPhysics = false;
@@ -49,6 +52,10 @@ public class ModifyBlockAction extends BaseSpellAction {
                 fallingBlockDirection.normalize();
             }
         }
+
+        int damage = parameters.getInt("damage", 0);
+        fallingBlockFallDamage = (float)parameters.getDouble("fall_damage", damage);
+        fallingBlockMaxDamage = parameters.getInt("max_damage", damage);
     }
 
     @SuppressWarnings("deprecation")
@@ -106,6 +113,9 @@ public class ModifyBlockAction extends BaseSpellAction {
                     }
                     fallingBlockVelocity.multiply(fallingBlockSpeed);
                     falling.setVelocity(fallingBlockVelocity);
+                }
+                if (fallingBlockMaxDamage > 0 && fallingBlockFallDamage > 0) {
+                    CompatibilityUtils.setFallingBlockDamage(falling, fallingBlockFallDamage, fallingBlockMaxDamage);
                 }
                 context.registerForUndo(falling);
             }
