@@ -23,4 +23,5 @@ public interface MaterialBrush extends MaterialAndData {
     public Vector getSize();
     public BrushMode getMode();
     public boolean isEraseModifierActive();
+    public boolean isErase();
 }

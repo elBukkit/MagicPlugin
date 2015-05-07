@@ -19,6 +19,7 @@ public interface SpellAction extends Cloneable
     public boolean usesBrush();
     public boolean isUndoable();
     public boolean requiresBuildPermission();
+    public boolean requiresBreakPermission();
     public boolean requiresTarget();
     public boolean requiresTargetEntity();
     public String transformMessage(String message);

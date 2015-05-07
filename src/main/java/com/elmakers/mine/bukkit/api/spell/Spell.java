@@ -2,6 +2,7 @@ package com.elmakers.mine.bukkit.api.spell;
 
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.block.MaterialAndData;
+import com.elmakers.mine.bukkit.api.block.MaterialBrush;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import org.bukkit.Color;
 import org.bukkit.Location;
@@ -46,10 +47,12 @@ public interface Spell extends SpellTemplate {
     public void playEffects(String effectName, CastContext context);
     public void playEffects(String effectName, CastContext context, float scale);
     public boolean requiresBuildPermission();
+    public boolean requiresBreakPermission();
     public boolean isPvpRestricted();
     public void sendMessage(String message);
     public void castMessage(String message);
     public MaterialAndData getEffectMaterial();
     public String getEffectParticle();
     public Color getEffectColor();
+    public MaterialBrush getBrush();
 }

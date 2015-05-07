@@ -55,6 +55,7 @@ public interface CastContext {
     public Block getPreviousBlock();
     public boolean isIndestructible(Block block);
     public boolean hasBuildPermission(Block block);
+    public boolean hasBreakPermission(Block block);
     public void playEffects(String key);
     public void playEffects(String key, float scale);
     public void cancelEffects();
