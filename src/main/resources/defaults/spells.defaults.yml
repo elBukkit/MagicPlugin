@@ -279,7 +279,7 @@ boon:
     icon: red_rose:2
     category: utility
     worth: 600
-    upgrade_required_path: apprentice
+    upgrade_required_path: student
     upgrade_required_casts: 50
     actions:
         cast:
@@ -308,6 +308,12 @@ boon:
         effect_night_vision: 5
 
 boon|2:
+    upgrade_required_path: apprentice
+    upgrade_required_casts: 50
+    parameters:
+        duration: 30000
+
+boon|3:
     actions:
         cast:
         -  class: PotionEffect
@@ -316,7 +322,7 @@ boon|2:
     costs:
         mana: 80
     parameters:
-        duration: 30000
+        duration: 45000
         effect_speed: 5
         effect_jump: 5
         effect_night_vision: 5
