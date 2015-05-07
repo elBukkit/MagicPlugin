@@ -1068,6 +1068,8 @@ push:
     upgrade_required_casts: 50
     actions:
         cast:
+        - class: VelocityAction
+          y_offset: 1
         - class: Repeat
           actions:
           - class: Delay
@@ -1096,9 +1098,8 @@ push:
         target_count: 2
         allow_max_range: true
         item_speed: 0.1
-        living_entity_speed: 0.4
+        living_entity_speed: 0.5
         push: 1
-        y_offset: 0.75
         repeat: 3
         delay: 250
     costs:
@@ -1121,10 +1122,9 @@ push|2:
              class: VortexEffect
              particle: spell
     parameters:
-        living_entity_speed: 0.8
+        living_entity_speed: 0.7
         range: 16
         target_count: 8
-        y_offset: 1
         repeat: 4
 
 pull:
@@ -2206,6 +2206,7 @@ flashbang:
       effect_night_vision: 1
       radius: 5
       target_self: true
+      cooldown: 10000
     costs:
         mana: 50
 
@@ -4944,6 +4945,8 @@ flare:
     category: light
     worth: 200
     show_undoable: false
+    upgrade_required_path: student
+    upgrade_required_casts: 50
     actions:
         cast:
         -  class: Firework
@@ -4957,8 +4960,18 @@ flare:
         range: 16
         ticks_flown: 2
         expected_lifespan: 1
+        cooldown: 2000
     costs:
         mana: 10
+
+flare|2:
+  effects:
+    cast:
+    -  class: EffectRing
+       location: target
+       firework: star
+       radius: 8
+       target_offset: 0,4,0
 
 recall:
     icon_url: http://textures.minecraft.net/texture/58c573cefdc8cc1b8c894340cb54ab343523ec2ffa0afc7536968391ae1e7

@@ -9,6 +9,7 @@
  - Add "use_magic_damage" config option to turn off "magic" (splash potion) damage source
  - Fix XP scale to 1.8 standards (effects XP-based shops)
  - Add "regenerate_while_inactive" config option to turn off wands regen'ing mana while not held
+ - Tweaks: Push, Mine, Flash Bang, Flare (lvl 2)
 
 ## 4.9.5.1
 
