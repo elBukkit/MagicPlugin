@@ -24,7 +24,7 @@ public class BoomSpell extends BlockSpell {
 		}
 
 		Block block = target.getBlock();
-		if ((breakBlocks || incendiary) && !hasBuildPermission(block)) {
+		if ((breakBlocks || incendiary) && !hasBreakPermission(block)) {
 			return SpellResult.INSUFFICIENT_PERMISSION;
 		}
         Entity entity = mage.getEntity();

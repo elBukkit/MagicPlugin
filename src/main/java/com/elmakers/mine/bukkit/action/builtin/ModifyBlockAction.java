@@ -60,8 +60,14 @@ public class ModifyBlockAction extends BaseSpellAction {
         }
 
         Block block = context.getTargetBlock();
-        if (!context.hasBuildPermission(block)) {
-            return SpellResult.INSUFFICIENT_PERMISSION;
+        if (brush.isErase()) {
+            if (!context.hasBreakPermission(block)) {
+                return SpellResult.INSUFFICIENT_PERMISSION;
+            }
+        } else {
+            if (!context.hasBuildPermission(block)) {
+                return SpellResult.INSUFFICIENT_PERMISSION;
+            }
         }
 
         if (commit)

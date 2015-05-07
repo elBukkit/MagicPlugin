@@ -451,7 +451,7 @@ public class MagicController implements Listener, MageController {
     }
 
     public boolean hasBuildPermission(Player player, Block block) {
-        // Check the region manager, or Factions
+        // Check all protection plugins
         boolean allowed = true;
         if (bypassBuildPermissions) return true;
         if (player != null && player.hasPermission("Magic.bypass_build")) return true;
@@ -461,6 +461,22 @@ public class MagicController implements Listener, MageController {
         allowed = allowed && locketteManager.hasBuildPermission(player, block);
         allowed = allowed && preciousStonesManager.hasBuildPermission(player, block);
         allowed = allowed && townyManager.hasBuildPermission(player, block);
+        allowed = allowed && griefPreventionManager.hasBuildPermission(player, block);
+
+        return allowed;
+    }
+
+    public boolean hasBreakPermission(Player player, Block block) {
+        // This is the same has hasBuildPermission for everything but Towny!
+        boolean allowed = true;
+        if (bypassBreakPermissions) return true;
+        if (player != null && player.hasPermission("Magic.bypass_break")) return true;
+
+        allowed = allowed && worldGuardManager.hasBuildPermission(player, block);
+        allowed = allowed && factionsManager.hasBuildPermission(player, block);
+        allowed = allowed && locketteManager.hasBuildPermission(player, block);
+        allowed = allowed && preciousStonesManager.hasBuildPermission(player, block);
+        allowed = allowed && townyManager.hasBreakPermission(player, block);
         allowed = allowed && griefPreventionManager.hasBuildPermission(player, block);
 
         return allowed;
@@ -1955,6 +1971,7 @@ public class MagicController implements Listener, MageController {
         dynmapOnlyPlayerSpells = properties.getBoolean("dynmap_only_player_spells", dynmapOnlyPlayerSpells);
 		dynmapUpdate = properties.getBoolean("dynmap_update", dynmapUpdate);
 		bypassBuildPermissions = properties.getBoolean("bypass_build", bypassBuildPermissions);
+        bypassBreakPermissions = properties.getBoolean("bypass_break", bypassBreakPermissions);
 		bypassPvpPermissions = properties.getBoolean("bypass_pvp", bypassPvpPermissions);
         allPvpRestricted = properties.getBoolean("pvp_restricted", allPvpRestricted);
 		extraSchematicFilePath = properties.getString("schematic_files", extraSchematicFilePath);
@@ -1978,6 +1995,7 @@ public class MagicController implements Listener, MageController {
         preciousStonesManager.setEnabled(properties.getBoolean("precious_stones_enabled", preciousStonesManager.isEnabled()));
         preciousStonesManager.setOverride(properties.getBoolean("precious_stones_override", true));
         townyManager.setEnabled(properties.getBoolean("towny_enabled", townyManager.isEnabled()));
+        townyManager.setWildernessBypass(properties.getBoolean("towny_wilderness_bypass", true));
         locketteManager.setEnabled(properties.getBoolean("lockette_enabled", locketteManager.isEnabled()));
         griefPreventionManager.setEnabled(properties.getBoolean("grief_prevention_enabled", griefPreventionManager.isEnabled()));
 
@@ -2513,7 +2531,7 @@ public class MagicController implements Listener, MageController {
         if (blockList != null)
         {
             com.elmakers.mine.bukkit.api.action.CastContext context = blockList.getContext();
-            if (!cancel && context != null && !context.hasBuildPermission(explodingEntity.getLocation().getBlock())) {
+            if (!cancel && context != null && !context.hasBreakPermission(explodingEntity.getLocation().getBlock())) {
                 cancel = true;
             }
         }
@@ -5000,6 +5018,7 @@ public class MagicController implements Listener, MageController {
     private boolean                             spellUpgradesEnabled        = true;
 
     private boolean							    bypassBuildPermissions      = false;
+    private boolean							    bypassBreakPermissions      = false;
     private boolean							    bypassPvpPermissions        = false;
     private boolean							    allPvpRestricted            = false;
 

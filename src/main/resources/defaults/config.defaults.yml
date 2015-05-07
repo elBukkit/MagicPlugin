@@ -445,6 +445,9 @@ pvp_manager_enabled: true
 # Enable Towny integration for Build checks
 towny_enabled: true
 
+# All spells are allowed in the wilderness
+towny_wilderness_bypass: true
+
 # Enable GriefPrevention integration for Build checks
 grief_prevention_enabled: true
 
@@ -462,6 +465,9 @@ multiverse_enabled: true
 
 # Disable all build-related checks
 bypass_build: false
+
+# Disable all block-breaking checks
+bypass_break: false
 
 # Disable all pvp-related checks
 bypass_pvp: false

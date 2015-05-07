@@ -19,10 +19,14 @@ public class ExplosionAction extends BaseSpellAction {
     @Override
     public SpellResult perform(CastContext context) {
         Block block = context.getTargetBlock();
-		if ((breakBlocks || useFire) && !context.hasBuildPermission(block))
+		if (breakBlocks && !context.hasBreakPermission(block))
         {
 			return SpellResult.INSUFFICIENT_PERMISSION;
 		}
+        if (useFire && !context.hasBuildPermission(block))
+        {
+            return SpellResult.INSUFFICIENT_PERMISSION;
+        }
         Entity entity = context.getEntity();
 		Location location = block.getLocation();
 		NMSUtils.createExplosion(entity, location.getWorld(), location.getX(), location.getY(), location.getZ(), size, useFire, breakBlocks);
@@ -47,6 +51,12 @@ public class ExplosionAction extends BaseSpellAction {
 
     @Override
     public boolean isUndoable() {
+        return true;
+    }
+
+    @Override
+    public boolean requiresBreakPermission()
+    {
         return true;
     }
 }

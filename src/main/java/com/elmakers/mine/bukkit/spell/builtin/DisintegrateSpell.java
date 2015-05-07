@@ -64,7 +64,7 @@ public class DisintegrateSpell extends BlockSpell
 		}
 		
 		Block targetBlock = target.getBlock();
-		if (!hasBuildPermission(targetBlock)) 
+		if (!hasBreakPermission(targetBlock))
 		{
 			return SpellResult.INSUFFICIENT_PERMISSION;
 		}

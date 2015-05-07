@@ -30,7 +30,7 @@ public class TunnelSpell extends BlockSpell
 		{
 			return SpellResult.NO_TARGET;
 		}
-		if (!hasBuildPermission(playerBlock)) {
+		if (!hasBreakPermission(playerBlock)) {
 			return SpellResult.INSUFFICIENT_PERMISSION;
 		}
 
@@ -67,7 +67,7 @@ public class TunnelSpell extends BlockSpell
 				targetBlock = bottomBlock;
 				for (int h = 0; h < height; h++)
 				{
-					if (isDestructible(targetBlock) && hasBuildPermission(targetBlock))
+					if (isDestructible(targetBlock) && hasBreakPermission(targetBlock))
 					{
 						// Put torches on the left and right wall 
 						/*

@@ -52,7 +52,7 @@ public class TNTAction extends TriggeredCompoundAction
 		if (loc == null) {
 			return SpellResult.LOCATION_REQUIRED;
 		}
-		if (!context.hasBuildPermission(loc.getBlock())) {
+		if (!context.hasBreakPermission(loc.getBlock())) {
 			return SpellResult.INSUFFICIENT_PERMISSION;
 		}
 
@@ -121,7 +121,7 @@ public class TNTAction extends TriggeredCompoundAction
     }
 
     @Override
-    public boolean requiresBuildPermission()
+    public boolean requiresBreakPermission()
     {
         return true;
     }

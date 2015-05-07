@@ -93,7 +93,8 @@ public class FillBatch extends BrushBatch {
 			}
 			processedBlocks++;
 
-			if (spell.hasBuildPermission(block) && !spell.isIndestructible(block)) {
+            boolean hasPermission = brush.isErase() ? spell.hasBreakPermission(block) : spell.hasBuildPermission(block);
+			if (hasPermission && !spell.isIndestructible(block)) {
 				Material previousMaterial = block.getType();
 				byte previousData = block.getData();
 				

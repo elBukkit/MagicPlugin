@@ -23,7 +23,7 @@ public class RegenerateSpell extends BlockSpell
 		{
 			return SpellResult.NO_TARGET;
 		}
-		if (!hasBuildPermission(targetBlock)) {
+		if (!hasBuildPermission(targetBlock) || !hasBreakPermission(targetBlock)) {
 			return SpellResult.INSUFFICIENT_PERMISSION;
 		}
 		

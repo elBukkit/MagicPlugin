@@ -1044,6 +1044,11 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     }
 
     @Override
+    public boolean hasBreakPermission(Block block) {
+        return controller.hasBreakPermission(getPlayer(), block);
+    }
+
+    @Override
     public boolean isIndestructible(Block block) {
         return controller.isIndestructible(block);
     }

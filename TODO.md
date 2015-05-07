@@ -1,5 +1,9 @@
 # TODO
 
+ - Something broken with Stash and quick-cast
+ - Add FallingBlock damage NBT option
+ - Is shift+click in wand inv doing something weird?
+
  - Check Regenerate - got stuck, couldn't cancel?
 
  - Make Portal spell portals avoid creating a frame on the other side (maybe handle TP'ing on portal event?)

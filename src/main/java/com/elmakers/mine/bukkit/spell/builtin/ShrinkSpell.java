@@ -148,7 +148,7 @@ public class ShrinkSpell extends BlockSpell
 			String blockSkin = getBlockSkin(targetBlock.getType());
 			if (blockSkin == null) return SpellResult.NO_TARGET;
 			
-			if (!hasBuildPermission(targetBlock)) 
+			if (!hasBreakPermission(targetBlock))
 			{
 				return SpellResult.INSUFFICIENT_PERMISSION;
 			}

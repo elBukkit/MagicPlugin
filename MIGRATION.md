@@ -1,5 +1,12 @@
 # Migration Notes
 
+## 4.9.7
+
+ * Build permissions for spells have been split into build vs break.
+   This mainly affects Towny integration, but if you are using the bypass_build
+   config option, or the bypass_build permission you may need to include bypass_break
+   for the same effect.
+
 ## 4.9
 
  * Haste, health regen and hunger regen were removed in place of potion effects.

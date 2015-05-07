@@ -612,6 +612,7 @@ public class MagicCommandExecutor extends MagicMapExecutor {
         sender.sendMessage(ChatColor.AQUA + " Has PVP bypass: " + formatBoolean(player.hasPermission("Magic.bypass_pvp")));
         sender.sendMessage(ChatColor.AQUA + " Has Build bypass: " + formatBoolean(player.hasPermission("Magic.bypass_build")));
         sender.sendMessage(ChatColor.AQUA + " Can build: " + formatBoolean(mage.hasBuildPermission(location.getBlock())));
+        sender.sendMessage(ChatColor.AQUA + " Can break: " + formatBoolean(mage.hasBreakPermission(location.getBlock())));
         sender.sendMessage(ChatColor.AQUA + " Can pvp: " + formatBoolean(mage.isPVPAllowed(location)));
         if (spell != null)
         {
@@ -619,6 +620,7 @@ public class MagicCommandExecutor extends MagicMapExecutor {
             sender.sendMessage(ChatColor.AQUA + " Region override: " + formatBoolean(controller.getRegionCastPermission(mage.getPlayer(), spell, location)));
             sender.sendMessage(ChatColor.AQUA + " Field override: " + formatBoolean(controller.getPersonalCastPermission(mage.getPlayer(), spell, location)));
             sender.sendMessage(ChatColor.GOLD + " " + spell.getName() + ChatColor.AQUA + " requires build: " + formatBoolean(spell.requiresBuildPermission()));
+            sender.sendMessage(ChatColor.GOLD + " " + spell.getName() + ChatColor.AQUA + " requires break: " + formatBoolean(spell.requiresBreakPermission()));
             sender.sendMessage(ChatColor.GOLD + " " + spell.getName() + ChatColor.AQUA + " requires pvp: " + formatBoolean(spell.isPvpRestricted()));
             if (spell instanceof BaseSpell)
             {

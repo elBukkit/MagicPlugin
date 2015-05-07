@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## 4.9.7
+
+ - Separate break/build permissions- check MIGRATION log.
+ - Expanded Towny integration, added "towny_wilderness_bypass" flag.
+
 ## 4.9.6
 
  - Add quick-cast from inventory, hit Q on a spell.

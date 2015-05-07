@@ -363,6 +363,10 @@ permissions:
     description: A player always bypasses build checks
     default: op
     type: boolean
+  Magic.bypass_break:
+    description: A player always bypasses block break checks
+    default: op
+    type: boolean
   Magic.bypass:
     description: A player always bypasses other permission checks
     default: op

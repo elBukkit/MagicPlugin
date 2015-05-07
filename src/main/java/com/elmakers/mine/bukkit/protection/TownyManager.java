@@ -8,6 +8,7 @@ import org.bukkit.plugin.Plugin;
 public class TownyManager {
 	private boolean enabled = false;
 	private TownyAPI towny = null;
+    protected boolean wildernessBypass;
 
 	public void setEnabled(boolean enabled) {
 		this.enabled = enabled;
@@ -23,7 +24,7 @@ public class TownyManager {
 				Plugin townyPlugin = plugin.getServer().getPluginManager()
 						.getPlugin("Towny");
 				if (townyPlugin != null) {
-					towny = new TownyAPI(townyPlugin);
+					towny = new TownyAPI(this, townyPlugin);
 				}
 			} catch (Throwable ex) {
 			}
@@ -42,6 +43,10 @@ public class TownyManager {
 		}
 	}
 
+    public void setWildernessBypass(boolean bypass) {
+        wildernessBypass = bypass;
+    }
+
 	public boolean isPVPAllowed(Location location) {
 		if (!enabled || towny == null || location == null)
 			return true;
@@ -54,4 +59,11 @@ public class TownyManager {
 		}
 		return true;
 	}
+
+    public boolean hasBreakPermission(Player player, Block block) {
+        if (enabled && block != null && towny != null) {
+            return towny.hasBreakPermission(player, block);
+        }
+        return true;
+    }
 }

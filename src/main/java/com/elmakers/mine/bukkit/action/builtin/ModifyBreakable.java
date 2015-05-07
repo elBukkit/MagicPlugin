@@ -24,7 +24,7 @@ public class ModifyBreakable extends BaseSpellAction {
     @Override
     public SpellResult perform(CastContext context) {
         Block block = context.getTargetBlock();
-        if (!context.hasBuildPermission(block)) {
+        if (!context.hasBreakPermission(block)) {
             return SpellResult.INSUFFICIENT_PERMISSION;
         }
 

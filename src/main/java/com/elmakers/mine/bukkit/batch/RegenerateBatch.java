@@ -99,7 +99,7 @@ public class RegenerateBatch extends SpellBatch {
 						return processedBlocks;
 					}
 					Block block = chunk.getBlock(blockX, blockY, blockZ);
-					if (!spell.hasBuildPermission(block)) {
+					if (!spell.hasBuildPermission(block) || !spell.hasBreakPermission(block)) {
 						spell.sendMessage(spell.getMessage("insufficient_permission"));
 						finish();
 						return processedBlocks;

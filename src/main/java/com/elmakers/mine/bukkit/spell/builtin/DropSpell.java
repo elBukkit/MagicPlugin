@@ -33,7 +33,7 @@ public class DropSpell extends BlockSpell
 		{
 			return SpellResult.NO_TARGET;
 		}
-		if (!hasBuildPermission(target)) 
+		if (!hasBreakPermission(target))
 		{
 			return SpellResult.INSUFFICIENT_PERMISSION;
 		}

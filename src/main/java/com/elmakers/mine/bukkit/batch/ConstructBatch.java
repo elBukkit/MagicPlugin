@@ -386,9 +386,19 @@ public class ConstructBatch extends BrushBatch {
             }
         }
 
-        if (!spell.hasBuildPermission(block))
-        {
-            return true;
+        // Prepare material brush, it may update
+        // given the current target (clone, replicate)
+        MaterialBrush brush = spell.getBrush();
+        brush.update(mage, block.getLocation());
+
+        if (brush.isErase()) {
+            if (!spell.hasBreakPermission(block)) {
+                return true;
+            }
+        } else {
+            if (!spell.hasBuildPermission(block)) {
+                return true;
+            }
         }
 
 		// Check for power mode.
@@ -453,11 +463,6 @@ public class ConstructBatch extends BrushBatch {
 
 			return true;
 		}
-
-		// Prepare material brush, it may update
-		// given the current target (clone, replicate)
-		MaterialBrush brush = spell.getBrush();
-		brush.update(mage, block.getLocation());
 
 		// Make sure the brush is ready, it may need to load chunks.
 		if (!brush.isReady()) {

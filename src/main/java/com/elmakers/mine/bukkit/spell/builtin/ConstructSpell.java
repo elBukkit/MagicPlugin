@@ -53,7 +53,8 @@ public class ConstructSpell extends BrushSpell
 			return SpellResult.NO_TARGET;
 		}
 
-        if (!hasBuildPermission(target)) {
+        boolean hasPermission = brush.isErase() ? hasBreakPermission(targetBlock) : hasBuildPermission(targetBlock);
+        if (!hasPermission) {
             return SpellResult.INSUFFICIENT_PERMISSION;
         }
 

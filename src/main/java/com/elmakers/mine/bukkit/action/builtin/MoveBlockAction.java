@@ -34,7 +34,7 @@ public class MoveBlockAction extends BaseSpellAction
             return SpellResult.NO_TARGET;
         }
 
-        if (!context.hasBuildPermission(targetBlock))
+        if (!context.hasBreakPermission(targetBlock))
         {
             return SpellResult.INSUFFICIENT_PERMISSION;
         }
@@ -87,6 +87,11 @@ public class MoveBlockAction extends BaseSpellAction
 
     @Override
     public boolean isUndoable() {
+        return true;
+    }
+
+    @Override
+    public boolean requiresBreakPermission() {
         return true;
     }
 }
