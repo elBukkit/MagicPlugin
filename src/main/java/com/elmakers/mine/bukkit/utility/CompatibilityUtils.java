@@ -17,6 +17,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Enderman;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.FallingBlock;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.ItemFrame;
 import org.bukkit.entity.LivingEntity;
@@ -752,5 +753,18 @@ public class CompatibilityUtils extends NMSUtils {
             ex.printStackTrace();
         }
         return false;
+    }
+
+    public static void setFallingBlockDamage(FallingBlock entity, float fallHurtAmount, int fallHurtMax)
+    {
+        Object entityHandle = getHandle(entity);
+        if (entityHandle == null) return;
+        try {
+            class_EntityFallingBlock_hurtEntitiesField.set(entityHandle, true);
+            class_EntityFallingBlock_fallHurtAmountField.set(entityHandle, fallHurtAmount);
+            class_EntityFallingBlock_fallHurtMaxField.set(entityHandle, fallHurtMax);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 }

@@ -102,6 +102,7 @@ public class NMSUtils {
     protected static Class<?> class_PacketPlayOutSpawnEntityLiving;
     protected static Class<?> class_PacketPlayOutEntityMetadata;
     protected static Class<?> class_PacketPlayOutEntityStatus;
+    protected static Class<?> class_EntityFallingBlock;
 
     protected static Method class_NBTTagList_addMethod;
     protected static Method class_NBTTagList_getMethod;
@@ -193,6 +194,9 @@ public class NMSUtils {
     protected static Field class_AxisAlignedBB_maxXField;
     protected static Field class_AxisAlignedBB_maxYField;
     protected static Field class_AxisAlignedBB_maxZField;
+    protected static Field class_EntityFallingBlock_hurtEntitiesField;
+    protected static Field class_EntityFallingBlock_fallHurtMaxField;
+    protected static Field class_EntityFallingBlock_fallHurtAmountField;
 
     static
     {
@@ -246,6 +250,7 @@ public class NMSUtils {
             class_PacketPlayOutSpawnEntityLiving = fixBukkitClass("net.minecraft.server.PacketPlayOutSpawnEntityLiving");
             class_PacketPlayOutEntityMetadata = fixBukkitClass("net.minecraft.server.PacketPlayOutEntityMetadata");
             class_PacketPlayOutEntityStatus = fixBukkitClass("net.minecraft.server.PacketPlayOutEntityStatus");
+            class_EntityFallingBlock = fixBukkitClass("net.minecraft.server.EntityFallingBlock");
 
             class_NBTTagList_addMethod = class_NBTTagList.getMethod("add", class_NBTBase);
             class_NBTTagList_getMethod = class_NBTTagList.getMethod("get", Integer.TYPE);
@@ -327,6 +332,13 @@ public class NMSUtils {
 
             class_NBTTagList_list = class_NBTTagList.getDeclaredField("list");
             class_NBTTagList_list.setAccessible(true);
+
+            class_EntityFallingBlock_hurtEntitiesField = class_EntityFallingBlock.getDeclaredField("hurtEntities");
+            class_EntityFallingBlock_hurtEntitiesField.setAccessible(true);
+            class_EntityFallingBlock_fallHurtAmountField = class_EntityFallingBlock.getDeclaredField("fallHurtAmount");
+            class_EntityFallingBlock_fallHurtAmountField.setAccessible(true);
+            class_EntityFallingBlock_fallHurtMaxField = class_EntityFallingBlock.getDeclaredField("fallHurtMax");
+            class_EntityFallingBlock_fallHurtMaxField.setAccessible(true);
 
             isLegacy = false;
             try {
