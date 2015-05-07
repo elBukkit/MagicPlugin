@@ -1649,6 +1649,8 @@ disarm|3:
 cure:
     icon_url: http://textures.minecraft.net/texture/775c41bd5e4ef3cba5f9bdc5258973c95477e819cb20c163ffb378db5ae3
     icon: cookie
+    upgrade_required_path: student
+    upgrade_required_casts: 50
     category: light
     worth: 800
     actions:
@@ -1679,7 +1681,6 @@ cure:
         range: 5
         bypass_confusion: true
         duration: 1000
-        effect_saturation: 4
         remove_effects:
         - confusion
         - weakness
@@ -1690,6 +1691,10 @@ cure:
     costs:
         mana: 30
 
+cure|2:
+    parameters:
+        effect_saturation: 4
+
 heal:
     icon_url: http://textures.minecraft.net/texture/6b7da98ef45cf45185d21d61f5fa3d5966a3ee52273620a6e4dfd54cf99dbc
     icon: bread
@@ -1699,7 +1704,6 @@ heal:
     worth: 1500
     actions:
         cast:
-        -  class: PotionEffect
         -  class: Heal
     effects:
         cast:
@@ -1732,7 +1736,6 @@ heal:
         allow_max_range: false
         range: 5
         duration: 1000
-        effect_saturation: 4
         amount: 2
         cooldown: 8000
     costs:

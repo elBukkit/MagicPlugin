@@ -473,6 +473,7 @@ spells:
         description: Remove negative effects
         cast: You cure $target
         cast_self: You cure yourself
+        upgrade_description: "&r&b&bull; &6Now cures hunger"
     music:
         name: Music
         description: Play some tunes
