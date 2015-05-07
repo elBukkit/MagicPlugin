@@ -1,6 +1,5 @@
 # TODO
 
- - Fix XP calculation for 1.8
  - Check Regenerate - got stuck, couldn't cancel?
 
  - Make Portal spell portals avoid creating a frame on the other side (maybe handle TP'ing on portal event?)
