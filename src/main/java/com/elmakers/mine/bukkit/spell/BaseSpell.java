@@ -157,6 +157,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     protected boolean loud                        = false;
     protected boolean messageTargets              = true;
     protected boolean showUndoable              = true;
+    protected boolean cancellable               = true;
     protected int                               verticalSearchDistance  = 8;
 
     private boolean backfired                   = false;
@@ -832,6 +833,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         castOnNoTarget = node.getBoolean("cast_on_no_target", castOnNoTarget);
         hidden = node.getBoolean("hidden", false);
         showUndoable = node.getBoolean("show_undoable", true);
+        cancellable = node.getBoolean("cancellable", true);
 
         // Preload some parameters
         ConfigurationSection parameters = node.getConfigurationSection("parameters");
@@ -1980,5 +1982,10 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
             return null;
         }
         return mage.getBrush();
+    }
+
+    @Override
+    public boolean isCancellable() {
+        return cancellable;
     }
 }
