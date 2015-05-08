@@ -26,12 +26,13 @@ public class FillSpell extends BrushSpell
 		{
 			return SpellResult.NO_TARGET;
 		}
-        boolean hasPermission = brush.isErase() ? hasBreakPermission(targetBlock) : hasBuildPermission(targetBlock);
+
+        MaterialBrush buildWith = getBrush();
+        boolean hasPermission = buildWith != null && buildWith.isErase() ? hasBreakPermission(targetBlock) : hasBuildPermission(targetBlock);
         if (!hasPermission) {
 			return SpellResult.INSUFFICIENT_PERMISSION;
 		}
-		
-		MaterialBrush buildWith = getBrush();
+
 		if (singleBlock)
 		{
 			deactivate();

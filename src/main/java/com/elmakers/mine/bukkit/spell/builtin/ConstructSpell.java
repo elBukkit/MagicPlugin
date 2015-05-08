@@ -53,7 +53,8 @@ public class ConstructSpell extends BrushSpell
 			return SpellResult.NO_TARGET;
 		}
 
-        boolean hasPermission = brush.isErase() ? hasBreakPermission(targetBlock) : hasBuildPermission(targetBlock);
+        MaterialBrush buildWith = getBrush();
+        boolean hasPermission = buildWith != null && buildWith.isErase() ? hasBreakPermission(targetBlock) : hasBuildPermission(targetBlock);
         if (!hasPermission) {
             return SpellResult.INSUFFICIENT_PERMISSION;
         }
@@ -70,8 +71,7 @@ public class ConstructSpell extends BrushSpell
         Vector bounds = null;
 
         if (parameters.getBoolean("use_brush_size", false)) {
-            MaterialBrush brush = getBrush();
-            bounds = brush.getSize();
+            bounds = buildWith.getSize();
             radius = (int)Math.max(Math.max(bounds.getX() / 2, bounds.getZ() / 2), bounds.getY());
         } else if (getTargetType() == TargetType.SELECT) {
 			if (targetLocation2 != null) {
@@ -131,7 +131,6 @@ public class ConstructSpell extends BrushSpell
 			target = target.getRelative(BlockFace.UP, parameters.getInt("y_offset", 0));
 		}
 
-		MaterialBrush buildWith = getBrush();
 		buildWith.setTarget(target.getLocation());
 		
 		ConstructionType conType = DEFAULT_CONSTRUCTION_TYPE;
