@@ -8,6 +8,7 @@
  - Some quick-cast fixes (Stash spell)
  - Fixes to enchanting progress with disabled spells (disabling Rollback will disable upgrading to Engineer now)
  - Add Secure Level 2
+ - Added Tree to the Engineering path
 
 ## 4.9.6
 

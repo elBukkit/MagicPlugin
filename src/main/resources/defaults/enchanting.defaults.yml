@@ -452,6 +452,7 @@ engineer:
       pillar: 0,5,10
       place: 0,1,5
       levitate: 0,0,10
+      tree: 0,2,10
     material_count:
       1: 50, 20, 20
       2: 1,  10,  30
