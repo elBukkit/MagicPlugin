@@ -790,10 +790,16 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 
             // Handle aliases and upgrades smoothly
             String loadedKey = pieces[0].trim();
+            SpellKey spellKey = new SpellKey(loadedKey);
             SpellTemplate spell = controller.getSpellTemplate(loadedKey);
+            // Downgrade spells if higher levels have gone missing
+            while (spell == null && spellKey.getLevel() > 0)
+            {
+                spellKey = new SpellKey(spellKey.getBaseKey(), spellKey.getLevel() - 1);
+                spell = controller.getSpellTemplate(spellKey.getKey());
+            }
             if (spell != null)
             {
-                SpellKey spellKey = new SpellKey(spell.getKey());
                 Integer currentLevel = spellLevels.get(spellKey.getBaseKey());
                 if (currentLevel == null || currentLevel < spellKey.getLevel()) {
                     spellLevels.put(spellKey.getBaseKey(), spellKey.getLevel());
