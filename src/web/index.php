@@ -61,8 +61,23 @@ foreach ($spells as $key => &$spell) {
         unset($spells[$key]);
         continue;
     }
+    $spell['key'] = $key;
+
+    $spell['upgrade_description'] = isset($messages['spells'][$key]['upgrade_description']) ? $messages['spells'][$key]['upgrade_description'] : '';
     if (strpos($key, '|') !== FALSE) {
+        $spellPieces = explode('|', $key);
+        $baseKey = $spellPieces[0];
+        $level = $spellPieces[1];
+        $spellLevel = $spells[$key];
         unset($spells[$key]);
+        if (isset($spells[$baseKey])) {
+            $baseSpell = &$spells[$baseKey];
+            if (!isset($baseSpell['levels'])) {
+                $baseSpell['levels'] = array($level => $spellLevel);
+            } else {
+                $baseSpell['levels'][$level] = $spellLevel;
+            }
+        }
         continue;
     }
 

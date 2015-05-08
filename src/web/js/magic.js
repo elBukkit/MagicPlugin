@@ -73,18 +73,26 @@ function getWorth(worth)
 
 function getSpellDetails(key, showTitle, useMana, costReduction, probabilityString)
 {
+    if (!(key in spells)) {
+        return $('<span/>').text("Sorry, something went wrong!");
+    }
+    var spell = spells[key];
+    return createSpellDetails(spell, showTitle, useMana, costReduction, probabilityString)
+}
+
+function createSpellDetails(spell, showTitle, useMana, costReduction, probabilityString)
+{
 	showTitle = (typeof showTitle === 'undefined') ? true : showTitle;
 	useMana = (typeof useMana === 'undefined') ? false : useMana;
 	costReduction = (typeof costReduction === 'undefined') ? 0 : costReduction;
-	if (!(key in spells)) {
-		return $('<span/>').text("Sorry, something went wrong!");
-	}
-	var spell = spells[key];
-	var detailsDiv = $('<div/>');
+	var key = spell.key;
+	var spellDiv = $('<div/>');
 	if (showTitle) {
 		var title = $('<div class="spellTitleBanner"/>').text(spell.name);
-		detailsDiv.append(title);
+        spellDiv.append(title);
 	}
+    var detailsDiv = $('<div class="spellContainer"/>');
+    spellDiv.append(detailsDiv);
 	var description = $('<div class="spellDescription"/>').text(spell.description);
     detailsDiv.append(description);
 
@@ -134,7 +142,7 @@ function getSpellDetails(key, showTitle, useMana, costReduction, probabilityStri
             break;
         }
     }
-	
+
 	// Check for rarity
 	if (probabilityString != null && probabilityString.length > 0) {
 		var rarityClass = 'spellCommon';
@@ -144,7 +152,7 @@ function getSpellDetails(key, showTitle, useMana, costReduction, probabilityStri
 		for (var index in pieces) {
 			overallWeight += parseInt(pieces[index]);
 		}
-		
+
 		if (overallWeight < 5) {
 			rarityClass = 'spellVeryRare';
 			rarityDescription = 'Very Rare';
@@ -155,10 +163,10 @@ function getSpellDetails(key, showTitle, useMana, costReduction, probabilityStri
 			rarityClass = 'spellUncommon';
 			rarityDescription = 'Uncommon';
 		}
-		
+
 		var probabilityDescription = $('<div class="spellProbability ' + rarityClass + '"/>')
 			.text(rarityDescription);
-		
+
 		detailsDiv.append(probabilityDescription);
 	}
 
@@ -168,6 +176,53 @@ function getSpellDetails(key, showTitle, useMana, costReduction, probabilityStri
         detailsDiv.append(getWorth(spell.worth));
     }
 
+    appendSpellDetails(detailsDiv, spell, useMana, costReduction);
+
+    if ('levels' in spell) {
+        var levelsList = $('<div/>');
+        var spellLevels = spell['levels'];
+        for (var spellLevel in spellLevels)
+        {
+            var level = spellLevels[spellLevel];
+            levelsList.append($('<h3/>').text("Level " + spellLevel));
+            var levelDiv = $('<div/>');
+
+            var descriptionText = "";
+            if ('upgrade_description' in level)
+            {
+                descriptionText = level.upgrade_description;
+            }
+            if (descriptionText == "" && 'upgrade_description' in spell)
+            {
+                descriptionText = spell.upgrade_description;
+            }
+            if (descriptionText != "") {
+                var tempDiv = $('<div/>').html(descriptionText);
+                descriptionText = tempDiv.text();
+                var description = $('<div class="spellDescription"/>').append(decodeColors(descriptionText));
+                levelDiv.append(description);
+            }
+            appendSpellDetails(levelDiv, level, useMana, costReduction);
+            appendSpellAdmin(levelDiv, level, 'adminuseLevel');
+            levelsList.append($('<div/>').append(levelDiv));
+        }
+        levelsList.accordion({ heightStyle: 'content'} );
+        detailsDiv.append(levelsList);
+    }
+
+    if (showTitle) {
+        appendSpellAdmin(spellDiv, spell, 'adminuse');
+    }
+    return spellDiv;
+}
+function appendSpellAdmin(detailsDiv, spell, divClass)
+{
+    var admin = $('<div class="' + divClass + '"/>').text("Admin use: /wand add " + spell.key);
+    detailsDiv.append(admin);
+}
+
+function appendSpellDetails(detailsDiv, spell, useMana, costReduction)
+{
 	var firstCost = true;
 	if ('costs' in spell) {
 		detailsDiv.append($('<div class="spellHeading"/>').text('Costs'));
@@ -209,12 +264,6 @@ function getSpellDetails(key, showTitle, useMana, costReduction, probabilityStri
 		}
 		detailsDiv.append(costList);
 	}
-	
-	if (showTitle) {
-		var admin = $('<div class="adminuse"/>').text("Admin use: /wand add " + key);
-		detailsDiv.append(admin);
-	}
-	return detailsDiv;
 }
 
 function getLevelString(prefix, amount)
@@ -262,15 +311,8 @@ function getBookDetails(key)
 		var page = book.pages[pageIndex];
 		var lines = page.split("&x");
 		for (var lineIndex in lines) {
-			var line = lines[lineIndex];
-			var lineStyle = "";
-			line = line.replace(/\&(.)/g, function (match, capture) {
-				lineStyle += getLineStyle(capture);
-				return "";
-			});
-
-			var lineSpan = jQuery('<span style="' + lineStyle + '"/>');
-			lineSpan.text(line);
+            var line = lines[lineIndex];
+			var lineSpan = decodeColors(line);
 			pages.append(lineSpan).append(jQuery('<br/>'));
 		}
 		
@@ -279,6 +321,19 @@ function getBookDetails(key)
 	scrollingContainer.append(pages);
 
 	return detailsDiv;
+}
+
+function decodeColors(line)
+{
+    var lineStyle = "";
+    line = line.replace(/\&(.)/g, function (match, capture) {
+        lineStyle += getLineStyle(capture);
+        return "";
+    });
+
+    var lineSpan = jQuery('<span style="' + lineStyle + '"/>');
+    lineSpan.text(line);
+    return lineSpan;
 }
 
 function getLineStyle(chatChar)

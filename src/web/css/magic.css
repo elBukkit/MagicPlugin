@@ -217,6 +217,13 @@
 	font-size: 0.75em;
 }
 
+.adminuseLevel
+{
+    color: #777777;
+    font-size: 0.75em;
+    margin-top: 1em;
+}
+
 .wandHeading
 {
 	margin-top: 8px;
@@ -243,6 +250,16 @@
 	left: 0px;
 	right: 0px;
 	overflow: auto;
+}
+
+#spellDetails .spellContainer
+{
+    position:absolute;
+    top: 40px;
+    bottom: 20px;
+    left: 0px;
+    right: 0px;
+    overflow: auto;
 }
 
 .bookContainer
