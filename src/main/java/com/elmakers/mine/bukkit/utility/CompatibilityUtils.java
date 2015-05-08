@@ -39,6 +39,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.ref.WeakReference;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -432,7 +433,7 @@ public class CompatibilityUtils extends NMSUtils {
         }
     }
 
-    private static ThrownPotion potion = null;
+    private static WeakReference<ThrownPotion> potionReference = null;
 
     public static void magicDamage(LivingEntity target, double amount, Entity source) {
         try {
@@ -454,10 +455,12 @@ public class CompatibilityUtils extends NMSUtils {
 
             // Bukkit won't allow magic damage from anything but a potion..
             if (sourceHandle != null && source instanceof LivingEntity) {
+                ThrownPotion potion = potionReference == null ? null : potionReference.get();
                 if (potion == null) {
                     Location location = target.getLocation();
                     potion = (ThrownPotion) location.getWorld().spawnEntity(location, EntityType.SPLASH_POTION);
                     potion.remove();
+                    potionReference = new WeakReference<ThrownPotion>(potion);
                 }
                 potion.setShooter((LivingEntity)source);
                 Object potionHandle = getHandle(potion);
