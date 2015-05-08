@@ -189,6 +189,7 @@ public interface Mage extends CostReducer {
      */
     public Batch cancelPending();
     public Batch cancelPending(String spellKey);
+    public Batch cancelPending(boolean force);
 
     /**
      * Undo the last construction performed by this Mage.
