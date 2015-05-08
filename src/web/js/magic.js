@@ -566,13 +566,14 @@ function getWandItemDetails(key, wand, recipe)
     if ('required_spells' in wand && wand.required_spells != null && wand.required_spells.length > 0) {
         var requiredSpells = wand.required_spells;
         requiredSpells.sort();
-        var spellHeader = $('<div class="wandHeading">Required Spells (' + requiredSpells.length + ')</div>');
+        var spellHeader = $('<div class="wandHeading">Required To Advance (' + requiredSpells.length + ')</div>');
         var spellListContainer = $('<div id="wandRequiredSpellList"/>');
         var spellList = $('<div/>');
         var usesMana = xpRegeneration > 0 || key == 'random';
         for (var spellIndex in requiredSpells)
         {
             var key = wand.required_spells[spellIndex];
+            if (!(key in spells)) continue;
             var spell = spells[key];
             spellList.append($('<h3/>').text(spell.name));
             spellList.append($('<div/>').append(getSpellDetails(key, false, usesMana, costReduction, "")));

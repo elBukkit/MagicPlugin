@@ -256,6 +256,10 @@ ksort($upgrades);
 
 // Look up craftable wands
 foreach ($crafting as $key => &$recipe) {
+    if (isset($recipe['enabled']) && !$recipe['enabled']) {
+        unset($crafting[$key]);
+        continue;
+    }
     if (!isset($recipe['output_type']) || $recipe['output_type'] != 'wand')
     {
         $recipe['wand'] = null;
