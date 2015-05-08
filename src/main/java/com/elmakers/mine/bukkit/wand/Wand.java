@@ -3165,10 +3165,6 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
     }
 
 	public boolean cast(Spell spell) {
-        if (hasUses && uses <= 0) {
-            use();
-            return false;
-        }
 		if (spell != null) {
             Collection<String> castParameters = null;
             if (castOverrides != null && castOverrides.size() > 0) {
@@ -3230,18 +3226,18 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	protected void use() {
 		if (mage == null) return;
 		if (hasUses) {
-            if (uses > 0)
+            ItemStack item = getItem();
+            if (item.getAmount() > 1)
             {
-                uses--;
+                item.setAmount(item.getAmount() - 1);
             }
-			if (uses <= 0) {
-                ItemStack item = getItem();
-                if (item.getAmount() > 1)
+            else
+            {
+                if (uses > 0)
                 {
-                    item.setAmount(item.getAmount() - 1);
+                    uses--;
                 }
-                else
-                {
+                if (uses <= 0) {
                     Player player = mage.getPlayer();
 
                     deactivate();
@@ -3249,12 +3245,12 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
                     PlayerInventory playerInventory = player.getInventory();
                     playerInventory.setItemInHand(new ItemStack(Material.AIR, 1));
                     player.updateInventory();
+                } else {
+                    saveState();
+                    updateName();
+                    updateLore();
                 }
-			} else {
-                saveState();
-				updateName();
-				updateLore();
-			}
+            }
 		}
 	}
 
