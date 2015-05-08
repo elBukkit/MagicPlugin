@@ -54,7 +54,7 @@ public class ConstructSpell extends BrushSpell
 		}
 
         MaterialBrush buildWith = getBrush();
-        boolean hasPermission = buildWith != null && buildWith.isErase() ? hasBreakPermission(targetBlock) : hasBuildPermission(targetBlock);
+        boolean hasPermission = buildWith != null && buildWith.isErase() ? hasBreakPermission(target) : hasBuildPermission(target);
         if (!hasPermission) {
             return SpellResult.INSUFFICIENT_PERMISSION;
         }
