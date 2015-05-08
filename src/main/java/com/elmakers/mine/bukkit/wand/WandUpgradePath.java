@@ -125,6 +125,15 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
         requiredSpells.addAll(template.getStringList("required_spells"));
         allRequiredSpells.addAll(requiredSpells);
 
+        // Validate requirements - disabling a required spell disables the upgrade.
+        for (String requiredKey : requiredSpells) {
+            SpellTemplate spell = controller.getSpellTemplate(requiredKey);
+            if (spell == null) {
+                controller.getLogger().warning("Invalid spell required for upgrade: " + requiredKey + ", upgrade path " + key + " will disable upgrades");
+                upgradeKey = null;
+            }
+        }
+
         matchSpellMana = template.getBoolean("match_spell_mana", matchSpellMana);
         hidden = template.getBoolean("hidden", false);
 
@@ -495,7 +504,7 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
                 SpellTemplate spell = wand.getController().getSpellTemplate(requiredKey);
                 if (spell == null) {
                     wand.getController().getLogger().warning("Invalid spell required for upgrade: " + requiredKey);
-                    continue;
+                    return false;
                 }
                 if (mage != null)
                 {
