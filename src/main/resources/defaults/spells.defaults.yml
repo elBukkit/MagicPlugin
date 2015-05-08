@@ -899,6 +899,7 @@ superdisc:
     icon: ink_sack:13
     category: engineering
     class: ConstructSpell
+    cancellable: false
     worth: 8000
     effects:
         cast:
@@ -923,6 +924,7 @@ superring:
     icon: ink_sack:9
     category: engineering
     class: ConstructSpell
+    cancellable: false
     worth: 6000
     effects:
         cast:
@@ -948,6 +950,7 @@ supershell:
     icon_url: http://textures.minecraft.net/texture/281923adf47a8ca699f6d09593e36d154acc707735eb25fd89d282f1f3bb2078
     category: engineering
     class: ConstructSpell
+    cancellable: false
     worth: 10000
     effects:
         cast:
@@ -971,6 +974,7 @@ superdome:
     icon_url: http://textures.minecraft.net/texture/e468c9623ed74bc829f985d46d4646241daa2a682fec5f2343d55cd7a63693d
     category: engineering
     class: ConstructSpell
+    cancellable: false
     worth: 9000
     effects:
         cast:
@@ -2753,6 +2757,7 @@ regenerate:
     icon: gold_hoe
     category: engineering
     class: RegenerateSpell
+    cancellable: false
     worth: 10000
     effects:
         cast:
@@ -2773,6 +2778,7 @@ superregenerate:
     icon: diamond_hoe
     category: engineering
     class: RegenerateSpell
+    cancellable: false
     worth: 15000
     effects:
         cast:
@@ -2795,6 +2801,7 @@ paint:
     category: engineering
     class: FillSpell
     worth: 1000
+    cancellable: false
     effects:
         cast:
         -  class: EffectTrail
@@ -2813,6 +2820,7 @@ fill:
     icon_url: http://textures.minecraft.net/texture/ce31cd14d873d1579b633646be683b5e1201512e593ca61595e33a5ef17b374
     category: engineering
     class: FillSpell
+    cancellable: false
     worth: 5000
     effects:
         cast:
@@ -2833,6 +2841,7 @@ recurse:
     icon_url: http://textures.minecraft.net/texture/ce31cd14d873d1579b633646be683b5e1201512e593ca61595e33a5ef17b374
     category: engineering
     class: RecurseSpell
+    cancellable: false
     worth: 4000
     effects:
         cast:
@@ -2987,6 +2996,7 @@ bridge:
     icon: stone_hoe
     category: engineering
     class: BridgeSpell
+    cancellable: false
     worth: 2000
     effects:
         cast:
@@ -3004,6 +3014,7 @@ pillar:
     icon: iron_axe
     category: engineering
     worth: 2000
+    cancellable: false
     actions:
         cast:
         - class: BlockSearch
@@ -3027,6 +3038,7 @@ place:
     icon: diamond_axe
     category: engineering
     worth: 2500
+    cancellable: false
     actions:
         cast:
         - class: ChangeContext
@@ -3165,6 +3177,7 @@ superblob:
     category: engineering
     class: ConstructSpell
     worth: 8000
+    cancellable: false
     effects:
         cast:
         -  class: EffectSingle
@@ -3186,6 +3199,7 @@ superpyramid:
     icon_url: http://textures.minecraft.net/texture/295775b75c70891a42d7d8fac699da5ec2ad6c419fd1ccafd32668713dace2e6
     icon: speckled_melon
     category: engineering
+    cancellable: false
     class: ConstructSpell
     worth: 7000
     effects:
@@ -3209,6 +3223,7 @@ supercylinder:
     icon_url: http://textures.minecraft.net/texture/86b54c2be72abec1bb595f3acea2e1ef3dffb94f7d316212ced492b72a164cb2
     icon: speckled_melon
     category: engineering
+    cancellable: false
     class: ConstructSpell
     worth: 7000
     effects:
@@ -3232,6 +3247,7 @@ box:
     icon_url: http://textures.minecraft.net/texture/35b7d887a08bb8eb927b58f452becf8d349cd46e6a2ea18dffb2776d676df5
     icon: gold_helmet
     category: engineering
+    cancellable: false
     class: ConstructSpell
     worth: 3000
     effects:
@@ -3256,6 +3272,7 @@ superbox:
     icon_url: http://textures.minecraft.net/texture/35b7d887a08bb8eb927b58f452becf8d349cd46e6a2ea18dffb2776d676df5
     icon: diamond_helmet
     category: engineering
+    cancellable: false
     class: ConstructSpell
     worth: 6000
     effects:
@@ -3279,6 +3296,7 @@ supercube:
     icon_url: http://textures.minecraft.net/texture/35b7d887a08bb8eb927b58f452becf8d349cd46e6a2ea18dffb2776d676df5
     icon: nether_brick_item
     category: engineering
+    cancellable: false
     class: ConstructSpell
     worth: 6500
     effects:
@@ -3301,6 +3319,7 @@ backup:
     icon_url: http://textures.minecraft.net/texture/1ba8664ebb95136081e296baa6b384b975ee864e61398a6dfe4915fcafd1f3eb
     icon: diamond_pickaxe
     category: engineering
+    cancellable: false
     class: ConstructSpell
     worth: 10000
     effects:
@@ -3330,6 +3349,7 @@ repair:
     icon: gold_pickaxe
     icon_url: http://textures.minecraft.net/texture/19b2a0ec54345ba8de3964a5ae74ef89c53a2922c527f96fb9238ecf761242a4
     category: engineering
+    cancellable: false
     class: ConstructSpell
     worth: 3000
     effects:
@@ -3359,6 +3379,7 @@ superrepair:
     icon_url: http://textures.minecraft.net/texture/2298724dfb9d1599590f4e8c3647c2c5532e8fae48fca12fe32a410bb4437a9
     icon: gold_pickaxe
     category: engineering
+    cancellable: false
     class: ConstructSpell
     worth: 5000
     effects:
@@ -3613,6 +3634,7 @@ tunnel:
     icon_url: http://textures.minecraft.net/texture/3186699cf52cb2f732b7948784b262a49d43a57c801368f776e3c9a88151d
     icon: iron_pickaxe
     category: engineering
+    cancellable: false
     class: TunnelSpell
     worth: 2000
     effects:
@@ -3631,6 +3653,7 @@ superblast:
     icon_url: http://textures.minecraft.net/texture/eab81081362ed39651bb47e8650dc6bbc3d8a1db56827c186267e546df0743f
     icon: red_mushroom
     category: engineering
+    cancellable: false
     class: ConstructSpell
     worth: 4000
     effects:
@@ -3656,6 +3679,7 @@ convert:
     icon_url: http://textures.minecraft.net/texture/b55a449b825c375ab91571e7e8a67856d212f756824bdfe43178eaea035bc
     icon: iron_spade
     category: engineering
+    cancellable: false
     class: ConstructSpell
     worth: 2500
     effects:
@@ -3679,6 +3703,7 @@ superconvert:
     icon: diamond_spade
     icon_url: http://textures.minecraft.net/texture/2734f67095a837ec19069f23cae3e82516fab4e29afc157bd99d370179ca0c3
     category: engineering
+    cancellable: false
     class: ConstructSpell
     worth: 7000
     effects:
@@ -3767,6 +3792,7 @@ supercollapse:
     icon: gold_plate
     icon_url: http://textures.minecraft.net/texture/a4cdbaa4de8eecc6363d760442688762daf588238f83a9da624eaa51e82bbb
     category: engineering
+    cancellable: false
     class: ConstructSpell
     worth: 9000
     effects:
@@ -3820,6 +3846,7 @@ rollback:
     icon_url: http://textures.minecraft.net/texture/9be3ca3c869345a6f2a3be3391615dca1ea1c631d86e3938dbff57f11cbb61
     icon: book_and_quill
     category: engineering
+    cancellable: false
     worth: 5000
     actions:
         cast:
@@ -3850,6 +3877,7 @@ commit:
     icon_url: http://textures.minecraft.net/texture/8767f81fd66cc826827de81f3d12a3fee1fd6cfee11a43bb438404cd3391f
     icon: enchanted_book
     category: engineering
+    cancellable: false
     class: CommitSpell
     worth: 4000
     effects:
@@ -4086,6 +4114,7 @@ alter:
     icon_url: http://textures.minecraft.net/texture/4e693cf3b7bf83248527aacc2714638b55587cde593963d1f861884f5be1638
     icon: ink_sack
     category: engineering
+    cancellable: false
     class: AlterSpell
     worth: 800
     effects:
@@ -4108,6 +4137,7 @@ superalter:
     icon_url: http://textures.minecraft.net/texture/b5ccb1a5547f7d1beb4896c6fad4fedbb17ebced53a86b7e96e417114a0cae4
     icon: ink_sack:1
     category: engineering
+    cancellable: false
     class: AlterSpell
     worth: 2000
     effects:
@@ -4129,6 +4159,7 @@ sphere:
     icon_url: http://textures.minecraft.net/texture/c4c932901eaf61a741a8fa8a786fa9e509b13ba518f384c6c731086ffdc829e
     icon: snow_ball
     category: engineering
+    cancellable: false
     class: ShapeSpell
     worth: 2000
     effects:
@@ -4700,6 +4731,7 @@ iterate:
     icon_url: http://textures.minecraft.net/texture/ce5eef24e2cf406bcd9d2b44f418ac72e26731b9a7e7402490e473af8145e0ba
     icon: ink_sack:2
     category: engineering
+    cancellable: false
     worth: 2500
     actions:
         cast:
@@ -4720,6 +4752,7 @@ column:
     icon_url: http://textures.minecraft.net/texture/58c328c062df8bb125e7bb2cca6dce38c24236733a9f95ca75b04c162c64cb8
     icon: ink_sack:4
     category: engineering
+    cancellable: false
     worth: 4000
     actions:
         cast:
@@ -5677,6 +5710,7 @@ paste:
     icon: iron_pickaxe
     category: engineering
     class: ConstructSpell
+    cancellable: false
     worth: 8500
     effects:
         cast:
@@ -5865,6 +5899,7 @@ rubberize:
     icon_url: http://textures.minecraft.net/texture/fced4114232f1aff90c5fbb3535e89c546858b14bae3fea7ecc896b2bd51
     category: engineering
     class: RecurseSpell
+    cancellable: false
     worth: 1500
     cast_on_no_target: true
     effects:

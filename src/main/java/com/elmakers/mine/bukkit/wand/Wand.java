@@ -3123,6 +3123,11 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		// This is a tying wands together with other spells, potentially
 		// But with the way the mana system works, this seems like the safest route.
 		mage.deactivateAllSpells();
+
+        // This is mainly here to prevent multi-wand spamming and for
+        // Disarm to be more powerful.. because Disarm needs to be more
+        // powerful :|
+        mage.cancelPending(false);
 		
 		if (isInventoryOpen()) {
 			closeInventory();
