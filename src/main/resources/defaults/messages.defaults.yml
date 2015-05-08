@@ -1060,6 +1060,7 @@ spells:
         name: Stream
         description: Spray a stream of water
         cast: You spray a stream of water
+        upgrade_description: "&r&b&bull; &6Increased damage and range"
     wolf:
         name: Wolf
         description: Create some wolf familiars

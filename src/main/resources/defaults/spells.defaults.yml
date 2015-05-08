@@ -4603,7 +4603,7 @@ lava:
         target_type: LivingEntity
         transparent: transparent_to_construction
         allow_max_range: true
-        range: 64
+        range: 16
         size: 16
         brush: lava
         increment_data: true
@@ -4612,6 +4612,8 @@ lava:
         mana: 65
 
 stream:
+    upgrade_required_path: apprentice
+    upgrade_required_casts: 30
     icon: ink_sack:6
     icon_url: http://textures.minecraft.net/texture/b750768d23e447d95b662344f426cc96228a4047f7a8ced0f4861edbbeaced
     category: combat
@@ -4632,16 +4634,33 @@ stream:
         target_type: LivingEntity
         transparent: transparent_to_construction
         allow_max_range: true
-        range: 64
-        size: 16
+        range: 4
+        size: 4
         brush: stationary_water
         increment_data: false
         undo: 2000
         duration: 3000
-        player_damage: 2
-        entity_damage: 4
+        player_damage: 1
+        entity_damage: 2
+        cooldown: 5000
     costs:
         mana: 30
+
+stream|2:
+    upgrade_required_path: apprentice
+    upgrade_required_casts: 30
+    parameters:
+        range: 8
+        size: 8
+        player_damage: 2
+        entity_damage: 4
+
+stream|3:
+    parameters:
+        range: 16
+        size: 16
+        player_damage: 4
+        entity_damage: 8
 
 earth:
     icon_url: http://textures.minecraft.net/texture/5d9ddb39f5cd587f63bb175dfaf55baaa917c1a2a3ca987a18d90c9e1a578d
@@ -4667,7 +4686,7 @@ earth:
         target_type: LivingEntity
         transparent: transparent_to_construction
         allow_max_range: true
-        range: 64
+        range: 16
         size: 16
         increment_data: false
         undo: 2000

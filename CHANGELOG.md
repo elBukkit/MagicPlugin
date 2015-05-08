@@ -9,6 +9,7 @@
  - Fixes to enchanting progress with disabled spells (disabling Rollback will disable upgrading to Engineer now)
  - Add Secure Level 2
  - Added Tree to the Engineering path
+ - Nerf stream, earth- add Stream Level 2 and 3
 
 ## 4.9.6
 
