@@ -491,7 +491,17 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
         int materialCount = maxLevel.getMaterialCount();
         LinkedList<WeightedPair<String>> remainingSpells = maxLevel.getRemainingSpells(wand);
         LinkedList<WeightedPair<String>> remainingMaterials = maxLevel.getRemainingMaterials(wand);
-        return ((spellCount > 0 && remainingSpells.size() > 0) || (materialCount > 0 && remainingMaterials.size() > 0));
+
+        boolean needsMaterials = false;
+        Set<String> spells = wand.getSpells();
+        for (String spellName : spells) {
+            SpellTemplate spell = wand.getMaster().getSpellTemplate(spellName);
+            if (spell != null) {
+                needsMaterials = needsMaterials || spell.usesBrush();
+            }
+        }
+
+        return ((spellCount > 0 && remainingSpells.size() > 0) || (needsMaterials && materialCount > 0 && remainingMaterials.size() > 0));
     }
 
     @Override

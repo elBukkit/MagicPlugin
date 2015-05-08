@@ -259,7 +259,7 @@ public class WandLevel {
 		}
 
         // Let them upgrade if they aren't getting any new spells or brushes
-        if (hasUpgrade && !addedMaterials && !addedSpells && ((getSpellCount() > 0 && spellProbability.size() > 0) || (getMaterialCount() > 0 && materialProbability.size() > 0)))
+        if (hasUpgrade && !(addedMaterials && needsMaterials) && !addedSpells && ((getSpellCount() > 0 && spellProbability.size() > 0) || (getMaterialCount() > 0 && materialProbability.size() > 0)))
         {
             return false;
         }
