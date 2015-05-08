@@ -4343,16 +4343,15 @@ public class MagicController implements Listener, MageController {
 	public SpellTemplate getSpellTemplate(String name) 
 	{
 		if (name == null || name.length() == 0) return null;
-        SpellTemplate spell = spells.get(name);
+        SpellTemplate spell = spellAliases.get(name);
         if (spell == null) {
-            if (name.startsWith("heroes*")) {
-                if (heroesManager == null) return null;
-                spell = heroesManager.createSkillSpell(this, name.substring(7));
-                if (spell != null) {
-                    spells.put(name, spell);
-                }
-            } else {
-                spell = spellAliases.get(name);
+            spell = spells.get(name);
+        }
+        if (spell == null && name.startsWith("heroes*")) {
+            if (heroesManager == null) return null;
+            spell = heroesManager.createSkillSpell(this, name.substring(7));
+            if (spell != null) {
+                spells.put(name, spell);
             }
         }
 		return spell;
