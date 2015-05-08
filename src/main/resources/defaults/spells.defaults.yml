@@ -6354,6 +6354,8 @@ secure:
     icon_url: http://textures.minecraft.net/texture/dea4155d3f45e95c71b441d1a233586dd2efd99e0d85a286e41dea2a5231ab7
     icon: iron_door
     category: utility
+    upgrade_required_path: master
+    upgrade_required_casts: 10
     worth: 5000
     actions:
        cast:
@@ -6376,6 +6378,10 @@ secure:
         key_icon: "skull_item:http://textures.minecraft.net/texture/3944e12e8e67fd67a55359df56c3c59c99550f6eaccb23813769afb2f1992"
     costs:
         mana: 100
+
+secure|2:
+    parameters:
+        destructible: chest,furnace,brewing_stand,dispenser,hopper,dropper
 
 lockpick:
     icon_url: http://textures.minecraft.net/texture/3944e12e8e67fd67a55359df56c3c59c99550f6eaccb23813769afb2f1992

@@ -334,6 +334,7 @@ spells:
         key_name: "&6$name's &eKey"
         key_description: "Needed to open your locked containers"
         fail: You can't lock that!
+        upgrade_description: "&r&b&bull; &6Now locks furnaces and other containers"
     lockpick:
         name: Lockpick
         description: Unlocks locked containers

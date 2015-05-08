@@ -6,6 +6,8 @@
  - Expanded Towny integration, added "towny_wilderness_bypass" flag.
  - Add ability to apply damage directly via a FallingBlock hit to ThrowBlock and ModifyBlock
  - Some quick-cast fixes (Stash spell)
+ - Fixes to enchanting progress with disabled spells (disabling Rollback will disable upgrading to Engineer now)
+ - Add Secure Level 2
 
 ## 4.9.6
 
