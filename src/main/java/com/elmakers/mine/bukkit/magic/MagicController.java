@@ -3490,6 +3490,7 @@ public class MagicController implements Listener, MageController {
                 }
 
                 if (!spellDroppingEnabled) {
+                    player.closeInventory();
                     String spellName = Wand.getSpell(droppedItem);
                     if (spellName != null) {
                         Spell spell = mage.getSpell(spellName);
@@ -3510,7 +3511,6 @@ public class MagicController implements Listener, MageController {
                         player.getInventory().setItem(event.getSlot(), droppedItem);
                         player.updateInventory();
                     }
-                    player.closeInventory();
 
                     return;
                 }

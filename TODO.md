@@ -1,6 +1,5 @@
 # TODO
 
- - Something broken with Stash and quick-cast
  - Add FallingBlock damage NBT option
  - Is shift+click in wand inv doing something weird?
 
