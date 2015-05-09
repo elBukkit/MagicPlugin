@@ -2,6 +2,7 @@ package com.elmakers.mine.bukkit.action.builtin;
 
 import com.elmakers.mine.bukkit.action.BaseSpellAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
+import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
@@ -12,6 +13,7 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -66,11 +68,13 @@ public class LockAction extends BaseSpellAction
             keyDescription = keyDescription.replace("$name", context.getMage().getName());
             result = CompatibilityUtils.setLock(targetBlock.getLocation(), keyName);
 
-            Player player = context.getMage().getPlayer();
-            if (player != null)
+            Mage mage = context.getMage();
+            Player player = mage.getPlayer();
+            Inventory inventory = mage.getInventory();
+            if (player != null && inventory != null)
             {
                 boolean hasKey = false;
-                ItemStack[] items = player.getInventory().getContents();
+                ItemStack[] items = inventory.getContents();
                 for (ItemStack item : items)
                 {
                     if (item != null && item.hasItemMeta())
