@@ -1253,10 +1253,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             expProgress = activeWand.getStoredXpProgress();
         }
 
-        for (int level = 0; level < expLevel; level++) {
-            xp += Wand.getExpToLevel(level);
-        }
-        return xp + (int) (expProgress * Wand.getExpToLevel(expLevel));
+        return Wand.getExperience(expLevel, expProgress);
     }
 
     @Override

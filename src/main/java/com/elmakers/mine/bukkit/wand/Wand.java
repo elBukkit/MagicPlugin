@@ -190,6 +190,8 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 
 	private int storedXpLevel = 0;
 	private float storedXpProgress = 0;
+    private Integer playerXpLevel = null;
+    private Float playerXpProgress = null;
 
     private long lastLocationTime;
     private Vector lastLocation;
@@ -3097,12 +3099,29 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
                 updateDurability();
             }
 			else {
+                int playerLevel = player.getLevel();
+                float playerProgress = player.getExp();
+                if (playerXpLevel != null && playerXpProgress != null && (playerLevel != playerXpLevel || playerProgress != playerXpProgress))
+                {
+                    int playerXP = getExperience(playerLevel, playerProgress);
+                    int wandXP = getExperience(playerXpLevel, playerXpProgress);
+                    if (playerXP > wandXP) {
+                        addExperience(playerXP - wandXP);
+                    }
+                }
+
                 if (displayManaAsBar) {
                     if (!retainLevelDisplay) {
                         player.setLevel(0);
+                        playerXpLevel = 0;
+                    } else {
+                        playerXpLevel = playerLevel;
                     }
-                    player.setExp(xp / (float)effectiveXpMax);
+                    playerXpProgress = xp / (float)effectiveXpMax;
+                    player.setExp(playerXpProgress);
                 } else {
+                    playerXpLevel = (int)xp;
+                    playerXpProgress = 0.0f;
                     player.setLevel((int)xp);
                     player.setExp(0);
                 }
@@ -3280,6 +3299,14 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         return expLevel >= 30 ? 112 + (expLevel - 30) * 9 : (expLevel >= 15 ? 37 + (expLevel - 15) * 5 : 7 + expLevel * 2);
     }
 
+    public static int getExperience(int expLevel, float expProgress) {
+        int xp = 0;
+        for (int level = 0; level < expLevel; level++) {
+            xp += Wand.getExpToLevel(level);
+        }
+        return xp + (int) (expProgress * Wand.getExpToLevel(expLevel));
+    }
+
     public boolean addExperience(int xp) {
         if (usesMana() && displayManaAsXp()) {
             this.storedXpProgress += (float)xp / (float)getExpToLevel(this.storedXpLevel);
@@ -3295,6 +3322,9 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
                     player.setLevel(storedXpLevel);
                 }
                 player.setExp(storedXpProgress);
+
+                playerXpLevel = player.getLevel();
+                playerXpProgress = player.getExp();
             }
             return true;
         }

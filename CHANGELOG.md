@@ -11,6 +11,7 @@
  - Added Tree to the Engineering path
  - Nerf stream, earth- add Stream Level 2 and 3
  - Fix an item dupe issue with /give'ing items directly into the wand inventory
+ - Fix wands eating XP given directly to a player
 
 ## 4.9.6
 
