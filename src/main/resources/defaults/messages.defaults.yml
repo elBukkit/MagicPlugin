@@ -1568,6 +1568,9 @@ wands:
     wolf:
         name: The Wolf
         description: NathanWolf's Mega-Wand
+    minister:
+        name: The Minister
+        description: For Magic!
     miniwolf:
         name: Mini-Wolf
         description: NathanWolf's Legit Wand

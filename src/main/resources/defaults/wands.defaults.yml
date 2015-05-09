@@ -1197,6 +1197,19 @@ crackedbroomstick:
     spells:
         - broom
 
+minister:
+    mode: cast
+    path: broom
+    active_spell: broom
+    icon: gold_spade
+    indestructible: true
+    locked: true
+    keep: true
+    effect_color: '00AAFF'
+    overrides: broom.mount_boost 4, broom.mount_boost_ticks 600, broom.mount_health 20, broom.slow_ticks 1, broom.steer_speed 0, broom.slow_steer_speed 0.05, broom.mount_boost_per_jump 0.5, broom.effect_confusion 0
+    spells:
+        - broom
+
 spleef:
     locked: true
     icon: stick
