@@ -2011,10 +2011,11 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
                     // This can happen if there is somehow no wand in the wand inventory.
                     break;
                 }
-                hotbar.setItem(i + saveOffset, playerItem);
                 if (!updateSlot(i + saveOffset + currentHotbar * HOTBAR_INVENTORY_SIZE, playerItem)) {
-                    hotbar.setItem(i + saveOffset, new ItemStack(Material.AIR));
+                    playerItem = new ItemStack(Material.AIR);
+                    playerInventory.setItem(i, playerItem);
                 }
+                hotbar.setItem(i + saveOffset, playerItem);
             }
         }
 
@@ -2023,10 +2024,11 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		Inventory openInventory = getOpenInventory();
 		for (int i = 0; i < openInventory.getSize(); i++) {
             ItemStack playerItem = playerInventory.getItem(i + HOTBAR_SIZE);
-			openInventory.setItem(i, playerItem);
             if (!updateSlot(i + hotbarOffset + openInventoryPage * INVENTORY_SIZE, playerItem)) {
-                openInventory.setItem(i, new ItemStack(Material.AIR));
+                playerItem = new ItemStack(Material.AIR);
+                playerInventory.setItem(i + HOTBAR_SIZE, playerItem);
             }
+			openInventory.setItem(i, playerItem);
 		}
 	}
 

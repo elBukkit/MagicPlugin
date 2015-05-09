@@ -3467,6 +3467,13 @@ public class MagicController implements Listener, MageController {
 
                 ItemStack droppedItem = clickedItem;
 
+                if (!Wand.isSpell(droppedItem)) {
+                    mage.giveItem(droppedItem);
+                    event.setCurrentItem(null);
+                    event.setCancelled(true);
+                    return;
+                }
+
                 // This is a hack to deal with spells on cooldown disappearing,
                 // Since the event handler doesn't match the zero-count itemstacks
                 Integer slot = event.getSlot();

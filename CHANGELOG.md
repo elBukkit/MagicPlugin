@@ -10,6 +10,7 @@
  - Add Secure Level 2
  - Added Tree to the Engineering path
  - Nerf stream, earth- add Stream Level 2 and 3
+ - Fix an item dupe issue with /give'ing items directly into the wand inventory
 
 ## 4.9.6
 
