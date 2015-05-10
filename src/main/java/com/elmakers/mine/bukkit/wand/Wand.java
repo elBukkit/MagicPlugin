@@ -802,6 +802,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
             }
             if (spell != null)
             {
+                spellKey = spell.getSpellKey();
                 Integer currentLevel = spellLevels.get(spellKey.getBaseKey());
                 if (currentLevel == null || currentLevel < spellKey.getLevel()) {
                     spellLevels.put(spellKey.getBaseKey(), spellKey.getLevel());
