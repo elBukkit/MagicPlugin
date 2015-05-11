@@ -21,6 +21,7 @@ public class DamageAction extends BaseSpellAction
     private double entityDamage;
     private double playerDamage;
     private double elementalDamage;
+    private boolean magicDamage;
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters)
@@ -30,6 +31,7 @@ public class DamageAction extends BaseSpellAction
         entityDamage = parameters.getDouble("entity_damage", damage);
         playerDamage = parameters.getDouble("player_damage", damage);
         elementalDamage = parameters.getDouble("elemental_damage", damage);
+        magicDamage = parameters.getBoolean("magic_damage", true);
     }
 
 	@Override
@@ -57,7 +59,12 @@ public class DamageAction extends BaseSpellAction
 			} else {
 				damage = entityDamage;
 			}
-			CompatibilityUtils.magicDamage(targetEntity, damage * mage.getDamageMultiplier(), mage.getEntity());
+            damage *= mage.getDamageMultiplier();
+            if (magicDamage) {
+                CompatibilityUtils.magicDamage(targetEntity, damage, mage.getEntity());
+            } else {
+                targetEntity.damage(damage, mage.getEntity());
+            }
 		}
 
 		return SpellResult.CAST;
@@ -76,6 +83,7 @@ public class DamageAction extends BaseSpellAction
 		parameters.add("player_damage");
 		parameters.add("entity_damage");
 		parameters.add("elemental_damage");
+        parameters.add("magic_damage");
 	}
 
 	@Override
@@ -83,7 +91,9 @@ public class DamageAction extends BaseSpellAction
 		if (parameterKey.equals("damage") || parameterKey.equals("player_damage")
 			|| parameterKey.equals("entity_damage") || parameterKey.equals("elemental_damage")) {
 			examples.addAll(Arrays.asList((BaseSpell.EXAMPLE_SIZES)));
-		} else {
+		} else if (parameterKey.equals("magic_damage")) {
+            examples.addAll(Arrays.asList((BaseSpell.EXAMPLE_BOOLEANS)));
+        } else {
 			super.getParameterOptions(spell, parameterKey, examples);
 		}
 	}
