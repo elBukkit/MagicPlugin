@@ -964,6 +964,11 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                 activeSpells.remove(spell);
             }
         }
+
+        // This is mainly here to prevent multi-wand spamming and for
+        // Disarm to be more powerful.. because Disarm needs to be more
+        // powerful :|
+        cancelPending(force);
     }
 
     @Override
