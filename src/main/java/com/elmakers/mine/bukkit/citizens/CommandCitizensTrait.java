@@ -125,6 +125,11 @@ public class CommandCitizensTrait extends CitizensTrait {
             }
             updatePotionEffects();
         }
+        else if (value == null || value.isEmpty())
+        {
+            command = key;
+            sender.sendMessage(ChatColor.DARK_PURPLE + "Set spell to: " + ChatColor.LIGHT_PURPLE + command);
+        }
         else
         {
             super.configure(sender, key, value);

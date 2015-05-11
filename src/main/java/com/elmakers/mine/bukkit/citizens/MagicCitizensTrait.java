@@ -134,6 +134,11 @@ public class MagicCitizensTrait extends CitizensTrait {
                 describeParameters(sender);
             }
         }
+        else if (value == null || value.isEmpty())
+        {
+            spellKey = key;
+            sender.sendMessage(ChatColor.DARK_PURPLE + "Set spell to: " + ChatColor.LIGHT_PURPLE + spellKey);
+        }
         else
         {
             super.configure(sender, key, value);

@@ -783,6 +783,7 @@ shell|2:
     parameters:
         reflect_chance: 0.5
         undo: 5000
+        cooldown: 6000
         breakable: 3
 
 shell|3:
@@ -4208,7 +4209,7 @@ blob:
         radius: 2
         transparent: transparent_to_construction
         undo: 2000
-        cooldown: 1000
+        cooldown: 3000
         brush: stained_glass
         brushcolor: true
         breakable: 3
@@ -4222,7 +4223,7 @@ blob|2:
     parameters:
         radius: 3
         undo: 5000
-        cooldown: 2000
+        cooldown: 6000
         brush: stained_clay
 
 blob|3:
@@ -4230,8 +4231,8 @@ blob|3:
     upgrade_required_casts: 50
     parameters:
         radius: 3
-        undo: 15000
-        cooldown: 5000
+        undo: 10000
+        cooldown: 12000
         brush: obsidian
 
 blob|4:
@@ -6650,7 +6651,7 @@ magicitemshop:
           wand|flashboots: 4000
           wand|camera: 200
           wand|divinghelmet: 1000
-          wand|wolfhouse: 200000
+          wand|wolfhouse: 50000
           wand|apprenticehelmet: 200
           wand|apprenticechestplate: 200
           wand|apprenticeleggings: 200
