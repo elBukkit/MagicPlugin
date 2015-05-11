@@ -86,8 +86,10 @@ public class PotionEffectAction extends BaseSpellAction
 
         LivingEntity targetEntity = (LivingEntity)entity;
         context.registerPotionEffects(targetEntity);
-        if (addEffects != null)
+        boolean effected = false;
+        if (addEffects != null && addEffects.size() > 0)
         {
+            effected = true;
             CompatibilityUtils.applyPotionEffects(targetEntity, addEffects);
         }
 
@@ -100,11 +102,12 @@ public class PotionEffectAction extends BaseSpellAction
                 if (removeEffects.contains(removeType) && effect.getDuration() < Integer.MAX_VALUE / 4)
                 {
                     targetEntity.removePotionEffect(removeType);
+                    effected = true;
                 }
             }
         }
 
-		return SpellResult.CAST;
+		return effected ? SpellResult.CAST : SpellResult.NO_TARGET;
 	}
 
     @Override
