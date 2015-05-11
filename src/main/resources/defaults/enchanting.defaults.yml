@@ -299,6 +299,7 @@ apprentice:
       flashbang: 20,30,50
       gatling: 0,20,30
       walls: 5,30,50
+      weaken: 5,30,50
 
 master:
     required_spells:

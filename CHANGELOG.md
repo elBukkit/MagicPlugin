@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## 4.9.8
+
+ - Add Weaken spell
+ - Cure casts no longer count towards level up unless it has something to cure
+
 ## 4.9.7
 
  - Separate break/build permissions- check MIGRATION log.

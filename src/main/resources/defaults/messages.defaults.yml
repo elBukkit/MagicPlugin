@@ -475,6 +475,11 @@ spells:
         cast: You cure $target
         cast_self: You cure yourself
         upgrade_description: "&r&b&bull; &6Now cures hunger"
+        cast: You heal $target
+    weaken:
+        name: Weaken
+        description: Make your target weak and frail
+        cast: You weaken $target
     music:
         name: Music
         description: Play some tunes

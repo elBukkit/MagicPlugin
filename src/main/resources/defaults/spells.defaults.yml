@@ -1691,6 +1691,7 @@ cure:
         range: 5
         bypass_confusion: true
         duration: 1000
+        cooldown: 2000
         remove_effects:
         - confusion
         - weakness
@@ -1698,12 +1699,51 @@ cure:
         - slow
         - damage_resistance
         - jump
+        - hunger
     costs:
         mana: 30
 
 cure|2:
     parameters:
         effect_saturation: 4
+
+weaken:
+    icon_url: http://textures.minecraft.net/texture/c8471a90c7b0d6ba70ddf0ea8daf2f8ee999a1efe95f2198d8352e42bd43d1
+    icon: bone
+    category: dark
+    worth: 800
+    actions:
+        cast:
+        -  class: PotionEffect
+    effects:
+        cast:
+        - class: EffectSingle
+          custom_sound: magic.shimmer
+          location: target
+          effectlib:
+             class: AtomEffect
+             particleNucleus: smoke_normal
+             particleOrbital: drip_lava
+             iterations: 5
+        -  class: EffectSingle
+           location: target
+           use_hit_location: false
+           effectlib:
+             class: ConeEffect
+             iterations: 5
+             lengthGrow: .14
+             particle: smoke_normal
+    parameters:
+        target_type: LivingEntity
+        target: other
+        allow_max_range: false
+        range: 16
+        duration: 10000
+        effect_hunger: 2
+        effect_weakness: 3
+        cooldown: 20000
+    costs:
+        mana: 50
 
 heal:
     icon_url: http://textures.minecraft.net/texture/6b7da98ef45cf45185d21d61f5fa3d5966a3ee52273620a6e4dfd54cf99dbc
@@ -5740,8 +5780,11 @@ kill:
     actions:
       cast:
         - class: Delay
-        - class: PlayEffects
-          effect: fire
+        - class: Retarget
+          actions:
+          - class: PlayEffects
+            effect: fire
+          - class: Damage
     effects:
         cast:
         - class: EffectSingle
@@ -5762,31 +5805,25 @@ kill:
           custom_sound: magic.zap_big
           sound_volume: 1
           location: origin
+          effectlib:
+             class: ConeEffect
+             iterations: 16
+             particle: spell_mob
+             color: 00FF00
+             lengthGrow: 0.4
         - class: EffectSingle
           location: targets
           color: "00FF00"
           firework: ball_large
-        - class: EffectSingle
-          location: origin
-          effectlib:
-             class: AtomEffect
-             colorNucleus: "00FF00"
-             particleNucleus: redstone
-             colorOrbital: "00FF00"
-             particleOrbital: redstone
-             iterations: 16
     parameters:
-        target: none
-        projectile: WitherSkull
+        target: other
+        target_type: LivingEntity
         cooldown: 30000
         target_breakables: 5
         bypass_backfire: true
-        spread: 0
-        speed: 1
-        size: 0
         damage: 20
-        break_blocks: false
         delay: 3000
+        range: 16
     costs:
         mana: 150
 
