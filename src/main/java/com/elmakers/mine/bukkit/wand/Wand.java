@@ -3119,11 +3119,11 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
                         playerXpLevel = playerLevel;
                     }
                     playerXpProgress = xp / (float)effectiveXpMax;
-                    player.setExp(playerXpProgress);
+                    player.setExp(Math.max(0, playerXpProgress));
                 } else {
                     playerXpLevel = (int)xp;
                     playerXpProgress = 0.0f;
-                    player.setLevel((int)xp);
+                    player.setLevel(Math.max(0, (int)xp));
                     player.setExp(0);
                 }
             }
@@ -3153,8 +3153,8 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         storedInventory = null;
 		
 		if (usesMana() && displayManaAsXp() && player != null) {
-            player.setLevel(storedXpLevel);
-            player.setExp(storedXpProgress);
+            player.setLevel(Math.max(0, storedXpLevel));
+            player.setExp(Math.max(0, storedXpProgress));
 			storedXpProgress = 0;
 			storedXpLevel = 0;
 		}
@@ -3315,9 +3315,9 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
             Player player = mage == null ? null : mage.getPlayer();
             if (player != null) {
                 if (retainLevelDisplay) {
-                    player.setLevel(storedXpLevel);
+                    player.setLevel(Math.max(0, storedXpLevel));
                 }
-                player.setExp(storedXpProgress);
+                player.setExp(Math.max(0, storedXpProgress));
 
                 playerXpLevel = player.getLevel();
                 playerXpProgress = player.getExp();

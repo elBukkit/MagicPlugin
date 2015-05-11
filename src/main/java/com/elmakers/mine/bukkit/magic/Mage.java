@@ -1211,8 +1211,8 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             }
         }
 
-        player.setExp(Math.min(1.0f, expProgress));
-        player.setLevel(expLevel);
+        player.setExp(Math.max(0, Math.min(1.0f, expProgress)));
+        player.setLevel(Math.max(0, expLevel));
 
         if (activeWand != null) {
             activeWand.updateExperience();
