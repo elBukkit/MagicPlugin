@@ -6,6 +6,7 @@
  - Wound now does physical damage (added magic_damage parameter to turn this on/off per spell)
  - Non-engineering spells now cancel and deactivate if you let go of your wand or are Cursed
  - Schematics load asynchronously
+ - Fix build/break permission checks on incendiary/exploding projectiles
 
 ## 4.9.7
 

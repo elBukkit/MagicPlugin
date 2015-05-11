@@ -107,6 +107,24 @@ public class ProjectileAction  extends TriggeredCompoundAction
 	}
 
     @Override
+    public void initialize(Spell spell, ConfigurationSection parameters) {
+        super.initialize(spell, parameters);
+
+        breakBlocks = parameters.getBoolean("break_blocks", false);
+        useFire = parameters.getBoolean("fire", false);
+    }
+
+    @Override
+    public boolean requiresBuildPermission() {
+        return useFire;
+    }
+
+    @Override
+    public boolean requiresBreakPermission() {
+        return breakBlocks;
+    }
+
+    @Override
     public void prepare(CastContext context, ConfigurationSection parameters)
     {
         super.prepare(context, parameters);
@@ -119,7 +137,7 @@ public class ProjectileAction  extends TriggeredCompoundAction
         useFire = parameters.getBoolean("fire", false);
         tickIncrease = parameters.getInt("tick_increase", 1180);
         projectileTypeName = parameters.getString("projectile", "Arrow");
-        breakBlocks = parameters.getBoolean("break_blocks", true);
+        breakBlocks = parameters.getBoolean("break_blocks", false);
         startDistance = parameters.getInt("start", 0);
     }
 

@@ -1903,6 +1903,7 @@ icbm:
         undo: 30000
         cooldown: 10000
         start: 1
+        break_blocks: true
     costs:
         mana: 100
 
@@ -1965,6 +1966,7 @@ wither:
         undo: 15000
         cooldown: 5000
         start: 1
+        break_blocks: false
     costs:
         mana: 60
 
@@ -5210,6 +5212,7 @@ fireball:
         undo: 4000
         cooldown: 2000
         start: 1
+        break_blocks: true
     costs:
         mana: 40
 
