@@ -12,4 +12,5 @@ public interface Schematic {
     public MaterialAndData getBlock(Vector v);
     public Collection<EntityData> getEntities(Location center);
     public Vector getSize();
+    public boolean isLoaded();
 }
