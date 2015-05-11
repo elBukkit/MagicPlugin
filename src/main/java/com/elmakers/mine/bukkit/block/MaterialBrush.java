@@ -329,6 +329,8 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
         if ((mode == BrushMode.CLONE || mode == BrushMode.REPLICATE) && materialTarget != null) {
             Block block = materialTarget.getBlock();
             return (block.getChunk().isLoaded());
+        } else if (mode == BrushMode.SCHEMATIC) {
+            return checkSchematic();
         }
 
         return true;
@@ -465,7 +467,7 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
             }
         }
 
-        return schematic != null;
+        return schematic != null && schematic.isLoaded();
     }
 
     public void prepare() {
@@ -657,7 +659,7 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
                 }
                 boolean recenter = true;
 
-                if (schematic != null) {
+                if (schematic != null && schematic.isLoaded()) {
                     Vector diff = target.toVector().subtract(cloneTarget.toVector());
                     recenter = (!schematic.contains(diff));
                 }

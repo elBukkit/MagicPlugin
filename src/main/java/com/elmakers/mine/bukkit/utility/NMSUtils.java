@@ -1047,9 +1047,9 @@ public class NMSUtils {
         return null;
     }
 
-    public static Schematic loadSchematic(File inputFile) {
-        if (inputFile == null || !inputFile.exists()) {
-            return null;
+    public static boolean loadSchematic(File inputFile, Schematic schematic) {
+        if (inputFile == null || !inputFile.exists() || schematic == null) {
+            return false;
         }
 
         InputStream inputStream = null;
@@ -1057,25 +1057,26 @@ public class NMSUtils {
             inputStream = new FileInputStream(inputFile);
         } catch (Exception ex) {
             ex.printStackTrace();
+            return false;
         }
 
-        return loadSchematic(inputStream);
+        return loadSchematic(inputStream, schematic);
     }
 
-    public static Schematic loadSchematic(InputStream input) {
-        if (input == null) return null;
+    public static boolean loadSchematic(InputStream input, Schematic schematic) {
+        if (input == null || schematic == null) return false;
 
         try {
             Object nbtData = class_NBTCompressedStreamTools_loadFileMethod.invoke(null, input);
             if (nbtData == null) {
-                return null;
+                return false;
             }
 
             // Version check
             String materials = (String)class_NBTTagCompound_getStringMethod.invoke(nbtData, "Materials");
             if (!materials.equals("Alpha")) {
                 Bukkit.getLogger().warning("Schematic is not in Alpha format");
-               return null;
+               return false;
             }
 
             short width = (Short)class_NBTTagCompound_getShortMethod.invoke(nbtData, "Width");
@@ -1135,11 +1136,12 @@ public class NMSUtils {
             int offsetY = (Integer)class_NBTTagCompound_getIntMethod.invoke(nbtData, "WEOffsetY");
             int offsetZ = (Integer)class_NBTTagCompound_getIntMethod.invoke(nbtData, "WEOffsetZ");
 
-            return new Schematic(width, height, length, blocks, data, tileEntityData, entityData, new Vector(originX, originY, originZ), new Vector(offsetX, offsetY, offsetZ));
+            schematic.load(width, height, length, blocks, data, tileEntityData, entityData, new Vector(originX, originY, originZ), new Vector(offsetX, offsetY, offsetZ));
         } catch (Exception ex) {
             ex.printStackTrace();
+            return false;
         }
-        return null;
+        return true;
     }
 
     public static Object getTileEntityData(Location location) {

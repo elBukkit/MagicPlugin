@@ -19,17 +19,22 @@ import java.util.List;
 import java.util.Map;
 
 public class Schematic implements com.elmakers.mine.bukkit.api.block.Schematic {
-    private final Vector size;
-    private final Vector center;
-    private final MaterialAndData blocks[][][];
-    private final Collection<EntityData> entities;
+    private volatile boolean loaded = false;
+    private Vector size;
+    private Vector center;
+    private MaterialAndData blocks[][][];
+    private Collection<EntityData> entities;
 
     // WorldEdit tags
-    private final Vector offset;
-    private final Vector origin;
+    private Vector offset;
+    private Vector origin;
+
+    public Schematic() {
+
+    }
 
     @SuppressWarnings("deprecation")
-    public Schematic(short width, short height, short length, short[] blockTypes, byte[] data, Collection<Object> tileEntityData, Collection<Object> entityData, Vector origin, Vector offset) {
+    public void load(short width, short height, short length, short[] blockTypes, byte[] data, Collection<Object> tileEntityData, Collection<Object> entityData, Vector origin, Vector offset) {
         size = new Vector(width, height, length);
         center = new Vector(Math.floor(size.getBlockX() / 2), 0, Math.floor(size.getBlockZ() / 2));
         blocks = new MaterialAndData[width][height][length];
@@ -134,6 +139,7 @@ public class Schematic implements com.elmakers.mine.bukkit.api.block.Schematic {
                 }
             }
         }
+        loaded = true;
     }
 
     protected BlockFace getFacing(byte dir) {
@@ -183,5 +189,10 @@ public class Schematic implements com.elmakers.mine.bukkit.api.block.Schematic {
     @Override
     public Vector getSize() {
         return size;
+    }
+
+    @Override
+    public boolean isLoaded() {
+        return loaded;
     }
 }
