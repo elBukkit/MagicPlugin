@@ -232,7 +232,7 @@ madscienceshop:
           glider: 5000
 
 cleanup:
-    icon_url: http://textures.minecraft.net/texture/b55a449b825c375ab91571e7e8a67856d212f756824bdfe43178eaea035bc
+    icon_url: http://textures.minecraft.net/texture/ce6ed0a5f7e23bc3d34d73baa0b9c3f838e85014d2ff290801dc7486dd4da6
     icon: iron_spade
     category: engineering
     class: ConstructSpell

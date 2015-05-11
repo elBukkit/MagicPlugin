@@ -296,9 +296,9 @@ if (file_exists($infoBookRootConfig)) {
 }
 
 $textures = array();
-$textureConfig = 'textures.txt';
+$textureConfig = $magicRootFolder . '/../../resource-pack/common/source/image_map.yml';
 if (file_exists($textureConfig)) {
-    $textures = file($textureConfig);
+    $textures = array_values(spyc_load_file($textureConfig));
 }
 
 function underscoreToReadable($s) {

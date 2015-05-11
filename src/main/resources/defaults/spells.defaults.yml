@@ -1265,7 +1265,7 @@ boom|2:
         mana: 75
 
 nuke:
-    icon_url: http://textures.minecraft.net/texture/70df3afc6a6035b189f83d2cfc84ff9ffe33750273247d1e41acb5a805f54
+    icon_url: http://textures.minecraft.net/texture/f27c497b89fdcbf754b59aaadcc7e49c5217f1677bf9f8803c4cca519b3a2
     icon: skull_item:4
     category: master
     worth: 10000
@@ -1921,7 +1921,7 @@ mount:
         mana: 60
 
 icbm:
-    icon_url: http://textures.minecraft.net/texture/e511624fac75f03cf2f3a56d5fe4582d6e74fc9f5e1e1160af1941ee144928
+    icon_url: http://textures.minecraft.net/texture/9c2e9d8395cacd9922869c15373cf7cb16da0a5ce5f3c632b19ceb3929c9a11
     icon: golden_carrot
     category: demolition
     pvp_restricted: true
@@ -3469,7 +3469,7 @@ workbench:
 
 stash:
     icon: ender_chest
-    icon_url: http://textures.minecraft.net/texture/6f68d509b5d1669b971dd1d4df2e47e19bcb1b33bf1a7ff1dda29bfc6f9ebf
+    icon_url: http://textures.minecraft.net/texture/a6cc486c2be1cb9dfcb2e53dd9a3e9a883bfadb27cb956f1896d602b4067
     category: utility
     class: StashSpell
     worth: 1000
@@ -4854,6 +4854,7 @@ laser:
     worth: 3500
     upgrade_required_path: apprentice
     upgrade_required_casts: 50
+    pvp_restricted: true
     actions:
         cast:
         -  class: Line
@@ -4917,7 +4918,7 @@ laser:
         brush: air
         radius: 1
         undo: 15000
-        cooldown: 5000
+        cooldown: 10000
         delay: 250
         repeat: 10
     costs:
@@ -5658,6 +5659,7 @@ pollinate:
 
 broom:
     hidden: true
+    icon_url: http://textures.minecraft.net/texture/7f4f1b4c6661ab552b21df8ed841a221296512de46c86e8dee891efbd2fba6
     icon: gold_spade
     category: specialty
     class: LevitateSpell
@@ -6100,7 +6102,7 @@ entangle:
 wound:
     upgrade_required_path: master
     upgrade_required_casts: 50
-    icon_url: http://textures.minecraft.net/texture/df19b39e565b16cbdabe364b91e35894d1e9bac0ad3fa4b0905ec4f366627
+    icon_url: http://textures.minecraft.net/texture/df4396a2bc47bc4dd545fc787a3ad8a0a75b8783cb5d81482c2016fab9cd2a
     icon: quartz
     category: combat
     worth: 1000
@@ -6320,7 +6322,7 @@ poison|3:
         effect_poison: 3
 
 lift:
-    icon_url: http://textures.minecraft.net/texture/4a23ccd51565d2e246675c86aef11b5412662c15ecc2e9f3ef425adc91d1
+    icon_url: http://textures.minecraft.net/texture/ff418f5c02c74f8e54645d05897b954c568f22753eea5fb559b898322aa79
     icon: ink_sack:8
     category: utility
     worth: 1500
@@ -6431,7 +6433,7 @@ admission|2:
         destructible: doors
 
 secure:
-    icon_url: http://textures.minecraft.net/texture/dea4155d3f45e95c71b441d1a233586dd2efd99e0d85a286e41dea2a5231ab7
+    icon_url: http://textures.minecraft.net/texture/e266e2ffa06f553ef326d8c92994c77edde2e521697b5fb4637ed644443e12
     icon: iron_door
     category: utility
     upgrade_required_path: master
@@ -6491,7 +6493,7 @@ lockpick:
         mana: 100
 
 harden:
-    icon_url: http://textures.minecraft.net/texture/36cf36693ac95c88c8dd92e1d5a54c92f593e802b3ae834c6bd87628b1b83
+    icon_url: http://textures.minecraft.net/texture/25147d8c6addc07635b183ae1c4459f173bdfde239d949f56ce56d2728911e2
     icon: flint
     category: utility
     class: RecurseSpell
@@ -6526,7 +6528,7 @@ harden|2:
 
 sponge:
     alias: gasp
-    icon_url: http://textures.minecraft.net/texture/5aacdf52fae9b3c03bf0ab4b705a44ceddb9a9df57bda0b863d0b7bc84c27e
+    icon_url: http://textures.minecraft.net/texture/c28bdd34810f866527daaf283da71826a8378286b2a43a626615fa1b3639e
     icon: sponge
     category: utility
     class: ConstructSpell

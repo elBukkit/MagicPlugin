@@ -15,8 +15,8 @@ define('USER_COOKIE', '<grab cookies from network inspector on profile upload pa
  */
 require_once('/Users/nathan/mc_creds.php');
 
-$mapFile = dirname(__FILE__) . '/imgur_map.yml';
-$inputFolder = dirname(__FILE__) . '/imgur_skins';
+$mapFile = dirname(__FILE__) . '/image_map.yml';
+$inputFolder = dirname(__FILE__) . '/skin_images';
 
 if (!file_exists($mapFile))
 {
@@ -42,7 +42,13 @@ function getCurrentSkin()
     curl_setopt($skinChecker, CURLOPT_RETURNTRANSFER, true);
     $result = curl_exec($skinChecker);
     if (!$result) {
-        die("Failed to retrieve profile $skinURL\n");
+        echo "Failed to retrieve skin, retrying in 2 minutes";
+        sleep(2 * 60);
+        $result = curl_exec($skinChecker);
+        if (!$result)
+        {
+            die("Failed to retrieve profile $skinURL\n");
+        }
     }
     $result = json_decode($result, true);
     if (!isset($result['properties'])) {
@@ -68,23 +74,8 @@ function getCurrentSkin()
     return $textureURL;
 }
 
-$images = spyc_load_file($mapFile);
-
-$dir = new DirectoryIterator($inputFolder);
-foreach ($dir as $fileinfo) {
-    $inputImage = $fileinfo->getFilename();
-    if ($fileinfo->isDot() || startsWith($inputImage, '.')) continue;
-    $url = "http://i.imgur.com/$inputImage";
-    if (isset($images[$url])) {
-        echo " Skipping $inputImage, already mapped\n";
-        continue;
-    }
-
-    $lastURL = getCurrentSkin();
-    echo "Current skin URL: $lastURL\n";
-    echo "Uploading $inputImage\n";
-
-    $inputFile = $inputFolder . '/' . $inputImage;
+function uploadSkin($inputFile)
+{
     $post = array
     (
         //'authenticityToken' => $accessToken,
@@ -101,12 +92,54 @@ foreach ($dir as $fileinfo) {
     curl_setopt($ch, CURLOPT_COOKIESESSION, true);
     curl_setopt($ch, CURLOPT_HEADER, true);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    $result = curl_exec($ch);
+    curl_exec($ch);
     $httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
     if ($httpcode != 302) {
-        die("Failed to upload skin\n");
+        echo("Failed to upload skin\n");
+        return false;
     }
     curl_close($ch);
+    return true;
+}
+
+// Save backup of original skin
+$originalSkin = 'original_skin.png';
+if (!file_exists($originalSkin))
+{
+    echo "Saving original skin to $originalSkin\n";
+    $skinURL = getCurrentSkin();
+    $skinFile = file_get_contents($skinURL);
+    file_put_contents($originalSkin, $skinFile);
+    echo "Waiting 2 minutes to start\n";
+    sleep(2 * 60);
+}
+
+$images = spyc_load_file($mapFile);
+
+$dir = new DirectoryIterator($inputFolder);
+foreach ($dir as $fileinfo) {
+    $inputImage = $fileinfo->getFilename();
+    if ($fileinfo->isDot() || startsWith($inputImage, '.')) continue;
+    $url = $inputImage;
+    if (isset($images[$url])) {
+        echo " Skipping $inputImage, already mapped\n";
+        continue;
+    }
+
+    $lastURL = getCurrentSkin();
+    echo "Current skin URL: $lastURL\n";
+    echo "Uploading $inputImage\n";
+
+    $inputFile = $inputFolder . '/' . $inputImage;
+    if (!uploadSkin($inputFile))
+    {
+        echo "Waiting 10 minutes to retry upload\n";
+        sleep(11 * 60);
+        if (!uploadSkin($inputFile))
+        {
+            die("Failed to upload twice, stopping");
+        }
+    }
 
     echo("Uploaded.\n");
     $waitedTime = 0;
@@ -133,4 +166,17 @@ foreach ($dir as $fileinfo) {
 
     echo "Waiting 2 more minutes\n";
     sleep(2 * 60);
+}
+
+if (file_exists($originalSkin))
+{
+    echo "Re-uploading original skin from $originalSkin\n";
+    if (!uploadSkin($originalSkin))
+    {
+        die("Failed to re-upload original skin!");
+    }
+    else
+    {
+        unlink($originalSkin);
+    }
 }
