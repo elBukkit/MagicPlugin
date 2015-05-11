@@ -348,7 +348,7 @@ spells:
         name: Curse
         description: Slows down and weakens the target
         cast: You curse $target
-        upgrade_description: "&r&b&bull; &6Now slows as well as confuses"
+        upgrade_description: "&r&b&bull; &6Now confuses as well"
     broom:
         name: Broom
         description: Powers magic brooms
@@ -476,10 +476,6 @@ spells:
         cast_self: You cure yourself
         upgrade_description: "&r&b&bull; &6Now cures hunger"
         cast: You heal $target
-    weaken:
-        name: Weaken
-        description: Make your target weak and frail
-        cast: You weaken $target
     music:
         name: Music
         description: Play some tunes
@@ -1230,7 +1226,8 @@ spells:
         cast_finish: Pasted $count blocks
     kill:
         name: Kill
-        description: Throw a deadly projectile
+        description: Kill your target
+        usage: Has a warmup time!
         cast: DIE!
         upgrade_description: "&r&b&bull; &6Increased damage, reduced cooldown"
     torture:
@@ -1260,7 +1257,7 @@ spells:
         cast: You trap $target.
     wound:
         name: Wound
-        description: A short-range damage spell
+        description: Physically damage your target
         cast: You slash $target.
         upgrade_description: "&r&b&bull; &6Increased damage"
     stun:

@@ -218,16 +218,16 @@ curse:
         duration: 4000
         cooldown: 6000
         hitbox: true
-        effect_weakness: 4
-        slow: 3
-        hunger: 1
+        effect_slow: 2
+        effect_hunger: 2
+        effect_weakness: 3
 
 curse|2:
     parameters:
         range: 32
         duration: 6000
-        effect_confusion: 5
-        effect_slow: 1
+        effect_confusion: 2
+        effect_slow: 3
 
 blessing:
     icon: double_plant:5
@@ -1706,44 +1706,6 @@ cure:
 cure|2:
     parameters:
         effect_saturation: 4
-
-weaken:
-    icon_url: http://textures.minecraft.net/texture/c8471a90c7b0d6ba70ddf0ea8daf2f8ee999a1efe95f2198d8352e42bd43d1
-    icon: bone
-    category: dark
-    worth: 800
-    actions:
-        cast:
-        -  class: PotionEffect
-    effects:
-        cast:
-        - class: EffectSingle
-          custom_sound: magic.shimmer
-          location: target
-          effectlib:
-             class: AtomEffect
-             particleNucleus: smoke_normal
-             particleOrbital: drip_lava
-             iterations: 5
-        -  class: EffectSingle
-           location: target
-           use_hit_location: false
-           effectlib:
-             class: ConeEffect
-             iterations: 5
-             lengthGrow: .14
-             particle: smoke_normal
-    parameters:
-        target_type: LivingEntity
-        target: other
-        allow_max_range: false
-        range: 16
-        duration: 10000
-        effect_hunger: 2
-        effect_weakness: 3
-        cooldown: 20000
-    costs:
-        mana: 50
 
 heal:
     icon_url: http://textures.minecraft.net/texture/6b7da98ef45cf45185d21d61f5fa3d5966a3ee52273620a6e4dfd54cf99dbc
@@ -6159,19 +6121,20 @@ wound:
         range: 5
         hitbox: false
         fov: 0.4
-        damage: 4
+        damage: 6
         target_breakables: 3
         cooldown: 2000
+        magic_damage: false
     costs:
         mana: 120
 
 wound|2:
   parameters:
-    damage: 6
+    damage: 8
 
 wound|3:
   parameters:
-    damage: 8
+    damage: 10
 
 stun:
     upgrade_required_path: student
@@ -6213,9 +6176,9 @@ stun:
         bypass_backfire: false
         effect_confusion: 5
         effect_slow: 1
-        duration: 1500
+        duration: 8000
         launch: true
-        cooldown: 3000
+        cooldown: 5000
         firework: ball
         power: 0
         speed: 0.5
@@ -6228,13 +6191,13 @@ stun|2:
     upgrade_required_casts: 50
     parameters:
         damage: 1.5
-        duration: 1000
+        duration: 10000
         target_breakables: 1
 
 stun|3:
     parameters:
         damage: 2
-        duration: 1500
+        duration: 12000
         target_breakables: 2
 
 poison:

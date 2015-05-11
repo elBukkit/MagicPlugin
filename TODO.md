@@ -11,16 +11,7 @@
  - Logout on death still buggy? (can not reproduce)
  - Make locked chests unbreakable
 
- - Wand dupe issue:
-   (can not reproduce, but certainly lag-related. Probably same issue as Recall and the other GUIs have)
-   If your ein inventory mode, press E to open inv,
-   left click the wand does nothing but sometimes if you right
-   click you can move the wand up into your inventory, leave it there,
-   exit the inventory and then just open it again
-   and youll have 1 in your hotbar and one in your inventory.
-   i just duped about four wands but now i cant dupe them anymore as i can no
-   longer move the wand out of my hotbar and into my inv.. idk if this was a one time
-   thing but should be looked into.
+ - Wand dupe issue: tl;dr : he was able to drag a wand while in the spell inventory.
 
  - Map brush was acting wonky.
  - Recall still losing waypoints .. also can grab items out?
