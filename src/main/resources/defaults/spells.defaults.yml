@@ -5741,10 +5741,7 @@ kill:
       cast:
         - class: Delay
         - class: PlayEffects
-          effect: launch_projectile
-        - class: Projectile
-          actions:
-          - class: Damage
+          effect: fire
     effects:
         cast:
         - class: EffectSingle
@@ -5760,19 +5757,11 @@ kill:
              colorOrbital: "00FF00"
              iterations: 16
              radius: 5
-        launch_projectile:
-        -  class: EffectSingle
-           custom_sound: magic.zap_big
-           sound_volume: 1
-           location: origin
-        projectile:
-        -  class: EffectSingle
-           location: origin
-           effectlib:
-             class: SmokeEffect
-             iterations: 8
-             particle: smoke_normal
-        hit:
+        fire:
+        - class: EffectSingle
+          custom_sound: magic.zap_big
+          sound_volume: 1
+          location: origin
         - class: EffectSingle
           location: targets
           color: "00FF00"
