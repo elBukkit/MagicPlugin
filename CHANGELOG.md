@@ -5,6 +5,7 @@
  - Cure casts no longer count towards level up unless it has something to cure
  - Wound now does physical damage (added magic_damage parameter to turn this on/off per spell)
  - Non-engineering spells now cancel and deactivate if you let go of your wand or are Cursed
+ - Schematics load asynchronously
 
 ## 4.9.7
 

@@ -1,2 +1,5 @@
 # Using Gringott's economy
 worth_base: 0.01
+
+# This IS a dev server, after all!
+log_verbosity: 10

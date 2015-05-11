@@ -25,6 +25,7 @@ import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.citizens.CitizensController;
 import com.elmakers.mine.bukkit.heroes.HeroesManager;
 import com.elmakers.mine.bukkit.integration.VaultController;
+import com.elmakers.mine.bukkit.magic.listener.LoadSchematicTask;
 import com.elmakers.mine.bukkit.maps.MapController;
 import com.elmakers.mine.bukkit.protection.GriefPreventionManager;
 import com.elmakers.mine.bukkit.protection.LocketteManager;
@@ -535,15 +536,12 @@ public class MagicController implements Listener, MageController {
             return null;
         }
 
-        try {
-            Schematic schematic = NMSUtils.loadSchematic(inputSchematic);
-            schematics.put(schematicName, new WeakReference<Schematic>(schematic));
-            return schematic;
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
+        com.elmakers.mine.bukkit.block.Schematic schematic = new com.elmakers.mine.bukkit.block.Schematic();
+        schematics.put(schematicName, new WeakReference<Schematic>(schematic));
+        Thread loadThread = new Thread(new LoadSchematicTask(this, inputSchematic, schematic));
+        loadThread.start();
 
-        return null;
+        return schematic;
     }
 
     @Override

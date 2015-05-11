@@ -1224,6 +1224,7 @@ spells:
         description: Pastes a full schematic
         usage: For use with schematic brushes
         cast_finish: Pasted $count blocks
+        no_action: Schematic loading, please try again!
     kill:
         name: Kill
         description: Kill your target

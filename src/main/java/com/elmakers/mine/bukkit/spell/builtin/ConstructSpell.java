@@ -71,6 +71,22 @@ public class ConstructSpell extends BrushSpell
         Vector bounds = null;
 
         if (parameters.getBoolean("use_brush_size", false)) {
+            if (!buildWith.isReady()) {
+                long timeout = System.currentTimeMillis() + 10000;
+                while (System.currentTimeMillis() < timeout) {
+                    try {
+                        Thread.sleep(500);
+                        if (buildWith.isReady()) {
+                            break;
+                        }
+                    } catch (InterruptedException ex) {
+                        break;
+                    }
+                }
+                if (!buildWith.isReady()) {
+                    return SpellResult.NO_ACTION;
+                }
+            }
             bounds = buildWith.getSize();
             radius = (int)Math.max(Math.max(bounds.getX() / 2, bounds.getZ() / 2), bounds.getY());
         } else if (getTargetType() == TargetType.SELECT) {
