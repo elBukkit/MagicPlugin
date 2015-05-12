@@ -146,6 +146,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
 
     protected boolean pvpRestricted           	= false;
     protected boolean usesBrushSelection        = false;
+    protected boolean bypassFriendlyFire    	= false;
     protected boolean bypassPvpRestriction    	= false;
     protected boolean bypassBuildRestriction    = false;
     protected boolean bypassBreakRestriction    = false;
@@ -947,6 +948,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         bypassPvpRestriction = parameters.getBoolean("bypass_pvp", false);
         bypassPvpRestriction = parameters.getBoolean("bp", bypassPvpRestriction);
         bypassPermissions = parameters.getBoolean("bypass_permissions", bypassPermissions);
+        bypassFriendlyFire = parameters.getBoolean("bypass_friendly_fire", false);
 
         // Check cooldowns
         cooldown = parameters.getInt("cooldown", cooldown);
@@ -1243,6 +1245,15 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
 
     @Override
     public boolean canTarget(Entity entity) {
+        if (!bypassPvpRestriction && entity instanceof Player)
+        {
+            Player magePlayer = mage.getPlayer();
+            if (magePlayer != null)
+            {
+                if (!bypassFriendlyFire && controller.isAlly(magePlayer, (Player)entity)) return false;
+                return controller.isPVPAllowed(magePlayer, entity.getLocation());
+            }
+        }
         return true;
     }
 
