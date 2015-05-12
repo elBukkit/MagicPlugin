@@ -811,4 +811,9 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
         itemStack.setItemMeta(meta);
         return itemStack;
     }
+
+    @Override
+    public String toString() {
+        return mode + ": " + super.toString();
+    }
 }

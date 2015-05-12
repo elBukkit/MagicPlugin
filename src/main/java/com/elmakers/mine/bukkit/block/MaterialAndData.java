@@ -645,4 +645,9 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
     public void setRawData(Object data) {
         this.tileEntityData = data;
     }
+
+    @Override
+    public String toString() {
+        return material + "@" + data;
+    }
 }
