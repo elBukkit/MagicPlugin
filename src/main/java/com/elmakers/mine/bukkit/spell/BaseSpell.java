@@ -1268,7 +1268,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         return new MaterialAndData(DEFAULT_EFFECT_MATERIAL);
     }
 
-    protected void processParameters(ConfigurationSection parameters) {
+    public void processParameters(ConfigurationSection parameters) {
         fizzleChance = (float)parameters.getDouble("fizzle_chance", 0);
         backfireChance = (float)parameters.getDouble("backfire_chance", 0);
 
