@@ -11,6 +11,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.plugin.Plugin;
@@ -103,4 +104,5 @@ public interface CastContext {
     public boolean isWater(Material mat);
     public boolean isOkToStandOn(Material mat);
     public Set<Material> getMaterialSet(String key);
+    public void setSpellParameters(ConfigurationSection parameters);
 }
