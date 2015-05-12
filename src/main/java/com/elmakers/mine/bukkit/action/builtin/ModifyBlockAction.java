@@ -90,12 +90,19 @@ public class ModifyBlockAction extends BaseSpellAction {
         Material previousMaterial = block.getType();
         byte previousData = block.getData();
 
+        Mage mage = context.getMage();
+        brush.update(mage, block.getLocation());
+
         if (brush.isDifferent(block)) {
             if (!commit) {
                 context.registerForUndo(block);
             }
-            Mage mage = context.getMage();
-            brush.update(mage, block.getLocation());
+
+            if (!brush.isReady()) {
+                brush.prepare();
+                return SpellResult.PENDING;
+            }
+
             brush.modify(block, applyPhysics);
 
             if (spawnFallingBlocks && previousMaterial != Material.AIR)
