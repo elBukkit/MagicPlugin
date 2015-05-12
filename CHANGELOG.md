@@ -7,6 +7,8 @@
  - Non-engineering spells now cancel and deactivate if you let go of your wand or are Cursed
  - Schematics load asynchronously
  - Fix build/break permission checks on incendiary/exploding projectiles
+ - Turned off pvp restrictions on most spells, preventing targeting players in PVP regions
+ - Add support for Towny warzones, friendly fire, and arenas
 
 ## 4.9.7
 

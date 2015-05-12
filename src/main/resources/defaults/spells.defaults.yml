@@ -151,7 +151,6 @@ curse:
     icon: rotten_flesh
     alias: silence
     category: dark
-    pvp_restricted: true
     worth: 800
     upgrade_required_path: apprentice
     upgrade_required_casts: 50
@@ -270,6 +269,7 @@ blessing:
         radius: 8
         target_self: true
         cooldown: 30000
+        bypass_friendly_fire: true
     costs:
         mana: 200
 
@@ -303,9 +303,10 @@ boon:
         target: any_entity
         range: 32
         duration: 10000
-        target_type: LivingEntity
+        target_type: Player
         effect_speed: 2
         effect_night_vision: 5
+        bypass_friendly_fire: true
 
 boon|2:
     upgrade_required_path: apprentice
@@ -1073,7 +1074,6 @@ push:
     icon_url: http://textures.minecraft.net/texture/44a760e06345bd9edd2475d6469dfb952278ca3ec7634aa334e1d7bfcc8644f
     icon: rails
     category: elemental
-    pvp_restricted: true
     worth: 500
     upgrade_required_path: student
     upgrade_required_casts: 50
@@ -1142,7 +1142,6 @@ pull:
     icon_url: http://textures.minecraft.net/texture/e13e9af0957a9dd4995811ef3e869b4ad8fbb59ca7474e4c84ce7f6019b079
     icon: fishing_rod
     category: elemental
-    pvp_restricted: true
     worth: 200
     actions:
         cast:
@@ -1304,7 +1303,6 @@ frost:
     icon_url: http://textures.minecraft.net/texture/ff39da1c8acc158ee5aa7f0352e4738aefe3365f28841badd603e2ffe42a
     icon: snow_ball
     category: combat
-    pvp_restricted: true
     worth: 1500
     upgrade_required_path: student
     upgrade_required_casts: 50
@@ -1572,7 +1570,6 @@ disarm:
     icon: tripwire_hook
     category: light
     class: DisarmSpell
-    pvp_restricted: true
     cast_on_no_target: true
     worth: 2000
     upgrade_required_path: student
@@ -1693,6 +1690,8 @@ cure:
         bypass_confusion: true
         duration: 1000
         cooldown: 2000
+        bypass_pvp: true
+        bypass_friendly_fire: true
         remove_effects:
         - confusion
         - weakness
@@ -1751,6 +1750,8 @@ heal:
         duration: 1000
         amount: 2
         cooldown: 8000
+        bypass_pvp: true
+        bypass_friendly_fire: true
     costs:
         mana: 50
 
@@ -1791,6 +1792,8 @@ healing:
         target_self: true
         radius: 5
         amount: 1
+        bypass_pvp: true
+        bypass_friendly_fire: true
 
 music:
     icon_url: http://textures.minecraft.net/texture/a2ea21c79fa115b9a63625a2c9c5ec3dd92e1d1a7024162790237da9d98ee28
@@ -1851,6 +1854,7 @@ gather:
         command: tpa @tn
         target_self: false
         cooldown: 30000
+        bypass_friendly_fire: true
     costs:
         mana: 50
 
@@ -1859,7 +1863,6 @@ mount:
     icon: saddle
     category: master
     worth: 1500
-    pvp_restricted: true
     show_undoable: false
     actions:
         cast:
@@ -1880,6 +1883,7 @@ mount:
         target_type: LivingEntity
         allow_max_range: false
         range: 16
+        bypass_friendly_fire: true
     costs:
         mana: 60
 
@@ -1911,7 +1915,6 @@ neutron:
     icon_url: http://textures.minecraft.net/texture/1eed1e4d70522ccd538b75ded4baa680e3dfe55426c560ff7b521be5cdf614f
     icon: poisonous_potato
     category: dark
-    pvp_restricted: true
     worth: 7500
     actions:
         cast:
@@ -3902,8 +3905,6 @@ counterspell:
     icon: diamond
     category: combat
     worth: 2500
-    cast_on_no_target: true
-    pvp_restricted: true
     upgrade_required_path: apprentice
     upgrade_required_casts: 50
     actions:
@@ -5145,7 +5146,6 @@ force:
     icon: leash
     category: master
     class: ForceSpell
-    pvp_restricted: true
     worth: 5000
     effects:
         cast:
@@ -5177,6 +5177,7 @@ fireball:
     icon_url: http://textures.minecraft.net/texture/e511624fac75f03cf2f3a56d5fe4582d6e74fc9f5e1e1160af1941ee144928
     icon: ghast_tear
     category: combat
+    pvp_restricted: true
     worth: 1500
     actions:
         cast:
@@ -5481,7 +5482,6 @@ blind:
     icon_url: http://textures.minecraft.net/texture/c7a8e7c9d3375135e39aa6d57b4e60539cf8f6efc5b58c83a13caf40561560
     icon: ender_pearl
     category: combat
-    pvp_restricted: true
     cast_on_no_target: true
     worth: 700
     actions:
@@ -5629,7 +5629,6 @@ broom:
     icon: gold_spade
     category: specialty
     class: LevitateSpell
-    pvp_restricted: false
     worth: 6000
     effects:
         cast:
@@ -5741,7 +5740,6 @@ kill:
     icon: skull_item:1
     icon_url: http://textures.minecraft.net/texture/71a235c48123b487e864fa21016e223ad4070c6d977b0a519f7dd743d39e47c
     category: master
-    pvp_restricted: true
     worth: 5500
     upgrade_required_path: master
     upgrade_required_casts: 50
@@ -5813,7 +5811,6 @@ torture:
     icon_url: http://textures.minecraft.net/texture/df19b39e565b16cbdabe364b91e35894d1e9bac0ad3fa4b0905ec4f366627
     icon: quartz
     category: master
-    pvp_restricted: true
     cast_on_no_target: true
     worth: 4000
     actions:
@@ -5969,7 +5966,6 @@ petrify:
     icon_url: http://textures.minecraft.net/texture/7e453aa5908121dcf1cd8cf9f04459741f7879d99c01fb71bf243c25c3188
     icon: nether_brick_item
     category: combat
-    pvp_restricted: true
     cast_on_no_target: true
     worth: 2000
     actions:
@@ -6146,7 +6142,6 @@ stun:
     icon_url: http://textures.minecraft.net/texture/a4b47e6847d71c60d0a6453313435d61f15b1523abd9741de36366deec1f38d6
     icon: ink_sack:4
     category: combat
-    pvp_restricted: true
     worth: 800
     actions:
         cast:
@@ -6208,7 +6203,6 @@ poison:
     icon: ink_sack:15
     icon_url: http://textures.minecraft.net/texture/f441923eb636b6fbc4cfba5475fd6abae52a41593a63d99bfecdd4d845b91a
     category: combat
-    pvp_restricted: true
     worth: 1000
     upgrade_required_path: student
     upgrade_required_casts: 50
@@ -6293,7 +6287,6 @@ lift:
     icon: ink_sack:8
     category: utility
     worth: 1500
-    pvp_restricted: true
     actions:
         cast:
         -  class: Velocity

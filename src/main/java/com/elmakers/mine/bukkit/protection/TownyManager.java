@@ -66,4 +66,11 @@ public class TownyManager {
         }
         return true;
     }
+
+    public boolean isAlly(Player player, Player other) {
+        if (enabled && player != null && towny != null && other != null) {
+            return towny.isAlly(player, other);
+        }
+        return false;
+    }
 }

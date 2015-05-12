@@ -1971,6 +1971,7 @@ public class MagicController implements Listener, MageController {
 		bypassBuildPermissions = properties.getBoolean("bypass_build", bypassBuildPermissions);
         bypassBreakPermissions = properties.getBoolean("bypass_break", bypassBreakPermissions);
 		bypassPvpPermissions = properties.getBoolean("bypass_pvp", bypassPvpPermissions);
+        bypassFriendlyFire = properties.getBoolean("bypass_friendly_fire", bypassFriendlyFire);
         allPvpRestricted = properties.getBoolean("pvp_restricted", allPvpRestricted);
 		extraSchematicFilePath = properties.getString("schematic_files", extraSchematicFilePath);
 		createWorldsEnabled = properties.getBoolean("enable_world_creation", createWorldsEnabled);
@@ -4199,6 +4200,14 @@ public class MagicController implements Listener, MageController {
 	}
 
     @Override
+    public boolean isAlly(Player player, Player other)
+    {
+        if (player == null || other == null) return false;
+        if (bypassFriendlyFire) return false;
+        return townyManager.isAlly(player, other);
+    }
+
+    @Override
     public boolean isPVPAllowed(Player player, Location location)
     {
         if (location == null) return true;
@@ -5024,6 +5033,7 @@ public class MagicController implements Listener, MageController {
     private boolean							    bypassBuildPermissions      = false;
     private boolean							    bypassBreakPermissions      = false;
     private boolean							    bypassPvpPermissions        = false;
+    private boolean							    bypassFriendlyFire          = false;
     private boolean							    allPvpRestricted            = false;
 
     private String								extraSchematicFilePath		= null;
