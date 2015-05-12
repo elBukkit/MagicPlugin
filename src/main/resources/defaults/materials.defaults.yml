@@ -320,6 +320,7 @@ attachable_wall:
 - ladder
 - wall_sign
 - wall_banner
+- cocoa
 
 # Things that double-stack like doors and tall plants
 attachable_double:
