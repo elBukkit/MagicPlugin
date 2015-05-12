@@ -303,6 +303,7 @@ attachable:
 - acacia_door
 - dark_oak_door
 - standing_banner
+- cocoa
 
 # Things that can specifically be attached to walls. 
 # this will be a more complex check in construction, otherwise
