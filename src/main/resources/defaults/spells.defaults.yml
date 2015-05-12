@@ -5727,7 +5727,7 @@ paste:
         -  class: EffectTrail
            effect: step_sound
     parameters:
-        allow_max_range: false
+        allow_max_range: true
         check_destructible: false
         use_brush_size: true
         max_dimension: 256

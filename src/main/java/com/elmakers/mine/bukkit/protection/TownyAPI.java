@@ -35,6 +35,8 @@ public class TownyAPI
 
         TownBlock townBlock = TownyUniverse.getTownBlock(location);
         if (townBlock == null) return true;
+        if (townBlock.getWorld().isForcePVP()) return true;
+
         Town town = null;
         try {
             if (townBlock.hasTown()) {
