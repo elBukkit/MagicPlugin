@@ -18,6 +18,7 @@ public class ChangeContextAction extends CompoundAction {
     private Vector sourceOffset;
     private Vector targetOffset;
     private boolean targetSelf;
+    private boolean targetEntityLocation;
     private boolean sourceAtTarget;
     private Vector randomSourceOffset;
     private Vector randomTargetOffset;
@@ -33,6 +34,7 @@ public class ChangeContextAction extends CompoundAction {
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters) {
         super.prepare(context, parameters);
+        targetEntityLocation = parameters.getBoolean("target_entity");
         targetSelf = parameters.getBoolean("target_caster");
         sourceAtTarget = parameters.getBoolean("source_at_target");
         targetOffset = ConfigurationUtils.getVector(parameters, "target_offset");
@@ -81,6 +83,10 @@ public class ChangeContextAction extends CompoundAction {
         {
             targetEntity = sourceEntity;
             targetLocation = sourceLocation;
+        }
+        else if (targetEntityLocation && targetEntity != null)
+        {
+            targetLocation = targetEntity.getLocation();
         }
         if (attachBlock)
         {
