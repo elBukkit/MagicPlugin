@@ -104,8 +104,7 @@ public class HeroesSkillsSelector implements GUIAction {
         }
 
         mage.deactivateGUI();
-        mage.activateGUI(this);
-        player.openInventory(displayInventory);
+        mage.activateGUI(this, displayInventory);
     }
 
     @Override

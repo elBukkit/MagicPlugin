@@ -37,6 +37,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityCombustEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -1487,21 +1488,27 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     }
 
     @Override
-    public void activateGUI(GUIAction action)
+    public void activateGUI(GUIAction action, Inventory inventory)
     {
         GUIAction previousGUI = gui;
-        gui = action;
         Player player = getPlayer();
-        if (player != null && gui == null)
+        gui = action;
+        if (player != null)
         {
             controller.disableItemSpawn();
             try {
                 player.closeInventory();
+                if (inventory != null) {
+                    player.openInventory(inventory);
+                }
             } catch (Throwable ex) {
                 ex.printStackTrace();
             }
             controller.enableItemSpawn();
         }
+        // Reset this as it may have gotten cleared while closing the previous
+        // inventory!
+        gui = action;
 
         if (previousGUI != null)
         {
@@ -1512,7 +1519,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     @Override
     public void deactivateGUI()
     {
-        activateGUI(null);
+        activateGUI(null, null);
     }
 
     @Override

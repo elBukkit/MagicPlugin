@@ -123,8 +123,7 @@ public class SpellProgressAction extends BaseSpellAction implements GUIAction
         {
             displayInventory.addItem(item);
         }
-        mage.activateGUI(this);
-        mage.getPlayer().openInventory(displayInventory);
+        mage.activateGUI(this, displayInventory);
 
         return SpellResult.CAST;
 	}

@@ -476,8 +476,7 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
             options.put(index, waypoint);
             index++;
         }
-        mage.activateGUI(this);
-        mage.getPlayer().openInventory(displayInventory);
+        mage.activateGUI(this, displayInventory);
 
         return SpellResult.CAST;
 	}

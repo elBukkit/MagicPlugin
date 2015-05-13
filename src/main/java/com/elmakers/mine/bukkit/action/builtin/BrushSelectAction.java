@@ -77,8 +77,7 @@ public class BrushSelectAction extends BaseSpellAction implements GUIAction
                         displayInventory.addItem(schematicItem);
                     }
                     mage.deactivateGUI();
-                    mage.activateGUI(this);
-                    mage.getPlayer().openInventory(displayInventory);
+                    mage.activateGUI(this, displayInventory);
                     return;
                 } else if (set.equals("variants")) {
                     MaterialAndData baseMaterial = new MaterialAndData(item);
@@ -92,8 +91,7 @@ public class BrushSelectAction extends BaseSpellAction implements GUIAction
                         displayInventory.addItem(variantItem);
                     }
                     mage.deactivateGUI();
-                    mage.activateGUI(this);
-                    mage.getPlayer().openInventory(displayInventory);
+                    mage.activateGUI(this, displayInventory);
                     return;
                 }
             }
@@ -220,8 +218,7 @@ public class BrushSelectAction extends BaseSpellAction implements GUIAction
         {
             displayInventory.addItem(brush);
         }
-        mage.activateGUI(this);
-        mage.getPlayer().openInventory(displayInventory);
+        mage.activateGUI(this, displayInventory);
 
         return SpellResult.CAST;
 	}
