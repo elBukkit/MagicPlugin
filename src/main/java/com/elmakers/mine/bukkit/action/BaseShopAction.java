@@ -215,8 +215,7 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
                     }
                 }
                 mage.deactivateGUI();
-                mage.activateGUI(this);
-                mage.getPlayer().openInventory(confirmInventory);
+                mage.activateGUI(this, confirmInventory);
                 return;
             }
 
@@ -414,8 +413,7 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
         {
             displayInventory.addItem(item);
         }
-        mage.activateGUI(this);
-        mage.getPlayer().openInventory(displayInventory);
+        mage.activateGUI(this, displayInventory);
 
         return SpellResult.CAST;
 	}
