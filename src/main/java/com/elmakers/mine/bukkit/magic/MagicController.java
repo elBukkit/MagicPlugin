@@ -847,8 +847,7 @@ public class MagicController implements Listener, MageController {
         registerListeners();
 
         // Activate/load any active player Mages
-        // GRRRR Bukkit
-        Collection<Player> allPlayers = CompatibilityUtils.getOnlinePlayers(plugin.getServer());
+        Collection<? extends Player> allPlayers = plugin.getServer().getOnlinePlayers();
         for (Player player : allPlayers) {
             getMage(player);
         }
@@ -2198,7 +2197,7 @@ public class MagicController implements Listener, MageController {
         if (!undoOnWorldSave) return;
 
         World world = event.getWorld();
-        Collection<Player> players = CompatibilityUtils.getOnlinePlayers(plugin.getServer());
+        Collection<? extends Player> players = plugin.getServer().getOnlinePlayers();
         for (Player player : players) {
             if (world.equals(player.getWorld()) && isMage(player)) {
                 com.elmakers.mine.bukkit.api.block.UndoQueue queue = getMage(player).getUndoQueue();
@@ -4163,8 +4162,7 @@ public class MagicController implements Listener, MageController {
 	public Collection<String> getPlayerNames() 
 	{
 		List<String> playerNames = new ArrayList<String>();
-        Collection<Player> players = CompatibilityUtils.getOnlinePlayers(plugin.getServer());
-
+        Collection<? extends Player> players = plugin.getServer().getOnlinePlayers();
         for (Player player : players) {
             if (isNPC(player)) continue;
             playerNames.add(player.getName());
@@ -4610,7 +4608,7 @@ public class MagicController implements Listener, MageController {
     }
 
     public boolean isUrlIconsEnabled() {
-        return urlIconsEnabled && NMSUtils.hasURLSkullSupport();
+        return urlIconsEnabled;
     }
 
     public Set<EntityType> getUndoEntityTypes() {

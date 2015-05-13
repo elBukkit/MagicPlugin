@@ -144,9 +144,6 @@ public class MagicPlugin extends JavaPlugin implements MagicAPI
 
 	public void onEnable() 
 	{
-        if (NMSUtils.isLegacy()) {
-            getLogger().info("Enabling 1.7 support - Magic may stop supporting 1.7 in version 5!");
-        }
 		if (controller == null) {
 			controller = new MagicController(this);
 		}

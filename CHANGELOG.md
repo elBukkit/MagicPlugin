@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 5.0
+
+ - Magic is now targeted for 1.8. See http://dev.bukkit.org/plugins/magic for 1.7-compatible builds.
+
 ## 4.9.8
 
  - Cure casts no longer count towards level up unless it has something to cure

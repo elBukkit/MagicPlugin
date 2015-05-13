@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.elmakers.mine.bukkit.plugins</groupId>
 	<artifactId>Magic</artifactId>
-	<version>4.9.8</version>
+	<version>5.0-SNAPSHOT</version>
 	<name>elMakers - Bukkit Plugins : Magic</name>
 	<url>http://mine.elmakers.com</url>
 	<dependencyManagement>
@@ -11,11 +11,12 @@
             <dependency>
                 <groupId>org.bukkit</groupId>
                 <artifactId>bukkit</artifactId>
-                <version>1.7.2-R0.3</version>
+                <version>1.8.3-R0.1-SNAPSHOT</version>
+                <scope>provided</scope>
             </dependency>
 		</dependencies>
 	</dependencyManagement>
-	
+
 	<organization>
 		<name>elMakers</name>
 		<url>http://www.elmakers.com/</url>
@@ -70,16 +71,16 @@
 	</properties>
 	
 	<dependencies>
-		<dependency>
-			<groupId>org.bukkit</groupId>
-			<artifactId>bukkit</artifactId>
-            <version>1.7.2-R0.3</version>
-			<scope>provided</scope>
-		</dependency>
+        <dependency>
+            <groupId>org.bukkit</groupId>
+            <artifactId>bukkit</artifactId>
+            <version>1.8.3-R0.1-SNAPSHOT</version>
+            <scope>provided</scope>
+        </dependency>
 		<dependency>
 			<groupId>com.elmakers.mine.bukkit</groupId>
 			<artifactId>MagicLib</artifactId>
-			<version>2.9.8</version>
+			<version>3.0-SNAPSHOT</version>
 		</dependency>
         <dependency>
             <groupId>com.sk89q</groupId>
@@ -180,10 +181,6 @@
             <id>SacredCoding</id>
             <name>SacredCoding-releases</name>
             <url>http://repo.sacredlabyrinth.net/artifactory/releases</url>
-        </repository>
-        <repository>
-            <id>bukkit-repo</id>
-            <url>http://repo.bukkit.org/content/groups/public/</url>
         </repository>
         <repository>
             <id>sk89q</id>
