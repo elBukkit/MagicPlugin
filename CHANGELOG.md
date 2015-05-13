@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 3.0
+
+ - MagicAPI now builds against Bukkit API 1.8
+
 ## 2.7
 
  - Extend/change effect API to allow for overlapping effects
