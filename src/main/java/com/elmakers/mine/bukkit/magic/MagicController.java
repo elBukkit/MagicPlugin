@@ -2472,21 +2472,17 @@ public class MagicController implements Listener, MageController {
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onHangingBreak(HangingBreakEvent event) {
         final Hanging entity = event.getEntity();
-        // Early-out for performance, if we already detected the Entity
-        if (entity.hasMetadata("broken")) return;
+        if (!entity.isValid()) return;
         try {
             final BlockFace attachedFace = entity.getAttachedFace();
-            Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
-                @Override
-                public void run() {
-                    Location location = entity.getLocation();
-                    location = location.getBlock().getRelative(attachedFace).getLocation();
-                    UndoList undoList = getPendingUndo(location);
-                    if (undoList != null) {
-                        undoList.modify(entity);
-                    }
-                }
-            }, 1);
+            Location location = entity.getLocation();
+            location = location.getBlock().getRelative(attachedFace).getLocation();
+            UndoList undoList = getPendingUndo(location);
+            if (undoList != null) {
+                event.setCancelled(true);
+                undoList.modify(entity);
+                entity.remove();
+            }
         } catch (Exception ex) {
             getLogger().log(Level.WARNING, "Failed to handle HangingBreakEvent", ex);
         }
@@ -2501,7 +2497,6 @@ public class MagicController implements Listener, MageController {
         UndoList undoList = getEntityUndo(breakingEntity);
         if (undoList != null)
         {
-            entity.setMetadata("broken", new FixedMetadataValue(plugin, true));
             undoList.modify(entity);
 
             // Prevent item drops, but still remove it

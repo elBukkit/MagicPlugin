@@ -9,6 +9,7 @@
  - Fix build/break permission checks on incendiary/exploding projectiles
  - Turned off pvp restrictions on most spells, preventing targeting players in PVP regions
  - Add support for Towny warzones, friendly fire, and arenas
+ - Fix an item frame related dupe exploit
 
 ## 4.9.7
 
