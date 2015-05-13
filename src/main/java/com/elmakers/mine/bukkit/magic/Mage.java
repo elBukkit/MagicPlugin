@@ -1492,7 +1492,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         GUIAction previousGUI = gui;
         gui = action;
         Player player = getPlayer();
-        if (player != null)
+        if (player != null && gui == null)
         {
             controller.disableItemSpawn();
             try {
