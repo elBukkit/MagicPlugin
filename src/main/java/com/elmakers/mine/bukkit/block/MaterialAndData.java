@@ -2,6 +2,7 @@ package com.elmakers.mine.bukkit.block;
 
 import java.net.URL;
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 
 import com.elmakers.mine.bukkit.api.magic.Messages;
@@ -15,13 +16,14 @@ import org.bukkit.Material;
 import org.bukkit.SkullType;
 import org.bukkit.TreeSpecies;
 import org.bukkit.block.*;
+import org.bukkit.block.banner.Pattern;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 
 import com.elmakers.mine.bukkit.utility.NMSUtils;
+import org.bukkit.inventory.meta.BannerMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
-import org.bukkit.metadata.MetadataValue;
 
 /**
  * A utility class for presenting a Material in its entirety, including Material variants.
@@ -47,7 +49,7 @@ import org.bukkit.metadata.MetadataValue;
  * When used as a storage mechanism for Block or Material data, this class will store the following bits of information:
  * 
  * - Base Material type
- * - Data/durability of material (stored as a byte.. TODO: should this be a short? Let's wait for 1.8)
+ * - Data/durability of material
  * - Sign Text
  * - Command Block Text
  * - Custom Name of Block (Skull, Command block name)
@@ -98,12 +100,14 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
             } catch (Exception ex) {
 
             }
-        } else if (this.material.getId() == 176 || this.material.getId() == 177 || this.material.getId() == 425) {
-            // Banner
-            // TODO: Change to Material.BANNER when dropping 1.7 support
+        } else if (this.material == Material.STANDING_BANNER || this.material == Material.WALL_BANNER || this.material == Material.BANNER) {
             ItemMeta meta = item.getItemMeta();
-            this.customData = InventoryUtils.getBannerPatterns(meta);
-            this.color = InventoryUtils.getBannerBaseColor(meta);
+            if (meta != null && meta instanceof BannerMeta)
+            {
+                BannerMeta banner = (BannerMeta)meta;
+                this.customData = banner.getPatterns();
+                this.color = banner.getBaseColor();
+            }
         }
     }
 
@@ -323,12 +327,13 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
             } else if (blockState instanceof CreatureSpawner) {
                 CreatureSpawner spawner = (CreatureSpawner)blockState;
                 customName = spawner.getCreatureTypeName();
-            } else if (blockMaterial.getId() == 176 || blockMaterial.getId() == 177) {
-                // Banner
-                // TODO: Change to Material.BANNER when dropping 1.7 support
-                customData = CompatibilityUtils.getBannerPatterns(blockState);
-                color = CompatibilityUtils.getBannerBaseColor(blockState);
-                data = (short)color.getDyeData();
+            } else if (blockMaterial == Material.STANDING_BANNER || blockMaterial == Material.WALL_BANNER) {
+                if (blockState != null && blockState instanceof Banner) {
+                    Banner banner = (Banner)blockState;
+                    customData = banner.getPatterns();
+                    color = banner.getBaseColor();
+                    data = (short) color.getDyeData();
+                }
             }
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -370,11 +375,18 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
             } else if (tileEntityData != null) {
                 // Tile entity data overrides everything else, and may replace all of this in the future.
                 NMSUtils.setTileEntityData(block.getLocation(), tileEntityData);
-            } else if (blockState != null && material != null && (material.getId() == 176 || material.getId() == 177) && (customData != null || color != null)) {
-                // Banner
-                // TODO: Change to Material.BANNER when dropping 1.7 support
-                CompatibilityUtils.setBannerPatterns(blockState, customData);
-                CompatibilityUtils.setBannerBaseColor(blockState, color);
+            } else if (blockState != null && (material == Material.STANDING_BANNER || material == Material.WALL_BANNER) && (customData != null || color != null)) {
+                if (blockState != null && blockState instanceof Banner) {
+                    Banner banner = (Banner)blockState;
+                    if (customData != null && customData instanceof List)
+                    {
+                        banner.setPatterns((List<Pattern>)customData);
+                    }
+                    if (color != null)
+                    {
+                        banner.setBaseColor(color);
+                    }
+                }
                 blockState.update(true, false);
             } else if (blockState != null && blockState instanceof Skull) {
                 Skull skull = (Skull)blockState;
@@ -511,12 +523,20 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
                 InventoryUtils.setSkullProfile(skullMeta, customData);
                 stack.setItemMeta(meta);
             }
-        } else if (material.getId() == 176 || material.getId() == 177 || material.getId() == 425) {
-            // Banner
-            // TODO: Change to Material.BANNER when dropping 1.7 support
+        } else if (material == Material.STANDING_BANNER || material == Material.WALL_BANNER || material == Material.BANNER) {
             ItemMeta meta = stack.getItemMeta();
-            InventoryUtils.setBannerPatterns(meta, this.customData);
-            InventoryUtils.setBannerBaseColor(meta, this.color);
+            if (meta != null && meta instanceof BannerMeta)
+            {
+                BannerMeta banner = (BannerMeta)meta;
+                if (this.customData != null && customData instanceof List)
+                {
+                    banner.setPatterns((List<Pattern>)this.customData);
+                }
+                if (this.color != null)
+                {
+                    banner.setBaseColor(this.color);
+                }
+            }
         }
         return stack;
     }

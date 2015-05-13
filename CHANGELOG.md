@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 3.0
+
+ - MagicLib now builds against Bukkit API 1.8
+
 ## 2.9.5
 
  - Add support for locking chests in 1.8

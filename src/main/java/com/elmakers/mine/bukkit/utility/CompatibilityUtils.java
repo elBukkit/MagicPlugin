@@ -69,22 +69,6 @@ public class CompatibilityUtils extends NMSUtils {
     private static double hitboxScale = 1.0;
     private static BoundingBox defaultHitbox;
 
-    /**
-     * This is shamelessly copied from org.bukkit.Location.setDirection.
-     *
-     * It's only here for 1.6 backwards compatibility.
-     *
-     * This will be removed once there is an RB for 1.7 or 1.8.
-     *
-     * @param location The Location to set the direction of
-     * @param vector the vector to use for the new direction
-     * @return Location the resultant Location (same as location)
-     */
-    @Deprecated
-    public static Location setDirection(Location location, Vector vector) {
-        return location.setDirection(vector);
-    }
-
     public static void applyPotionEffects(LivingEntity entity, Collection<PotionEffect> effects) {
         for (PotionEffect effect: effects) {
             applyPotionEffect(entity, effect);
@@ -171,8 +155,6 @@ public class CompatibilityUtils extends NMSUtils {
         watch(entity, 7, 0);
     }
 
-
-
     /**
      * Thanks you, Chilinot!
      * @param loc
@@ -250,13 +232,9 @@ public class CompatibilityUtils extends NMSUtils {
             location = getPaintingOffset(location, facing, art);
             Object worldHandle = getHandle(location.getWorld());
             Object newEntity = null;
-            if (!isLegacy) {
-                Enum<?> directionEnum = Enum.valueOf(class_EnumDirection, facing.name());
-                Object blockLocation = class_BlockPositionConstructor.newInstance(location.getX(), location.getY(), location.getZ());
-                newEntity = class_EntityPaintingConstructor.newInstance(worldHandle, blockLocation, directionEnum);
-            } else {
-                newEntity = class_EntityPaintingConstructor.newInstance(worldHandle, location.getBlockX(), location.getBlockY(), location.getBlockZ(), getFacing(facing));
-            }
+            Enum<?> directionEnum = Enum.valueOf(class_EnumDirection, facing.name());
+            Object blockLocation = class_BlockPositionConstructor.newInstance(location.getX(), location.getY(), location.getZ());
+            newEntity = class_EntityPaintingConstructor.newInstance(worldHandle, blockLocation, directionEnum);
             if (newEntity != null) {
                 Entity bukkitEntity = getBukkitEntity(newEntity);
                 if (bukkitEntity == null || !(bukkitEntity instanceof Painting)) return null;
@@ -279,13 +257,9 @@ public class CompatibilityUtils extends NMSUtils {
         try {
             Object worldHandle = getHandle(location.getWorld());
             Object newEntity = null;
-            if (!isLegacy) {
-                Enum<?> directionEnum = Enum.valueOf(class_EnumDirection, facing.name());
-                Object blockLocation = class_BlockPositionConstructor.newInstance(location.getX(), location.getY(), location.getZ());
-                newEntity = class_EntityItemFrameConstructor.newInstance(worldHandle, blockLocation, directionEnum);
-            } else {
-                newEntity = class_EntityItemFrameConstructor.newInstance(worldHandle, location.getBlockX(), location.getBlockY(), location.getBlockZ(), getFacing(facing));
-            }
+            Enum<?> directionEnum = Enum.valueOf(class_EnumDirection, facing.name());
+            Object blockLocation = class_BlockPositionConstructor.newInstance(location.getX(), location.getY(), location.getZ());
+            newEntity = class_EntityItemFrameConstructor.newInstance(worldHandle, blockLocation, directionEnum);
             if (newEntity != null) {
                 Entity bukkitEntity = getBukkitEntity(newEntity);
                 if (bukkitEntity == null || !(bukkitEntity instanceof ItemFrame)) return null;
@@ -468,9 +442,7 @@ public class CompatibilityUtils extends NMSUtils {
 
                 // This is a bit of hack that lets us damage the ender dragon, who is a weird and annoying collection
                 // of various non-living entity pieces.
-                if (!isLegacy) {
-                    class_EntityDamageSource_setThornsMethod.invoke(damageSource);
-                }
+                class_EntityDamageSource_setThornsMethod.invoke(damageSource);
 
                 class_EntityLiving_damageEntityMethod.invoke(targetHandle, damageSource, (float)amount);
             } else {
@@ -500,7 +472,6 @@ public class CompatibilityUtils extends NMSUtils {
 
     public static Object getSkullProfile(Skull state)
     {
-        if (isLegacy) return null;
         Object profile = null;
         try {
             if (state == null || !class_CraftSkull.isInstance(state)) return false;
@@ -513,7 +484,6 @@ public class CompatibilityUtils extends NMSUtils {
 
     public static boolean setSkullProfile(Skull state, Object data)
     {
-        if (isLegacy) return false;
         try {
             if (state == null || !class_CraftSkull.isInstance(state)) return false;
             class_CraftSkull_profile.set(state, data);
@@ -540,57 +510,6 @@ public class CompatibilityUtils extends NMSUtils {
     public static boolean setSkullOwner(Skull state, Player owner)
     {
         return setSkullOwner(state, owner.getName(), owner.getUniqueId());
-    }
-
-    public static Object getBannerPatterns(BlockState state)
-    {
-        if (isLegacy) return null;
-        Object data = null;
-        try {
-            if (state == null || !class_CraftBanner.isInstance(state)) return null;
-            data = class_CraftBanner_getPatternsMethod.invoke(state);
-        } catch (Exception ex) {
-
-        }
-        return data;
-    }
-
-    public static DyeColor getBannerBaseColor(BlockState state)
-    {
-        if (isLegacy) return null;
-        DyeColor color = null;
-        try {
-            if (state == null || !class_CraftBanner.isInstance(state)) return null;
-            color = (DyeColor)class_CraftBanner_getBaseColorMethod.invoke(state);
-        } catch (Exception ex) {
-
-        }
-        return color;
-    }
-
-    public static boolean setBannerPatterns(BlockState state, Object patterns)
-    {
-        if (isLegacy || patterns == null) return false;
-        Object data = null;
-        try {
-            if (state == null || !class_CraftBanner.isInstance(state)) return false;
-            data = class_CraftBanner_setPatternsMethod.invoke(state, patterns);
-        } catch (Exception ex) {
-            return false;
-        }
-        return true;
-    }
-
-    public static boolean setBannerBaseColor(BlockState state, DyeColor color)
-    {
-        if (isLegacy || color == null) return false;
-        try {
-            if (state == null || !class_CraftBanner.isInstance(state)) return false;
-            color = (DyeColor)class_CraftBanner_setBaseColorMethod.invoke(state, color);
-        } catch (Exception ex) {
-            return false;
-        }
-        return true;
     }
 
     public static ConfigurationSection loadConfiguration(String fileName) throws IOException, InvalidConfigurationException
@@ -660,25 +579,22 @@ public class CompatibilityUtils extends NMSUtils {
             return hitbox.center(entity.getLocation().toVector());
         }
 
-        if (!isLegacy)
-        {
-            try {
-                Object entityHandle = getHandle(entity);
-                Object aabb = class_Entity_getBoundingBox.invoke(entityHandle);
-                if (aabb == null) {
-                    return defaultHitbox.center(entity.getLocation().toVector());
-                }
-                return new BoundingBox(
-                        class_AxisAlignedBB_minXField.getDouble(aabb),
-                        class_AxisAlignedBB_maxXField.getDouble(aabb),
-                        class_AxisAlignedBB_minYField.getDouble(aabb),
-                        class_AxisAlignedBB_maxYField.getDouble(aabb),
-                        class_AxisAlignedBB_minZField.getDouble(aabb),
-                        class_AxisAlignedBB_maxZField.getDouble(aabb)
-                ).scale(hitboxScale);
-            } catch (Exception ex) {
-                ex.printStackTrace();
+        try {
+            Object entityHandle = getHandle(entity);
+            Object aabb = class_Entity_getBoundingBox.invoke(entityHandle);
+            if (aabb == null) {
+                return defaultHitbox.center(entity.getLocation().toVector());
             }
+            return new BoundingBox(
+                    class_AxisAlignedBB_minXField.getDouble(aabb),
+                    class_AxisAlignedBB_maxXField.getDouble(aabb),
+                    class_AxisAlignedBB_minYField.getDouble(aabb),
+                    class_AxisAlignedBB_maxYField.getDouble(aabb),
+                    class_AxisAlignedBB_minZField.getDouble(aabb),
+                    class_AxisAlignedBB_maxZField.getDouble(aabb)
+            ).scale(hitboxScale);
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
         return defaultHitbox.center(entity.getLocation().toVector());
     }
@@ -714,7 +630,6 @@ public class CompatibilityUtils extends NMSUtils {
 
     public static boolean setLock(Location location, String lockName)
     {
-        if (isLegacy) return false;
         Object tileEntity = getTileEntity(location);
         if (tileEntity == null) return false;
         try {
@@ -730,7 +645,6 @@ public class CompatibilityUtils extends NMSUtils {
 
     public static boolean clearLock(Location location)
     {
-        if (isLegacy) return false;
         Object tileEntity = getTileEntity(location);
         if (tileEntity == null) return false;
         try {
@@ -745,7 +659,6 @@ public class CompatibilityUtils extends NMSUtils {
 
     public static boolean isLocked(Location location)
     {
-        if (isLegacy) return false;
         Object tileEntity = getTileEntity(location);
         if (tileEntity == null) return false;
         try {

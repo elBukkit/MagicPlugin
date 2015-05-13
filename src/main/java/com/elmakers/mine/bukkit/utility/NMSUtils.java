@@ -41,7 +41,6 @@ public class NMSUtils {
     protected static boolean failed = false;
 
     protected static String versionPrefix = "";
-    protected static boolean isLegacy = false;
 
     protected final static int NBT_TYPE_COMPOUND = 10;
     protected final static int NBT_TYPE_INT_ARRAY= 11;
@@ -340,50 +339,42 @@ public class NMSUtils {
             class_EntityFallingBlock_fallHurtMaxField = class_EntityFallingBlock.getDeclaredField("fallHurtMax");
             class_EntityFallingBlock_fallHurtMaxField.setAccessible(true);
 
-            isLegacy = false;
-            try {
-                class_TileEntityContainer = fixBukkitClass("net.minecraft.server.TileEntityContainer");
-                class_ChestLock = fixBukkitClass("net.minecraft.server.ChestLock");
-                class_TileEntityContainer_setLock = class_TileEntityContainer.getMethod("a", class_ChestLock);
-                class_TileEntityContainer_getLock = class_TileEntityContainer.getMethod("i");
-                class_ChestLock_isEmpty = class_ChestLock.getMethod("a");
-                class_Entity_getBoundingBox = class_Entity.getMethod("getBoundingBox");
-                class_GameProfile = getClass("com.mojang.authlib.GameProfile");
-                class_GameProfileProperty = getClass("com.mojang.authlib.properties.Property");
-                class_CraftSkull_profile = class_CraftSkull.getDeclaredField("profile");
-                class_CraftSkull_profile.setAccessible(true);
-                class_CraftMetaSkull_profile = class_CraftMetaSkull.getDeclaredField("profile");
-                class_CraftMetaSkull_profile.setAccessible(true);
-                class_GameProfile_properties = class_GameProfile.getDeclaredField("properties");
-                class_GameProfile_properties.setAccessible(true);
-                class_GameProfileProperty_value = class_GameProfileProperty.getDeclaredField("value");
-                class_GameProfileProperty_value.setAccessible(true);
+            class_TileEntityContainer = fixBukkitClass("net.minecraft.server.TileEntityContainer");
+            class_ChestLock = fixBukkitClass("net.minecraft.server.ChestLock");
+            class_TileEntityContainer_setLock = class_TileEntityContainer.getMethod("a", class_ChestLock);
+            class_TileEntityContainer_getLock = class_TileEntityContainer.getMethod("i");
+            class_ChestLock_isEmpty = class_ChestLock.getMethod("a");
+            class_Entity_getBoundingBox = class_Entity.getMethod("getBoundingBox");
+            class_GameProfile = getClass("com.mojang.authlib.GameProfile");
+            class_GameProfileProperty = getClass("com.mojang.authlib.properties.Property");
+            class_CraftSkull_profile = class_CraftSkull.getDeclaredField("profile");
+            class_CraftSkull_profile.setAccessible(true);
+            class_CraftMetaSkull_profile = class_CraftMetaSkull.getDeclaredField("profile");
+            class_CraftMetaSkull_profile.setAccessible(true);
+            class_GameProfile_properties = class_GameProfile.getDeclaredField("properties");
+            class_GameProfile_properties.setAccessible(true);
+            class_GameProfileProperty_value = class_GameProfileProperty.getDeclaredField("value");
+            class_GameProfileProperty_value.setAccessible(true);
 
-                class_CraftMetaBanner = fixBukkitClass("org.bukkit.craftbukkit.inventory.CraftMetaBanner");
-                class_CraftMetaBanner_getBaseColorMethod = class_CraftMetaBanner.getMethod("getBaseColor");
-                class_CraftMetaBanner_getPatternsMethod = class_CraftMetaBanner.getMethod("getPatterns");
-                class_CraftMetaBanner_setPatternsMethod = class_CraftMetaBanner.getMethod("setPatterns", List.class);
-                class_CraftMetaBanner_setBaseColorMethod = class_CraftMetaBanner.getMethod("setBaseColor", DyeColor.class);
+            class_CraftMetaBanner = fixBukkitClass("org.bukkit.craftbukkit.inventory.CraftMetaBanner");
+            class_CraftMetaBanner_getBaseColorMethod = class_CraftMetaBanner.getMethod("getBaseColor");
+            class_CraftMetaBanner_getPatternsMethod = class_CraftMetaBanner.getMethod("getPatterns");
+            class_CraftMetaBanner_setPatternsMethod = class_CraftMetaBanner.getMethod("setPatterns", List.class);
+            class_CraftMetaBanner_setBaseColorMethod = class_CraftMetaBanner.getMethod("setBaseColor", DyeColor.class);
 
-                class_CraftBanner = fixBukkitClass("org.bukkit.craftbukkit.block.CraftBanner");
-                class_CraftBanner_getBaseColorMethod = class_CraftBanner.getMethod("getBaseColor");
-                class_CraftBanner_getPatternsMethod = class_CraftBanner.getMethod("getPatterns");
-                class_CraftBanner_setPatternsMethod = class_CraftBanner.getMethod("setPatterns", List.class);
-                class_CraftBanner_setBaseColorMethod = class_CraftBanner.getMethod("setBaseColor", DyeColor.class);
-                class_EntityDamageSource_setThornsMethod = class_EntityDamageSource.getMethod("v");
+            class_CraftBanner = fixBukkitClass("org.bukkit.craftbukkit.block.CraftBanner");
+            class_CraftBanner_getBaseColorMethod = class_CraftBanner.getMethod("getBaseColor");
+            class_CraftBanner_getPatternsMethod = class_CraftBanner.getMethod("getPatterns");
+            class_CraftBanner_setPatternsMethod = class_CraftBanner.getMethod("setPatterns", List.class);
+            class_CraftBanner_setBaseColorMethod = class_CraftBanner.getMethod("setBaseColor", DyeColor.class);
+            class_EntityDamageSource_setThornsMethod = class_EntityDamageSource.getMethod("v");
 
-                class_BlockPosition = fixBukkitClass("net.minecraft.server.BlockPosition");
-                class_EnumDirection = (Class<Enum>)fixBukkitClass("net.minecraft.server.EnumDirection");
-                class_BlockPositionConstructor = class_BlockPosition.getConstructor(Double.TYPE, Double.TYPE, Double.TYPE);
-                class_EntityPaintingConstructor = class_EntityPainting.getConstructor(class_World, class_BlockPosition, class_EnumDirection);
-                class_EntityItemFrameConstructor = class_EntityItemFrame.getConstructor(class_World, class_BlockPosition, class_EnumDirection);
-                class_ChestLock_Constructor = class_ChestLock.getConstructor(String.class);
-            }
-            catch (Throwable legacy) {
-                isLegacy = true;
-                class_EntityPaintingConstructor = class_EntityPainting.getConstructor(class_World, Integer.TYPE, Integer.TYPE, Integer.TYPE, Integer.TYPE);
-                class_EntityItemFrameConstructor = class_EntityItemFrame.getConstructor(class_World, Integer.TYPE, Integer.TYPE, Integer.TYPE, Integer.TYPE);
-            }
+            class_BlockPosition = fixBukkitClass("net.minecraft.server.BlockPosition");
+            class_EnumDirection = (Class<Enum>)fixBukkitClass("net.minecraft.server.EnumDirection");
+            class_BlockPositionConstructor = class_BlockPosition.getConstructor(Double.TYPE, Double.TYPE, Double.TYPE);
+            class_EntityPaintingConstructor = class_EntityPainting.getConstructor(class_World, class_BlockPosition, class_EnumDirection);
+            class_EntityItemFrameConstructor = class_EntityItemFrame.getConstructor(class_World, class_BlockPosition, class_EnumDirection);
+            class_ChestLock_Constructor = class_ChestLock.getConstructor(String.class);
 
             class_PacketPlayOutMapChunkBulk = getVersionedBukkitClass("net.minecraft.server.PacketPlayOutMapChunkBulk", "net.minecraft.server.Packet56MapChunkBulk");
         }
@@ -396,11 +387,6 @@ public class NMSUtils {
     public static boolean getFailed() {
         return failed;
     }
-
-    public static boolean isLegacy() {
-        return isLegacy;
-    }
-
 
     public static Class<?> getVersionedBukkitClass(String newVersion, String oldVersion) {
         Class<?> c = getBukkitClass(newVersion);
@@ -538,8 +524,8 @@ public class NMSUtils {
         return handle;
     }
 
-    protected static void sendPacket(Server server, Location source, Collection<Player> players, Object packet) throws Exception  {
-        players = ((players != null && players.size() > 0) ? players : CompatibilityUtils.getOnlinePlayers(server));
+    protected static void sendPacket(Server server, Location source, Collection<? extends Player> players, Object packet) throws Exception  {
+        players = ((players != null && players.size() > 0) ? players : server.getOnlinePlayers());
 
         int viewDistance = Bukkit.getServer().getViewDistance() * 16;
         int viewDistanceSquared =  viewDistance * viewDistance;
@@ -1005,14 +991,6 @@ public class NMSUtils {
         return listMeta;
     }
 
-    public static boolean hasBannerSupport() {
-        return !isLegacy;
-    }
-
-    public static boolean hasURLSkullSupport() {
-        return !isLegacy;
-    }
-
     public static ItemStack getItem(Object itemTag) {
         if (itemTag == null) return null;
         ItemStack item = null;
@@ -1207,28 +1185,13 @@ public class NMSUtils {
 
     public static Vector getPosition(Object entityData, String tag) {
         try {
-            Object posList = class_NBTTagCompound_getListMethod.invoke(entityData, "Pos", NBT_TYPE_DOUBLE);
+            Object posList = class_NBTTagCompound_getListMethod.invoke(entityData, tag, NBT_TYPE_DOUBLE);
             Double x = (Double)class_NBTTagList_getDoubleMethod.invoke(posList, 0);
             Double y = (Double)class_NBTTagList_getDoubleMethod.invoke(posList, 1);
             Double z = (Double)class_NBTTagList_getDoubleMethod.invoke(posList, 2);
             if (x != null && y != null && z != null) {
                 return new Vector(x, y, z);
             }
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        return null;
-    }
-
-    public static Collection<Player> getOnlinePlayers(Server server)
-    {
-        try {
-            Object players = class_Server_getOnlinePlayers.invoke(server);
-            if (players instanceof Collection) {
-                return (List<Player>)players;
-            }
-            Player[] playerArray = (Player[])players;
-            return new ArrayList<Player>(Arrays.asList(playerArray));
         } catch (Exception ex) {
             ex.printStackTrace();
         }

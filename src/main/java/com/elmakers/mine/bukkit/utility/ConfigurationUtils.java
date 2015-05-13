@@ -426,8 +426,7 @@ public class ConfigurationUtils {
             direction.setY(overrideDouble(node, direction.getY(), dyName));
             direction.setZ(overrideDouble(node, direction.getZ(), dzName));
 
-            // TODO: Use location.setDirection in 1.7+
-            CompatibilityUtils.setDirection(location, direction);
+            location.setDirection(direction);
         }
 
         return location;

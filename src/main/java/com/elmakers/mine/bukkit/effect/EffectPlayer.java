@@ -368,7 +368,7 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
         }
         if (customSound != null) {
             double range = soundVolume > 1.0 ? (double) (16.0 * soundVolume) : 16.0;
-            Collection<Player> players = CompatibilityUtils.getOnlinePlayers(plugin.getServer());
+            Collection<? extends Player> players = plugin.getServer().getOnlinePlayers();
             for (Player player : players)
             {
                 Location location = player.getLocation();

@@ -310,7 +310,7 @@ public abstract class TargetingSpell extends BaseSpell {
                         final Location location = getLocation();
                         final Location originLocation = block.getLocation();
                         Vector direction = location.getDirection();
-                        CompatibilityUtils.setDirection(originLocation, direction.multiply(-1));
+                        originLocation.setDirection(direction.multiply(-1));
                         this.location = originLocation;
                         backfire();
                         final Collection<com.elmakers.mine.bukkit.api.effect.EffectPlayer> effects = getEffects("cast");
