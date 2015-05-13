@@ -19,7 +19,6 @@ restricted:
 - gold_block
 - diamond_block
 - emerald_block
-- coal_block
 - lapis_block
 - iron_ore
 - gold_ore
