@@ -672,6 +672,10 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
                 }
             }
 
+            cloneTarget.setX(cloneTarget.getBlockX());
+            cloneTarget.setY(cloneTarget.getBlockY());
+            cloneTarget.setZ(cloneTarget.getBlockZ());
+
             if (cloneSource == null) {
                 cloneSource = cloneTarget.clone();
                 if (targetWorldName != null && targetWorldName.length() > 0) {
