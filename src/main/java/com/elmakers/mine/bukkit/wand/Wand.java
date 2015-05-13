@@ -78,7 +78,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         "effect_sound", "effect_sound_interval", "effect_sound_pitch", "effect_sound_volume",
         "cast_spell", "cast_parameters", "cast_interval", "cast_min_velocity", "cast_velocity_direction",
 		"hotbar_count", "hotbar",
-		"icon", "mode", "brush_mode", "keep", "locked", "quiet", "force", "randomize", "rename",
+		"icon", "mode", "brush_mode", "keep", "locked", "quiet", "force", "randomize", "rename", "rename_description",
 		"power", "overrides",
 		"protection", "protection_physical", "protection_projectiles", 
 		"protection_falling", "protection_fire", "protection_explosions",
@@ -129,6 +129,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	private boolean isUpgrade = false;
     private boolean randomize = false;
     private boolean rename = false;
+    private boolean renameDescription = false;
 	
 	private MaterialAndData icon = null;
     private MaterialAndData upgradeIcon = null;
@@ -1029,6 +1030,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		node.set("keep", keep);
         node.set("randomize", randomize);
         node.set("rename", rename);
+        node.set("rename_description", renameDescription);
 		node.set("bound", bound);
         node.set("force", forceUpgrade);
 		node.set("indestructible", indestructible);
@@ -1241,6 +1243,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 			autoFill = wandConfig.getBoolean("fill", autoFill);
             randomize = wandConfig.getBoolean("randomize", randomize);
             rename = wandConfig.getBoolean("rename", rename);
+            renameDescription = wandConfig.getBoolean("rename_description", renameDescription);
 
             if (wandConfig.contains("effect_particle")) {
                 effectParticle = ConfigurationUtils.toParticleEffect(wandConfig.getString("effect_particle"));
@@ -2263,9 +2266,17 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         if (other.rename && other.template != null && other.template.length() > 0) {
             ConfigurationSection template = wandTemplates.get(other.template);
 
-            wandName = template.getString("name", wandName);
             wandName = messages.get("wands." + other.template + ".name", wandName);
+            wandName = template.getString("name", wandName);
             updateName();
+        }
+
+        if (other.renameDescription && other.template != null && other.template.length() > 0) {
+            ConfigurationSection template = wandTemplates.get(other.template);
+
+            description = messages.get("wands." + other.template + ".description", description);
+            description = template.getString("description", description);
+            updateLore();
         }
 
         // Kind of a hacky way to allow for quiet level overries
