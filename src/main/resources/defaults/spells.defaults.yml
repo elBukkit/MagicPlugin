@@ -1700,6 +1700,7 @@ cure:
         - damage_resistance
         - jump
         - hunger
+        - wither
     costs:
         mana: 30
 
