@@ -584,11 +584,11 @@ public abstract class TargetingSpell extends BaseSpell {
             ItemStack item = itemFrame.getItem();
             if (item == null || item.getType() != targetContents) return false;
         }
-        if (targetEntityType == null && targetEntityTypes == null) return true;
+        if (targetEntityType == null && targetEntityTypes == null) return super.canTarget(entity);
         if (targetEntityTypes != null) {
-            return targetEntityTypes.contains(entity.getType());
+            return targetEntityTypes.contains(entity.getType()) && super.canTarget(entity);
         }
-        return targetEntityType.isAssignableFrom(entity.getClass());
+        return targetEntityType.isAssignableFrom(entity.getClass()) && super.canTarget(entity);
     }
 
     public boolean isSuperProtected(Mage mage) {
