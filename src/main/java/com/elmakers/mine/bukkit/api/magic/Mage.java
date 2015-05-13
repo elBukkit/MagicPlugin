@@ -376,7 +376,7 @@ public interface Mage extends CostReducer {
     public boolean isStealth();
     public boolean isSneaking();
 
-    public void activateGUI(GUIAction action);
+    public void activateGUI(GUIAction action, Inventory inventory);
     public void deactivateGUI();
 
     public void showHoloText(Location location, String text, int duration);

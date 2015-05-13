@@ -3,6 +3,8 @@
 ## 3.0
 
  - MagicAPI now builds against Bukkit API 1.8
+ - Fixes to GUI items being glitched out of inventories
+ - Cure cures wither
 
 ## 2.7
 
