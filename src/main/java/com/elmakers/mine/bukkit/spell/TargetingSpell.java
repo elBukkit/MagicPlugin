@@ -792,7 +792,7 @@ public abstract class TargetingSpell extends BaseSpell {
 
     @SuppressWarnings("unchecked")
     @Override
-    protected void processParameters(ConfigurationSection parameters) {
+    public void processParameters(ConfigurationSection parameters) {
         super.processParameters(parameters);
         useHitbox = parameters.getBoolean("hitbox", false);
         range = parameters.getInt("range", 32);

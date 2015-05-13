@@ -27,7 +27,7 @@ public abstract class UndoableSpell extends TargetingSpell {
     private int	 			autoUndo				= 0;
 
     @Override
-    protected void processParameters(ConfigurationSection parameters)
+    public void processParameters(ConfigurationSection parameters)
     {
         super.processParameters(parameters);
         undoEntityEffects = parameters.getBoolean("entity_undo", false);

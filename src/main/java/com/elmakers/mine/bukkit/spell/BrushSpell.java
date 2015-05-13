@@ -26,7 +26,7 @@ public abstract class BrushSpell extends BlockSpell {
     };
 
     @Override
-    protected void processParameters(ConfigurationSection parameters)
+    public void processParameters(ConfigurationSection parameters)
     {
         super.processParameters(parameters);
 

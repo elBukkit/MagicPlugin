@@ -76,7 +76,7 @@ public abstract class BlockSpell extends UndoableSpell {
     }
 
     @Override
-    protected void processParameters(ConfigurationSection parameters) {
+    public void processParameters(ConfigurationSection parameters) {
         super.processParameters(parameters);
         indestructible = null;
         if (parameters.contains("indestructible")) {
