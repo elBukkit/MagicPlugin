@@ -67,6 +67,25 @@
 # Localizations are also separate, in messages.yml.
 #
 
+
+#
+# Craftbukkit 1.7 specific changes
+#
+
+
+# This hack should not be required in 1.8 and up
+# This disables the item drag event interceptor
+enable_custom_item_hacks: true
+# This disables wands ejecting themselves in creative mode
+enable_creative_mode_ejecting: true
+
+# Set this to true to turn on spell glow. May not work on all server versions.
+spell_glow: true
+
+# Set this to false to turn off the player skull-based spell icons
+url_icons_enabled: false
+
+
 #
 # General Properties
 #
@@ -198,9 +217,6 @@ wand_hide_flags: 60
 # Set this to true to turn on material brush glow.
 brush_glow: false
 brush_item_glow: true
-
-# Set this to false to turn off the player skull-based spell icons
-url_icons_enabled: true
 
 # Set this to have the hotbar show what spells are castable
 live_hotbar: true
@@ -599,12 +615,6 @@ activate_holotext_range: 0
 
 ## Deprecated configuration options
 
-# This hack should not be required in 1.8 and up
-# This disables the item drag event interceptor
-enable_custom_item_hacks: false
-# This disables wands ejecting themselves in creative mode
-enable_creative_mode_ejecting: false
-
 # Used as a work-around for enchanting since the main item may not be enchantable (client-side).
 # wand_item_enchantable: wood_sword
 wand_item_enchantable:
@@ -615,9 +625,6 @@ auto_undo: 0
 # Backup Inventory to wand data
 # This can cause some issues with item sizes, and is somewhat experimental
 backup_inventory: false
-
-# Set this to true to turn on spell glow. May not work on all server versions.
-spell_glow: false
 
 # Throttle TNT explosions
 # This is built-in to Spigot, so generally not needed here.

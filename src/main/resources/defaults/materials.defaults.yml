@@ -288,7 +288,6 @@ attachable:
 - carpet
 - portal
 - ender_portal
-- standing_banner
 - sand
 - gravel
 # Copied from attachable_double
@@ -297,12 +296,6 @@ attachable:
 - wooden_door
 - sugar_cane_block
 - double_plant
-- spruce_door
-- birch_door
-- jungle_door
-- acacia_door
-- dark_oak_door
-- standing_banner
 - cocoa
 
 # Things that can specifically be attached to walls. 
@@ -319,7 +312,6 @@ attachable_wall:
 - torch
 - ladder
 - wall_sign
-- wall_banner
 - cocoa
 
 # Things that double-stack like doors and tall plants
@@ -329,31 +321,16 @@ attachable_double:
 - wooden_door
 - sugar_cane_block
 - double_plant
-- spruce_door
-- birch_door
-- jungle_door
-- acacia_door
-- dark_oak_door
-- standing_banner
 
 # All doors, for the DoorSpell generally
 doors:
 - iron_door_block
 - wooden_door
-- spruce_door
-- birch_door
-- jungle_door
-- acacia_door
-- dark_oak_door
 
 # Low-level doors (not iron)
 unlocked_doors:
 - wooden_door
 - spruce_door
-- birch_door
-- jungle_door
-- acacia_door
-- dark_oak_door
 
 # blocks that should otherwise be delayed until the second pass
 delayed:
@@ -365,7 +342,6 @@ delayed:
 # removal of attached block)
 indestructible:
 - bedrock
-- barrier
 
 # if you don't want people destroying your end portals:
 #- ender_portal_frame 
@@ -379,7 +355,6 @@ indestructible:
 # It's a good idea to put any indestructibles in here, since they can't be removed.
 restricted:
 - bedrock
-- barrier
 - command
 - ender_portal
 - mob_spawner
@@ -607,16 +582,7 @@ building:
 - acacia_stairs
 - dark_oak_stairs
 - red_sandstone
-- slime_block
-- barrier
-- prismarine
-- sea_lantern
 - red_sandstone_stairs
-- spruce_fence_gate
-- birch_fence_gate
-- jungle_fence_gate
-- dark_oak_fence_gate
-- acacia_fence_gate
 - spruce_fence
 - birch_fence
 - jungle_fence
@@ -672,17 +638,7 @@ interactible:
 - sign_post
 - command
 - wall_sign
-- spruce_door
-- birch_door
-- jungle_door
-- acacia_door
-- dark_oak_door
 - fence_gate
-- spruce_fence_gate
-- birch_fence_gate
-- jungle_fence_gate
-- dark_oak_fence_gate
-- acacia_fence_gate
 - daylight_detector
 - daylight_detector_inverted
 - trap_door

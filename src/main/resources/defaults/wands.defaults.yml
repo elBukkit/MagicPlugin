@@ -1429,7 +1429,6 @@ divinghelmet:
     enchantments:
       oxygen: 3
       water_worker: 1
-      depth_strider: 3
     spells:
         - wear
 

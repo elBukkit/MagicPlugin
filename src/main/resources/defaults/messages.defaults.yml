@@ -1239,7 +1239,7 @@ spells:
     rubberize:
         name: Rubberize
         description: Make the target area bouncy
-        cast: Time to bounce!
+        cast: You need 1.8 to bounce!
     count:
         name: Entity Counter
         description: An admin tool to check for nearby entities
