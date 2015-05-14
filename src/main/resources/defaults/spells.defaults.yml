@@ -6403,6 +6403,9 @@ secure:
     actions:
        cast:
        - class: Lock
+       alternate_up:
+       - class: Lock
+         type: key
     effects:
         cast:
         -  class: EffectSingle

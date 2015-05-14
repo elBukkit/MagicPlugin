@@ -3758,6 +3758,11 @@ public class MagicController implements Listener, MageController {
             return;
         }
 
+        if (NMSUtils.isUnplaceable(itemStack) || Wand.isWand(itemStack) || Wand.isSpell(itemStack) || Wand.isBrush(itemStack)) {
+            event.setCancelled(true);
+            return;
+        }
+
         Mage apiMage = getMage(player);
 
         if (!(apiMage instanceof com.elmakers.mine.bukkit.magic.Mage)) return;

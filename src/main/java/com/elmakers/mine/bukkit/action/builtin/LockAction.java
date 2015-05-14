@@ -26,7 +26,8 @@ public class LockAction extends BaseSpellAction
 {
     private enum LockActionType {
         LOCK,
-        UNLOCK
+        UNLOCK,
+        KEY
     };
 
     private LockActionType actionType;
@@ -38,7 +39,30 @@ public class LockAction extends BaseSpellAction
     @Override
     public SpellResult perform(CastContext context)
     {
-		Block targetBlock = context.getTargetBlock();
+        String keyName = this.keyName;
+        if (keyName.isEmpty())
+        {
+            keyName = context.getMessage("key_name");
+        }
+        keyName = keyName.replace("$name", context.getMage().getName());
+        String keyDescription = this.keyDescription;
+        if (keyDescription.isEmpty())
+        {
+            keyDescription = context.getMessage("key_description");
+        }
+        keyDescription = keyDescription.replace("$name", context.getMage().getName());
+        Mage mage = context.getMage();
+        boolean result = false;
+        if (actionType == LockActionType.KEY) {
+            giveKey(mage, keyName, keyDescription);
+            return SpellResult.CAST;
+        }
+
+        Block targetBlock = context.getTargetBlock();
+        if (targetBlock == null)
+        {
+            return SpellResult.NO_TARGET;
+        }
         if (!context.hasBuildPermission(targetBlock))
         {
             return SpellResult.INSUFFICIENT_PERMISSION;
@@ -48,62 +72,13 @@ public class LockAction extends BaseSpellAction
             return SpellResult.NO_TARGET;
         }
 
-        boolean result = false;
         if (actionType == LockActionType.LOCK) {
             if (!override && CompatibilityUtils.isLocked(targetBlock.getLocation()))
             {
                 return SpellResult.FAIL;
             }
-            String keyName = this.keyName;
-            if (keyName.isEmpty())
-            {
-                keyName = context.getMessage("key_name");
-            }
-            keyName = keyName.replace("$name", context.getMage().getName());
-            String keyDescription = this.keyDescription;
-            if (keyDescription.isEmpty())
-            {
-                keyDescription = context.getMessage("key_description");
-            }
-            keyDescription = keyDescription.replace("$name", context.getMage().getName());
             result = CompatibilityUtils.setLock(targetBlock.getLocation(), keyName);
-
-            Mage mage = context.getMage();
-            Player player = mage.getPlayer();
-            Inventory inventory = mage.getInventory();
-            if (player != null && inventory != null)
-            {
-                boolean hasKey = false;
-                ItemStack[] items = inventory.getContents();
-                for (ItemStack item : items)
-                {
-                    if (item != null && item.hasItemMeta())
-                    {
-                        String displayName = item.getItemMeta().getDisplayName();
-                        if (displayName != null && displayName.equals(keyName))
-                        {
-                            hasKey = true;
-                            break;
-                        }
-                    }
-                }
-
-                if (!hasKey)
-                {
-                    ItemStack keyItem = null;
-                    keyItem = iconType.getItemStack(1);
-                    ItemMeta meta = keyItem.getItemMeta();
-                    meta.setDisplayName(keyName);
-                    if (!keyDescription.isEmpty())
-                    {
-                        List<String> lore = new ArrayList<String>();
-                        lore.add(keyDescription);
-                        meta.setLore(lore);
-                    }
-                    keyItem.setItemMeta(meta);
-                    context.getController().giveItemToPlayer(player, keyItem);
-                }
-            }
+            giveKey(mage, keyName, keyDescription);
         } else {
             if (!CompatibilityUtils.isLocked(targetBlock.getLocation()))
             {
@@ -115,6 +90,40 @@ public class LockAction extends BaseSpellAction
 		return result ? SpellResult.CAST : SpellResult.FAIL;
 	}
 
+    protected void giveKey(Mage mage, String keyName, String keyDescription) {
+        Player player = mage.getPlayer();
+        Inventory inventory = mage.getInventory();
+        if (player != null && inventory != null) {
+            boolean hasKey = false;
+            ItemStack[] items = inventory.getContents();
+            for (ItemStack item : items) {
+                if (item != null && item.hasItemMeta()) {
+                    String displayName = item.getItemMeta().getDisplayName();
+                    if (displayName != null && displayName.equals(keyName)) {
+                        hasKey = true;
+                        break;
+                    }
+                }
+            }
+
+            if (!hasKey) {
+                ItemStack keyItem = null;
+                keyItem = iconType.getItemStack(1);
+                ItemMeta meta = keyItem.getItemMeta();
+                meta.setDisplayName(keyName);
+                if (!keyDescription.isEmpty()) {
+                    List<String> lore = new ArrayList<String>();
+                    lore.add(keyDescription);
+                    meta.setLore(lore);
+                }
+                keyItem.setItemMeta(meta);
+                keyItem = CompatibilityUtils.makeReal(keyItem);
+                CompatibilityUtils.makeUnplaceable(keyItem);
+                mage.giveItem(keyItem);
+            }
+        }
+    }
+
     @Override
     public boolean isUndoable() {
         return false;
@@ -122,12 +131,12 @@ public class LockAction extends BaseSpellAction
 
     @Override
     public boolean requiresTarget() {
-        return true;
+        return actionType != LockActionType.KEY;
     }
 
     @Override
     public boolean requiresBuildPermission() {
-        return true;
+        return actionType != LockActionType.KEY;
     }
 
     @Override
@@ -138,6 +147,8 @@ public class LockAction extends BaseSpellAction
         String type = parameters.getString("type", "lock");
         if (type.equalsIgnoreCase("unlock")) {
             actionType = LockActionType.UNLOCK;
+        } else if (type.equalsIgnoreCase("key")) {
+            actionType = LockActionType.KEY;
         }
         keyName = parameters.getString("key_name", "");
         keyDescription = parameters.getString("key_description", "");
@@ -162,6 +173,7 @@ public class LockAction extends BaseSpellAction
         if (parameterKey.equals("type")) {
             examples.add("lock");
             examples.add("unlock");
+            examples.add("key");
         } else if (parameterKey.equals("override")) {
             examples.addAll(Arrays.asList(BaseSpell.EXAMPLE_BOOLEANS));
         } else {

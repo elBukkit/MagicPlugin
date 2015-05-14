@@ -3,6 +3,8 @@
 ## 5.0
 
  - Magic is now targeted for 1.8. See http://dev.bukkit.org/plugins/magic for 1.7-compatible builds.
+ - Fix Blink/Phase taking you to the top of the nether
+ - Make Secure keys unplaceable, aim up and cast for a replacement key
 
 ## 4.9.8
 
