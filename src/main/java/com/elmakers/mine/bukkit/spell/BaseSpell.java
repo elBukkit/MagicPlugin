@@ -21,6 +21,7 @@ import com.elmakers.mine.bukkit.api.spell.SpellKey;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.api.spell.TargetType;
 import com.elmakers.mine.bukkit.api.wand.Wand;
+import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import org.apache.commons.lang.ArrayUtils;
 import org.bukkit.Bukkit;
@@ -251,7 +252,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
             return false;
         }
 
-        if (block.getY() > block.getWorld().getMaxHeight()) {
+        if (block.getY() > CompatibilityUtils.getMaxHeight(block.getWorld())) {
             return false;
         }
 
@@ -279,7 +280,8 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
 
     public Location tryFindPlaceToStand(Location targetLoc)
     {
-        return tryFindPlaceToStand(targetLoc, targetLoc.getWorld().getMaxHeight(), targetLoc.getWorld().getMaxHeight());
+        int maxHeight = CompatibilityUtils.getMaxHeight(targetLoc.getWorld());
+        return tryFindPlaceToStand(targetLoc, maxHeight, maxHeight);
     }
 
     public Location findPlaceToStand(Location targetLoc)
@@ -297,8 +299,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     {
         if (!targetLoc.getBlock().getChunk().isLoaded()) return null;
         int minY = MIN_Y;
-        int maxY = targetLoc.getWorld().getMaxHeight();
-
+        int maxY = CompatibilityUtils.getMaxHeight(targetLoc.getWorld());
         int targetY = targetLoc.getBlockY();
         if (targetY >= minY && targetY <= maxY && isSafeLocation(targetLoc)) {
             return checkForHalfBlock(targetLoc);
@@ -350,7 +351,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         Location targetLocation = target.clone();
         int yDelta = 0;
         int minY = MIN_Y;
-        int maxY = targetLocation.getWorld().getMaxHeight();
+        int maxY = CompatibilityUtils.getMaxHeight(targetLocation.getWorld());
 
         while (minY <= targetLocation.getY() && targetLocation.getY() <= maxY && yDelta < maxDelta)
         {

@@ -5,11 +5,10 @@ import org.bukkit.Art;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
-import org.bukkit.DyeColor;
 import org.bukkit.Location;
 import org.bukkit.Rotation;
+import org.bukkit.World;
 import org.bukkit.block.BlockFace;
-import org.bukkit.block.BlockState;
 import org.bukkit.block.Skull;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
@@ -66,6 +65,7 @@ public class CompatibilityUtils extends NMSUtils {
     public static boolean USE_MAGIC_DAMAGE = true;
     public final static int MAX_ENTITY_RANGE = 72;
     private final static Map<EntityType, BoundingBox> hitboxes = new HashMap<EntityType, BoundingBox>();
+    private final static Map<World.Environment, Integer> maxHeights = new HashMap<World.Environment, Integer>();
     private static double hitboxScale = 1.0;
     private static BoundingBox defaultHitbox;
 
@@ -682,5 +682,29 @@ public class CompatibilityUtils extends NMSUtils {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+    }
+
+    public static void configureMaxHeights(ConfigurationSection config) {
+        maxHeights.clear();
+        Collection<String> keys = config.getKeys(false);
+        for (String key : keys) {
+            try {
+                World.Environment worldType = World.Environment.valueOf(key.toUpperCase());
+                if (worldType != null)
+                {
+                    maxHeights.put(worldType, config.getInt(key));
+                }
+            } catch (Exception ex) {
+                org.bukkit.Bukkit.getLogger().log(Level.WARNING, "Invalid environment type: " + key, ex);
+            }
+        }
+    }
+
+    public static int getMaxHeight(World world) {
+        Integer maxHeight = maxHeights.get(world.getEnvironment());
+        if (maxHeight == null) {
+            maxHeight = world.getMaxHeight();
+        }
+        return maxHeight;
     }
 }

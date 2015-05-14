@@ -206,9 +206,10 @@ public abstract class TargetingSpell extends BaseSpell {
             location = location.clone();
             location.setY(0);
         }
-        if (location.getBlockY() > location.getWorld().getMaxHeight()) {
+        int maxHeight = CompatibilityUtils.getMaxHeight(location.getWorld());
+        if (location.getBlockY() > maxHeight) {
             location = location.clone();
-            location.setY(location.getWorld().getMaxHeight());
+            location.setY(maxHeight);
         }
 
         try {
