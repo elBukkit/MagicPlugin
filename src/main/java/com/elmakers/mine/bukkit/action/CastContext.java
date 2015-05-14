@@ -825,13 +825,21 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
             return;
         }
 
-        playEffects("teleport");
-
         registerMoved(entity);
         Location targetLocation = findPlaceToStand(location, verticalSearchDistance);
         if (targetLocation != null) {
             setTargetedLocation(targetLocation);
+            // Hacky double-teleport to work-around vanilla suffocation checks
+            boolean isWorldChange = !targetLocation.getWorld().equals(entity.getWorld());
             entity.teleport(targetLocation);
+            if (isWorldChange) {
+                entity.teleport(targetLocation);
+            }
+            sendMessage("teleport");
+            playEffects("teleport");
+        } else {
+            sendMessage("teleport_failed");
+            playEffects("teleport_failed");
         }
     }
 
