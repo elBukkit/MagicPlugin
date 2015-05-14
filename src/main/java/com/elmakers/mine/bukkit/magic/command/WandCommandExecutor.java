@@ -388,11 +388,13 @@ public class WandCommandExecutor extends MagicTabExecutor {
 		if (subCommand.length() == 0) 
 		{
 			if (!api.hasPermission(sender, "Magic.commands." + command)) return true;
+            if (!api.hasPermission(sender, "Magic.commands." + command + ".create")) return true;
 			if (!api.hasPermission(sender, "Magic.commands." + command + ".wand.default", true)) return true;
 		} 
 		else 
 		{
-			if (!api.hasPermission(sender,"Magic.commands." + command +".wand." + subCommand, true)) return true;
+            if (!api.hasPermission(sender, "Magic.commands." + command + ".create")) return true;
+			if (!api.hasPermission(sender, "Magic.commands." + command +".wand." + subCommand, true)) return true;
 		}
 		
 		return onWand(sender, player, args);

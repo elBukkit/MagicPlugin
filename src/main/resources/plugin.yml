@@ -72,6 +72,10 @@ permissions:
     type: boolean
     default: op
   Magic.commands.wand:
+    description: Player may use the /wand commands
+    type: boolean
+    default: op
+  Magic.commands.wand.create:
     description: Player may create a wand
     type: boolean
     default: op
@@ -150,6 +154,10 @@ permissions:
     type: boolean
     default: op
   Magic.commands.wandp:
+    description: Player may use the wandp commands
+    type: boolean
+    default: op
+  Magic.commands.wandp.create:
     description: Player may create a wand for another player
     type: boolean
     default: op
