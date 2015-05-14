@@ -933,6 +933,15 @@ public class NMSUtils {
         return hasMeta(itemStack, "temporary");
     }
 
+
+    public static void makeUnplaceable(ItemStack itemStack) {
+        setMeta(itemStack, "unplaceable", "true");
+    }
+
+    public static boolean isUnplaceable(ItemStack itemStack) {
+        return hasMeta(itemStack, "unplaceable");
+    }
+
     public static String getTemporaryMessage(ItemStack itemStack) {
         return getMeta(itemStack, "temporary");
     }
