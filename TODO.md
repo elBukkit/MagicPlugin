@@ -1,6 +1,5 @@
 # TODO
 
- - Blink goes above nether ceiling
  - Selected Hotbar# not saving?
 
  - Check Regenerate - got stuck, couldn't cancel?

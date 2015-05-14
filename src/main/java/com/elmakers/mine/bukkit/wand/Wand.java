@@ -228,6 +228,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
     public static boolean BrushGlow = false;
     public static boolean BrushItemGlow = true;
     public static boolean LiveHotbar = true;
+    public static boolean Unbreakable = false;
     public static SoundEffect inventoryOpenSound = null;
     public static SoundEffect inventoryCloseSound = null;
     public static SoundEffect inventoryCycleSound = null;
@@ -1514,7 +1515,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		}
 
         // Make indestructible
-        if (indestructible && !displayManaAsDurability) {
+        if ((indestructible || Unbreakable) && !displayManaAsDurability) {
             CompatibilityUtils.makeUnbreakable(item);
         } else {
             CompatibilityUtils.removeUnbreakable(item);

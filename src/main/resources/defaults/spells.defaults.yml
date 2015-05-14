@@ -1658,7 +1658,7 @@ cure:
     icon_url: http://textures.minecraft.net/texture/775c41bd5e4ef3cba5f9bdc5258973c95477e819cb20c163ffb378db5ae3
     icon: cookie
     upgrade_required_path: student
-    upgrade_required_casts: 50
+    upgrade_required_casts: 20
     category: light
     worth: 800
     actions:

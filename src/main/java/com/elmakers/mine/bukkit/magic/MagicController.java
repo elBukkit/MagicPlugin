@@ -2033,6 +2033,7 @@ public class MagicController implements Listener, MageController {
         Wand.BrushItemGlow = properties.getBoolean("brush_item_glow", Wand.BrushItemGlow);
         Wand.WAND_KEY = properties.getString("wand_key", "wand");
         Wand.HIDE_FLAGS = (byte)properties.getInt("wand_hide_flags", (int)Wand.HIDE_FLAGS);
+        Wand.Unbreakable = properties.getBoolean("wand_unbreakable", Wand.Unbreakable);
 
         MaterialBrush.CopyMaterial = ConfigurationUtils.getMaterial(properties, "copy_item", MaterialBrush.CopyMaterial);
 		MaterialBrush.EraseMaterial = ConfigurationUtils.getMaterial(properties, "erase_item", MaterialBrush.EraseMaterial);

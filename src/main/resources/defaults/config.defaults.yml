@@ -182,6 +182,9 @@ wand_item: wood_hoe
 wand_upgrade_item: stick
 wand_location_offset: 0.5
 
+# Set this to true to make wands "Unbreakable", regardless of the indestructible property
+wand_unbreakable: false
+
 # Skill configuration
 default_skill_icon: stick
 skill_inventory_max_rows: 6
