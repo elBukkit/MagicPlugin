@@ -1,7 +1,5 @@
 # TODO
 
- - Add FallingBlock damage NBT option
- - Is shift+click in wand inv doing something weird?
  - Blink goes above nether ceiling
  - Selected Hotbar# not saving?
 

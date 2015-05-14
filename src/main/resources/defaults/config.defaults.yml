@@ -504,6 +504,9 @@ hitboxes:
 #   sheep: 1.25, 1.25, 1.25
 #   cow: 1.5, 1.5, 1.5
 
+max_height:
+  nether: 127
+
 ### Economy Helpers
 
 # These values are used to help create a balanced economy if you plan on selling wands, spells, or upgrades.

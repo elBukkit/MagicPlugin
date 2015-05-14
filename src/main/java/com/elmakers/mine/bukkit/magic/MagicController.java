@@ -77,7 +77,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.BookMeta;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.mcstats.Metrics;
@@ -1950,6 +1949,10 @@ public class MagicController implements Listener, MageController {
         if (properties.contains("hitboxes"))
         {
             CompatibilityUtils.configureHitboxes(properties.getConfigurationSection("hitboxes"));
+        }
+        if (properties.contains("max_height"))
+        {
+            CompatibilityUtils.configureMaxHeights(properties.getConfigurationSection("max_height"));
         }
 
         costReduction = (float)properties.getDouble("cost_reduction", costReduction);
