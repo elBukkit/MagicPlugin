@@ -601,7 +601,9 @@ spells:
     phase:
         name: Phase
         description: Phase to another dimension
-        cast: You phase to $world_name
+        cast: ""
+        teleport: You phase to $world_name
+        teleport_failed: Can't phase to $world_name from here
     invincible:
         name: Invincible
         description: Make yourself impervious to damage

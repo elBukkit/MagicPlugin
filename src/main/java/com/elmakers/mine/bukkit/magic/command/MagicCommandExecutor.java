@@ -604,9 +604,8 @@ public class MagicCommandExecutor extends MagicMapExecutor {
         Spell spell = wand == null ? null : wand.getActiveSpell();
         sender.sendMessage(ChatColor.GOLD + "Permission check for " + ChatColor.AQUA + player.getDisplayName());
         sender.sendMessage(ChatColor.GOLD + " at " + ChatColor.AQUA
-                + location.getWorld().getName() + "|"
-                + location.getBlockX() + "," + location.getBlockY() + "," + location.getBlockZ()
-                + ChatColor.GOLD + ": ");
+                + ChatColor.BLUE + location.getBlockX() + " " + location.getBlockY() + " " + location.getBlockZ()
+                + " " + ChatColor.DARK_BLUE + location.getWorld().getName());
 
         sender.sendMessage(ChatColor.AQUA + " Has bypass: " + formatBoolean(player.hasPermission("Magic.bypass")));
         sender.sendMessage(ChatColor.AQUA + " Has PVP bypass: " + formatBoolean(player.hasPermission("Magic.bypass_pvp")));
