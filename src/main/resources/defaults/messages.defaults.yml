@@ -387,7 +387,7 @@ spells:
     shell:
         name: Shell
         description: Create a reflective shell
-        upgrade_description: "&r&b&bull; &6Increased durability and reflectibity"
+        upgrade_description: "&r&b&bull; &6Increased durability and reflectivity"
     tag:
         name: Tag
         description: Leave a sign with your name

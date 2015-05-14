@@ -1,5 +1,7 @@
 # TODO
 
+ - Undo FX not playing in correct location on multiple casts?
+
  - Selected Hotbar# not saving?
 
  - Check Regenerate - got stuck, couldn't cancel?
