@@ -76,8 +76,10 @@ public class LevitateSpell extends TargetingSpell implements Listener
     private boolean mountBaby = false;
     private boolean smallArmorStand = false;
     private boolean useArmorStand = false;
+    private boolean useHelmet = false;
     private Material mountItem = null;
     private Vector armorStandArm = null;
+    private Vector armorStandHead = null;
     private ArmorStand armorStand = null;
     private EntityType mountType = null;
     private Entity mountEntity = null;
@@ -392,9 +394,11 @@ public class LevitateSpell extends TargetingSpell implements Listener
             mountItem = null;
         }
         mountBaby = parameters.getBoolean("mount_baby", false);
+        useHelmet = parameters.getBoolean("armor_stand_helmet", false);
         useArmorStand = parameters.getBoolean("armor_stand", false);
         smallArmorStand = parameters.getBoolean("armor_stand_small", false);
         armorStandArm = ConfigurationUtils.getVector(parameters, "armor_stand_arm");
+        armorStandHead = ConfigurationUtils.getVector(parameters, "armor_stand_head");
 
         maxMountBoost = parameters.getDouble("mount_boost", 1);
         mountBoostPerJump = parameters.getDouble("mount_boost_per_jump", 0.5);
@@ -767,41 +771,12 @@ public class LevitateSpell extends TargetingSpell implements Listener
                 }
                 if (entity instanceof ArmorStand) {
                     ArmorStand armorStand = (ArmorStand)entity;
-                    //CompatibilityUtils.setMarker(armorStand, true);
-                    CompatibilityUtils.setGravity(armorStand, false);
-                    if (mountInvisible) {
-                        CompatibilityUtils.setInvisible(armorStand, true);
-                    }
-                    if (armorStandArm != null) {
-                        armorStand.setRightArmPose(new EulerAngle(armorStandArm.getX(), armorStandArm.getY(), armorStandArm.getZ()));
-                    }
-                    if (heldItem != null) {
-                        armorStand.setItemInHand(heldItem);
-                    }
-                    if (smallArmorStand) {
-                        CompatibilityUtils.setSmall(armorStand, true);
-                    }
+                    configureArmorStand(armorStand);
                 }
                 else if (useArmorStand) {
                     armorStand = (ArmorStand) mage.getLocation().getWorld().spawnEntity(mage.getLocation(), EntityType.ARMOR_STAND);
-                    armorStand.setItemInHand(heldItem);
-                    armorStand.setMetadata("notarget", new FixedMetadataValue(controller.getPlugin(), true));
-                    armorStand.setMetadata("broom", new FixedMetadataValue(controller.getPlugin(), true));
-                    if (mountInvisible) {
-                        CompatibilityUtils.setInvisible(armorStand, true);
-                    }
-                    //CompatibilityUtils.setMarker(armorStand, true);
-                    CompatibilityUtils.setGravity(armorStand, false);
-                    if (armorStandArm != null) {
-                        armorStand.setRightArmPose(new EulerAngle(armorStandArm.getX(), armorStandArm.getY(), armorStandArm.getZ()));
-                    }
-
-                    if (smallArmorStand) {
-                        CompatibilityUtils.setSmall(armorStand, true);
-                    }
-
+                    configureArmorStand(armorStand);
                     armorStand.setPassenger(mountEntity);
-
                 }
 
                 mountEntity.setPassenger(mage.getEntity());
@@ -834,6 +809,29 @@ public class LevitateSpell extends TargetingSpell implements Listener
 			}
 		}, flyDelay);
 	}
+
+    protected void configureArmorStand(ArmorStand armorStand) {
+        if (useHelmet) {
+            armorStand.setHelmet(heldItem);
+        } else {
+            armorStand.setItemInHand(heldItem);
+        }
+        armorStand.setMetadata("notarget", new FixedMetadataValue(controller.getPlugin(), true));
+        armorStand.setMetadata("broom", new FixedMetadataValue(controller.getPlugin(), true));
+        if (mountInvisible) {
+            CompatibilityUtils.setInvisible(armorStand, true);
+        }
+        CompatibilityUtils.setGravity(armorStand, false);
+        if (armorStandArm != null) {
+            armorStand.setRightArmPose(new EulerAngle(armorStandArm.getX(), armorStandArm.getY(), armorStandArm.getZ()));
+        }
+        if (armorStandHead != null) {
+            armorStand.setHeadPose(new EulerAngle(armorStandHead.getX(), armorStandHead.getY(), armorStandHead.getZ()));
+        }
+        if (smallArmorStand) {
+            CompatibilityUtils.setSmall(armorStand, true);
+        }
+    }
 
 	@SuppressWarnings("deprecation")
 	@Override
