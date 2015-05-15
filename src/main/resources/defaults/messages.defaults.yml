@@ -984,7 +984,9 @@ spells:
         description: Teleport to your target
         usage: Can pass through solid objects
         no_target: Can't blink there
-        cast: Blink!
+        teleport_failed: Can't blink there
+        teleport: Blink!
+        cast: ""
     blink|2:
         upgrade_description: "&r&b&bull; &6Increased range and passthrough"
     blink|3:
