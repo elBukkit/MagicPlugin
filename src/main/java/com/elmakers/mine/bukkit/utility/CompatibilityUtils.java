@@ -744,4 +744,13 @@ public class CompatibilityUtils extends NMSUtils {
             ex.printStackTrace();
         }
     }
+
+    public static void setYawPitch(Entity entity, float yaw, float pitch) {
+        try {
+            Object handle = getHandle(entity);
+            class_Entity_setYawPitchMethod.invoke(handle, yaw, pitch);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
 }
