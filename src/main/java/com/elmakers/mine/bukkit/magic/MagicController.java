@@ -3452,10 +3452,12 @@ public class MagicController implements Listener, MageController {
                 Wand wand = new Wand(this, clickedItem);
                 if (wand.isUndroppable()) {
                     event.setCancelled(true);
-                    if (activeWand.getHotbarCount() > 1) {
-                        activeWand.cycleHotbar(1);
-                    } else {
-                        activeWand.closeInventory();
+                    if (activeWand != null) {
+                        if (activeWand.getHotbarCount() > 1) {
+                            activeWand.cycleHotbar(1);
+                        } else {
+                            activeWand.closeInventory();
+                        }
                     }
                     return;
                 }
