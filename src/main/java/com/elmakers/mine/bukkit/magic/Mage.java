@@ -1498,6 +1498,11 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             controller.disableItemSpawn();
             try {
                 player.closeInventory();
+
+                // We have to do this a lot..
+                // here it will get cleared on close inventory, potentially
+                gui = action;
+
                 if (inventory != null) {
                     player.openInventory(inventory);
                 }
