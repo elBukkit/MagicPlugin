@@ -32,6 +32,7 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitScheduler;
+import org.bukkit.util.EulerAngle;
 import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.api.spell.SpellEventType;
@@ -72,7 +73,12 @@ public class LevitateSpell extends TargetingSpell implements Listener
     private double crashDistance = 0;
     private double slowMultiplier = 1;
 
+    private boolean mountBaby = false;
+    private boolean smallArmorStand = false;
+    private boolean useArmorStand = false;
     private Material mountItem = null;
+    private Vector armorStandArm = null;
+    private ArmorStand armorStand = null;
     private EntityType mountType = null;
     private Entity mountEntity = null;
     private Horse.Variant mountHorseVariant = null;
@@ -289,7 +295,15 @@ public class LevitateSpell extends TargetingSpell implements Listener
         }
         direction.multiply(boost);
         if (mountEntity != null) {
-            mountEntity.setVelocity(direction);
+            if (armorStand != null) {
+                armorStand.setVelocity(direction);
+                CompatibilityUtils.setYawPitch(armorStand, location.getYaw(), location.getPitch());
+            } else {
+                mountEntity.setVelocity(direction);
+                if (mountEntity instanceof ArmorStand) {
+                    CompatibilityUtils.setYawPitch(mountEntity, location.getYaw(), location.getPitch());
+                }
+            }
         } else {
             player.setVelocity(direction);
         }
@@ -377,6 +391,10 @@ public class LevitateSpell extends TargetingSpell implements Listener
         } else {
             mountItem = null;
         }
+        mountBaby = parameters.getBoolean("mount_baby", false);
+        useArmorStand = parameters.getBoolean("armor_stand", false);
+        smallArmorStand = parameters.getBoolean("armor_stand_small", false);
+        armorStandArm = ConfigurationUtils.getVector(parameters, "armor_stand_arm");
 
         maxMountBoost = parameters.getDouble("mount_boost", 1);
         mountBoostPerJump = parameters.getDouble("mount_boost_per_jump", 0.5);
@@ -587,6 +605,9 @@ public class LevitateSpell extends TargetingSpell implements Listener
             if (mageEntity != null) {
                 mageEntity.eject();
             }
+            if (armorStand != null) {
+                armorStand.remove();
+            }
             if (mountEntity instanceof Horse) {
                 Horse horse = (Horse)mountEntity;
                 horse.getInventory().clear();
@@ -647,6 +668,8 @@ public class LevitateSpell extends TargetingSpell implements Listener
         boostTicksRemaining = 0;
 
         if (stashItem) {
+            final PlayerInventory inventory = player.getInventory();
+            heldItem = inventory.getItem(heldItemSlot);
             Plugin plugin = controller.getPlugin();
             plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
                 @Override
@@ -655,7 +678,6 @@ public class LevitateSpell extends TargetingSpell implements Listener
                     if (wand != null) {
                         wand.deactivate();
                     }
-                    PlayerInventory inventory = player.getInventory();
                     heldItem = inventory.getItem(heldItemSlot);
                     inventory.setItem(heldItemSlot, null);
                 }
@@ -727,18 +749,62 @@ public class LevitateSpell extends TargetingSpell implements Listener
                     if (mountItem != null) {
                         horse.getInventory().setArmor(new ItemStack(mountItem, 1));
                     }
+                    if (mountBaby) {
+                        horse.setBaby();
+                    }
                 }
                 if (entity instanceof Pig) {
                     Pig pig = (Pig) entity;
                     pig.setSaddle(true);
+                    if (mountBaby) {
+                       pig.setBaby();
+                    }
                 }
                 if (entity instanceof LivingEntity) {
                     LivingEntity living = (LivingEntity)mountEntity;
                     living.setHealth(0.5);
                     living.setMaxHealth(mountHealth);
                 }
-                mountEntity.setPassenger(mage.getEntity());
+                if (entity instanceof ArmorStand) {
+                    ArmorStand armorStand = (ArmorStand)entity;
+                    //CompatibilityUtils.setMarker(armorStand, true);
+                    CompatibilityUtils.setGravity(armorStand, false);
+                    if (mountInvisible) {
+                        CompatibilityUtils.setInvisible(armorStand, true);
+                    }
+                    if (armorStandArm != null) {
+                        armorStand.setRightArmPose(new EulerAngle(armorStandArm.getX(), armorStandArm.getY(), armorStandArm.getZ()));
+                    }
+                    if (heldItem != null) {
+                        armorStand.setItemInHand(heldItem);
+                    }
+                    if (smallArmorStand) {
+                        CompatibilityUtils.setSmall(armorStand, true);
+                    }
+                }
+                else if (useArmorStand) {
+                    armorStand = (ArmorStand) mage.getLocation().getWorld().spawnEntity(mage.getLocation(), EntityType.ARMOR_STAND);
+                    armorStand.setItemInHand(heldItem);
+                    armorStand.setMetadata("notarget", new FixedMetadataValue(controller.getPlugin(), true));
+                    armorStand.setMetadata("broom", new FixedMetadataValue(controller.getPlugin(), true));
+                    if (mountInvisible) {
+                        CompatibilityUtils.setInvisible(armorStand, true);
+                    }
+                    //CompatibilityUtils.setMarker(armorStand, true);
+                    CompatibilityUtils.setGravity(armorStand, false);
+                    if (armorStandArm != null) {
+                        armorStand.setRightArmPose(new EulerAngle(armorStandArm.getX(), armorStandArm.getY(), armorStandArm.getZ()));
+                    }
 
+                    if (smallArmorStand) {
+                        CompatibilityUtils.setSmall(armorStand, true);
+                    }
+
+                    armorStand.setPassenger(mountEntity);
+
+                }
+
+                mountEntity.setPassenger(mage.getEntity());
                 mountEntity.setMetadata("notarget", new FixedMetadataValue(controller.getPlugin(), true));
                 mountEntity.setMetadata("broom", new FixedMetadataValue(controller.getPlugin(), true));
 
@@ -753,7 +819,11 @@ public class LevitateSpell extends TargetingSpell implements Listener
 		Vector velocity = player.getVelocity();
 		velocity.setY(velocity.getY() + yBoost);
         if (mountEntity != null) {
-            mountEntity.setVelocity(velocity);
+            if (armorStand != null) {
+                armorStand.setVelocity(velocity);
+            } else {
+                mountEntity.setVelocity(velocity);
+            }
         } else {
             player.setVelocity(velocity);
         }

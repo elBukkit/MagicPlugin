@@ -4266,8 +4266,8 @@ walls:
         radius: 5
         thickness: 1
         transparent: transparent_to_construction
-        undo: 10000
-        cooldown: 1000
+        undo: 6000
+        cooldown: 8000
         brush: stained_clay
         brushcolor: true
         breakable: 3
@@ -5693,9 +5693,12 @@ broom:
         effect_confusion: 120,2
         bypass_deactivate: true
         stash_item: true
+        mount_baby: true
         mount_type: Horse
         mount_variant: undead_horse
-        mount_invisible: false
+        armor_stand: true
+        armor_stand_arm: 0,0,3.4
+        mount_invisible: true
         mount_boost_ticks: 100
         power_mount_boost_ticks: 500
         mount_health: 8
@@ -5707,8 +5710,8 @@ broom:
         steer_speed: 0.6
         power_steer_speed: 2
         slow_steer_speed: 0.05
-        mount_boost_per_jump: 0.25
-        power_mount_boost_per_jump: 0.5
+        mount_boost_per_jump: 1
+        power_mount_boost_per_jump: 2
         custom_sound: magic.flying
         effect_sound_interval: 120
         effect_sound_volume: 15
