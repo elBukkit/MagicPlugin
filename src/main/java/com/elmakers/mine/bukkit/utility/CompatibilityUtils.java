@@ -13,6 +13,7 @@ import org.bukkit.block.Skull;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Enderman;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -706,5 +707,41 @@ public class CompatibilityUtils extends NMSUtils {
             maxHeight = world.getMaxHeight();
         }
         return maxHeight;
+    }
+
+    public static void setInvisible(ArmorStand armorStand, boolean invisible) {
+        try {
+            Object handle = getHandle(armorStand);
+            class_ArmorStand_setInvisible.invoke(handle, invisible);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public static void setMarker(ArmorStand armorStand, boolean marker) {
+        try {
+            Object handle = getHandle(armorStand);
+            class_ArmorStand_setMarker.invoke(handle, marker);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public static void setGravity(ArmorStand armorStand, boolean marker) {
+        try {
+            Object handle = getHandle(armorStand);
+            class_ArmorStand_setGravity.invoke(handle, marker);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public static void setSmall(ArmorStand armorStand, boolean marker) {
+        try {
+            Object handle = getHandle(armorStand);
+            class_ArmorStand_setSmall.invoke(handle, marker);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 }

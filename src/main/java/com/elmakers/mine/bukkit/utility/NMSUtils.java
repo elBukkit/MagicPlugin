@@ -102,6 +102,7 @@ public class NMSUtils {
     protected static Class<?> class_PacketPlayOutEntityMetadata;
     protected static Class<?> class_PacketPlayOutEntityStatus;
     protected static Class<?> class_EntityFallingBlock;
+    protected static Class<?> class_EntityArmorStand;
 
     protected static Method class_NBTTagList_addMethod;
     protected static Method class_NBTTagList_getMethod;
@@ -155,6 +156,10 @@ public class NMSUtils {
     protected static Method class_TileEntityContainer_setLock;
     protected static Method class_TileEntityContainer_getLock;
     protected static Method class_ChestLock_isEmpty;
+    protected static Method class_ArmorStand_setInvisible;
+    protected static Method class_ArmorStand_setMarker;
+    protected static Method class_ArmorStand_setGravity;
+    protected static Method class_ArmorStand_setSmall;
 
     protected static Constructor class_NBTTagList_consructor;
     protected static Constructor class_NBTTagList_legacy_consructor;
@@ -250,6 +255,7 @@ public class NMSUtils {
             class_PacketPlayOutEntityMetadata = fixBukkitClass("net.minecraft.server.PacketPlayOutEntityMetadata");
             class_PacketPlayOutEntityStatus = fixBukkitClass("net.minecraft.server.PacketPlayOutEntityStatus");
             class_EntityFallingBlock = fixBukkitClass("net.minecraft.server.EntityFallingBlock");
+            class_EntityArmorStand = fixBukkitClass("net.minecraft.server.EntityArmorStand");
 
             class_NBTTagList_addMethod = class_NBTTagList.getMethod("add", class_NBTBase);
             class_NBTTagList_getMethod = class_NBTTagList.getMethod("get", Integer.TYPE);
@@ -290,6 +296,11 @@ public class NMSUtils {
             class_Entity_getIdMethod = class_Entity.getMethod("getId");
             class_Entity_getDataWatcherMethod = class_Entity.getMethod("getDataWatcher");
             class_Server_getOnlinePlayers = Server.class.getMethod("getOnlinePlayers");
+            class_ArmorStand_setInvisible = class_EntityArmorStand.getDeclaredMethod("setInvisible", Boolean.TYPE);
+            class_ArmorStand_setGravity = class_EntityArmorStand.getDeclaredMethod("setGravity", Boolean.TYPE);
+            class_ArmorStand_setSmall = class_EntityArmorStand.getDeclaredMethod("setSmall", Boolean.TYPE);
+            class_ArmorStand_setMarker = class_EntityArmorStand.getDeclaredMethod("n", Boolean.TYPE);
+            class_ArmorStand_setMarker.setAccessible(true);
 
             class_CraftInventoryCustom_constructor = class_CraftInventoryCustom.getConstructor(InventoryHolder.class, Integer.TYPE, String.class);
             class_EntityFireworkConstructor = class_EntityFirework.getConstructor(class_World, Double.TYPE, Double.TYPE, Double.TYPE, class_ItemStack);
