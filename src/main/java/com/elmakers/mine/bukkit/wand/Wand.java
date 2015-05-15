@@ -1049,7 +1049,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
             for (Map.Entry entry : castOverrides.entrySet()) {
                 parameters.add(entry.getKey() + " " + entry.getValue());
             }
-            node.set("overrides", StringUtils.join(parameters, ","));
+            node.set("overrides", "|"  + StringUtils.join(parameters, "|"));
         } else {
             node.set("overrides", null);
         }
@@ -1353,8 +1353,13 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
                 castOverrides = null;
                 String overrides = wandConfig.getString("overrides", null);
                 if (overrides != null && !overrides.isEmpty()) {
+                    char split = ',';
+                    if (overrides.charAt(0) == '|') {
+                        split = '|';
+                        overrides = overrides.substring(1);
+                    }
                     castOverrides = new HashMap<String, String>();
-                    String[] pairs = StringUtils.split(overrides, ',');
+                    String[] pairs = StringUtils.split(overrides, split);
                     for (String pair : pairs) {
                         String[] keyValue = StringUtils.split(pair, " ");
                         if (keyValue.length > 0) {

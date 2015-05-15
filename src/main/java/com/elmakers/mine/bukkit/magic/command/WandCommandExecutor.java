@@ -707,7 +707,13 @@ public class WandCommandExecutor extends MagicTabExecutor {
             return true;
         }
 
-        wand.setOverride(parameters[0], parameters[1]);
+        String value = "";
+        for (int i = 1; i < parameters.length; i++) {
+            if (i != 1) value = value + " ";
+            value = value + parameters[i];
+        }
+
+        wand.setOverride(parameters[0], value);
         sender.sendMessage(ChatColor.DARK_AQUA  + "Added override " + ChatColor.AQUA + parameters[0]
                 + ChatColor.WHITE + " = " + ChatColor.DARK_AQUA + parameters[1]);
 
