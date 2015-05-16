@@ -694,7 +694,8 @@ admin:
 
 borealis:
     path: master
-    icon: gold_axe
+    migrate_icon: gold_axe
+    icon: monster_eggs:2
     keep: true
     bound: true
     undroppable: true
@@ -1389,7 +1390,8 @@ magneticleggings:
 
 goggles:
     mode: cast
-    icon: nether_fence
+    icon: monster_eggs:1
+    migrate_icon: nether_fence
     indestructible: false
     locked: true
     keep: false
