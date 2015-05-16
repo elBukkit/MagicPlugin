@@ -80,6 +80,7 @@ public class LevitateSpell extends TargetingSpell implements Listener
     private Material mountItem = null;
     private Vector armorStandArm = null;
     private Vector armorStandHead = null;
+    private double headPitchAmount = 0;
     private ArmorStand armorStand = null;
     private EntityType mountType = null;
     private Entity mountEntity = null;
@@ -300,6 +301,9 @@ public class LevitateSpell extends TargetingSpell implements Listener
             if (armorStand != null) {
                 armorStand.setVelocity(direction);
                 CompatibilityUtils.setYawPitch(armorStand, location.getYaw(), location.getPitch());
+                if (headPitchAmount != 0 && armorStandHead == null) {
+                    armorStand.setHeadPose(new EulerAngle(headPitchAmount * location.getPitch() / 180 * Math.PI, 0, 0));
+                }
             } else {
                 mountEntity.setVelocity(direction);
                 if (mountEntity instanceof ArmorStand) {
@@ -399,6 +403,7 @@ public class LevitateSpell extends TargetingSpell implements Listener
         smallArmorStand = parameters.getBoolean("armor_stand_small", false);
         armorStandArm = ConfigurationUtils.getVector(parameters, "armor_stand_arm");
         armorStandHead = ConfigurationUtils.getVector(parameters, "armor_stand_head");
+        headPitchAmount = ConfigurationUtils.getDouble(parameters, "armor_stand_head_pitch", 0.0);
 
         maxMountBoost = parameters.getDouble("mount_boost", 1);
         mountBoostPerJump = parameters.getDouble("mount_boost_per_jump", 0.5);
