@@ -736,6 +736,15 @@ public class CompatibilityUtils extends NMSUtils {
         }
     }
 
+    public static void setDisabledSlots(ArmorStand armorStand, int disabledSlots) {
+        try {
+            Object handle = getHandle(armorStand);
+            class_EntityArmorStand_disabledSlotsField.set(handle, disabledSlots);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
     public static void setSmall(ArmorStand armorStand, boolean marker) {
         try {
             Object handle = getHandle(armorStand);

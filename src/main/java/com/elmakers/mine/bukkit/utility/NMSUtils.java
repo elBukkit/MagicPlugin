@@ -160,7 +160,7 @@ public class NMSUtils {
     protected static Method class_ArmorStand_setInvisible;
     protected static Method class_ArmorStand_setMarker;
     protected static Method class_ArmorStand_setGravity;
-    protected static Method class_ArmorStand_setSmall;
+    protected static Method class_ArmorStand_setSmall;;
 
     protected static Constructor class_NBTTagList_consructor;
     protected static Constructor class_NBTTagList_legacy_consructor;
@@ -202,6 +202,7 @@ public class NMSUtils {
     protected static Field class_EntityFallingBlock_hurtEntitiesField;
     protected static Field class_EntityFallingBlock_fallHurtMaxField;
     protected static Field class_EntityFallingBlock_fallHurtAmountField;
+    protected static Field class_EntityArmorStand_disabledSlotsField;
 
     static
     {
@@ -332,6 +333,8 @@ public class NMSUtils {
             class_AxisAlignedBB_maxXField = class_AxisAlignedBB.getField("d");
             class_AxisAlignedBB_maxYField = class_AxisAlignedBB.getField("e");
             class_AxisAlignedBB_maxZField = class_AxisAlignedBB.getField("f");
+            class_EntityArmorStand_disabledSlotsField = class_EntityArmorStand.getDeclaredField("bi");
+            class_EntityArmorStand_disabledSlotsField.setAccessible(true);
 
             class_Firework_ticksFlownField = class_EntityFirework.getDeclaredField("ticksFlown");
             class_Firework_ticksFlownField.setAccessible(true);
