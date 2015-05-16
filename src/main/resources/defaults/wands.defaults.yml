@@ -1177,7 +1177,8 @@ broomstick:
     path: broom
     mode: cast
     active_spell: broom
-    icon: gold_spade
+    migrate_icon: gold_spade
+    icon: monster_eggs
     indestructible: true
     locked: true
     keep: true
