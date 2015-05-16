@@ -4213,7 +4213,7 @@ blob:
         radius: 2
         transparent: transparent_to_construction
         undo: 2000
-        cooldown: 3000
+        cooldown: 4000
         brush: stained_glass
         brushcolor: true
         breakable: 3
@@ -4226,8 +4226,8 @@ blob|2:
     upgrade_required_casts: 50
     parameters:
         radius: 3
-        undo: 5000
-        cooldown: 6000
+        undo: 3000
+        cooldown: 5000
         brush: stained_clay
 
 blob|3:
@@ -4235,13 +4235,15 @@ blob|3:
     upgrade_required_casts: 50
     parameters:
         radius: 3
-        undo: 10000
-        cooldown: 12000
+        undo: 5000
+        cooldown: 8000
         brush: obsidian
 
 blob|4:
     parameters:
         brush: ""
+        undo: 10000
+        cooldown: 8000
 
 walls:
     icon: clay_ball
@@ -4267,7 +4269,7 @@ walls:
         thickness: 1
         transparent: transparent_to_construction
         undo: 6000
-        cooldown: 8000
+        cooldown: 10000
         brush: stained_clay
         brushcolor: true
         breakable: 3
