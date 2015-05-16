@@ -840,6 +840,7 @@ public class LevitateSpell extends TargetingSpell implements Listener
             CompatibilityUtils.setMarker(armorStand, true);
         }
         CompatibilityUtils.setGravity(armorStand, false);
+        CompatibilityUtils.setDisabledSlots(armorStand, 2039552);
         if (armorStandArm != null) {
             armorStand.setRightArmPose(new EulerAngle(armorStandArm.getX(), armorStandArm.getY(), armorStandArm.getZ()));
         }
