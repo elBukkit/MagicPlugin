@@ -782,6 +782,8 @@ public class LevitateSpell extends TargetingSpell implements Listener
                     armorStand = (ArmorStand) mage.getLocation().getWorld().spawnEntity(mage.getLocation(), EntityType.ARMOR_STAND);
                     configureArmorStand(armorStand);
                     armorStand.setPassenger(mountEntity);
+                } else {
+                    armorStand = null;
                 }
 
                 mountEntity.setPassenger(mage.getEntity());
