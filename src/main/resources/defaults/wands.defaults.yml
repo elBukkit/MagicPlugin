@@ -1178,8 +1178,8 @@ broomstick:
     path: broom
     mode: cast
     active_spell: broom
-    migrate_icon: gold_spade
-    icon: monster_eggs
+    migrate_icon: monster_eggs
+    icon: gold_spade
     indestructible: true
     locked: true
     keep: true
@@ -1203,7 +1203,7 @@ minister:
     mode: cast
     path: broom
     active_spell: broom
-    icon: monster_eggs
+    icon: gold_spade
     indestructible: true
     locked: true
     keep: true

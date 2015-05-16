@@ -76,11 +76,12 @@ public class LevitateSpell extends TargetingSpell implements Listener
     private boolean mountBaby = false;
     private boolean smallArmorStand = false;
     private boolean useArmorStand = false;
+    private boolean armorStandMarker = false;
     private boolean useHelmet = false;
     private Material mountItem = null;
     private Vector armorStandArm = null;
     private Vector armorStandHead = null;
-    private double headPitchAmount = 0;
+    private double pitchAmount = 0;
     private ArmorStand armorStand = null;
     private EntityType mountType = null;
     private Entity mountEntity = null;
@@ -301,8 +302,14 @@ public class LevitateSpell extends TargetingSpell implements Listener
             if (armorStand != null) {
                 armorStand.setVelocity(direction);
                 CompatibilityUtils.setYawPitch(armorStand, location.getYaw(), location.getPitch());
-                if (headPitchAmount != 0 && armorStandHead == null) {
-                    armorStand.setHeadPose(new EulerAngle(headPitchAmount * location.getPitch() / 180 * Math.PI, 0, 0));
+                if (pitchAmount != 0) {
+                    if (armorStandHead == null && useHelmet) {
+                        armorStand.setHeadPose(new EulerAngle(pitchAmount * location.getPitch() / 180 * Math.PI, 0, 0));
+                    } else if (!useHelmet) {
+                        EulerAngle armPose = armorStand.getRightArmPose();
+                        armPose.setY(pitchAmount * location.getPitch() / 180 * Math.PI);
+                        armorStand.setRightArmPose(armPose);
+                    }
                 }
             } else {
                 mountEntity.setVelocity(direction);
@@ -400,10 +407,11 @@ public class LevitateSpell extends TargetingSpell implements Listener
         mountBaby = parameters.getBoolean("mount_baby", false);
         useHelmet = parameters.getBoolean("armor_stand_helmet", false);
         useArmorStand = parameters.getBoolean("armor_stand", false);
+        armorStandMarker = parameters.getBoolean("armor_stand_marker", false);
         smallArmorStand = parameters.getBoolean("armor_stand_small", false);
         armorStandArm = ConfigurationUtils.getVector(parameters, "armor_stand_arm");
         armorStandHead = ConfigurationUtils.getVector(parameters, "armor_stand_head");
-        headPitchAmount = ConfigurationUtils.getDouble(parameters, "armor_stand_head_pitch", 0.0);
+        pitchAmount = ConfigurationUtils.getDouble(parameters, "armor_stand_pitch", 0.0);
 
         maxMountBoost = parameters.getDouble("mount_boost", 1);
         mountBoostPerJump = parameters.getDouble("mount_boost_per_jump", 0.5);
@@ -827,6 +835,9 @@ public class LevitateSpell extends TargetingSpell implements Listener
         armorStand.setMetadata("broom", new FixedMetadataValue(controller.getPlugin(), true));
         if (mountInvisible) {
             CompatibilityUtils.setInvisible(armorStand, true);
+        }
+        if (armorStandMarker) {
+            CompatibilityUtils.setMarker(armorStand, true);
         }
         CompatibilityUtils.setGravity(armorStand, false);
         if (armorStandArm != null) {

@@ -5697,8 +5697,11 @@ broom:
         mount_type: Horse
         mount_variant: undead_horse
         armor_stand: true
-        armor_stand_helmet: true
-        armor_stand_head_pitch: 0.3
+        armor_stand_helmet: false
+        armor_stand_pitch: 0.3
+        armor_stand_arm: 0,0,-0.62
+        armor_stand_marker: true
+        armor_stand_small: false
         mount_invisible: true
         mount_boost_ticks: 100
         power_mount_boost_ticks: 500
