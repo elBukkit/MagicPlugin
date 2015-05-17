@@ -2,7 +2,7 @@
 
 ## CB 1.1
 
- - Fix command-block casting and automata with Factions
+ - Fix command-block casting and automata with Factions and Lockette
 
 ## 4.9.8
 
