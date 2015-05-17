@@ -13,6 +13,9 @@ public class FactionsManager {
 	private Class<?> factionsManager = null;
 	private Method factionsCanBuildMethod = null;
 	private Method psFactoryMethod = null;
+    private Object board = null;
+    private Method getFactionAtMethod = null;
+    private Method isNoneMethod = null;
 
 	public void setEnabled(boolean enabled) {
 		this.enabled = enabled;
@@ -32,6 +35,14 @@ public class FactionsManager {
 					factionsManager = Class.forName("com.massivecraft.factions.engine.EngineMain");
 					factionsCanBuildMethod = factionsManager.getMethod("canPlayerBuildAt", Object.class, psClass, Boolean.TYPE);
 					psFactoryMethod = psClass.getMethod("valueOf", Location.class);
+
+                    Class<?> boardClass = Class.forName("com.massivecraft.factions.entity.BoardColl");
+                    Method boardSingleton = boardClass.getMethod("get");
+                    board = boardSingleton.invoke(null);
+                    getFactionAtMethod = boardClass.getMethod("getFactionAt", psClass);
+                    Class<?> factionClass = Class.forName("com.massivecraft.factions.entity.Faction");
+                    isNoneMethod = factionClass.getMethod("isNone");
+
 					if (factionsManager == null || factionsCanBuildMethod == null || psFactoryMethod == null) {
 						factionsManager = null;
 						factionsCanBuildMethod = null;
@@ -73,8 +84,21 @@ public class FactionsManager {
 	public boolean hasBuildPermission(Player player, Block block) {
 		if (enabled && block != null && factionsManager != null && factionsCanBuildMethod != null) {
 			
-			// Disallows building via command blocks, or while offline, when Factions is present.
-			if (player == null) return false;
+			// Check for wilderness
+			if (player == null) {
+                if (board == null || getFactionAtMethod == null || isNoneMethod == null || psFactoryMethod == null) {
+                    return false;
+                }
+
+                try {
+                    Object loc = psFactoryMethod.invoke(null, block.getLocation());
+                    Object faction = getFactionAtMethod.invoke(board, loc);
+                    return (faction == null || (Boolean)isNoneMethod.invoke(faction));
+                } catch (Throwable ex) {
+                    ex.printStackTrace();
+                    return false;
+                }
+            }
 			
 			try {
                 if (psFactoryMethod != null) {
