@@ -588,21 +588,21 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
      public void takeOwnership(Player player, boolean setBound, boolean setKeep) {
         if (mage != null && (ownerId == null || ownerId.length() == 0))
         {
-            mage.sendMessage(controller.getMessages().get("wand.bound_instructions", "").replace("$wand", getName()));
+            mage.sendMessage(getMessage("bound_instructions", "").replace("$wand", getName()));
             Spell spell = getActiveSpell();
             if (spell != null)
             {
-                String message = controller.getMessages().get("wand.spell_instructions", "").replace("$wand", getName());
+                String message = getMessage("spell_instructions", "").replace("$wand", getName());
                 mage.sendMessage(message.replace("$spell", spell.getName()));
             }
             if (spells.size() > 1)
             {
-                mage.sendMessage(controller.getMessages().get("wand.inventory_instructions", "").replace("$wand", getName()));
+                mage.sendMessage(getMessage("inventory_instructions", "").replace("$wand", getName()));
             }
             com.elmakers.mine.bukkit.api.wand.WandUpgradePath path = getPath();
             if (path != null)
             {
-                String message = controller.getMessages().get("wand.enchant_instructions", "").replace("$wand", getName());
+                String message = getMessage("enchant_instructions", "").replace("$wand", getName());
                 mage.sendMessage(message);
             }
         }
@@ -1492,7 +1492,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         }
 
 		if (remaining > 1) {
-			String message = controller.getMessages().get("wand.uses_remaining_brief");
+			String message = getMessage("uses_remaining_brief");
 			name = name + ChatColor.DARK_RED + " (" + ChatColor.RED + message.replace("$count", ((Integer)remaining).toString()) + ChatColor.DARK_RED + ")";
 		}
 		return name;
@@ -1519,7 +1519,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	}
 
     protected String getDisplayName() {
-        return randomize ? controller.getMessages().get("wand.randomized_name") : wandName;
+        return randomize ? getMessage("randomized_name") : wandName;
     }
 
 	public void updateName(boolean isActive) {
@@ -1603,7 +1603,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
             }
 		}
         if (superPowered) {
-            lore.add(ChatColor.DARK_AQUA + controller.getMessages().get("wand.super_powered"));
+            lore.add(ChatColor.DARK_AQUA + getMessage("super_powered"));
         }
         if (xpMaxBoost != 0) {
             lore.add(ChatColor.LIGHT_PURPLE + "" + ChatColor.ITALIC + getPercentageString(controller.getMessages(), "wand.mana_boost", xpMaxBoost));
@@ -1615,7 +1615,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
             SpellTemplate spell = controller.getSpellTemplate(castSpell);
             if (spell != null)
             {
-                lore.add(ChatColor.AQUA + controller.getMessages().get("wand.spell_aura").replace("$spell", spell.getName()));
+                lore.add(ChatColor.AQUA + getMessage("spell_aura").replace("$spell", spell.getName()));
             }
         }
         for (Map.Entry<PotionEffectType, Integer> effect : potionEffects.entrySet()) {
@@ -1629,7 +1629,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		if (cooldownReduction > 0) lore.add(ChatColor.AQUA + getLevelString(controller.getMessages(), "wand.cooldown_reduction", cooldownReduction));
 		if (power > 0) lore.add(ChatColor.AQUA + getLevelString(controller.getMessages(), "wand.power", power));
         if (superProtected) {
-            lore.add(ChatColor.DARK_AQUA + controller.getMessages().get("wand.super_protected"));
+            lore.add(ChatColor.DARK_AQUA + getMessage("super_protected"));
         } else {
             if (damageReduction > 0) lore.add(ChatColor.AQUA + getLevelString(controller.getMessages(), "wand.protection", damageReduction));
             if (damageReductionPhysical > 0) lore.add(ChatColor.AQUA + getLevelString(controller.getMessages(), "wand.protection_physical", damageReductionPhysical));
@@ -1698,7 +1698,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
                 lore.add(ChatColor.ITALIC + "" + ChatColor.GREEN + description);
             }
             else if (description.contains("$")) {
-                String randomDescription = controller.getMessages().get("wand.randomized_lore");
+                String randomDescription = getMessage("randomized_lore");
                 if (randomDescription.length() > 0) {
                     lore.add(ChatColor.ITALIC + "" + ChatColor.DARK_GREEN + randomDescription);
                 }
@@ -2088,7 +2088,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         WandUpgradePath path = (WandUpgradePath)getPath();
 		if (path == null) {
             if (enchanter != null) {
-                enchanter.sendMessage(controller.getMessages().get("wand.no_path"));
+                enchanter.sendMessage(getMessage("no_path"));
             }
             return 0;
         }
@@ -2098,7 +2098,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         int minLevel = path.getMinLevel();
         if (totalLevels < minLevel) {
             if (enchanter != null) {
-                String levelMessage = controller.getMessages().get("wand.need_more_levels");
+                String levelMessage = getMessage("need_more_levels");
                 levelMessage = levelMessage.replace("$levels", Integer.toString(minLevel));
                 enchanter.sendMessage(levelMessage);
             }
@@ -2132,7 +2132,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
             } else if (path.canEnchant(this)) {
                 if (enchanter != null && levels == 0)
                 {
-                    String message = controller.getMessages().get("wand.require_more_levels");
+                    String message = getMessage("require_more_levels");
                     enchanter.sendMessage(message);
                 }
             } else if (hasUpgrade) {
@@ -2141,7 +2141,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
                     levels += addLevels;
                 }
             } else if (enchanter != null) {
-                enchanter.sendMessage(controller.getMessages().get("wand.fully_enchanted").replace("$wand", getName()));
+                enchanter.sendMessage(getMessage("fully_enchanted").replace("$wand", getName()));
             }
 			addLevels = Math.min(totalLevels, maxLevel);
 			additive = true;
@@ -2199,7 +2199,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	protected void sendAddMessage(com.elmakers.mine.bukkit.api.magic.Mage mage, String messageKey, String nameParam) {
 		if (mage == null) return;
 		
-		String message = controller.getMessages().get(messageKey).replace("$name", nameParam).replace("$wand", getName());
+		String message = getMessage(messageKey).replace("$name", nameParam).replace("$wand", getName());
 		mage.sendMessage(message);
 	}
 
@@ -2411,7 +2411,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
                 if (xp > previousXP) {
                     if (mage != null)
                     {
-                        String message = controller.getMessages().get("wand.mana_added").replace("$value", Integer.toString((int)xp)).replace("$wand", getName());
+                        String message = getMessage("mana_added").replace("$value", Integer.toString((int)xp)).replace("$wand", getName());
                         mage.sendMessage(message);
                     }
                     modified = true;
@@ -2495,19 +2495,19 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		if (other.autoFill && player != null) {
 			this.fill(player, controller.getMaxWandFillLevel());
 			modified = true;
-			if (mage != null) mage.sendMessage(controller.getMessages().get("wand.filled").replace("$wand", getName()));
+			if (mage != null) mage.sendMessage(getMessage("filled").replace("$wand", getName()));
 		}
 		
 		if (other.autoOrganize && mage != null) {
 			this.organizeInventory(mage);
 			modified = true;
-			if (mage != null) mage.sendMessage(controller.getMessages().get("wand.reorganized").replace("$wand", getName()));
+			if (mage != null) mage.sendMessage(getMessage("reorganized").replace("$wand", getName()));
 		}
 
         if (other.autoAlphabetize) {
             this.alphabetizeInventory();
             modified = true;
-            if (mage != null) mage.sendMessage(controller.getMessages().get("wand.alphabetized").replace("$wand", getName()));
+            if (mage != null) mage.sendMessage(getMessage("alphabetized").replace("$wand", getName()));
         }
 
 		saveState();
@@ -2778,7 +2778,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 
         Player player = mage.getPlayer();
         if (!canUse(player)) {
-            mage.sendMessage(controller.getMessages().get("wand.bound").replace("$name", getOwner()));
+            mage.sendMessage(getMessage("bound").replace("$name", getOwner()));
             mage.setActiveWand(null);
             return;
         }
@@ -2954,10 +2954,10 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
                             if (levelDescription == null || levelDescription.isEmpty()) {
                                 levelDescription = spell.getName();
                             }
-                            mage.sendMessage(controller.getMessages().get("wand.spell_upgraded").replace("$wand", getName()).replace("$name", currentSpell.getName()).replace("$level", levelDescription));
+                            mage.sendMessage(getMessage("spell_upgraded").replace("$wand", getName()).replace("$name", currentSpell.getName()).replace("$level", levelDescription));
                             mage.sendMessage(spell.getUpgradeDescription().replace("$name", currentSpell.getName()));
                         } else {
-                            mage.sendMessage(controller.getMessages().get("wand.spell_added").replace("$wand", getName()).replace("$name", spell.getName()));
+                            mage.sendMessage(getMessage("spell_added").replace("$wand", getName()).replace("$name", spell.getName()));
                             activeSpell = spell.getKey();
                         }
                     }
@@ -3810,22 +3810,34 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         {
             if (spellCount == 0)
             {
-                String message = controller.getMessages().get("wand.spell_instructions", "").replace("$wand", getName());
+                String message = getMessage("spell_instructions", "").replace("$wand", getName());
                 mage.sendMessage(message.replace("$spell", template.getName()));
             }
             else
             if (spellCount == 1)
             {
-                mage.sendMessage(controller.getMessages().get("wand.inventory_instructions", "").replace("$wand", getName()));
+                mage.sendMessage(getMessage("inventory_instructions", "").replace("$wand", getName()));
             }
             if (inventoryCount == 1 && inventories.size() > 1)
             {
-                mage.sendMessage(controller.getMessages().get("wand.page_instructions", "").replace("$wand", getName()));
+                mage.sendMessage(getMessage("page_instructions", "").replace("$wand", getName()));
             }
         }
 		
 		return true;
 	}
+
+    protected String getMessage(String key) {
+        return getMessage(key, "");
+    }
+
+    protected String getMessage(String key, String defaultValue) {
+        String message = controller.getMessages().get("wand." + key, defaultValue);
+        if (template != null && !template.isEmpty()) {
+            message = controller.getMessages().get("wands." + template + "." + key, message);
+        }
+        return message;
+    }
 
 	@Override
 	public boolean add(com.elmakers.mine.bukkit.api.wand.Wand other) {
@@ -3881,11 +3893,11 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         {
             if (brushCount == 0)
             {
-                mage.sendMessage(controller.getMessages().get("wand.brush_instructions", "").replace("$wand", getName()));
+                mage.sendMessage(getMessage("brush_instructions").replace("$wand", getName()));
             }
             if (inventoryCount == 1 && inventories.size() > 1)
             {
-                mage.sendMessage(controller.getMessages().get("wand.page_instructions", "").replace("$wand", getName()));
+                mage.sendMessage(getMessage("page_instructions").replace("$wand", getName()));
             }
         }
 
@@ -3905,12 +3917,12 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
                 if (mage != null) {
                     BrushMode mode = brush.getMode();
                     if (mode == BrushMode.CLONE) {
-                        mage.sendMessage(controller.getMessages().get("wand.clone_material_activated"));
+                        mage.sendMessage(getMessage("clone_material_activated"));
                     } else if (mode == BrushMode.REPLICATE) {
-                        mage.sendMessage(controller.getMessages().get("wand.replicate_material_activated"));
+                        mage.sendMessage(getMessage("replicate_material_activated"));
                     }
                     if (!eraseWasActive && brush.isEraseModifierActive()) {
-                        mage.sendMessage(controller.getMessages().get("wand.erase_modifier_activated"));
+                        mage.sendMessage(getMessage("erase_modifier_activated"));
                     }
                 }
             }
