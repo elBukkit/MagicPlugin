@@ -10,6 +10,7 @@
  - Magic Sword, Invisibility Cloak and Night Vision Goggles all have a custom icon now
  - Renamed Magic Sword to Master Sword, spells now upgradeable
  - Master wand now gets the engineer item, architect has a staff
+ - Add some new mechanics for the Master Sword
 
 ## 4.9.8
 

@@ -2609,17 +2609,20 @@ public class MagicController implements Listener, MageController {
         if (!(apiMage instanceof com.elmakers.mine.bukkit.magic.Mage)) return;
         com.elmakers.mine.bukkit.magic.Mage mage = (com.elmakers.mine.bukkit.magic.Mage)apiMage;
 
-        if (Wand.isSkill(next))
+        Wand activeWand = mage.getActiveWand();
+        if (Wand.isSkill(next) || (activeWand != null && activeWand.isQuickCast()))
         {
             Spell spell = mage.getSpell(Wand.getSpell(next));
             if (spell != null) {
-                spell.cast();
+                if (activeWand != null) {
+                    activeWand.cast(spell);
+                } else {
+                    spell.cast();
+                }
                 event.setCancelled(true);
             }
             return;
         }
-
-		Wand activeWand = mage.getActiveWand();
 		
 		// Check for active Wand
 		if (activeWand != null && Wand.isWand(previous)) {
@@ -2678,8 +2681,10 @@ public class MagicController implements Listener, MageController {
                 public void run() {
                     if (activeWand.getHotbarCount() > 1) {
                         activeWand.cycleHotbar(1);
-                    } else {
+                    } else if (activeWand.isInventoryOpen()) {
                         activeWand.closeInventory();
+                    } else if (activeWand.isDropToggle()) {
+                        activeWand.toggleInventory();
                     }
                }
             });
@@ -3054,7 +3059,7 @@ public class MagicController implements Listener, MageController {
             return;
         }
 
-        if (action == Action.LEFT_CLICK_AIR || action == Action.LEFT_CLICK_BLOCK && !wand.isUpgrade())
+        if ((action == Action.LEFT_CLICK_AIR || action == Action.LEFT_CLICK_BLOCK) && !wand.isUpgrade() && !wand.isQuickCast())
 		{
             if (!hasWandPermission(player, wand))
             {
@@ -3076,7 +3081,7 @@ public class MagicController implements Listener, MageController {
 				wand.closeInventory();
 			}
 		}
-		if (toggleInventory)
+		if (toggleInventory && !wand.isDropToggle())
 		{
 			// Check for spell cancel first, e.g. fill or force
 			if (!mage.cancel()) {

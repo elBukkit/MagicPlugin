@@ -318,6 +318,8 @@ battle:
     effect_color: '11FF11'
     protection_physical: 0.3
     path: battle
+    mode_drop: true
+    mode_cast: true
     migrate_icon: diamond_sword
     icon: gold_sword
     xp_regeneration: 5

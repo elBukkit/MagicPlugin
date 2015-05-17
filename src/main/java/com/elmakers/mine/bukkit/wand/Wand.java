@@ -78,7 +78,8 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         "effect_sound", "effect_sound_interval", "effect_sound_pitch", "effect_sound_volume",
         "cast_spell", "cast_parameters", "cast_interval", "cast_min_velocity", "cast_velocity_direction",
 		"hotbar_count", "hotbar",
-		"icon", "mode", "brush_mode", "keep", "locked", "quiet", "force", "randomize", "rename", "rename_description",
+		"icon", "mode", "brush_mode", "mode_cast", "mode_drop",
+        "keep", "locked", "quiet", "force", "randomize", "rename", "rename_description",
 		"power", "overrides",
 		"protection", "protection_physical", "protection_projectiles", 
 		"protection_falling", "protection_fire", "protection_explosions",
@@ -130,6 +131,8 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
     private boolean randomize = false;
     private boolean rename = false;
     private boolean renameDescription = false;
+    private boolean quickCast = false;
+    private boolean dropToggle = false;
 	
 	private MaterialAndData icon = null;
     private MaterialAndData upgradeIcon = null;
@@ -1068,6 +1071,8 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		} else {
 			node.set("mode", null);
 		}
+        node.set("mode_drop", dropToggle);
+        node.set("mode_cast", quickCast);
         if (brushMode != null) {
             node.set("brush_mode", brushMode.name());
         } else {
@@ -1279,6 +1284,8 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
                 }
             }
             setBrushMode(parseWandMode(wandConfig.getString("brush_mode"), brushMode));
+            quickCast = wandConfig.getBoolean("mode_cast", quickCast);
+            dropToggle = wandConfig.getBoolean("mode_drop", dropToggle);
 
 			owner = wandConfig.getString("owner", owner);
             ownerId = wandConfig.getString("owner_id", ownerId);
@@ -1487,7 +1494,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         // Add active spell to description
         Messages messages = controller.getMessages();
         boolean showSpell = isModifiable() && hasPath();
-        if (spell != null && (spells.size() > 1 || showSpell)) {
+        if (spell != null && !quickCast && (spells.size() > 1 || showSpell)) {
             name = getSpellDisplayName(messages, spell, brush) + " (" + name + ChatColor.WHITE + ")";
         }
 
@@ -2629,6 +2636,11 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		if (isInventoryOpen() && mage != null && hotbars.size() > 1) {
 			saveInventory();
 			int hotbarCount = hotbars.size();
+            if (dropToggle && currentHotbar + direction >= hotbarCount) {
+                closeInventory();
+                currentHotbar = 0;
+                return;
+            }
 			currentHotbar = hotbarCount == 0 ? 0 : (currentHotbar + hotbarCount + direction) % hotbarCount;
 			updateHotbar();
 			if (inventoryCycleSound != null) {
@@ -3585,6 +3597,14 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	public List<Inventory> getHotbars() {
 		return hotbars;
 	}
+
+    public boolean isQuickCast() {
+        return quickCast;
+    }
+
+    public boolean isDropToggle() {
+        return dropToggle;
+    }
 	
 	public WandMode getMode() {
 		return mode != null ? mode : controller.getDefaultWandMode();
