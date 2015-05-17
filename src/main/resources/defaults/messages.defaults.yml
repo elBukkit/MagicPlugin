@@ -1505,8 +1505,8 @@ wands:
         name: Apprentice Wand
         description: $path Magic Wand
     battle:
-        name: Magic Sword
-        description: A sword with combat spells
+        name: Master Sword
+        description: Spellcasting sword
     engineer:
         name: Engineering Wand
         description: $path Magic Wand

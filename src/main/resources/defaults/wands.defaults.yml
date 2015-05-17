@@ -247,6 +247,7 @@ apprentice:
 
 master:
     path: master
+    icon: gold_axe
     xp_regeneration: 50
     xp_max: 250
     xp: 250
@@ -317,7 +318,8 @@ battle:
     effect_color: '11FF11'
     protection_physical: 0.3
     path: battle
-    icon: diamond_sword
+    migrate_icon: diamond_sword
+    icon: gold_sword
     xp_regeneration: 5
     xp_max: 50
     xp: 50
@@ -334,12 +336,8 @@ battle:
       - curse
       - fire
       - fireball
-      - frost
       - grenade
-      - tesseract
       - push
-      - lightning
-      - shrink
 
 #
 # A starter engineering wand
@@ -406,7 +404,7 @@ architect:
     bound: true
     undroppable: true
     indestructible: true
-    icon: gold_axe
+    icon: monster_eggs:2
     effect_color: '00FF00'
     protection_falling: 1
     protection: 0.2
@@ -1010,19 +1008,19 @@ apprentice_upgrade:
 master_upgrade:
     upgrade: true
     indestructible: false
+    upgrade_icon: gold_axe
     xp_max: 250
     xp_regeneration: 50
     hotbar_count: 3
 engineer_upgrade:
     upgrade: true
-    upgrade_icon: gold_axe
     indestructible: false
     xp_max: 300
     xp_regeneration: 70
 architect_upgrade:
     upgrade: true
+    upgrade_icon: monster_eggs:2
     indestructible: false
-    upgrade_icon: gold_axe
     xp_max: 400
     xp_regeneration: 90
 
@@ -1407,7 +1405,8 @@ goggles:
 invisiblecloak:
     mode: cast
     active_spell: invisiblecloak
-    icon: ender_pearl
+    icon: gold_pickaxe
+    migrate_icon: ender_pearl
     indestructible: true
     locked: true
     keep: true

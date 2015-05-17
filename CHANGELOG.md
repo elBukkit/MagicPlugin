@@ -7,6 +7,9 @@
  - Make Secure keys unplaceable, aim up and cast for a replacement key
  - Brooms use the 3D model while riding
  - Fix command-block casting and automata with Factions and Lockette
+ - Magic Sword, Invisibility Cloak and Night Vision Goggles all have a custom icon now
+ - Renamed Magic Sword to Master Sword, spells now upgradeable
+ - Master wand now gets the engineer item, architect has a staff
 
 ## 4.9.8
 
