@@ -16,10 +16,12 @@ import java.util.Collection;
 public class EnchantWandAction extends BaseSpellAction
 {
     private int levels;
+    private boolean useXp;
 
     public void prepare(CastContext context, ConfigurationSection parameters) {
         super.prepare(context, parameters);
         levels = parameters.getInt("levels", 30);
+        useXp = parameters.getBoolean("use_xp", false);
     }
 
     @Override
@@ -37,8 +39,17 @@ public class EnchantWandAction extends BaseSpellAction
             context.sendMessage("no_wand");
             return SpellResult.FAIL;
         }
-        if (wand.enchant(levels, mage) == 0) {
+
+        int xpLevels = levels;
+        if (useXp) {
+            xpLevels = mage.getLevel();
+        }
+        int levelsUsed = wand.enchant(xpLevels, mage);
+        if (levelsUsed == 0) {
             return SpellResult.FAIL;
+        }
+        if (useXp) {
+            mage.setLevel(Math.max(0, mage.getLevel() - levelsUsed));
         }
         return SpellResult.CAST;
 	}
@@ -48,6 +59,7 @@ public class EnchantWandAction extends BaseSpellAction
     {
         super.getParameterNames(spell, parameters);
         parameters.add("levels");
+        parameters.add("use_xp");
     }
 
     @Override
@@ -55,6 +67,8 @@ public class EnchantWandAction extends BaseSpellAction
     {
         if (parameterKey.equals("levels")) {
             examples.addAll(Arrays.asList(BaseSpell.EXAMPLE_SIZES));
+        } else if (parameterKey.equals("use_xp")) {
+            examples.addAll(Arrays.asList(BaseSpell.EXAMPLE_BOOLEANS));
         } else {
             super.getParameterOptions(spell, parameterKey, examples);
         }
