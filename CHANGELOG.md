@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## CB 1.1
+
+ - Fix command-block casting and automata with Factions
+
 ## 4.9.8
 
  - Cure casts no longer count towards level up unless it has something to cure
