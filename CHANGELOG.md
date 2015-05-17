@@ -6,7 +6,7 @@
  - Fix Blink/Phase taking you to the top of the nether
  - Make Secure keys unplaceable, aim up and cast for a replacement key
  - Brooms use the 3D model while riding
- - Fix command-block casting and automata with Factions
+ - Fix command-block casting and automata with Factions and Lockette
 
 ## 4.9.8
 

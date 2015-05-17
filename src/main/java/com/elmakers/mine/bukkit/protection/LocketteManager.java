@@ -52,7 +52,7 @@ public class LocketteManager {
 			try {
 				// Handle command blocks or console spells
 				if (player == null) {
-					return (Boolean)isProtectedMethod.invoke(null, block);
+					return !(Boolean)isProtectedMethod.invoke(null, block);
 				}
 
 				return (Boolean)isOwnerMethod.invoke(null, block, player.getName());
