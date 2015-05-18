@@ -271,6 +271,12 @@ public class ConfigurationUtils {
          }
      }
 
+    public static ConfigurationSection cloneConfiguration(ConfigurationSection section)
+    {
+        return addConfigurations(new MemoryConfiguration(), section);
+    }
+
+
     public static ConfigurationSection addConfigurations(ConfigurationSection first, ConfigurationSection second)
     {
         return addConfigurations(first, second, true);
