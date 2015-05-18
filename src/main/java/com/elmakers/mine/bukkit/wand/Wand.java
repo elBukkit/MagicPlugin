@@ -196,6 +196,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	private float storedXpProgress = 0;
     private Integer playerXpLevel = null;
     private Float playerXpProgress = null;
+    private boolean effectBubblesApplied = false;
 
     private long lastLocationTime;
     private Vector lastLocation;
@@ -2250,19 +2251,19 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		boolean modified = false;
 
         Messages messages = controller.getMessages();
-		if (other.isForcedUpgrade() || other.costReduction > costReduction) { costReduction = other.costReduction; modified = true; if (costReduction > 0) sendAddMessage(mage, "wand.upgraded_property", getLevelString(messages, "wand.cost_reduction", costReduction)); }
-		if (other.isForcedUpgrade() || other.power > power) { power = other.power; modified = true; if (power > 0) sendAddMessage(mage, "wand.upgraded_property", getLevelString(messages, "wand.power", power)); }
-		if (other.isForcedUpgrade() || other.damageReduction > damageReduction) { damageReduction = other.damageReduction; modified = true; if (damageReduction > 0) sendAddMessage(mage, "wand.upgraded_property", getLevelString(messages, "wand.protection", damageReduction)); }
-		if (other.isForcedUpgrade() || other.damageReductionPhysical > damageReductionPhysical) { damageReductionPhysical = other.damageReductionPhysical; modified = true; if (damageReductionPhysical > 0) sendAddMessage(mage, "wand.upgraded_property", getLevelString(messages, "wand.protection_physical", damageReductionPhysical)); }
-		if (other.isForcedUpgrade() || other.damageReductionProjectiles > damageReductionProjectiles) { damageReductionProjectiles = other.damageReductionProjectiles; modified = true; if (damageReductionProjectiles > 0) sendAddMessage(mage, "wand.upgraded_property", getLevelString(messages, "wand.protection_projectile", damageReductionProjectiles)); }
-		if (other.isForcedUpgrade() || other.damageReductionFalling > damageReductionFalling) { damageReductionFalling = other.damageReductionFalling; modified = true; if (damageReductionFalling > 0) sendAddMessage(mage, "wand.upgraded_property", getLevelString(messages, "wand.protection_fall", damageReductionFalling)); }
-		if (other.isForcedUpgrade() || other.damageReductionFire > damageReductionFire) { damageReductionFire = other.damageReductionFire; modified = true; if (damageReductionFire > 0) sendAddMessage(mage, "wand.upgraded_property", getLevelString(messages, "wand.protection_fire", damageReductionFire)); }
-		if (other.isForcedUpgrade() || other.damageReductionExplosions > damageReductionExplosions) { damageReductionExplosions = other.damageReductionExplosions; modified = true; if (damageReductionExplosions > 0) sendAddMessage(mage, "wand.upgraded_property", getLevelString(messages, "wand.protection_blast", damageReductionExplosions)); }
-        if (other.isForcedUpgrade() || other.xpRegenerationBoost > xpRegenerationBoost) { xpRegenerationBoost = other.xpRegenerationBoost; modified = true; if (xpRegenerationBoost > 0) sendAddMessage(mage, "wand.upgraded_property", getLevelString(messages, "wand.mana_regeneration_boost", xpRegenerationBoost)); }
-        if (other.isForcedUpgrade() || other.xpMaxBoost > xpMaxBoost) { xpMaxBoost = other.xpMaxBoost; modified = true; if (xpMaxBoost > 0) sendAddMessage(mage, "wand.upgraded_property", getLevelString(messages, "wand.mana_boost", xpMaxBoost)); }
+		if (other.costReduction > costReduction) { costReduction = other.costReduction; modified = true; if (costReduction > 0) sendAddMessage(mage, "wand.upgraded_property", getLevelString(messages, "wand.cost_reduction", costReduction)); }
+		if (other.power > power) { power = other.power; modified = true; if (power > 0) sendAddMessage(mage, "wand.upgraded_property", getLevelString(messages, "wand.power", power)); }
+		if (other.damageReduction > damageReduction) { damageReduction = other.damageReduction; modified = true; if (damageReduction > 0) sendAddMessage(mage, "wand.upgraded_property", getLevelString(messages, "wand.protection", damageReduction)); }
+		if (other.damageReductionPhysical > damageReductionPhysical) { damageReductionPhysical = other.damageReductionPhysical; modified = true; if (damageReductionPhysical > 0) sendAddMessage(mage, "wand.upgraded_property", getLevelString(messages, "wand.protection_physical", damageReductionPhysical)); }
+		if (other.damageReductionProjectiles > damageReductionProjectiles) { damageReductionProjectiles = other.damageReductionProjectiles; modified = true; if (damageReductionProjectiles > 0) sendAddMessage(mage, "wand.upgraded_property", getLevelString(messages, "wand.protection_projectile", damageReductionProjectiles)); }
+		if (other.damageReductionFalling > damageReductionFalling) { damageReductionFalling = other.damageReductionFalling; modified = true; if (damageReductionFalling > 0) sendAddMessage(mage, "wand.upgraded_property", getLevelString(messages, "wand.protection_fall", damageReductionFalling)); }
+		if (other.damageReductionFire > damageReductionFire) { damageReductionFire = other.damageReductionFire; modified = true; if (damageReductionFire > 0) sendAddMessage(mage, "wand.upgraded_property", getLevelString(messages, "wand.protection_fire", damageReductionFire)); }
+		if (other.damageReductionExplosions > damageReductionExplosions) { damageReductionExplosions = other.damageReductionExplosions; modified = true; if (damageReductionExplosions > 0) sendAddMessage(mage, "wand.upgraded_property", getLevelString(messages, "wand.protection_blast", damageReductionExplosions)); }
+        if (other.xpRegenerationBoost > xpRegenerationBoost) { xpRegenerationBoost = other.xpRegenerationBoost; modified = true; if (xpRegenerationBoost > 0) sendAddMessage(mage, "wand.upgraded_property", getLevelString(messages, "wand.mana_regeneration_boost", xpRegenerationBoost)); }
+        if (other.xpMaxBoost > xpMaxBoost) { xpMaxBoost = other.xpMaxBoost; modified = true; if (xpMaxBoost > 0) sendAddMessage(mage, "wand.upgraded_property", getLevelString(messages, "wand.mana_boost", xpMaxBoost)); }
 
         boolean needsInventoryUpdate = false;
-		if (other.isForcedUpgrade() || other.hotbars.size() > hotbars.size()) {
+		if (other.hotbars.size() > hotbars.size()) {
 			int newCount = Math.max(1, other.hotbars.size());
 			if (newCount != hotbars.size()) {
 				if (isInventoryOpen()) {
@@ -2410,9 +2411,9 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 			xpMax = 0;
 			xp = 0;
 		} else {
-			if (other.isForcedUpgrade() || other.xpRegeneration > xpRegeneration) { xpRegeneration = other.xpRegeneration; modified = true; sendAddMessage(mage, "wand.upgraded_property", getLevelString(messages, "wand.mana_regeneration", xpRegeneration, controller.getMaxManaRegeneration())); }
-			if (other.isForcedUpgrade() || other.xpMax > xpMax) { xpMax = other.xpMax; modified = true; sendAddMessage(mage, "wand.upgraded_property", getLevelString(messages, "wand.mana_amount", xpMax, controller.getMaxMana())); }
-			if (other.isForcedUpgrade() || other.xp > xp) {
+			if (other.xpRegeneration > xpRegeneration) { xpRegeneration = other.xpRegeneration; modified = true; sendAddMessage(mage, "wand.upgraded_property", getLevelString(messages, "wand.mana_regeneration", xpRegeneration, controller.getMaxManaRegeneration())); }
+			if (other.xpMax > xpMax) { xpMax = other.xpMax; modified = true; sendAddMessage(mage, "wand.upgraded_property", getLevelString(messages, "wand.mana_amount", xpMax, controller.getMaxMana())); }
+			if (other.xp > xp) {
                 float previousXP = xp;
                 xp = Math.min(xpMax, other.xp);
                 if (xp > previousXP) {
@@ -2470,7 +2471,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
                 String overrideKey = entry.getKey();
                 String currentValue = castOverrides.get(overrideKey);
                 String value = entry.getValue();
-                if (currentValue != null && !other.isForcedUpgrade()) {
+                if (currentValue != null) {
                     try {
                         double currentDouble = Double.parseDouble(currentValue);
                         double newDouble = Double.parseDouble(value);
@@ -2988,6 +2989,25 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 			}
 		} else if (isUpgrade(item)) {
 			Wand wand = new Wand(controller, item);
+            if (wand.isForcedUpgrade()) {
+                String template = wand.getTemplate();
+                ConfigurationSection templateConfig = getWandTemplate(template);
+                if (templateConfig == null) {
+                    return false;
+                }
+                templateConfig = ConfigurationUtils.cloneConfiguration(templateConfig);
+                templateConfig.set("name", null);
+                templateConfig.set("description", null);
+                templateConfig.set("force", null);
+                templateConfig.set("upgrade", null);
+                templateConfig.set("icon", null);
+                templateConfig.set("indestructible", null);
+                templateConfig.set("key", null);
+
+                this.loadProperties(templateConfig, false);
+                this.saveState();
+                return true;
+            }
 			return this.add(wand);
 		}
 		
@@ -3006,7 +3026,11 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		// Update Bubble effects effects
 		if (effectBubbles && effectColor != null) {
 			CompatibilityUtils.addPotionEffect(player, effectColor.getColor());
-		}
+            effectBubblesApplied = true;
+		} else if (effectBubblesApplied) {
+            effectBubblesApplied = false;
+            CompatibilityUtils.removePotionEffect(player);
+        }
 		
 		Location location = mage.getLocation();
 		long now = System.currentTimeMillis();
@@ -3178,8 +3202,9 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		if (mage == null) return;
 
         Player player = mage.getPlayer();
-		if (effectBubbles && player != null) {
+		if (effectBubblesApplied && player != null) {
 			CompatibilityUtils.removePotionEffect(player);
+            effectBubblesApplied = false;
 		}
 		
 		// This is a tying wands together with other spells, potentially

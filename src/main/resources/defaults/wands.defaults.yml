@@ -1084,6 +1084,12 @@ orangeeffects:
     icon: carpet:14
     effect_color: 'FFAA00'
     effect_bubbles: true
+cleareffects:
+    force: true
+    upgrade: true
+    effect_bubbles: false
+    effect_particle: ""
+    icon: barrier
 rainboweffects:
     upgrade: true
     indestructible: false

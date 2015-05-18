@@ -6728,6 +6728,7 @@ colorshop:
           wand|aquaeffects: 100
           wand|orangeeffects: 100
           wand|haloeffects: 1000
+          wand|cleareffects: 0
 
 upgradeshop:
     icon: gold_axe

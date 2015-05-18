@@ -1620,6 +1620,9 @@ wands:
     rainboweffects:
         name: Rainbow Wand Effects
         description: Color-changing particles
+    cleareffects:
+        name: Clear Wand Effects
+        description: Removes particles and bubbles
     haloeffects:
         name: Halo Effects
         description: A personalized halo
