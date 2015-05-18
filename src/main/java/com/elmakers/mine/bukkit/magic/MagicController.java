@@ -2664,7 +2664,7 @@ public class MagicController implements Listener, MageController {
 		final Player player = event.getPlayer();
         Mage apiMage = getMage(player);
         if (!(apiMage instanceof com.elmakers.mine.bukkit.magic.Mage)) return;
-        com.elmakers.mine.bukkit.magic.Mage mage = (com.elmakers.mine.bukkit.magic.Mage)apiMage;
+        final com.elmakers.mine.bukkit.magic.Mage mage = (com.elmakers.mine.bukkit.magic.Mage)apiMage;
 
         // Catch lag-related glitches dropping items from GUIs
         if (mage.getActiveGUI() != null) {
@@ -2681,12 +2681,12 @@ public class MagicController implements Listener, MageController {
             Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
                 @Override
                 public void run() {
-                    if (activeWand.getHotbarCount() > 1) {
+                    if (activeWand.isDropToggle()) {
+                        onToggleInventory(mage, activeWand);
+                    } else if (activeWand.getHotbarCount() > 1) {
                         activeWand.cycleHotbar(1);
                     } else if (activeWand.isInventoryOpen()) {
                         activeWand.closeInventory();
-                    } else if (activeWand.isDropToggle()) {
-                        activeWand.toggleInventory();
                     }
                }
             });
@@ -3085,53 +3085,63 @@ public class MagicController implements Listener, MageController {
 		}
 		if (toggleInventory && !wand.isDropToggle())
 		{
-			// Check for spell cancel first, e.g. fill or force
-			if (!mage.cancel()) {
+            onToggleInventory(mage, wand);
+            event.setCancelled(true);
+		}
+	}
 
-				// Check for wand cycling
-                WandMode wandMode = wand.getMode();
-				if (wandMode == WandMode.CYCLE) {
-					if (player.isSneaking()) {
-						com.elmakers.mine.bukkit.api.spell.Spell activeSpell = wand.getActiveSpell();
-						boolean cycleMaterials = false;
-						if (activeSpell != null) {
-							cycleMaterials = activeSpell.usesBrushSelection();
-						}
-						if (cycleMaterials) {
-							wand.cycleMaterials();
-						} else {
-							wand.cycleSpells();
-						}
-					} else {
-						wand.cycleSpells();
-					}
-				} else if (wandMode == WandMode.CAST) {
-                    wand.cast();
-				} else {
-                    Spell currentSpell = wand.getActiveSpell();
-                    if (wand.getBrushMode() == WandMode.CHEST && brushSelectSpell != null && !brushSelectSpell.isEmpty() && player.isSneaking() && currentSpell != null && currentSpell.usesBrushSelection())
-                    {
-                        Spell brushSelect = mage.getSpell(brushSelectSpell);
-                        if (brushSelect == null)
-                        {
-                            wand.toggleInventory();
-                        }
-                        else
-                        {
-                            brushSelect.cast();
-                        }
+    protected void onToggleInventory(com.elmakers.mine.bukkit.magic.Mage mage, Wand wand) {
+
+        // Check for spell cancel first, e.g. fill or force
+        if (!mage.cancel()) {
+            Player player = mage.getPlayer();
+
+            // Check for wand cycling
+            WandMode wandMode = wand.getMode();
+            if (wandMode == WandMode.CYCLE) {
+                if (player != null && player.isSneaking()) {
+                    com.elmakers.mine.bukkit.api.spell.Spell activeSpell = wand.getActiveSpell();
+                    boolean cycleMaterials = false;
+                    if (activeSpell != null) {
+                        cycleMaterials = activeSpell.usesBrushSelection();
                     }
-                    else
+                    if (cycleMaterials) {
+                        wand.cycleMaterials();
+                    } else {
+                        wand.cycleSpells();
+                    }
+                } else {
+                    wand.cycleSpells();
+                }
+            } else if (wandMode == WandMode.CAST) {
+                wand.cast();
+            } else {
+                Spell currentSpell = wand.getActiveSpell();
+                if (wand.getBrushMode() == WandMode.CHEST && brushSelectSpell != null && !brushSelectSpell.isEmpty() && player.isSneaking() && currentSpell != null && currentSpell.usesBrushSelection())
+                {
+                    Spell brushSelect = mage.getSpell(brushSelectSpell);
+                    if (brushSelect == null)
                     {
                         wand.toggleInventory();
                     }
+                    else
+                    {
+                        brushSelect.cast();
+                    }
                 }
-				event.setCancelled(true);
-			} else {
-				mage.playSound(Sound.NOTE_BASS, 1.0f, 0.7f);
-			}
-		}
-	}
+                else
+                {
+                    if (wand.isDropToggle() && wand.isInventoryOpen() && wand.getHotbarCount() > 1) {
+                        wand.cycleHotbar(1);
+                    } else {
+                        wand.toggleInventory();
+                    }
+                }
+            }
+        } else {
+            mage.playSound(Sound.NOTE_BASS, 1.0f, 0.7f);
+        }
+    }
 
 	@EventHandler
 	public void onPlayerJoin(PlayerJoinEvent event)
