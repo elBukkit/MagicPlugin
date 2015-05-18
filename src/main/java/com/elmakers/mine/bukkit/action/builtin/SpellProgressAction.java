@@ -9,8 +9,10 @@ import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.api.wand.Wand;
 import com.elmakers.mine.bukkit.magic.MagicPlugin;
 import com.elmakers.mine.bukkit.action.BaseSpellAction;
+import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.api.wand.WandUpgradePath;
+import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -88,7 +90,7 @@ public class SpellProgressAction extends BaseSpellAction implements GUIAction
                     lore.add(levelDescription);
                     String upgradeDescription = upgradeSpell.getUpgradeDescription();
                     if (upgradeDescription != null && !upgradeDescription.isEmpty()) {
-                        lore.add(upgradeDescription);
+                        InventoryUtils.wrapText(upgradeDescription, BaseSpell.MAX_LORE_LENGTH, lore);
                     }
                     String requiredPathKey = spell.getRequiredUpgradePath();
                     WandUpgradePath currentPath = wand.getPath();
