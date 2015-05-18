@@ -1187,6 +1187,7 @@ broomstick:
     migrate_icon: monster_eggs
     icon: gold_spade
     indestructible: true
+    bound: true
     locked: true
     keep: true
     effect_color: '880088'
@@ -1208,6 +1209,7 @@ crackedbroomstick:
 minister:
     mode: cast
     path: broom
+    bound: true
     active_spell: broom
     icon: gold_spade
     indestructible: true

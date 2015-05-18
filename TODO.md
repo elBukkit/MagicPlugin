@@ -1,12 +1,7 @@
 # TODO
 
- - Add "Clean wand" item to color shop
-
- - Undo FX not playing in correct location on multiple casts?
  - Hover text for spells
-
  - Selected Hotbar# not saving?
-
  - Check Regenerate - got stuck, couldn't cancel?
 
  - Make Portal spell portals avoid creating a frame on the other side (maybe handle TP'ing on portal event?)

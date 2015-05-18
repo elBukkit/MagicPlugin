@@ -168,10 +168,10 @@ wand:
     level_up: "&r&bYour $wand has been upgraded to &r&5$path"
     duplicated: Your wand has been duplicated
     player_duplicated: $name's wand has been duplicated
-    restored: Your wand has been restored
-    player_restored: $name's wand has been restored
-    not_restored: You have no recorded bound wand
-    player_not_restored: $name's wand has no recorded bound wand
+    restored: Your wands have been restored
+    player_restored: $name's wands have been restored
+    not_restored: You have no missing wands on record
+    player_not_restored: $name's wand has no missing wands on record
     unlocked: Your wand has been unlocked
     player_unlocked: $name's wand has been unlocked
     unknown_template: Unknown wand name $name

@@ -13,6 +13,8 @@
  - Add some new mechanics for the Master Sword
  - Fix custom configurations with randomized enchanting
  - Add "Clear Effects" item to color shop
+ - Multiple wands will be tracked for "/wand restore"
+ - Broomsticks are now bound to the player, as is the Master Sword
 
 ## 4.9.8
 

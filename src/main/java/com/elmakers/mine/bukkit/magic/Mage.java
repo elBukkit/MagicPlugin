@@ -80,7 +80,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     protected final MagicController controller;
     protected HashMap<String, MageSpell> spells = new HashMap<String, MageSpell>();
     private Wand activeWand = null;
-    private Wand boundWand = null;
+    private Map<String, Wand> boundWands = new HashMap<String, Wand>();
     private final Collection<Listener> quitListeners = new HashSet<Listener>();
     private final Collection<Listener> deathListeners = new HashSet<Listener>();
     private final Collection<Listener> damageListeners = new HashSet<Listener>();
@@ -342,7 +342,10 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     public void setActiveWand(Wand activeWand) {
         this.activeWand = activeWand;
         if (activeWand != null && activeWand.isBound() && activeWand.canUse(getPlayer())) {
-            this.boundWand = activeWand;
+            String template = activeWand.getTemplate();
+            if (template != null) {
+                boundWands.put(template, activeWand);
+            }
         }
         blockPlaceTimeout = System.currentTimeMillis() + 200;
         updateEquipmentEffects();
@@ -536,11 +539,28 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                 return true;
             }
 
-            boundWand = null;
+            boundWands.clear();
             if (configNode.contains("bound_wand")) {
-                boundWand = new Wand(controller, configNode.getConfigurationSection("bound_wand"));
+                // Legacy support
+                Wand boundWand = new Wand(controller, configNode.getConfigurationSection("bound_wand"));
+                String template = boundWand.getTemplate();
+                if (template != null) {
+                    boundWands.put(template, boundWand);
+                }
             } else if (configNode.contains("wand")) {
-                boundWand = new Wand(controller, controller.deserialize(configNode, "wand"));
+                // More legacy support :|
+                Wand boundWand = new Wand(controller, controller.deserialize(configNode, "wand"));
+                String template = boundWand.getTemplate();
+                if (template != null) {
+                    boundWands.put(template, boundWand);
+                }
+            } else if (configNode.contains("wands")) {
+                ConfigurationSection wands = configNode.getConfigurationSection("wands");
+                Set<String> keys = wands.getKeys(false);
+                for (String key : keys) {
+                    Wand boundWand = new Wand(controller, controller.deserialize(wands, key));
+                    boundWands.put(key, boundWand);
+                }
             }
             if (configNode.contains("data")) {
                 data = configNode.getConfigurationSection("data");
@@ -625,8 +645,11 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                 spell.save(section);
             }
 
-            if (boundWand != null) {
-                controller.serialize(configNode, "wand", boundWand.getItem());
+            if (boundWands.size() > 0) {
+                ConfigurationSection wandSection = configNode.createSection("wands");
+                for (Map.Entry<String, Wand> wandEntry : boundWands.entrySet()) {
+                    controller.serialize(wandSection,  wandEntry.getKey(), wandEntry.getValue().getItem());
+                }
             }
             if (respawnArmor != null) {
                 ConfigurationSection armorSection = configNode.createSection("respawn_armor");
@@ -1457,13 +1480,31 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
     @Override
     public boolean restoreWand() {
-        if (boundWand == null) return false;
+        if (boundWands.size() == 0) return false;
         Player player = getPlayer();
         if (player == null) return false;
-        ItemStack wandItem = boundWand.duplicate().getItem();
-        wandItem.setAmount(1);
-        controller.giveItemToPlayer(player, wandItem);
-        return true;
+        Set<String> foundTemplates = new HashSet<String>();
+        ItemStack[] inventory = getInventory().getContents();
+        for (ItemStack item : inventory) {
+            if (Wand.isWand(item)) {
+                Wand tempWand = new Wand(controller, item);
+                String template = tempWand.getTemplate();
+                if (template != null) {
+                    foundTemplates.add(template);
+                }
+            }
+        }
+
+        int givenWands = 0;
+        for (Map.Entry<String, Wand> wandEntry : boundWands.entrySet()) {
+            if (foundTemplates.contains(wandEntry.getKey())) continue;
+
+            givenWands++;
+            ItemStack wandItem = wandEntry.getValue().duplicate().getItem();
+            wandItem.setAmount(1);
+            controller.giveItemToPlayer(player, wandItem);
+        }
+        return givenWands > 0;
     }
 
     @Override
