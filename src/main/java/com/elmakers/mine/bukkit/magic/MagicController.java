@@ -2610,7 +2610,9 @@ public class MagicController implements Listener, MageController {
         com.elmakers.mine.bukkit.magic.Mage mage = (com.elmakers.mine.bukkit.magic.Mage)apiMage;
 
         Wand activeWand = mage.getActiveWand();
-        if (Wand.isSkill(next) || (activeWand != null && activeWand.isQuickCast()))
+        boolean isSkill = Wand.isSkill(next);
+        boolean isQuickCast = activeWand != null && activeWand.isQuickCast() && activeWand.isInventoryOpen();
+        if (isSkill || isQuickCast)
         {
             Spell spell = mage.getSpell(Wand.getSpell(next));
             if (spell != null) {
