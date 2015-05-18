@@ -366,6 +366,7 @@ delayed:
 indestructible:
 - bedrock
 - barrier
+- ender_portal_frame
 
 # if you don't want people destroying your end portals:
 #- ender_portal_frame 
@@ -383,6 +384,7 @@ restricted:
 - command
 - ender_portal
 - mob_spawner
+- ender_portal_frame
 
 # Which materials the AnimateSpell can't be cast on
 # This generally means Automata cannot be made out of these materials.
