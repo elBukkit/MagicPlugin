@@ -83,7 +83,9 @@ public class BrushSelectAction extends BaseSpellAction implements GUIAction
                     MaterialAndData baseMaterial = new MaterialAndData(item);
                     String baseName = baseMaterial.getBaseName();
                     String inventoryTitle = context.getMessage("variants_title", "$variant Types").replace("$variant", baseName);
-                    List<ItemStack> variantList = variants.get(baseMaterial.getMaterial());
+                    String brushKey = com.elmakers.mine.bukkit.wand.Wand.getBrush(item);
+                    MaterialAndData brushMaterial = new MaterialAndData(brushKey);
+                    List<ItemStack> variantList = variants.get(brushMaterial.getMaterial());
                     int invSize = ((variantList.size() + 9) / 9) * 9;
                     Inventory displayInventory = CompatibilityUtils.createInventory(null, invSize, inventoryTitle);
                     for (ItemStack variantItem : variantList)
@@ -137,7 +139,7 @@ public class BrushSelectAction extends BaseSpellAction implements GUIAction
                 continue;
             }
             if (brushItem != null) {
-                MaterialAndData material = new MaterialAndData(brushItem);
+                MaterialAndData material = new MaterialAndData(brushKey);
                 if (previous != null && material.getMaterial() == previous.getMaterial())
                 {
                     List<ItemStack> variantList = variants.get(material.getMaterial());
