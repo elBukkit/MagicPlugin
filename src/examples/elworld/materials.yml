@@ -15,6 +15,7 @@ restricted:
 - command
 - ender_portal
 - mob_spawner
+- ender_portal_frame
 - iron_block
 - gold_block
 - diamond_block
@@ -32,6 +33,7 @@ restricted:
 - furnace
 - tnt
 - beacon
+- monster_eggs
 
 cleanup:
 - iron_block

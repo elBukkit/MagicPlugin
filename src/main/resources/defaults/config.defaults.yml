@@ -304,6 +304,20 @@ schematic_icon_url: http://textures.minecraft.net/texture/6eb68dc909b12ef5fb397c
 default_brush_item: sulphur
 default_brush_icon_url: http://textures.minecraft.net/texture/5163dafac1d91a8c91db576caac784336791a6e18d8f7f62778fc47bf146b6
 
+# Use this for block types that Minecraft won't allow in an inventory (lava, water)
+# or for blocks that have been replaced in the resource pack (monster eggs)
+brush_replacements:
+  lava: lava_bucket
+  stationary_lava: lava_bucket
+  water: water_bucket
+  stationary_water: water_bucket
+  monster_eggs|0: stone
+  monster_eggs|1: cobblestone
+  monster_eggs|2: smooth_brick
+  monster_eggs|3: smooth_brick:1
+  monster_eggs|4: smooth_brick:2
+  monster_eggs|5: smooth_brick:3
+
 # The folder and file path to use for loading schematics. This will be relative to
 # The server's /plugins folder.
 # You can use WorldEdit's schematics folder for easy access to saved schematics.
