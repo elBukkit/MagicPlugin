@@ -886,6 +886,11 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         }
 
         backfired = false;
+
+        if (!this.isActive)
+        {
+            this.currentCast = null;
+        }
     }
 
     public boolean cast(String[] extraParameters, Location defaultLocation) {
@@ -901,9 +906,10 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     {
         this.reset();
 
-        if (this.currentCast == null || !this.isActive)
+        if (this.currentCast == null)
         {
-            this.currentCast = new CastContext(this);
+            this.currentCast = new CastContext();
+            this.currentCast.setSpell(this);
         }
 
         if (this.parameters == null) {
@@ -1881,7 +1887,8 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     @Override
     public com.elmakers.mine.bukkit.api.action.CastContext getCurrentCast() {
         if (currentCast == null) {
-            currentCast = new CastContext(this);
+            currentCast = new CastContext();
+            this.currentCast.setSpell(this);
         }
         return currentCast;
     }

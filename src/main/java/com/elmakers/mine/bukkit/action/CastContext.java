@@ -91,8 +91,7 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
         }
     }
 
-    public CastContext(Spell spell) {
-        this.setSpell(spell);
+    public CastContext() {
         this.location = null;
         this.entity = null;
         this.base = this;
