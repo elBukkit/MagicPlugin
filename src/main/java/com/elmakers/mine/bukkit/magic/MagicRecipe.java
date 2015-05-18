@@ -171,29 +171,65 @@ public class MagicRecipe {
 
     public boolean isMatch(ItemStack[] matrix) {
         if (recipe == null || matrix.length < 9) return false;
+        boolean rows[] = new boolean[3];
+        boolean columns[] = new boolean[3];
+        for (int matrixRow = 0; matrixRow < 3; matrixRow++) {
+            for (int matrixColumn = 0; matrixColumn < 3; matrixColumn++) {
+                int i = matrixRow * 3 + matrixColumn;
+                ItemStack ingredient = matrix[i];
+                if (ingredient != null && ingredient.getType() != Material.AIR) {
+                    rows[matrixRow] = true;
+                    break;
+                }
+            }
+        }
+        for (int matrixColumn = 0; matrixColumn < 3; matrixColumn++) {
+            for (int matrixRow = 0; matrixRow < 3; matrixRow++) {
+                int i = matrixRow * 3 + matrixColumn;
+                ItemStack ingredient = matrix[i];
+                if (ingredient != null && ingredient.getType() != Material.AIR) {
+                    columns[matrixColumn] = true;
+                    break;
+                }
+            }
+        }
+
         String[] shape = recipe.getShape();
-        if (shape == null || shape.length < 3) return false;
+        if (shape == null || shape.length < 1) return false;
 
         Map<Character, ItemStack> itemMap = recipe.getIngredientMap();
-        for (int i = 0; i < 9; i++) {
-            String row = shape[i / 3];
-            int charIndex = i % 3;
-            char charAt = ' ';
-            if (charIndex < row.length()) {
-                charAt = row.charAt(charIndex);
-            }
-            ItemStack item = itemMap.get(charAt);
-            ItemStack ingredient = matrix[i];
-            if (ingredient != null && ingredient.getType() == Material.AIR) {
-                ingredient = null;
-            }
-            if (item == null && ingredient == null) continue;
-            if (item == null && ingredient != null) return false;
-            if (ingredient == null && item != null) return false;
+        int shapeRow = 0;
+        for (int matrixRow = 0; matrixRow < 3; matrixRow++) {
+            if (!rows[matrixRow]) continue;
+            int shapeColumn = 0;
+            for (int matrixColumn = 0; matrixColumn < 3; matrixColumn++) {
+                if (!columns[matrixColumn]) continue;
+                if (shapeRow >= shape.length) return false;
 
-            if (ingredient.getType() != item.getType()) {
-                return false;
+                String row = shape[shapeRow];
+                char charAt = ' ';
+                if (shapeColumn >= row.length()) {
+                    return false;
+                }
+                charAt = row.charAt(shapeColumn);
+                ItemStack item = itemMap.get(charAt);
+                int i = matrixRow * 3 + matrixColumn;
+                ItemStack ingredient = matrix[i];
+                if (ingredient != null && ingredient.getType() == Material.AIR) {
+                    ingredient = null;
+                }
+                if (item == null && ingredient == null) {
+                    shapeColumn++;
+                    continue;
+                }
+                if (item == null && ingredient != null) return false;
+                if (ingredient == null && item != null) return false;
+                if (ingredient.getType() != item.getType()) {
+                    return false;
+                }
+                shapeColumn++;
             }
+            shapeRow++;
         }
         return true;
     }
