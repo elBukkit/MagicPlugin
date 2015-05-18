@@ -3,6 +3,7 @@
 ## CB 1.1
 
  - Fix command-block casting and automata with Factions and Lockette
+ - Fix custom configurations with randomized enchanting
 
 ## 4.9.8
 
