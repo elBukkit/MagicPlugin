@@ -2,7 +2,10 @@ package com.elmakers.mine.bukkit.block;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import com.elmakers.mine.bukkit.api.block.BrushMode;
 import com.elmakers.mine.bukkit.api.magic.MageController;
@@ -63,6 +66,7 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
     public static String DefaultBrushCustomIcon;
 
     public static final Material DEFAULT_MATERIAL = Material.DIRT;
+    private static final Map<MaterialAndData, MaterialAndData> replacements = new HashMap<MaterialAndData, MaterialAndData>();
 
     private BrushMode mode = BrushMode.MATERIAL;
     private Location cloneSource = null;
@@ -731,68 +735,64 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
 
     public ItemStack getItem(MageController controller, boolean isItem) {
         Messages messages = controller.getMessages();
-        Material material = this.getMaterial();
-        short dataId = this.getData();
+        MaterialAndData icon = new MaterialAndData(this.getMaterial(), this.getData());
         String extraLore = null;
         String customName = getName(messages);
         ItemStack itemStack = null;
 
         if (mode == BrushMode.ERASE) {
-            material = MaterialBrush.EraseMaterial;
+            icon.setMaterial(MaterialBrush.EraseMaterial);
             if (EraseCustomIcon != null && !EraseCustomIcon.isEmpty() && controller.isUrlIconsEnabled()) {
                 itemStack = InventoryUtils.getURLSkull(EraseCustomIcon);
             }
             extraLore = messages.get("wand.erase_material_description");
         } else if (mode == BrushMode.COPY) {
-            material = MaterialBrush.CopyMaterial;
+            icon.setMaterial(MaterialBrush.CopyMaterial);
             if (CopyCustomIcon != null && !CopyCustomIcon.isEmpty() && controller.isUrlIconsEnabled()) {
                 itemStack = InventoryUtils.getURLSkull(CopyCustomIcon);
             }
             extraLore = messages.get("wand.copy_material_description");
         } else if (mode == BrushMode.CLONE) {
-            material = MaterialBrush.CloneMaterial;
+            icon.setMaterial(MaterialBrush.CloneMaterial);
             if (CloneCustomIcon != null && !CloneCustomIcon.isEmpty() && controller.isUrlIconsEnabled()) {
                 itemStack = InventoryUtils.getURLSkull(CloneCustomIcon);
             }
             extraLore = messages.get("wand.clone_material_description");
         } else if (mode == BrushMode.REPLICATE) {
-            material = MaterialBrush.ReplicateMaterial;
+            icon.setMaterial(MaterialBrush.ReplicateMaterial);
             if (ReplicateCustomIcon != null && !ReplicateCustomIcon.isEmpty() && controller.isUrlIconsEnabled()) {
                 itemStack = InventoryUtils.getURLSkull(ReplicateCustomIcon);
             }
             extraLore = messages.get("wand.replicate_material_description");
         } else if (mode == BrushMode.MAP) {
-            material = MaterialBrush.MapMaterial;
+            icon.setMaterial(MaterialBrush.MapMaterial);
             if (MapCustomIcon != null && !MapCustomIcon.isEmpty() && controller.isUrlIconsEnabled()) {
                 itemStack = InventoryUtils.getURLSkull(MapCustomIcon);
             }
             extraLore = messages.get("wand.map_material_description");
         } else if (mode == BrushMode.SCHEMATIC) {
-            material = MaterialBrush.SchematicMaterial;
+            icon.setMaterial(MaterialBrush.SchematicMaterial);
             if (SchematicCustomIcon != null && !SchematicCustomIcon.isEmpty() && controller.isUrlIconsEnabled()) {
                 itemStack = InventoryUtils.getURLSkull(SchematicCustomIcon);
             }
             extraLore = messages.get("wand.schematic_material_description").replace("$schematic", schematicName);
         } else {
-            if (material == Material.WATER || material == Material.STATIONARY_WATER || material == Material.LAVA || material == Material.STATIONARY_LAVA) {
-                if (material == Material.WATER || material == Material.STATIONARY_WATER) {
-                    material = Material.WATER_BUCKET;
-                } else if (material == Material.LAVA || material == Material.STATIONARY_LAVA) {
-                    material = Material.LAVA_BUCKET;
-                }
+            MaterialAndData replacementMaterial = replacements.get(icon);
+            if (replacementMaterial != null) {
+                icon = replacementMaterial;
             }
             extraLore = messages.get("wand.building_material_description").replace("$material", customName);
         }
 
         if (itemStack == null) {
-            itemStack = new ItemStack(material, 1, dataId);
+            itemStack = icon.getItemStack(1);
             itemStack = InventoryUtils.makeReal(itemStack);
             if (itemStack == null) {
                 if (DefaultBrushCustomIcon != null && !DefaultBrushCustomIcon.isEmpty() && controller.isUrlIconsEnabled()) {
                     itemStack = InventoryUtils.getURLSkull(DefaultBrushCustomIcon);
                 }
                 if (itemStack == null) {
-                    itemStack = new ItemStack(DefaultBrushMaterial, 1, dataId);
+                    itemStack = new ItemStack(DefaultBrushMaterial, 1);
                     itemStack = InventoryUtils.makeReal(itemStack);
                     if (itemStack == null) {
                         return itemStack;
@@ -814,6 +814,17 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
         }
         itemStack.setItemMeta(meta);
         return itemStack;
+    }
+
+    public static void configureReplacements(ConfigurationSection replacementConfig) {
+        replacements.clear();
+        if (replacementConfig == null) return;
+        Set<String> keys = replacementConfig.getKeys(false);
+        for (String key : keys) {
+            MaterialAndData toMaterial = ConfigurationUtils.getMaterialAndData(replacementConfig, key);
+            MaterialAndData fromMaterial = ConfigurationUtils.toMaterialAndData(key);
+            replacements.put(fromMaterial, toMaterial);
+        }
     }
 
     @Override
