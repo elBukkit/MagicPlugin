@@ -42,7 +42,7 @@ public abstract class TargetingSpell extends BaseSpell {
     private List<Target>                        targets                 = null;
     private TargetType							targetType				= TargetType.OTHER;
     private boolean								targetNPCs				= false;
-    private boolean								targetInvisible			= false;
+    private boolean								targetInvisible			= true;
     private boolean								targetUnknown			= true;
     private boolean                             targetingComplete		= false;
     private boolean                             targetSpaceRequired     = false;
@@ -832,7 +832,7 @@ public abstract class TargetingSpell extends BaseSpell {
         }
 
         targetNPCs = parameters.getBoolean("target_npc", false);
-        targetInvisible = parameters.getBoolean("target_invisible", false);
+        targetInvisible = parameters.getBoolean("target_invisible", true);
         targetUnknown = parameters.getBoolean("target_unknown", true);
 
         if (parameters.contains("target_type")) {
