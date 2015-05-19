@@ -177,6 +177,14 @@ public class HatAction extends BaseSpellAction
 		}
 
 		player.getInventory().setHelmet(hatItem);
+
+        // Sanity check to make sure the block was allowed to be created
+        ItemStack helmetItem = player.getInventory().getHelmet();
+        if (!NMSUtils.isTemporary(helmetItem)) {
+            player.getInventory().setHelmet(itemStack);
+            return SpellResult.NO_TARGET;
+        }
+
         context.registerForUndo(new HatUndoAction(mage));
 
         if (mage instanceof com.elmakers.mine.bukkit.magic.Mage) {
