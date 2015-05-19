@@ -8,6 +8,7 @@ import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
@@ -122,7 +123,7 @@ public class CommandAction extends BaseSpellAction {
             }
         }
 
-        return command;
+        return ChatColor.translateAlternateColorCodes('&', command);
     }
 
     @Override
