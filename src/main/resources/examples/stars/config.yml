@@ -1,0 +1,22 @@
+#
+# Set up for an Avatar (bending) server.
+#
+
+# This is a complete wand/spell overhaul
+load_default_spells: true
+disable_default_spells: true
+load_default_wands: false
+load_default_enchanting: false
+load_default_crafting: false
+
+# Don't allow crafting
+enable_crafting: false
+
+# Don't allow combining
+enable_combining: false
+
+# Whether wands can be upgraded on an enchanting table
+enable_enchanting: false
+
+# Wands don't glow
+wand_glow: false

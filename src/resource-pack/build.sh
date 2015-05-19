@@ -45,6 +45,19 @@ find . -name ".DS_Store" -type f -delete
 zip -r -X ../Magic-bending-5-RP.zip *
 cd ..
 
+echo "** BUILDING STARS **"
+
+mkdir stars
+cd stars
+mkdir assets
+cd assets
+cp -R ../../../common/assets/* .
+cd ..
+cp -R ../../stars/* .
+find . -name ".DS_Store" -type f -delete
+zip -r -X ../Magic-stars-5-RP.zip *
+cd ..
+
 # 4.0 Configs include outdated models/textures
 
 echo "** BUILDING 4.0 SURVIVAL **"
