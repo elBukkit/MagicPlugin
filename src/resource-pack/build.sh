@@ -29,7 +29,7 @@ cp -R ../../../common/assets/* .
 cd ..
 cp -R ../../potter/* .
 find . -name ".DS_Store" -type f -delete
-zip -r -X ../Magic-potter-5-RP.zip *
+zip -r -X ../Magic-potter-RP-5.zip *
 cd ..
 
 echo "** BUILDING BENDING **"
@@ -42,7 +42,7 @@ cp -R ../../../common/assets/* .
 cd ..
 cp -R ../../bending/* .
 find . -name ".DS_Store" -type f -delete
-zip -r -X ../Magic-bending-5-RP.zip *
+zip -r -X ../Magic-bending-RP-5.zip *
 cd ..
 
 echo "** BUILDING STARS **"
@@ -55,7 +55,7 @@ cp -R ../../../common/assets/* .
 cd ..
 cp -R ../../stars/* .
 find . -name ".DS_Store" -type f -delete
-zip -r -X ../Magic-stars-5-RP.zip *
+zip -r -X ../Magic-stars-RP-5.zip *
 cd ..
 
 # 4.0 Configs include outdated models/textures

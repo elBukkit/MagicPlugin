@@ -82,6 +82,8 @@ wolf:
     cost_reduction: 2
     cooldown_reduction: 2
     protection_falling: 2
+    protected: true
+    powered: true
     quiet: 0
     power: 0
     haste: 0.1

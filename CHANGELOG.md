@@ -3,6 +3,7 @@
 ## 5.1
 
  - Fix Hat eating your helmet if you cast it on water or lava
+ - Fix some Master Sword glitches
 
 ## 5.0
 

@@ -2622,8 +2622,8 @@ public class MagicController implements Listener, MageController {
                 } else {
                     spell.cast();
                 }
-                event.setCancelled(true);
             }
+            event.setCancelled(true);
             return;
         }
 		

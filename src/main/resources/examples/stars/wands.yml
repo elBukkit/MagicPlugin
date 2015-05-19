@@ -134,6 +134,8 @@ wolf:
     indestructible: true
     cost_reduction: 2
     protection: 2
+    protected: true
+    powered: true
     cooldown_reduction: 2
     health_regeneration: 1
     hunger_regeneration: 1
