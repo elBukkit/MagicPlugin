@@ -416,18 +416,6 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
             }
         }
     }
-    private void applyUpgradeItems(Wand wand, Mage mage) {
-        applyUpgradeItem(wand, mage);
-        if (parent != null) {
-            parent.applyUpgradeItems(wand, mage);
-        }
-    }
-
-    public void catchup(Wand wand, Mage mage) {
-        if (parent != null) {
-            parent.applyUpgradeItems(wand, mage);
-        }
-    }
 
     public void upgraded(com.elmakers.mine.bukkit.api.wand.Wand wand, Mage mage) {
         CommandSender sender = Bukkit.getConsoleSender();
