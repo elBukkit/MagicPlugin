@@ -1,5 +1,7 @@
 # CHANGELOG
 
+## 5.1
+
 ## 5.0
 
  - Magic is now targeted for 1.8. See http://dev.bukkit.org/plugins/magic for 1.7-compatible builds.
