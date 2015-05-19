@@ -109,11 +109,8 @@ spells:
         name: Apparate
         description: Teleport to your target
         no_target: Can't apparate there
-    apparatemaxima:
-        name: Apparate Maxima
-        description: Teleport to your target
-        usage: Can pass through solid objects
-        no_target: Can't apparate there
+        teleport_failed: Can't apparate there
+        teleport: ""
     araniaexumai:
         name: Arania Exumai
         description: Charm for repelling arachnids

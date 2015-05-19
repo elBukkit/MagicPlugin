@@ -81,10 +81,11 @@ aparecium:
         mana: 80
 
 apparate:
-    inherit: blink
+    inherit: blink|3
     category: elective
 
 araniaexumai:
+    icon_url: http://textures.minecraft.net/texture/67764b015a5e734dda05422c497d29b3f8edfbfe94472e665b277cda648
     icon: ink_sack:2
     category: creatures
     pvp_restricted: true
@@ -923,6 +924,7 @@ ventus:
 
 flipendo:
     icon: rails
+    icon_url: http://textures.minecraft.net/texture/e13e9af0957a9dd4995811ef3e869b4ad8fbb59ca7474e4c84ce7f6019b079
     category: dada
     pvp_restricted: true
     cast_on_no_target: true
@@ -1372,6 +1374,7 @@ levicorpus|3:
 lumos:
     icon: ink_sack:11
     category: charms
+    icon_url: http://textures.minecraft.net/texture/4abfe52d50f710f4103bc650b5e972d49832ea419841d9fa24e16ce617c716
     worth: 10
     actions:
         cast:
@@ -1516,21 +1519,11 @@ orchideous:
     inherit: pollinate
 
 periculum:
-    icon: firework
+    inherit: flare
     category: charms
-    class: FireworkSpell
-    worth: 2
-    show_undoable: false
-    actions:
-        cast:
-        -  class: Firework
-    parameters:
-        allow_max_range: true
-        range: 16
-    costs:
-        mana: 30
 
 periculux:
+    icon_url: http://textures.minecraft.net/texture/aa7e54c1c7634bdf1118db91da9e12b6b4d17f7fb7b7d5b0d06d554feb737bf
     icon: firework
     category: charms
     show_undoable: false
@@ -2223,6 +2216,7 @@ noxmaxima:
     category: staff
 
 vulnera:
+    icon_url: http://textures.minecraft.net/texture/6b7da98ef45cf45185d21d61f5fa3d5966a3ee52273620a6e4dfd54cf99dbc
     icon: ink_sack:9
     category: charms
     cast_on_no_target: true
@@ -2268,6 +2262,7 @@ vulnera:
         mana: 80
 
 ferula:
+    icon_url: http://textures.minecraft.net/texture/bc8e7e971bbac56883fe9bfe1b38c5f568ece6cbe09ca59d85f6dab4688d14
     icon: ink_sack:9
     category: charms
     cast_on_no_target: true
