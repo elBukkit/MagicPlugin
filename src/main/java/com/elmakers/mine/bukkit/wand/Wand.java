@@ -1882,7 +1882,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 
     public static void updateSpellItem(Messages messages, ItemStack itemStack, SpellTemplate spell, com.elmakers.mine.bukkit.api.magic.Mage mage, Wand wand, String activeMaterial, boolean isItem) {
         String displayName;
-		if (wand != null) {
+		if (wand != null && !wand.isQuickCast()) {
 			displayName = wand.getActiveWandName(spell);
 		} else {
 			displayName = getSpellDisplayName(messages, spell, MaterialBrush.parseMaterialKey(activeMaterial));
