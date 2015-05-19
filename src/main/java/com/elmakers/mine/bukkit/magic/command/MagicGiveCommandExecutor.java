@@ -5,6 +5,7 @@ import com.elmakers.mine.bukkit.api.magic.MagicAPI;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -115,7 +116,9 @@ public class MagicGiveCommandExecutor extends MagicTabExecutor {
             for (String wandKey : allWands) {
                 options.add(wandKey);
             }
-            options.addAll(api.getBrushes());
+            for (Material material : Material.values()) {
+                options.add(material.name().toLowerCase());
+            }
 		}
 		return options;
 	}
