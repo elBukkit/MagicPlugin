@@ -32,3 +32,14 @@ recall:
 enchantwand:
   parameters:
     cooldown: 1200000
+
+ollivander:
+  hidden: true
+  actions:
+    cast:
+    - class: GiveItem
+    - class: Command
+      console: true
+      commands:
+      - pex user @pn group add year1
+      - broadcast &6@pd &3has enrolled at &bHogwarts&3!
