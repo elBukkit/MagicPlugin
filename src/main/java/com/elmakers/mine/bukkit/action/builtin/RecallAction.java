@@ -479,6 +479,7 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
             }
             waypointItem.setItemMeta(meta);
             waypointItem = InventoryUtils.makeReal(waypointItem);
+            InventoryUtils.hideFlags(waypointItem, (byte)63);
             InventoryUtils.setMeta(waypointItem, "waypoint", "true");
             displayInventory.setItem(index, waypointItem);
             options.put(index, waypoint);
