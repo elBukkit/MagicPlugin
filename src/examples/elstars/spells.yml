@@ -1,0 +1,9 @@
+recall:
+  parameters:
+    commands:
+      hub:
+        name: elMakers Hub
+        description: Return to the Hub
+        icon: nether_star
+        command: mserver hub
+        op: true

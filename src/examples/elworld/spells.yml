@@ -67,7 +67,7 @@ recall:
         name: elMakers Hub
         description: Return to the Hub
         icon: nether_star
-        command: server hub
+        command: mserver hub
         op: true
     warps:
       town:
