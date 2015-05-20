@@ -275,6 +275,14 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
             {
                 warpName = config.getString("name", warpName);
             }
+            else
+            {
+                config = commandConfig.getConfigurationSection(unlockWarp);
+                if (config != null)
+                {
+                    warpName = config.getString("name", warpName);
+                }
+            }
             String unlockMessage = context.getMessage("unlock_warp").replace("$name", warpName);
             context.sendMessage(unlockMessage);
 
