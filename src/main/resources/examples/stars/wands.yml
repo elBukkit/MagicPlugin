@@ -88,7 +88,7 @@ lightsaber_purple:
 
 lightsaber_orange:
     path: youngling
-    icon: wooden_sword
+    icon: wood_sword
     mode_drop: true
     mode_cast: true
     xp_max: 50
