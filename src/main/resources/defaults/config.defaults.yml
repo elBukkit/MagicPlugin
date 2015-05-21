@@ -316,6 +316,7 @@ brush_replacements:
   monster_eggs|3: smooth_brick:1
   monster_eggs|4: smooth_brick:2
   monster_eggs|5: smooth_brick:3
+  fire: flint_and_steel
 
 # The folder and file path to use for loading schematics. This will be relative to
 # The server's /plugins folder.
