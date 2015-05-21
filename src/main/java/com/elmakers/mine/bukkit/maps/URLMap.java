@@ -391,7 +391,6 @@ public class URLMap extends MapRenderer implements com.elmakers.mine.bukkit.api.
                         loading = false;
                     } catch (Exception ex) {
                         controller.warning("Failed to load map " + url + ": " + ex.getMessage());
-                        ex.printStackTrace();
                     }
                 }
             });
