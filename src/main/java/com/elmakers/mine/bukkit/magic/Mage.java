@@ -37,7 +37,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityCombustEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
-import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -606,7 +605,6 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                         int index = Integer.parseInt(key);
                         ItemStack item = controller.deserialize(respawnArmorData, key);
                         respawnArmor.put(index, item);
-
                     } catch (Exception ex) {
                     }
                 }
@@ -615,8 +613,28 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             if (configNode.contains("brush")) {
                 brush.load(configNode.getConfigurationSection("brush"));
             }
+
+            if (configNode.contains("inventory")) {
+                Player player = getPlayer();
+                if (player != null) {
+                    controller.getLogger().info("Restoring saved inventory for player " + player.getName() + " - did the server not shut down properly?");
+                    if (activeWand != null) {
+                        activeWand.deactivate();
+                    }
+                    Inventory inventory = player.getInventory();
+                    List<?> items = configNode.getList("inventory");
+                    for (int slot = 0; slot < items.size(); slot++) {
+                        Object item = items.get(slot);
+                        if (item instanceof ItemStack) {
+                            inventory.setItem(slot, (ItemStack)item);
+                        } else {
+                            inventory.setItem(slot, null);
+                        }
+                    }
+                }
+            }
         } catch (Exception ex) {
-            controller.getPlugin().getLogger().warning("Failed to load player data for " + playerName + ": " + ex.getMessage());
+            controller.getLogger().warning("Failed to load player data for " + playerName + ": " + ex.getMessage());
             return false;
         }
 
@@ -664,6 +682,11 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                 {
                     controller.serialize(inventorySection, Integer.toString(entry.getKey()), entry.getValue());
                 }
+            }
+
+            if (activeWand != null && activeWand.hasStoredInventory()) {
+                ConfigurationSection inventoryConfig = configNode.createSection("inventory");
+                configNode.set("inventory", activeWand.getStoredInventory().getContents());
             }
 
             ConfigurationSection dataSection = configNode.createSection("data");

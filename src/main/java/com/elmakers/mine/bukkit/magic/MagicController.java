@@ -2199,17 +2199,20 @@ public class MagicController implements Listener, MageController {
 
     @EventHandler
     public void onWorldSaveEvent(WorldSaveEvent event) {
-        if (!undoOnWorldSave) return;
-
         World world = event.getWorld();
         Collection<? extends Player> players = plugin.getServer().getOnlinePlayers();
         for (Player player : players) {
             if (world.equals(player.getWorld()) && isMage(player)) {
-                com.elmakers.mine.bukkit.api.block.UndoQueue queue = getMage(player).getUndoQueue();
-                if (queue != null) {
-                    int undone = queue.undoScheduled();
-                    if (undone  > 0) {
-                        info("Undid " + undone + " spells for " + player.getName() + "prior to save of world " + world.getName());
+                Mage mage = getMage(player);
+                saveMage(mage, true);
+
+                if (undoOnWorldSave) {
+                    com.elmakers.mine.bukkit.api.block.UndoQueue queue = mage.getUndoQueue();
+                    if (queue != null) {
+                        int undone = queue.undoScheduled();
+                        if (undone  > 0) {
+                            info("Undid " + undone + " spells for " + player.getName() + "prior to save of world " + world.getName());
+                        }
                     }
                 }
             }
@@ -3224,44 +3227,48 @@ public class MagicController implements Listener, MageController {
             }
         }
 
+        mage.deactivate();
+
         if (!mage.isLoading() && (mage.isPlayer() || saveNonPlayerMages) && loaded)
         {
             // Save synchronously on shutdown
-            boolean asynchronousSaving = initialized;
-            final File playerData = new File(playerDataFolder, mage.getId() + ".dat");
-            info("Player logged out, saving data to " + playerData.getName() + (asynchronousSaving ? "" : " synchronously"));
-            final DataStore playerConfig = new DataStore(getLogger(), playerData);
-            if (mage.save(playerConfig)) {
-                if (asynchronousSaving) {
-                    Bukkit.getScheduler().runTaskAsynchronously(plugin, new Runnable() {
-                        @Override
-                        public void run() {
-                            synchronized (saveLock) {
-                                try {
-                                    playerConfig.save();
-                                } catch (Exception ex) {
-                                    ex.printStackTrace();
-                                }
-                            }
-                        }
-                    });
-                } else {
-                    synchronized (saveLock) {
-                        try {
-                            playerConfig.save();
-                        } catch (Exception ex) {
-                            ex.printStackTrace();
-                        }
-                    }
-                }
-            }
+            saveMage(mage, initialized);
         }
-
-        mage.deactivate();
 
 		// Let the GC collect the mage
         mages.remove(mage.getId());
 	}
+
+    public void saveMage(Mage mage, boolean asynchronous)
+    {
+        final File playerData = new File(playerDataFolder, mage.getId() + ".dat");
+        info("Saving player data for " + mage.getName() + " to " + playerData.getName() + (asynchronous ? "" : " synchronously"));
+        final DataStore playerConfig = new DataStore(getLogger(), playerData);
+        if (mage.save(playerConfig)) {
+            if (asynchronous) {
+                Bukkit.getScheduler().runTaskAsynchronously(plugin, new Runnable() {
+                    @Override
+                    public void run() {
+                        synchronized (saveLock) {
+                            try {
+                                playerConfig.save();
+                            } catch (Exception ex) {
+                                ex.printStackTrace();
+                            }
+                        }
+                    }
+                });
+            } else {
+                synchronized (saveLock) {
+                    try {
+                        playerConfig.save();
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
+                }
+            }
+        }
+    }
 
 	@EventHandler
 	public void onInventoryOpen(InventoryOpenEvent event) {
