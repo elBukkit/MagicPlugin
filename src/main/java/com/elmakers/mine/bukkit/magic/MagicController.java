@@ -3032,6 +3032,10 @@ public class MagicController implements Listener, MageController {
         // Hacky check for immediately activating a wand if for some reason it was
 		// not active
 		if (wand == null && hasWand) {
+            if (mage.isLoading()) {
+                event.setCancelled(true);
+                return;
+            }
 			wand = Wand.getActiveWand(this, player);
 			wand.activate(mage);
 			getLogger().warning("Player was holding an inactive wand on interact- activating.");
