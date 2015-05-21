@@ -152,6 +152,15 @@ public class CompatibilityUtils extends NMSUtils {
         }
     }
 
+    public static void setSilent(Entity entity, boolean flag) {
+        try {
+            Object handle = getHandle(entity);
+            class_Entity_setSilentMethod.invoke(handle, flag);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
     public static void removePotionEffect(LivingEntity entity) {
         watch(entity, 7, 0);
     }

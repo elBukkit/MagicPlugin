@@ -111,6 +111,7 @@ public class NMSUtils {
     protected static Method class_NBTTagCompound_setMethod;
     protected static Method class_DataWatcher_watchMethod;
     protected static Method class_World_getEntitiesMethod;
+    protected static Method class_Entity_setSilentMethod;
     protected static Method class_Entity_setYawPitchMethod;
     protected static Method class_Entity_getBukkitEntityMethod;
     protected static Method class_EntityLiving_damageEntityMethod;
@@ -270,6 +271,7 @@ public class NMSUtils {
             class_Entity_getBukkitEntityMethod = class_Entity.getMethod("getBukkitEntity");
             class_Entity_setYawPitchMethod = class_Entity.getDeclaredMethod("setYawPitch", Float.TYPE, Float.TYPE);
             class_Entity_setYawPitchMethod.setAccessible(true);
+            class_Entity_setSilentMethod = class_Entity.getDeclaredMethod("b", Boolean.TYPE);
             class_AxisAlignedBB_createBBMethod = class_AxisAlignedBB.getMethod("a", Double.TYPE, Double.TYPE, Double.TYPE, Double.TYPE, Double.TYPE, Double.TYPE);
             class_World_explodeMethod = class_World.getMethod("createExplosion", class_Entity, Double.TYPE, Double.TYPE, Double.TYPE, Float.TYPE, Boolean.TYPE, Boolean.TYPE);
             class_NBTTagCompound_setBooleanMethod = class_NBTTagCompound.getMethod("setBoolean", String.class, Boolean.TYPE);
