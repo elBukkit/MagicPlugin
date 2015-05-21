@@ -80,7 +80,7 @@
 		<dependency>
 			<groupId>com.elmakers.mine.bukkit</groupId>
 			<artifactId>MagicLib</artifactId>
-			<version>3.0</version>
+			<version>3.1-SNAPSHOT</version>
 		</dependency>
         <dependency>
             <groupId>com.sk89q</groupId>
@@ -171,6 +171,12 @@
             <version>1.5.5.5-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>fr.neatmonster</groupId>
+            <artifactId>nocheatplus</artifactId>
+            <version>3.12.1-SNAPSHOT</version>
+            <scope>provided</scope>
+        </dependency>
 	</dependencies>
 	<repositories>
         <repository>
@@ -218,6 +224,10 @@
         <repository>
             <id>Heroes</id>
             <url>http://nexus.theyeticave.net/content/repositories/pub_releases/</url>
+        </repository>
+        <repository>
+            <id>NoCheatPlus</id>
+            <url>http://ncp-repo.yawk.at/</url>
         </repository>
     </repositories>
 	<build>

@@ -2367,8 +2367,9 @@ familiar:
     parameters:
         target_type: LivingEntity
         allow_max_range: false
-        cooldown: 5000
+        cooldown: 30000
         range: 32
+        undo: 20000
     costs:
         mana: 20
 
@@ -2413,8 +2414,9 @@ monster:
     parameters:
         target_type: LivingEntity
         allow_max_range: false
-        cooldown: 5000
+        cooldown: 30000
         range: 32
+        undo: 20000
     costs:
         mana: 40
 
@@ -2460,6 +2462,7 @@ mob:
         allow_max_range: false
         range: 32
         cooldown: 45000
+        undo: 30000
         count: 20
     costs:
         mana: 100
@@ -2496,7 +2499,8 @@ farm:
         allow_max_range: false
         range: 64
         count: 10
-        cooldown: 30000
+        cooldown: 45000
+        undo: 30000
     costs:
         mana: 50
 
@@ -4367,7 +4371,7 @@ disintegrate:
         target: other
         brush: erase
         player_damage: 6
-        entity_damage: 50
+        entity_damage: 15
         check_destructible: false
         undo: 5000
         cooldown: 500

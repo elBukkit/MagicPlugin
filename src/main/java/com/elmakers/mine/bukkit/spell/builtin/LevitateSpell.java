@@ -73,6 +73,7 @@ public class LevitateSpell extends TargetingSpell implements Listener
     private double crashDistance = 0;
     private double slowMultiplier = 1;
 
+    private boolean mountSilent = true;
     private boolean mountBaby = false;
     private boolean smallArmorStand = false;
     private boolean useArmorStand = false;
@@ -418,6 +419,7 @@ public class LevitateSpell extends TargetingSpell implements Listener
         mountBoostTicks = parameters.getInt("mount_boost_ticks", 40);
         mountHealth = parameters.getDouble("mount_health", 2);
         mountInvisible = parameters.getBoolean("mount_invisible", true);
+        mountSilent = parameters.getBoolean("mount_silent", true);
         stashItem = parameters.getBoolean("stash_item", false);
 
         mountBoostTicks += mage.getPower() * parameters.getInt("power_mount_boost_ticks", 0);
@@ -734,6 +736,9 @@ public class LevitateSpell extends TargetingSpell implements Listener
                     if (entity != null) {
                         if (entity instanceof LivingEntity && mountInvisible) {
                             ((LivingEntity)entity).addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 2 << 24, 0));
+                        }
+                        if (mountSilent) {
+                            CompatibilityUtils.setSilent(entity, true);
                         }
                         Method setLocationMethod = mountClass.getMethod("setLocation", Double.TYPE, Double.TYPE, Double.TYPE, Float.TYPE, Float.TYPE);
                         setLocationMethod.invoke(nmsEntity, location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch());

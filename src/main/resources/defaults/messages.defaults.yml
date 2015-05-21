@@ -1110,6 +1110,8 @@ spells:
         cast: You teleport back to safety
     recall:
         name: Recall
+        teleport: ""
+        teleport_failed: Recall failed
         description: Return you to previous locations
         usage: Cast down to set a marker
         no_target: Can't place a marker there
