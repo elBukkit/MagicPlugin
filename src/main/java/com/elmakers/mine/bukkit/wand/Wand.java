@@ -3201,6 +3201,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	public void deactivate() {
 		if (mage == null) return;
 
+        Mage mage = this.mage;
         Player player = mage.getPlayer();
 		if (effectBubblesApplied && player != null) {
 			CompatibilityUtils.removePotionEffect(player);
@@ -3225,7 +3226,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		}
         saveState();
 		mage.setActiveWand(null);
-		mage = null;
+		this.mage = null;
 	}
 	
 	public Spell getActiveSpell() {

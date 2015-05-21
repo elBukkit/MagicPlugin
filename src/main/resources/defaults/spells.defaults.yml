@@ -3146,7 +3146,7 @@ cluster:
         fuse: 60
         fire: false
         undo: 20000
-        cooldown: 1000
+        cooldown: 6000
     costs:
         mana: 150
 
@@ -3176,7 +3176,7 @@ bomb:
         py: ~20
         pdy: -0.75
         undo: 10000
-        cooldown: 5000
+        cooldown: 8000
     costs:
         mana: 250
 

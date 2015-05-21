@@ -343,7 +343,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         this.activeWand = activeWand;
         if (activeWand != null && activeWand.isBound() && activeWand.canUse(getPlayer())) {
             String template = activeWand.getTemplate();
-            if (template != null) {
+            if (template != null && !template.isEmpty()) {
                 boundWands.put(template, activeWand);
             }
         }
@@ -551,7 +551,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                 // More legacy support :|
                 Wand boundWand = new Wand(controller, controller.deserialize(configNode, "wand"));
                 String template = boundWand.getTemplate();
-                if (template != null) {
+                if (template != null && !template.isEmpty()) {
                     boundWands.put(template, boundWand);
                 }
             } else if (configNode.contains("wands")) {
