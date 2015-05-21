@@ -631,10 +631,6 @@ wand_item_enchantable:
 # If set to non-zero, represents a time (in milliseconds) after which all spells will be reversed.
 auto_undo: 0
 
-# Backup Inventory to wand data
-# This can cause some issues with item sizes, and is somewhat experimental
-backup_inventory: false
-
 # Set this to true to turn on spell glow. May not work on all server versions.
 spell_glow: false
 

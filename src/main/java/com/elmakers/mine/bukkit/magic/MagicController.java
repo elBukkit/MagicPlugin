@@ -1883,7 +1883,6 @@ public class MagicController implements Listener, MageController {
 		commitOnQuit = properties.getBoolean("commit_on_quit", commitOnQuit);
         saveNonPlayerMages = properties.getBoolean("save_non_player_mages", saveNonPlayerMages);
         undoOnWorldSave = properties.getBoolean("undo_on_world_save", undoOnWorldSave);
-        backupInventory = properties.getBoolean("backup_inventory", backupInventory);
         defaultWandPath = properties.getString("default_wand_path", "");
         defaultWandMode = Wand.parseWandMode(properties.getString("default_wand_mode", ""), defaultWandMode);
         defaultBrushMode = Wand.parseWandMode(properties.getString("default_brush_mode", ""), defaultBrushMode);
@@ -4466,10 +4465,6 @@ public class MagicController implements Listener, MageController {
         return activateHoloTextRange;
     }
 
-    public boolean isInventoryBackupEnabled() {
-        return backupInventory;
-    }
-
     public ItemStack getSpellBook(com.elmakers.mine.bukkit.api.spell.SpellCategory category, int count) {
         Map<String, List<SpellTemplate>> categories = new HashMap<String, List<SpellTemplate>>();
         Collection<SpellTemplate> spellVariants = spells.values();
@@ -4961,7 +4956,6 @@ public class MagicController implements Listener, MageController {
     private int								    pendingQueueDepth				= 16;
     private int                                 undoMaxPersistSize              = 0;
     private boolean                             undoOnWorldSave                 = false;
-    private boolean                             backupInventory                 = false;
     private boolean                             commitOnQuit             		= false;
     private boolean                             saveNonPlayerMages              = false;
     private String                              defaultWandPath                 = "";

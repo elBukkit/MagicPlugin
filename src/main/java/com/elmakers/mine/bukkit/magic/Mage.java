@@ -124,6 +124,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
     private HashMap<Integer, ItemStack> respawnInventory;
     private HashMap<Integer, ItemStack> respawnArmor;
+    private Inventory storedInventory = null;
 
     public Mage(String id, MagicController controller) {
         this.id = id;
@@ -139,17 +140,9 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         costReduction = reduction;
     }
 
-    public boolean hasStoredInventory() {
-        return activeWand != null && activeWand.hasStoredInventory();
-    }
-
     @Override
     public Set<Spell> getActiveSpells() {
         return new HashSet<Spell>(activeSpells);
-    }
-
-    public Inventory getStoredInventory() {
-        return activeWand != null ? activeWand.getStoredInventory() : null;
     }
 
     public void setLocation(Location location) {
@@ -191,10 +184,6 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
     public boolean usesMana() {
         return activeWand == null ? false : activeWand.usesMana();
-    }
-
-    public boolean addToStoredInventory(ItemStack item) {
-        return (activeWand == null ? false : activeWand.addToStoredInventory(item));
     }
 
     public boolean cancel() {
@@ -684,9 +673,8 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                 }
             }
 
-            if (activeWand != null && activeWand.hasStoredInventory()) {
-                ConfigurationSection inventoryConfig = configNode.createSection("inventory");
-                configNode.set("inventory", activeWand.getStoredInventory().getContents());
+            if (hasStoredInventory()) {
+                configNode.set("inventory", getStoredInventory().getContents());
             }
 
             ConfigurationSection dataSection = configNode.createSection("data");
@@ -1498,6 +1486,67 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         // Automata theoretically handle themselves by sticking around for a while
         // And forcing themselves to be forgotten
         // but maybe some extra safety here would be good?
+        return true;
+    }
+
+    public boolean hasStoredInventory() {
+        return storedInventory != null;
+    }
+
+    public Inventory getStoredInventory() {
+        return storedInventory;
+    }
+
+    public boolean addToStoredInventory(ItemStack item) {
+        if (storedInventory == null) {
+            return false;
+        }
+
+        HashMap<Integer, ItemStack> remainder = storedInventory.addItem(item);
+        return remainder.size() == 0;
+    }
+
+    public boolean storeInventory() {
+        if (storedInventory != null) {
+            controller.getLogger().warning("Tried to store an inventory with one already present: " + getName());
+            return false;
+        }
+
+        Player player = getPlayer();
+        if (player == null) {
+            return false;
+        }
+        PlayerInventory inventory = player.getInventory();
+        storedInventory = CompatibilityUtils.createInventory(null, inventory.getSize(), "Stored Inventory");
+
+        // Make sure we don't store any spells or magical materials, just in case
+        ItemStack[] contents = inventory.getContents();
+        for (int i = 0; i < contents.length; i++) {
+            if (Wand.isSpell(contents[i]) && !Wand.isSkill(contents[i])) {
+                contents[i] = null;
+            }
+        }
+        storedInventory.setContents(contents);
+        inventory.clear();
+
+        return true;
+    }
+
+    @SuppressWarnings("deprecation")
+    public boolean restoreInventory() {
+        if (storedInventory == null) {
+            return false;
+        }
+
+        Player player = getPlayer();
+        if (player == null) {
+            return false;
+        }
+        PlayerInventory inventory = player.getInventory();
+        inventory.setContents(storedInventory.getContents());
+        storedInventory = null;
+        player.updateInventory();
+
         return true;
     }
 
