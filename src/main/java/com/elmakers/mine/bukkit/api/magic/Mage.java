@@ -5,10 +5,12 @@ import java.util.List;
 import java.util.Set;
 
 import com.elmakers.mine.bukkit.api.action.GUIAction;
+import com.elmakers.mine.bukkit.api.effect.SoundEffect;
 import com.elmakers.mine.bukkit.api.spell.MageSpell;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
@@ -379,6 +381,7 @@ public interface Mage extends CostReducer {
 
     public void activateGUI(GUIAction action, Inventory inventory);
     public void deactivateGUI();
+    public void playSoundEffect(SoundEffect sound);
 
     public void showHoloText(Location location, String text, int duration);
     public int getDebugLevel();
