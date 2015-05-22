@@ -40,12 +40,10 @@ import org.bukkit.ChatColor;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.Sound;
 import org.bukkit.block.BlockFace;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemoryConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerExpChangeEvent;
@@ -239,6 +237,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
     public static String WAND_KEY = "wand";
     public static byte HIDE_FLAGS = 60;
 
+    private Inventory storedInventory = null;
     private Integer playerInventorySlot = null;
 
     private static final ItemStack[] itemTemplate = new ItemStack[0];
@@ -1898,7 +1897,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         if (!isInventoryOpen()) return;
         Player player = mage.getPlayer();
         if (player == null) return;
-        if (!mage.hasStoredInventory()) return;
+        if (!hasStoredInventory()) return;
 
         WandMode wandMode = getMode();
         if (wandMode == WandMode.INVENTORY) {
@@ -1917,7 +1916,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		
 		WandMode wandMode = getMode();
 		if (wandMode == WandMode.INVENTORY) {
-			if (!mage.hasStoredInventory()) return;
+			if (!hasStoredInventory()) return;
 			PlayerInventory inventory = player.getInventory();
             inventory.clear();
 			updateHotbar(inventory);
@@ -1990,7 +1989,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		if (!isInventoryOpen()) return;
 		if (mage.getPlayer() == null) return;
 		if (getMode() != WandMode.INVENTORY) return;
-		if (!mage.hasStoredInventory()) return;
+		if (!hasStoredInventory()) return;
 
         // Work-around glitches that happen if you're dragging an item on death
         if (mage.isDead()) return;
@@ -2638,8 +2637,8 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
             updateInventory();
 			mage.getPlayer().openInventory(getDisplayInventory());
 		} else if (wandMode == WandMode.INVENTORY) {
-			if (mage.hasStoredInventory()) return;
-            if (mage.storeInventory()) {
+			if (hasStoredInventory()) return;
+            if (storeInventory()) {
 				inventoryIsOpen = true;
                 if (inventoryOpenSound != null) {
                     mage.playSound(inventoryOpenSound.getSound(), inventoryOpenSound.getVolume(), inventoryOpenSound.getPitch());
@@ -2663,7 +2662,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
                     mage.playSound(inventoryCloseSound.getSound(), inventoryCloseSound.getVolume(), inventoryCloseSound.getPitch());
                 }
                 if (mode == WandMode.INVENTORY) {
-                    mage.restoreInventory();
+                    restoreInventory();
                 } else {
                     mage.getPlayer().closeInventory();
                 }
@@ -2692,7 +2691,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
                 }
             }
         } catch (Throwable ex) {
-            mage.restoreInventory();
+            restoreInventory();
         }
 
         if (mode == WandMode.INVENTORY && mage != null) {
@@ -3185,7 +3184,8 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 			closeInventory();
 		}
         playerInventorySlot = null;
-
+        storedInventory = null;
+		
 		if (usesMana() && displayManaAsXp() && player != null) {
             player.setLevel(Math.max(0, storedXpLevel));
             player.setExp(Math.max(0, storedXpProgress));
@@ -4097,6 +4097,71 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 
     public float getStoredXpProgress() {
         return storedXpProgress;
+    }
+
+    public boolean hasStoredInventory() {
+        return storedInventory != null;
+    }
+
+    public Inventory getStoredInventory() {
+        return storedInventory;
+    }
+
+    public boolean addToStoredInventory(ItemStack item) {
+        if (storedInventory == null) {
+            return false;
+        }
+
+        HashMap<Integer, ItemStack> remainder = storedInventory.addItem(item);
+        return remainder.size() == 0;
+    }
+
+    public boolean storeInventory() {
+        if (storedInventory != null) {
+            if (mage != null) {
+                mage.sendMessage("Your wand contains a previously stored inventory and will not activate, let go of it to clear.");
+            }
+            controller.getLogger().warning("Tried to store an inventory with one already present: " + (mage == null ? "?" : mage.getName()));
+            return false;
+        }
+
+        Player player = mage.getPlayer();
+        if (player == null) {
+            return false;
+        }
+        PlayerInventory inventory = player.getInventory();
+        storedInventory = CompatibilityUtils.createInventory(null, inventory.getSize(), "Stored Inventory");
+
+        // Make sure we don't store any spells or magical materials, just in case
+        ItemStack[] contents = inventory.getContents();
+        for (int i = 0; i < contents.length; i++) {
+            if (Wand.isSpell(contents[i]) && !Wand.isSkill(contents[i])) {
+                contents[i] = null;
+            }
+        }
+        storedInventory.setContents(contents);
+        inventory.clear();
+
+        return true;
+    }
+
+    @SuppressWarnings("deprecation")
+    public boolean restoreInventory() {
+        if (storedInventory == null) {
+            return false;
+        }
+        Player player = mage.getPlayer();
+        if (player == null) {
+            return false;
+        }
+        PlayerInventory inventory = player.getInventory();
+        inventory.setContents(storedInventory.getContents());
+        storedInventory = null;
+        saveState();
+
+        player.updateInventory();
+
+        return true;
     }
 
     public boolean isBound() {
