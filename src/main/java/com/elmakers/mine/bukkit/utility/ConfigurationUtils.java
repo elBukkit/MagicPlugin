@@ -633,23 +633,7 @@ public class ConfigurationUtils {
     }
 
     public static SoundEffect toSoundEffect(String soundConfig) {
-        SoundEffect soundEffect = null;
-        if (soundConfig != null && soundConfig.length() > 0) {
-            String[] pieces = StringUtils.split(soundConfig, ',');
-            try {
-                String soundName = pieces[0].toUpperCase();
-                soundEffect = new SoundEffect(Sound.valueOf(soundName));
-                if (pieces.length > 1) {
-                    soundEffect.setVolume(Float.parseFloat(pieces[1]));
-                }
-                if (pieces.length > 2) {
-                    soundEffect.setPitch(Float.parseFloat(pieces[2]));
-                }
-            } catch (Exception ex) {
-            }
-        }
-
-        return soundEffect;
+        return new SoundEffect(soundConfig);
     }
 
     public static ParticleEffect toParticleEffect(String effectParticleName) {
