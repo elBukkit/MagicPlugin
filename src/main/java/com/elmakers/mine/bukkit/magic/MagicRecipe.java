@@ -5,6 +5,7 @@ import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.craftbukkit.libs.jline.internal.Log;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.ShapedRecipe;
@@ -16,6 +17,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Level;
 
 /**
  * Represents a crafting recipe which will make a wand item.
@@ -126,7 +128,11 @@ public class MagicRecipe {
         if (recipe != null)
         {
             plugin.getLogger().info("Adding crafting recipe for " + outputKey);
-            plugin.getServer().addRecipe(recipe);
+            try {
+                plugin.getServer().addRecipe(recipe);
+            } catch (Exception ex) {
+                plugin.getLogger().log(Level.WARNING, "Failed to add recipe", ex);
+            }
         }
     }
 
