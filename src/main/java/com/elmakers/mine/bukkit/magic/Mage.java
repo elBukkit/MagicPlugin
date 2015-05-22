@@ -341,7 +341,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     public void setActiveWand(Wand activeWand) {
         this.activeWand = activeWand;
         if (activeWand != null && activeWand.isBound() && activeWand.canUse(getPlayer())) {
-            String template = activeWand.getTemplate();
+            String template = activeWand.getTemplateKey();
             if (template != null && !template.isEmpty()) {
                 boundWands.put(template, activeWand);
             }
@@ -542,14 +542,14 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             if (configNode.contains("bound_wand")) {
                 // Legacy support
                 Wand boundWand = new Wand(controller, configNode.getConfigurationSection("bound_wand"));
-                String template = boundWand.getTemplate();
+                String template = boundWand.getTemplateKey();
                 if (template != null) {
                     boundWands.put(template, boundWand);
                 }
             } else if (configNode.contains("wand")) {
                 // More legacy support :|
                 Wand boundWand = new Wand(controller, controller.deserialize(configNode, "wand"));
-                String template = boundWand.getTemplate();
+                String template = boundWand.getTemplateKey();
                 if (template != null && !template.isEmpty()) {
                     boundWands.put(template, boundWand);
                 }
@@ -1511,7 +1511,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         for (ItemStack item : inventory) {
             if (Wand.isWand(item)) {
                 Wand tempWand = new Wand(controller, item);
-                String template = tempWand.getTemplate();
+                String template = tempWand.getTemplateKey();
                 if (template != null) {
                     foundTemplates.add(template);
                 }

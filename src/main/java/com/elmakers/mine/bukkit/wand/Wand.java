@@ -566,7 +566,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	}
 
     @Override
-	public String getTemplate() {
+	public String getTemplateKey() {
 		return this.template;
 	}
 
@@ -2994,7 +2994,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		} else if (isUpgrade(item)) {
 			Wand wand = new Wand(controller, item);
             if (wand.isForcedUpgrade()) {
-                String template = wand.getTemplate();
+                String template = wand.getTemplateKey();
                 ConfigurationSection templateConfig = getWandTemplate(template);
                 if (templateConfig == null) {
                     return false;

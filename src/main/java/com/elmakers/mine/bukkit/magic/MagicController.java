@@ -4806,8 +4806,8 @@ public class MagicController implements Listener, MageController {
             if (!firstIsWand || !secondIsWand) return false;
             Wand firstWand = new Wand(this, InventoryUtils.getCopy(first));
             Wand secondWand = new Wand(this, InventoryUtils.getCopy(second));
-            String firstTemplate = firstWand.getTemplate();
-            String secondTemplate = secondWand.getTemplate();
+            String firstTemplate = firstWand.getTemplateKey();
+            String secondTemplate = secondWand.getTemplateKey();
             if (firstTemplate == null || secondTemplate == null) return false;
             return firstTemplate.equalsIgnoreCase(secondTemplate);
         }
