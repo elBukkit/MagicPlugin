@@ -18,6 +18,9 @@ public class RandomUtils {
     private final static Random random = new Random();
 
     public static float lerp(String[] list, int levelIndex, int nextLevelIndex, float distance) {
+        if (list.length == 0) return 0;
+        if (levelIndex >= list.length) return Float.parseFloat(list[list.length - 1]);
+        if (nextLevelIndex >= list.length) return Float.parseFloat(list[list.length - 1]);
         float previousValue = Float.parseFloat(list[levelIndex]);
         float nextValue = Float.parseFloat(list[nextLevelIndex]);
         return lerp(previousValue, nextValue, distance);
