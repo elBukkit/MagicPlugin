@@ -1517,9 +1517,6 @@ wands:
     architect:
         name: The Architect
         description: $path Magic Wand
-    elder:
-        name: Elder Wand
-        description: The Uber Wand
     admin:
         name: Admin Wand
         description: For admins only
