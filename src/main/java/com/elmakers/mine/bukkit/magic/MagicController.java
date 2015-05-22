@@ -1232,12 +1232,12 @@ public class MagicController implements Listener, MageController {
                 if (exampleDefaults != null && exampleDefaults.length() > 0)
                 {
                     getLogger().info("Overriding configuration with example: " + exampleDefaults);
+                    loadProperties(loadConfigFile(CONFIG_FILE, true));
                 }
                 if (addExamples != null && addExamples.size() > 0)
                 {
                     getLogger().info("Adding examples: " + StringUtils.join(addExamples, ","));
                 }
-                loadProperties(loadConfigFile(CONFIG_FILE, true));
             }
         } catch (Exception ex) {
             getLogger().log(Level.WARNING, "Error loading config.yml", ex);
