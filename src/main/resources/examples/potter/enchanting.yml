@@ -8,6 +8,7 @@ default:
   hidden: true
   min_enchant_level: 20
   max_enchant_level: 50
+  levels: 10
   max_mana: 50
   max_mana_regeneration: 5
   max_health_regeneration: 1.0
@@ -52,7 +53,6 @@ year1:
     upgrade_item: year2
     min_enchant_level: 10
     max_enchant_level: 10
-    levels: 1,30,50
     max_mana: 60
     max_mana_regeneration: 8
     mana_regeneration:

@@ -3,7 +3,7 @@
 "ambientocclusion": false,
 "textures": {
     "texture": "items/lightsaber",
-    "lightsaber_glow": "items/glow_flow_orange"
+    "lightsaber_glow": "items/glow_flow_green"
 },
 "elements": [ 
 {

@@ -46,3 +46,27 @@ recall:
         name: The Brick Temple
         description: Spawn#6
         icon: brick
+
+wandshop:
+    icon: wooden_hoe
+    category: specialty
+    hidden: true
+    actions:
+        cast:
+        -  class: ItemShop
+    parameters:
+        loud: true
+        confirm: true
+        confirm_filler: stained_glass:3
+        items:
+          wand|beginner: 4000
+          wand|student: 80000
+          wand|apprentice: 135000
+          wand|master: 150000
+          wand|elder: 400000
+          wand|battle: 24000
+          wand|architect: 330000
+          wand|lightsaber_blue: 100000
+          wand|lightsaber_red: 100000
+          wand|lightsaber_green: 100000
+          wand|lightsaber_purple: 100000

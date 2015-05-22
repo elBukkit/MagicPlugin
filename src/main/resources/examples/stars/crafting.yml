@@ -9,9 +9,9 @@ lightsaber_hilt:
     o: nether_star
     i: iron_ingot
     x: emerald
-  row_1: ioi
-  row_2: ioi
-  row_3:  x
+  row_1: "ioi"
+  row_2: "ioi"
+  row_3: " x "
 
 lightsaber_green:
   output: lightsaber_green
@@ -20,9 +20,9 @@ lightsaber_green:
     o: nether_star
     i: monster_eggs
     x: stained_glass:5
-  row_1:  o
-  row_2:  o
-  row_3: xix
+  row_1: " o "
+  row_2: " o "
+  row_3: "xix"
 
 lightsaber_red:
   output: lightsaber_red
@@ -31,9 +31,9 @@ lightsaber_red:
     o: nether_star
     i: monster_eggs
     x: stained_glass:14
-  row_1:  o
-  row_2:  o
-  row_3: xix
+  row_1: " o "
+  row_2: " o "
+  row_3: "xix"
 
 lightsaber_blue:
   output: lightsaber_blue
@@ -42,9 +42,9 @@ lightsaber_blue:
     o: nether_star
     i: monster_eggs
     x: stained_glass:3
-  row_1:  o
-  row_2:  o
-  row_3: xix
+  row_1: " o "
+  row_2: " o "
+  row_3: "xix"
 
 lightsaber_orange:
   output: lightsaber_orange
@@ -53,9 +53,9 @@ lightsaber_orange:
     o: nether_star
     i: monster_eggs
     x: stained_glass:1
-  row_1:  o
-  row_2:  o
-  row_3: xix
+  row_1: " o "
+  row_2: " o "
+  row_3: "xix"
 
 lightsaber_purple:
   output: lightsaber_purple
@@ -64,6 +64,6 @@ lightsaber_purple:
     o: nether_star
     i: monster_eggs
     x: stained_glass:2
-  row_1:  o
-  row_2:  o
-  row_3: xix
+  row_1: " o "
+  row_2: " o "
+  row_3: "xix"

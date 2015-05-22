@@ -313,7 +313,7 @@ place:
     enabled: true
     hidden: true
 
-superiterate:
+column:
     enabled: true
     hidden: true
 

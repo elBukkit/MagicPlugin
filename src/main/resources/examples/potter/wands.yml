@@ -35,42 +35,38 @@ wandbox:
 elder:
     icon: iron_hoe
     undroppable: true
-    path: master
+    path: graduate
     bound: true
     keep: true
-    fill: true
     organize: true
     cost_reduction: 2
-    cooldown_reduction: 2
     protection_falling: 2
     quiet: 1
     power: 0
     haste: 0
     effect_color: 'FF00FF'
-    effect_particle: enchantment_table
-    effect_particle_count: 1
-    effect_particle_data: 1
-    effect_particle_interval: 1
     effect_bubbles: false
     active_spell: ascendio
-    hidden: true
-    overrides: patronus.type bat
     spells:
+      - apparate
+      - rennervate
       - stupefy
       - expelliarmus
       - ascendio
       - volo
       - protego
-      - invis
-      - apparatemaxima
       - vulnera
-      - flight
-      - gather
-      - reductomaxima
-      - deprimomaxima
-      - smite
-      - invis
-      - avadamaxima
+      - stupefy
+      - vermillious
+      - aguamenti
+      - levicorpus
+      - reducto
+      - deprimo
+      - duro
+      - crucio
+      - imperio
+      - avadakedavra
+      - finiteincantatem
 
 wolf:
     icon: gold_hoe
@@ -154,100 +150,6 @@ slytherinwand:
     effect_bubbles: false
     active_spell: ascendio
     hidden: true
-
-architect:
-    path: engineer
-    keep: true
-    bound: true
-    undroppable: true
-    bound: true
-    icon: gold_axe
-    effect_color: '00FF00'
-    hunger_regeneration: 1
-    health_regeneration: 1
-    protection_falling: 1
-    protection: 0.2
-    cost_reduction: 2
-    cooldown_reduction: 2
-    power: 10
-    effect_color: '8B008B'
-    effect_bubbles: true
-    organize: true
-    active_spell: levitate
-    spells:
-        - flight
-        - paste
-        - paint
-        - alter
-        - torch
-        - fill
-        - absorb
-        - bridge
-        - pillar
-        - place
-        - recurse
-        - reparifarge
-        - deletrius
-        - iterate
-        - superblob
-        - superbox
-        - supershell
-        - superconvert
-        - superpyramid
-        - superdome
-        - superdisc
-        - superring
-        - superiterate
-        - superalter
-        - reparo
-        - salviohexia
-        - reparomaxima
-    materials:
-        - clone
-        - replicate
-        - copy
-        - erase
-        - map
-        - monster_eggs:1
-        - monster_eggs:2
-        - monster_eggs:3
-        - monster_eggs:4
-        - monster_eggs:5
-        - stone
-        - wood
-        - glass
-        - dirt
-        - glowstone
-        - sand
-        - cobblestone
-        - stained_glass
-        - thin_glass
-        - stained_glass_pane
-        - stained_clay
-        - quartz_block
-        - quartz_block:1
-        - quartz_block:2
-        - lapis_block
-        - iron_block
-        - diamond_block
-        - gold_block
-        - emerald_block
-        - redstone_block
-        - obsidian
-        - schematic:rainbow
-        - schematic:creeper_rug
-        - schematic:church
-        - schematic:blacksmith
-        - schematic:compact_house
-        - schematic:small_house
-        - schematic:elder_tree
-        - schematic:garden_house
-        - schematic:beacon
-        - schematic:cage
-        - schematic:tent
-        - schematic:stash_chest
-        - schematic:lantern
-        - schematic:tech_tower
 
 crudwand:
     icon: stick

@@ -1,6 +1,7 @@
 # TODO
 
  - Hover text for spells
+ - Cat GIF generator? http://catdb.yawk.at/images?tag=gif
  - Selected Hotbar# not saving?
  - Check Regenerate - got stuck, couldn't cancel?
 
