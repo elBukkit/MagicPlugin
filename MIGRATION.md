@@ -1,5 +1,11 @@
 # Migration Notes
 
+## 5.1
+
+ - Remove the "elder" wand from survival configs.
+   - You can copy it back in if this is a problem for you
+   - It conflicted with the potter elder wand in combined configurations
+
 ## 4.9.7
 
  * Build permissions for spells have been split into build vs break.

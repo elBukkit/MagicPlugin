@@ -30,6 +30,7 @@ import com.elmakers.mine.bukkit.maps.MapController;
 import com.elmakers.mine.bukkit.protection.GriefPreventionManager;
 import com.elmakers.mine.bukkit.protection.LocketteManager;
 import com.elmakers.mine.bukkit.protection.MultiverseManager;
+import com.elmakers.mine.bukkit.protection.NCPManager;
 import com.elmakers.mine.bukkit.protection.PreciousStonesManager;
 import com.elmakers.mine.bukkit.protection.PvPManagerManager;
 import com.elmakers.mine.bukkit.protection.TownyManager;
@@ -763,6 +764,9 @@ public class MagicController implements Listener, MageController {
         // Link to GriefPrevention
         griefPreventionManager.initialize(plugin);
 
+        // Link to NoCheatPlus
+        ncpManager.initialize(plugin);
+
         // Try to link to Heroes:
         try {
             Plugin heroesPlugin = plugin.getServer().getPluginManager().getPlugin("Heroes");
@@ -986,6 +990,12 @@ public class MagicController implements Listener, MageController {
                         @Override
                         public int getValue() {
                             return controller.locketteManager.isEnabled() ? 1 : 0;
+                        }
+                    });
+                    integrationGraph.addPlotter(new Metrics.Plotter("NoCheatPlus") {
+                        @Override
+                        public int getValue() {
+                            return controller.ncpManager.isEnabled() ? 1 : 0;
                         }
                     });
 
@@ -4920,6 +4930,10 @@ public class MagicController implements Listener, MageController {
         return skillInventoryRows;
     }
 
+    public void addFlightExemption(Player player, int duration) {
+        ncpManager.addFlightExemption(player, duration);
+    }
+
     /*
 	 * Private data
 	 */
@@ -5110,5 +5124,6 @@ public class MagicController implements Listener, MageController {
     private PreciousStonesManager				preciousStonesManager		= new PreciousStonesManager();
     private TownyManager						townyManager				= new TownyManager();
     private GriefPreventionManager              griefPreventionManager		= new GriefPreventionManager();
+    private NCPManager                          ncpManager       		    = new NCPManager();
     private HeroesManager                       heroesManager       		= null;
 }

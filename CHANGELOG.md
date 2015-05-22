@@ -2,8 +2,12 @@
 
 ## 5.1
 
+ - Remove the "elder" wand from survival configs. Just use the Wolf! (or copy it back in if this is a problem for you)
  - Fix Hat eating your helmet if you cast it on water or lava
  - Fix some Master Sword glitches
+ - Add some protection against losing player inventories on server crash
+ - Balance/Fix Disintegrate, Torture, Monster/Familiar/Mob/Farm (add auto-undo)
+ - Add flight exemptions for NCP to avoid false-positives (off by default, there if you need it)
 
 ## 5.0
 
