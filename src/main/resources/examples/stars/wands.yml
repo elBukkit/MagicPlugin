@@ -21,6 +21,27 @@ lightsaber_red:
     effect_bubbles: false
     effect_color: 'FF0000'
     active_spell: push
+    effects:
+        activate:
+        -  class: EffectSingle
+           custom_sound: magic.ignite
+           sound_volume: 1
+           location: origin
+           effectlib:
+             class: HelixEffect
+             iterations: 1
+             radius: 0.3
+             particle: flame
+        deactivate:
+        -  class: EffectSingle
+           custom_sound: magic.zap
+           sound_volume: 1
+           location: origin
+           effectlib:
+             class: HelixEffect
+             iterations: 1
+             radius: 0.3
+             particle: smoke_normal
     spells:
         - push
         - fire

@@ -219,7 +219,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	private boolean suspendSave = false;
 
 	// Wand configurations
-	protected static Map<String, ConfigurationSection> wandTemplates = new HashMap<String, ConfigurationSection>();
+	protected static Map<String, WandTemplate> wandTemplates = new HashMap<String, WandTemplate>();
 	
 	public static boolean displayManaAsBar = true;
     public static boolean displayManaAsDurability = true;
@@ -309,7 +309,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 			if (!wandTemplates.containsKey(templateName)) {
 				throw new UnknownWandException(templateName);
 			}
-			ConfigurationSection wandConfig = wandTemplates.get(templateName);
+			ConfigurationSection wandConfig = getTemplateConfiguration(templateName);
 
 			// Default to template names, override with localizations
             wandName = wandConfig.getString("name", wandName);
@@ -1356,7 +1356,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
                 String iconKey = wandConfig.getString("icon");
                 ConfigurationSection templateConfig = null;
                 if (template != null && !template.isEmpty()) {
-                     templateConfig = getWandTemplate(template);
+                     templateConfig = getTemplateConfiguration(template);
                 }
                 String migrateIcon = null;
                 if (templateConfig != null && item != null) {
@@ -2283,7 +2283,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		}
 
         if (other.rename && other.template != null && other.template.length() > 0) {
-            ConfigurationSection template = wandTemplates.get(other.template);
+            ConfigurationSection template = getTemplateConfiguration(other.template);
 
             wandName = messages.get("wands." + other.template + ".name", wandName);
             wandName = template.getString("name", wandName);
@@ -2291,7 +2291,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         }
 
         if (other.renameDescription && other.template != null && other.template.length() > 0) {
-            ConfigurationSection template = wandTemplates.get(other.template);
+            ConfigurationSection template = getTemplateConfiguration(other.template);
 
             description = messages.get("wands." + other.template + ".description", description);
             description = template.getString("description", description);
@@ -2529,7 +2529,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		return keep;
 	}
 	
-	public static void loadTemplates(ConfigurationSection properties) {
+	public static void loadTemplates(MageController controller, ConfigurationSection properties) {
 		wandTemplates.clear();
 		
 		Set<String> wandKeys = properties.getKeys(false);
@@ -2537,17 +2537,8 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		{
 			ConfigurationSection wandNode = properties.getConfigurationSection(key);
 			wandNode.set("key", key);
-			ConfigurationSection existing = wandTemplates.get(key);
-			if (existing != null) {
-				Set<String> overrideKeys = existing.getKeys(false);
-				for (String propertyKey : overrideKeys) {
-					existing.set(propertyKey, existing.get(key));
-				}
-			} else {
-				wandTemplates.put(key,  wandNode);
-			}
-			if (!wandNode.getBoolean("enabled", true)) {
-				wandTemplates.remove(key);
+			if (wandNode.getBoolean("enabled", true)) {
+                wandTemplates.put(key, new WandTemplate(controller, key, wandNode));
 			}
 		}
 	}
@@ -2556,11 +2547,16 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		return wandTemplates.keySet();
 	}
 	
-	public static Collection<ConfigurationSection> getWandTemplates() {
+	public static Collection<WandTemplate> getWandTemplates() {
 		return wandTemplates.values();
 	}
 
-    public static ConfigurationSection getWandTemplate(String key) {
+    public static ConfigurationSection getTemplateConfiguration(String key) {
+        WandTemplate template = getWandTemplate(key);
+        return template == null ? null : template.getConfiguration();
+    }
+
+    public static WandTemplate getWandTemplate(String key) {
         return wandTemplates.get(key);
     }
 
@@ -2903,6 +2899,9 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		updateName();
 		updateLore();
 
+        // Play activate FX
+        playEffects("activate");
+
         lastSoundEffect = 0;
         lastParticleEffect = 0;
         lastSpellCast = 0;
@@ -2927,7 +2926,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         }
 
         if (template != null && template.length() > 0) {
-            ConfigurationSection wandConfig = wandTemplates.get(template);
+            ConfigurationSection wandConfig = getTemplateConfiguration(template);
             if (wandConfig != null && wandConfig.contains("icon")) {
                 String iconKey = wandConfig.getString("icon");
                 if (iconKey.contains(",")) {
@@ -2995,7 +2994,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 			Wand wand = new Wand(controller, item);
             if (wand.isForcedUpgrade()) {
                 String template = wand.getTemplateKey();
-                ConfigurationSection templateConfig = getWandTemplate(template);
+                ConfigurationSection templateConfig = getTemplateConfiguration(template);
                 if (templateConfig == null) {
                     return false;
                 }
@@ -3204,6 +3203,9 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	
 	public void deactivate() {
 		if (mage == null) return;
+
+        // Play deactivate FX
+        playEffects("deactivate");
 
         Mage mage = this.mage;
         Player player = mage.getPlayer();
@@ -4266,5 +4268,13 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
     public float getHungerRegeneration()  {
         Integer level = potionEffects.get(PotionEffectType.SATURATION);
         return level != null && level > 0 ? (float)level : 0;
+    }
+
+    public void playEffects(String effects) {
+        if (template == null || template.isEmpty() || mage == null) return;
+        WandTemplate wandTemplate = getWandTemplate(template);
+        if (wandTemplate != null) {
+            wandTemplate.playEffects(mage, effects);
+        }
     }
 }

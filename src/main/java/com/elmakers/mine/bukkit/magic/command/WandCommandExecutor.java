@@ -14,6 +14,7 @@ import java.util.TreeMap;
 
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.utility.NMSUtils;
+import com.elmakers.mine.bukkit.wand.WandTemplate;
 import de.slikey.effectlib.util.ParticleEffect;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
@@ -401,11 +402,11 @@ public class WandCommandExecutor extends MagicTabExecutor {
 	}
 
 	public boolean onWandList(CommandSender sender) {
-		Collection<ConfigurationSection> templates = com.elmakers.mine.bukkit.wand.Wand.getWandTemplates();
+		Collection<WandTemplate> templates = com.elmakers.mine.bukkit.wand.Wand.getWandTemplates();
 		Map<String, ConfigurationSection> nameMap = new TreeMap<String, ConfigurationSection>();
-		for (ConfigurationSection templateConfig : templates)
+		for (WandTemplate template : templates)
 		{
-			nameMap.put(templateConfig.getString("key"), templateConfig);
+			nameMap.put(template.getKey(), template.getConfiguration());
 		}
 		for (ConfigurationSection templateConfig : nameMap.values())
 		{
