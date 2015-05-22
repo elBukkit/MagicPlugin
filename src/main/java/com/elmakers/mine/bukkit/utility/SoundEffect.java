@@ -98,14 +98,34 @@ public class SoundEffect implements com.elmakers.mine.bukkit.api.effect.SoundEff
         return range;
     }
 
-    public void play(MageController controller, Entity entity) {
-        if (entity == null || controller == null) return;
+    public void play(Plugin plugin, Location sourceLocation) {
+        if (sourceLocation == null || plugin == null) return;
+
+        if (customSound != null) {
+            int rangeSquared = range <= 0 ?
+                    (int)(volume > 1.0 ? (16.0 * volume) : 16.0) :
+                    range * range;
+            Collection<? extends Player> players = plugin.getServer().getOnlinePlayers();
+            for (Player player : players) {
+                Location location = player.getLocation();
+                if (location.getWorld().equals(sourceLocation.getWorld()) && location.distanceSquared(sourceLocation) <= rangeSquared) {
+                    player.playSound(sourceLocation, customSound, volume, pitch);
+                }
+            }
+        }
+
+        if (sound != null) {
+            sourceLocation.getWorld().playSound(sourceLocation, sound, volume, pitch);
+        }
+    }
+
+    public void play(Plugin plugin, Entity entity) {
+        if (entity == null || plugin == null) return;
 
         Location sourceLocation = entity.getLocation();
         if (customSound != null) {
             if (range > 0) {
                 int rangeSquared = range * range;
-                Plugin plugin = controller.getPlugin();
                 Collection<? extends Player> players = plugin.getServer().getOnlinePlayers();
                 for (Player player : players) {
                     Location location = player.getLocation();
@@ -124,7 +144,7 @@ public class SoundEffect implements com.elmakers.mine.bukkit.api.effect.SoundEff
                 Player player = (Player)entity;
                 player.playSound(sourceLocation, sound, volume, pitch);
             } else {
-                entity.getLocation().getWorld().playSound(sourceLocation, sound, volume, pitch);
+                sourceLocation.getWorld().playSound(sourceLocation, sound, volume, pitch);
             }
         }
     }

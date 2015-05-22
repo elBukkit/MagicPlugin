@@ -6,6 +6,7 @@ import java.util.*;
 
 import com.elmakers.mine.bukkit.api.effect.EffectPlay;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
+import com.elmakers.mine.bukkit.utility.SoundEffect;
 import de.slikey.effectlib.util.ParticleEffect;
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
@@ -76,10 +77,7 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
     protected Effect effect = null;
     protected Integer effectData = null;
 
-    protected Sound sound = null;
-    protected String customSound = null;
-    protected float soundVolume = 0.7f;
-    protected float soundPitch = 1.5f;
+    protected SoundEffect sound = null;
 
     protected boolean hasFirework = false;
     protected FireworkEffect.Type fireworkType;
@@ -171,19 +169,15 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
         }
 
         if (configuration.contains("sound")) {
-            String soundName = configuration.getString("sound");
-            try {
-                sound = Sound.valueOf(soundName.toUpperCase());
-            } catch(Exception ex) {
-            }
-            if (sound == null) {
-                plugin.getLogger().warning("Unknown sound type " + soundName);
-            } else {
-                soundVolume = (float)configuration.getDouble("sound_volume", soundVolume);
-                soundPitch = (float)configuration.getDouble("sound_pitch", soundPitch);
-            }
+            sound = new SoundEffect(configuration.getString("sound"));
+        } else if (configuration.contains("custom_sound")) {
+            sound = new SoundEffect(configuration.getString("custom_sound"));
         }
-        customSound = configuration.getString("custom_sound");
+
+        if (sound != null) {
+            sound.setVolume((float)configuration.getDouble("sound_volume", sound.getVolume()));
+            sound.setPitch((float)configuration.getDouble("sound_pitch", sound.getPitch()));
+        }
 
         if (configuration.contains("firework") || configuration.contains("firework_power")) {
             hasFirework = true;
@@ -364,19 +358,7 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
             sourceEntity.playEffect(entityEffect);
         }
         if (sound != null) {
-            sourceLocation.getWorld().playSound(sourceLocation, sound, soundVolume, soundPitch);
-        }
-        if (customSound != null) {
-            double range = soundVolume > 1.0 ? (double) (16.0 * soundVolume) : 16.0;
-            Collection<? extends Player> players = plugin.getServer().getOnlinePlayers();
-            for (Player player : players)
-            {
-                Location location = player.getLocation();
-                if (location.getWorld().equals(sourceLocation.getWorld()) && location.distanceSquared(sourceLocation) <= range)
-                {
-                    player.playSound(sourceLocation, customSound, soundVolume, soundPitch);
-                }
-            }
+            sound.play(plugin, sourceLocation);
         }
         if (fireworkEffect != null) {
             EffectUtils.spawnFireworkEffect(plugin.getServer(), sourceLocation, fireworkEffect, fireworkPower);
@@ -435,14 +417,14 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
 
     @Override
     public void setSound(Sound sound) {
-        this.sound = sound;
+        this.sound = new SoundEffect(sound);
     }
 
     @Override
     public void setSound(Sound sound, float volume, float pitch) {
-        this.sound = sound;
-        this.soundVolume = volume;
-        this.soundPitch = pitch;
+        this.sound = new SoundEffect(sound);
+        this.sound.setVolume(volume);
+        this.sound.setPitch(pitch);
     }
 
     public void setDelayTicks(int ticks) {
