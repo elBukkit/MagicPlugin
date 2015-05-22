@@ -755,7 +755,7 @@ shell:
     effects:
         cast:
         -  class: EffectSingle
-           custom_sound: magic.shield
+           sound: magic.shield
         -  class: EffectTrail
            effect: step_sound
     parameters:
@@ -814,7 +814,7 @@ reflect:
     effects:
         cast:
         -  class: EffectSingle
-           custom_sound: magic.shield
+           sound: magic.shield
            location: origin
     parameters:
         allow_max_range: true
@@ -870,7 +870,7 @@ disc:
     effects:
         cast:
         -  class: EffectSingle
-           custom_sound: magic.shield
+           sound: magic.shield
         -  class: EffectTrail
            effect: step_sound
     parameters:
@@ -1321,7 +1321,7 @@ frost:
     effects:
         cast:
         -  class: EffectSingle
-           custom_sound: magic.zap
+           sound: magic.zap
            effectlib:
              class: ConeEffect
              iterations: 15
@@ -1367,7 +1367,7 @@ frost|2:
     effects:
         cast:
         -  class: EffectSingle
-           custom_sound: magic.zap
+           sound: magic.zap
            effectlib:
              class: ConeEffect
              iterations: 15
@@ -1581,7 +1581,7 @@ disarm:
            sound_pitch: 0.3
            sound_volume: 0.5
         -  class: EffectSingle
-           custom_sound: magic.crack
+           sound: magic.crack
            effectlib:
              class: ConeEffect
              iterations: 16
@@ -1598,7 +1598,7 @@ disarm:
            sound_pitch: 0.3
            sound_volume: 0.5
         -  class: EffectSingle
-           custom_sound: magic.crack
+           sound: magic.crack
            effectlib:
              class: ConeEffect
              iterations: 16
@@ -1667,7 +1667,7 @@ cure:
     effects:
         cast:
         - class: EffectSingle
-          custom_sound: magic.shimmer
+          sound: magic.shimmer
           location: target
           particle_override: particleOrbital
           effectlib:
@@ -1722,7 +1722,7 @@ heal:
         cast:
         -  class: EffectSingle
            sound: level_up
-           custom_sound: magic.shimmer
+           sound: magic.shimmer
            effectlib:
              class: ConeEffect
              iterations: 5
@@ -1737,7 +1737,7 @@ heal:
         cast_self:
         - class: EffectSingle
           sound: level_up
-          custom_sound: magic.shimmer
+          sound: magic.shimmer
           effectlib:
              class: AtomEffect
              particleNucleus: heart
@@ -2040,7 +2040,7 @@ gatling:
     effects:
         cast:
         -  class: EffectSingle
-           custom_sound: magic.electrify
+           sound: magic.electrify
            sound_pitch: 0.1
         shoot:
         -  class: EffectSingle
@@ -2125,7 +2125,7 @@ arrow:
            location: origin
            color: CC9933
            firework: ball
-           custom_sound: magic.hit
+           sound: magic.hit
     parameters:
       target: none
       projectile: Arrow
@@ -2186,7 +2186,7 @@ flashbang:
     effects:
         cast:
         -  class: EffectSingle
-           custom_sound: magic.bonk
+           sound: magic.bonk
            sound_pitch: 0.2
            sound_volume: 0.3
            location: origin
@@ -2203,7 +2203,7 @@ flashbang:
            color: CC9933
            firework: burst
            sound: explode
-           custom_sound: magic.hit
+           sound: magic.hit
            effectlib:
              class: SphereEffect
              iterations: 70
@@ -2668,7 +2668,7 @@ fire:
     effects:
         cast:
         -  class: EffectSingle
-           custom_sound: magic.burn
+           sound: magic.burn
            sound_volume: 1
            location: both
         -  class: EffectSingle
@@ -2919,7 +2919,7 @@ day:
     effects:
         cast:
         -  class: EffectSingle
-           custom_sound: magic.shimmer
+           sound: magic.shimmer
            effectlib:
              offset: 0,4,0
              class: HelixEffect
@@ -2931,7 +2931,7 @@ day:
            particle_count: 5
         alternate:
         -  class: EffectSingle
-           custom_sound: magic.shimmer
+           sound: magic.shimmer
            effectlib:
              offset: 0,4,0
              class: HelixEffect
@@ -2961,7 +2961,7 @@ night:
     effects:
         cast:
         -  class: EffectSingle
-           custom_sound: magic.shimmer
+           sound: magic.shimmer
            effectlib:
              offset: 0,4,0
              class: HelixEffect
@@ -2986,7 +2986,7 @@ time:
     effects:
         cast:
         -  class: EffectSingle
-           custom_sound: magic.shimmer
+           sound: magic.shimmer
            location: origin
            effectlib:
              offset: 0,4,0
@@ -3512,7 +3512,7 @@ blast:
            particle: explosion_large
         undo:
         -  class: EffectSingle
-           custom_sound: magic.shimmer
+           sound: magic.shimmer
            location: target
            effectlib:
                class: AtomEffect
@@ -3604,7 +3604,7 @@ earthquake:
     effects:
         cast:
         -  class: EffectSingle
-           custom_sound: magic.ignite
+           sound: magic.ignite
            sound_volume: 1
            location: origin
            effectlib:
@@ -3753,7 +3753,7 @@ collapse:
     effects:
         cast:
         -  class: EffectSingle
-           custom_sound: magic.ignite
+           sound: magic.ignite
            sound_volume: 1
            location: origin
            effectlib:
@@ -3776,7 +3776,7 @@ collapse:
              particle: flame
         undo:
         -  class: EffectSingle
-           custom_sound: magic.shimmer
+           sound: magic.shimmer
            location: target
            effectlib:
                class: AtomEffect
@@ -3840,7 +3840,7 @@ cloak:
     effects:
         cast:
         -  class: EffectSingle
-           custom_sound: magic.shimmer_quiet
+           sound: magic.shimmer_quiet
         -  class: EffectTrail
            particle: smoke_normal
         -  class: EffectRing
@@ -3873,7 +3873,7 @@ rollback:
     effects:
         cast:
         -  class: EffectSingle
-           custom_sound: magic.shimmer
+           sound: magic.shimmer
     parameters:
         target: block
         allow_max_range: true
@@ -3896,7 +3896,7 @@ commit:
     effects:
         cast:
         -  class: EffectSingle
-           custom_sound: magic.disillusion
+           sound: magic.disillusion
     parameters:
         target: none
         target: self
@@ -3921,7 +3921,7 @@ counterspell:
            brightness:
              '0.5':
              - class: EffectSingle
-               custom_sound: magic.shimmer
+               sound: magic.shimmer
                sound_volume: 1
                location: both
                particle_override: particleOrbital
@@ -3932,7 +3932,7 @@ counterspell:
                    iterations: 8
              '5':
              - class: EffectSingle
-               custom_sound: magic.shimmer
+               sound: magic.shimmer
                sound_volume: 1
                location: both
                particle_override: particleOrbital
@@ -4207,7 +4207,7 @@ blob:
     effects:
         cast:
         -  class: EffectSingle
-           custom_sound: magic.shield
+           sound: magic.shield
         -  class: EffectTrail
            effect: step_sound
     parameters:
@@ -4262,7 +4262,7 @@ walls:
     effects:
         cast:
         -  class: EffectSingle
-           custom_sound: magic.shield
+           sound: magic.shield
         -  class: EffectTrail
            effect: step_sound
     parameters:
@@ -4294,7 +4294,7 @@ emp:
     effects:
         cast:
         -  class: EffectSingle
-           custom_sound: magic.electrify
+           sound: magic.electrify
         -  class: EffectTrail
            particle: redstone
            particle_count: 5
@@ -4325,7 +4325,7 @@ superemp:
     effects:
         cast:
         -  class: EffectSingle
-           custom_sound:  magic.electrify
+           sound:  magic.electrify
         -  class: EffectTrail
            particle: redstone
            particle_count: 5
@@ -4392,14 +4392,14 @@ blink:
     effects:
         teleport:
         - class: EffectSingle
-          custom_sound: magic.teleport
+          sound: magic.teleport
           location: target
         cast:
         -  class: EffectVariable
            brightness:
              '0.5':
              - class: EffectSingle
-               custom_sound: magic.teleport
+               sound: magic.teleport
                location: origin
                particle_override: particleOrbital
                color_override: colorOrbital
@@ -4417,7 +4417,7 @@ blink:
                    particle: redstone
              '5':
              - class: EffectSingle
-               custom_sound: magic.teleport
+               sound: magic.teleport
                location: origin
                particle_override: particleOrbital
                color_override: colorOrbital
@@ -4801,7 +4801,7 @@ flamethrower:
     effects:
         cast:
         -  class: EffectSingle
-           custom_sound: magic.burn
+           sound: magic.burn
            effectlib:
              class: DragonEffect
              iterations: 20
@@ -4853,7 +4853,7 @@ laser:
     effects:
         beam:
         -  class: EffectSingle
-           custom_sound: magic.zap
+           sound: magic.zap
            location: origin
            sound_volume: 0.1
            color_override: colorHelix
@@ -4872,7 +4872,7 @@ laser:
              particlesBase: 5
         cast:
         -  class: EffectSingle
-           custom_sound: magic.zap_crack
+           sound: magic.zap_crack
            location: origin
     parameters:
         target: block
@@ -5157,7 +5157,7 @@ force:
     effects:
         cast:
         -  class: EffectSingle
-           custom_sound: magic.zap_big
+           sound: magic.zap_big
            location: origin
            effectlib:
              class: DnaEffect
@@ -5197,7 +5197,7 @@ fireball:
              iterations: 15
              particle: lava
              lengthGrow: 0.4
-           custom_sound: magic.burn
+           sound: magic.burn
            sound_volume: 1
            sound_pitch: -.25
         projectile:
@@ -5394,10 +5394,10 @@ missile:
     effects:
         cast:
         -  class: EffectSingle
-           custom_sound: magic.zap
+           sound: magic.zap
            sound_volume: .3
         -  class: EffectSingle
-           custom_sound: magic.zap_crack
+           sound: magic.zap_crack
            location: origin
            color_override: color
            effectlib:
@@ -5413,9 +5413,9 @@ missile:
            firework: burst
         no_target:
         -  class: EffectSingle
-           custom_sound: magic.zap
+           sound: magic.zap
         -  class: EffectSingle
-           custom_sound: magic.zap_crack
+           sound: magic.zap_crack
            location: origin
            color_override: color
            effectlib:
@@ -5431,9 +5431,9 @@ missile:
            firework: burst
         backfire:
         -  class: EffectSingle
-           custom_sound: magic.zap
+           sound: magic.zap
         -  class: EffectSingle
-           custom_sound: magic.zap_crack
+           sound: magic.zap_crack
            location: origin
            entity_effect: hurt
            color_override: color
@@ -5497,7 +5497,7 @@ blind:
     effects:
         cast:
         -  class: EffectSingle
-           custom_sound: magic.zap
+           sound: magic.zap
            effectlib:
              class: ConeEffect
              iterations: 15
@@ -5519,7 +5519,7 @@ blind:
              particles: 20
         no_target:
         -  class: EffectSingle
-           custom_sound: magic.zap
+           sound: magic.zap
            effectlib:
              class: ConeEffect
              iterations: 15
@@ -5568,7 +5568,7 @@ pollinate:
     effects:
         cast:
         -  class: EffectSingle
-           custom_sound: magic.shimmer
+           sound: magic.shimmer
            location: source
         despawn:
         -  class: EffectSingle
@@ -5722,7 +5722,7 @@ broom:
         slow_steer_speed: 0.05
         mount_boost_per_jump: 1
         power_mount_boost_per_jump: 2
-        custom_sound: magic.flying
+        sound: magic.flying
         effect_sound_interval: 120
         effect_sound_volume: 15
 
@@ -5768,7 +5768,7 @@ kill:
     effects:
         cast:
         - class: EffectSingle
-          custom_sound: magic.electrify
+          sound: magic.electrify
           sound_volume: 5
           sound_pitch: -0.25
           location: origin
@@ -5782,7 +5782,7 @@ kill:
              radius: 5
         fire:
         - class: EffectSingle
-          custom_sound: magic.zap_big
+          sound: magic.zap_big
           sound_volume: 1
           location: origin
           effectlib:
@@ -5834,7 +5834,7 @@ torture:
     effects:
         cast:
         -  class: EffectSingle
-           custom_sound: magic.electrify
+           sound: magic.electrify
            sound_volume: .5
         -  class: EffectSingle
            sound: irongolem_death
@@ -5856,7 +5856,7 @@ torture:
              duration: 500
         no_target:
         -  class: EffectSingle
-           custom_sound: magic.electrify
+           sound: magic.electrify
            sound_volume: .5
         -  class: EffectSingle
            sound: irongolem_death
@@ -5911,7 +5911,7 @@ rubberize:
         cast:
         -  class: EffectTrail
            effect: step_sound
-           custom_sound: magic.shimmer
+           sound: magic.shimmer
     parameters:
         allow_max_range: false
         range: 16
@@ -5946,7 +5946,7 @@ count:
     effects:
         cast:
         -  class: EffectSingle
-           custom_sound: magic.shimmer
+           sound: magic.shimmer
            effectlib:
              class: HelixEffect
              iterations: 1
@@ -5989,9 +5989,9 @@ petrify:
     effects:
         cast:
         -  class: EffectSingle
-           custom_sound: magic.zap_big
+           sound: magic.zap_big
         -  class: EffectSingle
-           custom_sound: magic.zap
+           sound: magic.zap
            effectlib:
              class: ConeEffect
              iterations: 5
@@ -6012,9 +6012,9 @@ petrify:
              iterations: 40
         no_target:
         -  class: EffectSingle
-           custom_sound: magic.zap_big
+           sound: magic.zap_big
         -  class: EffectSingle
-           custom_sound: magic.zap
+           sound: magic.zap
            effectlib:
              class: ConeEffect
              iterations: 15
@@ -6050,7 +6050,7 @@ entangle:
     effects:
         cast:
         -  class: EffectSingle
-           custom_sound: magic.crack
+           sound: magic.crack
         -  class: EffectTrail
            effect: step_sound
     parameters:
@@ -6088,10 +6088,10 @@ wound:
     effects:
         cast:
         -  class: EffectSingle
-           custom_sound: magic.shimmer_crack
+           sound: magic.shimmer_crack
            sound_volume: 1
         -  class: EffectSingle
-           custom_sound: magic.electrify
+           sound: magic.electrify
            sound_volume: 5
            effectlib:
              class: ConeEffect
@@ -6115,10 +6115,10 @@ wound:
              particles: 15
         no_target:
         -  class: EffectSingle
-           custom_sound: magic.crack
+           sound: magic.crack
            sound_volume: 1
         -  class: EffectSingle
-           custom_sound: magic.electrify
+           sound: magic.electrify
            sound_volume: 5
            effectlib:
              class: ConeEffect
@@ -6169,7 +6169,7 @@ stun:
     effects:
         cast:
         -  class: EffectSingle
-           custom_sound: magic.zap_crack
+           sound: magic.zap_crack
            sound_pitch: 0.1
            sound_volume: 0.5
            location: origin
@@ -6226,7 +6226,7 @@ poison:
     effects:
         cast:
         -  class: EffectSingle
-           custom_sound: magic.zap
+           sound: magic.zap
            effectlib:
              class: ConeEffect
              iterations: 15
@@ -6253,7 +6253,7 @@ poison:
              particles: 20
         no_target:
         -  class: EffectSingle
-           custom_sound: magic.zap
+           sound: magic.zap
            effectlib:
              class: ConeEffect
              iterations: 15
@@ -6386,7 +6386,7 @@ admission:
     effects:
         cast:
         -  class: EffectSingle
-           custom_sound: magic.shimmer
+           sound: magic.shimmer
         -  class: EffectTrail
            particle: redstone
            color: FFFF00
@@ -6422,7 +6422,7 @@ secure:
     effects:
         cast:
         -  class: EffectSingle
-           custom_sound: magic.shimmer
+           sound: magic.shimmer
            location: origin
         -  class: EffectTrail
            particle: smoke_normal
@@ -6453,7 +6453,7 @@ lockpick:
     effects:
         cast:
         -  class: EffectSingle
-           custom_sound: magic.shimmer
+           sound: magic.shimmer
            location: origin
         -  class: EffectTrail
            particle: smoke_normal
@@ -6482,7 +6482,7 @@ harden:
         cast:
         -  class: EffectTrail
            effect: step_sound
-           custom_sound: magic.shimmer
+           sound: magic.shimmer
     parameters:
         allow_max_range: false
         range: 16
@@ -6821,7 +6821,7 @@ tracking:
     effects:
         cast:
         -  class: EffectSingle
-           custom_sound: magic.zap
+           sound: magic.zap
            location: origin
         -  class: EffectSingle
            location: target
@@ -6908,7 +6908,7 @@ singularity:
     effects:
         cast:
         -  class: EffectSingle
-           custom_sound: magic.bonk
+           sound: magic.bonk
            sound_pitch: 0.2
            sound_volume: 0.3
            location: origin
@@ -6918,7 +6918,7 @@ singularity:
            color: CC9933
            firework: burst
            sound: explode
-           custom_sound: magic.hit
+           sound: magic.hit
            effectlib:
              class: SphereEffect
              iterations: 70

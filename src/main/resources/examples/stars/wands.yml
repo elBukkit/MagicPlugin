@@ -24,7 +24,7 @@ lightsaber_red:
     effects:
         activate:
         -  class: EffectSingle
-           custom_sound: magic.ignite
+           sound: magic.ignite
            sound_volume: 1
            location: origin
            effectlib:
@@ -34,7 +34,7 @@ lightsaber_red:
              particle: flame
         deactivate:
         -  class: EffectSingle
-           custom_sound: magic.zap
+           sound: magic.zap
            sound_volume: 1
            location: origin
            effectlib:

@@ -393,7 +393,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     public void playSoundEffect(SoundEffect soundEffect) {
         if (!controller.soundsEnabled() || soundEffect == null) return;
 
-        soundEffect.play(controller, getEntity());
+        soundEffect.play(controller.getPlugin(), getEntity());
     }
 
     public UndoQueue getUndoQueue() {
