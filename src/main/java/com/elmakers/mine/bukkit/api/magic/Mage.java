@@ -97,6 +97,7 @@ public interface Mage extends CostReducer {
      * @return Location the location of the Mage's eyes, used for targeting.
      */
     public Location getEyeLocation();
+    public Location getWandLocation();
 
     /**
      * Get the direction this Mage is facing.
