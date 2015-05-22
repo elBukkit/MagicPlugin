@@ -70,8 +70,6 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
     private int workAllowed = 500;
     private int actionsPerformed;
 
-    public static double WAND_LOCATION_OFFSET = 0.5;
-
     protected class TeleportTask implements Runnable {
         private final CastContext context;
         private final Entity entity;
@@ -167,16 +165,8 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
 
     @Override
     public Location getWandLocation() {
-        Location wandLocation = getEyeLocation();
-        if (wandLocation == null) {
-            return null;
-        }
-        Location toTheRight = wandLocation.clone();
-        toTheRight.setYaw(toTheRight.getYaw() + 90);
-        Vector wandDirection = toTheRight.getDirection();
-        wandLocation = wandLocation.clone();
-        wandLocation.add(wandDirection.multiply(WAND_LOCATION_OFFSET));
-        return wandLocation;
+        Mage mage = getMage();
+        return mage == null ? getEyeLocation() : mage.getWandLocation();
     }
 
     @Override
