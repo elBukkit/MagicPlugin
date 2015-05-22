@@ -5,6 +5,8 @@
 lightsaber_red:
     path: acolyte
     icon: diamond_sword
+    icon_inactive: monster_eggs
+    icon_inactive_delay: 2000
     mode_drop: true
     mode_cast: true
     xp_max: 50
@@ -26,6 +28,8 @@ lightsaber_red:
 lightsaber_green:
     path: youngling
     icon: wood_sword
+    icon_inactive: monster_eggs
+    icon_inactive_delay: 2000
     mode_drop: true
     mode_cast: true
     xp_max: 50
@@ -47,6 +51,8 @@ lightsaber_green:
 lightsaber_blue:
     path: youngling
     icon: stone_sword
+    icon_inactive: monster_eggs
+    icon_inactive_delay: 2000
     mode_drop: true
     mode_cast: true
     xp_max: 50
@@ -68,6 +74,8 @@ lightsaber_blue:
 lightsaber_purple:
     path: youngling
     icon: iron_sword
+    icon_inactive: monster_eggs
+    icon_inactive_delay: 2000
     mode_drop: true
     mode_cast: true
     xp_max: 50
@@ -89,6 +97,8 @@ lightsaber_purple:
 lightsaber_orange:
     path: youngling
     icon: gold_sword
+    icon_inactive: monster_eggs
+    icon_inactive_delay: 2000
     mode_drop: true
     mode_cast: true
     xp_max: 50

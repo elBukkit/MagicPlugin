@@ -50,6 +50,7 @@ import org.bukkit.event.player.PlayerExpChangeEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 
@@ -76,7 +77,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         "effect_sound", "effect_sound_interval", "effect_sound_pitch", "effect_sound_volume",
         "cast_spell", "cast_parameters", "cast_interval", "cast_min_velocity", "cast_velocity_direction",
 		"hotbar_count", "hotbar",
-		"icon", "mode", "brush_mode", "mode_cast", "mode_drop",
+		"icon", "icon_inactive", "icon_inactive_delay", "mode", "brush_mode", "mode_cast", "mode_drop",
         "keep", "locked", "quiet", "force", "randomize", "rename", "rename_description",
 		"power", "overrides",
 		"protection", "protection_physical", "protection_projectiles", 
@@ -134,6 +135,8 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	
 	private MaterialAndData icon = null;
     private MaterialAndData upgradeIcon = null;
+    private MaterialAndData inactiveIcon = null;
+    private int inactiveIconDelay = 0;
 	
 	protected float costReduction = 0;
     protected float cooldownReduction = 0;
@@ -375,7 +378,14 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         if (materialData == null || !materialData.isValid()) return;
 		icon = materialData;
         if (icon != null) {
-            icon.applyToItem(item);
+            if (inactiveIcon == null || mage != null)
+            {
+                icon.applyToItem(item);
+            }
+            else
+            {
+                inactiveIcon.applyToItem(item);
+            }
         }
 	}
 	
@@ -1089,6 +1099,17 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		} else {
 			node.set("icon", null);
 		}
+        if (inactiveIcon != null) {;
+            String iconKey = inactiveIcon.getKey();
+            if (iconKey != null && iconKey.length() > 0) {
+                node.set("icon_inactive", iconKey);
+            } else {
+                node.set("icon_inactive", null);
+            }
+        } else {
+            node.set("icon_inactive", null);
+        }
+        node.set("icon_inactive_delay", inactiveIconDelay);
         if (upgradeIcon != null) {
             String iconKey = upgradeIcon.getKey();
             if (iconKey != null && iconKey.length() > 0) {
@@ -1322,6 +1343,11 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 				wandSpells = wandSpells.length() == 0 ? getSpellString() : wandSpells;
 				parseInventoryStrings(wandSpells, wandMaterials);
 			}
+
+            if (wandConfig.contains("icon_inactive")) {
+                inactiveIcon = new MaterialAndData(wandConfig.getString("icon_inactive"));
+            }
+            inactiveIconDelay = wandConfig.getInt("icon_inactive_delay", inactiveIconDelay);
 
             if (wandConfig.contains("randomize_icon")) {
                 setIcon(new MaterialAndData(wandConfig.getString("randomize_icon")));
@@ -2757,6 +2783,16 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		if (mage == null || wandItem == null) return;
         id = null;
 
+        if (this.inactiveIcon != null && this.icon != null) {
+            Plugin plugin = controller.getPlugin();
+            plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
+                @Override
+                public void run() {
+                    icon.applyToItem(item);
+                }
+            }, inactiveIconDelay * 20 / 1000);
+        }
+
         Player player = mage.getPlayer();
         if (!canUse(player)) {
             mage.sendMessage(getMessage("bound").replace("$name", getOwner()));
@@ -3175,6 +3211,10 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 			CompatibilityUtils.removePotionEffect(player);
             effectBubblesApplied = false;
 		}
+
+        if (this.item != null && this.inactiveIcon != null) {
+            inactiveIcon.applyToItem(this.item);
+        }
 		
 		// This is a tying wands together with other spells, potentially
 		// But with the way the mana system works, this seems like the safest route.
