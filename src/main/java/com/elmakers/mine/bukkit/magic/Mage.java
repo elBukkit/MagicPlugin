@@ -64,9 +64,9 @@ import com.elmakers.mine.bukkit.wand.Wand;
 
 public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mage {
     protected static int AUTOMATA_ONLINE_TIMEOUT = 5000;
-
+    public static double WAND_LOCATION_OFFSET = 0.5;
+    public static double WAND_LOCATION_VERTICAL_OFFSET = 0;
     final static private Set<Material> EMPTY_MATERIAL_SET = new HashSet<Material>();
-
     private static String defaultMageName = "Mage";
 
     protected final String id;
@@ -865,6 +865,21 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         }
 
         return getLocation();
+    }
+
+    @Override
+    public Location getWandLocation() {
+        Location wandLocation = getEyeLocation();
+        if (wandLocation == null) {
+            return null;
+        }
+        Location toTheRight = wandLocation.clone();
+        toTheRight.setYaw(toTheRight.getYaw() + 90);
+        Vector wandDirection = toTheRight.getDirection();
+        wandLocation = wandLocation.clone();
+        wandLocation.add(wandDirection.multiply(WAND_LOCATION_OFFSET));
+        wandLocation.setY(wandLocation.getY() + WAND_LOCATION_VERTICAL_OFFSET);
+        return wandLocation;
     }
 
     @Override

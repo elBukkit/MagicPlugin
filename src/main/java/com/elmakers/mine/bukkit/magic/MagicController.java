@@ -1288,7 +1288,7 @@ public class MagicController implements Listener, MageController {
 
         // Load wand templates
         try {
-            Wand.loadTemplates(loadConfigFile(WANDS_FILE, loadDefaultWands));
+            Wand.loadTemplates(this, loadConfigFile(WANDS_FILE, loadDefaultWands));
         } catch (Exception ex) {
             getLogger().log(Level.WARNING, "Error loading wands.yml", ex);
             loaded = false;
@@ -2061,7 +2061,8 @@ public class MagicController implements Listener, MageController {
         MaterialBrush.MapCustomIcon = properties.getString("map_icon_url", MaterialBrush.MapCustomIcon);
         MaterialBrush.DefaultBrushCustomIcon = properties.getString("default_brush_icon_url", MaterialBrush.DefaultBrushCustomIcon);
 
-        CastContext.WAND_LOCATION_OFFSET = properties.getDouble("wand_location_offset", CastContext.WAND_LOCATION_OFFSET);
+        com.elmakers.mine.bukkit.magic.Mage.WAND_LOCATION_OFFSET = properties.getDouble("wand_location_offset", com.elmakers.mine.bukkit.magic.Mage.WAND_LOCATION_OFFSET);
+        com.elmakers.mine.bukkit.magic.Mage.WAND_LOCATION_VERTICAL_OFFSET = properties.getDouble("wand_location_offset_vertical", com.elmakers.mine.bukkit.magic.Mage.WAND_LOCATION_OFFSET);
 
         Wand.inventoryOpenSound = ConfigurationUtils.toSoundEffect(properties.getString("wand_inventory_open_sound"));
         Wand.inventoryCloseSound = ConfigurationUtils.toSoundEffect(properties.getString("wand_inventory_close_sound"));
@@ -4746,7 +4747,7 @@ public class MagicController implements Listener, MageController {
     }
 
     public ItemStack createGenericItem(String key) {
-        ConfigurationSection template = Wand.getWandTemplate(key);
+        ConfigurationSection template = Wand.getTemplateConfiguration(key);
         if (template == null || !template.contains("icon")) {
             return null;
         }
