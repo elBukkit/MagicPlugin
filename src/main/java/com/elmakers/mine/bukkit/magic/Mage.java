@@ -14,6 +14,7 @@ import java.util.logging.Level;
 
 import com.elmakers.mine.bukkit.api.action.GUIAction;
 import com.elmakers.mine.bukkit.api.batch.SpellBatch;
+import com.elmakers.mine.bukkit.api.effect.SoundEffect;
 import com.elmakers.mine.bukkit.api.spell.SpellKey;
 import com.elmakers.mine.bukkit.effect.HoloUtils;
 import com.elmakers.mine.bukkit.effect.Hologram;
@@ -388,16 +389,11 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         brush.setMaterial(controller.getDefaultMaterial(), (byte) 1);
     }
 
-    public void playSound(Sound sound, float volume, float pitch) {
-        if (!controller.soundsEnabled()) return;
+    @Override
+    public void playSoundEffect(SoundEffect soundEffect) {
+        if (!controller.soundsEnabled() || soundEffect == null) return;
 
-        Player player = getPlayer();
-        if (player != null) {
-            player.playSound(player.getLocation(), sound, volume, pitch);
-        } else {
-            Entity entity = getEntity();
-            entity.getLocation().getWorld().playSound(entity.getLocation(), sound, volume, pitch);
-        }
+        soundEffect.play(controller, getEntity());
     }
 
     public UndoQueue getUndoQueue() {

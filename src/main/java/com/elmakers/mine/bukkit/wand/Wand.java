@@ -2613,7 +2613,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 			updateInventory();
 			if (mage != null && inventories.size() > 1) {
                 if (inventoryCycleSound != null) {
-                    mage.playSound(inventoryCycleSound.getSound(), inventoryCycleSound.getVolume(), inventoryCycleSound.getPitch());
+                    mage.playSoundEffect(inventoryCycleSound);
                 }
 				mage.getPlayer().updateInventory();
 			}
@@ -2635,7 +2635,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 			currentHotbar = hotbarCount == 0 ? 0 : (currentHotbar + hotbarCount + direction) % hotbarCount;
 			updateHotbar();
 			if (inventoryCycleSound != null) {
-				mage.playSound(inventoryCycleSound.getSound(), inventoryCycleSound.getVolume(), inventoryCycleSound.getPitch());
+				mage.playSoundEffect(inventoryCycleSound);
 			}
             updateHotbarStatus();
 			mage.getPlayer().updateInventory();
@@ -2654,7 +2654,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		if (wandMode == WandMode.CHEST) {
 			inventoryIsOpen = true;
             if (inventoryOpenSound != null) {
-                mage.playSound(inventoryOpenSound.getSound(), inventoryOpenSound.getVolume(), inventoryOpenSound.getPitch());
+                mage.playSoundEffect(inventoryOpenSound);
             }
             updateInventory();
 			mage.getPlayer().openInventory(getDisplayInventory());
@@ -2663,7 +2663,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
             if (storeInventory()) {
 				inventoryIsOpen = true;
                 if (inventoryOpenSound != null) {
-                    mage.playSound(inventoryOpenSound.getSound(), inventoryOpenSound.getVolume(), inventoryOpenSound.getPitch());
+                    mage.playSoundEffect(inventoryOpenSound);
                 }
 				updateInventory();
                 updateHotbarStatus();
@@ -2681,7 +2681,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
             inventoryIsOpen = false;
             if (mage != null) {
                 if (inventoryCloseSound != null) {
-                    mage.playSound(inventoryCloseSound.getSound(), inventoryCloseSound.getVolume(), inventoryCloseSound.getPitch());
+                    mage.playSoundEffect(inventoryCloseSound);
                 }
                 if (mode == WandMode.INVENTORY) {
                     restoreInventory();
