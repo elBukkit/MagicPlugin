@@ -1,8 +1,9 @@
 package com.elmakers.mine.bukkit.api.effect;
 
-import com.elmakers.mine.bukkit.api.magic.MageController;
+import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.entity.Entity;
+import org.bukkit.plugin.Plugin;
 
 public interface SoundEffect {
     public String getCustomSound();
@@ -10,5 +11,6 @@ public interface SoundEffect {
     public float getVolume();
     public float getPitch();
     public int getRange();
-    public void play(MageController controller, Entity entity);
+    public void play(Plugin controller, Entity entity);
+    public void play(Plugin controller, Location location);
 }
