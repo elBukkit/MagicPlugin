@@ -160,6 +160,8 @@ public interface MageController {
     public CurrencyItem getCurrency();
     public boolean itemsAreEqual(ItemStack first, ItemStack second);
 
+    public void addFlightExemption(Player player, int duration);
+
     /**
      * Check to see if the Elementals plugin is present an enabled.
      *
