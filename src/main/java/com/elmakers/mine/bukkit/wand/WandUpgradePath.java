@@ -491,6 +491,14 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
             }
         }
 
+        Mage mage = wand.getActivePlayer();
+        if (mage != null && mage.getDebugLevel() > 0) {
+            mage.sendMessage("Spells remaining: " + remainingSpells.size() + ", max per enchant: " + spellCount);
+            if (needsMaterials) {
+                mage.sendMessage("Brushes remaining: " + remainingMaterials.size() + ", max per enchant: " + materialCount);
+            }
+        }
+
         return ((spellCount > 0 && remainingSpells.size() > 0) || (needsMaterials && materialCount > 0 && remainingMaterials.size() > 0));
     }
 
