@@ -839,17 +839,20 @@ conway:
 
 student_upgrade:
     upgrade: true
+    hidden: true
     indestructible: false
     xp_max: 100
     xp_regeneration: 10
 apprentice_upgrade:
     upgrade: true
+    hidden: true
     indestructible: false
     hotbar_count: 2
     xp_max: 150
     xp_regeneration: 30
 master_upgrade:
     upgrade: true
+    hidden: true
     indestructible: false
     upgrade_icon: gold_axe
     xp_max: 250
@@ -857,11 +860,13 @@ master_upgrade:
     hotbar_count: 3
 engineer_upgrade:
     upgrade: true
+    hidden: true
     indestructible: false
     xp_max: 300
     xp_regeneration: 70
 architect_upgrade:
     upgrade: true
+    hidden: true
     upgrade_icon: monster_eggs:2
     indestructible: false
     xp_max: 400

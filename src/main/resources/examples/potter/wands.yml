@@ -638,6 +638,7 @@ rainboweffects:
 
 year2:
     upgrade: true
+    hidden: true
     path: year1
     upgrade_path: year2
     indestructible: false
@@ -646,6 +647,7 @@ year2:
     xp_regeneration: 10
 year3:
     upgrade: true
+    hidden: true
     path: year2
     upgrade_path: year3
     indestructible: false
@@ -654,6 +656,7 @@ year3:
     xp_regeneration: 15
 year4:
     upgrade: true
+    hidden: true
     path: year3
     upgrade_path: year4
     indestructible: false
@@ -662,6 +665,7 @@ year4:
     xp_regeneration: 20
 year5:
     upgrade: true
+    hidden: true
     path: year4
     upgrade_path: year5
     indestructible: false
@@ -670,6 +674,7 @@ year5:
     xp_regeneration: 25
 year6:
     upgrade: true
+    hidden: true
     path: year5
     upgrade_path: year6
     indestructible: false
@@ -678,6 +683,7 @@ year6:
     xp_regeneration: 30
 year7:
     upgrade: true
+    hidden: true
     path: year6
     upgrade_path: year7
     indestructible: false
@@ -686,6 +692,7 @@ year7:
     xp_regeneration: 35
 graduate:
     upgrade: true
+    hidden: true
     path: year7
     upgrade_path: graduate
     indestructible: false
