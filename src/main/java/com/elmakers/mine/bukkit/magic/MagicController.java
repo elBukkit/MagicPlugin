@@ -2067,6 +2067,7 @@ public class MagicController implements Listener, MageController {
         Wand.inventoryOpenSound = ConfigurationUtils.toSoundEffect(properties.getString("wand_inventory_open_sound"));
         Wand.inventoryCloseSound = ConfigurationUtils.toSoundEffect(properties.getString("wand_inventory_close_sound"));
         Wand.inventoryCycleSound = ConfigurationUtils.toSoundEffect(properties.getString("wand_inventory_cycle_sound"));
+        wandNoActionSound = ConfigurationUtils.toSoundEffect(properties.getString("wand_no_action_sound"));
 
         preventMeleeDamage = properties.getBoolean("prevent_melee_damage", false);
 
@@ -2916,6 +2917,17 @@ public class MagicController implements Listener, MageController {
 
                 mage.onPlayerDamage(event);
 			}
+            else
+            {
+                Entity mount = entity.getPassenger();
+                if (isMage(mount)) {
+                    Mage apiMage = getMage(mount);
+                    if (!(apiMage instanceof com.elmakers.mine.bukkit.magic.Mage)) return;
+                    com.elmakers.mine.bukkit.magic.Mage mage = (com.elmakers.mine.bukkit.magic.Mage) apiMage;
+
+                    mage.onPlayerDamage(event);
+                }
+            }
 	        if (entity instanceof Item)
 	        {
 	   		 	Item item = (Item)entity;
@@ -3157,7 +3169,7 @@ public class MagicController implements Listener, MageController {
                 }
             }
         } else {
-            mage.playSound(Sound.NOTE_BASS, 1.0f, 0.7f);
+            mage.playSoundEffect(wandNoActionSound);
         }
     }
 
@@ -4953,6 +4965,8 @@ public class MagicController implements Listener, MageController {
     private final String						SPELLS_DATA_FILE			= "spells";
     private final String						AUTOMATA_FILE				= "automata";
     private final String						URL_MAPS_FILE				= "imagemaps";
+
+    public static SoundEffect                   wandNoActionSound           = null;
 
     private boolean                             disableDefaultSpells        = false;
     private boolean 							loadDefaultSpells			= true;

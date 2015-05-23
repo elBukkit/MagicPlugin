@@ -11,6 +11,7 @@
  - Add Star Wars configs - Work-in-Progress!
  - Add smarter handling of "sound" property in FX, deprecate custom_sound
  - Disable crafting of a gold sword by default
+ - Fall protection (and other protection) will protect your mount as well (Fling+Mount!)
 
 ## 5.0
 
