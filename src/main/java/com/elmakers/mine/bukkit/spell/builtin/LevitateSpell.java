@@ -233,6 +233,14 @@ public class LevitateSpell extends TargetingSpell implements Listener
         Player player = mage.getPlayer();
         if (player == null) return;
 
+        if (mountEntity != null) {
+            Entity currentMount = player.getVehicle();
+            if (currentMount != mountEntity) {
+                crash();
+                return;
+            }
+        }
+
         boolean checkHeight = autoDeactivateHeight > 0;
         if (checkHeight && mage.isPlayer()) {
             checkHeight = mage.getPlayer().isSneaking();
@@ -273,8 +281,14 @@ public class LevitateSpell extends TargetingSpell implements Listener
         if (crashDistance > 0)
         {
             Vector threshold = direction.clone().multiply(crashDistance);
-            if (checkForCrash(mage.getEyeLocation(), threshold)) return;
-            if (checkForCrash(mage.getLocation(), threshold)) return;
+            if (checkForCrash(mage.getEyeLocation(), threshold)) {
+                crash();
+                return;
+            }
+            if (checkForCrash(mage.getLocation(), threshold)) {
+                crash();
+                return;
+            }
         }
 
         double boost = thrustSpeed;
@@ -346,20 +360,24 @@ public class LevitateSpell extends TargetingSpell implements Listener
         }
     }
 
+    protected void crash()
+    {
+        deactivate(true, false);
+        sendMessage(getMessage("crash"));
+        mage.deactivateAllSpells();
+        playEffects("crash");
+        LivingEntity livingEntity = mage.getLivingEntity();
+        if (crashEffects != null && livingEntity != null && crashEffects.size() > 0) {
+            CompatibilityUtils.applyPotionEffects(livingEntity, crashEffects);
+        }
+    }
+
     protected boolean checkForCrash(Location source, Vector threshold)
     {
         Block facingBlock = source.getBlock();
         Block targetBlock = source.add(threshold).getBlock();
 
         if (!targetBlock.equals(facingBlock) && !isPassthrough(targetBlock.getType())) {
-            deactivate(true, false);
-            sendMessage(getMessage("crash"));
-            mage.deactivateAllSpells();
-            playEffects("crash");
-            LivingEntity livingEntity = mage.getLivingEntity();
-            if (crashEffects != null && livingEntity != null && crashEffects.size() > 0) {
-                CompatibilityUtils.applyPotionEffects(livingEntity, crashEffects);
-            }
             return true;
         }
 
