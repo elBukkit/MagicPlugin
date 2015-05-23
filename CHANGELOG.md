@@ -10,6 +10,7 @@
  - Add flight exemptions for NCP to avoid false-positives (off by default, there if you need it)
  - Add Star Wars configs - Work-in-Progress!
  - Add smarter handling of "sound" property in FX, deprecate custom_sound
+ - Disable crafting of a gold sword by default
 
 ## 5.0
 
