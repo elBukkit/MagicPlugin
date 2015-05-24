@@ -94,4 +94,5 @@ public interface Wand extends CostReducer {
     public boolean showMessages();
     public String getTemplateKey();
     public boolean isIndestructible();
+    public void playEffects(String key);
 }
