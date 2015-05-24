@@ -42,6 +42,46 @@ lightsaber_red:
              iterations: 1
              radius: 0.3
              particle: smoke_normal
+        swing:
+        -  class: EffectSingle
+           sound: magic.ignite
+           sound_volume: 1
+           location: origin
+           effectlib:
+             class: HelixEffect
+             iterations: 1
+             radius: 0.3
+             particle: flame
+        hit_entity:
+        -  class: EffectSingle
+           sound: magic.ignite
+           sound_volume: 1
+           location: origin
+           effectlib:
+             class: HelixEffect
+             iterations: 1
+             radius: 0.3
+             particle: smoke_large
+        hit_block:
+        -  class: EffectSingle
+           sound: magic.ignite
+           sound_volume: 1
+           location: origin
+           effectlib:
+             class: HelixEffect
+             iterations: 1
+             radius: 0.3
+             particle: smoke_normal
+        hit_blocked:
+        -  class: EffectSingle
+           sound: magic.ignite
+           sound_volume: 1
+           location: origin
+           effectlib:
+             class: HelixEffect
+             iterations: 1
+             radius: 0.3
+             particle: smoke_normal
     spells:
         - push
         - fire

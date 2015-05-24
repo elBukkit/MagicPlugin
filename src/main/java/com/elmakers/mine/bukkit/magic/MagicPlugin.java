@@ -325,8 +325,8 @@ public class MagicPlugin extends JavaPlugin implements MagicAPI
 
     @Override
     public void giveExperienceToPlayer(Player player, int xp) {
-        if (controller.isMage(player)) {
-            com.elmakers.mine.bukkit.api.magic.Mage mage = controller.getMage(player);
+        com.elmakers.mine.bukkit.api.magic.Mage mage = controller.getRegisteredMage(player);
+        if (mage != null) {
             mage.giveExperience(xp);
         } else {
             player.giveExp(xp);

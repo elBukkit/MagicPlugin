@@ -60,6 +60,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockBurnEvent;
+import org.bukkit.event.block.BlockDamageEvent;
 import org.bukkit.event.block.BlockFromToEvent;
 import org.bukkit.event.block.BlockIgniteEvent;
 import org.bukkit.event.block.BlockPhysicsEvent;
@@ -232,14 +233,15 @@ public class MagicController implements Listener, MageController {
         return getMage(entity, commandSender);
     }
 
+    public Mage getRegisteredMage(Entity entity) {
+        if (entity == null) return null;
+        String id = entity.getUniqueId().toString();
+        return mages.get(id);
+    }
+
     protected com.elmakers.mine.bukkit.api.magic.Mage getMage(Entity entity, CommandSender commandSender) {
         if (entity == null) return getMage(commandSender);
         String id = entity.getUniqueId().toString();
-
-        // Check for Citizens NPC
-        if (isNPC(entity)) {
-            id = "NPC-" + id;
-        }
         return getMage(id, commandSender, entity);
     }
 
@@ -2271,12 +2273,12 @@ public class MagicController implements Listener, MageController {
     public void onEntityCombust(EntityCombustEvent event)
     {
         Entity entity = event.getEntity();
-        if (isMage(entity)) {
-            Mage apiMage = getMage(event.getEntity());
-            if (!(apiMage instanceof com.elmakers.mine.bukkit.magic.Mage)) return;
-            com.elmakers.mine.bukkit.magic.Mage mage = (com.elmakers.mine.bukkit.magic.Mage) apiMage;
-
-            mage.onPlayerCombust(event);
+        Mage apiMage = getRegisteredMage(entity);
+        if (apiMage != null) {
+            if (apiMage instanceof com.elmakers.mine.bukkit.magic.Mage) {
+                com.elmakers.mine.bukkit.magic.Mage mage = (com.elmakers.mine.bukkit.magic.Mage) apiMage;
+                mage.onPlayerCombust(event);
+            }
         }
 
         if (!event.isCancelled())
@@ -2408,6 +2410,18 @@ public class MagicController implements Listener, MageController {
 			return;
 		}
 	}
+
+    @EventHandler
+    public void onBlockDamage(BlockDamageEvent event) {
+        Player damager = event.getPlayer();
+        Mage damagerMage = getRegisteredMage(damager);
+        if (damagerMage != null) {
+            com.elmakers.mine.bukkit.api.wand.Wand activeWand = damagerMage.getActiveWand();
+            if (activeWand != null) {
+                activeWand.playEffects("hit_block");
+            }
+        }
+    }
 	
 	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
 	public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
@@ -2435,25 +2449,40 @@ public class MagicController implements Listener, MageController {
         Entity entity = event.getEntity();
         if (entity instanceof Projectile || entity instanceof TNTPrimed) return;
         Entity damager = event.getDamager();
-        boolean isProtected = false;
-        if (isMage(entity)) {
-            isProtected = getMage(entity).isSuperProtected();
-        }
-        if (isProtected) {
-            event.setDamage(0);
-            return;
-        }
-        ActionHandler.targetEffects(damager, entity);
-        ActionHandler.runActions(damager, entity.getLocation(), entity);
-
-        if (preventMeleeDamage && event.getCause() == EntityDamageEvent.DamageCause.ENTITY_ATTACK && damager instanceof Player && entity instanceof Player)
-        {
-            Player player = (Player)damager;
-            ItemStack itemInHand = player.getItemInHand();
-            if (!isSword(itemInHand))
-            {
-                event.setDamage(0);
+        Mage entityMage = getRegisteredMage(entity);
+        if (entityMage != null) {
+            if (entity instanceof Player) {
+                Player damaged = (Player)entity;
+                if (damaged.isBlocking()) {
+                    com.elmakers.mine.bukkit.api.wand.Wand damagedWand = entityMage.getActiveWand();
+                    damagedWand.playEffects("hit_blocked");
+                }
             }
+            if (entityMage.isSuperProtected()) {
+                event.setDamage(0);
+                return;
+            }
+        }
+        if (damager instanceof Player) {
+            boolean hasWand = false;
+            Mage damagerMage = getRegisteredMage(damager);
+            if (damagerMage != null) {
+                com.elmakers.mine.bukkit.api.wand.Wand activeWand = damagerMage.getActiveWand();
+                if (activeWand != null) {
+                    hasWand = true;
+                    activeWand.playEffects("hit_entity");
+                }
+            }
+            if (!hasWand && preventMeleeDamage && event.getCause() == EntityDamageEvent.DamageCause.ENTITY_ATTACK) {
+                Player player = (Player) damager;
+                ItemStack itemInHand = player.getItemInHand();
+                if (!isSword(itemInHand)) {
+                    event.setDamage(0);
+                }
+            }
+        } else {
+            ActionHandler.targetEffects(damager, entity);
+            ActionHandler.runActions(damager, entity.getLocation(), entity);
         }
 	}
 
@@ -2469,8 +2498,8 @@ public class MagicController implements Listener, MageController {
 	protected UndoList getEntityUndo(Entity entity) {
 		UndoList blockList = null;
 		if (entity == null) return null;
-        if (isMage(entity)) {
-			Mage mage = getMage(entity);
+        Mage mage = getRegisteredMage(entity);
+        if (mage != null) {
             if (mage instanceof com.elmakers.mine.bukkit.magic.Mage) {
                 UndoList undoList = mage.getLastUndoList();
                 if (undoList != null) {
@@ -2739,9 +2768,10 @@ public class MagicController implements Listener, MageController {
             event.getDrops().clear();
         }
 
-        if (!isMage(entity)) return;
 
-        Mage apiMage = getMage(entity);
+        Mage apiMage = getRegisteredMage(entity);
+        if (apiMage == null) return;
+
         if (!(apiMage instanceof com.elmakers.mine.bukkit.magic.Mage)) return;
         com.elmakers.mine.bukkit.magic.Mage mage = (com.elmakers.mine.bukkit.magic.Mage)apiMage;
 
@@ -2909,9 +2939,9 @@ public class MagicController implements Listener, MageController {
 		try {
 			Entity entity = event.getEntity();
 
-			if (isMage(entity))
+            Mage apiMage = getRegisteredMage(event.getEntity());
+			if (apiMage != null)
 			{
-                Mage apiMage = getMage(event.getEntity());
                 if (!(apiMage instanceof com.elmakers.mine.bukkit.magic.Mage)) return;
                 com.elmakers.mine.bukkit.magic.Mage mage = (com.elmakers.mine.bukkit.magic.Mage) apiMage;
 
@@ -2919,12 +2949,11 @@ public class MagicController implements Listener, MageController {
 			}
             else
             {
-                Entity mount = entity.getPassenger();
-                if (isMage(mount)) {
-                    Mage apiMage = getMage(mount);
-                    if (!(apiMage instanceof com.elmakers.mine.bukkit.magic.Mage)) return;
-                    com.elmakers.mine.bukkit.magic.Mage mage = (com.elmakers.mine.bukkit.magic.Mage) apiMage;
-
+                Entity passenger = entity.getPassenger();
+                Mage apiMountMage = getRegisteredMage(passenger);
+                if (apiMountMage != null) {
+                    if (!(apiMountMage instanceof com.elmakers.mine.bukkit.magic.Mage)) return;
+                    com.elmakers.mine.bukkit.magic.Mage mage = (com.elmakers.mine.bukkit.magic.Mage)apiMountMage;
                     mage.onPlayerDamage(event);
                 }
             }
@@ -3038,20 +3067,6 @@ public class MagicController implements Listener, MageController {
             return;
         }
 
-        // Check for wearing via right-click
-        Action action = event.getAction();
-        if (itemInHand != null
-            && (action == Action.RIGHT_CLICK_AIR || action == Action.RIGHT_CLICK_BLOCK)
-            && wearableMaterials.contains(itemInHand.getType()))
-        {
-            if (wand != null)
-            {
-                wand.deactivate();
-            }
-            onArmorUpdated(mage);
-            return;
-        }
-
         // Hacky check for immediately activating a wand if for some reason it was
 		// not active
 		if (wand == null && hasWand) {
@@ -3063,6 +3078,20 @@ public class MagicController implements Listener, MageController {
 			wand.activate(mage);
 			getLogger().warning("Player was holding an inactive wand on interact- activating.");
 		}
+
+        // Check for wearing via right-click
+        Action action = event.getAction();
+        if (itemInHand != null
+                && (action == Action.RIGHT_CLICK_AIR || action == Action.RIGHT_CLICK_BLOCK)
+                && wearableMaterials.contains(itemInHand.getType()))
+        {
+            if (wand != null)
+            {
+                wand.deactivate();
+            }
+            onArmorUpdated(mage);
+            return;
+        }
 
 		if (wand == null) return;
 
@@ -3091,7 +3120,13 @@ public class MagicController implements Listener, MageController {
             return;
         }
 
-        if ((action == Action.LEFT_CLICK_AIR || action == Action.LEFT_CLICK_BLOCK) && !wand.isUpgrade() && !wand.isQuickCast())
+        boolean isSwing = action == Action.LEFT_CLICK_AIR || action == Action.LEFT_CLICK_BLOCK;
+
+        if (isSwing) {
+            wand.playEffects("swing");
+        }
+
+        if (isSwing && !wand.isUpgrade() && !wand.isQuickCast())
 		{
             if (!hasWandPermission(player, wand))
             {
@@ -3221,8 +3256,8 @@ public class MagicController implements Listener, MageController {
 
     protected void handlePlayerQuitEvent(PlayerEvent event) {
         Player player = event.getPlayer();
-        if (isMage(player)) {
-            Mage mage = getMage(player);
+        Mage mage = getRegisteredMage(player);
+        if (mage != null) {
             if (mage instanceof com.elmakers.mine.bukkit.magic.Mage)
             {
                 ((com.elmakers.mine.bukkit.magic.Mage)mage).onPlayerQuit(event);
