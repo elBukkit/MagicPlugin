@@ -2840,6 +2840,7 @@ fill:
         -  class: EffectTrail
            effect: step_sound
     parameters:
+        select_self: true
         allow_max_range: false
         target: select
         range: 64
