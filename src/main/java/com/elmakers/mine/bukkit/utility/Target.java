@@ -304,6 +304,11 @@ public class Target implements Comparable<Target>
         {
             score = score + 1;
         }
+
+        if (mage != null && mage.getDebugLevel() > 1)
+        {
+            mage.sendMessage("Target " + entity.getType() + ": r2=" + distanceSquared + ", a=" + angle + ", score: " + score);
+        }
     }
 
     public int compareTo(Target other)
