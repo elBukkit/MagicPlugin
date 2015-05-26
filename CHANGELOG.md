@@ -7,7 +7,7 @@
  - Fix some Master Sword glitches
  - Add some protection against losing player inventories on server crash
  - Balance/Fix Disintegrate, Torture, Monster/Familiar/Mob/Farm (add auto-undo)
- - Add flight exemptions for NCP to avoid false-positives (off by default, there if you need it)
+ - Add flight exemptions for NCP and vanilla flight checks for Fling and Lift
  - Add Star Wars configs - Work-in-Progress!
  - Add smarter handling of "sound" property in FX, deprecate custom_sound
  - Disable crafting of a gold sword by default

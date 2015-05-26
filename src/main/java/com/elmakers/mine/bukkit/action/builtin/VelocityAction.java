@@ -47,7 +47,7 @@ public class VelocityAction extends BaseSpellAction
         pushDirection = parameters.getDouble("push", 0);
         yOffset = parameters.getInt("y_offset", 0);
         direction = ConfigurationUtils.getVector(parameters, "direction");
-        exemptionDuration = parameters.getInt("exemption_duration", 0);
+        exemptionDuration = parameters.getInt("exemption_duration", (int)(maxSpeed * 2000));
     }
 
     @Override

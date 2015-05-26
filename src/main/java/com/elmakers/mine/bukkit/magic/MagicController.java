@@ -5004,12 +5004,12 @@ public class MagicController implements Listener, MageController {
 
     public void addFlightExemption(Player player, int duration) {
         ncpManager.addFlightExemption(player, duration);
+        CompatibilityUtils.addFlightExemption(player, duration * 20 / 1000);
     }
 
     /*
 	 * Private data
 	 */
-    private final static int                    MAX_Y = 255;
     private static final String                 BUILTIN_SPELL_CLASSPATH = "com.elmakers.mine.bukkit.spell.builtin";
     private static int                          VOLUME_UPDATE_THRESHOLD = 32;
 
