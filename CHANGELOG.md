@@ -13,6 +13,7 @@
  - Disable crafting of a gold sword by default
  - Fall protection (and other protection) will protect your mount as well (Fling+Mount!)
  - Chests locked with secure are now unbreakable unless you have the key
+ - Add /mserver command, useful for moving other players between Bungee servers
 
 ## 5.0
 

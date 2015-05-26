@@ -14,6 +14,7 @@ import com.elmakers.mine.bukkit.magic.command.CastCommandExecutor;
 import com.elmakers.mine.bukkit.magic.command.MagicCommandExecutor;
 import com.elmakers.mine.bukkit.magic.command.MagicGiveCommandExecutor;
 import com.elmakers.mine.bukkit.magic.command.MagicMapCommandExecutor;
+import com.elmakers.mine.bukkit.magic.command.MagicServerCommandExecutor;
 import com.elmakers.mine.bukkit.magic.command.MagicSkillsCommandExecutor;
 import com.elmakers.mine.bukkit.magic.command.MagicTraitCommandExecutor;
 import com.elmakers.mine.bukkit.magic.command.SpellsCommandExecutor;
@@ -22,6 +23,7 @@ import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import com.elmakers.mine.bukkit.utility.NMSUtils;
 import com.elmakers.mine.bukkit.wand.Wand;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
@@ -144,6 +146,7 @@ public class MagicPlugin extends JavaPlugin implements MagicAPI
 
 	public void onEnable() 
 	{
+        Bukkit.getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
 		if (controller == null) {
 			controller = new MagicController(this);
 		}
@@ -169,6 +172,9 @@ public class MagicPlugin extends JavaPlugin implements MagicAPI
         TabExecutor magicMapCommand = new MagicMapCommandExecutor(this);
         getCommand("mmap").setExecutor(magicMapCommand);
         getCommand("mmap").setTabCompleter(magicMapCommand);
+        TabExecutor magicServerCommand = new MagicServerCommandExecutor(this);
+        getCommand("mserver").setExecutor(magicServerCommand);
+        getCommand("mserver").setTabCompleter(magicServerCommand);
         TabExecutor magicSkillsCommand = new MagicSkillsCommandExecutor(this);
         getCommand("mskills").setExecutor(magicSkillsCommand);
         getCommand("mskills").setTabCompleter(magicSkillsCommand);

@@ -50,6 +50,10 @@ commands:
     description: Get Heroes skills
     usage: /mskills
     permission: Magic.commands.mskills
+  mserver:
+    description: "Moves a player to another server"
+    usage: "mserver <player> <server>"
+    permission: Magic.commands.mserver
 permissions:
   Magic.commands.spells:
     description: Player may list spells
@@ -337,6 +341,10 @@ permissions:
     default: op
   Magic.commands.mmap.player:
     description: Player may use the /mmap player command
+    type: boolean
+    default: op
+  Magic.commands.mserver:
+    description: Player may sender players to other servers
     type: boolean
     default: op
   Magic.wand.use:
