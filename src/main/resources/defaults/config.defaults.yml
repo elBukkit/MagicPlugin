@@ -209,7 +209,8 @@ url_icons_enabled: true
 live_hotbar: true
 
 # Turn this on if you don't want players to be able to deal damage
-# other than with a wand
+# other than with a wand, or items listed in the "melee" list in materials.yml
+# By default, swords are still allowed.
 prevent_melee_damage: false
 
 # Turn this off to use normal damage. May be useful if you want

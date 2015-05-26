@@ -1851,6 +1851,9 @@ public class MagicController implements Listener, MageController {
         if (materialSets.containsKey("wearable")) {
             wearableMaterials = materialSets.get("wearable");
         }
+        if (materialSets.containsKey("melee")) {
+            meleeMaterials = materialSets.get("melee");
+        }
         if (materialSets.containsKey("attachable")) {
             com.elmakers.mine.bukkit.block.UndoList.attachables = materialSets.get("attachable");
         }
@@ -2481,7 +2484,7 @@ public class MagicController implements Listener, MageController {
             if (!hasWand && preventMeleeDamage && event.getCause() == EntityDamageEvent.DamageCause.ENTITY_ATTACK) {
                 Player player = (Player) damager;
                 ItemStack itemInHand = player.getItemInHand();
-                if (!isSword(itemInHand)) {
+                if (itemInHand == null || !meleeMaterials.contains(itemInHand.getType())) {
                     event.setDamage(0);
                 }
             }
@@ -2490,15 +2493,6 @@ public class MagicController implements Listener, MageController {
             ActionHandler.runActions(damager, entity.getLocation(), entity);
         }
 	}
-
-    protected boolean isSword(ItemStack item)
-    {
-        return item.getType() == Material.DIAMOND_SWORD ||
-            item.getType() == Material.WOOD_SWORD ||
-            item.getType() == Material.IRON_SWORD ||
-            item.getType() == Material.STONE_SWORD ||
-            item.getType() == Material.GOLD_SWORD;
-    }
 	
 	protected UndoList getEntityUndo(Entity entity) {
 		UndoList blockList = null;
@@ -5047,6 +5041,7 @@ public class MagicController implements Listener, MageController {
     private Set<Material>                       interactibleMaterials           = new HashSet<Material>();
     private Set<Material>                       containerMaterials              = new HashSet<Material>();
     private Set<Material>                       wearableMaterials               = new HashSet<Material>();
+private Set<Material>                           meleeMaterials                  = new HashSet<Material>();
     private Map<String, Set<Material>>		    materialSets				    = new HashMap<String, Set<Material>>();
 
     private int								    undoTimeWindow				    = 6000;
