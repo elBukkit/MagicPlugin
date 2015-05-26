@@ -1708,10 +1708,15 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     }
 
     @Override
-    public void reactivate() {
-        isActive = true;
-        onActivate();
+    public void setActive(boolean active) {
+        if (active && !isActive) {
+            onActivate();
+        } else if (!active && isActive) {
+            onDeactivate();
+        }
+        isActive = active;
     }
+
     @Override
     public void activate() {
         if (!isActive) {
@@ -1758,7 +1763,6 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
             if (category != null && template == null) {
                 category.addCasts(castCount, lastCast);
             }
-            isActive = node.getBoolean("active", false);
             onLoad(node);
         } catch (Exception ex) {
             controller.getPlugin().getLogger().warning("Failed to load data for spell " + name + ": " + ex.getMessage());
