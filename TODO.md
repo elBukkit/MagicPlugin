@@ -1,20 +1,15 @@
 # TODO
 
+ - Support for restoring armor stands
+
  - Hover text for spells
  - Cat GIF generator? http://catdb.yawk.at/images?tag=gif
- - Selected Hotbar# not saving?
  - Check Regenerate - got stuck, couldn't cancel?
-
  - Make Portal spell portals avoid creating a frame on the other side (maybe handle TP'ing on portal event?)
  - Logout on death still buggy? (can not reproduce)
- - Make locked chests unbreakable
-
  - Wand dupe issue: tl;dr : he was able to drag a wand while in the spell inventory.
-
- - Map brush was acting wonky.
  - Recall still losing waypoints .. also can grab items out?
 
- - Support for restoring armor stands- might have to drop 1.7 support for this.
  - Clean up MaterialBrush target system, automate somehow?
  - Copy target brush action for tandem replication
  - Automata aren't cleaning up cmd block + redstone
@@ -33,8 +28,7 @@
  - Add repeat option for schematic brushes
    - or generalized option that works with map, too
  - /magic describe should show info about current spell?
- - Support for locking/unlocking chests
- - Configurable FOV weight for targeting (Survival Sense)
+ - Configurable FOV and entity type weights for targeting (Survival Sense)
  - Maximum enchant count for wands
 
 ## Old Stuff

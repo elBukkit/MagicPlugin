@@ -509,7 +509,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                 wand = Wand.createWand(controller, welcomeWand);
                 if (wand != null) {
                     wand.takeOwnership(player, false, false);
-                    controller.giveItemToPlayer(player, wand.getItem());
+                    giveItem(wand.getItem());
                     controller.getLogger().info("Gave welcome wand " + wand.getName() + " to " + player.getName());
                 } else {
                     controller.getLogger().warning("Unable to give welcome wand '" + welcomeWand + "' to " + player.getName());
@@ -1535,7 +1535,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             givenWands++;
             ItemStack wandItem = wandEntry.getValue().duplicate().getItem();
             wandItem.setAmount(1);
-            controller.giveItemToPlayer(player, wandItem);
+            giveItem(wandItem);
         }
         return givenWands > 0;
     }
@@ -1696,6 +1696,10 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             if (Wand.isWand(itemStack)) {
                 Wand wand = new Wand(controller, itemStack);
                 wand.activate(this);
+            } else {
+                if (itemStack.getType() == Material.MAP) {
+                    setLastHeldMapId(itemStack.getDurability());
+                }
             }
         } else {
             HashMap<Integer, ItemStack> returned = player.getInventory().addItem(itemStack);
