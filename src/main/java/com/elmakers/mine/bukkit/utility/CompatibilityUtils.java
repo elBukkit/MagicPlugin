@@ -8,7 +8,9 @@ import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Rotation;
 import org.bukkit.World;
+import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.block.ContainerBlock;
 import org.bukkit.block.Skull;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
@@ -638,10 +640,11 @@ public class CompatibilityUtils extends NMSUtils {
         }
     }
 
-    public static boolean setLock(Location location, String lockName)
+    public static boolean setLock(Block block, String lockName)
     {
-        Object tileEntity = getTileEntity(location);
+        Object tileEntity = getTileEntity(block.getLocation());
         if (tileEntity == null) return false;
+        if (!class_TileEntityContainer.isInstance(tileEntity)) return false;
         try {
             Object lock = class_ChestLock_Constructor.newInstance(lockName);
             class_TileEntityContainer_setLock.invoke(tileEntity, lock);
@@ -653,10 +656,11 @@ public class CompatibilityUtils extends NMSUtils {
         return true;
     }
 
-    public static boolean clearLock(Location location)
+    public static boolean clearLock(Block block)
     {
-        Object tileEntity = getTileEntity(location);
+        Object tileEntity = getTileEntity(block.getLocation());
         if (tileEntity == null) return false;
+        if (!class_TileEntityContainer.isInstance(tileEntity)) return false;
         try {
             class_TileEntityContainer_setLock.invoke(tileEntity, new Object[] {null});
         } catch (Exception ex) {
@@ -667,10 +671,11 @@ public class CompatibilityUtils extends NMSUtils {
         return true;
     }
 
-    public static boolean isLocked(Location location)
+    public static boolean isLocked(Block block)
     {
-        Object tileEntity = getTileEntity(location);
+        Object tileEntity = getTileEntity(block.getLocation());
         if (tileEntity == null) return false;
+        if (!class_TileEntityContainer.isInstance(tileEntity)) return false;
         try {
             Object lock = class_TileEntityContainer_getLock.invoke(tileEntity);
             if (lock == null) return false;
@@ -679,6 +684,21 @@ public class CompatibilityUtils extends NMSUtils {
             ex.printStackTrace();
         }
         return false;
+    }
+
+    public static String getLock(Block block)
+    {
+        Object tileEntity = getTileEntity(block.getLocation());
+        if (tileEntity == null) return null;
+        if (!class_TileEntityContainer.isInstance(tileEntity)) return null;
+        try {
+            Object lock = class_TileEntityContainer_getLock.invoke(tileEntity);
+            if (lock == null) return null;
+            return (String)class_ChestLock_getString.invoke(lock);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return null;
     }
 
     public static void setFallingBlockDamage(FallingBlock entity, float fallHurtAmount, int fallHurtMax)

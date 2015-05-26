@@ -3,11 +3,14 @@ package com.elmakers.mine.bukkit.utility;
 import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.logging.Level;
 
+import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.google.common.collect.Multimap;
 import org.bukkit.Bukkit;
 import org.bukkit.DyeColor;
@@ -243,5 +246,25 @@ public class InventoryUtils extends NMSUtils
         }
 
         list.add(text);
+    }
+
+    public static boolean hasItem(Mage mage, String itemName) {
+        return hasItem(mage.getInventory(), itemName);
+    }
+
+    public static boolean hasItem(Inventory inventory, String itemName) {
+        if (inventory == null) {
+            return false;
+        }
+        ItemStack[] items = inventory.getContents();
+        for (ItemStack item : items) {
+            if (item != null && item.hasItemMeta()) {
+                String displayName = item.getItemMeta().getDisplayName();
+                if (displayName != null && displayName.equals(itemName)) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }

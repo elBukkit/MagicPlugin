@@ -158,10 +158,11 @@ public class NMSUtils {
     protected static Method class_TileEntityContainer_setLock;
     protected static Method class_TileEntityContainer_getLock;
     protected static Method class_ChestLock_isEmpty;
+    protected static Method class_ChestLock_getString;
     protected static Method class_ArmorStand_setInvisible;
     protected static Method class_ArmorStand_setMarker;
     protected static Method class_ArmorStand_setGravity;
-    protected static Method class_ArmorStand_setSmall;;
+    protected static Method class_ArmorStand_setSmall;
 
     protected static Constructor class_NBTTagList_consructor;
     protected static Constructor class_NBTTagList_legacy_consructor;
@@ -363,6 +364,7 @@ public class NMSUtils {
             class_TileEntityContainer_setLock = class_TileEntityContainer.getMethod("a", class_ChestLock);
             class_TileEntityContainer_getLock = class_TileEntityContainer.getMethod("i");
             class_ChestLock_isEmpty = class_ChestLock.getMethod("a");
+            class_ChestLock_getString = class_ChestLock.getMethod("b");
             class_Entity_getBoundingBox = class_Entity.getMethod("getBoundingBox");
             class_GameProfile = getClass("com.mojang.authlib.GameProfile");
             class_GameProfileProperty = getClass("com.mojang.authlib.properties.Property");

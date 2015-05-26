@@ -6,10 +6,14 @@ import java.util.HashSet;
 import java.util.Set;
 
 import com.elmakers.mine.bukkit.block.UndoList;
+import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.block.BlockState;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.InventoryHolder;
 
 public abstract class BlockSpell extends UndoableSpell {
 
@@ -24,6 +28,9 @@ public abstract class BlockSpell extends UndoableSpell {
     public boolean isIndestructible(Block block)
     {
         if (mage.isSuperPowered()) return false;
+        Player player = mage.getPlayer();
+        if (player != null && player.hasPermission("Magic.bypass")) return false;
+        if (controller.isLocked(block)) return true;
         if (indestructible == null) {
             return mage.isIndestructible(block);
         }
