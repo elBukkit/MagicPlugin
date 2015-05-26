@@ -68,7 +68,7 @@ public class FillSpell extends BrushSpell
             // This is kind of a hack to make map-building easier
 			Location centerLocation = this.targetBlock.getLocation();
             Location secondLocation = this.targetBlock.getLocation();
-            if (brush.getMode() == BrushMode.MAP) {
+            if (buildWith.getMode() == BrushMode.MAP) {
                 centerLocation = targetBlock.getLocation();
                 centerLocation.setX(Math.floor((centerLocation.getX() + secondLocation.getX()) / 2));
                 centerLocation.setY(Math.floor((centerLocation.getY() + secondLocation.getY()) / 2));
