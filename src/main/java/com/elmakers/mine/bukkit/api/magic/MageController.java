@@ -266,4 +266,6 @@ public interface MageController {
      * @param item
      */
     public void serialize(ConfigurationSection root, String key, ItemStack item);
+
+    public boolean isLocked(Block block);
 }
