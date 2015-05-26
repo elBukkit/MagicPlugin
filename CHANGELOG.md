@@ -3,19 +3,19 @@
 ## 5.1
 
  - Remove the "elder" wand from survival configs. Just use the Wolf! (or copy it back in if this is a problem for you)
+ - Add flight exemptions for NCP and vanilla flight checks for Fling and Lift
+ - Add /mserver command, useful for moving other players between Bungee servers
  - Fix Hat eating your helmet if you cast it on water or lava
  - Fix some Master Sword glitches
  - Add some protection against losing player inventories on server crash
  - Balance/Fix Disintegrate, Torture, Monster/Familiar/Mob/Farm (add auto-undo)
- - Add flight exemptions for NCP and vanilla flight checks for Fling and Lift
- - Add Star Wars configs - Work-in-Progress!
  - Add smarter handling of "sound" property in FX, deprecate custom_sound
  - Disable crafting of a gold sword by default
  - Fall protection (and other protection) will protect your mount as well (Fling+Mount!)
- - Chests locked with secure are now unbreakable unless you have the key
- - Add /mserver command, useful for moving other players between Bungee servers
+ - Chests locked with Secure are now unbreakable unless you have the key
  - Brooms/Levitate no longer re-activate on login. Fall protection will, though.
  - Tracking Sense will prefer Players versus other mobs
+ - Add Star Wars configs - Work-in-Progress!
 
 ## 5.0
 
