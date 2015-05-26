@@ -22,6 +22,13 @@ public class Target implements Comparable<Target>
     protected double maxAngle           = 0.3;
     protected boolean useHitbox         = false;
 
+    protected float distanceWeight = 1;
+    protected float fovWeight = 4;
+    protected int npcWeight = -1;
+    protected int playerWeight = 4;
+    protected int livingEntityWeight = 3;
+    protected int mageWeight = 5;
+
     protected double closeDistanceSquared = 1;
     protected double closeAngle = Math.PI / 2;
 
@@ -109,6 +116,26 @@ public class Target implements Comparable<Target>
         this.maxAngle = angle;
         this.source = sourceLocation;
         this._entity = new WeakReference<Entity>(entity);
+        if (entity != null) this.location = CompatibilityUtils.getEyeLocation(entity);
+        calculateScore();
+    }
+
+    public Target(Location sourceLocation, Entity entity, int range, double angle, double closeRange, double closeAngle,
+                  float distanceWeight, float fovWeight, int mageWeight, int npcWeight, int playerWeight, int livingEntityWeight)
+    {
+        this.closeDistanceSquared = closeRange * closeRange;
+        this.closeAngle = closeAngle;
+        this.maxDistanceSquared = range * range;
+        this.maxAngle = angle;
+        this.source = sourceLocation;
+        this._entity = new WeakReference<Entity>(entity);
+        this.distanceWeight = distanceWeight;
+        this.fovWeight = fovWeight;
+        this.mageWeight = mageWeight;
+        this.npcWeight = npcWeight;
+        this.playerWeight = playerWeight;
+        this.livingEntityWeight = livingEntityWeight;
+
         if (entity != null) this.location = CompatibilityUtils.getEyeLocation(entity);
         calculateScore();
     }
@@ -277,37 +304,32 @@ public class Target implements Comparable<Target>
         }
 
         score = 1;
-        if (maxDistanceSquared > 0) score += (maxDistanceSquared - distanceSquared);
-        if (!useHitbox && angle > 0) score += (3 - angle) * 4;
 
-        // Favor targeting players, a bit
-        // TODO: Make this configurable? Offensive spells should prefer mobs, maybe?
+        // Apply scoring weights
+        if (maxDistanceSquared > 0) score += (maxDistanceSquared - distanceSquared) * distanceWeight;
+        if (!useHitbox && angle > 0) score += (3 - angle) * fovWeight;
+
         if (entity != null && mage != null && mage.getController().isNPC(entity))
         {
-            score = score - 1;
+            score = score + npcWeight;
         }
         else
         if (mage != null)
         {
-            score = score + 5;
+            score = score + mageWeight;
         }
         else
         if (entity instanceof Player)
         {
-            score = score + 3;
+            score = score + playerWeight;
         }
         else  if (entity instanceof LivingEntity)
         {
-            score = score + 2;
-        }
-        else
-        {
-            score = score + 1;
+            score = score + livingEntityWeight;
         }
 
-        if (mage != null && mage.getDebugLevel() > 1)
-        {
-            mage.sendMessage("Target " + entity.getType() + ": r2=" + distanceSquared + ", a=" + angle + ", score: " + score);
+        if (DEBUG_TARGETING && entity != null) {
+            org.bukkit.Bukkit.getLogger().info("TARGETED " + entity.getType() + ": r2=" + distanceSquared + " (" + distanceWeight + "), a=" + angle + " (" + fovWeight + "), score: " + score);
         }
     }
 

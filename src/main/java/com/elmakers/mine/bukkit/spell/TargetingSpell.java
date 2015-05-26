@@ -56,7 +56,15 @@ public abstract class TargetingSpell extends BaseSpell {
     private String								targetLocationWorldName;
     protected Location                          targetLocation2;
     protected double 		                    targetBreakables	    = 0;
-    private Entity								targetEntity = null;
+    private Entity								targetEntity            = null;
+
+    protected float                             distanceWeight          = 1;
+    protected float                             fovWeight               = 4;
+    protected int                               npcWeight               = -1;
+    protected int                               mageWeight              = 5;
+    protected int                               playerWeight            = 4;
+    protected int                               livingEntityWeight      = 3;
+
     private boolean                             bypassProtection        = false;
     private boolean                             checkProtection         = false;
 
@@ -553,10 +561,16 @@ public abstract class TargetingSpell extends BaseSpell {
             if (useHitbox) {
                 newScore = new Target(sourceLocation, entity, (int)range, useHitbox);
             } else {
-                newScore = new Target(sourceLocation, entity, (int)range, fov, closeRange, closeFOV);
+                newScore = new Target(sourceLocation, entity, (int)range, fov, closeRange, closeFOV,
+                    distanceWeight, fovWeight, mageWeight, npcWeight, playerWeight, livingEntityWeight);
             }
             if (newScore.getScore() > 0)
             {
+                if (mage != null && mage.getDebugLevel() > 1)
+                {
+                    mage.sendMessage("Target " + entity.getType() + ": " + newScore.getScore());
+                }
+
                 targets.add(newScore);
             }
         }
@@ -807,6 +821,12 @@ public abstract class TargetingSpell extends BaseSpell {
         checkProtection = parameters.getBoolean("check_protection", false);
         targetBreakables = parameters.getDouble("target_breakables", 0);
         reverseTargeting = parameters.getBoolean("reverse_targeting", false);
+
+        distanceWeight = (float)parameters.getDouble("distance_weight", 1);
+        fovWeight = (float)parameters.getDouble("fov_weight", 4);
+        npcWeight = parameters.getInt("npc_weight", -1);
+        playerWeight = parameters.getInt("player_weight", 4);
+        livingEntityWeight = parameters.getInt("entity_weight", 3);
 
         if (parameters.contains("transparent")) {
             targetThroughMaterials.clear();
