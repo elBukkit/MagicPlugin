@@ -1298,7 +1298,7 @@ spells:
     tracking:
         name: Tracking Sense
         description: Find nearby life
-        cast: You sense a nearby $target
+        cast: You sense $target nearby
         no_target: It's quiet ... too quiet!
         upgrade_description: "&r&b&bull; &6Larger search radius"
     enchantwand:

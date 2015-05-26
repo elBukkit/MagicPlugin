@@ -6833,10 +6833,13 @@ tracking:
         range: 32
         fov: 3
         close_fov: 3
+        fov_weight: 400
+        player_weight: 500
         target: other_entity
         target_type: LivingEntity
         cooldown: 5000
         ignore_blocks: true
+        loud: true
     costs:
         mana: 20
 

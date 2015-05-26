@@ -15,6 +15,7 @@
  - Chests locked with secure are now unbreakable unless you have the key
  - Add /mserver command, useful for moving other players between Bungee servers
  - Brooms/Levitate no longer re-activate on login. Fall protection will, though.
+ - Tracking Sense will prefer Players versus other mobs
 
 ## 5.0
 

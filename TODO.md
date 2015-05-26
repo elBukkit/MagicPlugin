@@ -28,7 +28,6 @@
  - Add repeat option for schematic brushes
    - or generalized option that works with map, too
  - /magic describe should show info about current spell?
- - Configurable FOV and entity type weights for targeting (Survival Sense)
  - Maximum enchant count for wands
 
 ## Old Stuff
