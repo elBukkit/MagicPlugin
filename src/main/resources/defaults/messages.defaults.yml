@@ -1676,9 +1676,6 @@ wands:
     alphabetizer:
         name: The Alphabetizer
         description: Alphabetizes your wand inventory
-    manaboost:
-        name: Mana Boost
-        description: Instantly refill your wand's mana
     recalltoken:
         name: Recall Token
         description: Teleport to waypoints
