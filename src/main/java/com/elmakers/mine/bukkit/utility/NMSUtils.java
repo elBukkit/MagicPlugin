@@ -103,6 +103,8 @@ public class NMSUtils {
     protected static Class<?> class_PacketPlayOutEntityStatus;
     protected static Class<?> class_EntityFallingBlock;
     protected static Class<?> class_EntityArmorStand;
+    protected static Class<?> class_EntityPlayer;
+    protected static Class<?> class_PlayerConnection;
 
     protected static Method class_NBTTagList_addMethod;
     protected static Method class_NBTTagList_getMethod;
@@ -205,6 +207,8 @@ public class NMSUtils {
     protected static Field class_EntityFallingBlock_fallHurtMaxField;
     protected static Field class_EntityFallingBlock_fallHurtAmountField;
     protected static Field class_EntityArmorStand_disabledSlotsField;
+    protected static Field class_EntityPlayer_playerConnectionField;
+    protected static Field class_PlayerConnection_floatCountField;
 
     static
     {
@@ -260,6 +264,8 @@ public class NMSUtils {
             class_PacketPlayOutEntityStatus = fixBukkitClass("net.minecraft.server.PacketPlayOutEntityStatus");
             class_EntityFallingBlock = fixBukkitClass("net.minecraft.server.EntityFallingBlock");
             class_EntityArmorStand = fixBukkitClass("net.minecraft.server.EntityArmorStand");
+            class_EntityPlayer = fixBukkitClass("net.minecraft.server.EntityPlayer");
+            class_PlayerConnection = fixBukkitClass("net.minecraft.server.PlayerConnection");
 
             class_NBTTagList_addMethod = class_NBTTagList.getMethod("add", class_NBTBase);
             class_NBTTagList_getMethod = class_NBTTagList.getMethod("get", Integer.TYPE);
@@ -338,6 +344,9 @@ public class NMSUtils {
             class_AxisAlignedBB_maxZField = class_AxisAlignedBB.getField("f");
             class_EntityArmorStand_disabledSlotsField = class_EntityArmorStand.getDeclaredField("bi");
             class_EntityArmorStand_disabledSlotsField.setAccessible(true);
+            class_EntityPlayer_playerConnectionField = class_EntityPlayer.getDeclaredField("playerConnection");
+            class_PlayerConnection_floatCountField = class_PlayerConnection.getDeclaredField("g");
+            class_PlayerConnection_floatCountField.setAccessible(true);
 
             class_Firework_ticksFlownField = class_EntityFirework.getDeclaredField("ticksFlown");
             class_Firework_ticksFlownField.setAccessible(true);

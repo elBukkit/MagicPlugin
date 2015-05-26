@@ -791,4 +791,14 @@ public class CompatibilityUtils extends NMSUtils {
             ex.printStackTrace();
         }
     }
+
+    public static void addFlightExemption(Player player, int ticks) {
+        try {
+            Object handle = getHandle(player);
+            Object connection = class_EntityPlayer_playerConnectionField.get(handle);
+            class_PlayerConnection_floatCountField.set(connection, -ticks);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
 }
