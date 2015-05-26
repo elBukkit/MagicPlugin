@@ -12,6 +12,7 @@
  - Add smarter handling of "sound" property in FX, deprecate custom_sound
  - Disable crafting of a gold sword by default
  - Fall protection (and other protection) will protect your mount as well (Fling+Mount!)
+ - Chests locked with secure are now unbreakable unless you have the key
 
 ## 5.0
 

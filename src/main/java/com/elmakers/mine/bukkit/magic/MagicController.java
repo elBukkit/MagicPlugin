@@ -15,7 +15,6 @@ import java.util.logging.Logger;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
-import com.elmakers.mine.bukkit.action.CastContext;
 import com.elmakers.mine.bukkit.api.action.GUIAction;
 import com.elmakers.mine.bukkit.api.block.CurrencyItem;
 import com.elmakers.mine.bukkit.api.block.Schematic;
@@ -45,6 +44,7 @@ import org.apache.commons.lang.StringUtils;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.block.BlockState;
 import org.bukkit.command.BlockCommandSender;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
@@ -74,6 +74,7 @@ import org.bukkit.event.player.*;
 import org.bukkit.event.world.ChunkLoadEvent;
 import org.bukkit.event.world.WorldSaveEvent;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
@@ -1844,6 +1845,9 @@ public class MagicController implements Listener, MageController {
         if (materialSets.containsKey("interactible")) {
             interactibleMaterials = materialSets.get("interactible");
         }
+        if (materialSets.containsKey("containers")) {
+            containerMaterials = materialSets.get("containers");
+        }
         if (materialSets.containsKey("wearable")) {
             wearableMaterials = materialSets.get("wearable");
         }
@@ -1981,6 +1985,7 @@ public class MagicController implements Listener, MageController {
 		dynmapShowSpells = properties.getBoolean("dynmap_show_spells", dynmapShowSpells);
         dynmapOnlyPlayerSpells = properties.getBoolean("dynmap_only_player_spells", dynmapOnlyPlayerSpells);
 		dynmapUpdate = properties.getBoolean("dynmap_update", dynmapUpdate);
+        protectLocked = properties.getBoolean("protected_locked", protectLocked);
 		bypassBuildPermissions = properties.getBoolean("bypass_build", bypassBuildPermissions);
         bypassBreakPermissions = properties.getBoolean("bypass_break", bypassBreakPermissions);
 		bypassPvpPermissions = properties.getBoolean("bypass_pvp", bypassPvpPermissions);
@@ -3823,10 +3828,35 @@ public class MagicController implements Listener, MageController {
 		}
 	}
 
+    public boolean isLocked(Block block) {
+        return protectLocked && containerMaterials.contains(block.getType()) && CompatibilityUtils.isLocked(block);
+    }
+
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onBlockBreak(BlockBreakEvent event)
     {
         Block block = event.getBlock();
+        if (protectLocked && containerMaterials.contains(block.getType()) && !event.getPlayer().hasPermission("Magic.bypass")) {
+            String lockKey = CompatibilityUtils.getLock(block);
+            if (lockKey != null && !lockKey.isEmpty()) {
+                Player player = event.getPlayer();
+                Inventory inventory = player.getInventory();
+                Mage mage = getRegisteredMage(event.getPlayer());
+                if (mage != null) {
+                    inventory = mage.getInventory();
+                }
+                if (!InventoryUtils.hasItem(inventory, lockKey)) {
+                    String message = messages.get("general.locked_chest");
+                    if (mage != null) {
+                        mage.sendMessage(message);
+                    } else {
+                        player.sendMessage(message);
+                    }
+                    event.setCancelled(true);
+                    return;
+                }
+            }
+        }
         com.elmakers.mine.bukkit.api.block.BlockData modifiedBlock = com.elmakers.mine.bukkit.block.UndoList.getBlockData(block.getLocation());
         if (modifiedBlock != null) {
             event.setCancelled(true);
@@ -5015,6 +5045,7 @@ public class MagicController implements Listener, MageController {
     private Set<Material>                       restrictedMaterials	 	        = new HashSet<Material>();
     private Set<Material>                       destructibleMaterials           = new HashSet<Material>();
     private Set<Material>                       interactibleMaterials           = new HashSet<Material>();
+    private Set<Material>                       containerMaterials              = new HashSet<Material>();
     private Set<Material>                       wearableMaterials               = new HashSet<Material>();
     private Map<String, Set<Material>>		    materialSets				    = new HashMap<String, Set<Material>>();
 
@@ -5126,6 +5157,7 @@ public class MagicController implements Listener, MageController {
     private boolean							    bypassPvpPermissions        = false;
     private boolean							    bypassFriendlyFire          = false;
     private boolean							    allPvpRestricted            = false;
+    private boolean							    protectLocked               = true;
 
     private String								extraSchematicFilePath		= null;
     private Mailer								mailer						= null;

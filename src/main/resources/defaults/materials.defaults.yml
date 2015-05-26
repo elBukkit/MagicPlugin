@@ -777,3 +777,11 @@ records:
 - record_10
 - record_11
 - record_12
+
+containers:
+- chest
+- furnace
+- brewing_stand
+- dispensers
+- hopper
+- dropper

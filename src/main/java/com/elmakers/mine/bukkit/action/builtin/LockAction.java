@@ -9,6 +9,7 @@ import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
+import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
@@ -73,54 +74,38 @@ public class LockAction extends BaseSpellAction
         }
 
         if (actionType == LockActionType.LOCK) {
-            if (!override && CompatibilityUtils.isLocked(targetBlock.getLocation()))
+            if (!override && CompatibilityUtils.isLocked(targetBlock))
             {
                 return SpellResult.FAIL;
             }
-            result = CompatibilityUtils.setLock(targetBlock.getLocation(), keyName);
+            result = CompatibilityUtils.setLock(targetBlock, keyName);
             giveKey(mage, keyName, keyDescription);
         } else {
-            if (!CompatibilityUtils.isLocked(targetBlock.getLocation()))
+            if (!CompatibilityUtils.isLocked(targetBlock))
             {
                 return SpellResult.FAIL;
             }
-            result = CompatibilityUtils.clearLock(targetBlock.getLocation());
+            result = CompatibilityUtils.clearLock(targetBlock);
         }
 		
 		return result ? SpellResult.CAST : SpellResult.FAIL;
 	}
 
     protected void giveKey(Mage mage, String keyName, String keyDescription) {
-        Player player = mage.getPlayer();
-        Inventory inventory = mage.getInventory();
-        if (player != null && inventory != null) {
-            boolean hasKey = false;
-            ItemStack[] items = inventory.getContents();
-            for (ItemStack item : items) {
-                if (item != null && item.hasItemMeta()) {
-                    String displayName = item.getItemMeta().getDisplayName();
-                    if (displayName != null && displayName.equals(keyName)) {
-                        hasKey = true;
-                        break;
-                    }
-                }
+        if (!InventoryUtils.hasItem(mage, keyName)) {
+            ItemStack keyItem = null;
+            keyItem = iconType.getItemStack(1);
+            ItemMeta meta = keyItem.getItemMeta();
+            meta.setDisplayName(keyName);
+            if (!keyDescription.isEmpty()) {
+                List<String> lore = new ArrayList<String>();
+                lore.add(keyDescription);
+                meta.setLore(lore);
             }
-
-            if (!hasKey) {
-                ItemStack keyItem = null;
-                keyItem = iconType.getItemStack(1);
-                ItemMeta meta = keyItem.getItemMeta();
-                meta.setDisplayName(keyName);
-                if (!keyDescription.isEmpty()) {
-                    List<String> lore = new ArrayList<String>();
-                    lore.add(keyDescription);
-                    meta.setLore(lore);
-                }
-                keyItem.setItemMeta(meta);
-                keyItem = CompatibilityUtils.makeReal(keyItem);
-                CompatibilityUtils.makeUnplaceable(keyItem);
-                mage.giveItem(keyItem);
-            }
+            keyItem.setItemMeta(meta);
+            keyItem = CompatibilityUtils.makeReal(keyItem);
+            CompatibilityUtils.makeUnplaceable(keyItem);
+            mage.giveItem(keyItem);
         }
     }
 
