@@ -49,13 +49,8 @@ public class LevitateSpell extends TargetingSpell implements Listener
     private static final BlockFace[] CHECK_FACES = {BlockFace.EAST, BlockFace.WEST, BlockFace.NORTH, BlockFace.SOUTH};
 
 	private static final float defaultFlySpeed = 0.1f;
-	
-	private long levitateEnded;
-	private final long safetyLength = 10000;
 
-    private final static int minRingEffectRange = 1;
-    private final static int maxRingEffectRange = 8;
-    private final static int maxDamageAmount = 150;
+	private final int safetyLength = 10000;
     
     private float flySpeed = 0;
     private int flyDelay = 2;
@@ -628,11 +623,14 @@ public class LevitateSpell extends TargetingSpell implements Listener
         deactivate(true, false);
 
         // Visual effect
-        playEffects("land", minRingEffectRange);
+        playEffects("land");
     }
 
 	@Override
 	public void onDeactivate() {
+        if (safetyLength > 0) {
+            mage.enableFallProtection(safetyLength, this);
+        }
         if (thrust != null) {
             thrust.stop();
             thrust = null;
@@ -688,8 +686,6 @@ public class LevitateSpell extends TargetingSpell implements Listener
 		
 		player.setFlying(false);
 		player.setAllowFlight(false);
-
-		levitateEnded = System.currentTimeMillis();
 	}
 	
 	@Override
@@ -698,9 +694,7 @@ public class LevitateSpell extends TargetingSpell implements Listener
 		if (player == null) return;
 
         // Prevent the player from death by fall
-        levitateEnded = 0;
         direction = null;
-        mage.registerEvent(SpellEventType.PLAYER_DAMAGE, this);
         mountBoostTicksRemaining = 0;
         boostTicksRemaining = 0;
 
@@ -872,28 +866,6 @@ public class LevitateSpell extends TargetingSpell implements Listener
         }
         if (smallArmorStand) {
             CompatibilityUtils.setSmall(armorStand, true);
-        }
-    }
-
-	@SuppressWarnings("deprecation")
-	@Override
-	@EventHandler
-	public void onPlayerDamage(EntityDamageEvent event)
-	{
-		if (event.getCause() != DamageCause.FALL) return;
-
-		if (levitateEnded == 0 || levitateEnded + safetyLength > System.currentTimeMillis())
-		{
-			event.setCancelled(true);
-
-			// Visual effect
-            int ringEffectRange = (int)Math.ceil(((double)maxRingEffectRange - minRingEffectRange) * event.getDamage() / maxDamageAmount + minRingEffectRange);
-            ringEffectRange = Math.min(maxRingEffectRange, ringEffectRange);
-            playEffects("land", ringEffectRange);
-		}
-
-        if (levitateEnded != 0 && System.currentTimeMillis() > levitateEnded + safetyLength) {
-            mage.unregisterEvent(SpellEventType.PLAYER_DAMAGE, this);
         }
     }
 

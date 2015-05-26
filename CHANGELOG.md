@@ -14,6 +14,7 @@
  - Fall protection (and other protection) will protect your mount as well (Fling+Mount!)
  - Chests locked with secure are now unbreakable unless you have the key
  - Add /mserver command, useful for moving other players between Bungee servers
+ - Brooms/Levitate no longer re-activate on login. Fall protection will, though.
 
 ## 5.0
 

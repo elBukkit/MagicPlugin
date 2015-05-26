@@ -516,15 +516,6 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                 }
             }
         }
-
-        Collection<Spell> spells = getSpells();
-        for (Spell spell : spells) {
-            // Reactivate spells that were active on logout.
-            if (spell.isActive()) {
-                sendMessage(controller.getMessages().get("spell.reactivate").replace("$name", spell.getName()));
-                activateSpell(spell);
-            }
-        }
     }
 
     protected boolean load(ConfigurationSection configNode) {
@@ -559,6 +550,12 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             }
             if (configNode.contains("data")) {
                 data = configNode.getConfigurationSection("data");
+            }
+
+            fallProtectionCount = configNode.getLong("fall_protection_count", 0);
+            fallProtection = configNode.getLong("fall_protection", 0);
+            if (fallProtectionCount > 0 && fallProtection > 0) {
+                fallProtection = System.currentTimeMillis() + fallProtection;
             }
 
             isNewPlayer = false;
@@ -648,6 +645,12 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                 configNode.set("location", ConfigurationUtils.fromLocation(location));
             }
 
+            long now = System.currentTimeMillis();
+            if (fallProtectionCount > 0 && fallProtection > now) {
+                configNode.set("fall_protection_count", fallProtectionCount);
+                configNode.set("fall_protection", fallProtection - now);
+            }
+
             ConfigurationSection brushNode = configNode.createSection("brush");
             brush.save(brushNode);
 
@@ -655,7 +658,6 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             ConfigurationSection spellNode = configNode.createSection("spells");
             for (MageSpell spell : spells.values()) {
                 ConfigurationSection section = spellNode.createSection(spell.getKey());
-                section.set("active", spell.isActive());
                 spell.save(section);
             }
 
@@ -990,10 +992,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         if (spell instanceof MageSpell) {
             MageSpell mageSpell = ((MageSpell) spell);
             activeSpells.add(mageSpell);
-
-            // Call reactivate to avoid the Spell calling back to this method,
-            // and to force activation if some state has gone wrong.
-            mageSpell.reactivate();
+            mageSpell.setActive(true);
         }
     }
 
