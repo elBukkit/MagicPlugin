@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.spell.builtin;
 
+import com.elmakers.mine.bukkit.api.block.BrushMode;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -63,13 +64,16 @@ public class FillSpell extends BrushSpell
 
 		if (this.targetBlock != null)
 		{
-			// Update the brush using the center of the fill volume. This is to make
-			// Replicate, clone, map and schematic work consistently with the construction spells.
-			Location centerLocation = targetBlock.getLocation();
-			Location secondLocation = this.targetBlock.getLocation();
-			centerLocation.setX(Math.floor((centerLocation.getX() + secondLocation.getX()) / 2));
-			centerLocation.setY(Math.floor((centerLocation.getY() + secondLocation.getY()) / 2));
-			centerLocation.setZ(Math.floor((centerLocation.getZ() + secondLocation.getZ()) / 2));
+			// Update the brush using the center of the fill volume.
+            // This is kind of a hack to make map-building easier
+			Location centerLocation = this.targetBlock.getLocation();
+            Location secondLocation = this.targetBlock.getLocation();
+            if (brush.getMode() == BrushMode.MAP) {
+                centerLocation = targetBlock.getLocation();
+                centerLocation.setX(Math.floor((centerLocation.getX() + secondLocation.getX()) / 2));
+                centerLocation.setY(Math.floor((centerLocation.getY() + secondLocation.getY()) / 2));
+                centerLocation.setZ(Math.floor((centerLocation.getZ() + secondLocation.getZ()) / 2));
+            }
 			buildWith.setTarget(this.targetBlock.getLocation(), centerLocation);
 			
 			FillBatch batch = new FillBatch(this, secondLocation, targetBlock.getLocation(), buildWith);
