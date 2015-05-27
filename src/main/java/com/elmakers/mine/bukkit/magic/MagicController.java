@@ -2481,12 +2481,15 @@ public class MagicController implements Listener, MageController {
                     activeWand.playEffects("hit_entity");
                 }
             }
-            if (!hasWand && preventMeleeDamage && event.getCause() == EntityDamageEvent.DamageCause.ENTITY_ATTACK) {
-                Player player = (Player) damager;
-                ItemStack itemInHand = player.getItemInHand();
-                if (itemInHand == null || !meleeMaterials.contains(itemInHand.getType())) {
-                    event.setDamage(0);
-                }
+            Player player = (Player) damager;
+            ItemStack itemInHand = player.getItemInHand();
+            boolean isMeleeWeapon = itemInHand == null || !meleeMaterials.contains(itemInHand.getType());
+            boolean isMelee = event.getCause() == EntityDamageEvent.DamageCause.ENTITY_ATTACK;
+            if (CompatibilityUtils.USE_MAGIC_DAMAGE && isMelee && hasWand && entity instanceof Player) {
+                event.setDamage(0);
+            }
+            else if (!hasWand && preventMeleeDamage && isMelee && !isMeleeWeapon) {
+                event.setDamage(0);
             }
         } else {
             ActionHandler.targetEffects(damager, entity);
