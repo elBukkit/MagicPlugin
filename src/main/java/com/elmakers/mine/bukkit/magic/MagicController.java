@@ -2463,7 +2463,9 @@ public class MagicController implements Listener, MageController {
                 Player damaged = (Player)entity;
                 if (damaged.isBlocking()) {
                     com.elmakers.mine.bukkit.api.wand.Wand damagedWand = entityMage.getActiveWand();
-                    damagedWand.playEffects("hit_blocked");
+                    if (damagedWand != null) {
+                        damagedWand.playEffects("hit_blocked");
+                    }
                 }
             }
             if (entityMage.isSuperProtected()) {
