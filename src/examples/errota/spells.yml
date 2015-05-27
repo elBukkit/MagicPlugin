@@ -1,0 +1,45 @@
+#
+# Customized Spells
+#
+
+firewave:
+  inherit: fire
+
+earthrumble:
+  inherit: laser
+
+windattack:
+  inherit: push
+
+solidwater:
+  inherit: frost
+
+skyattack:
+  inherit: lightning
+
+blind:
+  enabled: true
+
+poison:
+  enabled: true
+
+atomdestroy:
+  inherit: blast
+
+magicmissile:
+  inherit: stun
+
+armyattack:
+  inherit: mob
+  parameters:
+    type: zombie
+
+shieldoflife:
+  inherit: reflect|3
+
+flashrun:
+  inherit: boon
+  parameters:
+      target: self
+      duration: 5000
+      effect_night_vision: 0

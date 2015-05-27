@@ -1,0 +1,46 @@
+#
+# Custom Wands
+#
+
+offensive:
+    icon: wood_hoe
+    path: year1
+    bound: true
+    keep: true
+    undroppable: true
+    quiet: 1
+    xp_max: 300
+    xp: 300
+    xp_regeneration: 30
+    effect_color: 'FF0000'
+    effect_bubbles: false
+    active_spell: firewave
+    spells:
+    - firewave
+    - earthrumble
+    - windattack
+    - solidwater
+    - skyattack
+    - blind
+    - poison
+    - atomdestroy
+    - magicmissile
+    - armyattack
+
+defensive:
+    icon: gold_axe
+    path: year1
+    bound: true
+    keep: true
+    undroppable: true
+    quiet: 1
+    xp_max: 300
+    xp: 300
+    xp_regeneration: 30
+    effect_color: '0000FF'
+    effect_bubbles: false
+    active_spell: shieldoflife
+    spells:
+    - shieldoflife
+    - flashrun
+
