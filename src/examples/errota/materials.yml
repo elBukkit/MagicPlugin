@@ -1,4 +1,16 @@
 
+# Blocks that are always indestructible
+indestructible:
+- bedrock
+- barrier
+- ender_portal_frame
+
+#
+# The following list is only used if a spell has "check_destructible: true"
+# in its parameters- currrently none of your do.
+#
+# This would apply to Blast (Atom Destroy) and Laser (Earth Rumble)
+#
 # Which materials are inherently "destructible". This list includes anything is
 # can be naturally generated, except by structures (strongholds, villages, etc).
 # Most construction spells will use this material list for destructibility tests by

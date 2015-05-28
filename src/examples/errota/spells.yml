@@ -21,7 +21,7 @@ firewave:
     size: 8
 
 earthrumble:
-  inherit: laser|2
+  inherit: laser|3
 
 windattack:
   inherit: push
@@ -39,7 +39,7 @@ poison:
   enabled: true
 
 atomdestroy:
-  inherit: blast|3
+  inherit: blast|4
   actions:
       cast:
       -  class: AreaOfEffect
