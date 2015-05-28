@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## 5.1.1
+
+ - Disable NCP integration by default, fix concurrency issue
+ - Disable wand melee damage (except swords)
+ - Fix NPE when blocking with a non-magic sword
+
 ## 5.1
 
  - Remove the "elder" wand from survival configs. Just use the Wolf! (or copy it back in if this is a problem for you)
