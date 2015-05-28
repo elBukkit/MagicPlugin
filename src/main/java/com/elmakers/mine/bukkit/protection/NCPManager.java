@@ -22,12 +22,12 @@ public class NCPManager {
             if (ncpPlugin != null)
             {
                 ncp = new NCPAPI(plugin, ncpPlugin);
-                plugin.getLogger().info("NCP found, adding exemption handlers.");
+                plugin.getLogger().info("NoCheatPlus found, adding exemption handlers.");
             } else {
-                plugin.getLogger().info("NCP not found, will not integrate.");
+                plugin.getLogger().info("NoCheatPlus not found, will not integrate.");
             }
         } else {
-            plugin.getLogger().info("NCP integration disabled");
+            plugin.getLogger().info("NoCheatPlus integration disabled, enable this in config.yml if you find Magic triggering NCP violations");
         }
     }
 
