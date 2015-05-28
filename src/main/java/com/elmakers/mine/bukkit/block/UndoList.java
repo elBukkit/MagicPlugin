@@ -162,6 +162,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
     @Override
     public boolean add(BlockData blockData)
     {
+        if (bypass) return true;
         if (!super.add(blockData)) {
             return false;
         }
@@ -169,7 +170,6 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
             attached.remove(blockData.getId());
         }
         modifiedTime = System.currentTimeMillis();
-        if (bypass) return true;
 
         register(blockData);
         blockData.setUndoList(this);
