@@ -2488,7 +2488,7 @@ public class MagicController implements Listener, MageController {
             ItemStack itemInHand = player.getItemInHand();
             boolean isMeleeWeapon = itemInHand == null || !meleeMaterials.contains(itemInHand.getType());
             boolean isMelee = event.getCause() == EntityDamageEvent.DamageCause.ENTITY_ATTACK;
-            if (CompatibilityUtils.USE_MAGIC_DAMAGE && isMelee && hasWand && entity instanceof Player) {
+            if (CompatibilityUtils.USE_MAGIC_DAMAGE && isMelee && hasWand && entity instanceof Player && !isMeleeWeapon) {
                 event.setDamage(0);
             }
             else if (!hasWand && preventMeleeDamage && isMelee && !isMeleeWeapon) {
