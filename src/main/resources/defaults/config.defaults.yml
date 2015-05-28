@@ -480,6 +480,11 @@ precious_stones_enabled: true
 # regardless of other region perms
 precious_stones_override: true
 
+# Enable NCP integration- testing with the current version of NCP,
+# this does not seem to be necessary. But if you are having issues
+# with Magic causing violations, try turning this on.
+ncp_enabled: false
+
 # Enable Lockette integration for Build checks
 lockette_enabled: true
 

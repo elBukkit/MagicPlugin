@@ -6,7 +6,9 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
@@ -21,7 +23,7 @@ public class NCPAPI implements Runnable {
     }
 
     public void run() {
-        Set<UUID> uuids = flyExemptions.keySet();
+        List<UUID> uuids = new ArrayList<UUID>(flyExemptions.keySet());
         long now = System.currentTimeMillis();
         for (UUID uuid : uuids)
         {

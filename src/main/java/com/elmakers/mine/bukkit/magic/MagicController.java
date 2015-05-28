@@ -2018,6 +2018,7 @@ public class MagicController implements Listener, MageController {
         townyManager.setWildernessBypass(properties.getBoolean("towny_wilderness_bypass", true));
         locketteManager.setEnabled(properties.getBoolean("lockette_enabled", locketteManager.isEnabled()));
         griefPreventionManager.setEnabled(properties.getBoolean("grief_prevention_enabled", griefPreventionManager.isEnabled()));
+        ncpManager.setEnabled(properties.getBoolean("ncp_enabled", false));
 
         metricsLevel = properties.getInt("metrics_level", metricsLevel);
 

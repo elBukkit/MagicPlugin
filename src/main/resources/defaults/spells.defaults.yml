@@ -6984,7 +6984,6 @@ rocket:
     costs:
         mana: 75
 
-
 tornado:
     upgrade_required_path: master
     upgrade_required_casts: 50
