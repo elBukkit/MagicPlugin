@@ -3,7 +3,9 @@
 #
 
 firewave:
-  inherit: fire
+  inherit: fire|3
+  parameters:
+    radius: 3
 
 earthrumble:
   inherit: laser
@@ -24,10 +26,15 @@ poison:
   enabled: true
 
 atomdestroy:
-  inherit: blast
+  inherit: blast|4
+  parameters:
+    radius: 5
 
 magicmissile:
-  inherit: stun
+  inherit: missile|4
+  parameters:
+    player_damage: 4
+    entity_damage: 10
 
 armyattack:
   inherit: mob
@@ -36,6 +43,8 @@ armyattack:
 
 shieldoflife:
   inherit: reflect|3
+  parameters:
+    brush: stained_glass_pane:3
 
 flashrun:
   inherit: boon
