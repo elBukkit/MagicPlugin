@@ -4,11 +4,24 @@
 
 firewave:
   inherit: fire|3
+  actions:
+      cast:
+      - class: Disc
+        actions:
+        - class: Cover
+          actions:
+          - class: Burn
+      - class: Line
+        actions:
+        - class: Cover
+          actions:
+          - class: Burn
   parameters:
     radius: 3
+    size: 8
 
 earthrumble:
-  inherit: laser
+  inherit: laser|2
 
 windattack:
   inherit: push
@@ -26,9 +39,19 @@ poison:
   enabled: true
 
 atomdestroy:
-  inherit: blast|4
+  inherit: blast|3
+  actions:
+      cast:
+      -  class: AreaOfEffect
+         actions:
+         -  class: Damage
+      -  class: Sphere
+         actions:
+         -  class: ModifyBlock
   parameters:
     radius: 5
+    player_damage: 2
+    entity_damage: 8
 
 magicmissile:
   inherit: missile|4
