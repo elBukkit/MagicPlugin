@@ -47,6 +47,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
     protected static Map<Long, BlockData> modified = new HashMap<Long, BlockData>();
 
     protected HashSet<Long>         attached;
+    private boolean                 loading = false;
 
     protected List<WeakReference<Entity>> 	entities;
     protected List<Runnable>				runnables;
@@ -166,13 +167,16 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
         if (!super.add(blockData)) {
             return false;
         }
-        if (attached != null) {
-            attached.remove(blockData.getId());
-        }
         modifiedTime = System.currentTimeMillis();
 
         register(blockData);
         blockData.setUndoList(this);
+
+        if (loading) return true;
+
+        if (attached != null) {
+            attached.remove(blockData.getId());
+        }
 
         addAttachable(blockData, BlockFace.NORTH, attachablesWall);
         addAttachable(blockData, BlockFace.SOUTH, attachablesWall);
@@ -388,7 +392,9 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
     @Override
     public void load(ConfigurationSection node)
     {
+        loading = true;
         super.load(node);
+        loading = false;
         timeToLive = node.getInt("time_to_live", timeToLive);
         name = node.getString("name", name);
         applyPhysics = node.getBoolean("apply_physics", applyPhysics);
