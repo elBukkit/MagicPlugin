@@ -105,6 +105,10 @@ public class NMSUtils {
     protected static Class<?> class_EntityArmorStand;
     protected static Class<?> class_EntityPlayer;
     protected static Class<?> class_PlayerConnection;
+    protected static Class<?> class_Chunk;
+    protected static Class<?> class_CraftPlayer;
+    protected static Class<?> class_CraftChunk;
+    protected static Class<?> class_CraftEntity;
 
     protected static Method class_NBTTagList_addMethod;
     protected static Method class_NBTTagList_getMethod;
@@ -165,6 +169,11 @@ public class NMSUtils {
     protected static Method class_ArmorStand_setMarker;
     protected static Method class_ArmorStand_setGravity;
     protected static Method class_ArmorStand_setSmall;
+    protected static Method class_CraftPlayer_getHandleMethod;
+    protected static Method class_CraftChunk_getHandleMethod;
+    protected static Method class_CraftEntity_getHandleMethod;
+    protected static Method class_CraftLivingEntity_getHandleMethod;
+    protected static Method class_CraftWorld_getHandleMethod;
 
     protected static Constructor class_NBTTagList_consructor;
     protected static Constructor class_NBTTagList_legacy_consructor;
@@ -209,6 +218,8 @@ public class NMSUtils {
     protected static Field class_EntityArmorStand_disabledSlotsField;
     protected static Field class_EntityPlayer_playerConnectionField;
     protected static Field class_PlayerConnection_floatCountField;
+    protected static Field class_Chunk_doneField;
+    protected static Field class_CraftItemStack_getHandleField;
 
     static
     {
@@ -266,6 +277,10 @@ public class NMSUtils {
             class_EntityArmorStand = fixBukkitClass("net.minecraft.server.EntityArmorStand");
             class_EntityPlayer = fixBukkitClass("net.minecraft.server.EntityPlayer");
             class_PlayerConnection = fixBukkitClass("net.minecraft.server.PlayerConnection");
+            class_Chunk = fixBukkitClass("net.minecraft.server.Chunk");
+            class_CraftPlayer = fixBukkitClass("org.bukkit.craftbukkit.entity.CraftPlayer");
+            class_CraftChunk = fixBukkitClass("org.bukkit.craftbukkit.CraftChunk");
+            class_CraftEntity = fixBukkitClass("org.bukkit.craftbukkit.entity.CraftEntity");
 
             class_NBTTagList_addMethod = class_NBTTagList.getMethod("add", class_NBTBase);
             class_NBTTagList_getMethod = class_NBTTagList.getMethod("get", Integer.TYPE);
@@ -314,6 +329,11 @@ public class NMSUtils {
             class_ArmorStand_setSmall = class_EntityArmorStand.getDeclaredMethod("setSmall", Boolean.TYPE);
             class_ArmorStand_setMarker = class_EntityArmorStand.getDeclaredMethod("n", Boolean.TYPE);
             class_ArmorStand_setMarker.setAccessible(true);
+            class_CraftPlayer_getHandleMethod = class_CraftPlayer.getMethod("getHandle");
+            class_CraftChunk_getHandleMethod = class_CraftChunk.getMethod("getHandle");
+            class_CraftEntity_getHandleMethod = class_CraftEntity.getMethod("getHandle");
+            class_CraftLivingEntity_getHandleMethod = class_CraftLivingEntity.getMethod("getHandle");
+            class_CraftWorld_getHandleMethod = class_CraftWorld.getMethod("getHandle");
 
             class_CraftInventoryCustom_constructor = class_CraftInventoryCustom.getConstructor(InventoryHolder.class, Integer.TYPE, String.class);
             class_EntityFireworkConstructor = class_EntityFirework.getConstructor(class_World, Double.TYPE, Double.TYPE, Double.TYPE, class_ItemStack);
@@ -367,6 +387,11 @@ public class NMSUtils {
             class_EntityFallingBlock_fallHurtAmountField.setAccessible(true);
             class_EntityFallingBlock_fallHurtMaxField = class_EntityFallingBlock.getDeclaredField("fallHurtMax");
             class_EntityFallingBlock_fallHurtMaxField.setAccessible(true);
+
+            class_Chunk_doneField = class_Chunk.getDeclaredField("done");
+            class_Chunk_doneField.setAccessible(true);
+            class_CraftItemStack_getHandleField = class_CraftItemStack.getDeclaredField("handle");
+            class_CraftItemStack_getHandleField.setAccessible(true);
 
             class_TileEntityContainer = fixBukkitClass("net.minecraft.server.TileEntityContainer");
             class_ChestLock = fixBukkitClass("net.minecraft.server.ChestLock");
@@ -463,9 +488,7 @@ public class NMSUtils {
     public static Object getHandle(org.bukkit.inventory.ItemStack stack) {
         Object handle = null;
         try {
-            Field handleField = stack.getClass().getDeclaredField("handle");
-            handleField.setAccessible(true);
-            handle = handleField.get(stack);
+            handle = class_CraftItemStack_getHandleField.get(stack);
         } catch (Throwable ex) {
             handle = null;
         }
@@ -476,8 +499,7 @@ public class NMSUtils {
         if (world == null) return null;
         Object handle = null;
         try {
-            Method handleMethod = world.getClass().getMethod("getHandle");
-            handle = handleMethod.invoke(world);
+            handle = class_CraftWorld_getHandleMethod.invoke(world);
         } catch (Throwable ex) {
             ex.printStackTrace();
         }
@@ -488,8 +510,7 @@ public class NMSUtils {
         if (entity == null) return null;
         Object handle = null;
         try {
-            Method handleMethod = entity.getClass().getMethod("getHandle");
-            handle = handleMethod.invoke(entity);
+            handle = class_CraftEntity_getHandleMethod.invoke(entity);
         } catch (Throwable ex) {
             ex.printStackTrace();
         }
@@ -500,8 +521,7 @@ public class NMSUtils {
         if (entity == null) return null;
         Object handle = null;
         try {
-            Method handleMethod = entity.getClass().getMethod("getHandle");
-            handle = handleMethod.invoke(entity);
+            handle = class_CraftLivingEntity_getHandleMethod.invoke(entity);
         } catch (Throwable ex) {
             ex.printStackTrace();
         }
@@ -512,9 +532,7 @@ public class NMSUtils {
         Object chunkHandle = getHandle(chunk);
         boolean done = false;
         try {
-            Field doneField = chunkHandle.getClass().getDeclaredField("done");
-            doneField.setAccessible(true);
-            done = (Boolean)doneField.get(chunkHandle);
+            done = (Boolean)class_Chunk_doneField.get(chunkHandle);
         } catch (Throwable ex) {
             ex.printStackTrace();
         }
@@ -524,8 +542,7 @@ public class NMSUtils {
     public static Object getHandle(org.bukkit.Chunk chunk) {
         Object handle = null;
         try {
-            Method handleMethod = chunk.getClass().getMethod("getHandle");
-            handle = handleMethod.invoke(chunk);
+            handle = class_CraftChunk_getHandleMethod.invoke(chunk);
         } catch (Throwable ex) {
             ex.printStackTrace();
         }
@@ -535,19 +552,7 @@ public class NMSUtils {
     public static Object getHandle(org.bukkit.entity.Player player) {
         Object handle = null;
         try {
-            Method handleMethod = player.getClass().getMethod("getHandle");
-            handle = handleMethod.invoke(player);
-        } catch (Throwable ex) {
-            ex.printStackTrace();
-        }
-        return handle;
-    }
-
-    protected static Object getHandle(Object object) {
-        Object handle = null;
-        try {
-            Method handleMethod = object.getClass().getMethod("getHandle");
-            handle = handleMethod.invoke(object);
+            handle = class_CraftPlayer_getHandleMethod.invoke(player);
         } catch (Throwable ex) {
             ex.printStackTrace();
         }
