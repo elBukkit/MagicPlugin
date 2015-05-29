@@ -18,11 +18,14 @@ import org.bukkit.metadata.MetadataValue;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ActionHandler implements Cloneable
 {
     private static final String ACTION_BUILTIN_CLASSPATH = "com.elmakers.mine.bukkit.action.builtin";
+    private static Map<String, Class<?>> actionClasses = new HashMap<String, Class<?>>();
 
     private List<ActionContext> actions = new ArrayList<ActionContext>();
 
@@ -89,14 +92,18 @@ public class ActionHandler implements Cloneable
                         {
                             actionClassName = ACTION_BUILTIN_CLASSPATH + "." + actionClassName;
                         }
-                        Class<?> genericClass = null;
-                        try {
-                            genericClass = Class.forName(actionClassName + "Action");
-                        } catch (Exception ex) {
-                            genericClass = Class.forName(actionClassName);
-                        }
-                        if (!BaseSpellAction.class.isAssignableFrom(genericClass)) {
-                            throw new Exception("Must extend SpellAction");
+                        Class<?> genericClass = actionClasses.get(actionClassName);
+                        if (genericClass == null) {
+                            try {
+                                genericClass = Class.forName(actionClassName + "Action");
+                            } catch (Exception ex) {
+                                genericClass = Class.forName(actionClassName);
+                            }
+
+                            if (!BaseSpellAction.class.isAssignableFrom(genericClass)) {
+                                throw new Exception("Must extend SpellAction");
+                            }
+                            actionClasses.put(actionClassName, genericClass);
                         }
 
                         @SuppressWarnings("unchecked")

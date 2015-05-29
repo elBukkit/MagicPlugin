@@ -43,6 +43,7 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
         }
     }
 
+    private static Map<String, Class<?>> effectClasses = new HashMap<String, Class<?>>();
     private static EffectLibManager effectLib = null;
     private ConfigurationSection effectLibConfig = null;
     private Collection<EffectPlay> currentEffects = null;
@@ -575,7 +576,11 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
                         if (!effectClass.contains(".")) {
                             effectClass = EFFECT_BUILTIN_CLASSPATH + "." + effectClass;
                         }
-                        Class<?> genericClass = Class.forName(effectClass);
+                        Class<?> genericClass = effectClasses.get(effectClass);
+                        if (genericClass == null) {
+                            genericClass = Class.forName(effectClass);
+                            effectClasses.put(effectClass, genericClass);
+                        }
                         if (!EffectPlayer.class.isAssignableFrom(genericClass)) {
                             throw new Exception("Must extend EffectPlayer");
                         }
