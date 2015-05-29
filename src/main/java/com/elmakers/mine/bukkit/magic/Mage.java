@@ -125,6 +125,8 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
     private HashMap<Integer, ItemStack> respawnInventory;
     private HashMap<Integer, ItemStack> respawnArmor;
+    private List<?> restoreInventory;
+    private ConfigurationSection spellData;
 
     public Mage(String id, MagicController controller) {
         this.id = id;
@@ -499,29 +501,64 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     protected void onLoad() {
         loading = false;
         Player player = getPlayer();
-        if (player != null && activeWand == null) {
-            String welcomeWand = controller.getWelcomeWand();
-            Wand wand = Wand.getActiveWand(controller, player);
-            if (wand != null) {
-                wand.activate(this);
-            } else if (isNewPlayer && welcomeWand.length() > 0) {
-                isNewPlayer = false;
-                wand = Wand.createWand(controller, welcomeWand);
+        if (player != null) {
+            if (restoreInventory != null) {
+                controller.getLogger().info("Restoring saved inventory for player " + player.getName() + " - did the server not shut down properly?");
+                if (activeWand != null) {
+                    activeWand.deactivate();
+                }
+                Inventory inventory = player.getInventory();
+                for (int slot = 0; slot < restoreInventory.size(); slot++) {
+                    Object item = restoreInventory.get(slot);
+                    if (item instanceof ItemStack) {
+                        inventory.setItem(slot, (ItemStack)item);
+                    } else {
+                        inventory.setItem(slot, null);
+                    }
+                }
+                restoreInventory = null;
+            }
+
+            if (spellData != null) {
+                Set<String> keys = spellData.getKeys(false);
+                for (String key : keys) {
+                    Spell spell = spells.get(key);
+                    if (spell != null && spell instanceof MageSpell) {
+                        ConfigurationSection spellSection = spellData.getConfigurationSection(key);
+                        ((MageSpell) spell).load(spellSection);
+                    }
+                }
+            }
+
+            if (activeWand == null) {
+                String welcomeWand = controller.getWelcomeWand();
+                Wand wand = Wand.getActiveWand(controller, player);
                 if (wand != null) {
-                    wand.takeOwnership(player, false, false);
-                    giveItem(wand.getItem());
-                    controller.getLogger().info("Gave welcome wand " + wand.getName() + " to " + player.getName());
-                } else {
-                    controller.getLogger().warning("Unable to give welcome wand '" + welcomeWand + "' to " + player.getName());
+                    wand.activate(this);
+                } else if (isNewPlayer && welcomeWand.length() > 0) {
+                    isNewPlayer = false;
+                    wand = Wand.createWand(controller, welcomeWand);
+                    if (wand != null) {
+                        wand.takeOwnership(player, false, false);
+                        giveItem(wand.getItem());
+                        controller.getLogger().info("Gave welcome wand " + wand.getName() + " to " + player.getName());
+                    } else {
+                        controller.getLogger().warning("Unable to give welcome wand '" + welcomeWand + "' to " + player.getName());
+                    }
                 }
             }
         }
     }
 
+    protected void finishLoad() {
+        MageLoadTask loadTask = new MageLoadTask(this);
+        Bukkit.getScheduler().scheduleSyncDelayedTask(controller.getPlugin(), loadTask, 1);
+    }
+
     protected boolean load(ConfigurationSection configNode) {
         try {
             if (configNode == null) {
-                onLoad();
+                finishLoad();
                 return true;
             }
 
@@ -565,15 +602,11 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             lastCast = configNode.getLong("last_cast", lastCast);
 
             getUndoQueue().load(configNode);
-            ConfigurationSection spellNode = configNode.getConfigurationSection("spells");
-            if (spellNode != null) {
-                Set<String> keys = spellNode.getKeys(false);
+            spellData = configNode.getConfigurationSection("spells");
+            if (spellData != null) {
+                Set<String> keys = spellData.getKeys(false);
                 for (String key : keys) {
-                    Spell spell = getSpell(key);
-                    if (spell != null && spell instanceof MageSpell) {
-                        ConfigurationSection spellSection = spellNode.getConfigurationSection(key);
-                        ((MageSpell) spell).load(spellSection);
-                    }
+                    createSpell(key);
                 }
             }
             ConfigurationSection respawnData = configNode.getConfigurationSection("respawn_inventory");
@@ -608,30 +641,14 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             }
 
             if (configNode.contains("inventory")) {
-                Player player = getPlayer();
-                if (player != null) {
-                    controller.getLogger().info("Restoring saved inventory for player " + player.getName() + " - did the server not shut down properly?");
-                    if (activeWand != null) {
-                        activeWand.deactivate();
-                    }
-                    Inventory inventory = player.getInventory();
-                    List<?> items = configNode.getList("inventory");
-                    for (int slot = 0; slot < items.size(); slot++) {
-                        Object item = items.get(slot);
-                        if (item instanceof ItemStack) {
-                            inventory.setItem(slot, (ItemStack)item);
-                        } else {
-                            inventory.setItem(slot, null);
-                        }
-                    }
-                }
+                restoreInventory = configNode.getList("inventory");
             }
         } catch (Exception ex) {
             controller.getLogger().warning("Failed to load player data for " + playerName + ": " + ex.getMessage());
             return false;
         }
 
-        onLoad();
+        finishLoad();
         return true;
     }
 
@@ -961,23 +978,35 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
         MageSpell playerSpell = spells.get(key);
         if (playerSpell == null) {
-            SpellTemplate spellTemplate = controller.getSpellTemplate(key);
-            if (spellTemplate == null) return null;
-            Spell newSpell = spellTemplate.createSpell();
-            if (newSpell == null || !(newSpell instanceof MageSpell)) return null;
-            playerSpell = (MageSpell) newSpell;
-            spells.put(newSpell.getKey(), playerSpell);
+            playerSpell = createSpell(key);
+        } else {
+            playerSpell.setMage(this);
+        }
 
-            SpellKey baseKey = newSpell.getSpellKey();
-            SpellKey upgradeKey = new SpellKey(baseKey.getBaseKey(), baseKey.getLevel() + 1);
-            Spell upgradeSpell = getSpell(upgradeKey.getKey());
-            if (upgradeSpell instanceof MageSpell)
-            {
-                playerSpell.setUpgrade((MageSpell)upgradeSpell);
-            }
+        return playerSpell;
+    }
+
+    protected MageSpell createSpell(String key) {
+        MageSpell playerSpell = spells.get(key);
+        if (playerSpell != null) {
+            playerSpell.setMage(this);
+            return playerSpell;
+        }
+        SpellTemplate spellTemplate = controller.getSpellTemplate(key);
+        if (spellTemplate == null) return null;
+        Spell newSpell = spellTemplate.createSpell();
+        if (newSpell == null || !(newSpell instanceof MageSpell)) return null;
+        playerSpell = (MageSpell)newSpell;
+        spells.put(newSpell.getKey(), playerSpell);
+
+        SpellKey baseKey = newSpell.getSpellKey();
+        SpellKey upgradeKey = new SpellKey(baseKey.getBaseKey(), baseKey.getLevel() + 1);
+        Spell upgradeSpell = createSpell(upgradeKey.getKey());
+        if (upgradeSpell instanceof MageSpell)
+        {
+            playerSpell.setUpgrade((MageSpell)upgradeSpell);
         }
         playerSpell.setMage(this);
-
         return playerSpell;
     }
 

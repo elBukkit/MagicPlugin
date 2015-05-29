@@ -166,8 +166,7 @@ public class MagicController implements Listener, MageController {
                                 info("Loading mage data from file " + playerFile.getName());
                                 try {
                                     final Configuration playerData = YamlConfiguration.loadConfiguration(playerFile);
-                                    MageLoadTask loadTask = new MageLoadTask(mage, playerData);
-                                    Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, loadTask, 1);
+                                    mage.load(playerData);
                                 } catch (Exception ex) {
                                     getLogger().warning("Failed to load mage data from file " + playerFile.getName());
                                     ex.printStackTrace();
