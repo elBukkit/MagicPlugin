@@ -1692,6 +1692,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             }
         }
         clearRespawnInventories();
+        armorUpdated();
     }
 
     public void addToRespawnInventory(int slot, ItemStack item) {
