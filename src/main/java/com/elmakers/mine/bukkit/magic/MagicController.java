@@ -2073,6 +2073,7 @@ public class MagicController implements Listener, MageController {
 
         com.elmakers.mine.bukkit.magic.Mage.WAND_LOCATION_OFFSET = properties.getDouble("wand_location_offset", com.elmakers.mine.bukkit.magic.Mage.WAND_LOCATION_OFFSET);
         com.elmakers.mine.bukkit.magic.Mage.WAND_LOCATION_VERTICAL_OFFSET = properties.getDouble("wand_location_offset_vertical", com.elmakers.mine.bukkit.magic.Mage.WAND_LOCATION_OFFSET);
+        com.elmakers.mine.bukkit.magic.Mage.JUMP_EFFECT_FLIGHT_EXEMPTION_DURATION = properties.getInt("jump_exemption", 0);
 
         Wand.inventoryOpenSound = ConfigurationUtils.toSoundEffect(properties.getString("wand_inventory_open_sound"));
         Wand.inventoryCloseSound = ConfigurationUtils.toSoundEffect(properties.getString("wand_inventory_close_sound"));

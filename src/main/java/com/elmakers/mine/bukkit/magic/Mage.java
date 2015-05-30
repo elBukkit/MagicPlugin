@@ -67,6 +67,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     protected static int AUTOMATA_ONLINE_TIMEOUT = 5000;
     public static double WAND_LOCATION_OFFSET = 0.5;
     public static double WAND_LOCATION_VERTICAL_OFFSET = 0;
+    public static int JUMP_EFFECT_FLIGHT_EXEMPTION_DURATION = 0;
     final static private Set<Material> EMPTY_MATERIAL_SET = new HashSet<Material>();
     private static String defaultMageName = "Mage";
 
@@ -742,6 +743,14 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         if (player != null && player.isOnline()) {
             if (activeWand != null) {
                 activeWand.tick();
+            }
+
+            // Avoid getting kicked for large jump effects
+            // It'd be nice to filter this by amplitude, but as
+            // it turns out that is not easy to check efficiently.
+            if (JUMP_EFFECT_FLIGHT_EXEMPTION_DURATION > 0 && player.hasPotionEffect(PotionEffectType.JUMP))
+            {
+                controller.addFlightExemption(player, JUMP_EFFECT_FLIGHT_EXEMPTION_DURATION);
             }
 
             for (Wand armorWand : activeArmor.values())

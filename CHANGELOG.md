@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 5.2
+
+ - Fix Rocket Boots getting you kicked for flying
+
 ## 5.1.1
 
  - Disable NCP integration by default, fix concurrency issue

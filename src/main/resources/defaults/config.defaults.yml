@@ -377,6 +377,11 @@ work_per_update: 5000
 # This value is in ticks
 mage_update_frequency: 5
 
+# How long to exempt players from flight checks for each tick that
+# they have a jump potion effect
+# Set to 0 to disable exemption
+jump_exemption: 5000
+
 # How often to check for scheduled undo batches. Changing this will
 # make the scheduled undo times less accurate, though they will
 # always occur in the correct order
