@@ -3220,7 +3220,9 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		
 		// This is a tying wands together with other spells, potentially
 		// But with the way the mana system works, this seems like the safest route.
-		mage.deactivateAllSpells();
+        if (!hasUses) {
+            mage.deactivateAllSpells();
+        }
 		
 		if (isInventoryOpen()) {
 			closeInventory();
@@ -3264,6 +3266,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         return activeMaterial;
     }
 
+    @Override
     public boolean cast() {
         return cast(getActiveSpell());
     }

@@ -7,6 +7,7 @@
  - Proper rollback and replication of armor stands
  - Fix projectile hit FX
  - Some fixes for wand melee damage and short-range spell casting
+ - Fix the Wolf House and other single-use items that build things
 
 ## 5.1.1
 
