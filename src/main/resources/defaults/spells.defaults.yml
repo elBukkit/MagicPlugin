@@ -5337,6 +5337,7 @@ wolfhouse:
     category: master
     class: ConstructSpell
     worth: 10000
+    cancellable: false
     effects:
         cast:
         -  class: EffectSingle
