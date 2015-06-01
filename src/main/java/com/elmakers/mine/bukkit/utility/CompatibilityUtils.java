@@ -66,6 +66,7 @@ import java.util.logging.Level;
  */
 public class CompatibilityUtils extends NMSUtils {
     public static boolean USE_MAGIC_DAMAGE = true;
+    public static boolean isDamaging = false;
     public final static int MAX_ENTITY_RANGE = 72;
     private final static Map<EntityType, BoundingBox> hitboxes = new HashMap<EntityType, BoundingBox>();
     private final static Map<World.Environment, Integer> maxHeights = new HashMap<World.Environment, Integer>();
@@ -430,13 +431,20 @@ public class CompatibilityUtils extends NMSUtils {
             // Might need to config-drive this, or just go back to defaulting to normal damage
             if (!USE_MAGIC_DAMAGE || target instanceof Witch || target instanceof Enderman)
             {
-                target.damage(amount, source);
+                isDamaging = true;
+                try {
+                    target.damage(amount, source);
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+                isDamaging = false;
                 return;
             }
 
             Object targetHandle = getHandle(target);
             if (targetHandle == null) return;
 
+            isDamaging = true;
             Object sourceHandle = getHandle(source);
 
             // Bukkit won't allow magic damage from anything but a potion..
@@ -464,6 +472,7 @@ public class CompatibilityUtils extends NMSUtils {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+        isDamaging = false;
     }
 
     @Deprecated
