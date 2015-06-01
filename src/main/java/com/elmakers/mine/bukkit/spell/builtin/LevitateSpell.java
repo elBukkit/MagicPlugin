@@ -621,9 +621,6 @@ public class LevitateSpell extends TargetingSpell implements Listener
 
     public void land() {
         deactivate(true, false);
-
-        // Visual effect
-        playEffects("land");
     }
 
 	@Override

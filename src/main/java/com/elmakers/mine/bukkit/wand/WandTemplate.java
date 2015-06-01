@@ -68,8 +68,9 @@ public class WandTemplate {
     public void playEffects(Mage mage, String effectName, float scale)
     {
         currentEffects.clear();
-        Location wandLocation = mage.getWandLocation();
-        Location location = mage.getEyeLocation();
+        Location wandLocation = null;
+        Location location = mage.getLocation();
+        Location eyeLocation = mage.getEyeLocation();
         Collection<com.elmakers.mine.bukkit.api.effect.EffectPlayer> effects = getEffects(effectName);
         if (effects.size() > 0)
         {
@@ -87,7 +88,14 @@ public class WandTemplate {
                 String overrideParticle = mage.getEffectParticleName();
                 player.setParticleOverride(overrideParticle);
 
-                Location source = player.shouldUseWandLocation() ? wandLocation : location;
+                Location source = player.shouldUseEyeLocation() ? eyeLocation : location;
+                if (player.shouldUseWandLocation()) {
+                    if (wandLocation == null) {
+                        wandLocation = mage.getWandLocation();
+                    }
+                    location = wandLocation;
+                }
+
                 player.start(source, sourceEntity, null, null, null);
             }
         }

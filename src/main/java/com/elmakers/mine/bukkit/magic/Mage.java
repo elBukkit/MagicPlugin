@@ -268,16 +268,6 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             if (event.isCancelled()) break;
         }
 
-        if (isSuperProtected()) {
-            event.setCancelled(true);
-            if (player.getFireTicks() > 0) {
-                player.setFireTicks(0);
-            }
-            return;
-        }
-
-        if (event.isCancelled()) return;
-
         EntityDamageEvent.DamageCause cause = event.getCause();
         if (cause == EntityDamageEvent.DamageCause.FALL) {
             if (fallProtectionCount > 0 && fallProtection > 0 && fallProtection > System.currentTimeMillis()) {
@@ -300,6 +290,16 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                 fallingSpell = null;
             }
         }
+
+        if (isSuperProtected()) {
+            event.setCancelled(true);
+            if (player.getFireTicks() > 0) {
+                player.setFireTicks(0);
+            }
+            return;
+        }
+
+        if (event.isCancelled()) return;
 
         // First check for damage reduction
         float reduction = 0;

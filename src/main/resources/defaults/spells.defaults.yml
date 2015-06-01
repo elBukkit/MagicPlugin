@@ -2287,8 +2287,12 @@ fling:
              particle: spell
         land:
         -  class: EffectRing
-           particle: spell
-           period: 2
+           particle: block_crack
+           use_wand_location: false
+           use_eye_location: false
+           period: 4
+           particle_count: 10
+           radius: 4
     parameters:
         duration: 20000
         target: self
@@ -5140,8 +5144,12 @@ levitate:
            sound_pitch: 0.2
         land:
         -  class: EffectRing
-           effect: step_sound
-           period: 2
+           particle: block_crack
+           use_wand_location: false
+           use_eye_location: false
+           period: 4
+           particle_count: 10
+           radius: 4
     parameters:
         speed: 2
     costs:
@@ -5689,8 +5697,12 @@ broom:
              particle: spell
         land:
         -  class: EffectRing
-           effect: step_sound
-           period: 2
+           particle: block_crack
+           use_wand_location: false
+           use_eye_location: false
+           period: 4
+           particle_count: 10
+           radius: 4
     parameters:
         thrust: 1
         auto_deactivate: 4
