@@ -5,6 +5,7 @@
  - Fix Rocket Boots getting you kicked for flying
  - Several performance and memory optimizations
  - Proper rollback and replication of armor stands
+ - Fix projectile hit FX
 
 ## 5.1.1
 
