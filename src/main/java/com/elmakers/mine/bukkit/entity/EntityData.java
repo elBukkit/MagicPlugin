@@ -29,6 +29,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
 
     protected WeakReference<Entity> entity = null;
     protected UUID uuid = null;
+    protected EntityExtraData extraData;
     protected Location location;
     protected Vector relativeLocation;
     protected boolean hasMoved = false;
@@ -132,6 +133,10 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         } else if (entity instanceof Ocelot) {
             Ocelot ocelot = (Ocelot)entity;
             ocelotType = ocelot.getCatType();
+        }
+
+        if (entity instanceof ArmorStand) {
+            extraData = new EntityArmorStandData((ArmorStand)entity);
         }
     }
 
@@ -272,6 +277,10 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     public boolean modify(Entity entity) {
         if (entity == null || entity.getType() != type) return false;
 
+        if (extraData != null) {
+            extraData.apply(entity);
+        }
+
         entity.setFireTicks(fireTicks);
         if (entity instanceof Ageable) {
             Ageable ageable = (Ageable)entity;
@@ -389,5 +398,11 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         }
 
         return null;
+    }
+
+    public void removed(Entity entity) {
+        if (extraData != null) {
+            extraData.removed(entity);
+        }
     }
 }
