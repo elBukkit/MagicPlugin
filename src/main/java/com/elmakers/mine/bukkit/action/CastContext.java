@@ -381,8 +381,9 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
         Collection<EffectPlayer> effects = getEffects(effectName);
         if (effects.size() > 0)
         {
-            Location wand = getWandLocation();
-            Location location = getEyeLocation();
+            Location wand = null;
+            Location eyeLocation = getEyeLocation();
+            Location location = getLocation();
             Collection<Entity> targeted = getTargetedEntities();
             Entity sourceEntity = getEntity();
             Entity targetEntity = getTargetEntity();
@@ -403,7 +404,13 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
 
                 Mage mage = getMage();
                 boolean useWand = mage != null && mage.getEntity() == sourceEntity && player.shouldUseWandLocation();
-                Location source = useWand ? wand : location;
+                Location source = player.shouldUseEyeLocation() ? eyeLocation : location;
+                if (useWand) {
+                    if (wand == null) {
+                        wand = mage.getWandLocation();
+                    }
+                    source = wand;
+                }
                 Location target = targetLocation;
                 if (!player.shouldUseHitLocation() && targetEntity != null) {
                     if (targetEntity instanceof LivingEntity) {
