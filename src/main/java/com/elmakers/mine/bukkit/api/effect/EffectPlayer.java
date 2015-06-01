@@ -29,6 +29,7 @@ public interface EffectPlayer {
     public void setOffset(float x, float y, float z);
     public boolean shouldUseHitLocation();
     public boolean shouldUseWandLocation();
+    public boolean shouldUseEyeLocation();
 
     public void start(Location origin, Location target);
     public void start(Entity origin, Entity target);
