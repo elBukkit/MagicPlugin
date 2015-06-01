@@ -234,6 +234,13 @@ public class LevitateSpell extends TargetingSpell implements Listener
                 crash();
                 return;
             }
+            if (armorStand != null) {
+                Entity currentPassenger = armorStand.getPassenger();
+                if (currentPassenger != mountEntity) {
+                    crash();
+                    return;
+                }
+            }
         }
 
         boolean checkHeight = autoDeactivateHeight > 0;
