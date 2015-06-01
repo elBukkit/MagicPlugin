@@ -18,6 +18,7 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.InventoryHolder;
@@ -464,6 +465,18 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
         modifiedTime = System.currentTimeMillis();
 
         return entityData;
+    }
+
+    @Override
+    public EntityData damage(Entity entity, double damage) {
+        EntityData data = modify(entity);
+        // Kind of a hack to prevent dropping things we're going to undo later
+        if (undoEntityTypes != null && undoEntityTypes.contains(entity.getType()))
+        {
+            data.removed(entity);
+            entity.remove();
+        }
+        return data;
     }
 
     @Override
