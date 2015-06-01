@@ -126,6 +126,10 @@ default:
        - class: EffectSingle
          location: origin
          entity_effect: hurt
+       blocked:
+       - class: EffectSingle
+         location: origin
+         entity_effect: hurt
        upgrade:
        - class: EffectSingle
          location: origin
