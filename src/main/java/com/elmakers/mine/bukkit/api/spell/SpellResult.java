@@ -19,6 +19,7 @@ public enum SpellResult {
 
     FIZZLE(false, true, false),
     BACKFIRE(false, true, false),
+    BLOCKED(false, true, false),
 
     DEACTIVATE(false, false, true),
     TARGET_SELECTED(false, false, true),
