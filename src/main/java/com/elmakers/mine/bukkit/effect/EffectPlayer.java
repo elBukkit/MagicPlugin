@@ -1,11 +1,9 @@
 package com.elmakers.mine.bukkit.effect;
 
 import java.lang.ref.WeakReference;
-import java.security.InvalidParameterException;
 import java.util.*;
 
 import com.elmakers.mine.bukkit.api.effect.EffectPlay;
-import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.SoundEffect;
 import de.slikey.effectlib.util.ParticleEffect;
 import org.bukkit.Bukkit;
@@ -20,7 +18,6 @@ import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.util.Vector;
 
@@ -373,16 +370,23 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
             if ((useEffect == ParticleEffect.BLOCK_CRACK || useEffect == ParticleEffect.ITEM_CRACK || useEffect == ParticleEffect.BLOCK_DUST) && particleSubType.length() == 0) {
                 Material material = getWorkingMaterial().getMaterial();
 
-                if (useEffect == ParticleEffect.ITEM_CRACK) {
-                    data = new ParticleEffect.ItemData(material, getWorkingMaterial().getBlockData());
-                } else {
-                    data = new ParticleEffect.BlockData(material, getWorkingMaterial().getBlockData());
+                Byte blockData = getWorkingMaterial().getBlockData();
+                if (blockData != null && blockData != 0) {
+                    if (useEffect == ParticleEffect.ITEM_CRACK) {
+                        data = new ParticleEffect.ItemData(material, blockData);
+                    } else {
+                        data = new ParticleEffect.BlockData(material, blockData);
+                    }
+                    try {
+                        useEffect.display(data, sourceLocation, getColor1(), PARTICLE_RANGE, particleXOffset, particleYOffset, particleZOffset, particleData, particleCount);
+                    } catch (Exception ex) {
+                    }
                 }
-            }
-
-            try {
-                useEffect.display(data, sourceLocation, getColor1(), PARTICLE_RANGE, particleXOffset, particleYOffset, particleZOffset, particleData, particleCount);
-            } catch (Exception ex) {
+            } else {
+                try {
+                    useEffect.display(data, sourceLocation, getColor1(), PARTICLE_RANGE, particleXOffset, particleYOffset, particleZOffset, particleData, particleCount);
+                } catch (Exception ex) {
+                }
             }
         }
     }
