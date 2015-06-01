@@ -493,7 +493,6 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
             mapId = (short)node.getInt("map_id", mapId);
             material = ConfigurationUtils.getMaterial(node, "material", material);
             data = (short)node.getInt("data", data);
-            customName = node.getString("extra_data", customName);
             scale = node.getDouble("scale", scale);
             fillWithAir = node.getBoolean("erase", fillWithAir);
         } catch (Exception ex) {
@@ -519,7 +518,6 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
             node.set("map_id", (int)mapId);
             node.set("material", ConfigurationUtils.fromMaterial(material));
             node.set("data", data);
-            node.set("extra_data", customName);
             node.set("schematic", schematicName);
             node.set("scale", scale);
             node.set("erase", fillWithAir);
