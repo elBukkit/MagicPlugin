@@ -2457,7 +2457,6 @@ public class MagicController implements Listener, MageController {
     public void onEntityPreDamageByEntity(EntityDamageByEntityEvent event) {
         Entity entity = event.getEntity();
         if (entity instanceof Projectile || entity instanceof TNTPrimed) return;
-        Entity damager = event.getDamager();
         Mage entityMage = getRegisteredMage(entity);
         if (entityMage != null) {
             if (entity instanceof Player) {
@@ -2470,29 +2469,30 @@ public class MagicController implements Listener, MageController {
                 }
             }
             if (entityMage.isSuperProtected()) {
-                event.setDamage(0);
+                event.setCancelled(true);
                 return;
             }
         }
+        Entity damager = event.getDamager();
         if (damager instanceof Player) {
-            boolean hasWand = false;
             Mage damagerMage = getRegisteredMage(damager);
+            com.elmakers.mine.bukkit.api.wand.Wand activeWand = damagerMage.getActiveWand();
             if (damagerMage != null) {
-                com.elmakers.mine.bukkit.api.wand.Wand activeWand = damagerMage.getActiveWand();
                 if (activeWand != null) {
-                    hasWand = true;
                     activeWand.playEffects("hit_entity");
                 }
             }
+            boolean hasWand = activeWand != null;
             Player player = (Player) damager;
             ItemStack itemInHand = player.getItemInHand();
-            boolean isMeleeWeapon = itemInHand == null || !meleeMaterials.contains(itemInHand.getType());
-            boolean isMelee = event.getCause() == EntityDamageEvent.DamageCause.ENTITY_ATTACK;
-            if (CompatibilityUtils.USE_MAGIC_DAMAGE && isMelee && hasWand && entity instanceof Player && !isMeleeWeapon) {
-                event.setDamage(0);
+            boolean isMeleeWeapon = itemInHand != null && meleeMaterials.contains(itemInHand.getType());
+            boolean isMelee = event.getCause() == EntityDamageEvent.DamageCause.ENTITY_ATTACK && !CompatibilityUtils.isDamaging;
+            if (isMelee && hasWand && !isMeleeWeapon) {
+                event.setCancelled(true);
+                activeWand.cast();
             }
             else if (!hasWand && preventMeleeDamage && isMelee && !isMeleeWeapon) {
-                event.setDamage(0);
+                event.setCancelled(true);
             }
         } else {
             ActionHandler.targetEffects(damager, entity);
@@ -5043,7 +5043,7 @@ public class MagicController implements Listener, MageController {
     private Set<Material>                       interactibleMaterials           = new HashSet<Material>();
     private Set<Material>                       containerMaterials              = new HashSet<Material>();
     private Set<Material>                       wearableMaterials               = new HashSet<Material>();
-private Set<Material>                           meleeMaterials                  = new HashSet<Material>();
+    private Set<Material>                       meleeMaterials                  = new HashSet<Material>();
     private Map<String, Set<Material>>		    materialSets				    = new HashMap<String, Set<Material>>();
 
     private int								    undoTimeWindow				    = 6000;

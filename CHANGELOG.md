@@ -6,6 +6,7 @@
  - Several performance and memory optimizations
  - Proper rollback and replication of armor stands
  - Fix projectile hit FX
+ - Some fixes for wand melee damage and short-range spell casting
 
 ## 5.1.1
 
