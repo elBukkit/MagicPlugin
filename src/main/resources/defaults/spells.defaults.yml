@@ -84,7 +84,8 @@ default:
        target_selected:
        - class: EffectSingle
          location: origin
-         sound: anvil_use
+         sound: magic.hit
+         sound_volume: 0.5
        - class: EffectSingle
          location: target
          particle: villager_happy
