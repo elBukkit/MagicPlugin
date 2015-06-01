@@ -3,6 +3,8 @@
 ## 5.2
 
  - Fix Rocket Boots getting you kicked for flying
+ - Several performance and memory optimizations
+ - Proper rollback and replication of armor stands
 
 ## 5.1.1
 

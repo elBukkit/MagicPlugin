@@ -2442,12 +2442,13 @@ public class MagicController implements Listener, MageController {
         UndoList undoList = getEntityUndo(damager);
         if (undoList != null) {
             // Prevent dropping items from frames,
-            undoList.modify(entity);
-            if (entity instanceof ItemFrame && event.getCause() != EntityDamageEvent.DamageCause.ENTITY_ATTACK) {
-                // In fact, just remove it.
-                // Otherwise, a subsequent action may save the undo state with
-                // an empty item
-                entity.remove();
+            if (event.getCause() != EntityDamageEvent.DamageCause.ENTITY_ATTACK) {
+                undoList.damage(entity, event.getDamage());
+                if (!entity.isValid()) {
+                    event.setCancelled(true);
+                }
+            } else {
+                undoList.modify(entity);
             }
         }
     }
@@ -2531,8 +2532,7 @@ public class MagicController implements Listener, MageController {
             UndoList undoList = getPendingUndo(location);
             if (undoList != null) {
                 event.setCancelled(true);
-                undoList.modify(entity);
-                entity.remove();
+                undoList.damage(entity, 0);
             }
         } catch (Exception ex) {
             getLogger().log(Level.WARNING, "Failed to handle HangingBreakEvent", ex);
@@ -2548,13 +2548,11 @@ public class MagicController implements Listener, MageController {
         UndoList undoList = getEntityUndo(breakingEntity);
         if (undoList != null)
         {
-            undoList.modify(entity);
+            undoList.damage(entity, 0);
 
             // Prevent item drops, but still remove it
             // Else it'll probably just break again.
             event.setCancelled(true);
-            undoList.modify(entity);
-            entity.remove();
         }
     }
 
@@ -2771,7 +2769,6 @@ public class MagicController implements Listener, MageController {
             event.setDroppedExp(0);
             event.getDrops().clear();
         }
-
 
         Mage apiMage = getRegisteredMage(entity);
         if (apiMage == null) return;
