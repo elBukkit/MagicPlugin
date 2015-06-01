@@ -378,11 +378,11 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
     @Override
     public void playEffects(String effectName, float scale)
     {
-        Location wand = getWandLocation();
-        Location location = getEyeLocation();
         Collection<EffectPlayer> effects = getEffects(effectName);
         if (effects.size() > 0)
         {
+            Location wand = getWandLocation();
+            Location location = getEyeLocation();
             Collection<Entity> targeted = getTargetedEntities();
             Entity sourceEntity = getEntity();
             Entity targetEntity = getTargetEntity();
@@ -401,7 +401,9 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
                 String overrideParticle = spell.getEffectParticle();
                 player.setParticleOverride(overrideParticle);
 
-                Location source = player.shouldUseWandLocation() ? wand : location;
+                Mage mage = getMage();
+                boolean useWand = mage != null && mage.getEntity() == sourceEntity && player.shouldUseWandLocation();
+                Location source = useWand ? wand : location;
                 Location target = targetLocation;
                 if (!player.shouldUseHitLocation() && targetEntity != null) {
                     if (targetEntity instanceof LivingEntity) {
