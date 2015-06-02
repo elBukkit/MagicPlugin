@@ -13,4 +13,5 @@ public interface MapController {
     public ItemStack getMapItem(short id);
     public boolean hasMap(short id);
     public boolean remove(short id);
+    public void save();
 }
