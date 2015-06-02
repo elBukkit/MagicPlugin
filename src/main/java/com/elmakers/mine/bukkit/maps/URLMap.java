@@ -347,8 +347,13 @@ public class URLMap extends MapRenderer implements com.elmakers.mine.bukkit.api.
                         Collection<BufferedImage> images = null;
                         if (!url.startsWith("http"))
                         {
-                            File baseFolder = plugin.getDataFolder().getParentFile().getParentFile();
-                            File fileName = new File(baseFolder, url);
+                            File fileName;
+                            if (!url.startsWith("/")) {
+                                File baseFolder = plugin.getDataFolder().getParentFile().getParentFile();
+                                fileName = new File(baseFolder, url);
+                            } else {
+                                fileName = new File(url);
+                            }
                             controller.info("Loading map file: " + fileName.getName());
                             images = loadImages(ImageIO.createImageInputStream(fileName));
                         }
