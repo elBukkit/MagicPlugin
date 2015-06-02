@@ -6,6 +6,8 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
 import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -27,7 +29,8 @@ public abstract class MagicMapExecutor extends MagicTabExecutor {
         }
         int shown = 0;
         boolean limited = false;
-        Collection<URLMap> maps = api.getController().getMaps().getAll();
+        List<URLMap> maps = api.getController().getMaps().getAll();
+        Collections.reverse(maps);
         for (URLMap map : maps) {
             Short mapId = map.getId();
             if (map == null || mapId == null) continue;

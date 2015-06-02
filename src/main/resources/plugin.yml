@@ -343,6 +343,10 @@ permissions:
     description: Player may use the /mmap player command
     type: boolean
     default: op
+  Magic.commands.mmap.fix:
+    description: Player may use the /mmap fix command
+    type: boolean
+    default: op
   Magic.commands.mserver:
     description: Player may sender players to other servers
     type: boolean
