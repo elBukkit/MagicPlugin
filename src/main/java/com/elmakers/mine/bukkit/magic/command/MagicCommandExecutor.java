@@ -1,25 +1,21 @@
 package com.elmakers.mine.bukkit.magic.command;
 
-import java.io.File;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map.Entry;
-
-import com.elmakers.mine.bukkit.api.magic.MageController;
-import com.elmakers.mine.bukkit.api.maps.URLMap;
-import com.elmakers.mine.bukkit.api.spell.Spell;
-import com.elmakers.mine.bukkit.block.UndoList;
+import com.elmakers.mine.bukkit.api.batch.Batch;
 import com.elmakers.mine.bukkit.api.batch.SpellBatch;
+import com.elmakers.mine.bukkit.api.magic.Automaton;
+import com.elmakers.mine.bukkit.api.magic.Mage;
+import com.elmakers.mine.bukkit.api.magic.MageController;
+import com.elmakers.mine.bukkit.api.magic.MagicAPI;
+import com.elmakers.mine.bukkit.api.spell.Spell;
+import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
+import com.elmakers.mine.bukkit.api.wand.LostWand;
+import com.elmakers.mine.bukkit.api.wand.Wand;
+import com.elmakers.mine.bukkit.block.UndoList;
 import com.elmakers.mine.bukkit.magic.MagicController;
-import com.elmakers.mine.bukkit.magic.MagicPlugin;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.RunnableJob;
+import com.elmakers.mine.bukkit.wand.WandCleanupRunnable;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Chunk;
@@ -35,14 +31,18 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.BlockVector;
 
-import com.elmakers.mine.bukkit.api.batch.Batch;
-import com.elmakers.mine.bukkit.api.magic.Automaton;
-import com.elmakers.mine.bukkit.api.magic.Mage;
-import com.elmakers.mine.bukkit.api.magic.MagicAPI;
-import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
-import com.elmakers.mine.bukkit.api.wand.LostWand;
-import com.elmakers.mine.bukkit.api.wand.Wand;
-import com.elmakers.mine.bukkit.wand.WandCleanupRunnable;
+import java.io.File;
+import java.net.URL;
+import java.security.CodeSource;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map.Entry;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
 public class MagicCommandExecutor extends MagicMapExecutor {
 
@@ -236,11 +236,20 @@ public class MagicCommandExecutor extends MagicMapExecutor {
                 try {
                     Plugin plugin = (Plugin)api;
                     MagicController controller = (MagicController)api.getController();
-                    URL url = MagicCommandExecutor.class.getResource("resources/");
-                    if (url != null) {
-                        File dir = new File(url.toURI());
-                        for (File nextFile : dir.listFiles()) {
-                            schematics.add(nextFile.getName());
+
+                    // Find built-in schematics
+                    CodeSource src = MagicAPI.class.getProtectionDomain().getCodeSource();
+                    if (src != null) {
+                        URL jar = src.getLocation();
+                        ZipInputStream zip = new ZipInputStream(jar.openStream());
+                        while(true) {
+                            ZipEntry e = zip.getNextEntry();
+                            if (e == null)
+                                break;
+                            String name = e.getName();
+                            if (name.startsWith("schematics/")) {
+                                schematics.add(name.replace("schematics/", ""));
+                            }
                         }
                     }
 
@@ -255,7 +264,7 @@ public class MagicCommandExecutor extends MagicMapExecutor {
                     String extraSchematicFilePath = controller.getExtraSchematicFilePath();
                     if (extraSchematicFilePath != null && extraSchematicFilePath.length() > 0) {
                         File schematicFolder = new File(configFolder, "../" + extraSchematicFilePath);
-                        if (schematicFolder.exists()) {
+                        if (schematicFolder.exists() && !schematicFolder.equals(magicSchematicFolder)) {
                             for (File nextFile : schematicFolder.listFiles()) {
                                 schematics.add(nextFile.getName());
                             }
