@@ -2,6 +2,10 @@
 
 ## 5.2
 
+ - Check for schematics in the Magic/schematics folder.
+
+## 5.1.2
+
  - Fix Rocket Boots getting you kicked for flying
  - Several performance and memory optimizations
  - Proper rollback and replication of armor stands

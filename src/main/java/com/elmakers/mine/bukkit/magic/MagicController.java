@@ -515,10 +515,20 @@ public class MagicController implements Listener, MageController {
         try {
             // Check extra path first
             File extraSchematicFile = null;
-            if (extraSchematicFilePath != null && extraSchematicFilePath.length() > 0) {
+            File magicSchematicFolder = new File(plugin.getDataFolder(), "schematics");
+            if (magicSchematicFolder.exists()) {
+                extraSchematicFile = new File(magicSchematicFolder, schematicName + ".schematic");
+                info("Checking for schematic: " + extraSchematicFile.getAbsolutePath(), 2);
+                if (!extraSchematicFile.exists()) {
+                    extraSchematicFile = null;
+                }
+            }
+            if (extraSchematicFile == null && extraSchematicFilePath != null && extraSchematicFilePath.length() > 0) {
                 File schematicFolder = new File(configFolder, "../" + extraSchematicFilePath);
-                extraSchematicFile = new File(schematicFolder, schematicName + ".schematic");
-                info("Checking for external schematic: " + extraSchematicFile.getAbsolutePath(), 2);
+                if (schematicFolder.exists()) {
+                    extraSchematicFile = new File(schematicFolder, schematicName + ".schematic");
+                    info("Checking for external schematic: " + extraSchematicFile.getAbsolutePath(), 2);
+                }
             }
 
             if (extraSchematicFile != null && extraSchematicFile.exists()) {
