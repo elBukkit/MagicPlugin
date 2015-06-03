@@ -262,12 +262,13 @@ public class ActionHandler implements Cloneable
     }
 
     protected void advance(CastContext context) {
-        currentAction++;
-        context.performedActions(1);
-        if (currentAction >= actions.size()) {
-            currentAction = null;
-        } else {
-            actions.get(currentAction).getAction().reset(context);
+        if (currentAction != null) {
+            context.performedActions(1);
+            if (currentAction >= actions.size()) {
+                currentAction = null;
+            } else {
+                actions.get(currentAction).getAction().reset(context);
+            }
         }
     }
 
