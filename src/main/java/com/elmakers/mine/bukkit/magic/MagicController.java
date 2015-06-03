@@ -5019,6 +5019,10 @@ public class MagicController implements Listener, MageController {
         CompatibilityUtils.addFlightExemption(player, duration * 20 / 1000);
     }
 
+    public String getExtraSchematicFilePath() {
+        return extraSchematicFilePath;
+    }
+
     /*
 	 * Private data
 	 */

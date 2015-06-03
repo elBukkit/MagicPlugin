@@ -1,8 +1,11 @@
 package com.elmakers.mine.bukkit.magic.command;
 
+import java.io.File;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
@@ -12,6 +15,8 @@ import com.elmakers.mine.bukkit.api.maps.URLMap;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.block.UndoList;
 import com.elmakers.mine.bukkit.api.batch.SpellBatch;
+import com.elmakers.mine.bukkit.magic.MagicController;
+import com.elmakers.mine.bukkit.magic.MagicPlugin;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.RunnableJob;
@@ -26,6 +31,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.BlockVector;
 
@@ -172,7 +178,7 @@ public class MagicCommandExecutor extends MagicMapExecutor {
         }
 		if (subCommand.equalsIgnoreCase("list"))
 		{
-			String usage = "Usage: magic list <wands [player]|maps [keyword]|automata|tasks>";
+			String usage = "Usage: magic list <wands|map|automata|tasks|schematics>";
 			String listCommand = "";
 			if (args.length > 1)
 			{
@@ -184,7 +190,7 @@ public class MagicCommandExecutor extends MagicMapExecutor {
 			}
 			else
 			{				
-				sender.sendMessage(ChatColor.GRAY + "For more specific information, add 'tasks', 'wands', 'maps' or 'automata' parameter.");
+				sender.sendMessage(ChatColor.GRAY + "For more specific information, add 'tasks', 'wands', 'maps', 'schematics' or 'automata' parameter.");
 
 				Collection<Mage> mages = api.getMages();
                 sender.sendMessage(ChatColor.AQUA + "Registered blocks (" + UndoList.getModified().size() + "): ");
@@ -225,8 +231,51 @@ public class MagicCommandExecutor extends MagicMapExecutor {
 				}
 				return true;
 			}
+            if (listCommand.equalsIgnoreCase("schematics")) {
+                List<String> schematics = new ArrayList<String>();
+                try {
+                    Plugin plugin = (Plugin)api;
+                    MagicController controller = (MagicController)api.getController();
+                    URL url = MagicCommandExecutor.class.getResource("resources/");
+                    if (url != null) {
+                        File dir = new File(url.toURI());
+                        for (File nextFile : dir.listFiles()) {
+                            schematics.add(nextFile.getName());
+                        }
+                    }
 
-            if (listCommand.equalsIgnoreCase("tasks")) {
+                    // Check extra path first
+                    File configFolder = plugin.getDataFolder();
+                    File magicSchematicFolder = new File(configFolder, "schematics");
+                    if (magicSchematicFolder.exists()) {
+                        for (File nextFile : magicSchematicFolder.listFiles()) {
+                            schematics.add(nextFile.getName());
+                        }
+                    }
+                    String extraSchematicFilePath = controller.getExtraSchematicFilePath();
+                    if (extraSchematicFilePath != null && extraSchematicFilePath.length() > 0) {
+                        File schematicFolder = new File(configFolder, "../" + extraSchematicFilePath);
+                        if (schematicFolder.exists()) {
+                            for (File nextFile : schematicFolder.listFiles()) {
+                                schematics.add(nextFile.getName());
+                            }
+                        }
+                    }
+                } catch (Exception ex) {
+                    sender.sendMessage("Error loading schematics: " + ex.getMessage());
+                    ex.printStackTrace();;
+                }
+
+                sender.sendMessage(ChatColor.DARK_AQUA + "Found " + ChatColor.LIGHT_PURPLE + schematics.size() + ChatColor.DARK_AQUA + " schematics");
+                Collections.sort(schematics);
+                for (String schematic : schematics) {
+                    if (schematic.indexOf(".schematic") > 0) {
+                        sender.sendMessage(ChatColor.AQUA + schematic.replace(".schematic", ""));
+                    }
+                }
+
+                return true;
+            } else if (listCommand.equalsIgnoreCase("tasks")) {
                 List<BukkitTask> tasks = Bukkit.getScheduler().getPendingTasks();
                 HashMap<String, Integer> pluginCounts = new HashMap<String, Integer>();
                 HashMap<String, HashMap<String, Integer>> taskCounts = new HashMap<String, HashMap<String, Integer>>();

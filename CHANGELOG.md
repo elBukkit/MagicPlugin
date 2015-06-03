@@ -3,6 +3,7 @@
 ## 5.2
 
  - Check for schematics in the Magic/schematics folder.
+ - Add "/magic list schematics" command
 
 ## 5.1.2
 
