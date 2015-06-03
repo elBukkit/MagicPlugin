@@ -9,6 +9,7 @@
  - Some fixes for wand melee damage and short-range spell casting
  - Fix the Wolf House and other single-use items that build things
  - Brooms now crash properly in water instead of leaving you in a weird state
+ - Fixed/Improved Lockette integration
 
 ## 5.1.1
 
