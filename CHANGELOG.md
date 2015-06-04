@@ -4,6 +4,7 @@
 
  - Check for schematics in the Magic/schematics folder.
  - Add "/magic list schematics" command
+ - Fall back to chest mode when in creative
 
 ## 5.1.2
 

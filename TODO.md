@@ -1,6 +1,6 @@
 # TODO
 
- - Support for restoring armor stands
+ - Issues with switching to chest mode losing hotbar spells
 
  - Hover text for spells
  - Cat GIF generator? http://catdb.yawk.at/images?tag=gif

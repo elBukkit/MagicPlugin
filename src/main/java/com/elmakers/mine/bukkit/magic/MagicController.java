@@ -3728,31 +3728,33 @@ public class MagicController implements Listener, MageController {
 	@EventHandler
 	public void onPlayerGameModeChange(PlayerGameModeChangeEvent event)
 	{
-		if (event.getNewGameMode() == GameMode.CREATIVE && enableCreativeModeEjecting) {
-			boolean ejected = false;
-			Player player = event.getPlayer();
-            Mage apiMage = getMage(player);
+		if (event.getNewGameMode() == GameMode.CREATIVE) {
+            Player player = event.getPlayer();
+            Mage mage = getMage(player);
+            com.elmakers.mine.bukkit.api.wand.Wand activeWand = mage.getActiveWand();
+            if (activeWand != null) {
+                activeWand.closeInventory();
+            }
 
-            if (!(apiMage instanceof com.elmakers.mine.bukkit.magic.Mage)) return;
-            com.elmakers.mine.bukkit.magic.Mage mage = (com.elmakers.mine.bukkit.magic.Mage)apiMage;
-
-            Wand activeWand = mage.getActiveWand();
-			if (activeWand != null) {
-				activeWand.deactivate();
-			}
-			Inventory inventory = player.getInventory();
-			ItemStack[] contents = inventory.getContents();
-			for (int i = 0; i < contents.length; i++) {
-				ItemStack item = contents[i];
-				if (Wand.isWand(item)) {
-					ejected = true;
-					inventory.setItem(i, null);
-					player.getWorld().dropItemNaturally(player.getLocation(), item);
-				}
-			}
-			if (ejected) {
-				mage.sendMessage("Ejecting wands, creative mode will destroy them!");
-			}
+            if (enableCreativeModeEjecting) {
+                boolean ejected = false;
+                if (activeWand != null) {
+                    activeWand.deactivate();
+                }
+                Inventory inventory = player.getInventory();
+                ItemStack[] contents = inventory.getContents();
+                for (int i = 0; i < contents.length; i++) {
+                    ItemStack item = contents[i];
+                    if (Wand.isWand(item)) {
+                        ejected = true;
+                        inventory.setItem(i, null);
+                        player.getWorld().dropItemNaturally(player.getLocation(), item);
+                    }
+                }
+                if (ejected) {
+                    mage.sendMessage("Ejecting wands, creative mode will destroy them!");
+                }
+            }
 		}
 	}
 

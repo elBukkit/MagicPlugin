@@ -38,6 +38,7 @@ import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
+import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.BlockFace;
@@ -3646,7 +3647,12 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
     }
 	
 	public WandMode getMode() {
-		return mode != null ? mode : controller.getDefaultWandMode();
+        WandMode wandMode = mode != null ? mode : controller.getDefaultWandMode();
+        Player player = mage == null ? null : mage.getPlayer();
+        if (wandMode == WandMode.INVENTORY && player != null && player.getGameMode() == GameMode.CREATIVE) {
+            wandMode = WandMode.CHEST;
+        }
+		return wandMode;
 	}
 
     public WandMode getBrushMode() {
