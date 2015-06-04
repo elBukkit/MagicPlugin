@@ -636,11 +636,8 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	
 	protected List<Inventory> getAllInventories() {
         WandMode mode = getMode();
-        int hotbarCount = mode == WandMode.INVENTORY ? hotbars.size() : 0;
-		List<Inventory> allInventories = new ArrayList<Inventory>(inventories.size() + hotbarCount);
-        if (mode == WandMode.INVENTORY) {
-            allInventories.addAll(hotbars);
-        }
+		List<Inventory> allInventories = new ArrayList<Inventory>(inventories.size() + hotbars.size());
+        allInventories.addAll(hotbars);
 		allInventories.addAll(inventories);
 		return allInventories;
 	}
@@ -725,10 +722,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	
 	protected Inventory getDisplayInventory() {
 		if (displayInventory == null) {
-            int inventorySize = INVENTORY_SIZE;
-            if (getMode() == WandMode.INVENTORY) {
-                inventorySize += HOTBAR_SIZE;
-            }
+            int inventorySize = INVENTORY_SIZE + HOTBAR_SIZE;
 			displayInventory = CompatibilityUtils.createInventory(null, inventorySize, "Wand");
 		}
 		
@@ -743,7 +737,6 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	}
 
 	protected int getHotbarSize() {
-        if (getMode() != WandMode.INVENTORY) return 0;
 		return hotbars.size() * HOTBAR_INVENTORY_SIZE;
 	}
 	
@@ -1947,18 +1940,19 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 			PlayerInventory inventory = player.getInventory();
             inventory.clear();
 			updateHotbar(inventory);
-			updateInventory(inventory, HOTBAR_SIZE);
+			updateInventory(inventory, false);
 			updateName();
 			player.updateInventory();
 		} else if (wandMode == WandMode.CHEST) {
 			Inventory inventory = getDisplayInventory();
 			inventory.clear();
-			updateInventory(inventory, 0);
+			updateInventory(inventory, true);
 			player.updateInventory();
 		}
 	}
 	
 	private void updateHotbar(PlayerInventory playerInventory) {
+        if (getMode() != WandMode.INVENTORY) return;
 		Inventory hotbar = getHotbar();
         if (hotbar == null) return;
 
@@ -1985,11 +1979,26 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         item = playerInventory.getItem(currentSlot);
     }
 	
-	private void updateInventory(Inventory targetInventory, int startOffset) {
+	private void updateInventory(Inventory targetInventory, boolean addHotbars) {
 		// Set inventory from current page
-		int currentOffset = startOffset;
+		int currentOffset = addHotbars ? 0 : HOTBAR_SIZE;
+        List<Inventory> inventories = this.inventories;
+        if (addHotbars) {
+            inventories = new ArrayList<Inventory>(inventories);
+            inventories.addAll(getHotbars());
+        }
 		if (openInventoryPage < inventories.size()) {
             Inventory inventory = inventories.get(openInventoryPage);
+            ItemStack[] contents = inventory.getContents();
+            for (int i = 0; i < contents.length; i++) {
+                ItemStack inventoryItem = contents[i];
+                updateInventoryName(inventoryItem, false);
+                targetInventory.setItem(currentOffset, inventoryItem);
+                currentOffset++;
+            }
+        }
+        if (addHotbars && openInventoryPage < hotbars.size()) {
+            Inventory inventory = hotbars.get(openInventoryPage);
             ItemStack[] contents = inventory.getContents();
             for (int i = 0; i < contents.length; i++) {
                 ItemStack inventoryItem = contents[i];
@@ -3620,7 +3629,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 
 	public Inventory getHotbar() {
         WandMode mode = getMode();
-        if (this.hotbars.size() == 0 || mode != WandMode.INVENTORY) return null;
+        if (this.hotbars.size() == 0) return null;
 
 		if (currentHotbar < 0 || currentHotbar >= this.hotbars.size())
 		{

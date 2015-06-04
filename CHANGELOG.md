@@ -5,6 +5,8 @@
  - Check for schematics in the Magic/schematics folder.
  - Add "/magic list schematics" command
  - Fall back to chest mode when in creative
+ - Fix yet another item-frame-related dupe exploit
+ - Some more chest mode fixes
 
 ## 5.1.2
 
