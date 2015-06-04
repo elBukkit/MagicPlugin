@@ -2452,7 +2452,7 @@ public class MagicController implements Listener, MageController {
         UndoList undoList = getEntityUndo(damager);
         if (undoList != null) {
             // Prevent dropping items from frames,
-            if (event.getCause() != EntityDamageEvent.DamageCause.ENTITY_ATTACK) {
+            if (event.getCause() != EntityDamageEvent.DamageCause.ENTITY_ATTACK || undoList.isScheduled()) {
                 undoList.damage(entity, event.getDamage());
                 if (!entity.isValid()) {
                     event.setCancelled(true);
