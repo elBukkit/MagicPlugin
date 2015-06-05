@@ -70,6 +70,12 @@ recall:
         command: mserver hub
         op: true
     warps:
+      falcon:
+        name: Milennium Falcon
+        description: Testing cross-server warps
+        server: stars
+        locked: true
+        icon: compass
       town:
         name: The Capitol
         description: The only town we know of
