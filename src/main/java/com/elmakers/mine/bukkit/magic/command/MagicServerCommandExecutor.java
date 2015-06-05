@@ -55,17 +55,7 @@ public class MagicServerCommandExecutor extends MagicTabExecutor {
             player = Bukkit.getPlayer(args[0]);
             server = args[1];
         }
-
-        ByteArrayOutputStream b = new ByteArrayOutputStream();
-        DataOutputStream out = new DataOutputStream(b);
-        try {
-            out.writeUTF("Connect");
-            out.writeUTF(server);
-        } catch (IOException ex) {
-            // Impossible
-        }
-
-        player.sendPluginMessage(api.getPlugin(), "BungeeCord", b.toByteArray());
+        api.getController().sendPlayerToServer(player, server);
         return true;
 	}
 

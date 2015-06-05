@@ -44,7 +44,6 @@ import org.apache.commons.lang.StringUtils;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
-import org.bukkit.block.BlockState;
 import org.bukkit.command.BlockCommandSender;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
@@ -74,7 +73,6 @@ import org.bukkit.event.player.*;
 import org.bukkit.event.world.ChunkLoadEvent;
 import org.bukkit.event.world.WorldSaveEvent;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
@@ -145,6 +143,7 @@ public class MagicController implements Listener, MageController {
         }
         if (!mages.containsKey(mageId)) {
             final com.elmakers.mine.bukkit.magic.Mage mage = new com.elmakers.mine.bukkit.magic.Mage(mageId, this);
+
             mages.put(mageId, mage);
             mage.setName(mageName);
             mage.setCommandSender(commandSender);
@@ -3278,6 +3277,10 @@ public class MagicController implements Listener, MageController {
     }
 
     protected void playerQuit(Mage mage) {
+        playerQuit(mage, null);
+    }
+
+    protected void playerQuit(Mage mage, Runnable callback) {
 
 		// Make sure they get their portraits re-rendered on relogin.
         maps.resend(mage.getName());
@@ -3286,32 +3289,41 @@ public class MagicController implements Listener, MageController {
         if (undoQueue != null) {
             int undid = undoQueue.undoScheduled();
             if (undid != 0) {
-                info("Player " + mage.getName() + " logged out, auto-undid " + undid + " spells");
+                info("Player " + mage.getName() + " logging out, auto-undid " + undid + " spells");
             }
 
             if (!undoQueue.isEmpty()) {
                 if (commitOnQuit) {
-                    info("Player logged out, committing constructions: " + mage.getName());
+                    info("Player logging out, committing constructions: " + mage.getName());
                     undoQueue.commit();
                 } else {
-                    info("Player " + mage.getName() + " logged out with " + undoQueue.getSize() + " spells in their undo queue");
+                    info("Player " + mage.getName() + " logging out with " + undoQueue.getSize() + " spells in their undo queue");
                 }
             }
         }
 
         mage.deactivate();
 
+        // Unregister
+        mages.remove(mage.getId());
+
         if (!mage.isLoading() && (mage.isPlayer() || saveNonPlayerMages) && loaded)
         {
             // Save synchronously on shutdown
-            saveMage(mage, initialized);
+            saveMage(mage, initialized, callback);
         }
-
-		// Let the GC collect the mage
-        mages.remove(mage.getId());
+        else if (callback != null)
+        {
+            callback.run();
+        }
 	}
 
     public void saveMage(Mage mage, boolean asynchronous)
+    {
+        saveMage(mage, asynchronous, null);
+    }
+
+    public void saveMage(Mage mage, boolean asynchronous, final Runnable callback)
     {
         final File playerData = new File(playerDataFolder, mage.getId() + ".dat");
         info("Saving player data for " + mage.getName() + " to " + playerData.getName() + (asynchronous ? "" : " synchronously"));
@@ -3324,6 +3336,9 @@ public class MagicController implements Listener, MageController {
                         synchronized (saveLock) {
                             try {
                                 playerConfig.save();
+                                if (callback != null) {
+                                    Bukkit.getScheduler().runTaskLater(plugin, callback, 1);
+                                }
                             } catch (Exception ex) {
                                 ex.printStackTrace();
                             }
@@ -3334,6 +3349,9 @@ public class MagicController implements Listener, MageController {
                 synchronized (saveLock) {
                     try {
                         playerConfig.save();
+                        if (callback != null) {
+                            callback.run();
+                        }
                     } catch (Exception ex) {
                         ex.printStackTrace();
                     }
@@ -3668,9 +3686,9 @@ public class MagicController implements Listener, MageController {
 
 		// Update the active wand, it may have changed around
 		Player player = (Player)event.getPlayer();
-        Mage apiMage = getMage(player);
+        Mage apiMage = getRegisteredMage(player);
 
-        if (!(apiMage instanceof com.elmakers.mine.bukkit.magic.Mage)) return;
+        if (apiMage == null || !(apiMage instanceof com.elmakers.mine.bukkit.magic.Mage)) return;
         com.elmakers.mine.bukkit.magic.Mage mage = (com.elmakers.mine.bukkit.magic.Mage)apiMage;
 
         GUIAction gui = mage.getActiveGUI();
@@ -5023,6 +5041,18 @@ public class MagicController implements Listener, MageController {
 
     public String getExtraSchematicFilePath() {
         return extraSchematicFilePath;
+    }
+
+    @Override
+    public void sendPlayerToServer(Player player, String server) {
+        ChangeServerTask change = new ChangeServerTask(plugin, player, server);
+        info("Moving " + player.getName() + " to server " + server, 1);
+        Mage mage = getRegisteredMage(player);
+        if (mage != null) {
+            playerQuit(mage, change);
+        } else {
+            change.run();
+        }
     }
 
     /*
