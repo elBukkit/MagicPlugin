@@ -270,4 +270,108 @@ beaconshop:
         items:
           beacon: 1200
 
+## In testing
 
+wave:
+    icon_url: http://textures.minecraft.net/texture/912c6ba1e1756d2d8ffb0f72af0c46d2da3596168d3ad0d513ce25c92572
+    icon: feather
+    category: elemental
+    pvp_restricted: true
+    worth: 4000
+    actions:
+        cast:
+        -  class: Line
+           actions:
+           - class: Volume
+             actions:
+             - class: ModifyBlock
+           - class: Delay
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: fizz
+           sound_volume: 1
+           sound_pitch: 0.2
+           location: origin
+    parameters:
+        target: block
+        target_type: Entity
+        x_size: 0
+        y_size: 0
+        z_size: 2
+        size: 8
+        range: 10
+        allow_max_range: true
+        orient: true
+        target_count: 16
+        item_speed: 0.1
+        living_entity_speed: 0.2
+        push: -1
+        direction: 0,1,0
+        speed: 0.2
+        cooldown: 3000
+        delay: 250
+        brush: stained_clay
+        falling: false
+        undo: 15000
+    costs:
+        mana: 150
+
+
+
+smash:
+    icon: feather
+    icon_url: http://textures.minecraft.net/texture/7cc2fb583d1762a16a50fa5ac37bc09b46def63e68205116d650391f9233ed
+    category: combat
+    worth: 1000
+    pvp_restricted: true
+    actions:
+        cast:
+        - class: FallProtection
+        - class: Repeat
+          actions:
+          - class: Velocity
+          - class: Delay
+        - class: Repeat
+          repeat: 5
+          actions:
+          - class: Velocity
+            direction: 0,-1,0
+          - class: Delay
+            delay: 400
+        -  class: ChangeContext
+           target_caster: true
+           actions:
+           - class: Sphere
+             actions:
+             -  class: ModifyBlock
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: enderdragon_wings
+           sound_volume: 1
+           effectlib:
+             class: TraceEffect
+             iterations: 30
+             particle: spell
+        land:
+        -  class: EffectRing
+           particle: spell
+           period: 2
+    parameters:
+        duration: 240000
+        target: self
+        min_speed: 5
+        max_speed: 5
+        delay: 500
+        falling: true
+        speed: 0.9
+        brush: air
+        radius: 5
+        undo: 15000
+        cooldown: 30000
+        check_destructible: false
+        direction: 0,1,0
+        repeat: 5
+    costs:
+        mana: 60
