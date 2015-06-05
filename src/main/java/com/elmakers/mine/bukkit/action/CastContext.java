@@ -42,8 +42,6 @@ import java.util.logging.Logger;
 
 public class CastContext implements com.elmakers.mine.bukkit.api.action.CastContext {
     protected static Random random;
-    protected final static int TELEPORT_RETRY_COUNT = 8;
-    protected final static int TELEPORT_RETRY_INTERVAL = 10;
 
     private final Location location;
     private final Entity entity;
@@ -69,25 +67,6 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
     // Base Context
     private int workAllowed = 500;
     private int actionsPerformed;
-
-    protected class TeleportTask implements Runnable {
-        private final CastContext context;
-        private final Entity entity;
-        private final Location location;
-        private final int verticalSearchDistance;
-
-        protected TeleportTask(CastContext context, final Entity entity, final Location location, final int verticalSearchDistance) {
-            this.context = context;
-            this.entity = entity;
-            this.location = location;
-            this.verticalSearchDistance = verticalSearchDistance;
-        }
-
-        @Override
-        public void run() {
-            context.delayedTeleport(entity, location, verticalSearchDistance);
-        }
-    }
 
     public CastContext() {
         this.location = null;
@@ -798,47 +777,8 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
     public void teleport(final Entity entity, final Location location, final int verticalSearchDistance)
     {
         Plugin plugin = getPlugin();
-        Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
-            public void run() {
-                delayedTeleport(entity, location, verticalSearchDistance);
-            }
-        }, 1);
-    }
-
-    protected void delayedTeleport(final Entity entity, final Location location, final int verticalSearchDistance)
-    {
-        MageController controller = getController();
-        Chunk chunk = location.getBlock().getChunk();
-        int retryCount = 0;
-        if (!chunk.isLoaded()) {
-            chunk.load(true);
-            if (retryCount < TELEPORT_RETRY_COUNT) {
-                Plugin plugin = controller.getPlugin();
-                Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
-                    public void run() {
-                        delayedTeleport(entity, location, verticalSearchDistance);
-                    }
-                }, TELEPORT_RETRY_INTERVAL);
-            }
-            return;
-        }
-
-        registerMoved(entity);
-        Location targetLocation = findPlaceToStand(location, verticalSearchDistance);
-        if (targetLocation != null) {
-            setTargetedLocation(targetLocation);
-            // Hacky double-teleport to work-around vanilla suffocation checks
-            boolean isWorldChange = !targetLocation.getWorld().equals(entity.getWorld());
-            entity.teleport(targetLocation);
-            if (isWorldChange) {
-                entity.teleport(targetLocation);
-            }
-            sendMessage("teleport");
-            playEffects("teleport");
-        } else {
-            sendMessage("teleport_failed");
-            playEffects("teleport_failed");
-        }
+        TeleportTask task = new TeleportTask(getController(), entity, location, verticalSearchDistance, this);
+        Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, task, 1);
     }
 
     @Override
