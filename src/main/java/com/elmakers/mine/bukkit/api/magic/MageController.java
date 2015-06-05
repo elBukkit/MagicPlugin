@@ -269,4 +269,5 @@ public interface MageController {
 
     public boolean isLocked(Block block);
     public void sendPlayerToServer(Player player, String server);
+    public void warpPlayerToServer(Player player, String server, String warp);
 }
