@@ -2498,7 +2498,9 @@ public class MagicController implements Listener, MageController {
             boolean isMelee = event.getCause() == EntityDamageEvent.DamageCause.ENTITY_ATTACK && !CompatibilityUtils.isDamaging;
             if (isMelee && hasWand && !isMeleeWeapon) {
                 event.setCancelled(true);
+                CompatibilityUtils.isDamaging = true;
                 activeWand.cast();
+                CompatibilityUtils.isDamaging = false;
             }
             else if (!hasWand && preventMeleeDamage && isMelee && !isMeleeWeapon) {
                 event.setCancelled(true);
@@ -5041,6 +5043,17 @@ public class MagicController implements Listener, MageController {
 
     public String getExtraSchematicFilePath() {
         return extraSchematicFilePath;
+    }
+
+    @Override
+    public void warpPlayerToServer(Player player, String server, String warp) {
+        Mage apiMage = getMage(player);
+        if (apiMage instanceof com.elmakers.mine.bukkit.magic.Mage)
+        {
+            ((com.elmakers.mine.bukkit.magic.Mage)apiMage).setDestinationWarp(warp);
+            info("Cross-server warping " + player.getName() + " to warp " + warp, 1);
+        }
+        sendPlayerToServer(player, server);
     }
 
     @Override

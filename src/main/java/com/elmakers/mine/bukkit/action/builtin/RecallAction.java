@@ -95,6 +95,8 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
         public final String command;
         public final boolean opPlayer;
         public final boolean maintainDirection;
+        public final String warpName;
+        public final String serverName;
 
         public Waypoint(RecallType type, Location location, String name, String message, String failMessage, String description, MaterialAndData icon, boolean maintainDirection) {
             this.name = name;
@@ -108,12 +110,32 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
             this.command = null;
             this.opPlayer = false;
             this.maintainDirection = maintainDirection;
+            serverName = null;
+            warpName = null;
         }
 
         public Waypoint(RecallType type, Location location, String name, String message, String failMessage, String description, MaterialAndData icon, String iconURL) {
             this.name = name;
             this.type = type;
             this.location = location;
+            this.message = message;
+            this.description = description;
+            this.failMessage = failMessage;
+            this.icon = icon == null ? defaultMaterial : icon;
+            this.iconURL = iconURL;
+            this.command = null;
+            this.opPlayer = false;
+            this.maintainDirection = false;
+            serverName = null;
+            warpName = null;
+        }
+
+        public Waypoint(RecallType type, String warpName, String serverName, String name, String message, String failMessage, String description, MaterialAndData icon, String iconURL) {
+            this.name = name;
+            this.type = type;
+            this.location = null;
+            this.warpName = warpName;
+            this.serverName = serverName;
             this.message = message;
             this.description = description;
             this.failMessage = failMessage;
@@ -136,6 +158,8 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
             this.command = command;
             this.opPlayer = opPlayer;
             this.maintainDirection = false;
+            serverName = null;
+            warpName = null;
         }
 
         @Override
@@ -158,6 +182,10 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
             }
             if (location == null || location.getWorld() == null)
             {
+                if (serverName != null && warpName != null)
+                {
+                    return true;
+                }
                 return false;
             }
             return crossWorld || source.getWorld().equals(location.getWorld());
@@ -504,7 +532,16 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
         String description = config.getString("description");
         String iconURL = config.getString("icon_url");
         MaterialAndData icon = ConfigurationUtils.getMaterialAndData(config, "icon");
-        return new Waypoint(RecallType.WARP, controller.getWarp(warpKey), title, castMessage, failMessage, description, icon, iconURL);
+
+        Location warpLocation = controller.getWarp(warpKey);
+        if (warpLocation == null || warpLocation.getWorld() == null) {
+            String serverName = config.getString("server", null);
+            if (serverName != null) {
+                return new Waypoint(RecallType.WARP, warpKey, serverName, title, castMessage, failMessage, description, icon, iconURL);
+            }
+        }
+
+        return new Waypoint(RecallType.WARP, warpLocation, title, castMessage, failMessage, description, icon, iconURL);
     }
 
     protected Waypoint getCommand(String commandKey)
@@ -584,6 +621,11 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
         Location targetLocation = waypoint == null ? null : waypoint.location;
 		if (targetLocation == null) {
             if (waypoint != null) {
+                String serverName = waypoint.serverName;
+                String warpName = waypoint.warpName;
+                if (warpName != null && serverName != null) {
+                    context.getController().warpPlayerToServer(player, serverName, warpName);
+                }
                 context.sendMessage(waypoint.failMessage);
             }
 			return false;

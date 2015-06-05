@@ -28,7 +28,6 @@ public class ChangeServerTask implements Runnable {
         } catch (IOException ex) {
             // Impossible
         }
-
         player.sendPluginMessage(plugin, "BungeeCord", b.toByteArray());
     }
 }

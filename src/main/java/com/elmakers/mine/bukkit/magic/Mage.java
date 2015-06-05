@@ -12,6 +12,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 
+import com.elmakers.mine.bukkit.action.TeleportTask;
 import com.elmakers.mine.bukkit.api.action.GUIAction;
 import com.elmakers.mine.bukkit.api.batch.SpellBatch;
 import com.elmakers.mine.bukkit.api.effect.SoundEffect;
@@ -42,6 +43,7 @@ import org.bukkit.event.player.PlayerEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitScheduler;
@@ -128,6 +130,8 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     private HashMap<Integer, ItemStack> respawnArmor;
     private List<?> restoreInventory;
     private ConfigurationSection spellData;
+
+    private String destinationWarp;
 
     public Mage(String id, MagicController controller) {
         this.id = id;
@@ -601,6 +605,21 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             lastDeathLocation = ConfigurationUtils.getLocation(configNode, "last_death_location");
             location = ConfigurationUtils.getLocation(configNode, "location");
             lastCast = configNode.getLong("last_cast", lastCast);
+            destinationWarp = configNode.getString("destination_warp");
+            if (destinationWarp != null) {
+                if (!destinationWarp.isEmpty()) {
+                    Location destination = controller.getWarp(destinationWarp);
+                    if (destination != null) {
+                        Plugin plugin = controller.getPlugin();
+                        controller.info("Warping " + getEntity().getName() + " to " + destinationWarp + " on login");
+                        TeleportTask task = new TeleportTask(getController(), getEntity(), destination, 4, null);
+                        Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, task, 1);
+                    } else {
+                        controller.info("Failed to warp " + getEntity().getName() + " to " + destinationWarp + " on login, warp doesn't exist");
+                    }
+                }
+                destinationWarp = null;
+            }
 
             getUndoQueue().load(configNode);
             spellData = configNode.getConfigurationSection("spells");
@@ -662,6 +681,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             if (location != null) {
                 configNode.set("location", ConfigurationUtils.fromLocation(location));
             }
+            configNode.set("destination_warp", destinationWarp);
 
             long now = System.currentTimeMillis();
             if (fallProtectionCount > 0 && fallProtection > now) {
@@ -1890,6 +1910,10 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     @Override
     public boolean isQuiet() {
         return quiet;
+    }
+
+    public void setDestinationWarp(String warp) {
+        destinationWarp = warp;
     }
 }
 
