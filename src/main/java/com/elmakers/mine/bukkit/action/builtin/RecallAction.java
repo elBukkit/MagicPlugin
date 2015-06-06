@@ -288,7 +288,7 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
                 return SpellResult.NO_ACTION;
             }
 
-            if (warpConfig == null)
+            if (warpConfig == null && commandConfig == null)
             {
                 return SpellResult.FAIL;
             }
@@ -298,14 +298,14 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
             mageData.set(UNLOCKED_WARPS, unlockedString);
 
             String warpName = unlockWarp;
-            ConfigurationSection config = warpConfig.getConfigurationSection(unlockWarp);
+            ConfigurationSection config = warpConfig == null ? null : warpConfig.getConfigurationSection(unlockWarp);
             if (config != null)
             {
                 warpName = config.getString("name", warpName);
             }
             else
             {
-                config = commandConfig.getConfigurationSection(unlockWarp);
+                config = commandConfig == null ? null : commandConfig.getConfigurationSection(unlockWarp);
                 if (config != null)
                 {
                     warpName = config.getString("name", warpName);
