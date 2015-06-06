@@ -30,7 +30,7 @@ public class MagicServerCommandExecutor extends MagicTabExecutor {
             }
 
             player = (Player)sender;
-            if (!player.hasPermission("Magic.commands.server"))
+            if (!player.hasPermission("Magic.commands.mserver"))
             {
                 return false;
             }
@@ -62,7 +62,7 @@ public class MagicServerCommandExecutor extends MagicTabExecutor {
 	@Override
 	public Collection<String> onTabComplete(CommandSender sender, String commandName, String[] args) {
 		List<String> options = new ArrayList<String>();
-        if (!sender.hasPermission("Magic.commands.mmap")) return options;
+        if (!sender.hasPermission("Magic.commands.mserver")) return options;
 
 		if (args.length == 1) {
             options.addAll(api.getPlayerNames());

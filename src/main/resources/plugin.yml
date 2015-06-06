@@ -3,7 +3,7 @@ main: com.elmakers.mine.bukkit.magic.MagicPlugin
 version: ${project.version}
 website: http://mine.elmakers.com
 author: NathanWolf
-description : Mmmmmmaaaaagic!
+description : A gameplay-oriented plugin for spells and wands
 softdepend: [WorldGuard,Essentials,dynmap,dtlTraders,Factions,CommandBook,PvPManager,Multiverse-Core,WGCustomFlags,Citizens,Vault,GriefPrevention,Heroes,NoCheatPlus]
 loadbefore: [Scavenger]
 commands:
@@ -54,6 +54,10 @@ commands:
     description: "Moves a player to another server"
     usage: "mserver <player> <server>"
     permission: Magic.commands.mserver
+  msave:
+    description: Save player data, and execute command as console
+    usage: /msave <Player> [command to run]
+    permission: Magic.commands.msave
 permissions:
   Magic.commands.spells:
     description: Player may list spells
@@ -349,6 +353,10 @@ permissions:
     default: op
   Magic.commands.mserver:
     description: Player may sender players to other servers
+    type: boolean
+    default: op
+  Magic.commands.msave:
+    description: Player may save mage data and run commands
     type: boolean
     default: op
   Magic.wand.use:
