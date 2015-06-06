@@ -1,7 +1,8 @@
 # CHANGELOG
 
-## 5.2
+## 5.1.3
 
+ - Fix horrible recursion error on physical damage with a wand
  - Check for schematics in the Magic/schematics folder.
  - Add "/magic list schematics" command
  - Fall back to chest mode when in creative
