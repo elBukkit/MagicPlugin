@@ -102,9 +102,11 @@ public class SoundEffect implements com.elmakers.mine.bukkit.api.effect.SoundEff
         if (sourceLocation == null || plugin == null) return;
 
         if (customSound != null) {
-            int rangeSquared = range <= 0 ?
-                    (int)(volume > 1.0 ? (16.0 * volume) : 16.0) :
-                    range * range;
+            int range = this.range;
+            if (range <= 0) {
+                range = (int)(volume > 1.0 ? (16.0 * volume) : 16.0);
+            }
+            int rangeSquared = range * range;
             Collection<? extends Player> players = plugin.getServer().getOnlinePlayers();
             for (Player player : players) {
                 Location location = player.getLocation();
