@@ -3,6 +3,7 @@
 ## 5.2
 
  - Update to latest Citizens. This is NOT backwards compatible! :(
+ - Fix very short range of custom sound effects
 
 ## 5.1.3
 
