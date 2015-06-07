@@ -61,7 +61,7 @@ public class MagicCitizensTrait extends CitizensTrait {
         ConfigurationSection config = this.parameters;
         if (npcCaster) {
             if (event.getNPC().isSpawned()) {
-                entity = event.getNPC().getBukkitEntity();
+                entity = event.getNPC().getEntity();
                 sender = null;
                 config = new MemoryConfiguration();
                 ConfigurationUtils.addConfigurations(config, parameters);
