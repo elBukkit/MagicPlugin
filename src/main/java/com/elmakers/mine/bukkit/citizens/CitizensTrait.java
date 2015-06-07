@@ -7,6 +7,7 @@ import net.citizensnpcs.api.trait.Trait;
 import net.citizensnpcs.api.util.DataKey;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -51,12 +52,13 @@ public abstract class CitizensTrait extends Trait {
     }
 
     protected void updatePotionEffects() {
-        LivingEntity li = null;
+        Entity entity = null;
         try {
-            li = npc.getBukkitEntity();
+            entity = npc.getEntity();
         } catch (Exception ex) {
 
         }
+        LivingEntity li = entity instanceof LivingEntity ? (LivingEntity)entity : null;
         if (li != null) {
             if (invisible) {
                 li.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, Integer.MAX_VALUE, 1));

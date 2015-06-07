@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 5.2
+
+ - Update to latest Citizens. This is NOT backwards compatible! :(
+
 ## 5.1.3
 
  - Fix horrible recursion error on physical damage with a wand
