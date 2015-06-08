@@ -26,6 +26,7 @@ import com.elmakers.mine.bukkit.api.spell.SpellCategory;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.api.wand.LostWand;
 import com.elmakers.mine.bukkit.api.wand.Wand;
+import org.bukkit.util.Vector;
 
 public interface MageController {
 
@@ -270,4 +271,5 @@ public interface MageController {
     public boolean isLocked(Block block);
     public void sendPlayerToServer(Player player, String server);
     public void warpPlayerToServer(Player player, String server, String warp);
+    public boolean spawnPhysicsBlock(Location location, Material material, short data, Vector velocity);
 }
