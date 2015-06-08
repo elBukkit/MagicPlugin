@@ -106,7 +106,7 @@ public class MagicCitizensTrait extends CitizensTrait {
         {
             return;
         }
-        if (key.equalsIgnoreCase("spell"))
+        if (key.equalsIgnoreCase("spell") || key.equalsIgnoreCase("cast"))
         {
             spellKey = value;
             if (value == null)
@@ -132,6 +132,19 @@ public class MagicCitizensTrait extends CitizensTrait {
                 ConfigurationUtils.addParameters(params, parameters);
                 sender.sendMessage(ChatColor.DARK_PURPLE + "Set parameters to: ");
                 describeParameters(sender);
+            }
+        }
+        else if (key.equalsIgnoreCase("caster"))
+        {
+            if (value == null || !value.equalsIgnoreCase("true"))
+            {
+                sender.sendMessage(ChatColor.DARK_PURPLE + "Set caster as player");
+                npcCaster = false;
+            }
+            else
+            {
+                npcCaster = true;
+                sender.sendMessage(ChatColor.DARK_PURPLE + "Set caster as NPC");
             }
         }
         else if (value == null || value.isEmpty())
