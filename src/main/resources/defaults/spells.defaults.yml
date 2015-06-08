@@ -3540,6 +3540,7 @@ blast:
         cooldown: 500
         destructible: destructible_mining
         select_self: false
+        physics_blocks: true
     costs:
         mana: 45
 
@@ -3803,6 +3804,7 @@ collapse:
         undo: 10000
         cooldown: 2000
         select_self: false
+        physics_blocks: true
     costs:
         mana: 50
 

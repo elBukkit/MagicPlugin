@@ -23,6 +23,7 @@ import com.elmakers.mine.bukkit.api.spell.*;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.citizens.CitizensController;
 import com.elmakers.mine.bukkit.heroes.HeroesManager;
+import com.elmakers.mine.bukkit.integration.BlockPhysicsManager;
 import com.elmakers.mine.bukkit.integration.VaultController;
 import com.elmakers.mine.bukkit.magic.listener.LoadSchematicTask;
 import com.elmakers.mine.bukkit.maps.MapController;
@@ -80,6 +81,7 @@ import org.bukkit.inventory.meta.BookMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
+import org.bukkit.util.Vector;
 import org.mcstats.Metrics;
 import org.mcstats.Metrics.Graph;
 
@@ -660,6 +662,15 @@ public class MagicController implements Listener, MageController {
             } else {
                 getLogger().warning("Vault integration failed");
             }
+        }
+
+        // Check for BlockPhysics
+        Plugin blockPhysicsPlugin = plugin.getServer().getPluginManager().getPlugin("BlockPhysics");
+        if (blockPhysicsPlugin == null) {
+            getLogger().info("BlockPhysics not found- install that plugin for physics-based block effects");
+        } else {
+            blockPhysicsManager = new BlockPhysicsManager(plugin, blockPhysicsPlugin);
+            getLogger().info("Integrated with BlockPhysics, some spells will now use physics-based block effects");
         }
 
         // Try to link to Essentials:
@@ -5068,6 +5079,14 @@ public class MagicController implements Listener, MageController {
         }
     }
 
+    @Override
+    public boolean spawnPhysicsBlock(Location location, Material material, short data, Vector velocity) {
+        if (blockPhysicsManager == null) return false;
+
+        blockPhysicsManager.spawnPhysicsBlock(location, material, data, velocity);
+        return true;
+    }
+
     /*
 	 * Private data
 	 */
@@ -5264,4 +5283,5 @@ public class MagicController implements Listener, MageController {
     private GriefPreventionManager              griefPreventionManager		= new GriefPreventionManager();
     private NCPManager                          ncpManager       		    = new NCPManager();
     private HeroesManager                       heroesManager       		= null;
+    private BlockPhysicsManager                 blockPhysicsManager         = null;
 }

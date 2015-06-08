@@ -30,6 +30,7 @@ public class ModifyBlockAction extends BaseSpellAction {
     private double backfireChance = 0;
     private boolean applyPhysics = false;
     private boolean commit = false;
+    private boolean usePhysicsBlocks = false;
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters) {
@@ -37,6 +38,7 @@ public class ModifyBlockAction extends BaseSpellAction {
         spawnFallingBlocks = parameters.getBoolean("falling", false);
         applyPhysics = parameters.getBoolean("physics", false);
         commit = parameters.getBoolean("commit", false);
+        usePhysicsBlocks = parameters.getBoolean("physics_blocks", false);
         breakable = parameters.getInt("breakable", 0);
         backfireChance = parameters.getDouble("reflect_chance", 0);
         fallingBlockSpeed = parameters.getDouble("speed", 0);
@@ -107,24 +109,41 @@ public class ModifyBlockAction extends BaseSpellAction {
 
             if (spawnFallingBlocks && previousMaterial != Material.AIR)
             {
-                FallingBlock falling = block.getWorld().spawnFallingBlock(block.getLocation(), previousMaterial, previousData);
-                falling.setDropItem(false);
+                Location blockLocation = block.getLocation();
+                Vector fallingBlockVelocity = null;
                 if (fallingBlockSpeed > 0) {
-                    Vector fallingBlockVelocity = fallingBlockDirection;
+                    fallingBlockVelocity = fallingBlockDirection;
                     if (fallingBlockVelocity == null) {
                         Location source = context.getBaseContext().getTargetLocation();
-                        fallingBlockVelocity = falling.getLocation().subtract(source).toVector();
+                        fallingBlockVelocity = blockLocation.clone().subtract(source).toVector();
                         fallingBlockVelocity.normalize();
                     } else {
                         fallingBlockVelocity = fallingBlockVelocity.clone();
                     }
                     fallingBlockVelocity.multiply(fallingBlockSpeed);
-                    falling.setVelocity(fallingBlockVelocity);
                 }
-                if (fallingBlockMaxDamage > 0 && fallingBlockFallDamage > 0) {
-                    CompatibilityUtils.setFallingBlockDamage(falling, fallingBlockFallDamage, fallingBlockMaxDamage);
+                if (fallingBlockVelocity != null && (
+                       Double.isNaN(fallingBlockVelocity.getX()) || Double.isNaN(fallingBlockVelocity.getY()) || Double.isNaN(fallingBlockVelocity.getZ())
+                    || Double.isInfinite(fallingBlockVelocity.getX()) || Double.isInfinite(fallingBlockVelocity.getY()) || Double.isInfinite(fallingBlockVelocity.getZ())
+                ))
+                {
+                    fallingBlockVelocity = null;
                 }
-                context.registerForUndo(falling);
+                boolean spawned = false;
+                if (usePhysicsBlocks) {
+                    spawned = context.getController().spawnPhysicsBlock(blockLocation, previousMaterial, previousData, fallingBlockVelocity);
+                }
+                if (!spawned) {
+                    FallingBlock falling = block.getWorld().spawnFallingBlock(blockLocation, previousMaterial, previousData);
+                    falling.setDropItem(false);
+                    if (fallingBlockVelocity != null) {
+                        falling.setVelocity(fallingBlockVelocity);
+                    }
+                    if (fallingBlockMaxDamage > 0 && fallingBlockFallDamage > 0) {
+                        CompatibilityUtils.setFallingBlockDamage(falling, fallingBlockFallDamage, fallingBlockMaxDamage);
+                    }
+                    context.registerForUndo(falling);
+                }
             }
         }
 
