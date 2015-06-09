@@ -1,11 +1,13 @@
 # CHANGELOG
 
-## 5.2
+## 5.1.4
 
- - Update to latest Citizens. This is NOT backwards compatible! :(
+ - Update to latest Citizens. This may not be backwards compatible, but should
+   work with recent Citizens versions.
  - Fix very short range of custom sound effects
  - Fix NPC "caster" parameter
  - Fix rate of active spell costs
+ - Add BlockPhysics plugin integration (WIP)
 
 ## 5.1.3
 
