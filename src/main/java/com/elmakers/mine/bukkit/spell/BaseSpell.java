@@ -180,6 +180,8 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     private int                                 cooldown                = 0;
     private int                                 duration                = 0;
     private long                                lastCast                = 0;
+    private long                                lastActiveCost          = 0;
+    private float                               activeCostScale         = 1;
     private long								castCount				= 0;
 
     private boolean								isActive				= false;
@@ -738,16 +740,22 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     public void checkActiveCosts() {
         if (activeCosts == null) return;
 
+        long now = System.currentTimeMillis();
+        activeCostScale = (float)((double)(now - lastActiveCost) / 1000);
+        lastActiveCost = now;
+
         for (CastingCost cost : activeCosts)
         {
             if (!cost.has(this))
             {
                 deactivate();
-                return;
+                break;
             }
 
             cost.use(this);
         }
+
+        activeCostScale = 1;
     }
 
     public void checkActiveDuration() {
@@ -1429,6 +1437,12 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         return costReduction + mage.getCostReduction();
     }
 
+    @Override
+    public float getCostScale()
+    {
+        return activeCostScale;
+    }
+
     //
     // Public API Implementation
     //
@@ -1715,6 +1729,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
             onDeactivate();
         }
         isActive = active;
+        lastActiveCost = System.currentTimeMillis();
     }
 
     @Override

@@ -87,7 +87,7 @@ public class CastingCost implements com.elmakers.mine.bukkit.api.spell.CastingCo
         if (xp > 0) {
             mage.removeExperience(xp);
         }
-        int mana = getMana(spell);
+        float mana = getMana(spell);
         if (mana > 0) {
             mage.removeMana(mana);
         }
@@ -120,27 +120,35 @@ public class CastingCost implements com.elmakers.mine.bukkit.api.spell.CastingCo
 
     public int getAmount(CostReducer reducer)
     {
-        return getReducedCost(amount, reducer);
+        return getRoundedCost(amount, reducer);
     }
 
     public int getXP(CostReducer reducer)
     {
-        return getReducedCost(xp, reducer);
+        return getRoundedCost(xp, reducer);
     }
 
-    public int getMana(CostReducer reducer)
+    public float getMana(CostReducer reducer)
     {
         return getReducedCost(mana, reducer);
     }
 
-    protected int getReducedCost(int cost, CostReducer reducer)
+    protected int getRoundedCost(int cost, CostReducer reducer) {
+        return (int)Math.ceil(getReducedCost(cost, reducer));
+    }
+
+    protected float getReducedCost(int cost, CostReducer reducer)
     {
         float reducedAmount = cost;
         float reduction = reducer == null ? 0 : reducer.getCostReduction();
+        if (reduction >= 1) {
+            return 0;
+        }
         if (reduction > 0) {
             reducedAmount = (1.0f - reduction) * reducedAmount;
         }
-        return (int)Math.ceil(reducedAmount);
+        reducedAmount = reducedAmount * reducer.getCostScale();
+        return reducedAmount;
     }
 
     public boolean hasCosts(CostReducer reducer)
@@ -173,7 +181,7 @@ public class CastingCost implements com.elmakers.mine.bukkit.api.spell.CastingCo
             return messages.get("costs.xp_amount").replace("$amount", ((Integer)getXP(reducer)).toString());
         }
         if (mana > 0) {
-            return messages.get("costs.mana_amount").replace("$amount", ((Integer) getMana(reducer)).toString());
+            return messages.get("costs.mana_amount").replace("$amount", ((Integer)(int)Math.ceil(getMana(reducer))).toString());
         }
         return "";
     }
