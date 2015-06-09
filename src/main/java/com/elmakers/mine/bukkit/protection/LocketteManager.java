@@ -8,7 +8,7 @@ import org.bukkit.plugin.Plugin;
 
 import java.lang.reflect.Method;
 
-public class LocketteManager {
+public class LocketteManager implements BlockBuildManager, BlockBreakManager {
 	private boolean enabled = false;
 	private Method isOwnerMethod = null;
 	private Method isProtectedMethod = null;
@@ -72,4 +72,9 @@ public class LocketteManager {
 		
 		return true;
 	}
+
+    @Override
+    public boolean hasBreakPermission(Player player, Block block) {
+        return hasBuildPermission(player, block);
+    }
 }

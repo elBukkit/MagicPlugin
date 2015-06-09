@@ -8,7 +8,7 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
-public class FactionsManager {
+public class FactionsManager implements BlockBuildManager, BlockBreakManager {
 	private boolean enabled = false;
 	private Class<?> factionsManager = null;
 	private Method factionsCanBuildMethod = null;
@@ -114,4 +114,9 @@ public class FactionsManager {
 		
 		return true;
 	}
+
+    @Override
+    public boolean hasBreakPermission(Player player, Block block) {
+        return hasBuildPermission(player, block);
+    }
 }

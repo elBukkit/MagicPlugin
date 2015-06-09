@@ -5,7 +5,7 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
-public class TownyManager {
+public class TownyManager implements PVPManager, BlockBreakManager, BlockBuildManager {
 	private boolean enabled = false;
 	private TownyAPI towny = null;
     protected boolean wildernessBypass;
@@ -47,12 +47,6 @@ public class TownyManager {
         wildernessBypass = bypass;
     }
 
-	public boolean isPVPAllowed(Location location) {
-		if (!enabled || towny == null || location == null)
-			return true;
-		return towny.isPVPAllowed(location);
-	}
-
 	public boolean hasBuildPermission(Player player, Block block) {
 		if (enabled && block != null && towny != null) {
 			return towny.hasBuildPermission(player, block);
@@ -72,5 +66,12 @@ public class TownyManager {
             return towny.isAlly(player, other);
         }
         return false;
+    }
+
+    @Override
+    public boolean isPVPAllowed(Player player, Location location) {
+        if (!enabled || towny == null || location == null)
+            return true;
+        return towny.isPVPAllowed(location);
     }
 }

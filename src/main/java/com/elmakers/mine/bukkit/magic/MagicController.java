@@ -27,10 +27,13 @@ import com.elmakers.mine.bukkit.integration.BlockPhysicsManager;
 import com.elmakers.mine.bukkit.integration.VaultController;
 import com.elmakers.mine.bukkit.magic.listener.LoadSchematicTask;
 import com.elmakers.mine.bukkit.maps.MapController;
+import com.elmakers.mine.bukkit.protection.BlockBreakManager;
+import com.elmakers.mine.bukkit.protection.BlockBuildManager;
 import com.elmakers.mine.bukkit.protection.GriefPreventionManager;
 import com.elmakers.mine.bukkit.protection.LocketteManager;
 import com.elmakers.mine.bukkit.protection.MultiverseManager;
 import com.elmakers.mine.bukkit.protection.NCPManager;
+import com.elmakers.mine.bukkit.protection.PVPManager;
 import com.elmakers.mine.bukkit.protection.PreciousStonesManager;
 import com.elmakers.mine.bukkit.protection.PvPManagerManager;
 import com.elmakers.mine.bukkit.protection.TownyManager;
@@ -456,32 +459,31 @@ public class MagicController implements Listener, MageController {
 
     public boolean hasBuildPermission(Player player, Block block) {
         // Check all protection plugins
-        boolean allowed = true;
         if (bypassBuildPermissions) return true;
         if (player != null && player.hasPermission("Magic.bypass_build")) return true;
 
-        allowed = allowed && worldGuardManager.hasBuildPermission(player, block);
-        allowed = allowed && factionsManager.hasBuildPermission(player, block);
-        allowed = allowed && locketteManager.hasBuildPermission(player, block);
-        allowed = allowed && preciousStonesManager.hasBuildPermission(player, block);
-        allowed = allowed && townyManager.hasBuildPermission(player, block);
-        allowed = allowed && griefPreventionManager.hasBuildPermission(player, block);
-
+        boolean allowed = true;
+        for (BlockBuildManager manager : blockBuildManagers) {
+            if (!manager.hasBuildPermission(player, block)) {
+                allowed = false;
+                break;
+            }
+        }
         return allowed;
     }
 
     public boolean hasBreakPermission(Player player, Block block) {
         // This is the same has hasBuildPermission for everything but Towny!
-        boolean allowed = true;
         if (bypassBreakPermissions) return true;
         if (player != null && player.hasPermission("Magic.bypass_break")) return true;
 
-        allowed = allowed && worldGuardManager.hasBuildPermission(player, block);
-        allowed = allowed && factionsManager.hasBuildPermission(player, block);
-        allowed = allowed && locketteManager.hasBuildPermission(player, block);
-        allowed = allowed && preciousStonesManager.hasBuildPermission(player, block);
-        allowed = allowed && townyManager.hasBreakPermission(player, block);
-        allowed = allowed && griefPreventionManager.hasBuildPermission(player, block);
+        boolean allowed = true;
+        for (BlockBreakManager manager : blockBreakManagers) {
+            if (!manager.hasBreakPermission(player, block)) {
+                allowed = false;
+                break;
+            }
+        }
 
         return allowed;
     }
@@ -493,11 +495,15 @@ public class MagicController implements Listener, MageController {
         if (bypassPvpPermissions) return true;
         if (player != null && player.hasPermission("Magic.bypass_pvp")) return true;
         if (location == null && player != null) location = player.getLocation();
-        return worldGuardManager.isPVPAllowed(player, location)
-                && pvpManager.isPVPAllowed(player)
-                && multiverseManager.isPVPAllowed(location.getWorld())
-                && preciousStonesManager.isPVPAllowed(player, location)
-                && townyManager.isPVPAllowed(location);
+
+        boolean allowed = true;
+        for (PVPManager manager : pvpManagers) {
+            if (!manager.isPVPAllowed(player, location)) {
+                allowed = false;
+                break;
+            }
+        }
+        return allowed;
     }
 
     public void clearCache() {
@@ -893,6 +899,34 @@ public class MagicController implements Listener, MageController {
 
         // Register crafting recipes
         crafting.register(plugin);
+
+        // Set up Break/Build/PVP Managers
+        blockBreakManagers.clear();
+        blockBuildManagers.clear();
+        pvpManagers.clear();
+
+        // PVP Managers
+        if (worldGuardManager.isEnabled()) pvpManagers.add(worldGuardManager);
+        if (pvpManager.isEnabled()) pvpManagers.add(pvpManager);
+        if (multiverseManager.isEnabled()) pvpManagers.add(multiverseManager);
+        if (preciousStonesManager.isEnabled()) pvpManagers.add(preciousStonesManager);
+        if (townyManager.isEnabled()) pvpManagers.add(townyManager);
+
+        // Build Managers
+        if (worldGuardManager.isEnabled()) blockBuildManagers.add(worldGuardManager);
+        if (factionsManager.isEnabled()) blockBuildManagers.add(factionsManager);
+        if (locketteManager.isEnabled()) blockBuildManagers.add(locketteManager);
+        if (preciousStonesManager.isEnabled()) blockBuildManagers.add(preciousStonesManager);
+        if (townyManager.isEnabled()) blockBuildManagers.add(townyManager);
+        if (griefPreventionManager.isEnabled()) blockBuildManagers.add(griefPreventionManager);
+
+        // Break Managers
+        if (worldGuardManager.isEnabled()) blockBreakManagers.add(worldGuardManager);
+        if (factionsManager.isEnabled()) blockBreakManagers.add(factionsManager);
+        if (locketteManager.isEnabled()) blockBreakManagers.add(locketteManager);
+        if (preciousStonesManager.isEnabled()) blockBreakManagers.add(preciousStonesManager);
+        if (townyManager.isEnabled()) blockBreakManagers.add(townyManager);
+        if (griefPreventionManager.isEnabled()) blockBreakManagers.add(griefPreventionManager);
 
         initialized = true;
     }
@@ -5284,4 +5318,8 @@ public class MagicController implements Listener, MageController {
     private NCPManager                          ncpManager       		    = new NCPManager();
     private HeroesManager                       heroesManager       		= null;
     private BlockPhysicsManager                 blockPhysicsManager         = null;
+
+    private List<BlockBreakManager>             blockBreakManagers          = new ArrayList<BlockBreakManager>();
+    private List<BlockBuildManager>             blockBuildManagers          = new ArrayList<BlockBuildManager>();
+    private List<PVPManager>                    pvpManagers                 = new ArrayList<PVPManager>();
 }

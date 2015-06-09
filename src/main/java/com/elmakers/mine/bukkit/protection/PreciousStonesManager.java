@@ -12,7 +12,7 @@ import org.bukkit.plugin.Plugin;
 
 import java.util.List;
 
-public class PreciousStonesManager {
+public class PreciousStonesManager implements BlockBuildManager, BlockBreakManager, PVPManager {
 	private boolean enabled = false;
     private boolean override = true;
 	private PreciousStones preciousStones = null;
@@ -97,5 +97,10 @@ public class PreciousStonesManager {
             }
         }
         return overridePermission;
+    }
+
+    @Override
+    public boolean hasBreakPermission(Player player, Block block) {
+        return hasBuildPermission(player, block);
     }
 }

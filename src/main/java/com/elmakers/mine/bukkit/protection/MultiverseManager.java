@@ -1,10 +1,12 @@
 package com.elmakers.mine.bukkit.protection;
 
 import com.onarandombox.MultiverseCore.MultiverseCore;
+import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
-public class MultiverseManager {
+public class MultiverseManager implements PVPManager {
 
     private boolean enabled = false;
     private MultiverseCore mv = null;
@@ -35,9 +37,11 @@ public class MultiverseManager {
         }
     }
 
-    public boolean isPVPAllowed(World world) {
-        if (!enabled || mv == null || world == null) return true;
-
+    @Override
+    public boolean isPVPAllowed(Player player, Location location) {
+        if (!enabled || mv == null || location == null) return true;
+        World world = location.getWorld();
+        if (world == null) return true;
         return mv.getMVWorldManager().getMVWorld(world).isPVPEnabled();
     }
 }

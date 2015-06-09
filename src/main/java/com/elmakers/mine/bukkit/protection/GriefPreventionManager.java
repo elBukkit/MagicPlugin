@@ -5,7 +5,7 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
-public class GriefPreventionManager {
+public class GriefPreventionManager implements BlockBuildManager, BlockBreakManager  {
 	private boolean enabled = false;
 	private GriefPreventionAPI api = null;
 
@@ -44,4 +44,9 @@ public class GriefPreventionManager {
 		}
 		return true;
 	}
+
+    @Override
+    public boolean hasBreakPermission(Player player, Block block) {
+        return hasBuildPermission(player, block);
+    }
 }
