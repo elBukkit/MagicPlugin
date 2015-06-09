@@ -431,15 +431,15 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		return xpMax;
 	}
 	
-	public int getMana() {
-		return (int)xp;
+	public float getMana() {
+		return xp;
 	}
 
-	public void removeMana(int amount) {
+	public void removeMana(float amount) {
         if (isHeroes && mage != null) {
             HeroesManager heroes = controller.getHeroes();
             if (heroes != null) {
-                heroes.removeMana(mage.getPlayer(), amount);
+                heroes.removeMana(mage.getPlayer(), (int)Math.ceil(amount));
             }
         }
 		xp = Math.max(0,  xp - amount);
@@ -471,10 +471,16 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		return controller.getCooldownReduction() + cooldownReduction * controller.getMaxCooldownReduction();
 	}
 
+    @Override
 	public float getCostReduction() {
 		if (isCostFree()) return 1.0f;
 		return controller.getCostReduction() + costReduction * controller.getMaxCostReduction();
 	}
+
+    @Override
+    public float getCostScale() {
+        return 1;
+    }
 	
 	public void setCooldownReduction(float reduction) {
 		cooldownReduction = reduction;

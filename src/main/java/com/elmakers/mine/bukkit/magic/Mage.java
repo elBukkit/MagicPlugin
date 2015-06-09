@@ -1109,6 +1109,11 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     }
 
     @Override
+    public float getCostScale() {
+        return 1;
+    }
+
+    @Override
     public float getCooldownReduction() {
         return activeWand == null ? cooldownReduction + controller.getCooldownReduction() : activeWand.getCooldownReduction() + cooldownReduction;
     }
@@ -1287,12 +1292,12 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     }
 
     @Override
-    public int getMana() {
+    public float getMana() {
         return activeWand == null ? 0 : activeWand.getMana();
     }
 
     @Override
-    public void removeMana(int mana) {
+    public void removeMana(float mana) {
         if (activeWand != null) {
             activeWand.removeMana(mana);
         }

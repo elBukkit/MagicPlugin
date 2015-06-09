@@ -5,6 +5,7 @@
  - Update to latest Citizens. This is NOT backwards compatible! :(
  - Fix very short range of custom sound effects
  - Fix NPC "caster" parameter
+ - Fix rate of active spell costs
 
 ## 5.1.3
 
