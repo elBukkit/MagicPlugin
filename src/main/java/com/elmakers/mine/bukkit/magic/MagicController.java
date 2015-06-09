@@ -2548,8 +2548,9 @@ public class MagicController implements Listener, MageController {
         Entity damager = event.getDamager();
         if (damager instanceof Player) {
             Mage damagerMage = getRegisteredMage(damager);
-            com.elmakers.mine.bukkit.api.wand.Wand activeWand = damagerMage.getActiveWand();
+            com.elmakers.mine.bukkit.api.wand.Wand activeWand;
             if (damagerMage != null) {
+                activeWand = damagerMage.getActiveWand();
                 if (activeWand != null) {
                     activeWand.playEffects("hit_entity");
                 }
