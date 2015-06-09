@@ -10,8 +10,9 @@ import uk.thinkofdeath.minecraft.physics.api.PhysicsAPI;
 import uk.thinkofdeath.minecraft.physics.api.PhysicsBlock;
 
 public class BlockPhysicsManager {
-    final Plugin plugin;
-    final PhysicsAPI api;
+    private final Plugin plugin;
+    private final PhysicsAPI api;
+    private double velocityScale = 1;
 
     public BlockPhysicsManager(Plugin owningPlugin, Plugin physicsPlugin) {
         this.plugin = owningPlugin;
@@ -21,7 +22,11 @@ public class BlockPhysicsManager {
     public void spawnPhysicsBlock(Location location, Material material, short data, Vector velocity) {
         PhysicsBlock block = api.spawnBlock(location, new MaterialData(material, (byte)data));
         if (velocity != null) {
-            block.applyForce(velocity);
+            block.applyForce(velocity.multiply(velocityScale));
         }
+    }
+
+    public void setVelocityScale(double scale) {
+        this.velocityScale = scale;
     }
 }

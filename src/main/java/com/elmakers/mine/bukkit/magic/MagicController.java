@@ -670,6 +670,15 @@ public class MagicController implements Listener, MageController {
             getLogger().warning("Failed to initialize EffectLib");
         }
 
+        // Check for BlockPhysics
+        Plugin blockPhysicsPlugin = plugin.getServer().getPluginManager().getPlugin("BlockPhysics");
+        if (blockPhysicsPlugin == null) {
+            getLogger().info("BlockPhysics not found- install that plugin for physics-based block effects");
+        } else {
+            blockPhysicsManager = new BlockPhysicsManager(plugin, blockPhysicsPlugin);
+            getLogger().info("Integrated with BlockPhysics, some spells will now use physics-based block effects");
+        }
+
         load();
 
         // Vault integration is handled internally in MagicLib
@@ -682,15 +691,6 @@ public class MagicController implements Listener, MageController {
             } else {
                 getLogger().warning("Vault integration failed");
             }
-        }
-
-        // Check for BlockPhysics
-        Plugin blockPhysicsPlugin = plugin.getServer().getPluginManager().getPlugin("BlockPhysics");
-        if (blockPhysicsPlugin == null) {
-            getLogger().info("BlockPhysics not found- install that plugin for physics-based block effects");
-        } else {
-            blockPhysicsManager = new BlockPhysicsManager(plugin, blockPhysicsPlugin);
-            getLogger().info("Integrated with BlockPhysics, some spells will now use physics-based block effects");
         }
 
         // Try to link to Essentials:
@@ -2147,6 +2147,10 @@ public class MagicController implements Listener, MageController {
         Wand.inventoryCloseSound = ConfigurationUtils.toSoundEffect(properties.getString("wand_inventory_close_sound"));
         Wand.inventoryCycleSound = ConfigurationUtils.toSoundEffect(properties.getString("wand_inventory_cycle_sound"));
         wandNoActionSound = ConfigurationUtils.toSoundEffect(properties.getString("wand_no_action_sound"));
+
+        if (blockPhysicsManager != null) {
+            blockPhysicsManager.setVelocityScale(properties.getDouble("block_physics_velocity_scale", 1));
+        }
 
         preventMeleeDamage = properties.getBoolean("prevent_melee_damage", false);
 
