@@ -84,7 +84,7 @@ public interface CastingCost {
      * @param reducer The CostReducer to use to calculate costs
      * @return The Mana amount cost
      */
-    public int getMana(CostReducer reducer);
+    public float getMana(CostReducer reducer);
 
     /**
      * Returns the item amount to deduct

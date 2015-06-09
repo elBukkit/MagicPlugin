@@ -348,8 +348,8 @@ public interface Mage extends CostReducer {
     public int getExperience();
     public void giveExperience(int xp);
 
-    public void removeMana(int mana);
-    public int getMana();
+    public void removeMana(float mana);
+    public float getMana();
 
     public int getLevel();
     public void setLevel(int level);

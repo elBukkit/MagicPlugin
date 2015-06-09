@@ -13,4 +13,10 @@ public interface CostReducer {
      * @return The percent cost reduction.
      */
     public float getCostReduction();
+
+    /**
+     * Get the amount to scale the end cost by.
+     * @return The final scale to apply
+     */
+    public float getCostScale();
 }
