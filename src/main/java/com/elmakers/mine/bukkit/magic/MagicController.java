@@ -486,6 +486,20 @@ public class MagicController implements Listener, MageController {
         return allowed;
     }
 
+    @Override
+    public boolean isPVPAllowed(Player player, Location location)
+    {
+        if (location == null) return true;
+        if (bypassPvpPermissions) return true;
+        if (player != null && player.hasPermission("Magic.bypass_pvp")) return true;
+        if (location == null && player != null) location = player.getLocation();
+        return worldGuardManager.isPVPAllowed(player, location)
+                && pvpManager.isPVPAllowed(player)
+                && multiverseManager.isPVPAllowed(location.getWorld())
+                && preciousStonesManager.isPVPAllowed(player, location)
+                && townyManager.isPVPAllowed(location);
+    }
+
     public void clearCache() {
         schematics.clear();
         for (Mage mage : mages.values()) {
@@ -4364,20 +4378,6 @@ public class MagicController implements Listener, MageController {
         if (player == null || other == null) return false;
         if (bypassFriendlyFire) return false;
         return townyManager.isAlly(player, other);
-    }
-
-    @Override
-    public boolean isPVPAllowed(Player player, Location location)
-    {
-        if (location == null) return true;
-        if (bypassPvpPermissions) return true;
-        if (player != null && player.hasPermission("Magic.bypass_pvp")) return true;
-        if (location == null && player != null) location = player.getLocation();
-        return worldGuardManager.isPVPAllowed(player, location)
-            && pvpManager.isPVPAllowed(player)
-            && multiverseManager.isPVPAllowed(location.getWorld())
-            && preciousStonesManager.isPVPAllowed(player, location)
-            && townyManager.isPVPAllowed(location);
     }
 
 	public Location getWarp(String warpName) {
