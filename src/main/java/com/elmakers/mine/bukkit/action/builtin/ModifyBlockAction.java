@@ -131,7 +131,8 @@ public class ModifyBlockAction extends BaseSpellAction {
                 }
                 boolean spawned = false;
                 if (usePhysicsBlocks) {
-                    spawned = context.getController().spawnPhysicsBlock(blockLocation, previousMaterial, previousData, fallingBlockVelocity);
+                    Location blockCenter = new Location(blockLocation.getWorld(), blockLocation.getX() + 0.5, blockLocation.getY() + 0.5, blockLocation.getZ() + 0.5);
+                    spawned = context.getController().spawnPhysicsBlock(blockCenter, previousMaterial, previousData, fallingBlockVelocity);
                 }
                 if (!spawned) {
                     FallingBlock falling = block.getWorld().spawnFallingBlock(blockLocation, previousMaterial, previousData);
