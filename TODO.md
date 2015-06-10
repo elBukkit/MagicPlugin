@@ -1,6 +1,7 @@
 # TODO
 
- - Issues with switching to chest mode losing hotbar spells
+ - Re-activating Levitate on upgrade adds a cast to the counter.. ?
+ - Issues with switching to chest mode losing hotbar spells ?
 
  - Hover text for spells
  - Cat GIF generator? http://catdb.yawk.at/images?tag=gif

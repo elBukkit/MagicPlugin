@@ -3,6 +3,7 @@
 ## 5.1.5
 
  - Fix "upgrades" spell, NPE on creating spell items outside of wands
+ - Fix mob spawner dupe issue with SilkSpawners
 
 ## 5.1.4
 
