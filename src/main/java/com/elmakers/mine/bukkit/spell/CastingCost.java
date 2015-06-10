@@ -147,7 +147,9 @@ public class CastingCost implements com.elmakers.mine.bukkit.api.spell.CastingCo
         if (reduction > 0) {
             reducedAmount = (1.0f - reduction) * reducedAmount;
         }
-        reducedAmount = reducedAmount * reducer.getCostScale();
+        if (reducer != null) {
+            reducedAmount = reducedAmount * reducer.getCostScale();
+        }
         return reducedAmount;
     }
 
