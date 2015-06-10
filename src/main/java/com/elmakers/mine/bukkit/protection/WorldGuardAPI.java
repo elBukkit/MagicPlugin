@@ -62,7 +62,6 @@ public class WorldGuardAPI {
 		ApplicableRegionSet checkSet = regionManager.getApplicableRegions(location);
 		if (checkSet == null) return true;
 
-
 		return checkSet.queryState(getAssociable(player), DefaultFlag.PVP) != StateFlag.State.DENY;
 	}
 

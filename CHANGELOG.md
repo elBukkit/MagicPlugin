@@ -4,6 +4,7 @@
 
  - Fix "upgrades" spell, NPE on creating spell items outside of wands
  - Fix mob spawner dupe issue with SilkSpawners
+ - Fix a spell dupe bug/exploit with creative mode
 
 ## 5.1.4
 

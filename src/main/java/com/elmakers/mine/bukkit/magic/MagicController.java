@@ -3659,7 +3659,7 @@ public class MagicController implements Listener, MageController {
                 Integer slot = event.getSlot();
                 int heldSlot = player.getInventory().getHeldItemSlot();
                 Inventory hotbar = activeWand.getHotbar();
-                if (hotbar != null && slot >= 0 && slot <= hotbar.getSize() && slot != heldSlot)
+                if (hotbar != null && slot >= 0 && slot <= hotbar.getSize() && slot != heldSlot && activeWand.getMode() == WandMode.INVENTORY)
                 {
                     if (slot > heldSlot) slot--;
                     if (slot < hotbar.getSize())
