@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 5.1.5
+
+ - Fix "upgrades" spell, NPE on creating spell items outside of wands
+
 ## 5.1.4
 
  - Update to latest Citizens. This may not be backwards compatible, but should
