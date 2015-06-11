@@ -2,6 +2,8 @@
 
 ## 5.2
 
+ - Fix falling block velocity
+
 ## 5.1.5
 
  - Fix "upgrades" spell, NPE on creating spell items outside of wands

@@ -110,12 +110,13 @@ public class ModifyBlockAction extends BaseSpellAction {
             if (spawnFallingBlocks && previousMaterial != Material.AIR)
             {
                 Location blockLocation = block.getLocation();
+                Location blockCenter = new Location(blockLocation.getWorld(), blockLocation.getX() + 0.5, blockLocation.getY() + 0.5, blockLocation.getZ() + 0.5);
                 Vector fallingBlockVelocity = null;
                 if (fallingBlockSpeed > 0) {
                     fallingBlockVelocity = fallingBlockDirection;
                     if (fallingBlockVelocity == null) {
                         Location source = context.getBaseContext().getTargetLocation();
-                        fallingBlockVelocity = blockLocation.clone().subtract(source).toVector();
+                        fallingBlockVelocity = blockCenter.clone().subtract(source).toVector();
                         fallingBlockVelocity.normalize();
                     } else {
                         fallingBlockVelocity = fallingBlockVelocity.clone();
@@ -131,7 +132,6 @@ public class ModifyBlockAction extends BaseSpellAction {
                 }
                 boolean spawned = false;
                 if (usePhysicsBlocks) {
-                    Location blockCenter = new Location(blockLocation.getWorld(), blockLocation.getX() + 0.5, blockLocation.getY() + 0.5, blockLocation.getZ() + 0.5);
                     spawned = context.getController().spawnPhysicsBlock(blockCenter, previousMaterial, previousData, fallingBlockVelocity);
                 }
                 if (!spawned) {
