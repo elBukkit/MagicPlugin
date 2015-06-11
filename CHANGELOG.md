@@ -1,5 +1,7 @@
 # CHANGELOG
 
+## 5.2
+
 ## 5.1.5
 
  - Fix "upgrades" spell, NPE on creating spell items outside of wands
