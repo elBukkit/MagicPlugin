@@ -1,34 +1,50 @@
 package com.elmakers.mine.bukkit.magic;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.lang.ref.WeakReference;
-import java.lang.reflect.Field;
-import java.net.URL;
-import java.security.CodeSource;
-import java.util.*;
-import java.util.Map.Entry;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipInputStream;
-
-import com.elmakers.mine.bukkit.api.action.GUIAction;
+import com.elmakers.mine.bukkit.api.block.BoundingBox;
 import com.elmakers.mine.bukkit.api.block.CurrencyItem;
 import com.elmakers.mine.bukkit.api.block.Schematic;
+import com.elmakers.mine.bukkit.api.block.UndoList;
 import com.elmakers.mine.bukkit.api.event.SaveEvent;
-import com.elmakers.mine.bukkit.api.spell.*;
+import com.elmakers.mine.bukkit.api.magic.Mage;
+import com.elmakers.mine.bukkit.api.magic.MageController;
+import com.elmakers.mine.bukkit.api.spell.CastingCost;
+import com.elmakers.mine.bukkit.api.spell.CostReducer;
+import com.elmakers.mine.bukkit.api.spell.MageSpell;
+import com.elmakers.mine.bukkit.api.spell.Spell;
+import com.elmakers.mine.bukkit.api.spell.SpellKey;
+import com.elmakers.mine.bukkit.api.spell.SpellResult;
+import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
+import com.elmakers.mine.bukkit.block.Automaton;
+import com.elmakers.mine.bukkit.block.BlockData;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
+import com.elmakers.mine.bukkit.block.MaterialBrush;
 import com.elmakers.mine.bukkit.citizens.CitizensController;
+import com.elmakers.mine.bukkit.dynmap.DynmapController;
+import com.elmakers.mine.bukkit.effect.EffectPlayer;
+import com.elmakers.mine.bukkit.elementals.ElementalsController;
+import com.elmakers.mine.bukkit.essentials.MagicItemDb;
+import com.elmakers.mine.bukkit.essentials.Mailer;
 import com.elmakers.mine.bukkit.heroes.HeroesManager;
 import com.elmakers.mine.bukkit.integration.BlockPhysicsManager;
 import com.elmakers.mine.bukkit.integration.VaultController;
+import com.elmakers.mine.bukkit.magic.command.MagicTabExecutor;
+import com.elmakers.mine.bukkit.magic.listener.AnvilController;
+import com.elmakers.mine.bukkit.magic.listener.BlockController;
+import com.elmakers.mine.bukkit.magic.listener.CraftingController;
+import com.elmakers.mine.bukkit.magic.listener.EnchantingController;
+import com.elmakers.mine.bukkit.magic.listener.EntityController;
+import com.elmakers.mine.bukkit.magic.listener.ExplosionController;
+import com.elmakers.mine.bukkit.magic.listener.HangingController;
+import com.elmakers.mine.bukkit.magic.listener.InventoryController;
 import com.elmakers.mine.bukkit.magic.listener.LoadSchematicTask;
+import com.elmakers.mine.bukkit.magic.listener.PlayerController;
 import com.elmakers.mine.bukkit.maps.MapController;
+import com.elmakers.mine.bukkit.metrics.CategoryCastPlotter;
+import com.elmakers.mine.bukkit.metrics.DeltaPlotter;
+import com.elmakers.mine.bukkit.metrics.SpellCastPlotter;
 import com.elmakers.mine.bukkit.protection.BlockBreakManager;
 import com.elmakers.mine.bukkit.protection.BlockBuildManager;
+import com.elmakers.mine.bukkit.protection.FactionsManager;
 import com.elmakers.mine.bukkit.protection.GriefPreventionManager;
 import com.elmakers.mine.bukkit.protection.LocketteManager;
 import com.elmakers.mine.bukkit.protection.MultiverseManager;
@@ -37,17 +53,28 @@ import com.elmakers.mine.bukkit.protection.PVPManager;
 import com.elmakers.mine.bukkit.protection.PreciousStonesManager;
 import com.elmakers.mine.bukkit.protection.PvPManagerManager;
 import com.elmakers.mine.bukkit.protection.TownyManager;
-import com.elmakers.mine.bukkit.action.ActionHandler;
+import com.elmakers.mine.bukkit.protection.WorldGuardManager;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
-import com.elmakers.mine.bukkit.utility.*;
-import com.elmakers.mine.bukkit.wand.*;
+import com.elmakers.mine.bukkit.spell.SpellCategory;
+import com.elmakers.mine.bukkit.traders.TradersController;
+import com.elmakers.mine.bukkit.utilities.DataStore;
+import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
+import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
+import com.elmakers.mine.bukkit.utility.InventoryUtils;
+import com.elmakers.mine.bukkit.utility.Messages;
+import com.elmakers.mine.bukkit.utility.SoundEffect;
 import com.elmakers.mine.bukkit.wand.LostWand;
 import com.elmakers.mine.bukkit.wand.Wand;
+import com.elmakers.mine.bukkit.wand.WandMode;
 import com.elmakers.mine.bukkit.wand.WandUpgradePath;
+import com.elmakers.mine.bukkit.warp.WarpController;
 import org.apache.commons.lang.StringUtils;
-import org.bukkit.*;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Chunk;
+import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
 import org.bukkit.command.BlockCommandSender;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
@@ -56,30 +83,14 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.entity.*;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Item;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.Action;
-import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.event.block.BlockBurnEvent;
-import org.bukkit.event.block.BlockDamageEvent;
-import org.bukkit.event.block.BlockFromToEvent;
-import org.bukkit.event.block.BlockIgniteEvent;
 import org.bukkit.event.block.BlockPhysicsEvent;
-import org.bukkit.event.block.BlockPlaceEvent;
-import org.bukkit.event.entity.*;
-import org.bukkit.event.hanging.HangingBreakByEntityEvent;
-import org.bukkit.event.hanging.HangingBreakEvent;
-import org.bukkit.event.inventory.*;
-import org.bukkit.event.inventory.InventoryType.SlotType;
-import org.bukkit.event.player.*;
-import org.bukkit.event.world.ChunkLoadEvent;
-import org.bukkit.event.world.WorldSaveEvent;
-import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.BookMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
@@ -88,34 +99,30 @@ import org.bukkit.util.Vector;
 import org.mcstats.Metrics;
 import org.mcstats.Metrics.Graph;
 
-import com.elmakers.mine.bukkit.api.block.BoundingBox;
-import com.elmakers.mine.bukkit.api.block.UndoList;
-import com.elmakers.mine.bukkit.api.magic.Mage;
-import com.elmakers.mine.bukkit.api.magic.MageController;
-import com.elmakers.mine.bukkit.block.Automaton;
-import com.elmakers.mine.bukkit.block.BlockData;
-import com.elmakers.mine.bukkit.block.MaterialBrush;
-import com.elmakers.mine.bukkit.dynmap.DynmapController;
-import com.elmakers.mine.bukkit.effect.EffectPlayer;
-import com.elmakers.mine.bukkit.elementals.ElementalsController;
-import com.elmakers.mine.bukkit.essentials.MagicItemDb;
-import com.elmakers.mine.bukkit.essentials.Mailer;
-import com.elmakers.mine.bukkit.magic.command.MagicTabExecutor;
-import com.elmakers.mine.bukkit.magic.listener.AnvilController;
-import com.elmakers.mine.bukkit.magic.listener.CraftingController;
-import com.elmakers.mine.bukkit.magic.listener.EnchantingController;
-import com.elmakers.mine.bukkit.metrics.CategoryCastPlotter;
-import com.elmakers.mine.bukkit.metrics.DeltaPlotter;
-import com.elmakers.mine.bukkit.metrics.SpellCastPlotter;
-import com.elmakers.mine.bukkit.protection.FactionsManager;
-import com.elmakers.mine.bukkit.protection.WorldGuardManager;
-import com.elmakers.mine.bukkit.spell.SpellCategory;
-import com.elmakers.mine.bukkit.traders.TradersController;
-import com.elmakers.mine.bukkit.utilities.CompleteDragTask;
-import com.elmakers.mine.bukkit.utilities.DataStore;
-import com.elmakers.mine.bukkit.warp.WarpController;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.lang.ref.WeakReference;
+import java.lang.reflect.Field;
+import java.net.URL;
+import java.security.CodeSource;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.PriorityQueue;
+import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
-public class MagicController implements Listener, MageController {
+public class MagicController implements MageController {
     public MagicController(final MagicPlugin plugin) {
         this.plugin = plugin;
 
@@ -656,6 +663,12 @@ public class MagicController implements Listener, MageController {
         crafting = new CraftingController(this);
         enchanting = new EnchantingController(this);
         anvil = new AnvilController(this);
+        blockController = new BlockController(this);
+        hangingController = new HangingController(this);
+        entityController = new EntityController(this);
+        playerController = new PlayerController(this);
+        inventoryController = new InventoryController(this);
+        explosionController = new ExplosionController(this);
         messages = new Messages();
 
         File urlMapFile = getDataFile(URL_MAPS_FILE);
@@ -1144,10 +1157,15 @@ public class MagicController implements Listener, MageController {
 
     protected void registerListeners() {
         PluginManager pm = plugin.getServer().getPluginManager();
-        pm.registerEvents(this, plugin);
         pm.registerEvents(crafting, plugin);
         pm.registerEvents(enchanting, plugin);
         pm.registerEvents(anvil, plugin);
+        pm.registerEvents(blockController, plugin);
+        pm.registerEvents(hangingController, plugin);
+        pm.registerEvents(entityController, plugin);
+        pm.registerEvents(playerController, plugin);
+        pm.registerEvents(inventoryController, plugin);
+        pm.registerEvents(explosionController, plugin);
     }
 
     public Collection<Mage> getPending() {
@@ -1958,7 +1976,6 @@ public class MagicController implements Listener, MageController {
 		loadDefaultWands = properties.getBoolean("load_default_wands", loadDefaultWands);
         loadDefaultCrafting = properties.getBoolean("load_default_crafting", loadDefaultCrafting);
         loadDefaultEnchanting = properties.getBoolean("load_default_enchanting", loadDefaultEnchanting);
-        maxTNTPerChunk = properties.getInt("max_tnt_per_chunk", maxTNTPerChunk);
 		undoQueueDepth = properties.getInt("undo_depth", undoQueueDepth);
         workPerUpdate = properties.getInt("work_per_update", workPerUpdate);
         workFrequency = properties.getInt("work_frequency", workFrequency);
@@ -1968,22 +1985,16 @@ public class MagicController implements Listener, MageController {
 		undoMaxPersistSize = properties.getInt("undo_max_persist_size", undoMaxPersistSize);
 		commitOnQuit = properties.getBoolean("commit_on_quit", commitOnQuit);
         saveNonPlayerMages = properties.getBoolean("save_non_player_mages", saveNonPlayerMages);
-        undoOnWorldSave = properties.getBoolean("undo_on_world_save", undoOnWorldSave);
         defaultWandPath = properties.getString("default_wand_path", "");
         defaultWandMode = Wand.parseWandMode(properties.getString("default_wand_mode", ""), defaultWandMode);
         defaultBrushMode = Wand.parseWandMode(properties.getString("default_brush_mode", ""), defaultBrushMode);
         brushSelectSpell = properties.getString("brush_select_spell", brushSelectSpell);
 		showMessages = properties.getBoolean("show_messages", showMessages);
         showCastMessages = properties.getBoolean("show_cast_messages", showCastMessages);
-		clickCooldown = properties.getInt("click_cooldown", clickCooldown);
 		messageThrottle = properties.getInt("message_throttle", 0);
-		ageDroppedItems = properties.getInt("age_dropped_items", ageDroppedItems);
-		enableItemHacks = properties.getBoolean("enable_custom_item_hacks", enableItemHacks);
-        enableCreativeModeEjecting = properties.getBoolean("enable_creative_mode_ejecting", enableCreativeModeEjecting);
 		soundsEnabled = properties.getBoolean("sounds", soundsEnabled);
 		fillingEnabled = properties.getBoolean("fill_wands", fillingEnabled);
         maxFillLevel = properties.getInt("fill_wand_level", maxFillLevel);
-		keepWandsOnDeath = properties.getBoolean("keep_wands_on_death", keepWandsOnDeath);
 		welcomeWand = properties.getString("welcome_wand", "");
 		maxDamagePowerMultiplier = (float)properties.getDouble("max_power_damage_multiplier", maxDamagePowerMultiplier);
 		maxConstructionPowerMultiplier = (float)properties.getDouble("max_power_construction_multiplier", maxConstructionPowerMultiplier);
@@ -2152,7 +2163,15 @@ public class MagicController implements Listener, MageController {
             blockPhysicsManager.setVelocityScale(properties.getDouble("block_physics_velocity_scale", 1));
         }
 
-        preventMeleeDamage = properties.getBoolean("prevent_melee_damage", false);
+        // Configure sub-controllers
+        explosionController.setMaxTNTPerChunk(properties.getInt("max_tnt_per_chunk", 0));
+        blockController.setUndoOnWorldSave(properties.getBoolean("undo_on_world_save", false));
+        inventoryController.setEnableItemHacks(properties.getBoolean("enable_custom_item_hacks", false));
+        entityController.setPreventMeleeDamage(properties.getBoolean("prevent_melee_damage", false));
+        entityController.setKeepWandsOnDeath(properties.getBoolean("keep_wands_on_death", true));
+        entityController.setAgeDroppedItems(properties.getInt("age_dropped_items", 0));
+        playerController.setClickCooldown(properties.getInt("click_cooldown", 0));
+        playerController.setCreativeModeEjecting(properties.getBoolean("enable_creative_mode_ejecting", false));
 
 		// Set up other systems
 		EffectPlayer.SOUNDS_ENABLED = soundsEnabled;
@@ -2287,295 +2306,19 @@ public class MagicController implements Listener, MageController {
 		return hasPermission((Player)sender, pNode, defaultValue);
 	}
 
-	/*
-	 * Listeners / callbacks
-	 */
-
-    @EventHandler
-    public void onWorldSaveEvent(WorldSaveEvent event) {
-        World world = event.getWorld();
-        Collection<? extends Player> players = plugin.getServer().getOnlinePlayers();
-        for (Player player : players) {
-            if (world.equals(player.getWorld()) && isMage(player)) {
-                Mage mage = getMage(player);
-                saveMage(mage, true);
-
-                if (undoOnWorldSave) {
-                    com.elmakers.mine.bukkit.api.block.UndoQueue queue = mage.getUndoQueue();
-                    if (queue != null) {
-                        int undone = queue.undoScheduled();
-                        if (undone  > 0) {
-                            info("Undid " + undone + " spells for " + player.getName() + "prior to save of world " + world.getName());
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    @EventHandler
-    public void onProjectileHit(ProjectileHitEvent event) {
-        final Projectile projectile = event.getEntity();
-        // This is delayed so that the EntityDamage version takes precedence
-        if (ActionHandler.hasActions(projectile) || ActionHandler.hasEffects(projectile))
-        {
-            Bukkit.getScheduler().scheduleSyncDelayedTask(getPlugin(), new Runnable() {
-                @Override
-                public void run() {
-                    ActionHandler.runActions(projectile, projectile.getLocation(), null);
-                    ActionHandler.runEffects(projectile);
-                }
-            }, 1L);
-        }
-    }
-
-	@EventHandler
-	public void onEntityChangeBlockEvent(EntityChangeBlockEvent event) {
-		Entity entity = event.getEntity();
-
-		if (entity instanceof FallingBlock) {
-            ActionHandler.runActions(entity, entity.getLocation(), null);
-            ActionHandler.runEffects(entity);
-            UndoList blockList = com.elmakers.mine.bukkit.block.UndoList.getUndoList(entity);
-			if (blockList != null) {
-                com.elmakers.mine.bukkit.api.action.CastContext context = blockList.getContext();
-                if (context != null && !context.hasBuildPermission(entity.getLocation().getBlock())) {
-                    event.setCancelled(true);
-                } else {
-                    blockList.convert(entity, event.getBlock());
-                }
-			} else {
-				registerFallingBlock(entity, event.getBlock());
-			}
-		}
-	}
-
-    @EventHandler
-    public void onEntityCombust(EntityCombustEvent event)
-    {
-        Entity entity = event.getEntity();
-        Mage apiMage = getRegisteredMage(entity);
-        if (apiMage != null) {
-            if (apiMage instanceof com.elmakers.mine.bukkit.magic.Mage) {
-                com.elmakers.mine.bukkit.magic.Mage mage = (com.elmakers.mine.bukkit.magic.Mage) apiMage;
-                mage.onPlayerCombust(event);
-            }
-        }
-
-        if (!event.isCancelled())
-        {
-            UndoList undoList = getPendingUndo(entity.getLocation());
-            if (undoList != null)
-            {
-                undoList.modify(entity);
-            }
-        }
-    }
-
-    @EventHandler
-    public void onBlockFromTo(BlockFromToEvent event) {
-        Block targetBlock = event.getToBlock();
-        Block sourceBlock = event.getBlock();
-        UndoList undoList = getPendingUndo(sourceBlock.getLocation());
-        if (undoList != null)
-        {
-            undoList.add(targetBlock);
-        }
-        else
-        {
-            undoList = getPendingUndo(targetBlock.getLocation());
-            if (undoList != null)
-            {
-                undoList.add(targetBlock);
-            }
-        }
-    }
-
-    @EventHandler
-    public void onBlockBurn(BlockBurnEvent event) {
-        Block targetBlock = event.getBlock();
-        UndoList undoList = getPendingUndo(targetBlock.getLocation());
-        if (undoList != null)
-        {
-            undoList.add(targetBlock);
-        }
-    }
-
-    @EventHandler
-    public void onBlockIgnite(BlockIgniteEvent event) {
-        BlockIgniteEvent.IgniteCause cause = event.getCause();
-        if (cause == BlockIgniteEvent.IgniteCause.ENDER_CRYSTAL || cause == BlockIgniteEvent.IgniteCause.FLINT_AND_STEEL)
-        {
-            return;
-        }
-
-        Entity entity = event.getIgnitingEntity();
-        UndoList entityList = getEntityUndo(entity);
-        if (entityList != null)
-        {
-            entityList.add(event.getBlock());
-            return;
-        }
-
-        Block ignitingBlock = event.getIgnitingBlock();
-        Block targetBlock = event.getBlock();
-        if (ignitingBlock != null)
-        {
-            UndoList undoList = getPendingUndo(ignitingBlock.getLocation());
-            if (undoList != null)
-            {
-                undoList.add(event.getBlock());
-                return;
-            }
-        }
-
-        UndoList undoList = getPendingUndo(targetBlock.getLocation());
-        if (undoList != null)
-        {
-            undoList.add(targetBlock);
-        }
-    }
-
-    protected UndoList getPendingUndo(Location location)
+    public UndoList getPendingUndo(Location location)
     {
         return com.elmakers.mine.bukkit.block.UndoList.getUndoList(location);
     }
 	
-	protected void registerFallingBlock(Entity fallingBlock, Block block) {
+	public void registerFallingBlock(Entity fallingBlock, Block block) {
         UndoList undoList = getPendingUndo(fallingBlock.getLocation());
         if (undoList != null) {
             undoList.fall(fallingBlock, block);
         }
 	}
 	
-	@EventHandler(ignoreCancelled = true)
-	public void onInventoryDrag(InventoryDragEvent event) {
-        Mage mage = getMage(event.getWhoClicked());
-        GUIAction activeGUI = mage == null ? null : mage.getActiveGUI();
-        if (activeGUI != null) {
-            activeGUI.dragged(event);
-            return;
-        }
-		if (!enableItemHacks) return;
-		
-		// this is a huge hack! :\
-		// I apologize for any weird behavior this causes.
-		// Bukkit, unfortunately, will blow away NBT data for anything you drag
-		// Which will nuke a wand or spell.
-		// To make matters worse, Bukkit passes a copy of the item in the event, so we can't 
-		// even check for metadata and only cancel the event if it involves one of our special items.
-		// The best I can do is look for metadata at all, since Bukkit will retain the name and lore.
-		
-		// I have now decided to copy over the CB default handler for this, and cancel the event.
-		// The only change I have made is that *real* ItemStack copies are made, instead of shallow Bukkit ones.
-		ItemStack oldStack = event.getOldCursor();
-		HumanEntity entity = event.getWhoClicked();
-		if (oldStack != null && oldStack.hasItemMeta() && entity instanceof Player) {
-			// Only do this if we're only dragging one item, since I don't 
-			// really know what happens or how you would drag more than one.
-			Map<Integer, ItemStack> draggedSlots = event.getNewItems();
-			if (draggedSlots.size() != 1) return;
-			
-			event.setCancelled(true);
-			
-			// Cancelling the event will put the item back on the cursor,
-			// and skip updating the inventory.
-			
-			// So we will wait one tick and then fix this up using the original item.
-			InventoryView view = event.getView();
-			for (Integer dslot : draggedSlots.keySet()) {
-				CompleteDragTask completeDrag = new CompleteDragTask((Player)entity, view, dslot);
-				completeDrag.runTaskLater(plugin, 1);
-            }
-			
-			return;
-		}
-	}
-
-    @EventHandler
-    public void onBlockDamage(BlockDamageEvent event) {
-        Player damager = event.getPlayer();
-        Mage damagerMage = getRegisteredMage(damager);
-        if (damagerMage != null) {
-            com.elmakers.mine.bukkit.api.wand.Wand activeWand = damagerMage.getActiveWand();
-            if (activeWand != null) {
-                activeWand.playEffects("hit_block");
-            }
-        }
-    }
-	
-	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
-	public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
-        Entity entity = event.getEntity();
-
-        if (entity instanceof Projectile || entity instanceof TNTPrimed) return;
-
-        Entity damager = event.getDamager();
-        UndoList undoList = getEntityUndo(damager);
-        if (undoList != null) {
-            // Prevent dropping items from frames,
-            if (event.getCause() != EntityDamageEvent.DamageCause.ENTITY_ATTACK || undoList.isScheduled()) {
-                undoList.damage(entity, event.getDamage());
-                if (!entity.isValid()) {
-                    event.setCancelled(true);
-                }
-            } else {
-                undoList.modify(entity);
-            }
-        }
-    }
-
-    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
-    public void onEntityPreDamageByEntity(EntityDamageByEntityEvent event) {
-        Entity entity = event.getEntity();
-        if (entity instanceof Projectile || entity instanceof TNTPrimed) return;
-        Mage entityMage = getRegisteredMage(entity);
-        if (entityMage != null) {
-            if (entity instanceof Player) {
-                Player damaged = (Player)entity;
-                if (damaged.isBlocking()) {
-                    com.elmakers.mine.bukkit.api.wand.Wand damagedWand = entityMage.getActiveWand();
-                    if (damagedWand != null) {
-                        damagedWand.playEffects("hit_blocked");
-                    }
-                }
-            }
-            if (entityMage.isSuperProtected()) {
-                event.setCancelled(true);
-                return;
-            }
-        }
-        Entity damager = event.getDamager();
-        if (damager instanceof Player) {
-            Mage damagerMage = getRegisteredMage(damager);
-            com.elmakers.mine.bukkit.api.wand.Wand activeWand = null;
-            if (damagerMage != null) {
-                activeWand = damagerMage.getActiveWand();
-                if (activeWand != null) {
-                    activeWand.playEffects("hit_entity");
-                }
-            }
-            boolean hasWand = activeWand != null;
-            Player player = (Player) damager;
-            ItemStack itemInHand = player.getItemInHand();
-            boolean isMeleeWeapon = itemInHand != null && meleeMaterials.contains(itemInHand.getType());
-            boolean isMelee = event.getCause() == EntityDamageEvent.DamageCause.ENTITY_ATTACK && !CompatibilityUtils.isDamaging;
-            if (isMelee && hasWand && !isMeleeWeapon) {
-                event.setCancelled(true);
-                CompatibilityUtils.isDamaging = true;
-                activeWand.cast();
-                CompatibilityUtils.isDamaging = false;
-            }
-            else if (!hasWand && preventMeleeDamage && isMelee && !isMeleeWeapon) {
-                event.setCancelled(true);
-            }
-        } else {
-            ActionHandler.targetEffects(damager, entity);
-            ActionHandler.runActions(damager, entity.getLocation(), entity);
-        }
-	}
-	
-	protected UndoList getEntityUndo(Entity entity) {
+	public UndoList getEntityUndo(Entity entity) {
 		UndoList blockList = null;
 		if (entity == null) return null;
         Mage mage = getRegisteredMage(entity);
@@ -2595,107 +2338,8 @@ public class MagicController implements Listener, MageController {
 		
 		return blockList;
 	}
-
-    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-    public void onHangingBreak(HangingBreakEvent event) {
-        final Hanging entity = event.getEntity();
-        if (!entity.isValid()) return;
-        try {
-            final BlockFace attachedFace = entity.getAttachedFace();
-            Location location = entity.getLocation();
-            location = location.getBlock().getRelative(attachedFace).getLocation();
-            UndoList undoList = getPendingUndo(location);
-            if (undoList != null) {
-                event.setCancelled(true);
-                undoList.damage(entity, 0);
-            }
-        } catch (Exception ex) {
-            getLogger().log(Level.WARNING, "Failed to handle HangingBreakEvent", ex);
-        }
-    }
-
-    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-    public void onHangingBreakByEntity(HangingBreakByEntityEvent event) {
-        Entity breakingEntity = event.getRemover();
-        if (breakingEntity == null) return;
-
-        Hanging entity = event.getEntity();
-        UndoList undoList = getEntityUndo(breakingEntity);
-        if (undoList != null)
-        {
-            undoList.damage(entity, 0);
-
-            // Prevent item drops, but still remove it
-            // Else it'll probably just break again.
-            event.setCancelled(true);
-        }
-    }
-
-    @EventHandler
-    public void onExplosionPrime(ExplosionPrimeEvent event) {
-        Entity explodingEntity = event.getEntity();
-        ActionHandler.runActions(explodingEntity, explodingEntity.getLocation(), null);
-        ActionHandler.runEffects(explodingEntity);
-    }
-
-    @EventHandler(priority = EventPriority.LOWEST)
-    public void onEntityExplode(EntityExplodeEvent event) {
-        Entity explodingEntity = event.getEntity();
-        if (explodingEntity == null) return;
-
-        UndoList blockList = getEntityUndo(explodingEntity);
-        boolean cancel = event.isCancelled();
-        cancel = cancel || explodingEntity.hasMetadata("cancel_explosion");
-        if (blockList != null)
-        {
-            com.elmakers.mine.bukkit.api.action.CastContext context = blockList.getContext();
-            if (!cancel && context != null && !context.hasBreakPermission(explodingEntity.getLocation().getBlock())) {
-                cancel = true;
-            }
-        }
-        if (cancel) {
-            event.setCancelled(true);
-        }
-        else if (maxTNTPerChunk > 0 && explodingEntity.getType() == EntityType.PRIMED_TNT) {
-            Chunk chunk = explodingEntity.getLocation().getChunk();
-            if (chunk == null || !chunk.isLoaded()) return;
-
-            int tntCount = 0;
-            Entity[] entities = chunk.getEntities();
-            for (Entity entity : entities) {
-                if (entity != null && entity.getType() == EntityType.PRIMED_TNT) {
-                    tntCount++;
-                }
-            }
-            if (tntCount > maxTNTPerChunk) {
-                event.setCancelled(true);
-            } else {
-                if (blockList != null) {
-                    blockList.explode(explodingEntity, event.blockList());
-                }
-            }
-        }
-        else if (blockList != null) {
-            blockList.explode(explodingEntity, event.blockList());
-        }
-    }
 	
-	@EventHandler(priority = EventPriority.HIGHEST)
-	public void onEntityFinalizeExplode(EntityExplodeEvent event) {
-		Entity explodingEntity = event.getEntity();
-		if (explodingEntity == null) return;
-
-		UndoList blockList = getEntityUndo(explodingEntity);
-        if (blockList == null) return;
-
-		if (event.isCancelled()) {
-			blockList.cancelExplosion(explodingEntity);
-		} else {
-            blockList.finalizeExplosion(explodingEntity, event.blockList());
-		}
-	}
-	
-	protected void onPlayerActivateIcon(Mage mage, Wand activeWand, ItemStack icon)
+	public void onPlayerActivateIcon(Mage mage, Wand activeWand, ItemStack icon)
 	{
 		// Check for spell or material selection
 		if (icon != null && icon.getType() != Material.AIR) {
@@ -2710,294 +2354,6 @@ public class MagicController implements Listener, MageController {
 		}
         mage.getPlayer().updateInventory();
 	}
-	
-	@EventHandler
-	public void onPlayerEquip(PlayerItemHeldEvent event)
-	{
-        if (!loaded) return;
-
-		Player player = event.getPlayer();
-		PlayerInventory inventory = player.getInventory();
-		ItemStack next = inventory.getItem(event.getNewSlot());
-		ItemStack previous = inventory.getItem(event.getPreviousSlot());
-
-        if (NMSUtils.isTemporary(next)) {
-            inventory.setItem(event.getNewSlot(), null);
-            return;
-        }
-
-		Mage apiMage = getMage(player);
-        if (!(apiMage instanceof com.elmakers.mine.bukkit.magic.Mage)) return;
-        com.elmakers.mine.bukkit.magic.Mage mage = (com.elmakers.mine.bukkit.magic.Mage)apiMage;
-
-        Wand activeWand = mage.getActiveWand();
-        boolean isSkill = Wand.isSkill(next);
-        boolean isQuickCast = activeWand != null && activeWand.isQuickCast() && activeWand.isInventoryOpen();
-        if (isSkill || isQuickCast)
-        {
-            Spell spell = mage.getSpell(Wand.getSpell(next));
-            if (spell != null) {
-                if (activeWand != null) {
-                    activeWand.cast(spell);
-                } else {
-                    spell.cast();
-                }
-            }
-            event.setCancelled(true);
-            return;
-        }
-		
-		// Check for active Wand
-		if (activeWand != null && Wand.isWand(previous)) {
-			// If the wand inventory is open, we're going to let them select a spell or material
-			if (activeWand.isInventoryOpen()) {
-				// Check for spell or material selection
-                if (!Wand.isWand(next)) {
-                    onPlayerActivateIcon(mage, activeWand, next);
-                }
-				
-				event.setCancelled(true);
-				return;
-			} else {
-				// Otherwise, we're switching away from the wand, so deactivate it.
-				activeWand.deactivate();
-			}
-		}
-		
-		// If we're switching to a wand, activate it.
-		if (next != null && Wand.isWand(next)) {
-			Wand newWand = new Wand(this, next);
-			newWand.activate(mage, next, event.getNewSlot());
-		}
-		
-		// Check for map selection if no wand is active
-		activeWand = mage.getActiveWand();
-		if (activeWand == null && next != null) {
-			if (next.getType() == Material.MAP) {
-				mage.setLastHeldMapId(next.getDurability());
-			}
-		}
-	}
-
-	@EventHandler
-	public void onPlayerDropItem(PlayerDropItemEvent event)
-	{
-		final Player player = event.getPlayer();
-        Mage apiMage = getMage(player);
-        if (!(apiMage instanceof com.elmakers.mine.bukkit.magic.Mage)) return;
-        final com.elmakers.mine.bukkit.magic.Mage mage = (com.elmakers.mine.bukkit.magic.Mage)apiMage;
-
-        // Catch lag-related glitches dropping items from GUIs
-        if (mage.getActiveGUI() != null) {
-            event.setCancelled(true);
-            return;
-        }
-
-        final Wand activeWand = mage.getActiveWand();
-        ItemStack droppedItem = event.getItemDrop().getItemStack();
-
-        boolean cancelEvent = false;
-        if (Wand.isWand(droppedItem) && activeWand != null && activeWand.isUndroppable()) {
-            // Postpone cycling until after this event unwinds
-            Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
-                @Override
-                public void run() {
-                    if (activeWand.isDropToggle()) {
-                        onToggleInventory(mage, activeWand);
-                    } else if (activeWand.getHotbarCount() > 1) {
-                        activeWand.cycleHotbar(1);
-                    } else if (activeWand.isInventoryOpen()) {
-                        activeWand.closeInventory();
-                    }
-               }
-            });
-            cancelEvent = true;
-        } else if (activeWand != null) {
-			ItemStack inHand = event.getPlayer().getInventory().getItemInHand();
-			// Kind of a hack- check if we just dropped a wand, and now have an empty hand
-			if (Wand.isWand(droppedItem) && (inHand == null || inHand.getType() == Material.AIR)) {
-				activeWand.deactivate();
-				// Clear after inventory restore (potentially with deactivate), since that will put the wand back
-				if (Wand.hasActiveWand(player)) {
-					player.setItemInHand(new ItemStack(Material.AIR, 1));
-				}
-			} else if (activeWand.isInventoryOpen()) {
-                if (!spellDroppingEnabled) {
-                    cancelEvent = true;
-                } else {
-                    // The item is already removed from the wand's inventory, but that should be ok
-                    removeItemFromWand(activeWand, droppedItem);
-                }
-			}
-		}
-
-        if (cancelEvent) {
-            event.setCancelled(true);
-        }
-	}
-
-	@EventHandler(priority = EventPriority.LOWEST)
-	public void onEntityDeath(EntityDeathEvent event)
-	{
-        Entity entity = event.getEntity();
-        if (entity.hasMetadata("nodrops")) {
-            event.setDroppedExp(0);
-            event.getDrops().clear();
-        }
-
-        Mage apiMage = getRegisteredMage(entity);
-        if (apiMage == null) return;
-
-        if (!(apiMage instanceof com.elmakers.mine.bukkit.magic.Mage)) return;
-        com.elmakers.mine.bukkit.magic.Mage mage = (com.elmakers.mine.bukkit.magic.Mage)apiMage;
-
-        mage.onPlayerDeath(event);
-        mage.deactivateAllSpells();
-
-        if (!(entity instanceof Player)) {
-            return;
-        }
-        final Player player = (Player)entity;
-        String rule = entity.getWorld().getGameRuleValue("keepInventory");
-		if (rule.equals("true")) return;
-
-        List<ItemStack> drops = event.getDrops();
-		Wand wand = mage.getActiveWand();
-		if (wand != null) {
-			// Retrieve stored inventory before deactivating the wand
-			if (mage.hasStoredInventory()) {
-                // Remove the wand inventory from drops
-				drops.removeAll(Arrays.asList(player.getInventory().getContents()));
-
-				// Deactivate the wand.
-				wand.deactivate();
-
-	            // Add restored inventory back to drops
-                ItemStack[] stored = player.getInventory().getContents();
-				for (ItemStack stack : stored) {
-					if (stack != null) {
-						drops.add(stack);
-					}
-				}
-			} else {
-				wand.deactivate();
-			}
-		}
-
-        List<ItemStack> removeDrops = new ArrayList<ItemStack>();
-        PlayerInventory inventory = player.getInventory();
-        ItemStack[] contents = inventory.getContents();
-		for (int index = 0; index < contents.length; index++)
-		{
-            ItemStack itemStack = contents[index];
-            if (itemStack == null || itemStack.getType() == Material.AIR) continue;
-            if (NMSUtils.isTemporary(itemStack) || Wand.isSkill(itemStack)) {
-                removeDrops.add(itemStack);
-                continue;
-            }
-			boolean keepItem = false;
-			if (Wand.isWand(itemStack)) {
-				keepItem = keepWandsOnDeath;	
-				if (!keepItem) {
-					Wand testWand = new Wand(this, itemStack);
-					keepItem = testWand.keepOnDeath();
-				}
-			}
-			if (keepItem)
-			{
-				mage.addToRespawnInventory(index, itemStack);
-                removeDrops.add(itemStack);
-			}
-		}
-        ItemStack[] armor = player.getInventory().getArmorContents();
-        for (int index = 0; index < armor.length; index++)
-        {
-            ItemStack itemStack = armor[index];
-            if (itemStack == null || itemStack.getType() == Material.AIR) continue;
-            if (NMSUtils.isTemporary(itemStack) || Wand.isSkill(itemStack)) {
-                removeDrops.add(itemStack);
-                continue;
-            }
-            boolean keepItem = false;
-            if (Wand.isWand(itemStack)) {
-                keepItem = keepWandsOnDeath;
-                if (!keepItem) {
-                    Wand testWand = new Wand(this, itemStack);
-                    keepItem = testWand.keepOnDeath();
-                }
-            }
-            if (keepItem)
-            {
-                mage.addToRespawnArmor(index, itemStack);
-                removeDrops.add(itemStack);
-            }
-        }
-
-        drops.removeAll(removeDrops);
-	}
-
-    @EventHandler(priority = EventPriority.HIGH)
-    public void onPlayerRespawn(PlayerRespawnEvent event) {
-        Mage apiMage = getMage(event.getPlayer());
-        if (!(apiMage instanceof com.elmakers.mine.bukkit.magic.Mage)) return;
-        com.elmakers.mine.bukkit.magic.Mage mage = (com.elmakers.mine.bukkit.magic.Mage)apiMage;
-        mage.restoreRespawnInventories();
-    }
-	
-	@EventHandler
-	public void onItemDespawn(ItemDespawnEvent event)
-	{
-        Item entity = event.getEntity();
-        ActionHandler.runEffects(entity);
-        ActionHandler.runActions(entity, entity.getLocation(), null);
-		if (Wand.isWand(event.getEntity().getItemStack()))
-		{
-			Wand wand = new Wand(this, entity.getItemStack());
-			if (wand.isIndestructible()) {
-				event.getEntity().setTicksLived(1);
-				event.setCancelled(true);
-			} else if (dynmapShowWands) {
-				removeLostWand(wand.getLostId());
-			}
-		}
-	}
-	
-	@EventHandler(priority=EventPriority.LOWEST)
-	public void onItemSpawn(ItemSpawnEvent event)
-	{
-        if (disableItemSpawn)
-        {
-            event.setCancelled(true);
-            return;
-        }
-        ItemStack spawnedItem = event.getEntity().getItemStack();
-        if (Wand.isSkill(spawnedItem))
-        {
-            event.setCancelled(true);
-            return;
-        }
-		if (Wand.isWand(spawnedItem))
-		{
-			Wand wand = new Wand(this, event.getEntity().getItemStack());
-			if (wand.isIndestructible()) {
-				CompatibilityUtils.setInvulnerable(event.getEntity());
-
-				// Don't show non-indestructible wands on dynmap
-				addLostWand(wand, event.getEntity().getLocation());		
-				Location dropLocation = event.getLocation();
-				info("Wand " + wand.getName() + ", id " + wand.getLostId() + " spawned at " + dropLocation.getBlockX() + " " + dropLocation.getBlockY() + " " + dropLocation.getBlockZ());
-			}
-		} else  {
-            // Don't do this, no way to differentiate between a dropped item from a broken block
-            // versus a dead player
-			// registerEntityForUndo(event.getEntity());
-			if (ageDroppedItems > 0) {
-				int ticks = ageDroppedItems * 20 / 1000;
-				Item item = event.getEntity();
-				CompatibilityUtils.ageItem(item, ticks);
-			}
-		}
-	}
 
 	protected void registerEntityForUndo(Entity entity) {
         UndoList lastUndo = getPendingUndo(entity.getLocation());
@@ -3008,231 +2364,8 @@ public class MagicController implements Listener, MageController {
             }
         }
 	}
-	
-	@EventHandler
-	public void onEntityDamage(EntityDamageEvent event)
-	{
-		try {
-			Entity entity = event.getEntity();
 
-            Mage apiMage = getRegisteredMage(event.getEntity());
-			if (apiMage != null)
-			{
-                if (!(apiMage instanceof com.elmakers.mine.bukkit.magic.Mage)) return;
-                com.elmakers.mine.bukkit.magic.Mage mage = (com.elmakers.mine.bukkit.magic.Mage) apiMage;
-
-                mage.onPlayerDamage(event);
-			}
-            else
-            {
-                Entity passenger = entity.getPassenger();
-                Mage apiMountMage = getRegisteredMage(passenger);
-                if (apiMountMage != null) {
-                    if (!(apiMountMage instanceof com.elmakers.mine.bukkit.magic.Mage)) return;
-                    com.elmakers.mine.bukkit.magic.Mage mage = (com.elmakers.mine.bukkit.magic.Mage)apiMountMage;
-                    mage.onPlayerDamage(event);
-                }
-            }
-	        if (entity instanceof Item)
-	        {
-	   		 	Item item = (Item)entity;
-	   		 	ItemStack itemStack = item.getItemStack();
-	            if (Wand.isWand(itemStack))
-	            {
-                	Wand wand = new Wand(this, item.getItemStack());
-	            	if (wand.isIndestructible()) {
-	                     event.setCancelled(true);
-	            	} else if (event.getDamage() >= itemStack.getDurability()) {
-	                	if (removeLostWand(wand.getLostId())) {
-	                		info("Wand " + wand.getName() + ", id " + wand.getLostId() + " destroyed");
-	                	}
-	                }
-				}  
-	        }
-		} catch (Exception ex) {
-			// TODO: Trying to track down a stacktrace-less NPE that seemed to come from here:
-			// [06:22:34] [Server thread/ERROR]: Could not pass event EntityDamageEvent to Magic v2.9.0
-			// Caused by: java.lang.NullPointerException
-			ex.printStackTrace();
-		}
-	}
-	
-	@EventHandler(priority=EventPriority.LOW)
-    public void onPlayerInteractEntity(PlayerInteractEntityEvent event) {
-        if (event.isCancelled())
-            return;
-
-        Player player = event.getPlayer();
-
-        Mage apiMage = getMage(player);
-        if (!(apiMage instanceof com.elmakers.mine.bukkit.magic.Mage)) return;
-        com.elmakers.mine.bukkit.magic.Mage mage = (com.elmakers.mine.bukkit.magic.Mage)apiMage;
-        Wand wand = mage.getActiveWand();
-
-        // Check for a player placing a wand in an item frame
-        if (wand != null && event.getRightClicked() instanceof ItemFrame) {
-            if (wand.isUndroppable()) {
-                event.setCancelled(true);
-                return;
-            } else {
-                wand.deactivate();
-            }
-        }
-
-        // Check for clicking on a Citizens NPC, in case
-        // this hasn't been cancelled yet
-        if (isNPC(event.getRightClicked())) {
-        	if (wand != null) {
-        		wand.closeInventory();
-        	}
-        	
-        	// Don't let it re-open right away
-        	mage.checkLastClick(0);
-        } else {
-            // Don't allow interacting while holding spells, brushes or upgrades
-            ItemStack itemInHand = player.getItemInHand();
-            if (Wand.isSpell(itemInHand) || Wand.isBrush(itemInHand) || Wand.isUpgrade(itemInHand)) {
-                event.setCancelled(true);
-                return;
-            }
-        }
-    }
-
-	@EventHandler(priority=EventPriority.HIGHEST)
-	public void onPlayerInteract(PlayerInteractEvent event)
-	{
-        if (!loaded) return;
-		// Note that an interact on air event will arrive pre-cancelled
-		// So this is kind of useless. :\
-		//if (event.isCancelled()) return;
-		
-		// Block block = event.getClickedBlock();
-		// getLogger().info("INTERACT: " + event.getAction() + " on " + (block == null ? "NOTHING" : block.getType()));
-		
-		Player player = event.getPlayer();
-
-        // Don't allow interacting while holding spells, brushes or upgrades
-        ItemStack itemInHand = player.getItemInHand();
-        if (Wand.isSpell(itemInHand) || Wand.isBrush(itemInHand) || Wand.isUpgrade(itemInHand)) {
-            event.setCancelled(true);
-            return;
-        }
-
-        Mage apiMage = getMage(player);
-        if (!(apiMage instanceof com.elmakers.mine.bukkit.magic.Mage)) return;
-        com.elmakers.mine.bukkit.magic.Mage mage = (com.elmakers.mine.bukkit.magic.Mage)apiMage;
-
-		Wand wand = mage.getActiveWand();
-        boolean hasWand = Wand.hasActiveWand(player);
-
-        // Reset indestructible wand durability
-        if (wand != null && wand.isIndestructible())
-        {
-            ItemStack item = wand.getItem();
-            if (item.getType().getMaxDurability() > 0)
-            {
-                wand.getItem().setDurability((short)0);
-            }
-        }
-
-        // Safety check for a wand getting removed from the player's inventory
-        if ((itemInHand == null || itemInHand.getType() == Material.AIR) && wand != null)
-        {
-            getLogger().warning("Mage had an active wand, but player is not holding anything");
-            wand.deactivate();
-            return;
-        }
-
-        // Hacky check for immediately activating a wand if for some reason it was
-		// not active
-		if (wand == null && hasWand) {
-            if (mage.isLoading()) {
-                event.setCancelled(true);
-                return;
-            }
-			wand = Wand.getActiveWand(this, player);
-			wand.activate(mage);
-			getLogger().warning("Player was holding an inactive wand on interact- activating.");
-		}
-
-        // Check for wearing via right-click
-        Action action = event.getAction();
-        if (itemInHand != null
-                && (action == Action.RIGHT_CLICK_AIR || action == Action.RIGHT_CLICK_BLOCK)
-                && wearableMaterials.contains(itemInHand.getType()))
-        {
-            if (wand != null)
-            {
-                wand.deactivate();
-            }
-            onArmorUpdated(mage);
-            return;
-        }
-
-		if (wand == null) return;
-
-		if (!hasWandPermission(player))
-		{
-			// Check for self-destruct
-			if (hasPermission(player, "Magic.wand.destruct", false)) {
-				wand.deactivate();
-				PlayerInventory inventory = player.getInventory();
-				ItemStack[] items = inventory.getContents();
-				for (int i = 0; i < items.length; i++) {
-					ItemStack item = items[i];
-					if (Wand.isWand(item
-                    ) || Wand.isSpell(item) || Wand.isBrush(item) || Wand.isUpgrade(item)) {
-						items[i] = null;
-					}
-				}
-				inventory.setContents(items);
-				mage.sendMessage(messages.get("wand.self_destruct"));
-			}
-			return;
-		}
-
-        if (!mage.checkLastClick(clickCooldown)) {
-            event.setCancelled(true);
-            return;
-        }
-
-        boolean isSwing = action == Action.LEFT_CLICK_AIR || action == Action.LEFT_CLICK_BLOCK;
-
-        if (isSwing) {
-            wand.playEffects("swing");
-        }
-
-        if (isSwing && !wand.isUpgrade() && !wand.isQuickCast())
-		{
-            if (!hasWandPermission(player, wand))
-            {
-                mage.sendMessage(messages.get("wand.no_permission").replace("$wand", wand.getName()));
-                return;
-            }
-			wand.cast();
-			event.setCancelled(true);
-			return;
-		}
-
-		boolean toggleInventory = (action == Action.RIGHT_CLICK_AIR);
-		if (!toggleInventory && action == Action.RIGHT_CLICK_BLOCK) {
-			Material material = event.getClickedBlock().getType();
-			toggleInventory = !interactibleMaterials.contains(material);
-
-			// This is to prevent Essentials signs from giving you an item in your wand inventory.
-			if (material== Material.SIGN_POST || material == Material.WALL_SIGN) {
-				wand.closeInventory();
-			}
-		}
-		if (toggleInventory && !wand.isDropToggle())
-		{
-            onToggleInventory(mage, wand);
-            event.setCancelled(true);
-		}
-	}
-
-    protected void onToggleInventory(com.elmakers.mine.bukkit.magic.Mage mage, Wand wand) {
-
+    public void onToggleInventory(com.elmakers.mine.bukkit.magic.Mage mage, Wand wand) {
         // Check for spell cancel first, e.g. fill or force
         if (!mage.cancel()) {
             Player player = mage.getPlayer();
@@ -3284,13 +2417,6 @@ public class MagicController implements Listener, MageController {
         }
     }
 
-	@EventHandler
-	public void onPlayerJoin(PlayerJoinEvent event)
-	{
-		// Automatically re-activate mages.
-        getMage(event.getPlayer());
-	}
-
 	@Override
 	public void giveItemToPlayer(Player player, ItemStack itemStack) {
         // Check for wand inventory
@@ -3300,49 +2426,7 @@ public class MagicController implements Listener, MageController {
         mage.giveItem(itemStack);
 	}
 
-	@EventHandler
-	public void onPlayerExpChange(PlayerExpChangeEvent event)
-	{
-		// We don't care about exp loss events
-		if (event.getAmount() <= 0) return;
-
-		Player player = event.getPlayer();
-        Mage apiMage = getMage(player);
-
-        if (!(apiMage instanceof com.elmakers.mine.bukkit.magic.Mage)) return;
-        com.elmakers.mine.bukkit.magic.Mage mage = (com.elmakers.mine.bukkit.magic.Mage)apiMage;
-
-        Wand wand = mage.getActiveWand();
-		if (wand != null) {
-			wand.onPlayerExpChange(event);
-		}
-	}
-
-    @EventHandler
-    public void onPlayerKick(PlayerKickEvent event)
-    {
-        handlePlayerQuitEvent(event);
-    }
-
-	@EventHandler
-	public void onPlayerQuit(PlayerQuitEvent event)
-    {
-        handlePlayerQuitEvent(event);
-    }
-
-    protected void handlePlayerQuitEvent(PlayerEvent event) {
-        Player player = event.getPlayer();
-        Mage mage = getRegisteredMage(player);
-        if (mage != null) {
-            if (mage instanceof com.elmakers.mine.bukkit.magic.Mage)
-            {
-                ((com.elmakers.mine.bukkit.magic.Mage)mage).onPlayerQuit(event);
-            }
-            playerQuit(mage);
-        }
-    }
-
-    protected void playerQuit(Mage mage) {
+    public void playerQuit(Mage mage) {
         playerQuit(mage, null);
     }
 
@@ -3426,29 +2510,7 @@ public class MagicController implements Listener, MageController {
         }
     }
 
-	@EventHandler
-	public void onInventoryOpen(InventoryOpenEvent event) {
-		Player player = (Player)event.getPlayer();
-        Mage apiMage = getMage(player);
-
-        if (!(apiMage instanceof com.elmakers.mine.bukkit.magic.Mage)) return;
-        com.elmakers.mine.bukkit.magic.Mage mage = (com.elmakers.mine.bukkit.magic.Mage)apiMage;
-
-        Wand wand = mage.getActiveWand();
-        GUIAction gui = mage.getActiveGUI();
-		if (wand != null && gui == null) {
-			// NOTE: The type will never actually be CRAFTING, at least for now.
-			// But we can hope for server-side player inventory open notification one day, right?
-			// Anyway, check for opening another inventory and close the wand.
-			if (event.getView().getType() != InventoryType.CRAFTING) {
-				if (wand.getMode() == WandMode.INVENTORY || !wand.isInventoryOpen()) {
-					wand.deactivate();
-				}
-			}
-		}
-	}
-
-	protected ItemStack removeItemFromWand(Wand wand, ItemStack droppedItem) {
+	public ItemStack removeItemFromWand(Wand wand, ItemStack droppedItem) {
 		if (wand == null || droppedItem == null || Wand.isWand(droppedItem)) {
 			return null;
 		}
@@ -3472,7 +2534,7 @@ public class MagicController implements Listener, MageController {
 		return droppedItem;
 	}
 
-    protected void onArmorUpdated(final com.elmakers.mine.bukkit.magic.Mage mage) {
+    public void onArmorUpdated(final com.elmakers.mine.bukkit.magic.Mage mage) {
         plugin.getServer().getScheduler().runTaskLater(plugin, new Runnable() {
            @Override
            public void run() {
@@ -3481,520 +2543,9 @@ public class MagicController implements Listener, MageController {
         }, 1);
     }
 
-	@EventHandler
-	public void onInventoryClick(InventoryClickEvent event) {
-		// getLogger().info("CLICK: " + event.getAction() + ", " + event.getClick() + " on " + event.getSlotType() + " in "+ event.getInventory().getType() + " slots: " + event.getSlot() + ":" + event.getRawSlot());
-
-		if (event.isCancelled()) return;
-		if (!(event.getWhoClicked() instanceof Player)) return;
-
-		Player player = (Player)event.getWhoClicked();
-        Mage apiMage = getMage(player);
-
-        if (!(apiMage instanceof com.elmakers.mine.bukkit.magic.Mage)) return;
-        final com.elmakers.mine.bukkit.magic.Mage mage = (com.elmakers.mine.bukkit.magic.Mage)apiMage;
-
-        GUIAction gui = mage.getActiveGUI();
-        if (gui != null)
-        {
-            gui.clicked(event);
-            return;
-        }
-
-        // Check for temporary items and skill items
-        InventoryAction action = event.getAction();
-        InventoryType inventoryType = event.getInventory().getType();
-        ItemStack clickedItem = event.getCurrentItem();
-
-        boolean isDrop = event.getClick() == ClickType.DROP || event.getClick() == ClickType.CONTROL_DROP;
-        boolean isSkill = clickedItem != null && Wand.isSkill(clickedItem);
-        // Preventing putting skills in containers
-        if (isSkill && inventoryType != InventoryType.CRAFTING) {
-            if (!isDrop) {
-                event.setCancelled(true);
-            }
-            return;
-        }
-
-        // Check for right-click-to-use
-        if (isSkill && action == InventoryAction.PICKUP_HALF)
-        {
-            Spell spell = mage.getSpell(Wand.getSpell(clickedItem));
-            if (spell != null) {
-                spell.cast();
-            }
-            player.closeInventory();
-            event.setCancelled(true);
-            return;
-        }
-
-		if (clickedItem != null && NMSUtils.isTemporary(clickedItem)) {
-			String message = NMSUtils.getTemporaryMessage(clickedItem);
-			if (message != null && message.length() > 1) {
-				mage.sendMessage(message);
-			}
-            ItemStack replacement = NMSUtils.getReplacement(clickedItem);
-            event.setCurrentItem(replacement);
-			event.setCancelled(true);
-			return;
-		}
-
-        // Check for wearing spells
-        ItemStack heldItem = event.getCursor();
-        if (heldItem != null && event.getSlotType() == SlotType.ARMOR)
-        {
-            if (Wand.isSpell(heldItem)) {
-                event.setCancelled(true);
-            }
-            if (Wand.isWand(clickedItem) || Wand.isWand(heldItem)) {
-                onArmorUpdated(mage);
-            }
-        }
-        boolean isHotbar = event.getAction() == InventoryAction.HOTBAR_SWAP || event.getAction() == InventoryAction.HOTBAR_MOVE_AND_READD;
-        if (isHotbar && event.getSlotType() == SlotType.ARMOR)
-        {
-            int slot = event.getHotbarButton();
-            ItemStack item =  mage.getPlayer().getInventory().getItem(slot);
-            if (item != null && Wand.isSpell(item))
-            {
-                event.setCancelled(true);
-                return;
-            }
-            onArmorUpdated(mage);
-        }
-        if (event.getAction() == InventoryAction.MOVE_TO_OTHER_INVENTORY && clickedItem != null)
-        {
-            Material itemType = clickedItem.getType();
-            if (wearableMaterials.contains(itemType)) {
-                onArmorUpdated(mage);
-            }
-        }
-
-		Wand activeWand = mage.getActiveWand();
-
-        boolean clickedWand = Wand.isWand(clickedItem);
-        if (activeWand != null && activeWand.isInventoryOpen())
-        {
-            if (Wand.isSpell(clickedItem) && clickedItem.getAmount() != 1)
-            {
-                clickedItem.setAmount(1);
-            }
-            if (clickedWand)
-            {
-                event.setCancelled(true);
-                activeWand.cycleHotbar(1);
-                return;
-            }
-
-            // So many ways to try and move the wand around, that we have to watch for!
-            if (isHotbar && Wand.isWand(player.getInventory().getItem(event.getHotbarButton())))
-            {
-                event.setCancelled(true);
-                return;
-            }
-
-            // Can't wear spells
-            if (event.getAction() == InventoryAction.MOVE_TO_OTHER_INVENTORY && clickedItem != null)
-            {
-                Material itemType = clickedItem.getType();
-                if (wearableMaterials.contains(itemType))
-                {
-                    event.setCancelled(true);
-                    return;
-                }
-            }
-
-            // Safety check for something that ought not to be possible
-            // but perhaps happens with lag?
-            if (Wand.isWand(event.getCursor()))
-            {
-                activeWand.closeInventory();
-                event.setCursor(null);
-                event.setCancelled(true);
-                return;
-            }
-        } else if (activeWand != null) {
-            // Check for changes that could have been made to the active wand
-            Integer activeSlot = activeWand.getPlayerInventorySlot();
-            if (activeSlot != null
-                && event.getSlot() == activeSlot
-                || (event.getAction() == InventoryAction.HOTBAR_SWAP && event.getHotbarButton() == activeSlot)
-            )
-            {
-                activeWand.deactivate();
-                activeWand = null;
-            }
-        }
-
-		// Check for dropping items out of a wand's inventory
-        // or dropping undroppable wands
-		if (isDrop) {
-            if (clickedWand) {
-                Wand wand = new Wand(this, clickedItem);
-                if (wand.isUndroppable()) {
-                    event.setCancelled(true);
-                    if (activeWand != null) {
-                        if (activeWand.getHotbarCount() > 1) {
-                            activeWand.cycleHotbar(1);
-                        } else {
-                            activeWand.closeInventory();
-                        }
-                    }
-                    return;
-                }
-            }
-            if (activeWand != null && activeWand.isInventoryOpen()) {
-
-                ItemStack droppedItem = clickedItem;
-
-                if (!Wand.isSpell(droppedItem)) {
-                    mage.giveItem(droppedItem);
-                    event.setCurrentItem(null);
-                    event.setCancelled(true);
-                    return;
-                }
-
-                // This is a hack to deal with spells on cooldown disappearing,
-                // Since the event handler doesn't match the zero-count itemstacks
-                Integer slot = event.getSlot();
-                int heldSlot = player.getInventory().getHeldItemSlot();
-                Inventory hotbar = activeWand.getHotbar();
-                if (hotbar != null && slot >= 0 && slot <= hotbar.getSize() && slot != heldSlot && activeWand.getMode() == WandMode.INVENTORY)
-                {
-                    if (slot > heldSlot) slot--;
-                    if (slot < hotbar.getSize())
-                    {
-                        droppedItem = hotbar.getItem(slot);
-                    }
-                    else
-                    {
-                        slot = null;
-                    }
-                }
-                else
-                {
-                    slot = null;
-                }
-
-                if (!spellDroppingEnabled) {
-                    player.closeInventory();
-                    String spellName = Wand.getSpell(droppedItem);
-                    if (spellName != null) {
-                        Spell spell = mage.getSpell(spellName);
-                        if (spell != null) {
-                            activeWand.cast(spell);
-                            // Just in case a spell has levelled up... jeez!
-                            if (hotbar != null && slot != null)
-                            {
-                                droppedItem = hotbar.getItem(slot);
-                            }
-                        }
-                    }
-                    event.setCancelled(true);
-
-                    // This is needed to avoid spells on cooldown disappearing from the hotbar
-                    if (hotbar != null && slot != null)
-                    {
-                        player.getInventory().setItem(event.getSlot(), droppedItem);
-                        player.updateInventory();
-                    }
-
-                    return;
-                }
-                ItemStack newDrop = removeItemFromWand(activeWand, droppedItem);
-
-                if (newDrop != null) {
-                    Location location = player.getLocation();
-                    Item item = location.getWorld().dropItem(location, newDrop);
-                    item.setVelocity(location.getDirection().normalize());
-                } else {
-                    event.setCancelled(true);
-                }
-            }
-			return;
-		}
-		
-		// Check for wand cycling with active inventory
-    	if (activeWand != null) {
-			WandMode wandMode = activeWand.getMode();
-			if ((wandMode == WandMode.INVENTORY && inventoryType == InventoryType.CRAFTING) || 
-			    (wandMode == WandMode.CHEST && inventoryType == InventoryType.CHEST)) {
-				if (activeWand != null && activeWand.isInventoryOpen()) {
-					if (event.getAction() == InventoryAction.NOTHING) {
-						int direction = event.getClick() == ClickType.LEFT ? 1 : -1;
-                        activeWand.cycleInventory(direction);
-						event.setCancelled(true);
-						return;
-					}
-
-					if (event.getSlotType() == SlotType.ARMOR) {
-						event.setCancelled(true);
-						return;
-					}
-					
-					// Chest mode falls back to selection from here.
-					if (event.getAction() == InventoryAction.PICKUP_HALF || wandMode == WandMode.CHEST) {
-						onPlayerActivateIcon(mage, activeWand, clickedItem);
-						player.closeInventory();
-						event.setCancelled(true);
-						return;
-					}
-				}
-			}
-			
-			return;
-		}
-	}
-
-	@EventHandler
-	public void onInventoryClosed(InventoryCloseEvent event) {
-		if (!(event.getPlayer() instanceof Player)) return;
-
-		// Update the active wand, it may have changed around
-		Player player = (Player)event.getPlayer();
-        Mage apiMage = getRegisteredMage(player);
-
-        if (apiMage == null || !(apiMage instanceof com.elmakers.mine.bukkit.magic.Mage)) return;
-        com.elmakers.mine.bukkit.magic.Mage mage = (com.elmakers.mine.bukkit.magic.Mage)apiMage;
-
-        GUIAction gui = mage.getActiveGUI();
-        if (gui != null)
-        {
-            mage.deactivateGUI();
-        }
-
-        Wand previousWand = mage.getActiveWand();
-
-		// Save the inventory state of the current wand if its spell inventory is open
-		// This is just to make sure we don't lose changes made to the inventory
-		if (previousWand != null && previousWand.isInventoryOpen()) {
-			if (previousWand.getMode() == WandMode.INVENTORY) {
-				previousWand.saveInventory();
-                // Update hotbar names
-                previousWand.updateHotbar();
-			} else if (previousWand.getMode() == WandMode.CHEST) {
-				// Check for chest inventory mode, we may just be closing a display inventory.
-				// In theory you can't re-arrange items in here.
-                previousWand.closeInventory();
-			}
-		} else {
-            if (previousWand != null) {
-                if (player.getInventory().getHeldItemSlot() != previousWand.getPlayerInventorySlot()) {
-                    previousWand.deactivate();
-                    previousWand = null;
-                }
-            }
-            ItemStack currentItem = player.getItemInHand();
-
-            // If we're not in a wand inventory, check for the player
-            // having re-arranged their items such that a new wand is now active
-            // we don't get an equip event for this.
-            // Note that ".equals" is very strong and will detect any changes at all
-            // in the wand item, including an active spell change.
-            boolean changedWands = false;
-            boolean itemIsWand = Wand.isWand(currentItem);
-            if (previousWand != null && !itemIsWand) changedWands = true;
-            if (previousWand == null && itemIsWand) changedWands = true;
-            if (previousWand != null && itemIsWand && !previousWand.getItem().equals(currentItem)) changedWands = true;
-
-            if (changedWands) {
-                if (previousWand != null) {
-                    previousWand.deactivate();
-                }
-                if (itemIsWand) {
-                    Wand newWand = new Wand(this, currentItem);
-                    newWand.activate(mage);
-                }
-            }
-        }
-	}
-	
-	@EventHandler
-	public void onPlayerGameModeChange(PlayerGameModeChangeEvent event)
-	{
-		if (event.getNewGameMode() == GameMode.CREATIVE) {
-            Player player = event.getPlayer();
-            Mage mage = getMage(player);
-            com.elmakers.mine.bukkit.api.wand.Wand activeWand = mage.getActiveWand();
-            if (activeWand != null) {
-                activeWand.closeInventory();
-            }
-
-            if (enableCreativeModeEjecting) {
-                boolean ejected = false;
-                if (activeWand != null) {
-                    activeWand.deactivate();
-                }
-                Inventory inventory = player.getInventory();
-                ItemStack[] contents = inventory.getContents();
-                for (int i = 0; i < contents.length; i++) {
-                    ItemStack item = contents[i];
-                    if (Wand.isWand(item)) {
-                        ejected = true;
-                        inventory.setItem(i, null);
-                        player.getWorld().dropItemNaturally(player.getLocation(), item);
-                    }
-                }
-                if (ejected) {
-                    mage.sendMessage("Ejecting wands, creative mode will destroy them!");
-                }
-            }
-		}
-	}
-
-	@EventHandler(priority=EventPriority.LOWEST)
-	public void onPlayerPickupItem(PlayerPickupItemEvent event)
-	{
-		if (event.isCancelled()) return;
-
-        Player player = event.getPlayer();
-        Mage apiMage = getMage(player);
-
-        if (!(apiMage instanceof com.elmakers.mine.bukkit.magic.Mage)) return;
-        com.elmakers.mine.bukkit.magic.Mage mage = (com.elmakers.mine.bukkit.magic.Mage)apiMage;
-
-        Item item = event.getItem();
-        ItemStack pickup = item.getItemStack();
-        if (NMSUtils.isTemporary(pickup) || item.hasMetadata("temporary"))
-        {
-            item.remove();
-            event.setCancelled(true);
-            return;
-        }
-
-		boolean isWand = Wand.isWand(pickup);
-
-		// Creative mode inventory hacky work-around :\
-		if (event.getPlayer().getGameMode() == GameMode.CREATIVE && isWand && enableCreativeModeEjecting) {
-			event.setCancelled(true);
-			return;
-		}
-
-        // Remove lost wands from records
-        if (isWand) {
-            Wand wand = new Wand(this, pickup);
-            if (!wand.canUse(player)) {
-                mage.sendMessage(messages.get("wand.bound").replace("$name", wand.getOwner()));
-                event.setCancelled(true);
-                Item droppedItem = event.getItem();
-                org.bukkit.util.Vector velocity = droppedItem.getVelocity();
-                velocity.setY(velocity.getY() * 2 + 1);
-                droppedItem.setVelocity(velocity);
-                return;
-            }
-
-            if (removeLostWand(wand.getLostId())) {
-                info("Player " + mage.getName() + " picked up wand " + wand.getName() + ", id " + wand.getLostId());
-            }
-            wand.clearLostId();
-        }
-
-        // Wands will absorb spells and upgrade items
-		Wand activeWand = mage.getActiveWand();
-		if (activeWand != null
-            && activeWand.isModifiable()
-            && (Wand.isSpell(pickup) || Wand.isBrush(pickup) || Wand.isUpgrade(pickup))
-			&& activeWand.addItem(pickup)) {
-			event.getItem().remove();
-			event.setCancelled(true);   
-			return;
-		}
-
-        // If a wand's inventory is active, add the item there
-		if (mage.hasStoredInventory()) {
-			event.setCancelled(true);   		
-			if (mage.addToStoredInventory(event.getItem().getItemStack())) {
-				event.getItem().remove();
-			}
-		} else {
-			// Hackiness needed because we don't get an equip event for this!
-			PlayerInventory inventory = event.getPlayer().getInventory();
-			ItemStack inHand = inventory.getItemInHand();
-			if (isWand && (inHand == null || inHand.getType() == Material.AIR)) {
-				Wand wand = new Wand(this, pickup);
-				event.setCancelled(true);
-				event.getItem().remove();
-				inventory.setItem(inventory.getHeldItemSlot(), pickup);
-				wand.activate(mage);
-			} 
-		}
-	}
-
     public boolean isLocked(Block block) {
         return protectLocked && containerMaterials.contains(block.getType()) && CompatibilityUtils.isLocked(block);
     }
-
-    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
-    public void onBlockBreak(BlockBreakEvent event)
-    {
-        Block block = event.getBlock();
-        if (protectLocked && containerMaterials.contains(block.getType()) && !event.getPlayer().hasPermission("Magic.bypass")) {
-            String lockKey = CompatibilityUtils.getLock(block);
-            if (lockKey != null && !lockKey.isEmpty()) {
-                Player player = event.getPlayer();
-                Inventory inventory = player.getInventory();
-                Mage mage = getRegisteredMage(event.getPlayer());
-                if (mage != null) {
-                    inventory = mage.getInventory();
-                }
-                if (!InventoryUtils.hasItem(inventory, lockKey)) {
-                    String message = messages.get("general.locked_chest");
-                    if (mage != null) {
-                        mage.sendMessage(message);
-                    } else {
-                        player.sendMessage(message);
-                    }
-                    event.setCancelled(true);
-                    return;
-                }
-            }
-        }
-        com.elmakers.mine.bukkit.api.block.BlockData modifiedBlock = com.elmakers.mine.bukkit.block.UndoList.getBlockData(block.getLocation());
-        if (modifiedBlock != null) {
-            event.setCancelled(true);
-            block.setType(Material.AIR);
-            com.elmakers.mine.bukkit.block.UndoList.commit(modifiedBlock);
-        }
-    }
-
-	@EventHandler
-	public void onBlockPlace(BlockPlaceEvent event)
-	{
-		Player player = event.getPlayer();
-        ItemStack itemStack = event.getItemInHand();
-
-        if (NMSUtils.isTemporary(itemStack)) {
-            event.setCancelled(true);
-            player.setItemInHand(null);
-            return;
-        }
-
-        if (NMSUtils.isUnplaceable(itemStack) || Wand.isWand(itemStack) || Wand.isSpell(itemStack) || Wand.isBrush(itemStack)) {
-            event.setCancelled(true);
-            return;
-        }
-
-        Mage apiMage = getMage(player);
-
-        if (!(apiMage instanceof com.elmakers.mine.bukkit.magic.Mage)) return;
-        com.elmakers.mine.bukkit.magic.Mage mage = (com.elmakers.mine.bukkit.magic.Mage)apiMage;
-
-        if (mage.hasStoredInventory() || mage.getBlockPlaceTimeout() > System.currentTimeMillis()) {
-			event.setCancelled(true);
-		}
-
-		if (Wand.isWand(itemStack) || Wand.isBrush(itemStack) || Wand.isSpell(itemStack) || Wand.isUpgrade(itemStack)) {
-			event.setCancelled(true);
-		}
-
-        if (!event.isCancelled()) {
-            Block block = event.getBlock();
-            com.elmakers.mine.bukkit.api.block.BlockData modifiedBlock = com.elmakers.mine.bukkit.block.UndoList.getBlockData(block.getLocation());
-            if (modifiedBlock != null) {
-                com.elmakers.mine.bukkit.block.UndoList.commit(modifiedBlock);
-            }
-        }
-	}
 	
 	protected boolean addLostWandMarker(LostWand lostWand) {
 		Location location = lostWand.getLocation();
@@ -4004,12 +2555,6 @@ public class MagicController implements Listener, MageController {
 		return addMarker("wand-" + lostWand.getId(), "Wands", lostWand.getName(), location.getWorld().getName(),
 			location.getBlockX(), location.getBlockY(), location.getBlockZ(), lostWand.getDescription()
 		);
-	}
-
-	@EventHandler
-	public void onChunkLoad(ChunkLoadEvent e) {
-		// Check for any blocks we need to toggle.
-		triggerBlockToggle(e.getChunk());
 	}
 	
 	public void toggleCastCommandOverrides(Mage apiMage, boolean override) {
@@ -4139,7 +2684,7 @@ public class MagicController implements Listener, MageController {
         return welcomeWand;
     }
 	
-	protected void triggerBlockToggle(final Chunk chunk) {
+	public void triggerBlockToggle(final Chunk chunk) {
 		String chunkKey = getChunkKey(chunk);
 		Map<Long, Automaton> chunkData = automata.get(chunkKey);
 		if (chunkData != null) {
@@ -5059,12 +3604,12 @@ public class MagicController implements Listener, MageController {
 
     public void disableItemSpawn()
     {
-        disableItemSpawn = true;
+        entityController.setDisableItemSpawn(true);
     }
 
     public void enableItemSpawn()
     {
-        disableItemSpawn = false;
+        entityController.setDisableItemSpawn(false);
     }
 
     protected void forgetMages() {
@@ -5126,6 +3671,34 @@ public class MagicController implements Listener, MageController {
         return true;
     }
 
+    public boolean isLoaded() {
+        return loaded;
+    }
+
+    public boolean areLocksProtected() {
+        return protectLocked;
+    }
+
+    public boolean isContainer(Block block) {
+        return block != null && containerMaterials.contains(block.getType());
+    }
+
+    public boolean isMeleeWeapon(ItemStack item) {
+        return item != null && meleeMaterials.contains(item.getType());
+    }
+
+    public boolean isWearable(ItemStack item) {
+        return item != null && wearableMaterials.contains(item.getType());
+    }
+
+    public boolean isInteractable(Block block) {
+        return block != null && interactibleMaterials.contains(block.getType());
+    }
+
+    public boolean isSpellDroppingEnabled() {
+        return spellDroppingEnabled;
+    }
+
     /*
 	 * Private data
 	 */
@@ -5164,11 +3737,9 @@ public class MagicController implements Listener, MageController {
     private Map<String, Set<Material>>		    materialSets				    = new HashMap<String, Set<Material>>();
 
     private int								    undoTimeWindow				    = 6000;
-    private int								    maxTNTPerChunk					= 0;
     private int                                 undoQueueDepth                  = 256;
     private int								    pendingQueueDepth				= 16;
     private int                                 undoMaxPersistSize              = 0;
-    private boolean                             undoOnWorldSave                 = false;
     private boolean                             commitOnQuit             		= false;
     private boolean                             saveNonPlayerMages              = false;
     private String                              defaultWandPath                 = "";
@@ -5180,10 +3751,8 @@ public class MagicController implements Listener, MageController {
     private String								messagePrefix					= "";
     private String								castMessagePrefix				= "";
     private boolean                             soundsEnabled                   = true;
-    private boolean                             keepWandsOnDeath	            = true;
     private String								welcomeWand					    = "";
     private int								    messageThrottle				    = 0;
-    private int								    clickCooldown					= 150;
     private boolean							    bindingEnabled					= false;
     private boolean							    spellDroppingEnabled			= false;
     private boolean							    keepingEnabled					= false;
@@ -5222,10 +3791,8 @@ public class MagicController implements Listener, MageController {
     private float								castCommandPowerMultiplier      = 0.0f;
     private float							 	costReduction	    			= 0.0f;
     private float							 	cooldownReduction				= 0.0f;
-    private int								    ageDroppedItems				    = 0;
     private int								    autoUndo						= 0;
     private int								    autoSaveTaskId					= 0;
-    private boolean                             preventMeleeDamage              = false;
     private WarpController						warpController					= null;
 
     private final Map<String, SpellTemplate>    spells              		= new HashMap<String, SpellTemplate>();
@@ -5246,9 +3813,6 @@ public class MagicController implements Listener, MageController {
     private final File							dataFolder;
     private final File							defaultsFolder;
     private final File							playerDataFolder;
-    private boolean							    enableItemHacks			 	= true;
-    private boolean                             enableCreativeModeEjecting  = true;
-    private boolean							    disableItemSpawn			= false;
 
     private int								    toggleCooldown				= 1000;
     private int								    toggleMessageRange			= 1024;
@@ -5310,6 +3874,12 @@ public class MagicController implements Listener, MageController {
     private DynmapController					dynmap						= null;
     private ElementalsController				elementals					= null;
     private CitizensController                  citizens					= null;
+    private BlockController                     blockController             = null;
+    private HangingController                   hangingController           = null;
+    private PlayerController                    playerController            = null;
+    private EntityController                    entityController            = null;
+    private InventoryController                 inventoryController         = null;
+    private ExplosionController                 explosionController         = null;
     private boolean                             citizensEnabled			    = true;
 
     private FactionsManager					    factionsManager				= new FactionsManager();

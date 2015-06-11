@@ -734,7 +734,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         return true;
     }
 
-    protected boolean checkLastClick(long maxInterval) {
+    public boolean checkLastClick(long maxInterval) {
         long now = System.currentTimeMillis();
         long previous = lastClick;
         lastClick = now;
