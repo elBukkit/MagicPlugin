@@ -475,7 +475,7 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
     }
 
     public void prepare() {
-        if (cloneSource != null) {
+        if (cloneSource != null && cloneTarget != null) {
             Block block = cloneTarget.getBlock();
             if (!block.getChunk().isLoaded()) {
                 block.getChunk().load(true);
