@@ -15,6 +15,7 @@ import java.util.logging.Level;
 import com.elmakers.mine.bukkit.api.block.BrushMode;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.magic.Messages;
+import com.elmakers.mine.bukkit.api.spell.CastingCost;
 import com.elmakers.mine.bukkit.api.spell.CostReducer;
 import com.elmakers.mine.bukkit.api.spell.MageSpell;
 import com.elmakers.mine.bukkit.api.spell.Spell;
@@ -3450,12 +3451,21 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
                     Spell spell = mage.getSpell(spellKey);
                     if (spell != null) {
                         long remainingCooldown = spell.getRemainingCooldown();
-                        if (spell.canCast(location) && remainingCooldown == 0 && spell.getRequiredCost() == null) {
+                        CastingCost requiredCost = spell.getRequiredCost();
+                        if (spell.canCast(location) && remainingCooldown == 0 && requiredCost == null) {
                             if (spellItem.getAmount() != 1) {
                                 InventoryUtils.setCount(spellItem, 1);
                             }
                         } else {
-                            int targetAmount = LiveHotbarCooldown ? (int)Math.min(Math.ceil(remainingCooldown / 1000), 99) : 0;
+                            int targetAmount = LiveHotbarCooldown ? (int)Math.min(Math.ceil((double)remainingCooldown / 1000), 99) : 0;
+                            if (LiveHotbarCooldown && requiredCost != null) {
+                                int mana = requiredCost.getMana();
+                                if (mana < effectiveXpMax && effectiveXpRegeneration > 0) {
+                                    float remainingMana = (float)mana - xp;
+                                    int targetManaTime = (int)Math.min(Math.ceil(remainingMana / effectiveXpRegeneration), 99);
+                                    targetAmount = Math.max(targetManaTime, targetAmount);
+                                }
+                            }
                             if (spellItem.getAmount() != targetAmount) {
                                 InventoryUtils.setCount(spellItem, targetAmount);
                             }
