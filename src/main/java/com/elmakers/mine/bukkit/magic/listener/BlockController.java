@@ -8,6 +8,7 @@ import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import com.elmakers.mine.bukkit.utility.NMSUtils;
 import com.elmakers.mine.bukkit.wand.Wand;
+import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
@@ -34,19 +35,38 @@ import java.util.Collection;
 public class BlockController implements Listener {
     private final MagicController controller;
     private boolean undoOnWorldSave = false;
+    private int creativeBreakFrequency = 0;
 
     public BlockController(MagicController controller) {
         this.controller = controller;
+    }
+
+    public void setUndoOnWorldSave(boolean undo) {
+        this.undoOnWorldSave = undo;
+    }
+
+    public void setCreativeBreakFrequency(int frequency) {
+        this.creativeBreakFrequency = frequency;
     }
 
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onBlockBreak(BlockBreakEvent event)
     {
         Block block = event.getBlock();
+        Player player = event.getPlayer();
+        if (creativeBreakFrequency > 0 && player.getGameMode() == GameMode.CREATIVE) {
+            Mage apiMage = controller.getMage(event.getPlayer());
+            if (apiMage instanceof com.elmakers.mine.bukkit.magic.Mage) {
+                com.elmakers.mine.bukkit.magic.Mage mage = (com.elmakers.mine.bukkit.magic.Mage)apiMage;
+                if (mage.checkLastClick(creativeBreakFrequency)) {
+                    event.setCancelled(true);
+                    return;
+                }
+            }
+        }
         if (controller.areLocksProtected() && controller.isContainer(block) && !event.getPlayer().hasPermission("Magic.bypass")) {
             String lockKey = CompatibilityUtils.getLock(block);
             if (lockKey != null && !lockKey.isEmpty()) {
-                Player player = event.getPlayer();
                 Inventory inventory = player.getInventory();
                 Mage mage = controller.getRegisteredMage(event.getPlayer());
                 if (mage != null) {
@@ -228,10 +248,6 @@ public class BlockController implements Listener {
                 }
             }
         }
-    }
-
-    public void setUndoOnWorldSave(boolean undo) {
-        this.undoOnWorldSave = undo;
     }
 
     @EventHandler

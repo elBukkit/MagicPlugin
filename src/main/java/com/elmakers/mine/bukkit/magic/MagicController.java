@@ -2166,6 +2166,7 @@ public class MagicController implements MageController {
         // Configure sub-controllers
         explosionController.setMaxTNTPerChunk(properties.getInt("max_tnt_per_chunk", 0));
         blockController.setUndoOnWorldSave(properties.getBoolean("undo_on_world_save", false));
+        blockController.setCreativeBreakFrequency(properties.getInt("prevent_creative_breaking", 0));
         inventoryController.setEnableItemHacks(properties.getBoolean("enable_custom_item_hacks", false));
         entityController.setPreventMeleeDamage(properties.getBoolean("prevent_melee_damage", false));
         entityController.setKeepWandsOnDeath(properties.getBoolean("keep_wands_on_death", true));
