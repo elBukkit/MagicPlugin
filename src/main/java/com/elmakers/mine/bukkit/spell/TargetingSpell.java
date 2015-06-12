@@ -505,7 +505,6 @@ public abstract class TargetingSpell extends BaseSpell {
 
     protected Target getEntityTarget()
     {
-        if (targetEntityType == null && targetEntityTypes == null) return null;
         List<Target> scored = getAllTargetEntities();
         if (scored.size() <= 0) return null;
         return scored.get(0);
@@ -554,6 +553,7 @@ public abstract class TargetingSpell extends BaseSpell {
 
             // check for Superprotected Mages
             if (isSuperProtected(entity)) continue;
+
             // Ignore invisible entities
             if (!targetInvisible && entity instanceof LivingEntity && ((LivingEntity)entity).hasPotionEffect(PotionEffectType.INVISIBILITY)) continue;
 
@@ -884,6 +884,7 @@ public abstract class TargetingSpell extends BaseSpell {
                 }
             }
         } else {
+            targetEntityType = null;
             targetEntityTypes = null;
         }
 
