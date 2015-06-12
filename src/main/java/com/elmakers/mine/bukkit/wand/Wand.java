@@ -234,6 +234,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
     public static boolean BrushGlow = false;
     public static boolean BrushItemGlow = true;
     public static boolean LiveHotbar = true;
+    public static boolean LiveHotbarCooldown = true;
     public static boolean Unbreakable = false;
     public static SoundEffect inventoryOpenSound = null;
     public static SoundEffect inventoryCloseSound = null;
@@ -3448,13 +3449,15 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
                 if (spellKey != null) {
                     Spell spell = mage.getSpell(spellKey);
                     if (spell != null) {
-                        if (spell.canCast(location) && spell.getRemainingCooldown() == 0 && spell.getRequiredCost() == null) {
+                        long remainingCooldown = spell.getRemainingCooldown();
+                        if (spell.canCast(location) && remainingCooldown == 0 && spell.getRequiredCost() == null) {
                             if (spellItem.getAmount() != 1) {
                                 InventoryUtils.setCount(spellItem, 1);
                             }
                         } else {
-                            if (spellItem.getAmount() != 0) {
-                                InventoryUtils.setCount(spellItem, 0);
+                            int targetAmount = LiveHotbarCooldown ? (int)Math.min(Math.ceil(remainingCooldown / 1000), 99) : 0;
+                            if (spellItem.getAmount() != targetAmount) {
+                                InventoryUtils.setCount(spellItem, targetAmount);
                             }
                         }
                     }

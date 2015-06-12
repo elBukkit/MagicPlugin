@@ -208,6 +208,9 @@ url_icons_enabled: true
 # Set this to have the hotbar show what spells are castable
 live_hotbar: true
 
+# Set this to use item amounts as a cooldown countdown timer
+live_hotbar_cooldown: true
+
 # Turn this on if you don't want players to be able to deal damage
 # other than with a wand, or items listed in the "melee" list in materials.yml
 # By default, swords are still allowed.
