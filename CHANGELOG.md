@@ -1,9 +1,10 @@
 # CHANGELOG
 
-## 5.2
+## 5.1.6
 
  - Fix falling block velocity
  - Add much more detail to /help for Magic commands
+ - Levitate will auto-deactivate upon landing
 
 ## 5.1.5
 

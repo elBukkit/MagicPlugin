@@ -61,6 +61,7 @@ public class LevitateSpell extends TargetingSpell implements Listener
     private double yBoost = 2;
     private float thrustSpeed = 0;
     private int thrustFrequency = 1;
+    private int deactivateFrequency = 10;
     private ThrustAction thrust;
     private double crashDistance = 0;
     private double slowMultiplier = 1;
@@ -153,7 +154,7 @@ public class LevitateSpell extends TargetingSpell implements Listener
                 spell.land();
                 return;
             }
-            if (entity instanceof Player && !((Player)entity).isOnline()) {
+            if (entity instanceof Player && (!((Player)entity).isOnline() || !((Player)entity).isFlying())) {
                 spell.land();
                 return;
             }
@@ -407,6 +408,7 @@ public class LevitateSpell extends TargetingSpell implements Listener
         flyDelay = parameters.getInt("fly_delay", 2);
         slowMultiplier = parameters.getDouble("slow", 1);
         castBoost = parameters.getDouble("boost", 0);
+        deactivateFrequency = parameters.getInt("auto_deactivate", 10);
         yBoost = parameters.getDouble("y_boost", 2);
 		flySpeed = (float)parameters.getDouble("speed", 0);
         thrustSpeed = (float)parameters.getDouble("thrust", 0);
@@ -727,6 +729,8 @@ public class LevitateSpell extends TargetingSpell implements Listener
                 thrust.stop();
             }
             thrust = new ThrustAction(this, thrustFrequency + flyDelay + startDelay, thrustFrequency);
+        } else if (deactivateFrequency > 0) {
+            thrust = new ThrustAction(this, deactivateFrequency + flyDelay + startDelay, deactivateFrequency);
         }
 
         if (mountType != null) {
