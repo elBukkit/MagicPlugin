@@ -5,6 +5,7 @@
  - Fix falling block velocity
  - Add much more detail to /help for Magic commands
  - Levitate will auto-deactivate upon landing
+ - Add cooldown/re-cast timers to hotbar
 
 ## 5.1.5
 

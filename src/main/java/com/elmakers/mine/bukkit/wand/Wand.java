@@ -3460,7 +3460,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
                             int targetAmount = LiveHotbarCooldown ? (int)Math.min(Math.ceil((double)remainingCooldown / 1000), 99) : 0;
                             if (LiveHotbarCooldown && requiredCost != null) {
                                 int mana = requiredCost.getMana();
-                                if (mana < effectiveXpMax && effectiveXpRegeneration > 0) {
+                                if (mana <= effectiveXpMax && effectiveXpRegeneration > 0) {
                                     float remainingMana = (float)mana - xp;
                                     int targetManaTime = (int)Math.min(Math.ceil(remainingMana / effectiveXpRegeneration), 99);
                                     targetAmount = Math.max(targetManaTime, targetAmount);
