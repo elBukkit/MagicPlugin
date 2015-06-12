@@ -1640,6 +1640,9 @@ wands:
     architect_upgrade:
         name: Architect Upgrade
         description: Upgrade to Architect level
+    hotbar1:
+        name: Hotbar Reset
+        description: Reset your wand to a single hotbar
     hotbar2:
         name: Hotbar Level 2
         description: Add an extra hotbar to your wand!

@@ -958,6 +958,11 @@ haloeffects:
     effect_particle_data: 0
     effect_particle_radius: 0.4
     effect_particle_offset: 0.5
+hotbar1:
+    icon: skull_item:http://textures.minecraft.net/texture/4ee7b05ce62de9e76da5d2878f1f73d787368173f1cf2e9ba841d9248f902c
+    upgrade: true
+    hotbar_count: 1
+    force: true
 hotbar2:
     icon: skull_item:http://textures.minecraft.net/texture/1cd3a0e36d2fdbabf7fb4add48c26094636e77a5da1c61ae5d2e6974936
     upgrade: true
