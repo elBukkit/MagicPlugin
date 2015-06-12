@@ -1002,7 +1002,7 @@ superdome:
         mana: 200
 
 tag:
-    icon_url: http://textures.minecraft.net/texture/a9e073da36aaf2c844da428cd4a19dfde32c8cdc2404eed4a135f6095b17c
+    icon_url: http://textures.minecraft.net/texture/c5acc4b5a7079df3f51cd9388508a5860fc60e9bcde97f9abee62b457d7e
     icon: sign
     category: dark
     class: SignSpell
@@ -2238,7 +2238,7 @@ flashbang:
         mana: 50
 
 weather:
-    icon_url: http://textures.minecraft.net/texture/4a458a62561a9e6ab960b9bdccaddbf039429c836dfacdd39ff7c7085c9e9b9
+    icon_url: http://textures.minecraft.net/texture/cd76c83453ba48a6aceac090ef4e2c8918ecd8891e91621bed2e03fad8a7f6
     icon: water_bucket
     category: elemental
     worth: 1500
@@ -2918,7 +2918,7 @@ gills:
         mana: 15
 
 day:
-    icon_url: http://textures.minecraft.net/texture/cd76c83453ba48a6aceac090ef4e2c8918ecd8891e91621bed2e03fad8a7f6
+    icon_url: http://textures.minecraft.net/texture/1b5c8c12faec6646fd9cd8c610f138f51fbaaee1182baff8fa4f32d683b25eb
     icon: emerald
     category: master
     worth: 3000
@@ -3655,7 +3655,7 @@ earthquake:
         mana: 150
 
 tunnel:
-    icon_url: http://textures.minecraft.net/texture/3186699cf52cb2f732b7948784b262a49d43a57c801368f776e3c9a88151d
+    icon_url: http://textures.minecraft.net/texture/c94772c7eca88e1128b71f71f8951233f7ea79dbc80e02bb407acffe175e
     icon: iron_pickaxe
     category: engineering
     cancellable: false
