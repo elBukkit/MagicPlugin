@@ -3,6 +3,7 @@
 ## 5.2
 
  - Fix falling block velocity
+ - Add much more detail to /help for Magic commands
 
 ## 5.1.5
 
