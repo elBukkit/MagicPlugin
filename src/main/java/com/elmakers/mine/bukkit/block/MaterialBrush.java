@@ -624,6 +624,12 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
                 } catch (Exception ex) {
                 }
             }
+            if (pieces.length > 2) {
+                try {
+                    mapId = Short.parseShort(pieces[2]);
+                } catch (Exception ex) {
+                }
+            }
             enableMap(size);
         } else if (activeMaterial.equals(ERASE_MATERIAL_KEY)) {
             enableErase();
