@@ -90,8 +90,8 @@ wand:
     clone_material_activated: Clone source selected
     replicate_material_activated: Replicate source selected
     erase_modifier_activated: Erase modifier active
-    map_material_name: Map
-    map_material_name_scaled: Map $sizex$size
+    map_material_name: "Map #$id"
+    map_material_name_scaled: "Map $sizex$size #$id"
     map_material_description: Creates pixel art from last held map
     schematic_material_description: Uses $schematic to build.
     building_material_description: Build with $material
