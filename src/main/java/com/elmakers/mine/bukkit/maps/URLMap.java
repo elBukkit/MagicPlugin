@@ -94,7 +94,7 @@ public class URLMap extends MapRenderer implements com.elmakers.mine.bukkit.api.
         }
 
         if (rendered) {
-            if (priority != null) {
+            if (priority != null && player != null) {
                 sendToPlayer(player, mapView);
             }
             return;

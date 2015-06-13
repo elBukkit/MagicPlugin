@@ -201,6 +201,7 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
             } else if (messages != null) {
                 brushKey = messages.get("wand.map_material_name");
             }
+            brushKey = brushKey.replace("$id", Short.toString(mapId));
             break;
         case SCHEMATIC:
             brushKey = schematicName;
@@ -401,13 +402,13 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
         }
 
         if (mode == BrushMode.MAP && mapId >= 0) {
-            if (mapCanvas == null && fromMage != null) {
+            if (mapCanvas == null) {
                 try {
                     MapView mapView = Bukkit.getMap(mapId);
                     if (mapView != null) {
-                        Player player = fromMage.getPlayer();
+                        Player player = fromMage != null ? fromMage.getPlayer() : null;
                         List<MapRenderer> renderers = mapView.getRenderers();
-                        if (renderers.size() > 0 && player != null) {
+                        if (renderers.size() > 0) {
                             mapCanvas = new BufferedMapCanvas();
                             MapRenderer renderer = renderers.get(0);
                             // This is mainly here as a hack for my own urlmaps that do their own caching
