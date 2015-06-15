@@ -2135,6 +2135,22 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		while (addLevels >= minLevel && modified) {
             boolean hasUpgrade = path.hasUpgrade();
             WandLevel level = path.getLevel(addLevels);
+
+            if (!path.canEnchant(this)) {
+                // Check for level up
+                WandUpgradePath nextPath = path.getUpgrade();
+                if (nextPath != null) {
+                    if (!path.checkUpgradeRequirements(this, enchanter)) {
+                        break;
+                    }
+                    path.upgrade(this, enchanter);
+                    path = nextPath;
+                } else {
+                    enchanter.sendMessage(getMessage("fully_enchanted").replace("$wand", getName()));
+                    break;
+                }
+            }
+
             modified = level.randomizeWand(enchanter, this, additive, hasUpgrade);
 			totalLevels -= maxLevel;
             if (modified) {
@@ -4251,6 +4267,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         return true;
     }
 
+    @Override
     public boolean isBound() {
         return bound;
     }

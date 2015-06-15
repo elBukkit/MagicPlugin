@@ -7,6 +7,7 @@
  - Levitate will auto-deactivate upon landing
  - Add cooldown/re-cast timers to hotbar
  - Add item requirement option for the enchantwand NPC trait
+ - Some changes to enchanting to allow for upgrades that don't always give a new spell
 
 ## 5.1.5
 

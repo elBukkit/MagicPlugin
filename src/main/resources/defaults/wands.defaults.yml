@@ -856,22 +856,22 @@ master_upgrade:
     hidden: true
     indestructible: false
     upgrade_icon: gold_axe
-    xp_max: 250
-    xp_regeneration: 50
+    xp_max: 200
+    xp_regeneration: 40
     hotbar_count: 3
 engineer_upgrade:
     upgrade: true
     hidden: true
     indestructible: false
-    xp_max: 300
-    xp_regeneration: 70
+    xp_max: 250
+    xp_regeneration: 50
 architect_upgrade:
     upgrade: true
     hidden: true
     upgrade_icon: monster_eggs:2
     indestructible: false
-    xp_max: 400
-    xp_regeneration: 90
+    xp_max: 350
+    xp_regeneration: 70
 
 #
 # UPGRADE ITEMS

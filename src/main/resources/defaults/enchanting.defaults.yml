@@ -420,13 +420,13 @@ engineer:
       0^2: 1,  10, 20
       0^3: 0 , 15, 15
       0^4: 0 ,  0, 10
-    max_mana_regeneration: 90
+    max_mana_regeneration: 70
     mana_regeneration:
       1: 100, 30, 5
       2: 20, 30, 40
       3: 0 , 10, 10
       5: 0 ,  0, 1
-    max_mana: 400
+    max_mana: 350
     mana_max:
       5:  100,10,  0
       10: 20, 30, 50
