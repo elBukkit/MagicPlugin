@@ -146,6 +146,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     private List<CastingCost> activeCosts = null;
 
     protected boolean pvpRestricted           	= false;
+    protected boolean disguiseRestricted        = true;
     protected boolean usesBrushSelection        = false;
     protected boolean bypassFriendlyFire    	= false;
     protected boolean bypassPvpRestriction    	= false;
@@ -839,6 +840,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         costs = parseCosts(node.getConfigurationSection("costs"));
         activeCosts = parseCosts(node.getConfigurationSection("active_costs"));
         pvpRestricted = node.getBoolean("pvp_restricted", false);
+        disguiseRestricted = node.getBoolean("disguise_restricted", true);
         usesBrushSelection = node.getBoolean("brush_selection", false);
         castOnNoTarget = node.getBoolean("cast_on_no_target", castOnNoTarget);
         hidden = node.getBoolean("hidden", false);
@@ -1017,6 +1019,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     public boolean canCast(Location location) {
         if (location == null) return true;
         if (!hasCastPermission(mage.getCommandSender())) return false;
+        if (disguiseRestricted && controller.isDisguised(mage.getEntity())) return false;
         Boolean regionPermission = controller.getRegionCastPermission(mage.getPlayer(), this, location);
         if (regionPermission != null && regionPermission == true) return true;
         Boolean personalPermission = controller.getPersonalCastPermission(mage.getPlayer(), this, location);
@@ -1030,6 +1033,11 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     @Override
     public boolean isPvpRestricted() {
         return pvpRestricted && !bypassPvpRestriction;
+    }
+
+    @Override
+    public boolean isDisguiseRestricted() {
+        return disguiseRestricted;
     }
 
     @Override
