@@ -1193,8 +1193,11 @@ public class NMSUtils {
     }
 
     public static void clearItems(Location location) {
+        if (location == null) return;
         try {
             World world = location.getWorld();
+            if (world == null) return;
+
             Object tileEntity = class_CraftWorld_getTileEntityAtMethod.invoke(world, location.getBlockX(), location.getBlockY(), location.getBlockZ());
             if (tileEntity != null) {
                 Object entityData = class_NBTTagCompound.newInstance();
@@ -1213,9 +1216,14 @@ public class NMSUtils {
     }
 
     public static void setTileEntityData(Location location, Object data) {
+        if (location == null || data == null) return;
         try {
             World world = location.getWorld();
+            if (world == null) return;
+
             Object tileEntity = class_CraftWorld_getTileEntityAtMethod.invoke(world, location.getBlockX(), location.getBlockY(), location.getBlockZ());
+            if (tileEntity == null) return;
+
             class_NBTTagCompound_setIntMethod.invoke(data, "x", location.getBlockX());
             class_NBTTagCompound_setIntMethod.invoke(data, "y", location.getBlockY());
             class_NBTTagCompound_setIntMethod.invoke(data, "z", location.getBlockZ());
