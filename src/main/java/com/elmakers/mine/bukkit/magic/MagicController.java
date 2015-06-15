@@ -168,7 +168,7 @@ public class MagicController implements MageController {
             // Check for existing data file
             // For now we only do async loads for Players
             final File playerFile = new File(playerDataFolder, mageId + ".dat");
-            if (playerFile.exists()) {
+            if (savePlayerData && playerFile.exists()) {
                 if (commandSender instanceof Player) {
                     mage.setLoading(true);
                     plugin.getServer().getScheduler().runTaskAsynchronously(plugin, new Runnable() {
@@ -2196,6 +2196,8 @@ public class MagicController implements MageController {
 					autoSaveIntervalTicks, autoSaveIntervalTicks);
 		}
 
+        savePlayerData = properties.getBoolean("save_player_data", true);
+
         // Semi-deprecated Wand defaults
         Wand.DefaultWandMaterial = ConfigurationUtils.getMaterial(properties, "wand_item", Wand.DefaultWandMaterial);
         Wand.EnchantableWandMaterial = ConfigurationUtils.getMaterial(properties, "wand_item_enchantable", Wand.EnchantableWandMaterial);
@@ -2487,6 +2489,12 @@ public class MagicController implements MageController {
 
     public void saveMage(Mage mage, boolean asynchronous, final Runnable callback)
     {
+        if (!savePlayerData) {
+            if (callback != null) {
+                callback.run();
+            }
+            return;
+        }
         final File playerData = new File(playerDataFolder, mage.getId() + ".dat");
         info("Saving player data for " + mage.getName() + " to " + playerData.getName() + (asynchronous ? "" : " synchronously"));
         final DataStore playerConfig = new DataStore(getLogger(), playerData);
@@ -3810,6 +3818,7 @@ public class MagicController implements MageController {
     private float							 	cooldownReduction				= 0.0f;
     private int								    autoUndo						= 0;
     private int								    autoSaveTaskId					= 0;
+    private boolean                             savePlayerData                  = true;
     private WarpController						warpController					= null;
 
     private final Map<String, SpellTemplate>    spells              		= new HashMap<String, SpellTemplate>();
