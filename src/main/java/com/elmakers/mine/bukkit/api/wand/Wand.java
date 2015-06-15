@@ -96,4 +96,5 @@ public interface Wand extends CostReducer {
     public boolean isIndestructible();
     public void playEffects(String key);
     public boolean cast();
+    public boolean isBound();
 }
