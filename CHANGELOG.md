@@ -6,6 +6,7 @@
  - Add much more detail to /help for Magic commands
  - Levitate will auto-deactivate upon landing
  - Add cooldown/re-cast timers to hotbar
+ - Add item requirement option for the enchantwand NPC trait
 
 ## 5.1.5
 
