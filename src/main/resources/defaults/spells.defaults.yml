@@ -5160,9 +5160,9 @@ levitate:
     parameters:
         speed: 2
     costs:
-        mana: 45
+        mana: 50
     active_costs:
-        mana: 20
+        mana: 100
 
 force:
     icon_url: http://textures.minecraft.net/texture/c7142a19d8c84389da74b69641542b8b2fafbed8f7515d1d36c63c96bd749
