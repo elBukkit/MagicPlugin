@@ -272,4 +272,5 @@ public interface MageController {
     public void sendPlayerToServer(Player player, String server);
     public void warpPlayerToServer(Player player, String server, String warp);
     public boolean spawnPhysicsBlock(Location location, Material material, short data, Vector velocity);
+    public boolean isDisguised(Entity entity);
 }

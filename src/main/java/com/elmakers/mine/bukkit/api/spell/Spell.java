@@ -49,6 +49,7 @@ public interface Spell extends SpellTemplate {
     public boolean requiresBuildPermission();
     public boolean requiresBreakPermission();
     public boolean isPvpRestricted();
+    public boolean isDisguiseRestricted();
     public void sendMessage(String message);
     public void castMessage(String message);
     public MaterialAndData getEffectMaterial();
