@@ -671,6 +671,7 @@ public class MagicCommandExecutor extends MagicMapExecutor {
         sender.sendMessage(ChatColor.AQUA + " Can build: " + formatBoolean(mage.hasBuildPermission(location.getBlock())));
         sender.sendMessage(ChatColor.AQUA + " Can break: " + formatBoolean(mage.hasBreakPermission(location.getBlock())));
         sender.sendMessage(ChatColor.AQUA + " Can pvp: " + formatBoolean(mage.isPVPAllowed(location)));
+		sender.sendMessage(ChatColor.AQUA + " Is disguised: " + formatBoolean(controller.isDisguised(mage.getEntity())));
         if (spell != null)
         {
             sender.sendMessage(ChatColor.AQUA + " Has pnode " + ChatColor.GOLD + spell.getPermissionNode() + ChatColor.AQUA + ": " + formatBoolean(spell.hasCastPermission(player)));
@@ -679,6 +680,7 @@ public class MagicCommandExecutor extends MagicMapExecutor {
             sender.sendMessage(ChatColor.GOLD + " " + spell.getName() + ChatColor.AQUA + " requires build: " + formatBoolean(spell.requiresBuildPermission()));
             sender.sendMessage(ChatColor.GOLD + " " + spell.getName() + ChatColor.AQUA + " requires break: " + formatBoolean(spell.requiresBreakPermission()));
             sender.sendMessage(ChatColor.GOLD + " " + spell.getName() + ChatColor.AQUA + " requires pvp: " + formatBoolean(spell.isPvpRestricted()));
+			sender.sendMessage(ChatColor.GOLD + " " + spell.getName() + ChatColor.AQUA + " allowed while disguised: " + formatBoolean(!spell.isDisguiseRestricted()));
             if (spell instanceof BaseSpell)
             {
                 boolean buildPermission = ((BaseSpell)spell).hasBuildPermission(location.getBlock());

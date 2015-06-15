@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.elmakers.mine.bukkit.plugins</groupId>
 	<artifactId>Magic</artifactId>
-	<version>5.1.6</version>
+	<version>5.2-SNAPSHOT</version>
 	<name>elMakers - Bukkit Plugins : Magic</name>
 	<url>http://mine.elmakers.com</url>
 	<dependencyManagement>
@@ -183,6 +183,12 @@
             <version>0.4-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
+		<dependency>
+			<groupId>LibsDisguises</groupId>
+			<artifactId>LibsDisguises</artifactId>
+			<version>8.2.6-SNAPSHOT</version>
+			<scope>provided</scope>
+		</dependency>
 	</dependencies>
 	<repositories>
         <repository>
@@ -235,6 +241,10 @@
             <id>NoCheatPlus</id>
             <url>http://ncp-repo.yawk.at/</url>
         </repository>
+		<repository>
+			<id>Yawkat</id>
+			<url>http://mvn.yawk.at/</url>
+		</repository>
     </repositories>
 	<build>
 	<resources>

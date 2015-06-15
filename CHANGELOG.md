@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## 5.1.7
+
+ - Add LibsDisguise integration, most spells cannot be cast while disguised.
+   This can be controlled via the "allow_disguised" parameter on spells.
+
 ## 5.1.6
 
  - Fix falling block velocity

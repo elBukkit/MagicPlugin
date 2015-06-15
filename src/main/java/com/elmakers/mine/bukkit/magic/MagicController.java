@@ -26,6 +26,7 @@ import com.elmakers.mine.bukkit.essentials.MagicItemDb;
 import com.elmakers.mine.bukkit.essentials.Mailer;
 import com.elmakers.mine.bukkit.heroes.HeroesManager;
 import com.elmakers.mine.bukkit.integration.BlockPhysicsManager;
+import com.elmakers.mine.bukkit.integration.LibsDisguiseManager;
 import com.elmakers.mine.bukkit.integration.VaultController;
 import com.elmakers.mine.bukkit.magic.command.MagicTabExecutor;
 import com.elmakers.mine.bukkit.magic.listener.AnvilController;
@@ -686,10 +687,19 @@ public class MagicController implements MageController {
         // Check for BlockPhysics
         Plugin blockPhysicsPlugin = plugin.getServer().getPluginManager().getPlugin("BlockPhysics");
         if (blockPhysicsPlugin == null) {
-            getLogger().info("BlockPhysics not found- install that plugin for physics-based block effects");
+            getLogger().info("BlockPhysics not found- install BlockPhysics for physics-based block effects");
         } else {
             blockPhysicsManager = new BlockPhysicsManager(plugin, blockPhysicsPlugin);
             getLogger().info("Integrated with BlockPhysics, some spells will now use physics-based block effects");
+        }
+
+        // Check for LibsDisguise
+        Plugin libsDisguisePlugin = plugin.getServer().getPluginManager().getPlugin("LibsDisguises");
+        if (libsDisguisePlugin == null) {
+            getLogger().info("LibsDisguises not found");
+        } else {
+            libsDisguiseManager = new LibsDisguiseManager(plugin, libsDisguisePlugin);
+            getLogger().info("Integrated with LibsDisguises, most spells can't be cast while disguised");
         }
 
         load();
@@ -3673,6 +3683,11 @@ public class MagicController implements MageController {
         return true;
     }
 
+    @Override
+    public boolean isDisguised(Entity entity) {
+        return libsDisguiseManager == null || entity == null ? false : libsDisguiseManager.isDisguised(entity);
+    }
+
     public boolean isLoaded() {
         return loaded;
     }
@@ -3895,6 +3910,7 @@ public class MagicController implements MageController {
     private NCPManager                          ncpManager       		    = new NCPManager();
     private HeroesManager                       heroesManager       		= null;
     private BlockPhysicsManager                 blockPhysicsManager         = null;
+    private LibsDisguiseManager                 libsDisguiseManager         = null;
 
     private List<BlockBreakManager>             blockBreakManagers          = new ArrayList<BlockBreakManager>();
     private List<BlockBuildManager>             blockBuildManagers          = new ArrayList<BlockBuildManager>();

@@ -4,7 +4,7 @@ version: ${project.version}
 website: http://mine.elmakers.com
 author: NathanWolf
 description : A gameplay-oriented plugin for spells and wands
-softdepend: [WorldGuard,Essentials,dynmap,dtlTraders,Factions,CommandBook,PvPManager,Multiverse-Core,WGCustomFlags,Citizens,Vault,GriefPrevention,Heroes,NoCheatPlus,BlockPhysics]
+softdepend: [WorldGuard,Essentials,dynmap,dtlTraders,Factions,CommandBook,PvPManager,Multiverse-Core,WGCustomFlags,Citizens,Vault,GriefPrevention,Heroes,NoCheatPlus,BlockPhysics,LibsDisguises]
 loadbefore: [Scavenger, SilkSpawners]
 commands:
   cast:
