@@ -1,7 +1,6 @@
 # TODO
 
- - Re-activating Levitate on upgrade adds a cast to the counter.. ?
- - Issues with switching to chest mode losing hotbar spells ?
+ - Add option to allow spells on a wand even with no permission.
 
  - Hover text for spells
  - Cat GIF generator? http://catdb.yawk.at/images?tag=gif

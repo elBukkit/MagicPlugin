@@ -982,15 +982,14 @@ spells:
     blink:
         name: Blink
         description: Teleport to your target
-        usage: Can pass through solid objects
         no_target: Can't blink there
         teleport_failed: Can't blink there
         teleport: Blink!
         cast: ""
     blink|2:
-        upgrade_description: "&r&b&bull; &6Increased range and passthrough"
+        upgrade_description: "&r&b&bull; &6Increased range, will pass through solid objects"
     blink|3:
-        upgrade_description: "&r&b&bull; &6Increased range and ascend/descend"
+        upgrade_description: "&r&b&bull; &6Increased range, can ascend/descend through the ground"
     absorb:
         name: Absorb
         description: Absorb some of the target

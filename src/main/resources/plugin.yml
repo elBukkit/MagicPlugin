@@ -28,6 +28,7 @@ commands:
         Use /help wand [subcommand] for more information
         /wand add        Add spells and brushes to a wand
         /wand remove     Remove spells or brushes from a wand
+        /wand restore    Restore a player's lost wands
         /wand configure  Set wand properties
         /wand describe   Show information about a wand
         /wand organize   Re-organize a wand's spell inventory
@@ -73,6 +74,10 @@ commands:
     description: Turn the item you are holding into a wand
     permission: Magic.commands.wand.enchant
     usage: /wand enchant
+  "wand restore":
+    description: Restore your lost wands
+    permission: Magic.commands.wand.restore
+    usage: /wand restore
   "wand unenchant":
     description: Turn the wand you are holding into a normal item, wiping its magic data
     permission: Magic.commands.wand.unenchant

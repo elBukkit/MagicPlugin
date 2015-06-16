@@ -97,7 +97,7 @@
 		<dependency>
 			<groupId>net.dandielo</groupId>
 			<artifactId>dtlTraders</artifactId>
-			<version>3.2.0-SNAPSHOT</version>
+			<version>3.3-SNAPSHOT</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
@@ -215,7 +215,7 @@
         </repository>
         <repository>
             <id>dtlTraders</id>
-            <url>http://dandielo.net:8081/nexus/content/repositories/snapshots/</url>
+            <url>http://repo.dandielo.net/content/repositories/snapshots/</url>
         </repository>
         <repository>
             <id>Plugin Metrics</id>
