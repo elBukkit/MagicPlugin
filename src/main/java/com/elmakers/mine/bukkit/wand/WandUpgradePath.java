@@ -384,7 +384,7 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
 
     @Override
     public String getName() {
-        return name;
+        return name == null ? key : name;
     }
 
     @Override
@@ -476,6 +476,8 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
         // First check to see if the path has more spells available
         if (!(apiWand instanceof Wand)) return false;
         Wand wand = (Wand)apiWand;
+        if (levelMap == null) return false;
+
         WandLevel maxLevel = levelMap.get(levels[levels.length - 1]);
         int spellCount = maxLevel.getSpellCount();
         int materialCount = maxLevel.getMaterialCount();
