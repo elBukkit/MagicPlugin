@@ -4,16 +4,30 @@ import com.elmakers.mine.bukkit.action.BaseSpellAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import org.bukkit.block.Block;
+import org.bukkit.configuration.ConfigurationSection;
 
 public class LightningAction extends BaseSpellAction {
+    private boolean effectOnly;
+
+    @Override
+    public void prepare(CastContext context, ConfigurationSection parameters)
+    {
+        super.prepare(context, parameters);
+        effectOnly = parameters.getBoolean("effect_only", false);
+    }
+
     public SpellResult perform(CastContext context)
     {
         Block block = context.getTargetBlock();
-        if (!context.hasBuildPermission(block))
-        {
-            return SpellResult.INSUFFICIENT_PERMISSION;
+        if (effectOnly) {
+            block.getWorld().strikeLightningEffect(block.getLocation());
+        } else {
+            if (!context.hasBuildPermission(block))
+            {
+                return SpellResult.INSUFFICIENT_PERMISSION;
+            }
+            block.getWorld().strikeLightning(block.getLocation());
         }
-        block.getWorld().strikeLightning(block.getLocation());
         return SpellResult.CAST;
     }
 
@@ -26,7 +40,7 @@ public class LightningAction extends BaseSpellAction {
     @Override
     public boolean requiresBuildPermission()
     {
-        return true;
+        return !effectOnly;
     }
 
     @Override
