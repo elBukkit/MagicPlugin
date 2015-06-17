@@ -4267,6 +4267,41 @@ blob|4:
         undo: 10000
         cooldown: 8000
 
+tendril:
+    icon: leash
+    icon_url: http://textures.minecraft.net/texture/564e7e4b718a7136188385cae256de87a6cb29c85744c9c123509a4c7cec69d0
+    category: combat
+    worth: 1000
+    actions:
+        cast:
+        - class: Volume
+          actions:
+          - class: Skip
+            actions:
+            - class: Delay
+          - class: ModifyBlock
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: magic.shield
+        -  class: EffectTrail
+           effect: step_sound
+    parameters:
+        target: block
+        allow_max_range: true
+        range: 6
+        oby: -1
+        radius: 8
+        undo: 2000
+        cooldown: 4000
+        brush: schematic|tendril
+        breakable: 3
+        destructible: air,fire
+        orient: true
+        skip: 8
+    costs:
+        mana: 100
+
 walls:
     icon: clay_ball
     icon_url: http://textures.minecraft.net/texture/4fed122b86ffaeaee36ab4a8c1c27f46fb5bddc83322c8a165d0f27aeb1830

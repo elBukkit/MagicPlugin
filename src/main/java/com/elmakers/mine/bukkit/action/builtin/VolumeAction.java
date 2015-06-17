@@ -145,6 +145,8 @@ public class VolumeAction extends CompoundAction
 					offset.setX(dx);
 					offset.setY(dz);
 					offset.setZ(dy);
+					Block originalBlock = block.getRelative(offset.getBlockX(), offset.getBlockY(), offset.getBlockZ());
+					actionContext.setTargetSourceLocation(originalBlock.getLocation());
 					offset = rotate(location.getYaw(), location.getPitch(), offset.getX(), offset.getY(), offset.getZ());
 				} else {
 					offset.setX(dx);

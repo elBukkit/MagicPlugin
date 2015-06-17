@@ -93,7 +93,7 @@ public class ModifyBlockAction extends BaseSpellAction {
         byte previousData = block.getData();
 
         Mage mage = context.getMage();
-        brush.update(mage, block.getLocation());
+        brush.update(mage, context.getTargetSourceLocation());
 
         if (brush.isDifferent(block)) {
             if (!commit) {
