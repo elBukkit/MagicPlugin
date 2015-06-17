@@ -29,6 +29,7 @@ public interface CastContext {
     public LivingEntity getLivingEntity();
     public Location getLocation();
     public Location getTargetLocation();
+    public Location getTargetSourceLocation();
     public Vector getDirection();
     public World getWorld();
     public Plugin getPlugin();
@@ -39,6 +40,7 @@ public interface CastContext {
     public Entity getTargetEntity();
     public void setTargetEntity(Entity targetEntity);
     public void setTargetLocation(Location targetLocation);
+    public void setTargetSourceLocation(Location targetLocation);
     public Spell getSpell();
     public Mage getMage();
     public Collection<EffectPlayer> getEffects(String key);
