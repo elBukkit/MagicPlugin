@@ -46,6 +46,7 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
     private final Location location;
     private final Entity entity;
     private Location targetLocation;
+    private Location targetSourceLocation;
     private Entity targetEntity;
     private UndoList undoList;
     private String targetName = null;
@@ -195,6 +196,11 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
     }
 
     @Override
+    public Location getTargetSourceLocation() {
+        return targetSourceLocation == null ? targetLocation : targetSourceLocation;
+    }
+
+    @Override
     public Block getTargetBlock() {
         return targetLocation == null ? null : targetLocation.getBlock();
     }
@@ -224,6 +230,11 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
     @Override
     public void setTargetLocation(Location targetLocation) {
         this.targetLocation = targetLocation;
+    }
+
+    @Override
+    public void setTargetSourceLocation(Location targetLocation) {
+        targetSourceLocation = targetLocation;
     }
 
     @Override
