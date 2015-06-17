@@ -323,8 +323,6 @@ wave:
     costs:
         mana: 150
 
-
-
 smash:
     icon: feather
     icon_url: http://textures.minecraft.net/texture/7cc2fb583d1762a16a50fa5ac37bc09b46def63e68205116d650391f9233ed
@@ -381,3 +379,61 @@ smash:
         repeat: 5
     costs:
         mana: 60
+
+shuriken:
+    name: Shuriken
+    description: Throw a damaging star
+    icon: double_plant:5
+    icon_url: http://textures.minecraft.net/texture/775c41bd5e4ef3cba5f9bdc5258973c95477e819cb20c163ffb378db5ae3
+    category: master
+    worth: 2000
+    actions:
+        cast:
+        -  class: Projectile
+           actions:
+           -  class: AreaOfEffect
+              actions:
+              - class: Explosion
+              - class: AreaOfEffect
+                actions:
+                - class: Damage
+        -  class: Repeat
+           actions:
+           - class: Delay
+           - class: AreaOfEffect
+             actions:
+             - class: Damage
+    effects:
+        projectile:
+        -  class: EffectSingle
+           location: origin
+           sound: villager_yes
+           effectlib:
+             class: HelixEffect
+             iterations: 8
+             period: 2
+             radius: 0.2
+             strands: 3
+             particles: 10
+             particle: redstone
+        hit:
+        -  class: EffectSingle
+           sound: villager_yes
+           location: origin
+           effectlib:
+             class: HelixEffect
+             particle: redstone
+             radius: 8
+    parameters:
+        set_target: true
+        projectile: Arrow
+        duration: 10000
+        cooldown: 30000
+        damage: 100
+        repeat: 5
+        delay: 1
+        size: 4
+        speed: 3
+        radius: 3
+    costs:
+        mana: 200

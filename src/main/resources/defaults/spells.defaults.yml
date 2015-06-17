@@ -2385,6 +2385,7 @@ familiar:
         cooldown: 30000
         range: 32
         undo: 20000
+        loot: false
     costs:
         mana: 20
 
@@ -4290,10 +4291,9 @@ tendril:
         target: block
         allow_max_range: true
         range: 6
-        oby: -1
         radius: 8
-        undo: 2000
-        cooldown: 4000
+        undo: 30000
+        cooldown: 45000
         brush: schematic|tendril
         breakable: 3
         destructible: air,fire
