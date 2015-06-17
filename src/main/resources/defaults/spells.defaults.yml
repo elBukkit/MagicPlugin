@@ -753,10 +753,14 @@ shell:
     alias: dome
     icon: ender_pearl
     category: combat
-    class: ConstructSpell
     worth: 1500
     upgrade_required_path: student
     upgrade_required_casts: 50
+    actions:
+        cast:
+        -  class: Sphere
+           actions:
+           -  class: ModifyBlock
     effects:
         cast:
         -  class: EffectSingle
@@ -1486,6 +1490,7 @@ tree:
         allow_max_range: false
         range: 64
         require_sapling: false
+        cooldown: 5000
     costs:
         mana: 20
 
@@ -1516,6 +1521,7 @@ forest:
         radius: 16
         repeat: 16
         require_sapling: false
+        cooldown: 30000
         biomes:
           swampland: tree,brown_mushroom,red_mushroom
           forest: tree,big_tree,birch,tall_birch
@@ -5059,6 +5065,7 @@ flare|2:
        firework: star
        radius: 8
        target_offset: 0,4,0
+       size: 6
 
 recall:
     icon_url: http://textures.minecraft.net/texture/58c573cefdc8cc1b8c894340cb54ab343523ec2ffa0afc7536968391ae1e7

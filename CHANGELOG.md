@@ -4,6 +4,7 @@
 
  - Add LibsDisguise integration, most spells cannot be cast while disguised.
    This can be controlled via the "allow_disguised" parameter on spells.
+ - Fix/Tweak shapes of Shell and Walls
 
 ## 5.1.6
 

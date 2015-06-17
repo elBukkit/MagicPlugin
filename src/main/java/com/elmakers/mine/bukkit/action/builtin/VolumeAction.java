@@ -21,12 +21,14 @@ public class VolumeAction extends CompoundAction
 	private static final int DEFAULT_RADIUS	= 2;
     protected boolean autoOrient;
 	protected int radius;
+	protected int radiusSquared;
     protected int currentRadius;
     protected float centerProbability;
     protected float outerProbability;
     protected int xSize;
     protected int ySize;
     protected int zSize;
+	protected int thickness;
     private int dy;
 	private int dx;
 	private int dz;
@@ -42,7 +44,7 @@ public class VolumeAction extends CompoundAction
         xSize = parameters.getInt("x_size", radius);
         ySize = parameters.getInt("y_size", radius);
         zSize = parameters.getInt("z_size", radius);
-        int thickness = parameters.getInt("thickness", 0);
+        thickness = parameters.getInt("thickness", 0);
 		autoOrient = parameters.getBoolean("orient", false);
 		centerProbability = (float)parameters.getDouble("probability", 1);
 		outerProbability = (float)parameters.getDouble("probability", 1);
@@ -52,11 +54,12 @@ public class VolumeAction extends CompoundAction
         ySize = (int)(context.getMage().getRadiusMultiplier() * this.ySize);
         zSize = (int)(context.getMage().getRadiusMultiplier() * this.zSize);
         radius = Math.max(xSize, zSize);
-        if (thickness > 0) {
-            startRadius = radius - thickness;
-        } else {
-            startRadius = 0;
-        }
+		radiusSquared = radius * radius;
+		startRadius = getStartRadius();
+	}
+
+	protected int getStartRadius() {
+		return 0;
 	}
 
 	@Override
@@ -208,7 +211,7 @@ public class VolumeAction extends CompoundAction
 
 	protected boolean containsPoint(int x, int y, int z)
 	{
-		return true;
+		return thickness == 0 ? true : (x > radius - thickness || y > radius - thickness || z > radius - thickness);
 	}
 
 	@Override
