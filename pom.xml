@@ -215,7 +215,7 @@
         </repository>
         <repository>
             <id>dtlTraders</id>
-            <url>http://repo.dandielo.net/content/repositories/snapshots/</url>
+			<url>http://dandielo.net:8081/nexus/content/repositories/snapshots/</url>
         </repository>
         <repository>
             <id>Plugin Metrics</id>
