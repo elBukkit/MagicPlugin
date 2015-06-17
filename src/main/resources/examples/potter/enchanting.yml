@@ -41,11 +41,11 @@ default:
       -  class: EffectRing
          firework: star
          radius: 4
-         size: 3
+         size: 2
       -  class: EffectRing
          firework: ball_large
          radius: 6
-         size: 5
+         size: 3
 
 year1:
     inherit: default

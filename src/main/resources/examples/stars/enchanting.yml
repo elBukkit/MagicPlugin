@@ -34,7 +34,7 @@ default:
            iterations: 10
            period: 2
            particle: enchantment_table
-           radius: 3
+           radius: 2
       upgrade:
       -  class: EffectSingle
          sound: level_up
@@ -45,7 +45,7 @@ default:
       -  class: EffectRing
          firework: ball_large
          radius: 6
-         size: 5
+         size: 3
 
 youngling:
     inherit: default
