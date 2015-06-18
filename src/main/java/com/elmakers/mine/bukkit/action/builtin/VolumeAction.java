@@ -164,11 +164,9 @@ public class VolumeAction extends CompoundAction
 			if (checked)
 			{
 				if (autoOrient) {
-                    // Intentionally flipped axes ..
-                    // May need to re-evaluate with volumes
 					offset.setX(dx);
-					offset.setY(dz);
-					offset.setZ(dy);
+					offset.setY(dy);
+					offset.setZ(dz);
 					Block originalBlock = block.getRelative(offset.getBlockX(), offset.getBlockY(), offset.getBlockZ());
 					actionContext.setTargetSourceLocation(originalBlock.getLocation());
 					offset = rotate(location.getYaw(), location.getPitch(), offset.getX(), offset.getY(), offset.getZ());
