@@ -50,9 +50,33 @@ public class VolumeAction extends CompoundAction
 		outerProbability = (float)parameters.getDouble("probability", 1);
 		centerProbability = (float)parameters.getDouble("center_probability", centerProbability);
 		outerProbability = (float)parameters.getDouble("outer_probability", outerProbability);
-        xSize = (int)(context.getMage().getRadiusMultiplier() * this.xSize);
-        ySize = (int)(context.getMage().getRadiusMultiplier() * this.ySize);
-        zSize = (int)(context.getMage().getRadiusMultiplier() * this.zSize);
+
+		if (parameters.getBoolean("use_brush_size", false)) {
+			MaterialBrush brush = context.getBrush();
+			if (!brush.isReady()) {
+				long timeout = System.currentTimeMillis() + 10000;
+				while (System.currentTimeMillis() < timeout) {
+					try {
+						Thread.sleep(500);
+						if (brush.isReady()) {
+							break;
+						}
+					} catch (InterruptedException ex) {
+						break;
+					}
+				}
+			}
+			if (brush.isReady()) {
+				Vector bounds = brush.getSize();
+				xSize = (int)Math.ceil(bounds.getX() / 2) + 1;
+				ySize = (int)Math.ceil(bounds.getY() / 2) + 1;
+				zSize = (int)Math.ceil(bounds.getZ() / 2) + 1;
+			}
+		} else {
+			xSize = (int) (context.getMage().getRadiusMultiplier() * this.xSize);
+			ySize = (int) (context.getMage().getRadiusMultiplier() * this.ySize);
+			zSize = (int) (context.getMage().getRadiusMultiplier() * this.zSize);
+		}
         radius = Math.max(xSize, zSize);
 		radiusSquared = radius * radius;
 		startRadius = getStartRadius();
@@ -224,6 +248,9 @@ public class VolumeAction extends CompoundAction
 		parameters.add("probability");
 		parameters.add("center_probability");
 		parameters.add("outer_probability");
+		parameters.add("use_brush_size");
+		parameters.add("thickness");
+		parameters.add("orient");
 	}
 
 	@Override
@@ -231,10 +258,12 @@ public class VolumeAction extends CompoundAction
 	{
 		super.getParameterOptions(spell, parameterKey, examples);
 
-		if (parameterKey.equals("radius")) {
+		if (parameterKey.equals("radius") || parameterKey.equals("thickness")) {
 			examples.addAll(Arrays.asList(BaseSpell.EXAMPLE_SIZES));
 		} else if (parameterKey.equals("probability") || parameterKey.equals("center_probability") || parameterKey.equals("outer_probability")) {
 			examples.addAll(Arrays.asList(BaseSpell.EXAMPLE_PERCENTAGES));
+		} else if (parameterKey.equals("orient") || parameterKey.equals("use_brush_size")) {
+			examples.addAll(Arrays.asList(BaseSpell.EXAMPLE_BOOLEANS));
 		}
 	}
 
