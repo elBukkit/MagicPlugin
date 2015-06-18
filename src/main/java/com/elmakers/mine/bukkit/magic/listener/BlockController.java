@@ -12,6 +12,7 @@ import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.FallingBlock;
 import org.bukkit.entity.Player;
@@ -31,6 +32,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.Collection;
+import java.util.Set;
 
 public class BlockController implements Listener {
     private final MagicController controller;
@@ -135,6 +137,7 @@ public class BlockController implements Listener {
     public void onBlockFromTo(BlockFromToEvent event) {
         Block targetBlock = event.getToBlock();
         Block sourceBlock = event.getBlock();
+
         UndoList undoList = controller.getPendingUndo(sourceBlock.getLocation());
         if (undoList != null)
         {
@@ -147,6 +150,27 @@ public class BlockController implements Listener {
             {
                 undoList.add(targetBlock);
             }
+        }
+        if (undoList != null && undoList.isScheduled())
+        {
+            // Avoid dropping broken items!
+            Set<Material> doubles = com.elmakers.mine.bukkit.block.UndoList.attachablesDouble;
+            if (doubles != null && doubles.contains(targetBlock.getType()))
+            {
+                Block upBlock = targetBlock.getRelative(BlockFace.UP);
+                while (doubles.contains(upBlock.getType())) {
+                    undoList.add(upBlock);
+                    upBlock.setTypeIdAndData(Material.AIR.ordinal(), (byte) 0, false);
+                    upBlock = upBlock.getRelative(BlockFace.UP);
+                }
+                Block downBlock = targetBlock.getRelative(BlockFace.DOWN);
+                while (doubles.contains(downBlock.getType())) {
+                    undoList.add(downBlock);
+                    downBlock.setTypeIdAndData(Material.AIR.ordinal(), (byte) 0, false);
+                    downBlock = downBlock.getRelative(BlockFace.DOWN);
+                }
+            }
+            targetBlock.setTypeIdAndData(Material.AIR.ordinal(), (byte) 0, false);
         }
     }
 

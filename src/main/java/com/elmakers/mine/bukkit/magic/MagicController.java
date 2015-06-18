@@ -1955,6 +1955,9 @@ public class MagicController implements MageController {
         if (materialSets.containsKey("attachable_wall")) {
             com.elmakers.mine.bukkit.block.UndoList.attachablesWall = materialSets.get("attachable_wall");
         }
+        if (materialSets.containsKey("attachable_double")) {
+            com.elmakers.mine.bukkit.block.UndoList.attachablesDouble = materialSets.get("attachable_double");
+        }
 	}
 	
 	protected void loadProperties(ConfigurationSection properties)

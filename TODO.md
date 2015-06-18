@@ -2,6 +2,7 @@
 
  - Make sure to cancel spells when undoing them, for spells-in-progress
  - Maximum enchant count for wands
+ - Support for summoning wither skellies (make use of EntityData somehow in Spawn action?)
 
  - Hover text for spells
  - Cat GIF generator? http://catdb.yawk.at/images?tag=gif
