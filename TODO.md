@@ -1,6 +1,7 @@
 # TODO
 
- - Add option to allow spells on a wand even with no permission.
+ - Make sure to cancel spells when undoing them, for spells-in-progress
+ - Maximum enchant count for wands
 
  - Hover text for spells
  - Cat GIF generator? http://catdb.yawk.at/images?tag=gif
@@ -28,7 +29,6 @@
  - Add repeat option for schematic brushes
    - or generalized option that works with map, too
  - /magic describe should show info about current spell?
- - Maximum enchant count for wands
 
 ## Old Stuff
 

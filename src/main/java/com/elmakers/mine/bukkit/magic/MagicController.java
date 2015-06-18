@@ -2247,6 +2247,12 @@ public class MagicController implements MageController {
         scheduledUndo.add(undoList);
     }
 
+    @Override
+    public void cancelScheduledUndo(UndoList undoList)
+    {
+        scheduledUndo.remove(undoList);
+    }
+
 	public boolean hasWandPermission(Player player)
 	{
 		return hasPermission(player, "Magic.wand.use", true);
