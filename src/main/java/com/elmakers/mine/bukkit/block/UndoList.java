@@ -44,6 +44,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
 {
     public static Set<Material>         attachables;
     public static Set<Material>         attachablesWall;
+    public static Set<Material>         attachablesDouble;
 
     protected static Map<Long, BlockData> modified = new HashMap<Long, BlockData>();
 
@@ -216,6 +217,17 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
                     attached = new HashSet<Long>();
                 }
                 attached.add(blockId);
+                if (attachablesDouble != null && attachablesDouble.contains(material))
+                {
+                    if (direction != BlockFace.UP)
+                    {
+                        addAttachable(newBlock, BlockFace.DOWN, materials);
+                    }
+                    else if (direction != BlockFace.DOWN)
+                    {
+                        addAttachable(newBlock, BlockFace.UP, materials);
+                    }
+                }
                 return true;
             }
         }
