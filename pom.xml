@@ -195,6 +195,10 @@
             <id>elMakers</id>
             <url>http://maven.elmakers.com/repository/</url>
         </repository>
+		<repository>
+			<id>Yawkat</id>
+			<url>http://mvn.yawk.at/</url>
+		</repository>
         <repository>
             <id>SacredCoding</id>
             <name>SacredCoding-releases</name>
@@ -215,7 +219,7 @@
         </repository>
         <repository>
             <id>dtlTraders</id>
-			<url>http://dandielo.net:8081/nexus/content/repositories/snapshots/</url>
+            <url>http://repo.dandielo.net/content/repositories/snapshots/</url>
         </repository>
         <repository>
             <id>Plugin Metrics</id>
@@ -241,10 +245,6 @@
             <id>NoCheatPlus</id>
             <url>http://ncp-repo.yawk.at/</url>
         </repository>
-		<repository>
-			<id>Yawkat</id>
-			<url>http://mvn.yawk.at/</url>
-		</repository>
     </repositories>
 	<build>
 	<resources>
