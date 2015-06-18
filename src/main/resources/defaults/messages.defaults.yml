@@ -496,8 +496,9 @@ spells:
         cast: Look out!
     neutron:
         name: Neutron Bomb
-        description: Kill all entities in a wide radius
-        cast: You kill everything in the area
+        description: Kill entities in a wide radius
+        cast: Kill all the things!
+        upgrade_description: "&r&b&bull; &6Increased chance of damage"
     weather:
         name: Weather
         description: Change the weather

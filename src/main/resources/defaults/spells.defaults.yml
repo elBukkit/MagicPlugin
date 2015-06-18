@@ -829,6 +829,7 @@ reflect:
         allow_max_range: true
         range: 3
         radius: 0
+        axis: x
         brush: stained_glass
         orient: true
         transparent: transparent_to_construction
@@ -856,6 +857,8 @@ reflect|2:
         mana: 50
 
 reflect|3:
+    upgrade_required_path: master
+    upgrade_required_casts: 50
     parameters:
         radius: 1
         undo: 1000
@@ -863,6 +866,15 @@ reflect|3:
         breakable: 1
     costs:
         mana: 55
+
+reflect|4:
+    parameters:
+        radius: 2
+        undo: 1100
+        reflect_chance: 1
+        breakable: 1
+    costs:
+        mana: 60
 
 disc:
     upgrade_required_path: master
@@ -1924,6 +1936,8 @@ icbm:
         mana: 100
 
 neutron:
+    upgrade_required_path: master
+    upgrade_required_casts: 50
     icon_url: http://textures.minecraft.net/texture/1eed1e4d70522ccd538b75ded4baa680e3dfe55426c560ff7b521be5cdf614f
     icon: poisonous_potato
     category: dark
@@ -1934,7 +1948,9 @@ neutron:
            actions:
            -  class: AreaOfEffect
               actions:
-              -  class: Damage
+              -  class: Probability
+                 actions:
+                 -  class: Damage
     effects:
         cast:
         -  class: EffectSingle
@@ -1956,6 +1972,10 @@ neutron:
         cooldown: 10000
     costs:
         mana: 150
+
+neutron|2:
+    parameters:
+      probability: 0.75
 
 wither:
     upgrade_required_path: apprentice
@@ -4291,14 +4311,15 @@ tendril:
         target: block
         allow_max_range: true
         range: 6
-        radius: 8
+        use_brush_size: true
         undo: 30000
         cooldown: 45000
         brush: schematic|tendril
         breakable: 3
         destructible: air,fire
         orient: true
-        skip: 8
+        skip: 16
+        delay: 10
     costs:
         mana: 100
 
