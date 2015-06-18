@@ -342,6 +342,10 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
     public void undo(boolean blocking)
     {
         undo(blocking, true);
+        if (isScheduled())
+        {
+            owner.getController().cancelScheduledUndo(this);
+        }
     }
 
     public void undoScheduled(boolean blocking)

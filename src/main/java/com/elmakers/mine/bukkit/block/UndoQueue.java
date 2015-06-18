@@ -62,11 +62,6 @@ public class UndoQueue implements com.elmakers.mine.bukkit.api.block.UndoQueue
             head.setNext(addList);
             head = addList;
         }
-
-        if (addList.isScheduled())
-        {
-            owner.getController().scheduleUndo(addList);
-        }
     }
 
     public void removed(UndoList list)
@@ -222,6 +217,11 @@ public class UndoQueue implements com.elmakers.mine.bukkit.api.block.UndoQueue
                     UndoList list = new com.elmakers.mine.bukkit.block.UndoList(owner);
                     list.load(listNode);
                     add(list);
+
+                    if (list.isScheduled())
+                    {
+                        owner.getController().scheduleUndo(list);
+                    }
                 }
             }
         } catch (Exception ex) {
