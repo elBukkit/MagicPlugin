@@ -201,7 +201,11 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
             } else if (messages != null) {
                 brushKey = messages.get("wand.map_material_name");
             }
-            brushKey = brushKey.replace("$id", Short.toString(mapId));
+            if (mapId > 0) {
+                brushKey = brushKey.replace("$id", Short.toString(mapId));
+            } else {
+                brushKey = brushKey.replace("$id", "");
+            }
             break;
         case SCHEMATIC:
             brushKey = schematicName;
