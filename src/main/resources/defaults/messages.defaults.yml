@@ -972,6 +972,9 @@ spells:
         name: EMP
         description: Electrify the area
         cast_finish: Electrified $count blocks
+    ghast:
+        name: Ghast
+        description: Summon a menacing Ghast
     familiar:
         name: Familiar
         description: Create an animal familiar

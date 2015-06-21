@@ -6,6 +6,8 @@
  - Add LibsDisguise integration, most spells cannot be cast while disguised.
    This can be controlled via the "allow_disguised" parameter on spells.
  - Fix/Tweak shapes of Shell and Walls
+ - Add skeleton_type parameter to SpawnEntity action
+ - Add "ghast" spell, mainly for playing with the SpawnEntity action
 
 ## 5.1.6
 

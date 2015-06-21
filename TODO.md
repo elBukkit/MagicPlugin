@@ -1,9 +1,11 @@
 # TODO
 
+ - Add /mmap reload command
+
+ - Test Ghast spell- why is it not undoing their fireball damage?
  - Maximum enchant count for wands
 
  - Make sure to cancel spells when undoing them, for spells-in-progress
- - Support for summoning wither skellies (make use of EntityData somehow in Spawn action?)
 
  - Hover text for spells
  - Cat GIF generator? http://catdb.yawk.at/images?tag=gif

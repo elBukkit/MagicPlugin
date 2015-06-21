@@ -6,6 +6,7 @@ import com.elmakers.mine.bukkit.api.effect.EffectPlayer;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
+import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
@@ -21,7 +22,9 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Ageable;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.ExperienceOrb;
 import org.bukkit.entity.Horse;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Ocelot;
 import org.bukkit.entity.PigZombie;
@@ -57,6 +60,9 @@ public class SpawnEntityAction extends BaseSpellAction
     private Vector direction = null;
     private double speed;
     private double dyOffset;
+    private MaterialAndData item = null;
+    private int amount;
+    private Skeleton.SkeletonType skeletonType = null;
     private Horse.Variant horseVariant = null;
     private Horse.Color horseColor = null;
     private Horse.Style horseStyle = null;
@@ -74,6 +80,8 @@ public class SpawnEntityAction extends BaseSpellAction
         speed = parameters.getDouble("speed", 0);
         direction = ConfigurationUtils.getVector(parameters, "direction");
         dyOffset = parameters.getDouble("dy_offset", 0);
+        item = ConfigurationUtils.getMaterialAndData(parameters, "item");
+        amount = parameters.getInt("amount", 1);
         try {
             String entityTypeName = parameters.getString("type", "");
             if (!entityTypeName.isEmpty())
@@ -138,6 +146,15 @@ public class SpawnEntityAction extends BaseSpellAction
             try {
                 String colorString = parameters.getString("color");
                 color = DyeColor.valueOf(colorString.toUpperCase());
+            } catch (Exception ex) {
+            }
+        }
+
+        skeletonType = null;
+        if (parameters.contains("skeleton_type")) {
+            try {
+                String skeletonString = parameters.getString("skeleton_type");
+                skeletonType = Skeleton.SkeletonType.valueOf(skeletonString.toUpperCase());
             } catch (Exception ex) {
             }
         }
@@ -226,6 +243,10 @@ public class SpawnEntityAction extends BaseSpellAction
             Ocelot ocelot = (Ocelot)spawnedEntity;
             ocelot.setCatType(ocelotType);
         }
+        if (spawnedEntity instanceof Skeleton && skeletonType != null) {
+            Skeleton skeleton = (Skeleton)spawnedEntity;
+            skeleton.setSkeletonType(skeletonType);
+        }
         if (spawnedEntity instanceof Sheep && color != null) {
             Sheep sheep = (Sheep)spawnedEntity;
             sheep.setColor(color);
@@ -233,6 +254,12 @@ public class SpawnEntityAction extends BaseSpellAction
         if (spawnedEntity instanceof Wolf && color != null) {
             Wolf wolf = (Wolf)spawnedEntity;
             wolf.setCollarColor(color);
+        }
+        if (spawnedEntity instanceof Item && item != null) {
+            ((Item)spawnedEntity).setItemStack(item.getItemStack(amount));
+        }
+        if (spawnedEntity instanceof ExperienceOrb) {
+            ((ExperienceOrb)spawnedEntity).setExperience(amount);
         }
         if (spawnedEntity instanceof LivingEntity && health != null) {
             ((LivingEntity)spawnedEntity).setMaxHealth(health);
@@ -330,12 +357,47 @@ public class SpawnEntityAction extends BaseSpellAction
         parameters.add("name");
         parameters.add("type");
         parameters.add("speed");
+        parameters.add("reason");
+        parameters.add("skeleton_type");
+        parameters.add("ocelot_type");
+        parameters.add("horse_variant");
+        parameters.add("horse_style");
+        parameters.add("horse_color");
+        parameters.add("color");
     }
 
     @Override
     public void getParameterOptions(Spell spell, String parameterKey, Collection<String> examples) {
         if (parameterKey.equals("type")) {
             for (EntityType type : EntityType.values()) {
+                examples.add(type.name().toLowerCase());
+            }
+        } else if (parameterKey.equals("reason")) {
+            for (CreatureSpawnEvent.SpawnReason type : CreatureSpawnEvent.SpawnReason.values()) {
+                examples.add(type.name().toLowerCase());
+            }
+        } else if (parameterKey.equals("skeleton_type")) {
+            for (Skeleton.SkeletonType type : Skeleton.SkeletonType.values()) {
+                examples.add(type.name().toLowerCase());
+            }
+        } else if (parameterKey.equals("ocelot_type")) {
+            for (Ocelot.Type type : Ocelot.Type.values()) {
+                examples.add(type.name().toLowerCase());
+            }
+        } else if (parameterKey.equals("horse_variant")) {
+            for (Horse.Variant type : Horse.Variant.values()) {
+                examples.add(type.name().toLowerCase());
+            }
+        } else if (parameterKey.equals("horse_style")) {
+            for (Horse.Style type : Horse.Style.values()) {
+                examples.add(type.name().toLowerCase());
+            }
+        } else if (parameterKey.equals("horse_color")) {
+            for (Horse.Color type : Horse.Color.values()) {
+                examples.add(type.name().toLowerCase());
+            }
+        } else if (parameterKey.equals("color")) {
+            for (DyeColor type : DyeColor.values()) {
                 examples.add(type.name().toLowerCase());
             }
         } else if (parameterKey.equals("track") || parameterKey.equals("loot") || parameterKey.equals("baby")) {
