@@ -504,6 +504,16 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
         return ((spellCount > 0 && remainingSpells.size() > 0) || (needsMaterials && materialCount > 0 && remainingMaterials.size() > 0));
     }
 
+    public boolean hasSpells() {
+        WandLevel maxLevel = levelMap.get(levels[levels.length - 1]);
+        return maxLevel.getSpellProbabilityCount() > 0 && maxLevel.getSpellCount() > 0;
+    }
+
+    public boolean hasMaterials() {
+        WandLevel maxLevel = levelMap.get(levels[levels.length - 1]);
+        return maxLevel.getMaterialProbabilityCount() > 0 && maxLevel.getMaterialCount() > 0;
+    }
+
     @Override
     public boolean checkUpgradeRequirements(com.elmakers.mine.bukkit.api.wand.Wand wand, com.elmakers.mine.bukkit.api.magic.Mage mage) {
         if (requiredSpells == null && requiredSpells.isEmpty()) return true;

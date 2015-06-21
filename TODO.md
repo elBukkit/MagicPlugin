@@ -1,7 +1,9 @@
 # TODO
 
- - Make sure to cancel spells when undoing them, for spells-in-progress
+ - Fix Disc
  - Maximum enchant count for wands
+
+ - Make sure to cancel spells when undoing them, for spells-in-progress
  - Support for summoning wither skellies (make use of EntityData somehow in Spawn action?)
 
  - Hover text for spells

@@ -257,6 +257,19 @@ public class WandLevel {
 				}
 			}
 		}
+
+        // Let them upgrade if they aren't getting any new spells or brushes
+        if (hasUpgrade && !(addedMaterials && needsMaterials) && !addedSpells && ((getSpellCount() > 0 && spellProbability.size() > 0) || (getMaterialCount() > 0 && materialProbability.size() > 0)))
+        {
+            if (mage != null && mage.getDebugLevel() > 0) {
+                mage.sendMessage("Has upgrade: " +  hasUpgrade);
+                mage.sendMessage("Added spells: " +  addedSpells);
+                mage.sendMessage("Spells per enchant: " + getSpellCount());
+                mage.sendMessage("Spells in list: " + spellProbability.size());
+                mage.sendMessage("Added brushes: " +  addedMaterials + ", needed: " + needsMaterials);
+            }
+            return false;
+        }
 		
 		// Add random wand properties
 		boolean addedProperties = false;
@@ -429,4 +442,12 @@ public class WandLevel {
 		wand.loadProperties(wandProperties);
 		return addedMaterials || addedSpells || addedProperties;
 	}
+
+    public int getSpellProbabilityCount() {
+        return spellProbability.size();
+    }
+
+    public int getMaterialProbabilityCount() {
+        return materialProbability.size();
+    }
 }
