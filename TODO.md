@@ -1,6 +1,5 @@
 # TODO
 
- - Fix Disc
  - Maximum enchant count for wands
 
  - Make sure to cancel spells when undoing them, for spells-in-progress

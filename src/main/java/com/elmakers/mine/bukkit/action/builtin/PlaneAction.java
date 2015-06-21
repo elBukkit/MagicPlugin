@@ -16,6 +16,8 @@ public class PlaneAction extends VolumeAction
 			axis = Axis.X;
 		} else if (axisType.equalsIgnoreCase("z")) {
 			axis = Axis.Z;
+		} else {
+			axis = Axis.Y;
 		}
 		switch (axis)
 		{
