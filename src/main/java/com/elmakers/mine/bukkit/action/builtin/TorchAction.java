@@ -81,6 +81,9 @@ public class TorchAction extends BaseSpellAction
 		if (targetMaterial.getMaterial() == torchType)
 		{
 			BlockFace direction = face.getFace(target);
+			if (direction == null) {
+				direction = direction.SELF;
+			}
 			switch (direction)
 			{
 				case WEST:
