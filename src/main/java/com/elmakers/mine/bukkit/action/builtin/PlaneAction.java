@@ -12,10 +12,14 @@ public class PlaneAction extends VolumeAction
 	public void prepare(CastContext context, ConfigurationSection parameters) {
 		super.prepare(context, parameters);
 		String axisType = parameters.getString("axis");
-		if (axisType.equalsIgnoreCase("x")) {
-			axis = Axis.X;
-		} else if (axisType.equalsIgnoreCase("z")) {
-			axis = Axis.Z;
+		if (axisType != null) {
+			if (axisType.equalsIgnoreCase("x")) {
+				axis = Axis.X;
+			} else if (axisType.equalsIgnoreCase("z")) {
+				axis = Axis.Z;
+			} else {
+				axis = Axis.Y;
+			}
 		} else {
 			axis = Axis.Y;
 		}
