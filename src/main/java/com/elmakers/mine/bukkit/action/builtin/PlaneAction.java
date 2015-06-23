@@ -10,7 +10,6 @@ public class PlaneAction extends VolumeAction
 
 	@Override
 	public void prepare(CastContext context, ConfigurationSection parameters) {
-		super.prepare(context, parameters);
 		String axisType = parameters.getString("axis");
 		if (axisType != null) {
 			if (axisType.equalsIgnoreCase("x")) {
@@ -23,6 +22,10 @@ public class PlaneAction extends VolumeAction
 		} else {
 			axis = Axis.Y;
 		}
+		super.prepare(context, parameters);
+	}
+
+	protected void calculateSize(CastContext context) {
 		switch (axis)
 		{
 			case X:
@@ -35,6 +38,7 @@ public class PlaneAction extends VolumeAction
 				ySize = 0;
 				break;
 		}
+		super.calculateSize(context);
 	}
 
 	protected boolean containsPoint(int x, int y, int z)

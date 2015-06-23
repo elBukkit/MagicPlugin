@@ -829,7 +829,7 @@ reflect:
         allow_max_range: true
         range: 3
         radius: 0
-        axis: x
+        axis: z
         brush: stained_glass
         orient: true
         transparent: transparent_to_construction
@@ -4356,6 +4356,7 @@ tendril:
         orient: true
         skip: 16
         delay: 10
+        spiral: false
     costs:
         mana: 100
 
@@ -4600,6 +4601,7 @@ absorb:
            effect: step_sound
            reverse: true
     parameters:
+        target: block
         allow_max_range: false
         range: 64
         transparent: transparent_to_construction
@@ -4622,6 +4624,7 @@ hat:
            effect: step_sound
            reverse: true
     parameters:
+        target: block
         allow_max_range: false
         range: 32
         cooldown: 30000

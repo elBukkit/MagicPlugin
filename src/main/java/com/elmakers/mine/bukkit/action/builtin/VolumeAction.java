@@ -36,6 +36,15 @@ public class VolumeAction extends CompoundAction
 	private int zDirection;
     private int startRadius;
 	private boolean checked;
+	private Vector min;
+	private Vector max;
+	private VolumeType volumeType;
+
+	private enum VolumeType {
+		SPIRAL,
+		YZX,
+		YXZ
+	}
 
 	@Override
 	public void prepare(CastContext context, ConfigurationSection parameters) {
@@ -50,7 +59,20 @@ public class VolumeAction extends CompoundAction
 		outerProbability = (float)parameters.getDouble("probability", 1);
 		centerProbability = (float)parameters.getDouble("center_probability", centerProbability);
 		outerProbability = (float)parameters.getDouble("outer_probability", outerProbability);
+		String typeString = parameters.getString("volume_type");
+		if (typeString != null) {
+			try {
+				volumeType = VolumeType.valueOf(typeString.toUpperCase());
+			} catch (Exception ex) {
+				volumeType = VolumeType.SPIRAL;
+			}
+ 		} else {
+			volumeType = VolumeType.SPIRAL;
+		}
+		calculateSize(context);
+	}
 
+	protected void calculateSize(CastContext context) {
 		if (parameters.getBoolean("use_brush_size", false)) {
 			MaterialBrush brush = context.getBrush();
 			if (!brush.isReady()) {
@@ -71,13 +93,24 @@ public class VolumeAction extends CompoundAction
 				xSize = (int)Math.ceil(bounds.getX() / 2) + 1;
 				ySize = (int)Math.ceil(bounds.getY() / 2) + 1;
 				zSize = (int)Math.ceil(bounds.getZ() / 2) + 1;
+				if (volumeType == VolumeType.SPIRAL) {
+					xSize = Math.max(xSize, zSize);
+					zSize = Math.max(xSize, zSize);
+				}
 			}
 		} else {
 			xSize = (int) (context.getMage().getRadiusMultiplier() * this.xSize);
 			ySize = (int) (context.getMage().getRadiusMultiplier() * this.ySize);
 			zSize = (int) (context.getMage().getRadiusMultiplier() * this.zSize);
 		}
-        radius = Math.max(xSize, zSize);
+		if (volumeType == VolumeType.SPIRAL && xSize != zSize) {
+			volumeType = VolumeType.YZX;
+		}
+		if (volumeType != VolumeType.SPIRAL) {
+			min = new Vector(-xSize, -ySize, -zSize);
+			max = new Vector(xSize, ySize, zSize);
+		}
+		radius = Math.max(xSize, zSize);
 		radiusSquared = radius * radius;
 		startRadius = getStartRadius();
 	}
@@ -90,13 +123,18 @@ public class VolumeAction extends CompoundAction
 	public void reset(CastContext context) {
 		super.reset(context);
         createActionContext(context);
-		currentRadius = startRadius;
-
-		dx = -Math.min(startRadius, xSize);
-        dy = -ySize;
-		dz = -Math.min(startRadius, zSize);
-		xDirection = 1;
-		zDirection = 0;
+		if (volumeType == VolumeType.SPIRAL) {
+			currentRadius = startRadius;
+			dx = -Math.min(startRadius, xSize);
+			dy = -ySize;
+			dz = -Math.min(startRadius, zSize);
+			xDirection = 1;
+			zDirection = 0;
+		} else {
+			dx = min.getBlockX();
+			dy = min.getBlockY();
+			dz = min.getBlockZ();
+		}
 		checked = false;
         MaterialBrush brush = context.getBrush();
         brush.setTarget(context.getTargetLocation());
@@ -111,6 +149,10 @@ public class VolumeAction extends CompoundAction
 		double sinPitch = Math.sin(angle);
 		double cosPitch = Math.cos(angle);
 
+		double finalX = x * cosYaw + (y * sinPitch + z * cosPitch) * sinYaw;
+		double finalY = y * cosPitch - z * sinPitch;
+		double finalZ = -x * sinYaw + (y * sinPitch + z * cosPitch) * cosYaw;
+		/*
 		// X-axis rotation
 		// This mainly used for planes, that have no z-components.
         // Needs additional testing for volumes, probably. See below.
@@ -128,101 +170,179 @@ public class VolumeAction extends CompoundAction
 		double finalX = pitchedX * cosYaw + pitchedZ * sinYaw;
 		double finalY = pitchedY; // y
 		double finalZ = -pitchedX * sinYaw + pitchedZ * cosYaw;
-
+*/
 		return new Vector(finalX + 0.5, finalY + 0.5, finalZ + 0.5);
+	}
+
+	protected SpellResult checkPoint(CastContext context) {
+		SpellResult result = SpellResult.NO_ACTION;
+		if (!checked) {
+			checked = containsPoint(dx, dy, dz);
+			float probability = centerProbability;
+			if (centerProbability != outerProbability) {
+				float weight = Math.abs((float) dx + dz) / ((float) radius * 2);
+				probability = RandomUtils.lerp(centerProbability, outerProbability, weight);
+			}
+			checked = checked && (probability >= 1 || context.getRandom().nextDouble() <= probability);
+		}
+		if (checked)
+		{
+			Location location = context.getLocation();
+			Block block = context.getTargetBlock();
+			Vector offset = new Vector();
+			if (autoOrient) {
+				offset.setX(dx);
+				offset.setY(dy);
+				offset.setZ(dz);
+				Block originalBlock = block.getRelative(offset.getBlockX(), offset.getBlockY(), offset.getBlockZ());
+				actionContext.setTargetSourceLocation(originalBlock.getLocation());
+				offset = rotate(location.getYaw(), location.getPitch(), offset.getX(), offset.getY(), offset.getZ());
+			} else {
+				offset.setX(dx);
+				offset.setY(dy);
+				offset.setZ(dz);
+			}
+			Block targetBlock = block.getRelative(offset.getBlockX(), offset.getBlockY(), offset.getBlockZ());
+			actionContext.setTargetLocation(targetBlock.getLocation());
+
+			SpellResult actionResult = super.perform(actionContext);
+			result = result.min(actionResult);
+		}
+		else
+		{
+			skippedActions(context);
+		}
+
+		return result;
+	}
+
+	protected SpellResult performYZX(CastContext context) {
+		SpellResult result = SpellResult.NO_ACTION;
+		while (dx <= max.getBlockX() && dy <= max.getBlockY() && dz <= max.getBlockZ())
+		{
+			result = checkPoint(context);
+			if (result == SpellResult.PENDING) {
+				break;
+			}
+
+			dy++;
+			if (dy > max.getBlockY()) {
+				dy = min.getBlockY();
+				dz++;
+				if (dz > max.getBlockZ()) {
+					dz = min.getBlockZ();
+					dx++;
+				}
+			}
+			checked = false;
+			super.reset(context);
+		}
+
+		return result;
+	}
+
+	protected SpellResult performYXZ(CastContext context) {
+		SpellResult result = SpellResult.NO_ACTION;
+		while (dx <= max.getBlockX() && dy <= max.getBlockY() && dz <= max.getBlockZ())
+		{
+			result = checkPoint(context);
+			if (result == SpellResult.PENDING) {
+				break;
+			}
+
+			dy++;
+			if (dy > max.getBlockY()) {
+				dy = min.getBlockY();
+				dx++;
+				if (dx > max.getBlockX()) {
+					dx = min.getBlockX();
+					dz++;
+				}
+			}
+			checked = false;
+			super.reset(context);
+		}
+
+		return result;
+	}
+
+	protected SpellResult performSpiral(CastContext context) {
+		SpellResult result = SpellResult.NO_ACTION;
+		while (currentRadius <= radius)
+		{
+			result = checkPoint(context);
+			if (result == SpellResult.PENDING) {
+				break;
+			}
+
+			dy++;
+			if (dy > ySize) {
+				dy = -ySize;
+				int nextX = dx + xDirection;
+				int nextZ = dz + zDirection;
+				int endX = Math.min(currentRadius, xSize);
+				int endZ = Math.min(currentRadius, zSize);
+				if ((xDirection == 0 && zDirection == -1 && nextX <= -endX && nextZ <= -endZ) || currentRadius == 0) {
+					currentRadius++;
+					dx = -currentRadius;
+					dz = -currentRadius;
+					xDirection = 1;
+					zDirection = 0;
+				} else if (nextX > currentRadius || nextZ > endZ || nextX < -endX || nextZ < -endZ) {
+					if (xDirection == 1 && zDirection == 0) {
+						xDirection = 0;
+						zDirection = 1;
+						dz += zDirection;
+					} else if (xDirection == 0 && zDirection == 1) {
+						xDirection = -1;
+						zDirection = 0;
+						dx += xDirection;
+					} else {
+						xDirection = 0;
+						zDirection = -1;
+						dz += zDirection;
+					}
+				} else {
+					dx = nextX;
+					dz = nextZ;
+				}
+			}
+			checked = false;
+			super.reset(context);
+		}
+
+		return result;
+	}
+
+	public SpellResult performSingle(CastContext context) {
+		if (!checked && centerProbability < 1 && context.getRandom().nextDouble() <= centerProbability)
+		{
+			return SpellResult.NO_ACTION;
+		}
+		Block block = context.getTargetBlock();
+		checked = true;
+		actionContext.setTargetLocation(block.getLocation());
+		return super.perform(actionContext);
 	}
 
 	@Override
 	public SpellResult perform(CastContext context) {
-		Block block = context.getTargetBlock();
-
 		if (radius < 1 && ySize < 1)
 		{
-			if (!checked && centerProbability < 1 && context.getRandom().nextDouble() <= centerProbability)
-			{
-				return SpellResult.NO_ACTION;
-			}
-			checked = true;
-			actionContext.setTargetLocation(block.getLocation());
-			return super.perform(actionContext);
+			return performSingle(context);
 		}
 
-		Location location = context.getLocation();
 		SpellResult result = SpellResult.NO_ACTION;
-		Vector offset = new Vector();
-		while (currentRadius <= radius)
-		{
-			if (!checked) {
-				checked = containsPoint(dx, dy, dz);
-				float probability = centerProbability;
-				if (centerProbability != outerProbability) {
-					float weight = Math.abs((float) dx + dz) / ((float) radius * 2);
-					probability = RandomUtils.lerp(centerProbability, outerProbability, weight);
-				}
-				checked = checked && (probability >= 1 || context.getRandom().nextDouble() <= probability);
-			}
-			if (checked)
-			{
-				if (autoOrient) {
-					offset.setX(dx);
-					offset.setY(dy);
-					offset.setZ(dz);
-					Block originalBlock = block.getRelative(offset.getBlockX(), offset.getBlockY(), offset.getBlockZ());
-					actionContext.setTargetSourceLocation(originalBlock.getLocation());
-					offset = rotate(location.getYaw(), location.getPitch(), offset.getX(), offset.getY(), offset.getZ());
-				} else {
-					offset.setX(dx);
-					offset.setY(dy);
-					offset.setZ(dz);
-				}
-				Block targetBlock = block.getRelative(offset.getBlockX(), offset.getBlockY(), offset.getBlockZ());
-				actionContext.setTargetLocation(targetBlock.getLocation());
-
-				SpellResult actionResult = super.perform(actionContext);
-				result = result.min(actionResult);
-				if (actionResult == SpellResult.PENDING) {
-					break;
-				}
-			}
-			else
-			{
-				skippedActions(context);
-			}
-
-            dy++;
-            if (dy > ySize) {
-                dy = -ySize;
-                int nextX = dx + xDirection;
-                int nextZ = dz + zDirection;
-                int endX = Math.min(currentRadius, xSize);
-                int endZ = Math.min(currentRadius, zSize);
-                if ((xDirection == 0 && zDirection == -1 && nextX <= -endX && nextZ <= -endZ) || currentRadius == 0) {
-                    currentRadius++;
-                    dx = -currentRadius;
-                    dz = -currentRadius;
-                    xDirection = 1;
-                    zDirection = 0;
-                } else if (nextX > currentRadius || nextZ > endZ || nextX < -endX || nextZ < -endZ) {
-                    if (xDirection == 1 && zDirection == 0) {
-                        xDirection = 0;
-                        zDirection = 1;
-                        dz += zDirection;
-                    } else if (xDirection == 0 && zDirection == 1) {
-                        xDirection = -1;
-                        zDirection = 0;
-                        dx += xDirection;
-                    } else {
-                        xDirection = 0;
-                        zDirection = -1;
-                        dz += zDirection;
-                    }
-                } else {
-                    dx = nextX;
-                    dz = nextZ;
-                }
-            }
-			checked = false;
-			super.reset(context);
+		switch (volumeType) {
+			case SPIRAL:
+				result = performSpiral(context);
+				break;
+			case YZX:
+				result = performYZX(context);
+				break;
+			case YXZ:
+				result = performYXZ(context);
+				break;
 		}
 
 		return result;
@@ -235,7 +355,7 @@ public class VolumeAction extends CompoundAction
 
 	protected boolean containsPoint(int x, int y, int z)
 	{
-		return thickness == 0 ? true : (x > radius - thickness || y > radius - thickness || z > radius - thickness);
+		return thickness == 0 || x > radius - thickness || y > radius - thickness || z > radius - thickness;
 	}
 
 	@Override

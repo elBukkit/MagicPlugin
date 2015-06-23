@@ -226,7 +226,11 @@ public class ProjectileAction  extends TriggeredCompoundAction
 			try {
 				// Spawn a new projectile
 				Object nmsProjectile = null;
-				nmsProjectile = constructor.newInstance(nmsWorld);
+				try {
+					nmsProjectile = constructor.newInstance(nmsWorld);
+				} catch (Exception ex) {
+					nmsProjectile = null;
+				}
 
 				if (nmsProjectile == null) {
 					throw new Exception("Failed to spawn projectile of class " + projectileTypeName);
