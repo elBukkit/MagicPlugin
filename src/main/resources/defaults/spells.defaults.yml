@@ -2488,7 +2488,7 @@ ghast:
         range: 24
         undo: 20000
         loot: false
-        y_offset: 10
+        oty: 10
     costs:
         mana: 50
 
@@ -4355,8 +4355,8 @@ tendril:
         destructible: air,fire
         orient: true
         skip: 16
-        delay: 10
-        spiral: false
+        delay: 50
+        volume_type: yxz
     costs:
         mana: 100
 

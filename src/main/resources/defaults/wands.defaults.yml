@@ -746,6 +746,9 @@ wolf:
         - petrify
         - entangle
         - singularity
+        - paint
+        - tendril
+        - ghast
     materials:
         - erase@16
         - copy@17

@@ -2,12 +2,14 @@
 
 ## 5.1.7
 
+ - Add Tendril and Ghast spells (master level)
  - NOTE: Reflect will need "axis: x" added to its parameters if you've got your own configs
  - Add LibsDisguise integration, most spells cannot be cast while disguised.
    This can be controlled via the "allow_disguised" parameter on spells.
  - Fix/Tweak shapes of Shell and Walls
  - Add skeleton_type parameter to SpawnEntity action
  - Add "ghast" spell, mainly for playing with the SpawnEntity action
+ - Add arbitrary rotation for constructions, used in new "Tendril" spell
 
 ## 5.1.6
 
