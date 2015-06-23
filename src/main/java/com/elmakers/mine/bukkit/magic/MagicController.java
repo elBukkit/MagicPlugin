@@ -89,6 +89,7 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Projectile;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPhysicsEvent;
 import org.bukkit.inventory.ItemStack;
@@ -96,6 +97,7 @@ import org.bukkit.inventory.meta.BookMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
+import org.bukkit.projectiles.ProjectileSource;
 import org.bukkit.util.Vector;
 import org.mcstats.Metrics;
 import org.mcstats.Metrics.Graph;
@@ -2345,6 +2347,14 @@ public class MagicController implements MageController {
 		UndoList blockList = null;
 		if (entity == null) return null;
         Mage mage = getRegisteredMage(entity);
+        if (mage == null && entity instanceof Projectile) {
+            Projectile projectile = (Projectile)entity;
+            ProjectileSource source = projectile.getShooter();
+            if (source instanceof LivingEntity) {
+                entity = (LivingEntity)source;
+                mage = getRegisteredMage(entity);
+            }
+        }
         if (mage != null) {
             if (mage instanceof com.elmakers.mine.bukkit.magic.Mage) {
                 UndoList undoList = mage.getLastUndoList();
