@@ -372,6 +372,7 @@ public interface Mage extends CostReducer {
     public void enableFallProtection(int ms, int count, Spell protector);
 
     public boolean save(ConfigurationSection configuration);
+    public void activateWand();
     public void deactivate();
     public boolean isValid();
     public boolean restoreWand();
