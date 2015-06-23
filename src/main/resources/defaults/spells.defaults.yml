@@ -1592,11 +1592,13 @@ disarm:
     icon_url: http://textures.minecraft.net/texture/ff418f5c02c74f8e54645d05897b954c568f22753eea5fb559b898322aa79
     icon: tripwire_hook
     category: light
-    class: DisarmSpell
     cast_on_no_target: true
     worth: 2000
     upgrade_required_path: student
     upgrade_required_casts: 50
+    actions:
+        cast:
+        - class: Disarm
     effects:
         cast:
         -  class: EffectSingle
@@ -1658,6 +1660,7 @@ disarm:
         keep_in_inventory: true
         target_breakables: 0
         cooldown: 10000
+        undo: 5000
     costs:
         mana: 60
 

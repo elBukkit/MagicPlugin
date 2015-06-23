@@ -3,6 +3,7 @@
 ## 5.1.7
 
  - Add Tendril and Ghast spells (master level)
+ - Add auto-undo to Disarm spell
  - NOTE: Reflect will need "axis: x" added to its parameters if you've got your own configs
  - Add LibsDisguise integration, most spells cannot be cast while disguised.
    This can be controlled via the "allow_disguised" parameter on spells.
