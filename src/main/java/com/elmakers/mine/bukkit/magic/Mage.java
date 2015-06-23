@@ -346,6 +346,17 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         }
     }
 
+    @Override
+    public void activateWand() {
+        Player player = getPlayer();
+        if (player == null) return;
+        PlayerInventory inventory = player.getInventory();
+        ItemStack itemStack = inventory.getItemInHand();
+        int slot = inventory.getHeldItemSlot();
+        Wand newWand = new Wand(controller, itemStack);
+        newWand.activate(this, itemStack, slot);
+    }
+
     public void setActiveWand(Wand activeWand) {
         this.activeWand = activeWand;
         if (activeWand != null && activeWand.isBound() && activeWand.canUse(getPlayer())) {
