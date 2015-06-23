@@ -171,10 +171,10 @@ public class VolumeAction extends CompoundAction
 		}
 		if (checked)
 		{
-			Location location = context.getLocation();
 			Block block = context.getTargetBlock();
 			Vector offset = new Vector();
 			if (autoOrient) {
+				Location location = actionContext.getLocation();
 				offset.setX(dx);
 				offset.setY(dy);
 				offset.setZ(dz);
