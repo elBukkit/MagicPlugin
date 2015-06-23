@@ -57,8 +57,8 @@ public class DisarmAction extends BaseSpellAction
 			if (currentTargetItem != null && targetItem == null) return;
 			if (currentOriginalItem == null && swapItem != null) return;
 			if (currentOriginalItem != null && swapItem == null) return;
-			if (!currentOriginalItem.equals(swapItem)) return;
-			if (!currentTargetItem.equals(targetItem)) return;
+			if (currentOriginalItem != swapItem && !currentOriginalItem.equals(swapItem)) return;
+			if (currentTargetItem != targetItem && !currentTargetItem.equals(targetItem)) return;
 			inventory.setItemInHand(targetItem);
 			inventory.setItem(targetSlot, swapItem);
 			if (Wand.isWand(targetItem)) {
