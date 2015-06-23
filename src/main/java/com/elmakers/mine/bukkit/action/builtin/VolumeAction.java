@@ -149,28 +149,12 @@ public class VolumeAction extends CompoundAction
 		double sinPitch = Math.sin(angle);
 		double cosPitch = Math.cos(angle);
 
-		double finalX = x * cosYaw + (y * sinPitch + z * cosPitch) * sinYaw;
-		double finalY = y * cosPitch - z * sinPitch;
-		double finalZ = -x * sinYaw + (y * sinPitch + z * cosPitch) * cosYaw;
-		/*
-		// X-axis rotation
-		// This mainly used for planes, that have no z-components.
-        // Needs additional testing for volumes, probably. See below.
-		double pitchedX = x;
-		double pitchedY = y * cosPitch - z * sinPitch;
 		double pitchedZ = y * sinPitch + z * cosPitch;
 
-		// Z-axis rotation
-		// Here for posterity. If there were any z-components to this shape
-		// we might need to use this.
-		// pitchedX = x * cosPitch - y * sinPitch;
-		// pitchedY = x * sinPitch + y * cosPitch;
+		double finalX = x * cosYaw + pitchedZ * sinYaw;
+		double finalY = y * cosPitch - z * sinPitch;
+		double finalZ = -x * sinYaw + pitchedZ * cosYaw;
 
-		// Rotate around Y
-		double finalX = pitchedX * cosYaw + pitchedZ * sinYaw;
-		double finalY = pitchedY; // y
-		double finalZ = -pitchedX * sinYaw + pitchedZ * cosYaw;
-*/
 		return new Vector(finalX + 0.5, finalY + 0.5, finalZ + 0.5);
 	}
 
