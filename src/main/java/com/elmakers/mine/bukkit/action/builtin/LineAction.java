@@ -110,7 +110,7 @@ public class LineAction extends CompoundAction
             }
             SpellResult actionResult = super.perform(actionContext);
             result = result.min(actionResult);
-            if (actionResult == SpellResult.PENDING) {
+            if (actionResult.isStop()) {
                 break;
             }
             context.playEffects("iterate");

@@ -233,7 +233,7 @@ public class VolumeAction extends CompoundAction
 		while (dx <= max.getBlockX() && dy <= max.getBlockY() && dz <= max.getBlockZ())
 		{
 			result = checkPoint(context);
-			if (result == SpellResult.PENDING) {
+			if (result.isStop()) {
 				break;
 			}
 
@@ -258,7 +258,7 @@ public class VolumeAction extends CompoundAction
 		while (dx <= max.getBlockX() && dy <= max.getBlockY() && dz <= max.getBlockZ())
 		{
 			result = checkPoint(context);
-			if (result == SpellResult.PENDING) {
+			if (result.isStop()) {
 				break;
 			}
 
@@ -283,7 +283,7 @@ public class VolumeAction extends CompoundAction
 		while (currentRadius <= radius)
 		{
 			result = checkPoint(context);
-			if (result == SpellResult.PENDING) {
+			if (result.isStop()) {
 				break;
 			}
 

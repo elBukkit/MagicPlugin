@@ -59,7 +59,7 @@ public class TileEntitiesAction extends CompoundAction
             actionContext.setTargetLocation(tile.getLocation());
             SpellResult entityResult = super.perform(actionContext);
             result = result.min(entityResult);
-            if (entityResult == SpellResult.PENDING) {
+            if (entityResult.isStop()) {
                 break;
             }
             currentTile++;

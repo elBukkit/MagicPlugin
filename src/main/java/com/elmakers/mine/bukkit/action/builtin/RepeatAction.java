@@ -35,7 +35,7 @@ public class RepeatAction extends CompoundAction
         {
             SpellResult actionResult = super.perform(context);
             result = result.min(actionResult);
-            if (actionResult == SpellResult.PENDING)
+            if (actionResult.isStop())
             {
                 break;
             }
