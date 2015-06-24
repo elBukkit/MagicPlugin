@@ -544,6 +544,7 @@ borealis:
     quiet: 2
     effect_color: '00AACC'
     mode: chest
+    mode_drop: true
     active_spell: levitate
     cost_reduction: 2
     cooldown_reduction: 2
@@ -566,6 +567,16 @@ borealis:
         - recall
         - tag
         - pollinate
+        - torch|2
+        - weather
+        - ghast
+        - repair
+        - superalter
+        - tunnel
+        - familiar
+        - grow
+        - shrink
+        - force
 
 miniwolf:
     path: master
@@ -642,6 +653,7 @@ wolf:
     effect_particle_count: 0
     organize: true
     mode: inventory
+    mode_drop: true
     active_spell: levitate
     overrides: max_dimension 1024
     potion_effects: saturation,regeneration
@@ -721,7 +733,7 @@ wolf:
         - portal
         - disintegrate
         - neutron
-        - laser
+        - laser|3
         - flamethrower
         - regenerate
         - superregenerate

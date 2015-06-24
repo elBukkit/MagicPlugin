@@ -11,6 +11,7 @@
  - Add skeleton_type parameter to SpawnEntity action
  - Add "ghast" spell, mainly for playing with the SpawnEntity action
  - Add arbitrary rotation for constructions, used in new "Tendril" spell
+ - Spells won't target armor stands (use target_armor_stand: true to change this in a spell's config)
 
 ## 5.1.6
 
