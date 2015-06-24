@@ -4,7 +4,9 @@ import java.util.List;
 import java.util.Set;
 
 import com.elmakers.mine.bukkit.api.action.CastContext;
+import com.elmakers.mine.bukkit.api.batch.Batch;
 import com.elmakers.mine.bukkit.api.entity.EntityData;
+import com.elmakers.mine.bukkit.api.spell.Spell;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
@@ -51,6 +53,8 @@ public interface UndoList extends BlockList, Comparable<UndoList> {
     public void explode(Entity entity, List<Block> explodedBlocks);
     public void finalizeExplosion(Entity entity, List<Block> explodedBlocks);
     public void cancelExplosion(Entity entity);
+    public void setBatch(Batch batch);
+    public void setSpell(Spell spell);
 
     public boolean contains(Location location, int threshold);
 
