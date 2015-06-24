@@ -131,10 +131,12 @@ public class VolumeAction extends CompoundAction
 		} else {
 			zOffset = 0;
 		}
+
 		if (volumeType != VolumeType.SPIRAL) {
 			min = new Vector(-xSize, yStart, -zSize);
 			max = new Vector(xSize, yEnd, zSize);
 		}
+
 		radius = Math.max(xSize, zSize);
 		radiusSquared = radius * radius;
 		startRadius = getStartRadius();
@@ -207,7 +209,7 @@ public class VolumeAction extends CompoundAction
 				offset.setY(dy);
 				offset.setZ(dz + zOffset);
 				Block originalBlock = block.getRelative(offset.getBlockX(), offset.getBlockY(), offset.getBlockZ());
-				actionContext.setTargetSourceLocation(originalBlock.getLocation());
+				actionContext.setTargetSourceLocation(originalBlock.getRelative(-xOffset, 0, -zOffset).getLocation());
 				offset = rotate(location.getYaw(), location.getPitch(), offset.getX(), offset.getY(), offset.getZ());
 			} else {
 				offset.setX(dx);
