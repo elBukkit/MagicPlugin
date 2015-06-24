@@ -5,6 +5,7 @@
  - NOTE: Reflect will need "axis: x" added to its parameters if you've got your own configs
  - Add Tendril and Ghast spells (master level)
  - Fix Sandblast
+ - Tweak Nuke and Tornado
  - Add auto-undo to Disarm spell
  - Add LibsDisguise integration, most spells cannot be cast while disguised.
    This can be controlled via the "allow_disguised" parameter on spells.

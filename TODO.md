@@ -5,11 +5,6 @@
  - CoreProtect integration
    http://minerealm.com/community/viewtopic.php?f=32&t=16362
 
- - Test Ghast spell- why is it not undoing their fireball damage?
- - Maximum enchant count for wands
-
- - Make sure to cancel spells when undoing them, for spells-in-progress
-
  - Hover text for spells
  - Cat GIF generator? http://catdb.yawk.at/images?tag=gif
  - Check Regenerate - got stuck, couldn't cancel?

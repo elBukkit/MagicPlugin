@@ -1293,30 +1293,114 @@ nuke:
     pvp_restricted: true
     actions:
         cast:
-        - class: Explosion
+        - class: Parallel
+          actions:
+          - class: Serial
+            actions:
+            - class: Repeat
+              repeat: 2
+              actions:
+              - class: Delay
+                delay: 1000
+              - class: PlayEffects
+                effect: burst
+              - class: AreaOfEffect
+                radius: 4
+                actions:
+                - class: Damage
+                - class: Velocity
+            - class: Repeat
+              repeat: 2
+              actions:
+              - class: Delay
+                delay: 1000
+              - class: PlayEffects
+                effect: burst
+              - class: AreaOfEffect
+                radius: 10
+                actions:
+                - class: Damage
+                - class: Velocity
+          - class: Serial
+            actions:
+            - class: Sphere
+              actions:
+              - class: Skip
+                actions:
+                - class: Delay
+              - class: ModifyBlock
+            - class: PlayEffects
+              effect: cloud
     effects:
+        burst:
+        -  class: EffectSingle
+           location: target
+           sound: explode
+           sound_volume: 2
+           effectlib:
+             class: SphereEffect
+             particle: explosion_huge
+             radius: 6
+             particles: 4
+             iterations: 4
+        cloud:
+        -  class: EffectSingle
+           location: target
+           effectlib:
+             class: FountainEffect
+             particle: explosion_huge
+             strands: 4
+             particlesStrand: 4
+             particlesSpout: 2
+             height: 30
+             heightSpout: 28
+             iterations: 2
+             radius: 8
+             period: 4
+             radiusSpout: 0.1
+        -  class: EffectSingle
+           location: target
+           effectlib:
+             class: SphereEffect
+             particle: explosion_huge
+             iterations: 30
+             radius: 8
+             particles: 10
+             offset: 0,24,0
         cast:
         -  class: EffectSingle
            sound: explode
+           location: both
         -  class: EffectTrail
-           firework: creeper
-           color: '00FF00'
-           color2: '88FF88'
-           iterations: 5
-        -  class: EffectRing
-           particle: explosion_huge
-           radius: 16
-           iterations: 8
+           particle: explosion_large
+           iterations: 3
+        -  class: EffectSingle
            location: target
-           size: 4
+           effectlib:
+             class: FountainEffect
+             particle: explosion_huge
+             strands: 4
+             particlesStrand: 4
+             particlesSpout: 2
+             height: 30
+             heightSpout: 28
+             iterations: 20
+             radius: 2
+             radiusSpout: 1
+             period: 10
     parameters:
         target: block
         allow_max_range: true
         range: 64
         cooldown: 60000
-        size: 6
         undo: 50000
-        break_blocks: true
+        speed: 0.9
+        falling: true
+        falling_probability: 0.1
+        brush: air
+        radius: 10
+        skip: 16
+        delay: 1
     costs:
         mana: 200
 
@@ -2463,6 +2547,7 @@ ghast:
     icon_url: http://textures.minecraft.net/texture/8b6a72138d69fbbd2fea3fa251cabd87152e4f1c97e5f986bf685571db3cc0
     icon: monster_egg
     category: elemental
+    pvp_restricted: true
     actions:
       cast:
       - class: SpawnEntity
@@ -4335,6 +4420,7 @@ tendril:
     icon_url: http://textures.minecraft.net/texture/564e7e4b718a7136188385cae256de87a6cb29c85744c9c123509a4c7cec69d0
     category: combat
     worth: 1000
+    pvp_restricted: true
     actions:
         cast:
         - class: Volume
@@ -7150,12 +7236,13 @@ tornado:
            sound_pitch: 0.3
            location: target
            effectlib:
-             class: ConeEffect
-             iterations: 30
-             particle: spell
-             autoOrient: false
-             lengthGrow: 0.05
-             radiusGrow: 0.01
+             class: TornadoEffect
+             iterations: 3
+             tornadoHeight: 8
+             distance: 0.8
+             cloudSize: 1
+             tornadoParticle: spell
+             offset: 0,-4,0
         cast:
         -  class: EffectSingle
            sound: fizz
@@ -7174,15 +7261,15 @@ tornado:
         push: -1
         y_offset: 0.2
         cooldown: 3000
-        repeat: 20
+        repeat: 10
         delay: 250
         brush: erase
         falling: true
+        falling_probability: 0.2
         random_target_offset: 0.2,0,0.2
         target_direction_speed: 0.5
         source_direction_offset: 0,0.5,0
         undo: 15000
-        oty: 2
         x_size: 0
         z_size: 0
         y_size: 2
