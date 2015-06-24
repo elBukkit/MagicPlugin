@@ -4345,7 +4345,7 @@ tendril:
         -  class: EffectSingle
            sound: magic.shield
         -  class: EffectTrail
-           effect: lava_drip
+           particle: drip_lava
     parameters:
         target: block
         allow_max_range: true

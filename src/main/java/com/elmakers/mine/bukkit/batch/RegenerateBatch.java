@@ -51,6 +51,7 @@ public class RegenerateBatch extends SpellBatch {
 		this.mage = spell.getMage();
         this.restoredBlocks = new UndoList(mage, spell.getName());
         this.restoredBlocks.setSpell(spell);
+		this.restoredBlocks.setBatch(this);
 		this.world = this.mage.getLocation().getWorld();
 		this.state = RegenerateState.SAVING;
 		
@@ -201,6 +202,7 @@ public class RegenerateBatch extends SpellBatch {
 		if (!finished) {
 			UndoList modified = spell.getUndoList();
 			modified.prune();
+			restoredBlocks.setBatch(null);
 			super.finish();
 		}
 	}
