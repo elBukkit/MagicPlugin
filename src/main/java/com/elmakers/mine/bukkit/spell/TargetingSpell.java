@@ -15,6 +15,7 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.command.BlockCommandSender;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.ItemFrame;
@@ -42,6 +43,7 @@ public abstract class TargetingSpell extends BaseSpell {
     private List<Target>                        targets                 = null;
     private TargetType							targetType				= TargetType.OTHER;
     private boolean								targetNPCs				= false;
+    private boolean								targetArmorStands		= false;
     private boolean								targetInvisible			= true;
     private boolean								targetUnknown			= true;
     private boolean                             targetingComplete		= false;
@@ -545,6 +547,7 @@ public abstract class TargetingSpell extends BaseSpell {
             if (entity == mage.getEntity()) continue;
             if (!targetUnknown && entity.getType() == EntityType.UNKNOWN) continue;
             if (!targetNPCs && controller.isNPC(entity)) continue;
+            if (!targetArmorStands && entity instanceof ArmorStand) continue;
             if (entity.hasMetadata("notarget")) continue;
             if (entity.getLocation().distanceSquared(sourceLocation) > rangeSquared) continue;
 
@@ -586,6 +589,7 @@ public abstract class TargetingSpell extends BaseSpell {
             return false;
         }
         if (!targetNPCs && controller.isNPC(entity)) return false;
+        if (!targetArmorStands && entity instanceof ArmorStand) return false;
         if (entity instanceof Player)
         {
             Player player = (Player)entity;
@@ -852,6 +856,7 @@ public abstract class TargetingSpell extends BaseSpell {
         }
 
         targetNPCs = parameters.getBoolean("target_npc", false);
+        targetArmorStands = parameters.getBoolean("target_armor_stand", false);
         targetInvisible = parameters.getBoolean("target_invisible", true);
         targetUnknown = parameters.getBoolean("target_unknown", true);
 
