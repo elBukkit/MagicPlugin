@@ -4102,9 +4102,13 @@ sandblast:
     icon_url: http://textures.minecraft.net/texture/c1dc6e8c5e3da4aed0ca478e195b8fe3a438fd8cb775b9d10fa1ff7d2dcf714
     icon: sandstone
     category: combat
-    class: ConstructSpell
     pvp_restricted: true
     worth: 1500
+    actions:
+        cast:
+        - class: Volume
+          actions:
+          - class: ModifyBlock
     effects:
         cast:
         -  class: EffectSingle
@@ -4116,8 +4120,7 @@ sandblast:
         range: 32
         brush: sand
         radius: 2
-        type: cuboid
-        y_offset: 32
+        oty: 32
         undo: 20000
         cooldown: 5000
     costs:
