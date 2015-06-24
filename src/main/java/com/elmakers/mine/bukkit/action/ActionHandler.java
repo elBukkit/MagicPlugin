@@ -237,7 +237,10 @@ public class ActionHandler implements Cloneable
             SpellResult actionResult = action.perform(context);
             context.addWork(1);
             result = result.min(actionResult);
-            if (actionResult == SpellResult.PENDING) {
+            if (actionResult == SpellResult.CANCELLED) {
+                cancel(context);
+            }
+            if (actionResult.isStop()) {
                 break;
             }
             if (showDebug) {
