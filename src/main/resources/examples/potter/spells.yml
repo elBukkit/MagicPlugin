@@ -269,7 +269,7 @@ avadamaxima:
     parameters:
         commands:
         - ban @tn you have been Avada Kedavra'd!
-        - say §aAvada Kedavra §c@tn!
+        - say &aAvada Kedavra &c@tn!
         target_type: Player
         target: other
         target_breakables: 1
@@ -1479,7 +1479,7 @@ morsmordre:
         transparent: apparate
         op: true
         commands:
-        - broadcast @pd cast §aMorsmordre!
+        - broadcast @pd cast &aMorsmordre!
     costs:
         mana: 55
 
@@ -1512,7 +1512,7 @@ morsmordremaxima:
         transparent: apparate
         op: true
         commands:
-        - broadcast @pd cast §aMorsmordre Maxima, and a Dementor appears!
+        - broadcast @pd cast &aMorsmordre Maxima, and a Dementor appears!
         - mm mobs spawn Dementor 1 @tworld,@tx,@ty,@tz
     costs:
         mana: 100
@@ -1981,7 +1981,7 @@ silenciototalus:
     parameters:
         commands:
         - mute @tn 60
-        - say §dSILENCIO TOTALUS!
+        - say &dSILENCIO TOTALUS!
         target: none
         target_all_worlds: true
         target_type: Player
