@@ -2,8 +2,8 @@
 
  - Add /mmap reload command
  - Registered blocks aren't clearing on /magic commit ?
- - CoreProtect integration?
- - /spells list in potter configs is broken (weird hidden category??)
+ - CoreProtect integration
+   http://minerealm.com/community/viewtopic.php?f=32&t=16362
 
  - Test Ghast spell- why is it not undoing their fireball damage?
  - Maximum enchant count for wands

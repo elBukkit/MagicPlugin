@@ -29,6 +29,8 @@ public class VolumeAction extends CompoundAction
     protected int ySize;
     protected int zSize;
 	protected int thickness;
+	protected int yStart;
+	protected int yEnd;
     private int dy;
 	private int dx;
 	private int dz;
@@ -73,6 +75,7 @@ public class VolumeAction extends CompoundAction
 	}
 
 	protected void calculateSize(CastContext context) {
+		boolean centerY = true;
 		if (parameters.getBoolean("use_brush_size", false)) {
 			MaterialBrush brush = context.getBrush();
 			if (!brush.isReady()) {
@@ -97,6 +100,7 @@ public class VolumeAction extends CompoundAction
 					xSize = Math.max(xSize, zSize);
 					zSize = Math.max(xSize, zSize);
 				}
+				centerY = false;
 			}
 		} else {
 			xSize = (int) (context.getMage().getRadiusMultiplier() * this.xSize);
@@ -106,9 +110,16 @@ public class VolumeAction extends CompoundAction
 		if (volumeType == VolumeType.SPIRAL && xSize != zSize) {
 			volumeType = VolumeType.YZX;
 		}
+		if (centerY) {
+			yStart = -ySize;
+			yEnd = ySize;
+		} else {
+			yStart = 0;
+			yEnd = ySize * 2;
+		}
 		if (volumeType != VolumeType.SPIRAL) {
-			min = new Vector(-xSize, -ySize, -zSize);
-			max = new Vector(xSize, ySize, zSize);
+			min = new Vector(-xSize, yStart, -zSize);
+			max = new Vector(xSize, yEnd, zSize);
 		}
 		radius = Math.max(xSize, zSize);
 		radiusSquared = radius * radius;
@@ -126,7 +137,7 @@ public class VolumeAction extends CompoundAction
 		if (volumeType == VolumeType.SPIRAL) {
 			currentRadius = startRadius;
 			dx = -Math.min(startRadius, xSize);
-			dy = -ySize;
+			dy = yStart;
 			dz = -Math.min(startRadius, zSize);
 			xDirection = 1;
 			zDirection = 0;
@@ -142,6 +153,9 @@ public class VolumeAction extends CompoundAction
 
 	public static Vector rotate(float yaw, float pitch, double x, double y, double z){
 		float angle;
+		x += 0.5;
+		y += 0.5;
+		z += 0.5;
 		angle = -yaw * DEGTORAD;
 		double sinYaw = Math.sin(angle);
 		double cosYaw = Math.cos(angle);
@@ -155,7 +169,7 @@ public class VolumeAction extends CompoundAction
 		double finalY = y * cosPitch - z * sinPitch;
 		double finalZ = -x * sinYaw + pitchedZ * cosYaw;
 
-		return new Vector(finalX + 0.5, finalY + 0.5, finalZ + 0.5);
+		return new Vector(finalX, finalY, finalZ);
 	}
 
 	protected SpellResult checkPoint(CastContext context) {
@@ -260,8 +274,8 @@ public class VolumeAction extends CompoundAction
 			}
 
 			dy++;
-			if (dy > ySize) {
-				dy = -ySize;
+			if (dy > yEnd) {
+				dy = yStart;
 				int nextX = dx + xDirection;
 				int nextZ = dz + zDirection;
 				int endX = Math.min(currentRadius, xSize);
