@@ -90,6 +90,7 @@ public class NMSUtils {
     protected static Class<?> class_BlockPosition;
     protected static Class<?> class_NBTCompressedStreamTools;
     protected static Class<?> class_TileEntity;
+    protected static Class<?> class_TileEntitySign;
     protected static Class<?> class_TileEntityContainer;
     protected static Class<?> class_ChestLock;
     protected static Class<Enum> class_EnumDirection;
@@ -174,6 +175,7 @@ public class NMSUtils {
     protected static Method class_CraftEntity_getHandleMethod;
     protected static Method class_CraftLivingEntity_getHandleMethod;
     protected static Method class_CraftWorld_getHandleMethod;
+    protected static Method class_EntityPlayer_openSignMethod;
 
     protected static Constructor class_NBTTagList_consructor;
     protected static Constructor class_NBTTagList_legacy_consructor;
@@ -281,6 +283,7 @@ public class NMSUtils {
             class_CraftPlayer = fixBukkitClass("org.bukkit.craftbukkit.entity.CraftPlayer");
             class_CraftChunk = fixBukkitClass("org.bukkit.craftbukkit.CraftChunk");
             class_CraftEntity = fixBukkitClass("org.bukkit.craftbukkit.entity.CraftEntity");
+            class_TileEntitySign = fixBukkitClass("net.minecraft.server.TileEntitySign");
 
             class_NBTTagList_addMethod = class_NBTTagList.getMethod("add", class_NBTBase);
             class_NBTTagList_getMethod = class_NBTTagList.getMethod("get", Integer.TYPE);
@@ -334,6 +337,7 @@ public class NMSUtils {
             class_CraftEntity_getHandleMethod = class_CraftEntity.getMethod("getHandle");
             class_CraftLivingEntity_getHandleMethod = class_CraftLivingEntity.getMethod("getHandle");
             class_CraftWorld_getHandleMethod = class_CraftWorld.getMethod("getHandle");
+            class_EntityPlayer_openSignMethod = class_EntityPlayer.getMethod("openSign", class_TileEntitySign);
 
             class_CraftInventoryCustom_constructor = class_CraftInventoryCustom.getConstructor(InventoryHolder.class, Integer.TYPE, String.class);
             class_EntityFireworkConstructor = class_EntityFirework.getConstructor(class_World, Double.TYPE, Double.TYPE, Double.TYPE, class_ItemStack);

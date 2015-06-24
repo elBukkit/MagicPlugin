@@ -1,27 +1,22 @@
 package com.elmakers.mine.bukkit.utility;
 
-import java.lang.reflect.Method;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-import java.util.logging.Level;
-
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.google.common.collect.Multimap;
 import org.bukkit.Bukkit;
-import org.bukkit.DyeColor;
+import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.block.Skull;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.inventory.meta.SkullMeta;
+
+import java.lang.reflect.Method;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.Collection;
+import java.util.UUID;
+import java.util.logging.Level;
 
 public class InventoryUtils extends NMSUtils
 {	
@@ -266,5 +261,17 @@ public class InventoryUtils extends NMSUtils
             }
         }
         return false;
+    }
+
+    public static void openSign(Player player, Location signBlock) {
+        try {
+            Object tileEntity = getTileEntity(signBlock);
+            Object playerHandle = getHandle(player);
+            if (tileEntity != null && playerHandle != null) {
+                class_EntityPlayer_openSignMethod.invoke(playerHandle, tileEntity);
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 }
