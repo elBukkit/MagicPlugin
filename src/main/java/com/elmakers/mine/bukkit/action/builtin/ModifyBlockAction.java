@@ -26,6 +26,7 @@ public class ModifyBlockAction extends BaseSpellAction {
     private Vector fallingBlockDirection;
     private float fallingBlockFallDamage;
     private int fallingBlockMaxDamage;
+    private double fallingProbability;
     private int breakable = 0;
     private double backfireChance = 0;
     private boolean applyPhysics = false;
@@ -42,6 +43,7 @@ public class ModifyBlockAction extends BaseSpellAction {
         breakable = parameters.getInt("breakable", 0);
         backfireChance = parameters.getDouble("reflect_chance", 0);
         fallingBlockSpeed = parameters.getDouble("speed", 0);
+        fallingProbability = parameters.getDouble("falling_probability", 1);
         fallingBlockDirection = null;
         if (spawnFallingBlocks && parameters.contains("direction"))
         {
@@ -107,7 +109,11 @@ public class ModifyBlockAction extends BaseSpellAction {
 
             brush.modify(block, applyPhysics);
 
-            if (spawnFallingBlocks && previousMaterial != Material.AIR)
+            boolean spawnFalling = spawnFallingBlocks && previousMaterial != Material.AIR;
+            if (spawnFalling && fallingProbability < 1) {
+                spawnFalling = context.getRandom().nextDouble() < fallingProbability;
+            }
+            if (spawnFalling)
             {
                 Location blockLocation = block.getLocation();
                 Location blockCenter = new Location(blockLocation.getWorld(), blockLocation.getX() + 0.5, blockLocation.getY() + 0.5, blockLocation.getZ() + 0.5);
