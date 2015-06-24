@@ -11,14 +11,14 @@ import java.util.Set;
 import java.util.UUID;
 
 import com.elmakers.mine.bukkit.api.action.CastContext;
-import com.elmakers.mine.bukkit.spell.UndoableSpell;
+import com.elmakers.mine.bukkit.api.batch.Batch;
+import com.elmakers.mine.bukkit.api.spell.Spell;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.InventoryHolder;
@@ -67,10 +67,12 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
     protected long					modifiedTime;
     protected long                  scheduledTime;
 
-    // Doubly-linked list
-    protected UndoableSpell         spell;
+    protected Spell                 spell;
+    protected Batch                 batch;
     protected CastContext           context;
     protected UndoQueue             undoQueue;
+
+    // Doubly-linked list
     protected UndoList              next;
     protected UndoList              previous;
 
@@ -95,7 +97,13 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
         modifiedTime = createdTime;
     }
 
-    public void setSpell(UndoableSpell spell)
+    public void setBatch(Batch batch)
+    {
+        this.batch = batch;
+    }
+
+    @Override
+    public void setSpell(Spell spell)
     {
         this.spell = spell;
         this.context = spell == null ? null : spell.getCurrentCast();
@@ -353,6 +361,14 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
 
     public void undo(boolean blocking)
     {
+        if (spell != null)
+        {
+            spell.cancel();
+        }
+        if (batch != null && !batch.isFinished())
+        {
+            batch.finish();
+        }
         undo(blocking, true);
         if (isScheduled())
         {
@@ -641,7 +657,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
         return name;
     }
 
-    public UndoableSpell getSpell()
+    public Spell getSpell()
     {
         return spell;
     }

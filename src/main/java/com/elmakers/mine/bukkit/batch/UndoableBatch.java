@@ -22,6 +22,7 @@ public abstract class UndoableBatch implements Batch {
         this.controller = mage.getController();
         this.mage = mage;
         this.undoList = undoList == null ?  new UndoList(mage, "Undo") : undoList;
+        undoList.setBatch(this);
         mage.registerForUndo(this.undoList);
     }
 
@@ -37,6 +38,8 @@ public abstract class UndoableBatch implements Batch {
         if (!finished) {
             finished = true;
             controller.update(undoList);
+            // Let GC collect the batch
+            undoList.setBatch(null);
         }
     }
 
