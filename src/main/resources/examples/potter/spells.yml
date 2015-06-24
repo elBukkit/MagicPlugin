@@ -492,7 +492,8 @@ crucio:
 dementor:
     icon_url: http://textures.minecraft.net/texture/c8471a90c7b0d6ba70ddf0ea8daf2f8ee999a1efe95f2198d8352e42bd43d1
     icon: quartz
-    category: hidden
+    category: specialty
+    hidden: true
     pvp_restricted: true
     cast_on_no_target: false
     actions:
@@ -1578,7 +1579,8 @@ petrificustotalus:
 webbing:
     icon_url: http://textures.minecraft.net/texture/672e0c305074a7acf671e7644291d7f745baecf05743395e28d1f04cbbb4
     icon: web
-    category: hidden
+    category: specialty
+    hidden: true
     class: ConstructSpell
     pvp_restricted: true
     cast_on_no_target: true
