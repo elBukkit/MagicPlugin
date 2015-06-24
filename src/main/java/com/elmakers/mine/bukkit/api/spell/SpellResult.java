@@ -9,7 +9,8 @@ package com.elmakers.mine.bukkit.api.spell;
  */
 public enum SpellResult {
     // Order is important here
-    PENDING(true, false, false),
+    CANCELLED(false, true, true, false, true),
+    PENDING(true, false, false, false, true),
     CAST(true, false, false),
     CAST_SELF(true, false, false),
     ALTERNATE(true, false, false, true),
@@ -30,7 +31,6 @@ public enum SpellResult {
     NO_TARGET(false, false, false),
 
     FAIL(false, true, true),
-    CANCELLED(false, true, true),
     INSUFFICIENT_RESOURCES(false, true, true),
     INSUFFICIENT_PERMISSION(false, true, true),
 
@@ -48,12 +48,14 @@ public enum SpellResult {
     private final boolean failure;
     private final boolean free;
     private final boolean alternate;
+    private final boolean stop;
 
     private SpellResult(boolean success, boolean failure, boolean free) {
         this.success = success;
         this.failure = failure;
         this.free = free;
         this.alternate = false;
+        this.stop = false;
     }
 
     private SpellResult(boolean success, boolean failure, boolean free, boolean alternate) {
@@ -61,6 +63,15 @@ public enum SpellResult {
         this.failure = failure;
         this.free = free;
         this.alternate = alternate;
+        this.stop = false;
+    }
+
+    private SpellResult(boolean success, boolean failure, boolean free, boolean alternate, boolean stop) {
+        this.success = success;
+        this.failure = failure;
+        this.free = free;
+        this.alternate = alternate;
+        this.stop = stop;
     }
 
     /**
@@ -91,6 +102,15 @@ public enum SpellResult {
      */
     public boolean isFree() {
         return free;
+    }
+    /**
+     * Determine if this result should stop processing or not.
+     *
+     * @return True if this result should stop processing, either
+     *  temporarily (PENDING) or permanently (CANCELLED)
+     */
+    public boolean isStop() {
+        return stop;
     }
 
     /**
