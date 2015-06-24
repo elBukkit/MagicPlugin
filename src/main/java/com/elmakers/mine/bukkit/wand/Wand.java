@@ -1525,7 +1525,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	}
 
     protected String getDisplayName() {
-        return randomize ? getMessage("randomized_name") : wandName;
+        return ChatColor.translateAlternateColorCodes('&', randomize ? getMessage("randomized_name") : wandName);
     }
 
 	public void updateName(boolean isActive) {

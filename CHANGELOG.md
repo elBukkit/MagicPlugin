@@ -3,6 +3,7 @@
 ## 5.1.7
 
  - Add Tendril and Ghast spells (master level)
+ - Fix Sandblast
  - Add auto-undo to Disarm spell
  - NOTE: Reflect will need "axis: x" added to its parameters if you've got your own configs
  - Add LibsDisguise integration, most spells cannot be cast while disguised.
@@ -12,6 +13,7 @@
  - Add "ghast" spell, mainly for playing with the SpawnEntity action
  - Add arbitrary rotation for constructions, used in new "Tendril" spell
  - Spells won't target armor stands (use target_armor_stand: true to change this in a spell's config)
+ - Wands can have colored names with & codes
 
 ## 5.1.6
 
