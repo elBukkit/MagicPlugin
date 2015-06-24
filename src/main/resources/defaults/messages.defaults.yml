@@ -164,7 +164,8 @@ wand:
     enchanted: Your $item has been enchanted
     player_enchanted: $name's $item has been enchanted
     unenchanted: Your wand has been unenchanted
-    no_path: That item can not be enchanted
+    no_path: "&r&4Your $wand can not be enchanted"
+    max_enchanted: "&r&4Your $wand can not be enchanted any further"
     player_unenchanted: $name's wand has been unenchanted
     level_up: "&r&bYour $wand has been upgraded to &r&5$path"
     duplicated: Your wand has been duplicated
@@ -1503,6 +1504,9 @@ wands:
     beginner:
         name: Wand
         description: $path Magic Wand
+    starter:
+        name: Wand
+        description: A Wand with Limited Potential
     master:
         name: Master Wand
         description: $path Magic Wand

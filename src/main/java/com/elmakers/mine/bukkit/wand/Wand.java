@@ -85,7 +85,8 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		"protection", "protection_physical", "protection_projectiles", 
 		"protection_falling", "protection_fire", "protection_explosions",
         "potion_effects",
-		"materials", "spells", "powered", "protected", "heroes"
+		"materials", "spells", "powered", "protected", "heroes",
+        "enchant_count", "max_enchant_count"
 	};
 
 	public final static String[] HIDDEN_PROPERTY_KEYS = {
@@ -149,6 +150,9 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
     protected float damageReductionFire = 0;
     protected float damageReductionExplosions = 0;
     private float power = 0;
+
+    private int maxEnchantCount = 0;
+    private int enchantCount = 0;
 
 	private boolean hasInventory = false;
 	private boolean locked = false;
@@ -1003,6 +1007,8 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		node.set("cost_reduction", costReduction);
 		node.set("cooldown_reduction", cooldownReduction);
 		node.set("power", power);
+        node.set("enchant_count", enchantCount);
+        node.set("max_enchant_count", maxEnchantCount);
 		node.set("protection", damageReduction);
 		node.set("protection_physical", damageReductionPhysical);
 		node.set("protection_projectiles", damageReductionProjectiles);
@@ -1266,6 +1272,8 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
             randomize = wandConfig.getBoolean("randomize", randomize);
             rename = wandConfig.getBoolean("rename", rename);
             renameDescription = wandConfig.getBoolean("rename_description", renameDescription);
+            enchantCount = wandConfig.getInt("enchant_count", enchantCount);
+            maxEnchantCount = wandConfig.getInt("max_enchant_count", maxEnchantCount);
 
             if (wandConfig.contains("effect_particle")) {
                 effectParticle = ConfigurationUtils.toParticleEffect(wandConfig.getString("effect_particle"));
@@ -2107,10 +2115,18 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         if (enchanter == null && mage != null) {
             enchanter = mage;
         }
+
+        if (maxEnchantCount > 0 && enchantCount >= maxEnchantCount) {
+            if (enchanter != null) {
+                enchanter.sendMessage(getMessage("max_enchanted").replace("$wand", getName()));
+            }
+            return 0;
+        }
+
         WandUpgradePath path = (WandUpgradePath)getPath();
 		if (path == null) {
             if (enchanter != null) {
-                enchanter.sendMessage(getMessage("no_path"));
+                enchanter.sendMessage(getMessage("no_path").replace("$wand", getName()));
             }
             return 0;
         }
@@ -2181,6 +2197,10 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 			addLevels = Math.min(totalLevels, maxLevel);
 			additive = true;
 		}
+
+        if (levels > 0) {
+            enchantCount++;
+        }
 
         saveState();
         updateName();

@@ -135,6 +135,28 @@ beginner:
      - missile
 
 #
+# A wand that may only be enchanted 3 times
+#
+starter:
+    effect_color: random
+    icon: stick
+    glow: true
+    max_enchant_count: 3
+    path: beginner
+    xp_max: 50
+    xp: 50
+    xp_regeneration: 5
+    quiet: 1
+    bound: true
+    keep: false
+    undroppable: false
+    indestructible: false
+    effect_bubbles: false
+    active_spell: missile
+    spells:
+     - missile
+
+#
 # A sampling of "pre-levelled up" wands
 #
 student:
