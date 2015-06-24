@@ -31,6 +31,8 @@ public class VolumeAction extends CompoundAction
 	protected int thickness;
 	protected int yStart;
 	protected int yEnd;
+	private int xOffset;
+	private int zOffset;
     private int dy;
 	private int dx;
 	private int dz;
@@ -75,7 +77,9 @@ public class VolumeAction extends CompoundAction
 	}
 
 	protected void calculateSize(CastContext context) {
-		boolean centerY = true;
+		boolean centerY = parameters.getBoolean("center_y", true);
+		boolean centerX = parameters.getBoolean("center_x", true);
+		boolean centerZ = parameters.getBoolean("center_z", true);
 		if (parameters.getBoolean("use_brush_size", false)) {
 			MaterialBrush brush = context.getBrush();
 			if (!brush.isReady()) {
@@ -116,6 +120,16 @@ public class VolumeAction extends CompoundAction
 		} else {
 			yStart = 0;
 			yEnd = ySize * 2;
+		}
+		if (!centerX) {
+			xOffset = xSize;
+		} else {
+			xOffset = 0;
+		}
+		if (!centerZ) {
+			zOffset = zSize;
+		} else {
+			zOffset = 0;
 		}
 		if (volumeType != VolumeType.SPIRAL) {
 			min = new Vector(-xSize, yStart, -zSize);
@@ -189,9 +203,9 @@ public class VolumeAction extends CompoundAction
 			Vector offset = new Vector();
 			if (autoOrient) {
 				Location location = actionContext.getLocation();
-				offset.setX(dx);
+				offset.setX(dx + xOffset);
 				offset.setY(dy);
-				offset.setZ(dz);
+				offset.setZ(dz + zOffset);
 				Block originalBlock = block.getRelative(offset.getBlockX(), offset.getBlockY(), offset.getBlockZ());
 				actionContext.setTargetSourceLocation(originalBlock.getLocation());
 				offset = rotate(location.getYaw(), location.getPitch(), offset.getX(), offset.getY(), offset.getZ());

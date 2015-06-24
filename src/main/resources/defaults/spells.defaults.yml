@@ -4352,7 +4352,7 @@ tendril:
     parameters:
         target: block
         allow_max_range: true
-        range: 6
+        range: 2
         use_brush_size: true
         undo: 5000
         cooldown: 20000
@@ -4363,6 +4363,7 @@ tendril:
         skip: 16
         delay: 50
         volume_type: yxz
+        center_z: false
     costs:
         mana: 100
 
