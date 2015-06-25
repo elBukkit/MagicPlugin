@@ -2,7 +2,7 @@
 
 ## 5.1.7
 
- - NOTE: Reflect will need "axis: x" added to its parameters if you've got your own configs
+ - NOTE: Reflect will need "axis: z" added to its parameters if you've got your own configs
  - Add Tendril and Ghast spells (master level)
  - Fix Sandblast
  - Tweak Nuke and Tornado
