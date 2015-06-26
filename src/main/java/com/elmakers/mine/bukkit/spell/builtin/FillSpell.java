@@ -21,8 +21,11 @@ public class FillSpell extends BrushSpell
 	@Override
 	public SpellResult onCast(ConfigurationSection parameters) 
 	{
-		Block targetBlock = getTargetBlock();
 		boolean singleBlock = getTargetType() != TargetType.SELECT;
+		if (!singleBlock) {
+			setTargetType(TargetType.BLOCK);
+		}
+		Block targetBlock = getTargetBlock();
         if (!singleBlock && parameters.getBoolean("select_self", true) && isLookingDown())
         {
             targetBlock = mage.getLocation().getBlock().getRelative(BlockFace.DOWN);
