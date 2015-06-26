@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## 5.1.8
+
+ - Add Nuke Level 2 (Breaks all block types, larger radius)
+ - Add Smite spell (Lightning effect + Blast + Ignite/Damage)
+
 ## 5.1.7
 
  - NOTE: Reflect will need "axis: z" added to its parameters if you've got your own configs

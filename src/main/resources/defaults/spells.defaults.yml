@@ -1291,6 +1291,8 @@ nuke:
     category: master
     worth: 10000
     pvp_restricted: true
+    upgrade_required_path: master
+    upgrade_required_casts: 20
     actions:
         cast:
         - class: Parallel
@@ -1396,13 +1398,18 @@ nuke:
         undo: 50000
         speed: 0.9
         falling: true
-        falling_probability: 0.1
+        falling_probability: 0.2
         brush: air
-        radius: 10
+        radius: 8
         skip: 16
         delay: 1
     costs:
         mana: 200
+
+nuke|2:
+  parameters:
+    check_destructible: false
+    radius: 12
 
 frost:
     icon_url: http://textures.minecraft.net/texture/ff39da1c8acc158ee5aa7f0352e4738aefe3365f28841badd603e2ffe42a
@@ -1566,6 +1573,52 @@ lightning|3:
               -  class: Lightning
     parameters:
         repeat: 2
+
+smite:
+    icon: raw_fish:2
+    icon_url: http://textures.minecraft.net/texture/a31cc0ffb1e814e1c82301067ea318356befa65dc1a027afbfd498709cad58
+    category: elemental
+    pvp_restricted: true
+    worth: 5000
+    actions:
+        cast:
+        - class: Lightning
+        - class: AreaOfEffect
+          actions:
+          - class: Damage
+          - class: Ignite
+        -  class: Sphere
+           actions:
+           -  class: ModifyBlock
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: firework_large_blast
+        -  class: EffectTrail
+           particle: smoke_normal
+           particle_count: 2
+        -  class: EffectSingle
+           location: target
+           effectlib:
+             class: HelixEffect
+             particle: smoke_normal
+             iterations: 3
+    parameters:
+        target_type: LivingEntity
+        allow_max_range: true
+        range: 32
+        radius: 3
+        cooldown: 15000
+        effect_only: true
+        damage: 4
+        duration: 5000
+        speed: 0.9
+        falling: true
+        brush: air
+        undo: 10000
+        oty: -2
+    costs:
+        mana: 100
 
 tree:
     icon: sapling
@@ -7265,7 +7318,7 @@ tornado:
         delay: 250
         brush: erase
         falling: true
-        falling_probability: 0.2
+        falling_probability: 0.8
         random_target_offset: 0.2,0,0.2
         target_direction_speed: 0.5
         source_direction_offset: 0,0.5,0
@@ -7279,7 +7332,6 @@ tornado:
 tornado|2:
     parameters:
         check_destructible: false
-        oty: 4
         y_offset: 1
         x_size: 1
         z_size: 1

@@ -4,6 +4,7 @@
  - Registered blocks aren't clearing on /magic commit ?
  - CoreProtect integration
    http://minerealm.com/community/viewtopic.php?f=32&t=16362
+ - Look into ItemLoreStats incompatibility
 
  - Hover text for spells
  - Cat GIF generator? http://catdb.yawk.at/images?tag=gif

@@ -663,10 +663,15 @@ spells:
     lightning|3:
         upgrade_description: "&r&b&bull; &6More lightning"
         cast: Ka-POW!
+    smite:
+        name: Smite
+        description: Strike down your target
+        cast: You smite $target
     nuke:
         name: Nuke
         description: Create a huge explosion
         cast: YIKES!
+        upgrade_description: "&r&b&bull; &6Larger radius, more destruction"
     day:
         name: Sunny Day
         description: Make it a lovely day
