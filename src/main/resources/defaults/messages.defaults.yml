@@ -1246,10 +1246,14 @@ spells:
         no_action: Schematic loading, please try again!
     kill:
         name: Kill
-        description: Kill your target
+        description: Deal lethal damage to your target
         usage: Has a warmup time!
         cast: DIE!
         upgrade_description: "&r&b&bull; &6Increased damage, reduced cooldown"
+    superkill:
+        name: SuperKill
+        description: Kills your target, no questions asked
+        cast: SUPER DIE!
     torture:
         name: Torture
         description: Mercilessly torture your enemy
