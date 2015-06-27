@@ -415,7 +415,7 @@ engineer:
       - packed_ice
       - obsidian
       - redstone_block
-      - schematic|rainbow
+      - schematic|rainbow_blocks
       - schematic|creeper_rug
 
 #
@@ -502,7 +502,7 @@ architect:
         - emerald_block
         - redstone_block
         - obsidian
-        - schematic:rainbow
+        - schematic:rainbow_blocks
         - schematic:creeper_rug
         - schematic:church
         - schematic:blacksmith
@@ -823,7 +823,7 @@ wolf:
         - obsidian
         - bedrock
         - redstone_block
-        - schematic:rainbow
+        - schematic:rainbow_blocks
         - schematic:creeper_rug
         - schematic:church
         - schematic:blacksmith

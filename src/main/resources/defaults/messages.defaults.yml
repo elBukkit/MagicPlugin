@@ -953,6 +953,9 @@ spells:
         name: Sphere
         description: Create a real sphere
         cast_finish: Created a $material sphere
+    rainbow:
+        name: Rainbow
+        description: Send out a rainbow of love!
     blob:
         name: Blob
         description: Create a solid blob

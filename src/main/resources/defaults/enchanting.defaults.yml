@@ -485,7 +485,7 @@ engineer:
       packed_ice: 10,20,25
       obsidian: 0,0,15
       redstone_block: 0,0,5
-      schematic|rainbow: 0,2,5
+      schematic|rainbow_blocks: 0,2,5
       schematic|creeper_rug: 0,0,5
 
 architect:
@@ -632,7 +632,7 @@ architect:
       stained_glass_pane|13: 60,40,30
       stained_glass_pane|14: 60,40,30
       stained_glass_pane|15: 60,40,30
-      schematic|rainbow: 0,2,5
+      schematic|rainbow_blocks: 0,2,5
       schematic|lantern: 0,1,20
       schematic|creeper_rug: 0,0,5
       schematic|elder_tree: 0,0,1

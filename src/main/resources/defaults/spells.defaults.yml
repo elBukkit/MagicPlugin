@@ -7384,3 +7384,39 @@ tornado|2:
         z_size: 1
         y_size: 8
         radius: 4
+
+rainbow:
+    icon_url: http://textures.minecraft.net/texture/4e693cf3b7bf83248527aacc2714638b55587cde593963d1f861884f5be1638
+    icon: sapling:4
+    category: staff
+    hidden: true
+    worth: 350
+    actions:
+        cast:
+        - class: Volume
+          actions:
+          - class: Skip
+            actions:
+            - class: Delay
+          - class: ModifyBlock
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: level_up
+    parameters:
+        target: block
+        allow_max_range: true
+        range: 3
+        use_brush_size: true
+        undo: 60000
+        cooldown: 45000
+        brush: schematic|rainbow
+        breakable: 3
+        destructible: air
+        orient: true
+        skip: 100
+        delay: 5
+        volume_type: yxz
+        center_z: true
+    costs:
+        mana: 100
