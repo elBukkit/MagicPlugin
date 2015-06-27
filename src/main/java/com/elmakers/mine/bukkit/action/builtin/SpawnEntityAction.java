@@ -315,9 +315,9 @@ public class SpawnEntityAction extends BaseSpellAction
             } catch (Exception ex) {
                 entity = target.getWorld().spawnEntity(target, famType);
             }
-			if (entity != null && entity instanceof Skeleton) {
+			if (entity != null && item != null && entity instanceof Skeleton) {
 				Skeleton skellie = (Skeleton)entity;
-				skellie.getEquipment().setItemInHand(new ItemStack(Material.BOW));
+				skellie.getEquipment().setItemInHand(item.getItemStack(1));
             }
 		} catch (Exception ex) {
 			ex.printStackTrace();
