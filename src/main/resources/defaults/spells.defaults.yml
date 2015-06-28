@@ -7417,6 +7417,6 @@ rainbow:
         skip: 100
         delay: 5
         volume_type: yxz
-        center_z: true
+        center_z: false
     costs:
         mana: 100

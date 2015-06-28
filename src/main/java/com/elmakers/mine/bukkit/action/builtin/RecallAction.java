@@ -518,11 +518,23 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
         return SpellResult.CAST;
 	}
 
+    protected Waypoint getUnknownWarp(String warpKey) {
+        MageController controller = context.getController();
+        Location warpLocation = controller.getWarp(warpKey);
+        if (warpLocation == null || warpLocation.getWorld() == null) {
+            return null;
+        }
+
+        String castMessage = context.getMessage("cast_warp").replace("$name", warpKey);
+        String failMessage = context.getMessage("no_target_warp").replace("$name", warpKey);
+        return new Waypoint(RecallType.WARP, warpLocation, warpKey, castMessage, failMessage, "", null, null);
+    }
+
     protected Waypoint getWarp(String warpKey)
     {
-        if (warps == null) return null;
+        if (warps == null) return getUnknownWarp(warpKey);
         ConfigurationSection config = warps.get(warpKey);
-        if (config == null) return null;
+        if (config == null) return getUnknownWarp(warpKey);
 
         MageController controller = context.getController();
         String warpName = config.getString("name", warpKey);
@@ -539,6 +551,8 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
             if (serverName != null) {
                 return new Waypoint(RecallType.WARP, warpKey, serverName, title, castMessage, failMessage, description, icon, iconURL);
             }
+
+            return null;
         }
 
         return new Waypoint(RecallType.WARP, warpLocation, title, castMessage, failMessage, description, icon, iconURL);
@@ -600,6 +614,7 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
 	
 	protected boolean tryTeleport(final Player player, final Waypoint waypoint) {
         Mage mage = context.getMage();
+        if (waypoint == null) return false;
         if (waypoint.isCommand()) {
             CommandSender sender = mage.getCommandSender();
             boolean isOp = sender.isOp();

@@ -1,5 +1,8 @@
 # TODO
 
+ - Fix Firestorm (potter configs)
+ - Look at/expand "item" parameter to SpawnEntity (why do wither skellies start with a bow?)
+
  - Add /mmap reload command
  - Registered blocks aren't clearing on /magic commit ?
  - CoreProtect integration
