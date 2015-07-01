@@ -36,6 +36,7 @@ enchantwand:
 ollivander:
   hidden: true
   actions:
+    conditional: fail
     cast:
     - class: GiveItem
     - class: Command
