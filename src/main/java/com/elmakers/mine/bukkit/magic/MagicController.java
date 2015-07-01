@@ -701,7 +701,9 @@ public class MagicController implements MageController {
             getLogger().info("LibsDisguises not found");
         } else {
             libsDisguiseManager = new LibsDisguiseManager(plugin, libsDisguisePlugin);
-            getLogger().info("Integrated with LibsDisguises, most spells can't be cast while disguised");
+            if (libsDisguiseManager.initialize()) {
+                getLogger().info("Integrated with LibsDisguises, most spells can't be cast while disguised");
+            }
         }
 
         load();

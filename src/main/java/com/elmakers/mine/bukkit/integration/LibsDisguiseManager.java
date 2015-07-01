@@ -12,19 +12,28 @@ public class LibsDisguiseManager {
 
     public LibsDisguiseManager(Plugin owningPlugin, Plugin disguisePlugin) {
         this.plugin = owningPlugin;
+    }
+
+    public boolean initialize() {
         try {
             Class<?> disguiseAPI = Class.forName("me.libraryaddict.disguise.DisguiseAPI");
             if (disguiseAPI != null) {
                 isDisguisedMethod = disguiseAPI.getMethod("isDisguised", Entity.class);
+            } else {
+                plugin.getLogger().log(Level.WARNING, "LibsDisguise plugin found, but DisguiseAPI could not be loaded");
+                return false;
             }
         } catch (Exception ex) {
-            owningPlugin.getLogger().log(Level.WARNING, "LibsDisguise integration failed", ex);
+            plugin.getLogger().log(Level.WARNING, "LibsDisguise integration failed", ex);
             isDisguisedMethod = null;
-            return;
+            return false;
         }
-        if (isDisguisedMethod != null) {
-            owningPlugin.getLogger().log(Level.WARNING, "Something went wrong with LibsDisguise integration");
+        if (isDisguisedMethod == null) {
+            plugin.getLogger().log(Level.WARNING, "Something went wrong with LibsDisguise integration");
+            return false;
         }
+
+        return true;
     }
 
     public boolean isDisguised(Entity entity) {
