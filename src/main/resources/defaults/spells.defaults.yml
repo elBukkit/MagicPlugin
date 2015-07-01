@@ -7093,6 +7093,17 @@ addspell:
         spell: flare
         loud: true
 
+giveitem:
+    icon: iron_hoe
+    category: specialty
+    hidden: true
+    actions:
+        cast:
+        -  class: GiveItem
+    parameters:
+        item: magichat
+        loud: true
+
 fillwand:
     icon: iron_hoe
     category: specialty

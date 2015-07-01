@@ -1338,6 +1338,11 @@ spells:
         no_path_end: You must be ready to advance to $path!
         no_wand: You must be holding a wand!
         no_target: You already know that spell
+    giveitem:
+        name: Give Item
+        description: Give an item to the player
+        cast: ""
+        cast_player_message: ""
     fillwand:
         name: Fill Wand
         description: Fill up your wand with all spells
