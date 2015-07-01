@@ -2496,9 +2496,19 @@ firestorm:
     description: Incinerate your target!
     icon: clay_ball
     category: dark
-    class: CommandSpell
     worth: 35
     pvp_restricted: true
+    actions:
+        cast:
+        -  class: PotionEffectAction
+        -  class: Disc
+           actions:
+           - class: Skip
+             actions:
+             - class: Delay
+           - class: Cover
+             actions:
+             - class: Burn
     effects:
         cast:
         -  class: EffectSingle
@@ -2511,14 +2521,20 @@ firestorm:
              iterations: 8
              particle: lava
     parameters:
+        radius: 5
+        thickness: 2
+        fizzle_chance: .5
         target: self
         target_type: LivingEntity
         cooldown: 8000
-        op: true
-        commands:
-        - castp @t firestormbase
-        - castp @t floo
+        undo: 6000
+        duration: 10000
+        effect_fire_resistance: 100
         bypass_backfire: true
+        bypass_build: true
+        bypass_break: true
+        skip: 8
+        delay: 500
     costs:
         mana: 100
 

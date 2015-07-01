@@ -1,7 +1,9 @@
 # TODO
 
- - Fix Firestorm (potter configs)
+ - Manually dropping a wand with a different one in your hand goes weird- maybe only in drop mode? 
+ - Can't hitbox-target entities standing in a corner? Issues with spiders?
  - Look at/expand "item" parameter to SpawnEntity (why do wither skellies start with a bow?)
+ - Wand failed to activate on respawn?
 
  - Add /mmap reload command
  - Registered blocks aren't clearing on /magic commit ?
