@@ -79,7 +79,7 @@ recall:
       town:
         name: The Capitol
         description: The only town we know of
-        locked: true
+        locked: false
         icon: compass
       lodge:
         name: Old Town
