@@ -1,0 +1,466 @@
+
+general:
+    no_spells: No Has Aprendido Ningun Hechizo
+    no_spells_in_category: "No Has Aprendido Ningun Hechizo De La Categoria: $category"
+    spell_list_page: $count Hechizos Aprendidos [Pagina $page De $pages]
+    spell_list: $count Hechizos Aprendidos
+books:
+    default:
+        author: Dumbledore
+        title: $category Libro De Hechizos
+    all:
+        title: Libro De Hechizos Maestro
+paths:
+    beginner:
+        name: Beginner
+        description: Just starting out with magic
+    student:
+        name: Student
+        description: Starting to learn the basics
+    apprentice:
+        name: Apprentice
+        description: A good variety of spells
+    master:
+        name: Master
+        description: The penultimate wizard
+    engineer:
+        name: Engineer
+        description: Has engineering spells
+    architect:
+        name: Architect
+        description: Has super-powerful engineering spells
+    battle:
+        name: Battle
+        description: Combat spells only
+    broom:
+        name: Escoba
+        description: El Poder De Volar
+wand:
+    default_name: Varita
+    upgrade_default_description: Es Absorbido Por tu Varita
+    upgrade_item_description: Es Absorbido Por Tu Varita
+    spell_item_description: Es Absorbido Por Tu Varita
+    brush_item_description: Es Absorbido Por Tu Varita
+    copy_material_name: Copy
+    copy_material_description: Fills with the target material
+    erase_material_name: Erase
+    erase_material_description: Fills with Air
+    clone_material_name: Clone
+    clone_material_description: Copies blocks from a target
+    replicate_material_name: Replicate
+    replicate_material_description: Replicates the clone target
+    clone_material_activated: Clone source selected
+    replicate_material_activated: Replicate source selected
+    erase_modifier_activated: Erase modifier active
+    map_material_name: Mapa
+    map_material_name_scaled: Mapa $sizex$size
+    map_material_description: Creates pixel art from last held map
+    schematic_material_description: Uses $schematic to build.
+    building_material_description: Build with $material
+    upgrade_uses: Añadidos $count Usos
+    upgrade_uses_singular: Añadido $count Uso
+    uses_remaining_brief: $count Usos
+    uses_remaining_singular: $count Uso
+    uses_remaining: $count Usos Restantes
+    enchantment_level_1: I
+    enchantment_level_2: II
+    enchantment_level_3: III
+    enchantment_level_4: IV
+    enchantment_level_5: V
+    enchantment_level_max: X
+    spell_count: $count Hechizos Aprendidos
+    material_count: Tiene $count Materiales
+    upgrade_spell_count: $count Hechizos Mejorados
+    upgrade_material_count: Añadidos $count Materiales
+    mana_amount: "Energia: $amount"
+    mana_amount_boosted: "Energia Extra: $amount &f(&b$mana&f)"
+    mana_regeneration: "Regeneracion De Energia: $amount/s"
+    mana_regeneration_boosted: "Regeneracion De Energia Extra: $amount &f(&b$mana&f)&d/s"
+    mana_boost: "Energia Extra: $amount%"
+    mana_regeneration_boost: "Regeneracion De Energia Extra: $amount%"
+    cost_reduction: Cost Reduction $roman
+    cooldown_reduction: Cooldown Reduction $roman
+    power: Power $roman
+    protection: Protection $roman
+    protection_physical: Physical Protection $roman
+    protection_projectile: Projectile Protection $roman
+    protection_fall: Fall Protection $roman
+    protection_fire: Fire Protection $roman
+    protection_blast: Blast Protection $roman
+    potion_effect: $effect $roman
+    super_powered: Superpowered
+    super_protected: Invulnerability
+    spell_aura: "Aura: &6$spell"
+    costs_description: Coste $description
+    active_costs_description: Coste $description Por Segundo
+    range_description: "&9Rango: &6$range &9Bloques"
+    owner_description: Varita De $name
+    bound_description: Obdece A $name
+    unmodifiable: That wand can not be modified
+    player_unmodifiable: $name's wand can not be modified
+    bound_to_other: Esta Varita No Te Pertenece
+    bound: Esta Varita Obedece A $name
+    spell_added: "Has Aprendido El Hechizo: &r&6$name"
+    brush_added: "The &r&7$name &d&obrush has been added to your $wand"
+    player_spell_upgraded: "$players's &r&6$name &d&oHa Sido Mejorado Al Nivel &3$level"
+    spell_upgraded: "&r&6$name &d&oHa Sido Mejorado Al Nivel &3$level"
+    spell_override_upgraded: "&r&6$name &d&oHa Sido Mejorado"
+    upgraded_property: "&r&dTu Varita Ha Sido Mejorada: &r&b$name"
+    mana_added: "&r&dTu Varita Tiene Ahora $value mana"
+    hotbar_added: "&r&aYour $wand's hotbar has been upgraded! &r&bPress Q while your $wand is active"
+    player_upgraded: $name's wand upgraded
+    player_not_upgraded: $name's wand not upgraded
+    no_item: No Tienes Ningun Objeto Magico En La Mano
+    player_no_item: $name No Tiene Ningun Objeto Magico En La Mano
+    no_wand: Necesitas Tener La Varita En La Mano
+    player_no_wand: $name No Tiene La Varita En La Mano
+    no_item: Necesitas Tener Un Objeto Magico En La Mano
+    player_no_magic_item: $name No Tiene Un Objeto Magico En La Mano
+    no_magic_item: Esto No Es Un Objeto Magico
+    player_no_item: $name No Tiene Ningun Objeto Magico En La Mano
+    reorganized: $wand reorganized
+    player_reorganized: $name's wand reorganized
+    alphabetized: $wand alphabetized
+    player_alphabetized: $name's wand alphabetized
+    already_enchanted: That $item is already enchanted
+    enchanted: Your $item has been enchanted
+    player_enchanted: $name's $item has been enchanted
+    unenchanted: Your wand has been unenchanted
+    no_path: That item can not be enchanted
+    player_unenchanted: $name's wand has been unenchanted
+    level_up: "&r&bYour $wand has been upgraded to &r&5$path"
+    duplicated: Your wand has been duplicated
+    player_duplicated: $name's wand has been duplicated
+    restored: Your wand has been restored
+    player_restored: $name's wand has been restored
+    not_restored: You have no recorded bound wand
+    player_not_restored: $name's wand has no recorded bound wand
+    unlocked: Your wand has been unlocked
+    player_unlocked: $name's wand has been unlocked
+    unknown_template: Unknown wand name $name
+    reconfigured: Wand reconfigured
+    player_reconfigured: $name's wand reconfigured
+    filled: Your $wand now contains all of your spells
+    player_filled: $name's wand filled
+    renamed: Your wand has been renamed
+    player_renamed: $name's wand renamed
+    self_destruct: Your wands did not survive the dimensional shift!
+    no_permission: "&r&4You may not use that $wand &r&4here."
+    single_spell: Varita Con $spell
+    fully_enchanted: "&cThis $wand is fully enchanted &4(for now)"
+    need_more_levels: "You need at least &r&4$levels &d&olevels to enchant"
+    require_more_levels: "You must enchant at a higher level"
+    randomized_lore: What kind of wand will you get?
+    randomized_name: Caja De Varita
+    upgrade_name: $name Upgrade
+    inventory_instructions: "&r&bTu Varita Tiene Mas DE Un Hechizo. Clic Derecho Para Abrir/Cerrar El Inventario De Hechizos. Usa La Ruleta Del Raton O Los Numeros Para Cambiar De Hechizo."
+    page_instructions: "&r&bTu Varita Tiene Mas DE Una Pagina De Hechizos. Clickea Fuera Del Inventario Para Cambiar De Pagina."
+    bound_instructions: "&r&3Esta Varita Te Obedece A Ti Y No Se Puede Tirar."
+    spell_instructions: "&r&bTu Varita Necesita Energia Para Lanzar Hechizos.Puedes Mirar La Energia En La Barra De XP."
+    enchant_instructions: "&r&bEncanta Tu Varita Para Mejorar Sus Habilidades."
+    brush_instructions: "&r&bMaterial brushes have been added to your $wand. Shift+Right Click to select a brush."
+material:
+    wildcard: " (All Types)"
+economy:
+    missing: "&cMy shop is closed, sorry!"
+    insufficient: "Coste: &6$cost"
+    deducted: "Deducted: &6$cost"
+spell:
+    brush: Uses Material Brushes
+    undoable: ""
+    not_undoable: "&4Not Undoable"
+    reactivate: $name Activado
+    available_path: Available at the $path level
+    required_path: Required to complete the $path level
+    levels_available: "Maximo Nivel: &r&5$levels"
+    required_spell: "Necesitas Aprender &r&4$spell &d&oPara Avanzar &b$path"
+    level_description: Nivel $level
+worlds:
+    world:
+        name: The Overworld
+    world_nether:
+        name: The Nether
+    world_the_end:
+        name: The End
+costs:
+    xp_amount: $amount XP
+    mana_amount: $amount Energia
+    mana: Energia
+    xp: XP
+    heroes_mana: $amount Energia
+cooldown:
+    wait_seconds: $seconds Segundos
+    wait_minutes: $minutes Minutos
+    wait_hours: $hours Horas
+    wait_moment: Al Momento
+    wait_minute: Un Minuto
+    wait_hour: Una Hora
+    description_seconds: $seconds Segundos
+    description_minutes: $minutes Minutos
+    description_hours: $hours Horas
+    description_minute: Un Minuto
+    description_hour: Una Hora
+    description_moment: Al Momento
+    description: "&eEnfriamiento: &6$time"
+duration:
+    lasts_seconds: Dura Por $seconds Segundos
+    lasts_minutes: Dura Por $minutes Minutos
+    lasts_hours: Dura Por $hours Horas
+categories:
+    combat:
+        name: Combat Magic
+        description: Basic Attack Spells
+    automata:
+        name: Automata
+        description: Create Life!
+        color: 'FFA500'
+    electrical:
+        name: Electrical
+        description: Mad Science
+        color: '888800'
+    master:
+        name: Master
+        description: All the Really Powerful Stuff
+        color: '00AACC'
+    utility:
+        name: Utility
+        description: Utility and movement spells
+    utility:
+        name: Utility
+        description: Utility and movement spells
+    demolition:
+        name: Demolitions
+        description: Highly destructive magic
+        color: 'FF0000'
+    dark:
+        name: Dark Magic
+        description: Evil Stuff!
+        color: '010101'
+    light:
+        name: Light Magic
+        description: Good Stuff
+        color: 'DDDDDD'
+    engineering:
+        name: Engineering
+        description: Spells for magical building
+        color: '00FFFF'
+    elemental:
+        name: Elemental
+        description: Control Nature
+    mining:
+        name: Mining
+        description: Spells to help you mine
+    skills:
+        name: Heroes Skills
+        descriptions: Skills being used from Heroes
+    staff:
+        name: Staff
+        description: Staff-only spells
+    specialty:
+        name: Specialty
+        description: Spells meant for item or npc use
+skills:
+    inventory_title: "$class Skills ($page/$pages)"
+    inventory_title_secondary: "$class-$class2 Skills ($page/$pages)"
+    item_name: "$skill"
+    item_name_unavailable: "&c$skill"
+    item_description: "$description"
+    passive_description: "&1PASSIVE"
+spells:
+    default:
+        fizzle: Tu Hechizo Se Ha Congelado
+        backfire: Tu Hechizo Ha Rebotado
+        fail: Tu Hechizo Ha Fallado
+        insufficient_permission: No Puedes Lanzar Hechizos Aqui
+        cast_player_message: "&d&o$player &r&5Te Ha Lanzado&3&o$spell &r&5!"
+        indirect_player_message: "&d&o$player &r&5Te Ha Lanzado &3&o$spell &r&5!"
+        insufficient_resources: No Tienes Suficiente $cost
+        cooldown: Tienes Que Esperar $time.
+        cancelled: Your spell was cancelled!
+        entity_required: An entity is required for this spell.
+        living_entity_required: A living entity is required for this spell.
+        player_required: A player is required for this spell.
+        location_required: A location is required for this spell.
+        world_required: A world is required for this spell.
+        invalid_world: The specified world is not valid.
+        cast_finish: ""
+    admission:
+        name: Alohomora
+        description: Abre Puertas A Distancia
+        cast: Alohomora
+    admission|2:
+        upgrade_description: "&r&b• &6Ahora Abre Puertas De Hierro"
+    curse:
+        name: Tragacaracoles
+        description: Marea A Tu Oponente
+        cast: Has Mareado A $target
+        upgrade_description: "&r&b• &6Ahora Relentiza"
+    broom:
+        name: Escoba
+        description: El Poder De Volar
+        cast: Tu Escoba Se Ha Elevado!
+        deactivate: Tu Escoba Se Ha Quedado Parada.
+        crash: CRASH!
+        fail: No Tienes Suficiente Espacio Para Volar!
+        cursed: No Puedes Volar Ahora!
+    reflect:
+        name: Protego
+        description: Crea Un Escudo Delante Tuya
+        upgrade_description: "&r&b• &6Incrementa Tamaño Y Durabilidad"
+    shell:
+        name: Jaulio
+        description: Encierra A Tu Oponente
+        upgrade_description: "&r&b• &6Incrementa Durabilidad"
+    arrow:
+        name: Arrow
+        description: Lanza Una Flecha Magica
+        upgrade_description: "&r&b• &6Aumenta Daño"
+    frost:
+        name: Frost Requo
+        description: Congela El Agua
+        cast_finish: &count Bloques Congelados
+        upgrade_description: "&r&b• &6Aumenta El Radio"
+    tree:
+        name: Orchideous
+        description: Planta Un Arbol
+        fail: No Puedes Plantar Un Arbol Alli
+        cast: Orchideous
+    disarm:
+        name: Expelliarmous
+        description: Disarma A Tu Oponente
+        cast: Expelliarmous
+        cast_self: Te Has Desarmado A Ti Mismo
+        upgrade_description: "&r&b• &6Disminuye Las Posibilidades De Que Rebote O Se Congele"
+    disarm|3:
+        upgrade_description: "&r&b• &6No Rebota Ni Se Congela"
+    heal:
+        name: Branquia-Emendo
+        description: Te Cura A Ti Y A Otro
+        cast: Has Curado A $target
+        cast_self: Te Has Curado
+        upgrade_description: "&r&b• &6Aumenta La Cantidad De Vida"
+    torch:
+        name: Lumos
+        description: Ilumina Una Zona
+        no_target: No Puedes Iluminar Ahi
+        cast: Lumos
+    torch|2:
+        upgrade_description: "&r&b• &6Ahora Dura Permanente"
+    monster:
+        name: Immortui
+        description: Hace Aparecer Un Monstruo
+        deactivate: Has Quitado A Tu Monstruo
+        cast: Immortui
+    bubble:
+        name: Aguamenti
+        description: Crea Un Cubo De Agua
+        usage: Crea Un Cubo De Agua
+        cast: Aguamenti
+        upgrade_description: "&r&b• &6Aumenta El Radio"
+    collapse:
+        name: Bombarda
+        description: Rompe Una Zona
+        cast_finish: $count Bloques Rotos
+        upgrade_description: "&r&b• &6Aumenta Radio Y Rompe Mas Tipos De Bloques"
+    blast:
+        name: Reducto
+        description: Explota Una Zona Pequeña
+        cast_finish: $count Bloques Rotos
+        upgrade_description: "&r&b• &6Aumenta Radio Y Rompe Mas Tipos De Bloques"
+    cloak:
+        name: Evanesco
+        description: Te Hace Invisible
+        cast: Evanesco
+        cast_self: Te Has Vuelto Invisible
+    push:
+        name: Flipendo
+        description: Empuja A Tu Oponente
+        alternate: Flipendo
+        upgrade_description: "&r&b• &6Aumenta La Fuerza"
+    fire:
+        name: Incendio
+        description: Quema A Tu Oponente
+        cast: Incendio
+        upgrade_description: "&r&b• &6Aumenta El Radio"
+    blink:
+        name: Aparicion
+        description: Te Teletransporta
+        usage: Te Teletransporta A Donde Quieras
+        no_target: No Puedes Teletransportarte Alli
+        cast: Aparicion
+    blink|2:
+        upgrade_description: "&r&b• &6Aumenta El Rango"
+    blink|3:
+        upgrade_description: "&r&b• &6Aumenta El Rango Y La Subida/Bajada"
+    stash:
+        name: Bauleo
+        description: Abre Tu Cofre De Ender
+        cast: Bauleo
+        cast_player: Bauleo
+    stream:
+        name: Aquaeructo
+        description: Lanza Un Chorro De Agua
+        cast: Aquaeructo
+    flare:
+        name: Periculum
+        description: Lanza Petardos Magicos
+        cast: Periculum
+    fireball:
+        name: Confringo
+        description: Lanza Una Bola De Fuego
+    fireball|2:
+        upgrade_description: "&r&b• &6Aumenta El Daño"
+    fireball|3:
+        upgrade_description: "&r&b• &6Aumenta La Velocidad"
+    fireball|4:
+        upgrade_description: "&r&b• &6Ahora Quema"
+    tornado:
+        name: Maxima Tornadus
+        description: Crea Un Tornado
+        cast: Maxima Tornadus
+        upgrade_description: "&r&b• &6Ahora Destruye Estructuras"
+    missile:
+        name: Stupefy
+        description: Lanza Un Misil Magico
+        cast: Stupefy
+        upgrade_description: "&r&b• &6Aumenta Rango Y Daño"
+    blind:
+        name: Obscuro
+        description: Ciega A Tu Oponente
+        cast: Has Cegado A $target
+    torture:
+        name: Crucio
+        description: Tortura A Tu Oponente
+        cast: Crucio
+    petrify:
+        name: Immobilus
+        description: Immobiliza A Tu Oponente
+        cast: Immobilus
+    wound:
+        name: Sectucsempra
+        description: Daña A Tu Oponente
+        cast: Sectucsempra
+    stun:
+        name: Desmaius
+        description: Desmaya Y Daña A Tu Oponente
+        cast: Desmaius
+        upgrade_description: "&r&b• &6Aumenta Daño Y Tiempo"
+    pull:
+        name: Accio
+        description: Atrae Todo A Ti
+        alternate: Accio
+        cast: Accio
+    gills:
+        name: Casco Burbuja
+        description: Te Permite Respirar Bajo El Agua
+        cast: Casco Burbuja
+        hat_name: Casco Burbuja
+        hat_lore: Clic Para Quitar
+    lift:
+        name: Wingardium-Leviosa
+        description: Eleva El Bloque Que Quieras
+        cast: Wingardium-Leviosa
+    fling:
+        name: Spongify
+        description: Te Impulsa Hacia Donde Tu Quieras
+        upgrade_description: "&r&b• &6Aumenta La Potencia"
