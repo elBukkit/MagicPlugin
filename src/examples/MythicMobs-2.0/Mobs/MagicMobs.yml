@@ -51,6 +51,24 @@ Sludge:
     KnockbackResistance: 1
   Skills:
   - skill{skill=SludgePoison} @Target ~onTimer:20 >0 0.9
+Guardian:
+  Mobtype: zombie
+  Display: Guardian
+  Health: 50
+  Equipment:
+  - Wand:0
+  - Firebender_Helmet:4
+  - WarlockTunic:3
+  Drops:
+  - MinorBoss
+  Options:
+    MovementSpeed: 0.001
+    MaxCombatDistance: 32
+    KnockbackResistance: 1
+  DamageModifiers:
+  - MAGIC 20
+  Skills:
+  - skill{skill=Missile} @Target ~onTimer:60 >0 0.9
 Warlock:
   Mobtype: witch
   Display: Warlock
