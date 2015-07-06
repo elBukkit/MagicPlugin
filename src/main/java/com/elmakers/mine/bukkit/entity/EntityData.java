@@ -43,6 +43,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     protected double health = 1;
     protected boolean isBaby;
     protected int fireTicks;
+    protected int airLevel;
     protected DyeColor dyeColor;
     protected Horse.Color horseColor;
     protected Horse.Variant horseVariant;
@@ -94,6 +95,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
             name = li.getCustomName();
             this.health = li.getHealth();
             this.potionEffects = li.getActivePotionEffects();
+            this.airLevel = li.getRemainingAir();
         }
 
         if (entity instanceof Ageable) {
@@ -347,6 +349,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
 
             try {
                 li.setHealth(Math.min(health, li.getMaxHealth()));
+                li.setRemainingAir(Math.min(airLevel, li.getRemainingAir()));
             } catch (Throwable ex) {
             }
         }
