@@ -22,6 +22,7 @@ public class DamageAction extends BaseSpellAction
     private double playerDamage;
     private double elementalDamage;
     private boolean magicDamage;
+	private Double percentage;
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters)
@@ -31,6 +32,11 @@ public class DamageAction extends BaseSpellAction
         entityDamage = parameters.getDouble("entity_damage", damage);
         playerDamage = parameters.getDouble("player_damage", damage);
         elementalDamage = parameters.getDouble("elemental_damage", damage);
+		if (parameters.contains("percentage")) {
+			percentage = parameters.getDouble("percentage");
+		} else {
+			percentage = null;
+		}
         magicDamage = parameters.getBoolean("magic_damage", true);
     }
 
@@ -54,7 +60,9 @@ public class DamageAction extends BaseSpellAction
 			damage = elementalDamage;
 			controller.damageElemental(entity, damage * mage.getDamageMultiplier(), 0, mage.getCommandSender());
 		} else {
-			if (targetEntity instanceof Player) {
+			if (percentage != null) {
+				damage = percentage * targetEntity.getMaxHealth();
+			} else if (targetEntity instanceof Player) {
 				damage = playerDamage;
 			} else {
 				damage = entityDamage;
@@ -84,6 +92,7 @@ public class DamageAction extends BaseSpellAction
 		parameters.add("entity_damage");
 		parameters.add("elemental_damage");
         parameters.add("magic_damage");
+		parameters.add("percentage");
 	}
 
 	@Override
@@ -93,7 +102,9 @@ public class DamageAction extends BaseSpellAction
 			examples.addAll(Arrays.asList((BaseSpell.EXAMPLE_SIZES)));
 		} else if (parameterKey.equals("magic_damage")) {
             examples.addAll(Arrays.asList((BaseSpell.EXAMPLE_BOOLEANS)));
-        } else {
+        } else if (parameterKey.equals("percentage")) {
+			examples.addAll(Arrays.asList((BaseSpell.EXAMPLE_PERCENTAGES)));
+		} else {
 			super.getParameterOptions(spell, parameterKey, examples);
 		}
 	}
