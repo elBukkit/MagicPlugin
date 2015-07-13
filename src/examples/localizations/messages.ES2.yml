@@ -1,5 +1,4 @@
---- 
-automata: 
+automata:
   awaken: "&c&o$name &r&5ha sido revelado"
   default_name: Automaton
   evil: 
