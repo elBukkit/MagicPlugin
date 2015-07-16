@@ -5,6 +5,7 @@
  - Add Nuke Level 2 (Breaks all block types, larger radius)
  - Add Smite spell (Lightning effect + Blast + Ignite/Damage)
  - Fix Recall using ad-hoc warps via "/cast recall warp <warpname>"
+ - GriefPrevention integration now checks for PVP not being allowed in player claims
 
 ## 5.1.7
 

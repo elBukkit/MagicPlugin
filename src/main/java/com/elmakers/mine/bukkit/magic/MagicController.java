@@ -938,6 +938,7 @@ public class MagicController implements MageController {
         if (multiverseManager.isEnabled()) pvpManagers.add(multiverseManager);
         if (preciousStonesManager.isEnabled()) pvpManagers.add(preciousStonesManager);
         if (townyManager.isEnabled()) pvpManagers.add(townyManager);
+        if (griefPreventionManager.isEnabled()) pvpManagers.add(griefPreventionManager);
 
         // Build Managers
         if (worldGuardManager.isEnabled()) blockBuildManagers.add(worldGuardManager);

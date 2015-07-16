@@ -5,7 +5,7 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
-public class GriefPreventionManager implements BlockBuildManager, BlockBreakManager  {
+public class GriefPreventionManager implements BlockBuildManager, BlockBreakManager, PVPManager  {
 	private boolean enabled = false;
 	private GriefPreventionAPI api = null;
 
@@ -47,6 +47,17 @@ public class GriefPreventionManager implements BlockBuildManager, BlockBreakMana
 
     @Override
     public boolean hasBreakPermission(Player player, Block block) {
-        return hasBuildPermission(player, block);
+		if (enabled && block != null && api != null) {
+			return api.hasBreakPermission(player, block);
+		}
+		return true;
     }
+
+	@Override
+	public boolean isPVPAllowed(Player player, Location location) {
+		if (enabled && location != null && api != null) {
+			return api.isPVPAllowed(location);
+		}
+		return true;
+	}
 }
