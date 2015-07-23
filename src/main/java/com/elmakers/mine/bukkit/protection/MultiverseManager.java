@@ -1,6 +1,8 @@
 package com.elmakers.mine.bukkit.protection;
 
 import com.onarandombox.MultiverseCore.MultiverseCore;
+import com.onarandombox.MultiverseCore.api.MVWorldManager;
+import com.onarandombox.MultiverseCore.api.MultiverseWorld;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -42,6 +44,10 @@ public class MultiverseManager implements PVPManager {
         if (!enabled || mv == null || location == null) return true;
         World world = location.getWorld();
         if (world == null) return true;
-        return mv.getMVWorldManager().getMVWorld(world).isPVPEnabled();
+        MVWorldManager manager = mv.getMVWorldManager();
+        if (manager == null) return true;
+        MultiverseWorld mvWorld = manager.getMVWorld(world);
+        if (mvWorld == null) return true;
+;       return mvWorld.isPVPEnabled();
     }
 }
