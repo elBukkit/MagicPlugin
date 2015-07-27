@@ -41,8 +41,8 @@ public class ConstructSpell extends BrushSpell
 	public SpellResult onCast(ConfigurationSection parameters) 
 	{
         Block target = null;
-		boolean isSelect = getTargetType() != TargetType.SELECT;
-        boolean finalCast = isSelect || this.targetBlock != null;
+		boolean isSelect = getTargetType() == TargetType.SELECT;
+        boolean finalCast = !isSelect || this.targetBlock != null;
 		if (isSelect) {
 			setTargetType(TargetType.BLOCK);
 		}
