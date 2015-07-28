@@ -2189,6 +2189,7 @@ public class MagicController implements MageController {
         inventoryController.setEnableItemHacks(properties.getBoolean("enable_custom_item_hacks", false));
         entityController.setPreventMeleeDamage(properties.getBoolean("prevent_melee_damage", false));
         entityController.setKeepWandsOnDeath(properties.getBoolean("keep_wands_on_death", true));
+        entityController.setPreventWandMeleeDamage(properties.getBoolean("prevent_wand_melee_damage", true));
         entityController.setAgeDroppedItems(properties.getInt("age_dropped_items", 0));
         playerController.setClickCooldown(properties.getInt("click_cooldown", 0));
         playerController.setCreativeModeEjecting(properties.getBoolean("enable_creative_mode_ejecting", false));

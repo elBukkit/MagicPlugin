@@ -37,6 +37,7 @@ public class EntityController implements Listener {
     private boolean preventMeleeDamage = false;
     private boolean keepWandsOnDeath = true;
     private boolean	disableItemSpawn = false;
+    private boolean	preventWandMeleeDamage = true;
     private int ageDroppedItems	= 0;
 
     public EntityController(MagicController controller) {
@@ -49,6 +50,10 @@ public class EntityController implements Listener {
 
     public void setKeepWandsOnDeath(boolean keep) {
         keepWandsOnDeath = keep;
+    }
+
+    public void setPreventWandMeleeDamage(boolean prevent) {
+        preventWandMeleeDamage = prevent;
     }
 
     public void setDisableItemSpawn(boolean disable) {
@@ -139,7 +144,7 @@ public class EntityController implements Listener {
             }
         }
         Entity damager = event.getDamager();
-        if (damager instanceof Player) {
+        if (damager instanceof Player ) {
             Mage damagerMage = controller.getRegisteredMage(damager);
             com.elmakers.mine.bukkit.api.wand.Wand activeWand = null;
             if (damagerMage != null) {
@@ -148,19 +153,22 @@ public class EntityController implements Listener {
                     activeWand.playEffects("hit_entity");
                 }
             }
-            boolean hasWand = activeWand != null;
-            Player player = (Player) damager;
-            ItemStack itemInHand = player.getItemInHand();
-            boolean isMeleeWeapon = controller.isMeleeWeapon(itemInHand);
-            boolean isMelee = event.getCause() == EntityDamageEvent.DamageCause.ENTITY_ATTACK && !CompatibilityUtils.isDamaging;
-            if (isMelee && hasWand && !isMeleeWeapon) {
-                event.setCancelled(true);
-                CompatibilityUtils.isDamaging = true;
-                activeWand.cast();
-                CompatibilityUtils.isDamaging = false;
-            }
-            else if (!hasWand && preventMeleeDamage && isMelee && !isMeleeWeapon) {
-                event.setCancelled(true);
+            if (preventWandMeleeDamage)
+            {
+                boolean hasWand = activeWand != null;
+                Player player = (Player) damager;
+                ItemStack itemInHand = player.getItemInHand();
+                boolean isMeleeWeapon = controller.isMeleeWeapon(itemInHand);
+                boolean isMelee = event.getCause() == EntityDamageEvent.DamageCause.ENTITY_ATTACK && !CompatibilityUtils.isDamaging;
+                if (isMelee && hasWand && !isMeleeWeapon) {
+                    event.setCancelled(true);
+                    CompatibilityUtils.isDamaging = true;
+                    activeWand.cast();
+                    CompatibilityUtils.isDamaging = false;
+                }
+                else if (!hasWand && preventMeleeDamage && isMelee && !isMeleeWeapon) {
+                    event.setCancelled(true);
+                }
             }
         } else {
             ActionHandler.targetEffects(damager, entity);
