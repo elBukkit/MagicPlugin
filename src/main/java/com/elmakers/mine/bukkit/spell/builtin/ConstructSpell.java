@@ -93,7 +93,7 @@ public class ConstructSpell extends BrushSpell
             }
             bounds = buildWith.getSize();
             radius = (int)Math.max(Math.max(bounds.getX() / 2, bounds.getZ() / 2), bounds.getY());
-        } else if (getTargetType() == TargetType.SELECT) {
+        } else if (isSelect) {
 			if (targetLocation2 != null) {
 				this.targetBlock = targetLocation2.getBlock();
 			}
