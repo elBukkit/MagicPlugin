@@ -640,10 +640,13 @@ public class LevitateSpell extends TargetingSpell implements Listener
         }
         Entity mageEntity = mage.getEntity();
         if (mountEntity != null) {
+            Plugin plugin = controller.getPlugin();
             if (mageEntity != null) {
                 mageEntity.eject();
             }
             if (armorStand != null) {
+                armorStand.removeMetadata("notarget", plugin);
+                armorStand.removeMetadata("broom", plugin);
                 armorStand.remove();
             }
             if (mountEntity instanceof Horse) {
@@ -656,7 +659,6 @@ public class LevitateSpell extends TargetingSpell implements Listener
             }
             mountEntity.eject();
             mountEntity.setPassenger(null);
-            Plugin plugin = controller.getPlugin();
             mountEntity.removeMetadata("notarget", plugin);
             mountEntity.removeMetadata("broom", plugin);
             CompatibilityUtils.setInvulnerable(mountEntity, false);
@@ -812,6 +814,8 @@ public class LevitateSpell extends TargetingSpell implements Listener
                     armorStand = (ArmorStand) mage.getLocation().getWorld().spawnEntity(mage.getLocation(), EntityType.ARMOR_STAND);
                     configureArmorStand(armorStand);
                     armorStand.setPassenger(mountEntity);
+                    armorStand.setMetadata("notarget", new FixedMetadataValue(controller.getPlugin(), true));
+                    armorStand.setMetadata("broom", new FixedMetadataValue(controller.getPlugin(), true));
                 } else {
                     armorStand = null;
                 }
