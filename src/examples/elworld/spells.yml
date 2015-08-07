@@ -67,13 +67,19 @@ recall:
         name: elMakers Hub
         description: Return to the Hub
         icon: nether_star
-        command: server hub
+        command: mserver hub
         op: true
     warps:
+      falcon:
+        name: Milennium Falcon
+        description: Testing cross-server warps
+        server: stars
+        locked: true
+        icon: compass
       town:
         name: The Capitol
         description: The only town we know of
-        locked: true
+        locked: false
         icon: compass
       lodge:
         name: Old Town
@@ -270,4 +276,219 @@ beaconshop:
         items:
           beacon: 1200
 
+## In testing
 
+wave:
+    icon_url: http://textures.minecraft.net/texture/912c6ba1e1756d2d8ffb0f72af0c46d2da3596168d3ad0d513ce25c92572
+    icon: feather
+    category: elemental
+    pvp_restricted: true
+    worth: 4000
+    actions:
+        cast:
+        -  class: Line
+           actions:
+           - class: Volume
+             actions:
+             - class: ModifyBlock
+           - class: Delay
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: fizz
+           sound_volume: 1
+           sound_pitch: 0.2
+           location: origin
+    parameters:
+        target: block
+        target_type: Entity
+        x_size: 0
+        y_size: 0
+        z_size: 2
+        size: 8
+        range: 10
+        allow_max_range: true
+        orient: true
+        target_count: 16
+        item_speed: 0.1
+        living_entity_speed: 0.2
+        push: -1
+        direction: 0,1,0
+        speed: 0.2
+        cooldown: 3000
+        delay: 250
+        brush: stained_clay
+        falling: false
+        undo: 15000
+    costs:
+        mana: 150
+
+smash:
+    icon: feather
+    icon_url: http://textures.minecraft.net/texture/7cc2fb583d1762a16a50fa5ac37bc09b46def63e68205116d650391f9233ed
+    category: combat
+    worth: 1000
+    pvp_restricted: true
+    actions:
+        cast:
+        - class: FallProtection
+        - class: Repeat
+          actions:
+          - class: Velocity
+          - class: Delay
+        - class: Repeat
+          repeat: 5
+          actions:
+          - class: Velocity
+            direction: 0,-1,0
+          - class: Delay
+            delay: 400
+        -  class: ChangeContext
+           target_caster: true
+           actions:
+           - class: Sphere
+             actions:
+             -  class: ModifyBlock
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: enderdragon_wings
+           sound_volume: 1
+           effectlib:
+             class: TraceEffect
+             iterations: 30
+             particle: spell
+        land:
+        -  class: EffectRing
+           particle: spell
+           period: 2
+    parameters:
+        duration: 240000
+        target: self
+        min_speed: 5
+        max_speed: 5
+        delay: 500
+        falling: true
+        speed: 0.9
+        brush: air
+        radius: 5
+        undo: 15000
+        cooldown: 30000
+        check_destructible: false
+        direction: 0,1,0
+        repeat: 5
+    costs:
+        mana: 60
+
+shuriken:
+    name: Shuriken
+    description: Throw a damaging star
+    icon: double_plant:5
+    icon_url: http://textures.minecraft.net/texture/775c41bd5e4ef3cba5f9bdc5258973c95477e819cb20c163ffb378db5ae3
+    category: master
+    worth: 2000
+    actions:
+        cast:
+        -  class: Projectile
+           actions:
+           -  class: AreaOfEffect
+              actions:
+              - class: Explosion
+              - class: AreaOfEffect
+                actions:
+                - class: Damage
+        -  class: Repeat
+           actions:
+           - class: Delay
+           - class: AreaOfEffect
+             actions:
+             - class: Damage
+    effects:
+        projectile:
+        -  class: EffectSingle
+           location: origin
+           sound: villager_yes
+           effectlib:
+             class: HelixEffect
+             iterations: 8
+             period: 2
+             radius: 0.2
+             strands: 3
+             particles: 10
+             particle: redstone
+        hit:
+        -  class: EffectSingle
+           sound: villager_yes
+           location: origin
+           effectlib:
+             class: HelixEffect
+             particle: redstone
+             radius: 8
+    parameters:
+        set_target: true
+        projectile: Arrow
+        duration: 10000
+        cooldown: 30000
+        damage: 100
+        repeat: 5
+        delay: 1
+        size: 4
+        speed: 3
+        radius: 3
+    costs:
+        mana: 200
+
+napalm:
+    icon_url: http://textures.minecraft.net/texture/1eed1e4d70522ccd538b75ded4baa680e3dfe55426c560ff7b521be5cdf614f
+    icon: poisonous_potato
+    category: master
+    worth: 7500
+    upgrade_required_path: master
+    actions:
+        cast:
+        - class: Projectile
+          actions:
+          - class: Delay
+          - class: AreaOfEffect
+            actions:
+            - class: Damage
+          - class: Disc
+            actions:
+            - class: Cover
+              actions:
+              - class: Skip
+                actions:
+                - class: Delay
+                  delay: 5
+              - class: Burn
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: creeper_hiss
+        hit:
+        -  class: EffectSingle
+           location: source
+           effectlib:
+             class: HelixEffect
+             particle: flame
+             iterations: 1
+    parameters:
+        target: none
+        target_type: LivingEntity
+        projectile: LargeFireball
+        fire: true
+        delay: 3000
+        player_damage: 20
+        entity_damage: 40
+        radius: 16
+        cooldown: 120000
+        skip: 8
+    costs:
+        mana: 555
+
+
+rainbow:
+    parameters:
+       undo: 10000
+    costs:
+       mana: 30

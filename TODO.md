@@ -1,22 +1,28 @@
 # TODO
 
- - Add FallingBlock damage NBT option
- - Is shift+click in wand inv doing something weird?
- - Blink goes above nether ceiling
- - Selected Hotbar# not saving?
+ - Add an "override" option for spells, to skip loading the defaults for that spell
+ - Manually dropping a wand with a different one in your hand goes weird- maybe only in drop mode? 
+ - Can't hitbox-target entities standing in a corner? Issues with spiders?
+ - Look at/expand "item" parameter to SpawnEntity (why do wither skellies start with a bow?)
+ - Wand failed to activate on respawn?
+ - Add "drops" parameter to Damage action to prevent mobs dropping loot.
+ - Add "sword mode" tweak item
+ - Add Music action, with disc parameter
 
+ - Add /mmap reload command
+ - Registered blocks aren't clearing on /magic commit ?
+ - CoreProtect integration
+   http://minerealm.com/community/viewtopic.php?f=32&t=16362
+ - Look into ItemLoreStats incompatibility
+
+ - Hover text for spells
+ - Cat GIF generator? http://catdb.yawk.at/images?tag=gif
  - Check Regenerate - got stuck, couldn't cancel?
-
  - Make Portal spell portals avoid creating a frame on the other side (maybe handle TP'ing on portal event?)
  - Logout on death still buggy? (can not reproduce)
- - Make locked chests unbreakable
-
  - Wand dupe issue: tl;dr : he was able to drag a wand while in the spell inventory.
-
- - Map brush was acting wonky.
  - Recall still losing waypoints .. also can grab items out?
 
- - Support for restoring armor stands- might have to drop 1.7 support for this.
  - Clean up MaterialBrush target system, automate somehow?
  - Copy target brush action for tandem replication
  - Automata aren't cleaning up cmd block + redstone
@@ -35,9 +41,6 @@
  - Add repeat option for schematic brushes
    - or generalized option that works with map, too
  - /magic describe should show info about current spell?
- - Support for locking/unlocking chests
- - Configurable FOV weight for targeting (Survival Sense)
- - Maximum enchant count for wands
 
 ## Old Stuff
 

@@ -135,6 +135,28 @@ beginner:
      - missile
 
 #
+# A wand that may only be enchanted 3 times
+#
+starter:
+    effect_color: random
+    icon: stick
+    glow: true
+    max_enchant_count: 3
+    path: beginner
+    xp_max: 50
+    xp: 50
+    xp_regeneration: 5
+    quiet: 1
+    bound: true
+    keep: false
+    undroppable: false
+    indestructible: false
+    effect_bubbles: false
+    active_spell: missile
+    spells:
+     - missile
+
+#
 # A sampling of "pre-levelled up" wands
 #
 student:
@@ -247,6 +269,7 @@ apprentice:
 
 master:
     path: master
+    icon: gold_axe
     xp_regeneration: 50
     xp_max: 250
     xp: 250
@@ -317,7 +340,10 @@ battle:
     effect_color: '11FF11'
     protection_physical: 0.3
     path: battle
-    icon: diamond_sword
+    mode_drop: true
+    mode_cast: true
+    migrate_icon: diamond_sword
+    icon: gold_sword
     xp_regeneration: 5
     xp_max: 50
     xp: 50
@@ -334,12 +360,36 @@ battle:
       - curse
       - fire
       - fireball
-      - frost
       - grenade
-      - tesseract
       - push
-      - lightning
-      - shrink
+
+rage:
+    effect_color: '11FF11'
+    protection_physical: 0.3
+    path: battle
+    locked: true
+    mode_drop: true
+    mode_cast: true
+    icon: diamond_sword
+    xp_regeneration: 0
+    xp_max: 200
+    mana_per_damage: 5
+    xp: 100
+    quiet: 1
+    bound: true
+    keep: true
+    undroppable: true
+    indestructible: true
+    glow: true
+    spells:
+      - missile
+      - arrow
+      - boom
+      - curse
+      - fire
+      - fireball
+      - grenade
+      - push
 
 #
 # A starter engineering wand
@@ -393,7 +443,7 @@ engineer:
       - packed_ice
       - obsidian
       - redstone_block
-      - schematic|rainbow
+      - schematic|rainbow_blocks
       - schematic|creeper_rug
 
 #
@@ -406,7 +456,7 @@ architect:
     bound: true
     undroppable: true
     indestructible: true
-    icon: gold_axe
+    icon: monster_eggs:2
     effect_color: '00FF00'
     protection_falling: 1
     protection: 0.2
@@ -480,7 +530,7 @@ architect:
         - emerald_block
         - redstone_block
         - obsidian
-        - schematic:rainbow
+        - schematic:rainbow_blocks
         - schematic:creeper_rug
         - schematic:church
         - schematic:blacksmith
@@ -494,165 +544,6 @@ architect:
         - schematic:stash_chest
         - schematic:lantern
         - schematic:tech_tower
-
-elder:
-    path: architect
-    icon: gold_hoe
-    keep: true
-    bound: true
-    undroppable: true
-    indestructible: true
-    xp_regeneration: 100
-    xp_max: 1000
-    xp: 1000
-    power: 1
-    hotbar_count: 3
-    effect_color: '8B008B'
-    effect_bubbles: true
-    organize: true
-    active_spell: levitate
-    potion_effects: saturation,regeneration
-    spells:
-        - levitate@0
-        - blink|3@1
-        - fling|2@2
-        - missile|4@3
-        - day@4
-        - recall@5
-        - gather@6
-        - heal@7
-        - absorb@8
-        - place@9
-        - fill@10
-        - superblob@11
-        - superconvert@12
-        - supershell@13
-        - superrepair@14
-        - undo@15
-        - stash
-        - emp
-        - force
-        - pillar
-        - bridge
-        - recurse
-        - boom|2
-        - fireball
-        - superblast
-        - storm
-        - icbm
-        - torch|2
-        - inferno
-        - disarm
-        - superpyramid
-        - superbox
-        - superdisc
-        - superring
-        - disc
-        - superdome
-        - dome
-        - push
-        - pull
-        - mob
-        - farm
-        - shell
-        - shrink
-        - box
-        - frag
-        - volley
-        - blob
-        - repair
-        - alter
-        - superalter
-        - toss
-        - curse
-        - boon|2
-        - blessing
-        - convert
-        - blast|2
-        - wither
-        - camera
-        - collapse
-        - supercollapse
-        - iterate
-        - nuke
-        - commit
-        - familiar
-        - monster
-        - arrow
-        - arrowrain
-        - flare
-        - tree
-        - phase
-        - portal
-        - disintegrate
-        - neutron
-        - laser
-        - flamethrower
-        - regenerate
-        - superregenerate
-        - tag
-        - glider
-        - simulate
-        - simulate3
-        - mount
-        - counterspell
-        - arrow|4
-        - kill
-        - wound
-        - torture
-        - stun
-        - petrify
-        - entangle
-        - singularity
-    materials:
-        - erase@16
-        - copy@17
-        - replicate@18
-        - clone@19
-        - map@20
-        - map:128@21
-        - stained_clay
-        - stained_glass
-        - stained_glass_pane
-        - wool
-        - lapis_block
-        - water
-        - lava
-        - glowstone
-        - glass
-        - soul_sand
-        - dirt
-        - grass
-        - wood
-        - log
-        - vine
-        - mycel
-        - quartz_block
-        - quartz_block:1
-        - quartz_block:2
-        - wool
-        - emerald_block
-        - leaves
-        - ice
-        - packed_ice
-        - diamond_block
-        - gold_block
-        - emerald_block
-        - iron_block
-        - obsidian
-        - bedrock
-        - redstone_block
-        - schematic:rainbow
-        - schematic:creeper_rug
-        - schematic:church
-        - schematic:blacksmith
-        - schematic:compact_house
-        - schematic:small_house
-        - schematic:elder_tree
-        - schematic:garden_house
-        - schematic:stash_chest
-        - schematic:lantern
-        - schematic:beacon
 
 admin:
     icon: gold_axe
@@ -694,7 +585,8 @@ admin:
 
 borealis:
     path: master
-    icon: gold_axe
+    migrate_icon: gold_axe
+    icon: monster_eggs:2
     keep: true
     bound: true
     undroppable: true
@@ -702,6 +594,7 @@ borealis:
     quiet: 2
     effect_color: '00AACC'
     mode: chest
+    mode_drop: true
     active_spell: levitate
     cost_reduction: 2
     cooldown_reduction: 2
@@ -724,6 +617,16 @@ borealis:
         - recall
         - tag
         - pollinate
+        - torch|2
+        - weather
+        - ghast
+        - repair
+        - superalter
+        - tunnel
+        - familiar
+        - grow
+        - shrink
+        - force
 
 miniwolf:
     path: master
@@ -800,6 +703,7 @@ wolf:
     effect_particle_count: 0
     organize: true
     mode: inventory
+    mode_drop: true
     active_spell: levitate
     overrides: max_dimension 1024
     potion_effects: saturation,regeneration
@@ -879,7 +783,7 @@ wolf:
         - portal
         - disintegrate
         - neutron
-        - laser
+        - laser|3
         - flamethrower
         - regenerate
         - superregenerate
@@ -904,6 +808,9 @@ wolf:
         - petrify
         - entangle
         - singularity
+        - paint
+        - tendril
+        - ghast
     materials:
         - erase@16
         - copy@17
@@ -944,7 +851,7 @@ wolf:
         - obsidian
         - bedrock
         - redstone_block
-        - schematic:rainbow
+        - schematic:rainbow_blocks
         - schematic:creeper_rug
         - schematic:church
         - schematic:blacksmith
@@ -955,6 +862,7 @@ wolf:
         - schematic:stash_chest
         - schematic:lantern
         - schematic:beacon
+        - schematic:flare_beacon
 
 conway:
     effect_color: 'FFFFFF'
@@ -997,33 +905,38 @@ conway:
 
 student_upgrade:
     upgrade: true
+    hidden: true
     indestructible: false
     xp_max: 100
     xp_regeneration: 10
 apprentice_upgrade:
     upgrade: true
+    hidden: true
     indestructible: false
     hotbar_count: 2
     xp_max: 150
     xp_regeneration: 30
 master_upgrade:
     upgrade: true
+    hidden: true
     indestructible: false
-    xp_max: 250
-    xp_regeneration: 50
+    upgrade_icon: gold_axe
+    xp_max: 200
+    xp_regeneration: 40
     hotbar_count: 3
 engineer_upgrade:
     upgrade: true
-    upgrade_icon: gold_axe
+    hidden: true
     indestructible: false
-    xp_max: 300
-    xp_regeneration: 70
+    xp_max: 250
+    xp_regeneration: 50
 architect_upgrade:
     upgrade: true
+    hidden: true
+    upgrade_icon: monster_eggs:2
     indestructible: false
-    upgrade_icon: gold_axe
-    xp_max: 400
-    xp_regeneration: 90
+    xp_max: 350
+    xp_regeneration: 70
 
 #
 # UPGRADE ITEMS
@@ -1083,6 +996,12 @@ orangeeffects:
     icon: carpet:14
     effect_color: 'FFAA00'
     effect_bubbles: true
+cleareffects:
+    force: true
+    upgrade: true
+    effect_bubbles: false
+    effect_particle: ""
+    icon: barrier
 rainboweffects:
     upgrade: true
     indestructible: false
@@ -1105,6 +1024,11 @@ haloeffects:
     effect_particle_data: 0
     effect_particle_radius: 0.4
     effect_particle_offset: 0.5
+hotbar1:
+    icon: skull_item:http://textures.minecraft.net/texture/4ee7b05ce62de9e76da5d2878f1f73d787368173f1cf2e9ba841d9248f902c
+    upgrade: true
+    hotbar_count: 1
+    force: true
 hotbar2:
     icon: skull_item:http://textures.minecraft.net/texture/1cd3a0e36d2fdbabf7fb4add48c26094636e77a5da1c61ae5d2e6974936
     upgrade: true
@@ -1115,11 +1039,6 @@ hotbar3:
     upgrade: true
     indestructible: false
     hotbar_count: 3
-manaboost:
-    upgrade: true
-    indestructible: false
-    icon: glass_bottle
-    xp: 1000
 chestmode:
     icon: skull_item:http://textures.minecraft.net/texture/f6d6ac2ee323f6497c6e2663a7e56ed9523567b68d18a17f8f39736b06ac3cd
     upgrade: true
@@ -1177,8 +1096,10 @@ broomstick:
     path: broom
     mode: cast
     active_spell: broom
+    migrate_icon: monster_eggs
     icon: gold_spade
     indestructible: true
+    bound: true
     locked: true
     keep: true
     effect_color: '880088'
@@ -1200,6 +1121,7 @@ crackedbroomstick:
 minister:
     mode: cast
     path: broom
+    bound: true
     active_spell: broom
     icon: gold_spade
     indestructible: true
@@ -1388,7 +1310,8 @@ magneticleggings:
 
 goggles:
     mode: cast
-    icon: nether_fence
+    icon: monster_eggs:1
+    migrate_icon: nether_fence
     indestructible: false
     locked: true
     keep: false
@@ -1404,7 +1327,8 @@ goggles:
 invisiblecloak:
     mode: cast
     active_spell: invisiblecloak
-    icon: ender_pearl
+    icon: gold_pickaxe
+    migrate_icon: ender_pearl
     indestructible: true
     locked: true
     keep: true

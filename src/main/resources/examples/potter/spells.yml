@@ -81,10 +81,11 @@ aparecium:
         mana: 80
 
 apparate:
-    inherit: blink
+    inherit: blink|3
     category: elective
 
 araniaexumai:
+    icon_url: http://textures.minecraft.net/texture/67764b015a5e734dda05422c497d29b3f8edfbfe94472e665b277cda648
     icon: ink_sack:2
     category: creatures
     pvp_restricted: true
@@ -231,6 +232,7 @@ avadakedavra:
 
 avadamaxima:
     icon: ink_sack:10
+    icon_url: http://textures.minecraft.net/texture/71a235c48123b487e864fa21016e223ad4070c6d977b0a519f7dd743d39e47c
     category: staff
     pvp_restricted: true
     worth: 1000
@@ -267,7 +269,7 @@ avadamaxima:
     parameters:
         commands:
         - ban @tn you have been Avada Kedavra'd!
-        - say §aAvada Kedavra §c@tn!
+        - say &aAvada Kedavra &c@tn!
         target_type: Player
         target: other
         target_breakables: 1
@@ -490,7 +492,8 @@ crucio:
 dementor:
     icon_url: http://textures.minecraft.net/texture/c8471a90c7b0d6ba70ddf0ea8daf2f8ee999a1efe95f2198d8352e42bd43d1
     icon: quartz
-    category: hidden
+    category: specialty
+    hidden: true
     pvp_restricted: true
     cast_on_no_target: false
     actions:
@@ -556,6 +559,7 @@ deprimo|3:
 
 deprimomaxima:
     icon: flint
+    icon_url: http://textures.minecraft.net/texture/1789289cba5bdef5f92dee5165a99d063f8785db78bdc6b41e3c4b099c04ca4
     category: staff
     class: ConstructSpell
     cast_on_no_target: true
@@ -923,6 +927,7 @@ ventus:
 
 flipendo:
     icon: rails
+    icon_url: http://textures.minecraft.net/texture/e13e9af0957a9dd4995811ef3e869b4ad8fbb59ca7474e4c84ce7f6019b079
     category: dada
     pvp_restricted: true
     cast_on_no_target: true
@@ -1372,6 +1377,7 @@ levicorpus|3:
 lumos:
     icon: ink_sack:11
     category: charms
+    icon_url: http://textures.minecraft.net/texture/4abfe52d50f710f4103bc650b5e972d49832ea419841d9fa24e16ce617c716
     worth: 10
     actions:
         cast:
@@ -1473,7 +1479,7 @@ morsmordre:
         transparent: apparate
         op: true
         commands:
-        - broadcast @pd cast §aMorsmordre!
+        - broadcast @pd cast &aMorsmordre!
     costs:
         mana: 55
 
@@ -1506,7 +1512,7 @@ morsmordremaxima:
         transparent: apparate
         op: true
         commands:
-        - broadcast @pd cast §aMorsmordre Maxima, and a Dementor appears!
+        - broadcast @pd cast &aMorsmordre Maxima, and a Dementor appears!
         - mm mobs spawn Dementor 1 @tworld,@tx,@ty,@tz
     costs:
         mana: 100
@@ -1516,21 +1522,11 @@ orchideous:
     inherit: pollinate
 
 periculum:
-    icon: firework
+    inherit: flare
     category: charms
-    class: FireworkSpell
-    worth: 2
-    show_undoable: false
-    actions:
-        cast:
-        -  class: Firework
-    parameters:
-        allow_max_range: true
-        range: 16
-    costs:
-        mana: 30
 
 periculux:
+    icon_url: http://textures.minecraft.net/texture/aa7e54c1c7634bdf1118db91da9e12b6b4d17f7fb7b7d5b0d06d554feb737bf
     icon: firework
     category: charms
     show_undoable: false
@@ -1583,7 +1579,8 @@ petrificustotalus:
 webbing:
     icon_url: http://textures.minecraft.net/texture/672e0c305074a7acf671e7644291d7f745baecf05743395e28d1f04cbbb4
     icon: web
-    category: hidden
+    category: specialty
+    hidden: true
     class: ConstructSpell
     pvp_restricted: true
     cast_on_no_target: true
@@ -1984,7 +1981,7 @@ silenciototalus:
     parameters:
         commands:
         - mute @tn 60
-        - say §dSILENCIO TOTALUS!
+        - say &dSILENCIO TOTALUS!
         target: none
         target_all_worlds: true
         target_type: Player
@@ -2223,6 +2220,7 @@ noxmaxima:
     category: staff
 
 vulnera:
+    icon_url: http://textures.minecraft.net/texture/6b7da98ef45cf45185d21d61f5fa3d5966a3ee52273620a6e4dfd54cf99dbc
     icon: ink_sack:9
     category: charms
     cast_on_no_target: true
@@ -2268,6 +2266,7 @@ vulnera:
         mana: 80
 
 ferula:
+    icon_url: http://textures.minecraft.net/texture/bc8e7e971bbac56883fe9bfe1b38c5f568ece6cbe09ca59d85f6dab4688d14
     icon: ink_sack:9
     category: charms
     cast_on_no_target: true
@@ -2497,9 +2496,19 @@ firestorm:
     description: Incinerate your target!
     icon: clay_ball
     category: dark
-    class: CommandSpell
     worth: 35
     pvp_restricted: true
+    actions:
+        cast:
+        -  class: PotionEffectAction
+        -  class: Disc
+           actions:
+           - class: Skip
+             actions:
+             - class: Delay
+           - class: Cover
+             actions:
+             - class: Burn
     effects:
         cast:
         -  class: EffectSingle
@@ -2512,14 +2521,20 @@ firestorm:
              iterations: 8
              particle: lava
     parameters:
+        radius: 5
+        thickness: 2
+        fizzle_chance: .5
         target: self
         target_type: LivingEntity
         cooldown: 8000
-        op: true
-        commands:
-        - castp @t firestormbase
-        - castp @t floo
+        undo: 6000
+        duration: 10000
+        effect_fire_resistance: 100
         bypass_backfire: true
+        bypass_build: true
+        bypass_break: true
+        skip: 8
+        delay: 500
     costs:
         mana: 100
 
@@ -2828,7 +2843,7 @@ place:
     enabled: true
     hidden: true
 
-superiterate:
+column:
     enabled: true
     hidden: true
 

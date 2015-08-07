@@ -5,7 +5,7 @@ recall:
         name: elMakers Hub
         description: Return to the Hub
         icon: nether_star
-        command: server hub
+        command: mserver hub
         op: true
     warps:
       diagon:
@@ -32,3 +32,15 @@ recall:
 enchantwand:
   parameters:
     cooldown: 1200000
+
+ollivander:
+  hidden: true
+  actions:
+    conditional: fail
+    cast:
+    - class: GiveItem
+    - class: Command
+      console: true
+      commands:
+      - pex user @pn group add year1
+      - broadcast &6@pd &3has enrolled at &bHogwarts&3!

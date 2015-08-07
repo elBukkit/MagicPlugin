@@ -6,8 +6,9 @@
 default:
   match_spell_mana: false
   hidden: true
-  min_enchant_level: 20
-  max_enchant_level: 50
+  min_enchant_level: 10
+  max_enchant_level: 10
+  levels: 10
   max_mana: 50
   max_mana_regeneration: 5
   max_health_regeneration: 1.0
@@ -40,11 +41,11 @@ default:
       -  class: EffectRing
          firework: star
          radius: 4
-         size: 3
+         size: 2
       -  class: EffectRing
          firework: ball_large
          radius: 6
-         size: 5
+         size: 3
 
 year1:
     inherit: default
@@ -52,7 +53,6 @@ year1:
     upgrade_item: year2
     min_enchant_level: 10
     max_enchant_level: 10
-    levels: 1,30,50
     max_mana: 60
     max_mana_regeneration: 8
     mana_regeneration:
@@ -83,6 +83,7 @@ year2:
     inherit: year1
     min_enchant_level: 12
     max_enchant_level: 12
+    levels: 12
     max_mana: 90
     mana_max:
       3: 100
@@ -109,6 +110,7 @@ year3:
     inherit: year2
     min_enchant_level: 15
     max_enchant_level: 15
+    levels: 15
     max_mana: 110
     max_mana_regeneration: 15
     mana_regeneration:
@@ -132,6 +134,7 @@ year4:
     inherit: year3
     min_enchant_level: 18
     max_enchant_level: 18
+    levels: 18
     max_mana: 130
     max_mana_regeneration: 20
     mana_regeneration:
@@ -148,7 +151,7 @@ year4:
       accio: 40
       locomotomortus: 1
       orchideous: 1
-      bubble: 15
+      bubblehead: 15
       aguamenti: 50
     required_spells:
       - ascendio
@@ -159,6 +162,7 @@ year5:
     inherit: year4
     min_enchant_level: 20
     max_enchant_level: 20
+    levels: 20
     max_mana: 150
     max_mana_regeneration: 28
     mana_regeneration:
@@ -186,6 +190,7 @@ year6:
     max_mana: 170
     min_enchant_level: 22
     max_enchant_level: 22
+    levels: 22
     max_mana_regeneration: 34
     mana_regeneration:
       1: 100
@@ -207,6 +212,7 @@ year7:
     inherit: year6
     min_enchant_level: 25
     max_enchant_level: 25
+    levels: 25
     max_mana: 190
     max_mana_regeneration: 36
     mana_regeneration:

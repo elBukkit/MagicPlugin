@@ -3,9 +3,9 @@ main: com.elmakers.mine.bukkit.magic.MagicPlugin
 version: ${project.version}
 website: http://mine.elmakers.com
 author: NathanWolf
-description : Mmmmmmaaaaagic!
-softdepend: [WorldGuard,Essentials,dynmap,dtlTraders,Factions,CommandBook,PvPManager,Multiverse-Core,WGCustomFlags,Citizens,Vault,GriefPrevention,Heroes]
-loadbefore: [Scavenger]
+description : A gameplay-oriented plugin for spells and wands
+softdepend: [WorldGuard,Essentials,dynmap,dtlTraders,Factions,CommandBook,PvPManager,Multiverse-Core,WGCustomFlags,Citizens,Vault,GriefPrevention,Heroes,NoCheatPlus,BlockPhysics,LibsDisguises]
+loadbefore: [Scavenger, SilkSpawners]
 commands:
   cast:
     aliases: [mcast]
@@ -24,32 +24,221 @@ commands:
     permission: Magic.commands.spells
   wand:
     description: Create and modify wands
-    usage: /wand [add|remove|upgrade|configure|describe|organize|enchant|unenchant|duplicate|unlock|override] [<spellname>|material] <materialname>
+    usage: |
+        Use /help wand [subcommand] for more information
+        /wand add        Add spells and brushes to a wand
+        /wand remove     Remove spells or brushes from a wand
+        /wand restore    Restore a player's lost wands
+        /wand configure  Set wand properties
+        /wand describe   Show information about a wand
+        /wand organize   Re-organize a wand's spell inventory
+        /wand enchant    Turn an item into a wand
+        /wand unenchant  Turn a wand into a normal item
+        /wand duplicate  Create a copy of a wand
+        /wand unlock     Allow a locked wand to be modified
+        /wand override   Set or check cast overrides on a wand
+        /wand upgrade    Upgrade properties of a wand
     permission: Magic.commands.wand
+  "wand add":
+    description: Add a spell or brush to a wand
+    usage: |
+
+       /wand add <spellname>
+       /wand add material <materialname>
+    permission: Magic.commands.wand.add
+  "wand remove":
+    description: Remove a spell or brush from a wand
+    usage: |
+
+       /wand remove <spellname>
+       /wand remove material <materialname>
+    permission: Magic.commands.wand.remove
+  "wand configure":
+    description: Configure wand properties
+    usage: |
+
+       /wand configure <property> <value>
+       /wand configure xp_max 500
+       /wand configure xp_regeneration 50
+       /wand configure description My Awesome Wand
+    permission: Magic.commands.wand.configure
+  "wand describe":
+    description: List wand properties, useful for checking what can be used with /wand configure
+    permission: Magic.commands.wand.describe
+    usage: /wand describe
+  "wand organize":
+    description: Re-organize a wand's spell inventory, grouping by frequency of use and spell category
+    permission: Magic.commands.wand.organize
+    usage: /wand organize
+  "wand enchant":
+    description: Turn the item you are holding into a wand
+    permission: Magic.commands.wand.enchant
+    usage: /wand enchant
+  "wand restore":
+    description: Restore your lost wands
+    permission: Magic.commands.wand.restore
+    usage: /wand restore
+  "wand unenchant":
+    description: Turn the wand you are holding into a normal item, wiping its magic data
+    permission: Magic.commands.wand.unenchant
+    usage: /wand unenchant
+  "wand duplicate":
+    description: Duplicate a wand, making an exact copy
+    permission: Magic.commands.wand.duplicate
+    usage: /wand duplicate
+  "wand unlock":
+    description: Clear the "locked" setting on a wand so it can be used with /wand configure
+    permission: Magic.commands.wand.unlock
+    usage: /wand unlock
+  "wand override":
+    description: Check or set cast overrides, which modify how a wand casts a specific spell, or all spells
+    usage: |
+
+       To display current overrides
+       /wand override
+       To change parameters for a specific spell cast when using this wand
+       /wand override missile.entity_damage 20
+       /wand override boon.duration 30000
+       To change parameters for ALL spells cast with this wand
+       /wand override undo 0
+    permission: Magic.commands.wand.override
+  "wand upgrade":
+    description: Upgrade wand properties, won't decrease values
+    usage: |
+
+       /wand upgrade <property> <value>
+       /wand upgrade xp_max 500
+       /wand upgrade xp_regeneration 50
+    permission: Magic.commands.wand.upgrade
   wandp:
     description: Create and modify wands for another player
     usage: /wandp <player> [add|remove|upgrade|configure|describe|organize|enchant|unenchant|duplicate|unlock|override] [<spellname>|material] <materialname>
     permission: Magic.commands.wandp
   magic:
     description: Administer the Magic plugin
-    usage: /magic [load|save|cancel|clearcache|commit|list|give]
     permission: Magic.commands.magic
+    usage: |
+        Use /help magic [subcommand] for more information
+        /magic load        Reload configuration files
+        /magic save        Save all player data
+        /magic cancel      Cancel any jobs or spells
+        /magic commit      Commit all spells, clear all undo queues
+        /magic list        List various bits of information
+        /magic give        Give players wands or items
+        /magic clear       Remove dropped wands from the world
+  "magic load":
+    description: Reload configuration files. Useful for testing spell or wand changes.
+    permission: Magic.commands.magic.load
+    usage: /magic load
+  "magic save":
+    description: Immediately save all player data.
+    permission: Magic.commands.magic.save
+    usage: /magic save
+  "magic cancel":
+    description: Cancel all pending jobs and spells
+    permission: Magic.commands.magic.cancel
+    usage: /magic cancel
+  "magic commit":
+    description: Commit all spells, clear undo queues
+    permission: Magic.commands.magic.commit
+    usage: /magic commit
+  "magic list":
+    description: List various bits of information
+    permission: Magic.commands.magic.list
+    usage: |
+
+        /magic list wands
+        /magic list maps
+        /magic list automata
+        /magic list tasks
+        /magic list schematics
+  "magic give":
+    description: Give players wands and other magic items
+    permission: Magic.commands.magic.give
+    usage: |
+
+        /magic give elder
+        /magic give blink
+        /magic give material stone
+        /magic give upgrade apprentice
   mgive:
     description: Give players items
     usage: /mgive <Player> [itemname] <amount>
     permission: Magic.commands.mgive
+    usage: |
+        /mgive <Player> [itemname] <amount>
+        /mgive elder
+        /mgive blink
+        /mgive brush:sea_lantern
+        /mgive sea_lantern 32
+        /mgive NathanWolf wolf
   mmap:
     description: Create and manage Magic image maps
-    usage: /mmaps
     permission: Magic.commands.mmap
+    usage: |
+        Use /help mmap [subcommand] for more information
+        /mmap load       Load a new image map
+        /mmap list       List all loaded image maps
+        /mmap give       Give a player an image map
+        /mmap import     Import image maps from Pixelator
+  "mmap load":
+    description: Load a new map from a file or URL
+    permission: Magic.commands.mmap.load
+    usage: |
+        /mmap load [url] <name> <width> <height>
+        /mmap load http://i.imgur.com/YsbKHg1.gif Magic
+        /mmap load plugins/Pixelator/MyImage.png
+        /mmap load http://i.imgur.com/EufZP2A.gif Cropped 128 128
+  "mmap list":
+    description: List and search through loaded maps
+    permission: Magic.commands.mmap.list
+    usage: |
+        /mmap list <search>
+        /mmap list
+        /mmap list Magic
+  "mmap give":
+    description: Give a player an image amp
+    permission: Magic.commands.mmap.give
+    usage: |
+        /mmap give <player> [id]
+        /mmap give NathanWolf 1234
+        /mmap give 1234
+  "mmap import":
+    description: Import images from Pixelator
+    permission: Magic.commands.mmap.import
+    usage: /mmap import
   mtrait:
     description: Manage Magic NPCs
-    usage: /mtrait <id#> <property> <value>
     permission: Magic.commands.mtrait
+    usage: |
+
+      First add a magic or command trait to an NPC
+      /trait magic
+      /trait command
+      Then configure the Magic trait
+      /mtrait <id#> <property> <value>
+      /mtrait
+      /mtrait spell heal
+      /mtrait parameters amount 100
+      /mtrait spell upgrades
+      /mtrait spell engineershop
+      /mtrait command /spawn
+      /mtrait caster true
+      /mtrait invisible true
+      /mtrait cost 200
+      /mtrait permission Magic.npc.use.this.guy
   mskills:
     description: Get Heroes skills
     usage: /mskills
     permission: Magic.commands.mskills
+  mserver:
+    description: "Moves a player to another server"
+    usage: "mserver <player> <server>"
+    permission: Magic.commands.mserver
+  msave:
+    description: Save player data, and execute command as console
+    usage: /msave <Player> [command to run]
+    permission: Magic.commands.msave
 permissions:
   Magic.commands.spells:
     description: Player may list spells
@@ -72,6 +261,10 @@ permissions:
     type: boolean
     default: op
   Magic.commands.wand:
+    description: Player may use the /wand commands
+    type: boolean
+    default: op
+  Magic.commands.wand.create:
     description: Player may create a wand
     type: boolean
     default: op
@@ -150,6 +343,10 @@ permissions:
     type: boolean
     default: op
   Magic.commands.wandp:
+    description: Player may use the wandp commands
+    type: boolean
+    default: op
+  Magic.commands.wandp.create:
     description: Player may create a wand for another player
     type: boolean
     default: op
@@ -331,6 +528,18 @@ permissions:
     description: Player may use the /mmap player command
     type: boolean
     default: op
+  Magic.commands.mmap.fix:
+    description: Player may use the /mmap fix command
+    type: boolean
+    default: op
+  Magic.commands.mserver:
+    description: Player may sender players to other servers
+    type: boolean
+    default: op
+  Magic.commands.msave:
+    description: Player may save mage data and run commands
+    type: boolean
+    default: op
   Magic.wand.use:
     description: The player may use a wand
     default: true
@@ -375,6 +584,9 @@ permissions:
     description: A player may bypass restricted material checks
     default: op
     type: boolean
+  Magic.craft:
+    description: The wands a player may craft
+    type: list
   Magic.cast:
     description: The spells a player may cast
     type: list

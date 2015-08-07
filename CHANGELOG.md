@@ -1,5 +1,90 @@
 # CHANGELOG
 
+## CB 1.2
+
+ - Add Nuke Level 2 (Breaks all block types, larger radius)
+ - Add Smite spell (Lightning effect + Blast + Ignite/Damage)
+ - Fix Recall using ad-hoc warps via "/cast recall warp <warpname>"
+ - GriefPrevention integration now checks for PVP not being allowed in player claims
+ - Disarm will undo if you change items (but not if you move them around)
+ - Add "rage" sword, gathers mana via damage
+ - Add "requires" parameter for NPC trait, for item cost requirements
+ - Add per-recipe crafting permissions (e.g. Magic.craft.broomstick)
+ - Add Vault-based economy costs to spells ("currency" in costs)
+ - NOTE: Reflect will need "axis: z" added to its parameters if you've got your own configs
+ - Add Tendril and Ghast spells (master level)
+ - Fix Sandblast
+ - Tweak Nuke and Tornado
+ - Add auto-undo to Disarm spell
+ - Add LibsDisguise integration, most spells cannot be cast while disguised.
+   This can be controlled via the "allow_disguised" parameter on spells.
+ - Fix/Tweak shapes of Shell and Walls
+ - Add max_enchant_count option for wands, see "starter" wand
+ - Add skeleton_type parameter to SpawnEntity action
+ - Add "ghast" spell, mainly for playing with the SpawnEntity action
+ - Add arbitrary rotation for constructions, used in new "Tendril" spell
+ - Spells won't target armor stands (use target_armor_stand: true to change this in a spell's config)
+ - Wands can have colored names with & codes
+ - Fix falling block velocity
+ - Add much more detail to /help for Magic commands
+ - Levitate will auto-deactivate upon landing
+ - Add cooldown/re-cast timers to hotbar
+ - Add item requirement option for the enchantwand NPC trait
+ - Some changes to enchanting to allow for upgrades that don't always give a new spell
+ - Fix "upgrades" spell, NPE on creating spell items outside of wands
+ - Fix mob spawner dupe issue with SilkSpawners
+ - Fix a spell dupe bug/exploit with creative mode
+ - Update to latest Citizens. This may not be backwards compatible, but should
+   work with recent Citizens versions.
+ - Fix very short range of custom sound effects
+ - Fix NPC "caster" parameter
+ - Fix rate of active spell costs
+ - Add BlockPhysics plugin integration (WIP)
+ - Fix horrible recursion error on physical damage with a wand
+ - Check for schematics in the Magic/schematics folder.
+ - Add "/magic list schematics" command
+ - Fall back to chest mode when in creative
+ - Fix yet another item-frame-related dupe exploit
+ - Some more chest mode fixes
+ - Fix Rocket Boots getting you kicked for flying
+ - Several performance and memory optimizations
+ - Proper rollback and replication of armor stands
+ - Fix projectile hit FX
+ - Some fixes for wand melee damage and short-range spell casting
+ - Fix the Wolf House and other single-use items that build things
+ - Brooms now crash properly in water instead of leaving you in a weird state
+ - Fixed/Improved Lockette integration
+ - Disable NCP integration by default, fix concurrency issue
+ - Disable wand melee damage (except swords)
+ - Fix NPE when blocking with a non-magic sword
+ - Remove the "elder" wand from survival configs. Just use the Wolf! (or copy it back in if this is a problem for you)
+ - Add flight exemptions for NCP and vanilla flight checks for Fling and Lift
+ - Add /mserver command, useful for moving other players between Bungee servers
+ - Fix Hat eating your helmet if you cast it on water or lava
+ - Fix some Master Sword glitches
+ - Add some protection against losing player inventories on server crash
+ - Balance/Fix Disintegrate, Torture, Monster/Familiar/Mob/Farm (add auto-undo)
+ - Add smarter handling of "sound" property in FX, deprecate custom_sound
+ - Disable crafting of a gold sword by default
+ - Fall protection (and other protection) will protect your mount as well (Fling+Mount!)
+ - Chests locked with Secure are now unbreakable unless you have the key
+ - Brooms/Levitate no longer re-activate on login. Fall protection will, though.
+ - Tracking Sense will prefer Players versus other mobs
+ - Add Star Wars configs - Work-in-Progress!
+ - Magic is now targeted for 1.8. See http://dev.bukkit.org/plugins/magic for 1.7-compatible builds.
+ - Fix Blink/Phase taking you to the top of the nether
+ - Make Secure keys unplaceable, aim up and cast for a replacement key
+ - Brooms use the 3D model while riding
+ - Fix command-block casting and automata with Factions and Lockette
+ - Magic Sword, Invisibility Cloak and Night Vision Goggles all have a custom item model
+ - Renamed Magic Sword to Master Sword, spells now upgradeable
+ - Master wand now gets the engineer item, architect has a staff
+ - Add some new mechanics for the Master Sword
+ - Fix custom configurations with randomized enchanting
+ - Add "Clear Effects" item to color shop
+ - Multiple wands will be tracked for "/wand restore"
+ - Broomsticks are now bound to the player, as is the Master Sword
+
 ## CB 1.1
 
  - Fix command-block casting and automata with Factions and Lockette

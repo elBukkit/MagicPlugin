@@ -1,0 +1,59 @@
+wands:
+
+    offensive:
+        name: Attack Wand
+        description: Offensive Spells
+
+    defensive:
+        name: Defend Wand
+        description: Defensive Spells
+
+spells:
+
+    firewave:
+      name: Fire Wave
+      description: Set your target on fire
+
+    earthrumble:
+      name: Earth Rumble
+      description: Blast your target
+
+    windattack:
+      name: Wind Attack
+      description: Push your target away from you
+
+    solidwater:
+      name: Solid Water
+      description: Freeze your target
+
+    skyattack:
+      name: Sky Attack
+      description: Strike down from the heavens
+
+    blind:
+      name: Blink
+      description: Blind your opponents
+
+    poison:
+      name: Poison
+      description: Poison your opponents
+
+    atomdestroy:
+      name: Atom Destroy
+      description: Destroy your target
+
+    magicmissile:
+      name: Magic Missile
+      description: Fire a homing missile
+
+    armyattack:
+      name: Army Attack
+      description: Summon an army of zombies
+
+    shieldoflife:
+      name: Shield of Life
+      description: Create a protective shield
+
+    flashrun:
+      name: Flash Run
+      description: A brief jolt of super speed

@@ -3,11 +3,11 @@
 #
 
 wand:
-    mana_amount: "Energy: §e$amount"
-    mana_regeneration: "Energy Regeneration: §e$amount/s"
-    level_up: "§3You have graduated to §b$path§3!"
-    fully_enchanted: "§cYou have nothing more to learn here."
-    need_more_levels: "§cYou need at least §4$levels §clevels to take an exam."
+    mana_amount: "Energy: &e$amount"
+    mana_regeneration: "Energy Regeneration: &e$amount/s"
+    level_up: "&3You have graduated to &b$path&3!"
+    fully_enchanted: "&cYou have nothing more to learn here."
+    need_more_levels: "&cYou need at least &4$levels &clevels to take an exam."
     spell_added: "You have learned the &r&6$name &d&ospell!"
     no_path: You must be holding your wand
 
@@ -109,11 +109,8 @@ spells:
         name: Apparate
         description: Teleport to your target
         no_target: Can't apparate there
-    apparatemaxima:
-        name: Apparate Maxima
-        description: Teleport to your target
-        usage: Can pass through solid objects
-        no_target: Can't apparate there
+        teleport_failed: Can't apparate there
+        teleport: ""
     araniaexumai:
         name: Arania Exumai
         description: Charm for repelling arachnids

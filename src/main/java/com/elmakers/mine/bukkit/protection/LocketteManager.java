@@ -1,13 +1,14 @@
 package com.elmakers.mine.bukkit.protection;
 
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
 import java.lang.reflect.Method;
 
-public class LocketteManager {
+public class LocketteManager implements BlockBuildManager, BlockBreakManager {
 	private boolean enabled = false;
 	private Method isOwnerMethod = null;
 	private Method isProtectedMethod = null;
@@ -48,12 +49,19 @@ public class LocketteManager {
 	
 	public boolean hasBuildPermission(Player player, Block block) {
 		if (enabled && block != null && isOwnerMethod != null && isProtectedMethod != null) {
-
 			try {
 				// Handle command blocks or console spells
-				if (player == null) {
+				if (player == null)
+                {
 					return !(Boolean)isProtectedMethod.invoke(null, block);
 				}
+
+                // Lockette doesn't check the sign itself on an isOwner check ..
+                // So we just wont' allow breaking the signs, ever.
+                if (block.getType() == Material.WALL_SIGN || block.getType() == Material.SIGN_POST)
+                {
+                    return !(Boolean)isProtectedMethod.invoke(null, block);
+                }
 
 				return (Boolean)isOwnerMethod.invoke(null, block, player.getName());
 			} catch (Throwable ex) {
@@ -64,4 +72,9 @@ public class LocketteManager {
 		
 		return true;
 	}
+
+    @Override
+    public boolean hasBreakPermission(Player player, Block block) {
+        return hasBuildPermission(player, block);
+    }
 }

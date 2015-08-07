@@ -29,11 +29,19 @@ public class PortalSpell extends BlockSpell
 
 		Material blockType = target.getType();
 		Block portalBase = target.getRelative(BlockFace.UP);
+        if (portalBase == null)
+        {
+            return SpellResult.NO_TARGET;
+        }
 		blockType = portalBase.getType();
 		if (blockType != Material.AIR)
 		{
 			portalBase = getPreviousBlock();
 		}
+        if (portalBase == null)
+        {
+            return SpellResult.NO_TARGET;
+        }
 
 		blockType = portalBase.getType();
 		if (blockType != Material.AIR && blockType != Material.SNOW)

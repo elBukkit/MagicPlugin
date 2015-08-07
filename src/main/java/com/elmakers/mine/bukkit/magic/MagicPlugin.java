@@ -14,6 +14,8 @@ import com.elmakers.mine.bukkit.magic.command.CastCommandExecutor;
 import com.elmakers.mine.bukkit.magic.command.MagicCommandExecutor;
 import com.elmakers.mine.bukkit.magic.command.MagicGiveCommandExecutor;
 import com.elmakers.mine.bukkit.magic.command.MagicMapCommandExecutor;
+import com.elmakers.mine.bukkit.magic.command.MagicSaveCommandExecutor;
+import com.elmakers.mine.bukkit.magic.command.MagicServerCommandExecutor;
 import com.elmakers.mine.bukkit.magic.command.MagicSkillsCommandExecutor;
 import com.elmakers.mine.bukkit.magic.command.MagicTraitCommandExecutor;
 import com.elmakers.mine.bukkit.magic.command.SpellsCommandExecutor;
@@ -22,6 +24,7 @@ import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import com.elmakers.mine.bukkit.utility.NMSUtils;
 import com.elmakers.mine.bukkit.wand.Wand;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
@@ -150,6 +153,7 @@ public class MagicPlugin extends JavaPlugin implements MagicAPI
             getLogger().info("You might be able to find a better version of Magic where you got your server software.");
             getLogger().info("    *******************    ");
         }
+        Bukkit.getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
 		if (controller == null) {
 			controller = new MagicController(this);
 		}
@@ -175,6 +179,12 @@ public class MagicPlugin extends JavaPlugin implements MagicAPI
         TabExecutor magicMapCommand = new MagicMapCommandExecutor(this);
         getCommand("mmap").setExecutor(magicMapCommand);
         getCommand("mmap").setTabCompleter(magicMapCommand);
+        TabExecutor magicServerCommand = new MagicServerCommandExecutor(this);
+        getCommand("mserver").setExecutor(magicServerCommand);
+        getCommand("mserver").setTabCompleter(magicServerCommand);
+        TabExecutor magicSaveCommand = new MagicSaveCommandExecutor(this);
+        getCommand("msave").setExecutor(magicSaveCommand);
+        getCommand("msave").setTabCompleter(magicSaveCommand);
         TabExecutor magicSkillsCommand = new MagicSkillsCommandExecutor(this);
         getCommand("mskills").setExecutor(magicSkillsCommand);
         getCommand("mskills").setTabCompleter(magicSkillsCommand);
@@ -331,8 +341,8 @@ public class MagicPlugin extends JavaPlugin implements MagicAPI
 
     @Override
     public void giveExperienceToPlayer(Player player, int xp) {
-        if (controller.isMage(player)) {
-            com.elmakers.mine.bukkit.api.magic.Mage mage = controller.getMage(player);
+        com.elmakers.mine.bukkit.api.magic.Mage mage = controller.getRegisteredMage(player);
+        if (mage != null) {
             mage.giveExperience(xp);
         } else {
             player.giveExp(xp);
@@ -355,6 +365,16 @@ public class MagicPlugin extends JavaPlugin implements MagicAPI
     }
 
     @Override
+    public boolean takeItem(Player player, ItemStack item) {
+        return controller.takeItem(player, item);
+    }
+
+    @Override
+    public boolean hasItem(Player player, ItemStack item) {
+        return controller.hasItem(player, item);
+    }
+
+    @Override
     public ItemStack createItem(String magicKey) {
         return createItem(magicKey, null);
     }
@@ -369,70 +389,14 @@ public class MagicPlugin extends JavaPlugin implements MagicAPI
 
         // Handle : or | as delimiter
         String magicItemKey = magicKey.replace("|", ":");
-
-        try {
-            if (magicItemKey.contains("skull:") || magicItemKey.contains("skull_item:")) {
-                magicItemKey = magicItemKey.replace("skull:", "skull_item:");
-                MaterialAndData skullData = new MaterialAndData(magicItemKey);
-                itemStack = skullData.getItemStack(1);
-            } else if (magicItemKey.contains("book:")) {
-                String bookCategory = magicItemKey.substring(5);
-                SpellCategory category = null;
-
-                if (!bookCategory.isEmpty() && !bookCategory.equalsIgnoreCase("all")) {
-                    category = controller.getCategory(bookCategory);
-                    if (category == null) {
-                        return null;
-                    }
-                }
-                itemStack = getSpellBook(category, 1);
-            } else if (magicItemKey.contains("spell:")) {
-                String spellKey = magicKey.substring(6);
-                itemStack = createSpellItem(spellKey);
-            } else if (magicItemKey.contains("skill:")) {
-                String spellKey = magicKey.substring(6);
-                itemStack =  Wand.createSpellItem(spellKey, controller, mage, null, false);
-                InventoryUtils.setMeta(itemStack, "skill", "true");
-            } else if (magicItemKey.contains("wand:")) {
-                String wandKey = magicItemKey.substring(5);
-                com.elmakers.mine.bukkit.api.wand.Wand wand = createWand(wandKey);
-                if (wand != null) {
-                    itemStack = wand.getItem();
-                }
-            } else if (magicItemKey.contains("upgrade:")) {
-                String wandKey = magicItemKey.substring(8);
-                com.elmakers.mine.bukkit.api.wand.Wand wand = createWand(wandKey);
-                if (wand != null) {
-                    wand.makeUpgrade();
-                    itemStack = wand.getItem();
-                }
-            } else if (magicItemKey.contains("brush:")) {
-                String brushKey = magicItemKey.substring(6);
-                itemStack = createBrushItem(brushKey);
-            } else if (magicItemKey.contains("item:")) {
-                String itemKey = magicItemKey.substring(5);
-                itemStack = createGenericItem(itemKey);
-            } else {
-                MaterialAndData item = new MaterialAndData(magicItemKey);
-                if (item.isValid()) {
-                    return item.getItemStack(1);
-                }
-                com.elmakers.mine.bukkit.api.wand.Wand wand = createWand(magicKey);
-                if (wand != null) {
-                    return wand.getItem();
-                }
-                itemStack = createSpellItem(magicKey);
-                if (itemStack != null) {
-                    return itemStack;
-                }
-                itemStack = createBrushItem(magicItemKey);
-            }
-
-        } catch (Exception ex) {
-            getLogger().log(Level.WARNING, "Error creating item: " + magicItemKey, ex);
+        if (magicItemKey.contains("skill:")) {
+            String spellKey = magicKey.substring(6);
+            itemStack = Wand.createSpellItem(spellKey, controller, mage, null, false);
+            InventoryUtils.setMeta(itemStack, "skill", "true");
+            return itemStack;
         }
 
-        return itemStack;
+        return controller.createItem(magicKey);
     }
 
     @Override
@@ -452,6 +416,11 @@ public class MagicPlugin extends JavaPlugin implements MagicAPI
             wand.makeUpgrade();
         }
         return wand;
+    }
+
+    @Override
+    public String getItemKey(ItemStack item) {
+        return controller.getItemKey(item);
     }
 
 	@Override

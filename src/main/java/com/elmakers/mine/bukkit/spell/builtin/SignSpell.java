@@ -3,6 +3,7 @@ package com.elmakers.mine.bukkit.spell.builtin;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -24,6 +25,7 @@ public class SignSpell extends BlockSpell
 	{
 		String typeString = parameters.getString("type", "");
 		boolean autoGive = parameters.getBoolean("auto_give", true);
+		boolean editSign = parameters.getBoolean("edit", false);
 
         Entity sourceEntity = mage.getEntity();
         if (sourceEntity == null) {
@@ -96,6 +98,11 @@ public class SignSpell extends BlockSpell
 				registerForUndo(targetBlock);
 				registerForUndo();
 				controller.updateBlock(targetBlock);
+
+				if (editSign && sourceEntity instanceof Player) {
+					Player player = (Player)sourceEntity;
+					InventoryUtils.openSign(player, targetBlock.getLocation());
+				}
 				
 				return SpellResult.CAST;
 			}

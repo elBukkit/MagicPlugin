@@ -342,6 +342,7 @@ delayed:
 # removal of attached block)
 indestructible:
 - bedrock
+- ender_portal_frame
 
 # if you don't want people destroying your end portals:
 #- ender_portal_frame 
@@ -358,6 +359,7 @@ restricted:
 - command
 - ender_portal
 - mob_spawner
+- ender_portal_frame
 
 # Which materials the AnimateSpell can't be cast on
 # This generally means Automata cannot be made out of these materials.
@@ -731,3 +733,18 @@ records:
 - record_10
 - record_11
 - record_12
+
+containers:
+- chest
+- furnace
+- brewing_stand
+- dispensers
+- hopper
+- dropper
+
+melee:
+- diamond_sword
+- wood_sword
+- iron_sword
+- stone_sword
+- gold_sword

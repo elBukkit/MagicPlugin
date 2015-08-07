@@ -1,34 +1,34 @@
 year1:
   upgrade_commands:
-    - broadcast §6@pd §3has advanced to §b$path§3!
+    - broadcast &6@pd &3has advanced to &b$path&3!
     - pex user @pn group add year2
 
 year2:
   upgrade_commands:
-    - broadcast §6@pd §3has advanced to §b$path§3!
+    - broadcast &6@pd &3has advanced to &b$path&3!
     - pex user @pn group add year3
 
 year3:
   upgrade_commands:
-    - broadcast §6@pd §3has advanced to §b$path§3!
+    - broadcast &6@pd &3has advanced to &b$path&3!
     - pex user @pn group add year4
 
 year4:
   upgrade_commands:
-    - broadcast §6@pd §3has advanced to §b$path§3!
+    - broadcast &6@pd &3has advanced to &b$path&3!
     - pex user @pn group add year5
 
 year5:
   upgrade_commands:
-    - broadcast §6@pd §3has advanced to §b$path§3!
+    - broadcast &6@pd &3has advanced to &b$path&3!
     - pex user @pn group add year6
 
 year6:
   upgrade_commands:
-    - broadcast §6@pd §3has advanced to §b$path§3!
+    - broadcast &6@pd &3has advanced to &b$path&3!
     - pex user @pn group add year7
 
 year7:
   upgrade_commands:
-    - broadcast §6@pd §3has graduated from Hogwarts!
+    - broadcast &6@pd &3has graduated from Hogwarts!
     - pex user @pn group add graduate

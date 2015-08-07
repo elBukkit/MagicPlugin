@@ -48,7 +48,7 @@ public class CraftingController implements Listener {
             ConfigurationSection parameters = configuration.getConfigurationSection(key);
             if (!parameters.getBoolean("enabled", true)) continue;
 
-            MagicRecipe recipe = new MagicRecipe(controller);
+            MagicRecipe recipe = new MagicRecipe(key, controller);
             if (!recipe.load(parameters)) {
                 controller.getLogger().warning("Failed to create crafting recipe: " + key);
                 continue;
@@ -63,6 +63,19 @@ public class CraftingController implements Listener {
             recipeCount++;
         }
 	}
+
+    public boolean hasCraftPermission(Player player, MagicRecipe recipe)
+    {
+        if (player == null) return false;
+
+        if (player.hasPermission("Magic.bypass")) {
+            return true;
+        }
+        if (!controller.hasPermission(player, "Magic.wand.craft")) {
+            return false;
+        }
+        return controller.hasPermission(player, "Magic.craft." + recipe.getKey(), true);
+    }
 	
 	public void register(Plugin plugin) {
         if (!craftingEnabled) {
@@ -105,7 +118,7 @@ public class CraftingController implements Listener {
             Material substitute = candidate.getSubstitute();
             if (ingredientsMatch) {
                 for (HumanEntity human : event.getViewers()) {
-                    if (human instanceof Player && !controller.hasPermission((Player)human, "Magic.wand.craft")) {
+                    if (human instanceof Player && !hasCraftPermission((Player) human, candidate)) {
                         inventory.setResult(new ItemStack(Material.AIR));
                         return;
                     }

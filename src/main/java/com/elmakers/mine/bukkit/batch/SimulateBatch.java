@@ -734,8 +734,7 @@ public class SimulateBatch extends UndoableBatch {
 				}
 				
 				if (direction != null) {
-					// TODO: Use location.setDirection in 1.7+
-					center = CompatibilityUtils.setDirection(center, direction);
+					center.setDirection(direction);
 				}
 				
 				// Check for obstruction

@@ -15,6 +15,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Hanging;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
 import java.util.Arrays;
@@ -30,6 +31,7 @@ public class VelocityAction extends BaseSpellAction
     private int maxSpeedAtElevation;
     private double pushDirection;
     private int yOffset;
+    private int exemptionDuration;
     private Vector direction;
 
     @Override
@@ -45,6 +47,7 @@ public class VelocityAction extends BaseSpellAction
         pushDirection = parameters.getDouble("push", 0);
         yOffset = parameters.getInt("y_offset", 0);
         direction = ConfigurationUtils.getVector(parameters, "direction");
+        exemptionDuration = parameters.getInt("exemption_duration", (int)(maxSpeed * 2000));
     }
 
     @Override
@@ -111,6 +114,10 @@ public class VelocityAction extends BaseSpellAction
         velocity.multiply(magnitude);
         context.registerVelocity(entity);
         context.registerMoved(entity);
+
+        if (exemptionDuration > 0 && entity instanceof Player) {
+            context.getController().addFlightExemption((Player)entity, exemptionDuration);
+        }
         entity.setVelocity(velocity);
 
         return SpellResult.CAST;
@@ -127,6 +134,7 @@ public class VelocityAction extends BaseSpellAction
         parameters.add("min_speed");
         parameters.add("max_speed");
         parameters.add("max_altitude");
+        parameters.add("exemption_duration");
     }
 
     @Override

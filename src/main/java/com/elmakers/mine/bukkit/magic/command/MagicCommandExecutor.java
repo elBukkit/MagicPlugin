@@ -1,20 +1,21 @@
 package com.elmakers.mine.bukkit.magic.command;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map.Entry;
-
-import com.elmakers.mine.bukkit.api.magic.MageController;
-import com.elmakers.mine.bukkit.api.maps.URLMap;
-import com.elmakers.mine.bukkit.api.spell.Spell;
-import com.elmakers.mine.bukkit.block.UndoList;
+import com.elmakers.mine.bukkit.api.batch.Batch;
 import com.elmakers.mine.bukkit.api.batch.SpellBatch;
+import com.elmakers.mine.bukkit.api.magic.Automaton;
+import com.elmakers.mine.bukkit.api.magic.Mage;
+import com.elmakers.mine.bukkit.api.magic.MageController;
+import com.elmakers.mine.bukkit.api.magic.MagicAPI;
+import com.elmakers.mine.bukkit.api.spell.Spell;
+import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
+import com.elmakers.mine.bukkit.api.wand.LostWand;
+import com.elmakers.mine.bukkit.api.wand.Wand;
+import com.elmakers.mine.bukkit.block.UndoList;
+import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.RunnableJob;
+import com.elmakers.mine.bukkit.wand.WandCleanupRunnable;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Chunk;
@@ -26,17 +27,22 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.BlockVector;
 
-import com.elmakers.mine.bukkit.api.batch.Batch;
-import com.elmakers.mine.bukkit.api.magic.Automaton;
-import com.elmakers.mine.bukkit.api.magic.Mage;
-import com.elmakers.mine.bukkit.api.magic.MagicAPI;
-import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
-import com.elmakers.mine.bukkit.api.wand.LostWand;
-import com.elmakers.mine.bukkit.api.wand.Wand;
-import com.elmakers.mine.bukkit.wand.WandCleanupRunnable;
+import java.io.File;
+import java.net.URL;
+import java.security.CodeSource;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map.Entry;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
 public class MagicCommandExecutor extends MagicMapExecutor {
 
@@ -172,7 +178,7 @@ public class MagicCommandExecutor extends MagicMapExecutor {
         }
 		if (subCommand.equalsIgnoreCase("list"))
 		{
-			String usage = "Usage: magic list <wands [player]|maps [keyword]|automata|tasks>";
+			String usage = "Usage: magic list <wands|map|automata|tasks|schematics>";
 			String listCommand = "";
 			if (args.length > 1)
 			{
@@ -184,7 +190,7 @@ public class MagicCommandExecutor extends MagicMapExecutor {
 			}
 			else
 			{				
-				sender.sendMessage(ChatColor.GRAY + "For more specific information, add 'tasks', 'wands', 'maps' or 'automata' parameter.");
+				sender.sendMessage(ChatColor.GRAY + "For more specific information, add 'tasks', 'wands', 'maps', 'schematics' or 'automata' parameter.");
 
 				Collection<Mage> mages = api.getMages();
                 sender.sendMessage(ChatColor.AQUA + "Registered blocks (" + UndoList.getModified().size() + "): ");
@@ -225,8 +231,60 @@ public class MagicCommandExecutor extends MagicMapExecutor {
 				}
 				return true;
 			}
+            if (listCommand.equalsIgnoreCase("schematics")) {
+                List<String> schematics = new ArrayList<String>();
+                try {
+                    Plugin plugin = (Plugin)api;
+                    MagicController controller = (MagicController)api.getController();
 
-            if (listCommand.equalsIgnoreCase("tasks")) {
+                    // Find built-in schematics
+                    CodeSource src = MagicAPI.class.getProtectionDomain().getCodeSource();
+                    if (src != null) {
+                        URL jar = src.getLocation();
+                        ZipInputStream zip = new ZipInputStream(jar.openStream());
+                        while(true) {
+                            ZipEntry e = zip.getNextEntry();
+                            if (e == null)
+                                break;
+                            String name = e.getName();
+                            if (name.startsWith("schematics/")) {
+                                schematics.add(name.replace("schematics/", ""));
+                            }
+                        }
+                    }
+
+                    // Check extra path first
+                    File configFolder = plugin.getDataFolder();
+                    File magicSchematicFolder = new File(configFolder, "schematics");
+                    if (magicSchematicFolder.exists()) {
+                        for (File nextFile : magicSchematicFolder.listFiles()) {
+                            schematics.add(nextFile.getName());
+                        }
+                    }
+                    String extraSchematicFilePath = controller.getExtraSchematicFilePath();
+                    if (extraSchematicFilePath != null && extraSchematicFilePath.length() > 0) {
+                        File schematicFolder = new File(configFolder, "../" + extraSchematicFilePath);
+                        if (schematicFolder.exists() && !schematicFolder.equals(magicSchematicFolder)) {
+                            for (File nextFile : schematicFolder.listFiles()) {
+                                schematics.add(nextFile.getName());
+                            }
+                        }
+                    }
+                } catch (Exception ex) {
+                    sender.sendMessage("Error loading schematics: " + ex.getMessage());
+                    ex.printStackTrace();;
+                }
+
+                sender.sendMessage(ChatColor.DARK_AQUA + "Found " + ChatColor.LIGHT_PURPLE + schematics.size() + ChatColor.DARK_AQUA + " schematics");
+                Collections.sort(schematics);
+                for (String schematic : schematics) {
+                    if (schematic.indexOf(".schematic") > 0) {
+                        sender.sendMessage(ChatColor.AQUA + schematic.replace(".schematic", ""));
+                    }
+                }
+
+                return true;
+            } else if (listCommand.equalsIgnoreCase("tasks")) {
                 List<BukkitTask> tasks = Bukkit.getScheduler().getPendingTasks();
                 HashMap<String, Integer> pluginCounts = new HashMap<String, Integer>();
                 HashMap<String, HashMap<String, Integer>> taskCounts = new HashMap<String, HashMap<String, Integer>>();
@@ -604,9 +662,8 @@ public class MagicCommandExecutor extends MagicMapExecutor {
         Spell spell = wand == null ? null : wand.getActiveSpell();
         sender.sendMessage(ChatColor.GOLD + "Permission check for " + ChatColor.AQUA + player.getDisplayName());
         sender.sendMessage(ChatColor.GOLD + " at " + ChatColor.AQUA
-                + location.getWorld().getName() + "|"
-                + location.getBlockX() + "," + location.getBlockY() + "," + location.getBlockZ()
-                + ChatColor.GOLD + ": ");
+                + ChatColor.BLUE + location.getBlockX() + " " + location.getBlockY() + " " + location.getBlockZ()
+                + " " + ChatColor.DARK_BLUE + location.getWorld().getName());
 
         sender.sendMessage(ChatColor.AQUA + " Has bypass: " + formatBoolean(player.hasPermission("Magic.bypass")));
         sender.sendMessage(ChatColor.AQUA + " Has PVP bypass: " + formatBoolean(player.hasPermission("Magic.bypass_pvp")));
@@ -614,6 +671,7 @@ public class MagicCommandExecutor extends MagicMapExecutor {
         sender.sendMessage(ChatColor.AQUA + " Can build: " + formatBoolean(mage.hasBuildPermission(location.getBlock())));
         sender.sendMessage(ChatColor.AQUA + " Can break: " + formatBoolean(mage.hasBreakPermission(location.getBlock())));
         sender.sendMessage(ChatColor.AQUA + " Can pvp: " + formatBoolean(mage.isPVPAllowed(location)));
+		sender.sendMessage(ChatColor.AQUA + " Is disguised: " + formatBoolean(controller.isDisguised(mage.getEntity())));
         if (spell != null)
         {
             sender.sendMessage(ChatColor.AQUA + " Has pnode " + ChatColor.GOLD + spell.getPermissionNode() + ChatColor.AQUA + ": " + formatBoolean(spell.hasCastPermission(player)));
@@ -622,6 +680,7 @@ public class MagicCommandExecutor extends MagicMapExecutor {
             sender.sendMessage(ChatColor.GOLD + " " + spell.getName() + ChatColor.AQUA + " requires build: " + formatBoolean(spell.requiresBuildPermission()));
             sender.sendMessage(ChatColor.GOLD + " " + spell.getName() + ChatColor.AQUA + " requires break: " + formatBoolean(spell.requiresBreakPermission()));
             sender.sendMessage(ChatColor.GOLD + " " + spell.getName() + ChatColor.AQUA + " requires pvp: " + formatBoolean(spell.isPvpRestricted()));
+			sender.sendMessage(ChatColor.GOLD + " " + spell.getName() + ChatColor.AQUA + " allowed while disguised: " + formatBoolean(!spell.isDisguiseRestricted()));
             if (spell instanceof BaseSpell)
             {
                 boolean buildPermission = ((BaseSpell)spell).hasBuildPermission(location.getBlock());

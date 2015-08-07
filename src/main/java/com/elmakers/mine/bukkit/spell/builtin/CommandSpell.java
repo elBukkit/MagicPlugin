@@ -131,7 +131,7 @@ public class CommandSpell extends TargetingSpell {
                 if (parameters.getBoolean("exclude_player", true)) {
                     exclude = null;
                 }
-                Player[] players = Bukkit.getOnlinePlayers();
+                Collection<? extends Player> players = controller.getPlugin().getServer().getOnlinePlayers();
                 Location source = targetLocation == null ? getLocation() : targetLocation;
                 for (Player player : players) {
                     if (exclude != null && exclude.equals(player)) continue;

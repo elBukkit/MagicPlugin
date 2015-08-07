@@ -49,6 +49,7 @@ public class ProjectileAction  extends TriggeredCompoundAction
     private int tickIncrease;
     private String projectileTypeName;
     private int startDistance;
+	private boolean setTarget;
 
 	private static Class<?> projectileClass;
 	private static Class<?> fireballClass;
@@ -139,6 +140,7 @@ public class ProjectileAction  extends TriggeredCompoundAction
         projectileTypeName = parameters.getString("projectile", "Arrow");
         breakBlocks = parameters.getBoolean("break_blocks", false);
         startDistance = parameters.getInt("start", 0);
+		setTarget = parameters.getBoolean("set_target", false);
     }
 
 	@Override
@@ -224,7 +226,11 @@ public class ProjectileAction  extends TriggeredCompoundAction
 			try {
 				// Spawn a new projectile
 				Object nmsProjectile = null;
-				nmsProjectile = constructor.newInstance(nmsWorld);
+				try {
+					nmsProjectile = constructor.newInstance(nmsWorld);
+				} catch (Exception ex) {
+					nmsProjectile = null;
+				}
 
 				if (nmsProjectile == null) {
 					throw new Exception("Failed to spawn projectile of class " + projectileTypeName);
@@ -323,6 +329,10 @@ public class ProjectileAction  extends TriggeredCompoundAction
                 if (!breakBlocks) {
                     projectile.setMetadata("cancel_explosion", new FixedMetadataValue(controller.getPlugin(), true));
                 }
+				if (setTarget) {
+					context.setTargetEntity(projectile);
+					context.setTargetLocation(projectile.getLocation());
+				}
 			} catch(Exception ex) {
 				ex.printStackTrace();
 			}

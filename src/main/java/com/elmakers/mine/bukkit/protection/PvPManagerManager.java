@@ -2,6 +2,7 @@ package com.elmakers.mine.bukkit.protection;
 
 import me.NoChance.PvPManager.PvPManager;
 import me.NoChance.PvPManager.PvPlayer;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
@@ -10,7 +11,7 @@ import org.bukkit.plugin.Plugin;
  *
  * This is why it has kind of a funky name.
  */
-public class PvPManagerManager {
+public class PvPManagerManager implements PVPManager {
 
     private boolean enabled = false;
     private PvPManager manager = null;
@@ -41,7 +42,8 @@ public class PvPManagerManager {
         }
     }
 
-    public boolean isPVPAllowed(Player player) {
+    @Override
+    public boolean isPVPAllowed(Player player, Location location) {
         if (!enabled || manager == null || player == null) return true;
 
         PvPlayer pvpPlayer = manager.getPlayerHandler().get(player);

@@ -35,42 +35,38 @@ wandbox:
 elder:
     icon: iron_hoe
     undroppable: true
-    path: master
+    path: graduate
     bound: true
     keep: true
-    fill: true
     organize: true
     cost_reduction: 2
-    cooldown_reduction: 2
     protection_falling: 2
     quiet: 1
     power: 0
     haste: 0
     effect_color: 'FF00FF'
-    effect_particle: enchantment_table
-    effect_particle_count: 1
-    effect_particle_data: 1
-    effect_particle_interval: 1
     effect_bubbles: false
     active_spell: ascendio
-    hidden: true
-    overrides: patronus.type bat
     spells:
+      - apparate
+      - rennervate
       - stupefy
       - expelliarmus
       - ascendio
       - volo
       - protego
-      - invis
-      - apparatemaxima
       - vulnera
-      - flight
-      - gather
-      - reductomaxima
-      - deprimomaxima
-      - smite
-      - invis
-      - avadamaxima
+      - stupefy
+      - vermillious
+      - aguamenti
+      - levicorpus
+      - reducto
+      - deprimo
+      - duro
+      - crucio
+      - imperio
+      - avadakedavra
+      - finiteincantatem
 
 wolf:
     icon: gold_hoe
@@ -82,6 +78,8 @@ wolf:
     cost_reduction: 2
     cooldown_reduction: 2
     protection_falling: 2
+    protected: true
+    powered: true
     quiet: 0
     power: 0
     haste: 0.1
@@ -152,100 +150,6 @@ slytherinwand:
     effect_bubbles: false
     active_spell: ascendio
     hidden: true
-
-architect:
-    path: engineer
-    keep: true
-    bound: true
-    undroppable: true
-    bound: true
-    icon: gold_axe
-    effect_color: '00FF00'
-    hunger_regeneration: 1
-    health_regeneration: 1
-    protection_falling: 1
-    protection: 0.2
-    cost_reduction: 2
-    cooldown_reduction: 2
-    power: 10
-    effect_color: '8B008B'
-    effect_bubbles: true
-    organize: true
-    active_spell: levitate
-    spells:
-        - flight
-        - paste
-        - paint
-        - alter
-        - torch
-        - fill
-        - absorb
-        - bridge
-        - pillar
-        - place
-        - recurse
-        - reparifarge
-        - deletrius
-        - iterate
-        - superblob
-        - superbox
-        - supershell
-        - superconvert
-        - superpyramid
-        - superdome
-        - superdisc
-        - superring
-        - superiterate
-        - superalter
-        - reparo
-        - salviohexia
-        - reparomaxima
-    materials:
-        - clone
-        - replicate
-        - copy
-        - erase
-        - map
-        - monster_eggs:1
-        - monster_eggs:2
-        - monster_eggs:3
-        - monster_eggs:4
-        - monster_eggs:5
-        - stone
-        - wood
-        - glass
-        - dirt
-        - glowstone
-        - sand
-        - cobblestone
-        - stained_glass
-        - thin_glass
-        - stained_glass_pane
-        - stained_clay
-        - quartz_block
-        - quartz_block:1
-        - quartz_block:2
-        - lapis_block
-        - iron_block
-        - diamond_block
-        - gold_block
-        - emerald_block
-        - redstone_block
-        - obsidian
-        - schematic:rainbow
-        - schematic:creeper_rug
-        - schematic:church
-        - schematic:blacksmith
-        - schematic:compact_house
-        - schematic:small_house
-        - schematic:elder_tree
-        - schematic:garden_house
-        - schematic:beacon
-        - schematic:cage
-        - schematic:tent
-        - schematic:stash_chest
-        - schematic:lantern
-        - schematic:tech_tower
 
 crudwand:
     icon: stick
@@ -435,7 +339,7 @@ minister:
     indestructible: true
     locked: true
     effect_color: '00AAFF'
-    overrides: broom.mount_color creamy, broom.mount_style whitefield, broom.mount_boost 4, broom.mount_boost_ticks 600, broom.mount_health 20, broom.slow_ticks 1, broom.steer_speed 0, broom.slow_steer_speed 0.05, broom.mount_boost_per_jump 0.5, broom.effect_confusion 0
+    overrides: broom.mount_boost 4, broom.mount_boost_ticks 600, broom.mount_health 20, broom.slow_ticks 1, broom.steer_speed 0, broom.slow_steer_speed 0.05, broom.mount_boost_per_jump 0.5, broom.effect_confusion 0
     spells:
         - broom
 
@@ -447,7 +351,7 @@ unspeakabroom:
     indestructible: true
     locked: true
     effect_color: '00FFFF'
-    overrides: broom.mount_color creamy, broom.mount_style whitefield, broom.mount_boost 4, broom.mount_boost_ticks 600, broom.mount_health 20, broom.slow_ticks 2, broom.steer_speed 0, broom.slow_steer_speed 0.05, broom.mount_boost_per_jump 0.3, broom.effect_confusion 0
+    overrides: broom.mount_boost 4, broom.mount_boost_ticks 600, broom.mount_health 20, broom.slow_ticks 2, broom.steer_speed 0, broom.slow_steer_speed 0.05, broom.mount_boost_per_jump 0.3, broom.effect_confusion 0
     spells:
         - broom
 
@@ -459,7 +363,7 @@ headmaster:
     indestructible: true
     locked: true
     effect_color: 'FF00FF'
-    overrides: broom.mount_color creamy, broom.mount_style white_dots, broom.mount_boost 4, broom.mount_boost_ticks 600, broom.mount_health 20, broom.slow_ticks 5, broom.steer_speed 0, broom.slow_steer_speed 0.05, broom.mount_boost_per_jump 0.3, broom.effect_confusion 0
+    overrides: broom.mount_boost 4, broom.mount_boost_ticks 600, broom.mount_health 20, broom.slow_ticks 5, broom.steer_speed 0, broom.slow_steer_speed 0.05, broom.mount_boost_per_jump 0.3, broom.effect_confusion 0
     spells:
         - broom
 
@@ -471,7 +375,7 @@ firebolt:
     indestructible: true
     locked: true
     effect_color: 'FF00FF'
-    overrides: broom.mount_color dark_brown, broom.mount_boost 3, broom.mount_boost_ticks 1200, broom.mount_health 20, broom.slow_ticks 3, broom.steer_speed 0.8, broom.slow_steer_speed 0.8, broom.mount_boost_per_jump 0.25
+    overrides: broom.mount_boost 3, broom.mount_boost_ticks 1200, broom.mount_health 20, broom.slow_ticks 3, broom.steer_speed 0.8, broom.slow_steer_speed 0.8, broom.mount_boost_per_jump 0.25
     spells:
         - broom
 
@@ -483,7 +387,7 @@ crudfirebolt:
     locked: true
     effect_color: 'FF00FF'
     uses: 20
-    overrides: broom.mount_color dark_brown, broom.mount_boost 2.5, broom.mount_boost_ticks 1200, broom.mount_health 20, broom.slow_ticks 5, broom.steer_speed 0.8, broom.slow_steer_speed 0.2, broom.mount_boost_per_jump 0.25
+    overrides: broom.mount_boost 2.5, broom.mount_boost_ticks 1200, broom.mount_health 20, broom.slow_ticks 5, broom.steer_speed 0.8, broom.slow_steer_speed 0.2, broom.mount_boost_per_jump 0.25
     spells:
         - broom
 
@@ -495,7 +399,7 @@ nimbus:
     indestructible: true
     locked: true
     effect_color: '880088'
-    overrides: broom.mount_color gray, broom.mount_boost_ticks 600, broom.mount_health 16, broom.mount_boost 2, broom.slow_ticks 3, broom.steer_speed 0.6, broom.slow_steer_speed 0, broom.mount_boost_per_jump 0.4
+    overrides: broom.mount_boost_ticks 600, broom.mount_health 16, broom.mount_boost 2, broom.slow_ticks 3, broom.steer_speed 0.6, broom.slow_steer_speed 0, broom.mount_boost_per_jump 0.4
     spells:
         - broom
 
@@ -507,7 +411,7 @@ crudnimbus:
     locked: true
     effect_color: '880088'
     uses: 20
-    overrides: broom.mount_color gray, broom.mount_boost_ticks 600, broom.mount_health 16, broom.mount_boost 2, broom.slow_ticks 3, broom.steer_speed 0.6, broom.slow_steer_speed 0, broom.mount_boost_per_jump 0.4
+    overrides: broom.mount_boost_ticks 600, broom.mount_health 16, broom.mount_boost 2, broom.slow_ticks 3, broom.steer_speed 0.6, broom.slow_steer_speed 0, broom.mount_boost_per_jump 0.4
     spells:
         - broom
 
@@ -519,7 +423,7 @@ comet290:
     indestructible: true
     locked: true
     effect_color: 'FF00FF'
-    overrides: broom.mount_color chestnut, broom.mount_boost 2.5, broom.mount_boost_ticks 80, broom.mount_health 14, broom.slow_ticks 6, broom.steer_speed 0.6, broom.slow_steer_speed 0.5, broom.mount_boost_per_jump 1
+    overrides: broom.mount_boost 2.5, broom.mount_boost_ticks 80, broom.mount_health 14, broom.slow_ticks 6, broom.steer_speed 0.6, broom.slow_steer_speed 0.5, broom.mount_boost_per_jump 1
     spells:
         - broom
 
@@ -531,7 +435,7 @@ cleansweep1:
     indestructible: false
     locked: true
     effect_color: 'FFFF00'
-    overrides: broom.mount_color black, broom.mount_boost 1, broom.mount_boost_ticks 300, broom.mount_health 12, broom.steer_speed 0, broom.slow_steer_speed 0.8
+    overrides: broom.mount_boost 1, broom.mount_boost_ticks 300, broom.mount_health 12, broom.steer_speed 0, broom.slow_steer_speed 0.8
     spells:
         - broom
 
@@ -543,7 +447,7 @@ bluebottle:
     indestructible: false
     locked: true
     effect_color: '0000FF'
-    overrides: broom.mount_color brown, broom.mount_boost 0.5, broom.mount_boost_ticks 120, broom.mount_health 8, broom.steer_speed 0.2, broom.slow_ticks 5, broom.slow_steer_speed 0.1
+    overrides: broom.mount_boost 0.5, broom.mount_boost_ticks 120, broom.mount_health 8, broom.steer_speed 0.2, broom.slow_ticks 5, broom.slow_steer_speed 0.1
     spells:
         - broom
 
@@ -556,7 +460,7 @@ crudbroom:
     locked: true
     uses: 10
     effect_color: '000088'
-    overrides: broom.mount_color brown, broom.mount_boost 0.5, broom.mount_boost_ticks 120, broom.mount_health 8, broom.steer_speed 0.2, broom.slow_ticks 5, broom.slow_steer_speed 0.1
+    overrides: broom.mount_boost 0.5, broom.mount_boost_ticks 120, broom.mount_health 8, broom.steer_speed 0.2, broom.slow_ticks 5, broom.slow_steer_speed 0.1
     spells:
         - broom
 
@@ -732,16 +636,9 @@ rainboweffects:
 
 # Graduation upgrades
 
-year1:
-    upgrade: true
-    path: master
-    upgrade_path: year1
-    indestructible: false
-    icon: nether_star
-    xp_max: 50
-    xp_regeneration: 6
 year2:
     upgrade: true
+    hidden: true
     path: year1
     upgrade_path: year2
     indestructible: false
@@ -750,6 +647,7 @@ year2:
     xp_regeneration: 10
 year3:
     upgrade: true
+    hidden: true
     path: year2
     upgrade_path: year3
     indestructible: false
@@ -758,6 +656,7 @@ year3:
     xp_regeneration: 15
 year4:
     upgrade: true
+    hidden: true
     path: year3
     upgrade_path: year4
     indestructible: false
@@ -766,6 +665,7 @@ year4:
     xp_regeneration: 20
 year5:
     upgrade: true
+    hidden: true
     path: year4
     upgrade_path: year5
     indestructible: false
@@ -774,6 +674,7 @@ year5:
     xp_regeneration: 25
 year6:
     upgrade: true
+    hidden: true
     path: year5
     upgrade_path: year6
     indestructible: false
@@ -782,6 +683,7 @@ year6:
     xp_regeneration: 30
 year7:
     upgrade: true
+    hidden: true
     path: year6
     upgrade_path: year7
     indestructible: false
@@ -790,6 +692,7 @@ year7:
     xp_regeneration: 35
 graduate:
     upgrade: true
+    hidden: true
     path: year7
     upgrade_path: graduate
     indestructible: false

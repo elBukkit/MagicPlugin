@@ -1,18 +1,16 @@
 package com.elmakers.mine.bukkit.action.builtin;
 
-import com.elmakers.mine.bukkit.api.action.CastContext;
-import org.bukkit.configuration.ConfigurationSection;
-
-public class DiscAction extends VolumeAction
+public class DiscAction extends PlaneAction
 {
-	@Override
-	public void prepare(CastContext context, ConfigurationSection parameters) {
-		super.prepare(context, parameters);
-        ySize = 0;
-	}
-
 	protected boolean containsPoint(int x, int y, int z)
 	{
-		return ((x * x) + (z * z) - (radius * radius)) <= 0;
+		switch (axis)
+		{
+			case X:
+				return (y * y) + (z * z) <= radiusSquared;
+			case Z:
+				return (x * x) + (y * y) <= radiusSquared;
+		}
+		return (x * x) + (z * z) <= radiusSquared;
 	}
 }

@@ -12,8 +12,10 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 
+import com.elmakers.mine.bukkit.action.TeleportTask;
 import com.elmakers.mine.bukkit.api.action.GUIAction;
 import com.elmakers.mine.bukkit.api.batch.SpellBatch;
+import com.elmakers.mine.bukkit.api.effect.SoundEffect;
 import com.elmakers.mine.bukkit.api.spell.SpellKey;
 import com.elmakers.mine.bukkit.effect.HoloUtils;
 import com.elmakers.mine.bukkit.effect.Hologram;
@@ -41,6 +43,7 @@ import org.bukkit.event.player.PlayerEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitScheduler;
@@ -64,9 +67,10 @@ import com.elmakers.mine.bukkit.wand.Wand;
 
 public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mage {
     protected static int AUTOMATA_ONLINE_TIMEOUT = 5000;
-
+    public static double WAND_LOCATION_OFFSET = 0.5;
+    public static double WAND_LOCATION_VERTICAL_OFFSET = 0;
+    public static int JUMP_EFFECT_FLIGHT_EXEMPTION_DURATION = 0;
     final static private Set<Material> EMPTY_MATERIAL_SET = new HashSet<Material>();
-
     private static String defaultMageName = "Mage";
 
     protected final String id;
@@ -79,7 +83,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     protected final MagicController controller;
     protected HashMap<String, MageSpell> spells = new HashMap<String, MageSpell>();
     private Wand activeWand = null;
-    private Wand boundWand = null;
+    private Map<String, Wand> boundWands = new HashMap<String, Wand>();
     private final Collection<Listener> quitListeners = new HashSet<Listener>();
     private final Collection<Listener> deathListeners = new HashSet<Listener>();
     private final Collection<Listener> damageListeners = new HashSet<Listener>();
@@ -124,6 +128,10 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
     private HashMap<Integer, ItemStack> respawnInventory;
     private HashMap<Integer, ItemStack> respawnArmor;
+    private List<?> restoreInventory;
+    private ConfigurationSection spellData;
+
+    private String destinationWarp;
 
     public Mage(String id, MagicController controller) {
         this.id = id;
@@ -264,16 +272,6 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             if (event.isCancelled()) break;
         }
 
-        if (isSuperProtected()) {
-            event.setCancelled(true);
-            if (player.getFireTicks() > 0) {
-                player.setFireTicks(0);
-            }
-            return;
-        }
-
-        if (event.isCancelled()) return;
-
         EntityDamageEvent.DamageCause cause = event.getCause();
         if (cause == EntityDamageEvent.DamageCause.FALL) {
             if (fallProtectionCount > 0 && fallProtection > 0 && fallProtection > System.currentTimeMillis()) {
@@ -296,6 +294,16 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                 fallingSpell = null;
             }
         }
+
+        if (isSuperProtected()) {
+            event.setCancelled(true);
+            if (player.getFireTicks() > 0) {
+                player.setFireTicks(0);
+            }
+            return;
+        }
+
+        if (event.isCancelled()) return;
 
         // First check for damage reduction
         float reduction = 0;
@@ -338,10 +346,24 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         }
     }
 
+    @Override
+    public void activateWand() {
+        Player player = getPlayer();
+        if (player == null) return;
+        PlayerInventory inventory = player.getInventory();
+        ItemStack itemStack = inventory.getItemInHand();
+        int slot = inventory.getHeldItemSlot();
+        Wand newWand = new Wand(controller, itemStack);
+        newWand.activate(this, itemStack, slot);
+    }
+
     public void setActiveWand(Wand activeWand) {
         this.activeWand = activeWand;
         if (activeWand != null && activeWand.isBound() && activeWand.canUse(getPlayer())) {
-            this.boundWand = activeWand;
+            String template = activeWand.getTemplateKey();
+            if (template != null && !template.isEmpty()) {
+                boundWands.put(template, activeWand);
+            }
         }
         blockPlaceTimeout = System.currentTimeMillis() + 200;
         updateEquipmentEffects();
@@ -385,16 +407,11 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         brush.setMaterial(controller.getDefaultMaterial(), (byte) 1);
     }
 
-    public void playSound(Sound sound, float volume, float pitch) {
-        if (!controller.soundsEnabled()) return;
+    @Override
+    public void playSoundEffect(SoundEffect soundEffect) {
+        if (!controller.soundsEnabled() || soundEffect == null) return;
 
-        Player player = getPlayer();
-        if (player != null) {
-            player.playSound(player.getLocation(), sound, volume, pitch);
-        } else {
-            Entity entity = getEntity();
-            entity.getLocation().getWorld().playSound(entity.getLocation(), sound, volume, pitch);
-        }
+        soundEffect.play(controller.getPlugin(), getEntity());
     }
 
     public UndoQueue getUndoQueue() {
@@ -427,6 +444,11 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             undoList.setScheduleUndo(autoUndo);
         } else {
             undoList.updateScheduledUndo();
+        }
+
+        if (undoList.isScheduled())
+        {
+            controller.scheduleUndo(undoList);
         }
 
         return true;
@@ -500,49 +522,98 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     protected void onLoad() {
         loading = false;
         Player player = getPlayer();
-        if (player != null && activeWand == null) {
-            String welcomeWand = controller.getWelcomeWand();
-            Wand wand = Wand.getActiveWand(controller, player);
-            if (wand != null) {
-                wand.activate(this);
-            } else if (isNewPlayer && welcomeWand.length() > 0) {
-                isNewPlayer = false;
-                wand = Wand.createWand(controller, welcomeWand);
+        if (player != null) {
+            if (restoreInventory != null) {
+                controller.getLogger().info("Restoring saved inventory for player " + player.getName() + " - did the server not shut down properly?");
+                if (activeWand != null) {
+                    activeWand.deactivate();
+                }
+                Inventory inventory = player.getInventory();
+                for (int slot = 0; slot < restoreInventory.size(); slot++) {
+                    Object item = restoreInventory.get(slot);
+                    if (item instanceof ItemStack) {
+                        inventory.setItem(slot, (ItemStack)item);
+                    } else {
+                        inventory.setItem(slot, null);
+                    }
+                }
+                restoreInventory = null;
+            }
+
+            if (spellData != null) {
+                Set<String> keys = spellData.getKeys(false);
+                for (String key : keys) {
+                    Spell spell = spells.get(key);
+                    if (spell != null && spell instanceof MageSpell) {
+                        ConfigurationSection spellSection = spellData.getConfigurationSection(key);
+                        ((MageSpell) spell).load(spellSection);
+                    }
+                }
+            }
+
+            if (activeWand == null) {
+                String welcomeWand = controller.getWelcomeWand();
+                Wand wand = Wand.getActiveWand(controller, player);
                 if (wand != null) {
-                    wand.takeOwnership(player, false, false);
-                    controller.giveItemToPlayer(player, wand.getItem());
-                    controller.getLogger().info("Gave welcome wand " + wand.getName() + " to " + player.getName());
-                } else {
-                    controller.getLogger().warning("Unable to give welcome wand '" + welcomeWand + "' to " + player.getName());
+                    wand.activate(this);
+                } else if (isNewPlayer && welcomeWand.length() > 0) {
+                    isNewPlayer = false;
+                    wand = Wand.createWand(controller, welcomeWand);
+                    if (wand != null) {
+                        wand.takeOwnership(player, false, false);
+                        giveItem(wand.getItem());
+                        controller.getLogger().info("Gave welcome wand " + wand.getName() + " to " + player.getName());
+                    } else {
+                        controller.getLogger().warning("Unable to give welcome wand '" + welcomeWand + "' to " + player.getName());
+                    }
                 }
             }
         }
+    }
 
-        Collection<Spell> spells = getSpells();
-        for (Spell spell : spells) {
-            // Reactivate spells that were active on logout.
-            if (spell.isActive()) {
-                sendMessage(controller.getMessages().get("spell.reactivate").replace("$name", spell.getName()));
-                activateSpell(spell);
-            }
-        }
+    protected void finishLoad() {
+        MageLoadTask loadTask = new MageLoadTask(this);
+        Bukkit.getScheduler().scheduleSyncDelayedTask(controller.getPlugin(), loadTask, 1);
     }
 
     protected boolean load(ConfigurationSection configNode) {
         try {
             if (configNode == null) {
-                onLoad();
+                finishLoad();
                 return true;
             }
 
-            boundWand = null;
+            boundWands.clear();
             if (configNode.contains("bound_wand")) {
-                boundWand = new Wand(controller, configNode.getConfigurationSection("bound_wand"));
+                // Legacy support
+                Wand boundWand = new Wand(controller, configNode.getConfigurationSection("bound_wand"));
+                String template = boundWand.getTemplateKey();
+                if (template != null) {
+                    boundWands.put(template, boundWand);
+                }
             } else if (configNode.contains("wand")) {
-                boundWand = new Wand(controller, controller.deserialize(configNode, "wand"));
+                // More legacy support :|
+                Wand boundWand = new Wand(controller, controller.deserialize(configNode, "wand"));
+                String template = boundWand.getTemplateKey();
+                if (template != null && !template.isEmpty()) {
+                    boundWands.put(template, boundWand);
+                }
+            } else if (configNode.contains("wands")) {
+                ConfigurationSection wands = configNode.getConfigurationSection("wands");
+                Set<String> keys = wands.getKeys(false);
+                for (String key : keys) {
+                    Wand boundWand = new Wand(controller, controller.deserialize(wands, key));
+                    boundWands.put(key, boundWand);
+                }
             }
             if (configNode.contains("data")) {
                 data = configNode.getConfigurationSection("data");
+            }
+
+            fallProtectionCount = configNode.getLong("fall_protection_count", 0);
+            fallProtection = configNode.getLong("fall_protection", 0);
+            if (fallProtectionCount > 0 && fallProtection > 0) {
+                fallProtection = System.currentTimeMillis() + fallProtection;
             }
 
             isNewPlayer = false;
@@ -550,17 +621,28 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             lastDeathLocation = ConfigurationUtils.getLocation(configNode, "last_death_location");
             location = ConfigurationUtils.getLocation(configNode, "location");
             lastCast = configNode.getLong("last_cast", lastCast);
+            destinationWarp = configNode.getString("destination_warp");
+            if (destinationWarp != null) {
+                if (!destinationWarp.isEmpty()) {
+                    Location destination = controller.getWarp(destinationWarp);
+                    if (destination != null) {
+                        Plugin plugin = controller.getPlugin();
+                        controller.info("Warping " + getEntity().getName() + " to " + destinationWarp + " on login");
+                        TeleportTask task = new TeleportTask(getController(), getEntity(), destination, 4, null);
+                        Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, task, 1);
+                    } else {
+                        controller.info("Failed to warp " + getEntity().getName() + " to " + destinationWarp + " on login, warp doesn't exist");
+                    }
+                }
+                destinationWarp = null;
+            }
 
             getUndoQueue().load(configNode);
-            ConfigurationSection spellNode = configNode.getConfigurationSection("spells");
-            if (spellNode != null) {
-                Set<String> keys = spellNode.getKeys(false);
+            spellData = configNode.getConfigurationSection("spells");
+            if (spellData != null) {
+                Set<String> keys = spellData.getKeys(false);
                 for (String key : keys) {
-                    Spell spell = getSpell(key);
-                    if (spell != null && spell instanceof MageSpell) {
-                        ConfigurationSection spellSection = spellNode.getConfigurationSection(key);
-                        ((MageSpell) spell).load(spellSection);
-                    }
+                    createSpell(key);
                 }
             }
             ConfigurationSection respawnData = configNode.getConfigurationSection("respawn_inventory");
@@ -585,7 +667,6 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                         int index = Integer.parseInt(key);
                         ItemStack item = controller.deserialize(respawnArmorData, key);
                         respawnArmor.put(index, item);
-
                     } catch (Exception ex) {
                     }
                 }
@@ -594,12 +675,16 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             if (configNode.contains("brush")) {
                 brush.load(configNode.getConfigurationSection("brush"));
             }
+
+            if (configNode.contains("inventory")) {
+                restoreInventory = configNode.getList("inventory");
+            }
         } catch (Exception ex) {
-            controller.getPlugin().getLogger().warning("Failed to load player data for " + playerName + ": " + ex.getMessage());
+            controller.getLogger().warning("Failed to load player data for " + playerName + ": " + ex.getMessage());
             return false;
         }
 
-        onLoad();
+        finishLoad();
         return true;
     }
 
@@ -612,6 +697,13 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             if (location != null) {
                 configNode.set("location", ConfigurationUtils.fromLocation(location));
             }
+            configNode.set("destination_warp", destinationWarp);
+
+            long now = System.currentTimeMillis();
+            if (fallProtectionCount > 0 && fallProtection > now) {
+                configNode.set("fall_protection_count", fallProtectionCount);
+                configNode.set("fall_protection", fallProtection - now);
+            }
 
             ConfigurationSection brushNode = configNode.createSection("brush");
             brush.save(brushNode);
@@ -620,12 +712,14 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             ConfigurationSection spellNode = configNode.createSection("spells");
             for (MageSpell spell : spells.values()) {
                 ConfigurationSection section = spellNode.createSection(spell.getKey());
-                section.set("active", spell.isActive());
                 spell.save(section);
             }
 
-            if (boundWand != null) {
-                controller.serialize(configNode, "wand", boundWand.getItem());
+            if (boundWands.size() > 0) {
+                ConfigurationSection wandSection = configNode.createSection("wands");
+                for (Map.Entry<String, Wand> wandEntry : boundWands.entrySet()) {
+                    controller.serialize(wandSection,  wandEntry.getKey(), wandEntry.getValue().getItem());
+                }
             }
             if (respawnArmor != null) {
                 ConfigurationSection armorSection = configNode.createSection("respawn_armor");
@@ -642,6 +736,11 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                 }
             }
 
+            if (activeWand != null && activeWand.hasStoredInventory()) {
+                ConfigurationSection inventoryConfig = configNode.createSection("inventory");
+                configNode.set("inventory", activeWand.getStoredInventory().getContents());
+            }
+
             ConfigurationSection dataSection = configNode.createSection("data");
             ConfigurationUtils.addConfigurations(dataSection, data);
         } catch (Exception ex) {
@@ -651,7 +750,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         return true;
     }
 
-    protected boolean checkLastClick(long maxInterval) {
+    public boolean checkLastClick(long maxInterval) {
         long now = System.currentTimeMillis();
         long previous = lastClick;
         lastClick = now;
@@ -680,6 +779,14 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         if (player != null && player.isOnline()) {
             if (activeWand != null) {
                 activeWand.tick();
+            }
+
+            // Avoid getting kicked for large jump effects
+            // It'd be nice to filter this by amplitude, but as
+            // it turns out that is not easy to check efficiently.
+            if (JUMP_EFFECT_FLIGHT_EXEMPTION_DURATION > 0 && player.hasPotionEffect(PotionEffectType.JUMP))
+            {
+                controller.addFlightExemption(player, JUMP_EFFECT_FLIGHT_EXEMPTION_DURATION);
             }
 
             for (Wand armorWand : activeArmor.values())
@@ -821,6 +928,21 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     }
 
     @Override
+    public Location getWandLocation() {
+        Location wandLocation = getEyeLocation();
+        if (wandLocation == null) {
+            return null;
+        }
+        Location toTheRight = wandLocation.clone();
+        toTheRight.setYaw(toTheRight.getYaw() + 90);
+        Vector wandDirection = toTheRight.getDirection();
+        wandLocation = wandLocation.clone();
+        wandLocation.add(wandDirection.multiply(WAND_LOCATION_OFFSET));
+        wandLocation.setY(wandLocation.getY() + WAND_LOCATION_VERTICAL_OFFSET);
+        return wandLocation;
+    }
+
+    @Override
     public Vector getDirection() {
         Location location = getLocation();
         if (location != null) {
@@ -901,23 +1023,35 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
         MageSpell playerSpell = spells.get(key);
         if (playerSpell == null) {
-            SpellTemplate spellTemplate = controller.getSpellTemplate(key);
-            if (spellTemplate == null) return null;
-            Spell newSpell = spellTemplate.createSpell();
-            if (newSpell == null || !(newSpell instanceof MageSpell)) return null;
-            playerSpell = (MageSpell) newSpell;
-            spells.put(newSpell.getKey(), playerSpell);
+            playerSpell = createSpell(key);
+        } else {
+            playerSpell.setMage(this);
+        }
 
-            SpellKey baseKey = newSpell.getSpellKey();
-            SpellKey upgradeKey = new SpellKey(baseKey.getBaseKey(), baseKey.getLevel() + 1);
-            Spell upgradeSpell = getSpell(upgradeKey.getKey());
-            if (upgradeSpell instanceof MageSpell)
-            {
-                playerSpell.setUpgrade((MageSpell)upgradeSpell);
-            }
+        return playerSpell;
+    }
+
+    protected MageSpell createSpell(String key) {
+        MageSpell playerSpell = spells.get(key);
+        if (playerSpell != null) {
+            playerSpell.setMage(this);
+            return playerSpell;
+        }
+        SpellTemplate spellTemplate = controller.getSpellTemplate(key);
+        if (spellTemplate == null) return null;
+        Spell newSpell = spellTemplate.createSpell();
+        if (newSpell == null || !(newSpell instanceof MageSpell)) return null;
+        playerSpell = (MageSpell)newSpell;
+        spells.put(newSpell.getKey(), playerSpell);
+
+        SpellKey baseKey = newSpell.getSpellKey();
+        SpellKey upgradeKey = new SpellKey(baseKey.getBaseKey(), baseKey.getLevel() + 1);
+        Spell upgradeSpell = createSpell(upgradeKey.getKey());
+        if (upgradeSpell instanceof MageSpell)
+        {
+            playerSpell.setUpgrade((MageSpell)upgradeSpell);
         }
         playerSpell.setMage(this);
-
         return playerSpell;
     }
 
@@ -932,10 +1066,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         if (spell instanceof MageSpell) {
             MageSpell mageSpell = ((MageSpell) spell);
             activeSpells.add(mageSpell);
-
-            // Call reactivate to avoid the Spell calling back to this method,
-            // and to force activation if some state has gone wrong.
-            mageSpell.reactivate();
+            mageSpell.setActive(true);
         }
     }
 
@@ -968,7 +1099,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         // This is mainly here to prevent multi-wand spamming and for
         // Disarm to be more powerful.. because Disarm needs to be more
         // powerful :|
-        cancelPending(force);
+        cancelPending(false);
     }
 
     @Override
@@ -991,6 +1122,11 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     @Override
     public float getCostReduction() {
         return activeWand == null ? costReduction + controller.getCostReduction() : activeWand.getCostReduction() + costReduction;
+    }
+
+    @Override
+    public float getCostScale() {
+        return 1;
     }
 
     @Override
@@ -1172,12 +1308,12 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     }
 
     @Override
-    public int getMana() {
+    public float getMana() {
         return activeWand == null ? 0 : activeWand.getMana();
     }
 
     @Override
-    public void removeMana(int mana) {
+    public void removeMana(float mana) {
         if (activeWand != null) {
             activeWand.removeMana(mana);
         }
@@ -1456,13 +1592,31 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
     @Override
     public boolean restoreWand() {
-        if (boundWand == null) return false;
+        if (boundWands.size() == 0) return false;
         Player player = getPlayer();
         if (player == null) return false;
-        ItemStack wandItem = boundWand.duplicate().getItem();
-        wandItem.setAmount(1);
-        controller.giveItemToPlayer(player, wandItem);
-        return true;
+        Set<String> foundTemplates = new HashSet<String>();
+        ItemStack[] inventory = getInventory().getContents();
+        for (ItemStack item : inventory) {
+            if (Wand.isWand(item)) {
+                Wand tempWand = new Wand(controller, item);
+                String template = tempWand.getTemplateKey();
+                if (template != null) {
+                    foundTemplates.add(template);
+                }
+            }
+        }
+
+        int givenWands = 0;
+        for (Map.Entry<String, Wand> wandEntry : boundWands.entrySet()) {
+            if (foundTemplates.contains(wandEntry.getKey())) continue;
+
+            givenWands++;
+            ItemStack wandItem = wandEntry.getValue().duplicate().getItem();
+            wandItem.setAmount(1);
+            giveItem(wandItem);
+        }
+        return givenWands > 0;
     }
 
     @Override
@@ -1487,21 +1641,32 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     }
 
     @Override
-    public void activateGUI(GUIAction action)
+    public void activateGUI(GUIAction action, Inventory inventory)
     {
         GUIAction previousGUI = gui;
-        gui = action;
         Player player = getPlayer();
-        if (gui == null && player != null)
+        gui = action;
+        if (player != null)
         {
             controller.disableItemSpawn();
             try {
                 player.closeInventory();
+
+                // We have to do this a lot..
+                // here it will get cleared on close inventory, potentially
+                gui = action;
+
+                if (inventory != null) {
+                    player.openInventory(inventory);
+                }
             } catch (Throwable ex) {
                 ex.printStackTrace();
             }
             controller.enableItemSpawn();
         }
+        // Reset this as it may have gotten cleared while closing the previous
+        // inventory!
+        gui = action;
 
         if (previousGUI != null)
         {
@@ -1512,7 +1677,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     @Override
     public void deactivateGUI()
     {
-        activateGUI(null);
+        activateGUI(null, null);
     }
 
     @Override
@@ -1568,6 +1733,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             }
         }
         clearRespawnInventories();
+        armorUpdated();
     }
 
     public void addToRespawnInventory(int slot, ItemStack item) {
@@ -1610,6 +1776,10 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             if (Wand.isWand(itemStack)) {
                 Wand wand = new Wand(controller, itemStack);
                 wand.activate(this);
+            } else {
+                if (itemStack.getType() == Material.MAP) {
+                    setLastHeldMapId(itemStack.getDurability());
+                }
             }
         } else {
             HashMap<Integer, ItemStack> returned = player.getInventory().addItem(itemStack);
@@ -1761,6 +1931,10 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     @Override
     public boolean isQuiet() {
         return quiet;
+    }
+
+    public void setDestinationWarp(String warp) {
+        destinationWarp = warp;
     }
 }
 

@@ -200,6 +200,10 @@ age_dropped_items: 0
 wand_item: wood_hoe
 wand_upgrade_item: stick
 wand_location_offset: 0.5
+wand_location_offset_vertical: 0
+
+# Set this to true to make wands "Unbreakable", regardless of the indestructible property
+wand_unbreakable: false
 
 # Skill configuration
 default_skill_icon: stick
@@ -210,9 +214,8 @@ lore_wrap_limit: 32
 
 # This will hide all flags on a wand except for
 # - Enchantments
-# - Attributes
 # See: http://minecraft.gamepedia.com/Tutorials/Command_NBT_Tags
-wand_hide_flags: 60
+wand_hide_flags: 62
 
 # Set this to true to turn on material brush glow.
 brush_glow: false
@@ -221,8 +224,19 @@ brush_item_glow: true
 # Set this to have the hotbar show what spells are castable
 live_hotbar: true
 
+# Set this to use item amounts as a cooldown countdown timer
+live_hotbar_cooldown: true
+
+# Turn this off if you want to use Command actions that do damage
+# Magic will normally block this, preventing melee damage from wands and
+# allow spells casts from an entity hit (without potentially going into
+# an infinite loop of damage+cast)
+prevent_wand_melee_damage: true
+
 # Turn this on if you don't want players to be able to deal damage
-# other than with a wand
+# other than with a wand, or items listed in the "melee" list in materials.yml
+# By default, swords are still allowed.
+# Has no effect if prevent_wand_melee_damage is set to false
 prevent_melee_damage: false
 
 # Turn this off to use normal damage. May be useful if you want
@@ -233,6 +247,7 @@ use_magic_damage: true
 wand_inventory_open_sound: level_up,0.3,1.5
 wand_inventory_cycle_sound: orb_pickup,0.4,0.2
 wand_inventory_close_sound: level_up,0.4,0.2
+wand_no_action_sound: note_bass,1.0,0.7
 
 # If true, fill wands with all known spells on creation
 fill_wands: false
@@ -287,6 +302,12 @@ click_cooldown: 150
 # Auto-save interval in milliseconds (default is one hour, 0 to disable)
 auto_save: 3600000
 
+# Can be used to turn off saving player data entirely
+save_player_data: true
+
+# Whether or not allow players breaking locked containers they don't own
+protect_locked: true
+
 #
 # Special materials used to represent icons in the material brush system
 #
@@ -316,6 +337,21 @@ schematic_icon_url: http://textures.minecraft.net/texture/6eb68dc909b12ef5fb397c
 # This icon will be used for any material that fails to create as an item
 default_brush_item: sulphur
 default_brush_icon_url: http://textures.minecraft.net/texture/5163dafac1d91a8c91db576caac784336791a6e18d8f7f62778fc47bf146b6
+
+# Use this for block types that Minecraft won't allow in an inventory (lava, water)
+# or for blocks that have been replaced in the resource pack (monster eggs)
+brush_replacements:
+  lava: lava_bucket
+  stationary_lava: lava_bucket
+  water: water_bucket
+  stationary_water: water_bucket
+  monster_eggs|0: stone
+  monster_eggs|1: cobblestone
+  monster_eggs|2: smooth_brick
+  monster_eggs|3: smooth_brick:1
+  monster_eggs|4: smooth_brick:2
+  monster_eggs|5: smooth_brick:3
+  fire: flint_and_steel
 
 # The folder and file path to use for loading schematics. This will be relative to
 # The server's /plugins folder.
@@ -370,6 +406,11 @@ work_per_update: 5000
 # This value is in ticks
 mage_update_frequency: 5
 
+# How long to exempt players from flight checks for each tick that
+# they have a jump potion effect
+# Set to 0 to disable exemption
+jump_exemption: 5000
+
 # How often to check for scheduled undo batches. Changing this will
 # make the scheduled undo times less accurate, though they will
 # always occur in the correct order
@@ -388,7 +429,7 @@ save_non_player_mages: false
 # Force any pending scheduled undo tasks to run on world save
 # this will ensure the world reverts to normal in the event of
 # a server crash.
-undo_on_world_save: false
+undo_on_world_save: true
 
 # When redstone is toggled, what block should replace? Note that air is glitchy
 redstone_replacement: obsidian
@@ -473,6 +514,15 @@ precious_stones_enabled: true
 # regardless of other region perms
 precious_stones_override: true
 
+# Scaling for velocities applied to physics blocks when using the BlockPhysics plugin
+# This applies to the Blast spell, mainly.
+block_physics_velocity_scale: 10
+
+# Enable NCP integration- testing with the current version of NCP,
+# this does not seem to be necessary. But if you are having issues
+# with Magic causing violations, try turning this on.
+ncp_enabled: false
+
 # Enable Lockette integration for Build checks
 lockette_enabled: true
 
@@ -519,6 +569,9 @@ hitboxes:
 #   pig: 1.25, 1.25, 1.25
 #   sheep: 1.25, 1.25, 1.25
 #   cow: 1.5, 1.5, 1.5
+
+max_height:
+  nether: 127
 
 ### Economy Helpers
 
@@ -621,10 +674,6 @@ wand_item_enchantable:
 
 # If set to non-zero, represents a time (in milliseconds) after which all spells will be reversed.
 auto_undo: 0
-
-# Backup Inventory to wand data
-# This can cause some issues with item sizes, and is somewhat experimental
-backup_inventory: false
 
 # Throttle TNT explosions
 # This is built-in to Spigot, so generally not needed here.

@@ -8,6 +8,7 @@ import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.utility.WeightedPair;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
@@ -383,7 +384,7 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
 
     @Override
     public String getName() {
-        return name;
+        return name == null ? key : name;
     }
 
     @Override
@@ -416,18 +417,6 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
             }
         }
     }
-    private void applyUpgradeItems(Wand wand, Mage mage) {
-        applyUpgradeItem(wand, mage);
-        if (parent != null) {
-            parent.applyUpgradeItems(wand, mage);
-        }
-    }
-
-    public void catchup(Wand wand, Mage mage) {
-        if (parent != null) {
-            parent.applyUpgradeItems(wand, mage);
-        }
-    }
 
     public void upgraded(com.elmakers.mine.bukkit.api.wand.Wand wand, Mage mage) {
         CommandSender sender = Bukkit.getConsoleSender();
@@ -456,6 +445,7 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
                 }
                 WandUpgradePath upgrade = getPath(upgradeKey);
                 command = command.replace("$path", upgrade.getName());
+                command = ChatColor.translateAlternateColorCodes('&', command);
                 wand.getController().getPlugin().getServer().dispatchCommand(sender, command);
             }
         }
@@ -486,6 +476,8 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
         // First check to see if the path has more spells available
         if (!(apiWand instanceof Wand)) return false;
         Wand wand = (Wand)apiWand;
+        if (levelMap == null) return false;
+
         WandLevel maxLevel = levelMap.get(levels[levels.length - 1]);
         int spellCount = maxLevel.getSpellCount();
         int materialCount = maxLevel.getMaterialCount();
@@ -501,7 +493,25 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
             }
         }
 
+        Mage mage = wand.getActivePlayer();
+        if (mage != null && mage.getDebugLevel() > 0) {
+            mage.sendMessage("Spells remaining: " + remainingSpells.size() + ", max per enchant: " + spellCount);
+            if (needsMaterials) {
+                mage.sendMessage("Brushes remaining: " + remainingMaterials.size() + ", max per enchant: " + materialCount);
+            }
+        }
+
         return ((spellCount > 0 && remainingSpells.size() > 0) || (needsMaterials && materialCount > 0 && remainingMaterials.size() > 0));
+    }
+
+    public boolean hasSpells() {
+        WandLevel maxLevel = levelMap.get(levels[levels.length - 1]);
+        return maxLevel.getSpellProbabilityCount() > 0 && maxLevel.getSpellCount() > 0;
+    }
+
+    public boolean hasMaterials() {
+        WandLevel maxLevel = levelMap.get(levels[levels.length - 1]);
+        return maxLevel.getMaterialProbabilityCount() > 0 && maxLevel.getMaterialCount() > 0;
     }
 
     @Override

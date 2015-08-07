@@ -178,9 +178,9 @@ function createSpellDetails(spell, showTitle, useMana, costReduction, probabilit
 
     appendSpellDetails(detailsDiv, spell, useMana, costReduction);
 
-    if ('levels' in spell) {
+    if ('spell_levels' in spell) {
         var levelsList = $('<div/>');
-        var spellLevels = spell['levels'];
+        var spellLevels = spell['spell_levels'];
         for (var spellLevel in spellLevels)
         {
             var level = spellLevels[spellLevel];

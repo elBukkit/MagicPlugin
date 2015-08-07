@@ -23,7 +23,7 @@ spell:
     reactivate: Reactivating $name
     available_path: Available to $paths
     required_path: Required for $path graduation
-    required_spell: "You must learn &r&4$spell &d&oto advance"
+    required_spell: "You must learn &r&4$ability &d&oto advance"
 
 categories:
     airbending:
@@ -64,3 +64,16 @@ spells:
   block:
     name: Earth Block
     description: Raise a block of earth and throw it at your foes
+
+paths:
+    airbending:
+        name: Airbending
+    waterbending:
+        name: Waterbending
+    earthbending:
+        name: Earthbending
+    firebending:
+        name: Firebending
+    avatar:
+        name: Avatar
+        description: Master of all four elements

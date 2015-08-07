@@ -14,6 +14,7 @@ import java.util.TreeMap;
 
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.utility.NMSUtils;
+import com.elmakers.mine.bukkit.wand.WandTemplate;
 import de.slikey.effectlib.util.ParticleEffect;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
@@ -125,6 +126,11 @@ public class WandCommandExecutor extends MagicTabExecutor {
             addIfPermissible(sender, options, "Magic.commands." + permissionKey + ".", "duplicate");
             addIfPermissible(sender, options, "Magic.commands." + permissionKey + ".", "restore");
             addIfPermissible(sender, options, "Magic.commands." + permissionKey + ".", "unlock");
+
+			Collection<String> allWands = api.getWandKeys();
+			for (String wandKey : allWands) {
+				addIfPermissible(sender, options, "Magic.commands." + permissionKey + ".wand.", wandKey, true);
+			}
 		}
 		
 		if (args.length == 2) {
@@ -388,22 +394,24 @@ public class WandCommandExecutor extends MagicTabExecutor {
 		if (subCommand.length() == 0) 
 		{
 			if (!api.hasPermission(sender, "Magic.commands." + command)) return true;
+            if (!api.hasPermission(sender, "Magic.commands." + command + ".create")) return true;
 			if (!api.hasPermission(sender, "Magic.commands." + command + ".wand.default", true)) return true;
 		} 
 		else 
 		{
-			if (!api.hasPermission(sender,"Magic.commands." + command +".wand." + subCommand, true)) return true;
+            if (!api.hasPermission(sender, "Magic.commands." + command + ".create")) return true;
+			if (!api.hasPermission(sender, "Magic.commands." + command +".wand." + subCommand, true)) return true;
 		}
 		
 		return onWand(sender, player, args);
 	}
 
 	public boolean onWandList(CommandSender sender) {
-		Collection<ConfigurationSection> templates = com.elmakers.mine.bukkit.wand.Wand.getWandTemplates();
+		Collection<WandTemplate> templates = com.elmakers.mine.bukkit.wand.Wand.getWandTemplates();
 		Map<String, ConfigurationSection> nameMap = new TreeMap<String, ConfigurationSection>();
-		for (ConfigurationSection templateConfig : templates)
+		for (WandTemplate template : templates)
 		{
-			nameMap.put(templateConfig.getString("key"), templateConfig);
+			nameMap.put(template.getKey(), template.getConfiguration());
 		}
 		for (ConfigurationSection templateConfig : nameMap.values())
 		{
@@ -705,7 +713,13 @@ public class WandCommandExecutor extends MagicTabExecutor {
             return true;
         }
 
-        wand.setOverride(parameters[0], parameters[1]);
+        String value = "";
+        for (int i = 1; i < parameters.length; i++) {
+            if (i != 1) value = value + " ";
+            value = value + parameters[i];
+        }
+
+        wand.setOverride(parameters[0], value);
         sender.sendMessage(ChatColor.DARK_AQUA  + "Added override " + ChatColor.AQUA + parameters[0]
                 + ChatColor.WHITE + " = " + ChatColor.DARK_AQUA + parameters[1]);
 

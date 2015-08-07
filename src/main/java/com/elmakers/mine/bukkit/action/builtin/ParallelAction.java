@@ -32,7 +32,7 @@ public class ParallelAction extends CompoundAction
         for (ActionContext action : subActions) {
             context.setWorkAllowed(context.getWorkAllowed() + splitWork);
             SpellResult actionResult = action.perform(context);
-            if (actionResult == SpellResult.PENDING) {
+            if (actionResult.isStop()) {
                 remaining.add(action);
             }
             result = result.min(actionResult);

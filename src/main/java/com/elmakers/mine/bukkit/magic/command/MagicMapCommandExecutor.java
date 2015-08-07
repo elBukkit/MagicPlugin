@@ -166,6 +166,19 @@ public class MagicMapCommandExecutor extends MagicMapExecutor {
             String playerName = args[1];
             onMapPlayer(sender, world, playerName);
         }
+        else if (subCommand.equalsIgnoreCase("fix"))
+        {
+            int limit = 100;
+            if (args.length > 1)
+            {
+                try {
+                    limit = Integer.parseInt(args[1]);
+                } catch (Exception ex) {
+
+                }
+            }
+            onMapFix(sender, world, limit);
+        }
         else if (subCommand.equalsIgnoreCase("load"))
         {
             if (args.length == 1)
@@ -308,6 +321,37 @@ public class MagicMapCommandExecutor extends MagicMapExecutor {
         sender.sendMessage("Imported " + imported + " images, skipped " + skipped);
     }
 
+    protected void onMapFix(CommandSender sender, World world, int retries)
+    {
+        sender.sendMessage(ChatColor.AQUA + "Fixing maps, using up to " + ChatColor.DARK_AQUA + retries +
+                ChatColor.AQUA + " ids at a time.");
+
+        MapController mapController = api.getController().getMaps();
+        List<URLMap> maps = mapController.getAll();
+        int fixed = 0;
+        int notFixed = 0;
+        int skipped = 0;
+        for (URLMap map : maps)
+        {
+            if (map.isEnabled()) {
+                skipped++;
+            } else {
+                if (map.fix(world, retries)) {
+                    fixed++;
+                } else {
+                    notFixed++;
+                }
+            }
+        }
+
+        mapController.save();
+        sender.sendMessage(ChatColor.AQUA + "Fixed " + ChatColor.DARK_AQUA + fixed +
+                ChatColor.AQUA + " and skipped " + ChatColor.DARK_AQUA + skipped + ChatColor.AQUA + " maps");
+        if (notFixed > 0) {
+            sender.sendMessage(ChatColor.RED + "There are still " + ChatColor.DARK_RED + notFixed + ChatColor.RED + " maps disabled, you may want to try running this command again.");
+        }
+    }
+
     protected void onMapGive(CommandSender sender, Player recipient, short mapId)
     {
         MapController maps = api.getController().getMaps();
@@ -344,6 +388,7 @@ public class MagicMapCommandExecutor extends MagicMapExecutor {
             options.add("load");
             options.add("remove");
             options.add("player");
+            options.add("fix");
 		} else if (args.length == 2 && args[0].equals("give")) {
             options.addAll(api.getPlayerNames());
         }

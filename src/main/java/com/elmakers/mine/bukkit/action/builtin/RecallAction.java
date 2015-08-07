@@ -40,8 +40,6 @@ import java.util.logging.Level;
 public class RecallAction extends BaseTeleportAction implements GUIAction
 {
     private final static Material DefaultWaypointMaterial = Material.BEACON;
-    private final static String MARKER_KEY = "recall_marker";
-    private final static String UNLOCKED_WARPS = "recall_warps";
 
     private boolean allowCrossWorld = true;
     private Map<String, ConfigurationSection> warps = new HashMap<String, ConfigurationSection>();
@@ -50,6 +48,8 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
     private Map<Integer, Waypoint> options = new HashMap<Integer, Waypoint>();
     private CastContext context;
     private ConfigurationSection parameters;
+    private String markerKey = "recall_marker";
+    private String unlockKey = "recall_warps";
 
     private class UndoMarkerMove implements Runnable
     {
@@ -65,7 +65,7 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
         @Override
         public void run()
         {
-            mage.getData().set(MARKER_KEY, ConfigurationUtils.fromLocation(location));
+            mage.getData().set(markerKey, ConfigurationUtils.fromLocation(location));
         }
     }
 
@@ -95,6 +95,8 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
         public final String command;
         public final boolean opPlayer;
         public final boolean maintainDirection;
+        public final String warpName;
+        public final String serverName;
 
         public Waypoint(RecallType type, Location location, String name, String message, String failMessage, String description, MaterialAndData icon, boolean maintainDirection) {
             this.name = name;
@@ -108,12 +110,32 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
             this.command = null;
             this.opPlayer = false;
             this.maintainDirection = maintainDirection;
+            serverName = null;
+            warpName = null;
         }
 
         public Waypoint(RecallType type, Location location, String name, String message, String failMessage, String description, MaterialAndData icon, String iconURL) {
             this.name = name;
             this.type = type;
             this.location = location;
+            this.message = message;
+            this.description = description;
+            this.failMessage = failMessage;
+            this.icon = icon == null ? defaultMaterial : icon;
+            this.iconURL = iconURL;
+            this.command = null;
+            this.opPlayer = false;
+            this.maintainDirection = false;
+            serverName = null;
+            warpName = null;
+        }
+
+        public Waypoint(RecallType type, String warpName, String serverName, String name, String message, String failMessage, String description, MaterialAndData icon, String iconURL) {
+            this.name = name;
+            this.type = type;
+            this.location = null;
+            this.warpName = warpName;
+            this.serverName = serverName;
             this.message = message;
             this.description = description;
             this.failMessage = failMessage;
@@ -136,6 +158,8 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
             this.command = command;
             this.opPlayer = opPlayer;
             this.maintainDirection = false;
+            serverName = null;
+            warpName = null;
         }
 
         @Override
@@ -158,6 +182,10 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
             }
             if (location == null || location.getWorld() == null)
             {
+                if (serverName != null && warpName != null)
+                {
+                    return true;
+                }
                 return false;
             }
             return crossWorld || source.getWorld().equals(location.getWorld());
@@ -213,6 +241,8 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
         super.prepare(context, parameters);
         this.parameters = parameters;
         this.context = context;
+        this.markerKey = parameters.getString("marker_key", "recall_marker");
+        this.unlockKey = parameters.getString("unlock_key", "recall_warps");
 
         allowCrossWorld = parameters.getBoolean("allow_cross_world", true);
     }
@@ -234,7 +264,7 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
         Set<String> unlockedWarps = new HashSet<String>();
         ConfigurationSection mageData = mage.getData();
 
-        String unlockedString = mageData.getString(UNLOCKED_WARPS);
+        String unlockedString = mageData.getString(unlockKey);
         if (unlockedString != null && !unlockedString.isEmpty())
         {
             unlockedWarps.addAll(Arrays.asList(StringUtils.split(unlockedString, ",")));
@@ -260,20 +290,28 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
                 return SpellResult.NO_ACTION;
             }
 
-            if (warpConfig == null)
+            if (warpConfig == null && commandConfig == null)
             {
                 return SpellResult.FAIL;
             }
 
             unlockedWarps.add(unlockWarp);
             unlockedString = StringUtils.join(unlockedWarps, ",");
-            mageData.set(UNLOCKED_WARPS, unlockedString);
+            mageData.set(unlockKey, unlockedString);
 
             String warpName = unlockWarp;
-            ConfigurationSection config = warpConfig.getConfigurationSection(unlockWarp);
+            ConfigurationSection config = warpConfig == null ? null : warpConfig.getConfigurationSection(unlockWarp);
             if (config != null)
             {
                 warpName = config.getString("name", warpName);
+            }
+            else
+            {
+                config = commandConfig == null ? null : commandConfig.getConfigurationSection(unlockWarp);
+                if (config != null)
+                {
+                    warpName = config.getString("name", warpName);
+                }
             }
             String unlockMessage = context.getMessage("unlock_warp").replace("$name", warpName);
             context.sendMessage(unlockMessage);
@@ -292,7 +330,7 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
 
             unlockedWarps.remove(lockWarp);
             unlockedString = StringUtils.join(unlockedWarps, ",");
-            mageData.set(UNLOCKED_WARPS, unlockedString);
+            mageData.set(unlockKey, unlockedString);
 
             return SpellResult.DEACTIVATE;
         }
@@ -471,22 +509,34 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
             }
             waypointItem.setItemMeta(meta);
             waypointItem = InventoryUtils.makeReal(waypointItem);
+            InventoryUtils.hideFlags(waypointItem, (byte)63);
             InventoryUtils.setMeta(waypointItem, "waypoint", "true");
             displayInventory.setItem(index, waypointItem);
             options.put(index, waypoint);
             index++;
         }
-        mage.activateGUI(this);
-        mage.getPlayer().openInventory(displayInventory);
+        mage.activateGUI(this, displayInventory);
 
         return SpellResult.CAST;
 	}
 
+    protected Waypoint getUnknownWarp(String warpKey) {
+        MageController controller = context.getController();
+        Location warpLocation = controller.getWarp(warpKey);
+        if (warpLocation == null || warpLocation.getWorld() == null) {
+            return null;
+        }
+
+        String castMessage = context.getMessage("cast_warp").replace("$name", warpKey);
+        String failMessage = context.getMessage("no_target_warp").replace("$name", warpKey);
+        return new Waypoint(RecallType.WARP, warpLocation, warpKey, castMessage, failMessage, "", null, null);
+    }
+
     protected Waypoint getWarp(String warpKey)
     {
-        if (warps == null) return null;
+        if (warps == null) return getUnknownWarp(warpKey);
         ConfigurationSection config = warps.get(warpKey);
-        if (config == null) return null;
+        if (config == null) return getUnknownWarp(warpKey);
 
         MageController controller = context.getController();
         String warpName = config.getString("name", warpKey);
@@ -496,7 +546,18 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
         String description = config.getString("description");
         String iconURL = config.getString("icon_url");
         MaterialAndData icon = ConfigurationUtils.getMaterialAndData(config, "icon");
-        return new Waypoint(RecallType.WARP, controller.getWarp(warpKey), title, castMessage, failMessage, description, icon, iconURL);
+
+        Location warpLocation = controller.getWarp(warpKey);
+        if (warpLocation == null || warpLocation.getWorld() == null) {
+            String serverName = config.getString("server", null);
+            if (serverName != null) {
+                return new Waypoint(RecallType.WARP, warpKey, serverName, title, castMessage, failMessage, description, icon, iconURL);
+            }
+
+            return null;
+        }
+
+        return new Waypoint(RecallType.WARP, warpLocation, title, castMessage, failMessage, description, icon, iconURL);
     }
 
     protected Waypoint getCommand(String commandKey)
@@ -521,7 +582,7 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
 		Mage mage = context.getMage();
 		switch (type) {
 		case MARKER:
-            Location location = ConfigurationUtils.getLocation(mage.getData(), MARKER_KEY);
+            Location location = ConfigurationUtils.getLocation(mage.getData(), markerKey);
 			return new Waypoint(type, location, context.getMessage("title_marker"), context.getMessage("cast_marker"), context.getMessage("no_target_marker"), context.getMessage("description_marker", ""), ConfigurationUtils.getMaterialAndData(parameters, "icon_marker"), true);
 		case DEATH:
             return new Waypoint(type, mage.getLastDeathLocation(), "Last Death", context.getMessage("cast_death"), context.getMessage("no_target_death"), context.getMessage("description_death", ""), ConfigurationUtils.getMaterialAndData(parameters, "icon_death"), true);
@@ -547,14 +608,15 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
 	{
         Mage mage = context.getMage();
         ConfigurationSection mageData = mage.getData();
-        Location location = ConfigurationUtils.getLocation(mageData, MARKER_KEY);
+        Location location = ConfigurationUtils.getLocation(mageData, markerKey);
 		if (location == null) return false;
-        mageData.set(MARKER_KEY, null);
+        mageData.set(markerKey, null);
 		return true;
 	}
 	
 	protected boolean tryTeleport(final Player player, final Waypoint waypoint) {
         Mage mage = context.getMage();
+        if (waypoint == null) return false;
         if (waypoint.isCommand()) {
             CommandSender sender = mage.getCommandSender();
             boolean isOp = sender.isOp();
@@ -576,6 +638,11 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
         Location targetLocation = waypoint == null ? null : waypoint.location;
 		if (targetLocation == null) {
             if (waypoint != null) {
+                String serverName = waypoint.serverName;
+                String warpName = waypoint.warpName;
+                if (warpName != null && serverName != null) {
+                    context.getController().warpPlayerToServer(player, serverName, warpName);
+                }
                 context.sendMessage(waypoint.failMessage);
             }
 			return false;
@@ -605,7 +672,7 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
 
         Mage mage = context.getMage();
         ConfigurationSection mageData = mage.getData();
-        Location location = ConfigurationUtils.getLocation(mageData, MARKER_KEY);
+        Location location = ConfigurationUtils.getLocation(mageData, markerKey);
 
         context.registerForUndo(new UndoMarkerMove(mage, location));
 		if (location != null) 
@@ -622,7 +689,7 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
 		location.setY(target.getY());
 		location.setZ(target.getZ());
 
-        mageData.set(MARKER_KEY, ConfigurationUtils.fromLocation(location));
+        mageData.set(markerKey, ConfigurationUtils.fromLocation(location));
         return true;
 	}
 	
@@ -633,7 +700,7 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
 		Location location = ConfigurationUtils.getLocation(node, "location");
         if (location != null)
         {
-            mage.getData().set(MARKER_KEY, ConfigurationUtils.fromLocation(location));
+            mage.getData().set(markerKey, ConfigurationUtils.fromLocation(location));
         }
 	}
 }

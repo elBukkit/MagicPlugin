@@ -1,0 +1,77 @@
+#
+# Customized Spells
+#
+
+firewave:
+  inherit: fire|3
+  actions:
+      cast:
+      - class: Disc
+        actions:
+        - class: Cover
+          actions:
+          - class: Burn
+      - class: Line
+        actions:
+        - class: Cover
+          actions:
+          - class: Burn
+  parameters:
+    radius: 3
+    size: 8
+
+earthrumble:
+  inherit: laser|3
+
+windattack:
+  inherit: push
+
+solidwater:
+  inherit: frost
+
+skyattack:
+  inherit: lightning
+
+blind:
+  enabled: true
+
+poison:
+  enabled: true
+
+atomdestroy:
+  inherit: blast|4
+  actions:
+      cast:
+      -  class: AreaOfEffect
+         actions:
+         -  class: Damage
+      -  class: Sphere
+         actions:
+         -  class: ModifyBlock
+  parameters:
+    radius: 5
+    player_damage: 2
+    entity_damage: 8
+
+magicmissile:
+  inherit: missile|4
+  parameters:
+    player_damage: 4
+    entity_damage: 10
+
+armyattack:
+  inherit: mob
+  parameters:
+    type: zombie
+
+shieldoflife:
+  inherit: reflect|3
+  parameters:
+    brush: stained_glass_pane:3
+
+flashrun:
+  inherit: boon
+  parameters:
+      target: self
+      duration: 5000
+      effect_night_vision: 0

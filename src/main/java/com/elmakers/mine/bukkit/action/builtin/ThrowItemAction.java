@@ -38,15 +38,23 @@ public class ThrowItemAction extends TriggeredCompoundAction {
     public SpellResult perform(CastContext context)
     {
         MaterialAndData material = context.getBrush();
-        Location spawnLocation = context.getEyeLocation();
-        if (spawnLocation == null)
+        Location spawnLocation = context.getWandLocation();
+        if (spawnLocation == null || material == null)
         {
             return SpellResult.NO_TARGET;
         }
         double itemSpeed = context.getRandom().nextDouble() * (itemSpeedMax - itemSpeedMin) + itemSpeedMin;
         Vector velocity = context.getDirection().normalize().multiply(itemSpeed);
         ItemStack itemStack = new ItemStack(material.getMaterial(), 1, material.getData());
-        NMSUtils.makeTemporary(itemStack, context.getMessage("removed").replace("$material", material.getName()));
+        String removedMessage = context.getMessage("removed");
+        if (removedMessage != null) {
+            String name = material.getName();
+            if (name == null) {
+                name = "";
+            }
+            removedMessage = removedMessage.replace("$material", name);
+        }
+        NMSUtils.makeTemporary(itemStack, removedMessage);
         Item droppedItem = spawnLocation.getWorld().dropItem(spawnLocation, itemStack);
         droppedItem.setMetadata("temporary", new FixedMetadataValue(context.getController().getPlugin(), true));
         CompatibilityUtils.ageItem(droppedItem, ageItems);

@@ -41,6 +41,7 @@ general:
     no_spells_in_category: You don't know any spells in the $category category
     spell_list_page: You know $count spells [page $page of $pages]
     spell_list: You know $count spells
+    locked_chest: That chest is locked, you cannot break it.
 books:
     default:
         author: NathanWolf
@@ -89,8 +90,8 @@ wand:
     clone_material_activated: Clone source selected
     replicate_material_activated: Replicate source selected
     erase_modifier_activated: Erase modifier active
-    map_material_name: Map
-    map_material_name_scaled: Map $sizex$size
+    map_material_name: "Map $id"
+    map_material_name_scaled: "Map $id ($sizex$size)"
     map_material_description: Creates pixel art from last held map
     schematic_material_description: Uses $schematic to build.
     building_material_description: Build with $material
@@ -112,6 +113,7 @@ wand:
     mana_amount: "Mana: $amount"
     mana_amount_boosted: "Mana: $amount &f(&b$mana&f)"
     mana_regeneration: "Mana Regeneration: $amount/s"
+    mana_per_damage: "Mana Rage: $amount/HP"
     mana_regeneration_boosted: "Mana Regeneration: $amount &f(&b$mana&f)&d/s"
     mana_boost: "Mana Boost: $amount%"
     mana_regeneration_boost: "Mana Regeneration Boost: $amount%"
@@ -163,15 +165,16 @@ wand:
     enchanted: Your $item has been enchanted
     player_enchanted: $name's $item has been enchanted
     unenchanted: Your wand has been unenchanted
-    no_path: That item can not be enchanted
+    no_path: "&r&4Your $wand can not be enchanted"
+    max_enchanted: "&r&4Your $wand can not be enchanted any further"
     player_unenchanted: $name's wand has been unenchanted
     level_up: "&r&bYour $wand has been upgraded to &r&5$path"
     duplicated: Your wand has been duplicated
     player_duplicated: $name's wand has been duplicated
-    restored: Your wand has been restored
-    player_restored: $name's wand has been restored
-    not_restored: You have no recorded bound wand
-    player_not_restored: $name's wand has no recorded bound wand
+    restored: Your wands have been restored
+    player_restored: $name's wands have been restored
+    not_restored: You have no missing wands on record
+    player_not_restored: $name's wand has no missing wands on record
     unlocked: Your wand has been unlocked
     player_unlocked: $name's wand has been unlocked
     unknown_template: Unknown wand name $name
@@ -190,11 +193,11 @@ wand:
     randomized_lore: What kind of wand will you get?
     randomized_name: Wand Box
     upgrade_name: $name Upgrade
-    inventory_instructions: "&r&bYour $wand now has more than one spell. Right-click to open/close the wand inventory. Use the hotbar buttons to select a spell."
+    inventory_instructions: "&r&bYour $wand now has more than one spell. Right-click to open/close the spell inventory. Use the hotbar buttons to select a spell."
     page_instructions: "&r&bYour $wand now has more than one page of spells. Click outside the spell inventory to change pages."
     bound_instructions: "&r&3Your $wand is bound to you, and is undroppable."
     spell_instructions: "&r&bSwing your $wand to cast &r&6$spell&d&o. Spells require mana, shown in the XP bar."
-    enchant_instructions: "&r&bEnchant your $wand to upgrade its abilities."
+    enchant_instructions: "&r&bEnchant your $wand to add spells and abilities."
     brush_instructions: "&r&bMaterial brushes have been added to your $wand. Shift+Right Click to select a brush."
 material:
     wildcard: " (All Types)"
@@ -202,11 +205,11 @@ economy:
     missing: "&cMy shop is closed, sorry!"
     insufficient: "Costs: &6$cost"
     deducted: "Deducted: &6$cost"
+    requires: "You must have a $cost"
 spell:
     brush: Uses Material Brushes
     undoable: ""
     not_undoable: "&4Not Undoable"
-    reactivate: Reactivating $name
     available_path: Available at the $path level
     required_path: Required to complete the $path level
     levels_available: "Max Level: &r&5$levels"
@@ -225,6 +228,8 @@ costs:
     mana: Mana
     xp: XP
     heroes_mana: $amount Mana
+    currency: Dollars
+    currency_amount: "$$amount"
 cooldown:
     wait_seconds: another $seconds seconds
     wait_minutes: another $minutes minutes
@@ -331,6 +336,7 @@ spells:
         name: Secure
         description: Secures containers
         cast: Lock it up!
+        alternate_up: You summon a replacement key
         key_name: "&6$name's &eKey"
         key_description: "Needed to open your locked containers"
         fail: You can't lock that!
@@ -386,7 +392,7 @@ spells:
     shell:
         name: Shell
         description: Create a reflective shell
-        upgrade_description: "&r&b&bull; &6Increased durability and reflectibity"
+        upgrade_description: "&r&b&bull; &6Increased durability and reflectivity"
     tag:
         name: Tag
         description: Leave a sign with your name
@@ -495,8 +501,9 @@ spells:
         cast: Look out!
     neutron:
         name: Neutron Bomb
-        description: Kill all entities in a wide radius
-        cast: You kill everything in the area
+        description: Kill entities in a wide radius
+        cast: Kill all the things!
+        upgrade_description: "&r&b&bull; &6Increased chance of damage"
     weather:
         name: Weather
         description: Change the weather
@@ -601,7 +608,9 @@ spells:
     phase:
         name: Phase
         description: Phase to another dimension
-        cast: You phase to $world_name
+        cast: ""
+        teleport: You phase to $world_name
+        teleport_failed: Can't phase to $world_name from here
     invincible:
         name: Invincible
         description: Make yourself impervious to damage
@@ -658,10 +667,15 @@ spells:
     lightning|3:
         upgrade_description: "&r&b&bull; &6More lightning"
         cast: Ka-POW!
+    smite:
+        name: Smite
+        description: Strike down your target
+        cast: You smite $target
     nuke:
         name: Nuke
         description: Create a huge explosion
         cast: YIKES!
+        upgrade_description: "&r&b&bull; &6Larger radius, more destruction"
     day:
         name: Sunny Day
         description: Make it a lovely day
@@ -943,6 +957,9 @@ spells:
         name: Sphere
         description: Create a real sphere
         cast_finish: Created a $material sphere
+    rainbow:
+        name: Rainbow
+        description: Send out a rainbow of love!
     blob:
         name: Blob
         description: Create a solid blob
@@ -957,6 +974,9 @@ spells:
         name: Walls
         description: Create some walls around your target
         cast_finish: Filled $count blocks with $material
+    tendril:
+        name: Tendril
+        description: Summon a tendril of darkness
     repair:
         name: Repair
         description: Repair an area saved with Backup
@@ -965,6 +985,9 @@ spells:
         name: EMP
         description: Electrify the area
         cast_finish: Electrified $count blocks
+    ghast:
+        name: Ghast
+        description: Summon a menacing Ghast
     familiar:
         name: Familiar
         description: Create an animal familiar
@@ -979,13 +1002,14 @@ spells:
     blink:
         name: Blink
         description: Teleport to your target
-        usage: Can pass through solid objects
         no_target: Can't blink there
-        cast: Blink!
+        teleport_failed: Can't blink there
+        teleport: Blink!
+        cast: ""
     blink|2:
-        upgrade_description: "&r&b&bull; &6Increased range and passthrough"
+        upgrade_description: "&r&b&bull; &6Increased range, will pass through solid objects"
     blink|3:
-        upgrade_description: "&r&b&bull; &6Increased range and ascend/descend"
+        upgrade_description: "&r&b&bull; &6Increased range, can ascend/descend through the ground"
     absorb:
         name: Absorb
         description: Absorb some of the target
@@ -1105,6 +1129,8 @@ spells:
         cast: You teleport back to safety
     recall:
         name: Recall
+        teleport: ""
+        teleport_failed: Recall failed
         description: Return you to previous locations
         usage: Cast down to set a marker
         no_target: Can't place a marker there
@@ -1227,13 +1253,17 @@ spells:
         no_action: Schematic loading, please try again!
     kill:
         name: Kill
-        description: Kill your target
+        description: Deal lethal damage to your target
         usage: Has a warmup time!
         cast: DIE!
         upgrade_description: "&r&b&bull; &6Increased damage, reduced cooldown"
+    superkill:
+        name: SuperKill
+        description: Kills your target, no questions asked
+        cast: SUPER DIE!
     torture:
         name: Torture
-        description: Mercicelly torture your enemy
+        description: Mercilessly torture your enemy
         cast: Feel my wrath!
         upgrade_description: "&r&b&bull; &6Increased damage and duration"
     rubberize:
@@ -1291,7 +1321,7 @@ spells:
     tracking:
         name: Tracking Sense
         description: Find nearby life
-        cast: You sense a nearby $target
+        cast: You sense $target nearby
         no_target: It's quiet ... too quiet!
         upgrade_description: "&r&b&bull; &6Larger search radius"
     enchantwand:
@@ -1312,6 +1342,11 @@ spells:
         no_path_end: You must be ready to advance to $path!
         no_wand: You must be holding a wand!
         no_target: You already know that spell
+    giveitem:
+        name: Give Item
+        description: Give an item to the player
+        cast: ""
+        cast_player_message: ""
     fillwand:
         name: Fill Wand
         description: Fill up your wand with all spells
@@ -1490,6 +1525,9 @@ wands:
     beginner:
         name: Wand
         description: $path Magic Wand
+    starter:
+        name: Wand
+        description: A Wand with Limited Potential
     master:
         name: Master Wand
         description: $path Magic Wand
@@ -1499,18 +1537,22 @@ wands:
     apprentice:
         name: Apprentice Wand
         description: $path Magic Wand
+    rage:
+        name: Rage Sword
+        description: Gathers energy when hitting an enemy
+        spell_instructions: "&r&bUse the hotbar buttons to cast spells. Spells require mana, shown in the XP bar."
+        inventory_instructions: "&r&bUse the drop (Q) button to open/close the spell inventory."
     battle:
-        name: Magic Sword
-        description: A sword with combat spells
+        name: Master Sword
+        description: Spellcasting sword
+        spell_instructions: "&r&bUse the hotbar buttons to cast spells. Spells require mana, shown in the XP bar."
+        inventory_instructions: "&r&bUse the drop (Q) button to open/close the spell inventory."
     engineer:
         name: Engineering Wand
         description: $path Magic Wand
     architect:
         name: The Architect
         description: $path Magic Wand
-    elder:
-        name: Elder Wand
-        description: The Uber Wand
     admin:
         name: Admin Wand
         description: For admins only
@@ -1613,6 +1655,9 @@ wands:
     rainboweffects:
         name: Rainbow Wand Effects
         description: Color-changing particles
+    cleareffects:
+        name: Clear Wand Effects
+        description: Removes particles and bubbles
     haloeffects:
         name: Halo Effects
         description: A personalized halo
@@ -1631,6 +1676,9 @@ wands:
     architect_upgrade:
         name: Architect Upgrade
         description: Upgrade to Architect level
+    hotbar1:
+        name: Hotbar Reset
+        description: Reset your wand to a single hotbar
     hotbar2:
         name: Hotbar Level 2
         description: Add an extra hotbar to your wand!
@@ -1667,9 +1715,6 @@ wands:
     alphabetizer:
         name: The Alphabetizer
         description: Alphabetizes your wand inventory
-    manaboost:
-        name: Mana Boost
-        description: Instantly refill your wand's mana
     recalltoken:
         name: Recall Token
         description: Teleport to waypoints
@@ -1697,6 +1742,8 @@ wands:
     broomstick:
         name: Broomstick
         description: You can fly!
+        enchant_instructions: "&r&bEnchant your $wand to increase its speed and handling"
+        spell_instructions: "&r&bUse your broom to fly through the air. Spacebar will speed up, shift slows down and lands."
     crackedbroomstick:
         name: Cracked Broomstick
         description: Good while it lasts!

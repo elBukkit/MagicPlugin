@@ -219,7 +219,7 @@ public class ShapeBatch extends BrushBatch {
 
         Location loc = center.clone();
         Vector direction = block.getLocation().toVector().subtract(center.toVector()).normalize();
-        CompatibilityUtils.setDirection(loc, direction);
+        loc.setDirection(direction);
         Minecart minecart = CompatibilityUtils.spawnCustomMinecart(loc, brush, radius * 16);
         registerForUndo(minecart);
 		return true;

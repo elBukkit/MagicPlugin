@@ -84,7 +84,8 @@ default:
        target_selected:
        - class: EffectSingle
          location: origin
-         sound: anvil_use
+         sound: magic.hit
+         sound_volume: 0.5
        - class: EffectSingle
          location: target
          particle: villager_happy
@@ -122,6 +123,10 @@ default:
          location: origin
          entity_effect: hurt
        backfire:
+       - class: EffectSingle
+         location: origin
+         entity_effect: hurt
+       blocked:
        - class: EffectSingle
          location: origin
          entity_effect: hurt
@@ -748,14 +753,18 @@ shell:
     alias: dome
     icon: ender_pearl
     category: combat
-    class: ConstructSpell
     worth: 1500
     upgrade_required_path: student
     upgrade_required_casts: 50
+    actions:
+        cast:
+        -  class: Sphere
+           actions:
+           -  class: ModifyBlock
     effects:
         cast:
         -  class: EffectSingle
-           custom_sound: magic.shield
+           sound: magic.shield
         -  class: EffectTrail
            effect: step_sound
     parameters:
@@ -814,12 +823,13 @@ reflect:
     effects:
         cast:
         -  class: EffectSingle
-           custom_sound: magic.shield
+           sound: magic.shield
            location: origin
     parameters:
         allow_max_range: true
         range: 3
         radius: 0
+        axis: z
         brush: stained_glass
         orient: true
         transparent: transparent_to_construction
@@ -847,6 +857,8 @@ reflect|2:
         mana: 50
 
 reflect|3:
+    upgrade_required_path: master
+    upgrade_required_casts: 50
     parameters:
         radius: 1
         undo: 1000
@@ -854,6 +866,15 @@ reflect|3:
         breakable: 1
     costs:
         mana: 55
+
+reflect|4:
+    parameters:
+        radius: 2
+        undo: 1100
+        reflect_chance: 1
+        breakable: 1
+    costs:
+        mana: 60
 
 disc:
     upgrade_required_path: master
@@ -870,7 +891,7 @@ disc:
     effects:
         cast:
         -  class: EffectSingle
-           custom_sound: magic.shield
+           sound: magic.shield
         -  class: EffectTrail
            effect: step_sound
     parameters:
@@ -997,7 +1018,7 @@ superdome:
         mana: 200
 
 tag:
-    icon_url: http://textures.minecraft.net/texture/a9e073da36aaf2c844da428cd4a19dfde32c8cdc2404eed4a135f6095b17c
+    icon_url: http://textures.minecraft.net/texture/c5acc4b5a7079df3f51cd9388508a5860fc60e9bcde97f9abee62b457d7e
     icon: sign
     category: dark
     class: SignSpell
@@ -1270,34 +1291,125 @@ nuke:
     category: master
     worth: 10000
     pvp_restricted: true
+    upgrade_required_path: master
+    upgrade_required_casts: 20
     actions:
         cast:
-        - class: Explosion
+        - class: Parallel
+          actions:
+          - class: Serial
+            actions:
+            - class: Repeat
+              repeat: 2
+              actions:
+              - class: Delay
+                delay: 1000
+              - class: PlayEffects
+                effect: burst
+              - class: AreaOfEffect
+                radius: 4
+                actions:
+                - class: Damage
+                - class: Velocity
+            - class: Repeat
+              repeat: 2
+              actions:
+              - class: Delay
+                delay: 1000
+              - class: PlayEffects
+                effect: burst
+              - class: AreaOfEffect
+                radius: 10
+                actions:
+                - class: Damage
+                - class: Velocity
+          - class: Serial
+            actions:
+            - class: Sphere
+              actions:
+              - class: Skip
+                actions:
+                - class: Delay
+              - class: ModifyBlock
+            - class: PlayEffects
+              effect: cloud
     effects:
+        burst:
+        -  class: EffectSingle
+           location: target
+           sound: explode
+           sound_volume: 2
+           effectlib:
+             class: SphereEffect
+             particle: explosion_huge
+             radius: 6
+             particles: 4
+             iterations: 4
+        cloud:
+        -  class: EffectSingle
+           location: target
+           effectlib:
+             class: FountainEffect
+             particle: explosion_huge
+             strands: 4
+             particlesStrand: 4
+             particlesSpout: 2
+             height: 30
+             heightSpout: 28
+             iterations: 2
+             radius: 8
+             period: 4
+             radiusSpout: 0.1
+        -  class: EffectSingle
+           location: target
+           effectlib:
+             class: SphereEffect
+             particle: explosion_huge
+             iterations: 30
+             radius: 8
+             particles: 10
+             offset: 0,24,0
         cast:
         -  class: EffectSingle
            sound: explode
+           location: both
         -  class: EffectTrail
-           firework: creeper
-           color: '00FF00'
-           color2: '88FF88'
-           iterations: 5
-        -  class: EffectRing
-           particle: explosion_huge
-           radius: 16
-           iterations: 8
+           particle: explosion_large
+           iterations: 3
+        -  class: EffectSingle
            location: target
-           size: 4
+           effectlib:
+             class: FountainEffect
+             particle: explosion_huge
+             strands: 4
+             particlesStrand: 4
+             particlesSpout: 2
+             height: 30
+             heightSpout: 28
+             iterations: 20
+             radius: 2
+             radiusSpout: 1
+             period: 10
     parameters:
         target: block
         allow_max_range: true
         range: 64
         cooldown: 60000
-        size: 6
         undo: 50000
-        break_blocks: true
+        speed: 0.9
+        falling: true
+        falling_probability: 0.2
+        brush: air
+        radius: 8
+        skip: 16
+        delay: 1
     costs:
         mana: 200
+
+nuke|2:
+  parameters:
+    check_destructible: false
+    radius: 12
 
 frost:
     icon_url: http://textures.minecraft.net/texture/ff39da1c8acc158ee5aa7f0352e4738aefe3365f28841badd603e2ffe42a
@@ -1321,7 +1433,7 @@ frost:
     effects:
         cast:
         -  class: EffectSingle
-           custom_sound: magic.zap
+           sound: magic.zap
            effectlib:
              class: ConeEffect
              iterations: 15
@@ -1367,7 +1479,7 @@ frost|2:
     effects:
         cast:
         -  class: EffectSingle
-           custom_sound: magic.zap
+           sound: magic.zap
            effectlib:
              class: ConeEffect
              iterations: 15
@@ -1462,6 +1574,52 @@ lightning|3:
     parameters:
         repeat: 2
 
+smite:
+    icon: raw_fish:2
+    icon_url: http://textures.minecraft.net/texture/a31cc0ffb1e814e1c82301067ea318356befa65dc1a027afbfd498709cad58
+    category: elemental
+    pvp_restricted: true
+    worth: 5000
+    actions:
+        cast:
+        - class: Lightning
+        - class: AreaOfEffect
+          actions:
+          - class: Damage
+          - class: Ignite
+        -  class: Sphere
+           actions:
+           -  class: ModifyBlock
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: firework_large_blast
+        -  class: EffectTrail
+           particle: smoke_normal
+           particle_count: 2
+        -  class: EffectSingle
+           location: target
+           effectlib:
+             class: HelixEffect
+             particle: smoke_normal
+             iterations: 3
+    parameters:
+        target_type: LivingEntity
+        allow_max_range: true
+        range: 32
+        radius: 3
+        cooldown: 15000
+        effect_only: true
+        damage: 4
+        duration: 5000
+        speed: 0.9
+        falling: true
+        brush: air
+        undo: 10000
+        oty: -2
+    costs:
+        mana: 100
+
 tree:
     icon: sapling
     icon_url: http://textures.minecraft.net/texture/789e28cfb955a3bf9eafee3eabeca3e8bec87fc7e7489abb6281860289cec43
@@ -1481,6 +1639,7 @@ tree:
         allow_max_range: false
         range: 64
         require_sapling: false
+        cooldown: 5000
     costs:
         mana: 20
 
@@ -1511,6 +1670,7 @@ forest:
         radius: 16
         repeat: 16
         require_sapling: false
+        cooldown: 30000
         biomes:
           swampland: tree,brown_mushroom,red_mushroom
           forest: tree,big_tree,birch,tall_birch
@@ -1569,11 +1729,13 @@ disarm:
     icon_url: http://textures.minecraft.net/texture/ff418f5c02c74f8e54645d05897b954c568f22753eea5fb559b898322aa79
     icon: tripwire_hook
     category: light
-    class: DisarmSpell
     cast_on_no_target: true
     worth: 2000
     upgrade_required_path: student
     upgrade_required_casts: 50
+    actions:
+        cast:
+        - class: Disarm
     effects:
         cast:
         -  class: EffectSingle
@@ -1581,7 +1743,7 @@ disarm:
            sound_pitch: 0.3
            sound_volume: 0.5
         -  class: EffectSingle
-           custom_sound: magic.crack
+           sound: magic.crack
            effectlib:
              class: ConeEffect
              iterations: 16
@@ -1598,7 +1760,7 @@ disarm:
            sound_pitch: 0.3
            sound_volume: 0.5
         -  class: EffectSingle
-           custom_sound: magic.crack
+           sound: magic.crack
            effectlib:
              class: ConeEffect
              iterations: 16
@@ -1635,6 +1797,7 @@ disarm:
         keep_in_inventory: true
         target_breakables: 0
         cooldown: 10000
+        undo: 5000
     costs:
         mana: 60
 
@@ -1658,7 +1821,7 @@ cure:
     icon_url: http://textures.minecraft.net/texture/775c41bd5e4ef3cba5f9bdc5258973c95477e819cb20c163ffb378db5ae3
     icon: cookie
     upgrade_required_path: student
-    upgrade_required_casts: 50
+    upgrade_required_casts: 20
     category: light
     worth: 800
     actions:
@@ -1667,7 +1830,7 @@ cure:
     effects:
         cast:
         - class: EffectSingle
-          custom_sound: magic.shimmer
+          sound: magic.shimmer
           location: target
           particle_override: particleOrbital
           effectlib:
@@ -1700,6 +1863,7 @@ cure:
         - damage_resistance
         - jump
         - hunger
+        - wither
     costs:
         mana: 30
 
@@ -1721,7 +1885,7 @@ heal:
         cast:
         -  class: EffectSingle
            sound: level_up
-           custom_sound: magic.shimmer
+           sound: magic.shimmer
            effectlib:
              class: ConeEffect
              iterations: 5
@@ -1736,7 +1900,7 @@ heal:
         cast_self:
         - class: EffectSingle
           sound: level_up
-          custom_sound: magic.shimmer
+          sound: magic.shimmer
           effectlib:
              class: AtomEffect
              particleNucleus: heart
@@ -1912,6 +2076,8 @@ icbm:
         mana: 100
 
 neutron:
+    upgrade_required_path: master
+    upgrade_required_casts: 50
     icon_url: http://textures.minecraft.net/texture/1eed1e4d70522ccd538b75ded4baa680e3dfe55426c560ff7b521be5cdf614f
     icon: poisonous_potato
     category: dark
@@ -1922,7 +2088,9 @@ neutron:
            actions:
            -  class: AreaOfEffect
               actions:
-              -  class: Damage
+              -  class: Probability
+                 actions:
+                 -  class: Damage
     effects:
         cast:
         -  class: EffectSingle
@@ -1944,6 +2112,10 @@ neutron:
         cooldown: 10000
     costs:
         mana: 150
+
+neutron|2:
+    parameters:
+      probability: 0.75
 
 wither:
     upgrade_required_path: apprentice
@@ -2039,7 +2211,7 @@ gatling:
     effects:
         cast:
         -  class: EffectSingle
-           custom_sound: magic.electrify
+           sound: magic.electrify
            sound_pitch: 0.1
         shoot:
         -  class: EffectSingle
@@ -2124,7 +2296,7 @@ arrow:
            location: origin
            color: CC9933
            firework: ball
-           custom_sound: magic.hit
+           sound: magic.hit
     parameters:
       target: none
       projectile: Arrow
@@ -2185,7 +2357,7 @@ flashbang:
     effects:
         cast:
         -  class: EffectSingle
-           custom_sound: magic.bonk
+           sound: magic.bonk
            sound_pitch: 0.2
            sound_volume: 0.3
            location: origin
@@ -2202,7 +2374,7 @@ flashbang:
            color: CC9933
            firework: burst
            sound: explode
-           custom_sound: magic.hit
+           sound: magic.hit
            effectlib:
              class: SphereEffect
              iterations: 70
@@ -2232,7 +2404,7 @@ flashbang:
         mana: 50
 
 weather:
-    icon_url: http://textures.minecraft.net/texture/4a458a62561a9e6ab960b9bdccaddbf039429c836dfacdd39ff7c7085c9e9b9
+    icon_url: http://textures.minecraft.net/texture/cd76c83453ba48a6aceac090ef4e2c8918ecd8891e91621bed2e03fad8a7f6
     icon: water_bucket
     category: elemental
     worth: 1500
@@ -2286,8 +2458,12 @@ fling:
              particle: spell
         land:
         -  class: EffectRing
-           particle: spell
-           period: 2
+           particle: block_crack
+           use_wand_location: false
+           use_eye_location: false
+           period: 4
+           particle_count: 10
+           radius: 4
     parameters:
         duration: 20000
         target: self
@@ -2303,7 +2479,7 @@ fling|2:
         max_speed: 5
 
 torch:
-    icon_url: http://textures.minecraft.net/texture/4abfe52d50f710f4103bc650b5e972d49832ea419841d9fa24e16ce617c716
+    icon_url: http://textures.minecraft.net/texture/08f4793551132fad5bdb5d185269881a8de6fa4b86c6bde92c2bf467e097
     icon: torch
     category: engineering
     worth: 2000
@@ -2366,8 +2542,10 @@ familiar:
     parameters:
         target_type: LivingEntity
         allow_max_range: false
-        cooldown: 5000
+        cooldown: 30000
         range: 32
+        undo: 20000
+        loot: false
     costs:
         mana: 20
 
@@ -2412,10 +2590,48 @@ monster:
     parameters:
         target_type: LivingEntity
         allow_max_range: false
-        cooldown: 5000
+        cooldown: 30000
         range: 32
+        undo: 20000
     costs:
         mana: 40
+
+ghast:
+    icon_url: http://textures.minecraft.net/texture/8b6a72138d69fbbd2fea3fa251cabd87152e4f1c97e5f986bf685571db3cc0
+    icon: monster_egg
+    category: elemental
+    pvp_restricted: true
+    actions:
+      cast:
+      - class: SpawnEntity
+    worth: 1000
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: villager_yes
+           effectlib:
+             class: DnaEffect
+             particleHelix: drip_lava
+             iterations: 24
+             particleBase1: water_bubble
+        -  class: EffectSingle
+           location: target
+           effectlib:
+             class: AtomEffect
+             iterations: 32
+             particleNucleus: water_bubble
+    parameters:
+        target: block
+        track: false
+        type: ghast
+        allow_max_range: true
+        cooldown: 30000
+        range: 24
+        undo: 20000
+        loot: false
+        oty: 10
+    costs:
+        mana: 50
 
 mob:
     icon_url: http://textures.minecraft.net/texture/74e9c6e98582ffd8ff8feb3322cd1849c43fb16b158abb11ca7b42eda7743eb
@@ -2459,6 +2675,7 @@ mob:
         allow_max_range: false
         range: 32
         cooldown: 45000
+        undo: 30000
         count: 20
     costs:
         mana: 100
@@ -2495,7 +2712,8 @@ farm:
         allow_max_range: false
         range: 64
         count: 10
-        cooldown: 30000
+        cooldown: 45000
+        undo: 30000
     costs:
         mana: 50
 
@@ -2663,7 +2881,7 @@ fire:
     effects:
         cast:
         -  class: EffectSingle
-           custom_sound: magic.burn
+           sound: magic.burn
            sound_volume: 1
            location: both
         -  class: EffectSingle
@@ -2835,6 +3053,7 @@ fill:
         -  class: EffectTrail
            effect: step_sound
     parameters:
+        select_self: true
         allow_max_range: false
         target: select
         range: 64
@@ -2903,7 +3122,7 @@ gills:
         mana: 15
 
 day:
-    icon_url: http://textures.minecraft.net/texture/cd76c83453ba48a6aceac090ef4e2c8918ecd8891e91621bed2e03fad8a7f6
+    icon_url: http://textures.minecraft.net/texture/1b5c8c12faec6646fd9cd8c610f138f51fbaaee1182baff8fa4f32d683b25eb
     icon: emerald
     category: master
     worth: 3000
@@ -2914,7 +3133,7 @@ day:
     effects:
         cast:
         -  class: EffectSingle
-           custom_sound: magic.shimmer
+           sound: magic.shimmer
            effectlib:
              offset: 0,4,0
              class: HelixEffect
@@ -2926,7 +3145,7 @@ day:
            particle_count: 5
         alternate:
         -  class: EffectSingle
-           custom_sound: magic.shimmer
+           sound: magic.shimmer
            effectlib:
              offset: 0,4,0
              class: HelixEffect
@@ -2956,7 +3175,7 @@ night:
     effects:
         cast:
         -  class: EffectSingle
-           custom_sound: magic.shimmer
+           sound: magic.shimmer
            effectlib:
              offset: 0,4,0
              class: HelixEffect
@@ -2981,7 +3200,7 @@ time:
     effects:
         cast:
         -  class: EffectSingle
-           custom_sound: magic.shimmer
+           sound: magic.shimmer
            location: origin
            effectlib:
              offset: 0,4,0
@@ -3145,7 +3364,7 @@ cluster:
         fuse: 60
         fire: false
         undo: 20000
-        cooldown: 1000
+        cooldown: 6000
     costs:
         mana: 150
 
@@ -3175,7 +3394,7 @@ bomb:
         py: ~20
         pdy: -0.75
         undo: 10000
-        cooldown: 5000
+        cooldown: 8000
     costs:
         mana: 250
 
@@ -3507,7 +3726,7 @@ blast:
            particle: explosion_large
         undo:
         -  class: EffectSingle
-           custom_sound: magic.shimmer
+           sound: magic.shimmer
            location: target
            effectlib:
                class: AtomEffect
@@ -3525,6 +3744,7 @@ blast:
         cooldown: 500
         destructible: destructible_mining
         select_self: false
+        physics_blocks: true
     costs:
         mana: 45
 
@@ -3599,7 +3819,7 @@ earthquake:
     effects:
         cast:
         -  class: EffectSingle
-           custom_sound: magic.ignite
+           sound: magic.ignite
            sound_volume: 1
            location: origin
            effectlib:
@@ -3639,7 +3859,7 @@ earthquake:
         mana: 150
 
 tunnel:
-    icon_url: http://textures.minecraft.net/texture/3186699cf52cb2f732b7948784b262a49d43a57c801368f776e3c9a88151d
+    icon_url: http://textures.minecraft.net/texture/c94772c7eca88e1128b71f71f8951233f7ea79dbc80e02bb407acffe175e
     icon: iron_pickaxe
     category: engineering
     cancellable: false
@@ -3748,7 +3968,7 @@ collapse:
     effects:
         cast:
         -  class: EffectSingle
-           custom_sound: magic.ignite
+           sound: magic.ignite
            sound_volume: 1
            location: origin
            effectlib:
@@ -3771,7 +3991,7 @@ collapse:
              particle: flame
         undo:
         -  class: EffectSingle
-           custom_sound: magic.shimmer
+           sound: magic.shimmer
            location: target
            effectlib:
                class: AtomEffect
@@ -3788,6 +4008,7 @@ collapse:
         undo: 10000
         cooldown: 2000
         select_self: false
+        physics_blocks: true
     costs:
         mana: 50
 
@@ -3835,7 +4056,7 @@ cloak:
     effects:
         cast:
         -  class: EffectSingle
-           custom_sound: magic.shimmer_quiet
+           sound: magic.shimmer_quiet
         -  class: EffectTrail
            particle: smoke_normal
         -  class: EffectRing
@@ -3868,7 +4089,7 @@ rollback:
     effects:
         cast:
         -  class: EffectSingle
-           custom_sound: magic.shimmer
+           sound: magic.shimmer
     parameters:
         target: block
         allow_max_range: true
@@ -3891,7 +4112,7 @@ commit:
     effects:
         cast:
         -  class: EffectSingle
-           custom_sound: magic.disillusion
+           sound: magic.disillusion
     parameters:
         target: none
         target: self
@@ -3916,7 +4137,7 @@ counterspell:
            brightness:
              '0.5':
              - class: EffectSingle
-               custom_sound: magic.shimmer
+               sound: magic.shimmer
                sound_volume: 1
                location: both
                particle_override: particleOrbital
@@ -3927,7 +4148,7 @@ counterspell:
                    iterations: 8
              '5':
              - class: EffectSingle
-               custom_sound: magic.shimmer
+               sound: magic.shimmer
                sound_volume: 1
                location: both
                particle_override: particleOrbital
@@ -4019,9 +4240,13 @@ sandblast:
     icon_url: http://textures.minecraft.net/texture/c1dc6e8c5e3da4aed0ca478e195b8fe3a438fd8cb775b9d10fa1ff7d2dcf714
     icon: sandstone
     category: combat
-    class: ConstructSpell
     pvp_restricted: true
     worth: 1500
+    actions:
+        cast:
+        - class: Volume
+          actions:
+          - class: ModifyBlock
     effects:
         cast:
         -  class: EffectSingle
@@ -4033,8 +4258,7 @@ sandblast:
         range: 32
         brush: sand
         radius: 2
-        type: cuboid
-        y_offset: 32
+        oty: 32
         undo: 20000
         cooldown: 5000
     costs:
@@ -4202,7 +4426,7 @@ blob:
     effects:
         cast:
         -  class: EffectSingle
-           custom_sound: magic.shield
+           sound: magic.shield
         -  class: EffectTrail
            effect: step_sound
     parameters:
@@ -4212,7 +4436,7 @@ blob:
         radius: 2
         transparent: transparent_to_construction
         undo: 2000
-        cooldown: 3000
+        cooldown: 4000
         brush: stained_glass
         brushcolor: true
         breakable: 3
@@ -4225,8 +4449,8 @@ blob|2:
     upgrade_required_casts: 50
     parameters:
         radius: 3
-        undo: 5000
-        cooldown: 6000
+        undo: 3000
+        cooldown: 5000
         brush: stained_clay
 
 blob|3:
@@ -4234,13 +4458,53 @@ blob|3:
     upgrade_required_casts: 50
     parameters:
         radius: 3
-        undo: 10000
-        cooldown: 12000
+        undo: 5000
+        cooldown: 8000
         brush: obsidian
 
 blob|4:
     parameters:
         brush: ""
+        undo: 10000
+        cooldown: 8000
+
+tendril:
+    icon: leash
+    icon_url: http://textures.minecraft.net/texture/564e7e4b718a7136188385cae256de87a6cb29c85744c9c123509a4c7cec69d0
+    category: combat
+    worth: 1000
+    pvp_restricted: true
+    actions:
+        cast:
+        - class: Volume
+          actions:
+          - class: Skip
+            actions:
+            - class: Delay
+          - class: ModifyBlock
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: magic.shield
+        -  class: EffectTrail
+           particle: drip_lava
+    parameters:
+        target: block
+        allow_max_range: true
+        range: 2
+        use_brush_size: true
+        undo: 5000
+        cooldown: 20000
+        brush: schematic|tendril
+        breakable: 3
+        destructible: air,fire
+        orient: true
+        skip: 16
+        delay: 50
+        volume_type: yxz
+        center_z: false
+    costs:
+        mana: 100
 
 walls:
     icon: clay_ball
@@ -4255,7 +4519,7 @@ walls:
     effects:
         cast:
         -  class: EffectSingle
-           custom_sound: magic.shield
+           sound: magic.shield
         -  class: EffectTrail
            effect: step_sound
     parameters:
@@ -4265,8 +4529,8 @@ walls:
         radius: 5
         thickness: 1
         transparent: transparent_to_construction
-        undo: 10000
-        cooldown: 1000
+        undo: 6000
+        cooldown: 10000
         brush: stained_clay
         brushcolor: true
         breakable: 3
@@ -4287,7 +4551,7 @@ emp:
     effects:
         cast:
         -  class: EffectSingle
-           custom_sound: magic.electrify
+           sound: magic.electrify
         -  class: EffectTrail
            particle: redstone
            particle_count: 5
@@ -4318,7 +4582,7 @@ superemp:
     effects:
         cast:
         -  class: EffectSingle
-           custom_sound:  magic.electrify
+           sound:  magic.electrify
         -  class: EffectTrail
            particle: redstone
            particle_count: 5
@@ -4364,7 +4628,7 @@ disintegrate:
         target: other
         brush: erase
         player_damage: 6
-        entity_damage: 50
+        entity_damage: 15
         check_destructible: false
         undo: 5000
         cooldown: 500
@@ -4385,14 +4649,14 @@ blink:
     effects:
         teleport:
         - class: EffectSingle
-          custom_sound: magic.teleport
+          sound: magic.teleport
           location: target
         cast:
         -  class: EffectVariable
            brightness:
              '0.5':
              - class: EffectSingle
-               custom_sound: magic.teleport
+               sound: magic.teleport
                location: origin
                particle_override: particleOrbital
                color_override: colorOrbital
@@ -4410,7 +4674,7 @@ blink:
                    particle: redstone
              '5':
              - class: EffectSingle
-               custom_sound: magic.teleport
+               sound: magic.teleport
                location: origin
                particle_override: particleOrbital
                color_override: colorOrbital
@@ -4483,6 +4747,7 @@ absorb:
            effect: step_sound
            reverse: true
     parameters:
+        target: block
         allow_max_range: false
         range: 64
         transparent: transparent_to_construction
@@ -4505,6 +4770,7 @@ hat:
            effect: step_sound
            reverse: true
     parameters:
+        target: block
         allow_max_range: false
         range: 32
         cooldown: 30000
@@ -4794,7 +5060,7 @@ flamethrower:
     effects:
         cast:
         -  class: EffectSingle
-           custom_sound: magic.burn
+           sound: magic.burn
            effectlib:
              class: DragonEffect
              iterations: 20
@@ -4846,7 +5112,7 @@ laser:
     effects:
         beam:
         -  class: EffectSingle
-           custom_sound: magic.zap
+           sound: magic.zap
            location: origin
            sound_volume: 0.1
            color_override: colorHelix
@@ -4865,7 +5131,7 @@ laser:
              particlesBase: 5
         cast:
         -  class: EffectSingle
-           custom_sound: magic.zap_crack
+           sound: magic.zap_crack
            location: origin
     parameters:
         target: block
@@ -5040,6 +5306,7 @@ flare|2:
        firework: star
        radius: 8
        target_offset: 0,4,0
+       size: 6
 
 recall:
     icon_url: http://textures.minecraft.net/texture/58c573cefdc8cc1b8c894340cb54ab343523ec2ffa0afc7536968391ae1e7
@@ -5132,14 +5399,18 @@ levitate:
            sound_pitch: 0.2
         land:
         -  class: EffectRing
-           effect: step_sound
-           period: 2
+           particle: block_crack
+           use_wand_location: false
+           use_eye_location: false
+           period: 4
+           particle_count: 10
+           radius: 4
     parameters:
         speed: 2
     costs:
-        mana: 45
+        mana: 50
     active_costs:
-        mana: 20
+        mana: 100
 
 force:
     icon_url: http://textures.minecraft.net/texture/c7142a19d8c84389da74b69641542b8b2fafbed8f7515d1d36c63c96bd749
@@ -5150,7 +5421,7 @@ force:
     effects:
         cast:
         -  class: EffectSingle
-           custom_sound: magic.zap_big
+           sound: magic.zap_big
            location: origin
            effectlib:
              class: DnaEffect
@@ -5190,7 +5461,7 @@ fireball:
              iterations: 15
              particle: lava
              lengthGrow: 0.4
-           custom_sound: magic.burn
+           sound: magic.burn
            sound_volume: 1
            sound_pitch: -.25
         projectile:
@@ -5329,6 +5600,7 @@ wolfhouse:
     category: master
     class: ConstructSpell
     worth: 10000
+    cancellable: false
     effects:
         cast:
         -  class: EffectSingle
@@ -5387,10 +5659,10 @@ missile:
     effects:
         cast:
         -  class: EffectSingle
-           custom_sound: magic.zap
+           sound: magic.zap
            sound_volume: .3
         -  class: EffectSingle
-           custom_sound: magic.zap_crack
+           sound: magic.zap_crack
            location: origin
            color_override: color
            effectlib:
@@ -5406,9 +5678,9 @@ missile:
            firework: burst
         no_target:
         -  class: EffectSingle
-           custom_sound: magic.zap
+           sound: magic.zap
         -  class: EffectSingle
-           custom_sound: magic.zap_crack
+           sound: magic.zap_crack
            location: origin
            color_override: color
            effectlib:
@@ -5424,9 +5696,9 @@ missile:
            firework: burst
         backfire:
         -  class: EffectSingle
-           custom_sound: magic.zap
+           sound: magic.zap
         -  class: EffectSingle
-           custom_sound: magic.zap_crack
+           sound: magic.zap_crack
            location: origin
            entity_effect: hurt
            color_override: color
@@ -5490,7 +5762,7 @@ blind:
     effects:
         cast:
         -  class: EffectSingle
-           custom_sound: magic.zap
+           sound: magic.zap
            effectlib:
              class: ConeEffect
              iterations: 15
@@ -5512,7 +5784,7 @@ blind:
              particles: 20
         no_target:
         -  class: EffectSingle
-           custom_sound: magic.zap
+           sound: magic.zap
            effectlib:
              class: ConeEffect
              iterations: 15
@@ -5561,7 +5833,7 @@ pollinate:
     effects:
         cast:
         -  class: EffectSingle
-           custom_sound: magic.shimmer
+           sound: magic.shimmer
            location: source
         despawn:
         -  class: EffectSingle
@@ -5680,8 +5952,12 @@ broom:
              particle: spell
         land:
         -  class: EffectRing
-           effect: step_sound
-           period: 2
+           particle: block_crack
+           use_wand_location: false
+           use_eye_location: false
+           period: 4
+           particle_count: 10
+           radius: 4
     parameters:
         thrust: 1
         auto_deactivate: 4
@@ -5692,9 +5968,16 @@ broom:
         effect_confusion: 120,2
         bypass_deactivate: true
         stash_item: true
+        mount_baby: true
         mount_type: Horse
         mount_variant: undead_horse
-        mount_invisible: false
+        armor_stand: true
+        armor_stand_helmet: false
+        armor_stand_pitch: 0.3
+        armor_stand_arm: 0,0,-0.62
+        armor_stand_marker: true
+        armor_stand_small: false
+        mount_invisible: true
         mount_boost_ticks: 100
         power_mount_boost_ticks: 500
         mount_health: 8
@@ -5706,9 +5989,9 @@ broom:
         steer_speed: 0.6
         power_steer_speed: 2
         slow_steer_speed: 0.05
-        mount_boost_per_jump: 0.25
-        power_mount_boost_per_jump: 0.5
-        custom_sound: magic.flying
+        mount_boost_per_jump: 1
+        power_mount_boost_per_jump: 2
+        sound: magic.flying
         effect_sound_interval: 120
         effect_sound_volume: 15
 
@@ -5754,7 +6037,7 @@ kill:
     effects:
         cast:
         - class: EffectSingle
-          custom_sound: magic.electrify
+          sound: magic.electrify
           sound_volume: 5
           sound_pitch: -0.25
           location: origin
@@ -5768,7 +6051,7 @@ kill:
              radius: 5
         fire:
         - class: EffectSingle
-          custom_sound: magic.zap_big
+          sound: magic.zap_big
           sound_volume: 1
           location: origin
           effectlib:
@@ -5805,6 +6088,53 @@ kill|3:
         delay: 1000
         damage: 60
 
+superkill:
+    icon: skull_item:1
+    icon_url: http://textures.minecraft.net/texture/71a235c48123b487e864fa21016e223ad4070c6d977b0a519f7dd743d39e47c
+    category: staff
+    worth: 500000
+    actions:
+      cast:
+      - class: Kill
+    effects:
+        cast:
+        - class: EffectSingle
+          sound: magic.electrify
+          sound_volume: 5
+          sound_pitch: -0.25
+          location: origin
+          effectlib:
+             class: AtomEffect
+             particleNucleus: spell_mob
+             colorNucleus: "00FF00"
+             particleOrbital: redstone
+             colorOrbital: "00FF00"
+             iterations: 16
+             radius: 5
+        - class: EffectSingle
+          sound: magic.zap_big
+          sound_volume: 1
+          location: origin
+          effectlib:
+             class: ConeEffect
+             iterations: 16
+             particle: spell_mob
+             color: 00FF00
+             lengthGrow: 0.4
+        - class: EffectSingle
+          location: targets
+          color: "00FF00"
+          firework: ball_large
+    parameters:
+        target: other
+        target_type: LivingEntity
+        cooldown: 10000
+        target_breakables: 5
+        bypass_backfire: true
+        range: 40
+    costs:
+        mana: 500
+
 torture:
     upgrade_required_path: master
     upgrade_required_casts: 50
@@ -5820,7 +6150,7 @@ torture:
     effects:
         cast:
         -  class: EffectSingle
-           custom_sound: magic.electrify
+           sound: magic.electrify
            sound_volume: .5
         -  class: EffectSingle
            sound: irongolem_death
@@ -5842,7 +6172,7 @@ torture:
              duration: 500
         no_target:
         -  class: EffectSingle
-           custom_sound: magic.electrify
+           sound: magic.electrify
            sound_volume: .5
         -  class: EffectSingle
            sound: irongolem_death
@@ -5897,7 +6227,7 @@ rubberize:
         cast:
         -  class: EffectTrail
            effect: step_sound
-           custom_sound: magic.shimmer
+           sound: magic.shimmer
     parameters:
         allow_max_range: false
         range: 16
@@ -5932,7 +6262,7 @@ count:
     effects:
         cast:
         -  class: EffectSingle
-           custom_sound: magic.shimmer
+           sound: magic.shimmer
            effectlib:
              class: HelixEffect
              iterations: 1
@@ -5975,9 +6305,9 @@ petrify:
     effects:
         cast:
         -  class: EffectSingle
-           custom_sound: magic.zap_big
+           sound: magic.zap_big
         -  class: EffectSingle
-           custom_sound: magic.zap
+           sound: magic.zap
            effectlib:
              class: ConeEffect
              iterations: 5
@@ -5998,9 +6328,9 @@ petrify:
              iterations: 40
         no_target:
         -  class: EffectSingle
-           custom_sound: magic.zap_big
+           sound: magic.zap_big
         -  class: EffectSingle
-           custom_sound: magic.zap
+           sound: magic.zap
            effectlib:
              class: ConeEffect
              iterations: 15
@@ -6036,7 +6366,7 @@ entangle:
     effects:
         cast:
         -  class: EffectSingle
-           custom_sound: magic.crack
+           sound: magic.crack
         -  class: EffectTrail
            effect: step_sound
     parameters:
@@ -6074,10 +6404,10 @@ wound:
     effects:
         cast:
         -  class: EffectSingle
-           custom_sound: magic.shimmer_crack
+           sound: magic.shimmer_crack
            sound_volume: 1
         -  class: EffectSingle
-           custom_sound: magic.electrify
+           sound: magic.electrify
            sound_volume: 5
            effectlib:
              class: ConeEffect
@@ -6101,10 +6431,10 @@ wound:
              particles: 15
         no_target:
         -  class: EffectSingle
-           custom_sound: magic.crack
+           sound: magic.crack
            sound_volume: 1
         -  class: EffectSingle
-           custom_sound: magic.electrify
+           sound: magic.electrify
            sound_volume: 5
            effectlib:
              class: ConeEffect
@@ -6155,7 +6485,7 @@ stun:
     effects:
         cast:
         -  class: EffectSingle
-           custom_sound: magic.zap_crack
+           sound: magic.zap_crack
            sound_pitch: 0.1
            sound_volume: 0.5
            location: origin
@@ -6212,7 +6542,7 @@ poison:
     effects:
         cast:
         -  class: EffectSingle
-           custom_sound: magic.zap
+           sound: magic.zap
            effectlib:
              class: ConeEffect
              iterations: 15
@@ -6239,7 +6569,7 @@ poison:
              particles: 20
         no_target:
         -  class: EffectSingle
-           custom_sound: magic.zap
+           sound: magic.zap
            effectlib:
              class: ConeEffect
              iterations: 15
@@ -6372,7 +6702,7 @@ admission:
     effects:
         cast:
         -  class: EffectSingle
-           custom_sound: magic.shimmer
+           sound: magic.shimmer
         -  class: EffectTrail
            particle: redstone
            color: FFFF00
@@ -6402,10 +6732,13 @@ secure:
     actions:
        cast:
        - class: Lock
+       alternate_up:
+       - class: Lock
+         type: key
     effects:
         cast:
         -  class: EffectSingle
-           custom_sound: magic.shimmer
+           sound: magic.shimmer
            location: origin
         -  class: EffectTrail
            particle: smoke_normal
@@ -6436,7 +6769,7 @@ lockpick:
     effects:
         cast:
         -  class: EffectSingle
-           custom_sound: magic.shimmer
+           sound: magic.shimmer
            location: origin
         -  class: EffectTrail
            particle: smoke_normal
@@ -6465,7 +6798,7 @@ harden:
         cast:
         -  class: EffectTrail
            effect: step_sound
-           custom_sound: magic.shimmer
+           sound: magic.shimmer
     parameters:
         allow_max_range: false
         range: 16
@@ -6715,6 +7048,7 @@ colorshop:
           wand|aquaeffects: 100
           wand|orangeeffects: 100
           wand|haloeffects: 1000
+          wand|cleareffects: 0
 
 upgradeshop:
     icon: gold_axe
@@ -6757,6 +7091,17 @@ addspell:
         -  class: AddSpell
     parameters:
         spell: flare
+        loud: true
+
+giveitem:
+    icon: iron_hoe
+    category: specialty
+    hidden: true
+    actions:
+        cast:
+        -  class: GiveItem
+    parameters:
+        item: magichat
         loud: true
 
 fillwand:
@@ -6803,7 +7148,7 @@ tracking:
     effects:
         cast:
         -  class: EffectSingle
-           custom_sound: magic.zap
+           sound: magic.zap
            location: origin
         -  class: EffectSingle
            location: target
@@ -6814,10 +7159,13 @@ tracking:
         range: 32
         fov: 3
         close_fov: 3
+        fov_weight: 400
+        player_weight: 500
         target: other_entity
         target_type: LivingEntity
         cooldown: 5000
         ignore_blocks: true
+        loud: true
     costs:
         mana: 20
 
@@ -6890,7 +7238,7 @@ singularity:
     effects:
         cast:
         -  class: EffectSingle
-           custom_sound: magic.bonk
+           sound: magic.bonk
            sound_pitch: 0.2
            sound_volume: 0.3
            location: origin
@@ -6900,7 +7248,7 @@ singularity:
            color: CC9933
            firework: burst
            sound: explode
-           custom_sound: magic.hit
+           sound: magic.hit
            effectlib:
              class: SphereEffect
              iterations: 70
@@ -6962,7 +7310,6 @@ rocket:
     costs:
         mana: 75
 
-
 tornado:
     upgrade_required_path: master
     upgrade_required_casts: 50
@@ -7000,12 +7347,13 @@ tornado:
            sound_pitch: 0.3
            location: target
            effectlib:
-             class: ConeEffect
-             iterations: 30
-             particle: spell
-             autoOrient: false
-             lengthGrow: 0.05
-             radiusGrow: 0.01
+             class: TornadoEffect
+             iterations: 3
+             tornadoHeight: 8
+             distance: 0.8
+             cloudSize: 1
+             tornadoParticle: spell
+             offset: 0,-4,0
         cast:
         -  class: EffectSingle
            sound: fizz
@@ -7024,15 +7372,15 @@ tornado:
         push: -1
         y_offset: 0.2
         cooldown: 3000
-        repeat: 20
+        repeat: 10
         delay: 250
         brush: erase
         falling: true
+        falling_probability: 0.8
         random_target_offset: 0.2,0,0.2
         target_direction_speed: 0.5
         source_direction_offset: 0,0.5,0
         undo: 15000
-        oty: 2
         x_size: 0
         z_size: 0
         y_size: 2
@@ -7042,9 +7390,44 @@ tornado:
 tornado|2:
     parameters:
         check_destructible: false
-        oty: 4
         y_offset: 1
         x_size: 1
         z_size: 1
         y_size: 8
         radius: 4
+
+rainbow:
+    icon_url: http://textures.minecraft.net/texture/4e693cf3b7bf83248527aacc2714638b55587cde593963d1f861884f5be1638
+    icon: sapling:4
+    category: staff
+    hidden: true
+    worth: 350
+    actions:
+        cast:
+        - class: Volume
+          actions:
+          - class: Skip
+            actions:
+            - class: Delay
+          - class: ModifyBlock
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: level_up
+    parameters:
+        target: block
+        allow_max_range: true
+        range: 3
+        use_brush_size: true
+        undo: 60000
+        cooldown: 45000
+        brush: schematic|rainbow
+        breakable: 3
+        destructible: air
+        orient: true
+        skip: 100
+        delay: 5
+        volume_type: yxz
+        center_z: false
+    costs:
+        mana: 100

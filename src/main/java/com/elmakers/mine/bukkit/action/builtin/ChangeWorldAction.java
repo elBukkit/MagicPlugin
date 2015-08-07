@@ -51,7 +51,7 @@ public class ChangeWorldAction extends BaseTeleportAction
         else if (parameters.contains("worlds"))
         {
             ConfigurationSection worldMap = parameters.getConfigurationSection("worlds");
-            if (!worldMap.contains(worldName)) {
+            if (worldMap == null || !worldMap.contains(worldName)) {
                 return;
             }
 
@@ -110,6 +110,10 @@ public class ChangeWorldAction extends BaseTeleportAction
 		if (targetLocation == null) {
 			return SpellResult.NO_TARGET;
 		}
+
+        // Sanity check!
+        targetLocation.setX(Math.min(targetLocation.getX(), 3.0E7D));
+        targetLocation.setZ(Math.min(targetLocation.getZ(), 3.0E7D));
 
         targetLocation.setYaw(playerLocation.getYaw());
         targetLocation.setPitch(playerLocation.getPitch());

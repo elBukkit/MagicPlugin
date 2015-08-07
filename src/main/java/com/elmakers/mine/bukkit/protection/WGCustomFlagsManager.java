@@ -36,7 +36,7 @@ public class WGCustomFlagsManager {
     }
 
     public Boolean getWandPermission(RegionAssociable source, ApplicableRegionSet checkSet, Wand wand) {
-        String wandTemplate = wand.getTemplate();
+        String wandTemplate = wand.getTemplateKey();
         Set<String> blocked = checkSet.queryValue(source, BLOCKED_WANDS);
         if (blocked != null && blocked.contains(wandTemplate)) return false;
 

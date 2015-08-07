@@ -10,9 +10,11 @@ import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.api.wand.Wand;
 import com.elmakers.mine.bukkit.api.wand.WandUpgradePath;
 import com.elmakers.mine.bukkit.magic.MagicPlugin;
+import com.elmakers.mine.bukkit.spell.BaseSpell;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 
+import java.util.Arrays;
 import java.util.Collection;
 
 public class AddSpellAction extends BaseSpellAction
@@ -22,6 +24,7 @@ public class AddSpellAction extends BaseSpellAction
     private String requiresCompletedPath = null;
     private String exactPath = null;
     private String permissionNode = null;
+    protected boolean autoUpgrade = false;
 
     public void prepare(CastContext context, ConfigurationSection parameters) {
         super.prepare(context, parameters);
@@ -30,6 +33,7 @@ public class AddSpellAction extends BaseSpellAction
         requiredPath = parameters.getString("path", null);
         requiresCompletedPath = parameters.getString("path_end", null);
         exactPath = parameters.getString("path_exact", null);
+        autoUpgrade = parameters.getBoolean("auto_upgrade", true);
         if (requiresCompletedPath != null) {
             requiredPath = requiresCompletedPath;
         }
@@ -102,6 +106,14 @@ public class AddSpellAction extends BaseSpellAction
             }
         }
 
+        if (autoUpgrade) {
+            com.elmakers.mine.bukkit.api.wand.WandUpgradePath path = wand.getPath();
+            WandUpgradePath nextPath = path != null ? path.getUpgrade(): null;
+            if (nextPath != null && path.checkUpgradeRequirements(wand, null) && !path.canEnchant(wand)) {
+                path.upgrade(wand, mage);
+            }
+        }
+
         return SpellResult.CAST;
 	}
 
@@ -114,6 +126,7 @@ public class AddSpellAction extends BaseSpellAction
         parameters.add("path_end");
         parameters.add("path_exact");
         parameters.add("permission");
+        parameters.add("auto_upgrade");
     }
 
     @Override
@@ -126,6 +139,8 @@ public class AddSpellAction extends BaseSpellAction
             }
         } else if (parameterKey.equals("path") || parameterKey.equals("path_exact") || parameterKey.equals("path_end")) {
             examples.addAll(com.elmakers.mine.bukkit.wand.WandUpgradePath.getPathKeys());
+        } else if (parameterKey.equals("auto_upgrade")) {
+            examples.addAll(Arrays.asList(BaseSpell.EXAMPLE_BOOLEANS));
         } else {
             super.getParameterOptions(spell, parameterKey, examples);
         }

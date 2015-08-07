@@ -72,10 +72,10 @@ foreach ($spells as $key => &$spell) {
         unset($spells[$key]);
         if (isset($spells[$baseKey])) {
             $baseSpell = &$spells[$baseKey];
-            if (!isset($baseSpell['levels'])) {
-                $baseSpell['levels'] = array($level => $spellLevel);
+            if (!isset($baseSpell['spell_levels'])) {
+                $baseSpell['spell_levels'] = array($level => $spellLevel);
             } else {
-                $baseSpell['levels'][$level] = $spellLevel;
+                $baseSpell['spell_levels'][$level] = $spellLevel;
             }
         }
         continue;

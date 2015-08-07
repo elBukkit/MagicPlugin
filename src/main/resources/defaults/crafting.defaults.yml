@@ -44,14 +44,15 @@ beginner:
 # Other default craftable items
 
 battle:
+  disable_default: true
   output: battle
   output_type: wand
   materials:
     o: nether_star
-    i: diamond_sword
+    i: stick
   row_1: o
-  row_2: i
-  row_3:
+  row_2: o
+  row_3: i
 
 broomstick:
   disable_default: true

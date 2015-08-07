@@ -10,7 +10,6 @@ import com.elmakers.mine.bukkit.action.CompoundAction;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
-import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -98,7 +97,7 @@ public class PlayerSelectAction extends CompoundAction implements GUIAction
         List<Player> allPlayers = null;
 
         if (allowCrossWorld) {
-            allPlayers = new ArrayList<Player>(CompatibilityUtils.getOnlinePlayers(controller.getPlugin().getServer()));
+            allPlayers = new ArrayList<Player>(controller.getPlugin().getServer().getOnlinePlayers());
         } else {
             allPlayers = context.getLocation().getWorld().getPlayers();
         }
@@ -140,8 +139,7 @@ public class PlayerSelectAction extends CompoundAction implements GUIAction
             }
             displayInventory.setItem(entry.getKey(), playerItem);
         }
-        mage.activateGUI(this);
-        mage.getPlayer().openInventory(displayInventory);
+        mage.activateGUI(this, displayInventory);
 
         return SpellResult.CAST;
 	}

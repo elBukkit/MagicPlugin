@@ -1,0 +1,69 @@
+#
+# Lightsaber creation
+#
+
+lightsaber_hilt:
+  output: lightsaber_hilt
+  output_type: wand
+  materials:
+    o: nether_star
+    i: iron_ingot
+    x: emerald
+  row_1: "ioi"
+  row_2: "ioi"
+  row_3: " x "
+
+lightsaber_green:
+  output: lightsaber_green
+  output_type: wand
+  materials:
+    o: nether_star
+    i: monster_eggs
+    x: stained_glass:5
+  row_1: " o "
+  row_2: " o "
+  row_3: "xix"
+
+lightsaber_red:
+  output: lightsaber_red
+  output_type: wand
+  materials:
+    o: nether_star
+    i: monster_eggs
+    x: stained_glass:14
+  row_1: " o "
+  row_2: " o "
+  row_3: "xix"
+
+lightsaber_blue:
+  output: lightsaber_blue
+  output_type: wand
+  materials:
+    o: nether_star
+    i: monster_eggs
+    x: stained_glass:3
+  row_1: " o "
+  row_2: " o "
+  row_3: "xix"
+
+lightsaber_orange:
+  output: lightsaber_orange
+  output_type: wand
+  materials:
+    o: nether_star
+    i: monster_eggs
+    x: stained_glass:1
+  row_1: " o "
+  row_2: " o "
+  row_3: "xix"
+
+lightsaber_purple:
+  output: lightsaber_purple
+  output_type: wand
+  materials:
+    o: nether_star
+    i: monster_eggs
+    x: stained_glass:2
+  row_1: " o "
+  row_2: " o "
+  row_3: "xix"

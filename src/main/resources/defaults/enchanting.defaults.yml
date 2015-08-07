@@ -92,7 +92,7 @@ default:
          sound: level_up
          effectlib:
            class: SphereEffect
-           iterations: 10
+           iterations: 5
            period: 2
            particle: enchantment_table
            radius: 3
@@ -102,11 +102,11 @@ default:
       -  class: EffectRing
          firework: star
          radius: 4
-         size: 3
+         size: 2
       -  class: EffectRing
          firework: ball_large
          radius: 6
-         size: 5
+         size: 3
 
 #
 # Wand progression
@@ -299,6 +299,7 @@ apprentice:
       flashbang: 20,30,50
       gatling: 0,20,30
       walls: 5,30,50
+      smite: 10,20,30
 
 master:
     required_spells:
@@ -373,6 +374,8 @@ master:
       singularity: 0,1,5
       tornado: 1,10,15
       secure: 0,0,5
+      ghast: 0,0,5
+      tendril: 0,0,5
 
 #
 # The move from "master" to engineer requires the player to aquire some basic
@@ -420,13 +423,13 @@ engineer:
       0^2: 1,  10, 20
       0^3: 0 , 15, 15
       0^4: 0 ,  0, 10
-    max_mana_regeneration: 90
+    max_mana_regeneration: 70
     mana_regeneration:
       1: 100, 30, 5
       2: 20, 30, 40
       3: 0 , 10, 10
       5: 0 ,  0, 1
-    max_mana: 400
+    max_mana: 350
     mana_max:
       5:  100,10,  0
       10: 20, 30, 50
@@ -482,7 +485,7 @@ engineer:
       packed_ice: 10,20,25
       obsidian: 0,0,15
       redstone_block: 0,0,5
-      schematic|rainbow: 0,2,5
+      schematic|rainbow_blocks: 0,2,5
       schematic|creeper_rug: 0,0,5
 
 architect:
@@ -629,7 +632,7 @@ architect:
       stained_glass_pane|13: 60,40,30
       stained_glass_pane|14: 60,40,30
       stained_glass_pane|15: 60,40,30
-      schematic|rainbow: 0,2,5
+      schematic|rainbow_blocks: 0,2,5
       schematic|lantern: 0,1,20
       schematic|creeper_rug: 0,0,5
       schematic|elder_tree: 0,0,1
@@ -638,7 +641,6 @@ architect:
       schematic|garden_house: 0,5,10
       schematic|compact_house: 5,10,15
       schematic|small_house: 5,10,15
-      schematic|flare_beacon: 0,0,1
       schematic|nathanwolf: 0,0,1
 
 #
@@ -648,101 +650,52 @@ architect:
 
 battle:
     hidden: true
-    inherit: default
+    inherit: master
     property_count:
-      1: 100,100, 50
-      2: 5,  10,  100
-      3: 0,   5,   60
-    max_protection: 0.5
+      0: 100, 100, 50
+      1: 50,  100, 100
+      2: 10,  50,  75
+      3: 0,   0,   50
+    max_protection: 0.9
     protection:
-      0^1: 100,100,90
-      0^2: 0,   5, 10
-      0^3: 0 ,  1, 5
-      0^4: 0 ,  0, 1
-    max_protection_physical: 0.5
-    protection_physical:
-      0^1: 100, 100, 90
-      0^2: 1,   10,  20
-      0^3: 0 ,  15,  15
-      0^4: 0 ,  0,   10
-    max_protection_projectiles: 0.5
-    protection_projectiles:
-      0^1: 100, 100, 90
-      0^2: 1,   10,  20
-      0^3: 0 ,  15,  15
-      0^4: 0 ,  0,   10
-    max_protection_falling: 0.8
+      0^1: 100, 100,  90
+      0^2: 0,     5,  10
+      0^3: 0 ,    1,  5
+      0^4: 0 ,    0,  1
+    max_protection_falling: 1
     protection_falling:
-      0^1: 100, 100, 90
-      0^2: 1,   10,  20
-      0^3: 0 ,  15,  15
-      0^4: 0 ,  0,   10
-    max_protection_fire: 0.7
+      0^1: 100,100,90
+      0^2: 1,  10, 20
+      0^3: 0 , 15, 15
+      0^4: 0 ,  0, 10
+    max_protection_fire: 0.9
     protection_fire:
-      0^1: 100, 100, 90
-      0^2: 1,   10,  20
-      0^3: 0 ,  15,  15
-      0^4: 0 ,  0,   10
-    max_protection_explosions: 0.7
+      0^1: 100,100,90
+      0^2: 1,  10, 20
+      0^3: 0 , 15, 15
+      0^4: 0 ,  0, 10
+    max_protection_explosions: 0.9
     protection_explosions:
-      0^1: 100, 100, 90
-      0^2: 1,   10,  20
-      0^3: 0 ,  15,  15
-      0^4: 0 ,  0,   10
-    max_mana_regeneration: 20
+      0^1: 100,100,90
+      0^2: 1,  10, 20
+      0^3: 0 , 15, 15
+      0^4: 0 ,  0, 10
+    max_mana_regeneration: 90
     mana_regeneration:
       1: 100, 30, 5
-      2: 20,  30, 40
-      3: 0 ,  10, 10
-    max_mana: 200
+      2: 20, 30, 40
+      3: 0 , 10, 10
+      5: 0 ,  0, 1
+    max_mana: 400
     mana_max:
-      5:   100, 10,  0
-      10:  20,  30, 50
-      15:  5 ,  20, 30
+      5:  100,10,  0
+      10: 20, 30, 50
+      15: 5 , 20, 30
+      20: 0 , 0,   5
     spell_count:
-      1: 100, 40,  10
-      2: 1,   10,  30
-      3: 0,   1,   40
-    spells:
-      arrow: 100,80,70
-      arrowrain: 10,30,50
-      blast: 30,40,50
-      blink: 0,0,1
-      boom: 20,50,60
-      boon: 0,5,10
-      blessing: 0,1,5
-      breach: 5,20,30
-      cloak: 10,20,30
-      curse: 0,1,10
-      bubble: 10,40,20
-      disintegrate: 0,10,40
-      earth: 5,20,50
-      familiar: 10,30,40
-      fire: 50,70,60
-      fireball: 60,70,80
-      flare: 110,80,60
-      fling: 0,5,70
-      force: 5,10,20
-      frost: 80,70,50
-      grenade: 30,50,70
-      cure: 1,5,10
-      heal: 0,1,5
-      push: 10,20,40
-      pull: 10,20,40
-      monster: 5,20,30
-      lightning: 40,50,30
-      sandblast: 20,30,40
-      lava: 5,20,50
-      phase: 0,0,1
-      recall: 0,5,15
-      shrink: 5,20,30
-      stream: 0,10,30
-      flamethrower: 0,5,10
-      stash: 0,1,5
-      wither: 5,10,20
-      disarm: 0,0,1
-      missile: 5,10,30
-      blind: 1,5,10
+      1: 100, 20,  0
+      2: 0,   50,  10
+      3: 0,   10,  90
 
 #
 # Broom Enchanting

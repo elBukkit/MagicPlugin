@@ -8,7 +8,7 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
-public class WorldGuardManager {
+public class WorldGuardManager implements PVPManager, BlockBreakManager, BlockBuildManager {
     private boolean enabled = false;
     private WorldGuardAPI worldGuard = null;
 
@@ -72,5 +72,10 @@ public class WorldGuardManager {
             return worldGuard.getWandPermission(player, wand, location);
         }
         return null;
+    }
+
+    @Override
+    public boolean hasBreakPermission(Player player, Block block) {
+        return hasBuildPermission(player, block);
     }
 }

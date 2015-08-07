@@ -1,0 +1,72 @@
+recall:
+  parameters:
+    commands:
+      hub:
+        name: elMakers Hub
+        description: Return to the Hub
+        icon: nether_star
+        command: mserver hub
+        op: true
+    warps:
+    warps:
+      black:
+        name: The Black Temple
+        description: The original spawn!
+        icon: obsidian
+      white:
+        name: The White Temple
+        description: Spawn#2
+        icon: quartz_block
+      blue:
+        name: The Blue Temple
+        description: Spawn#3
+        icon: lapis_block
+      frozen:
+        name: The Frozen Temple
+        description: Spawn#4
+        icon: packed_ice
+      iron:
+        name: The Iron Temple
+        description: Spawn#5
+        icon: iron_block
+      redwood:
+        name: The Burning Temple
+        description: The Lost Spawn
+        icon: log
+      gold:
+        name: The Gold Temple
+        description: The spawn of Heroes
+        locked: true
+        icon: gold_block
+      hall:
+        name: The Hall of Heroes
+        description: Our most (in)famous players
+        icon: emerald
+      brick:
+        name: The Brick Temple
+        description: Spawn#6
+        icon: brick
+
+wandshop:
+    icon: wooden_hoe
+    category: specialty
+    hidden: true
+    actions:
+        cast:
+        -  class: ItemShop
+    parameters:
+        loud: true
+        confirm: true
+        confirm_filler: stained_glass:3
+        items:
+          wand|beginner: 4000
+          wand|student: 80000
+          wand|apprentice: 135000
+          wand|master: 150000
+          wand|elder: 400000
+          wand|battle: 24000
+          wand|architect: 330000
+          wand|lightsaber_blue: 100000
+          wand|lightsaber_red: 100000
+          wand|lightsaber_green: 100000
+          wand|lightsaber_purple: 100000
