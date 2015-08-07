@@ -1,5 +1,7 @@
 # CHANGELOG
 
+## 5.1.9
+
 ## 5.1.8
 
  - Add Nuke Level 2 (Breaks all block types, larger radius)
@@ -10,7 +12,7 @@
  - Add "rage" sword, gathers mana via damage
  - Add "requires" parameter for NPC trait, for item cost requirements
  - Add per-recipe crafting permissions (e.g. Magic.craft.broomstick)
- - Add Vault-based economy costs to spells
+ - Add Vault-based economy costs to spells ("currency" in costs)
 
 ## 5.1.7
 
