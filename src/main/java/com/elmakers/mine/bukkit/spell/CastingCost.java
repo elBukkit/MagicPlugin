@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.elmakers.mine.bukkit.api.magic.Messages;
+import com.elmakers.mine.bukkit.integration.VaultController;
 import org.bukkit.Material;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -20,6 +21,7 @@ public class CastingCost implements com.elmakers.mine.bukkit.api.spell.CastingCo
     protected int amount;
     protected int xp;
     protected int mana;
+    protected int currency;
 
     public CastingCost(String key, int cost)
     {
@@ -27,6 +29,8 @@ public class CastingCost implements com.elmakers.mine.bukkit.api.spell.CastingCo
             this.xp = cost;
         } else if (key.toLowerCase().equals("mana")) {
             this.mana = cost;
+        } else if (key.toLowerCase().equals("currency")) {
+            this.currency = cost;
         } else {
             this.item = new MaterialAndData(key);
             this.amount = cost;
@@ -56,6 +60,7 @@ public class CastingCost implements com.elmakers.mine.bukkit.api.spell.CastingCo
         cost.put("amount", amount);
         cost.put("xp", xp);
         cost.put("mana", mana);
+        cost.put("currency", currency);
 
         return cost;
     }
@@ -69,8 +74,13 @@ public class CastingCost implements com.elmakers.mine.bukkit.api.spell.CastingCo
         boolean hasItem = item == null || amount <= 0 || inventory.containsAtLeast(item.getItemStack(amount), amount);
         boolean hasXp = xp <= 0 || mage.getExperience() >= getXP(spell);
         boolean hasMana = mana <= 0 || mage.getMana() >= getMana(spell);
+        boolean hasCurrency = currency <= 0;
+        if (!hasCurrency) {
+            VaultController vault = VaultController.getInstance();
+            hasCurrency = vault.has(mage.getPlayer(), getCurrency(spell));
+        }
 
-        return hasItem && hasXp && hasMana;
+        return hasItem && hasXp && hasMana && hasCurrency;
     }
 
     public void use(Spell spell)
@@ -90,6 +100,11 @@ public class CastingCost implements com.elmakers.mine.bukkit.api.spell.CastingCo
         float mana = getMana(spell);
         if (mana > 0) {
             mage.removeMana(mana);
+        }
+        double currency = getCurrency(spell);
+        if (currency > 0) {
+            VaultController vault = VaultController.getInstance();
+            vault.withdrawPlayer(mage.getPlayer(), currency);
         }
     }
 
@@ -118,6 +133,11 @@ public class CastingCost implements com.elmakers.mine.bukkit.api.spell.CastingCo
         return mana;
     }
 
+    public int getCurrency()
+    {
+        return currency;
+    }
+
     public int getAmount(CostReducer reducer)
     {
         return getRoundedCost(amount, reducer);
@@ -126,6 +146,11 @@ public class CastingCost implements com.elmakers.mine.bukkit.api.spell.CastingCo
     public int getXP(CostReducer reducer)
     {
         return getRoundedCost(xp, reducer);
+    }
+
+    public double getCurrency(CostReducer reducer)
+    {
+        return getReducedCost(currency, reducer);
     }
 
     public float getMana(CostReducer reducer)
@@ -155,7 +180,7 @@ public class CastingCost implements com.elmakers.mine.bukkit.api.spell.CastingCo
 
     public boolean hasCosts(CostReducer reducer)
     {
-        return (item != null && getAmount(reducer) > 0) || getXP(reducer) > 0 || getMana(reducer) > 0;
+        return (item != null && getAmount(reducer) > 0) || getXP(reducer) > 0 || getMana(reducer) > 0 || getCurrency(reducer) > 0;
     }
 
     public String getDescription(Messages messages, CostReducer reducer)
@@ -171,6 +196,10 @@ public class CastingCost implements com.elmakers.mine.bukkit.api.spell.CastingCo
             return messages.get("costs.mana");
         }
 
+        if (currency > 0) {
+            return messages.get("costs.currency");
+        }
+
         return "";
     }
 
@@ -184,6 +213,9 @@ public class CastingCost implements com.elmakers.mine.bukkit.api.spell.CastingCo
         }
         if (mana > 0) {
             return messages.get("costs.mana_amount").replace("$amount", ((Integer)(int)Math.ceil(getMana(reducer))).toString());
+        }
+        if (currency > 0) {
+            return messages.get("costs.currency_amount").replace("$amount", ((Integer)(int)Math.ceil(getCurrency(reducer))).toString());
         }
         return "";
     }

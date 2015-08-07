@@ -53,7 +53,7 @@ public class VaultController {
     }
 
     public double getBalance(Player player) {
-        if (economy == null) {
+        if (economy == null || player == null) {
             return 0;
         }
 
@@ -61,7 +61,7 @@ public class VaultController {
     }
 
     public boolean has(Player player, double amount) {
-        if (economy == null) {
+        if (economy == null || player == null) {
             return false;
         }
 
@@ -77,7 +77,7 @@ public class VaultController {
     }
 
     public boolean withdrawPlayer(Player player, double amount) {
-        if (economy == null) {
+        if (economy == null || player == null) {
             return false;
         }
         EconomyResponse response  = economy.withdrawPlayer(player, amount);
@@ -85,7 +85,7 @@ public class VaultController {
     }
 
     public boolean depositPlayer(Player player, double amount) {
-        if (economy == null) {
+        if (economy == null || player == null) {
             return false;
         }
         EconomyResponse response  = economy.depositPlayer(player, amount);
