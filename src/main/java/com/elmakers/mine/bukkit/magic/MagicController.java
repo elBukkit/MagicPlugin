@@ -919,7 +919,7 @@ public class MagicController implements MageController {
         registerListeners();
 
         // Activate/load any active player Mages
-        Collection<? extends Player> allPlayers = plugin.getServer().getOnlinePlayers();
+        Player[] allPlayers = plugin.getServer().getOnlinePlayers();
         for (Player player : allPlayers) {
             getMage(player);
         }
@@ -2969,7 +2969,7 @@ public class MagicController implements MageController {
 	public Collection<String> getPlayerNames() 
 	{
 		List<String> playerNames = new ArrayList<String>();
-        Collection<? extends Player> players = plugin.getServer().getOnlinePlayers();
+        Player[] players = plugin.getServer().getOnlinePlayers();
         for (Player player : players) {
             if (isNPC(player)) continue;
             playerNames.add(player.getName());

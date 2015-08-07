@@ -627,11 +627,11 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                     Location destination = controller.getWarp(destinationWarp);
                     if (destination != null) {
                         Plugin plugin = controller.getPlugin();
-                        controller.info("Warping " + getEntity().getName() + " to " + destinationWarp + " on login");
+                        controller.info("Warping " + getPlayer().getName() + " to " + destinationWarp + " on login");
                         TeleportTask task = new TeleportTask(getController(), getEntity(), destination, 4, null);
                         Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, task, 1);
                     } else {
-                        controller.info("Failed to warp " + getEntity().getName() + " to " + destinationWarp + " on login, warp doesn't exist");
+                        controller.info("Failed to warp " + getPlayer().getName() + " to " + destinationWarp + " on login, warp doesn't exist");
                     }
                 }
                 destinationWarp = null;

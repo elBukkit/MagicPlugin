@@ -1,6 +1,6 @@
 # Migration Notes
 
-## 5.1
+## CB-1.1
 
  - Remove the "elder" wand from survival configs.
    - You can copy it back in if this is a problem for you

@@ -255,7 +255,7 @@ public class BlockController implements Listener {
     @EventHandler
     public void onWorldSaveEvent(WorldSaveEvent event) {
         World world = event.getWorld();
-        Collection<? extends Player> players = controller.getPlugin().getServer().getOnlinePlayers();
+        Player[] players = controller.getPlugin().getServer().getOnlinePlayers();
         for (Player player : players) {
             if (world.equals(player.getWorld()) && controller.isMage(player)) {
                 Mage mage = controller.getMage(player);

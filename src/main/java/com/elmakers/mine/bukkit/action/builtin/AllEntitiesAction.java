@@ -67,7 +67,7 @@ public class AllEntitiesAction extends CompoundEntityAction
 
 		if (targetType == Player.class)
 		{
-			Collection<? extends Player> players = context.getPlugin().getServer().getOnlinePlayers();
+			Player[] players = context.getPlugin().getServer().getOnlinePlayers();
 			for (Player player : players)
 			{
 				if ((targetSelf || player != sourceEntity) && (targetAllWorlds || (sourceLocation != null && sourceLocation.getWorld().equals(player.getWorld()))) && spell.canTarget(player))

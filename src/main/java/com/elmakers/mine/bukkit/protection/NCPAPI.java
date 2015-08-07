@@ -14,7 +14,7 @@ import java.util.Set;
 import java.util.UUID;
 
 public class NCPAPI implements Runnable {
-    private Map<UUID, Long> flyExemptions = new HashMap<UUID, Long>();
+    private Map<String, Long> flyExemptions = new HashMap<String, Long>();
     public static int CHECK_FREQUENCY = 20;
 
     public NCPAPI(Plugin plugin, Plugin ncpPlugin) {
@@ -23,9 +23,9 @@ public class NCPAPI implements Runnable {
     }
 
     public void run() {
-        List<UUID> uuids = new ArrayList<UUID>(flyExemptions.keySet());
+        List<String> uuids = new ArrayList<String>(flyExemptions.keySet());
         long now = System.currentTimeMillis();
-        for (UUID uuid : uuids)
+        for (String uuid : uuids)
         {
             long timeout = flyExemptions.get(uuid);
             if (now > timeout) {
@@ -39,7 +39,7 @@ public class NCPAPI implements Runnable {
     }
 
     public void addFlightExemption(Player player, long duration) {
-        UUID id = player.getUniqueId();
+        String id = player.getName();
         long newTimeout = System.currentTimeMillis() + duration;
         Long timeout = flyExemptions.get(id);
         if (timeout == null || timeout < newTimeout) {

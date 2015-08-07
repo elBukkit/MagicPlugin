@@ -1001,7 +1001,7 @@ cleareffects:
     upgrade: true
     effect_bubbles: false
     effect_particle: ""
-    icon: barrier
+    icon: carpet
 rainboweffects:
     upgrade: true
     indestructible: false
@@ -1352,7 +1352,6 @@ divinghelmet:
     passive: true
     enchantments:
       oxygen: 3
-      water_worker: 1
     spells:
         - wear
 
