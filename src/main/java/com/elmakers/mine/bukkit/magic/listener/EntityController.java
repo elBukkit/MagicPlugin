@@ -147,7 +147,8 @@ public class EntityController implements Listener {
         if (damager instanceof Player ) {
             Mage damagerMage = controller.getRegisteredMage(damager);
             com.elmakers.mine.bukkit.api.wand.Wand activeWand = null;
-            if (damagerMage != null) {
+            boolean isMelee = event.getCause() == EntityDamageEvent.DamageCause.ENTITY_ATTACK && !CompatibilityUtils.isDamaging;
+            if (isMelee && damagerMage != null) {
                 activeWand = damagerMage.getActiveWand();
                 if (activeWand != null) {
                     activeWand.playEffects("hit_entity");
@@ -160,7 +161,6 @@ public class EntityController implements Listener {
                 Player player = (Player) damager;
                 ItemStack itemInHand = player.getItemInHand();
                 boolean isMeleeWeapon = controller.isMeleeWeapon(itemInHand);
-                boolean isMelee = event.getCause() == EntityDamageEvent.DamageCause.ENTITY_ATTACK && !CompatibilityUtils.isDamaging;
                 if (isMelee && hasWand && !isMeleeWeapon) {
                     event.setCancelled(true);
                     CompatibilityUtils.isDamaging = true;
