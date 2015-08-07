@@ -82,6 +82,9 @@ public interface MageController {
     public ItemStack createBrushItem(String brushKey);
 
     public String describeItem(ItemStack item);
+    public String getItemKey(ItemStack item);
+    public boolean takeItem(Player player, ItemStack item);
+    public boolean hasItem(Player player, ItemStack item);
 
     public SpellCategory getCategory(String key);
     public Collection<SpellCategory> getCategories();

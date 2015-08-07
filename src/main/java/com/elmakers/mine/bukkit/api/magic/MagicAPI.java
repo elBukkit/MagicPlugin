@@ -289,6 +289,15 @@ public interface MagicAPI {
     public ItemStack createGenericItem(String magicItemKey);
 
     /**
+     * Return the key name of an item, so it can be re-created with
+     * createItem.
+     *
+     * @param item
+     * @return
+     */
+    public String getItemKey(ItemStack item);
+
+    /**
      * Return a string description of an item.
      *
      * This will use the display name if set, then Vault if
@@ -298,6 +307,25 @@ public interface MagicAPI {
      * @return A description of this item
      */
     public String describeItem(ItemStack item);
+
+    /**
+     * Check to see if a player has a specific item.
+     *
+     * @param player
+     * @param item
+     * @return
+     */
+    public boolean hasItem(Player player, ItemStack item);
+
+    /**
+     * Check to see if a player has a specific item, and remove it
+     * from the player's inventory.
+     *
+     * @param player
+     * @param item
+     * @return
+     */
+    public boolean takeItem(Player player, ItemStack item);
 
     /**
      * Create a new Wand from a template.
