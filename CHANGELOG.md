@@ -6,6 +6,9 @@
  - Add Smite spell (Lightning effect + Blast + Ignite/Damage)
  - Fix Recall using ad-hoc warps via "/cast recall warp <warpname>"
  - GriefPrevention integration now checks for PVP not being allowed in player claims
+ - Disarm will undo if you change items (but not if you move them around)
+ - Add "rage" sword, gathers mana via damage
+ - Add "requires" parameter for NPC trait, for item cost requirements
 
 ## 5.1.7
 

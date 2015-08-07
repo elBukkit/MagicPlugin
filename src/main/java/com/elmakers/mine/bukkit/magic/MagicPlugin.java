@@ -359,6 +359,16 @@ public class MagicPlugin extends JavaPlugin implements MagicAPI
     }
 
     @Override
+    public boolean takeItem(Player player, ItemStack item) {
+        return controller.takeItem(player, item);
+    }
+
+    @Override
+    public boolean hasItem(Player player, ItemStack item) {
+        return controller.hasItem(player, item);
+    }
+
+    @Override
     public ItemStack createItem(String magicKey) {
         return createItem(magicKey, null);
     }
@@ -373,70 +383,14 @@ public class MagicPlugin extends JavaPlugin implements MagicAPI
 
         // Handle : or | as delimiter
         String magicItemKey = magicKey.replace("|", ":");
-
-        try {
-            if (magicItemKey.contains("skull:") || magicItemKey.contains("skull_item:")) {
-                magicItemKey = magicItemKey.replace("skull:", "skull_item:");
-                MaterialAndData skullData = new MaterialAndData(magicItemKey);
-                itemStack = skullData.getItemStack(1);
-            } else if (magicItemKey.contains("book:")) {
-                String bookCategory = magicItemKey.substring(5);
-                SpellCategory category = null;
-
-                if (!bookCategory.isEmpty() && !bookCategory.equalsIgnoreCase("all")) {
-                    category = controller.getCategory(bookCategory);
-                    if (category == null) {
-                        return null;
-                    }
-                }
-                itemStack = getSpellBook(category, 1);
-            } else if (magicItemKey.contains("spell:")) {
-                String spellKey = magicKey.substring(6);
-                itemStack = createSpellItem(spellKey);
-            } else if (magicItemKey.contains("skill:")) {
-                String spellKey = magicKey.substring(6);
-                itemStack =  Wand.createSpellItem(spellKey, controller, mage, null, false);
-                InventoryUtils.setMeta(itemStack, "skill", "true");
-            } else if (magicItemKey.contains("wand:")) {
-                String wandKey = magicItemKey.substring(5);
-                com.elmakers.mine.bukkit.api.wand.Wand wand = createWand(wandKey);
-                if (wand != null) {
-                    itemStack = wand.getItem();
-                }
-            } else if (magicItemKey.contains("upgrade:")) {
-                String wandKey = magicItemKey.substring(8);
-                com.elmakers.mine.bukkit.api.wand.Wand wand = createWand(wandKey);
-                if (wand != null) {
-                    wand.makeUpgrade();
-                    itemStack = wand.getItem();
-                }
-            } else if (magicItemKey.contains("brush:")) {
-                String brushKey = magicItemKey.substring(6);
-                itemStack = createBrushItem(brushKey);
-            } else if (magicItemKey.contains("item:")) {
-                String itemKey = magicItemKey.substring(5);
-                itemStack = createGenericItem(itemKey);
-            } else {
-                MaterialAndData item = new MaterialAndData(magicItemKey);
-                if (item.isValid()) {
-                    return item.getItemStack(1);
-                }
-                com.elmakers.mine.bukkit.api.wand.Wand wand = createWand(magicKey);
-                if (wand != null) {
-                    return wand.getItem();
-                }
-                itemStack = createSpellItem(magicKey);
-                if (itemStack != null) {
-                    return itemStack;
-                }
-                itemStack = createBrushItem(magicItemKey);
-            }
-
-        } catch (Exception ex) {
-            getLogger().log(Level.WARNING, "Error creating item: " + magicItemKey, ex);
+        if (magicItemKey.contains("skill:")) {
+            String spellKey = magicKey.substring(6);
+            itemStack = Wand.createSpellItem(spellKey, controller, mage, null, false);
+            InventoryUtils.setMeta(itemStack, "skill", "true");
+            return itemStack;
         }
 
-        return itemStack;
+        return controller.createItem(magicKey);
     }
 
     @Override
@@ -456,6 +410,11 @@ public class MagicPlugin extends JavaPlugin implements MagicAPI
             wand.makeUpgrade();
         }
         return wand;
+    }
+
+    @Override
+    public String getItemKey(ItemStack item) {
+        return controller.getItemKey(item);
     }
 
 	@Override

@@ -1,6 +1,8 @@
 package com.elmakers.mine.bukkit.citizens;
 
+import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.magic.MagicAPI;
+import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.integration.VaultController;
 import com.elmakers.mine.bukkit.magic.MagicPlugin;
 import net.citizensnpcs.api.trait.Trait;
@@ -11,6 +13,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
@@ -18,6 +21,7 @@ public abstract class CitizensTrait extends Trait {
     private String permissionNode;
     private boolean invisible = false;
     private double cost = 0;
+    private ItemStack requireItem = null;
     protected MagicAPI api;
 
     protected CitizensTrait(String name) {
@@ -28,12 +32,19 @@ public abstract class CitizensTrait extends Trait {
         permissionNode = data.getString("permission", null);
         invisible = data.getBoolean("invisible", false);
         cost = data.getDouble("cost", 0);
+        String itemKey = data.getString("requires");
+        if (itemKey != null && itemKey.length() > 0) {
+            requireItem = api.createItem(itemKey);
+        }
     }
 
     public void save(DataKey data) {
         data.setString("permission", permissionNode);
         data.setBoolean("invisible", invisible);
         data.setDouble("cost", cost);
+        if (requireItem != null) {
+            data.setString("require", api.getItemKey(requireItem));
+        }
     }
 
     @Override
@@ -91,11 +102,20 @@ public abstract class CitizensTrait extends Trait {
             }
         }
 
+        if (requireItem != null && !api.hasItem(player, requireItem)) {
+            sender.sendMessage(api.getMessages().get("economy.requires").replace("$cost", api.describeItem(requireItem)));
+            return;
+        }
+
         boolean result = perform(event);
         if (result && cost > 0) {
             VaultController vault = VaultController.getInstance();
             sender.sendMessage(api.getMessages().get("economy.deducted").replace("$cost", vault.format(cost)));
             vault.withdrawPlayer(player, cost);
+        }
+        if (result && requireItem != null) {
+            sender.sendMessage(api.getMessages().get("economy.deducted").replace("$cost", api.describeItem(requireItem)));
+            api.takeItem(player, requireItem);
         }
     }
 
@@ -110,6 +130,9 @@ public abstract class CitizensTrait extends Trait {
         if (VaultController.hasEconomy()) {
             VaultController vault = VaultController.getInstance();
             sender.sendMessage(ChatColor.DARK_PURPLE + "Cost: " + ChatColor.GOLD + vault.format(cost));
+        }
+        if (requireItem != null) {
+            sender.sendMessage(ChatColor.DARK_PURPLE + "Requires: " + ChatColor.GOLD + api.describeItem(requireItem));
         }
     }
 
@@ -164,6 +187,23 @@ public abstract class CitizensTrait extends Trait {
                     }
                 } catch (Exception ex) {
                     sender.sendMessage(ChatColor.RED + "Invalid cost: " + value);
+                }
+            }
+        }
+        else if (key.equalsIgnoreCase("requires"))
+        {
+            if (value == null)
+            {
+                sender.sendMessage(ChatColor.DARK_PURPLE + "Cleared item requirement");
+                cost = 0;
+            }
+            else
+            {
+                try {
+                    requireItem = api.createItem(value);
+                    sender.sendMessage(ChatColor.DARK_PURPLE + "Set item requirement to " + api.describeItem(requireItem));
+                } catch (Exception ex) {
+                    sender.sendMessage(ChatColor.RED + "Invalid item: " + value);
                 }
             }
         }

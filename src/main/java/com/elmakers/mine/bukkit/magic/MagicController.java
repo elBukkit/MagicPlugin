@@ -2326,7 +2326,7 @@ public class MagicController implements MageController {
 	public boolean hasPermission(CommandSender sender, String pNode)
 	{
 		if (!(sender instanceof Player)) return true;
-		return hasPermission((Player)sender, pNode, false);
+		return hasPermission((Player) sender, pNode, false);
 	}
 	
 	public boolean hasPermission(CommandSender sender, String pNode, boolean defaultValue)
@@ -2579,10 +2579,10 @@ public class MagicController implements MageController {
 
     public void onArmorUpdated(final com.elmakers.mine.bukkit.magic.Mage mage) {
         plugin.getServer().getScheduler().runTaskLater(plugin, new Runnable() {
-           @Override
-           public void run() {
-               mage.armorUpdated();
-           }
+            @Override
+            public void run() {
+                mage.armorUpdated();
+            }
         }, 1);
     }
 
@@ -3422,6 +3422,61 @@ public class MagicController implements MageController {
         return displayName;
     }
 
+    public boolean checkForItem(Player player, ItemStack requireItem, boolean take) {
+        boolean foundItem = false;
+        ItemStack[] contents = player.getInventory().getContents();
+        for (int i = 0; i < contents.length; i++) {
+            ItemStack item = contents[i];
+            if (itemsAreEqual(item, requireItem)) {
+                if (take) {
+                    player.getInventory().setItem(i, null);
+                }
+                foundItem = true;
+                break;
+            }
+        }
+
+        return foundItem;
+    }
+
+    @Override
+    public boolean hasItem(Player player, ItemStack requireItem) {
+        return checkForItem(player, requireItem, false);
+    }
+
+    @Override
+    public boolean takeItem(Player player, ItemStack requireItem) {
+        return checkForItem(player, requireItem, true);
+    }
+
+    @Override
+    public String getItemKey(ItemStack item) {
+        if (item == null) {
+            return "";
+        }
+        if (Wand.isUpgrade(item)) {
+            return "upgrade:" + Wand.getWandTemplate(item);
+        }
+        if (Wand.isWand(item)) {
+            return "wand:" + Wand.getWandTemplate(item);
+        }
+        if (Wand.isSpell(item)) {
+            return "spell:" + Wand.getSpell(item);
+        }
+        if (Wand.isBrush(item)) {
+            return "brush:" + Wand.getBrush(item);
+        }
+        if (item.getType() == Material.SKULL_ITEM) {
+            String url = InventoryUtils.getSkullURL(item);
+            if (url != null && url.length() > 0) {
+                return "skull_item:" + url;
+            }
+        }
+
+        MaterialAndData material = new MaterialAndData(item);
+        return material.getKey();
+    }
+
     @Override
     public ItemStack createItem(String magicItemKey) {
         ItemStack itemStack = null;
@@ -3467,6 +3522,10 @@ public class MagicController implements MageController {
                 String itemKey = magicItemKey.substring(5);
                 itemStack = createGenericItem(itemKey);
             } else {
+                MaterialAndData item = new MaterialAndData(magicItemKey);
+                if (item.isValid()) {
+                    return item.getItemStack(1);
+                }
                 com.elmakers.mine.bukkit.api.wand.Wand wand = createWand(magicItemKey);
                 if (wand != null) {
                     return wand.getItem();
@@ -3474,10 +3533,6 @@ public class MagicController implements MageController {
                 itemStack = createSpellItem(magicItemKey);
                 if (itemStack != null) {
                     return itemStack;
-                }
-                MaterialAndData item = new MaterialAndData(magicItemKey);
-                if (item.isValid()) {
-                    return item.getItemStack(1);
                 }
                 itemStack = createBrushItem(magicItemKey);
             }

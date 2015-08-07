@@ -83,21 +83,9 @@ public class GiveItemAction extends BaseSpellAction
         if (permissionNode != null && !player.hasPermission(permissionNode)) {
             return SpellResult.INSUFFICIENT_PERMISSION;
         }
-        if (requireItem != null) {
-            boolean foundItem = false;
-            ItemStack[] contents = player.getInventory().getContents();
-            for (int i = 0; i < contents.length; i++) {
-                ItemStack item = contents[i];
-                if (controller.itemsAreEqual(item, requireItem)) {
-                    player.getInventory().setItem(i, null);
-                    foundItem = true;
-                    break;
-                }
-            }
-            if (!foundItem) {
-                context.sendMessage("insufficient_resources");
-                return SpellResult.INSUFFICIENT_RESOURCES;
-            }
+        if (requireItem != null && !controller.takeItem(player, requireItem)) {
+            context.sendMessage("insufficient_resources");
+            return SpellResult.INSUFFICIENT_RESOURCES;
         }
 
         mage.giveItem(InventoryUtils.getCopy(item));
