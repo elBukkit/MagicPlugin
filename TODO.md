@@ -1,7 +1,5 @@
 # TODO
 
- - Add Vault-based economy costs to spells
-
  - Add an "override" option for spells, to skip loading the defaults for that spell
  - Manually dropping a wand with a different one in your hand goes weird- maybe only in drop mode? 
  - Can't hitbox-target entities standing in a corner? Issues with spiders?

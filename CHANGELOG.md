@@ -10,6 +10,7 @@
  - Add "rage" sword, gathers mana via damage
  - Add "requires" parameter for NPC trait, for item cost requirements
  - Add per-recipe crafting permissions (e.g. Magic.craft.broomstick)
+ - Add Vault-based economy costs to spells
 
 ## 5.1.7
 
