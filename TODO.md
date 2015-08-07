@@ -1,8 +1,6 @@
 # TODO
 
  - Add Vault-based economy costs to spells
- - Add item requirement as an option for magic NPC traits
- - Add per-recipe crafting permissions
 
  - Add an "override" option for spells, to skip loading the defaults for that spell
  - Manually dropping a wand with a different one in your hand goes weird- maybe only in drop mode? 

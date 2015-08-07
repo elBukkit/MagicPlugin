@@ -9,6 +9,7 @@
  - Disarm will undo if you change items (but not if you move them around)
  - Add "rage" sword, gathers mana via damage
  - Add "requires" parameter for NPC trait, for item cost requirements
+ - Add per-recipe crafting permissions (e.g. Magic.craft.broomstick)
 
 ## 5.1.7
 

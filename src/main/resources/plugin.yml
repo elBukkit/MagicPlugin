@@ -584,6 +584,9 @@ permissions:
     description: A player may bypass restricted material checks
     default: op
     type: boolean
+  Magic.craft:
+    description: The wands a player may craft
+    type: list
   Magic.cast:
     description: The spells a player may cast
     type: list

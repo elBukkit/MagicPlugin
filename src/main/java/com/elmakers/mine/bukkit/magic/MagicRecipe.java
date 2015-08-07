@@ -31,8 +31,10 @@ public class MagicRecipe {
     private boolean disableDefaultRecipe;
     private ShapedRecipe recipe;
     private final MagicController controller;
+    private final String key;
 
-    public MagicRecipe(MagicController controller) {
+    public MagicRecipe(String key, MagicController controller) {
+        this.key = key;
         this.controller = controller;
     }
 
@@ -238,5 +240,9 @@ public class MagicRecipe {
             shapeRow++;
         }
         return true;
+    }
+
+    public String getKey() {
+        return key;
     }
 }
