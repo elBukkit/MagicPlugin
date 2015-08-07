@@ -145,6 +145,9 @@ public class InventoryUtils extends NMSUtils
     public static String getProfileURL(Object profile)
     {
         String url = null;
+        if (profile == null) {
+            return null;
+        }
         try {
             Multimap<String, Object> properties = (Multimap<String, Object>)class_GameProfile_properties.get(profile);
             Collection<Object> textures = properties.get("textures");
@@ -159,6 +162,10 @@ public class InventoryUtils extends NMSUtils
             ex.printStackTrace();
         }
         return url;
+    }
+
+    public static String getSkullURL(ItemStack skull) {
+        return getProfileURL(getSkullProfile(skull.getItemMeta()));
     }
 
     public static ItemStack getPlayerSkull(String playerName)
