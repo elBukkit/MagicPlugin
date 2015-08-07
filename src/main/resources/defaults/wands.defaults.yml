@@ -363,6 +363,34 @@ battle:
       - grenade
       - push
 
+rage:
+    effect_color: '11FF11'
+    protection_physical: 0.3
+    path: battle
+    locked: true
+    mode_drop: true
+    mode_cast: true
+    icon: diamond_sword
+    xp_regeneration: 0
+    xp_max: 200
+    mana_per_damage: 5
+    xp: 100
+    quiet: 1
+    bound: true
+    keep: true
+    undroppable: true
+    indestructible: true
+    glow: true
+    spells:
+      - missile
+      - arrow
+      - boom
+      - curse
+      - fire
+      - fireball
+      - grenade
+      - push
+
 #
 # A starter engineering wand
 #

@@ -151,6 +151,7 @@ public class EntityController implements Listener {
                 activeWand = damagerMage.getActiveWand();
                 if (activeWand != null) {
                     activeWand.playEffects("hit_entity");
+                    activeWand.damageDealt(event.getDamage(), entity);
                 }
             }
             if (preventWandMeleeDamage)
