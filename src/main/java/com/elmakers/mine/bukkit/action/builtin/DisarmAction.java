@@ -49,7 +49,6 @@ public class DisarmAction extends BaseSpellAction
 			Player player = mage.getPlayer();
 			if (player == null) return;
 			PlayerInventory inventory = player.getInventory();
-			if (inventory.getHeldItemSlot() != originalSlot) return;
 			ItemStack currentTargetItem = inventory.getItem(targetSlot);
 			ItemStack currentOriginalItem = inventory.getItem(originalSlot);
 
@@ -59,9 +58,13 @@ public class DisarmAction extends BaseSpellAction
 			if (currentOriginalItem != null && swapItem == null) return;
 			if (currentOriginalItem != swapItem && !currentOriginalItem.equals(swapItem)) return;
 			if (currentTargetItem != targetItem && !currentTargetItem.equals(targetItem)) return;
-			inventory.setItemInHand(targetItem);
+			inventory.setItem(originalSlot, targetItem);
 			inventory.setItem(targetSlot, swapItem);
-			if (Wand.isWand(targetItem)) {
+			if (inventory.getHeldItemSlot() == originalSlot && Wand.isWand(targetItem)) {
+				if (mage != null) {
+					mage.activateWand();
+				}
+			} else if (inventory.getHeldItemSlot() == targetSlot && Wand.isWand(swapItem)) {
 				if (mage != null) {
 					mage.activateWand();
 				}
