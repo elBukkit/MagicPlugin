@@ -456,7 +456,8 @@ architect:
     bound: true
     undroppable: true
     indestructible: true
-    icon: monster_eggs:2
+    icon: gold_pickaxe
+    migrate_icon: monster_eggs:2
     effect_color: '00FF00'
     protection_falling: 1
     protection: 0.2
@@ -933,7 +934,7 @@ engineer_upgrade:
 architect_upgrade:
     upgrade: true
     hidden: true
-    upgrade_icon: monster_eggs:2
+    upgrade_icon: gold_pickaxe
     indestructible: false
     xp_max: 350
     xp_regeneration: 70
@@ -1105,6 +1106,18 @@ broomstick:
     effect_color: '880088'
     spells:
         - broom
+
+blaster:
+    icon: monster_eggs:3
+    path: blaster
+    mode: cast
+    quiet: 2
+    xp: 100
+    xp_max: 100
+    xp_regeneration: 10
+    active_spell: missile
+    spells:
+        - missile
 
 crackedbroomstick:
     mode: cast
@@ -1327,8 +1340,8 @@ goggles:
 invisiblecloak:
     mode: cast
     active_spell: invisiblecloak
-    icon: gold_pickaxe
-    migrate_icon: ender_pearl
+    icon: ender_pearl
+    migrate_icon: gold_pickaxe
     indestructible: true
     locked: true
     keep: true

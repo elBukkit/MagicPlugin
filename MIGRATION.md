@@ -1,5 +1,10 @@
 # Migration Notes
 
+## 5.1.9
+
+ - Changed icon for architect wand, you may need to tweak existing ones with
+   /wand configure icon gold_pickaxe
+
 ## 5.1
 
  - Remove the "elder" wand from survival configs.

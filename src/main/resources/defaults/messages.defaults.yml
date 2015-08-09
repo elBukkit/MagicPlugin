@@ -1744,6 +1744,9 @@ wands:
         description: You can fly!
         enchant_instructions: "&r&bEnchant your $wand to increase its speed and handling"
         spell_instructions: "&r&bUse your broom to fly through the air. Spacebar will speed up, shift slows down and lands."
+    blaster:
+        name: Blaster
+        description: Pew-pew!
     crackedbroomstick:
         name: Cracked Broomstick
         description: Good while it lasts!
