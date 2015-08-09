@@ -1,5 +1,7 @@
 # CHANGELOG
 
+## 5.1.10
+
 ## 5.1.9
 
  - Changed icon for architect wand, you may need to tweak existing ones with
