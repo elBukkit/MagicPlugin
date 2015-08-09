@@ -1,5 +1,13 @@
 # CHANGELOG
 
+## CB 1.3
+
+ - Changed icon for architect wand, you may need to tweak existing ones with
+   /wand configure icon gold_pickaxe
+ - Changed icon for invisibility cloak back to ender eye
+ - Fixed PVP checks with GriefPrevention integration
+ - Add Blaster item, very WIP
+
 ## CB 1.2
 
  - Add Nuke Level 2 (Breaks all block types, larger radius)

@@ -1,5 +1,10 @@
 # Migration Notes
 
+## CB-1.3
+
+ - Changed icon for architect wand, you may need to tweak existing ones with
+   /wand configure icon gold_pickaxe
+
 ## CB-1.2
 
  - Remove the "elder" wand from survival configs.

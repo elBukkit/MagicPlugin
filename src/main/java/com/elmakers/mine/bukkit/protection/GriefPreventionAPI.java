@@ -42,7 +42,7 @@ public class GriefPreventionAPI
     public boolean isPVPAllowed(Location location) {
         if (location != null && griefPrevention != null && griefPrevention.config_pvp_noCombatInPlayerLandClaims) {
             Claim claim = griefPrevention.dataStore.getClaimAt(location, false, null);
-            return (claim != null);
+            return (claim == null);
         }
         return true;
     }

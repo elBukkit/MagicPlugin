@@ -713,3 +713,7 @@ broom:
       0^1: 100,100, 100
       0^2: 0,  100, 100
       0^3: 0 ,  10, 150
+
+blaster:
+    min_enchant_level: 50
+    max_enchant_level: 50
