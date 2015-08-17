@@ -5,16 +5,16 @@ import java.util.logging.Logger;
 
 import org.bukkit.configuration.file.YamlConfiguration;
 
-public class DataStore extends YamlConfiguration {
+public class YamlDataFile extends YamlConfiguration {
 	protected final File file;
 	protected final Logger logger;
 	
-	public DataStore(Logger logger, File file) {
+	public YamlDataFile(Logger logger, File file) {
 		this.file = file;
 		this.logger = logger;
 	}
 	
-	public DataStore(Logger logger, String filename) {
+	public YamlDataFile(Logger logger, String filename) {
 		file = new File(filename);
 		this.logger = logger;
 	}

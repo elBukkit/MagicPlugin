@@ -58,7 +58,7 @@ import com.elmakers.mine.bukkit.protection.WorldGuardManager;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.spell.SpellCategory;
 import com.elmakers.mine.bukkit.traders.TradersController;
-import com.elmakers.mine.bukkit.utilities.DataStore;
+import com.elmakers.mine.bukkit.utilities.YamlDataFile;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
@@ -1230,9 +1230,9 @@ public class MagicController implements MageController {
         return configuration;
     }
 
-    protected DataStore createDataFile(String fileName) {
+    protected YamlDataFile createDataFile(String fileName) {
         File dataFile = new File(dataFolder, fileName + ".yml");
-        DataStore configuration = new DataStore(getLogger(), dataFile);
+        YamlDataFile configuration = new YamlDataFile(getLogger(), dataFile);
         return configuration;
     }
     protected ConfigurationSection loadConfigFile(String fileName, boolean loadDefaults)
@@ -1494,10 +1494,10 @@ public class MagicController implements MageController {
         getLogger().info("Loaded " + lostWands.size() + " lost wands");
     }
 
-    protected void saveSpellData(Collection<DataStore> stores) {
+    protected void saveSpellData(Collection<YamlDataFile> stores) {
         String lastKey = "";
         try {
-            DataStore spellsDataFile = createDataFile(SPELLS_DATA_FILE);
+            YamlDataFile spellsDataFile = createDataFile(SPELLS_DATA_FILE);
             for (SpellTemplate spell : spells.values()) {
                 lastKey = spell.getKey();
                 ConfigurationSection spellNode = spellsDataFile.createSection(lastKey);
@@ -1517,10 +1517,10 @@ public class MagicController implements MageController {
         }
     }
 
-    protected void saveLostWands(Collection<DataStore> stores) {
+    protected void saveLostWands(Collection<YamlDataFile> stores) {
         String lastKey = "";
         try {
-            DataStore lostWandsConfiguration = createDataFile(LOST_WANDS_FILE);
+            YamlDataFile lostWandsConfiguration = createDataFile(LOST_WANDS_FILE);
             for (Entry<String, LostWand> wandEntry : lostWands.entrySet()) {
                 lastKey = wandEntry.getKey();
                 if (lastKey == null || lastKey.length() == 0) continue;
@@ -1568,9 +1568,9 @@ public class MagicController implements MageController {
         getLogger().info("Loaded " + automataCount + " automata");
     }
 
-    protected void saveAutomata(Collection<DataStore> stores) {
+    protected void saveAutomata(Collection<YamlDataFile> stores) {
         try {
-            DataStore automataData = createDataFile(AUTOMATA_FILE);
+            YamlDataFile automataData = createDataFile(AUTOMATA_FILE);
             for (Entry<String, Map<Long, Automaton>> toggleEntry : automata.entrySet()) {
                 Collection<Automaton> blocks = toggleEntry.getValue().values();
                 if (blocks.size() > 0) {
@@ -1648,11 +1648,11 @@ public class MagicController implements MageController {
         return defaultWandPath;
     }
 
-    protected void savePlayerData(Collection<DataStore> stores) {
+    protected void savePlayerData(Collection<YamlDataFile> stores) {
         try {
             for (Entry<String, Mage> mageEntry : mages.entrySet()) {
                 File playerData = new File(playerDataFolder, mageEntry.getKey() + ".dat");
-                DataStore playerConfig = new DataStore(getLogger(), playerData);
+                YamlDataFile playerConfig = new YamlDataFile(getLogger(), playerData);
                 Mage mage = mageEntry.getValue();
                 if (!mage.isPlayer() && !saveNonPlayerMages)
                 {
@@ -1699,7 +1699,7 @@ public class MagicController implements MageController {
         if (!initialized) return;
         maps.save(asynchronous);
 
-        final List<DataStore> saveData = new ArrayList<DataStore>();
+        final List<YamlDataFile> saveData = new ArrayList<YamlDataFile>();
 		savePlayerData(saveData);
         info("Saving " + saveData.size() + " players");
 		saveSpellData(saveData);
@@ -1711,7 +1711,7 @@ public class MagicController implements MageController {
                 @Override
                 public void run() {
                     synchronized (saveLock) {
-                        for (DataStore config : saveData) {
+                        for (YamlDataFile config : saveData) {
                             config.save();
                         }
                         info("Finished saving");
@@ -1720,7 +1720,7 @@ public class MagicController implements MageController {
             });
         } else {
             synchronized (saveLock) {
-                for (DataStore config : saveData) {
+                for (YamlDataFile config : saveData) {
                     config.save();
                 }
                 info("Finished saving");
@@ -2520,7 +2520,7 @@ public class MagicController implements MageController {
         }
         final File playerData = new File(playerDataFolder, mage.getId() + ".dat");
         info("Saving player data for " + mage.getName() + " to " + playerData.getName() + (asynchronous ? "" : " synchronously"));
-        final DataStore playerConfig = new DataStore(getLogger(), playerData);
+        final YamlDataFile playerConfig = new YamlDataFile(getLogger(), playerData);
         if (mage.save(playerConfig)) {
             if (asynchronous) {
                 Bukkit.getScheduler().runTaskAsynchronously(plugin, new Runnable() {
