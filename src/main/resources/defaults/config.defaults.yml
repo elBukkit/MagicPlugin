@@ -254,6 +254,7 @@ keep_wands_on_death: false
 allow_spell_dropping: false
 
 # Give new players a wand when they join.
+# e.g. welcome_wand: beginner
 welcome_wand:
 
 # Prefer alternate modes for wand mechanics.
