@@ -2,6 +2,8 @@
 
 ## 5.1.10
 
+ - Add world change event handler, hoping for MVInventories compatibility.
+
 ## 5.1.9
 
  - Changed icon for architect wand, you may need to tweak existing ones with

@@ -348,6 +348,10 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
     @Override
     public void activateWand() {
+        if (this.activeWand != null) {
+            this.activeWand.deactivate();
+            this.activeWand = null;
+        }
         Player player = getPlayer();
         if (player == null) return;
         PlayerInventory inventory = player.getInventory();
@@ -358,6 +362,10 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     }
 
     public void setActiveWand(Wand activeWand) {
+        if (this.activeWand != null) {
+            this.activeWand.deactivate();
+            this.activeWand = null;
+        }
         this.activeWand = activeWand;
         if (activeWand != null && activeWand.isBound() && activeWand.canUse(getPlayer())) {
             String template = activeWand.getTemplateKey();

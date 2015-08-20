@@ -16,6 +16,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.player.PlayerChangedWorldEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerEvent;
 import org.bukkit.event.player.PlayerExpChangeEvent;
@@ -387,6 +388,14 @@ public class PlayerController implements Listener {
             }
             controller.playerQuit(mage);
         }
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST)
+    public void onPlayerChangeWorld(PlayerChangedWorldEvent event)
+    {
+        Player player = event.getPlayer();
+        Mage mage = controller.getMage(player);
+        mage.activateWand();
     }
 
     @EventHandler
