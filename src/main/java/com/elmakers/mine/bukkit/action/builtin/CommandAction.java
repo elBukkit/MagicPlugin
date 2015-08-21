@@ -45,18 +45,22 @@ import java.util.logging.Level;
  */
 public class CommandAction extends BaseSpellAction {
     public final static String[] PARAMETERS = {
-            "command", "console", "op", "radius"
+        "command", "console", "op", "radius", "target_required", "target_entity_required"
     };
 
     private List<String> commands = new ArrayList<String>();
     private boolean asConsole;
     private boolean opPlayer;
+    private boolean requiresTarget;
+    private boolean requiresEntityTarget;
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters) {
         super.prepare(context, parameters);
         asConsole = parameters.getBoolean("console", false);
         opPlayer = parameters.getBoolean("op", false);
+        requiresTarget = parameters.getBoolean("target_required", false);
+        requiresEntityTarget = parameters.getBoolean("target_entity_required", false);
     }
 
     @Override
@@ -170,5 +174,17 @@ public class CommandAction extends BaseSpellAction {
         } else {
             super.getParameterOptions(spell, parameterKey, examples);
         }
+    }
+
+    @Override
+    public boolean requiresTargetEntity()
+    {
+        return requiresEntityTarget;
+    }
+
+    @Override
+    public boolean requiresTarget()
+    {
+        return requiresTarget;
     }
 }
