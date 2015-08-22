@@ -537,6 +537,7 @@ public abstract class TargetingSpell extends BaseSpell {
         range = Math.min(range, CompatibilityUtils.MAX_ENTITY_RANGE);
         if (sourceLocation == null && sourceEntity != null) {
             entities = sourceEntity.getNearbyEntities(range, range, range);
+            sourceLocation = sourceEntity.getLocation();
         } else if (sourceLocation != null) {
             entities = CompatibilityUtils.getNearbyEntities(sourceLocation, range, range, range);
         }
@@ -549,7 +550,9 @@ public abstract class TargetingSpell extends BaseSpell {
             if (!targetNPCs && controller.isNPC(entity)) continue;
             if (!targetArmorStands && entity instanceof ArmorStand) continue;
             if (entity.hasMetadata("notarget")) continue;
-            if (entity.getLocation().distanceSquared(sourceLocation) > rangeSquared) continue;
+            Location entityLocation = entity.getLocation();
+            if (!entityLocation.getWorld().equals(sourceLocation.getWorld())) continue;
+            if (entityLocation.distanceSquared(sourceLocation) > rangeSquared) continue;
 
             // Special check for Elementals
             if (!controller.isElemental(entity) && !canTarget(entity)) continue;
