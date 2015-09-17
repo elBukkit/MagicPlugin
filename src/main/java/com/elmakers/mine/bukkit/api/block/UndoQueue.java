@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.api.block;
 
+import com.elmakers.mine.bukkit.api.data.UndoData;
 import org.bukkit.block.Block;
 
 public interface UndoQueue {
@@ -56,4 +57,14 @@ public interface UndoQueue {
 
     public boolean isEmpty();
     public boolean commit();
+
+    /**
+     * Save the data in this undo queue
+     */
+    public void save(UndoData data);
+
+    /**
+     * Load the data in this undo queue
+     */
+    public void load(UndoData data);
 }

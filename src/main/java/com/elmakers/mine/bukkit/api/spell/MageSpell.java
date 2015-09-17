@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.api.spell;
 
+import com.elmakers.mine.bukkit.api.data.SpellData;
 import org.bukkit.configuration.ConfigurationSection;
 
 import com.elmakers.mine.bukkit.api.magic.Mage;
@@ -37,11 +38,10 @@ public interface MageSpell extends Spell, CostReducer {
     public void setMage(Mage mage);
     public Mage getMage();
 
-    public void load(ConfigurationSection node);
-    public void save(ConfigurationSection node);
+    public void load(SpellData spellData);
+    public void save(SpellData spellData);
 
     public void tick();
-
     public void initialize(MageController controller);
 
     public void setUpgrade(MageSpell spell);

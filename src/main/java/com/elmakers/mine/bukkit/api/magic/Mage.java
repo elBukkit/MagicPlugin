@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Set;
 
 import com.elmakers.mine.bukkit.api.action.GUIAction;
+import com.elmakers.mine.bukkit.api.data.MageData;
 import com.elmakers.mine.bukkit.api.effect.SoundEffect;
 import com.elmakers.mine.bukkit.api.spell.MageSpell;
 import org.bukkit.Color;
@@ -371,7 +372,7 @@ public interface Mage extends CostReducer {
     public void enableFallProtection(int ms, Spell protector);
     public void enableFallProtection(int ms, int count, Spell protector);
 
-    public boolean save(ConfigurationSection configuration);
+    public boolean save(MageData data);
     public void activateWand();
     public void deactivate();
     public boolean isValid();
