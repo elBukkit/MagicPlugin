@@ -4,6 +4,9 @@ import com.elmakers.mine.bukkit.api.block.BoundingBox;
 import com.elmakers.mine.bukkit.api.block.CurrencyItem;
 import com.elmakers.mine.bukkit.api.block.Schematic;
 import com.elmakers.mine.bukkit.api.block.UndoList;
+import com.elmakers.mine.bukkit.api.data.MageData;
+import com.elmakers.mine.bukkit.api.data.MageDataStore;
+import com.elmakers.mine.bukkit.api.data.SpellData;
 import com.elmakers.mine.bukkit.api.event.SaveEvent;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
@@ -135,9 +138,6 @@ public class MagicController implements MageController {
         dataFolder = new File(configFolder, "data");
         dataFolder.mkdirs();
 
-        playerDataFolder = new File(dataFolder, "players");
-        playerDataFolder.mkdirs();
-
         defaultsFolder = new File(configFolder, "defaults");
         defaultsFolder.mkdirs();
     }
@@ -169,33 +169,32 @@ public class MagicController implements MageController {
 
             // Check for existing data file
             // For now we only do async loads for Players
-            final File playerFile = new File(playerDataFolder, mageId + ".dat");
-            if (savePlayerData && playerFile.exists()) {
+            if (savePlayerData && mageDataStore != null) {
                 if (commandSender instanceof Player) {
                     mage.setLoading(true);
                     plugin.getServer().getScheduler().runTaskAsynchronously(plugin, new Runnable() {
                         @Override
                         public void run() {
                             synchronized (saveLock) {
-                                info("Loading mage data from file " + playerFile.getName());
+                                info("Loading mage data for " + mage.getName() + " (" + mage.getId() + ")");
                                 try {
-                                    final Configuration playerData = YamlConfiguration.loadConfiguration(playerFile);
+                                    MageData playerData = mageDataStore.load(mage.getId());
                                     mage.load(playerData);
                                 } catch (Exception ex) {
-                                    getLogger().warning("Failed to load mage data from file " + playerFile.getName());
+                                    getLogger().warning("Failed to load mage data for " + mage.getName() + " (" + mage.getId() + ")");
                                     ex.printStackTrace();
                                 }
                             }
                         }
                     });
                 } else {
-                    info("Loading mage data from file " + playerFile.getName() + " synchronously");
+                    info("Loading mage data for " + mage.getName() + " (" + mage.getId() + ") synchronously");
                     synchronized (saveLock) {
                         try {
-                            final Configuration playerData = YamlConfiguration.loadConfiguration(playerFile);
+                            MageData playerData = mageDataStore.load(mage.getId());
                             mage.load(playerData);
                         } catch (Exception ex) {
-                            getLogger().warning("Failed to load mage data from file " + playerFile.getName());
+                            getLogger().warning("Failed to load mage data for " + mage.getName() + " (" + mage.getId() + ")");
                             ex.printStackTrace();
                         }
                     }
@@ -1433,11 +1432,13 @@ public class MagicController implements MageController {
             Set<String> keys = configNode.getKeys(false);
             for (String key : keys) {
                 SpellTemplate spell = getSpellTemplate(key);
-
                 // Bit hacky to use the Spell load method on a SpellTemplate, but... meh!
                 if (spell != null && spell instanceof MageSpell) {
+                    SpellData templateData = new SpellData(key);
                     ConfigurationSection spellSection = configNode.getConfigurationSection(key);
-                    ((MageSpell) spell).load(spellSection);
+                    templateData.setCastCount(spellSection.getLong("cast_count"));
+                    templateData.setLastCast(spellSection.getLong("last_cast"));
+                    ((MageSpell) spell).load(templateData);
                 }
             }
         } catch (Exception ex) {
@@ -1507,7 +1508,10 @@ public class MagicController implements MageController {
                 }
                 // Hackily re-using save
                 if (spell != null && spell instanceof MageSpell) {
-                    ((MageSpell) spell).save(spellNode);
+                    SpellData templateData = new SpellData(lastKey);
+                    ((MageSpell) spell).save(templateData);
+                    spellNode.set("cast_count", templateData.getCastCount());
+                    spellNode.set("last_cast", templateData.getLastCast());
                 }
             }
             stores.add(spellsDataFile);
@@ -1648,11 +1652,9 @@ public class MagicController implements MageController {
         return defaultWandPath;
     }
 
-    protected void savePlayerData(Collection<YamlDataFile> stores) {
+    protected void savePlayerData(Collection<MageData> stores) {
         try {
             for (Entry<String, Mage> mageEntry : mages.entrySet()) {
-                File playerData = new File(playerDataFolder, mageEntry.getKey() + ".dat");
-                YamlDataFile playerConfig = new YamlDataFile(getLogger(), playerData);
                 Mage mage = mageEntry.getValue();
                 if (!mage.isPlayer() && !saveNonPlayerMages)
                 {
@@ -1664,8 +1666,9 @@ public class MagicController implements MageController {
                 }
 
                 if (!mage.isLoading()) {
-                    if (mage.save(playerConfig)) {
-                        stores.add(playerConfig);
+                    MageData mageData = new MageData(mage.getId());
+                    if (mage.save(mageData)) {
+                        stores.add(mageData);
                     }
                 } else {
                     getLogger().info("Skipping save of mage, already loading: " + mage.getName());
@@ -1700,8 +1703,11 @@ public class MagicController implements MageController {
         maps.save(asynchronous);
 
         final List<YamlDataFile> saveData = new ArrayList<YamlDataFile>();
-		savePlayerData(saveData);
-        info("Saving " + saveData.size() + " players");
+        final List<MageData> saveMages = new ArrayList<MageData>();
+        if (savePlayerData && mageDataStore != null) {
+            savePlayerData(saveMages);
+        }
+        info("Saving " + saveMages.size() + " players");
 		saveSpellData(saveData);
 		saveLostWands(saveData);
 		saveAutomata(saveData);
@@ -1711,6 +1717,9 @@ public class MagicController implements MageController {
                 @Override
                 public void run() {
                     synchronized (saveLock) {
+                        for (MageData mageData : saveMages) {
+                            mageDataStore.save(mageData);
+                        }
                         for (YamlDataFile config : saveData) {
                             config.save();
                         }
@@ -1720,6 +1729,9 @@ public class MagicController implements MageController {
             });
         } else {
             synchronized (saveLock) {
+                for (MageData mageData : saveMages) {
+                    mageDataStore.save(mageData);
+                }
                 for (YamlDataFile config : saveData) {
                     config.save();
                 }
@@ -2207,6 +2219,31 @@ public class MagicController implements MageController {
 
         savePlayerData = properties.getBoolean("save_player_data", true);
 
+        ConfigurationSection mageDataStore = properties.getConfigurationSection("player_data_store");
+        String dataStoreClassName = mageDataStore.getString("class");
+        if (mageDataStore != null) {
+            try {
+                Class<?> dataStoreClass = Class.forName(dataStoreClassName);
+                Object dataStore = dataStoreClass.newInstance();
+                if (dataStore == null || !(dataStore instanceof MageDataStore))
+                {
+                    getLogger().log(Level.WARNING, "Invalid player_data_store class " + dataStoreClassName + ", does it implement MageDataStore? Player data saving is disabled!");
+                    this.mageDataStore = null;
+                }
+                else
+                {
+                    this.mageDataStore = (MageDataStore)dataStore;
+                    this.mageDataStore.initialize(this, mageDataStore);
+                }
+            } catch (Exception ex) {
+                getLogger().log(Level.WARNING, "Failed to create player_data_store class from " + dataStoreClassName + " player data saving is disabled!");
+                this.mageDataStore = null;
+            }
+        } else {
+            getLogger().log(Level.WARNING, "Missing player_data_store configuration, player data saving disabled!");
+            this.mageDataStore = null;
+        }
+
         // Semi-deprecated Wand defaults
         Wand.DefaultWandMaterial = ConfigurationUtils.getMaterial(properties, "wand_item", Wand.DefaultWandMaterial);
         Wand.EnchantableWandMaterial = ConfigurationUtils.getMaterial(properties, "wand_item_enchantable", Wand.EnchantableWandMaterial);
@@ -2332,7 +2369,7 @@ public class MagicController implements MageController {
 	public boolean hasPermission(CommandSender sender, String pNode, boolean defaultValue)
 	{
 		if (!(sender instanceof Player)) return true;
-		return hasPermission((Player)sender, pNode, defaultValue);
+		return hasPermission((Player) sender, pNode, defaultValue);
 	}
 
     public UndoList getPendingUndo(Location location)
@@ -2518,17 +2555,16 @@ public class MagicController implements MageController {
             }
             return;
         }
-        final File playerData = new File(playerDataFolder, mage.getId() + ".dat");
-        info("Saving player data for " + mage.getName() + " to " + playerData.getName() + (asynchronous ? "" : " synchronously"));
-        final YamlDataFile playerConfig = new YamlDataFile(getLogger(), playerData);
-        if (mage.save(playerConfig)) {
+        info("Saving player data for " + mage.getName() + " (" + mage.getId() + ") " + (asynchronous ? "" : " synchronously"));
+        final MageData mageData = new MageData(mage.getId());
+        if (mage.save(mageData)) {
             if (asynchronous) {
                 Bukkit.getScheduler().runTaskAsynchronously(plugin, new Runnable() {
                     @Override
                     public void run() {
                         synchronized (saveLock) {
                             try {
-                                playerConfig.save();
+                                mageDataStore.save(mageData);
                                 if (callback != null) {
                                     Bukkit.getScheduler().runTaskLater(plugin, callback, 1);
                                 }
@@ -2541,7 +2577,7 @@ public class MagicController implements MageController {
             } else {
                 synchronized (saveLock) {
                     try {
-                        playerConfig.save();
+                        mageDataStore.save(mageData);
                         if (callback != null) {
                             callback.run();
                         }
@@ -3912,11 +3948,12 @@ public class MagicController implements MageController {
     private final PriorityQueue<UndoList>       scheduledUndo               = new PriorityQueue<UndoList>();
     private final Map<String, WeakReference<Schematic>> schematics	= new HashMap<String, WeakReference<Schematic>>();
 
+    private MageDataStore                       mageDataStore               = null;
+
     private MagicPlugin                         plugin                      = null;
     private final File							configFolder;
     private final File							dataFolder;
     private final File							defaultsFolder;
-    private final File							playerDataFolder;
 
     private int								    toggleCooldown				= 1000;
     private int								    toggleMessageRange			= 1024;

@@ -3,6 +3,7 @@ package com.elmakers.mine.bukkit.magic;
 import java.lang.ref.WeakReference;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -15,6 +16,10 @@ import java.util.logging.Level;
 import com.elmakers.mine.bukkit.action.TeleportTask;
 import com.elmakers.mine.bukkit.api.action.GUIAction;
 import com.elmakers.mine.bukkit.api.batch.SpellBatch;
+import com.elmakers.mine.bukkit.api.data.BrushData;
+import com.elmakers.mine.bukkit.api.data.MageData;
+import com.elmakers.mine.bukkit.api.data.SpellData;
+import com.elmakers.mine.bukkit.api.data.UndoData;
 import com.elmakers.mine.bukkit.api.effect.SoundEffect;
 import com.elmakers.mine.bukkit.api.spell.SpellKey;
 import com.elmakers.mine.bukkit.effect.HoloUtils;
@@ -62,7 +67,6 @@ import com.elmakers.mine.bukkit.api.wand.LostWand;
 import com.elmakers.mine.bukkit.block.MaterialBrush;
 import com.elmakers.mine.bukkit.block.UndoQueue;
 import com.elmakers.mine.bukkit.batch.UndoBatch;
-import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.wand.Wand;
 
 public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mage {
@@ -126,10 +130,9 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     private Integer hologramTaskId = null;
     private boolean hologramIsVisible = false;
 
-    private HashMap<Integer, ItemStack> respawnInventory;
-    private HashMap<Integer, ItemStack> respawnArmor;
-    private List<?> restoreInventory;
-    private ConfigurationSection spellData;
+    private Map<Integer, ItemStack> respawnInventory;
+    private Map<Integer, ItemStack> respawnArmor;
+    private List<ItemStack> restoreInventory;
 
     private String destinationWarp;
 
@@ -348,12 +351,12 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
     @Override
     public void activateWand() {
+        Player player = getPlayer();
+        if (player == null) return;
         if (this.activeWand != null) {
             this.activeWand.deactivate();
             this.activeWand = null;
         }
-        Player player = getPlayer();
-        if (player == null) return;
         PlayerInventory inventory = player.getInventory();
         ItemStack itemStack = inventory.getItemInHand();
         int slot = inventory.getHeldItemSlot();
@@ -527,7 +530,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         }
     }
 
-    protected void onLoad() {
+    protected void onLoad(MageData data) {
         loading = false;
         Player player = getPlayer();
         if (player != null) {
@@ -548,13 +551,12 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                 restoreInventory = null;
             }
 
-            if (spellData != null) {
-                Set<String> keys = spellData.getKeys(false);
-                for (String key : keys) {
-                    Spell spell = spells.get(key);
+            Collection<SpellData> spellDataList = data == null ? null : data.getSpellData();
+            if (spellDataList != null) {
+                for (SpellData spellData : spellDataList) {
+                    Spell spell = spells.get(spellData.getKey());
                     if (spell != null && spell instanceof MageSpell) {
-                        ConfigurationSection spellSection = spellData.getConfigurationSection(key);
-                        ((MageSpell) spell).load(spellSection);
+                        ((MageSpell)spell).load(spellData);
                     }
                 }
             }
@@ -579,57 +581,40 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         }
     }
 
-    protected void finishLoad() {
-        MageLoadTask loadTask = new MageLoadTask(this);
+    protected void finishLoad(MageData data) {
+        MageLoadTask loadTask = new MageLoadTask(this, data);
         Bukkit.getScheduler().scheduleSyncDelayedTask(controller.getPlugin(), loadTask, 1);
     }
 
-    protected boolean load(ConfigurationSection configNode) {
+    protected boolean load(MageData data) {
         try {
-            if (configNode == null) {
-                finishLoad();
+            if (data == null) {
+                finishLoad(data);
                 return true;
             }
 
             boundWands.clear();
-            if (configNode.contains("bound_wand")) {
-                // Legacy support
-                Wand boundWand = new Wand(controller, configNode.getConfigurationSection("bound_wand"));
-                String template = boundWand.getTemplateKey();
-                if (template != null) {
-                    boundWands.put(template, boundWand);
-                }
-            } else if (configNode.contains("wand")) {
-                // More legacy support :|
-                Wand boundWand = new Wand(controller, controller.deserialize(configNode, "wand"));
-                String template = boundWand.getTemplateKey();
-                if (template != null && !template.isEmpty()) {
-                    boundWands.put(template, boundWand);
-                }
-            } else if (configNode.contains("wands")) {
-                ConfigurationSection wands = configNode.getConfigurationSection("wands");
-                Set<String> keys = wands.getKeys(false);
-                for (String key : keys) {
-                    Wand boundWand = new Wand(controller, controller.deserialize(wands, key));
-                    boundWands.put(key, boundWand);
+            Map<String, ItemStack> boundWandItems = data.getBoundWands();
+            if (boundWandItems != null) {
+                for (ItemStack boundWandItem : boundWandItems.values()) {
+                    Wand boundWand = new Wand(controller, boundWandItem);
+                    boundWands.put(boundWand.getTemplateKey(), boundWand);
                 }
             }
-            if (configNode.contains("data")) {
-                data = configNode.getConfigurationSection("data");
-            }
+            this.data = data.getExtraData();
 
-            fallProtectionCount = configNode.getLong("fall_protection_count", 0);
-            fallProtection = configNode.getLong("fall_protection", 0);
+            fallProtectionCount = data.getFallProtectionCount();
+            fallProtection = data.getFallProtectionDuration();
             if (fallProtectionCount > 0 && fallProtection > 0) {
                 fallProtection = System.currentTimeMillis() + fallProtection;
             }
 
             isNewPlayer = false;
-            playerName = configNode.getString("name", playerName);
-            lastDeathLocation = ConfigurationUtils.getLocation(configNode, "last_death_location");
-            location = ConfigurationUtils.getLocation(configNode, "location");
-            lastCast = configNode.getLong("last_cast", lastCast);
-            destinationWarp = configNode.getString("destination_warp");
+            playerName = data.getName();
+            lastDeathLocation = data.getLastDeathLocation();
+            location = data.getLocation();
+            lastCast = data.getLastCast();
+            destinationWarp = data.getDestinationWarp();
             if (destinationWarp != null) {
                 if (!destinationWarp.isEmpty()) {
                     Location destination = controller.getWarp(destinationWarp);
@@ -645,112 +630,81 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                 destinationWarp = null;
             }
 
-            getUndoQueue().load(configNode);
-            spellData = configNode.getConfigurationSection("spells");
+            getUndoQueue().load(data.getUndoData());
+
+            Collection<SpellData> spellData = data.getSpellData();
             if (spellData != null) {
-                Set<String> keys = spellData.getKeys(false);
-                for (String key : keys) {
-                    createSpell(key);
-                }
-            }
-            ConfigurationSection respawnData = configNode.getConfigurationSection("respawn_inventory");
-            if (respawnData != null) {
-                Collection<String> keys = respawnData.getKeys(false);
-                respawnInventory = new HashMap<Integer, ItemStack>();
-                for (String key : keys) {
-                    try {
-                        int index = Integer.parseInt(key);
-                        ItemStack item = controller.deserialize(respawnData, key);
-                        respawnInventory.put(index, item);
-                    } catch (Exception ex) {
-                    }
-                }
-            }
-            ConfigurationSection respawnArmorData = configNode.getConfigurationSection("respawn_armor");
-            if (respawnArmorData != null) {
-                Collection<String> keys = respawnArmorData.getKeys(false);
-                respawnArmor = new HashMap<Integer, ItemStack>();
-                for (String key : keys) {
-                    try {
-                        int index = Integer.parseInt(key);
-                        ItemStack item = controller.deserialize(respawnArmorData, key);
-                        respawnArmor.put(index, item);
-                    } catch (Exception ex) {
-                    }
+                for (SpellData spell : spellData) {
+                    // Spell data is loaded in onLoad to ensure it happens in the main thread
+                    createSpell(spell.getKey());
                 }
             }
 
-            if (configNode.contains("brush")) {
-                brush.load(configNode.getConfigurationSection("brush"));
+            respawnInventory = data.getRespawnInventory();
+            respawnArmor = data.getRespawnArmor();
+
+            BrushData brushData = data.getBrushData();
+            if (brushData != null) {
+                brush.load(brushData);
             }
 
-            if (configNode.contains("inventory")) {
-                restoreInventory = configNode.getList("inventory");
-            }
+            restoreInventory = data.getStoredInventory();
         } catch (Exception ex) {
             controller.getLogger().warning("Failed to load player data for " + playerName + ": " + ex.getMessage());
             return false;
         }
 
-        finishLoad();
+        finishLoad(data);
         return true;
     }
 
     @Override
-    public boolean save(ConfigurationSection configNode) {
+    public boolean save(MageData data) {
         try {
-            configNode.set("name", playerName);
-            configNode.set("last_cast", lastCast);
-            configNode.set("last_death_location", ConfigurationUtils.fromLocation(lastDeathLocation));
-            if (location != null) {
-                configNode.set("location", ConfigurationUtils.fromLocation(location));
-            }
-            configNode.set("destination_warp", destinationWarp);
-
+            data.setName(getName());
+            data.setId(getId());
+            data.setLastCast(lastCast);
+            data.setLastDeathLocation(lastDeathLocation);
+            data.setLocation(location);
+            data.setDestinationWarp(destinationWarp);
             long now = System.currentTimeMillis();
+
             if (fallProtectionCount > 0 && fallProtection > now) {
-                configNode.set("fall_protection_count", fallProtectionCount);
-                configNode.set("fall_protection", fallProtection - now);
+                data.setFallProtectionCount(fallProtectionCount);
+                data.setFallProtectionDuration(fallProtection - now);
+            } else {
+                data.setFallProtectionCount(0);
+                data.setFallProtectionDuration(0);
             }
 
-            ConfigurationSection brushNode = configNode.createSection("brush");
-            brush.save(brushNode);
+            BrushData brushData = new BrushData();
+            brush.save(brushData);
+            data.setBrushData(brushData);
+            UndoData undoData = new UndoData();
+            getUndoQueue().save(undoData);
+            data.setUndoData(undoData);
 
-            getUndoQueue().save(configNode);
-            ConfigurationSection spellNode = configNode.createSection("spells");
+            List<SpellData> spellDataList = new ArrayList<SpellData>();
             for (MageSpell spell : spells.values()) {
-                ConfigurationSection section = spellNode.createSection(spell.getKey());
-                spell.save(section);
+                SpellData spellData = new SpellData(spell.getKey());
+                spell.save(spellData);
+                spellDataList.add(spellData);
             }
+            data.setSpellData(spellDataList);
 
             if (boundWands.size() > 0) {
-                ConfigurationSection wandSection = configNode.createSection("wands");
+                Map<String, ItemStack> wandItems = new HashMap<String, ItemStack>();
                 for (Map.Entry<String, Wand> wandEntry : boundWands.entrySet()) {
-                    controller.serialize(wandSection,  wandEntry.getKey(), wandEntry.getValue().getItem());
+                    wandItems.put(wandEntry.getKey(), wandEntry.getValue().getItem());
                 }
+                data.setBoundWands(wandItems);
             }
-            if (respawnArmor != null) {
-                ConfigurationSection armorSection = configNode.createSection("respawn_armor");
-                for (Map.Entry<Integer, ItemStack> entry : respawnArmor.entrySet())
-                {
-                    controller.serialize(armorSection, Integer.toString(entry.getKey()), entry.getValue());
-                }
-            }
-            if (respawnInventory != null) {
-                ConfigurationSection inventorySection = configNode.createSection("respawn_inventory");
-                for (Map.Entry<Integer, ItemStack> entry : respawnInventory.entrySet())
-                {
-                    controller.serialize(inventorySection, Integer.toString(entry.getKey()), entry.getValue());
-                }
-            }
-
+            data.setRespawnArmor(respawnArmor);
+            data.setRespawnInventory(respawnInventory);
             if (activeWand != null && activeWand.hasStoredInventory()) {
-                ConfigurationSection inventoryConfig = configNode.createSection("inventory");
-                configNode.set("inventory", activeWand.getStoredInventory().getContents());
+                data.setStoredInventory(Arrays.asList(activeWand.getStoredInventory().getContents()));
             }
-
-            ConfigurationSection dataSection = configNode.createSection("data");
-            ConfigurationUtils.addConfigurations(dataSection, data);
+            data.setExtraData(this.data);
         } catch (Exception ex) {
             controller.getPlugin().getLogger().log(Level.WARNING, "Failed to save player data for " + playerName, ex);
             return false;
@@ -835,7 +789,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         return updated;
     }
 
-    public void setLastHeldMapId(short mapId) {
+    public void setLastHeldMapId(int mapId) {
         brush.setMapId(mapId);
     }
 
@@ -854,7 +808,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                 }
                 // Check for spells that have changed class
                 if (!spell.getClass().getName().contains(className)) {
-                    ConfigurationSection spellData = new MemoryConfiguration();
+                    SpellData spellData = new SpellData(key);
                     spell.save(spellData);
                     spells.remove(key);
                     Spell newSpell = getSpell(key);
