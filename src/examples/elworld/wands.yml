@@ -79,3 +79,9 @@
 #           - <materialname>
 #
 
+cursedmeat:
+  icon: rotten_flesh
+  name: Cursed Meat
+  description: Don't even touch it!
+  locked: true
+  potion_effects: hunger:20

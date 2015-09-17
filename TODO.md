@@ -1,5 +1,14 @@
 # TODO
 
+Wand dupe issue:
+
+if there is a unlocked armor stand
+1. place rando item in the hand of the armor stand
+2. open your wand and then swap out the wand with the held item
+on the armor stand
+3. it dupes u can pull it off and get a 2nd wand
+it only works with wands that have menus
+
  - Add an "override" option for spells, to skip loading the defaults for that spell
  - Manually dropping a wand with a different one in your hand goes weird- maybe only in drop mode? 
  - Can't hitbox-target entities standing in a corner? Issues with spiders?
