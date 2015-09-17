@@ -1,18 +1,12 @@
 package com.elmakers.mine.bukkit.block;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-
-import com.elmakers.mine.bukkit.api.spell.Spell;
-import org.bukkit.block.Block;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.MemoryConfiguration;
-
+import com.elmakers.mine.bukkit.api.data.UndoData;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
-import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
+import com.elmakers.mine.bukkit.api.spell.Spell;
+import org.bukkit.block.Block;
+
+import java.util.List;
 
 public class UndoQueue implements com.elmakers.mine.bukkit.api.block.UndoQueue
 {
@@ -35,6 +29,7 @@ public class UndoQueue implements com.elmakers.mine.bukkit.api.block.UndoQueue
         if (addList.hasUndoQueue()) {
             return;
         }
+        addList.setMage(owner);
 
         if (maxSize > 0 && size > maxSize)
         {
@@ -206,18 +201,16 @@ public class UndoQueue implements com.elmakers.mine.bukkit.api.block.UndoQueue
         return lastActionOnTarget;
     }
 
-    public void load(ConfigurationSection node)
+    @Override
+    public void load(UndoData data)
     {
         try {
-            if (node == null) return;
-            Collection<ConfigurationSection> nodeList = ConfigurationUtils.getNodeList(node, "undo");
-
-            if (nodeList != null) {
-                for (ConfigurationSection listNode : nodeList) {
-                    UndoList list = new com.elmakers.mine.bukkit.block.UndoList(owner);
-                    list.load(listNode);
+            if (data == null) return;
+            List<com.elmakers.mine.bukkit.api.block.UndoList> undoList = data.getBlockList();
+            if (data == null) return;
+            if (undoList != null) {
+                for (com.elmakers.mine.bukkit.api.block.UndoList list : undoList) {
                     add(list);
-
                     if (list.isScheduled())
                     {
                         owner.getController().scheduleUndo(list);
@@ -230,21 +223,20 @@ public class UndoQueue implements com.elmakers.mine.bukkit.api.block.UndoQueue
         }
     }
 
-    public void save(ConfigurationSection node)
+    @Override
+    public void save(UndoData data)
     {
         MageController controller = owner.getController();
         int maxSize = controller.getMaxUndoPersistSize();
         try {
             int discarded = 0;
-            List<Map<String, Object>> nodeList = new ArrayList<Map<String, Object>>();
+            List<com.elmakers.mine.bukkit.api.block.UndoList> undoList = data.getBlockList();
             UndoList list = tail;
             while (list != null) {
                 if (maxSize > 0 && list.size() > maxSize) {
                     discarded++;
                 } else {
-                    MemoryConfiguration listNode = new MemoryConfiguration();
-                    list.save(listNode);
-                    nodeList.add(listNode.getValues(true));
+                    undoList.add(list);
                 }
 
                 list = list.getNext();
@@ -253,7 +245,6 @@ public class UndoQueue implements com.elmakers.mine.bukkit.api.block.UndoQueue
             if (discarded > 0) {
                 controller.getLogger().info("Not saving " + discarded + " undo batches for mage " + owner.getName() + ", over max size of " + maxSize);
             }
-            node.set("undo", nodeList);
         } catch (Exception ex) {
             ex.printStackTrace();
             controller.getLogger().warning("Failed to save undo data: " + ex.getMessage());

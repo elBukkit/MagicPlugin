@@ -55,8 +55,8 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
     protected List<Runnable>				runnables;
     protected HashMap<UUID, EntityData> 	modifiedEntities;
 
-    protected final Mage			owner;
-    protected final Plugin		   	plugin;
+    protected Mage			        owner;
+    protected Plugin		   	    plugin;
 
     protected boolean               undone              = false;
     protected int                  	timeToLive          = 0;
@@ -91,10 +91,16 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
 
     public UndoList(Mage mage)
     {
-        this.owner = mage;
-        this.plugin = owner.getController().getPlugin();
+        setMage(mage);
         createdTime = System.currentTimeMillis();
         modifiedTime = createdTime;
+    }
+
+    public void setMage(Mage mage) {
+        this.owner = mage;
+        if (mage != null) {
+            this.plugin = mage.getController().getPlugin();
+        }
     }
 
     public void setBatch(Batch batch)

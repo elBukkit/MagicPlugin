@@ -12,6 +12,7 @@ import java.util.Set;
 import java.util.logging.Level;
 
 import com.elmakers.mine.bukkit.action.CastContext;
+import com.elmakers.mine.bukkit.api.data.SpellData;
 import com.elmakers.mine.bukkit.api.event.CastEvent;
 import com.elmakers.mine.bukkit.api.event.PreCastEvent;
 import com.elmakers.mine.bukkit.api.magic.Messages;
@@ -1779,26 +1780,26 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     }
 
     @Override
-    public void load(ConfigurationSection node) {
+    public void load(SpellData spellData) {
         try {
-            castCount = node.getLong("cast_count", 0);
-            lastCast = node.getLong("last_cast", 0);
+            castCount = spellData.getCastCount();
+            lastCast = spellData.getLastCast();
             if (category != null && template == null) {
                 category.addCasts(castCount, lastCast);
             }
-            onLoad(node);
+            onLoad(spellData.getExtraData());
         } catch (Exception ex) {
             controller.getPlugin().getLogger().warning("Failed to load data for spell " + name + ": " + ex.getMessage());
         }
     }
 
     @Override
-    public void save(ConfigurationSection node) {
+    public void save(SpellData spellData) {
         try {
-            node.set("cast_count", castCount);
-            node.set("last_cast", lastCast);
-            node.set("active", isActive ? true : null);
-            onSave(node);
+            spellData.setCastCount(castCount);
+            spellData.setLastCast(lastCast);
+            spellData.setIsActive(isActive);
+            onSave(spellData.getExtraData());
         } catch (Exception ex) {
             controller.getPlugin().getLogger().warning("Failed to save data for spell " + name);
             ex.printStackTrace();

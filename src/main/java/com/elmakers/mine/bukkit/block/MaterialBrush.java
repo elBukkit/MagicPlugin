@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.Set;
 
 import com.elmakers.mine.bukkit.api.block.BrushMode;
+import com.elmakers.mine.bukkit.api.data.BrushData;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.magic.Messages;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
@@ -75,7 +76,7 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
     private Vector targetOffset = null;
     private String targetWorldName = null;
     private final Mage mage;
-    private short mapId = -1;
+    private int mapId = -1;
     private BufferedMapCanvas mapCanvas = null;
     private Material mapMaterialBase = Material.STAINED_CLAY;
     private Schematic schematic;
@@ -202,7 +203,7 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
                 brushKey = messages.get("wand.map_material_name");
             }
             if (mapId > 0) {
-                brushKey = brushKey.replace("$id", Short.toString(mapId));
+                brushKey = brushKey.replace("$id", Integer.toString(mapId));
             } else {
                 brushKey = brushKey.replace("$id", "");
             }
@@ -299,7 +300,7 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
         }
     }
 
-    public void setMapId(short mapId) {
+    public void setMapId(int mapId) {
         this.mapCanvas = null;
         this.mapId = mapId;
     }
@@ -408,7 +409,7 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
         if (mode == BrushMode.MAP && mapId >= 0) {
             if (mapCanvas == null) {
                 try {
-                    MapView mapView = Bukkit.getMap(mapId);
+                    MapView mapView = Bukkit.getMap((short)mapId);
                     if (mapView != null) {
                         Player player = fromMage != null ? fromMage.getPlayer() : null;
                         List<MapRenderer> renderers = mapView.getRenderers();
@@ -488,50 +489,30 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
         }
     }
 
-    public void load(ConfigurationSection node)
+    public void load(BrushData data)
     {
-        try {
-            cloneSource = ConfigurationUtils.getLocation(node, "clone_location");
-            cloneTarget = ConfigurationUtils.getLocation(node, "clone_target");
-            materialTarget = ConfigurationUtils.getLocation(node, "material_target");
-            schematicName = node.getString("schematic", schematicName);
-            mapId = (short)node.getInt("map_id", mapId);
-            material = ConfigurationUtils.getMaterial(node, "material", material);
-            data = (short)node.getInt("data", data);
-            scale = node.getDouble("scale", scale);
-            fillWithAir = node.getBoolean("erase", fillWithAir);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            if (mage != null) {
-                mage.getController().getLogger().warning("Failed to load brush data: " + ex.getMessage());
-            }
-        }
+        cloneSource = data.getCloneLocation();
+        cloneTarget = data.getCloneTarget();
+        materialTarget = data.getMaterialTarget();
+        schematicName = data.getSchematicName();
+        mapId = data.getMapId();
+        material = data.getMaterial();
+        this.data = data.getMaterialData();
+        scale = data.getScale();
+        fillWithAir = data.isFillWithAir();
     }
 
-    public void save(ConfigurationSection node)
+    public void save(BrushData data)
     {
-        try {
-            if (cloneSource != null) {
-                node.set("clone_location", ConfigurationUtils.fromLocation(cloneSource));
-            }
-            if (cloneTarget != null) {
-                node.set("clone_target", ConfigurationUtils.fromLocation(cloneTarget));
-            }
-            if (materialTarget != null) {
-                node.set("material_target", ConfigurationUtils.fromLocation(materialTarget));
-            }
-            node.set("map_id", (int)mapId);
-            node.set("material", ConfigurationUtils.fromMaterial(material));
-            node.set("data", data);
-            node.set("schematic", schematicName);
-            node.set("scale", scale);
-            node.set("erase", fillWithAir);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            if (mage != null) {
-                mage.getController().getLogger().warning("Failed to save brush data: " + ex.getMessage());
-            }
-        }
+        data.setCloneLocation(cloneSource);
+        data.setCloneTarget(cloneTarget);
+        data.setMaterialTarget(materialTarget);
+        data.setSchematicName(schematicName);
+        data.setMapId(mapId);
+        data.setMaterial(material);
+        data.setMaterialData(this.data);
+        data.setScale(scale);
+        data.setFillWithAir(fillWithAir);
     }
 
     @Override
@@ -631,7 +612,7 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
             }
             if (pieces.length > 2) {
                 try {
-                    mapId = Short.parseShort(pieces[2]);
+                    mapId = Integer.parseInt(pieces[2]);
                 } catch (Exception ex) {
                 }
             }
