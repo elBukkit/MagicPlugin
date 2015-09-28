@@ -179,7 +179,9 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     private float                               cooldownReduction       = 0;
     private float                               costReduction           = 0;
 
+    private int                                 mageCooldown            = 0;
     private int                                 cooldown                = 0;
+    private long                                cooldownExpiration      = 0;
     private int                                 duration                = 0;
     private long                                lastCast                = 0;
     private long                                lastActiveCost          = 0;
@@ -853,6 +855,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         if (parameters != null) {
             cooldown = parameters.getInt("cooldown", 0);
             cooldown = parameters.getInt("cool", cooldown);
+            mageCooldown = parameters.getInt("cooldown_mage", 0);
             bypassPvpRestriction = parameters.getBoolean("bypass_pvp", false);
             bypassPvpRestriction = parameters.getBoolean("bp", bypassPvpRestriction);
             bypassPermissions = parameters.getBoolean("bypass_permissions", false);
@@ -971,6 +974,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         // Check cooldowns
         cooldown = parameters.getInt("cooldown", cooldown);
         cooldown = parameters.getInt("cool", cooldown);
+        mageCooldown = parameters.getInt("cooldown_mage", mageCooldown);
 
         // Color override
         color = ConfigurationUtils.getColor(parameters, "color", color);
@@ -1129,6 +1133,16 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
                 {
                     cost.use(this);
                 }
+            }
+            if (!mage.isCooldownFree() && cooldown > 0) {
+                double cooldownReduction = mage.getCooldownReduction() + this.cooldownReduction;
+                if (cooldownReduction < 1) {
+                    int reducedCooldown = (int)Math.ceil((1.0f - cooldownReduction) * cooldown);
+                    cooldownExpiration = Math.max(cooldownExpiration, System.currentTimeMillis() + reducedCooldown);
+                }
+            }
+            if (!mage.isCooldownFree() && mageCooldown > 0) {
+                mage.setRemainingCooldown(mageCooldown);
             }
         }
         if (success && mage.getTrackCasts()) {
@@ -1630,6 +1644,10 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         }
     }
 
+    @Override
+    public String getMageCooldownDescription() {
+        return getCooldownDescription(controller.getMessages(), mageCooldown);
+    }
 
     @Override
     public String getCooldownDescription() {
@@ -1687,19 +1705,18 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
 
     @Override
     public long getRemainingCooldown() {
-        long currentTime = System.currentTimeMillis();
-        if (!mage.isCooldownFree()) {
-            double cooldownReduction = mage.getCooldownReduction() + this.cooldownReduction;
-            if (cooldownReduction < 1 && !isActive && cooldown > 0) {
-                int reducedCooldown = (int)Math.ceil((1.0f - cooldownReduction) * cooldown);
-                if (lastCast != 0 && lastCast > currentTime - reducedCooldown)
-                {
-                    return lastCast - (currentTime - reducedCooldown);
-                }
+        long remaining = 0;
+        if (cooldownExpiration > 0)
+        {
+            long now = System.currentTimeMillis();
+            if (cooldownExpiration > now) {
+                remaining = cooldownExpiration - now;
+            } else {
+                cooldownExpiration = 0;
             }
         }
 
-        return 0;
+        return Math.max(mage.getRemainingCooldown(), remaining);
     }
 
     @Override
@@ -1784,6 +1801,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         try {
             castCount = spellData.getCastCount();
             lastCast = spellData.getLastCast();
+            cooldownExpiration = spellData.getCooldownExpiration();
             if (category != null && template == null) {
                 category.addCasts(castCount, lastCast);
             }
@@ -1798,6 +1816,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         try {
             spellData.setCastCount(castCount);
             spellData.setLastCast(lastCast);
+            spellData.setCooldownExpiration(cooldownExpiration);
             spellData.setIsActive(isActive);
             onSave(spellData.getExtraData());
         } catch (Exception ex) {
@@ -1967,6 +1986,10 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         String cooldownDescription = getCooldownDescription();
         if (cooldownDescription != null && !cooldownDescription.isEmpty()) {
             lore.add(messages.get("cooldown.description").replace("$time", cooldownDescription));
+        }
+        String mageCooldownDescription = getMageCooldownDescription();
+        if (mageCooldownDescription != null && !mageCooldownDescription.isEmpty()) {
+            lore.add(messages.get("cooldown.mage_description").replace("$time", mageCooldownDescription));
         }
         if (costs != null) {
             for (com.elmakers.mine.bukkit.api.spell.CastingCost cost : costs) {
