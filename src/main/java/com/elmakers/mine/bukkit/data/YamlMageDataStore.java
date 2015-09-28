@@ -112,7 +112,9 @@ public class YamlMageDataStore implements MageDataStore {
         if (boundWands != null && boundWands.size() > 0) {
             ConfigurationSection wandSection = saveFile.createSection("wands");
             for (Map.Entry<String, ItemStack> wandEntry : boundWands.entrySet()) {
-                controller.serialize(wandSection,  wandEntry.getKey(), wandEntry.getValue());
+                String key = wandEntry.getKey();
+                if (key == null || key.isEmpty()) continue;
+                controller.serialize(wandSection, key, wandEntry.getValue());
             }
         }
         Map<Integer, ItemStack> respawnArmor = mage.getRespawnArmor();
