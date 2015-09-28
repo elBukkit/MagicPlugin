@@ -249,6 +249,15 @@ public interface Mage extends CostReducer {
     public GUIAction getActiveGUI();
 
     /**
+     * Force a re-check of the current active wand vs the item the player is holding.
+     *
+     * This may activate or deactivate a wand, or both.
+     *
+     * @return The current active wand, after checking
+     */
+    public Wand checkWand();
+
+    /**
      * Return a Spell for this Mage, which can be used to programatically
      * cast or modify a Spell on behalf of this Mage.
      *

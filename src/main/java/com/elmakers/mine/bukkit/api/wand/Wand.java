@@ -69,7 +69,6 @@ public interface Wand extends CostReducer {
     public void setPath(String path);
 
     public LostWand makeLost(Location location);
-    public boolean isLost();
     public boolean isLost(LostWand wand);
     public int enchant(int levels);
     public int enchant(int levels, Mage mage);
