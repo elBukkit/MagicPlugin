@@ -955,6 +955,18 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	protected void saveState() {
 		if (suspendSave) return;
 
+        // Make sure we're on the current item instance
+        if (mage != null) {
+            Player player = mage.getPlayer();
+            if (player != null) {
+                ItemStack itemInHand = player.getItemInHand();
+                String itemId = getWandId(itemInHand);
+                if (itemId != null && itemId.equals(id)) {
+                    item = itemInHand;
+                }
+            }
+        }
+
         ConfigurationSection stateNode = new MemoryConfiguration();
         saveProperties(stateNode);
 
