@@ -1,5 +1,8 @@
 # TODO
 
+ - Add compatibility with per-world inventories:
+ https://www.spigotmc.org/resources/per-world-inventory.4482/
+
 Wand dupe issue:
 
 if there is a unlocked armor stand
