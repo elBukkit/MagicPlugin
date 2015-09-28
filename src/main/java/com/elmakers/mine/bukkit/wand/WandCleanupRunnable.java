@@ -87,7 +87,7 @@ public class WandCleanupRunnable extends RunnableJob {
                 Wand wand = api.getWand(itemStack);
                 boolean isLost = false;
                 if (wand instanceof com.elmakers.mine.bukkit.wand.Wand) {
-                    String lostId = ((com.elmakers.mine.bukkit.wand.Wand)wand).getLostId();
+                    String lostId = ((com.elmakers.mine.bukkit.wand.Wand)wand).getId();
                     isLost = (lostId == null || lostId.length() == 0);
                 }
                 if (isLost || wand.isLost(lostWand)) {

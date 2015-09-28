@@ -251,7 +251,6 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
     public static byte HIDE_FLAGS = 60;
 
     private Inventory storedInventory = null;
-    private Integer playerInventorySlot = null;
 
     private static final ItemStack[] itemTemplate = new ItemStack[0];
 
@@ -416,12 +415,20 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         }
 	}
 
-    public String getLostId() { return id; }
-    public void clearLostId() {
-        if (id != null) {
-            id = null;
+    public void newId() {
+        id = UUID.randomUUID().toString();
+    }
+
+    public void checkId() {
+        if (id == null || id.length() == 0) {
+            newId();
             saveState();
         }
+    }
+
+    @Override
+    public String getId() {
+        return id;
     }
 
     public float getXpRegenerationBoost() {
@@ -947,20 +954,14 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 
 	protected void saveState() {
 		if (suspendSave) return;
-        if (checkWandItem()) {
-            updateName();
-            updateLore();
-            if (displayManaAsDurability && usesMana()) {
-                updateDurability();
-            }
-        }
 
         ConfigurationSection stateNode = new MemoryConfiguration();
         saveProperties(stateNode);
 
 		Object wandNode = InventoryUtils.createNode(item, WAND_KEY);
 		if (wandNode == null) {
-			controller.getLogger().warning("Failed to save wand state for wand to : " + item + " in slot " + playerInventorySlot);
+			controller.getLogger().warning("Failed to save wand state for wand to : " + item);
+            Thread.dumpStack();
 		} else {
             InventoryUtils.saveTagsToNBT(stateNode, wandNode, ALL_PROPERTY_KEYS);
         }
@@ -1444,6 +1445,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 
         updateMaxMana();
 		checkActiveMaterial();
+        checkId();
 	}
 
 	public void describe(CommandSender sender) {
@@ -1877,6 +1879,12 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         return InventoryUtils.getMeta(wandNode, "template");
     }
 
+    public static String getWandId(ItemStack item) {
+        Object wandNode = InventoryUtils.getNode(item, WAND_KEY);
+        if (wandNode == null) return null;
+        return InventoryUtils.getMeta(wandNode, "id");
+    }
+
 	public static String getSpell(ItemStack item) {
         Object spellNode = InventoryUtils.getNode(item, "spell");
         if (spellNode == null) return null;
@@ -1993,6 +2001,15 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         // Check for an item already in the player's held slot, which
         // we are about to replace with the wand.
 		int currentSlot = playerInventory.getHeldItemSlot();
+        ItemStack currentItem = playerInventory.getItem(currentSlot);
+        String currentId = getWandId(currentItem);
+        if (currentId != null && !currentId.equals(id)) {
+            org.bukkit.Bukkit.getLogger().info("not updating hotbar due to wand location mis-match!");
+            return;
+        }
+
+        // Reset the held item, just in case Bukkit made a copy or something.
+        playerInventory.setItemInHand(this.item);
 
         // Set hotbar items from remaining list
 		int targetOffset = 0;
@@ -2007,10 +2024,6 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 			updateInventoryName(hotbarItem, true);
 			playerInventory.setItem(hotbarSlot + targetOffset, hotbarItem);
 		}
-
-        // Put the wand in the player's active slot.
-        playerInventory.setItem(currentSlot, item);
-        item = playerInventory.getItem(currentSlot);
     }
 	
 	private void updateInventory(Inventory targetInventory, boolean addHotbars) {
@@ -2833,157 +2846,6 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		return true;
 	}
 
-    protected boolean checkWandItem() {
-        if (playerInventorySlot != null && mage != null && mage.isPlayer()) {
-            Player player = mage.getPlayer();
-            ItemStack currentItem = player.getInventory().getItem(playerInventorySlot);
-            if (isWand(currentItem) &&
-                NMSUtils.getHandle(currentItem) != NMSUtils.getHandle(item)) {
-                item = currentItem;
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-	public void activate(Mage mage, ItemStack wandItem, int slot) {
-		if (mage == null || wandItem == null) return;
-        id = null;
-
-        if (this.inactiveIcon != null && this.icon != null) {
-            Plugin plugin = controller.getPlugin();
-            plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
-                @Override
-                public void run() {
-                    icon.applyToItem(item);
-                }
-            }, inactiveIconDelay * 20 / 1000);
-        }
-
-        Player player = mage.getPlayer();
-        if (!canUse(player)) {
-            mage.sendMessage(getMessage("bound").replace("$name", getOwner()));
-            mage.setActiveWand(null);
-            return;
-        }
-
-        if (this.isUpgrade) {
-            controller.getLogger().warning("Activated an upgrade item- this shouldn't happen");
-            return;
-        }
-        playerInventorySlot = slot;
-		
-		// Update held item, it may have been copied since this wand was created.
-        boolean needsSave = NMSUtils.getHandle(this.item) != NMSUtils.getHandle(wandItem);
-		this.item = wandItem;
-		this.mage = mage;
-        boolean forceUpdate = false;
-		
-		// Check for an empty wand and auto-fill
-		if (!isUpgrade && (controller.fillWands() || autoFill)) {
-            fill(mage.getPlayer(), controller.getMaxWandFillLevel());
-		}
-
-        if (isHeroes && player != null) {
-            HeroesManager heroes = controller.getHeroes();
-            if (heroes != null) {
-                Set<String> skills = heroes.getSkills(player);
-                Collection<String> currentSpells = new ArrayList<String>(getSpells());
-                for (String spellKey : currentSpells) {
-                    if (spellKey.startsWith("heroes*") && !skills.contains(spellKey.substring(7)))
-                    {
-                        removeSpell(spellKey);
-                    }
-                }
-
-                // Hack to prevent messaging
-                this.mage = null;
-                for (String skillKey : skills)
-                {
-                    String heroesKey = "heroes*" + skillKey;
-                    if (!spells.containsKey(heroesKey))
-                    {
-                        addSpell(heroesKey);
-                    }
-                }
-                this.mage = mage;
-            }
-        }
-		
-		// Check for auto-organize
-		if (autoOrganize && !isUpgrade) {
-			organizeInventory(mage);
-		}
-
-        // Check for auto-alphabetize
-        if (autoAlphabetize && !isUpgrade) {
-            alphabetizeInventory();
-        }
-
-        // Check for spell or other special icons in the player's inventory
-        Inventory inventory = player.getInventory();
-        ItemStack[] items = inventory.getContents();
-        for (int i = 0; i < items.length; i++) {
-            ItemStack item = items[i];
-            if (addItem(item)) {
-                inventory.setItem(i, null);
-                forceUpdate = true;
-            }
-        }
-		
-		// Check for auto-bind
-		if (bound)
-        {
-            String mageName = ChatColor.stripColor(mage.getPlayer().getDisplayName());
-            String mageId = mage.getPlayer().getUniqueId().toString();
-            boolean ownerRenamed = owner != null && ownerId != null && ownerId.equals(mageId) && !owner.equals(mageName);
-
-            if (ownerId == null || ownerId.length() == 0 || owner == null || ownerRenamed)
-            {
-                takeOwnership(mage.getPlayer());
-                needsSave = true;
-            }
-		}
-
-        // Check for randomized wands
-        if (randomize) {
-            randomize();
-            forceUpdate = true;
-        }
-		
-		checkActiveMaterial();
-
-		mage.setActiveWand(this);
-		if (usesMana()) {
-            if (displayManaAsXp()) {
-                storedXpLevel = player.getLevel();
-                storedXpProgress = player.getExp();
-            }
-            updateMaxMana();
-		}
-
-        // Tick might save state, but it returns true to let us know when it does.
-        if (!tick() && needsSave) {
-            saveState();
-        }
-		updateActiveMaterial();
-		updateName();
-		updateLore();
-
-        // Play activate FX
-        playEffects("activate");
-
-        lastSoundEffect = 0;
-        lastParticleEffect = 0;
-        lastSpellCast = 0;
-        lastLocationTime = 0;
-        lastLocation = null;
-        if (forceUpdate) {
-            player.updateInventory();
-        }
-	}
-
     protected void randomize() {
         boolean modified = randomize;
         randomize = false;
@@ -3299,7 +3161,6 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		if (isInventoryOpen()) {
 			closeInventory();
 		}
-        playerInventorySlot = null;
         storedInventory = null;
 		
 		if (usesMana() && displayManaAsXp() && player != null) {
@@ -3542,13 +3403,12 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         }
     }
 	
-	public boolean tick() {
-		if (mage == null || item == null) return false;
+	public void tick() {
+		if (mage == null || item == null) return;
 		
 		Player player = mage.getPlayer();
-		if (player == null) return false;
+		if (player == null) return;
 
-        boolean modified = checkWandItem();
         int maxDurability = item.getType().getMaxDurability();
 
         // Auto-repair wands
@@ -3594,13 +3454,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 
             updateEffects();
         }
-
-        if (modified) {
-            saveState();
-        }
-
-        return modified;
-	}
+    }
 
     public void armorUpdated() {
         int currentMana = effectiveXpMax;
@@ -3790,12 +3644,6 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	 */
 
     @Override
-	public boolean isLost()
-    {
-		return this.id != null;
-	}
-
-    @Override
     public boolean isLost(com.elmakers.mine.bukkit.api.wand.LostWand lostWand) {
         return this.id != null && this.id.equals(lostWand.getId());
     }
@@ -3803,10 +3651,6 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
     @Override
     public LostWand makeLost(Location location)
     {
-        if (id == null || id.length() == 0) {
-            id = UUID.randomUUID().toString();
-            saveState();
-        }
         return new LostWand(this, location);
     }
 
@@ -3819,9 +3663,143 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		}
 		
 		if (mage instanceof Mage) {
-			activate((Mage)mage, player.getItemInHand(), player.getInventory().getHeldItemSlot());
+			activate((Mage)mage);
 		}
 	}
+
+
+    public void activate(Mage mage) {
+        if (mage == null) return;
+        this.newId();
+
+        if (this.inactiveIcon != null && this.icon != null) {
+            Plugin plugin = controller.getPlugin();
+            plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
+                @Override
+                public void run() {
+                    icon.applyToItem(item);
+                }
+            }, inactiveIconDelay * 20 / 1000);
+        }
+
+        Player player = mage.getPlayer();
+        if (!canUse(player)) {
+            mage.sendMessage(getMessage("bound").replace("$name", getOwner()));
+            mage.setActiveWand(null);
+            return;
+        }
+
+        if (this.isUpgrade) {
+            controller.getLogger().warning("Activated an upgrade item- this shouldn't happen");
+            return;
+        }
+
+        // Update held item, it may have been copied since this wand was created.
+        this.mage = mage;
+        boolean forceUpdate = false;
+
+        // Check for an empty wand and auto-fill
+        if (!isUpgrade && (controller.fillWands() || autoFill)) {
+            fill(mage.getPlayer(), controller.getMaxWandFillLevel());
+        }
+
+        if (isHeroes && player != null) {
+            HeroesManager heroes = controller.getHeroes();
+            if (heroes != null) {
+                Set<String> skills = heroes.getSkills(player);
+                Collection<String> currentSpells = new ArrayList<String>(getSpells());
+                for (String spellKey : currentSpells) {
+                    if (spellKey.startsWith("heroes*") && !skills.contains(spellKey.substring(7)))
+                    {
+                        removeSpell(spellKey);
+                    }
+                }
+
+                // Hack to prevent messaging
+                this.mage = null;
+                for (String skillKey : skills)
+                {
+                    String heroesKey = "heroes*" + skillKey;
+                    if (!spells.containsKey(heroesKey))
+                    {
+                        addSpell(heroesKey);
+                    }
+                }
+                this.mage = mage;
+            }
+        }
+
+        // Check for auto-organize
+        if (autoOrganize && !isUpgrade) {
+            organizeInventory(mage);
+        }
+
+        // Check for auto-alphabetize
+        if (autoAlphabetize && !isUpgrade) {
+            alphabetizeInventory();
+        }
+
+        // Check for spell or other special icons in the player's inventory
+        Inventory inventory = player.getInventory();
+        ItemStack[] items = inventory.getContents();
+        for (int i = 0; i < items.length; i++) {
+            ItemStack item = items[i];
+            if (addItem(item)) {
+                inventory.setItem(i, null);
+                forceUpdate = true;
+            }
+        }
+
+        // Check for auto-bind
+        if (bound)
+        {
+            String mageName = ChatColor.stripColor(mage.getPlayer().getDisplayName());
+            String mageId = mage.getPlayer().getUniqueId().toString();
+            boolean ownerRenamed = owner != null && ownerId != null && ownerId.equals(mageId) && !owner.equals(mageName);
+
+            if (ownerId == null || ownerId.length() == 0 || owner == null || ownerRenamed)
+            {
+                takeOwnership(mage.getPlayer());
+            }
+        }
+
+        // Check for randomized wands
+        if (randomize) {
+            randomize();
+            forceUpdate = true;
+        }
+
+        checkActiveMaterial();
+
+        mage.setActiveWand(this);
+        if (usesMana()) {
+            if (displayManaAsXp()) {
+                storedXpLevel = player.getLevel();
+                storedXpProgress = player.getExp();
+            }
+            updateMaxMana();
+        }
+
+
+        tick();
+        saveState();
+
+        updateActiveMaterial();
+        updateName();
+        updateLore();
+
+        // Play activate FX
+        playEffects("activate");
+
+        lastSoundEffect = 0;
+        lastParticleEffect = 0;
+        lastSpellCast = 0;
+        lastLocationTime = 0;
+        lastLocation = null;
+        if (forceUpdate) {
+            player.updateInventory();
+        }
+    }
 
 	@Override
 	public void organizeInventory(com.elmakers.mine.bukkit.api.magic.Mage mage) {
@@ -4325,11 +4303,6 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         SpellKey key = new SpellKey(spellKey);
         Integer level = spellLevels.get(key.getBaseKey());
         return level == null ? 0 : level;
-    }
-
-    public Integer getPlayerInventorySlot()
-    {
-        return playerInventorySlot;
     }
 
     @Override

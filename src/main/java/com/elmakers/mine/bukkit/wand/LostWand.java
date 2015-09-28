@@ -25,7 +25,7 @@ public class LostWand implements com.elmakers.mine.bukkit.api.wand.LostWand {
 	
 	public void update(Wand wand, Location location) {
 		this.location = location;
-		this.id = wand.getLostId();
+		this.id = wand.getId();
 		this.name = wand.getName();
 		this.owner = wand.getOwner();
         this.ownerId = wand.getOwnerId();

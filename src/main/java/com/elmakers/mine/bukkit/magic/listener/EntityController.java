@@ -290,7 +290,7 @@ public class EntityController implements Listener {
                 event.getEntity().setTicksLived(1);
                 event.setCancelled(true);
             } else {
-                controller.removeLostWand(wand.getLostId());
+                controller.removeLostWand(wand.getId());
             }
         }
     }
@@ -318,7 +318,7 @@ public class EntityController implements Listener {
                 // Don't show non-indestructible wands on dynmap
                 controller.addLostWand(wand, event.getEntity().getLocation());
                 Location dropLocation = event.getLocation();
-                controller.info("Wand " + wand.getName() + ", id " + wand.getLostId() + " spawned at " + dropLocation.getBlockX() + " " + dropLocation.getBlockY() + " " + dropLocation.getBlockZ());
+                controller.info("Wand " + wand.getName() + ", id " + wand.getId() + " spawned at " + dropLocation.getBlockX() + " " + dropLocation.getBlockY() + " " + dropLocation.getBlockZ());
             }
         } else  {
             // Don't do this, no way to differentiate between a dropped item from a broken block
@@ -366,8 +366,8 @@ public class EntityController implements Listener {
                     if (wand.isIndestructible()) {
                         event.setCancelled(true);
                     } else if (event.getDamage() >= itemStack.getDurability()) {
-                        if (controller.removeLostWand(wand.getLostId())) {
-                            controller.info("Wand " + wand.getName() + ", id " + wand.getLostId() + " destroyed");
+                        if (controller.removeLostWand(wand.getId())) {
+                            controller.info("Wand " + wand.getName() + ", id " + wand.getId() + " destroyed");
                         }
                     }
                 }
