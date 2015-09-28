@@ -2004,7 +2004,6 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         ItemStack currentItem = playerInventory.getItem(currentSlot);
         String currentId = getWandId(currentItem);
         if (currentId != null && !currentId.equals(id)) {
-            org.bukkit.Bukkit.getLogger().info("not updating hotbar due to wand location mis-match!");
             return;
         }
 
