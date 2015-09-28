@@ -215,7 +215,7 @@ public class InventoryController implements Listener {
             }
         } else if (activeWand != null) {
             // Check for changes that could have been made to the active wand
-            Integer activeSlot = activeWand.getPlayerInventorySlot();
+            Integer activeSlot = player.getInventory().getHeldItemSlot();
             if (activeSlot != null
                     &&
                     (
@@ -224,8 +224,8 @@ public class InventoryController implements Listener {
                     )
                 )
             {
-                activeWand.deactivate();
-                activeWand = null;
+                mage.checkWand();
+                activeWand = mage.getActiveWand();
             }
         }
 
@@ -378,34 +378,7 @@ public class InventoryController implements Listener {
                 previousWand.closeInventory();
             }
         } else {
-            if (previousWand != null) {
-                if (player.getInventory().getHeldItemSlot() != previousWand.getPlayerInventorySlot()) {
-                    previousWand.deactivate();
-                    previousWand = null;
-                }
-            }
-            ItemStack currentItem = player.getItemInHand();
-
-            // If we're not in a wand inventory, check for the player
-            // having re-arranged their items such that a new wand is now active
-            // we don't get an equip event for this.
-            // Note that ".equals" is very strong and will detect any changes at all
-            // in the wand item, including an active spell change.
-            boolean changedWands = false;
-            boolean itemIsWand = Wand.isWand(currentItem);
-            if (previousWand != null && !itemIsWand) changedWands = true;
-            if (previousWand == null && itemIsWand) changedWands = true;
-            if (previousWand != null && itemIsWand && !previousWand.getItem().equals(currentItem)) changedWands = true;
-
-            if (changedWands) {
-                if (previousWand != null) {
-                    previousWand.deactivate();
-                }
-                if (itemIsWand) {
-                    Wand newWand = new Wand(controller, currentItem);
-                    newWand.activate(mage);
-                }
-            }
+            mage.checkWand();
         }
     }
 

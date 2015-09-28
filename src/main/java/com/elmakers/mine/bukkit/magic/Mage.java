@@ -28,6 +28,7 @@ import com.elmakers.mine.bukkit.spell.ActionSpell;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
+import com.elmakers.mine.bukkit.utility.NMSUtils;
 import de.slikey.effectlib.util.ParticleEffect;
 import org.bukkit.*;
 import org.bukkit.block.Block;
@@ -361,7 +362,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         ItemStack itemStack = inventory.getItemInHand();
         int slot = inventory.getHeldItemSlot();
         Wand newWand = new Wand(controller, itemStack);
-        newWand.activate(this, itemStack, slot);
+        newWand.activate(this);
     }
 
     public void setActiveWand(Wand activeWand) {
@@ -738,12 +739,44 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         }
     }
 
+    public Wand checkWand(ItemStack itemInHand) {
+        Player player = getPlayer();
+        if (isLoading() || player == null) return null;
+
+        String itemId = Wand.getWandId(itemInHand);
+        String activeId = activeWand != null ? activeWand.getId() : null;
+
+        if ((itemId != null && activeId == null)
+                || (activeId != null && itemId == null)
+                || (itemId != null && activeId != null && !itemId.equals(activeId))
+                )
+        {
+            if (activeWand != null) {
+                activeWand.deactivate();
+            }
+            if (itemInHand != null && itemId != null) {
+                Wand newActiveWand = new Wand(controller, itemInHand);
+                newActiveWand.activate(this);
+            }
+        }
+
+        return activeWand;
+    }
+
+    @Override
+    public Wand checkWand() {
+        Player player = getPlayer();
+        if (isLoading() || player == null) return null;
+        return checkWand(player.getItemInHand());
+    }
+
     // This gets called every second (or so - 20 ticks)
     protected void tick() {
         Player player = getPlayer();
 
         // We don't tick non-player or offline Mages
         if (player != null && player.isOnline()) {
+            checkWand();
             if (activeWand != null) {
                 activeWand.tick();
             }

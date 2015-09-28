@@ -9,6 +9,8 @@ import com.elmakers.mine.bukkit.wand.Wand;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
+import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.ItemFrame;
 import org.bukkit.entity.Player;
@@ -58,7 +60,6 @@ public class PlayerController implements Listener {
         Player player = event.getPlayer();
         PlayerInventory inventory = player.getInventory();
         ItemStack next = inventory.getItem(event.getNewSlot());
-        ItemStack previous = inventory.getItem(event.getPreviousSlot());
 
         if (NMSUtils.isTemporary(next)) {
             inventory.setItem(event.getNewSlot(), null);
@@ -87,26 +88,25 @@ public class PlayerController implements Listener {
         }
 
         // Check for active Wand
-        if (activeWand != null && Wand.isWand(previous)) {
+        if (activeWand != null && activeWand.isInventoryOpen()) {
             // If the wand inventory is open, we're going to let them select a spell or material
-            if (activeWand.isInventoryOpen()) {
-                // Check for spell or material selection
-                if (!Wand.isWand(next)) {
-                    controller.onPlayerActivateIcon(mage, activeWand, next);
+            if (!Wand.isWand(next)) {
+                controller.onPlayerActivateIcon(mage, activeWand, next);
+
+                // Make sure we have the current wand item in the player's inventory so the
+                // item text gets updated on hotbar item selection "bounce"
+                int previousSlot = event.getPreviousSlot();
+                ItemStack previous = inventory.getItem(previousSlot);
+                String previousId = Wand.getWandId(previous);
+                if (previousId != null && previousId.equals(activeWand.getId())) {
+                    player.getInventory().setItem(previousSlot, activeWand.getItem());
                 }
-
-                event.setCancelled(true);
-                return;
-            } else {
-                // Otherwise, we're switching away from the wand, so deactivate it.
-                activeWand.deactivate();
             }
-        }
 
-        // If we're switching to a wand, activate it.
-        if (next != null && Wand.isWand(next)) {
-            Wand newWand = new Wand(controller, next);
-            newWand.activate(mage, next, event.getNewSlot());
+            event.setCancelled(true);
+        } else {
+            // Check to see if we've switched to/from a wand
+            mage.checkWand(next);
         }
 
         // Check for map selection if no wand is active
@@ -136,7 +136,9 @@ public class PlayerController implements Listener {
         ItemStack droppedItem = event.getItemDrop().getItemStack();
 
         boolean cancelEvent = false;
-        if (Wand.isWand(droppedItem) && activeWand != null && activeWand.isUndroppable()) {
+        String droppedId = Wand.getWandId(droppedItem);
+        boolean droppedWand = droppedId != null && activeWand != null && activeWand.getId().equals(droppedId);
+        if (droppedWand && activeWand.isUndroppable()) {
             // Postpone cycling until after this event unwinds
             Bukkit.getScheduler().scheduleSyncDelayedTask(controller.getPlugin(), new Runnable() {
                 @Override
@@ -152,13 +154,15 @@ public class PlayerController implements Listener {
             });
             cancelEvent = true;
         } else if (activeWand != null) {
-            ItemStack inHand = event.getPlayer().getInventory().getItemInHand();
-            // Kind of a hack- check if we just dropped a wand, and now have an empty hand
-            if (Wand.isWand(droppedItem) && (inHand == null || inHand.getType() == Material.AIR)) {
+            if (droppedWand) {
                 activeWand.deactivate();
                 // Clear after inventory restore (potentially with deactivate), since that will put the wand back
                 if (Wand.hasActiveWand(player)) {
-                    player.setItemInHand(new ItemStack(Material.AIR, 1));
+                    String activeId = Wand.getWandId(player.getItemInHand());
+                    if (activeId != null && activeWand.getId().equals(activeId))
+                    {
+                        player.setItemInHand(new ItemStack(Material.AIR, 1));
+                    }
                 }
             } else if (activeWand.isInventoryOpen()) {
                 if (!controller.isSpellDroppingEnabled()) {
@@ -193,10 +197,12 @@ public class PlayerController implements Listener {
         Mage apiMage = controller.getRegisteredMage(player);
         if (apiMage == null || !(apiMage instanceof com.elmakers.mine.bukkit.magic.Mage)) return;
         com.elmakers.mine.bukkit.magic.Mage mage = (com.elmakers.mine.bukkit.magic.Mage)apiMage;
-        Wand wand = mage.getActiveWand();
+        Wand wand = mage.checkWand();
 
         // Check for a player placing a wand in an item frame
-        if (wand != null && event.getRightClicked() instanceof ItemFrame) {
+        Entity clickedEntity = event.getRightClicked();
+        boolean isPlaceable = clickedEntity instanceof ItemFrame || clickedEntity instanceof ArmorStand;
+        if (wand != null && isPlaceable) {
             if (wand.isUndroppable()) {
                 event.setCancelled(true);
                 return;
@@ -247,8 +253,7 @@ public class PlayerController implements Listener {
         if (!(apiMage instanceof com.elmakers.mine.bukkit.magic.Mage)) return;
         com.elmakers.mine.bukkit.magic.Mage mage = (com.elmakers.mine.bukkit.magic.Mage)apiMage;
 
-        Wand wand = mage.getActiveWand();
-        boolean hasWand = Wand.hasActiveWand(player);
+        Wand wand = mage.checkWand();
 
         // Reset indestructible wand durability
         if (wand != null && wand.isIndestructible())
@@ -257,28 +262,6 @@ public class PlayerController implements Listener {
             if (item.getType().getMaxDurability() > 0)
             {
                 wand.getItem().setDurability((short)0);
-            }
-        }
-
-        // Safety check for a wand getting removed from the player's inventory
-        if ((itemInHand == null || itemInHand.getType() == Material.AIR) && wand != null)
-        {
-            controller.getLogger().warning("Mage had an active wand, but player is not holding anything");
-            wand.deactivate();
-            return;
-        }
-
-        // Hacky check for immediately activating a wand if for some reason it was
-        // not active
-        if (wand == null && hasWand) {
-            if (mage.isLoading()) {
-                event.setCancelled(true);
-                return;
-            }
-            wand = Wand.getActiveWand(controller, player);
-            if (wand != null) {
-                wand.activate(mage);
-                controller.getLogger().warning("Player was holding an inactive wand on interact- activating.");
             }
         }
 
@@ -395,7 +378,7 @@ public class PlayerController implements Listener {
     {
         Player player = event.getPlayer();
         Mage mage = controller.getMage(player);
-        mage.activateWand();
+        mage.checkWand();
     }
 
     @EventHandler
@@ -473,10 +456,9 @@ public class PlayerController implements Listener {
                 return;
             }
 
-            if (controller.removeLostWand(wand.getLostId())) {
-                controller.info("Player " + mage.getName() + " picked up wand " + wand.getName() + ", id " + wand.getLostId());
+            if (controller.removeLostWand(wand.getId())) {
+                controller.info("Player " + mage.getName() + " picked up wand " + wand.getName() + ", id " + wand.getId());
             }
-            wand.clearLostId();
         }
 
         // Wands will absorb spells and upgrade items
