@@ -17,6 +17,7 @@ public class MageData {
     private Location lastDeathLocation;
     private Location location;
     private String destinationWarp;
+    private long cooldownExpiration;
     private long fallProtectionCount;
     private long fallProtectionDuration;
     private Map<String, ItemStack> boundWands;
@@ -160,5 +161,13 @@ public class MageData {
 
     public void setUndoData(UndoData undoData) {
         this.undoData = undoData;
+    }
+
+    public long getCooldownExpiration() {
+        return cooldownExpiration;
+    }
+
+    public void setCooldownExpiration(long cooldownExpiration) {
+        this.cooldownExpiration = cooldownExpiration;
     }
 }

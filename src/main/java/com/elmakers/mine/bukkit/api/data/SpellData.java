@@ -8,6 +8,7 @@ public class SpellData {
     private boolean isActive;
     private long lastCast;
     private long castCount;
+    private long cooldownExpiration;
     private ConfigurationSection data;
 
     public SpellData(String spellKey) {
@@ -55,5 +56,13 @@ public class SpellData {
 
     public void setCastCount(long castCount) {
         this.castCount = castCount;
+    }
+
+    public long getCooldownExpiration() {
+        return cooldownExpiration;
+    }
+
+    public void setCooldownExpiration(long cooldownExpiration) {
+        this.cooldownExpiration = cooldownExpiration;
     }
 }
