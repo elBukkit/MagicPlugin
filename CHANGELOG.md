@@ -2,7 +2,9 @@
 
 ## 5.1.10
 
- - Add world change event handler, hoping for MVInventories compatibility.
+ - Several fixes/changes to wand tracking. Hoping this fixes a slew of wand dupe/glitch bugs.
+ - Create pluggable player data system. Currently just an API, eventually may allow for DB storage.
+ - Add global cooldown (Exhaustion) option, apply to Kill spell
 
 ## 5.1.9
 

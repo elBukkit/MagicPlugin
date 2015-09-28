@@ -113,6 +113,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     private Location location;
     private float costReduction = 0;
     private float cooldownReduction = 0;
+    private long cooldownExpiration = 0;
     private float powerMultiplier = 1;
     private long lastClick = 0;
     private long lastCast = 0;
@@ -609,6 +610,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             }
             this.data = data.getExtraData();
 
+            cooldownExpiration = data.getCooldownExpiration();
             fallProtectionCount = data.getFallProtectionCount();
             fallProtection = data.getFallProtectionDuration();
             if (fallProtectionCount > 0 && fallProtection > 0) {
@@ -673,6 +675,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             data.setLastDeathLocation(lastDeathLocation);
             data.setLocation(location);
             data.setDestinationWarp(destinationWarp);
+            data.setCooldownExpiration(cooldownExpiration);
             long now = System.currentTimeMillis();
 
             if (fallProtectionCount > 0 && fallProtection > now) {
@@ -1137,6 +1140,27 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     @Override
     public boolean isCooldownFree() {
         return activeWand == null ? false : activeWand.isCooldownFree();
+    }
+
+    @Override
+    public long getRemainingCooldown() {
+        long remaining = 0;
+        if (cooldownExpiration > 0)
+        {
+            long now = System.currentTimeMillis();
+            if (cooldownExpiration > now) {
+                remaining = cooldownExpiration - now;
+            } else {
+                cooldownExpiration = 0;
+            }
+        }
+
+        return remaining;
+    }
+
+    @Override
+    public void setRemainingCooldown(long ms) {
+        cooldownExpiration = Math.max(ms + System.currentTimeMillis(), cooldownExpiration);
     }
 
     @Override

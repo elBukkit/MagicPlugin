@@ -244,6 +244,7 @@ cooldown:
     description_hour: One hour
     description_moment: A Moment
     description: "&eCooldown: &6$time"
+    mage_description: "&cExhaustion: &6$time"
 duration:
     lasts_seconds: Lasts for $seconds seconds
     lasts_minutes: Lasts for $minutes minutes
@@ -1256,7 +1257,7 @@ spells:
         description: Deal lethal damage to your target
         usage: Has a warmup time!
         cast: DIE!
-        upgrade_description: "&r&b&bull; &6Increased damage, reduced cooldown"
+        upgrade_description: "&r&b&bull; &6Increased damage, reduced cooldown and exhaustion"
     superkill:
         name: SuperKill
         description: Kills your target, no questions asked

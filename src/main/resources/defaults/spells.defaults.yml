@@ -6068,6 +6068,7 @@ kill:
         target: other
         target_type: LivingEntity
         cooldown: 30000
+        cooldown_mage: 10000
         target_breakables: 5
         bypass_backfire: true
         damage: 20
@@ -6080,11 +6081,13 @@ kill|2:
     upgrade_required_path: master
     upgrade_required_casts: 50
     parameters:
+        cooldown_mage: 8000
         delay: 2000
         damage: 40
 
 kill|3:
     parameters:
+        cooldown_mage: 5000
         delay: 1000
         damage: 60
 

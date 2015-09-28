@@ -3326,6 +3326,12 @@ public class MagicController implements MageController {
                     lines.add("" + ChatColor.DARK_PURPLE + spellCooldownDescription);
                 }
 
+                String spellMageCooldownDescription = spell.getMageCooldownDescription();
+                if (spellMageCooldownDescription != null && spellMageCooldownDescription.length() > 0) {
+                    spellMageCooldownDescription = messages.get("cooldown.mage_description").replace("$time", spellMageCooldownDescription);
+                    lines.add("" + ChatColor.RED + spellMageCooldownDescription);
+                }
+
                 Collection<CastingCost> costs = spell.getCosts();
                 if (costs != null) {
                     for (CastingCost cost : costs) {
