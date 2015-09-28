@@ -30,6 +30,7 @@ import com.elmakers.mine.bukkit.api.spell.CostReducer;
  */
 public interface Wand extends CostReducer {
     public String getName();
+    public String getId();
     public long getWorth();
     public void closeInventory();
     public void activate(Mage mage);
