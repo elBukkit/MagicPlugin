@@ -1159,6 +1159,11 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     }
 
     @Override
+    public void clearCooldown() {
+        cooldownExpiration = 0;
+    }
+
+    @Override
     public void setRemainingCooldown(long ms) {
         cooldownExpiration = Math.max(ms + System.currentTimeMillis(), cooldownExpiration);
     }

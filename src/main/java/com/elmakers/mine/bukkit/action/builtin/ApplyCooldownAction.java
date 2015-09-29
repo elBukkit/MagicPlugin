@@ -8,6 +8,7 @@ import com.elmakers.mine.bukkit.api.spell.MageSpell;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 
@@ -17,14 +18,20 @@ import java.util.Collection;
 public class ApplyCooldownAction extends BaseSpellAction
 {
     private int cooldownAmount;
-	private String spellName;
+	private String[] spells;
+	private boolean clear;
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters)
     {
         super.prepare(context, parameters);
-		cooldownAmount = parameters.getInt("duration", 1000);
-		spellName = parameters.getString("spell", null);
+		cooldownAmount = parameters.getInt("duration", 0);
+		clear = parameters.getBoolean("clear", false);
+		String spellCSV = parameters.getString("spells", null);
+		if (spellCSV != null)
+		{
+			spells = StringUtils.split(spellCSV, ',');
+		}
     }
 
 	@Override
@@ -36,12 +43,24 @@ public class ApplyCooldownAction extends BaseSpellAction
 			return SpellResult.NO_TARGET;
 		}
 		Mage targetMage = controller.getMage(entity);
-		if (spellName == null) {
-			targetMage.setRemainingCooldown(cooldownAmount);
+		if (spells == null) {
+			if (clear) {
+				targetMage.clearCooldown();
+			}
+			if (cooldownAmount > 0) {
+				targetMage.setRemainingCooldown(cooldownAmount);
+			}
 		} else {
-			MageSpell spell = targetMage.getSpell(spellName);
-			if (spell != null) {
-				spell.setRemainingCooldown(cooldownAmount);
+			for (String spellName : spells) {
+				MageSpell spell = targetMage.getSpell(spellName);
+				if (spell != null) {
+					if (clear) {
+						spell.clearCooldown();
+					}
+					if (cooldownAmount > 0) {
+						spell.setRemainingCooldown(cooldownAmount);
+					}
+				}
 			}
 		}
 		return SpellResult.CAST;
