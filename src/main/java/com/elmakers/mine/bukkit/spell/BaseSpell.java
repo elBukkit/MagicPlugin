@@ -180,6 +180,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     private float                               cooldownReduction       = 0;
     private float                               costReduction           = 0;
 
+    private boolean                             bypassMageCooldown      = false;
     private int                                 mageCooldown            = 0;
     private int                                 cooldown                = 0;
     private long                                cooldownExpiration      = 0;
@@ -1328,6 +1329,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         }
         costReduction = (float)parameters.getDouble("cost_reduction", 0);
         cooldownReduction = (float)parameters.getDouble("cooldown_reduction", 0);
+        bypassMageCooldown = parameters.getBoolean("bypass_mage_cooldown", false);
 
         if (parameters.contains("prevent_passthrough")) {
             preventPassThroughMaterials = controller.getMaterialSet(parameters.getString("prevent_passthrough"));
@@ -1737,7 +1739,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
             }
         }
 
-        return Math.max(mage.getRemainingCooldown(), remaining);
+        return bypassMageCooldown ? remaining : Math.max(mage.getRemainingCooldown(), remaining);
     }
 
     @Override
