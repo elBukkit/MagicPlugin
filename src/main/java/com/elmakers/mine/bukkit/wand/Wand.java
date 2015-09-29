@@ -2754,6 +2754,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
             if (inventoryOpenSound != null) {
                 mage.playSoundEffect(inventoryOpenSound);
             }
+            playEffects("open");
             updateInventory();
 			mage.getPlayer().openInventory(getDisplayInventory());
 		} else if (wandMode == WandMode.INVENTORY) {
@@ -2763,6 +2764,8 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
                 if (inventoryOpenSound != null) {
                     mage.playSoundEffect(inventoryOpenSound);
                 }
+                showActiveIcon(true);
+                playEffects("open");
 				updateInventory();
                 updateHotbarStatus();
 				mage.getPlayer().updateInventory();
@@ -2781,8 +2784,10 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
                 if (inventoryCloseSound != null) {
                     mage.playSoundEffect(inventoryCloseSound);
                 }
+                playEffects("close");
                 if (mode == WandMode.INVENTORY) {
                     restoreInventory();
+                    showActiveIcon(false);
                 } else {
                     mage.getPlayer().closeInventory();
                 }
@@ -3161,8 +3166,8 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
             effectBubblesApplied = false;
 		}
 
-        if (this.item != null && this.inactiveIcon != null) {
-            inactiveIcon.applyToItem(this.item);
+        if (getMode() != WandMode.INVENTORY) {
+            showActiveIcon(false);
         }
 		
 		// This is a tying wands together with other spells, potentially
@@ -3680,19 +3685,31 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		}
 	}
 
+    protected void showActiveIcon(boolean show) {
+        if (this.icon == null || this.inactiveIcon == null) return;
+        if (show) {
+            if (inactiveIconDelay > 0) {
+                Plugin plugin = controller.getPlugin();
+                plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
+                    @Override
+                    public void run() {
+                        icon.applyToItem(item);
+                    }
+                }, inactiveIconDelay * 20 / 1000);
+            } else {
+                icon.applyToItem(item);
+            }
+        } else {
+            inactiveIcon.applyToItem(this.item);
+        }
+    }
 
     public void activate(Mage mage) {
         if (mage == null) return;
         this.newId();
 
-        if (this.inactiveIcon != null && this.icon != null) {
-            Plugin plugin = controller.getPlugin();
-            plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
-                @Override
-                public void run() {
-                    icon.applyToItem(item);
-                }
-            }, inactiveIconDelay * 20 / 1000);
+        if (getMode() != WandMode.INVENTORY) {
+            showActiveIcon(true);
         }
 
         Player player = mage.getPlayer();
