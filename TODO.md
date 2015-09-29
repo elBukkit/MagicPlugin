@@ -2,6 +2,9 @@
 
  - Add compatibility with per-world inventories:
  https://www.spigotmc.org/resources/per-world-inventory.4482/
+ 
+ - Add templates to messages.yml for all the various forms a wand and spell
+   name can take.
 
 Wand dupe issue:
 

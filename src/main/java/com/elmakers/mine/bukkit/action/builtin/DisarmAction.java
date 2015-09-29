@@ -62,11 +62,11 @@ public class DisarmAction extends BaseSpellAction
 			inventory.setItem(targetSlot, swapItem);
 			if (inventory.getHeldItemSlot() == originalSlot && Wand.isWand(targetItem)) {
 				if (mage != null) {
-					mage.activateWand();
+					mage.checkWand();
 				}
 			} else if (inventory.getHeldItemSlot() == targetSlot && Wand.isWand(swapItem)) {
 				if (mage != null) {
-					mage.activateWand();
+					mage.checkWand();
 				}
 			}
 		}
