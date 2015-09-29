@@ -80,6 +80,8 @@
 # for all spells- generally just effects.
 
 default:
+    parameters:
+      bypass_confusion: true
     effects:
        target_selected:
        - class: EffectSingle
@@ -151,10 +153,78 @@ default:
        world_required: fail
        invalid_world: fail
 
+silence:
+    icon_url: http://textures.minecraft.net/texture/1adaf6e6e387bc18567671bb82e948488bbacff97763ee5985442814989f5d
+    icon: rotten_flesh
+    category: dark
+    worth: 800
+    actions:
+        cast:
+        -  class: ApplyCooldown
+        -  class: Deactivate
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: irongolem_death
+           effectlib:
+             class: ConeEffect
+             iterations: 15
+             particle: redstone
+             color: 210B61
+             lengthGrow: 0.3
+        -  class: EffectSingle
+           location: target
+           color: 380B61
+           firework: star
+        -  class: EffectSingle
+           location: target
+           effectlib:
+             class: SmokeEffect
+             iterations: 16
+             particle: spell_mob
+             color: 210B61
+        -  class: EffectSingle
+           location: target
+           effectlib:
+             class: SphereEffect
+             iterations: 45
+             period: .1
+             particle: spell_mob
+             color: 210B61
+             radius: 1
+             particles: 20
+        no_target:
+        -  class: EffectSingle
+           sound: irongolem_death
+           effectlib:
+             class: ConeEffect
+             iterations: 15
+             particle: spell_mob
+             color: 210B61
+             lengthGrow: 0.3
+        -  class: EffectSingle
+           location: target
+           color: 210B61
+           firework: burst
+        -  class: EffectSingle
+           location: target
+           effectlib:
+             class: SmokeEffect
+             iterations: 10
+    costs:
+        mana: 80
+    parameters:
+        range: 16
+        cooldown: 20000
+        duration: 5000
+        target_type: LivingEntity
+        target_breakables: 1
+        target: other
+        hitbox: true
+
 curse:
     icon_url: http://textures.minecraft.net/texture/1adaf6e6e387bc18567671bb82e948488bbacff97763ee5985442814989f5d
     icon: rotten_flesh
-    alias: silence
     category: dark
     worth: 800
     upgrade_required_path: apprentice

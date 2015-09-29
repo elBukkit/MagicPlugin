@@ -5,6 +5,8 @@
  - Several fixes/changes to wand tracking. Hoping this fixes a slew of wand dupe/glitch bugs.
  - Create pluggable player data system. Currently just an API, eventually may allow for DB storage.
  - Add global cooldown (Exhaustion) option, apply to Kill spell
+ - Add ApplyCooldown action, resurrect Silence spell
+ - Confusion no longer prevents spell casting (by default, use bypass_confusion: false if you want to switch it back)
 
 ## 5.1.9
 
