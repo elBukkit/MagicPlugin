@@ -1704,6 +1704,11 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     }
 
     @Override
+    public void setRemainingCooldown(long ms) {
+        cooldownExpiration = Math.max(ms + System.currentTimeMillis(), cooldownExpiration);
+    }
+
+    @Override
     public long getRemainingCooldown() {
         long remaining = 0;
         if (cooldownExpiration > 0)
