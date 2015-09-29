@@ -7,6 +7,7 @@
  - Add global cooldown (Exhaustion) option, apply to Kill spell
  - Add ApplyCooldown action, resurrect Silence spell
  - Confusion no longer prevents spell casting (by default, use bypass_confusion: false if you want to switch it back)
+ - Add some new sound effects
 
 ## 5.1.9
 

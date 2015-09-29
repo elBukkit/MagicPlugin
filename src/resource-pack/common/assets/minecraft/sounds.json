@@ -515,5 +515,257 @@
       }
     ],
     "category": "player"
+  },
+  "magic.paperturn": {
+    "sounds": [
+      {
+        "name": "magic/paperturn1",
+        "stream": false,
+        "volume": 1,
+        "pitch": 1,
+        "weight": 3
+      },
+      {
+        "name": "magic/paperturn1",
+        "stream": false,
+        "volume": 0.9,
+        "pitch": 0.7
+      },
+      {
+        "name": "magic/paperturn1",
+        "stream": false,
+        "volume": 1,
+        "pitch": 0.8
+      },
+      {
+        "name": "magic/paperturn1",
+        "stream": false,
+        "volume": 0.8,
+        "pitch": 1.2
+      },
+      {
+        "name": "magic/paperturn1",
+        "stream": false,
+        "volume": 1,
+        "pitch": 1.3
+      }
+    ],
+    "category": "player"
+  },
+  "magic.wandup": {
+    "sounds": [
+      {
+        "name": "magic/wandup1",
+        "stream": false,
+        "volume": 1,
+        "pitch": 1,
+        "weight": 3
+      },
+      {
+        "name": "magic/wandup1",
+        "stream": false,
+        "volume": 0.9,
+        "pitch": 0.7
+      },
+      {
+        "name": "magic/wandup1",
+        "stream": false,
+        "volume": 1,
+        "pitch": 0.8
+      },
+      {
+        "name": "magic/wandup1",
+        "stream": false,
+        "volume": 0.8,
+        "pitch": 1.2
+      },
+      {
+        "name": "magic/wandup1",
+        "stream": false,
+        "volume": 1,
+        "pitch": 1.3
+      }
+    ],
+    "category": "player"
+  },
+  "magic.wanddown": {
+    "sounds": [
+      {
+        "name": "magic/wanddown1",
+        "stream": false,
+        "volume": 1,
+        "pitch": 1,
+        "weight": 3
+      },
+      {
+        "name": "magic/wanddown1",
+        "stream": false,
+        "volume": 0.9,
+        "pitch": 0.7
+      },
+      {
+        "name": "magic/wanddown1",
+        "stream": false,
+        "volume": 1,
+        "pitch": 0.8
+      },
+      {
+        "name": "magic/wanddown1",
+        "stream": false,
+        "volume": 0.8,
+        "pitch": 1.2
+      },
+      {
+        "name": "magic/wanddown1",
+        "stream": false,
+        "volume": 1,
+        "pitch": 1.3
+      }
+    ],
+    "category": "player"
+  },
+  "magic.shimmer_big": {
+    "sounds": [
+      {
+        "name": "magic/shimmer_big1",
+        "stream": false,
+        "volume": 1,
+        "pitch": 1,
+        "weight": 3
+      },
+      {
+        "name": "magic/shimmer_big1",
+        "stream": false,
+        "volume": 0.9,
+        "pitch": 0.7
+      },
+      {
+        "name": "magic/shimmer_big1",
+        "stream": false,
+        "volume": 1,
+        "pitch": 0.8
+      },
+      {
+        "name": "magic/shimmer_big1",
+        "stream": false,
+        "volume": 0.8,
+        "pitch": 1.2
+      },
+      {
+        "name": "magic/shimmer_big1",
+        "stream": false,
+        "volume": 1,
+        "pitch": 1.3
+      }
+    ],
+    "category": "player"
+  },
+  "magic.shield_boom": {
+    "sounds": [
+      {
+        "name": "magic/shield_boom1",
+        "stream": false,
+        "volume": 1,
+        "pitch": 1,
+        "weight": 3
+      },
+      {
+        "name": "magic/shield_boom1",
+        "stream": false,
+        "volume": 0.9,
+        "pitch": 0.7
+      },
+      {
+        "name": "magic/shield_boom1",
+        "stream": false,
+        "volume": 1,
+        "pitch": 0.8
+      },
+      {
+        "name": "magic/shield_boom1",
+        "stream": false,
+        "volume": 0.8,
+        "pitch": 1.2
+      },
+      {
+        "name": "magic/shield_boom1",
+        "stream": false,
+        "volume": 1,
+        "pitch": 1.3
+      }
+    ],
+    "category": "player"
+  },
+  "magic.zap_up": {
+    "sounds": [
+      {
+        "name": "magic/zap_up1",
+        "stream": false,
+        "volume": 1,
+        "pitch": 1,
+        "weight": 3
+      },
+      {
+        "name": "magic/zap_up1",
+        "stream": false,
+        "volume": 0.9,
+        "pitch": 0.7
+      },
+      {
+        "name": "magic/zap_up1",
+        "stream": false,
+        "volume": 1,
+        "pitch": 0.8
+      },
+      {
+        "name": "magic/zap_up1",
+        "stream": false,
+        "volume": 0.8,
+        "pitch": 1.2
+      },
+      {
+        "name": "magic/zap_up1",
+        "stream": false,
+        "volume": 1,
+        "pitch": 1.3
+      }
+    ],
+    "category": "player"
+  },
+  "magic.vanish": {
+    "sounds": [
+      {
+        "name": "magic/vanish1",
+        "stream": false,
+        "volume": 1,
+        "pitch": 1,
+        "weight": 3
+      },
+      {
+        "name": "magic/vanish1",
+        "stream": false,
+        "volume": 0.9,
+        "pitch": 0.7
+      },
+      {
+        "name": "magic/vanish1",
+        "stream": false,
+        "volume": 1,
+        "pitch": 0.8
+      },
+      {
+        "name": "magic/vanish1",
+        "stream": false,
+        "volume": 0.8,
+        "pitch": 1.2
+      },
+      {
+        "name": "magic/vanish1",
+        "stream": false,
+        "volume": 1,
+        "pitch": 1.3
+      }
+    ],
+    "category": "player"
   }
 }

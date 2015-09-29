@@ -166,7 +166,7 @@ silence:
     effects:
         cast:
         -  class: EffectSingle
-           sound: irongolem_death
+           sound: magic.shimmer_big
            effectlib:
              class: ConeEffect
              iterations: 15
@@ -894,7 +894,7 @@ reflect:
     effects:
         cast:
         -  class: EffectSingle
-           sound: magic.shield
+           sound: magic.shield_boom
            location: origin
     parameters:
         allow_max_range: true
@@ -4127,7 +4127,7 @@ cloak:
     effects:
         cast:
         -  class: EffectSingle
-           sound: magic.shimmer_quiet
+           sound: magic.vanish
         -  class: EffectTrail
            particle: smoke_normal
         -  class: EffectRing
@@ -6559,7 +6559,7 @@ stun:
     effects:
         cast:
         -  class: EffectSingle
-           sound: magic.zap_crack
+           sound: magic.shimmer_quiet
            sound_pitch: 0.1
            sound_volume: 0.5
            location: origin
@@ -6707,7 +6707,7 @@ lift:
         cast:
         -  class: EffectSingle
            location: origin
-           sound: enderdragon_wings
+           sound: magic.zap_up
            sound_pitch: 2
            effectlib:
              class: ConeEffect
