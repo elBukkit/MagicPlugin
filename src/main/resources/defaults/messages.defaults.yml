@@ -351,6 +351,10 @@ spells:
         name: Anvil
         description: Spawn an anvil
         cast: So heavy!
+    silence:
+        name: Silence
+        description: Prevent your target from casting spells
+        cast: You silence $target
     curse:
         name: Curse
         description: Slows down and weakens the target
@@ -483,6 +487,8 @@ spells:
         cast_self: You cure yourself
         upgrade_description: "&r&b&bull; &6Now cures hunger"
         cast: You heal $target
+    cure|3:
+        upgrade_description: "&r&b&bull; &6Now negates Silence"
     music:
         name: Music
         description: Play some tunes

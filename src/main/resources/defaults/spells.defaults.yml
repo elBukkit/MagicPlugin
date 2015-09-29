@@ -1917,6 +1917,7 @@ cure:
              iterations: 5
              period: 2
     parameters:
+        bypass_mage_cooldown: true
         target_type: LivingEntity
         target: any_entity
         allow_max_range: false
@@ -1939,8 +1940,18 @@ cure:
         mana: 30
 
 cure|2:
+    upgrade_required_path: apprentice
+    upgrade_required_casts: 20
     parameters:
         effect_saturation: 4
+
+cure|3:
+    actions:
+        cast:
+        -  class: PotionEffect
+        -  class: ApplyCooldown
+           clear: true
+           duration: 0
 
 heal:
     icon_url: http://textures.minecraft.net/texture/6b7da98ef45cf45185d21d61f5fa3d5966a3ee52273620a6e4dfd54cf99dbc

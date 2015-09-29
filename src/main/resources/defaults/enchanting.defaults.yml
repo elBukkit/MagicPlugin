@@ -300,6 +300,7 @@ apprentice:
       gatling: 0,20,30
       walls: 5,30,50
       smite: 10,20,30
+      silence: 0,0,5
 
 master:
     required_spells:
