@@ -154,6 +154,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     protected boolean bypassBuildRestriction    = false;
     protected boolean bypassBreakRestriction    = false;
     protected boolean bypassConfusion             = false;
+    protected boolean bypassWeakness              = false;
     protected boolean bypassPermissions           = false;
     protected boolean castOnNoTarget              = false;
     protected boolean bypassDeactivate            = false;
@@ -947,13 +948,23 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
             return false;
         }
 
-        // Don't allow casting if the player is confused
+        // Don't allow casting if the player is confused or weakened
         bypassConfusion = parameters.getBoolean("bypass_confusion", bypassConfusion);
+        bypassWeakness = parameters.getBoolean("bypass_weakness", bypassWeakness);
         LivingEntity livingEntity = mage.getLivingEntity();
-        if (livingEntity != null && !bypassConfusion && !mage.isSuperPowered() && livingEntity.hasPotionEffect(PotionEffectType.CONFUSION)) {
-            processResult(SpellResult.CURSED, parameters);
-            mage.sendDebugMessage(ChatColor.WHITE + "Cast " + ChatColor.GOLD + getName() + ChatColor.WHITE + ": " + ChatColor.AQUA + SpellResult.CURSED + ChatColor.DARK_AQUA + " (no cast)");
-            return false;
+        if (livingEntity != null && !mage.isSuperPowered()) {
+            if (!bypassConfusion && livingEntity.hasPotionEffect(PotionEffectType.CONFUSION)) {
+                processResult(SpellResult.CURSED, parameters);
+                mage.sendDebugMessage(ChatColor.WHITE + "Cast " + ChatColor.GOLD + getName() + ChatColor.WHITE + ": " + ChatColor.AQUA + SpellResult.CURSED + ChatColor.DARK_AQUA + " (no cast)");
+                return false;
+            }
+
+            // Don't allow casting if the player is weakened
+            if (!bypassWeakness && livingEntity.hasPotionEffect(PotionEffectType.WEAKNESS)) {
+                processResult(SpellResult.CURSED, parameters);
+                mage.sendDebugMessage(ChatColor.WHITE + "Cast " + ChatColor.GOLD + getName() + ChatColor.WHITE + ": " + ChatColor.AQUA + SpellResult.CURSED + ChatColor.DARK_AQUA + " (no cast)");
+                return false;
+            }
         }
 
         // Don't perform permission check until after processing parameters, in case of overrides
