@@ -48,6 +48,7 @@ public class YamlMageDataStore implements MageDataStore {
         saveFile.set("id", mage.getId());
         saveFile.set("name", mage.getName());
         saveFile.set("last_cast", mage.getLastCast());
+        saveFile.set("cooldown_expiration", mage.getCooldownExpiration());
         saveFile.set("last_death_location", ConfigurationUtils.fromLocation(mage.getLastDeathLocation()));
         Location location = mage.getLocation();
         if (location != null) {
@@ -101,6 +102,7 @@ public class YamlMageDataStore implements MageDataStore {
             ConfigurationSection node = spellNode.createSection(spell.getKey());
             node.set("cast_count", spell.getCastCount());
             node.set("last_cast", spell.getLastCast());
+            node.set("cooldown_expiration", spell.getCooldownExpiration());
             node.set("active", spell.isActive() ? true : null);
             ConfigurationSection extra = spell.getExtraData();
             if (extra != null) {
@@ -208,6 +210,7 @@ public class YamlMageDataStore implements MageDataStore {
         data.setLastDeathLocation(ConfigurationUtils.getLocation(saveFile, "last_death_location"));
         data.setLocation(ConfigurationUtils.getLocation(saveFile, "location"));
         data.setLastCast(saveFile.getLong("last_cast", 0));
+        data.setCooldownExpiration(saveFile.getLong("cooldown_expiration", 0));
         data.setDestinationWarp(saveFile.getString("destination_warp"));
 
         // Load undo queue
@@ -235,6 +238,7 @@ public class YamlMageDataStore implements MageDataStore {
                 SpellData spellData = new SpellData(key);
                 spellData.setCastCount(node.getLong("cast_count", 0));
                 spellData.setLastCast(node.getLong("last_cast", 0));
+                spellData.setCooldownExpiration(node.getLong("cooldown_expiration", 0));
                 spellData.setExtraData(node);
                 spellDataList.add(spellData);
             }

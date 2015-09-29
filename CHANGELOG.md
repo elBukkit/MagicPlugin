@@ -1,6 +1,6 @@
 # CHANGELOG
 
-## 5.1.10
+## 5.2
 
  - Several fixes/changes to wand tracking. Hoping this fixes a slew of wand dupe/glitch bugs.
  - Create pluggable player data system. Currently just an API, eventually may allow for DB storage.
