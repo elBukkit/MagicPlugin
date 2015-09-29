@@ -308,6 +308,7 @@ public interface Mage extends CostReducer {
     public float getCostReduction();
     public long getRemainingCooldown();
     public void setRemainingCooldown(long ms);
+    public void clearCooldown();
 
     public boolean isSuperPowered();
     public boolean isSuperProtected();
