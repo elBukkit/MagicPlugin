@@ -7,6 +7,7 @@ import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.spell.MageSpell;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
+import com.elmakers.mine.bukkit.api.wand.Wand;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.configuration.ConfigurationSection;
@@ -55,8 +56,14 @@ public class ApplyCooldownAction extends BaseSpellAction
 				targetMage.setRemainingCooldown(cooldownAmount);
 			}
 		} else {
+			Wand wand = targetMage.getActiveWand();
 			for (String spellName : spells) {
-				MageSpell spell = targetMage.getSpell(spellName);
+				Spell spell;
+				if (wand != null) {
+					spell = wand.getSpell(spellName);
+				} else {
+					spell = targetMage.getSpell(spellName);
+				}
 				if (spell != null) {
 					if (clear) {
 						spell.clearCooldown();
