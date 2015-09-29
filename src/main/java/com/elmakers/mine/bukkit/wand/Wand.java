@@ -3252,7 +3252,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 					// And the effect color morphing isn't all that important if a few
 					// casts get lost.
 				}
-                if (!isLocked() && spell instanceof MageSpell)
+                if (!isLocked() && spell instanceof MageSpell && controller.isSpellUpgradingEnabled())
                 {
                     MageSpell mageSpell = (MageSpell)spell;
                     MageSpell upgrade = mageSpell.getUpgrade();

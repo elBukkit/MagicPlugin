@@ -2000,6 +2000,7 @@ public class MagicController implements MageController {
         activateHoloTextRange = properties.getInt("activate_holotext_range", activateHoloTextRange);
         urlIconsEnabled = properties.getBoolean("url_icons_enabled", urlIconsEnabled);
         spellUpgradesEnabled = properties.getBoolean("enable_spell_upgrades", spellUpgradesEnabled);
+        autoSpellUpgradesEnabled = properties.getBoolean("enable_automatic_spell_upgrades", autoSpellUpgradesEnabled);
 
 		loadDefaultSpells = properties.getBoolean("load_default_spells", loadDefaultSpells);
         disableDefaultSpells = properties.getBoolean("disable_default_spells", disableDefaultSpells);
@@ -3816,6 +3817,10 @@ public class MagicController implements MageController {
         return libsDisguiseManager == null || entity == null ? false : libsDisguiseManager.isDisguised(entity);
     }
 
+    public boolean isSpellUpgradingEnabled() {
+        return autoSpellUpgradesEnabled;
+    }
+
     public boolean isLoaded() {
         return loaded;
     }
@@ -3976,6 +3981,7 @@ public class MagicController implements MageController {
     private int                                 activateHoloTextRange       = 0;
     private boolean							    urlIconsEnabled             = true;
     private boolean                             spellUpgradesEnabled        = true;
+    private boolean                             autoSpellUpgradesEnabled    = true;
 
     private boolean							    bypassBuildPermissions      = false;
     private boolean							    bypassBreakPermissions      = false;

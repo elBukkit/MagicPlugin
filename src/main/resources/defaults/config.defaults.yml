@@ -131,8 +131,12 @@ enable_crafting: true
 # Whether wands can be upgraded on an enchanting table
 enable_enchanting: true
 
-# Enable automatic spell upgrades
+# Enable spell upgrades. Turning this off will make all of the upgraded spells
+# unobtainable.
 enable_spell_upgrades: true
+
+# Automatically level up spells based on cast count
+enable_automatic_spell_upgrades: true
 
 # Whether wands can be combined on an anvil
 enable_combining: true
