@@ -6,6 +6,7 @@ import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 
 import java.util.Arrays;
@@ -25,10 +26,12 @@ public class AirSupplyAction extends BaseSpellAction
 	@Override
 	public SpellResult perform(CastContext context)
 	{
-		LivingEntity livingEntity = context.getLivingEntity();
-		if (livingEntity == null) {
+		Entity entity = context.getTargetEntity();
+
+		if (entity == null || !(entity instanceof LivingEntity)) {
 			return SpellResult.NO_TARGET;
 		}
+		LivingEntity livingEntity = (LivingEntity)entity;
 
 		int airLevel = air;
 		if (airLevel > livingEntity.getMaximumAir()) {
