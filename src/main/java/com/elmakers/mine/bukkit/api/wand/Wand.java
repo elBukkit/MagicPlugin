@@ -45,6 +45,7 @@ public interface Wand extends CostReducer {
     public void unenchant();
     public void unlock();
     public Wand duplicate();
+    public Spell getSpell(String key);
     public boolean hasSpell(String key);
     public boolean hasBrush(String key);
     public boolean isLocked();
