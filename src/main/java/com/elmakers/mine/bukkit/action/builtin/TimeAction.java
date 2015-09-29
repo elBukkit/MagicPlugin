@@ -53,13 +53,14 @@ public class TimeAction extends BaseSpellAction
         timeSet = timeType;
         if (timeType.equalsIgnoreCase("toggle")) {
             long currentTime = world.getTime();
-            if (currentTime > 13000) {
+            if (currentTime >= 13000) {
                 timeSet = "day";
             } else {
                 timeSet = "night";
+				targetTime = 13000;
             }
         }
-		if (timeType.equalsIgnoreCase("night"))
+		else if (timeType.equalsIgnoreCase("night"))
 		{
 			targetTime = 13000;
 		}
