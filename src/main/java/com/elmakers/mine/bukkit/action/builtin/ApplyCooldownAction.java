@@ -32,6 +32,10 @@ public class ApplyCooldownAction extends BaseSpellAction
 		{
 			spells = StringUtils.split(spellCSV, ',');
 		}
+		else
+		{
+			spells = null;
+		}
     }
 
 	@Override
