@@ -234,6 +234,7 @@ student:
       tracking: 5,10,30
       rocket: 0,10,20
       shrink: 5,20,30
+      wave: 5,20,30
 
 apprentice:
     upgrade: master
@@ -300,7 +301,7 @@ apprentice:
       gatling: 0,20,30
       walls: 5,30,50
       smite: 10,20,30
-      silence: 0,0,5
+      shuriken: 0,0,5
 
 master:
     required_spells:
@@ -377,6 +378,7 @@ master:
       secure: 0,0,5
       ghast: 0,0,5
       tendril: 0,0,5
+      silence: 0,0,5
 
 #
 # The move from "master" to engineer requires the player to aquire some basic

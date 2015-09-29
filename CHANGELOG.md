@@ -10,6 +10,7 @@
  - Add some new sound effects
  - Add Cure Level 3, to cure Silence
  - Separate console/command-block reductions, console casts no longer have cooldowns by default
+ - Add Wave and Shuriken spells
 
 ## 5.1.9
 

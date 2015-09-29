@@ -3239,7 +3239,7 @@ day:
            particle_count: 5
     parameters:
         target: none
-        cooldown: 5000
+        cooldown: 30000
         time: day
         weather: clear
     costs:
@@ -3265,7 +3265,7 @@ night:
              particle: smoke_large
     parameters:
         target: none
-        cooldown: 5000
+        cooldown: 30000
         time: night
         cycle_moon_phase: true
     costs:
@@ -3295,7 +3295,7 @@ time:
         allow_night: true
         allow_day: true
         allow_glowstone: false
-        cooldown: 120000
+        cooldown: 60000
         time: toggle
     costs:
         mana: 40
@@ -7516,3 +7516,147 @@ rainbow:
         center_z: false
     costs:
         mana: 100
+
+shuriken:
+    icon: double_plant:5
+    icon_url: http://textures.minecraft.net/texture/a8d5885e7a3471562c4b7e4f45ae0b8532596ca15f695345114213032a89ed
+    category: combat
+    upgrade_required_path: master
+    upgrade_required_casts: 50
+    worth: 2000
+    actions:
+        cast:
+        -  class: Projectile
+           actions:
+           -  class: AreaOfEffect
+              actions:
+              - class: Explosion
+              - class: AreaOfEffect
+                actions:
+                - class: Damage
+        -  class: Repeat
+           actions:
+           - class: Delay
+           - class: AreaOfEffect
+             actions:
+             - class: Damage
+    effects:
+        projectile:
+        -  class: EffectSingle
+           location: origin
+           sound: magic.shimmer_quiet
+           effectlib:
+             class: HelixEffect
+             iterations: 8
+             period: 2
+             radius: 0.2
+             strands: 3
+             particles: 10
+             particle: redstone
+        hit:
+        -  class: EffectSingle
+           sound: shimmer_big
+           location: origin
+           effectlib:
+             class: HelixEffect
+             particle: redstone
+             radius: 8
+    parameters:
+        set_target: true
+        projectile: Arrow
+        cooldown: 30000
+        repeat: 5
+        delay: 1
+        speed: 3
+        damage: 2
+        size: 1
+        radius: 3
+        undo: 10000
+    costs:
+        mana: 200
+
+shuriken|2:
+    upgrade_required_path: master
+    upgrade_required_casts: 50
+    parameters:
+        damage: 3
+        size: 2
+        radius: 4
+
+shuriken|3:
+    parameters:
+        damage: 3
+        size: 3
+        radius: 4
+
+wave:
+    icon_url: http://textures.minecraft.net/texture/912c6ba1e1756d2d8ffb0f72af0c46d2da3596168d3ad0d513ce25c92572
+    icon: feather
+    category: elemental
+    pvp_restricted: true
+    worth: 4000
+    upgrade_required_path: master
+    upgrade_required_casts: 50
+    actions:
+        cast:
+        -  class: Line
+           actions:
+           - class: PlayEffects
+             effects: iterate
+           - class: Volume
+             actions:
+             - class: Cover
+               actions:
+               - class: ModifyBlock
+           - class: AreaOfEffect
+             actions:
+             - class: Velocity
+           - class: Delay
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: magic.shimmer_quiet
+           sound_volume: 1
+           sound_pitch: 0.2
+           location: origin
+        iterate:
+        -  class: EffectSingle
+           location: origin
+           sound: magic.shimmer_quiet
+           effectlib:
+             class: SmokeEffect
+             iterations: 16
+             particle: smoke_normal
+    parameters:
+        target: block
+        target_type: Entity
+        start_at_target: true
+        x_size: 2
+        y_size: 0
+        z_size: 2
+        size: 8
+        range: 3
+        allow_max_range: true
+        orient: true
+        target_count: 16
+        item_speed: 0.2
+        living_entity_speed: 0.3
+        push: 1
+        direction: 0,1,0
+        speed: 0.4
+        cooldown: 10000
+        delay: 250
+        brush: air
+        falling: true
+        undo: 15000
+    costs:
+        mana: 150
+
+wave|2:
+    parameters:
+        x_size: 3
+        z_size: 3
+        item_speed: 0.4
+        living_entity_speed: 0.6
+        speed: 0.8
+        check_destructible: false

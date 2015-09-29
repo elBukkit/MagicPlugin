@@ -511,6 +511,14 @@ spells:
         description: Kill entities in a wide radius
         cast: Kill all the things!
         upgrade_description: "&r&b&bull; &6Increased chance of damage"
+    shuriken:
+        name: Shuriken
+        description: Throw an exploding star
+        upgrade_description: "&r&b&bull; &6Increased damage"
+    wave:
+        name: Wave
+        description: Unleash a concussive wave
+        upgrade_description: "&r&b&bull; &6Increased size and force"
     weather:
         name: Weather
         description: Change the weather
