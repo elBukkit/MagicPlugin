@@ -40,6 +40,7 @@ public interface Spell extends SpellTemplate {
     public boolean isActive();
     public boolean hasBrushOverride();
     public boolean canCast(Location location);
+    public void setRemainingCooldown(long ms);
     public long getRemainingCooldown();
     public CastingCost getRequiredCost();
     public void messageTargets(String messageKey);
