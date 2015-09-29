@@ -2087,6 +2087,9 @@ public class MagicController implements MageController {
 		castCommandCostReduction = (float)properties.getDouble("cast_command_cost_reduction", castCommandCostReduction);
 		castCommandCooldownReduction = (float)properties.getDouble("cast_command_cooldown_reduction", castCommandCooldownReduction);
 		castCommandPowerMultiplier = (float)properties.getDouble("cast_command_power_multiplier", castCommandPowerMultiplier);
+        castConsoleCostReduction = (float)properties.getDouble("cast_console_cost_reduction", castConsoleCostReduction);
+        castConsoleCooldownReduction = (float)properties.getDouble("cast_console_cooldown_reduction", castConsoleCooldownReduction);
+        castConsolePowerMultiplier = (float)properties.getDouble("cast_console_power_multiplier", castConsolePowerMultiplier);
 		autoUndo = properties.getInt("auto_undo", autoUndo);
         spellDroppingEnabled = properties.getBoolean("allow_spell_dropping", spellDroppingEnabled);
 		bindingEnabled = properties.getBoolean("enable_binding", bindingEnabled);
@@ -2637,15 +2640,24 @@ public class MagicController implements MageController {
 		);
 	}
 	
-	public void toggleCastCommandOverrides(Mage apiMage, boolean override) {
+	public void toggleCastCommandOverrides(Mage apiMage, CommandSender sender, boolean override) {
         // Don't track command-line casts
         apiMage.setTrackCasts(!override);
         // Reach into internals a bit here.
 		if (apiMage instanceof com.elmakers.mine.bukkit.magic.Mage) {
             com.elmakers.mine.bukkit.magic.Mage mage = (com.elmakers.mine.bukkit.magic.Mage)apiMage;
-			mage.setCostReduction(override ? castCommandCostReduction : 0);
-			mage.setCooldownReduction(override ? castCommandCooldownReduction : 0);
-			mage.setPowerMultiplier(override ? castCommandPowerMultiplier : 1);
+			if (sender instanceof BlockCommandSender)
+            {
+                mage.setCostReduction(override ? castCommandCostReduction : 0);
+                mage.setCooldownReduction(override ? castCommandCooldownReduction : 0);
+                mage.setPowerMultiplier(override ? castCommandPowerMultiplier : 1);
+            }
+            else
+            {
+                mage.setCostReduction(override ? castConsoleCostReduction : 0);
+                mage.setCooldownReduction(override ? castConsoleCooldownReduction : 0);
+                mage.setPowerMultiplier(override ? castConsolePowerMultiplier : 1);
+            }
 		}
 	}
 	
@@ -2724,14 +2736,14 @@ public class MagicController implements MageController {
 		}
 
 		// Make it free and skip cooldowns, if configured to do so.
-		toggleCastCommandOverrides(mage, true);
+		toggleCastCommandOverrides(mage, sender, true);
         boolean success = false;
         try {
             success = spell.cast(parameters, targetLocation);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-		toggleCastCommandOverrides(mage, false);
+		toggleCastCommandOverrides(mage, sender, false);
         // Removed sending messages here due to the log spam in WG region messages
         // Maybe should be a parameter option or something?
 
@@ -3939,6 +3951,9 @@ public class MagicController implements MageController {
     private float							 	castCommandCostReduction	    = 1.0f;
     private float							 	castCommandCooldownReduction	= 1.0f;
     private float								castCommandPowerMultiplier      = 0.0f;
+    private float							 	castConsoleCostReduction	    = 1.0f;
+    private float							 	castConsoleCooldownReduction	= 1.0f;
+    private float								castConsolePowerMultiplier      = 0.0f;
     private float							 	costReduction	    			= 0.0f;
     private float							 	cooldownReduction				= 0.0f;
     private int								    autoUndo						= 0;

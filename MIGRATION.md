@@ -1,5 +1,9 @@
 # Migration Notes
 
+## 5.2.0
+
+ - The /cast command now bypasses cooldowns. If you don't want this, set "cast_console_cooldown_reduction: 0" in config.yml!
+
 ## 5.1.9
 
  - Changed icon for architect wand, you may need to tweak existing ones with

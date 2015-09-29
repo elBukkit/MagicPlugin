@@ -149,12 +149,18 @@ cost_reduction: 0.0
 cooldown_reduction: 0.0
 
 # How much to reduce costs and cooldowns when using /cast (versus a wand)
+# From a command block
 cast_command_cost_reduction: 100.0
 cast_command_cooldown_reduction: 0.0
+
+# From the console (in-game or otherwise)
+cast_console_cost_reduction: 100.0
+cast_console_cooldown_reduction: 100.0
 
 # Whether or not to respect wand power for the held wand when using /cast
 # Set the to 1.0 to use normal wand power, 0.0 to ignore wand power.
 cast_command_power_multiplier: 0.0
+cast_console_power_multiplier: 0.0
 
 # Whether renaming on an anvil will also clear the description
 # In the future, it may be possible to change the description on

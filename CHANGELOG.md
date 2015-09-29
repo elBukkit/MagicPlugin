@@ -9,6 +9,7 @@
  - Confusion no longer prevents spell casting (by default, use bypass_confusion: false if you want to switch it back)
  - Add some new sound effects
  - Add Cure Level 3, to cure Silence
+ - Separate console/command-block reductions, console casts no longer have cooldowns by default
 
 ## 5.1.9
 
