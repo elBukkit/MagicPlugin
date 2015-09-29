@@ -82,6 +82,7 @@
 default:
     parameters:
       bypass_confusion: true
+      bypass_weakness: true
     effects:
        target_selected:
        - class: EffectSingle
