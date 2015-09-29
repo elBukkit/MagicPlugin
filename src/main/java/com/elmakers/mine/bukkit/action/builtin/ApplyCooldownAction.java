@@ -58,10 +58,11 @@ public class ApplyCooldownAction extends BaseSpellAction
 		} else {
 			Wand wand = targetMage.getActiveWand();
 			for (String spellName : spells) {
-				Spell spell;
+				Spell spell = null;
 				if (wand != null) {
 					spell = wand.getSpell(spellName);
-				} else {
+				}
+				if (spell == null) {
 					spell = targetMage.getSpell(spellName);
 				}
 				if (spell != null) {
