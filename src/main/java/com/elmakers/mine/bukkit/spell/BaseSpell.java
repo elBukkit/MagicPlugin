@@ -855,6 +855,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         // Preload some parameters
         ConfigurationSection parameters = node.getConfigurationSection("parameters");
         if (parameters != null) {
+            bypassMageCooldown = parameters.getBoolean("bypass_mage_cooldown", false);
             cooldown = parameters.getInt("cooldown", 0);
             cooldown = parameters.getInt("cool", cooldown);
             mageCooldown = parameters.getInt("cooldown_mage", 0);
