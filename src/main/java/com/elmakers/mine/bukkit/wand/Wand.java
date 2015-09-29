@@ -963,6 +963,8 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
                 String itemId = getWandId(itemInHand);
                 if (itemId != null && itemId.equals(id)) {
                     item = itemInHand;
+                    updateName();
+                    updateLore();
                 }
             }
         }
@@ -1114,7 +1116,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         } else {
             node.set("brush_mode", null);
         }
-		if (icon != null) {;
+		if (icon != null) {
 			String iconKey = icon.getKey();
 			if (iconKey != null && iconKey.length() > 0) {
 				node.set("icon", iconKey);
@@ -1124,7 +1126,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		} else {
 			node.set("icon", null);
 		}
-        if (inactiveIcon != null) {;
+        if (inactiveIcon != null) {
             String iconKey = inactiveIcon.getKey();
             if (iconKey != null && iconKey.length() > 0) {
                 node.set("icon_inactive", iconKey);
