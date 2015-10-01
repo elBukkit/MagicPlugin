@@ -99,5 +99,6 @@ public interface Wand extends CostReducer {
     public void playEffects(String key);
     public boolean cast();
     public boolean isBound();
+    public boolean isSoul();
     public void damageDealt(double damage, Entity target);
 }
