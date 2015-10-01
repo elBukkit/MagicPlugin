@@ -249,6 +249,15 @@ public interface Mage extends CostReducer {
     public GUIAction getActiveGUI();
 
     /**
+     * Get the Mage's "soul" wand. This represents all of the
+     * spells and other properties that are bound to the Mage itself,
+     * rather than to a specific wand.
+     *
+     * This wand never appears as an in-game item.
+     */
+    public Wand getSoulWand();
+
+    /**
      * Force a re-check of the current active wand vs the item the player is holding.
      *
      * This may activate or deactivate a wand, or both.

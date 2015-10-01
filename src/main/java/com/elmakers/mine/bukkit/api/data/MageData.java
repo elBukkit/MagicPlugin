@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.api.data;
 
+import com.elmakers.mine.bukkit.api.wand.Wand;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemoryConfiguration;
@@ -23,6 +24,7 @@ public class MageData {
     private Map<String, ItemStack> boundWands;
     private Map<Integer, ItemStack> respawnArmor;
     private Map<Integer, ItemStack> respawnInventory;
+    private Wand soulWand;
     private List<ItemStack> storedInventory;
     private Collection<SpellData> spellData;
     private BrushData brushData;
@@ -169,5 +171,13 @@ public class MageData {
 
     public void setCooldownExpiration(long cooldownExpiration) {
         this.cooldownExpiration = cooldownExpiration;
+    }
+
+    public Wand getSoulWand() {
+        return soulWand;
+    }
+
+    public void setSoulWand(Wand soulWand) {
+        this.soulWand = soulWand;
     }
 }
