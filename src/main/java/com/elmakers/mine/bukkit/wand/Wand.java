@@ -73,7 +73,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         "path", "passive",
 		"xp", "xp_regeneration", "xp_max", "xp_max_boost", "xp_regeneration_boost",
         "mana_per_damage",
-		"bound", "has_uses", "uses", "upgrade", "indestructible", "undroppable",
+		"bound", "soul", "has_uses", "uses", "upgrade", "indestructible", "undroppable",
 		"cost_reduction", "cooldown_reduction", "effect_bubbles", "effect_color", 
 		"effect_particle", "effect_particle_count", "effect_particle_data", "effect_particle_interval",
         "effect_particle_min_velocity",
@@ -123,7 +123,8 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
     private boolean superProtected = false;
     private boolean superPowered = false;
     private boolean glow = false;
-	private boolean bound = false;
+	private boolean soul = false;
+    private boolean bound = false;
 	private boolean indestructible = false;
     private boolean undroppable = false;
 	private boolean keep = false;
@@ -1074,6 +1075,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         node.set("rename", rename);
         node.set("rename_description", renameDescription);
 		node.set("bound", bound);
+        node.set("soul", soul);
         node.set("force", forceUpgrade);
 		node.set("indestructible", indestructible);
         node.set("protected", superProtected);
@@ -1287,6 +1289,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
             undroppable = wandConfig.getBoolean("undroppable", undroppable);
             isHeroes = wandConfig.getBoolean("heroes", isHeroes);
 			bound = wandConfig.getBoolean("bound", bound);
+            soul = wandConfig.getBoolean("soul", soul);
             forceUpgrade = wandConfig.getBoolean("force", forceUpgrade);
             autoOrganize = wandConfig.getBoolean("organize", autoOrganize);
             autoAlphabetize = wandConfig.getBoolean("alphabetize", autoAlphabetize);
@@ -4322,6 +4325,11 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         player.updateInventory();
 
         return true;
+    }
+
+    @Override
+    public boolean isSoul() {
+        return soul;
     }
 
     @Override

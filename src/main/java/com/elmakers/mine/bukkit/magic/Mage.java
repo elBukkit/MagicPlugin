@@ -88,6 +88,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     protected final MagicController controller;
     protected HashMap<String, MageSpell> spells = new HashMap<String, MageSpell>();
     private Wand activeWand = null;
+    private Wand soulWand = null;
     private Map<String, Wand> boundWands = new HashMap<String, Wand>();
     private final Collection<Listener> quitListeners = new HashSet<Listener>();
     private final Collection<Listener> deathListeners = new HashSet<Listener>();
@@ -587,6 +588,10 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                 }
             }
             this.data = data.getExtraData();
+            com.elmakers.mine.bukkit.api.wand.Wand apiWand = data.getSoulWand();
+            if (apiWand instanceof Wand) {
+                this.soulWand = (Wand)apiWand;
+            }
 
             cooldownExpiration = data.getCooldownExpiration();
             fallProtectionCount = data.getFallProtectionCount();
@@ -686,6 +691,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                 }
                 data.setBoundWands(wandItems);
             }
+            data.setSoulWand(soulWand);
             data.setRespawnArmor(respawnArmor);
             data.setRespawnInventory(respawnInventory);
             if (activeWand != null && activeWand.hasStoredInventory()) {
@@ -1270,6 +1276,14 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         }
         // TODO: Maybe wrap EntityEquipment in an Inventory... ? Could be hacky.
         return null;
+    }
+
+    @Override
+    public Wand getSoulWand() {
+        if (soulWand == null) {
+            soulWand = new Wand(controller);
+        }
+        return soulWand;
     }
 
     @Override

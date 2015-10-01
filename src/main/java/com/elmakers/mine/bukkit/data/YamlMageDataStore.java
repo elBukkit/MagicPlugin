@@ -7,6 +7,8 @@ import com.elmakers.mine.bukkit.api.data.MageDataStore;
 import com.elmakers.mine.bukkit.api.data.SpellData;
 import com.elmakers.mine.bukkit.api.data.UndoData;
 import com.elmakers.mine.bukkit.api.magic.MageController;
+import com.elmakers.mine.bukkit.api.wand.Wand;
+import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.utilities.YamlDataFile;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import org.bukkit.Location;
@@ -139,6 +141,13 @@ public class YamlMageDataStore implements MageDataStore {
         List<ItemStack> storedInventory = mage.getStoredInventory();
         if (storedInventory != null) {
             saveFile.set("inventory", storedInventory);
+        }
+
+        Wand soulWand = mage.getSoulWand();
+        if (soulWand != null && soulWand instanceof com.elmakers.mine.bukkit.wand.Wand) {
+            com.elmakers.mine.bukkit.wand.Wand wand = (com.elmakers.mine.bukkit.wand.Wand)soulWand;
+            ConfigurationSection soulNode = saveFile.createSection("soul");
+            wand.saveProperties(soulNode);
         }
 
         ConfigurationSection extraData = mage.getExtraData();
@@ -301,6 +310,12 @@ public class YamlMageDataStore implements MageDataStore {
         // Load stored inventory
         if (saveFile.contains("inventory")) {
             data.setStoredInventory((List<ItemStack>) saveFile.getList("inventory"));
+        }
+
+        if (saveFile.contains("soul") && controller instanceof MagicController) {
+            ConfigurationSection soulNode = saveFile.getConfigurationSection("soul");
+            Wand wand = new com.elmakers.mine.bukkit.wand.Wand((MagicController)controller, soulNode);
+            data.setSoulWand(wand);
         }
 
         return data;
