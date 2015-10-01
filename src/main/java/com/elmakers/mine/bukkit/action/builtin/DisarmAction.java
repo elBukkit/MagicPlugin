@@ -31,44 +31,28 @@ public class DisarmAction extends BaseSpellAction
 	private class DisarmUndoAction implements Runnable
 	{
 		private final Mage mage;
-		private final ItemStack targetItem;
-		private final ItemStack swapItem;
 		private final int originalSlot;
 		private final int targetSlot;
 
-		public DisarmUndoAction(Mage mage, ItemStack targetItem, int originalSlot, ItemStack swapItem, int targetSlot) {
+		public DisarmUndoAction(Mage mage, int originalSlot, int targetSlot) {
 			this.mage = mage;
-			this.targetItem = targetItem;
-			this.swapItem = swapItem;
 			this.originalSlot = originalSlot;
 			this.targetSlot = targetSlot;
 		}
 
 		@Override
 		public void run() {
+			com.elmakers.mine.bukkit.api.wand.Wand activeWand = mage.getActiveWand();
+			if (activeWand != null && activeWand instanceof Wand && ((Wand)activeWand).isInventoryOpen()) return;
+
 			Player player = mage.getPlayer();
 			if (player == null) return;
 			PlayerInventory inventory = player.getInventory();
-			ItemStack currentTargetItem = inventory.getItem(targetSlot);
-			ItemStack currentOriginalItem = inventory.getItem(originalSlot);
-
-			if (currentTargetItem == null && targetItem != null) return;
-			if (currentTargetItem != null && targetItem == null) return;
-			if (currentOriginalItem == null && swapItem != null) return;
-			if (currentOriginalItem != null && swapItem == null) return;
-			if (currentOriginalItem != swapItem && !currentOriginalItem.equals(swapItem)) return;
-			if (currentTargetItem != targetItem && !currentTargetItem.equals(targetItem)) return;
+			ItemStack targetItem = inventory.getItem(targetSlot);
+			ItemStack swapItem = inventory.getItem(originalSlot);
 			inventory.setItem(originalSlot, targetItem);
 			inventory.setItem(targetSlot, swapItem);
-			if (inventory.getHeldItemSlot() == originalSlot && Wand.isWand(targetItem)) {
-				if (mage != null) {
-					mage.checkWand();
-				}
-			} else if (inventory.getHeldItemSlot() == targetSlot && Wand.isWand(swapItem)) {
-				if (mage != null) {
-					mage.checkWand();
-				}
-			}
+			mage.checkWand();
 		}
 	}
 
@@ -152,7 +136,7 @@ public class DisarmAction extends BaseSpellAction
 		if (targetSlot != null && targetInventory != null) {
 			targetInventory.setItem(targetSlot, stack);
 			if (originalSlot != null && targetMage != null) {
-				DisarmUndoAction disarmUndo = new DisarmUndoAction(targetMage, stack, originalSlot, swapItem, targetSlot);
+				DisarmUndoAction disarmUndo = new DisarmUndoAction(targetMage, originalSlot, targetSlot);
 				context.registerForUndo(disarmUndo);
 			}
 		} else {
