@@ -35,7 +35,8 @@ public class ActionContext implements Cloneable {
         if (action.requiresTarget() && !hasTarget) return SpellResult.NO_TARGET;
         if (action.requiresTargetEntity() && !hasEntityTarget) return SpellResult.NO_TARGET;
 
-        return action.perform(context);
+        SpellResult result = action.perform(context);
+        return action.ignoreResult() ? SpellResult.NO_ACTION : result;
     }
 
     public ConfigurationSection getActionParameters()

@@ -14,6 +14,7 @@ public abstract class BaseSpellAction implements SpellAction
 {
     private boolean requiresTarget;
     private boolean requiresTargetEntity;
+    private boolean ignoreResult;
 
     @Override
     public void load(Mage mage, ConfigurationSection data)
@@ -35,6 +36,7 @@ public abstract class BaseSpellAction implements SpellAction
     public void initialize(Spell spell, ConfigurationSection actionParameters) {
         requiresTarget = actionParameters.getBoolean("requires_target", false);
         requiresTargetEntity = actionParameters.getBoolean("requires_entity_target", false);
+        ignoreResult = actionParameters.getBoolean("ignore_result", false);
     }
 
     @Override
@@ -119,5 +121,11 @@ public abstract class BaseSpellAction implements SpellAction
     public void reset(CastContext context)
     {
 
+    }
+
+    @Override
+    public boolean ignoreResult()
+    {
+        return ignoreResult;
     }
 }
