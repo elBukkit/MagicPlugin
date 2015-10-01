@@ -3208,6 +3208,7 @@ day:
     icon: emerald
     category: master
     worth: 3000
+    quick_cast: true
     actions:
         cast:
         -  class: Time
@@ -3249,7 +3250,7 @@ night:
     icon_url: http://textures.minecraft.net/texture/15f1fe5d5cc447e215243b4cf0b4eb56331f1b4f40909bb91a2963929ef1c2
     icon: ink_sack:0
     category: elemental
-    hidden: true
+    quick_cast: true
     worth: 2500
     actions:
         cast:
@@ -3276,6 +3277,7 @@ time:
     icon: watch
     category: master
     worth: 4000
+    quick_cast: true
     actions:
         cast:
         -  class: Time

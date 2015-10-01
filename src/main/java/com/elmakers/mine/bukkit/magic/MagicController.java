@@ -2423,10 +2423,14 @@ public class MagicController implements MageController {
 		if (icon != null && icon.getType() != Material.AIR) {
 			com.elmakers.mine.bukkit.api.spell.Spell spell = mage.getSpell(Wand.getSpell(icon));
 			if (spell != null) {
-				activeWand.setActiveSpell(spell.getKey());
+                if (spell.isQuickCast()) {
+                    activeWand.cast(spell);
+                } else {
+                    activeWand.setActiveSpell(spell.getKey());
+                }
             } else if (Wand.isBrush(icon)){
 				activeWand.setActiveBrush(icon);
-			}
+            }
 		} else {
 			activeWand.setActiveSpell("");
 		}

@@ -215,6 +215,7 @@ spell:
     levels_available: "Max Level: &r&5$levels"
     required_spell: "You must learn &r&4$spell &d&oto advance to &b$path"
     level_description: Level $level
+    quick_cast: "&2Quick Cast"
 worlds:
     world:
         name: The Overworld
