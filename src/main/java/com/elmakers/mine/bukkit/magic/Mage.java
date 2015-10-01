@@ -1793,7 +1793,10 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         PlayerInventory inventory = player.getInventory();
         ItemStack inHand = inventory.getItemInHand();
         if (inHand == null || inHand.getType() == Material.AIR) {
-            inventory.setItem(inventory.getHeldItemSlot(), itemStack);
+            inventory.setItemInHand(itemStack);
+            // Get the new item reference -
+            // it might change when added to an Inventory! :|
+            itemStack = inventory.getItemInHand();
             if (Wand.isWand(itemStack)) {
                 Wand wand = new Wand(controller, itemStack);
                 wand.activate(this);

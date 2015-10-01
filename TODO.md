@@ -16,10 +16,8 @@ on the armor stand
 it only works with wands that have menus
 
  - Add an "override" option for spells, to skip loading the defaults for that spell
- - Manually dropping a wand with a different one in your hand goes weird- maybe only in drop mode? 
  - Can't hitbox-target entities standing in a corner? Issues with spiders?
  - Look at/expand "item" parameter to SpawnEntity (why do wither skellies start with a bow?)
- - Wand failed to activate on respawn?
  - Add "drops" parameter to Damage action to prevent mobs dropping loot.
  - Add "sword mode" tweak item
  - Add Music action, with disc parameter
