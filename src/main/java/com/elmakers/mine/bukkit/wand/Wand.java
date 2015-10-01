@@ -93,7 +93,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 
 	public final static String[] HIDDEN_PROPERTY_KEYS = {
 		"id", "owner", "owner_id", "name", "description", "template",
-		"organize", "alphabetize", "fill", "stored", "upgrade_icon", "xp_timestamp",
+		"organize", "alphabetize", "fill", "stored", "upgrade_icon", "xp_timestamp", "upgrade_template",
         // For legacy wands
         "haste",
         "health_regeneration", "hunger_regeneration",
@@ -143,6 +143,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
     private MaterialAndData upgradeIcon = null;
     private MaterialAndData inactiveIcon = null;
     private int inactiveIconDelay = 0;
+    private String upgradeTemplate = null;
 	
 	protected float costReduction = 0;
     protected float cooldownReduction = 0;
@@ -1149,6 +1150,11 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         } else {
             node.set("upgrade_icon", null);
         }
+        if (upgradeTemplate != null && upgradeTemplate.length() > 0) {
+            node.set("upgrade_template", upgradeTemplate);
+        } else {
+            node.set("upgrade_template", null);
+        }
 		if (template != null && template.length() > 0) {
 			node.set("template", template);
 		} else {
@@ -1341,6 +1347,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 			wandName = wandConfig.getString("name", wandName);			
 			description = wandConfig.getString("description", description);
 			template = wandConfig.getString("template", template);
+            upgradeTemplate = wandConfig.getString("upgrade_template", upgradeTemplate);
             path = wandConfig.getString("path", path);
 
 			activeSpell = wandConfig.getString("active_spell", activeSpell);
@@ -2467,6 +2474,11 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 			modified = true;
 			template = other.template;
 		}
+
+        if (other.isUpgrade && other.upgradeTemplate != null && (this.template == null || !this.template.equals(other.template))) {
+            this.template = other.upgradeTemplate;
+            modified = true;
+        }
 		
 		if (other.isUpgrade && other.mode != null) {
             if (mode != other.mode) {
@@ -2497,6 +2509,17 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
                || this.icon.getData() != other.upgradeIcon.getData())) {
             modified = true;
             this.setIcon(other.upgradeIcon);
+        }
+
+        if (other.isUpgrade && other.inactiveIcon != null &&
+                (this.inactiveIcon == null
+                        || this.inactiveIcon.getMaterial() != other.inactiveIcon.getMaterial()
+                        || this.inactiveIcon.getData() != other.inactiveIcon.getData()
+                ))
+        {
+            this.inactiveIcon = other.inactiveIcon;
+            inactiveIcon.applyToItem(item);
+            modified = true;
         }
 		
 		// Don't need mana if cost-free

@@ -12,6 +12,7 @@
  - Separate console/command-block reductions, console casts no longer have cooldowns by default
  - Add Wave and Shuriken spells
  - Add "Quick Cast" option to spells, apply to Sunny Day and Night spells
+ - Add support for upgrades that change wand templates and icon behavior
 
 ## 5.1.9
 
