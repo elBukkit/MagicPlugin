@@ -354,13 +354,6 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     public void setActiveWand(Wand activeWand) {
         // Avoid deactivating a wand by mistake, and avoid infinite recursion on null!
         if (this.activeWand == activeWand) return;
-        Wand currentWand = this.activeWand;
-
-        // Prepare for setActiveWand to be called again with null
-        this.activeWand = null;
-        if (currentWand != null) {
-            currentWand.deactivate();
-        }
         this.activeWand = activeWand;
         if (activeWand != null && activeWand.isBound() && activeWand.canUse(getPlayer())) {
             String template = activeWand.getTemplateKey();
