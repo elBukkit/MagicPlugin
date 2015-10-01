@@ -418,11 +418,15 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	}
 
     public void newId() {
-        id = UUID.randomUUID().toString();
+        if (!this.isUpgrade) {
+            id = UUID.randomUUID().toString();
+        } else {
+            id = null;
+        }
     }
 
     public void checkId() {
-        if (id == null || id.length() == 0) {
+        if ((id == null || id.length() == 0) && !this.isUpgrade) {
             newId();
             saveState();
         }
@@ -1904,6 +1908,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
     }
 
     public static String getWandId(ItemStack item) {
+        if (isUpgrade(item)) return null;
         Object wandNode = InventoryUtils.getNode(item, WAND_KEY);
         if (wandNode == null) return null;
         return InventoryUtils.getMeta(wandNode, "id");
