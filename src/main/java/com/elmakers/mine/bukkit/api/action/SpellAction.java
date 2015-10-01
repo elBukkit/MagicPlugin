@@ -22,6 +22,7 @@ public interface SpellAction extends Cloneable
     public boolean requiresBreakPermission();
     public boolean requiresTarget();
     public boolean requiresTargetEntity();
+    public boolean ignoreResult();
     public String transformMessage(String message);
     public void load(Mage mage, ConfigurationSection data);
     public void save(Mage mage, ConfigurationSection data);
