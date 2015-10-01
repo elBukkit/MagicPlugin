@@ -163,6 +163,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     protected boolean messageTargets              = true;
     protected boolean showUndoable              = true;
     protected boolean cancellable               = true;
+    protected boolean quickCast                 = false;
     protected int                               verticalSearchDistance  = 8;
 
     private boolean backfired                   = false;
@@ -845,6 +846,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         costs = parseCosts(node.getConfigurationSection("costs"));
         activeCosts = parseCosts(node.getConfigurationSection("active_costs"));
         pvpRestricted = node.getBoolean("pvp_restricted", false);
+        quickCast = node.getBoolean("quick_cast", false);
         disguiseRestricted = node.getBoolean("disguise_restricted", true);
         usesBrushSelection = node.getBoolean("brush_selection", false);
         castOnNoTarget = node.getBoolean("cast_on_no_target", castOnNoTarget);
@@ -1529,6 +1531,10 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         return alias;
     }
 
+    public boolean isQuickCast() {
+        return quickCast;
+    }
+
     @Override
     public final com.elmakers.mine.bukkit.api.block.MaterialAndData getIcon()
     {
@@ -2006,6 +2012,12 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         }
         if (usage != null && usage.length() > 0) {
             InventoryUtils.wrapText(usage, MAX_LORE_LENGTH, lore);
+        }
+        if (quickCast) {
+            String quickCastText = messages.get("spell.quick_cast", "");
+            if (!quickCastText.isEmpty()) {
+                lore.add(quickCastText);
+            }
         }
         String cooldownDescription = getCooldownDescription();
         if (cooldownDescription != null && !cooldownDescription.isEmpty()) {
