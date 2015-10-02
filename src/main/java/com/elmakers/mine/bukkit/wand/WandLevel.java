@@ -262,11 +262,11 @@ public class WandLevel {
         if (hasUpgrade && !(addedMaterials && needsMaterials) && !addedSpells && ((getSpellCount() > 0 && spellProbability.size() > 0) || (getMaterialCount() > 0 && materialProbability.size() > 0)))
         {
             if (mage != null && mage.getDebugLevel() > 0) {
-                mage.sendMessage("Has upgrade: " +  hasUpgrade);
-                mage.sendMessage("Added spells: " +  addedSpells);
-                mage.sendMessage("Spells per enchant: " + getSpellCount());
-                mage.sendMessage("Spells in list: " + spellProbability.size());
-                mage.sendMessage("Added brushes: " +  addedMaterials + ", needed: " + needsMaterials);
+                mage.sendDebugMessage("Has upgrade: " + hasUpgrade);
+                mage.sendDebugMessage("Added spells: " + addedSpells);
+                mage.sendDebugMessage("Spells per enchant: " + getSpellCount());
+                mage.sendDebugMessage("Spells in list: " + spellProbability.size());
+                mage.sendDebugMessage("Added brushes: " +  addedMaterials + ", needed: " + needsMaterials);
             }
             return false;
         }
