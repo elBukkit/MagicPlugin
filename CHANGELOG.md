@@ -3,6 +3,7 @@
 ## 5.3
 
  - Added several new tweakshop actions to configure quick-cast and drop/right-click modes
+ - Add Cursed Meat item (use it if you dare dare dare dare!)
 
 ## 5.2
 

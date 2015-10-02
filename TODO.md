@@ -21,7 +21,6 @@ it only works with wands that have menus
  - Can't hitbox-target entities standing in a corner? Issues with spiders?
  - Look at/expand "item" parameter to SpawnEntity (why do wither skellies start with a bow?)
  - Add "drops" parameter to Damage action to prevent mobs dropping loot.
- - Add "sword mode" tweak item
  - Add Music action, with disc parameter
 
  - Add /mmap reload command
