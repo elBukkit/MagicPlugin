@@ -408,6 +408,8 @@ public interface Mage extends CostReducer {
     public void showHoloText(Location location, String text, int duration);
     public int getDebugLevel();
     public void setDebugLevel(int level);
+    public void setDebugger(CommandSender debugger);
+    public CommandSender getDebugger();
     public void giveItem(ItemStack item);
     public void removeItemsWithTag(String tag);
     public void setTrackCasts(boolean track);
