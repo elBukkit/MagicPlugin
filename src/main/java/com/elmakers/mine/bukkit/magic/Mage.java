@@ -86,6 +86,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     protected boolean hasEntity;
     protected String playerName;
     protected final MagicController controller;
+    protected CommandSender debugger;
     protected HashMap<String, MageSpell> spells = new HashMap<String, MageSpell>();
     private Wand activeWand = null;
     private Wand soulWand = null;
@@ -1713,6 +1714,16 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     }
 
     @Override
+    public void setDebugger(CommandSender sender) {
+        this.debugger = sender;
+    }
+
+    @Override
+    public CommandSender getDebugger() {
+        return debugger;
+    }
+
+    @Override
     public void setDebugLevel(int debugLevel) {
         this.debugLevel = debugLevel;
     }
@@ -1724,8 +1735,14 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
     @Override
     public void sendDebugMessage(String message, int level) {
-        if (debugLevel >= level) {
-            sendMessage(message);
+        if (debugLevel >= level && message != null && !message.isEmpty()) {
+            CommandSender sender = debugger;
+            if (sender == null) {
+                sender = getCommandSender();
+            }
+            if (sender != null) {
+                sender.sendMessage(controller.getMessagePrefix() + message);
+            }
         }
     }
 

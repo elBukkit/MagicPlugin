@@ -1,5 +1,6 @@
 # TODO
 
+ - NPCs bypass cooldowns!
  - Chest mode has multiple copies of spells in it
 
  - Add compatibility with per-world inventories:

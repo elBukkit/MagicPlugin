@@ -700,6 +700,11 @@ public class MagicCommandExecutor extends MagicMapExecutor {
             try {
                 int level = Integer.parseInt(args[0]);
                 mage.setDebugLevel(level);
+				if (level > 0) {
+					mage.setDebugger(sender);
+				} else {
+					mage.setDebugger(null);
+				}
                 sender.sendMessage(ChatColor.GOLD + "Setting debug level for  " + ChatColor.AQUA + player.getDisplayName() + ChatColor.GOLD + " to " + ChatColor.GREEN + Integer.toString(level));
             } catch (Exception ex) {
                 sender.sendMessage("Expecting integer, got: " + args[0]);
@@ -709,9 +714,11 @@ public class MagicCommandExecutor extends MagicMapExecutor {
         if (mage.getDebugLevel() > 0) {
             sender.sendMessage(ChatColor.GOLD + "Disabling debug for  " + ChatColor.AQUA + player.getDisplayName());
             mage.setDebugLevel(0);
+			mage.setDebugger(null);
         } else {
             sender.sendMessage(ChatColor.AQUA + "Enabling debug for  " + ChatColor.AQUA + player.getDisplayName());
             mage.setDebugLevel(1);
+			mage.setDebugger(sender);
         }
         return true;
     }
