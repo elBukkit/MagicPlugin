@@ -1,5 +1,7 @@
 # TODO
 
+ - Chest mode has multiple copies of spells in it
+
  - Add compatibility with per-world inventories:
  https://www.spigotmc.org/resources/per-world-inventory.4482/
  

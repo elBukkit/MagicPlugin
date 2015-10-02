@@ -7106,6 +7106,12 @@ tweakshop:
           wand|inventorymode: 0
           wand|chestmode: 0
           wand|cyclemode: 0
+          wand|inventorymode: 0
+          wand|quickcast_enable: 0
+          wand|quickcast_disable: 0
+          wand|quickcast_normal: 0
+          wand|quickcast_normal: 0
+          wand|quickcast_normal: 0
           wand|organizer: 0
           wand|alphabetizer: 0
           wand|loud: 0

@@ -137,6 +137,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
     private boolean rename = false;
     private boolean renameDescription = false;
     private boolean quickCast = false;
+    private boolean quickCastDisabled = false;
     private boolean dropToggle = false;
 	
 	private MaterialAndData icon = null;
@@ -1117,6 +1118,13 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 			node.set("mode", null);
 		}
         node.set("mode_drop", dropToggle);
+        if (quickCast) {
+            node.set("mode_cast", "true");
+        } else if (quickCastDisabled) {
+            node.set("mode_cast", "disable");
+        } else {
+            node.set("mode_cast", "false");
+        }
         node.set("mode_cast", quickCast);
         if (brushMode != null) {
             node.set("brush_mode", brushMode.name());
@@ -1343,7 +1351,18 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
                 }
             }
             setBrushMode(parseWandMode(wandConfig.getString("brush_mode"), brushMode));
-            quickCast = wandConfig.getBoolean("mode_cast", quickCast);
+            String quickCastType = wandConfig.getString("mode_cast");
+            if (quickCastType != null && quickCastType.equalsIgnoreCase("true")) {
+                quickCast = true;
+                // This is to turn the redundant spell lore off
+                quickCastDisabled = true;
+            } else if (quickCastType != null && quickCastType.equalsIgnoreCase("disable")) {
+                quickCast = false;
+                quickCastDisabled = true;
+            } else {
+                quickCast = false;
+                quickCastDisabled = false;
+            }
             dropToggle = wandConfig.getBoolean("mode_drop", dropToggle);
 
 			owner = wandConfig.getString("owner", owner);
@@ -3641,6 +3660,11 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	public List<Inventory> getHotbars() {
 		return hotbars;
 	}
+
+    @Override
+    public boolean isQuickCastDisabled() {
+        return quickCastDisabled;
+    }
 
     public boolean isQuickCast() {
         return quickCast;

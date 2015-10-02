@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 5.3
+
+ - Added several new tweakshop actions to configure quick-cast and drop/right-click modes
+
 ## 5.2
 
  - Several fixes/changes to wand tracking. Hoping this fixes a slew of wand dupe/glitch bugs.

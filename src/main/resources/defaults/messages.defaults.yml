@@ -1716,6 +1716,21 @@ wands:
     inventorymode:
         name: Inventory Mode
         description: For expert wizards
+    quickcast_enable:
+        name: Quick Cast (All)
+        description: Enable quick-cast on all spells
+    quickcast_disable:
+        name: Quick Cast (None)
+        description: Disable quick-cast on all spells
+    quickcast_normal:
+        name: Quick Cast (Select)
+        description: Enable quick-cast on select spells
+    mode_drop:
+        name: Drop Mode
+        description: Use the Drop (Q) Button to open the spell inventory
+    mode_rightclick:
+        name: Right-Click Mode
+        description: Right-Click to open the spell inventory
     loud:
         name: Loud Wand
         description: Turn on all wand chat messages
