@@ -100,5 +100,6 @@ public interface Wand extends CostReducer {
     public boolean cast();
     public boolean isBound();
     public boolean isSoul();
+    public boolean isQuickCastDisabled();
     public void damageDealt(double damage, Entity target);
 }
