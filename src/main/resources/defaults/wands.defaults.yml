@@ -1432,6 +1432,15 @@ wolfhouse:
         - wolfhouse
 
 #
+# Cursed Items
+#
+
+cursedmeat:
+  icon: rotten_flesh
+  locked: true
+  potion_effects: hunger:20
+
+#
 # Automata Items
 #
 

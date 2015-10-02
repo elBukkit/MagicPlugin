@@ -1770,6 +1770,9 @@ wands:
     wormheart:
         name: Heart of Worm
         description: It will consume the world
+    cursedmeat:
+        name: Cursed Meat
+        description: Don't even touch it!
     broomstick:
         name: Broomstick
         description: You can fly!
