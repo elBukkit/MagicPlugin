@@ -409,6 +409,7 @@ public interface Mage extends CostReducer {
     public int getDebugLevel();
     public void setDebugLevel(int level);
     public void setDebugger(CommandSender debugger);
+    public void debugPermissions();
     public CommandSender getDebugger();
     public void giveItem(ItemStack item);
     public void removeItemsWithTag(String tag);
@@ -416,4 +417,5 @@ public interface Mage extends CostReducer {
     public boolean getTrackCasts();
     public void setQuiet(boolean quiet);
     public boolean isQuiet();
+
 }
