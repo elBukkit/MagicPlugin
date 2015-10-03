@@ -153,9 +153,9 @@ cooldown_reduction: 0.0
 cast_command_cost_reduction: 100.0
 cast_command_cooldown_reduction: 0.0
 
-# From the console (in-game or otherwise)
+# From NPCs, /cast commands or other console-routed places
 cast_console_cost_reduction: 100.0
-cast_console_cooldown_reduction: 100.0
+cast_console_cooldown_reduction: 0.0
 
 # Whether or not to respect wand power for the held wand when using /cast
 # Set the to 1.0 to use normal wand power, 0.0 to ignore wand power.

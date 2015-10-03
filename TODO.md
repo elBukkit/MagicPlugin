@@ -1,6 +1,7 @@
 # TODO
-
- - NPCs bypass cooldowns!
+ 
+ - Add bypass_disguised flag
+ - Quick Cast lore/function not updating?
  - Chest mode has multiple copies of spells in it
 
  - Add compatibility with per-world inventories:

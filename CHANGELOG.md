@@ -5,6 +5,7 @@
  - Added several new tweakshop actions to configure quick-cast and drop/right-click modes
  - Add Cursed Meat item (use it if you dare dare dare dare!)
  - Add Debugger spell, for debugging spell issues
+ - Fix/Restore previous /cast command behavior with cooldowns
 
 ## 5.2
 
