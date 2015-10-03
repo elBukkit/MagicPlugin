@@ -720,7 +720,7 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
     @Override
     public boolean isErase()
     {
-        return mode == BrushMode.ERASE || material == Material.AIR;
+        return mode == BrushMode.ERASE || (mode == BrushMode.MATERIAL && material == Material.AIR);
     }
 
     public ItemStack getItem(MageController controller, boolean isItem) {
