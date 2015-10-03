@@ -1734,17 +1734,12 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     }
 
     @Override
-    public void debugPermissions() {
-        CommandSender sender = this.debugger;
-        if (sender == null) {
-            sender = this.getCommandSender();
-        }
-        if (sender == null) {
-            return;
-        }
+    public void debugPermissions(CommandSender sender, Spell spell) {
         com.elmakers.mine.bukkit.api.wand.Wand wand = getActiveWand();
         Location location = getLocation();
-        Spell spell = wand == null ? null : wand.getActiveSpell();
+        if (spell == null && wand != null) {
+            spell = wand.getActiveSpell();
+        }
         sender.sendMessage(ChatColor.GOLD + "Permission check for " + ChatColor.AQUA + getDisplayName());
         sender.sendMessage(ChatColor.GOLD + "  id " + ChatColor.DARK_AQUA + getId());
         sender.sendMessage(ChatColor.GOLD + " at " + ChatColor.AQUA

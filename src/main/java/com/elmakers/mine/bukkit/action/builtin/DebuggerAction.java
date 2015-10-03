@@ -46,7 +46,7 @@ public class DebuggerAction extends BaseSpellAction
 		mage.setDebugger(context.getMage().getCommandSender());
 
 		if (check) {
-			mage.debugPermissions();
+			mage.debugPermissions(context.getMage().getCommandSender(), null);
 		}
 
 		return SpellResult.CAST;
