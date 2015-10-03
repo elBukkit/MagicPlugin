@@ -13,6 +13,7 @@ import java.util.UUID;
 import java.util.logging.Level;
 
 import com.elmakers.mine.bukkit.api.block.BrushMode;
+import com.elmakers.mine.bukkit.api.event.SpellUpgradeEvent;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.magic.Messages;
 import com.elmakers.mine.bukkit.api.spell.CastingCost;
@@ -3319,9 +3320,9 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
                         WandUpgradePath currentPath = (WandUpgradePath)getPath();
                         if (upgradePath == null || upgradePath.isEmpty() || (currentPath != null && currentPath.hasPath(upgradePath)))
                         {
+                            Spell newSpell = mage.getSpell(upgrade.getKey());
                             if (mageSpell.isActive()) {
                                 mageSpell.deactivate(true, true);
-                                Spell newSpell = mage.getSpell(upgrade.getKey());
                                 if (newSpell != null && newSpell instanceof MageSpell) {
                                     ((MageSpell)newSpell).activate();
                                 }
@@ -3335,6 +3336,9 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
                             upgrade.playEffects("upgrade");
                             mage.sendMessage(messages.get("wand.spell_upgraded").replace("$name", upgrade.getName()).replace("$wand", getName()).replace("$level", levelDescription));
                             mage.sendMessage(upgrade.getUpgradeDescription().replace("$name", upgrade.getName()));
+
+                            SpellUpgradeEvent upgradeEvent = new SpellUpgradeEvent(mage, spell, newSpell);
+                            Bukkit.getPluginManager().callEvent(upgradeEvent);
                         }
                     }
                 }

@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.wand;
 
+import com.elmakers.mine.bukkit.api.event.WandUpgradeEvent;
 import com.elmakers.mine.bukkit.api.magic.Messages;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.effect.EffectPlayer;
@@ -576,5 +577,8 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
         }
         this.upgraded(wand, mage);
         wand.setPath(newPath.getKey());
+
+        WandUpgradeEvent upgradeEvent = new WandUpgradeEvent(mage, wand, this, newPath);
+        Bukkit.getPluginManager().callEvent(upgradeEvent);
     }
 }
