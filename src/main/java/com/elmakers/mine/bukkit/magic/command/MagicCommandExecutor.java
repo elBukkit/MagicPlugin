@@ -648,10 +648,7 @@ public class MagicCommandExecutor extends MagicMapExecutor {
     public boolean onMagicCheck(CommandSender sender, Player player, String[] args)
     {
         Mage mage = api.getMage(player);
-		CommandSender oldDebugger = mage.getDebugger();
-		mage.setDebugger(sender);
-		mage.debugPermissions();
-		mage.setDebugger(oldDebugger);
+		mage.debugPermissions(sender, null);
         return true;
     }
 
