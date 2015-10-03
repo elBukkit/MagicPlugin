@@ -975,6 +975,15 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         if (!canCast(getLocation())) {
             processResult(SpellResult.INSUFFICIENT_PERMISSION, parameters);
             mage.sendDebugMessage(ChatColor.WHITE + "Cast " + ChatColor.GOLD + getName() + ChatColor.WHITE  + ": " + ChatColor.AQUA + SpellResult.INSUFFICIENT_PERMISSION + ChatColor.DARK_AQUA + " (no cast)");
+            if (mage.getDebugLevel() > 1) {
+                CommandSender messageTarget = mage.getDebugger();
+                if (messageTarget == null) {
+                    messageTarget = mage.getCommandSender();
+                }
+                if (messageTarget != null) {
+                    mage.debugPermissions(messageTarget, this);
+                }
+            }
             return false;
         }
 
