@@ -1350,18 +1350,23 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
                     needsInventoryUpdate = true;
                 }
             }
-            setBrushMode(parseWandMode(wandConfig.getString("brush_mode"), brushMode));
+
+            if (wandConfig.contains("brush_mode")) {
+                setBrushMode(parseWandMode(wandConfig.getString("brush_mode"), brushMode));
+            }
             String quickCastType = wandConfig.getString("mode_cast");
-            if (quickCastType != null && quickCastType.equalsIgnoreCase("true")) {
-                quickCast = true;
-                // This is to turn the redundant spell lore off
-                quickCastDisabled = true;
-            } else if (quickCastType != null && quickCastType.equalsIgnoreCase("disable")) {
-                quickCast = false;
-                quickCastDisabled = true;
-            } else {
-                quickCast = false;
-                quickCastDisabled = false;
+            if (quickCastType != null) {
+                if (quickCastType.equalsIgnoreCase("true")) {
+                    quickCast = true;
+                    // This is to turn the redundant spell lore off
+                    quickCastDisabled = true;
+                } else if (quickCastType.equalsIgnoreCase("disable")) {
+                    quickCast = false;
+                    quickCastDisabled = true;
+                } else {
+                    quickCast = false;
+                    quickCastDisabled = false;
+                }
             }
             dropToggle = wandConfig.getBoolean("mode_drop", dropToggle);
 
