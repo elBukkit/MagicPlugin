@@ -1048,7 +1048,8 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     public boolean canCast(Location location) {
         if (location == null) return true;
         if (!hasCastPermission(mage.getCommandSender())) return false;
-        if (disguiseRestricted && controller.isDisguised(mage.getEntity())) return false;
+        Entity entity = mage.getEntity();
+        if (disguiseRestricted && entity != null && entity instanceof Player && controller.isDisguised(entity)) return false;
         Boolean regionPermission = controller.getRegionCastPermission(mage.getPlayer(), this, location);
         if (regionPermission != null && regionPermission == true) return true;
         Boolean personalPermission = controller.getPersonalCastPermission(mage.getPlayer(), this, location);
