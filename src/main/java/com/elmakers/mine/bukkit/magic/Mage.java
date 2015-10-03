@@ -1747,41 +1747,79 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                 + " " + ChatColor.DARK_BLUE + location.getWorld().getName());
 
         Player player = getPlayer();
+        boolean hasBypass = false;
+        boolean hasPVPBypass = false;
+        boolean hasBuildBypass = false;
+        boolean hasBreakBypass = false;
         if (player != null) {
-            sender.sendMessage(ChatColor.AQUA + " Has bypass: " + formatBoolean(player.hasPermission("Magic.bypass")));
-            sender.sendMessage(ChatColor.AQUA + " Has PVP bypass: " + formatBoolean(player.hasPermission("Magic.bypass_pvp")));
-            sender.sendMessage(ChatColor.AQUA + " Has Build bypass: " + formatBoolean(player.hasPermission("Magic.bypass_build")));
+            hasBypass = player.hasPermission("Magic.bypass");
+            hasPVPBypass = player.hasPermission("Magic.bypass_pvp");
+            hasBuildBypass = player.hasPermission("Magic.bypass_build");
+            sender.sendMessage(ChatColor.AQUA + " Has bypass: " + formatBoolean(hasBypass, true, null));
+            sender.sendMessage(ChatColor.AQUA + " Has PVP bypass: " + formatBoolean(hasPVPBypass, true, null));
+            sender.sendMessage(ChatColor.AQUA + " Has Build bypass: " + formatBoolean(hasBuildBypass, true, null));
+            sender.sendMessage(ChatColor.AQUA + " Has Break bypass: " + formatBoolean(hasBreakBypass, true, null));
         }
-        sender.sendMessage(ChatColor.AQUA + " Can build: " + formatBoolean(hasBuildPermission(location.getBlock())));
-        sender.sendMessage(ChatColor.AQUA + " Can break: " + formatBoolean(hasBreakPermission(location.getBlock())));
-        sender.sendMessage(ChatColor.AQUA + " Can pvp: " + formatBoolean(isPVPAllowed(location)));
-        sender.sendMessage(ChatColor.AQUA + " Is disguised: " + formatBoolean(controller.isDisguised(getEntity())));
+
+        boolean buildPermissionRequired = spell == null ? false : spell.requiresBuildPermission();
+        boolean breakPermissionRequired = spell == null ? false : spell.requiresBreakPermission();
+        boolean pvpRestricted = spell == null ? false : spell.isPvpRestricted();
+        sender.sendMessage(ChatColor.AQUA + " Can build: " + formatBoolean(hasBuildPermission(location.getBlock()), hasBuildBypass || !buildPermissionRequired ? null : true));
+        sender.sendMessage(ChatColor.AQUA + " Can break: " + formatBoolean(hasBreakPermission(location.getBlock()), hasBreakBypass || !breakPermissionRequired ? null : true));
+        sender.sendMessage(ChatColor.AQUA + " Can pvp: " + formatBoolean(isPVPAllowed(location), hasPVPBypass || !pvpRestricted ? null : true));
+        boolean isPlayer = player != null;
+        sender.sendMessage(ChatColor.AQUA + " Is disguised: " + formatBoolean(controller.isDisguised(getEntity()), null, isPlayer && spell.isDisguiseRestricted() ? true : null));
         if (spell != null)
         {
-            sender.sendMessage(ChatColor.AQUA + " Has pnode " + ChatColor.GOLD + spell.getPermissionNode() + ChatColor.AQUA + ": " + formatBoolean(spell.hasCastPermission(player)));
-            sender.sendMessage(ChatColor.AQUA + " Region override: " + formatBoolean(controller.getRegionCastPermission(player, spell, location)));
-            sender.sendMessage(ChatColor.AQUA + " Field override: " + formatBoolean(controller.getPersonalCastPermission(player, spell, location)));
-            sender.sendMessage(ChatColor.GOLD + " " + spell.getName() + ChatColor.AQUA + " requires build: " + formatBoolean(spell.requiresBuildPermission()));
-            sender.sendMessage(ChatColor.GOLD + " " + spell.getName() + ChatColor.AQUA + " requires break: " + formatBoolean(spell.requiresBreakPermission()));
-            sender.sendMessage(ChatColor.GOLD + " " + spell.getName() + ChatColor.AQUA + " requires pvp: " + formatBoolean(spell.isPvpRestricted()));
-            sender.sendMessage(ChatColor.GOLD + " " + spell.getName() + ChatColor.AQUA + " allowed while disguised: " + formatBoolean(!spell.isDisguiseRestricted()));
+            sender.sendMessage(ChatColor.AQUA + " Has pnode " + ChatColor.GOLD + spell.getPermissionNode() + ChatColor.AQUA + ": " + formatBoolean(spell.hasCastPermission(player), hasBypass ? null : true));
+            sender.sendMessage(ChatColor.AQUA + " Region override: " + formatBoolean(controller.getRegionCastPermission(player, spell, location), hasBypass ? null : true));
+            sender.sendMessage(ChatColor.AQUA + " Field override: " + formatBoolean(controller.getPersonalCastPermission(player, spell, location), hasBypass ? null : true));
+            com.elmakers.mine.bukkit.api.block.MaterialBrush brush = spell.getBrush();
+            if (brush != null) {
+                sender.sendMessage(ChatColor.GOLD + " " + spell.getName() + ChatColor.AQUA + " is erase: " + formatBoolean(brush.isErase(), null));
+            }
+            sender.sendMessage(ChatColor.GOLD + " " + spell.getName() + ChatColor.AQUA + " requires build: " + formatBoolean(spell.requiresBuildPermission(), null, true, true));
+            sender.sendMessage(ChatColor.GOLD + " " + spell.getName() + ChatColor.AQUA + " requires break: " + formatBoolean(spell.requiresBreakPermission(), null, true, true));
+            sender.sendMessage(ChatColor.GOLD + " " + spell.getName() + ChatColor.AQUA + " requires pvp: " + formatBoolean(spell.isPvpRestricted(), null, true, true));
+            sender.sendMessage(ChatColor.GOLD + " " + spell.getName() + ChatColor.AQUA + " allowed while disguised: " + formatBoolean(!spell.isDisguiseRestricted(), null, false, true));
             if (spell instanceof BaseSpell)
             {
                 boolean buildPermission = ((BaseSpell)spell).hasBuildPermission(location.getBlock());
-                sender.sendMessage(ChatColor.GOLD + " " + spell.getName() + ChatColor.AQUA + " has build: " + formatBoolean(buildPermission));
+                sender.sendMessage(ChatColor.GOLD + " " + spell.getName() + ChatColor.AQUA + " has build: " + formatBoolean(buildPermission, hasBuildBypass || !spell.requiresBuildPermission() ? null : true));
                 boolean breakPermission = ((BaseSpell)spell).hasBreakPermission(location.getBlock());
-                sender.sendMessage(ChatColor.GOLD + " " + spell.getName() + ChatColor.AQUA + " has break: " + formatBoolean(breakPermission));
+                sender.sendMessage(ChatColor.GOLD + " " + spell.getName() + ChatColor.AQUA + " has break: " + formatBoolean(breakPermission, hasBreakBypass || !spell.requiresBreakPermission() ? null : true));
             }
             sender.sendMessage(ChatColor.AQUA + " Can cast " + ChatColor.GOLD + spell.getName() + ChatColor.AQUA + ": " + formatBoolean(spell.canCast(location)));
         }
     }
 
+    public static String formatBoolean(Boolean flag, Boolean greenState)
+    {
+        return formatBoolean(flag, greenState, greenState == null ? null : !greenState, false);
+    }
+
     public static String formatBoolean(Boolean flag)
+    {
+        return formatBoolean(flag, true, false, false);
+    }
+
+    public static String formatBoolean(Boolean flag, Boolean greenState, Boolean redState)
+    {
+        return formatBoolean(flag, greenState, redState, false);
+    }
+
+    public static String formatBoolean(Boolean flag, Boolean greenState, Boolean redState, boolean dark)
     {
         if (flag == null) {
             return ChatColor.GRAY + "none";
         }
-        return flag ? ChatColor.GREEN + "true" : ChatColor.RED + "false";
+        String text = flag ? "true" : "false";
+        if (greenState != null && flag == greenState) {
+            return (dark ? ChatColor.DARK_GREEN : ChatColor.GREEN) + text;
+        } else if (redState != null && flag == redState) {
+            return (dark ? ChatColor.DARK_RED : ChatColor.RED) + text;
+        }
+        return ChatColor.GRAY + text;
     }
 
     @Override
