@@ -6328,6 +6328,38 @@ rubberize:
     costs:
         mana: 50
 
+debugger:
+    icon: watch
+    hidden: true
+    category: staff
+    worth: 500
+    actions:
+        alternate_up:
+        - class: AllEntities
+          actions:
+          - class: Debugger
+          - level: 0
+        cast:
+        - class: Debugger
+          level: 10
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: magic.shimmer
+           sound_volume: 1
+           effectlib:
+             class: ConeEffect
+             iterations: 15
+             particle: spell_mob
+             lengthGrow: 0.3
+    parameters:
+        target: any_entity
+        target_type: Entity
+        range: 32
+        messsage_targets: false
+        loud: true
+        cooldown: 1000
+
 count:
     icon: watch
     category: staff

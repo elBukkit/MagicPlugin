@@ -1289,6 +1289,12 @@ spells:
     count:
         name: Entity Counter
         description: An admin tool to check for nearby entities
+    debugger:
+        name: Debugger
+        description: An admin tool to debug spells
+        cast: Enabled debug on $target
+        deactivate: Disabled debug on $target
+        alternate_up: Disabled debug on all entities
     superfly:
         name: SuperFly
         description: For videographers
