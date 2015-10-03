@@ -1734,6 +1734,62 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     }
 
     @Override
+    public void debugPermissions() {
+        CommandSender sender = this.debugger;
+        if (sender == null) {
+            sender = this.getCommandSender();
+        }
+        if (sender == null) {
+            return;
+        }
+        com.elmakers.mine.bukkit.api.wand.Wand wand = getActiveWand();
+        Location location = getLocation();
+        Spell spell = wand == null ? null : wand.getActiveSpell();
+        sender.sendMessage(ChatColor.GOLD + "Permission check for " + ChatColor.AQUA + getDisplayName());
+        sender.sendMessage(ChatColor.GOLD + "  id " + ChatColor.DARK_AQUA + getId());
+        sender.sendMessage(ChatColor.GOLD + " at " + ChatColor.AQUA
+                + ChatColor.BLUE + location.getBlockX() + " " + location.getBlockY() + " " + location.getBlockZ()
+                + " " + ChatColor.DARK_BLUE + location.getWorld().getName());
+
+        Player player = getPlayer();
+        if (player != null) {
+            sender.sendMessage(ChatColor.AQUA + " Has bypass: " + formatBoolean(player.hasPermission("Magic.bypass")));
+            sender.sendMessage(ChatColor.AQUA + " Has PVP bypass: " + formatBoolean(player.hasPermission("Magic.bypass_pvp")));
+            sender.sendMessage(ChatColor.AQUA + " Has Build bypass: " + formatBoolean(player.hasPermission("Magic.bypass_build")));
+        }
+        sender.sendMessage(ChatColor.AQUA + " Can build: " + formatBoolean(hasBuildPermission(location.getBlock())));
+        sender.sendMessage(ChatColor.AQUA + " Can break: " + formatBoolean(hasBreakPermission(location.getBlock())));
+        sender.sendMessage(ChatColor.AQUA + " Can pvp: " + formatBoolean(isPVPAllowed(location)));
+        sender.sendMessage(ChatColor.AQUA + " Is disguised: " + formatBoolean(controller.isDisguised(getEntity())));
+        if (spell != null)
+        {
+            sender.sendMessage(ChatColor.AQUA + " Has pnode " + ChatColor.GOLD + spell.getPermissionNode() + ChatColor.AQUA + ": " + formatBoolean(spell.hasCastPermission(player)));
+            sender.sendMessage(ChatColor.AQUA + " Region override: " + formatBoolean(controller.getRegionCastPermission(player, spell, location)));
+            sender.sendMessage(ChatColor.AQUA + " Field override: " + formatBoolean(controller.getPersonalCastPermission(player, spell, location)));
+            sender.sendMessage(ChatColor.GOLD + " " + spell.getName() + ChatColor.AQUA + " requires build: " + formatBoolean(spell.requiresBuildPermission()));
+            sender.sendMessage(ChatColor.GOLD + " " + spell.getName() + ChatColor.AQUA + " requires break: " + formatBoolean(spell.requiresBreakPermission()));
+            sender.sendMessage(ChatColor.GOLD + " " + spell.getName() + ChatColor.AQUA + " requires pvp: " + formatBoolean(spell.isPvpRestricted()));
+            sender.sendMessage(ChatColor.GOLD + " " + spell.getName() + ChatColor.AQUA + " allowed while disguised: " + formatBoolean(!spell.isDisguiseRestricted()));
+            if (spell instanceof BaseSpell)
+            {
+                boolean buildPermission = ((BaseSpell)spell).hasBuildPermission(location.getBlock());
+                sender.sendMessage(ChatColor.GOLD + " " + spell.getName() + ChatColor.AQUA + " has build: " + formatBoolean(buildPermission));
+                boolean breakPermission = ((BaseSpell)spell).hasBreakPermission(location.getBlock());
+                sender.sendMessage(ChatColor.GOLD + " " + spell.getName() + ChatColor.AQUA + " has break: " + formatBoolean(breakPermission));
+            }
+            sender.sendMessage(ChatColor.AQUA + " Can cast " + ChatColor.GOLD + spell.getName() + ChatColor.AQUA + ": " + formatBoolean(spell.canCast(location)));
+        }
+    }
+
+    public static String formatBoolean(Boolean flag)
+    {
+        if (flag == null) {
+            return ChatColor.GRAY + "none";
+        }
+        return flag ? ChatColor.GREEN + "true" : ChatColor.RED + "false";
+    }
+
+    @Override
     public void sendDebugMessage(String message, int level) {
         if (debugLevel >= level && message != null && !message.isEmpty()) {
             CommandSender sender = debugger;

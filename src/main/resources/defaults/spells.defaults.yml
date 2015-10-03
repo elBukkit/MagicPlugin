@@ -6342,6 +6342,7 @@ debugger:
         cast:
         - class: Debugger
           level: 10
+          check: true
     effects:
         cast:
         -  class: EffectSingle

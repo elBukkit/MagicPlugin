@@ -16,12 +16,14 @@ import java.util.Collection;
 public class DebuggerAction extends BaseSpellAction
 {
     private int debugLevel;
+	private boolean check;
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters)
     {
         super.prepare(context, parameters);
 		debugLevel = parameters.getInt("level", 1);
+		check = parameters.getBoolean("check", false);
     }
 
 	@Override
@@ -34,13 +36,6 @@ public class DebuggerAction extends BaseSpellAction
 		}
 		Mage mage = controller.getMage(entity);
 		int currentLevel = mage.getDebugLevel();
-
-		org.bukkit.Bukkit.getLogger().info("Got mage for entity id " + entity.getUniqueId() +
-				" (" + entity.getEntityId() + ") resolved to Mage " + mage.getId() +
-				" (" + System.identityHashCode(mage) + ")" +
-				" with debug level " + currentLevel
-		);
-
 		if (currentLevel == debugLevel || debugLevel == 0) {
 			mage.setDebugLevel(0);
 			mage.setDebugger(null);
@@ -49,6 +44,10 @@ public class DebuggerAction extends BaseSpellAction
 
 		mage.setDebugLevel(debugLevel);
 		mage.setDebugger(context.getMage().getCommandSender());
+
+		if (check) {
+			mage.debugPermissions();
+		}
 
 		return SpellResult.CAST;
 	}

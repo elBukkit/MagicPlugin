@@ -645,51 +645,13 @@ public class MagicCommandExecutor extends MagicMapExecutor {
 		return options;
 	}
 
-    public static String formatBoolean(Boolean flag)
-    {
-        if (flag == null) {
-            return ChatColor.GRAY + "none";
-        }
-        return flag ? ChatColor.GREEN + "true" : ChatColor.RED + "false";
-    }
-
     public boolean onMagicCheck(CommandSender sender, Player player, String[] args)
     {
         Mage mage = api.getMage(player);
-        Wand wand = mage.getActiveWand();
-        Location location = player.getLocation();
-        MageController controller = api.getController();
-        Spell spell = wand == null ? null : wand.getActiveSpell();
-        sender.sendMessage(ChatColor.GOLD + "Permission check for " + ChatColor.AQUA + player.getDisplayName());
-        sender.sendMessage(ChatColor.GOLD + " at " + ChatColor.AQUA
-                + ChatColor.BLUE + location.getBlockX() + " " + location.getBlockY() + " " + location.getBlockZ()
-                + " " + ChatColor.DARK_BLUE + location.getWorld().getName());
-
-        sender.sendMessage(ChatColor.AQUA + " Has bypass: " + formatBoolean(player.hasPermission("Magic.bypass")));
-        sender.sendMessage(ChatColor.AQUA + " Has PVP bypass: " + formatBoolean(player.hasPermission("Magic.bypass_pvp")));
-        sender.sendMessage(ChatColor.AQUA + " Has Build bypass: " + formatBoolean(player.hasPermission("Magic.bypass_build")));
-        sender.sendMessage(ChatColor.AQUA + " Can build: " + formatBoolean(mage.hasBuildPermission(location.getBlock())));
-        sender.sendMessage(ChatColor.AQUA + " Can break: " + formatBoolean(mage.hasBreakPermission(location.getBlock())));
-        sender.sendMessage(ChatColor.AQUA + " Can pvp: " + formatBoolean(mage.isPVPAllowed(location)));
-		sender.sendMessage(ChatColor.AQUA + " Is disguised: " + formatBoolean(controller.isDisguised(mage.getEntity())));
-        if (spell != null)
-        {
-            sender.sendMessage(ChatColor.AQUA + " Has pnode " + ChatColor.GOLD + spell.getPermissionNode() + ChatColor.AQUA + ": " + formatBoolean(spell.hasCastPermission(player)));
-            sender.sendMessage(ChatColor.AQUA + " Region override: " + formatBoolean(controller.getRegionCastPermission(mage.getPlayer(), spell, location)));
-            sender.sendMessage(ChatColor.AQUA + " Field override: " + formatBoolean(controller.getPersonalCastPermission(mage.getPlayer(), spell, location)));
-            sender.sendMessage(ChatColor.GOLD + " " + spell.getName() + ChatColor.AQUA + " requires build: " + formatBoolean(spell.requiresBuildPermission()));
-            sender.sendMessage(ChatColor.GOLD + " " + spell.getName() + ChatColor.AQUA + " requires break: " + formatBoolean(spell.requiresBreakPermission()));
-            sender.sendMessage(ChatColor.GOLD + " " + spell.getName() + ChatColor.AQUA + " requires pvp: " + formatBoolean(spell.isPvpRestricted()));
-			sender.sendMessage(ChatColor.GOLD + " " + spell.getName() + ChatColor.AQUA + " allowed while disguised: " + formatBoolean(!spell.isDisguiseRestricted()));
-            if (spell instanceof BaseSpell)
-            {
-                boolean buildPermission = ((BaseSpell)spell).hasBuildPermission(location.getBlock());
-                sender.sendMessage(ChatColor.GOLD + " " + spell.getName() + ChatColor.AQUA + " has build: " + formatBoolean(buildPermission));
-                boolean breakPermission = ((BaseSpell)spell).hasBreakPermission(location.getBlock());
-                sender.sendMessage(ChatColor.GOLD + " " + spell.getName() + ChatColor.AQUA + " has break: " + formatBoolean(breakPermission));
-            }
-            sender.sendMessage(ChatColor.AQUA + " Can cast " + ChatColor.GOLD + spell.getName() + ChatColor.AQUA + ": " + formatBoolean(spell.canCast(location)));
-        }
+		CommandSender oldDebugger = mage.getDebugger();
+		mage.setDebugger(sender);
+		mage.debugPermissions();
+		mage.setDebugger(oldDebugger);
         return true;
     }
 
