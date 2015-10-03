@@ -409,7 +409,7 @@ public interface Mage extends CostReducer {
     public int getDebugLevel();
     public void setDebugLevel(int level);
     public void setDebugger(CommandSender debugger);
-    public void debugPermissions();
+    public void debugPermissions(CommandSender sender, Spell spell);
     public CommandSender getDebugger();
     public void giveItem(ItemStack item);
     public void removeItemsWithTag(String tag);
