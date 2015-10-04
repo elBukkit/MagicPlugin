@@ -1167,7 +1167,11 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
                 }
             }
             if (!mage.isCooldownFree() && mageCooldown > 0) {
-                mage.setRemainingCooldown(mageCooldown);
+                double cooldownReduction = mage.getCooldownReduction() + this.cooldownReduction;
+                if (cooldownReduction < 1) {
+                    int reducedCooldown = (int)Math.ceil((1.0f - cooldownReduction) * mageCooldown);
+                    mage.setRemainingCooldown(reducedCooldown);
+                }
             }
         }
         if (success && mage.getTrackCasts()) {
@@ -1746,6 +1750,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     @Override
     public long getRemainingCooldown() {
         long remaining = 0;
+        if (mage.isCooldownFree()) return 0;
         if (cooldownExpiration > 0)
         {
             long now = System.currentTimeMillis();
