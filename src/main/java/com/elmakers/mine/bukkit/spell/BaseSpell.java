@@ -2028,7 +2028,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         if (usage != null && usage.length() > 0) {
             InventoryUtils.wrapText(usage, MAX_LORE_LENGTH, lore);
         }
-        if (quickCast && (wand == null || !wand.isQuickCastDisabled())) {
+        if (quickCast && wand != null && !wand.isQuickCastDisabled()) {
             String quickCastText = messages.get("spell.quick_cast", "");
             if (!quickCastText.isEmpty()) {
                 lore.add(quickCastText);
