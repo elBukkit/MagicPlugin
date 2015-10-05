@@ -21,6 +21,7 @@ public class ApplyCooldownAction extends BaseSpellAction
     private int cooldownAmount;
 	private String[] spells;
 	private boolean clear;
+	private boolean bypassReduction;
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters)
@@ -28,6 +29,7 @@ public class ApplyCooldownAction extends BaseSpellAction
         super.prepare(context, parameters);
 		cooldownAmount = parameters.getInt("duration", 0);
 		clear = parameters.getBoolean("clear", false);
+		bypassReduction = parameters.getBoolean("bypass_reduction", false);
 		String spellCSV = parameters.getString("spells", null);
 		if (spellCSV != null)
 		{
@@ -48,12 +50,21 @@ public class ApplyCooldownAction extends BaseSpellAction
 			return SpellResult.NO_TARGET;
 		}
 		Mage targetMage = controller.getMage(entity);
+		int amount = cooldownAmount;
+		if (!bypassReduction && cooldownAmount > 0) {
+			double cooldownReduction = targetMage.getCooldownReduction();
+			if (cooldownReduction < 1) {
+				amount = (int)Math.ceil((1.0f - cooldownReduction) * amount);
+			} else {
+				amount = 0;
+			}
+		}
 		if (spells == null) {
 			if (clear) {
 				targetMage.clearCooldown();
 			}
-			if (cooldownAmount > 0) {
-				targetMage.setRemainingCooldown(cooldownAmount);
+			if (amount > 0) {
+				targetMage.setRemainingCooldown(amount);
 			}
 		} else {
 			Wand wand = targetMage.getActiveWand();
@@ -69,8 +80,8 @@ public class ApplyCooldownAction extends BaseSpellAction
 					if (clear) {
 						spell.clearCooldown();
 					}
-					if (cooldownAmount > 0) {
-						spell.setRemainingCooldown(cooldownAmount);
+					if (amount > 0) {
+						spell.setRemainingCooldown(amount);
 					}
 				}
 			}
