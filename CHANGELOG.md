@@ -2,6 +2,7 @@
 
 ## 5.3
 
+ - The Magic.commands.mskills permission (for /mskills) now defaults to off
  - Added several new tweakshop actions to configure quick-cast and drop/right-click modes
  - Add Cursed Meat item (use it if you dare dare dare dare!)
  - Add Debugger spell, for debugging spell issues

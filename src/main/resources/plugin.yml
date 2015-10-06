@@ -499,7 +499,7 @@ permissions:
   Magic.commands.mskills:
     description: Player may use the /mskills menu
     type: boolean
-    default: true
+    default: op
   Magic.commands.mmap:
     description: Player may use the /mmap command
     type: boolean
