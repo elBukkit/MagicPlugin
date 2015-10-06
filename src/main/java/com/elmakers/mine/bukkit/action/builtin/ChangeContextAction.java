@@ -144,6 +144,9 @@ public class ChangeContextAction extends CompoundAction {
             sourceLocation.setY(targetLocation.getY());
             sourceLocation.setZ(targetLocation.getZ());
             sourceLocation.setWorld(targetLocation.getWorld());
+            if (targetEntity != null) {
+                sourceEntity = targetEntity;
+            }
         }
         if (persistTarget)
         {
