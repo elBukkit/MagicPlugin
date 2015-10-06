@@ -1124,7 +1124,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         } else if (quickCastDisabled) {
             node.set("mode_cast", "disable");
         } else {
-            node.set("mode_cast", "false");
+            node.set("mode_cast", null);
         }
         if (brushMode != null) {
             node.set("brush_mode", brushMode.name());
