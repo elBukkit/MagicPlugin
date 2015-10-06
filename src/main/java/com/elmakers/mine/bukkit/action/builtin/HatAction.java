@@ -2,6 +2,7 @@ package com.elmakers.mine.bukkit.action.builtin;
 
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.magic.Mage;
+import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.api.block.MaterialAndData;
@@ -98,7 +99,8 @@ public class HatAction extends BaseSpellAction
 
         Player player = (Player)entity;
 		MaterialAndData material = this.material;
-        Mage mage = context.getMage();
+        MageController controller = context.getController();
+        Mage mage = controller.getMage(player);
         if (useItem)
         {
             Wand activeWand = mage.getActiveWand();
