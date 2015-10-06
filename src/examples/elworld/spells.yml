@@ -390,7 +390,9 @@ rainbow:
     costs:
        mana: 30
 
-rocketmaxima:
+tickettoboom:
+   name: One-Way Ticket to Boomstown
+   description: Oh, Yeah!
    icon_url: http://textures.minecraft.net/texture/aa7e54c1c7634bdf1118db91da9e12b6b4d17f7fb7b7d5b0d06d554feb737bf
    icon: ink_sack:4
    category: utility
@@ -399,10 +401,15 @@ rocketmaxima:
      cast:
        - class: ChangeContext
          source_at_target: true
+         requires_entity_target: true
          actions:
-         - class: FallProtection
          - class: Firework
          - class: Mount
+         - class: Delay
+         - class: ChangeContext
+           target_entity: true
+           actions:
+           - class: Explosion
    effects:
        cast:
        -  class: EffectSingle
@@ -458,7 +465,9 @@ rocketmaxima:
        cooldown: 5000
        power: 0
        speed: 0.15
-       expected_lifespan: 35
+       expected_lifespan: 30
+       size: 4
+       delay: 1500
        set_target: true
        duration: 20000
    costs:
