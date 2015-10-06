@@ -389,3 +389,77 @@ rainbow:
        undo: 10000
     costs:
        mana: 30
+
+rocketmaxima:
+   icon_url: http://textures.minecraft.net/texture/aa7e54c1c7634bdf1118db91da9e12b6b4d17f7fb7b7d5b0d06d554feb737bf
+   icon: ink_sack:4
+   category: utility
+   worth: 60
+   actions:
+     cast:
+       - class: ChangeContext
+         source_at_target: true
+         actions:
+         - class: FallProtection
+         - class: Firework
+         - class: Mount
+   effects:
+       cast:
+       -  class: EffectSingle
+          custom_sound: magic.whip
+          location: origin
+       -  class: EffectSingle
+          custom_sound: magic.protego
+          location: origin
+       -  class: EffectSingle
+          custom_sound: magic.disillusion
+          location: origin
+          effectlib:
+            class: ConeEffect
+            iterations: 16
+            particle: spell_mob
+            color: FE2EF7
+            lengthGrow: 0.4
+       -  class: EffectSingle
+          location: target
+          color: FE2EF7
+          firework: star
+       - class: EffectSingle
+         location: target
+         particle_override: particleOrbital
+         effectlib:
+            class: AtomEffect
+            particleNucleus: spell_instant
+            particleOrbital: spell_instant
+            iterations: 16
+       no_target:
+       -  class: EffectSingle
+          custom_sound: magic.whip
+          location: origin
+       -  class: EffectSingle
+          custom_sound: magic.protego
+          location: origin
+       -  class: EffectSingle
+          custom_sound: magic.disillusion
+          location: origin
+          effectlib:
+            class: ConeEffect
+            iterations: 16
+            particle: spell_mob
+            color: FE2EF7
+            lengthGrow: 0.4
+       -  class: EffectSingle
+          location: target
+          color: FE2EF7
+          firework: star
+   parameters:
+       target: other
+       launch: true
+       cooldown: 5000
+       power: 0
+       speed: 0.15
+       expected_lifespan: 35
+       set_target: true
+       duration: 20000
+   costs:
+       mana: 300
