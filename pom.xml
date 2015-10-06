@@ -189,6 +189,14 @@
             <id>elMakers</id>
             <url>http://maven.elmakers.com/repository/</url>
         </repository>
+
+		<!--
+
+		If my repo ever goes down, you can try to re-enable all of this.
+		It seems like these are, sadly, dropping off like flies and the build
+		time re-scanning them all has driven me nuts, so I'm turning them off for now.
+		     - NathanWolf
+
         <repository>
             <id>SacredCoding</id>
             <name>SacredCoding-releases</name>
@@ -235,6 +243,9 @@
             <id>NoCheatPlus</id>
             <url>http://ncp-repo.yawk.at/</url>
         </repository>
+
+		-->
+
     </repositories>
 	<build>
 	<resources>
