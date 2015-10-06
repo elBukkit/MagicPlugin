@@ -18,19 +18,18 @@ public class MountAction extends BaseSpellAction {
 
 	@Override
     public SpellResult perform(CastContext context) {
-        Mage mage = context.getMage();
-		LivingEntity player = mage.getLivingEntity();
-		if (player == null) {
+		LivingEntity source = context.getLivingEntity();
+		if (source == null) {
 			return SpellResult.LIVING_ENTITY_REQUIRED;
 		}
 
 		// Make it so this spell can be used to get someone off of you
         if (eject) {
-            player.eject();
+            source.eject();
             return SpellResult.CAST;
         }
 
-        Entity current = player.getVehicle();
+        Entity current = source.getVehicle();
         if (current != null) {
             current.eject();
         }
@@ -39,7 +38,7 @@ public class MountAction extends BaseSpellAction {
 			return SpellResult.NO_TARGET;
 		}
 		
-		targetEntity.setPassenger(player);
+		targetEntity.setPassenger(source);
 		
 		return SpellResult.CAST;
 	}
