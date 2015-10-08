@@ -16,17 +16,19 @@ lightning:
      category: firebending
      enabled: true
 
-flamethrower:
-     category: firebending
-     enabled: true
+firestream:
+  inherit: flamethrower
+  category: firebending
 
-boom:
-     category: firebending
-     enabled: true
+combustion:
+  inherit: boom
+  category: firebending
 
-boom|2:
-     category: firebending
-     enabled: true
+combustion|2:
+  inherit: boom|2
+  category: firebending
+  upgrade_required_path: firebending
+  upgrade_required_casts: 50
 
 lava:
      category: firebending
@@ -34,13 +36,13 @@ lava:
 
 ### AIRBENDING
 
-push:
-     category: airbending
-     enabled: true
+airblast:
+  inherit: push
+  category: airbending
 
-pull:
-     category: airbending
-     enabled: true
+suction:
+  inherit: pull
+  category: airbending
 
 fling:
      category: airbending
@@ -48,17 +50,17 @@ fling:
 
 ### WATERBENDING
 
-stream:
-     category: waterbending
-     enabled: true
+waterjet:
+  inherit: stream
+  category: waterbending
 
-bubble:
-     category: waterbending
-     enabled: true
+waterball:
+  inherit: bubble
+  category: waterbending
 
-force:
-     category: waterbending
-     enabled: true
+bloodbending:
+  inherit: force
+  category: waterbending
 
 heal:
      category: waterbending
@@ -68,29 +70,29 @@ cure:
      category: waterbending
      enabled: true
 
-frost:
-     category: waterbending
-     enabled: true
+breathofice:
+  inherit: frost
+  category: waterbending
 
 ## EARTHBENDING
 
-blob:
-    category: earthbending
-    enabled: true
-    parameters:
-       brush: dirt
+compression:
+  inherit: blob
+  category: earthbending
+  parameters:
+     brush: dirt
 
 breach:
      category: earthbending
      enabled: true
 
-sandblast:
-     category: earthbending
-     enabled: true
+sandspout:
+  inherit: sandblast
+  category: earthbending
 
-blast:
-     category: earthbending
-     enabled: true
+earthsmash:
+  inherit: blast
+  category: earthbending
 
 harden:
      category: earthbending

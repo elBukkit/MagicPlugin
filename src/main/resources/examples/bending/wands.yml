@@ -19,8 +19,8 @@ airbending:
     active_spell: fling
     spells:
         - fling
-        - push
-        - pull
+        - airblast
+        - suction
 
 waterbending:
     path: waterbending
@@ -37,8 +37,8 @@ waterbending:
     effect_color: '0000FF'
     active_spell: stream
     spells:
-        - stream
-        - cushion
+        - waterjet
+        - waterball
 
 earthbending:
     path: earthbending
@@ -58,7 +58,7 @@ earthbending:
     effect_color: 'CD853F'
     active_spell: earth
     spells:
-        - blob
+        - compression
         - block
 
 firebending:
@@ -97,20 +97,20 @@ avatar:
     active_spell: levitate
     spells:
         - fling
-        - push
-        - pull
+        - airblast
+        - suction
         - force
         - fireball
-        - blob
+        - compression
         - fire
         - lava
         - lightning
-        - sandblast
+        - sandspout
         - breach
-        - frost
-        - cushion
+        - breathofice
+        - waterball
         - levitate
-        - boom
+        - combustion|2
         - heal
         - cure
         - iterate
@@ -122,6 +122,7 @@ wolf:
     icon: gold_hoe
     keep: true
     bound: true
+    fill: true
     undroppable: true
     indestructible: true
     cost_reduction: 2
@@ -158,37 +159,6 @@ wolf:
         - supershell@13
         - superrepair@14
         - undo@15
-        - backup
-        - stash
-        - force
-        - pillar
-        - bridge
-        - recurse
-        - boom|2
-        - fireball
-        - torch
-        - wolfhouse
-        - superpyramid
-        - superbox
-        - superdisc
-        - superring
-        - superdome
-        - push
-        - pull
-        - box
-        - blob
-        - repair
-        - alter
-        - superalter
-        - boon|2
-        - collapse
-        - supercollapse
-        - iterate
-        - commit
-        - familiar
-        - phase
-        - regenerate
-        - superregenerate
         - mount
     materials:
         - erase@16

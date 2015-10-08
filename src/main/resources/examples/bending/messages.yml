@@ -64,6 +64,39 @@ spells:
   block:
     name: Earth Block
     description: Raise a block of earth and throw it at your foes
+  firestream:
+    name: Fire Stream
+    description: Shoot a continuous stream of fire
+  combustion:
+    name: Combustion
+    description: Cause objects to explode
+  airblast:
+    name: Air Blast
+    description: Create a direct pulse of air
+  suction:
+    name: Suction
+    description: Pull your target towards you
+  breathofice:
+    name: Breath of Ice
+    description: Quickly freeze your target
+  waterjet:
+    name: Water Jet
+    description: Shoot a powerful jet of water
+  waterball:
+    name: Water Ball
+    description: Trap your opponent in a ball of water
+  bloodbending:
+    name: Water Ball
+    description: Trap your opponent in a ball of water
+  compression:
+    name: Compression
+    description: Compress the surrounding earth into a sphere
+  earthsmash:
+    name: Earth Smash
+    description: Smash your target in a violent explosion
+  sandspout:
+    name: Sand Spout
+    description: Bury your target in a whirlwind of sand
 
 paths:
     airbending:

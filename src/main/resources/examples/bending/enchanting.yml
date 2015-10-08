@@ -52,52 +52,52 @@ airbending:
     max_mana: 200
     max_mana_regeneration: 20
     mana_regeneration:
-      1: 100
+      4: 100
     mana_max:
-      2: 100
+      20: 100
     spell_count:
       1: 100
     spells:
       fling: 100
-      push: 80
-      pull: 10
+      airblast: 80
+      suction: 10
 
 waterbending:
     inherit: default
     max_mana: 200
     max_mana_regeneration: 20
     mana_regeneration:
-      1: 100
+      4: 100
     mana_max:
-      2: 100
+      20: 100
     spell_count:
       1: 100
     spells:
-      frost: 80
-      bubble: 5
-      stream: 40
+      breathofice: 80
+      waterball: 5
+      waterjet: 40
       heal: 80
-      cure: 1
-      force: 10
+      cure: 10
+      bloodbending: 1
 
 earthbending:
     inherit: default
     max_mana: 200
     max_mana_regeneration: 20
     mana_regeneration:
-      1: 100
+      4: 100
     mana_max:
-      2: 100
+      20: 100
     spell_count:
       1: 100
     spells:
       block: 20
-      blob: 5
+      compression: 5
       iterate: 5
       harden: 15
-      sandblast: 40
+      sandspout: 40
       collapse: 5
-      blast: 5
+      earthsmash: 5
       breach: 1
       earthquake: 1
 
@@ -106,17 +106,17 @@ firebending:
     max_mana: 200
     max_mana_regeneration: 20
     mana_regeneration:
-      1: 100
+      4: 100
     mana_max:
-      2: 100
+      20: 100
     spell_count:
       1: 100
     spells:
       fireball: 40
       fire: 90
       lava: 20
-      flamethrower: 20
-      boom: 1
+      firestream: 20
+      combustion: 1
 
 avatar:
     max_mana: 500
@@ -132,23 +132,23 @@ avatar:
       fireball: 40
       fire: 90
       lava: 20
-      flamethrower: 20
-      boom: 1
-      blob: 5
+      firestream: 20
+      combustion: 1
+      compression: 5
       iterate: 5
       harden: 15
       sandblast: 40
       collapse: 5
-      blast: 5
-      frost: 80
-      bubble: 5
-      stream: 40
+      earthsmash: 5
+      breathofice: 80
+      waterball: 5
+      waterjet: 40
       heal: 80
       cure: 1
       gills: 20
-      force: 10
+      bloodbending: 10
       fling: 100
-      push: 80
-      pull: 10
+      airblast: 80
+      suction: 10
       breach: 1
       boon: 20
