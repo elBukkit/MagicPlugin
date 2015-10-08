@@ -5755,7 +5755,6 @@ missile:
              particle: redstone
              lengthGrow: 0.3
         -  class: EffectSingle
-           target_offset: 0,1.5,0
            location: target
            color: FF8800
            color2: FF0000
@@ -5773,7 +5772,6 @@ missile:
              particle: redstone
              lengthGrow: 0.3
         -  class: EffectSingle
-           target_offset: 0,1.5,0
            location: target
            color: "#884400"
            color2: "#880000"
