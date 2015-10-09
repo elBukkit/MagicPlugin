@@ -9,6 +9,8 @@
  - Fix/Restore previous /cast command behavior with cooldowns
  - Add mana_display: none option, to turn off the XP mana display
  - Add skills_use_permissions option, to use the /mskills menu with Magic spells
+ - Add /magic list entities command, for showing entity bounding boxes and HP by type
+ - Tweak entity hitboxes a bit, should be a little easier to hit now
 
 ## 5.2
 

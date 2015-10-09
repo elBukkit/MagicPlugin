@@ -13,6 +13,7 @@ import com.elmakers.mine.bukkit.api.wand.Wand;
 import com.elmakers.mine.bukkit.block.UndoList;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
+import com.elmakers.mine.bukkit.utility.BoundingBox;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.RunnableJob;
 import com.elmakers.mine.bukkit.wand.WandCleanupRunnable;
@@ -25,19 +26,30 @@ import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Ageable;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Skeleton;
+import org.bukkit.entity.Slime;
+import org.bukkit.entity.Zombie;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.BlockVector;
+import org.bukkit.util.Vector;
 
 import java.io.File;
 import java.net.URL;
 import java.security.CodeSource;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
@@ -247,7 +259,7 @@ public class MagicCommandExecutor extends MagicMapExecutor {
 
 	protected boolean onMagicList(CommandSender sender, String subCommand, String[] args)
 	{
-		String usage = "Usage: magic list <wands|map|automata|tasks|schematics>";
+		String usage = "Usage: magic list <wands|map|automata|tasks|schematics|entities>";
 		String listCommand = "";
 		if (args.length > 1)
 		{
@@ -259,7 +271,7 @@ public class MagicCommandExecutor extends MagicMapExecutor {
 		}
 		else
 		{
-			sender.sendMessage(ChatColor.GRAY + "For more specific information, add 'tasks', 'wands', 'maps', 'schematics' or 'automata' parameter.");
+			sender.sendMessage(ChatColor.GRAY + "For more specific information, add 'tasks', 'wands', 'maps', 'schematics', 'entities' or 'automata' parameter.");
 
 			Collection<Mage> mages = api.getMages();
 			sender.sendMessage(ChatColor.AQUA + "Registered blocks (" + UndoList.getModified().size() + "): ");
@@ -353,7 +365,9 @@ public class MagicCommandExecutor extends MagicMapExecutor {
 			}
 
 			return true;
-		} else if (listCommand.equalsIgnoreCase("tasks")) {
+		}
+
+		if (listCommand.equalsIgnoreCase("tasks")) {
 			List<BukkitTask> tasks = Bukkit.getScheduler().getPendingTasks();
 			HashMap<String, Integer> pluginCounts = new HashMap<String, Integer>();
 			HashMap<String, HashMap<String, Integer>> taskCounts = new HashMap<String, HashMap<String, Integer>>();
@@ -414,7 +428,9 @@ public class MagicCommandExecutor extends MagicMapExecutor {
 
 			sender.sendMessage(shown + " lost wands found" + (owner.length() > 0 ? " for " + owner : ""));
 			return true;
-		} else if (listCommand.equalsIgnoreCase("automata")) {
+		}
+
+		if (listCommand.equalsIgnoreCase("automata")) {
 			Collection<Automaton> automata = api.getAutomata();
 			for (Automaton automaton : automata) {
 				BlockVector location = automaton.getPosition();
@@ -434,7 +450,8 @@ public class MagicCommandExecutor extends MagicMapExecutor {
 			sender.sendMessage(automata.size() + " automata active");
 			return true;
 		}
-		else if (listCommand.equalsIgnoreCase("maps")) {
+
+		if (listCommand.equalsIgnoreCase("maps")) {
 			String keyword = "";
 			for (int i = 2; i < args.length; i++)
 			{
@@ -445,8 +462,133 @@ public class MagicCommandExecutor extends MagicMapExecutor {
 			return true;
 		}
 
+		if (listCommand.equalsIgnoreCase("entities")) {
+			World world = Bukkit.getWorlds().get(0);
+			Location spawn = world.getSpawnLocation();
+			NumberFormat formatter = new DecimalFormat("#0.0");
+			List<EntityType> types = Arrays.asList(EntityType.values());
+			Collections.sort(types, new Comparator<EntityType>() {
+				@Override
+				public int compare(EntityType o1, EntityType o2) {
+					return o1.name().compareTo(o2.name());
+				}
+			});
+			List<Player> players = world.getPlayers();
+			if (players.size() > 0)
+			{
+				Player player = players.get(0);
+				showEntityInfo(sender, player, EntityType.PLAYER.name(), formatter);
+			}
+			for (EntityType entityType : types)
+			{
+				if (entityType.isSpawnable())
+				{
+					Entity testEntity = null;
+					String errorMessage = null;
+					try {
+						testEntity = world.spawnEntity(spawn, entityType);
+					} catch (Exception ex) {
+						testEntity = null;
+						errorMessage = ex.getMessage();
+					}
+					if (testEntity == null) {
+						sender.sendMessage(ChatColor.BLACK + entityType.name() + ": " + ChatColor.RED + "Spawning error " + ChatColor.DARK_RED + "(" + errorMessage + ")");
+						continue;
+					}
+					String label = entityType.name();
+
+					Ageable ageable = (testEntity instanceof Ageable) ? (Ageable)testEntity : null;
+					Zombie zombie = (testEntity instanceof Zombie) ? (Zombie)testEntity : null;
+					Skeleton skeleton = (testEntity instanceof Skeleton) ? (Skeleton)testEntity : null;
+					Slime slime = (testEntity instanceof Slime) ? (Slime)testEntity : null;
+					if (ageable != null)
+					{
+						label = label + ChatColor.GRAY + " (Adult)";
+						ageable.setAdult();
+					}
+					else if (zombie != null)
+					{
+						label = label + ChatColor.GRAY + " (Adult)";
+						zombie.setBaby(false);
+						zombie.setVillager(false);
+					}
+					else if (skeleton != null)
+					{
+						label = label + ChatColor.GRAY + " (NORMAL)";
+						skeleton.setSkeletonType(Skeleton.SkeletonType.NORMAL);
+					}
+					else if (slime != null)
+					{
+						label = label + ChatColor.GRAY + " (Size 1)";
+						slime.setSize(1);
+					}
+
+					showEntityInfo(sender, testEntity, label, formatter);
+					if (ageable != null)
+					{
+						label = entityType.name() + ChatColor.GRAY + " (Baby)";
+						ageable.setBaby();
+						showEntityInfo(sender, testEntity, label, formatter);
+					}
+					else if (zombie != null)
+					{
+						label = entityType.name() + ChatColor.GRAY + " (Baby)";
+						zombie.setBaby(true);
+						showEntityInfo(sender, testEntity, label, formatter);
+						label = entityType.name() + ChatColor.GRAY + " (Villager)";
+						zombie.setBaby(false);
+						zombie.setVillager(true);
+						showEntityInfo(sender, testEntity, label, formatter);
+						label = entityType.name() + ChatColor.GRAY + " (Baby Villager)";
+						zombie.setBaby(true);
+						showEntityInfo(sender, testEntity, label, formatter);
+					}
+					else if (skeleton != null)
+					{
+						label = entityType.name() + ChatColor.GRAY + " (WITHER)";
+						skeleton.setSkeletonType(Skeleton.SkeletonType.WITHER);
+						showEntityInfo(sender, testEntity, label, formatter);
+					}
+					else if (slime != null)
+					{
+						label = entityType.name() + ChatColor.GRAY + " (Size 2)";
+						slime.setSize(2);
+						showEntityInfo(sender, testEntity, label, formatter);
+						label = entityType.name() + ChatColor.GRAY + " (Size 4)";
+						slime.setSize(4);
+						showEntityInfo(sender, testEntity, label, formatter);
+						label = entityType.name() + ChatColor.GRAY + " (Size 8)";
+						slime.setSize(8);
+						showEntityInfo(sender, testEntity, label, formatter);
+						label = entityType.name() + ChatColor.GRAY + " (Size 16)";
+						slime.setSize(16);
+						showEntityInfo(sender, testEntity, label, formatter);
+					}
+				}
+			}
+			return true;
+		}
+
 		sender.sendMessage(usage);
 		return true;
+	}
+
+	private void showEntityInfo(CommandSender sender, Entity entity, String label, NumberFormat formatter)
+	{
+		BoundingBox hitbox = CompatibilityUtils.getHitbox(entity);
+		Vector size = hitbox.size();
+		String message = ChatColor.BLACK + label + ": "
+				+ ChatColor.AQUA + formatter.format(size.getX()) + ChatColor.DARK_GRAY + "x"
+				+ ChatColor.AQUA + formatter.format(size.getY()) + ChatColor.DARK_GRAY + "x"
+				+ ChatColor.AQUA + formatter.format(size.getZ());
+
+		if (entity instanceof LivingEntity)
+		{
+			LivingEntity li = (LivingEntity)entity;
+			message += ChatColor.DARK_GRAY + ", " + ChatColor.GREEN + ((int)li.getMaxHealth()) + "hp";
+		}
+		sender.sendMessage(message);
+		entity.remove();
 	}
 
 	protected boolean onMagicGive(CommandSender sender, Player player, String command, String[] args)
@@ -612,6 +754,9 @@ public class MagicCommandExecutor extends MagicMapExecutor {
 				addIfPermissible(sender, options, "Magic.commands.magic.list", "maps");
 				addIfPermissible(sender, options, "Magic.commands.magic.list", "wands");
 				addIfPermissible(sender, options, "Magic.commands.magic.list", "automata");
+				addIfPermissible(sender, options, "Magic.commands.magic.list", "schematics");
+				addIfPermissible(sender, options, "Magic.commands.magic.list", "entities");
+				addIfPermissible(sender, options, "Magic.commands.magic.list", "tasks");
 			} if (args[0].equalsIgnoreCase("configure") || args[0].equalsIgnoreCase("describe") || args[0].equalsIgnoreCase("check") || args[0].equalsIgnoreCase("debug")) {
                 options.addAll(api.getPlayerNames());
             } else if (args[0].equalsIgnoreCase("give") || args[0].equalsIgnoreCase("worth") || args[0].equalsIgnoreCase("sell")) {
