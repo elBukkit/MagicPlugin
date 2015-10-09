@@ -135,6 +135,11 @@ public class BoundingBox
         return null;
     }
 
+    public Vector size()
+    {
+        return this.max.clone().subtract(this.min);
+    }
+
     @Override
     public String toString()
     {
