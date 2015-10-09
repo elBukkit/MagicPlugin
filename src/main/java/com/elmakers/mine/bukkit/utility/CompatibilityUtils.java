@@ -71,6 +71,7 @@ public class CompatibilityUtils extends NMSUtils {
     private final static Map<World.Environment, Integer> maxHeights = new HashMap<World.Environment, Integer>();
     private static double hitboxScale = 1.0;
     private static double hitboxScaleY = 1.0;
+    private static double hitboxSneakScaleY = 0.75;
     private static BoundingBox defaultHitbox;
 
     public static void applyPotionEffects(LivingEntity entity, Collection<PotionEffect> effects) {
@@ -607,6 +608,10 @@ public class CompatibilityUtils extends NMSUtils {
                 return defaultHitbox.center(entity.getLocation().toVector());
             }
 
+            double scaleY = hitboxScaleY;
+            if (entity instanceof Player && ((Player)entity).isSneaking()) {
+                scaleY = hitboxSneakScaleY;
+            }
             return new BoundingBox(
                     class_AxisAlignedBB_minXField.getDouble(aabb),
                     class_AxisAlignedBB_maxXField.getDouble(aabb),
@@ -614,7 +619,7 @@ public class CompatibilityUtils extends NMSUtils {
                     class_AxisAlignedBB_maxYField.getDouble(aabb),
                     class_AxisAlignedBB_minZField.getDouble(aabb),
                     class_AxisAlignedBB_maxZField.getDouble(aabb)
-            ).scaleFromBase(hitboxScale, hitboxScaleY);
+            ).scaleFromBase(hitboxScale, scaleY);
 
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -628,6 +633,10 @@ public class CompatibilityUtils extends NMSUtils {
 
     public static void setHitboxScaleY(double scaleY) {
         hitboxScaleY = scaleY;
+    }
+
+    public static void setHitboxSneakScaleY(double hitboxSneakScaleY) {
+        CompatibilityUtils.hitboxSneakScaleY = hitboxSneakScaleY;
     }
 
     public static void configureHitboxes(ConfigurationSection config) {
