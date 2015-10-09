@@ -606,19 +606,14 @@ public class CompatibilityUtils extends NMSUtils {
                 return defaultHitbox.center(entity.getLocation().toVector());
             }
 
-            // Debugging!
-
-            BoundingBox bb = new BoundingBox(
+            return new BoundingBox(
                     class_AxisAlignedBB_minXField.getDouble(aabb),
                     class_AxisAlignedBB_maxXField.getDouble(aabb),
                     class_AxisAlignedBB_minYField.getDouble(aabb),
                     class_AxisAlignedBB_maxYField.getDouble(aabb),
                     class_AxisAlignedBB_minZField.getDouble(aabb),
                     class_AxisAlignedBB_maxZField.getDouble(aabb)
-            );
-            if (hitboxScale > 1) {
-                bb = bb.scaleFromBase(hitboxScale);
-            }
+            ).scaleFromBase(hitboxScale);
 
         } catch (Exception ex) {
             ex.printStackTrace();
