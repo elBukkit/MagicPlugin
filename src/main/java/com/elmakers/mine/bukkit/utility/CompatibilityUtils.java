@@ -70,6 +70,7 @@ public class CompatibilityUtils extends NMSUtils {
     private final static Map<EntityType, BoundingBox> hitboxes = new HashMap<EntityType, BoundingBox>();
     private final static Map<World.Environment, Integer> maxHeights = new HashMap<World.Environment, Integer>();
     private static double hitboxScale = 1.0;
+    private static double hitboxScaleY = 1.0;
     private static BoundingBox defaultHitbox;
 
     public static void applyPotionEffects(LivingEntity entity, Collection<PotionEffect> effects) {
@@ -613,7 +614,7 @@ public class CompatibilityUtils extends NMSUtils {
                     class_AxisAlignedBB_maxYField.getDouble(aabb),
                     class_AxisAlignedBB_minZField.getDouble(aabb),
                     class_AxisAlignedBB_maxZField.getDouble(aabb)
-            ).scaleFromBase(hitboxScale);
+            ).scaleFromBase(hitboxScale, hitboxScaleY);
 
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -625,6 +626,10 @@ public class CompatibilityUtils extends NMSUtils {
         hitboxScale = scale;
     }
 
+    public static void setHitboxScaleY(double scaleY) {
+        hitboxScaleY = scaleY;
+    }
+
     public static void configureHitboxes(ConfigurationSection config) {
         hitboxes.clear();
         Collection<String> keys = config.getKeys(false);
@@ -634,7 +639,7 @@ public class CompatibilityUtils extends NMSUtils {
                 String upperKey = key.toUpperCase();
                 double halfX = bounds.getX() / 2;
                 double halfZ = bounds.getZ() / 2;
-                BoundingBox bb = new BoundingBox(-halfX, halfX, 0, bounds.getY(), -halfZ, halfZ).scaleFromBase(hitboxScale);
+                BoundingBox bb = new BoundingBox(-halfX, halfX, 0, bounds.getY(), -halfZ, halfZ).scaleFromBase(hitboxScale, hitboxScaleY);
                 if (upperKey.equals("DEFAULT")) {
                     defaultHitbox = bb;
                     continue;

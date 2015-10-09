@@ -58,9 +58,10 @@ public class BoundingBox
      * Useful for scaling entity AABB's.
      *
      * @param scale
+     * @param scaleY
      * @return the scaled BB (this object)
      */
-    public BoundingBox scaleFromBase(double scale)
+    public BoundingBox scaleFromBase(double scale, double scaleY)
     {
         if (scale <= 0 || scale == 1) return this;
         Vector center = this.center();
@@ -69,7 +70,7 @@ public class BoundingBox
         // We just skip setting minY, scaling Y only upward
         this.min.setZ((this.min.getZ() - center.getZ()) * scale + center.getZ());
         this.max.setX((this.max.getX() - center.getX()) * scale + center.getX());
-        this.max.setY((this.max.getY() - center.getY()) * scale + center.getY());
+        this.max.setY((this.max.getY() - center.getY()) * scaleY + center.getY());
         this.max.setZ((this.max.getZ() - center.getZ()) * scale + center.getZ());
         return this;
     }
