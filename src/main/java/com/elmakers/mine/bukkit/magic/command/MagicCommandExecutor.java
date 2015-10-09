@@ -178,209 +178,10 @@ public class MagicCommandExecutor extends MagicMapExecutor {
         }
 		if (subCommand.equalsIgnoreCase("list"))
 		{
-			String usage = "Usage: magic list <wands|map|automata|tasks|schematics>";
-			String listCommand = "";
-			if (args.length > 1)
-			{
-				listCommand = args[1];
-				if (!api.hasPermission(sender, "Magic.commands.magic." + subCommand + "." + listCommand)) {
-					sendNoPermission(sender);
-					return false;
-				}
-			}
-			else
-			{				
-				sender.sendMessage(ChatColor.GRAY + "For more specific information, add 'tasks', 'wands', 'maps', 'schematics' or 'automata' parameter.");
-
-				Collection<Mage> mages = api.getMages();
-                sender.sendMessage(ChatColor.AQUA + "Registered blocks (" + UndoList.getModified().size() + "): ");
-				sender.sendMessage(ChatColor.LIGHT_PURPLE + "Active mages: " + mages.size());
-                Collection<com.elmakers.mine.bukkit.api.block.UndoList> pendingUndo = api.getPendingUndo();
-                sender.sendMessage(ChatColor.AQUA + "Pending undo (" + pendingUndo.size() + "): ");
-                long now = System.currentTimeMillis();
-                for (com.elmakers.mine.bukkit.api.block.UndoList undo : pendingUndo) {
-                    long remainingTime = (undo.getScheduledTime() - now) / 1000;
-
-                    sender.sendMessage(ChatColor.AQUA + undo.getName() + ChatColor.GRAY + " will undo in "
-                            + ChatColor.WHITE + "" + remainingTime + "" + ChatColor.GRAY
-                            + " seconds");
-                }
-
-				Collection<Mage> pending = api.getMagesWithPendingBatches();
-				sender.sendMessage(ChatColor.AQUA + "Pending batches (" + pending.size() + "): ");
-                for (Mage mage : pending) {
-                    int totalSize = 0;
-                    int totalRemaining = 0;
-					Collection<Batch> pendingBatches = mage.getPendingBatches();
-                    String names = "";
-					if (pendingBatches.size() > 0) {
-                        for (Batch batch : pendingBatches) {
-                            if (batch instanceof SpellBatch) {
-                                names = names + ((SpellBatch)batch).getSpell().getName() + " ";
-                            }
-
-                            totalSize += batch.size();
-                            totalRemaining = batch.remaining();
-                        }
-					}
-
-                    sender.sendMessage(ChatColor.AQUA + mage.getName() + ChatColor.GRAY + " has "
-                            + ChatColor.WHITE + "" + pendingBatches.size() + "" + ChatColor.GRAY
-                            + " pending (" + ChatColor.WHITE + "" + totalRemaining + "/" + totalSize
-                            + "" + ChatColor.GRAY + ") (" + names + ")");
-				}
-				return true;
-			}
-            if (listCommand.equalsIgnoreCase("schematics")) {
-                List<String> schematics = new ArrayList<String>();
-                try {
-                    Plugin plugin = (Plugin)api;
-                    MagicController controller = (MagicController)api.getController();
-
-                    // Find built-in schematics
-                    CodeSource src = MagicAPI.class.getProtectionDomain().getCodeSource();
-                    if (src != null) {
-                        URL jar = src.getLocation();
-                        ZipInputStream zip = new ZipInputStream(jar.openStream());
-                        while(true) {
-                            ZipEntry e = zip.getNextEntry();
-                            if (e == null)
-                                break;
-                            String name = e.getName();
-                            if (name.startsWith("schematics/")) {
-                                schematics.add(name.replace("schematics/", ""));
-                            }
-                        }
-                    }
-
-                    // Check extra path first
-                    File configFolder = plugin.getDataFolder();
-                    File magicSchematicFolder = new File(configFolder, "schematics");
-                    if (magicSchematicFolder.exists()) {
-                        for (File nextFile : magicSchematicFolder.listFiles()) {
-                            schematics.add(nextFile.getName());
-                        }
-                    }
-                    String extraSchematicFilePath = controller.getExtraSchematicFilePath();
-                    if (extraSchematicFilePath != null && extraSchematicFilePath.length() > 0) {
-                        File schematicFolder = new File(configFolder, "../" + extraSchematicFilePath);
-                        if (schematicFolder.exists() && !schematicFolder.equals(magicSchematicFolder)) {
-                            for (File nextFile : schematicFolder.listFiles()) {
-                                schematics.add(nextFile.getName());
-                            }
-                        }
-                    }
-                } catch (Exception ex) {
-                    sender.sendMessage("Error loading schematics: " + ex.getMessage());
-                    ex.printStackTrace();;
-                }
-
-                sender.sendMessage(ChatColor.DARK_AQUA + "Found " + ChatColor.LIGHT_PURPLE + schematics.size() + ChatColor.DARK_AQUA + " schematics");
-                Collections.sort(schematics);
-                for (String schematic : schematics) {
-                    if (schematic.indexOf(".schematic") > 0) {
-                        sender.sendMessage(ChatColor.AQUA + schematic.replace(".schematic", ""));
-                    }
-                }
-
-                return true;
-            } else if (listCommand.equalsIgnoreCase("tasks")) {
-                List<BukkitTask> tasks = Bukkit.getScheduler().getPendingTasks();
-                HashMap<String, Integer> pluginCounts = new HashMap<String, Integer>();
-                HashMap<String, HashMap<String, Integer>> taskCounts = new HashMap<String, HashMap<String, Integer>>();
-                for (BukkitTask task : tasks)  {
-                    String pluginName = task.getOwner().getName();
-                    HashMap<String, Integer> pluginTaskCounts = taskCounts.get(pluginName);
-                    if (pluginTaskCounts == null) {
-                        pluginTaskCounts = new HashMap<String, Integer>();
-                        taskCounts.put(pluginName, pluginTaskCounts);
-                    }
-                    String className = "(Unknown)";
-                    Runnable taskRunnable = CompatibilityUtils.getTaskRunnable(task);
-                    if (taskRunnable != null) {
-                        Class<? extends Runnable> taskClass = taskRunnable.getClass();
-                        if (taskClass != null) {
-                            className = taskClass.getName();
-                        }
-                    }
-                    Integer count = pluginTaskCounts.get(className);
-                    if (count == null) count = 0;
-                    count++;
-                    pluginTaskCounts.put(className, count);
-
-                    Integer totalCount = pluginCounts.get(pluginName);
-                    if (count == null) count = 0;
-                    count++;
-                    pluginCounts.put(pluginName, count);
-                }
-                sender.sendMessage(ChatColor.LIGHT_PURPLE + "Active tasks: " + tasks.size());
-                for (Entry<String, HashMap<String, Integer>> pluginEntry : taskCounts.entrySet()) {
-                    String pluginName = pluginEntry.getKey();
-                    sender.sendMessage(" " + ChatColor.DARK_PURPLE + pluginName + ": " + ChatColor.LIGHT_PURPLE + pluginCounts.get(pluginName));
-                    for (Entry<String, Integer> taskEntry : pluginEntry.getValue().entrySet()) {
-                        sender.sendMessage("  " + ChatColor.DARK_PURPLE + taskEntry.getKey() + ": " + ChatColor.LIGHT_PURPLE + taskEntry.getValue());
-                    }
-                }
-
-                return true;
-            }
-			
-			if (listCommand.equalsIgnoreCase("wands")) {
-				String owner = "";
-				if (args.length > 2) {
-					owner = args[2];
-				}
-				Collection<LostWand> lostWands = api.getLostWands();
-				int shown = 0;
-				for (LostWand lostWand : lostWands) {
-					Location location = lostWand.getLocation();
-					if (location == null) continue;
-					if (owner.length() > 0 && !owner.equalsIgnoreCase	(lostWand.getOwner())) {
-						continue;
-					}
-					shown++;
-					sender.sendMessage(ChatColor.AQUA + lostWand.getName() + ChatColor.WHITE + " (" + lostWand.getOwner() + ") @ " + ChatColor.BLUE + location.getWorld().getName() + " " +
-							location.getBlockX() + " " + location.getBlockY() + " " + location.getBlockZ());
-				}
-				
-				sender.sendMessage(shown + " lost wands found" + (owner.length() > 0 ? " for " + owner : ""));
-				return true;
-			} else if (listCommand.equalsIgnoreCase("automata")) {
-				Collection<Automaton> automata = api.getAutomata();
-				for (Automaton automaton : automata) {
-					BlockVector location = automaton.getPosition();
-					String worldName = automaton.getWorldName();
-                    boolean isOnline = false;
-                    World world = Bukkit.getWorld(worldName);
-                    if (worldName != null) {
-                        Location automatonLocation = new Location(world, location.getX(), location.getY(), location.getZ());
-                        Chunk chunk = world.getChunkAt(automatonLocation);
-                        isOnline = chunk.isLoaded();
-                    }
-                    ChatColor nameColor = isOnline ? ChatColor.AQUA : ChatColor.GRAY;
-					sender.sendMessage(nameColor + automaton.getName() + ChatColor.WHITE + " @ " + ChatColor.BLUE + worldName + " " +
-							location.getBlockX() + " " + location.getBlockY() + " " + location.getBlockZ());
-				}
-				
-				sender.sendMessage(automata.size() + " automata active");
-				return true;
-			}
-			else if (listCommand.equalsIgnoreCase("maps")) {
-				String keyword = "";
-                for (int i = 2; i < args.length; i++)
-                {
-                    if (i != 2) keyword = keyword + " ";
-                    keyword = keyword + args[i];
-                }
-                onMapList(sender, keyword);
-				return true;
-			}
-		
-			sender.sendMessage(usage);
-			return true;
+			return onMagicList(sender, subCommand, args);
 		}
 		if (subCommand.equalsIgnoreCase("cancel"))
-		{ 
+		{
 			checkRunningTask();
 			if (runningTask != null) {
 				runningTask.cancel();
@@ -389,18 +190,18 @@ public class MagicCommandExecutor extends MagicMapExecutor {
 			} else {
 				sender.sendMessage("There is no job running");
 			}
-			
+
 			int stoppedPending = 0;
 			for (Mage mage : api.getMages()) {
 				while (mage.cancelPending() != null) stoppedPending++;
 			}
-			
+
 			sender.sendMessage("Stopped " + stoppedPending + " pending construction batches");
-			
+
 			return true;
 		}
 		if (subCommand.equalsIgnoreCase("clean"))
-		{ 
+		{
 			checkRunningTask();
 			if (runningTask != null) {
 				sender.sendMessage("Cancel current job first");
@@ -420,12 +221,12 @@ public class MagicCommandExecutor extends MagicMapExecutor {
 				}
 			}
 
-            boolean check = false;
-            if (owner != null && owner.equals("check")){
-                check = true;
-                owner = "ALL";
-            }
-            String description = check ? "Checking for" : "Cleaning up";
+			boolean check = false;
+			if (owner != null && owner.equals("check")){
+				check = true;
+				owner = "ALL";
+			}
+			String description = check ? "Checking for" : "Cleaning up";
 			String ownerName = owner == null ? "(Unowned)" : owner;
 			if (world == null) {
 				sender.sendMessage(description + " lost wands in all worlds for owner: " + ownerName);
@@ -436,11 +237,215 @@ public class MagicCommandExecutor extends MagicMapExecutor {
 			}
 			runningTask = new WandCleanupRunnable(api, world, owner, check);
 			runningTask.runTaskTimer(api.getPlugin(), 5, 5);
-			
+
 			return true;
 		}
 		
 		sender.sendMessage("Unknown magic command: " + subCommand);
+		return true;
+	}
+
+	protected boolean onMagicList(CommandSender sender, String subCommand, String[] args)
+	{
+		String usage = "Usage: magic list <wands|map|automata|tasks|schematics>";
+		String listCommand = "";
+		if (args.length > 1)
+		{
+			listCommand = args[1];
+			if (!api.hasPermission(sender, "Magic.commands.magic." + subCommand + "." + listCommand)) {
+				sendNoPermission(sender);
+				return false;
+			}
+		}
+		else
+		{
+			sender.sendMessage(ChatColor.GRAY + "For more specific information, add 'tasks', 'wands', 'maps', 'schematics' or 'automata' parameter.");
+
+			Collection<Mage> mages = api.getMages();
+			sender.sendMessage(ChatColor.AQUA + "Registered blocks (" + UndoList.getModified().size() + "): ");
+			sender.sendMessage(ChatColor.LIGHT_PURPLE + "Active mages: " + mages.size());
+			Collection<com.elmakers.mine.bukkit.api.block.UndoList> pendingUndo = api.getPendingUndo();
+			sender.sendMessage(ChatColor.AQUA + "Pending undo (" + pendingUndo.size() + "): ");
+			long now = System.currentTimeMillis();
+			for (com.elmakers.mine.bukkit.api.block.UndoList undo : pendingUndo) {
+				long remainingTime = (undo.getScheduledTime() - now) / 1000;
+
+				sender.sendMessage(ChatColor.AQUA + undo.getName() + ChatColor.GRAY + " will undo in "
+						+ ChatColor.WHITE + "" + remainingTime + "" + ChatColor.GRAY
+						+ " seconds");
+			}
+
+			Collection<Mage> pending = api.getMagesWithPendingBatches();
+			sender.sendMessage(ChatColor.AQUA + "Pending batches (" + pending.size() + "): ");
+			for (Mage mage : pending) {
+				int totalSize = 0;
+				int totalRemaining = 0;
+				Collection<Batch> pendingBatches = mage.getPendingBatches();
+				String names = "";
+				if (pendingBatches.size() > 0) {
+					for (Batch batch : pendingBatches) {
+						if (batch instanceof SpellBatch) {
+							names = names + ((SpellBatch)batch).getSpell().getName() + " ";
+						}
+
+						totalSize += batch.size();
+						totalRemaining = batch.remaining();
+					}
+				}
+
+				sender.sendMessage(ChatColor.AQUA + mage.getName() + ChatColor.GRAY + " has "
+						+ ChatColor.WHITE + "" + pendingBatches.size() + "" + ChatColor.GRAY
+						+ " pending (" + ChatColor.WHITE + "" + totalRemaining + "/" + totalSize
+						+ "" + ChatColor.GRAY + ") (" + names + ")");
+			}
+			return true;
+		}
+		if (listCommand.equalsIgnoreCase("schematics")) {
+			List<String> schematics = new ArrayList<String>();
+			try {
+				Plugin plugin = (Plugin)api;
+				MagicController controller = (MagicController)api.getController();
+
+				// Find built-in schematics
+				CodeSource src = MagicAPI.class.getProtectionDomain().getCodeSource();
+				if (src != null) {
+					URL jar = src.getLocation();
+					ZipInputStream zip = new ZipInputStream(jar.openStream());
+					while(true) {
+						ZipEntry e = zip.getNextEntry();
+						if (e == null)
+							break;
+						String name = e.getName();
+						if (name.startsWith("schematics/")) {
+							schematics.add(name.replace("schematics/", ""));
+						}
+					}
+				}
+
+				// Check extra path first
+				File configFolder = plugin.getDataFolder();
+				File magicSchematicFolder = new File(configFolder, "schematics");
+				if (magicSchematicFolder.exists()) {
+					for (File nextFile : magicSchematicFolder.listFiles()) {
+						schematics.add(nextFile.getName());
+					}
+				}
+				String extraSchematicFilePath = controller.getExtraSchematicFilePath();
+				if (extraSchematicFilePath != null && extraSchematicFilePath.length() > 0) {
+					File schematicFolder = new File(configFolder, "../" + extraSchematicFilePath);
+					if (schematicFolder.exists() && !schematicFolder.equals(magicSchematicFolder)) {
+						for (File nextFile : schematicFolder.listFiles()) {
+							schematics.add(nextFile.getName());
+						}
+					}
+				}
+			} catch (Exception ex) {
+				sender.sendMessage("Error loading schematics: " + ex.getMessage());
+				ex.printStackTrace();;
+			}
+
+			sender.sendMessage(ChatColor.DARK_AQUA + "Found " + ChatColor.LIGHT_PURPLE + schematics.size() + ChatColor.DARK_AQUA + " schematics");
+			Collections.sort(schematics);
+			for (String schematic : schematics) {
+				if (schematic.indexOf(".schematic") > 0) {
+					sender.sendMessage(ChatColor.AQUA + schematic.replace(".schematic", ""));
+				}
+			}
+
+			return true;
+		} else if (listCommand.equalsIgnoreCase("tasks")) {
+			List<BukkitTask> tasks = Bukkit.getScheduler().getPendingTasks();
+			HashMap<String, Integer> pluginCounts = new HashMap<String, Integer>();
+			HashMap<String, HashMap<String, Integer>> taskCounts = new HashMap<String, HashMap<String, Integer>>();
+			for (BukkitTask task : tasks)  {
+				String pluginName = task.getOwner().getName();
+				HashMap<String, Integer> pluginTaskCounts = taskCounts.get(pluginName);
+				if (pluginTaskCounts == null) {
+					pluginTaskCounts = new HashMap<String, Integer>();
+					taskCounts.put(pluginName, pluginTaskCounts);
+				}
+				String className = "(Unknown)";
+				Runnable taskRunnable = CompatibilityUtils.getTaskRunnable(task);
+				if (taskRunnable != null) {
+					Class<? extends Runnable> taskClass = taskRunnable.getClass();
+					if (taskClass != null) {
+						className = taskClass.getName();
+					}
+				}
+				Integer count = pluginTaskCounts.get(className);
+				if (count == null) count = 0;
+				count++;
+				pluginTaskCounts.put(className, count);
+
+				Integer totalCount = pluginCounts.get(pluginName);
+				if (count == null) count = 0;
+				count++;
+				pluginCounts.put(pluginName, count);
+			}
+			sender.sendMessage(ChatColor.LIGHT_PURPLE + "Active tasks: " + tasks.size());
+			for (Entry<String, HashMap<String, Integer>> pluginEntry : taskCounts.entrySet()) {
+				String pluginName = pluginEntry.getKey();
+				sender.sendMessage(" " + ChatColor.DARK_PURPLE + pluginName + ": " + ChatColor.LIGHT_PURPLE + pluginCounts.get(pluginName));
+				for (Entry<String, Integer> taskEntry : pluginEntry.getValue().entrySet()) {
+					sender.sendMessage("  " + ChatColor.DARK_PURPLE + taskEntry.getKey() + ": " + ChatColor.LIGHT_PURPLE + taskEntry.getValue());
+				}
+			}
+
+			return true;
+		}
+
+		if (listCommand.equalsIgnoreCase("wands")) {
+			String owner = "";
+			if (args.length > 2) {
+				owner = args[2];
+			}
+			Collection<LostWand> lostWands = api.getLostWands();
+			int shown = 0;
+			for (LostWand lostWand : lostWands) {
+				Location location = lostWand.getLocation();
+				if (location == null) continue;
+				if (owner.length() > 0 && !owner.equalsIgnoreCase	(lostWand.getOwner())) {
+					continue;
+				}
+				shown++;
+				sender.sendMessage(ChatColor.AQUA + lostWand.getName() + ChatColor.WHITE + " (" + lostWand.getOwner() + ") @ " + ChatColor.BLUE + location.getWorld().getName() + " " +
+						location.getBlockX() + " " + location.getBlockY() + " " + location.getBlockZ());
+			}
+
+			sender.sendMessage(shown + " lost wands found" + (owner.length() > 0 ? " for " + owner : ""));
+			return true;
+		} else if (listCommand.equalsIgnoreCase("automata")) {
+			Collection<Automaton> automata = api.getAutomata();
+			for (Automaton automaton : automata) {
+				BlockVector location = automaton.getPosition();
+				String worldName = automaton.getWorldName();
+				boolean isOnline = false;
+				World world = Bukkit.getWorld(worldName);
+				if (worldName != null) {
+					Location automatonLocation = new Location(world, location.getX(), location.getY(), location.getZ());
+					Chunk chunk = world.getChunkAt(automatonLocation);
+					isOnline = chunk.isLoaded();
+				}
+				ChatColor nameColor = isOnline ? ChatColor.AQUA : ChatColor.GRAY;
+				sender.sendMessage(nameColor + automaton.getName() + ChatColor.WHITE + " @ " + ChatColor.BLUE + worldName + " " +
+						location.getBlockX() + " " + location.getBlockY() + " " + location.getBlockZ());
+			}
+
+			sender.sendMessage(automata.size() + " automata active");
+			return true;
+		}
+		else if (listCommand.equalsIgnoreCase("maps")) {
+			String keyword = "";
+			for (int i = 2; i < args.length; i++)
+			{
+				if (i != 2) keyword = keyword + " ";
+				keyword = keyword + args[i];
+			}
+			onMapList(sender, keyword);
+			return true;
+		}
+
+		sender.sendMessage(usage);
 		return true;
 	}
 
