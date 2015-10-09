@@ -40,21 +40,39 @@ public class BoundingBox
 
     public BoundingBox scale(double scale)
     {
-        // Note that this intentionally uses the min Y as the "center point" - only
-        // scaling the maxY up and down.
         if (scale <= 0 || scale == 1) return this;
         Vector center = this.center();
 
-        // Scale half the distance upward to account for using the full height to scale
-        // from min Y
-        this.max.setY((this.max.getY() - this.min.getY()) * scale / 2 + this.min.getY());
         this.min.setX((this.min.getX() - center.getX()) * scale + center.getX());
+        this.min.setY((this.min.getY() - center.getY()) * scale + center.getY());
         this.min.setZ((this.min.getZ() - center.getZ()) * scale + center.getZ());
         this.max.setX((this.max.getX() - center.getX()) * scale + center.getX());
+        this.max.setY((this.max.getY() - center.getY()) * scale + center.getY());
         this.max.setZ((this.max.getZ() - center.getZ()) * scale + center.getZ());
         return this;
     }
 
+    /**
+     * Scale this BoundingBox, but keep the min-Y value constant.
+     *
+     * Useful for scaling entity AABB's.
+     *
+     * @param scale
+     * @return the scaled BB (this object)
+     */
+    public BoundingBox scaleFromBase(double scale)
+    {
+        if (scale <= 0 || scale == 1) return this;
+        Vector center = this.center();
+
+        this.min.setX((this.min.getX() - center.getX()) * scale + center.getX());
+        // We just skip setting minY, scaling Y only upward
+        this.min.setZ((this.min.getZ() - center.getZ()) * scale + center.getZ());
+        this.max.setX((this.max.getX() - center.getX()) * scale + center.getX());
+        this.max.setY((this.max.getY() - center.getY()) * scale + center.getY());
+        this.max.setZ((this.max.getZ() - center.getZ()) * scale + center.getZ());
+        return this;
+    }
 
     // Source:
     // [url]http://www.gamedev.net/topic/338987-aabb---line-segment-intersection-test/[/url]
@@ -120,6 +138,6 @@ public class BoundingBox
     @Override
     public String toString()
     {
-        return "[" + min.toString() + " - " + max.toString() + "]";
+        return "[" + min.toString() + " - " + max.toString() + "] (" + (max.getX() - min.getX()) + "x" + (max.getY() - min.getY()) + "x" + (max.getZ() - min.getZ()) + ")";
     }
 }

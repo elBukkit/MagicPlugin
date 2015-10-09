@@ -10,7 +10,6 @@ import org.bukkit.Rotation;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
-import org.bukkit.block.ContainerBlock;
 import org.bukkit.block.Skull;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
@@ -606,14 +605,21 @@ public class CompatibilityUtils extends NMSUtils {
             if (aabb == null) {
                 return defaultHitbox.center(entity.getLocation().toVector());
             }
-            return new BoundingBox(
+
+            // Debugging!
+
+            BoundingBox bb = new BoundingBox(
                     class_AxisAlignedBB_minXField.getDouble(aabb),
                     class_AxisAlignedBB_maxXField.getDouble(aabb),
                     class_AxisAlignedBB_minYField.getDouble(aabb),
                     class_AxisAlignedBB_maxYField.getDouble(aabb),
                     class_AxisAlignedBB_minZField.getDouble(aabb),
                     class_AxisAlignedBB_maxZField.getDouble(aabb)
-            ).scale(hitboxScale);
+            );
+            if (hitboxScale > 1) {
+                bb = bb.scaleFromBase(hitboxScale);
+            }
+
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -633,7 +639,7 @@ public class CompatibilityUtils extends NMSUtils {
                 String upperKey = key.toUpperCase();
                 double halfX = bounds.getX() / 2;
                 double halfZ = bounds.getZ() / 2;
-                BoundingBox bb = new BoundingBox(-halfX, halfX, 0, bounds.getY(), -halfZ, halfZ).scale(hitboxScale);
+                BoundingBox bb = new BoundingBox(-halfX, halfX, 0, bounds.getY(), -halfZ, halfZ).scaleFromBase(hitboxScale);
                 if (upperKey.equals("DEFAULT")) {
                     defaultHitbox = bb;
                     continue;
