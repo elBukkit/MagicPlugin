@@ -233,11 +233,8 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 
 	// Wand configurations
 	protected static Map<String, WandTemplate> wandTemplates = new HashMap<String, WandTemplate>();
-	
-	public static boolean displayManaAsBar = true;
-    public static boolean displayManaAsDurability = true;
-    public static boolean displayManaAsGlow = true;
-	public static boolean retainLevelDisplay = true;
+
+    public static WandManaMode manaMode = WandManaMode.BAR;
     public static boolean regenWhileInactive = true;
 	public static Material DefaultUpgradeMaterial = Material.NETHER_STAR;
 	public static Material DefaultWandMaterial = Material.BLAZE_ROD;
@@ -1606,7 +1603,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		}
 
         // Make indestructible
-        if ((indestructible || Unbreakable) && !displayManaAsDurability) {
+        if ((indestructible || Unbreakable) && !manaMode.useDurability()) {
             CompatibilityUtils.makeUnbreakable(item);
         } else {
             CompatibilityUtils.removeUnbreakable(item);
@@ -3157,23 +3154,23 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 
     public boolean displayManaAsXp()
     {
-        return !displayManaAsGlow && !displayManaAsDurability;
+        return manaMode.useXP();
     }
 
 	protected void updateMana() {
 		if (mage != null && effectiveXpMax > 0) {
 			Player player = mage.getPlayer();
-            if (displayManaAsGlow) {
+            if (manaMode.useGlow()) {
                 if (xp == effectiveXpMax) {
                     CompatibilityUtils.addGlow(item);
                 } else {
                     CompatibilityUtils.removeGlow(item);
                 }
             }
-            if (displayManaAsDurability) {
+            if (manaMode.useDurability()) {
                 updateDurability();
             }
-			else {
+			if (manaMode.useXP()) {
                 int playerLevel = player.getLevel();
                 float playerProgress = player.getExp();
                 if (playerXpLevel != null && playerXpProgress != null && (playerLevel != playerXpLevel || playerProgress != playerXpProgress))
@@ -3185,20 +3182,15 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
                     }
                 }
 
-                if (displayManaAsBar) {
-                    if (!retainLevelDisplay) {
-                        player.setLevel(0);
-                        playerXpLevel = 0;
-                    } else {
-                        playerXpLevel = playerLevel;
-                    }
+                if (manaMode.useXPNumber()) {
+                    player.setLevel(0);
+                    playerXpLevel = (int)xp;
+                    playerXpProgress = playerProgress;
+                    player.setLevel(Math.max(0, (int)xp));
+                } else {
+                    playerXpLevel = playerLevel;
                     playerXpProgress = xp / (float)effectiveXpMax;
                     player.setExp(Math.max(0, playerXpProgress));
-                } else {
-                    playerXpLevel = (int)xp;
-                    playerXpProgress = 0.0f;
-                    player.setLevel(Math.max(0, (int)xp));
-                    player.setExp(0);
                 }
             }
 		}
@@ -3420,7 +3412,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 
             Player player = mage == null ? null : mage.getPlayer();
             if (player != null) {
-                if (retainLevelDisplay) {
+                if (manaMode.useXPNumber()) {
                     player.setLevel(Math.max(0, storedXpLevel));
                 }
                 player.setExp(Math.max(0, storedXpProgress));
@@ -3488,7 +3480,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         int maxDurability = item.getType().getMaxDurability();
 
         // Auto-repair wands
-        if (!displayManaAsDurability && maxDurability > 0 && indestructible) {
+        if (!manaMode.useDurability() && maxDurability > 0 && indestructible) {
             item.setDurability((short)0);
         }
 

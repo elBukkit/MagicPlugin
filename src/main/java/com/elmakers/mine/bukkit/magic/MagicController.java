@@ -69,6 +69,7 @@ import com.elmakers.mine.bukkit.utility.Messages;
 import com.elmakers.mine.bukkit.utility.SoundEffect;
 import com.elmakers.mine.bukkit.wand.LostWand;
 import com.elmakers.mine.bukkit.wand.Wand;
+import com.elmakers.mine.bukkit.wand.WandManaMode;
 import com.elmakers.mine.bukkit.wand.WandMode;
 import com.elmakers.mine.bukkit.wand.WandUpgradePath;
 import com.elmakers.mine.bukkit.warp.WarpController;
@@ -2112,6 +2113,9 @@ public class MagicController implements MageController {
         skillInventoryRows = properties.getInt("skill_inventory_max_rows", skillInventoryRows);
         BaseSpell.MAX_LORE_LENGTH = properties.getInt("lore_wrap_limit", BaseSpell.MAX_LORE_LENGTH);
 
+        skillsUseHeroes = properties.getBoolean("skills_use_heroes", skillsUseHeroes);
+        skillsUsePermissions = properties.getBoolean("skills_use_permissions", skillsUsePermissions);
+
 		messagePrefix = properties.getString("message_prefix", messagePrefix);
 		castMessagePrefix = properties.getString("cast_message_prefix", castMessagePrefix);
 
@@ -2136,10 +2140,18 @@ public class MagicController implements MageController {
 
         Wand.regenWhileInactive = properties.getBoolean("regenerate_while_inactive", Wand.regenWhileInactive);
 		if (properties.contains("mana_display")) {
-			Wand.retainLevelDisplay = properties.getString("mana_display").equals("hybrid");
-			Wand.displayManaAsBar = !properties.getString("mana_display").equals("number");
-            Wand.displayManaAsDurability = properties.getString("mana_display").equals("durability");
-            Wand.displayManaAsGlow = properties.getString("mana_display").equals("glow");
+            String manaDisplay = properties.getString("mana_display");
+            if (manaDisplay.equalsIgnoreCase("bar") || manaDisplay.equalsIgnoreCase("hybrid")) {
+                Wand.manaMode = WandManaMode.BAR;
+            } else if (manaDisplay.equalsIgnoreCase("number")) {
+                Wand.manaMode = WandManaMode.NUMBER;
+            } else if (manaDisplay.equalsIgnoreCase("durability")) {
+                Wand.manaMode = WandManaMode.DURABILITY;
+            } else if (manaDisplay.equalsIgnoreCase("glow")) {
+                Wand.manaMode = WandManaMode.GLOW;
+            } else if (manaDisplay.equalsIgnoreCase("none")) {
+                Wand.manaMode = WandManaMode.NONE;
+            }
 		}
 
         undoEntityTypes.clear();
@@ -3788,6 +3800,14 @@ public class MagicController implements MageController {
         return skillInventoryRows;
     }
 
+    public boolean usePermissionSkills() {
+        return skillsUsePermissions;
+    }
+
+    public boolean useHeroesSkills() {
+        return skillsUseHeroes;
+    }
+
     public void addFlightExemption(Player player, int duration) {
         ncpManager.addFlightExemption(player, duration);
         CompatibilityUtils.addFlightExemption(player, duration * 20 / 1000);
@@ -4032,6 +4052,8 @@ public class MagicController implements MageController {
     private boolean                             loaded                      = false;
     private String                              defaultSkillIcon            = "stick";
     private int                                 skillInventoryRows          = 6;
+    private boolean                             skillsUseHeroes             = true;
+    private boolean                             skillsUsePermissions        = false;
 
     // Synchronization
     private final Object                        saveLock                    = new Object();
