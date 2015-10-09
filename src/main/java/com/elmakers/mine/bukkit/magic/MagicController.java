@@ -2075,6 +2075,7 @@ public class MagicController implements MageController {
 
         CompatibilityUtils.setHitboxScale(properties.getDouble("hitbox_scale", 1.0));
         CompatibilityUtils.setHitboxScaleY(properties.getDouble("hitbox_scale_y", 1.0));
+        CompatibilityUtils.setHitboxSneakScaleY(properties.getDouble("hitbox_sneaking_scale_y", 0.75));
         if (properties.contains("hitboxes"))
         {
             CompatibilityUtils.configureHitboxes(properties.getConfigurationSection("hitboxes"));

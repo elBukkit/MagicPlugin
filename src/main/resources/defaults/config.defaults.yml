@@ -559,6 +559,7 @@ debug_effects: false
 # I find the vanilla ones all felt a little small, though I'm not sure why.
 hitbox_scale: 1.75
 hitbox_scale_y: 1.2
+hitbox_sneaking_scale_y: 0.75
 
 # Entity-specific hitboxes for targeting purposes
 # Magic uses the vanilla hitboxes by default, but you
