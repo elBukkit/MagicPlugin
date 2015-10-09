@@ -4,7 +4,6 @@ import com.elmakers.mine.bukkit.api.batch.Batch;
 import com.elmakers.mine.bukkit.api.batch.SpellBatch;
 import com.elmakers.mine.bukkit.api.magic.Automaton;
 import com.elmakers.mine.bukkit.api.magic.Mage;
-import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.magic.MagicAPI;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
@@ -12,9 +11,9 @@ import com.elmakers.mine.bukkit.api.wand.LostWand;
 import com.elmakers.mine.bukkit.api.wand.Wand;
 import com.elmakers.mine.bukkit.block.UndoList;
 import com.elmakers.mine.bukkit.magic.MagicController;
-import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.BoundingBox;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
+import com.elmakers.mine.bukkit.utility.NMSUtils;
 import com.elmakers.mine.bukkit.utility.RunnableJob;
 import com.elmakers.mine.bukkit.wand.WandCleanupRunnable;
 import org.bukkit.Bukkit;
@@ -41,6 +40,7 @@ import org.bukkit.util.BlockVector;
 import org.bukkit.util.Vector;
 
 import java.io.File;
+import java.lang.reflect.Constructor;
 import java.net.URL;
 import java.security.CodeSource;
 import java.text.DecimalFormat;
@@ -464,7 +464,6 @@ public class MagicCommandExecutor extends MagicMapExecutor {
 
 		if (listCommand.equalsIgnoreCase("entities")) {
 			World world = Bukkit.getWorlds().get(0);
-			Location spawn = world.getSpawnLocation();
 			NumberFormat formatter = new DecimalFormat("#0.0");
 			List<EntityType> types = Arrays.asList(EntityType.values());
 			Collections.sort(types, new Comparator<EntityType>() {
@@ -479,17 +478,56 @@ public class MagicCommandExecutor extends MagicMapExecutor {
 				showEntityInfo(sender, player, EntityType.PLAYER.name() + ChatColor.GRAY + " (" + player.getName() + " [" + (player.isSneaking() ? "sneaking" : "standing") + "])", formatter);
 				break;
 			}
+
+			final Class<?> worldClass = NMSUtils.getBukkitClass("net.minecraft.server.World");
 			for (EntityType entityType : types)
 			{
 				if (entityType.isSpawnable())
 				{
 					Entity testEntity = null;
 					String errorMessage = null;
+					String entityName = "Entity" + entityType.getEntityClass().getSimpleName();
+					// A few hacky special cases :(
+					// Still better than actually adding all of these entities to the world!
+					if (entityName.equals("EntityGiant")) {
+						entityName = "EntityGiantZombie";
+					} else if (entityName.equals("EntityLeashHitch")) {
+						entityName = "EntityLeash";
+					} else if (entityName.equals("EntityStorageMinecart")) {
+						entityName = "EntityMinecartChest";
+					} else if (entityName.equals("EntitySpawnerMinecart")) {
+						entityName = "EntityMinecartMobSpawner";
+					} else if (entityName.equals("EntityCommandMinecart")) {
+						entityName = "EntityMinecartCommandBlock";
+					} else if (entityName.equals("EntityPoweredMinecart")) {
+						entityName = "EntityMinecartFurnace";
+					} else if (entityName.equals("EntityExplosiveMinecart")) {
+						entityName = "EntityMinecartTNT";
+					} else if (entityName.contains("Minecart")) {
+						entityName = entityType.getEntityClass().getSimpleName();
+						entityName = entityName.replace("Minecart", "");
+						entityName = "EntityMinecart" + entityName;
+					}
 					try {
-						testEntity = world.spawnEntity(spawn, entityType);
+						Class<?> entityClass = NMSUtils.getBukkitClass("net.minecraft.server." + entityName);
+						if (entityClass != null) {
+							Constructor<? extends Object> constructor = entityClass.getConstructor(worldClass);
+							Object nmsWorld = NMSUtils.getHandle(world);
+							Object nmsEntity = constructor.newInstance(nmsWorld);
+							testEntity = NMSUtils.getBukkitEntity(nmsEntity);
+							if (testEntity == null) {
+								errorMessage = "Failed to get Bukkit entity for class " + entityName;
+							}
+						} else {
+							errorMessage = "Could not load class " + entityName;
+						}
 					} catch (Exception ex) {
 						testEntity = null;
-						errorMessage = ex.getMessage();
+						errorMessage = ex.getClass().getSimpleName() + " [" + entityName + "]";
+						String message = ex.getMessage();
+						if (message != null && !message.isEmpty()) {
+							errorMessage += ": " + message;
+						}
 					}
 					if (testEntity == null) {
 						sender.sendMessage(ChatColor.BLACK + entityType.name() + ": " + ChatColor.RED + "Spawning error " + ChatColor.DARK_RED + "(" + errorMessage + ")");
@@ -588,7 +626,6 @@ public class MagicCommandExecutor extends MagicMapExecutor {
 			message += ChatColor.DARK_GRAY + ", " + ChatColor.GREEN + ((int)li.getMaxHealth()) + "hp";
 		}
 		sender.sendMessage(message);
-		entity.remove();
 	}
 
 	protected boolean onMagicGive(CommandSender sender, Player player, String command, String[] args)
