@@ -44,7 +44,10 @@ public class BoundingBox
         // scaling the maxY up and down.
         if (scale <= 0 || scale == 1) return this;
         Vector center = this.center();
-        this.max.setY((this.max.getY() - this.min.getY()) * scale + this.min.getY());
+
+        // Scale half the distance upward to account for using the full height to scale
+        // from min Y
+        this.max.setY((this.max.getY() - this.min.getY()) * scale / 2 + this.min.getY());
         this.min.setX((this.min.getX() - center.getX()) * scale + center.getX());
         this.min.setZ((this.min.getZ() - center.getZ()) * scale + center.getZ());
         this.max.setX((this.max.getX() - center.getX()) * scale + center.getX());
