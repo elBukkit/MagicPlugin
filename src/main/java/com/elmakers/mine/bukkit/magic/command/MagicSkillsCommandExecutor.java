@@ -1,28 +1,14 @@
 package com.elmakers.mine.bukkit.magic.command;
 
-import com.elmakers.mine.bukkit.api.action.GUIAction;
-import com.elmakers.mine.bukkit.api.magic.Mage;
-import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.magic.MagicAPI;
-import com.elmakers.mine.bukkit.heroes.HeroesManager;
-import com.elmakers.mine.bukkit.heroes.HeroesSkillsSelector;
-import com.elmakers.mine.bukkit.magic.MagicController;
-import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
-import com.elmakers.mine.bukkit.utility.InventoryUtils;
+import com.elmakers.mine.bukkit.heroes.SkillsSelector;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.inventory.InventoryDragEvent;
-import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
-import java.util.Set;
 
 public class MagicSkillsCommandExecutor extends MagicTabExecutor {
 
@@ -43,7 +29,7 @@ public class MagicSkillsCommandExecutor extends MagicTabExecutor {
             return true;
         }
         Player player = (Player)sender;
-        HeroesSkillsSelector selector = new HeroesSkillsSelector(api, player);
+        SkillsSelector selector = new SkillsSelector(api, player);
         int page = 1;
         if (args.length > 0) {
             try {

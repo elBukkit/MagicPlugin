@@ -285,7 +285,7 @@ brush_select_spell: brushselect
 # This means that wands prior to 3.3 will be counted as Master wands regardless of type.
 default_wand_path:
 
-# How to display Mana. Options are "bar", "number" and "hybrid"
+# How to display Mana. Options are "bar", "number", "durability", "glow" and "none"
 mana_display: hybrid
 
 # Control whether wands regenerate mana while they are not being held
@@ -470,6 +470,15 @@ max_cooldown_reduction: 0.75
 # These are used only for "Roman" display mode for mana on wand lore
 max_mana: 1000
 max_mana_regeneration: 100
+
+### Skills configuration
+
+# Show Heroes skills in the /mskills menu, if Heroes is present
+skills_use_heroes: true
+
+# Show all Magic spells the player has permission to cast in the /mskills menu
+# This might make opening the skills menu lag if you have a lot of spells.
+skills_use_permissions: false
 
 ### Plugin Integration
 

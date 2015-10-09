@@ -7,6 +7,8 @@
  - Add Cursed Meat item (use it if you dare dare dare dare!)
  - Add Debugger spell, for debugging spell issues
  - Fix/Restore previous /cast command behavior with cooldowns
+ - Add mana_display: none option, to turn off the XP mana display
+ - Add skills_use_permissions option, to use the /mskills menu with Magic spells
 
 ## 5.2
 

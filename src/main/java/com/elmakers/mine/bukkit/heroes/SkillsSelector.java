@@ -4,11 +4,15 @@ import com.elmakers.mine.bukkit.api.action.GUIAction;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.magic.MagicAPI;
+import com.elmakers.mine.bukkit.api.magic.Messages;
 import com.elmakers.mine.bukkit.api.spell.Spell;
+import com.elmakers.mine.bukkit.api.spell.SpellKey;
+import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import com.elmakers.mine.bukkit.wand.Wand;
+import com.herocraftonline.heroes.characters.skill.Skill;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
@@ -19,15 +23,47 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
-public class HeroesSkillsSelector implements GUIAction {
+public class SkillsSelector implements GUIAction {
     private int page;
-    private List<String> allSkills;
+    private List<SkillDescription> allSkills = new ArrayList<SkillDescription>();
     private final MagicAPI api;
     private final Player player;
+    private String inventoryTitle;
 
-    public HeroesSkillsSelector(MagicAPI api, Player player) {
+    class SkillDescription implements Comparable<SkillDescription> {
+        public String heroesSkill;
+        public SpellTemplate spell;
+
+        public SkillDescription(SpellTemplate spell, String heroesSkill) {
+            this.heroesSkill = heroesSkill;
+            this.spell = spell;
+        }
+
+        public String getSpellKey() {
+            if (spell != null) return "skill:" + spell.getKey();
+            return "skill:heroes*" + heroesSkill;
+        }
+
+        public String getSpellName() {
+            if (spell != null) return spell.getName();
+            return heroesSkill;
+        }
+
+        public boolean isHeroes() {
+            return heroesSkill != null;
+        }
+
+        @Override
+        public int compareTo(SkillDescription other) {
+            return getSpellName().compareTo(other.getSpellName());
+        }
+    };
+
+    public SkillsSelector(MagicAPI api, Player player) {
         this.api = api;
         this.player = player;
     }
@@ -37,18 +73,43 @@ public class HeroesSkillsSelector implements GUIAction {
         MageController apiController = api.getController();
         if (!(apiController instanceof MagicController)) return;
         MagicController controller = (MagicController) apiController;
+        Messages messages = controller.getMessages();
         HeroesManager heroes = controller.getHeroes();
-        if (heroes == null) {
-            player.sendMessage(ChatColor.RED + "This command requires Heroes");
-            return;
+        allSkills.clear();
+        if (controller.useHeroesSkills() && heroes != null) {
+            String classString = heroes.getClassName(player);
+            String class2String = heroes.getSecondaryClassName(player);
+            String messageKey = class2String != null && !class2String.isEmpty() ? "skills.inventory_title_secondary" : "skills.inventory_title";
+            inventoryTitle = api.getMessages().get(messageKey, "Skills ($page/$pages)");
+            inventoryTitle = inventoryTitle
+                    .replace("$class2", class2String)
+                    .replace("$class", classString);
+
+            List<String> heroesSkills = heroes.getSkillList(player, true, true);
+            for (String heroesSkill : heroesSkills) {
+                allSkills.add(new SkillDescription(null, heroesSkill));
+            }
+        } else {
+            inventoryTitle = messages.get("skills.inventory_title");
         }
 
-        allSkills = heroes.getSkillList(player, true, true);
+        if (controller.usePermissionSkills()) {
+            Collection<SpellTemplate> spells = controller.getSpellTemplates();
+            for (SpellTemplate spell : spells) {
+                if (spell.isHidden()) continue;
+                SpellKey key = spell.getSpellKey();
+                if (key.isVariant()) continue;
+                if (!spell.hasCastPermission(player)) continue;
+                allSkills.add(new SkillDescription(spell, null));
+            }
+        }
+
         if (allSkills.size() == 0) {
-            player.sendMessage(ChatColor.RED + "You have no skills");
+            player.sendMessage(messages.get("skills.none"));
             return;
         }
 
+        Collections.sort(allSkills);
         openInventory();
     }
 
@@ -57,10 +118,6 @@ public class HeroesSkillsSelector implements GUIAction {
         if (!(apiController instanceof MagicController)) return;
         MagicController controller = (MagicController) apiController;
         HeroesManager heroes = controller.getHeroes();
-        if (heroes == null) {
-            return;
-        }
-
         int inventorySize = 9 * controller.getSkillInventoryRows();
         int numPages = (int)Math.ceil((float)allSkills.size() / inventorySize);
         if (page < 1) page = numPages;
@@ -70,34 +127,30 @@ public class HeroesSkillsSelector implements GUIAction {
         int startIndex = pageIndex * inventorySize;
         int maxIndex = (pageIndex + 1) * inventorySize - 1;
 
-        List<String> skills = new ArrayList<String>();
+        List<SkillDescription> skills = new ArrayList<SkillDescription>();
         for (int i = startIndex; i <= maxIndex && i < allSkills.size(); i++) {
             skills.add(allSkills.get(i));
         }
         if (skills.size() == 0)
         {
-            player.sendMessage(ChatColor.RED + "No skills on page " + page);
+            String messageTemplate = controller.getMessages().get("skills.none_on_page", "$page");
+            player.sendMessage(messageTemplate.replace("$page", Integer.toString(page)));
             return;
         }
-        String classString = heroes.getClassName(player);
-        String class2String = heroes.getSecondaryClassName(player);
-        String messageKey = class2String != null && !class2String.isEmpty() ? "skills.inventory_title_secondary" : "skills.inventory_title";
-        String inventoryTitle = api.getMessages().get(messageKey, "Skills ($page/$pages)");
-        inventoryTitle = inventoryTitle
-                .replace("$pages", Integer.toString(numPages))
-                .replace("$page", Integer.toString(page))
-                .replace("$class2", class2String)
-                .replace("$class", classString);
         int invSize = (int)Math.ceil((float)skills.size() / 9.0f) * 9;
-        Inventory displayInventory = CompatibilityUtils.createInventory(null, invSize, inventoryTitle);
-        for (String skill : skills)
+        String title = inventoryTitle;
+        title = title
+                .replace("$pages", Integer.toString(numPages))
+                .replace("$page", Integer.toString(page));
+        Inventory displayInventory = CompatibilityUtils.createInventory(null, invSize, title);
+        for (SkillDescription skill : skills)
         {
-            ItemStack skillItem = api.createItem("skill:heroes*" + skill, mage);
+            ItemStack skillItem = api.createItem(skill.getSpellKey(), mage);
             if (skillItem == null) continue;
-            if (!heroes.canUseSkill(player, skill))
+            if (skill.isHeroes() && heroes != null && !heroes.canUseSkill(player, skill.heroesSkill))
             {
                 String nameTemplate = controller.getMessages().get("skills.item_name_unavailable", "$skill");
-                CompatibilityUtils.setDisplayName(skillItem, nameTemplate.replace("$skill", skill));
+                CompatibilityUtils.setDisplayName(skillItem, nameTemplate.replace("$skill", skill.heroesSkill));
                 InventoryUtils.setCount(skillItem, 0);
             }
             displayInventory.addItem(skillItem);

@@ -304,12 +304,15 @@ categories:
         name: Specialty
         description: Spells meant for item or npc use
 skills:
-    inventory_title: "$class Skills ($page/$pages)"
-    inventory_title_secondary: "$class-$class2 Skills ($page/$pages)"
+    inventory_title: "Skills"
+    inventory_title_heroes: "$class Skills ($page/$pages)"
+    inventory_title_heroes_secondary: "$class-$class2 Skills ($page/$pages)"
     item_name: "$skill"
     item_name_unavailable: "&c$skill"
     item_description: "$description"
     passive_description: "&1PASSIVE"
+    none: "You have no skills!"
+    none_on_page: "There are no skills on page $page"
 spells:
     default:
         fizzle: Your spell fizzled!
