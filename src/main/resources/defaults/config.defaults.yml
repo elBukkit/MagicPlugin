@@ -557,7 +557,8 @@ debug_effects: false
 # use this to make all hitboxes larger or smaller
 # for targeting purposes.
 # I find the vanilla ones all felt a little small, though I'm not sure why.
-hitbox_scale: 1.3
+hitbox_scale: 1.75
+hitbox_scale_y: 1.2
 
 # Entity-specific hitboxes for targeting purposes
 # Magic uses the vanilla hitboxes by default, but you

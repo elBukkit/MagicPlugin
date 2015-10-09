@@ -6,3 +6,6 @@ log_verbosity: 10
 
 # Creative mode is super annoying sometimes
 prevent_creative_breaking: 500
+
+# Turn on /mskills menu for testing purposes
+skills_use_permissions: true

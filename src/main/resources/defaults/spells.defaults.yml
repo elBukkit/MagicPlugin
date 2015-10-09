@@ -1998,6 +1998,7 @@ heal:
         cooldown: 8000
         bypass_pvp: true
         bypass_friendly_fire: true
+        hitbox: true
     costs:
         mana: 50
 
