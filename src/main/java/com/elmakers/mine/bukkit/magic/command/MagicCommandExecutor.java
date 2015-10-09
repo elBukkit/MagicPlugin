@@ -473,11 +473,11 @@ public class MagicCommandExecutor extends MagicMapExecutor {
 					return o1.name().compareTo(o2.name());
 				}
 			});
-			List<Player> players = world.getPlayers();
-			if (players.size() > 0)
+			Collection<? extends Player> players = Bukkit.getServer().getOnlinePlayers();
+			for (Player player : players)
 			{
-				Player player = players.get(0);
-				showEntityInfo(sender, player, EntityType.PLAYER.name(), formatter);
+				showEntityInfo(sender, player, EntityType.PLAYER.name() + ChatColor.GRAY + " (" + player.getName() + " [" + (player.isSneaking() ? "sneaking" : "standing") + "])", formatter);
+				break;
 			}
 			for (EntityType entityType : types)
 			{

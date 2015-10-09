@@ -1,12 +1,7 @@
 # TODO
- 
- - Add bypass_disguised flag
- - Quick Cast lore/function not updating?
- - Chest mode has multiple copies of spells in it
 
- - Add compatibility with per-world inventories:
- https://www.spigotmc.org/resources/per-world-inventory.4482/
- 
+ - Chest mode has multiple copies of spells in it 
+ - Generalized parameter system for EffectLib config
  - Add templates to messages.yml for all the various forms a wand and spell
    name can take.
 
