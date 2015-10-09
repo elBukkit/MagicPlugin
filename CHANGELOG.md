@@ -2,7 +2,7 @@
 
 ## 5.3
 
- - The Magic.commands.mskills permission (for /mskills) now defaults to off
+ - The Magic.commands.mskills permission (for /mskills) now defaults to op-only
  - Added several new tweakshop actions to configure quick-cast and drop/right-click modes
  - Add Cursed Meat item (use it if you dare dare dare dare!)
  - Add Debugger spell, for debugging spell issues
@@ -11,6 +11,7 @@
  - Add skills_use_permissions option, to use the /mskills menu with Magic spells
  - Add /magic list entities command, for showing entity bounding boxes and HP by type
  - Tweak entity hitboxes a bit, should be a little easier to hit now
+ - Add new spell (currently unobtainable), "One-Way Ticket to Boomstown"
 
 ## 5.2
 

@@ -1285,6 +1285,9 @@ spells:
         description: Mercilessly torture your enemy
         cast: Feel my wrath!
         upgrade_description: "&r&b&bull; &6Increased damage and duration"
+    boomstown:
+        name: One-Way Ticket to Boomstown
+        description: Send your target packing to an explosive destination
     rubberize:
         name: Rubberize
         description: Make the target area bouncy
