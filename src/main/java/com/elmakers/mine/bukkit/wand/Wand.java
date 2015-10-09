@@ -2079,10 +2079,6 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		// Set inventory from current page
 		int currentOffset = addHotbars ? 0 : HOTBAR_SIZE;
         List<Inventory> inventories = this.inventories;
-        if (addHotbars) {
-            inventories = new ArrayList<Inventory>(inventories);
-            inventories.addAll(getHotbars());
-        }
 		if (openInventoryPage < inventories.size()) {
             Inventory inventory = inventories.get(openInventoryPage);
             ItemStack[] contents = inventory.getContents();

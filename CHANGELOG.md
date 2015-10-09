@@ -1,6 +1,6 @@
 # CHANGELOG
 
-## 5.3
+## 5.2.1
 
  - The Magic.commands.mskills permission (for /mskills) now defaults to op-only
  - Added several new tweakshop actions to configure quick-cast and drop/right-click modes
@@ -12,6 +12,7 @@
  - Add /magic list entities command, for showing entity bounding boxes and HP by type
  - Tweak entity hitboxes a bit, should be a little easier to hit now
  - Add new spell (currently unobtainable), "One-Way Ticket to Boomstown"
+ - Fix duplicate spell icon issue with chest mode
 
 ## 5.2
 

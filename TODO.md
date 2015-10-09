@@ -1,6 +1,5 @@
 # TODO
 
- - Chest mode has multiple copies of spells in it 
  - Generalized parameter system for EffectLib config
  - Add templates to messages.yml for all the various forms a wand and spell
    name can take.
