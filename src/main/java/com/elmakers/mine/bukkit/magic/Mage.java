@@ -1094,7 +1094,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     public boolean isCostFree() {
         // Special case for command blocks and Automata
         if (getPlayer() == null) return true;
-        return activeWand == null ? false : activeWand.isCostFree();
+        return getCostReduction() > 1;
     }
 
     @Override
@@ -1124,7 +1124,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
     @Override
     public boolean isCooldownFree() {
-        return activeWand == null ? false : activeWand.isCooldownFree();
+        return getCooldownReduction() > 1;
     }
 
     @Override
@@ -1379,7 +1379,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
     @Override
     public int getLevel() {
-        if (activeWand != null && activeWand.usesMana() && activeWand.displayManaAsXp() && !Wand.retainLevelDisplay) {
+        if (activeWand != null && activeWand.usesMana() && Wand.manaMode.useXPNumber()) {
             return activeWand.getStoredXpLevel();
         }
 
@@ -1407,13 +1407,16 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         Player player = getPlayer();
         if (player == null) return 0;
 
-        int xp = 0;
         float expProgress = player.getExp();
         int expLevel = player.getLevel();
 
-        if (activeWand != null && activeWand.usesMana() && activeWand.displayManaAsXp()) {
-            expLevel = activeWand.getStoredXpLevel();
-            expProgress = activeWand.getStoredXpProgress();
+        if (activeWand != null && activeWand.usesMana()) {
+            if (Wand.manaMode.useXPBar()) {
+                expProgress = activeWand.getStoredXpProgress();
+            }
+            if (Wand.manaMode.useXPNumber()) {
+                expLevel = activeWand.getStoredXpLevel();
+            }
         }
 
         return Wand.getExperience(expLevel, expProgress);
