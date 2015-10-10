@@ -1,5 +1,7 @@
 # CHANGELOG
 
+## 5.3
+
 ## 5.2.1
 
  - The Magic.commands.mskills permission (for /mskills) now defaults to op-only
