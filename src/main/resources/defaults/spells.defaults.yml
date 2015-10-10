@@ -5467,6 +5467,7 @@ levitate:
     class: LevitateSpell
     worth: 7000
     show_undoable: false
+    quick_cast: true
     effects:
         cast:
            - class: EffectSingle

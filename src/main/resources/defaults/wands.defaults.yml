@@ -706,7 +706,7 @@ wolf:
     mode: inventory
     mode_drop: true
     active_spell: levitate
-    overrides: max_dimension 1024
+    overrides: max_dimension 1024,broom.armor_stand_yaw 180
     potion_effects: saturation,regeneration
     spells:
         - levitate@0
@@ -725,6 +725,7 @@ wolf:
         - supershell@13
         - superrepair@14
         - undo@15
+        - broom
         - backup
         - stash
         - emp

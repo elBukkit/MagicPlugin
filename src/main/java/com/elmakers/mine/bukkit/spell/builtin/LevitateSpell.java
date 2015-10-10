@@ -76,6 +76,8 @@ public class LevitateSpell extends TargetingSpell implements Listener
     private Vector armorStandArm = null;
     private Vector armorStandHead = null;
     private double pitchAmount = 0;
+    private double yawAmount = 0;
+    private double rollAmount = 0;
     private ArmorStand armorStand = null;
     private EntityType mountType = null;
     private Entity mountEntity = null;
@@ -316,20 +318,21 @@ public class LevitateSpell extends TargetingSpell implements Listener
         if (mountEntity != null) {
             if (armorStand != null) {
                 armorStand.setVelocity(direction);
-                CompatibilityUtils.setYawPitch(armorStand, location.getYaw(), location.getPitch());
+                CompatibilityUtils.setYawPitch(armorStand, location.getYaw() + (float)yawAmount, location.getPitch());
                 if (pitchAmount != 0) {
                     if (armorStandHead == null && useHelmet) {
                         armorStand.setHeadPose(new EulerAngle(pitchAmount * location.getPitch() / 180 * Math.PI, 0, 0));
                     } else if (!useHelmet) {
                         EulerAngle armPose = armorStand.getRightArmPose();
                         armPose.setY(pitchAmount * location.getPitch() / 180 * Math.PI);
+                        armPose.setZ(rollAmount);
                         armorStand.setRightArmPose(armPose);
                     }
                 }
             } else {
                 mountEntity.setVelocity(direction);
                 if (mountEntity instanceof ArmorStand) {
-                    CompatibilityUtils.setYawPitch(mountEntity, location.getYaw(), location.getPitch());
+                    CompatibilityUtils.setYawPitch(mountEntity, location.getYaw() + (float)yawAmount, location.getPitch());
                 }
             }
         } else {
@@ -432,6 +435,8 @@ public class LevitateSpell extends TargetingSpell implements Listener
         armorStandArm = ConfigurationUtils.getVector(parameters, "armor_stand_arm");
         armorStandHead = ConfigurationUtils.getVector(parameters, "armor_stand_head");
         pitchAmount = ConfigurationUtils.getDouble(parameters, "armor_stand_pitch", 0.0);
+        yawAmount = ConfigurationUtils.getDouble(parameters, "armor_stand_yaw", 0.0);
+        rollAmount = ConfigurationUtils.getDouble(parameters, "armor_stand_roll", 0.0);
 
         maxMountBoost = parameters.getDouble("mount_boost", 1);
         mountBoostPerJump = parameters.getDouble("mount_boost_per_jump", 0.5);
@@ -876,6 +881,8 @@ public class LevitateSpell extends TargetingSpell implements Listener
         if (smallArmorStand) {
             CompatibilityUtils.setSmall(armorStand, true);
         }
+        Location location = mage.getLocation();
+        CompatibilityUtils.setYawPitch(armorStand, location.getYaw() + (float)yawAmount, location.getPitch());
     }
 
     public void forceSneak(int ticks) {
