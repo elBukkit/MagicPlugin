@@ -126,7 +126,7 @@ Airbender:
   - skill{skill=Airbending} @Target ~onTimer:20 >0 0.9
 Waterbender:
   Mobtype: villagezombie
-  Display: Airbender
+  Display: Waterbender
   Health: 70
   Damage: 4
   Equipment:
