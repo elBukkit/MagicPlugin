@@ -217,4 +217,10 @@ public class HatAction extends BaseSpellAction
 	{
 		return true;
 	}
+
+    @Override
+    public boolean requiresTargetEntity()
+    {
+        return true;
+    }
 }
