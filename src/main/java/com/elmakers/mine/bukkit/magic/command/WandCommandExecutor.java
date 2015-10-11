@@ -3,15 +3,17 @@
  */
 package com.elmakers.mine.bukkit.magic.command;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.utility.NMSUtils;
 import com.elmakers.mine.bukkit.wand.WandTemplate;
@@ -24,6 +26,7 @@ import org.bukkit.Sound;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -126,6 +129,7 @@ public class WandCommandExecutor extends MagicTabExecutor {
             addIfPermissible(sender, options, "Magic.commands." + permissionKey + ".", "duplicate");
             addIfPermissible(sender, options, "Magic.commands." + permissionKey + ".", "restore");
             addIfPermissible(sender, options, "Magic.commands." + permissionKey + ".", "unlock");
+			addIfPermissible(sender, options, "Magic.commands." + permissionKey + ".", "save");
 
 			Collection<String> allWands = api.getWandKeys();
 			for (String wandKey : allWands) {
@@ -297,6 +301,13 @@ public class WandCommandExecutor extends MagicTabExecutor {
 			if (!api.hasPermission(sender, "Magic.commands." + command + "." + subCommand)) return true;
 
 			onWandDuplicate(sender, player);
+			return true;
+		}
+		if (subCommand.equalsIgnoreCase("save"))
+		{
+			if (!api.hasPermission(sender, "Magic.commands." + command + "." + subCommand)) return true;
+
+			onWandSave(sender, player, args2);
 			return true;
 		}
         if (subCommand.equalsIgnoreCase("restore"))
@@ -856,6 +867,39 @@ public class WandCommandExecutor extends MagicTabExecutor {
 			sender.sendMessage(api.getMessages().getParameterized("wand.player_filled", "$name", player.getName()));
 		}
 		
+		return true;
+	}
+
+	public boolean onWandSave(CommandSender sender, Player player, String[] parameters)
+	{
+		if (parameters.length < 1) {
+			sender.sendMessage("Use: /wand save <filename>");
+			return true;
+		}
+
+		if (!checkWand(sender, player)) {
+			return true;
+		}
+
+		Mage mage = api.getMage(player);
+		Wand wand = mage.getActiveWand();
+		MageController controller = api.getController();
+		YamlConfiguration wandConfig = new YamlConfiguration();
+		String template = parameters[0];
+		ConfigurationSection wandSection = wandConfig.createSection(template);
+		wand.save(wandSection, true);
+
+		File wandFolder = new File(controller.getConfigFolder(), "wands");
+		File wandFile = new File(wandFolder, template + ".yml");
+		wandFolder.mkdirs();
+		try {
+			wandConfig.save(wandFile);
+		} catch (IOException ex) {
+			ex.printStackTrace();
+			sender.sendMessage(ChatColor.RED + "Can't write to file " + wandFile.getName());
+			return true;
+		}
+		sender.sendMessage("Wand saved as " + template);
 		return true;
 	}
 	

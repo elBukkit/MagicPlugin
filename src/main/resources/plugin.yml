@@ -62,6 +62,10 @@ commands:
        /wand configure xp_regeneration 50
        /wand configure description My Awesome Wand
     permission: Magic.commands.wand.configure
+  "wand save":
+    description: Save a wand to a template
+    usage: /wand save <template>
+    permission: Magic.commands.wand.save
   "wand describe":
     description: List wand properties, useful for checking what can be used with /wand configure
     permission: Magic.commands.wand.describe
@@ -152,6 +156,7 @@ commands:
         /magic list automata
         /magic list tasks
         /magic list schematics
+        /magic list entities
   "magic give":
     description: Give players wands and other magic items
     permission: Magic.commands.magic.give
@@ -281,6 +286,10 @@ permissions:
     default: op
   Magic.commands.wand.describe:
     description: Player may describe their wand
+    type: boolean
+    default: op
+  Magic.commands.wand.save:
+    description: Player may save a wand toa  template
     type: boolean
     default: op
   Magic.commands.wand.enchant:

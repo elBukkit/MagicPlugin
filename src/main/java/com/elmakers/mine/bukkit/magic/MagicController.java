@@ -1217,6 +1217,11 @@ public class MagicController implements MageController {
         return created;
     }
 
+    @Override
+    public File getConfigFolder() {
+        return configFolder;
+    }
+
     protected File getDataFile(String fileName) {
         return new File(dataFolder, fileName + ".yml");
     }

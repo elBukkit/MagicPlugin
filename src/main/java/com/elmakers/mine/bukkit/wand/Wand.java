@@ -1013,6 +1013,44 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         return StringUtils.join(effectStrings, ",");
     }
 
+    @Override
+    public void save(ConfigurationSection node, boolean filtered) {
+        saveProperties(node);
+
+        // Filter out some fields
+        if (filtered) {
+            node.set("id", null);
+            node.set("owner_id", null);
+            node.set("owner", null);
+            node.set("template", null);
+
+            // This is super hacky, copyied from InventoryUtils.saveTagsToNBT
+            // But it generally reproduces what you'd have to do in the config
+            // to recreate this wand, sooooo
+            Collection<String> keys = node.getKeys(false);
+            for (String key : keys) {
+                String value = node.getString(key);
+                if (value == null || value.length() == 0 || value.equals("0") || value.equals("0.0") || value.equals("false")) {
+                    node.set(key, null);
+                }
+            }
+        }
+
+        // Change some CSV to lists
+        if (node.contains("spells")) {
+            node.set("spells", StringUtils.split(node.getString("spells"), ","));
+        }
+        if (node.contains("materials")) {
+            node.set("materials", StringUtils.split(node.getString("materials"), ","));
+        }
+        if (node.contains("overrides")) {
+            node.set("overrides", StringUtils.split(node.getString("overrides"), ","));
+        }
+        if (node.contains("potion_effects")) {
+            node.set("potion_effects", StringUtils.split(node.getString("potion_effects"), ","));
+        }
+    }
+
 	public void saveProperties(ConfigurationSection node) {
 		node.set("id", id);
 		node.set("materials", getMaterialString());
@@ -1093,10 +1131,11 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         node.set("alphabetize", autoAlphabetize);
         if (castOverrides != null && castOverrides.size() > 0) {
             Collection<String> parameters = new ArrayList<String>();
-            for (Map.Entry entry : castOverrides.entrySet()) {
-                parameters.add(entry.getKey() + " " + entry.getValue());
+            for (Map.Entry<String, String> entry : castOverrides.entrySet()) {
+                String value = entry.getValue();
+                parameters.add(entry.getKey() + " " + value.replace(",", "\\,"));
             }
-            node.set("overrides", "|"  + StringUtils.join(parameters, "|"));
+            node.set("overrides", StringUtils.join(parameters, ","));
         } else {
             node.set("overrides", null);
         }
@@ -1201,6 +1240,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         if (effectsString == null || effectsString.isEmpty()) {
             return;
         }
+        effectsString = effectsString.replaceAll("[\\]\\[]", "");
         String[] effectStrings = StringUtils.split(effectsString, ",");
         for (String effectString : effectStrings) {
             try {
@@ -1457,7 +1497,13 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
                 castOverrides = null;
                 String overrides = wandConfig.getString("overrides", null);
                 if (overrides != null && !overrides.isEmpty()) {
+                    // Support YML-List-As-String format
+                    overrides = overrides.replaceAll("[\\]\\[]", "");
+                    // Unescape commas
+                    overrides = overrides.replace("\\,", ",");
+
                     char split = ',';
+                    // Check for | delimited format
                     if (overrides.charAt(0) == '|') {
                         split = '|';
                         overrides = overrides.substring(1);
