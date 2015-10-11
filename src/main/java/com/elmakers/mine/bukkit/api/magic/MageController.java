@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.api.magic;
 
+import java.io.File;
 import java.util.Collection;
 import java.util.Set;
 import java.util.logging.Logger;
@@ -45,6 +46,7 @@ public interface MageController {
      * @return The owning plugin instance
      */
     public Plugin getPlugin();
+    public File getConfigFolder();
 
     /**
      * Check to see if the given block is part of an Automata.

@@ -8,6 +8,7 @@ import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -102,4 +103,13 @@ public interface Wand extends CostReducer {
     public boolean isSoul();
     public boolean isQuickCastDisabled();
     public void damageDealt(double damage, Entity target);
+
+    /**
+     * Save this Wand to a Configuartion Section.
+     *
+     * @param section
+     * @param filtered If true, removes item-specific data such as Wand
+     *                 id and bound owner.
+     */
+    public void save(ConfigurationSection section, boolean filtered);
 }
