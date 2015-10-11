@@ -464,6 +464,10 @@ permissions:
     description: Player may list running tasks
     type: boolean
     default: op
+  Magic.commands.magic.list.entities:
+    description: Player may inspect entity types
+    type: boolean
+    default: op
   Magic.commands.magic.clean:
     description: Player may remove lost wands from the world
     type: boolean
