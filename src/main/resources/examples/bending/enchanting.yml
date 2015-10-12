@@ -61,6 +61,7 @@ airbending:
       fling: 100
       airblast: 80
       suction: 10
+      airscooter: 5
 
 waterbending:
     inherit: default
@@ -152,3 +153,4 @@ avatar:
       suction: 10
       breach: 1
       boon: 20
+      airscooter: 10

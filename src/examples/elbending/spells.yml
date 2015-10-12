@@ -1,5 +1,6 @@
 recall:
   parameters:
+    allow_marker: false
     commands:
       hub:
         name: elMakers Hub
@@ -28,3 +29,39 @@ recall:
         description: Home of Airbenders
         locked: true
         icon: web
+
+become_airbender:
+  actions:
+    cast:
+    - class: Recall
+    - class: GiveItem
+  parameters:
+    warp: air_south
+    item: wand:airbending
+
+become_waterbender:
+  actions:
+    cast:
+    - class: Recall
+    - class: GiveItem
+  parameters:
+    warp: water_north
+    item: wand:waterbending
+
+become_firebender:
+  actions:
+    cast:
+    - class: Recall
+    - class: GiveItem
+  parameters:
+    warp: fire
+    item: wand:firebending
+
+become_earthbender:
+  actions:
+    cast:
+    - class: Recall
+    - class: GiveItem
+  parameters:
+    warp: earth
+    item: wand:earthbending

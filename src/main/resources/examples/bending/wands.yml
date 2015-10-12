@@ -35,7 +35,7 @@ waterbending:
     indestructible: true
     effect_bubbles: false
     effect_color: '0000FF'
-    active_spell: stream
+    active_spell: waterball
     spells:
         - waterjet
         - waterball
@@ -56,7 +56,7 @@ earthbending:
     protection_blast: 0.2
     xp_regeneration: 2
     effect_color: 'CD853F'
-    active_spell: earth
+    active_spell: block
     spells:
         - compression
         - block
@@ -114,6 +114,7 @@ avatar:
         - heal
         - cure
         - iterate
+        - airscooter
 
 ### Special wands
 
