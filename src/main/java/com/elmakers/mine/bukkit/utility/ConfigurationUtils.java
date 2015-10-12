@@ -307,6 +307,18 @@ public class ConfigurationUtils {
         return first;
     }
 
+    public static ConfigurationSection replaceConfigurations(ConfigurationSection first, ConfigurationSection second)
+    {
+        if (second == null) return first;
+        Set<String> keys = second.getKeys(false);
+        for (String key : keys) {
+            Object value = second.get(key);
+            first.set(key, value);
+        }
+
+        return first;
+    }
+
     protected static double parseDouble(String s)
     {
         char firstChar = s.charAt(0);
