@@ -48,6 +48,60 @@ fling:
      category: airbending
      enabled: true
 
+airscooter:
+    icon_url: http://textures.minecraft.net/texture/4a23ccd51565d2e246675c86aef11b5412662c15ecc2e9f3ef425adc91d1
+    icon: gold_boots
+    category: airbending
+    class: LevitateSpell
+    worth: 7000
+    show_undoable: false
+    quick_cast: true
+    effects:
+        cast:
+           - class: EffectSingle
+             sound: enderdragon_wings
+             location: origin
+             color_override: color
+             use_wand_location: false
+             effectlib:
+                 class: SphereEffect
+                 particle: redstone
+                 radius: 1.0
+                 offset: 0,-1.5,0
+        deactivate:
+        -  class: EffectSingle
+           sound: enderdragon_wings
+           sound_pitch: 0.2
+    parameters:
+        thrust: 1
+        speed: 2
+        flight: false
+        mount_type: Horse
+        mount_variant: undead_horse
+        mount_invisible: true
+        mount_boost_ticks: 100
+        mount_health: 8
+        mount_boost: 0.5
+        slow_ticks: 1
+        steer_speed: 0.6
+        slow_steer_speed: 0.05
+        mount_boost_per_jump: 1
+        sound: magic.flying
+        effect_sound_interval: 120
+        effect_sound_volume: 15
+        max_height_above_ground: 2
+        y_boost: 0.5
+        power_mount_boost_ticks: 500
+        power_mount_health: 12
+        power_mount_boost: 1
+        power_slow_ticks: 19
+        power_steer_speed: 2
+        power_mount_boost_per_jump: 2
+    costs:
+        mana: 20
+    active_costs:
+        mana: 10
+
 ### WATERBENDING
 
 waterjet:

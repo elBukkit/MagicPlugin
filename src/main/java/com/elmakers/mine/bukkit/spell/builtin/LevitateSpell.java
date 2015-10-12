@@ -65,7 +65,10 @@ public class LevitateSpell extends TargetingSpell implements Listener
     private ThrustAction thrust;
     private double crashDistance = 0;
     private double slowMultiplier = 1;
+    private int maxHeight;
+    private int maxHeightAboveGround;
 
+    private boolean flight = true;
     private boolean mountSilent = true;
     private boolean mountBaby = false;
     private boolean smallArmorStand = false;
@@ -156,7 +159,7 @@ public class LevitateSpell extends TargetingSpell implements Listener
                 spell.land();
                 return;
             }
-            if (entity instanceof Player && (!((Player)entity).isOnline() || !((Player)entity).isFlying())) {
+            if (entity instanceof Player && (!((Player)entity).isOnline() || (spell.isFlightEnabled() && !((Player)entity).isFlying()))) {
                 spell.land();
                 return;
             }
@@ -243,10 +246,12 @@ public class LevitateSpell extends TargetingSpell implements Listener
             }
         }
 
-        boolean checkHeight = autoDeactivateHeight > 0;
-        if (checkHeight && mage.isPlayer()) {
-            checkHeight = mage.getPlayer().isSneaking();
+        boolean isSneaking = mage.isPlayer() ? mage.getPlayer().isSneaking() : false;
+        if (!flight && isSneaking) {
+            land();
+            return;
         }
+        boolean checkHeight = autoDeactivateHeight > 0 && isSneaking;
         if (checkHeight) {
             int height = 0;
             Block block = player.getLocation().getBlock();
@@ -276,6 +281,21 @@ public class LevitateSpell extends TargetingSpell implements Listener
             } else {
                 Vector targetDirection = mageDirection.subtract(direction).normalize().multiply(move);
                 direction.add(targetDirection);
+            }
+        }
+        if (maxHeight > 0 && player.getLocation().getY() >= maxHeight) {
+            direction.setY(-1);
+
+        } else if (maxHeightAboveGround > 0) {
+            Block block = player.getLocation().getBlock();
+            int height = 0;
+            while (height < maxHeightAboveGround && block.getType() == Material.AIR)
+            {
+                block = block.getRelative(BlockFace.DOWN);
+                height++;
+            }
+            if (block.getType() == Material.AIR) {
+                direction.setY(-1);
             }
         }
         direction.normalize();
@@ -406,6 +426,7 @@ public class LevitateSpell extends TargetingSpell implements Listener
             return SpellResult.PLAYER_REQUIRED;
         }
 
+        flight = parameters.getBoolean("flight", true);
         int checkHeight = parameters.getInt("check_height", 4);
         startDelay = parameters.getInt("start_delay", 0);
         flyDelay = parameters.getInt("fly_delay", 2);
@@ -417,6 +438,8 @@ public class LevitateSpell extends TargetingSpell implements Listener
         thrustSpeed = (float)parameters.getDouble("thrust", 0);
         thrustFrequency = parameters.getInt("thrust_interval", thrustFrequency);
         autoDeactivateHeight = parameters.getInt("auto_deactivate", 0);
+        maxHeight = parameters.getInt("max_height", 0);
+        maxHeightAboveGround = parameters.getInt("max_height_above_ground", 0);
         boostTicks = parameters.getInt("boost_ticks", 1);
         crashDistance = parameters.getDouble("crash_distance", 0);
         slowReduceBoostTicks = parameters.getInt("slow_ticks", 4);
@@ -676,7 +699,7 @@ public class LevitateSpell extends TargetingSpell implements Listener
         final Player player = mage.getPlayer();
         if (player == null) return;
 		
-		if (flySpeed > 0) {
+		if (flySpeed > 0 && flight) {
 			player.setFlySpeed(defaultFlySpeed);
 		}
 
@@ -693,9 +716,11 @@ public class LevitateSpell extends TargetingSpell implements Listener
             }
             heldItem = null;
         }
-		
-		player.setFlying(false);
-		player.setAllowFlight(false);
+
+        if (flight) {
+            player.setFlying(false);
+            player.setAllowFlight(false);
+        }
 	}
 	
 	@Override
@@ -848,12 +873,14 @@ public class LevitateSpell extends TargetingSpell implements Listener
         } else {
             player.setVelocity(velocity);
         }
-		Bukkit.getScheduler().scheduleSyncDelayedTask(controller.getPlugin(), new Runnable() {
-			public void run() {
-				player.setAllowFlight(true);
-				player.setFlying(true);
-			}
-		}, flyDelay);
+        if (flight) {
+            Bukkit.getScheduler().scheduleSyncDelayedTask(controller.getPlugin(), new Runnable() {
+                public void run() {
+                    player.setAllowFlight(true);
+                    player.setFlying(true);
+                }
+            }, flyDelay);
+        }
 	}
 
     protected void configureArmorStand(ArmorStand armorStand) {
@@ -895,5 +922,9 @@ public class LevitateSpell extends TargetingSpell implements Listener
         Block block = mage.getEntity().getLocation().getBlock();
         block = block.getRelative(BlockFace.DOWN);
         return new MaterialAndData(block);
+    }
+
+    public boolean isFlightEnabled() {
+        return flight;
     }
 }

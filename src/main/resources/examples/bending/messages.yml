@@ -97,6 +97,9 @@ spells:
   sandspout:
     name: Sand Spout
     description: Bury your target in a whirlwind of sand
+  airscooter:
+    name: Air Scooter
+    description: Travel in style on a cushion of air
 
 paths:
     airbending:

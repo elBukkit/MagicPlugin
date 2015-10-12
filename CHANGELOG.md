@@ -3,6 +3,9 @@
 ## 5.3
 
  - Add /wand save command, for saving an in-game wand back to a template configuration
+ - Update bending configs
+   - Add Air Scooter
+   - Update several powers to canon names and descriptions
 
 ## 5.2.1
 
