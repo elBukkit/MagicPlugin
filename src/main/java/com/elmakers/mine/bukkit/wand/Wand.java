@@ -249,6 +249,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
     public static SoundEffect inventoryCloseSound = null;
     public static SoundEffect inventoryCycleSound = null;
     public static String WAND_KEY = "wand";
+    public static String WAND_SELF_DESTRUCT_KEY = null;
     public static byte HIDE_FLAGS = 60;
 
     private Inventory storedInventory = null;
@@ -1945,6 +1946,10 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	public static boolean isWand(ItemStack item) {
         return item != null && InventoryUtils.hasMeta(item, WAND_KEY) && !isUpgrade(item);
 	}
+
+    public static boolean isSelfDestructWand(ItemStack item) {
+        return item != null && WAND_SELF_DESTRUCT_KEY != null && InventoryUtils.hasMeta(item, WAND_SELF_DESTRUCT_KEY);
+    }
 
     public static boolean isUpgrade(ItemStack item) {
         if (item == null) return false;

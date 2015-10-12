@@ -3,6 +3,7 @@
 ## 5.3
 
  - Add /wand save command, for saving an in-game wand back to a template configuration
+ - Add "wand_self_destruct_key", for self-destructing old wands after a reset
  - Update bending configs
    - Add Air Scooter
    - Update several powers to canon names and descriptions

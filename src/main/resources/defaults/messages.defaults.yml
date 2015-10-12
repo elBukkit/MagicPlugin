@@ -184,7 +184,7 @@ wand:
     player_filled: $name's wand filled
     renamed: Your wand has been renamed
     player_renamed: $name's wand renamed
-    self_destruct: Your wands did not survive the dimensional shift!
+    self_destruct: The ancient artifact crumbles in your hands
     no_permission: "&r&4You may not use that $wand &r&4here."
     single_spell: Wand of $spell
     fully_enchanted: "&cThis $wand is fully enchanted &4(for now)"

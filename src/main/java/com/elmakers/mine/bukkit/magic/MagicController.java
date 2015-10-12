@@ -2196,6 +2196,10 @@ public class MagicController implements MageController {
         Wand.BrushGlow = properties.getBoolean("brush_glow", Wand.BrushGlow);
         Wand.BrushItemGlow = properties.getBoolean("brush_item_glow", Wand.BrushItemGlow);
         Wand.WAND_KEY = properties.getString("wand_key", "wand");
+        Wand.WAND_SELF_DESTRUCT_KEY = properties.getString("wand_self_destruct_key", "");
+        if (Wand.WAND_SELF_DESTRUCT_KEY.isEmpty()) {
+            Wand.WAND_SELF_DESTRUCT_KEY = null;
+        }
         Wand.HIDE_FLAGS = (byte)properties.getInt("wand_hide_flags", (int)Wand.HIDE_FLAGS);
         Wand.Unbreakable = properties.getBoolean("wand_unbreakable", Wand.Unbreakable);
 

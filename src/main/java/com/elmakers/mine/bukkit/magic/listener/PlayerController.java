@@ -61,14 +61,23 @@ public class PlayerController implements Listener {
         PlayerInventory inventory = player.getInventory();
         ItemStack next = inventory.getItem(event.getNewSlot());
 
-        if (NMSUtils.isTemporary(next)) {
-            inventory.setItem(event.getNewSlot(), null);
-            return;
-        }
-
         Mage apiMage = controller.getMage(player);
         if (!(apiMage instanceof com.elmakers.mine.bukkit.magic.Mage)) return;
         com.elmakers.mine.bukkit.magic.Mage mage = (com.elmakers.mine.bukkit.magic.Mage)apiMage;
+
+        // Check for self-destructing and temporary items
+        if (Wand.isSelfDestructWand(next)) {
+            mage.sendMessageKey("wand.self_destruct");
+            inventory.setItem(event.getNewSlot(), null);
+            mage.checkWand();
+            return;
+        }
+
+        if (NMSUtils.isTemporary(next)) {
+            inventory.setItem(event.getNewSlot(), null);
+            mage.checkWand();
+            return;
+        }
 
         Wand activeWand = mage.getActiveWand();
         boolean isSkill = Wand.isSkill(next);

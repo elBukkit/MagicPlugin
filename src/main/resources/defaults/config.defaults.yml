@@ -187,6 +187,26 @@ age_dropped_items: 0
 # Wand configuration
 #
 
+#
+# Wand data key
+# WARNING - changing this will cause all wands to deactivate permanently.
+#
+# This controls the root NBT tag used to store wand data on items.
+#
+wand_key: "wand"
+
+#
+# Wand destruction key
+# This can be used to cause old wands to self-destruct.
+#
+# If changing the above intentionally to "reset Magic", you way
+# also want to change this to "wand" to cause all of the old reset
+# wands to self-destruct, rather than staying around as inert items.
+#
+# They will self-destruct when held, with a configurable message (see messages.yml, wand.self_destruct)
+#
+wand_self_destruct_key: ""
+
 # Wand appearance
 wand_item: wood_hoe
 wand_upgrade_item: stick

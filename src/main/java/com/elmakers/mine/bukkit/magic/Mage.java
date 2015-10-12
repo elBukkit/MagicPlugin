@@ -727,6 +727,10 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         }
     }
 
+    public void sendMessageKey(String key) {
+        sendMessage(controller.getMessages().get(key, key));
+    }
+
     public Wand checkWand(ItemStack itemInHand) {
         Player player = getPlayer();
         if (isLoading() || player == null) return null;
