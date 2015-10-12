@@ -1,5 +1,6 @@
 # TODO
 
+ - Add destroy_data_key (or similar), auto-destroy out of date wand items.
  - Generalized parameter system for EffectLib config
  - Add templates to messages.yml for all the various forms a wand and spell
    name can take.

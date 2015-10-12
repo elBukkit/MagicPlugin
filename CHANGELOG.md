@@ -2,6 +2,8 @@
 
 ## 5.3
 
+ - Add /wand save command, for saving an in-game wand back to a template configuration
+
 ## 5.2.1
 
  - The Magic.commands.mskills permission (for /mskills) now defaults to op-only

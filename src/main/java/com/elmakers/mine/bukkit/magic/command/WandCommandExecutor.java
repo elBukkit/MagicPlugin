@@ -899,6 +899,7 @@ public class WandCommandExecutor extends MagicTabExecutor {
 			sender.sendMessage(ChatColor.RED + "Can't write to file " + wandFile.getName());
 			return true;
 		}
+		com.elmakers.mine.bukkit.wand.Wand.loadTemplate(controller, template, wandSection);
 		sender.sendMessage("Wand saved as " + template);
 		return true;
 	}

@@ -2727,13 +2727,16 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		Set<String> wandKeys = properties.getKeys(false);
 		for (String key : wandKeys)
 		{
-			ConfigurationSection wandNode = properties.getConfigurationSection(key);
-			wandNode.set("key", key);
-			if (wandNode.getBoolean("enabled", true)) {
-                wandTemplates.put(key, new WandTemplate(controller, key, wandNode));
-			}
+            loadTemplate(controller, key, properties.getConfigurationSection(key));
 		}
 	}
+
+    public static void loadTemplate(MageController controller, String key, ConfigurationSection wandNode) {
+        wandNode.set("key", key);
+        if (wandNode.getBoolean("enabled", true)) {
+            wandTemplates.put(key, new WandTemplate(controller, key, wandNode));
+        }
+    }
 	
 	public static Collection<String> getWandKeys() {
 		return wandTemplates.keySet();

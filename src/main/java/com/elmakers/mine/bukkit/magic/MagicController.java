@@ -1321,7 +1321,19 @@ public class MagicController implements MageController {
             }
         }
 
+        // Apply overrides after loading defaults and examples
         config = ConfigurationUtils.addConfigurations(config, overrides);
+
+        // Apply file overrides last
+        File configSubFolder = new File(configFolder, fileName);
+        if (configSubFolder.exists()) {
+            File[] files = configSubFolder.listFiles();
+            for (File file : files) {
+                if (file.getName().startsWith(".")) continue;
+                ConfigurationSection fileOverrides = CompatibilityUtils.loadConfiguration(file);
+                config = ConfigurationUtils.replaceConfigurations(config, fileOverrides);
+            }
+        }
 
         return config;
     }
