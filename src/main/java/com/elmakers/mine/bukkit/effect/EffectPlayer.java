@@ -102,6 +102,7 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
     protected float scale = 1.0f;
 
     protected Vector offset = new Vector(0, 0, 0);
+    protected Map<String, String> parameterMap = null;
 
     public EffectPlayer() {
     }
@@ -335,7 +336,8 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
         }
 
         if (effectLib != null && effectLibConfig != null) {
-            EffectLibPlay play = new EffectLibPlay(effectLib.play(effectLibConfig, this, sourceLocation, sourceEntity, targetLocation, targetEntity));
+
+            EffectLibPlay play = new EffectLibPlay(effectLib.play(effectLibConfig, this, sourceLocation, sourceEntity, targetLocation, targetEntity, parameterMap));
             if (currentEffects != null)
             {
                 currentEffects.add(play);
@@ -629,5 +631,9 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
     @Override
     public boolean shouldUseEyeLocation() {
         return useEyeLocation;
+    }
+
+    public void setParameterMap(Map<String, String> map) {
+        this.parameterMap = map;
     }
 }

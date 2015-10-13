@@ -32,8 +32,10 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 import java.util.UUID;
@@ -378,6 +380,18 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
             Entity sourceEntity = getEntity();
             Entity targetEntity = getTargetEntity();
             Location targetLocation = getTargetLocation();
+            // Create parameter map
+            Map<String, String> parameterMap = null;
+            ConfigurationSection workingParameters = spell != null ? spell.getWorkingParameters() : null;
+            if (workingParameters != null) {
+                Collection<String> keys = workingParameters.getKeys(false);
+                parameterMap = new HashMap<String, String>();
+                for (String key : keys) {
+                    parameterMap.put("$" + key, workingParameters.getString(key));
+                }
+            }
+
+
             for (EffectPlayer player : effects)
             {
                 // Track effect plays for cancelling
@@ -391,6 +405,9 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
                 player.setColor(spell.getEffectColor());
                 String overrideParticle = spell.getEffectParticle();
                 player.setParticleOverride(overrideParticle);
+
+                // Set parameters
+                player.setParameterMap(parameterMap);
 
                 Mage mage = getMage();
                 boolean useWand = mage != null && mage.getEntity() == sourceEntity && player.shouldUseWandLocation();

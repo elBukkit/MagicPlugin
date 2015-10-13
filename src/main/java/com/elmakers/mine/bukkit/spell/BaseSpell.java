@@ -170,6 +170,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     private boolean hidden                      = false;
 
     protected ConfigurationSection parameters = null;
+    protected ConfigurationSection workingParameters = null;
     protected ConfigurationSection configuration = null;
 
     protected static Random random            = new Random();
@@ -842,7 +843,6 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         color = ConfigurationUtils.getColor(node, "color", null);
         worth = node.getDouble("worth", 0);
         category = controller.getCategory(node.getString("category"));
-        parameters = node.getConfigurationSection("parameters");
         costs = parseCosts(node.getConfigurationSection("costs"));
         activeCosts = parseCosts(node.getConfigurationSection("active_costs"));
         pvpRestricted = node.getBoolean("pvp_restricted", false);
@@ -855,7 +855,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         cancellable = node.getBoolean("cancellable", true);
 
         // Preload some parameters
-        ConfigurationSection parameters = node.getConfigurationSection("parameters");
+        parameters = node.getConfigurationSection("parameters");
         if (parameters != null) {
             bypassMageCooldown = parameters.getBoolean("bypass_mage_cooldown", false);
             cooldown = parameters.getInt("cooldown", 0);
@@ -937,35 +937,35 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
 
         this.location = defaultLocation;
 
-        final ConfigurationSection parameters = new MemoryConfiguration();
-        ConfigurationUtils.addConfigurations(parameters, this.parameters);
-        ConfigurationUtils.addConfigurations(parameters, extraParameters);
-        processParameters(parameters);
+        workingParameters = new MemoryConfiguration();
+        ConfigurationUtils.addConfigurations(workingParameters, this.parameters);
+        ConfigurationUtils.addConfigurations(workingParameters, extraParameters);
+        processParameters(workingParameters);
 
         // Allow other plugins to cancel this cast
         PreCastEvent preCast = new PreCastEvent(mage, this);
         Bukkit.getPluginManager().callEvent(preCast);
 
         if (preCast.isCancelled()) {
-            processResult(SpellResult.CANCELLED, parameters);
+            processResult(SpellResult.CANCELLED, workingParameters);
             mage.sendDebugMessage(ChatColor.WHITE + "Cast " + ChatColor.GOLD + getName() + ChatColor.WHITE  + ": " + ChatColor.AQUA + SpellResult.CANCELLED + ChatColor.DARK_AQUA + " (no cast)");
             return false;
         }
 
         // Don't allow casting if the player is confused or weakened
-        bypassConfusion = parameters.getBoolean("bypass_confusion", bypassConfusion);
-        bypassWeakness = parameters.getBoolean("bypass_weakness", bypassWeakness);
+        bypassConfusion = workingParameters.getBoolean("bypass_confusion", bypassConfusion);
+        bypassWeakness = workingParameters.getBoolean("bypass_weakness", bypassWeakness);
         LivingEntity livingEntity = mage.getLivingEntity();
         if (livingEntity != null && !mage.isSuperPowered()) {
             if (!bypassConfusion && livingEntity.hasPotionEffect(PotionEffectType.CONFUSION)) {
-                processResult(SpellResult.CURSED, parameters);
+                processResult(SpellResult.CURSED, workingParameters);
                 mage.sendDebugMessage(ChatColor.WHITE + "Cast " + ChatColor.GOLD + getName() + ChatColor.WHITE + ": " + ChatColor.AQUA + SpellResult.CURSED + ChatColor.DARK_AQUA + " (no cast)");
                 return false;
             }
 
             // Don't allow casting if the player is weakened
             if (!bypassWeakness && livingEntity.hasPotionEffect(PotionEffectType.WEAKNESS)) {
-                processResult(SpellResult.CURSED, parameters);
+                processResult(SpellResult.CURSED, workingParameters);
                 mage.sendDebugMessage(ChatColor.WHITE + "Cast " + ChatColor.GOLD + getName() + ChatColor.WHITE + ": " + ChatColor.AQUA + SpellResult.CURSED + ChatColor.DARK_AQUA + " (no cast)");
                 return false;
             }
@@ -973,7 +973,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
 
         // Don't perform permission check until after processing parameters, in case of overrides
         if (!canCast(getLocation())) {
-            processResult(SpellResult.INSUFFICIENT_PERMISSION, parameters);
+            processResult(SpellResult.INSUFFICIENT_PERMISSION, workingParameters);
             mage.sendDebugMessage(ChatColor.WHITE + "Cast " + ChatColor.GOLD + getName() + ChatColor.WHITE  + ": " + ChatColor.AQUA + SpellResult.INSUFFICIENT_PERMISSION + ChatColor.DARK_AQUA + " (no cast)");
             if (mage.getDebugLevel() > 1) {
                 CommandSender messageTarget = mage.getDebugger();
@@ -990,19 +990,19 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         this.preCast();
 
         // PVP override settings
-        bypassPvpRestriction = parameters.getBoolean("bypass_pvp", false);
-        bypassPvpRestriction = parameters.getBoolean("bp", bypassPvpRestriction);
-        bypassPermissions = parameters.getBoolean("bypass_permissions", bypassPermissions);
-        bypassFriendlyFire = parameters.getBoolean("bypass_friendly_fire", false);
+        bypassPvpRestriction = workingParameters.getBoolean("bypass_pvp", false);
+        bypassPvpRestriction = workingParameters.getBoolean("bp", bypassPvpRestriction);
+        bypassPermissions = workingParameters.getBoolean("bypass_permissions", bypassPermissions);
+        bypassFriendlyFire = workingParameters.getBoolean("bypass_friendly_fire", false);
 
         // Check cooldowns
-        cooldown = parameters.getInt("cooldown", cooldown);
-        cooldown = parameters.getInt("cool", cooldown);
-        mageCooldown = parameters.getInt("cooldown_mage", mageCooldown);
+        cooldown = workingParameters.getInt("cooldown", cooldown);
+        cooldown = workingParameters.getInt("cool", cooldown);
+        mageCooldown = workingParameters.getInt("cooldown_mage", mageCooldown);
 
         // Color override
-        color = ConfigurationUtils.getColor(parameters, "color", color);
-        particle = parameters.getString("particle", null);
+        color = ConfigurationUtils.getColor(workingParameters, "color", color);
+        particle = workingParameters.getString("particle", null);
 
         long cooldownRemaining = getRemainingCooldown() / 1000;
         String timeDescription = "";
@@ -1027,7 +1027,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
                 timeDescription = controller.getMessages().get("cooldown.wait_moment");
             }
             castMessage(getMessage("cooldown").replace("$time", timeDescription));
-            processResult(SpellResult.COOLDOWN, parameters);
+            processResult(SpellResult.COOLDOWN, workingParameters);
             mage.sendDebugMessage(ChatColor.WHITE + "Cast " + ChatColor.GOLD + getName() + ChatColor.WHITE  + ": " + ChatColor.AQUA + SpellResult.COOLDOWN + ChatColor.DARK_AQUA + " (no cast)");
             return false;
         }
@@ -1037,12 +1037,12 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
             String baseMessage = getMessage("insufficient_resources");
             String costDescription = required.getDescription(controller.getMessages(), mage);
             castMessage(baseMessage.replace("$cost", costDescription));
-            processResult(SpellResult.INSUFFICIENT_RESOURCES, parameters);
+            processResult(SpellResult.INSUFFICIENT_RESOURCES, workingParameters);
             mage.sendDebugMessage(ChatColor.WHITE + "Cast " + ChatColor.GOLD + getName() + ChatColor.WHITE  + ": " + ChatColor.AQUA + SpellResult.INSUFFICIENT_RESOURCES + ChatColor.DARK_AQUA + " (no cast)");
             return false;
         }
 
-        return finalizeCast(parameters);
+        return finalizeCast(workingParameters);
     }
 
     public boolean canCast(Location location) {
@@ -1630,6 +1630,11 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         List<com.elmakers.mine.bukkit.api.spell.CastingCost> copy = new ArrayList<com.elmakers.mine.bukkit.api.spell.CastingCost>();
         copy.addAll(activeCosts);
         return copy;
+    }
+
+    @Override
+    public ConfigurationSection getWorkingParameters() {
+        return workingParameters;
     }
 
     @Override

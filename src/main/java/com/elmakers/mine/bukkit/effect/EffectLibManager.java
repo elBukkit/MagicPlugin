@@ -22,7 +22,6 @@ import java.util.Map;
  */
 public class EffectLibManager {
     private static EffectManager effectManager;
-    private static final Map<String, String> nameMap = new HashMap<String, String>();
 
     public EffectLibManager() {
     }
@@ -41,20 +40,23 @@ public class EffectLibManager {
         }
     }
 
-    public Effect play(ConfigurationSection configuration, EffectPlayer player, Location origin, Entity originEntity, Location target, Entity targetEntity) {
+    public Effect play(ConfigurationSection configuration, EffectPlayer player, Location origin, Entity originEntity, Location target, Entity targetEntity, Map<String, String> parameterMap) {
+        if (parameterMap == null) {
+            parameterMap = new HashMap<String, String>();
+        }
         if (originEntity != null && originEntity instanceof Player) {
-            nameMap.put("$name", ((Player)originEntity).getName());
+            parameterMap.put("$name", ((Player)originEntity).getName());
         } else if (originEntity != null && originEntity instanceof LivingEntity) {
-            nameMap.put("$name", ((LivingEntity)originEntity).getCustomName());
+            parameterMap.put("$name", ((LivingEntity)originEntity).getCustomName());
         } else {
-            nameMap.put("$name", "Unknown");
+            parameterMap.put("$name", "Unknown");
         }
         if (targetEntity != null && targetEntity instanceof Player) {
-            nameMap.put("$target", ((Player)targetEntity).getName());
+            parameterMap.put("$target", ((Player)targetEntity).getName());
         } else if (originEntity != null && targetEntity instanceof LivingEntity) {
-            nameMap.put("$target", ((LivingEntity)targetEntity).getCustomName());
+            parameterMap.put("$target", ((LivingEntity)targetEntity).getCustomName());
         } else {
-            nameMap.put("$target", "Unknown");
+            parameterMap.put("$target", "Unknown");
         }
 
         Effect effect = null;
@@ -84,7 +86,7 @@ public class EffectLibManager {
             }
         }
         try {
-            effect = effectManager.start(effectClass, parameters, origin, target, originEntity, targetEntity, nameMap);
+            effect = effectManager.start(effectClass, parameters, origin, target, originEntity, targetEntity, parameterMap);
         } catch (Throwable ex) {
             Bukkit.getLogger().warning("Error playing effects of class: " + effectClass);
             ex.printStackTrace();
