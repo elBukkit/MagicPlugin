@@ -135,4 +135,8 @@ public class HeroesSkillSpell extends BaseSpell {
         if (mana == 0 || hero.getMana() > mana) return null;
         return manaCost;
     }
+
+    public boolean hasCastPermission(CommandSender sender) {
+        return true;
+    }
 }
