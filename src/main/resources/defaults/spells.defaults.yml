@@ -5731,7 +5731,8 @@ blaster:
              class: LineEffect
              iterations: 1000
              particle: redstone
-             length: 4
+             length: 2
+             period: 1
         hit:
         -  class: EffectSingle
            location: target

@@ -159,14 +159,12 @@ public class CustomProjectileAction extends CompoundAction
 
         // Compute incremental speed movement
         double remainingSpeed = speed * delta / 50;
-        double expectedIterations = Math.ceil(remainingSpeed);
-
         List<CandidateEntity> candidates = null;
-        if (radius > 0 && targetEntities) {
+        if (radius >= 0 && targetEntities) {
             Entity sourceEntity = context.getEntity();
             candidates = new ArrayList<CandidateEntity>();
-            List<Entity> nearbyEntities = CompatibilityUtils.getNearbyEntities(targetLocation, expectedIterations * radius, expectedIterations * radius, expectedIterations * radius);
-
+            double boundSize = Math.ceil(remainingSpeed) * radius + 2;
+            List<Entity> nearbyEntities = CompatibilityUtils.getNearbyEntities(targetLocation, boundSize, boundSize, boundSize);
             for (Entity entity : nearbyEntities)
             {
                 if ((targetSelf || entity != sourceEntity) && context.canTarget(entity))
@@ -175,7 +173,8 @@ public class CustomProjectileAction extends CompoundAction
                 }
             }
 
-            if (candidates.isEmpty()) {
+            if (candidates.isEmpty())
+            {
                 candidates = null;
             }
         }
