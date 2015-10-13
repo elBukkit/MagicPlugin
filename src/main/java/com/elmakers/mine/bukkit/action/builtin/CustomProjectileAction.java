@@ -19,7 +19,6 @@ import org.bukkit.util.Vector;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 
 public class CustomProjectileAction extends CompoundAction
@@ -33,6 +32,8 @@ public class CustomProjectileAction extends CompoundAction
     private boolean targetEntities;
     private boolean targetSelf;
     private double radius;
+    private double gravity;
+    private double drag;
 
     private long lastUpdate;
     private long nextUpdate;
@@ -64,6 +65,8 @@ public class CustomProjectileAction extends CompoundAction
         targetEntities = parameters.getBoolean("target_entities", true);
         targetSelf = parameters.getBoolean("target_self", false);
         radius = parameters.getDouble("size", 1) / 2;
+        gravity = parameters.getDouble("gravity", 0);
+        drag = parameters.getDouble("drag", 0);
     }
 
     @Override
@@ -100,7 +103,7 @@ public class CustomProjectileAction extends CompoundAction
         // Check for initialization required
         Location targetLocation = context.getTargetLocation();
         if (targetLocation == null) {
-            targetLocation = context.getEyeLocation().clone();
+            targetLocation = context.getWandLocation().clone();
             context.setTargetLocation(targetLocation);
         }
         if (velocity == null)
@@ -137,6 +140,21 @@ public class CustomProjectileAction extends CompoundAction
         // Advance position, checking for collisions
         long delta = now - lastUpdate;
         lastUpdate = now;
+
+        // Apply gravity and drag
+
+        if (gravity > 0) {
+            velocity.setY(velocity.getY() - gravity * delta / 50);
+        }
+        if (drag > 0) {
+            double size = velocity.length();
+            size = size - drag * delta / 50;
+            if (size <= 0) {
+                hit(context);
+                return SpellResult.PENDING;
+            }
+            velocity.normalize().multiply(size);
+        }
 
         // Compute incremental speed movement
         double remainingSpeed = speed * delta / 50;
@@ -229,6 +247,8 @@ public class CustomProjectileAction extends CompoundAction
         parameters.add("lifetime");
         parameters.add("speed");
         parameters.add("start");
+        parameters.add("gravity");
+        parameters.add("drag");
         parameters.add("target_entities");
         parameters.add("target_self");
     }
@@ -239,7 +259,8 @@ public class CustomProjectileAction extends CompoundAction
         super.getParameterOptions(spell, parameterKey, examples);
 
         if (parameterKey.equals("speed") || parameterKey.equals("lifetime") ||
-            parameterKey.equals("interval") || parameterKey.equals("start") || parameterKey.equals("size")) {
+            parameterKey.equals("interval") || parameterKey.equals("start") || parameterKey.equals("size") ||
+            parameterKey.equals("gravity") || parameterKey.equals("drag")) {
             examples.addAll(Arrays.asList(BaseSpell.EXAMPLE_SIZES));
         } else if (parameterKey.equals("target_entities") || parameterKey.equals("target_self")) {
             examples.addAll(Arrays.asList(BaseSpell.EXAMPLE_BOOLEANS));
