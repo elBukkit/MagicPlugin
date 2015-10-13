@@ -404,7 +404,10 @@ public abstract class TargetingSpell extends BaseSpell {
     public Target findTarget()
     {
         final Location location = getEyeLocation();
-        if (targetType != TargetType.NONE && targetType != TargetType.BLOCK && targetEntity != null) {
+        if (targetType == TargetType.NONE) {
+            return new Target(location);
+        }
+        if (targetType != TargetType.BLOCK && targetEntity != null) {
             return new Target(location, targetEntity);
         }
 
@@ -419,7 +422,7 @@ public abstract class TargetingSpell extends BaseSpell {
             return new Target(commandBlock.getBlock().getLocation(), commandBlock.getBlock());
         }
 
-        if ((targetType == TargetType.SELF || targetType == TargetType.NONE) && location != null) {
+        if (targetType == TargetType.SELF && location != null) {
             return new Target(location, location.getBlock());
         }
 
@@ -427,12 +430,8 @@ public abstract class TargetingSpell extends BaseSpell {
             return new Target(location);
         }
 
-        if (targetType != TargetType.NONE && targetLocation != null) {
+        if (targetLocation != null) {
             return new Target(location, targetLocation.getBlock());
-        }
-
-        if (targetType == TargetType.NONE) {
-            return new Target(location);
         }
 
         Block block = null;
