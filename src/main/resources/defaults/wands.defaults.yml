@@ -1143,9 +1143,9 @@ blaster:
     xp: 100
     xp_max: 100
     xp_regeneration: 10
-    active_spell: missile
+    active_spell: blaster
     spells:
-        - missile
+        - blaster
 
 crackedbroomstick:
     mode: cast
