@@ -28,7 +28,6 @@ public interface EffectPlayer {
     public void setMaterial(MaterialAndData material);
     public void setMaterial(Block block);
     public void setColor(Color color);
-    public void setOffset(float x, float y, float z);
     public boolean shouldUseHitLocation();
     public boolean shouldUseWandLocation();
     public boolean shouldUseEyeLocation();
