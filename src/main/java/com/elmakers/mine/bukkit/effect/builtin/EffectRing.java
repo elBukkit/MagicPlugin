@@ -37,6 +37,7 @@ public class EffectRing extends EffectRepeating {
     }
 
     public void iterate() {
+        Location origin = getOrigin();
         if (origin == null) return;
         float currentRadius = scale(radius * scale);
 
@@ -47,13 +48,15 @@ public class EffectRing extends EffectRepeating {
             double radians = (double)i / size * Math.PI * 2 + startRadians;
             Vector direction = new Vector(Math.cos(radians) * currentRadius, 0, Math.sin(radians) * currentRadius);
             Location source = origin.clone();
-            Location target = this.target;
+            Location target = getTarget();
             source.add(direction);
             if (target != null) {
                 target = target.clone();
                 target.add(direction);
+                setTarget(target);
             }
-            playEffect(source, getOriginEntity(), target, getTargetEntity());
+            setOrigin(source);
+            playEffect();
         }
     }
 }

@@ -1,10 +1,10 @@
 package com.elmakers.mine.bukkit.effect;
 
-import java.lang.ref.WeakReference;
 import java.util.*;
 
 import com.elmakers.mine.bukkit.api.effect.EffectPlay;
 import com.elmakers.mine.bukkit.utility.SoundEffect;
+import de.slikey.effectlib.util.DynamicLocation;
 import de.slikey.effectlib.util.ParticleEffect;
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
@@ -49,12 +49,10 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
 
     protected Plugin plugin;
 
-    protected Location origin;
-    protected Location target;
-    protected Vector originOffset;
-    protected Vector targetOffset;
-    protected WeakReference<Entity> originEntity;
-    protected WeakReference<Entity> targetEntity;
+    private DynamicLocation origin;
+    private DynamicLocation target;
+    private Vector originOffset;
+    private Vector targetOffset;
 
     // These are ignored by the Trail type, need multi-inheritance :\
     protected boolean playAtOrigin = true;
@@ -301,6 +299,8 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
     protected MaterialAndData getWorkingMaterial() {
         if (material1 != null) return material1;
         MaterialAndData result = material;
+        Location target = this.target.getLocation();
+        Location origin = this.origin.getLocation();
         if (result == null && target != null) {
             result = new MaterialAndData(target.getBlock().getType(), target.getBlock().getData());
         } else if (result == null && origin != null) {
@@ -312,25 +312,27 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
         return result;
     }
 
-    protected void playEffect(Location sourceLocation, Entity sourceEntity, Location targetLocation, Entity targetEntity) {
-        if (playAtOrigin && sourceLocation != null) {
-            performEffect(sourceLocation, sourceEntity, targetLocation, targetEntity);
+    protected void playEffect() {
+        if (playAtOrigin && origin != null) {
+            performEffect(origin, target);
         }
-        if (playAtTarget && targetLocation != null) {
-            performEffect(targetLocation, targetEntity, sourceLocation, sourceEntity);
+        if (playAtTarget && target != null) {
+            performEffect(target, origin);
         }
     }
 
     @SuppressWarnings("deprecation")
-    private void performEffect(Location sourceLocation, Entity sourceEntity, Location targetLocation, Entity targetEntity) {
+    private void performEffect(DynamicLocation source, DynamicLocation target) {
         if (effectLib != null && effectLibConfig != null) {
 
-            EffectLibPlay play = new EffectLibPlay(effectLib.play(effectLibConfig, this, sourceLocation, sourceEntity, targetLocation, targetEntity, parameterMap));
+            EffectLibPlay play = new EffectLibPlay(effectLib.play(effectLibConfig, this, source, target, parameterMap));
             if (currentEffects != null)
             {
                 currentEffects.add(play);
             }
         }
+        Location sourceLocation = source.getLocation();
+        Entity sourceEntity = source.getEntity();
         if (effect != null) {
             int data = effectData == null ? 0 : effectData;
             if ((effect == Effect.STEP_SOUND) && effectData == null) {
@@ -430,14 +432,12 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
 
     @Override
     public void start(Entity originEntity, Entity targetEntity) {
-        start(originEntity == null ? null : originEntity.getLocation(), originEntity, targetEntity == null ? null : targetEntity.getLocation(), targetEntity);
+        startEffects(new DynamicLocation(originEntity), new DynamicLocation(targetEntity));
     }
 
     @Override
     public void start(Location origin, Entity originEntity, Location target, Entity targetEntity) {
-        this.originEntity = new WeakReference<Entity>(originEntity);
-        this.targetEntity = new WeakReference<Entity>(targetEntity);
-        start(origin, target);
+        startEffects(new DynamicLocation(origin, originEntity), new DynamicLocation(target, targetEntity));
     }
 
     @Override
@@ -452,24 +452,28 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
     public void start(Location origin, Entity originEntity, Collection<Entity> targets) {
         if (targets == null || targets.size() == 0) return;
 
-        this.originEntity = new WeakReference<Entity>(originEntity);
+        DynamicLocation source = new DynamicLocation(origin, originEntity);
         for (Entity targetEntity : targets)
         {
             if (targetEntity == null) continue;
-            this.targetEntity = new WeakReference<Entity>(targetEntity);
-            start(origin, targetEntity.getLocation());
+            // This is not really going to work out well for any Effect type but Single!
+            // TODO : Perhaps re-visit?
+            DynamicLocation target = new DynamicLocation(targetEntity);
+            startEffects(source, target);
         }
     }
 
     @Override
     public void start(Location origin, Location target) {
-        startEffects(origin, target);
+        startEffects(new DynamicLocation(origin), new DynamicLocation(target));
     }
 
-    public void startEffects(Location origin, Location target) {
+    public void startEffects(DynamicLocation origin, DynamicLocation target) {
         // Kinda hacky, but makes cross-world trails (e.g. Repair, Backup) work
-        if (target != null && origin != null && !origin.getWorld().equals(target.getWorld())) {
-            target.setWorld(origin.getWorld());
+        Location targetLocation = target == null ? null : target.getLocation();
+        Location originLocation = origin == null ? null : origin.getLocation();
+        if (targetLocation != null && originLocation != null && !originLocation.getWorld().equals(targetLocation.getWorld())) {
+            targetLocation.setWorld(originLocation.getWorld());
         }
         this.origin = origin;
         this.target = target;
@@ -495,10 +499,10 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
 
     protected void checkLocations() {
         if (origin != null && originOffset != null) {
-            origin = origin.clone().add(originOffset);
+            origin.addOffset(originOffset);
         }
         if (target != null && targetOffset != null) {
-            target = target.clone().add(targetOffset);
+            target.addOffset(targetOffset);
         }
     }
 
@@ -509,6 +513,8 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
     }
 
     protected Vector getDirection() {
+        Location origin = this.getOrigin();
+        Location target = this.getTarget();
         if (origin == null) return new Vector(0, 1, 0);
         Vector direction = target == null ? origin.getDirection() : target.toVector().subtract(origin.toVector());
         return direction.normalize();
@@ -536,12 +542,42 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
 
     public abstract void play();
 
+    public Location getOrigin() {
+        return origin == null ? null : origin.getLocation();
+    }
+
+    public Location getTarget() {
+        return target == null ? null : target.getLocation();
+    }
+
+    public void setOrigin(Location location) {
+        if (origin == null) {
+            origin = new DynamicLocation(location);
+        } else {
+            Location originLocation = origin.getLocation();
+            originLocation.setX(location.getX());
+            originLocation.setY(location.getY());
+            originLocation.setZ(location.getZ());
+        }
+    }
+
+    public void setTarget(Location location) {
+        if (target == null) {
+            target = new DynamicLocation(location);
+        } else {
+            Location targetLocation = target.getLocation();
+            targetLocation.setX(location.getX());
+            targetLocation.setY(location.getY());
+            targetLocation.setZ(location.getZ());
+        }
+    }
+
     public Entity getOriginEntity() {
-        return originEntity == null ? null : originEntity.get();
+        return origin == null ? null : origin.getEntity();
     }
 
     public Entity getTargetEntity() {
-        return targetEntity == null ? null : targetEntity.get();
+        return target == null ? null : target.getEntity();
     }
 
     public void cancel() {

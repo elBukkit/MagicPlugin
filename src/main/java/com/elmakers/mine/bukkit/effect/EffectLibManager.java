@@ -2,10 +2,10 @@ package com.elmakers.mine.bukkit.effect;
 
 import de.slikey.effectlib.Effect;
 import de.slikey.effectlib.EffectManager;
+import de.slikey.effectlib.util.DynamicLocation;
 import de.slikey.effectlib.util.ParticleEffect;
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
-import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.entity.Entity;
@@ -40,10 +40,11 @@ public class EffectLibManager {
         }
     }
 
-    public Effect play(ConfigurationSection configuration, EffectPlayer player, Location origin, Entity originEntity, Location target, Entity targetEntity, Map<String, String> parameterMap) {
+    public Effect play(ConfigurationSection configuration, EffectPlayer player, DynamicLocation origin, DynamicLocation target, Map<String, String> parameterMap) {
         if (parameterMap == null) {
             parameterMap = new HashMap<String, String>();
         }
+        Entity originEntity = origin == null ? null : origin.getEntity();
         if (originEntity != null && originEntity instanceof Player) {
             parameterMap.put("$name", ((Player)originEntity).getName());
         } else if (originEntity != null && originEntity instanceof LivingEntity) {
@@ -51,6 +52,7 @@ public class EffectLibManager {
         } else {
             parameterMap.put("$name", "Unknown");
         }
+        Entity targetEntity = target == null ? null : target.getEntity();
         if (targetEntity != null && targetEntity instanceof Player) {
             parameterMap.put("$target", ((Player)targetEntity).getName());
         } else if (originEntity != null && targetEntity instanceof LivingEntity) {
@@ -86,7 +88,7 @@ public class EffectLibManager {
             }
         }
         try {
-            effect = effectManager.start(effectClass, parameters, origin, target, originEntity, targetEntity, parameterMap);
+            effect = effectManager.start(effectClass, parameters, origin, target, parameterMap);
         } catch (Throwable ex) {
             Bukkit.getLogger().warning("Error playing effects of class: " + effectClass);
             ex.printStackTrace();

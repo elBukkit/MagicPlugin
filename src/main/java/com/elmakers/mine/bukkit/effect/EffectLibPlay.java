@@ -5,7 +5,7 @@ import de.slikey.effectlib.Effect;
 
 import java.util.logging.Level;
 
-public class EffectLibPlay implements EffectPlay{
+public class EffectLibPlay implements EffectPlay {
     private final Effect effect;
 
     public EffectLibPlay(Effect effect) {

@@ -8,6 +8,6 @@ public class EffectSingle extends EffectPlayer {
     }
 
     public void play() {
-        playEffect(origin, getOriginEntity(), target, getTargetEntity());
+        playEffect();
     }
 }
