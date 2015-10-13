@@ -5728,12 +5728,10 @@ blaster:
         -  class: EffectSingle
            location: origin
            effectlib:
-             class: SphereEffect
-             iterations: 100
-             period: 4
+             class: LineEffect
+             iterations: 1000
              particle: redstone
-             radius: 0.2
-             particles: 20
+             length: 4
         hit:
         -  class: EffectSingle
            location: target

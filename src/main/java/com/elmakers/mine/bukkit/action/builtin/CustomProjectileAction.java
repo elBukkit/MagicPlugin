@@ -119,6 +119,7 @@ public class CustomProjectileAction extends CompoundAction
             {
                 if (effectLocation == null) {
                     effectLocation = new DynamicLocation(targetLocation);
+                    effectLocation.setDirection(velocity);
                 }
                 if (activeProjectileEffects == null) {
                     activeProjectileEffects = new ArrayList<EffectPlay>();
@@ -128,13 +129,14 @@ public class CustomProjectileAction extends CompoundAction
                 {
                     com.elmakers.mine.bukkit.effect.EffectPlayer effectPlayer = (com.elmakers.mine.bukkit.effect.EffectPlayer)apiEffectPlayer;
                     effectPlayer.setEffectPlayList(activeProjectileEffects);
-                    effectPlayer.startEffects(effectLocation, new DynamicLocation(context.getTargetLocation(), context.getTargetEntity()));
+                    effectPlayer.startEffects(effectLocation, null);
                 }
             }
         }
         else if (effectLocation != null)
         {
             effectLocation.updateFrom(targetLocation);
+            effectLocation.setDirection(velocity);
         }
 
         // Advance position, checking for collisions
@@ -142,7 +144,6 @@ public class CustomProjectileAction extends CompoundAction
         lastUpdate = now;
 
         // Apply gravity and drag
-
         if (gravity > 0) {
             velocity.setY(velocity.getY() - gravity * delta / 50);
         }
@@ -193,6 +194,11 @@ public class CustomProjectileAction extends CompoundAction
                 }
             }
 
+            int y = targetLocation.getBlockY();
+            if (y >= targetLocation.getWorld().getMaxHeight() || y <= 0) {
+                hit(context);
+                return SpellResult.PENDING;
+            }
             Block block = targetLocation.getBlock();
             if (!block.getChunk().isLoaded()) {
                 hit(context);
