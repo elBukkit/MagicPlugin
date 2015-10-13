@@ -100,6 +100,7 @@ public class SkillsSelector implements GUIAction {
                 if (spell.isHidden()) continue;
                 SpellKey key = spell.getSpellKey();
                 if (key.isVariant()) continue;
+                if (key.getBaseKey().startsWith("heroes*")) continue;
                 if (!spell.hasCastPermission(player)) continue;
                 allSkills.add(new SkillDescription(spell, null));
             }
