@@ -33,6 +33,12 @@ public class BoundingBox
         return results;
     }
 
+    public boolean contains(Vector point) {
+        return this.min.getX() <= point.getX() && point.getX() <= this.max.getX() &&
+                this.min.getY() <= point.getY() && point.getY() <= this.max.getY() &&
+                this.min.getZ() <= point.getZ() && point.getZ() <= this.max.getZ();
+    }
+
     public Vector center()
     {
         return this.max.clone().add(this.min).multiply(0.5);
@@ -72,6 +78,16 @@ public class BoundingBox
         this.max.setX((this.max.getX() - center.getX()) * scale + center.getX());
         this.max.setY((this.max.getY() - center.getY()) * scaleY + center.getY());
         this.max.setZ((this.max.getZ() - center.getZ()) * scale + center.getZ());
+        return this;
+    }
+
+    public BoundingBox expand(double size) {
+        this.min.setX(this.min.getX() - size);
+        this.min.setY(this.min.getY() - size);
+        this.min.setZ(this.min.getZ() - size);
+        this.max.setX(this.max.getX() + size);
+        this.max.setY(this.max.getY() + size);
+        this.max.setZ(this.max.getZ() + size);
         return this;
     }
 
