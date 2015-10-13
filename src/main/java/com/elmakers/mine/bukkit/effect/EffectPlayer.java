@@ -578,29 +578,27 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
         {
             for (ConfigurationSection effectValues : effectNodes)
             {
-                if (effectValues.contains("class")) {
-                    String effectClass = effectValues.getString("class");
-                    try {
-                        if (!effectClass.contains(".")) {
-                            effectClass = EFFECT_BUILTIN_CLASSPATH + "." + effectClass;
-                        }
-                        Class<?> genericClass = effectClasses.get(effectClass);
-                        if (genericClass == null) {
-                            genericClass = Class.forName(effectClass);
-                            effectClasses.put(effectClass, genericClass);
-                        }
-                        if (!EffectPlayer.class.isAssignableFrom(genericClass)) {
-                            throw new Exception("Must extend EffectPlayer");
-                        }
-
-                        Class<? extends EffectPlayer> playerClass = (Class<? extends EffectPlayer>)genericClass;
-                        EffectPlayer player = playerClass.newInstance();
-                        player.load(plugin, effectValues);
-                        players.add(player);
-                    } catch (Exception ex) {
-                        ex.printStackTrace();
-                        plugin.getLogger().info("Error creating effect class: " + effectClass + " " + ex.getMessage());
+                String effectClass = effectValues.getString("class", "EffectSingle");
+                try {
+                    if (!effectClass.contains(".")) {
+                        effectClass = EFFECT_BUILTIN_CLASSPATH + "." + effectClass;
                     }
+                    Class<?> genericClass = effectClasses.get(effectClass);
+                    if (genericClass == null) {
+                        genericClass = Class.forName(effectClass);
+                        effectClasses.put(effectClass, genericClass);
+                    }
+                    if (!EffectPlayer.class.isAssignableFrom(genericClass)) {
+                        throw new Exception("Must extend EffectPlayer");
+                    }
+
+                    Class<? extends EffectPlayer> playerClass = (Class<? extends EffectPlayer>)genericClass;
+                    EffectPlayer player = playerClass.newInstance();
+                    player.load(plugin, effectValues);
+                    players.add(player);
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                    plugin.getLogger().info("Error creating effect class: " + effectClass + " " + ex.getMessage());
                 }
             }
         }
