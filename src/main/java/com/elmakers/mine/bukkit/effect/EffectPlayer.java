@@ -101,7 +101,6 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
 
     protected float scale = 1.0f;
 
-    protected Vector offset = new Vector(0, 0, 0);
     protected Map<String, String> parameterMap = null;
 
     public EffectPlayer() {
@@ -324,17 +323,6 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
 
     @SuppressWarnings("deprecation")
     private void performEffect(Location sourceLocation, Entity sourceEntity, Location targetLocation, Entity targetEntity) {
-        if (offset != null) {
-            if (sourceLocation != null) {
-                sourceLocation = sourceLocation.clone();
-                sourceLocation.add(offset);
-            }
-            if (targetLocation != null) {
-                targetLocation = targetLocation.clone();
-                targetLocation.add(offset);
-            }
-        }
-
         if (effectLib != null && effectLibConfig != null) {
 
             EffectLibPlay play = new EffectLibPlay(effectLib.play(effectLibConfig, this, sourceLocation, sourceEntity, targetLocation, targetEntity, parameterMap));
@@ -544,12 +532,6 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
 
     public Color getColor2() {
         return color2 != null ? color2 : color;
-    }
-
-    public void setOffset(float x, float y, float z) {
-        offset.setX(x);
-        offset.setY(y);
-        offset.setZ(z);
     }
 
     public abstract void play();
