@@ -5731,7 +5731,7 @@ blaster:
              class: SphereEffect
              iterations: 100
              period: 4
-             particle: smoke_normal
+             particle: redstone
              radius: 0.2
              particles: 20
         hit:
@@ -5739,7 +5739,7 @@ blaster:
            location: target
            effectlib:
              class: SphereEffect
-             particle: flame
+             particle: redstone
              iterations: 10
              radius: 2
         backfire:
@@ -5757,7 +5757,7 @@ blaster:
         target_breakables: 1
         bypass_backfire: false
         cooldown: 1000
-        speed: 0.1
+        speed: 0.5
     costs:
         mana: 15
 
@@ -6141,11 +6141,8 @@ kill:
     upgrade_required_casts: 50
     actions:
       cast:
-        - class: Delay
-        - class: Retarget
+        - class: CustomProjectile
           actions:
-          - class: PlayEffects
-            effect: fire
           - class: Damage
     effects:
         cast:
@@ -6162,31 +6159,29 @@ kill:
              colorOrbital: "00FF00"
              iterations: 16
              radius: 5
-        fire:
+        projectile:
         - class: EffectSingle
-          sound: magic.zap_big
-          sound_volume: 1
-          location: origin
           effectlib:
-             class: ConeEffect
-             iterations: 16
-             particle: spell_mob
-             color: 00FF00
-             lengthGrow: 0.4
+             class: SphereEffect
+             particle: redstone
+             color: "00FF00"
+             iterations: 100
+             radius: $size
+        hit:
         - class: EffectSingle
-          location: targets
+          location: target
           color: "00FF00"
           firework: ball_large
     parameters:
-        target: other
+        target: none
         target_type: LivingEntity
         cooldown: 30000
         cooldown_mage: 10000
         target_breakables: 5
         bypass_backfire: true
         damage: 20
-        delay: 3000
-        range: 16
+        size: 1
+        speed: 0.1
     costs:
         mana: 150
 
@@ -6195,14 +6190,16 @@ kill|2:
     upgrade_required_casts: 50
     parameters:
         cooldown_mage: 8000
-        delay: 2000
         damage: 40
+        size: 2
+        speed: 0.2
 
 kill|3:
     parameters:
         cooldown_mage: 5000
-        delay: 1000
         damage: 60
+        size: 3
+        speed: 0.3
 
 superkill:
     icon: skull_item:1
