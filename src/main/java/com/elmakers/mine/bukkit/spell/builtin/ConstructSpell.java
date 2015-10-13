@@ -258,7 +258,10 @@ public class ConstructSpell extends BrushSpell
 	protected void loadTemplate(ConfigurationSection node)
 	{
 		super.loadTemplate(node);
-		powered = parameters.getBoolean("power", false);
+		ConfigurationSection parameters = node.getConfigurationSection("parameters");
+		if (parameters != null) {
+			powered = parameters.getBoolean("power", false);
+		}
 	}
 
 	@Override

@@ -1523,7 +1523,7 @@ frost:
              iterations: 10
              period: 4
              particle: snowball
-             radius: 5
+             radius: $radius
     parameters:
         target: block
         allow_max_range: false
@@ -1547,29 +1547,6 @@ frost:
 frost|2:
     upgrade_required_path: apprentice
     upgrade_required_casts: 50
-    effects:
-        cast:
-        -  class: EffectSingle
-           sound: magic.zap
-           effectlib:
-             class: ConeEffect
-             iterations: 15
-             particle: snowball
-             particles: 5
-             lengthGrow: 0.4
-        -  class: EffectSingle
-           location: target
-           color: F5EFFB
-           firework: ball
-        - class: EffectSingle
-          location: target
-          target_offset: 0,2,0
-          effectlib:
-             class: SphereEffect
-             iterations: 15
-             period: 3
-             particle: snowball
-             radius: 8
     parameters:
         radius: 2
         player_damage: 2

@@ -7,6 +7,7 @@
  - Update bending configs
    - Add Air Scooter
    - Update several powers to canon names and descriptions
+ - Add support for EffectLib parameters (see: frost)
 
 ## 5.2.1
 
