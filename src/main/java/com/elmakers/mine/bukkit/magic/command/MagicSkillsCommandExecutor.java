@@ -1,7 +1,7 @@
 package com.elmakers.mine.bukkit.magic.command;
 
 import com.elmakers.mine.bukkit.api.magic.MagicAPI;
-import com.elmakers.mine.bukkit.heroes.SkillsSelector;
+import com.elmakers.mine.bukkit.action.builtin.SkillsSelector;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
