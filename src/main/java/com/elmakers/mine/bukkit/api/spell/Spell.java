@@ -60,4 +60,5 @@ public interface Spell extends SpellTemplate {
     public Color getEffectColor();
     public MaterialBrush getBrush();
     public boolean isCancellable();
+    public ConfigurationSection getWorkingParameters();
 }

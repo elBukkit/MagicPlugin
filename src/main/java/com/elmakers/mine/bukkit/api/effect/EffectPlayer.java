@@ -10,6 +10,7 @@ import com.elmakers.mine.bukkit.api.block.MaterialAndData;
 import org.bukkit.entity.Entity;
 
 import java.util.Collection;
+import java.util.Map;
 
 public interface EffectPlayer {
     public void setEffectPlayList(Collection<EffectPlay> plays);
@@ -19,6 +20,7 @@ public interface EffectPlayer {
 
     public void setSound(Sound sound);
     public void setSound(Sound sound, float volume, float pitch);
+    public void setParameterMap(Map<String, String> parameters);
 
     public void setDelayTicks(int ticks);
 
