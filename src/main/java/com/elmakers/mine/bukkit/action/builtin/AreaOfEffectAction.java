@@ -71,7 +71,7 @@ public class AreaOfEffectAction extends CompoundEntityAction
         {
             for (Entity entity : candidates)
             {
-                if ((targetSelf || entity != sourceEntity) && context.canTarget(entity))
+                if ((targetSelf || !entity.equals(sourceEntity)) && context.canTarget(entity))
                 {
                     entities.add(new WeakReference<Entity>(entity));
                 }

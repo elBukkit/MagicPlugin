@@ -7,15 +7,20 @@ import com.elmakers.mine.bukkit.api.effect.EffectPlayer;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
+import com.elmakers.mine.bukkit.utility.BoundingBox;
+import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import de.slikey.effectlib.util.DynamicLocation;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Entity;
 import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
 
 public class CustomProjectileAction extends CompoundAction
 {
@@ -25,6 +30,9 @@ public class CustomProjectileAction extends CompoundAction
     private int startDistance;
     private String projectileEffectKey;
     private String hitEffectKey;
+    private boolean targetEntities;
+    private boolean targetSelf;
+    private double radius;
 
     private long lastUpdate;
     private long nextUpdate;
@@ -33,6 +41,16 @@ public class CustomProjectileAction extends CompoundAction
     private Vector velocity = null;
     private DynamicLocation effectLocation = null;
     private Collection<EffectPlay> activeProjectileEffects;
+
+    private class CandidateEntity {
+        public final Entity entity;
+        public final BoundingBox bounds;
+
+        public CandidateEntity(Entity entity) {
+            this.entity = entity;
+            this.bounds = CompatibilityUtils.getHitbox(entity).expand(radius);
+        }
+    }
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters) {
@@ -43,6 +61,9 @@ public class CustomProjectileAction extends CompoundAction
         startDistance = parameters.getInt("start", 0);
         projectileEffectKey = parameters.getString("projectile_effects", "projectile");
         hitEffectKey = parameters.getString("hit_effects", "hit");
+        targetEntities = parameters.getBoolean("target_entities", true);
+        targetSelf = parameters.getBoolean("target_self", false);
+        radius = parameters.getDouble("size", 1) / 2;
     }
 
     @Override
@@ -116,39 +137,75 @@ public class CustomProjectileAction extends CompoundAction
         // Advance position, checking for collisions
         long delta = now - lastUpdate;
         lastUpdate = now;
-        if (delta > 0) {
-            double remainingSpeed = speed * delta / 50;
-            while (remainingSpeed > 0) {
-                Block block = targetLocation.getBlock();
-                if (!block.getChunk().isLoaded()) {
-                    hit(context);
-                    return SpellResult.PENDING;
-                }
-                if (!context.isTransparent(block.getType())) {
-                    hit(context);
-                    return SpellResult.PENDING;
-                }
 
-                double partialSpeed = Math.min(0.5, remainingSpeed);
-                Vector speedVector = velocity.clone().multiply(partialSpeed);
-                remainingSpeed -= 0.5;
-                Vector newLocation = targetLocation.toVector().add(speedVector);
+        // Compute incremental speed movement
+        double remainingSpeed = speed * delta / 50;
+        double expectedIterations = Math.ceil(remainingSpeed);
 
-                // Skip over same blocks, we increment by 0.5 to try and catch diagonals
-                if (newLocation.getBlockX() == targetLocation.getBlockX()
-                        && newLocation.getBlockY() == targetLocation.getBlockY()
-                        && newLocation.getBlockZ() == targetLocation.getBlockZ()) {
-                    remainingSpeed -= 0.5;
-                    newLocation = newLocation.add(speedVector);
-                    targetLocation.setX(newLocation.getX());
-                    targetLocation.setY(newLocation.getY());
-                    targetLocation.setZ(newLocation.getZ());
-                } else {
-                    targetLocation.setX(newLocation.getX());
-                    targetLocation.setY(newLocation.getY());
-                    targetLocation.setZ(newLocation.getZ());
+        List<CandidateEntity> candidates = null;
+        if (radius > 0 && targetEntities) {
+            Entity sourceEntity = context.getEntity();
+            candidates = new ArrayList<CandidateEntity>();
+            List<Entity> nearbyEntities = CompatibilityUtils.getNearbyEntities(targetLocation, expectedIterations * radius, expectedIterations * radius, expectedIterations * radius);
+
+            for (Entity entity : nearbyEntities)
+            {
+                if ((targetSelf || entity != sourceEntity) && context.canTarget(entity))
+                {
+                    candidates.add(new CandidateEntity(entity));
                 }
             }
+
+            if (candidates.isEmpty()) {
+                candidates = null;
+            }
+        }
+
+        // Put a sane limit on the number of iterations here
+        for (int i = 0; i < 256; i++) {
+            // Check for entity collisions first
+            Vector targetVector = targetLocation.toVector();
+            if (candidates != null) {
+                for (CandidateEntity candidate : candidates) {
+                    if (candidate.bounds.contains(targetVector)) {
+                        context.setTargetEntity(candidate.entity);
+                        hit(context);
+                        return SpellResult.PENDING;
+                    }
+                }
+            }
+
+            Block block = targetLocation.getBlock();
+            if (!block.getChunk().isLoaded()) {
+                hit(context);
+                return SpellResult.PENDING;
+            }
+            if (!context.isTransparent(block.getType())) {
+                hit(context);
+                return SpellResult.PENDING;
+            }
+
+            double partialSpeed = Math.min(0.5, remainingSpeed);
+            Vector speedVector = velocity.clone().multiply(partialSpeed);
+            remainingSpeed -= 0.5;
+            Vector newLocation = targetLocation.toVector().add(speedVector);
+
+            // Skip over same blocks, we increment by 0.5 to try and catch diagonals
+            if (newLocation.getBlockX() == targetLocation.getBlockX()
+                    && newLocation.getBlockY() == targetLocation.getBlockY()
+                    && newLocation.getBlockZ() == targetLocation.getBlockZ()) {
+                remainingSpeed -= 0.5;
+                newLocation = newLocation.add(speedVector);
+                targetLocation.setX(newLocation.getX());
+                targetLocation.setY(newLocation.getY());
+                targetLocation.setZ(newLocation.getZ());
+            } else {
+                targetLocation.setX(newLocation.getX());
+                targetLocation.setY(newLocation.getY());
+                targetLocation.setZ(newLocation.getZ());
+            }
+
+            if (remainingSpeed <= 0) break;
         }
 
 		return SpellResult.PENDING;
@@ -172,6 +229,8 @@ public class CustomProjectileAction extends CompoundAction
         parameters.add("lifetime");
         parameters.add("speed");
         parameters.add("start");
+        parameters.add("target_entities");
+        parameters.add("target_self");
     }
 
     @Override
@@ -180,8 +239,10 @@ public class CustomProjectileAction extends CompoundAction
         super.getParameterOptions(spell, parameterKey, examples);
 
         if (parameterKey.equals("speed") || parameterKey.equals("lifetime") ||
-            parameterKey.equals("interval") || parameterKey.equals("start")) {
+            parameterKey.equals("interval") || parameterKey.equals("start") || parameterKey.equals("size")) {
             examples.addAll(Arrays.asList(BaseSpell.EXAMPLE_SIZES));
+        } else if (parameterKey.equals("target_entities") || parameterKey.equals("target_self")) {
+            examples.addAll(Arrays.asList(BaseSpell.EXAMPLE_BOOLEANS));
         }
     }
 }

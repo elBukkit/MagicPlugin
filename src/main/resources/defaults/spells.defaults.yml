@@ -5717,6 +5717,8 @@ blaster:
     actions:
         cast:
         - class: CustomProjectile
+          actions:
+          - class: Damage
     effects:
         cast:
         -  class: EffectSingle
@@ -5730,15 +5732,16 @@ blaster:
              iterations: 100
              period: 4
              particle: smoke_normal
-             radius: 0.5
+             radius: 0.2
              particles: 20
         hit:
         -  class: EffectSingle
            location: target
            effectlib:
-             class: HelixEffect
+             class: SphereEffect
              particle: flame
-             iterations: 1
+             iterations: 10
+             radius: 2
         backfire:
         -  class: EffectSingle
            sound: magic.zap
