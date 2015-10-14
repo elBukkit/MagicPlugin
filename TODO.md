@@ -1,5 +1,6 @@
 # TODO
 
+ - Show countdown in hotbar for duration-based or active-cost spells
  - Add templates to messages.yml for all the various forms a wand and spell
    name can take.
 

@@ -329,6 +329,11 @@ player_data_store:
 # Whether or not allow players breaking locked containers they don't own
 protect_locked: true
 
+# Visible particle max range
+# Descrease this if you find you have client or server performance issues
+# Related to particle range
+particle_range: 48
+
 #
 # Special materials used to represent icons in the material brush system
 #

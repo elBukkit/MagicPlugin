@@ -4,9 +4,11 @@
 
  - Add CustomProjectile action, re-work Kill spell and Blaster item
  - Add /wand save command, for saving an in-game wand back to a template configuration
+ - Add "particle_range" config option, increase visible particle range by default
  - Add "wand_self_destruct_key", for self-destructing old wands after a reset
  - Update bending configs
    - Add Air Scooter
+   - Add Water Whip, Ice Shield
    - Update several powers to canon names and descriptions
  - Add support for EffectLib parameters (see: frost)
 

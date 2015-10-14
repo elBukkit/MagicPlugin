@@ -2007,6 +2007,7 @@ public class MagicController implements MageController {
 
         EffectPlayer.debugEffects(properties.getBoolean("debug_effects", false));
         CompatibilityUtils.USE_MAGIC_DAMAGE = properties.getBoolean("use_magic_damage", CompatibilityUtils.USE_MAGIC_DAMAGE);
+        EffectPlayer.setParticleRange(properties.getInt("particle_range", EffectPlayer.PARTICLE_RANGE));
 
         logVerbosity = properties.getInt("log_verbosity", 0);
         exampleDefaults = properties.getString("example", exampleDefaults);
