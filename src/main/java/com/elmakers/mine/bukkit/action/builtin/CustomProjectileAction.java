@@ -29,12 +29,15 @@ public class CustomProjectileAction extends CompoundAction
     private int startDistance;
     private String projectileEffectKey;
     private String hitEffectKey;
+    private String tickEffectKey;
     private boolean targetEntities;
     private boolean targetSelf;
     private double radius;
     private double gravity;
     private double drag;
+    private double tickSize;
 
+    private boolean hasTickEffects;
     private long lastUpdate;
     private long nextUpdate;
     private long deadline;
@@ -62,11 +65,14 @@ public class CustomProjectileAction extends CompoundAction
         startDistance = parameters.getInt("start", 0);
         projectileEffectKey = parameters.getString("projectile_effects", "projectile");
         hitEffectKey = parameters.getString("hit_effects", "hit");
+        tickEffectKey = parameters.getString("tick_effects", "tick");
         targetEntities = parameters.getBoolean("target_entities", true);
         targetSelf = parameters.getBoolean("target_self", false);
         radius = parameters.getDouble("size", 1) / 2;
         gravity = parameters.getDouble("gravity", 0);
         drag = parameters.getDouble("drag", 0);
+        tickSize = parameters.getDouble("tick_size", 0.5);
+        hasTickEffects = context.getEffects(tickEffectKey).size() > 0;
     }
 
     @Override
@@ -180,6 +186,12 @@ public class CustomProjectileAction extends CompoundAction
 
         // Put a sane limit on the number of iterations here
         for (int i = 0; i < 256; i++) {
+            // Play tick FX
+            if (hasTickEffects) {
+                context.setTargetLocation(targetLocation);
+                context.playEffects(tickEffectKey);
+            }
+
             // Check for entity collisions first
             Vector targetVector = targetLocation.toVector();
             if (candidates != null) {
@@ -203,20 +215,25 @@ public class CustomProjectileAction extends CompoundAction
                 return hit(context);
             }
 
-            double partialSpeed = Math.min(0.5, remainingSpeed);
+            double partialSpeed = Math.min(tickSize, remainingSpeed);
             Vector speedVector = velocity.clone().multiply(partialSpeed);
-            remainingSpeed -= 0.5;
+            remainingSpeed -= tickSize;
             Vector newLocation = targetLocation.toVector().add(speedVector);
 
-            // Skip over same blocks, we increment by 0.5 to try and catch diagonals
+            // Skip over same blocks, we increment by 0.5 (by default) to try and catch diagonals
             if (newLocation.getBlockX() == targetLocation.getBlockX()
                     && newLocation.getBlockY() == targetLocation.getBlockY()
                     && newLocation.getBlockZ() == targetLocation.getBlockZ()) {
-                remainingSpeed -= 0.5;
+                remainingSpeed -= tickSize;
                 newLocation = newLocation.add(speedVector);
                 targetLocation.setX(newLocation.getX());
                 targetLocation.setY(newLocation.getY());
                 targetLocation.setZ(newLocation.getZ());
+
+                if (hasTickEffects) {
+                    context.setTargetLocation(targetLocation);
+                    context.playEffects(tickEffectKey);
+                }
             } else {
                 targetLocation.setX(newLocation.getX());
                 targetLocation.setY(newLocation.getY());
@@ -261,7 +278,7 @@ public class CustomProjectileAction extends CompoundAction
 
         if (parameterKey.equals("speed") || parameterKey.equals("lifetime") ||
             parameterKey.equals("interval") || parameterKey.equals("start") || parameterKey.equals("size") ||
-            parameterKey.equals("gravity") || parameterKey.equals("drag")) {
+            parameterKey.equals("gravity") || parameterKey.equals("drag") || parameterKey.equals("tick_size")) {
             examples.addAll(Arrays.asList(BaseSpell.EXAMPLE_SIZES));
         } else if (parameterKey.equals("target_entities") || parameterKey.equals("target_self")) {
             examples.addAll(Arrays.asList(BaseSpell.EXAMPLE_BOOLEANS));
