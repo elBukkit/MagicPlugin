@@ -152,7 +152,7 @@ public class ChangeContextAction extends CompoundAction {
         {
             context.setTargetLocation(targetLocation);
         }
-        CastContext newContext = createContext(context, sourceEntity, sourceLocation, targetEntity, targetLocation);
-        return super.perform(newContext);
+        createActionContext(context, sourceEntity, sourceLocation, targetEntity, targetLocation);
+        return super.perform(actionContext);
     }
 }
