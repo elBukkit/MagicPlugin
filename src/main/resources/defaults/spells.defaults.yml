@@ -1202,7 +1202,6 @@ push:
         allow_max_range: true
         item_speed: 0.1
         living_entity_speed: 0.5
-        push: 1
         repeat: 3
         delay: 250
     costs:
@@ -1218,6 +1217,7 @@ push|2:
             radius: 8
             actions:
             - class: Velocity
+              push: 1
     effects:
         alternate_down:
         -  class: EffectSingle

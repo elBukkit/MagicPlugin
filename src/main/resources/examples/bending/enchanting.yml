@@ -63,6 +63,9 @@ airbending:
       airscooter: 5
       breathofwind: 20
       airbomb: 10
+      airshield: 5
+      enhancedspeed: 20
+      tornado: 1
 
 waterbending:
     inherit: default
@@ -97,12 +100,10 @@ earthbending:
     spells:
       block: 20
       compression: 5
-      iterate: 5
       harden: 15
       sandspout: 40
       collapse: 5
       earthsmash: 5
-      breach: 1
       earthquake: 1
 
 firebending:

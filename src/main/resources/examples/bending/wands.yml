@@ -94,7 +94,7 @@ avatar:
     indestructible: true
     effect_color: 'FFFFFF'
     effect_bubbles: true
-    active_spell: levitate
+    active_spell: airsphere
     spells:
         - fling
         - airblast
@@ -109,7 +109,7 @@ avatar:
         - breach
         - breathofice
         - waterball
-        - levitate
+        - airsphere
         - combustion|2
         - heal
         - cure
@@ -142,10 +142,10 @@ wolf:
     effect_particle_count: 0
     organize: true
     mode: inventory
-    active_spell: levitate
+    active_spell: airsphere
     overrides: max_dimension 1024
     spells:
-        - levitate@0
+        - airsphere@0
         - blink|3@1
         - fling|2@2
         - day@4

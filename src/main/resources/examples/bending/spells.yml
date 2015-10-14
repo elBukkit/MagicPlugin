@@ -44,20 +44,20 @@ airblast:
       - class: ChangeContext
         target_caster: true
         actions:
+        - class: FallProtection
         - class: VelocityAction
           y_offset: 1
-          push: 0
         - class: Repeat
           actions:
           - class: Delay
           - class: VelocityAction
-            push: 0
   parameters:
       living_entity_speed: 0.7
       range: 16
       target_count: 8
       repeat: 4
       cooldown: 500
+      duration: 10000
 
 airbomb:
     icon_url: http://textures.minecraft.net/texture/44a760e06345bd9edd2475d6469dfb952278ca3ec7634aa334e1d7bfcc8644f
@@ -97,9 +97,76 @@ suction:
   inherit: pull
   category: airbending
 
+tornado:
+  enabled: true
+  category: airbending
+
 fling:
      category: airbending
      enabled: true
+
+airshield:
+    icon_url: http://textures.minecraft.net/texture/3dbb78853b526f9b712b4e431fb332eae0e6cd3dea9a610e9ecf54c31f7c6d
+    icon: iron_helmet
+    category: airbending
+    worth: 2000
+    actions:
+        cast:
+        -  class: Plane
+           actions:
+           -  class: ModifyBlock
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: magic.shield_boom
+           location: origin
+    parameters:
+        allow_max_range: true
+        range: 2
+        radius: 1
+        axis: z
+        brush: web
+        orient: true
+        transparent: transparent_to_construction
+        destructible: air
+        check_destructible: true
+        brushcolor: true
+        undo: 1000
+        cooldown: 3000
+        breakable: 3
+        reflect_chance: 0.75
+        bypass_confusion: true
+        bypass_backfire: true
+    costs:
+        mana: 40
+
+enhancedspeed:
+    icon_url: http://textures.minecraft.net/texture/15987e49e7ed16df536f4dbf685e7720b88b4de6deaf614d84ab9f9884725c
+    icon: red_rose:2
+    category: airbending
+    worth: 600
+    actions:
+        cast:
+        -  class: PotionEffect
+    effects:
+        cast:
+           - class: EffectSingle
+             sound: enderdragon_wings
+             location: origin
+             use_wand_location: false
+             effectlib:
+                 class: SphereEffect
+                 particle: redstone
+                 color: FFFFFF
+                 radius: 2.5
+    costs:
+        mana: 50
+    parameters:
+        target: self
+        duration: 10000
+        cooldown: 15000
+        effect_speed: 2
+        effect_jump: 5
 
 airscooter:
     icon_url: http://textures.minecraft.net/texture/4a23ccd51565d2e246675c86aef11b5412662c15ecc2e9f3ef425adc91d1
@@ -114,13 +181,13 @@ airscooter:
            - class: EffectSingle
              sound: enderdragon_wings
              location: origin
-             color_override: color
              use_wand_location: false
              effectlib:
                  class: SphereEffect
                  particle: redstone
                  radius: 1.0
                  offset: 0,-1.5,0
+                 color: FFFFFF
         deactivate:
         -  class: EffectSingle
            sound: enderdragon_wings
@@ -203,6 +270,7 @@ breathofwind:
         cooldown: 1000
         speed: 2
         interval: 250
+        size: 3
     costs:
         mana: 40
 
@@ -245,7 +313,7 @@ waterwhip:
       size: 8
       brush: stationary_water
       increment_data: true
-      undo: 2000
+      undo: 800
       player_damage: 1
       entity_damage: 2
       cooldown: 5000
@@ -436,9 +504,9 @@ block:
 
 ### AVATAR
 
-levitate:
-     category: avatar
-     enabled: true
+airsphere:
+  inherit: levitate
+  category: avatar
 
 boon:
     enabled: true

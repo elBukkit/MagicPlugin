@@ -112,6 +112,15 @@ spells:
   airbomb:
     name: Air Bomb
     description: Force out a gust of wind in all directions
+  airshield:
+    name: Air Shield
+    description: Deflect foes and attacks with a shield of air
+  enhancedspeed:
+    name: Enhanced Speed
+    description: Move faster, jump farther using the air around you
+  airsphere:
+    name: Air Sphere
+    description: Fly in a protective shield of air
 
 paths:
     airbending:
