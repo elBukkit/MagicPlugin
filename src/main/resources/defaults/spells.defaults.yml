@@ -1211,9 +1211,13 @@ push:
 push|2:
     actions:
         alternate_down:
-        - class: Velocity
-          fov: 3
-          range: 8
+        - class: ChangeContext
+          target_caster: true
+          actions:
+          - class: AreaOfEffect
+            radius: 8
+            actions:
+            - class: Velocity
     effects:
         alternate_down:
         -  class: EffectSingle
@@ -1222,7 +1226,8 @@ push|2:
            sound_pitch: -0.1
            location: origin
            effectlib:
-             class: VortexEffect
+             class: HelixEffect
+             iterations: 1
              particle: spell
     parameters:
         living_entity_speed: 0.7

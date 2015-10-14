@@ -393,7 +393,6 @@ napalm:
     costs:
         mana: 555
 
-
 rainbow:
     parameters:
        undo: 10000

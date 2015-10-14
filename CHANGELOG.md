@@ -7,7 +7,7 @@
  - Add "particle_range" config option, increase visible particle range by default
  - Add "wand_self_destruct_key", for self-destructing old wands after a reset
  - Update bending configs
-   - Add Air Scooter
+   - Add Air Scooter, Breath of Wind, Air Bomb
    - Add Water Whip, Ice Shield
    - Update several powers to canon names and descriptions
  - Add support for EffectLib parameters (see: frost)

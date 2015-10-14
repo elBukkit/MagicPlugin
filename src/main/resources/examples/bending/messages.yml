@@ -106,6 +106,12 @@ spells:
   airscooter:
     name: Air Scooter
     description: Travel in style on a cushion of air
+  breathofwind:
+    name: Breath of Wind
+    description: Exhale a powerful gust of wind to damage and push your opponents
+  airbomb:
+    name: Air Bomb
+    description: Force out a gust of wind in all directions
 
 paths:
     airbending:

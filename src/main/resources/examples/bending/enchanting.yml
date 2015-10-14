@@ -61,6 +61,8 @@ airbending:
       airblast: 80
       suction: 10
       airscooter: 5
+      breathofwind: 20
+      airbomb: 10
 
 waterbending:
     inherit: default

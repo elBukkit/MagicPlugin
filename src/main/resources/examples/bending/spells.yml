@@ -39,6 +39,59 @@ lava:
 airblast:
   inherit: push
   category: airbending
+  actions:
+      alternate_sneak:
+      - class: ChangeContext
+        target_caster: true
+        actions:
+        - class: VelocityAction
+          y_offset: 1
+          push: 0
+        - class: Repeat
+          actions:
+          - class: Delay
+          - class: VelocityAction
+            push: 0
+  parameters:
+      living_entity_speed: 0.7
+      range: 16
+      target_count: 8
+      repeat: 4
+      cooldown: 500
+
+airbomb:
+    icon_url: http://textures.minecraft.net/texture/44a760e06345bd9edd2475d6469dfb952278ca3ec7634aa334e1d7bfcc8644f
+    icon: rails
+    category: airbending
+    worth: 500
+    actions:
+        cast:
+        - class: AreaOfEffect
+          radius: 8
+          actions:
+          - class: Velocity
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: fizz
+           sound_volume: 1
+           sound_pitch: -0.1
+           location: origin
+           effectlib:
+             class: HelixEffect
+             particle: spell
+             iterations: 1
+    parameters:
+        target: self
+        target_type: Entity
+        target_count: 8
+        item_speed: 0.1
+        living_entity_speed: 1
+        push: 1
+        cooldown: 5000
+        y_offset: 1
+    costs:
+        mana: 50
 
 suction:
   inherit: pull
@@ -102,6 +155,56 @@ airscooter:
     active_costs:
         mana: 10
 
+breathofwind:
+    icon: ink_sack:1
+    icon_url: http://textures.minecraft.net/texture/44a760e06345bd9edd2475d6469dfb952278ca3ec7634aa334e1d7bfcc8644f
+    category: airbending
+    worth: 1500
+    actions:
+        cast:
+        - class: CustomProjectile
+          actions:
+          - class: Damage
+          - class: Velocity
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: fizz
+           sound_volume: .3
+        tick:
+        - particle: spell
+          location: target
+          particle_count: 8
+          particle_offset_x: 0.8
+          particle_offset_y: 0.8
+          particle_offset_z: 0.8
+        hit:
+        -  class: EffectSingle
+           location: target
+           effectlib:
+             class: SphereEffect
+             particle: spell
+             iterations: 10
+             radius: 3
+        backfire:
+        -  class: EffectSingle
+           sound: magic.zap
+        -  class: EffectSingle
+           sound: magic.zap_crack
+           location: origin
+           entity_effect: hurt
+    parameters:
+        target: none
+        target_type: LivingEntity
+        player_damage: 2
+        entity_damage: 4
+        target_breakables: 1
+        bypass_backfire: false
+        cooldown: 1000
+        speed: 2
+    costs:
+        mana: 40
+
 ### WATERBENDING
 
 waterjet:
@@ -111,6 +214,7 @@ waterjet:
     player_damage: 4
     entity_damage: 6
     range: 6
+    speed: 1
 
 waterwhip:
   category: waterbending
