@@ -1,0 +1,21 @@
+spells:
+  train_waterbender:
+    no_path: We only train waterbenders here!
+    no_upgrade: We only train waterbenders here!
+    no_wand: Please have your bending powers at the ready!
+    fail: ""
+  train_airbender:
+    no_path: We only train airbenders here!
+    no_upgrade: We only train airbenders here!
+    no_wand: Please have your bending powers at the ready!
+    fail: ""
+  train_firebender:
+    no_path: We only train firebenders here!
+    no_upgrade: We only train firebenders here!
+    no_wand: Please have your bending powers at the ready!
+    fail: ""
+  train_earthbender:
+    no_path: We only train earthbenders here!
+    no_upgrade: We only train earthbenders here!
+    no_wand: Please have your bending powers at the ready!
+    fail: ""

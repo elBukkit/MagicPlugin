@@ -29,6 +29,11 @@ recall:
         description: Home of Airbenders
         locked: true
         icon: web
+      wilderness:
+        name: The Wilderness
+        description: For honing your skills
+        locked: false
+        icon: sapling
 
 become_airbender:
   actions:
@@ -66,6 +71,54 @@ become_earthbender:
     warp: earth
     item: wand:earthbending
 
-enchantwand:
-  parameters:
-    cooldown: 1200000
+train_waterbender:
+    icon: iron_hoe
+    category: specialty
+    hidden: true
+    actions:
+        cast:
+        -  class: EnchantWand
+    parameters:
+        levels: 30
+        cooldown: 1200000
+        loud: true
+        path: waterbending
+
+train_airbender:
+    icon: iron_hoe
+    category: specialty
+    hidden: true
+    actions:
+        cast:
+        -  class: EnchantWand
+    parameters:
+        levels: 30
+        cooldown: 1200000
+        loud: true
+        path: airbending
+
+train_earthbender:
+    icon: iron_hoe
+    category: specialty
+    hidden: true
+    actions:
+        cast:
+        -  class: EnchantWand
+    parameters:
+        levels: 30
+        cooldown: 1200000
+        loud: true
+        path: earthbending
+
+train_firebender:
+    icon: iron_hoe
+    category: specialty
+    hidden: true
+    actions:
+        cast:
+        -  class: EnchantWand
+    parameters:
+        levels: 30
+        cooldown: 1200000
+        loud: true
+        path: firebending
