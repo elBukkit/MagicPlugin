@@ -790,6 +790,7 @@ public class WandCommandExecutor extends MagicTabExecutor {
 	protected boolean checkWand(CommandSender sender, Player player, boolean skipModifiable, boolean skipBound, boolean quiet)
 	{
 		Mage mage = api.getMage(player);
+		if (mage == null) return false;
 		Wand wand = mage.getActiveWand();
 		
 		if (wand == null) {
