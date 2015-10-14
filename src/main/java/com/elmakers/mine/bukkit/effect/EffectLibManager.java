@@ -40,6 +40,12 @@ public class EffectLibManager {
         }
     }
 
+    public void setParticleRange(int range) {
+        if (effectManager != null) {
+            effectManager.setParticleRange(range);
+        }
+    }
+
     public Effect play(ConfigurationSection configuration, EffectPlayer player, DynamicLocation origin, DynamicLocation target, Map<String, String> parameterMap) {
         if (parameterMap == null) {
             parameterMap = new HashMap<String, String>();

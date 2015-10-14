@@ -26,7 +26,7 @@ import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 
 public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effect.EffectPlayer {
     private static final String EFFECT_BUILTIN_CLASSPATH = "com.elmakers.mine.bukkit.effect.builtin";
-    public static final int PARTICLE_RANGE = 32;
+    public static int PARTICLE_RANGE = 32;
 
     public static boolean initialize(Plugin plugin) {
         effectLib = EffectLibManager.initialize(plugin);
@@ -36,6 +36,13 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
     public static void debugEffects(boolean debug) {
         if (effectLib != null) {
             effectLib.enableDebug(debug);
+        }
+    }
+
+    public static void setParticleRange(int range) {
+        PARTICLE_RANGE = range;
+        if (effectLib != null) {
+            effectLib.setParticleRange(range);
         }
     }
 
