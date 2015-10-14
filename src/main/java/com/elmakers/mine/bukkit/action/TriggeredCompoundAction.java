@@ -150,6 +150,10 @@ public abstract class TriggeredCompoundAction extends BaseSpellAction implements
         actionContext = createContext(context, sourceEntity, sourceLocation);
     }
 
+    public void createActionContext(CastContext context, Entity sourceEntity, Location sourceLocation, Entity targetEntity, Location targetLocation) {
+        actionContext = createContext(context, sourceEntity, sourceLocation, targetEntity, targetLocation);
+    }
+
     public CastContext createContext(CastContext context) {
         return new com.elmakers.mine.bukkit.action.CastContext(context);
     }
