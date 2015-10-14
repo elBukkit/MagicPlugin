@@ -26,6 +26,7 @@ public class LineAction extends CompoundAction
     private boolean reverse;
     private boolean startAtTarget;
     private boolean requireBlock;
+    private boolean reorient;
 
     private int destination;
     private int current;
@@ -41,6 +42,7 @@ public class LineAction extends CompoundAction
         startAtTarget = parameters.getBoolean("start_at_target", false);
         reverse = parameters.getBoolean("reverse", false);
         requireBlock = parameters.getBoolean("require_block", false);
+        reorient = parameters.getBoolean("reorient", false);
 
         Mage mage = context.getMage();
         size = (int)(mage.getConstructionMultiplier() * (float)this.size);
@@ -51,27 +53,36 @@ public class LineAction extends CompoundAction
         super.reset(context);
         createActionContext(context);
         current = 0;
+        destination = 0;
 
         Location startLocation = context.getEyeLocation();
         Location targetLocation = context.getTargetLocation();
 
-        if (startLocation == null || targetLocation == null) return;
-
-        Vector targetLoc = new Vector(targetLocation.getX(), targetLocation.getY(), targetLocation.getZ());
+        if (startLocation == null) return;
         Vector playerLoc = startLocation.toVector();
-
-        direction = targetLoc.clone();
-        direction.subtract(playerLoc);
-        direction.normalize();
-
-        if (startAtTarget && !reverse) {
-            destination = size;
+        Vector targetLoc = null;
+        if (targetLocation == null) {
+            targetLocation = startLocation.clone();
+            direction = startLocation.getDirection();
         } else {
+            targetLoc = new Vector(targetLocation.getX(), targetLocation.getY(), targetLocation.getZ());
+            direction = targetLoc.clone();
+            direction.subtract(playerLoc);
+            direction.normalize();
+        }
+
+        // Need to fix all this when there is no target...
+        // and add a reorient option
+
+        destination = size;
+        if (!startAtTarget || reverse) {
             if (startDistance > 0) {
                 playerLoc.add(direction.clone().multiply(startDistance));
             }
 
-            destination = (int) playerLoc.distance(targetLoc);
+            if (targetLoc != null) {
+                destination = (int)playerLoc.distance(targetLoc);
+            }
             if (destination <= 0) return;
             destination = Math.min(destination, size);
 
@@ -81,9 +92,9 @@ public class LineAction extends CompoundAction
                 targetLocation.setX(playerLoc.getX());
                 targetLocation.setY(playerLoc.getY());
                 targetLocation.setZ(playerLoc.getZ());
-                actionContext.setTargetLocation(targetLocation);
             }
         }
+        actionContext.setTargetLocation(targetLocation);
     }
 
 	@SuppressWarnings("deprecation")
@@ -92,7 +103,7 @@ public class LineAction extends CompoundAction
     {
         MaterialBrush brush = context.getBrush();
         SpellResult result = SpellResult.NO_ACTION;
-        while (current < destination)
+        while (current <= destination)
         {
             Block currentTarget = actionContext.getTargetBlock();
             if (incrementData) {
@@ -123,14 +134,12 @@ public class LineAction extends CompoundAction
     protected void advance(CastContext context) {
         current++;
         Location target = actionContext.getTargetLocation();
+        if (reorient) {
+            direction = context.getDirection();
+        }
         target.add(direction);
         actionContext.setTargetLocation(target);
         super.reset(context);
-    }
-
-    @Override
-    public boolean requiresTarget() {
-        return true;
     }
 
     @Override
@@ -141,11 +150,13 @@ public class LineAction extends CompoundAction
         parameters.add("require_block");
         parameters.add("reverse");
         parameters.add("start");
+        parameters.add("reorient");
     }
 
     @Override
     public void getParameterOptions(Spell spell, String parameterKey, Collection<String> examples) {
-        if (parameterKey.equals("increment_data") || parameterKey.equals("reverse") || parameterKey.equals("require_block")) {
+        if (parameterKey.equals("increment_data") || parameterKey.equals("reverse")
+            || parameterKey.equals("require_block") || parameterKey.equals("reorient")) {
             examples.addAll(Arrays.asList((BaseSpell.EXAMPLE_BOOLEANS)));
         } else if (parameterKey.equals("size") || parameterKey.equals("start")) {
             examples.addAll(Arrays.asList((BaseSpell.EXAMPLE_SIZES)));
