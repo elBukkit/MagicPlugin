@@ -82,6 +82,12 @@ spells:
   waterjet:
     name: Water Jet
     description: Shoot a powerful jet of water
+  iceshield:
+    name: Ice Shield
+    description: Protect yourself with a wall of ice
+  waterwhip:
+    name: Water Whip
+    description: Control a damaging stream of water
   waterball:
     name: Water Ball
     description: Trap your opponent in a ball of water

@@ -18,9 +18,9 @@ airbending:
     effect_color: 'FFFFFF'
     active_spell: fling
     spells:
-        - fling
         - airblast
         - suction
+        - airscooter
 
 waterbending:
     path: waterbending

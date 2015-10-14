@@ -65,3 +65,7 @@ become_earthbender:
   parameters:
     warp: earth
     item: wand:earthbending
+
+enchantwand:
+  parameters:
+    cooldown: 1200000

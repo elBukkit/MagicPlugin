@@ -58,7 +58,6 @@ airbending:
     spell_count:
       1: 100
     spells:
-      fling: 100
       airblast: 80
       suction: 10
       airscooter: 5
@@ -80,6 +79,8 @@ waterbending:
       heal: 80
       cure: 10
       bloodbending: 1
+      waterwhip: 5
+      iceshield: 10
 
 earthbending:
     inherit: default

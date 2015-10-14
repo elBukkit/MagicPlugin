@@ -4991,14 +4991,16 @@ stream:
            actions:
            -  class: ModifyBlock
         -  class: Damage
+        -  class: Velocity
     effects:
         cast:
         -  class: EffectSingle
            sound: water
     parameters:
         target_type: LivingEntity
-        transparent: transparent_to_construction
         allow_max_range: true
+        check_destructible: true
+        destructible: air,fire
         range: 4
         size: 4
         brush: stationary_water
