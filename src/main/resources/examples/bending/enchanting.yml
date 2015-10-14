@@ -98,7 +98,7 @@ earthbending:
     spell_count:
       1: 100
     spells:
-      block: 20
+      earthblock: 20
       compression: 5
       harden: 15
       sandspout: 40

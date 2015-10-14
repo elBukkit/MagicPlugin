@@ -5743,11 +5743,9 @@ blaster:
         hit:
         -  class: EffectSingle
            location: target
-           effectlib:
-             class: SphereEffect
-             particle: redstone
-             iterations: 10
-             radius: 2
+           color: FF8800
+           color2: FF0000
+           firework: burst
         backfire:
         -  class: EffectSingle
            sound: magic.zap

@@ -9,8 +9,10 @@
  - Update bending configs
    - Add Air Scooter, Breath of Wind, Air Bomb, Enhanced Speed
    - Add Water Whip, Ice Shield
+   - Add Earth Line, Compression
    - Update powers to canon names and descriptions
  - Add support for EffectLib parameters (see: frost)
+ - Add "targetable" parameter for a targetable block type list
 
 ## 5.2.1
 

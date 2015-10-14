@@ -61,7 +61,7 @@ wands:
         description: Master of all four elements
 
 spells:
-  block:
+  earthblock:
     name: Earth Block
     description: Raise a block of earth and throw it at your foes
   firestream:

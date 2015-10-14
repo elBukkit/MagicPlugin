@@ -381,7 +381,10 @@ compression:
   inherit: blob
   category: earthbending
   parameters:
-     brush: dirt
+     brush: copy
+     check_destructible: true
+     destructible: destructible
+     targetable: earth
 
 breach:
      category: earthbending
@@ -399,13 +402,6 @@ harden:
      category: earthbending
      enabled: true
 
-iterate:
-     category: earthbending
-     enabled: true
-     parameters:
-       undo: 5000
-       brush: dirt
-
 earthquake:
      category: earthbending
      enabled: true
@@ -421,7 +417,7 @@ toss:
        undo: 5000
        brush: dirt
 
-block:
+earthblock:
     icon_url: http://textures.minecraft.net/texture/4a23ccd51565d2e246675c86aef11b5412662c15ecc2e9f3ef425adc91d1
     icon: ink_sack:8
     category: earthbending
@@ -487,8 +483,8 @@ block:
         range: 8
         damage: 4
         radius: 3
-        check_destructible: true
-        destructible: dirt,grass,stone
+        destructible: earth
+        targetable: earth
         undo: 15000
         cooldown: 2000
         offset: 0,2,0
@@ -501,6 +497,39 @@ block:
         living_entity_speed: 0.8
     costs:
         mana: 40
+
+earthline:
+  category: earthbending
+  icon_url: http://textures.minecraft.net/texture/ce5eef24e2cf406bcd9d2b44f418ac72e26731b9a7e7402490e473af8145e0ba
+  icon: ink_sack:2
+  worth: 1500
+  actions:
+      cast:
+      - class: Line
+        actions:
+        - class: ModifyBlock
+        - class: AreaOfEffect
+          actions:
+          - class: Damage
+        - class: Delay
+  effects:
+      cast:
+      - class: EffectSingle
+        sound: water
+  parameters:
+      target: none
+      reorient: true
+      target_type: LivingEntity
+      radius: 2
+      size: 8
+      brush: dirt
+      undo: 800
+      player_damage: 2
+      entity_damage: 4
+      cooldown: 8000
+      delay: 100
+  costs:
+      mana: 50
 
 ### AVATAR
 
