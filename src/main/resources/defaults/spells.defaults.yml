@@ -5764,6 +5764,7 @@ blaster:
         bypass_backfire: false
         cooldown: 1000
         speed: 0.5
+        interval: 250
     costs:
         mana: 15
 
@@ -6188,6 +6189,7 @@ kill:
         damage: 20
         size: 1
         speed: 0.1
+        interval: 250
     costs:
         mana: 150
 

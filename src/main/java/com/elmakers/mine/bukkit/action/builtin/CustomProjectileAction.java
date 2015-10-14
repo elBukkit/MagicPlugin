@@ -59,7 +59,7 @@ public class CustomProjectileAction extends CompoundAction
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters) {
         super.prepare(context, parameters);
-        interval = parameters.getInt("interval", 200);
+        interval = parameters.getInt("interval", 1);
         lifetime = parameters.getInt("lifetime", 5000);
         speed = parameters.getDouble("speed", 0.1);
         startDistance = parameters.getInt("start", 0);

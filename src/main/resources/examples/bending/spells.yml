@@ -202,6 +202,7 @@ breathofwind:
         bypass_backfire: false
         cooldown: 1000
         speed: 2
+        interval: 250
     costs:
         mana: 40
 
