@@ -1804,7 +1804,11 @@ public class MagicController implements MageController {
         boolean processInherited = addInherited && inheritFrom != null;
         if (processInherited || upgradeInheritsFrom != null)
         {
-            if (processInherited)
+            if (processInherited && key.equals(inheritFrom))
+            {
+                getLogger().warning("Spell " + key + " inherits from itself");
+            }
+            else if (processInherited)
             {
                 ConfigurationSection inheritConfig = getSpellConfig(inheritFrom, config);
                 if (inheritConfig != null)
