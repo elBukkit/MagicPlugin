@@ -80,6 +80,7 @@ public abstract class TargetingSpell extends BaseSpell {
     private double                              closeFOV                = 0.5;
 
     private Set<Material>                       targetThroughMaterials  = new HashSet<Material>();
+    private Set<Material>                       targetableMaterials     = null;
     private boolean                             reverseTargeting        = false;
     private boolean                             originAtTarget          = false;
     private boolean                             ignoreBlocks            = false;
@@ -170,6 +171,10 @@ public abstract class TargetingSpell extends BaseSpell {
         if (reverseTargeting)
         {
             return(targetThrough);
+        }
+        if (!targetThrough && targetableMaterials != null)
+        {
+            return targetableMaterials.contains(mat);
         }
         return !targetThrough;
     }
@@ -840,6 +845,13 @@ public abstract class TargetingSpell extends BaseSpell {
         } else {
             targetThroughMaterials.clear();
             targetThroughMaterials.addAll(controller.getMaterialSet("transparent"));
+        }
+
+        if (parameters.contains("targetable")) {
+            targetableMaterials = new HashSet<Material>();
+            targetableMaterials.addAll(controller.getMaterialSet(parameters.getString("targetable")));
+        } else {
+            targetableMaterials = null;
         }
 
         targetMinOffset = parameters.getInt("target_min_offset", 0);
