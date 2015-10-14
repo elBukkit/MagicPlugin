@@ -8,6 +8,7 @@ import com.elmakers.mine.bukkit.api.magic.MagicAPI;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.api.wand.Wand;
+import com.elmakers.mine.bukkit.api.wand.WandUpgradePath;
 import com.elmakers.mine.bukkit.magic.MagicPlugin;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import org.bukkit.configuration.ConfigurationSection;
@@ -22,11 +23,15 @@ public class EnchantWandAction extends BaseSpellAction
     private int levels;
     private boolean useXp;
     private ItemStack requireItem = null;
+    private String requiredPath = null;
+    private String exactPath = null;
 
     public void prepare(CastContext context, ConfigurationSection parameters) {
         super.prepare(context, parameters);
         levels = parameters.getInt("levels", 30);
         useXp = parameters.getBoolean("use_xp", false);
+        requiredPath = parameters.getString("path", null);
+        exactPath = parameters.getString("path_exact", null);
         String costKey = parameters.getString("requires");
         if (costKey != null && !costKey.isEmpty())
         {
@@ -52,6 +57,22 @@ public class EnchantWandAction extends BaseSpellAction
         if (wand == null) {
             context.sendMessage("no_wand");
             return SpellResult.FAIL;
+        }
+        if (requiredPath != null || exactPath != null) {
+            WandUpgradePath path = wand.getPath();
+            if (path == null) {
+                context.sendMessage(context.getMessage("no_upgrade").replace("$wand", wand.getName()));
+                return SpellResult.FAIL;
+            }
+            if ((requiredPath != null && !path.hasPath(requiredPath)) || (exactPath != null && !exactPath.equals(path.getKey()))) {
+                WandUpgradePath requiresPath = com.elmakers.mine.bukkit.wand.WandUpgradePath.getPath(requiredPath);
+                if (requiresPath != null) {
+                    context.sendMessage(context.getMessage("no_path").replace("$path", requiresPath.getName()));
+                } else {
+                    context.getLogger().warning("Invalid path specified in EnchantWand action: " + requiredPath);
+                }
+                return SpellResult.FAIL;
+            }
         }
         if (requireItem != null) {
             MageController controller = context.getController();
@@ -91,6 +112,8 @@ public class EnchantWandAction extends BaseSpellAction
         super.getParameterNames(spell, parameters);
         parameters.add("levels");
         parameters.add("use_xp");
+        parameters.add("path");
+        parameters.add("path_exact");
     }
 
     @Override
@@ -100,6 +123,8 @@ public class EnchantWandAction extends BaseSpellAction
             examples.addAll(Arrays.asList(BaseSpell.EXAMPLE_SIZES));
         } else if (parameterKey.equals("use_xp")) {
             examples.addAll(Arrays.asList(BaseSpell.EXAMPLE_BOOLEANS));
+        } else if (parameterKey.equals("path") || parameterKey.equals("path_exact")) {
+            examples.addAll(com.elmakers.mine.bukkit.wand.WandUpgradePath.getPathKeys());
         } else {
             super.getParameterOptions(spell, parameterKey, examples);
         }
