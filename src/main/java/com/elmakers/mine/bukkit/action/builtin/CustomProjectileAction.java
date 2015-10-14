@@ -92,7 +92,7 @@ public class CustomProjectileAction extends CompoundAction
         }
         if (now > deadline)
         {
-            hit(context);
+            return hit(context);
         }
         if (hit)
         {
@@ -151,8 +151,7 @@ public class CustomProjectileAction extends CompoundAction
             double size = velocity.length();
             size = size - drag * delta / 50;
             if (size <= 0) {
-                hit(context);
-                return SpellResult.PENDING;
+                return hit(context);
             }
             velocity.normalize().multiply(size);
         }
@@ -187,25 +186,21 @@ public class CustomProjectileAction extends CompoundAction
                 for (CandidateEntity candidate : candidates) {
                     if (candidate.bounds.contains(targetVector)) {
                         context.setTargetEntity(candidate.entity);
-                        hit(context);
-                        return SpellResult.PENDING;
+                        return hit(context);
                     }
                 }
             }
 
             int y = targetLocation.getBlockY();
             if (y >= targetLocation.getWorld().getMaxHeight() || y <= 0) {
-                hit(context);
-                return SpellResult.PENDING;
+                return hit(context);
             }
             Block block = targetLocation.getBlock();
             if (!block.getChunk().isLoaded()) {
-                hit(context);
-                return SpellResult.PENDING;
+                return hit(context);
             }
             if (!context.isTransparent(block.getType())) {
-                hit(context);
-                return SpellResult.PENDING;
+                return hit(context);
             }
 
             double partialSpeed = Math.min(0.5, remainingSpeed);
@@ -234,7 +229,7 @@ public class CustomProjectileAction extends CompoundAction
 		return SpellResult.PENDING;
 	}
 
-    protected void hit(CastContext context) {
+    protected SpellResult hit(CastContext context) {
         hit = true;
         if (activeProjectileEffects != null) {
             for (EffectPlay play : activeProjectileEffects) {
@@ -242,6 +237,7 @@ public class CustomProjectileAction extends CompoundAction
             }
         }
         context.playEffects(hitEffectKey);
+        return super.perform(context);
     }
 
     @Override
