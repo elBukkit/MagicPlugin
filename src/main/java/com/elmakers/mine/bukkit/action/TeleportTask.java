@@ -58,11 +58,11 @@ public class TeleportTask implements Runnable {
             }
             if (context != null) {
                 context.setTargetedLocation(targetLocation);
-                context.sendMessage("teleport");
+                context.sendMessageKey("teleport");
                 context.playEffects("teleport");
             }
         } else if (context != null) {
-            context.sendMessage("teleport_failed");
+            context.sendMessageKey("teleport_failed");
             context.playEffects("teleport_failed");
         }
     }

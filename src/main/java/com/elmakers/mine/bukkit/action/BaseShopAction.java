@@ -95,7 +95,7 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
         }
         Wand wand = mage.getActiveWand();
         if (wand == null) {
-            context.sendMessage("no_wand");
+            context.sendMessageKey("no_wand");
             return SpellResult.FAIL;
         }
 
@@ -265,7 +265,7 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
                 item = shopItem.getItem();
                 if (requireWand) {
                     if (wand == null) {
-                        context.sendMessage("no_wand");
+                        context.sendMessageKey("no_wand");
                         mage.deactivateGUI();
                         return;
                     }
@@ -399,7 +399,7 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
                     return SpellResult.CAST;
                 }
             }
-            context.sendMessage("no_items");
+            context.sendMessageKey("no_items");
             return SpellResult.FAIL;
         }
 
