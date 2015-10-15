@@ -99,6 +99,7 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
     protected float particleZOffset = 0.3f;
     protected int particleCount = 1;
 
+    protected boolean requireEntity = false;
     protected boolean useWandLocation = true;
     protected boolean useEyeLocation = true;
     protected boolean useHitLocation = true;
@@ -218,6 +219,7 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
         }
 
         setLocationType(configuration.getString("location", "origin"));
+        requireEntity = configuration.getBoolean("requires_entity", false);
         useWandLocation = configuration.getBoolean("use_wand_location", true);
         useEyeLocation = configuration.getBoolean("use_eye_location", true);
         useHitLocation = configuration.getBoolean("use_hit_location", true);
@@ -331,6 +333,9 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
     private void performEffect(DynamicLocation source, DynamicLocation target) {
         Location sourceLocation = source == null ? null : source.getLocation();
         if (sourceLocation == null) return;
+        Entity sourceEntity = source.getEntity();
+        if (requireEntity && sourceEntity == null) return;
+
         if (effectLib != null && effectLibConfig != null) {
 
             EffectLibPlay play = new EffectLibPlay(effectLib.play(effectLibConfig, this, source, target, parameterMap));
@@ -339,7 +344,6 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
                 currentEffects.add(play);
             }
         }
-        Entity sourceEntity = source.getEntity();
         if (effect != null) {
             int data = effectData == null ? 0 : effectData;
             if ((effect == Effect.STEP_SOUND) && effectData == null) {
