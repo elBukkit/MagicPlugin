@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
+import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.action.GUIAction;
 import com.elmakers.mine.bukkit.api.data.MageData;
 import com.elmakers.mine.bukkit.api.effect.SoundEffect;
@@ -341,12 +342,21 @@ public interface Mage extends CostReducer {
 
     /**
      * This should be called by a Spell upon
-     * completion, to notify the Mage that it cast a spell.
+     * casting, to notify the Mage that it cast a spell.
      *
      * @param spell The Spell that was cast
      * @param result The result of the cast.
      */
     public void onCast(Spell spell, SpellResult result);
+
+    /**
+     * Called when a Spell finishes completely - this may be
+     * some time after cast (for batches spells) or immediately at
+     * cast time.
+     *
+     * @param context
+     */
+    public void onFinalizeCast(CastContext context);
 
     public boolean isRestricted(Material material);
     public Set<Material> getRestrictedMaterials();
@@ -417,5 +427,4 @@ public interface Mage extends CostReducer {
     public boolean getTrackCasts();
     public void setQuiet(boolean quiet);
     public boolean isQuiet();
-
 }

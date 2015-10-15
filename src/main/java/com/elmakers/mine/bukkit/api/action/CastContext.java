@@ -7,6 +7,7 @@ import com.elmakers.mine.bukkit.api.effect.EffectPlayer;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.spell.Spell;
+import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -107,4 +108,7 @@ public interface CastContext {
     public boolean isOkToStandOn(Material mat);
     public Set<Material> getMaterialSet(String key);
     public void setSpellParameters(ConfigurationSection parameters);
+    public SpellResult getResult();
+    public void setResult(SpellResult result);
+    public void addResult(SpellResult result);
 }

@@ -3,9 +3,7 @@ package com.elmakers.mine.bukkit.api.spell;
 /**
  * Every Spell will return a SpellResult when cast. This result
  * will determine the messaging and effects used, as well as whether 
- * or not the Spell cast consumes its CastingCost costs. 
- * 
- * A Spell that fails to cast will not consume costs or register for cooldown.
+ * or not the Spell cast consumes its CastingCost costs.
  */
 public enum SpellResult {
     // Order is important here
