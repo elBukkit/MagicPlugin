@@ -77,7 +77,10 @@ public abstract class UndoableSpell extends TargetingSpell {
     protected void reset()
     {
         super.reset();
-        modifiedBlocks = null;
+        if (!isActive())
+        {
+            modifiedBlocks = null;
+        }
     }
 
     public int getModifiedCount()
@@ -96,8 +99,7 @@ public abstract class UndoableSpell extends TargetingSpell {
         mage.registerForUndo(list);
     }
 
-    public void registerForUndo(Block block)
-    {
+    public void registerForUndo(Block block) {
         getUndoList().add(block);
     }
 
@@ -111,8 +113,7 @@ public abstract class UndoableSpell extends TargetingSpell {
         getUndoList().add(entity);
     }
 
-    public void registerModified(Entity entity)
-    {
+    public void registerModified(Entity entity) {
         getUndoList().modify(entity);
     }
 
@@ -121,8 +122,7 @@ public abstract class UndoableSpell extends TargetingSpell {
         getUndoList().addPotionEffects(entity);
     }
 
-    public void registerMoved(Entity entity)
-    {
+    public void registerMoved(Entity entity) {
         getUndoList().move(entity);
     }
 
