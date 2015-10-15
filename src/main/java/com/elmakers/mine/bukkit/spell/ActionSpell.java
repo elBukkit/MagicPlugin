@@ -183,4 +183,13 @@ public class ActionSpell extends BrushSpell
     public boolean requiresBreakPermission() {
         return requiresBreakPermission;
     }
+
+    @Override
+    public com.elmakers.mine.bukkit.api.block.MaterialAndData getEffectMaterial()
+    {
+        if (!usesBrush) {
+            return null;
+        }
+        return super.getEffectMaterial();
+    }
 }

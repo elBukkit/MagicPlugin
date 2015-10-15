@@ -538,7 +538,7 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
     }
 
     public void setMaterial(com.elmakers.mine.bukkit.api.block.MaterialAndData material) {
-        this.material = new MaterialAndData(material);
+        this.material = material == null ? null : new MaterialAndData(material);
     }
 
     public void setMaterial(Block block) {
