@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.effect.builtin;
 
+import de.slikey.effectlib.util.DynamicLocation;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.plugin.Plugin;
@@ -53,10 +54,8 @@ public class EffectRing extends EffectRepeating {
             if (target != null) {
                 target = target.clone();
                 target.add(direction);
-                setTarget(target);
             }
-            setOrigin(source);
-            playEffect();
+            playEffect(new DynamicLocation(source), new DynamicLocation(target));
         }
     }
 }

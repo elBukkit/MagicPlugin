@@ -322,15 +322,15 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
 
     protected void playEffect() {
         if (playAtOrigin && origin != null) {
-            performEffect(origin, target);
+            playEffect(origin, target);
         }
         if (playAtTarget && target != null) {
-            performEffect(target, origin);
+            playEffect(target, origin);
         }
     }
 
     @SuppressWarnings("deprecation")
-    private void performEffect(DynamicLocation source, DynamicLocation target) {
+    protected void playEffect(DynamicLocation source, DynamicLocation target) {
         Location sourceLocation = source == null ? null : source.getLocation();
         if (sourceLocation == null) return;
         Entity sourceEntity = source.getEntity();
