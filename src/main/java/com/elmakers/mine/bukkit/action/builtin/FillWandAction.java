@@ -28,7 +28,7 @@ public class FillWandAction extends BaseSpellAction
             return SpellResult.PLAYER_REQUIRED;
         }
         if (wand == null) {
-            context.sendMessage("no_wand");
+            context.sendMessageKey("no_wand");
             return SpellResult.FAIL;
         }
         wand.fill(player, maxLevel);

@@ -55,7 +55,7 @@ public class EnchantWandAction extends BaseSpellAction
             return SpellResult.FAIL;
         }
         if (wand == null) {
-            context.sendMessage("no_wand");
+            context.sendMessageKey("no_wand");
             return SpellResult.FAIL;
         }
         if (requiredPath != null || exactPath != null) {
@@ -87,7 +87,7 @@ public class EnchantWandAction extends BaseSpellAction
                 }
             }
             if (!foundItem) {
-                context.sendMessage("insufficient_resources");
+                context.sendMessageKey("insufficient_resources");
                 return SpellResult.INSUFFICIENT_RESOURCES;
             }
         }

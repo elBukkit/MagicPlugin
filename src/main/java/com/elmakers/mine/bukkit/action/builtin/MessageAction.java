@@ -27,7 +27,7 @@ public class MessageAction extends BaseSpellAction
 		if (player == null) {
 			return SpellResult.PLAYER_REQUIRED;
 		}
-        String message = context.getMessage(this.message);
+        String message = context.getMessage(this.message, this.message);
         context.sendMessage(message.replace("$spell", context.getSpell().getName()));
 		return SpellResult.CAST;
 	}

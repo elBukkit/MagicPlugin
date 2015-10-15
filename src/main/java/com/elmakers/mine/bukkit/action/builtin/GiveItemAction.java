@@ -84,7 +84,7 @@ public class GiveItemAction extends BaseSpellAction
             return SpellResult.INSUFFICIENT_PERMISSION;
         }
         if (requireItem != null && !controller.takeItem(player, requireItem)) {
-            context.sendMessage("insufficient_resources");
+            context.sendMessageKey("insufficient_resources");
             return SpellResult.INSUFFICIENT_RESOURCES;
         }
 

@@ -51,7 +51,7 @@ public class AddSpellAction extends BaseSpellAction
             return SpellResult.INSUFFICIENT_PERMISSION;
         }
         if (wand == null || spellKey == null || spellKey.isEmpty()) {
-            context.sendMessage("no_wand");
+            context.sendMessageKey("no_wand");
             return SpellResult.FAIL;
         }
         if (wand.hasSpell(spellKey)) {
