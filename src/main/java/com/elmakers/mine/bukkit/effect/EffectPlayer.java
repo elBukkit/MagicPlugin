@@ -329,6 +329,8 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
 
     @SuppressWarnings("deprecation")
     private void performEffect(DynamicLocation source, DynamicLocation target) {
+        Location sourceLocation = source == null ? null : source.getLocation();
+        if (sourceLocation == null) return;
         if (effectLib != null && effectLibConfig != null) {
 
             EffectLibPlay play = new EffectLibPlay(effectLib.play(effectLibConfig, this, source, target, parameterMap));
@@ -337,7 +339,6 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
                 currentEffects.add(play);
             }
         }
-        Location sourceLocation = source.getLocation();
         Entity sourceEntity = source.getEntity();
         if (effect != null) {
             int data = effectData == null ? 0 : effectData;
@@ -504,11 +505,17 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
     }
 
     protected void checkLocations() {
-        if (origin != null && originOffset != null) {
-            origin.addOffset(originOffset);
+        if (origin != null) {
+            if (originOffset != null) {
+                origin.addOffset(originOffset);
+            }
+            origin.update();
         }
-        if (target != null && targetOffset != null) {
-            target.addOffset(targetOffset);
+        if (target != null) {
+            if (targetOffset != null) {
+                target.addOffset(targetOffset);
+            }
+            target.update();
         }
     }
 
