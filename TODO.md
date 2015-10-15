@@ -1,5 +1,8 @@
 # TODO
 
+ - Need a way for /cast to be cooldown-free without affecting NPC's, etc.
+ - Spells don't upgrade until end of cast
+
  - Show countdown in hotbar for duration-based or active-cost spells
  - Add templates to messages.yml for all the various forms a wand and spell
    name can take.

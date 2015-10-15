@@ -14,6 +14,7 @@ import java.util.Set;
 import java.util.logging.Level;
 
 import com.elmakers.mine.bukkit.action.TeleportTask;
+import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.action.GUIAction;
 import com.elmakers.mine.bukkit.api.batch.SpellBatch;
 import com.elmakers.mine.bukkit.api.data.BrushData;
@@ -1178,6 +1179,11 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             // this if for dynmap display or other global-level processing.
             controller.onCast(this, spell, result);
         }
+    }
+
+    @Override
+    public void onFinalizeCast(CastContext context) {
+        // TODO: Track spell casts here instead of on cast.
     }
 
     @Override
