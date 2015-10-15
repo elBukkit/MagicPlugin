@@ -613,6 +613,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
         return bypass;
     }
 
+    @Override
     public void setBypass(boolean bypass)
     {
         this.bypass = bypass;
