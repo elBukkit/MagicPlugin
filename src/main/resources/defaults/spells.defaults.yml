@@ -1525,7 +1525,7 @@ frost:
           target_offset: 0,2,0
           effectlib:
              class: SphereEffect
-             iterations: 10
+             duration: $undo
              period: 4
              particle: snowball
              radius: $radius
