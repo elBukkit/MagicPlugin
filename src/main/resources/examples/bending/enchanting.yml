@@ -105,6 +105,7 @@ earthbending:
       collapse: 5
       earthsmash: 5
       earthquake: 1
+      earthline: 20
 
 firebending:
     inherit: default
