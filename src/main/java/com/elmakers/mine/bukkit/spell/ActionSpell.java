@@ -32,6 +32,16 @@ public class ActionSpell extends BrushSpell
     }
 
     @Override
+    protected boolean isLegacy() {
+        return false;
+    }
+
+    @Override
+    protected boolean isBatched() {
+        return true;
+    }
+
+    @Override
     public SpellResult onCast(ConfigurationSection parameters)
     {
         currentCast.setWorkAllowed(workThreshold);

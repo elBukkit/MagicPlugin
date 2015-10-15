@@ -14,16 +14,12 @@ public abstract class UndoableBatch implements Batch {
     protected final Mage mage;
     protected boolean finished = false;
 
-    public UndoableBatch(Mage mage) {
-        this(mage, null);
-    }
-
     public UndoableBatch(Mage mage, UndoList undoList) {
         this.controller = mage.getController();
         this.mage = mage;
-        this.undoList = undoList == null ?  new UndoList(mage, "Undo") : undoList;
+        this.undoList = undoList;
         undoList.setBatch(this);
-        mage.registerForUndo(this.undoList);
+        mage.prepareForUndo(this.undoList);
     }
 
     public void registerForUndo(Block block) {

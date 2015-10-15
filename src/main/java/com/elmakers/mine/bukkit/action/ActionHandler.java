@@ -261,6 +261,7 @@ public class ActionHandler implements Cloneable
             }
         }
 
+        context.addResult(result);
         return result;
     }
 

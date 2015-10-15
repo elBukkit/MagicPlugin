@@ -8,6 +8,7 @@ import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.spell.MageSpell;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.block.UndoList;
+import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.spell.BlockSpell;
 import com.elmakers.mine.bukkit.spell.BrushSpell;
@@ -15,7 +16,7 @@ import com.elmakers.mine.bukkit.spell.TargetingSpell;
 import com.elmakers.mine.bukkit.spell.UndoableSpell;
 import com.elmakers.mine.bukkit.utility.Target;
 import org.bukkit.Bukkit;
-import org.bukkit.Chunk;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -52,6 +53,7 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
     private Entity targetEntity;
     private UndoList undoList;
     private String targetName = null;
+    private SpellResult result = SpellResult.NO_ACTION;
 
     private Collection<Entity> targetedEntities = Collections.newSetFromMap(new WeakHashMap<Entity, Boolean>());
     private Set<UUID> targetMessagesSent = new HashSet<UUID>();
@@ -75,6 +77,7 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
         this.location = null;
         this.entity = null;
         this.base = this;
+        this.result = SpellResult.NO_ACTION;
         targetedEntities = Collections.newSetFromMap(new WeakHashMap<Entity, Boolean>());
         targetMessagesSent = new HashSet<UUID>();
         currentEffects = new ArrayList<EffectPlay>();
@@ -441,7 +444,7 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
 
     @Override
     public String getMessage(String key) {
-        return getMessage(key, key);
+        return getMessage(key, "");
     }
 
     @Override
@@ -488,11 +491,29 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
     }
 
     @Override
+    public void castMessageKey(String key)
+    {
+        if (baseSpell != null)
+        {
+            baseSpell.castMessage(getMessage(key));
+        }
+    }
+
+    @Override
+    public void sendMessageKey(String key)
+    {
+        if (baseSpell != null)
+        {
+            baseSpell.sendMessage(getMessage(key));
+        }
+    }
+
+    @Override
     public void castMessage(String message)
     {
         if (baseSpell != null)
         {
-            baseSpell.castMessage(getMessage(message));
+            baseSpell.castMessage(message);
         }
     }
 
@@ -501,7 +522,7 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
     {
         if (baseSpell != null)
         {
-            baseSpell.sendMessage(getMessage(message));
+            baseSpell.sendMessage(message);
         }
     }
 
@@ -724,15 +745,24 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
 
     @Override
     public void finish() {
+        Mage mage = getMage();
+        Spell spell = getSpell();
+        if (spell != null) {
+            mage.sendDebugMessage(ChatColor.WHITE + " Finish " + ChatColor.GOLD + spell.getName() + ChatColor.WHITE  + ": " + ChatColor.AQUA + result, 1);
+        }
+
         if (undoSpell != null && undoSpell.isUndoable())
         {
             if (!undoList.isScheduled())
             {
                 getController().update(undoList);
             }
-            getMage().registerForUndo(undoList);
+            mage.registerForUndo(undoList);
         }
-        castMessage("cast_finish");
+        mage.onFinalizeCast(this);
+        String resultName = result.name().toLowerCase();
+        castMessageKey(resultName + "_finish");
+        playEffects(resultName + "_finish");
     }
 
     @Override
@@ -819,5 +849,22 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
     @Override
     public Set<Material> getMaterialSet(String key) {
         return getController().getMaterialSet(key);
+    }
+
+    @Override
+    public SpellResult getResult() {
+        return this.result;
+    }
+
+    @Override
+    public void setResult(SpellResult result) {
+        this.result = result;
+    }
+
+    @Override
+    public void addResult(SpellResult result) {
+        if (!result.isStop()) {
+            this.result = this.result.min(result);
+        }
     }
 }

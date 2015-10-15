@@ -1269,6 +1269,22 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
 
         // Play effects
         playEffects(resultName);
+
+        // Check for finalization
+        if (currentCast != null) {
+            // Legacy spells never update the final context result.
+            if (isLegacy()) currentCast.addResult(result);
+            // Batched spells will call finish() on completion
+            if (!isBatched()) currentCast.finish();
+        }
+    }
+
+    protected boolean isBatched() {
+        return false;
+    }
+
+    protected boolean isLegacy() {
+        return true;
     }
 
     public void messageTargets(String messageKey)
