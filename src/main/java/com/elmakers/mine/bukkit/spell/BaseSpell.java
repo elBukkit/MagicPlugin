@@ -187,6 +187,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     private int                                 cooldown                = 0;
     private long                                cooldownExpiration      = 0;
     private int                                 duration                = 0;
+    private int                                 totalDuration           = -1;
     private long                                lastCast                = 0;
     private long                                lastActiveCost          = 0;
     private float                               activeCostScale         = 1;
@@ -868,6 +869,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
             bypassBuildRestriction = parameters.getBoolean("bb", bypassBuildRestriction);
             bypassBreakRestriction = parameters.getBoolean("bypass_break", false);
             duration = parameters.getInt("duration", 0);
+            totalDuration = parameters.getInt("total_duration", -1);
         }
 
         effects.clear();
@@ -1391,6 +1393,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         bypassBuildRestriction = parameters.getBoolean("bb", bypassBuildRestriction);
         bypassBreakRestriction = parameters.getBoolean("bypass_break", false);
         duration = parameters.getInt("duration", 0);
+        totalDuration = parameters.getInt("total_duration", 0);
     }
 
 
@@ -1788,6 +1791,9 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     @Override
     public long getDuration()
     {
+        if (totalDuration >= 0) {
+            return totalDuration;
+        }
         return duration;
     }
 
@@ -2083,8 +2089,9 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
             lore.add(ChatColor.GRAY + messages.get("wand.range_description").replace("$range", Integer.toString(range)));
         }
 
-        if (duration > 0) {
-            long seconds = duration / 1000;
+        long effectiveDuration = this.getDuration();
+        if (effectiveDuration > 0) {
+            long seconds = effectiveDuration / 1000;
             if (seconds > 60 * 60 ) {
                 long hours = seconds / (60 * 60);
                 lore.add(ChatColor.GRAY + messages.get("duration.lasts_hours").replace("$hours", ((Long)hours).toString()));
