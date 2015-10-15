@@ -262,6 +262,7 @@ breathofwind:
            entity_effect: hurt
     parameters:
         target: none
+        reorient: true
         target_type: LivingEntity
         player_damage: 2
         entity_damage: 4

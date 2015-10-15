@@ -36,6 +36,7 @@ public class CustomProjectileAction extends CompoundAction
     private double gravity;
     private double drag;
     private double tickSize;
+    private boolean reorient;
 
     private boolean hasTickEffects;
     private long lastUpdate;
@@ -73,6 +74,7 @@ public class CustomProjectileAction extends CompoundAction
         drag = parameters.getDouble("drag", 0);
         tickSize = parameters.getDouble("tick_size", 0.5);
         hasTickEffects = context.getEffects(tickEffectKey).size() > 0;
+        reorient = parameters.getBoolean("reorient", false);
     }
 
     @Override
@@ -150,16 +152,23 @@ public class CustomProjectileAction extends CompoundAction
         lastUpdate = now;
 
         // Apply gravity and drag
-        if (gravity > 0) {
-            velocity.setY(velocity.getY() - gravity * delta / 50);
+        if (reorient)
+        {
+            velocity = context.getDirection().clone().normalize();
         }
-        if (drag > 0) {
-            double size = velocity.length();
-            size = size - drag * delta / 50;
-            if (size <= 0) {
-                return hit(context);
+        else
+        {
+            if (gravity > 0) {
+                velocity.setY(velocity.getY() - gravity * delta / 50);
             }
-            velocity.normalize().multiply(size);
+            if (drag > 0) {
+                double size = velocity.length();
+                size = size - drag * delta / 50;
+                if (size <= 0) {
+                    return hit(context);
+                }
+                velocity.normalize().multiply(size);
+            }
         }
 
         // Compute incremental speed movement
