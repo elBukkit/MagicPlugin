@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Set;
 
 import com.elmakers.mine.bukkit.api.block.BlockData;
-import com.elmakers.mine.bukkit.batch.UndoableBatch;
 import com.elmakers.mine.bukkit.block.UndoList;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -33,7 +32,7 @@ import com.elmakers.mine.bukkit.spell.BlockSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.Target;
 
-public class SimulateBatch extends UndoableBatch {
+public class SimulateBatch extends SpellBatch {
 	private static BlockFace[] NEIGHBOR_FACES = { BlockFace.NORTH, BlockFace.NORTH_EAST, 
 		BlockFace.EAST, BlockFace.SOUTH_EAST, BlockFace.SOUTH, BlockFace.SOUTH_WEST, BlockFace.WEST, BlockFace.NORTH_WEST
 	};
@@ -59,7 +58,7 @@ public class SimulateBatch extends UndoableBatch {
 	public static boolean DEBUG = false;
 	
 	private Mage mage;
-	private BlockSpell spell;
+	private BlockSpell blockSpell;
 	private Block castCommandBlock;
 	private Block commandTargetBlock;
     private Block powerTargetBlock;
@@ -107,9 +106,9 @@ public class SimulateBatch extends UndoableBatch {
 	private List<Target> potentialCommandBlocks = new LinkedList<Target>();
 	
 	public SimulateBatch(BlockSpell spell, Location center, int radius, int yRadius, MaterialAndData birth, Material death, Set<Integer> liveCounts, Set<Integer> birthCounts) {
-		super(spell.getMage(), spell.getUndoList());
-		
-		this.spell = spell;
+		super(spell);
+
+		this.blockSpell = spell;
 		this.mage = spell.getMage();
 		this.yRadius = yRadius;
 		this.radius = radius;
@@ -496,7 +495,7 @@ public class SimulateBatch extends UndoableBatch {
                     // If it's *still* not valid, search for something breakable.
                     if (powerDirection == null) {
                         for (BlockFace face : POWER_FACES) {
-                            if (spell.isDestructible(commandTargetBlock.getRelative(face))) {
+                            if (blockSpell.isDestructible(commandTargetBlock.getRelative(face))) {
                                 if (DEBUG) {
                                     controller.getLogger().info("Had to fall back to destructible location, pattern may diverge and may destroy blocks");
                                 }
