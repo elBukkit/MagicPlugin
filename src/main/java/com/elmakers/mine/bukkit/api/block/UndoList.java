@@ -61,4 +61,5 @@ public interface UndoList extends BlockList, Comparable<UndoList> {
     public String getName();
     public Mage getOwner();
     public CastContext getContext();
+    public void setBypass(boolean bypass);
 }

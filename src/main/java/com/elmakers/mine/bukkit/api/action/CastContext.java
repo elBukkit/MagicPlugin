@@ -69,6 +69,8 @@ public interface CastContext {
     public Location findPlaceToStand(Location target, int verticalSearchDistance, boolean goUp);
     public void castMessage(String message);
     public void sendMessage(String message);
+    public void castMessageKey(String key);
+    public void sendMessageKey(String key);
     public void setTargetedLocation(Location location);
     public Block findBlockUnder(Block block);
     public Block findSpaceAbove(Block block);
