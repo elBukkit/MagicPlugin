@@ -103,6 +103,11 @@ public class FillSpell extends BrushSpell
 	}
 
 	@Override
+	protected boolean isBatched() {
+		return true;
+	}
+
+	@Override
 	public boolean onCancel()
 	{
 		if (targetBlock != null)

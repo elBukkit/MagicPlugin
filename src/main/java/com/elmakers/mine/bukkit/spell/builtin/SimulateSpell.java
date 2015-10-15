@@ -231,6 +231,11 @@ public class SimulateSpell extends BlockSpell {
 	}
 
 	@Override
+	protected boolean isBatched() {
+		return true;
+	}
+
+	@Override
 	public void getParameters(Collection<String> parameters)
 	{
 		super.getParameters(parameters);

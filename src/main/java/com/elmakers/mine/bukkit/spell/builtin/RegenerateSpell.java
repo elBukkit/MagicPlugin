@@ -60,6 +60,11 @@ public class RegenerateSpell extends BlockSpell
 	}
 
 	@Override
+	protected boolean isBatched() {
+		return true;
+	}
+
+	@Override
 	public boolean onCancel()
 	{
 		if (targetBlock != null)

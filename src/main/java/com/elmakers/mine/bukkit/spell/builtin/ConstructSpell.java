@@ -229,7 +229,11 @@ public class ConstructSpell extends BrushSpell
 		deactivate();
 		return success ? SpellResult.CAST : SpellResult.FAIL;
 	}
-	
+
+	@Override
+	protected boolean isBatched() {
+		return true;
+	}
 	
 	@Override
 	public void onDeactivate() {
