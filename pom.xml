@@ -92,7 +92,7 @@
         <dependency>
             <groupId>de.slikey</groupId>
             <artifactId>EffectLib</artifactId>
-            <version>3.5</version>
+            <version>3.6-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
 		<dependency>
