@@ -13,6 +13,7 @@
    - Update powers to canon names and descriptions
  - Add support for EffectLib parameters (see: frost)
  - Add "targetable" parameter for a targetable block type list
+ - Undo action "target_self" parameter changed to "target_caster"
 
 ## 5.2.1
 

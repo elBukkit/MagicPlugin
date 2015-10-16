@@ -1,5 +1,9 @@
 # Migration Notes
 
+## 5.3
+
+ - Undo action "target_self" parameter changed to "target_caster"
+
 ## 5.2.0
 
  - The /cast command now bypasses cooldowns. If you don't want this, set "cast_console_cooldown_reduction: 0" in config.yml!

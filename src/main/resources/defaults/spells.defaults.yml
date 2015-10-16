@@ -4150,7 +4150,7 @@ rollback:
         -  class: Undo
         alternate_up:
         -  class: Undo
-           target_self: true
+           target_caster: true
         alternate_down:
         -  class: Undo
            target_down: true
