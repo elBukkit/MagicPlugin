@@ -37,6 +37,8 @@ public class CustomProjectileAction extends CompoundAction
     private double drag;
     private double tickSize;
     private boolean reorient;
+    private boolean useWandLocation;
+    private boolean useEyeLocation;
 
     private boolean hasTickEffects;
     private long lastUpdate;
@@ -75,6 +77,8 @@ public class CustomProjectileAction extends CompoundAction
         tickSize = parameters.getDouble("tick_size", 0.5);
         hasTickEffects = context.getEffects(tickEffectKey).size() > 0;
         reorient = parameters.getBoolean("reorient", false);
+        useWandLocation = parameters.getBoolean("use_wand_location", true);
+        useEyeLocation = parameters.getBoolean("use_eye_location", true);
     }
 
     @Override
@@ -111,7 +115,13 @@ public class CustomProjectileAction extends CompoundAction
         // Check for initialization required
         Location targetLocation = context.getTargetLocation();
         if (targetLocation == null) {
-            targetLocation = context.getWandLocation().clone();
+            if (useWandLocation) {
+                targetLocation = context.getWandLocation().clone();
+            } else if (useEyeLocation) {
+                targetLocation = context.getEyeLocation().clone();
+            } else {
+                targetLocation = context.getLocation().clone();
+            }
             context.setTargetLocation(targetLocation);
         }
         if (velocity == null)
