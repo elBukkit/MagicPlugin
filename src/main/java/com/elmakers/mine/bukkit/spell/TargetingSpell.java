@@ -561,12 +561,6 @@ public abstract class TargetingSpell extends BaseSpell {
             // Special check for Elementals
             if (!controller.isElemental(entity) && !canTarget(entity)) continue;
 
-            // check for Superprotected Mages
-            if (isSuperProtected(entity)) continue;
-
-            // Ignore invisible entities
-            if (!targetInvisible && entity instanceof LivingEntity && ((LivingEntity)entity).hasPotionEffect(PotionEffectType.INVISIBILITY)) continue;
-
             Target newScore = null;
             if (useHitbox) {
                 newScore = new Target(sourceLocation, entity, (int)range, useHitbox);
@@ -601,8 +595,10 @@ public abstract class TargetingSpell extends BaseSpell {
         {
             Player player = (Player)entity;
             if (checkProtection && player.hasPermission("Magic.protected." + this.getKey())) return false;
-            if (controller.isMage(entity) && controller.getMage(entity).isSuperProtected()) return false;
+            if (controller.isMage(entity) && isSuperProtected(controller.getMage(entity))) return false;
         }
+        // Ignore invisible entities
+        if (!targetInvisible && entity instanceof LivingEntity && ((LivingEntity)entity).hasPotionEffect(PotionEffectType.INVISIBILITY)) return false;
 
         if (targetContents != null && entity instanceof ItemFrame)
         {
@@ -619,15 +615,6 @@ public abstract class TargetingSpell extends BaseSpell {
 
     public boolean isSuperProtected(Mage mage) {
         return !bypassProtection && mage.isSuperProtected();
-    }
-
-    protected boolean isSuperProtected(Entity entity) {
-        if (bypassProtection || !controller.isMage(entity)) {
-            return false;
-        }
-
-        Mage targetMage = controller.getMage(entity);
-        return isSuperProtected(targetMage);
     }
 
     protected int getMaxRange()
