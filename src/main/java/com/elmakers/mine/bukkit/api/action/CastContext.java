@@ -113,4 +113,6 @@ public interface CastContext {
     public SpellResult getResult();
     public void setResult(SpellResult result);
     public void addResult(SpellResult result);
+    public boolean getTargetsCaster();
+    public void setTargetsCaster(boolean target);
 }
