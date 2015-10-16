@@ -746,10 +746,6 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
     @Override
     public void finish() {
         Mage mage = getMage();
-        Spell spell = getSpell();
-        if (spell != null) {
-            mage.sendDebugMessage(ChatColor.WHITE + " Finish " + ChatColor.GOLD + spell.getName() + ChatColor.WHITE  + ": " + ChatColor.AQUA + result, 1);
-        }
 
         if (undoSpell != null && undoSpell.isUndoable())
         {
@@ -759,7 +755,10 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
             }
             mage.registerForUndo(undoList);
         }
-        mage.onFinalizeCast(this);
+        if (spell != null) {
+            mage.sendDebugMessage(ChatColor.WHITE + " Finish " + ChatColor.GOLD + spell.getName() + ChatColor.WHITE  + ": " + ChatColor.AQUA + result, 1);
+            spell.finish(this);
+        }
         String resultName = result.name().toLowerCase();
         castMessageKey(resultName + "_finish");
         playEffects(resultName + "_finish");

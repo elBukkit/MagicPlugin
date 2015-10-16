@@ -15,13 +15,16 @@ import com.elmakers.mine.bukkit.action.CastContext;
 import com.elmakers.mine.bukkit.api.data.SpellData;
 import com.elmakers.mine.bukkit.api.event.CastEvent;
 import com.elmakers.mine.bukkit.api.event.PreCastEvent;
+import com.elmakers.mine.bukkit.api.event.SpellUpgradeEvent;
 import com.elmakers.mine.bukkit.api.magic.Messages;
 import com.elmakers.mine.bukkit.api.spell.CostReducer;
 import com.elmakers.mine.bukkit.api.spell.MageSpell;
+import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellKey;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.api.spell.TargetType;
 import com.elmakers.mine.bukkit.api.wand.Wand;
+import com.elmakers.mine.bukkit.api.wand.WandUpgradePath;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import org.apache.commons.lang.ArrayUtils;
@@ -168,6 +171,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
 
     private boolean backfired                   = false;
     private boolean hidden                      = false;
+    private boolean trackCasts                  = true;
 
     protected ConfigurationSection parameters = null;
     protected ConfigurationSection workingParameters = null;
@@ -923,6 +927,11 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         return cast(parameters, defaultLocation);
     }
 
+    public boolean cast(ConfigurationSection parameters)
+    {
+        return cast(parameters, null);
+    }
+
     public boolean cast(ConfigurationSection extraParameters, Location defaultLocation)
     {
         this.reset();
@@ -1176,12 +1185,6 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
                 }
             }
         }
-        if (success && mage.getTrackCasts()) {
-            castCount++;
-            if (template != null) {
-                template.castCount++;
-            }
-        }
 
         mage.sendDebugMessage(ChatColor.WHITE + "Cast " + ChatColor.GOLD + getName() + ChatColor.WHITE  + ": " + ChatColor.AQUA + result + ChatColor.DARK_AQUA + " (" + success + ")");
         return success;
@@ -1383,6 +1386,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         loud = parameters.getBoolean("loud", false);
         messageTargets = parameters.getBoolean("message_targets", true);
         verticalSearchDistance = parameters.getInt("vertical_range", 8);
+        trackCasts = parameters.getBoolean("track_casts", true);
 
         cooldown = parameters.getInt("cooldown", 0);
         cooldown = parameters.getInt("cool", cooldown);
@@ -2136,5 +2140,51 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     @Override
     public boolean isCancellable() {
         return cancellable;
+    }
+
+    @Override
+    public void finish(com.elmakers.mine.bukkit.api.action.CastContext context) {
+        if (context.getResult().isSuccess() && trackCasts) {
+            castCount++;
+            if (template != null) {
+                template.castCount++;
+            }
+
+            // Check for level up
+            // This currenlty only works on wands.
+            Wand wand = mage == null ? null : mage.getActiveWand();
+            if (wand != null && !wand.isLocked() && controller.isSpellUpgradingEnabled())
+            {
+                MageSpell upgrade = getUpgrade();
+                long requiredCasts = getRequiredUpgradeCasts();
+                if (upgrade != null && requiredCasts > 0 && getCastCount() >= requiredCasts)
+                {
+                    String upgradePath = getRequiredUpgradePath();
+                    WandUpgradePath currentPath = wand.getPath();
+                    if (upgradePath == null || upgradePath.isEmpty() || (currentPath != null && currentPath.hasPath(upgradePath)))
+                    {
+                        Spell newSpell = mage.getSpell(upgrade.getKey());
+                        if (isActive()) {
+                            deactivate(true, true);
+                            if (newSpell != null && newSpell instanceof MageSpell) {
+                                ((MageSpell)newSpell).activate();
+                            }
+                        }
+                        wand.addSpell(upgrade.getKey());
+                        Messages messages = controller.getMessages();
+                        String levelDescription = upgrade.getLevelDescription();
+                        if (levelDescription == null || levelDescription.isEmpty()) {
+                            levelDescription = upgrade.getName();
+                        }
+                        upgrade.playEffects("upgrade");
+                        mage.sendMessage(messages.get("wand.spell_upgraded").replace("$name", upgrade.getName()).replace("$wand", getName()).replace("$level", levelDescription));
+                        mage.sendMessage(upgrade.getUpgradeDescription().replace("$name", upgrade.getName()));
+
+                        SpellUpgradeEvent upgradeEvent = new SpellUpgradeEvent(mage, this, newSpell);
+                        Bukkit.getPluginManager().callEvent(upgradeEvent);
+                    }
+                }
+            }
+        }
     }
 }

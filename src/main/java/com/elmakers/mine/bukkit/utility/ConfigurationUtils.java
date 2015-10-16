@@ -643,6 +643,15 @@ public class ConfigurationUtils {
             }
         }
     }
+    static public String getParameters(ConfigurationSection parameters) {
+        Collection<String> parameterStrings = new ArrayList<String>();
+        Collection<String> keys = parameters.getKeys(false);
+        for (String key : keys) {
+            parameterStrings.add(key);
+            parameterStrings.add(parameters.getString(key));
+        }
+        return StringUtils.join(parameterStrings, ' ');
+    }
 
     public static SoundEffect toSoundEffect(String soundConfig) {
         return new SoundEffect(soundConfig);
