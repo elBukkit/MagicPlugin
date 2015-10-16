@@ -31,7 +31,6 @@ public class CustomProjectileAction extends CompoundAction
     private String hitEffectKey;
     private String tickEffectKey;
     private boolean targetEntities;
-    private boolean targetSelf;
     private double radius;
     private double gravity;
     private double drag;
@@ -70,7 +69,6 @@ public class CustomProjectileAction extends CompoundAction
         hitEffectKey = parameters.getString("hit_effects", "hit");
         tickEffectKey = parameters.getString("tick_effects", "tick");
         targetEntities = parameters.getBoolean("target_entities", true);
-        targetSelf = parameters.getBoolean("target_self", false);
         radius = parameters.getDouble("size", 1) / 2;
         gravity = parameters.getDouble("gravity", 0);
         drag = parameters.getDouble("drag", 0);
@@ -191,7 +189,7 @@ public class CustomProjectileAction extends CompoundAction
             List<Entity> nearbyEntities = CompatibilityUtils.getNearbyEntities(targetLocation, boundSize, boundSize, boundSize);
             for (Entity entity : nearbyEntities)
             {
-                if ((targetSelf || entity != sourceEntity) && context.canTarget(entity))
+                if ((context.getTargetsCaster() || entity != sourceEntity) && context.canTarget(entity))
                 {
                     candidates.add(new CandidateEntity(entity));
                 }
@@ -287,7 +285,6 @@ public class CustomProjectileAction extends CompoundAction
         parameters.add("gravity");
         parameters.add("drag");
         parameters.add("target_entities");
-        parameters.add("target_self");
     }
 
     @Override
@@ -299,7 +296,7 @@ public class CustomProjectileAction extends CompoundAction
             parameterKey.equals("interval") || parameterKey.equals("start") || parameterKey.equals("size") ||
             parameterKey.equals("gravity") || parameterKey.equals("drag") || parameterKey.equals("tick_size")) {
             examples.addAll(Arrays.asList(BaseSpell.EXAMPLE_SIZES));
-        } else if (parameterKey.equals("target_entities") || parameterKey.equals("target_self")) {
+        } else if (parameterKey.equals("target_entities")) {
             examples.addAll(Arrays.asList(BaseSpell.EXAMPLE_BOOLEANS));
         }
     }

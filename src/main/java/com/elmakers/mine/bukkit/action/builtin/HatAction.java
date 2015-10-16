@@ -90,6 +90,7 @@ public class HatAction extends BaseSpellAction
 	{
         Entity entity = context.getTargetEntity();
         if (entity == null) {
+            if (!context.getTargetsCaster()) return SpellResult.NO_TARGET;
             entity = context.getEntity();
         }
         if (entity == null || !(entity instanceof Player))

@@ -3,6 +3,9 @@
 ## 5.3
 
  - Undo action "target_self" parameter changed to "target_caster"
+ - Range parameter now defaults to zero. Target type defaults to "none" unless range is set.
+ - The target_self flag has been generalized, defaults to true if target type is "self".
+   - May affect Hat-based spells, add "target_self: true" if necessary.
 
 ## 5.2.0
 

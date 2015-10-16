@@ -55,7 +55,7 @@ public class AreaOfEffectAction extends CompoundEntityAction
             List<Target> targets = new ArrayList<Target>();
             for (Entity entity : candidates)
             {
-                if ((targetSelf || entity != sourceEntity) && context.canTarget(entity))
+                if ((context.getTargetsCaster() || entity != sourceEntity) && context.canTarget(entity))
                 {
                     targets.add(new Target(sourceLocation, entity, radius));
                 }
@@ -71,7 +71,7 @@ public class AreaOfEffectAction extends CompoundEntityAction
         {
             for (Entity entity : candidates)
             {
-                if ((targetSelf || !entity.equals(sourceEntity)) && context.canTarget(entity))
+                if ((context.getTargetsCaster() || !entity.equals(sourceEntity)) && context.canTarget(entity))
                 {
                     entities.add(new WeakReference<Entity>(entity));
                 }

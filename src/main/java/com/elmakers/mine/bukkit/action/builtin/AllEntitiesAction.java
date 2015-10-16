@@ -70,7 +70,7 @@ public class AllEntitiesAction extends CompoundEntityAction
 			Collection<? extends Player> players = context.getPlugin().getServer().getOnlinePlayers();
 			for (Player player : players)
 			{
-				if ((targetSelf || player != sourceEntity) && (targetAllWorlds || (sourceLocation != null && sourceLocation.getWorld().equals(player.getWorld()))) && spell.canTarget(player))
+				if ((context.getTargetsCaster() || player != sourceEntity) && (targetAllWorlds || (sourceLocation != null && sourceLocation.getWorld().equals(player.getWorld()))) && spell.canTarget(player))
 				{
                     entities.add(new WeakReference<Entity>(player));
 				}
@@ -90,7 +90,7 @@ public class AllEntitiesAction extends CompoundEntityAction
 				List<Entity> candidates = world.getEntities();
 				for (Entity entity : candidates)
 				{
-					if (spell.canTarget(entity) && (targetSelf || entity != sourceEntity))
+					if (spell.canTarget(entity) && (context.getTargetsCaster() || entity != sourceEntity))
 					{
                         entities.add(new WeakReference<Entity>(entity));
 					}

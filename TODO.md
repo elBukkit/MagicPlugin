@@ -1,7 +1,11 @@
 # TODO
 
+ - /mgive doesn't work with spell levels
  - Need a way for /cast to be cooldown-free without affecting NPC's, etc.
- - Spells don't upgrade until end of cast
+ - Aliases are broken /wand add doesn't activate, spell items don't work
+ 
+ - Change reflect behavior to only work on projectile spells
+ - Add break behavior to projectile
 
  - Show countdown in hotbar for duration-based or active-cost spells
  - Add templates to messages.yml for all the various forms a wand and spell

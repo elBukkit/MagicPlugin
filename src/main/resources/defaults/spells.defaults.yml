@@ -4838,6 +4838,7 @@ hat:
            effect: step_sound
            reverse: true
     parameters:
+        target_self: true
         target: block
         allow_max_range: false
         range: 32
@@ -4858,6 +4859,7 @@ wear:
         - class: Delay
         - class: Hat
     parameters:
+        target: self
         use_item: true
 
 magichat:

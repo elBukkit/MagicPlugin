@@ -35,7 +35,6 @@ public class PlayerSelectAction extends CompoundAction implements GUIAction
     private Map<Integer, WeakReference<Player>> players = new HashMap<Integer, WeakReference<Player>>();
     private CastContext context;
     private boolean allowCrossWorld;
-    private boolean targetSelf;
 
     @Override
     public void deactivated() {
@@ -80,7 +79,6 @@ public class PlayerSelectAction extends CompoundAction implements GUIAction
     public void prepare(CastContext context, ConfigurationSection parameters) {
         super.prepare(context, parameters);
         allowCrossWorld = parameters.getBoolean("cross_world", true);
-        targetSelf = parameters.getBoolean("target_self", true);
     }
 
     @Override
@@ -111,7 +109,7 @@ public class PlayerSelectAction extends CompoundAction implements GUIAction
 
         int index = 0;
         for (Player targetPlayer : allPlayers) {
-            if (!targetSelf && targetPlayer == player) continue;
+            if (!context.getTargetsCaster() && targetPlayer == player) continue;
             if (targetPlayer.hasPotionEffect(PotionEffectType.INVISIBILITY)) continue;
             if (!context.canTarget(targetPlayer)) continue;
             players.put(index++, new WeakReference<Player>(targetPlayer));
@@ -146,14 +144,13 @@ public class PlayerSelectAction extends CompoundAction implements GUIAction
 
     @Override
     public void getParameterNames(Spell spell, Collection<String> parameters) {
-        parameters.add("target_self");
         parameters.add("cross_world");
         super.getParameterNames(spell, parameters);
     }
 
     @Override
     public void getParameterOptions(Spell spell, String parameterKey, Collection<String> examples) {
-        if (parameterKey.equals("target_self") || parameterKey.equals("cross_world")) {
+        if (parameterKey.equals("cross_world")) {
             examples.addAll(Arrays.asList((BaseSpell.EXAMPLE_BOOLEANS)));
         } else {
             super.getParameterOptions(spell, parameterKey, examples);
