@@ -41,7 +41,7 @@ public abstract class TargetingSpell extends BaseSpell {
 
     private Target								target					= null;
     private List<Target>                        targets                 = null;
-    private TargetType							targetType				= TargetType.OTHER;
+    private TargetType							targetType				= TargetType.NONE;
     private boolean								targetNPCs				= false;
     private boolean								targetArmorStands		= false;
     private boolean								targetInvisible			= true;
@@ -74,7 +74,7 @@ public abstract class TargetingSpell extends BaseSpell {
     private boolean                             bypassBackfire          = false;
 
     private boolean                             useHitbox               = false;
-    private int                                 range                   = 32;
+    private int                                 range                   = 0;
     private double                              fov                     = 0.3;
     private double                              closeRange              = 1;
     private double                              closeFOV                = 0.5;
@@ -801,18 +801,36 @@ public abstract class TargetingSpell extends BaseSpell {
         ConfigurationSection parameters = node.getConfigurationSection("parameters");
         if (parameters != null)
         {
-            range = parameters.getInt("range", 32);
-            if (parameters.contains("target")) {
-                String targetTypeName = parameters.getString("target");
-                try {
-                    targetType = TargetType.valueOf(targetTypeName.toUpperCase());
-                } catch (Exception ex) {
-                    controller.getLogger().warning("Invalid target_type: " + targetTypeName);
-                    targetType = TargetType.OTHER;
-                }
-            } else {
-                targetType = TargetType.OTHER;
+            processTemplateParameters(parameters);
+        }
+    }
+
+    protected void processTemplateParameters(ConfigurationSection parameters) {
+        range = parameters.getInt("range", 0);
+        targetType = TargetType.NONE;
+        if (parameters.contains("target")) {
+            String targetTypeName = parameters.getString("target");
+            try {
+                targetType = TargetType.valueOf(targetTypeName.toUpperCase());
+            } catch (Exception ex) {
+                controller.getLogger().warning("Invalid target_type: " + targetTypeName);
+                targetType = TargetType.NONE;
             }
+
+            // Use default range of 32 for configs that didn't specify range
+            // Only when targeting is set to on
+            if ((targetType != TargetType.NONE && targetType != TargetType.SELF) && range == 0) {
+                range = 32;
+            }
+
+            // Re-process targetSelf parameter, defaults to on if targetType is "self"
+            targetSelf = (targetType == TargetType.SELF);
+            targetSelf = parameters.getBoolean("target_self", targetSelf);
+        }
+
+        // If a range was specified but not a target type, default to none
+        if (range > 0 && targetType == TargetType.NONE) {
+            targetType = TargetType.OTHER;
         }
     }
 
@@ -820,8 +838,8 @@ public abstract class TargetingSpell extends BaseSpell {
     @Override
     public void processParameters(ConfigurationSection parameters) {
         super.processParameters(parameters);
+        processTemplateParameters(parameters);
         useHitbox = parameters.getBoolean("hitbox", false);
-        range = parameters.getInt("range", 32);
         fov = parameters.getDouble("fov", 0.3);
         closeRange = parameters.getDouble("close_range", 1);
         closeFOV = parameters.getDouble("close_fov", 0.5);
@@ -856,18 +874,6 @@ public abstract class TargetingSpell extends BaseSpell {
 
         targetMinOffset = parameters.getInt("target_min_offset", 0);
         targetMinOffset = parameters.getInt("tmo", targetMinOffset);
-
-        if (parameters.contains("target")) {
-            String targetTypeName = parameters.getString("target");
-            try {
-                 targetType = TargetType.valueOf(targetTypeName.toUpperCase());
-            } catch (Exception ex) {
-                controller.getLogger().warning("Invalid target_type: " + targetTypeName);
-                targetType = TargetType.OTHER;
-            }
-        } else {
-            targetType = TargetType.OTHER;
-        }
 
         targetNPCs = parameters.getBoolean("target_npc", false);
         targetArmorStands = parameters.getBoolean("target_armor_stand", false);
