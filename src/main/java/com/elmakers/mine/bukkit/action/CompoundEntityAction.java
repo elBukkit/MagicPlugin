@@ -15,18 +15,10 @@ import java.util.List;
 
 public abstract class CompoundEntityAction extends CompoundAction
 {
-    protected boolean targetSelf;
     private List<WeakReference<Entity>> entities = new ArrayList<WeakReference<Entity>>();
     private int currentEntity = 0;
 
     public abstract void addEntities(CastContext context, List<WeakReference<Entity>> entities);
-
-    @Override
-    public void prepare(CastContext context, ConfigurationSection parameters)
-    {
-        super.prepare(context, parameters);
-        targetSelf = parameters.getBoolean("target_self", false);
-    }
 
     @Override
     public void reset(CastContext context)
@@ -70,21 +62,6 @@ public abstract class CompoundEntityAction extends CompoundAction
 
 		return result;
 	}
-
-    @Override
-    public void getParameterNames(Spell spell, Collection<String> parameters) {
-        super.getParameterNames(spell, parameters);
-        parameters.add("target_self");
-    }
-
-    @Override
-    public void getParameterOptions(Spell spell, String parameterKey, Collection<String> examples) {
-        if (parameterKey.equals("target_self")) {
-            examples.addAll(Arrays.asList((BaseSpell.EXAMPLE_BOOLEANS)));
-        } else {
-            super.getParameterOptions(spell, parameterKey, examples);
-        }
-    }
 
     @Override
     public Object clone()

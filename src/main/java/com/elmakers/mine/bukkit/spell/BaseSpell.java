@@ -93,7 +93,8 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     protected final static Set<String> vectorParameterMap = new HashSet<String>(Arrays.asList(VECTOR_PARAMETERS));
 
     public final static String[] BOOLEAN_PARAMETERS = {
-        "allow_max_range", "prevent_passthrough", "reverse_targeting", "passthrough", "bypass_build", "bypass_break", "bypass_pvp", "target_npc", "ignore_blocks"
+        "allow_max_range", "prevent_passthrough", "reverse_targeting", "passthrough",
+        "bypass_build", "bypass_break", "bypass_pvp", "target_npc", "ignore_blocks", "target_self"
     };
 
     protected final static Set<String> booleanParameterMap = new HashSet<String>(Arrays.asList(BOOLEAN_PARAMETERS));
@@ -164,6 +165,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     protected boolean quiet                       = false;
     protected boolean loud                        = false;
     protected boolean messageTargets              = true;
+    protected boolean targetSelf                  = false;
     protected boolean showUndoable              = true;
     protected boolean cancellable               = true;
     protected boolean quickCast                 = false;
@@ -1384,6 +1386,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         bypassDeactivate = parameters.getBoolean("bypass_deactivate", false);
         quiet = parameters.getBoolean("quiet", false);
         loud = parameters.getBoolean("loud", false);
+        targetSelf = parameters.getBoolean("target_self", false);
         messageTargets = parameters.getBoolean("message_targets", true);
         verticalSearchDistance = parameters.getInt("vertical_range", 8);
         trackCasts = parameters.getBoolean("track_casts", true);
@@ -2186,5 +2189,13 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
                 }
             }
         }
+    }
+
+    public boolean getTargetsCaster() {
+        return targetSelf;
+    }
+
+    public void setTargetsCaster(boolean target) {
+        targetSelf = target;
     }
 }

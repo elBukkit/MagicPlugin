@@ -606,6 +606,21 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
     }
 
     @Override
+    public boolean getTargetsCaster() {
+        if (baseSpell != null) {
+            return baseSpell.getTargetsCaster();
+        }
+        return false;
+    }
+
+    @Override
+    public void setTargetsCaster(boolean target) {
+        if (baseSpell != null) {
+            baseSpell.setTargetsCaster(target);
+        }
+    }
+
+    @Override
     public boolean canTarget(Entity entity) {
         return targetingSpell == null ? true : targetingSpell.canTarget(entity);
     }
