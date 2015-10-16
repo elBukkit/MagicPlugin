@@ -28,6 +28,7 @@ public interface Spell extends SpellTemplate {
     public boolean cast(String[] parameters);
     public boolean cast(String[] parameters, Location defaultLocation);
     public boolean cast(ConfigurationSection parameters, Location defaultLocation);
+    public boolean cast(ConfigurationSection parameters);
     public boolean cancel();
     public Location getLocation();
     public Entity getEntity();
@@ -61,4 +62,5 @@ public interface Spell extends SpellTemplate {
     public MaterialBrush getBrush();
     public boolean isCancellable();
     public ConfigurationSection getWorkingParameters();
+    public void finish(CastContext context);
 }

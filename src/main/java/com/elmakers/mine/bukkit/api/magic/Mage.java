@@ -349,15 +349,6 @@ public interface Mage extends CostReducer {
      */
     public void onCast(Spell spell, SpellResult result);
 
-    /**
-     * Called when a Spell finishes completely - this may be
-     * some time after cast (for batches spells) or immediately at
-     * cast time.
-     *
-     * @param context
-     */
-    public void onFinalizeCast(CastContext context);
-
     public boolean isRestricted(Material material);
     public Set<Material> getRestrictedMaterials();
 
@@ -423,8 +414,6 @@ public interface Mage extends CostReducer {
     public CommandSender getDebugger();
     public void giveItem(ItemStack item);
     public void removeItemsWithTag(String tag);
-    public void setTrackCasts(boolean track);
-    public boolean getTrackCasts();
     public void setQuiet(boolean quiet);
     public boolean isQuiet();
 }
