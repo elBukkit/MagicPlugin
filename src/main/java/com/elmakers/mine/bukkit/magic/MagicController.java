@@ -2686,7 +2686,6 @@ public class MagicController implements MageController {
 	
 	public void toggleCastCommandOverrides(Mage apiMage, CommandSender sender, boolean override) {
         // Don't track command-line casts
-        apiMage.setTrackCasts(!override);
         // Reach into internals a bit here.
 		if (apiMage instanceof com.elmakers.mine.bukkit.magic.Mage) {
             com.elmakers.mine.bukkit.magic.Mage mage = (com.elmakers.mine.bukkit.magic.Mage)apiMage;
@@ -2779,6 +2778,7 @@ public class MagicController implements MageController {
 			return false;
 		}
 
+        // TODO: Load configured list of parameters!
 		// Make it free and skip cooldowns, if configured to do so.
 		toggleCastCommandOverrides(mage, sender, true);
         boolean success = false;
@@ -3881,6 +3881,7 @@ public class MagicController implements MageController {
         return libsDisguiseManager == null || entity == null ? false : libsDisguiseManager.isDisguised(entity);
     }
 
+    @Override
     public boolean isSpellUpgradingEnabled() {
         return autoSpellUpgradesEnabled;
     }

@@ -194,7 +194,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
     private double castMinVelocity = 0;
     private Vector castVelocityDirection = null;
     private String castSpell = null;
-    private String[] castParameters = null;
+    private ConfigurationSection castParameters = null;
 
     private Map<PotionEffectType, Integer> potionEffects = new HashMap<PotionEffectType, Integer>();
 
@@ -1106,8 +1106,8 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         node.set("cast_velocity_direction", directionString);
         node.set("cast_spell", castSpell);
         String castParameterString = null;
-        if (castParameters != null && castParameters.length > 0) {
-            castParameterString = StringUtils.join(castParameters, " ");
+        if (castParameters != null) {
+            castParameterString = ConfigurationUtils.getParameters(castParameters);
         }
         node.set("cast_parameters", castParameterString);
 
@@ -1377,7 +1377,8 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
             castSpell = wandConfig.getString("cast_spell", castSpell);
             String castParameterString = wandConfig.getString("cast_parameters", null);
             if (castParameterString != null && !castParameterString.isEmpty()) {
-                castParameters = StringUtils.split(castParameterString, " ");
+                castParameters = new MemoryConfiguration();
+                ConfigurationUtils.addParameters(StringUtils.split(castParameterString, " "), castParameters);
             }
 
             boolean needsInventoryUpdate = false;
@@ -2530,7 +2531,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         if (other.castSpell != null && (other.isUpgrade || castSpell == null || !castSpell.equals(other.castSpell))) {
             modified = true;
             castSpell = other.castSpell;
-            castParameters = other.castParameters;
+            castParameters = ConfigurationUtils.addConfigurations(castParameters, other.castParameters);
             castInterval = other.castInterval;
             castVelocityDirection = other.castVelocityDirection;
             castMinVelocity = other.castMinVelocity;
@@ -3167,7 +3168,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
                 lastSpellCast = now;
                 Spell spell = mage.getSpell(castSpell);
                 if (spell != null) {
-                    mage.setTrackCasts(false);
+                    castParameters.set("track_casts", false);
                     mage.setCostReduction(100);
                     mage.setQuiet(true);
                     try {
@@ -3176,7 +3177,6 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
                         controller.getLogger().log(Level.WARNING, "Error casting aura spell " + spell.getKey(), ex);
                     }
                     mage.setQuiet(false);
-                    mage.setTrackCasts(true);
                     mage.setCostReduction(0);
                 }
             }
@@ -3361,40 +3361,6 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 					// And the effect color morphing isn't all that important if a few
 					// casts get lost.
 				}
-                if (!isLocked() && spell instanceof MageSpell && controller.isSpellUpgradingEnabled())
-                {
-                    MageSpell mageSpell = (MageSpell)spell;
-                    MageSpell upgrade = mageSpell.getUpgrade();
-                    long requiredCasts = mageSpell.getRequiredUpgradeCasts();
-                    if (upgrade != null && requiredCasts > 0 && mageSpell.getCastCount() >= requiredCasts)
-                    {
-                        String upgradePath = mageSpell.getRequiredUpgradePath();
-                        WandUpgradePath currentPath = (WandUpgradePath)getPath();
-                        if (upgradePath == null || upgradePath.isEmpty() || (currentPath != null && currentPath.hasPath(upgradePath)))
-                        {
-                            Spell newSpell = mage.getSpell(upgrade.getKey());
-                            if (mageSpell.isActive()) {
-                                mageSpell.deactivate(true, true);
-                                if (newSpell != null && newSpell instanceof MageSpell) {
-                                    ((MageSpell)newSpell).activate();
-                                }
-                            }
-                            addSpell(upgrade.getKey());
-                            Messages messages = controller.getMessages();
-                            String levelDescription = upgrade.getLevelDescription();
-                            if (levelDescription == null || levelDescription.isEmpty()) {
-                                levelDescription = upgrade.getName();
-                            }
-                            upgrade.playEffects("upgrade");
-                            mage.sendMessage(messages.get("wand.spell_upgraded").replace("$name", upgrade.getName()).replace("$wand", getName()).replace("$level", levelDescription));
-                            mage.sendMessage(upgrade.getUpgradeDescription().replace("$name", upgrade.getName()));
-
-                            SpellUpgradeEvent upgradeEvent = new SpellUpgradeEvent(mage, spell, newSpell);
-                            Bukkit.getPluginManager().callEvent(upgradeEvent);
-                        }
-                    }
-                }
-
                 updateHotbarStatus();
 				return true;
 			}

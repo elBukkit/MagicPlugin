@@ -100,7 +100,6 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     private LinkedList<Batch> pendingBatches = new LinkedList<Batch>();
     private boolean loading = false;
     private int debugLevel = 0;
-    private boolean trackSpellCasts = true;
     private boolean quiet = false;
 
     private Map<PotionEffectType, Integer> effectivePotionEffects = new HashMap<PotionEffectType, Integer>();
@@ -1182,11 +1181,6 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     }
 
     @Override
-    public void onFinalizeCast(CastContext context) {
-        // TODO: Track spell casts here instead of on cast.
-    }
-
-    @Override
     public float getPower() {
         float power = Math.min(controller.getMaxPower(), activeWand == null ? 0 : activeWand.getPower());
         return power * powerMultiplier;
@@ -2054,16 +2048,6 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         {
             inventory.setArmorContents(armor);
         }
-    }
-
-    @Override
-    public void setTrackCasts(boolean track) {
-        this.trackSpellCasts = track;
-    }
-
-    @Override
-    public boolean getTrackCasts() {
-        return trackSpellCasts;
     }
 
     @Override
