@@ -3579,8 +3579,6 @@ public class MagicController implements MageController {
     @Override
     public ItemStack createItem(String magicItemKey) {
         ItemStack itemStack = null;
-        // Handle : or | as delimiter
-        magicItemKey = magicItemKey.replace("|", ":");
 
         try {
             if (magicItemKey.contains("skull:") || magicItemKey.contains("skull_item:")) {

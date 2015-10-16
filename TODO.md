@@ -1,6 +1,5 @@
 # TODO
 
- - /mgive doesn't work with spell levels
  - Need a way for /cast to be cooldown-free without affecting NPC's, etc.
  - Aliases are broken /wand add doesn't activate, spell items don't work
  

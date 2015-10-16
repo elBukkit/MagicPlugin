@@ -14,6 +14,7 @@
  - Add support for EffectLib parameters (see: frost)
  - Add "targetable" parameter for a targetable block type list
  - Undo action "target_self" parameter changed to "target_caster"
+ - Fix /mgive blink|2 (giving spell-level items)
 
 ## 5.2.1
 

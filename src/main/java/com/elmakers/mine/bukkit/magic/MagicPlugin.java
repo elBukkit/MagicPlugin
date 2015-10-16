@@ -381,9 +381,7 @@ public class MagicPlugin extends JavaPlugin implements MagicAPI
             return null;
         }
 
-        // Handle : or | as delimiter
-        String magicItemKey = magicKey.replace("|", ":");
-        if (magicItemKey.contains("skill:")) {
+        if (magicKey.contains("skill:")) {
             String spellKey = magicKey.substring(6);
             itemStack = Wand.createSpellItem(spellKey, controller, mage, null, false);
             InventoryUtils.setMeta(itemStack, "skill", "true");
