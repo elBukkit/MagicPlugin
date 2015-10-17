@@ -100,13 +100,13 @@ public class CustomProjectileAction extends CompoundAction
         {
             return SpellResult.PENDING;
         }
-        if (now > deadline)
-        {
-            return hit(context);
-        }
         if (hit)
         {
             return super.perform(context);
+        }
+        if (now > deadline)
+        {
+            return hit(context);
         }
         nextUpdate = now + interval;
 
