@@ -3580,6 +3580,8 @@ public class MagicController implements MageController {
     public ItemStack createItem(String magicItemKey) {
         ItemStack itemStack = null;
 
+        // Handle : or | as delimiter
+        magicItemKey = magicItemKey.replace("|", ":");
         try {
             if (magicItemKey.contains("skull:") || magicItemKey.contains("skull_item:")) {
                 magicItemKey = magicItemKey.replace("skull:", "skull_item:");
@@ -3627,7 +3629,10 @@ public class MagicController implements MageController {
                 if (wand != null) {
                     return wand.getItem();
                 }
-                itemStack = createSpellItem(magicItemKey);
+                // Spells may be using the | delimiter for levels
+                // I am regretting overloading this delimiter!
+                String spellKey = magicItemKey.replace(":", "|");
+                itemStack = createSpellItem(spellKey);
                 if (itemStack != null) {
                     return itemStack;
                 }

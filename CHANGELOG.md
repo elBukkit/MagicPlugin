@@ -11,7 +11,7 @@
    - Add Water Whip, Ice Shield
    - Add Earth Line, Compression
    - Update powers to canon names and descriptions
- - Add support for EffectLib parameters (see: frost)
+ - Add support for EffectLib variables (see: frost)
  - Add "targetable" parameter for a targetable block type list
  - Undo action "target_self" parameter changed to "target_caster"
  - Fix /mgive blink|2 (giving spell-level items)

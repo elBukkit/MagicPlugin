@@ -1,7 +1,11 @@
 # TODO
 
  - Need a way for /cast to be cooldown-free without affecting NPC's, etc.
+   - Add list of cast-command params?
+   - Would be nice to replace the current toggleCastCommand stuff, but need something special for NPCs.. ?
  - Aliases are broken /wand add doesn't activate, spell items don't work
+ - Add "Protect" action
+ - Fix Anvil renaming + binding (KingBohica1)
  
  - Change reflect behavior to only work on projectile spells
  - Add break behavior to projectile
