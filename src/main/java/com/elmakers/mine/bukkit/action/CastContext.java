@@ -771,7 +771,7 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
             mage.registerForUndo(undoList);
         }
         if (spell != null) {
-            mage.sendDebugMessage(ChatColor.WHITE + " Finish " + ChatColor.GOLD + spell.getName() + ChatColor.WHITE  + ": " + ChatColor.AQUA + result, 1);
+            mage.sendDebugMessage(ChatColor.WHITE + " Finish " + ChatColor.GOLD + spell.getName() + ChatColor.WHITE  + ": " + ChatColor.AQUA + result, 2);
             spell.finish(this);
         }
         String resultName = result.name().toLowerCase();

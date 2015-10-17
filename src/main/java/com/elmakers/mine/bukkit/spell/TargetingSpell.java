@@ -570,7 +570,7 @@ public abstract class TargetingSpell extends BaseSpell {
             }
             if (newScore.getScore() > 0)
             {
-                if (mage != null && mage.getDebugLevel() > 1)
+                if (mage != null && mage.getDebugLevel() > 3)
                 {
                     mage.sendDebugMessage("Target " + entity.getType() + ": " + newScore.getScore());
                 }

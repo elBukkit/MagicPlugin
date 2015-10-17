@@ -216,7 +216,7 @@ public class ActionHandler implements Cloneable
             return result;
         }
         Mage mage = context.getMage();
-        boolean showDebug = mage.getDebugLevel() > 1;
+        boolean showDebug = mage.getDebugLevel() > 2;
         while (currentAction != null)
         {
             ActionContext action = actions.get(currentAction);
