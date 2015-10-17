@@ -813,6 +813,11 @@ public abstract class TargetingSpell extends BaseSpell {
             // Re-process targetSelf parameter, defaults to on if targetType is "self"
             targetSelf = (targetType == TargetType.SELF);
             targetSelf = parameters.getBoolean("target_self", targetSelf);
+
+            // If target type of none was explicity provided, zero-out range
+            if (targetType == TargetType.NONE) {
+                range = 0;
+            }
         }
 
         // If a range was specified but not a target type, default to none
