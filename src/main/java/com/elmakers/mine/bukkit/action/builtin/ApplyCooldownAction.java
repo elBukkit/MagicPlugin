@@ -4,7 +4,6 @@ import com.elmakers.mine.bukkit.action.BaseSpellAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
-import com.elmakers.mine.bukkit.api.spell.MageSpell;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.api.wand.Wand;
@@ -22,6 +21,7 @@ public class ApplyCooldownAction extends BaseSpellAction
 	private String[] spells;
 	private boolean clear;
 	private boolean bypassReduction;
+	private boolean targetCaster;
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters)
@@ -30,6 +30,7 @@ public class ApplyCooldownAction extends BaseSpellAction
 		cooldownAmount = parameters.getInt("duration", 0);
 		clear = parameters.getBoolean("clear", false);
 		bypassReduction = parameters.getBoolean("bypass_reduction", false);
+		targetCaster = parameters.getBoolean("target_caster", false);
 		String spellCSV = parameters.getString("spells", null);
 		if (spellCSV != null)
 		{
@@ -44,12 +45,15 @@ public class ApplyCooldownAction extends BaseSpellAction
 	@Override
 	public SpellResult perform(CastContext context)
 	{
-		Entity entity = context.getTargetEntity();
-		MageController controller = context.getController();
-		if (entity == null || !controller.isMage(entity)) {
-			return SpellResult.NO_TARGET;
+		Mage targetMage = context.getMage();
+		if (!targetCaster) {
+			Entity entity = context.getTargetEntity();
+			MageController controller = context.getController();
+			if (entity == null || !controller.isMage(entity)) {
+				return SpellResult.NO_TARGET;
+			}
+			controller.getMage(entity);
 		}
-		Mage targetMage = controller.getMage(entity);
 		int amount = cooldownAmount;
 		if (!bypassReduction && cooldownAmount > 0) {
 			double cooldownReduction = targetMage.getCooldownReduction();
@@ -98,7 +102,7 @@ public class ApplyCooldownAction extends BaseSpellAction
     @Override
     public boolean requiresTargetEntity()
     {
-        return true;
+        return !targetCaster;
     }
 
 	@Override
