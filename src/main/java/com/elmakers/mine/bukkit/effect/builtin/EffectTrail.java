@@ -67,7 +67,7 @@ public class EffectTrail extends EffectRepeating {
             target = target.clone();
             target.add(delta.multiply(-scale(size) + 1));
         }
-        playEffect(new DynamicLocation(source), new DynamicLocation(target));
+        playEffect(new DynamicLocation(source, getOriginEntity()), new DynamicLocation(target, getTargetEntity()));
     }
 
     @Override

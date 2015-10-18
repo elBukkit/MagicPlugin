@@ -55,7 +55,7 @@ public class EffectRing extends EffectRepeating {
                 target = target.clone();
                 target.add(direction);
             }
-            playEffect(new DynamicLocation(source), new DynamicLocation(target));
+            playEffect(new DynamicLocation(source, getOriginEntity()), new DynamicLocation(target, getTargetEntity()));
         }
     }
 }
