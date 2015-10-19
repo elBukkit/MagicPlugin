@@ -1,6 +1,6 @@
 # CHANGELOG
 
-## 5.3
+## 5.2.2
 
  - Add CustomProjectile action, re-work Kill spell and Blaster item
  - Add /wand save command, for saving an in-game wand back to a template configuration

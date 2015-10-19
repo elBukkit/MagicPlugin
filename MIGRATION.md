@@ -1,6 +1,6 @@
 # Migration Notes
 
-## 5.3
+## 5.2.2
 
  - Undo action "target_self" parameter changed to "target_caster"
  - Range parameter now defaults to zero. Target type defaults to "none" unless range is set.
