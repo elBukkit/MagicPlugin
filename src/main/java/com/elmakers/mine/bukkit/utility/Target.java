@@ -50,11 +50,19 @@ public class Target implements Comparable<Target>
         this.source = sourceLocation;
     }
 
+    public void setBlock(Block block)
+    {
+        if (block != null) {
+            this.location = block.getLocation();
+            this.location.add(0.5, 0.5, 0.5);
+        }
+    }
+
     public Target(Location sourceLocation, Block block)
     {
         this.source = sourceLocation;
         this.locationMaterial = new MaterialAndData(block);
-        if (block != null) this.location = block.getLocation();
+        this.setBlock(block);
         calculateScore();
     }
 
@@ -74,7 +82,7 @@ public class Target implements Comparable<Target>
         this.maxAngle = angle;
         this.reverseDistance = reverseDistance;
         this.source = sourceLocation;
-        if (block != null) this.location = block.getLocation();
+        this.setBlock(block);
         this.locationMaterial = new MaterialAndData(block);
         calculateScore();
     }
@@ -86,7 +94,7 @@ public class Target implements Comparable<Target>
         this.maxAngle = angle;
         this.reverseDistance = reverseDistance;
         this.source = sourceLocation;
-        if (block != null) this.location = block.getLocation();
+        this.setBlock(block);
         this.locationMaterial = new MaterialAndData(block);
         calculateScore();
     }
@@ -204,7 +212,7 @@ public class Target implements Comparable<Target>
         this.source = sourceLocation;
         this._entity = new WeakReference<Entity>(entity);
         if (block != null) {
-            this.location = block.getLocation();
+            this.setBlock(block);
         } else if (entity != null) {
             this.location = CompatibilityUtils.getEyeLocation(entity);
         }
