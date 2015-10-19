@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## 5.3
+
+ - Converted spells to projectiles: 
+   - Magic Missile
+   
 ## 5.2.2
 
  - Add CustomProjectile action, re-work Kill spell and Blaster item
