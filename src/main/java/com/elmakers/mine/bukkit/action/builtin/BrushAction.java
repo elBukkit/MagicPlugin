@@ -34,7 +34,7 @@ public class BrushAction extends CompoundAction {
                 addBrush(mage, location, brushKey);
             }
         }
-        sample = parameters.getBoolean("sample");
+        sample = parameters.getBoolean("sample", false);
     }
 
     protected void addBrush(Mage mage, Location location, String brushKey) {
@@ -55,8 +55,9 @@ public class BrushAction extends CompoundAction {
 
         // Don't re-assign the brush if we are re-running pending actions
         if (performed) {
-            return super.perform(context);
+            return super.perform(actionContext);
         }
+        performed = true;
 
         createActionContext(context);
         if (sample)

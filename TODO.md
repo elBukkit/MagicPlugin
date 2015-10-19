@@ -1,6 +1,11 @@
 # TODO
 
  - Test out silent firework entities
+ - Can magic items stack somehow ... ?
+ - Test baby/giant wither bosses:
+   You have to set (every tick) the invulnerability of the wither.
+   Either you get the data watcher and watch 20 with a value big but below than 1000. I use 600 not to have a too small wither. But there is an easier method which is r() which does it.
+   ((CraftWither)wither).getHandle().r(600);
  - Need a way for /cast to be cooldown-free without affecting NPC's, etc.
    - Add list of cast-command params?
    - Would be nice to replace the current toggleCastCommand stuff, but need something special for NPCs.. ?

@@ -52,9 +52,10 @@ public class SpreadAction extends CompoundAction
             }
         }
         CastContext actionContext = createContext(context, source, sourceLocation);
-        Location targetLocation = actionContext.getTargetLocation().clone();
+        Location targetLocation = actionContext.getTargetLocation();
         if (targetLocation != null)
         {
+            targetLocation = targetLocation.clone();
             double weight = RandomUtils.lerp(centerProbability - outerProbability, centerProbability + outerProbability, random.nextFloat());
             double xOffset = (double)radius * weight;
             xOffset = xOffset - (double)radius;
@@ -70,7 +71,7 @@ public class SpreadAction extends CompoundAction
 
     @Override
     public boolean requiresTarget() {
-        return true;
+        return false;
     }
 
     @Override
