@@ -25,6 +25,7 @@ public class CustomProjectileAction extends CompoundAction
 {
     private int interval;
     private int lifetime;
+    private int range;
     private double speed;
     private int startDistance;
     private String projectileEffectKey;
@@ -39,6 +40,7 @@ public class CustomProjectileAction extends CompoundAction
     private boolean useWandLocation;
     private boolean useEyeLocation;
 
+    private double distanceTravelled;
     private boolean hasTickEffects;
     private long lastUpdate;
     private long nextUpdate;
@@ -65,6 +67,7 @@ public class CustomProjectileAction extends CompoundAction
         lifetime = parameters.getInt("lifetime", 5000);
         speed = parameters.getDouble("speed", 0.1);
         startDistance = parameters.getInt("start", 0);
+        range = parameters.getInt("range", 0);
         projectileEffectKey = parameters.getString("projectile_effects", "projectile");
         hitEffectKey = parameters.getString("hit_effects", "hit");
         tickEffectKey = parameters.getString("tick_effects", "tick");
@@ -85,6 +88,7 @@ public class CustomProjectileAction extends CompoundAction
         super.reset(context);
         long now = System.currentTimeMillis();
         nextUpdate = 0;
+        distanceTravelled = 0;
         lastUpdate = now;
         deadline =  now + lifetime;
         hit = false;
@@ -111,22 +115,27 @@ public class CustomProjectileAction extends CompoundAction
         nextUpdate = now + interval;
 
         // Check for initialization required
-        Location targetLocation = context.getTargetLocation();
-        if (targetLocation == null) {
-            if (useWandLocation) {
-                targetLocation = context.getWandLocation().clone();
-            } else if (useEyeLocation) {
-                targetLocation = context.getEyeLocation().clone();
-            } else {
-                targetLocation = context.getLocation().clone();
-            }
-            context.setTargetLocation(targetLocation);
-        }
+        Location projectileLocation = context.getTargetLocation();
         if (velocity == null)
         {
-            velocity = context.getDirection().clone().normalize();
+            Location targetLocation = projectileLocation;
+            if (useWandLocation) {
+                projectileLocation = context.getWandLocation().clone();
+            } else if (useEyeLocation) {
+                projectileLocation = context.getEyeLocation().clone();
+            } else {
+                projectileLocation = context.getLocation().clone();
+            }
+
+            if (targetLocation != null && !reorient) {
+                velocity = targetLocation.toVector().subtract(projectileLocation.toVector()).normalize();
+            } else {
+                velocity = context.getDirection().clone().normalize();
+            }
+            projectileLocation.setDirection(velocity);
+            context.setTargetLocation(projectileLocation);
             if (startDistance != 0) {
-                targetLocation.add(velocity.clone().multiply(startDistance));
+                projectileLocation.add(velocity.clone().multiply(startDistance));
             }
 
             // Start up projectile FX
@@ -134,7 +143,7 @@ public class CustomProjectileAction extends CompoundAction
             for (EffectPlayer apiEffectPlayer : projectileEffects)
             {
                 if (effectLocation == null) {
-                    effectLocation = new DynamicLocation(targetLocation);
+                    effectLocation = new DynamicLocation(projectileLocation);
                     effectLocation.setDirection(velocity);
                 }
                 if (activeProjectileEffects == null) {
@@ -151,7 +160,7 @@ public class CustomProjectileAction extends CompoundAction
         }
         else if (effectLocation != null)
         {
-            effectLocation.updateFrom(targetLocation);
+            effectLocation.updateFrom(projectileLocation);
             effectLocation.setDirection(velocity);
         }
 
@@ -180,13 +189,13 @@ public class CustomProjectileAction extends CompoundAction
         }
 
         // Compute incremental speed movement
-        double remainingSpeed = speed * delta / 50;
+        double remainingDistance = speed * delta / 50;
         List<CandidateEntity> candidates = null;
         if (radius >= 0 && targetEntities) {
             Entity sourceEntity = context.getEntity();
             candidates = new ArrayList<CandidateEntity>();
-            double boundSize = Math.ceil(remainingSpeed) * radius + 2;
-            List<Entity> nearbyEntities = CompatibilityUtils.getNearbyEntities(targetLocation, boundSize, boundSize, boundSize);
+            double boundSize = Math.ceil(remainingDistance) * radius + 2;
+            List<Entity> nearbyEntities = CompatibilityUtils.getNearbyEntities(projectileLocation, boundSize, boundSize, boundSize);
             for (Entity entity : nearbyEntities)
             {
                 if ((context.getTargetsCaster() || entity != sourceEntity) && context.canTarget(entity))
@@ -205,12 +214,12 @@ public class CustomProjectileAction extends CompoundAction
         for (int i = 0; i < 256; i++) {
             // Play tick FX
             if (hasTickEffects) {
-                context.setTargetLocation(targetLocation);
+                context.setTargetLocation(projectileLocation);
                 context.playEffects(tickEffectKey);
             }
 
             // Check for entity collisions first
-            Vector targetVector = targetLocation.toVector();
+            Vector targetVector = projectileLocation.toVector();
             if (candidates != null) {
                 for (CandidateEntity candidate : candidates) {
                     if (candidate.bounds.contains(targetVector)) {
@@ -220,11 +229,11 @@ public class CustomProjectileAction extends CompoundAction
                 }
             }
 
-            int y = targetLocation.getBlockY();
-            if (y >= targetLocation.getWorld().getMaxHeight() || y <= 0) {
+            int y = projectileLocation.getBlockY();
+            if (y >= projectileLocation.getWorld().getMaxHeight() || y <= 0) {
                 return hit(context);
             }
-            Block block = targetLocation.getBlock();
+            Block block = projectileLocation.getBlock();
             if (!block.getChunk().isLoaded()) {
                 return hit(context);
             }
@@ -232,32 +241,38 @@ public class CustomProjectileAction extends CompoundAction
                 return hit(context);
             }
 
-            double partialSpeed = Math.min(tickSize, remainingSpeed);
-            Vector speedVector = velocity.clone().multiply(partialSpeed);
-            remainingSpeed -= tickSize;
-            Vector newLocation = targetLocation.toVector().add(speedVector);
+            double partialDistance = Math.min(tickSize, remainingDistance);
+            Vector speedVector = velocity.clone().multiply(partialDistance);
+            remainingDistance -= tickSize;
+            Vector newLocation = projectileLocation.toVector().add(speedVector);
 
             // Skip over same blocks, we increment by 0.5 (by default) to try and catch diagonals
-            if (newLocation.getBlockX() == targetLocation.getBlockX()
-                    && newLocation.getBlockY() == targetLocation.getBlockY()
-                    && newLocation.getBlockZ() == targetLocation.getBlockZ()) {
-                remainingSpeed -= tickSize;
+            if (newLocation.getBlockX() == projectileLocation.getBlockX()
+                    && newLocation.getBlockY() == projectileLocation.getBlockY()
+                    && newLocation.getBlockZ() == projectileLocation.getBlockZ()) {
+                remainingDistance -= tickSize;
+                distanceTravelled += partialDistance;
                 newLocation = newLocation.add(speedVector);
-                targetLocation.setX(newLocation.getX());
-                targetLocation.setY(newLocation.getY());
-                targetLocation.setZ(newLocation.getZ());
+                projectileLocation.setX(newLocation.getX());
+                projectileLocation.setY(newLocation.getY());
+                projectileLocation.setZ(newLocation.getZ());
 
                 if (hasTickEffects) {
-                    context.setTargetLocation(targetLocation);
+                    context.setTargetLocation(projectileLocation);
                     context.playEffects(tickEffectKey);
                 }
             } else {
-                targetLocation.setX(newLocation.getX());
-                targetLocation.setY(newLocation.getY());
-                targetLocation.setZ(newLocation.getZ());
+                projectileLocation.setX(newLocation.getX());
+                projectileLocation.setY(newLocation.getY());
+                projectileLocation.setZ(newLocation.getZ());
             }
 
-            if (remainingSpeed <= 0) break;
+            distanceTravelled += partialDistance;
+            if (range > 0 && distanceTravelled >= range) {
+                return hit(context);
+            }
+
+            if (remainingDistance <= 0) break;
         }
 
 		return SpellResult.PENDING;
