@@ -73,7 +73,7 @@ public abstract class TargetingSpell extends BaseSpell {
     private boolean                             allowMaxRange           = false;
     private boolean                             bypassBackfire          = false;
 
-    private boolean                             useHitbox               = false;
+    private boolean                             useHitbox               = true;
     private int                                 range                   = 0;
     private double                              fov                     = 0.3;
     private double                              closeRange              = 1;
@@ -831,7 +831,7 @@ public abstract class TargetingSpell extends BaseSpell {
     public void processParameters(ConfigurationSection parameters) {
         super.processParameters(parameters);
         processTemplateParameters(parameters);
-        useHitbox = parameters.getBoolean("hitbox", false);
+        useHitbox = parameters.getBoolean("hitbox", !parameters.contains("fov"));
         fov = parameters.getDouble("fov", 0.3);
         closeRange = parameters.getDouble("close_range", 1);
         closeFOV = parameters.getDouble("close_fov", 0.5);
