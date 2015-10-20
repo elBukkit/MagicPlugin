@@ -75,7 +75,7 @@ public class CustomProjectileAction extends CompoundAction
         hitEffectKey = parameters.getString("hit_effects", "hit");
         tickEffectKey = parameters.getString("tick_effects", "tick");
         targetEntities = parameters.getBoolean("target_entities", true);
-        radius = parameters.getDouble("size", 1) / 2;
+        radius = parameters.getDouble("size", 0) / 2;
         gravity = parameters.getDouble("gravity", 0);
         drag = parameters.getDouble("drag", 0);
         tickSize = parameters.getDouble("tick_size", 0.5);
