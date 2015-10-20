@@ -2,6 +2,7 @@ package com.elmakers.mine.bukkit.block;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -796,5 +797,33 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
 
     public void setUndoReflective(boolean reflective) {
         this.undoReflective = reflective;
+    }
+
+    @Override
+    public Collection<Entity> getAllEntities() {
+        ArrayList<Entity> entities = new ArrayList<Entity>();
+        if (this.entities != null)
+        {
+            for (WeakReference<Entity> entityReference : this.entities)
+            {
+                Entity entity = entityReference.get();
+                if (entity != null)
+                {
+                    entities.add(entity);
+                }
+            }
+        }
+        if (this.modifiedEntities != null)
+        {
+            for (EntityData entityData : this.modifiedEntities.values())
+            {
+                Entity entity = entityData.getEntity();
+                if (entity != null)
+                {
+                    entities.add(entity);
+                }
+            }
+        }
+        return entities;
     }
 }

@@ -56,7 +56,6 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
     private SpellResult result = SpellResult.NO_ACTION;
     private Vector direction = null;
 
-    private Collection<Entity> targetedEntities = Collections.newSetFromMap(new WeakHashMap<Entity, Boolean>());
     private Set<UUID> targetMessagesSent = new HashSet<UUID>();
     private Collection<EffectPlay> currentEffects = new ArrayList<EffectPlay>();
 
@@ -79,7 +78,6 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
         this.entity = null;
         this.base = this;
         this.result = SpellResult.NO_ACTION;
-        targetedEntities = Collections.newSetFromMap(new WeakHashMap<Entity, Boolean>());
         targetMessagesSent = new HashSet<UUID>();
         currentEffects = new ArrayList<EffectPlay>();
 
@@ -103,7 +101,6 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
         this.setSpell(copy.getSpell());
         this.targetEntity = copy.getTargetEntity();
         this.targetLocation = copy.getTargetLocation();
-        this.targetedEntities = copy.getTargetedEntities();
         this.undoList = copy.getUndoList();
         this.targetName = copy.getTargetName();
         this.brush = copy.getBrush();
@@ -242,7 +239,6 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
     @Override
     public void setTargetEntity(Entity targetEntity) {
         this.targetEntity = targetEntity;
-        addTargetEntity(targetEntity);
     }
 
     @Override
@@ -652,18 +648,14 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
     }
 
     @Override
-    public void addTargetEntity(Entity entity)
-    {
-        if (entity != null)
-        {
-            targetedEntities.add(entity);
-        }
-    }
-
-    @Override
     public Collection<Entity> getTargetedEntities()
     {
-        return targetedEntities;
+        if (undoList == null)
+        {
+            return new ArrayList<Entity>();
+        }
+
+        return undoList.getAllEntities();
     }
 
     @Override
