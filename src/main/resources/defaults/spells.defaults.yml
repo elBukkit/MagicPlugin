@@ -5791,7 +5791,9 @@ missile:
              class: ConeEffect
              iterations: 15
              particle: redstone
-             lengthGrow: 0.3
+             lengthGrow: 0.05
+             radiusGrow: 0.0015
+             updateLocations: false
         tick:
         - particle: redstone
           location: target
@@ -5844,6 +5846,63 @@ missile|4:
         target_breakables: 4
     costs:
         mana: 50
+
+homing:
+    icon: ink_sack:1
+    icon_url: http://textures.minecraft.net/texture/a4b47e6847d71c60d0a6453313435d61f15b1523abd9741de36366deec1f38d6
+    category: combat
+    worth: 1500
+    actions:
+        cast:
+        - class: CustomProjectile
+          actions:
+          - class: Damage
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: magic.zap_crack
+           location: origin
+           color_override: color
+           effectlib:
+             class: ConeEffect
+             iterations: 15
+             particle: redstone
+             lengthGrow: 0.01
+             radiusGrow: 0.002
+             updateLocations: false
+        tick:
+        - particle: redstone
+          color: FF0000
+          location: target
+        projectile:
+        - class: EffectSingle
+          effectlib:
+             class: SphereEffect
+             particle: redstone
+             color: "FFA500"
+             iterations: 100
+             radius: $size
+             particles: 10
+        hit:
+        -  class: EffectSingle
+           sound: magic.zap
+           sound_volume: .3
+           location: target
+           color2: FF0000
+           firework: burst
+    parameters:
+        speed: 0.1
+        range: 32
+        size: 1.5
+        hitbox: true
+        target_type: LivingEntity
+        player_damage: 2
+        entity_damage: 4
+        target_breakables: 1
+        cooldown: 5000
+        track_target: true
+    costs:
+        mana: 40
 
 blind:
     icon_url: http://textures.minecraft.net/texture/c7a8e7c9d3375135e39aa6d57b4e60539cf8f6efc5b58c83a13caf40561560

@@ -1260,6 +1260,10 @@ spells:
         description: Fire a bolt of pure magic
         cast: You fire a missile at $target
         upgrade_description: "&r&b&bull; &6Increased damage and range"
+    homing:
+        name: Homing Missile
+        description: Shoot a bolt of energy that will track your target
+        cast: You fire a homing missile at $target
     blind:
         name: Blind
         description: Blind your target

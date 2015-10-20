@@ -14,8 +14,10 @@ import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.util.Vector;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -39,7 +41,9 @@ public class CustomProjectileAction extends CompoundAction
     private boolean reorient;
     private boolean useWandLocation;
     private boolean useEyeLocation;
+    private boolean trackEntity;
 
+    private WeakReference<Entity> trackingEntity;
     private double distanceTravelled;
     private boolean hasTickEffects;
     private long lastUpdate;
@@ -80,6 +84,7 @@ public class CustomProjectileAction extends CompoundAction
         reorient = parameters.getBoolean("reorient", false);
         useWandLocation = parameters.getBoolean("use_wand_location", true);
         useEyeLocation = parameters.getBoolean("use_eye_location", true);
+        trackEntity = parameters.getBoolean("track_target", false);
     }
 
     @Override
@@ -95,6 +100,7 @@ public class CustomProjectileAction extends CompoundAction
         effectLocation = null;
         velocity = null;
         activeProjectileEffects = null;
+        trackingEntity = null;
     }
 
 	@Override
@@ -118,6 +124,13 @@ public class CustomProjectileAction extends CompoundAction
         Location projectileLocation = context.getTargetLocation();
         if (velocity == null)
         {
+            if (trackEntity && trackingEntity == null)
+            {
+                Entity targetEntity = context.getTargetEntity();
+                if (targetEntity != null) {
+                    trackingEntity = new WeakReference<Entity>(targetEntity);
+                }
+            }
             Location targetLocation = projectileLocation;
             if (useWandLocation) {
                 projectileLocation = context.getWandLocation().clone();
@@ -134,6 +147,9 @@ public class CustomProjectileAction extends CompoundAction
             }
             projectileLocation.setDirection(velocity);
             context.setTargetLocation(projectileLocation);
+            context.setTargetEntity(null);
+            context.setDirection(velocity);
+
             if (startDistance != 0) {
                 projectileLocation.add(velocity.clone().multiply(startDistance));
             }
@@ -169,7 +185,21 @@ public class CustomProjectileAction extends CompoundAction
         lastUpdate = now;
 
         // Apply gravity and drag
-        if (reorient)
+        if (trackEntity && trackingEntity != null)
+        {
+            Entity targetEntity = trackingEntity.get();
+            if (targetEntity == null || targetEntity.isDead())
+            {
+                trackingEntity = null;
+            }
+            else
+            {
+                Location targetLocation = targetEntity instanceof LivingEntity ?
+                        ((LivingEntity)targetEntity).getEyeLocation() : targetEntity.getLocation();
+                velocity = targetLocation.toVector().subtract(projectileLocation.toVector()).normalize();
+            }
+        }
+        else if (reorient)
         {
             velocity = context.getDirection().clone().normalize();
         }
@@ -286,6 +316,7 @@ public class CustomProjectileAction extends CompoundAction
             }
         }
         context.playEffects(hitEffectKey);
+        context.setDirection(null);
         return super.perform(context);
     }
 
@@ -300,6 +331,7 @@ public class CustomProjectileAction extends CompoundAction
         parameters.add("gravity");
         parameters.add("drag");
         parameters.add("target_entities");
+        parameters.add("track_target");
     }
 
     @Override
@@ -311,7 +343,7 @@ public class CustomProjectileAction extends CompoundAction
             parameterKey.equals("interval") || parameterKey.equals("start") || parameterKey.equals("size") ||
             parameterKey.equals("gravity") || parameterKey.equals("drag") || parameterKey.equals("tick_size")) {
             examples.addAll(Arrays.asList(BaseSpell.EXAMPLE_SIZES));
-        } else if (parameterKey.equals("target_entities")) {
+        } else if (parameterKey.equals("target_entities") || parameterKey.equals("track_target")) {
             examples.addAll(Arrays.asList(BaseSpell.EXAMPLE_BOOLEANS));
         }
     }

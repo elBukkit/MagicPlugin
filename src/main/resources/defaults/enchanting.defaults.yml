@@ -379,6 +379,7 @@ master:
       ghast: 0,0,5
       tendril: 0,0,5
       silence: 0,0,5
+      homing: 1,5,15
 
 #
 # The move from "master" to engineer requires the player to aquire some basic

@@ -4,7 +4,8 @@
 
  - Converted spells to projectiles: 
    - Magic Missile
-   
+ - Add new Homing Missile spell
+ 
 ## 5.2.2
 
  - Add CustomProjectile action, re-work Kill spell and Blaster item
