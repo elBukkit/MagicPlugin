@@ -40,36 +40,44 @@ become_airbender:
     cast:
     - class: Recall
     - class: GiveItem
+    - class: Command
   parameters:
     warp: air_south
     item: wand:airbending
+    command: pex user @pn group add airbender
 
 become_waterbender:
   actions:
     cast:
     - class: Recall
     - class: GiveItem
+    - class: Command
   parameters:
     warp: water_north
     item: wand:waterbending
+    command: pex user @pn group add wateverbender
 
 become_firebender:
   actions:
     cast:
     - class: Recall
     - class: GiveItem
+    - class: Command
   parameters:
     warp: fire
     item: wand:firebending
+    command: pex user @pn group add firebender
 
 become_earthbender:
   actions:
     cast:
     - class: Recall
     - class: GiveItem
+    - class: Command
   parameters:
     warp: earth
     item: wand:earthbending
+    command: pex user @pn group add earthbender
 
 train_waterbender:
     icon: iron_hoe
