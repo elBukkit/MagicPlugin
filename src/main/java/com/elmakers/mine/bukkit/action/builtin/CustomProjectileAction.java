@@ -43,12 +43,14 @@ public class CustomProjectileAction extends CompoundAction
     private boolean useWandLocation;
     private boolean useEyeLocation;
     private boolean trackEntity;
+    private int targetSelfTimeout;
 
     private double distanceTravelled;
     private boolean hasTickEffects;
     private long lastUpdate;
     private long nextUpdate;
     private long deadline;
+    private long targetSelfDeadline;
     private boolean hit = false;
     private Vector velocity = null;
     private DynamicLocation effectLocation = null;
@@ -84,6 +86,7 @@ public class CustomProjectileAction extends CompoundAction
         useWandLocation = parameters.getBoolean("use_wand_location", true);
         useEyeLocation = parameters.getBoolean("use_eye_location", true);
         trackEntity = parameters.getBoolean("track_target", false);
+        targetSelfTimeout = parameters.getInt("target_self_timeout", 0);
 
         TargetType targetType = context.getTargetType();
         targetEntities = (targetType == TargetType.NONE || targetType.targetsEntities());
@@ -99,6 +102,7 @@ public class CustomProjectileAction extends CompoundAction
         distanceTravelled = 0;
         lastUpdate = now;
         deadline =  now + lifetime;
+        targetSelfDeadline = targetSelfTimeout > 0 ? now + targetSelfTimeout : 0;
         hit = false;
         effectLocation = null;
         velocity = null;
@@ -119,6 +123,11 @@ public class CustomProjectileAction extends CompoundAction
         if (now > deadline)
         {
             return hit();
+        }
+        if (targetSelfDeadline > 0 && now > targetSelfDeadline)
+        {
+            targetSelfDeadline = 0;
+            context.setTargetsCaster(true);
         }
         nextUpdate = now + interval;
 

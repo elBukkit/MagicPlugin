@@ -5914,6 +5914,7 @@ homing:
         cooldown: 5000
         track_target: true
         lifetime: 20000
+        target_self_timeout: 2000
     costs:
         mana: 40
 
