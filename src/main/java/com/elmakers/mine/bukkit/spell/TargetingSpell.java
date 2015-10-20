@@ -58,6 +58,7 @@ public abstract class TargetingSpell extends BaseSpell {
     private String								targetLocationWorldName;
     protected Location                          targetLocation2;
     protected double 		                    targetBreakables	    = 0;
+    protected boolean                           instantBlockEffects     = false;
     private Entity								targetEntity            = null;
 
     protected float                             distanceWeight          = 1;
@@ -312,10 +313,8 @@ public abstract class TargetingSpell extends BaseSpell {
         }
     }
 
-    protected Target getTarget()
+    protected void processBlockEffects()
     {
-        target = findTarget();
-
         final Block block = target.getBlock();
         if (block != null && !bypassBackfire && block.hasMetadata("backfire")) {
             List<MetadataValue> metadata = block.getMetadata("backfire");
@@ -363,6 +362,16 @@ public abstract class TargetingSpell extends BaseSpell {
                     }
                 }
             }
+        }
+    }
+
+    protected Target getTarget()
+    {
+        target = findTarget();
+
+        if (instantBlockEffects)
+        {
+            processBlockEffects();
         }
 
         if (targetLocationOffset != null) {
@@ -842,6 +851,7 @@ public abstract class TargetingSpell extends BaseSpell {
         checkProtection = parameters.getBoolean("check_protection", false);
         targetBreakables = parameters.getDouble("target_breakables", 0);
         reverseTargeting = parameters.getBoolean("reverse_targeting", false);
+        instantBlockEffects = parameters.getBoolean("instant_block_effects", false);
 
         distanceWeight = (float)parameters.getDouble("distance_weight", 1);
         fovWeight = (float)parameters.getDouble("fov_weight", 4);
