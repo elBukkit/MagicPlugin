@@ -54,6 +54,7 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
     private UndoList undoList;
     private String targetName = null;
     private SpellResult result = SpellResult.NO_ACTION;
+    private Vector direction = null;
 
     private Collection<Entity> targetedEntities = Collections.newSetFromMap(new WeakHashMap<Entity, Boolean>());
     private Set<UUID> targetMessagesSent = new HashSet<UUID>();
@@ -151,7 +152,11 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
     @Override
     public Location getWandLocation() {
         Mage mage = getMage();
-        return mage == null ? getEyeLocation() : mage.getWandLocation();
+        Location wandLocation = mage == null ? getEyeLocation() : mage.getWandLocation();
+        if (wandLocation != null && direction != null) {
+            wandLocation.setDirection(direction);
+        }
+        return wandLocation;
     }
 
     @Override
@@ -217,7 +222,15 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
 
     @Override
     public Vector getDirection() {
+        if (direction != null) {
+            return direction.clone();
+        }
         return getLocation().getDirection();
+    }
+
+    @Override
+    public void setDirection(Vector direction) {
+        this.direction = direction;
     }
 
     @Override
