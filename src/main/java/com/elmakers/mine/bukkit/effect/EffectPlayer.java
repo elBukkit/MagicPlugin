@@ -309,8 +309,8 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
     protected MaterialAndData getWorkingMaterial() {
         if (material1 != null) return material1;
         MaterialAndData result = material;
-        Location target = this.target.getLocation();
-        Location origin = this.origin.getLocation();
+        Location target = getTarget();
+        Location origin = getOrigin();
         if (result == null && target != null) {
             result = new MaterialAndData(target.getBlock().getType(), target.getBlock().getData());
         } else if (result == null && origin != null) {
