@@ -5791,8 +5791,8 @@ missile:
              class: ConeEffect
              iterations: 15
              particle: redstone
-             lengthGrow: 0.05
-             radiusGrow: 0.0015
+             lengthGrow: 0.1
+             radiusGrow: 0.003
              updateLocations: false
         tick:
         - particle: redstone
@@ -5805,7 +5805,7 @@ missile:
            color2: FF8800
            firework: burst
     parameters:
-        speed: 0.2
+        speed: 2
         range: 24
         hitbox: true
         target_type: LivingEntity
@@ -5870,6 +5870,17 @@ homing:
              lengthGrow: 0.01
              radiusGrow: 0.002
              updateLocations: false
+        -  class: EffectSingle
+           requires_entity_target: true
+           sound: magic.shimmer
+           location: target
+           color_override: color
+           effectlib:
+             class: SphereEffect
+             iterations: 40
+             particle: redstone
+             radius: 0.1
+             particles: 10
         tick:
         - particle: redstone
           color: FF0000
@@ -5901,6 +5912,7 @@ homing:
         target_breakables: 1
         cooldown: 5000
         track_target: true
+        lifetime: 20000
     costs:
         mana: 40
 

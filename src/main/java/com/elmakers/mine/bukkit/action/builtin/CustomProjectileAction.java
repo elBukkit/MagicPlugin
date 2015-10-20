@@ -43,7 +43,6 @@ public class CustomProjectileAction extends CompoundAction
     private boolean useEyeLocation;
     private boolean trackEntity;
 
-    private WeakReference<Entity> trackingEntity;
     private double distanceTravelled;
     private boolean hasTickEffects;
     private long lastUpdate;
@@ -100,7 +99,6 @@ public class CustomProjectileAction extends CompoundAction
         effectLocation = null;
         velocity = null;
         activeProjectileEffects = null;
-        trackingEntity = null;
     }
 
 	@Override
@@ -116,22 +114,16 @@ public class CustomProjectileAction extends CompoundAction
         }
         if (now > deadline)
         {
-            return hit(context);
+            return hit();
         }
         nextUpdate = now + interval;
 
         // Check for initialization required
-        Location projectileLocation = context.getTargetLocation();
+        Location projectileLocation = null;
         if (velocity == null)
         {
-            if (trackEntity && trackingEntity == null)
-            {
-                Entity targetEntity = context.getTargetEntity();
-                if (targetEntity != null) {
-                    trackingEntity = new WeakReference<Entity>(targetEntity);
-                }
-            }
-            Location targetLocation = projectileLocation;
+            createActionContext(context);
+            Location targetLocation = context.getTargetLocation();
             if (useWandLocation) {
                 projectileLocation = context.getWandLocation().clone();
             } else if (useEyeLocation) {
@@ -146,9 +138,9 @@ public class CustomProjectileAction extends CompoundAction
                 velocity = context.getDirection().clone().normalize();
             }
             projectileLocation.setDirection(velocity);
-            context.setTargetLocation(projectileLocation);
-            context.setTargetEntity(null);
-            context.setDirection(velocity);
+            actionContext.setTargetLocation(projectileLocation);
+            actionContext.setTargetEntity(null);
+            actionContext.setDirection(velocity);
 
             if (startDistance != 0) {
                 projectileLocation.add(velocity.clone().multiply(startDistance));
@@ -174,10 +166,14 @@ public class CustomProjectileAction extends CompoundAction
                 }
             }
         }
-        else if (effectLocation != null)
+        else
         {
-            effectLocation.updateFrom(projectileLocation);
-            effectLocation.setDirection(velocity);
+            projectileLocation = actionContext.getTargetLocation();
+            if (effectLocation != null)
+            {
+                effectLocation.updateFrom(projectileLocation);
+                effectLocation.setDirection(velocity);
+            }
         }
 
         // Advance position, checking for collisions
@@ -185,14 +181,10 @@ public class CustomProjectileAction extends CompoundAction
         lastUpdate = now;
 
         // Apply gravity and drag
-        if (trackEntity && trackingEntity != null)
+        if (trackEntity)
         {
-            Entity targetEntity = trackingEntity.get();
-            if (targetEntity == null || targetEntity.isDead())
-            {
-                trackingEntity = null;
-            }
-            else
+            Entity targetEntity = context.getTargetEntity();
+            if (targetEntity != null && targetEntity.isValid())
             {
                 Location targetLocation = targetEntity instanceof LivingEntity ?
                         ((LivingEntity)targetEntity).getEyeLocation() : targetEntity.getLocation();
@@ -212,7 +204,7 @@ public class CustomProjectileAction extends CompoundAction
                 double size = velocity.length();
                 size = size - drag * delta / 50;
                 if (size <= 0) {
-                    return hit(context);
+                    return hit();
                 }
                 velocity.normalize().multiply(size);
             }
@@ -244,8 +236,8 @@ public class CustomProjectileAction extends CompoundAction
         for (int i = 0; i < 256; i++) {
             // Play tick FX
             if (hasTickEffects) {
-                context.setTargetLocation(projectileLocation);
-                context.playEffects(tickEffectKey);
+                actionContext.setTargetLocation(projectileLocation);
+                actionContext.playEffects(tickEffectKey);
             }
 
             // Check for entity collisions first
@@ -253,22 +245,22 @@ public class CustomProjectileAction extends CompoundAction
             if (candidates != null) {
                 for (CandidateEntity candidate : candidates) {
                     if (candidate.bounds.contains(targetVector)) {
-                        context.setTargetEntity(candidate.entity);
-                        return hit(context);
+                        actionContext.setTargetEntity(candidate.entity);
+                        return hit();
                     }
                 }
             }
 
             int y = projectileLocation.getBlockY();
             if (y >= projectileLocation.getWorld().getMaxHeight() || y <= 0) {
-                return hit(context);
+                return hit();
             }
             Block block = projectileLocation.getBlock();
             if (!block.getChunk().isLoaded()) {
-                return hit(context);
+                return hit();
             }
             if (!context.isTransparent(block.getType())) {
-                return hit(context);
+                return hit();
             }
 
             double partialDistance = Math.min(tickSize, remainingDistance);
@@ -280,17 +272,17 @@ public class CustomProjectileAction extends CompoundAction
             if (newLocation.getBlockX() == projectileLocation.getBlockX()
                     && newLocation.getBlockY() == projectileLocation.getBlockY()
                     && newLocation.getBlockZ() == projectileLocation.getBlockZ()) {
-                remainingDistance -= tickSize;
-                distanceTravelled += partialDistance;
                 newLocation = newLocation.add(speedVector);
                 projectileLocation.setX(newLocation.getX());
                 projectileLocation.setY(newLocation.getY());
                 projectileLocation.setZ(newLocation.getZ());
 
-                if (hasTickEffects) {
-                    context.setTargetLocation(projectileLocation);
-                    context.playEffects(tickEffectKey);
+                if (hasTickEffects && remainingDistance > 0) {
+                    actionContext.setTargetLocation(projectileLocation);
+                    actionContext.playEffects(tickEffectKey);
                 }
+                remainingDistance -= tickSize;
+                distanceTravelled += partialDistance;
             } else {
                 projectileLocation.setX(newLocation.getX());
                 projectileLocation.setY(newLocation.getY());
@@ -299,7 +291,7 @@ public class CustomProjectileAction extends CompoundAction
 
             distanceTravelled += partialDistance;
             if (range > 0 && distanceTravelled >= range) {
-                return hit(context);
+                return hit();
             }
 
             if (remainingDistance <= 0) break;
@@ -308,16 +300,18 @@ public class CustomProjectileAction extends CompoundAction
 		return SpellResult.PENDING;
 	}
 
-    protected SpellResult hit(CastContext context) {
+    protected SpellResult hit() {
         hit = true;
         if (activeProjectileEffects != null) {
             for (EffectPlay play : activeProjectileEffects) {
                 play.cancel();
             }
         }
-        context.playEffects(hitEffectKey);
-        context.setDirection(null);
-        return super.perform(context);
+        if (actionContext == null) {
+            return SpellResult.NO_ACTION;
+        }
+        actionContext.playEffects(hitEffectKey);
+        return super.perform(actionContext);
     }
 
     @Override
