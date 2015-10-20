@@ -5902,10 +5902,11 @@ homing:
            color2: FF0000
            firework: burst
     parameters:
+        fov: 0.5
+        hitbox: false
         speed: 0.1
-        range: 32
-        size: 1.5
-        hitbox: true
+        range: 48
+        size: 0.5
         target_type: LivingEntity
         player_damage: 2
         entity_damage: 4
