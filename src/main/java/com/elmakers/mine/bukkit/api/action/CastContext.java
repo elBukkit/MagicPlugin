@@ -32,6 +32,7 @@ public interface CastContext {
     public Location getTargetLocation();
     public Location getTargetSourceLocation();
     public Vector getDirection();
+    public void setDirection(Vector direction);
     public World getWorld();
     public Plugin getPlugin();
     public Location getEyeLocation();
