@@ -6,6 +6,7 @@ import com.elmakers.mine.bukkit.api.effect.EffectPlay;
 import com.elmakers.mine.bukkit.api.effect.EffectPlayer;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
+import com.elmakers.mine.bukkit.api.spell.TargetType;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.BoundingBox;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
@@ -74,7 +75,6 @@ public class CustomProjectileAction extends CompoundAction
         projectileEffectKey = parameters.getString("projectile_effects", "projectile");
         hitEffectKey = parameters.getString("hit_effects", "hit");
         tickEffectKey = parameters.getString("tick_effects", "tick");
-        targetEntities = parameters.getBoolean("target_entities", true);
         radius = parameters.getDouble("size", 0) / 2;
         gravity = parameters.getDouble("gravity", 0);
         drag = parameters.getDouble("drag", 0);
@@ -84,6 +84,10 @@ public class CustomProjectileAction extends CompoundAction
         useWandLocation = parameters.getBoolean("use_wand_location", true);
         useEyeLocation = parameters.getBoolean("use_eye_location", true);
         trackEntity = parameters.getBoolean("track_target", false);
+
+        TargetType targetType = context.getTargetType();
+        targetEntities = (targetType == TargetType.NONE || targetType.targetsEntities());
+        targetEntities = parameters.getBoolean("target_entities", targetEntities);
     }
 
     @Override
