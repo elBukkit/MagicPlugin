@@ -83,7 +83,6 @@ public interface CastContext {
     public boolean canTarget(Entity entity);
     public MaterialBrush getBrush();
     public void setBrush(MaterialBrush brush);
-    public void addTargetEntity(Entity entity);
     public Collection<Entity> getTargetedEntities();
     public void getTargetEntities(int count, Collection<WeakReference<Entity>> entities);
     public void messageTargets(String messageKey);

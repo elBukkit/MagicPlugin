@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.api.block;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
@@ -62,4 +63,5 @@ public interface UndoList extends BlockList, Comparable<UndoList> {
     public Mage getOwner();
     public CastContext getContext();
     public void setBypass(boolean bypass);
+    public Collection<Entity> getAllEntities();
 }
