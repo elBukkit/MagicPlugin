@@ -9,6 +9,7 @@ import com.elmakers.mine.bukkit.api.spell.MageSpell;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.block.UndoList;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
+import com.elmakers.mine.bukkit.api.spell.TargetType;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.spell.BlockSpell;
 import com.elmakers.mine.bukkit.spell.BrushSpell;
@@ -612,6 +613,18 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
             return targetingSpell.isTargetable(material);
         }
         return true;
+    }
+
+    @Override
+    public TargetType getTargetType()
+    {
+        TargetType targetType = TargetType.NONE;
+
+        if (targetingSpell != null)
+        {
+            targetType = targetingSpell.getTargetType();
+        }
+        return targetType;
     }
 
     @Override
