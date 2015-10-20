@@ -8,12 +8,22 @@ package com.elmakers.mine.bukkit.api.spell;
  * 
  */
 public enum TargetType {
-    NONE,
-    BLOCK,
-    ANY,
-    OTHER,
-    ANY_ENTITY,
-    OTHER_ENTITY,
-    SELF,
-    SELECT
+    NONE(false),
+    BLOCK(false),
+    ANY(true),
+    OTHER(true),
+    ANY_ENTITY(true),
+    OTHER_ENTITY(true),
+    SELF(false),
+    SELECT(true);
+
+    private boolean targetEntities;
+
+    private TargetType(boolean targetEntities) {
+        this.targetEntities = true;
+    }
+
+    public boolean targetsEntities() {
+        return this.targetEntities;
+    }
 }

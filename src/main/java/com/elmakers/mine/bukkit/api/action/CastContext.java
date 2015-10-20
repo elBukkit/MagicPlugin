@@ -8,6 +8,7 @@ import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
+import com.elmakers.mine.bukkit.api.spell.TargetType;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -115,4 +116,5 @@ public interface CastContext {
     public void addResult(SpellResult result);
     public boolean getTargetsCaster();
     public void setTargetsCaster(boolean target);
+    public TargetType getTargetType();
 }
