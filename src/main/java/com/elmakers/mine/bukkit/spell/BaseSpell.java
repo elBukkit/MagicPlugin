@@ -1260,7 +1260,6 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
                 } else {
                     castMessage(message);
                 }
-                messageTargets("cast_player_message");
             } else
             // Special cases where messaging is handled elsewhere
             if (result != SpellResult.INSUFFICIENT_RESOURCES && result != SpellResult.COOLDOWN)
@@ -2147,7 +2146,15 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
 
     @Override
     public void finish(com.elmakers.mine.bukkit.api.action.CastContext context) {
-        if (context.getResult().isSuccess() && trackCasts) {
+        SpellResult result = context.getResult();
+
+        // Message targets
+        if (result.isSuccess() && !mage.isQuiet()) {
+            messageTargets("cast_player_message");
+        }
+
+        // Track cast counts
+        if (result.isSuccess() && trackCasts) {
             castCount++;
             if (template != null) {
                 template.castCount++;
