@@ -271,7 +271,7 @@ breathofwind:
         cooldown: 1000
         speed: 2
         interval: 250
-        size: 3
+        hitbox_size: 3
     costs:
         mana: 40
 
