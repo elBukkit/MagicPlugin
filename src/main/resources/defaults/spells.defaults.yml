@@ -5906,7 +5906,7 @@ homing:
         hitbox: false
         speed: 0.1
         range: 48
-        size: 0.5
+        hitbox_size: 0.5
         target_type: LivingEntity
         player_damage: 2
         entity_damage: 4
@@ -6235,7 +6235,7 @@ kill:
         target_breakables: 5
         bypass_backfire: true
         damage: 20
-        size: 1
+        hitbox_size: 1
         speed: 0.1
         interval: 250
     costs:
@@ -6247,14 +6247,14 @@ kill|2:
     parameters:
         cooldown_mage: 8000
         damage: 40
-        size: 2
+        hitbox_size: 2
         speed: 0.2
 
 kill|3:
     parameters:
         cooldown_mage: 5000
         damage: 60
-        size: 3
+        hitbox_size: 3
         speed: 0.3
 
 superkill:

@@ -62,7 +62,10 @@ public class CustomProjectileAction extends CompoundAction
 
         public CandidateEntity(Entity entity) {
             this.entity = entity;
-            this.bounds = CompatibilityUtils.getHitbox(entity).expand(radius);
+            this.bounds = CompatibilityUtils.getHitbox(entity);
+            if (radius > 0) {
+                this.bounds.expand(radius);
+            }
         }
     }
 
@@ -77,7 +80,7 @@ public class CustomProjectileAction extends CompoundAction
         projectileEffectKey = parameters.getString("projectile_effects", "projectile");
         hitEffectKey = parameters.getString("hit_effects", "hit");
         tickEffectKey = parameters.getString("tick_effects", "tick");
-        radius = parameters.getDouble("size", 0) / 2;
+        radius = parameters.getDouble("hitbox_size", 0) / 2;
         gravity = parameters.getDouble("gravity", 0);
         drag = parameters.getDouble("drag", 0);
         tickSize = parameters.getDouble("tick_size", 0.5);
@@ -226,10 +229,11 @@ public class CustomProjectileAction extends CompoundAction
         // Compute incremental speed movement
         double remainingDistance = speed * delta / 50;
         List<CandidateEntity> candidates = null;
-        if (radius >= 0 && targetEntities) {
+        if (targetEntities) {
             Entity sourceEntity = context.getEntity();
             candidates = new ArrayList<CandidateEntity>();
-            double boundSize = Math.ceil(remainingDistance) * radius + 2;
+            double expand = Math.max(radius, 0);
+            double boundSize = Math.ceil(remainingDistance) + expand + 2;
             List<Entity> nearbyEntities = CompatibilityUtils.getNearbyEntities(projectileLocation, boundSize, boundSize, boundSize);
             for (Entity entity : nearbyEntities)
             {
