@@ -478,12 +478,13 @@ public abstract class TargetingSpell extends BaseSpell {
 
     protected Target getEntityTarget()
     {
-        List<Target> scored = getAllTargetEntities();
+        List<Target> scored = getAllTargetEntities(this.getMaxRange());
         if (scored.size() <= 0) return null;
         return scored.get(0);
     }
 
     public List<Target> getAllTargetEntities() {
+        targets = null;
         return getAllTargetEntities(this.getMaxRange());
     }
 
