@@ -60,7 +60,6 @@ import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 public abstract class BaseSpell implements MageSpell, Cloneable {
     public static int MAX_LORE_LENGTH = 24;
 
-    protected static final double VIEW_HEIGHT = 1.65;
     protected static final double LOOK_THRESHOLD_RADIANS = 0.9;
 
     // TODO: Config-drive

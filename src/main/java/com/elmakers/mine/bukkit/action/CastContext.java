@@ -808,10 +808,10 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
     }
 
     @Override
-    public void retarget(int range, double fov, double closeRange, double closeFOV, boolean useHitbox, Vector offset, boolean targetSpaceRequired, int targetMinOffset) {
+    public void retarget(int range, double fov, double closeRange, double closeFOV, boolean useHitbox, int yOffset, boolean targetSpaceRequired, int targetMinOffset) {
         if (targetingSpell != null)
         {
-            targetingSpell.retarget(range, fov, closeRange, closeFOV, useHitbox, offset, targetSpaceRequired, targetMinOffset);
+            targetingSpell.retarget(range, fov, closeRange, closeFOV, useHitbox, yOffset, targetSpaceRequired, targetMinOffset);
             setTargetEntity(targetingSpell.getTargetEntity());
             setTargetLocation(targetingSpell.getTargetLocation());
         }

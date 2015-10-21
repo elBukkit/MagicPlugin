@@ -2,7 +2,6 @@ package com.elmakers.mine.bukkit.spell;
 
 import java.util.*;
 
-import com.elmakers.mine.bukkit.api.action.SpellAction;
 import com.elmakers.mine.bukkit.api.block.UndoList;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import org.bukkit.Bukkit;
@@ -79,6 +78,7 @@ public abstract class TargetingSpell extends BaseSpell {
     private double                              fov                     = 0.3;
     private double                              closeRange              = 1;
     private double                              closeFOV                = 0.5;
+    private double                              yOffset                 = 0;
 
     private Set<Material>                       targetThroughMaterials  = new HashSet<Material>();
     private Set<Material>                       targetableMaterials     = null;
@@ -102,6 +102,7 @@ public abstract class TargetingSpell extends BaseSpell {
         reverseTargeting = false;
         targetingComplete = false;
         targetMinOffset = 0;
+        yOffset = 0;
     }
 
     public void setTargetType(TargetType t) {
@@ -205,13 +206,8 @@ public abstract class TargetingSpell extends BaseSpell {
         target = new Target(getEyeLocation(), location == null ? null : location.getBlock());
     }
 
-    public void offsetTarget(int dx, int dy, int dz) {
-        Location location = getLocation();
-        if (location == null) {
-            return;
-        }
-        location.add(dx, dy, dz);
-        initializeBlockIterator(location);
+    public void setTargetingHeight(int offset) {
+        yOffset = offset;
     }
 
     protected boolean initializeBlockIterator(Location location) {
@@ -229,7 +225,7 @@ public abstract class TargetingSpell extends BaseSpell {
         }
 
         try {
-            blockIterator = new BlockIterator(location, VIEW_HEIGHT, getMaxRange());
+            blockIterator = new BlockIterator(location, yOffset, getMaxRange());
         } catch (Exception ex) {
             // This seems to happen randomly, like when you use the same target.
             // Very annoying, and I now kind of regret switching to BlockIterator.
@@ -283,12 +279,9 @@ public abstract class TargetingSpell extends BaseSpell {
         return targetType;
     }
 
-    public void retarget(int range, double fov, double closeRange, double closeFOV, boolean useHitbox, Vector offset, boolean targetSpaceRequired, int targetMinOffset) {
+    public void retarget(int range, double fov, double closeRange, double closeFOV, boolean useHitbox, int yOffset, boolean targetSpaceRequired, int targetMinOffset) {
         initializeTargeting();
-        if (offset != null)
-        {
-            offsetTarget(offset.getBlockX(), offset.getBlockY(), offset.getBlockZ());
-        }
+        setTargetingHeight(yOffset);
         this.targetSpaceRequired = targetSpaceRequired;
         this.targetMinOffset = targetMinOffset;
         this.range = range;
@@ -301,7 +294,7 @@ public abstract class TargetingSpell extends BaseSpell {
 
     public void retarget(int range, double fov, double closeRange, double closeFOV, boolean useHitbox)
     {
-        retarget(range, fov, closeRange, closeFOV, useHitbox, null, targetSpaceRequired, targetMinOffset);
+        retarget(range, fov, closeRange, closeFOV, useHitbox, 0, targetSpaceRequired, targetMinOffset);
     }
 
     @Override
@@ -421,7 +414,8 @@ public abstract class TargetingSpell extends BaseSpell {
         if (targetType == TargetType.NONE) {
             return new Target(location);
         }
-        if (targetType != TargetType.BLOCK && targetEntity != null) {
+        boolean isBlock = targetType == TargetType.BLOCK || targetType == TargetType.SELECT;
+        if (!isBlock && targetEntity != null) {
             return new Target(location, targetEntity);
         }
 
@@ -454,7 +448,7 @@ public abstract class TargetingSpell extends BaseSpell {
             block = getCurBlock();
         }
 
-        if (targetType == TargetType.BLOCK) {
+        if (isBlock) {
             return new Target(location, block);
         }
 
@@ -664,7 +658,7 @@ public abstract class TargetingSpell extends BaseSpell {
 
     protected void findTargetBlock()
     {
-        Location location = getLocation();
+        Location location = getEyeLocation();
         if (location == null)
         {
             return;
