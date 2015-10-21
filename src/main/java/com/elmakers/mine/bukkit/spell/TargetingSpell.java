@@ -776,9 +776,13 @@ public abstract class TargetingSpell extends BaseSpell {
             targetSelf = parameters.getBoolean("target_self", targetSelf);
 
             // If target type of none was explicity provided, zero-out range
+            // TODO: This seems like a good idea, but it breaks ConeOfEffect and AreaOfEffect actions
+            // Those should probably provide their own range settings, though!
+            /*
             if (targetType == TargetType.NONE) {
                 range = 0;
             }
+            */
         }
 
         // If a range was specified but not a target type, default to none
