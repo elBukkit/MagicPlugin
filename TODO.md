@@ -1,5 +1,7 @@
 # TODO
 
+ - Need to test: Regenerate, SuperRegerenerate, Fill, SuperBlob, Cluster Bomb, Blink passthrough
+
  - Test out silent firework entities
  - Can magic items stack somehow ... ?
  - Test baby/giant wither bosses:

@@ -12,7 +12,6 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
-import com.elmakers.mine.bukkit.spell.TargetingSpell;
 
 @Deprecated
 public class BlinkSpell extends UndoableSpell
@@ -91,7 +90,7 @@ public class BlinkSpell extends UndoableSpell
 			{
 				int passthroughRange = (int)Math.floor(mage.getRangeMultiplier() * parameters.getInt("passthrough_range", DEFAULT_PASSTHROUGH_RANGE));
 				setMaxRange(passthroughRange);
-				offsetTarget(0, -1, 0);
+				setTargetingHeight(-1);
 				setTargetSpaceRequired();
                 setTargetMinOffset(1);
                 isPassthrough = true;
