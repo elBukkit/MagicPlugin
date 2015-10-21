@@ -225,11 +225,17 @@ public class ActionHandler implements Cloneable
                 action.getAction().reset(context);
             }
             if (action.getAction().requiresTargetEntity() && targetEntity == null) {
+                if (showDebug) {
+                    mage.sendDebugMessage(ChatColor.GRAY + " Action " + ChatColor.GOLD + action.getAction().getClass().getSimpleName() + ChatColor.WHITE  + ": " + ChatColor.GRAY + "Skipped, requires entity target");
+                }
                 result = result.min(SpellResult.NO_TARGET);
                 advance(context);
                 continue;
             }
             if (action.getAction().requiresTarget() && targetLocation == null) {
+                if (showDebug) {
+                    mage.sendDebugMessage(ChatColor.GRAY + " Action " + ChatColor.GOLD + action.getAction().getClass().getSimpleName() + ChatColor.WHITE  + ": " + ChatColor.GRAY + "Skipped, requires target");
+                }
                 result = result.min(SpellResult.NO_TARGET);
                 advance(context);
                 continue;
@@ -244,7 +250,7 @@ public class ActionHandler implements Cloneable
                 break;
             }
             if (showDebug) {
-                mage.sendDebugMessage(ChatColor.WHITE + " Action " + ChatColor.GOLD + action.getAction().getClass().getSimpleName() + ChatColor.WHITE  + ": " + ChatColor.AQUA + result);
+                mage.sendDebugMessage(ChatColor.WHITE + " Action " + ChatColor.GOLD + action.getAction().getClass().getSimpleName() + ChatColor.WHITE  + ": " + ChatColor.AQUA + actionResult);
             }
             if (isConditionalOnSuccess && actionResult.isSuccess()) {
                 cancel(context);
