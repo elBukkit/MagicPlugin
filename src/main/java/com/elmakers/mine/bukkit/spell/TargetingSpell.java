@@ -105,14 +105,6 @@ public abstract class TargetingSpell extends BaseSpell {
         yOffset = 0;
     }
 
-    public void setTargetType(TargetType t) {
-        this.targetType = t;
-        if (target != null) {
-            target = null;
-            initializeTargeting();
-        }
-    }
-
     public String getMessage(String messageKey, String def) {
         String message = super.getMessage(messageKey, def);
 
@@ -143,27 +135,6 @@ public abstract class TargetingSpell extends BaseSpell {
         return message;
     }
 
-    public void clearTargetThrough()
-    {
-        targetThroughMaterials.clear();
-    }
-
-    public void targetThrough(Material mat)
-    {
-        targetThroughMaterials.add(mat);
-    }
-
-    public void targetThrough(Set<Material> mat)
-    {
-        targetThroughMaterials.clear();
-        targetThroughMaterials.addAll(mat);
-    }
-
-    public void noTargetThrough(Material mat)
-    {
-        targetThroughMaterials.remove(mat);
-    }
-
     public boolean isTargetable(Material mat)
     {
         if (!allowPassThrough(mat)) {
@@ -185,13 +156,6 @@ public abstract class TargetingSpell extends BaseSpell {
     {
         reverseTargeting = reverse;
     }
-
-    public boolean isReverseTargeting()
-    {
-        return reverseTargeting;
-    }
-
-    public boolean isOriginAtTarget() { return originAtTarget; }
 
     public void setTargetSpaceRequired()
     {
@@ -638,12 +602,6 @@ public abstract class TargetingSpell extends BaseSpell {
     {
         int maxRange = getMaxRange();
         return maxRange * maxRange;
-    }
-
-    protected void setMaxRange(int range, boolean allow)
-    {
-        this.range = range;
-        this.allowMaxRange = allow;
     }
 
     protected void setMaxRange(int range)
