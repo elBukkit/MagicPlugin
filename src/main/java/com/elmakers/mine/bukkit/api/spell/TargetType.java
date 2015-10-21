@@ -15,7 +15,8 @@ public enum TargetType {
     ANY_ENTITY(true),
     OTHER_ENTITY(true),
     SELF(false),
-    SELECT(true);
+    SELECT(false),
+    SELECT_ENTITY(true);
 
     private boolean targetEntities;
 
