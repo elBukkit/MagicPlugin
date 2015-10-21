@@ -4,6 +4,7 @@
 
  - Converted spells to projectiles: 
    - Magic Missile
+   - Curse
  - Add new Homing Missile spell
  
 ## 5.2.2

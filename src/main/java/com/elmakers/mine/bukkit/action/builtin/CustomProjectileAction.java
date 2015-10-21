@@ -214,7 +214,7 @@ public class CustomProjectileAction extends CompoundAction
         else
         {
             if (gravity > 0) {
-                velocity.setY(velocity.getY() - gravity * delta / 50);
+                velocity.setY(velocity.getY() - gravity * delta / 50).normalize();
             }
             if (drag > 0) {
                 double size = velocity.length();

@@ -232,8 +232,10 @@ curse:
     upgrade_required_casts: 50
     actions:
         cast:
-        -  class: PotionEffect
-        -  class: Deactivate
+        - class: CustomProjectile
+          actions:
+          - class: PotionEffect
+          - class: Deactivate
     effects:
         cast:
         -  class: EffectSingle
@@ -243,13 +245,22 @@ curse:
              iterations: 15
              particle: redstone
              color: 210B61
-             lengthGrow: 0.3
+             lengthGrow: 0.1
+             radiusGrow: 0.003
+             updateLocations: false
+             updateDirections: false
+        tick:
+        - particle: redstone
+          color: 380B61
+          location: target
+        hit:
         -  class: EffectSingle
            location: target
            color: 380B61
            firework: star
         -  class: EffectSingle
            location: target
+           requires_entity_target: true
            effectlib:
              class: SmokeEffect
              iterations: 16
@@ -257,6 +268,7 @@ curse:
              color: 210B61
         -  class: EffectSingle
            location: target
+           requires_entity_target: true
            effectlib:
              class: SphereEffect
              iterations: 45
@@ -265,27 +277,10 @@ curse:
              color: 210B61
              radius: 1
              particles: 20
-        no_target:
-        -  class: EffectSingle
-           sound: irongolem_death
-           effectlib:
-             class: ConeEffect
-             iterations: 15
-             particle: spell_mob
-             color: 210B61
-             lengthGrow: 0.3
-        -  class: EffectSingle
-           location: target
-           color: 210B61
-           firework: burst
-        -  class: EffectSingle
-           location: target
-           effectlib:
-             class: SmokeEffect
-             iterations: 10
     costs:
         mana: 50
     parameters:
+        speed: 5
         range: 16
         target_type: LivingEntity
         target_breakables: 1
@@ -5788,7 +5783,7 @@ missile:
            color_override: color
            effectlib:
              class: ConeEffect
-             iterations: 15
+             iterations: 10
              particle: redstone
              lengthGrow: 0.1
              radiusGrow: 0.003
@@ -5804,7 +5799,7 @@ missile:
            color2: FF8800
            firework: burst
     parameters:
-        speed: 2
+        speed: 10
         range: 24
         hitbox: true
         target_type: LivingEntity
@@ -5812,6 +5807,7 @@ missile:
         entity_damage: 4
         target_breakables: 1
         cooldown: 1000
+        reorient: true
     costs:
         mana: 15
 
