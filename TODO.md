@@ -1,6 +1,7 @@
 # TODO
 
  - Test out silent firework entities
+ - Don't show hidden spells in tab-completion
  - Can magic items stack somehow ... ?
  - Test baby/giant wither bosses:
    You have to set (every tick) the invulnerability of the wither.

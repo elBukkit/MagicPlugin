@@ -121,7 +121,7 @@ public class CustomProjectileAction extends CompoundAction
         }
         if (hit)
         {
-            return super.perform(context);
+            return super.perform(actionContext);
         }
         if (now > deadline)
         {
