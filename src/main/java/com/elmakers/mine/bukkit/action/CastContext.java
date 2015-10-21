@@ -263,11 +263,6 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
     }
 
     @Override
-    public Collection<EffectPlayer> getEffects(String key) {
-        return spell.getEffects(key);
-    }
-
-    @Override
     public MageController getController() {
         Mage mage = getMage();
         return mage == null ? null : mage.getController();
@@ -381,6 +376,40 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
     }
 
     @Override
+    public Collection<EffectPlayer> getEffects(String effectKey) {
+        Collection<EffectPlayer> effects = spell.getEffects(effectKey);
+        if (effects.size() == 0) return effects;
+
+        // Create parameter map
+        Map<String, String> parameterMap = null;
+        ConfigurationSection workingParameters = spell != null ? spell.getWorkingParameters() : null;
+        if (workingParameters != null) {
+            Collection<String> keys = workingParameters.getKeys(false);
+            parameterMap = new HashMap<String, String>();
+            for (String key : keys) {
+                parameterMap.put("$" + key, workingParameters.getString(key));
+            }
+        }
+
+        for (EffectPlayer player : effects)
+        {
+            // Track effect plays for cancelling
+            player.setEffectPlayList(currentEffects);
+
+            // Set material and color
+            player.setMaterial(spell.getEffectMaterial());
+            player.setColor(spell.getEffectColor());
+            String overrideParticle = spell.getEffectParticle();
+            player.setParticleOverride(overrideParticle);
+
+            // Set parameters
+            player.setParameterMap(parameterMap);
+        }
+
+        return effects;
+    }
+
+    @Override
     public void playEffects(String effectName, float scale)
     {
         Collection<EffectPlayer> effects = getEffects(effectName);
@@ -393,34 +422,11 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
             Entity sourceEntity = getEntity();
             Entity targetEntity = getTargetEntity();
             Location targetLocation = getTargetLocation();
-            // Create parameter map
-            Map<String, String> parameterMap = null;
-            ConfigurationSection workingParameters = spell != null ? spell.getWorkingParameters() : null;
-            if (workingParameters != null) {
-                Collection<String> keys = workingParameters.getKeys(false);
-                parameterMap = new HashMap<String, String>();
-                for (String key : keys) {
-                    parameterMap.put("$" + key, workingParameters.getString(key));
-                }
-            }
-
 
             for (EffectPlayer player : effects)
             {
-                // Track effect plays for cancelling
-                player.setEffectPlayList(currentEffects);
-
                 // Set scale
                 player.setScale(scale);
-
-                // Set material and color
-                player.setMaterial(spell.getEffectMaterial());
-                player.setColor(spell.getEffectColor());
-                String overrideParticle = spell.getEffectParticle();
-                player.setParticleOverride(overrideParticle);
-
-                // Set parameters
-                player.setParameterMap(parameterMap);
 
                 Mage mage = getMage();
                 boolean useWand = mage != null && mage.getEntity() == sourceEntity && player.shouldUseWandLocation();
