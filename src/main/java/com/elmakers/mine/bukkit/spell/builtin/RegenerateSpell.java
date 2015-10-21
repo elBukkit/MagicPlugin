@@ -31,9 +31,10 @@ public class RegenerateSpell extends BlockSpell
 			this.targetBlock = targetLocation2.getBlock();
 		}
 
-		if (this.targetBlock != null || getTargetType() == TargetType.BLOCK)
+		TargetType targetType = getTargetType();
+		if (this.targetBlock != null || targetType == TargetType.BLOCK)
 		{
-			Block secondBlock = getTargetType() == TargetType.BLOCK ? targetBlock : this.targetBlock;
+			Block secondBlock = targetType == TargetType.BLOCK ? targetBlock : this.targetBlock;
 			RegenerateBatch batch = new RegenerateBatch(this, secondBlock.getLocation(), targetBlock.getLocation());
 
 			int maxDimension = parameters.getInt("max_dimension", DEFAULT_MAX_DIMENSION);		

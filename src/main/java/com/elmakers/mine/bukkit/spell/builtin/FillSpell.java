@@ -22,9 +22,6 @@ public class FillSpell extends BrushSpell
 	public SpellResult onCast(ConfigurationSection parameters) 
 	{
 		boolean singleBlock = getTargetType() != TargetType.SELECT;
-		if (!singleBlock) {
-			setTargetType(TargetType.BLOCK);
-		}
 		Block targetBlock = getTargetBlock();
         if (!singleBlock && parameters.getBoolean("select_self", true) && isLookingDown())
         {

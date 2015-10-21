@@ -3421,7 +3421,6 @@ cluster:
            actions:
            -  class: TNT
               count: 4
-              origin_at_target: true
     effects:
         cast:
         -  class: EffectSingle

@@ -43,9 +43,6 @@ public class ConstructSpell extends BrushSpell
         Block target = null;
 		boolean isSelect = getTargetType() == TargetType.SELECT;
         boolean finalCast = !isSelect || this.targetBlock != null;
-		if (isSelect) {
-			setTargetType(TargetType.BLOCK);
-		}
         if (finalCast && parameters.getBoolean("select_self", true) && isLookingDown()) {
             target = mage.getLocation().getBlock().getRelative(BlockFace.DOWN);
         } else {
