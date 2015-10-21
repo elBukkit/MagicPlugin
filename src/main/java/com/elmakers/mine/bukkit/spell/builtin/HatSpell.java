@@ -26,11 +26,6 @@ public class HatSpell extends TargetingSpell
 		if (player == null) {
 			return SpellResult.PLAYER_REQUIRED;
 		}
-		if (!isUnderwater())
-		{
-			noTargetThrough(Material.STATIONARY_WATER);
-			noTargetThrough(Material.WATER);
-		}
 		Block target = getTargetBlock();
 
 		if (target == null) 

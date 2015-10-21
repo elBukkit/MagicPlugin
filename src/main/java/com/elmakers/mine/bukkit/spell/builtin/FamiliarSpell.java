@@ -97,11 +97,7 @@ public class FamiliarSpell extends UndoableSpell implements Listener
 	@Override
 	public SpellResult onCast(ConfigurationSection parameters) 
 	{
-		spawnCount = 0;	
-		
-		// For squid spawning
-		noTargetThrough(Material.STATIONARY_WATER);
-		noTargetThrough(Material.WATER);
+		spawnCount = 0;
 
 		Target target = getTarget();
 		if (!target.hasTarget())
