@@ -6,6 +6,7 @@
    - Magic Missile
    - Curse
  - Add new Homing Missile spell
+ - Allow @p and @t as simple CommandAction parameters (same as @pn and @tn)
  
 ## 5.2.2
 

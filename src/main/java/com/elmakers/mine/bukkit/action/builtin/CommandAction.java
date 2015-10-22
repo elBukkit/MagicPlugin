@@ -45,7 +45,7 @@ import java.util.logging.Level;
  */
 public class CommandAction extends BaseSpellAction {
     public final static String[] PARAMETERS = {
-            "command", "console", "op", "radius"
+            "command", "console", "op"
     };
 
     private List<String> commands = new ArrayList<String>();
@@ -88,7 +88,8 @@ public class CommandAction extends BaseSpellAction {
                 .replace("@spell", context.getSpell().getName())
                 .replace("@pd", mage.getDisplayName())
                 .replace("@pn", mage.getName())
-                .replace("@uuid", mage.getId());
+                .replace("@uuid", mage.getId())
+                .replace("@p", mage.getName());
 
         if (location != null) {
             command = command
@@ -114,12 +115,14 @@ public class CommandAction extends BaseSpellAction {
                 command = command
                     .replace("@td", targetMage.getDisplayName())
                     .replace("@tn", targetMage.getName())
-                    .replace("@tuuid", targetMage.getId());
+                    .replace("@tuuid", targetMage.getId())
+                    .replace("@t", targetMage.getName());
             } else {
                 command = command
                     .replace("@td", controller.getEntityDisplayName(targetEntity))
                     .replace("@tn", controller.getEntityName(targetEntity))
-                    .replace("@tuuid", targetEntity.getUniqueId().toString());
+                    .replace("@tuuid", targetEntity.getUniqueId().toString())
+                    .replace("@t", controller.getEntityName(targetEntity));
             }
         }
 
