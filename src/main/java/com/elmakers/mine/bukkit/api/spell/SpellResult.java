@@ -7,7 +7,7 @@ package com.elmakers.mine.bukkit.api.spell;
  */
 public enum SpellResult {
     // Order is important here
-    CANCELLED(true, true, true, false, true),
+    STOP(true, false, false, false, true),
     PENDING(true, false, false, false, true),
     CAST(true, false, false),
     CAST_SELF(true, false, false),
@@ -29,6 +29,7 @@ public enum SpellResult {
     NO_TARGET(false, false, false),
 
     FAIL(false, true, true),
+    CANCELLED(true, false, true, false, true),
     INSUFFICIENT_RESOURCES(false, true, true),
     INSUFFICIENT_PERMISSION(false, true, true),
 
@@ -48,6 +49,14 @@ public enum SpellResult {
     private final boolean alternate;
     private final boolean stop;
 
+    private SpellResult(boolean success, boolean failure, boolean free, boolean alternate, boolean stop) {
+        this.success = success;
+        this.failure = failure;
+        this.free = free;
+        this.alternate = alternate;
+        this.stop = stop;
+    }
+
     private SpellResult(boolean success, boolean failure, boolean free) {
         this.success = success;
         this.failure = failure;
@@ -62,14 +71,6 @@ public enum SpellResult {
         this.free = free;
         this.alternate = alternate;
         this.stop = false;
-    }
-
-    private SpellResult(boolean success, boolean failure, boolean free, boolean alternate, boolean stop) {
-        this.success = success;
-        this.failure = failure;
-        this.free = free;
-        this.alternate = alternate;
-        this.stop = stop;
     }
 
     /**
