@@ -477,6 +477,10 @@ permissions:
     description: Player may inspect entity types
     type: boolean
     default: op
+  Magic.commands.magic.list.schematics:
+    description: Player may inspect loaded schematics
+    type: boolean
+    default: op
   Magic.commands.magic.clean:
     description: Player may remove lost wands from the world
     type: boolean
