@@ -91,6 +91,10 @@ public class CustomProjectileAction extends CompoundAction
         trackEntity = parameters.getBoolean("track_target", false);
         targetSelfTimeout = parameters.getInt("target_self_timeout", 0);
 
+        if (parameters.contains("velocity")) {
+            speed = parameters.getDouble("velocity") / 20;
+        }
+
         TargetType targetType = context.getTargetType();
         targetEntities = (targetType == TargetType.NONE || targetType.targetsEntities());
         targetEntities = parameters.getBoolean("target_entities", targetEntities);

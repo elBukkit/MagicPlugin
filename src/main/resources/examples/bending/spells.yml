@@ -269,7 +269,7 @@ breathofwind:
         target_breakables: 1
         bypass_backfire: false
         cooldown: 1000
-        speed: 2
+        velocity: 40
         interval: 250
         hitbox_size: 3
     costs:

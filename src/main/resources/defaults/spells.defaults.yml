@@ -5735,7 +5735,7 @@ blaster:
              class: LineEffect
              iterations: 1000
              particle: redstone
-             length: 2
+             length: 4
              period: 1
         hit:
         -  class: EffectSingle
@@ -5758,7 +5758,7 @@ blaster:
         target_breakables: 1
         bypass_backfire: false
         cooldown: 1000
-        speed: 0.5
+        velocity: 30
         interval: 250
     costs:
         mana: 15
@@ -5799,7 +5799,7 @@ missile:
            color2: FF8800
            firework: burst
     parameters:
-        speed: 10
+        velocity: 200
         range: 24
         hitbox: true
         target_type: LivingEntity
@@ -5899,7 +5899,7 @@ homing:
     parameters:
         fov: 0.5
         hitbox: false
-        speed: 0.1
+        velocity: 20
         range: 48
         hitbox_size: 0.5
         target_type: LivingEntity
@@ -6231,7 +6231,7 @@ kill:
         bypass_backfire: true
         damage: 20
         hitbox_size: 1
-        speed: 0.1
+        velocity: 5
         interval: 250
     costs:
         mana: 150
@@ -6243,14 +6243,14 @@ kill|2:
         cooldown_mage: 8000
         damage: 40
         hitbox_size: 2
-        speed: 0.2
+        velocity: 7
 
 kill|3:
     parameters:
         cooldown_mage: 5000
         damage: 60
         hitbox_size: 3
-        speed: 0.3
+        velocity: 10
 
 superkill:
     icon: skull_item:1
