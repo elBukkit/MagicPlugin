@@ -14,15 +14,15 @@ public class CheckBlockAction extends BaseSpellAction {
         Block block = context.getTargetBlock();
         if (brush != null && brush.isErase()) {
             if (!context.hasBreakPermission(block)) {
-                return SpellResult.CANCELLED;
+                return SpellResult.STOP;
             }
         } else {
             if (!context.hasBuildPermission(block)) {
-                return SpellResult.CANCELLED;
+                return SpellResult.STOP;
             }
         }
         if (!context.isDestructible(block)) {
-            return SpellResult.CANCELLED;
+            return SpellResult.STOP;
         }
         return SpellResult.CAST;
     }
