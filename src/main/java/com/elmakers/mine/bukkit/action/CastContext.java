@@ -41,7 +41,6 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 import java.util.UUID;
-import java.util.WeakHashMap;
 import java.util.logging.Logger;
 
 public class CastContext implements com.elmakers.mine.bukkit.api.action.CastContext {
@@ -55,6 +54,7 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
     private UndoList undoList;
     private String targetName = null;
     private SpellResult result = SpellResult.NO_ACTION;
+    private SpellResult initialResult = SpellResult.CAST;
     private Vector direction = null;
 
     private Set<UUID> targetMessagesSent = new HashSet<UUID>();
@@ -107,9 +107,11 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
         this.brush = copy.getBrush();
         this.targetMessagesSent = copy.getTargetMessagesSent();
         this.currentEffects = copy.getCurrentEffects();
+        this.result = copy.getResult();
         if (copy instanceof CastContext)
         {
             this.base = ((CastContext)copy).base;
+            this.initialResult = ((CastContext)copy).initialResult;
         }
         else
         {
@@ -794,6 +796,7 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
             }
             mage.registerForUndo(undoList);
         }
+        result = result.max(initialResult);
         if (spell != null) {
             mage.sendDebugMessage(ChatColor.WHITE + "Finish " + ChatColor.GOLD + spell.getName() + ChatColor.WHITE  + ": " + ChatColor.AQUA + result, 2);
             spell.finish(this);
@@ -904,5 +907,9 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
         if (result != SpellResult.PENDING) {
             this.result = this.result.min(result);
         }
+    }
+
+    public void setInitialResult(SpellResult result) {
+        initialResult = result;
     }
 }
