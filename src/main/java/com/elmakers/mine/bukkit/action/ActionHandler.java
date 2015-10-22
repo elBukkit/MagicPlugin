@@ -248,7 +248,9 @@ public class ActionHandler implements Cloneable
             context.addWork(1);
             result = result.min(actionResult);
             if (actionResult == SpellResult.CANCELLED) {
-                mage.sendDebugMessage(ChatColor.RED + debugIndent + "Action " + ChatColor.GOLD + action.getAction().getClass().getSimpleName() + ChatColor.WHITE  + ": " + ChatColor.AQUA + actionResult);
+                if (showDebug) {
+                    mage.sendDebugMessage(ChatColor.RED + debugIndent + "Action " + ChatColor.GOLD + action.getAction().getClass().getSimpleName() + ChatColor.WHITE  + ": " + ChatColor.AQUA + actionResult);
+                }
                 cancel(context);
             }
             if (actionResult.isStop()) {
