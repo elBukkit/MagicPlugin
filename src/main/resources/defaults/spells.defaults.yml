@@ -1171,6 +1171,8 @@ push:
         - class: Repeat
           actions:
           - class: Delay
+          - class: PlayEffects
+            effects: iterate
           - class: ConeOfEffectAction
             actions:
             - class: VelocityAction
@@ -1189,16 +1191,27 @@ push:
              particleBase1: spell
              particleBase2: spell
              iterations: 10
+        iterate:
+        -  class: EffectSingle
+           location: origin
+           effectlib:
+             class: DnaEffect
+             particlesBase: 0
+             particlesHelix: 7
+             particleHelix: spell
+             particleBase1: spell
+             particleBase2: spell
+             iterations: 4
     parameters:
         target_type: Entity
         range: 8
         fov: 1
         target_count: 2
-        allow_max_range: true
         item_speed: 0.1
         living_entity_speed: 0.5
         repeat: 3
         delay: 250
+        y_offset: 0.75
     costs:
         mana: 40
 

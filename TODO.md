@@ -1,5 +1,8 @@
 # TODO
 
+ - Spell lore should reflect reduced cooldowns
+ - Goggles deactivate on death (maybe only in Azkaban?)
+ - Can we save 1 slot in wand inv?
  - Test out silent firework entities
  - Don't show hidden spells in tab-completion
  - Can magic items stack somehow ... ?
