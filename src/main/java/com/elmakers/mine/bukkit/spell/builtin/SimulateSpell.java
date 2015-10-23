@@ -223,9 +223,9 @@ public class SimulateSpell extends BlockSpell {
 		}
 		
 		// This is a bit of a hack, but it forces dynmap to show the spell cast direction
-		// instead of the target (also for effects), which looks cool with
-		// Automata
-		clearTarget();
+		// instead of the target (also for effects), which looks cool with Automata
+		// TODO: See how bad the side-effects of removing this are.
+		//clearTarget();
 		
 		return success ? SpellResult.CAST : SpellResult.FAIL;
 	}
