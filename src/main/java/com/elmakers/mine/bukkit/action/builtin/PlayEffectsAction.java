@@ -23,5 +23,6 @@ public class PlayEffectsAction extends BaseSpellAction
 	public void prepare(CastContext context, ConfigurationSection parameters) {
 		super.prepare(context, parameters);
         effectKey = parameters.getString("effect");
+		effectKey = parameters.getString("effects", effectKey);
 	}
 }
