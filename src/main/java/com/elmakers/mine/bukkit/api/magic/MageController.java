@@ -128,6 +128,7 @@ public interface MageController {
     public Mage getMage(Player player);
     public Mage getMage(Entity entity);
     public Mage getMage(String id, String name);
+    public Mage getRegisteredMage(String mageId);
 
     public Collection<String> getBrushKeys();
 
