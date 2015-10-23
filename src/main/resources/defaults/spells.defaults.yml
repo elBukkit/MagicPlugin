@@ -5862,6 +5862,9 @@ homing:
     worth: 1500
     actions:
         cast:
+        - class: Message
+          message: lock_on
+          message_target: true
         - class: CustomProjectile
           actions:
           - class: Damage
@@ -5875,9 +5878,10 @@ homing:
              class: ConeEffect
              iterations: 15
              particle: redstone
-             lengthGrow: 0.01
-             radiusGrow: 0.002
+             lengthGrow: 0.1
+             radiusGrow: 0.05
              updateLocations: false
+             updateDirections: false
         -  class: EffectSingle
            requires_entity_target: true
            sound: magic.shimmer
@@ -5913,7 +5917,7 @@ homing:
     parameters:
         fov: 0.5
         hitbox: false
-        velocity: 15
+        velocity: 10
         range: 48
         hitbox_size: 0.5
         target_type: LivingEntity
@@ -6425,6 +6429,13 @@ debugger:
     category: staff
     worth: 500
     actions:
+        alternate_down:
+        - class: ChangeContext
+          target_caster: true
+          actions:
+          - class: Debugger
+            level: 10
+            check: true
         alternate_up:
         - class: AllEntities
           actions:
@@ -6445,7 +6456,7 @@ debugger:
              particle: spell_mob
              lengthGrow: 0.3
     parameters:
-        target: any_entity
+        target: other
         target_type: Entity
         range: 32
         messsage_targets: false

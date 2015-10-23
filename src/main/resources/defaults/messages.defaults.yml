@@ -1264,6 +1264,8 @@ spells:
         name: Homing Missile
         description: Shoot a bolt of energy that will track your target
         cast: You fire a homing missile at $target
+        lock_on: "&d&o$player&r&5 has locked on to you!"
+        cast_player_message: "&d&o$player&r&5's $spell hit you"
     blind:
         name: Blind
         description: Blind your target
@@ -1305,9 +1307,10 @@ spells:
     debugger:
         name: Debugger
         description: An admin tool to debug spells
-        cast: Enabled debug on $target
+        cast: Debugging $target
         deactivate: Disabled debug on $target
         alternate_up: Disabled debug on all entities
+        alternate_up: Debugging yourself
     superfly:
         name: SuperFly
         description: For videographers
