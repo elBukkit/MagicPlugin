@@ -151,8 +151,10 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
 
     @Override
     public Location getWandLocation() {
-        Mage mage = getMage();
-        Location wandLocation = mage == null ? getEyeLocation() : mage.getWandLocation();
+        if (location != null) {
+            return location;
+        }
+        Location wandLocation = this.baseSpell != null ? baseSpell.getWandLocation() : getEyeLocation();
         if (wandLocation != null && direction != null) {
             wandLocation.setDirection(direction);
         }
@@ -435,7 +437,7 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
                 Location source = player.shouldUseEyeLocation() ? eyeLocation : location;
                 if (useWand) {
                     if (wand == null) {
-                        wand = mage.getWandLocation();
+                        wand = getWandLocation();
                     }
                     source = wand;
                 }
@@ -780,7 +782,7 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
         }
         result = result.max(initialResult);
         if (spell != null) {
-            mage.sendDebugMessage(ChatColor.WHITE + "Finish " + ChatColor.GOLD + spell.getName() + ChatColor.WHITE  + ": " + ChatColor.AQUA + result, 2);
+            mage.sendDebugMessage(ChatColor.WHITE + "Finish " + ChatColor.GOLD + spell.getName() + ChatColor.WHITE  + ": " + ChatColor.AQUA + result.name().toLowerCase(), 2);
             spell.finish(this);
         }
         String resultName = result.name().toLowerCase();
