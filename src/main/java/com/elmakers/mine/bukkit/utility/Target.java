@@ -21,6 +21,7 @@ public class Target implements Comparable<Target>
     protected int    minDistanceSquared = 0;
     protected double maxAngle           = 0.3;
     protected boolean useHitbox         = false;
+    protected double hitboxPadding      = 0;
 
     protected float distanceWeight = 1;
     protected float fovWeight = 4;
@@ -108,11 +109,12 @@ public class Target implements Comparable<Target>
         calculateScore();
     }
 
-    public Target(Location sourceLocation, Entity entity, int range, boolean hitbox)
+    public Target(Location sourceLocation, Entity entity, int range, boolean hitbox, double hitboxPadding)
     {
         this.maxDistanceSquared = range * range;
         this.source = sourceLocation;
         this.useHitbox = hitbox;
+        this.hitboxPadding = hitboxPadding;
         this._entity = new WeakReference<Entity>(entity);
         if (entity != null) this.location = CompatibilityUtils.getEyeLocation(entity);
         calculateScore();
@@ -257,6 +259,10 @@ public class Target implements Comparable<Target>
                 {
                     org.bukkit.Bukkit.getLogger().info(" failed to get hitbox for " + entity.getType() + " : " + targetLoc);
                 }
+            }
+            if (hitboxPadding > 0)
+            {
+                hitbox.expand(hitboxPadding);
             }
 
             if (DEBUG_TARGETING && entity != null)

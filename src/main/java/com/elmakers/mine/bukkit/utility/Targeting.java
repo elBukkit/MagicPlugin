@@ -49,6 +49,7 @@ public class Targeting {
     private boolean                             ignoreBlocks            = false;
     private boolean                             ignoreBreakables        = false;
 
+    private double                              hitboxPadding           = 0;
     private boolean                             useHitbox               = true;
     private double                              fov                     = 0.3;
     private double                              closeRange              = 1;
@@ -391,7 +392,7 @@ public class Targeting {
 
         int rangeSquared = (int)Math.floor(range * range);
         List<Entity> entities = null;
-        range = Math.min(range, CompatibilityUtils.MAX_ENTITY_RANGE);
+        range = Math.min(range + hitboxPadding, CompatibilityUtils.MAX_ENTITY_RANGE);
         if (source == null && sourceEntity != null) {
             entities = sourceEntity.getNearbyEntities(range, range, range);
             if (sourceEntity instanceof LivingEntity) {
@@ -415,7 +416,7 @@ public class Targeting {
         for (Entity entity : entities)
         {
             if (sourceEntity != null && entity.equals(sourceEntity) && !context.getTargetsCaster()) continue;
-            Location entityLocation = entity.getLocation();
+            Location entityLocation = entity instanceof LivingEntity ? ((LivingEntity)entity).getEyeLocation() : entity.getLocation();
             if (!entityLocation.getWorld().equals(source.getWorld())) continue;
             if (entityLocation.distanceSquared(source) > rangeSquared) continue;
 
@@ -423,7 +424,7 @@ public class Targeting {
 
             Target newScore = null;
             if (useHitbox) {
-                newScore = new Target(source, entity, (int)range, useHitbox);
+                newScore = new Target(source, entity, (int)range, useHitbox, hitboxPadding);
             } else {
                 newScore = new Target(source, entity, (int)range, fov, closeRange, closeFOV,
                         distanceWeight, fovWeight, mageWeight, npcWeight, playerWeight, livingEntityWeight);
@@ -457,6 +458,7 @@ public class Targeting {
     public void processParameters(ConfigurationSection parameters) {
         parseTargetType(parameters.getString("target"));
         useHitbox = parameters.getBoolean("hitbox", !parameters.contains("fov"));
+        hitboxPadding = parameters.getDouble("hitbox_size", 0);
         fov = parameters.getDouble("fov", 0.3);
         closeRange = parameters.getDouble("close_range", 1);
         closeFOV = parameters.getDouble("close_fov", 0.5);
