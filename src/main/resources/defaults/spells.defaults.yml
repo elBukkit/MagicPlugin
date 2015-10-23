@@ -5889,6 +5889,7 @@ homing:
              particle: redstone
              radius: 0.1
              particles: 10
+             offset: 0,-0.5,0
         tick:
         - particle: redstone
           color: FF0000
@@ -5912,7 +5913,7 @@ homing:
     parameters:
         fov: 0.5
         hitbox: false
-        velocity: 20
+        velocity: 15
         range: 48
         hitbox_size: 0.5
         target_type: LivingEntity
