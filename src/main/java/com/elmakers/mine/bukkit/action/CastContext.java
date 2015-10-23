@@ -912,4 +912,13 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
     public void setInitialResult(SpellResult result) {
         initialResult = result;
     }
+
+    @Override
+    public boolean canCast(Location location)
+    {
+        if (baseSpell != null) {
+            return baseSpell.canCast(location);
+        }
+        return true;
+    }
 }
