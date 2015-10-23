@@ -3,7 +3,7 @@ package com.elmakers.mine.bukkit.utility;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.spell.TargetType;
-import com.elmakers.mine.bukkit.spell.TargetingSpell;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
@@ -403,6 +403,14 @@ public class Targeting {
             entities = CompatibilityUtils.getNearbyEntities(source, range, range, range);
         }
 
+        if (mage != null && mage.getDebugLevel() > 3)
+        {
+            mage.sendDebugMessage(ChatColor.GREEN + "Targeting from " + ChatColor.GRAY + source.getBlockX() +
+                    ChatColor.DARK_GRAY + ","  + ChatColor.GRAY + source.getBlockY() +
+                    ChatColor.DARK_GRAY + "," + ChatColor.GRAY + source.getBlockZ() +
+                    ChatColor.DARK_GREEN + " at " + ChatColor.GRAY + source.getDirection());
+        }
+
         if (entities == null) return targets;
         for (Entity entity : entities)
         {
@@ -424,7 +432,7 @@ public class Targeting {
             {
                 if (mage != null && mage.getDebugLevel() > 3)
                 {
-                    mage.sendDebugMessage("Target " + entity.getType() + ": " + newScore.getScore());
+                    mage.sendDebugMessage(ChatColor.DARK_GREEN + "Target " + ChatColor.GREEN + entity.getType() + ChatColor.DARK_GREEN + ": " + ChatColor.YELLOW + newScore.getScore());
                 }
 
                 targets.add(newScore);

@@ -960,7 +960,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
 
         if (preCast.isCancelled()) {
             processResult(SpellResult.CANCELLED, workingParameters);
-            mage.sendDebugMessage(ChatColor.WHITE + "Cast " + ChatColor.GOLD + getName() + ChatColor.WHITE  + ": " + ChatColor.AQUA + SpellResult.CANCELLED + ChatColor.DARK_AQUA + " (no cast)");
+            sendCastMessage(SpellResult.CANCELLED, " (no cast)");
             return false;
         }
 
@@ -971,14 +971,14 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         if (livingEntity != null && !mage.isSuperPowered()) {
             if (!bypassConfusion && livingEntity.hasPotionEffect(PotionEffectType.CONFUSION)) {
                 processResult(SpellResult.CURSED, workingParameters);
-                mage.sendDebugMessage(ChatColor.WHITE + "Cast " + ChatColor.GOLD + getName() + ChatColor.WHITE + ": " + ChatColor.AQUA + SpellResult.CURSED + ChatColor.DARK_AQUA + " (no cast)");
+                sendCastMessage(SpellResult.CURSED, " (no cast)");
                 return false;
             }
 
             // Don't allow casting if the player is weakened
             if (!bypassWeakness && livingEntity.hasPotionEffect(PotionEffectType.WEAKNESS)) {
                 processResult(SpellResult.CURSED, workingParameters);
-                mage.sendDebugMessage(ChatColor.WHITE + "Cast " + ChatColor.GOLD + getName() + ChatColor.WHITE + ": " + ChatColor.AQUA + SpellResult.CURSED + ChatColor.DARK_AQUA + " (no cast)");
+                sendCastMessage(SpellResult.CURSED, " (no cast)");
                 return false;
             }
         }
@@ -986,7 +986,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         // Don't perform permission check until after processing parameters, in case of overrides
         if (!canCast(getLocation())) {
             processResult(SpellResult.INSUFFICIENT_PERMISSION, workingParameters);
-            mage.sendDebugMessage(ChatColor.WHITE + "Cast " + ChatColor.GOLD + getName() + ChatColor.WHITE  + ": " + ChatColor.AQUA + SpellResult.INSUFFICIENT_PERMISSION + ChatColor.DARK_AQUA + " (no cast)");
+            sendCastMessage(SpellResult.INSUFFICIENT_PERMISSION, " (no cast)");
             if (mage.getDebugLevel() > 1) {
                 CommandSender messageTarget = mage.getDebugger();
                 if (messageTarget == null) {
@@ -1040,7 +1040,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
             }
             castMessage(getMessage("cooldown").replace("$time", timeDescription));
             processResult(SpellResult.COOLDOWN, workingParameters);
-            mage.sendDebugMessage(ChatColor.WHITE + "Cast " + ChatColor.GOLD + getName() + ChatColor.WHITE  + ": " + ChatColor.AQUA + SpellResult.COOLDOWN + ChatColor.DARK_AQUA + " (no cast)");
+            sendCastMessage(SpellResult.COOLDOWN, " (no cast)");
             return false;
         }
 
@@ -1050,7 +1050,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
             String costDescription = required.getDescription(controller.getMessages(), mage);
             castMessage(baseMessage.replace("$cost", costDescription));
             processResult(SpellResult.INSUFFICIENT_RESOURCES, workingParameters);
-            mage.sendDebugMessage(ChatColor.WHITE + "Cast " + ChatColor.GOLD + getName() + ChatColor.WHITE  + ": " + ChatColor.AQUA + SpellResult.INSUFFICIENT_RESOURCES + ChatColor.DARK_AQUA + " (no cast)");
+            sendCastMessage(SpellResult.INSUFFICIENT_RESOURCES, " (no cast)");
             return false;
         }
 
@@ -1187,8 +1187,20 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
             }
         }
 
+        sendCastMessage(result, " (" + success + ")");
         mage.sendDebugMessage(ChatColor.WHITE + "Cast " + ChatColor.GOLD + getName() + ChatColor.WHITE  + ": " + ChatColor.AQUA + result + ChatColor.DARK_AQUA + " (" + success + ")");
         return success;
+    }
+
+    protected void sendCastMessage(SpellResult result, String message)
+    {
+        Location source = getEyeLocation();
+        mage.sendDebugMessage(ChatColor.WHITE + "Cast " + ChatColor.GOLD + getName() + ChatColor.WHITE + " from " +
+                ChatColor.GRAY + source.getBlockX() +
+                ChatColor.DARK_GRAY + ","  + ChatColor.GRAY + source.getBlockY() +
+                ChatColor.DARK_GRAY + "," + ChatColor.GRAY + source.getBlockZ() +
+                ChatColor.WHITE  + ": " + ChatColor.AQUA + result.name().toLowerCase() +
+                ChatColor.DARK_AQUA + message);
     }
 
     public String getMessage(String messageKey) {

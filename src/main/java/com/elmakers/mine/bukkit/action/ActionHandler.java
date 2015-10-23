@@ -249,7 +249,7 @@ public class ActionHandler implements Cloneable
             result = result.min(actionResult);
             if (actionResult == SpellResult.STOP) {
                 if (showDebug) {
-                    mage.sendDebugMessage(ChatColor.RED + debugIndent + "Action " + ChatColor.GOLD + action.getAction().getClass().getSimpleName() + ChatColor.WHITE  + ": " + ChatColor.AQUA + actionResult);
+                    mage.sendDebugMessage(ChatColor.RED + debugIndent + "Action " + ChatColor.GOLD + action.getAction().getClass().getSimpleName() + ChatColor.WHITE  + ": " + ChatColor.AQUA + actionResult.name().toLowerCase());
                 }
                 cancel(context);
             }
@@ -257,7 +257,7 @@ public class ActionHandler implements Cloneable
                 break;
             }
             if (showDebug) {
-                mage.sendDebugMessage(ChatColor.WHITE + debugIndent + "Action " + ChatColor.GOLD + action.getAction().getClass().getSimpleName() + ChatColor.WHITE  + ": " + ChatColor.AQUA + actionResult);
+                mage.sendDebugMessage(ChatColor.WHITE + debugIndent + "Action " + ChatColor.GOLD + action.getAction().getClass().getSimpleName() + ChatColor.WHITE  + ": " + ChatColor.AQUA + actionResult.name().toLowerCase());
             }
             if (isConditionalOnSuccess && actionResult.isSuccess()) {
                 cancel(context);
@@ -282,7 +282,9 @@ public class ActionHandler implements Cloneable
         context.addResult(result);
         SpellResult newResult = context.getResult();
         if (showDebug && newResult != currentResult) {
-            mage.sendDebugMessage(ChatColor.AQUA + debugIndent + "Result changed from " + ChatColor.DARK_AQUA + currentResult.name() + ChatColor.WHITE  + " to " + ChatColor.AQUA + newResult.name());
+            mage.sendDebugMessage(ChatColor.AQUA + debugIndent + "Result changed from " +
+                    ChatColor.DARK_AQUA + currentResult.name().toLowerCase() + ChatColor.WHITE  +
+                    " to " + ChatColor.AQUA + newResult.name().toLowerCase());
         }
 
         return result;
