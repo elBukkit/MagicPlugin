@@ -7,6 +7,9 @@ import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
+import org.bukkit.Material;
+import org.bukkit.block.Block;
+import org.bukkit.block.CommandBlock;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 
@@ -31,10 +34,26 @@ public class DebuggerAction extends BaseSpellAction
 	{
         Entity entity = context.getTargetEntity();
 		MageController controller = context.getController();
-		if (!controller.isMage(entity)) {
+		Mage mage = null;
+		if (entity != null && controller.isMage(entity)) {
+				mage = controller.getMage(entity);
+		} else {
+			Block block = context.getTargetBlock();
+			org.bukkit.Bukkit.getLogger().info("Target block: " + block.getType());
+			if (block.getType() == Material.COMMAND) {
+				CommandBlock commandBlock = (CommandBlock)block.getState();
+				// This is a bit of hacky ..
+				String commandName = commandBlock.getName();
+				String mageId = "COMMAND";
+				if (commandName != null && commandName.length() > 0) {
+					mageId = "COMMAND-" + commandBlock.getName();
+				}
+				mage = controller.getRegisteredMage(mageId);
+			}
+		}
+		if (mage == null) {
 			return SpellResult.NO_TARGET;
 		}
-		Mage mage = controller.getMage(entity);
 		int currentLevel = mage.getDebugLevel();
 		if (currentLevel == debugLevel || debugLevel == 0) {
 			mage.setDebugLevel(0);
@@ -59,7 +78,7 @@ public class DebuggerAction extends BaseSpellAction
 	}
 
     @Override
-    public boolean requiresTargetEntity()
+    public boolean requiresTarget()
     {
         return true;
     }

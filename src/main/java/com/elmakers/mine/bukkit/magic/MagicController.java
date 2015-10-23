@@ -143,6 +143,13 @@ public class MagicController implements MageController {
         defaultsFolder.mkdirs();
     }
 
+    public Mage getRegisteredMage(String mageId) {
+        if (!loaded) {
+            return null;
+        }
+        return mages.get(mageId);
+    }
+
     @Override
     public Mage getMage(String mageId, String mageName) {
         return getMage(mageId, mageName, null, null);
