@@ -23,6 +23,7 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.MetadataValue;
+import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 
@@ -55,6 +56,7 @@ public abstract class TargetingSpell extends BaseSpell {
 
     private boolean                             bypassProtection        = false;
     private boolean                             checkProtection         = false;
+    private int                                 damageResistanceProtection = 0;
 
     private boolean                             allowMaxRange           = false;
     private boolean                             bypassBackfire          = false;
@@ -310,6 +312,18 @@ public abstract class TargetingSpell extends BaseSpell {
         if (entity.hasMetadata("notarget")) return false;
         if (!targetNPCs && controller.isNPC(entity)) return false;
         if (!targetArmorStands && entity instanceof ArmorStand) return false;
+        if (damageResistanceProtection > 0 && entity instanceof LivingEntity)
+        {
+            LivingEntity living = (LivingEntity)entity;
+            if (living.hasPotionEffect(PotionEffectType.DAMAGE_RESISTANCE)) {
+                Collection<PotionEffect> effects = living.getActivePotionEffects();
+                for (PotionEffect effect : effects) {
+                    if (effect.getType() == PotionEffectType.DAMAGE_RESISTANCE && effect.getAmplifier() >= damageResistanceProtection) {
+                        return false;
+                    }
+                }
+            }
+        }
         if (entity instanceof Player)
         {
             Player player = (Player)entity;
@@ -488,6 +502,7 @@ public abstract class TargetingSpell extends BaseSpell {
         bypassProtection = parameters.getBoolean("bypass_protection", false);
         bypassProtection = parameters.getBoolean("bp", bypassProtection);
         checkProtection = parameters.getBoolean("check_protection", false);
+        damageResistanceProtection = parameters.getInt("damage_resistance_protection", 0);
         targetBreakables = parameters.getDouble("target_breakables", 0);
         reverseTargeting = parameters.getBoolean("reverse_targeting", false);
         instantBlockEffects = parameters.getBoolean("instant_block_effects", false);
