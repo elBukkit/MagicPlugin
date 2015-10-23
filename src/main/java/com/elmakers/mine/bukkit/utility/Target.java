@@ -67,6 +67,16 @@ public class Target implements Comparable<Target>
         calculateScore();
     }
 
+    public Target(Location sourceLocation, Block block, boolean hitbox, double hitboxPadding)
+    {
+        this.source = sourceLocation;
+        this.locationMaterial = new MaterialAndData(block);
+        this.useHitbox = hitbox;
+        this.hitboxPadding = hitboxPadding;
+        this.setBlock(block);
+        calculateScore();
+    }
+
     public Target(Location sourceLocation, Block block, int range)
     {
         this(sourceLocation, block, range, 0.3, false);
@@ -254,10 +264,14 @@ public class Target implements Comparable<Target>
             }
             if (hitbox == null)
             {
-                hitbox =  new BoundingBox(targetLoc, -0.5, 0.5, 0, 1, -0.5, 0.5);
-                if (DEBUG_TARGETING && entity != null)
+                hitbox =  new BoundingBox(targetLoc, -0.5, 0.5, -0.5, 0.5, -0.5, 0.5);
+                if (DEBUG_TARGETING)
                 {
-                    org.bukkit.Bukkit.getLogger().info(" failed to get hitbox for " + entity.getType() + " : " + targetLoc);
+                    if (entity != null) {
+                        org.bukkit.Bukkit.getLogger().info(" failed to get hitbox for " + entity.getType() + " : " + targetLoc);
+                    } else {
+                        org.bukkit.Bukkit.getLogger().info(" got hitbox for block " + getBlock() + " : " + hitbox);
+                    }
                 }
             }
             if (hitboxPadding > 0)
@@ -272,6 +286,10 @@ public class Target implements Comparable<Target>
 
             if (!hitbox.intersectsLine(playerLoc, playerMaxRange))
             {
+                if (DEBUG_TARGETING && entity != null)
+                {
+                    org.bukkit.Bukkit.getLogger().info(" block hitbox test failed from " + playerLoc);
+                }
                 return;
             }
             Vector hit = hitbox.getIntersection(playerLoc, playerMaxRange);
@@ -280,6 +298,8 @@ public class Target implements Comparable<Target>
                 location.setX(hit.getX());
                 location.setY(hit.getY());
                 location.setZ(hit.getZ());
+
+                distanceSquared = location.distanceSquared(source);
             }
             if (DEBUG_TARGETING)
             {
@@ -308,7 +328,6 @@ public class Target implements Comparable<Target>
                         + " rangeA = (" + closeAngle + " to " + maxAngle + "), rangeD = (" + closeDistanceSquared + " to " + maxDistanceSquared + ")"
                         + " ... from " + playerLoc + " to " + targetLoc);
             }
-
 
             if (checkAngle > 0 && angle > checkAngle) return;
         }

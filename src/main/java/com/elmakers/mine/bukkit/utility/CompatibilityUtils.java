@@ -589,6 +589,16 @@ public class CompatibilityUtils extends NMSUtils {
         }
     }
 
+    public static BoundingBox getHitbox(Block block)
+    {
+        int blockX = block.getX();
+        int blockY = block.getY();
+        int blockZ = block.getZ();
+
+        // We make these slightly small to ensure the coordinates stay within the block!
+        return new BoundingBox(blockX + 0.001, blockX + 0.999, blockY + 0.001, blockY + 0.999, blockZ + 0.001, blockZ + 0.999);
+    }
+
     public static BoundingBox getHitbox(Entity entity)
     {
         if (entity == null)

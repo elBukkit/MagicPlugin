@@ -50,10 +50,11 @@ public class Targeting {
     private boolean                             ignoreBreakables        = false;
 
     private double                              hitboxPadding           = 0;
+    private double                              rangeQueryPadding       = 1;
     private boolean                             useHitbox               = true;
     private double                              fov                     = 0.3;
-    private double                              closeRange              = 1;
-    private double                              closeFOV                = 0.5;
+    private double                              closeRange              = 0;
+    private double                              closeFOV                = 0;
     private double                              yOffset                 = 0;
     private boolean                             targetSpaceRequired     = false;
     private int                                 targetMinOffset         = 0;
@@ -130,7 +131,7 @@ public class Targeting {
     }
 
     public void targetBlock(Location source, Block block) {
-        target = new Target(source, block);
+        target = new Target(source, block, useHitbox, hitboxPadding);
     }
 
     public void setYOffset(int offset) {
@@ -260,15 +261,27 @@ public class Targeting {
         Block block = null;
         if (!ignoreBlocks) {
             findTargetBlock(context, range);
-            block = getCurBlock();
+            block = currentBlock;
         }
 
         if (isBlock) {
-            return new Target(source, block);
+            return new Target(source, block, useHitbox, hitboxPadding);
         }
 
-        Target targetBlock = block == null ? null : new Target(source, block);
-        Target entityTarget = getEntityTarget(context, range);
+        Target targetBlock = block == null ? null : new Target(source, block, useHitbox, hitboxPadding);
+
+        // Don't target entities beyond the block we just hit
+        if (targetBlock != null && source != null && source.getWorld().equals(block.getWorld()))
+        {
+            range = Math.min(range, source.distance(targetBlock.getLocation()));
+        }
+
+        // Pick the closest candidate entity
+        Target entityTarget = null;
+        List<Target> scored = getAllTargetEntities(context, range);
+        if (scored.size() > 0) {
+            entityTarget = scored.get(0);
+        }
 
         // Don't allow targeting entities in an area you couldn't cast the spell in
         if (entityTarget != null && !context.canCast(entityTarget.getLocation())) {
@@ -309,6 +322,13 @@ public class Targeting {
         return new Target(source);
     }
 
+    public boolean isTargetable(CastContext context, Block block) {
+        if (!ignoreBreakables && block.hasMetadata("breakable")) {
+            return true;
+        }
+        return context.isTargetable(block.getType());
+    }
+
     protected void findTargetBlock(CastContext context, double range)
     {
         if (source == null)
@@ -319,13 +339,26 @@ public class Targeting {
         {
             return;
         }
+
+        // Pre-check for no block movement
+        Location targetLocation = source.clone().add(source.getDirection().multiply(range));
+        if (targetLocation.getBlockX() == source.getBlockX() &&
+            targetLocation.getBlockY() == source.getBlockY() &&
+            targetLocation.getBlockZ() == source.getBlockZ()) {
+
+            currentBlock = source.getBlock();
+            if (isTargetable(context, currentBlock)) {
+                result = TargetingResult.BLOCK;
+            } else {
+                result = TargetingResult.MISS;
+            }
+            return;
+        }
+
         if (!initializeBlockIterator(source))
         {
             return;
         }
-        currentBlock = null;
-        previousBlock = null;
-        previousPreviousBlock = null;
 
         int distanceTravelled = 0;
         Block block = getNextBlock();
@@ -340,13 +373,8 @@ public class Targeting {
                     if (context.isOkToStandIn(block.getType()) && context.isOkToStandIn(block.getRelative(BlockFace.UP).getType())) {
                         break;
                     }
-                } else {
-                    if (!ignoreBreakables && block.hasMetadata("breakable")) {
-                        break;
-                    }
-                    if (context.isTargetable(block.getType())) {
-                        break;
-                    }
+                } else if (isTargetable(context, block)) {
+                    break;
                 }
             } else {
                 targetMinOffset--;
@@ -365,17 +393,6 @@ public class Targeting {
         }
     }
 
-    public void clearTargets() {
-        targets = null;
-    }
-
-    protected Target getEntityTarget(CastContext context, double range)
-    {
-        List<Target> scored = getAllTargetEntities(context, range);
-        if (scored.size() <= 0) return null;
-        return scored.get(0);
-    }
-
     public List<Target> getAllTargetEntities(CastContext context, double range) {
         Entity sourceEntity = context.getEntity();
         Mage mage = context.getMage();
@@ -385,14 +402,11 @@ public class Targeting {
         }
         targets = new ArrayList<Target>();
 
-        if (currentBlock != null && source != null && source.getWorld().equals(currentBlock.getWorld()))
-        {
-            range = Math.min(range, source.distance(currentBlock.getLocation()));
-        }
+        // A fuzzy optimization range-check. A hard range limit is enforced in the final target consolidator
+        double rangeSquaredPadded = (range + 1) * (range + 1);
 
-        int rangeSquared = (int)Math.floor(range * range);
         List<Entity> entities = null;
-        range = Math.min(range + hitboxPadding, CompatibilityUtils.MAX_ENTITY_RANGE);
+        range = Math.min(range + hitboxPadding + rangeQueryPadding, CompatibilityUtils.MAX_ENTITY_RANGE);
         if (source == null && sourceEntity != null) {
             entities = sourceEntity.getNearbyEntities(range, range, range);
             if (sourceEntity instanceof LivingEntity) {
@@ -418,15 +432,14 @@ public class Targeting {
             if (sourceEntity != null && entity.equals(sourceEntity) && !context.getTargetsCaster()) continue;
             Location entityLocation = entity instanceof LivingEntity ? ((LivingEntity)entity).getEyeLocation() : entity.getLocation();
             if (!entityLocation.getWorld().equals(source.getWorld())) continue;
-            if (entityLocation.distanceSquared(source) > rangeSquared) continue;
-
+            if (entityLocation.distanceSquared(source) > rangeSquaredPadded) continue;
             if (!context.canTarget(entity)) continue;
 
             Target newScore = null;
             if (useHitbox) {
-                newScore = new Target(source, entity, (int)range, useHitbox, hitboxPadding);
+                newScore = new Target(source, entity, (int)Math.ceil(range), useHitbox, hitboxPadding);
             } else {
-                newScore = new Target(source, entity, (int)range, fov, closeRange, closeFOV,
+                newScore = new Target(source, entity, (int)Math.ceil(range), fov, closeRange, closeFOV,
                         distanceWeight, fovWeight, mageWeight, npcWeight, playerWeight, livingEntityWeight);
             }
             if (newScore.getScore() > 0)
@@ -459,6 +472,7 @@ public class Targeting {
         parseTargetType(parameters.getString("target"));
         useHitbox = parameters.getBoolean("hitbox", !parameters.contains("fov"));
         hitboxPadding = parameters.getDouble("hitbox_size", 0);
+        rangeQueryPadding = parameters.getDouble("range_padding", 1);
         fov = parameters.getDouble("fov", 0.3);
         closeRange = parameters.getDouble("close_range", 1);
         closeFOV = parameters.getDouble("close_fov", 0.5);
