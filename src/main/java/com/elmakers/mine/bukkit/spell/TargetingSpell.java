@@ -1,18 +1,19 @@
 package com.elmakers.mine.bukkit.spell;
 
-import java.util.*;
-
 import com.elmakers.mine.bukkit.api.block.UndoList;
-import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
+import com.elmakers.mine.bukkit.api.magic.Mage;
+import com.elmakers.mine.bukkit.api.spell.TargetType;
+import com.elmakers.mine.bukkit.block.MaterialAndData;
+import com.elmakers.mine.bukkit.block.MaterialBrush;
+import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
+import com.elmakers.mine.bukkit.utility.Target;
+import com.elmakers.mine.bukkit.utility.Targeting;
 import org.bukkit.Bukkit;
 import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
-import org.bukkit.command.BlockCommandSender;
-import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
@@ -23,49 +24,34 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.MetadataValue;
 import org.bukkit.potion.PotionEffectType;
-import org.bukkit.util.BlockIterator;
 import org.bukkit.util.Vector;
 
-import com.elmakers.mine.bukkit.api.magic.Mage;
-import com.elmakers.mine.bukkit.api.spell.TargetType;
-import com.elmakers.mine.bukkit.block.MaterialAndData;
-import com.elmakers.mine.bukkit.block.MaterialBrush;
-import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
-import com.elmakers.mine.bukkit.utility.Target;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public abstract class TargetingSpell extends BaseSpell {
     // This differs from CompatibilityUtils.MAX_ENTITY_RANGE,
     // block targeting can theoretically go farther
     private static final int  MAX_RANGE  = 511;
 
-    private Target								target					= null;
-    private List<Target>                        targets                 = null;
-    private TargetType							targetType				= TargetType.NONE;
+    private Targeting                           targeting               = new Targeting();
+
+    private Location                            targetLocation          = null;
+    protected Location                          targetLocation2         = null;
+    private Entity								targetEntity            = null;
+
     private boolean								targetNPCs				= false;
     private boolean								targetArmorStands		= false;
     private boolean								targetInvisible			= true;
     private boolean								targetUnknown			= true;
-    private boolean                             targetingComplete		= false;
-    private boolean                             targetSpaceRequired     = false;
-    private int                                 targetMinOffset         = 0;
     protected Class<? extends Entity>           targetEntityType        = null;
     protected Set<EntityType>                   targetEntityTypes       = null;
     protected Material                          targetContents          = null;
-    private Location                            targetLocation;
-    private Vector								targetLocationOffset;
-    private Vector								targetDirectionOverride;
-    private String								targetLocationWorldName;
-    protected Location                          targetLocation2;
     protected double 		                    targetBreakables	    = 0;
     protected boolean                           instantBlockEffects     = false;
-    private Entity								targetEntity            = null;
-
-    protected float                             distanceWeight          = 1;
-    protected float                             fovWeight               = 4;
-    protected int                               npcWeight               = -1;
-    protected int                               mageWeight              = 5;
-    protected int                               playerWeight            = 4;
-    protected int                               livingEntityWeight      = 3;
+    private int                                 range                   = 0;
 
     private boolean                             bypassProtection        = false;
     private boolean                             checkProtection         = false;
@@ -73,36 +59,17 @@ public abstract class TargetingSpell extends BaseSpell {
     private boolean                             allowMaxRange           = false;
     private boolean                             bypassBackfire          = false;
 
-    private boolean                             useHitbox               = true;
-    private int                                 range                   = 0;
-    private double                              fov                     = 0.3;
-    private double                              closeRange              = 1;
-    private double                              closeFOV                = 0.5;
-    private double                              yOffset                 = 0;
-
     private Set<Material>                       targetThroughMaterials  = new HashSet<Material>();
     private Set<Material>                       targetableMaterials     = null;
     private boolean                             reverseTargeting        = false;
     private boolean                             originAtTarget          = false;
-    private boolean                             ignoreBlocks            = false;
-
-    private BlockIterator						blockIterator = null;
-    private	Block								currentBlock = null;
-    private	Block								previousBlock = null;
-    private	Block								previousPreviousBlock = null;
 
     protected void initializeTargeting()
     {
-        clearTarget();
-        blockIterator = null;
-        currentBlock = null;
-        previousBlock = null;
-        previousPreviousBlock = null;
-        targetSpaceRequired = false;
+        targeting.reset();
         reverseTargeting = false;
-        targetingComplete = false;
-        targetMinOffset = 0;
-        yOffset = 0;
+        targetLocation = null;
+        targetLocation2 = null;
     }
 
     public String getMessage(String messageKey, String def) {
@@ -114,6 +81,7 @@ public abstract class TargetingSpell extends BaseSpell {
             useTargetName = currentCast.getTargetName();
         }
         if (useTargetName == null) {
+            Target target = targeting.getTarget();
             if (target != null) {
                 if (target.hasEntity() && getTargetType() != TargetType.BLOCK) {
                     useTargetName = controller.getEntityDisplayName(target.getEntity());
@@ -159,112 +127,57 @@ public abstract class TargetingSpell extends BaseSpell {
 
     public void setTargetSpaceRequired()
     {
-        targetSpaceRequired = true;
+        targeting.setTargetSpaceRequired(true);
     }
 
     public void setTargetMinOffset(int offset) {
-        targetMinOffset = offset;
+        targeting.setTargetMinOffset(offset);
     }
 
     public void setTarget(Location location) {
-        target = new Target(getEyeLocation(), location == null ? null : location.getBlock());
+        targeting.targetBlock(getEyeLocation(), location == null ? null : location.getBlock());
     }
 
     public void setTargetingHeight(int offset) {
-        yOffset = offset;
-    }
-
-    protected boolean initializeBlockIterator(Location location) {
-        if (blockIterator != null) {
-            return true;
-        }
-        if (location.getBlockY() < 0) {
-            location = location.clone();
-            location.setY(0);
-        }
-        int maxHeight = CompatibilityUtils.getMaxHeight(location.getWorld());
-        if (location.getBlockY() > maxHeight) {
-            location = location.clone();
-            location.setY(maxHeight);
-        }
-
-        try {
-            blockIterator = new BlockIterator(location, yOffset, getMaxRange());
-        } catch (Exception ex) {
-            // This seems to happen randomly, like when you use the same target.
-            // Very annoying, and I now kind of regret switching to BlockIterator.
-            // At any rate, we're going to just re-use the last target block and
-            // cross our fingers!
-            return false;
-        }
-
-        return true;
-    }
-
-    /**
-     * Move "steps" forward along line of vision and returns the block there
-     *
-     * @return The block at the new location
-     */
-    protected Block getNextBlock()
-    {
-        previousPreviousBlock = previousBlock;
-        previousBlock = currentBlock;
-        if (blockIterator == null || !blockIterator.hasNext()) {
-            currentBlock = null;
-        } else {
-            currentBlock = blockIterator.next();
-        }
-        return currentBlock;
-    }
-
-    /**
-     * Returns the current block along the line of vision
-     *
-     * @return The block
-     */
-    public Block getCurBlock()
-    {
-        return currentBlock;
-    }
-
-    /**
-     * Returns the previous block along the line of vision
-     *
-     * @return The block
-     */
-    public Block getPreviousBlock()
-    {
-        return previousBlock;
+        targeting.setYOffset(offset);
     }
 
     public TargetType getTargetType()
     {
-        return targetType;
+        return targeting.getTargetType();
+    }
+
+    public Block getPreviousBlock() {
+        return targeting.getPreviousBlock();
     }
 
     public void retarget(int range, double fov, double closeRange, double closeFOV, boolean useHitbox, int yOffset, boolean targetSpaceRequired, int targetMinOffset) {
         initializeTargeting();
-        setTargetingHeight(yOffset);
-        this.targetSpaceRequired = targetSpaceRequired;
-        this.targetMinOffset = targetMinOffset;
         this.range = range;
-        this.fov = fov;
-        this.closeRange = closeRange;
-        this.closeFOV = closeFOV;
-        this.useHitbox = useHitbox;
+        targeting.setYOffset(yOffset);
+        targeting.setTargetSpaceRequired(targetSpaceRequired);
+        targeting.setTargetMinOffset(targetMinOffset);
+        targeting.setFOV(fov);
+        targeting.setCloseRange(closeFOV);
+        targeting.setCloseFOV(closeRange);
+        targeting.setUseHitbox(useHitbox);
         target();
     }
 
-    public void retarget(int range, double fov, double closeRange, double closeFOV, boolean useHitbox)
-    {
-        retarget(range, fov, closeRange, closeFOV, useHitbox, 0, targetSpaceRequired, targetMinOffset);
+    public void retarget(int range, double fov, double closeRange, double closeFOV, boolean useHitbox) {
+        initializeTargeting();
+        this.range = range;
+        targeting.setFOV(fov);
+        targeting.setCloseRange(closeFOV);
+        targeting.setCloseFOV(closeRange);
+        targeting.setUseHitbox(useHitbox);
+        target();
     }
 
     @Override
     public void target()
     {
-        if (target == null)
+        if (!targeting.hasTarget())
         {
             getTarget();
         }
@@ -272,6 +185,7 @@ public abstract class TargetingSpell extends BaseSpell {
 
     protected void processBlockEffects()
     {
+        Target target = targeting.getTarget();
         final Block block = target.getBlock();
         if (block != null && !bypassBackfire && block.hasMetadata("backfire")) {
             List<MetadataValue> metadata = block.getMetadata("backfire");
@@ -322,27 +236,30 @@ public abstract class TargetingSpell extends BaseSpell {
         }
     }
 
+    protected Target findTarget()
+    {
+        Location source = getEyeLocation();
+        TargetType targetType = targeting.getTargetType();
+        boolean isBlock = targetType == TargetType.BLOCK || targetType == TargetType.SELECT;
+        if (!isBlock && targetEntity != null) {
+            return new Target(source, targetEntity);
+        }
+
+        if (targetType != TargetType.SELF && targetLocation != null) {
+            return new Target(source, targetLocation.getBlock());
+        }
+
+        Target target = targeting.advance(currentCast, getMaxRange());
+        return targeting.getResult() == Targeting.TargetingResult.MISS && !allowMaxRange ? new Target(source) : target;
+    }
+
     protected Target getTarget()
     {
-        target = findTarget();
+        Target target = findTarget();
 
         if (instantBlockEffects)
         {
             processBlockEffects();
-        }
-
-        if (targetLocationOffset != null) {
-            target.add(targetLocationOffset);
-        }
-        if (targetDirectionOverride != null) {
-            target.setDirection(targetDirectionOverride);
-        }
-        if (targetLocationWorldName != null && targetLocationWorldName.length() > 0) {
-            Location location = target.getLocation();
-            if (location != null) {
-                World targetWorld = location.getWorld();
-                target.setWorld(ConfigurationUtils.overrideWorld(targetLocationWorldName, targetWorld, controller.canCreateWorlds()));
-            }
         }
         if (originAtTarget && target.isValid()) {
             Location previous = this.location;
@@ -367,108 +284,9 @@ public abstract class TargetingSpell extends BaseSpell {
         return target;
     }
 
-    /**
-     * Returns the block at the cursor, or null if out of range
-     *
-     * @return The target block
-     */
-    public Target findTarget()
-    {
-        final Location location = getEyeLocation();
-        if (targetType == TargetType.NONE) {
-            return new Target(location);
-        }
-        boolean isBlock = targetType == TargetType.BLOCK || targetType == TargetType.SELECT;
-        if (!isBlock && targetEntity != null) {
-            return new Target(location, targetEntity);
-        }
-
-        final Entity mageEntity = mage.getEntity();
-        if (targetType == TargetType.SELF && mageEntity != null) {
-            return new Target(location, mageEntity);
-        }
-
-        CommandSender sender = mage.getCommandSender();
-        if (targetType == TargetType.SELF && mageEntity == null && sender != null && (sender instanceof BlockCommandSender)) {
-            BlockCommandSender commandBlock = (BlockCommandSender)mage.getCommandSender();
-            return new Target(commandBlock.getBlock().getLocation(), commandBlock.getBlock());
-        }
-
-        if (targetType == TargetType.SELF && location != null) {
-            return new Target(location, location.getBlock());
-        }
-
-        if (targetType == TargetType.SELF) {
-            return new Target(location);
-        }
-
-        if (targetLocation != null) {
-            return new Target(location, targetLocation.getBlock());
-        }
-
-        Block block = null;
-        if (!ignoreBlocks) {
-            findTargetBlock();
-            block = getCurBlock();
-        }
-
-        if (isBlock) {
-            return new Target(location, block);
-        }
-
-        Target targetBlock = block == null ? null : new Target(location, block);
-        Target entityTarget = getEntityTarget();
-
-        // Don't allow targeting entities in an area you couldn't cast the spell in
-        if (entityTarget != null && !canCast(entityTarget.getLocation())) {
-            entityTarget = null;
-        }
-        if (targetBlock != null && !canCast(targetBlock.getLocation())) {
-            targetBlock = null;
-        }
-
-        if (targetType == TargetType.OTHER_ENTITY && entityTarget == null) {
-            return new Target(location);
-        }
-
-        if (targetType == TargetType.ANY_ENTITY && entityTarget == null) {
-            return new Target(location, mageEntity);
-        }
-
-        if (entityTarget == null && targetType == TargetType.ANY && mageEntity != null) {
-            return new Target(location, mageEntity, targetBlock == null ? null : targetBlock.getBlock());
-        }
-
-        if (targetBlock != null && entityTarget != null) {
-            if (targetBlock.getDistanceSquared() < entityTarget.getDistanceSquared()) {
-                entityTarget = null;
-            } else {
-                targetBlock = null;
-            }
-        }
-
-        if (entityTarget != null) {
-            return entityTarget;
-        } else if (targetBlock != null) {
-            return targetBlock;
-        }
-
-        return new Target(location);
-    }
-
     public Target getCurrentTarget()
     {
-        if (target == null) {
-            target = new Target(getEyeLocation());
-        }
-        return target;
-    }
-
-    public void clearTarget()
-    {
-        target = null;
-        targets = null;
-        targetLocation = null;
+        return targeting.getOrCreateTarget(getEyeLocation());
     }
 
     public Block getTargetBlock()
@@ -476,79 +294,12 @@ public abstract class TargetingSpell extends BaseSpell {
         return getTarget().getBlock();
     }
 
-    protected Target getEntityTarget()
-    {
-        List<Target> scored = getAllTargetEntities(this.getMaxRange());
-        if (scored.size() <= 0) return null;
-        return scored.get(0);
-    }
-
     public List<Target> getAllTargetEntities() {
-        targets = null;
-        return getAllTargetEntities(this.getMaxRange());
-    }
-
-    protected List<Target> getAllTargetEntities(double range) {
-
-        return getAllTargetEntities(getEyeLocation(), mage.getEntity(), range, fov, closeRange, closeFOV, useHitbox);
-    }
-
-    public List<Target> getAllTargetEntities(Location sourceLocation, Entity sourceEntity, double range, double fov, double closeRange, double closeFOV, boolean useHitbox) {
-        if (targets != null) {
-            return targets;
-        }
-        targets = new ArrayList<Target>();
-
-        if (currentBlock != null && sourceLocation != null && sourceLocation.getWorld().equals(currentBlock.getWorld()))
-        {
-            range = Math.min(range, sourceLocation.distance(currentBlock.getLocation()));
-        }
-
-        int rangeSquared = (int)Math.floor(range * range);
-        List<Entity> entities = null;
-        range = Math.min(range, CompatibilityUtils.MAX_ENTITY_RANGE);
-        if (sourceLocation == null && sourceEntity != null) {
-            entities = sourceEntity.getNearbyEntities(range, range, range);
-            sourceLocation = sourceEntity.getLocation();
-        } else if (sourceLocation != null) {
-            entities = CompatibilityUtils.getNearbyEntities(sourceLocation, range, range, range);
-        }
-
-        if (entities == null) return targets;
-        for (Entity entity : entities)
-        {
-            if (entity == mage.getEntity()) continue;
-            if (!targetUnknown && entity.getType() == EntityType.UNKNOWN) continue;
-            if (!targetNPCs && controller.isNPC(entity)) continue;
-            if (!targetArmorStands && entity instanceof ArmorStand) continue;
-            if (entity.hasMetadata("notarget")) continue;
-            Location entityLocation = entity.getLocation();
-            if (!entityLocation.getWorld().equals(sourceLocation.getWorld())) continue;
-            if (entityLocation.distanceSquared(sourceLocation) > rangeSquared) continue;
-
-            // Special check for Elementals
-            if (!controller.isElemental(entity) && !canTarget(entity)) continue;
-
-            Target newScore = null;
-            if (useHitbox) {
-                newScore = new Target(sourceLocation, entity, (int)range, useHitbox);
-            } else {
-                newScore = new Target(sourceLocation, entity, (int)range, fov, closeRange, closeFOV,
-                    distanceWeight, fovWeight, mageWeight, npcWeight, playerWeight, livingEntityWeight);
-            }
-            if (newScore.getScore() > 0)
-            {
-                if (mage != null && mage.getDebugLevel() > 3)
-                {
-                    mage.sendDebugMessage("Target " + entity.getType() + ": " + newScore.getScore());
-                }
-
-                targets.add(newScore);
-            }
-        }
-
-        Collections.sort(targets);
-        return targets;
+        // This target-clearing is a bit hacky, but this is only used when we want to reset
+        // targeting.
+        targeting.clearTargets();
+        targeting.start(currentCast.getEyeLocation());
+        return targeting.getAllTargetEntities(currentCast, this.getMaxRange());
     }
 
     @Override
@@ -557,6 +308,7 @@ public abstract class TargetingSpell extends BaseSpell {
         if (!targetUnknown && entity.getType() == EntityType.UNKNOWN) {
             return false;
         }
+        if (entity.hasMetadata("notarget")) return false;
         if (!targetNPCs && controller.isNPC(entity)) return false;
         if (!targetArmorStands && entity instanceof ArmorStand) return false;
         if (entity instanceof Player)
@@ -595,6 +347,7 @@ public abstract class TargetingSpell extends BaseSpell {
     @Override
     public int getRange()
     {
+        TargetType targetType = targeting.getTargetType();
         if (targetType == TargetType.NONE || targetType == TargetType.SELF) return 0;
         return getMaxRange();
     }
@@ -615,55 +368,6 @@ public abstract class TargetingSpell extends BaseSpell {
         return targetThroughMaterials.contains(material);
     }
 
-    protected void findTargetBlock()
-    {
-        Location location = getEyeLocation();
-        if (location == null)
-        {
-            return;
-        }
-        if (targetingComplete)
-        {
-            return;
-        }
-        if (!initializeBlockIterator(location))
-        {
-            return;
-        }
-        currentBlock = null;
-        previousBlock = null;
-        previousPreviousBlock = null;
-
-        Block block = getNextBlock();
-        while (block != null)
-        {
-            if (targetMinOffset <= 0) {
-                if (targetSpaceRequired) {
-                    if (!allowPassThrough(block.getType())) {
-                        break;
-                    }
-                    if (isOkToStandIn(block.getType()) && isOkToStandIn(block.getRelative(BlockFace.UP).getType())) {
-                        break;
-                    }
-                } else {
-                    if (!bypassProtection && block.hasMetadata("breakable")) {
-                        break;
-                    }
-                    if (isTargetable(block.getType())) {
-                        break;
-                    }
-                }
-            } else {
-                targetMinOffset--;
-            }
-            block = getNextBlock();
-        }
-        if (block == null && allowMaxRange) {
-            currentBlock = previousBlock;
-            previousBlock = previousPreviousBlock;
-        }
-        targetingComplete = true;
-    }
 
     public Block getInteractBlock() {
         Location location = getEyeLocation();
@@ -740,7 +444,6 @@ public abstract class TargetingSpell extends BaseSpell {
         }
     }
 
-
     @SuppressWarnings("unchecked")
     protected void loadTemplate(ConfigurationSection node)
     {
@@ -756,51 +459,31 @@ public abstract class TargetingSpell extends BaseSpell {
 
     protected void processTemplateParameters(ConfigurationSection parameters) {
         range = parameters.getInt("range", 0);
-        targetType = TargetType.NONE;
-        if (parameters.contains("target")) {
-            String targetTypeName = parameters.getString("target");
-            try {
-                targetType = TargetType.valueOf(targetTypeName.toUpperCase());
-            } catch (Exception ex) {
-                controller.getLogger().warning("Invalid target_type: " + targetTypeName);
-                targetType = TargetType.NONE;
-            }
-
-            // Use default range of 32 for configs that didn't specify range
-            // Only when targeting is set to on
-            if ((targetType != TargetType.NONE && targetType != TargetType.SELF) && range == 0) {
-                range = 32;
-            }
-
-            // Re-process targetSelf parameter, defaults to on if targetType is "self"
-            targetSelf = (targetType == TargetType.SELF);
-            targetSelf = parameters.getBoolean("target_self", targetSelf);
-
-            // If target type of none was explicity provided, zero-out range
-            // TODO: This seems like a good idea, but it breaks ConeOfEffect and AreaOfEffect actions
-            // Those should probably provide their own range settings, though!
-            /*
-            if (targetType == TargetType.NONE) {
-                range = 0;
-            }
-            */
-        }
+        targeting.parseTargetType(parameters.getString("target"));
 
         // If a range was specified but not a target type, default to none
-        if (range > 0 && targetType == TargetType.NONE) {
-            targetType = TargetType.OTHER;
+        if (range > 0 && targeting.getTargetType() == TargetType.NONE) {
+            targeting.setTargetType(TargetType.OTHER);
         }
+        TargetType targetType = targeting.getTargetType();
+
+        // Use default range of 32 for configs that didn't specify range
+        // Only when targeting is set to on
+        if ((targetType != TargetType.NONE && targetType != TargetType.SELF) && range == 0) {
+            range = 32;
+        }
+
+        // Re-process targetSelf parameter, defaults to on if targetType is "self"
+        targetSelf = (targetType == TargetType.SELF);
+        targetSelf = parameters.getBoolean("target_self", targetSelf);
     }
 
     @SuppressWarnings("unchecked")
     @Override
     public void processParameters(ConfigurationSection parameters) {
         super.processParameters(parameters);
+        targeting.processParameters(parameters);
         processTemplateParameters(parameters);
-        useHitbox = parameters.getBoolean("hitbox", !parameters.contains("fov"));
-        fov = parameters.getDouble("fov", 0.3);
-        closeRange = parameters.getDouble("close_range", 1);
-        closeFOV = parameters.getDouble("close_fov", 0.5);
         allowMaxRange = parameters.getBoolean("allow_max_range", false);
         bypassBackfire = parameters.getBoolean("bypass_backfire", false);
         bypassProtection = parameters.getBoolean("bypass_protection", false);
@@ -809,12 +492,6 @@ public abstract class TargetingSpell extends BaseSpell {
         targetBreakables = parameters.getDouble("target_breakables", 0);
         reverseTargeting = parameters.getBoolean("reverse_targeting", false);
         instantBlockEffects = parameters.getBoolean("instant_block_effects", false);
-
-        distanceWeight = (float)parameters.getDouble("distance_weight", 1);
-        fovWeight = (float)parameters.getDouble("fov_weight", 4);
-        npcWeight = parameters.getInt("npc_weight", -1);
-        playerWeight = parameters.getInt("player_weight", 4);
-        livingEntityWeight = parameters.getInt("entity_weight", 3);
 
         if (parameters.contains("transparent")) {
             targetThroughMaterials.clear();
@@ -830,9 +507,6 @@ public abstract class TargetingSpell extends BaseSpell {
         } else {
             targetableMaterials = null;
         }
-
-        targetMinOffset = parameters.getInt("target_min_offset", 0);
-        targetMinOffset = parameters.getInt("tmo", targetMinOffset);
 
         targetNPCs = parameters.getBoolean("target_npc", false);
         targetArmorStands = parameters.getBoolean("target_armor_stand", false);
@@ -874,33 +548,9 @@ public abstract class TargetingSpell extends BaseSpell {
 
         targetContents = ConfigurationUtils.getMaterial(parameters, "target_contents", null);
         originAtTarget = parameters.getBoolean("origin_at_target", false);
-        ignoreBlocks = parameters.getBoolean("ignore_blocks", false);
 
         Location defaultLocation = getLocation();
         targetLocation = ConfigurationUtils.overrideLocation(parameters, "t", defaultLocation, controller.canCreateWorlds());
-        targetLocationOffset = null;
-        targetDirectionOverride = null;
-
-        Double otxValue = ConfigurationUtils.getDouble(parameters, "otx", null);
-        Double otyValue = ConfigurationUtils.getDouble(parameters, "oty", null);
-        Double otzValue = ConfigurationUtils.getDouble(parameters, "otz", null);
-        if (otxValue != null || otzValue != null || otyValue != null) {
-            targetLocationOffset = new Vector(
-                    (otxValue == null ? 0 : otxValue),
-                    (otyValue == null ? 0 : otyValue),
-                    (otzValue == null ? 0 : otzValue));
-        }
-        targetLocationWorldName = parameters.getString("otworld");
-
-        Double tdxValue = ConfigurationUtils.getDouble(parameters, "otdx", null);
-        Double tdyValue = ConfigurationUtils.getDouble(parameters, "otdy", null);
-        Double tdzValue = ConfigurationUtils.getDouble(parameters, "otdz", null);
-        if (tdxValue != null || tdzValue != null || tdyValue != null) {
-            targetDirectionOverride = new Vector(
-                    (tdxValue == null ? 0 : tdxValue),
-                    (tdyValue == null ? 0 : tdyValue),
-                    (tdzValue == null ? 0 : tdzValue));
-        }
 
         // For two-click construction spells
         defaultLocation = targetLocation == null ? defaultLocation : targetLocation;
@@ -927,6 +577,7 @@ public abstract class TargetingSpell extends BaseSpell {
     @Override
     protected String getDisplayMaterialName()
     {
+        Target target = targeting.getTarget();
         if (target != null && target.isValid()) {
             return MaterialBrush.getMaterialName(target.getBlock());
         }
@@ -936,11 +587,12 @@ public abstract class TargetingSpell extends BaseSpell {
 
     @Override
     protected void onBackfire() {
-        targetType = TargetType.SELF;
+        targeting.setTargetType(TargetType.SELF);
     }
 
     @Override
     public Location getTargetLocation() {
+        Target target = targeting.getTarget();
         if (target != null && target.isValid()) {
             return target.getLocation();
         }
@@ -950,6 +602,7 @@ public abstract class TargetingSpell extends BaseSpell {
 
     @Override
     public Entity getTargetEntity() {
+        Target target = targeting.getTarget();
         if (target != null && target.isValid()) {
             return target.getEntity();
         }
@@ -960,6 +613,7 @@ public abstract class TargetingSpell extends BaseSpell {
     @Override
     public com.elmakers.mine.bukkit.api.block.MaterialAndData getEffectMaterial()
     {
+        Target target = targeting.getTarget();
         if (target != null && target.isValid()) {
             Block block = target.getBlock();
             MaterialAndData targetMaterial = new MaterialAndData(block);
