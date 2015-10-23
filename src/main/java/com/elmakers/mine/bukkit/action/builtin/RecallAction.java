@@ -322,17 +322,24 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
 
         if (parameters.contains("lock"))
         {
-            String lockWarp = parameters.getString("lock");
-            if (!unlockedWarps.contains(lockWarp))
+            String lockWarpString = parameters.getString("lock");
+            String[] lockWarps = StringUtils.split(lockWarpString, ',');
+            boolean locked = false;
+            for (String lockWarp : lockWarps)
             {
-                return SpellResult.NO_ACTION;
+                if (unlockedWarps.contains(lockWarp))
+                {
+                    locked = true;
+                    unlockedWarps.remove(lockWarp);
+                }
             }
 
-            unlockedWarps.remove(lockWarp);
-            unlockedString = StringUtils.join(unlockedWarps, ",");
-            mageData.set(unlockKey, unlockedString);
+            if (locked) {
+                unlockedString = StringUtils.join(unlockedWarps, ",");
+                mageData.set(unlockKey, unlockedString);
+            }
 
-            return SpellResult.DEACTIVATE;
+            return locked ? SpellResult.DEACTIVATE : SpellResult.NO_ACTION;
         }
 
         Location playerLocation = mage.getLocation();
