@@ -3,6 +3,7 @@ package com.elmakers.mine.bukkit.utility;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.spell.TargetType;
+import com.elmakers.mine.bukkit.spell.TargetingSpell;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
@@ -15,7 +16,9 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.util.BlockIterator;
 import org.bukkit.util.Vector;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -196,6 +199,7 @@ public class Targeting {
     }
 
     public void start(Location source) {
+        reset();
         this.source = source.clone();
     }
 
@@ -488,5 +492,18 @@ public class Targeting {
 
     public TargetingResult getResult() {
         return result;
+    }
+
+    public void getTargetEntities(CastContext context, double range, int targetCount, Collection<WeakReference<Entity>> entities)
+    {
+        List<Target> candidates = getAllTargetEntities(context, range);
+        if (targetCount < 0) {
+            targetCount = entities.size();
+        }
+
+        for (int i = 0; i < targetCount && i < candidates.size(); i++) {
+            Target target = candidates.get(i);
+            entities.add(new WeakReference<Entity>(target.getEntity()));
+        }
     }
 }

@@ -297,7 +297,6 @@ public abstract class TargetingSpell extends BaseSpell {
     public List<Target> getAllTargetEntities() {
         // This target-clearing is a bit hacky, but this is only used when we want to reset
         // targeting.
-        targeting.clearTargets();
         targeting.start(currentCast.getEyeLocation());
         return targeting.getAllTargetEntities(currentCast, this.getMaxRange());
     }

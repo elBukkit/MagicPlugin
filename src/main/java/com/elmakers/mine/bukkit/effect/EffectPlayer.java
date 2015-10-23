@@ -495,6 +495,8 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
         if (targetLocation != null && originLocation != null && !originLocation.getWorld().equals(targetLocation.getWorld())) {
             targetLocation.setWorld(originLocation.getWorld());
         }
+        org.bukkit.Bukkit.getLogger().info("Playing at " + origin.getLocation().getDirection());
+
         this.origin = origin;
         this.target = target;
 

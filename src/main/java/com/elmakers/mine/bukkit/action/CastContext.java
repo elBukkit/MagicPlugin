@@ -680,24 +680,6 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
     }
 
     @Override
-    public void getTargetEntities(int targetCount, Collection<WeakReference<Entity>> entities)
-    {
-        if (targetingSpell == null)
-        {
-            return;
-        }
-        List<Target> candidates = ((TargetingSpell)spell).getAllTargetEntities();
-        if (targetCount < 0) {
-            targetCount = entities.size();
-        }
-
-        for (int i = 0; i < targetCount && i < candidates.size(); i++) {
-            Target target = candidates.get(i);
-            entities.add(new WeakReference<Entity>(target.getEntity()));
-        }
-    }
-
-    @Override
     public void messageTargets(String messageKey)
     {
         Mage mage = getMage();
