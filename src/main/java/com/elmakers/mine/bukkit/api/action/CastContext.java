@@ -117,4 +117,5 @@ public interface CastContext {
     public boolean getTargetsCaster();
     public void setTargetsCaster(boolean target);
     public TargetType getTargetType();
+    public boolean canCast(Location location);
 }
