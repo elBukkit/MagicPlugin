@@ -1195,7 +1195,6 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         }
 
         sendCastMessage(result, " (" + success + ")");
-        mage.sendDebugMessage(ChatColor.WHITE + "Cast " + ChatColor.GOLD + getName() + ChatColor.WHITE  + ": " + ChatColor.AQUA + result + ChatColor.DARK_AQUA + " (" + success + ")");
         return success;
     }
 
