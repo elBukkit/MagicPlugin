@@ -240,14 +240,14 @@ public class Target implements Comparable<Target>
         score = 0;
         if (source == null) return;
 
-        Vector playerFacing = source.getDirection();
-        Vector playerLoc = new Vector(source.getX(), source.getY(), source.getZ());
+        Vector sourceDirection = source.getDirection();
+        Vector sourceLocation = new Vector(source.getX(), source.getY(), source.getZ());
 
         Location targetLocation = getLocation();
         if (targetLocation == null) return;
 
         Vector targetLoc = new Vector(targetLocation.getX(), targetLocation.getY(), targetLocation.getZ());
-        Vector targetDirection = new Vector(targetLoc.getX() - playerLoc.getX(), targetLoc.getY() - playerLoc.getY(), targetLoc.getZ() - playerLoc.getZ());
+        Vector targetDirection = new Vector(targetLoc.getX() - sourceLocation.getX(), targetLoc.getY() - sourceLocation.getY(), targetLoc.getZ() - sourceLocation.getZ());
         distanceSquared = targetDirection.lengthSquared();
 
         if (maxDistanceSquared > 0 && distanceSquared > maxDistanceSquared) return;
@@ -256,7 +256,9 @@ public class Target implements Comparable<Target>
         Entity entity = getEntity();
         if (useHitbox)
         {
-            Vector playerMaxRange = playerLoc.clone().add(playerFacing.multiply(maxDistanceSquared));
+            double checkDistance = Math.max(maxDistanceSquared, 2);
+            Vector endPoint = sourceLocation.clone().add(sourceDirection.multiply(checkDistance));
+            Vector startPoint = sourceLocation.clone().add(sourceDirection.multiply(-1));
             BoundingBox hitbox = null;
             if (entity != null)
             {
@@ -264,7 +266,8 @@ public class Target implements Comparable<Target>
             }
             if (hitbox == null)
             {
-                hitbox =  new BoundingBox(targetLoc, -0.5, 0.5, -0.5, 0.5, -0.5, 0.5);
+                // We make this a little smaller to ensure the coordinates stay inside the block
+                hitbox =  new BoundingBox(targetLoc, -0.499, 0.499, -0.499, 0.499, -0.499, 0.499);
                 if (DEBUG_TARGETING)
                 {
                     if (entity != null) {
@@ -281,18 +284,18 @@ public class Target implements Comparable<Target>
 
             if (DEBUG_TARGETING && entity != null)
             {
-                org.bukkit.Bukkit.getLogger().info("CHECKING " + entity.getType() + ": " + hitbox + ", " + playerLoc + " - " + playerMaxRange + ": " + hitbox.intersectsLine(playerLoc, playerMaxRange));
+                org.bukkit.Bukkit.getLogger().info("CHECKING " + entity.getType() + ": " + hitbox + ", " + startPoint + " - " + endPoint + ": " + hitbox.intersectsLine(sourceLocation, endPoint));
             }
 
-            if (!hitbox.intersectsLine(playerLoc, playerMaxRange))
+            if (!hitbox.intersectsLine(startPoint, endPoint))
             {
                 if (DEBUG_TARGETING && entity != null)
                 {
-                    org.bukkit.Bukkit.getLogger().info(" block hitbox test failed from " + playerLoc);
+                    org.bukkit.Bukkit.getLogger().info(" block hitbox test failed from " + sourceLocation);
                 }
                 return;
             }
-            Vector hit = hitbox.getIntersection(playerLoc, playerMaxRange);
+            Vector hit = hitbox.getIntersection(startPoint, endPoint);
             if (hit != null)
             {
                 location.setX(hit.getX());
@@ -308,7 +311,7 @@ public class Target implements Comparable<Target>
         }
         else
         {
-            angle = targetDirection.angle(playerFacing);
+            angle = targetDirection.angle(sourceDirection);
 
             double checkAngle = maxAngle;
             if (closeDistanceSquared > 0 && maxDistanceSquared > closeDistanceSquared)
@@ -326,7 +329,7 @@ public class Target implements Comparable<Target>
                 org.bukkit.Bukkit.getLogger().info("CHECKING " + getEntity().getType() + " (" + closeDistanceSquared + ") " +
                         " angle = " + angle + " against " + checkAngle + " at distance " + distanceSquared
                         + " rangeA = (" + closeAngle + " to " + maxAngle + "), rangeD = (" + closeDistanceSquared + " to " + maxDistanceSquared + ")"
-                        + " ... from " + playerLoc + " to " + targetLoc);
+                        + " ... from " + sourceLocation + " to " + targetLoc);
             }
 
             if (checkAngle > 0 && angle > checkAngle) return;

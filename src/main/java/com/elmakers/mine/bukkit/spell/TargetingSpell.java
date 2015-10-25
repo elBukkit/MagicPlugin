@@ -251,7 +251,7 @@ public abstract class TargetingSpell extends BaseSpell {
             return new Target(source, targetLocation.getBlock());
         }
 
-        Target target = targeting.advance(currentCast, getMaxRange());
+        Target target = targeting.target(currentCast, getMaxRange());
         return targeting.getResult() == Targeting.TargetingResult.MISS && !allowMaxRange ? new Target(source) : target;
     }
 

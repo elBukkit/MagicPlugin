@@ -80,7 +80,7 @@ public class Targeting {
         yOffset = 0;
     }
 
-    protected boolean initializeBlockIterator(Location location) {
+    protected boolean initializeBlockIterator(Location location, double range) {
         if (blockIterator != null) {
             return true;
         }
@@ -95,8 +95,12 @@ public class Targeting {
         }
 
         try {
-            blockIterator = new BlockIterator(location, yOffset);
+            blockIterator = new BlockIterator(location, yOffset, (int)Math.ceil(range));
         } catch (Exception ex) {
+            if (Target.DEBUG_TARGETING) {
+                org.bukkit.Bukkit.getLogger().warning("Exception creating BlockIterator");
+                ex.printStackTrace();
+            }
             // This seems to happen randomly, like when you use the same target.
             // Very annoying, and I now kind of regret switching to BlockIterator.
             // At any rate, we're going to just re-use the last target block and
@@ -205,7 +209,7 @@ public class Targeting {
         this.source = source.clone();
     }
 
-    public Target advance(CastContext context, double range)
+    public Target target(CastContext context, double range)
     {
         target = findTarget(context, range);
 
@@ -355,12 +359,11 @@ public class Targeting {
             return;
         }
 
-        if (!initializeBlockIterator(source))
+        if (!initializeBlockIterator(source, range))
         {
             return;
         }
 
-        int distanceTravelled = 0;
         Block block = getNextBlock();
         result = TargetingResult.BLOCK;
         while (block != null)
@@ -380,11 +383,6 @@ public class Targeting {
                 targetMinOffset--;
             }
             block = getNextBlock();
-            distanceTravelled++;
-            if (distanceTravelled >= range) {
-                result = TargetingResult.MISS;
-                break;
-            }
         }
         if (block == null) {
             result = TargetingResult.MISS;
@@ -418,12 +416,12 @@ public class Targeting {
             entities = CompatibilityUtils.getNearbyEntities(source, range, range, range);
         }
 
-        if (mage != null && mage.getDebugLevel() > 3)
+        if (mage != null && mage.getDebugLevel() > 8)
         {
             mage.sendDebugMessage(ChatColor.GREEN + "Targeting from " + ChatColor.GRAY + source.getBlockX() +
                     ChatColor.DARK_GRAY + ","  + ChatColor.GRAY + source.getBlockY() +
                     ChatColor.DARK_GRAY + "," + ChatColor.GRAY + source.getBlockZ() +
-                    ChatColor.DARK_GREEN + " at " + ChatColor.GRAY + source.getDirection());
+                    ChatColor.DARK_GREEN + " with range of " + ChatColor.GREEN + range);
         }
 
         if (entities == null) return targets;
@@ -444,7 +442,7 @@ public class Targeting {
             }
             if (newScore.getScore() > 0)
             {
-                if (mage != null && mage.getDebugLevel() > 3)
+                if (mage != null && mage.getDebugLevel() > 5)
                 {
                     mage.sendDebugMessage(ChatColor.DARK_GREEN + "Target " + ChatColor.GREEN + entity.getType() + ChatColor.DARK_GREEN + ": " + ChatColor.YELLOW + newScore.getScore());
                 }
