@@ -5801,6 +5801,7 @@ missile:
              lengthGrow: 0.1
              radiusGrow: 0.003
              updateLocations: false
+             updateDirections: false
         tick:
         - particle: redstone
           location: target
@@ -5812,6 +5813,7 @@ missile:
            color2: FF8800
            firework: burst
     parameters:
+        allow_max_range: true
         velocity: 200
         range: 24
         hitbox: true
@@ -5820,7 +5822,7 @@ missile:
         entity_damage: 4
         target_breakables: 1
         cooldown: 1000
-        reorient: true
+        reorient: false
     costs:
         mana: 15
 

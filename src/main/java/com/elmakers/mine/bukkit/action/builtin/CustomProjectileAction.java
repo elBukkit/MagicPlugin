@@ -8,9 +8,10 @@ import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.api.spell.TargetType;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
-import com.elmakers.mine.bukkit.utility.BoundingBox;
-import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
+import com.elmakers.mine.bukkit.utility.Target;
+import com.elmakers.mine.bukkit.utility.Targeting;
 import de.slikey.effectlib.util.DynamicLocation;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
@@ -18,14 +19,14 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.util.Vector;
 
-import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.List;
 
 public class CustomProjectileAction extends CompoundAction
 {
+    private Targeting targeting;
+
     private int interval;
     private int lifetime;
     private int range;
@@ -34,8 +35,6 @@ public class CustomProjectileAction extends CompoundAction
     private String projectileEffectKey;
     private String hitEffectKey;
     private String tickEffectKey;
-    private boolean targetEntities;
-    private double radius;
     private double gravity;
     private double drag;
     private double tickSize;
@@ -46,6 +45,7 @@ public class CustomProjectileAction extends CompoundAction
     private int targetSelfTimeout;
 
     private double distanceTravelled;
+    private double effectDistanceTravelled;
     private boolean hasTickEffects;
     private long lastUpdate;
     private long nextUpdate;
@@ -56,31 +56,23 @@ public class CustomProjectileAction extends CompoundAction
     private DynamicLocation effectLocation = null;
     private Collection<EffectPlay> activeProjectileEffects;
 
-    private class CandidateEntity {
-        public final Entity entity;
-        public final BoundingBox bounds;
-
-        public CandidateEntity(Entity entity) {
-            this.entity = entity;
-            this.bounds = CompatibilityUtils.getHitbox(entity);
-            if (radius > 0) {
-                this.bounds.expand(radius);
-            }
-        }
+    @Override
+    public void initialize(Spell spell, ConfigurationSection baseParameters) {
+        super.initialize(spell, baseParameters);
+        targeting = new Targeting();
     }
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters) {
         super.prepare(context, parameters);
-        interval = parameters.getInt("interval", 1);
+        targeting.processParameters(parameters);
+        interval = parameters.getInt("interval", 30);
         lifetime = parameters.getInt("lifetime", 5000);
-        speed = parameters.getDouble("speed", 0.1);
         startDistance = parameters.getInt("start", 0);
         range = parameters.getInt("range", 0);
         projectileEffectKey = parameters.getString("projectile_effects", "projectile");
         hitEffectKey = parameters.getString("hit_effects", "hit");
         tickEffectKey = parameters.getString("tick_effects", "tick");
-        radius = parameters.getDouble("hitbox_size", 0) / 2;
         gravity = parameters.getDouble("gravity", 0);
         drag = parameters.getDouble("drag", 0);
         tickSize = parameters.getDouble("tick_size", 0.5);
@@ -91,13 +83,16 @@ public class CustomProjectileAction extends CompoundAction
         trackEntity = parameters.getBoolean("track_target", false);
         targetSelfTimeout = parameters.getInt("target_self_timeout", 0);
 
-        if (parameters.contains("velocity")) {
-            speed = parameters.getDouble("velocity") / 20;
-        }
+        range *= context.getMage().getRangeMultiplier();
 
-        TargetType targetType = context.getTargetType();
-        targetEntities = (targetType == TargetType.NONE || targetType.targetsEntities());
-        targetEntities = parameters.getBoolean("target_entities", targetEntities);
+        speed = parameters.getDouble("speed", 0.1);
+        speed = parameters.getDouble("velocity", speed * 20);
+
+        // Some parameter tweaks to make sure things are sane
+        TargetType targetType = targeting.getTargetType();
+        if (targetType == TargetType.NONE) {
+            targeting.setTargetType(TargetType.OTHER);
+        }
     }
 
     @Override
@@ -107,7 +102,7 @@ public class CustomProjectileAction extends CompoundAction
         long now = System.currentTimeMillis();
         nextUpdate = 0;
         distanceTravelled = 0;
-        lastUpdate = now;
+        lastUpdate = 0;
         deadline =  now + lifetime;
         targetSelfDeadline = targetSelfTimeout > 0 ? now + targetSelfTimeout : 0;
         hit = false;
@@ -196,15 +191,16 @@ public class CustomProjectileAction extends CompoundAction
             }
         }
 
-        // Advance position, checking for collisions
-        long delta = now - lastUpdate;
+        // Advance position
+        // We default to 50 ms travel time (one tick) for the first iteration.
+        long delta = lastUpdate > 0 ? now - lastUpdate : 50;
         lastUpdate = now;
 
         // Apply gravity and drag
         if (trackEntity)
         {
             Entity targetEntity = context.getTargetEntity();
-            if (targetEntity != null && targetEntity.isValid())
+            if (targetEntity != null && targetEntity.isValid() && context.canTarget(targetEntity))
             {
                 Location targetLocation = targetEntity instanceof LivingEntity ?
                         ((LivingEntity)targetEntity).getEyeLocation() : targetEntity.getLocation();
@@ -221,101 +217,86 @@ public class CustomProjectileAction extends CompoundAction
                 velocity.setY(velocity.getY() - gravity * delta / 50).normalize();
             }
             if (drag > 0) {
-                double size = velocity.length();
-                size = size - drag * delta / 50;
-                if (size <= 0) {
+                speed -= drag * delta / 50;
+                if (speed <= 0) {
                     return hit();
                 }
-                velocity.normalize().multiply(size);
             }
         }
 
-        // Compute incremental speed movement
-        double remainingDistance = speed * delta / 50;
-        List<CandidateEntity> candidates = null;
-        if (targetEntities) {
-            Entity sourceEntity = context.getEntity();
-            candidates = new ArrayList<CandidateEntity>();
-            double expand = Math.max(radius, 0);
-            double boundSize = Math.ceil(remainingDistance) + expand + 2;
-            List<Entity> nearbyEntities = CompatibilityUtils.getNearbyEntities(projectileLocation, boundSize, boundSize, boundSize);
-            for (Entity entity : nearbyEntities)
-            {
-                if ((context.getTargetsCaster() || entity != sourceEntity) && context.canTarget(entity))
-                {
-                    candidates.add(new CandidateEntity(entity));
-                }
-            }
+        projectileLocation.setDirection(velocity);
+        targeting.start(projectileLocation);
 
-            if (candidates.isEmpty())
-            {
-                candidates = null;
-            }
+        // Advance targeting to find Entity or Block
+        double distance = Math.min(speed * delta / 1000, range - distanceTravelled);
+        context.addWork((int)Math.ceil(distance));
+        Target target = targeting.target(context, distance);
+        Location targetLocation;
+        Targeting.TargetingResult targetingResult = targeting.getResult();
+        if (targetingResult == Targeting.TargetingResult.MISS) {
+
+            actionContext.setTargetLocation(target.getLocation());
+            actionContext.playEffects("blockmiss");
+
+            targetLocation = projectileLocation.clone().add(velocity.clone().multiply(distance));
+            context.getMage().sendDebugMessage(ChatColor.DARK_BLUE + "Projectile miss: " + now + " " + ChatColor.DARK_PURPLE
+                    + " at " + targetLocation.getBlock().getType() + " : " + targetLocation.toVector() + " from range of " + distance + " over time " + delta, 7);
+        } else {
+            actionContext.playEffects("prehit");
+            targetLocation = target.getLocation();
+            context.getMage().sendDebugMessage(ChatColor.BLUE + "Projectile hit: " + now  + " " + ChatColor.LIGHT_PURPLE + targetingResult.name().toLowerCase()
+                    + " at " + targetLocation.getBlock().getType() + " from " + projectileLocation.getBlock() + " to " +
+                    targetLocation.toVector() + " from range of " + distance + " over time " + delta, 4);
+            distance = targetLocation.distance(projectileLocation);
+        }
+        distanceTravelled += distance;
+        effectDistanceTravelled += distance;
+
+        // Max Height check
+        int y = targetLocation.getBlockY();
+        boolean maxHeight = y >= targetLocation.getWorld().getMaxHeight();
+        boolean minHeight = y <= 0;
+
+        if (maxHeight) {
+            targetLocation.setY(targetLocation.getWorld().getMaxHeight());
+        } else if (minHeight) {
+            targetLocation.setY(0);
         }
 
-        // Put a sane limit on the number of iterations here
-        for (int i = 0; i < 256; i++) {
-            // Play tick FX
-            if (hasTickEffects) {
+        if (hasTickEffects && effectDistanceTravelled > tickSize) {
+            // Sane limit here
+            Vector speedVector = velocity.clone().multiply(tickSize);
+            for (int i = 0; i < 256; i++) {
                 actionContext.setTargetLocation(projectileLocation);
                 actionContext.playEffects(tickEffectKey);
-            }
 
-            // Check for entity collisions first
-            Vector targetVector = projectileLocation.toVector();
-            if (candidates != null) {
-                for (CandidateEntity candidate : candidates) {
-                    if (candidate.bounds.contains(targetVector)) {
-                        actionContext.setTargetEntity(candidate.entity);
-                        return hit();
-                    }
-                }
-            }
+                projectileLocation.add(speedVector);
 
-            int y = projectileLocation.getBlockY();
-            if (y >= projectileLocation.getWorld().getMaxHeight() || y <= 0) {
-                return hit();
+                effectDistanceTravelled -= tickSize;
+                if (effectDistanceTravelled < tickSize) break;
             }
-            Block block = projectileLocation.getBlock();
-            if (!block.getChunk().isLoaded()) {
-                return hit();
-            }
-            if (!context.isTransparent(block.getType())) {
-                return hit();
-            }
+        }
 
-            double partialDistance = Math.min(tickSize, remainingDistance);
-            Vector speedVector = velocity.clone().multiply(partialDistance);
-            remainingDistance -= tickSize;
-            Vector newLocation = projectileLocation.toVector().add(speedVector);
+        actionContext.setTargetLocation(targetLocation);
+        actionContext.setTargetEntity(target.getEntity());
 
-            // Skip over same blocks, we increment by 0.5 (by default) to try and catch diagonals
-            if (newLocation.getBlockX() == projectileLocation.getBlockX()
-                    && newLocation.getBlockY() == projectileLocation.getBlockY()
-                    && newLocation.getBlockZ() == projectileLocation.getBlockZ()) {
-                newLocation = newLocation.add(speedVector);
-                projectileLocation.setX(newLocation.getX());
-                projectileLocation.setY(newLocation.getY());
-                projectileLocation.setZ(newLocation.getZ());
+        actionContext.playEffects("fulltick");
 
-                if (hasTickEffects && remainingDistance > 0) {
-                    actionContext.setTargetLocation(projectileLocation);
-                    actionContext.playEffects(tickEffectKey);
-                }
-                remainingDistance -= tickSize;
-                distanceTravelled += partialDistance;
-            } else {
-                projectileLocation.setX(newLocation.getX());
-                projectileLocation.setY(newLocation.getY());
-                projectileLocation.setZ(newLocation.getZ());
-            }
+        if (maxHeight || minHeight) {
+            return hit();
+        }
 
-            distanceTravelled += partialDistance;
-            if (range > 0 && distanceTravelled >= range) {
-                return hit();
-            }
+        if (targetingResult != Targeting.TargetingResult.MISS) {
+            return hit();
+        }
 
-            if (remainingDistance <= 0) break;
+        if (distanceTravelled >= range) {
+            return hit();
+        }
+
+        Block block = targetLocation.getBlock();
+        if (!block.getChunk().isLoaded()) {
+            return hit();
         }
 
 		return SpellResult.PENDING;

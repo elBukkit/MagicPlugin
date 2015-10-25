@@ -1,5 +1,9 @@
 # TODO
 
+ - Test projectile targeting, not always hitting the correct face.
+ - Copy brush is busted?
+ 
+
  - Spell lore should reflect reduced cooldowns
  - Goggles deactivate on death (maybe only in Azkaban?)
  - Can we save 1 slot in wand inv?
