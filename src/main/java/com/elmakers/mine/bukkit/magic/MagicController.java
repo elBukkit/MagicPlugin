@@ -990,11 +990,10 @@ public class MagicController implements MageController {
                 if (apiMage instanceof com.elmakers.mine.bukkit.magic.Mage) {
                     com.elmakers.mine.bukkit.magic.Mage mage = ((com.elmakers.mine.bukkit.magic.Mage) apiMage);
                     int workPerformed = mage.processPendingBatches(workPerMage);
-                    if (workPerformed == 0) {
+                    if (workPerformed < workPerMage) {
                         pendingScratchpad.remove(apiMage);
-                    } else {
-                        remainingWork -= workPerformed;
                     }
+                    remainingWork -= workPerformed;
                 }
             }
             pendingScratchpad.removeAll(pendingConstructionRemoval);

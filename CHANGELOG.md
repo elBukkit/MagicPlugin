@@ -7,6 +7,7 @@
    - Curse
  - Add new Homing Missile spell
  - Allow @p and @t as simple CommandAction parameters (same as @pn and @tn)
+ - Fixed some performance and timing issues with the scheduler
  
 ## 5.2.2
 
