@@ -601,10 +601,9 @@ public class CompatibilityUtils extends NMSUtils {
 
     public static Vector getNormal(Block block, Location intersection)
     {
-        Vector direction = intersection.toVector().subtract(block.getLocation().toVector());
-        double x = direction.getX();
-        double y = direction.getY();
-        double z = direction.getZ();
+        double x = intersection.getX() - (block.getX() + 0.5);
+        double y = intersection.getY() - (block.getY() + 0.5);
+        double z = intersection.getZ() - (block.getZ() + 0.5);
         double ax = Math.abs(x);
         double ay = Math.abs(y);
         double az = Math.abs(z);
