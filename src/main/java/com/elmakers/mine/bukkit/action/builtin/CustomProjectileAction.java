@@ -45,6 +45,7 @@ public class CustomProjectileAction extends CompoundAction
     private int targetSelfTimeout;
     private boolean breaksBlocks;
     private double targetBreakables;
+    private int targetBreakableSize;
 
     private double distanceTravelled;
     private double effectDistanceTravelled;
@@ -88,6 +89,7 @@ public class CustomProjectileAction extends CompoundAction
         targetSelfTimeout = parameters.getInt("target_self_timeout", 0);
         breaksBlocks = parameters.getBoolean("break_blocks", true);
         targetBreakables = parameters.getDouble("target_breakables", 1);
+        targetBreakableSize = parameters.getInt("breakable_size", 1);
 
         range *= context.getMage().getRangeMultiplier();
 
@@ -322,9 +324,7 @@ public class CustomProjectileAction extends CompoundAction
 
     protected SpellResult hitBlock(Block block) {
         if (targetBreakables > 0 && breaksBlocks && actionContext.isBreakable(block)) {
-
-            targetBreakables -= targeting.breakBlock(actionContext, block, targetBreakables);
-
+            targetBreakables -= targeting.breakBlock(actionContext, block, Math.min(targetBreakableSize, targetBreakables));
             if (targetBreakables > 0) {
                 return SpellResult.PENDING;
             }
