@@ -5,6 +5,18 @@
  - Converted spells to projectiles: 
    - Magic Missile
    - Curse
+   - Silence
+   - Torture
+   - Kill
+   - Boom
+   - Frost
+   - Disarm
+   - Fire
+   - Bubble
+   - Blob
+   - Disintegrate
+   - Blind
+   - Petrify
  - Added Homing Missile spell
  - Added Sticky Bomb spell
  - Added Whip spell

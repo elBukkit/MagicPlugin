@@ -96,7 +96,7 @@ public class CustomProjectileAction extends CompoundAction
 
         range *= context.getMage().getRangeMultiplier();
 
-        speed = parameters.getDouble("speed", 0.1);
+        speed = parameters.getDouble("speed", 1);
         speed = parameters.getDouble("velocity", speed * 20);
 
         // Some parameter tweaks to make sure things are sane

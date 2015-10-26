@@ -174,8 +174,10 @@ silence:
     worth: 800
     actions:
         cast:
-        -  class: ApplyCooldown
-        -  class: Deactivate
+        - class: CustomProjectile
+          actions:
+          - class: ApplyCooldown
+          - class: Deactivate
     effects:
         cast:
         -  class: EffectSingle
@@ -185,7 +187,11 @@ silence:
              iterations: 15
              particle: redstone
              color: 210B61
-             lengthGrow: 0.3
+             lengthGrow: 0.01
+        tick:
+        - location: target
+          particle: villager_angry
+        hit:
         -  class: EffectSingle
            location: target
            color: 380B61
@@ -207,24 +213,6 @@ silence:
              color: 210B61
              radius: 1
              particles: 20
-        no_target:
-        -  class: EffectSingle
-           sound: irongolem_death
-           effectlib:
-             class: ConeEffect
-             iterations: 15
-             particle: spell_mob
-             color: 210B61
-             lengthGrow: 0.3
-        -  class: EffectSingle
-           location: target
-           color: 210B61
-           firework: burst
-        -  class: EffectSingle
-           location: target
-           effectlib:
-             class: SmokeEffect
-             iterations: 10
     costs:
         mana: 80
     parameters:
@@ -1346,12 +1334,22 @@ boom:
     upgrade_required_casts: 50
     actions:
         cast:
-        - class: Explosion
+        - class: CustomProjectile
+          actions:
+          - class: Explosion
     effects:
         cast:
         -  class: EffectSingle
            sound: enderdragon_hit
            location: target
+        tick:
+        - location: target
+          particle: fireworks_spark
+          particle_count: 6
+          particle_offset_x: 0.5
+          particle_offset_y: 0.5
+          particle_offset_z: 0.5
+        hit:
         -  class: EffectSingle
            location: target
            firework: burst
@@ -1365,6 +1363,7 @@ boom:
            particle: explosion_large
     parameters:
         target: block
+        velocity: 150
         allow_max_range: false
         range: 32
         break_blocks: false
@@ -1518,26 +1517,30 @@ frost:
     upgrade_required_casts: 50
     actions:
         cast:
-        - class: AreaOfEffect
+        - class: CustomProjectile
           actions:
-          - class: PotionEffect
-          - class: Damage
-          - class: Ignite
-            duration: 0
-        - class: Sphere
-          actions:
-          - class: Freeze
-          - class: ModifyBreakable
+          - class: AreaOfEffect
+            actions:
+            - class: PotionEffect
+            - class: Damage
+            - class: Ignite
+              duration: 0
+          - class: Sphere
+            actions:
+            - class: Freeze
+            - class: ModifyBreakable
     effects:
         cast:
         -  class: EffectSingle
            sound: magic.zap
-           effectlib:
-             class: ConeEffect
-             iterations: 15
-             particle: snowball
-             particles: 5
-             lengthGrow: 0.4
+        tick:
+        - location: target
+          particle: snowball
+          particle_count: 4
+          particle_offset_x: 0.01
+          particle_offset_y: 0.01
+          particle_offset_z: 0.01
+        hit:
         -  class: EffectSingle
            location: target
            color: F5EFFB
@@ -1552,6 +1555,7 @@ frost:
              particle: snowball
              radius: $radius
     parameters:
+        velocity: 175
         target: block
         allow_max_range: false
         range: 48
@@ -1810,42 +1814,30 @@ disarm:
     upgrade_required_casts: 50
     actions:
         cast:
-        - class: Disarm
+        - class: CustomProjectile
+          actions:
+          - class: Disarm
     effects:
         cast:
         -  class: EffectSingle
            sound: enderman_teleport
+           sound: magic.crack
            sound_pitch: 0.3
            sound_volume: 0.5
+        tick:
         -  class: EffectSingle
-           sound: magic.crack
+           location: target
            effectlib:
              class: ConeEffect
-             iterations: 16
+             iterations: 10
              particle: redstone
              color: FF0000
-             lengthGrow: 0.4
+             lengthGrow: 0.05
+        hit:
         -  class: EffectSingle
            location: target
            color: DF0101
            firework: star
-        no_target:
-        -  class: EffectSingle
-           sound: enderman_teleport
-           sound_pitch: 0.3
-           sound_volume: 0.5
-        -  class: EffectSingle
-           sound: magic.crack
-           effectlib:
-             class: ConeEffect
-             iterations: 16
-             particle: redstone
-             color: FF0000
-             lengthGrow: 0.4
-        -  class: EffectSingle
-           location: target
-           color: DF0101
-           firework: burst
         backfire:
         -  class: EffectSingle
            sound: hurt_flesh
@@ -1861,6 +1853,9 @@ disarm:
            color: FF0000
            location: self
     parameters:
+        target: other
+        velocity: 50
+        tick_size: 2
         min_slot: 0
         max_slot: 8
         target_type: LivingEntity
@@ -2960,28 +2955,34 @@ fire:
     upgrade_required_casts: 50
     actions:
         cast:
-        - class: Disc
+        - class: CustomProjectile
           actions:
-          - class: Cover
+          - class: Disc
             actions:
-            - class: Burn
+            - class: Cover
+              actions:
+              - class: Burn
     effects:
         cast:
         -  class: EffectSingle
            sound: magic.burn
            sound_volume: 1
            location: both
+        tick:
         -  class: EffectSingle
-           effectlib:
-             class: ConeEffect
-             iterations: 15
-             particle: lava
-             lengthGrow: 0.4
+           location: target
+           particle: lava
+           particle_count: 2
+           particle_offset_x: 0.1
+           particle_offset_y: 0.1
+           particle_offset_z: 0.1
+        hit:
         -  class: EffectSingle
            location: target
            color: FE642E
            firework: ball
     parameters:
+        velocity: 80
         target_type: LivingEntity
         allow_max_range: true
         range: 48
@@ -3025,18 +3026,25 @@ bubble:
     upgrade_required_casts: 50
     actions:
         cast:
-        - class: DisablePhysics
-        - class: Volume
+        - class: CustomProjectile
           actions:
-          - class: ModifyBlock
+          - class: DisablePhysics
+          - class: Volume
+            actions:
+            - class: ModifyBlock
     effects:
         cast:
         -  class: EffectSingle
            sound: splash
            location: both
-        -  class: EffectTrail
+        tick:
+        -  location: target
            particle: drip_water
-           particle_count: 8
+           particle_count: 4
+           particle_offset_x: 0.5
+           particle_offset_y: 0.5
+           particle_offset_z: 0.5
+        hit:
         -  class: EffectSingle
            location: target
            effectlib:
@@ -3047,8 +3055,9 @@ bubble:
              radius: 1.8
              particles: 20
     parameters:
+        velocity: 250
         target_type: LivingEntity
-        allow_max_range: false
+        allow_max_range: true
         radius: 1
         range: 25
         cooldown: 2000
@@ -3056,6 +3065,7 @@ bubble:
         duration: 3000
         destructible: fire,air
         brush: stationary_water
+        hitbox: true
     costs:
         mana: 10
 
@@ -4509,19 +4519,24 @@ blob:
     upgrade_required_casts: 50
     actions:
         cast:
-        -  class: Sphere
-           actions:
-           -  class: ModifyBlock
+        - class: CustomProjectile
+          actions:
+          -  class: Sphere
+             actions:
+             -  class: ModifyBlock
     effects:
         cast:
         -  class: EffectSingle
            sound: magic.shield
-        -  class: EffectTrail
+        tick:
+        -  location: target
            effect: step_sound
     parameters:
+        velocity: 50
         target_type: LivingEntity
         allow_max_range: true
         range: 32
+        tick_size: 2
         radius: 2
         transparent: transparent_to_construction
         undo: 2000
@@ -4700,20 +4715,34 @@ disintegrate:
     worth: 2500
     actions:
         cast:
-        - class: Damage
-        - class: ModifyBlock
+        - class: CustomProjectile
+          actions:
+          - class: Damage
+          - class: ModifyBlock
     effects:
         cast:
         -  class: EffectSingle
            sound: magmacube_jump
-        -  class: EffectTrail
+        tick:
+        -  location: target
            particle: drip_lava
            particle_data: 1
+        hit:
+        -  location: target
+           effectlib:
+            class: AtomEffect
+            particleNucleus: smoke_large
+            iterations: 20
+            particlesNucleus: 5
+            particlesOrbital: 5
+            orbitals: 2
+            radius: 0.9
     parameters:
+        velocity: 30
+        range: 5
         conditional: fail
         target_type: LivingEntity
-        allow_max_range: false
-        range: 4
+        allow_max_range: true
         target: other
         brush: erase
         player_damage: 6
@@ -6028,7 +6057,9 @@ blind:
     worth: 700
     actions:
         cast:
-        -  class: PotionEffect
+        - class: CustomProjectile
+          actions:
+          - class: PotionEffect
     effects:
         cast:
         -  class: EffectSingle
@@ -6037,7 +6068,11 @@ blind:
              class: ConeEffect
              iterations: 15
              particle: smoke_normal
-             lengthGrow: 0.3
+             lengthGrow: 0.01
+        tick:
+        - location: target
+          particle: smoke_normal
+        hit:
         -  class: EffectSingle
            location: target
            color: 2E2E2E
@@ -6045,6 +6080,7 @@ blind:
         -  class: EffectSingle
            location: target
            use_hit_location: false
+           requires_entity_target: true
            effectlib:
              class: SphereEffect
              iterations: 17
@@ -6052,21 +6088,10 @@ blind:
              particle: smoke_normal
              radius: 0.5
              particles: 20
-        no_target:
-        -  class: EffectSingle
-           sound: magic.zap
-           effectlib:
-             class: ConeEffect
-             iterations: 15
-             particle: smoke_normal
-             lengthGrow: 0.3
-        -  class: EffectSingle
-           location: target
-           color: 2E2E2E
-           firework: ball
     costs:
         mana: 45
     parameters:
+        velocity: 120
         range: 32
         target_type: LivingEntity
         target_breakables: 0
@@ -6316,6 +6341,13 @@ kill:
              colorOrbital: "00FF00"
              iterations: 16
              radius: 5
+        tick:
+        - location: target
+          particle: smoke_large
+          particle_count: 4
+          particle_offset_x: 0.2
+          particle_offset_y: 0.2
+          particle_offset_z: 0.2
         projectile:
         - class: EffectSingle
           effectlib:
@@ -6323,7 +6355,7 @@ kill:
              particle: redstone
              color: "00FF00"
              iterations: 100
-             radius: $size
+             radius: 0.3
         hit:
         - class: EffectSingle
           location: target
@@ -6416,50 +6448,50 @@ torture:
     worth: 4000
     actions:
         cast:
-        -  class: PotionEffect
-        -  class: Damage
+        - class: CustomProjectile
+          actions:
+          - class: PotionEffect
+          - class: Damage
     effects:
         cast:
         -  class: EffectSingle
            sound: magic.electrify
            sound_volume: .5
         -  class: EffectSingle
-           sound: irongolem_death
-           sound_volume: 1
            effectlib:
              class: ConeEffect
              iterations: 15
              particle: spell_mob
-             lengthGrow: 0.3
+             lengthGrow: 0.001
+             radiusGrow: 0.001
+        projectile:
+        - location: origin
+          effectlib:
+            class: SphereEffect
+            iterations: 15
+            particle: drip_lava
+            radius: 0.3
+        tick:
+        -  location: target
+           particle: spell_mob
+        hit:
         -  class: EffectSingle
+           sound: irongolem_death
+           sound_volume: 1
            location: target
            color: 19070B
            firework: ball
         -  class: EffectSingle
+           requires_entity_target: true
            particle: town_aura
            location: target
            effectlib:
              class: BleedEffect
              duration: 500
-        no_target:
-        -  class: EffectSingle
-           sound: magic.electrify
-           sound_volume: .5
-        -  class: EffectSingle
-           sound: irongolem_death
-           sound_volume: 1
-           effectlib:
-             class: ConeEffect
-             iterations: 15
-             particle: spell_mob
-             lengthGrow: 0.3
-        -  class: EffectSingle
-           location: target
-           color: 19070B
-           firework: ball
     costs:
         mana: 100
     parameters:
+        velocity: 30
         range: 32
         target_type: LivingEntity
         target_breakables: 3
@@ -6614,50 +6646,43 @@ petrify:
     cast_on_no_target: true
     worth: 2000
     actions:
-        cast:
-        -  class: PotionEffect
-        -  class: FallProtection
+      cast:
+      - class: CustomProjectile
+        actions:
+        - class: PotionEffect
+        - class: FallProtection
     effects:
         cast:
         -  class: EffectSingle
            sound: magic.zap_big
         -  class: EffectSingle
            sound: magic.zap
-           effectlib:
-             class: ConeEffect
-             iterations: 5
-             particle: fireworks_spark
-             lengthGrow: 0.32
-        -  class: EffectSingle
-           location: target
-           color: F5EFFB
-           firework: ball
+        tick:
+        - location: target
+          particle: fireworks_spark
+          particle_count: 3
+          particle_offset_x: 0.01
+          particle_offset_y: 0.01
+          particle_offset_z: 0.01
+        hit:
+        - class: EffectSingle
+          location: target
+          color: F5EFFB
+          firework: ball
         - class: EffectSingle
           sound: orb_pickup
           location: target
+          requires_entity_target: true
           particle_override: particleOrbital
           effectlib:
              class: AtomEffect
              particleNucleus: fireworks_spark
              particleOrbital: fireworks_spark
              iterations: 40
-        no_target:
-        -  class: EffectSingle
-           sound: magic.zap_big
-        -  class: EffectSingle
-           sound: magic.zap
-           effectlib:
-             class: ConeEffect
-             iterations: 15
-             particle: fireworks_spark
-             lengthGrow: 0.4
-        -  class: EffectSingle
-           location: target
-           color: F5EFFB
-           firework: burst
     costs:
         mana: 100
     parameters:
+        velocity: 150
         range: 48
         target_type: LivingEntity
         target_breakables: 1
