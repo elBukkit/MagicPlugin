@@ -235,6 +235,7 @@ student:
       rocket: 0,10,20
       shrink: 5,20,30
       wave: 5,20,30
+      whip: 1,10,20
 
 apprentice:
     upgrade: master

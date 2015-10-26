@@ -6015,7 +6015,6 @@ sticky:
         direction: 0,0.5,0
         brush: air
         undo: 15000
-        cooldown: 500
         destructible: destructible
         physics_blocks: true
     costs:
@@ -8086,3 +8085,48 @@ projectile:
         reflective: iron_block
     costs:
         mana: 15
+
+whip:
+    icon: ink_sack:1
+    icon_url: http://textures.minecraft.net/texture/2e67b7afcdb3bfe70cb33d1e384f11f8dc81f3dc9677cc64cb51ba0eb8f3f
+    category: combat
+    worth: 1000
+    actions:
+        cast:
+        - class: CustomProjectile
+          actions:
+          - class: Damage
+          - class: Velocity
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: magic.zap
+           location: origin
+        tick:
+        - location: target
+          particle: cloud
+          particle_count: 4
+          particle_offset_x: 0.05
+          particle_offset_y: 0.05
+          particle_offset_z: 0.05
+        hit:
+        -  class: EffectSingle
+           sound: magic.zap_crack
+           sound_volume: .3
+           location: target
+           particle: explosion_large
+    parameters:
+        target: other
+        hitbox: true
+        allow_max_range: true
+        velocity: 8
+        reorient: true
+        range: 48
+        target_type: LivingEntity
+        player_damage: 3
+        entity_damage: 6
+        target_breakables: 2
+        cooldown: 5000
+        target_self_timeout: 2000
+    costs:
+        mana: 25

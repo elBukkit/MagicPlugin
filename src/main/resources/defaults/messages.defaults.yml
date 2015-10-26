@@ -1266,6 +1266,10 @@ spells:
         cast: Launching projectile
         cast_finish: Projectile hit
         no_target_finish: Projectile miss
+    whip:
+        name: Whip
+        description: A magical whip of pure energy
+        cast: Crack!
     sticky:
         name: Sticky Bomb
         description: Toss a sticky bomb that explodes after 5 seconds

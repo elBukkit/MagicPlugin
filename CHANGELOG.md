@@ -7,6 +7,7 @@
    - Curse
  - Added Homing Missile spell
  - Added Sticky Bomb spell
+ - Added Whip spell
  - Add hidden "Projectile" spell for testing CustomProjectile actions
  - Implemented break mechanics for projectiles (Reflect, Shell, Blob, etc)
  - Spells and projectile now hit at the actual block intersection location
