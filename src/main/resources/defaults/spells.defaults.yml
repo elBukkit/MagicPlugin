@@ -7886,3 +7886,94 @@ boomstown:
        duration: 20000
    costs:
        mana: 100
+
+projectile:
+    icon: ink_sack:1
+    icon_url: http://textures.minecraft.net/texture/2ba95570c7b712713632d4c0d2fc66906613d3850a596a0267c6d763fe741ac
+    upgrade_required_path: beginner
+    upgrade_required_casts: 15
+    category: staff
+    worth: 1500
+    hidden: true
+    actions:
+        cast:
+        - class: CustomProjectile
+          actions:
+          - class: Damage
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: magic.zap_crack
+           location: origin
+        -  class: EffectSingle
+           location: target
+           effectlib:
+             class: SphereEffect
+             iterations: 40
+             particle: spell
+             radius: 0.2
+             particles: 10
+             offset: 0,0,0
+        tick:
+        - particle: redstone
+          location: target
+        hit:
+        -  class: EffectSingle
+           sound: magic.zap
+           sound_volume: .3
+           location: target
+           color2: FF8800
+           firework: burst
+           effectlib:
+             class: SphereEffect
+             iterations: 100
+             particle: redstone
+             radius: 0.3
+             particles: 10
+             offset: 0,0,0
+             color: "FF0000"
+        prehit:
+        -  class: EffectSingle
+           location: target
+           effectlib:
+             class: SphereEffect
+             iterations: 100
+             particle: redstone
+             radius: 0.2
+             particles: 10
+             offset: 0,0,0
+             color: "FF00FF"
+        step:
+        -  class: EffectSingle
+           location: target
+           effectlib:
+             class: SphereEffect
+             iterations: 100
+             particle: redstone
+             radius: 0.1
+             particles: 2
+             offset: 0,0,0
+             color: "FFFF00"
+        blockmiss:
+        -  class: EffectSingle
+           location: target
+           effectlib:
+             class: SphereEffect
+             iterations: 100
+             particle: redstone
+             radius: 0.1
+             particles: 2
+             offset: 0,0,0
+             color: "010202"
+    parameters:
+        allow_max_range: true
+        velocity: 200
+        range: 24
+        hitbox: true
+        target_type: LivingEntity
+        damage: 0
+        target_breakables: 1
+        cooldown: 1000
+        reorient: false
+    costs:
+        mana: 15

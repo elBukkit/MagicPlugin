@@ -1260,6 +1260,12 @@ spells:
         description: Fire a bolt of pure magic
         cast: You fire a missile at $target
         upgrade_description: "&r&b&bull; &6Increased damage and range"
+    projectile:
+        name: PROJECT-I.L.E.
+        description: A spell for testing projectiles
+        cast: Launching projectile
+        cast_finish: Projectile hit
+        no_target_finish: Projectile miss
     homing:
         name: Homing Missile
         description: Shoot a bolt of energy that will track your target

@@ -47,6 +47,9 @@ public class CustomProjectileAction extends CompoundAction
     private double distanceTravelled;
     private double effectDistanceTravelled;
     private boolean hasTickEffects;
+    private boolean hasStepEffects;
+    private boolean hasBlockMissEffects;
+    private boolean hasPreHitEffects;
     private long lastUpdate;
     private long nextUpdate;
     private long deadline;
@@ -76,7 +79,6 @@ public class CustomProjectileAction extends CompoundAction
         gravity = parameters.getDouble("gravity", 0);
         drag = parameters.getDouble("drag", 0);
         tickSize = parameters.getDouble("tick_size", 0.5);
-        hasTickEffects = context.getEffects(tickEffectKey).size() > 0;
         reorient = parameters.getBoolean("reorient", false);
         useWandLocation = parameters.getBoolean("use_wand_location", true);
         useEyeLocation = parameters.getBoolean("use_eye_location", true);
@@ -93,12 +95,18 @@ public class CustomProjectileAction extends CompoundAction
         if (targetType == TargetType.NONE) {
             targeting.setTargetType(TargetType.OTHER);
         }
+
+        hasTickEffects = context.getEffects(tickEffectKey).size() > 0;
+        hasBlockMissEffects = context.getEffects("blockmiss").size() > 0;
+        hasStepEffects = context.getEffects("step").size() > 0;
+        hasPreHitEffects = context.getEffects("prehit").size() > 0;
     }
 
     @Override
     public void reset(CastContext context)
     {
         super.reset(context);
+        targeting.reset();
         long now = System.currentTimeMillis();
         nextUpdate = 0;
         distanceTravelled = 0;
@@ -234,15 +242,18 @@ public class CustomProjectileAction extends CompoundAction
         Location targetLocation;
         Targeting.TargetingResult targetingResult = targeting.getResult();
         if (targetingResult == Targeting.TargetingResult.MISS) {
-
-            actionContext.setTargetLocation(target.getLocation());
-            actionContext.playEffects("blockmiss");
+            if (hasBlockMissEffects) {
+                actionContext.setTargetLocation(target.getLocation());
+                actionContext.playEffects("blockmiss");
+            }
 
             targetLocation = projectileLocation.clone().add(velocity.clone().multiply(distance));
             context.getMage().sendDebugMessage(ChatColor.DARK_BLUE + "Projectile miss: " + now + " " + ChatColor.DARK_PURPLE
                     + " at " + targetLocation.getBlock().getType() + " : " + targetLocation.toVector() + " from range of " + distance + " over time " + delta, 7);
         } else {
-            actionContext.playEffects("prehit");
+            if (hasPreHitEffects) {
+                actionContext.playEffects("prehit");
+            }
             targetLocation = target.getLocation();
             context.getMage().sendDebugMessage(ChatColor.BLUE + "Projectile hit: " + now  + " " + ChatColor.LIGHT_PURPLE + targetingResult.name().toLowerCase()
                     + " at " + targetLocation.getBlock().getType() + " from " + projectileLocation.getBlock() + " to " +
@@ -280,7 +291,9 @@ public class CustomProjectileAction extends CompoundAction
         actionContext.setTargetLocation(targetLocation);
         actionContext.setTargetEntity(target.getEntity());
 
-        actionContext.playEffects("fulltick");
+        if (hasStepEffects) {
+            actionContext.playEffects("step");
+        }
 
         if (maxHeight || minHeight) {
             return hit();
