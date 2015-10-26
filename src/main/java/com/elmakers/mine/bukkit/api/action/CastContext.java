@@ -69,6 +69,7 @@ public interface CastContext {
     public void clearReflective(Block block);
     public void playEffects(String key);
     public void playEffects(String key, float scale);
+    public void playEffects(String effectName, float scale, Location source, Entity sourceEntity, Location target, Entity targetEntity);
     public void cancelEffects();
     public String getMessage(String key);
     public String getMessage(String key, String def);
