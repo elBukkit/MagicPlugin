@@ -5,8 +5,9 @@
  - Converted spells to projectiles: 
    - Magic Missile
    - Curse
- - Add new Homing Missile spell
- - Add hidden "projectile" spell for testing CustomProjectile actions
+ - Added Homing Missile spell
+ - Added Sticky Bomb spell
+ - Add hidden "Projectile" spell for testing CustomProjectile actions
  - Implemented break mechanics for projectiles (Reflect, Shell, Blob, etc)
  - Spells and projectile now hit at the actual block intersection location
  - Allow @p and @t as simple CommandAction parameters (same as @pn and @tn)

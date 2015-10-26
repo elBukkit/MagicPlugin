@@ -302,6 +302,7 @@ apprentice:
       walls: 5,30,50
       smite: 10,20,30
       shuriken: 0,0,5
+      sticky: 1,5,15
 
 master:
     required_spells:

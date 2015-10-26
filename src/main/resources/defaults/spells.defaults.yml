@@ -391,6 +391,7 @@ boon:
         effect_speed: 2
         effect_night_vision: 5
         bypass_friendly_fire: true
+        bypass_pvp: true
 
 boon|2:
     upgrade_required_path: apprentice
@@ -5921,7 +5922,7 @@ homing:
              particle: redstone
              color: "FFA500"
              iterations: 100
-             radius: $size
+             radius: 0.4
              particles: 10
         hit:
         -  class: EffectSingle
@@ -5946,6 +5947,79 @@ homing:
         target_self_timeout: 2000
     costs:
         mana: 40
+
+sticky:
+    icon: ink_sack:1
+    icon_url: http://textures.minecraft.net/texture/a5454f6488662cdb7d57d5fcaf3d9b061b57c109ba2aaa06c54707174d7a0c4
+    category: combat
+    worth: 1500
+    actions:
+        cast:
+        - class: CustomProjectile
+          actions:
+          - class: Delay
+          - class: AreaOfEffect
+            actions:
+            - class: Damage
+          - class: Sphere
+            actions:
+            - class: ModifyBlock
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: magic.zap_crack
+           location: origin
+        tick:
+        - particle: redstone
+          color: FF0000
+          location: target
+        projectile:
+        - class: EffectSingle
+          effectlib:
+             class: SphereEffect
+             particle: redstone
+             color: "FFA500"
+             iterations: 20
+             radius: 0.2
+             particles: 10
+        hit:
+        -  class: EffectSingle
+           sound: magic.zap
+           sound_volume: .3
+           location: target
+           effectlib:
+             class: SphereEffect
+             particle: redstone
+             color: "FFA500"
+             duration: $delay
+             radius: 0.3
+             particles: 10
+    parameters:
+        target: block
+        hitbox: true
+        allow_max_range: true
+        velocity: 20
+        gravity: 0.05
+        range: 48
+        target_type: LivingEntity
+        player_damage: 4
+        entity_damage: 8
+        target_breakables: 1
+        cooldown: 10000
+        target_self_timeout: 2000
+        delay: 5000
+        radius: 2
+        speed: 1.2
+        destructible: destructible
+        falling: true
+        direction: 0,0.5,0
+        brush: air
+        undo: 15000
+        cooldown: 500
+        destructible: destructible
+        physics_blocks: true
+    costs:
+        mana: 80
 
 blind:
     icon_url: http://textures.minecraft.net/texture/c7a8e7c9d3375135e39aa6d57b4e60539cf8f6efc5b58c83a13caf40561560

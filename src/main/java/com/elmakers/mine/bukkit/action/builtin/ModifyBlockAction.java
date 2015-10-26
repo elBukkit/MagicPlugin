@@ -51,10 +51,6 @@ public class ModifyBlockAction extends BaseSpellAction {
                 fallingBlockSpeed = 1;
             }
             fallingBlockDirection = ConfigurationUtils.getVector(parameters, "direction");
-            if (fallingBlockDirection != null)
-            {
-                fallingBlockDirection.normalize();
-            }
         }
 
         int damage = parameters.getInt("damage", 0);
@@ -119,13 +115,13 @@ public class ModifyBlockAction extends BaseSpellAction {
                 Location blockCenter = new Location(blockLocation.getWorld(), blockLocation.getX() + 0.5, blockLocation.getY() + 0.5, blockLocation.getZ() + 0.5);
                 Vector fallingBlockVelocity = null;
                 if (fallingBlockSpeed > 0) {
-                    fallingBlockVelocity = fallingBlockDirection;
-                    if (fallingBlockVelocity == null) {
-                        Location source = context.getBaseContext().getTargetLocation();
-                        fallingBlockVelocity = blockCenter.clone().subtract(source).toVector();
-                        fallingBlockVelocity.normalize();
-                    } else {
-                        fallingBlockVelocity = fallingBlockVelocity.clone();
+                    Location source = context.getBaseContext().getTargetLocation();
+                    fallingBlockVelocity = blockCenter.clone().subtract(source).toVector();
+                    fallingBlockVelocity.normalize();
+
+                    if (fallingBlockDirection != null)
+                    {
+                        fallingBlockVelocity.add(fallingBlockDirection).normalize();
                     }
                     fallingBlockVelocity.multiply(fallingBlockSpeed);
                 }

@@ -1254,18 +1254,22 @@ spells:
     blaster:
         name: Blaster
         description: Fire powerful bolts of energy
-        usage: Has more power the more energy it consumes
+        usage: Reflects off of iron blocks
     missile:
         name: Magic Missile
         description: Fire a bolt of pure magic
         cast: You fire a missile at $target
         upgrade_description: "&r&b&bull; &6Increased damage and range"
     projectile:
-        name: PROJECT-I.L.E.
+        name: Project I.L.E.
         description: A spell for testing projectiles
         cast: Launching projectile
         cast_finish: Projectile hit
         no_target_finish: Projectile miss
+    sticky:
+        name: Sticky Bomb
+        description: Toss a sticky bomb that explodes after 5 seconds
+        cast: You toss a sticky bomb
     homing:
         name: Homing Missile
         description: Shoot a bolt of energy that will track your target
