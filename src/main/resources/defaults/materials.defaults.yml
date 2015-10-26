@@ -76,13 +76,6 @@ transparent:
 
 transparent_to_construction:
 - air
-- long_grass
-- dead_bush
-- yellow_flower
-- red_rose
-- brown_mushroom
-- red_mushroom
-- double_plant
 
 # Which materials are inherently "destructible". This list includes anything is
 # can be naturally generated, except by structures (strongholds, villages, etc).
