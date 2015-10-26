@@ -8,6 +8,7 @@ import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.api.spell.TargetType;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
+import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.Target;
 import com.elmakers.mine.bukkit.utility.Targeting;
 import de.slikey.effectlib.util.DynamicLocation;
@@ -46,6 +47,7 @@ public class CustomProjectileAction extends CompoundAction
     private boolean breaksBlocks;
     private double targetBreakables;
     private int targetBreakableSize;
+    private boolean bypassBackfire;
 
     private double distanceTravelled;
     private double effectDistanceTravelled;
@@ -90,6 +92,7 @@ public class CustomProjectileAction extends CompoundAction
         breaksBlocks = parameters.getBoolean("break_blocks", true);
         targetBreakables = parameters.getDouble("target_breakables", 1);
         targetBreakableSize = parameters.getInt("breakable_size", 1);
+        bypassBackfire = parameters.getBoolean("bypass_backfire", false);
 
         range *= context.getMage().getRangeMultiplier();
 
@@ -245,7 +248,7 @@ public class CustomProjectileAction extends CompoundAction
         // Advance targeting to find Entity or Block
         double distance = Math.min(speed * delta / 1000, range - distanceTravelled);
         context.addWork((int)Math.ceil(distance));
-        Target target = targeting.target(context, distance);
+        Target target = targeting.target(actionContext, distance);
         Location targetLocation;
         Targeting.TargetingResult targetingResult = targeting.getResult();
         if (targetingResult == Targeting.TargetingResult.MISS) {
@@ -323,14 +326,33 @@ public class CustomProjectileAction extends CompoundAction
 	}
 
     protected SpellResult hitBlock(Block block) {
+        boolean continueProjectile = false;
+        if (!bypassBackfire && actionContext.isReflective(block)) {
+            double reflective = actionContext.getReflective(block);
+            if (actionContext.getRandom().nextDouble() < reflective) {
+                trackEntity = false;
+                reorient = false;
+                actionContext.setTargetsCaster(true);
+
+                // Calculate angle of reflection
+                Location targetLocation = actionContext.getTargetLocation();
+                Vector normal = CompatibilityUtils.getNormal(block, targetLocation);
+                velocity = velocity.subtract(normal.multiply(2 * velocity.dot(normal)));
+
+                // Offset position slightly to avoid hitting again
+                actionContext.setTargetLocation(targetLocation.add(velocity.clone().multiply(0.05)));
+
+                continueProjectile = true;
+            }
+        }
         if (targetBreakables > 0 && breaksBlocks && actionContext.isBreakable(block)) {
             targetBreakables -= targeting.breakBlock(actionContext, block, Math.min(targetBreakableSize, targetBreakables));
             if (targetBreakables > 0) {
-                return SpellResult.PENDING;
+                continueProjectile = true;
             }
         }
 
-        return hit();
+        return continueProjectile ? SpellResult.PENDING : hit();
     }
 
     protected SpellResult hit() {
