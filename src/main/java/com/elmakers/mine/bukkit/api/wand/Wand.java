@@ -112,4 +112,12 @@ public interface Wand extends CostReducer {
      *                 id and bound owner.
      */
     public void save(ConfigurationSection section, boolean filtered);
+
+    /**
+     * Save current Wand state to the ItemStack's NBT data immediately.
+     *
+     * Wands are saved periodically so this is generally not needed unless
+     * you need to force an update right away.
+     */
+    public void saveState();
 }
