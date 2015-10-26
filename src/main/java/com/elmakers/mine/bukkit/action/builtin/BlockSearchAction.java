@@ -34,13 +34,13 @@ public class BlockSearchAction extends CompoundAction
 		Block targetBlock = attachBlock.getRelative(direction);
 		int distance = 0;
 
-		while (context.isTargetable(targetBlock.getType()) && distance <= MAX_SEARCH_DISTANCE)
+		while (context.isTargetable(targetBlock) && distance <= MAX_SEARCH_DISTANCE)
 		{
 			distance++;
 			attachBlock = targetBlock;
 			targetBlock = attachBlock.getRelative(direction);
 		}
-		if (context.isTargetable(targetBlock.getType()))
+		if (context.isTargetable(targetBlock))
 		{
 			return SpellResult.NO_TARGET;
 		}

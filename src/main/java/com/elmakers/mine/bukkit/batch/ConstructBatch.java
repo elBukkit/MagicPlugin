@@ -61,7 +61,7 @@ public class ConstructBatch extends BrushBatch {
 	private Integer minOrientDimension = null;
 	private boolean power = false;
     private boolean commit = false;
-    private int breakable = 0;
+    private double breakable = 0;
     private double backfireChance = 0;
     private Vector bounds = null;
 	private boolean applyPhysics = false;
@@ -101,7 +101,7 @@ public class ConstructBatch extends BrushBatch {
         this.backfireChance = backfireChance;
     }
 
-    public void setBreakable(int breakable) {
+    public void setBreakable(double breakable) {
         this.breakable = breakable;
     }
 

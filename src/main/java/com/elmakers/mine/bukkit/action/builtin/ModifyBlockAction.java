@@ -27,7 +27,7 @@ public class ModifyBlockAction extends BaseSpellAction {
     private float fallingBlockFallDamage;
     private int fallingBlockMaxDamage;
     private double fallingProbability;
-    private int breakable = 0;
+    private double breakable = 0;
     private double backfireChance = 0;
     private boolean applyPhysics = false;
     private boolean commit = false;
@@ -40,7 +40,7 @@ public class ModifyBlockAction extends BaseSpellAction {
         applyPhysics = parameters.getBoolean("physics", false);
         commit = parameters.getBoolean("commit", false);
         usePhysicsBlocks = parameters.getBoolean("physics_blocks", false);
-        breakable = parameters.getInt("breakable", 0);
+        breakable = parameters.getDouble("breakable", 0);
         backfireChance = parameters.getDouble("reflect_chance", 0);
         fallingBlockSpeed = parameters.getDouble("speed", 0);
         fallingProbability = parameters.getDouble("falling_probability", 1);

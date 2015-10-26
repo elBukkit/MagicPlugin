@@ -66,7 +66,7 @@ public class ConstructSpell extends BrushSpell
 		boolean falling = parameters.getBoolean("falling", false);
 		boolean physics = parameters.getBoolean("physics", false);
         boolean commit = parameters.getBoolean("commit", false);
-        int breakable = parameters.getInt("breakable", 0);
+        double breakable = parameters.getDouble("breakable", 0);
         double backfireChance = parameters.getDouble("reflect_chance", 0);
 		Vector orientTo = null;
         Vector bounds = null;

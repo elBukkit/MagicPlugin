@@ -12,12 +12,12 @@ import java.util.Arrays;
 import java.util.Collection;
 
 public class ModifyBreakable extends BaseSpellAction {
-    private int breakable = 1;
+    private double breakable = 1;
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters) {
         super.prepare(context, parameters);
-        breakable = parameters.getInt("breakable", 1);
+        breakable = parameters.getDouble("breakable", 1);
     }
 
     @SuppressWarnings("deprecation")
