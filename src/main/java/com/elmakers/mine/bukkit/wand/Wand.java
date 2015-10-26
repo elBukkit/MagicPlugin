@@ -958,7 +958,8 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		return itemStack;
 	}
 
-	protected void saveState() {
+    @Override
+	public void saveState() {
 		if (suspendSave) return;
 
         // Make sure we're on the current item instance
