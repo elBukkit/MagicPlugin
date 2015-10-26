@@ -599,6 +599,24 @@ public class CompatibilityUtils extends NMSUtils {
         return new BoundingBox(blockX + 0.001, blockX + 0.999, blockY + 0.001, blockY + 0.999, blockZ + 0.001, blockZ + 0.999);
     }
 
+    public static Vector getNormal(Block block, Location intersection)
+    {
+        Vector direction = intersection.toVector().subtract(block.getLocation().toVector());
+        double x = direction.getX();
+        double y = direction.getY();
+        double z = direction.getZ();
+        double ax = Math.abs(x);
+        double ay = Math.abs(y);
+        double az = Math.abs(z);
+        if (ax > ay && ax > az) {
+            return new Vector(Math.signum(x), 0, 0);
+        } else if (ay > ax && ay > az) {
+            return new Vector(0, Math.signum(y), 0);
+        }
+
+        return new Vector(0, 0, Math.signum(z));
+    }
+
     public static BoundingBox getHitbox(Entity entity)
     {
         if (entity == null)
