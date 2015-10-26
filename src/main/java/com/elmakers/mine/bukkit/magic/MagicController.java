@@ -3234,7 +3234,13 @@ public class MagicController implements MageController {
 	public Collection<SpellTemplate> getSpellTemplates()
 	{
 		List<SpellTemplate> allSpells = new ArrayList<SpellTemplate>();
-		allSpells.addAll(spells.values());
+        for (SpellTemplate spell : spells.values())
+        {
+            if (!spell.isHidden())
+            {
+                allSpells.add(spell);
+            }
+        }
 		return allSpells;
 	}
 
