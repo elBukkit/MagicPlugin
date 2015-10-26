@@ -138,6 +138,19 @@ default:
          location: origin
          sound: level_up
          firework: ball_large
+       break:
+       - class: EffectSingle
+         location: target
+         effect: step_sound
+       reflect:
+       - class: EffectSingle
+         location: target
+         particle: fireworks_spark
+         particle_count: 3
+         particle_offset_x: 0.1
+         particle_offset_y: 0.1
+         particle_offset_z: 0.1
+         sound: magic.shimmer_quiet
        cast_self: cast
        no_target: cast
        no_action: cast
@@ -5773,6 +5786,7 @@ blaster:
         cooldown: 1000
         velocity: 30
         interval: 250
+        reflective: iron_block
     costs:
         mana: 15
 
@@ -6444,6 +6458,10 @@ debugger:
           - class: Debugger
           - level: 0
         cast:
+        - class: Debugger
+          level: 1
+          check: true
+        alternate_sneak:
         - class: Debugger
           level: 10
           check: true
@@ -7900,6 +7918,11 @@ projectile:
         - class: CustomProjectile
           actions:
           - class: Damage
+        alternate_sneak:
+        - class: CustomProjectile
+          velocity: 1
+          actions:
+          - class: Damage
     effects:
         cast:
         -  class: EffectSingle
@@ -7912,7 +7935,7 @@ projectile:
              iterations: 40
              particle: spell
              radius: 0.2
-             particles: 10
+             particles: 5
              offset: 0,0,0
         tick:
         - particle: redstone
@@ -7929,9 +7952,20 @@ projectile:
              iterations: 100
              particle: redstone
              radius: 0.3
-             particles: 10
+             particles: 5
              offset: 0,0,0
              color: "FF0000"
+        reflect:
+        -  class: EffectSingle
+           location: target
+           effectlib:
+             class: SphereEffect
+             iterations: 200
+             particle: redstone
+             radius: 0.2
+             particles: 10
+             offset: 0,0,0
+             color: "00FFFF"
         prehit:
         -  class: EffectSingle
            location: target
@@ -7940,7 +7974,7 @@ projectile:
              iterations: 100
              particle: redstone
              radius: 0.2
-             particles: 10
+             particles: 5
              offset: 0,0,0
              color: "FF00FF"
         step:
@@ -7962,7 +7996,7 @@ projectile:
              iterations: 100
              particle: redstone
              radius: 0.1
-             particles: 2
+             particles: 3
              offset: 0,0,0
              color: "010202"
     parameters:
@@ -7975,5 +8009,6 @@ projectile:
         target_breakables: 1
         cooldown: 1000
         reorient: false
+        reflective: iron_block
     costs:
         mana: 15

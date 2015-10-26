@@ -261,16 +261,18 @@ public class CustomProjectileAction extends CompoundAction
             }
 
             targetLocation = projectileLocation.clone().add(velocity.clone().multiply(distance));
-            context.getMage().sendDebugMessage(ChatColor.DARK_BLUE + "Projectile miss: " + now + " " + ChatColor.DARK_PURPLE
+            context.getMage().sendDebugMessage(ChatColor.DARK_BLUE + "Projectile miss: " + ChatColor.DARK_PURPLE
                     + " at " + targetLocation.getBlock().getType() + " : " + targetLocation.toVector() + " from range of " + distance + " over time " + delta, 7);
         } else {
             if (hasPreHitEffects) {
                 actionContext.playEffects("prehit");
             }
             targetLocation = target.getLocation();
-            context.getMage().sendDebugMessage(ChatColor.BLUE + "Projectile hit: " + now  + " " + ChatColor.LIGHT_PURPLE + targetingResult.name().toLowerCase()
-                    + " at " + targetLocation.getBlock().getType() + " from " + projectileLocation.getBlock() + " to " +
-                    targetLocation.toVector() + " from range of " + distance + " over time " + delta, 4);
+            context.getMage().sendDebugMessage(ChatColor.BLUE + "Projectile hit: " + ChatColor.LIGHT_PURPLE + targetingResult.name().toLowerCase()
+                    + ChatColor.BLUE + " at " + ChatColor.GOLD + targetLocation.getBlock().getType()
+                    + ChatColor.BLUE + " from " + ChatColor.GRAY + projectileLocation.getBlock() + ChatColor.BLUE + " to "
+                    + ChatColor.GRAY + targetLocation.toVector() + ChatColor.BLUE
+                    + " from range of " + ChatColor.GOLD + distance + ChatColor.BLUE + " over time " + ChatColor.DARK_PURPLE + delta, 4);
             distance = targetLocation.distance(projectileLocation);
         }
         distanceTravelled += distance;
@@ -341,11 +343,18 @@ public class CustomProjectileAction extends CompoundAction
                 // Calculate angle of reflection
                 Location targetLocation = actionContext.getTargetLocation();
                 Vector normal = CompatibilityUtils.getNormal(block, targetLocation);
-                velocity = velocity.subtract(normal.multiply(2 * velocity.dot(normal)));
+                velocity.multiply(-1);
+                velocity = velocity.subtract(normal.multiply(2 * velocity.dot(normal))).normalize();
+                velocity.multiply(-1);
 
                 // Offset position slightly to avoid hitting again
                 actionContext.setTargetLocation(targetLocation.add(velocity.clone().multiply(0.05)));
+                // actionContext.setTargetLocation(targetLocation.add(normal.normalize().multiply(2)));
 
+                actionContext.getMage().sendDebugMessage(ChatColor.AQUA + "Projectile reflected: " + ChatColor.LIGHT_PURPLE + " at "
+                        + ChatColor.GRAY + block + ChatColor.AQUA + " with normal vector of " + ChatColor.LIGHT_PURPLE + normal, 4);
+
+                actionContext.playEffects("reflect");
                 continueProjectile = true;
             }
         }
