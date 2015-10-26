@@ -234,15 +234,8 @@ public abstract class TargetingSpell extends BaseSpell {
             }
         }
 
-        if (targetBreakables > 0 && target.isValid()) {
-            if (block != null && currentCast.isBreakable(block)) {
-                int breakable = (int)(targetBreakables > 1 ? targetBreakables :
-                        (random.nextDouble() < targetBreakables ? 1 : 0));
-                if (breakable > 0) {
-                    Double breakableAmount = currentCast.getBreakable(block);
-                    breakBlock(block, (int)Math.ceil(breakableAmount + breakable - 1));
-                }
-            }
+        if (targetBreakables > 0 && target.isValid() && block != null && currentCast.isBreakable(block)) {
+            targeting.breakBlock(currentCast, block, targetBreakables);
         }
     }
 
@@ -439,30 +432,6 @@ public abstract class TargetingSpell extends BaseSpell {
     {
         super.reset();
         this.initializeTargeting();
-    }
-
-    protected void breakBlock(Block block, int recursion) {
-        if (currentCast.isBreakable(block)) return;
-
-        Location blockLocation = block.getLocation();
-        Location effectLocation = blockLocation.add(0.5, 0.5, 0.5);
-        effectLocation.getWorld().playEffect(effectLocation, Effect.STEP_SOUND, block.getType().getId());
-        UndoList undoList = com.elmakers.mine.bukkit.block.UndoList.getUndoList(blockLocation);
-        if (undoList != null) {
-            undoList.add(block);
-        }
-        currentCast.clearBreakable(block);
-        currentCast.clearReflective(block);
-        block.setType(Material.AIR);
-
-        if (--recursion > 0) {
-            breakBlock(block.getRelative(BlockFace.UP), recursion);
-            breakBlock(block.getRelative(BlockFace.DOWN), recursion);
-            breakBlock(block.getRelative(BlockFace.EAST), recursion);
-            breakBlock(block.getRelative(BlockFace.WEST), recursion);
-            breakBlock(block.getRelative(BlockFace.NORTH), recursion);
-            breakBlock(block.getRelative(BlockFace.SOUTH), recursion);
-        }
     }
 
     @SuppressWarnings("unchecked")

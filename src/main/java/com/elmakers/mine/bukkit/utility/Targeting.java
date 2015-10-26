@@ -1,10 +1,13 @@
 package com.elmakers.mine.bukkit.utility;
 
 import com.elmakers.mine.bukkit.api.action.CastContext;
+import com.elmakers.mine.bukkit.api.block.UndoList;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.spell.TargetType;
 import org.bukkit.ChatColor;
+import org.bukkit.Effect;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -518,5 +521,43 @@ public class Targeting {
             Target target = candidates.get(i);
             entities.add(new WeakReference<Entity>(target.getEntity()));
         }
+    }
+
+    public int breakBlock(CastContext context, Block block, double amount) {
+        if (amount <= 0) return 0;
+        Double breakableAmount = context.getBreakable(block);
+        if (breakableAmount == null) return 0;
+
+        double breakable = (int)(amount > 1 ? amount : (context.getRandom().nextDouble() < amount ? 1 : 0));
+        if (breakable <= 0) return 0;
+
+        breakable = (int)Math.ceil(breakableAmount + breakable - 1);
+
+        // TODO: Custom FX
+        Location blockLocation = block.getLocation();
+        Location effectLocation = blockLocation.add(0.5, 0.5, 0.5);
+        effectLocation.getWorld().playEffect(effectLocation, Effect.STEP_SOUND, block.getType().getId());
+
+        // TODO: Re-examime this?
+        UndoList undoList = com.elmakers.mine.bukkit.block.UndoList.getUndoList(blockLocation);
+        if (undoList != null) {
+            undoList.add(block);
+        }
+
+        context.clearBreakable(block);
+        context.clearReflective(block);
+        block.setType(Material.AIR);
+
+        int broken = 1;
+        if (breakable > broken) {
+            broken += breakBlock(context, block.getRelative(BlockFace.UP), breakable - broken);
+            broken += breakBlock(context, block.getRelative(BlockFace.DOWN),  breakable - broken);
+            broken += breakBlock(context, block.getRelative(BlockFace.EAST),  breakable - broken);
+            broken += breakBlock(context, block.getRelative(BlockFace.WEST),  breakable - broken);
+            broken += breakBlock(context, block.getRelative(BlockFace.NORTH),  breakable - broken);
+            broken += breakBlock(context, block.getRelative(BlockFace.SOUTH),  breakable - broken);
+        }
+
+        return broken;
     }
 }
