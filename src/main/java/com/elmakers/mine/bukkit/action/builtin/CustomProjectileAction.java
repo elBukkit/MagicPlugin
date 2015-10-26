@@ -246,7 +246,10 @@ public class CustomProjectileAction extends CompoundAction
         targeting.start(projectileLocation);
 
         // Advance targeting to find Entity or Block
-        double distance = Math.min(speed * delta / 1000, range - distanceTravelled);
+        double distance = speed * delta / 1000;
+        if (range > 0) {
+            distance = Math.min(distance, range - distanceTravelled);
+        }
         context.addWork((int)Math.ceil(distance));
         Target target = targeting.target(actionContext, distance);
         Location targetLocation;
@@ -309,7 +312,7 @@ public class CustomProjectileAction extends CompoundAction
             return hit();
         }
 
-        if (distanceTravelled >= range) {
+        if (range > 0 && distanceTravelled >= range) {
             return hit();
         }
 
@@ -332,6 +335,7 @@ public class CustomProjectileAction extends CompoundAction
             if (actionContext.getRandom().nextDouble() < reflective) {
                 trackEntity = false;
                 reorient = false;
+                distanceTravelled = 0;
                 actionContext.setTargetsCaster(true);
 
                 // Calculate angle of reflection
