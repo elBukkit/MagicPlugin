@@ -414,6 +414,12 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
     @Override
     public void playEffects(String effectName, float scale)
     {
+        playEffects(effectName, scale, null, getEntity(), null, getTargetEntity());
+    }
+
+    @Override
+    public void playEffects(String effectName, float scale, Location source, Entity sourceEntity, Location target, Entity targetEntity)
+    {
         Collection<EffectPlayer> effects = getEffects(effectName);
         if (effects.size() > 0)
         {
@@ -421,9 +427,6 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
             Location eyeLocation = getEyeLocation();
             Location location = getLocation();
             Collection<Entity> targeted = getTargetedEntities();
-            Entity sourceEntity = getEntity();
-            Entity targetEntity = getTargetEntity();
-            Location targetLocation = getTargetLocation();
 
             for (EffectPlayer player : effects)
             {
@@ -431,20 +434,24 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
                 player.setScale(scale);
 
                 Mage mage = getMage();
-                boolean useWand = mage != null && mage.getEntity() == sourceEntity && player.shouldUseWandLocation();
-                Location source = player.shouldUseEyeLocation() ? eyeLocation : location;
-                if (useWand) {
-                    if (wand == null) {
-                        wand = getWandLocation();
+                if (source == null) {
+                    boolean useWand = mage != null && mage.getEntity() == sourceEntity && player.shouldUseWandLocation();
+                    source = player.shouldUseEyeLocation() ? eyeLocation : location;
+                    if (useWand) {
+                        if (wand == null) {
+                            wand = getWandLocation();
+                        }
+                        source = wand;
                     }
-                    source = wand;
                 }
-                Location target = targetLocation;
-                if (!player.shouldUseHitLocation() && targetEntity != null) {
-                    if (targetEntity instanceof LivingEntity) {
-                        target = ((LivingEntity)targetEntity).getEyeLocation();
-                    } else {
-                        target = targetEntity.getLocation();
+                if (target == null) {
+                    target = getTargetLocation();
+                    if (!player.shouldUseHitLocation() && targetEntity != null) {
+                        if (targetEntity instanceof LivingEntity) {
+                            target = ((LivingEntity)targetEntity).getEyeLocation();
+                        } else {
+                            target = targetEntity.getLocation();
+                        }
                     }
                 }
                 player.start(source, sourceEntity, target, targetEntity, targeted);

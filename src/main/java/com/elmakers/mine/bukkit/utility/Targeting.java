@@ -533,10 +533,10 @@ public class Targeting {
 
         breakable = (int)Math.ceil(breakableAmount + breakable - 1);
 
-        // TODO: Custom FX
+        // Play break FX
         Location blockLocation = block.getLocation();
         Location effectLocation = blockLocation.add(0.5, 0.5, 0.5);
-        effectLocation.getWorld().playEffect(effectLocation, Effect.STEP_SOUND, block.getType().getId());
+        context.playEffects("break", 1, context.getLocation(), null, effectLocation, null);
 
         // TODO: Re-examime this?
         UndoList undoList = com.elmakers.mine.bukkit.block.UndoList.getUndoList(blockLocation);
