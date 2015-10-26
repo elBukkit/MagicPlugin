@@ -7,6 +7,7 @@
    - Curse
  - Add new Homing Missile spell
  - Add hidden "projectile" spell for testing CustomProjectile actions
+ - Implemented break mechanics for projectiles (Reflect, Shell, Blob, etc)
  - Spells and projectile now hit at the actual block intersection location
  - Allow @p and @t as simple CommandAction parameters (same as @pn and @tn)
  - Fixed some performance and timing issues with the scheduler

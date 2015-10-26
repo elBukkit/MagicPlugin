@@ -43,6 +43,8 @@ public class CustomProjectileAction extends CompoundAction
     private boolean useEyeLocation;
     private boolean trackEntity;
     private int targetSelfTimeout;
+    private boolean breaksBlocks;
+    private double targetBreakables;
 
     private double distanceTravelled;
     private double effectDistanceTravelled;
@@ -70,7 +72,7 @@ public class CustomProjectileAction extends CompoundAction
         super.prepare(context, parameters);
         targeting.processParameters(parameters);
         interval = parameters.getInt("interval", 30);
-        lifetime = parameters.getInt("lifetime", 5000);
+        lifetime = parameters.getInt("lifetime", 8000);
         startDistance = parameters.getInt("start", 0);
         range = parameters.getInt("range", 0);
         projectileEffectKey = parameters.getString("projectile_effects", "projectile");
@@ -84,6 +86,8 @@ public class CustomProjectileAction extends CompoundAction
         useEyeLocation = parameters.getBoolean("use_eye_location", true);
         trackEntity = parameters.getBoolean("track_target", false);
         targetSelfTimeout = parameters.getInt("target_self_timeout", 0);
+        breaksBlocks = parameters.getBoolean("break_blocks", true);
+        targetBreakables = parameters.getDouble("target_breakables", 1);
 
         range *= context.getMage().getRangeMultiplier();
 
@@ -96,6 +100,7 @@ public class CustomProjectileAction extends CompoundAction
             targeting.setTargetType(TargetType.OTHER);
         }
 
+        // Flags to optimize FX calls
         hasTickEffects = context.getEffects(tickEffectKey).size() > 0;
         hasBlockMissEffects = context.getEffects("blockmiss").size() > 0;
         hasStepEffects = context.getEffects("step").size() > 0;
@@ -299,21 +304,34 @@ public class CustomProjectileAction extends CompoundAction
             return hit();
         }
 
-        if (targetingResult != Targeting.TargetingResult.MISS) {
-            return hit();
-        }
-
         if (distanceTravelled >= range) {
             return hit();
         }
 
         Block block = targetLocation.getBlock();
+        if (targetingResult != Targeting.TargetingResult.MISS) {
+            return hitBlock(block);
+        }
+
         if (!block.getChunk().isLoaded()) {
             return hit();
         }
 
 		return SpellResult.PENDING;
 	}
+
+    protected SpellResult hitBlock(Block block) {
+        if (targetBreakables > 0 && breaksBlocks && actionContext.isBreakable(block)) {
+
+            targetBreakables -= targeting.breakBlock(actionContext, block, targetBreakables);
+
+            if (targetBreakables > 0) {
+                return SpellResult.PENDING;
+            }
+        }
+
+        return hit();
+    }
 
     protected SpellResult hit() {
         hit = true;
