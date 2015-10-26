@@ -19,7 +19,6 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.util.Vector;
 
-import java.lang.ref.WeakReference;
 import java.util.Collection;
 import java.util.Random;
 import java.util.Set;
@@ -86,7 +85,7 @@ public interface CastContext {
     public boolean isPassthrough(Material material);
     public boolean isDestructible(Block block);
     public boolean areAnyDestructible(Block block);
-    public boolean isTargetable(Material material);
+    public boolean isTargetable(Block block);
     public boolean canTarget(Entity entity);
     public MaterialBrush getBrush();
     public void setBrush(MaterialBrush brush);
