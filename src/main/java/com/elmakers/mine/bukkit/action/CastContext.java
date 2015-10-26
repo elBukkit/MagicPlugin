@@ -15,7 +15,6 @@ import com.elmakers.mine.bukkit.spell.BlockSpell;
 import com.elmakers.mine.bukkit.spell.BrushSpell;
 import com.elmakers.mine.bukkit.spell.TargetingSpell;
 import com.elmakers.mine.bukkit.spell.UndoableSpell;
-import com.elmakers.mine.bukkit.utility.Target;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -27,13 +26,12 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.metadata.MetadataValue;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.util.Vector;
 
-import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -616,11 +614,11 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
     }
 
     @Override
-    public boolean isTargetable(Material material)
+    public boolean isTargetable(Block block)
     {
         if (targetingSpell != null)
         {
-            return targetingSpell.isTargetable(material);
+            return targetingSpell.isTargetable(this, block);
         }
         return true;
     }
@@ -710,7 +708,7 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
         Location location = getEyeLocation();
         if (location == null) return null;
         Block playerBlock = location.getBlock();
-        if (isTargetable(playerBlock.getType())) return playerBlock;
+        if (isTargetable(playerBlock)) return playerBlock;
         Vector direction = location.getDirection().normalize();
         return location.add(direction).getBlock();
     }
@@ -827,7 +825,7 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
     }
 
     @Override
-    public void registerBreakable(Block block, int breakable) {
+    public void registerBreakable(Block block, double breakable) {
         if (block == null || block.getType() == Material.AIR) return;
         MageController controller = getController();
         if (breakable > 0) {
@@ -904,5 +902,65 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
             return baseSpell.canCast(location);
         }
         return true;
+    }
+
+    @Override
+    public boolean isBreakable(Block block) {
+        return (block != null && block.hasMetadata("breakable"));
+    }
+
+    @Override
+    public Double getBreakable(Block block) {
+        if (block == null || !block.hasMetadata("breakable")) return null;
+        Plugin plugin = getController().getPlugin();
+        List<MetadataValue> metadata = block.getMetadata("breakable");
+        for (MetadataValue value : metadata) {
+            if (value.getOwningPlugin().equals(plugin)) {
+                return value.asDouble();
+            }
+        }
+
+        return null;
+    }
+
+    @Override
+    public void clearBreakable(Block block) {
+        block.removeMetadata("breakable", getController().getPlugin());
+    }
+
+    @Override
+    public void clearReflective(Block block) {
+        block.removeMetadata("backfire", getController().getPlugin());
+    }
+
+    @Override
+    public boolean isReflective(Block block) {
+        if (block == null) return false;
+        if (targetingSpell != null && targetingSpell.isReflective(block.getType())) {
+            return true;
+        }
+        return  block.hasMetadata("backfire");
+    }
+
+    @Override
+    public Double getReflective(Block block) {
+        if (block == null) return null;
+
+        if (block == null) return null;
+        if (targetingSpell != null && targetingSpell.isReflective(block.getType())) {
+            return 1.0;
+        }
+
+        if (!block.hasMetadata("backfire")) return null;
+
+        Plugin plugin = getController().getPlugin();
+        List<MetadataValue> metadata = block.getMetadata("backfire");
+        for (MetadataValue value : metadata) {
+            if (value.getOwningPlugin().equals(plugin)) {
+                return value.asDouble();
+            }
+        }
+
+        return null;
     }
 }

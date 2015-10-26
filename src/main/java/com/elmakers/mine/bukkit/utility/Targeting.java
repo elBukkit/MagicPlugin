@@ -47,7 +47,6 @@ public class Targeting {
     protected int                               livingEntityWeight      = 3;
 
     private boolean                             ignoreBlocks            = false;
-    private boolean                             ignoreBreakables        = false;
 
     private double                              hitboxPadding           = 0;
     private double                              rangeQueryPadding       = 1;
@@ -326,13 +325,6 @@ public class Targeting {
         return new Target(source);
     }
 
-    public boolean isTargetable(CastContext context, Block block) {
-        if (!ignoreBreakables && block.hasMetadata("breakable")) {
-            return true;
-        }
-        return context.isTargetable(block.getType());
-    }
-
     protected void findTargetBlock(CastContext context, double range)
     {
         if (source == null)
@@ -351,7 +343,7 @@ public class Targeting {
             targetLocation.getBlockZ() == source.getBlockZ()) {
 
             currentBlock = source.getBlock();
-            if (isTargetable(context, currentBlock)) {
+            if (context.isTargetable(currentBlock)) {
                 result = TargetingResult.BLOCK;
             } else {
                 result = TargetingResult.MISS;
@@ -376,7 +368,7 @@ public class Targeting {
                     if (context.isOkToStandIn(block.getType()) && context.isOkToStandIn(block.getRelative(BlockFace.UP).getType())) {
                         break;
                     }
-                } else if (isTargetable(context, block)) {
+                } else if (context.isTargetable(block)) {
                     break;
                 }
             } else {
@@ -485,7 +477,6 @@ public class Targeting {
         targetMinOffset = parameters.getInt("tmo", targetMinOffset);
 
         ignoreBlocks = parameters.getBoolean("ignore_blocks", false);
-        ignoreBreakables = parameters.getBoolean("ignore_breakable", false);
 
         targetLocationOffset = null;
         targetDirectionOverride = null;

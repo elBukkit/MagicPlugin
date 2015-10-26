@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.spell;
 
+import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.block.UndoList;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.spell.TargetType;
@@ -63,6 +64,7 @@ public abstract class TargetingSpell extends BaseSpell {
 
     private Set<Material>                       targetThroughMaterials  = new HashSet<Material>();
     private Set<Material>                       targetableMaterials     = null;
+    private Set<Material>                       reflectiveMaterials     = null;
     private boolean                             reverseTargeting        = false;
     private boolean                             originAtTarget          = false;
 
@@ -103,6 +105,21 @@ public abstract class TargetingSpell extends BaseSpell {
         }
 
         return message;
+    }
+
+    public boolean isReflective(Material mat)
+    {
+        return reflectiveMaterials != null && reflectiveMaterials.contains(mat);
+    }
+
+    public boolean isTargetable(CastContext context, Block block) {
+        if (targetBreakables > 0 && context.isBreakable(block)) {
+            return true;
+        }
+        if (!bypassBackfire && context.isReflective(block)) {
+            return true;
+        }
+        return isTargetable(block.getType());
     }
 
     public boolean isTargetable(Material mat)
@@ -189,50 +206,41 @@ public abstract class TargetingSpell extends BaseSpell {
     {
         Target target = targeting.getTarget();
         final Block block = target.getBlock();
-        if (block != null && !bypassBackfire && block.hasMetadata("backfire")) {
-            List<MetadataValue> metadata = block.getMetadata("backfire");
-            for (MetadataValue value : metadata) {
-                if (value.getOwningPlugin().equals(controller.getPlugin())) {
-                    if (random.nextDouble() < value.asDouble()) {
-                        final Entity mageEntity = mage.getEntity();
-                        final Location location = getLocation();
-                        final Location originLocation = block.getLocation();
-                        Vector direction = location.getDirection();
-                        originLocation.setDirection(direction.multiply(-1));
-                        this.location = originLocation;
-                        backfire();
-                        final Collection<com.elmakers.mine.bukkit.api.effect.EffectPlayer> effects = getEffects("cast");
-                        if (effects.size() > 0) {
-                            Bukkit.getScheduler().runTaskLater(controller.getPlugin(),
-                                    new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            for (com.elmakers.mine.bukkit.api.effect.EffectPlayer player : effects) {
-                                                player.setMaterial(getEffectMaterial());
-                                                player.setColor(mage.getEffectColor());
-                                                player.start(originLocation, null, location, mageEntity);
-                                            }
-                                        }
-                                    }, 5l);
-                        }
-                        target = new Target(getEyeLocation(), mageEntity);
-                    }
+        Double backfireAmount = currentCast.getReflective(block);
+        if (backfireAmount != null) {
+            if (random.nextDouble() < backfireAmount) {
+                final Entity mageEntity = mage.getEntity();
+                final Location location = getLocation();
+                final Location originLocation = block.getLocation();
+                Vector direction = location.getDirection();
+                originLocation.setDirection(direction.multiply(-1));
+                this.location = originLocation;
+                backfire();
+                final Collection<com.elmakers.mine.bukkit.api.effect.EffectPlayer> effects = getEffects("cast");
+                if (effects.size() > 0) {
+                    Bukkit.getScheduler().runTaskLater(controller.getPlugin(),
+                            new Runnable() {
+                                @Override
+                                public void run() {
+                                    for (com.elmakers.mine.bukkit.api.effect.EffectPlayer player : effects) {
+                                        player.setMaterial(getEffectMaterial());
+                                        player.setColor(mage.getEffectColor());
+                                        player.start(originLocation, null, location, mageEntity);
+                                    }
+                                }
+                            }, 5l);
                 }
+                target = new Target(getEyeLocation(), mageEntity);
             }
         }
 
         if (targetBreakables > 0 && target.isValid()) {
-            if (block != null && block.hasMetadata("breakable")) {
+            if (block != null && currentCast.isBreakable(block)) {
                 int breakable = (int)(targetBreakables > 1 ? targetBreakables :
                         (random.nextDouble() < targetBreakables ? 1 : 0));
                 if (breakable > 0) {
-                    List<MetadataValue> metadata = block.getMetadata("breakable");
-                    for (MetadataValue value : metadata) {
-                        if (value.getOwningPlugin().equals(controller.getPlugin())) {
-                            breakBlock(block, value.asInt() + breakable - 1);
-                            break;
-                        }
-                    }
+                    Double breakableAmount = currentCast.getBreakable(block);
+                    breakBlock(block, (int)Math.ceil(breakableAmount + breakable - 1));
                 }
             }
         }
@@ -434,7 +442,7 @@ public abstract class TargetingSpell extends BaseSpell {
     }
 
     protected void breakBlock(Block block, int recursion) {
-        if (!block.hasMetadata("breakable")) return;
+        if (currentCast.isBreakable(block)) return;
 
         Location blockLocation = block.getLocation();
         Location effectLocation = blockLocation.add(0.5, 0.5, 0.5);
@@ -443,8 +451,8 @@ public abstract class TargetingSpell extends BaseSpell {
         if (undoList != null) {
             undoList.add(block);
         }
-        block.removeMetadata("breakable", mage.getController().getPlugin());
-        block.removeMetadata("backfire", mage.getController().getPlugin());
+        currentCast.clearBreakable(block);
+        currentCast.clearReflective(block);
         block.setType(Material.AIR);
 
         if (--recursion > 0) {
@@ -503,7 +511,7 @@ public abstract class TargetingSpell extends BaseSpell {
         bypassProtection = parameters.getBoolean("bp", bypassProtection);
         checkProtection = parameters.getBoolean("check_protection", false);
         damageResistanceProtection = parameters.getInt("damage_resistance_protection", 0);
-        targetBreakables = parameters.getDouble("target_breakables", 0);
+        targetBreakables = parameters.getDouble("target_breakables", 1);
         reverseTargeting = parameters.getBoolean("reverse_targeting", false);
         instantBlockEffects = parameters.getBoolean("instant_block_effects", false);
 
@@ -520,6 +528,13 @@ public abstract class TargetingSpell extends BaseSpell {
             targetableMaterials.addAll(controller.getMaterialSet(parameters.getString("targetable")));
         } else {
             targetableMaterials = null;
+        }
+
+        if (parameters.contains("reflective")) {
+            reflectiveMaterials = new HashSet<Material>();
+            reflectiveMaterials.addAll(controller.getMaterialSet(parameters.getString("reflective")));
+        } else {
+            reflectiveMaterials = null;
         }
 
         targetNPCs = parameters.getBoolean("target_npc", false);
