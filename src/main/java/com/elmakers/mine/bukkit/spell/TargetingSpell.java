@@ -449,10 +449,11 @@ public abstract class TargetingSpell extends BaseSpell {
 
     protected void processTemplateParameters(ConfigurationSection parameters) {
         range = parameters.getInt("range", 0);
+        boolean hasTargeting = parameters.contains("target");
         targeting.parseTargetType(parameters.getString("target"));
 
         // If a range was specified but not a target type, default to none
-        if (range > 0 && targeting.getTargetType() == TargetType.NONE) {
+        if (range > 0 && !hasTargeting) {
             targeting.setTargetType(TargetType.OTHER);
         }
         TargetType targetType = targeting.getTargetType();
