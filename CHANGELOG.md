@@ -17,6 +17,7 @@
    - Disintegrate
    - Blind
    - Petrify
+   - Poison
  - Added Homing Missile spell
  - Added Sticky Bomb spell
  - Added Whip spell

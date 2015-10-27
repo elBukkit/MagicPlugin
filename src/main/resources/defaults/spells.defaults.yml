@@ -6728,6 +6728,7 @@ entangle:
         undo: 5000
         breakable: 1
         cooldown: 8000
+        instant_block_effects: true
     costs:
         mana: 70
 
@@ -6795,6 +6796,7 @@ wound:
         target_breakables: 3
         cooldown: 2000
         magic_damage: false
+        instant_block_effects: true
     costs:
         mana: 120
 
@@ -6878,28 +6880,35 @@ poison:
     upgrade_required_casts: 50
     actions:
         cast:
-        -  class: PotionEffect
+        - class: CustomProjectile
+          actions:
+          - class: PotionEffect
     effects:
         cast:
         -  class: EffectSingle
            sound: magic.zap
-           effectlib:
-             class: ConeEffect
-             iterations: 15
-             particle: slime
-             lengthGrow: 0.2
+        tick:
+        - location: target
+          particle: slime
+          particle_count: 4
+          particle_offset_x: 0.5
+          particle_offset_z: 0.5
+          particle_offset_y: 0
+        hit:
         -  class: EffectSingle
            location: target
            color: 088A08
            firework: ball
         -  class: EffectSingle
            location: target
+           requires_entity_target: true
            effectlib:
              class: WarpEffect
              particle: slime
              iterations: 1
         -  class: EffectSingle
            location: target
+           requires_entity_target: true
            effectlib:
              class: SphereEffect
              iterations: 60
@@ -6907,27 +6916,10 @@ poison:
              particle: slime
              radius: .75
              particles: 20
-        no_target:
-        -  class: EffectSingle
-           sound: magic.zap
-           effectlib:
-             class: ConeEffect
-             iterations: 15
-             particle: slime
-             lengthGrow: 0.2
-        -  class: EffectSingle
-           location: target
-           color: 088A08
-           firework: ball
-        -  class: EffectSingle
-           location: target
-           effectlib:
-             class: WarpEffect
-             particle: slime
-             iterations: 1
     costs:
         mana: 50
     parameters:
+        velocity: 100
         hitbox: true
         range: 48
         deactivate_target_mage: false
@@ -7025,6 +7017,7 @@ lift:
         living_entity_speed: 0.1
         item_speed: 0.05
         repeat: 50
+        instant_block_effects: true
     costs:
         mana: 40
 
@@ -7990,6 +7983,7 @@ boomstown:
           color: FE2EF7
           firework: star
    parameters:
+       instant_block_effects: true
        target: other
        launch: true
        cooldown: 30000
@@ -8153,5 +8147,6 @@ whip:
         target_breakables: 2
         cooldown: 5000
         target_self_timeout: 2000
+        velocity: 60
     costs:
         mana: 25
