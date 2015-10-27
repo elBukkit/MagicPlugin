@@ -1246,6 +1246,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         String[] effectStrings = StringUtils.split(effectsString, ",");
         for (String effectString : effectStrings) {
             try {
+                effectString = effectString.trim();
                 PotionEffectType type;
                 int power = 1;
                 if (effectString.contains(":")) {
