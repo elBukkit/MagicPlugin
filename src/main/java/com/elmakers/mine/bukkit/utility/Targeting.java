@@ -247,6 +247,7 @@ public class Targeting {
         Mage mage = context.getMage();
         final Entity mageEntity = mage.getEntity();
         if (targetType == TargetType.SELF && mageEntity != null) {
+            result = TargetingResult.ENTITY;
             return new Target(source, mageEntity);
         }
 
@@ -298,6 +299,7 @@ public class Targeting {
         }
 
         if (targetType == TargetType.OTHER_ENTITY && entityTarget == null) {
+            result = TargetingResult.ENTITY;
             return new Target(source);
         }
 
@@ -307,6 +309,7 @@ public class Targeting {
         }
 
         if (entityTarget == null && targetType == TargetType.ANY && mageEntity != null) {
+            result = TargetingResult.ENTITY;
             return new Target(source, mageEntity, targetBlock == null ? null : targetBlock.getBlock());
         }
 
