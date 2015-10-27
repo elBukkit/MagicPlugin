@@ -1569,6 +1569,9 @@ spells:
         insufficient_resources: Requires $cost
         confirm_title: "Sell $item"
         deducted: "&d&oYou sold &r&6$item &r&d&ofor &r&a$cost"
+    fxdemo:
+        name: FX Demo
+        description: Show off various EffectLib effects
 
 wands:
     default:

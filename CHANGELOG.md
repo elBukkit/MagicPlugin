@@ -2,6 +2,7 @@
 
 ## 5.3
 
+ - Add "fxdemo" spell, to demo all of the EffectLib FX (well, most of them)
  - Converted spells to projectiles: 
    - Magic Missile
    - Curse
