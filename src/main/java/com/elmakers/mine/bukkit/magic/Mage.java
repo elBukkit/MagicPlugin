@@ -358,7 +358,8 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                 if (!(batch instanceof SpellBatch)) continue;
                 SpellBatch spellBatch = (SpellBatch)batch;
                 Spell spell = spellBatch.getSpell();
-                if (spell.cancelOnDamage() < damage)
+                double cancelOnDamage = spell.cancelOnDamage();
+                if (cancelOnDamage > 0 && cancelOnDamage < damage)
                 {
                     if (!spell.cancel()) {
                         spell.sendMessage(spell.getMessage("cancel"));
@@ -1002,7 +1003,21 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                         continue;
                     }
                 }
+
                 if (!(batch instanceof UndoBatch)) {
+                    if (force && batch instanceof SpellBatch)
+                    {
+                        SpellBatch spellBatch = (SpellBatch)batch;
+                        Spell spell = spellBatch.getSpell();
+                        if (spell != null)
+                        {
+                            if (!spell.cancel())
+                            {
+                                spell.sendMessage(spell.getMessage("cancel"));
+                            }
+                        }
+                    }
+
                     batch.finish();
                     pendingBatches.remove(batch);
                     stoppedPending = batch;
