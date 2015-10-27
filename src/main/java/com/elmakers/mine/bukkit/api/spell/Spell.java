@@ -63,4 +63,6 @@ public interface Spell extends SpellTemplate {
     public boolean isCancellable();
     public ConfigurationSection getWorkingParameters();
     public void finish(CastContext context);
+    public double cancelOnDamage();
+    public String getMessage(String messageKey);
 }
