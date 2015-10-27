@@ -27,4 +27,10 @@ public abstract class SpellBatch extends UndoableBatch implements com.elmakers.m
     public Spell getSpell() {
         return spell;
     }
+
+    @Override
+    public String getName() {
+        if (spell == null) return "Unknown";
+        return spell.getName();
+    }
 }
