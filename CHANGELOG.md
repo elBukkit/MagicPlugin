@@ -27,6 +27,7 @@
  - Spells and projectile now hit at the actual block intersection location
  - Allow @p and @t as simple CommandAction parameters (same as @pn and @tn)
  - Fixed some performance and timing issues with the scheduler
+ - Added tab-completion to /wand override command
  
 ## 5.2.2
 

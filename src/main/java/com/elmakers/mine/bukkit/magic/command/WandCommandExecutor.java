@@ -160,6 +160,31 @@ public class WandCommandExecutor extends MagicTabExecutor {
 					options.add(key);
 				}
 			}
+
+			if (subCommand.equalsIgnoreCase("override")) {
+				Collection<SpellTemplate> spellList = api.getController().getSpellTemplates(true);
+				String partial = args[1];
+				if (partial.indexOf('.') > 0) {
+					String[] pieces = StringUtils.split(partial, '.');
+					String spellKey = pieces[0];
+					SpellTemplate spell = api.getController().getSpellTemplate(spellKey);
+					if (spell != null) {
+						List<String> spellOptions = new ArrayList<String>();
+						spell.getParameters(spellOptions);
+						for (String option : spellOptions) {
+							options.add(spellKey + "." + option);
+						}
+					}
+				} else {
+					for (SpellTemplate spell : spellList) {
+						String spellKey = spell.getKey();
+						if (api.hasPermission(sender, subCommandPNode + spellKey, true))
+						{
+							options.add(spellKey + ".");
+						}
+					}
+				}
+			}
 			
 			if (subCommand.equalsIgnoreCase("remove")) {
 				Wand activeWand = null;
@@ -195,6 +220,18 @@ public class WandCommandExecutor extends MagicTabExecutor {
             if (!api.hasPermission(sender, commandPNode)) {
                 return options;
             }
+
+			if (subCommand.equalsIgnoreCase("override")) {
+				String[] pieces = StringUtils.split(subCommand2, '.');
+				if (pieces.length > 1) {
+					String spellKey = pieces[0];
+					String argument = pieces[1];
+					SpellTemplate spell = api.getSpellTemplate(spellKey);
+					if (spell != null) {
+						spell.getParameterOptions(options, argument);
+					}
+				}
+			}
 
             if (subCommand.equalsIgnoreCase("configure") || subCommand.equalsIgnoreCase("upgrade")) {
                 if (subCommand2.equals("effect_sound")) {
