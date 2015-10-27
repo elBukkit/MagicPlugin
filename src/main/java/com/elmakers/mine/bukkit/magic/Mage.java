@@ -346,10 +346,28 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             return;
         }
 
+        double damage = event.getDamage();
         if (reduction > 0) {
-            double newDamage = (1.0f - reduction) * event.getDamage();
-            if (newDamage <= 0) newDamage = 0.1;
-            event.setDamage(newDamage);
+            damage = (1.0f - reduction) * damage;
+            if (damage <= 0) damage = 0.1;
+            event.setDamage(damage);
+        }
+
+        if (damage > 0) {
+            for (Batch batch : pendingBatches) {
+                if (!(batch instanceof SpellBatch)) continue;
+                SpellBatch spellBatch = (SpellBatch)batch;
+                Spell spell = spellBatch.getSpell();
+                if (spell.cancelOnDamage() < damage)
+                {
+                    org.bukkit.Bukkit.getLogger().info("Cancelling " + spell.getName());
+                    if (!spell.cancel()) {
+                        spell.sendMessage(spell.getMessage("cancel"));
+                    }
+                    batch.finish();
+                    pendingBatches.remove(batch);
+                }
+            }
         }
     }
 
@@ -1982,7 +2000,6 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         damageReductionFalling = Math.min(damageReductionFalling, 1);
         damageReductionFire = Math.min(damageReductionFire, 1);
         damageReductionExplosions = Math.min(damageReductionExplosions, 1);
-
 
         LivingEntity entity = getLivingEntity();
         if (entity != null)
