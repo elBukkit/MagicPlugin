@@ -202,9 +202,10 @@ public abstract class TargetingSpell extends BaseSpell {
         }
     }
 
-    protected void processBlockEffects()
+    protected Target processBlockEffects()
     {
         Target target = targeting.getTarget();
+        Target originalTarget = target;
         final Block block = target.getBlock();
         Double backfireAmount = currentCast.getReflective(block);
         if (backfireAmount != null) {
@@ -219,24 +220,26 @@ public abstract class TargetingSpell extends BaseSpell {
                 final Collection<com.elmakers.mine.bukkit.api.effect.EffectPlayer> effects = getEffects("cast");
                 if (effects.size() > 0) {
                     Bukkit.getScheduler().runTaskLater(controller.getPlugin(),
-                            new Runnable() {
-                                @Override
-                                public void run() {
-                                    for (com.elmakers.mine.bukkit.api.effect.EffectPlayer player : effects) {
-                                        player.setMaterial(getEffectMaterial());
-                                        player.setColor(mage.getEffectColor());
-                                        player.start(originLocation, null, location, mageEntity);
-                                    }
+                        new Runnable() {
+                            @Override
+                            public void run() {
+                                for (com.elmakers.mine.bukkit.api.effect.EffectPlayer player : effects) {
+                                    player.setMaterial(getEffectMaterial());
+                                    player.setColor(mage.getEffectColor());
+                                    player.start(originLocation, null, location, mageEntity);
                                 }
-                            }, 5l);
+                            }
+                        }, 5l);
                 }
                 target = new Target(getEyeLocation(), mageEntity);
             }
         }
 
-        if (targetBreakables > 0 && target.isValid() && block != null && currentCast.isBreakable(block)) {
+        if (targetBreakables > 0 && originalTarget.isValid() && block != null && currentCast.isBreakable(block)) {
             targeting.breakBlock(currentCast, block, targetBreakables);
         }
+
+        return target;
     }
 
     protected Target findTarget()
@@ -262,7 +265,7 @@ public abstract class TargetingSpell extends BaseSpell {
 
         if (instantBlockEffects)
         {
-            processBlockEffects();
+            target = processBlockEffects();
         }
         if (originAtTarget && target.isValid()) {
             Location previous = this.location;
