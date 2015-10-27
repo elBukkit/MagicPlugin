@@ -976,6 +976,8 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
             }
         }
 
+        if (item == null || item.getType() == Material.AIR) return;
+
         ConfigurationSection stateNode = new MemoryConfiguration();
         saveProperties(stateNode);
 
