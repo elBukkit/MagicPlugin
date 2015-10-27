@@ -208,7 +208,7 @@ public class MagicCommandExecutor extends MagicMapExecutor {
 				while (mage.cancelPending() != null) stoppedPending++;
 			}
 
-			sender.sendMessage("Stopped " + stoppedPending + " pending construction batches");
+			sender.sendMessage("Stopped " + stoppedPending + " pending spell casts");
 
 			return true;
 		}
@@ -288,7 +288,7 @@ public class MagicCommandExecutor extends MagicMapExecutor {
 			}
 
 			Collection<Mage> pending = api.getMagesWithPendingBatches();
-			sender.sendMessage(ChatColor.AQUA + "Pending batches (" + pending.size() + "): ");
+			sender.sendMessage(ChatColor.AQUA + "Pending casts (" + pending.size() + "): ");
 			for (Mage mage : pending) {
 				int totalSize = 0;
 				int totalRemaining = 0;
