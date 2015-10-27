@@ -28,6 +28,7 @@
  - Allow @p and @t as simple CommandAction parameters (same as @pn and @tn)
  - Fixed some performance and timing issues with the scheduler
  - Added tab-completion to /wand override command
+ - Added Cancel action, for canelling a target's in-progress spell.
  
 ## 5.2.2
 
@@ -44,6 +45,7 @@
  - Add "targetable" parameter for a targetable block type list
  - Undo action "target_self" parameter changed to "target_caster"
  - Fix /mgive blink|2 (giving spell-level items)
+ 
 
 ## 5.2.1
 

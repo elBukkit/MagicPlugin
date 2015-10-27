@@ -8,7 +8,6 @@ import com.elmakers.mine.bukkit.api.block.UndoQueue;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
-import com.elmakers.mine.bukkit.api.batch.SpellBatch;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
@@ -58,7 +57,7 @@ public class UndoAction extends BaseSpellAction
 
             Batch batch = targetMage.cancelPending(targetSpellKey);
             if (batch != null) {
-                undoListName = (batch instanceof SpellBatch) ? ((SpellBatch)batch).getSpell().getName() : null;
+                undoListName = batch.getName();
                 if (cancel)
                 {
                     return SpellResult.DEACTIVATE;
