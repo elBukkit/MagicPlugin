@@ -8339,6 +8339,7 @@ fxdemo:
       - class: PlayEffects
         effects: love
       - class: Delay
+        delay: 1500
       # Music
       - class: AreaOfEffect
         actions:
@@ -8347,6 +8348,7 @@ fxdemo:
       - class: PlayEffects
         effects: music
       - class: Delay
+        delay: 1000
       # Shield
       - class: AreaOfEffect
         actions:
@@ -8363,6 +8365,7 @@ fxdemo:
       - class: PlayEffects
         effects: smoke
       - class: Delay
+        delay: 1000
       # Sphere
       - class: AreaOfEffect
         actions:
@@ -8399,7 +8402,7 @@ fxdemo:
       - class: AreaOfEffect
         actions:
         - class: Message
-          message: "&5Now Playing:&b Trace"
+          message: "&5Now Playing:&b Trace &7(Look at the caster!)"
       - class: PlayEffects
         effects: trace
       - class: Delay
@@ -8435,203 +8438,170 @@ fxdemo:
           message: "&cThat's (nearly) all of 'em!"
     effects:
       animatedball:
-      - class: EffectSingle
-        location: target
+      - location: target
         effectlib:
           class: AnimatedBall
           duration: $effect_duration
       arc:
-      - class: EffectSingle
-        location: target
+      - location: target
         effectlib:
           class: Arc
           duration: $effect_duration
       atom:
-      - class: EffectSingle
-        location: target
+      - location: target
         effectlib:
           class: Atom
           duration: $effect_duration
       bigbang:
-      - class: EffectSingle
-        location: target
+      - location: target
         effectlib:
           class: BigBang
           duration: $effect_duration
       circle:
-      - class: EffectSingle
-        location: target
+      - location: target
         effectlib:
           class: Circle
           duration: $effect_duration
       cloud:
-      - class: EffectSingle
-        location: target
+      - location: target
         effectlib:
           class: Cloud
           duration: $effect_duration
       cone:
-      - class: EffectSingle
-        location: target
+      - location: target
         effectlib:
           class: Cone
           duration: $effect_duration
       cube:
-      - class: EffectSingle
-        location: target
+      - location: target
         effectlib:
           class: Cube
           duration: $effect_duration
       cylinder:
-      - class: EffectSingle
-        location: target
+      - location: target
         effectlib:
           class: Cylinder
           duration: $effect_duration
       discoball:
-      - class: EffectSingle
-        location: target
+      - location: target
         effectlib:
           class: DiscoBall
           duration: $effect_duration
       dna:
-      - class: EffectSingle
-        location: target
+      - location: target
         effectlib:
           class: Dna
           duration: $effect_duration
       donut:
-      - class: EffectSingle
-        location: target
+      - location: target
         effectlib:
           class: Donut
           duration: $effect_duration
       dragon:
-      - class: EffectSingle
-        location: target
+      - location: target
         effectlib:
           class: Dragon
           duration: $effect_duration
       earth:
-      - class: EffectSingle
-        location: target
+      - location: target
         effectlib:
           class: Earth
           duration: $effect_duration
       flame:
-      - class: EffectSingle
-        location: target
+      - location: target
         effectlib:
           class: Flame
           duration: $effect_duration
       fountain:
-      - class: EffectSingle
-        location: target
+      - location: target
         effectlib:
           class: Fountain
           duration: $effect_duration
       grid:
-      - class: EffectSingle
-        location: target
+      - location: target
         effectlib:
           class: Grid
           duration: $effect_duration
           type: repeating
       heart:
-      - class: EffectSingle
-        location: target
+      - location: target
         effectlib:
           class: Heart
           duration: $effect_duration
           type: repeating
       helix:
-      - class: EffectSingle
-        location: target
+      - location: target
         effectlib:
           class: Helix
           duration: $effect_duration
       hill:
-      - class: EffectSingle
-        location: target
+      - location: target
         effectlib:
           class: Hill
           duration: $effect_duration
       line:
-      - class: EffectSingle
-        location: target
+      - location: target
         effectlib:
           class: Line
           duration: $effect_duration
       love:
-      - class: EffectSingle
-        location: target
+      - location: target
         effectlib:
           class: Love
           duration: $effect_duration
       music:
-      - class: EffectSingle
-        location: target
+      - location: target
         effectlib:
           class: Music
           duration: $effect_duration
       shield:
-      - class: EffectSingle
-        location: target
+      - location: target
         effectlib:
           class: Shield
           duration: $effect_duration
       smoke:
-      - class: EffectSingle
-        location: target
+      - location: target
         effectlib:
           class: Smoke
           duration: $effect_duration
       sphere:
-      - class: EffectSingle
-        location: target
+      - location: target
         effectlib:
           class: Sphere
           duration: $effect_duration
       star:
-      - class: EffectSingle
-        location: target
+      - location: target
         effectlib:
           class: Star
           duration: $effect_duration
       text:
-      - class: EffectSingle
-        location: target
+      - location: target
         effectlib:
           class: Text
           duration: $effect_duration
           text: Magic!
       tornado:
-      - class: EffectSingle
-        location: target
+      - location: target
         effectlib:
           class: Tornado
           duration: $effect_duration
       trace:
-      - class: EffectSingle
-        location: both
+      - location: both
         effectlib:
           class: Trace
           duration: $effect_duration
       vortex:
-      - class: EffectSingle
-        location: target
+      - location: target
         effectlib:
           class: Vortex
           duration: $effect_duration
       warp:
-      - class: EffectSingle
-        location: target
+      - location: target
         effectlib:
           class: Warp
           duration: $effect_duration
       wave:
-      - class: EffectSingle
-        location: target
+      - location: target
         effectlib:
           class: Wave
           duration: $effect_duration
