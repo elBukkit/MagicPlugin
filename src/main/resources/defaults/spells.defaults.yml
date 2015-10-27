@@ -6202,6 +6202,8 @@ broom:
     category: specialty
     class: LevitateSpell
     worth: 6000
+    show_undoable: false
+    quick_cast: true
     effects:
         cast:
         -  class: EffectSingle

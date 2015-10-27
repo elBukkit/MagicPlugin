@@ -843,7 +843,7 @@ wolf:
   - SATURATION
   - REGENERATION
   hotbar_count: 3
-  active_spell: broom
+  active_spell: missile|4
   active_material: erase
   cost_reduction: 2.0
   cooldown_reduction: 2.0
