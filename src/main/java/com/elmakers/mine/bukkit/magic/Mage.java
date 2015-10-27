@@ -360,7 +360,6 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                 Spell spell = spellBatch.getSpell();
                 if (spell.cancelOnDamage() < damage)
                 {
-                    org.bukkit.Bukkit.getLogger().info("Cancelling " + spell.getName());
                     if (!spell.cancel()) {
                         spell.sendMessage(spell.getMessage("cancel"));
                     }
