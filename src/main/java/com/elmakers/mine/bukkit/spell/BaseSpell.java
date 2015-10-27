@@ -149,6 +149,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     private List<CastingCost> costs = null;
     private List<CastingCost> activeCosts = null;
 
+    protected double cancelOnDamage             = 0;
     protected boolean pvpRestricted           	= false;
     protected boolean disguiseRestricted        = true;
     protected boolean usesBrushSelection        = false;
@@ -1209,6 +1210,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
                 ChatColor.DARK_AQUA + message);
     }
 
+    @Override
     public String getMessage(String messageKey) {
         return getMessage(messageKey, "");
     }
@@ -1386,6 +1388,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         costReduction = (float)parameters.getDouble("cost_reduction", 0);
         cooldownReduction = (float)parameters.getDouble("cooldown_reduction", 0);
         bypassMageCooldown = parameters.getBoolean("bypass_mage_cooldown", false);
+        cancelOnDamage = parameters.getDouble("cancel_on_damage", 0);
 
         if (parameters.contains("prevent_passthrough")) {
             preventPassThroughMaterials = controller.getMaterialSet(parameters.getString("prevent_passthrough"));
@@ -1839,6 +1842,9 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         if (cancelled) {
             sendMessage(getMessage("cancel"));
         }
+        if (currentCast != null) {
+            currentCast.cancelEffects();
+        }
         return cancelled;
     }
 
@@ -2221,5 +2227,10 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
 
     public void setTargetsCaster(boolean target) {
         targetSelf = target;
+    }
+
+    @Override
+    public double cancelOnDamage() {
+        return cancelOnDamage;
     }
 }

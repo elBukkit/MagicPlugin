@@ -972,7 +972,6 @@ public class NMSUtils {
         return hasMeta(itemStack, "temporary");
     }
 
-
     public static void makeUnplaceable(ItemStack itemStack) {
         setMeta(itemStack, "unplaceable", "true");
     }
