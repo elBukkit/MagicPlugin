@@ -91,6 +91,7 @@ public interface MageController {
     public SpellCategory getCategory(String key);
     public Collection<SpellCategory> getCategories();
     public Collection<SpellTemplate> getSpellTemplates();
+    public Collection<SpellTemplate> getSpellTemplates(boolean showHidden);
     public SpellTemplate getSpellTemplate(String key);
     public Set<String> getWandPathKeys();
     public WandUpgradePath getPath(String key);
