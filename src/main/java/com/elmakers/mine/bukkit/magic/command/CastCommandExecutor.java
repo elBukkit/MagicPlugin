@@ -191,7 +191,7 @@ public class CastCommandExecutor extends MagicTabExecutor {
 		}
 
 		if (args.length == 1) {
-			Collection<SpellTemplate> spellList = api.getSpellTemplates();
+			Collection<SpellTemplate> spellList = api.getController().getSpellTemplates(true);
 			for (SpellTemplate spell : spellList) {
 				addIfPermissible(sender, options, "Magic." + permissionKey + ".", spell.getKey(), true);
 			}

@@ -3233,16 +3233,22 @@ public class MagicController implements MageController {
 	@Override
 	public Collection<SpellTemplate> getSpellTemplates()
 	{
-		List<SpellTemplate> allSpells = new ArrayList<SpellTemplate>();
+		return getSpellTemplates(false);
+	}
+
+    @Override
+    public Collection<SpellTemplate> getSpellTemplates(boolean showHidden)
+    {
+        List<SpellTemplate> allSpells = new ArrayList<SpellTemplate>();
         for (SpellTemplate spell : spells.values())
         {
-            if (!spell.isHidden())
+            if (showHidden || !spell.isHidden())
             {
                 allSpells.add(spell);
             }
         }
-		return allSpells;
-	}
+        return allSpells;
+    }
 
     @Override
 	public SpellTemplate getSpellTemplate(String name) 
