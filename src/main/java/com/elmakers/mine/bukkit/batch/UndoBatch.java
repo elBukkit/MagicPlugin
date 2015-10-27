@@ -127,4 +127,9 @@ public class UndoBatch implements com.elmakers.mine.bukkit.api.batch.UndoBatch {
     public boolean isFinished() {
         return finished;
     }
+
+    @Override
+    public String getName() {
+        return "Undo " + undoList.getName();
+    }
 }

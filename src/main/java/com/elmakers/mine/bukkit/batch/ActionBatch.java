@@ -71,4 +71,11 @@ public class ActionBatch implements com.elmakers.mine.bukkit.api.batch.SpellBatc
     public Spell getSpell() {
         return context.getSpell();
     }
+
+    @Override
+    public String getName() {
+        Spell spell = getSpell();
+        if (spell == null) return "Unknown";
+        return spell.getName();
+    }
 }
