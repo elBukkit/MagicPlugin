@@ -8610,6 +8610,7 @@ fxdemo:
     parameters:
       radius: 48
       range: 16
+      allow_max_range: true
       target: block
       oty: 6
       target_type: Player
