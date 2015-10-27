@@ -13,7 +13,7 @@ import java.util.Collection;
 public class DelayAction extends BaseSpellAction
 {
     private int delay;
-    private long targetTime;
+    private Long targetTime;
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters) {
@@ -25,11 +25,15 @@ public class DelayAction extends BaseSpellAction
     public void reset(CastContext context)
     {
         super.reset(context);
-        targetTime = System.currentTimeMillis() + delay;
+        targetTime = null;
     }
 
 	@Override
 	public SpellResult perform(CastContext context) {
+        if (targetTime == null) {
+            targetTime = System.currentTimeMillis() + delay;
+            return SpellResult.PENDING;
+        }
         if (System.currentTimeMillis() < targetTime)
         {
             return SpellResult.PENDING;
