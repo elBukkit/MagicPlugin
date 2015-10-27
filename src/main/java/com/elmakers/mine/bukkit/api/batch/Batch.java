@@ -58,4 +58,10 @@ public interface Batch {
      * @return The remaining size of this batch.
      */
     public int remaining();
+
+    /**
+     * Return a friendly name to identify this batch.
+     * @return
+     */
+    public String getName();
 }
