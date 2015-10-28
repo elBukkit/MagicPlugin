@@ -7,6 +7,7 @@ import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.RandomUtils;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
@@ -43,6 +44,9 @@ public class VolumeAction extends CompoundAction
 	private Vector min;
 	private Vector max;
 	private VolumeType volumeType;
+	private boolean useBrushSize;
+
+	private boolean calculatedSize = false;
 
 	private enum VolumeType {
 		SPIRAL,
@@ -63,6 +67,7 @@ public class VolumeAction extends CompoundAction
 		outerProbability = (float)parameters.getDouble("probability", 1);
 		centerProbability = (float)parameters.getDouble("center_probability", centerProbability);
 		outerProbability = (float)parameters.getDouble("outer_probability", outerProbability);
+		useBrushSize = parameters.getBoolean("use_brush_size", false);
 		String typeString = parameters.getString("volume_type");
 		if (typeString != null) {
 			try {
@@ -73,39 +78,27 @@ public class VolumeAction extends CompoundAction
  		} else {
 			volumeType = VolumeType.SPIRAL;
 		}
-		calculateSize(context);
 	}
 
-	protected void calculateSize(CastContext context) {
+	protected boolean calculateSize(CastContext context) {
 		boolean centerY = parameters.getBoolean("center_y", true);
 		boolean centerX = parameters.getBoolean("center_x", true);
 		boolean centerZ = parameters.getBoolean("center_z", true);
-		if (parameters.getBoolean("use_brush_size", false)) {
+		if (useBrushSize) {
 			MaterialBrush brush = context.getBrush();
 			if (!brush.isReady()) {
-				long timeout = System.currentTimeMillis() + 10000;
-				while (System.currentTimeMillis() < timeout) {
-					try {
-						Thread.sleep(500);
-						if (brush.isReady()) {
-							break;
-						}
-					} catch (InterruptedException ex) {
-						break;
-					}
-				}
+				return false;
 			}
-			if (brush.isReady()) {
-				Vector bounds = brush.getSize();
-				xSize = (int)Math.ceil(bounds.getX() / 2) + 1;
-				ySize = (int)Math.ceil(bounds.getY() / 2) + 1;
-				zSize = (int)Math.ceil(bounds.getZ() / 2) + 1;
-				if (volumeType == VolumeType.SPIRAL) {
-					xSize = Math.max(xSize, zSize);
-					zSize = Math.max(xSize, zSize);
-				}
-				centerY = false;
+			Vector bounds = brush.getSize();
+			xSize = (int)Math.ceil(bounds.getX() / 2) + 1;
+			ySize = (int)Math.ceil(bounds.getY() / 2) + 1;
+			zSize = (int)Math.ceil(bounds.getZ() / 2) + 1;
+			if (volumeType == VolumeType.SPIRAL) {
+				xSize = Math.max(xSize, zSize);
+				zSize = Math.max(xSize, zSize);
 			}
+			centerY = false;
+			context.getMage().sendDebugMessage(ChatColor.GREEN + "Brush Size: " + ChatColor.GRAY + xSize + "," + ySize + "," + zSize, 2);
 		} else {
 			xSize = (int) (context.getMage().getRadiusMultiplier() * this.xSize);
 			ySize = (int) (context.getMage().getRadiusMultiplier() * this.ySize);
@@ -140,6 +133,9 @@ public class VolumeAction extends CompoundAction
 		radius = Math.max(xSize, zSize);
 		radiusSquared = radius * radius;
 		startRadius = getStartRadius();
+		calculatedSize = true;
+
+		return true;
 	}
 
 	protected int getStartRadius() {
@@ -163,6 +159,7 @@ public class VolumeAction extends CompoundAction
 			dz = min.getBlockZ();
 		}
 		checked = false;
+		calculatedSize = false;
         MaterialBrush brush = context.getBrush();
         brush.setTarget(context.getTargetLocation());
 	}
@@ -341,6 +338,11 @@ public class VolumeAction extends CompoundAction
 
 	@Override
 	public SpellResult perform(CastContext context) {
+		if (!calculatedSize) {
+			if (!calculateSize(context)) {
+				return SpellResult.PENDING;
+			}
+		}
 		if (radius < 1 && ySize < 1)
 		{
 			return performSingle(context);
