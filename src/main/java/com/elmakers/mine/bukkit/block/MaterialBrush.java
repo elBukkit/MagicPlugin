@@ -12,6 +12,7 @@ import com.elmakers.mine.bukkit.api.data.BrushData;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.magic.Messages;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.DyeColor;
@@ -594,7 +595,18 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
 
     @Override
     public void update(String activeMaterial) {
-        String pieces[] = splitMaterialKey(activeMaterial);
+        // First check for brush mods
+        String pieces[] = StringUtils.split(activeMaterial, '&');
+        if (pieces != null && pieces.length > 0)
+        {
+            activeMaterial = pieces[0];
+            if (pieces.length > 1)
+            {
+                update(pieces[1]);
+            }
+        }
+
+        pieces = splitMaterialKey(activeMaterial);
         isValid = true;
         if (activeMaterial.equals(COPY_MATERIAL_KEY)) {
             enableCopying();
