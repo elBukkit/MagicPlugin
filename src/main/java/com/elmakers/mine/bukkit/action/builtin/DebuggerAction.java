@@ -39,7 +39,6 @@ public class DebuggerAction extends BaseSpellAction
 				mage = controller.getMage(entity);
 		} else {
 			Block block = context.getTargetBlock();
-			org.bukkit.Bukkit.getLogger().info("Target block: " + block.getType());
 			if (block.getType() == Material.COMMAND) {
 				CommandBlock commandBlock = (CommandBlock)block.getState();
 				// This is a bit of hacky ..
