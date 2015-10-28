@@ -2614,13 +2614,13 @@ familiar:
              class: DnaEffect
              particleHelix: drip_lava
              iterations: 24
-             particleBase1: water_bubble
+             particleBase1: drip_water
         -  class: EffectSingle
            location: target
            effectlib:
              class: AtomEffect
              iterations: 32
-             particleNucleus: water_bubble
+             particleNucleus: drip_water
     parameters:
         target_type: LivingEntity
         allow_max_range: false
@@ -2662,13 +2662,13 @@ monster:
              class: DnaEffect
              particleHelix: drip_lava
              iterations: 24
-             particleBase1: water_bubble
+             particleBase1: drip_water
         -  class: EffectSingle
            location: target
            effectlib:
              class: AtomEffect
              iterations: 32
-             particleNucleus: water_bubble
+             particleNucleus: drip_water
     parameters:
         target_type: LivingEntity
         allow_max_range: false
@@ -2695,13 +2695,13 @@ ghast:
              class: DnaEffect
              particleHelix: drip_lava
              iterations: 24
-             particleBase1: water_bubble
+             particleBase1: drip_water
         -  class: EffectSingle
            location: target
            effectlib:
              class: AtomEffect
              iterations: 32
-             particleNucleus: water_bubble
+             particleNucleus: drip_water
     parameters:
         target: block
         track: false
@@ -2745,13 +2745,13 @@ mob:
              class: DnaEffect
              particleHelix: drip_lava
              iterations: 24
-             particleBase1: water_bubble
+             particleBase1: drip_water
         -  class: EffectSingle
            location: target
            effectlib:
              class: AtomEffect
              iterations: 32
-             particleNucleus: water_bubble
+             particleNucleus: drip_water
     parameters:
         target_type: LivingEntity
         allow_max_range: false
@@ -2782,13 +2782,13 @@ farm:
              class: DnaEffect
              particleHelix: drip_lava
              iterations: 24
-             particleBase1: water_bubble
+             particleBase1: drip_water
         -  class: EffectSingle
            location: target
            effectlib:
              class: AtomEffect
              iterations: 32
-             particleNucleus: water_bubble
+             particleNucleus: drip_water
     parameters:
         target_type: LivingEntity
         allow_max_range: false
@@ -2814,13 +2814,13 @@ wolf:
              class: DnaEffect
              particleHelix: drip_lava
              iterations: 24
-             particleBase1: water_bubble
+             particleBase1: drip_water
         -  class: EffectSingle
            location: target
            effectlib:
              class: AtomEffect
              iterations: 32
-             particleNucleus: water_bubble
+             particleNucleus: drip_water
     parameters:
         target_type: LivingEntity
         max_wolves: 5
@@ -2844,13 +2844,13 @@ cat:
              class: DnaEffect
              particleHelix: drip_lava
              iterations: 24
-             particleBase1: water_bubble
+             particleBase1: drip_water
         -  class: EffectSingle
            location: target
            effectlib:
              class: AtomEffect
              iterations: 32
-             particleNucleus: water_bubble
+             particleNucleus: drip_water
     parameters:
         target_type: LivingEntity
         max_ocelots: 5
