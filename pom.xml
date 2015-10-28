@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.elmakers.mine.bukkit</groupId>
 	<artifactId>MagicLib</artifactId>
-	<version>3.3</version>
+	<version>3.4-SNAPSHOT</version>
 	<name>elMakers - Bukkit Plugins : Magic Lib</name>
 	<url>http://mine.elmakers.com</url>
 
@@ -98,7 +98,7 @@
 		<dependency>
 			<groupId>com.elmakers.mine.bukkit</groupId>
 			<artifactId>MagicAPI</artifactId>
-			<version>3.3</version>
+			<version>3.4-SNAPSHOT</version>
 		</dependency>
         <dependency>
             <groupId>net.milkbowl.vault</groupId>
