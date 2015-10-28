@@ -1,5 +1,7 @@
 # CHANGELOG
 
+## 5.4
+
 ## 5.3
 
  - Add "fxdemo" spell, to demo all of the EffectLib FX (well, most of them)
@@ -24,11 +26,11 @@
  - Added Whip spell
  - Add hidden "Projectile" spell for testing CustomProjectile actions
  - Implemented break mechanics for projectiles (Reflect, Shell, Blob, etc)
- - Spells and projectile now hit at the actual block intersection location
+ - Spells and projectiles now hit (and reflect off of) the actual block intersection location
  - Allow @p and @t as simple CommandAction parameters (same as @pn and @tn)
  - Fixed some performance and timing issues with the scheduler
  - Added tab-completion to /wand override command
- - Added Cancel action, for canelling a target's in-progress spell.
+ - Added Cancel action, for cancelling a target's in-progress spell.
  
 ## 5.2.2
 
