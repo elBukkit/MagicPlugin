@@ -31,13 +31,6 @@ public class YamlMageDataStore extends ConfigurationMageDataStore {
     }
 
     @Override
-    public void save(Collection<MageData> mages) {
-        for (MageData data : mages) {
-            save(data);
-        }
-    }
-
-    @Override
     public MageData load(String id) {
         final File playerFile = new File(playerDataFolder, id + ".dat");
         if (!playerFile.exists()) return null;
