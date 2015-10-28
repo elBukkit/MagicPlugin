@@ -451,12 +451,13 @@ public class CompatibilityUtils extends NMSUtils {
             // Bukkit won't allow magic damage from anything but a potion..
             if (sourceHandle != null && source instanceof LivingEntity) {
                 ThrownPotion potion = potionReference == null ? null : potionReference.get();
+                Location location = target.getLocation();
                 if (potion == null) {
-                    Location location = target.getLocation();
                     potion = (ThrownPotion) location.getWorld().spawnEntity(location, EntityType.SPLASH_POTION);
                     potion.remove();
                     potionReference = new WeakReference<ThrownPotion>(potion);
                 }
+                potion.teleport(location);
                 potion.setShooter((LivingEntity)source);
                 Object potionHandle = getHandle(potion);
                 Object damageSource = class_DamageSource_getMagicSourceMethod.invoke(null, potionHandle, sourceHandle);
