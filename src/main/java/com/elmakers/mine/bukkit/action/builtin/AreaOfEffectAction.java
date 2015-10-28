@@ -7,6 +7,7 @@ import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.Target;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
@@ -47,8 +48,16 @@ public class AreaOfEffectAction extends CompoundEntityAction
     @Override
     public void addEntities(CastContext context, List<WeakReference<Entity>> entities)
     {
+        Mage mage = context.getMage();
         Entity sourceEntity = context.getMage().getEntity();
         Location sourceLocation = context.getTargetLocation();
+        if (mage.getDebugLevel() > 8)
+        {
+            mage.sendDebugMessage(ChatColor.GREEN + "AOE Targeting from " + ChatColor.GRAY + sourceLocation.getBlockX() +
+                    ChatColor.DARK_GRAY + ","  + ChatColor.GRAY + sourceLocation.getBlockY() +
+                    ChatColor.DARK_GRAY + "," + ChatColor.GRAY + sourceLocation.getBlockZ() +
+                    ChatColor.DARK_GREEN + " with radius of " + ChatColor.GREEN + radius);
+        }
         List<Entity> candidates = CompatibilityUtils.getNearbyEntities(sourceLocation, radius, radius, radius);
         if (targetCount > 0)
         {
@@ -57,7 +66,13 @@ public class AreaOfEffectAction extends CompoundEntityAction
             {
                 if ((context.getTargetsCaster() || entity != sourceEntity) && context.canTarget(entity))
                 {
-                    targets.add(new Target(sourceLocation, entity, radius));
+                    Target target = new Target(sourceLocation, entity, radius);
+                    targets.add(target);
+                    mage.sendDebugMessage(ChatColor.DARK_GREEN + "Target " + ChatColor.GREEN + entity.getType() + ChatColor.DARK_GREEN + ": " + ChatColor.YELLOW + target.getScore(), 6);
+                }
+                else if (mage.getDebugLevel() > 7)
+                {
+                    mage.sendDebugMessage(ChatColor.DARK_RED + "Skipped Target " + ChatColor.GREEN + entity.getType());
                 }
             }
             Collections.sort(targets);
@@ -74,6 +89,11 @@ public class AreaOfEffectAction extends CompoundEntityAction
                 if ((context.getTargetsCaster() || !entity.equals(sourceEntity)) && context.canTarget(entity))
                 {
                     entities.add(new WeakReference<Entity>(entity));
+                    mage.sendDebugMessage(ChatColor.DARK_GREEN + "Target " + ChatColor.GREEN + entity.getType(), 6);
+                }
+                else if (mage.getDebugLevel() > 7)
+                {
+                    mage.sendDebugMessage(ChatColor.DARK_RED + "Skipped Target " + ChatColor.GREEN + entity.getType());
                 }
             }
         }
