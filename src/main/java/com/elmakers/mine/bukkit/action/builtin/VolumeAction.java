@@ -45,6 +45,9 @@ public class VolumeAction extends CompoundAction
 	private Vector max;
 	private VolumeType volumeType;
 	private boolean useBrushSize;
+	private boolean centerY;
+	private boolean centerX;
+	private boolean centerZ;
 
 	private boolean calculatedSize = false;
 
@@ -61,6 +64,9 @@ public class VolumeAction extends CompoundAction
         xSize = parameters.getInt("x_size", radius);
         ySize = parameters.getInt("y_size", radius);
         zSize = parameters.getInt("z_size", radius);
+		centerY = parameters.getBoolean("center_y", true);
+		centerX = parameters.getBoolean("center_x", true);
+		centerZ = parameters.getBoolean("center_z", true);
         thickness = parameters.getInt("thickness", 0);
 		autoOrient = parameters.getBoolean("orient", false);
 		centerProbability = (float)parameters.getDouble("probability", 1);
@@ -81,9 +87,6 @@ public class VolumeAction extends CompoundAction
 	}
 
 	protected boolean calculateSize(CastContext context) {
-		boolean centerY = parameters.getBoolean("center_y", true);
-		boolean centerX = parameters.getBoolean("center_x", true);
-		boolean centerZ = parameters.getBoolean("center_z", true);
 		if (useBrushSize) {
 			MaterialBrush brush = context.getBrush();
 			if (!brush.isReady()) {
@@ -146,6 +149,13 @@ public class VolumeAction extends CompoundAction
 	public void reset(CastContext context) {
 		super.reset(context);
         createActionContext(context);
+		checked = false;
+		calculatedSize = false;
+        MaterialBrush brush = context.getBrush();
+        brush.setTarget(context.getTargetLocation());
+	}
+
+	protected void resetCounters() {
 		if (volumeType == VolumeType.SPIRAL) {
 			currentRadius = startRadius;
 			dx = -Math.min(startRadius, xSize);
@@ -158,10 +168,6 @@ public class VolumeAction extends CompoundAction
 			dy = min.getBlockY();
 			dz = min.getBlockZ();
 		}
-		checked = false;
-		calculatedSize = false;
-        MaterialBrush brush = context.getBrush();
-        brush.setTarget(context.getTargetLocation());
 	}
 
 	public static Vector rotate(float yaw, float pitch, double x, double y, double z){
@@ -342,6 +348,7 @@ public class VolumeAction extends CompoundAction
 			if (!calculateSize(context)) {
 				return SpellResult.PENDING;
 			}
+			resetCounters();
 		}
 		if (radius < 1 && ySize < 1)
 		{
