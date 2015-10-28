@@ -52,7 +52,7 @@ public class ApplyCooldownAction extends BaseSpellAction
 			if (entity == null || !controller.isMage(entity)) {
 				return SpellResult.NO_TARGET;
 			}
-			controller.getMage(entity);
+			targetMage = controller.getMage(entity);
 		}
 		int amount = cooldownAmount;
 		if (!bypassReduction && cooldownAmount > 0) {
