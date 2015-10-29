@@ -973,6 +973,17 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
                     updateName();
                     updateLore();
                 }
+
+                // Update the stored item, too- in case we save while the
+                // inventory is open.
+                if (storedInventory != null && item != null) {
+                    int currentSlot = player.getInventory().getHeldItemSlot();
+                    ItemStack storedItem = storedInventory.getItem(currentSlot);
+                    String storedId = getWandId(storedItem);
+                    if (storedId != null && storedId.equals(id)) {
+                        storedInventory.setItem(currentSlot, item);
+                    }
+                }
             }
         }
 
