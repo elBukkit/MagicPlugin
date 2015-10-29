@@ -5784,15 +5784,14 @@ blaster:
         -  class: EffectSingle
            sound: magic.zap
            sound_volume: .3
-        projectile:
+        tick:
         -  class: EffectSingle
-           location: origin
+           location: target
            effectlib:
              class: LineEffect
-             iterations: 1000
+             type: instant
              particle: redstone
-             length: 4
-             period: 1
+             length: 2
         hit:
         -  class: EffectSingle
            location: target
@@ -5807,6 +5806,7 @@ blaster:
            location: origin
            entity_effect: hurt
     parameters:
+        tick_size: 3
         target: none
         target_type: LivingEntity
         player_damage: 2
@@ -5814,7 +5814,7 @@ blaster:
         target_breakables: 1
         bypass_backfire: false
         cooldown: 1000
-        velocity: 30
+        velocity: 80
         interval: 250
         reflective: iron_block
     costs:

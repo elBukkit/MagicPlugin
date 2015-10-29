@@ -1135,6 +1135,7 @@ blaster:
     icon: monster_eggs:3
     path: blaster
     mode: cast
+    locked: true
     quiet: 2
     xp: 100
     xp_max: 100
