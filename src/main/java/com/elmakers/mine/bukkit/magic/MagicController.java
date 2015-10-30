@@ -178,7 +178,7 @@ public class MagicController implements MageController {
             // Check for existing data file
             // For now we only do async loads for Players
             if (savePlayerData && mageDataStore != null) {
-                if (commandSender instanceof Player) {
+                if (asynchronousSaving && commandSender instanceof Player) {
                     mage.setLoading(true);
                     plugin.getServer().getScheduler().runTaskAsynchronously(plugin, new Runnable() {
                         @Override
@@ -2274,6 +2274,7 @@ public class MagicController implements MageController {
 		}
 
         savePlayerData = properties.getBoolean("save_player_data", true);
+        asynchronousSaving = properties.getBoolean("save_player_data_asynchronously", true);
 
         ConfigurationSection mageDataStore = properties.getConfigurationSection("player_data_store");
         String dataStoreClassName = mageDataStore.getString("class");
@@ -4040,6 +4041,7 @@ public class MagicController implements MageController {
     private int								    autoUndo						= 0;
     private int								    autoSaveTaskId					= 0;
     private boolean                             savePlayerData                  = true;
+    private boolean                             asynchronousSaving              = true;
     private WarpController						warpController					= null;
 
     private final Map<String, SpellTemplate>    spells              		= new HashMap<String, SpellTemplate>();
