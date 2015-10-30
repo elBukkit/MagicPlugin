@@ -41,9 +41,10 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
     private String requiresCompletedPath = null;
     private String exactPath = null;
     protected boolean autoUpgrade = false;
-    protected boolean useXP = false;
+    protected boolean isXP = false;
+    protected boolean isSkillPoints = false;
     protected boolean sell = false;
-    protected boolean useItems = false;
+    protected boolean isItems = false;
     protected boolean showConfirmation = true;
     protected MaterialAndData confirmFillMaterial;
     protected CastContext context;
@@ -147,8 +148,7 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
         Messages messages = controller.getMessages();
         Mage mage = context.getMage();
         Wand wand = mage.getActiveWand();
-        boolean isItems = (useItems || !VaultController.hasEconomy()) && controller.getWorthItem() != null;
-        boolean isXP = (useXP || (!VaultController.hasEconomy() && controller.getWorthItem() == null));
+
         ShopItem shopItem = showingItems.get(slotIndex);
         if (shopItem == null) {
             return;
@@ -163,8 +163,11 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
                 worth = worth * controller.getWorthBase() / controller.getWorthItemAmount();
                 int hasAmount = getItemAmount(controller, mage);
                 hasCosts = hasAmount >= worth;
+            } else if (isSkillPoints) {
+                worth = worth * controller.getWorthBase() / controller.getWorthSkillPoints();
+                hasCosts = mage.getSkillPoints() >= Math.ceil(worth);
             } else {
-                worth = worth * controller.getWorthBase() * controller.getWorthVirtualCurrency();
+                worth = worth * controller.getWorthBase();
                 hasCosts = VaultController.getInstance().has(mage.getPlayer(), worth);
             }
         }
@@ -187,6 +190,11 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
             {
                 String amountString = formatItemAmount(controller, worth);
                 costString = costString.replace("$cost", amountString);
+            }
+            else if (isSkillPoints) {
+                String spAmount = Integer.toString((int)Math.ceil(worth));
+                spAmount = messages.get("costs.sp_amount").replace("$amount", spAmount);
+                costString = costString.replace("$cost", spAmount);
             }
             else
             {
@@ -233,6 +241,11 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
             {
                 String amountString = formatItemAmount(controller, worth);
                 costString = costString.replace("$cost", amountString);
+            }
+            else if (isSkillPoints) {
+                String spAmount = Integer.toString((int)Math.ceil(worth));
+                spAmount = messages.get("costs.sp_amount").replace("$amount", spAmount);
+                costString = costString.replace("$cost", spAmount);
             } else {
                 costString = costString.replace("$cost", VaultController.getInstance().format(worth));
             }
@@ -254,6 +267,11 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
                         amount -= worthItem.getAmount();
                         mage.giveItem(worthItem);
                     }
+                }
+                else if (isSkillPoints)
+                {
+                    int amount = (int)Math.ceil(worth);
+                    mage.addSkillPoints(amount);
                 }
                 else
                 {
@@ -282,6 +300,10 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
                 else if (isItems)
                 {
                     removeItems(controller, mage, (int)Math.ceil(worth));
+                }
+                else if (isSkillPoints)
+                {
+                    mage.addSkillPoints(-(int)Math.ceil(worth));
                 }
                 else
                 {
@@ -312,9 +334,7 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
     public void prepare(CastContext context, ConfigurationSection parameters) {
         super.prepare(context, parameters);
         permissionNode = parameters.getString("permission", null);
-        useXP = parameters.getBoolean("use_xp", false);
         sell = parameters.getBoolean("sell", false);
-        useItems = parameters.getBoolean("use_items", false);
         showConfirmation = parameters.getBoolean("confirm", true);
         confirmFillMaterial = ConfigurationUtils.getMaterialAndData(parameters, "confirm_filler", new MaterialAndData(Material.AIR));
         requiredPath = parameters.getString("path", null);
@@ -327,6 +347,22 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
         }
         if (requiredPath != null || exactPath != null) {
             requireWand = true;
+        }
+
+        MageController controller = context.getController();
+        isXP = parameters.getBoolean("use_xp", false);
+        isItems = parameters.getBoolean("use_items", false) && controller.getWorthItem() != null;
+        isSkillPoints = parameters.getBoolean("use_sp", false);
+        if (!isSkillPoints && !isXP && !isItems && !VaultController.hasEconomy())
+        {
+            if (controller.getWorthItem() != null)
+            {
+                isItems = true;
+            }
+            else
+            {
+                isSkillPoints = true;
+            }
         }
     }
 
@@ -345,8 +381,6 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
 
         // Load items
         List<ItemStack> itemStacks = new ArrayList<ItemStack>();
-        boolean isItems = (useItems || !VaultController.hasEconomy()) && controller.getWorthItem() != null;
-        boolean isXP = (useXP || (!VaultController.hasEconomy() && controller.getWorthItem() == null));
         String costString = context.getMessage("cost_lore");
         for (ShopItem shopItem : items) {
             double worth = shopItem.getWorth();
@@ -372,8 +406,13 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
                 worth = worth * controller.getWorthBase() / controller.getWorthItemAmount();
                 String itemWorth = formatItemAmount(controller, worth);
                 costs = costString.replace("$cost", itemWorth);
+            } else if (isSkillPoints) {
+                worth = worth * controller.getWorthBase() / controller.getWorthSkillPoints();
+                String spAmount = Integer.toString((int)(double)worth);
+                spAmount = messages.get("costs.sp_amount").replace("$amount", spAmount);
+                costs = costString.replace("$cost", spAmount);
             } else {
-                worth = worth * controller.getWorthBase() * controller.getWorthVirtualCurrency();
+                worth = worth * controller.getWorthBase();
                 costs = costString.replace("$cost", VaultController.getInstance().format(worth));
             }
             lore.add(ChatColor.GOLD + costs);
@@ -411,6 +450,10 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
         } else if (isItems) {
             int itemAmount = getItemAmount(controller, mage);
             inventoryTitle = inventoryTitle.replace("$balance", formatItemAmount(controller, itemAmount));
+        } else if (isSkillPoints) {
+            String spAmount = Integer.toString(mage.getSkillPoints());
+            spAmount = messages.get("costs.sp_amount").replace("$amount", spAmount);
+            inventoryTitle = inventoryTitle.replace("$balance", spAmount);
         } else {
             double balance = VaultController.getInstance().getBalance(player);
             inventoryTitle = inventoryTitle.replace("$balance", VaultController.getInstance().format(balance));
