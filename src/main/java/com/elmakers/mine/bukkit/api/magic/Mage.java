@@ -416,4 +416,7 @@ public interface Mage extends CostReducer {
     public void removeItemsWithTag(String tag);
     public void setQuiet(boolean quiet);
     public boolean isQuiet();
+    public int getSkillPoints();
+    public void addSkillPoints(int delta);
+    public void setSkillPoints(int sp);
 }
