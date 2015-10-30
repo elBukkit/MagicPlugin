@@ -380,8 +380,8 @@ public class MagicController implements MageController {
     }
 
     @Override
-    public double getWorthVirtualCurrency() {
-        return worthCurrency;
+    public double getWorthSkillPoints() {
+        return worthSkillPoints;
     }
 
     @Override
@@ -2079,7 +2079,7 @@ public class MagicController implements MageController {
         maxCooldownReduction = (float)properties.getDouble("max_cooldown_reduction", maxCooldownReduction);
         maxMana = properties.getInt("max_mana", maxMana);
         maxManaRegeneration = properties.getInt("max_mana_regeneration", maxManaRegeneration);
-        worthCurrency = properties.getDouble("worth_currency", 1);
+        worthSkillPoints = properties.getDouble("worth_sp", 1);
         worthBase = properties.getDouble("worth_base", 1);
         worthXP = properties.getDouble("worth_xp", 1);
         ConfigurationSection currencies = properties.getConfigurationSection("currency");
@@ -4025,7 +4025,7 @@ public class MagicController implements MageController {
     private int								    maxMana        	                = 1000;
     private int								    maxManaRegeneration        	    = 100;
     private double                              worthBase                       = 1;
-    private double                              worthCurrency                   = 1;
+    private double                              worthSkillPoints                = 1;
     private double                              worthXP                         = 1;
     private CurrencyItem                        currencyItem                    = null;
 

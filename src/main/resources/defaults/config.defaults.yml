@@ -663,11 +663,10 @@ worth_effect_sound: 8
 # match up.
 worth_base: 1
 
-# This is how much Vaul economy currency is worth.
-#
-# This is set to a value to scale money up to the new skill-point-based worth values.
-#
-worth_currency: 10
+# This is how much Skill Points are worth, relative to virtual currency.
+# This is set to 10 to scale skill points relative to the currency costs,
+# so we don't break users who have already set up an economy-based spell shop.
+worth_sp: 10
 
 # If using XP as a currency, how much one XP is worth
 worth_xp: 1
@@ -692,7 +691,7 @@ worth_xp: 1
 #
 currency:
   emerald:
-    worth: 10
+    worth: 100
     name: Emerald
     name_plural: Emeralds
 

@@ -224,10 +224,12 @@ worlds:
     world_the_end:
         name: The End
 costs:
+    sp_amount: $amount SP
     xp_amount: $amount XP
     mana_amount: $amount Mana
     mana: Mana
     xp: XP
+    sp: Skill Points
     heroes_mana: $amount Mana
     currency: Dollars
     currency_amount: "$$amount"

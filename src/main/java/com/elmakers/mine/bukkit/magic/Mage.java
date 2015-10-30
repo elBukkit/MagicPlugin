@@ -78,6 +78,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     public static int JUMP_EFFECT_FLIGHT_EXEMPTION_DURATION = 0;
     final static private Set<Material> EMPTY_MATERIAL_SET = new HashSet<Material>();
     private static String defaultMageName = "Mage";
+    private static String SKILL_POINT_KEY = "sp";
 
     protected final String id;
     protected ConfigurationSection data = new MemoryConfiguration();
@@ -2093,6 +2094,35 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
     public void setDestinationWarp(String warp) {
         destinationWarp = warp;
+    }
+
+    @Override
+    public int getSkillPoints() {
+        if (data.contains(SKILL_POINT_KEY)) {
+            // .. I thought Configuration section would auto-convert? I guess not!
+            if (data.isString(SKILL_POINT_KEY)) {
+                try {
+                    data.set(SKILL_POINT_KEY, Integer.parseInt(data.getString(SKILL_POINT_KEY)));
+                } catch (Exception ex) {
+                    data.set(SKILL_POINT_KEY, 0);
+                }
+            }
+            return data.getInt(SKILL_POINT_KEY);
+        }
+
+        return 0;
+    }
+
+    @Override
+    public void addSkillPoints(int delta) {
+        int current = getSkillPoints();
+        setSkillPoints(current + delta);
+    }
+
+    @Override
+    public void setSkillPoints(int amount) {
+        // We don't allow negative skill points.
+        data.set(SKILL_POINT_KEY, Math.max(amount, 0));
     }
 }
 
