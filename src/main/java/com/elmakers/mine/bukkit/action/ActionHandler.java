@@ -221,6 +221,7 @@ public class ActionHandler implements Cloneable
         if (showDebug) {
             debugIndent += "  ";
         }
+        boolean isPending = false;
         while (currentAction != null)
         {
             ActionContext action = actions.get(currentAction);
@@ -230,7 +231,7 @@ public class ActionHandler implements Cloneable
             }
             if (action.getAction().requiresTargetEntity() && targetEntity == null) {
                 if (showDebug) {
-                    mage.sendDebugMessage(ChatColor.GRAY + debugIndent + "Action " + ChatColor.GOLD + action.getAction().getClass().getSimpleName() + ChatColor.WHITE  + ": " + ChatColor.GRAY + "Skipped, requires entity target");
+                    mage.sendDebugMessage(ChatColor.GRAY + debugIndent + "Action " + ChatColor.GOLD + action.getAction().getClass().getSimpleName() + ChatColor.WHITE  + ": " + ChatColor.GRAY + "Skipped, requires entity target", 5);
                 }
                 result = result.min(SpellResult.NO_TARGET);
                 advance(context);
@@ -238,7 +239,7 @@ public class ActionHandler implements Cloneable
             }
             if (action.getAction().requiresTarget() && targetLocation == null) {
                 if (showDebug) {
-                    mage.sendDebugMessage(ChatColor.GRAY + debugIndent + "Action " + ChatColor.GOLD + action.getAction().getClass().getSimpleName() + ChatColor.WHITE  + ": " + ChatColor.GRAY + "Skipped, requires target");
+                    mage.sendDebugMessage(ChatColor.GRAY + debugIndent + "Action " + ChatColor.GOLD + action.getAction().getClass().getSimpleName() + ChatColor.WHITE  + ": " + ChatColor.GRAY + "Skipped, requires target", 5);
                 }
                 result = result.min(SpellResult.NO_TARGET);
                 advance(context);
@@ -246,10 +247,14 @@ public class ActionHandler implements Cloneable
             }
             SpellResult actionResult = action.perform(context);
             context.addWork(1);
-            result = result.min(actionResult);
+            if (actionResult == SpellResult.PENDING) {
+                isPending = true;
+            } else {
+                result = result.min(actionResult);
+            }
             if (actionResult == SpellResult.STOP) {
                 if (showDebug) {
-                    mage.sendDebugMessage(ChatColor.RED + debugIndent + "Action " + ChatColor.GOLD + action.getAction().getClass().getSimpleName() + ChatColor.WHITE  + ": " + ChatColor.AQUA + actionResult.name().toLowerCase());
+                    mage.sendDebugMessage(ChatColor.RED + debugIndent + "Action " + ChatColor.GOLD + action.getAction().getClass().getSimpleName() + ChatColor.WHITE  + ": " + ChatColor.AQUA + actionResult.name().toLowerCase(), 4);
                 }
                 cancel(context);
             }
@@ -257,7 +262,7 @@ public class ActionHandler implements Cloneable
                 break;
             }
             if (showDebug) {
-                mage.sendDebugMessage(ChatColor.WHITE + debugIndent + "Action " + ChatColor.GOLD + action.getAction().getClass().getSimpleName() + ChatColor.WHITE  + ": " + ChatColor.AQUA + actionResult.name().toLowerCase());
+                mage.sendDebugMessage(ChatColor.WHITE + debugIndent + "Action " + ChatColor.GOLD + action.getAction().getClass().getSimpleName() + ChatColor.WHITE  + ": " + ChatColor.AQUA + actionResult.name().toLowerCase(), 4);
             }
             if (isConditionalOnSuccess && actionResult.isSuccess()) {
                 cancel(context);
@@ -270,7 +275,7 @@ public class ActionHandler implements Cloneable
 
             advance(context);
             if (context.getWorkAllowed() <= 0) {
-                result = SpellResult.PENDING;
+                isPending = true;
                 break;
             }
         }
@@ -287,7 +292,7 @@ public class ActionHandler implements Cloneable
                     " to " + ChatColor.AQUA + newResult.name().toLowerCase());
         }
 
-        return result;
+        return isPending ? SpellResult.PENDING : newResult;
     }
 
     protected void advance(CastContext context) {
