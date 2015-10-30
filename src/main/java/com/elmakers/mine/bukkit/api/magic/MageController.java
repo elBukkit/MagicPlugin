@@ -164,6 +164,7 @@ public interface MageController {
     public int getMaxWandFillLevel();
     public double getWorthBase();
     public double getWorthXP();
+    public double getWorthVirtualCurrency();
     public ItemStack getWorthItem();
     public double getWorthItemAmount();
     public CurrencyItem getCurrency();

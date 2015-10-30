@@ -28,6 +28,7 @@ public interface SpellTemplate extends Comparable<SpellTemplate>, CostReducer {
     public SpellKey getSpellKey();
     public Color getColor();
     public double getWorth();
+    public double getEarns();
     public int getRange();
     public SpellCategory getCategory();
     public long getCastCount();
