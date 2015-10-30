@@ -139,6 +139,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
     private boolean renameDescription = false;
     private boolean quickCast = false;
     private boolean quickCastDisabled = false;
+    private boolean manualQuickCastDisabled = false;
     private boolean dropToggle = false;
 	
 	private MaterialAndData icon = null;
@@ -1173,7 +1174,11 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         if (quickCast) {
             node.set("mode_cast", "true");
         } else if (quickCastDisabled) {
-            node.set("mode_cast", "disable");
+            if (manualQuickCastDisabled) {
+                node.set("mode_cast", "disable");
+            } else {
+                node.set("mode_cast", "manual");
+            }
         } else {
             node.set("mode_cast", null);
         }
@@ -1414,12 +1419,19 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
                     quickCast = true;
                     // This is to turn the redundant spell lore off
                     quickCastDisabled = true;
+                    manualQuickCastDisabled = false;
+                } else if (quickCastType.equalsIgnoreCase("manual")) {
+                    quickCast = false;
+                    quickCastDisabled = true;
+                    manualQuickCastDisabled = false;
                 } else if (quickCastType.equalsIgnoreCase("disable")) {
                     quickCast = false;
                     quickCastDisabled = true;
+                    manualQuickCastDisabled = true;
                 } else {
                     quickCast = false;
                     quickCastDisabled = false;
+                    manualQuickCastDisabled = false;
                 }
             }
             dropToggle = wandConfig.getBoolean("mode_drop", dropToggle);
@@ -3700,6 +3712,10 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
     @Override
     public boolean isQuickCastDisabled() {
         return quickCastDisabled;
+    }
+
+    public boolean isManualQuickCastDisabled() {
+        return manualQuickCastDisabled;
     }
 
     public boolean isQuickCast() {

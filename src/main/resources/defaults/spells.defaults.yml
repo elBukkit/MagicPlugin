@@ -7363,6 +7363,7 @@ tweakshop:
           wand|quickcast_enable: 0
           wand|quickcast_disable: 0
           wand|quickcast_normal: 0
+          wand|quickcast_manual: 0
           wand|mode_drop: 0
           wand|mode_rightclick: 0
           wand|organizer: 0

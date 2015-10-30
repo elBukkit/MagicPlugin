@@ -282,7 +282,7 @@ public class InventoryController implements Listener {
                 if (!controller.isSpellDroppingEnabled()) {
                     player.closeInventory();
                     String spellName = Wand.getSpell(droppedItem);
-                    if (spellName != null && !activeWand.isQuickCastDisabled()) {
+                    if (spellName != null && !activeWand.isManualQuickCastDisabled()) {
                         Spell spell = mage.getSpell(spellName);
                         if (spell != null) {
                             activeWand.cast(spell);

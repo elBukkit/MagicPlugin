@@ -1764,6 +1764,9 @@ wands:
     quickcast_normal:
         name: Quick Cast (Select)
         description: Enable quick-cast on select spells
+    quickcast_manual:
+        name: Quick Cast (Manual)
+        description: Quick-cast only by pressing Q in inventory
     mode_drop:
         name: Drop Mode
         description: Use the Drop (Q) Button to open the spell inventory
