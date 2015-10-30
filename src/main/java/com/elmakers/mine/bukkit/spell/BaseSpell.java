@@ -137,7 +137,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     private String upgradeDescription;
     private String usage;
     private double worth;
-    private double earns;
+    private int earns;
     private Color color;
     private String particle;
     private SpellCategory category;
@@ -860,7 +860,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         if (node.contains("worth_sp")) {
             worth = node.getDouble("worth_sp", 0) * controller.getWorthSkillPoints();
         }
-        earns = node.getDouble("earns_sp", 0);
+        earns = node.getInt("earns_sp", 0);
         category = controller.getCategory(node.getString("category"));
         costs = parseCosts(node.getConfigurationSection("costs"));
         activeCosts = parseCosts(node.getConfigurationSection("active_costs"));
@@ -2192,6 +2192,11 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
             castCount++;
             if (template != null) {
                 template.castCount++;
+            }
+
+            // Reward SP
+            if (earns > 0 && mage != null) {
+                mage.addSkillPoints(earns);
             }
 
             // Check for level up
