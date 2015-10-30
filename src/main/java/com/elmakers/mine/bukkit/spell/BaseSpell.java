@@ -857,7 +857,10 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         iconURL = node.getString("icon_url");
         color = ConfigurationUtils.getColor(node, "color", null);
         worth = node.getDouble("worth", 0);
-        earns = node.getDouble("earns", 0);
+        if (node.contains("worth_sp")) {
+            worth = node.getDouble("worth_sp", 0) * controller.getWorthSkillPoints();
+        }
+        earns = node.getDouble("earns_sp", 0);
         category = controller.getCategory(node.getString("category"));
         costs = parseCosts(node.getConfigurationSection("costs"));
         activeCosts = parseCosts(node.getConfigurationSection("active_costs"));
