@@ -164,7 +164,7 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
                 int hasAmount = getItemAmount(controller, mage);
                 hasCosts = hasAmount >= worth;
             } else {
-                worth = worth * controller.getWorthBase();
+                worth = worth * controller.getWorthBase() * controller.getWorthVirtualCurrency();
                 hasCosts = VaultController.getInstance().has(mage.getPlayer(), worth);
             }
         }
@@ -373,7 +373,7 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
                 String itemWorth = formatItemAmount(controller, worth);
                 costs = costString.replace("$cost", itemWorth);
             } else {
-                worth = worth * controller.getWorthBase();
+                worth = worth * controller.getWorthBase() * controller.getWorthVirtualCurrency();
                 costs = costString.replace("$cost", VaultController.getInstance().format(worth));
             }
             lore.add(ChatColor.GOLD + costs);
