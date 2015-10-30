@@ -1,5 +1,13 @@
 # Migration Notes
 
+## 5.4
+
+ - The economy "worth" values of spells were scaled down by 10x. 
+   I added a new "worth_currency" value in config.yml that accounts for this,
+   and scaled the default emerald worth appropriately- but if you have tweaked your
+   economy, you may need to account for this.
+ - The spell shop now defaults to working with skill points.
+
 ## 5.2.2
 
  - Undo action "target_self" parameter changed to "target_caster"

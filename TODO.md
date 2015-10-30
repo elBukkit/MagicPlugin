@@ -1,12 +1,23 @@
 # TODO
 
+Lead on possible undo issue- undo another player's spell while building, it still builds another tick or so?
+
+Wand dupe issue:
+
+if there is a unlocked armor stand
+1. place rando item in the hand of the armor stand
+2. open your wand and then swap out the wand with the held item
+on the armor stand
+3. it dupes u can pull it off and get a 2nd wand
+it only works with wands that have menus
+
  - Need to save state to the wand item in the stored inventory.... >:|
+ - Add template requirements to NPCs, or spellshop trait, or.. something?
  
  - Spell lore should reflect reduced cooldowns
  - Goggles deactivate on death (maybe only in Azkaban?)
  - Can we save 1 slot in wand inv?
  - Test out silent firework entities
- - Don't show hidden spells in tab-completion
  - Can magic items stack somehow ... ?
  - Test baby/giant wither bosses:
    You have to set (every tick) the invulnerability of the wither.
@@ -18,22 +29,10 @@
  - Aliases are broken /wand add doesn't activate, spell items don't work
  - Add "Protect" action
  - Fix Anvil renaming + binding (KingBohica1)
- 
- - Change reflect behavior to only work on projectile spells
- - Add break behavior to projectile
 
  - Show countdown in hotbar for duration-based or active-cost spells
  - Add templates to messages.yml for all the various forms a wand and spell
    name can take.
-
-Wand dupe issue:
-
-if there is a unlocked armor stand
-1. place rando item in the hand of the armor stand
-2. open your wand and then swap out the wand with the held item
-on the armor stand
-3. it dupes u can pull it off and get a 2nd wand
-it only works with wands that have menus
 
  - Add an "override" option for spells, to skip loading the defaults for that spell
  - Can't hitbox-target entities standing in a corner? Issues with spiders?
@@ -45,7 +44,6 @@ it only works with wands that have menus
  - Registered blocks aren't clearing on /magic commit ?
  - CoreProtect integration
    http://minerealm.com/community/viewtopic.php?f=32&t=16362
- - Look into ItemLoreStats incompatibility
 
  - Hover text for spells
  - Cat GIF generator? http://catdb.yawk.at/images?tag=gif
@@ -130,44 +128,5 @@ Feb 13, 2014 at 11:51 - 1 like Unlike
 Very good Please a Integration with diablodrops Thanks
 
 --- Contacted diablodrops dev, never heard back. Grabbed source code from github, will check it out.
-
-Mre30
-Jan 9, 2014 at 09:36 - 1 like Unlike
-
-For sure, GlobalMarket will and does work. But its only good for player2player sales.
-
-- DTLTraders
-
----
-
-Gitpw3d
-Wants scoreboard-based mana display
-
--------
-
-alek123222
-Can you make it compatible so when a user has over 20 health he can still be healed because at the moment the plugin just sets them back to 20 again.
-I am using a custom plugin thats based of this one: http://dev.bukkit.org/bukkit-plugins/lore-attrubites-revival/ 
-
-----
-
-Gitpw3d
-My Mistake When the wand is selected the health is set to 20(normal)
-but ils messes with that becauses of the lvs the when the wand is unslected the health reverts to normal execpt needing to regen ~100-1000 hearts
-
-Gitpw3d
-Hi elMaker im using ils lore stats which increases the health you get per lv but mana being displayed messed it up, do you have a solution? other then that this plugin is great
-
-----
-
-diannetea
-We've narrowed down the wands breaking to the "clicksort" plugin, when someone organizes their inventory it breaks and you have to create a new one.
-
----
-
-Peda1996
-Can you add the Feature that it is working on the Plugin shopkeepers?
-
------
 
 	
