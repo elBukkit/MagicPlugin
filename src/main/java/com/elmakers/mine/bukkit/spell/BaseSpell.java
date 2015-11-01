@@ -2195,14 +2195,14 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
             }
 
             // Reward SP
-            if (earns > 0 && mage != null) {
+            if (earns > 0 && mage != null && controller.isSPEnabled()) {
                 mage.addSkillPoints(earns);
             }
 
             // Check for level up
             // This currenlty only works on wands.
             Wand wand = mage == null ? null : mage.getActiveWand();
-            if (wand != null && !wand.isLocked() && controller.isSpellUpgradingEnabled())
+            if (wand != null && !wand.isLocked() && controller.isSpellUpgradingEnabled() && wand.getSpellLevel(spellKey.getKey()) == spellKey.getLevel())
             {
                 MageSpell upgrade = getUpgrade();
                 long requiredCasts = getRequiredUpgradeCasts();
