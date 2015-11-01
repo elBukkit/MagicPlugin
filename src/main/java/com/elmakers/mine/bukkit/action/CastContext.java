@@ -71,6 +71,7 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
     // Base Context
     private int workAllowed = 500;
     private int actionsPerformed;
+    private boolean finished = false;
 
     public CastContext() {
         this.location = null;
@@ -777,6 +778,8 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
 
     @Override
     public void finish() {
+        if (finished) return;
+        finished = true;
         Mage mage = getMage();
 
         if (undoSpell != null && undoSpell.isUndoable())
