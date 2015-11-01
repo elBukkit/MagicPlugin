@@ -5,7 +5,6 @@ import com.elmakers.mine.bukkit.api.block.UndoList;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.spell.TargetType;
 import org.bukkit.ChatColor;
-import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -227,6 +226,30 @@ public class Targeting {
                 World targetWorld = location.getWorld();
                 target.setWorld(ConfigurationUtils.overrideWorld(targetLocationWorldName, targetWorld, context.getController().canCreateWorlds()));
             }
+        }
+
+        Mage mage = context.getMage();
+        if (mage != null && mage.getDebugLevel() > 6)
+        {
+            Location targetLocation = target.getLocation();
+            String message = ChatColor.GREEN + "Targeted from " + ChatColor.GRAY + source.getBlockX() +
+                    ChatColor.DARK_GRAY + ","  + ChatColor.GRAY + source.getBlockY() +
+                    ChatColor.DARK_GRAY + "," + ChatColor.GRAY + source.getBlockZ() +
+                    ChatColor.DARK_GREEN + " with range of " + ChatColor.GREEN + range + ChatColor.DARK_GREEN + ": " +
+                    ChatColor.GOLD + result;
+
+            Entity targetEntity = target.getEntity();
+            if (targetEntity != null) {
+                message = message + ChatColor.DARK_GREEN + " (" + ChatColor.YELLOW + targetEntity.getType() + ChatColor.DARK_GREEN + ")";
+            }
+            if (targetLocation != null) {
+                message = message + ChatColor.DARK_GREEN + " (" + ChatColor.LIGHT_PURPLE + targetLocation.getBlock().getType() + ChatColor.DARK_GREEN + ")";
+                message = message + ChatColor.DARK_GREEN + " at " +
+                        ChatColor.GRAY + targetLocation.getBlockX() +
+                        ChatColor.DARK_GRAY + ","  + ChatColor.GRAY + targetLocation.getBlockY() +
+                        ChatColor.DARK_GRAY + "," + ChatColor.GRAY + targetLocation.getBlockZ();
+            }
+            mage.sendDebugMessage(message);
         }
 
         return target;
