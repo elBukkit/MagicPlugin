@@ -103,6 +103,7 @@ public interface Wand extends CostReducer {
     public boolean isSoul();
     public boolean isQuickCastDisabled();
     public void damageDealt(double damage, Entity target);
+    public int getSpellLevel(String spellKey);
 
     /**
      * Save this Wand to a Configuartion Section.

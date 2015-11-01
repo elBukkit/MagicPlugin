@@ -283,4 +283,5 @@ public interface MageController {
     public boolean spawnPhysicsBlock(Location location, Material material, short data, Vector velocity);
     public boolean isDisguised(Entity entity);
     public boolean isSpellUpgradingEnabled();
+    public boolean isSPEnabled();
 }
