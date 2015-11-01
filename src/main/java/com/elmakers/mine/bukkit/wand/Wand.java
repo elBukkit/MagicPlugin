@@ -66,9 +66,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	public final static float DEFAULT_WAND_COLOR_MIX_WEIGHT = 1.0f;
 
     public final static String[] EMPTY_PARAMETERS = new String[0];
-	
-	// REMEMBER! Each of these MUST have a corresponding class in .traders, else traders will
-	// destroy the corresponding data.
+
 	public final static String[] PROPERTY_KEYS = {
 		"active_spell", "active_material",
         "path", "passive",
@@ -212,6 +210,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
     private Integer playerXpLevel = null;
     private Float playerXpProgress = null;
     private boolean effectBubblesApplied = false;
+    private boolean hasSpellProgression = false;
 
     private long lastLocationTime;
     private Vector lastLocation;
@@ -236,6 +235,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	protected static Map<String, WandTemplate> wandTemplates = new HashMap<String, WandTemplate>();
 
     public static WandManaMode manaMode = WandManaMode.BAR;
+    public static WandManaMode spMode = WandManaMode.NUMBER;
     public static boolean regenWhileInactive = true;
 	public static Material DefaultUpgradeMaterial = Material.NETHER_STAR;
 	public static Material DefaultWandMaterial = Material.BLAZE_ROD;
@@ -487,7 +487,8 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	}
 	
 	public boolean usesMana() {
-		return (xpMax > 0 && xpRegeneration > 0 && !isCostFree()) || isHeroes || (xpMax > 0 && manaPerDamage > 0);
+        if (isCostFree()) return false;
+		return (xpMax > 0 && xpRegeneration > 0) || isHeroes || (xpMax > 0 && manaPerDamage > 0);
 	}
 
 	public float getCooldownReduction() {
@@ -1443,6 +1444,13 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 			template = wandConfig.getString("template", template);
             upgradeTemplate = wandConfig.getString("upgrade_template", upgradeTemplate);
             path = wandConfig.getString("path", path);
+
+            com.elmakers.mine.bukkit.api.wand.WandUpgradePath upgradePath = getPath();
+            if (upgradePath != null) {
+                hasSpellProgression = upgradePath.getSpells().size() > 0;
+            } else {
+                hasSpellProgression = false;
+            }
 
 			activeSpell = wandConfig.getString("active_spell", activeSpell);
 			activeMaterial = wandConfig.getString("active_material", activeMaterial);
@@ -3234,14 +3242,31 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         }
     }
 
-    public boolean displayManaAsXp()
+    public boolean usesXPBar()
     {
-        return manaMode.useXP();
+        return (hasSpellProgression && spMode.useXP()) || (usesMana() && manaMode.useXP());
     }
 
-	protected void updateMana() {
-		if (mage != null && effectiveXpMax > 0) {
-			Player player = mage.getPlayer();
+    public boolean usesXPNumber()
+    {
+        return (hasSpellProgression && spMode.useXPNumber() && controller.isSPEnabled()) || (usesMana() && manaMode.useXP());
+    }
+
+    public boolean hasSpellProgression()
+    {
+        return hasSpellProgression;
+    }
+
+    public boolean usesXPDisplay()
+    {
+        return usesXPBar() || usesXPNumber();
+    }
+
+	public void updateMana() {
+        Player player = mage == null ? null : mage.getPlayer();
+        if (player == null) return;
+
+		if (usesMana()) {
             if (manaMode.useGlow()) {
                 if (xp == effectiveXpMax) {
                     CompatibilityUtils.addGlow(item);
@@ -3252,30 +3277,40 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
             if (manaMode.useDurability()) {
                 updateDurability();
             }
-			if (manaMode.useXP()) {
-                int playerLevel = player.getLevel();
-                float playerProgress = player.getExp();
-                if (playerXpLevel != null && playerXpProgress != null && (playerLevel != playerXpLevel || playerProgress != playerXpProgress))
-                {
-                    int playerXP = getExperience(playerLevel, playerProgress);
-                    int wandXP = getExperience(playerXpLevel, playerXpProgress);
-                    if (playerXP > wandXP) {
-                        addExperience(playerXP - wandXP);
-                    }
-                }
+		}
 
-                if (manaMode.useXPNumber()) {
-                    player.setLevel(0);
-                    playerXpLevel = (int)xp;
-                    playerXpProgress = playerProgress;
-                    player.setLevel(Math.max(0, (int)xp));
-                } else {
-                    playerXpLevel = playerLevel;
-                    playerXpProgress = xp / (float)effectiveXpMax;
-                    player.setExp(Math.max(0, playerXpProgress));
+        if (usesXPDisplay()) {
+            int playerLevel = player.getLevel();
+            float playerProgress = player.getExp();
+
+            if (playerXpLevel != null && playerXpProgress != null && (playerLevel != playerXpLevel || playerProgress != playerXpProgress))
+            {
+                int playerXP = getExperience(playerLevel, playerProgress);
+                int wandXP = getExperience(playerXpLevel, playerXpProgress);
+                if (playerXP > wandXP) {
+                    addExperience(playerXP - wandXP);
                 }
             }
-		}
+
+            if (usesMana() && manaMode.useXPNumber())
+            {
+                playerLevel = (int)xp;
+            }
+            if (usesMana() && manaMode.useXPBar())
+            {
+                playerProgress = Math.max(0, xp / (float)effectiveXpMax);
+            }
+            if (controller.isSPEnabled() && spMode.useXPNumber() && hasSpellProgression)
+            {
+                playerLevel = mage.getSkillPoints();
+            }
+
+            player.setExp(playerProgress);
+            player.setLevel(playerLevel);
+
+            playerXpLevel = player.getLevel();
+            playerXpProgress = player.getExp();
+        }
 	}
 	
 	public boolean isInventoryOpen() {
@@ -3310,9 +3345,13 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		}
         storedInventory = null;
 		
-		if (usesMana() && displayManaAsXp() && player != null) {
-            player.setLevel(Math.max(0, storedXpLevel));
-            player.setExp(Math.max(0, storedXpProgress));
+		if (player != null) {
+            if (usesXPNumber()) {
+                player.setLevel(Math.max(0, storedXpLevel));
+            }
+            if (usesXPBar()) {
+                player.setExp(Math.max(0, storedXpProgress));
+            }
 			storedXpProgress = 0;
 			storedXpLevel = 0;
 		}
@@ -3450,7 +3489,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
     }
 
     public boolean addExperience(int xp) {
-        if (usesMana() && displayManaAsXp()) {
+        if (usesXPDisplay()) {
             this.storedXpProgress += (float)xp / (float)getExpToLevel(this.storedXpLevel);
 
             for (; this.storedXpProgress >= 1.0F; this.storedXpProgress /= (float)getExpToLevel(this.storedXpLevel)) {
@@ -3460,10 +3499,12 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 
             Player player = mage == null ? null : mage.getPlayer();
             if (player != null) {
-                if (manaMode.useXPNumber()) {
+                if (usesXPNumber()) {
                     player.setLevel(Math.max(0, storedXpLevel));
                 }
-                player.setExp(Math.max(0, storedXpProgress));
+                if (usesXPBar()) {
+                    player.setExp(Math.max(0, storedXpProgress));
+                }
 
                 playerXpLevel = player.getLevel();
                 playerXpProgress = player.getExp();
@@ -3475,8 +3516,8 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
     }
 
     public void updateExperience() {
-        if (mage != null && mage.isPlayer() && usesMana() && displayManaAsXp()) {
-            Player player = mage.getPlayer();
+        Player player = mage == null ? null : mage.getPlayer();
+        if (player != null) {
             storedXpProgress = player.getExp();
             storedXpLevel = player.getLevel();
         }
@@ -3909,14 +3950,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         checkActiveMaterial();
 
         mage.setActiveWand(this);
-        if (usesMana()) {
-            if (displayManaAsXp()) {
-                storedXpLevel = player.getLevel();
-                storedXpProgress = player.getExp();
-            }
-            updateMaxMana();
-        }
-
+        updateExperience();
 
         tick();
         saveState();
@@ -4452,6 +4486,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         return mage.getSpell(levelKey.getKey());
     }
 
+    @Override
     public int getSpellLevel(String spellKey) {
         SpellKey key = new SpellKey(spellKey);
         Integer level = spellLevels.get(key.getBaseKey());

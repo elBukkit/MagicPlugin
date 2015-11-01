@@ -2,6 +2,11 @@
 
 ## 5.4
 
+ - Add skill point system.
+   - By default, SP's are displayed above the mana bar while holding a wand (see: config.yml, sp_display)
+   - Some spells reward SP's for successful spell casts
+   - SP's can be spent to purchase new spells
+
 ## 5.3
 
  - Add "fxdemo" spell, to demo all of the EffectLib FX (well, most of them)

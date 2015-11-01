@@ -6,7 +6,9 @@
    I added a new "worth_currency" value in config.yml that accounts for this,
    and scaled the default emerald worth appropriately- but if you have tweaked your
    economy, you may need to account for this.
- - The spell shop now defaults to working with skill points.
+ - The spell shop now defaults to working with skill points. To disable this, set "use_sp: false" on the spellshop in spells.yml.
+ - Wands now use a Skill Point system for progression. This replaces the enchanting system.
+   To switch this back, set "enable_sp: false" in config.yml.
 
 ## 5.2.2
 

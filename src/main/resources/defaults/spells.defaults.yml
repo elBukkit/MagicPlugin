@@ -5827,6 +5827,7 @@ missile:
     upgrade_required_casts: 15
     category: combat
     worth_sp: 150
+    earns_sp: 10
     actions:
         cast:
         - class: CustomProjectile

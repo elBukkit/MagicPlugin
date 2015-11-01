@@ -306,7 +306,13 @@ brush_select_spell: brushselect
 default_wand_path:
 
 # How to display Mana. Options are "bar", "number", "durability", "glow" and "none"
-mana_display: hybrid
+mana_display: bar
+
+# How to display SP. Options are "number" and "none"
+sp_display: number
+
+# Set this to false to disable the Skill Point system completely.
+sp_enabled: true
 
 # Control whether wands regenerate mana while they are not being held
 regenerate_while_inactive: true

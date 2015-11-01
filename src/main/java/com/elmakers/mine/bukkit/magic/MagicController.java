@@ -2189,6 +2189,15 @@ public class MagicController implements MageController {
                 Wand.manaMode = WandManaMode.NONE;
             }
 		}
+        if (properties.contains("sp_display")) {
+            String spDisplay = properties.getString("sp_display");
+            if (spDisplay.equalsIgnoreCase("number")) {
+                Wand.spMode = WandManaMode.NUMBER;
+            } else {
+                Wand.spMode = WandManaMode.NONE;
+            }
+        }
+        spEnabled = properties.getBoolean("sp_enabled", true);
 
         undoEntityTypes.clear();
         if (properties.contains("entity_undo_types"))
@@ -3942,6 +3951,11 @@ public class MagicController implements MageController {
         return spellDroppingEnabled;
     }
 
+    @Override
+    public boolean isSPEnabled() {
+        return spEnabled;
+    }
+
     /*
 	 * Private data
 	 */
@@ -4029,6 +4043,7 @@ public class MagicController implements MageController {
     private double                              worthSkillPoints                = 1;
     private double                              worthXP                         = 1;
     private CurrencyItem                        currencyItem                    = null;
+    private boolean                             spEnabled                       = true;
 
     private float							 	castCommandCostReduction	    = 1.0f;
     private float							 	castCommandCooldownReduction	= 1.0f;

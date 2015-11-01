@@ -1,6 +1,33 @@
 # TODO
 
+- unfinite level-up bug with bewitched snowball
+- projectile passes through protego sometimes
+- protego direction bug:
+if you look norht and east its offf but if you look south and west its "centered"
+
 Lead on possible undo issue- undo another player's spell while building, it still builds another tick or so?
+
+- Don't logout players on server change until they quit
+
+- Optimize entity queries for hitbox targeting
+
+- Skill point system:
+  - Add "uses_sp" tag to wands
+  - Refactor XP bar/number system ... completely
+  - Save stored XP values in mage data, same as inventory, for restoring
+  - Check for uses_sp on ench table clicks
+
+- Projectile action re-work
+  - Action should track projectiles for hit/miss
+  - Also in toss block action, tnt action, etc
+
+- Undo action re-work
+  - Incorporate UndoBatch into Undo action
+    - Make sure to handle special cases, non-cancellable
+
+- Re-work "active", "deactivate" and "cancel" behaviors?
+
+- Ignite, remove PotionEffects, etc- only return CAST if they changed something
 
 Wand dupe issue:
 
