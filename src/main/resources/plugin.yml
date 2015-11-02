@@ -166,6 +166,53 @@ commands:
         /magic give blink
         /magic give material stone
         /magic give upgrade apprentice
+  mage:
+    description: Configure or inspect Magic player data
+    permission: Magic.commands.mage
+    usage: |
+        Use /help mage [subcommand] for more information
+        /mage configure   Modify Mage data
+        /mage describe    Describe Mage data
+        /mage check       Check player permissions
+        /mage debug       Enable/disable debug for a player
+        /mage delete      Delete all data for a Mage
+  "mage configure":
+    description: Configure Mage player data or spell cast counts
+    permission: Magic.commands.mage.configure
+    usage: |
+
+        /mage configure <Player> <Spell/Key> <Value/Cast Count>
+        /mage configure NathanWolf sp 100
+        /mage configure NathanWolf blink 0
+  "mage describe":
+    description: List Mage player data or spell cast counts
+    permission: Magic.commands.mage.describe
+    usage: |
+
+        /mage describe <Player> [Spell]
+        /mage describe NathanWolf
+        /mage describe NathanWolf blink
+  "mage delete":
+    description: Complete reset and delete player data
+    permission: Magic.commands.mage.delete
+    usage: |
+
+        /mage delete NathanWolf
+  "mage check":
+    description: Do a permission check on player, show debug info
+    permission: Magic.commands.mage.check
+    usage: |
+        /mage check [Player]
+        /mage check
+        /mage check NathanWolf
+  "mage debug":
+    description: Toggle debug messages for a player's spell casts
+    permission: Magic.commands.mage.debug
+    usage: |
+        /mage debug [Player] [Debug Level]
+        /mage debug
+        /mage debug NathanWolf
+        /mage debug NathanWolf 10
   mgive:
     description: Give players items
     usage: /mgive <Player> [itemname] <amount>
@@ -497,20 +544,28 @@ permissions:
     description: Player may check the value of an item
     type: boolean
     default: op
-  Magic.commands.magic.describe:
+  Magic.commands.mage:
+    description: Shows help info for the /mage command
+    type: boolean
+    default: op
+  Magic.commands.mage.describe:
     description: Player may check Mage attributes
     type: boolean
     default: op
-  Magic.commands.magic.configure:
+  Magic.commands.mage.configure:
     description: Player may modify Mage attributes
     type: boolean
     default: op
-  Magic.commands.magic.check:
+  Magic.commands.mage.check:
     description: Player may check permissions
     type: boolean
     default: op
-  Magic.commands.magic.debug:
+  Magic.commands.mage.debug:
     description: Player may toggle debug
+    type: boolean
+    default: op
+  Magic.commands.mage.delete:
+    description: Player may delete player data
     type: boolean
     default: op
   Magic.commands.mskills:

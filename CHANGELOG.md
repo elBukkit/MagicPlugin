@@ -8,6 +8,9 @@
    - SP's can be spent to purchase new spells
  - Add alternate_up_parameters, alternate_down_parameters and alternate_sneak_parameters.
  - Store player EXP and level in backup data, in case of server crash with active wand
+ - Changed /magic commands to /mage:
+   - debug, check, configure, describe
+   - add "delete" command
 
 ## 5.3
 
