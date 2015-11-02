@@ -39,7 +39,7 @@ public class Messages implements com.elmakers.mine.bukkit.api.magic.Messages {
                 }
             } else if (messages.isString(key)) {
                 String value = messages.getString(key);
-                value = StringEscapeUtils.unescapeHtml(value);
+                value = ChatColor.translateAlternateColorCodes('&', StringEscapeUtils.unescapeHtml(value));
                 messageMap.put(key, value);
             }
         }
@@ -55,7 +55,13 @@ public class Messages implements com.elmakers.mine.bukkit.api.magic.Messages {
     }
 
     public String get(String key, String defaultValue) {
-        return messageMap.containsKey(key) ? ChatColor.translateAlternateColorCodes('&', messageMap.get(key)) : defaultValue;
+        if (messageMap.containsKey(key)) {
+            return messageMap.get(key);
+        }
+        if (defaultValue == null) {
+            return "";
+        }
+        return ChatColor.translateAlternateColorCodes('&', defaultValue);
     }
 
     public String get(String key) {
