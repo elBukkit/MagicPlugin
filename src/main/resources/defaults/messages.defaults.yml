@@ -916,7 +916,7 @@ spells:
         cast: Mined $count blocks
         upgrade_description: "&r&b&bull; &6Mines more blocks"
     mine|4:
-        upgrade_description: "&r&b&bull; &6Now mines stone"
+        upgrade_description: "&r&b&bull; &6Now mines full blocks"
     chop:
         name: Chop
         description: Fell a tree in one cast
@@ -1412,7 +1412,7 @@ spells:
         no_required_path: You must be at least $path!
         no_path_end: You must be ready to advance to $path!
         no_wand: You must be holding a wand!
-        insufficient: Costs $cost
+        insufficient: "&4Costs &c$cost"
         confirm_title: "Buy $item"
         deducted: "&d&oYou bought &r&6$item &r&d&ofor &r&a$cost"
     engineershop:

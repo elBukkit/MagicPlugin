@@ -190,9 +190,12 @@ mining:
 - glowing_redstone_ore
 - emerald_ore
 - quartz_ore
-- stone
-- grass
-- dirt
+- coal_block
+- gold_block
+- lapis_block
+- diamond_block
+- redstone_block
+- emerald_block
 
 trees:
 - log
