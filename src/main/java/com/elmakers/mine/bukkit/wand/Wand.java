@@ -353,7 +353,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
                 // Account for randomized locked wands
                 boolean wasLocked = locked;
                 locked = false;
-                randomize(level, false, null);
+                randomize(level, false, null, true);
                 locked = wasLocked;
             }
 		}
@@ -2266,15 +2266,19 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         return true;
     }
 
+    public int enchant(int totalLevels, com.elmakers.mine.bukkit.api.magic.Mage mage, boolean addSpells) {
+        return randomize(totalLevels, true, mage, addSpells);
+    }
+
     public int enchant(int totalLevels, com.elmakers.mine.bukkit.api.magic.Mage mage) {
-        return randomize(totalLevels, true, mage);
+        return randomize(totalLevels, true, mage, true);
     }
 
     public int enchant(int totalLevels) {
-        return randomize(totalLevels, true, null);
+        return randomize(totalLevels, true, null, true);
     }
 
-	protected int randomize(int totalLevels, boolean additive, com.elmakers.mine.bukkit.api.magic.Mage enchanter) {
+	protected int randomize(int totalLevels, boolean additive, com.elmakers.mine.bukkit.api.magic.Mage enchanter, boolean addSpells) {
         if (enchanter == null && mage != null) {
             enchanter = mage;
         }
@@ -2329,7 +2333,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
                 }
             }
 
-            modified = level.randomizeWand(enchanter, this, additive, hasUpgrade);
+            modified = level.randomizeWand(enchanter, this, additive, hasUpgrade, addSpells);
 			totalLevels -= maxLevel;
             if (modified) {
                 if (enchanter != null) {

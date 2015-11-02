@@ -165,7 +165,7 @@ public class WandLevel {
         return remainingMaterials;
     }
 	
-	public boolean randomizeWand(Mage mage, Wand wand, boolean additive, boolean hasUpgrade) {
+	public boolean randomizeWand(Mage mage, Wand wand, boolean additive, boolean hasUpgrade, boolean addSpells) {
 		// Add random spells to the wand
         if (mage == null) {
             mage = wand.getActivePlayer();
@@ -174,33 +174,35 @@ public class WandLevel {
 		boolean addedSpells = false;
         LinkedList<WeightedPair<String>> remainingSpells = getRemainingSpells(wand);
 
-		SpellTemplate firstSpell = null;
-		if (remainingSpells.size() > 0) {
-			Integer spellCount = RandomUtils.weightedRandom(spellCountProbability);
-			for (int i = 0; spellCount != null && i < spellCount; i++) {
-				String spellKey = RandomUtils.weightedRandom(remainingSpells);
-                SpellTemplate currentSpell = wand.getBaseSpell(spellKey);
-				if (wand.addSpell(spellKey)) {
-                    SpellTemplate spell = wand.getMaster().getSpellTemplate(spellKey);
-                    if (mage != null && spell != null) {
-                        if (currentSpell != null) {
-                            String levelDescription = spell.getLevelDescription();
-                            if (levelDescription == null || levelDescription.isEmpty()) {
-                                levelDescription = spell.getName();
+        if (addSpells) {
+            SpellTemplate firstSpell = null;
+            if (remainingSpells.size() > 0) {
+                Integer spellCount = RandomUtils.weightedRandom(spellCountProbability);
+                for (int i = 0; spellCount != null && i < spellCount; i++) {
+                    String spellKey = RandomUtils.weightedRandom(remainingSpells);
+                    SpellTemplate currentSpell = wand.getBaseSpell(spellKey);
+                    if (wand.addSpell(spellKey)) {
+                        SpellTemplate spell = wand.getMaster().getSpellTemplate(spellKey);
+                        if (mage != null && spell != null) {
+                            if (currentSpell != null) {
+                                String levelDescription = spell.getLevelDescription();
+                                if (levelDescription == null || levelDescription.isEmpty()) {
+                                    levelDescription = spell.getName();
+                                }
+                                mage.sendMessage(messages.get("wand.spell_upgraded").replace("$name", currentSpell.getName()).replace("$wand", wand.getName()).replace("$level", levelDescription));
+                                mage.sendMessage(spell.getUpgradeDescription().replace("$name", currentSpell.getName()));
+                            } else {
+                                mage.sendMessage(messages.get("wand.spell_added").replace("$name", spell.getName()).replace("$wand", wand.getName()));
                             }
-                            mage.sendMessage(messages.get("wand.spell_upgraded").replace("$name", currentSpell.getName()).replace("$wand", wand.getName()).replace("$level", levelDescription));
-                            mage.sendMessage(spell.getUpgradeDescription().replace("$name", currentSpell.getName()));
-                        } else {
-                            mage.sendMessage(messages.get("wand.spell_added").replace("$name", spell.getName()).replace("$wand", wand.getName()));
                         }
+                        if (firstSpell == null) {
+                            firstSpell = spell;
+                        }
+                        addedSpells = true;
                     }
-					if (firstSpell == null) {
-						firstSpell = spell;
-					}
-					addedSpells = true;
-				}
-			}
-		}
+                }
+            }
+        }
 		
 		// Look through all spells for the max XP casting cost
 		// Also look for any material-using spells
@@ -259,11 +261,11 @@ public class WandLevel {
 		}
 
         // Let them upgrade if they aren't getting any new spells or brushes
-        if (hasUpgrade && !(addedMaterials && needsMaterials) && !addedSpells && ((getSpellCount() > 0 && spellProbability.size() > 0) || (getMaterialCount() > 0 && materialProbability.size() > 0)))
+        if (hasUpgrade && addSpells && !(addedMaterials && needsMaterials) && !addedSpells && ((getSpellCount() > 0 && spellProbability.size() > 0) || (getMaterialCount() > 0 && materialProbability.size() > 0)))
         {
             if (mage != null && mage.getDebugLevel() > 0) {
                 mage.sendDebugMessage("Has upgrade: " + hasUpgrade);
-                mage.sendDebugMessage("Added spells: " + addedSpells);
+                mage.sendDebugMessage("Added spells: " + addedSpells + " (" + addSpells + ")");
                 mage.sendDebugMessage("Spells per enchant: " + getSpellCount());
                 mage.sendDebugMessage("Spells in list: " + spellProbability.size());
                 mage.sendDebugMessage("Added brushes: " +  addedMaterials + ", needed: " + needsMaterials);

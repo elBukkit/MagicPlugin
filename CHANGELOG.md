@@ -7,6 +7,7 @@
    - Some spells reward SP's for successful spell casts
    - SP's can be spent to purchase new spells (The spellshop now works with SP by default)
    - Players can access the spell shop and upgrades GUIs via an enchantment table
+   - When purchasing a spell from a spell shop, player's wands are upgraded a little
  - Add alternate_up_parameters, alternate_down_parameters and alternate_sneak_parameters.
  - Store player EXP and level in backup data, in case of server crash with active wand
  - Changed /magic commands to /mage:
