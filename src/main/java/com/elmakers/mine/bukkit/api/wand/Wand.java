@@ -75,6 +75,7 @@ public interface Wand extends CostReducer {
     public boolean isLost(LostWand wand);
     public int enchant(int levels);
     public int enchant(int levels, Mage mage);
+    public int enchant(int levels, Mage mage, boolean addSpells);
 
     public Map<String, String> getOverrides();
     public void setOverrides(Map<String, String> overrides);
