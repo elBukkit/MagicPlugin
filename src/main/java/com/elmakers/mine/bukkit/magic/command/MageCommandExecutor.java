@@ -79,6 +79,10 @@ public class MageCommandExecutor extends MagicMapExecutor {
 		{
 			return onMagicCheck(sender, player, args2);
 		}
+        if (subCommand.equalsIgnoreCase("delete"))
+        {
+            return onMagicDelete(sender, player);
+        }
 		if (subCommand.equalsIgnoreCase("debug"))
 		{
 			return onMagicDebug(sender, player, args2);
@@ -124,6 +128,13 @@ public class MageCommandExecutor extends MagicMapExecutor {
     {
         Mage mage = api.getMage(player);
 		mage.debugPermissions(sender, null);
+        return true;
+    }
+
+    public boolean onMagicDelete(CommandSender sender, Player player)
+    {
+        api.getController().deleteMage(player.getUniqueId().toString());
+        sender.sendMessage(ChatColor.RED + "Deleted player " + player.getName());
         return true;
     }
 

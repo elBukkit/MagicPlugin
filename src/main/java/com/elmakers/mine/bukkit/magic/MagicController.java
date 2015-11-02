@@ -3955,6 +3955,20 @@ public class MagicController implements MageController {
         return spEnabled;
     }
 
+    @Override
+    public void deleteMage(final String id) {
+        Mage mage = getRegisteredMage(id);
+        if (mage != null) {
+            playerQuit(mage, new Runnable() {
+                @Override
+                public void run() {
+                    info("Deleted player id " + id);
+                    mageDataStore.delete(id);
+                }
+            });
+        }
+    }
+
     /*
 	 * Private data
 	 */

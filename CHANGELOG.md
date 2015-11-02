@@ -12,7 +12,7 @@
  - Store player EXP and level in backup data, in case of server crash with active wand
  - Changed /magic commands to /mage:
    - debug, check, configure, describe
-   - add "delete" command
+   - add "delete" command, for completely resetting a player data (does not affect wand items!)
  - Add default messaging for shops and shop-related actions
  - Add "apply_to_wand" and require_template parameters for shops, so you can require wands/paths without upgrades
  - Disabled combining wands on an anvil by default (use enable_combining: true in config.yml to change back)
