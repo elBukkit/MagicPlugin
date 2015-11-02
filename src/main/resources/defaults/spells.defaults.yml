@@ -7229,7 +7229,7 @@ spellshop:
         quiet: true
         confirm_filler: stained_glass:5
         auto_upgrade: true
-        upgrade_levels: 30
+        upgrade_levels: 15
         use_sp: true
 
 engineershop:
