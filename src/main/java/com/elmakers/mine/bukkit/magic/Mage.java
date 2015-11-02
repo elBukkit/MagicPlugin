@@ -413,6 +413,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
      *
      * @param message The message to send
      */
+    @Override
     public void sendMessage(String message) {
         if (message == null || message.length() == 0 || quiet) return;
 

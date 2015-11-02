@@ -51,7 +51,7 @@ public class AddSpellAction extends BaseSpellAction
             return SpellResult.INSUFFICIENT_PERMISSION;
         }
         if (wand == null || spellKey == null || spellKey.isEmpty()) {
-            context.sendMessageKey("no_wand");
+            context.showMessage("no_wand", "You must be holding a wand!");
             return SpellResult.FAIL;
         }
         if (wand.hasSpell(spellKey)) {
@@ -60,13 +60,13 @@ public class AddSpellAction extends BaseSpellAction
         if (requiredPath != null || exactPath != null) {
             WandUpgradePath path = wand.getPath();
             if (path == null) {
-                context.sendMessage(context.getMessage("no_upgrade").replace("$wand", wand.getName()));
+                context.showMessage(context.getMessage("no_upgrade", "You may not learn with that $wand.").replace("$wand", wand.getName()));
                 return SpellResult.FAIL;
             }
             if ((requiredPath != null && !path.hasPath(requiredPath)) || (exactPath != null && !exactPath.equals(path.getKey()))) {
                 WandUpgradePath requiresPath = com.elmakers.mine.bukkit.wand.WandUpgradePath.getPath(requiredPath);
                 if (requiresPath != null) {
-                    context.sendMessage(context.getMessage("no_path").replace("$path", requiresPath.getName()));
+                    context.showMessage(context.getMessage("no_path", "You may not learn with that $wand.").replace("$path", requiresPath.getName()));
                 } else {
                     context.getLogger().warning("Invalid path specified in AddSpell action: " + requiredPath);
                 }
@@ -75,11 +75,11 @@ public class AddSpellAction extends BaseSpellAction
             if (requiresCompletedPath != null) {
                 WandUpgradePath pathUpgrade = path.getUpgrade();
                 if (pathUpgrade == null) {
-                    context.sendMessage(context.getMessage("no_upgrade").replace("$wand", wand.getName()));
+                    context.showMessage(context.getMessage("no_upgrade", "There is nothing more for you here.").replace("$wand", wand.getName()));
                     return SpellResult.FAIL;
                 }
                 if (path.canEnchant(wand)) {
-                    context.sendMessage(context.getMessage("no_path_end").replace("$path", pathUpgrade.getName()));
+                    context.showMessage(context.getMessage("no_path_end", "You must be ready to advance to $path!").replace("$path", pathUpgrade.getName()));
                     return SpellResult.FAIL;
                 }
             }
@@ -99,10 +99,10 @@ public class AddSpellAction extends BaseSpellAction
                 if (levelDescription == null || levelDescription.isEmpty()) {
                     levelDescription = spell.getName();
                 }
-                context.sendMessage(messages.get("wand.spell_upgraded").replace("$name", currentSpell.getName()).replace("$wand", wand.getName()).replace("$level", levelDescription));
-                context.sendMessage(spell.getUpgradeDescription().replace("$name", currentSpell.getName()));
+                context.showMessage(messages.get("wand.spell_upgraded").replace("$name", currentSpell.getName()).replace("$wand", wand.getName()).replace("$level", levelDescription));
+                context.showMessage(spell.getUpgradeDescription().replace("$name", currentSpell.getName()));
             } else {
-                context.sendMessage(messages.get("wand.spell_added").replace("$name", spell.getName()).replace("$wand", wand.getName()));
+                context.showMessage(messages.get("wand.spell_added").replace("$name", spell.getName()).replace("$wand", wand.getName()));
             }
         }
 

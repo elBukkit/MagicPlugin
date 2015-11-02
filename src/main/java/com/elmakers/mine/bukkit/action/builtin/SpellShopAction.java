@@ -73,7 +73,7 @@ public class SpellShopAction extends BaseShopAction
         else
         {
             if (path == null) {
-                context.sendMessage(context.getMessage("no_path").replace("$wand", wand.getName()));
+                context.showMessage(context.getMessage("no_path", "You may not learn with that $wand.").replace("$wand", wand.getName()));
                 return SpellResult.FAIL;
             }
 

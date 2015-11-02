@@ -11,6 +11,8 @@
  - Changed /magic commands to /mage:
    - debug, check, configure, describe
    - add "delete" command
+ - Add default messaging for shops and shop-related actions
+ - Add "apply_to_wand" and require_template parameters for shops, so you can require wands/paths without upgrades
 
 ## 5.3
 

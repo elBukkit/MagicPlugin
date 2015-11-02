@@ -55,19 +55,19 @@ public class EnchantWandAction extends BaseSpellAction
             return SpellResult.FAIL;
         }
         if (wand == null) {
-            context.sendMessageKey("no_wand");
+            context.showMessage("no_wand", "You must be holding a wand!");
             return SpellResult.FAIL;
         }
         if (requiredPath != null || exactPath != null) {
             WandUpgradePath path = wand.getPath();
             if (path == null) {
-                context.sendMessage(context.getMessage("no_upgrade").replace("$wand", wand.getName()));
+                context.showMessage(context.getMessage("no_upgrade", "You may not learn with that $wand.").replace("$wand", wand.getName()));
                 return SpellResult.FAIL;
             }
             if ((requiredPath != null && !path.hasPath(requiredPath)) || (exactPath != null && !exactPath.equals(path.getKey()))) {
                 WandUpgradePath requiresPath = com.elmakers.mine.bukkit.wand.WandUpgradePath.getPath(requiredPath);
                 if (requiresPath != null) {
-                    context.sendMessage(context.getMessage("no_path").replace("$path", requiresPath.getName()));
+                    context.showMessage(context.getMessage("no_path", "You may not learn with that $wand.").replace("$path", requiresPath.getName()));
                 } else {
                     context.getLogger().warning("Invalid path specified in EnchantWand action: " + requiredPath);
                 }
@@ -87,7 +87,7 @@ public class EnchantWandAction extends BaseSpellAction
                 }
             }
             if (!foundItem) {
-                context.sendMessageKey("insufficient_resources");
+                context.showMessage("insufficient_resources", "You must have a $requires");
                 return SpellResult.INSUFFICIENT_RESOURCES;
             }
         }

@@ -1384,15 +1384,9 @@ spells:
         name: Upgrade Wand
         description: Add levels to your wand
         no_wand: You must be holding a wand!
-        cast: ""
-        cast_player_message: ""
-        fail: ""
     addspell:
         name: Add Spell
         description: Add a spell to your wand
-        cast: ""
-        cast_player_message: ""
-        fail: ""
         no_upgrade: You may not learn with that $wand.
         no_path: You must be at least $path!
         no_path_end: You must be ready to advance to $path!
@@ -1401,76 +1395,41 @@ spells:
     giveitem:
         name: Give Item
         description: Give an item to the player
-        cast: ""
-        cast_player_message: ""
+        cast: "You received $item"
+        cast_player_message: "You received $item from $player"
     fillwand:
         name: Fill Wand
         description: Fill up your wand with all spells
-        cast: ""
-        cast_player_message: ""
-        fail: ""
         no_wand: You must be holding a wand!
     spellshop:
         name: Spell Shop
         title: "Spells ($balance)"
         description: Buy spells for your current level
         cost_lore: "Costs: $cost"
-        cast: ""
-        cast_player_message: ""
-        fail: ""
         no_items: There are no spells for you to buy here
         no_path: You may not learn with that $wand.
         no_upgrade: There is nothing more for you here.
         no_required_path: You must be at least $path!
         no_path_end: You must be ready to advance to $path!
         no_wand: You must be holding a wand!
-        insufficient_resources: Costs $cost
+        insufficient: Costs $cost
         confirm_title: "Buy $item"
         deducted: "&d&oYou bought &r&6$item &r&d&ofor &r&a$cost"
     engineershop:
         name: Engineer Shop
         title: "Rollback ($balance)"
         description: Unlock the Engineering level
-        cost_lore: "Costs: $cost"
-        cast: ""
-        cast_player_message: ""
-        fail: ""
-        no_items: There are no spells for you to buy here
-        no_path: You may not learn with that $wand.
-        no_upgrade: There is nothing more for you here.
-        no_required_path: You must be at least $path!
-        no_path_end: You must be ready to advance to $path!
-        no_wand: You must be holding a wand!
         confirm_title: "Upgrade to Engineer"
-        insufficient_resources: Costs $cost
-        deducted: "&d&oYou bought &r&6$item &r&d&ofor &r&a$cost"
     architectshop:
         name: Architect Shop
         title: "Absorb ($balance)"
         description: Unlock the Architect level
-        cost_lore: "Costs: $cost"
-        cast: ""
-        cast_player_message: ""
-        fail: ""
-        no_items: There are no spells for you to buy here
-        no_path: You may not learn with that $wand.
-        no_upgrade: There is nothing more for you here.
-        no_required_path: You must be at least $path!
-        no_path_end: You must be ready to advance to $path!
-        no_wand: You must be holding a wand!
-        insufficient_resources: Costs $cost
         confirm_title: "Upgrade to Architect"
-        deducted: "&d&oYou bought &r&6$item &r&d&ofor &r&a$cost"
     bookshop:
         name: Spellbook Shop
         title: "Spell Books"
         description: Get some spell books
         cost_lore: "Free!"
-        cast: ""
-        cast_player_message: ""
-        fail: ""
-        no_items: There is nothing to buy here!
-        insufficient_resources: Costs $cost
         confirm_title: "Get $item"
         deducted: "&d&oYou received &r&6$item"
     tweakshop:
@@ -1478,99 +1437,41 @@ spells:
         title: "Wand Tweaks"
         description: Tweak Your Wand
         cost_lore: "Free!"
-        cast: ""
-        cast_player_message: ""
-        fail: ""
         not_applicable: Your wand already has $item
-        no_items: There is nothing to buy here!
-        insufficient_resources: Costs $cost
-        no_wand: You must be holding a wand!
         confirm_title: "Get $item"
         deducted: "&d&oYou received &r&6$item"
     colorshop:
         name: Wand Color Shop
         title: "Wand Color ($balance)"
         description: Colorize Your Wand
-        cost_lore: "Costs: $cost"
-        cast: ""
-        cast_player_message: ""
-        fail: ""
-        no_items: There is nothing to buy here!
-        insufficient_resources: Costs $cost
-        confirm_title: "Buy $item"
-        no_wand: You must be holding a wand!
-        deducted: "&d&oYou bought &r&6$item &r&d&ofor &r&a$cost"
     upgradeshop:
         name: Wand Upgrade Shop
         title: "Wand Upgrades ($balance)"
         description: Upgrade your wand
-        cost_lore: "Costs: $cost"
-        cast: ""
-        cast_player_message: ""
-        fail: ""
-        no_items: There is nothing to buy here!
-        insufficient_resources: Costs $cost
-        confirm_title: "Buy $item"
-        no_wand: You must be holding a wand!
-        deducted: "&d&oYou bought &r&6$item &r&d&ofor &r&a$cost"
+        not_applicable: Your wand already has $item
     emeraldshop:
         name: Emerald Exchange
         title: "Emeralds ($balance)"
         description: Trade XP for Emeralds
-        cost_lore: "Costs: $cost"
-        cast: ""
-        cast_player_message: ""
-        fail: ""
-        no_items: There is nothing to buy here!
-        insufficient_resources: Costs $cost
-        confirm_title: "Buy $item"
-        deducted: "&d&oYou bought &r&6$item &r&d&ofor &r&a$cost"
     wandshop:
         name: Wand Shop
         title: "Wands ($balance)"
         description: Buy Wands
-        cost_lore: "Costs: $cost"
-        cast: ""
-        cast_player_message: ""
-        fail: ""
-        no_items: There is nothing to buy here!
-        insufficient_resources: Costs $cost
-        confirm_title: "Buy $item"
-        deducted: "&d&oYou bought &r&6$item &r&d&ofor &r&a$cost"
     broomshop:
         name: Broom Shop
         title: "Brooms ($balance)"
         description: Buy Brooms
-        cost_lore: "Costs: $cost"
-        cast: ""
-        cast_player_message: ""
-        fail: ""
-        no_items: There is nothing to buy here!
-        insufficient_resources: Costs $cost
-        confirm_title: "Buy $item"
-        deducted: "&d&oYou bought &r&6$item &r&d&ofor &r&a$cost"
     magicitemshop:
         name: Magic Item Shop
         title: "Magic Items ($balance)"
         description: Buy Magic Items
-        cost_lore: "Costs: $cost"
-        cast: ""
-        cast_player_message: ""
-        fail: ""
-        no_items: There is nothing to buy here!
-        insufficient_resources: Costs $cost
-        confirm_title: "Buy $item"
-        deducted: "&d&oYou bought &r&6$item &r&d&ofor &r&a$cost"
     automatashop:
         name: Automata Shop
         title: "Sell Automata Hearts"
         description: Sell Automata Hearts
         cost_lore: "Earns: $cost"
-        cast: ""
-        cast_player_message: ""
-        fail: ""
         no_items: There is nothing to sell here!
-        insufficient_resources: Requires $cost
+        insufficient: Requires $cost
         confirm_title: "Sell $item"
         deducted: "&d&oYou sold &r&6$item &r&d&ofor &r&a$cost"
     fxdemo:

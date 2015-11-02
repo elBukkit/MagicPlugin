@@ -7212,6 +7212,8 @@ upgrades:
     icon: compass
     category: specialty
     hidden: true
+    parameters:
+      quiet: true
     actions:
         cast:
         -  class: SpellProgress
@@ -7224,7 +7226,7 @@ spellshop:
         cast:
         -  class: SpellShop
     parameters:
-        loud: true
+        quiet: true
         confirm_filler: stained_glass:5
         auto_upgrade: true
         use_sp: true
@@ -7237,7 +7239,7 @@ engineershop:
         cast:
         -  class: SpellShop
     parameters:
-        loud: true
+        quiet: true
         path_end: master
         auto_upgrade: true
         confirm_filler: stained_glass:2
@@ -7252,7 +7254,7 @@ architectshop:
         cast:
         -  class: SpellShop
     parameters:
-        loud: true
+        quiet: true
         path_end: engineer
         auto_upgrade: true
         confirm_filler: stained_glass:9
@@ -7267,7 +7269,7 @@ bookshop:
         cast:
         -  class: ItemShop
     parameters:
-        loud: true
+        quiet: true
         confirm: false
         items:
           book|combat: 0
@@ -7289,7 +7291,7 @@ broomshop:
         cast:
         -  class: ItemShop
     parameters:
-        loud: true
+        quiet: true
         confirm: true
         confirm_filler: stained_glass:3
         items:
@@ -7304,7 +7306,7 @@ wandshop:
         cast:
         -  class: ItemShop
     parameters:
-        loud: true
+        quiet: true
         confirm: true
         confirm_filler: stained_glass:3
         items:
@@ -7324,7 +7326,7 @@ magicitemshop:
         cast:
         -  class: ItemShop
     parameters:
-        loud: true
+        quiet: true
         confirm: true
         confirm_filler: stained_glass:3
         items:
@@ -7357,7 +7359,7 @@ automatashop:
         cast:
         -  class: ItemShop
     parameters:
-        loud: true
+        quiet: true
         confirm: true
         confirm_filler: stained_glass:14
         sell: true
@@ -7375,7 +7377,7 @@ tweakshop:
         cast:
         -  class: ItemShop
     parameters:
-        loud: true
+        quiet: true
         confirm: false
         require_wand: true
         items:
@@ -7403,7 +7405,7 @@ colorshop:
         cast:
         -  class: ItemShop
     parameters:
-        loud: true
+        quiet: true
         confirm_filler: stained_glass:9
         confirm: true
         require_wand: true
@@ -7428,7 +7430,7 @@ upgradeshop:
         cast:
         -  class: ItemShop
     parameters:
-        loud: true
+        quiet: true
         confirm_filler: stained_glass:2
         confirm: true
         require_wand: true
@@ -7445,7 +7447,7 @@ emeraldshop:
         cast:
         -  class: ItemShop
     parameters:
-        loud: true
+        quiet: true
         confirm: true
         use_xp: true
         confirm_filler: stained_glass:5
