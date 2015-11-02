@@ -82,7 +82,12 @@ public class MagicGiveCommandExecutor extends MagicTabExecutor {
             api.giveExperienceToPlayer(player, count);
             sender.sendMessage("Gave " + count + " experience to " + player.getName());
             return true;
-        } else {
+        } else if (itemName.equalsIgnoreCase("sp")) {
+            Mage mage = api.getMage(player);
+            mage.addSkillPoints(count);
+            sender.sendMessage("Gave " + count + " skill points to " + player.getName());
+            return true;
+        }else {
             Mage mage = api.getMage(player);
             ItemStack item = api.createItem(itemName, mage);
             if (item == null) {
@@ -119,6 +124,8 @@ public class MagicGiveCommandExecutor extends MagicTabExecutor {
             for (Material material : Material.values()) {
                 options.add(material.name().toLowerCase());
             }
+            options.add("xp");
+            options.add("sp");
 		}
 		return options;
 	}
