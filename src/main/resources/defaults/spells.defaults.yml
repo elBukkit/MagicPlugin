@@ -7243,6 +7243,7 @@ engineershop:
         quiet: true
         path_end: master
         auto_upgrade: true
+        use_sp: true
         confirm_filler: stained_glass:2
         spells:
           rollback: 5000
@@ -7258,6 +7259,7 @@ architectshop:
         quiet: true
         path_end: engineer
         auto_upgrade: true
+        use_sp: true
         confirm_filler: stained_glass:9
         spells:
           absorb: 6000
