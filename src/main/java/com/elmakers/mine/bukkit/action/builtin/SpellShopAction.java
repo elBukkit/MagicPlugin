@@ -51,6 +51,7 @@ public class SpellShopAction extends BaseShopAction
         showRequired = parameters.getBoolean("show_required", false);
         showFree = parameters.getBoolean("show_free", false);
         requireWand = true;
+        applyToWand = true;
     }
 
     @Override
