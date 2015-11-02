@@ -199,6 +199,7 @@ wand:
     spell_instructions: "&r&bSwing your $wand to cast &r&6$spell&d&o. Spells require mana, shown in the XP bar."
     enchant_instructions: "&r&bEnchant your $wand to add spells and abilities."
     brush_instructions: "&r&bMaterial brushes have been added to your $wand. Shift+Right Click to select a brush."
+    sp_instructions: "&r&6You have earned some Skill Points! SP's are displayed above your mana bar, and may be spent at an enchanting table to learn new spells."
 material:
     wildcard: " (All Types)"
 economy:
@@ -216,6 +217,7 @@ spell:
     required_spell: "You must learn &r&4$spell &d&oto advance to &b$path"
     level_description: Level $level
     quick_cast: "&2Quick Cast"
+    earns: "&2Earns up to &6$earns &eSP"
 worlds:
     world:
         name: The Overworld

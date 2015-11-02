@@ -92,6 +92,7 @@ public abstract class ConfigurationMageDataStore implements MageDataStore {
             ConfigurationSection node = spellNode.createSection(spell.getKey());
             node.set("cast_count", spell.getCastCount());
             node.set("last_cast", spell.getLastCast());
+            node.set("last_earn", spell.getLastEarn());
             node.set("cooldown_expiration", spell.getCooldownExpiration());
             node.set("active", spell.isActive() ? true : null);
             ConfigurationSection extra = spell.getExtraData();
@@ -230,6 +231,7 @@ public abstract class ConfigurationMageDataStore implements MageDataStore {
                 SpellData spellData = new SpellData(key);
                 spellData.setCastCount(node.getLong("cast_count", 0));
                 spellData.setLastCast(node.getLong("last_cast", 0));
+                spellData.setLastEarn(node.getLong("last_earn", 0));
                 spellData.setCooldownExpiration(node.getLong("cooldown_expiration", 0));
                 spellData.setExtraData(node);
                 spellDataList.add(spellData);

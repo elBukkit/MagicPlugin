@@ -4142,11 +4142,11 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		return true;
 	}
 
-    protected String getMessage(String key) {
+    public String getMessage(String key) {
         return getMessage(key, "");
     }
 
-    protected String getMessage(String key, String defaultValue) {
+    public String getMessage(String key, String defaultValue) {
         String message = controller.getMessages().get("wand." + key, defaultValue);
         if (template != null && !template.isEmpty()) {
             message = controller.getMessages().get("wands." + template + "." + key, message);

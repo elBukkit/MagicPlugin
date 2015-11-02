@@ -80,6 +80,8 @@
 # for all spells- generally just effects.
 
 default:
+    # Spells take 2 minutes to return to full SP earning potential
+    earns_cooldown: 120000
     parameters:
       bypass_confusion: true
       bypass_weakness: true
@@ -3848,7 +3850,7 @@ blast:
         brush: air
         radius: 1
         undo: 15000
-        cooldown: 500
+        cooldown: 3000
         destructible: destructible_mining
         select_self: false
         physics_blocks: true
@@ -8033,6 +8035,8 @@ projectile:
     upgrade_required_casts: 15
     category: staff
     worth_sp: 150
+    earns_sp: 10
+    earns_cooldown: 10000
     hidden: true
     actions:
         cast:

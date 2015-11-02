@@ -2143,9 +2143,13 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     @Override
     public void setSkillPoints(int amount) {
         // We don't allow negative skill points.
+        boolean firstEarn = !data.contains(SKILL_POINT_KEY);
         data.set(SKILL_POINT_KEY, Math.max(amount, 0));
 
         if (activeWand != null && Wand.spMode != WandManaMode.NONE) {
+            if (firstEarn) {
+                sendMessage(activeWand.getMessage("sp_instructions"));
+            }
             activeWand.updateMana();
         }
     }

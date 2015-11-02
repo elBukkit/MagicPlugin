@@ -1,17 +1,15 @@
 # TODO
 
-- projectile passes through protego sometimes
-
 Lead on possible undo issue- undo another player's spell while building, it still builds another tick or so?
 
 - Don't logout players on server change until they quit
 
 - Optimize entity queries for hitbox targeting
 
+- Add /mage commands (describe, configure, delete)
+
 - Skill point system:
   - Check for uses_sp on ench table clicks
-  - Add messaging to explain SP system
-  - Scale SP's by time since cast/earn
 
 - Projectile action re-work
   - Action should track projectiles for hit/miss
