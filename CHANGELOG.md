@@ -5,7 +5,8 @@
  - Add skill point system.
    - By default, SP's are displayed above the mana bar while holding a wand (see: config.yml, sp_display)
    - Some spells reward SP's for successful spell casts
-   - SP's can be spent to purchase new spells
+   - SP's can be spent to purchase new spells (The spellshop now works with SP by default)
+   - Players can access the spell shop and upgrades GUIs via an enchantment table
  - Add alternate_up_parameters, alternate_down_parameters and alternate_sneak_parameters.
  - Store player EXP and level in backup data, in case of server crash with active wand
  - Changed /magic commands to /mage:

@@ -2268,8 +2268,7 @@ public class MagicController implements MageController {
         entityController.setKeepWandsOnDeath(properties.getBoolean("keep_wands_on_death", true));
         entityController.setPreventWandMeleeDamage(properties.getBoolean("prevent_wand_melee_damage", true));
         entityController.setAgeDroppedItems(properties.getInt("age_dropped_items", 0));
-        playerController.setClickCooldown(properties.getInt("click_cooldown", 0));
-        playerController.setCreativeModeEjecting(properties.getBoolean("enable_creative_mode_ejecting", false));
+        playerController.loadProperties(properties);
 
 		// Set up other systems
 		EffectPlayer.SOUNDS_ENABLED = soundsEnabled;

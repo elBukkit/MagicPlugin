@@ -79,6 +79,11 @@ public class EnchantingController implements Listener {
 				event.setCancelled(true);
 				return;
 			}
+
+			if (controller.isSPEnabled() && wandItem.hasSpellProgression()) {
+				event.setCancelled(true);
+				return;
+			}
 			
 			if (!wandItem.canUse(player)) {
 				event.setCancelled(true);

@@ -62,7 +62,7 @@
 
 #
 # This is the general configuration file for the magic plugin.
-# 
+#
 # Wand and Spell configurations are separate, in wands.yml and spells.yml.
 # Localizations are also separate, in messages.yml.
 #
@@ -83,7 +83,7 @@
 #   - survival
 
 # Set to false to skip loading defaults/spells.defaults.yml entirely.
-# Use this if you want a completely customized configuration. 
+# Use this if you want a completely customized configuration.
 # You will only have your custom spells, and will not get any new spells when you update.
 # You will need to do the same with wands, since they refer to the default spells.
 load_default_spells: true
@@ -313,6 +313,11 @@ sp_display: number
 
 # Set this to false to disable the Skill Point system completely.
 sp_enabled: true
+
+# This controls what players will see when interacting with an enchantment table
+enchant_click: spellshop
+enchant_sneak_click: upgrades
+enchant_block: enchantment_table
 
 # Control whether wands regenerate mana while they are not being held
 regenerate_while_inactive: true

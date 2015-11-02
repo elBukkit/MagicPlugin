@@ -3,12 +3,15 @@ package com.elmakers.mine.bukkit.magic.listener;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.Messages;
 import com.elmakers.mine.bukkit.api.spell.Spell;
+import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.utility.NMSUtils;
 import com.elmakers.mine.bukkit.wand.Wand;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
@@ -39,13 +42,20 @@ public class PlayerController implements Listener {
     private final MagicController controller;
     private int clickCooldown = 150;
     private boolean enableCreativeModeEjecting = true;
+    private MaterialAndData enchantBlockMaterial;
+    private String enchantClickSpell = "spellshop";
+    private String enchantSneakClickSpell = "upgrades";
 
     public PlayerController(MagicController controller) {
         this.controller = controller;
     }
 
-    public void setClickCooldown(int cooldown) {
-        clickCooldown = cooldown;
+    public void loadProperties(ConfigurationSection properties) {
+        clickCooldown = properties.getInt("click_cooldown", 0);
+        enableCreativeModeEjecting = properties.getBoolean("enable_creative_mode_ejecting", false);
+        enchantBlockMaterial = new MaterialAndData(properties.getString("enchant_block", "enchantment_table"));
+        enchantClickSpell = properties.getString("enchant_click");
+        enchantSneakClickSpell = properties.getString("enchant_sneak_click");
     }
 
     public void setCreativeModeEjecting(boolean eject) {
@@ -309,6 +319,27 @@ public class PlayerController implements Listener {
                 mage.sendMessage(messages.get("wand.self_destruct"));
             }
             return;
+        }
+
+        // Check for enchantment table click
+        Block clickedBlock = event.getClickedBlock();
+        if (wand.hasSpellProgression() && controller.isSPEnabled() && clickedBlock != null && clickedBlock.getType() != Material.AIR && enchantBlockMaterial != null && enchantBlockMaterial.is(clickedBlock))
+        {
+            Spell spell = null;
+            if (player.isSneaking())
+            {
+                spell = enchantSneakClickSpell != null ? mage.getSpell(enchantSneakClickSpell) : null;
+            }
+            else
+            {
+                spell = enchantClickSpell != null ? mage.getSpell(enchantClickSpell) : null;
+            }
+            if (spell != null)
+            {
+                spell.cast();
+                event.setCancelled(true);
+                return;
+            }
         }
 
         if (!mage.checkLastClick(clickCooldown)) {
