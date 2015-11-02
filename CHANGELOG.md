@@ -13,6 +13,7 @@
    - add "delete" command
  - Add default messaging for shops and shop-related actions
  - Add "apply_to_wand" and require_template parameters for shops, so you can require wands/paths without upgrades
+ - Disabled combining wands on an anvil by default (use enable_combining: true in config.yml to change back)
 
 ## 5.3
 

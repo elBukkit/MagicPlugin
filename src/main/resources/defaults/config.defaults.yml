@@ -22,7 +22,7 @@
 # - Wands can be crafted on a crafting table using a blaze rod and nether star
 # - Wands can NOT be found in random naturally-spawned chests (block populator disabled by default- enable prior to world generation for best use!)
 # - Wands can be upgraded on an enchanting table
-# - Wands can be combined on an anvil
+# - Wands can not be combined on an anvil
 # - Wands are indestructible (and will show up on a dynmap)
 # - Wands can be purchased in Essentials shops
 # - WorldGuard building protection will prevent construction spell use
@@ -139,7 +139,7 @@ enable_spell_upgrades: true
 enable_automatic_spell_upgrades: true
 
 # Whether wands can be combined on an anvil
-enable_combining: true
+enable_combining: false
 
 # Set this to 1 to just turn costs off, or you can use it to scale costs down.
 cost_reduction: 0.0

@@ -9,6 +9,7 @@
  - The spell shop now defaults to working with skill points. To disable this, set "use_sp: false" on the spellshop in spells.yml.
  - Wands now use a Skill Point system for progression. This replaces the enchanting system.
    To switch this back, set "enable_sp: false" in config.yml.
+ - Disabled combining wands on an anvil by default (use enable_combining: true in config.yml to change back)
 
 ## 5.2.2
 
