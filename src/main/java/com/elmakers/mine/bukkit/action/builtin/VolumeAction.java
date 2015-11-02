@@ -172,9 +172,6 @@ public class VolumeAction extends CompoundAction
 
 	public static Vector rotate(float yaw, float pitch, double x, double y, double z){
 		float angle;
-		x += 0.5;
-		y += 0.5;
-		z += 0.5;
 		angle = -yaw * DEGTORAD;
 		double sinYaw = Math.sin(angle);
 		double cosYaw = Math.cos(angle);
@@ -184,9 +181,9 @@ public class VolumeAction extends CompoundAction
 
 		double pitchedZ = y * sinPitch + z * cosPitch;
 
-		double finalX = x * cosYaw + pitchedZ * sinYaw;
-		double finalY = y * cosPitch - z * sinPitch;
-		double finalZ = -x * sinYaw + pitchedZ * cosYaw;
+		double finalX = x * cosYaw + pitchedZ * sinYaw + 0.5;
+		double finalY = y * cosPitch - z * sinPitch + 0.5;
+		double finalZ = -x * sinYaw + pitchedZ * cosYaw + 0.5;
 
 		return new Vector(finalX, finalY, finalZ);
 	}
