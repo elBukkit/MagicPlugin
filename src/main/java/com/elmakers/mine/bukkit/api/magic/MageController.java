@@ -284,4 +284,5 @@ public interface MageController {
     public boolean isDisguised(Entity entity);
     public boolean isSpellUpgradingEnabled();
     public boolean isSPEnabled();
+    public void deleteMage(final String id);
 }
