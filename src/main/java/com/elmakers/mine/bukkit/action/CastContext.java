@@ -537,6 +537,26 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
     }
 
     @Override
+    public void showMessage(String key, String def)
+    {
+        Mage mage = getMage();
+        if (mage != null)
+        {
+            mage.sendMessage(getMessage(key, def));
+        }
+    }
+
+    @Override
+    public void showMessage(String message)
+    {
+        Mage mage = getMage();
+        if (mage != null)
+        {
+            mage.sendMessage(message);
+        }
+    }
+
+    @Override
     public void castMessage(String message)
     {
         if (baseSpell != null)
