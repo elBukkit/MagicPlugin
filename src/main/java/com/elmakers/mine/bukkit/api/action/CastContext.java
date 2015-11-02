@@ -79,6 +79,8 @@ public interface CastContext {
     public void sendMessage(String message);
     public void castMessageKey(String key);
     public void sendMessageKey(String key);
+    public void showMessage(String message);
+    public void showMessage(String key, String def);
     public void setTargetedLocation(Location location);
     public Block findBlockUnder(Block block);
     public Block findSpaceAbove(Block block);
