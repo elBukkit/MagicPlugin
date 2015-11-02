@@ -138,6 +138,8 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     private Map<Integer, ItemStack> respawnInventory;
     private Map<Integer, ItemStack> respawnArmor;
     private List<ItemStack> restoreInventory;
+    private Float restoreExperience;
+    private Integer restoreLevel;
 
     private String destinationWarp;
 
@@ -556,6 +558,14 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                 }
                 restoreInventory = null;
             }
+            if (restoreExperience != null) {
+                player.setExp(restoreExperience);
+                restoreExperience = null;
+            }
+            if (restoreLevel != null) {
+                player.setLevel(restoreLevel);
+                restoreLevel = null;
+            }
 
             Collection<SpellData> spellDataList = data == null ? null : data.getSpellData();
             if (spellDataList != null) {
@@ -660,6 +670,8 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             }
 
             restoreInventory = data.getStoredInventory();
+            restoreLevel = data.getStoredLevel();
+            restoreExperience = data.getStoredExperience();
         } catch (Exception ex) {
             controller.getLogger().warning("Failed to load player data for " + playerName + ": " + ex.getMessage());
             return false;
@@ -714,8 +726,16 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             data.setSoulWand(soulWand);
             data.setRespawnArmor(respawnArmor);
             data.setRespawnInventory(respawnInventory);
-            if (activeWand != null && activeWand.hasStoredInventory()) {
-                data.setStoredInventory(Arrays.asList(activeWand.getStoredInventory().getContents()));
+            if (activeWand != null) {
+                if (activeWand.hasStoredInventory()) {
+                    data.setStoredInventory(Arrays.asList(activeWand.getStoredInventory().getContents()));
+                }
+                if (activeWand.usesXPNumber()) {
+                    data.setStoredLevel(activeWand.getStoredXpLevel());
+                }
+                if (activeWand.usesXPBar()) {
+                    data.setStoredExperience(activeWand.getStoredXpProgress());
+                }
             }
             data.setExtraData(this.data);
         } catch (Exception ex) {

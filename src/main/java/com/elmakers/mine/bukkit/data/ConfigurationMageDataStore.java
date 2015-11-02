@@ -130,6 +130,8 @@ public abstract class ConfigurationMageDataStore implements MageDataStore {
         if (storedInventory != null) {
             saveFile.set("inventory", storedInventory);
         }
+        saveFile.set("experience", mage.getStoredExperience());
+        saveFile.set("level", mage.getStoredLevel());
 
         Wand soulWand = mage.getSoulWand();
         if (soulWand != null && soulWand instanceof com.elmakers.mine.bukkit.wand.Wand) {
@@ -291,6 +293,12 @@ public abstract class ConfigurationMageDataStore implements MageDataStore {
         // Load stored inventory
         if (saveFile.contains("inventory")) {
             data.setStoredInventory((List<ItemStack>) saveFile.getList("inventory"));
+        }
+        if (saveFile.contains("experience")) {
+            data.setStoredExperience((float)saveFile.getDouble("experience"));
+        }
+        if (saveFile.contains("level")) {
+            data.setStoredLevel(saveFile.getInt("level"));
         }
 
         if (saveFile.contains("soul") && controller instanceof MagicController) {
