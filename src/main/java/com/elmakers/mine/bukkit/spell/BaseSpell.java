@@ -193,9 +193,11 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     private int                                 mageCooldown            = 0;
     private int                                 cooldown                = 0;
     private long                                cooldownExpiration      = 0;
+    private int                                 earnCooldown            = 0;
     private int                                 duration                = 0;
     private int                                 totalDuration           = -1;
     private long                                lastCast                = 0;
+    private long                                lastEarn                = 0;
     private long                                lastActiveCost          = 0;
     private float                               activeCostScale         = 1;
     private long								castCount				= 0;
@@ -861,6 +863,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
             worth = node.getDouble("worth_sp", 0) * controller.getWorthSkillPoints();
         }
         earns = node.getInt("earns_sp", 0);
+        earnCooldown = node.getInt("earns_cooldown", 0);
         category = controller.getCategory(node.getString("category"));
         costs = parseCosts(node.getConfigurationSection("costs"));
         activeCosts = parseCosts(node.getConfigurationSection("active_costs"));
@@ -1913,6 +1916,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         try {
             castCount = spellData.getCastCount();
             lastCast = spellData.getLastCast();
+            lastEarn = spellData.getLastEarn();
             cooldownExpiration = spellData.getCooldownExpiration();
             if (category != null && template == null) {
                 category.addCasts(castCount, lastCast);
@@ -1928,6 +1932,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         try {
             spellData.setCastCount(castCount);
             spellData.setLastCast(lastCast);
+            spellData.setLastEarn(lastEarn);
             spellData.setCooldownExpiration(cooldownExpiration);
             spellData.setIsActive(isActive);
             onSave(spellData.getExtraData());
@@ -2162,6 +2167,13 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
                 lore.add(ChatColor.GOLD + brushText);
             }
         }
+
+        if (earns > 0) {
+            String earnsText = messages.get("spell.earns").replace("$earns", Integer.toString(earns));
+            if (!earnsText.isEmpty()) {
+                lore.add(earnsText);
+            }
+        }
     }
 
     @Override
@@ -2196,11 +2208,19 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
 
             // Reward SP
             if (earns > 0 && mage != null && controller.isSPEnabled()) {
-                mage.addSkillPoints(earns);
+                long now = System.currentTimeMillis();
+                int scaledEarn = earns;
+                if (lastEarn > 0 && earnCooldown > 0 && now < lastEarn + earnCooldown) {
+                    scaledEarn = (int)Math.floor((double)earns * (now - lastEarn) / earnCooldown);
+                }
+                if (scaledEarn > 0) {
+                    mage.addSkillPoints(scaledEarn);
+                    lastEarn = now;
+                }
             }
 
             // Check for level up
-            // This currenlty only works on wands.
+            // This currently only works on wands.
             Wand wand = mage == null ? null : mage.getActiveWand();
             if (wand != null && !wand.isLocked() && controller.isSpellUpgradingEnabled() && wand.getSpellLevel(spellKey.getKey()) == spellKey.getLevel())
             {
