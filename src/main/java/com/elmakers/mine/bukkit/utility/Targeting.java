@@ -449,6 +449,13 @@ public class Targeting {
                 queryRange = new Vector(range * 2, range * 2, range * 2);
                 sourceLocation = source;
             }
+            if (mage != null && mage.getDebugLevel() > 9)
+            {
+                mage.sendDebugMessage(ChatColor.GREEN + "Targeting via bounding box " +
+                        ChatColor.GRAY + (int)Math.ceil(queryRange.getX()) +
+                        ChatColor.DARK_GRAY + ","  + ChatColor.GRAY + (int)Math.ceil(queryRange.getY()) +
+                        ChatColor.DARK_GRAY + "," + ChatColor.GRAY + (int)Math.ceil(queryRange.getZ()));
+            }
             entities = CompatibilityUtils.getNearbyEntities(sourceLocation, queryRange.getX() / 2, queryRange.getY() / 2, queryRange.getZ() / 2);
         }
 
