@@ -9,8 +9,8 @@ public class BoundingBox
 
     public BoundingBox(Vector min, Vector max)
     {
-        this.min = min.clone();
-        this.max = max.clone();
+        this.min = new Vector(Math.min(min.getX(), max.getX()), Math.min(min.getY(), max.getY()), Math.min(min.getZ(), max.getZ()));
+        this.max = new Vector(Math.max(min.getX(), max.getX()), Math.max(min.getY(), max.getY()), Math.max(min.getZ(), max.getZ()));
     }
 
     public BoundingBox(double dMinX, double dMaxX, double dMinY, double dMaxY, double dMinZ, double dMaxZ)

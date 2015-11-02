@@ -425,8 +425,8 @@ public class Targeting {
         double rangeSquaredPadded = (range + 1) * (range + 1);
 
         List<Entity> entities = null;
-        range = Math.min(range + hitboxPadding + rangeQueryPadding, CompatibilityUtils.MAX_ENTITY_RANGE);
         if (source == null && sourceEntity != null) {
+            range = Math.min(range + hitboxPadding + rangeQueryPadding, CompatibilityUtils.MAX_ENTITY_RANGE);
             entities = sourceEntity.getNearbyEntities(range, range, range);
             if (sourceEntity instanceof LivingEntity) {
                 source = ((LivingEntity)sourceEntity).getEyeLocation();
@@ -434,7 +434,22 @@ public class Targeting {
                 source = sourceEntity.getLocation();
             }
         } else if (source != null) {
-            entities = CompatibilityUtils.getNearbyEntities(source, range, range, range);
+            Vector queryRange = null;
+            Location sourceLocation = source;
+            if (useHitbox) {
+                range = Math.min(range, CompatibilityUtils.MAX_ENTITY_RANGE);
+                Vector direction = source.getDirection();
+                Location targetLocation = source.clone().add(direction.multiply(range));
+                BoundingBox bounds = new BoundingBox(source.toVector(), targetLocation.toVector());
+                bounds.expand(hitboxPadding + rangeQueryPadding);
+                Vector center = bounds.center();
+                sourceLocation = new Location(source.getWorld(), center.getX(), center.getY(), center.getZ());
+                queryRange = bounds.size();
+            } else {
+                queryRange = new Vector(range * 2, range * 2, range * 2);
+                sourceLocation = source;
+            }
+            entities = CompatibilityUtils.getNearbyEntities(sourceLocation, queryRange.getX() / 2, queryRange.getY() / 2, queryRange.getZ() / 2);
         }
 
         if (mage != null && mage.getDebugLevel() > 8)
