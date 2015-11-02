@@ -171,7 +171,8 @@ silence:
     icon_url: http://textures.minecraft.net/texture/1adaf6e6e387bc18567671bb82e948488bbacff97763ee5985442814989f5d
     icon: rotten_flesh
     category: dark
-    worth_sp: 80
+    worth_sp: 200
+    earns_sp: 10
     actions:
         cast:
         - class: CustomProjectile
@@ -229,6 +230,7 @@ curse:
     icon: rotten_flesh
     category: dark
     worth_sp: 80
+    earns_sp: 6
     upgrade_required_path: apprentice
     upgrade_required_casts: 50
     actions:
@@ -1164,6 +1166,7 @@ push:
     icon: rails
     category: elemental
     worth_sp: 50
+    earns_sp: 3
     upgrade_required_path: student
     upgrade_required_casts: 50
     actions:
@@ -1214,6 +1217,7 @@ push:
         repeat: 3
         delay: 250
         y_offset: 0.75
+        cooldown: 5000
     costs:
         mana: 40
 
@@ -1250,6 +1254,7 @@ pull:
     icon: fishing_rod
     category: elemental
     worth_sp: 20
+    earns_sp: 4
     actions:
         cast:
         -  class: Velocity
@@ -1282,6 +1287,7 @@ pull:
         living_entity_speed: 1
         push: -1
         duration: 10000
+        cooldown: 2000
     costs:
         mana: 50
 
@@ -1810,6 +1816,7 @@ disarm:
     category: light
     cast_on_no_target: true
     worth_sp: 200
+    earns_sp: 7
     upgrade_required_path: student
     upgrade_required_casts: 50
     actions:
@@ -2565,6 +2572,7 @@ torch:
     icon: torch
     category: engineering
     worth_sp: 200
+    earns_sp: 2
     upgrade_required_path: engineer
     upgrade_required_casts: 25
     actions:
@@ -4225,6 +4233,7 @@ counterspell:
     icon: diamond
     category: combat
     worth_sp: 250
+    earns_sp: 6
     upgrade_required_path: apprentice
     upgrade_required_casts: 50
     actions:
@@ -5303,6 +5312,7 @@ shrink:
     class: ShrinkSpell
     cast_on_no_target: true
     worth_sp: 150
+    earns_sp: 8
     effects:
         cast:
         -  class: EffectSingle
@@ -5343,7 +5353,7 @@ shrink:
         player_damage: 1
         entity_damage: 4
         target_breakables: 1
-        cooldown: 4000
+        cooldown: 15000
     costs:
         mana: 75
 
@@ -5354,6 +5364,7 @@ grow:
     class: GrowSpell
     cast_on_no_target: true
     worth_sp: 100
+    earns_sp: 8
     effects:
         cast:
         -  class: EffectSingle
@@ -5391,7 +5402,7 @@ grow:
         allow_max_range: false
         range: 16
         target_breakables: 1
-        cooldown: 7000
+        cooldown: 30000
     costs:
         mana: 110
 
@@ -5827,7 +5838,7 @@ missile:
     upgrade_required_casts: 15
     category: combat
     worth_sp: 150
-    earns_sp: 10
+    earns_sp: 5
     actions:
         cast:
         - class: CustomProjectile
@@ -5907,6 +5918,7 @@ homing:
     icon_url: http://textures.minecraft.net/texture/a4b47e6847d71c60d0a6453313435d61f15b1523abd9741de36366deec1f38d6
     category: combat
     worth_sp: 150
+    earns_sp: 6
     actions:
         cast:
         - class: Message
@@ -5983,6 +5995,7 @@ sticky:
     icon_url: http://textures.minecraft.net/texture/a5454f6488662cdb7d57d5fcaf3d9b061b57c109ba2aaa06c54707174d7a0c4
     category: combat
     worth_sp: 150
+    earns_sp: 10
     actions:
         cast:
         - class: CustomProjectile
@@ -6061,6 +6074,7 @@ blind:
     category: combat
     cast_on_no_target: true
     worth_sp: 70
+    earns_sp: 6
     actions:
         cast:
         - class: CustomProjectile
@@ -6327,6 +6341,7 @@ kill:
     icon_url: http://textures.minecraft.net/texture/71a235c48123b487e864fa21016e223ad4070c6d977b0a519f7dd743d39e47c
     category: master
     worth_sp: 550
+    earns_sp: 13
     upgrade_required_path: master
     upgrade_required_casts: 50
     actions:
@@ -6454,6 +6469,7 @@ torture:
     category: master
     cast_on_no_target: true
     worth_sp: 400
+    earns_sp: 7
     actions:
         cast:
         - class: CustomProjectile
@@ -6653,6 +6669,7 @@ petrify:
     category: combat
     cast_on_no_target: true
     worth_sp: 200
+    earns_sp: 8
     actions:
       cast:
       - class: CustomProjectile
@@ -6747,6 +6764,7 @@ wound:
     icon: quartz
     category: combat
     worth_sp: 100
+    earns_sp: 8
     actions:
         cast:
         -  class: Damage
@@ -6802,7 +6820,7 @@ wound:
         fov: 0.4
         damage: 6
         target_breakables: 3
-        cooldown: 2000
+        cooldown: 5000
         magic_damage: false
         instant_block_effects: true
     costs:
@@ -6884,6 +6902,7 @@ poison:
     icon_url: http://textures.minecraft.net/texture/f441923eb636b6fbc4cfba5475fd6abae52a41593a63d99bfecdd4d845b91a
     category: combat
     worth_sp: 100
+    earns_sp: 7
     upgrade_required_path: student
     upgrade_required_casts: 50
     actions:
@@ -8119,6 +8138,7 @@ whip:
     icon_url: http://textures.minecraft.net/texture/2e67b7afcdb3bfe70cb33d1e384f11f8dc81f3dc9677cc64cb51ba0eb8f3f
     category: combat
     worth_sp: 100
+    earns_sp: 6
     actions:
         cast:
         - class: CustomProjectile
