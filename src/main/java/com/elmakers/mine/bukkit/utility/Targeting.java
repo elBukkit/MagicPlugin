@@ -212,6 +212,10 @@ public class Targeting {
 
     public Target target(CastContext context, double range)
     {
+        if (source == null)
+        {
+            source = context.getEyeLocation();
+        }
         target = findTarget(context, range);
 
         if (targetLocationOffset != null) {
@@ -260,7 +264,7 @@ public class Targeting {
      *
      * @return The target block
      */
-    public Target findTarget(CastContext context, double range)
+    protected Target findTarget(CastContext context, double range)
     {
         if (targetType == TargetType.NONE) {
             return new Target(source);
@@ -356,10 +360,6 @@ public class Targeting {
 
     protected void findTargetBlock(CastContext context, double range)
     {
-        if (source == null)
-        {
-            source = context.getEyeLocation();
-        }
         if (source == null)
         {
             return;
