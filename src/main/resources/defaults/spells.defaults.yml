@@ -8020,11 +8020,7 @@ projectile:
         - class: CustomProjectile
           actions:
           - class: Damage
-        alternate_sneak:
-        - class: CustomProjectile
-          velocity: 1
-          actions:
-          - class: Damage
+          - class: ModifyBlock
     effects:
         cast:
         -  class: EffectSingle
@@ -8101,6 +8097,8 @@ projectile:
              particles: 3
              offset: 0,0,0
              color: "010202"
+    alternate_sneak_parameters:
+        velocity: 20
     parameters:
         allow_max_range: true
         velocity: 200
@@ -8109,11 +8107,12 @@ projectile:
         target_type: LivingEntity
         damage: 0
         target_breakables: 1
-        cooldown: 1000
         reorient: false
         reflective: iron_block
-    costs:
-        mana: 15
+        transparent: air
+        brush: stained_glass:9
+        check_destructible: false
+        undo: 5000
 
 whip:
     icon: ink_sack:1

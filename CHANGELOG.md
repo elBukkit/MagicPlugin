@@ -6,6 +6,7 @@
    - By default, SP's are displayed above the mana bar while holding a wand (see: config.yml, sp_display)
    - Some spells reward SP's for successful spell casts
    - SP's can be spent to purchase new spells
+ - Add alternate_up_parameters, alternate_down_parameters and alternate_sneak_parameters.
 
 ## 5.3
 
