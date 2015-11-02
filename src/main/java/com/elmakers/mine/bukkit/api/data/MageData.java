@@ -29,6 +29,8 @@ public class MageData {
     private Collection<SpellData> spellData;
     private BrushData brushData;
     private UndoData undoData;
+    private Float storedExperience;
+    private Integer storedLevel;
 
     public MageData(String id) {
         this.id = id;
@@ -179,5 +181,21 @@ public class MageData {
 
     public void setSoulWand(Wand soulWand) {
         this.soulWand = soulWand;
+    }
+
+    public Float getStoredExperience() {
+        return storedExperience;
+    }
+
+    public void setStoredExperience(Float storedExperience) {
+        this.storedExperience = storedExperience;
+    }
+
+    public Integer getStoredLevel() {
+        return storedLevel;
+    }
+
+    public void setStoredLevel(Integer storedLevel) {
+        this.storedLevel = storedLevel;
     }
 }
