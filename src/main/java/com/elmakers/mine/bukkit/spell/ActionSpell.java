@@ -2,6 +2,7 @@ package com.elmakers.mine.bukkit.spell;
 
 import com.elmakers.mine.bukkit.action.ActionHandler;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
+import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import org.bukkit.configuration.ConfigurationSection;
 
 import java.util.Collection;
@@ -15,6 +16,9 @@ public class ActionSpell extends BrushSpell
     private boolean undoable = false;
     private boolean requiresBuildPermission = false;
     private boolean requiresBreakPermission = false;
+    private ConfigurationSection upParameters = null;
+    private ConfigurationSection downParameters = null;
+    private ConfigurationSection sneakParameters = null;
     private ActionHandler currentHandler = null;
     private int workThreshold = 500;
 
@@ -47,24 +51,34 @@ public class ActionSpell extends BrushSpell
         currentCast.setWorkAllowed(workThreshold);
         SpellResult result = SpellResult.CAST;
         currentHandler = actions.get("cast");
+        ConfigurationSection altParameters = null;
         ActionHandler downHandler = actions.get("alternate_down");
         ActionHandler upHandler = actions.get("alternate_up");
         ActionHandler sneakHandler = actions.get("alternate_sneak");
         workThreshold = parameters.getInt("work_threshold", 500);
-        if (downHandler != null && isLookingDown())
+        if ((downHandler != null || downParameters != null) && isLookingDown())
         {
             result = SpellResult.ALTERNATE_DOWN;
-            currentHandler = downHandler;
+            if (downHandler != null) {
+                currentHandler = downHandler;
+            }
+            altParameters = downParameters;
         }
-        else if (upHandler != null && isLookingUp())
+        else if ((upHandler != null || upParameters != null) && isLookingUp())
         {
             result = SpellResult.ALTERNATE_UP;
-            currentHandler = upHandler;
+            if (upHandler != null) {
+                currentHandler = upHandler;
+            }
+            altParameters = upParameters;
         }
-        else if (sneakHandler != null && mage.isSneaking())
+        else if ((sneakHandler != null || sneakParameters != null) && mage.isSneaking())
         {
             result = SpellResult.ALTERNATE_SNEAK;
-            currentHandler = sneakHandler;
+            if (sneakHandler != null) {
+                currentHandler = sneakHandler;
+            }
+            altParameters = sneakParameters;
         }
 
         if (isUndoable())
@@ -75,6 +89,13 @@ public class ActionSpell extends BrushSpell
         target();
         if (currentHandler != null)
         {
+            if (altParameters != null) {
+                if (parameters == null) {
+                    parameters = altParameters;
+                } else {
+                    parameters = ConfigurationUtils.addConfigurations(parameters, altParameters);
+                }
+            }
             try {
                 result = result.max(currentHandler.start(currentCast, parameters));
                 currentCast.setInitialResult(result);
@@ -121,6 +142,9 @@ public class ActionSpell extends BrushSpell
         undoable = false;
         requiresBuildPermission = false;
         requiresBreakPermission = false;
+        upParameters = template.getConfigurationSection("alternate_up_parameters");
+        downParameters = template.getConfigurationSection("alternate_down_parameters");
+        sneakParameters = template.getConfigurationSection("alternate_sneak_parameters");
         if (template.contains("actions"))
         {
             ConfigurationSection parameters = template.getConfigurationSection("parameters");
