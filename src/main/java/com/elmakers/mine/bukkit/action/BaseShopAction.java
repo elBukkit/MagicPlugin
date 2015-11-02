@@ -41,6 +41,7 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
     private String requiredTemplate = null;
     private String requiresCompletedPath = null;
     private String exactPath = null;
+    protected int upgradeLevels = 0;
     protected boolean autoUpgrade = false;
     protected boolean applyToWand = false;
     protected boolean isXP = false;
@@ -323,10 +324,14 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
                 }
 
                 if (wand != null && autoUpgrade) {
-                    com.elmakers.mine.bukkit.api.wand.WandUpgradePath path = wand.getPath();
-                    WandUpgradePath nextPath = path != null ? path.getUpgrade(): null;
-                    if (nextPath != null && path.checkUpgradeRequirements(wand, null) && !path.canEnchant(wand)) {
-                        path.upgrade(wand, mage);
+                    if (upgradeLevels <= 0) {
+                        com.elmakers.mine.bukkit.api.wand.WandUpgradePath path = wand.getPath();
+                        WandUpgradePath nextPath = path != null ? path.getUpgrade(): null;
+                        if (nextPath != null && path.checkUpgradeRequirements(wand, null) && !path.canEnchant(wand)) {
+                            path.upgrade(wand, mage);
+                        }
+                    } else {
+                        wand.enchant(upgradeLevels, mage, false);
                     }
                 }
             }
@@ -353,6 +358,7 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
         requiresCompletedPath = parameters.getString("path_end", null);
         requiredTemplate = parameters.getString("require_template", null);
         autoUpgrade = parameters.getBoolean("auto_upgrade", false);
+        upgradeLevels = parameters.getInt("upgrade_levels", 0);
         requireWand = parameters.getBoolean("require_wand", false);
         if (requiresCompletedPath != null) {
             requiredPath = requiresCompletedPath;
