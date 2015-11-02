@@ -257,8 +257,9 @@ public class Target implements Comparable<Target>
         if (useHitbox)
         {
             double checkDistance = Math.max(maxDistanceSquared, 2);
-            Vector endPoint = sourceLocation.clone().add(sourceDirection.multiply(checkDistance));
-            Vector startPoint = sourceLocation.clone().add(sourceDirection.multiply(-1));
+            Vector endPoint = sourceLocation.clone().add(sourceDirection.clone().multiply(checkDistance));
+            // Back up just a wee bit
+            Vector startPoint = sourceLocation.clone().add(sourceDirection.multiply(-0.1));
             BoundingBox hitbox = null;
             if (entity != null)
             {
