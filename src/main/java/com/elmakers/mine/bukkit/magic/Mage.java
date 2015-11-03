@@ -1724,22 +1724,26 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         return data;
     }
 
+    public void onGUIDeactivate()
+    {
+        GUIAction previousGUI = gui;
+        gui = null;
+
+        if (previousGUI != null)
+        {
+            previousGUI.deactivated();
+        }
+    }
+
     @Override
     public void activateGUI(GUIAction action, Inventory inventory)
     {
-        GUIAction previousGUI = gui;
         Player player = getPlayer();
-        gui = action;
         if (player != null)
         {
             controller.disableItemSpawn();
             try {
                 player.closeInventory();
-
-                // We have to do this a lot..
-                // here it will get cleared on close inventory, potentially
-                gui = action;
-
                 if (inventory != null) {
                     player.openInventory(inventory);
                 }
@@ -1748,14 +1752,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             }
             controller.enableItemSpawn();
         }
-        // Reset this as it may have gotten cleared while closing the previous
-        // inventory!
         gui = action;
-
-        if (previousGUI != null)
-        {
-            previousGUI.deactivated();
-        }
     }
 
     @Override
