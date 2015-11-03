@@ -296,7 +296,7 @@ public class InventoryController implements Listener {
                     event.setCancelled(true);
 
                     // This is needed to avoid spells on cooldown disappearing from the hotbar
-                    if (hotbar != null && slot != null)
+                    if (hotbar != null && slot != null && mage.getActiveGUI() == null)
                     {
                         player.getInventory().setItem(event.getSlot(), droppedItem);
                         player.updateInventory();
@@ -360,7 +360,7 @@ public class InventoryController implements Listener {
         GUIAction gui = mage.getActiveGUI();
         if (gui != null)
         {
-            mage.deactivateGUI();
+            mage.onGUIDeactivate();
         }
 
         Wand previousWand = mage.getActiveWand();
