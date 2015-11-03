@@ -22,6 +22,7 @@ public class DamageAction extends BaseSpellAction
     private double playerDamage;
     private double elementalDamage;
     private boolean magicDamage;
+	private boolean magicEntityDamage;
 	private Double percentage;
 
     @Override
@@ -38,6 +39,7 @@ public class DamageAction extends BaseSpellAction
 			percentage = null;
 		}
         magicDamage = parameters.getBoolean("magic_damage", true);
+		magicEntityDamage = parameters.getBoolean("magic_entity_damage", false);
     }
 
 	@Override
@@ -68,7 +70,7 @@ public class DamageAction extends BaseSpellAction
 				damage = entityDamage;
 			}
             damage *= mage.getDamageMultiplier();
-            if (magicDamage) {
+            if (magicDamage && (magicEntityDamage || targetEntity instanceof Player)) {
                 CompatibilityUtils.magicDamage(targetEntity, damage, mage.getEntity());
             } else {
                 targetEntity.damage(damage, mage.getEntity());
