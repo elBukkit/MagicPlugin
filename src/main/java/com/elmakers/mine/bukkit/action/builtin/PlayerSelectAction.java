@@ -1,12 +1,12 @@
 package com.elmakers.mine.bukkit.action.builtin;
 
+import com.elmakers.mine.bukkit.action.CompoundAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.action.GUIAction;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
-import com.elmakers.mine.bukkit.action.CompoundAction;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
@@ -32,13 +32,14 @@ import java.util.Map;
 
 public class PlayerSelectAction extends CompoundAction implements GUIAction
 {
-    private Map<Integer, WeakReference<Player>> players = new HashMap<Integer, WeakReference<Player>>();
-    private CastContext context;
+    private Map<Integer, WeakReference<Player>> players;
     private boolean allowCrossWorld;
+    private boolean active = false;
+    private WeakReference<Player> target = null;
 
     @Override
     public void deactivated() {
-
+        active = false;
     }
 
     @Override
@@ -49,30 +50,31 @@ public class PlayerSelectAction extends CompoundAction implements GUIAction
     @Override
     public void clicked(InventoryClickEvent event)
     {
-        if (context == null) {
-            event.setCancelled(true);
-            event.getWhoClicked().closeInventory();
-            return;
-        }
         int slot = event.getSlot();
         event.setCancelled(true);
         if (event.getSlotType() == InventoryType.SlotType.CONTAINER)
         {
-            WeakReference<Player> playerReference = players.get(slot);
-            Player player = playerReference != null ? playerReference.get() : null;
+            target = players.get(slot);
+            Player player = target != null ? target.get() : null;
             if (player != null)
             {
-                Mage mage = context.getMage();
+                Mage mage = actionContext.getMage();
                 mage.deactivateGUI();
-                createActionContext(context);
                 actionContext.setTargetEntity(player);
                 actionContext.setTargetLocation(player.getLocation());
-                super.perform(actionContext);
                 actionContext.playEffects("player_selected");
             }
 
             players.clear();
+            active = false;
         }
+    }
+
+    @Override
+    public void reset(CastContext context) {
+        super.reset(context);
+        players = new HashMap<Integer, WeakReference<Player>>();
+        active = false;
     }
 
     @Override
@@ -82,9 +84,21 @@ public class PlayerSelectAction extends CompoundAction implements GUIAction
     }
 
     @Override
-    public SpellResult perform(CastContext context) {
-		players.clear();
-        this.context = context;
+    public SpellResult step(CastContext context) {
+        if (active) {
+            return SpellResult.PENDING;
+        }
+
+        Player targetEntity = target == null ? null : target.get();
+        if (targetEntity == null) {
+            return SpellResult.NO_TARGET;
+        }
+
+        return startActions();
+    }
+
+    @Override
+    public SpellResult start(CastContext context) {
         Mage mage = context.getMage();
         MageController controller = context.getController();
 		Player player = mage.getPlayer();
@@ -93,6 +107,7 @@ public class PlayerSelectAction extends CompoundAction implements GUIAction
         }
 
         List<Player> allPlayers = null;
+        players.clear();
 
         if (allowCrossWorld) {
             allPlayers = new ArrayList<Player>(controller.getPlugin().getServer().getOnlinePlayers());
@@ -137,9 +152,10 @@ public class PlayerSelectAction extends CompoundAction implements GUIAction
             }
             displayInventory.setItem(entry.getKey(), playerItem);
         }
+        active = true;
         mage.activateGUI(this, displayInventory);
 
-        return SpellResult.CAST;
+        return SpellResult.NO_ACTION;
 	}
 
     @Override

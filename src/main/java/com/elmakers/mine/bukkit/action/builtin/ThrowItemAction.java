@@ -1,7 +1,6 @@
 package com.elmakers.mine.bukkit.action.builtin;
 
-import com.elmakers.mine.bukkit.action.ActionHandler;
-import com.elmakers.mine.bukkit.action.TriggeredCompoundAction;
+import com.elmakers.mine.bukkit.action.CompoundAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
@@ -19,7 +18,7 @@ import org.bukkit.util.Vector;
 import java.util.Arrays;
 import java.util.Collection;
 
-public class ThrowItemAction extends TriggeredCompoundAction {
+public class ThrowItemAction extends CompoundAction {
     private double itemSpeedMin;
     private double itemSpeedMax;
     private int ageItems;
@@ -35,7 +34,7 @@ public class ThrowItemAction extends TriggeredCompoundAction {
     }
 
     @Override
-    public SpellResult perform(CastContext context)
+    public SpellResult step(CastContext context)
     {
         MaterialAndData material = context.getBrush();
         Location spawnLocation = context.getWandLocation();
@@ -60,8 +59,10 @@ public class ThrowItemAction extends TriggeredCompoundAction {
         CompatibilityUtils.ageItem(droppedItem, ageItems);
         droppedItem.setVelocity(velocity);
         context.registerForUndo(droppedItem);
-        ActionHandler.setActions(droppedItem, actions, context, parameters, "indirect_player_message");
-        ActionHandler.setEffects(droppedItem, context, "despawn");
+
+        // TODO: Fix!
+        //ActionHandler.setActions(droppedItem, actions, context, parameters, "indirect_player_message");
+        //ActionHandler.setEffects(droppedItem, context, "despawn");
         return SpellResult.CAST;
     }
 

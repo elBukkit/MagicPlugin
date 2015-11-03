@@ -1,7 +1,8 @@
 package com.elmakers.mine.bukkit.action.builtin;
 
 import com.elmakers.mine.bukkit.action.ActionContext;
-import com.elmakers.mine.bukkit.action.TriggeredCompoundAction;
+import com.elmakers.mine.bukkit.action.ActionHandler;
+import com.elmakers.mine.bukkit.action.CompoundAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
@@ -12,7 +13,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import java.util.LinkedList;
 import java.util.List;
 
-public class RandomAction extends TriggeredCompoundAction
+public class RandomAction extends CompoundAction
 {
     private LinkedList<WeightedPair<ActionContext>> actionProbability;
     private ActionContext currentAction = null;
@@ -24,20 +25,9 @@ public class RandomAction extends TriggeredCompoundAction
         mapActions();
     }
 
-    @Override
-    public void prepare(CastContext context, ConfigurationSection parameters) {
-        super.prepare(context, parameters);
-        if (actions != null) {
-            actions.prepare(context, parameters);
-        }
-    }
-
     public void reset(CastContext context)
     {
         super.reset(context);
-        if (actions != null) {
-            actions.reset(context);
-        }
         if (actionProbability.size() > 0) {
             currentAction = RandomUtils.weightedRandom(actionProbability);
             currentAction.getAction().reset(context);
@@ -60,6 +50,7 @@ public class RandomAction extends TriggeredCompoundAction
 
     protected void mapActions() {
         actionProbability = new LinkedList<WeightedPair<ActionContext>>();
+        ActionHandler actions = addHandler("actions");
         if (actions != null)
         {
             List<ActionContext> options = actions.getActions();

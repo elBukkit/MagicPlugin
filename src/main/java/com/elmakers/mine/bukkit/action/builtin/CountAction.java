@@ -45,7 +45,7 @@ public class CountAction extends BaseSpellAction
 		CommandSender sender = context.getMage().getCommandSender();
 		if (sender != null)
 		{
-			sender.sendMessage(ChatColor.DARK_AQUA + "Found " + ChatColor.AQUA + totalCount + ChatColor.DARK_AQUA + " entities in the area");
+			sender.sendMessage(ChatColor.DARK_AQUA + "Found " + ChatColor.AQUA + totalCount + ChatColor.DARK_AQUA + " targets in the area");
 			for (Map.Entry<String, Integer> entry : counts.entrySet())
 			{
 				sender.sendMessage(ChatColor.AQUA + entry.getKey() + ChatColor.WHITE + ": " + ChatColor.GOLD + entry.getValue());

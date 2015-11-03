@@ -33,6 +33,11 @@ import java.util.List;
 
 public class AnimateAction extends CompoundAction {
 
+	@Override
+	public SpellResult step(CastContext context) {
+		return SpellResult.NO_ACTION;
+	}
+
 	public enum TargetMode {
 		STABILIZE, WANDER, GLIDE, HUNT, FLEE, DIRECTED
 	};

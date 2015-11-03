@@ -1,8 +1,7 @@
 package com.elmakers.mine.bukkit.action.builtin;
 
 import com.elmakers.mine.bukkit.action.ActionHandler;
-import com.elmakers.mine.bukkit.action.BaseSpellAction;
-import com.elmakers.mine.bukkit.action.TriggeredCompoundAction;
+import com.elmakers.mine.bukkit.action.CompoundAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.effect.EffectPlayer;
 import com.elmakers.mine.bukkit.api.magic.Mage;
@@ -21,7 +20,7 @@ import java.lang.reflect.Field;
 import java.util.Collection;
 import java.util.Random;
 
-public class FireworkAction extends TriggeredCompoundAction
+public class FireworkAction extends CompoundAction
 {
     private int power;
     private Integer ticksFlown;
@@ -80,7 +79,7 @@ public class FireworkAction extends TriggeredCompoundAction
     }
 
     @Override
-    public SpellResult perform(CastContext context) {
+    public SpellResult step(CastContext context) {
         Location location = context.getEyeLocation();
         Vector direction = null;
         if (launch) {
@@ -107,8 +106,9 @@ public class FireworkAction extends TriggeredCompoundAction
                 effectPlayer.start(firework.getLocation(), firework, null, null);
             }
 
-            ActionHandler.setActions(firework, actions, context, parameters, "indirect_player_message");
-            ActionHandler.setEffects(firework, context, "hit");
+            // TODO: Fix!
+            // ActionHandler.setActions(firework, actions, context, parameters, "indirect_player_message");
+            // ActionHandler.setEffects(firework, context, "hit");
 
             scheduleEntityCheck(context, firework, checkInterval);
             if (setTarget) {

@@ -15,7 +15,6 @@ import java.util.List;
 public class BrushAction extends CompoundAction {
     private List<MaterialBrush> brushes = new ArrayList<MaterialBrush>();
     private boolean sample = false;
-    private boolean performed = false;
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters) {
@@ -42,24 +41,11 @@ public class BrushAction extends CompoundAction {
     }
 
     @Override
-    public void reset(CastContext context) {
-        super.reset(context);
-        performed = false;
-    }
-
-    @Override
-    public SpellResult perform(CastContext context) {
+    public SpellResult step(CastContext context) {
         if (brushes.size() == 0 && !sample) {
-            return super.perform(context);
+            return startActions();
         }
 
-        // Don't re-assign the brush if we are re-running pending actions
-        if (performed) {
-            return super.perform(actionContext);
-        }
-        performed = true;
-
-        createActionContext(context);
         if (sample)
         {
             Block targetBlock = context.getTargetBlock();
@@ -76,7 +62,7 @@ public class BrushAction extends CompoundAction {
             brush.clearCloneTarget();
             actionContext.setBrush(brush);
         }
-        return super.perform(actionContext);
+        return startActions();
     }
 
     @Override

@@ -59,7 +59,6 @@ public class CustomProjectileAction extends CompoundAction
     private long nextUpdate;
     private long deadline;
     private long targetSelfDeadline;
-    private boolean hit = false;
     private Vector velocity = null;
     private DynamicLocation effectLocation = null;
     private Collection<EffectPlay> activeProjectileEffects;
@@ -123,22 +122,17 @@ public class CustomProjectileAction extends CompoundAction
         lastUpdate = 0;
         deadline =  now + lifetime;
         targetSelfDeadline = targetSelfTimeout > 0 ? now + targetSelfTimeout : 0;
-        hit = false;
         effectLocation = null;
         velocity = null;
         activeProjectileEffects = null;
     }
 
 	@Override
-	public SpellResult perform(CastContext context) {
+	public SpellResult step(CastContext context) {
         long now = System.currentTimeMillis();
         if (now < nextUpdate)
         {
             return SpellResult.PENDING;
-        }
-        if (hit)
-        {
-            return super.perform(actionContext);
         }
         if (now > deadline)
         {
@@ -155,7 +149,6 @@ public class CustomProjectileAction extends CompoundAction
         Location projectileLocation = null;
         if (velocity == null)
         {
-            createActionContext(context);
             Location targetLocation = context.getTargetLocation();
             if (useWandLocation) {
                 projectileLocation = context.getWandLocation().clone();
@@ -369,7 +362,6 @@ public class CustomProjectileAction extends CompoundAction
     }
 
     protected SpellResult hit() {
-        hit = true;
         if (activeProjectileEffects != null) {
             for (EffectPlay play : activeProjectileEffects) {
                 play.cancel();
@@ -379,7 +371,7 @@ public class CustomProjectileAction extends CompoundAction
             return SpellResult.NO_ACTION;
         }
         actionContext.playEffects(hitEffectKey);
-        return super.perform(actionContext);
+        return startActions();
     }
 
     @Override

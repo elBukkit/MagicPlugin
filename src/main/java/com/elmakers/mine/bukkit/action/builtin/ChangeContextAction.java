@@ -66,7 +66,7 @@ public class ChangeContextAction extends CompoundAction {
     }
 
     @Override
-    public SpellResult perform(CastContext context) {
+    public SpellResult step(CastContext context) {
         Entity sourceEntity = context.getEntity();
         Location sourceLocation = context.getEyeLocation().clone();
         Entity targetEntity = context.getTargetEntity();
@@ -153,6 +153,6 @@ public class ChangeContextAction extends CompoundAction {
             context.setTargetLocation(targetLocation);
         }
         createActionContext(context, sourceEntity, sourceLocation, targetEntity, targetLocation);
-        return super.perform(actionContext);
+        return startActions();
     }
 }

@@ -21,7 +21,7 @@ public class TileEntitiesAction extends CompoundAction
 {
     private boolean targetAllWorlds;
 
-    private List<BlockState> tiles = new ArrayList<BlockState>();
+    private List<BlockState> tiles;
     private int currentTile = 0;
 
 	@Override
@@ -33,12 +33,11 @@ public class TileEntitiesAction extends CompoundAction
     @Override
     public void reset(CastContext context) {
         super.reset(context);
-        createActionContext(context);
+        tiles = new ArrayList<BlockState>();
         currentTile = 0;
     }
 
-    @Override
-    public SpellResult perform(CastContext context)
+    public SpellResult start(CastContext context)
     {
         Location sourceLocation = context.getLocation();
         if (sourceLocation == null && !targetAllWorlds)
@@ -46,30 +45,21 @@ public class TileEntitiesAction extends CompoundAction
             return SpellResult.LOCATION_REQUIRED;
         }
 
-        if (currentTile == 0)
-        {
-            tiles.clear();
-            addTiles(context, tiles);
-        }
+        addTiles(context, tiles);
+        return SpellResult.NO_ACTION;
+    }
 
-        SpellResult result = SpellResult.NO_TARGET;
-        while (currentTile < tiles.size())
-        {
-            BlockState tile = tiles.get(currentTile);
-            actionContext.setTargetLocation(tile.getLocation());
-            SpellResult entityResult = super.perform(actionContext);
-            result = result.min(entityResult);
-            if (entityResult.isStop()) {
-                break;
-            }
-            currentTile++;
-            if (currentTile < tiles.size())
-            {
-                super.reset(context);
-            }
-        }
+    @Override
+    public SpellResult step(CastContext context)
+    {
+        BlockState tile = tiles.get(currentTile);
+        actionContext.setTargetLocation(tile.getLocation());
+        return startActions();
+    }
 
-        return result;
+    public boolean next(CastContext context) {
+        currentTile++;
+        return currentTile < tiles.size();
     }
 
     public void addTiles(CastContext context, List<BlockState> tiles)

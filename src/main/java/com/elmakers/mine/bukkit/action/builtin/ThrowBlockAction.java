@@ -1,7 +1,7 @@
 package com.elmakers.mine.bukkit.action.builtin;
 
 import com.elmakers.mine.bukkit.action.ActionHandler;
-import com.elmakers.mine.bukkit.action.TriggeredCompoundAction;
+import com.elmakers.mine.bukkit.action.CompoundAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.block.MaterialBrush;
 import com.elmakers.mine.bukkit.api.effect.EffectPlayer;
@@ -18,7 +18,7 @@ import org.bukkit.util.Vector;
 import java.util.Arrays;
 import java.util.Collection;
 
-public class ThrowBlockAction extends TriggeredCompoundAction
+public class ThrowBlockAction extends CompoundAction
 {
     private double speedMin;
     private double speedMax;
@@ -40,7 +40,7 @@ public class ThrowBlockAction extends TriggeredCompoundAction
     }
 
 	@Override
-	public SpellResult perform(CastContext context)
+	public SpellResult step(CastContext context)
 	{
 		Location location = context.getLocation();
 		if (!context.hasBuildPermission(location.getBlock())) {
@@ -85,7 +85,8 @@ public class ThrowBlockAction extends TriggeredCompoundAction
         if (maxDamage > 0 && fallDamage > 0) {
             CompatibilityUtils.setFallingBlockDamage(block, fallDamage, maxDamage);
         }
-        ActionHandler.setActions(block, actions, context, parameters, "indirect_player_message");
+        // TODO!
+        //ActionHandler.setActions(block, actions, context, parameters, "indirect_player_message");
 
 		return SpellResult.CAST;
 	}

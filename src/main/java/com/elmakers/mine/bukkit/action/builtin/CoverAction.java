@@ -9,7 +9,7 @@ import org.bukkit.block.BlockFace;
 public class CoverAction extends CompoundAction
 {
 	@Override
-	public SpellResult perform(CastContext context) {
+	public SpellResult step(CastContext context) {
         Block targetBlock = context.getTargetBlock();
         targetBlock = context.findSpaceAbove(targetBlock);
         targetBlock = context.findBlockUnder(targetBlock);
@@ -18,9 +18,8 @@ public class CoverAction extends CompoundAction
             skippedActions(context);
             return SpellResult.NO_TARGET;
         }
-        createActionContext(context);
         actionContext.setTargetLocation(targetBlock.getLocation());
-		return super.perform(actionContext);
+        return startActions();
 	}
 
     @Override

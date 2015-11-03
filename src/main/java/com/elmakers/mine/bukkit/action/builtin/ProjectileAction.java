@@ -1,7 +1,7 @@
 package com.elmakers.mine.bukkit.action.builtin;
 
 import com.elmakers.mine.bukkit.action.ActionHandler;
-import com.elmakers.mine.bukkit.action.TriggeredCompoundAction;
+import com.elmakers.mine.bukkit.action.CompoundAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.effect.EffectPlayer;
 import com.elmakers.mine.bukkit.api.magic.Mage;
@@ -15,7 +15,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Arrow;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Fireball;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Projectile;
@@ -29,13 +28,13 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Random;
 
-public class ProjectileAction  extends TriggeredCompoundAction
+public class ProjectileAction  extends CompoundAction
 {
 	private int defaultSize = 1;
 
     private int count;
-    private int undoInterval;
     private int size;
+	private long lifetime;
     private double damage;
     private float speed;
     private float spread;
@@ -45,6 +44,9 @@ public class ProjectileAction  extends TriggeredCompoundAction
     private String projectileTypeName;
     private int startDistance;
 	private boolean setTarget;
+
+	private long expiration;
+	private Collection<Projectile> tracking = null;
 
     @Override
     public void initialize(Spell spell, ConfigurationSection parameters) {
@@ -64,12 +66,19 @@ public class ProjectileAction  extends TriggeredCompoundAction
         return breakBlocks;
     }
 
+	@Override
+	public void reset(CastContext context)
+	{
+		super.reset(context);
+		expiration = System.currentTimeMillis() + lifetime;
+		tracking = null;
+	}
+
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters)
     {
         super.prepare(context, parameters);
         count = parameters.getInt("count", 1);
-        undoInterval = parameters.getInt("undo_interval", 200);
         size = parameters.getInt("size", defaultSize);
         damage = parameters.getDouble("damage", 0);
         speed = (float)parameters.getDouble("speed", 0.6f);
@@ -80,6 +89,7 @@ public class ProjectileAction  extends TriggeredCompoundAction
         breakBlocks = parameters.getBoolean("break_blocks", false);
         startDistance = parameters.getInt("start", 0);
 		setTarget = parameters.getBoolean("set_target", false);
+		lifetime = parameters.getLong("lifetime", 15000);
     }
 
 	@Override
@@ -170,7 +180,8 @@ public class ProjectileAction  extends TriggeredCompoundAction
 			}
 		}
 		if (projectiles.size() > 0) {
-			registerProjectiles(projectiles, actions, context, parameters, undoInterval);
+			// TODO: Fix!
+			// registerProjectiles(projectiles, actions, context, parameters, undoInterval);
 		}
 
 		return SpellResult.CAST;
@@ -215,7 +226,7 @@ public class ProjectileAction  extends TriggeredCompoundAction
     public void getParameterNames(Spell spell, Collection<String> parameters) {
 		super.getParameterNames(spell, parameters);
 		parameters.add("count");
-		parameters.add("check_frequency");
+		parameters.add("lifetime");
 		parameters.add("size");
 		parameters.add("damage");
 		parameters.add("speed");
@@ -232,7 +243,7 @@ public class ProjectileAction  extends TriggeredCompoundAction
 			examples.addAll(Arrays.asList((BaseSpell.EXAMPLE_DURATIONS)));
 		} else if (parameterKey.equals("count") || parameterKey.equals("size") || parameterKey.equals("speed")
 				|| parameterKey.equals("spread") || parameterKey.equals("tick_increase")
-                || parameterKey.equals("damage") || parameterKey.equals("start")) {
+                || parameterKey.equals("damage") || parameterKey.equals("start")|| parameterKey.equals("lifetime")) {
 			examples.addAll(Arrays.asList((BaseSpell.EXAMPLE_SIZES)));
 		} else if (parameterKey.equals("fire")) {
 			examples.addAll(Arrays.asList((BaseSpell.EXAMPLE_BOOLEANS)));

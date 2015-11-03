@@ -28,11 +28,10 @@ public class RetargetAction extends CompoundAction {
     }
 
     @Override
-    public SpellResult perform(CastContext context) {
-        createActionContext(context);
+    public SpellResult step(CastContext context) {
         actionContext.addWork(range);
         actionContext.retarget(range, fov, closeRange, closeFOV, useHitbox);
-        return super.perform(actionContext);
+        return startActions();
     }
 
     @Override

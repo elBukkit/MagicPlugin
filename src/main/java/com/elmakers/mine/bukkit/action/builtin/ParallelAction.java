@@ -1,6 +1,7 @@
 package com.elmakers.mine.bukkit.action.builtin;
 
 import com.elmakers.mine.bukkit.action.ActionContext;
+import com.elmakers.mine.bukkit.action.ActionHandler;
 import com.elmakers.mine.bukkit.action.CompoundAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
@@ -15,10 +16,18 @@ public class ParallelAction extends CompoundAction
     @Override
     public void reset(CastContext context) {
         super.reset(context);
+        ActionHandler actions = addHandler("actions");
         remaining = new ArrayList<ActionContext>(actions.getActions());
         for (ActionContext action : remaining) {
             action.getAction().reset(context);
         }
+    }
+
+    @Override
+    public void finish(CastContext context) {
+        super.finish(context);
+        ActionHandler actions = addHandler("actions");
+        actions.finish(context);
     }
 
     @Override

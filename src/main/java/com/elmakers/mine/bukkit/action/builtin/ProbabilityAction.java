@@ -22,14 +22,13 @@ public class ProbabilityAction extends CompoundAction
     }
 
 	@Override
-    public SpellResult perform(CastContext context)
+    public SpellResult step(CastContext context)
 	{
-		SpellResult result = SpellResult.NO_ACTION;
-        if (context.getRandom().nextDouble() <= probability) {
-            result = result.min(super.perform(context));
+        if (context.getRandom().nextDouble() > probability) {
+            return SpellResult.NO_ACTION;
         }
 
-		return result;
+		return startActions();
 	}
 
     @Override

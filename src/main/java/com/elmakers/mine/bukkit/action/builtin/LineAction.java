@@ -51,7 +51,6 @@ public class LineAction extends CompoundAction
     @Override
     public void reset(CastContext context) {
         super.reset(context);
-        createActionContext(context);
         current = 0;
         destination = 0;
 
@@ -99,39 +98,28 @@ public class LineAction extends CompoundAction
 
 	@SuppressWarnings("deprecation")
 	@Override
-    public SpellResult perform(CastContext context)
+    public SpellResult step(CastContext context)
     {
         MaterialBrush brush = context.getBrush();
-        SpellResult result = SpellResult.NO_ACTION;
-        while (current <= destination)
-        {
-            Block currentTarget = actionContext.getTargetBlock();
-            if (incrementData) {
-                short data = current > 15 ? 15 : (short)current;
-                brush.setData(data);
-            }
-
-            if (requireBlock) {
-                Block lowerBlock = currentTarget.getRelative(BlockFace.DOWN);
-                if (lowerBlock.getType() == Material.AIR || lowerBlock.getType() == brush.getMaterial()) {
-                    advance(context);
-                    skippedActions(context);
-                    continue;
-                }
-            }
-            SpellResult actionResult = super.perform(actionContext);
-            result = result.min(actionResult);
-            if (actionResult.isStop()) {
-                break;
-            }
-            context.playEffects("iterate");
-            advance(context);
+        Block currentTarget = actionContext.getTargetBlock();
+        if (incrementData) {
+            short data = current > 15 ? 15 : (short)current;
+            brush.setData(data);
         }
 
-		return result;
+        if (requireBlock) {
+            Block lowerBlock = currentTarget.getRelative(BlockFace.DOWN);
+            if (lowerBlock.getType() == Material.AIR || lowerBlock.getType() == brush.getMaterial()) {
+                next(context);
+                skippedActions(context);
+                return SpellResult.NO_TARGET;
+            }
+        }
+        context.playEffects("iterate");
+        return startActions();
 	}
 
-    protected void advance(CastContext context) {
+    public boolean next(CastContext context) {
         current++;
         Location target = actionContext.getTargetLocation();
         if (reorient) {
@@ -139,7 +127,7 @@ public class LineAction extends CompoundAction
         }
         target.add(direction);
         actionContext.setTargetLocation(target);
-        super.reset(context);
+        return (current <= destination);
     }
 
     @Override
@@ -167,6 +155,6 @@ public class LineAction extends CompoundAction
 
     @Override
     public int getActionCount() {
-        return destination * actions.getActionCount();
+        return destination * super.getActionCount();
     }
 }

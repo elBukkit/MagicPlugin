@@ -1,13 +1,12 @@
 package com.elmakers.mine.bukkit.action.builtin;
 
-import com.elmakers.mine.bukkit.action.TriggeredCompoundAction;
+import com.elmakers.mine.bukkit.action.CompoundAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.effect.EffectPlayer;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
-import com.elmakers.mine.bukkit.action.ActionHandler;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import org.bukkit.Location;
@@ -22,7 +21,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Random;
 
-public class TNTAction extends TriggeredCompoundAction
+public class TNTAction extends CompoundAction
 {
     private int size;
     private int count;
@@ -33,7 +32,6 @@ public class TNTAction extends TriggeredCompoundAction
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters) {
         super.prepare(context, parameters);
-        this.parameters = parameters;
         size = parameters.getInt("size", 6);
         count = parameters.getInt("count", 1);
         fuse = parameters.getInt("fuse", 80);
@@ -42,7 +40,7 @@ public class TNTAction extends TriggeredCompoundAction
     }
 
 	@Override
-	public SpellResult perform(CastContext context) {
+	public SpellResult step(CastContext context) {
 		Mage mage = context.getMage();
         LivingEntity living = mage.getLivingEntity();
 		MageController controller = context.getController();
@@ -86,8 +84,9 @@ public class TNTAction extends TriggeredCompoundAction
 			{
 				grenade.setMetadata("cancel_explosion", new FixedMetadataValue(controller.getPlugin(), true));
 			}
-			ActionHandler.setActions(grenade, actions, context, parameters, "indirect_player_message");
-			ActionHandler.setEffects(grenade, context, "explode");
+			// TODO: Fix!
+			//ActionHandler.setActions(grenade, actions, context, parameters, "indirect_player_message");
+			//ActionHandler.setEffects(grenade, context, "explode");
 		}
 		
 		return SpellResult.CAST;

@@ -40,7 +40,6 @@ public class VolumeAction extends CompoundAction
 	private int xDirection;
 	private int zDirection;
     private int startRadius;
-	private boolean checked;
 	private Vector min;
 	private Vector max;
 	private VolumeType volumeType;
@@ -48,8 +47,6 @@ public class VolumeAction extends CompoundAction
 	private boolean centerY;
 	private boolean centerX;
 	private boolean centerZ;
-
-	private boolean calculatedSize = false;
 
 	private enum VolumeType {
 		SPIRAL,
@@ -136,7 +133,6 @@ public class VolumeAction extends CompoundAction
 		radius = Math.max(xSize, zSize);
 		radiusSquared = radius * radius;
 		startRadius = getStartRadius();
-		calculatedSize = true;
 
 		return true;
 	}
@@ -148,9 +144,6 @@ public class VolumeAction extends CompoundAction
 	@Override
 	public void reset(CastContext context) {
 		super.reset(context);
-        createActionContext(context);
-		checked = false;
-		calculatedSize = false;
         MaterialBrush brush = context.getBrush();
         brush.setTarget(context.getTargetLocation());
 	}
@@ -188,18 +181,110 @@ public class VolumeAction extends CompoundAction
 		return new Vector(finalX, finalY, finalZ);
 	}
 
-	protected SpellResult checkPoint(CastContext context) {
-		SpellResult result = SpellResult.NO_ACTION;
-		if (!checked) {
-			checked = containsPoint(dx, dy, dz);
-			float probability = centerProbability;
-			if (centerProbability != outerProbability) {
-				float weight = Math.abs((float) dx + dz) / ((float) radius * 2);
-				probability = RandomUtils.lerp(centerProbability, outerProbability, weight);
+	protected boolean nextYZX(CastContext context) {
+		dy++;
+		if (dy > max.getBlockY()) {
+			dy = min.getBlockY();
+			dz++;
+			if (dz > max.getBlockZ()) {
+				dz = min.getBlockZ();
+				dx++;
 			}
-			checked = checked && (probability >= 1 || context.getRandom().nextDouble() <= probability);
 		}
-		if (checked)
+		return (dx <= max.getBlockX() && dy <= max.getBlockY() && dz <= max.getBlockZ());
+	}
+
+	protected boolean nextYXZ(CastContext context) {
+		dy++;
+		if (dy > max.getBlockY()) {
+			dy = min.getBlockY();
+			dx++;
+			if (dx > max.getBlockX()) {
+				dx = min.getBlockX();
+				dz++;
+			}
+		}
+		return (dx <= max.getBlockX() && dy <= max.getBlockY() && dz <= max.getBlockZ());
+	}
+
+	protected boolean nextSpiral(CastContext context) {
+		dy++;
+		if (dy > yEnd) {
+			dy = yStart;
+			int nextX = dx + xDirection;
+			int nextZ = dz + zDirection;
+			int endX = Math.min(currentRadius, xSize);
+			int endZ = Math.min(currentRadius, zSize);
+			if ((xDirection == 0 && zDirection == -1 && nextX <= -endX && nextZ <= -endZ) || currentRadius == 0) {
+				currentRadius++;
+				dx = -currentRadius;
+				dz = -currentRadius;
+				xDirection = 1;
+				zDirection = 0;
+			} else if (nextX > currentRadius || nextZ > endZ || nextX < -endX || nextZ < -endZ) {
+				if (xDirection == 1 && zDirection == 0) {
+					xDirection = 0;
+					zDirection = 1;
+					dz += zDirection;
+				} else if (xDirection == 0 && zDirection == 1) {
+					xDirection = -1;
+					zDirection = 0;
+					dx += xDirection;
+				} else {
+					xDirection = 0;
+					zDirection = -1;
+					dz += zDirection;
+				}
+			} else {
+				dx = nextX;
+				dz = nextZ;
+			}
+		}
+		return currentRadius <= radius;
+	}
+
+	@Override
+	public SpellResult start(CastContext context) {
+		if (!calculateSize(context)) {
+			return SpellResult.PENDING;
+		}
+		resetCounters();
+		return SpellResult.NO_ACTION;
+	}
+
+	@Override
+	public boolean next(CastContext context) {
+		if (radius < 1 && ySize < 1) {
+			return false;
+		}
+
+		boolean result = false;
+		switch (volumeType) {
+			case SPIRAL:
+				result = nextSpiral(context);
+				break;
+			case YZX:
+				result = nextYZX(context);
+				break;
+			case YXZ:
+				result = nextYXZ(context);
+				break;
+		}
+		return result;
+	}
+
+	@Override
+	public SpellResult step(CastContext context) {
+		SpellResult result = SpellResult.NO_ACTION;
+		boolean singleBlock = (radius < 1 && ySize < 1);
+		boolean validBlock = singleBlock ? true : containsPoint(dx, dy, dz);
+		float probability = centerProbability;
+		if (!singleBlock && centerProbability != outerProbability) {
+			float weight = Math.abs((float) dx + dz) / ((float) radius * 2);
+			probability = RandomUtils.lerp(centerProbability, outerProbability, weight);
+		}
+		validBlock = validBlock && (probability >= 1 || context.getRandom().nextDouble() <= probability);
+		if (validBlock)
 		{
 			Block block = context.getTargetBlock();
 			Vector offset = new Vector();
@@ -218,151 +303,11 @@ public class VolumeAction extends CompoundAction
 			}
 			Block targetBlock = block.getRelative(offset.getBlockX(), offset.getBlockY(), offset.getBlockZ());
 			actionContext.setTargetLocation(targetBlock.getLocation());
-
-			SpellResult actionResult = super.perform(actionContext);
-			result = result.min(actionResult);
+			result = startActions();
 		}
 		else
 		{
 			skippedActions(context);
-		}
-
-		return result;
-	}
-
-	protected SpellResult performYZX(CastContext context) {
-		SpellResult result = SpellResult.NO_ACTION;
-		while (dx <= max.getBlockX() && dy <= max.getBlockY() && dz <= max.getBlockZ())
-		{
-			result = result.min(checkPoint(context));
-			if (result.isStop()) {
-				break;
-			}
-
-			dy++;
-			if (dy > max.getBlockY()) {
-				dy = min.getBlockY();
-				dz++;
-				if (dz > max.getBlockZ()) {
-					dz = min.getBlockZ();
-					dx++;
-				}
-			}
-			checked = false;
-			super.reset(context);
-		}
-
-		return result;
-	}
-
-	protected SpellResult performYXZ(CastContext context) {
-		SpellResult result = SpellResult.NO_ACTION;
-		while (dx <= max.getBlockX() && dy <= max.getBlockY() && dz <= max.getBlockZ())
-		{
-			result = result.min(checkPoint(context));
-			if (result.isStop()) {
-				break;
-			}
-
-			dy++;
-			if (dy > max.getBlockY()) {
-				dy = min.getBlockY();
-				dx++;
-				if (dx > max.getBlockX()) {
-					dx = min.getBlockX();
-					dz++;
-				}
-			}
-			checked = false;
-			super.reset(context);
-		}
-
-		return result;
-	}
-
-	protected SpellResult performSpiral(CastContext context) {
-		SpellResult result = SpellResult.NO_ACTION;
-		while (currentRadius <= radius)
-		{
-			result = result.min(checkPoint(context));
-			if (result.isStop()) {
-				break;
-			}
-
-			dy++;
-			if (dy > yEnd) {
-				dy = yStart;
-				int nextX = dx + xDirection;
-				int nextZ = dz + zDirection;
-				int endX = Math.min(currentRadius, xSize);
-				int endZ = Math.min(currentRadius, zSize);
-				if ((xDirection == 0 && zDirection == -1 && nextX <= -endX && nextZ <= -endZ) || currentRadius == 0) {
-					currentRadius++;
-					dx = -currentRadius;
-					dz = -currentRadius;
-					xDirection = 1;
-					zDirection = 0;
-				} else if (nextX > currentRadius || nextZ > endZ || nextX < -endX || nextZ < -endZ) {
-					if (xDirection == 1 && zDirection == 0) {
-						xDirection = 0;
-						zDirection = 1;
-						dz += zDirection;
-					} else if (xDirection == 0 && zDirection == 1) {
-						xDirection = -1;
-						zDirection = 0;
-						dx += xDirection;
-					} else {
-						xDirection = 0;
-						zDirection = -1;
-						dz += zDirection;
-					}
-				} else {
-					dx = nextX;
-					dz = nextZ;
-				}
-			}
-			checked = false;
-			super.reset(context);
-		}
-
-		return result;
-	}
-
-	public SpellResult performSingle(CastContext context) {
-		if (!checked && centerProbability < 1 && context.getRandom().nextDouble() <= centerProbability)
-		{
-			return SpellResult.NO_ACTION;
-		}
-		Block block = context.getTargetBlock();
-		checked = true;
-		actionContext.setTargetLocation(block.getLocation());
-		return super.perform(actionContext);
-	}
-
-	@Override
-	public SpellResult perform(CastContext context) {
-		if (!calculatedSize) {
-			if (!calculateSize(context)) {
-				return SpellResult.PENDING;
-			}
-			resetCounters();
-		}
-		if (radius < 1 && ySize < 1)
-		{
-			return performSingle(context);
-		}
-
-		SpellResult result = SpellResult.NO_ACTION;
-		switch (volumeType) {
-			case SPIRAL:
-				result = performSpiral(context);
-				break;
-			case YZX:
-				result = performYZX(context);
-				break;
-			case YXZ:
-				result = performYXZ(context);
-				break;
 		}
 
 		return result;
@@ -408,6 +353,6 @@ public class VolumeAction extends CompoundAction
 	@Override
 	public int getActionCount() {
 		int volume = (1 + xSize * 2) * (1 + ySize * 2) * (1 + zSize * 2);
-		return volume * actions.getActionCount();
+		return volume * super.getActionCount();
 	}
 }

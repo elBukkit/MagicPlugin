@@ -27,7 +27,7 @@ public class BlockSearchAction extends CompoundAction
     }
 
     @Override
-    public SpellResult perform(CastContext context)
+    public SpellResult step(CastContext context)
     {
 		Block attachBlock = context.getTargetBlock();
 		BlockFace direction = BlockFace.UP;
@@ -45,10 +45,9 @@ public class BlockSearchAction extends CompoundAction
 			return SpellResult.NO_TARGET;
 		}
 
-        createActionContext(context);
         actionContext.setTargetLocation(targetBlock.getLocation());
         context.getBrush().setTarget(attachBlock.getLocation(), targetBlock.getLocation());
-		return super.perform(actionContext);
+        return startActions();
 	}
 
     @Override

@@ -29,25 +29,16 @@ public class RepeatAction extends CompoundAction
     }
 
 	@Override
-	public SpellResult perform(CastContext context) {
-        SpellResult result = SpellResult.NO_ACTION;
-        while (current < count)
-        {
-            SpellResult actionResult = super.perform(context);
-            result = result.min(actionResult);
-            if (actionResult.isStop())
-            {
-                break;
-            }
-            current++;
-            if (current < count)
-            {
-                super.reset(context);
-            }
-        }
-
-		return result;
+	public SpellResult step(CastContext context) {
+        return startActions();
 	}
+
+    @Override
+    public boolean next(CastContext context) {
+        current++;
+        return current < count;
+    }
+
     @Override
     public void getParameterNames(Spell spell, Collection<String> parameters)
     {
@@ -67,6 +58,6 @@ public class RepeatAction extends CompoundAction
 
     @Override
     public int getActionCount() {
-        return count * actions.getActionCount();
+        return count * super.getActionCount();
     }
 }

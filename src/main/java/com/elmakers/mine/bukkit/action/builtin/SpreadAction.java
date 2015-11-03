@@ -35,7 +35,7 @@ public class SpreadAction extends CompoundAction
     }
 
 	@Override
-	public SpellResult perform(CastContext context) {
+	public SpellResult step(CastContext context) {
         Location sourceLocation = context.getEyeLocation();
         Entity source = context.getEntity();
         Random random = context.getRandom();
@@ -51,7 +51,7 @@ public class SpreadAction extends CompoundAction
                 sourceLocation.setYaw(sourceLocation.getYaw() + yawMax * random.nextFloat() - yawMax / 2);
             }
         }
-        CastContext actionContext = createContext(context, source, sourceLocation);
+        createActionContext(context, source, sourceLocation);
         Location targetLocation = actionContext.getTargetLocation();
         if (targetLocation != null)
         {
@@ -66,7 +66,7 @@ public class SpreadAction extends CompoundAction
             targetLocation.setZ(targetLocation.getZ() + zOffset);
             actionContext.setTargetLocation(targetLocation);
         }
-        return super.perform(actionContext);
+        return startActions();
 	}
 
     @Override
