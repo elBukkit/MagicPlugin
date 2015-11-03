@@ -60,13 +60,24 @@ public abstract class CompoundAction extends BaseSpellAction
         return SpellResult.NO_ACTION;
     }
 
+    public boolean hasActions() {
+        return hasActions("actions");
+    }
+
+    public boolean hasActions(String key) {
+        ActionHandler handler = handlers.get(key);
+        return handler != null && handler.size() > 0;
+    }
+
     @Override
     public SpellResult perform(CastContext context) {
         SpellResult result = SpellResult.NO_ACTION;
         while (!result.isStop()) {
             if (state == State.NOT_STARTED) {
                 result = result.min(start(context));
-                if (result.isStop()) break;
+
+                // Don't continue if the action failed to start
+                if (result.isStop() || result.isFailure()) break;
                 state = State.STARTED;
             }
 
