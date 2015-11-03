@@ -1653,11 +1653,11 @@ lightning|2:
 lightning|3:
     actions:
         cast:
-        -  class: Spread
+         - class: Repeat
            actions:
-           -  class: Repeat
-              actions:
-              -  class: Lightning
+           - class: Spread
+             actions:
+             - class: Lightning
     parameters:
         repeat: 2
 
@@ -7747,13 +7747,13 @@ tornado:
         push: -1
         y_offset: 0.2
         cooldown: 3000
-        repeat: 10
-        delay: 250
+        repeat: 8
+        delay: 800
         brush: erase
         falling: true
         falling_probability: 0.8
         random_target_offset: 0.2,0,0.2
-        target_direction_speed: 0.5
+        target_direction_speed: 3
         source_direction_offset: 0,0.5,0
         undo: 15000
         x_size: 0
