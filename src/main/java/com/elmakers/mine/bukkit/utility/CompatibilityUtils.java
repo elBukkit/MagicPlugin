@@ -426,6 +426,17 @@ public class CompatibilityUtils extends NMSUtils {
 
     private static WeakReference<ThrownPotion> potionReference = null;
 
+    public static void damage(LivingEntity target, double amount, Entity source) {
+        if (target == null || target.isDead()) return;
+        isDamaging = true;
+        try {
+            target.damage(amount, source);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        isDamaging = false;
+    }
+
     public static void magicDamage(LivingEntity target, double amount, Entity source) {
         try {
             if (target == null || target.isDead()) return;
@@ -435,13 +446,7 @@ public class CompatibilityUtils extends NMSUtils {
             // Might need to config-drive this, or just go back to defaulting to normal damage
             if (!USE_MAGIC_DAMAGE || target instanceof Witch || target instanceof Enderman)
             {
-                isDamaging = true;
-                try {
-                    target.damage(amount, source);
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                }
-                isDamaging = false;
+                damage(target, amount, source);
                 return;
             }
 
