@@ -1666,6 +1666,11 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         return getEffects(result.name().toLowerCase());
     }
 
+    public boolean hasEffects(String key) {
+        Collection<EffectPlayer> effectList = effects.get(key);
+        return effectList != null && effectList.size() > 0;
+    }
+
     @Override
     public Collection<com.elmakers.mine.bukkit.api.effect.EffectPlayer> getEffects(String key) {
         Collection<EffectPlayer> effectList = effects.get(key);

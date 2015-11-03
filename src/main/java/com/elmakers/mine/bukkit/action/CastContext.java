@@ -381,6 +381,11 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
     }
 
     @Override
+    public boolean hasEffects(String key) {
+        return baseSpell != null ? baseSpell.hasEffects(key) : false;
+    }
+
+    @Override
     public void playEffects(String key)
     {
         playEffects(key, 1.0f);
