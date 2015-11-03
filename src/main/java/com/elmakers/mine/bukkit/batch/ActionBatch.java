@@ -13,7 +13,7 @@ public class ActionBatch implements com.elmakers.mine.bukkit.api.batch.SpellBatc
 
     public ActionBatch(CastContext context, ActionHandler handler) {
         this.context = context;
-        this.handler = (ActionHandler)handler.clone();
+        this.handler = handler;
         this.actionCount = handler.getActionCount();
         if (handler.isUndoable()) {
             UndoList undoList = context.getUndoList();
