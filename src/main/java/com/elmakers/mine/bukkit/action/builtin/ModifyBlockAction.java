@@ -115,7 +115,7 @@ public class ModifyBlockAction extends BaseSpellAction {
                 Location blockCenter = new Location(blockLocation.getWorld(), blockLocation.getX() + 0.5, blockLocation.getY() + 0.5, blockLocation.getZ() + 0.5);
                 Vector fallingBlockVelocity = null;
                 if (fallingBlockSpeed > 0) {
-                    Location source = context.getBaseContext().getTargetLocation();
+                    Location source = context.getTargetCenterLocation();
                     fallingBlockVelocity = blockCenter.clone().subtract(source).toVector();
                     fallingBlockVelocity.normalize();
 
