@@ -30,12 +30,6 @@ public class AllEntitiesAction extends CompoundEntityAction
     }
 
     @Override
-    public void reset(CastContext context) {
-        super.reset(context);
-        createActionContext(context);
-    }
-
-    @Override
     public SpellResult perform(CastContext context)
     {
         Location sourceLocation = context.getLocation();

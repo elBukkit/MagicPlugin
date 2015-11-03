@@ -26,8 +26,9 @@ public class AreaOfEffectAction extends CompoundEntityAction
 
     @Override
     public void reset(CastContext context) {
-        super.reset(context);
+        // Doing this prior to calling the super method prevents double-creating the context
         createActionContext(context, context.getTargetEntity(), context.getTargetLocation());
+        super.reset(context);
     }
 
     @Override
