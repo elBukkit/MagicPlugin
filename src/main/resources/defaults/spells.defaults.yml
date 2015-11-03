@@ -1555,9 +1555,9 @@ frost:
            firework: ball
         - class: EffectSingle
           location: target
-          target_offset: 0,2,0
+          target_offset: 0,0.2,0
           effectlib:
-             class: SphereEffect
+             class: Shield
              duration: $undo
              period: 4
              particle: snowball
