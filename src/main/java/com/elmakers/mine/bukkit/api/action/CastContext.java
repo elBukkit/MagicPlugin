@@ -47,6 +47,7 @@ public interface CastContext {
     public Spell getSpell();
     public Mage getMage();
     public Collection<EffectPlayer> getEffects(String key);
+    public boolean hasEffects(String key);
     public MageController getController();
     public void registerForUndo(Runnable runnable);
     public void registerModified(Entity entity);
