@@ -30,6 +30,7 @@ public interface CastContext {
     public LivingEntity getLivingEntity();
     public Location getLocation();
     public Location getTargetLocation();
+    public Location getTargetCenterLocation();
     public Location getTargetSourceLocation();
     public Vector getDirection();
     public void setDirection(Vector direction);
