@@ -73,7 +73,7 @@ public class DamageAction extends BaseSpellAction
             if (magicDamage && (magicEntityDamage || targetEntity instanceof Player)) {
                 CompatibilityUtils.magicDamage(targetEntity, damage, mage.getEntity());
             } else {
-                targetEntity.damage(damage, mage.getEntity());
+				CompatibilityUtils.damage(targetEntity, damage, mage.getEntity());
             }
 		}
 
