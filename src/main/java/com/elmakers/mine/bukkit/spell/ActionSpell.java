@@ -89,6 +89,7 @@ public class ActionSpell extends BrushSpell
         target();
         if (currentHandler != null)
         {
+            currentHandler = (ActionHandler)currentHandler.clone();
             if (altParameters != null) {
                 if (parameters == null) {
                     parameters = altParameters;
