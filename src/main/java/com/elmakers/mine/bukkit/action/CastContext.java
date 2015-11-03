@@ -84,7 +84,7 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
     }
 
     public CastContext(com.elmakers.mine.bukkit.api.action.CastContext copy) {
-        this(copy, copy.getEntity(), copy.getLocation());
+        this(copy, copy.getEntity(), copy instanceof CastContext ? ((CastContext) copy).location : null);
     }
 
     public CastContext(com.elmakers.mine.bukkit.api.action.CastContext copy, Entity sourceEntity) {
@@ -111,6 +111,7 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
         {
             this.base = ((CastContext)copy).base;
             this.initialResult = ((CastContext)copy).initialResult;
+            this.direction = ((CastContext)copy).direction;
         }
         else
         {
