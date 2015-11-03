@@ -2436,6 +2436,7 @@ flashbang:
     category: combat
     pvp_restricted: true
     worth_sp: 50
+    earns_sp: 10
     upgrade_required_path: student
     upgrade_required_casts: 50
     actions:
@@ -7560,6 +7561,7 @@ singularity:
     category: master
     pvp_restricted: true
     worth_sp: 500
+    earns_sp: 15
     upgrade_required_path: student
     upgrade_required_casts: 50
     actions:
@@ -7571,6 +7573,7 @@ singularity:
             # This switches the "brush" to erase
             # Needed since the original brush was obsidian for ThrowBlock
           - class: Brush
+            ignore_result: true
             brush: erase
             actions:
             # First build a sphere
@@ -7600,16 +7603,20 @@ singularity:
               actions:
               # Pull (push: -1) entities inward
               - class: Velocity
+                ignore_result: true
                 push: -1
                 entity_speed: 0.7
+              - class: Damage
               # Delay a bit more
             - class: Delay
               # AOE, push entities outward slightly
             - class: AreaOfEffect
               actions:
               - class: Velocity
+                ignore_result: true
                 push: 1
                 entity_speed: 0.1
+              - class: Damage
     effects:
         cast:
         -  class: EffectSingle
@@ -7646,6 +7653,7 @@ singularity:
       radius: 5
       repeat: 10
       delay: 250
+      damage: 1
       target_self: true
       speed: 0.5
       item_speed: 0.5
@@ -7653,6 +7661,7 @@ singularity:
       falling: true
       radius: 5
       check_destructible: false
+      cooldown: 30000
     costs:
         mana: 50
 
@@ -7693,18 +7702,20 @@ tornado:
     category: elemental
     pvp_restricted: true
     worth_sp: 400
+    earns_sp: 11
     actions:
         cast:
         -  class: Repeat
            actions:
-           - class: Delay
            - class: ChangeContext
              target_direction: 0,1,0
              persist_target: true
              actions:
              - class: PlayEffects
                effect: whirl
+               ignore_result: true
              - class: Sphere
+               ignore_result: true
                actions:
                - class: Volume
                  actions:
@@ -7714,6 +7725,9 @@ tornado:
              - class: AreaOfEffect
                actions:
                 - class: Velocity
+                  ignore_result: true
+                - class: Damage
+           - class: Delay
     effects:
         whirl:
         -  class: EffectSingle
@@ -7746,8 +7760,9 @@ tornado:
         living_entity_speed: 0.2
         push: -1
         y_offset: 0.2
-        cooldown: 3000
+        cooldown: 10000
         repeat: 8
+        damage: 1
         delay: 800
         brush: erase
         falling: true
