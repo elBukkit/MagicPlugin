@@ -1,6 +1,5 @@
 package com.elmakers.mine.bukkit.action.builtin;
 
-import com.elmakers.mine.bukkit.action.ActionHandler;
 import com.elmakers.mine.bukkit.action.CompoundAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.block.MaterialBrush;
@@ -22,9 +21,12 @@ public class ThrowBlockAction extends CompoundAction
 {
     private double speedMin;
     private double speedMax;
-    private boolean setTarget;
     private float fallDamage;
     private int maxDamage;
+    private long lifetime;
+
+    private FallingBlock tracking;
+    private long expiration;
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters)
@@ -33,14 +35,41 @@ public class ThrowBlockAction extends CompoundAction
         double itemSpeed = parameters.getDouble("speed", 0.6f);
         speedMin = parameters.getDouble("speed_min", itemSpeed);
         speedMax = parameters.getDouble("speed_max", itemSpeed);
-        setTarget = parameters.getBoolean("set_target", false);
         int damage = parameters.getInt("damage", 0);
         fallDamage = (float)parameters.getDouble("fall_damage", damage);
         maxDamage = parameters.getInt("max_damage", damage);
+        lifetime = parameters.getLong("lifetime", 20000);
+    }
+
+    @Override
+    public SpellResult step(CastContext context)
+    {
+        if (tracking == null) {
+            return SpellResult.CAST;
+        }
+
+        if (System.currentTimeMillis() > expiration) {
+            tracking.remove();
+            return SpellResult.NO_TARGET;
+        }
+
+        if (!tracking.isValid()) {
+            createActionContext(context, tracking, tracking.getLocation(), null, tracking.getLocation());
+            actionContext.playEffects("hit");
+            return startActions();
+        }
+
+        return SpellResult.PENDING;
+    }
+
+    @Override
+    public void reset(CastContext context) {
+        super.reset(context);
+        expiration = System.currentTimeMillis() + lifetime;
     }
 
 	@Override
-	public SpellResult step(CastContext context)
+	public SpellResult start(CastContext context)
 	{
 		Location location = context.getLocation();
 		if (!context.hasBuildPermission(location.getBlock())) {
@@ -62,33 +91,31 @@ public class ThrowBlockAction extends CompoundAction
 		perp.copy(direction);
 		perp.crossProduct(up);
 
-        FallingBlock block = null;
         location = context.getEyeLocation();
-        block = context.getWorld().spawnFallingBlock(location, material, data);
+        tracking = context.getWorld().spawnFallingBlock(location, material, data);
 
-        if (block == null)
+        if (tracking == null)
         {
             return SpellResult.FAIL;
         }
-        if (setTarget)
-        {
-            context.setTargetEntity(block);
-        }
+
         Collection<EffectPlayer> projectileEffects = context.getEffects("projectile");
         for (EffectPlayer effectPlayer : projectileEffects) {
-            effectPlayer.start(block.getLocation(), block, null, null);
+            effectPlayer.start(tracking.getLocation(), tracking, null, null);
         }
-        ActionHandler.setEffects(block, context, "hit");
-        context.registerForUndo(block);
-        block.setDropItem(false);
-        block.setVelocity(direction);
+        context.registerForUndo(tracking);
+        tracking.setDropItem(false);
+        tracking.setVelocity(direction);
         if (maxDamage > 0 && fallDamage > 0) {
-            CompatibilityUtils.setFallingBlockDamage(block, fallDamage, maxDamage);
+            CompatibilityUtils.setFallingBlockDamage(tracking, fallDamage, maxDamage);
         }
-        // TODO!
-        //ActionHandler.setActions(block, actions, context, parameters, "indirect_player_message");
 
-		return SpellResult.CAST;
+        if (!hasActions() && !context.hasEffects("hit")) {
+            tracking = null;
+            return SpellResult.CAST;
+        }
+
+		return SpellResult.NO_ACTION;
 	}
 
     @Override

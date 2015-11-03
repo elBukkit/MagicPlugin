@@ -236,8 +236,6 @@ public class BlockController implements Listener {
         Entity entity = event.getEntity();
 
         if (entity instanceof FallingBlock) {
-            ActionHandler.runActions(entity, entity.getLocation(), null);
-            ActionHandler.runEffects(entity);
             UndoList blockList = com.elmakers.mine.bukkit.block.UndoList.getUndoList(entity);
             if (blockList != null) {
                 com.elmakers.mine.bukkit.api.action.CastContext context = blockList.getContext();
@@ -266,7 +264,7 @@ public class BlockController implements Listener {
                     if (queue != null) {
                         int undone = queue.undoScheduled();
                         if (undone > 0) {
-                            controller.info("Undid " + undone + " spells for " + player.getName() + " prior to save of world " + world.getName());
+                            controller.info("Undid " + undone + " spells for " + player.getName() + "prior to save of world " + world.getName());
                         }
                     }
                 }
