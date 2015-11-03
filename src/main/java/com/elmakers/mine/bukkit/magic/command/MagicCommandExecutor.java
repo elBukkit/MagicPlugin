@@ -180,8 +180,6 @@ public class MagicCommandExecutor extends MagicMapExecutor {
 				runningTask.cancel();
 				runningTask = null;
 				sender.sendMessage("Job cancelled");
-			} else {
-				sender.sendMessage("There is no job running");
 			}
 
 			int stoppedPending = 0;
