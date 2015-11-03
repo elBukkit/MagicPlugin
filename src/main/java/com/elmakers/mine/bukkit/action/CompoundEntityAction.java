@@ -1,16 +1,11 @@
 package com.elmakers.mine.bukkit.action;
 
 import com.elmakers.mine.bukkit.api.action.CastContext;
-import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
-import com.elmakers.mine.bukkit.spell.BaseSpell;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 
 public abstract class CompoundEntityAction extends CompoundAction
@@ -27,16 +22,22 @@ public abstract class CompoundEntityAction extends CompoundAction
         currentEntity = 0;
     }
 
-	@Override
-    public SpellResult perform(CastContext context)
-	{
-        if (currentEntity == 0)
-        {
-            entities.clear();
-            addEntities(context, entities);
-        }
+    @Override
+    public SpellResult start(CastContext context) {
+        entities.clear();
+        addEntities(context, entities);
+        return SpellResult.NO_TARGET;
+    }
 
-        SpellResult result = SpellResult.NO_TARGET;
+    @Override
+    public boolean next(CastContext context) {
+        currentEntity++;
+        return currentEntity < entities.size();
+    }
+
+	@Override
+    public SpellResult step(CastContext context)
+	{
         while (currentEntity < entities.size())
         {
             Entity entity = entities.get(currentEntity).get();
@@ -48,20 +49,11 @@ public abstract class CompoundEntityAction extends CompoundAction
             }
             actionContext.setTargetEntity(entity);
             actionContext.setTargetLocation(entity.getLocation());
-            SpellResult entityResult = super.perform(actionContext);
-            result = result.min(entityResult);
-            if (entityResult.isStop()) {
-                break;
-            }
-            currentEntity++;
-            if (currentEntity < entities.size())
-            {
-                super.reset(context);
-            }
+            return startActions();
         }
 
-		return result;
-	}
+        return SpellResult.NO_ACTION;
+    }
 
     @Override
     public Object clone()
