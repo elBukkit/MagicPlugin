@@ -1,16 +1,5 @@
 package com.elmakers.mine.bukkit.utility;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-
 import com.elmakers.mine.bukkit.block.Schematic;
 import org.bukkit.Bukkit;
 import org.bukkit.DyeColor;
@@ -26,6 +15,16 @@ import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * Contains some raw methods for doing some simple NMS utilities.
@@ -110,6 +109,10 @@ public class NMSUtils {
     protected static Class<?> class_CraftPlayer;
     protected static Class<?> class_CraftChunk;
     protected static Class<?> class_CraftEntity;
+    protected static Class<?> class_EntityProjectile;
+    protected static Class<?> class_EntityFireball;
+    protected static Class<?> class_EntityArrow;
+    protected static Class<?> class_CraftArrow;
 
     protected static Method class_NBTTagList_addMethod;
     protected static Method class_NBTTagList_getMethod;
@@ -222,6 +225,9 @@ public class NMSUtils {
     protected static Field class_PlayerConnection_floatCountField;
     protected static Field class_Chunk_doneField;
     protected static Field class_CraftItemStack_getHandleField;
+    protected static Field class_EntityArrow_lifeField = null;
+    protected static Field class_EntityArrow_fromPlayerField;
+    protected static Field class_EntityArrow_damageField;
 
     static
     {
@@ -284,6 +290,11 @@ public class NMSUtils {
             class_CraftChunk = fixBukkitClass("org.bukkit.craftbukkit.CraftChunk");
             class_CraftEntity = fixBukkitClass("org.bukkit.craftbukkit.entity.CraftEntity");
             class_TileEntitySign = fixBukkitClass("net.minecraft.server.TileEntitySign");
+
+            class_EntityProjectile = NMSUtils.getBukkitClass("net.minecraft.server.EntityProjectile");
+            class_EntityFireball = NMSUtils.getBukkitClass("net.minecraft.server.EntityFireball");
+            class_EntityArrow = NMSUtils.getBukkitClass("net.minecraft.server.EntityArrow");
+            class_CraftArrow = NMSUtils.getBukkitClass("org.bukkit.craftbukkit.entity.CraftArrow");
 
             class_NBTTagList_addMethod = class_NBTTagList.getMethod("add", class_NBTBase);
             class_NBTTagList_getMethod = class_NBTTagList.getMethod("get", Integer.TYPE);
@@ -436,6 +447,36 @@ public class NMSUtils {
             class_ChestLock_Constructor = class_ChestLock.getConstructor(String.class);
 
             class_PacketPlayOutMapChunkBulk = getVersionedBukkitClass("net.minecraft.server.PacketPlayOutMapChunkBulk", "net.minecraft.server.Packet56MapChunkBulk");
+
+            try {
+                class_EntityArrow_fromPlayerField = class_EntityArrow.getField("fromPlayer");
+                class_EntityArrow_damageField = class_EntityArrow.getDeclaredField("damage");
+                class_EntityArrow_damageField.setAccessible(true);
+                // This is kinda hacky, like fer reals :\
+                try {
+                    // 1.8.3
+                    class_EntityArrow_lifeField = class_EntityArrow.getDeclaredField("ar");
+                } catch (Throwable ignore3) {
+                    try {
+                        // 1.8
+                        class_EntityArrow_lifeField = class_EntityArrow.getDeclaredField("ap");
+                    } catch (Throwable ignore2) {
+                        try {
+                            // 1.7
+                            class_EntityArrow_lifeField = class_EntityArrow.getDeclaredField("at");
+                        } catch (Throwable ignore) {
+                            // Prior
+                            class_EntityArrow_lifeField = class_EntityArrow.getDeclaredField("j");
+                        }
+                    }
+                }
+            } catch (Throwable ex) {
+                class_EntityArrow_lifeField = null;
+            }
+            if (class_EntityArrow_lifeField != null)
+            {
+                class_EntityArrow_lifeField.setAccessible(true);
+            }
         }
         catch (Throwable ex) {
             failed = true;
@@ -1253,3 +1294,4 @@ public class NMSUtils {
         return null;
     }
 }
+

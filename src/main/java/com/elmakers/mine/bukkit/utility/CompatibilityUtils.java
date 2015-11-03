@@ -25,6 +25,7 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Minecart;
 import org.bukkit.entity.Painting;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Projectile;
 import org.bukkit.entity.TNTPrimed;
 import org.bukkit.entity.ThrownPotion;
 import org.bukkit.entity.Witch;
@@ -33,6 +34,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
+import org.bukkit.projectiles.ProjectileSource;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
 
@@ -48,6 +50,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.UUID;
 import java.util.logging.Level;
 
@@ -851,6 +854,126 @@ public class CompatibilityUtils extends NMSUtils {
             class_PlayerConnection_floatCountField.set(connection, -ticks);
         } catch (Exception ex) {
             ex.printStackTrace();
+        }
+    }
+
+    public static boolean isValidProjectileClass(Class<?> projectileType) {
+        return projectileType != null
+                && (class_EntityArrow.isAssignableFrom(projectileType)
+                || class_EntityProjectile.isAssignableFrom(projectileType)
+                || class_EntityFireball.isAssignableFrom(projectileType));
+    }
+
+    public static Projectile spawnProjectile(Class<?> projectileType, Location location, Vector direction, ProjectileSource source, float speed, float spread, float spreadLocations, Random random) {
+        Constructor<? extends Object> constructor = null;
+        Method shootMethod = null;
+        Method setPositionRotationMethod = null;
+        Field projectileSourceField = null;
+        Field dirXField = null;
+        Field dirYField = null;
+        Field dirZField = null;
+        Object nmsWorld = getHandle(location.getWorld());
+        Projectile projectile = null;
+        try {
+            constructor = projectileType.getConstructor(class_World);
+
+            if (class_EntityFireball.isAssignableFrom(projectileType)) {
+                dirXField = projectileType.getField("dirX");
+                dirYField = projectileType.getField("dirY");
+                dirZField = projectileType.getField("dirZ");
+            }
+
+            if (class_EntityProjectile.isAssignableFrom(projectileType) || class_EntityArrow.isAssignableFrom(projectileType)) {
+                shootMethod = projectileType.getMethod("shoot", Double.TYPE, Double.TYPE, Double.TYPE, Float.TYPE, Float.TYPE);
+            }
+
+            setPositionRotationMethod = projectileType.getMethod("setPositionRotation", Double.TYPE, Double.TYPE, Double.TYPE, Float.TYPE, Float.TYPE);
+            projectileSourceField = projectileType.getField("projectileSource");
+
+            Object nmsProjectile = null;
+            try {
+                nmsProjectile = constructor.newInstance(nmsWorld);
+            } catch (Exception ex) {
+                nmsProjectile = null;
+            }
+
+            if (nmsProjectile == null) {
+                throw new Exception("Failed to spawn projectile of class " + projectileType.getName());
+            }
+
+            // Set position and rotation, and potentially velocity (direction)
+            // Velocity must be set manually- EntityFireball.setDirection applies a crazy-wide gaussian distribution!
+            if (dirXField != null && dirYField != null && dirZField != null) {
+                // Taken from EntityArrow
+                double spreadWeight = Math.min(0.4f,  spread * 0.007499999832361937D);
+
+                double dx = speed * (direction.getX() + (random.nextGaussian() * spreadWeight));
+                double dy = speed * (direction.getY() + (random.nextGaussian() * spreadWeight));
+                double dz = speed * (direction.getZ() + (random.nextGaussian() * spreadWeight));
+
+                dirXField.set(nmsProjectile, dx * 0.1D);
+                dirYField.set(nmsProjectile, dy * 0.1D);
+                dirZField.set(nmsProjectile, dz * 0.1D);
+            }
+            Vector modifiedLocation = location.toVector().clone();
+            if (class_EntityFireball.isAssignableFrom(projectileType) && spreadLocations > 0) {
+                modifiedLocation.setX(modifiedLocation.getX() + direction.getX() + (random.nextGaussian() * spread / 5));
+                modifiedLocation.setY(modifiedLocation.getY() + direction.getY() + (random.nextGaussian() * spread / 5));
+                modifiedLocation.setZ(modifiedLocation.getZ() + direction.getZ() + (random.nextGaussian() * spread / 5));
+            }
+            setPositionRotationMethod.invoke(nmsProjectile, modifiedLocation.getX(), modifiedLocation.getY(), modifiedLocation.getZ(), location.getYaw(), location.getPitch());
+
+            if (shootMethod != null) {
+                shootMethod.invoke(nmsProjectile, direction.getX(), direction.getY(), direction.getZ(), speed, spread);
+            }
+
+            Entity entity = NMSUtils.getBukkitEntity(nmsProjectile);
+            if (entity == null || !(entity instanceof Projectile)) {
+                throw new Exception("Got invalid bukkit entity from projectile of class " + projectileType.getName());
+            }
+
+            projectile = (Projectile)entity;
+            if (source != null) {
+                projectile.setShooter(source);
+                projectileSourceField.set(nmsProjectile, source);
+            }
+
+            class_World_addEntityMethod.invoke(nmsWorld, nmsProjectile, CreatureSpawnEvent.SpawnReason.DEFAULT);
+        } catch (Throwable ex) {
+            ex.printStackTrace();
+            return null;
+        }
+
+        return projectile;
+    }
+
+    public static void makeInfinite(Projectile projectile) {
+        try {
+            Object handle = getHandle(projectile);
+            class_EntityArrow_fromPlayerField.setInt(handle, 2);
+        } catch (Exception ex) {
+            ex.printStackTrace();;
+        }
+    }
+
+    public static void setDamage(Projectile projectile, double damage) {
+        try {
+            Object handle = getHandle(projectile);
+            class_EntityArrow_damageField.set(handle, damage);
+        } catch (Exception ex) {
+            ex.printStackTrace();;
+        }
+    }
+
+    public static void decreaseLifespan(Projectile projectile, int ticks) {
+        try {
+            Object handle = getHandle(projectile);
+            int currentLife = (Integer) class_EntityArrow_lifeField.get(handle);
+            if (currentLife < ticks) {
+                class_EntityArrow_lifeField.set(handle, ticks);
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();;
         }
     }
 }
