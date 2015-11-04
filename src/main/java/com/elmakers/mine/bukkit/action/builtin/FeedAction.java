@@ -18,6 +18,10 @@ public class FeedAction extends BaseSpellAction
 		}
 
         Player player = (Player)targetEntity;
+        if (player.getExhaustion() == 0 && player.getFoodLevel() >= 20)
+        {
+            return SpellResult.NO_TARGET;
+        }
         player.setExhaustion(0);
         player.setFoodLevel(20);
 

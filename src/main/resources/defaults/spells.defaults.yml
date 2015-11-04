@@ -1521,6 +1521,7 @@ frost:
     icon: snow_ball
     category: combat
     worth_sp: 150
+    earns_sp: 8
     upgrade_required_path: student
     upgrade_required_casts: 50
     actions:
@@ -1534,6 +1535,7 @@ frost:
             - class: Ignite
               duration: 0
           - class: Sphere
+            ignore_result: true
             actions:
             - class: Freeze
             - class: ModifyBreakable
@@ -1903,6 +1905,7 @@ cure:
     upgrade_required_casts: 20
     category: light
     worth_sp: 80
+    earns_sp: 10
     actions:
         cast:
         -  class: PotionEffect
@@ -1968,6 +1971,7 @@ heal:
     upgrade_required_path: student
     upgrade_required_casts: 50
     worth_sp: 150
+    earns_sp: 2
     actions:
         cast:
         -  class: Heal
@@ -2533,6 +2537,7 @@ fling:
     icon_url: http://textures.minecraft.net/texture/7cc2fb583d1762a16a50fa5ac37bc09b46def63e68205116d650391f9233ed
     category: utility
     worth_sp: 100
+    earns_sp: 1
     upgrade_required_path: apprentice
     upgrade_required_casts: 50
     actions:
@@ -2993,6 +2998,7 @@ fire:
     category: demolition
     pvp_restricted: true
     worth_sp: 100
+    earns_sp: 1
     upgrade_required_path: student
     upgrade_required_casts: 50
     actions:
@@ -4805,6 +4811,7 @@ blink:
     icon: eye_of_ender
     icon_url: http://textures.minecraft.net/texture/a35cfb663dbde27598eebe76b0fdac2593f1d696b3e6b9e044edeb8d48c2e2
     worth_sp: 300
+    earns_sp: 2
     upgrade_required_path: student
     upgrade_required_casts: 20
     actions:

@@ -36,6 +36,10 @@ public class HealAction extends BaseSpellAction
 		}
 
         LivingEntity targetEntity = (LivingEntity)entity;
+        if (targetEntity.getHealth() == targetEntity.getMaxHealth())
+        {
+            return SpellResult.NO_TARGET;
+        }
         context.registerModified(targetEntity);
         if (percentage > 0)
         {
