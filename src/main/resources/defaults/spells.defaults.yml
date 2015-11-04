@@ -826,6 +826,7 @@ shell:
     icon: ender_pearl
     category: combat
     worth_sp: 150
+    earns_sp: 2
     upgrade_required_path: student
     upgrade_required_casts: 50
     actions:
@@ -2220,6 +2221,7 @@ wither:
     category: dark
     pvp_restricted: true
     worth_sp: 250
+    earns_sp: 10
     actions:
         cast:
         -  class: Projectile
@@ -2259,6 +2261,7 @@ arrowrain:
     icon: bow
     category: combat
     worth_sp: 100
+    earns_sp: 5
     actions:
         cast:
         -  class: Projectile
@@ -2276,7 +2279,7 @@ arrowrain:
         py: ~4
         pdy: ~-0.2
         undo: 15000
-        cooldown: 5000
+        cooldown: 10000
     costs:
         mana: 30
 
@@ -2292,6 +2295,7 @@ gatling:
     icon: bow
     category: combat
     worth_sp: 150
+    earns_sp: 5
     actions:
         cast:
         - class: Delay
@@ -2301,8 +2305,6 @@ gatling:
           - class: Projectile
           - class: PlayEffects
             effect: shoot
-          - class: Delay
-            delay: 100
     effects:
         cast:
         -  class: EffectSingle
@@ -2320,8 +2322,9 @@ gatling:
       spread: 12
       cooldown: 20000
       damage: 0.1
-      repeat: 30
+      repeat: 20
       fire: false
+      lifetime: 200
     costs:
         mana: 100
 
@@ -2336,6 +2339,7 @@ meteor:
     category: demolition
     pvp_restricted: true
     worth_sp: 250
+    earns_sp: 5
     actions:
         cast:
         -  class: Projectile
@@ -2367,6 +2371,7 @@ arrow:
     icon: arrow
     category: combat
     worth_sp: 90
+    earns_sp: 8
     upgrade_required_path: student
     upgrade_required_casts: 50
     actions:
@@ -2403,6 +2408,7 @@ arrow:
       entity_undo: false
       undo: 5000
       range: 50
+      cooldown: 2000
     costs:
         mana: 50
 
@@ -3554,6 +3560,7 @@ superblob:
     category: engineering
     class: ConstructSpell
     worth_sp: 800
+    earns_sp: 2
     cancellable: false
     effects:
         cast:
@@ -3850,6 +3857,7 @@ blast:
     icon: sulphur
     category: mining
     worth_sp: 80
+    earns_sp: 2
     upgrade_required_path: student
     upgrade_required_casts: 50
     actions:
@@ -4421,6 +4429,7 @@ mine:
     category: mining
     class: DropSpell
     worth_sp: 100
+    earns_sp: 10
     upgrade_required_path: apprentice
     upgrade_required_casts: 50
     effects:
@@ -4435,6 +4444,7 @@ mine:
         range: 32
         recursion_depth: 2
         drop: ores
+        cooldown: 10000
     costs:
         mana: 10
 
@@ -4461,6 +4471,7 @@ chop:
     category: elemental
     class: DropSpell
     worth_sp: 150
+    earns_sp: 8
     upgrade_required_path: student
     upgrade_required_casts: 30
     effects:
@@ -4476,6 +4487,7 @@ chop:
         range: 32
         recursion_depth: 32
         drop: trees
+        cooldown: 5000
     costs:
         mana: 10
 
@@ -4567,6 +4579,7 @@ blob:
     icon_url: http://textures.minecraft.net/texture/bc8e7e971bbac56883fe9bfe1b38c5f568ece6cbe09ca59d85f6dab4688d14
     category: combat
     worth_sp: 100
+    earns_sp: 2
     upgrade_required_path: apprentice
     upgrade_required_casts: 50
     actions:
@@ -5628,6 +5641,7 @@ fireball:
     category: combat
     pvp_restricted: true
     worth_sp: 150
+    earns_sp: 10
     actions:
         cast:
         -  class: Projectile
