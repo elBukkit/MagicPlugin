@@ -4,6 +4,7 @@ import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.effect.EffectPlayer;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.utility.Targeting;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
@@ -20,7 +21,7 @@ public abstract class BaseProjectileAction extends CompoundAction {
     private long lifetime;
     private boolean setTarget;
 
-    protected boolean track;
+    protected boolean track = false;
 
     private Set<Entity> tracking;
     private long expiration;
@@ -30,6 +31,7 @@ public abstract class BaseProjectileAction extends CompoundAction {
         super.prepare(context, parameters);
         lifetime = parameters.getLong("lifetime", 10000);
         setTarget = parameters.getBoolean("set_target", false);
+        track = parameters.getBoolean("track_projectile", track);
     }
 
     @Override
@@ -54,6 +56,7 @@ public abstract class BaseProjectileAction extends CompoundAction {
                 entity.removeMetadata("hit", context.getPlugin());
                 entity.remove();
             }
+            context.getMage().sendDebugMessage(ChatColor.DARK_GRAY + "Projectiles expired", 4);
             tracking = null;
             return SpellResult.NO_TARGET;
         }
@@ -81,6 +84,11 @@ public abstract class BaseProjectileAction extends CompoundAction {
                             break;
                         }
                     }
+                }
+                if (targetEntity == null) {
+                    context.getMage().sendDebugMessage(ChatColor.GRAY + "Projectile missed", 4);
+                } else {
+                    context.getMage().sendDebugMessage(ChatColor.GREEN + "Projectile hit " + ChatColor.GOLD + targetEntity.getType());
                 }
                 entity.removeMetadata("hit", plugin);
                 createActionContext(context, entity, entity.getLocation(), targetEntity, targetLocation);
