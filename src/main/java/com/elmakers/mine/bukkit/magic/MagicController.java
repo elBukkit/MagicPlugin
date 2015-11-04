@@ -2372,6 +2372,9 @@ public class MagicController implements MageController {
     public boolean hasWandPermission(Player player, Wand wand)
     {
         if (player.hasPermission("Magic.bypass")) return true;
+        if (wand.isSuperPowered() && !player.hasPermission("Magic.wand.use.powered")) return false;
+        if (wand.isSuperProtected() && !player.hasPermission("Magic.wand.use.protected")) return false;
+
         Location location = player.getLocation();
         Boolean override = worldGuardManager.getWandPermission(player, wand, location);
         return override == null || override;

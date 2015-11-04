@@ -18,6 +18,7 @@
  - Disabled combining wands on an anvil by default (use enable_combining: true in config.yml to change back)
  - Only apply "magic" damage to other players, never to entities (use magic_entity_damage: true on Damage action to switch it back)
  - Add "Test Dummy" spell, summons some poor villagers for spell testing purposes.
+ - Add Magic.wand.use.protected and Magic.wand.use.powered permission nodes, true by default
 
 ## 5.3
 

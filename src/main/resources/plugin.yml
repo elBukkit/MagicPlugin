@@ -616,6 +616,14 @@ permissions:
     description: The player may use a wand
     default: true
     type: boolean
+  Magic.wand.use.protected:
+    description: The player may use a protected wand
+    default: true
+    type: boolean
+  Magic.wand.use.powered:
+    description: The player may use a powered wand
+    default: true
+    type: boolean
   Magic.wand.enchant:
     description: The player may enchant a wand
     default: true
