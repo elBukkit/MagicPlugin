@@ -41,6 +41,7 @@ public class ParallelAction extends CompoundAction
         for (ActionContext action : subActions) {
             context.setWorkAllowed(context.getWorkAllowed() + splitWork);
             SpellResult actionResult = action.perform(context);
+            context.addResult(actionResult);
             if (actionResult.isStop()) {
                 remaining.add(action);
             }

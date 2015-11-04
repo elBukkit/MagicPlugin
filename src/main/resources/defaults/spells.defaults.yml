@@ -1428,6 +1428,7 @@ nuke:
                 actions:
                 - class: Damage
                 - class: Velocity
+                  ignore_result: true
             - class: Repeat
               repeat: 2
               actions:
@@ -1441,6 +1442,7 @@ nuke:
                 actions:
                 - class: Damage
                 - class: Velocity
+                  ignore_result: true
           - class: Serial
             ignore_result: true
             actions:
