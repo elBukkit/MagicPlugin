@@ -1,10 +1,10 @@
 package com.elmakers.mine.bukkit.action.builtin;
 
-import com.elmakers.mine.bukkit.action.CompoundAction;
+import com.elmakers.mine.bukkit.action.BaseProjectileAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
+import com.elmakers.mine.bukkit.api.block.MaterialAndData;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
-import com.elmakers.mine.bukkit.api.block.MaterialAndData;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.NMSUtils;
@@ -18,7 +18,7 @@ import org.bukkit.util.Vector;
 import java.util.Arrays;
 import java.util.Collection;
 
-public class ThrowItemAction extends CompoundAction {
+public class ThrowItemAction extends BaseProjectileAction {
     private double itemSpeedMin;
     private double itemSpeedMax;
     private int ageItems;
@@ -34,7 +34,7 @@ public class ThrowItemAction extends CompoundAction {
     }
 
     @Override
-    public SpellResult step(CastContext context)
+    public SpellResult start(CastContext context)
     {
         MaterialAndData material = context.getBrush();
         Location spawnLocation = context.getWandLocation();
@@ -58,12 +58,9 @@ public class ThrowItemAction extends CompoundAction {
         droppedItem.setMetadata("temporary", new FixedMetadataValue(context.getController().getPlugin(), true));
         CompatibilityUtils.ageItem(droppedItem, ageItems);
         droppedItem.setVelocity(velocity);
-        context.registerForUndo(droppedItem);
 
-        // TODO: Fix!
-        //ActionHandler.setActions(droppedItem, actions, context, parameters, "indirect_player_message");
-        //ActionHandler.setEffects(droppedItem, context, "despawn");
-        return SpellResult.CAST;
+        track(context, droppedItem);
+        return checkTracking(context);
     }
 
     @Override

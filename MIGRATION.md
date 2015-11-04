@@ -10,6 +10,9 @@
  - Wands now use a Skill Point system for progression. This replaces the enchanting system.
    To switch this back, set "enable_sp: false" in config.yml.
  - Disabled combining wands on an anvil by default (use enable_combining: true in config.yml to change back)
+ - Projectile, TNT, ThrowItem, ThrowBlock and Firework all track their projectiles now.
+   This means the actions won't complete until the projectile hits or expires, this may 
+   impact existing spells that use these actions coupled with Repeat.
 
 ## 5.2.2
 

@@ -6163,25 +6163,25 @@ pollinate:
     icon: yellow_flower
     category: light
     worth_sp: 100
+    earns_sp: 3
     actions:
         cast:
         -  class: Repeat
            repeat: 8
+           ignore_result: true
            actions:
            -  class: Brush
               actions:
               -  class: Spread
                  actions:
                  -  class: ThrowItem
-        -  class: Brush
-           actions:
-           -  class: ThrowItem
+        - class: ThrowItem
+          actions:
+          - class: Disc
+            actions:
+            - class: Cover
               actions:
-              - class: Disc
-                actions:
-                - class: Cover
-                  actions:
-                  - class: Flower
+              - class: Flower
     effects:
         cast:
         -  class: EffectSingle
@@ -6205,7 +6205,7 @@ pollinate:
         center_probability: 0.9
         outer_probability: 0.1
         vertical_range: 8
-        cooldown: 5000
+        cooldown: 20000
         age_items: 5940
         item_speed_min: 0.75
         item_speed_max: 1.1

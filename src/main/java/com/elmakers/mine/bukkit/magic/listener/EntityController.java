@@ -283,8 +283,6 @@ public class EntityController implements Listener {
     public void onItemDespawn(ItemDespawnEvent event)
     {
         Item entity = event.getEntity();
-        ActionHandler.runEffects(entity);
-        ActionHandler.runActions(entity, entity.getLocation(), null);
         if (Wand.isWand(event.getEntity().getItemStack()))
         {
             Wand wand = new Wand(controller, entity.getItemStack());
