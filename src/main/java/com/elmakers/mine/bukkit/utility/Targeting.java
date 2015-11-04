@@ -15,6 +15,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.util.BlockIterator;
 import org.bukkit.util.Vector;
 
@@ -607,5 +609,22 @@ public class Targeting {
         }
 
         return broken;
+    }
+
+    public static void track(Plugin plugin, Entity tracked) {
+        tracked.setMetadata("tracking", new FixedMetadataValue(plugin, true));
+    }
+
+    public static boolean checkTracking(Plugin plugin, Entity tracked, Entity target) {
+        if (tracked == null || !tracked.hasMetadata("tracking")) {
+            return false;
+        }
+        if (target != null) {
+            tracked.setMetadata("hit", new FixedMetadataValue(plugin, new WeakReference<Entity>(target)));
+        } else {
+            tracked.setMetadata("hit", new FixedMetadataValue(plugin, null));
+        }
+
+        return true;
     }
 }
