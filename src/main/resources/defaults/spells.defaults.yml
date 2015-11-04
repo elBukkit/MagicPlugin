@@ -2689,6 +2689,37 @@ monster:
     costs:
         mana: 40
 
+testdummy:
+    icon_url: http://textures.minecraft.net/texture/f6f3e3c8aeff6128b1194ccf7e3eaddcf438e1938471a66ef76a09d4a3a1932
+    icon: skull_item
+    category: staff
+    quick_cast: true
+    hidden: true
+    actions:
+      cast:
+      - class: SpawnEntity
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: villager_yes
+           effectlib:
+             class: DnaEffect
+             particleHelix: drip_lava
+             iterations: 24
+             particleBase1: drip_water
+        -  class: EffectSingle
+           location: target
+           effectlib:
+             class: AtomEffect
+             iterations: 32
+             particleNucleus: drip_water
+    parameters:
+        target: block
+        track: false
+        type: villager
+        allow_max_range: true
+        range: 24
+
 ghast:
     icon_url: http://textures.minecraft.net/texture/8b6a72138d69fbbd2fea3fa251cabd87152e4f1c97e5f986bf685571db3cc0
     icon: monster_egg
@@ -3425,6 +3456,7 @@ grenade:
     category: demolition
     pvp_restricted: true
     worth_sp: 150
+    earns_sp: 12
     upgrade_required_path: apprentice
     upgrade_required_casts: 50
     actions:
@@ -3458,6 +3490,7 @@ cluster:
     category: demolition
     pvp_restricted: true
     worth_sp: 250
+    earns_sp: 8
     actions:
         cast:
         -  class: TNT
@@ -3474,7 +3507,7 @@ cluster:
         fuse: 60
         fire: false
         undo: 20000
-        cooldown: 6000
+        cooldown: 10000
     costs:
         mana: 150
 
@@ -3484,6 +3517,7 @@ bomb:
     category: demolition
     pvp_restricted: true
     worth_sp: 300
+    earns_sp: 8
     actions:
         cast:
         -  class: TNT

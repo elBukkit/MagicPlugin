@@ -1264,6 +1264,9 @@ spells:
         description: Fire a bolt of pure magic
         cast: You fire a missile at $target
         upgrade_description: "&r&b&bull; &6Increased damage and range"
+    testdummy:
+        name: Test Dummy
+        description: Spawn a poor test dummy
     projectile:
         name: Project I.L.E.
         description: A spell for testing projectiles
