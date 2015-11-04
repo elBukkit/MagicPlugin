@@ -6,6 +6,7 @@ import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.NMSUtils;
+import com.elmakers.mine.bukkit.utility.Targeting;
 import com.elmakers.mine.bukkit.wand.Wand;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -27,7 +28,9 @@ import org.bukkit.event.entity.ItemSpawnEvent;
 import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.metadata.FixedMetadataValue;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -172,8 +175,7 @@ public class EntityController implements Listener {
                 }
             }
         } else {
-            ActionHandler.targetEffects(damager, entity);
-            ActionHandler.runActions(damager, entity.getLocation(), entity);
+            Targeting.checkTracking(controller.getPlugin(), damager, entity);
         }
     }
 

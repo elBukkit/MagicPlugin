@@ -10,6 +10,7 @@ import org.bukkit.FireworkEffect;
 import org.bukkit.FireworkEffect.Type;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Entity;
 import org.bukkit.util.Vector;
 
 import java.lang.reflect.Field;
@@ -29,7 +30,6 @@ public class FireworkAction extends BaseProjectileAction
     private int startDistance;
     private double speed;
     private double dyOffset;
-    private boolean setTarget;
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters) {
@@ -58,7 +58,6 @@ public class FireworkAction extends BaseProjectileAction
         startDistance = parameters.getInt("start", 0);
         speed = parameters.getDouble("speed", 0.1);
         dyOffset = parameters.getDouble("dy_offset", 0);
-        setTarget = parameters.getBoolean("set_target", false);
         if (parameters.contains("ticks_flown")) {
             ticksFlown = parameters.getInt("ticks_flown");
         } else {
@@ -94,18 +93,13 @@ public class FireworkAction extends BaseProjectileAction
         }
 	     
         FireworkEffect effect = EffectUtils.getFireworkEffect(context, color1, color2, fireworkType, flicker, trail);
-        tracking = EffectUtils.spawnFireworkEffect(context.getPlugin().getServer(), location, effect, power, direction, expectedLifespan, ticksFlown);
+        Entity firework = EffectUtils.spawnFireworkEffect(context.getPlugin().getServer(), location, effect, power, direction, expectedLifespan, ticksFlown);
 
-        if (tracking == null) {
+        if (firework == null) {
             return SpellResult.FAIL;
         }
 
-        playProjectileEffects(context);
-
-        if (setTarget) {
-            context.setTargetEntity(tracking);
-        }
-
+        track(context, firework);
         return checkTracking(context);
 	}
 
@@ -132,5 +126,10 @@ public class FireworkAction extends BaseProjectileAction
     @Override
     public boolean requiresTarget() {
         return !launch;
+    }
+
+    @Override
+    public boolean isUndoable() {
+        return true;
     }
 }

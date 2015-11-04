@@ -1,8 +1,7 @@
 package com.elmakers.mine.bukkit.action.builtin;
 
-import com.elmakers.mine.bukkit.action.CompoundAction;
+import com.elmakers.mine.bukkit.action.BaseProjectileAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
-import com.elmakers.mine.bukkit.api.effect.EffectPlayer;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.spell.Spell;
@@ -21,7 +20,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Random;
 
-public class TNTAction extends CompoundAction
+public class TNTAction extends BaseProjectileAction
 {
     private int size;
     private int count;
@@ -37,10 +36,11 @@ public class TNTAction extends CompoundAction
         fuse = parameters.getInt("fuse", 80);
         useFire = parameters.getBoolean("fire", false);
         breakBlocks = parameters.getBoolean("break_blocks", true);
+		track = true;
     }
 
 	@Override
-	public SpellResult step(CastContext context) {
+	public SpellResult start(CastContext context) {
 		Mage mage = context.getMage();
         LivingEntity living = mage.getLivingEntity();
 		MageController controller = context.getController();
@@ -75,21 +75,14 @@ public class TNTAction extends CompoundAction
 			grenade.setYield(size);
 			grenade.setFuseTicks(fuse);
 			grenade.setIsIncendiary(useFire);
-            Collection<EffectPlayer> projectileEffects = context.getEffects("projectile");
-            for (EffectPlayer effectPlayer : projectileEffects) {
-                effectPlayer.start(grenade.getLocation(), grenade, null, null);
-            }
-            context.registerForUndo(grenade);
 			if (!breakBlocks)
 			{
 				grenade.setMetadata("cancel_explosion", new FixedMetadataValue(controller.getPlugin(), true));
 			}
-			// TODO: Fix!
-			//ActionHandler.setActions(grenade, actions, context, parameters, "indirect_player_message");
-			//ActionHandler.setEffects(grenade, context, "explode");
+			track(context, grenade);
 		}
 		
-		return SpellResult.CAST;
+		return checkTracking(context);
 	}
 
     @Override

@@ -24,13 +24,6 @@ public class ExplosionController implements Listener {
         this.maxTNTPerChunk = max;
     }
 
-    @EventHandler
-    public void onExplosionPrime(ExplosionPrimeEvent event) {
-        Entity explodingEntity = event.getEntity();
-        ActionHandler.runActions(explodingEntity, explodingEntity.getLocation(), null);
-        ActionHandler.runEffects(explodingEntity);
-    }
-
     @EventHandler(priority = EventPriority.LOWEST)
     public void onEntityExplode(EntityExplodeEvent event) {
         Entity explodingEntity = event.getEntity();

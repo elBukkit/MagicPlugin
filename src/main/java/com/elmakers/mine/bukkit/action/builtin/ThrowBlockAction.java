@@ -59,18 +59,14 @@ public class ThrowBlockAction extends BaseProjectileAction
 		perp.crossProduct(up);
 
         location = context.getEyeLocation();
-        tracking = context.getWorld().spawnFallingBlock(location, material, data);
-
-        if (tracking == null || !(tracking instanceof FallingBlock))
+        FallingBlock falling = context.getWorld().spawnFallingBlock(location, material, data);
+        if (falling == null)
         {
-            tracking = null;
             return SpellResult.FAIL;
         }
-        FallingBlock falling = (FallingBlock)tracking;
-        playProjectileEffects(context);
-        context.registerForUndo(tracking);
+        track(context, falling);
         falling.setDropItem(false);
-        tracking.setVelocity(direction);
+        falling.setVelocity(direction);
         if (maxDamage > 0 && fallDamage > 0) {
             CompatibilityUtils.setFallingBlockDamage(falling, fallDamage, maxDamage);
         }
