@@ -29,10 +29,15 @@ public class IgniteAction extends BaseSpellAction
 	{
         int ticks = duration * 20 / 1000;
         Entity entity = context.getTargetEntity();
+		MageController controller = context.getController();
+		boolean isElemental = controller.isElemental(entity);
+		if (!isElemental && entity.getFireTicks() <= ticks)
+		{
+			return SpellResult.NO_TARGET;
+		}
         context.registerModified(entity);
 
-		MageController controller = context.getController();
-		if (controller.isElemental(entity)) {
+		if (isElemental) {
             Mage mage = context.getMage();
 			controller.damageElemental(entity, 0, ticks, mage.getCommandSender());
 		} else {
