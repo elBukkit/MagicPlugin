@@ -1,9 +1,7 @@
 package com.elmakers.mine.bukkit.action.builtin;
 
-import com.elmakers.mine.bukkit.action.ActionHandler;
-import com.elmakers.mine.bukkit.action.CompoundAction;
+import com.elmakers.mine.bukkit.action.BaseProjectileAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
-import com.elmakers.mine.bukkit.api.effect.EffectPlayer;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.spell.Spell;
@@ -11,7 +9,6 @@ import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.NMSUtils;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Arrow;
@@ -28,13 +25,12 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Random;
 
-public class ProjectileAction  extends CompoundAction
+public class ProjectileAction  extends BaseProjectileAction
 {
 	private int defaultSize = 1;
 
     private int count;
     private int size;
-	private long lifetime;
     private double damage;
     private float speed;
     private float spread;
@@ -43,10 +39,6 @@ public class ProjectileAction  extends CompoundAction
     private int tickIncrease;
     private String projectileTypeName;
     private int startDistance;
-	private boolean setTarget;
-
-	private long expiration;
-	private Collection<Projectile> tracking = null;
 
     @Override
     public void initialize(Spell spell, ConfigurationSection parameters) {
@@ -66,17 +58,10 @@ public class ProjectileAction  extends CompoundAction
         return breakBlocks;
     }
 
-	@Override
-	public void reset(CastContext context)
-	{
-		super.reset(context);
-		expiration = System.currentTimeMillis() + lifetime;
-		tracking = null;
-	}
-
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters)
     {
+		track = true;
         super.prepare(context, parameters);
         count = parameters.getInt("count", 1);
         size = parameters.getInt("size", defaultSize);
@@ -88,12 +73,10 @@ public class ProjectileAction  extends CompoundAction
         projectileTypeName = parameters.getString("projectile", "Arrow");
         breakBlocks = parameters.getBoolean("break_blocks", false);
         startDistance = parameters.getInt("start", 0);
-		setTarget = parameters.getBoolean("set_target", false);
-		lifetime = parameters.getLong("lifetime", 15000);
     }
 
 	@Override
-	public SpellResult perform(CastContext context)
+	public SpellResult start(CastContext context)
 	{
         MageController controller = context.getController();
 		Mage mage = context.getMage();
@@ -163,28 +146,16 @@ public class ProjectileAction  extends CompoundAction
 						CompatibilityUtils.decreaseLifespan(projectile, tickIncrease);
 					}
 				}
-                Collection<EffectPlayer> projectileEffects = context.getEffects("projectile");
-                for (EffectPlayer effectPlayer : projectileEffects) {
-                    effectPlayer.start(projectile.getLocation(), projectile, null, null);
-                }
-                context.registerForUndo(projectile);
                 if (!breakBlocks) {
                     projectile.setMetadata("cancel_explosion", new FixedMetadataValue(controller.getPlugin(), true));
                 }
-				if (setTarget) {
-					context.setTargetEntity(projectile);
-					context.setTargetLocation(projectile.getLocation());
-				}
+				track(context, projectile);
 			} catch(Exception ex) {
 				ex.printStackTrace();
 			}
 		}
-		if (projectiles.size() > 0) {
-			// TODO: Fix!
-			// registerProjectiles(projectiles, actions, context, parameters, undoInterval);
-		}
 
-		return SpellResult.CAST;
+		return checkTracking(context);
 	}
 
 	@Override
@@ -192,41 +163,10 @@ public class ProjectileAction  extends CompoundAction
 		return true;
 	}
 
-	protected void registerProjectiles(final Collection<Projectile> projectiles,
-			final ActionHandler actions,
-            final CastContext context, final ConfigurationSection parameters,
-            final int undoInterval) {
-
-        for (Projectile projectile : projectiles) {
-            ActionHandler.setActions(projectile, actions, context, parameters, "indirect_player_message");
-            ActionHandler.setEffects(projectile, context, "hit");
-        }
-
-        if (undoInterval > 0) {
-            Bukkit.getScheduler().scheduleSyncDelayedTask(context.getController().getPlugin(), new Runnable() {
-                public void run() {
-                    checkProjectiles(projectiles);
-                }
-            }, undoInterval);
-        }
-    }
-
-	protected void checkProjectiles(final Collection<Projectile> projectiles) {
-
-		for (Projectile projectile : projectiles)
-		{
-            projectile.remove();
-
-            // Don't run actions here, the spell may have been undone
-            // and removed the projectile!
-		}
-	}
-
 	@Override
     public void getParameterNames(Spell spell, Collection<String> parameters) {
 		super.getParameterNames(spell, parameters);
 		parameters.add("count");
-		parameters.add("lifetime");
 		parameters.add("size");
 		parameters.add("damage");
 		parameters.add("speed");
@@ -243,7 +183,7 @@ public class ProjectileAction  extends CompoundAction
 			examples.addAll(Arrays.asList((BaseSpell.EXAMPLE_DURATIONS)));
 		} else if (parameterKey.equals("count") || parameterKey.equals("size") || parameterKey.equals("speed")
 				|| parameterKey.equals("spread") || parameterKey.equals("tick_increase")
-                || parameterKey.equals("damage") || parameterKey.equals("start")|| parameterKey.equals("lifetime")) {
+                || parameterKey.equals("damage") || parameterKey.equals("start")) {
 			examples.addAll(Arrays.asList((BaseSpell.EXAMPLE_SIZES)));
 		} else if (parameterKey.equals("fire")) {
 			examples.addAll(Arrays.asList((BaseSpell.EXAMPLE_BOOLEANS)));
