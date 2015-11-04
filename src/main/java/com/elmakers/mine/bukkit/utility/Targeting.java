@@ -621,7 +621,7 @@ public class Targeting {
         }
         if (target != null) {
             tracked.setMetadata("hit", new FixedMetadataValue(plugin, new WeakReference<Entity>(target)));
-        } else {
+        } else if (!tracked.hasMetadata("hit")) {
             tracked.setMetadata("hit", new FixedMetadataValue(plugin, null));
         }
 
