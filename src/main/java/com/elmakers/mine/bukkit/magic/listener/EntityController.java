@@ -70,17 +70,10 @@ public class EntityController implements Listener {
     @EventHandler
     public void onProjectileHit(ProjectileHitEvent event) {
         final Projectile projectile = event.getEntity();
-        // This is delayed so that the EntityDamage version takes precedence
-        if (ActionHandler.hasActions(projectile) || ActionHandler.hasEffects(projectile))
-        {
-            Bukkit.getScheduler().scheduleSyncDelayedTask(controller.getPlugin(), new Runnable() {
-                @Override
-                public void run() {
-                    ActionHandler.runActions(projectile, projectile.getLocation(), null);
-                    ActionHandler.runEffects(projectile);
-                }
-            }, 1L);
-        }
+        // This happens before EntityDamageEvent, so the hit target will
+        // be assigned before the tracked projectile is checked.
+        // This is here to register misses, mainly.
+        Targeting.checkTracking(controller.getPlugin(), projectile, null);
     }
 
     @EventHandler
