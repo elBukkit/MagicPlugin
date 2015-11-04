@@ -2198,6 +2198,7 @@ public class MagicController implements MageController {
             }
         }
         spEnabled = properties.getBoolean("sp_enabled", true);
+        spMaximum = properties.getInt("sp_max", 9999);
 
         undoEntityTypes.clear();
         if (properties.contains("entity_undo_types"))
@@ -3958,6 +3959,10 @@ public class MagicController implements MageController {
         return spEnabled;
     }
 
+    public int getSPMaximum() {
+        return spMaximum;
+    }
+
     @Override
     public void deleteMage(final String id) {
         Mage mage = getRegisteredMage(id);
@@ -4060,6 +4065,7 @@ public class MagicController implements MageController {
     private double                              worthXP                         = 1;
     private CurrencyItem                        currencyItem                    = null;
     private boolean                             spEnabled                       = true;
+    private int                                 spMaximum                       = 0;
 
     private float							 	castCommandCostReduction	    = 1.0f;
     private float							 	castCommandCooldownReduction	= 1.0f;
