@@ -786,7 +786,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             if (activeWand != null) {
                 activeWand.deactivate();
             }
-            if (itemInHand != null && itemId != null) {
+            if (itemInHand != null && itemId != null && controller.hasWandPermission(player)) {
                 Wand newActiveWand = new Wand(controller, itemInHand);
                 newActiveWand.activate(this);
             }

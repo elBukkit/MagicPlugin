@@ -3858,13 +3858,16 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 
     public void activate(Mage mage) {
         if (mage == null) return;
+        Player player = mage.getPlayer();
+        if (player != null && !controller.hasWandPermission(player, this)) {
+            return;
+        }
         this.newId();
 
         if (getMode() != WandMode.INVENTORY) {
             showActiveIcon(true);
         }
 
-        Player player = mage.getPlayer();
         if (!canUse(player)) {
             mage.sendMessage(getMessage("bound").replace("$name", getOwner()));
             mage.setActiveWand(null);

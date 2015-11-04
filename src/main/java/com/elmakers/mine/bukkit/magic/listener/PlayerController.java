@@ -321,6 +321,14 @@ public class PlayerController implements Listener {
             return;
         }
 
+        // Check for region or wand-specific permissions
+        if (!controller.hasWandPermission(player, wand))
+        {
+            wand.deactivate();
+            mage.sendMessage(messages.get("wand.no_permission").replace("$wand", wand.getName()));
+            return;
+        }
+
         // Check for enchantment table click
         Block clickedBlock = event.getClickedBlock();
         if (wand.hasSpellProgression() && controller.isSPEnabled() && clickedBlock != null && clickedBlock.getType() != Material.AIR && enchantBlockMaterial != null && enchantBlockMaterial.is(clickedBlock))
@@ -355,11 +363,6 @@ public class PlayerController implements Listener {
 
         if (isSwing && !wand.isUpgrade() && !wand.isQuickCast())
         {
-            if (!controller.hasWandPermission(player, wand))
-            {
-                mage.sendMessage(messages.get("wand.no_permission").replace("$wand", wand.getName()));
-                return;
-            }
             wand.cast();
             event.setCancelled(true);
             return;
