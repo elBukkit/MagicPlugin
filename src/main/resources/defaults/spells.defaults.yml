@@ -309,6 +309,7 @@ blessing:
     icon_url: http://textures.minecraft.net/texture/775c41bd5e4ef3cba5f9bdc5258973c95477e819cb20c163ffb378db5ae3
     category: master
     worth_sp: 200
+    earns_sp: 8
     actions:
         cast:
         -  class: Projectile
@@ -355,6 +356,7 @@ boon:
     icon: red_rose:2
     category: utility
     worth_sp: 60
+    earns_sp: 6
     upgrade_required_path: student
     upgrade_required_casts: 50
     actions:
@@ -384,12 +386,14 @@ boon:
         effect_night_vision: 5
         bypass_friendly_fire: true
         bypass_pvp: true
+        cooldown: 20000
 
 boon|2:
     upgrade_required_path: apprentice
     upgrade_required_casts: 50
     parameters:
         duration: 30000
+        cooldown: 40000
 
 boon|3:
     actions:
@@ -401,6 +405,7 @@ boon|3:
         mana: 80
     parameters:
         duration: 45000
+        cooldown: 60000
         effect_speed: 5
         effect_jump: 5
         effect_night_vision: 5
@@ -886,6 +891,7 @@ reflect:
     icon: iron_helmet
     category: light
     worth_sp: 200
+    earns_sp: 5
     upgrade_required_path: student
     upgrade_required_casts: 25
     actions:
@@ -910,7 +916,7 @@ reflect:
         check_destructible: true
         brushcolor: true
         undo: 800
-        cooldown: 1100
+        cooldown: 2000
         breakable: 3
         reflect_chance: 0.25
         bypass_confusion: true
@@ -956,6 +962,7 @@ disc:
     icon_url: http://textures.minecraft.net/texture/48e69c5a76182441d98326284e9342c1dac2a786ba47e8226884f65594c3bd3a
     category: utility
     worth_sp: 150
+    earns_sp: 2
     actions:
         cast:
         -  class: Disc
@@ -1096,6 +1103,7 @@ tag:
     category: dark
     class: SignSpell
     worth_sp: 20
+    earns_sp: 1
     effects:
         cast:
         -  class: EffectSingle
@@ -1339,6 +1347,7 @@ boom:
     category: combat
     pvp_restricted: true
     worth_sp: 100
+    earns_sp: 3
     upgrade_required_path: apprentice
     upgrade_required_casts: 50
     actions:
@@ -1396,6 +1405,7 @@ nuke:
     icon: skull_item:4
     category: master
     worth_sp: 1000
+    earns_sp: 10
     pvp_restricted: true
     upgrade_required_path: master
     upgrade_required_casts: 20
@@ -1411,6 +1421,7 @@ nuke:
               - class: Delay
                 delay: 1000
               - class: PlayEffects
+                ignore_result: true
                 effect: burst
               - class: AreaOfEffect
                 radius: 4
@@ -1423,6 +1434,7 @@ nuke:
               - class: Delay
                 delay: 1000
               - class: PlayEffects
+                ignore_result: true
                 effect: burst
               - class: AreaOfEffect
                 radius: 10
@@ -1430,6 +1442,7 @@ nuke:
                 - class: Damage
                 - class: Velocity
           - class: Serial
+            ignore_result: true
             actions:
             - class: Sphere
               actions:
@@ -1620,6 +1633,7 @@ lightning:
     category: elemental
     pvp_restricted: true
     worth_sp: 300
+    earns_sp: 2
     actions:
         cast:
         -  class: Spread
@@ -1670,14 +1684,17 @@ smite:
     category: elemental
     pvp_restricted: true
     worth_sp: 500
+    worth_sp: 10
     actions:
         cast:
         - class: Lightning
+          ignore_result: true
         - class: AreaOfEffect
           actions:
           - class: Damage
           - class: Ignite
         -  class: Sphere
+           ignore_result: true
            actions:
            -  class: ModifyBlock
     effects:
@@ -2060,6 +2077,7 @@ music:
     icon: gold_record
     category: light
     worth_sp: 50
+    earns_sp: 1
     show_undoable: false
     actions:
         cast:
@@ -2123,6 +2141,7 @@ mount:
     icon: saddle
     category: master
     worth_sp: 150
+    earns_sp: 2
     show_undoable: false
     actions:
         cast:
@@ -2144,6 +2163,7 @@ mount:
         allow_max_range: false
         range: 16
         bypass_friendly_fire: true
+        cooldown: 2000
     costs:
         mana: 60
 
@@ -2153,6 +2173,7 @@ icbm:
     category: demolition
     pvp_restricted: true
     worth_sp: 800
+    earns_sp: 6
     actions:
         cast:
         - class: Projectile
@@ -2305,6 +2326,7 @@ gatling:
           - class: Projectile
           - class: PlayEffects
             effect: shoot
+            ignore_result: true
     effects:
         cast:
         -  class: EffectSingle
@@ -2372,6 +2394,7 @@ arrow:
     category: combat
     worth_sp: 90
     earns_sp: 8
+    earns_cooldown: 60000
     upgrade_required_path: student
     upgrade_required_casts: 50
     actions:
@@ -2510,6 +2533,7 @@ weather:
     icon: water_bucket
     category: elemental
     worth_sp: 150
+    earns_sp: 5
     actions:
         cast:
         -  class: Weather
@@ -2939,6 +2963,7 @@ phase:
     icon: eye_of_ender
     category: master
     worth_sp: 200
+    earns_sp: 2
     actions:
         cast:
         - class: ChangeWorld
@@ -3076,6 +3101,7 @@ bubble:
     icon: water_bucket
     category: utility
     worth_sp: 50
+    earns_sp: 5
     upgrade_required_path: student
     upgrade_required_casts: 50
     actions:
@@ -3278,6 +3304,7 @@ day:
     icon: emerald
     category: master
     worth_sp: 300
+    earns_sp: 5
     quick_cast: true
     actions:
         cast:
@@ -3322,6 +3349,7 @@ night:
     category: elemental
     quick_cast: true
     worth_sp: 250
+    earns_sp: 5
     actions:
         cast:
         -  class: Time
@@ -3817,6 +3845,7 @@ stash:
     category: utility
     class: StashSpell
     worth_sp: 100
+    earns_sp: 1
     show_undoable: false
     effects:
         cast:
@@ -3827,6 +3856,7 @@ stash:
     parameters:
         target_type: Player
         target: self
+        cooldown: 500
 
 pickpocket:
     icon_url: http://textures.minecraft.net/texture/3bc9de58822a3f7c6c23e212cf954fc728a6b2e45c54a89b4af5e453d39b1
@@ -3931,6 +3961,7 @@ earthquake:
     icon: sulphur
     category: combat
     worth_sp: 200
+    earns_sp: 8
     actions:
         cast:
         # First thing it does is AOE Velocity
@@ -3961,6 +3992,7 @@ earthquake:
           # Create a disc, do this in parallel with the Repeating
           # AOE above
           - class: Disc
+            ignore_result: true
             actions:
             # The "Skip" action skips the actions below it
             # every "skip" run (skip: 8 in params)
@@ -4013,6 +4045,7 @@ earthquake:
         undo: 10000
         skip: 8
         target_self: true
+        cooldown: 20000
     costs:
         mana: 150
 
@@ -4116,6 +4149,7 @@ collapse:
     icon: iron_plate
     category: combat
     worth_sp: 150
+    earns_sp: 5
     upgrade_required_path: master
     upgrade_required_casts: 50
     actions:
@@ -4208,6 +4242,7 @@ cloak:
     icon: chainmail_chestplate
     category: master
     worth_sp: 100
+    earns_sp: 5
     actions:
         cast:
         -  class: PotionEffect
@@ -4284,7 +4319,7 @@ counterspell:
     icon: diamond
     category: combat
     worth_sp: 250
-    earns_sp: 6
+    earns_sp: 20
     upgrade_required_path: apprentice
     upgrade_required_casts: 50
     actions:
@@ -4348,6 +4383,7 @@ breach:
     category: mining
     class: ConstructSpell
     worth_sp: 150
+    earns_sp: 5
     effects:
         cast:
         -  class: EffectSingle
@@ -4374,6 +4410,7 @@ peek:
     category: mining
     class: ConstructSpell
     worth_sp: 100
+    earns_sp: 8
     effects:
         cast:
         -  class: EffectSingle
@@ -4401,6 +4438,7 @@ sandblast:
     category: combat
     pvp_restricted: true
     worth_sp: 150
+    earns_sp: 3
     actions:
         cast:
         - class: Volume
@@ -4642,6 +4680,7 @@ tendril:
     icon_url: http://textures.minecraft.net/texture/564e7e4b718a7136188385cae256de87a6cb29c85744c9c123509a4c7cec69d0
     category: combat
     worth_sp: 100
+    earns_sp: 5
     pvp_restricted: true
     actions:
         cast:
@@ -4680,6 +4719,7 @@ walls:
     icon_url: http://textures.minecraft.net/texture/4fed122b86ffaeaee36ab4a8c1c27f46fb5bddc83322c8a165d0f27aeb1830
     category: combat
     worth_sp: 100
+    earns_sp: 5
     actions:
         cast:
         -  class: Cylinder
@@ -4712,6 +4752,7 @@ emp:
     icon: daylight_detector
     category: electrical
     worth_sp: 150
+    earns_sp: 15
     actions:
         cast:
         -  class: Sphere
@@ -4733,7 +4774,7 @@ emp:
         allow_max_range: true
         range: 8
         radius: 5
-        cooldown: 1000
+        cooldown: 5000
         check_destructible: true
         destructible: powerable
         physics: true
@@ -4778,12 +4819,14 @@ disintegrate:
     icon: bone
     category: combat
     worth_sp: 250
+    earns_sp: 10
     actions:
         cast:
         - class: CustomProjectile
           actions:
           - class: Damage
           - class: ModifyBlock
+            ignore_result: true
     effects:
         cast:
         -  class: EffectSingle
@@ -4814,7 +4857,7 @@ disintegrate:
         entity_damage: 15
         check_destructible: false
         undo: 5000
-        cooldown: 500
+        cooldown: 1500
     costs:
         mana: 50
 
@@ -4943,6 +4986,7 @@ hat:
     icon: leather_helmet
     category: utility
     worth_sp: 80
+    earns_sp: 1
     actions:
         cast:
         -  class: Hat
@@ -5076,6 +5120,7 @@ lava:
     category: combat
     pvp_restricted: true
     worth_sp: 200
+    earns_sp: 5
     actions:
         cast:
         -  class: Line
@@ -5097,6 +5142,7 @@ lava:
         brush: lava
         increment_data: true
         undo: 200
+        cooldown: 5000
     costs:
         mana: 65
 
@@ -5108,6 +5154,7 @@ stream:
     category: combat
     pvp_restricted: true
     worth_sp: 150
+    earns_sp: 4
     actions:
         cast:
         -  class: DisablePhysics
@@ -5238,6 +5285,7 @@ flamethrower:
     icon: blaze_powder
     category: combat
     worth_sp: 250
+    earns_sp: 4
     actions:
         cast:
         -  class: Line
@@ -5272,12 +5320,14 @@ laser:
     icon: ink_sack:11
     category: demolition
     worth_sp: 350
+    earns_sp: 8
     upgrade_required_path: apprentice
     upgrade_required_casts: 50
     pvp_restricted: true
     actions:
         cast:
         -  class: Line
+           ignore_result: true
            actions:
            -  class: Disc
               actions:
@@ -5289,7 +5339,9 @@ laser:
              actions:
               - class: PlayEffects
                 effect: beam
+                ignore_result: true
               - class: Line
+                ignore_result: true
                 actions:
                 -  class: Disc
                    actions:
@@ -5468,6 +5520,7 @@ flare:
     icon: firework
     category: light
     worth_sp: 20
+    earns_sp: 1
     show_undoable: false
     upgrade_required_path: student
     upgrade_required_casts: 50
@@ -5503,6 +5556,7 @@ recall:
     icon: compass
     category: utility
     worth_sp: 100
+    earns_sp: 5
     cast_on_no_target: false
     actions:
         cast:
@@ -5642,6 +5696,7 @@ fireball:
     pvp_restricted: true
     worth_sp: 150
     earns_sp: 10
+    earns_cooldown: 60000
     actions:
         cast:
         -  class: Projectile
@@ -5738,6 +5793,7 @@ tent:
     category: master
     class: ConstructSpell
     worth_sp: 700
+    earns_sp: 10
     effects:
         cast:
         -  class: EffectSingle
@@ -5765,6 +5821,7 @@ cage:
     category: master
     class: ConstructSpell
     worth_sp: 600
+    earns_sp: 5
     effects:
         cast:
         -  class: EffectSingle
@@ -5897,6 +5954,7 @@ missile:
     category: combat
     worth_sp: 150
     earns_sp: 5
+    earns_cooldown: 60000
     actions:
         cast:
         - class: CustomProjectile
@@ -5977,6 +6035,7 @@ homing:
     category: combat
     worth_sp: 150
     earns_sp: 6
+    earns_cooldown: 90000
     actions:
         cast:
         - class: Message
@@ -6133,6 +6192,7 @@ blind:
     cast_on_no_target: true
     worth_sp: 70
     earns_sp: 6
+    earns_cooldown: 60000
     actions:
         cast:
         - class: CustomProjectile
@@ -6607,6 +6667,7 @@ rubberize:
     class: RecurseSpell
     cancellable: false
     worth_sp: 150
+    earns_sp: 2
     cast_on_no_target: true
     effects:
         cast:
@@ -6785,6 +6846,7 @@ entangle:
     category: combat
     class: ConstructSpell
     worth_sp: 150
+    earns_sp: 3
     pvp_restricted: true
     effects:
         cast:
@@ -7035,6 +7097,7 @@ lift:
     icon: ink_sack:8
     category: utility
     worth_sp: 150
+    earns_sp: 5
     actions:
         cast:
         -  class: Velocity
@@ -7104,6 +7167,7 @@ lift:
         item_speed: 0.05
         repeat: 50
         instant_block_effects: true
+        cooldown: 2000
     costs:
         mana: 40
 
@@ -7112,6 +7176,7 @@ admission:
     icon: wood_door
     category: utility
     worth_sp: 100
+    earns_sp: 10
     cast_on_no_target: true
     upgrade_required_path: master
     upgrade_required_casts: 20
@@ -7133,6 +7198,7 @@ admission:
         destructible: unlocked_doors
         transparent: transparent_to_construction
         undo: 8000
+        cooldown: 10000
     costs:
         mana: 50
 
@@ -7148,6 +7214,7 @@ secure:
     upgrade_required_path: master
     upgrade_required_casts: 10
     worth_sp: 500
+    earns_sp: 10
     actions:
        cast:
        - class: Lock
@@ -7210,6 +7277,7 @@ harden:
     category: utility
     class: RecurseSpell
     worth_sp: 150
+    earns_sp: 4
     cast_on_no_target: true
     upgrade_required_path: apprentice
     upgrade_required_casts: 50
@@ -7245,6 +7313,7 @@ sponge:
     category: utility
     class: ConstructSpell
     worth_sp: 100
+    earns_sp: 4
     cast_on_no_target: true
     effects:
         cast:
@@ -7261,6 +7330,7 @@ sponge:
         radius: 3
         transparent: transparent_to_construction
         undo: 10000
+        cooldown: 8000
         select_self: false
     costs:
         mana: 65
@@ -7574,6 +7644,7 @@ tracking:
     icon: compass
     category: utility
     worth_sp: 50
+    earns_sp: 5
     actions:
         cast:
          -  class: Orient
@@ -7726,6 +7797,7 @@ rocket:
     icon: ink_sack:4
     category: utility
     worth_sp: 100
+    earns_sp: 2
     actions:
         cast:
         - class: FallProtection
@@ -7741,7 +7813,7 @@ rocket:
     parameters:
         target: self
         launch: true
-        cooldown: 5000
+        cooldown: 15000
         power: 0
         speed: 0.2
         expected_lifespan: 35
@@ -7885,22 +7957,16 @@ shuriken:
     upgrade_required_path: master
     upgrade_required_casts: 50
     worth_sp: 200
+    earns_sp: 10
     actions:
         cast:
         -  class: Projectile
            actions:
+           -  class: Explosion
+              ignore_result: true
            -  class: AreaOfEffect
               actions:
-              - class: Explosion
-              - class: AreaOfEffect
-                actions:
-                - class: Damage
-        -  class: Repeat
-           actions:
-           - class: Delay
-           - class: AreaOfEffect
-             actions:
-             - class: Damage
+              - class: Damage
     effects:
         projectile:
         -  class: EffectSingle
@@ -7956,6 +8022,7 @@ wave:
     category: elemental
     pvp_restricted: true
     worth_sp: 400
+    earns_sp: 8
     upgrade_required_path: master
     upgrade_required_casts: 50
     actions:
@@ -7963,8 +8030,10 @@ wave:
         -  class: Line
            actions:
            - class: PlayEffects
+             ignore_result: true
              effects: iterate
            - class: Volume
+             ignore_result: true
              actions:
              - class: Cover
                actions:
@@ -7972,6 +8041,8 @@ wave:
            - class: AreaOfEffect
              actions:
              - class: Velocity
+               ignore_result: true
+             - class: Damage
            - class: Delay
     effects:
         cast:
@@ -8002,7 +8073,6 @@ wave:
         target_count: 16
         item_speed: 0.2
         living_entity_speed: 0.3
-        push: 1
         direction: 0,1,0
         speed: 0.4
         cooldown: 10000
@@ -8010,6 +8080,7 @@ wave:
         brush: air
         falling: true
         undo: 15000
+        damage: 0.5
     costs:
         mana: 150
 

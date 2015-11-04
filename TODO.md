@@ -2,20 +2,13 @@
 
 - Don't logout players on server change until they quit
 
-- Projectile action re-work
-  - Action should track projectiles for hit/miss
-  - Also in toss block action, tnt action, etc
-
 - Undo action re-work
   - Incorporate UndoBatch into Undo action
     - Make sure to handle special cases, non-cancellable
 
 - Re-work "active", "deactivate" and "cancel" behaviors?
 
-- Ignite, remove PotionEffects, etc- should only return CAST if they changed something
-
 Lead on possible undo issue- undo another player's spell while building, it still builds another tick or so?
-
 
 Wand dupe issue:
 

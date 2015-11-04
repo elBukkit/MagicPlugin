@@ -1357,7 +1357,7 @@ spells:
         upgrade_description: "&r&b&bull; &6Increased damage and stun duration"
     lift:
         name: Lift
-        description: Lift up the target block
+        description: Lift up your target
         cast: You lift $target.
     rocket:
         name: Rocket
