@@ -1,26 +1,21 @@
 package com.elmakers.mine.bukkit.action.builtin;
 
-import com.elmakers.mine.bukkit.action.ActionHandler;
-import com.elmakers.mine.bukkit.action.CompoundAction;
+import com.elmakers.mine.bukkit.action.BaseProjectileAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
-import com.elmakers.mine.bukkit.api.effect.EffectPlayer;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.effect.EffectUtils;
-import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.FireworkEffect;
 import org.bukkit.FireworkEffect.Type;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.entity.Entity;
 import org.bukkit.util.Vector;
 
 import java.lang.reflect.Field;
-import java.util.Collection;
 import java.util.Random;
 
-public class FireworkAction extends CompoundAction
+public class FireworkAction extends BaseProjectileAction
 {
     private int power;
     private Integer ticksFlown;
@@ -34,12 +29,11 @@ public class FireworkAction extends CompoundAction
     private int startDistance;
     private double speed;
     private double dyOffset;
-    private int checkInterval;
     private boolean setTarget;
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters) {
-
+        super.prepare(context, parameters);
         Random rand = context.getRandom();
         power = rand.nextInt(2) + 1;
         Mage mage = context.getMage();
@@ -64,7 +58,6 @@ public class FireworkAction extends CompoundAction
         startDistance = parameters.getInt("start", 0);
         speed = parameters.getDouble("speed", 0.1);
         dyOffset = parameters.getDouble("dy_offset", 0);
-        checkInterval = parameters.getInt("check_interval", 10);
         setTarget = parameters.getBoolean("set_target", false);
         if (parameters.contains("ticks_flown")) {
             ticksFlown = parameters.getInt("ticks_flown");
@@ -79,11 +72,12 @@ public class FireworkAction extends CompoundAction
     }
 
     @Override
-    public SpellResult step(CastContext context) {
+    public SpellResult start(CastContext context) {
         Location location = context.getEyeLocation();
         Vector direction = null;
         if (launch) {
             direction = context.getDirection();
+
             if (dyOffset != 0) {
                 direction.setY(direction.getY() + dyOffset);
             }
@@ -94,49 +88,26 @@ public class FireworkAction extends CompoundAction
             direction = direction.multiply(speed);
         } else {
             location = context.getTargetLocation();
+            if (location == null) {
+                return SpellResult.NO_TARGET;
+            }
         }
 	     
         FireworkEffect effect = EffectUtils.getFireworkEffect(context, color1, color2, fireworkType, flicker, trail);
-        Entity firework = EffectUtils.spawnFireworkEffect(context.getPlugin().getServer(), location, effect, power, direction, expectedLifespan, ticksFlown);
+        tracking = EffectUtils.spawnFireworkEffect(context.getPlugin().getServer(), location, effect, power, direction, expectedLifespan, ticksFlown);
 
-        if (firework != null)
-        {
-            Collection<EffectPlayer> projectileEffects = context.getEffects("projectile");
-            for (EffectPlayer effectPlayer : projectileEffects) {
-                effectPlayer.start(firework.getLocation(), firework, null, null);
-            }
-
-            // TODO: Fix!
-            // ActionHandler.setActions(firework, actions, context, parameters, "indirect_player_message");
-            // ActionHandler.setEffects(firework, context, "hit");
-
-            scheduleEntityCheck(context, firework, checkInterval);
-            if (setTarget) {
-                context.setTargetEntity(firework);
-            }
+        if (tracking == null) {
+            return SpellResult.FAIL;
         }
 
-		return SpellResult.CAST;
+        playProjectileEffects(context);
+
+        if (setTarget) {
+            context.setTargetEntity(tracking);
+        }
+
+        return checkTracking(context);
 	}
-
-    protected void scheduleEntityCheck(final CastContext context, final Entity entity, final int interval) {
-        if (interval > 0) {
-            Bukkit.getScheduler().scheduleSyncDelayedTask(context.getController().getPlugin(), new Runnable() {
-                public void run() {
-                    checkEntity(context, entity, interval);
-                }
-            }, interval);
-        }
-    }
-
-    protected void checkEntity(final CastContext context, final Entity entity, final int interval) {
-        if (entity.isDead() || !entity.isValid()) {
-            ActionHandler.runActions(entity, entity.getLocation(), entity);
-            ActionHandler.runEffects(entity);
-        } else {
-            scheduleEntityCheck(context, entity, interval);
-        }
-    }
 
 	protected Color getColor(String name) {
 		try {
@@ -157,4 +128,9 @@ public class FireworkAction extends CompoundAction
 		
 		return Type.BALL;
 	}
+
+    @Override
+    public boolean requiresTarget() {
+        return !launch;
+    }
 }

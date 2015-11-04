@@ -6844,6 +6844,7 @@ stun:
     icon: ink_sack:4
     category: combat
     worth_sp: 80
+    earns_sp: 15
     actions:
         cast:
         - class: Firework
