@@ -14,6 +14,7 @@ define('USER_COOKIE', '<grab cookies from network inspector on profile upload pa
 ?>
  */
 require_once('/Users/nathan/mc_creds.php');
+define('DEBUG', FALSE);
 
 $mapFile = dirname(__FILE__) . '/image_map.yml';
 $inputFolder = dirname(__FILE__) . '/skin_images';
@@ -76,26 +77,48 @@ function getCurrentSkin()
 
 function uploadSkin($inputFile)
 {
+    $skinFile = curl_file_create($inputFile, 'image/png', 'skin.png');
     $post = array
     (
         //'authenticityToken' => $accessToken,
         'authenticityToken' => AUTH_TOKEN,
         'model' => 'steve',
-        'skin' => '@' . $inputFile
+        'skin' => $skinFile
     );
 
     $ch = curl_init();
+
+    curl_setopt($ch, CURLINFO_HEADER_OUT, true);
+
     curl_setopt($ch, CURLOPT_URL, 'https://minecraft.net/profile/skin');
     curl_setopt($ch, CURLOPT_COOKIE, USER_COOKIE);
+    curl_setopt($ch, CURLOPT_REFERER, "https://minecraft.net/profile");
+    curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+        'Host: minecraft.net',
+        'Origin: https://minecraft.net',
+        'User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36')
+    );
     curl_setopt($ch, CURLOPT_POST, 1);
     curl_setopt($ch, CURLOPT_POSTFIELDS, $post);
     curl_setopt($ch, CURLOPT_COOKIESESSION, true);
     curl_setopt($ch, CURLOPT_HEADER, true);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    curl_exec($ch);
+    $output = curl_exec($ch);
     $httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+
+    if (DEBUG)
+    {
+        $headerSent = curl_getinfo($ch, CURLINFO_HEADER_OUT );
+        echo "\n.\n";
+        echo($headerSent);
+        echo "\n.\n";
+        echo($output);
+        echo "\n.\n";
+    }
+
     if ($httpcode != 302) {
         echo("Failed to upload skin\n");
+        if (!DEBUG) echo($output);
         return false;
     }
     curl_close($ch);
