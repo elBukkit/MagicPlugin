@@ -54,6 +54,7 @@ public class Targeting {
     private int 		                        targetBreakableDepth	= 2;
 
     private double                              hitboxPadding           = 0;
+    private double                              hitboxBlockPadding      = 0;
     private double                              rangeQueryPadding       = 1;
     private boolean                             useHitbox               = true;
     private double                              fov                     = 0.3;
@@ -139,7 +140,7 @@ public class Targeting {
     }
 
     public void targetBlock(Location source, Block block) {
-        target = new Target(source, block, useHitbox, hitboxPadding);
+        target = new Target(source, block, useHitbox, hitboxBlockPadding);
     }
 
     public void setYOffset(int offset) {
@@ -302,10 +303,10 @@ public class Targeting {
         }
 
         if (isBlock) {
-            return new Target(source, block, useHitbox, hitboxPadding);
+            return new Target(source, block, useHitbox, hitboxBlockPadding);
         }
 
-        Target targetBlock = block == null ? null : new Target(source, block, useHitbox, hitboxPadding);
+        Target targetBlock = block == null ? null : new Target(source, block, useHitbox, hitboxBlockPadding);
 
         // Don't target entities beyond the block we just hit
         if (targetBlock != null && source != null && source.getWorld().equals(block.getWorld()))
@@ -516,6 +517,7 @@ public class Targeting {
         parseTargetType(parameters.getString("target"));
         useHitbox = parameters.getBoolean("hitbox", !parameters.contains("fov"));
         hitboxPadding = parameters.getDouble("hitbox_size", 0);
+        hitboxBlockPadding = parameters.getDouble("hitbox_block_size", 0);
         rangeQueryPadding = parameters.getDouble("range_padding", 1);
         fov = parameters.getDouble("fov", 0.3);
         closeRange = parameters.getDouble("close_range", 1);
