@@ -108,16 +108,16 @@ function getPath($key) {
 
     if (!isset($enchanting[$key])) {
         $config = $enchantingConfig[$key];
-        $spellKeys = $config['spells'];
+        $spellKeys = isset($config['spells']) ? $config['spells'] : array();
         $pathSpells = array();
         if ($spellKeys) {
             foreach ($spellKeys as $spellKey => $spellData) {
                 $pathSpells[] = $spellKey;
             }
         }
-        $requiredSpells = $config['required_spells'];
+        $requiredSpells = isset($config['required_spells']) ? $config['required_spells'] : array();
         if (isset($config['inherit'])) {
-            $baseConfig = getPath($config[inherit]);
+            $baseConfig = getPath($config['inherit']);
             unset($baseConfig['hidden']);
             $config = array_replace_recursive($baseConfig, $config);
         }
@@ -212,8 +212,9 @@ foreach ($wands as $key => $wand) {
     $wand['name'] = isset($messages['wands'][$key]['name']) ? $messages['wands'][$key]['name'] : '';
     $wand['description'] = isset($messages['wands'][$key]['description']) ? $messages['wands'][$key]['description'] : '';
     $wandsSpells = isset($wand['spells']) ? $wand['spells'] : array();
-
-    $worth = 0;
+	if (!is_array($wandsSpells)) {
+		$wandsSpells = array();
+	}
     foreach ($wandsSpells as $wandSpell) {
         if (isset($spells[$wandSpell]) && isset($spells[$wandSpell]['worth'])) {
            $worth += $spells[$wandSpell]['worth'];
@@ -387,7 +388,6 @@ function printIcon($iconUrl, $title) {
 								printMaterial($craftingMaterialLower);
 						echo '</li>'; 
 					}?>
-					<?php if ($blockPopulatorEnabled) echo "<li>Find in random chests (dungeons, fortresses, etc)</li>"; ?>
 				</ul>
 				</div>
 				<?php 
