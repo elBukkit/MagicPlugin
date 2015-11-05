@@ -51,6 +51,7 @@ public class Targeting {
     protected int                               livingEntityWeight      = 3;
 
     private boolean                             ignoreBlocks            = false;
+    private int 		                        targetBreakableDepth	= 2;
 
     private double                              hitboxPadding           = 0;
     private double                              rangeQueryPadding       = 1;
@@ -530,6 +531,7 @@ public class Targeting {
         targetMinOffset = parameters.getInt("tmo", targetMinOffset);
 
         ignoreBlocks = parameters.getBoolean("ignore_blocks", false);
+        targetBreakableDepth = parameters.getInt("target_breakable_depth", 2);
 
         targetLocationOffset = null;
         targetDirectionOverride = null;
@@ -573,15 +575,8 @@ public class Targeting {
         }
     }
 
-    public int breakBlock(CastContext context, Block block, double amount) {
-        if (amount <= 0) return 0;
-        Double breakableAmount = context.getBreakable(block);
-        if (breakableAmount == null) return 0;
-
-        double breakable = (int)(amount > 1 ? amount : (context.getRandom().nextDouble() < amount ? 1 : 0));
-        if (breakable <= 0) return 0;
-
-        breakable = (int)Math.ceil(breakableAmount + breakable - 1);
+    protected int breakBlockRecursively(CastContext context, Block block, int depth) {
+        if (depth <= 0) return 0;
 
         // Play break FX
         Location blockLocation = block.getLocation();
@@ -599,16 +594,26 @@ public class Targeting {
         block.setType(Material.AIR);
 
         int broken = 1;
-        if (breakable > broken) {
-            broken += breakBlock(context, block.getRelative(BlockFace.UP), breakable - broken);
-            broken += breakBlock(context, block.getRelative(BlockFace.DOWN),  breakable - broken);
-            broken += breakBlock(context, block.getRelative(BlockFace.EAST),  breakable - broken);
-            broken += breakBlock(context, block.getRelative(BlockFace.WEST),  breakable - broken);
-            broken += breakBlock(context, block.getRelative(BlockFace.NORTH),  breakable - broken);
-            broken += breakBlock(context, block.getRelative(BlockFace.SOUTH),  breakable - broken);
+        if (depth > broken) {
+            broken += breakBlockRecursively(context, block.getRelative(BlockFace.UP), Math.min(targetBreakableDepth, depth - broken));
+            broken += breakBlockRecursively(context, block.getRelative(BlockFace.DOWN), Math.min(targetBreakableDepth, depth - broken));
+            broken += breakBlockRecursively(context, block.getRelative(BlockFace.EAST), Math.min(targetBreakableDepth, depth - broken));
+            broken += breakBlockRecursively(context, block.getRelative(BlockFace.WEST), Math.min(targetBreakableDepth, depth - broken));
+            broken += breakBlockRecursively(context, block.getRelative(BlockFace.NORTH), Math.min(targetBreakableDepth, depth - broken));
+            broken += breakBlockRecursively(context, block.getRelative(BlockFace.SOUTH), Math.min(targetBreakableDepth, depth - broken));
         }
 
         return broken;
+    }
+
+    public int breakBlock(CastContext context, Block block, double amount) {
+        if (amount <= 0) return 0;
+        Double breakableAmount = context.getBreakable(block);
+        if (breakableAmount == null) return 0;
+
+        double breakable = (int)(amount > 1 ? amount : (context.getRandom().nextDouble() < amount ? 1 : 0));
+        if (breakable <= 0) return 0;
+        return breakBlockRecursively(context, block, (int)Math.ceil(breakableAmount + breakable - 1));
     }
 
     public static void track(Plugin plugin, Entity tracked) {
