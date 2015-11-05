@@ -315,6 +315,7 @@ attachable_wall:
 - wall_sign
 - wall_banner
 - cocoa
+- cactus
 
 # Things that double-stack like doors and tall plants
 attachable_double:
