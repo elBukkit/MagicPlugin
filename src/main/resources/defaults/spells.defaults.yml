@@ -1919,7 +1919,7 @@ disarm|3:
         target_breakables: 2
 
 cure:
-    icon_url: http://textures.minecraft.net/texture/775c41bd5e4ef3cba5f9bdc5258973c95477e819cb20c163ffb378db5ae3
+    icon_url: http://textures.minecraft.net/texture/1364e3f9597a295108d202d20c2f02539d5ad8377fef53ef622603a7f45b52f
     icon: cookie
     upgrade_required_path: student
     upgrade_required_casts: 20
@@ -1994,43 +1994,73 @@ heal:
     earns_sp: 2
     actions:
         cast:
-        -  class: Heal
+        - class: Repeat
+          actions:
+          - class: Delay
+          - class: Heal
+          - class: Feed
     effects:
         cast:
-        -  class: EffectSingle
-           sound: level_up
-           sound: magic.shimmer
-           effectlib:
-             class: ConeEffect
-             iterations: 5
-             lengthGrow: .14
-             particle: heart
-        -  class: EffectSingle
-           location: target
-           effectlib:
-             class: LoveEffect
-             iterations: 5
-             period: 2
+        - class: EffectSingle
+          custom_sound: magic.rennervate
+          effectlib:
+            class: ConeEffect
+            iterations: 5
+            lengthGrow: .12
+            particle: heart
+        - class: EffectSingle
+          sound: level_up
+          custom_sound: magic.rennervate
+          location: target
+          target_offset: 0,-2,0
+          effectlib:
+            class: WarpEffect
+            duration: $total_duration
+            period: 2
+            particle: heart
+            particles: 7
+            iterations: 40
+            radius: 1
         cast_self:
         - class: EffectSingle
           sound: level_up
-          sound: magic.shimmer
+          custom_sound: magic.rennervate
+          location: target
+          target_offset: 0,-2,0
           effectlib:
-             class: AtomEffect
-             particleNucleus: heart
-             particleOrbital: crit
-             iterations: 5
+            class: WarpEffect
+            duration: $total_duration
+            period: 2
+            particle: heart
+            particles: 7
+            iterations: 40
+            radius: 1
+        cast_finish:
+        -  class: EffectSingle
+           custom_sound: magic.vulnera
+           sound_pitch: 5
+           location: origin
+        -  location: origin
+           effectlib:
+             class: AnimatedBall
+             duration: 200
+             particle: heart
+             size: 3
     parameters:
+        cancel_on_damage: 0.5
+        delay: 500
+        repeat: 10
+        total_duration: 5000
         target_type: LivingEntity
         target: any_entity
         allow_max_range: false
         range: 5
-        duration: 1000
-        amount: 2
-        cooldown: 8000
+        cooldown: 20000
         bypass_pvp: true
         bypass_friendly_fire: true
         hitbox: true
+        amount: 1
+        feed: 1
     costs:
         mana: 50
 
@@ -2039,12 +2069,10 @@ heal|2:
     upgrade_required_casts: 50
     parameters:
         range: 32
-        amount: 4
-        cooldown: 9000
+        cooldown: 15000
 
 heal|3:
     parameters:
-        amount: 6
         cooldown: 10000
 
 healing:

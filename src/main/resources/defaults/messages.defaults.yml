@@ -481,9 +481,10 @@ spells:
     heal:
         name: Heal
         description: Heal yourself or others
+        usage: Can be interrupted by damage!
         cast: You heal $target
         cast_self: You heal yourself
-        upgrade_description: "&r&b&bull; &6Heal amount increased"
+        upgrade_description: "&r&b&bull; &6Cooldown decreased"
     healing:
         name: Healing
         description: Heal everyone around you
