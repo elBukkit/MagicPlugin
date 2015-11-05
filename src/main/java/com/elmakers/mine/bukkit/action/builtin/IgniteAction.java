@@ -31,7 +31,7 @@ public class IgniteAction extends BaseSpellAction
         Entity entity = context.getTargetEntity();
 		MageController controller = context.getController();
 		boolean isElemental = controller.isElemental(entity);
-		if (!isElemental && entity.getFireTicks() <= ticks)
+		if (!isElemental && entity.getFireTicks() == ticks)
 		{
 			return SpellResult.NO_TARGET;
 		}
