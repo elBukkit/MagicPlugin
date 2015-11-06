@@ -13,12 +13,10 @@ import java.util.UUID;
 import java.util.logging.Level;
 
 import com.elmakers.mine.bukkit.api.block.BrushMode;
-import com.elmakers.mine.bukkit.api.event.SpellUpgradeEvent;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.magic.Messages;
 import com.elmakers.mine.bukkit.api.spell.CastingCost;
 import com.elmakers.mine.bukkit.api.spell.CostReducer;
-import com.elmakers.mine.bukkit.api.spell.MageSpell;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellKey;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
@@ -32,7 +30,6 @@ import com.elmakers.mine.bukkit.utility.ColorHD;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
-import com.elmakers.mine.bukkit.utility.NMSUtils;
 import com.elmakers.mine.bukkit.utility.SoundEffect;
 import de.slikey.effectlib.util.ParticleEffect;
 import org.apache.commons.lang.ArrayUtils;
@@ -289,7 +286,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         loadProperties(config);
         updateName();
         updateLore();
-        saveState();
+        saveItemState();
     }
 	
 	protected Wand(MagicController controller, String templateName) throws UnknownWandException {
@@ -368,13 +365,13 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 
         setTemplate(templateName);
 		suspendSave = false;
-		saveState();
+		saveItemState();
 	}
 	
 	public Wand(MagicController controller, Material icon, short iconData) {
 		// This will make the Bukkit ItemStack into a real ItemStack with NBT data.
 		this(controller, InventoryUtils.makeReal(new ItemStack(icon, 1, iconData)));
-        saveState();
+        saveItemState();
 		updateName();
 	}
 	
@@ -412,7 +409,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
                 description = controller.getMessages().get("wands." + template + ".upgrade_description", description);
             }
             setIcon(DefaultUpgradeMaterial, (byte) 0);
-            saveState();
+            saveItemState();
             updateName(true);
             updateLore();
         }
@@ -429,7 +426,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
     public void checkId() {
         if ((id == null || id.length() == 0) && !this.isUpgrade) {
             newId();
-            saveState();
+            saveItemState();
         }
     }
 
@@ -961,8 +958,13 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		return itemStack;
 	}
 
-    @Override
+	@Override
 	public void saveState() {
+		saveInventory();
+		saveItemState();
+	}
+
+    public void saveItemState() {
 		if (suspendSave) return;
 
         // Make sure we're on the current item instance
@@ -975,17 +977,6 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
                     item = itemInHand;
                     updateName();
                     updateLore();
-                }
-
-                // Update the stored item, too- in case we save while the
-                // inventory is open.
-                if (storedInventory != null && item != null) {
-                    int currentSlot = player.getInventory().getHeldItemSlot();
-                    ItemStack storedItem = storedInventory.getItem(currentSlot);
-                    String storedId = getWandId(storedItem);
-                    if (storedId != null && storedId.equals(id)) {
-                        storedInventory.setItem(currentSlot, item);
-                    }
                 }
             }
         }
@@ -1002,6 +993,22 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		} else {
             InventoryUtils.saveTagsToNBT(stateNode, wandNode, ALL_PROPERTY_KEYS);
         }
+
+		if (mage != null) {
+			Player player = mage.getPlayer();
+			if (player != null) {
+				// Update the stored item, too- in case we save while the
+				// inventory is open.
+				if (storedInventory != null && item != null) {
+					int currentSlot = player.getInventory().getHeldItemSlot();
+					ItemStack storedItem = storedInventory.getItem(currentSlot);
+					String storedId = getWandId(storedItem);
+					if (storedId != null && storedId.equals(id)) {
+						storedInventory.setItem(currentSlot, item);
+					}
+				}
+			}
+		}
 	}
 	
 	protected void loadState() {
@@ -1940,7 +1947,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	}
 
     public void save() {
-        saveState();
+        saveItemState();
         updateName();
         updateLore();
     }
@@ -2370,7 +2377,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
             enchantCount++;
         }
 
-        saveState();
+        saveItemState();
         updateName();
         updateLore();
         return levels;
@@ -2411,7 +2418,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         Wand wand = null;
         try {
             wand = new Wand(controller, InventoryUtils.makeReal(itemStack));
-            wand.saveState();
+            wand.saveItemState();
             wand.updateName();
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -2750,7 +2757,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
             if (mage != null) mage.sendMessage(getMessage("alphabetized").replace("$wand", getName()));
         }
 
-		saveState();
+		saveItemState();
 		updateName();
 		updateLore();
         updateMaxMana();
@@ -3007,7 +3014,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		}
 		
 		autoFill = false;
-		saveState();
+		saveItemState();
 		
 		return true;
 	}
@@ -3040,7 +3047,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         }
 
         if (modified) {
-            saveState();
+            saveItemState();
         }
     }
 	
@@ -3108,7 +3115,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
                 templateConfig.set("key", null);
 
                 this.loadProperties(templateConfig, false);
-                this.saveState();
+                this.saveItemState();
                 return true;
             }
 			return this.add(wand);
@@ -3360,7 +3367,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 			storedXpProgress = 0;
 			storedXpLevel = 0;
 		}
-        saveState();
+        saveItemState();
 		mage.setActiveWand(null);
 		this.mage = null;
 	}
@@ -3464,7 +3471,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
                     playerInventory.setItemInHand(new ItemStack(Material.AIR, 1));
                     player.updateInventory();
                 } else {
-                    saveState();
+                    saveItemState();
                     updateName();
                     updateLore();
                 }
@@ -3961,7 +3968,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         updateExperience();
 
         tick();
-        saveState();
+        saveItemState();
 
         updateActiveMaterial();
         updateName();
@@ -3990,7 +3997,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         autoAlphabetize = false;
 
 		// Force inventory re-load
-		saveState();
+		saveItemState();
 		loadState();
 		updateInventory();
     }
@@ -4005,7 +4012,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         autoAlphabetize = false;
 
 		// Force inventory re-load
-		saveState();
+		saveItemState();
 		loadState();
 		updateInventory();
     }
@@ -4014,7 +4021,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	public com.elmakers.mine.bukkit.api.wand.Wand duplicate() {
 		ItemStack newItem = InventoryUtils.getCopy(item);
 		Wand newWand = new Wand(controller, newItem);
-		newWand.saveState();
+		newWand.saveItemState();
 		return newWand;
 	}
 
@@ -4022,7 +4029,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	public boolean configure(Map<String, Object> properties) {
 		Map<Object, Object> convertedProperties = new HashMap<Object, Object>(properties);
 		loadProperties(ConfigurationUtils.toNodeList(convertedProperties), false);
-        saveState();
+        saveItemState();
         updateName();
         updateLore();
 		return true;
@@ -4032,7 +4039,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	public boolean upgrade(Map<String, Object> properties) {
 		Map<Object, Object> convertedProperties = new HashMap<Object, Object>(properties);
 		loadProperties(ConfigurationUtils.toNodeList(convertedProperties), true);
-        saveState();
+        saveItemState();
         updateName();
         updateLore();
 		return true;
@@ -4126,7 +4133,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		addToInventory(spellItem, inventorySlot);
 		updateInventory();
 		hasInventory = getSpells().size() + getBrushes().size() > 1;
-        saveState();
+        saveItemState();
 		updateLore();
 
         if (mage != null && spells.size() != spellCount)
@@ -4209,7 +4216,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 			updateInventory();
 		}
         hasInventory = getSpells().size() + getBrushes().size() > 1;
-        saveState();
+        saveItemState();
 		updateLore();
 
         if (mage != null)
@@ -4259,7 +4266,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 
 	public void activateBrush(String materialKey) {
 		this.activeMaterial = materialKey;
-        saveState();
+        saveItemState();
 		updateName();
 		updateActiveMaterial();
         updateHotbar();
@@ -4275,7 +4282,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         }
         spellKey = new SpellKey(spellKey.getBaseKey(), spellLevels.get(activeSpell));
 		this.activeSpell = spellKey.getKey();
-        saveState();
+        saveItemState();
 		updateName();
 	}
 
@@ -4312,7 +4319,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		}
 		updateActiveMaterial();
 		updateInventory();
-        saveState();
+        saveItemState();
 		updateName();
 		updateLore();
 		return found;
@@ -4352,7 +4359,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 			}
 		}
         updateInventory();
-        saveState();
+        saveItemState();
         updateName();
         updateLore();
 
@@ -4483,7 +4490,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 
         inventory.setContents(storedInventory.getContents());
         storedInventory = null;
-        saveState();
+        saveItemState();
 
         player.updateInventory();
 
