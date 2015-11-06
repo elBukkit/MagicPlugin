@@ -69,9 +69,13 @@ public class CastingCost implements com.elmakers.mine.bukkit.api.spell.CastingCo
     {
         if (!(spell instanceof MageSpell)) return false;
         Mage mage = ((MageSpell)spell).getMage();
-        Inventory inventory = mage.getInventory();
         int amount = getAmount(spell);
-        boolean hasItem = item == null || amount <= 0 || inventory.containsAtLeast(item.getItemStack(amount), amount);
+        boolean hasItem = true;
+        if (item != null && amount > 0)
+        {
+            Inventory inventory = mage.getInventory();
+            hasItem = inventory.containsAtLeast(item.getItemStack(amount), amount);
+        }
         boolean hasXp = xp <= 0 || mage.getExperience() >= getXP(spell);
         boolean hasMana = mana <= 0 || mage.getMana() >= getMana(spell);
         boolean hasCurrency = currency <= 0;
@@ -87,9 +91,9 @@ public class CastingCost implements com.elmakers.mine.bukkit.api.spell.CastingCo
     {
         if (!(spell instanceof MageSpell)) return;
         Mage mage = ((MageSpell)spell).getMage();
-        Inventory inventory = mage.getInventory();
         int amount = getAmount(spell);
         if (item != null && amount > 0) {
+            Inventory inventory = mage.getInventory();
             ItemStack itemStack = getItemStack(spell);
             inventory.removeItem(itemStack);
         }
