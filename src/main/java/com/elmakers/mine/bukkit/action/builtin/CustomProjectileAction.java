@@ -264,7 +264,7 @@ public class CustomProjectileAction extends CompoundAction
             // Debugging
             if (targetLocation == null) {
                 targetLocation = projectileLocation;
-                context.getLogger().warning("Targeting hit, with no target location: " + targetingResult + " with " + targeting.getTargetType());
+                context.getLogger().warning("Targeting hit, with no target location: " + targetingResult + " with " + targeting.getTargetType() + " from " + context.getSpell().getName());
             }
 
             context.getMage().sendDebugMessage(ChatColor.BLUE + "Projectile hit: " + ChatColor.LIGHT_PURPLE + targetingResult.name().toLowerCase()
