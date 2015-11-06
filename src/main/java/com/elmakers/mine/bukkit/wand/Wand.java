@@ -477,6 +477,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		return indestructible;
 	}
 
+	@Override
     public boolean isUndroppable() {
 		// Don't allow dropping wands while the inventory is open.
         return undroppable || isInventoryOpen();
@@ -4462,7 +4463,24 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         if (player == null) {
             return false;
         }
-        PlayerInventory inventory = player.getInventory();
+
+		PlayerInventory inventory = player.getInventory();
+		// Check for the wand having been removed somehow, we don't want to put it back
+		// if that happened.
+		// This fixes dupe issues with armor stands, among other things
+		// We do need to account for the wand not being the active slot, though
+		// Though maybe not needed now with PlayerArmorStandManipulateEvent ?
+		// we'll have to see if wands disappear due to this.
+		int currentSlot = inventory.getHeldItemSlot();
+		ItemStack storedItem = storedInventory.getItem(currentSlot);
+		String currentId = getWandId(inventory.getItem(currentSlot));
+		String storedId = getWandId(storedItem);
+		if (storedId != null && storedId.equals(id) && currentId != id) {
+			storedInventory.setItem(currentSlot, null);
+			org.bukkit.Bukkit.getLogger().warning("Cleared wand on inv close for player " + player.getName());
+			Thread.dumpStack();
+		}
+
         inventory.setContents(storedInventory.getContents());
         storedInventory = null;
         saveState();
