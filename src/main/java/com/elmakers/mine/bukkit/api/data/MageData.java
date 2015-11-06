@@ -31,6 +31,7 @@ public class MageData {
     private UndoData undoData;
     private Float storedExperience;
     private Integer storedLevel;
+    private boolean openWand;
 
     public MageData(String id) {
         this.id = id;
@@ -197,5 +198,13 @@ public class MageData {
 
     public void setStoredLevel(Integer storedLevel) {
         this.storedLevel = storedLevel;
+    }
+
+    public boolean isOpenWand() {
+        return openWand;
+    }
+
+    public void setOpenWand(boolean openWand) {
+        this.openWand = openWand;
     }
 }
