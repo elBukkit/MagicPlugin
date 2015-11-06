@@ -170,7 +170,7 @@ default:
        invalid_world: fail
 
 silence:
-    icon_url: http://textures.minecraft.net/texture/1adaf6e6e387bc18567671bb82e948488bbacff97763ee5985442814989f5d
+    icon_url: http://textures.minecraft.net/texture/ad7e09a7af7af5acc286e6a4dd3c2f69b55ace33b7838ca899545570e946ee
     icon: rotten_flesh
     category: dark
     worth_sp: 200
@@ -5929,6 +5929,7 @@ blaster:
     icon: ink_sack:1
     icon_url: http://textures.minecraft.net/texture/2ba95570c7b712713632d4c0d2fc66906613d3850a596a0267c6d763fe741ac
     category: specialty
+    hidden: true
     worth_sp: 150
     actions:
         cast:
@@ -6061,7 +6062,7 @@ missile|4:
 
 homing:
     icon: ink_sack:1
-    icon_url: http://textures.minecraft.net/texture/a4b47e6847d71c60d0a6453313435d61f15b1523abd9741de36366deec1f38d6
+    icon_url: http://textures.minecraft.net/texture/e3152dba6ee22b6e89e88878acc5a01f5964946b8938e9a1470dfabbeeca
     category: combat
     worth_sp: 150
     earns_sp: 6
@@ -6139,7 +6140,7 @@ homing:
 
 sticky:
     icon: ink_sack:1
-    icon_url: http://textures.minecraft.net/texture/a5454f6488662cdb7d57d5fcaf3d9b061b57c109ba2aaa06c54707174d7a0c4
+    icon_url: http://textures.minecraft.net/texture/336d58bfed2770519f6db2742d3c6ad0cf645d7f1c86a242dc27ed52963b4e7
     category: combat
     worth_sp: 150
     earns_sp: 10
@@ -7855,7 +7856,7 @@ rocket:
 tornado:
     upgrade_required_path: master
     upgrade_required_casts: 50
-    icon_url: http://textures.minecraft.net/texture/912c6ba1e1756d2d8ffb0f72af0c46d2da3596168d3ad0d513ce25c92572
+    icon_url: http://textures.minecraft.net/texture/2362826553aaf78fd8b511fdedba941738ddd21c0f889e6bf2697d5a4f74f27
     icon: feather
     category: elemental
     pvp_restricted: true
@@ -7982,7 +7983,7 @@ rainbow:
 
 shuriken:
     icon: double_plant:5
-    icon_url: http://textures.minecraft.net/texture/a8d5885e7a3471562c4b7e4f45ae0b8532596ca15f695345114213032a89ed
+    icon_url: http://textures.minecraft.net/texture/c79a5d6fbb1fe7435edbb9e72cb1d02f6e91597eb4b79d818ae583cda21f
     category: combat
     upgrade_required_path: master
     upgrade_required_casts: 50
@@ -8047,7 +8048,7 @@ shuriken|3:
         radius: 4
 
 wave:
-    icon_url: http://textures.minecraft.net/texture/912c6ba1e1756d2d8ffb0f72af0c46d2da3596168d3ad0d513ce25c92572
+    icon_url: http://textures.minecraft.net/texture/1d7cb6f2a4b2c2059621b7f6f84b5f0bc84c19ce981d054c26cec012ac
     icon: feather
     category: elemental
     pvp_restricted: true
@@ -8124,7 +8125,7 @@ wave|2:
         check_destructible: false
 
 boomstown:
-   icon_url: http://textures.minecraft.net/texture/aa7e54c1c7634bdf1118db91da9e12b6b4d17f7fb7b7d5b0d06d554feb737bf
+   icon_url: http://textures.minecraft.net/texture/91e9bb78d29e2967d52274d370ad78cb61d15eca3d26a8d6bfc24f887072fa81
    icon: ink_sack:4
    category: combat
    worth_sp: 6
@@ -8207,7 +8208,7 @@ boomstown:
 
 projectile:
     icon: ink_sack:1
-    icon_url: http://textures.minecraft.net/texture/2ba95570c7b712713632d4c0d2fc66906613d3850a596a0267c6d763fe741ac
+    icon_url: http://textures.minecraft.net/texture/d8532e9a6994e828df3a7236a7b3686194eba57dae3eb10789d98915cbb3336
     upgrade_required_path: beginner
     upgrade_required_casts: 15
     category: staff
@@ -8316,7 +8317,7 @@ projectile:
 
 whip:
     icon: ink_sack:1
-    icon_url: http://textures.minecraft.net/texture/2e67b7afcdb3bfe70cb33d1e384f11f8dc81f3dc9677cc64cb51ba0eb8f3f
+    icon_url: http://textures.minecraft.net/texture/543a93796b389fc710671b62106068619b7673e7bf48a6c77bc4db921d54
     category: combat
     worth_sp: 100
     earns_sp: 6
@@ -8363,7 +8364,7 @@ whip:
 
 fxdemo:
     icon: ink_sack:1
-    icon_url: http://textures.minecraft.net/texture/aa7e54c1c7634bdf1118db91da9e12b6b4d17f7fb7b7d5b0d06d554feb737bf
+    icon_url: http://textures.minecraft.net/texture/ce6ed0a5f7e23bc3d34d73baa0b9c3f838e85014d2ff290801dc7486dd4da6
     category: staff
     hidden: true
     actions:
