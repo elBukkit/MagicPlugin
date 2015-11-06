@@ -94,7 +94,17 @@ public abstract class BlockSpell extends UndoableSpell {
         }
         destructible = null;
         if (parameters.contains("destructible")) {
-            destructible = controller.getMaterialSet(parameters.getString("destructible"));
+            // This always needs to be a copy since it can be modified by addDestructible
+            // Kind of a hack for Automata.
+            destructible = new HashSet<Material>(controller.getMaterialSet(parameters.getString("destructible")));
+        }
+
+        String destructibleKey = controller.getDestructibleMaterials(mage, mage.getLocation());
+        if (destructibleKey != null) {
+            if (destructible == null) {
+                destructible = new HashSet<Material>();
+            }
+            destructible.addAll(controller.getMaterialSet(destructibleKey));
         }
         checkDestructible = parameters.getBoolean("check_destructible", true);
         checkDestructible = parameters.getBoolean("cd", checkDestructible);

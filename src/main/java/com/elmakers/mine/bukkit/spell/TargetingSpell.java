@@ -503,11 +503,19 @@ public abstract class TargetingSpell extends BaseSpell {
             targetableMaterials = null;
         }
 
+        reflectiveMaterials = null;
         if (parameters.contains("reflective")) {
-            reflectiveMaterials = new HashSet<Material>();
-            reflectiveMaterials.addAll(controller.getMaterialSet(parameters.getString("reflective")));
-        } else {
-            reflectiveMaterials = null;
+            reflectiveMaterials = controller.getMaterialSet(parameters.getString("reflective"));
+        }
+
+        String reflectiveKey = controller.getReflectiveMaterials(mage, mage.getLocation());
+        if (reflectiveKey != null) {
+            Set<Material> currentReflective = reflectiveMaterials;
+            reflectiveMaterials = controller.getMaterialSet(reflectiveKey);
+            if (currentReflective != null) {
+                reflectiveMaterials = new HashSet<Material>(reflectiveMaterials);
+                reflectiveMaterials.addAll(currentReflective);
+            }
         }
 
         targetNPCs = parameters.getBoolean("target_npc", false);
