@@ -1,7 +1,7 @@
 Wraith:
   Mobtype: witherskeleton
   Display: '&6Wraith'
-  Health: 500
+  Health: 60
   Damage: 10
   Skills:
   - skill{skill=SummonWraithlets} @Target >0 0.1
@@ -24,7 +24,7 @@ Wraithlet:
 DreadKnight:
   Mobtype: witherskeleton
   Display: '&2DreadKnight'
-  Health: 50
+  Health: 30
   Damage: 8
   Drops:
   - MinorBoss
@@ -38,7 +38,7 @@ DreadKnight:
 Sludge:
   Mobtype: slime
   Display: Sludge
-  Health: 60
+  Health: 25
   Damage: 2
   Drops:
   - MinorBoss
@@ -54,7 +54,7 @@ Sludge:
 Guardian:
   Mobtype: zombie
   Display: Guardian
-  Health: 50
+  Health: 40
   Equipment:
   - Wand:0
   - Firebender_Helmet:4
@@ -72,7 +72,7 @@ Guardian:
 Warlock:
   Mobtype: witch
   Display: Warlock
-  Health: 120
+  Health: 70
   Damage: 4
   Equipment:
   - Wand:0
