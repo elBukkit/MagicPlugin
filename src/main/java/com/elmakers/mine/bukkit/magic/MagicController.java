@@ -1966,6 +1966,14 @@ public class MagicController implements MageController {
 		}
 		return newSpell;
 	}
+
+    public String getReflectiveMaterials(Mage mage, Location location) {
+        return worldGuardManager.getReflective(mage.getPlayer(), location);
+    }
+
+    public String getDestructibleMaterials(Mage mage, Location location) {
+        return worldGuardManager.getDestructible(mage.getPlayer(), location);
+    }
 	
 	protected void loadMaterials(ConfigurationSection materialNode)
 	{

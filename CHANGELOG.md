@@ -21,6 +21,7 @@
  - Add Magic.wand.use.protected and Magic.wand.use.powered permission nodes, true by default
  - Fixed some very specific item-drop exploit issues with attached blocks
  - Fix wand dupe issues with inventory mode and armor stands with arms
+ - Add "destructible" and "reflective" custom flags, for region-specific reflect/destruct behavior
 
 ## 5.3
 

@@ -74,6 +74,20 @@ public class WorldGuardManager implements PVPManager, BlockBreakManager, BlockBu
         return null;
     }
 
+    public String getReflective(Player player, Location location) {
+        if (enabled && worldGuard != null) {
+            return worldGuard.getReflective(player, location);
+        }
+        return null;
+    }
+
+    public String getDestructible(Player player, Location location) {
+        if (enabled && worldGuard != null) {
+            return worldGuard.getDestructible(player, location);
+        }
+        return null;
+    }
+
     @Override
     public boolean hasBreakPermission(Player player, Block block) {
         return hasBuildPermission(player, block);

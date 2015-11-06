@@ -108,4 +108,40 @@ public class WorldGuardAPI {
         }
         return null;
     }
+
+    public String getReflective(Player player, Location location) {
+        if (location != null && worldGuard != null && customFlags != null)
+        {
+            RegionManager regionManager = worldGuard.getRegionManager(location.getWorld());
+            if (regionManager == null) {
+                return null;
+            }
+
+            ApplicableRegionSet checkSet = regionManager.getApplicableRegions(location);
+            if (checkSet == null) {
+                return null;
+            }
+
+            return customFlags.getReflective(getAssociable(player), checkSet);
+        }
+        return null;
+    }
+
+    public String getDestructible(Player player, Location location) {
+        if (location != null && worldGuard != null && customFlags != null)
+        {
+            RegionManager regionManager = worldGuard.getRegionManager(location.getWorld());
+            if (regionManager == null) {
+                return null;
+            }
+
+            ApplicableRegionSet checkSet = regionManager.getApplicableRegions(location);
+            if (checkSet == null) {
+                return null;
+            }
+
+            return customFlags.getDestructible(getAssociable(player), checkSet);
+        }
+        return null;
+    }
 }
