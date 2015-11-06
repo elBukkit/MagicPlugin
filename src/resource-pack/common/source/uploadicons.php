@@ -5,16 +5,8 @@ ini_set('display_errors', 1);
 
 require_once('../../../web/spyc.php');
 
-// Replace this with a file that looks like this:
-/*
-<?php
-define('USER_UUID', '<your player's uuid>');
-define('AUTH_TOKEN', '<find this in a hidden form element on profile upload page>');
-define('USER_COOKIE', '<grab cookies from network inspector on profile upload page>');
-?>
- */
-require_once('/Users/nathan/mc_creds.php');
-define('DEBUG', FALSE);
+// You will need to fill out some info here- see mc_creds.php.sample
+require_once('mc_creds.php');
 
 $mapFile = dirname(__FILE__) . '/image_map.yml';
 $inputFolder = dirname(__FILE__) . '/skin_images';
