@@ -261,11 +261,17 @@ public class CustomProjectileAction extends CompoundAction
                 actionContext.playEffects("prehit");
             }
             targetLocation = target.getLocation();
+            // Debugging
+            if (targetLocation == null) {
+                targetLocation = projectileLocation;
+                context.getLogger().warning("Targeting hit, with no target location: " + targetingResult + " with " + targeting.getTargetType());
+            }
+
             context.getMage().sendDebugMessage(ChatColor.BLUE + "Projectile hit: " + ChatColor.LIGHT_PURPLE + targetingResult.name().toLowerCase()
-                    + ChatColor.BLUE + " at " + ChatColor.GOLD + targetLocation.getBlock().getType()
-                    + ChatColor.BLUE + " from " + ChatColor.GRAY + projectileLocation.getBlock() + ChatColor.BLUE + " to "
-                    + ChatColor.GRAY + targetLocation.toVector() + ChatColor.BLUE
-                    + " from range of " + ChatColor.GOLD + distance + ChatColor.BLUE + " over time " + ChatColor.DARK_PURPLE + delta, 4);
+                + ChatColor.BLUE + " at " + ChatColor.GOLD + targetLocation.getBlock().getType()
+                + ChatColor.BLUE + " from " + ChatColor.GRAY + projectileLocation.getBlock() + ChatColor.BLUE + " to "
+                + ChatColor.GRAY + targetLocation.toVector() + ChatColor.BLUE
+                + " from range of " + ChatColor.GOLD + distance + ChatColor.BLUE + " over time " + ChatColor.DARK_PURPLE + delta, 4);
             distance = targetLocation.distance(projectileLocation);
         }
         distanceTravelled += distance;

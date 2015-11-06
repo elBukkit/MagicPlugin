@@ -20,6 +20,7 @@
  - Add "Test Dummy" spell, summons some poor villagers for spell testing purposes.
  - Add Magic.wand.use.protected and Magic.wand.use.powered permission nodes, true by default
  - Fixed some very specific item-drop exploit issues with attached blocks
+ - Fix wand dupe issues with inventory mode and armor stands with arms
 
 ## 5.3
 

@@ -4477,7 +4477,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		String storedId = getWandId(storedItem);
 		if (storedId != null && storedId.equals(id) && currentId != id) {
 			storedInventory.setItem(currentSlot, null);
-			org.bukkit.Bukkit.getLogger().warning("Cleared wand on inv close for player " + player.getName());
+			controller.getLogger().warning("Cleared wand on inv close for player " + player.getName());
 			Thread.dumpStack();
 		}
 

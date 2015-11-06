@@ -1,27 +1,17 @@
 # TODO
 
-- Don't logout players on server change until they quit
+ - Don't logout players on server change until they quit
 
-- Undo action re-work
-  - Incorporate UndoBatch into Undo action
-    - Make sure to handle special cases, non-cancellable
+ - MagicArenas: Add wand path to announcement messages
 
-- Re-work "active", "deactivate" and "cancel" behaviors?
+ - Undo action re-work
+   - Incorporate UndoBatch into Undo action
+     - Make sure to handle special cases, non-cancellable
 
-Lead on possible undo issue- undo another player's spell while building, it still builds another tick or so?
+ - Re-work "active", "deactivate" and "cancel" behaviors?
 
-Wand dupe issue:
+ - Lead on possible undo issue- undo another player's spell while building, it still builds another tick or so?
 
-if there is a unlocked armor stand
-1. place rando item in the hand of the armor stand
-2. open your wand and then swap out the wand with the held item
-on the armor stand
-3. it dupes u can pull it off and get a 2nd wand
-it only works with wands that have menus
-
- - Need to save state to the wand item in the stored inventory.... >:|
- - Add template requirements to NPCs, or spellshop trait, or.. something?
- 
  - Spell lore should reflect reduced cooldowns
  - Goggles deactivate on death (maybe only in Azkaban?)
  - Can we save 1 slot in wand inv?
