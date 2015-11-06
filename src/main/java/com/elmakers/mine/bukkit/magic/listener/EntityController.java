@@ -1,6 +1,6 @@
 package com.elmakers.mine.bukkit.magic.listener;
 
-import com.elmakers.mine.bukkit.action.ActionHandler;
+import com.elmakers.mine.bukkit.api.block.BlockData;
 import com.elmakers.mine.bukkit.api.block.UndoList;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.magic.MagicController;
@@ -8,9 +8,9 @@ import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.NMSUtils;
 import com.elmakers.mine.bukkit.utility.Targeting;
 import com.elmakers.mine.bukkit.wand.Wand;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
@@ -28,9 +28,7 @@ import org.bukkit.event.entity.ItemSpawnEvent;
 import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
-import org.bukkit.metadata.FixedMetadataValue;
 
-import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -296,7 +294,22 @@ public class EntityController implements Listener {
             event.setCancelled(true);
             return;
         }
-        ItemStack spawnedItem = event.getEntity().getItemStack();
+
+        Item itemEntity = event.getEntity();
+        ItemStack spawnedItem = itemEntity.getItemStack();
+        Block block = itemEntity.getLocation().getBlock();
+        BlockData undoData = com.elmakers.mine.bukkit.block.UndoList.getBlockData(block.getLocation());
+        if (undoData != null)
+        {
+            // if a block just broke via physics, it will not yet have its id changed to air
+            // So we can catch this as a one-time event, for blocks we have recorded.
+            if (undoData.getMaterial() != Material.AIR && block.getType() != Material.AIR)
+            {
+                undoData.getUndoList().add(block);
+                event.setCancelled(true);
+                return;
+            }
+        }
         if (Wand.isSkill(spawnedItem))
         {
             event.setCancelled(true);

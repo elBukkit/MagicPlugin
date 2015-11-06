@@ -19,6 +19,7 @@
  - Only apply "magic" damage to other players, never to entities (use magic_entity_damage: true on Damage action to switch it back)
  - Add "Test Dummy" spell, summons some poor villagers for spell testing purposes.
  - Add Magic.wand.use.protected and Magic.wand.use.powered permission nodes, true by default
+ - Fixed some very specific item-drop exploit issues with attached blocks
 
 ## 5.3
 
