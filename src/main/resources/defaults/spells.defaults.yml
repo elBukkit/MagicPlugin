@@ -7368,6 +7368,7 @@ sponge:
 
 upgrades:
     icon: compass
+    icon_url: http://textures.minecraft.net/texture/ce6ed0a5f7e23bc3d34d73baa0b9c3f838e85014d2ff290801dc7486dd4da6
     category: specialty
     hidden: true
     parameters:
