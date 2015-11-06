@@ -326,10 +326,12 @@ public class Targeting {
             entityTarget = null;
         }
         if (targetBlock != null && !context.canCast(targetBlock.getLocation())) {
+            result = TargetingResult.MISS;
             targetBlock = null;
         }
 
         if (targetType == TargetType.OTHER_ENTITY && entityTarget == null) {
+            result = TargetingResult.MISS;
             return new Target(source);
         }
 
@@ -355,9 +357,11 @@ public class Targeting {
             result = TargetingResult.ENTITY;
             return entityTarget;
         } else if (targetBlock != null) {
+            result = TargetingResult.BLOCK;
             return targetBlock;
         }
 
+        result = TargetingResult.MISS;
         return new Target(source);
     }
 
