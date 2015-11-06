@@ -330,7 +330,6 @@ public class Targeting {
         }
 
         if (targetType == TargetType.OTHER_ENTITY && entityTarget == null) {
-            result = TargetingResult.ENTITY;
             return new Target(source);
         }
 
