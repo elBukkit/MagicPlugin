@@ -2173,7 +2173,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
             }
         }
 
-        if (earns > 0) {
+        if (earns > 0 && controller.isSPEnabled()) {
             String earnsText = messages.get("spell.earns").replace("$earns", Integer.toString(earns));
             if (!earnsText.isEmpty()) {
                 lore.add(earnsText);
