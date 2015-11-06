@@ -28,7 +28,6 @@ import java.util.List;
 public class SpellProgressAction extends BaseSpellAction implements GUIAction
 {
     private CastContext context;
-    private Wand wand;
 
     @Override
     public void deactivated() {
@@ -47,6 +46,7 @@ public class SpellProgressAction extends BaseSpellAction implements GUIAction
         if (context != null)
         {
             Mage mage = context.getMage();
+            Wand wand = mage.getActiveWand();
             ItemStack item = event.getCurrentItem();
             if (wand != null && com.elmakers.mine.bukkit.wand.Wand.isSpell(item))
             {
@@ -61,7 +61,7 @@ public class SpellProgressAction extends BaseSpellAction implements GUIAction
     @Override
     public SpellResult perform(CastContext context) {
         Mage mage = context.getMage();
-        this.wand = mage.getActiveWand();
+        Wand wand = mage.getActiveWand();
         this.context = context;
 		Player player = mage.getPlayer();
 		if (player == null) {
