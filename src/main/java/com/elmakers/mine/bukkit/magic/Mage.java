@@ -138,6 +138,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     private Map<Integer, ItemStack> respawnInventory;
     private Map<Integer, ItemStack> respawnArmor;
     private List<ItemStack> restoreInventory;
+    private boolean restoreOpenWand;
     private Float restoreExperience;
     private Integer restoreLevel;
 
@@ -595,6 +596,12 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                     }
                 }
             }
+
+            if (activeWand != null && restoreOpenWand && !activeWand.isInventoryOpen())
+            {
+                activeWand.openInventory();
+            }
+            restoreOpenWand = false;
         }
     }
 
@@ -664,6 +671,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
             respawnInventory = data.getRespawnInventory();
             respawnArmor = data.getRespawnArmor();
+            restoreOpenWand = data.isOpenWand();
 
             BrushData brushData = data.getBrushData();
             if (brushData != null) {
@@ -727,6 +735,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             data.setSoulWand(soulWand);
             data.setRespawnArmor(respawnArmor);
             data.setRespawnInventory(respawnInventory);
+            data.setOpenWand(false);
             if (activeWand != null) {
                 if (activeWand.hasStoredInventory()) {
                     data.setStoredInventory(Arrays.asList(activeWand.getStoredInventory().getContents()));
@@ -736,6 +745,9 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                 }
                 if (activeWand.usesXPBar()) {
                     data.setStoredExperience(activeWand.getStoredXpProgress());
+                }
+                if (activeWand.isInventoryOpen()) {
+                    data.setOpenWand(true);
                 }
             }
             data.setExtraData(this.data);

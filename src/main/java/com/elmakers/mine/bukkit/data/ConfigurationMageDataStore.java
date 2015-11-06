@@ -133,6 +133,7 @@ public abstract class ConfigurationMageDataStore implements MageDataStore {
         }
         saveFile.set("experience", mage.getStoredExperience());
         saveFile.set("level", mage.getStoredLevel());
+        saveFile.set("open_wand", mage.isOpenWand());
 
         Wand soulWand = mage.getSoulWand();
         if (soulWand != null && soulWand instanceof com.elmakers.mine.bukkit.wand.Wand) {
@@ -302,6 +303,7 @@ public abstract class ConfigurationMageDataStore implements MageDataStore {
         if (saveFile.contains("level")) {
             data.setStoredLevel(saveFile.getInt("level"));
         }
+        data.setOpenWand(saveFile.getBoolean("open_wand", false));
 
         if (saveFile.contains("soul") && controller instanceof MagicController) {
             ConfigurationSection soulNode = saveFile.getConfigurationSection("soul");

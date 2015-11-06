@@ -2607,6 +2607,8 @@ public class MagicController implements MageController {
             }
         }
 
+        com.elmakers.mine.bukkit.api.wand.Wand wand = mage.getActiveWand();
+        boolean isOpen = wand != null && wand.isInventoryOpen();
         mage.deactivate();
 
         // Unregister
@@ -2615,7 +2617,7 @@ public class MagicController implements MageController {
         if (!mage.isLoading() && (mage.isPlayer() || saveNonPlayerMages) && loaded)
         {
             // Save synchronously on shutdown
-            saveMage(mage, initialized, callback);
+            saveMage(mage, initialized, callback, isOpen);
         }
         else if (callback != null)
         {
@@ -2628,7 +2630,11 @@ public class MagicController implements MageController {
         saveMage(mage, asynchronous, null);
     }
 
-    public void saveMage(Mage mage, boolean asynchronous, final Runnable callback)
+    public void saveMage(Mage mage, boolean asynchronous, final Runnable callback) {
+        saveMage(mage, asynchronous, null, false);
+    }
+
+    public void saveMage(Mage mage, boolean asynchronous, final Runnable callback, boolean wandInventoryOpen)
     {
         if (!savePlayerData) {
             if (callback != null) {
@@ -2639,6 +2645,9 @@ public class MagicController implements MageController {
         info("Saving player data for " + mage.getName() + " (" + mage.getId() + ") " + (asynchronous ? "" : " synchronously"));
         final MageData mageData = new MageData(mage.getId());
         if (mage.save(mageData)) {
+            if (wandInventoryOpen) {
+                mageData.setOpenWand(true);
+            }
             if (asynchronous) {
                 Bukkit.getScheduler().runTaskAsynchronously(plugin, new Runnable() {
                     @Override

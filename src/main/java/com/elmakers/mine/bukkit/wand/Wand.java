@@ -2895,7 +2895,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
     }
 	
 	@SuppressWarnings("deprecation")
-	private void openInventory() {
+	public void openInventory() {
 		if (mage == null) return;
 		
 		WandMode wandMode = getMode();
@@ -3324,7 +3324,8 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
             playerXpProgress = player.getExp();
         }
 	}
-	
+
+	@Override
 	public boolean isInventoryOpen() {
 		return mage != null && inventoryIsOpen;
 	}
