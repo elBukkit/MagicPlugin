@@ -21,6 +21,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.player.PlayerArmorStandManipulateEvent;
 import org.bukkit.event.player.PlayerChangedWorldEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerEvent;
@@ -206,13 +207,26 @@ public class PlayerController implements Listener {
         mage.restoreRespawnInventories();
     }
 
-    @EventHandler(priority=EventPriority.LOW)
-    public void onPlayerInteractEntity(PlayerInteractEntityEvent event) {
-        if (event.isCancelled())
-            return;
-
+    @EventHandler(priority=EventPriority.LOW, ignoreCancelled = true)
+    public void onPlayerInteractArmorStand(PlayerArmorStandManipulateEvent event)
+    {
         Player player = event.getPlayer();
+        Mage mage = controller.getRegisteredMage(player);
+        if (mage == null) return;
+        com.elmakers.mine.bukkit.api.wand.Wand wand = mage.checkWand();
+        if (wand != null) {
+            if (wand.isUndroppable()) {
+                event.setCancelled(true);
+                return;
+            } else {
+                wand.deactivate();
+            }
+        }
+    }
 
+    @EventHandler(priority=EventPriority.LOW, ignoreCancelled = true)
+    public void onPlayerInteractEntity(PlayerInteractEntityEvent event) {
+        Player player = event.getPlayer();
         Mage apiMage = controller.getRegisteredMage(player);
         if (apiMage == null || !(apiMage instanceof com.elmakers.mine.bukkit.magic.Mage)) return;
         com.elmakers.mine.bukkit.magic.Mage mage = (com.elmakers.mine.bukkit.magic.Mage)apiMage;
@@ -220,6 +234,8 @@ public class PlayerController implements Listener {
 
         // Check for a player placing a wand in an item frame
         Entity clickedEntity = event.getRightClicked();
+
+        // Don't think this ever fires for ArmorStand - see above
         boolean isPlaceable = clickedEntity instanceof ItemFrame || clickedEntity instanceof ArmorStand;
         if (wand != null && isPlaceable) {
             if (wand.isUndroppable()) {
