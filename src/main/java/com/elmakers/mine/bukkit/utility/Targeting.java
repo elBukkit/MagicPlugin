@@ -357,7 +357,6 @@ public class Targeting {
             result = TargetingResult.ENTITY;
             return entityTarget;
         } else if (targetBlock != null) {
-            result = TargetingResult.BLOCK;
             return targetBlock;
         }
 
