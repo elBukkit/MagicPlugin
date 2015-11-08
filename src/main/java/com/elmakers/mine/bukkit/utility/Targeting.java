@@ -581,6 +581,7 @@ public class Targeting {
 
     protected int breakBlockRecursively(CastContext context, Block block, int depth) {
         if (depth <= 0) return 0;
+        if (!context.isBreakable(block)) return 0;
 
         // Play break FX
         Location blockLocation = block.getLocation();
