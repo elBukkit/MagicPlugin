@@ -3961,6 +3961,7 @@ blast:
         undo: 15000
         cooldown: 3000
         destructible: destructible_mining
+        destructible_override: true
         select_self: false
         physics_blocks: true
     costs:
@@ -4227,6 +4228,7 @@ collapse:
         falling: true
         radius: 2
         transparent: transparent_to_construction
+        destructible_override: true
         undo: 10000
         cooldown: 2000
         select_self: false
@@ -6207,11 +6209,11 @@ sticky:
         radius: 2
         speed: 1.2
         destructible: destructible
+        destructible_override: true
         falling: true
         direction: 0,0.5,0
         brush: air
         undo: 15000
-        destructible: destructible
         physics_blocks: true
     costs:
         mana: 80

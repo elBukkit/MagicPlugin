@@ -1,5 +1,10 @@
 # TODO
 
+ - Apply projectile spread based on movement
+   
+ - Spells acting oddly with Copy - Box, Iterate
+ - Superdome is a shell :\
+   
  - Don't logout players on server change until they quit
 
  - MagicArenas: Add wand path to announcement messages
