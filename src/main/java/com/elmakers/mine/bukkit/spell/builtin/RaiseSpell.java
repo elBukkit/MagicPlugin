@@ -51,8 +51,7 @@ public class RaiseSpell extends BlockSpell
 
         targetBlock.setType(Material.AIR);
         blockState.modify(highestBlock);
-        highestBlock.setMetadata("breakable", new FixedMetadataValue(controller.getPlugin(), 1));
-        highestBlock.setMetadata("reflect_chance", new FixedMetadataValue(controller.getPlugin(), 1));
+        currentCast.registerBreakable(highestBlock, 1);
 
         registerForUndo();
 		

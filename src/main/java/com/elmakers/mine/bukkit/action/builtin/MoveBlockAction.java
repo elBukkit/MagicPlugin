@@ -73,9 +73,7 @@ public class MoveBlockAction extends BaseSpellAction
 
         targetBlock.setType(Material.AIR);
         blockState.modify(moveToBlock);
-        MageController controller = context.getController();
-        moveToBlock.setMetadata("breakable", new FixedMetadataValue(controller.getPlugin(), 1));
-        moveToBlock.setMetadata("reflect_chance", new FixedMetadataValue(controller.getPlugin(), 1));
+        context.registerBreakable(moveToBlock, 1);
 
 		return SpellResult.CAST;
 	}
