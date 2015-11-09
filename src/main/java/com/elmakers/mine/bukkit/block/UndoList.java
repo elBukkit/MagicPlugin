@@ -784,6 +784,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
         this.applyPhysics = applyPhysics;
     }
 
+    @Override
     public boolean getApplyPhysics() {
         return applyPhysics;
     }
