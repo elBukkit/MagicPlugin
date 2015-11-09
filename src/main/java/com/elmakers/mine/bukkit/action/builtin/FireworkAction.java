@@ -96,7 +96,11 @@ public class FireworkAction extends BaseProjectileAction
         Entity firework = EffectUtils.spawnFireworkEffect(context.getPlugin().getServer(), location, effect, power, direction, expectedLifespan, ticksFlown);
 
         if (firework == null) {
-            return SpellResult.FAIL;
+            if (direction != null) {
+                org.bukkit.Bukkit.getLogger().warning("Failed to spawn firework entity");
+                return SpellResult.FAIL;
+            }
+            return SpellResult.CAST;
         }
 
         track(context, firework);
