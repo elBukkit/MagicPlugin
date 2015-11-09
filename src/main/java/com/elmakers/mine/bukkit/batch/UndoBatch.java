@@ -5,7 +5,7 @@ import java.util.Comparator;
 import java.util.Set;
 
 import com.elmakers.mine.bukkit.api.action.CastContext;
-import com.elmakers.mine.bukkit.api.spell.Spell;
+import com.elmakers.mine.bukkit.block.BlockList;
 import org.apache.commons.lang.ArrayUtils;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -17,7 +17,7 @@ import com.elmakers.mine.bukkit.block.UndoList;
 
 public class UndoBatch implements com.elmakers.mine.bukkit.api.batch.UndoBatch {
     protected final MageController controller;
-    private UndoList trackUndoBlocks;
+    private BlockList trackUndoBlocks;
     private static final BlockData[] template = new BlockData[0];
     private final BlockData[] undoBlocks;
     private int undoIndex = 0;
@@ -39,10 +39,7 @@ public class UndoBatch implements com.elmakers.mine.bukkit.api.batch.UndoBatch {
         // But this doesn't get put back in the undo queue, or
         // it will just flip-flop forever between these two actions.
         // Maybe eventually we'll have a "redo" queue.
-        trackUndoBlocks = new UndoList(mage, "Undo");
-        trackUndoBlocks.setSpell(blockList.getSpell());
-        trackUndoBlocks.setBatch(this);
-        trackUndoBlocks.setBypass(true);
+        trackUndoBlocks = new BlockList();
 
         undoList = blockList;
         this.applyPhysics = blockList.getApplyPhysics();
@@ -117,6 +114,7 @@ public class UndoBatch implements com.elmakers.mine.bukkit.api.batch.UndoBatch {
             undoList.undoEntityEffects();
             finished = true;
             controller.update(trackUndoBlocks);
+            trackUndoBlocks = null;
             CastContext context = undoList.getContext();
             if (context != null) {
                 context.playEffects("undo");
