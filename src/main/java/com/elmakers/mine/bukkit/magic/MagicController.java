@@ -3131,6 +3131,7 @@ public class MagicController implements MageController {
 		for (Mage mage : mages.values()) {
 			undid = mage.commit() || undid;
 		}
+        com.elmakers.mine.bukkit.block.UndoList.commitAll();
 		return undid;
 	}
 
