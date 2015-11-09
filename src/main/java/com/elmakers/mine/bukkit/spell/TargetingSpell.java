@@ -508,13 +508,15 @@ public abstract class TargetingSpell extends BaseSpell {
             reflectiveMaterials = controller.getMaterialSet(parameters.getString("reflective"));
         }
 
-        String reflectiveKey = controller.getReflectiveMaterials(mage, mage.getLocation());
-        if (reflectiveKey != null) {
-            Set<Material> currentReflective = reflectiveMaterials;
-            reflectiveMaterials = controller.getMaterialSet(reflectiveKey);
-            if (currentReflective != null) {
-                reflectiveMaterials = new HashSet<Material>(reflectiveMaterials);
-                reflectiveMaterials.addAll(currentReflective);
+        if (parameters.getBoolean("reflective_override", true)) {
+            String reflectiveKey = controller.getReflectiveMaterials(mage, mage.getLocation());
+            if (reflectiveKey != null) {
+                Set<Material> currentReflective = reflectiveMaterials;
+                reflectiveMaterials = controller.getMaterialSet(reflectiveKey);
+                if (currentReflective != null) {
+                    reflectiveMaterials = new HashSet<Material>(reflectiveMaterials);
+                    reflectiveMaterials.addAll(currentReflective);
+                }
             }
         }
 
