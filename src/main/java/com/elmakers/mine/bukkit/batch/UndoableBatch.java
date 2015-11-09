@@ -33,7 +33,9 @@ public abstract class UndoableBatch implements Batch {
     public void finish() {
         if (!finished) {
             finished = true;
-            controller.update(undoList);
+            if (!undoList.isScheduled()) {
+                controller.update(undoList);
+            }
             // Let GC collect the batch
             undoList.setBatch(null);
         }

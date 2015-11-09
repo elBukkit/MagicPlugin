@@ -13,7 +13,6 @@ import java.util.Set;
 
 public class UndoBatch implements com.elmakers.mine.bukkit.api.batch.UndoBatch {
     protected final MageController controller;
-    private BlockList trackUndoBlocks;
     protected boolean finished = false;
     protected boolean applyPhysics = false;
     protected UndoList undoList;
@@ -24,11 +23,6 @@ public class UndoBatch implements com.elmakers.mine.bukkit.api.batch.UndoBatch {
     public UndoBatch(UndoList blockList) {
         Mage mage = blockList.getOwner();
         controller = mage.getController();
-
-        // We're going to track the blocks we undo
-        // This is just for updating dynmap and other Controller-level
-        // block change triggers
-        trackUndoBlocks = new BlockList();
 
         undoList = blockList;
         this.applyPhysics = blockList.getApplyPhysics();
@@ -71,7 +65,6 @@ public class UndoBatch implements com.elmakers.mine.bukkit.api.batch.UndoBatch {
             if (undone == null) {
                 break;
             }
-            trackUndoBlocks.add(undone);
             processedBlocks++;
         }
         if (undoList.size() == 0) {
@@ -86,8 +79,9 @@ public class UndoBatch implements com.elmakers.mine.bukkit.api.batch.UndoBatch {
             finished = true;
             undoList.unregisterAttached();
             undoList.undoEntityEffects();
-            controller.update(trackUndoBlocks);
-            trackUndoBlocks = null;
+            if (!undoList.isScheduled()) {
+                controller.update(undoList);
+            }
             CastContext context = undoList.getContext();
             if (context != null) {
                 context.playEffects("undo");
