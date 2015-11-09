@@ -3,8 +3,8 @@ package com.elmakers.mine.bukkit.block;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -47,7 +47,8 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
     public static Set<Material>         attachablesWall;
     public static Set<Material>         attachablesDouble;
 
-    protected static Map<Long, BlockData> modified = new HashMap<Long, BlockData>();
+    protected static Map<Long, BlockData> modified = new HashMap<Long, BlockData>();;
+    protected static BlockComparator blockComparator = new BlockComparator();
 
     protected Map<Long, BlockData>  attached;
     private boolean                 loading = false;
@@ -114,15 +115,6 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
     {
         this.spell = spell;
         this.context = spell == null ? null : spell.getCurrentCast();
-    }
-
-    @Override
-    public int size()
-    {
-        return (
-                (blockList == null ? 0 :blockList.size())
-            + 	(entities == null ? 0 : entities.size()))
-            + 	(runnables == null ? 0 : runnables.size());
     }
 
     @Override
@@ -327,6 +319,20 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
         }
     }
 
+    public BlockData undoNext(boolean applyPhysics)
+    {
+        if (blockList.size() == 0) {
+            return null;
+        }
+        BlockData blockData = blockList.getFirst();
+        if (undo(blockData, applyPhysics)) {
+            blockList.removeFirst();
+            return blockData;
+        }
+
+        return null;
+    }
+
     public boolean undo(BlockData undoBlock, boolean applyPhysics)
     {
         BlockData priorState = undoBlock.getPriorState();
@@ -446,7 +452,6 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
         } else {
             owner.addUndoBatch(batch);
         }
-        blockList = null;
     }
 
     @Override
@@ -845,5 +850,16 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
             }
         }
         return entities;
+    }
+
+    public void sort(Set<Material> attachables) {
+        if (blockList == null) return;
+
+        Collections.reverse(blockList);
+        if (attachables == null) {
+            return;
+        }
+        blockComparator.setAttachables(attachables);
+        Collections.sort(blockList, blockComparator);
     }
 }

@@ -106,6 +106,10 @@ public class BlockList implements com.elmakers.mine.bukkit.api.block.BlockList {
     @Override
     public void clear()
     {
+        if (blockIdMap != null)
+        {
+            blockIdMap.clear();
+        }
         if (blockList == null)
         {
             return;
@@ -169,7 +173,7 @@ public class BlockList implements com.elmakers.mine.bukkit.api.block.BlockList {
 
     public int size()
     {
-        return blockList == null ? 0 :blockList.size();
+        return blockList == null ? 0 : blockList.size();
     }
 
     public boolean isEmpty()

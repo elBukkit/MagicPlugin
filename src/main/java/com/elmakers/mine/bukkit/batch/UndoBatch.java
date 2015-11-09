@@ -1,108 +1,89 @@
 package com.elmakers.mine.bukkit.batch;
 
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.Set;
-
 import com.elmakers.mine.bukkit.api.action.CastContext;
-import com.elmakers.mine.bukkit.block.BlockList;
-import org.apache.commons.lang.ArrayUtils;
-import org.bukkit.Material;
-import org.bukkit.block.Block;
-
 import com.elmakers.mine.bukkit.api.block.BlockData;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
+import com.elmakers.mine.bukkit.block.BlockList;
 import com.elmakers.mine.bukkit.block.UndoList;
+import org.bukkit.Material;
+
+import java.util.HashSet;
+import java.util.Set;
 
 public class UndoBatch implements com.elmakers.mine.bukkit.api.batch.UndoBatch {
     protected final MageController controller;
     private BlockList trackUndoBlocks;
-    private static final BlockData[] template = new BlockData[0];
-    private final BlockData[] undoBlocks;
-    private int undoIndex = 0;
-    private boolean finishedAttachables = false;
     protected boolean finished = false;
     protected boolean applyPhysics = false;
     protected UndoList undoList;
+    protected int listSize;
 
     private final Set<Material> attachables;
-    private final Set<Material> attachablesWall;
-    private final Set<Material> attachablesDouble;
-    private final Set<Material> delayed;
 
     public UndoBatch(UndoList blockList) {
         Mage mage = blockList.getOwner();
         controller = mage.getController();
 
         // We're going to track the blocks we undo
-        // But this doesn't get put back in the undo queue, or
-        // it will just flip-flop forever between these two actions.
-        // Maybe eventually we'll have a "redo" queue.
+        // This is just for updating dynmap and other Controller-level
+        // block change triggers
         trackUndoBlocks = new BlockList();
 
         undoList = blockList;
         this.applyPhysics = blockList.getApplyPhysics();
-        this.attachables = controller.getMaterialSet("attachable");
-        this.attachablesWall = controller.getMaterialSet("attachable_wall");
-        this.attachablesDouble = controller.getMaterialSet("attachable_double");
-        this.delayed = controller.getMaterialSet("delayed");
+        this.attachables = new HashSet<Material>();
+
+        Set<Material> addToAttachables = controller.getMaterialSet("attachable");
+        if (addToAttachables != null) {
+            attachables.addAll(addToAttachables);
+        }
+        addToAttachables = controller.getMaterialSet("attachable_wall");
+        if (addToAttachables != null) {
+            attachables.addAll(addToAttachables);
+        }
+        addToAttachables = controller.getMaterialSet("attachable_double");
+        if (addToAttachables != null) {
+            attachables.addAll(addToAttachables);
+        }
+        addToAttachables = controller.getMaterialSet("delayed");
+        if (addToAttachables != null) {
+            attachables.addAll(addToAttachables);
+        }
 
         // Sort so attachable items don't break
-        this.undoBlocks = blockList.toArray(template);
-        ArrayUtils.reverse(this.undoBlocks);
-        Arrays.sort(undoBlocks, new Comparator<BlockData>() {
-            @Override
-            public int compare(BlockData block1, BlockData block2) {
-                Material material1 = block1.getMaterial();
-                Material material2 = block2.getMaterial();
-                boolean attachable1 = attachablesWall.contains(material1) || attachables.contains(material1) || attachablesDouble.contains(material1) || delayed.contains(material1);
-                boolean attachable2 = attachablesWall.contains(material2) || attachables.contains(material2) || attachablesDouble.contains(material2) || delayed.contains(material2);
-                if (attachable1 && !attachable2) {
-                    return 1;
-                }
-                if (attachable2 && !attachable1) {
-                    return -1;
-                }
-                return block1.getLocation().getBlockY() - block2.getLocation().getBlockY();
-            }
-        });
+
+        org.bukkit.Bukkit.getLogger().info("SIZE: " + undoList.size());
+
+        undoList.sort(attachables);
+        listSize = undoList.size();
+
+        org.bukkit.Bukkit.getLogger().info("SIZE post-sort: " + undoList.size());
     }
 
     public int size() {
-        return undoBlocks == null ? 0 : undoBlocks.length;
+        return listSize;
     }
 
     public int remaining() {
-        return undoBlocks == null ? 0 : undoBlocks.length - undoIndex;
+        return undoList == null ? 0 : undoList.size();
     }
 
     public int process(int maxBlocks) {
+        org.bukkit.Bukkit.getLogger().info("Processing up to " + maxBlocks + " of " + undoList.size());
+
+
         int processedBlocks = 0;
-        while (undoBlocks != null && undoIndex < undoBlocks.length && processedBlocks < maxBlocks) {
-            BlockData blockData = undoBlocks[undoIndex];
-            Block block = blockData.getBlock();
-            if (!block.getChunk().isLoaded()) {
-                block.getChunk().load();
+        while (undoList.size() > 0 && processedBlocks < maxBlocks) {
+            BlockData undone = undoList.undoNext(applyPhysics);
+            if (undone == null) {
                 break;
             }
-            Material material = block.getType();
-            boolean isAttachable = attachables.contains(material) || attachablesWall.contains(material)
-                    || attachablesDouble.contains(material) || delayed.contains(material);
-            if ((isAttachable && !finishedAttachables) || (!isAttachable && finishedAttachables)) {
-                trackUndoBlocks.add(blockData);
-                if (!undoList.undo(blockData, applyPhysics)) {
-                    break;
-                }
-            }
-            undoIndex++;
+            trackUndoBlocks.add(undone);
             processedBlocks++;
         }
-        if (undoBlocks == null || (undoIndex >= undoBlocks.length && finishedAttachables)) {
+        if (undoList.size() == 0) {
             finish();
-        } else if (undoIndex >= undoBlocks.length) {
-            finishedAttachables = true;
-            undoIndex = 0;
         }
 
         return processedBlocks;
@@ -110,9 +91,9 @@ public class UndoBatch implements com.elmakers.mine.bukkit.api.batch.UndoBatch {
 
     public void finish() {
         if (!finished) {
+            finished = true;
             undoList.unregisterAttached();
             undoList.undoEntityEffects();
-            finished = true;
             controller.update(trackUndoBlocks);
             trackUndoBlocks = null;
             CastContext context = undoList.getContext();
