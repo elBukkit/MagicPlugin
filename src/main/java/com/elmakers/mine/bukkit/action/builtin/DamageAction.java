@@ -39,7 +39,7 @@ public class DamageAction extends BaseSpellAction
 			percentage = null;
 		}
         magicDamage = parameters.getBoolean("magic_damage", true);
-		magicEntityDamage = parameters.getBoolean("magic_entity_damage", false);
+		magicEntityDamage = parameters.getBoolean("magic_entity_damage", true);
     }
 
 	@Override
