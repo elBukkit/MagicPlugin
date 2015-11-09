@@ -2,6 +2,7 @@ package com.elmakers.mine.bukkit.magic.command;
 
 import com.elmakers.mine.bukkit.api.batch.Batch;
 import com.elmakers.mine.bukkit.api.batch.SpellBatch;
+import com.elmakers.mine.bukkit.api.block.BlockData;
 import com.elmakers.mine.bukkit.api.magic.Automaton;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MagicAPI;
@@ -21,6 +22,7 @@ import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.block.Block;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
@@ -238,7 +240,7 @@ public class MagicCommandExecutor extends MagicMapExecutor {
 
 	protected boolean onMagicList(CommandSender sender, String subCommand, String[] args)
 	{
-		String usage = "Usage: magic list <wands|map|automata|tasks|schematics|entities>";
+		String usage = "Usage: magic list <wands|map|automata|tasks|schematics|entities|blocks>";
 		String listCommand = "";
 		if (args.length > 1)
 		{
@@ -250,7 +252,7 @@ public class MagicCommandExecutor extends MagicMapExecutor {
 		}
 		else
 		{
-			sender.sendMessage(ChatColor.GRAY + "For more specific information, add 'tasks', 'wands', 'maps', 'schematics', 'entities' or 'automata' parameter.");
+			sender.sendMessage(ChatColor.GRAY + "For more specific information, add 'tasks', 'wands', 'maps', 'schematics', 'entities', 'blocks' or 'automata' parameter.");
 
 			Collection<Mage> mages = api.getMages();
 			sender.sendMessage(ChatColor.AQUA + "Registered blocks (" + UndoList.getModified().size() + "): ");
@@ -438,6 +440,21 @@ public class MagicCommandExecutor extends MagicMapExecutor {
 				keyword = keyword + args[i];
 			}
 			onMapList(sender, keyword);
+			return true;
+		}
+
+		if (listCommand.equalsIgnoreCase("blocks")) {
+			for (BlockData blockData : UndoList.getModified().values())
+			{
+				BlockVector blockLocation = blockData.getLocation();
+				Block block = blockData.getBlock();
+				sender.sendMessage(ChatColor.BLUE + "Block at "
+						+ ChatColor.GRAY + blockLocation.getBlockX() + ChatColor.DARK_GRAY + ","
+						+ ChatColor.GRAY + blockLocation.getBlockY() + ChatColor.DARK_GRAY + ","
+						+ ChatColor.GRAY + blockLocation.getBlockZ()
+						+ ChatColor.BLUE + " stored as " + ChatColor.AQUA + blockData.getMaterial()
+						+ ChatColor.BLUE + " is currently " + ChatColor.AQUA + block.getType());
+			}
 			return true;
 		}
 
