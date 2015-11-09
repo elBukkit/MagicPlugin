@@ -1,7 +1,7 @@
 # TODO
 
- - Apply projectile spread based on movement
-   
+ - damage_resistance_protection not working? (Check Fianto Duri in PW configs)
+
  - Spells acting oddly with Copy - Box, Iterate
  - Superdome is a shell :\
    

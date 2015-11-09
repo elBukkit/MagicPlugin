@@ -887,7 +887,7 @@ shell|4:
         breakable: 1
 
 reflect:
-    icon_url: http://textures.minecraft.net/texture/3dbb78853b526f9b712b4e431fb332eae0e6cd3dea9a610e9ecf54c31f7c6d
+    icon_url: http://textures.minecraft.net/texture/38f77caf858c927df996e277cf6e9fbb9b3cd71aa34e4412da4d6312cc8dfc
     icon: iron_helmet
     category: light
     worth_sp: 200
@@ -2079,6 +2079,7 @@ healing:
     icon_url: http://textures.minecraft.net/texture/6b7da98ef45cf45185d21d61f5fa3d5966a3ee52273620a6e4dfd54cf99dbc
     icon: bread
     category: light
+    hiden: true
     worth_sp: 150
     actions:
         cast:
@@ -6142,7 +6143,7 @@ homing:
 
 sticky:
     icon: ink_sack:1
-    icon_url: http://textures.minecraft.net/texture/336d58bfed2770519f6db2742d3c6ad0cf645d7f1c86a242dc27ed52963b4e7
+    icon_url: http://textures.minecraft.net/texture/f873525428823bffa57b74bdb1251de6e7c49660b35c995d2bf5d04a1ff34b8f
     category: combat
     worth_sp: 150
     earns_sp: 10
@@ -7828,7 +7829,7 @@ singularity:
         mana: 50
 
 rocket:
-    icon_url: http://textures.minecraft.net/texture/aa7e54c1c7634bdf1118db91da9e12b6b4d17f7fb7b7d5b0d06d554feb737bf
+    icon_url: http://textures.minecraft.net/texture/5a532e9d2221b1a2ffdbc701578331c8da41c36d1487696fefa584373572
     icon: ink_sack:4
     category: utility
     worth_sp: 100
