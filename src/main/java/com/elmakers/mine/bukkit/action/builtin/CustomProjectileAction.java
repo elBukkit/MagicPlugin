@@ -23,6 +23,7 @@ import org.bukkit.util.Vector;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Random;
 
 public class CustomProjectileAction extends CompoundAction
 {
@@ -32,6 +33,9 @@ public class CustomProjectileAction extends CompoundAction
     private int lifetime;
     private int range;
     private double speed;
+    private double spread;
+    private double movementSpread;
+    private double maxSpread;
     private int startDistance;
     private String projectileEffectKey;
     private String hitEffectKey;
@@ -92,6 +96,9 @@ public class CustomProjectileAction extends CompoundAction
         targetBreakables = parameters.getDouble("target_breakables", 1);
         targetBreakableSize = parameters.getInt("breakable_size", 1);
         bypassBackfire = parameters.getBoolean("bypass_backfire", false);
+        spread = parameters.getDouble("spread", 0);
+        maxSpread = parameters.getDouble("spread_max", 0.4);
+        movementSpread = parameters.getDouble("spread_movement", 20);
 
         range *= context.getMage().getRangeMultiplier();
 
@@ -127,6 +134,20 @@ public class CustomProjectileAction extends CompoundAction
         activeProjectileEffects = null;
     }
 
+    @Override
+    public SpellResult start(CastContext context) {
+        if (movementSpread > 0) {
+            Entity sourceEntity = context.getEntity();
+            double entitySpeed = sourceEntity != null ? sourceEntity.getVelocity().lengthSquared() : 0;
+            if (entitySpeed > 0.01) {
+                spread += Math.min(movementSpread * entitySpeed, maxSpread);
+                context.getMage().sendDebugMessage(ChatColor.DARK_RED + " Applying spread of " + ChatColor.RED + spread
+                    + ChatColor.DARK_RED + " from speed^2 of " + ChatColor.GOLD + entitySpeed, 3);
+            }
+        }
+        return SpellResult.CAST;
+    }
+
 	@Override
 	public SpellResult step(CastContext context) {
         long now = System.currentTimeMillis();
@@ -146,6 +167,7 @@ public class CustomProjectileAction extends CompoundAction
         nextUpdate = now + interval;
 
         // Check for initialization required
+        // TODO: Move this to start()?
         Location projectileLocation = null;
         if (velocity == null)
         {
@@ -163,6 +185,15 @@ public class CustomProjectileAction extends CompoundAction
             } else {
                 velocity = context.getDirection().clone().normalize();
             }
+
+            if (spread > 0) {
+                Random random = context.getRandom();
+                velocity.setX(velocity.getX() + (random.nextDouble() * spread - spread / 2));
+                velocity.setY(velocity.getY() + (random.nextDouble() * spread - spread / 2));
+                velocity.setZ(velocity.getZ() + (random.nextDouble() * spread - spread / 2));
+                velocity.normalize();
+            }
+
             projectileLocation.setDirection(velocity);
             actionContext.setTargetLocation(projectileLocation);
             actionContext.setTargetEntity(null);
@@ -392,6 +423,7 @@ public class CustomProjectileAction extends CompoundAction
         parameters.add("drag");
         parameters.add("target_entities");
         parameters.add("track_target");
+        parameters.add("spread");
     }
 
     @Override
@@ -401,7 +433,8 @@ public class CustomProjectileAction extends CompoundAction
 
         if (parameterKey.equals("speed") || parameterKey.equals("lifetime") ||
             parameterKey.equals("interval") || parameterKey.equals("start") || parameterKey.equals("size") ||
-            parameterKey.equals("gravity") || parameterKey.equals("drag") || parameterKey.equals("tick_size")) {
+            parameterKey.equals("gravity") || parameterKey.equals("drag") || parameterKey.equals("tick_size") ||
+            parameterKey.equals("spread")) {
             examples.addAll(Arrays.asList(BaseSpell.EXAMPLE_SIZES));
         } else if (parameterKey.equals("target_entities") || parameterKey.equals("track_target")) {
             examples.addAll(Arrays.asList(BaseSpell.EXAMPLE_BOOLEANS));
