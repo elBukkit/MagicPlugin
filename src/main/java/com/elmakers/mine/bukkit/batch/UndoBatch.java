@@ -113,6 +113,7 @@ public class UndoBatch implements com.elmakers.mine.bukkit.api.batch.UndoBatch {
 
     public void finish() {
         if (!finished) {
+            undoList.unregisterAttached();
             undoList.undoEntityEffects();
             finished = true;
             controller.update(trackUndoBlocks);

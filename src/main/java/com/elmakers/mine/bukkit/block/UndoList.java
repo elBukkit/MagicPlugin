@@ -49,7 +49,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
 
     protected static Map<Long, BlockData> modified = new HashMap<Long, BlockData>();
 
-    protected HashSet<Long>         attached;
+    protected Map<Long, BlockData>  attached;
     private boolean                 loading = false;
 
     protected List<WeakReference<Entity>> 	entities;
@@ -161,7 +161,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
     {
         if (blockIdMap == null) return false;
         Long blockId = com.elmakers.mine.bukkit.block.BlockData.getBlockId(block);
-        if (attached != null && attached.contains(blockId)) return false;
+        if (attached != null && attached.containsKey(blockId)) return false;
         return blockIdMap.contains(blockId);
     }
 
@@ -173,7 +173,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
             return false;
         }
         Long blockId = blockData.getId();
-        if (attached != null && attached.contains(blockId)) return false;
+        if (attached != null && attached.containsKey(blockId)) return false;
         return blockIdMap.contains(blockData.getId());
     }
 
@@ -215,7 +215,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
         {
             return false;
         }
-        if (attached != null && attached.contains(blockId))
+        if (attached != null && attached.containsKey(blockId))
         {
             return false;
         }
@@ -229,9 +229,9 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
                 newBlock.setUndoList(this);
                 if (attached == null)
                 {
-                    attached = new HashSet<Long>();
+                    attached = new HashMap<Long, BlockData>();
                 }
-                attached.add(blockId);
+                attached.put(blockId, newBlock);
                 if (attachablesDouble != null && attachablesDouble.contains(material))
                 {
                     if (direction != BlockFace.UP)
@@ -400,6 +400,17 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
     public void undoScheduled()
     {
         undoScheduled(false);
+    }
+
+    public void unregisterAttached()
+    {
+        if (attached != null) {
+            for (BlockData block : attached.values()) {
+                removeFromModified(block, block.getPriorState());
+                block.unlink();
+            }
+            attached = null;
+        }
     }
 
     public void undo(boolean blocking, boolean undoEntities)

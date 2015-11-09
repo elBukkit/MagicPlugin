@@ -165,6 +165,8 @@ public class BlockData extends MaterialAndData implements com.elmakers.mine.bukk
             priorState.setNextState(nextState);
         }
         if (nextState != null) {
+            // Pass state up the chain
+            nextState.updateFrom(this);
             nextState.setPriorState(priorState);
         }
 
@@ -194,12 +196,9 @@ public class BlockData extends MaterialAndData implements com.elmakers.mine.bukk
             return false;
         }
 
-        // Pass state up the chain
-        if (nextState != null)
-        {
-            nextState.updateFrom(this);
-        }
-        else if (isDifferent(block))
+        // Don't undo if not the top of the stack
+        // Otherwise, state will be pushed up in unlink
+        if (nextState == null && isDifferent(block))
         {
             modify(block, applyPhysics);
         }
