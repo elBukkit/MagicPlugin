@@ -5,6 +5,7 @@ import com.elmakers.mine.bukkit.api.batch.SpellBatch;
 import com.elmakers.mine.bukkit.api.block.BlockData;
 import com.elmakers.mine.bukkit.api.magic.Automaton;
 import com.elmakers.mine.bukkit.api.magic.Mage;
+import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.magic.MagicAPI;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.api.wand.LostWand;
@@ -254,6 +255,18 @@ public class MagicCommandExecutor extends MagicMapExecutor {
 		{
 			sender.sendMessage(ChatColor.GRAY + "For more specific information, add 'tasks', 'wands', 'maps', 'schematics', 'entities', 'blocks' or 'automata' parameter.");
 
+			MageController apiController = api.getController();
+			if (apiController != null && apiController instanceof MagicController) {
+				MagicController controller = (MagicController)apiController;
+				long timeout = controller.getPhysicsTimeout();
+				if (timeout > 0) {
+					long seconds = (timeout - System.currentTimeMillis()) / 1000;
+					sender.sendMessage(ChatColor.GREEN + "Physics handler active for another " + ChatColor.DARK_GREEN + seconds + ChatColor.GREEN + " seconds");
+				} else {
+					sender.sendMessage(ChatColor.GRAY + "Physics handler inactive");
+				}
+			}
+
 			Collection<Mage> mages = api.getMages();
 			sender.sendMessage(ChatColor.AQUA + "Registered blocks (" + ChatColor.LIGHT_PURPLE + UndoList.getModified().size() + ChatColor.AQUA + ")");
 			sender.sendMessage(ChatColor.AQUA + "Registered breakable (" + ChatColor.LIGHT_PURPLE + UndoList.getBreakable().size() + ChatColor.AQUA + ")");
@@ -261,6 +274,7 @@ public class MagicCommandExecutor extends MagicMapExecutor {
 			sender.sendMessage(ChatColor.LIGHT_PURPLE + "Active mages: " + ChatColor.LIGHT_PURPLE + mages.size());
 			Collection<com.elmakers.mine.bukkit.api.block.UndoList> pendingUndo = api.getPendingUndo();
 			sender.sendMessage(ChatColor.AQUA + "Pending undo (" + ChatColor.LIGHT_PURPLE + pendingUndo.size() + ChatColor.AQUA + "): ");
+
 			long now = System.currentTimeMillis();
 			for (com.elmakers.mine.bukkit.api.block.UndoList undo : pendingUndo) {
 				long remainingTime = (undo.getScheduledTime() - now) / 1000;

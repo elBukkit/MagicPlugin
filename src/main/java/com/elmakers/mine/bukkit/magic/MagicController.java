@@ -3995,6 +3995,14 @@ public class MagicController implements MageController {
         }
     }
 
+    public long getPhysicsTimeout() {
+        if (physicsHandler != null) {
+            return physicsHandler.getTimeout();
+        }
+
+        return 0;
+    }
+
     /*
 	 * Private data
 	 */
