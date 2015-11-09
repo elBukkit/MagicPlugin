@@ -2987,13 +2987,7 @@ public class MagicController implements MageController {
 	public void update(com.elmakers.mine.bukkit.api.block.BlockList blockList)
 	{
 		if (blockList != null) {
-			if (blockList.size() > VOLUME_UPDATE_THRESHOLD) {
-				update(blockList.getWorldName(), blockList.getArea());
-			} else {
-				for (com.elmakers.mine.bukkit.api.block.BlockData blockData : blockList) {
-					updateBlock(blockData.getWorldName(), blockData.getPosition().getBlockX(), blockData.getPosition().getBlockY(), blockData.getPosition().getBlockZ());
-				}
-			}
+            update(blockList.getWorldName(), blockList.getArea());
 		}
 	}
 	
@@ -4007,7 +4001,6 @@ public class MagicController implements MageController {
 	 * Private data
 	 */
     private static final String                 BUILTIN_SPELL_CLASSPATH = "com.elmakers.mine.bukkit.spell.builtin";
-    private static int                          VOLUME_UPDATE_THRESHOLD = 32;
 
     private final String                        SPELLS_FILE                 = "spells";
     private final String                        CONFIG_FILE             	= "config";
