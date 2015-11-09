@@ -52,13 +52,8 @@ public class UndoBatch implements com.elmakers.mine.bukkit.api.batch.UndoBatch {
         }
 
         // Sort so attachable items don't break
-
-        org.bukkit.Bukkit.getLogger().info("SIZE: " + undoList.size());
-
         undoList.sort(attachables);
         listSize = undoList.size();
-
-        org.bukkit.Bukkit.getLogger().info("SIZE post-sort: " + undoList.size());
     }
 
     public int size() {
@@ -70,9 +65,6 @@ public class UndoBatch implements com.elmakers.mine.bukkit.api.batch.UndoBatch {
     }
 
     public int process(int maxBlocks) {
-        org.bukkit.Bukkit.getLogger().info("Processing up to " + maxBlocks + " of " + undoList.size());
-
-
         int processedBlocks = 0;
         while (undoList.size() > 0 && processedBlocks < maxBlocks) {
             BlockData undone = undoList.undoNext(applyPhysics);
