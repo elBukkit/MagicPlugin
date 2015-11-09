@@ -255,10 +255,12 @@ public class MagicCommandExecutor extends MagicMapExecutor {
 			sender.sendMessage(ChatColor.GRAY + "For more specific information, add 'tasks', 'wands', 'maps', 'schematics', 'entities', 'blocks' or 'automata' parameter.");
 
 			Collection<Mage> mages = api.getMages();
-			sender.sendMessage(ChatColor.AQUA + "Registered blocks (" + UndoList.getModified().size() + "): ");
-			sender.sendMessage(ChatColor.LIGHT_PURPLE + "Active mages: " + mages.size());
+			sender.sendMessage(ChatColor.AQUA + "Registered blocks (" + ChatColor.LIGHT_PURPLE + UndoList.getModified().size() + ChatColor.AQUA + ")");
+			sender.sendMessage(ChatColor.AQUA + "Registered breakable (" + ChatColor.LIGHT_PURPLE + UndoList.getBreakable().size() + ChatColor.AQUA + ")");
+			sender.sendMessage(ChatColor.AQUA + "Registered reflective (" + ChatColor.LIGHT_PURPLE + UndoList.getReflective().size() + ChatColor.AQUA + ")");
+			sender.sendMessage(ChatColor.LIGHT_PURPLE + "Active mages: " + ChatColor.LIGHT_PURPLE + mages.size());
 			Collection<com.elmakers.mine.bukkit.api.block.UndoList> pendingUndo = api.getPendingUndo();
-			sender.sendMessage(ChatColor.AQUA + "Pending undo (" + pendingUndo.size() + "): ");
+			sender.sendMessage(ChatColor.AQUA + "Pending undo (" + ChatColor.LIGHT_PURPLE + pendingUndo.size() + ChatColor.AQUA + "): ");
 			long now = System.currentTimeMillis();
 			for (com.elmakers.mine.bukkit.api.block.UndoList undo : pendingUndo) {
 				long remainingTime = (undo.getScheduledTime() - now) / 1000;
@@ -269,7 +271,7 @@ public class MagicCommandExecutor extends MagicMapExecutor {
 			}
 
 			Collection<Mage> pending = api.getMagesWithPendingBatches();
-			sender.sendMessage(ChatColor.AQUA + "Pending casts (" + pending.size() + "): ");
+			sender.sendMessage(ChatColor.AQUA + "Pending casts (" + ChatColor.LIGHT_PURPLE + pending.size() + ChatColor.AQUA + "): ");
 			for (Mage mage : pending) {
 				int totalSize = 0;
 				int totalRemaining = 0;
