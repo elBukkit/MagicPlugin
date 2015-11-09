@@ -59,6 +59,8 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
     protected List<Runnable>				runnables;
     protected HashMap<UUID, EntityData> 	modifiedEntities;
 
+    protected WeakReference<CastContext>    context;
+
     protected Mage			        owner;
     protected Plugin		   	    plugin;
 
@@ -73,7 +75,6 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
 
     protected Spell                 spell;
     protected Batch                 batch;
-    protected CastContext           context;
     protected UndoQueue             undoQueue;
 
     // Doubly-linked list
@@ -116,7 +117,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
     public void setSpell(Spell spell)
     {
         this.spell = spell;
-        this.context = spell == null ? null : spell.getCurrentCast();
+        this.context = spell == null ? null : new WeakReference<CastContext>(spell.getCurrentCast());
     }
 
     @Override
@@ -430,6 +431,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
         if (isComplete()) return;
         undone = true;
 
+        CastContext context = getContext();
         if (context != null)
         {
             context.cancelEffects();
@@ -707,7 +709,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
 
     @Override
     public CastContext getContext() {
-        return context;
+        return context == null ? null : context.get();
     }
 
     @Override
