@@ -93,60 +93,62 @@ public class ModifyBlockAction extends BaseSpellAction {
         Mage mage = context.getMage();
         brush.update(mage, context.getTargetSourceLocation());
 
-        if (brush.isDifferent(block)) {
-            if (!commit) {
-                context.registerForUndo(block);
-            }
+        if (!brush.isDifferent(block)) {
+            return SpellResult.NO_TARGET;
+        }
 
-            if (!brush.isReady()) {
-                brush.prepare();
-                return SpellResult.PENDING;
-            }
+        if (!commit) {
+            context.registerForUndo(block);
+        }
 
-            brush.modify(block, applyPhysics);
+        if (!brush.isReady()) {
+            brush.prepare();
+            return SpellResult.PENDING;
+        }
 
-            boolean spawnFalling = spawnFallingBlocks && previousMaterial != Material.AIR;
-            if (spawnFalling && fallingProbability < 1) {
-                spawnFalling = context.getRandom().nextDouble() < fallingProbability;
-            }
-            if (spawnFalling)
-            {
-                Location blockLocation = block.getLocation();
-                Location blockCenter = new Location(blockLocation.getWorld(), blockLocation.getX() + 0.5, blockLocation.getY() + 0.5, blockLocation.getZ() + 0.5);
-                Vector fallingBlockVelocity = null;
-                if (fallingBlockSpeed > 0) {
-                    Location source = context.getTargetCenterLocation();
-                    fallingBlockVelocity = blockCenter.clone().subtract(source).toVector();
-                    fallingBlockVelocity.normalize();
+        brush.modify(block, applyPhysics);
 
-                    if (fallingBlockDirection != null)
-                    {
-                        fallingBlockVelocity.add(fallingBlockDirection).normalize();
-                    }
-                    fallingBlockVelocity.multiply(fallingBlockSpeed);
-                }
-                if (fallingBlockVelocity != null && (
-                       Double.isNaN(fallingBlockVelocity.getX()) || Double.isNaN(fallingBlockVelocity.getY()) || Double.isNaN(fallingBlockVelocity.getZ())
-                    || Double.isInfinite(fallingBlockVelocity.getX()) || Double.isInfinite(fallingBlockVelocity.getY()) || Double.isInfinite(fallingBlockVelocity.getZ())
-                ))
+        boolean spawnFalling = spawnFallingBlocks && previousMaterial != Material.AIR;
+        if (spawnFalling && fallingProbability < 1) {
+            spawnFalling = context.getRandom().nextDouble() < fallingProbability;
+        }
+        if (spawnFalling)
+        {
+            Location blockLocation = block.getLocation();
+            Location blockCenter = new Location(blockLocation.getWorld(), blockLocation.getX() + 0.5, blockLocation.getY() + 0.5, blockLocation.getZ() + 0.5);
+            Vector fallingBlockVelocity = null;
+            if (fallingBlockSpeed > 0) {
+                Location source = context.getTargetCenterLocation();
+                fallingBlockVelocity = blockCenter.clone().subtract(source).toVector();
+                fallingBlockVelocity.normalize();
+
+                if (fallingBlockDirection != null)
                 {
-                    fallingBlockVelocity = null;
+                    fallingBlockVelocity.add(fallingBlockDirection).normalize();
                 }
-                boolean spawned = false;
-                if (usePhysicsBlocks) {
-                    spawned = context.getController().spawnPhysicsBlock(blockCenter, previousMaterial, previousData, fallingBlockVelocity);
+                fallingBlockVelocity.multiply(fallingBlockSpeed);
+            }
+            if (fallingBlockVelocity != null && (
+                   Double.isNaN(fallingBlockVelocity.getX()) || Double.isNaN(fallingBlockVelocity.getY()) || Double.isNaN(fallingBlockVelocity.getZ())
+                || Double.isInfinite(fallingBlockVelocity.getX()) || Double.isInfinite(fallingBlockVelocity.getY()) || Double.isInfinite(fallingBlockVelocity.getZ())
+            ))
+            {
+                fallingBlockVelocity = null;
+            }
+            boolean spawned = false;
+            if (usePhysicsBlocks) {
+                spawned = context.getController().spawnPhysicsBlock(blockCenter, previousMaterial, previousData, fallingBlockVelocity);
+            }
+            if (!spawned) {
+                FallingBlock falling = block.getWorld().spawnFallingBlock(blockLocation, previousMaterial, previousData);
+                falling.setDropItem(false);
+                if (fallingBlockVelocity != null) {
+                    falling.setVelocity(fallingBlockVelocity);
                 }
-                if (!spawned) {
-                    FallingBlock falling = block.getWorld().spawnFallingBlock(blockLocation, previousMaterial, previousData);
-                    falling.setDropItem(false);
-                    if (fallingBlockVelocity != null) {
-                        falling.setVelocity(fallingBlockVelocity);
-                    }
-                    if (fallingBlockMaxDamage > 0 && fallingBlockFallDamage > 0) {
-                        CompatibilityUtils.setFallingBlockDamage(falling, fallingBlockFallDamage, fallingBlockMaxDamage);
-                    }
-                    context.registerForUndo(falling);
+                if (fallingBlockMaxDamage > 0 && fallingBlockFallDamage > 0) {
+                    CompatibilityUtils.setFallingBlockDamage(falling, fallingBlockFallDamage, fallingBlockMaxDamage);
                 }
+                context.registerForUndo(falling);
             }
         }
 
