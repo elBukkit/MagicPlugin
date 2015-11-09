@@ -32,7 +32,8 @@ public class PhysicsHandler implements Listener {
 			controller.unregisterPhysicsHandler(this);
 			return true;
 		}
-		if (System.currentTimeMillis() > timeout) {
+		long now = System.currentTimeMillis();
+		if (now > timeout) {
 			controller.unregisterPhysicsHandler(this);
 			timeout = 0;
 			return true;
@@ -44,7 +45,8 @@ public class PhysicsHandler implements Listener {
 		}
 		com.elmakers.mine.bukkit.api.block.UndoList registeredList = registered.getUndoList();
 		if (!registeredList.getApplyPhysics()) {
-			timeout += timeoutBuffer;
+
+			timeout = Math.min(now + timeoutBuffer, timeout);
 			return false;
 		}
 
