@@ -25,8 +25,6 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.metadata.FixedMetadataValue;
-import org.bukkit.metadata.MetadataValue;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.util.Vector;
 
@@ -34,7 +32,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
@@ -876,30 +873,6 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
     }
 
     @Override
-    public void registerBreakable(Block block, double breakable) {
-        if (block == null || block.getType() == Material.AIR) return;
-        MageController controller = getController();
-        if (breakable > 0) {
-            block.setMetadata("breakable", new FixedMetadataValue(controller.getPlugin(), breakable));
-        } else {
-            block.removeMetadata("breakable", controller.getPlugin());
-        }
-        undoList.setUndoBreakable(true);
-    }
-
-    @Override
-    public void registerReflective(Block block, double reflectivity) {
-        if (block == null || block.getType() == Material.AIR) return;
-        MageController controller = getController();
-        if (reflectivity > 0) {
-            block.setMetadata("backfire", new FixedMetadataValue(controller.getPlugin(), reflectivity));
-        } else {
-            block.removeMetadata("backfire", controller.getPlugin());
-        }
-        undoList.setUndoReflective(true);
-    }
-
-    @Override
     public Plugin getPlugin() {
         MageController controller = getController();
         return controller == null ? null : controller.getPlugin();
@@ -957,31 +930,22 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
 
     @Override
     public boolean isBreakable(Block block) {
-        return (block != null && block.hasMetadata("breakable"));
+        return com.elmakers.mine.bukkit.block.UndoList.isBreakable(block);
     }
 
     @Override
     public Double getBreakable(Block block) {
-        if (block == null || !block.hasMetadata("breakable")) return null;
-        Plugin plugin = getController().getPlugin();
-        List<MetadataValue> metadata = block.getMetadata("breakable");
-        for (MetadataValue value : metadata) {
-            if (value.getOwningPlugin().equals(plugin)) {
-                return value.asDouble();
-            }
-        }
-
-        return null;
+        return com.elmakers.mine.bukkit.block.UndoList.getBreakable(block);
     }
 
     @Override
     public void clearBreakable(Block block) {
-        block.removeMetadata("breakable", getController().getPlugin());
+        com.elmakers.mine.bukkit.block.UndoList.unregisterBreakable(block);
     }
 
     @Override
     public void clearReflective(Block block) {
-        block.removeMetadata("backfire", getController().getPlugin());
+        com.elmakers.mine.bukkit.block.UndoList.unregisterReflective(block);
     }
 
     @Override
@@ -990,7 +954,7 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
         if (targetingSpell != null && targetingSpell.isReflective(block.getType())) {
             return true;
         }
-        return  block.hasMetadata("backfire");
+        return com.elmakers.mine.bukkit.block.UndoList.isReflective(block);
     }
 
     @Override
@@ -1002,16 +966,18 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
             return 1.0;
         }
 
-        if (!block.hasMetadata("backfire")) return null;
+        return com.elmakers.mine.bukkit.block.UndoList.getReflective(block);
+    }
 
-        Plugin plugin = getController().getPlugin();
-        List<MetadataValue> metadata = block.getMetadata("backfire");
-        for (MetadataValue value : metadata) {
-            if (value.getOwningPlugin().equals(plugin)) {
-                return value.asDouble();
-            }
-        }
+    @Override
+    public void registerBreakable(Block block, double breakable) {
+        com.elmakers.mine.bukkit.block.UndoList.registerBreakable(block, breakable);
+        undoList.setUndoBreakable(true);
+    }
 
-        return null;
+    @Override
+    public void registerReflective(Block block, double reflectivity) {
+        com.elmakers.mine.bukkit.block.UndoList.registerReflective(block, reflectivity);
+        undoList.setUndoReflective(true);
     }
 }

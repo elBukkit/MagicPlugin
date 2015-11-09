@@ -42,7 +42,7 @@ public abstract class BlockSpell extends UndoableSpell {
         if (isIndestructible(block)) return false;
 
         if (!checkDestructible) return true;
-        if (targetBreakables > 0 && block.hasMetadata("breakable")) return true;
+        if (targetBreakables > 0 && currentCast.isBreakable(block)) return true;
         if (destructible == null) {
             return mage.isDestructible(block);
         }
@@ -54,7 +54,7 @@ public abstract class BlockSpell extends UndoableSpell {
         if (isIndestructible(block)) return false;
 
         if (!checkDestructible) return true;
-        if (targetBreakables > 0 && block.hasMetadata("breakable")) return true;
+        if (targetBreakables > 0 && currentCast.isBreakable(block)) return true;
         Set<Material> allDestructible = destructible;
         if (allDestructible == null) {
             allDestructible = controller.getDestructibleMaterials();

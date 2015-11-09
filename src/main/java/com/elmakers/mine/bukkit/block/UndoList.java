@@ -47,7 +47,9 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
     public static Set<Material>         attachablesWall;
     public static Set<Material>         attachablesDouble;
 
-    protected static Map<Long, BlockData> modified = new HashMap<Long, BlockData>();;
+    protected static Map<Long, BlockData> modified = new HashMap<Long, BlockData>();
+    protected static Map<Long, Double> reflective = new HashMap<Long, Double>();
+    protected static Map<Long, Double> breakable = new HashMap<Long, Double>();
     protected static BlockComparator blockComparator = new BlockComparator();
 
     protected Map<Long, BlockData>  attached;
@@ -289,6 +291,8 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
             modified.remove(block.getId());
         }
         block.commit();
+        reflective.remove(block.getId());
+        breakable.remove(block.getId());
     }
 
     @Override
@@ -339,10 +343,10 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
 
         // Remove any tagged metadata
         if (undoBreakable) {
-            undoBlock.getBlock().removeMetadata("breakable", plugin);
+            breakable.remove(undoBlock.getId());
         }
         if (undoReflective) {
-            undoBlock.getBlock().removeMetadata("backfire", plugin);
+            reflective.remove(undoBlock.getId());
         }
 
         if (undoBlock.undo(applyPhysics)) {
@@ -816,6 +820,14 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
         return modified;
     }
 
+    public static Map<Long, Double> getReflective() {
+        return reflective;
+    }
+
+    public static Map<Long, Double> getBreakable() {
+        return breakable;
+    }
+
     public void setUndoBreakable(boolean breakable) {
         this.undoBreakable = breakable;
     }
@@ -861,5 +873,41 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
         }
         blockComparator.setAttachables(attachables);
         Collections.sort(blockList, blockComparator);
+    }
+
+    public static boolean isReflective(Block block) {
+        return block != null && reflective.containsKey(com.elmakers.mine.bukkit.block.BlockData.getBlockId(block));
+    }
+
+    public static boolean isBreakable(Block block) {
+        return block != null && breakable.containsKey(com.elmakers.mine.bukkit.block.BlockData.getBlockId(block));
+    }
+
+    public static Double getReflective(Block block) {
+        return block == null ? null : reflective.get(com.elmakers.mine.bukkit.block.BlockData.getBlockId(block));
+    }
+
+    public static Double getBreakable(Block block) {
+        return block == null ? null : breakable.get(com.elmakers.mine.bukkit.block.BlockData.getBlockId(block));
+    }
+
+    public static void registerReflective(Block block, double amount) {
+        if (block == null) return;
+        reflective.put(com.elmakers.mine.bukkit.block.BlockData.getBlockId(block), amount);
+    }
+
+    public static void registerBreakable(Block block, double amount) {
+        if (block == null) return;
+        breakable.put(com.elmakers.mine.bukkit.block.BlockData.getBlockId(block), amount);
+    }
+
+    public static void unregisterBreakable(Block block) {
+        if (block == null) return;
+        breakable.remove(com.elmakers.mine.bukkit.block.BlockData.getBlockId(block));
+    }
+
+    public static void unregisterReflective(Block block) {
+        if (block == null) return;
+        reflective.remove(com.elmakers.mine.bukkit.block.BlockData.getBlockId(block));
     }
 }
