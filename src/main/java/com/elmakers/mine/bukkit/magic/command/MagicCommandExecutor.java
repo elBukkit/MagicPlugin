@@ -453,7 +453,8 @@ public class MagicCommandExecutor extends MagicMapExecutor {
 						+ ChatColor.GRAY + blockLocation.getBlockY() + ChatColor.DARK_GRAY + ","
 						+ ChatColor.GRAY + blockLocation.getBlockZ()
 						+ ChatColor.BLUE + " stored as " + ChatColor.AQUA + blockData.getMaterial()
-						+ ChatColor.BLUE + " is currently " + ChatColor.AQUA + block.getType());
+						+ ChatColor.BLUE + " is currently " + ChatColor.AQUA + block.getType()
+						+ ChatColor.BLUE + " from " + ChatColor.GOLD + blockData.getUndoList().getName());
 			}
 			return true;
 		}
