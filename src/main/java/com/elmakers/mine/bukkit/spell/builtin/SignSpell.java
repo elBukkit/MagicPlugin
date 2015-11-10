@@ -24,7 +24,7 @@ public class SignSpell extends BlockSpell
 	public SpellResult onCast(ConfigurationSection parameters) 
 	{
 		String typeString = parameters.getString("type", "");
-		boolean autoGive = parameters.getBoolean("auto_give", true);
+		boolean autoGive = parameters.getBoolean("auto_give", false);
 		boolean editSign = parameters.getBoolean("edit", false);
 
         Entity sourceEntity = mage.getEntity();
