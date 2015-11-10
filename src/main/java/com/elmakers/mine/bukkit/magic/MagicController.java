@@ -707,6 +707,8 @@ public class MagicController implements MageController {
             getLogger().info("Integrated with BlockPhysics, some spells will now use physics-based block effects");
         }
 
+        load();
+
         // Check for LibsDisguise
         Plugin libsDisguisePlugin = plugin.getServer().getPluginManager().getPlugin("LibsDisguises");
         if (libsDisguisePlugin == null) {
@@ -714,11 +716,13 @@ public class MagicController implements MageController {
         } else {
             libsDisguiseManager = new LibsDisguiseManager(plugin, libsDisguisePlugin);
             if (libsDisguiseManager.initialize()) {
-                getLogger().info("Integrated with LibsDisguises, most spells can't be cast while disguised");
+                if (libsDisguiseEnabled) {
+                    getLogger().info("Integrated with LibsDisguises, most spells can't be cast while disguised");
+                } else {
+                    getLogger().info("LibsDisguises integration disabled");
+                }
             }
         }
-
-        load();
 
         // Vault integration is handled internally in MagicLib
         Plugin vaultPlugin = plugin.getServer().getPluginManager().getPlugin("Vault");
@@ -2156,6 +2160,7 @@ public class MagicController implements MageController {
         defaultSkillIcon = properties.getString("default_skill_icon", defaultSkillIcon);
         skillInventoryRows = properties.getInt("skill_inventory_max_rows", skillInventoryRows);
         BaseSpell.MAX_LORE_LENGTH = properties.getInt("lore_wrap_limit", BaseSpell.MAX_LORE_LENGTH);
+        libsDisguiseEnabled = properties.getBoolean("enable_libsdisguises", libsDisguiseEnabled);
 
         skillsUseHeroes = properties.getBoolean("skills_use_heroes", skillsUseHeroes);
         skillsUsePermissions = properties.getBoolean("skills_use_permissions", skillsUsePermissions);
@@ -3930,7 +3935,7 @@ public class MagicController implements MageController {
 
     @Override
     public boolean isDisguised(Entity entity) {
-        return libsDisguiseManager == null || entity == null ? false : libsDisguiseManager.isDisguised(entity);
+        return !libsDisguiseEnabled || libsDisguiseManager == null || entity == null ? false : libsDisguiseManager.isDisguised(entity);
     }
 
     @Override
@@ -4190,6 +4195,7 @@ public class MagicController implements MageController {
     private InventoryController                 inventoryController         = null;
     private ExplosionController                 explosionController         = null;
     private boolean                             citizensEnabled			    = true;
+    private boolean                             libsDisguiseEnabled			= true;
 
     private FactionsManager					    factionsManager				= new FactionsManager();
     private LocketteManager                     locketteManager				= new LocketteManager();

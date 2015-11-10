@@ -25,6 +25,7 @@
  - Fixed some very specific item-drop exploit issues with attached blocks
  - Fix wand dupe issues with inventory mode and armor stands with arms
  - Add "destructible" and "reflective" custom flags, for region-specific reflect/destruct behavior
+ - Add enable_libsdisguises config option, to turn off LibsDisguise integration
 
 ## 5.3
 
