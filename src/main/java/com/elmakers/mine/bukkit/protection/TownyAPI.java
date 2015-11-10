@@ -72,7 +72,7 @@ public class TownyAPI
     }
 
     public boolean hasBuildPermission(Player player, Block block) {
-        if (block != null && towny != null) {
+        if (block != null && towny != null && player != null) {
             if (controller.wildernessBypass && TownyUniverse.isWilderness(block)) {
                 return true;
             }
@@ -82,7 +82,7 @@ public class TownyAPI
     }
 
     public boolean hasBreakPermission(Player player, Block block) {
-        if (block != null && towny != null) {
+        if (block != null && towny != null && player != null) {
             if (controller.wildernessBypass && TownyUniverse.isWilderness(block)) {
                 return true;
             }
@@ -92,7 +92,7 @@ public class TownyAPI
     }
 
     public boolean isAlly(Player player, Player other) {
-        if (towny != null && !TownySettings.getFriendlyFire()) {
+        if (towny != null && !TownySettings.getFriendlyFire() && player != null && other != null) {
             if (CombatUtil.isAlly(player.getName(), other.getName())) {
                 try {
                     TownBlock townBlock = new WorldCoord(player.getWorld().getName(), Coord.parseCoord(other)).getTownBlock();
