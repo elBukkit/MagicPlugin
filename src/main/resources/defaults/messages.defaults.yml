@@ -1155,7 +1155,7 @@ spells:
         name: Recall
         teleport: ""
         teleport_failed: Recall failed
-        description: Return you to previous locations
+        description: Return you to previous locations (5 second warmup)
         usage: Cast down to set a marker
         no_target: Can't place a marker there
         cast_marker_place: You place a recall marker

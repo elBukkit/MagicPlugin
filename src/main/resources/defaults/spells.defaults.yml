@@ -2423,7 +2423,7 @@ arrow:
     alias: sniper
     icon: arrow
     category: combat
-    worth_sp: 90
+    worth_sp: 70
     earns_sp: 8
     earns_cooldown: 60000
     upgrade_required_path: student
@@ -5588,11 +5588,12 @@ recall:
     icon_url: http://textures.minecraft.net/texture/58c573cefdc8cc1b8c894340cb54ab343523ec2ffa0afc7536968391ae1e7
     icon: compass
     category: utility
-    worth_sp: 100
+    worth_sp: 20
     earns_sp: 5
     cast_on_no_target: false
     actions:
         cast:
+        -  class: Delay
         -  class: Recall
         alternate_down:
         -  class: Recall
@@ -5602,6 +5603,13 @@ recall:
         cast:
         -  class: EffectSingle
            sound: level_up
+           effectlib:
+            class: WarpEffect
+            duration: $delay
+            period: 2
+            particle: portal
+            particles: 7
+            radius: 1
         deactivate:
         -  class: EffectSingle
            sound: level_up
@@ -5614,6 +5622,8 @@ recall:
              class: WarpEffect
              particle: portal
     parameters:
+        delay: 5000
+        cancel_on_damage: true
         allow_spawn: false
         allow_marker: true
         allow_death: true

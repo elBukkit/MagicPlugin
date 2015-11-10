@@ -3,7 +3,7 @@
 ## 5.4
 
  - Fix long-standing occasional undo issue (I think it's rock solid now!)
-   - With thanks to the grief-o-tron 9000: https://www.youtube.com/watch?v=rO0AeaK2nHU
+   - With thanks to the grief-o-tron 9000: https://www.youtube.com/watch?v=XBCF5rFUszA
  - Improved physics handler (to keep Bubble from popping, mainly)
  - Add skill point system.
    - By default, SP's are displayed above the mana bar while holding a wand (see: config.yml, sp_display)
