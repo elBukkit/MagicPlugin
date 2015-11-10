@@ -1250,10 +1250,6 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     }
 
     protected void processResult(SpellResult result, ConfigurationSection parameters) {
-        // Notify other plugins of this spell cast
-        CastEvent castEvent = new CastEvent(mage, this, result);
-        Bukkit.getPluginManager().callEvent(castEvent);
-
         if (mage != null) {
             mage.onCast(this, result);
         }
@@ -2198,6 +2194,11 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     @Override
     public void finish(com.elmakers.mine.bukkit.api.action.CastContext context) {
         SpellResult result = context.getResult();
+
+        // Notify other plugins of this spell cast
+        CastEvent castEvent = new CastEvent(mage, this, result);
+        Bukkit.getPluginManager().callEvent(castEvent);
+
 
         // Message targets
         if (result.isSuccess() && !mage.isQuiet()) {
