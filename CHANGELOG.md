@@ -1,8 +1,8 @@
 # CHANGELOG
 
-## 5.4
+## 5.3.1
 
- - Fix long-standing occasional undo issue (I think it's rock solid now!)
+ - Fix long-standing occasional undo issue
    - With thanks to the grief-o-tron 9000: https://www.youtube.com/watch?v=XBCF5rFUszA
  - Improved physics handler (to keep Bubble from popping, mainly)
  - Add skill point system.

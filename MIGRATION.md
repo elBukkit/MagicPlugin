@@ -2,13 +2,11 @@
 
 ## 5.4
 
- - The economy "worth" values of spells were scaled down by 10x. 
-   I added a new "worth_currency" value in config.yml that accounts for this,
-   and scaled the default emerald worth appropriately- but if you have tweaked your
-   economy, you may need to account for this.
+ - Spell worth values are now defined in SP. There is a "worth_sp" parameter in config.yml that is used to scale
+   them back up to currency prices, this defaults to 10.
  - The spell shop now defaults to working with skill points. To disable this, set "use_sp: false" on the spellshop in spells.yml.
  - Wands now use a Skill Point system for progression. This replaces the enchanting system.
-   To switch this back, set "enable_sp: false" in config.yml.
+   To switch this back, set "sp_enabled: false" in config.yml.
  - Disabled combining wands on an anvil by default (use enable_combining: true in config.yml to change back)
  - Projectile, TNT, ThrowItem, ThrowBlock and Firework all track their projectiles now.
    This means the actions won't complete until the projectile hits or expires, this may 
