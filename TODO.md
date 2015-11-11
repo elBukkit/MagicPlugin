@@ -1,5 +1,7 @@
 # TODO
 
+ - Fix shop price scaling
+
  - Stillll have an undo issue somewhere. Make sure unregistering attachables isn't going wrong
    - was able to build a schematic (nathanwolf) and undo piece by piece, but last piece wouldn't register.
 

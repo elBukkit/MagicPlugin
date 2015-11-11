@@ -6,6 +6,7 @@ import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.action.BaseSpellAction;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -118,6 +119,10 @@ public class VelocityAction extends BaseSpellAction
         if (exemptionDuration > 0 && entity instanceof Player) {
             context.getController().addFlightExemption((Player)entity, exemptionDuration);
         }
+        context.getMage().sendDebugMessage(ChatColor.AQUA + "Applying velocity of " +
+                ChatColor.BLUE + velocity +
+                ChatColor.AQUA + " to " + ChatColor.DARK_AQUA + entity.getType()
+                , 11);
         entity.setVelocity(velocity);
 
         return SpellResult.CAST;
