@@ -80,8 +80,8 @@
 # for all spells- generally just effects.
 
 default:
-    # Spells take 2 minutes to return to full SP earning potential
-    earns_cooldown: 120000
+    # Spells take 5 minutes to return to full SP earning potential
+    earns_cooldown: 900000
     parameters:
       bypass_confusion: true
       bypass_weakness: true
@@ -359,6 +359,7 @@ boon:
     earns_sp: 6
     upgrade_required_path: student
     upgrade_required_casts: 50
+    quick_cast: true
     actions:
         cast:
         -  class: PotionEffect
@@ -1230,7 +1231,7 @@ push:
         y_offset: 0.75
         cooldown: 5000
     costs:
-        mana: 40
+        mana: 20
 
 push|2:
     actions:
@@ -1300,7 +1301,7 @@ pull:
         duration: 10000
         cooldown: 2000
     costs:
-        mana: 50
+        mana: 10
 
 grab:
     icon_url: http://textures.minecraft.net/texture/e13e9af0957a9dd4995811ef3e869b4ad8fbb59ca7474e4c84ce7f6019b079
@@ -2425,7 +2426,6 @@ arrow:
     category: combat
     worth_sp: 70
     earns_sp: 8
-    earns_cooldown: 60000
     upgrade_required_path: student
     upgrade_required_casts: 50
     actions:
@@ -2464,7 +2464,7 @@ arrow:
       range: 50
       cooldown: 2000
     costs:
-        mana: 50
+        mana: 20
 
 arrow|2:
     upgrade_required_path: apprentice
@@ -2474,7 +2474,7 @@ arrow|2:
       speed: 3
       spread: 2
     costs:
-        mana: 60
+        mana: 30
 
 arrow|3:
     upgrade_required_path: master
@@ -2484,7 +2484,7 @@ arrow|3:
       speed: 4
       spread: 1
     costs:
-        mana: 70
+        mana: 40
 
 arrow|4:
     parameters:
@@ -2492,7 +2492,7 @@ arrow|4:
       speed: 5
       spread: 0
     costs:
-        mana: 80
+        mana: 50
 
 flashbang:
     icon_url: http://textures.minecraft.net/texture/bc8e7e971bbac56883fe9bfe1b38c5f568ece6cbe09ca59d85f6dab4688d14
@@ -2642,8 +2642,8 @@ torch:
     category: engineering
     worth_sp: 200
     earns_sp: 2
-    upgrade_required_path: engineer
-    upgrade_required_casts: 25
+    upgrade_required_path: beginner
+    upgrade_required_casts: 30
     actions:
         cast:
         -  class: Torch
@@ -2664,9 +2664,21 @@ torch:
         mana: 50
 
 torch|2:
+    upgrade_required_path: student
+    upgrade_required_casts: 30
+    parameters:
+        cooldown: 8000
+
+torch|3:
+    upgrade_required_path: engineer
+    upgrade_required_casts: 50
+    parameters:
+        cooldown: 5000
+
+torch|4:
     parameters:
         undo: 0
-        cooldown: 0
+        cooldown: 1000
 
 familiar:
     icon_url: http://textures.minecraft.net/texture/621668ef7cb79dd9c22ce3d1f3f4cb6e2559893b6df4a469514e667c16aa4
@@ -3878,6 +3890,7 @@ stash:
     worth_sp: 100
     earns_sp: 1
     show_undoable: false
+    quick_cast: true
     effects:
         cast:
         -  class: EffectSingle
@@ -5662,7 +5675,7 @@ respawn:
         cooldown: 30000
 
 levitate:
-    icon_url: http://textures.minecraft.net/texture/4a23ccd51565d2e246675c86aef11b5412662c15ecc2e9f3ef425adc91d1
+    icon_url: http://textures.minecraft.net/texture/d02585f4a2b47524541d67ae253cf21fde8eea1c21494f61df5f4929a76e0
     alias: fly
     icon: gold_boots
     category: master
@@ -5739,7 +5752,6 @@ fireball:
     pvp_restricted: true
     worth_sp: 150
     earns_sp: 10
-    earns_cooldown: 60000
     actions:
         cast:
         -  class: Projectile
@@ -5998,7 +6010,7 @@ missile:
     category: combat
     worth_sp: 150
     earns_sp: 5
-    earns_cooldown: 60000
+    earns_cooldown: 120000
     actions:
         cast:
         - class: CustomProjectile
@@ -6045,6 +6057,7 @@ missile:
 missile|2:
     upgrade_required_path: student
     upgrade_required_casts: 30
+    earns_cooldown: 600000
     parameters:
         range: 32
         player_damage: 3
@@ -6056,6 +6069,7 @@ missile|2:
 missile|3:
     upgrade_required_path: apprentice
     upgrade_required_casts: 50
+    earns_cooldown: 900000
     parameters:
         range: 48
         player_damage: 4
@@ -6079,7 +6093,6 @@ homing:
     category: combat
     worth_sp: 150
     earns_sp: 6
-    earns_cooldown: 90000
     actions:
         cast:
         - class: Message
@@ -6236,7 +6249,6 @@ blind:
     cast_on_no_target: true
     worth_sp: 70
     earns_sp: 6
-    earns_cooldown: 60000
     actions:
         cast:
         - class: CustomProjectile

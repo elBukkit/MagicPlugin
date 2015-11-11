@@ -1,10 +1,19 @@
 # TODO
 
+ - Stillll have an undo issue somewhere. Make sure unregistering attachables isn't going wrong
+   - was able to build a schematic (nathanwolf) and undo piece by piece, but last piece wouldn't register.
+
+ - Reducto hay blocks in the PW park, some drop :|
+
  - damage_resistance_protection not working? (Check Fianto Duri in PW configs)
 
  - Spells acting oddly with Copy - Box, Iterate
  - Superdome is a shell :\
    
+ - Herobrines - XP exploit?
+   hold wand and go to /ma j Fight
+   you will get xp equivalent to your mana
+
  - Don't logout players on server change until they quit
 
  - MagicArenas: Add wand path to announcement messages

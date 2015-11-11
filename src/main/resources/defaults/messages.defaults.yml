@@ -607,7 +607,8 @@ spells:
         description: Creates a torch or glowstone
         no_target: Can't put a torch there
         cast: Flame on!
-    torch|2:
+        upgrade_description: "&r&b&bull; &6Reduced cooldown"
+    torch|4:
         upgrade_description: "&r&b&bull; &6Torches are now permanent"
     tunnel:
         name: Tunnel
