@@ -15,20 +15,18 @@ public class TeleportTask implements Runnable {
     private final Entity entity;
     private final Location location;
     private final int verticalSearchDistance;
-    private final int retryCount;
     private final MageController controller;
+    private final boolean safe;
+    private int retryCount;
 
-    private TeleportTask(MageController controller, final Entity entity, final Location location, final int verticalSearchDistance, CastContext context, final int retryCount) {
+    public TeleportTask(MageController controller, final Entity entity, final Location location, final int verticalSearchDistance, boolean safe, CastContext context) {
         this.context = context;
         this.entity = entity;
         this.location = location;
         this.verticalSearchDistance = verticalSearchDistance;
         this.controller = controller;
-        this.retryCount = retryCount;
-    }
-
-    public TeleportTask(MageController controller, final Entity entity, final Location location, final int verticalSearchDistance, CastContext context) {
-        this(controller, entity, location, verticalSearchDistance, context, TELEPORT_RETRY_COUNT);
+        this.retryCount = TELEPORT_RETRY_COUNT;
+        this.safe = safe;
     }
 
     @Override
@@ -36,10 +34,10 @@ public class TeleportTask implements Runnable {
         Chunk chunk = location.getBlock().getChunk();
         if (!chunk.isLoaded()) {
             chunk.load(true);
-            if (retryCount < TELEPORT_RETRY_COUNT) {
+            if (retryCount > 0) {
+                retryCount--;
                 Plugin plugin = controller.getPlugin();
-                TeleportTask retry = new TeleportTask(controller, entity, location, verticalSearchDistance, context, retryCount - 1);
-                Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, retry, TELEPORT_RETRY_INTERVAL);
+                Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, this, TELEPORT_RETRY_INTERVAL);
             }
             return;
         }
@@ -48,6 +46,9 @@ public class TeleportTask implements Runnable {
         if (context != null) {
             context.registerMoved(entity);
             targetLocation = context.findPlaceToStand(location, verticalSearchDistance);
+        }
+        if (targetLocation == null && !safe) {
+            targetLocation = location;
         }
         if (targetLocation != null) {
             // Hacky double-teleport to work-around vanilla suffocation checks
