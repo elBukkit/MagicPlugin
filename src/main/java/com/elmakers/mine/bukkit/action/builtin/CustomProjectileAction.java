@@ -97,8 +97,8 @@ public class CustomProjectileAction extends CompoundAction
         targetBreakableSize = parameters.getInt("breakable_size", 1);
         bypassBackfire = parameters.getBoolean("bypass_backfire", false);
         spread = parameters.getDouble("spread", 0);
-        maxSpread = parameters.getDouble("spread_max", 0.4);
-        movementSpread = parameters.getDouble("spread_movement", 20);
+        maxSpread = parameters.getDouble("spread_max", 0);
+        movementSpread = parameters.getDouble("spread_movement", 0);
 
         range *= context.getMage().getRangeMultiplier();
 
