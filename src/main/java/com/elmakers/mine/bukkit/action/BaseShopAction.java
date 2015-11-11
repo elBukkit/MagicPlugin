@@ -48,6 +48,7 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
     protected boolean isSkillPoints = false;
     protected boolean sell = false;
     protected boolean isItems = false;
+    protected double costScale = 1;
     protected boolean showConfirmation = true;
     protected MaterialAndData confirmFillMaterial;
     protected CastContext context;
@@ -382,6 +383,16 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
             {
                 isSkillPoints = true;
             }
+        }
+
+        if (isXP) {
+            costScale = controller.getWorthXP();
+        } else if (isItems) {
+            costScale = controller.getWorthBase() / controller.getWorthItemAmount();
+        } else if (isSkillPoints) {
+            costScale = controller.getWorthBase() / controller.getWorthSkillPoints();
+        } else {
+            costScale = controller.getWorthBase();
         }
     }
 
