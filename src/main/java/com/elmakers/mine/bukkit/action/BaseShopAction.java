@@ -372,7 +372,7 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
         MageController controller = context.getController();
         isXP = parameters.getBoolean("use_xp", false);
         isItems = parameters.getBoolean("use_items", false) && controller.getWorthItem() != null;
-        isSkillPoints = parameters.getBoolean("use_sp", false);
+        isSkillPoints = parameters.getBoolean("use_sp", false) && controller.isSPEnabled();
         if (!isSkillPoints && !isXP && !isItems && !VaultController.hasEconomy())
         {
             if (controller.getWorthItem() != null)
