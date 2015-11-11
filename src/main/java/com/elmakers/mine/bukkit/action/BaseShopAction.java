@@ -385,14 +385,10 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
             }
         }
 
-        if (isXP) {
-            costScale = controller.getWorthXP();
-        } else if (isItems) {
-            costScale = controller.getWorthBase() / controller.getWorthItemAmount();
-        } else if (isSkillPoints) {
+        if (isSkillPoints) {
             costScale = controller.getWorthBase() / controller.getWorthSkillPoints();
         } else {
-            costScale = controller.getWorthBase();
+            costScale = 1;
         }
     }
 
