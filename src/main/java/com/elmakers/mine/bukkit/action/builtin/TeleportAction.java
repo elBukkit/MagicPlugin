@@ -4,6 +4,7 @@ import com.elmakers.mine.bukkit.action.BaseTeleportAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
@@ -19,6 +20,7 @@ public class TeleportAction extends BaseTeleportAction
     private boolean autoPassthrough = true;
     private int passthroughRange;
     private int ledgeSearchDistance = 2;
+	private boolean safe = true;
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters)
@@ -27,6 +29,7 @@ public class TeleportAction extends BaseTeleportAction
         Mage mage = context.getMage();
         ledgeSearchDistance = parameters.getInt("ledge_range", 2);
         autoPassthrough = parameters.getBoolean("allow_passthrough", true);
+		safe = parameters.getBoolean("safe", true);
         passthroughRange = (int)Math.floor(mage.getRangeMultiplier() * parameters.getInt("passthrough_range", DEFAULT_PASSTHROUGH_RANGE));
     }
 
@@ -51,6 +54,7 @@ public class TeleportAction extends BaseTeleportAction
 			if (firstBlock != null && !context.isPassthrough(firstBlock.getType())) {
                 context.retarget(passthroughRange, 0, passthroughRange, 0, false, -1, true, 1);
                 isPassthrough = true;
+				context.getMage().sendDebugMessage(ChatColor.BLUE + "Teleporting passthrough engaged", 11);
 			}
 		}
 
@@ -82,14 +86,15 @@ public class TeleportAction extends BaseTeleportAction
 			if (safeLocation != null)
             {
                 destination = safeLocation.getBlock();
-            }
+				context.getMage().sendDebugMessage(ChatColor.BLUE + "Teleporting destination changed to safe location", 11);
+			}
 		}
 
 		// Also check for a ledge above the target
 		Block ledge = null;
 		if (!isPassthrough && (!face.equals(target.getRelative(BlockFace.DOWN)) || autoPassthrough))
 		{
-            int distanceUp = 0;
+			int distanceUp = 0;
 			ledge = target;
 			Block inFront = face;
 			Block oneUp = ledge.getRelative(BlockFace.UP);
@@ -141,11 +146,17 @@ public class TeleportAction extends BaseTeleportAction
 		if (ledge != null && context.isOkToStandOn(ledge.getType()))
 		{
 			destination = ledge.getRelative(BlockFace.UP);
+			context.getMage().sendDebugMessage(ChatColor.BLUE + "Teleporting hit ledge", 11);
 		}
 
 		Block oneUp = destination.getRelative(BlockFace.UP);
 		if (!context.isOkToStandIn(destination.getType()) || !context.isOkToStandIn(oneUp.getType()))
 		{
+			context.getMage().sendDebugMessage(ChatColor.RED + "Teleporting entity failed, can't stand in " +
+					ChatColor.DARK_RED + destination.getType() +
+					ChatColor.RED + " or " +
+					ChatColor.DARK_RED + oneUp.getType()
+					, 11);
 			return SpellResult.NO_TARGET;
 		}
 		Location targetLocation = new Location
@@ -157,7 +168,16 @@ public class TeleportAction extends BaseTeleportAction
 			entity.getLocation().getYaw(),
             entity.getLocation().getPitch()
 		);
-        context.teleport(entity, targetLocation, verticalSearchDistance);
+
+		context.getMage().sendDebugMessage(ChatColor.AQUA + "Teleporting entity " +
+						ChatColor.DARK_AQUA + entity.getType() +
+						ChatColor.AQUA + " to " +
+						ChatColor.BLUE + targetLocation.getBlockX() + ChatColor.GRAY + "," +
+						ChatColor.BLUE + targetLocation.getBlockY() + ChatColor.GRAY + "," +
+						ChatColor.BLUE + targetLocation.getBlockZ()
+				, 11);
+
+        context.teleport(entity, targetLocation, verticalSearchDistance, safe);
 		return SpellResult.CAST;
 	}
 

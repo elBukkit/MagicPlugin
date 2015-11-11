@@ -1,6 +1,8 @@
 # TODO
 
  - Fix shop price scaling
+ 
+ - Would be nice if the brush selector didn't kill Levitate :\
 
  - Stillll have an undo issue somewhere. Make sure unregistering attachables isn't going wrong
    - was able to build a schematic (nathanwolf) and undo piece by piece, but last piece wouldn't register.
