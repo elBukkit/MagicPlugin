@@ -144,6 +144,23 @@ default:
        - class: EffectSingle
          location: target
          effect: step_sound
+       earn_sp:
+       - class: EffectSingle
+         location: origin
+         sound: level_up
+         sound_volume: 0.6
+         sound_pitch: 0.75
+       - class: EffectSingle
+         location: origin
+         sound: orb_pickup
+         sound_volume: 0.4
+         sound_pitch: 1.5
+       earn_scaled_sp:
+       - class: EffectSingle
+         location: origin
+         sound: orb_pickup
+         sound_volume: 0.6
+         sound_pitch: 1.5
        reflect:
        - class: EffectSingle
          location: target

@@ -2,6 +2,8 @@
 
 ## 5.4
 
+ - Add sound FX on SP earn.
+
 ## 5.3.1
 
  - Fix long-standing occasional undo issue
