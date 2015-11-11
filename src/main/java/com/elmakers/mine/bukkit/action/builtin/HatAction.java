@@ -115,7 +115,11 @@ public class HatAction extends BaseSpellAction
             }
             ItemStack currentItem = player.getInventory().getHelmet();
             player.getInventory().setHelmet(itemInHand);
-            player.setItemInHand(currentItem);
+            if (!InventoryUtils.isTemporary(currentItem)) {
+                player.setItemInHand(currentItem);
+            } else {
+                player.setItemInHand(new ItemStack(Material.AIR));
+            }
 
             if (mage instanceof com.elmakers.mine.bukkit.magic.Mage) {
                 ((com.elmakers.mine.bukkit.magic.Mage)mage).armorUpdated();
