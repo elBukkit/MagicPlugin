@@ -1,5 +1,7 @@
 # CHANGELOG
 
+## 5.4
+
 ## 5.3.1
 
  - Fix long-standing occasional undo issue
