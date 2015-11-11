@@ -44,6 +44,14 @@ public class ItemShopAction extends BaseShopAction
         for (Map.Entry<String, Double> itemValue : items.entrySet()) {
             String itemKey = itemValue.getKey();
             double worth = items.get(itemKey);
+            // This is kinda ugly.. :|
+            // This is here to undo the scaling of whatever type of currency is selected
+            // So, for an SP shop- SP is converted to virtual economy units
+            // and then converted back into SP by BaseShopAction.
+            if (costScale > 0) {
+                worth /= costScale;
+            }
+
             ItemStack item = controller.createItem(itemKey);
             if (item == null) continue;
             shopItems.add(new ShopItem(item, worth));

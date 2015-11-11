@@ -99,7 +99,9 @@ public class SpellShopAction extends BaseShopAction
             Double worth = spellValue.getValue();
             if (worth == null) {
                 worth = spell.getWorth();
-                spellPrices.put(spellKey, worth);
+            } else if (costScale > 0) {
+                // See note in ItemShopAction about how ugly this is.
+                worth /= costScale;
             }
             if (worth <= 0 && !showFree) continue;
 
