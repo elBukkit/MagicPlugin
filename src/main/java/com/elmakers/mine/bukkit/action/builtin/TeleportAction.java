@@ -146,11 +146,14 @@ public class TeleportAction extends BaseTeleportAction
 		if (ledge != null && context.isOkToStandOn(ledge.getType()))
 		{
 			destination = ledge.getRelative(BlockFace.UP);
-			context.getMage().sendDebugMessage(ChatColor.BLUE + "Teleporting hit ledge", 11);
+			context.getMage().sendDebugMessage(ChatColor.BLUE + "Teleporting hit ledge at " +
+					ChatColor.BLUE + destination.getX() + ChatColor.GRAY + "," +
+					ChatColor.BLUE + destination.getY() + ChatColor.GRAY + "," +
+					ChatColor.BLUE + destination.getZ(), 11);
 		}
 
 		Block oneUp = destination.getRelative(BlockFace.UP);
-		if (!context.isOkToStandIn(destination.getType()) || !context.isOkToStandIn(oneUp.getType()))
+		if (safe && (!context.isOkToStandIn(destination.getType()) || !context.isOkToStandIn(oneUp.getType())))
 		{
 			context.getMage().sendDebugMessage(ChatColor.RED + "Teleporting entity failed, can't stand in " +
 					ChatColor.DARK_RED + destination.getType() +
