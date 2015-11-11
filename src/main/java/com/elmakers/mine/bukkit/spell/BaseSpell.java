@@ -2218,6 +2218,11 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
                 int scaledEarn = earns;
                 if (lastEarn > 0 && earnCooldown > 0 && now < lastEarn + earnCooldown) {
                     scaledEarn = (int)Math.floor((double)earns * (now - lastEarn) / earnCooldown);
+                    if (scaledEarn > 0) {
+                        context.playEffects("earn_scaled_sp");
+                    }
+                } else {
+                    context.playEffects("earn_sp");
                 }
                 if (scaledEarn > 0) {
                     mage.addSkillPoints(scaledEarn);
