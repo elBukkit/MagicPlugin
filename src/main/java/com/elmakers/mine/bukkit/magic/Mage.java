@@ -2170,5 +2170,10 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             activeWand.updateMana();
         }
     }
+
+    @Override
+    public com.elmakers.mine.bukkit.api.wand.Wand getBoundWand(String template) {
+        return boundWands.get(template);
+    }
 }
 
