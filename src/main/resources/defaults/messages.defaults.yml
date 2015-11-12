@@ -455,7 +455,7 @@ spells:
         name: Frost
         description: Freeze water and create snow
         cast_finish: Frosted $count blocks
-        upgrade_description: "&r&b&bull; &6Larger radius"
+        upgrade_description: "&r&b&bull; &6Larger radius, increased slow duration"
     harden:
         name: Harden
         description: Make the target blocks stronger
@@ -966,7 +966,7 @@ spells:
         name: Fire
         description: Light fires from a distance
         cast: You start a fire
-        upgrade_description: "&r&b&bull; &6Increased radius"
+        upgrade_description: "&r&b&bull; &6Increased radius, longer burn time"
     alter:
         name: Alter
         description: Alter certain objects
@@ -1190,9 +1190,9 @@ spells:
         title: Choose Destination
         unlock_warp: "&bYou have unlocked &5$name &bas a &6Recall &bdestination!"
     recall|2:
-        upgrade_description: "&r&b&bull; &6Unlocked last death location"
+        upgrade_description: "&r&b&bull; &6Unlock last death location"
     recall|3:
-        upgrade_description: "&r&b&bull; &6Unlocked marker, aim down to set location."
+        upgrade_description: "&r&b&bull; &6Unlock marker, aim down to set location."
         usage: Has a 5-second warmup. Cast down to set a marker
     levitate:
         name: Levitate

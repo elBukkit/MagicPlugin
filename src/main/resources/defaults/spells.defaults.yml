@@ -1563,7 +1563,7 @@ frost:
     category: combat
     worth_sp: 150
     earns_sp: 8
-    upgrade_required_path: student
+    upgrade_required_path: beginner
     upgrade_required_casts: 50
     actions:
         cast:
@@ -1627,7 +1627,7 @@ frost:
         mana: 75
 
 frost|2:
-    upgrade_required_path: apprentice
+    upgrade_required_path: student
     upgrade_required_casts: 50
     parameters:
         radius: 2
@@ -1640,11 +1640,24 @@ frost|2:
         mana: 90
 
 frost|3:
+    upgrade_required_path: apprentice
+    upgrade_required_casts: 50
+    parameters:
+        radius: 2
+        player_damage: 2
+        entity_damage: 6
+        duration: 3000
+        effect_slow: 1
+        undo: 5000
+    costs:
+        mana: 90
+
+frost|4:
     parameters:
         radius: 3
         player_damage: 2.5
         entity_damage: 8
-        duration: 3000
+        duration: 3500
         effect_slow: 1
         undo: 6000
         freeze_lava: true
@@ -3117,8 +3130,8 @@ fire:
     pvp_restricted: true
     worth_sp: 100
     earns_sp: 1
-    upgrade_required_path: student
-    upgrade_required_casts: 50
+    upgrade_required_path: beginner
+    upgrade_required_casts: 40
     actions:
         cast:
         - class: CustomProjectile
@@ -3156,19 +3169,29 @@ fire:
         fov: 0.03
         radius: 0
         vertical_range: 4
-        undo: 2000
+        undo: 1000
         cooldown: 1000
         target_breakables: 0
     costs:
         mana: 35
 
 fire|2:
-    upgrade_required_path: apprentice
+    upgrade_required_path: student
     upgrade_required_casts: 50
     parameters:
         radius: 1
         cooldown: 3000
-        undo: 1600
+        undo: 1500
+        target_breakables: 1
+    costs:
+        mana: 75
+
+fire|3:
+    upgrade_required_path: apprentice
+    upgrade_required_casts: 50
+    parameters:
+        radius: 1
+        undo: 2000
         target_breakables: 1
     costs:
         mana: 75
@@ -3176,8 +3199,8 @@ fire|2:
 fire|3:
     parameters:
         radius: 2
-        cooldown: 5000
-        undo: 1700
+        cooldown: 4000
+        undo: 2500
         target_breakables: 2
     costs:
         mana: 90
@@ -6990,7 +7013,7 @@ entangle:
         mana: 70
 
 wound:
-    upgrade_required_path: master
+    upgrade_required_path: apprentice
     upgrade_required_casts: 50
     icon_url: http://textures.minecraft.net/texture/df4396a2bc47bc4dd545fc787a3ad8a0a75b8783cb5d81482c2016fab9cd2a
     icon: quartz
