@@ -259,6 +259,12 @@ public interface Mage extends CostReducer {
     public Wand getSoulWand();
 
     /**
+     * Get a bound wand. Bound wands are stored based on their template,
+     * only one wand per template type is stored.
+     */
+    public Wand getBoundWand(String template);
+
+    /**
      * Force a re-check of the current active wand vs the item the player is holding.
      *
      * This may activate or deactivate a wand, or both.
