@@ -5718,7 +5718,7 @@ recall:
         icon_home: bed
         icon_marker: redstone_torch_on
         loud: true
-        cooldown: 2000
+        cooldown: 8000
         target: self
 
 recall|2:
