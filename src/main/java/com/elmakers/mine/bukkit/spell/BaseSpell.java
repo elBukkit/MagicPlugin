@@ -2199,7 +2199,6 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         CastEvent castEvent = new CastEvent(mage, this, result);
         Bukkit.getPluginManager().callEvent(castEvent);
 
-
         // Message targets
         if (result.isSuccess() && !mage.isQuiet()) {
             messageTargets("cast_player_message");
