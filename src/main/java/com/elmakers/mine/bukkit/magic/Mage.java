@@ -1757,6 +1757,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             try {
                 player.closeInventory();
                 if (inventory != null) {
+                    gui = action;
                     player.openInventory(inventory);
                 }
             } catch (Throwable ex) {
