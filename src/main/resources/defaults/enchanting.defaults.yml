@@ -147,8 +147,6 @@ beginner:
       cloak: 0,0,30
       collapse: 0,0,30
       cure: 1,5,10
-      admission: 20,25,30
-      curse: 0,0,10
       bubble: 10,40,20
       fireball: 0,0,80
       flare: 110,80,60
@@ -161,7 +159,9 @@ beginner:
       blind: 0,1,5
       reflect: 0,0,5
       stun: 0,5,15
-      gather: 0,0,5
+      poison: 5,10,20
+      fire: 50,70,60
+      frost: 80,70,50
 
 student:
     upgrade: apprentice
@@ -211,8 +211,6 @@ student:
       boom: 20,50,60
       familiar: 10,30,40
       fling: 0,5,70
-      fire: 50,70,60
-      frost: 80,70,50
       grenade: 0,20,70
       heal: 0,1,5
       monster: 5,20,30
@@ -227,15 +225,16 @@ student:
       shell: 1,20,30
       tag: 1,4,5
       blob: 1,20,30
-      disarm: 0,0,2
       entangle: 0,0,20
-      poison: 5,10,20
-      laser: 0,0,10
       tracking: 5,10,30
       rocket: 0,10,20
       shrink: 5,20,30
       wave: 5,20,30
       whip: 1,10,20
+      secure: 0,0,5
+      admission: 20,25,30
+      gather: 0,0,5
+      curse: 0,0,10
 
 apprentice:
     upgrade: master
@@ -285,14 +284,12 @@ apprentice:
       blessing: 0,0,1
       breach: 5,20,30
       disintegrate: 0,10,40
-      force: 5,10,20
       hat: 110,80,60
       music: 110,80,60
       sandblast: 20,30,40
       phase: 0,0,1
       grow: 1,10,20
       counterspell: 0,1,5
-      tent: 0,0,1
       disc: 0,1,5
       rubberize: 2,10,20
       wound: 0,10,20
@@ -304,6 +301,10 @@ apprentice:
       smite: 10,20,30
       shuriken: 0,0,5
       sticky: 1,5,15
+      homing: 1,5,15
+      lift: 1,5,10
+      disarm: 0,0,2
+      laser: 0,0,10
 
 master:
     required_spells:
@@ -373,15 +374,14 @@ master:
       kill: 2,10,20
       torture: 2,10,20
       petrify: 0,10,30
-      lift: 1,5,10
       anvil: 0,0,10
       singularity: 0,1,5
       tornado: 1,10,15
-      secure: 0,0,5
       ghast: 0,0,5
       tendril: 0,0,5
       silence: 0,0,5
-      homing: 1,5,15
+      force: 5,10,20
+      tent: 0,0,1
 
 #
 # The move from "master" to engineer requires the player to aquire some basic

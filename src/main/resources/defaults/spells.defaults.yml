@@ -374,8 +374,8 @@ boon:
     category: utility
     worth_sp: 60
     earns_sp: 6
-    upgrade_required_path: student
-    upgrade_required_casts: 50
+    upgrade_required_path: beginner
+    upgrade_required_casts: 40
     quick_cast: true
     actions:
         cast:
@@ -407,13 +407,20 @@ boon:
         cooldown: 20000
 
 boon|2:
-    upgrade_required_path: apprentice
+    upgrade_required_path: student
+    upgrade_required_casts: 50
+    parameters:
+        duration: 20000
+        cooldown: 40000
+
+boon|3:
+    upgrade_required_path: master
     upgrade_required_casts: 50
     parameters:
         duration: 30000
         cooldown: 40000
 
-boon|3:
+boon|4:
     actions:
         cast:
         -  class: PotionEffect
@@ -2125,7 +2132,7 @@ music:
     icon_url: http://textures.minecraft.net/texture/a2ea21c79fa115b9a63625a2c9c5ec3dd92e1d1a7024162790237da9d98ee28
     icon: gold_record
     category: light
-    worth_sp: 50
+    worth_sp: 30
     earns_sp: 1
     show_undoable: false
     actions:
@@ -2154,7 +2161,7 @@ gather:
     icon_url: http://textures.minecraft.net/texture/ff78194bb5fe3f374ca6a1727c04247b7bac331cff248bf642acc8e73647e
     icon: glowstone_dust
     category: master
-    worth_sp: 150
+    worth_sp: 15
     show_undoable: false
     actions:
         cast:
@@ -2443,8 +2450,8 @@ arrow:
     category: combat
     worth_sp: 70
     earns_sp: 8
-    upgrade_required_path: student
-    upgrade_required_casts: 50
+    upgrade_required_path: beginner
+    upgrade_required_casts: 40
     actions:
         cast:
         - class: Projectile
@@ -2471,7 +2478,7 @@ arrow:
     parameters:
       target: none
       projectile: Arrow
-      damage: .75
+      damage: 0.75
       speed: 2
       spread: 6
       fire: false
@@ -2484,26 +2491,46 @@ arrow:
         mana: 20
 
 arrow|2:
-    upgrade_required_path: apprentice
-    upgrade_required_casts: 50
+    upgrade_required_path: student
+    upgrade_required_casts: 30
     parameters:
-      damage: .75
-      speed: 3
-      spread: 2
+      damage: 0.80
+      speed: 2.5
+      spread: 5
     costs:
         mana: 30
 
 arrow|3:
+    upgrade_required_path: student
+    upgrade_required_casts: 50
+    parameters:
+      damage: 0.85
+      speed: 3
+      spread: 4
+    costs:
+        mana: 30
+
+arrow|4:
+    upgrade_required_path: apprentice
+    upgrade_required_casts: 50
+    parameters:
+      damage: 0.9
+      speed: 3.5
+      spread: 3
+    costs:
+        mana: 30
+
+arrow|5:
     upgrade_required_path: master
     upgrade_required_casts: 50
     parameters:
-      damage: .85
+      damage: 0.95
       speed: 4
       spread: 1
     costs:
         mana: 40
 
-arrow|4:
+arrow|6:
     parameters:
       damage: 1
       speed: 5
@@ -5621,6 +5648,8 @@ recall:
     worth_sp: 20
     earns_sp: 5
     cast_on_no_target: false
+    upgrade_required_path: beginner
+    upgrade_required_casts: 25
     actions:
         cast:
         -  class: Delay
@@ -5655,8 +5684,8 @@ recall:
         delay: 5000
         cancel_on_damage: true
         allow_spawn: false
-        allow_marker: true
-        allow_death: true
+        allow_marker: false
+        allow_death: false
         allow_wand: true
         allow_home: true
         allow_cross_world: true
@@ -5668,6 +5697,16 @@ recall:
         loud: true
         cooldown: 2000
         target: self
+
+recall|2:
+    upgrade_required_path: student
+    upgrade_required_casts: 30
+    parameters:
+        allow_death: true
+
+recall|3:
+    parameters:
+        allow_marker: true
 
 respawn:
     hidden: true
@@ -7248,10 +7287,10 @@ admission:
     icon_url: http://textures.minecraft.net/texture/3944e12e8e67fd67a55359df56c3c59c99550f6eaccb23813769afb2f1992
     icon: wood_door
     category: utility
-    worth_sp: 100
+    worth_sp: 20
     earns_sp: 10
     cast_on_no_target: true
-    upgrade_required_path: master
+    upgrade_required_path: apprentice
     upgrade_required_casts: 20
     actions:
         cast:
