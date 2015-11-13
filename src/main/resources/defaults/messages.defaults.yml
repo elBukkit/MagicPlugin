@@ -901,6 +901,8 @@ spells:
         description: Push things away from you
         alternate: Get away!
         upgrade_description: "&r&b&bull; &6Pushes with more force"
+    push|4:
+        upgrade_description: "&r&b&bull; &6Aim down and cast for area of effect alternate"
     farm:
         name: Herd
         description: Create a herd

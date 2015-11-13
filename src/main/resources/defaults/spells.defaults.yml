@@ -1203,8 +1203,8 @@ push:
     category: elemental
     worth_sp: 50
     earns_sp: 3
-    upgrade_required_path: student
-    upgrade_required_casts: 50
+    upgrade_required_path: beginner
+    upgrade_required_casts: 40
     actions:
         cast:
         - class: VelocityAction
@@ -1258,6 +1258,22 @@ push:
         mana: 20
 
 push|2:
+    upgrade_required_path: student
+    upgrade_required_casts: 40
+    parameters:
+      range: 10
+      target_count: 4
+      living_entity_speed: 0.6
+
+push|3:
+    upgrade_required_path: master
+    upgrade_required_casts: 50
+    parameters:
+      range: 12
+      target_count: 6
+      living_entity_speed: 0.7
+
+push|4:
     actions:
         alternate_down:
         - class: ChangeContext
@@ -1280,7 +1296,7 @@ push|2:
              iterations: 1
              particle: spell
     parameters:
-        living_entity_speed: 0.7
+        living_entity_speed: 0.75
         range: 16
         target_count: 8
         repeat: 4
