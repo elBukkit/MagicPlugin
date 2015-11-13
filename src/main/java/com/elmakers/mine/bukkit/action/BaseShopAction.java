@@ -146,25 +146,9 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
         return SpellResult.CAST;
     }
 
-    @Override
-    public void clicked(InventoryClickEvent event)
-    {
-        event.setCancelled(true);
-        ItemStack item = event.getCurrentItem();
-        if (context == null || item == null || !InventoryUtils.hasMeta(item, "shop")) {
-            return;
-        }
-
-        int slotIndex = Integer.parseInt(InventoryUtils.getMeta(item, "shop"));
-        MageController controller = context.getController();
-        Messages messages = controller.getMessages();
+    protected boolean hasItemCosts(CastContext context, ShopItem shopItem) {
         Mage mage = context.getMage();
-        Wand wand = mage.getActiveWand();
-
-        ShopItem shopItem = showingItems.get(slotIndex);
-        if (shopItem == null) {
-            return;
-        }
+        MageController controller = context.getController();
         double worth = shopItem.getWorth();
         boolean hasCosts = true;
         if (worth > 0) {
@@ -183,34 +167,114 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
                 hasCosts = VaultController.getInstance().has(mage.getPlayer(), worth);
             }
         }
-        if (sell) {
-            hasCosts = getItemAmount(controller, item, mage) > 0;
+
+        return hasCosts;
+    }
+
+    protected String getItemCost(CastContext context, ShopItem shopItem) {
+        String amountString = "?";
+        MageController controller = context.getController();
+        Messages messages = controller.getMessages();
+        double worth = shopItem.getWorth();
+
+        if (isXP) {
+            amountString = Integer.toString((int)(double)worth);
+            amountString = messages.get("costs.xp_amount").replace("$amount", amountString);
         }
+        else if (isItems)
+        {
+            amountString = formatItemAmount(controller, worth);
+        }
+        else if (isSkillPoints) {
+            amountString = Integer.toString((int)Math.ceil(worth));
+            amountString = messages.get("costs.sp_amount").replace("$amount", amountString);
+        }
+        else
+        {
+            amountString = VaultController.getInstance().format(worth);
+        }
+
+        return amountString;
+    }
+
+    protected void giveCosts(CastContext context, ShopItem shopItem) {
+        Mage mage = context.getMage();
+        MageController controller = context.getController();
+        double worth = shopItem.getWorth();
+        if (isXP) {
+            mage.giveExperience((int) (double) worth);
+        }
+        else if (isItems)
+        {
+            int amount = (int)Math.ceil(worth);
+            ItemStack worthItem = controller.getWorthItem();
+            while (amount > 0) {
+                worthItem = InventoryUtils.getCopy(worthItem);
+                worthItem.setAmount(Math.min(amount, 64));
+                amount -= worthItem.getAmount();
+                mage.giveItem(worthItem);
+            }
+        }
+        else if (isSkillPoints)
+        {
+            int amount = (int)Math.ceil(worth);
+            mage.addSkillPoints(amount);
+        }
+        else
+        {
+            VaultController.getInstance().depositPlayer(mage.getPlayer(), worth);
+        }
+    }
+
+    protected void takeCosts(CastContext context, ShopItem shopItem) {
+        Mage mage = context.getMage();
+        MageController controller = context.getController();
+        double worth = shopItem.getWorth();
+
+        if (isXP) {
+            mage.removeExperience((int)(double)worth);
+        }
+        else if (isItems)
+        {
+            removeItems(controller, mage, (int)Math.ceil(worth));
+        }
+        else if (isSkillPoints)
+        {
+            mage.addSkillPoints(-(int)Math.ceil(worth));
+        }
+        else
+        {
+            VaultController.getInstance().withdrawPlayer(mage.getPlayer(), worth);
+        }
+    }
+
+    @Override
+    public void clicked(InventoryClickEvent event)
+    {
+        event.setCancelled(true);
+        ItemStack item = event.getCurrentItem();
+        if (context == null || item == null || !InventoryUtils.hasMeta(item, "shop")) {
+            return;
+        }
+
+        int slotIndex = Integer.parseInt(InventoryUtils.getMeta(item, "shop"));
+        MageController controller = context.getController();
+        Mage mage = context.getMage();
+        Wand wand = mage.getActiveWand();
+
+        ShopItem shopItem = showingItems.get(slotIndex);
+        if (shopItem == null) {
+            return;
+        }
+        boolean hasCosts = sell ? getItemAmount(controller, shopItem.getItem(), mage) > 0
+                : hasItemCosts(context, shopItem);
 
         if (!hasCosts) {
             String costString = context.getMessage("insufficient", ChatColor.RED + "Costs $cost");
             if (sell) {
-                String amountString = formatItemAmount(controller, item, 1);
-                costString = costString.replace("$cost", amountString);
-            }
-            else if (isXP) {
-                String xpAmount = Integer.toString((int)(double)worth);
-                xpAmount = messages.get("costs.xp_amount").replace("$amount", xpAmount);
-                costString = costString.replace("$cost", xpAmount);
-            }
-            else if (isItems)
-            {
-                String amountString = formatItemAmount(controller, worth);
-                costString = costString.replace("$cost", amountString);
-            }
-            else if (isSkillPoints) {
-                String spAmount = Integer.toString((int)Math.ceil(worth));
-                spAmount = messages.get("costs.sp_amount").replace("$amount", spAmount);
-                costString = costString.replace("$cost", spAmount);
-            }
-            else
-            {
-                costString = costString.replace("$cost", VaultController.getInstance().format(worth));
+                costString = costString.replace("$cost", formatItemAmount(controller, item, 1));
+            } else {
+                costString = costString.replace("$cost", getItemCost(context, shopItem));
             }
             context.showMessage(costString);
         } else {
@@ -239,57 +303,15 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
                 return;
             }
 
+            double worth = shopItem.getWorth();
             String costString = context.getMessage("deducted", "&d&oYou bought &r&6$item &r&d&ofor &r&a$cost");
             if (sell) {
                 String amountString = formatItemAmount(controller, worth);
                 costString = costString.replace("$cost", amountString);
-            }
-            else if (isXP) {
-                String xpAmount = Integer.toString((int)(double)worth);
-                xpAmount = messages.get("costs.xp_amount").replace("$amount", xpAmount);
-                costString = costString.replace("$cost", xpAmount);
-            }
-            else if (isItems)
-            {
-                String amountString = formatItemAmount(controller, worth);
-                costString = costString.replace("$cost", amountString);
-            }
-            else if (isSkillPoints) {
-                String spAmount = Integer.toString((int)Math.ceil(worth));
-                spAmount = messages.get("costs.sp_amount").replace("$amount", spAmount);
-                costString = costString.replace("$cost", spAmount);
-            } else {
-                costString = costString.replace("$cost", VaultController.getInstance().format(worth));
-            }
-
-            if (sell) {
                 removeItems(controller, mage, item, 1);
-                if (isXP) {
-                    mage.giveExperience((int) (double) worth);
-                }
-                else if (isItems)
-                {
-                    int amount = (int)Math.ceil(worth);
-                    ItemStack worthItem = controller.getWorthItem();
-                    while (amount > 0) {
-                        worthItem = InventoryUtils.getCopy(worthItem);
-                        worthItem.setAmount(Math.min(amount, 64));
-                        amount -= worthItem.getAmount();
-                        mage.giveItem(worthItem);
-                    }
-                }
-                else if (isSkillPoints)
-                {
-                    int amount = (int)Math.ceil(worth);
-                    mage.addSkillPoints(amount);
-                }
-                else
-                {
-                    VaultController.getInstance().depositPlayer(mage.getPlayer(), worth);
-                }
-            }
-            else
-            {
+                giveCosts(context, shopItem);
+            } else {
+                costString = costString.replace("$cost", getItemCost(context, shopItem));
                 item = shopItem.getItem();
                 if (requireWand) {
                     if (wand == null) {
@@ -304,22 +326,7 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
                         return;
                     }
                 }
-                if (isXP) {
-                    mage.removeExperience((int)(double)worth);
-                }
-                else if (isItems)
-                {
-                    removeItems(controller, mage, (int)Math.ceil(worth));
-                }
-                else if (isSkillPoints)
-                {
-                    mage.addSkillPoints(-(int)Math.ceil(worth));
-                }
-                else
-                {
-                    VaultController.getInstance().withdrawPlayer(mage.getPlayer(), worth);
-                }
-
+                takeCosts(context, shopItem);
                 if (!requireWand) {
                     context.getController().giveItemToPlayer(mage.getPlayer(), item);
                 }
@@ -422,25 +429,7 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
             if (lore == null) {
                 lore = new ArrayList<String>();
             }
-            String costs;
-            if (isXP) {
-                worth = worth * controller.getWorthXP();
-                String xpAmount = Integer.toString((int)(double)worth);
-                xpAmount = messages.get("costs.xp_amount").replace("$amount", xpAmount);
-                costs = costString.replace("$cost", xpAmount);
-            } else if (isItems) {
-                worth = worth * controller.getWorthBase() / controller.getWorthItemAmount();
-                String itemWorth = formatItemAmount(controller, worth);
-                costs = costString.replace("$cost", itemWorth);
-            } else if (isSkillPoints) {
-                worth = worth * controller.getWorthBase() / controller.getWorthSkillPoints();
-                String spAmount = Integer.toString((int)(double)worth);
-                spAmount = messages.get("costs.sp_amount").replace("$amount", spAmount);
-                costs = costString.replace("$cost", spAmount);
-            } else {
-                worth = worth * controller.getWorthBase();
-                costs = costString.replace("$cost", VaultController.getInstance().format(worth));
-            }
+            String costs = costString.replace("$cost", getItemCost(context, shopItem));
             lore.add(ChatColor.GOLD + costs);
             meta.setLore(lore);
             item.setItemMeta(meta);
