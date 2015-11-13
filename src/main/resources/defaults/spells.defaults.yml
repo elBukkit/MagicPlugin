@@ -6562,6 +6562,7 @@ broom:
         mount_variant: undead_horse
         armor_stand: true
         armor_stand_helmet: false
+        armor_stand_yaw: -0.5
         armor_stand_pitch: 0.3
         armor_stand_arm: 0,0,-0.62
         armor_stand_marker: true

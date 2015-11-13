@@ -2,6 +2,8 @@
 
  - Fix shop price scaling
  
+ - Overrides with commas in them are broken again
+ 
  - Stillll have an undo issue somewhere. Make sure unregistering attachables isn't going wrong
    - was able to build a schematic (nathanwolf) and undo piece by piece, but last piece wouldn't register.
 
