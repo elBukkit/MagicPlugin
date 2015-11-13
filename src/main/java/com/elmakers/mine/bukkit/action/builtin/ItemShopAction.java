@@ -5,6 +5,7 @@ import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
 
@@ -52,7 +53,18 @@ public class ItemShopAction extends BaseShopAction
                 worth /= costScale;
             }
 
+            String[] pieces = StringUtils.split(itemKey, '@');
+            int amount = 1;
+            if (pieces.length > 1) {
+                itemKey = pieces[0];
+                try {
+                    amount = Integer.parseInt(pieces[1]);
+                } catch (Exception ex) {
+                    context.getLogger().warning("Invalid item amount in shop: " + pieces[1] + " for item " + itemKey + " shop " + context.getSpell().getKey());
+                }
+            }
             ItemStack item = controller.createItem(itemKey);
+            item.setAmount(amount);
             if (item == null) continue;
             shopItems.add(new ShopItem(item, worth));
         }

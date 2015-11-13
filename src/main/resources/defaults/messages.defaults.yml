@@ -1477,6 +1477,10 @@ spells:
         name: Magic Item Shop
         title: "Magic Items ($balance)"
         description: Buy Magic Items
+    itemshop:
+        name: Item Shop
+        title: "Shop ($balance)"
+        description: Buy Buy Buy!
     automatashop:
         name: Automata Shop
         title: "Sell Automata Hearts"
