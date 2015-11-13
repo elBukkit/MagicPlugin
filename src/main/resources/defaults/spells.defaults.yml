@@ -1569,6 +1569,7 @@ frost:
         cast:
         - class: CustomProjectile
           actions:
+          - class: Damage
           - class: AreaOfEffect
             actions:
             - class: PotionEffect
@@ -1607,7 +1608,7 @@ frost:
              radius: $radius
     parameters:
         velocity: 175
-        target: block
+        target: other
         allow_max_range: false
         range: 48
         hitbox: true
@@ -4638,9 +4639,9 @@ chop:
         range: 32
         recursion_depth: 32
         drop: trees
-        cooldown: 5000
+        cooldown: 30000
     costs:
-        mana: 10
+        mana: 80
 
 chop|2:
     upgrade_required_path: apprentice
@@ -5692,6 +5693,7 @@ recall:
             particle: portal
             particles: 7
             radius: 1
+             offset: 0,-1,0
         deactivate:
         -  class: EffectSingle
            sound: level_up
@@ -5703,6 +5705,7 @@ recall:
            effectlib:
              class: WarpEffect
              particle: portal
+             offset: 0,-1,0
     parameters:
         delay: 5000
         cancel_on_damage: true
