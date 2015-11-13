@@ -129,6 +129,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
      * Variant properties
      */
     private SpellKey spellKey;
+    private String inheritKey;
     private String name;
     private String alias;
     private String description;
@@ -820,6 +821,9 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         requiredUpgradePath = node.getString("upgrade_required_path");
         requiredUpgradeCasts = node.getLong("upgrade_required_casts");
 
+        // Inheritance, currently only used to look up messages, and only goes one level deep
+        inheritKey = node.getString("inherit");
+
         // Can be overridden by the base spell, or the variant spell
         levelDescription = controller.getMessages().get("spells." + baseKey + ".level_description", levelDescription);
         upgradeDescription = controller.getMessages().get("spells." + baseKey + ".upgrade_description", upgradeDescription);
@@ -1225,6 +1229,9 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
 
     public String getMessage(String messageKey, String def) {
         String message = controller.getMessages().get("spells.default." + messageKey, def);
+        if (inheritKey != null && !inheritKey.isEmpty()) {
+            message = controller.getMessages().get("spells." + inheritKey + "." + messageKey, message);
+        }
         message = controller.getMessages().get("spells." + spellKey.getBaseKey() + "." + messageKey, message);
         if (spellKey.isVariant()) {
             message = controller.getMessages().get("spells." + spellKey.getKey() + "." + messageKey, message);
