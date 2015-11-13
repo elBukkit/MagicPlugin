@@ -303,7 +303,10 @@ public class Target implements Comparable<Target>
                 location.setY(hit.getY());
                 location.setZ(hit.getZ());
 
-                distanceSquared = location.distanceSquared(source);
+                if (location.getWorld().equals(source.getWorld()))
+                {
+                    distanceSquared = location.distanceSquared(source);
+                }
             }
             if (DEBUG_TARGETING)
             {
