@@ -24,6 +24,7 @@ public class WGCustomFlagsManager {
     public static SetFlag<String> BLOCKED_SPELL_CATEGORIES = new SetFlag<String>("blocked-spell-categories", RegionGroup.ALL, new StringFlag(null));
     public static SetFlag<String> ALLOWED_WANDS = new SetFlag<String>("allowed-wands", RegionGroup.ALL, new StringFlag(null));
     public static SetFlag<String> BLOCKED_WANDS = new SetFlag<String>("blocked-wands", RegionGroup.ALL, new StringFlag(null));
+    public static SetFlag<String> SPELL_OVERRIDES = new SetFlag<String>("spell-overrides", RegionGroup.ALL, new StringFlag(null));
     public static StringFlag DESTRUCTIBLE = new StringFlag("destructible", RegionGroup.ALL);
     public static StringFlag REFLECTIVE = new StringFlag("reflective", RegionGroup.ALL);
 
@@ -35,6 +36,7 @@ public class WGCustomFlagsManager {
         customFlags.addCustomFlag(BLOCKED_SPELL_CATEGORIES);
         customFlags.addCustomFlag(ALLOWED_WANDS);
         customFlags.addCustomFlag(BLOCKED_WANDS);
+        customFlags.addCustomFlag(SPELL_OVERRIDES);
         customFlags.addCustomFlag(DESTRUCTIBLE);
         customFlags.addCustomFlag(REFLECTIVE);
     }
@@ -47,6 +49,11 @@ public class WGCustomFlagsManager {
     public String getReflective(RegionAssociable source, ApplicableRegionSet checkSet)
     {
         return checkSet.queryValue(source, REFLECTIVE);
+    }
+
+    public Set<String> getSpellOverrides(RegionAssociable source, ApplicableRegionSet checkSet)
+    {
+        return checkSet.queryValue(source, SPELL_OVERRIDES);
     }
 
     public Boolean getWandPermission(RegionAssociable source, ApplicableRegionSet checkSet, Wand wand) {

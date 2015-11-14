@@ -16,6 +16,8 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
+import java.util.Set;
+
 public class WorldGuardAPI {
 	private WorldGuardPlugin worldGuard = null;
     private WGCustomFlagsManager customFlags = null;
@@ -123,6 +125,24 @@ public class WorldGuardAPI {
             }
 
             return customFlags.getReflective(getAssociable(player), checkSet);
+        }
+        return null;
+    }
+
+    public Set<String> getSpellOverrides(Player player, Location location) {
+        if (location != null && worldGuard != null && customFlags != null)
+        {
+            RegionManager regionManager = worldGuard.getRegionManager(location.getWorld());
+            if (regionManager == null) {
+                return null;
+            }
+
+            ApplicableRegionSet checkSet = regionManager.getApplicableRegions(location);
+            if (checkSet == null) {
+                return null;
+            }
+
+            return customFlags.getSpellOverrides(getAssociable(player), checkSet);
         }
         return null;
     }

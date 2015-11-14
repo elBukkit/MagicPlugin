@@ -8,6 +8,8 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
+import java.util.Set;
+
 public class WorldGuardManager implements PVPManager, BlockBreakManager, BlockBuildManager {
     private boolean enabled = false;
     private WorldGuardAPI worldGuard = null;
@@ -84,6 +86,13 @@ public class WorldGuardManager implements PVPManager, BlockBreakManager, BlockBu
     public String getDestructible(Player player, Location location) {
         if (enabled && worldGuard != null) {
             return worldGuard.getDestructible(player, location);
+        }
+        return null;
+    }
+
+    public Set<String> getSpellOverrides(Player player, Location location) {
+        if (enabled && worldGuard != null) {
+            return worldGuard.getSpellOverrides(player, location);
         }
         return null;
     }

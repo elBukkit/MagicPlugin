@@ -5,6 +5,7 @@
  - Add sound FX on SP earn.
  - Fix GUI actions deactivating the wand (e.g. Recall, brush selector)
  - Add support for selling multiples in shops. Kind of hacky right now, like "carrot_item@64: 100"
+ - Add spell-overrides region flag, for region-specific spell tweaks (e.g. broom max height)
 
 ## 5.3.1
 

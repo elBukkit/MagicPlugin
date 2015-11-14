@@ -2,6 +2,8 @@
 
  - Fix shop price scaling
  
+ - KidBear says spawned animated statues don't disappear if the player dies
+ 
  - Overrides with commas in them are broken again
  
  - Stillll have an undo issue somewhere. Make sure unregistering attachables isn't going wrong

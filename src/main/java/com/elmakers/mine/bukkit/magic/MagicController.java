@@ -1971,12 +1971,19 @@ public class MagicController implements MageController {
 		return newSpell;
 	}
 
+    @Override
     public String getReflectiveMaterials(Mage mage, Location location) {
         return worldGuardManager.getReflective(mage.getPlayer(), location);
     }
 
+    @Override
     public String getDestructibleMaterials(Mage mage, Location location) {
         return worldGuardManager.getDestructible(mage.getPlayer(), location);
+    }
+
+    @Override
+    public Set<String> getSpellOverrides(Mage mage, Location location) {
+        return worldGuardManager.getSpellOverrides(mage.getPlayer(), location);
     }
 	
 	protected void loadMaterials(ConfigurationSection materialNode)

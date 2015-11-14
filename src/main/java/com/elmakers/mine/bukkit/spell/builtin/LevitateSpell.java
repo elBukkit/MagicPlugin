@@ -285,7 +285,6 @@ public class LevitateSpell extends TargetingSpell implements Listener
         }
         if (maxHeight > 0 && player.getLocation().getY() >= maxHeight) {
             direction.setY(-1);
-
         } else if (maxHeightAboveGround > 0) {
             Block block = player.getLocation().getBlock();
             int height = 0;
