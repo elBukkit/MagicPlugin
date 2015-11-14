@@ -117,6 +117,7 @@ public interface MageController {
 
     public String getReflectiveMaterials(Mage mage, Location location);
     public String getDestructibleMaterials(Mage mage, Location location);
+    public Set<String> getSpellOverrides(Mage mage, Location location);
 
     public Set<Material> getDestructibleMaterials();
     public Set<Material> getBuildingMaterials();
