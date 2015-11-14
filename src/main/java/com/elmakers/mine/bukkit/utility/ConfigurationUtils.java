@@ -643,6 +643,7 @@ public class ConfigurationUtils {
             }
         }
     }
+
     static public String getParameters(ConfigurationSection parameters) {
         Collection<String> parameterStrings = new ArrayList<String>();
         Collection<String> keys = parameters.getKeys(false);

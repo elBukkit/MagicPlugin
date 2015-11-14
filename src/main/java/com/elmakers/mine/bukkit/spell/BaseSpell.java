@@ -28,6 +28,7 @@ import com.elmakers.mine.bukkit.api.wand.WandUpgradePath;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import org.apache.commons.lang.ArrayUtils;
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
@@ -956,6 +957,31 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     public boolean cast(ConfigurationSection extraParameters, Location defaultLocation)
     {
         this.reset();
+
+        Location location = mage.getLocation();
+        if (location != null) {
+            Set<String> overrides = controller.getSpellOverrides(mage, location);
+            if (overrides != null && !overrides.isEmpty())
+            {
+                if (extraParameters == null) {
+                    extraParameters = new MemoryConfiguration();
+                }
+                for (String entry : overrides) {
+                    String[] pieces = StringUtils.split(entry, ' ');
+                    if (pieces.length < 2) continue;
+
+                    String fullKey = pieces[0];
+                    String[] key = StringUtils.split(fullKey, ".");
+                    if (key.length == 0) continue;
+                    if (key.length == 2 && !key[0].equals("default") && !key[0].equals(spellKey.getBaseKey()) && !key[0].equals(spellKey.getKey())) {
+                        continue;
+                    }
+
+                    fullKey = key.length == 2 ? key[1] : key[0];
+                    ConfigurationUtils.set(extraParameters, fullKey, pieces[1]);
+                }
+            }
+        }
 
         if (this.currentCast == null)
         {
