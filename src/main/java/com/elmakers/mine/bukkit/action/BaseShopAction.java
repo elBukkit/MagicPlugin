@@ -178,19 +178,23 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
         double worth = shopItem.getWorth();
 
         if (isXP) {
+            worth = worth * controller.getWorthXP();
             amountString = Integer.toString((int)(double)worth);
             amountString = messages.get("costs.xp_amount").replace("$amount", amountString);
         }
         else if (isItems)
         {
+            worth = worth * controller.getWorthBase() / controller.getWorthItemAmount();
             amountString = formatItemAmount(controller, worth);
         }
         else if (isSkillPoints) {
+            worth = worth * controller.getWorthBase() / controller.getWorthSkillPoints();
             amountString = Integer.toString((int)Math.ceil(worth));
             amountString = messages.get("costs.sp_amount").replace("$amount", amountString);
         }
         else
         {
+            worth = worth * controller.getWorthBase();
             amountString = VaultController.getInstance().format(worth);
         }
 
@@ -202,10 +206,12 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
         MageController controller = context.getController();
         double worth = shopItem.getWorth();
         if (isXP) {
+            worth = worth * controller.getWorthXP();
             mage.giveExperience((int) (double) worth);
         }
         else if (isItems)
         {
+            worth = worth * controller.getWorthBase() / controller.getWorthItemAmount();
             int amount = (int)Math.ceil(worth);
             ItemStack worthItem = controller.getWorthItem();
             while (amount > 0) {
@@ -217,11 +223,13 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
         }
         else if (isSkillPoints)
         {
+            worth = worth * controller.getWorthBase() / controller.getWorthSkillPoints();
             int amount = (int)Math.ceil(worth);
             mage.addSkillPoints(amount);
         }
         else
         {
+            worth = worth * controller.getWorthBase();
             VaultController.getInstance().depositPlayer(mage.getPlayer(), worth);
         }
     }
@@ -232,18 +240,22 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
         double worth = shopItem.getWorth();
 
         if (isXP) {
+            worth = worth * controller.getWorthXP();
             mage.removeExperience((int)(double)worth);
         }
         else if (isItems)
         {
+            worth = worth * controller.getWorthBase() / controller.getWorthItemAmount();
             removeItems(controller, mage, (int)Math.ceil(worth));
         }
         else if (isSkillPoints)
         {
+            worth = worth * controller.getWorthBase() / controller.getWorthSkillPoints();
             mage.addSkillPoints(-(int)Math.ceil(worth));
         }
         else
         {
+            worth = worth * controller.getWorthBase();
             VaultController.getInstance().withdrawPlayer(mage.getPlayer(), worth);
         }
     }
