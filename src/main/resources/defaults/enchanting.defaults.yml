@@ -708,17 +708,17 @@ battle:
 #
 
 broom:
-    min_enchant_level: 15
+    min_enchant_level: 25
     max_enchant_level: 35
-    levels: 15,20,30
+    levels: 25,30,35
     inherit: default
     max_power: 0.9
     property_count:
       1: 100, 100, 100
     power:
       0^1: 100,100, 100
-      0^2: 0,  100, 100
-      0^3: 0 ,  10, 150
+      0^2: 0,   40, 50
+      0^3: 0 ,  10, 30
 
 blaster:
     min_enchant_level: 50
