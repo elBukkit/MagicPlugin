@@ -293,7 +293,7 @@ public class ConfigurationUtils {
             Object existingValue = first.get(key);
             if (value instanceof ConfigurationSection && (existingValue == null || existingValue instanceof ConfigurationSection)) {
                 ConfigurationSection addChild = (ConfigurationSection)value;
-                if (existingValue == null) {
+                if (existingValue == null || !addChild.getBoolean("inherit", true)) {
                     ConfigurationSection newChild = first.createSection(key);
                     addConfigurations(newChild, addChild, override);
                 } else {
