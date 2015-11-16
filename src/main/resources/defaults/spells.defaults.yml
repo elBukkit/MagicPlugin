@@ -313,6 +313,7 @@ curse:
         effect_slow: 2
         effect_hunger: 2
         effect_weakness: 3
+        effect_confusion: 5
 
 curse|2:
     parameters:
@@ -1400,8 +1401,15 @@ boom:
         cast:
         -  class: EffectSingle
            sound: enderdragon_hit
-           location: target
+           location: origin
+        -  class: EffectSingle
+           sound: explode
+           sound_pitch: 2
+           location: origin
         tick:
+        - particle: redstone
+          color: 8A084B
+          location: target
         - location: target
           particle: fireworks_spark
           particle_count: 6
@@ -1410,19 +1418,23 @@ boom:
           particle_offset_z: 0.5
         hit:
         -  class: EffectSingle
+           custom_sound: magic.shield_boom
+           sound_pitch: 2
+           location: both
+        -  class: EffectSingle
            location: target
+           color: 8A084B
            firework: burst
-           color: 'CC0000'
-           color2: 'FF0088'
         -  class: EffectSingle
            target_offset: 0,0.5,0
            location: target
-           color: FFFFFF
-           firework: ball_large
-           particle: explosion_large
+           color: 8A084B
+           firework: burst
+           particle: explosion_huge
     parameters:
         target: block
-        velocity: 150
+        gravity: .05
+        velocity: 100
         allow_max_range: false
         range: 32
         break_blocks: false
@@ -6314,6 +6326,7 @@ sticky:
         explode:
         - location: target
           particle: explosion_huge
+          sound: explode
     parameters:
         target: block
         hitbox: true
@@ -6548,7 +6561,7 @@ broom:
            particle_count: 10
            radius: 4
     parameters:
-        thrust: 1
+        thrust: 0.4
         auto_deactivate: 4
         auto_deactivate_ticks: 10
         slow: 0.2
@@ -6570,17 +6583,17 @@ broom:
         mount_invisible: true
         mount_boost_ticks: 100
         power_mount_boost_ticks: 500
-        mount_health: 8
-        power_mount_health: 12
-        mount_boost: 0.5
-        power_mount_boost: 3.5
-        slow_ticks: 1
-        power_slow_ticks: 19
-        steer_speed: 0.6
-        power_steer_speed: 2
-        slow_steer_speed: 0.05
-        mount_boost_per_jump: 1
-        power_mount_boost_per_jump: 2
+        mount_health: 2
+        power_mount_health: 10
+        mount_boost: 0.3
+        power_mount_boost: 1
+        slow_ticks: 2
+        power_slow_ticks: 10
+        steer_speed: 0.01
+        power_steer_speed: 0.3
+        slow_steer_speed: 2
+        mount_boost_per_jump: 0.3
+        power_mount_boost_per_jump: 1
         sound: magic.flying
         effect_sound_interval: 120
         effect_sound_volume: 15
@@ -6922,7 +6935,9 @@ count:
 
 superfly:
     hidden: true
+    icon_url: http://textures.minecraft.net/texture/d02585f4a2b47524541d67ae253cf21fde8eea1c21494f61df5f4929a76e0
     icon: feather
+    quick_cast: true
     category: staff
     class: LevitateSpell
     worth_sp: 1500

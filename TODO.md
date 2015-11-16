@@ -1,5 +1,7 @@
 # TODO
-
+   
+ - Quick-casting Stash from inside the player inventory doesn't work
+ 
  - Fix shop price scaling
  
  - KidBear says spawned animated statues don't disappear if the player dies
