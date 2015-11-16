@@ -684,6 +684,7 @@ miniwolf:
         - flamethrower
         - tag
         - mount
+
 wolf:
   icon: gold_hoe
   path: architect
@@ -703,6 +704,14 @@ wolf:
   overrides:
     - broom.armor_stand_yaw 180
     - max_dimension 1024
+    - broom.mount_boost 4
+    - broom.mount_boost_ticks 600
+    - broom.mount_health 20
+    - broom.slow_ticks 1
+    - broom.steer_speed 0
+    - broom.slow_steer_speed 0.05
+    - broom.mount_boost_per_jump 0.5
+    - broom.effect_confusion 0
   effect_particle: ENCHANTMENT_TABLE
   potion_effects:
     - SATURATION
@@ -1129,6 +1138,7 @@ broomstick:
     migrate_icon: monster_eggs
     icon: gold_spade
     indestructible: true
+    undroppable: true
     bound: true
     locked: true
     keep: true
