@@ -52,6 +52,7 @@ public class CustomProjectileAction extends CompoundAction
     private double targetBreakables;
     private int targetBreakableSize;
     private boolean bypassBackfire;
+    private boolean reverseDirection;
 
     private double distanceTravelled;
     private double effectDistanceTravelled;
@@ -79,6 +80,7 @@ public class CustomProjectileAction extends CompoundAction
         targeting.processParameters(parameters);
         interval = parameters.getInt("interval", 30);
         lifetime = parameters.getInt("lifetime", 8000);
+        reverseDirection = parameters.getBoolean("reverse", false);
         startDistance = parameters.getInt("start", 0);
         range = parameters.getInt("range", 0);
         projectileEffectKey = parameters.getString("projectile_effects", "projectile");
@@ -194,14 +196,18 @@ public class CustomProjectileAction extends CompoundAction
                 velocity.normalize();
             }
 
+            if (startDistance != 0) {
+                projectileLocation.add(velocity.clone().multiply(startDistance));
+            }
+
+            if (reverseDirection) {
+                velocity = velocity.multiply(-1);
+            }
+
             projectileLocation.setDirection(velocity);
             actionContext.setTargetLocation(projectileLocation);
             actionContext.setTargetEntity(null);
             actionContext.setDirection(velocity);
-
-            if (startDistance != 0) {
-                projectileLocation.add(velocity.clone().multiply(startDistance));
-            }
 
             // Start up projectile FX
             Collection<EffectPlayer> projectileEffects = context.getEffects(projectileEffectKey);
