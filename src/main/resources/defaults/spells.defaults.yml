@@ -5894,7 +5894,7 @@ fireball:
         fire: false
         size: 1
         undo: 4000
-        cooldown: 2000
+        cooldown: 10000
         start: 1
         break_blocks: true
     costs:

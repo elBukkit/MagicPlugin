@@ -1,6 +1,6 @@
 # TODO
-   
- - Quick-casting Stash from inside the player inventory doesn't work
+ 
+ - Need a way to create SP items with amounts, hook up to MagicWorlds chest generator
  
  - Fix shop price scaling
  
