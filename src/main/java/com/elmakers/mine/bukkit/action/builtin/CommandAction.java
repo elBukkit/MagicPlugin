@@ -78,57 +78,6 @@ public class CommandAction extends BaseSpellAction {
         }
     }
 
-    protected String parameterize(CastContext context, String command) {
-        Location location = context.getLocation();
-        Mage mage = context.getMage();
-        MageController controller = context.getController();
-
-        command = command
-                .replace("@_", " ")
-                .replace("@spell", context.getSpell().getName())
-                .replace("@pd", mage.getDisplayName())
-                .replace("@pn", mage.getName())
-                .replace("@uuid", mage.getId())
-                .replace("@p", mage.getName());
-
-        if (location != null) {
-            command = command
-                .replace("@world", location.getWorld().getName())
-                .replace("@x", Double.toString(location.getX()))
-                .replace("@y", Double.toString(location.getY()))
-                .replace("@z", Double.toString(location.getZ()));
-        }
-
-        Location targetLocation = context.getTargetLocation();
-        if (targetLocation != null) {
-            command = command
-                .replace("@tworld", targetLocation.getWorld().getName())
-                .replace("@tx", Double.toString(targetLocation.getX()))
-                .replace("@ty", Double.toString(targetLocation.getY()))
-                .replace("@tz", Double.toString(targetLocation.getZ()));
-        }
-
-        Entity targetEntity = context.getTargetEntity();
-        if (targetEntity != null) {
-            if (controller.isMage(targetEntity)) {
-                Mage targetMage = controller.getMage(targetEntity);
-                command = command
-                    .replace("@td", targetMage.getDisplayName())
-                    .replace("@tn", targetMage.getName())
-                    .replace("@tuuid", targetMage.getId())
-                    .replace("@t", targetMage.getName());
-            } else {
-                command = command
-                    .replace("@td", controller.getEntityDisplayName(targetEntity))
-                    .replace("@tn", controller.getEntityName(targetEntity))
-                    .replace("@tuuid", targetEntity.getUniqueId().toString())
-                    .replace("@t", controller.getEntityName(targetEntity));
-            }
-        }
-
-        return ChatColor.translateAlternateColorCodes('&', command);
-    }
-
     @Override
     public SpellResult perform(CastContext context) {
         Mage mage = context.getMage();
@@ -143,7 +92,7 @@ public class CommandAction extends BaseSpellAction {
         }
         for (String command : commands) {
             try {
-                String converted = parameterize(context, command);
+                String converted = context.parameterize(command);
                 controller.getPlugin().getServer().dispatchCommand(sender, converted);
             } catch (Exception ex) {
                 controller.getLogger().log(Level.WARNING, "Error running command: " + command, ex);

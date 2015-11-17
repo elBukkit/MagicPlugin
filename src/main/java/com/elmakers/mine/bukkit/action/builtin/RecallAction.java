@@ -94,6 +94,7 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
         public final String iconURL;
         public final String command;
         public final boolean opPlayer;
+        public final boolean asConsole;
         public final boolean maintainDirection;
         public final String warpName;
         public final String serverName;
@@ -109,6 +110,7 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
             this.iconURL = null;
             this.command = null;
             this.opPlayer = false;
+            this.asConsole = false;
             this.maintainDirection = maintainDirection;
             serverName = null;
             warpName = null;
@@ -125,6 +127,7 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
             this.iconURL = iconURL;
             this.command = null;
             this.opPlayer = false;
+            this.asConsole = false;
             this.maintainDirection = false;
             serverName = null;
             warpName = null;
@@ -143,10 +146,11 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
             this.iconURL = iconURL;
             this.command = null;
             this.opPlayer = false;
+            this.asConsole = false;
             this.maintainDirection = false;
         }
 
-        public Waypoint(RecallType type, String command, boolean opPlayer, String name, String message, String failMessage, String description, MaterialAndData icon, String iconURL) {
+        public Waypoint(RecallType type, String command, boolean opPlayer, boolean asConsole, String name, String message, String failMessage, String description, MaterialAndData icon, String iconURL) {
             this.name = name;
             this.type = type;
             this.location = null;
@@ -157,6 +161,7 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
             this.iconURL = iconURL;
             this.command = command;
             this.opPlayer = opPlayer;
+            this.asConsole = asConsole;
             this.maintainDirection = false;
             serverName = null;
             warpName = null;
@@ -411,7 +416,7 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
         if (parameters.contains("command"))
         {
             String commandName = parameters.getString("command");
-            Waypoint waypoint = getCommand(commandName);
+            Waypoint waypoint = getCommand(context, commandName);
             if (tryTeleport(player, waypoint)) {
                 return SpellResult.CAST;
             }
@@ -463,7 +468,7 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
                 }
             } else if (selectedType == RecallType.COMMAND) {
                 for (String commandKey : commands.keySet()) {
-                    Waypoint targetLocation = getCommand(commandKey);
+                    Waypoint targetLocation = getCommand(context, commandKey);
                     if (targetLocation != null && targetLocation.isValid(allowCrossWorld, playerLocation)) {
                         allWaypoints.add(targetLocation);
                     }
@@ -567,7 +572,7 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
         return new Waypoint(RecallType.WARP, warpLocation, title, castMessage, failMessage, description, icon, iconURL);
     }
 
-    protected Waypoint getCommand(String commandKey)
+    protected Waypoint getCommand(CastContext context, String commandKey)
     {
         if (commands == null) return null;
         ConfigurationSection config = commands.get(commandKey);
@@ -579,10 +584,11 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
         String title = context.getMessage("title_warp").replace("$name", commandName);
         String description = config.getString("description");
         String iconURL = config.getString("icon_url");
-        String command = config.getString("command");
+        String command = context.parameterize(config.getString("command"));
         boolean op = config.getBoolean("op", false);
+        boolean console = config.getBoolean("console", false);
         MaterialAndData icon = ConfigurationUtils.getMaterialAndData(config, "icon");
-        return new Waypoint(RecallType.COMMAND, command, op, title, castMessage, failMessage, description, icon, iconURL);
+        return new Waypoint(RecallType.COMMAND, command, op, console, title, castMessage, failMessage, description, icon, iconURL);
     }
 
 	protected Waypoint getWaypoint(Player player, RecallType type, int index, ConfigurationSection parameters) {
