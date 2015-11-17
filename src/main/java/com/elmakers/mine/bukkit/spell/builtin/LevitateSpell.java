@@ -860,17 +860,36 @@ public class LevitateSpell extends TargetingSpell implements Listener
                 }
             }
         }
-		
-		Vector velocity = player.getVelocity();
-		velocity.setY(velocity.getY() + yBoost);
-        if (mountEntity != null) {
-            if (armorStand != null) {
-                armorStand.setVelocity(velocity);
-            } else {
-                mountEntity.setVelocity(velocity);
+
+        boolean atHeight = false;
+        if (maxHeight > 0 && player.getLocation().getY() >= maxHeight) {
+            atHeight = true;
+        } else if (maxHeightAboveGround > 0) {
+            Block block = player.getLocation().getBlock();
+            int height = 0;
+            while (height < maxHeightAboveGround && block.getType() == Material.AIR)
+            {
+                block = block.getRelative(BlockFace.DOWN);
+                height++;
             }
-        } else {
-            player.setVelocity(velocity);
+            if (block.getType() == Material.AIR) {
+                atHeight = true;
+            }
+        }
+
+        if (!atHeight) {
+            Vector velocity = player.getVelocity();
+            velocity.setY(velocity.getY() + yBoost);
+
+            if (mountEntity != null) {
+                if (armorStand != null) {
+                    armorStand.setVelocity(velocity);
+                } else {
+                    mountEntity.setVelocity(velocity);
+                }
+            } else {
+                player.setVelocity(velocity);
+            }
         }
         if (flight) {
             Bukkit.getScheduler().scheduleSyncDelayedTask(controller.getPlugin(), new Runnable() {
