@@ -92,23 +92,6 @@ public class TownyAPI
         return true;
     }
 
-    public boolean isAlly(Player player, Player other) {
-        if (towny != null && !TownySettings.getFriendlyFire() && player != null && other != null) {
-            if (CombatUtil.isAlly(player.getName(), other.getName())) {
-                try {
-                    TownBlock townBlock = new WorldCoord(player.getWorld().getName(), Coord.parseCoord(other)).getTownBlock();
-                    if (!townBlock.getType().equals(TownBlockType.ARENA)) {
-                        return true;
-                    }
-                } catch (Exception ex) {
-                    return true;
-                }
-            }
-        }
-
-        return false;
-    }
-
     public boolean canTarget(Entity entity, Entity target) {
         if (towny != null && target != null && entity != null) {
             // TODO: Handle non-entity casts (automata...)?

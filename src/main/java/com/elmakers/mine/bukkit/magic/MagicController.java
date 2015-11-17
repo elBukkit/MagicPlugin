@@ -3142,14 +3142,6 @@ public class MagicController implements MageController {
 	}
 
     @Override
-    public boolean isAlly(Player player, Player other)
-    {
-        if (player == null || other == null) return false;
-        if (bypassFriendlyFire) return false;
-        return townyManager.isAlly(player, other);
-    }
-
-    @Override
     public boolean canTarget(Entity attacker, Entity entity)
     {
         return townyManager.canTarget(attacker, entity);

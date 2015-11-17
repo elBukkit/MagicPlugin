@@ -62,13 +62,6 @@ public class TownyManager implements PVPManager, BlockBreakManager, BlockBuildMa
         return true;
     }
 
-    public boolean isAlly(Player player, Player other) {
-        if (enabled && player != null && towny != null && other != null) {
-            return towny.isAlly(player, other);
-        }
-        return false;
-    }
-
     @Override
     public boolean isPVPAllowed(Player player, Location location) {
         if (!enabled || towny == null || location == null)
