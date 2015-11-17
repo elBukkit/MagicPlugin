@@ -8002,8 +8002,8 @@ rocket:
         launch: true
         cooldown: 15000
         power: 0
-        speed: 0.2
-        expected_lifespan: 35
+        speed: 0.05
+        expected_lifespan: 30
         set_target: true
         duration: 20000
     costs:
