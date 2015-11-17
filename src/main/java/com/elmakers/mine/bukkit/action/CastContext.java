@@ -986,4 +986,56 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
         com.elmakers.mine.bukkit.block.UndoList.registerReflective(block, reflectivity);
         undoList.setUndoReflective(true);
     }
+
+    @Override
+    public String parameterize(String command) {
+        Location location = getLocation();
+        Mage mage = getMage();
+        MageController controller = getController();
+
+        command = command
+                .replace("@_", " ")
+                .replace("@spell", getSpell().getName())
+                .replace("@pd", mage.getDisplayName())
+                .replace("@pn", mage.getName())
+                .replace("@uuid", mage.getId())
+                .replace("@p", mage.getName());
+
+        if (location != null) {
+            command = command
+                    .replace("@world", location.getWorld().getName())
+                    .replace("@x", Double.toString(location.getX()))
+                    .replace("@y", Double.toString(location.getY()))
+                    .replace("@z", Double.toString(location.getZ()));
+        }
+
+        Location targetLocation = getTargetLocation();
+        if (targetLocation != null) {
+            command = command
+                    .replace("@tworld", targetLocation.getWorld().getName())
+                    .replace("@tx", Double.toString(targetLocation.getX()))
+                    .replace("@ty", Double.toString(targetLocation.getY()))
+                    .replace("@tz", Double.toString(targetLocation.getZ()));
+        }
+
+        Entity targetEntity = getTargetEntity();
+        if (targetEntity != null) {
+            if (controller.isMage(targetEntity)) {
+                Mage targetMage = controller.getMage(targetEntity);
+                command = command
+                        .replace("@td", targetMage.getDisplayName())
+                        .replace("@tn", targetMage.getName())
+                        .replace("@tuuid", targetMage.getId())
+                        .replace("@t", targetMage.getName());
+            } else {
+                command = command
+                        .replace("@td", controller.getEntityDisplayName(targetEntity))
+                        .replace("@tn", controller.getEntityName(targetEntity))
+                        .replace("@tuuid", targetEntity.getUniqueId().toString())
+                        .replace("@t", controller.getEntityName(targetEntity));
+            }
+        }
+
+        return ChatColor.translateAlternateColorCodes('&', command);
+    }
 }
