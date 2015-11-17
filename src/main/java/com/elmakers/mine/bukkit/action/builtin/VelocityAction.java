@@ -41,7 +41,6 @@ public class VelocityAction extends BaseSpellAction
         defaultSpeed = parameters.getDouble("speed", 1);
         livingEntitySpeed = parameters.getDouble("living_entity_speed", defaultSpeed);
         itemSpeed = parameters.getDouble("item_speed", defaultSpeed);
-
         maxSpeedAtElevation = parameters.getInt("max_altitude", 64);
         minSpeed = parameters.getDouble("min_speed", 0);
         maxSpeed = parameters.getDouble("max_speed", 0);
@@ -121,7 +120,8 @@ public class VelocityAction extends BaseSpellAction
         }
         context.getMage().sendDebugMessage(ChatColor.AQUA + "Applying velocity of " +
                 ChatColor.BLUE + velocity +
-                ChatColor.AQUA + " to " + ChatColor.DARK_AQUA + entity.getType()
+                ChatColor.AQUA + " to " + ChatColor.DARK_AQUA + entity.getType() +
+                ChatColor.AQUA + " from magnitude of " + ChatColor.BLUE + magnitude
                 , 11);
         entity.setVelocity(velocity);
 
