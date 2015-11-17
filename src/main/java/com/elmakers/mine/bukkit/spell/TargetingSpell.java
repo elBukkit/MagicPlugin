@@ -55,7 +55,6 @@ public abstract class TargetingSpell extends BaseSpell {
     protected boolean                           instantBlockEffects     = false;
     private int                                 range                   = 0;
 
-    private boolean                             bypassProtection        = false;
     private boolean                             checkProtection         = false;
     private int                                 damageResistanceProtection = 0;
 
@@ -480,8 +479,6 @@ public abstract class TargetingSpell extends BaseSpell {
         processTemplateParameters(parameters);
         allowMaxRange = parameters.getBoolean("allow_max_range", false);
         bypassBackfire = parameters.getBoolean("bypass_backfire", false);
-        bypassProtection = parameters.getBoolean("bypass_protection", false);
-        bypassProtection = parameters.getBoolean("bp", bypassProtection);
         checkProtection = parameters.getBoolean("check_protection", false);
         damageResistanceProtection = parameters.getInt("damage_resistance_protection", 0);
         targetBreakables = parameters.getDouble("target_breakables", 1);

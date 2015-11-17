@@ -93,7 +93,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     protected final static Set<String> vectorParameterMap = new HashSet<String>(Arrays.asList(VECTOR_PARAMETERS));
 
     public final static String[] BOOLEAN_PARAMETERS = {
-        "allow_max_range", "prevent_passthrough", "reverse_targeting", "passthrough",
+        "allow_max_range", "prevent_passthrough", "reverse_targeting", "passthrough", "bypass_protection",
         "bypass_build", "bypass_break", "bypass_pvp", "target_npc", "ignore_blocks", "target_self"
     };
 
@@ -160,6 +160,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     protected boolean bypassPvpRestriction    	= false;
     protected boolean bypassBuildRestriction    = false;
     protected boolean bypassBreakRestriction    = false;
+    protected boolean bypassProtection          = false;
     protected boolean bypassConfusion             = false;
     protected boolean bypassWeakness              = false;
     protected boolean bypassPermissions           = false;
@@ -894,6 +895,8 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
             bypassBuildRestriction = parameters.getBoolean("bypass_build", false);
             bypassBuildRestriction = parameters.getBoolean("bb", bypassBuildRestriction);
             bypassBreakRestriction = parameters.getBoolean("bypass_break", false);
+            bypassProtection = parameters.getBoolean("bypass_protection", false);
+            bypassProtection = parameters.getBoolean("bp", bypassProtection);
             duration = parameters.getInt("duration", 0);
             totalDuration = parameters.getInt("total_duration", -1);
         }
@@ -1399,6 +1402,10 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
                 return controller.isPVPAllowed(magePlayer, entity.getLocation());
             }
         }
+        if (!bypassProtection)
+        {
+            return controller.canTarget(mage.getEntity(), entity);
+        }
         return true;
     }
 
@@ -1455,6 +1462,8 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         bypassBuildRestriction = parameters.getBoolean("bypass_build", false);
         bypassBuildRestriction = parameters.getBoolean("bb", bypassBuildRestriction);
         bypassBreakRestriction = parameters.getBoolean("bypass_break", false);
+        bypassProtection = parameters.getBoolean("bypass_protection", false);
+        bypassProtection = parameters.getBoolean("bp", bypassProtection);
         duration = parameters.getInt("duration", 0);
         totalDuration = parameters.getInt("total_duration", 0);
     }
