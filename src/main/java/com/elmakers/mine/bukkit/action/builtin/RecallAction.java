@@ -12,6 +12,7 @@ import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import org.apache.commons.lang.StringUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -631,20 +632,27 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
         Mage mage = context.getMage();
         if (waypoint == null) return false;
         if (waypoint.isCommand()) {
-            CommandSender sender = mage.getCommandSender();
-            boolean isOp = sender.isOp();
-            if (waypoint.opPlayer && !isOp) {
-                sender.setOp(true);
+            if (waypoint.asConsole) {
+                try {
+                    player.getServer().dispatchCommand(Bukkit.getConsoleSender(), waypoint.command);
+                } catch (Exception ex) {
+                    context.getLogger().log(Level.WARNING, "Error running command as console " + waypoint.command, ex);
+                }
+            } else {
+                CommandSender sender = mage.getCommandSender();
+                boolean isOp = sender.isOp();
+                if (waypoint.opPlayer && !isOp) {
+                    sender.setOp(true);
+                }
+                try {
+                    player.getServer().dispatchCommand(sender, waypoint.command);
+                } catch (Exception ex) {
+                    context.getLogger().log(Level.WARNING, "Error running command " + waypoint.command, ex);
+                }
+                if (waypoint.opPlayer && !isOp) {
+                    sender.setOp(false);
+                }
             }
-            try {
-                player.getServer().dispatchCommand(sender, waypoint.command);
-            } catch (Exception ex) {
-                context.getLogger().log(Level.WARNING, "Error running command " + waypoint.command, ex);
-            }
-            if (waypoint.opPlayer && !isOp) {
-                sender.setOp(false);
-            }
-
             return true;
         }
 
