@@ -99,6 +99,7 @@ public class LevitateSpell extends TargetingSpell implements Listener
     private CreatureSpawnEvent.SpawnReason mountSpawnReason = CreatureSpawnEvent.SpawnReason.CUSTOM;
 
     private Vector direction = null;
+    private boolean grounded = false;
 
     private boolean stashItem = false;
     private ItemStack heldItem = null;
@@ -271,7 +272,7 @@ public class LevitateSpell extends TargetingSpell implements Listener
         Vector mageDirection = location.getDirection();
         boolean sneaking = player.isSneaking() || forceSneak > 0;
         double move = sneakMoveDistance >= 0 && sneaking ? sneakMoveDistance : moveDistance;
-        if (direction == null || move <= 0) {
+        if (direction == null || move <= 0 || grounded) {
             direction = mageDirection;
         } else {
             double moveDistanceSquared = move * move;
@@ -283,8 +284,10 @@ public class LevitateSpell extends TargetingSpell implements Listener
                 direction.add(targetDirection);
             }
         }
+        grounded = false;
         if (maxHeight > 0 && player.getLocation().getY() >= maxHeight) {
             direction.setY(-1);
+            grounded = true;
         } else if (maxHeightAboveGround > 0) {
             Block block = player.getLocation().getBlock();
             int height = 0;
@@ -295,6 +298,7 @@ public class LevitateSpell extends TargetingSpell implements Listener
             }
             if (block.getType() == Material.AIR) {
                 direction.setY(-1);
+                grounded = true;
             }
         }
         direction.normalize();
@@ -425,6 +429,7 @@ public class LevitateSpell extends TargetingSpell implements Listener
             return SpellResult.PLAYER_REQUIRED;
         }
 
+        direction = null;
         flight = parameters.getBoolean("flight", true);
         int checkHeight = parameters.getInt("check_height", 4);
         startDelay = parameters.getInt("start_delay", 0);
@@ -861,9 +866,9 @@ public class LevitateSpell extends TargetingSpell implements Listener
             }
         }
 
-        boolean atHeight = false;
+        grounded = false;
         if (maxHeight > 0 && player.getLocation().getY() >= maxHeight) {
-            atHeight = true;
+            grounded = true;
         } else if (maxHeightAboveGround > 0) {
             Block block = player.getLocation().getBlock();
             int height = 0;
@@ -873,11 +878,11 @@ public class LevitateSpell extends TargetingSpell implements Listener
                 height++;
             }
             if (block.getType() == Material.AIR) {
-                atHeight = true;
+                grounded = true;
             }
         }
 
-        if (!atHeight) {
+        if (!grounded) {
             Vector velocity = player.getVelocity();
             velocity.setY(velocity.getY() + yBoost);
 
