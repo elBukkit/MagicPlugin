@@ -147,7 +147,6 @@ public interface MageController {
     public Boolean getPersonalCastPermission(Player player, SpellTemplate spell, Location location);
     public boolean isPVPAllowed(Player player, Location location);
     public boolean canTarget(Entity attacker, Entity target);
-    public boolean isAlly(Player player, Player other);
     public boolean isUrlIconsEnabled();
     public Set<EntityType> getUndoEntityTypes();
 
