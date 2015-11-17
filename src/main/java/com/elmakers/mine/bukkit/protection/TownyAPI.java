@@ -16,6 +16,7 @@ import com.palmergames.bukkit.towny.utils.CombatUtil;
 import com.palmergames.bukkit.towny.utils.PlayerCacheUtil;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
@@ -106,5 +107,14 @@ public class TownyAPI
         }
 
         return false;
+    }
+
+    public boolean canTarget(Entity entity, Entity target) {
+        if (towny != null && target != null && entity != null) {
+            // TODO: Handle non-entity casts (automata...)?
+            return !CombatUtil.preventDamageCall(towny, entity, target);
+        }
+
+        return true;
     }
 }

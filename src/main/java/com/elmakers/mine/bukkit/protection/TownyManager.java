@@ -2,6 +2,7 @@ package com.elmakers.mine.bukkit.protection;
 
 import org.bukkit.Location;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
@@ -74,4 +75,10 @@ public class TownyManager implements PVPManager, BlockBreakManager, BlockBuildMa
             return true;
         return towny.isPVPAllowed(location);
     }
+
+	public boolean canTarget(Entity entity, Entity target) {
+		if (!enabled || towny == null || entity == null || target == null)
+			return true;
+		return towny.canTarget(entity, target);
+	}
 }

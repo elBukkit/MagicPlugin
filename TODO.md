@@ -1,6 +1,15 @@
 # TODO
  
  - Need a way to create SP items with amounts, hook up to MagicWorlds chest generator
+ - More Towny support:
+   - Add town home to Recall
+   - Check for mob killing allowed
+   
+ - Glitchy Velocity action?
+   depending on how "far" the target is from the "spell origin" the more glitchy velocity becomes. so take alarte for example. if i stand really far away... it will barely hit them up. if i stand up close it will do it correctly.
+   
+ - Need to clean up location offset issues for effects. Can't use updateLocations: false with 
+   an offset, for instance. Relative locations would be great, too- maybe in Magic and EffectLib.
  
  - Fix shop price scaling
  

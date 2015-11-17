@@ -3149,6 +3149,12 @@ public class MagicController implements MageController {
         return townyManager.isAlly(player, other);
     }
 
+    @Override
+    public boolean canTarget(Entity attacker, Entity entity)
+    {
+        return townyManager.canTarget(attacker, entity);
+    }
+
 	public Location getWarp(String warpName) {
         Location location = null;
 		if (warpController != null) {
