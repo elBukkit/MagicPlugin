@@ -128,4 +128,5 @@ public interface CastContext {
     public void setTargetsCaster(boolean target);
     public TargetType getTargetType();
     public boolean canCast(Location location);
+    public String parameterize(String command);
 }
