@@ -49,8 +49,10 @@ import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerExpChangeEvent;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.plugin.Plugin;
@@ -629,7 +631,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
     }
 
      public void takeOwnership(Player player, boolean setBound, boolean setKeep) {
-        if (mage != null && (ownerId == null || ownerId.length() == 0))
+        if (mage != null && (ownerId == null || ownerId.length() == 0) && quietLevel < 2)
         {
             mage.sendMessage(getMessage("bound_instructions", "").replace("$wand", getName()));
             Spell spell = getActiveSpell();
@@ -3882,9 +3884,14 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
     public void activate(Mage mage) {
         if (mage == null) return;
         Player player = mage.getPlayer();
-        if (player != null && !controller.hasWandPermission(player, this)) {
-            return;
+        if (player != null) {
+			if (!controller.hasWandPermission(player, this)) return;
+			InventoryView openInventory = player.getOpenInventory();
+			InventoryType inventoryType = openInventory.getType();
+			if (inventoryType == InventoryType.ENCHANTING ||
+				inventoryType == InventoryType.ANVIL) return;
         }
+
         this.newId();
 
         if (getMode() != WandMode.INVENTORY) {

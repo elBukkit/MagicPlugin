@@ -8,6 +8,7 @@
  - Add spell-overrides region flag, for region-specific spell tweaks (e.g. broom max height)
  - Add mob protection to Towny integration
  - Added "console" parameter and @p, @pn etc replacement to Recall commands
+ - Fixed issues with wands feeding mana into enchanting tables when enchanting other items
 
 ## 5.3.1
 
