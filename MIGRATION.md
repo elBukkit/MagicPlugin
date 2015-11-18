@@ -11,6 +11,9 @@
  - Projectile, TNT, ThrowItem, ThrowBlock and Firework all track their projectiles now.
    This means the actions won't complete until the projectile hits or expires, this may 
    impact existing spells that use these actions coupled with Repeat.
+ - Crafting once again gives you the "default" wand, not "beginner". Default wand changed to
+   include the Magic Missile spell.
+ - Wand crafting recipe changed from "beginner" to "wand"
 
 ## 5.2.2
 

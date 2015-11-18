@@ -103,6 +103,9 @@ default:
     undroppable: true
     indestructible: true
     effect_bubbles: false
+    active_spell: missile
+    spells:
+     - missile
 
 #
 #
