@@ -9,6 +9,7 @@ import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.api.spell.TargetType;
+import com.elmakers.mine.bukkit.api.wand.Wand;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -46,6 +47,7 @@ public interface CastContext {
     public void setTargetSourceLocation(Location targetLocation);
     public Spell getSpell();
     public Mage getMage();
+    public Wand getWand();
     public Collection<EffectPlayer> getEffects(String key);
     public boolean hasEffects(String key);
     public MageController getController();
