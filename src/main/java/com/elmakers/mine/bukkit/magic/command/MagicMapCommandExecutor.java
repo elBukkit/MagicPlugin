@@ -213,6 +213,24 @@ public class MagicMapCommandExecutor extends MagicMapExecutor {
                     sender.sendMessage("Invalid height: " + args[4]);
                 }
             }
+
+            if (args.length > 5)
+            {
+                try {
+                    x = Integer.parseInt(args[5]);
+                } catch (Exception ex) {
+                    sender.sendMessage("Invalid x: " + args[5]);
+                }
+            }
+
+            if (args.length > 6)
+            {
+                try {
+                    y = Integer.parseInt(args[6]);
+                } catch (Exception ex) {
+                    sender.sendMessage("Invalid y: " + args[6]);
+                }
+            }
             onMapLoad(sender, world, args[1], mapName, width, height, x, y, priority);
         }
         else if (subCommand.equalsIgnoreCase("import"))
