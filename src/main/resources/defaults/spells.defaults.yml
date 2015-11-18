@@ -1648,12 +1648,12 @@ frost:
         effect_slow: 1
         ice: ice
         undo: 4000
-        cooldown: 5000
+        cooldown: 10000
         entity_undo: false
         freeze_lava: false
         breakable: 4
     costs:
-        mana: 75
+        mana: 40
 
 frost|2:
     upgrade_required_path: student
@@ -1663,10 +1663,11 @@ frost|2:
         player_damage: 2
         entity_damage: 6
         duration: 2000
+        cooldown: 9000
         effect_slow: 1
         undo: 5000
     costs:
-        mana: 90
+        mana: 50
 
 frost|3:
     upgrade_required_path: apprentice
@@ -1678,8 +1679,9 @@ frost|3:
         duration: 3000
         effect_slow: 1
         undo: 5000
+        cooldown: 8000
     costs:
-        mana: 90
+        mana: 60
 
 frost|4:
     parameters:
@@ -1689,9 +1691,10 @@ frost|4:
         duration: 3500
         effect_slow: 1
         undo: 6000
+        cooldown: 7000
         freeze_lava: true
     costs:
-        mana: 125
+        mana: 70
 
 lightning:
     alias: storm
@@ -3213,7 +3216,7 @@ fire|2:
         undo: 1500
         target_breakables: 1
     costs:
-        mana: 75
+        mana: 50
 
 fire|3:
     upgrade_required_path: apprentice
@@ -3223,7 +3226,7 @@ fire|3:
         undo: 2000
         target_breakables: 1
     costs:
-        mana: 75
+        mana: 60
 
 fire|3:
     parameters:
@@ -3232,7 +3235,7 @@ fire|3:
         undo: 2500
         target_breakables: 2
     costs:
-        mana: 90
+        mana: 70
 
 bubble:
     alias: cushion
