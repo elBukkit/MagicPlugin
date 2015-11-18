@@ -3203,6 +3203,11 @@ public class MagicController implements MageController {
         return citizens;
     }
 
+    @Override
+    public com.elmakers.mine.bukkit.api.wand.Wand getWand(ItemStack itemStack) {
+        return new Wand(this, itemStack);
+    }
+
 	@Override
 	public com.elmakers.mine.bukkit.api.wand.Wand createWand(String wandKey) 
 	{

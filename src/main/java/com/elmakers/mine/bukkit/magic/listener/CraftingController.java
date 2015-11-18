@@ -1,6 +1,8 @@
 package com.elmakers.mine.bukkit.magic.listener;
 
+import com.elmakers.mine.bukkit.api.event.CraftWandEvent;
 import com.elmakers.mine.bukkit.magic.MagicRecipe;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.HumanEntity;
@@ -161,6 +163,14 @@ public class CraftingController implements Listener {
         if (mage.hasStoredInventory()) {
             event.setCancelled(true);
             return;
+        }
+
+        ItemStack currentItem = event.getCurrentItem();
+        if (Wand.isWand(currentItem)) {
+            if (player != null) {
+                CraftWandEvent castEvent = new CraftWandEvent(mage, controller.getWand(currentItem));
+                Bukkit.getPluginManager().callEvent(castEvent);
+            }
         }
     }
 	
