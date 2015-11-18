@@ -3202,7 +3202,7 @@ fire:
         radius: 0
         vertical_range: 4
         undo: 1000
-        cooldown: 1000
+        cooldown: 3000
         target_breakables: 0
     costs:
         mana: 35
@@ -3212,7 +3212,7 @@ fire|2:
     upgrade_required_casts: 50
     parameters:
         radius: 1
-        cooldown: 3000
+        cooldown: 4000
         undo: 1500
         target_breakables: 1
     costs:
@@ -3223,7 +3223,7 @@ fire|3:
     upgrade_required_casts: 50
     parameters:
         radius: 1
-        undo: 2000
+        undo: 5000
         target_breakables: 1
     costs:
         mana: 60
@@ -3232,7 +3232,7 @@ fire|3:
     parameters:
         radius: 2
         cooldown: 4000
-        undo: 2500
+        undo: 5500
         target_breakables: 2
     costs:
         mana: 70
