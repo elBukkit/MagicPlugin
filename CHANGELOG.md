@@ -1,5 +1,7 @@
 # CHANGELOG
 
+## 5.4
+
 ## 5.3.2
 
  - Add sound FX on SP earn.
