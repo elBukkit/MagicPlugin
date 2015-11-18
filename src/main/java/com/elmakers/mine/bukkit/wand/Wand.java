@@ -68,7 +68,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 
 	public final static String[] PROPERTY_KEYS = {
 		"active_spell", "active_material",
-        "path", "passive",
+        "path",  "template", "passive",
 		"xp", "xp_regeneration", "xp_max", "xp_max_boost", "xp_regeneration_boost",
         "mana_per_damage",
 		"bound", "soul", "has_uses", "uses", "upgrade", "indestructible", "undroppable",
@@ -90,7 +90,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	};
 
 	public final static String[] HIDDEN_PROPERTY_KEYS = {
-		"id", "owner", "owner_id", "name", "description", "template",
+		"id", "owner", "owner_id", "name", "description",
 		"organize", "alphabetize", "fill", "stored", "upgrade_icon", "xp_timestamp", "upgrade_template",
         // For legacy wands
         "haste",
