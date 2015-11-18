@@ -312,7 +312,8 @@ mana_display: bar
 sp_display: number
 
 # Set this to false to disable the Skill Point system completely.
-sp_enabled: true
+# Temporarily disabled for 5.3.2 release
+sp_enabled: false
 
 # Cap SP- mainly so the UI doesn't get broken. 0 to disable and allow unlimited SP.
 sp_max: 9999
