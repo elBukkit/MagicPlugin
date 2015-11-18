@@ -2253,7 +2253,9 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
             }
 
             // Reward SP
-            if (earns > 0 && mage != null && controller.isSPEnabled()) {
+            Wand wand = context.getWand();
+            WandUpgradePath path = wand == null ? null : wand.getPath();
+            if (earns > 0 && wand != null && path != null && path.earnsSP() && controller.isSPEnabled()) {
                 long now = System.currentTimeMillis();
                 int scaledEarn = earns;
                 if (lastEarn > 0 && earnCooldown > 0 && now < lastEarn + earnCooldown) {
@@ -2272,7 +2274,6 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
 
             // Check for level up
             // This currently only works on wands.
-            Wand wand = mage == null ? null : mage.getActiveWand();
             if (wand != null && !wand.isLocked() && controller.isSpellUpgradingEnabled() && wand.getSpellLevel(spellKey.getKey()) == spellKey.getLevel())
             {
                 MageSpell upgrade = getUpgrade();

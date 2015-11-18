@@ -10,6 +10,7 @@ import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.block.UndoList;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.api.spell.TargetType;
+import com.elmakers.mine.bukkit.api.wand.Wand;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.spell.BlockSpell;
 import com.elmakers.mine.bukkit.spell.BrushSpell;
@@ -65,6 +66,7 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
     private UndoableSpell undoSpell;
     private MaterialBrush brush;
     private CastContext base;
+    private Wand wand;
 
     // Base Context
     private int workAllowed = 500;
@@ -105,6 +107,7 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
         this.targetMessagesSent = copy.getTargetMessagesSent();
         this.currentEffects = copy.getCurrentEffects();
         this.result = copy.getResult();
+        this.wand = copy.getWand();
 
         Location centerLocation = copy.getTargetCenterLocation();
         if (centerLocation != null) {
@@ -133,6 +136,7 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
         if (spell instanceof MageSpell)
         {
             this.mageSpell = (MageSpell)spell;
+            this.wand = this.mageSpell.getMage().getActiveWand();
         }
         if (spell instanceof UndoableSpell)
         {
@@ -268,6 +272,11 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
     @Override
     public Mage getMage() {
         return this.mageSpell == null ? null : this.mageSpell.getMage();
+    }
+
+    @Override
+    public Wand getWand() {
+        return wand;
     }
 
     @Override
