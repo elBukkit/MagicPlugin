@@ -2,6 +2,8 @@
 
 ## 5.4
 
+ - Enchanting paths can have a simple list of spells instead of a probability map
+
 ## 5.3.2
 
  - Add sound FX on SP earn.

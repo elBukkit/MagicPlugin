@@ -46,7 +46,7 @@ public class WandLevel {
 
 		// Fetch spell probabilities, and filter out invalid/unknown spells
         LinkedList<WeightedPair<String>> spells = new LinkedList<WeightedPair<String>>();
-		com.elmakers.mine.bukkit.utility.RandomUtils.populateStringProbabilityMap(spells, template.getConfigurationSection("spells"), levelIndex, nextLevelIndex, distance);
+		com.elmakers.mine.bukkit.utility.RandomUtils.populateStringProbabilityMap(spells, template, "spells", levelIndex, nextLevelIndex, distance);
 
         for (WeightedPair<String> spellValue : spells) {
             if (controller.getSpellTemplate(spellValue.getValue()) != null) {
@@ -55,36 +55,36 @@ public class WandLevel {
         }
 
 		// Fetch spell count probabilities
-		com.elmakers.mine.bukkit.utility.RandomUtils.populateIntegerProbabilityMap(spellCountProbability, template.getConfigurationSection("spell_count"), levelIndex, nextLevelIndex, distance);
+		com.elmakers.mine.bukkit.utility.RandomUtils.populateIntegerProbabilityMap(spellCountProbability, template, "spell_count", levelIndex, nextLevelIndex, distance);
 		
 		// Fetch material probabilities
-		com.elmakers.mine.bukkit.utility.RandomUtils.populateStringProbabilityMap(materialProbability, template.getConfigurationSection("materials"), levelIndex, nextLevelIndex, distance);
+		com.elmakers.mine.bukkit.utility.RandomUtils.populateStringProbabilityMap(materialProbability, template, "materials", levelIndex, nextLevelIndex, distance);
 		
 		// Fetch material count probabilities
 		com.elmakers.mine.bukkit.utility.RandomUtils.populateIntegerProbabilityMap(materialCountProbability, template.getConfigurationSection("material_count"), levelIndex, nextLevelIndex, distance);
 		
 		// Fetch uses
-		com.elmakers.mine.bukkit.utility.RandomUtils.populateIntegerProbabilityMap(useProbability, template.getConfigurationSection("uses"), levelIndex, nextLevelIndex, distance);
-		com.elmakers.mine.bukkit.utility.RandomUtils.populateIntegerProbabilityMap(addUseProbability, template.getConfigurationSection("add_uses"), levelIndex, nextLevelIndex, distance);
+		com.elmakers.mine.bukkit.utility.RandomUtils.populateIntegerProbabilityMap(useProbability, template, "uses", levelIndex, nextLevelIndex, distance);
+		com.elmakers.mine.bukkit.utility.RandomUtils.populateIntegerProbabilityMap(addUseProbability, template, "add_uses", levelIndex, nextLevelIndex, distance);
 		
 		// Fetch property count probability
-		com.elmakers.mine.bukkit.utility.RandomUtils.populateIntegerProbabilityMap(propertyCountProbability, template.getConfigurationSection("property_count"), levelIndex, nextLevelIndex, distance);
+		com.elmakers.mine.bukkit.utility.RandomUtils.populateIntegerProbabilityMap(propertyCountProbability, template, "property_count", levelIndex, nextLevelIndex, distance);
 		
 		// Fetch cost and damage reduction
-		com.elmakers.mine.bukkit.utility.RandomUtils.populateFloatProbabilityMap(costReductionProbability, template.getConfigurationSection("cost_reduction"), levelIndex, nextLevelIndex, distance);
-		com.elmakers.mine.bukkit.utility.RandomUtils.populateFloatProbabilityMap(damageReductionProbability, template.getConfigurationSection("protection"), levelIndex, nextLevelIndex, distance);
-		com.elmakers.mine.bukkit.utility.RandomUtils.populateFloatProbabilityMap(damageReductionPhysicalProbability, template.getConfigurationSection("protection_physical"), levelIndex, nextLevelIndex, distance);
-		com.elmakers.mine.bukkit.utility.RandomUtils.populateFloatProbabilityMap(damageReductionFallingProbability, template.getConfigurationSection("protection_falling"), levelIndex, nextLevelIndex, distance);
-		com.elmakers.mine.bukkit.utility.RandomUtils.populateFloatProbabilityMap(damageReductionProjectilesProbability, template.getConfigurationSection("protection_projectiles"), levelIndex, nextLevelIndex, distance);
-		com.elmakers.mine.bukkit.utility.RandomUtils.populateFloatProbabilityMap(damageReductionFireProbability, template.getConfigurationSection("protection_fire"), levelIndex, nextLevelIndex, distance);
-		com.elmakers.mine.bukkit.utility.RandomUtils.populateFloatProbabilityMap(damageReductionExplosionsProbability, template.getConfigurationSection("protection_explosions"), levelIndex, nextLevelIndex, distance);
+		com.elmakers.mine.bukkit.utility.RandomUtils.populateFloatProbabilityMap(costReductionProbability, template, "cost_reduction", levelIndex, nextLevelIndex, distance);
+		com.elmakers.mine.bukkit.utility.RandomUtils.populateFloatProbabilityMap(damageReductionProbability, template, "protection", levelIndex, nextLevelIndex, distance);
+		com.elmakers.mine.bukkit.utility.RandomUtils.populateFloatProbabilityMap(damageReductionPhysicalProbability, template, "protection_physical", levelIndex, nextLevelIndex, distance);
+		com.elmakers.mine.bukkit.utility.RandomUtils.populateFloatProbabilityMap(damageReductionFallingProbability, template, "protection_falling", levelIndex, nextLevelIndex, distance);
+		com.elmakers.mine.bukkit.utility.RandomUtils.populateFloatProbabilityMap(damageReductionProjectilesProbability, template, "protection_projectiles", levelIndex, nextLevelIndex, distance);
+		com.elmakers.mine.bukkit.utility.RandomUtils.populateFloatProbabilityMap(damageReductionFireProbability, template, "protection_fire", levelIndex, nextLevelIndex, distance);
+		com.elmakers.mine.bukkit.utility.RandomUtils.populateFloatProbabilityMap(damageReductionExplosionsProbability, template, "protection_explosions", levelIndex, nextLevelIndex, distance);
 
 		// Fetch regeneration
-		com.elmakers.mine.bukkit.utility.RandomUtils.populateIntegerProbabilityMap(xpRegenerationProbability, template.getConfigurationSection("mana_regeneration"), levelIndex, nextLevelIndex, distance);
-		com.elmakers.mine.bukkit.utility.RandomUtils.populateIntegerProbabilityMap(xpMaxProbability, template.getConfigurationSection("mana_max"), levelIndex, nextLevelIndex, distance);
+		com.elmakers.mine.bukkit.utility.RandomUtils.populateIntegerProbabilityMap(xpRegenerationProbability, template, "mana_regeneration", levelIndex, nextLevelIndex, distance);
+		com.elmakers.mine.bukkit.utility.RandomUtils.populateIntegerProbabilityMap(xpMaxProbability, template, "mana_max", levelIndex, nextLevelIndex, distance);
 		
 		// Fetch power
-		com.elmakers.mine.bukkit.utility.RandomUtils.populateFloatProbabilityMap(powerProbability, template.getConfigurationSection("power"), levelIndex, nextLevelIndex, distance);		
+		com.elmakers.mine.bukkit.utility.RandomUtils.populateFloatProbabilityMap(powerProbability, template, "power", levelIndex, nextLevelIndex, distance);
 	}
 
     public void add(WandLevel other) {

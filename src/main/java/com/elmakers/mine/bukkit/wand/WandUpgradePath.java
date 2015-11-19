@@ -6,6 +6,7 @@ import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.effect.EffectPlayer;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
+import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.WeightedPair;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
@@ -110,9 +111,16 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
 
     protected void load(MageController controller, String key, ConfigurationSection template) {
         // Cache spells, mainly used for spellbooks
-        ConfigurationSection spellSection = template.getConfigurationSection("spells");
-        if (spellSection != null) {
-            Collection<String> spellKeys = spellSection.getKeys(false);
+        Collection<String> spellKeys = null;
+        if (template.isConfigurationSection("spells")) {
+            ConfigurationSection spellSection = template.getConfigurationSection("spells");
+            if (spellSection != null) {
+                spellKeys = spellSection.getKeys(false);
+            }
+        } else {
+            spellKeys = ConfigurationUtils.getStringList(template, "spells");
+        }
+        if (spellKeys != null) {
             for (String spellKey : spellKeys) {
                 if (controller.getSpellTemplate(spellKey) != null) {
                     spells.add(spellKey);
