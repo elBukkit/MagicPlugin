@@ -185,12 +185,12 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
         minLevel = template.getInt("min_enchant_level", minLevel);
         maxLevel = template.getInt("max_enchant_level", maxLevel);
 
-        maxDamageReduction = (float)template.getDouble("max_damage_reduction", maxDamageReduction);
-        maxDamageReduction = (float)template.getDouble("max_damage_reduction_explosions", maxDamageReductionExplosions);
-        maxDamageReduction = (float)template.getDouble("max_damage_reduction_falling", maxDamageReductionFalling);
-        maxDamageReduction = (float)template.getDouble("max_damage_reduction_fire", maxDamageReductionFire);
-        maxDamageReduction = (float)template.getDouble("max_damage_reduction_physical", maxDamageReductionPhysical);
-        maxDamageReduction = (float)template.getDouble("max_damage_reduction_projectiles", maxDamageReductionProjectiles);
+        maxDamageReduction = (float)template.getDouble("max_protection", maxDamageReduction);
+        maxDamageReductionExplosions = (float)template.getDouble("max_protection_explosions", maxDamageReductionExplosions);
+        maxDamageReductionFalling = (float)template.getDouble("max_protection_falling", maxDamageReductionFalling);
+        maxDamageReductionFire = (float)template.getDouble("max_protection_fire", maxDamageReductionFire);
+        maxDamageReductionPhysical = (float)template.getDouble("max_protection_physical", maxDamageReductionPhysical);
+        maxDamageReductionProjectiles = (float)template.getDouble("max_protection_projectiles", maxDamageReductionProjectiles);
         maxCostReduction = (float)template.getDouble("max_cost_reduction", maxCostReduction);
         maxCooldownReduction = (float)template.getDouble("max_cooldown_reduction", maxCooldownReduction);
 
