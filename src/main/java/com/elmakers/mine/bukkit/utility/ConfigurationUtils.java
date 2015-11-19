@@ -326,8 +326,8 @@ public class ConfigurationUtils {
         {
             String[] pieces = StringUtils.split(s, "(,)");
             try {
-                double min = Double.parseDouble(pieces[1]);
-                double max = Double.parseDouble(pieces[2]);
+                double min = Double.parseDouble(pieces[1].trim());
+                double max = Double.parseDouble(pieces[2].trim());
                 return random.nextDouble() * (max - min) + min;
             } catch (Exception ex) {
                 Bukkit.getLogger().warning("Failed to parse: " + s);
@@ -339,6 +339,32 @@ public class ConfigurationUtils {
             return Double.parseDouble(s);
         } catch (Exception ex) {
             Bukkit.getLogger().warning("Failed to parse as double: " + s);
+            ex.printStackTrace();
+        }
+
+        return 0;
+    }
+
+    protected static int parseInt(String s)
+    {
+        char firstChar = s.charAt(0);
+        if (firstChar == 'r' || firstChar == 'R')
+        {
+            String[] pieces = StringUtils.split(s, "(,)");
+            try {
+                double min = Double.parseDouble(pieces[1].trim());
+                double max = Double.parseDouble(pieces[2].trim());
+                return (int)Math.floor(random.nextDouble() * (max - min) + min);
+            } catch (Exception ex) {
+                Bukkit.getLogger().warning("Failed to parse: " + s);
+                ex.printStackTrace();
+            }
+        }
+
+        try {
+            return (int)Math.floor(Double.parseDouble(s));
+        } catch (Exception ex) {
+            Bukkit.getLogger().warning("Failed to parse as int: " + s);
             ex.printStackTrace();
         }
 
@@ -487,7 +513,9 @@ public class ConfigurationUtils {
 
     public static Integer getInteger(ConfigurationSection node, String path, Integer def)
     {
-        if (node.contains(path)) return node.getInt(path);
+        if (node.contains(path)) {
+            return parseInt(node.getString(path));
+        }
         return def;
     }
 
