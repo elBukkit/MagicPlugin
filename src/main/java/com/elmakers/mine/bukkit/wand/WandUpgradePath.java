@@ -50,7 +50,7 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
     private String name;
     private String description;
     private boolean hidden = false;
-    private boolean earns = true;
+    private boolean earnsSP = true;
 
     private boolean matchSpellMana = true;
 
@@ -89,7 +89,7 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
         this.minLevel = inherit.minLevel;
         this.maxLevel = inherit.maxLevel;
         this.matchSpellMana = inherit.matchSpellMana;
-        this.earns = inherit.earns;
+        this.earnsSP = inherit.earnsSP;
         this.levelMap = new TreeMap<Integer, WandLevel>(inherit.levelMap);
         effects.putAll(inherit.effects);
         allRequiredSpells.addAll(inherit.allRequiredSpells);
@@ -148,7 +148,7 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
 
         matchSpellMana = template.getBoolean("match_spell_mana", matchSpellMana);
         hidden = template.getBoolean("hidden", false);
-        earns = template.getBoolean("earns", earns);
+        earnsSP = template.getBoolean("earns_sp", earnsSP);
 
         // Description information
         Messages messages = controller.getMessages();
@@ -595,6 +595,6 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
 
     @Override
     public boolean earnsSP() {
-        return earns;
+        return earnsSP;
     }
 }
