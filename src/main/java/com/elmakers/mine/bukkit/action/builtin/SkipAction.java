@@ -14,11 +14,13 @@ public class SkipAction extends CompoundAction
 {
     private int skipCount;
     private int skipCounter;
+    private boolean repeatSkip;
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters) {
         super.prepare(context, parameters);
         skipCount = parameters.getInt("skip", 1);
+        repeatSkip = parameters.getBoolean("repeat_skip", true);
         skipCounter = 0;
     }
 
@@ -28,7 +30,10 @@ public class SkipAction extends CompoundAction
         {
             return SpellResult.NO_ACTION;
         }
-        skipCounter = 0;
+        if (repeatSkip)
+        {
+            skipCounter = 0;
+        }
         return startActions();
 	}
 
