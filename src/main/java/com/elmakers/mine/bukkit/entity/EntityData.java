@@ -13,8 +13,23 @@ import org.bukkit.DyeColor;
 import org.bukkit.Location;
 import org.bukkit.Rotation;
 import org.bukkit.block.BlockFace;
-import org.bukkit.entity.*;
+import org.bukkit.entity.Ageable;
+import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Hanging;
+import org.bukkit.entity.Horse;
+import org.bukkit.entity.Item;
+import org.bukkit.entity.ItemFrame;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Ocelot;
+import org.bukkit.entity.Painting;
+import org.bukkit.entity.Player;
+import org.bukkit.entity.Projectile;
+import org.bukkit.entity.Skeleton;
 import org.bukkit.entity.Skeleton.SkeletonType;
+import org.bukkit.entity.Villager;
+import org.bukkit.entity.Wolf;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.Colorable;
 import org.bukkit.potion.PotionEffect;
@@ -45,9 +60,6 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     protected int fireTicks;
     protected int airLevel;
     protected DyeColor dyeColor;
-    protected Horse.Color horseColor;
-    protected Horse.Variant horseVariant;
-    protected Horse.Style horseStyle;
     protected SkeletonType skeletonType;
     protected Ocelot.Type ocelotType;
     protected Villager.Profession villagerProfession;
@@ -119,10 +131,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
             Item droppedItem = (Item)entity;
             item = droppedItem.getItemStack();
         } else if (entity instanceof Horse) {
-            Horse horse = (Horse)entity;
-            horseVariant = horse.getVariant();
-            horseColor = horse.getColor();
-            horseStyle = horse.getStyle();
+            extraData = new EntityHorseData((Horse)entity);
         } else if (entity instanceof Skeleton) {
             Skeleton skeleton = (Skeleton)entity;
             skeletonType = skeleton.getSkeletonType();
@@ -135,9 +144,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         } else if (entity instanceof Ocelot) {
             Ocelot ocelot = (Ocelot)entity;
             ocelotType = ocelot.getCatType();
-        }
-
-        if (entity instanceof ArmorStand) {
+        } else if (entity instanceof ArmorStand) {
             extraData = new EntityArmorStandData((ArmorStand)entity);
         }
     }
@@ -310,11 +317,6 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         } else if (entity instanceof Item) {
             Item droppedItem = (Item)entity;
             droppedItem.setItemStack(item);
-        } else if (entity instanceof Horse) {
-            Horse horse = (Horse)entity;
-            horse.setVariant(horseVariant);
-            horse.setStyle(horseStyle);
-            horse.setColor(horseColor);
         } else if (entity instanceof Skeleton) {
             Skeleton skeleton = (Skeleton)entity;
             skeleton.setSkeletonType(skeletonType);
