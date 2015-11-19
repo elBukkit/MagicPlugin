@@ -3014,10 +3014,24 @@ public class MagicController implements MageController {
 	}
 
 	@Override
-	public Set<Material> getMaterialSet(String name)
+public Set<Material> getMaterialSet(String name)
 	{
 		if (name.contains(",")) {
-			return ConfigurationUtils.parseMaterials(name);
+            String[] nameList = StringUtils.split(name, ',');
+            Set<Material> materials = new HashSet<Material>();
+
+            for (String matName : nameList)
+            {
+                if (materialSets.containsKey(matName)) {
+                    materials.addAll(materialSets.get(matName));
+                } else {
+                    Material material = ConfigurationUtils.toMaterial(matName);
+                    if (material != null) {
+                        materials.add(material);
+                    }
+                }
+            }
+            return materials;
 		}
 		if (!materialSets.containsKey(name)) {
 			return ConfigurationUtils.parseMaterials(name);
