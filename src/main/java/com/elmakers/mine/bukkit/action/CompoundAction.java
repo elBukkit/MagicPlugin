@@ -134,14 +134,14 @@ public abstract class CompoundAction extends BaseSpellAction
         undoable = false;
         requiresBuildPermission = false;
         requiresBreakPermission = false;
-        addHandlers();
+        addHandlers(spell, parameters);
         for (ActionHandler handler : handlers.values()) {
             handler.initialize(spell, actionConfiguration);
             updateFlags(handler);
         }
     }
 
-    protected void addHandlers() {
+    protected void addHandlers(Spell spell, ConfigurationSection parameters) {
         addHandler("actions");
     }
 
