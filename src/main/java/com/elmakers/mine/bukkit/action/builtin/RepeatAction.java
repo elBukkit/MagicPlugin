@@ -5,6 +5,7 @@ import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
+import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import org.bukkit.configuration.ConfigurationSection;
 
 import java.util.Arrays;
@@ -18,7 +19,7 @@ public class RepeatAction extends CompoundAction
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters) {
         super.prepare(context, parameters);
-        count = parameters.getInt("repeat", 2);
+        count = ConfigurationUtils.getInteger(parameters, "repeat", 2);
     }
 
     @Override
