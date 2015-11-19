@@ -3986,6 +3986,7 @@ public class MagicController implements MageController {
         return spEnabled;
     }
 
+    @Override
     public int getSPMaximum() {
         return spMaximum;
     }
