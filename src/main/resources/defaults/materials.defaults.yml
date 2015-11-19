@@ -77,6 +77,36 @@ transparent:
 transparent_to_construction:
 - air
 
+# Destructible list minus ores, for mining spells.
+#
+destructible_mining:
+- air
+- log
+- stone
+- grass
+- dirt
+- cobblestone
+- water
+- stationary_water
+- lava
+- stationary_lava
+- sand
+- gravel
+- netherrack
+- soul_sand
+- snow
+- long_grass
+- dead_bush
+- yellow_flower
+- red_rose
+- brown_mushroom
+- red_mushroom
+- leaves
+- sandstone
+- stained_clay
+- mycel
+- ender_stone
+
 # Which materials are inherently "destructible". This list includes anything is
 # can be naturally generated, except by structures (strongholds, villages, etc).
 # Most construction spells will use this material list for destructibility tests by
@@ -88,15 +118,13 @@ destructible:
 - stone
 - grass
 - dirt
+- soil
 - cobblestone
 - mossy_cobblestone
 - clay
 - hard_clay
 - stained_clay
-- water
-- stationary_water
-- lava
-- stationary_lava
+- fire
 - sand
 - gravel
 - netherrack
@@ -108,6 +136,8 @@ destructible:
 - dead_bush
 - yellow_flower
 - red_rose
+- sugar_cane_block
+- sapling
 - brown_mushroom
 - red_mushroom
 - leaves
@@ -128,6 +158,94 @@ destructible:
 - huge_mushroom_2
 - ice
 - packed_ice
+
+# Destructible level 2
+destructible2:
+- step
+- double_step
+- glass
+- thin_glass
+- stained_glass
+- stained_glass_pane
+- web
+- bookshelf
+- crops
+- workbench
+- wood_stairs
+- cactus
+- glowstone
+- jack_o_lantern
+- fence
+- spruce_fence
+- birch_fence
+- jungle_fence
+- dark_oak_fence
+- acacia_fence
+- melon_stem
+- pumpkin_stem
+- smooth_stairs
+- wood_double_step
+- wood_step
+- cocoa
+- sandstone_stairs
+- spruce_wood_stairs
+- birch_wood_stairs
+- jungle_wood_stairs
+- acacia_stairs
+- dark_oak_stairs
+- cobble_wall
+- carrot
+- potato
+- hay_block
+- carpet
+- red_sandstone
+- red_sandstone_stairs
+- double_stone_slab2
+- stone_slab2
+- gate
+- spruce_fence_gate
+- birch_fence_gate
+- jungle_fence_gate
+- dark_oak_fence_gate
+- acacia_fence_gate
+- wooden_door
+- double_plant
+- spruce_door
+- birch_door
+- jungle_door
+- acacia_door
+- dark_oak_door
+- standing_banner
+
+
+destructible3:
+- tnt
+- brick
+- furnace
+- burning_furnace
+- cobblestone_stairs
+- monster_eggs
+- iron_fence
+- brick_stairs
+- nether_brick
+- nether_brick_fence
+- nether_brick_stairs
+- caudlron
+- redstone_block
+- anvil
+- skull
+- quartz_block
+- quartz_stairs
+- slime_block
+- prismarine
+- sea_lantern
+- iron_door_block
+
+hardenable:
+- water
+- stationary_water
+- lava
+- stationary_lava
 
 water:
 - water
@@ -204,36 +322,6 @@ trees:
 - leaves
 - vine
 - cocoa
-
-# Destructible list minus ores, for mining spells.
-#
-destructible_mining:
-- air
-- log
-- stone
-- grass
-- dirt
-- cobblestone
-- water
-- stationary_water
-- lava
-- stationary_lava
-- sand
-- gravel
-- netherrack
-- soul_sand
-- snow
-- long_grass
-- dead_bush
-- yellow_flower
-- red_rose
-- brown_mushroom
-- red_mushroom
-- leaves
-- sandstone
-- stained_clay
-- mycel
-- ender_stone
 
 # Materials that must attach to another material when cloning or replicating
 # These are done in a second pass so they attach properly after whatever they've

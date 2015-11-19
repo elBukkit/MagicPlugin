@@ -5,6 +5,7 @@
  - Enchanting paths can have a simple list of spells instead of a probability map
  - Change "max_damage_reduction" (and related) to "max_protection" (this has apparently been broken for a while!)
  - Updated Meteor Shower to use CustomProjectile (EPIC! Thanks, Droobledore!)
+ - Added destructible2 and destructible3 lists, no non-engineering spells use check_destructible: false anymore.
 
 ## 5.3.2
 

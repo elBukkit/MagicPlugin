@@ -2565,7 +2565,7 @@ meteor:
         falling: true
         brush: air
         direction: 0,0.75,0
-        destructible: destructible_mining
+        destructible: destructible,destructible2,destructible3
         destructible_override: true
     costs:
         mana: 100
@@ -4150,11 +4150,12 @@ blast:
         allow_max_range: false
         range: 32
         speed: 0.9
+        direction: 0,0.8,0
         falling: true
         brush: air
         radius: 1
         undo: 15000
-        cooldown: 3000
+        cooldown: 5000
         destructible: destructible_mining
         destructible_override: true
         select_self: false
@@ -4166,20 +4167,22 @@ blast|2:
     upgrade_required_path: apprentice
     upgrade_required_casts: 50
     parameters:
+        destructible: destructible
         radius: 2
         speed: 1.2
-        destructible: destructible
 
 blast|3:
     upgrade_required_path: master
     upgrade_required_casts: 50
     parameters:
-        radius: 3
+        destructible: destructible,destructible2
+        radius: 2
+        undo: 20000
 
 blast|4:
     parameters:
-        check_destructible: false
-        radius: 4
+        destructible: destructible,destructible2,destructible3
+        radius: 3
         undo: 30000
 
 earthquake:
@@ -4425,7 +4428,7 @@ collapse:
         transparent: transparent_to_construction
         destructible_override: true
         undo: 10000
-        cooldown: 2000
+        cooldown: 8000
         select_self: false
         physics_blocks: true
     costs:
@@ -4433,7 +4436,7 @@ collapse:
 
 collapse|2:
     parameters:
-       check_destructible: false
+       destructible: destructible,destructible2,destructible3
        radius: 3
 
 supercollapse:
@@ -7546,7 +7549,7 @@ harden:
         range: 16
         size: 2
         destructible_override: true
-        check_destructible: true
+        destructible: destructible,hardenable
         brush: smooth_brick
         transparent: transparent_to_construction
         undo: 4000
@@ -8060,7 +8063,8 @@ singularity:
       entity_speed: 0.5
       falling: true
       radius: 5
-      check_destructible: false
+      destructible: destructible,destructible2,destructible3
+      destructible_override: true
       cooldown: 30000
     costs:
         mana: 50
@@ -8175,12 +8179,13 @@ tornado:
         x_size: 0
         z_size: 0
         y_size: 2
+        destructible_override: true
     costs:
         mana: 150
 
 tornado|2:
     parameters:
-        check_destructible: false
+        destructible: destructible,destructible2,destructible3
         y_offset: 1
         x_size: 1
         z_size: 1

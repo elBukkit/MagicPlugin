@@ -6,6 +6,8 @@
    - Auto-plot creation?
 
  - Fix that horrible inv-dupe issue :(
+ 
+ - Add spell or brush or something to auto-convert from MagicWorlds configs
    
  - Need to clean up location offset issues for effects. Can't use updateLocations: false with 
    an offset, for instance. Relative locations would be great, too- maybe in Magic and EffectLib.
