@@ -80,7 +80,7 @@
 # for all spells- generally just effects.
 
 default:
-    # Spells take 5 minutes to return to full SP earning potential
+    # Spells take 15 minutes to return to full SP earning potential
     earns_cooldown: 900000
     parameters:
       bypass_confusion: true
@@ -2458,35 +2458,117 @@ gatling|2:
 
 meteor:
     icon: double_plant:4
-    icon_url: http://textures.minecraft.net/texture/4e3b267157546ae9ce12c16f2847c9d298e593924e669179d2fad9f96712cba
-    category: demolition
-    pvp_restricted: true
+    icon_url: http://textures.minecraft.net/texture/f554672caf6e5335954614fb185acb15148e71423d97d0d5ff6023c247d5eb21
+    category: combat
     worth_sp: 250
     earns_sp: 5
     actions:
         cast:
-        -  class: Projectile
+        - class: ChangeContext
+          actions:
+          - class: Multiply
+            actions:
+            - class: Delay
+            - class: CustomProjectile
+              actions:
+              - class: AreaOfEffect
+                radius: 5
+                actions:
+                - class: VelocityAction
+                - class: PotionEffectAction
+                - class: IgniteAction
+                - class: DamageAction
+              -  class: Sphere
+                 actions:
+                 -  class: ModifyBlock
     effects:
         cast:
         -  class: EffectSingle
-           sound: ghast_fireball
-        -  class: EffectRing
-           particle: drip_lava
+           custom_sound: magic.burn
+           location: both
+        -  class: EffectSingle
            location: target
-           particle_count: 4
+           target_offset: 0,.15,0
+           effectlib:
+             class: HelixEffect
+             particles: 26
+             iterations: 5
+             radius: 5
+             particle: drip_lava
+        tick:
+        - particle: fireworks_spark
+          location: target
+          particle_count: 3
+          particle_offset_x: 0.1
+          particle_offset_y: 0.1
+          particle_offset_z: 0.1
+        - particle: smoke_large
+          location: target
+          particle_count: 1
+          particle_offset_x: .7
+          particle_offset_y: .7
+          particle_offset_z: .7
+        projectile:
+        -  class: EffectSingle
+           location: origin
+           effectlib:
+             class: SphereEffect
+             particle: lava
+             iterations: 100
+             particles: 15
+             radius: 0.5
+        hit:
+        - class: EffectSingle
+          sound: successful_hit
+          sound_pitch: .5
+          location: origin
+          requires_entity_target: true
+        - class: EffectSingle
+          location: target
+          color: FE2E2E
+          firework: ball_large
+        - class: EffectSingle
+          sound: explode
+          sound_volume: 2
+          location: both
+        - class: EffectSingle
+          target_offset: 0,0.5,0
+          location: target
+          color: FE2E2E
+          firework: burst
+          particle: explosion_huge
     parameters:
-        projectile: SmallFireball
-        count: 12
-        fire: true
-        spread: 30
-        py: ~12
-        pdy: ~-0.2
+        spread: 0.5
+        first:
+          spread: 0
+        radius: 3
+        delay: rand(0,2000)
+        multiply: rand(3,5)
+        source_offset: 0,50,0
+        target: other
+        item_speed: .5
+        living_entity_speed: .5
+        y_offset: 1
+        player_damage: 3
+        entity_damage: 3
+        target_breakables: 2
         range: 64
         allow_max_range: true
-        undo: 40000
-        cooldown: 10000
+        hitbox: true
+        size: 1
+        velocity: 50
+        cooldown: 21000
+        bypass_backfire: false
+        undo: 10000
+        cooldown: 45000
+        speed: 0.9
+        falling: true
+        brush: air
+        direction: 0,0.75,0
+        destructible: destructible_mining
+        destructible_override: true
     costs:
-        mana: 80
+        mana: 100
 
 arrow:
     icon_url: http://textures.minecraft.net/texture/ea96e1b8c4d458f8f5443fa66eb376981f7b2ec385386db67faf3f1589094
@@ -7463,6 +7545,7 @@ harden:
         allow_max_range: false
         range: 16
         size: 2
+        destructible_override: true
         check_destructible: true
         brush: smooth_brick
         transparent: transparent_to_construction
