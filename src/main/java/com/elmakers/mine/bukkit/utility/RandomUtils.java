@@ -53,8 +53,26 @@ public class RandomUtils {
         RandomUtils.populateProbabilityMap(Integer.class, probabilityMap, nodeMap, 0, 0, 0);
     }
 
+    public static void populateIntegerProbabilityMap(LinkedList<WeightedPair<Integer>> probabilityMap, ConfigurationSection parent, String key, int levelIndex, int nextLevelIndex, float distance) {
+        if (parent.isConfigurationSection(key)) {
+            populateProbabilityMap(Integer.class, probabilityMap, parent.getConfigurationSection(key), levelIndex, nextLevelIndex, distance);
+        } else if (parent.isInt(key)) {
+            populateProbabilityConstant(Integer.class, probabilityMap, parent.getString(key));
+        } else {
+            populateProbabilityList(Integer.class, probabilityMap, ConfigurationUtils.getStringList(parent, key));
+        }
+    }
+
     public static void populateStringProbabilityMap(LinkedList<WeightedPair<String>> probabilityMap, ConfigurationSection nodeMap, int levelIndex, int nextLevelIndex, float distance) {
         RandomUtils.populateProbabilityMap(String.class, probabilityMap, nodeMap, levelIndex, nextLevelIndex, distance);
+    }
+
+    public static void populateStringProbabilityMap(LinkedList<WeightedPair<String>> probabilityMap, ConfigurationSection parent, String key, int levelIndex, int nextLevelIndex, float distance) {
+        if (parent.isConfigurationSection(key)) {
+            populateProbabilityMap(String.class, probabilityMap, parent.getConfigurationSection(key), levelIndex, nextLevelIndex, distance);
+        } else {
+            populateProbabilityList(String.class, probabilityMap, ConfigurationUtils.getStringList(parent, key));
+        }
     }
 
     public static void populateStringProbabilityMap(LinkedList<WeightedPair<String>> probabilityMap, ConfigurationSection nodeMap) {
@@ -65,8 +83,30 @@ public class RandomUtils {
         RandomUtils.populateProbabilityMap(Float.class, probabilityMap, nodeMap, levelIndex, nextLevelIndex, distance);
     }
 
+    public static void populateFloatProbabilityMap(LinkedList<WeightedPair<Float>> probabilityMap, ConfigurationSection parent, String key, int levelIndex, int nextLevelIndex, float distance) {
+        if (parent.isConfigurationSection(key)) {
+            populateProbabilityMap(Float.class, probabilityMap, parent.getConfigurationSection(key), levelIndex, nextLevelIndex, distance);
+        } else if (parent.isDouble(key) || parent.isInt(key)) {
+            populateProbabilityConstant(Float.class, probabilityMap, parent.getString(key));
+        } else {
+            populateProbabilityList(Float.class, probabilityMap, ConfigurationUtils.getStringList(parent, key));
+        }
+    }
+
     public static void populateFloatProbabilityMap(LinkedList<WeightedPair<Float>> probabilityMap, ConfigurationSection nodeMap) {
         RandomUtils.populateProbabilityMap(Float.class, probabilityMap, nodeMap, 0, 0, 0);
+    }
+
+    public static <T extends Object> void populateProbabilityConstant(Class<T> valueClass, LinkedList<WeightedPair<T>> probabilityMap, String value) {
+        probabilityMap.add(new WeightedPair<T>(1.0f, 1.0f, value, valueClass));
+    }
+
+    public static <T extends Object> void populateProbabilityList(Class<T> valueClass, LinkedList<WeightedPair<T>> probabilityMap, List<String> keys) {
+        if (keys != null) {
+            for (String key : keys) {
+                probabilityMap.add(new WeightedPair<T>(1.0f, 1.0f, key, valueClass));
+            }
+        }
     }
 
     public static <T extends Object> void populateProbabilityMap(Class<T> valueClass, LinkedList<WeightedPair<T>> probabilityMap, ConfigurationSection nodeMap, int levelIndex, int nextLevelIndex, float distance) {
