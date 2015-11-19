@@ -1804,6 +1804,10 @@ public class MagicController implements MageController {
 
         SpellKey spellKey = new SpellKey(key);
         String inheritFrom = spellNode.getString("inherit");
+        if (inheritFrom != null && inheritFrom.equalsIgnoreCase("false"))
+        {
+            inheritFrom = null;
+        }
         String upgradeInheritsFrom = null;
         if (spellKey.isVariant()) {
             if (!spellUpgradesEnabled) {
