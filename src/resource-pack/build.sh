@@ -16,7 +16,7 @@ cp -R ../../../common/assets/* .
 cd ..
 cp -R ../../survival/* .
 find . -name ".DS_Store" -type f -delete
-zip -r -X ../Magic-RP-5.zip *
+zip -r -X ../Magic-RP.zip *
 cd ..
 
 echo "** BUILDING POTTER **"
@@ -29,7 +29,7 @@ cp -R ../../../common/assets/* .
 cd ..
 cp -R ../../potter/* .
 find . -name ".DS_Store" -type f -delete
-zip -r -X ../Magic-potter-RP-5.zip *
+zip -r -X ../Magic-potter-RP.zip *
 cd ..
 
 echo "** BUILDING BENDING **"
@@ -42,7 +42,7 @@ cp -R ../../../common/assets/* .
 cd ..
 cp -R ../../bending/* .
 find . -name ".DS_Store" -type f -delete
-zip -r -X ../Magic-bending-RP-5.zip *
+zip -r -X ../Magic-bending-RP.zip *
 cd ..
 
 echo "** BUILDING STARS **"
@@ -55,7 +55,7 @@ cp -R ../../../common/assets/* .
 cd ..
 cp -R ../../stars/* .
 find . -name ".DS_Store" -type f -delete
-zip -r -X ../Magic-stars-RP-5.zip *
+zip -r -X ../Magic-stars-RP.zip *
 cd ..
 
 echo "** BUILDING FFA **"
@@ -71,7 +71,7 @@ cp -R ../../potter/* .
 cp -R ../../stars/* .
 cp -R ../../survival/* .
 find . -name ".DS_Store" -type f -delete
-zip -r -X ../Magic-ffa-RP-5.zip *
+zip -r -X ../Magic-ffa-RP.zip *
 cd ..
 
 # 4.0 Configs include outdated models/textures
@@ -88,7 +88,7 @@ cd ..
 cp -R ../../survival/* .
 cp -R ../../4.0/survival/* .
 find . -name ".DS_Store" -type f -delete
-zip -r -X ../Magic-RP.zip *
+zip -r -X ../Magic-RP-4.zip *
 cd ..
 
 echo "** BUILDING 4.0 POTTER **"
@@ -102,7 +102,7 @@ cd ..
 cp -R ../../potter/* .
 cp -R ../../4.0/potter/* .
 find . -name ".DS_Store" -type f -delete
-zip -r -X ../Magic-potter-RP.zip *
+zip -r -X ../Magic-potter-RP-4.zip *
 cd ..
 
 echo "** BUILDING 4.0 BENDING **"
@@ -116,5 +116,5 @@ cd ..
 cp -R ../../bending/* .
 cp -R ../../4.0/bending/* .
 find . -name ".DS_Store" -type f -delete
-zip -r -X ../Magic-bending-RP.zip *
+zip -r -X ../Magic-bending-RP-4.zip *
 cd ..
