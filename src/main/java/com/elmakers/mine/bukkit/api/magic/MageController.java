@@ -154,6 +154,7 @@ public interface MageController {
     public boolean sendMail(CommandSender sender, String fromPlayer, String toPlayer, String message);
 
     public Location getWarp(String warpName);
+    public Location getTownLocation(Player player);
 
     public void giveItemToPlayer(Player player, ItemStack itemStack);
 
