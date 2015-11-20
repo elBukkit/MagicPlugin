@@ -84,4 +84,11 @@ public class TownyManager implements PVPManager, BlockBreakManager, BlockBuildMa
 
 		return towny.getTownLocation(player);
 	}
+
+	public boolean createPlot(Location center, Double price) {
+		if (!enabled || towny == null || center == null)
+			return false;
+
+		return towny.createPlot(center, price);
+	}
 }

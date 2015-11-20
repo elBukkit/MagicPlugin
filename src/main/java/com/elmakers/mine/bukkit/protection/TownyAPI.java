@@ -159,4 +159,20 @@ public class TownyAPI
         }
         return location;
     }
+
+    public boolean createPlot(Location center, Double price) {
+        WorldCoord worldCoord = new WorldCoord(center.getWorld().getName(), Coord.parseCoord(center));
+        try {
+            TownBlock townBlock = worldCoord.getTownBlock();
+            if (price == null) {
+                price = worldCoord.getTownBlock().getTown()
+                        .getPlotTypePrice(worldCoord.getTownBlock().getType());
+            }
+            townBlock.setPlotPrice(price);
+        } catch (Exception ex) {
+            return false;
+        }
+
+        return true;
+    }
 }

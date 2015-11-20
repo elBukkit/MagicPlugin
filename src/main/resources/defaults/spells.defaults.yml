@@ -2833,6 +2833,7 @@ torch:
         allow_glowstone: true
         undo: 30000
         cooldown: 10000
+        destructible: destructible_replace
     costs:
         mana: 50
 
@@ -3752,6 +3753,7 @@ place:
         allow_max_range: false
         range: 64
         transparent: transparent_to_construction
+        check_destructible: false
     costs:
         mana: 10
 
@@ -4013,6 +4015,7 @@ supercube:
         target: select
         type: cuboid
         transparent: transparent_to_construction
+        check_destructible: false
     costs:
         mana: 400
 
