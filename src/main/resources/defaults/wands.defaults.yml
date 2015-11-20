@@ -557,35 +557,56 @@ admin:
     undroppable: true
     indestructible: true
     cost_reduction: 2
-    protection: 2
+    protected: true
     cooldown_reduction: 2
-    power: 1
     effect_color: '888888'
     effect_bubbles: true
-    active_spell: fly
+    active_spell: superfly
     spells:
-        - fly
-        - blink
-        - recurse
+        - superfly
+        - blink|4
+        - missile|4
+        - cloak
         - time
-        - arrow|4
-        - fill
         - heal
         - phase
-        - disarm
         - gather
+        - supergather
         - regenerate
         - superregenerate
         - pickpocket
         - backup
         - repair
         - superrepair
-    materials:
-        - water
-        - lava
-        - glowstone
-        - erase
-        - copy
+
+developer:
+    icon: gold_axe
+    path: master
+    keep: true
+    bound: true
+    undroppable: true
+    indestructible: true
+    cost_reduction: 2
+    protected: true
+    cooldown_reduction: 2
+    effect_color: 'FFAA00'
+    effect_bubbles: true
+    active_spell: superfly
+    spells:
+        - superfly
+        - blink|4
+        - missile|4
+        - projectile
+        - debugger
+        - testdummy
+        - time
+        - heal
+        - phase
+        - gather
+        - supergather
+        - backup
+        - repair
+        - superrepair
 
 borealis:
     path: master

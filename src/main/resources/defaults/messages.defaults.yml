@@ -923,7 +923,8 @@ spells:
     breach:
         name: Breach
         description: Temporarily destroy the target surface
-        cast_finish: Temporarily destroyed $count blocks
+        cast_finish: Breached $count blocks
+        upgrade_description: "&r&b&bull; &6Size increased"
     tesseract:
         name: Tesseract
         description: Blink a short distance
@@ -943,11 +944,13 @@ spells:
     peek:
         name: Peek
         description: Temporarily glass the target surface
-        cast_finish: Temporarily glassed $count blocks
+        cast_finish: Glassed $count blocks
+        upgrade_description: "&r&b&bull; &6Window size increased"
     sandblast:
         name: Sandblast
         description: Drop a big block of sand
         cast_finish: Created $count falling sand blocks
+        upgrade_description: "&r&b&bull; &6Drops more sand"
     fill:
         name: Fill
         description: Fill a selected cuboid area
@@ -1544,8 +1547,11 @@ wands:
         name: The Architect
         description: $path Magic Wand
     admin:
-        name: Admin Wand
+        name: The Shusher
         description: For admins only
+    developer:
+        name: The Coder
+        description: See the Matrix
     camera:
         name: Camera
         description: Take a portrait of yourself or others
