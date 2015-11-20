@@ -379,6 +379,13 @@ spells:
         crash: CRASH!
         fail: Not enough room to take off!
         cursed: You are too stunned to fly!
+    superbroom:
+        name: SuperBroom
+        description: Powers magic flying wands
+        cast: Your wand springs to life!
+        deactivate: Your wand quiets down.
+        crash: CRASH!
+        fail: Not enough room to take off!
     boon:
         name: Boon
         description: Makes you temporarily superpowered

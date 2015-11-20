@@ -6706,6 +6706,7 @@ broom:
         start_delay: 20
         crash_distance: 0.9
         effect_confusion: 120,2
+        bypass_confusion: false
         bypass_deactivate: true
         stash_item: true
         mount_baby: true
@@ -6735,6 +6736,21 @@ broom:
         sound: magic.flying
         effect_sound_interval: 120
         effect_sound_volume: 15
+
+superbroom:
+  inherit: broom
+  hidden: true
+  parameters:
+    bypass_confusion: true
+    mount_boost: 4
+    mount_boost_ticks: 600
+    mount_health: 20
+    slow_ticks: 1
+    steer_speed: 0
+    slow_steer_speed: 0.05
+    mount_boost_per_jump: 0.5
+    effect_confusion: 0
+    armor_stand_yaw: 180
 
 paste:
     icon_url: http://textures.minecraft.net/texture/6eb68dc909b12ef5fb397c23fdecbc416d9a76825170c106b1faeb97b4749
