@@ -23,7 +23,7 @@ public class EntityHorseData extends EntityExtraData {
         variant = horse.getVariant();
         style = horse.getStyle();
         saddle = horse.getInventory().getSaddle();
-        armor = horse.getInventory().getSaddle();
+        armor = horse.getInventory().getArmor();
         domestication = horse.getDomestication();
         maxDomestication = horse.getMaxDomestication();
         jumpStrength = horse.getJumpStrength();
