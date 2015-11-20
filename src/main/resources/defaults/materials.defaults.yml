@@ -80,7 +80,6 @@ transparent_to_construction:
 # Destructible list minus ores, for mining spells.
 #
 destructible_mining:
-- air
 - log
 - stone
 - grass
@@ -107,12 +106,23 @@ destructible_mining:
 - mycel
 - ender_stone
 
+# Which materials spells that build blocks will replace
+destructible_replace:
+- air
+- fire
+- snow
+- long_grass
+- dead_bush
+- yellow_flower
+- red_rose
+- water
+- stationary_water
+
 # Which materials are inherently "destructible". This list includes anything is
 # can be naturally generated, except by structures (strongholds, villages, etc).
 # Most construction spells will use this material list for destructibility tests by
 # default.
 destructible:
-- air
 - log
 - log_2
 - stone

@@ -880,7 +880,7 @@ shell:
         radius: 3
         type: sphere
         transparent: transparent_to_construction
-        destructible: air,fire,water,stationary_water
+        destructible: destructible_replace
         check_destructible: true
         undo: 4000
         brush: stained_glass
@@ -938,7 +938,7 @@ reflect:
         brush: stained_glass
         orient: true
         transparent: transparent_to_construction
-        destructible: air,fire,water,stationary_water
+        destructible: destructible_replace
         check_destructible: true
         brushcolor: true
         undo: 800
@@ -1005,6 +1005,7 @@ disc:
         range: 8
         radius: 2
         transparent: transparent_to_construction
+        destructible: destructible_replace
         undo: 20000
         breakable: 2
         brush: stained_glass
@@ -1045,6 +1046,7 @@ superdisc:
         orient_dimension_max: 0
         orient_dimension_min: 0
         transparent: transparent_to_construction
+        destructible: destructible_replace
     costs:
         mana: 200
 
@@ -1582,7 +1584,7 @@ nuke:
 
 nuke|2:
   parameters:
-    check_destructible: false
+    destructible: destructible,destructible2,destructible3
     radius: 12
 
 frost:
@@ -3367,7 +3369,7 @@ bubble:
         cooldown: 2000
         undo: 1000
         duration: 3000
-        destructible: fire,air
+        destructible: destructible_replace
         brush: stationary_water
         hitbox: true
     costs:
@@ -4294,6 +4296,7 @@ tunnel:
     parameters:
         allow_max_range: false
         range: 32
+        destructible: destructible_mining
     costs:
         mana: 30
 
@@ -4340,7 +4343,6 @@ convert:
         allow_max_range: false
         range: 32
         check_destructible: false
-        indestructible: air
         radius: 3
         replace: true
         transparent: transparent_to_construction
@@ -4365,7 +4367,6 @@ superconvert:
         range: 32
         check_destructible: false
         max_dimension: 16
-        indestructible: air
         target: select
         type: sphere
         replace: true
@@ -4460,7 +4461,6 @@ supercollapse:
         brush: air
         falling: true
         check_destructible: false
-        indestructible: air
         target: select
         type: sphere
         transparent: transparent_to_construction
@@ -4611,9 +4611,13 @@ breach:
     icon_url: http://textures.minecraft.net/texture/672e0c305074a7acf671e7644291d7f745baecf05743395e28d1f04cbbb4
     icon: seeds
     category: mining
-    class: ConstructSpell
     worth_sp: 150
     earns_sp: 5
+    actions:
+        cast:
+        - class: Sphere
+          actions:
+          - class: ModifyBlock
     effects:
         cast:
         -  class: EffectSingle
@@ -4622,9 +4626,8 @@ breach:
            particle: smoke_normal
     parameters:
         allow_max_range: false
-        check_destructible: true
+        destructible: destructible_mining
         range: 32
-        indestructible: air
         transparent: transparent_to_construction
         undo: 10000
         brush: air
@@ -4638,9 +4641,13 @@ peek:
     icon_url: http://textures.minecraft.net/texture/672e0c305074a7acf671e7644291d7f745baecf05743395e28d1f04cbbb4
     icon: sugar_cane
     category: mining
-    class: ConstructSpell
     worth_sp: 100
     earns_sp: 8
+    actions:
+        cast:
+        - class: Sphere
+          actions:
+          - class: ModifyBlock
     effects:
         cast:
         -  class: EffectSingle
@@ -4651,13 +4658,12 @@ peek:
         target: block
         allow_max_range: false
         check_destructible: true
+        destructible: destructible_mining
         range: 32
-        indestructible: air
         transparent: transparent
         undo: 4000
         brush: glass
         radius: 3
-        type: sphere
         cooldown: 5000
     costs:
         mana: 30
@@ -4877,7 +4883,7 @@ blob:
         brush: stained_glass
         brushcolor: true
         breakable: 3
-        destructible: air,fire
+        destructible: destructible_replace
     costs:
         mana: 50
 
@@ -4935,7 +4941,7 @@ tendril:
         cooldown: 20000
         brush: schematic|tendril
         breakable: 3
-        destructible: air,fire
+        destructible: destructible_replace
         orient: true
         skip: 16
         delay: 50
@@ -4973,7 +4979,7 @@ walls:
         brush: stained_clay
         brushcolor: true
         breakable: 3
-        destructible: air,fire
+        destructible: destructible_replace
     costs:
         mana: 75
 
@@ -5085,7 +5091,7 @@ disintegrate:
         brush: erase
         player_damage: 6
         entity_damage: 15
-        check_destructible: false
+        destructible: destructible1,destructible2,destructible3
         undo: 5000
         cooldown: 1500
     costs:
@@ -5404,7 +5410,7 @@ stream:
         target_type: LivingEntity
         allow_max_range: true
         check_destructible: true
-        destructible: air,fire
+        destructible: destructible_replace
         range: 4
         size: 4
         brush: stationary_water
@@ -5634,14 +5640,14 @@ laser|2:
     upgrade_required_casts: 50
     parameters:
         radius: 2
-        destructible: destructible
+        destructible: destructible,destructible2
         player_damage: 0.5
         entity_damage: 2
         repeat: 12
 
 laser|3:
     parameters:
-        check_destructible: false
+        destructible: destructible,destructible2,destructible3
         radius: 3
         player_damage: 1
         entity_damage: 3
@@ -6060,7 +6066,6 @@ tent:
         target_type: LivingEntity
         target: any
         allow_max_range: false
-        check_destructibe: false
         range: 16
         radius: 8
         type: sphere
@@ -6068,6 +6073,7 @@ tent:
         undo: 60000
         brush: schematic|tent
         transparent: transparent_to_construction
+        destructible: destructible_replace,destructible
     costs:
         mana: 150
 
@@ -6088,6 +6094,7 @@ cage:
         target_type: LivingEntity
         allow_max_range: false
         check_destructible: true
+        destructible: destructible_replace,destructible
         range: 16
         radius: 8
         type: sphere
@@ -7130,7 +7137,7 @@ entangle:
         orient: false
         transparent: transparent_to_construction
         check_destructible: true
-        destructible: air
+        destructible: destructible_replace
         undo: 5000
         breakable: 1
         cooldown: 8000
@@ -7386,6 +7393,7 @@ lift:
         -  class: EffectSingle
            target_offset: 0.5,5.5,0.5
            location: target
+           use_block_location: true
            effectlib:
              class: SphereEffect
              iterations: 48
@@ -8222,7 +8230,7 @@ rainbow:
         cooldown: 45000
         brush: schematic|rainbow
         breakable: 3
-        destructible: air
+        destructible: destructible_replace
         orient: true
         skip: 100
         delay: 5
@@ -8372,7 +8380,7 @@ wave|2:
         item_speed: 0.4
         living_entity_speed: 0.6
         speed: 0.8
-        check_destructible: false
+        destructible: destructible1,destructible2,destructible3
 
 boomstown:
    icon_url: http://textures.minecraft.net/texture/91e9bb78d29e2967d52274d370ad78cb61d15eca3d26a8d6bfc24f887072fa81

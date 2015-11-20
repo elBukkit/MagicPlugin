@@ -16,6 +16,8 @@
  
  - Try to support projectile hitbox modifiers that aren't cubes
  
+ - Peek is broken??
+ 
  - Additive Velocity parameter?
  
  - KidBear says spawned animated statues don't disappear if the player dies
