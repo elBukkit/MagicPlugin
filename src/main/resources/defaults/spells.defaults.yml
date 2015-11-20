@@ -3288,6 +3288,7 @@ fire:
         undo: 1000
         cooldown: 3000
         target_breakables: 0
+        destructible: burnable
     costs:
         mana: 35
 
@@ -4585,6 +4586,7 @@ counterspell:
            location: target
            firework: star
     parameters:
+        hitbox: false
         allow_max_range: false
         target: other
         target_type: LivingEntity
@@ -4597,7 +4599,7 @@ counterspell:
         bypass_protection: true
         bypass_confusion: true
         bypass_backfire: true
-        cooldown: 7000
+        cooldown: 5000
         fizzle_chance: 0.3
     costs:
         mana: 70
@@ -4605,7 +4607,7 @@ counterspell:
 counterspell|2:
     parameters:
         fizzle_chance: 0
-        cooldown: 1000
+        cooldown: 10000
 
 breach:
     icon_url: http://textures.minecraft.net/texture/672e0c305074a7acf671e7644291d7f745baecf05743395e28d1f04cbbb4
@@ -4613,6 +4615,8 @@ breach:
     category: mining
     worth_sp: 150
     earns_sp: 5
+    upgrade_required_path: apprentice
+    upgrade_required_casts: 50
     actions:
         cast:
         - class: Sphere
@@ -4631,11 +4635,23 @@ breach:
         transparent: transparent_to_construction
         undo: 10000
         brush: air
-        radius: 4
+        radius: 2
         type: sphere
         cooldown: 15000
     costs:
         mana: 50
+
+breach|2:
+    upgrade_required_path: master
+    upgrade_required_casts: 50
+    parameters:
+        radius: 3
+
+breach|3:
+    upgrade_required_path: master
+    upgrade_required_casts: 50
+    parameters:
+        radius: 4
 
 peek:
     icon_url: http://textures.minecraft.net/texture/672e0c305074a7acf671e7644291d7f745baecf05743395e28d1f04cbbb4
@@ -4643,6 +4659,8 @@ peek:
     category: mining
     worth_sp: 100
     earns_sp: 8
+    upgrade_required_path: beginner
+    upgrade_required_casts: 10
     actions:
         cast:
         - class: Sphere
@@ -4663,10 +4681,26 @@ peek:
         transparent: transparent
         undo: 4000
         brush: glass
-        radius: 3
+        radius: 0
         cooldown: 5000
     costs:
         mana: 30
+
+peek|2:
+    upgrade_required_path: student
+    upgrade_required_casts: 40
+    parameters:
+      radius: 1
+
+peek|3:
+    upgrade_required_path: apprentice
+    upgrade_required_casts: 50
+    parameters:
+      radius: 2
+
+peek|4:
+    parameters:
+      radius: 3
 
 sandblast:
     icon_url: http://textures.minecraft.net/texture/c1dc6e8c5e3da4aed0ca478e195b8fe3a438fd8cb775b9d10fa1ff7d2dcf714
@@ -4675,6 +4709,8 @@ sandblast:
     pvp_restricted: true
     worth_sp: 150
     earns_sp: 3
+    upgrade_required_path: master
+    upgrade_required_casts: 50
     actions:
         cast:
         - class: Volume
@@ -4690,12 +4726,16 @@ sandblast:
         allow_max_range: true
         range: 32
         brush: sand
-        radius: 2
+        radius: 1
         oty: 32
         undo: 20000
         cooldown: 5000
     costs:
         mana: 50
+
+sandblast|2:
+    parameters:
+      radius: 2
 
 mine:
     icon: wood_pickaxe
