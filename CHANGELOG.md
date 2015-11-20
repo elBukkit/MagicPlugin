@@ -7,6 +7,8 @@
  - Updated Meteor Shower to use CustomProjectile (EPIC! Thanks, Droobledore!)
  - Added destructible2 and destructible3 lists, no non-engineering spells use check_destructible: false anymore.
  - Add more levels to Breach, Peek and Sandblast
+ - Updated admin wands, added developer wand. 
+ - Added SuperGather (old-school Gather), PhaseBackup - admin/dev spells, SuperPhase
 
 ## 5.3.2
 

@@ -37,7 +37,7 @@ public class ChangeWorldAction extends BaseTeleportAction
 
         String worldName = world.getName();
         if (parameters.contains("target_world")) {
-            World targetWorld = getWorld(context, parameters.getString("target_world"), parameters.getBoolean("load", true));
+            World targetWorld = getWorld(context, parameters.getString("target_world"), parameters.getBoolean("load", true), null);
             if (targetWorld == null) {
                 return;
             }
@@ -56,7 +56,7 @@ public class ChangeWorldAction extends BaseTeleportAction
             }
 
             ConfigurationSection worldNode = worldMap.getConfigurationSection(worldName);
-            World targetWorld = getWorld(context, worldNode.getString("target"), worldNode.getBoolean("load", true));
+            World targetWorld = getWorld(context, worldNode.getString("target"), worldNode.getBoolean("load", true), worldNode.getBoolean("copy", false) ? world : null);
             if (targetWorld != null) {
                 double scale = worldNode.getDouble("scale", 1);
                 targetLocation = new Location(targetWorld, playerLocation.getX() * scale, playerLocation.getY(), playerLocation.getZ() * scale);
@@ -123,15 +123,16 @@ public class ChangeWorldAction extends BaseTeleportAction
 		return SpellResult.CAST;
 	}
 
-    protected World getWorld(CastContext context, String worldName, boolean loadWorld) {
+    protected World getWorld(CastContext context, String worldName, boolean loadWorld, World copyFrom) {
         World world = Bukkit.getWorld(worldName);
         if (world == null) {
             if (loadWorld) {
-                context.getLogger().info("Loading world: " + worldName);
-                world = Bukkit.createWorld(new WorldCreator(worldName));
-                if (world == null) {
-                    context.getLogger().warning("Failed to load world: " + worldName);
-                    return null;
+                if (copyFrom != null) {
+                    context.getLogger().info("Creating world: " + worldName + " as copy of " + copyFrom.getName());
+                    world = Bukkit.createWorld(new WorldCreator(worldName).copy(copyFrom));
+                } else {
+                    context.getLogger().info("Loading world: " + worldName);
+                    world = Bukkit.createWorld(new WorldCreator(worldName));
                 }
             }
         }

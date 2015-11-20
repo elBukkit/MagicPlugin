@@ -657,6 +657,18 @@ spells:
         cast: ""
         teleport: You phase to $world_name
         teleport_failed: Can't phase to $world_name from here
+    superphase:
+        name: SuperPhase
+        description: Phase yourself or others to another dimension
+        cast: ""
+        teleport: You phase $target to $world_name
+        teleport_failed: Can't phase $target to $world_name from here
+    phasebackup:
+        name: Phase to Backup
+        description: Check on the backup worlds
+        cast: ""
+        teleport: You phase to $world_name
+        teleport_failed: Can't phase to $world_name from here
     invincible:
         name: Invincible
         description: Make yourself impervious to damage
