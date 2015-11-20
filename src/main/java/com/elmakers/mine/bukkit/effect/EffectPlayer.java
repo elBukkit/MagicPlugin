@@ -104,6 +104,7 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
     protected boolean useWandLocation = true;
     protected boolean useEyeLocation = true;
     protected boolean useHitLocation = true;
+    protected boolean useBlockLocation = true;
 
     protected float scale = 1.0f;
 
@@ -225,6 +226,7 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
         useWandLocation = configuration.getBoolean("use_wand_location", true);
         useEyeLocation = configuration.getBoolean("use_eye_location", true);
         useHitLocation = configuration.getBoolean("use_hit_location", true);
+        useBlockLocation = configuration.getBoolean("use_block_location", false);
     }
 
     public void setLocationType(String locationType) {
@@ -658,6 +660,11 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
     @Override
     public void setEffectPlayList(Collection<EffectPlay> plays) {
         this.currentEffects = plays;
+    }
+
+    @Override
+    public boolean shouldUseBlockLocation() {
+        return useBlockLocation;
     }
 
     @Override
