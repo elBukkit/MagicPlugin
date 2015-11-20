@@ -31,6 +31,7 @@ public interface EffectPlayer {
     public boolean shouldUseHitLocation();
     public boolean shouldUseWandLocation();
     public boolean shouldUseEyeLocation();
+    public boolean shouldUseBlockLocation();
 
     public void start(Location origin, Location target);
     public void start(Entity origin, Entity target);
