@@ -9,6 +9,7 @@
  - Add more levels to Breach, Peek and Sandblast
  - Updated admin wands, added developer wand. 
  - Added SuperGather (old-school Gather), PhaseBackup - admin/dev spells, SuperPhase
+ - Add Town support to Recall (Towny)
 
 ## 5.3.2
 

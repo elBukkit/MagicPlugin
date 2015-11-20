@@ -5942,10 +5942,12 @@ recall:
         allow_wand: true
         allow_home: true
         allow_cross_world: true
+        allow_town: true
         icon_death: skull_item
         icon_wand: wood_hoe
         icon_spawn: wood_door
         icon_home: bed
+        icon_town: iron_door
         icon_marker: redstone_torch_on
         loud: true
         cooldown: 8000

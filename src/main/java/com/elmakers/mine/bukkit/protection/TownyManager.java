@@ -6,6 +6,8 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
+import java.util.logging.Level;
+
 public class TownyManager implements PVPManager, BlockBreakManager, BlockBuildManager {
 	private boolean enabled = false;
 	private TownyAPI towny = null;
@@ -28,6 +30,7 @@ public class TownyManager implements PVPManager, BlockBreakManager, BlockBuildMa
 					towny = new TownyAPI(this, townyPlugin);
 				}
 			} catch (Throwable ex) {
+				plugin.getLogger().log(Level.WARNING, "Error initializing Towny integration", ex);
 			}
 
 			if (towny == null) {
@@ -73,5 +76,12 @@ public class TownyManager implements PVPManager, BlockBreakManager, BlockBuildMa
 		if (!enabled || towny == null || entity == null || target == null)
 			return true;
 		return towny.canTarget(entity, target);
+	}
+
+	public Location getTownLocation(Player player) {
+		if (!enabled || towny == null || player == null)
+			return null;
+
+		return towny.getTownLocation(player);
 	}
 }

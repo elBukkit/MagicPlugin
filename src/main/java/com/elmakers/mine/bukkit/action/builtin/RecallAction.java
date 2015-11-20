@@ -78,7 +78,8 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
         SPAWN,
         HOME,
         WAND,
-        MARKER
+        MARKER,
+        TOWN
     }
 
     private static MaterialAndData defaultMaterial = new MaterialAndData(DefaultWaypointMaterial);
@@ -594,6 +595,7 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
 
 	protected Waypoint getWaypoint(Player player, RecallType type, int index, ConfigurationSection parameters) {
 		Mage mage = context.getMage();
+        MageController controller = context.getController();
 		switch (type) {
 		case MARKER:
             Location location = ConfigurationUtils.getLocation(mage.getData(), markerKey);
@@ -602,6 +604,8 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
             return new Waypoint(type, mage.getLastDeathLocation(), "Last Death", context.getMessage("cast_death"), context.getMessage("no_target_death"), context.getMessage("description_death", ""), ConfigurationUtils.getMaterialAndData(parameters, "icon_death"), true);
 		case SPAWN:
 			return new Waypoint(type, context.getWorld().getSpawnLocation(), context.getMessage("title_spawn"), context.getMessage("cast_spawn"), context.getMessage("no_target_spawn"), context.getMessage("description_spawn", ""), ConfigurationUtils.getMaterialAndData(parameters, "icon_spawn"), false);
+        case TOWN:
+            return new Waypoint(type, controller.getTownLocation(player), context.getMessage("title_town"), context.getMessage("cast_town"), context.getMessage("no_target_town"), context.getMessage("description_town", ""), ConfigurationUtils.getMaterialAndData(parameters, "icon_town"), false);
         case HOME:
             Location bedLocation = player == null ? null : player.getBedSpawnLocation();
             if (bedLocation != null) {

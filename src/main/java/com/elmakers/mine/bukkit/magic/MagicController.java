@@ -3165,6 +3165,7 @@ public Set<Material> getMaterialSet(String name)
         return townyManager.canTarget(attacker, entity);
     }
 
+    @Override
 	public Location getWarp(String warpName) {
         Location location = null;
 		if (warpController != null) {
@@ -3176,6 +3177,11 @@ public Set<Material> getMaterialSet(String name)
         }
 		return location;
 	}
+
+    @Override
+    public Location getTownLocation(Player player) {
+        return townyManager.getTownLocation(player);
+    }
 	
 	@Override
 	public boolean sendMail(CommandSender sender, String fromPlayer, String toPlayer, String message) {
