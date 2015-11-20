@@ -109,7 +109,7 @@ public abstract class CompoundAction extends BaseSpellAction
     @Override
     public void reset(CastContext context) {
         super.reset(context);
-        if (actionContext == null && context != null) {
+        if (context != null) {
             actionContext = new com.elmakers.mine.bukkit.action.CastContext(context);
         }
         state = State.NOT_STARTED;
