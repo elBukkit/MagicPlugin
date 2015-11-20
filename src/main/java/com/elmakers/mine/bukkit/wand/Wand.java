@@ -1505,15 +1505,21 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
             }
             inactiveIconDelay = wandConfig.getInt("icon_inactive_delay", inactiveIconDelay);
 
+			// Check for migration information in the template config
+			ConfigurationSection templateConfig = null;
+			if (template != null && !template.isEmpty()) {
+				templateConfig = getTemplateConfiguration(template);
+			}
+			String migrateTemplate = templateConfig == null ? null : templateConfig.getString("migrate_to");
+			if (migrateTemplate != null) {
+				template = migrateTemplate;
+			}
+
             if (wandConfig.contains("randomize_icon")) {
                 setIcon(new MaterialAndData(wandConfig.getString("randomize_icon")));
                 randomize = true;
             } else if (!randomize && wandConfig.contains("icon")) {
                 String iconKey = wandConfig.getString("icon");
-                ConfigurationSection templateConfig = null;
-                if (template != null && !template.isEmpty()) {
-                     templateConfig = getTemplateConfiguration(template);
-                }
                 String migrateIcon = null;
                 if (templateConfig != null && item != null) {
                     migrateIcon = templateConfig.getString("migrate_icon");

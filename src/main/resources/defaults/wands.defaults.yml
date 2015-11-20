@@ -118,10 +118,14 @@ default:
 #
 
 #
-# The default crafted wand
+# A beginner wand, this is a leftover from previous configs.
+# This wand will transform into the default wand due to the
+# migrate_to settings, in terms of identity.
+# It is better to use the default wand now!
 #
 
 beginner:
+    migrate_to: default
     effect_color: random
     path: beginner
     xp_max: 50
@@ -557,8 +561,8 @@ admin:
     undroppable: true
     indestructible: true
     cost_reduction: 2
+    cooldown_reduction: 1
     protected: true
-    cooldown_reduction: 2
     effect_color: '888888'
     effect_bubbles: true
     active_spell: superfly
@@ -577,6 +581,7 @@ admin:
         - superregenerate
         - pickpocket
         - backup
+        - phasebackup
         - repair
         - superrepair
 
@@ -588,8 +593,8 @@ developer:
     undroppable: true
     indestructible: true
     cost_reduction: 2
-    protected: true
     cooldown_reduction: 2
+    protected: true
     effect_color: 'FFAA00'
     effect_bubbles: true
     active_spell: superfly
@@ -606,6 +611,7 @@ developer:
         - phase
         - gather
         - supergather
+        - phasebackup
         - backup
         - repair
         - superrepair
@@ -717,6 +723,7 @@ wolf:
   hotbar_count: 3
   keep: true
   bound: true
+  fill: true
   indestructible: true
   protected: true
   powered: true
