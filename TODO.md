@@ -14,6 +14,10 @@
  
  - Fix shop price scaling
  
+ - Try to support projectile hitbox modifiers that aren't cubes
+ 
+ - Additive Velocity parameter?
+ 
  - KidBear says spawned animated statues don't disappear if the player dies
  
  - Overrides with commas in them are broken again

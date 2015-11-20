@@ -73,6 +73,9 @@ paths:
     broom:
         name: Broom
         description: Flying broom upgrades
+    blaster:
+        name: Blaster
+        description: Blaster upgrades
 wand:
     default_name: Wand
     upgrade_default_description: Will upgrade your wand.
@@ -508,6 +511,15 @@ spells:
     gather:
         name: Gather
         description: Teleport you to other players
+        cast_to_player: Teleporting you to $target
+        cast_entity: Teleporting $target to your target
+        cast_player_message: "&d&o$player &r&5folded space"
+        target_selected: You captured $target
+        cancel: Released target
+    supergather:
+        name: SuperGather
+        description: Capture players and teleport them
+        usage: Aim down to cycle targets, up to teleport to them
         cast_to_player: Teleporting you to $target
         cast_entity: Teleporting $target to your target
         cast_player_message: "&d&o$player &r&5folded space"

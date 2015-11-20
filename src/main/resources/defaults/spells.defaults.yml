@@ -4361,7 +4361,7 @@ superconvert:
         -  class: EffectTrail
            effect: step_sound
     parameters:
-        allow_max_range: true
+        allow_max_range: false
         range: 32
         check_destructible: false
         max_dimension: 16
@@ -5102,6 +5102,11 @@ blink:
     upgrade_required_casts: 20
     actions:
         cast:
+        - class: ChangeContext
+          target_caster: true
+          ignore_result: true
+          actions:
+          - class: FallProtectionAction
         - class: Teleport
     effects:
         teleport:
@@ -5149,7 +5154,7 @@ blink:
                    particle: redstone
     parameters:
         target: block
-        allow_max_range: false
+        allow_max_range: true
         allow_passthrough: false
         range: 16
         cooldown: 5000
@@ -5171,8 +5176,6 @@ blink|2:
 
 blink|3:
     actions:
-        cast:
-        - class: Teleport
         alternate_up:
         - class: Ascend
           vertical_range: 255
@@ -9072,3 +9075,31 @@ fxdemo:
       bypass_protection: true
       delay: 6000
       effect_duration: 5000
+
+supergather:
+    icon_url: http://textures.minecraft.net/texture/ff78194bb5fe3f374ca6a1727c04247b7bac331cff248bf642acc8e73647e
+    icon: glowstone_dust
+    category: staff
+    show_undoable: false
+    class: GotoSpell
+    hidden: true
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: enderman_idle
+        -  class: EffectTrail
+           particle: portal
+           particle_count: 4
+        -  class: EffectSingle
+           location: both
+           effectlib:
+             class: WarpEffect
+             particle: portal
+    parameters:
+        target_type: LivingEntity
+        allow_max_range: false
+        range: 64
+        target: other
+        bypass_friendly_fire: true
+    costs:
+        mana: 50
