@@ -6,6 +6,7 @@ import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.RandomUtils;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
@@ -30,6 +31,7 @@ public class ChangeContextAction extends CompoundAction {
     private Vector targetDirectionOffset;
     private boolean persistTarget;
     private boolean attachBlock;
+    private int snapTargetToSize;
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters) {
@@ -47,6 +49,7 @@ public class ChangeContextAction extends CompoundAction {
         targetDirectionOffset = ConfigurationUtils.getVector(parameters, "source_direction_offset");
         persistTarget = parameters.getBoolean("persist_target", false);
         attachBlock = parameters.getBoolean("target_attachment", false);
+        snapTargetToSize = parameters.getInt("target_snap", 0);
         if (parameters.contains("target_direction_speed"))
         {
             targetDirectionSpeed = parameters.getDouble("target_direction_speed");
@@ -101,6 +104,18 @@ public class ChangeContextAction extends CompoundAction {
         {
             sourceLocation = sourceLocation.add(sourceOffset);
         }
+        if (snapTargetToSize > 0 && targetLocation != null)
+        {
+            // This is kind of specific to how Towny does things... :\
+            int x = targetLocation.getBlockX();
+            int z = targetLocation.getBlockZ();
+            int xresult = x / snapTargetToSize;
+            int zresult = z / snapTargetToSize;
+            boolean xneedfix = x % snapTargetToSize != 0;
+            boolean zneedfix = z % snapTargetToSize != 0;
+            targetLocation.setX(snapTargetToSize * (xresult - (x < 0 && xneedfix ? 1 : 0)));
+            targetLocation.setZ(snapTargetToSize * (zresult - (z < 0 && zneedfix ? 1 : 0)));
+        }
         if (targetOffset != null && targetLocation != null)
         {
             targetLocation = targetLocation.add(targetOffset);
@@ -151,6 +166,10 @@ public class ChangeContextAction extends CompoundAction {
         if (persistTarget)
         {
             context.setTargetLocation(targetLocation);
+            context.getMage().sendDebugMessage(ChatColor.GREEN + "Set new target location to " +
+                ChatColor.GRAY + targetLocation.getBlockX() + ChatColor.DARK_GRAY + "," +
+                ChatColor.GRAY + targetLocation.getBlockY() + ChatColor.DARK_GRAY + "," +
+                ChatColor.GRAY + targetLocation.getBlockZ() + ChatColor.DARK_GRAY, 6);
         }
         createActionContext(context, sourceEntity, sourceLocation, targetEntity, targetLocation);
         return startActions();
