@@ -834,6 +834,7 @@ wolf:
     - emerald_block
     - erase@16
     - glass
+    - sea_lantern
     - glowstone
     - gold_block
     - grass
@@ -919,6 +920,7 @@ student_upgrade:
     upgrade: true
     hidden: true
     indestructible: false
+    hotbar_count: 2
     xp_max: 100
     xp_regeneration: 10
 apprentice_upgrade:
