@@ -50,7 +50,7 @@ public class PlayerSelectAction extends CompoundAction implements GUIAction
     @Override
     public void clicked(InventoryClickEvent event)
     {
-        int slot = event.getSlot();
+        int slot = event.getRawSlot();
         event.setCancelled(true);
         if (event.getSlotType() == InventoryType.SlotType.CONTAINER)
         {

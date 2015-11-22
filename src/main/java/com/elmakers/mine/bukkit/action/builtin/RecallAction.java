@@ -229,7 +229,7 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
             event.getWhoClicked().closeInventory();
             return;
         }
-        int slot = event.getSlot();
+        int slot = event.getRawSlot();
         if (event.getSlotType() == InventoryType.SlotType.CONTAINER)
         {
             Waypoint waypoint = options.get(slot);
