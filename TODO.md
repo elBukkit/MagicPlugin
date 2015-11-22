@@ -1,9 +1,9 @@
 # TODO
  
+ - Recall still TP's if you pick a spell in the GUI
+ - XP shops broken - SP system?
+ 
  - Need a way to create SP items with amounts, hook up to MagicWorlds chest generator
- - More Towny support:
-   - Add town home to Recall
-   - Auto-plot creation?
 
  - Fix that horrible inv-dupe issue :(
  
@@ -15,8 +15,6 @@
  - Fix shop price scaling
  
  - Try to support projectile hitbox modifiers that aren't cubes
- 
- - Peek is broken??
  
  - Additive Velocity parameter?
  
@@ -32,7 +30,6 @@
  - damage_resistance_protection not working? (Check Fianto Duri in PW configs)
 
  - Spells acting oddly with Copy - Box, Iterate
- - Superdome is a shell :\
    
  - Herobrines - XP exploit?
    hold wand and go to /ma j Fight

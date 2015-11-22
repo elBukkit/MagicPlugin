@@ -1096,6 +1096,7 @@ supershell:
         thickness: 1
         target: select
         type: sphere
+        destructible: destructible_replace
         transparent: transparent_to_construction
     costs:
         mana: 250
@@ -1121,6 +1122,7 @@ superdome:
         target: select
         type: sphere
         orient_dimension_min: 0
+        destructible: destructible_replace
         transparent: transparent_to_construction
     costs:
         mana: 200
@@ -3991,6 +3993,7 @@ superbox:
         thickness: 1
         target: select
         type: cuboid
+        destructible: destructible_replace
         transparent: transparent_to_construction
     costs:
         mana: 400
@@ -4172,6 +4175,8 @@ pickpocket:
         range: 32
         bypass_backfire: true
         check_protection: true
+        bypass_pvp: true
+        bypass_friendly_fire: true
     costs:
         mana: 75
 

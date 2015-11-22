@@ -11,6 +11,7 @@
  - Added SuperGather (old-school Gather), PhaseBackup - admin/dev spells, SuperPhase
  - Add Town support to Recall (Towny)
  - Add CreatePlot action, for automatic Towny plot generation
+ - Fix XP-based shops
 
 ## 5.3.2
 

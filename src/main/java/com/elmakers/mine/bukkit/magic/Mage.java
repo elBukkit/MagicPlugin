@@ -1418,13 +1418,24 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
         float expProgress = player.getExp();
         int expLevel = player.getLevel();
+
+        if (activeWand != null) {
+            if (activeWand.usesXPBar()) {
+                expProgress = activeWand.getStoredXpProgress();
+            }
+            if (activeWand.usesXPNumber()) {
+                expLevel = activeWand.getStoredXpLevel();
+            }
+        }
+
         while ((expProgress > 0 || expLevel > 0) && xp > 0) {
             if (expProgress > 0) {
-                int expAtLevel = (int) (expProgress * (player.getExpToLevel()));
+                float expToLevel = Wand.getExpToLevel(expLevel);
+                int expAtLevel = (int)(expProgress * expToLevel);
                 if (expAtLevel > xp) {
                     expAtLevel -= xp;
                     xp = 0;
-                    expProgress = (float) expAtLevel / (float)Wand.getExpToLevel(expLevel);
+                    expProgress = (float)expAtLevel / expToLevel;
                 } else {
                     expProgress = 0;
                     xp -= expAtLevel;
