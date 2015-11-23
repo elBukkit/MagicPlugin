@@ -293,10 +293,7 @@ public class MagicCommandExecutor extends MagicMapExecutor {
 				String names = "";
 				if (pendingBatches.size() > 0) {
 					for (Batch batch : pendingBatches) {
-						if (batch instanceof SpellBatch) {
-							names = names + ((SpellBatch)batch).getSpell().getName() + " ";
-						}
-
+						names = names + batch.getName() + " ";
 						totalSize += batch.size();
 						totalRemaining = batch.remaining();
 					}
