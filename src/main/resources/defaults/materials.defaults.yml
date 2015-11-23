@@ -407,6 +407,7 @@ attachable:
 - dark_oak_door
 - standing_banner
 - cocoa
+- bed_block
 
 # Things that can specifically be attached to walls. 
 # this will be a more complex check in construction, otherwise
@@ -425,6 +426,7 @@ attachable_wall:
 - wall_banner
 - cocoa
 - cactus
+- bed_block
 
 # Things that double-stack like doors and tall plants
 attachable_double:
