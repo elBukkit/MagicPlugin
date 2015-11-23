@@ -17,6 +17,7 @@ public class UndoBatch implements com.elmakers.mine.bukkit.api.batch.UndoBatch {
     protected boolean applyPhysics = false;
     protected UndoList undoList;
     protected int listSize;
+    protected double partialWork = 0;
 
     private final Set<Material> attachables;
 
@@ -60,6 +61,16 @@ public class UndoBatch implements com.elmakers.mine.bukkit.api.batch.UndoBatch {
 
     public int process(int maxBlocks) {
         int processedBlocks = 0;
+        double undoSpeed = undoList.getUndoSpeed();
+        if (undoSpeed > 0) {
+            partialWork += undoSpeed;
+            if (partialWork > 1) {
+                maxBlocks = (int)Math.floor(partialWork);
+                partialWork = partialWork - maxBlocks;
+            } else {
+                return 0;
+            }
+        }
         while (undoList.size() > 0 && processedBlocks < maxBlocks) {
             BlockData undone = undoList.undoNext(applyPhysics);
             if (undone == null) {

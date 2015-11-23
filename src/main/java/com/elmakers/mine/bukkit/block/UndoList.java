@@ -72,6 +72,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
     protected final long			createdTime;
     protected long					modifiedTime;
     protected long                  scheduledTime;
+    protected double                speed = 0;
 
     protected Spell                 spell;
     protected Batch                 batch;
@@ -912,5 +913,13 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
     public static void unregisterReflective(Block block) {
         if (block == null) return;
         reflective.remove(com.elmakers.mine.bukkit.block.BlockData.getBlockId(block));
+    }
+
+    public double getUndoSpeed() {
+        return speed;
+    }
+
+    public void setUndoSpeed(double speed) {
+        this.speed = speed;
     }
 }

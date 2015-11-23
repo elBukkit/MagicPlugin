@@ -25,6 +25,7 @@ public abstract class UndoableSpell extends TargetingSpell {
     private Set<EntityType> undoEntityTypes     	= null;
     private boolean 		bypassUndo				= false;
     private int	 			autoUndo				= 0;
+    private double          undoSpeed               = 0;
 
     @Override
     public void processParameters(ConfigurationSection parameters)
@@ -36,6 +37,7 @@ public abstract class UndoableSpell extends TargetingSpell {
         autoUndo = parameters.getInt("undo", 0);
         autoUndo = parameters.getInt("u", autoUndo);
         bypassUndo = parameters.getBoolean("bypass_undo", false);
+        undoSpeed = parameters.getDouble("undo_speed", 0);
         if (parameters.contains("entity_undo_types"))
         {
             undoEntityTypes = new HashSet<EntityType>();
@@ -153,6 +155,7 @@ public abstract class UndoableSpell extends TargetingSpell {
             modifiedBlocks.setEntityUndoTypes(undoEntityTypes);
             modifiedBlocks.setBypass(bypassUndo);
             modifiedBlocks.setScheduleUndo(autoUndo);
+            modifiedBlocks.setUndoSpeed(undoSpeed);
         }
     }
 
