@@ -14,6 +14,7 @@
  - Crafting once again gives you the "default" wand, not "beginner". Default wand changed to
    include the Magic Missile spell.
  - Wand crafting recipe changed from "beginner" to "wand"
+ - Updated PreciousStones integration to latest version (unfortunately NOT backwards compatible!)
 
 ## 5.2.2
 

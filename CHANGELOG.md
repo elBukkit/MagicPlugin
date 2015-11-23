@@ -12,6 +12,7 @@
  - Add Town support to Recall (Towny)
  - Add CreatePlot action, for automatic Towny plot generation
  - Fix XP-based shops
+ - Update to work against latest PreciousStones
 
 ## 5.3.2
 
