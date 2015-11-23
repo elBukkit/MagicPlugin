@@ -1,7 +1,6 @@
 # TODO
  
- - Recall still TP's if you pick a spell in the GUI
- - XP shops broken - SP system?
+ - Portal spell is broken
  
  - Need a way to create SP items with amounts, hook up to MagicWorlds chest generator
 

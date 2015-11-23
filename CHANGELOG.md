@@ -13,6 +13,7 @@
  - Add CreatePlot action, for automatic Towny plot generation
  - Fix XP-based shops
  - Update to work against latest PreciousStones
+ - Added "undo_speed" parameter, many spells that break blocks no undo slowly instead of all at once.
 
 ## 5.3.2
 

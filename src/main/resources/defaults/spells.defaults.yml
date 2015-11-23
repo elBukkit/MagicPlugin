@@ -1445,6 +1445,7 @@ boom:
         size: 2
         cooldown: 2000
         undo: 3000
+        undo_speed: 0.5
     costs:
         mana: 50
 
@@ -1581,6 +1582,7 @@ nuke:
         radius: 8
         skip: 16
         delay: 1
+        undo_speed: 2
     costs:
         mana: 200
 
@@ -1760,7 +1762,6 @@ smite:
     category: elemental
     pvp_restricted: true
     worth_sp: 500
-    worth_sp: 10
     actions:
         cast:
         - class: Lightning
@@ -1800,6 +1801,7 @@ smite:
         brush: air
         undo: 10000
         oty: -2
+        undo_speed: 0.5
     costs:
         mana: 100
 
@@ -2294,6 +2296,7 @@ icbm:
         cooldown: 10000
         start: 1
         break_blocks: true
+        undo_speed: 0.5
     costs:
         mana: 100
 
@@ -2571,6 +2574,7 @@ meteor:
         direction: 0,0.75,0
         destructible: destructible,destructible2,destructible3
         destructible_override: true
+        undo_speed: 0.5
     costs:
         mana: 100
 
@@ -3174,6 +3178,7 @@ portal:
         range: 32
         cooldown: 5000
         undo: 10000
+        destructible: destructible_replace
     costs:
         mana: 20
 
@@ -3731,6 +3736,7 @@ pillar:
         range: 64
         transparent: transparent_to_construction
         direction: up
+        destructible: destructible_replace
     costs:
         mana: 5
 
@@ -4233,6 +4239,7 @@ blast:
         destructible_override: true
         select_self: false
         physics_blocks: true
+        undo_speed: 0.5
     costs:
         mana: 45
 
@@ -4348,6 +4355,7 @@ earthquake:
         skip: 8
         target_self: true
         cooldown: 20000
+        undo_speed: 0.5
     costs:
         mana: 150
 
@@ -4394,6 +4402,9 @@ superblast:
         type: sphere
         transparent: transparent_to_construction
         check_destructible: false
+        speed: 0.9
+        direction: 0,0.8,0
+        falling: true
     costs:
         mana: 100
 
@@ -4503,6 +4514,7 @@ collapse:
         cooldown: 8000
         select_self: false
         physics_blocks: true
+        undo_speed: 1
     costs:
         mana: 50
 
@@ -4708,6 +4720,7 @@ breach:
         radius: 2
         type: sphere
         cooldown: 15000
+        undo_speed: 0.2
     costs:
         mana: 50
 
@@ -4753,6 +4766,7 @@ peek:
         brush: glass
         radius: 0
         cooldown: 5000
+        undo_speed: 0.5
     costs:
         mana: 30
 
@@ -5742,6 +5756,7 @@ laser:
         cooldown: 10000
         delay: 250
         repeat: 10
+        undo_speed: 0.5
     costs:
         mana: 120
 
@@ -6106,6 +6121,7 @@ fireball:
         cooldown: 10000
         start: 1
         break_blocks: true
+        undo_speed: 1
     costs:
         mana: 40
 
@@ -8498,6 +8514,7 @@ wave:
         falling: true
         undo: 15000
         damage: 0.5
+        undo_speed: 0.5
     costs:
         mana: 150
 
