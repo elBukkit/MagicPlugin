@@ -49,6 +49,11 @@ public abstract class BlockSpell extends UndoableSpell {
         return destructible.contains(block.getType());
     }
 
+    public Set<Material> getDestructible() {
+        if (destructible != null) return destructible;
+        return controller.getDestructibleMaterials();
+    }
+
     public boolean areAnyDestructible(Block block)
     {
         if (isIndestructible(block)) return false;
