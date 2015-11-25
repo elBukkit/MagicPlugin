@@ -5487,10 +5487,12 @@ lava:
     worth_sp: 200
     earns_sp: 5
     actions:
-        cast:
-        -  class: Line
-           actions:
-           -  class: ModifyBlock
+      cast:
+      - class: DisablePhysics
+      - class: Line
+        actions:
+        - class: ModifyBlock
+        - class: Delay
     effects:
         cast:
         -  class: EffectSingle
@@ -5502,12 +5504,14 @@ lava:
         target_type: LivingEntity
         transparent: transparent_to_construction
         allow_max_range: true
-        range: 16
-        size: 16
-        brush: lava
+        range: 8
+        size: 8
+        brush: stationary_lava
         increment_data: true
         undo: 200
         cooldown: 5000
+        destructible: destructible_replace
+        delay: 1
     costs:
         mana: 65
 
@@ -5521,31 +5525,34 @@ stream:
     worth_sp: 150
     earns_sp: 4
     actions:
-        cast:
-        -  class: DisablePhysics
-        -  class: Line
-           actions:
-           -  class: ModifyBlock
-        -  class: Damage
-        -  class: Velocity
+      cast:
+      - class: DisablePhysics
+      - class: Line
+        actions:
+        - class: ModifyBlock
+        - class: AreaOfEffect
+          actions:
+          - class: Damage
+          - class: Velocity
+        - class: Delay
     effects:
-        cast:
-        -  class: EffectSingle
-           sound: water
+      cast:
+      - class: EffectSingle
+        sound: water
     parameters:
-        target_type: LivingEntity
-        allow_max_range: true
-        check_destructible: true
-        destructible: destructible_replace
-        range: 4
-        size: 4
-        brush: stationary_water
-        increment_data: false
-        undo: 2000
-        duration: 3000
-        player_damage: 1
-        entity_damage: 2
-        cooldown: 5000
+      target: none
+      reorient: true
+      target_type: LivingEntity
+      radius: 2
+      size: 8
+      brush: stationary_water
+      increment_data: true
+      undo: 800
+      player_damage: 1
+      entity_damage: 2
+      cooldown: 5000
+      delay: 1
+      destructible: destructible_replace
     costs:
         mana: 30
 
@@ -5616,6 +5623,7 @@ iterate:
         range: 64
         size: 32
         increment_data: false
+        destructible: destructible_replace
     costs:
         mana: 50
 
@@ -5642,6 +5650,7 @@ column:
         reverse: true
         increment_data: false
         orient: true
+        destructible: destructible_replace
     costs:
         mana: 200
 
@@ -5655,9 +5664,10 @@ flamethrower:
         cast:
         -  class: Line
            actions:
-           -  class: Cover
-              actions:
-              -  class: Burn
+           - class: Cover
+             actions:
+             - class: Burn
+           - class: Delay
     effects:
         cast:
         -  class: EffectSingle
@@ -5677,6 +5687,8 @@ flamethrower:
         require_blocks: true
         undo: 5000
         cooldown: 2000
+        destructible: destructible_replace
+        delay: 100
     costs:
         mana: 100
 
