@@ -3162,7 +3162,7 @@ public Set<Material> getMaterialSet(String name)
     @Override
     public boolean canTarget(Entity attacker, Entity entity)
     {
-        return townyManager.canTarget(attacker, entity);
+        return preciousStonesManager.canTarget(attacker, entity) && townyManager.canTarget(attacker, entity);
     }
 
     @Override

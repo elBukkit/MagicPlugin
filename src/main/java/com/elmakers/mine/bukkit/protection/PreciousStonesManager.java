@@ -7,7 +7,13 @@ import net.sacredlabyrinth.Phaed.PreciousStones.field.Field;
 import net.sacredlabyrinth.Phaed.PreciousStones.field.FieldFlag;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Ageable;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Golem;
+import org.bukkit.entity.Monster;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Villager;
+import org.bukkit.entity.WaterMob;
 import org.bukkit.plugin.Plugin;
 
 import java.util.List;
@@ -103,4 +109,72 @@ public class PreciousStonesManager implements BlockBuildManager, BlockBreakManag
     public boolean hasBreakPermission(Player player, Block block) {
         return hasBuildPermission(player, block);
     }
+
+	public boolean canTarget(Entity source, Entity target ) {
+		if (!enabled || target == null)
+		{
+			return true;
+		}
+
+		Player player = (source instanceof Player) ? (Player)source : null;
+		if (target instanceof Ageable)
+		{
+			Field field = preciousStones.getForceFieldManager().getEnabledSourceField(target.getLocation(), FieldFlag.PROTECT_ANIMALS);
+			if (field == null) return true;
+			if (player != null)
+			{
+				if (FieldFlag.PROTECT_ANIMALS.applies(field, player))
+				{
+					return false;
+				}
+			}
+			else
+			{
+				if (field.hasFlag(FieldFlag.PROTECT_ANIMALS))
+				{
+					return false;
+				}
+			}
+		}
+		else if (target instanceof Villager)
+		{
+			Field field = preciousStones.getForceFieldManager().getEnabledSourceField(target.getLocation(), FieldFlag.PROTECT_VILLAGERS);
+			if (field == null) return true;
+			if (player != null)
+			{
+				if (FieldFlag.PROTECT_VILLAGERS.applies(field, player))
+				{
+					return false;
+				}
+			}
+			else
+			{
+				if (field.hasFlag(FieldFlag.PROTECT_VILLAGERS))
+				{
+					return false;
+				}
+			}
+		}
+		else if (target instanceof Monster || target instanceof Golem || target instanceof WaterMob)
+		{
+			Field field = preciousStones.getForceFieldManager().getEnabledSourceField(target.getLocation(), FieldFlag.PROTECT_MOBS);
+			if (field == null) return true;
+			if (player != null)
+			{
+				if (FieldFlag.PROTECT_MOBS.applies(field, player))
+				{
+					return false;
+				}
+			}
+			else
+			{
+				if (field.hasFlag(FieldFlag.PROTECT_MOBS))
+				{
+					return false;
+				}
+			}
+		}
+
+		return true;
+	}
 }

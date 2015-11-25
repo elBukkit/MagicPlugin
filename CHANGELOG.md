@@ -14,6 +14,7 @@
  - Fix XP-based shops
  - Update to work against latest PreciousStones
  - Added "undo_speed" parameter, many spells that break blocks no undo slowly instead of all at once.
+ - Spells respect PreciousStones protect_mob/villager/animal flags
 
 ## 5.3.2
 
