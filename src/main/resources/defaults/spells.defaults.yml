@@ -3712,6 +3712,7 @@ bridge:
     parameters:
         target: none
         transparent: transparent_to_construction
+        destructible: destructible_replace
     costs:
         mana: 5
 
@@ -3813,6 +3814,7 @@ grenade:
         fuse: 60
         undo: 20000
         cooldown: 2000
+        undo_speed: 0.2
     costs:
         mana: 40
 
@@ -7626,7 +7628,7 @@ secure:
     category: utility
     upgrade_required_path: master
     upgrade_required_casts: 10
-    worth_sp: 500
+    worth_sp: 150
     earns_sp: 10
     actions:
        cast:

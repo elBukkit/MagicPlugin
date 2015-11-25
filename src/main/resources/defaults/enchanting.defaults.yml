@@ -211,7 +211,6 @@ student:
       mine: 0,5,30
       chop: 0,5,30
       shell: 1,20,30
-      tag: 1,4,5
       blob: 1,20,30
       entangle: 0,0,20
       tracking: 5,10,30
@@ -450,6 +449,7 @@ engineer:
       place: 0,1,5
       levitate: 0,0,10
       tree: 0,2,10
+      tag: 1,4,5
     material_count:
       1: 50, 20, 20
       2: 1,  10,  30

@@ -1,7 +1,5 @@
 # TODO
  
- - Portal spell is broken
- 
  - Need a way to create SP items with amounts, hook up to MagicWorlds chest generator
 
  - Fix that horrible inv-dupe issue :(
