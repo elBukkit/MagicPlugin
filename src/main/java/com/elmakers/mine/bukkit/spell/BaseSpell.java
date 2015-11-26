@@ -1393,7 +1393,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
 
     @Override
     public boolean canTarget(Entity entity) {
-        if (!bypassPvpRestriction)
+        if (!bypassPvpRestriction && entity instanceof Player)
         {
             Player magePlayer = mage.getPlayer();
             if (magePlayer != null)
