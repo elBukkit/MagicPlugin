@@ -292,4 +292,6 @@ public interface MageController {
     public boolean isSPEnabled();
     public int getSPMaximum();
     public void deleteMage(final String id);
+    public void disableItemSpawn();
+    public void enableItemSpawn();
 }
