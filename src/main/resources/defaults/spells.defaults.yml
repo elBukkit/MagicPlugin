@@ -2913,7 +2913,6 @@ monster:
         spider: 110
         creeper: 30
         witch: 20
-        slime: 20
         blaze: 15
         bat: 15
         magma_cube: 10
@@ -3813,7 +3812,7 @@ grenade:
         size: 2
         fuse: 60
         undo: 20000
-        cooldown: 2000
+        cooldown: 10000
         undo_speed: 0.2
     costs:
         mana: 40
@@ -3848,7 +3847,8 @@ cluster:
         fuse: 60
         fire: false
         undo: 20000
-        cooldown: 10000
+        cooldown: 15000
+        undo_speed: 0.2
     costs:
         mana: 150
 
@@ -3878,8 +3878,9 @@ bomb:
         count: 12
         py: ~20
         pdy: -0.75
-        undo: 10000
-        cooldown: 8000
+        undo: 20000
+        cooldown: 12000
+        undo_speed: 0.2
     costs:
         mana: 250
 
