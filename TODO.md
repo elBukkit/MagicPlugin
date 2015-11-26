@@ -3,7 +3,6 @@
  - Pollinate is semi-broken.. fails?
  - Shuriken is broken, too
  - Apparate goes through destructible blocks?
- - Immobolus cast on someone means you can hit them with your wand.. ?
  - Automata hit themselves with Shell?
  - Need a way to create SP items with amounts, hook up to MagicWorlds chest generator
 
