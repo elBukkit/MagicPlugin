@@ -1399,6 +1399,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
             if (magePlayer != null)
             {
                 if (!controller.isPVPAllowed(magePlayer, entity.getLocation())) return false;
+                if (!controller.isPVPAllowed(magePlayer, mage.getLocation())) return false;
             }
         }
         if (!bypassProtection && !bypassFriendlyFire)
