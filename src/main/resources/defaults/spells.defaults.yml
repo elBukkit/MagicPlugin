@@ -8437,11 +8437,8 @@ shuriken:
              particle: redstone
              radius: 8
     parameters:
-        set_target: true
         projectile: Arrow
         cooldown: 30000
-        repeat: 5
-        delay: 1
         speed: 3
         damage: 2
         size: 1
