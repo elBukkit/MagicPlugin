@@ -3894,11 +3894,13 @@ public Set<Material> getMaterialSet(String name)
         }
     }
 
+    @Override
     public void disableItemSpawn()
     {
         entityController.setDisableItemSpawn(true);
     }
 
+    @Override
     public void enableItemSpawn()
     {
         entityController.setDisableItemSpawn(false);

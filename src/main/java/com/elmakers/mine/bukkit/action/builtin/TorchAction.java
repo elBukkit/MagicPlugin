@@ -13,12 +13,14 @@ import org.bukkit.configuration.ConfigurationSection;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Set;
 
 public class TorchAction extends BaseSpellAction
 {
     private Material torchType;
     private boolean allowLightstone;
     private boolean useLightstone;
+	private Set<Material> slippery;
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters) {
@@ -27,6 +29,13 @@ public class TorchAction extends BaseSpellAction
         allowLightstone = parameters.getBoolean("allow_glowstone", false);
         useLightstone = parameters.getBoolean("glowstone_torch", false);
     }
+
+	@Override
+	public void initialize(Spell spell, ConfigurationSection parameters)
+	{
+		super.initialize(spell, parameters);
+		slippery = spell.getController().getMaterialSet(parameters.getString("not_attachable", "not_attachable"));
+	}
 
 	@Override
 	public SpellResult perform(CastContext context) {
@@ -42,8 +51,7 @@ public class TorchAction extends BaseSpellAction
 			return SpellResult.INSUFFICIENT_PERMISSION;
 		}
 
-		boolean isAttachmentSlippery = target.getType() == Material.GLASS || target.getType() == Material.ICE;
-		if (isAttachmentSlippery)
+		if (slippery != null && slippery.contains(target.getType()))
 		{
 			return SpellResult.NO_TARGET;
 		}
@@ -117,7 +125,17 @@ public class TorchAction extends BaseSpellAction
 		}
 
 		context.registerForUndo(target);
-		targetMaterial.modify(target);
+		context.getController().disableItemSpawn();
+		try {
+			targetMaterial.modify(target);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		context.getController().enableItemSpawn();
+		if (targetMaterial.getMaterial() != target.getType())
+		{
+			return SpellResult.NO_TARGET;
+		}
 
 		return SpellResult.CAST;
 	}
