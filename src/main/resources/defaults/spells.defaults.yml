@@ -6680,13 +6680,15 @@ pollinate:
               -  class: Spread
                  actions:
                  -  class: ThrowItem
-        - class: ThrowItem
+        - class: Brush
           actions:
-          - class: Disc
+          - class: ThrowItem
             actions:
-            - class: Cover
+            - class: Disc
               actions:
-              - class: Flower
+              - class: Cover
+                actions:
+                - class: Flower
     effects:
         cast:
         -  class: EffectSingle
@@ -6716,6 +6718,7 @@ pollinate:
         item_speed_max: 1.1
         yaw_max: 30
         pitch_max: 2
+        uses_brush: false
         brushes:
         - yellow_flower
         - red_rose

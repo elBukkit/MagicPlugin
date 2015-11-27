@@ -1,6 +1,5 @@
 # TODO
  
- - Pollinate is semi-broken.. fails?
  - Shuriken is broken, too
  - Apparate goes through destructible blocks?
  - Automata hit themselves with Shell?
