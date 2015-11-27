@@ -39,6 +39,7 @@ public class ProjectileAction  extends BaseProjectileAction
     private int tickIncrease;
     private String projectileTypeName;
     private int startDistance;
+	private boolean useWandLocation;
 
     @Override
     public void initialize(Spell spell, ConfigurationSection parameters) {
@@ -73,6 +74,7 @@ public class ProjectileAction  extends BaseProjectileAction
         projectileTypeName = parameters.getString("projectile", "Arrow");
         breakBlocks = parameters.getBoolean("break_blocks", false);
         startDistance = parameters.getInt("start", 0);
+		useWandLocation = parameters.getBoolean("use_wand_location", true);
     }
 
 	@Override
@@ -98,8 +100,14 @@ public class ProjectileAction  extends BaseProjectileAction
 		}
 		
 		// Prepare parameters
-		Location location = context.getEyeLocation();
-		Vector direction = context.getDirection().normalize();
+		Location location = useWandLocation ? context.getWandLocation() : context.getEyeLocation();
+		Location targetLocation = context.getTargetLocation();
+		Vector direction;
+		if (targetLocation != null) {
+			direction = targetLocation.toVector().subtract(location.toVector()).normalize();
+		} else {
+			direction = context.getDirection().clone().normalize();
+		}
 
         if (startDistance > 0) {
             location = location.clone().add(direction.clone().multiply(startDistance));
