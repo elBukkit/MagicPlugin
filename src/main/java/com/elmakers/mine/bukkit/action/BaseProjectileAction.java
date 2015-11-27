@@ -91,7 +91,7 @@ public abstract class BaseProjectileAction extends CompoundAction {
                     context.getMage().sendDebugMessage(ChatColor.GREEN + "Projectile hit " + ChatColor.GOLD + targetEntity.getType());
                 }
                 entity.removeMetadata("hit", plugin);
-                createActionContext(context, entity, entity.getLocation(), targetEntity, targetLocation);
+                createActionContext(context, context.getMage().getEntity(), entity.getLocation(), targetEntity, targetLocation);
                 actionContext.playEffects("hit");
                 SpellResult result = startActions();
                 if (targetEntity != null) {
