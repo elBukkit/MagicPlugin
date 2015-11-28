@@ -959,6 +959,12 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
 
     public boolean cast(ConfigurationSection extraParameters, Location defaultLocation)
     {
+        if (mage.getDebugLevel() > 5 && extraParameters != null) {
+            Collection<String> keys = extraParameters.getKeys(false);
+            if (keys.size() > 0) {
+                mage.sendDebugMessage(ChatColor.BLUE + "Cast " + ChatColor.GOLD + getName() + " " + ChatColor.GREEN + ConfigurationUtils.getParameters(extraParameters));
+            }
+        }
         this.reset();
 
         Location location = mage.getLocation();
