@@ -603,14 +603,14 @@ worm:
         "blast target self commit true radius 12 speed -0^2 destructible $birth,command,redstone_block check_destructible true": 100,100,100
         "blast target self commit true radius 12 speed -0^5 destructible $birth,command,redstone_block check_destructible true": 20,50,200
     cast:
-        "blob brush stained_glass:15 radius 3 type sphere check_destructible true undo 5000 transparent air,$birth,redstone_block": 50,100,200
-        "curse transparent air,$birth,redstone_block": 100,100,200
+        "blob brush stained_glass:15 radius 3 type sphere check_destructible true undo 5000 transparent air,$birth,redstone_block,command": 50,100,200
+        "curse transparent air,$birth,redstone_block,command": 100,100,200
         "shrink transparent air,$birth,command,redstone_block": 30,50,70
-        "push transparent air,$birth,redstone_block": 100,100,100
-        "blob brush stained_glass:15 radius 2 type sphere check_destructible true undo 5000 transparent air,$birth,redstone_block": 20,40,80
-        "lava transparent air,$birth,redstone_block": 0,10,20
-        "lightning transparent air,$birth,redstone_block": 0,10,20
-        "shell brush stained_glass:15 radius 3 type sphere check_destructible true undo 7000 transparent air,$birth,redstone_block": 20,40,80
+        "push transparent air,$birth,redstone_block,command": 100,100,100
+        "blob brush stained_glass:15 radius 2 type sphere check_destructible true undo 5000 transparent air,$birth,redstone_block,command": 20,40,80
+        "lava transparent air,$birth,redstone_block,command": 0,10,20
+        "lightning transparent air,$birth,redstone_block,command": 0,10,20
+        "shell brush stained_glass:15 radius 3 type sphere check_destructible true undo 7000 transparent air,$birth,redstone_block,command": 20,40,80
         "none": 20,10,5
     parameters:
         bypass_undo: true
@@ -668,11 +668,11 @@ hunter:
     cast:
         "boom transparent air,$birth,command,redstone_block": 20,40,100
         "shrink transparent air,$birth,command,redstone_block": 30,40,50
-        "pull transparent air,$birth,redstone_block": 100,100,100
-        "curse transparent air,$birth,redstone_block": 100,100,150
-        "blob brush stained_glass:15 radius 2 type sphere check_destructible true undo 5000 transparent air,$birth,redstone_block": 20,40,80
-        "lava transparent air,$birth,redstone_block": 0,10,20
-        "shell brush stained_glass:15 radius 3 type sphere check_destructible true undo 7000 transparent air,$birth,redstone_block": 20,40,80
+        "pull transparent air,$birth,redstone_block,command": 100,100,100
+        "curse transparent air,$birth,redstone_block,command": 100,100,150
+        "blob brush stained_glass:15 radius 2 type sphere check_destructible true undo 5000 transparent air,$birth,redstone_block,command": 20,40,80
+        "lava transparent air,$birth,redstone_block,command": 0,10,20
+        "shell brush stained_glass:15 radius 3 type sphere check_destructible true undo 7000 transparent air,$birth,redstone_block,command": 20,40,80
         "none": 300,200,50
     parameters:
         bypass_undo: true
@@ -708,7 +708,7 @@ defender:
         -  class: EffectTrail
            effect: step_sound
     cast:
-        "convert brush stained_glass|1 radius 3 check_destructible true undo 5000 transparent air,$birth,redstone_block": 100
+        "convert brush stained_glass|1 radius 3 check_destructible true undo 5000 transparent air,$birth,redstone_block,command": 100
         "none": 1000
     death_cast:
         "collapse target self commit true radius 7 check_destructible true destructible $birth,command,redstone_block": 100

@@ -1,7 +1,7 @@
 # TODO
  
  - Apparate goes through destructible blocks?
- - Automata hit themselves with Shell?
+ - Automata don't resume anymore
  - Need a way to create SP items with amounts, hook up to MagicWorlds chest generator
  - Look at radius=1 (e.g. Reflect lvl 2)- too big?
 
