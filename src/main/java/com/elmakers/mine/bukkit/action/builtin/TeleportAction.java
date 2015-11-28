@@ -59,9 +59,16 @@ public class TeleportAction extends BaseTeleportAction
 		}
 
 		Block target = context.getTargetBlock();
+		Block source = context.getEyeLocation().getBlock();
 		Block face = context.getPreviousBlock();
 
 		if (target == null)
+		{
+			return SpellResult.NO_TARGET;
+		}
+
+		// Special-case to prevent passthrough of half-width blocks
+		if (!autoPassthrough && target.getX() == source.getX() && target.getY() == source.getY() && target.getZ() == source.getZ())
 		{
 			return SpellResult.NO_TARGET;
 		}
