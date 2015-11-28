@@ -23,6 +23,7 @@ import com.elmakers.mine.bukkit.api.data.SpellData;
 import com.elmakers.mine.bukkit.api.data.UndoData;
 import com.elmakers.mine.bukkit.api.effect.SoundEffect;
 import com.elmakers.mine.bukkit.api.spell.SpellKey;
+import com.elmakers.mine.bukkit.api.wand.WandUpgradePath;
 import com.elmakers.mine.bukkit.effect.HoloUtils;
 import com.elmakers.mine.bukkit.effect.Hologram;
 import com.elmakers.mine.bukkit.spell.ActionSpell;
@@ -2141,6 +2142,11 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     }
 
     @Override
+    public boolean isAtMaxSkillPoints() {
+        return getSkillPoints() >= controller.getSPMaximum();
+    }
+
+    @Override
     public int getSkillPoints() {
         if (data.contains(SKILL_POINT_KEY)) {
             // .. I thought Configuration section would auto-convert? I guess not!
@@ -2185,6 +2191,16 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     @Override
     public com.elmakers.mine.bukkit.api.wand.Wand getBoundWand(String template) {
         return boundWands.get(template);
+    }
+
+    @Override
+    public WandUpgradePath getBoundWandPath(String templateKey) {
+        com.elmakers.mine.bukkit.api.wand.Wand boundWand = boundWands.get(templateKey);
+        if (boundWand != null) {
+            return boundWand.getPath();
+        }
+
+        return null;
     }
 }
 
