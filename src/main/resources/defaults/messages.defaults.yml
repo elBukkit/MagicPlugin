@@ -546,7 +546,7 @@ spells:
         upgrade_description: "&r&b&bull; &6Increased chance of damage"
     shuriken:
         name: Shuriken
-        description: Throw an exploding star
+        description: Throw a bouncing projectile
         upgrade_description: "&r&b&bull; &6Increased damage"
     wave:
         name: Wave

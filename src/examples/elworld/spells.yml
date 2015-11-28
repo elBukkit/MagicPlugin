@@ -393,55 +393,5 @@ napalm:
     costs:
         mana: 555
 
-rainbow:
-    parameters:
-       undo: 10000
-    costs:
-       mana: 30
 
-fireblast:
-   icon: ink_sack:1
-   icon_url: http://textures.minecraft.net/texture/44a760e06345bd9edd2475d6469dfb952278ca3ec7634aa334e1d7bfcc8644f
-   category: firebending
-   worth: 100
-   actions:
-       cast:
-       - class: CustomProjectile
-         actions:
-         - class: Damage
-         - class: Velocity
-   effects:
-       cast:
-       - class: EffectSingle
-         location: origin
-         effectlib:
-           class: ConeEffect
-           iterations: 3
-           particle: flame
-       tick:
-       - particle: flame
-         location: target
-         particle_count: 1
-         particle_offset_x: 0
-         particle_offset_y: 0
-         particle_offset_z: 0
-       hit:
-       - class: EffectSingle
-         location: target
-         effectlib:
-           class: SphereEffect
-           particle: flame
-           iterations: 3
-           radius: 1
-   parameters:
-       target: none
-       target_type: LivingEntity
-       player_damage: 2
-       entity_damage: 4
-       cooldown: 0
-       speed: 1
-       interval: 250
-       size: 3
-   costs:
-       mana: 10
 

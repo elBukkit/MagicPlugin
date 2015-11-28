@@ -7427,7 +7427,7 @@ stun:
         projectile:
         -  class: EffectSingle
            location: origin
-           colorOverride: color
+           color_override: color
            effectlib:
              class: SmokeEffect
              iterations: 16
@@ -8424,61 +8424,64 @@ shuriken:
     upgrade_required_path: master
     upgrade_required_casts: 50
     worth_sp: 200
-    earns_sp: 10
+    earns_sp: 12
     actions:
         cast:
-        -  class: Projectile
+        -  class: CustomProjectile
            actions:
-           -  class: Explosion
-              ignore_result: true
            -  class: AreaOfEffect
               actions:
               - class: Damage
     effects:
+        tick:
+        -  particle: redstone
+           location: target
         projectile:
         -  class: EffectSingle
            location: origin
            sound: magic.shimmer_quiet
+           color_override: color
            effectlib:
              class: HelixEffect
-             iterations: 8
-             period: 2
-             radius: 0.2
+             duration: 2000
+             period: 1
+             radius: 0.5
              strands: 3
              particles: 10
-             particle: redstone
+             particle: spell_mob
         hit:
         -  class: EffectSingle
-           sound: shimmer_big
-           location: origin
+           sound: magic.shimmer_big
+           location: target
+           color_override: color
            effectlib:
              class: HelixEffect
              particle: redstone
-             radius: 8
+             radius: $radius
+             iterations: 1
     parameters:
-        projectile: Arrow
-        cooldown: 30000
-        speed: 3
+        range: 32
+        reflective: building
+        cooldown: 8000
+        velocity: 100
+        gravity: .05
         damage: 2
-        size: 1
         radius: 3
-        undo: 10000
+        lifetime: 10000
     costs:
-        mana: 200
+        mana: 80
 
 shuriken|2:
     upgrade_required_path: master
     upgrade_required_casts: 50
     parameters:
         damage: 3
-        size: 2
         radius: 4
 
 shuriken|3:
     parameters:
-        damage: 3
-        size: 3
-        radius: 4
+        damage: 4
+        radius: 5
 
 wave:
     icon_url: http://textures.minecraft.net/texture/1d7cb6f2a4b2c2059621b7f6f84b5f0bc84c19ce981d054c26cec012ac
