@@ -425,4 +425,5 @@ public interface Mage extends CostReducer {
     public int getSkillPoints();
     public void addSkillPoints(int delta);
     public void setSkillPoints(int sp);
+    public boolean isAtMaxSkillPoints();
 }
