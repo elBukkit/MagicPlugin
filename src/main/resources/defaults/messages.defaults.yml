@@ -228,6 +228,9 @@ worlds:
         name: The Nether
     world_the_end:
         name: The End
+sp:
+    name: "&e$amount &6Skill Points"
+    description: Will be absorbed by your wand
 costs:
     sp_amount: $amount SP
     xp_amount: $amount XP

@@ -2005,6 +2005,20 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         return item != null && WAND_SELF_DESTRUCT_KEY != null && InventoryUtils.hasMeta(item, WAND_SELF_DESTRUCT_KEY);
     }
 
+	public static Integer getSP(ItemStack item) {
+		if (item == null) return null;
+		String spNode = InventoryUtils.getMeta(item, "sp");
+		if (spNode == null) return null;
+		Integer sp = null;
+		try {
+			sp = Integer.parseInt(spNode);
+		} catch (Exception ex) {
+			sp = null;
+		}
+
+		return sp;
+	}
+
     public static boolean isUpgrade(ItemStack item) {
         if (item == null) return false;
         Object wandNode = InventoryUtils.getNode(item, WAND_KEY);
@@ -3141,6 +3155,13 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
                 return true;
             }
 			return this.add(wand);
+		}
+		if (mage != null && !mage.isAtMaxSkillPoints()) {
+			Integer sp = getSP(item);
+			if (sp != null) {
+				mage.addSkillPoints(sp);
+				return true;
+			}
 		}
 		
 		return false;

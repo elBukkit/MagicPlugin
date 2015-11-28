@@ -87,7 +87,7 @@ public class MagicGiveCommandExecutor extends MagicTabExecutor {
             mage.addSkillPoints(count);
             sender.sendMessage("Gave " + count + " skill points to " + player.getName());
             return true;
-        }else {
+        } else {
             Mage mage = api.getMage(player);
             ItemStack item = api.createItem(itemName, mage);
             if (item == null) {

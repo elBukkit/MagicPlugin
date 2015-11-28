@@ -1,9 +1,7 @@
 # TODO
  
- - Apparate goes through destructible blocks?
  - Automata don't resume anymore
- - Need a way to create SP items with amounts, hook up to MagicWorlds chest generator
- - Look at radius=1 (e.g. Reflect lvl 2)- too big?
+ - Maybe add a floor/ceil option to Volume for more control over sizes
 
  - Fix that horrible inv-dupe issue :(
  

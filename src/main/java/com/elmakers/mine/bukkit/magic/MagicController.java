@@ -2103,6 +2103,7 @@ public class MagicController implements MageController {
         maxMana = properties.getInt("max_mana", maxMana);
         maxManaRegeneration = properties.getInt("max_mana_regeneration", maxManaRegeneration);
         worthSkillPoints = properties.getDouble("worth_sp", 1);
+        skillPointIcon = properties.getString("sp_item_icon_url");
         worthBase = properties.getDouble("worth_base", 1);
         worthXP = properties.getDouble("worth_xp", 1);
         ConfigurationSection currencies = properties.getConfigurationSection("currency");
@@ -3690,6 +3691,20 @@ public Set<Material> getMaterialSet(String name)
                     }
                 }
                 itemStack = getSpellBook(category, 1);
+            } else if (magicItemKey.contains("sp:")) {
+                String spAmount = magicItemKey.substring(3);
+                itemStack = InventoryUtils.getURLSkull(skillPointIcon);
+                ItemMeta meta = itemStack.getItemMeta();
+                meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', messages.get("sp.name")).replace("$amount", spAmount));
+                String spDescription = messages.get("sp.description");
+                if (spDescription.length() > 0)
+                {
+                    List<String> lore = new ArrayList<String>();
+                    lore.add(ChatColor.translateAlternateColorCodes('&', spDescription));
+                    meta.setLore(lore);
+                }
+                itemStack.setItemMeta(meta);
+                InventoryUtils.setMeta(itemStack, "sp", spAmount);
             } else if (magicItemKey.contains("spell:")) {
                 String spellKey = magicItemKey.substring(6);
                 itemStack = createSpellItem(spellKey);
@@ -4127,6 +4142,7 @@ public Set<Material> getMaterialSet(String name)
     private int								    maxManaRegeneration        	    = 100;
     private double                              worthBase                       = 1;
     private double                              worthSkillPoints                = 1;
+    private String                              skillPointIcon                  = null;
     private double                              worthXP                         = 1;
     private CurrencyItem                        currencyItem                    = null;
     private boolean                             spEnabled                       = true;
