@@ -371,18 +371,19 @@ public class Targeting {
             return;
         }
 
+        currentBlock = source.getBlock();
+        if (context.isTargetable(currentBlock)) {
+            result = TargetingResult.BLOCK;
+            return;
+        }
+
         // Pre-check for no block movement
         Location targetLocation = source.clone().add(source.getDirection().multiply(range));
         if (targetLocation.getBlockX() == source.getBlockX() &&
             targetLocation.getBlockY() == source.getBlockY() &&
             targetLocation.getBlockZ() == source.getBlockZ()) {
 
-            currentBlock = source.getBlock();
-            if (context.isTargetable(currentBlock)) {
-                result = TargetingResult.BLOCK;
-            } else {
-                result = TargetingResult.MISS;
-            }
+            result = TargetingResult.MISS;
             return;
         }
 
