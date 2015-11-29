@@ -552,7 +552,7 @@ public class WandCommandExecutor extends MagicTabExecutor {
 		wand.organizeInventory(mage);
 		mage.sendMessage(api.getMessages().get("wand.reorganized"));
 		if (sender != player) {
-			sender.sendMessage(api.getMessages().getParameterized("wand.player_reorganized", "$name", player.getName()));
+			sender.sendMessage(api.getMessages().getParameterized("wand.player_reorganized", "$name", player.getName()).replace("$wand", wand.getName()));
 		}
 		
 		return true;
