@@ -411,6 +411,28 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
         }
     }
 
+    protected String getBalanceDescription(CastContext context) {
+        Mage mage = context.getMage();
+        MageController controller = context.getController();
+        Messages messages = controller.getMessages();
+        String description = "";
+        if (isXP) {
+            String xpAmount = Integer.toString(mage.getExperience());
+            description = messages.get("costs.xp_amount").replace("$amount", xpAmount);
+        } else if (isItems) {
+            int itemAmount = getItemAmount(controller, mage);
+            description = formatItemAmount(controller, itemAmount);
+        } else if (isSkillPoints) {
+            String spAmount = Integer.toString(mage.getSkillPoints());
+            description = messages.get("costs.sp_amount").replace("$amount", spAmount);
+        } else {
+            double balance = VaultController.getInstance().getBalance(mage.getPlayer());
+            description = VaultController.getInstance().format(balance);
+        }
+
+        return description;
+    }
+
     public SpellResult showItems(CastContext context, List<ShopItem> items) {
         Mage mage = context.getMage();
         this.context = context;
@@ -470,21 +492,8 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
         }
 
         String inventoryTitle = context.getMessage("title", "Shop ($balance)");
-        if (isXP) {
-            String xpAmount = Integer.toString(mage.getExperience());
-            xpAmount = messages.get("costs.xp_amount").replace("$amount", xpAmount);
-            inventoryTitle = inventoryTitle.replace("$balance", xpAmount);
-        } else if (isItems) {
-            int itemAmount = getItemAmount(controller, mage);
-            inventoryTitle = inventoryTitle.replace("$balance", formatItemAmount(controller, itemAmount));
-        } else if (isSkillPoints) {
-            String spAmount = Integer.toString(mage.getSkillPoints());
-            spAmount = messages.get("costs.sp_amount").replace("$amount", spAmount);
-            inventoryTitle = inventoryTitle.replace("$balance", spAmount);
-        } else {
-            double balance = VaultController.getInstance().getBalance(player);
-            inventoryTitle = inventoryTitle.replace("$balance", VaultController.getInstance().format(balance));
-        }
+        String balanceDescription = getBalanceDescription(context);
+        inventoryTitle = inventoryTitle.replace("$balance", balanceDescription);
 
         int invSize = (int)Math.ceil((float)itemStacks.size() / 9.0f) * 9;
         Inventory displayInventory = CompatibilityUtils.createInventory(null, invSize, inventoryTitle);
