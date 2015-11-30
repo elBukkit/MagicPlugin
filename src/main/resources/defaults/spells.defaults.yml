@@ -6880,6 +6880,7 @@ broom:
         armor_stand_small: false
         mount_invisible: true
         mount_boost_ticks: 100
+        mount_reason: mount
         power_mount_boost_ticks: 500
         mount_health: 2
         power_mount_health: 10
