@@ -3686,6 +3686,7 @@ night:
 
 time:
     hidden: true
+    icon_url: http://textures.minecraft.net/texture/1b5c8c12faec6646fd9cd8c610f138f51fbaaee1182baff8fa4f32d683b25eb
     icon: watch
     category: master
     worth_sp: 400
@@ -4050,6 +4051,37 @@ supercube:
         mana: 400
 
 backup:
+    icon_url: http://textures.minecraft.net/texture/1ba8664ebb95136081e296baa6b384b975ee864e61398a6dfe4915fcafd1f3eb
+    icon: diamond_pickaxe
+    category: engineering
+    cancellable: false
+    class: ConstructSpell
+    worth_sp: 1000
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: piston_retract
+        -  class: EffectTrail
+           effect: ender_signal
+    parameters:
+        allow_max_range: true
+        range: 32
+        max_dimension: 32
+        target: block
+        radius: 5
+        type: cuboid
+        transparent: transparent_to_construction
+        brush: clone
+        check_destructible: false
+        brushmod: erase
+        otworld: ~_backup
+        obworld: ~-_backup
+        brushtarget: true
+        bypass_undo: true
+    costs:
+        mana: 100
+
+superbackup:
     icon_url: http://textures.minecraft.net/texture/1ba8664ebb95136081e296baa6b384b975ee864e61398a6dfe4915fcafd1f3eb
     icon: diamond_pickaxe
     category: engineering
@@ -6058,10 +6090,12 @@ levitate:
              location: origin
              color_override: color
              use_wand_location: false
+             use_eye_location: false
              effectlib:
                  class: SphereEffect
                  particle: redstone
-                 radius: 2.5
+                 radius: 1
+                 offset: 0,-0.5,0
         deactivate:
         -  class: EffectSingle
            sound: enderdragon_wings
