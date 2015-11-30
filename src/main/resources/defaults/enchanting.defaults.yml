@@ -204,7 +204,6 @@ student:
       monster: 5,20,30
       lightning: 40,50,30
       lava: 5,20,50
-      portal: 0,0,25
       stream: 0,10,30
       flamethrower: 0,5,10
       wither: 5,10,20
@@ -362,7 +361,6 @@ master:
       kill: 2,10,20
       torture: 2,10,20
       petrify: 0,10,30
-      anvil: 0,0,10
       singularity: 0,1,5
       tornado: 1,10,15
       ghast: 0,0,5
@@ -450,6 +448,8 @@ engineer:
       place: 0,1,5
       levitate: 0,0,10
       tree: 0,2,10
+      portal: 0,0,25
+      anvil: 0,0,10
     material_count:
       1: 50, 20, 20
       2: 1,  10,  30

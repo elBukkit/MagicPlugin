@@ -190,7 +190,7 @@ silence:
     icon_url: http://textures.minecraft.net/texture/ad7e09a7af7af5acc286e6a4dd3c2f69b55ace33b7838ca899545570e946ee
     icon: rotten_flesh
     category: dark
-    worth_sp: 200
+    worth_sp: 750
     earns_sp: 10
     actions:
         cast:
@@ -326,7 +326,7 @@ blessing:
     icon: double_plant:5
     icon_url: http://textures.minecraft.net/texture/775c41bd5e4ef3cba5f9bdc5258973c95477e819cb20c163ffb378db5ae3
     category: master
-    worth_sp: 200
+    worth_sp: 700
     earns_sp: 8
     actions:
         cast:
@@ -373,7 +373,7 @@ boon:
     alias: perk
     icon: red_rose:2
     category: utility
-    worth_sp: 60
+    worth_sp: 220
     earns_sp: 6
     upgrade_required_path: beginner
     upgrade_required_casts: 40
@@ -916,7 +916,7 @@ reflect:
     icon_url: http://textures.minecraft.net/texture/38f77caf858c927df996e277cf6e9fbb9b3cd71aa34e4412da4d6312cc8dfc
     icon: iron_helmet
     category: light
-    worth_sp: 200
+    worth_sp: 100
     earns_sp: 5
     upgrade_required_path: student
     upgrade_required_casts: 25
@@ -1394,7 +1394,7 @@ boom:
     icon: fireball
     category: combat
     pvp_restricted: true
-    worth_sp: 100
+    worth_sp: 200
     earns_sp: 3
     upgrade_required_path: apprentice
     upgrade_required_casts: 50
@@ -1464,7 +1464,7 @@ nuke:
     icon_url: http://textures.minecraft.net/texture/f27c497b89fdcbf754b59aaadcc7e49c5217f1677bf9f8803c4cca519b3a2
     icon: skull_item:4
     category: master
-    worth_sp: 1000
+    worth_sp: 2000
     earns_sp: 10
     pvp_restricted: true
     upgrade_required_path: master
@@ -1597,7 +1597,7 @@ frost:
     icon_url: http://textures.minecraft.net/texture/ff39da1c8acc158ee5aa7f0352e4738aefe3365f28841badd603e2ffe42a
     icon: snow_ball
     category: combat
-    worth_sp: 150
+    worth_sp: 200
     earns_sp: 8
     upgrade_required_path: beginner
     upgrade_required_casts: 50
@@ -2002,8 +2002,8 @@ cure:
     upgrade_required_path: student
     upgrade_required_casts: 20
     category: light
-    worth_sp: 80
-    earns_sp: 10
+    worth_sp: 175
+    earns_sp: 20
     actions:
         cast:
         -  class: PotionEffect
@@ -2086,7 +2086,7 @@ heal:
     category: light
     upgrade_required_path: student
     upgrade_required_casts: 50
-    worth_sp: 150
+    worth_sp: 300
     earns_sp: 2
     actions:
         cast:
@@ -2297,7 +2297,7 @@ icbm:
     icon: golden_carrot
     category: demolition
     pvp_restricted: true
-    worth_sp: 800
+    worth_sp: 1500
     earns_sp: 6
     actions:
         cast:
@@ -2367,7 +2367,7 @@ wither:
     icon: skull_item:1
     category: dark
     pvp_restricted: true
-    worth_sp: 250
+    worth_sp: 350
     earns_sp: 10
     actions:
         cast:
@@ -2441,7 +2441,7 @@ gatling:
     icon_url: http://textures.minecraft.net/texture/7134aed98232d9946f9dbd738a37e68f36a9a773a863dde206bb9115b993d78
     icon: bow
     category: combat
-    worth_sp: 150
+    worth_sp: 400
     earns_sp: 5
     actions:
         cast:
@@ -2485,7 +2485,7 @@ meteor:
     icon: double_plant:4
     icon_url: http://textures.minecraft.net/texture/f554672caf6e5335954614fb185acb15148e71423d97d0d5ff6023c247d5eb21
     category: combat
-    worth_sp: 250
+    worth_sp: 1500
     earns_sp: 5
     actions:
         cast:
@@ -2760,7 +2760,7 @@ weather:
     icon_url: http://textures.minecraft.net/texture/cd76c83453ba48a6aceac090ef4e2c8918ecd8891e91621bed2e03fad8a7f6
     icon: water_bucket
     category: elemental
-    worth_sp: 150
+    worth_sp: 500
     earns_sp: 5
     actions:
         cast:
@@ -2794,7 +2794,7 @@ fling:
     icon: feather
     icon_url: http://textures.minecraft.net/texture/7cc2fb583d1762a16a50fa5ac37bc09b46def63e68205116d650391f9233ed
     category: utility
-    worth_sp: 100
+    worth_sp: 400
     earns_sp: 1
     upgrade_required_path: apprentice
     upgrade_required_casts: 50
@@ -3003,7 +3003,7 @@ ghast:
     actions:
       cast:
       - class: SpawnEntity
-    worth_sp: 100
+    worth_sp: 200
     effects:
         cast:
         -  class: EffectSingle
@@ -3331,7 +3331,7 @@ fire:
     icon: flint_and_steel
     category: demolition
     pvp_restricted: true
-    worth_sp: 100
+    worth_sp: 200
     earns_sp: 1
     upgrade_required_path: beginner
     upgrade_required_casts: 40
@@ -3414,7 +3414,7 @@ bubble:
     icon_url: http://textures.minecraft.net/texture/b750768d23e447d95b662344f426cc96228a4047f7a8ced0f4861edbbeaced
     icon: water_bucket
     category: utility
-    worth_sp: 50
+    worth_sp: 100
     earns_sp: 5
     upgrade_required_path: student
     upgrade_required_casts: 50
@@ -3617,7 +3617,7 @@ day:
     icon_url: http://textures.minecraft.net/texture/1b5c8c12faec6646fd9cd8c610f138f51fbaaee1182baff8fa4f32d683b25eb
     icon: emerald
     category: master
-    worth_sp: 300
+    worth_sp: 1000
     earns_sp: 5
     quick_cast: true
     actions:
@@ -3662,7 +3662,7 @@ night:
     icon: ink_sack:0
     category: elemental
     quick_cast: true
-    worth_sp: 250
+    worth_sp: 800
     earns_sp: 5
     actions:
         cast:
@@ -3813,7 +3813,7 @@ grenade:
     alias: frag
     category: demolition
     pvp_restricted: true
-    worth_sp: 150
+    worth_sp: 300
     earns_sp: 12
     upgrade_required_path: apprentice
     upgrade_required_casts: 50
@@ -3848,7 +3848,7 @@ cluster:
     icon: red_rose:3
     category: demolition
     pvp_restricted: true
-    worth_sp: 250
+    worth_sp: 600
     earns_sp: 8
     actions:
         cast:
@@ -3876,7 +3876,7 @@ bomb:
     icon: double_plant:1
     category: demolition
     pvp_restricted: true
-    worth_sp: 300
+    worth_sp: 500
     earns_sp: 8
     actions:
         cast:
@@ -4198,7 +4198,7 @@ stash:
     icon_url: http://textures.minecraft.net/texture/a6cc486c2be1cb9dfcb2e53dd9a3e9a883bfadb27cb956f1896d602b4067
     category: utility
     class: StashSpell
-    worth_sp: 100
+    worth_sp: 150
     earns_sp: 1
     show_undoable: false
     quick_cast: true
@@ -4243,7 +4243,7 @@ blast:
     icon_url: http://textures.minecraft.net/texture/4a458a62561a9e6ab960b9bdccaddbf039429c836dfacdd39ff7c7085c9e9b9
     icon: sulphur
     category: mining
-    worth_sp: 80
+    worth_sp: 200
     earns_sp: 2
     upgrade_required_path: student
     upgrade_required_casts: 50
@@ -4322,7 +4322,7 @@ earthquake:
     icon_url: http://textures.minecraft.net/texture/64764ad7b991afd8886d847f439b3d1753bc2632a7dbc047a9a040aa1ff98
     icon: sulphur
     category: combat
-    worth_sp: 200
+    worth_sp: 450
     earns_sp: 8
     actions:
         cast:
@@ -4684,7 +4684,7 @@ counterspell:
     icon_url: http://textures.minecraft.net/texture/36cf36693ac95c88c8dd92e1d5a54c92f593e802b3ae834c6bd87628b1b83
     icon: diamond
     category: combat
-    worth_sp: 250
+    worth_sp: 600
     earns_sp: 20
     upgrade_required_path: apprentice
     upgrade_required_casts: 50
@@ -4748,7 +4748,7 @@ breach:
     icon_url: http://textures.minecraft.net/texture/672e0c305074a7acf671e7644291d7f745baecf05743395e28d1f04cbbb4
     icon: seeds
     category: mining
-    worth_sp: 150
+    worth_sp: 400
     earns_sp: 5
     upgrade_required_path: apprentice
     upgrade_required_casts: 50
@@ -4793,7 +4793,7 @@ peek:
     icon_url: http://textures.minecraft.net/texture/672e0c305074a7acf671e7644291d7f745baecf05743395e28d1f04cbbb4
     icon: sugar_cane
     category: mining
-    worth_sp: 100
+    worth_sp: 300
     earns_sp: 8
     upgrade_required_path: beginner
     upgrade_required_casts: 10
@@ -4880,7 +4880,7 @@ mine:
     icon_url: http://textures.minecraft.net/texture/c688f9a3b3db226582ae3f49d34aa9077b4d4f8102dd46f21bcb784a68f2c63
     category: mining
     class: DropSpell
-    worth_sp: 100
+    worth_sp: 500
     earns_sp: 10
     upgrade_required_path: apprentice
     upgrade_required_casts: 50
@@ -4922,7 +4922,7 @@ chop:
     icon: stone_axe
     category: elemental
     class: DropSpell
-    worth_sp: 150
+    worth_sp: 600
     earns_sp: 8
     upgrade_required_path: student
     upgrade_required_casts: 30
@@ -5093,7 +5093,7 @@ tendril:
     icon: leash
     icon_url: http://textures.minecraft.net/texture/564e7e4b718a7136188385cae256de87a6cb29c85744c9c123509a4c7cec69d0
     category: combat
-    worth_sp: 100
+    worth_sp: 400
     earns_sp: 5
     pvp_restricted: true
     actions:
@@ -5132,7 +5132,7 @@ walls:
     icon: clay_ball
     icon_url: http://textures.minecraft.net/texture/4fed122b86ffaeaee36ab4a8c1c27f46fb5bddc83322c8a165d0f27aeb1830
     category: combat
-    worth_sp: 100
+    worth_sp: 250
     earns_sp: 5
     actions:
         cast:
@@ -5232,7 +5232,7 @@ disintegrate:
     icon_url: http://textures.minecraft.net/texture/89f9399aceb3211c3ca1259d5b1bb1f3fb61a4d5626a757ee1a1ccec28a0ae
     icon: bone
     category: combat
-    worth_sp: 250
+    worth_sp: 300
     earns_sp: 10
     actions:
         cast:
@@ -5280,7 +5280,7 @@ blink:
     category: utility
     icon: eye_of_ender
     icon_url: http://textures.minecraft.net/texture/a35cfb663dbde27598eebe76b0fdac2593f1d696b3e6b9e044edeb8d48c2e2
-    worth_sp: 300
+    worth_sp: 500
     earns_sp: 2
     upgrade_required_path: student
     upgrade_required_casts: 20
@@ -5536,7 +5536,7 @@ lava:
     icon: ink_sack:14
     category: combat
     pvp_restricted: true
-    worth_sp: 200
+    worth_sp: 250
     earns_sp: 5
     actions:
       cast:
@@ -5748,7 +5748,7 @@ laser:
     icon_url: http://textures.minecraft.net/texture/7cc8e096a2ac99bf264b3e827f1e3aa07ba688d7b4f470128f741132625e
     icon: ink_sack:11
     category: demolition
-    worth_sp: 350
+    worth_sp: 450
     earns_sp: 8
     upgrade_required_path: apprentice
     upgrade_required_casts: 50
@@ -6120,7 +6120,7 @@ force:
     icon: leash
     category: master
     class: ForceSpell
-    worth_sp: 500
+    worth_sp: 1000
     effects:
         cast:
         -  class: EffectSingle
@@ -6143,7 +6143,7 @@ force:
         entity_force: 4
         bypass_backfire: true
     costs:
-        mana: 50
+        mana: 200
 
 fireball:
     upgrade_required_path: beginner
@@ -6495,7 +6495,7 @@ homing:
     icon: ink_sack:1
     icon_url: http://textures.minecraft.net/texture/e3152dba6ee22b6e89e88878acc5a01f5964946b8938e9a1470dfabbeeca
     category: combat
-    worth_sp: 150
+    worth_sp: 750
     earns_sp: 6
     actions:
         cast:
@@ -6572,7 +6572,7 @@ sticky:
     icon: ink_sack:1
     icon_url: http://textures.minecraft.net/texture/f873525428823bffa57b74bdb1251de6e7c49660b35c995d2bf5d04a1ff34b8f
     category: combat
-    worth_sp: 150
+    worth_sp: 300
     earns_sp: 10
     actions:
         cast:
@@ -6704,7 +6704,7 @@ pollinate:
     icon_url: http://textures.minecraft.net/texture/b6d7a7f167e24d166ab1d8dedd79311481d4e1ebddbaba8ec6cb394713fb
     icon: yellow_flower
     category: light
-    worth_sp: 100
+    worth_sp: 1200
     earns_sp: 3
     actions:
         cast:
@@ -6939,7 +6939,7 @@ kill:
     icon: skull_item:1
     icon_url: http://textures.minecraft.net/texture/71a235c48123b487e864fa21016e223ad4070c6d977b0a519f7dd743d39e47c
     category: master
-    worth_sp: 550
+    worth_sp: 5000
     earns_sp: 13
     upgrade_required_path: master
     upgrade_required_casts: 50
@@ -7053,12 +7053,12 @@ superkill:
     parameters:
         target: other
         target_type: LivingEntity
-        cooldown: 10000
+        cooldown: 500
         target_breakables: 5
         bypass_backfire: true
         range: 40
     costs:
-        mana: 500
+        mana: 300
 
 torture:
     upgrade_required_path: master
@@ -7067,7 +7067,7 @@ torture:
     icon: quartz
     category: master
     cast_on_no_target: true
-    worth_sp: 400
+    worth_sp: 3000
     earns_sp: 7
     actions:
         cast:
@@ -7270,7 +7270,7 @@ petrify:
     icon: nether_brick_item
     category: combat
     cast_on_no_target: true
-    worth_sp: 200
+    worth_sp: 300
     earns_sp: 8
     actions:
       cast:
@@ -8189,7 +8189,7 @@ singularity:
     icon: obsidian
     category: master
     pvp_restricted: true
-    worth_sp: 500
+    worth_sp: 1000
     earns_sp: 15
     upgrade_required_path: student
     upgrade_required_casts: 50
@@ -8332,7 +8332,7 @@ tornado:
     icon: feather
     category: elemental
     pvp_restricted: true
-    worth_sp: 400
+    worth_sp: 900
     earns_sp: 11
     actions:
         cast:

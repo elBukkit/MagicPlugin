@@ -6,6 +6,8 @@
  - Brooms now used tamed horses, which should play nicer with WorldGuard regions that block mob spawning.
  - Add SuperBackup, Backup is now a simpler one-click cast
  - Add Architect Staff, a wand for admins with architect spells
+ - Rebalanced SP costs for longer progression
+ - Moved Portal, Anvil to Engineer (for now?)
 
 ## 5.3.3
 
