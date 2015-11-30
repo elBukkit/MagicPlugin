@@ -2,6 +2,9 @@
 
 ## 5.4
 
+ - Move Tag back to Beginner, but it requires a sign.
+ - Brooms now used tamed horses, which should play nicer with WorldGuard regions that block mob spawning.
+
 ## 5.3.3
 
  - Enchanting paths can have a simple list of spells instead of a probability map

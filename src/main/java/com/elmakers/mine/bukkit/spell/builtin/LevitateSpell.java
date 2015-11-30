@@ -790,6 +790,9 @@ public class LevitateSpell extends TargetingSpell implements Listener
                         if (entity instanceof LivingEntity && mountInvisible) {
                             ((LivingEntity)entity).addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 2 << 24, 0));
                         }
+                        if (entity instanceof Tameable) {
+                            ((Tameable) entity).setTamed(true);
+                        }
                         if (mountSilent) {
                             CompatibilityUtils.setSilent(entity, true);
                         }
