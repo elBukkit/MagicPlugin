@@ -130,7 +130,6 @@ public class ProjectileAction  extends BaseProjectileAction
         for (int i = 0; i < count; i++) {
 			try {
 				// Spawn a new projectile
-				org.bukkit.Bukkit.getLogger().info("Spawning projectile " + i + " of " + count);
 				Projectile projectile = CompatibilityUtils.spawnProjectile(projectileType, location, direction, source, speed, spread, i > 0 ? spread : 0, random);
 				if (projectile == null) {
 					return SpellResult.FAIL;
