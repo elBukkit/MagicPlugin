@@ -159,17 +159,22 @@ public class ChangeContextAction extends CompoundAction {
             sourceLocation.setY(targetLocation.getY());
             sourceLocation.setZ(targetLocation.getZ());
             sourceLocation.setWorld(targetLocation.getWorld());
-            if (targetEntity != null) {
-                sourceEntity = targetEntity;
-            }
         }
         if (persistTarget)
         {
             context.setTargetLocation(targetLocation);
-            context.getMage().sendDebugMessage(ChatColor.GREEN + "Set new target location to " +
-                ChatColor.GRAY + targetLocation.getBlockX() + ChatColor.DARK_GRAY + "," +
-                ChatColor.GRAY + targetLocation.getBlockY() + ChatColor.DARK_GRAY + "," +
-                ChatColor.GRAY + targetLocation.getBlockZ() + ChatColor.DARK_GRAY, 6);
+        }
+        if (sourceLocation != null) {
+            context.getMage().sendDebugMessage(ChatColor.GREEN + " Set new source location to " +
+                    ChatColor.GRAY + sourceLocation.getBlockX() + ChatColor.DARK_GRAY + "," +
+                    ChatColor.GRAY + sourceLocation.getBlockY() + ChatColor.DARK_GRAY + "," +
+                    ChatColor.GRAY + sourceLocation.getBlockZ() + ChatColor.DARK_GRAY, 6);
+        }
+        if (targetLocation != null) {
+            context.getMage().sendDebugMessage(ChatColor.DARK_GREEN + " Set new target location to " +
+                    ChatColor.GRAY + targetLocation.getBlockX() + ChatColor.DARK_GRAY + "," +
+                    ChatColor.GRAY + targetLocation.getBlockY() + ChatColor.DARK_GRAY + "," +
+                    ChatColor.GRAY + targetLocation.getBlockZ() + ChatColor.DARK_GRAY, 6);
         }
         createActionContext(context, sourceEntity, sourceLocation, targetEntity, targetLocation);
         return startActions();
