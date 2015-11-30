@@ -1,5 +1,7 @@
 # CHANGELOG
 
+## 5.4
+
 ## 5.3.3
 
  - Enchanting paths can have a simple list of spells instead of a probability map
