@@ -821,10 +821,15 @@ spells:
     backup:
         name: Backup
         description: Save your target area for Repair
+        cast_finish: Backed up the area
+        target_selected: Cast again to backup
+    superbackup:
+        name: SuperBackup
+        description: Save a large target area for Repair
         usage: Cast twice to save
         cancel: Backup cancelled
         fail: Too large!
-        cast_finish: Backed up $count blocks
+        cast_finish: Backed up the selected area
         target_selected: Cast again to backup
     superemp:
         name: SuperEMP
@@ -1574,8 +1579,11 @@ wands:
         name: Engineering Wand
         description: $path Magic Wand
     architect:
-        name: The Architect
+        name: Architect Wand
         description: $path Magic Wand
+    architectstaff:
+        name: The Architect
+        description: With Great Power Comes Great Responsibility
     admin:
         name: The Shusher
         description: For admins only

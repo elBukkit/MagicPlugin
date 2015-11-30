@@ -4,6 +4,8 @@
 
  - Move Tag back to Beginner, but it requires a sign.
  - Brooms now used tamed horses, which should play nicer with WorldGuard regions that block mob spawning.
+ - Add SuperBackup, Backup is now a simpler one-click cast
+ - Add Architect Staff, a wand for admins with architect spells
 
 ## 5.3.3
 

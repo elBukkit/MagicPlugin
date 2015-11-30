@@ -496,7 +496,6 @@ architect:
         - dome
         - disc
         - convert
-        - superemp
         - superblob
         - superbox
         - supershell
@@ -565,9 +564,9 @@ admin:
     protected: true
     effect_color: '888888'
     effect_bubbles: true
-    active_spell: superfly
+    active_spell: levitate
     spells:
-        - superfly
+        - levitate
         - superbroom
         - blink|4
         - missile|4
@@ -585,6 +584,107 @@ admin:
         - repair
         - superrepair
 
+architectstaff:
+  hotbar_count: 3
+  active_spell: pillar
+  active_material: copy
+  protected: true
+  cost_reduction: 2
+  effect_color: 8af553b2025f,0,8af553b2025f
+  effect_particle_count: 8
+  effect_particle_interval: 100
+  effect_particle_radius: 0.6
+  effect_particle_offset: 0.9
+  keep: true
+  bound: true
+  indestructible: true
+  undroppable: true
+  effect_particle: REDSTONE
+  icon: gold_pickaxe
+  path: architect
+  spells:
+    - absorb@8
+    - alter@22
+    - backup@23
+    - blink|3@0
+    - box@24
+    - bridge@9
+    - cloak@47
+    - column@45
+    - commit@32
+    - convert@26
+    - fill@13
+    - gather@4
+    - heal@5
+    - iterate@28
+    - levitate@1
+    - missile|4@2
+    - paint@12
+    - phasebackup@49
+    - pickpocket@48
+    - pillar@10
+    - place@11
+    - recurse@29
+    - repair@14
+    - rollback@15
+    - superalter@34
+    - superbackup@41
+    - superblob@18
+    - superbox@25
+    - superbroom@7
+    - superconvert@21
+    - superdisc@20
+    - superdome@30
+    - superkill@3
+    - superpyramid@27
+    - superrepair@50
+    - superring@33
+    - supershell@19
+    - time@6
+    - torch|4@31
+  materials:
+    - clone@43
+    - cobblestone
+    - copy@17
+    - diamond_block
+    - dirt
+    - emerald_block
+    - erase@16
+    - glass
+    - glowstone
+    - gold_block
+    - iron_block
+    - lapis_block
+    - map@42
+    - obsidian
+    - quartz_block
+    - quartz_block:1
+    - quartz_block:2
+    - redstone_block
+    - replicate@44
+    - sand
+    - schematic:beacon
+    - schematic:blacksmith
+    - schematic:cage
+    - schematic:church
+    - schematic:compact_house
+    - schematic:creeper_rug
+    - schematic:elder_tree
+    - schematic:garden_house
+    - schematic:lantern
+    - schematic:rainbow_blocks
+    - schematic:small_house
+    - schematic:stash_chest
+    - schematic:tech_tower
+    - schematic:tent
+    - stained_clay
+    - stained_glass
+    - stained_glass_pane
+    - stone
+    - thin_glass
+    - wood
+
+
 developer:
     icon: monster_eggs:4
     path: master
@@ -597,9 +697,9 @@ developer:
     protected: true
     effect_color: 'FFAA00'
     effect_bubbles: true
-    active_spell: superfly
+    active_spell: levitate
     spells:
-        - superfly
+        - levitate
         - superbroom
         - blink|4
         - missile|4
