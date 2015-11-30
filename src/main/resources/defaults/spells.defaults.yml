@@ -5394,7 +5394,7 @@ absorb:
         target: block
         allow_max_range: false
         range: 64
-        transparent: transparent_to_construction
+        transparent: transparent
     costs:
         mana: 30
 

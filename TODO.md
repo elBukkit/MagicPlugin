@@ -1,7 +1,5 @@
 # TODO
 
- - bypass_restricted not working?
- 
  - Automata don't resume anymore
  - Maybe add a floor/ceil option to Volume for more control over sizes
  - Somehow make brooms work when mob spawning is denied?

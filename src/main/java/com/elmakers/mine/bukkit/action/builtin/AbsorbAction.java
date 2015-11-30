@@ -32,7 +32,11 @@ public class AbsorbAction extends BaseSpellAction
 
 		Set<Material> buildingMaterials = controller.getBuildingMaterials();
         Set<Material> restrictedMaterials = mage.getRestrictedMaterials();
-		if (material == null || material == Material.AIR || !buildingMaterials.contains(material) || restrictedMaterials.contains(material))
+		if (material == null || material == Material.AIR)
+		{
+			return SpellResult.NO_TARGET;
+		}
+		if (!mage.getCommandSender().hasPermission("Magic.bypass_restricted") && (!buildingMaterials.contains(material) || restrictedMaterials.contains(material)))
 		{
 			return SpellResult.NO_TARGET;
 		}
