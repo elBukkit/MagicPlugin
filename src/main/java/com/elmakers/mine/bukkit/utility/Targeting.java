@@ -432,6 +432,7 @@ public class Targeting {
         double rangeSquaredPadded = (range + 1) * (range + 1);
 
         List<Entity> entities = null;
+        boolean debugMessage = true;
         if (source == null && sourceEntity != null) {
             range = Math.min(range + hitboxPadding + rangeQueryPadding, CompatibilityUtils.MAX_ENTITY_RANGE);
             entities = sourceEntity.getNearbyEntities(range, range, range);
@@ -456,19 +457,26 @@ public class Targeting {
                 queryRange = new Vector(range * 2, range * 2, range * 2);
                 sourceLocation = source;
             }
-            if (mage != null && mage.getDebugLevel() > 9)
+            if (mage != null && mage.getDebugLevel() > 8)
             {
-                mage.sendDebugMessage(ChatColor.GREEN + "Targeting via bounding box " +
+                mage.sendDebugMessage(ChatColor.GREEN + "Targeting entities from " +
+                        ChatColor.GRAY + source.getBlockX() +
+                        ChatColor.DARK_GRAY + ","  + ChatColor.GRAY + source.getBlockY() +
+                        ChatColor.DARK_GRAY + "," + ChatColor.GRAY + source.getBlockZ() +
+                        " via bounding box " +
                         ChatColor.GRAY + (int)Math.ceil(queryRange.getX()) +
                         ChatColor.DARK_GRAY + ","  + ChatColor.GRAY + (int)Math.ceil(queryRange.getY()) +
-                        ChatColor.DARK_GRAY + "," + ChatColor.GRAY + (int)Math.ceil(queryRange.getZ()));
+                        ChatColor.DARK_GRAY + "," + ChatColor.GRAY + (int)Math.ceil(queryRange.getZ()) +
+                        ChatColor.DARK_GREEN + " with range of " + ChatColor.GREEN + range);
+                debugMessage = false;
             }
             entities = CompatibilityUtils.getNearbyEntities(sourceLocation, queryRange.getX() / 2, queryRange.getY() / 2, queryRange.getZ() / 2);
         }
 
-        if (mage != null && mage.getDebugLevel() > 8)
+        if (debugMessage && mage != null && mage.getDebugLevel() > 8)
         {
-            mage.sendDebugMessage(ChatColor.GREEN + "Targeting from " + ChatColor.GRAY + source.getBlockX() +
+            mage.sendDebugMessage(ChatColor.GREEN + "Targeting entities from " +
+                    ChatColor.GRAY + source.getBlockX() +
                     ChatColor.DARK_GRAY + ","  + ChatColor.GRAY + source.getBlockY() +
                     ChatColor.DARK_GRAY + "," + ChatColor.GRAY + source.getBlockZ() +
                     ChatColor.DARK_GREEN + " with range of " + ChatColor.GREEN + range);
