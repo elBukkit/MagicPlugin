@@ -40,6 +40,8 @@ public class ProjectileAction  extends BaseProjectileAction
     private String projectileTypeName;
     private int startDistance;
 	private boolean useWandLocation;
+	private boolean useEyeLocation;
+	private boolean useTargetLocation;
 
     @Override
     public void initialize(Spell spell, ConfigurationSection parameters) {
@@ -75,6 +77,8 @@ public class ProjectileAction  extends BaseProjectileAction
         breakBlocks = parameters.getBoolean("break_blocks", false);
         startDistance = parameters.getInt("start", 0);
 		useWandLocation = parameters.getBoolean("use_wand_location", true);
+		useEyeLocation = parameters.getBoolean("use_eye_location", true);
+		useTargetLocation = parameters.getBoolean("use_target_location", true);
     }
 
 	@Override
@@ -100,10 +104,10 @@ public class ProjectileAction  extends BaseProjectileAction
 		}
 		
 		// Prepare parameters
-		Location location = useWandLocation ? context.getWandLocation() : context.getEyeLocation();
+		Location location = useWandLocation ? context.getWandLocation() : (useEyeLocation ? context.getEyeLocation() : context.getLocation());
 		Location targetLocation = context.getTargetLocation();
 		Vector direction;
-		if (targetLocation != null) {
+		if (targetLocation != null && useTargetLocation) {
 			direction = targetLocation.toVector().subtract(location.toVector()).normalize();
 		} else {
 			direction = context.getDirection().clone().normalize();
@@ -126,6 +130,7 @@ public class ProjectileAction  extends BaseProjectileAction
         for (int i = 0; i < count; i++) {
 			try {
 				// Spawn a new projectile
+				org.bukkit.Bukkit.getLogger().info("Spawning projectile " + i + " of " + count);
 				Projectile projectile = CompatibilityUtils.spawnProjectile(projectileType, location, direction, source, speed, spread, i > 0 ? spread : 0, random);
 				if (projectile == null) {
 					return SpellResult.FAIL;

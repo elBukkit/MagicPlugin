@@ -46,6 +46,7 @@ public class CustomProjectileAction extends CompoundAction
     private boolean reorient;
     private boolean useWandLocation;
     private boolean useEyeLocation;
+    private boolean useTargetLocation;
     private boolean trackEntity;
     private int targetSelfTimeout;
     private boolean breaksBlocks;
@@ -92,6 +93,7 @@ public class CustomProjectileAction extends CompoundAction
         reorient = parameters.getBoolean("reorient", false);
         useWandLocation = parameters.getBoolean("use_wand_location", true);
         useEyeLocation = parameters.getBoolean("use_eye_location", true);
+        useTargetLocation = parameters.getBoolean("use_target_location", true);
         trackEntity = parameters.getBoolean("track_target", false);
         targetSelfTimeout = parameters.getInt("target_self_timeout", 0);
         breaksBlocks = parameters.getBoolean("break_blocks", true);
@@ -182,7 +184,7 @@ public class CustomProjectileAction extends CompoundAction
                 projectileLocation = context.getLocation().clone();
             }
 
-            if (targetLocation != null && !reorient) {
+            if (targetLocation != null && !reorient && useTargetLocation) {
                 velocity = targetLocation.toVector().subtract(projectileLocation.toVector()).normalize();
             } else {
                 velocity = context.getDirection().clone().normalize();
