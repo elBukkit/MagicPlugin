@@ -1,6 +1,6 @@
 # CHANGELOG
 
-## 5.4
+## 5.3.3
 
  - Enchanting paths can have a simple list of spells instead of a probability map
  - Change "max_damage_reduction" (and related) to "max_protection" (this has apparently been broken for a while!)
