@@ -232,6 +232,10 @@ public class LevitateSpell extends TargetingSpell implements Listener
         Player player = mage.getPlayer();
         if (player == null) return;
 
+        if (safetyLength > 0) {
+            mage.enableFallProtection(safetyLength, this);
+        }
+
         if (mountEntity != null) {
             Entity currentMount = player.getVehicle();
             if (currentMount != mountEntity) {
