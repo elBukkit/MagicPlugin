@@ -222,6 +222,7 @@ student:
       admission: 20,25,30
       gather: 0,0,5
       curse: 0,0,10
+      tag: 1,4,5
 
 apprentice:
     upgrade: master
@@ -449,7 +450,6 @@ engineer:
       place: 0,1,5
       levitate: 0,0,10
       tree: 0,2,10
-      tag: 1,4,5
     material_count:
       1: 50, 20, 20
       2: 1,  10,  30

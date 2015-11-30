@@ -350,6 +350,7 @@ spells:
     secure:
         name: Secure
         description: Secures containers
+        usage: Aim up and cast for a replacement key
         cast: Lock it up!
         alternate_up: You summon a replacement key
         key_name: "&6$name's &eKey"

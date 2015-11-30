@@ -1155,8 +1155,10 @@ tag:
         range: 32
         cooldown: 30000
         transparent: transparent_to_construction
+        loud: true
     costs:
         mana: 20
+        sign: 1
 
 toss:
     icon_url: http://textures.minecraft.net/texture/44471f5f9792fd21dd1e652f2ac5f47e49eeebd4fb289f4174ec20dc7b57e6
