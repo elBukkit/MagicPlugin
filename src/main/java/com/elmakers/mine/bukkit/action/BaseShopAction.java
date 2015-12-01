@@ -42,6 +42,7 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
     private String requiresCompletedPath = null;
     private String exactPath = null;
     protected int upgradeLevels = 0;
+    protected boolean autoClose = true;
     protected boolean autoUpgrade = false;
     protected boolean applyToWand = false;
     protected boolean isXP = false;
@@ -265,13 +266,16 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
     {
         event.setCancelled(true);
         ItemStack item = event.getCurrentItem();
+        Mage mage = context.getMage();
         if (context == null || item == null || !InventoryUtils.hasMeta(item, "shop")) {
+            if (!autoClose) {
+                mage.deactivateGUI();
+            }
             return;
         }
 
         int slotIndex = Integer.parseInt(InventoryUtils.getMeta(item, "shop"));
         MageController controller = context.getController();
-        Mage mage = context.getMage();
         Wand wand = mage.getActiveWand();
 
         ShopItem shopItem = showingItems.get(slotIndex);
@@ -360,7 +364,12 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
             context.showMessage(costString);
             onPurchase(context);
         }
-        mage.deactivateGUI();
+        if (autoClose) {
+            mage.deactivateGUI();
+        } else {
+            // Need to update balance
+
+        }
     }
 
     protected void onPurchase(CastContext context) {
@@ -380,6 +389,10 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
         autoUpgrade = parameters.getBoolean("auto_upgrade", false);
         upgradeLevels = parameters.getInt("upgrade_levels", 0);
         requireWand = parameters.getBoolean("require_wand", false);
+        autoClose = parameters.getBoolean("auto_close", true);
+        if (!autoClose) {
+            showConfirmation = false;
+        }
         if (requiresCompletedPath != null) {
             requiredPath = requiresCompletedPath;
         }
