@@ -130,11 +130,6 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
         && 	(runnables == null || runnables.isEmpty()));
     }
 
-    public boolean isComplete()
-    {
-        return undone;
-    }
-
     public void setScheduleUndo(int ttl)
     {
         timeToLive = ttl;
@@ -330,11 +325,11 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
         if (blockList.size() == 0) {
             return null;
         }
-        BlockData blockData = blockList.getFirst();
+        BlockData blockData = blockList.removeFirst();
         if (undo(blockData, applyPhysics)) {
-            blockList.removeFirst();
             return blockData;
         }
+        blockList.addFirst(blockData);
 
         return null;
     }
@@ -427,10 +422,11 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
 
     public void undo(boolean blocking, boolean undoEntities)
     {
+        if (undone) return;
+        undone = true;
+
         undoEntityEffects = undoEntityEffects || undoEntities;
         unlink();
-        if (isComplete()) return;
-        undone = true;
 
         CastContext context = getContext();
         if (context != null)
