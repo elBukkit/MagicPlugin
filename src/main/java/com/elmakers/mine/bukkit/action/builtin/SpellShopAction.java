@@ -104,6 +104,7 @@ public class SpellShopAction extends BaseShopAction
                 worth /= costScale;
             }
             if (worth <= 0 && !showFree) continue;
+            if (!spell.hasCastPermission(mage.getCommandSender())) continue;
 
             ItemStack spellItem = controller.createSpellItem(spellKey);
             shopItems.add(new ShopItem(spellItem, worth));
