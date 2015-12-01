@@ -5,6 +5,7 @@ import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
+import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
@@ -17,7 +18,18 @@ import java.util.Map;
 
 public class ItemShopAction extends BaseShopAction
 {
-    private Map<String, Double> items = new HashMap<String, Double>();
+    private class ShopItemConfiguration
+    {
+        ShopItemConfiguration(String key, double cost)
+        {
+            this.cost = cost;
+            this.itemKey = key;
+        }
+
+        public String itemKey;
+        public double cost;
+    }
+    private List<ShopItemConfiguration> items = new ArrayList<ShopItemConfiguration>();
 
     @Override
     public void initialize(Spell spell, ConfigurationSection parameters)
@@ -26,10 +38,22 @@ public class ItemShopAction extends BaseShopAction
         items.clear();
         if (parameters.contains("items"))
         {
-            ConfigurationSection itemSection = parameters.getConfigurationSection("items");
-            Collection<String> itemKeys = itemSection.getKeys(false);
-            for (String itemKey : itemKeys) {
-                items.put(itemKey, itemSection.getDouble(itemKey));
+            if (parameters.isConfigurationSection("items")) {
+                ConfigurationSection itemSection = parameters.getConfigurationSection("items");
+                Collection<String> itemKeys = itemSection.getKeys(false);
+                for (String itemKey : itemKeys) {
+                    items.add(new ShopItemConfiguration(itemKey, itemSection.getDouble(itemKey)));
+                }
+            } else {
+                Collection<ConfigurationSection> itemList = ConfigurationUtils.getNodeList(parameters, "items");
+                for (ConfigurationSection itemConfig : itemList)
+                {
+                    if (itemConfig != null) {
+                        items.add(new ShopItemConfiguration(itemConfig.getString("item"), itemConfig.getDouble("cost")));
+                    } else {
+                        items.add(null);
+                    }
+                }
             }
         }
     }
@@ -42,9 +66,20 @@ public class ItemShopAction extends BaseShopAction
         }
         List<ShopItem> shopItems = new ArrayList<ShopItem>();
         MageController controller = context.getController();
-        for (Map.Entry<String, Double> itemValue : items.entrySet()) {
-            String itemKey = itemValue.getKey();
-            double worth = items.get(itemKey);
+        for (ShopItemConfiguration itemConfig : items) {
+            if (itemConfig == null)
+            {
+                shopItems.add(null);
+                continue;
+            }
+            String itemKey = itemConfig.itemKey;
+            if (itemKey == null || itemKey.isEmpty() || itemKey.equalsIgnoreCase("none"))
+            {
+                shopItems.add(null);
+                continue;
+            }
+            double worth = itemConfig.cost;
+
             // This is kinda ugly.. :|
             // This is here to undo the scaling of whatever type of currency is selected
             // So, for an SP shop- SP is converted to virtual economy units
