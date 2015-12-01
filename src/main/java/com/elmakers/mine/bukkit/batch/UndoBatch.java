@@ -30,6 +30,11 @@ public class UndoBatch implements com.elmakers.mine.bukkit.api.batch.UndoBatch {
         this.applyPhysics = blockList.getApplyPhysics();
         this.attachables = new HashSet<Material>();
 
+        CastContext context = undoList.getContext();
+        if (context != null) {
+            context.playEffects("undo");
+        }
+
         Set<Material> addToAttachables = controller.getMaterialSet("attachable");
         if (addToAttachables != null) {
             attachables.addAll(addToAttachables);
@@ -97,7 +102,7 @@ public class UndoBatch implements com.elmakers.mine.bukkit.api.batch.UndoBatch {
             }
             CastContext context = undoList.getContext();
             if (context != null) {
-                context.playEffects("undo");
+                context.playEffects("undo_finished");
             }
         }
     }
