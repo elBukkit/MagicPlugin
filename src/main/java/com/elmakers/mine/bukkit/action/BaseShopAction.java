@@ -457,13 +457,17 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
         this.showingItems = new HashMap<Integer, ShopItem>();
 
         MageController controller = context.getController();
-        Messages messages = controller.getMessages();
 
         // Load items
         List<ItemStack> itemStacks = new ArrayList<ItemStack>();
         String costString = context.getMessage("cost_lore", "Costs: $cost");
         for (ShopItem shopItem : items) {
-            double worth = shopItem.getWorth();
+            int currentSlot = itemStacks.size();
+            if (shopItem == null) {
+                this.showingItems.put(currentSlot, null);
+                itemStacks.add(new ItemStack(Material.AIR));
+                continue;
+            }
             ItemStack item = InventoryUtils.getCopy(shopItem.getItem());
             if (item == null) continue;
 
@@ -481,7 +485,6 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
             meta.setLore(lore);
             item.setItemMeta(meta);
             item = InventoryUtils.makeReal(item);
-            int currentSlot = itemStacks.size();
             InventoryUtils.setMeta(item, "shop", Integer.toString(currentSlot));
             if (showConfirmation) {
                 InventoryUtils.setMeta(item, "confirm", "true");
@@ -510,9 +513,10 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
 
         int invSize = (int)Math.ceil((float)itemStacks.size() / 9.0f) * 9;
         Inventory displayInventory = CompatibilityUtils.createInventory(null, invSize, inventoryTitle);
+        int slot = 0;
         for (ItemStack item : itemStacks)
         {
-            displayInventory.addItem(item);
+            displayInventory.setItem(slot++, item);
         }
         mage.activateGUI(this, displayInventory);
 
