@@ -7,10 +7,10 @@ public class DiscAction extends PlaneAction
 		switch (axis)
 		{
 			case X:
-				return (y * y) + (z * z) <= radiusSquared;
+				return (double)((y * y) + (z * z)) <= radiusSquared;
 			case Z:
-				return (x * x) + (y * y) <= radiusSquared;
+				return (double)((x * x) + (y * y)) <= radiusSquared;
 		}
-		return (x * x) + (z * z) <= radiusSquared;
+		return (double)((x * x) + (z * z)) <= radiusSquared;
 	}
 }

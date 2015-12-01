@@ -21,15 +21,18 @@ public class VolumeAction extends CompoundAction
 	public static final float DEGTORAD = 0.017453293F;
 	private static final int DEFAULT_RADIUS	= 2;
     protected boolean autoOrient;
-	protected int radius;
-	protected int radiusSquared;
+	protected double radius;
+	protected double radiusSquared;
     protected int currentRadius;
     protected float centerProbability;
     protected float outerProbability;
-    protected int xSize;
-    protected int ySize;
-    protected int zSize;
-	protected int thickness;
+    protected double xSize;
+    protected double ySize;
+    protected double zSize;
+	protected int xSizeCeil;
+	protected int ySizeCeil;
+	protected int zSizeCeil;
+	protected double thickness;
 	protected int yStart;
 	protected int yEnd;
 	private int xOffset;
@@ -57,14 +60,14 @@ public class VolumeAction extends CompoundAction
 	@Override
 	public void prepare(CastContext context, ConfigurationSection parameters) {
 		super.prepare(context, parameters);
-		radius = parameters.getInt("radius", DEFAULT_RADIUS);
-        xSize = parameters.getInt("x_size", radius);
-        ySize = parameters.getInt("y_size", radius);
-        zSize = parameters.getInt("z_size", radius);
+		radius = parameters.getDouble("radius", DEFAULT_RADIUS);
+        xSize = parameters.getDouble("x_size", radius);
+        ySize = parameters.getDouble("y_size", radius);
+        zSize = parameters.getDouble("z_size", radius);
 		centerY = parameters.getBoolean("center_y", true);
 		centerX = parameters.getBoolean("center_x", true);
 		centerZ = parameters.getBoolean("center_z", true);
-        thickness = parameters.getInt("thickness", 0);
+        thickness = parameters.getDouble("thickness", 0);
 		autoOrient = parameters.getBoolean("orient", false);
 		centerProbability = (float)parameters.getDouble("probability", 1);
 		outerProbability = (float)parameters.getDouble("probability", 1);
@@ -84,6 +87,10 @@ public class VolumeAction extends CompoundAction
 	}
 
 	protected boolean calculateSize(CastContext context) {
+		xSizeCeil = (int)Math.ceil(xSize);
+		ySizeCeil = (int)Math.ceil(ySize);
+		zSizeCeil = (int)Math.ceil(zSize);
+
 		if (useBrushSize) {
 			MaterialBrush brush = context.getBrush();
 			if (!brush.isReady()) {
@@ -100,34 +107,34 @@ public class VolumeAction extends CompoundAction
 			centerY = false;
 			context.getMage().sendDebugMessage(ChatColor.GREEN + "Brush Size: " + ChatColor.GRAY + xSize + "," + ySize + "," + zSize, 2);
 		} else {
-			xSize = (int) (context.getMage().getRadiusMultiplier() * this.xSize);
-			ySize = (int) (context.getMage().getRadiusMultiplier() * this.ySize);
-			zSize = (int) (context.getMage().getRadiusMultiplier() * this.zSize);
+			xSize = context.getMage().getRadiusMultiplier() * this.xSize;
+			ySize = context.getMage().getRadiusMultiplier() * this.ySize;
+			zSize = context.getMage().getRadiusMultiplier() * this.zSize;
 		}
 		if (volumeType == VolumeType.SPIRAL && xSize != zSize) {
 			volumeType = VolumeType.YZX;
 		}
 		if (centerY) {
-			yStart = -ySize;
-			yEnd = ySize;
+			yStart = -ySizeCeil;
+			yEnd = ySizeCeil;
 		} else {
 			yStart = 0;
-			yEnd = ySize * 2;
+			yEnd = ySizeCeil * 2;
 		}
 		if (!centerX) {
-			xOffset = xSize;
+			xOffset = xSizeCeil;
 		} else {
 			xOffset = 0;
 		}
 		if (!centerZ) {
-			zOffset = zSize;
+			zOffset = zSizeCeil;
 		} else {
 			zOffset = 0;
 		}
 
 		if (volumeType != VolumeType.SPIRAL) {
-			min = new Vector(-xSize, yStart, -zSize);
-			max = new Vector(xSize, yEnd, zSize);
+			min = new Vector(-xSizeCeil, yStart, -zSizeCeil);
+			max = new Vector(xSizeCeil, yEnd, zSizeCeil);
 		}
 
 		radius = Math.max(xSize, zSize);
@@ -151,9 +158,9 @@ public class VolumeAction extends CompoundAction
 	protected void resetCounters() {
 		if (volumeType == VolumeType.SPIRAL) {
 			currentRadius = startRadius;
-			dx = -Math.min(startRadius, xSize);
+			dx = -Math.min(startRadius, xSizeCeil);
 			dy = yStart;
-			dz = -Math.min(startRadius, zSize);
+			dz = -Math.min(startRadius, zSizeCeil);
 			xDirection = 1;
 			zDirection = 0;
 		} else {
@@ -213,8 +220,8 @@ public class VolumeAction extends CompoundAction
 			dy = yStart;
 			int nextX = dx + xDirection;
 			int nextZ = dz + zDirection;
-			int endX = Math.min(currentRadius, xSize);
-			int endZ = Math.min(currentRadius, zSize);
+			int endX = Math.min(currentRadius, xSizeCeil);
+			int endZ = Math.min(currentRadius, zSizeCeil);
 			if ((xDirection == 0 && zDirection == -1 && nextX <= -endX && nextZ <= -endZ) || currentRadius == 0) {
 				currentRadius++;
 				dx = -currentRadius;
@@ -352,7 +359,7 @@ public class VolumeAction extends CompoundAction
 
 	@Override
 	public int getActionCount() {
-		int volume = (1 + xSize * 2) * (1 + ySize * 2) * (1 + zSize * 2);
+		int volume = (1 + xSizeCeil * 2) * (1 + ySizeCeil * 2) * (1 + zSizeCeil * 2);
 		return volume * super.getActionCount();
 	}
 }

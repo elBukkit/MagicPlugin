@@ -101,6 +101,7 @@ destructible_mining:
 - stained_clay
 - mycel
 - ender_stone
+- hard_clay
 
 # Which materials spells that build blocks will replace
 destructible_replace:

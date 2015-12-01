@@ -922,7 +922,7 @@ reflect:
     upgrade_required_casts: 25
     actions:
         cast:
-        -  class: Plane
+        -  class: Disc
            actions:
            -  class: ModifyBlock
     effects:
@@ -965,7 +965,7 @@ reflect|3:
     upgrade_required_path: master
     upgrade_required_casts: 50
     parameters:
-        radius: 1
+        radius: 1.5
         undo: 1000
         reflect_chance: 0.75
         breakable: 1
@@ -4199,7 +4199,7 @@ stash:
     icon_url: http://textures.minecraft.net/texture/a6cc486c2be1cb9dfcb2e53dd9a3e9a883bfadb27cb956f1896d602b4067
     category: utility
     class: StashSpell
-    worth_sp: 150
+    worth_sp: 2000
     earns_sp: 1
     show_undoable: false
     quick_cast: true
@@ -4771,7 +4771,7 @@ breach:
         transparent: transparent_to_construction
         undo: 10000
         brush: air
-        radius: 2
+        radius: 1
         type: sphere
         cooldown: 15000
         undo_speed: 0.2
@@ -4782,13 +4782,13 @@ breach|2:
     upgrade_required_path: master
     upgrade_required_casts: 50
     parameters:
-        radius: 3
+        radius: 1.5
 
 breach|3:
     upgrade_required_path: master
     upgrade_required_casts: 50
     parameters:
-        radius: 4
+        radius: 2
 
 peek:
     icon_url: http://textures.minecraft.net/texture/672e0c305074a7acf671e7644291d7f745baecf05743395e28d1f04cbbb4
@@ -4834,11 +4834,11 @@ peek|3:
     upgrade_required_path: apprentice
     upgrade_required_casts: 50
     parameters:
-      radius: 2
+      radius: 1.5
 
 peek|4:
     parameters:
-      radius: 3
+      radius: 2
 
 sandblast:
     icon_url: http://textures.minecraft.net/texture/c1dc6e8c5e3da4aed0ca478e195b8fe3a438fd8cb775b9d10fa1ff7d2dcf714
