@@ -143,7 +143,6 @@ beginner:
       pull: 10,20,40
       peek: 10,30,40
       recall: 0,5,15
-      stash: 0,0,5
       blind: 0,1,5
       reflect: 0,0,5
       stun: 0,5,15
@@ -368,6 +367,7 @@ master:
       silence: 0,0,5
       force: 5,10,20
       tent: 0,0,1
+      stash: 0,0,5
 
 #
 # The move from "master" to engineer requires the player to aquire some basic
