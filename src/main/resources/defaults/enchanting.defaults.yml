@@ -213,7 +213,6 @@ student:
       entangle: 0,0,20
       tracking: 5,10,30
       rocket: 0,10,20
-      shrink: 5,20,30
       wave: 5,20,30
       whip: 1,10,20
       secure: 0,0,5
@@ -274,7 +273,6 @@ apprentice:
       music: 110,80,60
       sandblast: 20,30,40
       phase: 0,0,1
-      grow: 1,10,20
       counterspell: 0,1,5
       disc: 0,1,5
       rubberize: 2,10,20
@@ -450,6 +448,8 @@ engineer:
       tree: 0,2,10
       portal: 0,0,25
       anvil: 0,0,10
+      shrink: 5,20,30
+      grow: 1,10,20
     material_count:
       1: 50, 20, 20
       2: 1,  10,  30

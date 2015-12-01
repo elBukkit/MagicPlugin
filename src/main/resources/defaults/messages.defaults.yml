@@ -1286,7 +1286,7 @@ spells:
         name: Fireball
         description: Cast an exploding fireball
     fireball|2:
-        upgrade_description: "&r&b&bull; &6Increased accuracy and damage"
+        upgrade_description: "&r&b&bull; &6Increased accuracy"
     fireball|3:
         upgrade_description: "&r&b&bull; &6Pinpoint accuracy and speed"
     fireball|4:

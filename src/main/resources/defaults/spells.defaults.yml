@@ -2583,7 +2583,7 @@ meteor:
         direction: 0,0.75,0
         destructible: destructible,destructible2,destructible3
         destructible_override: true
-        undo_speed: 0.5
+        undo_speed: 2
     costs:
         mana: 100
 
@@ -5333,7 +5333,7 @@ blink:
         allow_max_range: true
         allow_passthrough: false
         range: 16
-        cooldown: 5000
+        cooldown: 10000
         prevent_passthrough: indestructible
         bypass_confusion: true
     costs:
@@ -5345,8 +5345,8 @@ blink|2:
     parameters:
         allow_passthrough: true
         passthrough_range: 2
-        range: 64
-        cooldown: 2000
+        range: 32
+        cooldown: 7000
     costs:
         mana: 75
 
@@ -5359,12 +5359,12 @@ blink|3:
         - class: Descend
           vertical_range: 255
     parameters:
-        range: 128
+        range: 48
         allow_passthrough: true
         passthrough_range: 8
-        cooldown: 100
+        cooldown: 5000
     costs:
-        mana: 100
+        mana: 200
 
 absorb:
     icon: bucket
@@ -6189,7 +6189,7 @@ fireball|2:
     upgrade_required_path: student
     upgrade_required_casts: 30
     parameters:
-        size: 2
+        size: 1
         spread: 4
 
 fireball|3:
@@ -6983,7 +6983,8 @@ kill:
         cooldown_mage: 10000
         target_breakables: 5
         bypass_backfire: true
-        damage: 20
+        player_damage: 10
+        entity_damage: 20
         hitbox_size: 1
         velocity: 5
         interval: 250
@@ -6995,14 +6996,16 @@ kill|2:
     upgrade_required_casts: 50
     parameters:
         cooldown_mage: 8000
-        damage: 40
+        player_damage: 15
+        entity_damage: 30
         hitbox_size: 2
         velocity: 7
 
 kill|3:
     parameters:
         cooldown_mage: 5000
-        damage: 60
+        player_damage: 18
+        entity_damage: 40
         hitbox_size: 3
         velocity: 10
 
@@ -7117,7 +7120,7 @@ torture:
         effect_slow: 20
         effect_wither: 1
         effect_confusion: 5
-        cooldown: 13000
+        cooldown: 30000
         hitbox: true
 
 torture|2:
