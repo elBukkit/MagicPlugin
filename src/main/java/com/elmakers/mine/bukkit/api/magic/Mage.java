@@ -406,6 +406,7 @@ public interface Mage extends CostReducer {
     public boolean isSneaking();
 
     public void activateGUI(GUIAction action, Inventory inventory);
+    public void continueGUI(GUIAction action, Inventory inventory);
     public void deactivateGUI();
     public void playSoundEffect(SoundEffect sound);
 
