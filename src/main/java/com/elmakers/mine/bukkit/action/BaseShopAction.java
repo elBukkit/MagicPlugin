@@ -54,6 +54,7 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
     protected MaterialAndData confirmFillMaterial;
     protected CastContext context;
     private Map<Integer, ShopItem> showingItems;
+    private List<ItemStack> itemStacks;
 
     protected class ShopItem {
         private final ItemStack item;
@@ -367,8 +368,8 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
         if (autoClose) {
             mage.deactivateGUI();
         } else {
-            // Need to update balance
-
+            // update title
+            mage.continueGUI(this, getInventory(context));
         }
     }
 
@@ -459,7 +460,7 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
         MageController controller = context.getController();
 
         // Load items
-        List<ItemStack> itemStacks = new ArrayList<ItemStack>();
+        itemStacks = new ArrayList<ItemStack>();
         String costString = context.getMessage("cost_lore", "Costs: $cost");
         for (ShopItem shopItem : items) {
             int currentSlot = itemStacks.size();
@@ -506,22 +507,32 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
             context.showMessage("no_items", "There is nothing for you to buy here");
             return SpellResult.FAIL;
         }
-
-        String inventoryTitle = context.getMessage("title", "Shop ($balance)");
-        String balanceDescription = getBalanceDescription(context);
-        inventoryTitle = inventoryTitle.replace("$balance", balanceDescription);
-
-        int invSize = (int)Math.ceil((float)itemStacks.size() / 9.0f) * 9;
-        Inventory displayInventory = CompatibilityUtils.createInventory(null, invSize, inventoryTitle);
-        int slot = 0;
-        for (ItemStack item : itemStacks)
-        {
-            displayInventory.setItem(slot++, item);
-        }
+        Inventory displayInventory = getInventory(context);
         mage.activateGUI(this, displayInventory);
 
         return SpellResult.CAST;
 	}
+
+    protected Inventory getInventory(CastContext context)
+    {
+        String inventoryTitle = context.getMessage("title", "Shop ($balance)");
+        String balanceDescription = getBalanceDescription(context);
+        inventoryTitle = inventoryTitle.replace("$balance", balanceDescription);
+
+        int invSize = itemStacks == null ? 0 : itemStacks.size();
+        invSize = (int)Math.ceil((float)invSize / 9.0f) * 9;
+        Inventory displayInventory = CompatibilityUtils.createInventory(null, invSize, inventoryTitle);
+        if (itemStacks != null)
+        {
+            int slot = 0;
+            for (ItemStack item : itemStacks)
+            {
+                displayInventory.setItem(slot++, item);
+            }
+        }
+
+        return displayInventory;
+    }
 
     protected String formatItemAmount(MageController controller, double amount) {
         CurrencyItem currency = controller.getCurrency();
