@@ -8019,6 +8019,7 @@ tweakshop:
           wand|chestmode: 0
           wand|cyclemode: 0
           wand|inventorymode: 0
+          none: 0
           wand|quickcast_enable: 0
           wand|quickcast_disable: 0
           wand|quickcast_normal: 0

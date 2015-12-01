@@ -8,6 +8,7 @@
  - Add Architect Staff, a wand for admins with architect spells
  - Rebalanced SP costs for longer progression
  - Moved Portal, Anvil to Engineer (for now?)
+ - Fixed issue with spell shops and spell permissions
 
 ## 5.3.3
 
