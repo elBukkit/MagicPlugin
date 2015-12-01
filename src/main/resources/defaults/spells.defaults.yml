@@ -394,49 +394,40 @@ boon:
            effectLib:
              class: TraceEffect
              particle: redstone
-    costs:
-        mana: 50
     parameters:
         target: any_entity
         range: 32
-        duration: 10000
+        duration: 5000
         target_type: Player
-        effect_speed: 2
-        effect_night_vision: 5
+        effect_speed: 1
         bypass_friendly_fire: true
         bypass_pvp: true
         cooldown: 20000
+    costs:
+        mana: 50
 
 boon|2:
     upgrade_required_path: student
     upgrade_required_casts: 50
     parameters:
-        duration: 20000
+        duration: 10000
         cooldown: 40000
 
 boon|3:
     upgrade_required_path: master
     upgrade_required_casts: 50
     parameters:
-        duration: 30000
+        duration: 20000
         cooldown: 40000
 
 boon|4:
-    actions:
-        cast:
-        -  class: PotionEffect
-        -  class: FallProtection
-           duration: 35000
-    costs:
-        mana: 80
     parameters:
         duration: 45000
         cooldown: 60000
-        effect_speed: 5
-        effect_jump: 5
+        effect_speed: 2
         effect_night_vision: 5
-        effect_fire_resistance: 1
-        effect_saturation: 5
+    costs:
+        mana: 100
 
 simulate:
     icon_url: http://textures.minecraft.net/texture/7ee091dbd831daca4385f481d3a0c5bf6513e47db9a0926e567e10997cfd6ce2
