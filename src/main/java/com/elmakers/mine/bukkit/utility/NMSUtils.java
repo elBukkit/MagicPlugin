@@ -195,6 +195,7 @@ public class NMSUtils {
     protected static Constructor class_PacketPlayOutEntityStatus_Constructor;
     protected static Constructor class_PacketPlayOutEntityDestroy_Constructor;
     protected static Constructor class_ChestLock_Constructor;
+    protected static Constructor class_ArmorStand_Constructor;
 
     protected static Field class_Entity_invulnerableField;
     protected static Field class_Entity_motXField;
@@ -445,6 +446,7 @@ public class NMSUtils {
             class_EntityPaintingConstructor = class_EntityPainting.getConstructor(class_World, class_BlockPosition, class_EnumDirection);
             class_EntityItemFrameConstructor = class_EntityItemFrame.getConstructor(class_World, class_BlockPosition, class_EnumDirection);
             class_ChestLock_Constructor = class_ChestLock.getConstructor(String.class);
+            class_ArmorStand_Constructor = class_EntityArmorStand.getConstructor(class_World);
 
             class_PacketPlayOutMapChunkBulk = getVersionedBukkitClass("net.minecraft.server.PacketPlayOutMapChunkBulk", "net.minecraft.server.Packet56MapChunkBulk");
 

@@ -299,6 +299,42 @@ public class CompatibilityUtils extends NMSUtils {
         return newItemFrame;
     }
 
+    public static ArmorStand spawnArmorStand(Location location)
+    {
+        ArmorStand armorStand = null;
+        try {
+            Object worldHandle = getHandle(location.getWorld());
+            Object newEntity = null;
+            newEntity = class_ArmorStand_Constructor.newInstance(worldHandle);
+            if (newEntity != null) {
+                Entity bukkitEntity = getBukkitEntity(newEntity);
+                if (bukkitEntity == null || !(bukkitEntity instanceof ArmorStand)) return null;
+
+                armorStand = (ArmorStand)bukkitEntity;
+            }
+        } catch (Throwable ex) {
+            ex.printStackTrace();
+        }
+        if (armorStand != null) {
+            armorStand.teleport(location);
+        }
+        return armorStand;
+    }
+
+    public static boolean addToWorld(World world, Entity entity, CreatureSpawnEvent.SpawnReason reason)
+    {
+        try {
+            Object worldHandle = getHandle(world);
+            Object entityHandle = getHandle(entity);
+            class_World_addEntityMethod.invoke(worldHandle, entityHandle, reason);
+        } catch (Throwable ex) {
+            ex.printStackTrace();
+            return false;
+        }
+
+        return true;
+    }
+
     public static void watch(Object entityHandle, int key, Object data) {
         try {
             Method getDataWatcherMethod = class_Entity.getMethod("getDataWatcher");
