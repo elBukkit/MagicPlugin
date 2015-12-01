@@ -1781,6 +1781,26 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     }
 
     @Override
+    public void continueGUI(GUIAction action, Inventory inventory)
+    {
+        Player player = getPlayer();
+        if (player != null)
+        {
+            controller.disableItemSpawn();
+            try {
+                if (inventory != null) {
+                    gui = action;
+                    player.openInventory(inventory);
+                }
+            } catch (Throwable ex) {
+                ex.printStackTrace();
+            }
+            controller.enableItemSpawn();
+        }
+        gui = action;
+    }
+
+    @Override
     public void deactivateGUI()
     {
         activateGUI(null, null);
