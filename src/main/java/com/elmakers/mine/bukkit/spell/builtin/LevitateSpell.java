@@ -46,6 +46,7 @@ public class LevitateSpell extends TargetingSpell implements Listener
     private static final BlockFace[] CHECK_FACES = {BlockFace.EAST, BlockFace.WEST, BlockFace.NORTH, BlockFace.SOUTH};
 
 	private static final float defaultFlySpeed = 0.1f;
+    private static Class<?> worldClass;
 
 	private final int safetyLength = 10000;
     
@@ -784,8 +785,9 @@ public class LevitateSpell extends TargetingSpell implements Listener
                 }
                 Class<?> mountClass = NMSUtils.getBukkitClass("net.minecraft.server." + mountName);
                 if (mountClass != null) {
-                    final Class<?> worldClass = NMSUtils.getBukkitClass("net.minecraft.server.World");
-                    final Class<?> entityClass = NMSUtils.getBukkitClass("net.minecraft.server.Entity");
+                    if (worldClass == null) {
+                        worldClass = NMSUtils.getBukkitClass("net.minecraft.server.World");
+                    }
                     Constructor<? extends Object> constructor = mountClass.getConstructor(worldClass);
                     Object nmsWorld = NMSUtils.getHandle(world);
                     Object nmsEntity = constructor.newInstance(nmsWorld);
@@ -802,8 +804,7 @@ public class LevitateSpell extends TargetingSpell implements Listener
                         }
                         Method setLocationMethod = mountClass.getMethod("setLocation", Double.TYPE, Double.TYPE, Double.TYPE, Float.TYPE, Float.TYPE);
                         setLocationMethod.invoke(nmsEntity, location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch());
-                        Method addEntityMethod = worldClass.getMethod("addEntity", entityClass, CreatureSpawnEvent.SpawnReason.class);
-                        addEntityMethod.invoke(nmsWorld, nmsEntity, mountSpawnReason);
+                        CompatibilityUtils.addToWorld(world, entity, mountSpawnReason);
                     } else {
                         mage.sendMessage("Failed to spawn entity of type: " + mountType + " (" + mountType.getName() + ")");
                         return;
@@ -852,11 +853,12 @@ public class LevitateSpell extends TargetingSpell implements Listener
                     configureArmorStand(armorStand);
                 }
                 else if (useArmorStand) {
-                    armorStand = (ArmorStand) mage.getLocation().getWorld().spawnEntity(mage.getLocation(), EntityType.ARMOR_STAND);
+                    armorStand = CompatibilityUtils.spawnArmorStand(mage.getLocation());
                     configureArmorStand(armorStand);
                     armorStand.setPassenger(mountEntity);
                     armorStand.setMetadata("notarget", new FixedMetadataValue(controller.getPlugin(), true));
                     armorStand.setMetadata("broom", new FixedMetadataValue(controller.getPlugin(), true));
+                    CompatibilityUtils.addToWorld(mage.getLocation().getWorld(), armorStand, mountSpawnReason);
                 } else {
                     armorStand = null;
                 }
