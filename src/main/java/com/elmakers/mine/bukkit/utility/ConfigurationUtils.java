@@ -164,7 +164,9 @@ public class ConfigurationUtils {
         }
         if (o instanceof String) {
             try {
-                String[] pieces = StringUtils.split((String)o, ',');
+                String parse = (String)o;
+                parse = parse.replace("|", ",");
+                String[] pieces = StringUtils.split(parse, ',');
                 double x = Double.parseDouble(pieces[0]);
                 double y = Double.parseDouble(pieces[1]);
                 double z = Double.parseDouble(pieces[2]);
