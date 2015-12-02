@@ -8,6 +8,12 @@
     ],
     "category": "player"
   },
+  "magic.sonic": {
+      "sounds": [
+          "custom/sonic"
+      ],
+      "category": "player"
+  },
   "magic.crack": {
     "sounds": [
       {
