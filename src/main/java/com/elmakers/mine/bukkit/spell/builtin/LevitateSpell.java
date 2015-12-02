@@ -79,6 +79,7 @@ public class LevitateSpell extends TargetingSpell implements Listener
     private Material mountItem = null;
     private Vector armorStandArm = null;
     private Vector armorStandHead = null;
+    private Vector armorStandBody = null;
     private double pitchAmount = 0;
     private double yawAmount = 0;
     private double rollAmount = 0;
@@ -344,24 +345,22 @@ public class LevitateSpell extends TargetingSpell implements Listener
         }
         direction.multiply(boost);
         if (mountEntity != null) {
-            if (armorStand != null) {
-                armorStand.setVelocity(direction);
-                CompatibilityUtils.setYawPitch(armorStand, location.getYaw() + (float)yawAmount, location.getPitch());
+            ArmorStand activeArmorStand = armorStand != null ? armorStand : (mountEntity instanceof ArmorStand ? (ArmorStand)mountEntity : null);
+            if (activeArmorStand != null) {
+                activeArmorStand.setVelocity(direction);
+                CompatibilityUtils.setYawPitch(activeArmorStand, location.getYaw() + (float)yawAmount, location.getPitch());
                 if (pitchAmount != 0) {
                     if (armorStandHead == null && useHelmet) {
-                        armorStand.setHeadPose(new EulerAngle(pitchAmount * location.getPitch() / 180 * Math.PI, 0, 0));
+                        activeArmorStand.setHeadPose(new EulerAngle(pitchAmount * location.getPitch() / 180 * Math.PI, 0, 0));
                     } else if (!useHelmet) {
-                        EulerAngle armPose = armorStand.getRightArmPose();
+                        EulerAngle armPose = activeArmorStand.getRightArmPose();
                         armPose.setY(pitchAmount * location.getPitch() / 180 * Math.PI);
                         armPose.setZ(rollAmount);
-                        armorStand.setRightArmPose(armPose);
+                        activeArmorStand.setRightArmPose(armPose);
                     }
                 }
             } else {
                 mountEntity.setVelocity(direction);
-                if (mountEntity instanceof ArmorStand) {
-                    CompatibilityUtils.setYawPitch(mountEntity, location.getYaw() + (float)yawAmount, location.getPitch());
-                }
             }
         } else {
             player.setVelocity(direction);
@@ -466,6 +465,7 @@ public class LevitateSpell extends TargetingSpell implements Listener
         smallArmorStand = parameters.getBoolean("armor_stand_small", false);
         armorStandArm = ConfigurationUtils.getVector(parameters, "armor_stand_arm");
         armorStandHead = ConfigurationUtils.getVector(parameters, "armor_stand_head");
+        armorStandBody = ConfigurationUtils.getVector(parameters, "armor_stand_body");
         pitchAmount = ConfigurationUtils.getDouble(parameters, "armor_stand_pitch", 0.0);
         yawAmount = ConfigurationUtils.getDouble(parameters, "armor_stand_yaw", 0.0);
         rollAmount = ConfigurationUtils.getDouble(parameters, "armor_stand_roll", 0.0);
@@ -936,6 +936,9 @@ public class LevitateSpell extends TargetingSpell implements Listener
         }
         if (armorStandHead != null) {
             armorStand.setHeadPose(new EulerAngle(armorStandHead.getX(), armorStandHead.getY(), armorStandHead.getZ()));
+        }
+        if (armorStandBody != null) {
+            armorStand.setBodyPose(new EulerAngle(armorStandBody.getX(), armorStandBody.getY(), armorStandBody.getZ()));
         }
         if (smallArmorStand) {
             CompatibilityUtils.setSmall(armorStand, true);

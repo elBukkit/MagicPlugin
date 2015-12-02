@@ -674,8 +674,6 @@ architectstaff:
     - schematic:lantern
     - schematic:rainbow_blocks
     - schematic:small_house
-    - schematic:stash_chest
-    - schematic:tech_tower
     - schematic:tent
     - stained_clay
     - stained_glass
