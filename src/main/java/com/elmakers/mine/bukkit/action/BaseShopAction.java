@@ -323,8 +323,7 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
             double worth = shopItem.getWorth();
             String costString = context.getMessage("deducted", "&d&oYou bought &r&6$item &r&d&ofor &r&a$cost");
             if (sell) {
-                String amountString = formatItemAmount(controller, worth);
-                costString = costString.replace("$cost", amountString);
+                costString = costString.replace("$cost", getItemCost(context, shopItem));
                 removeItems(controller, mage, item, 1);
                 giveCosts(context, shopItem);
             } else {
