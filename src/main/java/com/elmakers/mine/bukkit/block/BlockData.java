@@ -123,8 +123,10 @@ public class BlockData extends MaterialAndData implements com.elmakers.mine.bukk
     public BlockData(Location location, Material material, byte data)
     {
         super(material, data);
-        this.location = new BlockVector(location.getBlockX(), location.getBlockY(), location.getBlockZ());
-        this.worldName = location.getWorld().getName();
+        if (location != null) {
+            this.location = new BlockVector(location.getBlockX(), location.getBlockY(), location.getBlockZ());
+            this.worldName = location.getWorld().getName();
+        }
     }
 
     public BlockData(int x, int y, int z, String world, Material material, byte data)
