@@ -36,9 +36,9 @@ public class ChangeContextAction extends CompoundAction {
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters) {
         super.prepare(context, parameters);
-        targetEntityLocation = parameters.getBoolean("target_entity");
-        targetSelf = parameters.getBoolean("target_caster");
-        sourceAtTarget = parameters.getBoolean("source_at_target");
+        targetEntityLocation = parameters.getBoolean("target_entity", false);
+        targetSelf = parameters.getBoolean("target_caster", false);
+        sourceAtTarget = parameters.getBoolean("source_at_target", false);
         targetOffset = ConfigurationUtils.getVector(parameters, "target_offset");
         sourceOffset = ConfigurationUtils.getVector(parameters, "source_offset");
         randomTargetOffset = ConfigurationUtils.getVector(parameters, "random_target_offset");

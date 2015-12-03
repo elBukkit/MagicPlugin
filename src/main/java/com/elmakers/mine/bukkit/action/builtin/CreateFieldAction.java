@@ -8,16 +8,23 @@ import com.elmakers.mine.bukkit.protection.PreciousStonesManager;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.ConfigurationSection;
 
 public class CreateFieldAction extends ModifyBlockAction {
     private Material fieldType;
+    private String rent;
+    private String rentPeriod;
+    private byte rentSignDirection;
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters)
     {
         super.prepare(context, parameters);
         fieldType = ConfigurationUtils.getMaterial(parameters, "field_type");
+        rent = parameters.getString("field_rent", "");
+        rentPeriod = parameters.getString("field_rent_period", "");
+        rentSignDirection = (byte)parameters.getInt("field_rent_sign_direction", 0);
     }
 
     @Override
@@ -37,6 +44,12 @@ public class CreateFieldAction extends ModifyBlockAction {
         if (!preciousStones.createField(context.getTargetLocation(), context.getMage().getPlayer())) {
             context.getMage().sendDebugMessage(ChatColor.RED + "Could not place field", 2);
             return SpellResult.NO_TARGET;
+        }
+        if (!rent.isEmpty() && !rentPeriod.isEmpty()) {
+            if (!preciousStones.rentField(context.getTargetLocation().getBlock().getRelative(BlockFace.UP).getLocation(),
+                    context.getMage().getPlayer(), rent, rentPeriod, rentSignDirection)) {
+                context.getMage().sendDebugMessage(ChatColor.RED + "Could not rent field", 2);
+            }
         }
         return SpellResult.CAST;
     }

@@ -2,13 +2,16 @@ package com.elmakers.mine.bukkit.protection;
 
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import net.sacredlabyrinth.Phaed.PreciousStones.PreciousStones;
+import net.sacredlabyrinth.Phaed.PreciousStones.entries.FieldSign;
 import net.sacredlabyrinth.Phaed.PreciousStones.field.Field;
 import net.sacredlabyrinth.Phaed.PreciousStones.field.FieldFlag;
 import net.sacredlabyrinth.Phaed.PreciousStones.managers.ForceFieldManager;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
-import org.bukkit.block.BlockState;
+import org.bukkit.block.Sign;
 import org.bukkit.entity.Ageable;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Golem;
@@ -164,5 +167,18 @@ public class PreciousStonesAPI implements BlockBuildManager, BlockBreakManager, 
 
 		manager.add(location.getBlock(), player, event);
 		return !event.isCancelled();
+	}
+
+	public boolean rentField(Location signLocation, Player player, String rent, String timePeriod, byte signDirection) {
+		Block signBlock = signLocation.getBlock();
+		signBlock.setType(Material.SIGN_POST);
+		signBlock.setData(signDirection);
+		Sign sign = (Sign)signBlock.getState();
+		sign.setLine(0, ChatColor.BLACK + "" + ChatColor.BOLD + "[Rent]");
+		sign.setLine(1, rent);
+		sign.setLine(2, timePeriod);
+		sign.update();
+		final FieldSign s = new FieldSign(signBlock, sign.getLines(), player);
+		return s.isValid();
 	}
 }

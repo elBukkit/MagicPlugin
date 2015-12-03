@@ -83,4 +83,11 @@ public class PreciousStonesManager implements BlockBuildManager, BlockBreakManag
 
 		return api.createField(location, player);
 	}
+
+	public boolean rentField(Location signLocation, Player player, String rent, String timePeriod, byte signDirection) {
+		if (!enabled || api == null || signLocation == null || player == null)
+			return false;
+
+		return api.rentField(signLocation, player, rent, timePeriod, signDirection);
+	}
 }
