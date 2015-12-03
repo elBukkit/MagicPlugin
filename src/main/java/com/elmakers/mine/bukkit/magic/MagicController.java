@@ -3187,6 +3187,10 @@ public Set<Material> getMaterialSet(String name)
     public TownyManager getTowny() {
         return townyManager;
     }
+
+    public PreciousStonesManager getPreciousStones() {
+        return preciousStonesManager;
+    }
 	
 	@Override
 	public boolean sendMail(CommandSender sender, String fromPlayer, String toPlayer, String message) {

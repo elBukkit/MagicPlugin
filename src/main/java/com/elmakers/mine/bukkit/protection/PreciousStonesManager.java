@@ -76,4 +76,11 @@ public class PreciousStonesManager implements BlockBuildManager, BlockBreakManag
 
 		return api.canTarget(source, target);
 	}
+
+	public boolean createField(Location location, Player player) {
+		if (!enabled || api == null || location == null || player == null)
+			return false;
+
+		return api.createField(location, player);
+	}
 }

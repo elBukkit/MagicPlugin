@@ -4,8 +4,11 @@ import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import net.sacredlabyrinth.Phaed.PreciousStones.PreciousStones;
 import net.sacredlabyrinth.Phaed.PreciousStones.field.Field;
 import net.sacredlabyrinth.Phaed.PreciousStones.field.FieldFlag;
+import net.sacredlabyrinth.Phaed.PreciousStones.managers.ForceFieldManager;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
+import org.bukkit.block.BlockState;
 import org.bukkit.entity.Ageable;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Golem;
@@ -13,6 +16,8 @@ import org.bukkit.entity.Monster;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Villager;
 import org.bukkit.entity.WaterMob;
+import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 
 import java.util.List;
@@ -146,5 +151,18 @@ public class PreciousStonesAPI implements BlockBuildManager, BlockBreakManager, 
 		}
 
 		return true;
+	}
+
+	public boolean createField(Location location, Player player) {
+		ForceFieldManager manager = preciousStones.getForceFieldManager();
+		Block targetBlock = location.getBlock();
+		BlockPlaceEvent event = new BlockPlaceEvent(targetBlock,
+				targetBlock.getState(),
+				targetBlock.getRelative(BlockFace.DOWN),
+				new ItemStack(targetBlock.getType(), targetBlock.getData()),
+				player, true);
+
+		manager.add(location.getBlock(), player, event);
+		return !event.isCancelled();
 	}
 }
