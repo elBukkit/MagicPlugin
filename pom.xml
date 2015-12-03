@@ -4,7 +4,7 @@
 	<groupId>com.elmakers.mine.bukkit.plugins</groupId>
 	<artifactId>Magic</artifactId>
 	<version>5.4-SNAPSHOT</version>
-	<name>elMakers - Bukkit Plugins : Magic</name>
+	<name>Magic Bukkit Plugin</name>
 	<url>http://mine.elmakers.com</url>
 	<dependencyManagement>
 		<dependencies>

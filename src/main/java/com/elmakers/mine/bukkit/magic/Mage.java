@@ -34,6 +34,7 @@ import com.elmakers.mine.bukkit.wand.WandManaMode;
 import de.slikey.effectlib.util.ParticleEffect;
 import org.bukkit.*;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.command.BlockCommandSender;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
@@ -295,7 +296,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                     if (li != null) {
                         scale = event.getDamage() / li.getMaxHealth();
                     }
-                    fallingSpell.playEffects("land", (float)scale);
+                    fallingSpell.playEffects("land", (float)scale, player.getLocation().getBlock().getRelative(BlockFace.DOWN));
                 }
                 if (fallProtectionCount <= 0) {
                     fallProtection = 0;

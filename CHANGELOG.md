@@ -9,6 +9,8 @@
  - Rebalanced SP costs for longer progression
  - Moved Portal, Anvil to Engineer (for now?)
  - Fixed issue with spell shops and spell permissions
+ - Fix "block crack" particle FX
+ - Make Sandblast a projectile spell
 
 ## 5.3.3
 

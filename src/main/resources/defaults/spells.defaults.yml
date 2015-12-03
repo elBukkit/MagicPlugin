@@ -487,7 +487,7 @@ glider:
         -  class: EffectSingle
            sound: ambience_cave
         -  class: EffectTrail
-           effect: step_sound
+           particle: block_crack
     death_cast:
         "push pdy -1 pdx 0 pdz 0": 100
     parameters:
@@ -518,7 +518,7 @@ virus:
         -  class: EffectSingle
            sound: enderdragon_growl
         -  class: EffectTrail
-           effect: step_sound
+           particle: block_crack
     levels:
         1: 100
         3: 40
@@ -578,7 +578,7 @@ worm:
         -  class: EffectSingle
            sound: slime_attack
         -  class: EffectTrail
-           effect: step_sound
+           particle: block_crack
     levels:
         1: 100
         3: 40
@@ -639,7 +639,7 @@ hunter:
         -  class: EffectSingle
            sound: enderman_scream
         -  class: EffectTrail
-           effect: step_sound
+           particle: block_crack
     levels:
         1: 100
         3: 40
@@ -697,7 +697,7 @@ defender:
         -  class: EffectSingle
            sound: enderman_scream
         -  class: EffectTrail
-           effect: step_sound
+           particle: block_crack
     cast:
         "convert brush stained_glass|1 radius 3 check_destructible true undo 5000 transparent air,$birth,redstone_block,command": 100
         "none": 1000
@@ -743,7 +743,7 @@ animate:
         -  class: EffectSingle
            sound: enderdragon_growl
         -  class: EffectTrail
-           effect: step_sound
+           particle: block_crack
     cast:
         blessing: 100
         "none": 1000
@@ -787,7 +787,7 @@ life:
         -  class: EffectSingle
            sound: ambience_cave
         -  class: EffectTrail
-           effect: step_sound
+           particle: block_crack
     parameters:
         allow_max_range: true
         check_destructible: false
@@ -820,7 +820,7 @@ life3:
         -  class: EffectSingle
            sound: ambience_cave
         -  class: EffectTrail
-           effect: step_sound
+           particle: block_crack
     parameters:
         allow_max_range: true
         check_destructible: false
@@ -853,19 +853,30 @@ shell:
     upgrade_required_casts: 50
     actions:
         cast:
-        -  class: Sphere
+        -  class: CustomProjectile
            actions:
-           -  class: ModifyBlock
+           - class: Sphere
+             actions:
+             -  class: ModifyBlock
     effects:
         cast:
         -  class: EffectSingle
            sound: magic.shield
-        -  class: EffectTrail
-           effect: step_sound
+        tick:
+        -  location: target
+           particle: block_crack
+        hit:
+        -  location: target
+           effectlib:
+             class: SphereEffect
+             particle: block_crack
+             radius: $radius
+             duration: 2000
     parameters:
-        target: any
-        target_type: LivingEntity
+        target: other
         allow_max_range: false
+        velocity: 50
+        target_type: LivingEntity
         range: 32
         thickness: 1
         radius: 3
@@ -990,7 +1001,7 @@ disc:
         -  class: EffectSingle
            sound: magic.shield
         -  class: EffectTrail
-           effect: step_sound
+           particle: block_crack
     parameters:
         allow_max_range: true
         range: 8
@@ -1027,7 +1038,7 @@ superdisc:
         -  class: EffectSingle
            sound: level_up
         -  class: EffectTrail
-           effect: step_sound
+           particle: block_crack
     parameters:
         allow_max_range: true
         range: 64
@@ -1053,7 +1064,7 @@ superring:
         -  class: EffectSingle
            sound: level_up
         -  class: EffectTrail
-           effect: step_sound
+           particle: block_crack
     parameters:
         allow_max_range: true
         range: 64
@@ -1079,7 +1090,7 @@ supershell:
         -  class: EffectSingle
            sound: level_up
         -  class: EffectTrail
-           effect: step_sound
+           particle: block_crack
     parameters:
         allow_max_range: true
         range: 64
@@ -1104,7 +1115,7 @@ superdome:
         -  class: EffectSingle
            sound: level_up
         -  class: EffectTrail
-           effect: step_sound
+           particle: block_crack
     parameters:
         allow_max_range: true
         range: 64
@@ -1162,7 +1173,7 @@ toss:
     effects:
         hit:
         -  class: EffectSingle
-           effect: step_sound
+           particle: block_crack
            location: origin
     parameters:
       speed_min: 1.2
@@ -1185,7 +1196,7 @@ volley:
     effects:
         hit:
         -  class: EffectSingle
-           effect: step_sound
+           particle: block_crack
            location: origin
     parameters:
       speed: 1.5
@@ -1811,7 +1822,7 @@ tree:
         -  class: EffectSingle
            sound: splash
         -  class: EffectTrail
-           effect: step_sound
+           particle: block_crack
            material: log
     parameters:
         allow_max_range: false
@@ -1840,7 +1851,7 @@ forest:
         -  class: EffectSingle
            sound: splash
         -  class: EffectTrail
-           effect: step_sound
+           particle: block_crack
            material: log
     parameters:
         allow_max_range: false
@@ -2804,6 +2815,8 @@ fling:
              particle: spell
         land:
         -  class: EffectRing
+           sound: STEP_GRASS
+           sound_pitch: 0.7
            particle: block_crack
            use_wand_location: false
            use_eye_location: false
@@ -3470,7 +3483,7 @@ regenerate:
     effects:
         cast:
         -  class: EffectTrail
-           effect: step_sound
+           particle: block_crack
            material: dirt
     parameters:
         allow_max_range: false
@@ -3491,7 +3504,7 @@ superregenerate:
     effects:
         cast:
         -  class: EffectTrail
-           effect: step_sound
+           particle: block_crack
            material: dirt
     parameters:
         allow_max_range: false
@@ -3513,7 +3526,7 @@ paint:
     effects:
         cast:
         -  class: EffectTrail
-           effect: step_sound
+           particle: block_crack
     parameters:
         target: block
         allow_max_range: false
@@ -3533,7 +3546,7 @@ fill:
     effects:
         cast:
         -  class: EffectTrail
-           effect: step_sound
+           particle: block_crack
     parameters:
         select_self: true
         allow_max_range: false
@@ -3555,7 +3568,7 @@ recurse:
     effects:
         cast:
         -  class: EffectTrail
-           effect: step_sound
+           particle: block_crack
     parameters:
         allow_max_range: false
         range: 32
@@ -3716,7 +3729,7 @@ bridge:
     effects:
         cast:
         -  class: EffectSingle
-           effect: step_sound
+           particle: block_crack
            location: target
     parameters:
         target: none
@@ -3739,7 +3752,7 @@ pillar:
     effects:
         cast:
         -  class: EffectSingle
-           effect: step_sound
+           particle: block_crack
            location: target
     parameters:
         allow_max_range: false
@@ -3765,7 +3778,7 @@ place:
     effects:
         cast:
         -  class: EffectSingle
-           effect: step_sound
+           particle: block_crack
            location: target
     parameters:
         allow_max_range: false
@@ -3784,7 +3797,7 @@ anvil:
     effects:
         cast:
         -  class: EffectSingle
-           effect: step_sound
+           particle: block_crack
            location: target
     parameters:
         target: other
@@ -3907,7 +3920,7 @@ superblob:
         -  class: EffectSingle
            sound: level_up
         -  class: EffectTrail
-           effect: step_sound
+           particle: block_crack
     parameters:
         allow_max_range: true
         check_destructible: false
@@ -3931,7 +3944,7 @@ superpyramid:
         -  class: EffectSingle
            sound: level_up
         -  class: EffectTrail
-           effect: step_sound
+           particle: block_crack
     parameters:
         allow_max_range: true
         range: 32
@@ -3955,7 +3968,7 @@ supercylinder:
         -  class: EffectSingle
            sound: level_up
         -  class: EffectTrail
-           effect: step_sound
+           particle: block_crack
     parameters:
         allow_max_range: true
         range: 32
@@ -3979,7 +3992,7 @@ box:
         -  class: EffectSingle
            sound: level_up
         -  class: EffectTrail
-           effect: step_sound
+           particle: block_crack
     parameters:
         target_type: LivingEntity
         allow_max_range: false
@@ -4004,7 +4017,7 @@ superbox:
         -  class: EffectSingle
            sound: level_up
         -  class: EffectTrail
-           effect: step_sound
+           particle: block_crack
     parameters:
         allow_max_range: true
         range: 64
@@ -4029,7 +4042,7 @@ supercube:
         -  class: EffectSingle
            sound: level_up
         -  class: EffectTrail
-           effect: step_sound
+           particle: block_crack
     parameters:
         allow_max_range: true
         range: 64
@@ -4174,7 +4187,7 @@ workbench:
         -  class: EffectSingle
            sound: piston_extend
         -  class: EffectTrail
-           effect: step_sound
+           particle: block_crack
     parameters:
         allow_max_range: false
         range: 5
@@ -4198,8 +4211,11 @@ stash:
         cast:
         -  class: EffectSingle
            sound: enderman_hit
-        -  class: EffectTrail
-           effect: step_sound
+           effectlib:
+            class: WarpEffect
+            particle: block_crack
+            materia: obsidian
+            duration: 1000
     parameters:
         target_type: Player
         target: self
@@ -4218,7 +4234,8 @@ pickpocket:
         -  class: EffectSingle
            sound: enderman_hit
         -  class: EffectTrail
-           effect: step_sound
+           particle: block_crack
+           material: obsidian
     parameters:
         target_type: Player
         target: other
@@ -4465,7 +4482,7 @@ convert:
         -  class: EffectSingle
            sound: level_up
         -  class: EffectTrail
-           effect: step_sound
+           particle: block_crack
     parameters:
         allow_max_range: false
         range: 32
@@ -4488,7 +4505,7 @@ superconvert:
         -  class: EffectSingle
            sound: level_up
         -  class: EffectTrail
-           effect: step_sound
+           particle: block_crack
     parameters:
         allow_max_range: false
         range: 32
@@ -4842,23 +4859,38 @@ sandblast:
     upgrade_required_casts: 50
     actions:
         cast:
-        - class: Volume
+        - class: CustomProjectile
           actions:
-          - class: ModifyBlock
+          - class: ChangeContext
+            target_offset: 0,30,0
+            actions:
+            - class: Volume
+              actions:
+              - class: ModifyBlock
     effects:
         cast:
         -  class: EffectSingle
            sound: step_sand
-        -  class: EffectTrail
+           location: both
+        tick:
+        -  location: target
            particle: block_crack
+        hit:
+        -  location: target
+           effectlib:
+             class: SphereEffect
+             particle: block_crack
+             radius: $radius
+             duration: 2000
     parameters:
+        velocity: 20
+        gravity: 0.05
         allow_max_range: true
-        range: 32
+        range: 24
         brush: sand
         radius: 1
-        oty: 32
         undo: 20000
-        cooldown: 5000
+        cooldown: 30000
         destructible: destructible_replace
     costs:
         mana: 50
@@ -5004,7 +5036,7 @@ sphere:
         -  class: EffectSingle
            sound: slime_walk
         -  class: EffectTrail
-           effect: step_sound
+           particle: block_crack
     parameters:
         target_type: LivingEntity
         allow_max_range: true
@@ -5039,7 +5071,14 @@ blob:
            sound: magic.shield
         tick:
         -  location: target
-           effect: step_sound
+           particle: block_crack
+        hit:
+        -  location: target
+           effectlib:
+             class: SphereEffect
+             particle: block_crack
+             radius: $radius
+             duration: 2000
     parameters:
         velocity: 50
         target_type: LivingEntity
@@ -5136,7 +5175,7 @@ walls:
         -  class: EffectSingle
            sound: magic.shield
         -  class: EffectTrail
-           effect: step_sound
+           particle: block_crack
     parameters:
         target_type: LivingEntity
         allow_max_range: true
@@ -5380,8 +5419,9 @@ absorb:
         -  class: EffectSingle
            sound: drink
         -  class: EffectTrail
-           effect: step_sound
+           particle: block_crack
            reverse: true
+           particle_count: 4
     parameters:
         target: block
         allow_max_range: false
@@ -5404,7 +5444,7 @@ hat:
         -  class: EffectSingle
            sound: drink
         -  class: EffectTrail
-           effect: step_sound
+           particle: block_crack
            reverse: true
     parameters:
         target_self: true
@@ -5634,7 +5674,7 @@ earth:
            sound: step_grass
         iterate:
         -  class: EffectSingle
-           effect: step_sound
+           particle: block_crack
            location: target
     parameters:
         target_type: LivingEntity
@@ -6099,7 +6139,11 @@ levitate:
            use_eye_location: false
            period: 4
            particle_count: 10
+           particle_offset_x: 0.9
+           particle_offset_z: 0.9
+           particle_offset_y: 0.1
            radius: 4
+
     parameters:
         speed: 2
     costs:
@@ -6249,7 +6293,7 @@ tent:
         -  class: EffectSingle
            sound: anvil_use
         -  class: EffectTrail
-           effect: step_sound
+           particle: block_crack
     parameters:
         target_type: LivingEntity
         target: any
@@ -6277,7 +6321,7 @@ cage:
         -  class: EffectSingle
            sound: anvil_use
         -  class: EffectTrail
-           effect: step_sound
+           particle: block_crack
     parameters:
         target_type: LivingEntity
         allow_max_range: false
@@ -6306,7 +6350,7 @@ wolfhouse:
         -  class: EffectSingle
            sound: ambience_cave
         -  class: EffectTrail
-           effect: step_sound
+           particle: block_crack
     parameters:
         target_type: LivingEntity
         allow_max_range: true
@@ -6916,7 +6960,7 @@ paste:
         -  class: EffectSingle
            sound: level_up
         -  class: EffectTrail
-           effect: step_sound
+           particle: block_crack
     parameters:
         allow_max_range: true
         check_destructible: false
@@ -7149,7 +7193,7 @@ rubberize:
     effects:
         cast:
         -  class: EffectTrail
-           effect: step_sound
+           particle: block_crack
            sound: magic.shimmer
     parameters:
         allow_max_range: false
@@ -7332,7 +7376,7 @@ entangle:
         -  class: EffectSingle
            sound: magic.crack
         -  class: EffectTrail
-           effect: step_sound
+           particle: block_crack
     parameters:
         target: other
         target_type: LivingEntity
@@ -7764,7 +7808,7 @@ harden:
     effects:
         cast:
         -  class: EffectTrail
-           effect: step_sound
+           particle: block_crack
            sound: magic.shimmer
     parameters:
         allow_max_range: false
@@ -7801,7 +7845,7 @@ sponge:
         -  class: EffectSingle
            sound: level_up
         -  class: EffectTrail
-           effect: step_sound
+           particle: block_crack
     parameters:
         allow_max_range: false
         range: 32
