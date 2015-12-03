@@ -4358,6 +4358,7 @@ earthquake:
               delay: 1000
             - class: AreaOfEffect
               actions:
+              - class: Damage
               - class: Velocity
                 speed: 0.2
           # Create a disc, do this in parallel with the Repeating
@@ -4418,6 +4419,7 @@ earthquake:
         target_self: true
         cooldown: 20000
         undo_speed: 0.5
+        damage: 1
     costs:
         mana: 150
 
