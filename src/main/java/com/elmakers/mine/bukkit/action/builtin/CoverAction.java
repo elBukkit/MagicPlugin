@@ -5,9 +5,18 @@ import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.configuration.ConfigurationSection;
 
 public class CoverAction extends CompoundAction
 {
+    protected boolean targetAbove = false;
+
+    @Override
+    public void prepare(CastContext context, ConfigurationSection parameters) {
+        super.prepare(context, parameters);
+        targetAbove = parameters.getBoolean("target_above", false);
+    }
+
 	@Override
 	public SpellResult step(CastContext context) {
         Block targetBlock = context.getTargetBlock();
@@ -18,7 +27,11 @@ public class CoverAction extends CompoundAction
             skippedActions(context);
             return SpellResult.NO_TARGET;
         }
-        actionContext.setTargetLocation(targetBlock.getLocation());
+        if (targetAbove) {
+            actionContext.setTargetLocation(coveringBlock.getLocation());
+        } else {
+            actionContext.setTargetLocation(targetBlock.getLocation());
+        }
         return startActions();
 	}
 
