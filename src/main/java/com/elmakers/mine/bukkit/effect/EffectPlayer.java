@@ -92,7 +92,6 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
     protected ParticleEffect particleOverride = null;
     protected String useParticleOverride = null;
     protected String useColorOverride = null;
-    protected String particleSubType = "";
     protected float particleData = 0f;
     protected float particleXOffset = 0.3f;
     protected float particleYOffset = 0.3f;
@@ -211,7 +210,6 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
             if (particleType == null) {
                 plugin.getLogger().warning("Unknown particle type " + typeName);
             } else {
-                particleSubType = configuration.getString("particle_sub_type", particleSubType);
                 particleData = (float)configuration.getDouble("particle_data", particleData);
                 particleXOffset = (float)configuration.getDouble("particle_offset_x", particleXOffset);
                 particleYOffset = (float)configuration.getDouble("particle_offset_y", particleYOffset);
@@ -298,11 +296,6 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
             this.particleOverride = null;
         }
     }
-
-    public void setParticleSubType(String particleSubType) {
-        this.particleSubType = particleSubType;
-    }
-
     public void setEffectData(int data) {
         this.effectData = data;
     }
@@ -348,7 +341,6 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
         if (requireEntity && sourceEntity == null) return;
 
         if (effectLib != null && effectLibConfig != null) {
-
             EffectLibPlay play = new EffectLibPlay(effectLib.play(effectLibConfig, this, source, target, parameterMap));
             if (currentEffects != null)
             {
@@ -380,22 +372,15 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
 
         if (particleType != null) {
             ParticleEffect useEffect = overrideParticle(particleType);
-            ParticleEffect.ParticleData data = null;
-            if ((useEffect == ParticleEffect.BLOCK_CRACK || useEffect == ParticleEffect.ITEM_CRACK || useEffect == ParticleEffect.BLOCK_DUST) && particleSubType.length() == 0) {
-                Material material = getWorkingMaterial().getMaterial();
-                Byte blockData = getWorkingMaterial().getBlockData();
-                if (material != null && material != Material.AIR) {
-                    if (useEffect == ParticleEffect.ITEM_CRACK) {
-                        data = new ParticleEffect.ItemData(material, blockData);
-                    } else {
-                        data = new ParticleEffect.BlockData(material, blockData);
-                    }
-                    try {
-                        useEffect.display(data, sourceLocation, getColor1(), PARTICLE_RANGE, particleXOffset, particleYOffset, particleZOffset, particleData, particleCount);
-                    } catch (Exception ex) {
-                        if (effectLib.isDebugEnabled()) {
-                            ex.printStackTrace();
-                        }
+            Material material = getWorkingMaterial().getMaterial();
+            Byte blockData = getWorkingMaterial().getBlockData();
+            ParticleEffect.ParticleData data = useEffect.getData(material, blockData);
+            if (data != null) {
+                try {
+                    useEffect.display(data, sourceLocation, getColor1(), PARTICLE_RANGE, particleXOffset, particleYOffset, particleZOffset, particleData, particleCount);
+                } catch (Exception ex) {
+                    if (effectLib.isDebugEnabled()) {
+                        ex.printStackTrace();
                     }
                 }
             } else {

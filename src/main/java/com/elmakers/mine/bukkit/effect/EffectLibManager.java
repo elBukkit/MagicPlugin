@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.effect;
 
+import com.elmakers.mine.bukkit.block.MaterialAndData;
 import de.slikey.effectlib.Effect;
 import de.slikey.effectlib.EffectManager;
 import de.slikey.effectlib.util.DynamicLocation;
@@ -97,6 +98,10 @@ public class EffectLibManager {
                 parameters.set(colorOverrideName, hexColor);
             }
         }
+        MaterialAndData mat = player.getWorkingMaterial();
+        parameters.set("material", mat.getMaterial().name());
+        parameters.set("materialData", mat.getData());
+
         try {
             effect = effectManager.start(effectClass, parameters, origin, target, parameterMap);
         } catch (Throwable ex) {
