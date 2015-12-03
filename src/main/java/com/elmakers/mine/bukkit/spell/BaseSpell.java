@@ -1366,8 +1366,12 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         }
     }
 
+    public void playEffects(String effectName, float scale, Block sourceBlock) {
+        playEffects(effectName, getCurrentCast(), scale, sourceBlock);
+    }
+
     public void playEffects(String effectName, float scale) {
-        playEffects(effectName, getCurrentCast(), scale);
+        playEffects(effectName, getCurrentCast(), scale, null);
     }
 
     @Override
@@ -1382,9 +1386,13 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         playEffects(effectName, context, 1);
     }
 
+    public void playEffects(String effectName, com.elmakers.mine.bukkit.api.action.CastContext context, float scale, Block block) {
+        context.playEffects(effectName, scale, block);
+    }
+
     @Override
     public void playEffects(String effectName, com.elmakers.mine.bukkit.api.action.CastContext context, float scale) {
-        context.playEffects(effectName, scale);
+        playEffects(effectName, context, scale, null);
     }
 
     @Override

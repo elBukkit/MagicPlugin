@@ -437,8 +437,19 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
         playEffects(effectName, scale, null, getEntity(), null, getTargetEntity());
     }
 
+    public void playEffects(String effectName, float scale, Block sourceBlock)
+    {
+        playEffects(effectName, scale, null, getEntity(), null, getTargetEntity(), sourceBlock);
+    }
+
     @Override
     public void playEffects(String effectName, float scale, Location sourceLocation, Entity sourceEntity, Location targetLocation, Entity targetEntity)
+    {
+        playEffects(effectName, scale, sourceLocation, sourceEntity, targetLocation, targetEntity, null);
+    }
+
+    @Override
+    public void playEffects(String effectName, float scale, Location sourceLocation, Entity sourceEntity, Location targetLocation, Entity targetEntity, Block sourceBlock)
     {
         Collection<EffectPlayer> effects = getEffects(effectName);
         if (effects.size() > 0)
@@ -477,6 +488,9 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
                             target = targetEntity.getLocation();
                         }
                     }
+                }
+                if (sourceBlock != null) {
+                    player.setMaterial(sourceBlock);
                 }
                 player.start(source, sourceEntity, target, targetEntity, targeted);
             }

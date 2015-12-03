@@ -99,8 +99,11 @@ public class EffectLibManager {
             }
         }
         MaterialAndData mat = player.getWorkingMaterial();
-        parameters.set("material", mat.getMaterial().name());
-        parameters.set("materialData", mat.getData());
+        if (!parameters.contains("material"))
+        {
+            parameters.set("material", mat.getMaterial().name());
+            parameters.set("materialData", mat.getData());
+        }
 
         try {
             effect = effectManager.start(effectClass, parameters, origin, target, parameterMap);
