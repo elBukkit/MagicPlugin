@@ -4,7 +4,7 @@
 	<groupId>com.elmakers.mine.bukkit</groupId>
 	<artifactId>MagicLib</artifactId>
 	<version>3.4-SNAPSHOT</version>
-	<name>elMakers - Bukkit Plugins : Magic Lib</name>
+	<name>Magic Lib</name>
 	<url>http://mine.elmakers.com</url>
 
     <profiles>
