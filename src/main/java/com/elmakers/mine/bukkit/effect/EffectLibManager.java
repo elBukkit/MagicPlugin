@@ -40,6 +40,10 @@ public class EffectLibManager {
         }
     }
 
+    public boolean isDebugEnabled() {
+        return effectManager != null ? effectManager.isDebugEnabled() : false;
+    }
+
     public void setParticleRange(int range) {
         if (effectManager != null) {
             effectManager.setParticleRange(range);

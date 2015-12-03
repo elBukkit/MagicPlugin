@@ -383,9 +383,8 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
             ParticleEffect.ParticleData data = null;
             if ((useEffect == ParticleEffect.BLOCK_CRACK || useEffect == ParticleEffect.ITEM_CRACK || useEffect == ParticleEffect.BLOCK_DUST) && particleSubType.length() == 0) {
                 Material material = getWorkingMaterial().getMaterial();
-
                 Byte blockData = getWorkingMaterial().getBlockData();
-                if (blockData != null && blockData != 0) {
+                if (material != null && material != Material.AIR) {
                     if (useEffect == ParticleEffect.ITEM_CRACK) {
                         data = new ParticleEffect.ItemData(material, blockData);
                     } else {
@@ -394,12 +393,18 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
                     try {
                         useEffect.display(data, sourceLocation, getColor1(), PARTICLE_RANGE, particleXOffset, particleYOffset, particleZOffset, particleData, particleCount);
                     } catch (Exception ex) {
+                        if (effectLib.isDebugEnabled()) {
+                            ex.printStackTrace();
+                        }
                     }
                 }
             } else {
                 try {
                     useEffect.display(data, sourceLocation, getColor1(), PARTICLE_RANGE, particleXOffset, particleYOffset, particleZOffset, particleData, particleCount);
                 } catch (Exception ex) {
+                    if (effectLib.isDebugEnabled()) {
+                        ex.printStackTrace();
+                    }
                 }
             }
         }
