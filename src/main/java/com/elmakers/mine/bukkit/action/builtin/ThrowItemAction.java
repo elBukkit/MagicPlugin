@@ -54,7 +54,16 @@ public class ThrowItemAction extends BaseProjectileAction {
             removedMessage = removedMessage.replace("$material", name);
         }
         NMSUtils.makeTemporary(itemStack, removedMessage);
-        Item droppedItem = spawnLocation.getWorld().dropItem(spawnLocation, itemStack);
+        Item droppedItem = null;
+        try {
+            droppedItem = spawnLocation.getWorld().dropItem(spawnLocation, itemStack);
+        } catch (Exception ex) {
+
+        }
+        if (droppedItem == null) {
+            context.getMage().sendDebugMessage("Failed to spawn item of type " + itemStack.getType());
+            return SpellResult.FAIL;
+        }
         droppedItem.setMetadata("temporary", new FixedMetadataValue(context.getController().getPlugin(), true));
         CompatibilityUtils.ageItem(droppedItem, ageItems);
         droppedItem.setVelocity(velocity);
