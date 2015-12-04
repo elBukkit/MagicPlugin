@@ -1467,7 +1467,7 @@ spells:
         no_wand: You must be holding a wand!
     spellshop:
         name: Spell Shop
-        title: "Spells ($balance)"
+        title: "$path Spells ($balance)"
         description: Buy spells for your current level
         cost_lore: "Costs: $cost"
         no_items: There are no spells for you to buy here
