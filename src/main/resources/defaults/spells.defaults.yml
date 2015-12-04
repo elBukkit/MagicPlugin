@@ -4214,7 +4214,7 @@ stash:
            effectlib:
             class: WarpEffect
             particle: block_crack
-            materia: obsidian
+            material: obsidian
             duration: 1000
             particleCount: 10
             particleOffsetX: 1
