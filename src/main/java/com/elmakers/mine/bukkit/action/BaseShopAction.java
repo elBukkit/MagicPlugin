@@ -512,9 +512,19 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
         return SpellResult.CAST;
 	}
 
+    protected String getInventoryTitle(CastContext context)
+    {
+        Wand wand = context.getWand();
+        WandUpgradePath path = (wand == null ? null : wand.getPath());
+        String pathName = (path == null ? "" : path.getName());
+        String title = context.getMessage("title", "Shop ($balance)");
+        title = title.replace("$path", pathName);
+        return title;
+    }
+
     protected Inventory getInventory(CastContext context)
     {
-        String inventoryTitle = context.getMessage("title", "Shop ($balance)");
+        String inventoryTitle = getInventoryTitle(context);
         String balanceDescription = getBalanceDescription(context);
         inventoryTitle = inventoryTitle.replace("$balance", balanceDescription);
 
