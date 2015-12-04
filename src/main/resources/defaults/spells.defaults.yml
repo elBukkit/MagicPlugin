@@ -4216,6 +4216,10 @@ stash:
             particle: block_crack
             materia: obsidian
             duration: 1000
+            particleCount: 10
+            particleOffsetX: 1
+            particleOffsetZ: 1
+            particleOffsetY: 1
     parameters:
         target_type: Player
         target: self
