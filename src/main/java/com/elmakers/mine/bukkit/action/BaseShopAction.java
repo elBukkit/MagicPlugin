@@ -516,7 +516,10 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
     {
         Wand wand = context.getWand();
         WandUpgradePath path = (wand == null ? null : wand.getPath());
-        String pathName = (path == null ? "" : path.getName());
+        String pathName = (path == null ? null : path.getName());
+        if (pathName == null) {
+            pathName = "";
+        }
         String title = context.getMessage("title", "Shop ($balance)");
         title = title.replace("$path", pathName);
         return title;
