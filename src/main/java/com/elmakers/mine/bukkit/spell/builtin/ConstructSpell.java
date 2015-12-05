@@ -102,17 +102,19 @@ public class ConstructSpell extends BrushSpell
 			} else {
 				radius = (int)targetBlock.getLocation().distance(target.getLocation());
 
-                orientTo = target.getLocation().toVector().subtract(targetBlock.getLocation().toVector());
-                orientTo.setX(Math.abs(orientTo.getX()));
-                orientTo.setY(Math.abs(orientTo.getY()));
-                orientTo.setZ(Math.abs(orientTo.getZ()));
-                if (orientTo.getX() < orientTo.getZ() && orientTo.getX() < orientTo.getY()) {
-                    orientTo = new Vector(1, 0, 0);
-                } else if (orientTo.getZ() < orientTo.getX() && orientTo.getZ() < orientTo.getY()) {
-                    orientTo = new Vector(0, 0, 1);
-                } else {
-                    orientTo = new Vector(0, 1, 0);
-                }
+				if (parameters.getBoolean("orient")) {
+					orientTo = target.getLocation().toVector().subtract(targetBlock.getLocation().toVector());
+					orientTo.setX(Math.abs(orientTo.getX()));
+					orientTo.setY(Math.abs(orientTo.getY()));
+					orientTo.setZ(Math.abs(orientTo.getZ()));
+					if (orientTo.getX() < orientTo.getZ() && orientTo.getX() < orientTo.getY()) {
+						orientTo = new Vector(1, 0, 0);
+					} else if (orientTo.getZ() < orientTo.getX() && orientTo.getZ() < orientTo.getY()) {
+						orientTo = new Vector(0, 0, 1);
+					} else {
+						orientTo = new Vector(0, 1, 0);
+					}
+				}
 				target = targetBlock;
                 targetBlock = null;
 			}

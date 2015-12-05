@@ -1049,6 +1049,7 @@ superdisc:
         orient_dimension_min: 0
         transparent: transparent_to_construction
         destructible: destructible_replace
+        orient: true
     costs:
         mana: 200
 
@@ -1074,6 +1075,7 @@ superring:
         orient_dimension_max: 0
         orient_dimension_min: 0
         thickness: 1
+        orient: true
         transparent: transparent_to_construction
     costs:
         mana: 200
