@@ -3934,6 +3934,32 @@ superblob:
     costs:
         mana: 400
 
+superhemisphere:
+    icon: slime_ball
+    icon_url: http://textures.minecraft.net/texture/812a772ef923c597e12f41986d7bea9a9387055eb17eeebb1d8c6de3ca25f
+    category: engineering
+    class: ConstructSpell
+    worth_sp: 800
+    earns_sp: 2
+    cancellable: false
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: level_up
+        -  class: EffectTrail
+           particle: block_crack
+    parameters:
+        allow_max_range: true
+        check_destructible: false
+        range: 32
+        max_dimension: 16
+        target: select
+        type: sphere
+        transparent: transparent_to_construction
+        orient_dimension_min: 0
+    costs:
+        mana: 400
+
 superpyramid:
     icon_url: http://textures.minecraft.net/texture/295775b75c70891a42d7d8fac699da5ec2ad6c419fd1ccafd32668713dace2e6
     icon: speckled_melon
