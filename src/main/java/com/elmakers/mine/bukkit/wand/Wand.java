@@ -4527,6 +4527,8 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		// We do need to account for the wand not being the active slot, though
 		// Though maybe not needed now with PlayerArmorStandManipulateEvent ?
 		// we'll have to see if wands disappear due to this.
+		// Turning this off for now, it does in fact seem to cause wands to disappear.
+		/*
 		int currentSlot = inventory.getHeldItemSlot();
 		ItemStack storedItem = storedInventory.getItem(currentSlot);
 		String currentId = getWandId(inventory.getItem(currentSlot));
@@ -4536,6 +4538,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 			controller.getLogger().warning("Cleared wand on inv close for player " + player.getName());
 			Thread.dumpStack();
 		}
+		*/
 
         inventory.setContents(storedInventory.getContents());
         storedInventory = null;
