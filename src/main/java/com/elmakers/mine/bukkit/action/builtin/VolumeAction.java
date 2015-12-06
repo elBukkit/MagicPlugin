@@ -87,10 +87,6 @@ public class VolumeAction extends CompoundAction
 	}
 
 	protected boolean calculateSize(CastContext context) {
-		xSizeCeil = (int)Math.ceil(xSize);
-		ySizeCeil = (int)Math.ceil(ySize);
-		zSizeCeil = (int)Math.ceil(zSize);
-
 		if (useBrushSize) {
 			MaterialBrush brush = context.getBrush();
 			if (!brush.isReady()) {
@@ -114,6 +110,10 @@ public class VolumeAction extends CompoundAction
 		if (volumeType == VolumeType.SPIRAL && xSize != zSize) {
 			volumeType = VolumeType.YZX;
 		}
+
+		xSizeCeil = (int)Math.ceil(xSize);
+		ySizeCeil = (int)Math.ceil(ySize);
+		zSizeCeil = (int)Math.ceil(zSize);
 		if (centerY) {
 			yStart = -ySizeCeil;
 			yEnd = ySizeCeil;
