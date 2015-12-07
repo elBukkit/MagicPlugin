@@ -7,11 +7,16 @@ import com.elmakers.mine.bukkit.api.effect.EffectPlayer;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.api.spell.TargetType;
+import com.elmakers.mine.bukkit.math.equations.Equation;
+import com.elmakers.mine.bukkit.math.equations.MathHandler;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.Target;
 import com.elmakers.mine.bukkit.utility.Targeting;
 import de.slikey.effectlib.util.DynamicLocation;
+import de.slikey.effectlib.util.MathUtils;
+import de.slikey.effectlib.util.VectorUtils;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
@@ -54,7 +59,23 @@ public class CustomProjectileAction extends CompoundAction
     private int targetBreakableSize;
     private boolean bypassBackfire;
     private boolean reverseDirection;
-
+    
+    MathHandler xAxisHandler;
+    MathHandler yAxisHandler;
+    private boolean useEquation;
+    private Equation xAxisEquationType;
+    private Equation yAxisEquationType;
+    private double xAxisMathA;
+    private double xAxisMathB;
+    private double xAxisMathC;
+    private double yAxisMathA;
+    private double yAxisMathB;
+    private double yAxisMathC;
+    private Vector equationUnitVector;
+    private double intialPitch = 0;
+    private double intialYaw = 0;
+    private int mathStep = -1;
+    
     private double distanceTravelled;
     private double effectDistanceTravelled;
     private boolean hasTickEffects;
@@ -103,7 +124,20 @@ public class CustomProjectileAction extends CompoundAction
         spread = parameters.getDouble("spread", 0);
         maxSpread = parameters.getDouble("spread_max", 0);
         movementSpread = parameters.getDouble("spread_movement", 0);
-
+        
+        useEquation = parameters.getBoolean("use_equation", false);
+        xAxisEquationType = Equation.valueOf(parameters.getString("x_axis_equation", "LINEAR"));
+        yAxisEquationType = Equation.valueOf(parameters.getString("y_axis_equation", "LINEAR"));
+        xAxisMathA = parameters.getDouble("x_axis_a_value", 0);
+        xAxisMathB = parameters.getDouble("x_axis_b_value", 0);
+        xAxisMathC = parameters.getDouble("x_axis_c_value", 0);
+        yAxisMathA = parameters.getDouble("y_axis_a_value", 0);
+        yAxisMathB = parameters.getDouble("y_axis_b_value", 0);
+        yAxisMathC = parameters.getDouble("y_axis_c_value", 0);
+        
+        xAxisHandler = new MathHandler(xAxisMathA, xAxisMathB, xAxisMathC);
+        yAxisHandler = new MathHandler(yAxisMathA, yAxisMathB, yAxisMathC);
+        
         range *= context.getMage().getRangeMultiplier();
 
         speed = parameters.getDouble("speed", 1);
@@ -136,6 +170,8 @@ public class CustomProjectileAction extends CompoundAction
         effectLocation = null;
         velocity = null;
         activeProjectileEffects = null;
+        intialYaw = 0;
+        intialPitch = 0;
     }
 
     @Override
@@ -154,6 +190,7 @@ public class CustomProjectileAction extends CompoundAction
 
 	@Override
 	public SpellResult step(CastContext context) {
+		mathStep++;
         long now = System.currentTimeMillis();
         if (now < nextUpdate)
         {
@@ -184,7 +221,7 @@ public class CustomProjectileAction extends CompoundAction
                 projectileLocation = context.getLocation().clone();
             }
 
-            if (targetLocation != null && !reorient && useTargetLocation) {
+            if (targetLocation != null && !reorient && !useEquation && useTargetLocation) {
                 velocity = targetLocation.toVector().subtract(projectileLocation.toVector()).normalize();
             } else {
                 velocity = context.getDirection().clone().normalize();
@@ -260,6 +297,29 @@ public class CustomProjectileAction extends CompoundAction
         else if (reorient)
         {
             velocity = context.getDirection().clone().normalize();
+            System.out.println(context.getDirection().clone().normalize());
+        }
+        /* This adjusts the flight pattern to follow a configurable mathematic equation
+         * If set to true, it will first intially grab the player's yaw and pitch, the casting direction
+         * It will then check with handlers for the new velocity value
+         */
+        else if (useEquation)
+        {
+        	if (intialPitch == 0 && intialYaw == 0)
+        	{
+        		Location loc = context.getLocation();
+        		
+        		intialYaw = loc.getYaw();
+        		intialPitch = loc.getPitch();
+        		
+        		intialPitch = intialPitch * -1;
+        		intialYaw = (intialYaw + 90) * -1;
+        		
+        	}
+        	
+        	equationUnitVector = new Vector(1 , yAxisHandler.returnDerivative(yAxisEquationType, mathStep), xAxisHandler.returnDerivative(xAxisEquationType, mathStep)).normalize();
+        	VectorUtils.rotateVector(equationUnitVector, 0, intialYaw * MathUtils.degreesToRadians, intialPitch * MathUtils.degreesToRadians);
+            velocity = equationUnitVector;
         }
         else
         {
@@ -375,6 +435,8 @@ public class CustomProjectileAction extends CompoundAction
             if (actionContext.getRandom().nextDouble() < reflective) {
                 trackEntity = false;
                 reorient = false;
+                useEquation = false;
+                
                 distanceTravelled = 0;
                 actionContext.setTargetsCaster(true);
 
