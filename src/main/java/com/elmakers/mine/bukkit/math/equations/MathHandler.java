@@ -6,7 +6,6 @@ public class MathHandler {
 	private double a;
 	private double b;
 	private double c;
-	private Vector playerIntialDirection;
 	
 	public MathHandler(double mathA, double mathB, double mathC) {
 		a = mathA;
@@ -32,13 +31,5 @@ public class MathHandler {
 				break;
 			}
 		return derivativeValue;
-	}
-	
-	public void storeIntialDirection(Vector value) {
-		playerIntialDirection = value;
-	}
-	
-	public Vector adjustDirection(Vector direction) {
-		return null;
 	}
 }
