@@ -7,9 +7,7 @@ public class CylinderAction extends VolumeAction
 	@Override
 	protected boolean containsPoint(int x, int y, int z)
 	{
-		double fx = (double)Math.abs(x) - 0.25;
-		double fz = (double)Math.abs(z) - 0.25;
-		double distanceSquared = (int)((fx * fx) + (fz * fz));
+		double distanceSquared = ((double)x * (double)x) + ((double)z * (double)z);
 		if (thickness > 0) {
 			return distanceSquared <= radiusSquared && distanceSquared >= innerRadiusSquared;
 		}
@@ -18,10 +16,10 @@ public class CylinderAction extends VolumeAction
 
 	@Override
 	protected int getStartRadius() {
-		innerRadiusSquared = (radius - thickness) * (radius - thickness);
+		innerRadiusSquared = (radius - thickness + radiusPadding) * (radius - thickness + radiusPadding);
 
 		if (thickness > 0) {
-			return (int)Math.floor(radius - thickness);
+			return (int)Math.floor(radius - thickness + radiusPadding);
 		}
 
 		return 0;

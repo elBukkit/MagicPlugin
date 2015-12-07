@@ -23,12 +23,14 @@ public class VolumeAction extends CompoundAction
     protected boolean autoOrient;
 	protected double radius;
 	protected double radiusSquared;
+	protected int spiralRadius;
     protected int currentRadius;
     protected float centerProbability;
     protected float outerProbability;
     protected double xSize;
     protected double ySize;
     protected double zSize;
+	protected double radiusPadding;
 	protected int xSizeCeil;
 	protected int ySizeCeil;
 	protected int zSizeCeil;
@@ -60,6 +62,7 @@ public class VolumeAction extends CompoundAction
 	@Override
 	public void prepare(CastContext context, ConfigurationSection parameters) {
 		super.prepare(context, parameters);
+		radiusPadding = parameters.getDouble("radius_padding", 0.25);
 		radius = parameters.getDouble("radius", DEFAULT_RADIUS);
         xSize = parameters.getDouble("x_size", radius);
         ySize = parameters.getDouble("y_size", radius);
@@ -138,7 +141,9 @@ public class VolumeAction extends CompoundAction
 		}
 
 		radius = Math.max(xSize, zSize);
-		radiusSquared = radius * radius;
+		spiralRadius = (int)Math.ceil(radius);
+		radius = Math.max(radius, ySize);
+		radiusSquared = (radius + radiusPadding) * (radius + radiusPadding);
 		startRadius = getStartRadius();
 
 		return true;
@@ -247,7 +252,7 @@ public class VolumeAction extends CompoundAction
 				dz = nextZ;
 			}
 		}
-		return currentRadius <= radius;
+		return currentRadius <= spiralRadius;
 	}
 
 	@Override
@@ -261,7 +266,7 @@ public class VolumeAction extends CompoundAction
 
 	@Override
 	public boolean next(CastContext context) {
-		if (radius < 1 && ySize < 1) {
+		if (radius < 1) {
 			return false;
 		}
 
@@ -283,11 +288,11 @@ public class VolumeAction extends CompoundAction
 	@Override
 	public SpellResult step(CastContext context) {
 		SpellResult result = SpellResult.NO_ACTION;
-		boolean singleBlock = (radius < 1 && ySize < 1);
+		boolean singleBlock = radius < 1;
 		boolean validBlock = singleBlock ? true : containsPoint(dx, dy, dz);
 		float probability = centerProbability;
 		if (!singleBlock && centerProbability != outerProbability) {
-			float weight = Math.abs((float) dx + dz) / ((float) radius * 2);
+			float weight = Math.abs((float) dx + dz) / ((float) spiralRadius * 2);
 			probability = RandomUtils.lerp(centerProbability, outerProbability, weight);
 		}
 		validBlock = validBlock && (probability >= 1 || context.getRandom().nextDouble() <= probability);
