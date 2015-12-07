@@ -632,10 +632,6 @@ permissions:
     description: The player may craft a wand
     default: true
     type: boolean
-  Magic.wand.destruct:
-    description: A wand will self-destruct if the players tries to use it without permission.
-    default: false
-    type: boolean
   Magic.wand.override_bind:
     description: A player may use a wand even if it is bound to another player.
     default: op

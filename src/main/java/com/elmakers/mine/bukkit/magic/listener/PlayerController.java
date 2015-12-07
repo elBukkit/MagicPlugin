@@ -319,21 +319,6 @@ public class PlayerController implements Listener {
         Messages messages = controller.getMessages();
         if (!controller.hasWandPermission(player))
         {
-            // Check for self-destruct
-            if (controller.hasPermission(player, "Magic.wand.destruct", false)) {
-                wand.deactivate();
-                PlayerInventory inventory = player.getInventory();
-                ItemStack[] items = inventory.getContents();
-                for (int i = 0; i < items.length; i++) {
-                    ItemStack item = items[i];
-                    if (Wand.isWand(item
-                    ) || Wand.isSpell(item) || Wand.isBrush(item) || Wand.isUpgrade(item)) {
-                        items[i] = null;
-                    }
-                }
-                inventory.setContents(items);
-                mage.sendMessage(messages.get("wand.self_destruct"));
-            }
             return;
         }
 
