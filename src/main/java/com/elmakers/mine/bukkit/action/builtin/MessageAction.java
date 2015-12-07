@@ -31,7 +31,7 @@ public class MessageAction extends BaseSpellAction
 			if (targetEntity == null || !(targetEntity instanceof Player)) {
 				return SpellResult.NO_TARGET;
 			}
-			String message = context.getMessage(this.message, this.message);
+			String message = context.parameterize(context.getMessage(this.message, this.message));
 			targetEntity.sendMessage(message);
 			return SpellResult.CAST;
 		}
@@ -40,7 +40,7 @@ public class MessageAction extends BaseSpellAction
 		if (player == null) {
 			return SpellResult.PLAYER_REQUIRED;
 		}
-        String message = context.getMessage(this.message, this.message);
+        String message = context.parameterize(context.getMessage(this.message, this.message));
         context.sendMessage(message.replace("$spell", context.getSpell().getName()));
 		return SpellResult.CAST;
 	}
