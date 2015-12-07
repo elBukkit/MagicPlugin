@@ -99,8 +99,8 @@ public class ItemShopAction extends BaseShopAction
                 }
             }
             ItemStack item = controller.createItem(itemKey);
-            item.setAmount(amount);
             if (item == null) continue;
+            item.setAmount(amount);
             shopItems.add(new ShopItem(item, worth));
         }
         return showItems(context, shopItems);

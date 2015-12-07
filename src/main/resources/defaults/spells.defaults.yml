@@ -7963,16 +7963,16 @@ bookshop:
         quiet: true
         confirm: false
         items:
-          book|combat: 0
-          book|master: 0
-          book|utility: 0
-          book|demolition: 0
-          book|dark: 0
-          book|light: 0
-          book|engineering: 0
-          book|elemental: 0
-          book|mining: 0
-          book|electrical: 0
+        - item: book|combat
+        - item: book|master
+        - item: book|utility
+        - item: book|demolition
+        - item: book|dark
+        - item: book|light
+        - item: book|engineering
+        - item: book|elemental
+        - item: book|mining
+        - item: book|electrical
 
 broomshop:
     icon: gold_spade
@@ -7986,8 +7986,10 @@ broomshop:
         confirm: true
         confirm_filler: stained_glass:3
         items:
-          wand|crackedbroomstick: 100
-          wand|broomstick: 4000
+        - item: wand|crackedbroomstick
+          cost: 100
+        - item: wand|broomstick
+          cost: 4000
 
 wandshop:
     icon: wooden_hoe
@@ -8001,13 +8003,18 @@ wandshop:
         confirm: true
         confirm_filler: stained_glass:3
         items:
-          wand|beginner: 4000
-          wand|student: 80000
-          wand|apprentice: 135000
-          wand|master: 150000
-          wand|elder: 400000
-          wand|architect: 330000
-          wand|battle: 24000
+        - item: wand|default
+          cost: 4000
+        - item: wand|student
+          cost: 80000
+        - item: wand|apprentice
+          cost: 135000
+        - item: wand|master
+          cost: 150000
+        - item: wand|architect
+          cost: 330000
+        - item: wand|battle
+          cost: 24000
 
 magicitemshop:
     icon: ender_portal_frame
@@ -8021,26 +8028,53 @@ magicitemshop:
         confirm: true
         confirm_filler: stained_glass:3
         items:
-          wand|magichat: 4000
-          wand|wizardhelmet: 4000
-          wand|wizardchestplate: 4000
-          wand|wizardleggings: 4000
-          wand|wizardboots: 4000
-          wand|invisiblecloak: 10000
-          wand|rabbitboots: 300
-          wand|goggles: 500
-          wand|rocketboots: 4000
-          wand|hulkboots: 8000
-          wand|clericchestplate: 9000
-          wand|magneticleggings: 10000
-          wand|flashboots: 4000
-          wand|camera: 200
-          wand|divinghelmet: 1000
-          wand|wolfhouse: 50000
-          wand|apprenticehelmet: 200
-          wand|apprenticechestplate: 200
-          wand|apprenticeleggings: 200
-          wand|apprenticeboots: 200
+        - item: wand|camera
+          cost: 200
+        - item: wand|goggles
+          cost: 500
+        - item: wand|divinghelmet
+          cost: 1000
+        - item: wand|magichat
+          cost: 4000
+        - item: none
+        - item: wand|wizardhelmet
+          cost: 4000
+        - item: wand|wizardchestplate
+          cost: 4000
+        - item: wand|wizardleggings
+          cost: 4000
+        - item: wand|wizardboots
+          cost: 4000
+        - item: wand|apprenticehelmet
+          cost: 200
+        - item: wand|apprenticechestplate
+          cost: 200
+        - item: wand|apprenticeleggings
+          cost: 200
+        - item: wand|apprenticeboots
+          cost: 200
+        - item: none
+        - item: wand|rabbitboots
+          cost: 300
+        - item: wand|rocketboots
+          cost: 4000
+        - item: wand|hulkboots
+          cost: 8000
+        - item: wand|flashboots
+          cost: 4000
+        - item: wand|clericchestplate
+          cost: 9000
+        - item: wand|magneticleggings
+          cost: 10000
+        - item: none
+        - item: none
+        - item: wand|invisiblecloak
+          cost: 50000
+        - item: none
+        - item: none
+        - item: none
+        - item: wand|wolfhouse
+          cost: 50000
 
 itemshop:
     icon: carrot
@@ -8054,8 +8088,10 @@ itemshop:
         confirm: true
         confirm_filler: stained_glass:3
         items:
-          carrot_item@64: 100
-          bed: 200
+        - item: carrot_item@64
+          cost: 100
+        - item: bed
+          cost: 200
 
 automatashop:
     icon: command
@@ -8087,22 +8123,27 @@ tweakshop:
         confirm: false
         require_wand: true
         items:
-          wand|inventorymode: 0
-          wand|chestmode: 0
-          wand|cyclemode: 0
-          wand|inventorymode: 0
-          none: 0
-          wand|quickcast_enable: 0
-          wand|quickcast_disable: 0
-          wand|quickcast_normal: 0
-          wand|quickcast_manual: 0
-          wand|mode_drop: 0
-          wand|mode_rightclick: 0
-          wand|organizer: 0
-          wand|alphabetizer: 0
-          wand|loud: 0
-          wand|quiet: 0
-          wand|silent: 0
+          - item: wand|inventorymode
+          - item: wand|chestmode
+          - item: wand|cyclemode
+          - item: wand|inventorymode
+          - item: none
+          - item: wand|quickcast_enable
+          - item: wand|quickcast_disable
+          - item: wand|quickcast_normal
+          - item: wand|quickcast_manual
+          - item: wand|mode_drop
+          - item: wand|mode_rightclick
+          - item: none
+          - item: wand|organizer
+          - item: wand|alphabetizer
+          - item: none
+          - item: none
+          - item: none
+          - item: none
+          - item: wand|loud
+          - item: wand|quiet
+          - item: wand|silent
 
 colorshop:
     icon: ink_sack
@@ -8117,17 +8158,35 @@ colorshop:
         confirm: true
         require_wand: true
         items:
-          wand|redeffects: 100
-          wand|greeneffects: 100
-          wand|blueeffects: 100
-          wand|whiteeffects: 100
-          wand|blackeffects: 100
-          wand|purpleeffects: 100
-          wand|yelloweffects: 100
-          wand|aquaeffects: 100
-          wand|orangeeffects: 100
-          wand|haloeffects: 1000
-          wand|cleareffects: 0
+        - item: wand|redeffects
+          cost: 100
+        - item: wand|greeneffects
+          cost: 100
+        - item: wand|blueeffects
+          cost: 100
+        - item: wand|whiteeffects
+          cost: 100
+        - item: wand|blackeffects
+          cost: 100
+        - item: wand|purpleeffects
+          cost: 100
+        - item: wand|yelloweffects
+          cost: 100
+        - item: wand|aquaeffects
+          cost: 100
+        - item: wand|orangeeffects
+          cost: 100
+        - item: wand|haloeffects
+          cost: 1000
+        - item: none
+        - item: none
+        - item: none
+        - item: none
+        - item: none
+        - item: none
+        - item: none
+        - item: wand|cleareffects
+          cost: 0
 
 upgradeshop:
     icon: gold_axe
@@ -8142,9 +8201,12 @@ upgradeshop:
         confirm: true
         require_wand: true
         items:
-          wand|antihunger: 2000
-          wand|hotbar2: 500
-          wand|hotbar3: 1000
+        - item: wand|antihunger
+          cost: 2000
+        - item: wand|hotbar2
+          cost: 500
+        - item: wand|hotbar3
+          cost: 1000
 
 emeraldshop:
     icon: emerald
