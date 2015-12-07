@@ -387,7 +387,7 @@ public class InventoryController implements Listener {
         Player player = (Player)event.getPlayer();
         Mage apiMage = controller.getRegisteredMage(player);
 
-        if (apiMage != null && !(apiMage instanceof com.elmakers.mine.bukkit.magic.Mage)) return;
+        if (apiMage == null || !(apiMage instanceof com.elmakers.mine.bukkit.magic.Mage)) return;
         com.elmakers.mine.bukkit.magic.Mage mage = (com.elmakers.mine.bukkit.magic.Mage)apiMage;
 
         Wand wand = mage.getActiveWand();
