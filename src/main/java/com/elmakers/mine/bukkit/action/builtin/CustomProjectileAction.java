@@ -76,6 +76,11 @@ public class CustomProjectileAction extends CompoundAction
     private double intialYaw = 0;
     private int mathStep = -1;
     
+    private boolean whip;
+    private int whipDistance;
+    private Vector playerCursor;
+    private double projectileDistance;
+     
     private double distanceTravelled;
     private double effectDistanceTravelled;
     private boolean hasTickEffects;
@@ -134,6 +139,9 @@ public class CustomProjectileAction extends CompoundAction
         yAxisMathA = parameters.getDouble("y_axis_a_value", 0);
         yAxisMathB = parameters.getDouble("y_axis_b_value", 0);
         yAxisMathC = parameters.getDouble("y_axis_c_value", 0);
+        
+        whipDistance = parameters.getInt("whip_distance", 5);
+        whip = parameters.getBoolean("whip", false);
         
         xAxisHandler = new MathHandler(xAxisMathA, xAxisMathB, xAxisMathC);
         yAxisHandler = new MathHandler(yAxisMathA, yAxisMathB, yAxisMathC);
@@ -296,8 +304,18 @@ public class CustomProjectileAction extends CompoundAction
         }
         else if (reorient)
         {
-            velocity = context.getDirection().clone().normalize();
-            System.out.println(context.getDirection().clone().normalize());
+            if (whip) {
+                projectileDistance = context.getLocation().distance(projectileLocation);
+                System.out.println(projectileDistance);
+                if (projectileDistance >= whipDistance) {
+                    playerCursor = context.getDirection().clone().normalize().multiply(whipDistance);
+                    velocity = projectileLocation.toVector().subtract(playerCursor).clone().normalize();
+                } else {
+                    velocity = context.getDirection().clone().normalize();
+                }
+            } else {
+                velocity = context.getDirection().clone().normalize();
+            }
         }
         /* This adjusts the flight pattern to follow a configurable mathematic equation
          * If set to true, it will first intially grab the player's yaw and pitch, the casting direction
