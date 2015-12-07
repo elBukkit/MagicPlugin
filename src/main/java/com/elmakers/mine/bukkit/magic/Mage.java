@@ -643,7 +643,6 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             isNewPlayer = false;
             playerName = data.getName();
             lastDeathLocation = data.getLastDeathLocation();
-            location = data.getLocation();
             lastCast = data.getLastCast();
             destinationWarp = data.getDestinationWarp();
             if (destinationWarp != null) {
