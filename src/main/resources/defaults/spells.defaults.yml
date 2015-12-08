@@ -8961,7 +8961,7 @@ whip:
         hitbox: true
         allow_max_range: true
         velocity: 8
-        reorient: true
+        reorient: false
         range: 48
         target_type: LivingEntity
         player_damage: 3
@@ -8969,7 +8969,8 @@ whip:
         target_breakables: 2
         cooldown: 5000
         target_self_timeout: 2000
-        velocity: 60
+        velocity: 10
+        track_range: 5
     costs:
         mana: 25
 

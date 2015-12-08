@@ -48,6 +48,7 @@ public class CustomProjectileAction extends CompoundAction
     private boolean useEyeLocation;
     private boolean useTargetLocation;
     private boolean trackEntity;
+    private double trackCursorRange;
     private int targetSelfTimeout;
     private boolean breaksBlocks;
     private double targetBreakables;
@@ -103,6 +104,7 @@ public class CustomProjectileAction extends CompoundAction
         spread = parameters.getDouble("spread", 0);
         maxSpread = parameters.getDouble("spread_max", 0);
         movementSpread = parameters.getDouble("spread_movement", 0);
+        trackCursorRange = parameters.getDouble("track_range", 0);
 
         range *= context.getMage().getRangeMultiplier();
 
@@ -246,7 +248,7 @@ public class CustomProjectileAction extends CompoundAction
         long delta = lastUpdate > 0 ? now - lastUpdate : 50;
         lastUpdate = now;
 
-        // Apply gravity and drag
+        // Apply gravity, drag or other velocity modifiers
         if (trackEntity)
         {
             Entity targetEntity = context.getTargetEntity();
@@ -256,6 +258,15 @@ public class CustomProjectileAction extends CompoundAction
                         ((LivingEntity)targetEntity).getEyeLocation() : targetEntity.getLocation();
                 velocity = targetLocation.toVector().subtract(projectileLocation.toVector()).normalize();
             }
+        }
+        else if (trackCursorRange > 0)
+        {
+            /* We need to first find out where the player is looking and multiply it by how far the player wants the whip to extend
+        	 * Finally after all that, we adjust the velocity of the projectile to go towards the cursor point
+        	 */
+            Vector playerCursor = context.getDirection().clone().normalize().multiply(trackCursorRange);
+            playerCursor = context.getEyeLocation().toVector().add(playerCursor);
+            velocity = playerCursor.subtract(projectileLocation.toVector()).normalize();
         }
         else if (reorient)
         {
