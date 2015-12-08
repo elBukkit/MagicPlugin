@@ -49,6 +49,7 @@ public class CustomProjectileAction extends CompoundAction
     private boolean useTargetLocation;
     private boolean trackEntity;
     private double trackCursorRange;
+    private double trackSpeed;
     private int targetSelfTimeout;
     private boolean breaksBlocks;
     private double targetBreakables;
@@ -105,6 +106,7 @@ public class CustomProjectileAction extends CompoundAction
         maxSpread = parameters.getDouble("spread_max", 0);
         movementSpread = parameters.getDouble("spread_movement", 0);
         trackCursorRange = parameters.getDouble("track_range", 0);
+        trackSpeed = parameters.getDouble("track_speed", 0);
 
         range *= context.getMage().getRangeMultiplier();
 
@@ -249,6 +251,7 @@ public class CustomProjectileAction extends CompoundAction
         lastUpdate = now;
 
         // Apply gravity, drag or other velocity modifiers
+        Vector targetVelocity = null;
         if (trackEntity)
         {
             Entity targetEntity = context.getTargetEntity();
@@ -256,7 +259,7 @@ public class CustomProjectileAction extends CompoundAction
             {
                 Location targetLocation = targetEntity instanceof LivingEntity ?
                         ((LivingEntity)targetEntity).getEyeLocation() : targetEntity.getLocation();
-                velocity = targetLocation.toVector().subtract(projectileLocation.toVector()).normalize();
+                targetVelocity = targetLocation.toVector().subtract(projectileLocation.toVector()).normalize();
             }
         }
         else if (trackCursorRange > 0)
@@ -266,11 +269,11 @@ public class CustomProjectileAction extends CompoundAction
         	 */
             Vector playerCursor = context.getDirection().clone().normalize().multiply(trackCursorRange);
             playerCursor = context.getEyeLocation().toVector().add(playerCursor);
-            velocity = playerCursor.subtract(projectileLocation.toVector()).normalize();
+            targetVelocity = playerCursor.subtract(projectileLocation.toVector()).normalize();
         }
         else if (reorient)
         {
-            velocity = context.getDirection().clone().normalize();
+            targetVelocity = context.getDirection().clone().normalize();
         }
         else
         {
@@ -282,6 +285,25 @@ public class CustomProjectileAction extends CompoundAction
                 if (speed <= 0) {
                     return hit();
                 }
+            }
+        }
+
+        if (targetVelocity != null)
+        {
+            if (trackSpeed > 0)
+            {
+                double steerDistanceSquared = trackSpeed * trackSpeed;
+                double distanceSquared = targetVelocity.distanceSquared(velocity);
+                if (distanceSquared <= steerDistanceSquared) {
+                    velocity = targetVelocity;
+                } else {
+                    Vector targetDirection = targetVelocity.subtract(velocity).normalize().multiply(steerDistanceSquared);
+                    velocity.add(targetDirection);
+                }
+            }
+            else
+            {
+                velocity = targetVelocity;
             }
         }
 

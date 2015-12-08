@@ -6635,6 +6635,8 @@ homing:
         track_target: true
         lifetime: 20000
         target_self_timeout: 2000
+        track_speed: 0.2
+        use_target_location: false
     costs:
         mana: 40
 
@@ -8970,7 +8972,8 @@ whip:
         cooldown: 5000
         target_self_timeout: 2000
         velocity: 10
-        track_range: 5
+        track_speed: 0.01
+        track_range: 0.75
     costs:
         mana: 25
 
