@@ -62,24 +62,27 @@ public class CustomProjectileAction extends CompoundAction
     
     MathHandler xAxisHandler;
     MathHandler yAxisHandler;
+    MathHandler zAxisHandler;
     private boolean useEquation;
     private Equation xAxisEquationType;
     private Equation yAxisEquationType;
+    private Equation zAxisEquationType;
     private double xAxisMathA;
     private double xAxisMathB;
     private double xAxisMathC;
     private double yAxisMathA;
     private double yAxisMathB;
     private double yAxisMathC;
+    private double zAxisMathA;
+    private double zAxisMathB;
+    private double zAxisMathC;
     private Vector equationUnitVector;
     private double intialPitch = 0;
     private double intialYaw = 0;
-    private int mathStep = -1;
     
     private boolean whip;
     private int whipDistance;
     private Vector playerCursor;
-    private double projectileDistance;
      
     private double distanceTravelled;
     private double effectDistanceTravelled;
@@ -91,6 +94,9 @@ public class CustomProjectileAction extends CompoundAction
     private long nextUpdate;
     private long deadline;
     private long targetSelfDeadline;
+    private long now;
+    private long intialTime;
+    private long timeElapsed;
     private Vector velocity = null;
     private DynamicLocation effectLocation = null;
     private Collection<EffectPlay> activeProjectileEffects;
@@ -133,18 +139,23 @@ public class CustomProjectileAction extends CompoundAction
         useEquation = parameters.getBoolean("use_equation", false);
         xAxisEquationType = Equation.valueOf(parameters.getString("x_axis_equation", "LINEAR"));
         yAxisEquationType = Equation.valueOf(parameters.getString("y_axis_equation", "LINEAR"));
+        zAxisEquationType = Equation.valueOf(parameters.getString("z_axis_equation", "LINEAR"));
         xAxisMathA = parameters.getDouble("x_axis_a_value", 0);
         xAxisMathB = parameters.getDouble("x_axis_b_value", 0);
         xAxisMathC = parameters.getDouble("x_axis_c_value", 0);
         yAxisMathA = parameters.getDouble("y_axis_a_value", 0);
         yAxisMathB = parameters.getDouble("y_axis_b_value", 0);
         yAxisMathC = parameters.getDouble("y_axis_c_value", 0);
-        
-        whipDistance = parameters.getInt("whip_distance", 5);
-        whip = parameters.getBoolean("whip", false);
+        zAxisMathA = parameters.getDouble("z_axis_a_value", 0);
+        zAxisMathB = parameters.getDouble("z_axis_b_value", 0);
+        zAxisMathC = parameters.getDouble("z_axis_c_value", 0);
         
         xAxisHandler = new MathHandler(xAxisMathA, xAxisMathB, xAxisMathC);
         yAxisHandler = new MathHandler(yAxisMathA, yAxisMathB, yAxisMathC);
+        zAxisHandler = new MathHandler(zAxisMathA, zAxisMathB, zAxisMathC);
+        
+        whipDistance = parameters.getInt("whip_distance", 5);
+        whip = parameters.getBoolean("whip", false);
         
         range *= context.getMage().getRangeMultiplier();
 
@@ -180,6 +191,8 @@ public class CustomProjectileAction extends CompoundAction
         activeProjectileEffects = null;
         intialYaw = 0;
         intialPitch = 0;
+        intialTime = 0;
+        timeElapsed = 0;
     }
 
     @Override
@@ -198,8 +211,19 @@ public class CustomProjectileAction extends CompoundAction
 
 	@Override
 	public SpellResult step(CastContext context) {
-		mathStep++;
-        long now = System.currentTimeMillis();
+		
+        now = System.currentTimeMillis();
+        
+        if (intialTime == 0) 
+        {
+        	intialTime = now;
+        	timeElapsed = 0;
+        }
+        else 
+        {
+        	timeElapsed = now - intialTime;
+        }
+        
         if (now < nextUpdate)
         {
             return SpellResult.PENDING;
@@ -302,44 +326,45 @@ public class CustomProjectileAction extends CompoundAction
                 velocity = targetLocation.toVector().subtract(projectileLocation.toVector()).normalize();
             }
         }
+        else if (whip)
+        {
+        	/* We need to first find out where the player is looking and multiply it by how far the player wants the whip to extend
+        	 * We then add a magic number, this adjusts the cursor to eye level.
+        	 * Finally after all that, we adjust the velocity of the projectile to go towards the cursor point
+        	 */
+        	playerCursor = context.getEyeLocation().getDirection().clone().normalize().multiply(whipDistance);
+            playerCursor = context.getLocation().clone().toVector().add(playerCursor.clone());
+            velocity = (playerCursor.clone().subtract(projectileLocation.clone().toVector()) ).normalize();
+        }
         else if (reorient)
         {
-            if (whip) {
-                projectileDistance = context.getLocation().distance(projectileLocation);
-                System.out.println(projectileDistance);
-                if (projectileDistance >= whipDistance) {
-                    playerCursor = context.getDirection().clone().normalize().multiply(whipDistance);
-                    velocity = projectileLocation.toVector().subtract(playerCursor).clone().normalize();
-                } else {
-                    velocity = context.getDirection().clone().normalize();
-                }
-            } else {
-                velocity = context.getDirection().clone().normalize();
-            }
+        	velocity = context.getDirection().clone().normalize();
         }
-        /* This adjusts the flight pattern to follow a configurable mathematic equation
-         * If set to true, it will first intially grab the player's yaw and pitch, the casting direction
-         * It will then check with handlers for the new velocity value
-         */
         else if (useEquation)
         {
         	if (intialPitch == 0 && intialYaw == 0)
         	{
-        		Location loc = context.getLocation();
+        		intialYaw = context.getEyeLocation().getYaw();
+        		intialPitch = context.getEyeLocation().getPitch();
         		
-        		intialYaw = loc.getYaw();
-        		intialPitch = loc.getPitch();
-        		
-        		intialPitch = intialPitch * -1;
-        		intialYaw = (intialYaw + 90) * -1;
-        		
+        		intialPitch = (intialPitch * -1) * MathUtils.degreesToRadians;
+        		intialYaw = ((intialYaw + 90) * -1) * MathUtils.degreesToRadians;	
         	}
         	
-        	equationUnitVector = new Vector(1 , yAxisHandler.returnDerivative(yAxisEquationType, mathStep), xAxisHandler.returnDerivative(xAxisEquationType, mathStep)).normalize();
-        	VectorUtils.rotateVector(equationUnitVector, 0, intialYaw * MathUtils.degreesToRadians, intialPitch * MathUtils.degreesToRadians);
+        	//This returns a unit vector with the new direction calculated via the equations
+        	Double xDerivative = xAxisHandler.returnDerivative(xAxisEquationType, timeElapsed);
+        	Double yDerivative = yAxisHandler.returnDerivative(yAxisEquationType, timeElapsed);
+        	Double zDerivative = zAxisHandler.returnDerivative(zAxisEquationType, timeElapsed);
+        	
+        	
+        	equationUnitVector = new Vector(1, yDerivative, zDerivative).normalize();
+        	//Rotates to player's direction
+        	equationUnitVector = VectorUtils.rotateVector(equationUnitVector.clone(), 0, intialYaw, intialPitch);
+        	
+        	speed = xDerivative;
             velocity = equationUnitVector;
         }
-        else
+	else
         {
             if (gravity > 0) {
                 velocity.setY(velocity.getY() - gravity * delta / 50).normalize();
