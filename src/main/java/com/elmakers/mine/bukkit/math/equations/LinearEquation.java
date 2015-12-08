@@ -1,9 +1,9 @@
 package com.elmakers.mine.bukkit.math.equations;
 
 public class LinearEquation {
-	private double a;
+	private Double a;
 	
-	public LinearEquation(double linearA) {
+	public LinearEquation(Double linearA) {
 		a = linearA;
 	}
 	//This returns the value, or velocity, of a linear equation at a specific step.
@@ -11,8 +11,8 @@ public class LinearEquation {
 	//For a linear function:
 	//f(x) = a(x+b) + c
 	//f'(x) = a
-	public double doDerivativeMath() {
-		double value;
+	public Double doDerivativeMath() {
+		Double value;
 		value = a;
 		return value;
 	}

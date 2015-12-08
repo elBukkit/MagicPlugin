@@ -1,11 +1,11 @@
 package com.elmakers.mine.bukkit.math.equations;
 
 public class QuadraticEquation {
-	private double a;
-	private double b;
-	private double c;
+	private Double a;
+	private Double b;
+	private Double c;
 	
-	public QuadraticEquation(double quadraticA, double quadraticB, double quadraticC) {
+	public QuadraticEquation(Double quadraticA, Double quadraticB, Double quadraticC) {
 		a = quadraticA;
 		b = quadraticB;
 		c = quadraticC;
@@ -15,8 +15,8 @@ public class QuadraticEquation {
 	//For a quadratic function:
 	//f(x) = a(x+b)^2 + c(x+b) + d
 	//f'(x) = 2a(x+b) + c
-	public double doDerivativeMath(double step) {
-		double value;
+	public Double doDerivativeMath(Double step) {
+		Double value;
 		value = 2*a*(step+b) + c;
 		return value;
 	}

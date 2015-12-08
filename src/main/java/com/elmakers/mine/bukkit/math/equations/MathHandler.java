@@ -11,21 +11,22 @@ public class MathHandler {
 		c = mathC;
 	}
 	
-	public double returnDerivative(Equation equation, int step) {
-		double derivativeValue;
+	public double returnDerivative(Equation equation, double time) {
+		Double derivativeValue;
+		time = time / 1000;
 		
 		switch(equation) {
 			case LINEAR:
 				derivativeValue = new LinearEquation(a).doDerivativeMath();
 				break;
 			case QUADRATIC:
-				derivativeValue = new QuadraticEquation(a, b, c).doDerivativeMath(step);
+				derivativeValue = new QuadraticEquation(a, b, c).doDerivativeMath(time);
 				break;
 			case SIN:
-				derivativeValue = new SinEquation(a, b, c).doDerivativeMath(step);
+				derivativeValue = new SinEquation(a, b, c).doDerivativeMath(time);
 				break;
 			default:
-				derivativeValue = 0;
+				derivativeValue = 0.0;
 				break;
 			}
 		return derivativeValue;

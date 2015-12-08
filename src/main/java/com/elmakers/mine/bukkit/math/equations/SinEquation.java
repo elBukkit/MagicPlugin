@@ -1,11 +1,11 @@
 package com.elmakers.mine.bukkit.math.equations;
 
 public class SinEquation {
-	private double a;
-	private double b;
-	private double c;
+	private Double a;
+	private Double b;
+	private Double c;
 	
-	public SinEquation(double sinA, double sinB, double sinC) {
+	public SinEquation(Double sinA, Double sinB, Double sinC) {
 		a = sinA;
 		b = sinB;
 		c = sinC;
@@ -15,8 +15,8 @@ public class SinEquation {
 	//For a sin function:
 	//f(x) = a*sin(b(x+c)) + d
 	//f'(x) = a*b*cos(b(x+c))
-	public double doDerivativeMath(double step) {
-		double value;
+	public Double doDerivativeMath(Double step) {
+		Double value;
 		value = a*b*Math.cos(b*(step+c));
 		return value;
 	}
