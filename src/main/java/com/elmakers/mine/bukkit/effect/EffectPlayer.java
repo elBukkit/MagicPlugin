@@ -513,13 +513,11 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
         if (origin != null) {
             if (originOffset != null) {
                 origin.addOffset(originOffset);
-                origin.update();
             }
         }
         if (target != null) {
             if (targetOffset != null) {
                 target.addOffset(targetOffset);
-                target.update();
             }
         }
     }
