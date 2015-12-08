@@ -1,7 +1,5 @@
 package com.elmakers.mine.bukkit.math.equations;
 
-import org.bukkit.util.Vector;
-
 public class MathHandler {
 	private double a;
 	private double b;
