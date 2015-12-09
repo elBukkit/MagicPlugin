@@ -25,6 +25,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
+import java.util.UUID;
 
 public class Targeting {
     private TargetingResult                     result                  = TargetingResult.NONE;
@@ -63,6 +65,7 @@ public class Targeting {
     private double                              yOffset                 = 0;
     private boolean                             targetSpaceRequired     = false;
     private int                                 targetMinOffset         = 0;
+    private Set<UUID>                           ignoreEntities          = null;
 
     public enum TargetingResult {
         NONE,
@@ -485,6 +488,7 @@ public class Targeting {
         if (entities == null) return targets;
         for (Entity entity : entities)
         {
+            if (ignoreEntities != null && ignoreEntities.contains(entity.getUniqueId())) continue;
             if (sourceEntity != null && entity.equals(sourceEntity) && !context.getTargetsCaster()) continue;
             Location entityLocation = entity instanceof LivingEntity ? ((LivingEntity)entity).getEyeLocation() : entity.getLocation();
             if (!entityLocation.getWorld().equals(source.getWorld())) continue;
@@ -645,5 +649,9 @@ public class Targeting {
         }
 
         return true;
+    }
+
+    public void setIgnoreEntities(Set<UUID> ignoreEntities) {
+        this.ignoreEntities = ignoreEntities;
     }
 }
