@@ -22,6 +22,9 @@ public class Transforms {
         if (base.isDouble(value) || base.isInt(value)) {
             return new ConstantTransform(base.getDouble(value));
         }
+        if (base.isString(value)) {
+            return new EquationTransform(base.getString(value));
+        }
         return new ConstantTransform(0);
     }
 
