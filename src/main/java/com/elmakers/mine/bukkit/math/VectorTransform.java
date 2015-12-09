@@ -31,9 +31,7 @@ public class VectorTransform {
         // Rotates to player's direction
         if (orient && source != null)
         {
-            float initialPitch = (source.getPitch() * -1) * MathUtils.degreesToRadians;
-            float initialYaw = ((source.getYaw() + 90) * -1) * MathUtils.degreesToRadians;
-            result = VectorUtils.rotateVector(result, 0, initialYaw, initialPitch);
+            result = VectorUtils.rotateVector(result, source);
         }
 
         return result;
