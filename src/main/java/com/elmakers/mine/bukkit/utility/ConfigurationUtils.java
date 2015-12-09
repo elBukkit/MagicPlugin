@@ -293,6 +293,28 @@ public class ConfigurationUtils {
             if (value == null) continue;
 
             Object existingValue = first.get(key);
+            if (value instanceof Map)
+            {
+                ConfigurationSection newChild = second.createSection(key);
+                Map<String, Object> map = (Map<String, Object>)value;
+                for (Entry<String, Object> entry : map.entrySet())
+                {
+                    newChild.set(entry.getKey(), entry.getValue());
+                }
+                second.set(key, newChild);
+                value = newChild;
+            }
+            if (existingValue instanceof Map)
+            {
+                ConfigurationSection newChild = first.createSection(key);
+                Map<String, Object> map = (Map<String, Object>)value;
+                for (Entry<String, Object> entry : map.entrySet())
+                {
+                    newChild.set(entry.getKey(), entry.getValue());
+                }
+                first.set(key, newChild);
+                existingValue = newChild;
+            }
             if (value instanceof ConfigurationSection && (existingValue == null || existingValue instanceof ConfigurationSection)) {
                 ConfigurationSection addChild = (ConfigurationSection)value;
                 if (existingValue == null || !addChild.getBoolean("inherit", true)) {
