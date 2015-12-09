@@ -64,9 +64,10 @@ public class CustomProjectileAction extends CompoundAction
     private int blockHitLimit;
     private int entityHitLimit;
 
-    private Location launchLocation;
-    private long flightTime;
-    private double distanceTravelled;
+    protected Location launchLocation;
+    protected long flightTime;
+    protected double distanceTravelled;
+
     private double effectDistanceTravelled;
     private boolean hasTickEffects;
     private boolean hasStepEffects;

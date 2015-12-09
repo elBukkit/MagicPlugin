@@ -493,6 +493,15 @@ boomerang:
         entity_damage: 2
         cooldown: 0
         held_item: diamond_sword
+        armor_stand_offset: 0,2,0
+        right_arm_transform:
+            x:
+              class: dSin
+              a: 0.5
+              b: 1
+              c: 0
+            y: 0
+            z: 0
 
 mathtest:
     icon: paper
