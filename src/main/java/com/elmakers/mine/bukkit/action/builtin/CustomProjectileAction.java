@@ -7,6 +7,7 @@ import com.elmakers.mine.bukkit.api.effect.EffectPlayer;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.api.spell.TargetType;
+import com.elmakers.mine.bukkit.math.VectorTransform;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.Target;
@@ -36,6 +37,7 @@ public class CustomProjectileAction extends CompoundAction
     private int lifetime;
     private int range;
     private double speed;
+    private VectorTransform velocityTransform;
     private double spread;
     private double movementSpread;
     private double maxSpread;
@@ -62,6 +64,8 @@ public class CustomProjectileAction extends CompoundAction
     private int blockHitLimit;
     private int entityHitLimit;
 
+    private Location launchLocation;
+    private long flightTime;
     private double distanceTravelled;
     private double effectDistanceTravelled;
     private boolean hasTickEffects;
@@ -81,9 +85,14 @@ public class CustomProjectileAction extends CompoundAction
     private Collection<EffectPlay> activeProjectileEffects;
 
     @Override
-    public void initialize(Spell spell, ConfigurationSection baseParameters) {
-        super.initialize(spell, baseParameters);
+    public void initialize(Spell spell, ConfigurationSection parameters) {
+        super.initialize(spell, parameters);
         targeting = new Targeting();
+        if (parameters.isConfigurationSection("velocity_transform")) {
+            velocityTransform = new VectorTransform(parameters.getConfigurationSection("velocity_transform"));
+        } else {
+            velocityTransform = null;
+        }
     }
 
     @Override
@@ -208,9 +217,11 @@ public class CustomProjectileAction extends CompoundAction
             } else {
                 projectileLocation = context.getLocation().clone();
             }
+            launchLocation = projectileLocation.clone();
 
             if (targetLocation != null && !reorient && useTargetLocation) {
                 velocity = targetLocation.toVector().subtract(projectileLocation.toVector()).normalize();
+                launchLocation.setDirection(velocity);
             } else {
                 velocity = context.getDirection().clone().normalize();
             }
@@ -270,6 +281,7 @@ public class CustomProjectileAction extends CompoundAction
         // We default to 50 ms travel time (one tick) for the first iteration.
         long delta = lastUpdate > 0 ? now - lastUpdate : 50;
         lastUpdate = now;
+        flightTime += delta;
 
         // Apply gravity, drag or other velocity modifiers
         Vector targetVelocity = null;
@@ -295,6 +307,17 @@ public class CustomProjectileAction extends CompoundAction
         else if (reorient)
         {
             targetVelocity = context.getDirection().clone().normalize();
+        }
+        else if (velocityTransform != null)
+        {
+            targetVelocity = velocityTransform.get(launchLocation, (double)flightTime / 1000);
+
+            // This is expensive, but necessary for variable speed to work properly
+            // with targeting and range-checking
+            if (targetVelocity != null) {
+                speed = targetVelocity.length();
+                targetVelocity.normalize();
+            }
         }
         else
         {
