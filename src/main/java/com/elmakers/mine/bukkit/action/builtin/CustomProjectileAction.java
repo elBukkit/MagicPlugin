@@ -316,7 +316,11 @@ public class CustomProjectileAction extends CompoundAction
             // with targeting and range-checking
             if (targetVelocity != null) {
                 speed = targetVelocity.length();
-                targetVelocity.normalize();
+                if (speed > 0) {
+                    targetVelocity.normalize();
+                } else {
+                    targetVelocity.setX(1);
+                }
             }
         }
         else
