@@ -23,7 +23,11 @@ public class Transforms {
             return new ConstantTransform(base.getDouble(value));
         }
         if (base.isString(value)) {
-            return new EquationTransform(base.getString(value));
+            String equation = base.getString(value);
+            if (equation.equalsIgnoreCase("t") || equation.equalsIgnoreCase("time")) {
+                return new EchoTransform();
+            }
+            return new EquationTransform(equation);
         }
         return new ConstantTransform(0);
     }
