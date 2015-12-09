@@ -394,6 +394,7 @@ napalm:
         mana: 555
 
 relative:
+    icon: paper
     actions:
         cast:
         -   class: CustomProjectile
@@ -453,7 +454,20 @@ relative:
         entity_damage: 2
         cooldown: 0
 
+throwsword:
+    icon: diamond_sword
+    actions:
+        cast:
+        - class: ArmorStandProjectile
+          actions:
+          - class: Damage
+    parameters:
+      armor_stand_invisible: true
+      velocity: 10
+      held_item: diamond_sword
+
 mathtest:
+    icon: paper
     actions:
         cast:
         - class: CustomProjectile
