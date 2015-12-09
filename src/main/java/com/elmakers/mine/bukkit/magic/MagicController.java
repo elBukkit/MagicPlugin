@@ -3019,27 +3019,28 @@ public class MagicController implements MageController {
 	@Override
 public Set<Material> getMaterialSet(String name)
 	{
-		if (name.contains(",")) {
-            String[] nameList = StringUtils.split(name, ',');
-            Set<Material> materials = new HashSet<Material>();
-
-            for (String matName : nameList)
-            {
-                if (materialSets.containsKey(matName)) {
-                    materials.addAll(materialSets.get(matName));
-                } else {
-                    Material material = ConfigurationUtils.toMaterial(matName);
-                    if (material != null) {
-                        materials.add(material);
+        Set<Material> materials = materialSets.get(name);
+        if (materials == null) {
+            materials = new HashSet<Material>();
+            if (name.contains(",")) {
+                String[] nameList = StringUtils.split(name, ',');
+                for (String matName : nameList)
+                {
+                    if (materialSets.containsKey(matName)) {
+                        materials.addAll(materialSets.get(matName));
+                    } else {
+                        Material material = ConfigurationUtils.toMaterial(matName);
+                        if (material != null) {
+                            materials.add(material);
+                        }
                     }
                 }
+            } else {
+                materials = ConfigurationUtils.parseMaterials(name);
             }
-            return materials;
-		}
-		if (!materialSets.containsKey(name)) {
-			return ConfigurationUtils.parseMaterials(name);
-		}
-		return materialSets.get(name);
+            materialSets.put(name, materials);
+        }
+		return materials;
 	}
 	
 	@Override
