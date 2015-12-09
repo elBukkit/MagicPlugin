@@ -6561,6 +6561,64 @@ missile|4:
     costs:
         mana: 50
 
+railgun:
+    icon: ink_sack:1
+    icon_url: http://textures.minecraft.net/texture/436cb244bd2a9c1734f2db6517a973a91b1773f02ca4b481af5f24d17bb1496
+    category: combat
+    worth_sp: 1000
+    earns_sp: 10
+    actions:
+        cast:
+        - class: CustomProjectile
+          actions:
+          - class: Damage
+          - class: ModifyBlock
+            ignore_result: true
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: magic.zap_crack
+           location: origin
+           color_override: color
+           effectlib:
+             class: VortexEffect
+             iterations: 100
+             particle: redstone
+             radius: 0.2
+             grow: 0.5
+             updateLocations: false
+             updateDirections: false
+        tick:
+        - particle: fireworks_spark
+          location: target
+        - particle: redstone
+          location: target
+          color: FF8800
+        hit:
+        -  class: EffectSingle
+           sound: magic.zap
+           sound_volume: .3
+           location: target
+           color2: FF8800
+           firework: burst
+    parameters:
+        destructible: destructible,destructible2,destructible3
+        allow_max_range: true
+        velocity: 200
+        range: 64
+        hitbox: true
+        block_hit_count: 2
+        entity_hit_count: 5
+        target_type: LivingEntity
+        player_damage: 6
+        entity_damage: 8
+        target_breakables: 1
+        cooldown: 10000
+        reorient: false
+        brush: air
+    costs:
+        mana: 150
+
 homing:
     icon: ink_sack:1
     icon_url: http://textures.minecraft.net/texture/e3152dba6ee22b6e89e88878acc5a01f5964946b8938e9a1470dfabbeeca

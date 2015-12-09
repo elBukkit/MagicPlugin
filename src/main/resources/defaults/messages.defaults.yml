@@ -1332,7 +1332,13 @@ spells:
         name: Magic Missile
         description: Fire a bolt of pure magic
         cast: You fire a missile at $target
+        no_target: You fire a missile
         upgrade_description: "&r&b&bull; &6Increased damage and range"
+    railgun:
+        name: Railgun
+        description: Blast through blocks and multiple targets
+        cast: You fire a rail at $target
+        no_target: You fire off a rail
     testdummy:
         name: Test Dummy
         description: Spawn a poor test dummy

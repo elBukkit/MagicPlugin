@@ -23,7 +23,10 @@ import org.bukkit.util.Vector;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Random;
+import java.util.Set;
+import java.util.UUID;
 
 public class CustomProjectileAction extends CompoundAction
 {
@@ -56,6 +59,8 @@ public class CustomProjectileAction extends CompoundAction
     private int targetBreakableSize;
     private boolean bypassBackfire;
     private boolean reverseDirection;
+    private int blockHitLimit;
+    private int entityHitLimit;
 
     private double distanceTravelled;
     private double effectDistanceTravelled;
@@ -63,6 +68,10 @@ public class CustomProjectileAction extends CompoundAction
     private boolean hasStepEffects;
     private boolean hasBlockMissEffects;
     private boolean hasPreHitEffects;
+    private int entityHitCount;
+    private Set<UUID> entitiesHit;
+    private int blockHitCount;
+    private boolean missed;
     private long lastUpdate;
     private long nextUpdate;
     private long deadline;
@@ -107,6 +116,9 @@ public class CustomProjectileAction extends CompoundAction
         movementSpread = parameters.getDouble("spread_movement", 0);
         trackCursorRange = parameters.getDouble("track_range", 0);
         trackSpeed = parameters.getDouble("track_speed", 0);
+        int hitLimit = parameters.getInt("hit_count", 1);
+        entityHitLimit = parameters.getInt("entity_hit_count", hitLimit);
+        blockHitLimit = parameters.getInt("block_hit_count", hitLimit);
 
         range *= context.getMage().getRangeMultiplier();
 
@@ -127,6 +139,11 @@ public class CustomProjectileAction extends CompoundAction
     }
 
     @Override
+    public boolean next(CastContext context) {
+        return !missed && entityHitCount < entityHitLimit && blockHitCount < blockHitLimit;
+    }
+
+    @Override
     public void reset(CastContext context)
     {
         super.reset(context);
@@ -140,6 +157,10 @@ public class CustomProjectileAction extends CompoundAction
         effectLocation = null;
         velocity = null;
         activeProjectileEffects = null;
+        entityHitCount = 0;
+        entitiesHit = null;
+        blockHitCount = 0;
+        missed = false;
     }
 
     @Override
@@ -165,7 +186,7 @@ public class CustomProjectileAction extends CompoundAction
         }
         if (now > deadline)
         {
-            return hit();
+            return miss();
         }
         if (targetSelfDeadline > 0 && now > targetSelfDeadline)
         {
@@ -283,7 +304,7 @@ public class CustomProjectileAction extends CompoundAction
             if (drag > 0) {
                 speed -= drag * delta / 50;
                 if (speed <= 0) {
-                    return hit();
+                    return miss();
                 }
             }
         }
@@ -308,6 +329,7 @@ public class CustomProjectileAction extends CompoundAction
         }
 
         projectileLocation.setDirection(velocity);
+        targeting.setIgnoreEntities(entitiesHit);
         targeting.start(projectileLocation);
 
         // Advance targeting to find Entity or Block
@@ -382,19 +404,29 @@ public class CustomProjectileAction extends CompoundAction
         }
 
         if (maxHeight || minHeight) {
-            return hit();
+            return miss();
         }
 
         if (range > 0 && distanceTravelled >= range) {
-            return hit();
+            return miss();
         }
 
         Block block = targetLocation.getBlock();
-        if (targetingResult != Targeting.TargetingResult.MISS) {
-            return hitBlock(block);
+        if (!block.getChunk().isLoaded()) {
+            return miss();
         }
 
-        if (!block.getChunk().isLoaded()) {
+        if (targetingResult == Targeting.TargetingResult.BLOCK) {
+            return hitBlock(block);
+        } else if (targetingResult == Targeting.TargetingResult.ENTITY) {
+            entityHitCount++;
+            Entity hitEntity = target.getEntity();
+            if (hitEntity != null && entityHitLimit > 1) {
+                if (entitiesHit == null) {
+                    entitiesHit = new HashSet<UUID>();
+                }
+                entitiesHit.add(hitEntity.getUniqueId());
+            }
             return hit();
         }
 
@@ -436,7 +468,15 @@ public class CustomProjectileAction extends CompoundAction
             }
         }
 
+        if (!continueProjectile) {
+            blockHitCount++;
+        }
         return continueProjectile ? SpellResult.PENDING : hit();
+    }
+
+    protected SpellResult miss() {
+        missed = true;
+        return hit();
     }
 
     protected SpellResult hit() {

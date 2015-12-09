@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## 5.5
+
+ - Add options for relative effect locations (Thanks, SexyToad!)
+ - Add "track_range" CustomProjectile parameter, for projectiles that track the player's cursor at a fixed range (Thanks again, SexyToad!)
+ - Add Railgun spell, ability for CustomProjectile to hit multiple targets  
+
 ## 5.4
 
  - Move Tag back to Beginner, but it requires a sign.
