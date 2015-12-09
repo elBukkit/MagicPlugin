@@ -407,7 +407,6 @@ relative:
             use_wand_location: false
             use_eye_location: true
             effectlib:
-                offset: 0,2,0
                 class: SphereEffect
                 particle: smoke_normal
                 radius: 1
@@ -419,9 +418,8 @@ relative:
             use_wand_location: false
             use_eye_location: true
             effectlib:
-                offset: 0,2,0
                 class: SphereEffect
-                particle: smoke_normal
+                particle: redstone
                 radius: 1
                 duration: 10000
                 updateLocations: false
@@ -454,23 +452,23 @@ relative:
         entity_damage: 2
         cooldown: 0
 
-throwsword:
-    icon: diamond_sword
+boomerang:
+    icon: gold_sword
     actions:
         cast:
         - class: ArmorStandProjectile
-          actions:
-          - class: Damage
-    parameters:
-      armor_stand_invisible: true
-      velocity: 10
-      held_item: diamond_sword
-
-mathtest:
-    icon: paper
-    actions:
-        cast:
-        - class: CustomProjectile
+          velocity_transform:
+            x:
+              class: dSin
+              a: 10
+              b: 0.31416
+              c: 0
+            y: 0
+            z:
+              class: dSin
+              a: 5
+              b: 0.62832
+              c: 0
           actions:
           - class: Damage
     effects:
@@ -494,18 +492,48 @@ mathtest:
         damage: 1
         entity_damage: 2
         cooldown: 0
-        velocity_transform:
-          x:
-            class: dSin
-            a: 10
-            b: 0.31416
-            c: 0
-          y: 0
-          z:
-            class: dSin
-            a: 5
-            b: 0.62832
-            c: 0
+        held_item: diamond_sword
+
+mathtest:
+    icon: paper
+    actions:
+        cast:
+        - class: CustomProjectile
+          velocity_transform:
+            x:
+              class: dSin
+              a: 10
+              b: 0.31416
+              c: 0
+            y: 0
+            z:
+              class: dSin
+              a: 5
+              b: 0.62832
+              c: 0
+          actions:
+          - class: Damage
+    effects:
+        projectile:
+        -   class: EffectSingle
+            effectlib:
+                class: SphereEffect
+                particle: flame
+                particles: 4
+                radius: 0.2
+                duration: 30000
+        tick:
+        - particle: redstone
+          color: FF0000
+          location: target
+    parameters:
+        target_type: LivingEntity
+        range: 100
+        lifetime: 10000
+        hitbox_size: 0.2
+        damage: 1
+        entity_damage: 2
+        cooldown: 0
 
 equationtest:
     icon: paper
