@@ -469,12 +469,13 @@ throwsword:
                 radius: 0.2
                 duration: 30000
     parameters:
-      armor_stand_invisible: true
       velocity: 10
       held_item: diamond_sword
       armor_stand_offset: 0,4,0
-      armor_stand_invisible: false
-      armor_stand_marker: false
+      armor_stand_invisible: true
+      armor_stand_marker: true
+      attach_duration: 5000
+      gravity: 0.05
 
 boomerang:
     icon: gold_sword
@@ -606,3 +607,4 @@ equationtest:
           x: "10*sin(0.31416 * t)"
           y: 0
           z: "5*sin(0.62832 * t)"
+

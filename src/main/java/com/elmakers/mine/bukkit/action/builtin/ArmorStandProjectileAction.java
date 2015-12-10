@@ -26,6 +26,8 @@ public class ArmorStandProjectileAction extends CustomProjectileAction {
     private boolean noTarget = true;
     private boolean doTeleport = false;
     private boolean doVelocity = false;
+    private boolean adjustArmPitch = false;
+    private boolean adjustHeadPitch = false;
     private boolean orient = false;
     private ItemStack heldItem = null;
     private ItemStack helmetItem = null;
@@ -76,6 +78,8 @@ public class ArmorStandProjectileAction extends CustomProjectileAction {
         armorStandInvisible = parameters.getBoolean("armor_stand_invisible", true);
         armorStandGravity = parameters.getBoolean("armor_stand_gravity", true);
         smallArmorStand = parameters.getBoolean("armor_stand_small", false);
+        adjustHeadPitch = parameters.getBoolean("orient_head", false);
+        adjustArmPitch = parameters.getBoolean("orient_right_arm", false);
         doVelocity = parameters.getBoolean("apply_velocity", true);
         doTeleport = parameters.getBoolean("teleport", true);
         noTarget = parameters.getBoolean("no_target", true);
@@ -162,9 +166,9 @@ public class ArmorStandProjectileAction extends CustomProjectileAction {
             }
             armorStand.setVelocity(velocity);
         }
+        Location currentLocation = armorStand.getLocation();
         if (doTeleport) {
             if (!orient) {
-                Location currentLocation = armorStand.getLocation();
                 target.setYaw(currentLocation.getYaw());
                 target.setPitch(currentLocation.getPitch());
             }
@@ -176,7 +180,12 @@ public class ArmorStandProjectileAction extends CustomProjectileAction {
         }
         if (rightArmTransform != null) {
             Vector direction = rightArmTransform.get(launchLocation, flightTime);
-            armorStand.setRightArmPose(new EulerAngle(direction.getX(), direction.getY(), direction.getZ()));
+            double pitchOffset = adjustArmPitch ? Math.toRadians(currentLocation.getPitch()) : 0;
+            armorStand.setRightArmPose(new EulerAngle(direction.getX(), direction.getY() + pitchOffset, direction.getZ()));
+        } else if (adjustArmPitch) {
+            EulerAngle armPose = armorStand.getRightArmPose();
+            armPose.setY(Math.toRadians(currentLocation.getPitch()));
+            armorStand.setRightArmPose(armPose);
         }
         if (leftLegTransform != null) {
             Vector direction = leftLegTransform.get(launchLocation, flightTime);
@@ -192,7 +201,12 @@ public class ArmorStandProjectileAction extends CustomProjectileAction {
         }
         if (headTransform != null) {
             Vector direction = headTransform.get(launchLocation, flightTime);
-            armorStand.setHeadPose(new EulerAngle(direction.getX(), direction.getY(), direction.getZ()));
+            double pitchOffset = adjustHeadPitch ? Math.toRadians(currentLocation.getPitch()) : 0;
+            armorStand.setHeadPose(new EulerAngle(direction.getX(), direction.getY() + pitchOffset, direction.getZ()));
+        } else if (adjustHeadPitch) {
+            EulerAngle headPose = armorStand.getHeadPose();
+            headPose.setY(Math.toRadians(currentLocation.getPitch()));
+            armorStand.setRightArmPose(headPose);
         }
         return result;
     }
