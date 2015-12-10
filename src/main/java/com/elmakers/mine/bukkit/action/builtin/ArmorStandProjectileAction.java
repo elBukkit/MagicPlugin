@@ -30,7 +30,7 @@ public class ArmorStandProjectileAction extends CustomProjectileAction {
     private boolean adjustHeadPitch = false;
     private boolean showArmorStandArms = true;
     private boolean orient = false;
-    private ItemStack heldItem = null;
+    private ItemStack rightArmItem = null;
     private ItemStack helmetItem = null;
     private ItemStack chestplateItem = null;
     private ItemStack leggingsItem = null;
@@ -88,9 +88,9 @@ public class ArmorStandProjectileAction extends CustomProjectileAction {
         orient = parameters.getBoolean("orient", true);
         velocityOffset = ConfigurationUtils.getVector(parameters, "velocity_offset");
         armorStandOffset = ConfigurationUtils.getVector(parameters, "armor_stand_offset");
-        MaterialAndData itemType = ConfigurationUtils.getMaterialAndData(parameters, "held_item");
+        MaterialAndData itemType = ConfigurationUtils.getMaterialAndData(parameters, "right_arm_item");
         if (itemType != null) {
-            heldItem = itemType.getItemStack(1);
+            rightArmItem = itemType.getItemStack(1);
         }
         itemType = ConfigurationUtils.getMaterialAndData(parameters, "helmet_item");
         if (itemType != null) {
@@ -125,7 +125,7 @@ public class ArmorStandProjectileAction extends CustomProjectileAction {
         Location location = mage.getEyeLocation();
         armorStand = CompatibilityUtils.spawnArmorStand(location);
         CompatibilityUtils.setYawPitch(armorStand, location.getYaw(), location.getPitch());
-        armorStand.setItemInHand(heldItem);
+        armorStand.setItemInHand(rightArmItem);
         armorStand.setHelmet(helmetItem);
         armorStand.setChestplate(chestplateItem);
         armorStand.setLeggings(leggingsItem);
