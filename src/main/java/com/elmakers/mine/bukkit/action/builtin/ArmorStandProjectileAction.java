@@ -184,7 +184,7 @@ public class ArmorStandProjectileAction extends CustomProjectileAction {
             armorStand.setRightArmPose(new EulerAngle(direction.getX(), direction.getY() + pitchOffset, direction.getZ()));
         } else if (adjustArmPitch) {
             EulerAngle armPose = armorStand.getRightArmPose();
-            armPose.setY(Math.toRadians(currentLocation.getPitch()));
+            armPose.setY(Math.toRadians(-currentLocation.getPitch()));
             armorStand.setRightArmPose(armPose);
         }
         if (leftLegTransform != null) {
@@ -205,7 +205,7 @@ public class ArmorStandProjectileAction extends CustomProjectileAction {
             armorStand.setHeadPose(new EulerAngle(direction.getX(), direction.getY() + pitchOffset, direction.getZ()));
         } else if (adjustHeadPitch) {
             EulerAngle headPose = armorStand.getHeadPose();
-            headPose.setY(Math.toRadians(currentLocation.getPitch()));
+            headPose.setY(Math.toRadians(-currentLocation.getPitch()));
             armorStand.setRightArmPose(headPose);
         }
         return result;

@@ -474,6 +474,7 @@ throwsword:
       armor_stand_offset: 0,4,0
       armor_stand_invisible: true
       armor_stand_marker: true
+      orient_right_arm: true
       attach_duration: 5000
       gravity: 0.05
 
@@ -607,4 +608,3 @@ equationtest:
           x: "10*sin(0.31416 * t)"
           y: 0
           z: "5*sin(0.62832 * t)"
-

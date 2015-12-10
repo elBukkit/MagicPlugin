@@ -1,5 +1,7 @@
 # TODO
 
+ - Spells will run partially but then not undo if the player's batch queue is full?
+ - Effects don't cancel if you switch away from your wand? Whip stops moving? Wha?
  - Fix block targeting cast messages
  - Need a way for arena deaths to prevent a Recall change of death location
  - Automata don't resume anymore
