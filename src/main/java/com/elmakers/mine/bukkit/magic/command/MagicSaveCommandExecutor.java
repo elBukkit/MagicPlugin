@@ -1,5 +1,7 @@
 package com.elmakers.mine.bukkit.magic.command;
 
+import com.elmakers.mine.bukkit.api.data.MageData;
+import com.elmakers.mine.bukkit.api.data.MageDataCallback;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MagicAPI;
 import com.elmakers.mine.bukkit.magic.MagicController;
@@ -46,9 +48,9 @@ public class MagicSaveCommandExecutor extends MagicTabExecutor {
         Mage mage = controller.getMage(player);
         final String cmd = executeCommand.trim().replace("@p", mage.getName());
         final Plugin plugin = controller.getPlugin();
-        controller.saveMage(mage, true, new Runnable() {
+        controller.saveMage(mage, true, new MageDataCallback() {
             @Override
-            public void run() {
+            public void run(MageData data) {
                 if (cmd.length() > 0) {
                     plugin.getServer().dispatchCommand(sender, cmd);
                 }

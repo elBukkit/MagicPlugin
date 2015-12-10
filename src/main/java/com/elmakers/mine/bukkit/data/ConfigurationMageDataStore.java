@@ -3,6 +3,7 @@ package com.elmakers.mine.bukkit.data;
 import com.elmakers.mine.bukkit.api.block.UndoList;
 import com.elmakers.mine.bukkit.api.data.BrushData;
 import com.elmakers.mine.bukkit.api.data.MageData;
+import com.elmakers.mine.bukkit.api.data.MageDataCallback;
 import com.elmakers.mine.bukkit.api.data.MageDataStore;
 import com.elmakers.mine.bukkit.api.data.SpellData;
 import com.elmakers.mine.bukkit.api.data.UndoData;
@@ -152,7 +153,7 @@ public abstract class ConfigurationMageDataStore implements MageDataStore {
     @Override
     public void save(Collection<MageData> mages) {
         for (MageData data : mages) {
-            save(data);
+            save(data, (MageDataCallback)null);
         }
     }
 
