@@ -335,21 +335,6 @@ public class CustomProjectileAction extends CompoundAction
         {
             targetVelocity = context.getDirection().clone().normalize();
         }
-        else if (velocityTransform != null)
-        {
-            targetVelocity = velocityTransform.get(launchLocation, (double)flightTime / 1000);
-
-            // This is expensive, but necessary for variable speed to work properly
-            // with targeting and range-checking
-            if (targetVelocity != null) {
-                speed = targetVelocity.length();
-                if (speed > 0) {
-                    targetVelocity.normalize();
-                } else {
-                    targetVelocity.setX(1);
-                }
-            }
-        }
         else
         {
             if (gravity > 0) {
@@ -378,6 +363,24 @@ public class CustomProjectileAction extends CompoundAction
             }
             else
             {
+                velocity = targetVelocity;
+            }
+            launchLocation.setDirection(velocity);
+        }
+
+        if (velocityTransform != null)
+        {
+            targetVelocity = velocityTransform.get(launchLocation, (double)flightTime / 1000);
+
+            // This is expensive, but necessary for variable speed to work properly
+            // with targeting and range-checking
+            if (targetVelocity != null) {
+                speed = targetVelocity.length();
+                if (speed > 0) {
+                    targetVelocity.normalize();
+                } else {
+                    targetVelocity.setX(1);
+                }
                 velocity = targetVelocity;
             }
         }
