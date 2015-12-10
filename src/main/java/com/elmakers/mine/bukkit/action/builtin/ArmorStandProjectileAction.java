@@ -28,6 +28,7 @@ public class ArmorStandProjectileAction extends CustomProjectileAction {
     private boolean doVelocity = false;
     private boolean adjustArmPitch = false;
     private boolean adjustHeadPitch = false;
+    private boolean showArmorStandArms = true;
     private boolean orient = false;
     private ItemStack heldItem = null;
     private ItemStack helmetItem = null;
@@ -77,6 +78,7 @@ public class ArmorStandProjectileAction extends CustomProjectileAction {
         armorStandMarker = parameters.getBoolean("armor_stand_marker", true);
         armorStandInvisible = parameters.getBoolean("armor_stand_invisible", true);
         armorStandGravity = parameters.getBoolean("armor_stand_gravity", true);
+        showArmorStandArms = parameters.getBoolean("armor_stand_arms", true);
         smallArmorStand = parameters.getBoolean("armor_stand_small", false);
         adjustHeadPitch = parameters.getBoolean("orient_head", false);
         adjustArmPitch = parameters.getBoolean("orient_right_arm", false);
@@ -128,19 +130,11 @@ public class ArmorStandProjectileAction extends CustomProjectileAction {
         armorStand.setChestplate(chestplateItem);
         armorStand.setLeggings(leggingsItem);
         armorStand.setBoots(bootsItem);
-        armorStand.setMetadata("notarget", new FixedMetadataValue(controller.getPlugin(), true));
-        if (armorStandInvisible) {
-            CompatibilityUtils.setInvisible(armorStand, true);
-        }
-        if (armorStandMarker) {
-            CompatibilityUtils.setMarker(armorStand, true);
-        }
-        if (!armorStandGravity) {
-            CompatibilityUtils.setGravity(armorStand, false);
-        }
-        if (smallArmorStand) {
-            CompatibilityUtils.setSmall(armorStand, true);
-        }
+        armorStand.setMarker(armorStandMarker);
+        armorStand.setVisible(!armorStandInvisible);
+        armorStand.setGravity(armorStandGravity);
+        armorStand.setSmall(smallArmorStand);
+        armorStand.setArms(showArmorStandArms);
         if (noTarget) {
             armorStand.setMetadata("notarget", new FixedMetadataValue(controller.getPlugin(), true));
         }
