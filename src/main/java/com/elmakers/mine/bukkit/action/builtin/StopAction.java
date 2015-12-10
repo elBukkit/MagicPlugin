@@ -9,6 +9,6 @@ public class StopAction extends BaseSpellAction
 	@Override
 	public SpellResult perform(CastContext context)
 	{
-        return SpellResult.CANCELLED;
+        return SpellResult.STOP;
 	}
 }
