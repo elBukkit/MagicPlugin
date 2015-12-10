@@ -32,7 +32,7 @@ public interface MageDataStore {
      *
      * If there is no data for this mage, a new empty record should be returned.
      */
-    MageData load(String id);
+    void load(String id, MageDataCallback callback);
 
     /**
      * Remove all data for a single mage
