@@ -2452,7 +2452,6 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	
 	protected void sendAddMessage(com.elmakers.mine.bukkit.api.magic.Mage mage, String messageKey, String nameParam) {
 		if (mage == null) return;
-		
 		String message = getMessage(messageKey).replace("$name", nameParam).replace("$wand", getName());
 		mage.sendMessage(message);
 	}
@@ -2497,16 +2496,16 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		boolean modified = false;
 
         Messages messages = controller.getMessages();
-		if (other.costReduction > costReduction) { costReduction = other.costReduction; modified = true; if (costReduction > 0) sendAddMessage(mage, "wand.upgraded_property", getLevelString(messages, "wand.cost_reduction", costReduction)); }
-		if (other.power > power) { power = other.power; modified = true; if (power > 0) sendAddMessage(mage, "wand.upgraded_property", getLevelString(messages, "wand.power", power)); }
-		if (other.damageReduction > damageReduction) { damageReduction = other.damageReduction; modified = true; if (damageReduction > 0) sendAddMessage(mage, "wand.upgraded_property", getLevelString(messages, "wand.protection", damageReduction)); }
-		if (other.damageReductionPhysical > damageReductionPhysical) { damageReductionPhysical = other.damageReductionPhysical; modified = true; if (damageReductionPhysical > 0) sendAddMessage(mage, "wand.upgraded_property", getLevelString(messages, "wand.protection_physical", damageReductionPhysical)); }
-		if (other.damageReductionProjectiles > damageReductionProjectiles) { damageReductionProjectiles = other.damageReductionProjectiles; modified = true; if (damageReductionProjectiles > 0) sendAddMessage(mage, "wand.upgraded_property", getLevelString(messages, "wand.protection_projectile", damageReductionProjectiles)); }
-		if (other.damageReductionFalling > damageReductionFalling) { damageReductionFalling = other.damageReductionFalling; modified = true; if (damageReductionFalling > 0) sendAddMessage(mage, "wand.upgraded_property", getLevelString(messages, "wand.protection_fall", damageReductionFalling)); }
-		if (other.damageReductionFire > damageReductionFire) { damageReductionFire = other.damageReductionFire; modified = true; if (damageReductionFire > 0) sendAddMessage(mage, "wand.upgraded_property", getLevelString(messages, "wand.protection_fire", damageReductionFire)); }
-		if (other.damageReductionExplosions > damageReductionExplosions) { damageReductionExplosions = other.damageReductionExplosions; modified = true; if (damageReductionExplosions > 0) sendAddMessage(mage, "wand.upgraded_property", getLevelString(messages, "wand.protection_blast", damageReductionExplosions)); }
-        if (other.xpRegenerationBoost > xpRegenerationBoost) { xpRegenerationBoost = other.xpRegenerationBoost; modified = true; if (xpRegenerationBoost > 0) sendAddMessage(mage, "wand.upgraded_property", getLevelString(messages, "wand.mana_regeneration_boost", xpRegenerationBoost)); }
-        if (other.xpMaxBoost > xpMaxBoost) { xpMaxBoost = other.xpMaxBoost; modified = true; if (xpMaxBoost > 0) sendAddMessage(mage, "wand.upgraded_property", getLevelString(messages, "wand.mana_boost", xpMaxBoost)); }
+		if (other.costReduction > costReduction) { costReduction = other.costReduction; modified = true; if (costReduction > 0) sendAddMessage(mage, "upgraded_property", getLevelString(messages, "wand.cost_reduction", costReduction)); }
+		if (other.power > power) { power = other.power; modified = true; if (power > 0) sendAddMessage(mage, "upgraded_property", getLevelString(messages, "wand.power", power)); }
+		if (other.damageReduction > damageReduction) { damageReduction = other.damageReduction; modified = true; if (damageReduction > 0) sendAddMessage(mage, "upgraded_property", getLevelString(messages, "wand.protection", damageReduction)); }
+		if (other.damageReductionPhysical > damageReductionPhysical) { damageReductionPhysical = other.damageReductionPhysical; modified = true; if (damageReductionPhysical > 0) sendAddMessage(mage, "upgraded_property", getLevelString(messages, "wand.protection_physical", damageReductionPhysical)); }
+		if (other.damageReductionProjectiles > damageReductionProjectiles) { damageReductionProjectiles = other.damageReductionProjectiles; modified = true; if (damageReductionProjectiles > 0) sendAddMessage(mage, "upgraded_property", getLevelString(messages, "wand.protection_projectile", damageReductionProjectiles)); }
+		if (other.damageReductionFalling > damageReductionFalling) { damageReductionFalling = other.damageReductionFalling; modified = true; if (damageReductionFalling > 0) sendAddMessage(mage, "upgraded_property", getLevelString(messages, "wand.protection_fall", damageReductionFalling)); }
+		if (other.damageReductionFire > damageReductionFire) { damageReductionFire = other.damageReductionFire; modified = true; if (damageReductionFire > 0) sendAddMessage(mage, "upgraded_property", getLevelString(messages, "wand.protection_fire", damageReductionFire)); }
+		if (other.damageReductionExplosions > damageReductionExplosions) { damageReductionExplosions = other.damageReductionExplosions; modified = true; if (damageReductionExplosions > 0) sendAddMessage(mage, "upgraded_property", getLevelString(messages, "wand.protection_blast", damageReductionExplosions)); }
+        if (other.xpRegenerationBoost > xpRegenerationBoost) { xpRegenerationBoost = other.xpRegenerationBoost; modified = true; if (xpRegenerationBoost > 0) sendAddMessage(mage, "upgraded_property", getLevelString(messages, "wand.mana_regeneration_boost", xpRegenerationBoost)); }
+        if (other.xpMaxBoost > xpMaxBoost) { xpMaxBoost = other.xpMaxBoost; modified = true; if (xpMaxBoost > 0) sendAddMessage(mage, "upgraded_property", getLevelString(messages, "wand.mana_boost", xpMaxBoost)); }
 
         boolean needsInventoryUpdate = false;
 		if (other.hotbars.size() > hotbars.size()) {
@@ -2519,7 +2518,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
                 needsInventoryUpdate = true;
 				modified = true;
                 if (getMode() == WandMode.INVENTORY) {
-                    sendAddMessage(mage, "wand.hotbar_added", Integer.toString(newCount));
+					sendAddMessage(mage, "hotbar_added", Integer.toString(newCount));
                 }
 			}
 		}
@@ -2673,9 +2672,9 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 			xpMax = 0;
 			xp = 0;
 		} else {
-			if (other.xpRegeneration > xpRegeneration) { xpRegeneration = other.xpRegeneration; modified = true; sendAddMessage(mage, "wand.upgraded_property", getLevelString(messages, "wand.mana_regeneration", xpRegeneration, controller.getMaxManaRegeneration())); }
-            if (other.manaPerDamage > manaPerDamage) { manaPerDamage = other.manaPerDamage; modified = true; sendAddMessage(mage, "wand.upgraded_property", getLevelString(messages, "wand.mana_per_damage", manaPerDamage, controller.getMaxManaRegeneration())); }
-			if (other.xpMax > xpMax) { xpMax = other.xpMax; modified = true; sendAddMessage(mage, "wand.upgraded_property", getLevelString(messages, "wand.mana_amount", xpMax, controller.getMaxMana())); }
+			if (other.xpRegeneration > xpRegeneration) { xpRegeneration = other.xpRegeneration; modified = true; sendAddMessage(mage, "upgraded_property", getLevelString(messages, "wand.mana_regeneration", xpRegeneration, controller.getMaxManaRegeneration())); }
+            if (other.manaPerDamage > manaPerDamage) { manaPerDamage = other.manaPerDamage; modified = true; sendAddMessage(mage, "upgraded_property", getLevelString(messages, "wand.mana_per_damage", manaPerDamage, controller.getMaxManaRegeneration())); }
+			if (other.xpMax > xpMax) { xpMax = other.xpMax; modified = true; sendAddMessage(mage, "upgraded_property", getLevelString(messages, "wand.mana_amount", xpMax, controller.getMaxMana())); }
 			if (other.xp > xp) {
                 float previousXP = xp;
                 xp = Math.min(xpMax, other.xp);
