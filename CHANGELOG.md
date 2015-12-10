@@ -2,6 +2,7 @@
 
 ## 5.5
 
+ - Building against 1.8.8 now- plugin may not function properly in older versions of Spigot.
  - Add options for relative effect locations (Thanks, SexyToad!)
  - Add "track_range" CustomProjectile parameter, for projectiles that track the player's cursor at a fixed range (Thanks again, SexyToad!)
  - Add Railgun spell, ability for CustomProjectile to hit multiple targets  
