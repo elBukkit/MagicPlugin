@@ -6708,7 +6708,6 @@ sticky:
         cast:
         - class: CustomProjectile
           actions:
-          - class: Delay
           - class: PlayEffects
             effects: explode
           - class: AreaOfEffect
@@ -6743,8 +6742,8 @@ sticky:
            effectlib:
              class: SphereEffect
              particle: redstone
-             color: "FFA500"
-             duration: $delay
+             color: "FF0000"
+             duration: $attach_duration
              radius: 0.3
              particles: 10
         explode:
@@ -6752,7 +6751,7 @@ sticky:
           particle: explosion_huge
           sound: explode
     parameters:
-        target: block
+        target: other
         hitbox: true
         allow_max_range: true
         velocity: 20
@@ -6764,7 +6763,7 @@ sticky:
         target_breakables: 1
         cooldown: 10000
         target_self_timeout: 2000
-        delay: 5000
+        attach_duration: 5000
         radius: 2
         speed: 1.2
         destructible: destructible

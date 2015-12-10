@@ -6,6 +6,7 @@
  - Add "track_range" CustomProjectile parameter, for projectiles that track the player's cursor at a fixed range (Thanks again, SexyToad!)
  - Add Railgun spell, ability for CustomProjectile to hit multiple targets  
  - Add mathematically-controlled custom projectile velocity (Thanks yet again, SexyToad!)
+ - Sticky Bomb will attach to entities
 
 ## 5.4
 

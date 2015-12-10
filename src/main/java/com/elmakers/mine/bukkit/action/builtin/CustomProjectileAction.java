@@ -35,6 +35,7 @@ public class CustomProjectileAction extends CompoundAction
 
     private int interval;
     private int lifetime;
+    private int attachDuration;
     private int range;
     private double speed;
     private VectorTransform velocityTransform;
@@ -75,6 +76,8 @@ public class CustomProjectileAction extends CompoundAction
     private boolean hasStepEffects;
     private boolean hasBlockMissEffects;
     private boolean hasPreHitEffects;
+    private Vector attachedOffset;
+    private long attachedDeadline;
     private int entityHitCount;
     private Set<UUID> entitiesHit;
     private int blockHitCount;
@@ -103,6 +106,7 @@ public class CustomProjectileAction extends CompoundAction
         targeting.processParameters(parameters);
         interval = parameters.getInt("interval", 30);
         lifetime = parameters.getInt("lifetime", 8000);
+        attachDuration = parameters.getInt("attach_duration", 0);
         reverseDirection = parameters.getBoolean("reverse", false);
         startDistance = parameters.getInt("start", 0);
         range = parameters.getInt("range", 0);
@@ -171,6 +175,8 @@ public class CustomProjectileAction extends CompoundAction
         entityHitCount = 0;
         entitiesHit = null;
         blockHitCount = 0;
+        attachedDeadline = 0;
+        attachedOffset = null;
         missed = false;
     }
 
@@ -193,6 +199,25 @@ public class CustomProjectileAction extends CompoundAction
         long now = System.currentTimeMillis();
         if (now < nextUpdate)
         {
+            return SpellResult.PENDING;
+        }
+        if (attachedDeadline > 0)
+        {
+            Entity targetEntity = actionContext.getTargetEntity();
+            if (attachedOffset != null && targetEntity != null)
+            {
+                Location targetLocation = targetEntity.getLocation();
+                targetLocation.add(attachedOffset);
+                actionContext.setTargetLocation(targetLocation);
+                if (effectLocation != null)
+                {
+                    effectLocation.updateFrom(targetLocation);
+                }
+            }
+            if (now > attachedDeadline)
+            {
+                return finishAttach();
+            }
             return SpellResult.PENDING;
         }
         if (now > deadline)
@@ -508,12 +533,40 @@ public class CustomProjectileAction extends CompoundAction
         return hit();
     }
 
-    protected SpellResult hit() {
+    protected SpellResult attach() {
+        attachedDeadline = System.currentTimeMillis() + attachDuration;
+        Entity targetEntity = actionContext == null ? null : actionContext.getTargetEntity();
+        Location targetLocation = actionContext == null ? null : actionContext.getTargetLocation();
+        if (targetEntity != null && targetLocation != null)
+        {
+            attachedOffset = targetLocation.toVector().subtract(targetEntity.getLocation().toVector());
+        }
+        actionContext.playEffects(hitEffectKey);
+
+        org.bukkit.Bukkit.getLogger().info("ATTACHED WITH " + attachedOffset);
+        return SpellResult.PENDING;
+    }
+
+    protected SpellResult finishAttach() {
+        attachedDeadline = 0;
+        org.bukkit.Bukkit.getLogger().info("Finishing attach, canceling " + activeProjectileEffects.size() + " effects");
+        finishEffects();
+        return startActions();
+    }
+
+    protected void finishEffects() {
         if (activeProjectileEffects != null) {
             for (EffectPlay play : activeProjectileEffects) {
                 play.cancel();
             }
         }
+    }
+
+    protected SpellResult hit() {
+        if (attachDuration > 0) {
+            return attach();
+        }
+        finishEffects();
         if (actionContext == null) {
             return SpellResult.NO_ACTION;
         }
