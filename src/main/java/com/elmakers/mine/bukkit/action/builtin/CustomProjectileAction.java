@@ -542,14 +542,11 @@ public class CustomProjectileAction extends CompoundAction
             attachedOffset = targetLocation.toVector().subtract(targetEntity.getLocation().toVector());
         }
         actionContext.playEffects(hitEffectKey);
-
-        org.bukkit.Bukkit.getLogger().info("ATTACHED WITH " + attachedOffset);
         return SpellResult.PENDING;
     }
 
     protected SpellResult finishAttach() {
         attachedDeadline = 0;
-        org.bukkit.Bukkit.getLogger().info("Finishing attach, canceling " + activeProjectileEffects.size() + " effects");
         finishEffects();
         return startActions();
     }
