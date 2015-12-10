@@ -1763,7 +1763,7 @@ public class MagicController implements MageController {
                     public void run() {
                         synchronized (saveLock) {
                             for (MageData mageData : saveMages) {
-                                mageDataStore.save(mageData);
+                                mageDataStore.save(mageData, null);
                             }
                             for (YamlDataFile config : saveData) {
                                 config.save();
@@ -1775,7 +1775,7 @@ public class MagicController implements MageController {
             } else {
                 synchronized (saveLock) {
                     for (MageData mageData : saveMages) {
-                        mageDataStore.save(mageData);
+                        mageDataStore.save(mageData, null);
                     }
                     for (YamlDataFile config : saveData) {
                         config.save();
@@ -2615,7 +2615,7 @@ public class MagicController implements MageController {
         playerQuit(mage, null);
     }
 
-    protected void playerQuit(Mage mage, Runnable callback) {
+    protected void playerQuit(Mage mage, MageDataCallback callback) {
 
 		// Make sure they get their portraits re-rendered on relogin.
         maps.resend(mage.getName());
@@ -2651,7 +2651,7 @@ public class MagicController implements MageController {
         }
         else if (callback != null)
         {
-            callback.run();
+            callback.run(null);
         }
 	}
 
@@ -2660,15 +2660,15 @@ public class MagicController implements MageController {
         saveMage(mage, asynchronous, null);
     }
 
-    public void saveMage(Mage mage, boolean asynchronous, final Runnable callback) {
+    public void saveMage(Mage mage, boolean asynchronous, final MageDataCallback callback) {
         saveMage(mage, asynchronous, null, false);
     }
 
-    public void saveMage(Mage mage, boolean asynchronous, final Runnable callback, boolean wandInventoryOpen)
+    public void saveMage(Mage mage, boolean asynchronous, final MageDataCallback callback, boolean wandInventoryOpen)
     {
         if (!savePlayerData) {
             if (callback != null) {
-                callback.run();
+                callback.run(null);
             }
             return;
         }
@@ -2684,10 +2684,7 @@ public class MagicController implements MageController {
                     public void run() {
                         synchronized (saveLock) {
                             try {
-                                mageDataStore.save(mageData);
-                                if (callback != null) {
-                                    Bukkit.getScheduler().runTaskLater(plugin, callback, 1);
-                                }
+                                mageDataStore.save(mageData, callback);
                             } catch (Exception ex) {
                                 ex.printStackTrace();
                             }
@@ -2697,10 +2694,7 @@ public class MagicController implements MageController {
             } else {
                 synchronized (saveLock) {
                     try {
-                        mageDataStore.save(mageData);
-                        if (callback != null) {
-                            callback.run();
-                        }
+                        mageDataStore.save(mageData, callback);
                     } catch (Exception ex) {
                         ex.printStackTrace();
                     }
@@ -3989,14 +3983,19 @@ public Set<Material> getMaterialSet(String name)
     }
 
     @Override
-    public void sendPlayerToServer(Player player, String server) {
-        ChangeServerTask change = new ChangeServerTask(plugin, player, server);
+    public void sendPlayerToServer(final Player player, final String server) {
+        MageDataCallback callback = new MageDataCallback() {
+            @Override
+            public void run(MageData data) {
+                Bukkit.getScheduler().runTaskLater(plugin, new ChangeServerTask(plugin, player, server), 1);
+            }
+        };
         info("Moving " + player.getName() + " to server " + server, 1);
         Mage mage = getRegisteredMage(player);
         if (mage != null) {
-            playerQuit(mage, change);
+            playerQuit(mage, callback);
         } else {
-            change.run();
+            callback.run(null);
         }
     }
 
@@ -4060,9 +4059,9 @@ public Set<Material> getMaterialSet(String name)
     public void deleteMage(final String id) {
         Mage mage = getRegisteredMage(id);
         if (mage != null) {
-            playerQuit(mage, new Runnable() {
+            playerQuit(mage, new MageDataCallback() {
                 @Override
-                public void run() {
+                public void run(MageData data) {
                     info("Deleted player id " + id);
                     mageDataStore.delete(id);
                 }

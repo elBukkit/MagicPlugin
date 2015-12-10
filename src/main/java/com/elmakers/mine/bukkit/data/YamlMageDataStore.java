@@ -30,11 +30,14 @@ public class YamlMageDataStore extends ConfigurationMageDataStore {
     }
 
     @Override
-    public void save(MageData mage) {
+    public void save(MageData mage, MageDataCallback callback) {
         File playerData = new File(playerDataFolder, mage.getId() + ".dat");
         YamlDataFile saveFile = new YamlDataFile(controller.getLogger(), playerData);
         save(mage, saveFile);
         saveFile.save();
+        if (callback != null) {
+            callback.run(mage);
+        }
     }
 
     @Override
@@ -45,7 +48,9 @@ public class YamlMageDataStore extends ConfigurationMageDataStore {
         }
         YamlConfiguration saveFile = YamlConfiguration.loadConfiguration(playerFile);
         MageData data = load(id, saveFile);
-        callback.run(data);
+        if (callback != null) {
+            callback.run(data);
+        }
     }
 
     @Override
