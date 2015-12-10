@@ -22,13 +22,18 @@ public class ArmorStandProjectileAction extends CustomProjectileAction {
     private boolean smallArmorStand = false;
     private boolean armorStandMarker = false;
     private boolean armorStandInvisible = false;
+    private boolean armorStandGravity = false;
     private boolean noTarget = true;
+    private boolean doTeleport = false;
+    private boolean doVelocity = false;
+    private boolean orient = false;
     private ItemStack heldItem = null;
     private ItemStack helmetItem = null;
     private ItemStack chestplateItem = null;
     private ItemStack leggingsItem = null;
     private ItemStack bootsItem = null;
     private Vector armorStandOffset;
+    private Vector velocityOffset;
     private CreatureSpawnEvent.SpawnReason armorStandSpawnReason = CreatureSpawnEvent.SpawnReason.CUSTOM;
     private VectorTransform leftArmTransform;
     private VectorTransform rightArmTransform;
@@ -69,8 +74,13 @@ public class ArmorStandProjectileAction extends CustomProjectileAction {
 
         armorStandMarker = parameters.getBoolean("armor_stand_marker", true);
         armorStandInvisible = parameters.getBoolean("armor_stand_invisible", true);
+        armorStandGravity = parameters.getBoolean("armor_stand_gravity", true);
         smallArmorStand = parameters.getBoolean("armor_stand_small", false);
+        doVelocity = parameters.getBoolean("apply_velocity", true);
+        doTeleport = parameters.getBoolean("teleport", true);
         noTarget = parameters.getBoolean("no_target", true);
+        orient = parameters.getBoolean("orient", true);
+        velocityOffset = ConfigurationUtils.getVector(parameters, "velocity_offset");
         armorStandOffset = ConfigurationUtils.getVector(parameters, "armor_stand_offset");
         MaterialAndData itemType = ConfigurationUtils.getMaterialAndData(parameters, "held_item");
         if (itemType != null) {
@@ -121,14 +131,16 @@ public class ArmorStandProjectileAction extends CustomProjectileAction {
         if (armorStandMarker) {
             CompatibilityUtils.setMarker(armorStand, true);
         }
-        CompatibilityUtils.setGravity(armorStand, false);
-        CompatibilityUtils.setDisabledSlots(armorStand, 2039552);
+        if (!armorStandGravity) {
+            CompatibilityUtils.setGravity(armorStand, false);
+        }
         if (smallArmorStand) {
             CompatibilityUtils.setSmall(armorStand, true);
         }
         if (noTarget) {
             armorStand.setMetadata("notarget", new FixedMetadataValue(controller.getPlugin(), true));
         }
+        CompatibilityUtils.setDisabledSlots(armorStand, 2039552);
         CompatibilityUtils.addToWorld(location.getWorld(), armorStand, armorStandSpawnReason);
 
         return super.start(context);
@@ -138,10 +150,26 @@ public class ArmorStandProjectileAction extends CustomProjectileAction {
     public SpellResult step(CastContext context) {
         SpellResult result = super.step(context);
         Location target = actionContext.getTargetLocation();
+
+        // TODO: armorStandOffset and velocityOffset should be made relative
         if (armorStandOffset != null) {
             target = target.clone().add(armorStandOffset);
         }
-        armorStand.teleport(target);
+        if (doVelocity) {
+            Vector velocity = this.velocity.clone().multiply(distanceTravelledThisTick);
+            if (velocityOffset != null) {
+                velocity = velocity.add(velocityOffset);
+            }
+            armorStand.setVelocity(velocity);
+        }
+        if (doTeleport) {
+            if (!orient) {
+                Location currentLocation = armorStand.getLocation();
+                target.setYaw(currentLocation.getYaw());
+                target.setPitch(currentLocation.getPitch());
+            }
+            armorStand.teleport(target);
+        }
         if (leftArmTransform != null) {
             Vector direction = leftArmTransform.get(launchLocation, flightTime);
             armorStand.setLeftArmPose(new EulerAngle(direction.getX(), direction.getY(), direction.getZ()));

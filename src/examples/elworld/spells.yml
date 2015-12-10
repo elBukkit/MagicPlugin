@@ -517,13 +517,19 @@ boomerang:
         entity_damage: 2
         cooldown: 0
         held_item: diamond_sword
+        # This won't do anything with teleport: false
+        # But it doesn't seem to do anything either way? Whhuutttt?
         armor_stand_offset: 0,30,0
+        # Turns off teleporting the entity every tick
+        teleport: true
+        # Turns off re-orienting, we don't want this since we're animating the armor
+        orient: false
+        # This is supposed to account for gravity, maybe not working
+        apply_velocity: true
+        velocity_offset: 0,0.05,0
+        armor_stand_gravity: true
         right_arm_transform:
-            x:
-              class: dSin
-              a: 0.5
-              b: 1
-              c: 0
+            x: "6.28*sin(0.001*t)"
             y: 0
             z: 0
 

@@ -67,6 +67,8 @@ public class CustomProjectileAction extends CompoundAction
     protected Location launchLocation;
     protected long flightTime;
     protected double distanceTravelled;
+    protected double distanceTravelledThisTick;
+    protected Vector velocity = null;
 
     private double effectDistanceTravelled;
     private boolean hasTickEffects;
@@ -81,7 +83,6 @@ public class CustomProjectileAction extends CompoundAction
     private long nextUpdate;
     private long deadline;
     private long targetSelfDeadline;
-    private Vector velocity = null;
     private DynamicLocation effectLocation = null;
     private Collection<EffectPlay> activeProjectileEffects;
 
@@ -361,12 +362,12 @@ public class CustomProjectileAction extends CompoundAction
         targeting.start(projectileLocation);
 
         // Advance targeting to find Entity or Block
-        double distance = speed * delta / 1000;
+        distanceTravelledThisTick = speed * delta / 1000;
         if (range > 0) {
-            distance = Math.min(distance, range - distanceTravelled);
+            distanceTravelledThisTick = Math.min(distanceTravelledThisTick, range - distanceTravelled);
         }
-        context.addWork((int)Math.ceil(distance));
-        Target target = targeting.target(actionContext, distance);
+        context.addWork((int)Math.ceil(distanceTravelledThisTick));
+        Target target = targeting.target(actionContext, distanceTravelledThisTick);
         Location targetLocation;
         Targeting.TargetingResult targetingResult = targeting.getResult();
         if (targetingResult == Targeting.TargetingResult.MISS) {
@@ -375,9 +376,9 @@ public class CustomProjectileAction extends CompoundAction
                 actionContext.playEffects("blockmiss");
             }
 
-            targetLocation = projectileLocation.clone().add(velocity.clone().multiply(distance));
+            targetLocation = projectileLocation.clone().add(velocity.clone().multiply(distanceTravelledThisTick));
             context.getMage().sendDebugMessage(ChatColor.DARK_BLUE + "Projectile miss: " + ChatColor.DARK_PURPLE
-                    + " at " + targetLocation.getBlock().getType() + " : " + targetLocation.toVector() + " from range of " + distance + " over time " + delta, 7);
+                    + " at " + targetLocation.getBlock().getType() + " : " + targetLocation.toVector() + " from range of " + distanceTravelledThisTick + " over time " + delta, 7);
         } else {
             if (hasPreHitEffects) {
                 actionContext.playEffects("prehit");
@@ -393,11 +394,11 @@ public class CustomProjectileAction extends CompoundAction
                 + ChatColor.BLUE + " at " + ChatColor.GOLD + targetLocation.getBlock().getType()
                 + ChatColor.BLUE + " from " + ChatColor.GRAY + projectileLocation.getBlock() + ChatColor.BLUE + " to "
                 + ChatColor.GRAY + targetLocation.toVector() + ChatColor.BLUE
-                + " from range of " + ChatColor.GOLD + distance + ChatColor.BLUE + " over time " + ChatColor.DARK_PURPLE + delta, 4);
-            distance = targetLocation.distance(projectileLocation);
+                + " from range of " + ChatColor.GOLD + distanceTravelledThisTick + ChatColor.BLUE + " over time " + ChatColor.DARK_PURPLE + delta, 4);
+            distanceTravelledThisTick = targetLocation.distance(projectileLocation);
         }
-        distanceTravelled += distance;
-        effectDistanceTravelled += distance;
+        distanceTravelled += distanceTravelledThisTick;
+        effectDistanceTravelled += distanceTravelledThisTick;
 
         // Max Height check
         int y = targetLocation.getBlockY();
