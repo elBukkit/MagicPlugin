@@ -106,8 +106,8 @@ public class ArmorStandProjectileAction extends CustomProjectileAction {
     public SpellResult start(CastContext context) {
         Mage mage = context.getMage();
         MageController controller = context.getController();
-        armorStand = CompatibilityUtils.spawnArmorStand(mage.getEyeLocation());
         Location location = mage.getEyeLocation();
+        armorStand = CompatibilityUtils.spawnArmorStand(location);
         CompatibilityUtils.setYawPitch(armorStand, location.getYaw(), location.getPitch());
         armorStand.setItemInHand(heldItem);
         armorStand.setHelmet(helmetItem);

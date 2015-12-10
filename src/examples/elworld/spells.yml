@@ -452,6 +452,30 @@ relative:
         entity_damage: 2
         cooldown: 0
 
+throwsword:
+    icon: diamond_sword
+    actions:
+        cast:
+        - class: ArmorStandProjectile
+          actions:
+          - class: Damage
+    effects:
+        projectile:
+        -   class: EffectSingle
+            effectlib:
+                class: SphereEffect
+                particle: flame
+                particles: 4
+                radius: 0.2
+                duration: 30000
+    parameters:
+      armor_stand_invisible: true
+      velocity: 10
+      held_item: diamond_sword
+      armor_stand_offset: 0,4,0
+      armor_stand_invisible: false
+      armor_stand_marker: false
+
 boomerang:
     icon: gold_sword
     actions:
@@ -493,7 +517,7 @@ boomerang:
         entity_damage: 2
         cooldown: 0
         held_item: diamond_sword
-        armor_stand_offset: 0,2,0
+        armor_stand_offset: 0,30,0
         right_arm_transform:
             x:
               class: dSin
