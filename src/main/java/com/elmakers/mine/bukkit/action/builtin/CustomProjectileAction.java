@@ -101,6 +101,12 @@ public class CustomProjectileAction extends CompoundAction
     }
 
     @Override
+    public void finish(CastContext context) {
+        super.finish(context);
+        finishEffects();
+    }
+
+    @Override
     public void prepare(CastContext context, ConfigurationSection parameters) {
         super.prepare(context, parameters);
         targeting.processParameters(parameters);
