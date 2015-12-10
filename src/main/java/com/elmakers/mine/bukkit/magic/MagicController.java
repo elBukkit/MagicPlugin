@@ -195,7 +195,7 @@ public class MagicController implements MageController {
                             }
                         }
                     });
-                } else if (entity == null || saveNonPlayerMages) {
+                } else if (saveNonPlayerMages) {
                     info("Loading mage data for " + mage.getName() + " (" + mage.getId() + ") synchronously");
                     synchronized (saveLock) {
                         try {
