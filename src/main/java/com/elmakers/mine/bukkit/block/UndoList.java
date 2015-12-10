@@ -425,6 +425,11 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
         if (undone) return;
         undone = true;
 
+        // This is a hack to make forced-undo happen instantly
+        if (undoEntities) {
+            this.speed = 0;
+        }
+
         undoEntityEffects = undoEntityEffects || undoEntities;
         unlink();
 
