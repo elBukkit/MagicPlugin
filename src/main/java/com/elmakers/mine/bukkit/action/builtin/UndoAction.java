@@ -16,10 +16,12 @@ public class UndoAction extends BaseSpellAction
 {
 	private String undoListName;
     private int timeout;
+    private int blockTimeout;
     private String targetSpellKey;
     private boolean targetSelf;
     private boolean targetDown;
     private boolean targetBlocks;
+    private boolean targetOtherBlocks;
     private boolean cancel;
     private String adminPermission;
 
@@ -28,11 +30,13 @@ public class UndoAction extends BaseSpellAction
     {
         super.prepare(context, parameters);
         timeout = parameters.getInt("target_timeout", 0);
+        blockTimeout = parameters.getInt("target_block_timeout", timeout);
 
         // TODO: Use a ContextAction instead?
         targetSelf = parameters.getBoolean("target_caster", false);
         targetDown = parameters.getBoolean("target_down", false);
         targetBlocks = parameters.getBoolean("target_blocks", true);
+        targetOtherBlocks = parameters.getBoolean("target_other_blocks", true);
         cancel = parameters.getBoolean("cancel", true);
         targetSpellKey = parameters.getString("target_spell", null);
         adminPermission = parameters.getString("admin_permission", null);
@@ -83,11 +87,12 @@ public class UndoAction extends BaseSpellAction
         Mage mage = context.getMage();
 		if (targetBlock != null)
 		{
-            boolean undoAny = adminPermission != null && context.getController().hasPermission(context.getMage().getCommandSender(), adminPermission, false);
+            boolean undoAny = targetOtherBlocks;
+            undoAny = undoAny || (adminPermission != null && context.getController().hasPermission(context.getMage().getCommandSender(), adminPermission, false));
             undoAny = undoAny || context.getMage().isSuperPowered();
             if (undoAny)
 			{
-				UndoList undid = controller.undoRecent(targetBlock, timeout);
+				UndoList undid = controller.undoRecent(targetBlock, blockTimeout);
 				if (undid != null) 
 				{
 					Mage targetMage = undid.getOwner();

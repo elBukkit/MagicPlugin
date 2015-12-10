@@ -4768,8 +4768,10 @@ counterspell:
         allow_max_range: false
         target: other
         target_type: LivingEntity
-        target_blocks: false
+        target_blocks: true
+        target_other_blocks: true
         target_timeout: 4000
+        target_block_timeout: 10000
         target_breakables: 3
         cancel: false
         range: 50
