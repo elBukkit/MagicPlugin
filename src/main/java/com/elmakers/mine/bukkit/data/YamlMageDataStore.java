@@ -1,6 +1,7 @@
 package com.elmakers.mine.bukkit.data;
 
 import com.elmakers.mine.bukkit.api.data.MageData;
+import com.elmakers.mine.bukkit.api.data.MageDataCallback;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.utilities.YamlDataFile;
 import org.apache.commons.multiverse.io.FilenameUtils;
@@ -37,11 +38,14 @@ public class YamlMageDataStore extends ConfigurationMageDataStore {
     }
 
     @Override
-    public MageData load(String id) {
+    public void load(String id, MageDataCallback callback) {
         final File playerFile = new File(playerDataFolder, id + ".dat");
-        if (!playerFile.exists()) return null;
+        if (!playerFile.exists()) {
+            callback.run(null);
+        }
         YamlConfiguration saveFile = YamlConfiguration.loadConfiguration(playerFile);
-        return load(id, saveFile);
+        MageData data = load(id, saveFile);
+        callback.run(data);
     }
 
     @Override

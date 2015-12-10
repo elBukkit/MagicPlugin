@@ -5,6 +5,7 @@ import com.elmakers.mine.bukkit.api.block.CurrencyItem;
 import com.elmakers.mine.bukkit.api.block.Schematic;
 import com.elmakers.mine.bukkit.api.block.UndoList;
 import com.elmakers.mine.bukkit.api.data.MageData;
+import com.elmakers.mine.bukkit.api.data.MageDataCallback;
 import com.elmakers.mine.bukkit.api.data.MageDataStore;
 import com.elmakers.mine.bukkit.api.data.SpellData;
 import com.elmakers.mine.bukkit.api.event.SaveEvent;
@@ -186,8 +187,12 @@ public class MagicController implements MageController {
                             synchronized (saveLock) {
                                 info("Loading mage data for " + mage.getName() + " (" + mage.getId() + ")");
                                 try {
-                                    MageData playerData = mageDataStore.load(mage.getId());
-                                    mage.load(playerData);
+                                    mageDataStore.load(mage.getId(), new MageDataCallback() {
+                                        @Override
+                                        public void run(MageData data) {
+                                            mage.load(data);
+                                        }
+                                    });
                                 } catch (Exception ex) {
                                     getLogger().warning("Failed to load mage data for " + mage.getName() + " (" + mage.getId() + ")");
                                     ex.printStackTrace();
@@ -199,8 +204,12 @@ public class MagicController implements MageController {
                     info("Loading mage data for " + mage.getName() + " (" + mage.getId() + ") synchronously");
                     synchronized (saveLock) {
                         try {
-                            MageData playerData = mageDataStore.load(mage.getId());
-                            mage.load(playerData);
+                            mageDataStore.load(mage.getId(), new MageDataCallback() {
+                                @Override
+                                public void run(MageData data) {
+                                    mage.load(data);
+                                }
+                            });
                         } catch (Exception ex) {
                             getLogger().warning("Failed to load mage data for " + mage.getName() + " (" + mage.getId() + ")");
                             ex.printStackTrace();
