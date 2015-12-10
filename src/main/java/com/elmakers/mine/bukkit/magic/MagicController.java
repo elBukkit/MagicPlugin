@@ -1747,30 +1747,32 @@ public class MagicController implements MageController {
 		saveLostWands(saveData);
 		saveAutomata(saveData);
 
-        if (asynchronous) {
-            Bukkit.getScheduler().runTaskAsynchronously(plugin, new Runnable() {
-                @Override
-                public void run() {
-                    synchronized (saveLock) {
-                        for (MageData mageData : saveMages) {
-                            mageDataStore.save(mageData);
+        if (mageDataStore != null) {
+            if (asynchronous) {
+                Bukkit.getScheduler().runTaskAsynchronously(plugin, new Runnable() {
+                    @Override
+                    public void run() {
+                        synchronized (saveLock) {
+                            for (MageData mageData : saveMages) {
+                                mageDataStore.save(mageData);
+                            }
+                            for (YamlDataFile config : saveData) {
+                                config.save();
+                            }
+                            info("Finished saving");
                         }
-                        for (YamlDataFile config : saveData) {
-                            config.save();
-                        }
-                        info("Finished saving");
                     }
+                });
+            } else {
+                synchronized (saveLock) {
+                    for (MageData mageData : saveMages) {
+                        mageDataStore.save(mageData);
+                    }
+                    for (YamlDataFile config : saveData) {
+                        config.save();
+                    }
+                    info("Finished saving");
                 }
-            });
-        } else {
-            synchronized (saveLock) {
-                for (MageData mageData : saveMages) {
-                    mageDataStore.save(mageData);
-                }
-                for (YamlDataFile config : saveData) {
-                    config.save();
-                }
-                info("Finished saving");
             }
         }
 
@@ -2663,7 +2665,7 @@ public class MagicController implements MageController {
         }
         info("Saving player data for " + mage.getName() + " (" + mage.getId() + ") " + (asynchronous ? "" : " synchronously"));
         final MageData mageData = new MageData(mage.getId());
-        if (mage.save(mageData)) {
+        if (mageDataStore != null && mage.save(mageData)) {
             if (wandInventoryOpen) {
                 mageData.setOpenWand(true);
             }
