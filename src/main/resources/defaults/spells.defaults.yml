@@ -944,7 +944,7 @@ reflect:
         check_destructible: true
         brushcolor: true
         undo: 800
-        cooldown: 2000
+        cooldown: 5000
         breakable: 3
         reflect_chance: 0.25
         bypass_confusion: true
@@ -5463,7 +5463,7 @@ absorb:
         target: block
         allow_max_range: false
         range: 64
-        transparent: transparent
+        transparent: transparent_to_construction
     costs:
         mana: 30
 

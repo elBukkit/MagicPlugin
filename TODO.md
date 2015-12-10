@@ -1,5 +1,6 @@
 # TODO
 
+ - Alter *really* needs an update!
  - Spells will run partially but then not undo if the player's batch queue is full?
  - Effects don't cancel if you switch away from your wand? Whip stops moving? Wha?
  - Fix block targeting cast messages
