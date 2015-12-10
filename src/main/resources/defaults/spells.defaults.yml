@@ -4765,6 +4765,7 @@ counterspell:
            firework: star
     parameters:
         hitbox: false
+        transparent: air
         allow_max_range: false
         target: other
         target_type: LivingEntity

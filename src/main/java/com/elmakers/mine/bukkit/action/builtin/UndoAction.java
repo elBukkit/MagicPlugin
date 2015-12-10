@@ -8,6 +8,7 @@ import com.elmakers.mine.bukkit.api.block.UndoQueue;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
+import org.bukkit.ChatColor;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
@@ -36,7 +37,7 @@ public class UndoAction extends BaseSpellAction
         targetSelf = parameters.getBoolean("target_caster", false);
         targetDown = parameters.getBoolean("target_down", false);
         targetBlocks = parameters.getBoolean("target_blocks", true);
-        targetOtherBlocks = parameters.getBoolean("target_other_blocks", true);
+        targetOtherBlocks = parameters.getBoolean("target_other_blocks", false);
         cancel = parameters.getBoolean("cancel", true);
         targetSpellKey = parameters.getString("target_spell", null);
         adminPermission = parameters.getString("admin_permission", null);
@@ -48,8 +49,8 @@ public class UndoAction extends BaseSpellAction
 		Entity targetEntity = context.getTargetEntity();
 
         SpellResult result = SpellResult.CAST;
+        Mage mage = context.getMage();
         if (targetSelf) {
-            Mage mage = context.getMage();
             targetEntity = context.getEntity();
             context.setTargetName(mage.getName());
             result = SpellResult.ALTERNATE_UP;
@@ -58,6 +59,10 @@ public class UndoAction extends BaseSpellAction
 		if (targetEntity != null && controller.isMage(targetEntity))
 		{
 			Mage targetMage = controller.getMage(targetEntity);
+            mage.sendDebugMessage(ChatColor.AQUA + "Undo checking last spell of " +
+                    ChatColor.GOLD + targetMage + ChatColor.AQUA + " with timeout of " +
+                    ChatColor.YELLOW + timeout + ChatColor.AQUA + " for targe spellKey" +
+                    ChatColor.BLUE + targetSpellKey, 2);
 
             Batch batch = targetMage.cancelPending(targetSpellKey);
             if (batch != null) {
@@ -84,25 +89,33 @@ public class UndoAction extends BaseSpellAction
         if (targetDown) {
             targetBlock = context.getLocation().getBlock();
         }
-        Mage mage = context.getMage();
 		if (targetBlock != null)
 		{
             boolean undoAny = targetOtherBlocks;
             undoAny = undoAny || (adminPermission != null && context.getController().hasPermission(context.getMage().getCommandSender(), adminPermission, false));
-            undoAny = undoAny || context.getMage().isSuperPowered();
+            undoAny = undoAny || mage.isSuperPowered();
             if (undoAny)
 			{
+                mage.sendDebugMessage(ChatColor.AQUA + "Looking for recent cast at " +
+                        ChatColor.GOLD + targetBlock + ChatColor.AQUA + " with timeout of " +
+                        ChatColor.YELLOW + blockTimeout, 2);
+
 				UndoList undid = controller.undoRecent(targetBlock, blockTimeout);
 				if (undid != null) 
 				{
 					Mage targetMage = undid.getOwner();
 					undoListName = undid.getName();
-					context.setTargetName(targetMage.getName());
+                    if (targetMage != null) {
+                        context.setTargetName(targetMage.getName());
+                    }
 					return result;
 				}
 			}
 			else
 			{
+                mage.sendDebugMessage(ChatColor.AQUA + "Looking for recent self-cast at " +
+                        ChatColor.GOLD + targetBlock, 2);
+
                 context.setTargetName(mage.getName());
 				UndoList undoList = mage.undo(targetBlock);
                 if (undoList != null) {
