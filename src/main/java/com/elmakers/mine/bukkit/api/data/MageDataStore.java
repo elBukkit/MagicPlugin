@@ -20,10 +20,12 @@ public interface MageDataStore {
     /**
      * Save a single Mage
      */
-    void save(MageData mage);
+    void save(MageData mage, MageDataCallback callback);
 
     /**
-     * Save several Mages in a batch
+     * Save several Mages in a batch.
+     *
+     * If the provided callback is non-null, it should be called on completion.
      */
     void save(Collection<MageData> mages);
 
@@ -31,6 +33,8 @@ public interface MageDataStore {
      * Load a single mage by id.
      *
      * If there is no data for this mage, a new empty record should be returned.
+     *
+     * If the provided callback is non-null, it should be called on completion.
      */
     void load(String id, MageDataCallback callback);
 

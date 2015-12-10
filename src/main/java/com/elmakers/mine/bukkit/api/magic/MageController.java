@@ -284,8 +284,8 @@ public interface MageController {
     public void serialize(ConfigurationSection root, String key, ItemStack item);
 
     public boolean isLocked(Block block);
-    public void sendPlayerToServer(Player player, String server);
-    public void warpPlayerToServer(Player player, String server, String warp);
+    public void sendPlayerToServer(final Player player, final String server);
+    public void warpPlayerToServer(final Player player, final String server, final String warp);
     public boolean spawnPhysicsBlock(Location location, Material material, short data, Vector velocity);
     public boolean isDisguised(Entity entity);
     public boolean isSpellUpgradingEnabled();
