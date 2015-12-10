@@ -888,6 +888,15 @@ public class CompatibilityUtils extends NMSUtils {
         }
     }
 
+    public static void setLocation(Entity entity, double x, double y, double z, float yaw, float pitch) {
+        try {
+            Object handle = getHandle(entity);
+            class_Entity_setLocationMethod.invoke(handle, x, y, z, yaw, pitch);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
     public static void addFlightExemption(Player player, int ticks) {
         try {
             Object handle = getHandle(player);
