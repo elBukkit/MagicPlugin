@@ -513,12 +513,13 @@ boomerang:
     parameters:
         target_type: LivingEntity
         range: 100
+        armor_stand_invisible: false
         lifetime: 10000
         hitbox_size: 0.2
         damage: 1
         entity_damage: 2
         cooldown: 0
-        held_item: diamond_sword
+        right_arm_item: diamond_sword
         # This won't do anything with teleport: false
         # But it doesn't seem to do anything either way? Whhuutttt?
         armor_stand_offset: 0,30,0
@@ -527,9 +528,9 @@ boomerang:
         # Turns off re-orienting, we don't want this since we're animating the armor
         orient: false
         # This is supposed to account for gravity, maybe not working
-        apply_velocity: true
+        apply_velocity: false
         velocity_offset: 0,0.05,0
-        armor_stand_gravity: true
+        armor_stand_gravity: false
         right_arm_transform:
             x: "6.28*sin(0.001*t)"
             y: 0
@@ -608,3 +609,77 @@ equationtest:
           x: "10*sin(0.31416 * t)"
           y: 0
           z: "5*sin(0.62832 * t)"
+
+stoptest:
+    category: FireBending
+    actions:
+        cast:
+        -   class: Parallel
+            actions:
+            -   class: CustomProjectile
+                velocity_transform:
+                    x: 10
+                    y: 0
+                    z: 0
+                actions:
+                -   class: Damage
+                -   class: Stop
+            -   class: CustomProjectile
+                velocity_transform:
+                    x: 1
+                    y: 0
+                    z: 0
+                actions:
+                -   class: Damage
+    effects:
+        projectile:
+        -   class: EffectSingle
+            effectlib:
+                class: SphereEffect
+                particle: flame
+                particles: 20
+                radius: 0.2
+                duration: 30000
+        cast:
+        -   class: EffectSingle
+            location: self
+            use_wand_location: false
+            effectlib:
+                offset: 0,-0.5,0
+                class: SphereEffect
+                particle: smoke_normal
+                particles: 10
+                radius: 1
+                duration: 1
+    parameters:
+        target_type: LivingEntity
+        range: 100
+        lifetime: 10000
+        hitbox_size: 1
+        damage: 1
+        entity_damage: 2
+        cooldown: 0
+
+
+disc:
+    icon: bucket
+    icon_url: http://textures.minecraft.net/texture/8b50be531940368e173db018d2ead9d2cdeec8e39c7a51b681dcad4c4d41d
+    category: engineering
+    worth_sp: 600
+    actions:
+      cast:
+      - class: PlayEffect
+    effects:
+        cast:
+        -  class: EffectTransform
+           particle: block_crack
+           material: redstone_block
+           particle_count: 20
+           particle_offset_x: 1
+           particle_offset_y: 1
+           particle_offset_z: 1
+           iterations: 100
+           position_transform:
+            x: 2 * t
+            y: 2 * cos(t)
+            z: 2 * sin(t * 5)

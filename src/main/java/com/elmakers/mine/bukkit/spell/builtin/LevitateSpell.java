@@ -99,6 +99,8 @@ public class LevitateSpell extends TargetingSpell implements Listener
     private double moveDistance = 0;
     private double sneakMoveDistance = -1;
     private CreatureSpawnEvent.SpawnReason mountSpawnReason = CreatureSpawnEvent.SpawnReason.CUSTOM;
+    private Vector directionOffset = null;
+    private Double directionForceY = null;
 
     private Vector direction = null;
     private boolean grounded = false;
@@ -274,8 +276,14 @@ public class LevitateSpell extends TargetingSpell implements Listener
                 return;
             }
         }
-        Location location = player.getLocation();
-        Vector mageDirection = location.getDirection();
+        Location location = getLocation();
+        Vector mageDirection = getDirection().clone();
+        if (directionForceY != null) {
+            mageDirection.setY(directionForceY);
+        }
+        if (directionOffset != null) {
+            mageDirection.add(directionOffset);
+        }
         boolean sneaking = player.isSneaking() || forceSneak > 0;
         double move = sneakMoveDistance >= 0 && sneaking ? sneakMoveDistance : moveDistance;
         if (direction == null || move <= 0 || grounded) {
@@ -434,6 +442,8 @@ public class LevitateSpell extends TargetingSpell implements Listener
         }
 
         direction = null;
+        directionOffset = ConfigurationUtils.getVector(parameters, "direction_offset");
+        directionForceY = ConfigurationUtils.getDouble(parameters, "direction_y", null);
         flight = parameters.getBoolean("flight", true);
         int checkHeight = parameters.getInt("check_height", 4);
         startDelay = parameters.getInt("start_delay", 0);
