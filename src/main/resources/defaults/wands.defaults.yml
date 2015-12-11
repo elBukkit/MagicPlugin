@@ -1393,8 +1393,8 @@ wizardchestplate:
     keep: true
     xp_max_boost: 0.1
     enchantments:
-      protection_explosions: 4
-      protection_environmental: 5
+      protection_explosions: 2
+      protection_environmental: 1
 
 wizardhelmet:
     icon: chainmail_helmet
@@ -1403,7 +1403,7 @@ wizardhelmet:
     keep: true
     xp_max_boost: 0.1
     enchantments:
-      protection_projectile: 4
+      protection_projectile: 2
 
 wizardleggings:
     icon: chainmail_leggings
@@ -1412,7 +1412,7 @@ wizardleggings:
     keep: true
     xp_max_boost: 0.1
     enchantments:
-      protection_fire: 4
+      protection_fire: 2
 
 wizardboots:
     icon: chainmail_boots

@@ -9,6 +9,7 @@
  - Add Railgun spell, ability for CustomProjectile to hit multiple targets  
  - Add mathematically-controlled custom projectile velocity (Thanks yet again, SexyToad!)
  - Sticky Bomb will attach to entities
+ - Fix apprentice gear (and other non-indestructible items) getting their durability auto-replenished (it wasn't supposed to!)
 
 ## 5.4
 

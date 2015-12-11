@@ -1612,21 +1612,21 @@ wands:
         description: A true wizard's hat
     wizardhelmet:
         name: Wizard's Scarf
-        description: A magical scarf
+        description: Indestructible!
     wizardchestplate:
         name: Wizard's Robes
-        description: Magical robes
+        description: Indestructible!
     wizardleggings:
         name: Wizard's Pants
-        description: Magical pants
+        description: Indestructible!
     wizardboots:
         name: Wizard's Boots
-        description: Magical boots
+        description: Indestructible!
     apprenticehelmet:
         name: Apprentice Scarf
         description: For new wizards
     apprenticechestplate:
-        name: Wizard's Robes
+        name: Apprentice Robes
         description: For new wizards
     apprenticeleggings:
         name: Apprentice Pants

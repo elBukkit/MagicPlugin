@@ -391,6 +391,11 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         if (materialData == null || !materialData.isValid()) return;
 		icon = materialData;
         if (icon != null) {
+			Short durability = null;
+			if (!indestructible && icon.getMaterial().getMaxDurability() > 0)
+			{
+				durability = item.getDurability();
+			}
             if (inactiveIcon == null || mage != null)
             {
                 icon.applyToItem(item);
@@ -399,6 +404,10 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
             {
                 inactiveIcon.applyToItem(item);
             }
+			if (durability != null)
+			{
+				item.setDurability(durability);
+			}
         }
 	}
 	
