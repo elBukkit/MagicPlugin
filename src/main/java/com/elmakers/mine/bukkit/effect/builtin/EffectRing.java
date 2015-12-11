@@ -48,10 +48,13 @@ public class EffectRing extends EffectRepeating {
         for (int i = 0; i < size; i++) {
             double radians = (double)i / size * Math.PI * 2 + startRadians;
             Vector direction = new Vector(Math.cos(radians) * currentRadius, 0, Math.sin(radians) * currentRadius);
-            Location source = origin.clone();
+            Location source = origin;
             Location target = getTarget();
-            source.add(direction);
-            if (target != null) {
+            if (playAtOrigin) {
+                source = source.clone();
+                source.add(direction);
+            }
+            if (target != null && playAtTarget) {
                 target = target.clone();
                 target.add(direction);
             }
