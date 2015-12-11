@@ -386,20 +386,20 @@ public class PlayerController implements Listener {
         }
     }
 
-    @EventHandler
+    @EventHandler(priority=EventPriority.HIGH)
     public void onPlayerJoin(PlayerJoinEvent event)
     {
         // Automatically re-activate mages.
         controller.getMage(event.getPlayer());
     }
 
-    @EventHandler
+    @EventHandler(priority=EventPriority.LOWEST)
     public void onPlayerKick(PlayerKickEvent event)
     {
         handlePlayerQuitEvent(event);
     }
 
-    @EventHandler
+    @EventHandler(priority=EventPriority.LOWEST)
     public void onPlayerQuit(PlayerQuitEvent event)
     {
         handlePlayerQuitEvent(event);
