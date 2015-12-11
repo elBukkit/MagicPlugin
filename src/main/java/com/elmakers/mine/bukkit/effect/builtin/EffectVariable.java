@@ -1,12 +1,15 @@
 package com.elmakers.mine.bukkit.effect.builtin;
 
 import com.elmakers.mine.bukkit.effect.EffectPlayer;
+import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import org.bukkit.Color;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.plugin.Plugin;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Map;
+import java.util.TreeMap;
 
 public class EffectVariable extends EffectPlayer {
 
@@ -29,31 +32,13 @@ public class EffectVariable extends EffectPlayer {
     public void load(Plugin plugin, ConfigurationSection configuration) {
         super.load(plugin, configuration);
 
-        // ... This seems kinda broken. I get a Map here if it's embedded in another section?
-        Object testObject = configuration.get("brightness");
-        if (testObject != null) {
-            if (testObject instanceof Map) {
-                Map<String, List<ConfigurationSection>> dataMap = (Map<String, List<ConfigurationSection>>)testObject;
-                for (Map.Entry<String, List<ConfigurationSection>> entry : dataMap.entrySet()) {
-                    try {
-                        String key = entry.getKey();
-                        double level = Double.parseDouble(key);
-                        MemoryConfiguration brightness = new MemoryConfiguration();
-                        brightness.set(key, entry.getValue());
-                        brightnessMap.put(level, EffectPlayer.loadEffects(plugin, brightness, key));
-                    } catch (Exception ex) {
-                    }
-                }
-            } else {
-                ConfigurationSection brightness = configuration.getConfigurationSection("brightness");
-                Collection<String> keys = brightness.getKeys(false);
-                for (String key : keys) {
-                    try {
-                        double level = Double.parseDouble(key);
-                        brightnessMap.put(level, EffectPlayer.loadEffects(plugin, brightness, key));
-                    } catch (Exception ex) {
-                    }
-                }
+        ConfigurationSection brightness = ConfigurationUtils.getConfigurationSection(configuration, "brightness");
+        Collection<String> keys = brightness.getKeys(false);
+        for (String key : keys) {
+            try {
+                double level = Double.parseDouble(key);
+                brightnessMap.put(level, EffectPlayer.loadEffects(plugin, brightness, key));
+            } catch (Exception ex) {
             }
         }
     }

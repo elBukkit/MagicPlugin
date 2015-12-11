@@ -17,7 +17,7 @@ public class Transforms {
 
     public static Transform loadTransform(ConfigurationSection base, String value) {
         if (base.isConfigurationSection(value)) {
-            return loadTransform(base.getConfigurationSection(value));
+            return loadTransform(ConfigurationUtils.getConfigurationSection(base, value));
         }
         if (base.isDouble(value) || base.isInt(value)) {
             return new ConstantTransform(base.getDouble(value));

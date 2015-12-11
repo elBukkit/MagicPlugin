@@ -120,21 +120,10 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
         this.plugin = plugin;
 
         if (effectLib != null && configuration.contains("effectlib")) {
-            effectLibConfig = configuration.getConfigurationSection("effectlib");
-            // I feel like ConfigurationSection should be smart enough for the above
-            // to work, but it is not.
-            // I suspect this is due to having Maps in Lists. Oh well.
+            effectLibConfig = ConfigurationUtils.getConfigurationSection(configuration, "effectlib");
             if (effectLibConfig == null) {
                 Object rawConfig = configuration.get("effectlib");
-                if (rawConfig instanceof Map) {
-                    effectLibConfig = new MemoryConfiguration();
-                    Map<String, Object> map = (Map<String, Object>)rawConfig;
-                    for (Map.Entry<String, Object> entry : map.entrySet()) {
-                        effectLibConfig.set(entry.getKey(), entry.getValue());
-                    }
-                } else {
-                    plugin.getLogger().warning("Could not load effectlib node of type " + rawConfig.getClass());
-                }
+                plugin.getLogger().warning("Could not load effectlib node of type " + rawConfig.getClass());
             }
         } else {
             effectLibConfig = null;

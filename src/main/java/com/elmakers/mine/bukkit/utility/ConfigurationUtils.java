@@ -284,6 +284,31 @@ public class ConfigurationUtils {
         return addConfigurations(first, second, true);
     }
 
+    public static ConfigurationSection getConfigurationSection(ConfigurationSection base, String key)
+    {
+        Object value = base.get(key);
+        if (value == null) return null;
+
+        if (value instanceof ConfigurationSection)
+        {
+            return (ConfigurationSection)value;
+        }
+
+        if (value instanceof Map)
+        {
+            ConfigurationSection newChild = base.createSection(key);
+            Map<String, Object> map = (Map<String, Object>)value;
+            for (Entry<String, Object> entry : map.entrySet())
+            {
+                newChild.set(entry.getKey(), entry.getValue());
+            }
+            base.set(key, newChild);
+            return newChild;
+        }
+
+        return null;
+    }
+
     public static ConfigurationSection addConfigurations(ConfigurationSection first, ConfigurationSection second, boolean override)
     {
         if (second == null) return first;
@@ -295,25 +320,11 @@ public class ConfigurationUtils {
             Object existingValue = first.get(key);
             if (value instanceof Map)
             {
-                ConfigurationSection newChild = second.createSection(key);
-                Map<String, Object> map = (Map<String, Object>)value;
-                for (Entry<String, Object> entry : map.entrySet())
-                {
-                    newChild.set(entry.getKey(), entry.getValue());
-                }
-                second.set(key, newChild);
-                value = newChild;
+                value = getConfigurationSection(second, key);
             }
             if (existingValue instanceof Map)
             {
-                ConfigurationSection newChild = first.createSection(key);
-                Map<String, Object> map = (Map<String, Object>)value;
-                for (Entry<String, Object> entry : map.entrySet())
-                {
-                    newChild.set(entry.getKey(), entry.getValue());
-                }
-                first.set(key, newChild);
-                existingValue = newChild;
+                existingValue = getConfigurationSection(first, key);
             }
             if (value instanceof ConfigurationSection && (existingValue == null || existingValue instanceof ConfigurationSection)) {
                 ConfigurationSection addChild = (ConfigurationSection)value;
