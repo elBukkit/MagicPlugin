@@ -1,27 +1,49 @@
 package com.elmakers.mine.bukkit.magic.listener;
 
-import com.elmakers.mine.bukkit.action.ActionHandler;
 import com.elmakers.mine.bukkit.api.block.UndoList;
+import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.magic.MagicController;
+import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityExplodeEvent;
-import org.bukkit.event.entity.ExplosionPrimeEvent;
+
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 public class ExplosionController implements Listener {
     private final MagicController controller;
     private int	maxTNTPerChunk = 0;
+    private int autoRollbackDuration = 10000;
+    private double autoRollbackSpeed = 2;
+    private Set<EntityType> rollbackExplosions = new HashSet<EntityType>();
 
     public ExplosionController(MagicController controller) {
         this.controller = controller;
     }
 
-    public void setMaxTNTPerChunk(int max) {
-        this.maxTNTPerChunk = max;
+    public void loadProperties(ConfigurationSection properties) {
+        maxTNTPerChunk = properties.getInt("max_tnt_per_chunk", 0);
+        autoRollbackDuration = properties.getInt("auto_rollback_duration", 10000);
+        autoRollbackSpeed = properties.getDouble("auto_rollback_speed", 2);
+        rollbackExplosions.clear();
+        Collection<String> typeNames = properties.getStringList("auto_rollback_explosions");
+        if (typeNames != null) {
+            for (String typeName : typeNames) {
+                try {
+                    EntityType entityType = EntityType.valueOf(typeName.toUpperCase());
+                    rollbackExplosions.add(entityType);
+                } catch (Exception ex) {
+                    controller.getLogger().warning("Failed to parse entity type: " + typeName + " in auto_rollback_explosions");
+                }
+            }
+        }
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
@@ -63,6 +85,14 @@ public class ExplosionController implements Listener {
         }
         else if (blockList != null) {
             blockList.explode(explodingEntity, event.blockList());
+        }
+        else if (autoRollbackDuration > 0 && rollbackExplosions.contains(explodingEntity.getType())) {
+            Mage mage = controller.getMage(Bukkit.getConsoleSender());
+            UndoList explosionUndo = new com.elmakers.mine.bukkit.block.UndoList(mage, "Explosion (" + explodingEntity.getType().name() + ")");
+            explosionUndo.setScheduleUndo(autoRollbackDuration);
+            explosionUndo.setUndoSpeed(autoRollbackSpeed);
+            explosionUndo.explode(explodingEntity, event.blockList());
+            mage.registerForUndo(explosionUndo);
         }
     }
 

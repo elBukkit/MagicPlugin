@@ -7,3 +7,6 @@ prevent_creative_breaking: 500
 
 # Turn on /mskills menu for testing purposes
 skills_use_permissions: true
+
+# Turn on auto-rollback for creeper explosions
+auto_rollback_duration: 1000

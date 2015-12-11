@@ -426,6 +426,14 @@ entity_undo_types:
 - armor_stand
 - dropped_item
 
+# This can be used to enable auto-rollback for natural explosions
+# from creepers, fireballs, TNT or other entities.
+# Change the duration to a positive number (time to undo in ms) to enable this feature.
+auto_rollback_duration: 0
+auto_rollback_speed: 0.5
+auto_rollback_explosions:
+- creeper
+
 # The largest thing we'll persist in the undo queue (to a file)
 undo_max_persist_size: 16384
 
