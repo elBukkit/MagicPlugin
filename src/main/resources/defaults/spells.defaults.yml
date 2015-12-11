@@ -9032,8 +9032,8 @@ whip:
         cooldown: 5000
         target_self_timeout: 2000
         velocity: 10
-        track_speed: 0.01
-        track_range: 0.75
+        track_speed: 0.75
+        track_range: 5
     costs:
         mana: 25
 
