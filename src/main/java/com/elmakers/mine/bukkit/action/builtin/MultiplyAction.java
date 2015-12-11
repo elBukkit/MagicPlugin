@@ -25,7 +25,7 @@ public class MultiplyAction extends CompoundAction
         ActionHandler base = addHandler("actions");
         if (base != null)
         {
-            ConfigurationSection initialParameters = parameters.getConfigurationSection("first");
+            ConfigurationSection initialParameters = ConfigurationUtils.getConfigurationSection(parameters, "first");
             if (initialParameters != null)
             {
                 ConfigurationSection combined = ConfigurationUtils.addConfigurations(new MemoryConfiguration(), parameters);

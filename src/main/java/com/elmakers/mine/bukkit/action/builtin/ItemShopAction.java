@@ -39,7 +39,7 @@ public class ItemShopAction extends BaseShopAction
         if (parameters.contains("items"))
         {
             if (parameters.isConfigurationSection("items")) {
-                ConfigurationSection itemSection = parameters.getConfigurationSection("items");
+                ConfigurationSection itemSection = ConfigurationUtils.getConfigurationSection(parameters, "items");
                 Collection<String> itemKeys = itemSection.getKeys(false);
                 for (String itemKey : itemKeys) {
                     items.add(new ShopItemConfiguration(itemKey, itemSection.getDouble(itemKey)));

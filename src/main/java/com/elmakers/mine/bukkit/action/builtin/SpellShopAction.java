@@ -10,6 +10,7 @@ import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.api.wand.Wand;
 import com.elmakers.mine.bukkit.api.wand.WandUpgradePath;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
+import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
 
@@ -33,7 +34,7 @@ public class SpellShopAction extends BaseShopAction
         spells.clear();
         if (parameters.contains("spells"))
         {
-            ConfigurationSection spellSection = parameters.getConfigurationSection("spells");
+            ConfigurationSection spellSection = ConfigurationUtils.getConfigurationSection(parameters, "spells");
             Collection<String> spellKeys = spellSection.getKeys(false);
             for (String spellKey : spellKeys) {
                 spells.put(spellKey, spellSection.getDouble(spellKey));

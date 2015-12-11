@@ -52,22 +52,22 @@ public class ArmorStandProjectileAction extends CustomProjectileAction {
         super.initialize(spell, parameters);
 
         if (parameters.isConfigurationSection("left_arm_transform")) {
-            leftArmTransform = new VectorTransform(parameters.getConfigurationSection("right_arm_transform"));
+            leftArmTransform = new VectorTransform(ConfigurationUtils.getConfigurationSection(parameters, "right_arm_transform"));
         }
         if (parameters.isConfigurationSection("right_arm_transform")) {
-            rightArmTransform = new VectorTransform(parameters.getConfigurationSection("right_arm_transform"));
+            rightArmTransform = new VectorTransform(ConfigurationUtils.getConfigurationSection(parameters, "right_arm_transform"));
         }
         if (parameters.isConfigurationSection("right_leg_transform")) {
-            rightLegTransform = new VectorTransform(parameters.getConfigurationSection("right_leg_transform"));
+            rightLegTransform = new VectorTransform(ConfigurationUtils.getConfigurationSection(parameters, "right_leg_transform"));
         }
         if (parameters.isConfigurationSection("left_leg_transform")) {
-            leftLegTransform = new VectorTransform(parameters.getConfigurationSection("left_leg_transform"));
+            leftLegTransform = new VectorTransform(ConfigurationUtils.getConfigurationSection(parameters, "left_leg_transform"));
         }
         if (parameters.isConfigurationSection("head_transform")) {
-            headTransform = new VectorTransform(parameters.getConfigurationSection("head_transform"));
+            headTransform = new VectorTransform(ConfigurationUtils.getConfigurationSection(parameters, "head_transform"));
         }
         if (parameters.isConfigurationSection("body_transform")) {
-            bodyTransform = new VectorTransform(parameters.getConfigurationSection("body_transform"));
+            bodyTransform = new VectorTransform(ConfigurationUtils.getConfigurationSection(parameters, "body_transform"));
         }
     }
 

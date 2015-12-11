@@ -8,6 +8,7 @@ import com.elmakers.mine.bukkit.api.magic.Messages;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
+import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -50,12 +51,12 @@ public class ChangeWorldAction extends BaseTeleportAction
         }
         else if (parameters.contains("worlds"))
         {
-            ConfigurationSection worldMap = parameters.getConfigurationSection("worlds");
+            ConfigurationSection worldMap = ConfigurationUtils.getConfigurationSection(parameters, "worlds");
             if (worldMap == null || !worldMap.contains(worldName)) {
                 return;
             }
 
-            ConfigurationSection worldNode = worldMap.getConfigurationSection(worldName);
+            ConfigurationSection worldNode = ConfigurationUtils.getConfigurationSection(worldMap, worldName);
             World targetWorld = getWorld(context, worldNode.getString("target"), worldNode.getBoolean("load", true), worldNode.getBoolean("copy", false) ? world : null);
             if (targetWorld != null) {
                 double scale = worldNode.getDouble("scale", 1);

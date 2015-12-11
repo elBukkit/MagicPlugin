@@ -38,7 +38,7 @@ public class TreeAction extends BaseSpellAction
         super.initialize(spell, parameters);
         if (parameters.contains("biomes"))
         {
-            ConfigurationSection biomeConfig = parameters.getConfigurationSection("biomes");
+            ConfigurationSection biomeConfig = ConfigurationUtils.getConfigurationSection(parameters, "biomes");
             biomeMap = new HashMap<Biome, List<TreeType>>();
             Collection<String> biomeKeys = biomeConfig.getKeys(false);
             for (String biomeKey : biomeKeys)

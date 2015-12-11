@@ -40,7 +40,7 @@ public class HatAction extends BaseSpellAction
         if (parameters.contains("enchantments"))
         {
             enchantments = new HashMap<Enchantment, Integer>();
-            ConfigurationSection enchantConfig = parameters.getConfigurationSection("enchantments");
+            ConfigurationSection enchantConfig = ConfigurationUtils.getConfigurationSection(parameters, "enchantments");
             Collection<String> enchantKeys = enchantConfig.getKeys(false);
             for (String enchantKey : enchantKeys)
             {

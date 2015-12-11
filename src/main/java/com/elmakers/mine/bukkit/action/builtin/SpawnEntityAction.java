@@ -332,7 +332,7 @@ public class SpawnEntityAction extends BaseSpellAction
 
         if (parameters.contains("entity_types"))
         {
-            RandomUtils.populateStringProbabilityMap(entityTypeProbability, parameters.getConfigurationSection("entity_types"), 0, 0, 0);
+            RandomUtils.populateStringProbabilityMap(entityTypeProbability, ConfigurationUtils.getConfigurationSection(parameters, "entity_types"), 0, 0, 0);
         } else {
             entityTypeProbability.add(new WeightedPair<String>(100.0f, "pig"));
         }

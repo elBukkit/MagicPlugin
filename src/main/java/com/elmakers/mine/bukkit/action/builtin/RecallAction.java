@@ -280,13 +280,13 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
         ConfigurationSection warpConfig = null;
         if (parameters.contains("warps"))
         {
-            warpConfig = parameters.getConfigurationSection("warps");
+            warpConfig = ConfigurationUtils.getConfigurationSection(parameters, "warps");
         }
 
         ConfigurationSection commandConfig = null;
         if (parameters.contains("commands"))
         {
-            commandConfig = parameters.getConfigurationSection("commands");
+            commandConfig = ConfigurationUtils.getConfigurationSection(parameters, "commands");
         }
 
         if (parameters.contains("unlock"))

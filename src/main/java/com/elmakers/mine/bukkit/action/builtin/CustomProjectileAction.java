@@ -10,6 +10,7 @@ import com.elmakers.mine.bukkit.api.spell.TargetType;
 import com.elmakers.mine.bukkit.math.VectorTransform;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
+import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.Target;
 import com.elmakers.mine.bukkit.utility.Targeting;
 import de.slikey.effectlib.util.DynamicLocation;
@@ -94,7 +95,7 @@ public class CustomProjectileAction extends CompoundAction
         super.initialize(spell, parameters);
         targeting = new Targeting();
         if (parameters.isConfigurationSection("velocity_transform")) {
-            velocityTransform = new VectorTransform(parameters.getConfigurationSection("velocity_transform"));
+            velocityTransform = new VectorTransform(ConfigurationUtils.getConfigurationSection(parameters, "velocity_transform"));
         } else {
             velocityTransform = null;
         }
