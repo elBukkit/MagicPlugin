@@ -1,11 +1,13 @@
 package com.elmakers.mine.bukkit.action.builtin;
 
-import com.elmakers.mine.bukkit.action.BaseSpellAction;
 import com.elmakers.mine.bukkit.action.CompoundAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.RandomUtils;
+
+import de.slikey.effectlib.util.VectorUtils;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
@@ -13,14 +15,15 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.util.Vector;
 
-import java.util.Random;
-
 public class ChangeContextAction extends CompoundAction {
     private Vector sourceOffset;
+    private Vector relativeSourceOffset;
     private Vector targetOffset;
+    private Vector relativeTargetOffset;
     private boolean targetSelf;
     private boolean targetEntityLocation;
     private boolean sourceAtTarget;
+    private boolean ignorePitch;
     private Vector randomSourceOffset;
     private Vector randomTargetOffset;
     private Double targetDirectionSpeed;
@@ -39,8 +42,11 @@ public class ChangeContextAction extends CompoundAction {
         targetEntityLocation = parameters.getBoolean("target_entity", false);
         targetSelf = parameters.getBoolean("target_caster", false);
         sourceAtTarget = parameters.getBoolean("source_at_target", false);
-        targetOffset = ConfigurationUtils.getVector(parameters, "target_offset");
+        ignorePitch = parameters.getBoolean("ignore_pitch", false);
         sourceOffset = ConfigurationUtils.getVector(parameters, "source_offset");
+        relativeSourceOffset = ConfigurationUtils.getVector(parameters, "relative_source_offset");
+        targetOffset = ConfigurationUtils.getVector(parameters, "target_offset");
+        relativeTargetOffset = ConfigurationUtils.getVector(parameters, "relative_target_offset");
         randomTargetOffset = ConfigurationUtils.getVector(parameters, "random_target_offset");
         randomSourceOffset = ConfigurationUtils.getVector(parameters, "random_source_offset");
         sourceDirection = ConfigurationUtils.getVector(parameters, "source_direction");
@@ -100,9 +106,17 @@ public class ChangeContextAction extends CompoundAction {
                 context.getBrush().setTarget(current, targetLocation);
             }
         }
+        if (ignorePitch) {
+            sourceLocation.setPitch(0);
+        }
         if (sourceOffset != null)
         {
             sourceLocation = sourceLocation.add(sourceOffset);
+        }
+        if (relativeSourceOffset != null)
+        {
+            Vector offset = VectorUtils.rotateVector(relativeSourceOffset, targetLocation);
+            targetLocation.add(offset);
         }
         if (snapTargetToSize > 0 && targetLocation != null)
         {
@@ -119,6 +133,11 @@ public class ChangeContextAction extends CompoundAction {
         if (targetOffset != null && targetLocation != null)
         {
             targetLocation = targetLocation.add(targetOffset);
+        }
+        if (relativeTargetOffset != null & targetLocation != null)
+        {
+            Vector offset = VectorUtils.rotateVector(relativeTargetOffset, targetLocation);
+            targetLocation.add(offset);
         }
         if (randomSourceOffset != null)
         {
