@@ -46,12 +46,24 @@ public class ExplosionController implements Listener {
         }
     }
 
+    protected UndoList getExplosionUndo(Entity explodingEntity) {
+        UndoList blockList = controller.getEntityUndo(explodingEntity);
+        if (blockList == null && autoRollbackDuration > 0 && rollbackExplosions.contains(explodingEntity.getType())) {
+            Mage mage = controller.getMage(Bukkit.getConsoleSender());
+            blockList = new com.elmakers.mine.bukkit.block.UndoList(mage, "Explosion (" + explodingEntity.getType().name() + ")");
+            blockList.setScheduleUndo(autoRollbackDuration);
+            blockList.setUndoSpeed(autoRollbackSpeed);
+            mage.registerForUndo(blockList);
+        }
+        return blockList;
+    }
+
     @EventHandler(priority = EventPriority.LOWEST)
     public void onEntityExplode(EntityExplodeEvent event) {
         Entity explodingEntity = event.getEntity();
         if (explodingEntity == null) return;
 
-        UndoList blockList = controller.getEntityUndo(explodingEntity);
+        UndoList blockList = getExplosionUndo(explodingEntity);
         boolean cancel = event.isCancelled();
         cancel = cancel || explodingEntity.hasMetadata("cancel_explosion");
         if (blockList != null)
@@ -86,14 +98,6 @@ public class ExplosionController implements Listener {
         else if (blockList != null) {
             blockList.explode(explodingEntity, event.blockList());
         }
-        else if (autoRollbackDuration > 0 && rollbackExplosions.contains(explodingEntity.getType())) {
-            Mage mage = controller.getMage(Bukkit.getConsoleSender());
-            UndoList explosionUndo = new com.elmakers.mine.bukkit.block.UndoList(mage, "Explosion (" + explodingEntity.getType().name() + ")");
-            explosionUndo.setScheduleUndo(autoRollbackDuration);
-            explosionUndo.setUndoSpeed(autoRollbackSpeed);
-            explosionUndo.explode(explodingEntity, event.blockList());
-            mage.registerForUndo(explosionUndo);
-        }
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
@@ -101,7 +105,7 @@ public class ExplosionController implements Listener {
         Entity explodingEntity = event.getEntity();
         if (explodingEntity == null) return;
 
-        UndoList blockList = controller.getEntityUndo(explodingEntity);
+        UndoList blockList = getExplosionUndo(explodingEntity);
         if (blockList == null) return;
 
         if (event.isCancelled()) {
