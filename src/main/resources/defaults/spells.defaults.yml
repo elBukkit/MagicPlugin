@@ -1831,6 +1831,7 @@ tree:
         range: 64
         require_sapling: false
         cooldown: 5000
+        destructible: destructible,destructible_replace
     costs:
         mana: 20
 
@@ -1862,6 +1863,7 @@ forest:
         repeat: 16
         require_sapling: false
         cooldown: 30000
+        destructible: destructible,destructible_replace
         biomes:
           swampland: tree,brown_mushroom,red_mushroom
           forest: tree,big_tree,birch,tall_birch

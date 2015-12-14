@@ -1,7 +1,6 @@
 # TODO
 
  - Add tags to wand and spell templates
- - Tree spell broken?
  - Alter *really* needs an update!
  - Spells will run partially but then not undo if the player's batch queue is full?
  - Effects don't cancel if you switch away from your wand? Whip stops moving? Wha?
