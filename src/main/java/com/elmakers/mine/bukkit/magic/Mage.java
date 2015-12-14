@@ -614,7 +614,8 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         Bukkit.getScheduler().scheduleSyncDelayedTask(controller.getPlugin(), loadTask, 1);
     }
 
-    protected boolean load(MageData data) {
+    @Override
+    public boolean load(MageData data) {
         try {
             if (data == null) {
                 finishLoad(data);
