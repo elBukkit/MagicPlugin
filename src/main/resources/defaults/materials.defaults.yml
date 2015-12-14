@@ -69,10 +69,6 @@ transparent:
 - carpet
 - sign_post
 - wall_sign
-- glass
-- thin_glass
-- stained_glass
-- stained_glass_pane
 
 transparent_to_construction:
 - air
