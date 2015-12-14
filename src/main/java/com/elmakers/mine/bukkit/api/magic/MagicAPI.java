@@ -518,6 +518,7 @@ public interface MagicAPI {
      * @return A list of all known SpellTemplate definitions.
      */
     public Collection<SpellTemplate> getSpellTemplates();
+    public Collection<SpellTemplate> getSpellTemplates(boolean showHidden);
 
     /**
      * Retrieve a specific SpellTemplate.
