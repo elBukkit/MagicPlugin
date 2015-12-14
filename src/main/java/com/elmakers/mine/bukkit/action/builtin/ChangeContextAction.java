@@ -23,7 +23,7 @@ public class ChangeContextAction extends CompoundAction {
     private boolean targetSelf;
     private boolean targetEntityLocation;
     private boolean sourceAtTarget;
-    private boolean ignorePitch;
+    private Double sourcePitch;
     private Vector randomSourceOffset;
     private Vector randomTargetOffset;
     private Double targetDirectionSpeed;
@@ -42,7 +42,7 @@ public class ChangeContextAction extends CompoundAction {
         targetEntityLocation = parameters.getBoolean("target_entity", false);
         targetSelf = parameters.getBoolean("target_caster", false);
         sourceAtTarget = parameters.getBoolean("source_at_target", false);
-        ignorePitch = parameters.getBoolean("ignore_pitch", false);
+        sourcePitch = ConfigurationUtils.getDouble(parameters, "source_pitch", null);
         sourceOffset = ConfigurationUtils.getVector(parameters, "source_offset");
         relativeSourceOffset = ConfigurationUtils.getVector(parameters, "relative_source_offset");
         targetOffset = ConfigurationUtils.getVector(parameters, "target_offset");
@@ -106,8 +106,9 @@ public class ChangeContextAction extends CompoundAction {
                 context.getBrush().setTarget(current, targetLocation);
             }
         }
-        if (ignorePitch) {
-            sourceLocation.setPitch(0);
+        if (sourcePitch != null)
+        {
+            sourceLocation.setPitch((float)(double)sourcePitch);
         }
         if (sourceOffset != null)
         {
