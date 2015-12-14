@@ -546,29 +546,31 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         loading = false;
         Player player = getPlayer();
         if (player != null) {
-            if (restoreInventory != null) {
-                controller.getLogger().info("Restoring saved inventory for player " + player.getName() + " - did the server not shut down properly?");
-                if (activeWand != null) {
-                    activeWand.deactivate();
-                }
-                Inventory inventory = player.getInventory();
-                for (int slot = 0; slot < restoreInventory.size(); slot++) {
-                    Object item = restoreInventory.get(slot);
-                    if (item instanceof ItemStack) {
-                        inventory.setItem(slot, (ItemStack)item);
-                    } else {
-                        inventory.setItem(slot, null);
+            if (controller.isInventoryBackupEnabled()) {
+                if (restoreInventory != null) {
+                    controller.getLogger().info("Restoring saved inventory for player " + player.getName() + " - did the server not shut down properly?");
+                    if (activeWand != null) {
+                        activeWand.deactivate();
                     }
+                    Inventory inventory = player.getInventory();
+                    for (int slot = 0; slot < restoreInventory.size(); slot++) {
+                        Object item = restoreInventory.get(slot);
+                        if (item instanceof ItemStack) {
+                            inventory.setItem(slot, (ItemStack) item);
+                        } else {
+                            inventory.setItem(slot, null);
+                        }
+                    }
+                    restoreInventory = null;
                 }
-                restoreInventory = null;
-            }
-            if (restoreExperience != null) {
-                player.setExp(restoreExperience);
-                restoreExperience = null;
-            }
-            if (restoreLevel != null) {
-                player.setLevel(restoreLevel);
-                restoreLevel = null;
+                if (restoreExperience != null) {
+                    player.setExp(restoreExperience);
+                    restoreExperience = null;
+                }
+                if (restoreLevel != null) {
+                    player.setLevel(restoreLevel);
+                    restoreLevel = null;
+                }
             }
 
             Collection<SpellData> spellDataList = data == null ? null : data.getSpellData();
@@ -679,9 +681,11 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                 brush.load(brushData);
             }
 
-            restoreInventory = data.getStoredInventory();
-            restoreLevel = data.getStoredLevel();
-            restoreExperience = data.getStoredExperience();
+            if (controller.isInventoryBackupEnabled()) {
+                restoreInventory = data.getStoredInventory();
+                restoreLevel = data.getStoredLevel();
+                restoreExperience = data.getStoredExperience();
+            }
         } catch (Exception ex) {
             controller.getLogger().warning("Failed to load player data for " + playerName + ": " + ex.getMessage());
             return false;

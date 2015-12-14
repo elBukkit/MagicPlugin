@@ -300,6 +300,12 @@ default_brush_mode: chest
 # The spell to cast on shift+right-click
 brush_select_spell: brushselect
 
+# When wands are in "inventory" mode, players' inventories will be backed up
+# so that if the server crashes it is not lost.
+# The same is done for XP.
+# You can turn this feature off by setting this to false.
+backup_player_inventory: true
+
 # The default enchanting path.
 # The default default is "master" for backwards compatibility reasons
 # This means that wands prior to 3.3 will be counted as Master wands regardless of type.

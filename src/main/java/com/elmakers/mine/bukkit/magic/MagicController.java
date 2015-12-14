@@ -2089,6 +2089,7 @@ public class MagicController implements MageController {
         defaultWandPath = properties.getString("default_wand_path", "");
         defaultWandMode = Wand.parseWandMode(properties.getString("default_wand_mode", ""), defaultWandMode);
         defaultBrushMode = Wand.parseWandMode(properties.getString("default_brush_mode", ""), defaultBrushMode);
+        backupInventories = properties.getBoolean("backup_player_inventory", true);
         brushSelectSpell = properties.getString("brush_select_spell", brushSelectSpell);
 		showMessages = properties.getBoolean("show_messages", showMessages);
         showCastMessages = properties.getBoolean("show_cast_messages", showCastMessages);
@@ -4077,6 +4078,10 @@ public Set<Material> getMaterialSet(String name)
         return 0;
     }
 
+    public boolean isInventoryBackupEnabled() {
+        return backupInventories;
+    }
+
     /*
 	 * Private data
 	 */
@@ -4113,6 +4118,7 @@ public Set<Material> getMaterialSet(String name)
     private Set<Material>                       meleeMaterials                  = new HashSet<Material>();
     private Map<String, Set<Material>>		    materialSets				    = new HashMap<String, Set<Material>>();
 
+    private boolean                             backupInventories               = true;
     private int								    undoTimeWindow				    = 6000;
     private int                                 undoQueueDepth                  = 256;
     private int								    pendingQueueDepth				= 16;
