@@ -115,8 +115,8 @@ public class ChangeContextAction extends CompoundAction {
         }
         if (relativeSourceOffset != null)
         {
-            Vector offset = VectorUtils.rotateVector(relativeSourceOffset, targetLocation);
-            targetLocation.add(offset);
+            Vector offset = VectorUtils.rotateVector(relativeSourceOffset, sourceLocation);
+            sourceLocation.add(offset);
         }
         if (snapTargetToSize > 0 && targetLocation != null)
         {
