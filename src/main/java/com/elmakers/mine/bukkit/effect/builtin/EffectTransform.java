@@ -22,7 +22,6 @@ public class EffectTransform extends EffectRepeating {
     public void play() {
         playTime = 0;
         totalSteps = 0;
-        maxStep = 0;
         lastIteration = System.currentTimeMillis();
         super.play();
     }
