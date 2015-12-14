@@ -4,6 +4,8 @@ import com.elmakers.mine.bukkit.api.magic.MageController;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
+import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Entity;
 import org.bukkit.plugin.Plugin;
 
@@ -48,7 +50,12 @@ public class TeleportTask implements Runnable {
             targetLocation = context.findPlaceToStand(location, verticalSearchDistance);
         }
         if (targetLocation == null && !safe) {
-            targetLocation = location;
+            Block block = location.getBlock();
+            Block blockOneUp = block.getRelative(BlockFace.UP);
+            if (context.isOkToStandIn(blockOneUp.getType()) && context.isOkToStandIn(block.getType()))
+            {
+                targetLocation = location;
+            }
         }
         if (targetLocation != null) {
             // Hacky double-teleport to work-around vanilla suffocation checks
