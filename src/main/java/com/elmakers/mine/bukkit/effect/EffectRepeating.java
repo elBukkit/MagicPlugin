@@ -29,7 +29,13 @@ public abstract class EffectRepeating extends EffectPlayer implements Runnable {
 
         iterations = configuration.getInt("iterations", iterations);
         period = configuration.getInt("period", period);
+        if (period < 1) {
+            period = 1;
+        }
         reverse = configuration.getBoolean("reverse", reverse);
+        if (configuration.contains("duration")) {
+            iterations = (int)Math.ceil(configuration.getDouble("duration") / period / 50);
+        }
     }
 
     public void setPeriod(int period) {
