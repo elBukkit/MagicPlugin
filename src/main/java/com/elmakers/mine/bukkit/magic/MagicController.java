@@ -190,7 +190,7 @@ public class MagicController implements MageController {
                                     mageDataStore.load(mage.getId(), new MageDataCallback() {
                                         @Override
                                         public void run(MageData data) {
-                                            mage.load(data);
+                                        mage.load(data);
                                         }
                                     });
                                 } catch (Exception ex) {
@@ -207,7 +207,7 @@ public class MagicController implements MageController {
                             mageDataStore.load(mage.getId(), new MageDataCallback() {
                                 @Override
                                 public void run(MageData data) {
-                                    mage.load(data);
+                                mage.load(data);
                                 }
                             });
                         } catch (Exception ex) {
@@ -218,6 +218,8 @@ public class MagicController implements MageController {
                 } else {
                     mage.load(null);
                 }
+            } else if (externalPlayerData){
+                mage.setLoading(true);
             } else {
                 mage.load(null);
             }
@@ -4184,6 +4186,7 @@ public Set<Material> getMaterialSet(String name)
     private int								    autoUndo						= 0;
     private int								    autoSaveTaskId					= 0;
     private boolean                             savePlayerData                  = true;
+    private boolean                             externalPlayerData              = false;
     private boolean                             asynchronousSaving              = true;
     private WarpController						warpController					= null;
 

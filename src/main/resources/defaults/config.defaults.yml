@@ -343,6 +343,9 @@ auto_save: 3600000
 # Can be used to turn off saving player data entirely
 save_player_data: true
 
+# If player data saving is off, you can use this to still have mages expect their data to load
+external_player_data: false
+
 # Use this to provide your own mechanism for saving player data.
 # More built-in options may be available in the future.
 player_data_store:
