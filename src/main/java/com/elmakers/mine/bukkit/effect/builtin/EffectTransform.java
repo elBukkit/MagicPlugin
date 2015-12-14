@@ -12,12 +12,15 @@ public class EffectTransform extends EffectRepeating {
     private VectorTransform positionTransform;
     private long playTime;
     private long lastIteration;
+    private long totalSteps;
+    private long steps;
 
     public EffectTransform() {
     }
 
     public void play() {
         playTime = 0;
+        totalSteps = 0;
         lastIteration = System.currentTimeMillis();
         super.play();
     }
@@ -31,6 +34,24 @@ public class EffectTransform extends EffectRepeating {
         } else {
             positionTransform = null;
         }
+        steps = parameters.getInt("steps", 0);
+    }
+
+    public void iterateSteps(Location originalOrigin, Location originalTarget) {
+        for (int i = 0; i < steps; i++) {
+            Location source = originalOrigin;
+            Location target = originalTarget;
+            if (playAtOrigin) {
+                source = source.clone();
+                source.add(positionTransform.get(source, totalSteps));
+            }
+            if (target != null && playAtTarget) {
+                target = target.clone();
+                target.add(positionTransform.get(target, totalSteps));
+            }
+            playEffect(new DynamicLocation(source, getOriginEntity()), new DynamicLocation(target, getTargetEntity()));
+            totalSteps++;
+        }
     }
 
     public void iterate() {
@@ -41,6 +62,11 @@ public class EffectTransform extends EffectRepeating {
         Location origin = getOrigin();
         Location target = getTarget();
         if (origin == null) return;
+        if (steps > 0) {
+            iterateSteps(origin, target);
+            return;
+        }
+
         Location source = origin;
         double t = (double)playTime / 1000;
         if (playAtOrigin) {
