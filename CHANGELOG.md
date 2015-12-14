@@ -13,6 +13,7 @@
  - Add TransformEffect to builtin effects. Build your own effectlib-style effects via configs!
  - Glass is no longer transparent by default (spells won't shoot through glass, too exploitable!)
  - Fix Tree/Forest spells
+ - The Drop spell will now collapse trees and only drop part of the tree
 
 ## 5.4
 

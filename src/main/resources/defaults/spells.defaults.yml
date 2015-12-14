@@ -2902,7 +2902,7 @@ torch|2:
         cooldown: 8000
 
 torch|3:
-    upgrade_required_path: engineer
+    upgrade_required_path: master
     upgrade_required_casts: 50
     parameters:
         cooldown: 5000
@@ -5026,6 +5026,7 @@ chop:
         allow_max_range: false
         range: 32
         recursion_depth: 32
+        drop_count: 4
         drop: trees
         cooldown: 30000
     costs:
@@ -5035,13 +5036,13 @@ chop|2:
     upgrade_required_path: apprentice
     upgrade_required_casts: 30
     parameters:
-        recursion_depth: 8
+        drop_count: 8
 
 chop|3:
     upgrade_required_path: master
     upgrade_required_casts: 50
     parameters:
-        recursion_depth: 32
+        drop_count: 16
 
 alter:
     icon_url: http://textures.minecraft.net/texture/4e693cf3b7bf83248527aacc2714638b55587cde593963d1f861884f5be1638
