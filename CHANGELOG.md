@@ -10,6 +10,7 @@
  - Add mathematically-controlled custom projectile velocity (Thanks yet again, SexyToad!)
  - Sticky Bomb will attach to entities
  - Fix apprentice gear (and other non-indestructible items) getting their durability auto-replenished (it wasn't supposed to!)
+ - Add TransformEffect to builtin effects. Build your own effectlib-style effects via configs!
 
 ## 5.4
 
