@@ -31,6 +31,7 @@ import org.bukkit.inventory.PlayerInventory;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
 public class EntityController implements Listener {
@@ -289,6 +290,7 @@ public class EntityController implements Listener {
     @EventHandler(priority=EventPriority.LOWEST)
     public void onItemSpawn(ItemSpawnEvent event)
     {
+
         if (disableItemSpawn)
         {
             event.setCancelled(true);
@@ -299,15 +301,29 @@ public class EntityController implements Listener {
         ItemStack spawnedItem = itemEntity.getItemStack();
         Block block = itemEntity.getLocation().getBlock();
         BlockData undoData = com.elmakers.mine.bukkit.block.UndoList.getBlockData(block.getLocation());
-        if (undoData != null)
+        if (undoData != null && block.getType() != Material.AIR)
         {
             // if a block just broke via physics, it will not yet have its id changed to air
             // So we can catch this as a one-time event, for blocks we have recorded.
-            if (undoData.getMaterial() != Material.AIR && block.getType() != Material.AIR)
+            if (undoData.getMaterial() != Material.AIR)
             {
-                undoData.getUndoList().add(block);
+                com.elmakers.mine.bukkit.block.UndoList.commit(undoData);
                 event.setCancelled(true);
                 return;
+            }
+
+            // If this was a block we built magically, don't drop items if the item being dropped
+            // matches the block type. This is messy, but avoid players losing all their items
+            // when suffocating inside a Blob
+            Collection<ItemStack> drops = block.getDrops();
+            if (drops != null) {
+                for (ItemStack drop : drops) {
+                    if (drop.getType() == spawnedItem.getType()) {
+                        com.elmakers.mine.bukkit.block.UndoList.commit(undoData);
+                        event.setCancelled(true);
+                        return;
+                    }
+                }
             }
         }
         if (Wand.isSkill(spawnedItem))
