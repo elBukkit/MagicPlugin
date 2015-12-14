@@ -83,6 +83,7 @@ public interface MageController {
     public ItemStack createSpellItem(String spellKey);
     public ItemStack createBrushItem(String brushKey);
     public Wand getWand(ItemStack item);
+    public Wand getWand(ConfigurationSection config);
 
     public String describeItem(ItemStack item);
     public String getItemKey(ItemStack item);
