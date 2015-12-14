@@ -67,9 +67,8 @@ public class DropSpell extends BlockSpell
 	protected void drop(Block block, Set<Material> dropTypes, Collection<ItemStack> drops, int maxRecursion, int rDepth)
 	{
 		registerForUndo(block);
-		if (dropCount != 0) {
+		if (dropCount < 0 || drops.size() < dropCount) {
 			drops.addAll(block.getDrops());
-			dropCount--;
 		} else if (falling) {
 			Location blockLocation = block.getLocation();
 			FallingBlock falling = block.getWorld().spawnFallingBlock(blockLocation, block.getType(), block.getData());
