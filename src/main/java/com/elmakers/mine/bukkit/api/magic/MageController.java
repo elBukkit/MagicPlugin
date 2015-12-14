@@ -114,6 +114,7 @@ public interface MageController {
 
     public void sendToMages(String message, Location location);
     public Collection<Mage> getMages();
+    public void removeMage(Mage mage);
 
     public String getMessagePrefix();
 
