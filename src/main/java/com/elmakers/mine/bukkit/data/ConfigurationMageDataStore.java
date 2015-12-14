@@ -36,6 +36,10 @@ public abstract class ConfigurationMageDataStore implements MageDataStore {
     }
 
     public void save(MageData mage, ConfigurationSection saveFile) {
+        save(controller, mage, saveFile);
+    }
+
+    public static void save(MageController controller, MageData mage, ConfigurationSection saveFile) {
         saveFile.set("id", mage.getId());
         saveFile.set("name", mage.getName());
         saveFile.set("last_cast", mage.getLastCast());
@@ -72,7 +76,7 @@ public abstract class ConfigurationMageDataStore implements MageDataStore {
                 brushNode.set("scale", brush.getScale());
                 brushNode.set("erase", brush.isFillWithAir());
             } catch (Exception ex) {
-                logger.warning("Failed to save brush data: " + ex.getMessage());
+                controller.getLogger().warning("Failed to save brush data: " + ex.getMessage());
                 ex.printStackTrace();
             }
         }
@@ -158,6 +162,10 @@ public abstract class ConfigurationMageDataStore implements MageDataStore {
     }
 
     public MageData load(String id, ConfigurationSection saveFile) {
+        return load(controller, id, saveFile);
+    }
+
+    public static MageData load(MageController controller, String id, ConfigurationSection saveFile) {
         MageData data = new MageData(id);
 
         // Load brush data
@@ -176,7 +184,7 @@ public abstract class ConfigurationMageDataStore implements MageDataStore {
                 brushData.setFillWithAir(brushConfig.getBoolean("erase", true));
                 data.setBrushData(brushData);
             } catch (Exception ex) {
-                logger.warning("Failed to load brush data: " + ex.getMessage());
+                controller.getLogger().warning("Failed to load brush data: " + ex.getMessage());
                 ex.printStackTrace();
             }
         }
