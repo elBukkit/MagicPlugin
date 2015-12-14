@@ -62,7 +62,7 @@ import com.elmakers.mine.bukkit.protection.WorldGuardManager;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.spell.SpellCategory;
 import com.elmakers.mine.bukkit.traders.TradersController;
-import com.elmakers.mine.bukkit.utilities.YamlDataFile;
+import com.elmakers.mine.bukkit.data.YamlDataFile;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
@@ -3252,6 +3252,10 @@ public Set<Material> getMaterialSet(String name)
     @Override
     public com.elmakers.mine.bukkit.api.wand.Wand getWand(ItemStack itemStack) {
         return new Wand(this, itemStack);
+    }
+
+    public com.elmakers.mine.bukkit.api.wand.Wand getWand(ConfigurationSection config) {
+        return new Wand(this, config);
     }
 
 	@Override
