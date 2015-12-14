@@ -5380,7 +5380,7 @@ blink:
     worth_sp: 500
     earns_sp: 2
     upgrade_required_path: student
-    upgrade_required_casts: 20
+    upgrade_required_casts: 40
     actions:
         cast:
         - class: ChangeContext
@@ -5441,12 +5441,13 @@ blink:
         cooldown: 10000
         prevent_passthrough: indestructible
         bypass_confusion: true
+        vertical_range: 8
     costs:
         mana: 50
 
 blink|2:
-    upgrade_required_path: master
-    upgrade_required_casts: 30
+    upgrade_required_path: apprentice
+    upgrade_required_casts: 50
     parameters:
         allow_passthrough: true
         passthrough_range: 2
@@ -5456,6 +5457,8 @@ blink|2:
         mana: 75
 
 blink|3:
+    upgrade_required_path: master
+    upgrade_required_casts: 100
     actions:
         alternate_up:
         - class: Ascend
@@ -5470,6 +5473,10 @@ blink|3:
         cooldown: 5000
     costs:
         mana: 200
+
+blink|4:
+  parameters:
+        safe: false
 
 absorb:
     icon: bucket

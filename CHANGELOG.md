@@ -2,10 +2,15 @@
 
 ## 5.5
 
+ - Added Blink Level 4, can now blink up into the air
+
+## 5.4.1
+
  - Building against 1.8.8 now- plugin may not function properly in older versions of Spigot.
  - Add auto-rollback for creeper or other natural explosions. Disabled by default, see auto_rollback_duration parameter.
  - Add options for relative effect locations (Thanks, SexyToad!)
  - Add "track_range" CustomProjectile parameter, for projectiles that track the player's cursor at a fixed range (Thanks again, SexyToad!)
+ - Modify "Whip" spell to use the above
  - Add Railgun spell, ability for CustomProjectile to hit multiple targets  
  - Add mathematically-controlled custom projectile velocity (Thanks yet again, SexyToad!)
  - Sticky Bomb will attach to entities

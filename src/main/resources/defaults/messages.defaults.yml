@@ -1093,6 +1093,8 @@ spells:
         upgrade_description: "&r&b&bull; &6Increased range, will pass through solid objects"
     blink|3:
         upgrade_description: "&r&b&bull; &6Increased range, can ascend/descend through the ground"
+    blink|4:
+        upgrade_description: "&r&b&bull; &6You can now Blink up into the air"
     absorb:
         name: Absorb
         description: Absorb some of the target

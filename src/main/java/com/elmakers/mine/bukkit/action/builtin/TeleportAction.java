@@ -160,7 +160,7 @@ public class TeleportAction extends BaseTeleportAction
 		}
 
 		Block oneUp = destination.getRelative(BlockFace.UP);
-		if (safe && (!context.isOkToStandIn(destination.getType()) || !context.isOkToStandIn(oneUp.getType())))
+		if (!context.isOkToStandIn(destination.getType()) || !context.isOkToStandIn(oneUp.getType()))
 		{
 			context.getMage().sendDebugMessage(ChatColor.RED + "Teleporting entity failed, can't stand in " +
 					ChatColor.DARK_RED + destination.getType() +
