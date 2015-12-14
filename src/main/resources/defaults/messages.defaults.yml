@@ -279,9 +279,6 @@ categories:
     utility:
         name: Utility
         description: Utility and movement spells
-    utility:
-        name: Utility
-        description: Utility and movement spells
     demolition:
         name: Demolitions
         description: Highly destructive magic
@@ -636,8 +633,11 @@ spells:
         no_target: Can't put a torch there
         cast: Flame on!
         upgrade_description: "&r&b&bull; &6Reduced cooldown"
-    torch|4:
-        upgrade_description: "&r&b&bull; &6Torches are now permanent"
+    supertorch:
+        name: SuperTorch
+        description: Creates a permanent torch
+        no_target: Can't put a torch there
+        cast: Flame on!
     tunnel:
         name: Tunnel
         description: Mine out a tunnel in front of you

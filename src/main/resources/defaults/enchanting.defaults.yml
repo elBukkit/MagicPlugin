@@ -451,6 +451,7 @@ engineer:
       anvil: 0,0,10
       shrink: 5,20,30
       grow: 1,10,20
+      supertorch: 1,10,20
     material_count:
       1: 50, 20, 20
       2: 1,  10,  30

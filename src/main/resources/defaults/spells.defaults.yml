@@ -2839,10 +2839,36 @@ fling|2:
         min_speed: 2
         max_speed: 5
 
-torch:
+supertorch:
     icon_url: http://textures.minecraft.net/texture/08f4793551132fad5bdb5d185269881a8de6fa4b86c6bde92c2bf467e097
     icon: torch
     category: engineering
+    worth_sp: 800
+    earns_sp: 2
+    actions:
+        cast:
+        -  class: Torch
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: fire_ignite
+        -  class: EffectTrail
+           particle: block_crack
+           material: glowstone
+    parameters:
+        allow_max_range: false
+        range: 32
+        allow_glowstone: false
+        cooldown: 1000
+        destructible: destructible_replace
+    costs:
+        mana: 50
+        torch: 1
+
+torch:
+    icon_url: http://textures.minecraft.net/texture/08f4793551132fad5bdb5d185269881a8de6fa4b86c6bde92c2bf467e097
+    icon: torch
+    category: utility
     worth_sp: 200
     earns_sp: 2
     upgrade_required_path: beginner
@@ -2881,8 +2907,7 @@ torch|3:
 
 torch|4:
     parameters:
-        undo: 0
-        cooldown: 1000
+        cooldown: 2000
 
 familiar:
     icon_url: http://textures.minecraft.net/texture/621668ef7cb79dd9c22ce3d1f3f4cb6e2559893b6df4a469514e667c16aa4
@@ -3550,7 +3575,7 @@ fill:
         -  class: EffectTrail
            particle: block_crack
     parameters:
-        select_self: true
+        select_self: false
         allow_max_range: false
         target: select
         range: 64
