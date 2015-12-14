@@ -213,7 +213,6 @@ student:
       entangle: 0,0,20
       tracking: 5,10,30
       rocket: 0,10,20
-      wave: 5,20,30
       whip: 1,10,20
       secure: 0,0,5
       admission: 20,25,30
@@ -266,7 +265,6 @@ apprentice:
       3: 0,   10,  80
     spells:
       emp: 0,0,10
-      blessing: 0,0,1
       breach: 5,20,30
       disintegrate: 0,10,40
       hat: 110,80,60
@@ -289,6 +287,7 @@ apprentice:
       lift: 1,5,10
       disarm: 0,0,2
       laser: 0,0,10
+      wave: 5,20,30
 
 master:
     required_spells:
@@ -342,6 +341,7 @@ master:
       2: 0,   70,  10
       3: 0,   10,   90
     spells:
+      blessing: 0,0,1
       cluster: 0,0,5
       bomb: 0,0,1
       invincible: 0,0,10

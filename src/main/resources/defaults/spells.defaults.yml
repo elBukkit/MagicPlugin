@@ -2322,7 +2322,7 @@ icbm:
         break_blocks: true
         undo_speed: 0.5
     costs:
-        mana: 100
+        mana: 150
 
 neutron:
     upgrade_required_path: master
@@ -2600,7 +2600,7 @@ meteor:
         destructible_override: true
         undo_speed: 2
     costs:
-        mana: 100
+        mana: 200
 
 arrow:
     icon_url: http://textures.minecraft.net/texture/ea96e1b8c4d458f8f5443fa66eb376981f7b2ec385386db67faf3f1589094
@@ -3934,7 +3934,7 @@ bomb:
         cooldown: 12000
         undo_speed: 0.2
     costs:
-        mana: 250
+        mana: 175
 
 superblob:
     icon: slime_ball
@@ -5029,7 +5029,7 @@ chop:
         drop_count: 4
         drop: trees
         diagonals: true
-        cooldown: 30000
+        cooldown: 5000
     costs:
         mana: 80
 
@@ -6951,7 +6951,7 @@ pollinate:
         - double_plant:4
         - double_plant:5
     costs:
-        mana: 40
+        mana: 100
 
 broom:
     hidden: true
@@ -7592,7 +7592,7 @@ wound:
         magic_damage: false
         instant_block_effects: true
     costs:
-        mana: 120
+        mana: 100
 
 wound|2:
   parameters:
@@ -7996,6 +7996,21 @@ upgrades:
     actions:
         cast:
         -  class: SpellProgress
+
+testspellshop:
+    icon: iron_hoe
+    category: specialty
+    hidden: true
+    actions:
+        cast:
+        -  class: SpellShop
+    parameters:
+        quiet: true
+        confirm: false
+        auto_close: false
+        auto_upgrade: true
+        upgrade_levels: 15
+        use_sp: true
 
 spellshop:
     icon: iron_hoe
