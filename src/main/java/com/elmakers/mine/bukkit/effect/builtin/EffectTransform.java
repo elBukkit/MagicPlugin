@@ -14,6 +14,7 @@ public class EffectTransform extends EffectRepeating {
     private long lastIteration;
     private long totalSteps;
     private long steps;
+    private long maxStep;
 
     public EffectTransform() {
     }
@@ -21,6 +22,7 @@ public class EffectTransform extends EffectRepeating {
     public void play() {
         playTime = 0;
         totalSteps = 0;
+        maxStep = 0;
         lastIteration = System.currentTimeMillis();
         super.play();
     }
@@ -35,6 +37,7 @@ public class EffectTransform extends EffectRepeating {
             positionTransform = null;
         }
         steps = parameters.getInt("steps", 0);
+        maxStep = parameters.getInt("max_steps", 0);
     }
 
     public void iterateSteps(Location originalOrigin, Location originalTarget) {
@@ -51,6 +54,9 @@ public class EffectTransform extends EffectRepeating {
             }
             playEffect(new DynamicLocation(source, getOriginEntity()), new DynamicLocation(target, getTargetEntity()));
             totalSteps++;
+            if (maxStep > 0 && totalSteps >= maxStep) {
+                totalSteps = 0;
+            }
         }
     }
 
