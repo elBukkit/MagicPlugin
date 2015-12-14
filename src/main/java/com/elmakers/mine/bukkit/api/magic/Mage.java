@@ -397,6 +397,7 @@ public interface Mage extends CostReducer {
     public void enableFallProtection(int ms, Spell protector);
     public void enableFallProtection(int ms, int count, Spell protector);
 
+    public boolean load(MageData data);
     public boolean save(MageData data);
     public void deactivate();
     public boolean isValid();
@@ -425,4 +426,5 @@ public interface Mage extends CostReducer {
     public void setSkillPoints(int sp);
     public boolean isAtMaxSkillPoints();
     public WandUpgradePath getBoundWandPath(String templateKey);
+
 }
