@@ -113,7 +113,7 @@ public class MagicGiveCommandExecutor extends MagicTabExecutor {
 		}
 
         if (args.length == 1 || args.length == 2) {
-            Collection<SpellTemplate> spellList = api.getSpellTemplates();
+            Collection<SpellTemplate> spellList = api.getSpellTemplates(sender.hasPermission("Magic.bypass_hidden"));
             for (SpellTemplate spell : spellList) {
                 options.add(spell.getKey());
             }

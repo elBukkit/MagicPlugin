@@ -439,6 +439,11 @@ public class MagicPlugin extends JavaPlugin implements MagicAPI
 	}
 
 	@Override
+	public Collection<SpellTemplate> getSpellTemplates(boolean showHidden) {
+		return controller.getSpellTemplates(showHidden);
+	}
+
+	@Override
 	public Collection<String> getWandKeys() {
 		return Wand.getWandKeys();
 	}

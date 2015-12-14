@@ -804,7 +804,7 @@ public class MagicCommandExecutor extends MagicMapExecutor {
 				options.add("wand");
 				options.add("material");
 				options.add("upgrade");
-				Collection<SpellTemplate> spellList = api.getSpellTemplates();
+				Collection<SpellTemplate> spellList = api.getSpellTemplates(sender.hasPermission("Magic.bypass_hidden"));
 				for (SpellTemplate spell : spellList) {
 					options.add(spell.getKey());
 				}

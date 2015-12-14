@@ -148,7 +148,7 @@ public class WandCommandExecutor extends MagicTabExecutor {
 			subCommandPNode += ".";
 			
 			if (subCommand.equalsIgnoreCase("add")) {
-				Collection<SpellTemplate> spellList = api.getSpellTemplates();
+				Collection<SpellTemplate> spellList = api.getSpellTemplates(sender.hasPermission("Magic.bypass_hidden"));
 				for (SpellTemplate spell : spellList) {
 					addIfPermissible(sender, options, subCommandPNode, spell.getKey(), true);
 				}

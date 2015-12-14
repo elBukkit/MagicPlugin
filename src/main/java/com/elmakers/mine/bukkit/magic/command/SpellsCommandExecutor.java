@@ -43,7 +43,7 @@ public class SpellsCommandExecutor extends MagicTabExecutor {
 	public void listSpellsByCategory(CommandSender sender, String category)
 	{
 		List<SpellTemplate> categorySpells = new ArrayList<SpellTemplate>();
-		Collection<SpellTemplate> spellVariants = api.getSpellTemplates();
+		Collection<SpellTemplate> spellVariants = api.getSpellTemplates(sender.hasPermission("Magic.bypass_hidden"));
 		Player player = sender instanceof Player ? (Player)sender : null;
 		for (SpellTemplate spell : spellVariants)
 		{
@@ -79,7 +79,7 @@ public class SpellsCommandExecutor extends MagicTabExecutor {
 	{
 		HashMap<String, Integer> spellCounts = new HashMap<String, Integer>();
 		List<SpellCategory> spellGroups = new ArrayList<SpellCategory>();
-		Collection<SpellTemplate> spellVariants = api.getSpellTemplates();
+		Collection<SpellTemplate> spellVariants = api.getSpellTemplates(player == null || player.hasPermission("Magic.bypass_hidden"));
 
 		for (SpellTemplate spell : spellVariants)
 		{
@@ -118,7 +118,7 @@ public class SpellsCommandExecutor extends MagicTabExecutor {
 			return;
 		}
 		Player player = sender instanceof Player ? (Player)sender : null;
-		Collection<SpellTemplate> spellVariants = api.getSpellTemplates();
+		Collection<SpellTemplate> spellVariants = api.getSpellTemplates(sender.hasPermission("Magic.bypass_hidden"));
 
 		int spellCount = 0;
 		for (SpellTemplate spell : spellVariants)
