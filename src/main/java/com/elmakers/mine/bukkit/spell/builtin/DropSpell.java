@@ -20,6 +20,7 @@ public class DropSpell extends BlockSpell
 	private final static int DEFAULT_MAX_RECURSION = 16;
 	private int dropCount;
 	private boolean falling = true;
+	private boolean diagonals = false;
 
 	@Override
 	public SpellResult onCast(ConfigurationSection parameters) 
@@ -30,7 +31,6 @@ public class DropSpell extends BlockSpell
 			return SpellResult.NO_TARGET;
 		}
 
-		// TODO: Optimize this
 		Set<Material> dropMaterials = controller.getMaterialSet(parameters.getString("drop"));
 		
 		if (!dropMaterials.contains(target.getType()))
@@ -46,6 +46,7 @@ public class DropSpell extends BlockSpell
 		int maxRecursion = parameters.getInt("recursion_depth", DEFAULT_MAX_RECURSION);
 		dropCount = parameters.getInt("drop_count", -1);
 		falling = parameters.getBoolean("falling", true);
+		diagonals = parameters.getBoolean("diagonals", true);
 		drop(target, dropMaterials, drops, maxRecursion);
 
         for (ItemStack drop : drops) {
@@ -84,6 +85,30 @@ public class DropSpell extends BlockSpell
 			tryDrop(block.getRelative(BlockFace.EAST), dropTypes, drops, maxRecursion, rDepth + 1);
 			tryDrop(block.getRelative(BlockFace.UP), dropTypes, drops, maxRecursion, rDepth + 1);
 			tryDrop(block.getRelative(BlockFace.DOWN), dropTypes, drops, maxRecursion, rDepth + 1);
+			if (diagonals) {
+				tryDrop(block.getRelative(BlockFace.NORTH_EAST), dropTypes, drops, maxRecursion, rDepth + 1);
+				tryDrop(block.getRelative(BlockFace.NORTH_WEST), dropTypes, drops, maxRecursion, rDepth + 1);
+				tryDrop(block.getRelative(BlockFace.SOUTH_EAST), dropTypes, drops, maxRecursion, rDepth + 1);
+				tryDrop(block.getRelative(BlockFace.SOUTH_WEST), dropTypes, drops, maxRecursion, rDepth + 1);
+				Block up = block.getRelative(BlockFace.UP);
+				tryDrop(up.getRelative(BlockFace.NORTH_EAST), dropTypes, drops, maxRecursion, rDepth + 1);
+				tryDrop(up.getRelative(BlockFace.NORTH_WEST), dropTypes, drops, maxRecursion, rDepth + 1);
+				tryDrop(up.getRelative(BlockFace.SOUTH_EAST), dropTypes, drops, maxRecursion, rDepth + 1);
+				tryDrop(up.getRelative(BlockFace.SOUTH_WEST), dropTypes, drops, maxRecursion, rDepth + 1);
+				tryDrop(up.getRelative(BlockFace.NORTH), dropTypes, drops, maxRecursion, rDepth + 1);
+				tryDrop(up.getRelative(BlockFace.WEST), dropTypes, drops, maxRecursion, rDepth + 1);
+				tryDrop(up.getRelative(BlockFace.SOUTH), dropTypes, drops, maxRecursion, rDepth + 1);
+				tryDrop(up.getRelative(BlockFace.EAST), dropTypes, drops, maxRecursion, rDepth + 1);
+				Block down = block.getRelative(BlockFace.DOWN);
+				tryDrop(down.getRelative(BlockFace.NORTH_EAST), dropTypes, drops, maxRecursion, rDepth + 1);
+				tryDrop(down.getRelative(BlockFace.NORTH_WEST), dropTypes, drops, maxRecursion, rDepth + 1);
+				tryDrop(down.getRelative(BlockFace.SOUTH_EAST), dropTypes, drops, maxRecursion, rDepth + 1);
+				tryDrop(down.getRelative(BlockFace.SOUTH_WEST), dropTypes, drops, maxRecursion, rDepth + 1);
+				tryDrop(down.getRelative(BlockFace.NORTH), dropTypes, drops, maxRecursion, rDepth + 1);
+				tryDrop(down.getRelative(BlockFace.WEST), dropTypes, drops, maxRecursion, rDepth + 1);
+				tryDrop(down.getRelative(BlockFace.SOUTH), dropTypes, drops, maxRecursion, rDepth + 1);
+				tryDrop(down.getRelative(BlockFace.EAST), dropTypes, drops, maxRecursion, rDepth + 1);
+			}
 		}
 	}
 

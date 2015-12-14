@@ -5028,6 +5028,7 @@ chop:
         recursion_depth: 32
         drop_count: 4
         drop: trees
+        diagonals: true
         cooldown: 30000
     costs:
         mana: 80
