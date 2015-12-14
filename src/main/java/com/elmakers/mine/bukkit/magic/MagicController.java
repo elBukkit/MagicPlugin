@@ -2645,7 +2645,11 @@ public class MagicController implements MageController {
         mage.deactivate();
 
         // Unregister
-        mages.remove(mage.getId());
+        if (!externalPlayerData) {
+            removeMage(mage);
+        } else if (mage instanceof com.elmakers.mine.bukkit.magic.Mage){
+            ((com.elmakers.mine.bukkit.magic.Mage)mage).setLoading(true);
+        }
 
         if (!mage.isLoading() && (mage.isPlayer() || saveNonPlayerMages) && loaded)
         {
@@ -2657,6 +2661,11 @@ public class MagicController implements MageController {
             callback.run(null);
         }
 	}
+
+    @Override
+    public void removeMage(Mage mage) {
+        mages.remove(mage.getId());
+    }
 
     public void saveMage(Mage mage, boolean asynchronous)
     {
