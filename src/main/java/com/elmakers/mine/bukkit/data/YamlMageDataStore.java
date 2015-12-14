@@ -4,7 +4,6 @@ import com.elmakers.mine.bukkit.api.data.MageData;
 import com.elmakers.mine.bukkit.api.data.MageDataCallback;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.utilities.YamlDataFile;
-import org.apache.commons.multiverse.io.FilenameUtils;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
@@ -66,7 +65,13 @@ public class YamlMageDataStore extends ConfigurationMageDataStore {
         List<String> ids = new ArrayList<String>();
         File[] files = playerDataFolder.listFiles();
         for (File file : files) {
-            ids.add(FilenameUtils.removeExtension(file.getName()));
+            String filename = file.getName();
+            int extensionIndex = filename.lastIndexOf('.');
+            if (extensionIndex > 0) {
+                filename = filename.substring(0, filename.lastIndexOf('.'));
+            }
+
+            ids.add(filename);
         }
         return ids;
     }
