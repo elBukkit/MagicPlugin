@@ -219,7 +219,7 @@ public class MagicController implements MageController {
                 } else {
                     mage.load(null);
                 }
-            } else if (externalPlayerData && (isPlayer || saveNonPlayerMages)){
+            } else if (externalPlayerData && (isPlayer || saveNonPlayerMages)) {
                 mage.setLoading(true);
             } else {
                 mage.load(null);
@@ -1699,16 +1699,19 @@ public class MagicController implements MageController {
         return defaultWandPath;
     }
 
+    protected boolean isValid(Mage mage) {
+        // Players are handled by logout
+        if (mage.isPlayer() || mage.isValid()) return true;
+        mageQuit(mage);
+        return false;
+    }
+
     protected void savePlayerData(Collection<MageData> stores) {
         try {
             for (Entry<String, Mage> mageEntry : mages.entrySet()) {
                 Mage mage = mageEntry.getValue();
                 if (!mage.isPlayer() && !saveNonPlayerMages)
                 {
-                    if (!mage.isValid())
-                    {
-                        forgetMages.add(mageEntry.getKey());
-                    }
                     continue;
                 }
 
@@ -1720,23 +1723,13 @@ public class MagicController implements MageController {
                 } else {
                     getLogger().info("Skipping save of mage, already loading: " + mage.getName());
                 }
-
-                // Check for players we can forget
-                if (!mage.isValid())
-                {
-                    info("Forgetting Offline mage " + mage.getName());
-                    forgetMages.add(mageEntry.getKey());
-                }
             }
         } catch (Exception ex) {
             ex.printStackTrace();
         }
 
         // Forget players we don't need to keep in memory
-        for (String forgetId : forgetMages) {
-            mages.remove(forgetId);
-        }
-        forgetMages.clear();
+        forgetMages();
     }
 
     public void save()
@@ -2625,12 +2618,13 @@ public class MagicController implements MageController {
         playerQuit(mage, null);
     }
 
-    protected void playerQuit(Mage mage, MageDataCallback callback) {
+    protected void mageQuit(Mage mage) {
+        mageQuit(mage, null);
+    }
 
-		// Make sure they get their portraits re-rendered on relogin.
-        maps.resend(mage.getName());
-
-		com.elmakers.mine.bukkit.api.block.UndoQueue undoQueue = mage.getUndoQueue();
+    protected void mageQuit(Mage mage, MageDataCallback callback) {
+        // Immediately rollback any auto-undo spells
+        com.elmakers.mine.bukkit.api.block.UndoQueue undoQueue = mage.getUndoQueue();
         if (undoQueue != null) {
             int undid = undoQueue.undoScheduled();
             if (undid != 0) {
@@ -2652,9 +2646,9 @@ public class MagicController implements MageController {
         mage.deactivate();
 
         // Unregister
-        if (!externalPlayerData) {
-            removeMage(mage);
-        } else if (mage instanceof com.elmakers.mine.bukkit.magic.Mage){
+        if (!externalPlayerData || !mage.isPlayer()) {
+            forgetMage(mage);
+        } else if (mage instanceof com.elmakers.mine.bukkit.magic.Mage) {
             ((com.elmakers.mine.bukkit.magic.Mage)mage).setLoading(true);
         }
 
@@ -2667,6 +2661,13 @@ public class MagicController implements MageController {
         {
             callback.run(null);
         }
+    }
+
+    protected void playerQuit(Mage mage, MageDataCallback callback) {
+		// Make sure they get their portraits re-rendered on relogin.
+        maps.resend(mage.getName());
+
+        mageQuit(mage, callback);
 	}
 
     @Override
@@ -2963,7 +2964,7 @@ public class MagicController implements MageController {
 	}
 	
 	public void forgetMage(Mage mage) {
-		forgetMages.add(mage.getId());
+        forgetMages.add(mage.getId());
 	}
 
     public Automaton getAutomaton(Block block) {

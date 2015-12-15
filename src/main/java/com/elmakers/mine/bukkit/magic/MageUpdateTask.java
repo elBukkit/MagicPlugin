@@ -15,6 +15,9 @@ public class MageUpdateTask implements Runnable {
         controller.forgetMages();
         Collection<com.elmakers.mine.bukkit.api.magic.Mage> mages = controller.getMages();
         for (com.elmakers.mine.bukkit.api.magic.Mage mage : mages) {
+            if (!controller.isValid(mage)) {
+                continue;
+            }
             if (mage instanceof com.elmakers.mine.bukkit.magic.Mage) {
                 try {
                     ((com.elmakers.mine.bukkit.magic.Mage) mage).tick();

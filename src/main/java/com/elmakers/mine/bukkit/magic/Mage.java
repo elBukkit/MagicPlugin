@@ -1700,7 +1700,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         // Automata theoretically handle themselves by sticking around for a while
         // And forcing themselves to be forgotten
         // but maybe some extra safety here would be good?
-        return true;
+        return entity.isValid();
     }
 
     @Override
