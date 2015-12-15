@@ -196,6 +196,9 @@ public class ActionHandler implements Cloneable
             ActionBatch batch = new ActionBatch(context, this);
             if (!context.getMage().addBatch(batch)) {
                 handlerResult = SpellResult.FAIL;
+
+                finish(context);
+                context.finish();
             }
         }
         else
