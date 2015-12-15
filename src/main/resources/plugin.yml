@@ -157,6 +157,8 @@ commands:
         /magic list tasks
         /magic list schematics
         /magic list entities
+        /magic list blocks
+        /magic list mages
   "magic give":
     description: Give players wands and other magic items
     permission: Magic.commands.magic.give
@@ -526,6 +528,14 @@ permissions:
     default: op
   Magic.commands.magic.list.schematics:
     description: Player may inspect loaded schematics
+    type: boolean
+    default: op
+  Magic.commands.magic.list.blocks:
+    description: Player may inspect registered blocks
+    type: boolean
+    default: op
+  Magic.commands.magic.list.mages:
+    description: Player may inspect registered mages
     type: boolean
     default: op
   Magic.commands.magic.clean:

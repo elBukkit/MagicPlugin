@@ -472,6 +472,18 @@ public class MagicCommandExecutor extends MagicMapExecutor {
 			return true;
 		}
 
+		if (listCommand.equalsIgnoreCase("mages")) {
+			for (Mage mage : api.getController().getMages())
+			{
+				Entity mageEntity = mage.getEntity();
+				String mageType = mageEntity == null ? "Non-Entity" : mageEntity.getType().name();
+				sender.sendMessage(ChatColor.AQUA + "Mage id " + ChatColor.YELLOW + mage.getId()
+						+ ChatColor.GRAY + " (" + mage.getName() + ") " + ChatColor.AQUA + " of type "
+						+ ChatColor.DARK_AQUA + mageType + ChatColor.AQUA);
+			}
+			return true;
+		}
+
 		if (listCommand.equalsIgnoreCase("entities")) {
 			World world = Bukkit.getWorlds().get(0);
 			NumberFormat formatter = new DecimalFormat("#0.0");
@@ -800,6 +812,8 @@ public class MagicCommandExecutor extends MagicMapExecutor {
 				addIfPermissible(sender, options, "Magic.commands.magic.list", "schematics");
 				addIfPermissible(sender, options, "Magic.commands.magic.list", "entities");
 				addIfPermissible(sender, options, "Magic.commands.magic.list", "tasks");
+				addIfPermissible(sender, options, "Magic.commands.magic.list", "blocks");
+				addIfPermissible(sender, options, "Magic.commands.magic.list", "mages");
             } else if (args[0].equalsIgnoreCase("give") || args[0].equalsIgnoreCase("worth") || args[0].equalsIgnoreCase("sell")) {
 				options.add("wand");
 				options.add("material");
