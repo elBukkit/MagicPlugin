@@ -2324,6 +2324,12 @@ public class MagicController implements MageController {
 		}
 
         savePlayerData = properties.getBoolean("save_player_data", true);
+        externalPlayerData = properties.getBoolean("external_player_data", false);
+        if (externalPlayerData) {
+            getLogger().info("Magic is expecting player data to be loaded from an external source");
+        } else if (!savePlayerData) {
+            getLogger().info("Magic player data saving is disabled");
+        }
         asynchronousSaving = properties.getBoolean("save_player_data_asynchronously", true);
 
         ConfigurationSection mageDataStore = properties.getConfigurationSection("player_data_store");
