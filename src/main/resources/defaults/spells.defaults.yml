@@ -5921,6 +5921,7 @@ laser:
         increment_data: false
         check_destructible: true
         destructible: destructible_mining
+        transparent: transparent_to_construction
         brush: air
         radius: 1
         undo: 15000
