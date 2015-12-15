@@ -3,6 +3,7 @@
 ## 5.5
 
  - Added Blink Level 4, can now blink up into the air
+ - Renamed "Disc" to "Platform"
 
 ## 5.4.1
 

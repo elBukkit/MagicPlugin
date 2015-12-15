@@ -983,8 +983,9 @@ reflect|4:
     costs:
         mana: 60
 
-disc:
-    upgrade_required_path: master
+platform:
+    alias: disc
+    upgrade_required_path: apprentice
     upgrade_required_casts: 50
     icon: ink_sack:8
     icon_url: http://textures.minecraft.net/texture/48e69c5a76182441d98326284e9342c1dac2a786ba47e8226884f65594c3bd3a
@@ -1005,7 +1006,7 @@ disc:
     parameters:
         allow_max_range: true
         range: 8
-        radius: 2
+        radius: 1
         transparent: transparent_to_construction
         destructible: destructible_replace
         undo: 20000
@@ -1016,13 +1017,19 @@ disc:
     costs:
         mana: 60
 
-disc|2:
-    upgrade_required_path: architect
+platform|2:
+    upgrade_required_path: master
     upgrade_required_casts: 50
     parameters:
-        radius: 3
+        radius: 1.5
 
-disc|3:
+platform|3:
+    upgrade_required_path: engineer
+    upgrade_required_casts: 50
+    parameters:
+        radius: 2
+
+platform|4:
     parameters:
         brush: ""
 
