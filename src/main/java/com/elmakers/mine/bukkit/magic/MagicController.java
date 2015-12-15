@@ -178,8 +178,9 @@ public class MagicController implements MageController {
 
             // Check for existing data file
             // For now we only do async loads for Players
+            boolean isPlayer = (commandSender instanceof Player);
             if (savePlayerData && mageDataStore != null) {
-                if (asynchronousSaving && commandSender instanceof Player) {
+                if (asynchronousSaving && isPlayer) {
                     mage.setLoading(true);
                     plugin.getServer().getScheduler().runTaskAsynchronously(plugin, new Runnable() {
                         @Override
@@ -218,7 +219,7 @@ public class MagicController implements MageController {
                 } else {
                     mage.load(null);
                 }
-            } else if (externalPlayerData){
+            } else if (externalPlayerData && (isPlayer || saveNonPlayerMages)){
                 mage.setLoading(true);
             } else {
                 mage.load(null);
