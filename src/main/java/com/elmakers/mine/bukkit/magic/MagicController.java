@@ -165,6 +165,12 @@ public class MagicController implements MageController {
         if (!loaded) {
             return null;
         }
+
+        if (commandSender instanceof Player && !((Player)commandSender).isOnline())
+        {
+            getLogger().warning("Player data for " + mageId + " (" + ((Player)commandSender).getName() + ") loaded while offline!");
+        }
+
         if (!mages.containsKey(mageId)) {
             final com.elmakers.mine.bukkit.magic.Mage mage = new com.elmakers.mine.bukkit.magic.Mage(mageId, this);
 
