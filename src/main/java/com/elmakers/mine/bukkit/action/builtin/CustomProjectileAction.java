@@ -66,6 +66,8 @@ public class CustomProjectileAction extends CompoundAction
     private boolean reverseDirection;
     private int blockHitLimit;
     private int entityHitLimit;
+    private int pitchMin;
+    private int pitchMax;
 
     protected Location launchLocation;
     protected long flightTime;
@@ -149,7 +151,9 @@ public class CustomProjectileAction extends CompoundAction
         int hitLimit = parameters.getInt("hit_count", 1);
         entityHitLimit = parameters.getInt("entity_hit_count", hitLimit);
         blockHitLimit = parameters.getInt("block_hit_count", hitLimit);
-
+        pitchMin = parameters.getInt("pitch_min", 90);
+        pitchMax = parameters.getInt("pitch_max", -90);
+        
         range *= context.getMage().getRangeMultiplier();
 
         speed = parameters.getDouble("speed", 1);
@@ -258,6 +262,21 @@ public class CustomProjectileAction extends CompoundAction
                 projectileLocation = context.getEyeLocation().clone();
             } else {
                 projectileLocation = context.getLocation().clone();
+            }
+            
+            /* This feels confusing however...
+             * Looking straight down in Minecraft gives a pitch of 90
+             * While looking straight up is a pitch of -90
+             * We don't want to normalize these values as other functions need the non-normalize numbers.
+             * So if the projectile pitch value is found to be higher or lower than the min or max, it's set to the min or max respectively
+             */
+            if (pitchMin < projectileLocation.getPitch())
+            {
+                projectileLocation.setPitch(pitchMin);
+            } 
+            else if (pitchMax > projectileLocation.getPitch())
+            {
+                projectileLocation.setPitch(pitchMax);
             }
             launchLocation = projectileLocation.clone();
 
