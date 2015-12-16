@@ -6142,7 +6142,7 @@ recall:
              offset: 0,-1,0
     parameters:
         delay: 5000
-        cancel_on_damage: true
+        cancel_on_damage: 1
         allow_spawn: false
         allow_marker: false
         allow_death: false
