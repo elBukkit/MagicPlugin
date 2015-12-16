@@ -51,6 +51,11 @@ public class ActionContext implements Cloneable {
             effectiveParameters = new MemoryConfiguration();
             ConfigurationUtils.addConfigurations(effectiveParameters, baseParameters);
             effectiveParameters.set("actions", null);
+            String parametersKey = this.parameters == null ? null : this.parameters.getString("parameters");
+            ConfigurationSection overrideParameters = parametersKey == null || baseParameters == null ? null : ConfigurationUtils.getConfigurationSection(baseParameters, parametersKey);
+            if (overrideParameters != null) {
+                ConfigurationUtils.addConfigurations(effectiveParameters, overrideParameters);
+            }
             ConfigurationUtils.addConfigurations(effectiveParameters, this.parameters);
         }
 
