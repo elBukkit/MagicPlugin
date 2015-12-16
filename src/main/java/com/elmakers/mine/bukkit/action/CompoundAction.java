@@ -145,6 +145,10 @@ public abstract class CompoundAction extends BaseSpellAction
         addHandler("actions");
     }
 
+    protected ActionHandler getHandler(String handlerKey) {
+        return handlers.get(handlerKey);
+    }
+
     protected ActionHandler addHandler(String handlerKey) {
         ActionHandler handler = handlers.get(handlerKey);
         if (handler != null) {

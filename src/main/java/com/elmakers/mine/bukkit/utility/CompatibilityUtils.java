@@ -71,6 +71,7 @@ public class CompatibilityUtils extends NMSUtils {
     public static boolean isDamaging = false;
     public final static int MAX_ENTITY_RANGE = 72;
     private final static Map<EntityType, BoundingBox> hitboxes = new HashMap<EntityType, BoundingBox>();
+    private final static Map<EntityType, Double> headSizes = new HashMap<EntityType, Double>();
     private final static Map<World.Environment, Integer> maxHeights = new HashMap<World.Environment, Integer>();
     private static double hitboxScale = 1.0;
     private static double hitboxScaleY = 1.0;
@@ -711,6 +712,38 @@ public class CompatibilityUtils extends NMSUtils {
         CompatibilityUtils.hitboxSneakScaleY = hitboxSneakScaleY;
     }
 
+    public static boolean isHeadshot(Entity target, Location hitLocation) {
+        if (target == null) return false;
+        Double headSize = headSizes.get(target.getType());
+        if (headSize == null) return false;
+        Location eyeLocation = null;
+        if (target instanceof LivingEntity) {
+            eyeLocation = ((LivingEntity)target).getEyeLocation();
+        } else {
+            eyeLocation = target.getLocation();
+        }
+        if (!eyeLocation.getWorld().equals(hitLocation.getWorld())) return false;
+        double distance = Math.abs(hitLocation.getY() - eyeLocation.getY());
+        return distance <= headSize;
+    }
+
+    public static void configureHeadSizes(ConfigurationSection config) {
+        headSizes.clear();
+        Collection<String> keys = config.getKeys(false);
+        for (String key : keys) {
+            try {
+                double size = config.getDouble(key);
+                EntityType entityType = EntityType.valueOf(key.toUpperCase());
+                if (size > 0 && entityType != null)
+                {
+                    headSizes.put(entityType, size);
+                }
+            } catch (Exception ex) {
+                org.bukkit.Bukkit.getLogger().log(Level.WARNING, "Invalid entity type in head size definition: " + key, ex);
+            }
+        }
+    }
+
     public static void configureHitboxes(ConfigurationSection config) {
         hitboxes.clear();
         Collection<String> keys = config.getKeys(false);
@@ -731,7 +764,7 @@ public class CompatibilityUtils extends NMSUtils {
                     hitboxes.put(entityType, bb);
                 }
             } catch (Exception ex) {
-                org.bukkit.Bukkit.getLogger().log(Level.WARNING, "Invalid entity type: " + key, ex);
+                org.bukkit.Bukkit.getLogger().log(Level.WARNING, "Invalid entity type in hitbox definition: " + key, ex);
             }
         }
     }
