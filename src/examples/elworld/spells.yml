@@ -679,3 +679,245 @@ transformtest:
             x: 0.02 * t
             y: 3 * cos(t)
             z: 2 * sin(t * 2)
+
+
+droobillious:
+    icon_url: http://textures.minecraft.net/texture/567a2a143c95290b2e2bd9145ec121d5e5a374df6eceba9cce9ccc758818
+    icon: ink_sack:1
+    category: damage
+    actions:
+        cast:
+        - class: CustomProjectile
+          actions:
+          - class: DamageAction
+          - class: PotionEffectAction
+          headshot:
+          - class: Damage
+            parameters: headshot_parameters
+    effects:
+        cast:
+        -  class: EffectSingle
+           custom_sound: magic.vermillious
+           sound_pitch: 2
+           location: origin
+        tick:
+        - particle: redstone
+          color: AC58FA
+          location: target
+        hit:
+        -  class: EffectSingle
+           custom_sound: magic.hit
+           sound_pitch: 2
+           location: both
+        -  class: EffectSingle
+           target_offset: 0,0,0
+           location: target
+           effectlib:
+             class: SphereEffect
+             iterations: 1
+             period: 1
+             particle: block_crack
+             particles: 30
+             radius: 0.5
+        backfire:
+        -  class: EffectSingle
+           custom_sound: magic.vermillious
+           sound_pitch: 2
+           location: origin
+           entity_effect: hurt
+        headshot:
+        -  class: EffectSingle
+           sound: enderdragon_hit
+           sound_volume: 4
+           sound_pitch: 2
+           location: origin
+           requires_entity_target: true
+        -  class: EffectSingle
+           sound: enderdragon_hit
+           sound_volume: .5
+           location: target
+           color: AC58FA
+           firework: burst
+        -  class: EffectSingle
+           target_offset: 0,.3,0
+           location: target
+           effectlib:
+             class: SphereEffect
+             iterations: 1
+             period: 1
+             particle: block_crack
+             material: lapis_ore
+             particles: 30
+             radius: 0.5
+    parameters:
+        target: other
+        speed: 10
+        interval: 1
+        size: 1
+        bypass_weakness: false
+        fizzle_chance: 0
+        range: 45
+        target_type: LivingEntity
+        player_damage: 3
+        entity_damage: 3
+        cooldown: 4000
+        target_breakables: 0
+        bypass_backfire: false
+        headshot_parameters:
+          player_damage: 5
+          entity_damage: 5
+    costs:
+        mana: 30
+
+
+missile:
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: magic.zap_crack
+           location: origin
+           color_override: color
+           effectlib:
+             class: ConeEffect
+             iterations: 10
+             particle: redstone
+             lengthGrow: 0.1
+             radiusGrow: 0.003
+             updateLocations: false
+             updateDirections: false
+        tick:
+        - particle: redstone
+          location: target
+        hit_block:
+        -  class: EffectSingle
+           location: target
+           particle: block_crack
+           particle_count: 50
+           particle_offset_x: 0.2
+           particle_offset_y: 1
+           particle_offset_z: 0.2
+        hit_entity:
+        -  class: EffectSingle
+           location: target
+           particle: block_crack
+           material: redstone_block
+           particle_count: 30
+           particle_offset_x: 0.2
+           particle_offset_y: 0.2
+           particle_offset_z: 0.2
+        hit:
+        -  class: EffectSingle
+           location: target
+           particle: fireworks_spark
+           particle_count: 20
+           particle_offset_x: 0.3
+           particle_offset_y: 0.5
+           particle_offset_z: 0.3
+           sound: magic.zap
+           sound_volume: .3
+           particle_data: 0.3
+        headshot:
+        -  class: EffectSingle
+           location: target
+           particle: fireworks_spark
+           particle_count: 2
+           particle_offset_y: 0.5
+           particle_offset_x: 0.5
+           particle_offset_z: 1.5
+           sound: magic.zap
+           sound_volume: .3
+        -  class: EffectSingle
+           sound: slime_attack
+           sound_pitch: 0.8
+           location: target
+           effectlib:
+            class: AnimatedBallEffect
+            particles: 50
+            particlesPerIteration: 4
+            iterations: 10
+            particle: block_crack
+            particleCount: 20
+            material: redstone_block
+            size: 0.1
+            yOffset: 0
+
+
+railgun:
+    brush_effects: false
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: magic.zap_crack
+           sound_pitch: 1.5
+           location: origin
+           color_override: color
+           effectlib:
+             class: VortexEffect
+             iterations: 100
+             particle: redstone
+             radius: 0.2
+             grow: 0.5
+             updateLocations: false
+             updateDirections: false
+        tick:
+        - particle: fireworks_spark
+          location: target
+        - particle: redstone
+          location: target
+          color: FF8800
+        hit_entity:
+        -  class: EffectSingle
+           location: target
+           particle: block_crack
+           material: redstone_block
+           particle_count: 40
+           particle_offset_x: 0.3
+           particle_offset_y: 0.3
+           particle_offset_z: 0.3
+        hit:
+        -  class: EffectSingle
+           location: target
+           particle: fireworks_spark
+           particle_count: 20
+           particle_offset_x: 0.4
+           particle_offset_y: 0.5
+           particle_offset_z: 0.4
+           sound: magic.zap
+           sound_pitch: 1.2
+           sound_volume: 0.5
+           particle_data: 0.4
+        hit_block:
+        -  class: EffectSingle
+           effect: step_sound
+           location: target
+        -  class: EffectSingle
+           location: target
+           particle: block_crack
+           particle_count: 50
+           particle_offset_x: 0.8
+           particle_offset_y: 1
+           particle_offset_z: 0.8
+        headshot:
+        -  class: EffectSingle
+           location: target
+           particle: fireworks_spark
+           particle_count: 2
+           particle_offset_y: 0.5
+           particle_offset_x: 0.5
+           particle_offset_z: 1.5
+           sound: magic.zap
+           sound_volume: .3
+        -  class: EffectSingle
+           sound: slime_attack
+           sound_pitch: 0.8
+           location: target
+           effectlib:
+            class: AnimatedBallEffect
+            particles: 50
+            particlesPerIteration: 8
+            iterations: 15
+            particle: block_crack
+            particleCount: 20
+            material: redstone_block
+            size: 0.3
+            yOffset: 0

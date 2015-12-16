@@ -103,7 +103,7 @@ public class CastCommandExecutor extends MagicTabExecutor {
                 mage = controller.getMage(mageId, mageName);
             }
 
-            if (mage != null) {
+            if (mage != null && !mage.isLoading()) {
                 String[] castParameters = Arrays.copyOfRange(args, 1, args.length);
                 if (castParameters.length < 1) {
                     if (sender != null) sender.sendMessage("Invalid command line, expecting more parameters");
