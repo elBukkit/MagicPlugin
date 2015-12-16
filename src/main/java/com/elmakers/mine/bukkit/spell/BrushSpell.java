@@ -20,6 +20,7 @@ public abstract class BrushSpell extends BlockSpell {
     protected MaterialBrush brush;
     protected boolean hasBrush = false;
     protected boolean usesBrush = true;
+    protected boolean usesBrushEffects = true;
 
     public final static String[] BRUSH_PARAMETERS = {
         "brushmod", "brush", "obx", "oby", "obz", "obworld", "btarget", "brushcolor", "preserve_data"
@@ -92,6 +93,7 @@ public abstract class BrushSpell extends BlockSpell {
     {
         super.loadTemplate(node);
         usesBrush = node.getBoolean("uses_brush", usesBrush);
+        usesBrushEffects = node.getBoolean("brush_effects", true);
 
         ConfigurationSection parameters = node.getConfigurationSection("parameters");
         if (parameters != null)
@@ -132,6 +134,7 @@ public abstract class BrushSpell extends BlockSpell {
     @Override
     public com.elmakers.mine.bukkit.api.block.MaterialAndData getEffectMaterial()
     {
+        if (!usesBrush || !usesBrushEffects) return null;
         return brush != null ? brush : mage.getBrush();
     }
 
