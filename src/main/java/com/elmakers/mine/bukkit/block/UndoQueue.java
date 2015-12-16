@@ -31,7 +31,8 @@ public class UndoQueue implements com.elmakers.mine.bukkit.api.block.UndoQueue
         }
         addList.setMage(owner);
 
-        if (maxSize > 0 && size > maxSize)
+        int iterations = 100;
+        while (owner != null && !owner.isLoading() && maxSize > 0 && size > maxSize && iterations-- > 0)
         {
             UndoList expired = tail;
             if (expired != null)
