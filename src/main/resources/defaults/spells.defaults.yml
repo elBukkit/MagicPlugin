@@ -2559,11 +2559,6 @@ meteor:
              radius: 0.5
         hit:
         - class: EffectSingle
-          sound: successful_hit
-          sound_pitch: .5
-          location: origin
-          requires_entity_target: true
-        - class: EffectSingle
           location: target
           color: FE2E2E
           firework: ball_large
@@ -6569,28 +6564,58 @@ missile:
         tick:
         - particle: redstone
           location: target
+        hit_block:
+        -  class: EffectSingle
+           location: target
+           particle: block_crack
+           particle_count: 50
+           particle_offset_x: 0.2
+           particle_offset_y: 1
+           particle_offset_z: 0.2
+        hit_entity:
+        -  class: EffectSingle
+           location: target
+           particle: block_crack
+           material: redstone_block
+           particle_count: 30
+           particle_offset_x: 0.2
+           particle_offset_y: 0.2
+           particle_offset_z: 0.2
         hit:
         -  class: EffectSingle
+           location: target
+           particle: fireworks_spark
+           particle_count: 20
+           particle_offset_x: 0.3
+           particle_offset_y: 0.5
+           particle_offset_z: 0.3
            sound: magic.zap
            sound_volume: .3
-           location: target
-           color2: FF8800
-           firework: burst
+           particle_data: 0.3
         headshot:
         -  class: EffectSingle
+           location: target
+           particle: fireworks_spark
+           particle_count: 2
+           particle_offset_y: 0.5
+           particle_offset_x: 0.5
+           particle_offset_z: 1.5
            sound: magic.zap
            sound_volume: .3
-           location: target
-           color2: FF8800
-           firework: burst
         -  class: EffectSingle
            sound: slime_attack
            sound_pitch: 0.8
            location: target
            effectlib:
-            class: BleedEffect
-            iterations: 2
-            hurt: false
+            class: AnimatedBallEffect
+            particles: 50
+            particlesPerIteration: 4
+            iterations: 10
+            particle: block_crack
+            particleCount: 20
+            material: redstone_block
+            size: 0.1
+            yOffset: 0
     parameters:
         allow_max_range: true
         velocity: 200
@@ -6656,6 +6681,7 @@ railgun:
     category: combat
     worth_sp: 1000
     earns_sp: 10
+    brush_effects: false
     actions:
         cast:
         - class: CustomProjectile
@@ -6670,6 +6696,7 @@ railgun:
         cast:
         -  class: EffectSingle
            sound: magic.zap_crack
+           sound_pitch: 1.5
            location: origin
            color_override: color
            effectlib:
@@ -6686,28 +6713,62 @@ railgun:
         - particle: redstone
           location: target
           color: FF8800
+        hit_entity:
+        -  class: EffectSingle
+           location: target
+           particle: block_crack
+           material: redstone_block
+           particle_count: 40
+           particle_offset_x: 0.3
+           particle_offset_y: 0.3
+           particle_offset_z: 0.3
         hit:
         -  class: EffectSingle
-           sound: magic.zap
-           sound_volume: .3
            location: target
-           color2: FF8800
-           firework: star
+           particle: fireworks_spark
+           particle_count: 20
+           particle_offset_x: 0.4
+           particle_offset_y: 0.5
+           particle_offset_z: 0.4
+           sound: magic.zap
+           sound_pitch: 1.2
+           sound_volume: 0.5
+        hit_block:
+        -  class: EffectSingle
+           effect: step_sound
+           location: target
+        -  class: EffectSingle
+           location: target
+           particle: block_crack
+           particle_count: 50
+           particle_offset_x: 0.8
+           particle_offset_y: 1
+           particle_offset_z: 0.8
         headshot:
         -  class: EffectSingle
+           location: target
+           particle: fireworks_spark
+           particle_count: 2
+           particle_offset_y: 0.5
+           particle_offset_x: 0.5
+           particle_offset_z: 1.5
            sound: magic.zap
            sound_volume: .3
-           location: target
-           color2: FF8800
-           firework: star
+           particle_data: 0.4
         -  class: EffectSingle
            sound: slime_attack
            sound_pitch: 0.8
            location: target
            effectlib:
-            class: BleedEffect
-            iterations: 4
-            hurt: false
+            class: AnimatedBallEffect
+            particles: 50
+            particlesPerIteration: 8
+            iterations: 15
+            particle: block_crack
+            particleCount: 20
+            material: redstone_block
+            size: 0.3
+            yOffset: 0
     parameters:
         destructible: destructible,destructible2,destructible3
         allow_max_range: true

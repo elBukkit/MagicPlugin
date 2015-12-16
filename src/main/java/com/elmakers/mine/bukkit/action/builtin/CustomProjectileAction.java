@@ -519,6 +519,8 @@ public class CustomProjectileAction extends CompoundAction
                 entitiesHit.add(hitEntity.getUniqueId());
             }
             if (hitEntity != null) {
+                actionContext.playEffects("hit_entity");
+
                 if (hasActions("headshot") && CompatibilityUtils.isHeadshot(hitEntity, targetLocation)) {
                     actionContext.getMage().sendDebugMessage(ChatColor.GREEN + "   Projectile headshot", 3);
                     return headshot();
@@ -564,6 +566,8 @@ public class CustomProjectileAction extends CompoundAction
                 continueProjectile = true;
             }
         }
+
+        actionContext.playEffects("hit_block");
 
         if (!continueProjectile) {
             blockHitCount++;
