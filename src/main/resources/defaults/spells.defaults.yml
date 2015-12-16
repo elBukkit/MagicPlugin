@@ -359,8 +359,7 @@ blessing:
         effect_heal: 10
         effect_damage_resistance: 1
         effect_fire_resistance: 1
-        effect_saturation: 5
-        duration: 10000
+        duration: 5000
         radius: 8
         target_self: true
         cooldown: 30000
@@ -6775,7 +6774,7 @@ railgun:
         velocity: 200
         range: 64
         hitbox: true
-        block_hit_count: 2
+        block_hit_count: 4
         entity_hit_count: 5
         target_type: LivingEntity
         player_damage: 6
