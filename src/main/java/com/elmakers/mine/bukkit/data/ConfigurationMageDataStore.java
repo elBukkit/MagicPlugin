@@ -92,16 +92,19 @@ public abstract class ConfigurationMageDataStore implements MageDataStore {
             saveFile.set("undo", nodeList);
         }
         ConfigurationSection spellNode = saveFile.createSection("spells");
-        for (SpellData spell : mage.getSpellData()) {
-            ConfigurationSection node = spellNode.createSection(spell.getKey());
-            node.set("cast_count", spell.getCastCount());
-            node.set("last_cast", spell.getLastCast());
-            node.set("last_earn", spell.getLastEarn());
-            node.set("cooldown_expiration", spell.getCooldownExpiration());
-            node.set("active", spell.isActive() ? true : null);
-            ConfigurationSection extra = spell.getExtraData();
-            if (extra != null) {
-                ConfigurationUtils.addConfigurations(node, extra);
+        Collection<SpellData> spellData = mage.getSpellData();
+        if (spellData != null) {
+            for (SpellData spell : spellData) {
+                ConfigurationSection node = spellNode.createSection(spell.getKey());
+                node.set("cast_count", spell.getCastCount());
+                node.set("last_cast", spell.getLastCast());
+                node.set("last_earn", spell.getLastEarn());
+                node.set("cooldown_expiration", spell.getCooldownExpiration());
+                node.set("active", spell.isActive() ? true : null);
+                ConfigurationSection extra = spell.getExtraData();
+                if (extra != null) {
+                    ConfigurationUtils.addConfigurations(node, extra);
+                }
             }
         }
 
