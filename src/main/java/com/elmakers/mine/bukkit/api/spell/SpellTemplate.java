@@ -60,4 +60,6 @@ public interface SpellTemplate extends Comparable<SpellTemplate>, CostReducer {
     public String getUpgradeDescription();
     public ConfigurationSection getConfiguration();
     public void addLore(Messages messages, Mage mage, Wand wand, List<String> lore);
+    public boolean hasTag(String tag);
+    public boolean hasAnyTag(Collection<String> tags);
 }
