@@ -545,36 +545,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     }
 
     protected void onLoad(MageData data) {
-        loading = false;
-        Player player = getPlayer();
-        if (player != null) {
-            if (controller.isInventoryBackupEnabled()) {
-                if (restoreInventory != null) {
-                    controller.getLogger().info("Restoring saved inventory for player " + player.getName() + " - did the server not shut down properly?");
-                    if (activeWand != null) {
-                        activeWand.deactivate();
-                    }
-                    Inventory inventory = player.getInventory();
-                    for (int slot = 0; slot < restoreInventory.size(); slot++) {
-                        Object item = restoreInventory.get(slot);
-                        if (item instanceof ItemStack) {
-                            inventory.setItem(slot, (ItemStack) item);
-                        } else {
-                            inventory.setItem(slot, null);
-                        }
-                    }
-                    restoreInventory = null;
-                }
-                if (restoreExperience != null) {
-                    player.setExp(restoreExperience);
-                    restoreExperience = null;
-                }
-                if (restoreLevel != null) {
-                    player.setLevel(restoreLevel);
-                    restoreLevel = null;
-                }
-            }
-
+        try {
             Collection<SpellData> spellDataList = data == null ? null : data.getSpellData();
             if (spellDataList != null) {
                 for (SpellData spellData : spellDataList) {
@@ -585,29 +556,64 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                 }
             }
 
-            if (activeWand == null) {
-                String welcomeWand = controller.getWelcomeWand();
-                Wand wand = Wand.getActiveWand(controller, player);
-                if (wand != null) {
-                    wand.activate(this);
-                } else if (isNewPlayer && welcomeWand.length() > 0) {
-                    isNewPlayer = false;
-                    wand = Wand.createWand(controller, welcomeWand);
-                    if (wand != null) {
-                        wand.takeOwnership(player, false, false);
-                        giveItem(wand.getItem());
-                        controller.getLogger().info("Gave welcome wand " + wand.getName() + " to " + player.getName());
-                    } else {
-                        controller.getLogger().warning("Unable to give welcome wand '" + welcomeWand + "' to " + player.getName());
+            // Load player-specific data
+            Player player = getPlayer();
+            if (player != null) {
+                if (controller.isInventoryBackupEnabled()) {
+                    if (restoreInventory != null) {
+                        controller.getLogger().info("Restoring saved inventory for player " + player.getName() + " - did the server not shut down properly?");
+                        if (activeWand != null) {
+                            activeWand.deactivate();
+                        }
+                        Inventory inventory = player.getInventory();
+                        for (int slot = 0; slot < restoreInventory.size(); slot++) {
+                            Object item = restoreInventory.get(slot);
+                            if (item instanceof ItemStack) {
+                                inventory.setItem(slot, (ItemStack) item);
+                            } else {
+                                inventory.setItem(slot, null);
+                            }
+                        }
+                        restoreInventory = null;
+                    }
+                    if (restoreExperience != null) {
+                        player.setExp(restoreExperience);
+                        restoreExperience = null;
+                    }
+                    if (restoreLevel != null) {
+                        player.setLevel(restoreLevel);
+                        restoreLevel = null;
                     }
                 }
+
+                if (activeWand == null) {
+                    String welcomeWand = controller.getWelcomeWand();
+                    Wand wand = Wand.getActiveWand(controller, player);
+                    if (wand != null) {
+                        wand.activate(this);
+                    } else if (isNewPlayer && welcomeWand.length() > 0) {
+                        isNewPlayer = false;
+                        wand = Wand.createWand(controller, welcomeWand);
+                        if (wand != null) {
+                            wand.takeOwnership(player, false, false);
+                            giveItem(wand.getItem());
+                            controller.getLogger().info("Gave welcome wand " + wand.getName() + " to " + player.getName());
+                        } else {
+                            controller.getLogger().warning("Unable to give welcome wand '" + welcomeWand + "' to " + player.getName());
+                        }
+                    }
+                }
+
+                if (activeWand != null && restoreOpenWand && !activeWand.isInventoryOpen())
+                {
+                    activeWand.openInventory();
+                }
+                restoreOpenWand = false;
             }
 
-            if (activeWand != null && restoreOpenWand && !activeWand.isInventoryOpen())
-            {
-                activeWand.openInventory();
-            }
-            restoreOpenWand = false;
+            loading = false;
+        } catch (Exception ex) {
+            controller.getLogger().warning("Error finalizing player data for " + playerName + ": " + ex.getMessage());
         }
     }
 
