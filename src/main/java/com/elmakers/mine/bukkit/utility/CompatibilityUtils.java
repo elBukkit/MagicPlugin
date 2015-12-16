@@ -719,11 +719,6 @@ public class CompatibilityUtils extends NMSUtils {
         Location eyeLocation = null;
         if (target instanceof LivingEntity) {
             eyeLocation = ((LivingEntity)target).getEyeLocation();
-            if (target instanceof Player && ((Player)target).isSneaking()) {
-                double baseY = target.getLocation().getY();
-                double delta = eyeLocation.getY() - baseY;
-                eyeLocation.setY(baseY + delta * hitboxSneakScaleY);
-            }
         } else {
             eyeLocation = target.getLocation();
         }
