@@ -2685,6 +2685,11 @@ public class MagicController implements MageController {
         mages.remove(mage.getId());
     }
 
+    @Override
+    public void removeMage(String id) {
+        mages.remove(id);
+    }
+
     public void saveMage(Mage mage, boolean asynchronous)
     {
         saveMage(mage, asynchronous, null);
