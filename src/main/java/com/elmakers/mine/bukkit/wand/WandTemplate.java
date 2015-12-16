@@ -4,6 +4,7 @@ import com.elmakers.mine.bukkit.api.effect.EffectPlay;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.effect.EffectPlayer;
+import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
@@ -11,7 +12,9 @@ import org.bukkit.entity.Entity;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 public class WandTemplate {
     private final MageController controller;
@@ -19,6 +22,7 @@ public class WandTemplate {
     private final ConfigurationSection configuration;
     private Map<String, Collection<EffectPlayer>> effects = new HashMap<String, Collection<EffectPlayer>>();
     private Collection<EffectPlay> currentEffects = new ArrayList<EffectPlay>();
+    private Set<String> tags;
 
     public WandTemplate(MageController controller, String key, ConfigurationSection node) {
         this.key = key;
@@ -41,6 +45,13 @@ public class WandTemplate {
                     effects.put(effectKey, EffectPlayer.loadEffects(controller.getPlugin(), effectsNode, effectKey));
                 }
             }
+        }
+
+        Collection<String> tagList = ConfigurationUtils.getStringList(node, "tags");
+        if (tagList != null) {
+            tags = new HashSet<String>(tagList);
+        } else {
+            tags = null;
         }
     }
 
@@ -99,5 +110,9 @@ public class WandTemplate {
                 player.start(source, sourceEntity, null, null, null);
             }
         }
+    }
+
+    public boolean hasTag(String tag) {
+        return tags != null && tags.contains(tag);
     }
 }

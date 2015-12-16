@@ -612,6 +612,12 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		return this.template;
 	}
 
+	@Override
+	public boolean hasTag(String tag) {
+		WandTemplate template = getTemplate();
+		return template != null && template.hasTag(tag);
+	}
+
     public com.elmakers.mine.bukkit.api.wand.WandUpgradePath getPath() {
         String pathKey = path;
         if (pathKey == null || pathKey.length() == 0) {
@@ -4634,10 +4640,14 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         return level != null && level > 0 ? (float)level : 0;
     }
 
+	public WandTemplate getTemplate() {
+		if (template == null || template.isEmpty()) return null;
+		return getWandTemplate(template);
+	}
+
     public void playEffects(String effects) {
-        if (template == null || template.isEmpty() || mage == null) return;
-        WandTemplate wandTemplate = getWandTemplate(template);
-        if (wandTemplate != null) {
+        WandTemplate wandTemplate = getTemplate();
+        if (wandTemplate != null && mage != null) {
             wandTemplate.playEffects(mage, effects);
         }
     }
