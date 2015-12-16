@@ -874,14 +874,10 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
                 }
             }
             ItemStack itemStack = createSpellItem(spell, controller, getActivePlayer(), this, false);
-			if (itemStack == null)
+			if (itemStack != null)
             {
-				// controller.getPlugin().getLogger().warning("Unable to create spell icon for key " + loadedKey + " - someone has a dead spell");
-				itemStack = new ItemStack(item.getType(), 1);
-                CompatibilityUtils.setDisplayName(itemStack, loadedKey);
-                CompatibilityUtils.setMeta(itemStack, "spell", loadedKey);
+				addToInventory(itemStack, slot);
             }
-			addToInventory(itemStack, slot);
 		}
 		materialString = materialString.replaceAll("[\\]\\[]", "");
 		String[] materialNames = StringUtils.split(materialString, ",");
