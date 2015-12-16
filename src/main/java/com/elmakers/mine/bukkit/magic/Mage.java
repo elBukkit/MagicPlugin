@@ -243,7 +243,9 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         if (player == null || player != event.getEntity()) {
             return;
         }
-        lastDeathLocation = player.getLocation();
+        if (!player.hasMetadata("arena")) {
+            lastDeathLocation = player.getLocation();
+        }
         List<Listener> active = new ArrayList<Listener>(deathListeners);
         for (Listener listener : active) {
             callEvent(listener, event);
