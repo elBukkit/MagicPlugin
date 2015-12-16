@@ -3,6 +3,7 @@ package com.elmakers.mine.bukkit.spell;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -143,6 +144,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     private Color color;
     private String particle;
     private SpellCategory category;
+    private Set<String> tags;
     private BaseSpell template;
     private MageSpell upgrade;
     private long requiredUpgradeCasts;
@@ -871,6 +873,13 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         earns = node.getInt("earns_sp", 0);
         earnCooldown = node.getInt("earns_cooldown", 0);
         category = controller.getCategory(node.getString("category"));
+        Collection<String> tagList = ConfigurationUtils.getStringList(node, "tags");
+        if (tagList != null) {
+            tags = new HashSet<String>(tagList);
+        } else {
+            tags = null;
+        }
+
         costs = parseCosts(node.getConfigurationSection("costs"));
         activeCosts = parseCosts(node.getConfigurationSection("active_costs"));
         pvpRestricted = node.getBoolean("pvp_restricted", false);
@@ -1711,6 +1720,18 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     public final SpellCategory getCategory()
     {
         return category;
+    }
+
+    @Override
+    public boolean hasTag(String tag) {
+        if (category != null && category.getKey().equals(tag)) return true;
+        return tags != null && tags.contains(tag);
+    }
+
+    @Override
+    public boolean hasAnyTag(Collection<String> tagSet) {
+        if (category != null && tagSet.contains(category.getKey())) return true;
+        return tags != null && !Collections.disjoint(tagSet, tags);
     }
 
     @Override
