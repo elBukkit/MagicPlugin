@@ -6930,7 +6930,7 @@ sticky:
         target_type: LivingEntity
         player_damage: 4
         entity_damage: 8
-        target_breakables: 1
+        target_breakables: 0
         cooldown: 10000
         target_self_timeout: 2000
         attach_duration: 5000
@@ -7956,6 +7956,7 @@ lift:
         repeat: 50
         instant_block_effects: true
         cooldown: 2000
+        cancel_on_damage: 0.5
     costs:
         mana: 40
 
