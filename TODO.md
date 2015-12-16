@@ -1,5 +1,6 @@
 # TODO
 
+ - Is cancel-on-damage working? Recall seems to fire either way :\
  - Add tags to wand and spell templates
  - Alter *really* needs an update!
  - Spells will run partially but then not undo if the player's batch queue is full?

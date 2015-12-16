@@ -6542,8 +6542,7 @@ missile:
           - class: Damage
           headshot:
           - class: Damage
-            player_damage: 4
-            entity_damage: 6
+            parameters: headshot_parameters
     effects:
         cast:
         -  class: EffectSingle
@@ -6591,6 +6590,9 @@ missile:
         target_type: LivingEntity
         player_damage: 2
         entity_damage: 4
+        headshot_parameters:
+          player_damage: 4
+          entity_damage: 6
         target_breakables: 1
         cooldown: 1000
         reorient: false
@@ -6601,20 +6603,14 @@ missile|2:
     upgrade_required_path: student
     upgrade_required_casts: 30
     earns_cooldown: 600000
-    actions:
-        cast:
-        - class: CustomProjectile
-          actions:
-          - class: Damage
-          headshot:
-          - class: Damage
-            player_damage: 5
-            entity_damage: 8
     parameters:
         range: 32
         player_damage: 3
         entity_damage: 6
         target_breakables: 2
+        headshot_parameters:
+          player_damage: 5
+          entity_damage: 8
     costs:
         mana: 20
 
@@ -6622,37 +6618,25 @@ missile|3:
     upgrade_required_path: apprentice
     upgrade_required_casts: 50
     earns_cooldown: 900000
-    actions:
-        cast:
-        - class: CustomProjectile
-          actions:
-          - class: Damage
-          headshot:
-          - class: Damage
-            player_damage: 6
-            entity_damage: 10
     parameters:
         range: 48
         player_damage: 4
         entity_damage: 8
+        headshot_parameters:
+          player_damage: 6
+          entity_damage: 10
         target_breakables: 3
     costs:
         mana: 40
 
 missile|4:
-    actions:
-        cast:
-        - class: CustomProjectile
-          actions:
-          - class: Damage
-          headshot:
-          - class: Damage
-            player_damage: 7
-            entity_damage: 11
     parameters:
         range: 64
         player_damage: 4
         entity_damage: 10
+        headshot_parameters:
+          player_damage: 7
+          entity_damage: 11
         target_breakables: 4
     costs:
         mana: 50
@@ -6672,7 +6656,7 @@ railgun:
             ignore_result: true
           headshot:
           - class: Damage
-            damage: 15
+            parameters: headshot_parameters
     effects:
         cast:
         -  class: EffectSingle
@@ -6726,6 +6710,9 @@ railgun:
         target_type: LivingEntity
         player_damage: 6
         entity_damage: 8
+        headshot_parameters:
+          player_damage: 12
+          entity_damage: 20
         target_breakables: 1
         cooldown: 10000
         reorient: false
