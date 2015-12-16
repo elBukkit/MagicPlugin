@@ -162,16 +162,25 @@ public class MagicController implements MageController {
 
     protected Mage getMage(String mageId, String mageName, CommandSender commandSender, Entity entity) {
         Mage apiMage = null;
+        if (commandSender == null && entity == null) {
+            getLogger().warning("getMage called with no commandsender or entity");
+            Thread.dumpStack();
+            return null;
+        }
         if (!loaded) {
+            if (commandSender instanceof Player) {
+                getLogger().warning("Player data request for " + mageId + " (" + ((Player)commandSender).getName() + ") failed, plugin not loaded yet");
+            }
             return null;
         }
 
-        if (commandSender instanceof Player && !((Player)commandSender).isOnline())
-        {
-            getLogger().warning("Player data for " + mageId + " (" + ((Player)commandSender).getName() + ") loaded while offline!");
-        }
-
         if (!mages.containsKey(mageId)) {
+            if (commandSender instanceof Player && !((Player)commandSender).isOnline())
+            {
+                getLogger().warning("Player data for " + mageId + " (" + ((Player)commandSender).getName() + ") loaded while offline!");
+                Thread.dumpStack();
+            }
+
             final com.elmakers.mine.bukkit.magic.Mage mage = new com.elmakers.mine.bukkit.magic.Mage(mageId, this);
 
             mages.put(mageId, mage);
@@ -246,6 +255,10 @@ public class MagicController implements MageController {
                     mage.setPlayer((Player) commandSender);
                 }
             }
+        }
+        if (apiMage == null) {
+            getLogger().warning("getMage returning null mage for " + entity + " and " + commandSender);
+            Thread.dumpStack();
         }
         return apiMage;
     }
@@ -2658,10 +2671,7 @@ public class MagicController implements MageController {
         // Unregister
         if (!externalPlayerData || !mage.isPlayer()) {
             forgetMage(mage);
-        } else if (mage instanceof com.elmakers.mine.bukkit.magic.Mage) {
-            ((com.elmakers.mine.bukkit.magic.Mage)mage).setLoading(true);
         }
-
         if (!mage.isLoading() && (mage.isPlayer() || saveNonPlayerMages) && loaded)
         {
             // Save synchronously on shutdown
