@@ -2244,6 +2244,7 @@ gather:
     icon_url: http://textures.minecraft.net/texture/ff78194bb5fe3f374ca6a1727c04247b7bac331cff248bf642acc8e73647e
     icon: glowstone_dust
     category: master
+    tags: noduel
     worth_sp: 15
     show_undoable: false
     actions:
@@ -3222,6 +3223,7 @@ portal:
     icon_url: http://textures.minecraft.net/texture/65627b236b77eef7b4f31726ed5dbb8f3cdf29a7f8cf820fa34c6cae82f9
     icon: eye_of_ender
     category: master
+    tags: noduel
     class: PortalSpell
     worth_sp: 300
     effects:
@@ -3244,6 +3246,7 @@ phase:
     icon_url: http://textures.minecraft.net/texture/3186699cf52cb2f732b7948784b262a49d43a57c801368f776e3c9a88151d
     icon: eye_of_ender
     category: master
+    tags: noduel
     worth_sp: 200
     earns_sp: 2
     actions:
@@ -3339,6 +3342,7 @@ invincible:
     icon_url: http://textures.minecraft.net/texture/4a68c3ec585277cad3da3955fac44fbe7a7f98271fd529d26ce110d8884a8a
     icon: golden_apple
     category: master
+    tags: noduel
     worth_sp: 500
     actions:
         cast:
@@ -3360,6 +3364,7 @@ invincible:
         target: self
         duration: 5000
         cooldown: 15000
+        cooldown_mage: 10000
         transparent: transparent_to_construction
         effect_damage_resistance: 300
         effect_slow: 1
@@ -4685,6 +4690,7 @@ cloak:
     icon_url: http://textures.minecraft.net/texture/4a68c3ec585277cad3da3955fac44fbe7a7f98271fd529d26ce110d8884a8a
     icon: chainmail_chestplate
     category: master
+    tags: noduel
     worth_sp: 100
     earns_sp: 5
     actions:
@@ -6101,6 +6107,7 @@ recall:
     icon_url: http://textures.minecraft.net/texture/58c573cefdc8cc1b8c894340cb54ab343523ec2ffa0afc7536968391ae1e7
     icon: compass
     category: utility
+    tags: noduel
     worth_sp: 20
     earns_sp: 5
     cast_on_no_target: false
@@ -6195,6 +6202,7 @@ levitate:
     alias: fly
     icon: gold_boots
     category: master
+    tags: noduel
     class: LevitateSpell
     worth_sp: 700
     show_undoable: false
@@ -6239,6 +6247,7 @@ force:
     icon_url: http://textures.minecraft.net/texture/c7142a19d8c84389da74b69641542b8b2fafbed8f7515d1d36c63c96bd749
     icon: leash
     category: master
+    tags: noduel
     class: ForceSpell
     worth_sp: 1000
     effects:
@@ -7170,6 +7179,7 @@ kill:
     icon: skull_item:1
     icon_url: http://textures.minecraft.net/texture/71a235c48123b487e864fa21016e223ad4070c6d977b0a519f7dd743d39e47c
     category: master
+    tags: noduel
     worth_sp: 5000
     earns_sp: 13
     upgrade_required_path: master

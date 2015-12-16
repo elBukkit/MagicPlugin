@@ -71,18 +71,17 @@ public class WGCustomFlagsManager {
 
     public Boolean getCastPermission(RegionAssociable source, ApplicableRegionSet checkSet, SpellTemplate spell) {
         String spellKey = spell.getSpellKey().getBaseKey();
-        SpellCategory category = spell.getCategory();
 
         Set<String> blocked = checkSet.queryValue(source, BLOCKED_SPELLS);
         if (blocked != null && blocked.contains(spellKey)) return false;
         Set<String> blockedCategories = checkSet.queryValue(source, BLOCKED_SPELL_CATEGORIES);
-        if (blockedCategories != null && category != null && blockedCategories.contains(category.getKey())) return false;
+        if (blockedCategories != null && spell.hasAnyTag(blockedCategories)) return false;
 
         Set<String> allowed = checkSet.queryValue(source, ALLOWED_SPELLS);
         if (allowed != null && (allowed.contains("*") || allowed.contains(spellKey))) return true;
 
         Set<String> allowedCategories = checkSet.queryValue(source, ALLOWED_SPELL_CATEGORIES);
-        if (allowedCategories != null && category != null && allowedCategories.contains(category.getKey())) return true;
+        if (allowedCategories != null && spell.hasAnyTag(allowedCategories)) return true;
 
         if (blocked != null && blocked.contains("*")) return false;
 
