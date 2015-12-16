@@ -98,15 +98,15 @@ public class EffectLibManager {
                 parameters.set(colorOverrideName, hexColor);
             }
         }
-        MaterialAndData mat = player.getWorkingMaterial();
-        if (!parameters.contains("material"))
-        {
-            parameters.set("material", mat.getMaterial().name());
-            parameters.set("materialData", mat.getData());
-        }
 
         try {
             effect = effectManager.start(effectClass, parameters, origin, target, parameterMap);
+            if (!parameters.contains("material"))
+            {
+                MaterialAndData mat = player.getWorkingMaterial();
+                effect.material = mat.getMaterial();
+                effect.materialData = mat.getBlockData();
+            }
         } catch (Throwable ex) {
             Bukkit.getLogger().warning("Error playing effects of class: " + effectClass);
             ex.printStackTrace();
