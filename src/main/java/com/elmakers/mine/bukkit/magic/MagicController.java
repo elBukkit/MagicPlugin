@@ -2148,6 +2148,10 @@ public class MagicController implements MageController {
         {
             CompatibilityUtils.configureHitboxes(properties.getConfigurationSection("hitboxes"));
         }
+        if (properties.contains("head_sizes"))
+        {
+            CompatibilityUtils.configureHeadSizes(properties.getConfigurationSection("head_sizes"));
+        }
         if (properties.contains("max_height"))
         {
             CompatibilityUtils.configureMaxHeights(properties.getConfigurationSection("max_height"));

@@ -4,6 +4,8 @@
 
  - Added Blink Level 4, can now blink up into the air
  - Renamed "Disc" to "Platform"
+ - Added "headshot" functionality, some spells will have different effects when you hit the target's head:
+   Railgun, Magic Missile
 
 ## 5.4.1
 

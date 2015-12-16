@@ -1018,6 +1018,7 @@ platform:
         mana: 60
 
 platform|2:
+    alias: ""
     upgrade_required_path: master
     upgrade_required_casts: 50
     parameters:
@@ -5479,11 +5480,13 @@ blink|3:
         passthrough_range: 8
         cooldown: 5000
     costs:
-        mana: 200
+        mana: 150
 
 blink|4:
   parameters:
         safe: false
+  costs:
+      mana: 200
 
 absorb:
     icon: bucket
@@ -6537,6 +6540,10 @@ missile:
         - class: CustomProjectile
           actions:
           - class: Damage
+          headshot:
+          - class: Damage
+            player_damage: 4
+            entity_damage: 6
     effects:
         cast:
         -  class: EffectSingle
@@ -6561,6 +6568,21 @@ missile:
            location: target
            color2: FF8800
            firework: burst
+        headshot:
+        -  class: EffectSingle
+           sound: magic.zap
+           sound_volume: .3
+           location: target
+           color2: FF8800
+           firework: burst
+        -  class: EffectSingle
+           sound: slime_attack
+           sound_pitch: 0.8
+           location: target
+           effectlib:
+            class: BleedEffect
+            iterations: 2
+            hurt: false
     parameters:
         allow_max_range: true
         velocity: 200
@@ -6579,6 +6601,15 @@ missile|2:
     upgrade_required_path: student
     upgrade_required_casts: 30
     earns_cooldown: 600000
+    actions:
+        cast:
+        - class: CustomProjectile
+          actions:
+          - class: Damage
+          headshot:
+          - class: Damage
+            player_damage: 5
+            entity_damage: 8
     parameters:
         range: 32
         player_damage: 3
@@ -6591,6 +6622,15 @@ missile|3:
     upgrade_required_path: apprentice
     upgrade_required_casts: 50
     earns_cooldown: 900000
+    actions:
+        cast:
+        - class: CustomProjectile
+          actions:
+          - class: Damage
+          headshot:
+          - class: Damage
+            player_damage: 6
+            entity_damage: 10
     parameters:
         range: 48
         player_damage: 4
@@ -6600,6 +6640,15 @@ missile|3:
         mana: 40
 
 missile|4:
+    actions:
+        cast:
+        - class: CustomProjectile
+          actions:
+          - class: Damage
+          headshot:
+          - class: Damage
+            player_damage: 7
+            entity_damage: 11
     parameters:
         range: 64
         player_damage: 4
@@ -6621,6 +6670,9 @@ railgun:
           - class: Damage
           - class: ModifyBlock
             ignore_result: true
+          headshot:
+          - class: Damage
+            damage: 15
     effects:
         cast:
         -  class: EffectSingle
@@ -6647,7 +6699,22 @@ railgun:
            sound_volume: .3
            location: target
            color2: FF8800
-           firework: burst
+           firework: star
+        headshot:
+        -  class: EffectSingle
+           sound: magic.zap
+           sound_volume: .3
+           location: target
+           color2: FF8800
+           firework: star
+        -  class: EffectSingle
+           sound: slime_attack
+           sound_pitch: 0.8
+           location: target
+           effectlib:
+            class: BleedEffect
+            iterations: 4
+            hurt: false
     parameters:
         destructible: destructible,destructible2,destructible3
         allow_max_range: true
@@ -7756,7 +7823,7 @@ poison|3:
         effect_poison: 3
 
 lift:
-    icon_url: http://textures.minecraft.net/texture/ff418f5c02c74f8e54645d05897b954c568f22753eea5fb559b898322aa79
+    icon_url: http://textures.minecraft.net/texture/111de372969a39e34c3af5e6d2392e7876a1f13cf7a37d7513ad60c168bfd7b9
     icon: ink_sack:8
     category: utility
     worth_sp: 150
@@ -8952,8 +9019,7 @@ projectile:
         cast:
         - class: CustomProjectile
           actions:
-          - class: Damage
-          - class: ModifyBlock
+          - class: PotionEffect
     effects:
         cast:
         -  class: EffectSingle
@@ -9038,13 +9104,12 @@ projectile:
         range: 24
         hitbox: true
         target_type: LivingEntity
-        damage: 0
+        effect_slow: 5
+        duration: 5000
         target_breakables: 1
         reorient: false
         reflective: iron_block
         transparent: air
-        brush: stained_glass:9
-        check_destructible: false
         undo: 5000
 
 whip:

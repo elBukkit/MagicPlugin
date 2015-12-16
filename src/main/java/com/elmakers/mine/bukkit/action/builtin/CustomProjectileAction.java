@@ -46,6 +46,7 @@ public class CustomProjectileAction extends CompoundAction
     private int startDistance;
     private String projectileEffectKey;
     private String hitEffectKey;
+    private String headshotEffectKey;
     private String tickEffectKey;
     private double gravity;
     private double drag;
@@ -108,6 +109,12 @@ public class CustomProjectileAction extends CompoundAction
     }
 
     @Override
+    protected void addHandlers(Spell spell, ConfigurationSection parameters) {
+        addHandler("actions");
+        addHandler("headshot");
+    }
+
+    @Override
     public void prepare(CastContext context, ConfigurationSection parameters) {
         super.prepare(context, parameters);
         targeting.processParameters(parameters);
@@ -118,6 +125,7 @@ public class CustomProjectileAction extends CompoundAction
         startDistance = parameters.getInt("start", 0);
         range = parameters.getInt("range", 0);
         projectileEffectKey = parameters.getString("projectile_effects", "projectile");
+        headshotEffectKey = parameters.getString("headshot_effects", "headshot");
         hitEffectKey = parameters.getString("hit_effects", "hit");
         tickEffectKey = parameters.getString("tick_effects", "tick");
         gravity = parameters.getDouble("gravity", 0);
@@ -491,6 +499,12 @@ public class CustomProjectileAction extends CompoundAction
                 }
                 entitiesHit.add(hitEntity.getUniqueId());
             }
+            if (hitEntity != null) {
+                if (hasActions("headshot") && CompatibilityUtils.isHeadshot(hitEntity, targetLocation)) {
+                    actionContext.getMage().sendDebugMessage(ChatColor.GREEN + "   Projectile headshot", 3);
+                    return headshot();
+                }
+            }
             return hit();
         }
 
@@ -567,6 +581,15 @@ public class CustomProjectileAction extends CompoundAction
                 play.cancel();
             }
         }
+    }
+
+    protected SpellResult headshot() {
+        finishEffects();
+        if (actionContext == null) {
+            return SpellResult.NO_ACTION;
+        }
+        actionContext.playEffects(headshotEffectKey);
+        return startActions("headshot");
     }
 
     protected SpellResult hit() {

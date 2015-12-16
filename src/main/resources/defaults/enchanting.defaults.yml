@@ -272,7 +272,7 @@ apprentice:
       sandblast: 20,30,40
       phase: 0,0,1
       counterspell: 0,1,5
-      disc: 0,1,5
+      platform: 0,1,5
       rubberize: 2,10,20
       wound: 0,10,20
       harden: 0,0,15

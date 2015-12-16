@@ -623,6 +623,21 @@ hitbox_scale: 1.75
 hitbox_scale_y: 1.2
 hitbox_sneaking_scale_y: 0.75
 
+# This defines head radius in blocks, for entities that can have headshots
+head_sizes:
+  player: 0.2
+  villager: 0.2
+  skeleton: 0.2
+  zombie: 0.2
+  enderman: 0.2
+  giant: 4
+  pig_zombie: 0.2
+  blaze: 0.2
+  creeper: 0.2
+  witch: 0.2
+  snowman: 0.2
+  iron_golem: 0.2
+
 # Entity-specific hitboxes for targeting purposes
 # Magic uses the vanilla hitboxes by default, but you
 # can override that per-entity here.
