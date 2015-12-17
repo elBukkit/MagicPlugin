@@ -30,7 +30,7 @@ public class Target implements Comparable<Target>
     protected int livingEntityWeight = 3;
     protected int mageWeight = 5;
 
-    protected double closeDistanceSquared = 1;
+    protected double closeDistanceSquared = 0;
     protected double closeAngle = Math.PI / 2;
 
     private Location source;
@@ -411,6 +411,10 @@ public class Target implements Comparable<Target>
     public double getDistanceSquared()
     {
         return distanceSquared;
+    }
+
+    public double getAngle() {
+        return angle;
     }
 
     public Location getLocation()

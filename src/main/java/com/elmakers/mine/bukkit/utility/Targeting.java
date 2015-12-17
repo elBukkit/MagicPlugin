@@ -506,7 +506,14 @@ public class Targeting {
             {
                 if (mage != null && mage.getDebugLevel() > 5)
                 {
-                    mage.sendDebugMessage(ChatColor.DARK_GREEN + "Target " + ChatColor.GREEN + entity.getType() + ChatColor.DARK_GREEN + ": " + ChatColor.YELLOW + newScore.getScore());
+                    String message = ChatColor.DARK_GREEN + "Target " +
+                            ChatColor.GREEN + entity.getType() + ChatColor.DARK_GREEN +
+                            ": " + ChatColor.YELLOW + newScore.getScore()
+                            + ChatColor.DARK_GREEN + ", r2: " + ((int)newScore.getDistanceSquared());
+                    if (!useHitbox) {
+                        message += ChatColor.GREEN + ", a: " + newScore.getAngle();
+                    }
+                    mage.sendDebugMessage(message);
                 }
 
                 targets.add(newScore);
@@ -535,7 +542,7 @@ public class Targeting {
         hitboxBlockPadding = parameters.getDouble("hitbox_block_size", 0);
         rangeQueryPadding = parameters.getDouble("range_padding", 1);
         fov = parameters.getDouble("fov", 0.3);
-        closeRange = parameters.getDouble("close_range", 1);
+        closeRange = parameters.getDouble("close_range", 0);
         closeFOV = parameters.getDouble("close_fov", 0.5);
 
         distanceWeight = (float)parameters.getDouble("distance_weight", 1);
