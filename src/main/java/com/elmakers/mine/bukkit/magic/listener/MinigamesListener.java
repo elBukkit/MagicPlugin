@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.magic.listener;
 
+import au.com.mineauz.minigames.events.QuitMinigameEvent;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import org.bukkit.entity.Player;
@@ -17,6 +18,17 @@ public class MinigamesListener implements Listener {
 
     @EventHandler
     public void onJoinMinigame(JoinMinigameEvent event) {
+        Player player = event.getPlayer();
+        if (player == null) return;
+
+        Mage mage = controller.getRegisteredMage(player.getUniqueId().toString());
+        if (mage == null) return;
+
+        mage.deactivate();
+    }
+
+    @EventHandler
+    public void onQuitMinigame(QuitMinigameEvent event) {
         Player player = event.getPlayer();
         if (player == null) return;
 
