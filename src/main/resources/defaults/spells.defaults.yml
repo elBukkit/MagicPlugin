@@ -5920,11 +5920,11 @@ laser:
     parameters:
         target: block
         target_type: LivingEntity
-        fov: 0.3
+        fov: 0.1
         allow_max_range: true
-        player_damage: 0.2
+        player_damage: 0.5
         entity_damage: 1
-        target_count: 10
+        target_count: 5
         range: 32
         size: 4
         start_at_target: true
@@ -5948,7 +5948,7 @@ laser|2:
     parameters:
         radius: 2
         destructible: destructible,destructible2
-        player_damage: 0.5
+        player_damage: 1
         entity_damage: 2
         repeat: 12
 
