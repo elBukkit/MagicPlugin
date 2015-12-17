@@ -1,6 +1,6 @@
 # CHANGELOG
 
-## 5.5
+## 5.4.2
 
  - Added Blink Level 4, can now blink up into the air
  - Renamed "Disc" to "Platform"
