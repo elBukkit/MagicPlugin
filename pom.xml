@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.elmakers.mine.bukkit.plugins</groupId>
 	<artifactId>Magic</artifactId>
-	<version>5.4.2</version>
+	<version>5.5-SNAPSHOT</version>
 	<name>Magic Bukkit Plugin</name>
 	<url>http://mine.elmakers.com</url>
 	<dependencyManagement>
