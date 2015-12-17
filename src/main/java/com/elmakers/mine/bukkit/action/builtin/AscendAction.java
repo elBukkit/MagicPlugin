@@ -21,9 +21,16 @@ public class AscendAction extends BaseTeleportAction
 			targetLocation.setY(targetLocation.getY() + 1);
 		}
 		Location location = context.findPlaceToStand(targetLocation, verticalSearchDistance, true);
+		if (location == null && !safe)
+		{
+			location = context.getTargetLocation();
+			location.setPitch(targetLocation.getPitch());
+			location.setYaw(targetLocation.getYaw());
+			verticalSearchDistance = 0;
+		}
 		if (location != null) 
 		{
-            context.teleport(entity, location, verticalSearchDistance);
+			teleport(context, entity, location);
 			return SpellResult.CAST;
 		}
 		return SpellResult.NO_TARGET;

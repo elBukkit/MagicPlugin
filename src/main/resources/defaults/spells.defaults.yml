@@ -8374,7 +8374,7 @@ tweakshop:
           - item: wand|inventorymode
           - item: wand|chestmode
           - item: wand|cyclemode
-          - item: wand|inventorymode
+          - item: none
           - item: none
           - item: wand|quickcast_enable
           - item: wand|quickcast_disable

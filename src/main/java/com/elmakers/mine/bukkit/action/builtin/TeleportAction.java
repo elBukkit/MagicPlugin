@@ -20,7 +20,6 @@ public class TeleportAction extends BaseTeleportAction
     private boolean autoPassthrough = true;
     private int passthroughRange;
     private int ledgeSearchDistance = 2;
-	private boolean safe = true;
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters)
@@ -29,7 +28,6 @@ public class TeleportAction extends BaseTeleportAction
         Mage mage = context.getMage();
         ledgeSearchDistance = parameters.getInt("ledge_range", 2);
         autoPassthrough = parameters.getBoolean("allow_passthrough", true);
-		safe = parameters.getBoolean("safe", true);
         passthroughRange = (int)Math.floor(mage.getRangeMultiplier() * parameters.getInt("passthrough_range", DEFAULT_PASSTHROUGH_RANGE));
     }
 
@@ -187,7 +185,7 @@ public class TeleportAction extends BaseTeleportAction
 						ChatColor.BLUE + targetLocation.getBlockZ()
 				, 11);
 
-        context.teleport(entity, targetLocation, verticalSearchDistance, safe);
+        teleport(context, entity, targetLocation);
 		return SpellResult.CAST;
 	}
 
