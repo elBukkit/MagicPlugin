@@ -42,6 +42,7 @@ import com.elmakers.mine.bukkit.magic.listener.ExplosionController;
 import com.elmakers.mine.bukkit.magic.listener.HangingController;
 import com.elmakers.mine.bukkit.magic.listener.InventoryController;
 import com.elmakers.mine.bukkit.magic.listener.LoadSchematicTask;
+import com.elmakers.mine.bukkit.magic.listener.MinigamesListener;
 import com.elmakers.mine.bukkit.magic.listener.PlayerController;
 import com.elmakers.mine.bukkit.maps.MapController;
 import com.elmakers.mine.bukkit.metrics.CategoryCastPlotter;
@@ -732,7 +733,8 @@ public class MagicController implements MageController {
         }
 
         // Check for BlockPhysics
-        Plugin blockPhysicsPlugin = plugin.getServer().getPluginManager().getPlugin("BlockPhysics");
+        PluginManager pluginManager = plugin.getServer().getPluginManager();
+        Plugin blockPhysicsPlugin = pluginManager.getPlugin("BlockPhysics");
         if (blockPhysicsPlugin == null) {
             getLogger().info("BlockPhysics not found- install BlockPhysics for physics-based block effects");
         } else {
@@ -740,10 +742,17 @@ public class MagicController implements MageController {
             getLogger().info("Integrated with BlockPhysics, some spells will now use physics-based block effects");
         }
 
+        // Check for Minigames
+        Plugin minigamesPlugin = pluginManager.getPlugin("Minigames");
+        if (minigamesPlugin != null) {
+            pluginManager.registerEvents(new MinigamesListener(this), plugin);
+            getLogger().info("Integrated with Minigames plugin, wands will deactivate before joining a minigame");
+        }
+
         load();
 
         // Check for LibsDisguise
-        Plugin libsDisguisePlugin = plugin.getServer().getPluginManager().getPlugin("LibsDisguises");
+        Plugin libsDisguisePlugin = pluginManager.getPlugin("LibsDisguises");
         if (libsDisguisePlugin == null) {
             getLogger().info("LibsDisguises not found");
         } else {
@@ -758,7 +767,7 @@ public class MagicController implements MageController {
         }
 
         // Vault integration is handled internally in MagicLib
-        Plugin vaultPlugin = plugin.getServer().getPluginManager().getPlugin("Vault");
+        Plugin vaultPlugin = pluginManager.getPlugin("Vault");
         if (vaultPlugin == null) {
             getLogger().info("Vault not found, virtual economy unavailable");
         } else {
@@ -770,7 +779,7 @@ public class MagicController implements MageController {
         }
 
         // Try to link to Essentials:
-        Plugin essentials = plugin.getServer().getPluginManager().getPlugin("Essentials");
+        Plugin essentials = pluginManager.getPlugin("Essentials");
         hasEssentials = essentials != null;
         if (hasEssentials) {
             if (warpController.setEssentials(essentials)) {

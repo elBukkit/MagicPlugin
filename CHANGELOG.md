@@ -7,6 +7,7 @@
  - Added "headshot" functionality, some spells will have different effects when you hit the target's head:
    Railgun, Magic Missile
  - Added a completely separate progression path for the Master Sword (Warrior->Squire->Soldier->Knight)
+ - Added Minigames plugin integration to prevent issues with storing inventories when going to a minigame
 
 ## 5.4.1
 
