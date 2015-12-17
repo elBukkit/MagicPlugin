@@ -644,54 +644,107 @@ architect:
 # Have a separate enchanting path.
 #
 
+#
+# Wand progression
+# beginner -> student -> apprentice -> master
+#
 battle:
-    hidden: true
-    inherit: master
-    property_count:
-      0: 100, 100, 50
-      1: 50,  100, 100
-      2: 10,  50,  75
-      3: 0,   0,   50
-    max_protection: 0.9
-    protection:
-      0^1: 100, 100,  90
-      0^2: 0,     5,  10
-      0^3: 0 ,    1,  5
-      0^4: 0 ,    0,  1
-    max_protection_falling: 1
-    protection_falling:
-      0^1: 100,100,90
-      0^2: 1,  10, 20
-      0^3: 0 , 15, 15
-      0^4: 0 ,  0, 10
-    max_protection_fire: 0.9
-    protection_fire:
-      0^1: 100,100,90
-      0^2: 1,  10, 20
-      0^3: 0 , 15, 15
-      0^4: 0 ,  0, 10
-    max_protection_explosions: 0.9
-    protection_explosions:
-      0^1: 100,100,90
-      0^2: 1,  10, 20
-      0^3: 0 , 15, 15
-      0^4: 0 ,  0, 10
-    max_mana_regeneration: 90
-    mana_regeneration:
-      1: 100, 30, 5
-      2: 20, 30, 40
-      3: 0 , 10, 10
-      5: 0 ,  0, 1
-    max_mana: 400
-    mana_max:
-      5:  100,10,  0
-      10: 20, 30, 50
-      15: 5 , 20, 30
-      20: 0 , 0,   5
-    spell_count:
-      1: 100, 20,  0
-      2: 0,   50,  10
-      3: 0,   10,  90
+    upgrade: squire
+    upgrade_item: squire_upgrade
+    inherit: default
+    max_mana_regeneration: 10
+    max_mana: 100
+    mana_regeneration: 1
+    mana_max: 2
+    spell_count: 1
+    spells:
+      missile: 100,90,80
+      arrow: 0,20,10
+      cure: 1,5,10
+      fireball: 0,0,80
+      push: 0,20,40
+      pull: 10,20,40
+      blind: 0,1,5
+      reflect: 0,0,5
+      stun: 0,5,15
+      poison: 5,10,20
+      fire: 50,70,60
+      frost: 80,70,50
+
+squire:
+    upgrade: soldier
+    upgrade_item: soldier_upgrade
+    inherit: battle
+    max_mana_regeneration: 30
+    max_mana: 150
+    mana_regeneration: 1
+    mana_max: 2
+    spell_count: 1
+    spells:
+      arrowrain: 10,30,50
+      boom: 20,50,60
+      grenade: 0,20,70
+      heal: 0,1,5
+      lightning: 40,50,30
+      lava: 5,20,50
+      stream: 0,10,30
+      flamethrower: 0,5,10
+      wither: 5,10,20
+      shell: 1,20,30
+      blob: 1,20,30
+      entangle: 0,0,20
+      whip: 1,10,20
+      curse: 0,0,10
+
+soldier:
+    upgrade: knight
+    upgrade_item: knight_upgrade
+    inherit: squire
+    max_mana_regeneration: 40
+    max_mana: 200
+    mana_regeneration: 1
+    mana_max: 2
+    spell_count: 1
+    spells:
+      breach: 5,20,30
+      disintegrate: 0,10,40
+      sandblast: 20,30,40
+      counterspell: 0,1,5
+      wound: 0,10,20
+      flashbang: 20,30,50
+      gatling: 0,20,30
+      smite: 10,20,30
+      shuriken: 0,0,5
+      sticky: 1,5,15
+      homing: 1,5,15
+      lift: 1,5,10
+      disarm: 0,0,2
+      laser: 0,0,10
+      wave: 5,20,30
+
+knight:
+    inherit: soldier
+    max_mana_regeneration: 50
+    max_mana: 250
+    mana_regeneration: 1
+    mana_max: 2
+    spell_count: 1
+    spells:
+      cluster: 0,0,5
+      bomb: 0,0,1
+      earthquake: 0,0,1
+      icbm: 0,0,1
+      nuke: 0,0,1
+      cage: 0,0,2
+      meteor: 0,0,2
+      kill: 2,10,20
+      torture: 2,10,20
+      petrify: 0,10,30
+      singularity: 0,1,5
+      tornado: 1,10,15
+      tendril: 0,0,5
+      force: 5,10,20
+      railgun: 10,20,30
 
 #
 # Broom Enchanting

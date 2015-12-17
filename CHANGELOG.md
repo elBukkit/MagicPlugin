@@ -6,6 +6,7 @@
  - Renamed "Disc" to "Platform"
  - Added "headshot" functionality, some spells will have different effects when you hit the target's head:
    Railgun, Magic Missile
+ - Added a completely separate progression path for the Master Sword (Warrior->Squire->Soldier->Knight)
 
 ## 5.4.1
 

@@ -5647,7 +5647,7 @@ invisiblecloak:
       use_item: true
 
 lava:
-    icon_url: http://textures.minecraft.net/texture/92d331289b5e527c540652d61561a2e90f52a8755c1c7d0cd1a1a98f49de450
+    icon_url: http://textures.minecraft.net/texture/a9e073da36aaf2c844da428cd4a19dfde32c8cdc2404eed4a135f6095b17c
     icon: ink_sack:14
     category: combat
     pvp_restricted: true
@@ -6595,10 +6595,11 @@ missile:
         -  class: EffectSingle
            location: target
            particle: fireworks_spark
-           particle_count: 2
-           particle_offset_y: 0.5
-           particle_offset_x: 0.5
-           particle_offset_z: 1.5
+           particle_count: 15
+           particle_offset_y: 0.2
+           particle_offset_x: 0.2
+           particle_offset_z: 0.2
+           particle_data: 0.1
            sound: magic.zap
            sound_volume: .3
         -  class: EffectSingle
@@ -6729,6 +6730,7 @@ railgun:
            particle_offset_x: 0.4
            particle_offset_y: 0.5
            particle_offset_z: 0.4
+           particle_data: 0.4
            sound: magic.zap
            sound_pitch: 1.2
            sound_volume: 0.5
@@ -6747,10 +6749,10 @@ railgun:
         -  class: EffectSingle
            location: target
            particle: fireworks_spark
-           particle_count: 2
+           particle_count: 15
            particle_offset_y: 0.5
            particle_offset_x: 0.5
-           particle_offset_z: 1.5
+           particle_offset_z: 0.5
            sound: magic.zap
            sound_volume: .3
            particle_data: 0.4

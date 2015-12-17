@@ -1070,6 +1070,28 @@ architect_upgrade:
     xp_max: 350
     xp_regeneration: 70
 
+squire_upgrade:
+    upgrade: true
+    hidden: true
+    indestructible: false
+    hotbar_count: 2
+    xp_max: 100
+    xp_regeneration: 10
+soldier_upgrade:
+    upgrade: true
+    hidden: true
+    indestructible: false
+    hotbar_count: 2
+    xp_max: 150
+    xp_regeneration: 30
+knight_upgrade:
+    upgrade: true
+    hidden: true
+    indestructible: false
+    xp_max: 200
+    xp_regeneration: 40
+    hotbar_count: 3
+
 #
 # UPGRADE ITEMS
 #
