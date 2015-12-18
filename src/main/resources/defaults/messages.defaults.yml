@@ -570,7 +570,7 @@ spells:
     fling:
         name: Fling
         description: Sends you flying in the target direction
-        upgrade_description: "&r&b&bull; &6Increased speed"
+        upgrade_description: "&r&b&bull; &6Increased speed, reduced cooldown"
     leap:
         name: Leap
         description: Take a big leap
@@ -1099,10 +1099,14 @@ spells:
         teleport: Blink!
         cast: ""
     blink|2:
-        upgrade_description: "&r&b&bull; &6Increased range, will pass through solid objects"
+        upgrade_description: "&r&b&bull; &6Increased range"
     blink|3:
-        upgrade_description: "&r&b&bull; &6Increased range, can ascend/descend through the ground"
+        upgrade_description: "&r&b&bull; &6Increased range, can ascend up to the surface"
     blink|4:
+        upgrade_description: "&r&b&bull; &6Increased range, can descend through the ground"
+    blink|5:
+        upgrade_description: "&r&b&bull; &6Increased range, will pass through solid objects"
+    blink|6:
         upgrade_description: "&r&b&bull; &6You can now Blink up into the air"
     absorb:
         name: Absorb

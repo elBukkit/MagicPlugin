@@ -3,6 +3,9 @@
 ## 5.5
 
  - Optimize /magic load, almost entirely async, load Mage spell data only when needed.
+ - Added several more Blink/Fling levels
+ - Added "warpunlock" and "warpmenu" spells, for region or NPC use (works with Recall)
+ - Prevent Blink passthrough on obsidian, iron blocks and iron bars
 
 ## 5.4.2
 

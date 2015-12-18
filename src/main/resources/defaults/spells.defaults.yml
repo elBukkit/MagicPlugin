@@ -2804,8 +2804,8 @@ fling:
     icon_url: http://textures.minecraft.net/texture/7cc2fb583d1762a16a50fa5ac37bc09b46def63e68205116d650391f9233ed
     category: utility
     worth_sp: 400
-    earns_sp: 1
-    upgrade_required_path: apprentice
+    earns_sp: 2
+    upgrade_required_path: student
     upgrade_required_casts: 50
     actions:
         cast:
@@ -2833,16 +2833,38 @@ fling:
     parameters:
         duration: 20000
         target: self
-        min_speed: 1.0
+        min_speed: 1.5
         max_speed: 2.0
         bypass_confusion: true
+        cooldown: 5000
     costs:
         mana: 60
 
 fling|2:
+    upgrade_required_path: apprentice
+    upgrade_required_casts: 100
     parameters:
         min_speed: 2
+        max_speed: 3
+        cooldown: 2000
+
+fling|3:
+    upgrade_required_path: master
+    upgrade_required_casts: 150
+    parameters:
+        min_speed: 3
+        max_speed: 4
+        cooldown: 1000
+    costs:
+        mana: 100
+
+fling|4:
+    parameters:
+        min_speed: 3
         max_speed: 5
+        cooldown: 0
+    costs:
+        mana: 150
 
 supertorch:
     icon_url: http://textures.minecraft.net/texture/08f4793551132fad5bdb5d185269881a8de6fa4b86c6bde92c2bf467e097
@@ -5445,48 +5467,64 @@ blink:
         target: block
         allow_max_range: true
         allow_passthrough: false
-        range: 16
+        range: 12
         cooldown: 10000
-        prevent_passthrough: indestructible
+        prevent_passthrough: nopassthrough
         bypass_confusion: true
         vertical_range: 8
     costs:
         mana: 50
 
 blink|2:
-    upgrade_required_path: apprentice
+    upgrade_required_path: student
     upgrade_required_casts: 50
     parameters:
-        allow_passthrough: true
-        passthrough_range: 2
-        range: 32
-        cooldown: 7000
+        range: 16
     costs:
-        mana: 75
+        mana: 60
 
 blink|3:
-    upgrade_required_path: master
-    upgrade_required_casts: 100
+    upgrade_required_path: apprentice
+    upgrade_required_casts: 50
     actions:
         alternate_up:
         - class: Ascend
           vertical_range: 255
+    parameters:
+        range: 24
+        cooldown: 7000
+    costs:
+        mana: 75
+
+blink|4:
+    upgrade_required_path: apprentice
+    upgrade_required_casts: 75
+    actions:
         alternate_down:
         - class: Descend
           vertical_range: 255
     parameters:
-        range: 48
-        allow_passthrough: true
-        passthrough_range: 8
+        range: 32
         cooldown: 5000
     costs:
         mana: 150
 
-blink|4:
+blink|5:
+  upgrade_required_path: master
+  upgrade_required_casts: 100
   parameters:
-        safe: false
+      allow_passthrough: true
+      passthrough_range: 8
+      range: 48
+  costs:
+      mana: 150
+
+blink|6:
+  parameters:
+      safe: false
   costs:
       mana: 200
+      cooldown: 2000
 
 absorb:
     icon: bucket

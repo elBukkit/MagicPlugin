@@ -228,7 +228,6 @@ destructible3:
 - burning_furnace
 - cobblestone_stairs
 - monster_eggs
-- iron_fence
 - brick_stairs
 - nether_brick
 - nether_brick_fence
@@ -467,8 +466,13 @@ indestructible:
 - barrier
 - ender_portal_frame
 
-# if you don't want people destroying your end portals:
-#- ender_portal_frame 
+# Blocks that Blink can't pass through
+nopassthrough:
+- bedrock
+- barrier
+- iron_fence
+- iron_block
+- obsidian
 
 # Which materials are always completely off-limits.
 # Any spells not on this list can not be copied, cloned, replicated
