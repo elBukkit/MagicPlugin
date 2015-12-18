@@ -1265,6 +1265,8 @@ spells:
     recall|3:
         upgrade_description: "&r&b&bull; &6Unlock marker, aim down to set location."
         usage: Has a 5-second warmup. Cast down to set a marker
+    warpunlock:
+      cooldown: ""
     levitate:
         name: Levitate
         description: Levitate yourself up into the air

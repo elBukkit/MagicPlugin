@@ -210,7 +210,7 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
 
     @Override
     public void deactivated() {
-// Check for shop items glitched into the player's inventory
+        // Check for shop items glitched into the player's inventory
         if (context != null) {
             context.getMage().removeItemsWithTag("waypoint");
         }
@@ -323,8 +323,7 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
             String unlockMessage = context.getMessage("unlock_warp").replace("$name", warpName);
             context.sendMessage(unlockMessage);
 
-            // This is a little hacky :(
-            return SpellResult.DEACTIVATE;
+            return SpellResult.CAST;
         }
 
         if (parameters.contains("lock"))

@@ -6115,7 +6115,8 @@ recall:
         -  class: Recall
            type: place
     effects:
-        no_action: []
+        no_action:
+        no_target:
         cast:
         -  class: EffectSingle
            sound: level_up
@@ -6127,9 +6128,6 @@ recall:
             particles: 7
             radius: 1
             offset: 0,-1,0
-        deactivate:
-        -  class: EffectSingle
-           sound: level_up
         teleport:
         -  class: EffectSingle
            sound: portal_travel
@@ -6168,6 +6166,39 @@ recall|2:
 recall|3:
     parameters:
         allow_marker: true
+
+# Use this for an NPC Recall menu with no warmup or sp earn.
+warpmenu:
+  earns_sp: 0
+  inherit: recall
+  actions:
+      cast:
+      -  class: Recall
+      alternate_down:
+      alternate_up:
+      alternate_sneak:
+  parameters:
+      cooldown: 500
+
+# Use this with /castp <player> warpunlock unlock <warp>
+# This can be done, for example, on region enter using the WGRegionEvents plugin
+warpunlock:
+  earns_sp: 20
+  earns_cooldown: 30000
+  inherit: recall
+  actions:
+      cast:
+      -  class: Recall
+      alternate_down:
+      alternate_up:
+      alternate_sneak:
+  effects:
+    cast:
+    -  class: EffectSingle
+       sound: level_up
+       firework: star
+  parameters:
+      cooldown: 5000
 
 respawn:
     hidden: true
