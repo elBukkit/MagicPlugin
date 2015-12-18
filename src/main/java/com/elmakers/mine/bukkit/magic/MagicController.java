@@ -2701,6 +2701,10 @@ public class MagicController implements MageController {
     }
 
     protected void mageQuit(Mage mage, MageDataCallback callback) {
+        com.elmakers.mine.bukkit.api.wand.Wand wand = mage.getActiveWand();
+        boolean isOpen = wand != null && wand.isInventoryOpen();
+        mage.deactivate();
+
         // Immediately rollback any auto-undo spells
         com.elmakers.mine.bukkit.api.block.UndoQueue undoQueue = mage.getUndoQueue();
         if (undoQueue != null) {
@@ -2708,7 +2712,14 @@ public class MagicController implements MageController {
             if (undid != 0) {
                 info("Player " + mage.getName() + " logging out, auto-undid " + undid + " spells");
             }
+        }
 
+        int finished = mage.finishPendingUndo();
+        if (finished != 0) {
+            info("Player " + mage.getName() + " logging out, fast-forwarded undo for " + finished + " spells");
+        }
+
+        if (undoQueue != null) {
             if (!undoQueue.isEmpty()) {
                 if (commitOnQuit) {
                     info("Player logging out, committing constructions: " + mage.getName());
@@ -2718,10 +2729,6 @@ public class MagicController implements MageController {
                 }
             }
         }
-
-        com.elmakers.mine.bukkit.api.wand.Wand wand = mage.getActiveWand();
-        boolean isOpen = wand != null && wand.isInventoryOpen();
-        mage.deactivate();
 
         // Unregister
         if (!externalPlayerData || !mage.isPlayer()) {
