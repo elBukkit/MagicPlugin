@@ -6564,11 +6564,11 @@ missile:
     icon: ink_sack:1
     icon_url: http://textures.minecraft.net/texture/2ba95570c7b712713632d4c0d2fc66906613d3850a596a0267c6d763fe741ac
     upgrade_required_path: beginner
-    upgrade_required_casts: 15
+    upgrade_required_casts: 40
     category: combat
     worth_sp: 150
-    earns_sp: 5
-    earns_cooldown: 120000
+    earns_sp: 7
+    earns_cooldown: 10000
     actions:
         cast:
         - class: CustomProjectile
@@ -6666,7 +6666,7 @@ missile:
 
 missile|2:
     upgrade_required_path: student
-    upgrade_required_casts: 30
+    upgrade_required_casts: 50
     earns_cooldown: 600000
     parameters:
         range: 32
