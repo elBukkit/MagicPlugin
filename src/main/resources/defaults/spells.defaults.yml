@@ -1929,7 +1929,6 @@ disarm:
     icon_url: http://textures.minecraft.net/texture/ff418f5c02c74f8e54645d05897b954c568f22753eea5fb559b898322aa79
     icon: tripwire_hook
     category: light
-    cast_on_no_target: true
     worth_sp: 200
     earns_sp: 7
     upgrade_required_path: student
@@ -6003,7 +6002,6 @@ shrink:
     icon_url: http://textures.minecraft.net/texture/dd91c092cb93f6f4152629a02ddf617557381a16694a46eba3468446363c08e
     category: combat
     class: ShrinkSpell
-    cast_on_no_target: true
     worth_sp: 150
     earns_sp: 8
     effects:
@@ -6055,7 +6053,6 @@ grow:
     icon: skull_item:1
     category: combat
     class: GrowSpell
-    cast_on_no_target: true
     worth_sp: 100
     earns_sp: 8
     effects:
@@ -6153,8 +6150,8 @@ recall:
         -  class: Recall
            type: place
     effects:
-        no_action:
-        no_target:
+        no_action: []
+        no_target: []
         cast:
         -  class: EffectSingle
            sound: level_up
@@ -6209,6 +6206,7 @@ recall|3:
 warpmenu:
   earns_sp: 0
   inherit: recall
+  cast_on_no_target: false
   actions:
       cast:
       -  class: Recall
@@ -7021,7 +7019,6 @@ blind:
     icon_url: http://textures.minecraft.net/texture/c7a8e7c9d3375135e39aa6d57b4e60539cf8f6efc5b58c83a13caf40561560
     icon: ender_pearl
     category: combat
-    cast_on_no_target: true
     worth_sp: 70
     earns_sp: 6
     actions:
@@ -7441,7 +7438,6 @@ torture:
     icon_url: http://textures.minecraft.net/texture/df19b39e565b16cbdabe364b91e35894d1e9bac0ad3fa4b0905ec4f366627
     icon: quartz
     category: master
-    cast_on_no_target: true
     worth_sp: 3000
     earns_sp: 7
     actions:
@@ -7524,7 +7520,6 @@ rubberize:
     cancellable: false
     worth_sp: 150
     earns_sp: 2
-    cast_on_no_target: true
     effects:
         cast:
         -  class: EffectTrail
@@ -7644,7 +7639,6 @@ petrify:
     icon_url: http://textures.minecraft.net/texture/7e453aa5908121dcf1cd8cf9f04459741f7879d99c01fb71bf243c25c3188
     icon: nether_brick_item
     category: combat
-    cast_on_no_target: true
     worth_sp: 300
     earns_sp: 8
     actions:
@@ -8037,7 +8031,6 @@ admission:
     category: utility
     worth_sp: 20
     earns_sp: 10
-    cast_on_no_target: true
     upgrade_required_path: apprentice
     upgrade_required_casts: 20
     actions:
@@ -8138,7 +8131,6 @@ harden:
     class: RecurseSpell
     worth_sp: 150
     earns_sp: 4
-    cast_on_no_target: true
     upgrade_required_path: apprentice
     upgrade_required_casts: 50
     effects:
@@ -8175,7 +8167,6 @@ sponge:
     class: ConstructSpell
     worth_sp: 100
     earns_sp: 4
-    cast_on_no_target: true
     effects:
         cast:
         -  class: EffectSingle
