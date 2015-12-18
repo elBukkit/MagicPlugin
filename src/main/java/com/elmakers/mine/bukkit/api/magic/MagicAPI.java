@@ -170,6 +170,11 @@ public interface MagicAPI {
     public void reload();
 
     /**
+     * Reload all Magic configurations, report success/fail to sender
+     */
+    public void reload(CommandSender sender);
+
+    /**
      * Clear all image and schematic caches
      */
     public void clearCache();
