@@ -388,25 +388,22 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
         {
             spell.cancel();
         }
-        if (batch != null && !batch.isFinished())
-        {
-            batch.finish();
-        }
         undo(blocking, true);
+    }
+
+    public void undoScheduled(boolean blocking)
+    {
+        undo(blocking, false);
+
         if (isScheduled())
         {
             owner.getController().cancelScheduledUndo(this);
         }
     }
 
-    public void undoScheduled(boolean blocking)
-    {
-        undo(blocking, false);
-    }
-
     public void undoScheduled()
     {
-        undoScheduled(false);
+        undo(false, false);
     }
 
     public void unregisterAttached()
@@ -424,6 +421,11 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
     {
         if (undone) return;
         undone = true;
+
+        if (batch != null && !batch.isFinished())
+        {
+            batch.finish();
+        }
 
         // This is a hack to make forced-undo happen instantly
         if (undoEntities) {
