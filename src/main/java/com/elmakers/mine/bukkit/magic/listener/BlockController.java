@@ -253,10 +253,10 @@ public class BlockController implements Listener {
     @EventHandler
     public void onWorldSaveEvent(WorldSaveEvent event) {
         World world = event.getWorld();
-        Collection<? extends Player> players = controller.getPlugin().getServer().getOnlinePlayers();
+        Collection<Player> players = world.getPlayers();
         for (Player player : players) {
-            if (world.equals(player.getWorld()) && controller.isMage(player)) {
-                Mage mage = controller.getMage(player);
+            Mage mage = controller.getRegisteredMage(player);
+            if (mage != null) {
                 controller.saveMage(mage, true);
 
                 if (undoOnWorldSave) {
@@ -264,7 +264,7 @@ public class BlockController implements Listener {
                     if (queue != null) {
                         int undone = queue.undoScheduled();
                         if (undone > 0) {
-                            controller.info("Undid " + undone + " spells for " + player.getName() + "prior to save of world " + world.getName());
+                            controller.info("Undid " + undone + " spells for " + player.getName() + " prior to save of world " + world.getName());
                         }
                     }
                 }
