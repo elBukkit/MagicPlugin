@@ -23,6 +23,7 @@ import com.elmakers.mine.bukkit.api.spell.MageSpell;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellKey;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
+import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.api.spell.TargetType;
 import com.elmakers.mine.bukkit.api.wand.Wand;
 import com.elmakers.mine.bukkit.api.wand.WandUpgradePath;
@@ -146,7 +147,6 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     private SpellCategory category;
     private Set<String> tags;
     private BaseSpell template;
-    private MageSpell upgrade;
     private long requiredUpgradeCasts;
     private String requiredUpgradePath;
     private MaterialAndData icon = new MaterialAndData(Material.AIR);
@@ -2112,13 +2112,12 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     }
 
     @Override
-    public MageSpell getUpgrade() {
-        return upgrade;
-    }
-
-    @Override
-    public void setUpgrade(MageSpell upgrade) {
-        this.upgrade = upgrade;
+    public SpellTemplate getUpgrade() {
+        if (requiredUpgradeCasts <= 0) {
+            return null;
+        }
+        SpellKey upgradeKey = new SpellKey(spellKey.getBaseKey(), spellKey.getLevel() + 1);
+        return controller.getSpellTemplate(upgradeKey.getKey());
     }
 
     @Override
@@ -2312,7 +2311,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
             // This currently only works on wands.
             if (wand != null && !wand.isLocked() && controller.isSpellUpgradingEnabled() && wand.getSpellLevel(spellKey.getKey()) == spellKey.getLevel())
             {
-                MageSpell upgrade = getUpgrade();
+                SpellTemplate upgrade = getUpgrade();
                 long requiredCasts = getRequiredUpgradeCasts();
                 if (upgrade != null && requiredCasts > 0 && getCastCount() >= requiredCasts)
                 {
@@ -2333,7 +2332,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
                         if (levelDescription == null || levelDescription.isEmpty()) {
                             levelDescription = upgrade.getName();
                         }
-                        upgrade.playEffects("upgrade");
+                        playEffects("upgrade");
                         mage.sendMessage(messages.get("wand.spell_upgraded").replace("$name", upgrade.getName()).replace("$wand", getName()).replace("$level", levelDescription));
                         mage.sendMessage(upgrade.getUpgradeDescription().replace("$name", upgrade.getName()));
 
