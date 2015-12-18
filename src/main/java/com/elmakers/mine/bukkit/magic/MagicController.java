@@ -1395,108 +1395,135 @@ public class MagicController implements MageController {
         return config;
     }
 
-    public void loadConfiguration() {
-        loaded = true;
+    protected ConfigurationSection loadExamples() throws InvalidConfigurationException, IOException {
+        if ((exampleDefaults != null && exampleDefaults.length() > 0) || (addExamples != null && addExamples.size() > 0)) {
+            // Reload config, example will be used this time.
+            if (exampleDefaults != null && exampleDefaults.length() > 0)
+            {
+                getLogger().info("Overriding configuration with example: " + exampleDefaults);
+                return loadConfigFile(CONFIG_FILE, true);
+            }
+        }
+
+        return null;
+    }
+
+    protected ConfigurationSection loadMainConfiguration() throws InvalidConfigurationException, IOException {
+        return loadConfigFile(CONFIG_FILE, true);
+    }
+
+    protected ConfigurationSection loadMessageConfiguration() throws InvalidConfigurationException, IOException {
+        return loadConfigFile(MESSAGES_FILE, true);
+    }
+
+    protected ConfigurationSection loadMaterialsConfiguration() throws InvalidConfigurationException, IOException {
+        return loadConfigFile(MATERIALS_FILE, true);
+    }
+
+    protected ConfigurationSection loadWandConfiguration() throws InvalidConfigurationException, IOException {
+        return loadConfigFile(WANDS_FILE, loadDefaultWands);
+    }
+
+    protected ConfigurationSection loadEnchantingConfiguration() throws InvalidConfigurationException, IOException {
+        return loadConfigFile(ENCHANTING_FILE, loadDefaultEnchanting);
+    }
+
+    protected ConfigurationSection loadCraftingConfiguration() throws InvalidConfigurationException, IOException {
+        return loadConfigFile(CRAFTING_FILE, loadDefaultCrafting);
+    }
+
+    protected Map<String, ConfigurationSection> loadAndMapSpells()  throws InvalidConfigurationException, IOException {
+        Map<String, ConfigurationSection> spellConfigs = new HashMap<String, ConfigurationSection>();
+        ConfigurationSection config = loadConfigFile(SPELLS_FILE, loadDefaultSpells, disableDefaultSpells);
+        if (config == null) return spellConfigs;
+
+        // Reset cached spell configs
+        spellConfigurations.clear();
+        baseSpellConfigurations.clear();
+
+        Set<String> spellKeys = config.getKeys(false);
+        for (String key : spellKeys) {
+            if (key.equals("default")) continue;
+
+            ConfigurationSection spellNode = getSpellConfig(key, config);
+            if (spellNode == null || !spellNode.getBoolean("enabled", true)) {
+                continue;
+            }
+
+            // Kind of a hacky way to do this, and only works with BaseSpell spells.
+            if (allPvpRestricted) {
+                spellNode.set("pvp_restricted", true);
+            }
+
+            spellConfigs.put(key, spellNode);
+        }
+
+        return spellConfigs;
+    }
+
+    protected void finalizeLoad(ConfigurationLoadTask loader, CommandSender sender) {
+        if (!loader.success) {
+            if (sender != null) {
+                sender.sendMessage(ChatColor.RED + "An error occurred reloading configurations, please check server logs!");
+            }
+
+            // Check for initial load failure on startup
+            if (!loaded) {
+                getLogger().warning("*** An error occurred while loading configurations ***");
+                getLogger().warning("***         Magic is temporarily disabled          ***");
+                getLogger().warning("***   Please check the errors above, fix configs   ***");
+                getLogger().warning("***    And '/magic load' or restart the server     ***");
+            }
+
+            return;
+        }
 
         // Clear some cache stuff... mainly this is for debugging/testing.
         schematics.clear();
 
-        // Load main configuration
-        try {
-            loadProperties(loadConfigFile(CONFIG_FILE, true));
-            if ((exampleDefaults != null && exampleDefaults.length() > 0) || (addExamples != null && addExamples.size() > 0)) {
-                // Reload config, example will be used this time.
-                if (exampleDefaults != null && exampleDefaults.length() > 0)
-                {
-                    getLogger().info("Overriding configuration with example: " + exampleDefaults);
-                    loadProperties(loadConfigFile(CONFIG_FILE, true));
-                }
-                if (addExamples != null && addExamples.size() > 0)
-                {
-                    getLogger().info("Adding examples: " + StringUtils.join(addExamples, ","));
-                }
-            }
-        } catch (Exception ex) {
-            getLogger().log(Level.WARNING, "Error loading config.yml", ex);
-            loaded = false;
+        // Process loaded data
+
+        // Main configuration
+        loadProperties(loader.configuration);
+        if (loader.exampleConfiguration != null)
+        {
+            getLogger().info("Overriding configuration with example: " + exampleDefaults);
+            loadProperties(loader.exampleConfiguration);
         }
-        if (isUrlIconsEnabled()) {
-            getLogger().info("Skin-based custom icons enabled");
-        } else {
-            getLogger().info("Skin-based custom icons disabled");
+        if (addExamples != null && addExamples.size() > 0)
+        {
+            getLogger().info("Adding examples: " + StringUtils.join(addExamples, ","));
         }
 
-        // Load localizations
-        try {
-            messages.reset();
-            messages.load(loadConfigFile(MESSAGES_FILE, true));
-        } catch (Exception ex) {
-            getLogger().log(Level.WARNING, "Error loading messages.yml", ex);
-            loaded = false;
-        }
+        // Sub-configurations
+        messages.load(loader.messages);
+        loadMaterials(loader.materials);
 
-        // Load materials configuration
-        try {
-            loadMaterials(loadConfigFile(MATERIALS_FILE, true));
-        } catch (Exception ex) {
-            getLogger().log(Level.WARNING, "Error loading material.yml", ex);
-            loaded = false;
-        }
-
-        // Load spells
-        try {
-            loadSpells(loadConfigFile(SPELLS_FILE, loadDefaultSpells, disableDefaultSpells));
-        } catch (Exception ex) {
-            getLogger().log(Level.WARNING, "Error loading spells.yml", ex);
-            loaded = false;
-        }
-
+        loadSpells(loader.spells);
         getLogger().info("Loaded " + spells.size() + " spells");
 
-        // Load enchanting paths
-        try {
-            enchanting.load(loadConfigFile(ENCHANTING_FILE, loadDefaultEnchanting));
-        } catch (Exception ex) {
-            getLogger().log(Level.WARNING, "Error loading enchanting.yml", ex);
-            loaded = false;
-        }
-
+        enchanting.load(loader.enchanting);
         getLogger().info("Loaded " + enchanting.getCount() + " enchanting paths");
 
-        // Load wand templates
-        try {
-            Wand.loadTemplates(this, loadConfigFile(WANDS_FILE, loadDefaultWands));
-        } catch (Exception ex) {
-            getLogger().log(Level.WARNING, "Error loading wands.yml", ex);
-            loaded = false;
-        }
-
+        Wand.loadTemplates(this, loader.wands);
         getLogger().info("Loaded " + Wand.getWandTemplates().size() + " wands");
 
-        // Load crafting recipes
-        try {
-            crafting.load(loadConfigFile(CRAFTING_FILE, loadDefaultCrafting));
-        } catch (Exception ex) {
-            getLogger().log(Level.WARNING, "Error loading crafting.yml", ex);
-            loaded = false;
-        }
-
+        crafting.load(loader.crafting);
         getLogger().info("Loaded " + crafting.getCount() + " crafting recipes");
 
-        if (!loaded) {
-            getLogger().warning("*** An error occurred while loading configurations ***");
-            getLogger().warning("***         Magic is temporarily disabled          ***");
-            getLogger().warning("***   Please check the errors above, fix configs   ***");
-            getLogger().warning("***    And '/magic load' or restart the server     ***");
-            for (Mage mage : mages.values()) {
-                com.elmakers.mine.bukkit.api.wand.Wand wand = mage.getActiveWand();
-                if (wand != null) {
-                    wand.deactivate();
-                }
-                mage.deactivateAllSpells(true, true);
-            }
-            mages.clear();
+        loaded = true;
+        if (sender != null) {
+            sender.sendMessage(ChatColor.AQUA + "Configuration reloaded.");
         }
+    }
+
+    public void loadConfiguration() {
+        loadConfiguration(null);
+    }
+
+    public void loadConfiguration(CommandSender sender) {
+        ConfigurationLoadTask loadTask = new ConfigurationLoadTask(this, sender);
+        plugin.getServer().getScheduler().runTaskAsynchronously(plugin, loadTask);
     }
 
     protected void loadSpellData() {
@@ -1902,29 +1929,22 @@ public class MagicController implements MageController {
         return spellNode;
     }
 
-	protected void loadSpells(ConfigurationSection config)
+	protected void loadSpells(Map<String, ConfigurationSection> spellConfigs)
 	{
-		if (config == null) return;
+		if (spellConfigs == null) return;
 		
 		// Reset existing spells.
 		spells.clear();
         spellAliases.clear();
-        spellConfigurations.clear();
-        baseSpellConfigurations.clear();
 
-        Set<String> spellKeys = config.getKeys(false);
-		for (String key : spellKeys)
+		for (Entry<String, ConfigurationSection> entry : spellConfigs.entrySet())
 		{
+            String key = entry.getKey();
             if (key.equals("default")) continue;
 
-            ConfigurationSection spellNode = getSpellConfig(key, config);
-            if (spellNode == null || !spellNode.getBoolean("enabled", true)) {
+            ConfigurationSection spellNode = entry.getValue();
+            if (spellNode == null) {
                 continue;
-            }
-
-            // Kind of a hacky way to do this, and only works with BaseSpell spells.
-            if (allPvpRestricted) {
-                spellNode.set("pvp_restricted", true);
             }
 
 			Spell newSpell = null;
@@ -2402,6 +2422,11 @@ public class MagicController implements MageController {
         }
         if (anvil.isOrganizingEnabled()) {
             getLogger().info("Wand anvil organizing is enabled");
+        }
+        if (isUrlIconsEnabled()) {
+            getLogger().info("Skin-based custom icons enabled");
+        } else {
+            getLogger().info("Skin-based custom icons disabled");
         }
 	}
 

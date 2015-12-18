@@ -2,6 +2,8 @@
 
 ## 5.5
 
+ - Optimize /magic load, almost entirely async, load Mage spell data only when needed.
+
 ## 5.4.2
 
  - Added Blink Level 4, can now blink up into the air

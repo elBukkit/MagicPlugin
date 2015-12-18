@@ -248,6 +248,11 @@ public class MagicPlugin extends JavaPlugin implements MagicAPI
 	}
 
 	@Override
+	public void reload(CommandSender sender) {
+		controller.loadConfiguration(sender);
+	}
+
+	@Override
 	public void clearCache() {
 		controller.clearCache();
 	}
