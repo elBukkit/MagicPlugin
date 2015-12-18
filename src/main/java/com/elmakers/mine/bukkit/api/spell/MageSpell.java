@@ -43,7 +43,4 @@ public interface MageSpell extends Spell, CostReducer {
 
     public void tick();
     public void initialize(MageController controller);
-
-    public void setUpgrade(MageSpell spell);
-    public MageSpell getUpgrade();
 }

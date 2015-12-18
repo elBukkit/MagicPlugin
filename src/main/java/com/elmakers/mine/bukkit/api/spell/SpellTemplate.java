@@ -62,4 +62,5 @@ public interface SpellTemplate extends Comparable<SpellTemplate>, CostReducer {
     public void addLore(Messages messages, Mage mage, Wand wand, List<String> lore);
     public boolean hasTag(String tag);
     public boolean hasAnyTag(Collection<String> tags);
+    public SpellTemplate getUpgrade();
 }
