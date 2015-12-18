@@ -1456,7 +1456,7 @@ boom:
         range: 32
         break_blocks: false
         size: 2
-        cooldown: 2000
+        cooldown: 7000
         undo: 3000
         undo_speed: 0.5
     costs:
@@ -1467,7 +1467,7 @@ boom|2:
         cooldown: 7000
         size: 4
         break_blocks: true
-        undo: 5000
+        undo: 10000
     costs:
         mana: 75
 

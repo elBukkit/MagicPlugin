@@ -717,15 +717,4 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
         mageData.set(markerKey, ConfigurationUtils.fromLocation(location));
         return true;
 	}
-	
-	@Override
-	public void load(Mage mage, ConfigurationSection node)
-	{
-        // This is here for backwards-compatibility with RecallSpell
-		Location location = ConfigurationUtils.getLocation(node, "location");
-        if (location != null)
-        {
-            mage.getData().set(markerKey, ConfigurationUtils.fromLocation(location));
-        }
-	}
 }
