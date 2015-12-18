@@ -722,13 +722,12 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             getUndoQueue().save(undoData);
             data.setUndoData(undoData);
 
-            List<SpellData> spellDataList = new ArrayList<SpellData>();
             for (MageSpell spell : spells.values()) {
                 SpellData spellData = new SpellData(spell.getKey());
                 spell.save(spellData);
-                spellDataList.add(spellData);
+                this.spellData.put(spellData.getKey(), spellData);
             }
-            data.setSpellData(spellDataList);
+            data.setSpellData(this.spellData.values());
 
             if (boundWands.size() > 0) {
                 Map<String, ItemStack> wandItems = new HashMap<String, ItemStack>();
