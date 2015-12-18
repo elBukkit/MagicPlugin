@@ -73,7 +73,7 @@ default:
   max_enchant_level: 30
   levels: 1,15,25
   upgrade_commands:
-    - broadcast §6@pd §3has advanced to §b$path§3!
+    - broadcast &6@pd &3has advanced to &b$path&3!
   effects:
       enchant:
       -  class: EffectSingle
