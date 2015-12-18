@@ -6,6 +6,7 @@
  - Added several more Blink/Fling levels
  - Added "warpunlock" and "warpmenu" spells, for region or NPC use (works with Recall)
  - Prevent Blink passthrough on obsidian, iron blocks and iron bars
+ - Fix Railgun not having auto-undo (!!)
 
 ## 5.4.2
 

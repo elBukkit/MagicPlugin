@@ -6206,7 +6206,6 @@ recall|3:
 warpmenu:
   earns_sp: 0
   inherit: recall
-  cast_on_no_target: false
   actions:
       cast:
       -  class: Recall
@@ -6854,6 +6853,7 @@ railgun:
         target_breakables: 1
         cooldown: 10000
         reorient: false
+        undo: 5000
         brush: air
     costs:
         mana: 150
