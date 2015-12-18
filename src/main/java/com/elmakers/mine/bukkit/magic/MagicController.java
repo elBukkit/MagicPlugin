@@ -750,6 +750,11 @@ public class MagicController implements MageController {
         }
 
         load();
+    }
+
+
+    protected void finalizeIntegration() {
+        PluginManager pluginManager = plugin.getServer().getPluginManager();
 
         // Check for LibsDisguise
         Plugin libsDisguisePlugin = pluginManager.getPlugin("LibsDisguises");
@@ -1511,6 +1516,11 @@ public class MagicController implements MageController {
         crafting.load(loader.crafting);
         getLogger().info("Loaded " + crafting.getCount() + " crafting recipes");
 
+        // Finalize integrations, we only do this one time at startup.
+        if (!initialized) {
+            finalizeIntegration();
+        }
+
         loaded = true;
         if (sender != null) {
             sender.sendMessage(ChatColor.AQUA + "Configuration reloaded.");
@@ -1523,7 +1533,11 @@ public class MagicController implements MageController {
 
     public void loadConfiguration(CommandSender sender) {
         ConfigurationLoadTask loadTask = new ConfigurationLoadTask(this, sender);
-        plugin.getServer().getScheduler().runTaskAsynchronously(plugin, loadTask);
+        if (initialized) {
+            plugin.getServer().getScheduler().runTaskAsynchronously(plugin, loadTask);
+        } else {
+            loadTask.runNow();
+        }
     }
 
     protected void loadSpellData() {

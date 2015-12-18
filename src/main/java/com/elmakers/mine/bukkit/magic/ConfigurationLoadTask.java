@@ -28,8 +28,16 @@ public class ConfigurationLoadTask implements Runnable {
         this.sender = sender;
     }
 
+    public void runNow() {
+        run(true);
+    }
+
     @Override
     public void run() {
+        run(false);
+    }
+
+    public void run(boolean synchronous) {
         success = true;
         Logger logger = controller.getLogger();
 
@@ -90,13 +98,17 @@ public class ConfigurationLoadTask implements Runnable {
             success = false;
         }
 
-        Plugin plugin = controller.getPlugin();
-        final ConfigurationLoadTask result = this;
-        plugin.getServer().getScheduler().runTaskLater(plugin, new Runnable() {
-            @Override
-            public void run() {
+        if (synchronous) {
+            controller.finalizeLoad(this, sender);
+        } else {
+            Plugin plugin = controller.getPlugin();
+            final ConfigurationLoadTask result = this;
+            plugin.getServer().getScheduler().runTask(plugin, new Runnable() {
+                @Override
+                public void run() {
                 controller.finalizeLoad(result, sender);
-            }
-        }, 1);
+                }
+            });
+        }
     }
 }
