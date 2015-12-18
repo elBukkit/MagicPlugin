@@ -387,6 +387,7 @@ public interface Mage extends CostReducer {
     public void unregisterEvent(SpellEventType type, Listener spell);
 
     public UndoQueue getUndoQueue();
+    public int finishPendingUndo();
     public List<LostWand> getLostWands();
     public Location getLastDeathLocation();
 
