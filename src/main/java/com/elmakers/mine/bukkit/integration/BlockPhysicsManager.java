@@ -16,10 +16,19 @@ public class BlockPhysicsManager {
 
     public BlockPhysicsManager(Plugin owningPlugin, Plugin physicsPlugin) {
         this.plugin = owningPlugin;
-        this.api = ((PhysicsPlugin)physicsPlugin).getAPI(owningPlugin);
+        if (physicsPlugin instanceof PhysicsPlugin) {
+            this.api = ((PhysicsPlugin)physicsPlugin).getAPI(owningPlugin);
+        } else {
+            this.api = null;
+        }
+    }
+
+    public boolean isEnabled() {
+        return this.api != null;
     }
 
     public void spawnPhysicsBlock(Location location, Material material, short data, Vector velocity) {
+        if (api == null) return;
         PhysicsBlock block = api.spawnBlock(location, new MaterialData(material, (byte)data));
         if (velocity != null) {
             block.applyForce(velocity.multiply(velocityScale));

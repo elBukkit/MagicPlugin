@@ -732,14 +732,26 @@ public class MagicController implements MageController {
             getLogger().warning("Failed to initialize EffectLib");
         }
 
-        // Check for BlockPhysics
+        load();
+    }
+
+
+    protected void finalizeIntegration() {
         PluginManager pluginManager = plugin.getServer().getPluginManager();
-        Plugin blockPhysicsPlugin = pluginManager.getPlugin("BlockPhysics");
-        if (blockPhysicsPlugin == null) {
-            getLogger().info("BlockPhysics not found- install BlockPhysics for physics-based block effects");
-        } else {
-            blockPhysicsManager = new BlockPhysicsManager(plugin, blockPhysicsPlugin);
-            getLogger().info("Integrated with BlockPhysics, some spells will now use physics-based block effects");
+
+        // Check for BlockPhysics
+        if (useBlockPhysics) {
+            Plugin blockPhysicsPlugin = pluginManager.getPlugin("BlockPhysics");
+            if (blockPhysicsPlugin == null) {
+                getLogger().info("BlockPhysics not found- install BlockPhysics for physics-based block effects");
+            } else {
+                blockPhysicsManager = new BlockPhysicsManager(plugin, blockPhysicsPlugin);
+                if (blockPhysicsManager.isEnabled()) {
+                    getLogger().info("Integrated with BlockPhysics, some spells will now use physics-based block effects");
+                } else {
+                    getLogger().warning("Error integrating with BlockPhysics, you may want to set 'enable_block_physics: false' in config.yml");
+                }
+            }
         }
 
         // Check for Minigames
@@ -748,13 +760,6 @@ public class MagicController implements MageController {
             pluginManager.registerEvents(new MinigamesListener(this), plugin);
             getLogger().info("Integrated with Minigames plugin, wands will deactivate before joining a minigame");
         }
-
-        load();
-    }
-
-
-    protected void finalizeIntegration() {
-        PluginManager pluginManager = plugin.getServer().getPluginManager();
 
         // Check for LibsDisguise
         Plugin libsDisguisePlugin = pluginManager.getPlugin("LibsDisguises");
@@ -2416,6 +2421,8 @@ public class MagicController implements MageController {
             getLogger().log(Level.WARNING, "Missing player_data_store configuration, player data saving disabled!");
             this.mageDataStore = null;
         }
+
+        useBlockPhysics = properties.getBoolean("enable_block_physics", true);
 
         // Semi-deprecated Wand defaults
         Wand.DefaultWandMaterial = ConfigurationUtils.getMaterial(properties, "wand_item", Wand.DefaultWandMaterial);
@@ -4387,6 +4394,7 @@ public Set<Material> getMaterialSet(String name)
     private NCPManager                          ncpManager       		    = new NCPManager();
     private HeroesManager                       heroesManager       		= null;
     private BlockPhysicsManager                 blockPhysicsManager         = null;
+    private boolean                             useBlockPhysics             = true;
     private LibsDisguiseManager                 libsDisguiseManager         = null;
 
     private List<BlockBreakManager>             blockBreakManagers          = new ArrayList<BlockBreakManager>();
