@@ -6,6 +6,7 @@ import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.spell.MageSpell;
 import com.elmakers.mine.bukkit.api.spell.SpellKey;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
+import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.api.wand.Wand;
 import com.elmakers.mine.bukkit.magic.MagicPlugin;
 import com.elmakers.mine.bukkit.action.BaseSpellAction;
@@ -75,7 +76,7 @@ public class SpellProgressAction extends BaseSpellAction implements GUIAction
         for (String spellKey : spells) {
             MageSpell spell = mage.getSpell(spellKey);
             long requiredCastCount = spell.getRequiredUpgradeCasts();
-            MageSpell upgradeSpell = spell.getUpgrade();
+            SpellTemplate upgradeSpell = spell.getUpgrade();
             if (requiredCastCount > 0 && upgradeSpell != null) {
                 ItemStack spellItem = MagicPlugin.getAPI().createSpellItem(spellKey);
                 if (spellItem != null) {

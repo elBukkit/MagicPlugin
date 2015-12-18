@@ -1127,14 +1127,6 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         if (newSpell == null || !(newSpell instanceof MageSpell)) return null;
         playerSpell = (MageSpell)newSpell;
         spells.put(newSpell.getKey(), playerSpell);
-
-        SpellKey baseKey = newSpell.getSpellKey();
-        SpellKey upgradeKey = new SpellKey(baseKey.getBaseKey(), baseKey.getLevel() + 1);
-        Spell upgradeSpell = createSpell(upgradeKey.getKey());
-        if (upgradeSpell instanceof MageSpell)
-        {
-            playerSpell.setUpgrade((MageSpell)upgradeSpell);
-        }
         playerSpell.setMage(this);
         return playerSpell;
     }
