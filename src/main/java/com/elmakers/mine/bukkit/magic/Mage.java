@@ -84,6 +84,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
     protected final String id;
     protected ConfigurationSection data = new MemoryConfiguration();
+    protected Map<String, SpellData> spellData = new HashMap<String, SpellData>();
     protected WeakReference<Player> _player;
     protected WeakReference<Entity> _entity;
     protected WeakReference<CommandSender> _commandSender;
@@ -549,10 +550,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             Collection<SpellData> spellDataList = data == null ? null : data.getSpellData();
             if (spellDataList != null) {
                 for (SpellData spellData : spellDataList) {
-                    Spell spell = spells.get(spellData.getKey());
-                    if (spell != null && spell instanceof MageSpell) {
-                        ((MageSpell)spell).load(spellData);
-                    }
+                    this.spellData.put(spellData.getKey(), spellData);
                 }
             }
 
@@ -672,14 +670,6 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             }
 
             getUndoQueue().load(data.getUndoData());
-
-            Collection<SpellData> spellData = data.getSpellData();
-            if (spellData != null) {
-                for (SpellData spell : spellData) {
-                    // Spell data is loaded in onLoad to ensure it happens in the main thread
-                    createSpell(spell.getKey());
-                }
-            }
 
             respawnInventory = data.getRespawnInventory();
             respawnArmor = data.getRespawnArmor();
@@ -908,10 +898,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                     SpellData spellData = new SpellData(key);
                     spell.save(spellData);
                     spells.remove(key);
-                    Spell newSpell = getSpell(key);
-                    if (newSpell != null && newSpell instanceof MageSpell) {
-                        ((MageSpell)newSpell).load(spellData);
-                    }
+                    this.spellData.put(key, spellData);
                 } else {
                     spell.loadTemplate(key, template);
                 }
@@ -1097,6 +1084,12 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         MageSpell playerSpell = spells.get(key);
         if (playerSpell == null) {
             playerSpell = createSpell(key);
+            if (playerSpell != null) {
+                SpellData spellData = this.spellData.get(key);
+                if (spellData != null) {
+                    playerSpell.load(spellData);
+                }
+            }
         } else {
             playerSpell.setMage(this);
         }

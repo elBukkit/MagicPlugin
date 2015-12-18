@@ -943,7 +943,7 @@ reflect:
         check_destructible: true
         brushcolor: true
         undo: 800
-        cooldown: 5000
+        cooldown: 3000
         breakable: 3
         reflect_chance: 0.25
         bypass_confusion: true
