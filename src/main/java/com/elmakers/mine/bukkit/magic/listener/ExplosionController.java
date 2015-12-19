@@ -16,6 +16,7 @@ import org.bukkit.event.entity.EntityExplodeEvent;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.logging.Level;
 
 public class ExplosionController implements Listener {
     private final MagicController controller;
@@ -111,7 +112,13 @@ public class ExplosionController implements Listener {
         if (event.isCancelled()) {
             blockList.cancelExplosion(explodingEntity);
         } else {
-            blockList.finalizeExplosion(explodingEntity, event.blockList());
+            controller.disableItemSpawn();
+            try {
+                blockList.finalizeExplosion(explodingEntity, event.blockList());
+            } catch (Exception ex) {
+                controller.getLogger().log(Level.WARNING, "Error finalizing explosion", ex);
+            }
+            controller.enableItemSpawn();
         }
     }
 }
