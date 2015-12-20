@@ -5968,7 +5968,7 @@ laser:
         increment_data: false
         check_destructible: true
         destructible: destructible_mining
-        transparent: transparent_to_construction
+        transparent: air
         brush: air
         radius: 1
         undo: 15000
@@ -6855,6 +6855,7 @@ railgun:
         reorient: false
         undo: 5000
         brush: air
+        transparent: air
     costs:
         mana: 150
 
