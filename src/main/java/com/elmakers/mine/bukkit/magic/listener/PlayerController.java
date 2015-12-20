@@ -386,7 +386,7 @@ public class PlayerController implements Listener {
         }
     }
 
-    @EventHandler(priority=EventPriority.HIGH)
+    @EventHandler(priority=EventPriority.HIGHEST, ignoreCancelled = true)
     public void onPlayerJoin(PlayerJoinEvent event)
     {
         // Automatically re-activate mages.
