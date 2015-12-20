@@ -12,7 +12,6 @@ public class MageUpdateTask implements Runnable {
 
     @Override
     public void run() {
-        controller.forgetMages();
         Collection<com.elmakers.mine.bukkit.api.magic.Mage> mages = controller.getMages();
         for (com.elmakers.mine.bukkit.api.magic.Mage mage : mages) {
             if (!controller.isValid(mage)) {

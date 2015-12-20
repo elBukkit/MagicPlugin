@@ -208,6 +208,7 @@ public class MagicController implements MageController {
                                         @Override
                                         public void run(MageData data) {
                                         mage.load(data);
+                                        info(" Finished Loading mage data for " + mage.getName() + " (" + mage.getId() + ")");
                                         }
                                     });
                                 } catch (Exception ex) {
@@ -1801,9 +1802,6 @@ public class MagicController implements MageController {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-
-        // Forget players we don't need to keep in memory
-        forgetMages();
     }
 
     public void save()
@@ -3051,7 +3049,7 @@ public class MagicController implements MageController {
 	}
 	
 	public void forgetMage(Mage mage) {
-        forgetMages.add(mage.getId());
+        mages.remove(mage.getId());
 	}
 
     public Automaton getAutomaton(Block block) {
@@ -4046,13 +4044,6 @@ public Set<Material> getMaterialSet(String name)
         entityController.setDisableItemSpawn(false);
     }
 
-    protected void forgetMages() {
-        for (String mageEntry : forgetMages) {
-            mages.remove(mageEntry);
-        }
-        forgetMages.clear();
-    }
-
     public HeroesManager getHeroes() {
         return heroesManager;
     }
@@ -4304,7 +4295,6 @@ public Set<Material> getMaterialSet(String name)
     private final Map<String, ConfigurationSection> spellConfigurations     = new HashMap<String, ConfigurationSection>();
     private final Map<String, ConfigurationSection> baseSpellConfigurations = new HashMap<String, ConfigurationSection>();
     private final Map<String, Mage> 		    mages                  		= new HashMap<String, Mage>();
-    private final Set<String>			        forgetMages					= new HashSet<String>();
     private final Set<Mage>		 	            pendingConstruction			= new HashSet<Mage>();
     private final Set<Mage>                     pendingConstructionRemoval  = new HashSet<Mage>();
     private final Set<Mage>                     pendingScratchpad           = new HashSet<Mage>();
