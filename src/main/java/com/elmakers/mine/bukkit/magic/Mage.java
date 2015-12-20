@@ -819,7 +819,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     }
 
     // This gets called every second (or so - 20 ticks)
-    protected void tick() {
+    public void tick() {
         Player player = getPlayer();
 
         // We don't tick non-player or offline Mages

@@ -1,7 +1,9 @@
 package com.elmakers.mine.bukkit.magic;
 
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.logging.Level;
+import com.elmakers.mine.bukkit.api.magic.Mage;
 
 public class MageUpdateTask implements Runnable {
     private final MagicController controller;
@@ -12,17 +14,20 @@ public class MageUpdateTask implements Runnable {
 
     @Override
     public void run() {
-        Collection<com.elmakers.mine.bukkit.api.magic.Mage> mages = controller.getMages();
-        for (com.elmakers.mine.bukkit.api.magic.Mage mage : mages) {
-            if (!controller.isValid(mage)) {
+        Collection<Mage> mages = controller.getMages();
+        for (Iterator<Mage> iterator = mages.iterator(); iterator.hasNext();) {
+            Mage mage = iterator.next();
+
+            // Players are handled by logout
+            if (!mage.isPlayer() && !mage.isValid())
+            {
+                iterator.remove();
                 continue;
             }
-            if (mage instanceof com.elmakers.mine.bukkit.magic.Mage) {
-                try {
-                    ((com.elmakers.mine.bukkit.magic.Mage) mage).tick();
-                } catch (Exception ex) {
-                    controller.getLogger().log(Level.WARNING, "Error ticking Mage " + mage.getName(), ex);
-                }
+            try {
+               mage.tick();
+            } catch (Exception ex) {
+                controller.getLogger().log(Level.WARNING, "Error ticking Mage " + mage.getName(), ex);
             }
         }
     }

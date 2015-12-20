@@ -1774,13 +1774,6 @@ public class MagicController implements MageController {
         return defaultWandPath;
     }
 
-    protected boolean isValid(Mage mage) {
-        // Players are handled by logout
-        if (mage.isPlayer() || mage.isValid()) return true;
-        mageQuit(mage);
-        return false;
-    }
-
     protected void savePlayerData(Collection<MageData> stores) {
         try {
             for (Entry<String, Mage> mageEntry : mages.entrySet()) {
@@ -3200,8 +3193,7 @@ public Set<Material> getMaterialSet(String name)
 	@Override
 	public Collection<Mage> getMages()
 	{
-		Collection<Mage> mageInterfaces = new ArrayList<Mage>(mages.values());
-		return mageInterfaces;
+		return mages.values();
 	}
 
 	@Override
