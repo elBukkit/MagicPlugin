@@ -5521,9 +5521,9 @@ blink|5:
 blink|6:
   parameters:
       safe: false
+      cooldown: 2000
   costs:
       mana: 200
-      cooldown: 2000
 
 absorb:
     icon: bucket
