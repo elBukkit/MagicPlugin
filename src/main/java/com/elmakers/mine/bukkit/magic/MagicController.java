@@ -1406,7 +1406,18 @@ public class MagicController implements MageController {
         return config;
     }
 
-    protected ConfigurationSection loadExamples() throws InvalidConfigurationException, IOException {
+    protected ConfigurationSection loadExamples(ConfigurationSection properties) throws InvalidConfigurationException, IOException {
+
+        logVerbosity = properties.getInt("log_verbosity", 0);
+        exampleDefaults = properties.getString("example", exampleDefaults);
+        addExamples = properties.getStringList("add_examples");
+
+        loadDefaultSpells = properties.getBoolean("load_default_spells", loadDefaultSpells);
+        disableDefaultSpells = properties.getBoolean("disable_default_spells", disableDefaultSpells);
+        loadDefaultWands = properties.getBoolean("load_default_wands", loadDefaultWands);
+        loadDefaultCrafting = properties.getBoolean("load_default_crafting", loadDefaultCrafting);
+        loadDefaultEnchanting = properties.getBoolean("load_default_enchanting", loadDefaultEnchanting);
+
         if ((exampleDefaults != null && exampleDefaults.length() > 0) || (addExamples != null && addExamples.size() > 0)) {
             // Reload config, example will be used this time.
             if (exampleDefaults != null && exampleDefaults.length() > 0)
@@ -2099,7 +2110,7 @@ public class MagicController implements MageController {
             com.elmakers.mine.bukkit.block.UndoList.attachablesDouble = materialSets.get("attachable_double");
         }
 	}
-	
+
 	protected void loadProperties(ConfigurationSection properties)
 	{
 		if (properties == null) return;
@@ -2114,10 +2125,6 @@ public class MagicController implements MageController {
         CompatibilityUtils.USE_MAGIC_DAMAGE = properties.getBoolean("use_magic_damage", CompatibilityUtils.USE_MAGIC_DAMAGE);
         EffectPlayer.setParticleRange(properties.getInt("particle_range", EffectPlayer.PARTICLE_RANGE));
 
-        logVerbosity = properties.getInt("log_verbosity", 0);
-        exampleDefaults = properties.getString("example", exampleDefaults);
-        addExamples = properties.getStringList("add_examples");
-
         showCastHoloText = properties.getBoolean("show_cast_holotext", showCastHoloText);
         showActivateHoloText = properties.getBoolean("show_activate_holotext", showCastHoloText);
         castHoloTextRange = properties.getInt("cast_holotext_range", castHoloTextRange);
@@ -2125,12 +2132,6 @@ public class MagicController implements MageController {
         urlIconsEnabled = properties.getBoolean("url_icons_enabled", urlIconsEnabled);
         spellUpgradesEnabled = properties.getBoolean("enable_spell_upgrades", spellUpgradesEnabled);
         autoSpellUpgradesEnabled = properties.getBoolean("enable_automatic_spell_upgrades", autoSpellUpgradesEnabled);
-
-		loadDefaultSpells = properties.getBoolean("load_default_spells", loadDefaultSpells);
-        disableDefaultSpells = properties.getBoolean("disable_default_spells", disableDefaultSpells);
-		loadDefaultWands = properties.getBoolean("load_default_wands", loadDefaultWands);
-        loadDefaultCrafting = properties.getBoolean("load_default_crafting", loadDefaultCrafting);
-        loadDefaultEnchanting = properties.getBoolean("load_default_enchanting", loadDefaultEnchanting);
 		undoQueueDepth = properties.getInt("undo_depth", undoQueueDepth);
         workPerUpdate = properties.getInt("work_per_update", workPerUpdate);
         workFrequency = properties.getInt("work_frequency", workFrequency);

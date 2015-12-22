@@ -44,7 +44,7 @@ public class ConfigurationLoadTask implements Runnable {
         // Load main configuration
         try {
             configuration = controller.loadMainConfiguration();
-            exampleConfiguration = controller.loadExamples();
+            exampleConfiguration = controller.loadExamples(configuration);
         } catch (Exception ex) {
             logger.log(Level.WARNING, "Error loading config.yml", ex);
             success = false;
