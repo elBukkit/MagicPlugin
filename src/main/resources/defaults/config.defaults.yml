@@ -617,6 +617,11 @@ bypass_pvp: false
 # Will consider all spells as pvp spells
 pvp_restricted: false
 
+# Use scoreboard teams for friendly fire
+# This will prevent players on the same scoreboard team from
+# targeting each other with spells.
+use_scoreboard_teams: false
+
 # Debug EffectLib issues
 debug_effects: false
 

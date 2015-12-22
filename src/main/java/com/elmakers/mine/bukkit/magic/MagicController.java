@@ -104,6 +104,8 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.projectiles.ProjectileSource;
+import org.bukkit.scoreboard.Scoreboard;
+import org.bukkit.scoreboard.Team;
 import org.bukkit.util.Vector;
 import org.mcstats.Metrics;
 import org.mcstats.Metrics.Graph;
@@ -2240,6 +2242,7 @@ public class MagicController implements MageController {
 		bypassPvpPermissions = properties.getBoolean("bypass_pvp", bypassPvpPermissions);
         bypassFriendlyFire = properties.getBoolean("bypass_friendly_fire", bypassFriendlyFire);
         allPvpRestricted = properties.getBoolean("pvp_restricted", allPvpRestricted);
+        useScoreboardTeams = properties.getBoolean("use_scoreboard_teams", useScoreboardTeams);
 		extraSchematicFilePath = properties.getString("schematic_files", extraSchematicFilePath);
 		createWorldsEnabled = properties.getBoolean("enable_world_creation", createWorldsEnabled);
         defaultSkillIcon = properties.getString("default_skill_icon", defaultSkillIcon);
@@ -3271,6 +3274,24 @@ public Set<Material> getMaterialSet(String name)
     @Override
     public boolean canTarget(Entity attacker, Entity entity)
     {
+        if (useScoreboardTeams && attacker instanceof Player && entity instanceof Player)
+        {
+            Player player1 = (Player)attacker;
+            Player player2 = (Player)entity;
+
+            Scoreboard scoreboard1 = player1.getScoreboard();
+            Scoreboard scoreboard2 = player2.getScoreboard();
+
+            if (scoreboard1 != null && scoreboard2 != null)
+            {
+                Team team1 = scoreboard1.getPlayerTeam(player1);
+                Team team2 = scoreboard2.getPlayerTeam(player2);
+                if (team1 != null && team2 != null && team1.equals(team2))
+                {
+                    return false;
+                }
+            }
+        }
         return preciousStonesManager.canTarget(attacker, entity) && townyManager.canTarget(attacker, entity);
     }
 
@@ -4323,6 +4344,7 @@ public Set<Material> getMaterialSet(String name)
     private boolean							    bypassPvpPermissions        = false;
     private boolean							    bypassFriendlyFire          = false;
     private boolean							    allPvpRestricted            = false;
+    private boolean                             useScoreboardTeams          = false;
     private boolean							    protectLocked               = true;
 
     private String								extraSchematicFilePath		= null;
