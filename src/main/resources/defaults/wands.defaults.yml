@@ -1501,6 +1501,7 @@ clericchestplate:
     indestructible: true
     locked: true
     keep: true
+    passive: true
     xp_regeneration_boost: -0.2
     cast_spell: healing
     cast_interval: 2000
@@ -1510,6 +1511,7 @@ magneticleggings:
     indestructible: true
     locked: true
     keep: true
+    passive: true
     xp_regeneration_boost: -0.3
     cast_spell: grab
     cast_interval: 5000

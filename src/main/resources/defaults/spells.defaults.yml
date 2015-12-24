@@ -1390,7 +1390,7 @@ grab:
              particle: spell
              radius: 0.8
     parameters:
-        target: none
+        target: self
         target_types: dropped_item,experience_orb
         count: 16
         radius: 8

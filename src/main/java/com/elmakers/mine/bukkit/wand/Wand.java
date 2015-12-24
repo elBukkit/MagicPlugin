@@ -3268,6 +3268,9 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
                 lastSpellCast = now;
                 Spell spell = mage.getSpell(castSpell);
                 if (spell != null) {
+					if (castParameters == null) {
+						castParameters = new MemoryConfiguration();
+					}
                     castParameters.set("track_casts", false);
                     mage.setCostReduction(100);
                     mage.setQuiet(true);
