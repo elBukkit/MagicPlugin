@@ -139,10 +139,10 @@ public class ActionSpell extends BrushSpell
         castOnNoTarget = true;
         super.loadTemplate(template);
 
-        usesBrush = false;
         undoable = false;
         requiresBuildPermission = false;
         requiresBreakPermission = false;
+        usesBrush = template.getBoolean("uses_brush", false);
         upParameters = template.getConfigurationSection("alternate_up_parameters");
         downParameters = template.getConfigurationSection("alternate_down_parameters");
         sneakParameters = template.getConfigurationSection("alternate_sneak_parameters");
