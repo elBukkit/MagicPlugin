@@ -1,16 +1,18 @@
 # CHANGELOG
 
-## 5.5
+## 5.4.3
 
  - Optimize /magic load, almost entirely async, load Mage spell data only when needed.
  - Added several more Blink/Fling levels
  - Added "warpunlock" and "warpmenu" spells, for region or NPC use (works with Recall)
  - Prevent Blink passthrough on obsidian, iron blocks and iron bars
  - Fix Railgun not having auto-undo (!!)
- - Re-work color shop a bit, bubble effects are now separate from color upgrades
+ - Re-work color shops:
+   - Bubble and particles effects are now separate from color upgrades and in a separate effectshop
+   - Added 15 colors to color shop, plus a color randomizer
  - Fix Wolf House spell/item
  - Add questscompass, ledger for Quests/Vault integration
- - Add several new shops: ledgershop, withdrawals, deposits, lootshop
+ - Add several new shops: ledgershop, withdrawals, deposits, lootshop, effectshop
 
 ## 5.4.2
 

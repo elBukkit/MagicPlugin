@@ -1730,9 +1730,30 @@ wands:
     orangeeffects:
         name: Orange Wand Effects
         description: Tint your wand effects!
+    magentaeffects:
+        name: Magenta Wand Effects
+        description: Tint your wand effects!
+    grayeffects:
+        name: Gray Wand Effects
+        description: Tint your wand effects!
+    lightgrayeffects:
+        name: Light Gray Wand Effects
+        description: Tint your wand effects!
+    lightblueeffects:
+        name: Light Blue Wand Effects
+        description: Tint your wand effects!
     pinkeffects:
         name: Pink Wand Effects
         description: Tint your wand effects!
+    browneffects:
+        name: Brown Wand Effects
+        description: Tint your wand effects!
+    darkgreeneffects:
+        name: Dark Green Wand Effects
+        description: Tint your wand effects!
+    randomeffects:
+        name: Random Wand Effects
+        description: Feeling lucky? Tint your wand effects a random color!
     bubbleeffects:
         name: Bubble Wand Effects
         description: Add potion-like bubble effects to your wand

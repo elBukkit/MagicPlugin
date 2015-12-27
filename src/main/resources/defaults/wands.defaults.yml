@@ -1096,56 +1096,91 @@ knight_upgrade:
 # UPGRADE ITEMS
 #
 
-redeffects:
-    upgrade: true
-    indestructible: false
-    icon: carpet:14
-    effect_color: 'FF0000'
-greeneffects:
-    upgrade: true
-    indestructible: false
-    icon: carpet:5
-    effect_color: '00FF00'
-blueeffects:
-    upgrade: true
-    indestructible: false
-    icon: carpet:11
-    effect_color: '0000FF'
 whiteeffects:
     upgrade: true
     indestructible: false
     icon: carpet:0
     effect_color: 'FFFFFF'
-blackeffects:
+orangeeffects:
     upgrade: true
     indestructible: false
-    icon: carpet:15
-    effect_color: '010101'
-purpleeffects:
+    icon: carpet:1
+    effect_color: 'FFAA00'
+magentaeffects:
     upgrade: true
     indestructible: false
-    icon: carpet:10
+    icon: carpet:2
     effect_color: 'FF00FF'
+lightblueeffects:
+    upgrade: true
+    indestructible: false
+    icon: carpet:3
+    effect_color: 'ADD8E6'
 yelloweffects:
     upgrade: true
     indestructible: false
     icon: carpet:4
     effect_color: 'FFFF00'
-aquaeffects:
+greeneffects:
     upgrade: true
     indestructible: false
-    icon: carpet:3
-    effect_color: '00FFFF'
-orangeeffects:
-    upgrade: true
-    indestructible: false
-    icon: carpet:14
-    effect_color: 'FFAA00'
+    icon: carpet:5
+    effect_color: '00FF00'
 pinkeffects:
     upgrade: true
     indestructible: false
     icon: carpet:6
     effect_color: 'FAAFBE'
+grayeffects:
+    upgrade: true
+    indestructible: false
+    icon: carpet:7
+    effect_color: '808080'
+lightgrayeffects:
+    upgrade: true
+    indestructible: false
+    icon: carpet:8
+    effect_color: '404040'
+aquaeffects:
+    upgrade: true
+    indestructible: false
+    icon: carpet:9
+    effect_color: '00FFFF'
+purpleeffects:
+    upgrade: true
+    indestructible: false
+    icon: carpet:10
+    effect_color: '800080'
+blueeffects:
+    upgrade: true
+    indestructible: false
+    icon: carpet:11
+    effect_color: '0000FF'
+browneffects:
+    upgrade: true
+    indestructible: false
+    icon: carpet:12
+    effect_color: '806517'
+darkgreeneffects:
+    upgrade: true
+    indestructible: false
+    icon: carpet:13
+    effect_color: '254117'
+redeffects:
+    upgrade: true
+    indestructible: false
+    icon: carpet:14
+    effect_color: 'FF0000'
+blackeffects:
+    upgrade: true
+    indestructible: false
+    icon: carpet:15
+    effect_color: '010101'
+randomeffects:
+    upgrade: true
+    indestructible: false
+    icon: skull_item:http://textures.minecraft.net/texture/1adaf6e6e387bc18567671bb82e948488bbacff97763ee5985442814989f5d
+    effect_color: 'random'
 bubbleeffects:
     upgrade: true
     indestructible: false

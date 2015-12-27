@@ -8476,6 +8476,10 @@ colorshop:
           cost: 10
         - item: wand|blueeffects
           cost: 10
+        - item: wand|lightblueeffects
+          cost: 10
+        - item: wand|aquaeffects
+          cost: 10
         - item: wand|whiteeffects
           cost: 10
         - item: wand|blackeffects
@@ -8484,18 +8488,45 @@ colorshop:
           cost: 10
         - item: wand|yelloweffects
           cost: 10
-        - item: wand|aquaeffects
-          cost: 10
         - item: wand|orangeeffects
           cost: 10
         - item: wand|pinkeffects
           cost: 10
+        - item: wand|magentaeffects
+          cost: 10
+        - item: wand|grayeffects
+          cost: 10
+        - item: wand|lightgrayeffects
+          cost: 10
+        - item: wand|browneffects
+          cost: 10
+        - item: wand|darkgreeneffects
+          cost: 10
         - item: none
-        - item: none
+        - item: wand|randomeffects
+          cost: 5
+
+effectshop:
+    icon: ink_sack
+    category: specialty
+    hidden: true
+    actions:
+        cast:
+        -  class: ItemShop
+    parameters:
+        quiet: true
+        confirm_filler: stained_glass:9
+        confirm: true
+        require_wand: true
+        items:
         - item: wand|bubbleeffects
           cost: 100
         - item: wand|haloeffects
           cost: 500
+        - item: wand|rainboweffects
+          cost: 500
+        - item: none
+        - item: none
         - item: none
         - item: none
         - item: none
