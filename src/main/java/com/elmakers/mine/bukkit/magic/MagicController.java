@@ -1732,16 +1732,20 @@ public class MagicController implements MageController {
 
     public boolean addLostWand(LostWand lostWand) {
         lostWands.put(lostWand.getId(), lostWand);
-        String chunkKey = getChunkKey(lostWand.getLocation().getChunk());
-        Set<String> chunkWands = lostWandChunks.get(chunkKey);
-        if (chunkWands == null) {
-            chunkWands = new HashSet<String>();
-            lostWandChunks.put(chunkKey, chunkWands);
-        }
-        chunkWands.add(lostWand.getId());
+        try {
+            String chunkKey = getChunkKey(lostWand.getLocation().getChunk());
+            Set<String> chunkWands = lostWandChunks.get(chunkKey);
+            if (chunkWands == null) {
+                chunkWands = new HashSet<String>();
+                lostWandChunks.put(chunkKey, chunkWands);
+            }
+            chunkWands.add(lostWand.getId());
 
-        if (dynmapShowWands) {
-            addLostWandMarker(lostWand);
+            if (dynmapShowWands) {
+                addLostWandMarker(lostWand);
+            }
+        } catch (Exception ex) {
+            getLogger().log(Level.WARNING, "Error loading lost wand id " + lostWand.getId() + " - is it in an unloaded world?", ex);
         }
 
         return true;
