@@ -2895,6 +2895,7 @@ torch:
     icon_url: http://textures.minecraft.net/texture/08f4793551132fad5bdb5d185269881a8de6fa4b86c6bde92c2bf467e097
     icon: torch
     category: utility
+    tags: noduel
     worth_sp: 200
     earns_sp: 2
     upgrade_required_path: beginner
@@ -7072,7 +7073,8 @@ blind:
 pollinate:
     icon_url: http://textures.minecraft.net/texture/b6d7a7f167e24d166ab1d8dedd79311481d4e1ebddbaba8ec6cb394713fb
     icon: yellow_flower
-    category: light
+    category: engineering
+    tags: noduel
     worth_sp: 1200
     earns_sp: 3
     actions:
@@ -8486,13 +8488,14 @@ colorshop:
           cost: 10
         - item: wand|orangeeffects
           cost: 10
+        - item: wand|pinkeffects
+          cost: 10
+        - item: none
+        - item: none
         - item: wand|bubbleeffects
           cost: 100
         - item: wand|haloeffects
           cost: 500
-        - item: none
-        - item: none
-        - item: none
         - item: none
         - item: none
         - item: none

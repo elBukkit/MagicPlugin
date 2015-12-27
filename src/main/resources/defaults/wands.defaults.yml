@@ -1141,6 +1141,11 @@ orangeeffects:
     indestructible: false
     icon: carpet:14
     effect_color: 'FFAA00'
+pinkeffects:
+    upgrade: true
+    indestructible: false
+    icon: carpet:6
+    effect_color: 'FAAFBE'
 bubbleeffects:
     upgrade: true
     indestructible: false

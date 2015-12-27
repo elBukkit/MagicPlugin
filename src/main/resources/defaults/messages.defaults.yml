@@ -1717,6 +1717,9 @@ wands:
     orangeeffects:
         name: Orange Wand Effects
         description: Tint your wand effects!
+    pinkeffects:
+        name: Pink Wand Effects
+        description: Tint your wand effects!
     bubbleeffects:
         name: Bubble Wand Effects
         description: Add potion-like bubble effects to your wand

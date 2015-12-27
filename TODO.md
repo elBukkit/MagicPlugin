@@ -1,6 +1,7 @@
 # TODO
 
  - There's an area in the RoR where you can cast alohomora and it will spawn doors, in the center of the right side when you enter~
+ - Implement "/mage configure <foo>" for clearing mage data
 
  - Alter *really* needs an update!
  - Effects don't cancel if you switch away from your wand? Whip stops moving? Wha?
@@ -8,6 +9,7 @@
  - Automata don't resume anymore
  - Somehow make brooms work when mob spawning is denied?
  - Fix Shrink/Grow losing track of entities (zombie->giant)
+ - Super-undroppable option? Not droppable at all, or allowed to put in chests, etc?
 
  - Fix that horrible inv-dupe issue :(
  
