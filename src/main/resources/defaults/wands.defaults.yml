@@ -1681,3 +1681,28 @@ heroes:
     indestructible: true
     effect_bubbles: false
     heroes: true
+
+# Quests integration
+questscompass:
+  active_spell: quests
+  icon: compass
+  undroppable: true
+  indestructible: false
+  mode: cast
+  locked: true
+  keep: true
+  spells:
+  - quests
+
+# Vault integration
+
+ledger:
+  active_spell: ledger
+  icon: paper
+  undroppable: true
+  keep: true
+  indestructible: false
+  mode: cast
+  locked: true
+  spells:
+  - ledger

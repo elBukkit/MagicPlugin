@@ -9,6 +9,8 @@
  - Fix Railgun not having auto-undo (!!)
  - Re-work color shop a bit, bubble effects are now separate from color upgrades
  - Fix Wolf House spell/item
+ - Add questscompass, ledger for Quests/Vault integration
+ - Add several new shops: ledgershop, withdrawals, deposits, lootshop
 
 ## 5.4.2
 

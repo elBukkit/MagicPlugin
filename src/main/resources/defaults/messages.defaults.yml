@@ -226,7 +226,8 @@ spell:
     available_path: Available at the $path level
     required_path: Required to complete the $path level
     levels_available: "Max Level: &r&5$levels"
-    required_spell: "You must learn &r&4$spell &d&oto advance to &b$path"
+    required_spell: "&cNothing new to learn for now! &4What mystery lies ahead?"
+    #required_spell: "You must learn &r&4$spell &d&oto advance to &b$path"
     level_description: Level $level
     quick_cast: "&2Quick Cast"
     earns: "&2Earns up to &6$earns &eSP"
@@ -1548,6 +1549,18 @@ spells:
         name: Emerald Exchange
         title: "Emeralds ($balance)"
         description: Trade XP for Emeralds
+    withdrawals:
+      cost_lore: "Withdraw $cost"
+      deducted: "&d&oYou withdrew &r&a$cost &r&d&oof &r&6$item"
+    deposits:
+      cost_lore: "Deposit $cost"
+      deducted: "&d&oYou deposited &r&a$cost &r&d&oof &r&6$item"
+    lootshop:
+      cost_lore: "Earn $cost"
+      deducted: "&d&oYou deposited &r&a$cost &r&d&oof &r&6$item"
+      insufficient: "&cRequires &4$cost"
+      confirm_title: "Sell $item"
+      deducted: "&d&oYou sold &r&6$item &r&d&ofor &r&a$cost"
     wandshop:
         name: Wand Shop
         title: "Wands ($balance)"
@@ -1851,6 +1864,12 @@ wands:
     heroes:
         name: Skills
         description: Right-click to use skills
+    ledger:
+      name: Ledger
+      description: Check your bank balance
+    questscompass:
+      name: Quest Compass
+      description: Tells you what to do next
 
 automata:
     awaken: "&c&o$name &r&5has awakened"

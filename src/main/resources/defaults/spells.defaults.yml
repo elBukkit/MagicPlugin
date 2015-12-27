@@ -8537,6 +8537,105 @@ emeraldshop:
         items:
           emerald: 500
 
+deposits:
+    icon: emerald
+    category: specialty
+    hidden: true
+    actions:
+        cast:
+        -  class: ItemShop
+    parameters:
+        sell: true
+        quiet: true
+        confirm: false
+        use_items: false
+        auto_close: false
+        items:
+          - item: gold_nugget
+            cost: 1
+          - item: gold_ingot
+            cost: 9
+          - item: gold_block
+            cost: 81
+          - item: diamond
+            cost: 16
+          - item: diamond_block
+            cost: 144
+          - item: emerald
+            cost: 64
+          - item: emerald_block
+            cost: 576
+
+withdrawals:
+    icon: emerald
+    category: specialty
+    hidden: true
+    actions:
+        cast:
+        -  class: ItemShop
+    parameters:
+        quiet: true
+        confirm: false
+        use_items: false
+        auto_close: false
+        items:
+          - item: gold_nugget
+            cost: 1
+          - item: gold_ingot
+            cost: 9
+          - item: gold_block
+            cost: 81
+          - item: diamond
+            cost: 16
+          - item: diamond_block
+            cost: 144
+          - item: emerald
+            cost: 64
+          - item: emerald_block
+            cost: 576
+
+ledgershop:
+    icon: paper
+    category: specialty
+    hidden: true
+    actions:
+        cast:
+        -  class: ItemShop
+    parameters:
+        quiet: true
+        confirm: true
+        use_items: false
+        confirm_filler: stained_glass_pane
+        items:
+          wand|ledger: 2
+
+lootshop:
+    icon: emerald
+    category: specialty
+    hidden: true
+    actions:
+        cast:
+        -  class: ItemShop
+    parameters:
+        sell: true
+        quiet: true
+        confirm: false
+        use_items: false
+        auto_close: false
+        items:
+          - item: spider_eye@4
+            cost: 1
+          - item: rotten_flesh@2
+            cost: 1
+          - item: bone@2
+            cost: 1
+          - item: ghast_tear
+            cost: 1
+          - item: blaze_powder
+            cost: 1
+          - item: sulphur
+            cost: 2
+
 addspell:
     icon: iron_hoe
     category: specialty
@@ -9778,3 +9877,24 @@ supergather:
         bypass_friendly_fire: true
     costs:
         mana: 50
+
+quests:
+    icon: compass
+    category: specialty
+    hidden: true
+    actions:
+        cast:
+        - class: Command
+    parameters:
+      command: quest
+
+ledger:
+    icon: paper
+    category: specialty
+    hidden: true
+    actions:
+        cast:
+        - class: Command
+    parameters:
+      op: true
+      command: bal
