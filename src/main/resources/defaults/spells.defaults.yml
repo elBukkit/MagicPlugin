@@ -8468,26 +8468,27 @@ colorshop:
         require_wand: true
         items:
         - item: wand|redeffects
-          cost: 100
+          cost: 10
         - item: wand|greeneffects
-          cost: 100
+          cost: 10
         - item: wand|blueeffects
-          cost: 100
+          cost: 10
         - item: wand|whiteeffects
-          cost: 100
+          cost: 10
         - item: wand|blackeffects
-          cost: 100
+          cost: 10
         - item: wand|purpleeffects
-          cost: 100
+          cost: 10
         - item: wand|yelloweffects
-          cost: 100
+          cost: 10
         - item: wand|aquaeffects
-          cost: 100
+          cost: 10
         - item: wand|orangeeffects
+          cost: 10
+        - item: wand|bubbleeffects
           cost: 100
         - item: wand|haloeffects
-          cost: 1000
-        - item: none
+          cost: 500
         - item: none
         - item: none
         - item: none
