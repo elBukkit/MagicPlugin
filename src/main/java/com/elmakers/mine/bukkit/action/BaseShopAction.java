@@ -283,19 +283,19 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
         if (shopItem == null) {
             return;
         }
-        boolean hasCosts = sell ? getItemAmount(controller, shopItem.getItem(), mage) > 0
+        boolean hasCosts = sell ? getItemAmount(controller, shopItem.getItem(), mage) >= shopItem.getItem().getAmount()
                 : hasItemCosts(context, shopItem);
 
         if (!hasCosts) {
             String costString = context.getMessage("insufficient", ChatColor.RED + "Costs $cost");
             if (sell) {
-                costString = costString.replace("$cost", formatItemAmount(controller, item, 1));
+                costString = costString.replace("$cost", formatItemAmount(controller, item, shopItem.getItem().getAmount()));
             } else {
                 costString = costString.replace("$cost", getItemCost(context, shopItem));
             }
             context.showMessage(costString);
         } else {
-            String itemName = controller.describeItem(item);
+            String itemName = formatItemAmount(controller, item, item.getAmount());
             if (InventoryUtils.hasMeta(item, "confirm")) {
                 String inventoryTitle = context.getMessage("confirm_title", "Buy $item").replace("$item", itemName);
                 Inventory confirmInventory = CompatibilityUtils.createInventory(null, 9, inventoryTitle);
@@ -320,11 +320,10 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
                 return;
             }
 
-            double worth = shopItem.getWorth();
             String costString = context.getMessage("deducted", "&d&oYou bought &r&6$item &r&d&ofor &r&a$cost");
             if (sell) {
                 costString = costString.replace("$cost", getItemCost(context, shopItem));
-                removeItems(controller, mage, item, 1);
+                removeItems(controller, mage, item, shopItem.getItem().getAmount());
                 giveCosts(context, shopItem);
             } else {
                 costString = costString.replace("$cost", getItemCost(context, shopItem));
