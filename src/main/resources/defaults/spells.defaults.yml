@@ -6520,6 +6520,7 @@ wolfhouse:
         oty: 1
         brushmod: erase
         transparent: transparent_to_construction
+        destructible: destructible_replace
         commands:
           wolf_generate: castp @p[r=7] wolfhouse type sphere cd true md 150 tx ~-6 ty ~22 tz ~11 obx 0 oby -46 obz -1 r 52 brushmod dirt
           wolf_underwater: castp @p[r=7] wolfhouse type sphere cd true md 150 tx ~-5 ty ~23 tz ~11 obx 0 oby -46 obz -1 r 52 id water,stationary_water

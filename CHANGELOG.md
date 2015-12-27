@@ -7,6 +7,8 @@
  - Added "warpunlock" and "warpmenu" spells, for region or NPC use (works with Recall)
  - Prevent Blink passthrough on obsidian, iron blocks and iron bars
  - Fix Railgun not having auto-undo (!!)
+ - Re-work color shop a bit, bubble effects are now separate from color upgrades
+ - Fix Wolf House spell/item
 
 ## 5.4.2
 

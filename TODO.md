@@ -1,12 +1,11 @@
 # TODO
 
+ - There's an area in the RoR where you can cast alohomora and it will spawn doors, in the center of the right side when you enter~
+
  - Alter *really* needs an update!
- - Spells will run partially but then not undo if the player's batch queue is full?
  - Effects don't cancel if you switch away from your wand? Whip stops moving? Wha?
  - Fix block targeting cast messages
- - Need a way for arena deaths to prevent a Recall change of death location
  - Automata don't resume anymore
- - Maybe add a floor/ceil option to Volume for more control over sizes
  - Somehow make brooms work when mob spawning is denied?
  - Fix Shrink/Grow losing track of entities (zombie->giant)
 
@@ -14,9 +13,6 @@
  
  - Add spell or brush or something to auto-convert from MagicWorlds configs
    
- - Need to clean up location offset issues for effects. Can't use updateLocations: false with 
-   an offset, for instance. Relative locations would be great, too- maybe in Magic and EffectLib.
- 
  - Fix shop price scaling
  
  - Try to support projectile hitbox modifiers that aren't cubes
@@ -41,8 +37,6 @@
    you will get xp equivalent to your mana
 
  - Don't logout players on server change until they quit
-
- - MagicArenas: Add wand path to announcement messages
 
  - Undo action re-work
    - Incorporate UndoBatch into Undo action
