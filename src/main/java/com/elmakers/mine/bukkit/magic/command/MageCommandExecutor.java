@@ -221,11 +221,23 @@ public class MageCommandExecutor extends MagicMapExecutor {
 
     public boolean onMagicConfigure(CommandSender sender, Player player, String[] args)
     {
+        Mage mage = api.getMage(player);
+        if (args.length == 1)
+        {
+            ConfigurationSection data = mage.getData();
+            String key = args[0];
+            if (!data.contains(key)) {
+                sender.sendMessage(ChatColor.RED + "No data found with key " + ChatColor.AQUA + key + ChatColor.RED + " for " + ChatColor.DARK_AQUA + player.getDisplayName());
+                return true;
+            }
+            data.set(key, null);
+            sender.sendMessage(ChatColor.GOLD + "Removed data for key " + ChatColor.AQUA + key + ChatColor.GOLD  + " for " + ChatColor.DARK_AQUA + player.getDisplayName());
+            return true;
+        }
         if (args.length != 2)
         {
             return false;
         }
-        Mage mage = api.getMage(player);
         if (args[0].equals("*"))
         {
             long value = 0;
