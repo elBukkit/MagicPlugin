@@ -14,6 +14,7 @@ public interface WandUpgradePath {
     public boolean hasUpgrade();
     public boolean checkUpgradeRequirements(Wand wand, Mage mage);
     public WandUpgradePath getUpgrade();
+    public String translatePath(String path);
     public void upgrade(Wand wand, Mage mage);
     public Collection<String> getSpells();
     public Collection<String> getRequiredSpells();
