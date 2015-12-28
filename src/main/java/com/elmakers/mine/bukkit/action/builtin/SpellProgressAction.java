@@ -97,6 +97,7 @@ public class SpellProgressAction extends BaseSpellAction implements GUIAction
                     WandUpgradePath currentPath = wand.getPath();
                     if (requiredPathKey != null && !currentPath.hasPath(requiredPathKey))
                     {
+                        requiredPathKey = currentPath.translatePath(requiredPathKey);
                         com.elmakers.mine.bukkit.wand.WandUpgradePath upgradePath = com.elmakers.mine.bukkit.wand.WandUpgradePath.getPath(requiredPathKey);
                         if (upgradePath == null) continue;
                         lore.add(context.getMessage("level_requirement").replace("$path", upgradePath.getName()));

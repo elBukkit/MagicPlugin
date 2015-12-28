@@ -651,6 +651,7 @@ architect:
 battle:
     upgrade: squire
     upgrade_item: squire_upgrade
+    follows: beginner
     inherit: default
     max_mana_regeneration: 10
     max_mana: 100
@@ -674,6 +675,7 @@ battle:
 squire:
     upgrade: soldier
     upgrade_item: soldier_upgrade
+    follows: student
     inherit: battle
     max_mana_regeneration: 30
     max_mana: 150
@@ -700,6 +702,7 @@ soldier:
     upgrade: knight
     upgrade_item: knight_upgrade
     inherit: squire
+    follows: apprentice
     max_mana_regeneration: 40
     max_mana: 200
     mana_regeneration: 1
@@ -724,6 +727,7 @@ soldier:
 
 knight:
     inherit: soldier
+    follows: master
     max_mana_regeneration: 50
     max_mana: 250
     mana_regeneration: 1

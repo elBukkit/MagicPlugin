@@ -49,6 +49,7 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
     private String upgradeItemKey;
     private String name;
     private String description;
+    private String followsPath;
     private boolean hidden = false;
     private boolean earnsSP = true;
 
@@ -132,6 +133,7 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
         allSpells.addAll(spells);
 
         // Upgrade information
+        followsPath = template.getString("follows");
         upgradeKey = template.getString("upgrade");
         upgradeItemKey = template.getString("upgrade_item");
         requiredSpells.addAll(template.getStringList("required_spells"));
@@ -566,11 +568,25 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
     @Override
     public boolean hasPath(String pathName) {
         if (this.key.equalsIgnoreCase(pathName)) return true;
+        if (followsPath != null && followsPath.equalsIgnoreCase(pathName)) return true;
         if (parent != null) {
             return parent.hasPath(pathName);
         }
 
         return false;
+    }
+
+    @Override
+    public String translatePath(String pathKey) {
+        if (followsPath != null) {
+            if (followsPath.equalsIgnoreCase(pathKey)) {
+                return key;
+            }
+            if (upgradeKey != null) {
+                return getUpgrade().translatePath(pathKey);
+            }
+        }
+        return pathKey;
     }
 
     @Override

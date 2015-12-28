@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 5.5
+
+ - Fix spells not upgrading on Master Sword
+
 ## 5.4.3
 
  - Optimize /magic load, almost entirely async, load Mage spell data only when needed.
