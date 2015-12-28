@@ -778,8 +778,8 @@ miniwolf:
         - harden|2@2
         - missile|4@3
         - levitate@4
-        - fling|2@5
-        - blink|3@6
+        - fling|4@5
+        - blink|6@6
         - counterspell|2@7
         - reflect|3@8
         - day@9

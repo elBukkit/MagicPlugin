@@ -2245,6 +2245,8 @@ gather:
     tags: noduel
     worth_sp: 15
     show_undoable: false
+    upgrade_required_path: apprentice
+    upgrade_required_casts: 50
     actions:
         cast:
         -  class: PlayerSelect
@@ -2271,8 +2273,17 @@ gather:
         target_self: false
         cooldown: 30000
         bypass_friendly_fire: true
+        op: true
     costs:
         mana: 50
+
+gather|2:
+    actions:
+        alternate_down:
+        -  class: PlayerSelect
+           actions:
+           -  class: Command
+              command: tpahere @tn
 
 mount:
     icon_url: http://textures.minecraft.net/texture/ddb5db33eac28ccfce38f179044575cb9de8195bc1ed843d4345da5f13b63d
@@ -5015,6 +5026,7 @@ mine:
         recursion_depth: 2
         drop: ores
         cooldown: 10000
+        bypass_undo: true
     costs:
         mana: 10
 
@@ -5060,6 +5072,7 @@ chop:
         drop: trees
         diagonals: true
         cooldown: 5000
+        bypass_undo: true
     costs:
         mana: 80
 

@@ -537,6 +537,7 @@ spells:
         cast_player_message: "&d&o$player &r&5folded space"
         target_selected: You captured $target
         cancel: Released target
+        upgrade_description: "&r&b&bull; &6Aim down and cast to gather players to you"
     supergather:
         name: SuperGather
         description: Capture players and teleport them

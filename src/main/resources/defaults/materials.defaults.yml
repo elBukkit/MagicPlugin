@@ -166,6 +166,7 @@ destructible:
 destructible2:
 - step
 - double_step
+- wood
 - glass
 - thin_glass
 - stained_glass
@@ -220,7 +221,6 @@ destructible2:
 - dark_oak_door
 - standing_banner
 
-
 destructible3:
 - tnt
 - brick
@@ -229,6 +229,7 @@ destructible3:
 - cobblestone_stairs
 - monster_eggs
 - brick_stairs
+- smooth_brick
 - nether_brick
 - nether_brick_fence
 - nether_brick_stairs
