@@ -3,6 +3,7 @@
 ## 5.5
 
  - Fix spells not upgrading on Master Sword
+ - Add PermaFrost spell, ChangeBiome action
 
 ## 5.4.3
 

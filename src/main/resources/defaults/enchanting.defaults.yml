@@ -552,6 +552,7 @@ architect:
       paste: 0,1,10
       volley: 2,25,35
       forest: 0,0,10
+      permafrost: 1,10,20
     material_count:
       1:  50, 20, 20
       3:  1,  10, 30

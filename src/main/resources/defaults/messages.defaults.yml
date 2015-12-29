@@ -472,6 +472,10 @@ spells:
         name: Grab
         description: Pull items toward you
         cast: Yoink!
+    permafrost:
+        name: PermaFrost
+        description: Make it permanently snowy!
+        cast_finish: Permafrosted $count blocks
     frost:
         name: Frost
         description: Freeze water and create snow
@@ -1375,12 +1379,14 @@ spells:
         name: Sticky Bomb
         description: Toss a sticky bomb that explodes after 5 seconds
         cast: You toss a sticky bomb
+        upgrade_description: "&r&b&bull; &6More accurate, larger blast"
     homing:
         name: Homing Missile
         description: Shoot a bolt of energy that will track your target
         cast: You fire a homing missile at $target
         lock_on: "&d&o$player&r&5 has locked on to you!"
         cast_player_message: "&d&o$player&r&5's $spell hit you"
+        upgrade_description: "&r&b&bull; &6Faster missile, more damage"
     blind:
         name: Blind
         description: Blind your target

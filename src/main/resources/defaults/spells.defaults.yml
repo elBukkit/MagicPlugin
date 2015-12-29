@@ -1715,6 +1715,59 @@ frost|4:
     costs:
         mana: 70
 
+permafrost:
+    icon_url: http://textures.minecraft.net/texture/ff39da1c8acc158ee5aa7f0352e4738aefe3365f28841badd603e2ffe42a
+    icon: snow_ball
+    category: engineering
+    worth_sp: 2000
+    earns_sp: 10
+    actions:
+        cast:
+        - class: Sphere
+          actions:
+          - class: Freeze
+          - class: ChangeBiome
+          - class: Weather
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: magic.zap
+        tick:
+        - location: target
+          particle: snowball
+          particle_count: 4
+          particle_offset_x: 0.01
+          particle_offset_y: 0.01
+          particle_offset_z: 0.01
+        hit:
+        -  class: EffectSingle
+           location: target
+           color: F5EFFB
+           firework: ball
+        - class: EffectSingle
+          location: target
+          target_offset: 0,0.2,0
+          effectlib:
+             class: Shield
+             duration: $undo
+             period: 4
+             particle: snowball
+             radius: $radius
+    parameters:
+        target: block
+        allow_max_range: false
+        range: 48
+        radius: 16
+        transparent: freeze_transparent
+        destructible: freezeable
+        ice: ice
+        cooldown: 30000
+        freeze_lava: true
+        biome: ice_plains_spikes
+        weather: storm
+    costs:
+        mana: 200
+
 lightning:
     alias: storm
     upgrade_required_path: apprentice
@@ -6624,9 +6677,6 @@ missile:
         - class: CustomProjectile
           actions:
           - class: Damage
-          headshot:
-          - class: Damage
-            parameters: headshot_parameters
     effects:
         cast:
         -  class: EffectSingle
@@ -6697,6 +6747,9 @@ missile:
             material: redstone_block
             size: 0.1
             yOffset: 0
+    headshot_parameters:
+      player_damage: 4
+      entity_damage: 6
     parameters:
         allow_max_range: true
         velocity: 200
@@ -6705,9 +6758,6 @@ missile:
         target_type: LivingEntity
         player_damage: 2
         entity_damage: 4
-        headshot_parameters:
-          player_damage: 4
-          entity_damage: 6
         target_breakables: 1
         cooldown: 1000
         reorient: false
@@ -6718,14 +6768,14 @@ missile|2:
     upgrade_required_path: student
     upgrade_required_casts: 50
     earns_cooldown: 600000
+    headshot_parameters:
+      player_damage: 5
+      entity_damage: 8
     parameters:
         range: 32
         player_damage: 3
         entity_damage: 6
         target_breakables: 2
-        headshot_parameters:
-          player_damage: 5
-          entity_damage: 8
     costs:
         mana: 20
 
@@ -6733,25 +6783,25 @@ missile|3:
     upgrade_required_path: apprentice
     upgrade_required_casts: 50
     earns_cooldown: 900000
+    headshot_parameters:
+      player_damage: 6
+      entity_damage: 10
     parameters:
         range: 48
         player_damage: 4
         entity_damage: 8
-        headshot_parameters:
-          player_damage: 6
-          entity_damage: 10
         target_breakables: 3
     costs:
         mana: 40
 
 missile|4:
+    headshot_parameters:
+      player_damage: 7
+      entity_damage: 11
     parameters:
         range: 64
         player_damage: 4
         entity_damage: 10
-        headshot_parameters:
-          player_damage: 7
-          entity_damage: 11
         target_breakables: 4
     costs:
         mana: 50
@@ -6770,9 +6820,6 @@ railgun:
           - class: Damage
           - class: ModifyBlock
             ignore_result: true
-          headshot:
-          - class: Damage
-            parameters: headshot_parameters
     effects:
         cast:
         -  class: EffectSingle
@@ -6851,6 +6898,9 @@ railgun:
             material: redstone_block
             size: 0.3
             yOffset: 0
+    headshot_parameters:
+      player_damage: 12
+      entity_damage: 20
     parameters:
         destructible: destructible,destructible2,destructible3
         allow_max_range: true
@@ -6862,9 +6912,6 @@ railgun:
         target_type: LivingEntity
         player_damage: 6
         entity_damage: 8
-        headshot_parameters:
-          player_damage: 12
-          entity_damage: 20
         target_breakables: 1
         cooldown: 10000
         reorient: false
@@ -6875,6 +6922,8 @@ railgun:
         mana: 150
 
 homing:
+    upgrade_required_path: apprentice
+    upgrade_required_casts: 50
     icon: ink_sack:1
     icon_url: http://textures.minecraft.net/texture/e3152dba6ee22b6e89e88878acc5a01f5964946b8938e9a1470dfabbeeca
     category: combat
@@ -6935,7 +6984,7 @@ homing:
            color2: FF0000
            firework: burst
     parameters:
-        fov: 0.5
+        fov: 0.75
         hitbox: false
         velocity: 10
         range: 48
@@ -6951,9 +7000,39 @@ homing:
         track_speed: 0.2
         use_target_location: false
     costs:
-        mana: 40
+        mana: 100
+
+homing|2:
+    upgrade_required_path: master
+    upgrade_required_casts: 50
+    parameters:
+        range: 64
+        player_damage: 3
+        entity_damage: 5
+        track_speed: 0.3
+        velocity: 12
+
+homing|3:
+    upgrade_required_path: master
+    upgrade_required_casts: 50
+    parameters:
+        range: 64
+        player_damage: 4
+        entity_damage: 6
+        track_speed: 0.4
+        velocity: 14
+
+homing|4:
+    parameters:
+        range: 64
+        player_damage: 6
+        entity_damage: 8
+        track_speed: 0.6
+        velocity: 16
 
 sticky:
+    upgrade_required_path: apprentice
+    upgrade_required_casts: 50
     icon: ink_sack:1
     icon_url: http://textures.minecraft.net/texture/f873525428823bffa57b74bdb1251de6e7c49660b35c995d2bf5d04a1ff34b8f
     category: combat
@@ -7019,7 +7098,7 @@ sticky:
         cooldown: 10000
         target_self_timeout: 2000
         attach_duration: 5000
-        radius: 2
+        radius: 1.5
         speed: 1.2
         destructible: destructible
         destructible_override: true
@@ -7030,6 +7109,22 @@ sticky:
         physics_blocks: true
     costs:
         mana: 80
+
+sticky|2:
+  upgrade_required_path: master
+  upgrade_required_casts: 50
+  parameters:
+      velocity: 25
+      radius: 2
+      player_damage: 6
+      entity_damage: 10
+
+sticky|3:
+  parameters:
+      velocity: 30
+      radius: 2.5
+      player_damage: 8
+      entity_damage: 12
 
 blind:
     icon_url: http://textures.minecraft.net/texture/c7a8e7c9d3375135e39aa6d57b4e60539cf8f6efc5b58c83a13caf40561560
@@ -7070,8 +7165,26 @@ blind:
              particle: smoke_normal
              radius: 0.5
              particles: 20
+        headshot:
+        -  class: EffectSingle
+           location: target
+           color: 2E2E2E
+           firework: ball
+        -  class: EffectSingle
+           location: target
+           use_hit_location: false
+           requires_entity_target: true
+           effectlib:
+             class: SphereEffect
+             iterations: 30
+             period: 4
+             particle: smoke_normal
+             radius: 0.75
+             particles: 30
     costs:
         mana: 45
+    headshot_parameters:
+      duration: 5000
     parameters:
         velocity: 120
         range: 32
