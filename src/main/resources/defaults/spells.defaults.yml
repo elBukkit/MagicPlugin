@@ -8847,7 +8847,7 @@ brushselect:
         -  class: BrushSelect
 
 tracking:
-    upgrade_required_path: apprentice
+    upgrade_required_path: student
     upgrade_required_casts: 50
     icon_url: http://textures.minecraft.net/texture/3bc9de58822a3f7c6c23e212cf954fc728a6b2e45c54a89b4af5e453d39b1
     icon: compass
@@ -8882,14 +8882,20 @@ tracking:
         mana: 20
 
 tracking|2:
-    upgrade_required_path: master
+    upgrade_required_path: apprentice
     upgrade_required_casts: 50
     parameters:
         range: 64
 
 tracking|3:
+    upgrade_required_path: master
+    upgrade_required_casts: 50
     parameters:
         range: 128
+
+tracking|4:
+    alternate_sneak_parameters:
+        target_type: Player
 
 singularity:
     icon_url: http://textures.minecraft.net/texture/ac60643368ba49652b36989878bf296e25d5b3d7526f283ef8cd7470a7a51e8

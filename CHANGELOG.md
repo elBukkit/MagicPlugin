@@ -4,6 +4,7 @@
 
  - Fix spells not upgrading on Master Sword
  - Add PermaFrost spell, ChangeBiome action
+ - Add Tracking Sense Level 4, sneak-cast to look only for players
 
 ## 5.4.3
 
