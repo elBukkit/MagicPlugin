@@ -50,7 +50,7 @@ public class RandomAction extends CompoundAction
 
     protected void mapActions() {
         actionProbability = new LinkedList<WeightedPair<ActionContext>>();
-        ActionHandler actions = addHandler("actions");
+        ActionHandler actions = getHandler("actions");
         if (actions != null)
         {
             List<ActionContext> options = actions.getActions();

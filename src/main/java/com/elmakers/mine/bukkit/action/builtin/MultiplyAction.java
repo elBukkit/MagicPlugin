@@ -22,7 +22,7 @@ public class MultiplyAction extends CompoundAction
         multiply = ConfigurationUtils.getInteger(parameters, "multiply", 2);
         multiplied = new ArrayList<ActionHandler>();
 
-        ActionHandler base = addHandler("actions");
+        ActionHandler base = getHandler("actions");
         if (base != null)
         {
             ConfigurationSection initialParameters = ConfigurationUtils.getConfigurationSection(parameters, "first");

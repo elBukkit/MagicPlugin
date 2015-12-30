@@ -16,18 +16,24 @@ public class ParallelAction extends CompoundAction
     @Override
     public void reset(CastContext context) {
         super.reset(context);
-        ActionHandler actions = addHandler("actions");
-        remaining = new ArrayList<ActionContext>(actions.getActions());
-        for (ActionContext action : remaining) {
-            action.getAction().reset(context);
+        ActionHandler actions = getHandler("actions");
+        if (actions != null)
+        {
+            remaining = new ArrayList<ActionContext>(actions.getActions());
+            for (ActionContext action : remaining) {
+                action.getAction().reset(context);
+            }
         }
     }
 
     @Override
     public void finish(CastContext context) {
         super.finish(context);
-        ActionHandler actions = addHandler("actions");
-        actions.finish(context);
+        ActionHandler actions = getHandler("actions");
+        if (actions != null)
+        {
+            actions.finish(context);
+        }
     }
 
     @Override
