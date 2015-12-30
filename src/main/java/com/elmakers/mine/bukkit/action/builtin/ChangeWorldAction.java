@@ -16,6 +16,7 @@ import org.bukkit.WorldCreator;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.util.Vector;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -57,10 +58,31 @@ public class ChangeWorldAction extends BaseTeleportAction
             }
 
             ConfigurationSection worldNode = ConfigurationUtils.getConfigurationSection(worldMap, worldName);
+            boolean useSpawnLocations = worldNode.getBoolean("use_spawns", false);
+            Vector minLocation = ConfigurationUtils.getVector(worldNode, "bounds_min");
+            Vector maxLocation = ConfigurationUtils.getVector(worldNode, "bounds_max");
             World targetWorld = getWorld(context, worldNode.getString("target"), worldNode.getBoolean("load", true), worldNode.getBoolean("copy", false) ? world : null);
             if (targetWorld != null) {
                 double scale = worldNode.getDouble("scale", 1);
+                if (useSpawnLocations) {
+                    Location currentSpawn = playerLocation.getWorld().getSpawnLocation();
+                    playerLocation.setX(playerLocation.getX() - currentSpawn.getX());
+                    playerLocation.setZ(playerLocation.getZ() - currentSpawn.getZ());
+                }
                 targetLocation = new Location(targetWorld, playerLocation.getX() * scale, playerLocation.getY(), playerLocation.getZ() * scale);
+                if (useSpawnLocations) {
+                    Location targetSpawn = targetWorld.getSpawnLocation();
+                    targetLocation.setX(targetLocation.getX() + targetSpawn.getX());
+                    targetLocation.setZ(targetLocation.getZ() + targetSpawn.getZ());
+                }
+                if (minLocation != null) {
+                    if (targetLocation.getX() < minLocation.getX()) targetLocation.setX(minLocation.getX());
+                    if (targetLocation.getZ() < minLocation.getZ()) targetLocation.setZ(minLocation.getZ());
+                }
+                if (maxLocation != null) {
+                    if (targetLocation.getX() > maxLocation.getX()) targetLocation.setX(maxLocation.getX());
+                    if (targetLocation.getZ() > maxLocation.getZ()) targetLocation.setZ(maxLocation.getZ());
+                }
             }
         }
         else {
