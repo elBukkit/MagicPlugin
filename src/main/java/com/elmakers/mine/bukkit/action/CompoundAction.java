@@ -154,13 +154,12 @@ public abstract class CompoundAction extends BaseSpellAction
         if (handler != null) {
             return handler;
         }
+        if (actionConfiguration == null || !actionConfiguration.contains(handlerKey)) {
+            return null;
+        }
         handler = new ActionHandler();
         handlers.put(handlerKey, handler);
-        if (actionConfiguration != null && actionConfiguration.contains(handlerKey))
-        {
-            handler.load(actionConfiguration, handlerKey);
-        }
-
+        handler.load(actionConfiguration, handlerKey);
         return handler;
     }
 
