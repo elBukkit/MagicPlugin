@@ -18,16 +18,18 @@ public class TeleportTask implements Runnable {
     private final Location location;
     private final int verticalSearchDistance;
     private final MageController controller;
+    private final boolean preventFall;
     private final boolean safe;
     private int retryCount;
 
-    public TeleportTask(MageController controller, final Entity entity, final Location location, final int verticalSearchDistance, boolean safe, CastContext context) {
+    public TeleportTask(MageController controller, final Entity entity, final Location location, final int verticalSearchDistance, final boolean preventFall, final boolean safe, CastContext context) {
         this.context = context;
         this.entity = entity;
         this.location = location;
         this.verticalSearchDistance = verticalSearchDistance;
         this.controller = controller;
         this.retryCount = TELEPORT_RETRY_COUNT;
+        this.preventFall = preventFall;
         this.safe = safe;
     }
 
@@ -49,10 +51,10 @@ public class TeleportTask implements Runnable {
             context.registerMoved(entity);
             targetLocation = context.findPlaceToStand(location, verticalSearchDistance);
         }
-        if (targetLocation == null && !safe) {
+        if (targetLocation == null && !preventFall) {
             Block block = location.getBlock();
             Block blockOneUp = block.getRelative(BlockFace.UP);
-            if (context.isOkToStandIn(blockOneUp.getType()) && context.isOkToStandIn(block.getType()))
+            if (!safe || (context.isOkToStandIn(blockOneUp.getType()) && context.isOkToStandIn(block.getType())))
             {
                 targetLocation = location;
             }

@@ -902,12 +902,17 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
         MageController controller = getController();
         return controller == null ? null : controller.getPlugin();
     }
+    @Override
+    public void teleport(final Entity entity, final Location location, final int verticalSearchDistance, boolean preventFall)
+    {
+        teleport(entity, location, verticalSearchDistance, preventFall, true);
+    }
 
     @Override
-    public void teleport(final Entity entity, final Location location, final int verticalSearchDistance, boolean safe)
+    public void teleport(final Entity entity, final Location location, final int verticalSearchDistance, boolean preventFall, boolean safe)
     {
         Plugin plugin = getPlugin();
-        TeleportTask task = new TeleportTask(getController(), entity, location, verticalSearchDistance, safe, this);
+        TeleportTask task = new TeleportTask(getController(), entity, location, verticalSearchDistance, safe, preventFall, this);
         Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, task, 1);
     }
 
