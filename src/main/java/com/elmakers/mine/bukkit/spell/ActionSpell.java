@@ -4,6 +4,7 @@ import com.elmakers.mine.bukkit.action.ActionHandler;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.MemoryConfiguration;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -16,10 +17,8 @@ public class ActionSpell extends BrushSpell
     private boolean undoable = false;
     private boolean requiresBuildPermission = false;
     private boolean requiresBreakPermission = false;
-    private ConfigurationSection upParameters = null;
-    private ConfigurationSection downParameters = null;
-    private ConfigurationSection sneakParameters = null;
     private ActionHandler currentHandler = null;
+    private Map<String, ConfigurationSection> handlerParameters = new HashMap<String, ConfigurationSection>();
     private int workThreshold = 500;
 
     @Override
@@ -45,40 +44,40 @@ public class ActionSpell extends BrushSpell
         return true;
     }
 
+    public boolean hasHandlerParameters(String handlerKey)
+    {
+        return handlerParameters.containsKey(handlerKey);
+    }
+
+    public ConfigurationSection getHandlerParameters(String handlerKey)
+    {
+        return handlerParameters.get(handlerKey);
+    }
+
     @Override
     public SpellResult onCast(ConfigurationSection parameters)
     {
         currentCast.setWorkAllowed(workThreshold);
         SpellResult result = SpellResult.CAST;
         currentHandler = actions.get("cast");
-        ConfigurationSection altParameters = null;
         ActionHandler downHandler = actions.get("alternate_down");
         ActionHandler upHandler = actions.get("alternate_up");
         ActionHandler sneakHandler = actions.get("alternate_sneak");
         workThreshold = parameters.getInt("work_threshold", 500);
-        if ((downHandler != null || downParameters != null) && isLookingDown())
+        if (downHandler != null && isLookingDown())
         {
             result = SpellResult.ALTERNATE_DOWN;
-            if (downHandler != null) {
-                currentHandler = downHandler;
-            }
-            altParameters = downParameters;
+            currentHandler = downHandler;
         }
-        else if ((upHandler != null || upParameters != null) && isLookingUp())
+        else if (upHandler != null && isLookingUp())
         {
             result = SpellResult.ALTERNATE_UP;
-            if (upHandler != null) {
-                currentHandler = upHandler;
-            }
-            altParameters = upParameters;
+            currentHandler = upHandler;
         }
-        else if ((sneakHandler != null || sneakParameters != null) && mage.isSneaking())
+        else if (sneakHandler != null && mage.isSneaking())
         {
             result = SpellResult.ALTERNATE_SNEAK;
-            if (sneakHandler != null) {
-                currentHandler = sneakHandler;
-            }
-            altParameters = sneakParameters;
+            currentHandler = sneakHandler;
         }
 
         if (isUndoable())
@@ -90,13 +89,6 @@ public class ActionSpell extends BrushSpell
         if (currentHandler != null)
         {
             currentHandler = (ActionHandler)currentHandler.clone();
-            if (altParameters != null) {
-                if (parameters == null) {
-                    parameters = altParameters;
-                } else {
-                    parameters = ConfigurationUtils.addConfigurations(parameters, altParameters);
-                }
-            }
             try {
                 result = result.max(currentHandler.start(currentCast, parameters));
                 currentCast.setInitialResult(result);
@@ -143,20 +135,37 @@ public class ActionSpell extends BrushSpell
         requiresBuildPermission = false;
         requiresBreakPermission = false;
         usesBrush = template.getBoolean("uses_brush", false);
-        upParameters = template.getConfigurationSection("alternate_up_parameters");
-        downParameters = template.getConfigurationSection("alternate_down_parameters");
-        sneakParameters = template.getConfigurationSection("alternate_sneak_parameters");
         if (template.contains("actions"))
         {
             ConfigurationSection parameters = template.getConfigurationSection("parameters");
             ConfigurationSection actionsNode = template.getConfigurationSection("actions");
+            Object baseActions = actionsNode.get("cast");
+
+            Collection<String> templateKeys = template.getKeys(false);
+            for (String templateKey : templateKeys)
+            {
+                if (templateKey.endsWith("_parameters"))
+                {
+                    ConfigurationSection overrides = new MemoryConfiguration();
+                    ConfigurationUtils.addConfigurations(overrides, template.getConfigurationSection(templateKey));
+                    String handlerKey = templateKey.substring(0, templateKey.length() - 11);
+                    handlerParameters.put(handlerKey, overrides);
+
+                    // Auto-register base actions, kind of hacky to check for alternates though.
+                    if (baseActions != null && !actionsNode.contains(handlerKey) && handlerKey.startsWith("alternate_"))
+                    {
+                        actionsNode.set(handlerKey, baseActions);
+                    }
+                }
+            }
+
             if (actionsNode != null)
             {
                 Collection<String> actionKeys = actionsNode.getKeys(false);
                 for (String actionKey : actionKeys)
                 {
                     ActionHandler handler = new ActionHandler();
-                    handler.load(actionsNode, actionKey);
+                    handler.load(this, actionsNode, actionKey);
                     handler.initialize(this, parameters);
                     usesBrush = usesBrush || handler.usesBrush();
                     undoable = undoable || handler.isUndoable();

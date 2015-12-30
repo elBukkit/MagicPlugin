@@ -13,8 +13,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
-import org.bukkit.metadata.FixedMetadataValue;
-import org.bukkit.metadata.MetadataValue;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -60,7 +58,7 @@ public class ActionHandler implements Cloneable
         }
     }
 
-    public void load(ConfigurationSection root, String key)
+    public void load(Spell spell, ConfigurationSection root, String key)
     {
         undoable = false;
         usesBrush = false;
@@ -78,8 +76,8 @@ public class ActionHandler implements Cloneable
             isConditionalOnSuccess = false;
             isConditionalOnFailure = false;
         }
+        ConfigurationSection handlerConfiguration = (spell != null) ? spell.getHandlerParameters(key) : null;
         Collection<ConfigurationSection> actionNodes = ConfigurationUtils.getNodeList(root, key);
-
         if (actionNodes != null)
         {
             for (ConfigurationSection actionConfiguration : actionNodes)
@@ -111,6 +109,9 @@ public class ActionHandler implements Cloneable
                         Class<? extends BaseSpellAction> actionClass = (Class<? extends BaseSpellAction>)genericClass;
                         BaseSpellAction action = actionClass.newInstance();
                         actionConfiguration.set("class", null);
+                        if (handlerConfiguration != null) {
+                            ConfigurationUtils.addConfigurations(actionConfiguration, handlerConfiguration, false);
+                        }
                         if (actionConfiguration.getKeys(false).size() == 0) {
                             actionConfiguration = null;
                         }

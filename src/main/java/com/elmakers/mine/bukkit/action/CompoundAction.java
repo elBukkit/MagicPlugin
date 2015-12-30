@@ -142,24 +142,37 @@ public abstract class CompoundAction extends BaseSpellAction
     }
 
     protected void addHandlers(Spell spell, ConfigurationSection parameters) {
-        addHandler("actions");
+        addHandler(spell, "actions");
     }
 
     protected ActionHandler getHandler(String handlerKey) {
         return handlers.get(handlerKey);
     }
 
-    protected ActionHandler addHandler(String handlerKey) {
+    protected ActionHandler addHandler(Spell spell, String handlerKey) {
         ActionHandler handler = handlers.get(handlerKey);
         if (handler != null) {
             return handler;
         }
-        if (actionConfiguration == null || !actionConfiguration.contains(handlerKey)) {
+        if (actionConfiguration == null)
+        {
             return null;
+        }
+        if (!actionConfiguration.contains(handlerKey)) {
+            Object baseActions = actionConfiguration.get("actions");
+            if (baseActions == null) {
+                return null;
+            }
+
+            // Create parameter-only configs automagically
+            if (spell.hasHandlerParameters(handlerKey))
+            {
+                actionConfiguration.set(handlerKey, baseActions);
+            }
         }
         handler = new ActionHandler();
         handlers.put(handlerKey, handler);
-        handler.load(actionConfiguration, handlerKey);
+        handler.load(spell, actionConfiguration, handlerKey);
         return handler;
     }
 
@@ -177,7 +190,7 @@ public abstract class CompoundAction extends BaseSpellAction
     }
 
     public void addAction(SpellAction action, ConfigurationSection parameters) {
-        ActionHandler actions = addHandler("actions");
+        ActionHandler actions = addHandler(null, "actions");
         if (actions == null) {
             actions = new ActionHandler();
         }
