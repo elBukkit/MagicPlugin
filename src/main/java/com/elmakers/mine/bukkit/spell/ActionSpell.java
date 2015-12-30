@@ -55,6 +55,36 @@ public class ActionSpell extends BrushSpell
     }
 
     @Override
+    public void processParameters(ConfigurationSection parameters) {
+        ConfigurationSection alternateParameters = null;
+        if (isLookingDown())
+        {
+            alternateParameters = getHandlerParameters("alternate_down");
+        }
+        else if (isLookingUp())
+        {
+            alternateParameters = getHandlerParameters("alternate_down");
+        }
+        else if (mage.isSneaking())
+        {
+            alternateParameters = getHandlerParameters("alternate_sneak");
+        }
+        if (alternateParameters != null)
+        {
+            if (parameters == null)
+            {
+                parameters = alternateParameters;
+            }
+            else
+            {
+                parameters = ConfigurationUtils.addConfigurations(parameters, alternateParameters, true);
+            }
+        }
+
+        super.processParameters(parameters);
+    }
+
+    @Override
     public SpellResult onCast(ConfigurationSection parameters)
     {
         currentCast.setWorkAllowed(workThreshold);
