@@ -2,6 +2,7 @@
 
  - There's an area in the RoR where you can cast alohomora and it will spawn doors, in the center of the right side when you enter~
  - Need to fix some door-related undo issues, e.g. casting admission then breaking door sometimes drops door
+ - Flash Bang needs a better icon
 
  - Alter *really* needs an update!
  - Effects don't cancel if you switch away from your wand? Whip stops moving? Wha?

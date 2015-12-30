@@ -101,6 +101,8 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
         public final String warpName;
         public final String serverName;
 
+        public boolean safe = true;
+
         public Waypoint(RecallType type, Location location, String name, String message, String failMessage, String description, MaterialAndData icon, boolean maintainDirection) {
             this.name = name;
             this.type = type;
@@ -600,8 +602,10 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
             Location location = ConfigurationUtils.getLocation(mage.getData(), markerKey);
 			return new Waypoint(type, location, context.getMessage("title_marker"), context.getMessage("cast_marker"), context.getMessage("no_target_marker"), context.getMessage("description_marker", ""), ConfigurationUtils.getMaterialAndData(parameters, "icon_marker"), true);
 		case DEATH:
-            return new Waypoint(type, mage.getLastDeathLocation(), "Last Death", context.getMessage("cast_death"), context.getMessage("no_target_death"), context.getMessage("description_death", ""), ConfigurationUtils.getMaterialAndData(parameters, "icon_death"), true);
-		case SPAWN:
+            Waypoint death = new Waypoint(type, mage.getLastDeathLocation(), "Last Death", context.getMessage("cast_death"), context.getMessage("no_target_death"), context.getMessage("description_death", ""), ConfigurationUtils.getMaterialAndData(parameters, "icon_death"), true);
+		    death.safe = false;
+            return death;
+        case SPAWN:
 			return new Waypoint(type, context.getWorld().getSpawnLocation(), context.getMessage("title_spawn"), context.getMessage("cast_spawn"), context.getMessage("no_target_spawn"), context.getMessage("description_spawn", ""), ConfigurationUtils.getMaterialAndData(parameters, "icon_spawn"), false);
         case TOWN:
             return new Waypoint(type, controller.getTownLocation(player), context.getMessage("title_town"), context.getMessage("cast_town"), context.getMessage("no_target_town"), context.getMessage("description_town", ""), ConfigurationUtils.getMaterialAndData(parameters, "icon_town"), false);
@@ -682,7 +686,7 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
             targetLocation.setYaw(playerLocation.getYaw());
             targetLocation.setPitch(playerLocation.getPitch());
         }
-        context.teleport(player, targetLocation, verticalSearchDistance);
+        context.teleport(player, targetLocation, verticalSearchDistance, waypoint.safe, waypoint.safe);
         context.castMessage(waypoint.message);
 		return true;
 	}

@@ -844,6 +844,7 @@ passthrough:
 - step
 - wood_step
 - web
+- ladder
 
 wearable:
 - gold_helmet
