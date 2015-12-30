@@ -112,8 +112,8 @@ public class CustomProjectileAction extends CompoundAction
 
     @Override
     protected void addHandlers(Spell spell, ConfigurationSection parameters) {
-        addHandler("actions");
-        addHandler("headshot");
+        addHandler(spell, "actions");
+        addHandler(spell, "headshot");
     }
 
     @Override
@@ -522,7 +522,7 @@ public class CustomProjectileAction extends CompoundAction
                 actionContext.playEffects("hit_entity");
 
                 if (hasActions("headshot") && CompatibilityUtils.isHeadshot(hitEntity, targetLocation)) {
-                    actionContext.getMage().sendDebugMessage(ChatColor.GREEN + "   Projectile headshot", 3);
+                    actionContext.getMage().sendDebugMessage(ChatColor.GOLD + "   Projectile headshot", 3);
                     return headshot();
                 }
             }
