@@ -117,7 +117,8 @@ public interface CastContext {
     public Set<UUID> getTargetMessagesSent();
     public Collection<EffectPlay> getCurrentEffects();
     public void teleport(final Entity entity, final Location location, final int verticalSearchDistance);
-    public void teleport(final Entity entity, final Location location, final int verticalSearchDistance, boolean safe);
+    public void teleport(final Entity entity, final Location location, final int verticalSearchDistance, boolean preventFall);
+    public void teleport(final Entity entity, final Location location, final int verticalSearchDistance, boolean preventFall, boolean safe);
     public boolean allowPassThrough(Material material);
     public int getVerticalSearchDistance();
     public boolean isOkToStandIn(Material mat);
