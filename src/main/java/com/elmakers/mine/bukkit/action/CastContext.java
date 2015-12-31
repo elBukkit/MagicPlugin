@@ -912,7 +912,7 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
     public void teleport(final Entity entity, final Location location, final int verticalSearchDistance, boolean preventFall, boolean safe)
     {
         Plugin plugin = getPlugin();
-        TeleportTask task = new TeleportTask(getController(), entity, location, verticalSearchDistance, safe, preventFall, this);
+        TeleportTask task = new TeleportTask(getController(), entity, location, verticalSearchDistance, preventFall, safe, this);
         Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, task, 1);
     }
 
