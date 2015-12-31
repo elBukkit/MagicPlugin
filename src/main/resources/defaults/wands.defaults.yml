@@ -1558,7 +1558,7 @@ goggles:
     migrate_icon: nether_fence
     indestructible: false
     locked: true
-    keep: false
+    keep: true
     passive: true
     xp_regeneration_boost: -0.1
     potion_effects: night_vision:3
