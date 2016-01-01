@@ -209,7 +209,8 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
         }
 
         if (levels == null) {
-           return;
+            levels = new int[1];
+            levels[0] = 1;
         }
 
         for (int level = 1; level <= levels[levels.length - 1]; level++) {
