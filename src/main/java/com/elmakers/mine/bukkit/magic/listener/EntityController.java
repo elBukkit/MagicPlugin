@@ -36,6 +36,7 @@ import java.util.List;
 
 public class EntityController implements Listener {
     private final MagicController controller;
+    private double meleeDamageReduction = 0;
     private boolean preventMeleeDamage = false;
     private boolean keepWandsOnDeath = true;
     private boolean	disableItemSpawn = false;
@@ -48,6 +49,10 @@ public class EntityController implements Listener {
 
     public void setPreventMeleeDamage(boolean prevent) {
         preventMeleeDamage = prevent;
+    }
+
+    public void setMeleeDamageReduction(double reduction) {
+        meleeDamageReduction = reduction;
     }
 
     public void setKeepWandsOnDeath(boolean keep) {
@@ -143,6 +148,15 @@ public class EntityController implements Listener {
             Mage damagerMage = controller.getRegisteredMage(damager);
             com.elmakers.mine.bukkit.api.wand.Wand activeWand = null;
             boolean isMelee = event.getCause() == EntityDamageEvent.DamageCause.ENTITY_ATTACK && !CompatibilityUtils.isDamaging;
+
+            if (isMelee && meleeDamageReduction > 0) {
+                if (meleeDamageReduction >= 1) {
+                    event.setCancelled(true);
+                    return;
+                }
+                event.setDamage(event.getDamage() * (1 - meleeDamageReduction));
+            }
+
             if (isMelee && damagerMage != null) {
                 activeWand = damagerMage.getActiveWand();
                 if (activeWand != null) {
@@ -290,7 +304,6 @@ public class EntityController implements Listener {
     @EventHandler(priority=EventPriority.LOWEST)
     public void onItemSpawn(ItemSpawnEvent event)
     {
-
         if (disableItemSpawn)
         {
             event.setCancelled(true);

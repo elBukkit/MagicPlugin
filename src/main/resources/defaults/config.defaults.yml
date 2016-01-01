@@ -253,6 +253,10 @@ prevent_wand_melee_damage: true
 # Has no effect if prevent_wand_melee_damage is set to false
 prevent_melee_damage: false
 
+# A value above 0 here will reduce melee damage from any weapon globally.
+# A value of 1 or high will completely disable all melee damage.
+melee_damage_reduction: 0
+
 # Turn this off to use normal damage. May be useful if you want
 # direct damage spells to effect armor.
 # This is incompatible with prevent_melee_damage: true!
