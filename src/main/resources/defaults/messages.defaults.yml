@@ -1494,7 +1494,7 @@ spells:
         description: Add a spell to your wand
         no_upgrade: You may not learn with that $wand.
         no_path: You must be at least $path!
-        no_path_end: You must be ready to advance to $path!
+        no_path_end: You must be ready to advance from $path!
         no_wand: You must be holding a wand!
         no_target: You already know that spell
     giveitem:
@@ -1515,7 +1515,7 @@ spells:
         no_path: You may not learn with that $wand.
         no_upgrade: There is nothing more for you here.
         no_required_path: You must be at least $path!
-        no_path_end: You must be ready to advance to $path!
+        no_path_end: You must be ready to advance from $path!
         no_wand: You must be holding a wand!
         insufficient: "&4Costs &c$cost"
         confirm_title: "Buy $item"

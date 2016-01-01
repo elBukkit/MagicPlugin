@@ -1725,8 +1725,8 @@ permafrost:
         cast:
         - class: Sphere
           actions:
-          - class: Freeze
           - class: ChangeBiome
+          - class: Freeze
           - class: Weather
     effects:
         cast:
@@ -2393,7 +2393,7 @@ icbm:
           effect: explosion_huge
     parameters:
         target: none
-        size: 2
+        size: 1
         projectile: LargeFireball
         undo: 30000
         cooldown: 10000
@@ -2933,7 +2933,7 @@ fling|3:
         max_speed: 4
         cooldown: 1000
     costs:
-        mana: 100
+        mana: 75
 
 fling|4:
     parameters:
@@ -2941,7 +2941,7 @@ fling|4:
         max_speed: 5
         cooldown: 0
     costs:
-        mana: 150
+        mana: 100
 
 supertorch:
     icon_url: http://textures.minecraft.net/texture/08f4793551132fad5bdb5d185269881a8de6fa4b86c6bde92c2bf467e097
