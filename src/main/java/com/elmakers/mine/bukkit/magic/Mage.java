@@ -114,6 +114,8 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     protected float damageReductionFire = 0;
     protected float damageReductionExplosions = 0;
 
+    protected long superProtectionExpiration = 0;
+
     private Map<Integer, Wand> activeArmor = new HashMap<Integer, Wand>();
 
     private Location location;
@@ -1187,6 +1189,13 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
     @Override
     public boolean isSuperProtected() {
+        if (superProtectionExpiration != 0) {
+            if (System.currentTimeMillis() > superProtectionExpiration) {
+                superProtectionExpiration = 0;
+            } else {
+                return true;
+            }
+        }
         return activeWand != null && activeWand.isSuperProtected();
     }
 
@@ -1682,6 +1691,16 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     public void enableFallProtection(int ms)
     {
         enableFallProtection(ms, null);
+    }
+
+    @Override
+    public void enableSuperProtection(int ms) {
+        if (ms <= 0) return;
+
+        long nextTime = System.currentTimeMillis() + ms;
+        if (nextTime > superProtectionExpiration) {
+            superProtectionExpiration = nextTime;
+        }
     }
 
     public void setLoading(boolean loading) {

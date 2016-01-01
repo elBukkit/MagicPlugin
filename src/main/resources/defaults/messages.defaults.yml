@@ -432,6 +432,7 @@ spells:
     tag:
         name: Tag
         description: Leave a sign with your name
+        usage: Requires and consumes one sign item!
         fail: Sign placement failed!
         cast: You leave a tag
         cast_player: You send $target a message
@@ -1233,9 +1234,10 @@ spells:
         cast: You teleport back to safety
     recall:
         name: Recall
+        description: Teleport to different locations.
+        usage: Grants 5 seconds of protection on teleportation.
         teleport: ""
         teleport_failed: Recall failed
-        description: Teleport to different locations
         usage: Has a 5-second warmup.
         no_target: Can't place a marker there
         cast_marker_place: You place a recall marker

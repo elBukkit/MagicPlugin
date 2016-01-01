@@ -6270,7 +6270,8 @@ recall:
         icon_town: iron_door
         icon_marker: redstone_torch_on
         loud: true
-        cooldown: 8000
+        cooldown: 15000
+        protection_duration: 5000
         target: self
 
 recall|2:

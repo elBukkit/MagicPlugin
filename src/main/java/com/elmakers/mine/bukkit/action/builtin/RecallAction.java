@@ -49,6 +49,7 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
     private Map<Integer, Waypoint> options = new HashMap<Integer, Waypoint>();
     private CastContext context;
     private ConfigurationSection parameters;
+    private int protectionTime;
     private String markerKey = "recall_marker";
     private String unlockKey = "recall_warps";
 
@@ -252,6 +253,7 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
         this.context = context;
         this.markerKey = parameters.getString("marker_key", "recall_marker");
         this.unlockKey = parameters.getString("unlock_key", "recall_warps");
+        this.protectionTime = parameters.getInt("protection_duration", 0);
 
         allowCrossWorld = parameters.getBoolean("allow_cross_world", true);
     }
@@ -660,6 +662,7 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
                     sender.setOp(false);
                 }
             }
+            mage.enableSuperProtection(protectionTime);
             return true;
         }
 
@@ -686,6 +689,7 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
             targetLocation.setYaw(playerLocation.getYaw());
             targetLocation.setPitch(playerLocation.getPitch());
         }
+        mage.enableSuperProtection(protectionTime);
         context.teleport(player, targetLocation, verticalSearchDistance, waypoint.safe, waypoint.safe);
         context.castMessage(waypoint.message);
 		return true;
