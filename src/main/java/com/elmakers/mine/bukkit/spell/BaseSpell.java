@@ -2356,4 +2356,16 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     public double cancelOnDamage() {
         return cancelOnDamage;
     }
+
+    @Override
+    public ConfigurationSection getHandlerParameters(String handlerKey)
+    {
+        return null;
+    }
+
+    @Override
+    public boolean hasHandlerParameters(String handlerKey)
+    {
+        return false;
+    }
 }
