@@ -398,6 +398,8 @@ public interface Mage extends CostReducer {
     public void enableFallProtection(int ms, Spell protector);
     public void enableFallProtection(int ms, int count, Spell protector);
 
+    public void enableSuperProtection(int ms);
+
     public boolean load(MageData data);
     public boolean save(MageData data);
     public void deactivate();
