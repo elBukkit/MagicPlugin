@@ -1,0 +1,9 @@
+
+# This will load the default spells, but disable them all.
+# This lets you re-enable and modify only the ones you want.
+disable_default_spells: true
+
+# Completely disable all of the default crafting, enchanting and wands
+load_default_wands: false
+load_default_enchanting: false
+load_default_crafting: false

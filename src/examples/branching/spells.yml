@@ -1,0 +1,43 @@
+# This can be used to set up an NPC that players can
+# use to choose a path to take once they have mastered Magician.
+# Usage:
+# /trait magic
+# /mtrait rankshop
+rankshop:
+    icon: iron_hoe
+    category: specialty
+    hidden: true
+    actions:
+        cast:
+        - class: ItemShop
+    parameters:
+        quiet: true
+        path_end: magician
+        auto_upgrade: false
+        require_upgrade: false
+        use_sp: true
+        confirm_filler: stained_glass:2
+        require_wand: true
+        items:
+          to_mystic: 100
+          to_priest: 100
+
+# Enable the spellshop, so players can upgrade their spells
+spellshop:
+ enabled: true
+
+# Enable the default spells we want to give out
+missile:
+ enabled: true
+
+arrow:
+ enabled: true
+
+curse:
+ enabled: true
+
+heal:
+ enabled: true
+
+cure:
+ enabled: true

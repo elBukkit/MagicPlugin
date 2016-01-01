@@ -1,0 +1,23 @@
+# Names for the different ranks (wand paths - defined in enchanting.yml)
+paths:
+  magician:
+    name: Magician
+  priest:
+    name: Priest
+  mystic:
+    name: Mystic
+
+# Here we set up in-game text for the rankshop menu's upgrade items
+wands:
+  to_mystic:
+    name: Become a Mystic
+    description: Learn the ancient mystic arts!
+  to_priest:
+    name: Become a Priest
+    description: Vow yourself to serve humanity!
+
+# Here we set up text for the rankshop itself
+spells:
+  rankshop:
+      title: "Choose! ($balance)"
+      no_required_path: There is nothing here for you.

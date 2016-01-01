@@ -1,0 +1,32 @@
+# This is the starter wand for new Magicians.
+magician:
+    path: magician
+    xp_max: 50
+    xp: 50
+    xp_regeneration: 5
+    quiet: 1
+    bound: true
+    keep: true
+    undroppable: true
+    indestructible: true
+    effect_bubbles: false
+    active_spell: missile
+    spells:
+     - missile
+
+# Here we define some upgrade items that will take players to
+# a specific rank.
+# The "force" parameter means to directly apply any values from the config
+# file to the wand, otherwise the "path" parameter would be used
+# on a normal upgrade item to restrict the upgrade to a certain path.
+to_mystic:
+  icon: 'skull_item:http://textures.minecraft.net/texture/4a68c3ec585277cad3da3955fac44fbe7a7f98271fd529d26ce110d8884a8a'
+  force: true
+  upgrade: true
+  path: mystic
+
+to_priest:
+  icon: 'skull_item:http://textures.minecraft.net/texture/6b7da98ef45cf45185d21d61f5fa3d5966a3ee52273620a6e4dfd54cf99dbc'
+  force: true
+  upgrade: true
+  path: priest

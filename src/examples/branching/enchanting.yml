@@ -1,0 +1,46 @@
+# You can set up different progression paths here
+
+# These are the defaults, mainly here to add effects to rank up
+default:
+  effects:
+      enchant:
+      -  class: EffectSingle
+         sound: level_up
+         effectlib:
+           class: SphereEffect
+           iterations: 10
+           period: 2
+           particle: enchantment_table
+           radius: 3
+      upgrade:
+      -  class: EffectSingle
+         sound: level_up
+      -  class: EffectRing
+         firework: star
+         radius: 4
+         size: 3
+      -  class: EffectRing
+         firework: ball_large
+         radius: 6
+         size: 5
+
+# This is the beginning path that wands start on
+magician:
+  spell_count: 1
+  spells:
+  - missile
+  - arrow
+
+# One a player has mastered Magician, they can choose
+# between Priest and Mystic using the rankshop spell
+# (ideally via an mtrait Citizens NPC)
+priest:
+  inherit: magician
+  spells:
+  - heal
+
+mystic:
+  inherit: magician
+  spells:
+  - curse
+
