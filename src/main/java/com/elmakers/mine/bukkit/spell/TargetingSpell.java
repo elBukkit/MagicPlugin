@@ -321,7 +321,7 @@ public abstract class TargetingSpell extends BaseSpell {
             if (living.hasPotionEffect(PotionEffectType.DAMAGE_RESISTANCE)) {
                 Collection<PotionEffect> effects = living.getActivePotionEffects();
                 for (PotionEffect effect : effects) {
-                    if (effect.getType() == PotionEffectType.DAMAGE_RESISTANCE && effect.getAmplifier() >= damageResistanceProtection) {
+                    if (effect.getType().equals(PotionEffectType.DAMAGE_RESISTANCE) && effect.getAmplifier() >= damageResistanceProtection) {
                         return false;
                     }
                 }
