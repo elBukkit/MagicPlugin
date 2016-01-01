@@ -133,13 +133,8 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
                 return SpellResult.FAIL;
             }
             if (requiresCompletedPath != null) {
-                WandUpgradePath pathUpgrade = path.getUpgrade();
-                if (pathUpgrade == null) {
-                    context.showMessage(context.getMessage("no_upgrade", "There is nothing more for you here.").replace("$wand", wand.getName()));
-                    return SpellResult.FAIL;
-                }
                 if (path.canEnchant(wand)) {
-                    context.showMessage(context.getMessage("no_path_end", "You must be ready to advance to $path!").replace("$path", pathUpgrade.getName()));
+                    context.showMessage(context.getMessage("no_path_end", "You must be ready to advance from $path!").replace("$path", path.getName()));
                     return SpellResult.FAIL;
                 }
             }
@@ -394,6 +389,7 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
         }
         if (requiresCompletedPath != null) {
             requiredPath = requiresCompletedPath;
+            exactPath = requiresCompletedPath;
         }
         if (requiredPath != null || exactPath != null || requiredTemplate != null) {
             requireWand = true;
