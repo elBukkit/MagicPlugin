@@ -30,6 +30,7 @@ transparent:
 - dead_bush
 - yellow_flower
 - red_rose
+- wheat
 - brown_mushroom
 - red_mushroom
 - double_plant
@@ -349,6 +350,7 @@ attachable:
 - dead_bush
 - yellow_flower
 - red_rose
+- wheat
 - flower_pot
 - brown_mushroom
 - red_mushroom
@@ -533,6 +535,7 @@ restricted_animate:
 - dead_bush
 - yellow_flower
 - red_rose
+- wheat
 - brown_mushroom
 - red_mushroom
 - glass
@@ -614,6 +617,7 @@ building:
 - piston_moving_piece
 - yellow_flower
 - red_rose
+- wheat
 - brown_mushroom
 - red_mushroom
 - wool
@@ -802,6 +806,7 @@ passthrough:
 - dead_bush
 - yellow_flower
 - red_rose
+- wheat
 - brown_mushroom
 - red_mushroom
 - double_plant
