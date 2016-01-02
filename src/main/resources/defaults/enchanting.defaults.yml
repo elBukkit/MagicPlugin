@@ -115,6 +115,10 @@ beginner:
     protection_falling:
       0^1: 100, 100, 90
       0^2: 1,   10,  20
+    max_protection_physical: 0.4
+    protection_physical:
+      0^1: 100, 100, 90
+      0^2: 1,   10,  20
     max_mana_regeneration: 10
     mana_regeneration:
       1: 100, 30, 5
@@ -165,6 +169,11 @@ student:
       0^3: 0 ,  1,   5
     max_protection_falling: 0.5
     protection_falling:
+      0^1: 100, 100, 90
+      0^2: 1,   10,  20
+      0^3: 0 ,  15,  15
+    max_protection_physical: 0.5
+    protection_physical:
       0^1: 100, 100, 90
       0^2: 1,   10,  20
       0^3: 0 ,  15,  15
@@ -239,6 +248,11 @@ apprentice:
       0^1: 100, 100, 90
       0^2: 1,   10,  20
       0^3: 0 ,  15,  15
+    max_protection_physical: 0.75
+    protection_physical:
+      0^1: 100, 100, 90
+      0^2: 1,   10,  20
+      0^3: 0 ,  15,  15
     max_protection_fire: 0.5
     protection_fire:
       0^1: 100, 100, 90
@@ -308,6 +322,12 @@ master:
       0^4: 0 ,  0, 1
     max_protection_falling: 1
     protection_falling:
+      0^1: 100,100,90
+      0^2: 1,  10, 20
+      0^3: 0 , 15, 15
+      0^4: 0 ,  0, 10
+    max_protection_physical: 0.9
+    protection_physical:
       0^1: 100,100,90
       0^2: 1,  10, 20
       0^3: 0 , 15, 15

@@ -525,7 +525,7 @@ max_damage_reduction: 0.3
 max_damage_reduction_explosions: 0.2
 max_damage_reduction_falling: 1
 max_damage_reduction_fire: 0.5
-max_damage_reduction_physical: 0.1
+max_damage_reduction_physical: 0.75
 max_damage_reduction_projectiles: 0.2
 max_cost_reduction: 0.5
 max_cooldown_reduction: 0.75
