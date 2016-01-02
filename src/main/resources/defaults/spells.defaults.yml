@@ -2326,6 +2326,7 @@ gather:
         target_self: false
         cooldown: 30000
         bypass_friendly_fire: true
+        bypass_pvp: true
         op: true
     costs:
         mana: 50
@@ -6807,7 +6808,7 @@ missile|3:
         entity_damage: 8
         target_breakables: 3
     costs:
-        mana: 40
+        mana: 50
 
 missile|4:
     headshot_parameters:
@@ -6819,7 +6820,7 @@ missile|4:
         entity_damage: 10
         target_breakables: 4
     costs:
-        mana: 50
+        mana: 80
 
 railgun:
     icon: ink_sack:1
@@ -6919,8 +6920,8 @@ railgun:
     parameters:
         destructible: destructible,destructible2,destructible3
         allow_max_range: true
-        velocity: 200
-        range: 64
+        velocity: 1000
+        range: 80
         hitbox: true
         block_hit_count: 4
         entity_hit_count: 5
@@ -7005,8 +7006,8 @@ homing:
         range: 48
         hitbox_size: 0.5
         target_type: LivingEntity
-        player_damage: 2
-        entity_damage: 4
+        player_damage: 4
+        entity_damage: 6
         target_breakables: 1
         cooldown: 5000
         track_target: true
@@ -7022,8 +7023,8 @@ homing|2:
     upgrade_required_casts: 50
     parameters:
         range: 64
-        player_damage: 3
-        entity_damage: 5
+        player_damage: 6
+        entity_damage: 8
         track_speed: 0.3
         velocity: 12
 
@@ -7032,16 +7033,16 @@ homing|3:
     upgrade_required_casts: 50
     parameters:
         range: 64
-        player_damage: 4
-        entity_damage: 6
+        player_damage: 8
+        entity_damage: 10
         track_speed: 0.4
         velocity: 14
 
 homing|4:
     parameters:
         range: 64
-        player_damage: 6
-        entity_damage: 8
+        player_damage: 10
+        entity_damage: 12
         track_speed: 0.6
         velocity: 16
 

@@ -5,6 +5,8 @@
  - Fix spells not upgrading on Master Sword
  - Add PermaFrost spell, ChangeBiome action
  - Add Tracking Sense Level 4, sneak-cast to look only for players
+ - Wands now gain physical protection, up to 75%
+ - Added melee_damage_reduction, off by default, can be used to globally nerf melee damage
 
 ## 5.4.3
 
