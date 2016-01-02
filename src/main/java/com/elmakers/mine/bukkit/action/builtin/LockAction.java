@@ -10,6 +10,7 @@ import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
@@ -45,7 +46,9 @@ public class LockAction extends BaseSpellAction
         {
             keyName = context.getMessage("key_name");
         }
-        keyName = keyName.replace("$name", context.getMage().getName());
+        keyName = keyName
+                    .replace("$name", context.getMage().getName())
+                    .replace("$uuid", context.getMage().getId());
         String keyDescription = this.keyDescription;
         if (keyDescription.isEmpty())
         {
@@ -74,9 +77,19 @@ public class LockAction extends BaseSpellAction
         }
 
         if (actionType == LockActionType.LOCK) {
-            if (!override && CompatibilityUtils.isLocked(targetBlock))
+            String lock = CompatibilityUtils.getLock(targetBlock);
+            if (lock != null)
             {
-                return SpellResult.FAIL;
+                if (lock.equals(keyName))
+                {
+                    context.sendMessageKey("already");
+                    return SpellResult.NO_TARGET;
+                }
+                if (!override && !InventoryUtils.hasItem(mage, lock))
+                {
+                    return SpellResult.FAIL;
+                }
+                context.sendMessageKey("acquire");
             }
             result = CompatibilityUtils.setLock(targetBlock, keyName);
             giveKey(mage, keyName, keyDescription);
@@ -99,7 +112,10 @@ public class LockAction extends BaseSpellAction
             meta.setDisplayName(keyName);
             if (!keyDescription.isEmpty()) {
                 List<String> lore = new ArrayList<String>();
-                lore.add(keyDescription);
+                String[] lines = StringUtils.split(keyDescription, "\n");
+                for (String line : lines) {
+                    lore.add(line);
+                }
                 meta.setLore(lore);
             }
             keyItem.setItemMeta(meta);

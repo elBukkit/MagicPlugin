@@ -2,6 +2,9 @@
 
 ## 5.5
 
+ - ! Secure key format changed to use masked UUIDs. Old keys will work on old chests, old chests
+   can be converted to new format by casting at them with the old key in your inventory.
+ 
  - Fix spells not upgrading on Master Sword
  - Add PermaFrost spell, ChangeBiome action
  - Add Tracking Sense Level 4, sneak-cast to look only for players
