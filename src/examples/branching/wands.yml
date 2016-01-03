@@ -21,12 +21,14 @@ magician:
 # on a normal upgrade item to restrict the upgrade to a certain path.
 to_mystic:
   icon: 'skull_item:http://textures.minecraft.net/texture/4a68c3ec585277cad3da3955fac44fbe7a7f98271fd529d26ce110d8884a8a'
+  upgrade_icon: gold_pickaxe
   force: true
   upgrade: true
   path: mystic
 
 to_priest:
   icon: 'skull_item:http://textures.minecraft.net/texture/6b7da98ef45cf45185d21d61f5fa3d5966a3ee52273620a6e4dfd54cf99dbc'
+  upgrade_icon: gold_axe
   force: true
   upgrade: true
   path: priest

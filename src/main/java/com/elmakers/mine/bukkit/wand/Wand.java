@@ -3156,7 +3156,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
                 templateConfig.set("description", null);
                 templateConfig.set("force", null);
                 templateConfig.set("upgrade", null);
-                templateConfig.set("icon", null);
+                templateConfig.set("icon", templateConfig.getString("upgrade_icon"));
                 templateConfig.set("indestructible", null);
                 templateConfig.set("key", null);
 
