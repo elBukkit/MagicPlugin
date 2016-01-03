@@ -82,6 +82,8 @@
 default:
     # Spells take 15 minutes to return to full SP earning potential
     earns_cooldown: 900000
+    # Enable this to prevent spell casts outside the world border
+    world_border_restricted: false
     parameters:
       bypass_confusion: true
       bypass_weakness: true
@@ -6224,6 +6226,7 @@ recall:
     cast_on_no_target: false
     upgrade_required_path: beginner
     upgrade_required_casts: 25
+    world_border_restricted: false
     actions:
         cast:
         -  class: Delay

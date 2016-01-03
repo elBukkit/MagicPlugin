@@ -1910,6 +1910,18 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         boolean isPlayer = player != null;
         boolean spellDisguiseRestricted = (spell == null) ? false : spell.isDisguiseRestricted();
         sender.sendMessage(ChatColor.AQUA + " Is disguised: " + formatBoolean(controller.isDisguised(getEntity()), null, isPlayer && spellDisguiseRestricted ? true : null));
+        WorldBorder border = location.getWorld().getWorldBorder();
+        double borderSize = border.getSize();
+
+        // Kind of a hack, meant to prevent this from showing up when there's no border defined
+        if (borderSize < 50000000)
+        {
+            borderSize = borderSize / 2 - border.getWarningDistance();
+            Location offset = location.subtract(border.getCenter());
+            boolean isOutsideBorder = (offset.getX() < -borderSize || offset.getX() > borderSize || offset.getZ() < -borderSize || offset.getZ() > borderSize);
+            sender.sendMessage(ChatColor.AQUA + " Is in world border (" + ChatColor.GRAY + borderSize + ChatColor.AQUA + "): " + formatBoolean(!isOutsideBorder, true, false));
+        }
+
         if (spell != null)
         {
             sender.sendMessage(ChatColor.AQUA + " Has pnode " + ChatColor.GOLD + spell.getPermissionNode() + ChatColor.AQUA + ": " + formatBoolean(spell.hasCastPermission(player), hasBypass ? null : true));
