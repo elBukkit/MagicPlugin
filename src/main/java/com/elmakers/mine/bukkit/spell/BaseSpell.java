@@ -37,6 +37,7 @@ import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.WorldBorder;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.command.CommandSender;
@@ -157,6 +158,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     protected double cancelOnDamage             = 0;
     protected boolean pvpRestricted           	= false;
     protected boolean disguiseRestricted        = true;
+    protected boolean worldBorderRestricted     = true;
     protected boolean usesBrushSelection        = false;
     protected boolean bypassFriendlyFire    	= false;
     protected boolean bypassPvpRestriction    	= false;
@@ -885,6 +887,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         pvpRestricted = node.getBoolean("pvp_restricted", false);
         quickCast = node.getBoolean("quick_cast", false);
         disguiseRestricted = node.getBoolean("disguise_restricted", true);
+        worldBorderRestricted = node.getBoolean("world_border_restricted", false);
         usesBrushSelection = node.getBoolean("brush_selection", false);
         castOnNoTarget = node.getBoolean("cast_on_no_target", castOnNoTarget);
         hidden = node.getBoolean("hidden", false);
@@ -1133,6 +1136,13 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         if (regionPermission != null && regionPermission == false) return false;
         if (requiresBuildPermission() && !hasBuildPermission(location.getBlock())) return false;
         if (requiresBreakPermission() && !hasBreakPermission(location.getBlock())) return false;
+        if (worldBorderRestricted)
+        {
+            WorldBorder border = location.getWorld().getWorldBorder();
+            double borderSize = border.getSize() / 2 - border.getWarningDistance();
+            Location offset = location.subtract(border.getCenter());
+            if (offset.getX() < -borderSize || offset.getX() > borderSize || offset.getZ() < -borderSize || offset.getZ() > borderSize) return false;
+        }
         return !pvpRestricted || bypassPvpRestriction || mage.isPVPAllowed(location);
     }
 
