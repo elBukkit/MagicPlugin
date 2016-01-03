@@ -5,6 +5,7 @@
  - ! Secure key format changed to use masked UUIDs. Old keys will work on old chests, old chests
    can be converted to new format by casting at them with the old key in your inventory.
  
+ - Add "Tame" spell
  - Add "world_border_restricted" spell option, to prevent spell casts or broom flying outside the world border. Off by default.
  - Fix spells not upgrading on Master Sword
  - Add PermaFrost spell, ChangeBiome action

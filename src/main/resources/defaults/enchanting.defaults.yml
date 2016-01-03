@@ -386,6 +386,7 @@ master:
       force: 5,10,20
       tent: 0,0,1
       stash: 0,0,5
+      tame: 0,0,5
       railgun: 10,20,30
 
 #
