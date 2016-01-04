@@ -92,7 +92,6 @@ public abstract class CompoundAction extends BaseSpellAction
                 result = result.min(handler.perform(actionContext));
                 if (result.isStop()) break;
             }
-            currentHandler = null;
 
             if (!next(context)) {
                 if (handler != null) {
