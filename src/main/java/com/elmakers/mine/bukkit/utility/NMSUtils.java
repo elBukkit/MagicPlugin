@@ -233,6 +233,7 @@ public class NMSUtils {
     protected static Field class_EntityArrow_lifeField = null;
     protected static Field class_EntityArrow_fromPlayerField;
     protected static Field class_EntityArrow_damageField;
+    protected static Field class_CraftWorld_environmentField;
 
     static
     {
@@ -364,6 +365,8 @@ public class NMSUtils {
             class_PacketPlayOutEntityStatus_Constructor = class_PacketPlayOutEntityStatus.getConstructor(class_Entity, Byte.TYPE);
             class_PacketPlayOutEntityDestroy_Constructor = class_PacketPlayOutEntityDestroy.getConstructor(int[].class);
 
+            class_CraftWorld_environmentField = class_CraftWorld.getDeclaredField("environment");
+            class_CraftWorld_environmentField.setAccessible(true);
             class_Entity_invulnerableField = class_Entity.getDeclaredField("invulnerable");
             class_Entity_invulnerableField.setAccessible(true);
             class_Entity_motXField = class_Entity.getDeclaredField("motX");
@@ -1317,6 +1320,14 @@ public class NMSUtils {
             ex.printStackTrace();
         }
         return null;
+    }
+
+    public static void setEnvironment(World world, World.Environment environment) {
+        try {
+            class_CraftWorld_environmentField.set(world, environment);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 }
 
