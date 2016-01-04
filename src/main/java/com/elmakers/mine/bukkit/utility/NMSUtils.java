@@ -25,6 +25,8 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 /**
  * Contains some raw methods for doing some simple NMS utilities.
@@ -69,6 +71,7 @@ public class NMSUtils {
     protected static Class<?> class_DamageSource;
     protected static Class<?> class_EntityDamageSource;
     protected static Class<?> class_World;
+    protected static Class<?> class_WorldServer;
     protected static Class<?> class_Packet;
     protected static Class<Enum> class_EnumSkyBlock;
     protected static Class<?> class_PacketPlayOutMapChunkBulk;
@@ -201,6 +204,7 @@ public class NMSUtils {
     protected static Field class_Entity_motXField;
     protected static Field class_Entity_motYField;
     protected static Field class_Entity_motZField;
+    protected static Field class_WorldServer_entitiesByUUIDField;
     protected static Field class_ItemStack_tagField;
     protected static Field class_DamageSource_MagicField;
     protected static Field class_Firework_ticksFlownField;
@@ -258,6 +262,7 @@ public class NMSUtils {
             class_CraftLivingEntity = fixBukkitClass("org.bukkit.craftbukkit.entity.CraftLivingEntity");
             class_Packet = fixBukkitClass("net.minecraft.server.Packet");
             class_World = fixBukkitClass("net.minecraft.server.World");
+            class_WorldServer = fixBukkitClass("net.minecraft.server.WorldServer");
             class_EnumSkyBlock = (Class<Enum>)fixBukkitClass("net.minecraft.server.EnumSkyBlock");
             class_EntityPainting = fixBukkitClass("net.minecraft.server.EntityPainting");
             class_EntityCreature = fixBukkitClass("net.minecraft.server.EntityCreature");
@@ -367,6 +372,8 @@ public class NMSUtils {
             class_Entity_motYField.setAccessible(true);
             class_Entity_motZField = class_Entity.getDeclaredField("motZ");
             class_Entity_motZField.setAccessible(true);
+            class_WorldServer_entitiesByUUIDField = class_WorldServer.getDeclaredField("entitiesByUUID");
+            class_WorldServer_entitiesByUUIDField.setAccessible(true);
             class_ItemStack_tagField = class_ItemStack.getDeclaredField("tag");
             class_ItemStack_tagField.setAccessible(true);
             class_DamageSource_MagicField = class_DamageSource.getField("MAGIC");
@@ -1289,6 +1296,22 @@ public class NMSUtils {
             Double z = (Double)class_NBTTagList_getDoubleMethod.invoke(posList, 2);
             if (x != null && y != null && z != null) {
                 return new Vector(x, y, z);
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return null;
+    }
+
+    public static Entity getEntity(World world, UUID uuid) {
+        try {
+            Object worldHandle = getHandle(world);
+            final Map<UUID, Entity> entityMap = (Map<UUID, Entity>)class_WorldServer_entitiesByUUIDField.get(worldHandle);
+            if (entityMap != null) {
+                Object nmsEntity = entityMap.get(uuid);
+                if (nmsEntity != null) {
+                    return getBukkitEntity(nmsEntity);
+                }
             }
         } catch (Exception ex) {
             ex.printStackTrace();
