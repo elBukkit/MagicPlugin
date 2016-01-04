@@ -3,27 +3,24 @@
  */
 package com.elmakers.mine.bukkit.magic.command;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
+import com.elmakers.mine.bukkit.api.magic.MagicAPI;
 import com.elmakers.mine.bukkit.api.spell.Spell;
+import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
+import com.elmakers.mine.bukkit.utility.NMSUtils;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
-import org.bukkit.Chunk;
 import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
-import com.elmakers.mine.bukkit.api.magic.MagicAPI;
-import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.UUID;
 
 public class CastCommandExecutor extends MagicTabExecutor {
 	
@@ -50,33 +47,19 @@ public class CastCommandExecutor extends MagicTabExecutor {
             Mage mage = null;
             if (playerName.contains(",")) {
                 String[] idPieces = StringUtils.split(playerName, ",");
-                if (idPieces.length == 4) {
+                if (idPieces.length == 4 || idPieces.length == 2) {
                     try {
                         String worldName = idPieces[0];
-                        long x = Long.parseLong(idPieces[1]);
-                        long z = Long.parseLong(idPieces[2]);
-                        String entityId = idPieces[3];
+                        String entityId = idPieces[idPieces.length - 1];
 
                         World world = Bukkit.getWorld(worldName);
                         if (world == null) {
                             if (sender != null) sender.sendMessage("Unknown world: " + worldName);
                             return false;
                         }
-                        Chunk chunk = world.getChunkAt((int)(x >> 4), (int)(z >> 4));
-                        if (chunk == null || !chunk.isLoaded()) {
-                            if (sender != null) sender.sendMessage("Entity not loaded");
-                            return false;
-                        }
-                        Entity entity = null;
-                        for (Entity testEntity : chunk.getEntities()) {
-                            if (testEntity.getUniqueId().toString().equals(entityId)) {
-                                entity = testEntity;
-                                break;
-                            }
-                        }
-
+                        Entity entity = NMSUtils.getEntity(world, UUID.fromString(entityId));
                         if (entity == null) {
-                            if (sender != null) sender.sendMessage("Entity not found with id " + entityId + " at " + world.getName() + "," + x + "," + z);
+                            if (sender != null) sender.sendMessage("Entity not found with id " + entityId + " in " + world.getName());
                             return false;
                         }
 

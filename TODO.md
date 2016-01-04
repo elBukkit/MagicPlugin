@@ -3,6 +3,7 @@
  - Add PS integration for Recall
  
  - We have noticed a bug today that I want to inform you of. A player was getting really laggy so they relogged and the lag seemed to stop. Then the player went to open their wand inventory to cast a spell. They ended up being able to hold the spell heads in their inventory and they could drop the spell heads where other players could pick them up as items. This normally happens when players lag but not this bad. The weird part was that when they relogged again their while inventory was gone and all spells were back. The whole time he couldn’t use his wand until he relogged with his inventory cleared.
+ - Sandblast dropped on torches dupes torches
 
  - There's an area in the RoR where you can cast alohomora and it will spawn doors, in the center of the right side when you enter~
  - Need to fix some door-related undo issues, e.g. casting admission then breaking door sometimes drops door
