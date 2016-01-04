@@ -1040,6 +1040,10 @@ spells:
         name: Recurse
         description: Recursively fill blocks
         cast: Filled $count blocks with $material
+    floodfill:
+        name: Flood Fill
+        description: Fill up a hole
+        cast: Flooded $count blocks with $material
     fire:
         name: Fire
         description: Light fires from a distance

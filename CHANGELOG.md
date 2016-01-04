@@ -13,6 +13,7 @@
  - Wands now gain physical protection, up to 75%
  - Added melee_damage_reduction, off by default, can be used to globally nerf melee damage
  - Fix for temporary entities not getting removed if the chunk unloads before the timer expires.
+ - Add Flood Fill spell, Action-ize Drop and Recurse actions
 
 ## 5.4.3
 
