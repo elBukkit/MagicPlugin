@@ -123,6 +123,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -1045,24 +1046,20 @@ public class MagicController implements MageController {
 
     protected void processBlockUpdates()
     {
-        pendingScratchpad.clear();
-        pendingScratchpad.addAll(pendingConstruction);
         int remainingWork = workPerUpdate;
-        while (remainingWork > 0 && pendingScratchpad.size() > 0) {
-            int workPerMage = Math.max(10, remainingWork / pendingScratchpad.size());
-            for (Mage apiMage : pendingConstruction) {
+        while (remainingWork > 0 && pendingConstruction.size() > 0) {
+            int workPerMage = Math.max(10, remainingWork / pendingConstruction.size());
+            for (Iterator<Mage> iterator = pendingConstruction.iterator(); iterator.hasNext();) {
+                Mage apiMage = iterator.next();
                 if (apiMage instanceof com.elmakers.mine.bukkit.magic.Mage) {
                     com.elmakers.mine.bukkit.magic.Mage mage = ((com.elmakers.mine.bukkit.magic.Mage) apiMage);
                     int workPerformed = mage.processPendingBatches(workPerMage);
-                    if (workPerformed < workPerMage) {
-                        pendingScratchpad.remove(apiMage);
+                    if (workPerformed < workPerMage || !mage.hasPendingBatches()) {
+                        iterator.remove();
                     }
                     remainingWork -= workPerformed;
                 }
             }
-            pendingScratchpad.removeAll(pendingConstructionRemoval);
-            pendingConstruction.removeAll(pendingConstructionRemoval);
-            pendingConstructionRemoval.clear();
         }
     }
 
@@ -1263,10 +1260,6 @@ public class MagicController implements MageController {
 
     protected void addPending(Mage mage) {
         pendingConstruction.add(mage);
-    }
-
-    protected void removePending(Mage mage) {
-        pendingConstructionRemoval.add(mage);
     }
 
     public boolean removeMarker(String id, String group) {
@@ -2462,7 +2455,6 @@ public class MagicController implements MageController {
 
 		mages.clear();
 		pendingConstruction.clear();
-        pendingConstructionRemoval.clear();
 		spells.clear();
 	}
 	
@@ -4315,8 +4307,6 @@ public Set<Material> getMaterialSet(String name)
     private final Map<String, ConfigurationSection> baseSpellConfigurations = new HashMap<String, ConfigurationSection>();
     private final Map<String, Mage> 		    mages                  		= new HashMap<String, Mage>();
     private final Set<Mage>		 	            pendingConstruction			= new HashSet<Mage>();
-    private final Set<Mage>                     pendingConstructionRemoval  = new HashSet<Mage>();
-    private final Set<Mage>                     pendingScratchpad           = new HashSet<Mage>();
     private final PriorityQueue<UndoList>       scheduledUndo               = new PriorityQueue<UndoList>();
     private final Map<String, WeakReference<Schematic>> schematics	= new HashMap<String, WeakReference<Schematic>>();
 

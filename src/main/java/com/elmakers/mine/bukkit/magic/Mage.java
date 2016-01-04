@@ -870,11 +870,11 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                 }
             }
         }
-
-        if (pendingBatches.size() == 0) {
-            controller.removePending(this);
-        }
         return updated;
+    }
+
+    public boolean hasPendingBatches() {
+        return pendingBatches.size() > 0;
     }
 
     public void setLastHeldMapId(int mapId) {
