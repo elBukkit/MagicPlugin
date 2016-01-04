@@ -389,6 +389,8 @@ attachable:
 - standing_banner
 - sand
 - gravel
+- trap_door
+- iron_trap_door
 # Copied from attachable_double
 - cactus
 - iron_door_block
@@ -422,6 +424,8 @@ attachable_wall:
 - cocoa
 - cactus
 - bed_block
+- trap_door
+- iron_trap_door
 
 # Things that double-stack like doors and tall plants
 attachable_double:
