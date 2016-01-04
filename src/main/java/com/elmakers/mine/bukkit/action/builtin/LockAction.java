@@ -78,7 +78,7 @@ public class LockAction extends BaseSpellAction
 
         if (actionType == LockActionType.LOCK) {
             String lock = CompatibilityUtils.getLock(targetBlock);
-            if (lock != null)
+            if (lock != null && !lock.isEmpty())
             {
                 if (lock.equals(keyName))
                 {
