@@ -3317,6 +3317,11 @@ public Set<Material> getMaterialSet(String name)
         return townyManager.getTownLocation(player);
     }
 
+    @Override
+    public Map<String, Location> getHomeLocations(Player player) {
+        return preciousStonesManager.getFieldLocations(player);
+    }
+
     public TownyManager getTowny() {
         return townyManager;
     }

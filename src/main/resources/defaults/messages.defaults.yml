@@ -1259,6 +1259,7 @@ spells:
         cast_wand: Returning you to your lost wand
         cast_warp: Warping you to $name
         cast_town: Warping you to your home town
+        cast_field: Warping you to your personal field
         no_target_death: No recorded death location
         no_target_wand: No recorded lost wands
         no_target_home: No home set
@@ -1266,6 +1267,7 @@ spells:
         no_target_marker: No marker set
         no_target_spawn: Can't recall to spawn
         no_target_town: You're not in a town
+        no_target_fields: You have no fields
         title_marker: Marker
         description_marker: Aim down to move your marker
         title_death: Last Death
@@ -1279,6 +1281,7 @@ spells:
         description_wand: A wand you've dropped on the ground
         title_town: Town Square
         description_town: The center of your home town
+        description_field: Your personal protected area
         cross_world_disallowed: You are not allowed to Recall to another world
         title: Choose Destination
         unlock_warp: "&bYou have unlocked &5$name &bas a &6Recall &bdestination!"

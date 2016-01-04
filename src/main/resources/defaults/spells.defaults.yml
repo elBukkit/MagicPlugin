@@ -6361,7 +6361,9 @@ recall:
         allow_home: true
         allow_cross_world: true
         allow_town: true
+        allow_fields: true
         icon_death: skull_item
+        icon_field: wood_door
         icon_wand: wood_hoe
         icon_spawn: wood_door
         icon_home: bed

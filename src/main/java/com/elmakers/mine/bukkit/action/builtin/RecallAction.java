@@ -80,7 +80,8 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
         HOME,
         WAND,
         MARKER,
-        TOWN
+        TOWN,
+        FIELDS
     }
 
     private static MaterialAndData defaultMaterial = new MaterialAndData(DefaultWaypointMaterial);
@@ -372,7 +373,7 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
                     }
 				}
 			}
-            // Special-case for warps
+            // Special-case for commands
             else if (testType == RecallType.COMMAND)
             {
                 if (commandConfig != null)
@@ -484,6 +485,21 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
                     Waypoint targetLocation = getWaypoint(player, selectedType, i, parameters);
                     if (targetLocation != null && targetLocation.isValid(allowCrossWorld, playerLocation)) {
                         allWaypoints.add(targetLocation);
+                    }
+                }
+            }
+            else if (selectedType == RecallType.FIELDS)
+            {
+                Map<String, Location> fields = controller.getHomeLocations(player);
+                if (fields != null) {
+                    for (Map.Entry<String, Location> fieldEntry : fields.entrySet()) {
+                        allWaypoints.add(new Waypoint(RecallType.FIELDS, fieldEntry.getValue(),
+                                fieldEntry.getKey(),
+                                context.getMessage("cast_field"),
+                                context.getMessage("no_target_field"),
+                                context.getMessage("description_field", ""),
+                                ConfigurationUtils.getMaterialAndData(parameters, "icon_field"),
+                                true));
                     }
                 }
             } else {

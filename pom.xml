@@ -126,7 +126,7 @@
 		<dependency>
 			<groupId>net.sacredlabyrinth.Phaed</groupId>
 			<artifactId>PreciousStones</artifactId>
-			<version>10.0.4</version>
+			<version>10.0.5</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>

@@ -7,6 +7,8 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
+import java.util.Map;
+
 public class PreciousStonesManager implements BlockBuildManager, BlockBreakManager, PVPManager {
 	private boolean enabled = false;
 	private boolean override = true;
@@ -29,7 +31,8 @@ public class PreciousStonesManager implements BlockBuildManager, BlockBreakManag
 			try {
 				Plugin psPlugin = plugin.getServer().getPluginManager().getPlugin("PreciousStones");
 				if (psPlugin != null) {
-					api = new PreciousStonesAPI(psPlugin);
+					api = new PreciousStonesAPI(plugin, psPlugin);
+					plugin.getLogger().info("PreciousStones found, will respect build and PVP permissions for force fields");
 				}
 			} catch (Throwable ex) {
 			}
@@ -89,5 +92,12 @@ public class PreciousStonesManager implements BlockBuildManager, BlockBreakManag
 			return false;
 
 		return api.rentField(signLocation, player, rent, timePeriod, signDirection);
+	}
+
+	public Map<String, Location> getFieldLocations(Player player) {
+		if (!enabled || api == null || player == null)
+			return null;
+
+		return api.getFieldLocations(player);
 	}
 }

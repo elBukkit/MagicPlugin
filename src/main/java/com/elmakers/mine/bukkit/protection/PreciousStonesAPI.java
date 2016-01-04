@@ -23,14 +23,26 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class PreciousStonesAPI implements BlockBuildManager, BlockBreakManager, PVPManager {
 	private PreciousStones preciousStones = null;
+	private boolean canGetFields;
 
-	public PreciousStonesAPI(Plugin psPlugin) {
+	public PreciousStonesAPI(Plugin owner, Plugin psPlugin) {
 		if (psPlugin instanceof PreciousStones) {
 			preciousStones = (PreciousStones) psPlugin;
+			ForceFieldManager manager = preciousStones.getForceFieldManager();
+			try {
+				manager.getClass().getMethod("getAllPlayerFields", String.class);
+				canGetFields = true;
+			} catch (Exception ex) {
+				canGetFields = false;
+				owner.getLogger().warning("Update PreciousStones if you'd like it to work with Recall!");
+			}
 		}
 	}
 
@@ -43,6 +55,25 @@ public class PreciousStonesAPI implements BlockBuildManager, BlockBreakManager, 
 			return true;
         List<Field> fields = PreciousStones.API().getFieldsProtectingArea(FieldFlag.PREVENT_PVP, location);
 		return fields.size() == 0;
+	}
+
+	public Map<String, Location> getFieldLocations(Player player) {
+		if (preciousStones == null || player == null || !canGetFields)
+			return null;
+
+		ForceFieldManager manager = preciousStones.getForceFieldManager();
+		if (manager == null) return null;
+		Collection<Field> fields = manager.getAllPlayerFields(player.getName());
+		if (fields == null) return null;
+		Map<String, Location> fieldLocations = new HashMap<String, Location>();
+		for (Field field : fields) {
+			String fieldName = field.getName();
+			if (fieldName == null || fieldName.isEmpty()) {
+				fieldName = "Field";
+			}
+			fieldLocations.put(fieldName, field.getLocation());
+		}
+		return fieldLocations;
 	}
 
 	public boolean hasBuildPermission(Player player, Block block) {

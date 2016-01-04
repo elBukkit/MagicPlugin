@@ -14,6 +14,7 @@
  - Added melee_damage_reduction, off by default, can be used to globally nerf melee damage
  - Fix for temporary entities not getting removed if the chunk unloads before the timer expires.
  - Add Flood Fill spell, Action-ize Drop and Recurse actions
+ - Added Recall support for owned/rented PreciousStones fields (requires a dev build of PS plugin!)
 
 ## 5.4.3
 
