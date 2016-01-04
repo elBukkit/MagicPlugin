@@ -2,6 +2,7 @@ package com.elmakers.mine.bukkit.api.magic;
 
 import java.io.File;
 import java.util.Collection;
+import java.util.Map;
 import java.util.Set;
 import java.util.logging.Logger;
 
@@ -158,6 +159,7 @@ public interface MageController {
 
     public Location getWarp(String warpName);
     public Location getTownLocation(Player player);
+    public Map<String, Location> getHomeLocations(Player player);
 
     public void giveItemToPlayer(Player player, ItemStack itemStack);
 
