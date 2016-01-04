@@ -1047,14 +1047,21 @@ public class MagicController implements MageController {
     protected void processBlockUpdates()
     {
         int remainingWork = workPerUpdate;
-        while (remainingWork > 0 && pendingConstruction.size() > 0) {
-            int workPerMage = Math.max(10, remainingWork / pendingConstruction.size());
-            for (Iterator<Mage> iterator = pendingConstruction.iterator(); iterator.hasNext();) {
+        if (pendingConstruction.isEmpty()) return;
+
+        List<Mage> pending = new ArrayList<Mage>(pendingConstruction);
+        while (remainingWork > 0 && !pending.isEmpty()) {
+            int workPerMage = Math.max(10, remainingWork / pending.size());
+            for (Iterator<Mage> iterator = pending.iterator(); iterator.hasNext();) {
                 Mage apiMage = iterator.next();
                 if (apiMage instanceof com.elmakers.mine.bukkit.magic.Mage) {
                     com.elmakers.mine.bukkit.magic.Mage mage = ((com.elmakers.mine.bukkit.magic.Mage) apiMage);
                     int workPerformed = mage.processPendingBatches(workPerMage);
-                    if (workPerformed < workPerMage || !mage.hasPendingBatches()) {
+                    if (!mage.hasPendingBatches()) {
+                        iterator.remove();
+                        pendingConstruction.remove(mage);
+                    } else if (workPerformed < workPerMage) {
+                        // Wait for next tick to process this action further since it's sleeping
                         iterator.remove();
                     }
                     remainingWork -= workPerformed;
