@@ -9,6 +9,7 @@ import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
+import com.elmakers.mine.bukkit.utility.NMSUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -63,6 +64,16 @@ public class ChangeWorldAction extends BaseTeleportAction
             Vector maxLocation = ConfigurationUtils.getVector(worldNode, "bounds_max");
             World targetWorld = getWorld(context, worldNode.getString("target"), worldNode.getBoolean("load", true), worldNode.getBoolean("copy", false) ? world : null);
             if (targetWorld != null) {
+                String envName = worldNode.getString("environment");
+                if (envName != null && !envName.isEmpty()) {
+                    try {
+                        World.Environment env = World.Environment.valueOf(envName.toUpperCase());
+                        NMSUtils.setEnvironment(targetWorld, env);
+                    } catch (Exception ex) {
+                        context.getLogger().warning("Unknown environment type: " + envName);
+                    }
+                }
+
                 double scale = worldNode.getDouble("scale", 1);
                 if (useSpawnLocations) {
                     Location currentSpawn = playerLocation.getWorld().getSpawnLocation();
