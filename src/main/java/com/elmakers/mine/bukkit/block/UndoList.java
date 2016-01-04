@@ -24,6 +24,7 @@ import org.bukkit.block.BlockState;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.FallingBlock;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.metadata.MetadataValue;
@@ -612,6 +613,9 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
 
     public void fall(Entity fallingBlock, Block block)
     {
+        if (isScheduled() && fallingBlock instanceof FallingBlock) {
+            ((FallingBlock)fallingBlock).setDropItem(false);
+        }
         add(fallingBlock);
         add(block);
         modifiedTime = System.currentTimeMillis();
