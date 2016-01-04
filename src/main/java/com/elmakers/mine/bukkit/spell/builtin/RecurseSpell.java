@@ -12,6 +12,7 @@ import com.elmakers.mine.bukkit.batch.BlockRecurse;
 import com.elmakers.mine.bukkit.action.builtin.ModifyBlockAction;
 import com.elmakers.mine.bukkit.spell.BrushSpell;
 
+@Deprecated
 public class RecurseSpell extends BrushSpell 
 {
 	@Override

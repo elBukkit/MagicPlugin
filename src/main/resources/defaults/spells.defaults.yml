@@ -2372,6 +2372,45 @@ mount:
     costs:
         mana: 60
 
+tame:
+    icon_url: http://textures.minecraft.net/texture/ddb5db33eac28ccfce38f179044575cb9de8195bc1ed843d4345da5f13b63d
+    icon: saddle
+    category: utility
+    worth_sp: 500
+    earns_sp: 2
+    actions:
+        cast:
+        - class: Tame
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: irongolem_hit
+           effectlib:
+             class: ConeEffect
+             iterations: 20
+             particle: heart
+        -  class: EffectSingle
+           sound: irongolem_hit
+           location: target
+           effectlib:
+             class: SphereEffect
+             iterations: 20
+             particle: heart
+        no_target:
+        -  class: EffectSingle
+           sound: creeper_hiss
+           effectlib:
+             class: ConeEffect
+             iterations: 20
+             particle: slime
+    parameters:
+        target_type: Tameable
+        allow_max_range: false
+        range: 8
+        cooldown: 30000
+    costs:
+        mana: 100
+
 icbm:
     icon_url: http://textures.minecraft.net/texture/9c2e9d8395cacd9922869c15373cf7cb16da0a5ce5f3c632b19ceb3929c9a11
     icon: golden_carrot
@@ -2901,15 +2940,18 @@ fling:
              iterations: 30
              particle: spell
         land:
-        -  class: EffectRing
-           sound: STEP_GRASS
+        -  sound: step_stone
            sound_pitch: 0.7
+        -  class: EffectRing
            particle: block_crack
            use_wand_location: false
            use_eye_location: false
            period: 4
-           particle_count: 10
+           particle_count: 80
            radius: 4
+           particle_offset_x: 0.9
+           particle_offset_z: 0.9
+           particle_offset_y: 0.1
     parameters:
         duration: 20000
         target: self
@@ -3701,9 +3743,13 @@ recurse:
     icon: wood_spade
     icon_url: http://textures.minecraft.net/texture/ce31cd14d873d1579b633646be683b5e1201512e593ca61595e33a5ef17b374
     category: engineering
-    class: RecurseSpell
     cancellable: false
     worth_sp: 400
+    actions:
+        cast:
+        - class: Recurse
+          actions:
+          - class: ModifyBlock
     effects:
         cast:
         -  class: EffectTrail
@@ -3716,6 +3762,7 @@ recurse:
         check_destructible: false
         transparent: transparent_to_construction
         cooldown: 500
+        replace: true
     costs:
         mana: 30
 
@@ -4118,6 +4165,7 @@ superpyramid:
         thickness: 1
         type: pyramid
         transparent: transparent_to_construction
+        destructible: destructible_replace
     costs:
         mana: 400
 
@@ -4142,6 +4190,7 @@ supercylinder:
         thickness: 1
         type: cylinder
         transparent: transparent_to_construction
+        destructible: destructible_replace
     costs:
         mana: 400
 
@@ -4167,6 +4216,7 @@ box:
         type: cuboid
         transparent: transparent_to_construction
         y_offset: 4
+        destructible: destructible_replace
     costs:
         mana: 60
 
@@ -5078,11 +5128,15 @@ mine:
     icon: wood_pickaxe
     icon_url: http://textures.minecraft.net/texture/c688f9a3b3db226582ae3f49d34aa9077b4d4f8102dd46f21bcb784a68f2c63
     category: mining
-    class: DropSpell
     worth_sp: 500
     earns_sp: 10
     upgrade_required_path: apprentice
     upgrade_required_casts: 50
+    actions:
+        cast:
+        - class: Recurse
+          actions:
+          - class: Drop
     effects:
         cast:
         -  class: EffectSingle
@@ -5091,10 +5145,11 @@ mine:
            particle: block_crack
            material: diamond_ore
     parameters:
+        faces: all
         allow_max_range: false
         range: 32
         recursion_depth: 2
-        drop: ores
+        destructible: ores
         cooldown: 10000
         bypass_undo: true
     costs:
@@ -5121,11 +5176,15 @@ chop:
     icon_url: http://textures.minecraft.net/texture/7033deb4e25f57413fb15bd3f7019d4ea659a4637d75597248590d746778f
     icon: stone_axe
     category: elemental
-    class: DropSpell
     worth_sp: 600
     earns_sp: 8
     upgrade_required_path: student
     upgrade_required_casts: 30
+    actions:
+        cast:
+        - class: Recurse
+          actions:
+          - class: Drop
     effects:
         cast:
         -  class: EffectSingle
@@ -5137,10 +5196,10 @@ chop:
         bypass_undo: true
         allow_max_range: false
         range: 32
+        faces: all
         recursion_depth: 32
         drop_count: 4
-        drop: trees
-        diagonals: true
+        destructible: trees
         cooldown: 5000
         bypass_undo: true
     costs:
@@ -6051,7 +6110,7 @@ laser:
         start_at_target: true
         increment_data: false
         check_destructible: true
-        destructible: destructible_mining
+        destructible: destructible_mining,transparent
         transparent: air
         brush: air
         radius: 1
@@ -6068,14 +6127,14 @@ laser|2:
     upgrade_required_casts: 50
     parameters:
         radius: 2
-        destructible: destructible,destructible2
+        destructible: destructible,destructible2,transparent
         player_damage: 1
         entity_damage: 2
         repeat: 12
 
 laser|3:
     parameters:
-        destructible: destructible,destructible2,destructible3
+        destructible: destructible,destructible2,destructible3,transparent
         radius: 3
         player_damage: 1
         entity_damage: 3
@@ -6371,12 +6430,14 @@ levitate:
            sound: enderdragon_wings
            sound_pitch: 0.2
         land:
+        -  sound: step_stone
+           sound_pitch: 0.7
         -  class: EffectRing
            particle: block_crack
            use_wand_location: false
            use_eye_location: false
            period: 4
-           particle_count: 10
+           particle_count: 80
            particle_offset_x: 0.9
            particle_offset_z: 0.9
            particle_offset_y: 0.1
@@ -6921,7 +6982,7 @@ railgun:
       player_damage: 12
       entity_damage: 20
     parameters:
-        destructible: destructible,destructible2,destructible3
+        destructible: destructible,destructible2,destructible3,transparent
         allow_max_range: true
         velocity: 1000
         range: 80
@@ -7366,13 +7427,18 @@ broom:
              iterations: 30
              particle: spell
         land:
+        -  sound: step_stone
+           sound_pitch: 0.7
         -  class: EffectRing
            particle: block_crack
            use_wand_location: false
            use_eye_location: false
            period: 4
-           particle_count: 10
+           particle_count: 80
            radius: 4
+           particle_offset_x: 0.9
+           particle_offset_z: 0.9
+           particle_offset_y: 0.1
     parameters:
         thrust: 0.4
         auto_deactivate: 4
@@ -7665,10 +7731,14 @@ rubberize:
     icon: slime_ball
     icon_url: http://textures.minecraft.net/texture/fced4114232f1aff90c5fbb3535e89c546858b14bae3fea7ecc896b2bd51
     category: engineering
-    class: RecurseSpell
     cancellable: false
     worth_sp: 150
     earns_sp: 2
+    actions:
+        cast:
+        - class: Recurse
+          actions:
+          - class: ModifyBlock
     effects:
         cast:
         -  class: EffectTrail
@@ -7684,6 +7754,8 @@ rubberize:
         cooldown: 2000
         bypass_backfire: true
         select_self: false
+        replace: true
+        destructible: destructible1,destructible2,destructible3
     costs:
         mana: 50
 
@@ -8277,11 +8349,15 @@ harden:
     icon_url: http://textures.minecraft.net/texture/25147d8c6addc07635b183ae1c4459f173bdfde239d949f56ce56d2728911e2
     icon: flint
     category: utility
-    class: RecurseSpell
     worth_sp: 150
     earns_sp: 4
     upgrade_required_path: apprentice
     upgrade_required_casts: 50
+    actions:
+        cast:
+        - class: Recurse
+          actions:
+          - class: ModifyBlock
     effects:
         cast:
         -  class: EffectTrail
@@ -8299,6 +8375,7 @@ harden:
         cooldown: 1000
         bypass_backfire: true
         select_self: false
+        replace: true
     costs:
         mana: 30
 

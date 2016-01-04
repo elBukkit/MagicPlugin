@@ -15,6 +15,7 @@ import org.bukkit.inventory.ItemStack;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.BlockSpell;
 
+@Deprecated
 public class DropSpell extends BlockSpell
 {
 	private final static int DEFAULT_MAX_RECURSION = 16;
