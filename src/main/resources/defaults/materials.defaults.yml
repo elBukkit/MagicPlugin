@@ -916,3 +916,11 @@ not_attachable:
 - glowstone
 - leaves
 - leaves_2
+
+containers:
+- chest
+- furnace
+- brewing_stand
+- dispenser
+- hopper
+- dropper

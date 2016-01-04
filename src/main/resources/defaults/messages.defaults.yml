@@ -357,11 +357,12 @@ spells:
     secure:
         name: Secure
         description: Secures containers
-        usage: Aim up and cast for a replacement key
+        usage: Aim up and cast for a replacement key, sneak-cast to unlock
         cast: Chest is now locked- you must have your key to unlock it!
         acquire: Lock changed!
         already: That is already locked
         alternate_up: You summon a replacement key
+        alternate_sneak: Container unlocked
         key_name: "&6&k$uuid"
         key_description: "&6$name's &eKey\nNeeded to open your locked containers"
         fail: You can't lock that!
@@ -993,14 +994,14 @@ spells:
     mine:
         name: Mine
         description: Mines and drops the targeted ores
-        cast: Mined some ore
+        cast_finish: Mined some ore
         upgrade_description: "&r&b&bull; &6Mines more blocks"
     mine|4:
         upgrade_description: "&r&b&bull; &6Now mines full blocks"
     chop:
         name: Chop
         description: Fell a tree in one cast
-        cast: TIMBER!
+        cast_finish: TIMBER!
         upgrade_description: "&r&b&bull; &6Chops more blocks"
     peek:
         name: Peek
@@ -1039,11 +1040,11 @@ spells:
     recurse:
         name: Recurse
         description: Recursively fill blocks
-        cast: Filled $count blocks with $material
+        cast_finish: Filled $count blocks with $material
     floodfill:
         name: Flood Fill
         description: Fill up a hole
-        cast: Flooded $count blocks with $material
+        cast_finish: Flooded $count blocks with $material
     fire:
         name: Fire
         description: Light fires from a distance

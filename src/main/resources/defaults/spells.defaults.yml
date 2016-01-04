@@ -3789,7 +3789,7 @@ floodfill:
         range: 32
         max_volume: 512
         max_dimension: 128
-        destructible: destructible_replace
+        destructible: air
         transparent: transparent_to_construction
         cooldown: 1000
         faces:
@@ -5163,6 +5163,7 @@ mine:
     icon: wood_pickaxe
     icon_url: http://textures.minecraft.net/texture/c688f9a3b3db226582ae3f49d34aa9077b4d4f8102dd46f21bcb784a68f2c63
     category: mining
+    tags: noduel
     worth_sp: 500
     earns_sp: 10
     upgrade_required_path: apprentice
@@ -5211,6 +5212,7 @@ chop:
     icon_url: http://textures.minecraft.net/texture/7033deb4e25f57413fb15bd3f7019d4ea659a4637d75597248590d746778f
     icon: stone_axe
     category: elemental
+    tags: noduel
     worth_sp: 600
     earns_sp: 8
     upgrade_required_path: student
@@ -8329,9 +8331,6 @@ secure:
     actions:
        cast:
        - class: Lock
-       alternate_up:
-       - class: Lock
-         type: key
     effects:
         cast:
         -  class: EffectSingle
@@ -8341,11 +8340,14 @@ secure:
            particle: smoke_normal
            particle_data: 1
            particle_count: 5
+    alternate_up_parameters:
+      type: key
+    alternate_sneak_parameters:
+      type: unlock
     parameters:
         range: 8
         check_destructible: true
         destructible: chest
-        transparent: transparent_to_construction
         cooldown: 10000
         key_icon: "skull_item:http://textures.minecraft.net/texture/3944e12e8e67fd67a55359df56c3c59c99550f6eaccb23813769afb2f1992"
     costs:
@@ -8353,7 +8355,7 @@ secure:
 
 secure|2:
     parameters:
-        destructible: chest,furnace,brewing_stand,dispenser,hopper,dropper
+        destructible: containers
 
 lockpick:
     icon_url: http://textures.minecraft.net/texture/3944e12e8e67fd67a55359df56c3c59c99550f6eaccb23813769afb2f1992
@@ -8373,11 +8375,12 @@ lockpick:
            particle_data: 1
            particle_count: 5
     parameters:
+        bypass_build: true
         type: unlock
+        override: true
         range: 8
         check_destructible: true
-        destructible: chest
-        transparent: transparent_to_construction
+        destructible: containers
         cooldown: 10000
     costs:
         mana: 100

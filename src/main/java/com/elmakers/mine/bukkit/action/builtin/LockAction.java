@@ -94,7 +94,12 @@ public class LockAction extends BaseSpellAction
             result = CompatibilityUtils.setLock(targetBlock, keyName);
             giveKey(mage, keyName, keyDescription);
         } else {
-            if (!CompatibilityUtils.isLocked(targetBlock))
+            String lock = CompatibilityUtils.getLock(targetBlock);
+            if (lock == null || lock.isEmpty())
+            {
+                return SpellResult.FAIL;
+            }
+            if (!keyName.equals(lock) && !override && !InventoryUtils.hasItem(mage, lock))
             {
                 return SpellResult.FAIL;
             }
