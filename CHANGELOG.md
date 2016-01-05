@@ -1,6 +1,6 @@
 # CHANGELOG
 
-## 5.5
+## 5.4.4
 
  - ! Secure key format changed to use masked UUIDs. Old keys will work on old chests, old chests
    can be converted to new format by casting at them with the old key in your inventory.
