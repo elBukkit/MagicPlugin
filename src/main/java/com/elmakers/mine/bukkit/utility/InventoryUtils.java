@@ -281,4 +281,12 @@ public class InventoryUtils extends NMSUtils
             ex.printStackTrace();
         }
     }
+
+    public static void makeKeep(ItemStack itemStack) {
+        setMeta(itemStack, "keep", "true");
+    }
+
+    public static boolean isKeep(ItemStack itemStack) {
+        return hasMeta(itemStack, "keep");
+    }
 }
