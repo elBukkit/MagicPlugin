@@ -1911,6 +1911,27 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         {
             addSpellLore(messages, spell, lore, getActivePlayer(), this);
 		}
+		// This is here mostly for broomsticks..
+		else if (spell != null && spellCount == 1 && !isUpgrade && hasPath())
+		{
+			String cooldownDescription = spell.getCooldownDescription();
+			if (cooldownDescription != null && !cooldownDescription.isEmpty()) {
+				lore.add(messages.get("cooldown.description").replace("$time", cooldownDescription));
+			}
+			long effectiveDuration = spell.getDuration();
+			if (effectiveDuration > 0) {
+				long seconds = effectiveDuration / 1000;
+				if (seconds > 60 * 60 ) {
+					long hours = seconds / (60 * 60);
+					lore.add(ChatColor.GRAY + messages.get("duration.lasts_hours").replace("$hours", ((Long)hours).toString()));
+				} else if (seconds > 60) {
+					long minutes = seconds / 60;
+					lore.add(ChatColor.GRAY + messages.get("duration.lasts_minutes").replace("$minutes", ((Long)minutes).toString()));
+				} else {
+					lore.add(ChatColor.GRAY + messages.get("duration.lasts_seconds").replace("$seconds", ((Long)seconds).toString()));
+				}
+			}
+		}
         if (materialCount == 1 && activeMaterial != null && activeMaterial.length() > 0)
         {
             lore.add(getBrushDisplayName(messages, MaterialBrush.parseMaterialKey(activeMaterial)));
@@ -3401,12 +3422,6 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 
         if (getMode() != WandMode.INVENTORY) {
             showActiveIcon(false);
-        }
-		
-		// This is a tying wands together with other spells, potentially
-		// But with the way the mana system works, this seems like the safest route.
-        if (!hasUses) {
-            mage.deactivateAllSpells();
         }
 		
 		if (isInventoryOpen()) {
