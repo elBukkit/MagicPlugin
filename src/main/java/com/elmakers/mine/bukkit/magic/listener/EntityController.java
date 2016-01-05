@@ -5,6 +5,7 @@ import com.elmakers.mine.bukkit.api.block.UndoList;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
+import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import com.elmakers.mine.bukkit.utility.NMSUtils;
 import com.elmakers.mine.bukkit.utility.Targeting;
 import com.elmakers.mine.bukkit.wand.Wand;
@@ -251,6 +252,9 @@ public class EntityController implements Listener {
                     Wand testWand = new Wand(controller, itemStack);
                     keepItem = testWand.keepOnDeath();
                 }
+            }
+            else if (InventoryUtils.isKeep(itemStack)) {
+                keepItem = true;
             }
             if (keepItem)
             {

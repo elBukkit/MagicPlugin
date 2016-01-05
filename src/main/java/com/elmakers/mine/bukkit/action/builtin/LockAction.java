@@ -36,6 +36,7 @@ public class LockAction extends BaseSpellAction
     private MaterialAndData iconType;
     private String keyName;
     private String keyDescription;
+    private boolean keyKeep;
     private boolean override;
 
     @Override
@@ -126,6 +127,7 @@ public class LockAction extends BaseSpellAction
             keyItem.setItemMeta(meta);
             keyItem = CompatibilityUtils.makeReal(keyItem);
             CompatibilityUtils.makeUnplaceable(keyItem);
+            InventoryUtils.makeKeep(keyItem);
             mage.giveItem(keyItem);
         }
     }
@@ -159,6 +161,7 @@ public class LockAction extends BaseSpellAction
         keyName = parameters.getString("key_name", "");
         keyDescription = parameters.getString("key_description", "");
         iconType = ConfigurationUtils.getMaterialAndData(parameters, "key_icon", new MaterialAndData(Material.TRIPWIRE_HOOK));
+        keyKeep = parameters.getBoolean("key_keep", true);
         override = parameters.getBoolean("override", false);
     }
 

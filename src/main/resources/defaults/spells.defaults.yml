@@ -8987,7 +8987,7 @@ brushselect:
 
 tracking:
     upgrade_required_path: student
-    upgrade_required_casts: 50
+    upgrade_required_casts: 30
     icon_url: http://textures.minecraft.net/texture/3bc9de58822a3f7c6c23e212cf954fc728a6b2e45c54a89b4af5e453d39b1
     icon: compass
     category: utility
@@ -9022,13 +9022,13 @@ tracking:
 
 tracking|2:
     upgrade_required_path: apprentice
-    upgrade_required_casts: 50
+    upgrade_required_casts: 30
     parameters:
         range: 64
 
 tracking|3:
     upgrade_required_path: master
-    upgrade_required_casts: 50
+    upgrade_required_casts: 40
     parameters:
         range: 128
 

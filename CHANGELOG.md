@@ -5,6 +5,8 @@
  - ! Secure key format changed to use masked UUIDs. Old keys will work on old chests, old chests
    can be converted to new format by casting at them with the old key in your inventory.
  
+ - Nerfed Broomsticks, now have a 60-second duration and a 10-second cooldown.
+ - Secure keys are now kept on death
  - Add sneak-cast alt to Secure to unlock
  - Add "Tame" spell
  - Add "world_border_restricted" spell option, to prevent spell casts or broom flying outside the world border. Off by default.
