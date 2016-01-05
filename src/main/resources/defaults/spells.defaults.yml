@@ -3795,8 +3795,8 @@ floodfill:
         faces:
         - down
         - north
-        - south
         - east
+        - south
         - west
     costs:
         mana: 200
