@@ -7413,6 +7413,7 @@ broom:
     icon_url: http://textures.minecraft.net/texture/7f4f1b4c6661ab552b21df8ed841a221296512de46c86e8dee891efbd2fba6
     icon: gold_spade
     category: specialty
+    tags: noduel
     class: LevitateSpell
     worth_sp: 600
     show_undoable: false
@@ -7487,7 +7488,7 @@ broom:
         crash_distance: 0.9
         effect_confusion: 120,2
         bypass_confusion: false
-        bypass_deactivate: true
+        bypass_deactivate: false
         stash_item: true
         mount_baby: true
         mount_type: Horse
@@ -7517,6 +7518,8 @@ broom:
         sound: magic.flying
         effect_sound_interval: 120
         effect_sound_volume: 15
+        duration: 60000
+        cooldown: 10000
 
 superbroom:
   inherit: broom
