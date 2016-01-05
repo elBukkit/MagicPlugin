@@ -1238,31 +1238,35 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         boolean requiresCost = success || (castOnNoTarget && (result == SpellResult.NO_TARGET || result == SpellResult.NO_ACTION));
         boolean free = !requiresCost && result.isFree();
         if (!free) {
-            lastCast = System.currentTimeMillis();
             if (costs != null && !mage.isCostFree()) {
                 for (CastingCost cost : costs)
                 {
                     cost.use(this);
                 }
             }
-            if (!mage.isCooldownFree() && cooldown > 0) {
-                double cooldownReduction = mage.getCooldownReduction() + this.cooldownReduction;
-                if (cooldownReduction < 1) {
-                    int reducedCooldown = (int)Math.ceil((1.0f - cooldownReduction) * cooldown);
-                    cooldownExpiration = Math.max(cooldownExpiration, System.currentTimeMillis() + reducedCooldown);
-                }
-            }
-            if (!mage.isCooldownFree() && mageCooldown > 0) {
-                double cooldownReduction = mage.getCooldownReduction() + this.cooldownReduction;
-                if (cooldownReduction < 1) {
-                    int reducedCooldown = (int)Math.ceil((1.0f - cooldownReduction) * mageCooldown);
-                    mage.setRemainingCooldown(reducedCooldown);
-                }
-            }
+            updateCooldown();
         }
 
         sendCastMessage(result, " (" + success + ")");
         return success;
+    }
+
+    protected void updateCooldown() {
+        lastCast = System.currentTimeMillis();
+        if (!mage.isCooldownFree() && cooldown > 0) {
+            double cooldownReduction = mage.getCooldownReduction() + this.cooldownReduction;
+            if (cooldownReduction < 1) {
+                int reducedCooldown = (int)Math.ceil((1.0f - cooldownReduction) * cooldown);
+                cooldownExpiration = Math.max(cooldownExpiration, System.currentTimeMillis() + reducedCooldown);
+            }
+        }
+        if (!mage.isCooldownFree() && mageCooldown > 0) {
+            double cooldownReduction = mage.getCooldownReduction() + this.cooldownReduction;
+            if (cooldownReduction < 1) {
+                int reducedCooldown = (int)Math.ceil((1.0f - cooldownReduction) * mageCooldown);
+                mage.setRemainingCooldown(reducedCooldown);
+            }
+        }
     }
 
     protected void sendCastMessage(SpellResult result, String message)
@@ -1970,6 +1974,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
 
     @Override
     public boolean deactivate() {
+        updateCooldown();
         return deactivate(false, false);
     }
 
