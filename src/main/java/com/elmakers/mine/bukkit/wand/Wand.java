@@ -396,14 +396,15 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 			{
 				durability = item.getDurability();
 			}
-            if (inactiveIcon == null || mage != null)
-            {
-                icon.applyToItem(item);
-            }
-            else
-            {
-                inactiveIcon.applyToItem(item);
-            }
+			try {
+				if (inactiveIcon == null || mage != null) {
+					icon.applyToItem(item);
+				} else {
+					inactiveIcon.applyToItem(item);
+				}
+			} catch (Exception ex) {
+				controller.getLogger().log(Level.WARNING, "Unable to apply wand icon", ex);
+			}
 			if (durability != null)
 			{
 				item.setDurability(durability);
@@ -1514,6 +1515,10 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
             if (wandConfig.contains("icon_inactive")) {
                 inactiveIcon = new MaterialAndData(wandConfig.getString("icon_inactive"));
             }
+			if (inactiveIcon != null && inactiveIcon.getMaterial() == Material.AIR)
+			{
+				inactiveIcon = null;
+			}
             inactiveIconDelay = wandConfig.getInt("icon_inactive_delay", inactiveIconDelay);
 
 			// Check for migration information in the template config
