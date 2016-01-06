@@ -404,6 +404,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 				}
 			} catch (Exception ex) {
 				controller.getLogger().log(Level.WARNING, "Unable to apply wand icon", ex);
+				item.setType(DefaultWandMaterial);
 			}
 			if (durability != null)
 			{
@@ -1222,7 +1223,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		} else {
 			node.set("icon", null);
 		}
-        if (inactiveIcon != null) {
+        if (inactiveIcon != null && inactiveIcon.getMaterial() != null) {
             String iconKey = inactiveIcon.getKey();
             if (iconKey != null && iconKey.length() > 0) {
                 node.set("icon_inactive", iconKey);
@@ -2692,7 +2693,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
             this.setIcon(other.upgradeIcon);
         }
 
-        if (other.isUpgrade && other.inactiveIcon != null &&
+        if (other.isUpgrade && other.inactiveIcon != null && other.inactiveIcon.getMaterial() != Material.AIR &&
                 (this.inactiveIcon == null
                         || this.inactiveIcon.getMaterial() != other.inactiveIcon.getMaterial()
                         || this.inactiveIcon.getData() != other.inactiveIcon.getData()
@@ -3923,7 +3924,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	}
 
     protected void showActiveIcon(boolean show) {
-        if (this.icon == null || this.inactiveIcon == null) return;
+        if (this.icon == null || this.inactiveIcon == null || this.inactiveIcon.getMaterial() == Material.AIR) return;
         if (show) {
             if (inactiveIconDelay > 0) {
                 Plugin plugin = controller.getPlugin();
