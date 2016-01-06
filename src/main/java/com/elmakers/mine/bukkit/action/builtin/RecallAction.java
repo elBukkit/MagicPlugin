@@ -233,6 +233,20 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
             event.getWhoClicked().closeInventory();
             return;
         }
+        ItemStack item = event.getCurrentItem();
+        if (InventoryUtils.hasMeta(item, "move_marker"))
+        {
+            if (placeMarker(context.getLocation().getBlock()))
+            {
+                context.sendMessageKey("target_selected");
+            }
+            context.getMage().deactivateGUI();
+            return;
+        }
+        if (item == null || item.getType() == Material.AIR)
+        {
+            context.getMage().deactivateGUI();
+        }
         int slot = event.getRawSlot();
         if (event.getSlotType() == InventoryType.SlotType.CONTAINER)
         {
@@ -431,23 +445,31 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
         else if (parameters.contains("type"))
         {
 			String typeString = parameters.getString("type", "");
-			if (typeString.equalsIgnoreCase("remove"))
+            if (parameters.getBoolean("allow_marker", true))
             {
-				if (removeMarker())
+                if (typeString.equalsIgnoreCase("remove"))
                 {
-                    return SpellResult.TARGET_SELECTED;
-                }
-                return SpellResult.FAIL;
-			}
-
-            if (typeString.equalsIgnoreCase("place"))
-            {
-                if (placeMarker(context.getLocation().getBlock()))
-                {
-                    return SpellResult.TARGET_SELECTED;
+                    if (removeMarker())
+                    {
+                        return SpellResult.TARGET_SELECTED;
+                    }
+                    return SpellResult.FAIL;
                 }
 
-                return SpellResult.FAIL;
+                if (typeString.equalsIgnoreCase("place"))
+                {
+                    if (hasMarker())
+                    {
+                        showMarkerConfirm(context);
+                        return SpellResult.CAST;
+                    }
+                    if (placeMarker(context.getLocation().getBlock()))
+                    {
+                        return SpellResult.TARGET_SELECTED;
+                    }
+
+                    return SpellResult.FAIL;
+                }
             }
 
 			RecallType recallType = RecallType.valueOf(typeString.toUpperCase());
@@ -565,6 +587,32 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
         return new Waypoint(RecallType.WARP, warpLocation, warpKey, castMessage, failMessage, "", null, null);
     }
 
+    protected void showMarkerConfirm(CastContext context)
+    {
+        options.clear();
+        String inventoryTitle = context.getMessage("move_marker_title", "Move Marker");
+        Inventory displayInventory = CompatibilityUtils.createInventory(null, 9, inventoryTitle);
+        MaterialAndData iconType = ConfigurationUtils.getMaterialAndData(parameters, "icon_move_marker");
+        ItemStack markerItem = iconType.getItemStack(1);
+
+        ItemMeta meta = markerItem.getItemMeta();
+        meta.setDisplayName(context.getMessage("title_move_marker"));
+        String description = context.getMessage("description_move_marker");
+        if (description != null && description.length() > 0)
+        {
+            List<String> lore = new ArrayList<String>();
+            lore.add(description);
+            meta.setLore(lore);
+        }
+        markerItem.setItemMeta(meta);
+        markerItem = InventoryUtils.makeReal(markerItem);
+        InventoryUtils.hideFlags(markerItem, (byte)63);
+        InventoryUtils.setMeta(markerItem, "move_marker", "true");
+
+        displayInventory.setItem(4, markerItem);
+        context.getMage().activateGUI(this, displayInventory);
+    }
+
     protected Waypoint getWarp(String warpKey)
     {
         if (warps == null) return getUnknownWarp(warpKey);
@@ -652,6 +700,14 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
         mageData.set(markerKey, null);
 		return true;
 	}
+
+    protected boolean hasMarker()
+    {
+        Mage mage = context.getMage();
+        ConfigurationSection mageData = mage.getData();
+        Location location = ConfigurationUtils.getLocation(mageData, markerKey);
+        return location != null;
+    }
 	
 	protected boolean tryTeleport(final Player player, final Waypoint waypoint) {
         Mage mage = context.getMage();

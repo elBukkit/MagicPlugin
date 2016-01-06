@@ -153,6 +153,7 @@ beginner:
       poison: 5,10,20
       fire: 50,70,60
       frost: 80,70,50
+      gather: 0,0,5
 
 student:
     upgrade: apprentice
@@ -225,7 +226,6 @@ student:
       whip: 1,10,20
       secure: 0,0,5
       admission: 20,25,30
-      gather: 0,0,5
       curse: 0,0,10
       tag: 1,4,5
 

@@ -1269,6 +1269,8 @@ spells:
         no_target_spawn: Can't recall to spawn
         no_target_town: You're not in a town
         no_target_fields: You have no fields
+        title_move_marker: Move Marker to Here
+        description_move_marker: Replaces your current marker
         title_marker: Marker
         description_marker: Aim down to move your marker
         title_death: Last Death
@@ -1285,6 +1287,7 @@ spells:
         description_field: Your personal protected area
         cross_world_disallowed: You are not allowed to Recall to another world
         title: Choose Destination
+        move_marker_title: Move Marker
         unlock_warp: "&bYou have unlocked &5$name &bas a &6Recall &bdestination!"
     recall|2:
         upgrade_description: "&r&b&bull; &6Unlock last death location"

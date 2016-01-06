@@ -2300,8 +2300,8 @@ gather:
     tags: noduel
     worth_sp: 15
     show_undoable: false
-    upgrade_required_path: apprentice
-    upgrade_required_casts: 50
+    upgrade_required_path: student
+    upgrade_required_casts: 20
     actions:
         cast:
         -  class: PlayerSelect
@@ -2344,6 +2344,7 @@ gather|2:
 mount:
     icon_url: http://textures.minecraft.net/texture/ddb5db33eac28ccfce38f179044575cb9de8195bc1ed843d4345da5f13b63d
     icon: saddle
+    tags: noduel
     category: master
     worth_sp: 150
     earns_sp: 2
@@ -6327,9 +6328,6 @@ recall:
         cast:
         -  class: Delay
         -  class: Recall
-        alternate_down:
-        -  class: Recall
-           type: place
     effects:
         no_action: []
         no_target: []
@@ -6371,6 +6369,7 @@ recall:
         icon_home: bed
         icon_town: iron_door
         icon_marker: redstone_torch_on
+        icon_move_marker: redstone_block
         loud: true
         cooldown: 15000
         protection_duration: 5000
@@ -6383,6 +6382,10 @@ recall|2:
         allow_death: true
 
 recall|3:
+    actions:
+      alternate_down:
+      -  class: Recall
+         type: place
     parameters:
         allow_marker: true
 

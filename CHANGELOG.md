@@ -2,6 +2,8 @@
 
 ## 5.5
 
+ - Add confirmation GUI for moving Recall marker
+
 ## 5.4.4
 
  - ! Secure key format changed to use masked UUIDs. Old keys will work on old chests, old chests
