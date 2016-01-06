@@ -2297,7 +2297,7 @@ gather:
     icon_url: http://textures.minecraft.net/texture/ff78194bb5fe3f374ca6a1727c04247b7bac331cff248bf642acc8e73647e
     icon: glowstone_dust
     category: master
-    tags: noduel
+    tags: noduel,nojail
     worth_sp: 15
     show_undoable: false
     upgrade_required_path: student
@@ -2923,6 +2923,7 @@ fling:
     icon: feather
     icon_url: http://textures.minecraft.net/texture/7cc2fb583d1762a16a50fa5ac37bc09b46def63e68205116d650391f9233ed
     category: utility
+    tags: nojail
     worth_sp: 400
     earns_sp: 2
     upgrade_required_path: student
@@ -3386,7 +3387,7 @@ phase:
     icon_url: http://textures.minecraft.net/texture/3186699cf52cb2f732b7948784b262a49d43a57c801368f776e3c9a88151d
     icon: eye_of_ender
     category: master
-    tags: noduel
+    tags: noduel,nojail
     worth_sp: 200
     earns_sp: 2
     actions:
@@ -5576,7 +5577,7 @@ disintegrate:
         brush: erase
         player_damage: 6
         entity_damage: 15
-        destructible: destructible1,destructible2,destructible3
+        destructible: destructible,destructible2,destructible3
         undo: 5000
         cooldown: 1500
     costs:
@@ -5585,6 +5586,7 @@ disintegrate:
 blink:
     alias: tesseract
     category: utility
+    tags: nojail
     icon: eye_of_ender
     icon_url: http://textures.minecraft.net/texture/a35cfb663dbde27598eebe76b0fdac2593f1d696b3e6b9e044edeb8d48c2e2
     worth_sp: 500
@@ -6317,7 +6319,7 @@ recall:
     icon_url: http://textures.minecraft.net/texture/58c573cefdc8cc1b8c894340cb54ab343523ec2ffa0afc7536968391ae1e7
     icon: compass
     category: utility
-    tags: noduel
+    tags: noduel,nojail
     worth_sp: 20
     earns_sp: 5
     cast_on_no_target: false
@@ -7688,6 +7690,7 @@ superkill:
         cooldown: 500
         target_breakables: 5
         bypass_backfire: true
+        bypass_pvp: true
         range: 40
     costs:
         mana: 300
@@ -7800,7 +7803,7 @@ rubberize:
         bypass_backfire: true
         select_self: false
         replace: true
-        destructible: destructible1,destructible2,destructible3
+        destructible: destructible,destructible2,destructible3
     costs:
         mana: 50
 
@@ -9451,7 +9454,7 @@ wave|2:
         item_speed: 0.4
         living_entity_speed: 0.6
         speed: 0.8
-        destructible: destructible1,destructible2,destructible3
+        destructible: destructible,destructible2,destructible3
 
 boomstown:
    icon_url: http://textures.minecraft.net/texture/91e9bb78d29e2967d52274d370ad78cb61d15eca3d26a8d6bfc24f887072fa81
