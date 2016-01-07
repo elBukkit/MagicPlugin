@@ -88,7 +88,18 @@ public class LockAction extends BaseSpellAction
                 }
                 if (!override && !InventoryUtils.hasItem(mage, lock))
                 {
-                    return SpellResult.FAIL;
+                    // Check for old alternate keys
+                    boolean isAlternate = false;
+                    String altTemplate = context.getMessage("key_name_alternate", null);
+                    if (altTemplate != null && altTemplate.length() > 0) {
+                        altTemplate = altTemplate
+                                .replace("$name", context.getMage().getName())
+                                .replace("$uuid", context.getMage().getId());
+                        isAlternate = lock.equals(altTemplate);
+                    }
+                    if (!isAlternate) {
+                        return SpellResult.FAIL;
+                    }
                 }
                 context.sendMessageKey("acquire");
             }

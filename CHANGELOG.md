@@ -4,6 +4,7 @@
 
  - Add confirmation GUI for moving Recall marker
  - Mobs will ignore superprotected Mages
+ - Add alt-template to Secure, to make transitioning from old keys easier.
 
 ## 5.4.4
 

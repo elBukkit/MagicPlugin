@@ -364,6 +364,7 @@ spells:
         alternate_up: You summon a replacement key
         alternate_sneak: Container unlocked
         key_name: "&6&k$uuid"
+        key_name_alternate: "&6$name's &eKey"
         key_description: "&6$name's &eKey\nNeeded to open your locked containers"
         fail: You can't lock that!
         upgrade_description: "&r&b&bull; &6Now locks furnaces and other containers"
