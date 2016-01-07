@@ -14,8 +14,6 @@ import org.apache.commons.lang.StringUtils;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -72,8 +70,12 @@ public class LockAction extends BaseSpellAction
         {
             return SpellResult.INSUFFICIENT_PERMISSION;
         }
-        if (!context.isDestructible(targetBlock))
+
+        // The isLocked check here is a work-around for re-securing chests
+        // Since locked chests are normally indestructible!
+        if (!context.isDestructible(targetBlock) && !CompatibilityUtils.isLocked(targetBlock))
         {
+            mage.sendDebugMessage("Destructible fallback, can't lock " + targetBlock.getType());
             return SpellResult.NO_TARGET;
         }
 
@@ -98,6 +100,7 @@ public class LockAction extends BaseSpellAction
                         isAlternate = lock.equals(altTemplate);
                     }
                     if (!isAlternate) {
+                        mage.sendDebugMessage("Already locked with different key, tried alternate");
                         return SpellResult.FAIL;
                     }
                 }
@@ -117,7 +120,10 @@ public class LockAction extends BaseSpellAction
             }
             result = CompatibilityUtils.clearLock(targetBlock);
         }
-		
+
+        if (!result) {
+            mage.sendDebugMessage("Failed to lock");
+        }
 		return result ? SpellResult.CAST : SpellResult.FAIL;
 	}
 

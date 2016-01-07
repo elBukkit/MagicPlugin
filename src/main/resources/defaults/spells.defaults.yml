@@ -2334,12 +2334,8 @@ gather:
         mana: 50
 
 gather|2:
-    actions:
-        alternate_down:
-        -  class: PlayerSelect
-           actions:
-           -  class: Command
-              command: tpahere @tn
+    alternate_down_parameters:
+        command: tpahere @tn
 
 mount:
     icon_url: http://textures.minecraft.net/texture/ddb5db33eac28ccfce38f179044575cb9de8195bc1ed843d4345da5f13b63d
@@ -8355,9 +8351,11 @@ secure:
       type: unlock
     parameters:
         range: 8
+        loud: true
+        transparent: air,attachable_wall
         check_destructible: true
         destructible: chest,trapped_chest
-        cooldown: 10000
+        cooldown: 5000
         key_icon: "skull_item:http://textures.minecraft.net/texture/3944e12e8e67fd67a55359df56c3c59c99550f6eaccb23813769afb2f1992"
     costs:
         mana: 100
