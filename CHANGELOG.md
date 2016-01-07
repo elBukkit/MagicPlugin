@@ -2,8 +2,11 @@
 
 ## 5.5
 
+ - Add warmup back to Kill
+
 ## 5.4.5
 
+ - Allow players to re-Secure chests even if they don't have their old key
  - Add confirmation GUI for moving Recall marker
  - Mobs will ignore superprotected Mages
  - Add alt-template to Secure, to make transitioning from old keys easier.

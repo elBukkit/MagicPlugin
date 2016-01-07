@@ -7572,6 +7572,9 @@ kill:
     upgrade_required_casts: 50
     actions:
       cast:
+        - class: Delay
+        - class: PlayEffects
+          effect: launch
         - class: CustomProjectile
           actions:
           - class: Damage
@@ -7590,6 +7593,11 @@ kill:
              colorOrbital: "00FF00"
              iterations: 16
              radius: 5
+        launch:
+        -  class: EffectSingle
+           custom_sound: magic.zap_big
+           sound_volume: 1
+           location: origin
         tick:
         - location: target
           particle: smoke_large
@@ -7617,11 +7625,12 @@ kill:
         cooldown_mage: 10000
         target_breakables: 5
         bypass_backfire: true
-        player_damage: 10
-        entity_damage: 20
+        player_damage: 20
+        entity_damage: 30
         hitbox_size: 1
         velocity: 5
         interval: 250
+        delay: 3000
     costs:
         mana: 150
 
@@ -7630,18 +7639,20 @@ kill|2:
     upgrade_required_casts: 50
     parameters:
         cooldown_mage: 8000
-        player_damage: 15
-        entity_damage: 30
-        hitbox_size: 2
+        player_damage: 25
+        entity_damage: 35
+        hitbox_size: 1.5
         velocity: 7
+        delay: 2000
 
 kill|3:
     parameters:
         cooldown_mage: 5000
-        player_damage: 18
+        player_damage: 30
         entity_damage: 40
-        hitbox_size: 3
+        hitbox_size: 2
         velocity: 10
+        delay: 1500
 
 superkill:
     icon: skull_item:1

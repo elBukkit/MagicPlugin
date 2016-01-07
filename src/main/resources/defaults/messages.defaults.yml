@@ -1424,8 +1424,9 @@ spells:
     kill:
         name: Kill
         description: Deal lethal damage to your target
+        usage: Has a warmup time.
         cast: DIE!
-        upgrade_description: "&r&b&bull; &6Faster, larger projectile"
+        upgrade_description: "&r&b&bull; &6Faster, larger projectile and shorter warmup"
     superkill:
         name: SuperKill
         description: Kills your target, no questions asked
