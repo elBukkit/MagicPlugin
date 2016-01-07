@@ -8356,7 +8356,7 @@ secure:
     parameters:
         range: 8
         check_destructible: true
-        destructible: chest
+        destructible: chest,trapped_chest
         cooldown: 10000
         key_icon: "skull_item:http://textures.minecraft.net/texture/3944e12e8e67fd67a55359df56c3c59c99550f6eaccb23813769afb2f1992"
     costs:
@@ -8926,6 +8926,8 @@ lootshop:
         auto_close: false
         items:
           - item: spider_eye@4
+            cost: 1
+          - item: string@2
             cost: 1
           - item: rotten_flesh@2
             cost: 1

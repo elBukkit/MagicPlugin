@@ -1,5 +1,8 @@
 # TODO
 
+ - Automata don't resume anymore
+ - Secure acquisition not working? Maybe also have it target through signs and stuff?
+
  - We have noticed a bug today that I want to inform you of. A player was getting really laggy so they relogged and the lag seemed to stop. Then the player went to open their wand inventory to cast a spell. They ended up being able to hold the spell heads in their inventory and they could drop the spell heads where other players could pick them up as items. This normally happens when players lag but not this bad. The weird part was that when they relogged again their while inventory was gone and all spells were back. The whole time he couldn’t use his wand until he relogged with his inventory cleared.
 
  - There's an area in the RoR where you can cast alohomora and it will spawn doors, in the center of the right side when you enter~
@@ -8,7 +11,6 @@
  - Alter *really* needs an update!
  - Effects don't cancel if you switch away from your wand? Whip stops moving? Wha?
  - Fix block targeting cast messages
- - Automata don't resume anymore
  - Somehow make brooms work when mob spawning is denied?
  - Fix Shrink/Grow losing track of entities (zombie->giant)
  - Super-undroppable option? Not droppable at all, or allowed to put in chests, etc?

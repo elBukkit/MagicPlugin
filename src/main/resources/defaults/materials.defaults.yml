@@ -898,6 +898,7 @@ containers:
 - dispensers
 - hopper
 - dropper
+- trapped_chest
 
 melee:
 - diamond_sword
