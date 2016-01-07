@@ -24,6 +24,7 @@ import org.bukkit.event.entity.EntityCombustEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.event.entity.EntityTargetLivingEntityEvent;
 import org.bukkit.event.entity.ItemDespawnEvent;
 import org.bukkit.event.entity.ItemSpawnEvent;
 import org.bukkit.event.entity.ProjectileHitEvent;
@@ -413,6 +414,20 @@ public class EntityController implements Listener {
             }
         } catch (Exception ex) {
             ex.printStackTrace();
+        }
+    }
+
+    @EventHandler
+    public void onEntityTarget(EntityTargetLivingEntityEvent event)
+    {
+        Entity target = event.getTarget();
+        if (target == null) return;
+        if (!(target instanceof Player)) return;
+        Mage mage = controller.getRegisteredMage(target);
+        if (mage == null) return;
+        if (mage.isSuperProtected())
+        {
+            event.setCancelled(true);
         }
     }
 }
