@@ -157,21 +157,28 @@ public abstract class CompoundAction extends BaseSpellAction
         {
             return null;
         }
-        if (!actionConfiguration.contains(handlerKey)) {
+        if (!actionConfiguration.contains(handlerKey))
+        {
             Object baseActions = actionConfiguration.get("actions");
-            if (baseActions == null) {
-                return null;
-            }
 
             // Create parameter-only configs automagically
-            if (spell.hasHandlerParameters(handlerKey))
+            if (baseActions != null && spell.hasHandlerParameters(handlerKey))
             {
                 actionConfiguration.set(handlerKey, baseActions);
             }
         }
+        else if (actionConfiguration.isString(handlerKey))
+        {
+            // Support references
+            actionConfiguration.set(handlerKey, actionConfiguration.get(actionConfiguration.getString(handlerKey)));
+        }
+        if (!actionConfiguration.isList(handlerKey))
+        {
+            return null;
+        }
         handler = new ActionHandler();
-        handlers.put(handlerKey, handler);
         handler.load(spell, actionConfiguration, handlerKey);
+        handlers.put(handlerKey, handler);
         return handler;
     }
 
