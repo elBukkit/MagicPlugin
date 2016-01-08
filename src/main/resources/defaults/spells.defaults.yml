@@ -9039,6 +9039,7 @@ tracking:
         cooldown: 5000
         ignore_blocks: true
         loud: true
+        bypass_pvp: true
     costs:
         mana: 20
 
