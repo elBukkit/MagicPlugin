@@ -3,6 +3,8 @@
 ## 5.5
 
  - Add warmup back to Kill
+ - Separate hit/miss actions and effects for projectiles, nothing happens on miss now by default.
+   ("miss" generally meaning it flies past its range without hitting a block or entity)
 
 ## 5.4.5
 

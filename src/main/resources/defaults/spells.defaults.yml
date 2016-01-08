@@ -891,6 +891,8 @@ shell:
         cooldown: 5000
         breakable: 4
         reflect_chance: 0.25
+        miss_effects: hit
+        miss: actions
     costs:
         mana: 75
 
@@ -1461,6 +1463,8 @@ boom:
         cooldown: 7000
         undo: 3000
         undo_speed: 0.5
+        miss_effects: hit
+        miss: actions
     costs:
         mana: 50
 
@@ -2329,7 +2333,6 @@ gather:
         cooldown: 30000
         bypass_friendly_fire: true
         bypass_pvp: true
-        op: true
     costs:
         mana: 50
 
@@ -5355,6 +5358,8 @@ blob:
     parameters:
         velocity: 50
         target_type: LivingEntity
+        miss_effects: hit
+        miss: actions
         allow_max_range: true
         range: 32
         tick_size: 2

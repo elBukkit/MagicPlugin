@@ -46,6 +46,7 @@ public class CustomProjectileAction extends CompoundAction
     private int startDistance;
     private String projectileEffectKey;
     private String hitEffectKey;
+    private String missEffectKey;
     private String headshotEffectKey;
     private String tickEffectKey;
     private double gravity;
@@ -114,6 +115,7 @@ public class CustomProjectileAction extends CompoundAction
     protected void addHandlers(Spell spell, ConfigurationSection parameters) {
         addHandler(spell, "actions");
         addHandler(spell, "headshot");
+        addHandler(spell, "miss");
     }
 
     @Override
@@ -129,6 +131,7 @@ public class CustomProjectileAction extends CompoundAction
         projectileEffectKey = parameters.getString("projectile_effects", "projectile");
         headshotEffectKey = parameters.getString("headshot_effects", "headshot");
         hitEffectKey = parameters.getString("hit_effects", "hit");
+        missEffectKey = parameters.getString("miss_effects", "miss");
         tickEffectKey = parameters.getString("tick_effects", "tick");
         gravity = parameters.getDouble("gravity", 0);
         drag = parameters.getDouble("drag", 0);
@@ -575,23 +578,6 @@ public class CustomProjectileAction extends CompoundAction
         return continueProjectile ? SpellResult.PENDING : hit();
     }
 
-    protected SpellResult miss() {
-        missed = true;
-        return hit();
-    }
-
-    protected SpellResult attach() {
-        attachedDeadline = System.currentTimeMillis() + attachDuration;
-        Entity targetEntity = actionContext == null ? null : actionContext.getTargetEntity();
-        Location targetLocation = actionContext == null ? null : actionContext.getTargetLocation();
-        if (targetEntity != null && targetLocation != null)
-        {
-            attachedOffset = targetLocation.toVector().subtract(targetEntity.getLocation().toVector());
-        }
-        actionContext.playEffects(hitEffectKey);
-        return SpellResult.PENDING;
-    }
-
     protected SpellResult finishAttach() {
         attachedDeadline = 0;
         finishEffects();
@@ -604,6 +590,18 @@ public class CustomProjectileAction extends CompoundAction
                 play.cancel();
             }
         }
+    }
+
+    protected SpellResult attach() {
+        attachedDeadline = System.currentTimeMillis() + attachDuration;
+        Entity targetEntity = actionContext == null ? null : actionContext.getTargetEntity();
+        Location targetLocation = actionContext == null ? null : actionContext.getTargetLocation();
+        if (targetEntity != null && targetLocation != null)
+        {
+            attachedOffset = targetLocation.toVector().subtract(targetEntity.getLocation().toVector());
+        }
+        actionContext.playEffects(hitEffectKey);
+        return SpellResult.PENDING;
     }
 
     protected SpellResult headshot() {
@@ -625,6 +623,16 @@ public class CustomProjectileAction extends CompoundAction
         }
         actionContext.playEffects(hitEffectKey);
         return startActions();
+    }
+
+    protected SpellResult miss() {
+        missed = true;
+        finishEffects();
+        if (actionContext == null) {
+            return SpellResult.NO_ACTION;
+        }
+        actionContext.playEffects(missEffectKey);
+        return startActions("miss");
     }
 
     @Override

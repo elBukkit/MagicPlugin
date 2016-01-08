@@ -1,5 +1,8 @@
 # TODO
 
+ - Add pstone type to name in Recall to keep grouping
+ - Prevent TNT breaking secured chests
+ - Add option for projectiles to not run when they expire
  - Automata don't resume anymore
  - Secure acquisition not working? Maybe also have it target through signs and stuff?
 
