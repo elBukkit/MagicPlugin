@@ -68,8 +68,11 @@ public class PreciousStonesAPI implements BlockBuildManager, BlockBreakManager, 
 		Map<String, Location> fieldLocations = new HashMap<String, Location>();
 		for (Field field : fields) {
 			String fieldName = field.getName();
+			String fieldType = field.getSettings().getTitle();
 			if (fieldName == null || fieldName.isEmpty()) {
-				fieldName = "Field";
+				fieldName = fieldType;
+			} else {
+				fieldName = fieldType + " (" + fieldName + ")";
 			}
 			fieldLocations.put(fieldName, field.getLocation());
 		}
