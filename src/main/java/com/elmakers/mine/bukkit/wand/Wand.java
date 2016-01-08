@@ -263,6 +263,9 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         wandName = controller.getMessages().get("wand.default_name");
         hotbars = new ArrayList<Inventory>();
 		setHotbarCount(1);
+		if (itemStack.getType() == Material.AIR) {
+			itemStack.setType(DefaultWandMaterial);
+		}
 		this.icon = new MaterialAndData(itemStack);
 		inventories = new ArrayList<Inventory>();
         item = itemStack;
@@ -389,6 +392,9 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	
 	public void setIcon(MaterialAndData materialData) {
         if (materialData == null || !materialData.isValid()) return;
+		if (materialData.getMaterial() == Material.AIR || materialData.getMaterial() == null) {
+			materialData.setMaterial(DefaultWandMaterial);
+		}
 		icon = materialData;
         if (icon != null) {
 			Short durability = null;
@@ -1213,7 +1219,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         } else {
             node.set("brush_mode", null);
         }
-		if (icon != null) {
+		if (icon != null && icon.getMaterial() != null && icon.getMaterial() != Material.AIR) {
 			String iconKey = icon.getKey();
 			if (iconKey != null && iconKey.length() > 0) {
 				node.set("icon", iconKey);
@@ -1223,7 +1229,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		} else {
 			node.set("icon", null);
 		}
-        if (inactiveIcon != null && inactiveIcon.getMaterial() != null) {
+        if (inactiveIcon != null && inactiveIcon.getMaterial() != null && inactiveIcon.getMaterial() != Material.AIR) {
             String iconKey = inactiveIcon.getKey();
             if (iconKey != null && iconKey.length() > 0) {
                 node.set("icon_inactive", iconKey);
@@ -1516,7 +1522,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
             if (wandConfig.contains("icon_inactive")) {
                 inactiveIcon = new MaterialAndData(wandConfig.getString("icon_inactive"));
             }
-			if (inactiveIcon != null && inactiveIcon.getMaterial() == Material.AIR)
+			if (inactiveIcon != null && (inactiveIcon.getMaterial() == null || inactiveIcon.getMaterial() == Material.AIR))
 			{
 				inactiveIcon = null;
 			}
@@ -2693,7 +2699,8 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
             this.setIcon(other.upgradeIcon);
         }
 
-        if (other.isUpgrade && other.inactiveIcon != null && other.inactiveIcon.getMaterial() != Material.AIR &&
+        if (other.isUpgrade && other.inactiveIcon != null
+				&& other.inactiveIcon.getMaterial() != Material.AIR && other.inactiveIcon.getMaterial() != null &&
                 (this.inactiveIcon == null
                         || this.inactiveIcon.getMaterial() != other.inactiveIcon.getMaterial()
                         || this.inactiveIcon.getData() != other.inactiveIcon.getData()
@@ -3924,8 +3931,11 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	}
 
     protected void showActiveIcon(boolean show) {
-        if (this.icon == null || this.inactiveIcon == null || this.inactiveIcon.getMaterial() == Material.AIR) return;
-        if (show) {
+        if (this.icon == null || this.inactiveIcon == null || this.inactiveIcon.getMaterial() == Material.AIR || this.inactiveIcon.getMaterial() == null) return;
+        if (this.icon.getMaterial() == Material.AIR || this.icon.getMaterial() == null) {
+			this.icon.setMaterial(DefaultWandMaterial);
+		}
+		if (show) {
             if (inactiveIconDelay > 0) {
                 Plugin plugin = controller.getPlugin();
                 plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
