@@ -3819,13 +3819,25 @@ public Set<Material> getMaterialSet(String name)
     public ItemStack createItem(String magicItemKey) {
         ItemStack itemStack = null;
 
+        // Check for amounts
+        int amount = 1;
+        if (magicItemKey.contains("@")) {
+            String[] pieces = StringUtils.split(magicItemKey, '@');
+            magicItemKey = pieces[0];
+            try {
+                amount = Integer.parseInt(pieces[1]);
+            } catch (Exception ex) {
+
+            }
+        }
+
         // Handle : or | as delimiter
         magicItemKey = magicItemKey.replace("|", ":");
         try {
             if (magicItemKey.contains("skull:") || magicItemKey.contains("skull_item:")) {
                 magicItemKey = magicItemKey.replace("skull:", "skull_item:");
                 MaterialAndData skullData = new MaterialAndData(magicItemKey);
-                itemStack = skullData.getItemStack(1);
+                itemStack = skullData.getItemStack(amount);
             } else if (magicItemKey.contains("book:")) {
                 String bookCategory = magicItemKey.substring(5);
                 com.elmakers.mine.bukkit.api.spell.SpellCategory category = null;
@@ -3836,7 +3848,7 @@ public Set<Material> getMaterialSet(String name)
                         return null;
                     }
                 }
-                itemStack = getSpellBook(category, 1);
+                itemStack = getSpellBook(category, amount);
             } else if (magicItemKey.contains("sp:")) {
                 String spAmount = magicItemKey.substring(3);
                 itemStack = InventoryUtils.getURLSkull(skillPointIcon);
@@ -3876,7 +3888,7 @@ public Set<Material> getMaterialSet(String name)
             } else {
                 MaterialAndData item = new MaterialAndData(magicItemKey);
                 if (item.isValid()) {
-                    return item.getItemStack(1);
+                    return item.getItemStack(amount);
                 }
                 com.elmakers.mine.bukkit.api.wand.Wand wand = createWand(magicItemKey);
                 if (wand != null) {
