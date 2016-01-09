@@ -7541,6 +7541,8 @@ superbroom:
     mount_boost_per_jump: 0.5
     effect_confusion: 0
     armor_stand_yaw: 180
+    duration: 0
+    cooldown: 0
 
 paste:
     icon_url: http://textures.minecraft.net/texture/6eb68dc909b12ef5fb397c23fdecbc416d9a76825170c106b1faeb97b4749
