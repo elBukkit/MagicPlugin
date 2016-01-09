@@ -106,7 +106,7 @@ public class BlockController implements Listener {
             return;
         }
 
-        if (NMSUtils.isUnplaceable(itemStack) || Wand.isWand(itemStack) || Wand.isSpell(itemStack) || Wand.isBrush(itemStack)) {
+        if (NMSUtils.isUnplaceable(itemStack) || Wand.isWand(itemStack) || Wand.isSpell(itemStack) || Wand.isBrush(itemStack) || Wand.isSP(itemStack)) {
             event.setCancelled(true);
             return;
         }

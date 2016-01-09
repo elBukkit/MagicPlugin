@@ -509,7 +509,7 @@ public class PlayerController implements Listener {
         Wand activeWand = mage.getActiveWand();
         if (activeWand != null
                 && activeWand.isModifiable()
-                && (Wand.isSpell(pickup) || Wand.isBrush(pickup) || Wand.isUpgrade(pickup))
+                && (Wand.isSpell(pickup) || Wand.isBrush(pickup) || Wand.isUpgrade(pickup) || Wand.isSP(pickup))
                 && activeWand.addItem(pickup)) {
             event.getItem().remove();
             event.setCancelled(true);

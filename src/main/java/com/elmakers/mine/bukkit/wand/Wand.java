@@ -2049,6 +2049,10 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         return item != null && WAND_SELF_DESTRUCT_KEY != null && InventoryUtils.hasMeta(item, WAND_SELF_DESTRUCT_KEY);
     }
 
+	public static boolean isSP(ItemStack item) {
+		return InventoryUtils.hasMeta(item, "sp");
+	}
+
 	public static Integer getSP(ItemStack item) {
 		if (item == null) return null;
 		String spNode = InventoryUtils.getMeta(item, "sp");
