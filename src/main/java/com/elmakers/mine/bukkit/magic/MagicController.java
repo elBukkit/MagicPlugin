@@ -1414,22 +1414,22 @@ public class MagicController implements MageController {
         exampleDefaults = properties.getString("example", exampleDefaults);
         addExamples = properties.getStringList("add_examples");
 
+        if ((exampleDefaults != null && exampleDefaults.length() > 0) || (addExamples != null && addExamples.size() > 0)) {
+            // Reload config, example will be used this time.
+            if (exampleDefaults != null && exampleDefaults.length() > 0)
+            {
+                getLogger().info("Overriding configuration with example: " + exampleDefaults);
+                properties = loadConfigFile(CONFIG_FILE, true);
+            }
+        }
+
         loadDefaultSpells = properties.getBoolean("load_default_spells", loadDefaultSpells);
         disableDefaultSpells = properties.getBoolean("disable_default_spells", disableDefaultSpells);
         loadDefaultWands = properties.getBoolean("load_default_wands", loadDefaultWands);
         loadDefaultCrafting = properties.getBoolean("load_default_crafting", loadDefaultCrafting);
         loadDefaultEnchanting = properties.getBoolean("load_default_enchanting", loadDefaultEnchanting);
 
-        if ((exampleDefaults != null && exampleDefaults.length() > 0) || (addExamples != null && addExamples.size() > 0)) {
-            // Reload config, example will be used this time.
-            if (exampleDefaults != null && exampleDefaults.length() > 0)
-            {
-                getLogger().info("Overriding configuration with example: " + exampleDefaults);
-                return loadConfigFile(CONFIG_FILE, true);
-            }
-        }
-
-        return null;
+        return properties;
     }
 
     protected ConfigurationSection loadMainConfiguration() throws InvalidConfigurationException, IOException {
@@ -1509,11 +1509,6 @@ public class MagicController implements MageController {
 
         // Main configuration
         loadProperties(loader.configuration);
-        if (loader.exampleConfiguration != null)
-        {
-            getLogger().info("Overriding configuration with example: " + exampleDefaults);
-            loadProperties(loader.exampleConfiguration);
-        }
         if (addExamples != null && addExamples.size() > 0)
         {
             getLogger().info("Adding examples: " + StringUtils.join(addExamples, ","));

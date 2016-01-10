@@ -13,7 +13,6 @@ public class ConfigurationLoadTask implements Runnable {
     private final CommandSender sender;
 
     protected ConfigurationSection configuration;
-    protected ConfigurationSection exampleConfiguration;
     protected ConfigurationSection messages;
     protected ConfigurationSection materials;
     protected ConfigurationSection wands;
@@ -44,7 +43,7 @@ public class ConfigurationLoadTask implements Runnable {
         // Load main configuration
         try {
             configuration = controller.loadMainConfiguration();
-            exampleConfiguration = controller.loadExamples(configuration);
+            configuration = controller.loadExamples(configuration);
         } catch (Exception ex) {
             logger.log(Level.WARNING, "Error loading config.yml", ex);
             success = false;
