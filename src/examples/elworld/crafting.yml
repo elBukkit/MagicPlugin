@@ -23,3 +23,14 @@ leather:
   row_1: ooo
   row_2: ooo
   row_3: ooo
+
+blaster:
+  output: blaster
+  output_type: wand
+  materials:
+    p: wood
+    i: iron_ingot
+    g: glass
+  row_1: "iig"
+  row_2: "ii "
+  row_3: "p  "
