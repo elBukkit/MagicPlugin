@@ -5,6 +5,7 @@
  - Add warmup back to Kill
  - Separate hit/miss actions and effects for projectiles, nothing happens on miss now by default.
    ("miss" generally meaning it flies past its range without hitting a block or entity)
+ - Add Levitate to master, add levels to levitate- starts out very slow
 
 ## 5.4.5
 

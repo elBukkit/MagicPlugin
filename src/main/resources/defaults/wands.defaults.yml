@@ -777,7 +777,7 @@ miniwolf:
         - collapse|2@1
         - harden|2@2
         - missile|4@3
-        - levitate@4
+        - levitate|5@4
         - fling|4@5
         - blink|6@6
         - counterspell|2@7

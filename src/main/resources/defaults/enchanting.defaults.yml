@@ -388,6 +388,7 @@ master:
       stash: 0,0,5
       tame: 0,0,5
       railgun: 10,20,30
+      levitate: 0,0,10
 
 #
 # The move from "master" to engineer requires the player to aquire some basic
@@ -466,7 +467,6 @@ engineer:
       commit: 0,0,1
       pillar: 0,5,10
       place: 0,1,5
-      levitate: 0,0,10
       tree: 0,2,10
       portal: 0,0,25
       anvil: 0,0,10
