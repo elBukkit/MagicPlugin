@@ -850,6 +850,16 @@ spells:
         target_selected: Cast again to repair
         fail: Too large!
         cast_finish: Repaired $count blocks
+    repairitem:
+        name: Repair Item
+        description: Repairs the target dropped item to full durability
+        no_target: Can't repair that
+        cast: Item repaired!
+    repairequipment:
+        name: Repair Equipment
+        description: Repairs the target player's equipment full durability
+        no_target: Nothing to repair
+        cast: Equipment repaired!
     backup:
         name: Backup
         description: Save your target area for Repair
@@ -1302,11 +1312,7 @@ spells:
         description: Levitate yourself up into the air
         cast: You feel lighter
         cancel: You feel heavier
-    fly:
-        name: Fly
-        description: Fly free as a bird
-        cast: You feel lighter
-        cancel: You feel heavier
+        upgrade_description: "&r&b&bull; &6Fly faster, reduced cooldown"
     boom:
         name: Boom
         description: Create an explosion

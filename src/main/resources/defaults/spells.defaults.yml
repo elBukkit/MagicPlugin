@@ -783,6 +783,7 @@ life:
     category: electrical
     class: ConstructSpell
     worth_sp: 15000
+    hidden: true
     effects:
         cast:
         -  class: EffectSingle
@@ -814,6 +815,7 @@ life3:
     icon: sapling:1
     icon_url: http://textures.minecraft.net/texture/7ee091dbd831daca4385f481d3a0c5bf6513e47db9a0926e567e10997cfd6ce2
     category: electrical
+    hidden: true
     class: ConstructSpell
     worth_sp: 15000
     effects:
@@ -6448,13 +6450,15 @@ respawn:
         cooldown: 30000
 
 levitate:
+    upgrade_required_path: master
+    upgrade_required_casts: 50
     icon_url: http://textures.minecraft.net/texture/d02585f4a2b47524541d67ae253cf21fde8eea1c21494f61df5f4929a76e0
     alias: fly
     icon: gold_boots
     category: master
     tags: noduel
     class: LevitateSpell
-    worth_sp: 700
+    worth_sp: 5000
     show_undoable: false
     quick_cast: true
     effects:
@@ -6487,13 +6491,43 @@ levitate:
            particle_offset_z: 0.9
            particle_offset_y: 0.1
            radius: 4
-
     parameters:
-        speed: 2
+        speed: 0.2
+        cooldown: 30000
     costs:
         mana: 50
     active_costs:
         mana: 100
+
+levitate|2:
+    upgrade_required_path: master
+    upgrade_required_casts: 50
+    parameters:
+        speed: 0.5
+        cooldown: 20000
+
+levitate|3:
+    upgrade_required_path: engineer
+    upgrade_required_casts: 50
+    parameters:
+        speed: 0.75
+        cooldown: 10000
+
+levitate|4:
+    upgrade_required_path: engineer
+    upgrade_required_casts: 50
+    parameters:
+        speed: 1
+        cooldown: 5000
+    active_costs:
+        mana: 150
+
+levitate|5:
+    parameters:
+        speed: 2
+        cooldown: 1000
+    active_costs:
+        mana: 150
 
 force:
     icon_url: http://textures.minecraft.net/texture/c7142a19d8c84389da74b69641542b8b2fafbed8f7515d1d36c63c96bd749
@@ -7860,6 +7894,7 @@ debugger:
     parameters:
         target: other
         target_type: Entity
+        target_npc: true
         range: 32
         messsage_targets: false
         loud: true
@@ -8481,7 +8516,7 @@ sponge:
 upgrades:
     icon: compass
     icon_url: http://textures.minecraft.net/texture/ce6ed0a5f7e23bc3d34d73baa0b9c3f838e85014d2ff290801dc7486dd4da6
-    category: specialty
+    category: npc
     hidden: true
     quick_cast: true
     parameters:
@@ -8492,7 +8527,7 @@ upgrades:
 
 testspellshop:
     icon: iron_hoe
-    category: specialty
+    category: npc
     hidden: true
     actions:
         cast:
@@ -8507,7 +8542,7 @@ testspellshop:
 
 spellshop:
     icon: iron_hoe
-    category: specialty
+    category: npc
     hidden: true
     actions:
         cast:
@@ -8521,7 +8556,7 @@ spellshop:
 
 engineershop:
     icon: iron_hoe
-    category: specialty
+    category: npc
     hidden: true
     actions:
         cast:
@@ -8537,7 +8572,7 @@ engineershop:
 
 architectshop:
     icon: gold_axe
-    category: specialty
+    category: npc
     hidden: true
     actions:
         cast:
@@ -8553,7 +8588,7 @@ architectshop:
 
 bookshop:
     icon: book
-    category: specialty
+    category: npc
     hidden: true
     actions:
         cast:
@@ -8575,7 +8610,7 @@ bookshop:
 
 broomshop:
     icon: gold_spade
-    category: specialty
+    category: npc
     hidden: true
     actions:
         cast:
@@ -8592,7 +8627,7 @@ broomshop:
 
 wandshop:
     icon: wooden_hoe
-    category: specialty
+    category: npc
     hidden: true
     actions:
         cast:
@@ -8617,7 +8652,7 @@ wandshop:
 
 magicitemshop:
     icon: ender_portal_frame
-    category: specialty
+    category: npc
     hidden: true
     actions:
         cast:
@@ -8677,7 +8712,7 @@ magicitemshop:
 
 itemshop:
     icon: carrot
-    category: specialty
+    category: npc
     hidden: true
     actions:
         cast:
@@ -8694,7 +8729,7 @@ itemshop:
 
 automatashop:
     icon: command
-    category: specialty
+    category: npc
     hidden: true
     actions:
         cast:
@@ -8712,7 +8747,7 @@ automatashop:
 
 tweakshop:
     icon: nether_star
-    category: specialty
+    category: npc
     hidden: true
     actions:
         cast:
@@ -8746,7 +8781,7 @@ tweakshop:
 
 colorshop:
     icon: ink_sack
-    category: specialty
+    category: npc
     hidden: true
     actions:
         cast:
@@ -8795,7 +8830,7 @@ colorshop:
 
 effectshop:
     icon: ink_sack
-    category: specialty
+    category: npc
     hidden: true
     actions:
         cast:
@@ -8822,7 +8857,7 @@ effectshop:
 
 upgradeshop:
     icon: gold_axe
-    category: specialty
+    category: npc
     hidden: true
     actions:
         cast:
@@ -8842,7 +8877,7 @@ upgradeshop:
 
 emeraldshop:
     icon: emerald
-    category: specialty
+    category: npc
     hidden: true
     actions:
         cast:
@@ -8857,7 +8892,7 @@ emeraldshop:
 
 deposits:
     icon: emerald
-    category: specialty
+    category: npc
     hidden: true
     actions:
         cast:
@@ -8886,7 +8921,7 @@ deposits:
 
 withdrawals:
     icon: emerald
-    category: specialty
+    category: npc
     hidden: true
     actions:
         cast:
@@ -8914,7 +8949,7 @@ withdrawals:
 
 ledgershop:
     icon: paper
-    category: specialty
+    category: npc
     hidden: true
     actions:
         cast:
@@ -8929,7 +8964,7 @@ ledgershop:
 
 lootshop:
     icon: emerald
-    category: specialty
+    category: npc
     hidden: true
     actions:
         cast:
@@ -8956,9 +8991,35 @@ lootshop:
           - item: sulphur
             cost: 2
 
+repairequipment:
+  icon: anvil
+  category: npc
+  hidden: true
+  actions:
+      cast:
+      -  class: RepairItem
+  parameters:
+    target_type: LivingEntity
+    armor: true
+    held_item: true
+
+repairitem:
+  icon: anvil
+  category: npc
+  hidden: true
+  actions:
+      cast:
+      -  class: RepairItem
+  parameters:
+    target_type: Item
+    range: 8
+    cooldown: 10000
+  costs:
+    mana: 200
+
 addspell:
     icon: iron_hoe
-    category: specialty
+    category: npc
     hidden: true
     actions:
         cast:
@@ -8969,7 +9030,7 @@ addspell:
 
 giveitem:
     icon: iron_hoe
-    category: specialty
+    category: npc
     hidden: true
     actions:
         cast:
@@ -8980,7 +9041,7 @@ giveitem:
 
 fillwand:
     icon: iron_hoe
-    category: specialty
+    category: npc
     hidden: true
     actions:
         cast:
@@ -8990,7 +9051,7 @@ fillwand:
 
 enchantwand:
     icon: iron_hoe
-    category: specialty
+    category: npc
     hidden: true
     actions:
         cast:

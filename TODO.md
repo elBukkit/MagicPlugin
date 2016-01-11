@@ -1,5 +1,10 @@
 # TODO
 
+ - PS TODO:
+   - Disallow renaming on anvil
+   - Disallow place in disabled worlds
+   - Fix formatting of allowed list, single-column
+
  - Add effects template, for wands to stay one template but act like another (? - for cane)
  - Prevent TNT breaking secured chests
  - Add option for projectiles to not run when they expire

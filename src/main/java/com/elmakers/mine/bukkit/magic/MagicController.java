@@ -179,7 +179,7 @@ public class MagicController implements MageController {
         }
 
         if (!mages.containsKey(mageId)) {
-            if (commandSender instanceof Player && !((Player)commandSender).isOnline())
+            if (commandSender instanceof Player && !((Player)commandSender).isOnline() && !isNPC((Player)commandSender))
             {
                 getLogger().warning("Player data for " + mageId + " (" + ((Player)commandSender).getName() + ") loaded while offline!");
                 Thread.dumpStack();
