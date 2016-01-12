@@ -221,6 +221,7 @@ destructible2:
 - acacia_door
 - dark_oak_door
 - standing_banner
+- wool
 
 destructible3:
 - tnt
