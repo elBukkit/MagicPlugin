@@ -59,7 +59,7 @@ paths:
         name: Apprentice
         description: A good variety of spells
     master:
-        name: Master
+        name: Wizard
         description: The penultimate wizard
     engineer:
         name: Engineer
@@ -1637,13 +1637,13 @@ wands:
         name: Wand
         description: A Wand with Limited Potential
     master:
-        name: Master Wand
+        name: Wand
         description: $path Magic Wand
     student:
-        name: Student Wand
+        name: Wand
         description: $path Magic Wand
     apprentice:
-        name: Apprentice Wand
+        name: Wand
         description: $path Magic Wand
     rage:
         name: Rage Sword
