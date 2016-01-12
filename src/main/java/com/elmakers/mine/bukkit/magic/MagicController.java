@@ -4074,6 +4074,12 @@ public Set<Material> getMaterialSet(String name)
         entityController.setDisableItemSpawn(false);
     }
 
+    @Override
+    public void setForceSpawn(boolean force)
+    {
+        entityController.setForceSpawn(force);
+    }
+
     public HeroesManager getHeroes() {
         return heroesManager;
     }

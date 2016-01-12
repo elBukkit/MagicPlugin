@@ -814,7 +814,14 @@ public class LevitateSpell extends TargetingSpell implements Listener
                         }
                         Method setLocationMethod = mountClass.getMethod("setLocation", Double.TYPE, Double.TYPE, Double.TYPE, Float.TYPE, Float.TYPE);
                         setLocationMethod.invoke(nmsEntity, location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch());
-                        CompatibilityUtils.addToWorld(world, entity, mountSpawnReason);
+
+                        controller.setForceSpawn(true);
+                        try {
+                            CompatibilityUtils.addToWorld(world, entity, mountSpawnReason);
+                        } catch (Exception ex) {
+                            ex.printStackTrace();;
+                        }
+                        controller.setForceSpawn(false);
                     } else {
                         mage.sendMessage("Failed to spawn entity of type: " + mountType + " (" + mountType.getName() + ")");
                         return;
@@ -868,7 +875,13 @@ public class LevitateSpell extends TargetingSpell implements Listener
                     armorStand.setPassenger(mountEntity);
                     armorStand.setMetadata("notarget", new FixedMetadataValue(controller.getPlugin(), true));
                     armorStand.setMetadata("broom", new FixedMetadataValue(controller.getPlugin(), true));
-                    CompatibilityUtils.addToWorld(mage.getLocation().getWorld(), armorStand, mountSpawnReason);
+                    controller.setForceSpawn(true);
+                    try {
+                        CompatibilityUtils.addToWorld(mage.getLocation().getWorld(), armorStand, mountSpawnReason);
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
+                    controller.setForceSpawn(false);
                 } else {
                     armorStand = null;
                 }

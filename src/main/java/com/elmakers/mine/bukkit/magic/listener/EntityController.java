@@ -20,6 +20,7 @@ import org.bukkit.entity.TNTPrimed;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityCombustEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
@@ -42,6 +43,7 @@ public class EntityController implements Listener {
     private boolean preventMeleeDamage = false;
     private boolean keepWandsOnDeath = true;
     private boolean	disableItemSpawn = false;
+    private boolean	forceSpawn = false;
     private boolean	preventWandMeleeDamage = true;
     private int ageDroppedItems	= 0;
 
@@ -71,6 +73,21 @@ public class EntityController implements Listener {
 
     public void setAgeDroppedItems(int age) {
         ageDroppedItems = age;
+    }
+
+    public boolean isForceSpawn() {
+        return forceSpawn;
+    }
+
+    public void setForceSpawn(boolean forceSpawn) {
+        this.forceSpawn = forceSpawn;
+    }
+
+    @EventHandler(ignoreCancelled = false, priority = EventPriority.HIGHEST)
+    public void onCreatureSpawn(CreatureSpawnEvent event) {
+        if (forceSpawn) {
+            event.setCancelled(false);
+        }
     }
 
     @EventHandler
