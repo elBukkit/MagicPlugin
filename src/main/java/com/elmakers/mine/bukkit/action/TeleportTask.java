@@ -11,7 +11,7 @@ import org.bukkit.plugin.Plugin;
 
 public class TeleportTask implements Runnable {
     protected final static int TELEPORT_RETRY_COUNT = 8;
-    protected final static int TELEPORT_RETRY_INTERVAL = 10;
+    protected final static int TELEPORT_RETRY_INTERVAL = 1;
 
     private final CastContext context;
     private final Entity entity;
@@ -48,7 +48,6 @@ public class TeleportTask implements Runnable {
 
         Location targetLocation = location;
         if (context != null) {
-            context.registerMoved(entity);
             targetLocation = context.findPlaceToStand(location, verticalSearchDistance);
         }
         if (targetLocation == null && !preventFall) {
@@ -60,6 +59,10 @@ public class TeleportTask implements Runnable {
             }
         }
         if (targetLocation != null) {
+            if (context != null) {
+                context.registerMoved(entity);
+            }
+
             // Hacky double-teleport to work-around vanilla suffocation checks
             boolean isWorldChange = !targetLocation.getWorld().equals(entity.getWorld());
             entity.teleport(targetLocation);
