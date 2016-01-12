@@ -299,4 +299,5 @@ public interface MageController {
     public void deleteMage(final String id);
     public void disableItemSpawn();
     public void enableItemSpawn();
+    public void setForceSpawn(boolean force);
 }
