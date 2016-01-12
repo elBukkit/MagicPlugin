@@ -515,7 +515,10 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
                 Map<String, Location> fields = controller.getHomeLocations(player);
                 if (fields != null) {
                     for (Map.Entry<String, Location> fieldEntry : fields.entrySet()) {
-                        allWaypoints.add(new Waypoint(RecallType.FIELDS, fieldEntry.getValue(),
+                        Location location = fieldEntry.getValue().clone();
+                        location.setX(location.getX() + 0.5);
+                        location.setZ(location.getZ() + 0.5);
+                        allWaypoints.add(new Waypoint(RecallType.FIELDS, location,
                                 fieldEntry.getKey(),
                                 context.getMessage("cast_field"),
                                 context.getMessage("no_target_field"),
@@ -789,9 +792,9 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
 		}
 
 		location = context.getLocation();
-		location.setX(target.getX());
+		location.setX(target.getX() + 0.5);
 		location.setY(target.getY());
-		location.setZ(target.getZ());
+		location.setZ(target.getZ() + 0.5);
 
         mageData.set(markerKey, ConfigurationUtils.fromLocation(location));
         return true;
