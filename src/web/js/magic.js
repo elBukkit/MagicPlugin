@@ -130,14 +130,15 @@ function createSpellDetails(spell, showTitle, useMana, costReduction, probabilit
 
     // Check for path availability
     for (var pathIndex in paths) {
+		var spAmount = spell.hasOwnProperty('worth_sp') ? spell['worth_sp'] : 0;
         var path = paths[pathIndex];
         if ('path_spells' in path && path.path_spells != null && path.path_spells.indexOf(key) >= 0) {
-            var availability = $('<div class="spellPathAvailability"/>').text("Available to: " + path.name);
+            var availability = $('<div class="spellPathAvailability"/>').text("Available to: " + path.name + " for " + spAmount + " SP");
             detailsDiv.append(availability);
             break;
         }
         if ('required_spells' in path && path.required_spells != null && path.required_spells.indexOf(key) >= 0) {
-            var requirement = $('<div class="spellPathRequirement"/>').text("Required for: " + path.name);
+            var requirement = $('<div class="spellPathRequirement"/>').text("Required at: " + path.name + " for " + spAmount + " SP");
             detailsDiv.append(requirement);
             break;
         }
