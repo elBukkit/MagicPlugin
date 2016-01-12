@@ -59,6 +59,8 @@ public class TeleportTask implements Runnable {
             }
         }
         if (targetLocation != null) {
+            targetLocation.setX(location.getX() - location.getBlockX() + targetLocation.getBlockX());
+            targetLocation.setZ(location.getZ() - location.getBlockZ() + targetLocation.getBlockZ());
             if (context != null) {
                 context.registerMoved(entity);
             }
