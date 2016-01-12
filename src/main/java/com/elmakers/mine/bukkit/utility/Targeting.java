@@ -96,7 +96,7 @@ public class Targeting {
             location = location.clone();
             location.setY(0);
         }
-        int maxHeight = CompatibilityUtils.getMaxHeight(location.getWorld());
+        int maxHeight = location.getWorld().getMaxHeight();
         if (location.getBlockY() > maxHeight) {
             location = location.clone();
             location.setY(maxHeight);
