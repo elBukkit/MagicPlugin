@@ -5166,7 +5166,7 @@ mine:
     icon: wood_pickaxe
     icon_url: http://textures.minecraft.net/texture/c688f9a3b3db226582ae3f49d34aa9077b4d4f8102dd46f21bcb784a68f2c63
     category: mining
-    tags: noduel
+    tags: noduel,nojail
     worth_sp: 500
     earns_sp: 10
     upgrade_required_path: apprentice
@@ -5215,7 +5215,7 @@ chop:
     icon_url: http://textures.minecraft.net/texture/7033deb4e25f57413fb15bd3f7019d4ea659a4637d75597248590d746778f
     icon: stone_axe
     category: elemental
-    tags: noduel
+    tags: noduel,nojail
     worth_sp: 600
     earns_sp: 8
     upgrade_required_path: student
