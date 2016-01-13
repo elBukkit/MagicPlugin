@@ -167,9 +167,7 @@ public class MagicController implements MageController {
     protected Mage getMage(String mageId, String mageName, CommandSender commandSender, Entity entity) {
         Mage apiMage = null;
         if (commandSender == null && entity == null) {
-            getLogger().warning("getMage called with no commandsender or entity");
-            Thread.dumpStack();
-            return null;
+            commandSender = Bukkit.getConsoleSender();
         }
         if (!loaded) {
             if (commandSender instanceof Player) {
@@ -3004,8 +3002,6 @@ public class MagicController implements MageController {
 					Block current = toggleBlock.getBlock();
 					// Don't toggle the block if it has changed to something else.
 					if (current.getType() == toggleBlock.getMaterial()) {
-                        info("Resuming block at " + toggleBlock.getPosition() + ": " + toggleBlock.getName() + " with " + toggleBlock.getMaterial());
-
                         redstoneReplacement.modify(current, true);
 						restored.add(toggleBlock);
 					}
@@ -3170,13 +3166,16 @@ public Set<Material> getMaterialSet(String name)
 
 	@Override
 	public boolean unregisterAutomata(Block block) {
-		// Note that we currently don't clean up an empty entry,
+        // Note that we currently don't clean up an empty entry,
 		// purposefully, to prevent thrashing the main map and adding lots
 		// of HashMap creation.
 		String chunkId = getChunkKey(block.getChunk());
 		Map<Long, Automaton> toReload = automata.get(chunkId);
 		if (toReload != null) {
 			toReload.remove(BlockData.getBlockId(block));
+            if (toReload.size() == 0) {
+                automata.remove(chunkId);
+            }
 		}
 		
 		return toReload != null;

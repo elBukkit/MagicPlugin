@@ -431,9 +431,7 @@ public class MagicCommandExecutor extends MagicMapExecutor {
 				boolean isOnline = false;
 				World world = Bukkit.getWorld(worldName);
 				if (worldName != null) {
-					Location automatonLocation = new Location(world, location.getX(), location.getY(), location.getZ());
-					Chunk chunk = world.getChunkAt(automatonLocation);
-					isOnline = chunk.isLoaded();
+					isOnline = world.isChunkLoaded(location.getBlockX() >> 4, location.getBlockZ() >> 4);
 				}
 				ChatColor nameColor = isOnline ? ChatColor.AQUA : ChatColor.GRAY;
 				sender.sendMessage(nameColor + automaton.getName() + ChatColor.WHITE + " @ " + ChatColor.BLUE + worldName + " " +

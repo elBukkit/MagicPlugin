@@ -1,5 +1,7 @@
 # TODO
 
+ - Column's radius doesn't seem to work
+
  - PS TODO:
    - Disallow renaming on anvil
    - Disallow place in disabled worlds
@@ -9,7 +11,6 @@
  - Add effects template, for wands to stay one template but act like another (? - for cane)
  - Prevent TNT breaking secured chests
  - Add option for projectiles to not run when they expire
- - Automata don't resume anymore
  - Secure acquisition not working? Maybe also have it target through signs and stuff?
 
  - We have noticed a bug today that I want to inform you of. A player was getting really laggy so they relogged and the lag seemed to stop. Then the player went to open their wand inventory to cast a spell. They ended up being able to hold the spell heads in their inventory and they could drop the spell heads where other players could pick them up as items. This normally happens when players lag but not this bad. The weird part was that when they relogged again their while inventory was gone and all spells were back. The whole time he couldn’t use his wand until he relogged with his inventory cleared.
