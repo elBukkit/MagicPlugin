@@ -681,8 +681,25 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
                 break;
             case VILLAGER:
                 mobSkin = "MHF_Villager";
-            default:
-                // TODO: Find skins for SKELETON, CREEPER and ZOMBIE .. ?
+                break;
+            case WOLF:
+                mobSkin = "MHF_Wolf";
+                break;
+            case CREEPER:
+                mobSkin = "MHF_Creeper";
+                break;
+            case ZOMBIE:
+                mobSkin = "MHF_Zombie";
+                break;
+            case SKELETON:
+                mobSkin = "MHF_Skeleton";
+                break;
+            case GUARDIAN:
+                mobSkin = "MHF_Guardian";
+                break;
+            case WITCH:
+                mobSkin = "MHF_Witch";
+                break;
         }
 
         return mobSkin;
