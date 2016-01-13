@@ -1312,17 +1312,20 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
             message = controller.getMessages().get("spells." + spellKey.getKey() + "." + messageKey, message);
         }
         if (message == null) message = "";
+        else if (!message.isEmpty()) {
+            // Escape some common parameters
+            String playerName = mage.getName();
+            message = message.replace("$player", playerName);
 
-        // Escape some common parameters
-        String playerName = mage.getName();
-        message = message.replace("$player", playerName);
+            if (message.contains("$material"))
+            {
+                String materialName = getDisplayMaterialName();
 
-        String materialName = getDisplayMaterialName();
-
-        // TODO: Localize "None", provide static getter
-        materialName = materialName == null ? "None" : materialName;
-        message = message.replace("$material", materialName);
-
+                // TODO: Localize "None", provide static getter
+                materialName = materialName == null ? "None" : materialName;
+                message = message.replace("$material", materialName);
+            }
+        }
         return message;
     }
 

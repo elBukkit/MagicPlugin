@@ -748,12 +748,15 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
     public void messageTargets(String messageKey)
     {
         Mage mage = getMage();
+        if (mage.isStealth()) return;
+        Collection<Entity> targets = getTargetedEntities();
+        if (targets == null || targets.isEmpty()) return;
+
         MageController controller = getController();
         LivingEntity sourceEntity = mage == null ? null : mage.getLivingEntity();
         String playerMessage = getMessage(messageKey);
-        if (!mage.isStealth() && playerMessage.length() > 0)
+        if (playerMessage.length() > 0)
         {
-            Collection<Entity> targets = getTargetedEntities();
             for (Entity target : targets)
             {
                 UUID targetUUID = target.getUniqueId();
