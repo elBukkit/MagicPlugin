@@ -154,7 +154,7 @@ public class MagicPlugin extends JavaPlugin implements MagicAPI
 
         if (NMSUtils.getFailed()) {
             getLogger().warning("Something went wrong with some Deep Magic, plugin will not load.");
-            getLogger().warning("Please make sure you are running a compatible version of CraftBukkit or Spigot!");
+            getLogger().warning("Please make sure you are running a compatible version of CraftBukkit or Spigot (1.8.8 or Higher)!");
         } else {
             initialize();
         }
