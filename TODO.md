@@ -5,6 +5,7 @@
    - Disallow place in disabled worlds
    - Fix formatting of allowed list, single-column
 
+ - Action to convert mob to spawn egg
  - Add effects template, for wands to stay one template but act like another (? - for cane)
  - Prevent TNT breaking secured chests
  - Add option for projectiles to not run when they expire

@@ -67,6 +67,7 @@ broomstick:
   row_3: "wow"
 
 camera:
+  enabled: false
   output: camera
   output_type: wand
   materials:
@@ -109,6 +110,7 @@ magichat:
   row_3:
 
 invisiblecloak:
+  enabled: false
   output: invisiblecloak
   output_type: wand
   materials:
@@ -200,6 +202,7 @@ apprenticeboots:
   row_3: ioi
 
 rabbitboots:
+  enabled: false
   output: rabbitboots
   output_type: wand
   materials:
@@ -210,6 +213,7 @@ rabbitboots:
   row_3: r r
 
 rocketboots:
+  enabled: false
   output: rocketboots
   output_type: wand
   materials:
@@ -221,6 +225,7 @@ rocketboots:
   row_3: ifi
 
 flashboots:
+  enabled: false
   output: flashboots
   output_type: wand
   materials:

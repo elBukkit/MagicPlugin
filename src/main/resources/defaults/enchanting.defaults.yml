@@ -228,6 +228,7 @@ student:
       admission: 20,25,30
       curse: 0,0,10
       tag: 1,4,5
+      phase: 0,0,1
 
 apprentice:
     upgrade: master
@@ -284,7 +285,6 @@ apprentice:
       hat: 110,80,60
       music: 110,80,60
       sandblast: 20,30,40
-      phase: 0,0,1
       counterspell: 0,1,5
       platform: 0,1,5
       rubberize: 2,10,20
@@ -302,6 +302,7 @@ apprentice:
       disarm: 0,0,2
       laser: 0,0,10
       wave: 5,20,30
+      ghast: 0,0,5
 
 master:
     required_spells:
@@ -380,7 +381,6 @@ master:
       petrify: 0,10,30
       singularity: 0,1,5
       tornado: 1,10,15
-      ghast: 0,0,5
       tendril: 0,0,5
       silence: 0,0,5
       force: 5,10,20

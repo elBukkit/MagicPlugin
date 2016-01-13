@@ -3389,7 +3389,7 @@ phase:
     icon: eye_of_ender
     category: master
     tags: noduel,nojail
-    worth_sp: 200
+    worth_sp: 400
     earns_sp: 2
     actions:
         cast:

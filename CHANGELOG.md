@@ -9,6 +9,7 @@
  - Broomsticks will work in regions with entity spawning denied
  - Renamed the "master" path to "Wizard" (just the label, not the key)
  - Wool is now destructible for levelled up spells
+ - Disable several OP crafting recipes by default.
 
 ## 5.4.5
 
