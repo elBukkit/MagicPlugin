@@ -6,15 +6,15 @@ import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
+import net.md_5.bungee.api.ChatColor;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class ItemShopAction extends BaseShopAction
 {
@@ -28,6 +28,8 @@ public class ItemShopAction extends BaseShopAction
 
         public String itemKey;
         public double cost;
+        public String name;
+        public List<String> lore;
     }
     private List<ShopItemConfiguration> items = new ArrayList<ShopItemConfiguration>();
 
@@ -49,7 +51,10 @@ public class ItemShopAction extends BaseShopAction
                 for (ConfigurationSection itemConfig : itemList)
                 {
                     if (itemConfig != null) {
-                        items.add(new ShopItemConfiguration(itemConfig.getString("item"), itemConfig.getDouble("cost")));
+                        ShopItemConfiguration shopItem = new ShopItemConfiguration(itemConfig.getString("item"), itemConfig.getDouble("cost"));
+                        shopItem.name = itemConfig.getString("name");
+                        shopItem.lore = ConfigurationUtils.getStringList(itemConfig, "lore");
+                        items.add(shopItem);
                     } else {
                         items.add(null);
                     }
@@ -100,6 +105,23 @@ public class ItemShopAction extends BaseShopAction
             }
             ItemStack item = controller.createItem(itemKey);
             if (item == null) continue;
+
+            if (itemConfig.name != null || itemConfig.lore != null) {
+                ItemMeta meta = item.getItemMeta();
+                if (itemConfig.name != null) {
+                    meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', itemConfig.name));
+                }
+                if (itemConfig.lore != null) {
+                    List<String> lore = new ArrayList<String>();
+                    for (String line : itemConfig.lore) {
+                        if (line != null) {
+                            lore.add(ChatColor.translateAlternateColorCodes('&', line));
+                        }
+                    }
+                    meta.setLore(lore);
+                }
+                item.setItemMeta(meta);
+            }
             item.setAmount(amount);
             shopItems.add(new ShopItem(item, worth));
         }

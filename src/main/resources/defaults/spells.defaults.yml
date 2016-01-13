@@ -8990,6 +8990,8 @@ lootshop:
             cost: 1
           - item: sulphur
             cost: 2
+          - item: slime_ball
+            cost: 4
 
 repairequipment:
   icon: anvil
