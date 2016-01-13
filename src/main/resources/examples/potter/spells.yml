@@ -141,12 +141,15 @@ snowball:
     worth: 5
     actions:
         cast:
-        -  class: ProjectileAction
+        -  class: ChangeContext
            actions:
-           -  class: AreaOfEffectAction
-              actions:
-              -  class: PotionEffectAction
-              -  class: DamageAction
+           - class: ProjectileAction
+             actions:
+             -  class: AreaOfEffectAction
+                target_self: true
+                actions:
+                -  class: PotionEffectAction
+                -  class: DamageAction
     effects:
         cast:
         -  class: EffectSingle
@@ -154,33 +157,47 @@ snowball:
            location: origin
         hit:
         -  class: EffectSingle
-           location: origin
-           color: DDDDDD
-           firework: ball
+           location: target
+           particle: snowball
+           particle_count: 15
+           particle_offset_x: 0.2
+           particle_offset_y: 0.2
+           particle_offset_z: 0.2
+        -  class: EffectSingle
+           sound: magic.hit
+           sound_pitch: 2
+           location: both
+        -  class: EffectSingle
+           sound: successful_hit
+           sound_pitch: .5
+           location: both
+           requires_entity_target: true
         projectile:
         -  class: EffectSingle
            location: origin
            effectlib:
              class: SmokeEffect
-             iterations: 8
+             iterations: 1
+             particles: 15
              particle: snowball
     parameters:
+      target: other
+      bypass_weakness: false
       projectile: Snowball
-      origin_at_target: true
-      oty: 5
-      otdx: 0
-      otdy: -1
-      otdz: 0
+      use_target_location: false
+      source_at_target: true
+      target_offset: 0,5,0
+      source_direction: 0,-1,0
       count: 4
       radius: 3
-      range: 16
+      range: 10
       allow_max_range: true
       spread: 20
       effect_slow: 120,1
-      target_self: true
-      damage: 1
+      damage: .25
+      cooldown: 10000
     costs:
-        mana: 80
+        mana: 40
 
 ascendio:
     inherit: fling
@@ -1023,7 +1040,7 @@ flipendo|3:
         mana: 100
 
 flight:
-    inherit: levitate
+    inherit: levitate|4
     category: staff
     hidden: true
 
