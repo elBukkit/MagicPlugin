@@ -72,7 +72,7 @@ public class TeleportTask implements Runnable {
                 entity.teleport(targetLocation);
             }
             if (context != null) {
-                context.setTargetedLocation(targetLocation);
+                context.setTargetLocation(targetLocation);
                 context.sendMessageKey("teleport");
                 context.playEffects("teleport");
             }
