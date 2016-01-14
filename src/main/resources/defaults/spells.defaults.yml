@@ -3400,17 +3400,33 @@ phase:
            sound: portal_travel
            sound_volume: 0.1
            location: source
+           use_wand_location: false
            effectlib:
-             class: WarpEffect
-             particle: portal
+             class: AnimatedBall
+             particle: redstone
+             color: FF00FF
+             duration: 2500
+             radius: 3
+             particle_count: 20
+             particle_offset_x: 0.9
+             particle_offset_z: 0.9
+             particle_offset_y: 0.4
         teleport:
         -  class: EffectSingle
            sound: portal_travel
            sound_volume: 0.1
            location: target
+           use_wand_location: false
            effectlib:
-             class: WarpEffect
-             particle: portal
+             class: AnimatedBall
+             particle: redstone
+             color: FF00FF
+             duration: 2500
+             radius: 3
+             particle_count: 20
+             particle_offset_x: 0.9
+             particle_offset_z: 0.9
+             particle_offset_y: 0.4
     parameters:
         cooldown: 10000
         target: self
@@ -6339,12 +6355,16 @@ recall:
         cast:
         -  class: EffectSingle
            sound: level_up
+           use_wand_location: false
            effectlib:
             class: WarpEffect
             duration: $delay
             period: 2
             particle: portal
-            particles: 7
+            particle_count: 10
+            particle_offset_x: 0.9
+            particle_offset_z: 0.9
+            particle_offset_y: 0.1
             radius: 1
             offset: 0,-1,0
         teleport:
@@ -6352,9 +6372,14 @@ recall:
            sound: portal_travel
            sound_volume: 0.1
            location: both
+           use_wand_location: false
            effectlib:
              class: WarpEffect
              particle: portal
+             particle_count: 10
+             particle_offset_x: 0.9
+             particle_offset_z: 0.9
+             particle_offset_y: 0.1
              offset: 0,-1,0
     parameters:
         delay: 5000
