@@ -3459,6 +3459,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         saveItemState();
 		mage.setActiveWand(null);
 		this.mage = null;
+		updateMaxMana();
 	}
 	
 	public Spell getActiveSpell() {
@@ -4067,6 +4068,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         tick();
         saveItemState();
 
+		updateMaxMana();
         updateActiveMaterial();
         updateName();
         updateLore();

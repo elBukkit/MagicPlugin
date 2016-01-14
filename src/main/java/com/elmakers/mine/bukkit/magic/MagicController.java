@@ -243,7 +243,6 @@ public class MagicController implements MageController {
                 mage.load(null);
             }
 
-            mage.armorUpdated();
             apiMage = mage;
         } else {
             apiMage = mages.get(mageId);
