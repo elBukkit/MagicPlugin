@@ -1616,7 +1616,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 			effectParticleInterval = 0;
 		}
 
-        updateMaxMana();
+        updateMaxMana(false);
 		checkActiveMaterial();
         checkId();
 	}
@@ -2837,8 +2837,8 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 
 		saveItemState();
 		updateName();
+		updateMaxMana(false);
 		updateLore();
-        updateMaxMana();
 
 		return modified;
 	}
@@ -3459,7 +3459,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         saveItemState();
 		mage.setActiveWand(null);
 		this.mage = null;
-		updateMaxMana();
+		updateMaxMana(true);
 	}
 	
 	public Spell getActiveSpell() {
@@ -3716,16 +3716,14 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
     }
 
     public void armorUpdated() {
-        int currentMana = effectiveXpMax;
-        int currentManaRegen = effectiveXpRegeneration;
-        updateMaxMana();
-        if (currentMana != effectiveXpMax || effectiveXpRegeneration != currentManaRegen) {
-            updateLore();
-        }
+        updateMaxMana(true);
     }
 
-    protected void updateMaxMana() {
+    protected void updateMaxMana(boolean updateLore) {
         if (isHeroes) return;
+
+		int currentMana = effectiveXpMax;
+		int currentManaRegen = effectiveXpRegeneration;
 
         float effectiveBoost = xpMaxBoost;
         float effectiveRegenBoost = xpRegenerationBoost;
@@ -3745,6 +3743,10 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         if (effectiveRegenBoost != 0) {
             effectiveXpRegeneration = (int)Math.ceil(effectiveXpRegeneration + effectiveRegenBoost * effectiveXpRegeneration);
         }
+
+		if (updateLore && (currentMana != effectiveXpMax || effectiveXpRegeneration != currentManaRegen)) {
+			updateLore();
+		}
     }
 
     public static Float getWandFloat(ItemStack item, String key) {
@@ -4068,7 +4070,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         tick();
         saveItemState();
 
-		updateMaxMana();
+		updateMaxMana(false);
         updateActiveMaterial();
         updateName();
         updateLore();
