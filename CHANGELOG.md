@@ -1,5 +1,7 @@
 # CHANGELOG
 
+## 5.5
+
 ## 5.4.6
 
  - Add warmup back to Kill
