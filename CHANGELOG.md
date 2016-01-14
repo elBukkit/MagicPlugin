@@ -10,6 +10,7 @@
  - Renamed the "master" path to "Wizard" (just the label, not the key)
  - Wool is now destructible for levelled up spells
  - Disable several OP crafting recipes by default.
+ - Add 5-second warmup to Phase spell 
 
 ## 5.4.5
 

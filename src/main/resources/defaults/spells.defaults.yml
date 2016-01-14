@@ -2914,7 +2914,7 @@ weather:
              particle: drip_water
     parameters:
         target: none
-        cooldown: 30000
+        cooldown: 100000
         weather: cycle
     costs:
         mana: 150
@@ -2972,6 +2972,8 @@ fling|2:
         min_speed: 2
         max_speed: 3
         cooldown: 2000
+    costs:
+        mana: 75
 
 fling|3:
     upgrade_required_path: master
@@ -2981,7 +2983,7 @@ fling|3:
         max_speed: 4
         cooldown: 1000
     costs:
-        mana: 75
+        mana: 90
 
 fling|4:
     parameters:
@@ -2989,7 +2991,7 @@ fling|4:
         max_speed: 5
         cooldown: 0
     costs:
-        mana: 100
+        mana: 90
 
 supertorch:
     icon_url: http://textures.minecraft.net/texture/08f4793551132fad5bdb5d185269881a8de6fa4b86c6bde92c2bf467e097
@@ -3393,42 +3395,58 @@ phase:
     earns_sp: 2
     actions:
         cast:
+        - class: Delay
+        - class: PlayEffects
+          effects: phase
         - class: ChangeWorld
     effects:
         cast:
         -  class: EffectSingle
            sound: portal_travel
-           sound_volume: 0.1
+           sound_volume: 0.5
+           sound_pitch: 0.4
            location: source
            use_wand_location: false
            effectlib:
              class: AnimatedBall
-             particle: redstone
-             color: FF00FF
-             duration: 2500
-             radius: 3
-             particle_count: 20
-             particle_offset_x: 0.9
-             particle_offset_z: 0.9
-             particle_offset_y: 0.4
+             particle: portal
+             duration: 5000
+             yOffset: -0.5
+             particleCount: 8
+             particleOffsetX: 0.9
+             particleOffsetY: 2
+             particleOffsetZ: 0.9
+        phase:
+        - class: EffectSingle
+          use_wand_location: false
+          sound: magic.teleport
+          location: source
+          sound_volume: 0.8
+          sound_pitch: 0.8
+          color: FF00FF
+          firework: star
         teleport:
-        -  class: EffectSingle
-           sound: portal_travel
-           sound_volume: 0.1
-           location: target
-           use_wand_location: false
-           effectlib:
+        - class: EffectSingle
+          sound: magic.teleport
+          sound_volume: 0.8
+          sound_pitch: 0.8
+          location: target
+          use_wand_location: false
+          color: FF00FF
+          firework: star
+          effectlib:
              class: AnimatedBall
-             particle: redstone
-             color: FF00FF
+             particle: portal
              duration: 2500
-             radius: 3
-             particle_count: 20
-             particle_offset_x: 0.9
-             particle_offset_z: 0.9
-             particle_offset_y: 0.4
+             yOffset: -0.5
+             particleCount: 8
+             particleOffsetX: 0.9
+             particleOffsetY: 2
+             particleOffsetZ: 0.9
     parameters:
-        cooldown: 10000
+        delay: 5000
+        cancel_on_damage: 1
+        cooldown: 15000
         target: self
         vertical_range: 255
     costs:
@@ -3440,6 +3458,7 @@ superphase:
       target: other
       target_type: LivingEntity
       cooldown: 500
+      delay: 0
 
 phasebackup:
     icon_url: http://textures.minecraft.net/texture/3186699cf52cb2f732b7948784b262a49d43a57c801368f776e3c9a88151d
@@ -3895,7 +3914,7 @@ day:
            particle_count: 5
     parameters:
         target: none
-        cooldown: 30000
+        cooldown: 300000
         time: day
         weather: clear
     costs:
@@ -3922,7 +3941,7 @@ night:
              particle: smoke_large
     parameters:
         target: none
-        cooldown: 30000
+        cooldown: 300000
         time: night
         cycle_moon_phase: true
     costs:
@@ -3954,7 +3973,7 @@ time:
         allow_night: true
         allow_day: true
         allow_glowstone: false
-        cooldown: 60000
+        cooldown: 10000
         time: toggle
     costs:
         mana: 40
@@ -6354,32 +6373,33 @@ recall:
         no_target: []
         cast:
         -  class: EffectSingle
-           sound: level_up
+           sound: portal_travel
+           sound_volume: 0.4
            use_wand_location: false
            effectlib:
             class: WarpEffect
             duration: $delay
             period: 2
             particle: portal
-            particle_count: 10
-            particle_offset_x: 0.9
-            particle_offset_z: 0.9
-            particle_offset_y: 0.1
+            particleCount: 10
+            particleOffsetX: 0.9
+            particleOffsetY: 0.1
+            particleOffsetZ: 0.9
             radius: 1
             offset: 0,-1,0
         teleport:
         -  class: EffectSingle
-           sound: portal_travel
-           sound_volume: 0.1
+           sound: magic.teleport
+           sound_pitch: 0.8
            location: both
            use_wand_location: false
            effectlib:
              class: WarpEffect
              particle: portal
-             particle_count: 10
-             particle_offset_x: 0.9
-             particle_offset_z: 0.9
-             particle_offset_y: 0.1
+             particleCount: 10
+             particleOffsetX: 0.9
+             particleOffsetY: 0.1
+             particleOffsetZ: 0.9
              offset: 0,-1,0
     parameters:
         delay: 5000
@@ -7478,7 +7498,6 @@ broom:
     icon_url: http://textures.minecraft.net/texture/7f4f1b4c6661ab552b21df8ed841a221296512de46c86e8dee891efbd2fba6
     icon: gold_spade
     category: specialty
-    tags: noduel
     class: LevitateSpell
     worth_sp: 600
     show_undoable: false
@@ -9016,6 +9035,8 @@ lootshop:
           - item: sulphur
             cost: 2
           - item: slime_ball
+            cost: 3
+          - item: ender_pearl
             cost: 4
 
 repairequipment:
