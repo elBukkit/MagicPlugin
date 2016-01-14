@@ -7739,7 +7739,7 @@ superkill:
         target_breakables: 5
         bypass_backfire: true
         bypass_pvp: true
-        range: 40
+        range: 64
     costs:
         mana: 300
 

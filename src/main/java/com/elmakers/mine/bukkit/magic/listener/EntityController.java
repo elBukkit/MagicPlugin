@@ -213,6 +213,11 @@ public class EntityController implements Listener {
             event.getDrops().clear();
         }
 
+        if (!(entity instanceof Player)) {
+            return;
+        }
+        final Player player = (Player)entity;
+
         Mage apiMage = controller.getRegisteredMage(entity);
         if (apiMage == null) return;
 
@@ -221,11 +226,6 @@ public class EntityController implements Listener {
 
         mage.onPlayerDeath(event);
         mage.deactivateAllSpells();
-
-        if (!(entity instanceof Player)) {
-            return;
-        }
-        final Player player = (Player)entity;
         String rule = entity.getWorld().getGameRuleValue("keepInventory");
         if (rule.equals("true")) return;
 

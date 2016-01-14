@@ -46,7 +46,7 @@ public class DamageAction extends BaseSpellAction
 	public SpellResult perform(CastContext context)
 	{
         Entity entity = context.getTargetEntity();
-		if (entity == null || !(entity instanceof LivingEntity))
+		if (entity == null || !(entity instanceof LivingEntity) || !entity.isValid())
 		{
 			return SpellResult.NO_TARGET;
 		}
