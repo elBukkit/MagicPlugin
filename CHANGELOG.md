@@ -1,6 +1,6 @@
 # CHANGELOG
 
-## 5.5
+## 5.4.6
 
  - Add warmup back to Kill
  - Separate hit/miss actions and effects for projectiles, nothing happens on miss now by default.
