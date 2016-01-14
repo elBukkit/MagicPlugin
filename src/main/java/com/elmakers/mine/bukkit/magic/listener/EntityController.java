@@ -296,6 +296,8 @@ public class EntityController implements Listener {
                     Wand testWand = new Wand(controller, itemStack);
                     keepItem = testWand.keepOnDeath();
                 }
+            } else if (InventoryUtils.isKeep(itemStack)) {
+                keepItem = true;
             }
             if (keepItem)
             {
