@@ -2,6 +2,9 @@
 
 ## 5.5
 
+ - Engineer and Architect spells being re-balanced to consume blocks required for building
+ - Wands are only enchantable if there are spells left to get, brushes no longer count
+ - Add "Conduit" rank (after Architect), bypasses block consume ("Manifestation")
  - Add EntityProjectile and PlaySound actions
  - Add Patronus spell to potter configs (damages Withers)
  - Add the Brush Selector as a spell that Engineers get

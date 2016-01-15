@@ -508,6 +508,10 @@ engineer:
 
 architect:
     inherit: engineer
+    required_spells:
+    - backup
+    upgrade: conduit
+    upgrade_item: conduit_upgrade
     property_count:
       0: 100, 100, 50
       1: 50,  100, 100
@@ -555,9 +559,7 @@ architect:
       3: 0,   5,   90
     spells:
       absorb: 0,1,2
-      backup: 0,0,1
       superalter: 0,1,5
-      superrepair: 0,0,5
       supershell: 0,0,5
       superblast: 0,0,5
       superbox: 0,0,5
@@ -571,10 +573,7 @@ architect:
       supercylinder: 0,20,50
       column: 5,50,100
       superdome: 0,0,2
-      paste: 0,1,10
       volley: 2,25,35
-      forest: 0,0,10
-      permafrost: 0,5,10
       floodfill: 1,10,20
     material_count:
       1:  50, 20, 20
@@ -584,10 +583,6 @@ architect:
       10: 0,  0,  1
     materials:
       copy: 0,0,10
-      clone: 0,0,1
-      replicate: 0,0,1
-      lava: 0,0,15
-      water: 0,0,30
       wool|0: 80,60,50
       wool|1: 80,60,50
       wool|2: 80,60,50
@@ -652,6 +647,52 @@ architect:
       stained_glass_pane|13: 60,40,30
       stained_glass_pane|14: 60,40,30
       stained_glass_pane|15: 60,40,30
+      schematic|rainbow_blocks: 0,2,5
+      schematic|lantern: 0,1,20
+      schematic|creeper_rug: 0,0,5
+      schematic|elder_tree: 0,0,1
+      schematic|church: 0,0,5
+      schematic|blacksmith: 0,0,5
+      schematic|garden_house: 0,5,10
+      schematic|compact_house: 5,10,15
+      schematic|small_house: 5,10,15
+      schematic|nathanwolf: 0,0,1
+
+conduit:
+    inherit: architect
+    max_mana_regeneration: 150
+    mana_regeneration:
+      1: 100, 30, 5
+      2: 20, 30, 40
+      3: 0 , 10, 10
+      5: 0 ,  0, 1
+    max_mana: 700
+    mana_max:
+      5:  100,10,  0
+      20: 20, 30, 50
+      30: 5 , 20, 30
+      50: 0 , 0,   5
+    spell_count:
+      1: 100, 0,   0
+      2: 0,   50,  10
+      3: 0,   5,   90
+    spells:
+      backup: 0,0,1
+      superrepair: 0,0,5
+      paste: 0,1,10
+      forest: 0,0,10
+      permafrost: 0,5,10
+    material_count:
+      1:  50, 20, 20
+      3:  1,  10, 30
+      5:  0,  5,  40
+      8:  0,  1,  10
+      10: 0,  0,  1
+    materials:
+      clone: 0,0,1
+      replicate: 0,0,1
+      lava: 0,0,15
+      water: 0,0,30
       schematic|rainbow_blocks: 0,2,5
       schematic|lantern: 0,1,20
       schematic|creeper_rug: 0,0,5

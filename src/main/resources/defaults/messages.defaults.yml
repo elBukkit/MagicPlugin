@@ -67,6 +67,9 @@ paths:
     architect:
         name: Architect
         description: Has super-powerful engineering spells
+    conduit:
+        name: Conduit
+        description: Can manifest blocks from pure energy
     battle:
         name: Warrior
         description: Low-level combat spells
@@ -130,6 +133,7 @@ wand:
     mana_boost: "Mana Boost: $amount%"
     mana_regeneration_boost: "Mana Regeneration Boost: $amount%"
     cost_reduction: Cost Reduction $roman
+    consume_reduction: Manifestation
     cooldown_reduction: Cooldown Reduction $roman
     power: Power $roman
     protection: Protection $roman
@@ -1565,6 +1569,12 @@ spells:
         description: Unlock the Architect level
         confirm_title: "Upgrade to Architect"
         fail: ""
+    conduitshop:
+        name: Conduit Shop
+        title: "Backup ($balance)"
+        description: Unlock the Conduit level
+        confirm_title: "Upgrade to Conduit"
+        fail: ""
     bookshop:
         name: Spellbook Shop
         title: "Spell Books"
@@ -1668,6 +1678,9 @@ wands:
         description: $path Magic Wand
     architect:
         name: Architect Wand
+        description: $path Magic Wand
+    conduit:
+        name: Conduit Wand
         description: $path Magic Wand
     architectstaff:
         name: The Architect

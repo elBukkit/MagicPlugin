@@ -1902,6 +1902,7 @@ tree:
         destructible: destructible,destructible_replace
     costs:
         mana: 20
+        sapling: 1
 
 forest:
     icon: sapling
@@ -3465,7 +3466,7 @@ phasebackup:
     icon_url: http://textures.minecraft.net/texture/3186699cf52cb2f732b7948784b262a49d43a57c801368f776e3c9a88151d
     icon: eye_of_ender
     category: staff
-    worth_sp: 200
+    worth_sp: 1000
     earns_sp: 2
     actions:
         cast:
@@ -3740,9 +3741,11 @@ paint:
     icon_url: http://textures.minecraft.net/texture/719e9875ffb35adfbd135c416e51dcf80dec38bf3d0dca2f94eb6595b90c0b5
     icon: painting
     category: engineering
-    class: FillSpell
     worth_sp: 100
     cancellable: false
+    actions:
+      cast:
+      - class: ModifyBlock
     effects:
         cast:
         -  class: EffectTrail
@@ -3753,6 +3756,7 @@ paint:
         range: 64
         check_destructible: false
         transparent: transparent_to_construction
+        consume: true
     costs:
         mana: 5
 
@@ -3802,6 +3806,7 @@ recurse:
         transparent: transparent_to_construction
         cooldown: 500
         replace: true
+        consume: true
     costs:
         mana: 30
 
@@ -3831,6 +3836,7 @@ floodfill:
         destructible: air
         transparent: transparent_to_construction
         cooldown: 1000
+        consume: true
         faces:
         - down
         - north
@@ -4004,6 +4010,7 @@ pillar:
     category: engineering
     worth_sp: 200
     cancellable: false
+    consume: true
     actions:
         cast:
         - class: BlockSearch
@@ -4045,6 +4052,7 @@ place:
         range: 64
         transparent: transparent_to_construction
         check_destructible: false
+        consume: true
     costs:
         mana: 10
 
@@ -4350,7 +4358,7 @@ backup:
     category: engineering
     cancellable: false
     class: ConstructSpell
-    worth_sp: 1000
+    worth_sp: 9999
     effects:
         cast:
         -  class: EffectSingle
@@ -8635,6 +8643,22 @@ architectshop:
         confirm_filler: stained_glass:9
         spells:
         - absorb
+
+conduitshop:
+    icon: gold_axe
+    category: npc
+    hidden: true
+    actions:
+        cast:
+        -  class: SpellShop
+    parameters:
+        quiet: true
+        path_end: architect
+        auto_upgrade: true
+        use_sp: true
+        confirm_filler: stained_glass:9
+        spells:
+        - backup
 
 bookshop:
     icon: book

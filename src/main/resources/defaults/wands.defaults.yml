@@ -467,10 +467,87 @@ architect:
     migrate_icon: monster_eggs:2
     effect_color: '00FF00'
     protection_falling: 1
-    protection: 0.2
-    xp_max: 1000
-    xp: 1000
+    protection: 1
+    xp_max: 500
+    xp: 500
     xp_regeneration: 100
+    power: 0
+    effect_color: '8B008B'
+    effect_bubbles: true
+    organize: true
+    active_spell: levitate
+    spells:
+        - levitate
+        - paint
+        - alter
+        - torch
+        - fill
+        - absorb
+        - bridge
+        - pillar
+        - place
+        - recurse
+        - undo
+        - commit
+        - blob
+        - shell
+        - iterate
+        - box
+        - dome
+        - disc
+        - convert
+        - superblob
+        - superbox
+        - supershell
+        - superconvert
+        - superpyramid
+        - superdome
+        - superdisc
+        - superring
+        - column
+        - levitate
+        - superalter
+    materials:
+        - stone
+        - wood
+        - glass
+        - dirt
+        - erase
+        - copy
+        - map
+        - glowstone
+        - sand
+        - cobblestone
+        - stained_glass
+        - thin_glass
+        - stained_glass_pane
+        - stained_clay
+        - quartz_block
+        - quartz_block:1
+        - quartz_block:2
+        - lapis_block
+        - iron_block
+        - diamond_block
+        - gold_block
+        - emerald_block
+        - redstone_block
+        - obsidian
+
+conduit:
+    path: conduit
+    consume_reduction: 1
+    keep: true
+    bound: true
+    undroppable: true
+    indestructible: true
+    icon: gold_pickaxe
+    migrate_icon: monster_eggs:2
+    effect_color: '00FF00'
+    protection_falling: 1
+    protection: 1
+    xp_max: 600
+    xp: 600
+    xp_regeneration: 120
     power: 0
     effect_color: '8B008B'
     effect_bubbles: true
@@ -561,6 +638,7 @@ admin:
     indestructible: true
     cost_reduction: 2
     cooldown_reduction: 1
+    consume_reduction: 1
     protected: true
     effect_color: '888888'
     effect_bubbles: true
@@ -590,6 +668,7 @@ architectstaff:
   active_material: copy
   protected: true
   cost_reduction: 2
+  consume_reduction: 1
   effect_color: 8af553b2025f,0,8af553b2025f
   effect_particle_count: 8
   effect_particle_interval: 100
@@ -691,6 +770,7 @@ developer:
     indestructible: true
     cost_reduction: 2
     cooldown_reduction: 2
+    consume_reduction: 1
     protected: true
     effect_color: 'FFAA00'
     effect_bubbles: true
@@ -728,6 +808,7 @@ borealis:
     active_spell: levitate
     cost_reduction: 2
     cooldown_reduction: 2
+    consume_reduction: 1
     protected: true
     spells:
         - levitate
@@ -827,6 +908,7 @@ wolf:
   undroppable: true
   cost_reduction: 2.0
   cooldown_reduction: 2.0
+  consume_reduction: 1
   mode: INVENTORY
   effect_color: 0,aa0000000000,cc0000000000
   effect_particle_radius: 0.2
@@ -1074,6 +1156,11 @@ architect_upgrade:
     indestructible: false
     xp_max: 350
     xp_regeneration: 70
+conduit_upgrade:
+    upgrade: true
+    hidden: true
+    indestructible: false
+    consume_reduction: 1
 
 squire_upgrade:
     upgrade: true
