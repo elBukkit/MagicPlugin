@@ -34,10 +34,24 @@ public class SpellShopAction extends BaseShopAction
         spells.clear();
         if (parameters.contains("spells"))
         {
-            ConfigurationSection spellSection = ConfigurationUtils.getConfigurationSection(parameters, "spells");
-            Collection<String> spellKeys = spellSection.getKeys(false);
-            for (String spellKey : spellKeys) {
-                spells.put(spellKey, spellSection.getDouble(spellKey));
+            if (parameters.isConfigurationSection("spells"))
+            {
+                ConfigurationSection spellSection = ConfigurationUtils.getConfigurationSection(parameters, "spells");
+                Collection<String> spellKeys = spellSection.getKeys(false);
+                for (String spellKey : spellKeys) {
+                    spells.put(spellKey, spellSection.getDouble(spellKey));
+                }
+            }
+            else
+            {
+                Collection<String> spellList = ConfigurationUtils.getStringList(parameters, "spells");
+                if (spellList != null)
+                {
+                    for (String spellKey : spellList)
+                    {
+                        spells.put(spellKey, null);
+                    }
+                }
             }
         }
     }

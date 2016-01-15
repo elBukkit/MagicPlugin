@@ -4,6 +4,7 @@
 
  - Add EntityProjectile and PlaySound actions
  - Add Patronus spell to potter configs (damages Withers)
+ - Add the Brush Selector as a spell that Engineers get
 
 ## 5.4.6
 

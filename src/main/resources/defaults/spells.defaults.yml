@@ -4944,7 +4944,7 @@ rollback:
     icon: book_and_quill
     category: engineering
     cancellable: false
-    worth_sp: 500
+    worth_sp: 9999
     actions:
         cast:
         -  class: Undo
@@ -5755,7 +5755,7 @@ absorb:
     icon: bucket
     icon_url: http://textures.minecraft.net/texture/8b50be531940368e173db018d2ead9d2cdeec8e39c7a51b681dcad4c4d41d
     category: engineering
-    worth_sp: 600
+    worth_sp: 9999
     brush_selection: true
     actions:
         cast:
@@ -8618,7 +8618,7 @@ engineershop:
         use_sp: true
         confirm_filler: stained_glass:2
         spells:
-          rollback: 5000
+        - rollback
 
 architectshop:
     icon: gold_axe
@@ -8634,7 +8634,7 @@ architectshop:
         use_sp: true
         confirm_filler: stained_glass:9
         spells:
-          absorb: 6000
+        - absorb
 
 bookshop:
     icon: book
@@ -9120,6 +9120,9 @@ brushselect:
     icon_url: http://textures.minecraft.net/texture/a653c2daf990459d641e5b8f6e62ef8af24b1a2da49c9ce8d9f68ab682905112
     category: specialty
     hidden: true
+    show_undoable: false
+    worth_sp: 10
+    quick_cast: true
     actions:
         cast:
         -  class: BrushSelect

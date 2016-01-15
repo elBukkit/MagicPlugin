@@ -473,6 +473,7 @@ engineer:
       shrink: 5,20,30
       grow: 1,10,20
       supertorch: 1,10,20
+      brushselect: 100,100,100
     material_count:
       1: 50, 20, 20
       2: 1,  10,  30

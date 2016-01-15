@@ -1503,6 +1503,7 @@ spells:
     brushselect:
         name: Brush Selector
         descriptions: Chooses your active brush
+        usage: Brushes are used by engineering spells
         fail: You must be holding a wand!
     tracking:
         name: Tracking Sense

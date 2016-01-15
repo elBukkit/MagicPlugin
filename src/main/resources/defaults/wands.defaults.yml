@@ -1062,6 +1062,11 @@ engineer_upgrade:
     indestructible: false
     xp_max: 250
     xp_regeneration: 50
+    spells:
+    - brushselect
+    materials:
+    - dirt
+    - cobblestone
 architect_upgrade:
     upgrade: true
     hidden: true
