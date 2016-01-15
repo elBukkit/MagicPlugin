@@ -15,6 +15,7 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.FallingBlock;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
 import java.util.Arrays;
@@ -32,6 +33,7 @@ public class ModifyBlockAction extends BaseSpellAction {
     private boolean applyPhysics = false;
     private boolean commit = false;
     private boolean usePhysicsBlocks = false;
+    private boolean consumeBlocks = false;
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters) {
@@ -44,6 +46,7 @@ public class ModifyBlockAction extends BaseSpellAction {
         backfireChance = parameters.getDouble("reflect_chance", 0);
         fallingBlockSpeed = parameters.getDouble("speed", 0);
         fallingProbability = parameters.getDouble("falling_probability", 1);
+        consumeBlocks = parameters.getBoolean("consume", false);
         fallingBlockDirection = null;
         if (spawnFallingBlocks && parameters.contains("direction"))
         {
@@ -97,13 +100,23 @@ public class ModifyBlockAction extends BaseSpellAction {
             return SpellResult.NO_TARGET;
         }
 
-        if (!commit) {
-            context.registerForUndo(block);
-        }
-
         if (!brush.isReady()) {
             brush.prepare();
             return SpellResult.PENDING;
+        }
+
+        if (consumeBlocks && !context.isConsumeFree() && !brush.isErase()) {
+            ItemStack requires = brush.getItemStack(1);
+            if (!mage.hasItem(requires)) {
+                String requiresMessage = context.getMessage("insufficient_resources");
+                context.sendMessage(requiresMessage.replace("$cost", brush.getName()));
+                return SpellResult.INSUFFICIENT_RESOURCES;
+            }
+            mage.removeItem(requires);
+        }
+
+        if (!commit) {
+            context.registerForUndo(block);
         }
 
         brush.modify(block, applyPhysics);

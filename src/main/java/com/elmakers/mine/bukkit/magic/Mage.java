@@ -1189,6 +1189,11 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     }
 
     @Override
+    public boolean isConsumeFree() {
+        return activeWand != null && activeWand.isConsumeFree();
+    }
+
+    @Override
     public boolean isSuperProtected() {
         if (superProtectionExpiration != 0) {
             if (System.currentTimeMillis() > superProtectionExpiration) {
@@ -1208,6 +1213,11 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     @Override
     public float getCostReduction() {
         return activeWand == null ? costReduction + controller.getCostReduction() : activeWand.getCostReduction() + costReduction;
+    }
+
+    @Override
+    public float getConsumeReduction() {
+        return activeWand == null ? 0 : activeWand.getConsumeReduction();
     }
 
     @Override
@@ -1375,6 +1385,18 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         }
         // TODO: Maybe wrap EntityEquipment in an Inventory... ? Could be hacky.
         return null;
+    }
+
+    @Override
+    public Map<Integer, ItemStack> removeItem(ItemStack itemStack) {
+        Inventory inventory = getInventory();
+        return inventory.removeItem(itemStack);
+    }
+
+    @Override
+    public boolean hasItem(ItemStack item) {
+        Inventory inventory = getInventory();
+        return inventory.containsAtLeast(item, item.getAmount());
     }
 
     @Override

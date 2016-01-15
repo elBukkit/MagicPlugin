@@ -74,7 +74,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		"xp", "xp_regeneration", "xp_max", "xp_max_boost", "xp_regeneration_boost",
         "mana_per_damage",
 		"bound", "soul", "has_uses", "uses", "upgrade", "indestructible", "undroppable",
-		"cost_reduction", "cooldown_reduction", "effect_bubbles", "effect_color", 
+		"consume_reduction", "cost_reduction", "cooldown_reduction", "effect_bubbles", "effect_color",
 		"effect_particle", "effect_particle_count", "effect_particle_data", "effect_particle_interval",
         "effect_particle_min_velocity",
         "effect_particle_radius", "effect_particle_offset",
@@ -148,6 +148,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
     private String upgradeTemplate = null;
 	
 	protected float costReduction = 0;
+	protected float consumeReduction = 0;
     protected float cooldownReduction = 0;
     protected float damageReduction = 0;
     protected float damageReductionPhysical = 0;
@@ -520,6 +521,11 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		return controller.getCostReduction() + costReduction * controller.getMaxCostReduction();
 	}
 
+	@Override
+	public float getConsumeReduction() {
+		return consumeReduction;
+	}
+
     @Override
     public float getCostScale() {
         return 1;
@@ -547,6 +553,10 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	
 	public boolean isCostFree() {
 		return costReduction > 1;
+	}
+
+	public boolean isConsumeFree() {
+		return consumeReduction >= 1;
 	}
 	
 	public boolean isCooldownFree() {
@@ -1114,6 +1124,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         node.set("owner_id", ownerId);
 
 		node.set("cost_reduction", costReduction);
+		node.set("consume_reduction", consumeReduction);
 		node.set("cooldown_reduction", cooldownReduction);
 		node.set("power", power);
         node.set("enchant_count", enchantCount);
@@ -1322,6 +1333,8 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	
 	public void loadProperties(ConfigurationSection wandConfig, boolean safe) {
 		locked = wandConfig.getBoolean("locked", locked);
+		float _consumeReduction = (float)wandConfig.getDouble("consume_reduction", consumeReduction);
+		consumeReduction = safe ? Math.max(_consumeReduction, consumeReduction) : _consumeReduction;
 		float _costReduction = (float)wandConfig.getDouble("cost_reduction", costReduction);
 		costReduction = safe ? Math.max(_costReduction, costReduction) : _costReduction;
 		float _cooldownReduction = (float)wandConfig.getDouble("cooldown_reduction", cooldownReduction);
@@ -1826,6 +1839,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
             effectName = effectFirst + effectName;
             lore.add(ChatColor.AQUA + getLevelString(controller.getMessages(), "wand.potion_effect", effect.getValue(), 5).replace("$effect", effectName));
         }
+		if (consumeReduction > 0) lore.add(ChatColor.AQUA + getLevelString(controller.getMessages(), "wand.consume_reduction", consumeReduction));
 		if (costReduction > 0) lore.add(ChatColor.AQUA + getLevelString(controller.getMessages(), "wand.cost_reduction", costReduction));
 		if (cooldownReduction > 0) lore.add(ChatColor.AQUA + getLevelString(controller.getMessages(), "wand.cooldown_reduction", cooldownReduction));
 		if (power > 0) lore.add(ChatColor.AQUA + getLevelString(controller.getMessages(), "wand.power", power));
@@ -2545,6 +2559,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 
         Messages messages = controller.getMessages();
 		if (other.costReduction > costReduction) { costReduction = other.costReduction; modified = true; if (costReduction > 0) sendAddMessage(mage, "upgraded_property", getLevelString(messages, "wand.cost_reduction", costReduction)); }
+		if (other.consumeReduction > consumeReduction) { consumeReduction = other.consumeReduction; modified = true; if (consumeReduction > 0) sendAddMessage(mage, "upgraded_property", getLevelString(messages, "wand.consume_reduction", consumeReduction)); }
 		if (other.power > power) { power = other.power; modified = true; if (power > 0) sendAddMessage(mage, "upgraded_property", getLevelString(messages, "wand.power", power)); }
 		if (other.damageReduction > damageReduction) { damageReduction = other.damageReduction; modified = true; if (damageReduction > 0) sendAddMessage(mage, "upgraded_property", getLevelString(messages, "wand.protection", damageReduction)); }
 		if (other.damageReductionPhysical > damageReductionPhysical) { damageReductionPhysical = other.damageReductionPhysical; modified = true; if (damageReductionPhysical > 0) sendAddMessage(mage, "upgraded_property", getLevelString(messages, "wand.protection_physical", damageReductionPhysical)); }
