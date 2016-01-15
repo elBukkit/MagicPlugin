@@ -14,8 +14,6 @@ import com.elmakers.mine.bukkit.utility.RandomUtils;
 import com.elmakers.mine.bukkit.utility.WeightedPair;
 import org.bukkit.DyeColor;
 import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.ConfigurationSection;
@@ -34,12 +32,10 @@ import org.bukkit.entity.Slime;
 import org.bukkit.entity.Wolf;
 import org.bukkit.entity.Zombie;
 import org.bukkit.event.entity.CreatureSpawnEvent;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.util.Vector;
 
 import java.lang.ref.WeakReference;
-import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedList;
@@ -306,22 +302,11 @@ public class SpawnEntityAction extends BaseSpellAction
 
 	protected Entity spawnEntity(Location target, EntityType famType)
 	{
-        Entity entity = null;
-		try {
-            World world = target.getWorld();
-            try {
-                Method spawnMethod = world.getClass().getMethod("spawn", Location.class, Class.class, CreatureSpawnEvent.SpawnReason.class);
-                entity = (Entity)spawnMethod.invoke(world, target, famType.getEntityClass(), spawnReason);
-            } catch (Exception ex) {
-                entity = target.getWorld().spawnEntity(target, famType);
-            }
-			if (entity != null && item != null && entity instanceof Skeleton) {
-				Skeleton skellie = (Skeleton)entity;
-				skellie.getEquipment().setItemInHand(item.getItemStack(1));
-            }
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
+        Entity entity = CompatibilityUtils.spawnEntity(target, famType, spawnReason);
+        if (entity != null && item != null && entity instanceof Skeleton) {
+            Skeleton skellie = (Skeleton)entity;
+            skellie.getEquipment().setItemInHand(item.getItemStack(1));
+        }
 		return entity;
 	}
 
