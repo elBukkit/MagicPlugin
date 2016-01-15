@@ -175,7 +175,10 @@ public class HatAction extends BaseSpellAction
 		{
 			if (NMSUtils.isTemporary(itemStack))
 			{
-				itemStack = NMSUtils.getReplacement(itemStack);
+				ItemStack replacement = NMSUtils.getReplacement(itemStack);
+                if (replacement != null) {
+                    itemStack = replacement;
+                }
 			}
 			if (itemStack != null)
 			{
