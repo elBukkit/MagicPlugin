@@ -130,8 +130,21 @@ public class AlterSpell extends BlockSpell
                 registerModified(entity);
                 Painting painting = (Painting)entity;
                 Art[] artValues = Art.values();
-                Art newArt = artValues[(painting.getArt().ordinal() + 1) % artValues.length];
-                painting.setArt(newArt);
+				Art oldArt = painting.getArt();
+				Art newArt = oldArt;
+				int ordinal = (oldArt.ordinal() + 1);
+				for (int i = 0; i < artValues.length; i++) {
+					newArt = artValues[ordinal++ % artValues.length];
+					painting.setArt(newArt);
+					newArt = painting.getArt();
+					if (oldArt != newArt) {
+						break;
+					}
+				}
+				if (oldArt == newArt) {
+					return SpellResult.FAIL;
+				}
+				mage.sendDebugMessage("Altering art from " + oldArt + " to " + newArt);
                 break;
             case ITEM_FRAME:
                 ItemFrame itemFrame = (ItemFrame)entity;

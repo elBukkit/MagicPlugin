@@ -471,7 +471,7 @@ throwsword:
     parameters:
       velocity: 10
       held_item: diamond_sword
-      armor_stand_offset: 0,4,0
+      location_offset: 0,4,0
       armor_stand_invisible: true
       armor_stand_marker: true
       orient_right_arm: true
@@ -522,7 +522,7 @@ boomerang:
         right_arm_item: diamond_sword
         # This won't do anything with teleport: false
         # But it doesn't seem to do anything either way? Whhuutttt?
-        armor_stand_offset: 0,30,0
+        location_offset: 0,30,0
         # Turns off teleporting the entity every tick
         teleport: true
         # Turns off re-orienting, we don't want this since we're animating the armor
@@ -532,7 +532,7 @@ boomerang:
         velocity_offset: 0,0.05,0
         armor_stand_gravity: false
         right_arm_transform:
-            x: "6.28*sin(0.001*t)"
+            x: "6.28*sin(0.2*t)"
             y: 0
             z: 0
 
@@ -540,7 +540,7 @@ mathtest:
     icon: paper
     actions:
         cast:
-        - class: CustomProjectile
+        - class: EntityProjectile
           velocity_transform:
             x:
               class: dSin
@@ -576,6 +576,7 @@ mathtest:
         damage: 1
         entity_damage: 2
         cooldown: 0
+        type: zombie
 
 equationtest:
     icon: paper
