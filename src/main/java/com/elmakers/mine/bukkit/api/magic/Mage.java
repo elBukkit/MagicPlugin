@@ -32,6 +32,7 @@ import org.bukkit.util.Vector;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -318,6 +319,7 @@ public interface Mage extends CostReducer {
     public boolean isCooldownFree();
     public float getCooldownReduction();
     public boolean isCostFree();
+    public boolean isConsumeFree();
     public float getCostReduction();
     public long getRemainingCooldown();
     public void setRemainingCooldown(long ms);
@@ -367,6 +369,8 @@ public interface Mage extends CostReducer {
     public boolean prepareForUndo(UndoList blocks);
 
     public Inventory getInventory();
+    public Map<Integer, ItemStack> removeItem(ItemStack item);
+    public boolean hasItem(ItemStack item);
 
     public MaterialBrush getBrush();
 
