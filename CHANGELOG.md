@@ -2,6 +2,9 @@
 
 ## 5.5
 
+ - Add EntityProjectile and PlaySound actions
+ - Add Patronus spell to potter configs (damages Withers)
+
 ## 5.4.6
 
  - Add warmup back to Kill
@@ -13,7 +16,6 @@
  - Wool is now destructible for levelled up spells
  - Disable several OP crafting recipes by default.
  - Add 5-second warmup to Phase spell 
- - Add EntityProjectile and PlaySound actions
 
 ## 5.4.5
 
