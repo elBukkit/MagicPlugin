@@ -16,10 +16,13 @@ public class PlaySoundAction extends BaseSpellAction
 	@Override
 	public SpellResult perform(CastContext context)
 	{
-		if (sound == null) {
+		Location location = context.getTargetLocation();
+		if (location == null) {
+			location = context.getLocation();
+		}
+		if (sound == null || location == null) {
 			return SpellResult.FAIL;
 		}
-		Location location = context.getTargetLocation();
 		location.getWorld().playSound(location, sound, volume, pitch);
 		return SpellResult.CAST;
 	}

@@ -3007,7 +3007,7 @@ patronus:
         track_speed: 0.5
         type: chicken
         bypass_backfire: true
-        sound: iron_golem_hit
+        sound: irongolem_hit
         damage: 5
         hitbox_size: 3
         hitbox: true
