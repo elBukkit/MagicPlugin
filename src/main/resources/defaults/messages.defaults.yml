@@ -1516,6 +1516,7 @@ spells:
         name: Upgrade Wand
         description: Add levels to your wand
         no_wand: You must be holding a wand!
+        fail: ""
     addspell:
         name: Add Spell
         description: Add a spell to your wand
@@ -1524,15 +1525,18 @@ spells:
         no_path_end: You must be ready to advance from $path!
         no_wand: You must be holding a wand!
         no_target: You already know that spell
+        fail: ""
     giveitem:
         name: Give Item
         description: Give an item to the player
         cast: "You received $item"
         cast_player_message: "You received $item from $player"
+        fail: ""
     fillwand:
         name: Fill Wand
         description: Fill up your wand with all spells
         no_wand: You must be holding a wand!
+        fail: ""
     spellshop:
         name: Spell Shop
         title: "$path Spells ($balance)"
@@ -1547,16 +1551,19 @@ spells:
         insufficient: "&4Costs &c$cost"
         confirm_title: "Buy $item"
         deducted: "&d&oYou bought &r&6$item &r&d&ofor &r&a$cost"
+        fail: ""
     engineershop:
         name: Engineer Shop
         title: "Rollback ($balance)"
         description: Unlock the Engineering level
         confirm_title: "Upgrade to Engineer"
+        fail: ""
     architectshop:
         name: Architect Shop
         title: "Absorb ($balance)"
         description: Unlock the Architect level
         confirm_title: "Upgrade to Architect"
+        fail: ""
     bookshop:
         name: Spellbook Shop
         title: "Spell Books"

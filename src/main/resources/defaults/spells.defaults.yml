@@ -4891,8 +4891,12 @@ supercollapse:
         cast:
         -  class: EffectSingle
            sound: explode
-        -  class: EffectTrail
+        -  class: EffectSingle
+           sound: explode
+           location: target
            particle: explosion_huge
+        -  class: EffectTrail
+           particle: explosion_normal
     parameters:
         allow_max_range: true
         range: 32
