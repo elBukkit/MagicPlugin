@@ -163,6 +163,7 @@ public class NMSUtils {
     protected static Method class_CraftItemStack_mirrorMethod;
     protected static Method class_NBTTagCompound_hasKeyMethod;
     protected static Method class_CraftWorld_getTileEntityAtMethod;
+    protected static Method class_CraftWorld_spawnMethod;
     protected static Method class_Entity_setLocationMethod;
     protected static Method class_Entity_getIdMethod;
     protected static Method class_Entity_getDataWatcherMethod;
@@ -311,6 +312,7 @@ public class NMSUtils {
             class_DataWatcher_watchMethod = class_DataWatcher.getMethod("watch", Integer.TYPE, Object.class);
             class_World_getEntitiesMethod = class_World.getMethod("getEntities", class_Entity, class_AxisAlignedBB);
             class_CraftWorld_getTileEntityAtMethod = class_CraftWorld.getMethod("getTileEntityAt", Integer.TYPE, Integer.TYPE, Integer.TYPE);
+            class_CraftWorld_spawnMethod = class_CraftWorld.getMethod("spawn", Location.class, Class.class, CreatureSpawnEvent.SpawnReason.class);
             class_Entity_getBukkitEntityMethod = class_Entity.getMethod("getBukkitEntity");
             class_Entity_setYawPitchMethod = class_Entity.getDeclaredMethod("setYawPitch", Float.TYPE, Float.TYPE);
             class_Entity_setYawPitchMethod.setAccessible(true);

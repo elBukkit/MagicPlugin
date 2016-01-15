@@ -1059,4 +1059,20 @@ public class CompatibilityUtils extends NMSUtils {
             ex.printStackTrace();;
         }
     }
+
+    public static Entity spawnEntity(Location target, EntityType entityType, CreatureSpawnEvent.SpawnReason spawnReason)
+    {
+        Entity entity = null;
+        try {
+            World world = target.getWorld();
+            try {
+                entity = (Entity)class_CraftWorld_spawnMethod.invoke(world, target, entityType.getEntityClass(), spawnReason);
+            } catch (Exception ex) {
+                entity = target.getWorld().spawnEntity(target, entityType);
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return entity;
+    }
 }
