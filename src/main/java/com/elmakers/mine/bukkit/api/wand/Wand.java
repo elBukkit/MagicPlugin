@@ -86,6 +86,7 @@ public interface Wand extends CostReducer {
     public boolean isSuperProtected();
     public boolean isSuperPowered();
     public boolean isCostFree();
+    public boolean isConsumeFree();
     public boolean isCooldownFree();
     public float getPower();
     public float getHealthRegeneration();
