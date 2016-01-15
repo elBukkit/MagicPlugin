@@ -3393,6 +3393,7 @@ phase:
     tags: noduel,nojail
     worth_sp: 400
     earns_sp: 2
+    quick_cast: true
     actions:
         cast:
         - class: Delay
@@ -6364,6 +6365,7 @@ recall:
     upgrade_required_path: beginner
     upgrade_required_casts: 25
     world_border_restricted: false
+    quick_cast: true
     actions:
         cast:
         -  class: Delay

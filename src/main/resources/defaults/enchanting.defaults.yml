@@ -778,6 +778,7 @@ knight:
 #
 
 broom:
+    hidden: true
     min_enchant_level: 25
     max_enchant_level: 35
     levels: 25,30,35
@@ -791,5 +792,6 @@ broom:
       0^3: 0 ,  10, 30
 
 blaster:
+    hidden: true
     min_enchant_level: 50
     max_enchant_level: 50
