@@ -32,8 +32,6 @@ import java.util.UUID;
 
 public class CustomProjectileAction extends CompoundAction
 {
-    private Targeting targeting;
-
     private int interval;
     private int lifetime;
     private int attachDuration;
@@ -70,6 +68,7 @@ public class CustomProjectileAction extends CompoundAction
     private int pitchMin;
     private int pitchMax;
 
+    protected Targeting targeting;
     protected Location launchLocation;
     protected long flightTime;
     protected double distanceTravelled;
@@ -84,7 +83,6 @@ public class CustomProjectileAction extends CompoundAction
     private Vector attachedOffset;
     private long attachedDeadline;
     private int entityHitCount;
-    private Set<UUID> entitiesHit;
     private int blockHitCount;
     private boolean missed;
     private long lastUpdate;
@@ -195,7 +193,6 @@ public class CustomProjectileAction extends CompoundAction
         velocity = null;
         activeProjectileEffects = null;
         entityHitCount = 0;
-        entitiesHit = null;
         blockHitCount = 0;
         attachedDeadline = 0;
         attachedOffset = null;
@@ -423,7 +420,6 @@ public class CustomProjectileAction extends CompoundAction
         }
 
         projectileLocation.setDirection(velocity);
-        targeting.setIgnoreEntities(entitiesHit);
         targeting.start(projectileLocation);
 
         // Advance targeting to find Entity or Block
@@ -516,10 +512,7 @@ public class CustomProjectileAction extends CompoundAction
             entityHitCount++;
             Entity hitEntity = target.getEntity();
             if (hitEntity != null && entityHitLimit > 1) {
-                if (entitiesHit == null) {
-                    entitiesHit = new HashSet<UUID>();
-                }
-                entitiesHit.add(hitEntity.getUniqueId());
+                targeting.ignoreEntity(hitEntity);
             }
             if (hitEntity != null) {
                 actionContext.playEffects("hit_entity");

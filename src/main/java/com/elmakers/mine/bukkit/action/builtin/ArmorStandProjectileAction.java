@@ -12,40 +12,29 @@ import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.ArmorStand;
-import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.util.EulerAngle;
 import org.bukkit.util.Vector;
 
-public class ArmorStandProjectileAction extends CustomProjectileAction {
+public class ArmorStandProjectileAction extends EntityProjectileAction {
     private boolean smallArmorStand = false;
     private boolean armorStandMarker = false;
     private boolean armorStandInvisible = false;
     private boolean armorStandGravity = false;
-    private boolean noTarget = true;
-    private boolean doTeleport = false;
-    private boolean doVelocity = false;
     private boolean adjustArmPitch = false;
     private boolean adjustHeadPitch = false;
     private boolean showArmorStandArms = true;
-    private boolean orient = false;
     private ItemStack rightArmItem = null;
     private ItemStack helmetItem = null;
     private ItemStack chestplateItem = null;
     private ItemStack leggingsItem = null;
     private ItemStack bootsItem = null;
-    private Vector armorStandOffset;
-    private Vector velocityOffset;
-    private CreatureSpawnEvent.SpawnReason armorStandSpawnReason = CreatureSpawnEvent.SpawnReason.CUSTOM;
     private VectorTransform leftArmTransform;
     private VectorTransform rightArmTransform;
     private VectorTransform leftLegTransform;
     private VectorTransform rightLegTransform;
     private VectorTransform bodyTransform;
     private VectorTransform headTransform;
-
-    private ArmorStand armorStand = null;
 
     @Override
     public void initialize(Spell spell, ConfigurationSection parameters) {
@@ -82,12 +71,6 @@ public class ArmorStandProjectileAction extends CustomProjectileAction {
         smallArmorStand = parameters.getBoolean("armor_stand_small", false);
         adjustHeadPitch = parameters.getBoolean("orient_head", false);
         adjustArmPitch = parameters.getBoolean("orient_right_arm", false);
-        doVelocity = parameters.getBoolean("apply_velocity", true);
-        doTeleport = parameters.getBoolean("teleport", true);
-        noTarget = parameters.getBoolean("no_target", true);
-        orient = parameters.getBoolean("orient", true);
-        velocityOffset = ConfigurationUtils.getVector(parameters, "velocity_offset");
-        armorStandOffset = ConfigurationUtils.getVector(parameters, "armor_stand_offset");
         MaterialAndData itemType = ConfigurationUtils.getMaterialAndData(parameters, "right_arm_item");
         if (itemType != null) {
             rightArmItem = itemType.getItemStack(1);
@@ -108,14 +91,6 @@ public class ArmorStandProjectileAction extends CustomProjectileAction {
         if (itemType != null) {
             bootsItem = itemType.getItemStack(1);
         }
-        if (parameters.contains("spawn_reason")) {
-            String reasonText = parameters.getString("spawn_reason").toUpperCase();
-            try {
-                armorStandSpawnReason = CreatureSpawnEvent.SpawnReason.valueOf(reasonText);
-            } catch (Exception ex) {
-                context.getMage().sendMessage("Unknown spawn reason: " + reasonText);
-            }
-        }
     }
 
     @Override
@@ -123,7 +98,7 @@ public class ArmorStandProjectileAction extends CustomProjectileAction {
         Mage mage = context.getMage();
         MageController controller = context.getController();
         Location location = mage.getEyeLocation();
-        armorStand = CompatibilityUtils.spawnArmorStand(location);
+        ArmorStand armorStand = (ArmorStand)setEntity(controller, CompatibilityUtils.spawnArmorStand(location));
         CompatibilityUtils.setYawPitch(armorStand, location.getYaw(), location.getPitch());
         armorStand.setItemInHand(rightArmItem);
         armorStand.setHelmet(helmetItem);
@@ -135,11 +110,8 @@ public class ArmorStandProjectileAction extends CustomProjectileAction {
         armorStand.setGravity(armorStandGravity);
         armorStand.setSmall(smallArmorStand);
         armorStand.setArms(showArmorStandArms);
-        if (noTarget) {
-            armorStand.setMetadata("notarget", new FixedMetadataValue(controller.getPlugin(), true));
-        }
         CompatibilityUtils.setDisabledSlots(armorStand, 2039552);
-        CompatibilityUtils.addToWorld(location.getWorld(), armorStand, armorStandSpawnReason);
+        CompatibilityUtils.addToWorld(location.getWorld(), armorStand, spawnReason);
 
         return super.start(context);
     }
@@ -147,28 +119,10 @@ public class ArmorStandProjectileAction extends CustomProjectileAction {
     @Override
     public SpellResult step(CastContext context) {
         SpellResult result = super.step(context);
-        Location target = actionContext.getTargetLocation();
-
-        // TODO: armorStandOffset and velocityOffset should be made relative
-        if (armorStandOffset != null) {
-            target = target.clone().add(armorStandOffset);
-        }
-        if (doVelocity) {
-            Vector velocity = this.velocity.clone().multiply(distanceTravelledThisTick);
-            if (velocityOffset != null) {
-                velocity = velocity.add(velocityOffset);
-            }
-            armorStand.setVelocity(velocity);
-        }
-        Location currentLocation = armorStand.getLocation();
-        if (doTeleport) {
-            if (!orient) {
-                target.setYaw(currentLocation.getYaw());
-                target.setPitch(currentLocation.getPitch());
-            }
-            armorStand.teleport(target);
-        }
+        ArmorStand armorStand = (ArmorStand)entity;
         double t = (double)flightTime / 1000;
+        Location currentLocation = entity.getLocation();
+
         if (leftArmTransform != null) {
             Vector direction = leftArmTransform.get(launchLocation, t);
             armorStand.setLeftArmPose(new EulerAngle(direction.getX(), direction.getY(), direction.getZ()));
@@ -204,11 +158,5 @@ public class ArmorStandProjectileAction extends CustomProjectileAction {
             armorStand.setRightArmPose(headPose);
         }
         return result;
-    }
-
-    @Override
-    public void finish(CastContext context) {
-        super.finish(context);
-        armorStand.remove();
     }
 }
