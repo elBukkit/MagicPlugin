@@ -195,6 +195,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
 
     private float                               cooldownReduction       = 0;
     private float                               costReduction           = 0;
+    private float                               consumeReduction        = 0;
 
     private boolean                             bypassMageCooldown      = false;
     private int                                 mageCooldown            = 0;
@@ -1487,6 +1488,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
             location = locationOverride;
         }
         costReduction = (float)parameters.getDouble("cost_reduction", 0);
+        consumeReduction = (float)parameters.getDouble("consume_reduction", 0);
         cooldownReduction = (float)parameters.getDouble("cooldown_reduction", 0);
         bypassMageCooldown = parameters.getBoolean("bypass_mage_cooldown", false);
         cancelOnDamage = parameters.getDouble("cancel_on_damage", 0);
@@ -1631,6 +1633,12 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     //
     // CostReducer Implementation
     //
+
+    @Override
+    public float getConsumeReduction()
+    {
+        return consumeReduction + mage.getConsumeReduction();
+    }
 
     @Override
     public float getCostReduction()

@@ -709,6 +709,14 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
     }
 
     @Override
+    public boolean isConsumeFree() {
+        if (baseSpell != null) {
+            return baseSpell.getConsumeReduction() >= 1;
+        }
+        return false;
+    }
+
+    @Override
     public void setTargetsCaster(boolean target) {
         if (baseSpell != null) {
             baseSpell.setTargetsCaster(target);

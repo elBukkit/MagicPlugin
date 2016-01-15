@@ -71,10 +71,9 @@ public class CastingCost implements com.elmakers.mine.bukkit.api.spell.CastingCo
         Mage mage = ((MageSpell)spell).getMage();
         int amount = getAmount(spell);
         boolean hasItem = true;
-        if (item != null && amount > 0)
+        if (item != null && amount > 0 && !isConsumeFree(spell))
         {
-            Inventory inventory = mage.getInventory();
-            hasItem = inventory.containsAtLeast(item.getItemStack(amount), amount);
+            hasItem = mage.hasItem(item.getItemStack(amount));
         }
         boolean hasXp = xp <= 0 || mage.getExperience() >= getXP(spell);
         boolean hasMana = mana <= 0 || mage.getMana() >= getMana(spell);
@@ -92,10 +91,9 @@ public class CastingCost implements com.elmakers.mine.bukkit.api.spell.CastingCo
         if (!(spell instanceof MageSpell)) return;
         Mage mage = ((MageSpell)spell).getMage();
         int amount = getAmount(spell);
-        if (item != null && amount > 0) {
-            Inventory inventory = mage.getInventory();
+        if (item != null && amount > 0 && !isConsumeFree(spell)) {
             ItemStack itemStack = getItemStack(spell);
-            inventory.removeItem(itemStack);
+            mage.removeItem(itemStack);
         }
         int xp = getXP(spell);
         if (xp > 0) {
@@ -189,7 +187,7 @@ public class CastingCost implements com.elmakers.mine.bukkit.api.spell.CastingCo
 
     public String getDescription(Messages messages, CostReducer reducer)
     {
-        if (item != null && getAmount() != 0) {
+        if (item != null && getAmount() != 0 && reducer.getConsumeReduction() < 1) {
             return item.getName();
         }
         if (xp > 0) {
@@ -207,9 +205,14 @@ public class CastingCost implements com.elmakers.mine.bukkit.api.spell.CastingCo
         return "";
     }
 
+    public boolean isConsumeFree(CostReducer reducer)
+    {
+        return reducer != null && reducer.getConsumeReduction() >= 1;
+    }
+
     public String getFullDescription(Messages messages, CostReducer reducer)
     {
-        if (item != null) {
+        if (item != null && !isConsumeFree(reducer)) {
             return getAmount(reducer) + " " + item.getName();
         }
         if (xp > 0) {
