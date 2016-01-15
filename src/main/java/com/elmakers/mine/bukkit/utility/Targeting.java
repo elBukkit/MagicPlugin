@@ -24,6 +24,7 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -349,7 +350,7 @@ public class Targeting {
         }
 
         if (targetBlock != null && entityTarget != null) {
-            if (targetBlock.getDistanceSquared() < entityTarget.getDistanceSquared()) {
+            if (targetBlock.getDistanceSquared() < entityTarget.getDistanceSquared() - hitboxPadding * hitboxPadding) {
                 entityTarget = null;
             } else {
                 targetBlock = null;
@@ -432,13 +433,14 @@ public class Targeting {
         targets = new ArrayList<Target>();
 
         // A fuzzy optimization range-check. A hard range limit is enforced in the final target consolidator
-        double rangeSquaredPadded = (range + 1) * (range + 1);
+        double rangePadded = (range + hitboxPadding + rangeQueryPadding);
+        rangePadded = Math.min(rangePadded, CompatibilityUtils.MAX_ENTITY_RANGE);
+        double rangeSquaredPadded = rangePadded * rangePadded;
 
         List<Entity> entities = null;
         boolean debugMessage = true;
         if (source == null && sourceEntity != null) {
-            range = Math.min(range + hitboxPadding + rangeQueryPadding, CompatibilityUtils.MAX_ENTITY_RANGE);
-            entities = sourceEntity.getNearbyEntities(range, range, range);
+            entities = sourceEntity.getNearbyEntities(rangePadded, rangePadded, rangePadded);
             if (sourceEntity instanceof LivingEntity) {
                 source = ((LivingEntity)sourceEntity).getEyeLocation();
             } else {
@@ -460,9 +462,11 @@ public class Targeting {
                 queryRange = new Vector(range * 2, range * 2, range * 2);
                 sourceLocation = source;
             }
+
+            entities = CompatibilityUtils.getNearbyEntities(sourceLocation, queryRange.getX() / 2, queryRange.getY() / 2, queryRange.getZ() / 2);
             if (mage != null && mage.getDebugLevel() > 8)
             {
-                mage.sendDebugMessage(ChatColor.GREEN + "Targeting entities from " +
+                mage.sendDebugMessage(ChatColor.GREEN + "Targeting " + ChatColor.GOLD + entities.size() + ChatColor.GREEN + " entities from " +
                         ChatColor.GRAY + source.getBlockX() +
                         ChatColor.DARK_GRAY + ","  + ChatColor.GRAY + source.getBlockY() +
                         ChatColor.DARK_GRAY + "," + ChatColor.GRAY + source.getBlockZ() +
@@ -473,7 +477,6 @@ public class Targeting {
                         ChatColor.DARK_GREEN + " with range of " + ChatColor.GREEN + range);
                 debugMessage = false;
             }
-            entities = CompatibilityUtils.getNearbyEntities(sourceLocation, queryRange.getX() / 2, queryRange.getY() / 2, queryRange.getZ() / 2);
         }
 
         if (debugMessage && mage != null && mage.getDebugLevel() > 8)
@@ -496,27 +499,30 @@ public class Targeting {
             if (!context.canTarget(entity)) continue;
 
             Target newScore = null;
+            int useRange = (int)Math.ceil(range + hitboxPadding);
             if (useHitbox) {
-                newScore = new Target(source, entity, (int)Math.ceil(range), useHitbox, hitboxPadding);
+                newScore = new Target(source, entity, useRange, useHitbox, hitboxPadding);
             } else {
-                newScore = new Target(source, entity, (int)Math.ceil(range), fov, closeRange, closeFOV,
+                newScore = new Target(source, entity, useRange, fov, closeRange, closeFOV,
                         distanceWeight, fovWeight, mageWeight, npcWeight, playerWeight, livingEntityWeight);
             }
+            int requiredDebug = 15;
             if (newScore.getScore() > 0)
             {
-                if (mage != null && mage.getDebugLevel() > 5)
-                {
-                    String message = ChatColor.DARK_GREEN + "Target " +
-                            ChatColor.GREEN + entity.getType() + ChatColor.DARK_GREEN +
-                            ": " + ChatColor.YELLOW + newScore.getScore()
-                            + ChatColor.DARK_GREEN + ", r2: " + ((int)newScore.getDistanceSquared());
-                    if (!useHitbox) {
-                        message += ChatColor.GREEN + ", a: " + newScore.getAngle();
-                    }
-                    mage.sendDebugMessage(message);
-                }
-
                 targets.add(newScore);
+                requiredDebug = 5;
+            }
+            if (mage != null && mage.getDebugLevel() > requiredDebug)
+            {
+                String message = ChatColor.DARK_GREEN + "Target " +
+                        ChatColor.GREEN + entity.getType() + ChatColor.DARK_GREEN +
+                        ": " + ChatColor.YELLOW + newScore.getScore()
+                        + ChatColor.DARK_GREEN + ", r2: "
+                        + ChatColor.GREEN + ((int)newScore.getDistanceSquared() + " / " + (useRange * useRange));
+                if (!useHitbox) {
+                    message += ChatColor.GREEN + ", a: " + newScore.getAngle();
+                }
+                mage.sendDebugMessage(message);
             }
         }
 
@@ -658,7 +664,10 @@ public class Targeting {
         return true;
     }
 
-    public void setIgnoreEntities(Set<UUID> ignoreEntities) {
-        this.ignoreEntities = ignoreEntities;
+    public void ignoreEntity(Entity entity) {
+        if (ignoreEntities == null) {
+            ignoreEntities = new HashSet<UUID>();
+        }
+        ignoreEntities.add(entity.getUniqueId());
     }
 }
