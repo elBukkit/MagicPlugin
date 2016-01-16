@@ -6390,6 +6390,19 @@ recall:
            sound: portal_travel
            sound_volume: 0.4
            use_wand_location: false
+           color_override: color
+           effectlib:
+            class: WarpEffect
+            duration: $delay
+            period: 1
+            particle: redstone
+            particleOffsetX: 0.9
+            particleOffsetY: 0.1
+            particleOffsetZ: 0.9
+            radius: 1
+            offset: 0,-1,0
+        -  class: EffectSingle
+           use_wand_location: false
            effectlib:
             class: WarpEffect
             duration: $delay
@@ -6403,12 +6416,25 @@ recall:
             offset: 0,-1,0
         teleport:
         -  class: EffectSingle
+           location: both
+           use_wand_location: false
+           color_override: color
+           effectlib:
+             class: WarpEffect
+             particle: redstone
+             particleOffsetX: 0.9
+             particleOffsetY: 0.1
+             particleOffsetZ: 0.9
+             offset: 0,-1,0
+             period: 2
+        -  class: EffectSingle
            sound: magic.teleport
            sound_pitch: 0.8
            location: both
            use_wand_location: false
            effectlib:
              class: WarpEffect
+             period: 1
              particle: portal
              particleCount: 10
              particleOffsetX: 0.9
