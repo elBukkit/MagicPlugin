@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -365,7 +366,8 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         }
 
         if (damage > 0) {
-            for (Batch batch : pendingBatches) {
+            for (Iterator<Batch> iterator = pendingBatches.iterator(); iterator.hasNext();) {
+                Batch batch = iterator.next();
                 if (!(batch instanceof SpellBatch)) continue;
                 SpellBatch spellBatch = (SpellBatch)batch;
                 Spell spell = spellBatch.getSpell();
@@ -376,7 +378,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                         spell.sendMessage(spell.getMessage("cancel"));
                     }
                     batch.finish();
-                    pendingBatches.remove(batch);
+                    iterator.remove();
                 }
             }
         }
