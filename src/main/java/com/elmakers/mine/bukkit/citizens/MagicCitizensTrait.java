@@ -49,7 +49,7 @@ public class MagicCitizensTrait extends CitizensTrait {
         super.save(data);
         data.setString("spell", spellKey);
         data.setBoolean("caster", npcCaster);
-        String parameterString = parameters.saveToString();
+        String parameterString = parameters == null ? null : parameters.saveToString();
         data.setString("parameters", parameterString);
 	}
 
@@ -123,7 +123,7 @@ public class MagicCitizensTrait extends CitizensTrait {
             if (value == null)
             {
                 sender.sendMessage(ChatColor.RED + "Cleared parameters");
-                parameters = null;
+                parameters = new YamlConfiguration();;
             }
             else
             {
