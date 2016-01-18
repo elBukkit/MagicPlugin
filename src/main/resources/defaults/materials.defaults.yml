@@ -480,6 +480,7 @@ nopassthrough:
 - barrier
 - iron_fence
 - iron_block
+- iron_door_block
 - obsidian
 
 # Which materials are always completely off-limits.

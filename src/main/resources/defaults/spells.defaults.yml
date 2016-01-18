@@ -5285,8 +5285,8 @@ chop:
         allow_max_range: false
         range: 32
         faces: all
-        recursion_depth: 32
-        drop_count: 4
+        recursion_depth: 64
+        drop_count: 8
         destructible: trees
         cooldown: 5000
         bypass_undo: true
@@ -5297,13 +5297,13 @@ chop|2:
     upgrade_required_path: apprentice
     upgrade_required_casts: 30
     parameters:
-        drop_count: 8
+        drop_count: 16
 
 chop|3:
     upgrade_required_path: master
     upgrade_required_casts: 50
     parameters:
-        drop_count: 16
+        drop_count: 32
 
 alter:
     icon_url: http://textures.minecraft.net/texture/4e693cf3b7bf83248527aacc2714638b55587cde593963d1f861884f5be1638
@@ -6387,8 +6387,9 @@ recall:
         no_target: []
         cast:
         -  class: EffectSingle
-           sound: portal_travel
-           sound_volume: 0.4
+           sound: magic.teleport
+           sound_volume: 0.8
+           sound_pitch: 0.3
            use_wand_location: false
            color_override: color
            effectlib:
@@ -6429,7 +6430,7 @@ recall:
              period: 2
         -  class: EffectSingle
            sound: magic.teleport
-           sound_pitch: 0.8
+           sound_pitch: 1.2
            location: both
            use_wand_location: false
            effectlib:
@@ -7230,7 +7231,7 @@ homing:
     parameters:
         fov: 0.75
         hitbox: false
-        velocity: 10
+        velocity: 5
         range: 48
         hitbox_size: 0.5
         target_type: LivingEntity
@@ -7241,7 +7242,7 @@ homing:
         track_target: true
         lifetime: 20000
         target_self_timeout: 2000
-        track_speed: 0.2
+        track_speed: 0.1
         use_target_location: false
     costs:
         mana: 100
@@ -7253,8 +7254,8 @@ homing|2:
         range: 64
         player_damage: 6
         entity_damage: 8
-        track_speed: 0.3
-        velocity: 12
+        track_speed: 0.2
+        velocity: 6
 
 homing|3:
     upgrade_required_path: master
@@ -7263,16 +7264,16 @@ homing|3:
         range: 64
         player_damage: 8
         entity_damage: 10
-        track_speed: 0.4
-        velocity: 14
+        track_speed: 0.3
+        velocity: 7
 
 homing|4:
     parameters:
         range: 64
         player_damage: 10
         entity_damage: 12
-        track_speed: 0.6
-        velocity: 16
+        track_speed: 0.4
+        velocity: 8
 
 sticky:
     upgrade_required_path: apprentice
@@ -7839,6 +7840,11 @@ torture:
         cast:
         - class: CustomProjectile
           actions:
+          - class: AreaOfEffect
+            actions:
+            - class: PotionEffect
+              duration: 1000
+              effect_wither: 1
           - class: PotionEffect
           - class: Damage
     effects:
@@ -7880,13 +7886,14 @@ torture:
     costs:
         mana: 100
     parameters:
-        velocity: 30
+        velocity: 20
+        gravity: 0.05
         range: 32
         target_type: LivingEntity
         target_breakables: 3
         target: other
-        duration: 3000
-        damage: 4
+        duration: 2000
+        damage: 2
         effect_slow: 20
         effect_wither: 1
         effect_confusion: 5
@@ -7897,15 +7904,15 @@ torture|2:
     upgrade_required_path: master
     upgrade_required_casts: 50
     parameters:
-        duration: 5000
-        effect_wither: 5
-        damage: 6
+        duration: 3000
+        effect_wither: 2
+        damage: 3
 
 torture|3:
     parameters:
-        duration: 7000
-        effect_wither: 10
-        damage: 8
+        duration: 4000
+        effect_wither: 3
+        damage: 4
 
 rubberize:
     icon: slime_ball
