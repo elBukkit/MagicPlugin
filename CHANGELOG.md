@@ -8,6 +8,7 @@
  - Add EntityProjectile and PlaySound actions
  - Add Patronus spell to potter configs (damages Withers)
  - Add the Brush Selector as a spell that Engineers get
+ - Prevent locked wands from learning new spells
 
 ## 5.4.6
 

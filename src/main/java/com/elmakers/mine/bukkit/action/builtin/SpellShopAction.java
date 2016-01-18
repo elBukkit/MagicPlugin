@@ -80,6 +80,11 @@ public class SpellShopAction extends BaseShopAction
         Wand wand = mage.getActiveWand();
         WandUpgradePath path = wand.getPath();
 
+        if (wand.isLocked()) {
+            context.showMessage(context.getMessage("no_path", "You may not learn with that $wand.").replace("$wand", wand.getName()));
+            return SpellResult.FAIL;
+        }
+
         // Load spells
         Map<String, Double> spellPrices = new HashMap<String, Double>();
         if (spells.size() > 0)

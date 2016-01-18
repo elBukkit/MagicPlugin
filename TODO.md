@@ -1,6 +1,7 @@
 # TODO
 
  - Column's radius doesn't seem to work
+ - Spells (Recall, marker place specifically) can't be used in a pstone area
 
  - PS TODO:
    - Disallow renaming on anvil
