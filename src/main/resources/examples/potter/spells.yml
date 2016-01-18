@@ -1521,40 +1521,6 @@ morsmordre:
     costs:
         mana: 55
 
-morsmordremaxima:
-    icon_url: http://textures.minecraft.net/texture/1eed1e4d70522ccd538b75ded4baa680e3dfe55426c560ff7b521be5cdf614f
-    icon: skull_item:4
-    category: dark
-    worth: 20
-    actions:
-        cast:
-        - class: CommandAction
-    effects:
-        cast:
-        -  class: EffectSingle
-           sound: wither_hurt
-        -  class: EffectTrail
-           particle: flame
-        -  class: EffectRing
-           location: target
-           firework: creeper
-           radius: 12
-           target_offset: 0,16,0
-           color: '00FF00'
-           color2: '88FF88'
-    parameters:
-        target: any
-        allow_max_range: true
-        range: 16
-        cooldown: 60000
-        transparent: apparate
-        op: true
-        commands:
-        - broadcast @pd cast &aMorsmordre Maxima, and a Dementor appears!
-        - mm mobs spawn Dementor 1 @tworld,@tx,@ty,@tz
-    costs:
-        mana: 100
-
 orchideous:
     category: herbology
     inherit: pollinate
