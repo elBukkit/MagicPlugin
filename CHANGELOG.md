@@ -9,6 +9,7 @@
  - Add Patronus spell to potter configs (damages Withers)
  - Add the Brush Selector as a spell that Engineers get
  - Prevent locked wands from learning new spells
+ - Placing a Recall marker requires build permission
 
 ## 5.4.6
 

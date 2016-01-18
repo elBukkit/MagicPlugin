@@ -458,12 +458,18 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
 
                 if (typeString.equalsIgnoreCase("place"))
                 {
+                    Block block = context.getLocation().getBlock();
+                    if (parameters.getBoolean("marker_requires_build", true) && !context.hasBuildPermission(block))
+                    {
+
+                        return SpellResult.NO_TARGET;
+                    }
                     if (hasMarker())
                     {
                         showMarkerConfirm(context);
                         return SpellResult.CAST;
                     }
-                    if (placeMarker(context.getLocation().getBlock()))
+                    if (placeMarker(block))
                     {
                         return SpellResult.TARGET_SELECTED;
                     }
