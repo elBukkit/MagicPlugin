@@ -2884,6 +2884,7 @@ flashbang:
       radius: 5
       target_self: true
       cooldown: 10000
+      speed: 1
     costs:
         mana: 50
 
