@@ -56,7 +56,7 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
     private Map<Integer, ShopItem> showingItems;
     private List<ItemStack> itemStacks;
 
-    protected class ShopItem {
+    protected class ShopItem implements Comparable<ShopItem> {
         private final ItemStack item;
         private final double worth;
 
@@ -71,6 +71,11 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
 
         public ItemStack getItem() {
             return item;
+        }
+
+        @Override
+        public int compareTo(ShopItem o) {
+            return (int)(this.worth - o.worth);
         }
     }
 
