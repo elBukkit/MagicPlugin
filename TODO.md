@@ -1,6 +1,7 @@
 # TODO
 
  - Column's radius doesn't seem to work
+ - Action to turn spell into a spawn egg
 
  - PS TODO:
    - Disallow renaming on anvil
