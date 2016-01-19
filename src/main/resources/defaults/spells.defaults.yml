@@ -1402,6 +1402,7 @@ grab:
         radius: 8
         item_speed: 2
         push: -1
+        bypass_undo: true
     costs:
         mana: 50
 
@@ -1495,7 +1496,7 @@ nuke:
           - class: Serial
             actions:
             - class: Repeat
-              repeat: 2
+              repeat: 4
               actions:
               - class: Delay
                 delay: 1000
@@ -1509,7 +1510,7 @@ nuke:
                 - class: Velocity
                   ignore_result: true
             - class: Repeat
-              repeat: 2
+              repeat: 4
               actions:
               - class: Delay
                 delay: 1000
@@ -2269,7 +2270,9 @@ healing:
         radius: 5
         amount: 1
         bypass_pvp: true
+        bypass_undo: true
         bypass_friendly_fire: true
+        bypass_undo: true
 
 music:
     icon_url: http://textures.minecraft.net/texture/a2ea21c79fa115b9a63625a2c9c5ec3dd92e1d1a7024162790237da9d98ee28
@@ -2381,6 +2384,7 @@ tame:
     category: utility
     worth_sp: 500
     earns_sp: 2
+    show_undoable: false
     actions:
         cast:
         - class: Tame

@@ -162,6 +162,7 @@ destructible:
 - huge_mushroom_2
 - ice
 - packed_ice
+- glowstone
 
 # Destructible level 2
 destructible2:
@@ -222,6 +223,7 @@ destructible2:
 - dark_oak_door
 - standing_banner
 - wool
+- torch
 
 destructible3:
 - tnt

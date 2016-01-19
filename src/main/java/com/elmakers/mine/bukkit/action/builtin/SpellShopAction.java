@@ -17,6 +17,7 @@ import org.bukkit.inventory.ItemStack;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -130,6 +131,7 @@ public class SpellShopAction extends BaseShopAction
             shopItems.add(new ShopItem(spellItem, worth));
         }
 
+        Collections.sort(shopItems);
         return showItems(context, shopItems);
 	}
 
