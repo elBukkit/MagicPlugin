@@ -125,6 +125,7 @@ year3:
       colorvaria: 40
       duro: 10
       diffindo: 30
+      patronus: 5
     required_spells:
       - deprimo
 

@@ -2916,6 +2916,7 @@ patronus:
     icon_url: http://textures.minecraft.net/texture/615baaf7223ce4ff011aa2db6b71c3022151c7f2b873c85d62ef69a36785a61
     icon: ink_sack:12
     category: charms
+    worth_sp: 200
     actions:
       cast:
       - class: PlaySound
