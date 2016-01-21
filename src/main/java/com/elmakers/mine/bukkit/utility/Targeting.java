@@ -76,6 +76,11 @@ public class Targeting {
     };
 
     public void reset() {
+        iterate();
+        ignoreEntities = null;
+    }
+
+    public void iterate() {
         result = TargetingResult.NONE;
         source = null;
         target = null;
@@ -214,7 +219,7 @@ public class Targeting {
     }
 
     public void start(Location source) {
-        reset();
+        iterate();
         this.source = source.clone();
     }
 
