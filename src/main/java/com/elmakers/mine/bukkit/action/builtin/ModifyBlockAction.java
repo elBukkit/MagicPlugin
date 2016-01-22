@@ -118,7 +118,7 @@ public class ModifyBlockAction extends BaseSpellAction {
             if (!mage.hasItem(requires)) {
                 String requiresMessage = context.getMessage("insufficient_resources");
                 context.sendMessage(requiresMessage.replace("$cost", brush.getName()));
-                return SpellResult.INSUFFICIENT_RESOURCES;
+                return SpellResult.STOP;
             }
             mage.removeItem(requires);
         }
