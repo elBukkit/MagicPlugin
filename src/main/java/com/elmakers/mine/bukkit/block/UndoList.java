@@ -26,6 +26,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.FallingBlock;
 import org.bukkit.inventory.InventoryHolder;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.metadata.MetadataValue;
 import org.bukkit.plugin.Plugin;
@@ -87,6 +88,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
 
     protected String				name;
 
+    private boolean                 consumed = false;
     private boolean                 undoEntityEffects = true;
     private Set<EntityType>         undoEntityTypes = null;
     protected boolean               undoBreakable = false;
@@ -329,7 +331,11 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
             return null;
         }
         BlockData blockData = blockList.removeFirst();
+        BlockState currentState = blockData.getBlock().getState();
         if (undo(blockData, applyPhysics)) {
+            if (consumed && currentState.getType() != Material.AIR && owner != null) {
+                owner.giveItem(new ItemStack(currentState.getType(), 1, currentState.getRawData()));
+            }
             return blockData;
         }
         blockList.addFirst(blockData);
@@ -483,6 +489,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
         timeToLive = node.getInt("time_to_live", timeToLive);
         name = node.getString("name", name);
         applyPhysics = node.getBoolean("apply_physics", applyPhysics);
+        consumed = node.getBoolean("consumed", consumed);
     }
 
     @Override
@@ -491,7 +498,8 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
         super.save(node);
         node.set("time_to_live", (Integer)timeToLive);
         node.set("name", name);
-        node.set("apply_physics", applyPhysics);
+        if (applyPhysics) node.set("apply_physics", true);
+        if (consumed) node.set("consumed", true);
     }
 
     public void watch(Entity entity)
@@ -940,5 +948,15 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
 
     public void setUndoSpeed(double speed) {
         this.speed = speed;
+    }
+
+    @Override
+    public boolean isConsumed() {
+        return consumed;
+    }
+
+    @Override
+    public void setConsumed(boolean consumed) {
+        this.consumed = consumed;
     }
 }
