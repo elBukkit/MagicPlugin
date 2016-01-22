@@ -88,8 +88,10 @@ public class BlockController implements Listener {
         }
         com.elmakers.mine.bukkit.api.block.BlockData modifiedBlock = com.elmakers.mine.bukkit.block.UndoList.getBlockData(block.getLocation());
         if (modifiedBlock != null) {
-            event.setCancelled(true);
-            block.setType(Material.AIR);
+            if (!modifiedBlock.getUndoList().isConsumed()) {
+                event.setCancelled(true);
+                block.setType(Material.AIR);
+            }
             com.elmakers.mine.bukkit.block.UndoList.commit(modifiedBlock);
         }
     }

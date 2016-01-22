@@ -3,10 +3,10 @@ package com.elmakers.mine.bukkit.action.builtin;
 import com.elmakers.mine.bukkit.action.BaseSpellAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.block.MaterialBrush;
+import com.elmakers.mine.bukkit.api.block.UndoList;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
-import com.elmakers.mine.bukkit.block.UndoList;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
@@ -105,7 +105,15 @@ public class ModifyBlockAction extends BaseSpellAction {
             return SpellResult.PENDING;
         }
 
+        if (!brush.isValid()) {
+            return SpellResult.FAIL;
+        }
+
         if (consumeBlocks && !context.isConsumeFree() && !brush.isErase()) {
+            UndoList undoList = context.getUndoList();
+            if (undoList != null) {
+                undoList.setConsumed(true);
+            }
             ItemStack requires = brush.getItemStack(1);
             if (!mage.hasItem(requires)) {
                 String requiresMessage = context.getMessage("insufficient_resources");
@@ -173,7 +181,7 @@ public class ModifyBlockAction extends BaseSpellAction {
         }
 
         if (commit) {
-            com.elmakers.mine.bukkit.api.block.BlockData blockData = UndoList.register(block);
+            com.elmakers.mine.bukkit.api.block.BlockData blockData = com.elmakers.mine.bukkit.block.UndoList.register(block);
             blockData.commit();
         }
         return SpellResult.CAST;
