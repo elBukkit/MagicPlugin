@@ -24,6 +24,7 @@ public class ArmorStandProjectileAction extends EntityProjectileAction {
     private boolean adjustArmPitch = false;
     private boolean adjustHeadPitch = false;
     private boolean showArmorStandArms = true;
+    private boolean sampleTarget = false;
     private ItemStack rightArmItem = null;
     private ItemStack helmetItem = null;
     private ItemStack chestplateItem = null;
@@ -71,13 +72,10 @@ public class ArmorStandProjectileAction extends EntityProjectileAction {
         smallArmorStand = parameters.getBoolean("armor_stand_small", false);
         adjustHeadPitch = parameters.getBoolean("orient_head", false);
         adjustArmPitch = parameters.getBoolean("orient_right_arm", false);
-        MaterialAndData itemType = ConfigurationUtils.getMaterialAndData(parameters, "right_arm_item");
+        sampleTarget = parameters.getBoolean("sample_target", false);
+        MaterialAndData itemType = ConfigurationUtils.getMaterialAndData(parameters, "right_arm_item"); 
         if (itemType != null) {
             rightArmItem = itemType.getItemStack(1);
-        }
-        itemType = ConfigurationUtils.getMaterialAndData(parameters, "helmet_item");
-        if (itemType != null) {
-            helmetItem = itemType.getItemStack(1);
         }
         itemType = ConfigurationUtils.getMaterialAndData(parameters, "chestplate_item");
         if (itemType != null) {
@@ -90,6 +88,16 @@ public class ArmorStandProjectileAction extends EntityProjectileAction {
         itemType = ConfigurationUtils.getMaterialAndData(parameters, "boots_item");
         if (itemType != null) {
             bootsItem = itemType.getItemStack(1);
+        }
+        if (sampleTarget) {
+            if (context.getTargetBlock() != null) {
+            itemType = new MaterialAndData(context.getTargetBlock());
+            }
+        } else {
+            itemType = ConfigurationUtils.getMaterialAndData(parameters, "helmet_item");
+        }
+        if (itemType != null) {
+            helmetItem = itemType.getItemStack(1);
         }
     }
 
@@ -112,7 +120,7 @@ public class ArmorStandProjectileAction extends EntityProjectileAction {
         armorStand.setArms(showArmorStandArms);
         CompatibilityUtils.setDisabledSlots(armorStand, 2039552);
         CompatibilityUtils.addToWorld(location.getWorld(), armorStand, spawnReason);
-
+        
         return super.start(context);
     }
 

@@ -25,10 +25,7 @@ import org.bukkit.util.Vector;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.Random;
-import java.util.Set;
-import java.util.UUID;
 
 public class CustomProjectileAction extends CompoundAction
 {
@@ -91,6 +88,11 @@ public class CustomProjectileAction extends CompoundAction
     private long targetSelfDeadline;
     private DynamicLocation effectLocation = null;
     private Collection<EffectPlay> activeProjectileEffects;
+    
+    //TEMP
+    private boolean returnToCaster = false;
+    private int returnToCasterTime;
+    private Vector returnVector;
 
     @Override
     public void initialize(Spell spell, ConfigurationSection parameters) {
@@ -160,6 +162,10 @@ public class CustomProjectileAction extends CompoundAction
         speed = parameters.getDouble("speed", 1);
         speed = parameters.getDouble("velocity", speed * 20);
 
+        //TEMP
+        returnToCaster = parameters.getBoolean("return_to_source", false);
+        returnToCasterTime = parameters.getInt("return_duration", 1000);
+        
         // Some parameter tweaks to make sure things are sane
         TargetType targetType = targeting.getTargetType();
         if (targetType == TargetType.NONE) {
@@ -197,6 +203,7 @@ public class CustomProjectileAction extends CompoundAction
         attachedDeadline = 0;
         attachedOffset = null;
         missed = false;
+        returnVector = null;
     }
 
     @Override
@@ -367,7 +374,7 @@ public class CustomProjectileAction extends CompoundAction
         }
         else if (reorient)
         {
-            targetVelocity = context.getDirection().clone().normalize();
+            targetVelocity = context.getMage().getPlayer().getLocation().getDirection().clone().normalize();
         }
         else
         {
@@ -418,7 +425,35 @@ public class CustomProjectileAction extends CompoundAction
                 velocity = targetVelocity;
             }
         }
-
+        
+        if (returnToCaster) {
+            if (returnVector == null) {
+                Entity targetEntity = context.getMage().getEntity();
+                Location targetLocation = targetEntity.getLocation().add(0, 1.5, 0);
+                Vector direction = targetLocation.toVector().subtract(projectileLocation.toVector());
+                double amplitude = direction.length()/(returnToCasterTime/1000);
+                
+                returnVector = direction.normalize().multiply(amplitude);
+            }
+            if ((flightTime*2) >= returnToCasterTime) {
+                returnToCaster = false;
+                velocity = new Vector(0,0,0);
+            } else {
+                velocity = returnVector;
+            }
+        }
+        
+        if (trackEntity)
+        {
+            Entity targetEntity = context.getTargetEntity();
+            if (targetEntity != null && targetEntity.isValid() && context.canTarget(targetEntity))
+            {
+                Location targetLocation = targetEntity instanceof LivingEntity ?
+                        ((LivingEntity)targetEntity).getEyeLocation() : targetEntity.getLocation();
+                targetVelocity = targetLocation.toVector().subtract(projectileLocation.toVector()).normalize();
+            }
+        }
+        
         projectileLocation.setDirection(velocity);
         targeting.start(projectileLocation);
 
@@ -488,7 +523,7 @@ public class CustomProjectileAction extends CompoundAction
 
         actionContext.setTargetLocation(targetLocation);
         actionContext.setTargetEntity(target.getEntity());
-
+              
         if (hasStepEffects) {
             actionContext.playEffects("step");
         }
