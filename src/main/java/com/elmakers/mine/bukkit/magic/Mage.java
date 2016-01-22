@@ -2057,17 +2057,17 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
     public void giveItem(ItemStack itemStack) {
 
-        if (hasStoredInventory()) {
-            addToStoredInventory(itemStack);
-            return;
-        }
-
         // Check for wand upgrades if appropriate
         Wand activeWand = getActiveWand();
         if (activeWand != null) {
             if (activeWand.addItem(itemStack)) {
                 return;
             }
+        }
+
+        if (hasStoredInventory()) {
+            addToStoredInventory(itemStack);
+            return;
         }
 
         // Place directly in hand if possible
