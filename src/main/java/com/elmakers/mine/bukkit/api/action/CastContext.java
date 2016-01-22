@@ -53,6 +53,7 @@ public interface CastContext {
     public MageController getController();
     public void registerForUndo(Runnable runnable);
     public void registerModified(Entity entity);
+    public void registerDamaged(Entity entity);
     public void registerForUndo(Entity entity);
     public void registerForUndo(Block block);
     public void updateBlock(Block block);

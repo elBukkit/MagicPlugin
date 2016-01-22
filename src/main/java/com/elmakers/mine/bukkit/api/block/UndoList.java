@@ -43,7 +43,7 @@ public interface UndoList extends BlockList, Comparable<UndoList> {
 
     public void add(Entity entity);
     public void remove(Entity entity);
-    public EntityData damage(Entity entity, double damage);
+    public EntityData damage(Entity entity);
     public EntityData modify(Entity entity);
     public void add(Runnable runnable);
     public void move(Entity entity);
