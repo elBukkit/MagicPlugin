@@ -5,6 +5,8 @@ import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
+import com.palmergames.bukkit.towny.utils.EntityTypeUtil;
+
 import org.bukkit.DyeColor;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
@@ -190,11 +192,12 @@ public class EntityProjectileAction extends CustomProjectileAction {
         }
         SpellResult result = super.step(context);
         Location target = actionContext.getTargetLocation();
-
         // TODO: locationOffset and velocityOffset should be made relative
         if (locationOffset != null) {
             target = target.clone().add(locationOffset);
         }
+        double distance = target.toVector().subtract(entity.getLocation().toVector()).length();
+        System.out.println(distance);
         if (doVelocity) {
             Vector velocity = this.velocity.clone().multiply(distanceTravelledThisTick);
             if (velocityOffset != null) {
@@ -209,6 +212,8 @@ public class EntityProjectileAction extends CustomProjectileAction {
                 target.setPitch(currentLocation.getPitch());
             }
             entity.teleport(target);
+            Location loc = entity.getLocation();
+            
         }
         return result;
     }

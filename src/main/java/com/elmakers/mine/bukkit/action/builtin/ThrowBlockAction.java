@@ -53,7 +53,7 @@ public class ThrowBlockAction extends BaseProjectileAction
 		Vector direction = context.getDirection();
         double speed = context.getRandom().nextDouble() * (speedMax - speedMin) + speedMin;
         direction.normalize().multiply(speed);
-		Vector up = new Vector(0, 1, 0);
+		Vector up = new Vector(0, 1, 0);     
 		Vector perp = new Vector();
 		perp.copy(direction);
 		perp.crossProduct(up);
