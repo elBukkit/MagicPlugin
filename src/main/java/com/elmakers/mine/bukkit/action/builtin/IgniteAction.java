@@ -35,7 +35,7 @@ public class IgniteAction extends BaseSpellAction
 		{
 			return SpellResult.NO_TARGET;
 		}
-        context.registerModified(entity);
+        context.registerDamaged(entity);
 
 		if (isElemental) {
             Mage mage = context.getMage();

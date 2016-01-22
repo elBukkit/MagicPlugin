@@ -54,7 +54,7 @@ public class DamageAction extends BaseSpellAction
 		double damage = 1;
 
         LivingEntity targetEntity = (LivingEntity)entity;
-        context.registerModified(targetEntity);
+        context.registerDamaged(targetEntity);
 		Mage mage = context.getMage();
 		MageController controller = context.getController();
 

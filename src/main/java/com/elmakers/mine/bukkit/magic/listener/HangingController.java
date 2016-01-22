@@ -32,7 +32,7 @@ public class HangingController implements Listener {
             UndoList undoList = controller.getPendingUndo(location);
             if (undoList != null) {
                 event.setCancelled(true);
-                undoList.damage(entity, 0);
+                undoList.damage(entity);
             }
         } catch (Exception ex) {
             controller.getLogger().log(Level.WARNING, "Failed to handle HangingBreakEvent", ex);
@@ -46,9 +46,9 @@ public class HangingController implements Listener {
 
         Hanging entity = event.getEntity();
         UndoList undoList = controller.getEntityUndo(breakingEntity);
-        if (undoList != null)
+        if (undoList != null && undoList.isScheduled())
         {
-            undoList.damage(entity, 0);
+            undoList.damage(entity);
 
             // Prevent item drops, but still remove it
             // Else it'll probably just break again.
