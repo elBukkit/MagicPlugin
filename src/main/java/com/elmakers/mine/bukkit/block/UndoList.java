@@ -552,13 +552,17 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
     }
 
     @Override
-    public EntityData damage(Entity entity, double damage) {
+    public EntityData damage(Entity entity) {
         EntityData data = modify(entity);
         // Kind of a hack to prevent dropping things we're going to undo later
         if (undoEntityTypes != null && undoEntityTypes.contains(entity.getType()))
         {
             data.removed(entity);
             entity.remove();
+        }
+        if (data != null)
+        {
+            data.setRespawn(true);
         }
         return data;
     }

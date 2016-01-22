@@ -306,6 +306,16 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
     }
 
     @Override
+    public void registerDamaged(Entity entity)
+    {
+        addWork(5);
+        if (undoList != null)
+        {
+            undoList.damage(entity);
+        }
+    }
+
+    @Override
     public void registerForUndo(Entity entity)
     {
         addWork(5);

@@ -49,6 +49,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     protected Vector relativeLocation;
     protected boolean hasMoved = false;
     protected boolean isTemporary = false;
+    private boolean respawn = false;
     protected String name = null;
     protected EntityType type;
     protected Art art;
@@ -264,7 +265,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         Entity entity = this.getEntity();
 
         // Re-spawn if dead or missing
-        if (!isTemporary && uuid != null && (entity == null || !entity.isValid() || entity.isDead()) && !(entity instanceof Player)) {
+        if (respawn && !isTemporary && uuid != null && (entity == null || !entity.isValid() || entity.isDead()) && !(entity instanceof Player)) {
             // Avoid re-re-spawning an entity
             WeakReference<Entity> respawnedEntity = respawned.get(uuid);
             if (respawnedEntity != null) {
@@ -284,7 +285,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
 
     @Override
     public boolean modify(Entity entity) {
-        if (entity == null || entity.getType() != type) return false;
+        if (entity == null || entity.getType() != type || !entity.isValid()) return false;
 
         if (extraData != null) {
             extraData.apply(entity);
@@ -409,5 +410,13 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         if (extraData != null) {
             extraData.removed(entity);
         }
+    }
+
+    public boolean isRespawn() {
+        return respawn;
+    }
+
+    public void setRespawn(boolean respawn) {
+        this.respawn = respawn;
     }
 }
