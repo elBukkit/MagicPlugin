@@ -66,4 +66,7 @@ public interface UndoList extends BlockList, Comparable<UndoList> {
     public void setBypass(boolean bypass);
     public Collection<Entity> getAllEntities();
     public boolean getApplyPhysics();
+
+    public boolean isConsumed();
+    public void setConsumed(boolean consumed);
 }
