@@ -1884,7 +1884,8 @@ tree:
     icon: sapling
     icon_url: http://textures.minecraft.net/texture/789e28cfb955a3bf9eafee3eabeca3e8bec87fc7e7489abb6281860289cec43
     category: elemental
-    worth_sp: 200
+    worth_sp: 5000
+    earns_sp: 20
     actions:
         cast:
         - class: Tree
@@ -3003,8 +3004,8 @@ supertorch:
     icon_url: http://textures.minecraft.net/texture/15f098d4bc88ca9b11ddb6b3acb08dad7a3fc62929ec27adcedb667c61faa3
     icon: torch
     category: engineering
-    worth_sp: 800
-    earns_sp: 2
+    worth_sp: 500
+    earns_sp: 15
     actions:
         cast:
         -  class: Torch
@@ -3746,8 +3747,8 @@ paint:
     icon_url: http://textures.minecraft.net/texture/719e9875ffb35adfbd135c416e51dcf80dec38bf3d0dca2f94eb6595b90c0b5
     icon: painting
     category: engineering
-    worth_sp: 100
-    cancellable: false
+    worth_sp: 1000
+    earns_sp: 10
     actions:
       cast:
       - class: ModifyBlock
@@ -3792,7 +3793,8 @@ recurse:
     icon_url: http://textures.minecraft.net/texture/ce31cd14d873d1579b633646be683b5e1201512e593ca61595e33a5ef17b374
     category: engineering
     cancellable: false
-    worth_sp: 400
+    worth_sp: 4000
+    earns_sp: 15
     actions:
         cast:
         - class: Recurse
@@ -3996,7 +3998,8 @@ bridge:
     category: engineering
     class: BridgeSpell
     cancellable: false
-    worth_sp: 200
+    worth_sp: 1000
+    earns_sp: 10
     effects:
         cast:
         -  class: EffectSingle
@@ -4013,8 +4016,8 @@ pillar:
     icon_url: http://textures.minecraft.net/texture/8a37d68a64b72c169586e55e885784f61ba6ca62246b5dff877656c6c2f657e
     icon: iron_axe
     category: engineering
-    worth_sp: 200
-    cancellable: false
+    worth_sp: 1000
+    earns_sp: 10
     consume: true
     actions:
         cast:
@@ -4032,6 +4035,7 @@ pillar:
         transparent: transparent_to_construction
         direction: up
         destructible: destructible_replace
+        consume: true
     costs:
         mana: 5
 
@@ -4039,8 +4043,8 @@ place:
     icon_url: http://textures.minecraft.net/texture/c79136be2c1ed4c89e21bfc7846486c516d9b4d32965edfd5877fafa8aeb6
     icon: diamond_axe
     category: engineering
-    worth_sp: 250
-    cancellable: false
+    worth_sp: 1000
+    earns_sp: 10
     actions:
         cast:
         - class: ChangeContext
@@ -5316,7 +5320,8 @@ alter:
     category: engineering
     cancellable: false
     class: AlterSpell
-    worth_sp: 80
+    worth_sp: 1500
+    earns_sp: 12
     effects:
         cast:
         -  class: EffectSingle
@@ -6054,7 +6059,8 @@ iterate:
     icon: ink_sack:2
     category: engineering
     cancellable: false
-    worth_sp: 250
+    worth_sp: 3000
+    earns_sp: 13
     actions:
         cast:
         -  class: Line
@@ -6067,6 +6073,7 @@ iterate:
         size: 32
         increment_data: false
         destructible: destructible_replace
+        consume: true
     costs:
         mana: 50
 

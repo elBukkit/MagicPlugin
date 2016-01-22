@@ -455,23 +455,16 @@ engineer:
     spells:
       rollback: 1,5,10
       alter: 0,10,20
-      blob: 0,10,40
-      bridge: 0,5,10
-      convert: 0,5,40
+      #bridge: 0,5,10
+      #convert: 0,5,40
       recurse: 0,5,20
       paint: 1,20,45
-      toss: 2,25,35
+      #toss: 2,25,35
       iterate: 0,0,40
-      repair: 1,10,30
-      tunnel: 5,10,20
-      commit: 0,0,1
+      #tunnel: 5,10,20
       pillar: 0,5,10
       place: 0,1,5
       tree: 0,2,10
-      portal: 0,0,25
-      anvil: 0,0,10
-      shrink: 5,20,30
-      grow: 1,10,20
       supertorch: 1,10,20
       brushselect: 100,100,100
     material_count:
@@ -677,11 +670,16 @@ conduit:
       2: 0,   50,  10
       3: 0,   5,   90
     spells:
+      portal: 0,0,25
       backup: 0,0,1
+      repair: 1,10,30
       superrepair: 0,0,5
       paste: 0,1,10
       forest: 0,0,10
       permafrost: 0,5,10
+      anvil: 0,0,10
+      shrink: 5,20,30
+      grow: 1,10,20
     material_count:
       1:  50, 20, 20
       3:  1,  10, 30
@@ -689,6 +687,7 @@ conduit:
       8:  0,  1,  10
       10: 0,  0,  1
     materials:
+      commit: 0,0,1
       clone: 0,0,1
       replicate: 0,0,1
       lava: 0,0,15
