@@ -2,6 +2,9 @@
 
  - Column's radius doesn't seem to work
  - Action to turn spell into a spawn egg
+ - Add an unbind command
+ - Add option for bound wands to not restore (ollivander's ticket)
+   or to get unbound automatically on sell? Better.
 
  - PS TODO:
    - Disallow renaming on anvil

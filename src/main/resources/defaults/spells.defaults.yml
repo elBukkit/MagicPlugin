@@ -1725,7 +1725,7 @@ frost|4:
         mana: 70
 
 permafrost:
-    icon_url: http://textures.minecraft.net/texture/ff39da1c8acc158ee5aa7f0352e4738aefe3365f28841badd603e2ffe42a
+    icon_url: http://textures.minecraft.net/texture/872d9b98a6b34a2762aac1af915873c066c43c2b2b8d689d27626cc5afcb11
     icon: snow_ball
     category: engineering
     worth_sp: 2000
@@ -3000,7 +3000,7 @@ fling|4:
         mana: 90
 
 supertorch:
-    icon_url: http://textures.minecraft.net/texture/08f4793551132fad5bdb5d185269881a8de6fa4b86c6bde92c2bf467e097
+    icon_url: http://textures.minecraft.net/texture/15f098d4bc88ca9b11ddb6b3acb08dad7a3fc62929ec27adcedb667c61faa3
     icon: torch
     category: engineering
     worth_sp: 800
@@ -5115,7 +5115,7 @@ breach|3:
         radius: 2
 
 peek:
-    icon_url: http://textures.minecraft.net/texture/872d9b98a6b34a2762aac1af915873c066c43c2b2b8d689d27626cc5afcb11
+    icon_url: http://textures.minecraft.net/texture/42fe4273a62118f32881159ab3d6eded9fac90748deedbdb16204d107f843
     icon: sugar_cane
     category: mining
     worth_sp: 300
