@@ -5115,7 +5115,7 @@ breach|3:
         radius: 2
 
 peek:
-    icon_url: http://textures.minecraft.net/texture/672e0c305074a7acf671e7644291d7f745baecf05743395e28d1f04cbbb4
+    icon_url: http://textures.minecraft.net/texture/872d9b98a6b34a2762aac1af915873c066c43c2b2b8d689d27626cc5afcb11
     icon: sugar_cane
     category: mining
     worth_sp: 300
@@ -6202,14 +6202,14 @@ laser:
         entity_damage: 1
         target_count: 5
         range: 32
-        size: 4
+        size: 1
         start_at_target: true
         increment_data: false
         check_destructible: true
         destructible: destructible_mining,transparent
         transparent: air
         brush: air
-        radius: 1
+        radius: 0
         undo: 15000
         cooldown: 10000
         delay: 250
@@ -6222,19 +6222,21 @@ laser|2:
     upgrade_required_path: master
     upgrade_required_casts: 50
     parameters:
-        radius: 2
+        radius: 0.5
+        size: 1
         destructible: destructible,destructible2,transparent
         player_damage: 1
         entity_damage: 2
-        repeat: 12
+        repeat: 11
 
 laser|3:
     parameters:
         destructible: destructible,destructible2,destructible3,transparent
-        radius: 3
+        radius: 0.5
+        size: 2
         player_damage: 1
         entity_damage: 3
-        repeat: 15
+        repeat: 12
 
 shrink:
     icon: skull_item
