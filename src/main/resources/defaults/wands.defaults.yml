@@ -1146,6 +1146,7 @@ engineer_upgrade:
     xp_regeneration: 50
     spells:
     - brushselect
+    - place
     materials:
     - dirt
     - cobblestone
