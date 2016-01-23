@@ -267,7 +267,8 @@ public class MagicCommandExecutor extends MagicMapExecutor {
 			}
 
 			Collection<Mage> mages = api.getMages();
-			sender.sendMessage(ChatColor.AQUA + "Registered blocks (" + ChatColor.LIGHT_PURPLE + UndoList.getModified().size() + ChatColor.AQUA + ")");
+			sender.sendMessage(ChatColor.AQUA + "Modified blocks (" + ChatColor.LIGHT_PURPLE + UndoList.getModified().size() + ChatColor.AQUA + ")");
+			sender.sendMessage(ChatColor.AQUA + "Watching blocks (" + ChatColor.LIGHT_PURPLE + UndoList.getWatching().size() + ChatColor.AQUA + ")");
 			sender.sendMessage(ChatColor.AQUA + "Registered breakable (" + ChatColor.LIGHT_PURPLE + UndoList.getBreakable().size() + ChatColor.AQUA + ")");
 			sender.sendMessage(ChatColor.AQUA + "Registered reflective (" + ChatColor.LIGHT_PURPLE + UndoList.getReflective().size() + ChatColor.AQUA + ")");
 			sender.sendMessage(ChatColor.LIGHT_PURPLE + "Active mages: " + ChatColor.LIGHT_PURPLE + mages.size());

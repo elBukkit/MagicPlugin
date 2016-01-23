@@ -2612,16 +2612,6 @@ public class MagicController implements MageController {
         mage.getPlayer().updateInventory();
 	}
 
-	protected void registerEntityForUndo(Entity entity) {
-        UndoList lastUndo = getPendingUndo(entity.getLocation());
-        if (lastUndo != null) {
-            long now = System.currentTimeMillis();
-            if (lastUndo.getModifiedTime() >= now - undoTimeWindow) {
-                lastUndo.add(entity);
-            }
-        }
-	}
-
     public void onToggleInventory(com.elmakers.mine.bukkit.magic.Mage mage, Wand wand) {
         // Check for spell cancel first, e.g. fill or force
         if (!mage.cancel()) {
