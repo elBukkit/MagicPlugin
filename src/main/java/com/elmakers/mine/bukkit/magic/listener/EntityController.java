@@ -343,7 +343,7 @@ public class EntityController implements Listener {
             // So we can catch this as a one-time event, for blocks we have recorded.
             if (undoData.getMaterial() != Material.AIR)
             {
-                com.elmakers.mine.bukkit.block.UndoList.commit(undoData);
+                undoData.getUndoList().add(block);
                 event.setCancelled(true);
                 return;
             }
