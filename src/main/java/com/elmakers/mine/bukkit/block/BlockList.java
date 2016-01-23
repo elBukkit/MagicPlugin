@@ -49,7 +49,7 @@ public class BlockList implements com.elmakers.mine.bukkit.api.block.BlockList {
         return add(newBlock);
     }
 
-    public boolean add(BlockData blockData)
+    public boolean contain(BlockData blockData)
     {
         // First do a sanity check with the map
         // Currently, we don't replace blocks!
@@ -61,6 +61,19 @@ public class BlockList implements com.elmakers.mine.bukkit.api.block.BlockList {
         // Set a world name if this block list doesn't have one yet
         if (worldName == null || worldName.length() == 0) worldName = blockData.getWorldName();
 
+        BlockVector blockLocation = blockData.getPosition();
+        contain(blockLocation);
+
+        return true;
+    }
+
+    public boolean add(BlockData blockData)
+    {
+        if (!contain(blockData))
+        {
+            return false;
+        }
+
         if (blockIdMap == null)
         {
             blockIdMap = new HashSet<Long>();
@@ -70,8 +83,6 @@ public class BlockList implements com.elmakers.mine.bukkit.api.block.BlockList {
         {
             blockList = new LinkedList<BlockData>();
         }
-        BlockVector blockLocation = blockData.getPosition();
-        contain(blockLocation);
 
         blockIdMap.add(blockData.getId());
         blockList.addLast(blockData);
