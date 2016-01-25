@@ -2921,7 +2921,7 @@ weather:
              particle: drip_water
     parameters:
         target: none
-        cooldown: 100000
+        cooldown: 900000
         weather: cycle
     costs:
         mana: 150
@@ -3928,7 +3928,7 @@ day:
            particle_count: 5
     parameters:
         target: none
-        cooldown: 300000
+        cooldown: 1800000
         time: day
         weather: clear
     costs:
@@ -3955,7 +3955,7 @@ night:
              particle: smoke_large
     parameters:
         target: none
-        cooldown: 300000
+        cooldown: 1800000
         time: night
         cycle_moon_phase: true
     costs:
