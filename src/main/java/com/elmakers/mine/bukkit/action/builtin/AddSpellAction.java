@@ -3,6 +3,7 @@ package com.elmakers.mine.bukkit.action.builtin;
 import com.elmakers.mine.bukkit.action.BaseSpellAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.magic.Mage;
+import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.magic.Messages;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
@@ -63,12 +64,22 @@ public class AddSpellAction extends BaseSpellAction
                 context.showMessage(context.getMessage("no_upgrade", "You may not learn with that $wand.").replace("$wand", wand.getName()));
                 return SpellResult.FAIL;
             }
-            if ((requiredPath != null && !path.hasPath(requiredPath)) || (exactPath != null && !exactPath.equals(path.getKey()))) {
-                WandUpgradePath requiresPath = com.elmakers.mine.bukkit.wand.WandUpgradePath.getPath(requiredPath);
+            MageController controller = context.getController();
+            if (requiredPath != null && !path.hasPath(requiredPath)) {
+                WandUpgradePath requiresPath = controller.getPath(requiredPath);
                 if (requiresPath != null) {
-                    context.showMessage(context.getMessage("no_path", "You may not learn with that $wand.").replace("$path", requiresPath.getName()));
+                    context.showMessage(context.getMessage("no_required_path", "You must be at least $path!").replace("$path", requiresPath.getName()));
                 } else {
                     context.getLogger().warning("Invalid path specified in AddSpell action: " + requiredPath);
+                }
+                return SpellResult.FAIL;
+            }
+            if (exactPath != null && !exactPath.equals(path.getKey())) {
+                WandUpgradePath requiresPath = controller.getPath(exactPath);
+                if (requiresPath != null) {
+                    context.showMessage(context.getMessage("no_path_exact", "You must be at $path!").replace("$path", requiresPath.getName()));
+                } else {
+                    context.getLogger().warning("Invalid path specified in AddSpell action: " + exactPath);
                 }
                 return SpellResult.FAIL;
             }

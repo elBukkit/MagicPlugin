@@ -2705,7 +2705,6 @@ meteor:
         radius: 3
         delay: rand(0,2000)
         multiply: rand(3,5)
-        source_offset: 0,50,0
         target: other
         item_speed: .5
         living_entity_speed: .5
@@ -2725,6 +2724,7 @@ meteor:
         speed: 0.9
         falling: true
         brush: air
+        source_offset: 0,50,0
         direction: 0,0.75,0
         destructible: destructible,destructible2,destructible3
         destructible_override: true
