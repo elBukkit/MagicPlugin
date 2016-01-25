@@ -24,6 +24,7 @@ public class ChangeContextAction extends CompoundAction {
     private boolean targetEntityLocation;
     private boolean sourceAtTarget;
     private Double sourcePitch;
+    private Double sourceYaw;
     private Vector randomSourceOffset;
     private Vector randomTargetOffset;
     private Double targetDirectionSpeed;
@@ -43,6 +44,7 @@ public class ChangeContextAction extends CompoundAction {
         targetSelf = parameters.getBoolean("target_caster", false);
         sourceAtTarget = parameters.getBoolean("source_at_target", false);
         sourcePitch = ConfigurationUtils.getDouble(parameters, "source_pitch", null);
+        sourceYaw = ConfigurationUtils.getDouble(parameters, "source_yaw", null);
         sourceOffset = ConfigurationUtils.getVector(parameters, "source_offset");
         relativeSourceOffset = ConfigurationUtils.getVector(parameters, "relative_source_offset");
         targetOffset = ConfigurationUtils.getVector(parameters, "target_offset");
@@ -109,6 +111,10 @@ public class ChangeContextAction extends CompoundAction {
         if (sourcePitch != null)
         {
             sourceLocation.setPitch((float)(double)sourcePitch);
+        }
+        if (sourceYaw != null)
+        {
+            sourceLocation.setYaw((float)(double)sourceYaw);
         }
         if (sourceOffset != null)
         {
