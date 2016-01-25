@@ -69,10 +69,17 @@ public class PreciousStonesAPI implements BlockBuildManager, BlockBreakManager, 
 		for (Field field : fields) {
 			String fieldName = field.getName();
 			String fieldType = field.getSettings().getTitle();
+			String fieldOwner = field.getOwner();
+			List<String> renters = field.getRenters();
 			if (fieldName == null || fieldName.isEmpty()) {
 				fieldName = fieldType;
-			} else {
-				fieldName = fieldType + " (" + fieldName + ")";
+			}
+			if (!fieldOwner.equalsIgnoreCase(player.getName())) {
+				if (renters.contains(player.getName().toLowerCase())) {
+					fieldName = fieldName + ChatColor.GRAY + " (Renting)";
+				} else {
+					fieldName = fieldName + ChatColor.LIGHT_PURPLE + " (" + fieldOwner + ")";
+				}
 			}
 			fieldLocations.put(fieldName, field.getLocation());
 		}

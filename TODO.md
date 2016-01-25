@@ -5,27 +5,21 @@
  - Add an unbind command
  - Add option for bound wands to not restore (ollivander's ticket)
    or to get unbound automatically on sell? Better.
+   
+ - CoreProtect integration
+   http://minerealm.com/community/viewtopic.php?f=32&t=16362
 
  - PS TODO:
-   - Disallow renaming on anvil
-   - Disallow place in disabled worlds
    - Fix formatting of allowed list, single-column
 
- - Action to convert mob to spawn egg
  - Add effects template, for wands to stay one template but act like another (? - for cane)
  - Prevent TNT breaking secured chests
- - Add option for projectiles to not run when they expire
- - Secure acquisition not working? Maybe also have it target through signs and stuff?
-
- - We have noticed a bug today that I want to inform you of. A player was getting really laggy so they relogged and the lag seemed to stop. Then the player went to open their wand inventory to cast a spell. They ended up being able to hold the spell heads in their inventory and they could drop the spell heads where other players could pick them up as items. This normally happens when players lag but not this bad. The weird part was that when they relogged again their while inventory was gone and all spells were back. The whole time he couldn’t use his wand until he relogged with his inventory cleared.
 
  - There's an area in the RoR where you can cast alohomora and it will spawn doors, in the center of the right side when you enter~
  - Need to fix some door-related undo issues, e.g. casting admission then breaking door sometimes drops door
 
  - Alter *really* needs an update!
- - Effects don't cancel if you switch away from your wand? Whip stops moving? Wha?
  - Fix block targeting cast messages
- - Somehow make brooms work when mob spawning is denied?
  - Fix Shrink/Grow losing track of entities (zombie->giant)
  - Super-undroppable option? Not droppable at all, or allowed to put in chests, etc?
 
@@ -39,22 +33,11 @@
  
  - Additive Velocity parameter?
  
- - KidBear says spawned animated statues don't disappear if the player dies
- 
  - Overrides with commas in them are broken again
  
- - Stillll have an undo issue somewhere. Make sure unregistering attachables isn't going wrong
-   - was able to build a schematic (nathanwolf) and undo piece by piece, but last piece wouldn't register.
-
  - Reducto hay blocks in the PW park, some drop :|
 
- - damage_resistance_protection not working? (Check Fianto Duri in PW configs)
-
  - Spells acting oddly with Copy - Box, Iterate
-   
- - Herobrines - XP exploit?
-   hold wand and go to /ma j Fight
-   you will get xp equivalent to your mana
 
  - Don't logout players on server change until they quit
 
@@ -79,23 +62,18 @@
    - Add list of cast-command params?
    - Would be nice to replace the current toggleCastCommand stuff, but need something special for NPCs.. ?
  - Aliases are broken /wand add doesn't activate, spell items don't work
- - Add "Protect" action
  - Fix Anvil renaming + binding (KingBohica1)
 
  - Show countdown in hotbar for duration-based or active-cost spells
  - Add templates to messages.yml for all the various forms a wand and spell
    name can take.
 
- - Add an "override" option for spells, to skip loading the defaults for that spell
  - Can't hitbox-target entities standing in a corner? Issues with spiders?
  - Look at/expand "item" parameter to SpawnEntity (why do wither skellies start with a bow?)
  - Add "drops" parameter to Damage action to prevent mobs dropping loot.
  - Add Music action, with disc parameter
 
  - Add /mmap reload command
- - Registered blocks aren't clearing on /magic commit ?
- - CoreProtect integration
-   http://minerealm.com/community/viewtopic.php?f=32&t=16362
 
  - Hover text for spells
  - Cat GIF generator? http://catdb.yawk.at/images?tag=gif
@@ -103,7 +81,6 @@
  - Make Portal spell portals avoid creating a frame on the other side (maybe handle TP'ing on portal event?)
  - Logout on death still buggy? (can not reproduce)
  - Wand dupe issue: tl;dr : he was able to drag a wand while in the spell inventory.
- - Recall still losing waypoints .. also can grab items out?
 
  - Clean up MaterialBrush target system, automate somehow?
  - Copy target brush action for tandem replication

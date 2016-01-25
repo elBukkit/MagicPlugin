@@ -1275,7 +1275,7 @@ spells:
         cast_wand: Returning you to your lost wand
         cast_warp: Warping you to $name
         cast_town: Warping you to your home town
-        cast_field: Warping you to your personal field
+        cast_field: Warping you to a protected area
         no_target_death: No recorded death location
         no_target_wand: No recorded lost wands
         no_target_home: No home set
@@ -1299,7 +1299,7 @@ spells:
         description_wand: A wand you've dropped on the ground
         title_town: Town Square
         description_town: The center of your home town
-        description_field: Your personal protected area
+        description_field: A protected area
         cross_world_disallowed: You are not allowed to Recall to another world
         title: Choose Destination
         move_marker_title: Move Marker
