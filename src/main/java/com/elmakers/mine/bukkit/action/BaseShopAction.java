@@ -128,12 +128,21 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
                 return SpellResult.FAIL;
             }
 
-            if ((requiredPath != null && !path.hasPath(requiredPath)) || (exactPath != null && !exactPath.equals(path.getKey()))) {
+            if (requiredPath != null && !path.hasPath(requiredPath)) {
                 WandUpgradePath requiresPath = controller.getPath(requiredPath);
                 if (requiresPath != null) {
                     context.showMessage(context.getMessage("no_required_path", "You must be at least $path!").replace("$path", requiresPath.getName()));
                 } else {
-                    context.getLogger().warning("Invalid path specified in AddSpell action: " + requiredPath);
+                    context.getLogger().warning("Invalid path specified in Shop action: " + requiredPath);
+                }
+                return SpellResult.FAIL;
+            }
+            if (exactPath != null && !exactPath.equals(path.getKey())) {
+                WandUpgradePath requiresPath = controller.getPath(exactPath);
+                if (requiresPath != null) {
+                    context.showMessage(context.getMessage("no_path_exact", "You must be at $path!").replace("$path", requiresPath.getName()));
+                } else {
+                    context.getLogger().warning("Invalid path specified in Shop action: " + exactPath);
                 }
                 return SpellResult.FAIL;
             }
