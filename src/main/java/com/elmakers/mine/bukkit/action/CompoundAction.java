@@ -19,6 +19,7 @@ public abstract class CompoundAction extends BaseSpellAction
     private boolean undoable = false;
     private boolean requiresBuildPermission = false;
     private boolean requiresBreakPermission = false;
+    private boolean stopOnSuccess = false;
     protected ConfigurationSection actionConfiguration;
     protected CastContext actionContext;
 
@@ -91,6 +92,10 @@ public abstract class CompoundAction extends BaseSpellAction
             if (handler != null) {
                 result = result.min(handler.perform(actionContext));
                 if (result.isStop()) break;
+                if (stopOnSuccess && result.isSuccess()) {
+                    result = SpellResult.STOP;
+                    break;
+                }
             }
 
             if (!next(context)) {
@@ -122,6 +127,7 @@ public abstract class CompoundAction extends BaseSpellAction
         for (ActionHandler handler : handlers.values()) {
             handler.prepare(context, parameters);
         }
+        stopOnSuccess = parameters.getBoolean("stop_on_success", false);
     }
 
     @Override
