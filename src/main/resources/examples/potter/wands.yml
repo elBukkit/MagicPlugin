@@ -333,6 +333,7 @@ thestral:
 
 minister:
     mode: cast
+    bound: true
     path: broom
     active_spell: broom
     icon: gold_spade
@@ -346,6 +347,7 @@ minister:
 unspeakabroom:
     mode: cast
     path: broom
+    bound: true
     active_spell: broom
     icon: gold_spade
     indestructible: true
@@ -358,6 +360,7 @@ unspeakabroom:
 headmaster:
     mode: cast
     path: broom
+    bound: true
     active_spell: broom
     icon: gold_spade
     indestructible: true
@@ -370,6 +373,7 @@ headmaster:
 firebolt:
     mode: cast
     path: broom
+    bound: true
     active_spell: broom
     icon: gold_spade
     indestructible: true
@@ -394,6 +398,7 @@ crudfirebolt:
 nimbus:
     mode: cast
     path: broom
+    bound: true
     active_spell: broom
     icon: gold_spade
     indestructible: true
@@ -418,6 +423,7 @@ crudnimbus:
 comet290:
     mode: cast
     path: broom
+    bound: true
     active_spell: broom
     icon: gold_spade
     indestructible: true
@@ -430,6 +436,7 @@ comet290:
 cleansweep1:
     mode: cast
     path: broom
+    bound: true
     active_spell: broom
     icon: gold_spade
     indestructible: false
@@ -442,6 +449,7 @@ cleansweep1:
 bluebottle:
     mode: cast
     path: broom
+    bound: true
     active_spell: broom
     icon: gold_spade
     indestructible: false
