@@ -68,6 +68,7 @@ public class CustomProjectileAction extends CompoundAction
     private int entityHitLimit;
     private int pitchMin;
     private int pitchMax;
+    private boolean ignoreTargeting;
 
     protected Targeting targeting;
     protected Location launchLocation;
@@ -127,6 +128,7 @@ public class CustomProjectileAction extends CompoundAction
         lifetime = parameters.getInt("lifetime", 8000);
         attachDuration = parameters.getInt("attach_duration", 0);
         reverseDirection = parameters.getBoolean("reverse", false);
+        ignoreTargeting = parameters.getBoolean("ignore_targeting", false);
         startDistance = parameters.getInt("start", 0);
         range = parameters.getInt("range", 0);
         projectileEffectKey = parameters.getString("projectile_effects", "projectile");
@@ -426,7 +428,6 @@ public class CustomProjectileAction extends CompoundAction
         }
 
         projectileLocation.setDirection(velocity);
-        targeting.start(projectileLocation);
 
         // Advance targeting to find Entity or Block
         distanceTravelledThisTick = speed * delta / 1000;
@@ -434,11 +435,16 @@ public class CustomProjectileAction extends CompoundAction
             distanceTravelledThisTick = Math.min(distanceTravelledThisTick, range - distanceTravelled);
         }
         context.addWork((int)Math.ceil(distanceTravelledThisTick));
-        Target target = targeting.target(actionContext, distanceTravelledThisTick);
         Location targetLocation;
-        Targeting.TargetingResult targetingResult = targeting.getResult();
+        Targeting.TargetingResult targetingResult = Targeting.TargetingResult.MISS;
+        Target target = null;
+        if (!ignoreTargeting) {
+            targeting.start(projectileLocation);
+            target = targeting.target(actionContext, distanceTravelledThisTick);
+            targetingResult = targeting.getResult();
+        }
         if (targetingResult == Targeting.TargetingResult.MISS) {
-            if (hasBlockMissEffects) {
+            if (hasBlockMissEffects && target != null) {
                 actionContext.setTargetLocation(target.getLocation());
                 actionContext.playEffects("blockmiss");
             }
@@ -493,7 +499,9 @@ public class CustomProjectileAction extends CompoundAction
         }
 
         actionContext.setTargetLocation(targetLocation);
-        actionContext.setTargetEntity(target.getEntity());
+        if (target != null) {
+            actionContext.setTargetEntity(target.getEntity());
+        }
 
         if (hasStepEffects) {
             actionContext.playEffects("step");
