@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.action.builtin;
 
+import com.elmakers.mine.bukkit.action.ActionHandler;
 import com.elmakers.mine.bukkit.action.CompoundAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.effect.EffectPlay;
@@ -76,6 +77,7 @@ public class CustomProjectileAction extends CompoundAction
     protected Vector velocity = null;
 
     private double effectDistanceTravelled;
+    private boolean hasTickActions;
     private boolean hasTickEffects;
     private boolean hasStepEffects;
     private boolean hasBlockMissEffects;
@@ -114,6 +116,7 @@ public class CustomProjectileAction extends CompoundAction
         addHandler(spell, "actions");
         addHandler(spell, "headshot");
         addHandler(spell, "miss");
+        addHandler(spell, "tick");
     }
 
     @Override
@@ -171,6 +174,9 @@ public class CustomProjectileAction extends CompoundAction
         hasBlockMissEffects = context.getEffects("blockmiss").size() > 0;
         hasStepEffects = context.getEffects("step").size() > 0;
         hasPreHitEffects = context.getEffects("prehit").size() > 0;
+
+        ActionHandler handler = getHandler("tick");
+        hasTickActions = handler != null && handler.size() > 0;
     }
 
     @Override
@@ -523,6 +529,10 @@ public class CustomProjectileAction extends CompoundAction
                 }
             }
             return hit();
+        }
+
+        if (hasTickActions) {
+            return startActions("tick");
         }
 
 		return SpellResult.PENDING;
