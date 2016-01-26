@@ -1325,6 +1325,11 @@ public class MagicController implements MageController {
 
     protected ConfigurationSection loadConfigFile(String fileName, boolean loadDefaults, boolean disableDefaults)
         throws IOException, InvalidConfigurationException {
+        return loadConfigFile(fileName, loadDefaults, disableDefaults, false);
+    }
+
+    protected ConfigurationSection loadConfigFile(String fileName, boolean loadDefaults, boolean disableDefaults, boolean filesReplace)
+        throws IOException, InvalidConfigurationException {
         String configFileName = fileName + ".yml";
         File configFile = new File(configFolder, configFileName);
         if (!configFile.exists()) {
@@ -1398,7 +1403,11 @@ public class MagicController implements MageController {
             for (File file : files) {
                 if (file.getName().startsWith(".")) continue;
                 ConfigurationSection fileOverrides = CompatibilityUtils.loadConfiguration(file);
-                config = ConfigurationUtils.replaceConfigurations(config, fileOverrides);
+                if (filesReplace) {
+                    config = ConfigurationUtils.replaceConfigurations(config, fileOverrides);
+                } else {
+                    config = ConfigurationUtils.addConfigurations(config, fileOverrides);
+                }
             }
         }
 
@@ -1442,7 +1451,7 @@ public class MagicController implements MageController {
     }
 
     protected ConfigurationSection loadWandConfiguration() throws InvalidConfigurationException, IOException {
-        return loadConfigFile(WANDS_FILE, loadDefaultWands);
+        return loadConfigFile(WANDS_FILE, loadDefaultWands, false, true);
     }
 
     protected ConfigurationSection loadEnchantingConfiguration() throws InvalidConfigurationException, IOException {
