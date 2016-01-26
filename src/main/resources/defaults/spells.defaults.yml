@@ -2115,6 +2115,7 @@ cure:
         - confusion
         - poison
         - slow
+        - slow_digging
     costs:
         mana: 30
 
@@ -2127,6 +2128,7 @@ cure|2:
         - weakness
         - poison
         - slow
+        - slow_digging
         - wither
 
 cure|3:
@@ -9420,15 +9422,10 @@ tornado:
     earns_sp: 11
     actions:
         cast:
-        -  class: Repeat
-           actions:
+         - class: CustomProjectile
+           tick:
            - class: ChangeContext
-             target_direction: 0,1,0
-             persist_target: true
              actions:
-             - class: PlayEffects
-               effect: whirl
-               ignore_result: true
              - class: Sphere
                ignore_result: true
                actions:
@@ -9437,27 +9434,25 @@ tornado:
                  - class: ModifyBlock
                    direction: 0,1,0
                    speed: 0.2
-             - class: AreaOfEffect
-               actions:
-                - class: Velocity
-                  ignore_result: true
-                - class: Damage
-           - class: Delay
+           - class: AreaOfEffect
+             actions:
+              - class: Velocity
+                ignore_result: true
+              - class: Damage
     effects:
-        whirl:
+        projectile:
         -  class: EffectSingle
            sound: fizz
            sound_volume: 0.2
            sound_pitch: 0.3
-           location: target
            effectlib:
              class: TornadoEffect
-             iterations: 3
+             duration: $lifetime
              tornadoHeight: 8
              distance: 0.8
              cloudSize: 1
              tornadoParticle: spell
-             offset: 0,-4,0
+             offset: 0,-2,0
         cast:
         -  class: EffectSingle
            sound: fizz
@@ -9465,26 +9460,24 @@ tornado:
            sound_pitch: 0.2
            location: origin
     parameters:
-        target: block
+        target: none
+        ignore_targeting: true
+        transparent: air,destructible
         target_type: Entity
-        range: 8
         radius: 2
         target_count: 16
-        allow_max_range: true
         item_speed: 0.1
         living_entity_speed: 0.2
         push: -1
-        y_offset: 0.2
+        y_offset: 1
+        velocity: 5
         cooldown: 10000
-        repeat: 8
+        lifetime: 3000
+        interval: 4
         damage: 1
-        delay: 800
         brush: erase
         falling: true
         falling_probability: 0.8
-        random_target_offset: 0.2,0,0.2
-        target_direction_speed: 3
-        source_direction_offset: 0,0.5,0
         undo: 15000
         x_size: 0
         z_size: 0
@@ -9496,10 +9489,11 @@ tornado:
 tornado|2:
     parameters:
         destructible: destructible,destructible2,destructible3
-        y_offset: 1
+        transparent: air,destructible,destructible2,destructible3
+        target_offset: 0,5,0
         x_size: 1
         z_size: 1
-        y_size: 8
+        y_size: 4
         radius: 4
 
 rainbow:
