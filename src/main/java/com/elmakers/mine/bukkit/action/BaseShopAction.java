@@ -355,6 +355,11 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
                 if (!castsSpells && !requireWand) {
                     context.getController().giveItemToPlayer(mage.getPlayer(), InventoryUtils.getCopy(item));
                 }
+                if (castsSpells) {
+                    String spellKey = controller.getSpell(item);
+                    Spell spell = mage.getSpell(spellKey);
+                    spell.cast();
+                }
 
                 if (wand != null && autoUpgrade) {
                     if (upgradeLevels <= 0) {
