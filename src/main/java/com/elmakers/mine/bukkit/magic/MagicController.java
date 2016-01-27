@@ -22,6 +22,8 @@ import com.elmakers.mine.bukkit.block.Automaton;
 import com.elmakers.mine.bukkit.block.BlockData;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.block.MaterialBrush;
+import com.elmakers.mine.bukkit.block.NegatedHashSet;
+import com.elmakers.mine.bukkit.block.WildcardHashSet;
 import com.elmakers.mine.bukkit.citizens.CitizensController;
 import com.elmakers.mine.bukkit.dynmap.DynmapController;
 import com.elmakers.mine.bukkit.effect.EffectPlayer;
@@ -3125,22 +3127,26 @@ public Set<Material> getMaterialSet(String name)
 	{
         Set<Material> materials = materialSets.get(name);
         if (materials == null) {
-            materials = new HashSet<Material>();
-            if (name.contains(",")) {
-                String[] nameList = StringUtils.split(name, ',');
-                for (String matName : nameList)
-                {
-                    if (materialSets.containsKey(matName)) {
-                        materials.addAll(materialSets.get(matName));
-                    } else {
-                        Material material = ConfigurationUtils.toMaterial(matName);
-                        if (material != null) {
-                            materials.add(material);
-                        }
+            String materialString = name;
+            if (name.equals("*")) {
+                materials = new WildcardHashSet<Material>();
+            } else if (name.startsWith("!")) {
+                materialString = materialString.substring(1);
+                materials = new NegatedHashSet<Material>();
+            } else {
+                materials = new HashSet<Material>();
+            }
+            String[] nameList = StringUtils.split(materialString, ',');
+            for (String matName : nameList)
+            {
+                if (materialSets.containsKey(matName)) {
+                    materials.addAll(materialSets.get(matName));
+                } else {
+                    Material material = ConfigurationUtils.toMaterial(matName);
+                    if (material != null) {
+                        materials.add(material);
                     }
                 }
-            } else {
-                materials = ConfigurationUtils.parseMaterials(name);
             }
             materialSets.put(name, materials);
         }
@@ -3947,6 +3953,11 @@ public Set<Material> getMaterialSet(String name)
     @Override
     public ItemStack createSpellItem(String spellKey) {
         return Wand.createSpellItem(spellKey, this, null, true);
+    }
+
+    @Override
+    public ItemStack createSpellItem(String spellKey, boolean brief) {
+        return Wand.createSpellItem(spellKey, this, null, !brief);
     }
 
     @Override
