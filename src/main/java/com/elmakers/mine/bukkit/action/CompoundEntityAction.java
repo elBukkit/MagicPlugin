@@ -3,6 +3,7 @@ package com.elmakers.mine.bukkit.action;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -48,7 +49,11 @@ public abstract class CompoundEntityAction extends CompoundAction
                 continue;
             }
             actionContext.setTargetEntity(entity);
-            actionContext.setTargetLocation(entity.getLocation());
+            if (entity instanceof LivingEntity) {
+                actionContext.setTargetLocation(((LivingEntity)entity).getEyeLocation());
+            } else {
+                actionContext.setTargetLocation(entity.getLocation());
+            }
             return startActions();
         }
 
