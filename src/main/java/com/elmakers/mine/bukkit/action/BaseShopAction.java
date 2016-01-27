@@ -351,14 +351,19 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
                         return;
                     }
                 }
-                takeCosts(context, shopItem);
-                if (!castsSpells && !requireWand) {
-                    context.getController().giveItemToPlayer(mage.getPlayer(), InventoryUtils.getCopy(item));
-                }
+
                 if (castsSpells) {
                     String spellKey = controller.getSpell(item);
                     Spell spell = mage.getSpell(spellKey);
-                    spell.cast();
+                    if (!spell.cast()) {
+                        context.showMessage("cast_fail", "Sorry, please try again!");
+                        mage.deactivateGUI();
+                        return;
+                    }
+                }
+                takeCosts(context, shopItem);
+                if (!castsSpells && !requireWand) {
+                    context.getController().giveItemToPlayer(mage.getPlayer(), InventoryUtils.getCopy(item));
                 }
 
                 if (wand != null && autoUpgrade) {
@@ -401,7 +406,7 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
         requiresCompletedPath = parameters.getString("path_end", null);
         requiredTemplate = parameters.getString("require_template", null);
         autoUpgrade = parameters.getBoolean("auto_upgrade", false);
-        castsSpells = parameters.getBoolean("casts_spells", false);
+        castsSpells = parameters.getBoolean("cast_spells", false);
         upgradeLevels = parameters.getInt("upgrade_levels", 0);
         requireWand = parameters.getBoolean("require_wand", false);
         autoClose = parameters.getBoolean("auto_close", true);
