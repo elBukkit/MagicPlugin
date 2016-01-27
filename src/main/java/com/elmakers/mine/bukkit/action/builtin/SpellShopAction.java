@@ -81,7 +81,7 @@ public class SpellShopAction extends BaseShopAction
             return contextResult;
         }
         Wand wand = mage.getActiveWand();
-        WandUpgradePath path = wand.getPath();
+        WandUpgradePath path = wand == null ? null : wand.getPath();
 
         if (!castsSpells && wand.isLocked()) {
             context.showMessage(context.getMessage("no_path", "You may not learn with that $wand.").replace("$wand", wand.getName()));
@@ -129,7 +129,7 @@ public class SpellShopAction extends BaseShopAction
             if (worth <= 0 && !showFree) continue;
             if (!spell.hasCastPermission(mage.getCommandSender())) continue;
 
-            ItemStack spellItem = controller.createSpellItem(spellKey);
+            ItemStack spellItem = controller.createSpellItem(spellKey, castsSpells);
             shopItems.add(new ShopItem(spellItem, worth));
         }
 

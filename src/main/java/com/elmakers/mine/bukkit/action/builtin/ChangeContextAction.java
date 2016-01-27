@@ -32,6 +32,8 @@ public class ChangeContextAction extends CompoundAction {
     private Vector targetDirection;
     private Vector sourceDirectionOffset;
     private Vector targetDirectionOffset;
+    private String targetLocation;
+    private String sourceLocation;
     private boolean persistTarget;
     private boolean attachBlock;
     private int snapTargetToSize;
@@ -56,6 +58,8 @@ public class ChangeContextAction extends CompoundAction {
         persistTarget = parameters.getBoolean("persist_target", false);
         attachBlock = parameters.getBoolean("target_attachment", false);
         snapTargetToSize = parameters.getInt("target_snap", 0);
+        targetLocation = parameters.getString("target_location");
+        sourceLocation = parameters.getString("source_location");
         if (parameters.contains("target_direction_speed"))
         {
             targetDirectionSpeed = parameters.getDouble("target_direction_speed");
@@ -78,10 +82,26 @@ public class ChangeContextAction extends CompoundAction {
     public SpellResult step(CastContext context) {
         Entity sourceEntity = context.getEntity();
         Location sourceLocation = context.getEyeLocation().clone();
+        if (this.sourceLocation != null) {
+            Vector newSource = ConfigurationUtils.toVector(this.sourceLocation);
+            if (newSource != null) {
+                sourceLocation.setX(newSource.getX());
+                sourceLocation.setY(newSource.getY());
+                sourceLocation.setZ(newSource.getZ());
+            }
+        }
         Entity targetEntity = context.getTargetEntity();
         Location targetLocation = context.getTargetLocation();
         if (targetLocation != null) {
             targetLocation = targetLocation.clone();
+            if (this.targetLocation != null) {
+                Vector newTarget = ConfigurationUtils.toVector(this.targetLocation);
+                if (newTarget != null) {
+                    targetLocation.setX(newTarget.getX());
+                    targetLocation.setY(newTarget.getY());
+                    targetLocation.setZ(newTarget.getZ());
+                }
+            }
         }
         Vector direction = context.getDirection().normalize();
         if (sourceLocation == null)

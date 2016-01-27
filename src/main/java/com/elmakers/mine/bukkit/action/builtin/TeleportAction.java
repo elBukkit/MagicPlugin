@@ -185,8 +185,7 @@ public class TeleportAction extends BaseTeleportAction
 						ChatColor.BLUE + targetLocation.getBlockZ()
 				, 11);
 
-        teleport(context, entity, targetLocation);
-		return SpellResult.CAST;
+        return teleport(context, entity, targetLocation);
 	}
 
     @Override

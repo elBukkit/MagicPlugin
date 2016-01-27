@@ -23,8 +23,7 @@ public class DescendAction extends BaseTeleportAction
 		Location location = context.findPlaceToStand(targetLocation, verticalSearchDistance, false);
 		if (location != null) 
 		{
-			teleport(context, entity, location);
-			return SpellResult.CAST;
+			return teleport(context, entity, location);
 		}
 		return SpellResult.NO_TARGET;
 	}

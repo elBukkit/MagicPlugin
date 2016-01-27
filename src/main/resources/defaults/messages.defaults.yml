@@ -1643,6 +1643,9 @@ spells:
     fxdemo:
         name: FX Demo
         description: Show off various EffectLib effects
+    randomtp:
+      name: Random Teleport
+      description: Teleports you to a random location
 
 wands:
     default:

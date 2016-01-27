@@ -30,8 +30,7 @@ public class AscendAction extends BaseTeleportAction
 		}
 		if (location != null) 
 		{
-			teleport(context, entity, location);
-			return SpellResult.CAST;
+			return teleport(context, entity, location);
 		}
 		return SpellResult.NO_TARGET;
 	}
