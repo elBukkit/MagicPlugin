@@ -10439,6 +10439,7 @@ randomtp:
         actions:
         - class: Teleport
   parameters:
+    target: self
     target_location: rand(-5000,5000) 200 rand(-5000,5000)
     vertical_range: 250
     stop_on_success: true
