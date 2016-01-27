@@ -940,9 +940,6 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
         }
 
         Location targetLocation = findPlaceToStand(location, verticalSearchDistance);
-
-        org.bukkit.Bukkit.getLogger().info("Found " + targetLocation + " from " + location + " search: " + verticalSearchDistance);
-
         if (targetLocation == null && !preventFall) {
             Block block = location.getBlock();
             Block blockOneUp = block.getRelative(BlockFace.UP);
