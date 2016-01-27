@@ -16,7 +16,7 @@ import java.util.Collection;
 public class MagicCitizensTrait extends CitizensTrait {
 
     private String spellKey;
-    private boolean npcCaster = true;
+    private boolean npcCaster = false;
     private YamlConfiguration parameters = null;
 
 	public MagicCitizensTrait() {
