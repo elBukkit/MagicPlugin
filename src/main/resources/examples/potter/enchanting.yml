@@ -48,6 +48,7 @@ default:
          size: 3
 
 year1:
+    follows: beginner
     inherit: default
     upgrade: year2
     upgrade_item: year2
@@ -78,6 +79,7 @@ year1:
       - alohomora
 
 year2:
+    follows: beginner
     upgrade: year3
     upgrade_item: year3
     inherit: year1
@@ -105,6 +107,7 @@ year2:
       - glacius
 
 year3:
+    follows: student
     upgrade: year4
     upgrade_item: year4
     inherit: year2
@@ -130,6 +133,7 @@ year3:
       - deprimo
 
 year4:
+    follows: student
     upgrade: year5
     upgrade_item: year5
     inherit: year3
@@ -158,6 +162,7 @@ year4:
       - ascendio
 
 year5:
+    follows: apprentice
     upgrade: year6
     upgrade_item: year6
     inherit: year4
@@ -185,6 +190,7 @@ year5:
       - reducto
 
 year6:
+    follows: apprentice
     upgrade: year7
     upgrade_item: year7
     inherit: year5
@@ -208,6 +214,7 @@ year6:
       - apparate
 
 year7:
+    follows: master
     upgrade: graduate
     upgrade_item: graduate
     inherit: year6
@@ -234,6 +241,7 @@ year7:
       - piertotum
 
 graduate:
+    follows: master
     inherit: year7
     max_mana_regeneration: 40
     max_mana: 200
