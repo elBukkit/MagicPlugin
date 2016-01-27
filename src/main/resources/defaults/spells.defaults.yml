@@ -10460,4 +10460,4 @@ tpshop:
         confirm_filler: stained_glass:5
         cast_spells: true
         spells:
-          randomtp: 5
+          randomtp: 1

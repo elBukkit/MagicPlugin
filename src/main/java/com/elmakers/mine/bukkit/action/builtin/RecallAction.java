@@ -771,8 +771,11 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
             targetLocation.setPitch(playerLocation.getPitch());
         }
         mage.enableSuperProtection(protectionTime);
-        context.teleport(player, targetLocation, verticalSearchDistance, waypoint.safe, waypoint.safe);
-        context.castMessage(waypoint.message);
+        if (context.teleport(player, targetLocation, verticalSearchDistance, waypoint.safe, waypoint.safe)) {
+            context.castMessage(waypoint.message);
+        } else {
+            context.castMessage(waypoint.failMessage);
+        }
 		return true;
 	}
 
