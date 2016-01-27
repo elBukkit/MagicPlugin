@@ -44,6 +44,7 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
     protected int upgradeLevels = 0;
     protected boolean autoClose = true;
     protected boolean autoUpgrade = false;
+    protected boolean castsSpells = false;
     protected boolean applyToWand = false;
     protected boolean isXP = false;
     protected boolean isSkillPoints = false;
@@ -351,7 +352,7 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
                     }
                 }
                 takeCosts(context, shopItem);
-                if (!requireWand) {
+                if (!castsSpells && !requireWand) {
                     context.getController().giveItemToPlayer(mage.getPlayer(), InventoryUtils.getCopy(item));
                 }
 
@@ -370,7 +371,7 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
 
             costString = costString.replace("$item", itemName);
             context.showMessage(costString);
-            onPurchase(context);
+            onPurchase(context, item);
         }
         if (autoClose) {
             mage.deactivateGUI();
@@ -380,7 +381,7 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
         }
     }
 
-    protected void onPurchase(CastContext context) {
+    protected void onPurchase(CastContext context, ItemStack itemPurchased) {
 
     }
 
@@ -395,6 +396,7 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
         requiresCompletedPath = parameters.getString("path_end", null);
         requiredTemplate = parameters.getString("require_template", null);
         autoUpgrade = parameters.getBoolean("auto_upgrade", false);
+        castsSpells = parameters.getBoolean("casts_spells", false);
         upgradeLevels = parameters.getInt("upgrade_levels", 0);
         requireWand = parameters.getBoolean("require_wand", false);
         autoClose = parameters.getBoolean("auto_close", true);
