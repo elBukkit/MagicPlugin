@@ -1,5 +1,8 @@
 # TODO
 
+ - Use hunger for mana.. ?
+
+ - Pull/Accio on top of an entity sends it skyrocketing
  - Column's radius doesn't seem to work
  - Action to turn spell into a spawn egg
  - Add an unbind command

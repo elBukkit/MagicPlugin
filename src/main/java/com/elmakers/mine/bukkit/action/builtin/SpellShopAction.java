@@ -9,7 +9,6 @@ import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.api.wand.Wand;
 import com.elmakers.mine.bukkit.api.wand.WandUpgradePath;
-import com.elmakers.mine.bukkit.magic.MagicPlugin;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import org.bukkit.configuration.ConfigurationSection;
@@ -137,12 +136,6 @@ public class SpellShopAction extends BaseShopAction
         Collections.sort(shopItems);
         return showItems(context, shopItems);
 	}
-
-    @Override
-    protected void onPurchase(CastContext context, ItemStack purchasedItem) {
-        String spell = com.elmakers.mine.bukkit.wand.Wand.getSpell(purchasedItem);
-        MagicPlugin.getAPI().cast(spell, new String[] {}, context.getMage().getPlayer(), context.getMage().getPlayer());
-    }
 
     @Override
     public void getParameterNames(Spell spell, Collection<String> parameters) {
