@@ -9,6 +9,7 @@ import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.api.wand.Wand;
 import com.elmakers.mine.bukkit.api.wand.WandUpgradePath;
+import com.elmakers.mine.bukkit.magic.MagicPlugin;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import org.bukkit.configuration.ConfigurationSection;
@@ -66,8 +67,10 @@ public class SpellShopAction extends BaseShopAction
         super.prepare(context, parameters);
         showRequired = parameters.getBoolean("show_required", false);
         showFree = parameters.getBoolean("show_free", false);
-        requireWand = true;
-        applyToWand = true;
+        if (!castsSpells) {
+            requireWand = true;
+            applyToWand = true;
+        }
     }
 
     @Override
@@ -81,7 +84,7 @@ public class SpellShopAction extends BaseShopAction
         Wand wand = mage.getActiveWand();
         WandUpgradePath path = wand.getPath();
 
-        if (wand.isLocked()) {
+        if (!castsSpells && wand.isLocked()) {
             context.showMessage(context.getMessage("no_path", "You may not learn with that $wand.").replace("$wand", wand.getName()));
             return SpellResult.FAIL;
         }
@@ -114,7 +117,7 @@ public class SpellShopAction extends BaseShopAction
         List<ShopItem> shopItems = new ArrayList<ShopItem>();
         for (Map.Entry<String, Double> spellValue : spellPrices.entrySet()) {
             String spellKey = spellValue.getKey();
-            if (wand.hasSpell(spellKey)) continue;
+            if (!castsSpells && wand.hasSpell(spellKey)) continue;
 
             SpellTemplate spell = controller.getSpellTemplate(spellKey);
             Double worth = spellValue.getValue();
@@ -134,6 +137,12 @@ public class SpellShopAction extends BaseShopAction
         Collections.sort(shopItems);
         return showItems(context, shopItems);
 	}
+
+    @Override
+    protected void onPurchase(CastContext context, ItemStack purchasedItem) {
+        String spell = com.elmakers.mine.bukkit.wand.Wand.getSpell(purchasedItem);
+        MagicPlugin.getAPI().cast(spell, new String[] {}, context.getMage().getPlayer(), context.getMage().getPlayer());
+    }
 
     @Override
     public void getParameterNames(Spell spell, Collection<String> parameters) {
