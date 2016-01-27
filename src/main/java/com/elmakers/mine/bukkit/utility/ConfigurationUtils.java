@@ -165,11 +165,14 @@ public class ConfigurationUtils {
         if (o instanceof String) {
             try {
                 String parse = (String)o;
-                parse = parse.replace("|", ",");
-                String[] pieces = StringUtils.split(parse, ',');
-                double x = Double.parseDouble(pieces[0]);
-                double y = Double.parseDouble(pieces[1]);
-                double z = Double.parseDouble(pieces[2]);
+                if (!parse.contains(" ")) {
+                    parse = parse.replace(",", " ");
+                }
+                parse = parse.replace("|", " ");
+                String[] pieces = StringUtils.split(parse, ' ');
+                double x = parseDouble(pieces[0]);
+                double y = parseDouble(pieces[1]);
+                double z = parseDouble(pieces[2]);
                 return new Vector(x, y, z);
             } catch(Exception ex) {
                 return null;
