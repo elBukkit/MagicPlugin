@@ -220,6 +220,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     private long 								lastMessageSent 			= 0;
     private Set<Material>						preventPassThroughMaterials = null;
     private Set<Material>                       passthroughMaterials = null;
+    private Set<Material>						unsafeMaterials = null;
 
     public boolean allowPassThrough(Material mat)
     {
@@ -245,7 +246,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         if (isHalfBlock(mat)) {
             return false;
         }
-        return passthroughMaterials.contains(mat);
+        return passthroughMaterials.contains(mat) && !unsafeMaterials.contains(mat);
     }
 
     public boolean isWater(Material mat)
@@ -270,7 +271,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         if (isHalfBlock(mat)) {
             return true;
         }
-        return (mat != Material.AIR && mat != Material.LAVA && mat != Material.STATIONARY_LAVA && !passthroughMaterials.contains(mat));
+        return (mat != Material.AIR && !unsafeMaterials.contains(mat) && !passthroughMaterials.contains(mat));
     }
 
     public boolean isSafeLocation(Block block)
@@ -1508,6 +1509,12 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
             passthroughMaterials = controller.getMaterialSet(parameters.getString("passthrough"));
         } else {
             passthroughMaterials = controller.getMaterialSet("passthrough");
+        }
+
+        if (parameters.contains("unsafe")) {
+            unsafeMaterials = controller.getMaterialSet(parameters.getString("unsafe"));
+        } else {
+            unsafeMaterials = controller.getMaterialSet("unsafe");
         }
 
         bypassDeactivate = parameters.getBoolean("bypass_deactivate", false);
