@@ -3,6 +3,9 @@
 ## 5.5
 
  - Engineer and Architect spells being re-balanced to consume blocks required for building
+ - Undroppable wands can no longer be dragged out of the inventory or placed in containers.
+   Set "wand_undroppable: false" in config.yml for old behavior. Players with "Magic.wand.override_drop"
+   permission can still drop and put wands in chests.
  - Wands are only enchantable if there are spells left to get, brushes no longer count
  - Add "Conduit" rank (after Architect), bypasses block consume ("Manifestation")
  - Add EntityProjectile and PlaySound actions

@@ -1403,6 +1403,7 @@ public class MagicController implements MageController {
             for (File file : files) {
                 if (file.getName().startsWith(".")) continue;
                 ConfigurationSection fileOverrides = CompatibilityUtils.loadConfiguration(file);
+                getLogger().info("  Loading " + file.getName());
                 if (filesReplace) {
                     config = ConfigurationUtils.replaceConfigurations(config, fileOverrides);
                 } else {
@@ -2335,6 +2336,7 @@ public class MagicController implements MageController {
         }
         Wand.HIDE_FLAGS = (byte)properties.getInt("wand_hide_flags", (int)Wand.HIDE_FLAGS);
         Wand.Unbreakable = properties.getBoolean("wand_unbreakable", Wand.Unbreakable);
+        Wand.Undroppable = properties.getBoolean("wand_undroppable", Wand.Undroppable);
 
         MaterialBrush.CopyMaterial = ConfigurationUtils.getMaterial(properties, "copy_item", MaterialBrush.CopyMaterial);
 		MaterialBrush.EraseMaterial = ConfigurationUtils.getMaterial(properties, "erase_item", MaterialBrush.EraseMaterial);
@@ -4210,6 +4212,11 @@ public Set<Material> getMaterialSet(String name)
         }
 
         return 0;
+    }
+
+    @Override
+    public String getSpell(ItemStack item) {
+        return Wand.getSpell(item);
     }
 
     public boolean isInventoryBackupEnabled() {

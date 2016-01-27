@@ -47,6 +47,7 @@ public class InventoryController implements Listener {
             activeGUI.dragged(event);
             return;
         }
+
         if (!enableItemHacks) return;
 
         // this is a huge hack! :\
@@ -84,7 +85,7 @@ public class InventoryController implements Listener {
     @SuppressWarnings("deprecation")
     @EventHandler
     public void onInventoryClick(InventoryClickEvent event) {
-        // controller.getLogger().info("CLICK: " + event.getAction() + ", " + event.getClick() + " on " + event.getSlotType() + " in "+ event.getInventory().getType() + " slots: " + event.getSlot() + ":" + event.getRawSlot());
+        //controller.getLogger().info("CLICK: " + event.getAction() + ", " + event.getClick() + " on " + event.getSlotType() + " in "+ event.getInventory().getType() + " slots: " + event.getSlot() + ":" + event.getRawSlot());
 
         if (event.isCancelled()) return;
         if (!(event.getWhoClicked() instanceof Player)) return;
@@ -173,7 +174,10 @@ public class InventoryController implements Listener {
 
         Wand activeWand = mage.getActiveWand();
 
+        boolean isChest = inventoryType == InventoryType.CHEST || inventoryType == InventoryType.ENDER_CHEST || inventoryType == InventoryType.HOPPER || inventoryType == InventoryType.DISPENSER;
         boolean clickedWand = Wand.isWand(clickedItem);
+        boolean isContainerSlot = event.getSlot() == event.getRawSlot();
+
         if (activeWand != null && activeWand.isInventoryOpen())
         {
             if (Wand.isSpell(clickedItem) && clickedItem.getAmount() != 1)
@@ -227,6 +231,9 @@ public class InventoryController implements Listener {
                 mage.checkWand();
                 activeWand = mage.getActiveWand();
             }
+        } else if (clickedWand && Wand.Undroppable && !player.hasPermission("Magic.wand.override_drop") && isChest && !isContainerSlot) {
+            event.setCancelled(true);
+            return;
         }
 
         // Check for dropping items out of a wand's inventory

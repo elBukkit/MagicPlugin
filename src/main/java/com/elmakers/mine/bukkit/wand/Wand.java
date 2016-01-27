@@ -248,6 +248,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
     public static boolean LiveHotbar = true;
     public static boolean LiveHotbarCooldown = true;
     public static boolean Unbreakable = false;
+	public static boolean Undroppable = true;
     public static SoundEffect inventoryOpenSound = null;
     public static SoundEffect inventoryCloseSound = null;
     public static SoundEffect inventoryCycleSound = null;
@@ -3222,7 +3223,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		if (mage != null && !mage.isAtMaxSkillPoints()) {
 			Integer sp = getSP(item);
 			if (sp != null) {
-				mage.addSkillPoints(sp);
+				mage.addSkillPoints(sp * item.getAmount());
 				return true;
 			}
 		}

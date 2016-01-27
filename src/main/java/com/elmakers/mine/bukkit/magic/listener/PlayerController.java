@@ -192,6 +192,11 @@ public class PlayerController implements Listener {
                     controller.removeItemFromWand(activeWand, droppedItem);
                 }
             }
+        } else if (Wand.Undroppable && Wand.isWand(droppedItem) && !player.hasPermission("Magic.wand.override_drop")) {
+            Wand wand = new Wand(controller, droppedItem);
+            if (wand.isUndroppable()) {
+                cancelEvent = true;
+            }
         }
 
         if (cancelEvent) {
