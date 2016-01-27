@@ -5633,7 +5633,6 @@ disintegrate:
     parameters:
         velocity: 30
         range: 5
-        conditional: fail
         target_type: LivingEntity
         allow_max_range: true
         target: other
