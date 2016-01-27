@@ -31,8 +31,6 @@ public class ActionHandler implements Cloneable
     private boolean usesBrush = false;
     private boolean requiresBuildPermission = false;
     private boolean requiresBreakPermission = false;
-    private boolean isConditionalOnSuccess = false;
-    private boolean isConditionalOnFailure = false;
     private Integer currentAction = null;
     private boolean started = false;
     private static String debugIndent = "";
@@ -49,8 +47,6 @@ public class ActionHandler implements Cloneable
         this.usesBrush = copy.usesBrush;
         this.requiresBuildPermission = copy.requiresBuildPermission;
         this.requiresBreakPermission = copy.requiresBreakPermission;
-        this.isConditionalOnSuccess = copy.isConditionalOnSuccess;
-        this.isConditionalOnFailure = copy.isConditionalOnFailure;
         this.currentAction = copy.currentAction;
         for (ActionContext context : copy.actions)
         {
@@ -64,18 +60,6 @@ public class ActionHandler implements Cloneable
         usesBrush = false;
         requiresBuildPermission = false;
         requiresBreakPermission = false;
-        String conditionalTest = root.getString("conditional");
-        if (conditionalTest != null && !conditionalTest.isEmpty()) {
-            if (conditionalTest.equalsIgnoreCase("success")) {
-                isConditionalOnSuccess = true;
-            } else {
-
-                isConditionalOnFailure = true;
-            }
-        } else {
-            isConditionalOnSuccess = false;
-            isConditionalOnFailure = false;
-        }
         ConfigurationSection handlerConfiguration = (spell != null) ? spell.getHandlerParameters(key) : null;
         Collection<ConfigurationSection> actionNodes = ConfigurationUtils.getNodeList(root, key);
         if (actionNodes != null)
@@ -267,14 +251,6 @@ public class ActionHandler implements Cloneable
             }
             if (showDebug) {
                 mage.sendDebugMessage(ChatColor.WHITE + debugIndent + "Action " + ChatColor.GOLD + action.getAction().getClass().getSimpleName() + ChatColor.WHITE  + ": " + ChatColor.AQUA + actionResult.name().toLowerCase(), 4);
-            }
-            if (isConditionalOnSuccess && actionResult.isSuccess()) {
-                cancel(context);
-                break;
-            }
-            if (isConditionalOnFailure && !actionResult.isSuccess()) {
-                cancel(context);
-                break;
             }
 
             advance(context);
