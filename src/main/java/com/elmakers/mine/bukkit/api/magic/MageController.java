@@ -300,4 +300,5 @@ public interface MageController {
     public void disableItemSpawn();
     public void enableItemSpawn();
     public void setForceSpawn(boolean force);
+    public String getSpell(ItemStack item);
 }
