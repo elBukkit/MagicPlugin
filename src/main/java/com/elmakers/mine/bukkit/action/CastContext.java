@@ -18,10 +18,12 @@ import com.elmakers.mine.bukkit.spell.TargetingSpell;
 import com.elmakers.mine.bukkit.spell.UndoableSpell;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
@@ -924,23 +926,58 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
         return controller == null ? null : controller.getPlugin();
     }
     @Override
-    public void teleport(final Entity entity, final Location location, final int verticalSearchDistance, boolean preventFall)
+    public boolean teleport(final Entity entity, final Location location, final int verticalSearchDistance, boolean preventFall)
     {
-        teleport(entity, location, verticalSearchDistance, preventFall, true);
+        return teleport(entity, location, verticalSearchDistance, preventFall, true);
     }
 
     @Override
-    public void teleport(final Entity entity, final Location location, final int verticalSearchDistance, boolean preventFall, boolean safe)
+    public boolean teleport(final Entity entity, final Location location, final int verticalSearchDistance, boolean preventFall, boolean safe)
     {
-        Plugin plugin = getPlugin();
-        TeleportTask task = new TeleportTask(getController(), entity, location, verticalSearchDistance, preventFall, safe, this);
-        Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, task, 1);
+        Chunk chunk = location.getBlock().getChunk();
+        if (!chunk.isLoaded()) {
+            chunk.load(true);
+        }
+
+        Location targetLocation = findPlaceToStand(location, verticalSearchDistance);
+
+        org.bukkit.Bukkit.getLogger().info("Found " + targetLocation + " from " + location + " search: " + verticalSearchDistance);
+
+        if (targetLocation == null && !preventFall) {
+            Block block = location.getBlock();
+            Block blockOneUp = block.getRelative(BlockFace.UP);
+            if (!safe || (isOkToStandIn(blockOneUp.getType()) && isOkToStandIn(block.getType())))
+            {
+                targetLocation = location;
+            }
+        }
+        if (targetLocation != null) {
+            targetLocation.setX(location.getX() - location.getBlockX() + targetLocation.getBlockX());
+            targetLocation.setZ(location.getZ() - location.getBlockZ() + targetLocation.getBlockZ());
+            registerMoved(entity);
+
+            // Hacky double-teleport to work-around vanilla suffocation checks
+            boolean isWorldChange = !targetLocation.getWorld().equals(entity.getWorld());
+            entity.teleport(targetLocation);
+            if (isWorldChange) {
+                entity.teleport(targetLocation);
+            }
+            setTargetLocation(targetLocation);
+            sendMessageKey("teleport");
+            playEffects("teleport");
+        } else {
+            sendMessageKey("teleport_failed");
+            playEffects("teleport_failed");
+            return false;
+        }
+
+        return true;
     }
 
     @Override
-    public void teleport(final Entity entity, final Location location, final int verticalSearchDistance)
+    public boolean teleport(final Entity entity, final Location location, final int verticalSearchDistance)
     {
-        teleport(entity, location, verticalSearchDistance, true);
+        return teleport(entity, location, verticalSearchDistance, true);
     }
 
     @Override
