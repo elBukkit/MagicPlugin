@@ -1,5 +1,8 @@
 # TODO
 
+ - Fix Shift+click wand anvil, weird color code showing up?
+ - Re-example target_breakables new behavior- it seems to always break through, even at a value of 1?
+
  - Use hunger for mana.. ?
 
  - Pull/Accio on top of an entity sends it skyrocketing

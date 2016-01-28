@@ -7252,7 +7252,7 @@ homing:
         target_type: LivingEntity
         player_damage: 4
         entity_damage: 6
-        target_breakables: 1
+        target_breakables: 0
         cooldown: 5000
         track_target: true
         lifetime: 20000

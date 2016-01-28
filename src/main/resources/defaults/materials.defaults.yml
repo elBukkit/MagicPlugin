@@ -443,6 +443,7 @@ attachable:
 - gravel
 - trap_door
 - iron_trap_door
+- fire
 # Copied from attachable_double
 - cactus
 - iron_door_block

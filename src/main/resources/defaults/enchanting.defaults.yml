@@ -454,11 +454,11 @@ engineer:
       alter: 0,10,20
       #bridge: 0,5,10
       #convert: 0,5,40
+      #toss: 2,25,35
+      #tunnel: 5,10,20
       recurse: 0,5,20
       paint: 1,20,45
-      #toss: 2,25,35
       iterate: 0,0,40
-      #tunnel: 5,10,20
       pillar: 0,5,10
       place: 0,1,5
       tree: 0,2,10
