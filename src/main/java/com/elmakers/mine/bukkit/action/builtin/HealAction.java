@@ -31,14 +31,6 @@ public class HealAction extends BaseSpellAction
 	@Override
 	public SpellResult perform(CastContext context)
 	{
-        HealEvent healEvent = new HealEvent(context, amount, percentage);
-        Bukkit.getServer().getPluginManager().callEvent(healEvent);
-        if (healEvent.isCancelled()) {
-            return SpellResult.CANCELLED;
-        }
-        amount = healEvent.getHealAmount();
-        percentage = healEvent.getHealPercent();
-
         Entity entity = context.getTargetEntity();
 		if (!(entity instanceof LivingEntity))
 		{
@@ -50,18 +42,31 @@ public class HealAction extends BaseSpellAction
         {
             return SpellResult.NO_TARGET;
         }
-        context.registerModified(targetEntity);
+
+        double healAmount = amount;
+        Mage mage = context.getMage();
         if (percentage > 0)
         {
-            double health = targetEntity.getHealth() + targetEntity.getMaxHealth() * percentage;
-            targetEntity.setHealth(Math.min(health, targetEntity.getMaxHealth()));
+            healAmount = targetEntity.getMaxHealth() * percentage;
         }
         else
         {
-            Mage mage = context.getMage();
-            double health = targetEntity.getHealth() + (amount * mage.getDamageMultiplier());
-            targetEntity.setHealth(Math.min(health, targetEntity.getMaxHealth()));
+            healAmount *= mage.getDamageMultiplier();
         }
+
+        HealEvent healEvent = new HealEvent(context, healAmount);
+        Bukkit.getServer().getPluginManager().callEvent(healEvent);
+        if (healEvent.isCancelled()) {
+            return SpellResult.CANCELLED;
+        }
+        healAmount = healEvent.getHealAmount();
+        if (healAmount == 0)
+        {
+            return SpellResult.NO_TARGET;
+        }
+
+        context.registerModified(targetEntity);
+        targetEntity.setHealth(Math.min(targetEntity.getHealth() + healAmount, targetEntity.getMaxHealth()));
 
 		return SpellResult.CAST;
 	}
