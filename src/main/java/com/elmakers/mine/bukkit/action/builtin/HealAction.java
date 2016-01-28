@@ -1,11 +1,13 @@
 package com.elmakers.mine.bukkit.action.builtin;
 
 import com.elmakers.mine.bukkit.api.action.CastContext;
+import com.elmakers.mine.bukkit.api.event.HealEvent;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.action.BaseSpellAction;
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
@@ -29,6 +31,14 @@ public class HealAction extends BaseSpellAction
 	@Override
 	public SpellResult perform(CastContext context)
 	{
+        HealEvent healEvent = new HealEvent(context, amount, percentage);
+        Bukkit.getServer().getPluginManager().callEvent(healEvent);
+        if (healEvent.isCancelled()) {
+            return SpellResult.CANCELLED;
+        }
+        amount = healEvent.getHealAmount();
+        percentage = healEvent.getHealPercent();
+
         Entity entity = context.getTargetEntity();
 		if (!(entity instanceof LivingEntity))
 		{
