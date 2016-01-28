@@ -13,12 +13,14 @@ public class HealEvent extends Event implements Cancellable {
     private static final HandlerList handlers = new HandlerList();
 
     private final CastContext context;
-    private double healedAmount;
+    private double amount;
+    private double percent;
     private boolean cancelled;
 
-    public HealEvent(CastContext context, double healingAmount) {
+    public HealEvent(CastContext context, double amount, double percent) {
         this.context = context;
-        this.healedAmount = healingAmount;
+        this.amount = amount;
+        this.percent = percent;
         this.cancelled = false;
     }
 
@@ -26,12 +28,34 @@ public class HealEvent extends Event implements Cancellable {
         return context;
     }
 
-    public double getHealingAmount() {
-        return healedAmount;
+    /**
+     * The amount that will be healed unless {@link #getHealPercent()} is greater than 0.
+     */
+    public double getHealAmount() {
+        return amount;
     }
 
-    public void setHealingAmount(double healingAmount) {
-        this.healedAmount = healingAmount;
+    /**
+     * The amount that will be healed unless {@link #getHealPercent()} is greater than 0.
+     */
+    public void setHealAmount(double healAmount) {
+        this.amount = healAmount;
+    }
+
+    /**
+     * If the heal percent is greater than 0 then the healing will occur as a percent of the targets total health
+     * instead of the flat amount indicated by {@link #getHealAmount()}.
+     */
+    public double getHealPercent() {
+        return percent;
+    }
+
+    /**
+     * If the heal percent is greater than 0 then the healing will occur as a percent of the targets total health
+     * instead of the flat amount indicated by {@link #getHealAmount()}.
+     */
+    public void setHealPercent(double healPercent) {
+        this.percent = healPercent;
     }
 
     @Override
