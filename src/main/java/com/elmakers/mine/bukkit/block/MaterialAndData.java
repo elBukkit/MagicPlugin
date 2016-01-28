@@ -303,6 +303,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
                 extraData = new BlockCommand(command.getCommand(), command.getName());
             } else if (blockState instanceof Skull) {
                 Skull skull = (Skull)blockState;
+                data = (short)skull.getSkullType().ordinal();
                 extraData = new BlockSkull(CompatibilityUtils.getSkullProfile(skull), skull.getSkullType(), skull.getRotation());
             } else if (blockState instanceof CreatureSpawner) {
                 CreatureSpawner spawner = (CreatureSpawner)blockState;
@@ -460,7 +461,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         }
 
         // Special cases
-        if (material.getId() == 176 || material.getId() == 177) {
+        if (material == Material.WALL_BANNER || material == Material.STANDING_BANNER) {
             // Can't compare patterns for now
             return true;
         }
@@ -485,6 +486,22 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
     @SuppressWarnings("deprecation")
     public ItemStack getItemStack(int amount)
     {
+        // TODO: Need to config-drive this?
+        switch (material) {
+            case SKULL: material = Material.SKULL_ITEM; break;
+            case WALL_BANNER: material = Material.BANNER; break;
+            case STANDING_BANNER: material = Material.BANNER; break;
+            case WOODEN_DOOR: material = Material.WOOD_DOOR; break;
+            case IRON_DOOR_BLOCK: material = Material.IRON_DOOR; break;
+            case WALL_SIGN: material = Material.SIGN; break;
+            case SIGN_POST: material = Material.SIGN; break;
+            case ACACIA_DOOR: material = Material.ACACIA_DOOR_ITEM; break;
+            case JUNGLE_DOOR: material = Material.JUNGLE_DOOR_ITEM; break;
+            case DARK_OAK_DOOR: material = Material.DARK_OAK_DOOR_ITEM; break;
+            case BIRCH_DOOR: material = Material.BIRCH_DOOR_ITEM; break;
+            case SPRUCE_DOOR: material = Material.SPRUCE_DOOR_ITEM; break;
+            default:
+        }
         ItemStack stack = new ItemStack(material, amount, data);
         applyToItem(stack);
         return stack;
@@ -499,9 +516,13 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
             ItemMeta meta = stack.getItemMeta();
             if (meta != null && meta instanceof SkullMeta && extraData != null && extraData instanceof BlockSkull)
             {
-                SkullMeta skullMeta = (SkullMeta)meta;
-                InventoryUtils.setSkullProfile(skullMeta, ((BlockSkull)extraData).profile);
-                stack.setItemMeta(meta);
+                BlockSkull skullData = (BlockSkull)extraData;
+                if (skullData.skullType == SkullType.PLAYER && skullData.profile != null) {
+
+                    SkullMeta skullMeta = (SkullMeta)meta;
+                    InventoryUtils.setSkullProfile(skullMeta, ((BlockSkull)extraData).profile);
+                    stack.setItemMeta(meta);
+                }
             }
         } else if (material == Material.STANDING_BANNER || material == Material.WALL_BANNER || material == Material.BANNER) {
             ItemMeta meta = stack.getItemMeta();
@@ -517,6 +538,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
                 {
                     banner.setBaseColor(bannerData.baseColor);
                 }
+                stack.setItemMeta(meta);
             }
         }
         return stack;
