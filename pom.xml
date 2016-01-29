@@ -201,18 +201,15 @@
             <id>elMakers</id>
             <url>http://maven.elmakers.com/repository/</url>
         </repository>
+		<!--
+
+		All of the following repositories seem to be offline.
+		If the elmakers repo ever goes down, you could try re-enabling these, but you may be out of luck.
+
         <repository>
             <id>SacredCoding</id>
             <name>SacredCoding-releases</name>
             <url>http://repo.sacredlabyrinth.net/artifactory/releases</url>
-        </repository>
-        <repository>
-            <id>sk89q</id>
-            <url>http://maven.sk89q.com/repo/</url>
-        </repository>
-        <repository>
-            <id>dynmap</id>
-            <url>http://repo.mikeprimm.com/</url>
         </repository>
         <repository>
             <name>Citizens2 repository</name>
@@ -226,6 +223,20 @@
         <repository>
             <id>Plugin Metrics</id>
             <url>http://repo.mcstats.org/content/repositories/public</url>
+        </repository>
+        <repository>
+            <id>NoCheatPlus</id>
+            <url>http://ncp-repo.yawk.at/</url>
+        </repository>
+
+        -->
+        <repository>
+            <id>sk89q</id>
+            <url>http://maven.sk89q.com/repo/</url>
+        </repository>
+        <repository>
+            <id>dynmap</id>
+            <url>http://repo.mikeprimm.com/</url>
         </repository>
         <repository>
             <id>MultiverseCore</id>
@@ -242,10 +253,6 @@
         <repository>
             <id>Heroes</id>
             <url>http://nexus.theyeticave.net/content/repositories/pub_releases/</url>
-        </repository>
-        <repository>
-            <id>NoCheatPlus</id>
-            <url>http://ncp-repo.yawk.at/</url>
         </repository>
     </repositories>
 	<build>
