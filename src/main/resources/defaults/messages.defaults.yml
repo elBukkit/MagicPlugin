@@ -1155,6 +1155,7 @@ spells:
         removed: You remove your magical hat
         hat_name: Hat of $hat
         hat_lore: Will disappear if clicked
+        upgrade_description: "&r&b&bull; &6Increased duration"
     wear:
         name: Wear
         description: Wear the item in your hand

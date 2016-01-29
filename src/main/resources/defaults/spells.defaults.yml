@@ -5801,6 +5801,8 @@ hat:
     category: utility
     worth_sp: 80
     earns_sp: 1
+    upgrade_required_path: apprentice
+    upgrade_required_casts: 40
     actions:
         cast:
         -  class: Hat
@@ -5821,6 +5823,16 @@ hat:
         transparent: transparent_to_construction
     costs:
         mana: 30
+
+hat|2:
+    upgrade_required_path: master
+    upgrade_required_casts: 40
+    parameers:
+      undo: 60000
+
+hat|3:
+    parameers:
+      undo: 120000
 
 wear:
     hidden: true
