@@ -167,6 +167,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
     private boolean isHeroes = false;
 	private int uses = 0;
     private boolean hasUses = false;
+    private boolean isSingleUse = false;
 	private float xp = 0;
 
     private float xpMaxBoost = 0;
@@ -443,7 +444,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	}
 
     public void newId() {
-        if (!this.isUpgrade) {
+        if (!this.isUpgrade && !this.isSingleUse) {
             id = UUID.randomUUID().toString();
         } else {
             id = null;
@@ -1371,6 +1372,8 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         xpRegenerationBoost = safe ? Math.max(_xpRegenerationBoost, xpRegenerationBoost) : _xpRegenerationBoost;
         int _uses = wandConfig.getInt("uses", uses);
         uses = safe ? Math.max(_uses, uses) : _uses;
+        String tempId = wandConfig.getString("id", id);
+        isSingleUse = (tempId == null || tempId.isEmpty()) && uses == 1;
         hasUses = wandConfig.getBoolean("has_uses", hasUses) || uses > 0;
 
         float _manaPerDamage = (float)wandConfig.getDouble("mana_per_damage", manaPerDamage);
@@ -3579,7 +3582,12 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
                     deactivate();
 
                     PlayerInventory playerInventory = player.getInventory();
-                    playerInventory.setItemInHand(new ItemStack(Material.AIR, 1));
+                    item = player.getItemInHand();
+                    if (item.getAmount() > 1) {
+                        item.setAmount(item.getAmount() - 1);
+                    } else {
+                        playerInventory.setItemInHand(new ItemStack(Material.AIR, 1));
+                    }
                     player.updateInventory();
                 } else {
                     saveItemState();
