@@ -1,7 +1,6 @@
 package com.elmakers.mine.bukkit.action.builtin;
 
 import com.elmakers.mine.bukkit.api.action.CastContext;
-import com.elmakers.mine.bukkit.api.event.HealEvent;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
@@ -11,6 +10,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.event.entity.EntityRegainHealthEvent;
+import org.bukkit.event.entity.EntityRegainHealthEvent.RegainReason;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -54,12 +55,12 @@ public class HealAction extends BaseSpellAction
             healAmount *= mage.getDamageMultiplier();
         }
 
-        HealEvent healEvent = new HealEvent(context, healAmount);
-        Bukkit.getServer().getPluginManager().callEvent(healEvent);
-        if (healEvent.isCancelled()) {
+        EntityRegainHealthEvent event = new EntityRegainHealthEvent(targetEntity, healAmount, RegainReason.CUSTOM);
+        Bukkit.getServer().getPluginManager().callEvent(event);
+        if (event.isCancelled()) {
             return SpellResult.CANCELLED;
         }
-        healAmount = healEvent.getHealAmount();
+        healAmount = event.getAmount();
         if (healAmount == 0)
         {
             return SpellResult.NO_TARGET;
