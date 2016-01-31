@@ -703,6 +703,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
             case WITCH:
                 mobSkin = "MHF_Witch";
                 break;
+            default:
         }
 
         return mobSkin;
