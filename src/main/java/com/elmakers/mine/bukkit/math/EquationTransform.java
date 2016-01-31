@@ -1,6 +1,5 @@
 package com.elmakers.mine.bukkit.math;
 
-import com.avaje.ebean.LogLevel;
 import com.elmakers.mine.bukkit.api.math.Transform;
 import net.objecthunter.exp4j.Expression;
 import net.objecthunter.exp4j.ExpressionBuilder;

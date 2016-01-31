@@ -1,6 +1,5 @@
 package com.elmakers.mine.bukkit.utility;
 
-import com.elmakers.mine.bukkit.api.magic.MageController;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Location;
 import org.bukkit.Sound;

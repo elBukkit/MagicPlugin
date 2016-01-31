@@ -2,13 +2,11 @@ package com.elmakers.mine.bukkit.effect;
 
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.magic.Mage;
-import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import org.bukkit.Color;
 import org.bukkit.FireworkEffect;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Server;
-import org.bukkit.World;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.CreatureSpawnEvent;
@@ -19,7 +17,6 @@ import com.elmakers.mine.bukkit.utility.NMSUtils;
 import org.bukkit.util.Vector;
 
 import java.lang.reflect.Constructor;
-import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.Random;
 

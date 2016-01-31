@@ -1,6 +1,5 @@
 package com.elmakers.mine.bukkit.block;
 
-import com.elmakers.mine.bukkit.api.block.*;
 import org.bukkit.Material;
 
 import java.util.Comparator;
