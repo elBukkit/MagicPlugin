@@ -10,6 +10,7 @@ import com.elmakers.mine.bukkit.api.data.UndoData;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.wand.Wand;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
+
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
@@ -305,7 +306,9 @@ public abstract class ConfigurationMageDataStore implements MageDataStore {
 
         // Load stored inventory
         if (saveFile.contains("inventory")) {
-            data.setStoredInventory((List<ItemStack>) saveFile.getList("inventory"));
+            @SuppressWarnings("unchecked")
+            List<ItemStack> inventory = (List<ItemStack>) saveFile.getList("inventory");
+            data.setStoredInventory(inventory);
         }
         if (saveFile.contains("experience")) {
             data.setStoredExperience((float)saveFile.getDouble("experience"));

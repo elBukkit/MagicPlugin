@@ -4,6 +4,7 @@ import java.util.*;
 import java.util.Map.Entry;
 
 import de.slikey.effectlib.util.ParticleEffect;
+
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
@@ -300,10 +301,10 @@ public class ConfigurationUtils {
         if (value instanceof Map)
         {
             ConfigurationSection newChild = base.createSection(key);
-            Map<String, Object> map = (Map<String, Object>)value;
-            for (Entry<String, Object> entry : map.entrySet())
+            Map<?, ?> map = (Map<?, ?>)value;
+            for (Entry<?, ?> entry : map.entrySet())
             {
-                newChild.set(entry.getKey(), entry.getValue());
+                newChild.set((String) entry.getKey(), entry.getValue());
             }
             base.set(key, newChild);
             return newChild;

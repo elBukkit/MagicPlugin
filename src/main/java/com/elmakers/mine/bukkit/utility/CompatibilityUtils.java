@@ -1,6 +1,7 @@
 package com.elmakers.mine.bukkit.utility;
 
 import com.elmakers.mine.bukkit.api.block.MaterialAndData;
+
 import org.bukkit.Art;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -250,6 +251,7 @@ public class CompatibilityUtils extends NMSUtils {
             location = getPaintingOffset(location, facing, art);
             Object worldHandle = getHandle(location.getWorld());
             Object newEntity = null;
+            @SuppressWarnings("unchecked")
             Enum<?> directionEnum = Enum.valueOf(class_EnumDirection, facing.name());
             Object blockLocation = class_BlockPositionConstructor.newInstance(location.getX(), location.getY(), location.getZ());
             newEntity = class_EntityPaintingConstructor.newInstance(worldHandle, blockLocation, directionEnum);
@@ -275,6 +277,7 @@ public class CompatibilityUtils extends NMSUtils {
         try {
             Object worldHandle = getHandle(location.getWorld());
             Object newEntity = null;
+            @SuppressWarnings("unchecked")
             Enum<?> directionEnum = Enum.valueOf(class_EnumDirection, facing.name());
             Object blockLocation = class_BlockPositionConstructor.newInstance(location.getX(), location.getY(), location.getZ());
             newEntity = class_EntityItemFrameConstructor.newInstance(worldHandle, blockLocation, directionEnum);
@@ -373,6 +376,7 @@ public class CompatibilityUtils extends NMSUtils {
                     location.getX() + x, location.getY() + y, location.getZ() + z);
 
             // The input entity is only used for equivalency testing, so this "null" should be ok.
+            @SuppressWarnings("unchecked")
             List<? extends Object> entityList = (List<? extends Object>)class_World_getEntitiesMethod.invoke(worldHandle, null, bb);
             List<Entity> bukkitEntityList = new java.util.ArrayList<org.bukkit.entity.Entity>(entityList.size());
 
@@ -422,6 +426,7 @@ public class CompatibilityUtils extends NMSUtils {
         return newMinecart;
     }
 
+    @SuppressWarnings("unchecked")
     public static Class<? extends Runnable> getTaskClass(BukkitTask task) {
         Class<? extends Runnable> taskClass = null;
         try {

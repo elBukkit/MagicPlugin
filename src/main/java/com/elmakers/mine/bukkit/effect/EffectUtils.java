@@ -62,7 +62,7 @@ public class EffectUtils extends NMSUtils {
                 Object metadataPacket = class_PacketPlayOutEntityMetadata_Constructor.newInstance(fireworkId, watcher, true);
                 Object statusPacket = class_PacketPlayOutEntityStatus_Constructor.newInstance(fireworkHandle, (byte)17);
 
-                Constructor packetDestroyEntityConstructor = class_PacketPlayOutEntityDestroy.getConstructor(int[].class);
+                Constructor<?> packetDestroyEntityConstructor = class_PacketPlayOutEntityDestroy.getConstructor(int[].class);
                 Object destroyPacket = packetDestroyEntityConstructor.newInstance(new int[] {(Integer)fireworkId});
 
                 Collection<? extends Player> players = server.getOnlinePlayers();

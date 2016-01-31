@@ -29,6 +29,7 @@ import com.elmakers.mine.bukkit.api.wand.Wand;
 import com.elmakers.mine.bukkit.api.wand.WandUpgradePath;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
+
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
@@ -940,7 +941,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
                 if (effectsNode.isString(effectKey)) {
                     String referenceKey = effectsNode.getString(effectKey);
                     if (effects.containsKey(referenceKey)) {
-                        effects.put(effectKey, new ArrayList(effects.get(referenceKey)));
+                        effects.put(effectKey, new ArrayList<EffectPlayer>(effects.get(referenceKey)));
                     }
                 }
                 else
