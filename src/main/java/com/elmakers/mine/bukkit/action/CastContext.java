@@ -1051,7 +1051,6 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
     public Double getReflective(Block block) {
         if (block == null) return null;
 
-        if (block == null) return null;
         if (targetingSpell != null && targetingSpell.isReflective(block.getType())) {
             return 1.0;
         }

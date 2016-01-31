@@ -208,7 +208,6 @@ public class UndoQueue implements com.elmakers.mine.bukkit.api.block.UndoQueue
         try {
             if (data == null) return;
             List<com.elmakers.mine.bukkit.api.block.UndoList> undoList = data.getBlockList();
-            if (data == null) return;
             if (undoList != null) {
                 for (com.elmakers.mine.bukkit.api.block.UndoList list : undoList) {
                     add(list);
