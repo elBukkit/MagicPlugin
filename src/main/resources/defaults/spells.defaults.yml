@@ -4716,6 +4716,7 @@ earthquake:
              radius: 4
              particle: flame
     parameters:
+        target: other
         target_type: LivingEntity
         allow_max_range: false
         range: 16
@@ -5881,6 +5882,15 @@ magichat:
             # in messages.yml
           - class: Message
             message: cast_bunny
+        - class: Serial
+          weight: 1
+          actions:
+          - class: SpawnEntity
+            type: rabbit
+            rabbit_type: the_killer_bunny
+            # in messages.yml
+          - class: Message
+            message: cast_killer_bunny
         - class: Serial
           weight: 20
           actions:
@@ -7190,7 +7200,7 @@ railgun:
         reorient: false
         undo: 5000
         brush: air
-        transparent: air
+        transparent: air,water,stationary_water
     costs:
         mana: 150
 
@@ -7265,7 +7275,7 @@ homing:
         target_type: LivingEntity
         player_damage: 4
         entity_damage: 6
-        target_breakables: 0
+        target_breakables: 1
         cooldown: 5000
         track_target: true
         lifetime: 20000

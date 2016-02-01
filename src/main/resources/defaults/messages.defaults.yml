@@ -1166,6 +1166,7 @@ spells:
         cast_nightvision: Your hat lights the way
         cast_absorption: Your hat gives you a boost
         cast_bunny: A bunny pops out!
+        cast_killer_bunny: Whoops, RUN!!!!!!
         alternate: Your magic hat jumps onto your head
     invisiblecloak:
         name: Invisible Cloak

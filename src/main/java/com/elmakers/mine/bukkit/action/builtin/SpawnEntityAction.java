@@ -26,6 +26,7 @@ import org.bukkit.entity.Item;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Ocelot;
 import org.bukkit.entity.PigZombie;
+import org.bukkit.entity.Rabbit;
 import org.bukkit.entity.Sheep;
 import org.bukkit.entity.Skeleton;
 import org.bukkit.entity.Slime;
@@ -62,7 +63,9 @@ public class SpawnEntityAction extends BaseSpellAction
     private Horse.Variant horseVariant = null;
     private Horse.Color horseColor = null;
     private Horse.Style horseStyle = null;
+    private Double horseJumpStrength;
     private Ocelot.Type ocelotType = null;
+    private Rabbit.Type rabbitType = null;
     private DyeColor color = null;
     private Double health;
 
@@ -128,6 +131,11 @@ public class SpawnEntityAction extends BaseSpellAction
             }
         }
 
+        horseJumpStrength = null;
+        if (parameters.contains("horse_jump_strength")) {
+            horseJumpStrength = parameters.getDouble("horse_jump_strength");
+        }
+
         ocelotType = null;
         if (parameters.contains("ocelot_type")) {
             try {
@@ -151,6 +159,15 @@ public class SpawnEntityAction extends BaseSpellAction
             try {
                 String skeletonString = parameters.getString("skeleton_type");
                 skeletonType = Skeleton.SkeletonType.valueOf(skeletonString.toUpperCase());
+            } catch (Exception ex) {
+            }
+        }
+
+        rabbitType = null;
+        if (parameters.contains("rabbit_type")) {
+            try {
+                String rabbitString = parameters.getString("rabbit_type");
+                rabbitType = Rabbit.Type.valueOf(rabbitString.toUpperCase());
             } catch (Exception ex) {
             }
         }
@@ -224,17 +241,25 @@ public class SpawnEntityAction extends BaseSpellAction
         }
 
         if (spawnedEntity instanceof Horse) {
+            Horse horse = (Horse)spawnedEntity;
             if (horseVariant != null) {
-                ((Horse)spawnedEntity).setVariant(horseVariant);
+                horse.setVariant(horseVariant);
             }
             if (horseColor != null) {
-                ((Horse)spawnedEntity).setColor(horseColor);
+                horse.setColor(horseColor);
             }
             if (horseStyle != null) {
-                ((Horse)spawnedEntity).setStyle(horseStyle);
+                horse.setStyle(horseStyle);
+            }
+            if (horseJumpStrength != null) {
+                horse.setJumpStrength(horseJumpStrength);
             }
         }
 
+        if (spawnedEntity instanceof Rabbit && rabbitType != null) {
+            Rabbit rabbit = (Rabbit)spawnedEntity;
+            rabbit.setRabbitType(rabbitType);
+        }
         if (spawnedEntity instanceof Ocelot && ocelotType != null) {
             Ocelot ocelot = (Ocelot)spawnedEntity;
             ocelot.setCatType(ocelotType);
