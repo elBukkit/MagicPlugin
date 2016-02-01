@@ -738,10 +738,8 @@ stream2:
         tick:
         - class: ModifyBlock
           ignore_result: true
-        - class: Skip
+        - class: Undo
           ignore_result: true
-          actions:
-          - class: Undo
         - class: AreaOfEffect
           actions:
           - class: Damage
@@ -773,8 +771,6 @@ stream2:
       cooldown: 5000
       destructible: destructible_replace
       undo: 800
-      skip: 10
-      repeat_skip: false
-      undo_oldest: 1
+      undo_to: 3
     costs:
         mana: 30
