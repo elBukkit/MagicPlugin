@@ -7,6 +7,7 @@ import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.utility.NMSUtils;
 import com.elmakers.mine.bukkit.wand.Wand;
+
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
@@ -38,6 +39,7 @@ import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.scheduler.BukkitRunnable;
 
 public class PlayerController implements Listener {
     private final MagicController controller;
@@ -202,18 +204,25 @@ public class PlayerController implements Listener {
                 ItemStack item = inventory.getItem(i);
 
                 if (item != null && Wand.getWandId(item) != null) {
-                    int previouslySelected = inventory
+                    final int previouslySelected = inventory
                             .getHeldItemSlot();
                     inventory.setHeldItemSlot(i);
 
-                    Wand newWand = mage.checkWand();
+                    final Wand newWand = mage.checkWand();
 
                     // Restore if not activated
                     if (null == newWand) {
                         inventory.setHeldItemSlot(previouslySelected);
                     } else {
-                        newWand.openInventory();
-                        newWand.setStoredSlot(previouslySelected);
+                        // Using a runnable here as workaround for bukkit bug
+                        // that uses inventory.addItem when drop event is cancelled
+                        new BukkitRunnable() {
+                            @Override
+                            public void run() {
+                                newWand.openInventory();
+                                newWand.setStoredSlot(previouslySelected);
+                            }
+                        }.runTaskLater(mage.getController().getPlugin(), 0);
                         break;
                     }
                 }
