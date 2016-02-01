@@ -21,6 +21,7 @@ public interface UndoList extends BlockList, Comparable<UndoList> {
     public void undo(boolean blocking);
     public void undoScheduled();
     public void undoScheduled(boolean blocking);
+    public BlockData undoNext(boolean applyPhysics);
 
     public void setEntityUndo(boolean undoEntityEffects);
     public void setEntityUndoTypes(Set<EntityType> undoTypes);
