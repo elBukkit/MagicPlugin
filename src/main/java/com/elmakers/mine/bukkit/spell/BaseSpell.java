@@ -1298,6 +1298,8 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     protected void sendCastMessage(SpellResult result, String message)
     {
         Location source = getEyeLocation();
+        if (mage == null || source == null) return;
+
         mage.sendDebugMessage(ChatColor.WHITE + "Cast " + ChatColor.GOLD + getName() + ChatColor.WHITE + " from " +
                 ChatColor.GRAY + source.getBlockX() +
                 ChatColor.DARK_GRAY + ","  + ChatColor.GRAY + source.getBlockY() +
