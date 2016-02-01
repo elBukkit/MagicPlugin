@@ -6,14 +6,11 @@ import java.util.HashSet;
 import java.util.Set;
 
 import com.elmakers.mine.bukkit.block.UndoList;
-import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
-import org.bukkit.block.BlockState;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.InventoryHolder;
 
 public abstract class BlockSpell extends UndoableSpell {
 

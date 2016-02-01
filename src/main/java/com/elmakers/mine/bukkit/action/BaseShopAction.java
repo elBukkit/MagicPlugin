@@ -477,8 +477,6 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
 
         this.showingItems = new HashMap<Integer, ShopItem>();
 
-        MageController controller = context.getController();
-
         // Load items
         itemStacks = new ArrayList<ItemStack>();
         String costString = context.getMessage("cost_lore", "Costs: $cost");

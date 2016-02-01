@@ -2,13 +2,11 @@ package com.elmakers.mine.bukkit.effect;
 
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.magic.Mage;
-import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import org.bukkit.Color;
 import org.bukkit.FireworkEffect;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Server;
-import org.bukkit.World;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.CreatureSpawnEvent;
@@ -19,7 +17,6 @@ import com.elmakers.mine.bukkit.utility.NMSUtils;
 import org.bukkit.util.Vector;
 
 import java.lang.reflect.Constructor;
-import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.Random;
 
@@ -62,7 +59,7 @@ public class EffectUtils extends NMSUtils {
                 Object metadataPacket = class_PacketPlayOutEntityMetadata_Constructor.newInstance(fireworkId, watcher, true);
                 Object statusPacket = class_PacketPlayOutEntityStatus_Constructor.newInstance(fireworkHandle, (byte)17);
 
-                Constructor packetDestroyEntityConstructor = class_PacketPlayOutEntityDestroy.getConstructor(int[].class);
+                Constructor<?> packetDestroyEntityConstructor = class_PacketPlayOutEntityDestroy.getConstructor(int[].class);
                 Object destroyPacket = packetDestroyEntityConstructor.newInstance(new int[] {(Integer)fireworkId});
 
                 Collection<? extends Player> players = server.getOnlinePlayers();

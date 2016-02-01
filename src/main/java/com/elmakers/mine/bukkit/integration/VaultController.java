@@ -15,7 +15,6 @@ import java.text.NumberFormat;
 public class VaultController {
     private static VaultController instance;
     private Economy economy;
-    private Plugin owningPlugin;
     private NumberFormat formatter = new DecimalFormat("#0.00");
 
     public static VaultController getInstance() {
@@ -48,7 +47,6 @@ public class VaultController {
     }
 
     private VaultController(Plugin owner, Economy economy) {
-        this.owningPlugin = owner;
         this.economy = economy;
     }
 

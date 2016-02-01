@@ -75,7 +75,7 @@ public abstract class BaseProjectileAction extends CompoundAction {
                     if (value.getOwningPlugin().equals(plugin)) {
                         Object o = value.value();
                         if (o != null && o instanceof WeakReference) {
-                            WeakReference reference = (WeakReference)o;
+                            WeakReference<?> reference = (WeakReference<?>)o;
                             o = reference.get();
                             if (o != null && o instanceof Entity) {
                                 targetEntity = (Entity)o;

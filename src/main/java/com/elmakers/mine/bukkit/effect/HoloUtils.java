@@ -20,7 +20,7 @@ public class HoloUtils extends NMSUtils
         Object skull = null;
         try {
             Object world = getHandle(location.getWorld());
-            Constructor skullConstructor = class_EntityWitherSkull.getConstructor(class_World);
+            Constructor<?> skullConstructor = class_EntityWitherSkull.getConstructor(class_World);
             skull = skullConstructor.newInstance(world);
             Method setLocationMethod = skull.getClass().getMethod("setLocation", Double.TYPE, Double.TYPE, Double.TYPE, Float.TYPE, Float.TYPE);
             setLocationMethod.invoke(skull, location.getX(), location.getY() + Y_OFFSET, location.getZ(), location.getPitch(), location.getYaw());
@@ -37,7 +37,7 @@ public class HoloUtils extends NMSUtils
         Object horse = null;
         try {
             Object world = getHandle(location.getWorld());
-            Constructor horseConstructor = class_EntityHorse.getConstructor(class_World);
+            Constructor<?> horseConstructor = class_EntityHorse.getConstructor(class_World);
             horse = horseConstructor.newInstance(world);
 
             Method setAgeMethod = horse.getClass().getMethod("setAge", Integer.TYPE);
@@ -93,7 +93,7 @@ public class HoloUtils extends NMSUtils
         try {
             Object horsePacket = class_PacketSpawnLivingEntityConstructor.newInstance(horse);
             Object skullPacket = class_PacketSpawnEntityConstructor.newInstance(skull, WITHER_SKULL_TYPE);
-            Constructor packetAttachEntityConstructor = class_PacketPlayOutAttachEntity.getConstructor(Integer.TYPE, class_Entity, class_Entity);
+            Constructor<?> packetAttachEntityConstructor = class_PacketPlayOutAttachEntity.getConstructor(Integer.TYPE, class_Entity, class_Entity);
             Object attachPacket = packetAttachEntityConstructor.newInstance(0, horse, skull);
 
             sendPacket(player, horsePacket);
@@ -115,7 +115,7 @@ public class HoloUtils extends NMSUtils
             int horseId = (int)(Integer)getHorseIdMethod.invoke(horse);
             int skullId = (int)(Integer)getSkullIdMethod.invoke(skull);
 
-            Constructor packetDestroyEntityConstructor = class_PacketPlayOutEntityDestroy.getConstructor(int[].class);
+            Constructor<?> packetDestroyEntityConstructor = class_PacketPlayOutEntityDestroy.getConstructor(int[].class);
             Object destroyPacket = packetDestroyEntityConstructor.newInstance(new int[] {horseId, skullId});
 
             sendPacket(player, destroyPacket);

@@ -2,6 +2,7 @@ package com.elmakers.mine.bukkit.utility;
 
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.google.common.collect.Multimap;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -149,6 +150,7 @@ public class InventoryUtils extends NMSUtils
             return null;
         }
         try {
+            @SuppressWarnings("unchecked")
             Multimap<String, Object> properties = (Multimap<String, Object>)class_GameProfile_properties.get(profile);
             Collection<Object> textures = properties.get("textures");
             if (textures != null && textures.size() > 0)

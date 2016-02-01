@@ -4,8 +4,10 @@ import java.util.*;
 
 import com.elmakers.mine.bukkit.api.effect.EffectPlay;
 import com.elmakers.mine.bukkit.utility.SoundEffect;
+
 import de.slikey.effectlib.util.DynamicLocation;
 import de.slikey.effectlib.util.ParticleEffect;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.Effect;
@@ -16,7 +18,6 @@ import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.entity.Entity;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.util.Vector;
@@ -622,6 +623,7 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
                         throw new Exception("Must extend EffectPlayer");
                     }
 
+                    @SuppressWarnings("unchecked")
                     Class<? extends EffectPlayer> playerClass = (Class<? extends EffectPlayer>)genericClass;
                     EffectPlayer player = playerClass.newInstance();
                     player.load(plugin, effectValues);

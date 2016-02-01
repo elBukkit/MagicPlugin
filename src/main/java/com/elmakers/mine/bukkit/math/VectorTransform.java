@@ -1,7 +1,6 @@
 package com.elmakers.mine.bukkit.math;
 
 import com.elmakers.mine.bukkit.api.math.Transform;
-import de.slikey.effectlib.util.MathUtils;
 import de.slikey.effectlib.util.VectorUtils;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
