@@ -7,6 +7,7 @@ import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.utility.NMSUtils;
 import com.elmakers.mine.bukkit.wand.Wand;
+
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
@@ -38,6 +39,7 @@ import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.scheduler.BukkitRunnable;
 
 public class PlayerController implements Listener {
     private final MagicController controller;
@@ -46,6 +48,7 @@ public class PlayerController implements Listener {
     private MaterialAndData enchantBlockMaterial;
     private String enchantClickSpell = "spellshop";
     private String enchantSneakClickSpell = "upgrades";
+    private boolean openOnSneakDrop;
 
     public PlayerController(MagicController controller) {
         this.controller = controller;
@@ -57,6 +60,7 @@ public class PlayerController implements Listener {
         enchantBlockMaterial = new MaterialAndData(properties.getString("enchant_block", "enchantment_table"));
         enchantClickSpell = properties.getString("enchant_click");
         enchantSneakClickSpell = properties.getString("enchant_sneak_click");
+        openOnSneakDrop = properties.getBoolean("open_wand_on_sneak_drop");
     }
 
     public void setCreativeModeEjecting(boolean eject) {
@@ -192,6 +196,39 @@ public class PlayerController implements Listener {
                     controller.removeItemFromWand(activeWand, droppedItem);
                 }
             }
+        } else if(openOnSneakDrop && !player.isSneaking() && event.getPlayer().getItemOnCursor().getType() == Material.AIR) {
+            PlayerInventory inventory = player.getInventory();
+
+            // Find a wand on the hotbar to open
+            for (int i = 0; i < 9; i++) {
+                ItemStack item = inventory.getItem(i);
+
+                if (item != null && Wand.getWandId(item) != null) {
+                    final int previouslySelected = inventory
+                            .getHeldItemSlot();
+                    inventory.setHeldItemSlot(i);
+
+                    final Wand newWand = mage.checkWand();
+
+                    // Restore if not activated
+                    if (null == newWand) {
+                        inventory.setHeldItemSlot(previouslySelected);
+                    } else {
+                        // Using a runnable here as workaround for bukkit bug
+                        // that uses inventory.addItem when drop event is cancelled
+                        new BukkitRunnable() {
+                            @Override
+                            public void run() {
+                                newWand.openInventory();
+                                newWand.setStoredSlot(previouslySelected);
+                            }
+                        }.runTaskLater(mage.getController().getPlugin(), 0);
+                        break;
+                    }
+                }
+            }
+
+            cancelEvent = true;
         } else if (Wand.Undroppable && Wand.isWand(droppedItem) && !player.hasPermission("Magic.wand.override_drop")) {
             Wand wand = new Wand(controller, droppedItem);
             if (wand.isUndroppable()) {

@@ -258,6 +258,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
     public static byte HIDE_FLAGS = 60;
 
     private Inventory storedInventory = null;
+    private int storedSlot;
 
     private static final ItemStack[] itemTemplate = new ItemStack[0];
 
@@ -4571,6 +4572,10 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         return remainder.size() == 0;
     }
 
+    public void setStoredSlot(int slot) {
+        this.storedSlot = slot;
+    }
+
     public boolean storeInventory() {
         if (storedInventory != null) {
             if (mage != null) {
@@ -4596,6 +4601,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         }
         storedInventory.setContents(contents);
         inventory.clear();
+        storedSlot = inventory.getHeldItemSlot();
 
         return true;
     }
@@ -4633,6 +4639,8 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         inventory.setContents(storedInventory.getContents());
         storedInventory = null;
         saveItemState();
+
+        inventory.setHeldItemSlot(storedSlot);
 
         player.updateInventory();
 
