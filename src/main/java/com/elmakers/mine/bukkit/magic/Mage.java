@@ -1728,6 +1728,11 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         }
     }
 
+    @Override
+    public void clearSuperProtection() {
+        superProtectionExpiration = 0;
+    }
+
     public void setLoading(boolean loading) {
         this.loading = loading;
     }
