@@ -262,7 +262,7 @@ public class ConfigurationUtils {
 
     @SuppressWarnings("unchecked")
     protected void combine(Map<Object, Object> to, Map<? extends Object, Object> from) {
-         for (Entry<? extends Object, Object> entry : from.entrySet()) {
+         for (Entry<?, Object> entry : from.entrySet()) {
              Object value = entry.getValue();
              Object key = entry.getKey();
              if (value instanceof Map && to.containsKey(key)) {
@@ -300,10 +300,11 @@ public class ConfigurationUtils {
         if (value instanceof Map)
         {
             ConfigurationSection newChild = base.createSection(key);
-            Map<?, ?> map = (Map<?, ?>)value;
-            for (Entry<?, ?> entry : map.entrySet())
+            @SuppressWarnings("unchecked")
+            Map<String, Object> map = (Map<String, Object>)value;
+            for (Entry<String, Object> entry : map.entrySet())
             {
-                newChild.set((String) entry.getKey(), entry.getValue());
+                newChild.set(entry.getKey(), entry.getValue());
             }
             base.set(key, newChild);
             return newChild;
@@ -669,8 +670,8 @@ public class ConfigurationUtils {
      /**
       * Casts a value to an integer. May return null.
       *
-      * @param o
-      * @return
+      * @param o the object to cast
+      * @return an Integer, or null on failure
       */
      private static Integer castInt(Object o) {
          if (o == null) {
