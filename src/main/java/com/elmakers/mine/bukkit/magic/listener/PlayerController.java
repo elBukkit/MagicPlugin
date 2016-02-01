@@ -46,6 +46,7 @@ public class PlayerController implements Listener {
     private MaterialAndData enchantBlockMaterial;
     private String enchantClickSpell = "spellshop";
     private String enchantSneakClickSpell = "upgrades";
+    private boolean openOnSneakDrop;
 
     public PlayerController(MagicController controller) {
         this.controller = controller;
@@ -57,6 +58,7 @@ public class PlayerController implements Listener {
         enchantBlockMaterial = new MaterialAndData(properties.getString("enchant_block", "enchantment_table"));
         enchantClickSpell = properties.getString("enchant_click");
         enchantSneakClickSpell = properties.getString("enchant_sneak_click");
+        openOnSneakDrop = properties.getBoolean("open_wand_on_sneak_drop");
     }
 
     public void setCreativeModeEjecting(boolean eject) {
@@ -192,6 +194,31 @@ public class PlayerController implements Listener {
                     controller.removeItemFromWand(activeWand, droppedItem);
                 }
             }
+        } else if(openOnSneakDrop && !player.isSneaking() && event.getPlayer().getItemOnCursor().getType() == Material.AIR) {
+            PlayerInventory inventory = player.getInventory();
+
+            // Find a wand on the hotbar to open
+            for (int i = 0; i < 9; i++) {
+                ItemStack item = inventory.getItem(i);
+
+                if (item != null && Wand.getWandId(item) != null) {
+                    int previouslySelected = inventory
+                            .getHeldItemSlot();
+                    inventory.setHeldItemSlot(i);
+
+                    Wand newWand = mage.checkWand();
+
+                    // Restore if not activated
+                    if (null == newWand) {
+                        inventory.setHeldItemSlot(previouslySelected);
+                    } else {
+                        newWand.openInventory();
+                        break;
+                    }
+                }
+            }
+
+            cancelEvent = true;
         } else if (Wand.Undroppable && Wand.isWand(droppedItem) && !player.hasPermission("Magic.wand.override_drop")) {
             Wand wand = new Wand(controller, droppedItem);
             if (wand.isUndroppable()) {
