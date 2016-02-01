@@ -4571,6 +4571,10 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         return remainder.size() == 0;
     }
 
+    public void setStoredSlot(int slot) {
+        this.storedSlot = slot;
+    }
+
     public boolean storeInventory() {
         if (storedInventory != null) {
             if (mage != null) {

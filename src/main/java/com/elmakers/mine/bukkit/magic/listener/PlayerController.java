@@ -213,6 +213,7 @@ public class PlayerController implements Listener {
                         inventory.setHeldItemSlot(previouslySelected);
                     } else {
                         newWand.openInventory();
+                        newWand.setStoredSlot(previouslySelected);
                         break;
                     }
                 }
