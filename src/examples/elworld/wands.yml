@@ -78,3 +78,56 @@
 #       materials:
 #           - <materialname>
 #
+
+
+spraycan:
+  hidden: true
+  name: Spray Can
+  description: Color the World!
+  icon: 'skull_item:http://textures.minecraft.net/texture/719e9875ffb35adfbd135c416e51dcf80dec38bf3d0dca2f94eb6595b90c0b5'
+  keep: true
+  bound: true
+  undroppable: true
+  indestructible: true
+  active_spell: spraypaint
+  active_material: wool:2
+  brush_mode: inventory
+  hotbar_count: 3
+  materials:
+    - wool:15@0
+    - wool@1
+    - wool:1@2
+    - wool:2@3
+    - wool:3@4
+    - wool:4@5
+    - wool:5@6
+    - wool:6@7
+    - wool:7@8
+    - wool:8@9
+    - wool:9@10
+    - wool:10@11
+    - wool:11@12
+    - wool:12@13
+    - wool:13@14
+    - wool:14@15
+    - stone
+    - wood
+    - glass
+    - dirt
+    - glowstone
+    - sand
+    - cobblestone
+    - stained_glass
+    - thin_glass
+    - stained_glass_pane
+    - stained_clay
+    - quartz_block
+    - quartz_block:1
+    - quartz_block:2
+    - lapis_block
+    - iron_block
+    - diamond_block
+    - gold_block
+    - emerald_block
+    - redstone_block
+    - obsidian
