@@ -25,6 +25,11 @@ public class UndoAction extends BaseSpellAction
     private boolean targetOtherBlocks;
     private boolean cancel;
     private String adminPermission;
+    private int undoOldest;
+    private int undoToSize;
+
+    // State
+    private int undone;
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters)
@@ -41,11 +46,53 @@ public class UndoAction extends BaseSpellAction
         cancel = parameters.getBoolean("cancel", true);
         targetSpellKey = parameters.getString("target_spell", null);
         adminPermission = parameters.getString("admin_permission", null);
+
+        undoOldest = parameters.getInt("undo_oldest", 0);
+        undoToSize = parameters.getInt("undo_to", 0);
+    }
+    @Override
+    public void reset(CastContext context) {
+        super.reset(context);
+        undone = 0;
+    }
+
+    protected SpellResult performNew(CastContext context)
+    {
+        UndoList undoList = context.getUndoList();
+        if (undoList.size() == 0)
+        {
+            return SpellResult.NO_ACTION;
+        }
+
+        boolean undid = false;
+        while (context.getWorkAllowed() > 0) {
+            if (undoToSize > 0 && undoList.size() <= undoToSize) break;
+
+            if (undoList.undoNext(false) == null) break;
+            undid = true;
+            undone++;
+
+            context.addWork(10);
+            if (undoOldest > 0 && undone > undoOldest) {
+                break;
+            }
+        }
+        if (!undid) return SpellResult.NO_ACTION;
+
+        return undoOldest == 0 || undone >= undoOldest ? SpellResult.CAST : SpellResult.PENDING;
     }
 
     @Override
 	public SpellResult perform(CastContext context)
 	{
+        // Start of new functionality
+        if (undoOldest > 0 || undoToSize > 0)
+        {
+            return performNew(context);
+        }
+
+        // Old functionality- this should be converted into an action that processes
+        // blocks instead of creating a separate batch.
 		Entity targetEntity = context.getTargetEntity();
 
         SpellResult result = SpellResult.CAST;

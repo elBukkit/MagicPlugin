@@ -3,6 +3,7 @@
  - Fix Shift+click wand anvil, weird color code showing up?
  - Re-example target_breakables new behavior- it seems to always break through, even at a value of 1?
  - Would be nice to tie consume into item costs? So e.g. Tag is undoable, but returns the item?
+ - Spell organization by path?
 
  - Use hunger for mana.. ?
 
