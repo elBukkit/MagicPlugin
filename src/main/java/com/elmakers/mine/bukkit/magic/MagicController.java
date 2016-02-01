@@ -2816,7 +2816,7 @@ public class MagicController implements MageController {
 			// Update the item for proper naming and lore
 			SpellTemplate spell = getSpellTemplate(spellKey);
 			if (spell != null) {
-				Wand.updateSpellItem(messages, droppedItem, spell, null, null, true);
+				Wand.updateSpellItem(messages, droppedItem, spell, "", null, null, true);
 			}
 		} else if (Wand.isBrush(droppedItem)) {
 			String brushKey = Wand.getBrush(droppedItem);
@@ -4228,6 +4228,11 @@ public Set<Material> getMaterialSet(String name)
     @Override
     public String getSpell(ItemStack item) {
         return Wand.getSpell(item);
+    }
+
+    @Override
+    public String getSpellArgs(ItemStack item) {
+        return Wand.getSpellArgs(item);
     }
 
     public boolean isInventoryBackupEnabled() {
