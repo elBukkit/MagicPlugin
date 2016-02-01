@@ -1654,7 +1654,7 @@ piertotum:
         range: 1
         spawn_range: 1
         cooldown: 10000
-        type: creeper
+        type: iron_golem
         spread: 0
         count: 5
         reason: custom
