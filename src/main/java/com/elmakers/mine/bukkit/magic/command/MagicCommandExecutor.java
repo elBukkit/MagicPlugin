@@ -386,9 +386,9 @@ public class MagicCommandExecutor extends MagicMapExecutor {
 				pluginTaskCounts.put(className, count);
 
 				Integer totalCount = pluginCounts.get(pluginName);
-				if (count == null) count = 0;
-				count++;
-				pluginCounts.put(pluginName, count);
+				if (totalCount == null) totalCount = 0;
+				totalCount++;
+				pluginCounts.put(pluginName, totalCount);
 			}
 			sender.sendMessage(ChatColor.LIGHT_PURPLE + "Active tasks: " + tasks.size());
 			for (Entry<String, HashMap<String, Integer>> pluginEntry : taskCounts.entrySet()) {
