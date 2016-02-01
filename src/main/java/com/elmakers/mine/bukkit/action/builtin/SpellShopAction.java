@@ -115,7 +115,10 @@ public class SpellShopAction extends BaseShopAction
 
         List<ShopItem> shopItems = new ArrayList<ShopItem>();
         for (Map.Entry<String, Double> spellValue : spellPrices.entrySet()) {
-            String spellKey = spellValue.getKey();
+            String key = spellValue.getKey();
+            key = context.parameterize(key);
+            String spellKey = key.split(" ", 2)[0];
+
             if (!castsSpells && wand.hasSpell(spellKey)) continue;
 
             SpellTemplate spell = controller.getSpellTemplate(spellKey);
@@ -129,7 +132,7 @@ public class SpellShopAction extends BaseShopAction
             if (worth <= 0 && !showFree) continue;
             if (!spell.hasCastPermission(mage.getCommandSender())) continue;
 
-            ItemStack spellItem = controller.createSpellItem(spellKey, castsSpells);
+            ItemStack spellItem = controller.createSpellItem(key, castsSpells);
             shopItems.add(new ShopItem(spellItem, worth));
         }
 
