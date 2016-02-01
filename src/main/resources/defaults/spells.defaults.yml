@@ -5664,6 +5664,7 @@ blink:
           ignore_result: true
           actions:
           - class: FallProtectionAction
+        - class: Delay
         - class: Teleport
     effects:
         teleport:
@@ -5671,44 +5672,23 @@ blink:
           sound: magic.teleport
           location: target
         cast:
-        -  class: EffectVariable
-           brightness:
-             '0.5':
-             - class: EffectSingle
-               sound: magic.teleport
-               location: origin
-               particle_override: particleOrbital
-               color_override: colorOrbital
-               use_wand_location: false
-               effectlib:
-                   class: AtomEffect
-                   particleNucleus: smoke_large
-                   particleOrbital: redstone
-                   iterations: 8
-             - class: EffectSingle
-               particle_override: particle
-               color_override: color
-               effectlib:
-                   class: LineEffect
-                   particle: redstone
-             '5':
-             - class: EffectSingle
-               sound: magic.teleport
-               location: origin
-               particle_override: particleOrbital
-               color_override: colorOrbital
-               use_wand_location: false
-               effectlib:
-                   class: AtomEffect
-                   particleNucleus: spell
-                   particleOrbital: redstone
-                   iterations: 8
-             - class: EffectSingle
-               particle_override: particle
-               color_override: color
-               effectlib:
-                   class: LineEffect
-                   particle: redstone
+         - class: EffectSingle
+           sound: magic.teleport
+           location: origin
+           particle_override: particleOrbital
+           color_override: colorOrbital
+           use_wand_location: false
+           effectlib:
+               class: AtomEffect
+               particleNucleus: smoke_large
+               particleOrbital: redstone
+               iterations: 8
+         - class: EffectSingle
+           particle_override: particle
+           color_override: color
+           effectlib:
+               class: LineEffect
+               particle: redstonee
     parameters:
         target: block
         allow_max_range: true
