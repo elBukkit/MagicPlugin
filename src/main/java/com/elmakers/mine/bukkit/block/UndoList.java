@@ -154,24 +154,6 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
     }
 
     @Override
-    public boolean contains(Block block)
-    {
-        if (blockIdMap == null) return false;
-        Long blockId = com.elmakers.mine.bukkit.block.BlockData.getBlockId(block);
-        return blockIdMap.contains(blockId);
-    }
-
-    @Override
-    public boolean contains(BlockData blockData)
-    {
-        if (blockIdMap == null || blockData == null)
-        {
-            return false;
-        }
-        return blockIdMap.contains(blockData.getId());
-    }
-
-    @Override
     public boolean add(BlockData blockData)
     {
         if (bypass) return true;
@@ -279,6 +261,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
         {
             commit(block);
         }
+        clear();
     }
 
     public static void commitAll()
@@ -357,6 +340,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
         }
     }
 
+    @Override
     public BlockData undoNext(boolean applyPhysics)
     {
         if (blockList.size() == 0) {
@@ -365,6 +349,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
         BlockData blockData = blockList.removeFirst();
         BlockState currentState = blockData.getBlock().getState();
         if (undo(blockData, applyPhysics)) {
+            blockIdMap.remove(blockData.getId());
             if (consumed && currentState.getType() != Material.AIR && owner != null) {
                 owner.giveItem(new ItemStack(currentState.getType(), 1, currentState.getRawData()));
             }

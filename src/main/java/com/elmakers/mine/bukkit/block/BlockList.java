@@ -201,23 +201,34 @@ public class BlockList implements com.elmakers.mine.bukkit.api.block.BlockList {
         return blockList.iterator();
     }
 
-    public boolean remove(Object arg0)
+    public boolean remove(Object removeObject)
     {
         // Note that we never shrink the BB!
         if (blockList == null)
         {
             return false;
         }
-        return blockList.remove(arg0);
+        if (removeObject instanceof BlockData)
+        {
+            blockIdMap.remove(((BlockData)removeObject).getId());
+        }
+        return blockList.remove(removeObject);
     }
 
-    public boolean removeAll(Collection<?> arg0)
+    public boolean removeAll(Collection<?> removeCollection)
     {
         if (blockList == null)
         {
             return false;
         }
-        return blockList.removeAll(arg0);
+        for (Object removeObject : removeCollection)
+        {
+            if (removeObject instanceof BlockData)
+            {
+                blockIdMap.remove(((BlockData)removeObject).getId());
+            }
+        }
+        return blockList.removeAll(removeCollection);
     }
 
     public boolean retainAll(Collection<?> arg0)
