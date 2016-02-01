@@ -236,6 +236,29 @@ flashboots:
   row_2: i i
   row_3: fof
 
+# Some off-by-default crafting options
+# for animal lovers <3
+zombie_leather:
+  enabled: false
+  output: leather
+  output_type: item
+  materials:
+    o: rotten_flesh
+  row_1: ooo
+  row_2: ooo
+  row_3: ooo
+
+coal_ink:
+  enabled: true
+  output: ink_sack
+  output_type: item
+  materials:
+    o: coal
+    d: ink_sack:15
+  row_1: " o "
+  row_2: "odo"
+  row_3: " o "
+
 # This is here to disable crafting of other items, even if
 # they aren't craftable.
 wolf:
