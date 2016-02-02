@@ -83,6 +83,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.command.BlockCommandSender;
 import org.bukkit.command.CommandSender;
@@ -1730,6 +1731,16 @@ public class MagicController implements MageController {
         }
     }
 
+    protected String getChunkKey(Block block) {
+        return getChunkKey(block.getLocation());
+    }
+
+    protected String getChunkKey(Location location) {
+        World world = location.getWorld();
+        if (world == null) return null;
+        return world.getName() + "|" + (location.getBlockX() >> 4) + "," + (location.getBlockZ() >> 4);
+    }
+
     protected String getChunkKey(Chunk chunk) {
         return chunk.getWorld().getName() + "|" + chunk.getX() + "," + chunk.getZ();
     }
@@ -1737,7 +1748,9 @@ public class MagicController implements MageController {
     public boolean addLostWand(LostWand lostWand) {
         lostWands.put(lostWand.getId(), lostWand);
         try {
-            String chunkKey = getChunkKey(lostWand.getLocation().getChunk());
+            String chunkKey = getChunkKey(lostWand.getLocation());
+            if (chunkKey == null) return false;
+
             Set<String> chunkWands = lostWandChunks.get(chunkKey);
             if (chunkWands == null) {
                 chunkWands = new HashSet<String>();
@@ -1765,7 +1778,9 @@ public class MagicController implements MageController {
 
         LostWand lostWand = lostWands.get(wandId);
         lostWands.remove(wandId);
-        String chunkKey = getChunkKey(lostWand.getLocation().getChunk());
+        String chunkKey = getChunkKey(lostWand.getLocation());
+        if (chunkKey == null) return false;
+
         Set<String> chunkWands = lostWandChunks.get(chunkKey);
         if (chunkWands != null) {
             chunkWands.remove(wandId);
@@ -3047,7 +3062,7 @@ public class MagicController implements MageController {
 	}
 
     public Automaton getAutomaton(Block block) {
-        String chunkId = getChunkKey(block.getChunk());
+        String chunkId = getChunkKey(block);
         Map<Long, Automaton> toReload = automata.get(chunkId);
         if (toReload != null) {
             return toReload.get(BlockData.getBlockId(block));
@@ -3061,7 +3076,7 @@ public class MagicController implements MageController {
 	
 	@Override
 	public boolean isAutomata(Block block) {
-		String chunkId = getChunkKey(block.getChunk());
+		String chunkId = getChunkKey(block);
 		Map<Long, Automaton> toReload = automata.get(chunkId);
 		if (toReload != null) {
 			return toReload.containsKey(BlockData.getBlockId(block));
@@ -3160,7 +3175,9 @@ public Set<Material> getMaterialSet(String name)
 	
 	@Override
 	public void registerAutomata(Block block, String name, String message) {
-		String chunkId = getChunkKey(block.getChunk());
+		String chunkId = getChunkKey(block);
+        if (chunkId == null) return;
+
 		Map<Long, Automaton> toReload = automata.get(chunkId);
 		if (toReload == null) {
 			toReload = new HashMap<Long, Automaton>();
@@ -3175,7 +3192,7 @@ public Set<Material> getMaterialSet(String name)
         // Note that we currently don't clean up an empty entry,
 		// purposefully, to prevent thrashing the main map and adding lots
 		// of HashMap creation.
-		String chunkId = getChunkKey(block.getChunk());
+		String chunkId = getChunkKey(block);
 		Map<Long, Automaton> toReload = automata.get(chunkId);
 		if (toReload != null) {
 			toReload.remove(BlockData.getBlockId(block));
