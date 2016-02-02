@@ -15,7 +15,8 @@ import java.util.logging.Level;
 import com.elmakers.mine.bukkit.api.block.BrushMode;
 import com.elmakers.mine.bukkit.api.event.AddSpellEvent;
 import com.elmakers.mine.bukkit.api.event.SpellUpgradeEvent;
-import com.elmakers.mine.bukkit.api.event.WandActivateEvent;
+import com.elmakers.mine.bukkit.api.event.WandActivatedEvent;
+import com.elmakers.mine.bukkit.api.event.WandPreActivateEvent;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.magic.Messages;
 import com.elmakers.mine.bukkit.api.spell.CastingCost;
@@ -4039,9 +4040,9 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
             return;
         }
 
-        WandActivateEvent event = new WandActivateEvent(mage, this);
-        Bukkit.getPluginManager().callEvent(event);
-        if (event.isCancelled()) {
+        WandPreActivateEvent preActivateEvent = new WandPreActivateEvent(mage, this);
+        Bukkit.getPluginManager().callEvent(preActivateEvent);
+        if (preActivateEvent.isCancelled()) {
             return;
         }
 
@@ -4144,6 +4145,9 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         if (forceUpdate) {
             player.updateInventory();
         }
+
+        WandActivatedEvent activatedEvent = new WandActivatedEvent(mage, this);
+        Bukkit.getPluginManager().callEvent(activatedEvent);
     }
 
 	@Override
