@@ -2395,7 +2395,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
                         mage.sendMessage(messages.get("wand.spell_upgraded").replace("$name", upgrade.getName()).replace("$wand", getName()).replace("$level", levelDescription));
                         mage.sendMessage(upgrade.getUpgradeDescription().replace("$name", upgrade.getName()));
 
-                        SpellUpgradeEvent upgradeEvent = new SpellUpgradeEvent(mage, this, newSpell);
+                        SpellUpgradeEvent upgradeEvent = new SpellUpgradeEvent(mage, wand, this, newSpell);
                         Bukkit.getPluginManager().callEvent(upgradeEvent);
                     }
                 }
