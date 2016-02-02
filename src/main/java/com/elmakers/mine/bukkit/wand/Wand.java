@@ -15,6 +15,7 @@ import java.util.logging.Level;
 import com.elmakers.mine.bukkit.api.block.BrushMode;
 import com.elmakers.mine.bukkit.api.event.AddSpellEvent;
 import com.elmakers.mine.bukkit.api.event.SpellUpgradeEvent;
+import com.elmakers.mine.bukkit.api.event.WandActivateEvent;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.magic.Messages;
 import com.elmakers.mine.bukkit.api.spell.CastingCost;
@@ -4035,6 +4036,12 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 
         if (this.isUpgrade) {
             controller.getLogger().warning("Activated an upgrade item- this shouldn't happen");
+            return;
+        }
+
+        WandActivateEvent event = new WandActivateEvent(mage, this);
+        Bukkit.getPluginManager().callEvent(event);
+        if (event.isCancelled()) {
             return;
         }
 
