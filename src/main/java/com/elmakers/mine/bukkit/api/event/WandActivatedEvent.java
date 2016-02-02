@@ -8,17 +8,16 @@ import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
 /**
- * A custom event that the Magic plugin will fire whenever a player equips
- * a wand
+ * A custom event that the Magic plugin will fire whenever a wand has become
+ * activated.
  */
-public class WandActivateEvent extends Event implements Cancellable {
+public class WandActivatedEvent extends Event {
     private final Mage mage;
     private final Wand wand;
-    private boolean cancelled = false;
 
     private static final HandlerList handlers = new HandlerList();
 
-    public WandActivateEvent(Mage mage, Wand wand) {
+    public WandActivatedEvent(Mage mage, Wand wand) {
         this.mage = mage;
         this.wand = wand;
     }
@@ -38,15 +37,5 @@ public class WandActivateEvent extends Event implements Cancellable {
 
     public Wand getWand() {
         return wand;
-    }
-
-    @Override
-    public boolean isCancelled() {
-        return cancelled;
-    }
-
-    @Override
-    public void setCancelled(boolean cancel) {
-        cancelled = cancel;
     }
 }
