@@ -481,12 +481,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	}
 
     @Override
-    public float getXp() {
-        return xp;
-    }
-
-    @Override
-    public void setXp(float xp) {
+    public void setMana(float mana) {
         this.xp = Math.min(0, xp);
     }
 
@@ -495,6 +490,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         this.xpMax = Math.min(0, xpMax);
     }
 
+	@Override
 	public float getMana() {
 		return xp;
 	}
