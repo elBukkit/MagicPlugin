@@ -1,7 +1,8 @@
 package com.elmakers.mine.bukkit.api.event;
 
 import com.elmakers.mine.bukkit.api.magic.Mage;
-import com.elmakers.mine.bukkit.api.spell.Spell;
+import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
+import com.elmakers.mine.bukkit.api.wand.Wand;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
@@ -11,13 +12,15 @@ import org.bukkit.event.HandlerList;
  */
 public class SpellUpgradeEvent extends Event {
     private final Mage mage;
-    private final Spell oldSpell;
-    private final Spell newSpell;
+    private final Wand wand;
+    private final SpellTemplate oldSpell;
+    private final SpellTemplate newSpell;
 
     private static final HandlerList handlers = new HandlerList();
 
-    public SpellUpgradeEvent(Mage mage, Spell oldSpell, Spell newSpell) {
+    public SpellUpgradeEvent(Mage mage, Wand wand, SpellTemplate oldSpell, SpellTemplate newSpell) {
         this.mage = mage;
+        this.wand = wand;
         this.oldSpell = oldSpell;
         this.newSpell = newSpell;
     }
@@ -35,11 +38,15 @@ public class SpellUpgradeEvent extends Event {
         return mage;
     }
 
-    public Spell getOldSpell() {
+    public SpellTemplate getOldSpell() {
         return oldSpell;
     }
 
-    public Spell getNewSpell() {
+    public SpellTemplate getNewSpell() {
         return newSpell;
+    }
+
+    public Wand getWand() {
+        return wand;
     }
 }
