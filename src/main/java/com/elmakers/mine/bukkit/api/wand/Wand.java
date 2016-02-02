@@ -94,9 +94,9 @@ public interface Wand extends CostReducer {
     public float getCooldownReduction();
     public float getCostReduction();
     public float getMana();
-    public int getXpMax();
+    public int getManaMax();
     public void setMana(float mana);
-    public void setXpMax(int xpMax);
+    public void setManaMax(int manaMax);
     public void updateMana();
     public WandUpgradePath getPath();
     public MageController getController();
