@@ -399,7 +399,7 @@ public class WandLevel {
 			wandProperties.set("xp_max", 0);
 			wandProperties.set("xp", 0);
 		} else {
-			int xpRegeneration = wand.getXpRegeneration();
+			int xpRegeneration = wand.getManaRegeneration();
 			if (xpRegenerationProbability.size() > 0 && xpRegeneration < path.getMaxXpRegeneration()) {
                 addedProperties = true;
                 xpRegeneration = Math.min(path.getMaxXpRegeneration(), xpRegeneration + RandomUtils.weightedRandom(xpRegenerationProbability));
@@ -409,7 +409,7 @@ public class WandLevel {
                 updateString = updateString.replace("$amount", Integer.toString(xpRegeneration));
                 sendAddMessage(mage, wand, "wand.upgraded_property", updateString);
 			}
-			int xpMax = wand.getXpMax();
+			int xpMax = wand.getManaMax();
 			if (xpMaxProbability.size() > 0 && xpMax < path.getMaxMaxXp()) {
 				xpMax = (Integer)(int)(Math.min(path.getMaxMaxXp(), xpMax + RandomUtils.weightedRandom(xpMaxProbability)));
                 if (path.getMatchSpellMana()) {

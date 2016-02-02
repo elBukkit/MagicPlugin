@@ -464,19 +464,20 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         return id;
     }
 
-    public float getXpRegenerationBoost() {
+    public float getManaRegenerationBoost() {
         return xpRegenerationBoost;
     }
 
-    public float getXpMaxBoost() {
+    public float getManaMaxBoost() {
         return xpMaxBoost;
     }
 	
-	public int getXpRegeneration() {
+	public int getManaRegeneration() {
 		return xpRegeneration;
 	}
 
-	public int getXpMax() {
+	@Override
+	public int getManaMax() {
 		return xpMax;
 	}
 
@@ -486,8 +487,8 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
     }
 
     @Override
-    public void setXpMax(int xpMax) {
-        this.xpMax = Math.min(0, xpMax);
+    public void setManaMax(int manaMax) {
+        this.xpMax = Math.min(0, manaMax);
     }
 
 	@Override
@@ -3781,8 +3782,8 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         {
             Collection<Wand> activeArmor = mage.getActiveArmor();
             for (Wand armorWand : activeArmor) {
-                effectiveBoost += armorWand.getXpMaxBoost();
-                effectiveRegenBoost += armorWand.getXpRegenerationBoost();
+                effectiveBoost += armorWand.getManaMaxBoost();
+                effectiveRegenBoost += armorWand.getManaRegenerationBoost();
             }
         }
         effectiveXpMax = xpMax;
