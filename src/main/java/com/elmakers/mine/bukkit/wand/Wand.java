@@ -14,7 +14,7 @@ import java.util.logging.Level;
 
 import com.elmakers.mine.bukkit.api.block.BrushMode;
 import com.elmakers.mine.bukkit.api.event.AddSpellEvent;
-import com.elmakers.mine.bukkit.api.event.UpgradeSpellEvent;
+import com.elmakers.mine.bukkit.api.event.SpellUpgradeEvent;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.magic.Messages;
 import com.elmakers.mine.bukkit.api.spell.CastingCost;
@@ -2803,7 +2803,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
                         mage.sendMessage(messages.get("wand.spell_upgraded").replace("$name", currentSpell.getName()).replace("$level", levelDescription).replace("$wand", getName()));
                         mage.sendMessage(spell.getUpgradeDescription().replace("$name", currentSpell.getName()));
 
-						UpgradeSpellEvent upgradeEvent = new UpgradeSpellEvent(mage, this, currentSpell, spell);
+						SpellUpgradeEvent upgradeEvent = new SpellUpgradeEvent(mage, this, currentSpell, spell);
 						Bukkit.getPluginManager().callEvent(upgradeEvent);
                     } else {
                         mage.sendMessage(messages.get("wand.spell_added").replace("$name", spellName).replace("$wand", getName()));
@@ -3204,7 +3204,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
                             mage.sendMessage(getMessage("spell_upgraded").replace("$wand", getName()).replace("$name", currentSpell.getName()).replace("$level", levelDescription));
                             mage.sendMessage(spell.getUpgradeDescription().replace("$name", currentSpell.getName()));
 
-							UpgradeSpellEvent upgradeEvent = new UpgradeSpellEvent(mage, this, currentSpell, spell);
+							SpellUpgradeEvent upgradeEvent = new SpellUpgradeEvent(mage, this, currentSpell, spell);
 							Bukkit.getPluginManager().callEvent(upgradeEvent);
                         } else {
                             mage.sendMessage(getMessage("spell_added").replace("$wand", getName()).replace("$name", spell.getName()));
