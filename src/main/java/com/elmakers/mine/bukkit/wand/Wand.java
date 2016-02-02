@@ -485,12 +485,12 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 
     @Override
     public void setMana(float mana) {
-        this.xp = Math.min(0, xp);
+        this.xp = Math.max(0, mana);
     }
 
     @Override
     public void setManaMax(int manaMax) {
-        this.xpMax = Math.min(0, manaMax);
+        this.xpMax = Math.max(0, manaMax);
     }
 
 	@Override
