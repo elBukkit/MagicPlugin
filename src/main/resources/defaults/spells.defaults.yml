@@ -3999,22 +3999,37 @@ bridge:
     icon_url: http://textures.minecraft.net/texture/328d3a15afbc7f95d64179bb6154aa2e9ce7212462145c3344fda754b12c61e7
     icon: stone_hoe
     category: engineering
-    class: BridgeSpell
     cancellable: false
     worth_sp: 1000
     earns_sp: 10
+    actions:
+        cast:
+        - class: ChangeContext
+          actions:
+          - class: BlockSearch
+            actions:
+            - class: ModifyBlock
+            - class: PlayEffects
     effects:
         cast:
         -  class: EffectSingle
-           particle: block_crack
+           sound: dig_stone
+           location: origin
+        built:
+        -  class: EffectSingle
+           effect: step_sound
            location: target
     parameters:
-        target: none
+        effects: built
+        target: self
         transparent: transparent_to_construction
         destructible: destructible_replace
+        consume: true
+        direction: forward
+        target_offset: 0,-2,0
     costs:
         mana: 5
-
+    
 pillar:
     icon_url: http://textures.minecraft.net/texture/8a37d68a64b72c169586e55e885784f61ba6ca62246b5dff877656c6c2f657e
     icon: iron_axe
@@ -4027,12 +4042,18 @@ pillar:
         - class: BlockSearch
           actions:
           - class: ModifyBlock
+          - class: PlayEffects
     effects:
         cast:
         -  class: EffectSingle
-           particle: block_crack
+           sound: dig_stone
+           location: origin
+        built:
+        -  class: EffectSingle
+           effect: step_sound
            location: target
     parameters:
+        effects: built
         allow_max_range: false
         range: 64
         transparent: transparent_to_construction
@@ -4791,8 +4812,12 @@ convert:
     icon: iron_spade
     category: engineering
     cancellable: false
-    class: ConstructSpell
     worth_sp: 250
+    actions:
+        cast:
+        - class: Sphere
+          actions:
+          - class: ModifyBlock
     effects:
         cast:
         -  class: EffectSingle
@@ -4806,6 +4831,7 @@ convert:
         radius: 3
         replace: true
         transparent: transparent_to_construction
+        consume: true
     costs:
         mana: 100
 

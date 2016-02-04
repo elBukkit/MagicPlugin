@@ -452,10 +452,10 @@ engineer:
     spells:
       rollback: 1,5,10
       alter: 0,10,20
-      #bridge: 0,5,10
-      #convert: 0,5,40
+      bridge: 0,5,10
       #toss: 2,25,35
       #tunnel: 5,10,20
+      convert: 0,5,40
       recurse: 0,5,20
       paint: 1,20,45
       iterate: 0,0,40

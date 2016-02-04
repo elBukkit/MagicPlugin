@@ -9,6 +9,7 @@ import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.RandomUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.util.Vector;
@@ -52,6 +53,9 @@ public class VolumeAction extends CompoundAction
 	private boolean centerY;
 	private boolean centerX;
 	private boolean centerZ;
+	private boolean replaceTarget;
+	
+	private Material replaceMaterial;
 
 	private enum VolumeType {
 		SPIRAL,
@@ -77,6 +81,7 @@ public class VolumeAction extends CompoundAction
 		centerProbability = (float)parameters.getDouble("center_probability", centerProbability);
 		outerProbability = (float)parameters.getDouble("outer_probability", outerProbability);
 		useBrushSize = parameters.getBoolean("use_brush_size", false);
+		replaceTarget = parameters.getBoolean("replace", false);
 		String typeString = parameters.getString("volume_type");
 		if (typeString != null) {
 			try {
@@ -260,6 +265,11 @@ public class VolumeAction extends CompoundAction
 		if (!calculateSize(context)) {
 			return SpellResult.PENDING;
 		}
+		if (replaceTarget) {
+			replaceMaterial = context.getTargetBlock().getType();
+		} else {
+			replaceMaterial = null;
+		}
 		resetCounters();
 		return SpellResult.NO_ACTION;
 	}
@@ -314,8 +324,10 @@ public class VolumeAction extends CompoundAction
 				offset.setZ(dz);
 			}
 			Block targetBlock = block.getRelative(offset.getBlockX(), offset.getBlockY(), offset.getBlockZ());
-			actionContext.setTargetLocation(targetBlock.getLocation());
-			result = startActions();
+			if (replaceMaterial == null || targetBlock.getType() == replaceMaterial) {
+				actionContext.setTargetLocation(targetBlock.getLocation());
+				result = startActions();
+			}
 		}
 		else
 		{
