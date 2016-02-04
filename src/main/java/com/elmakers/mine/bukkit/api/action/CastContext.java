@@ -14,6 +14,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
@@ -34,6 +35,7 @@ public interface CastContext {
     public Location getTargetCenterLocation();
     public Location getTargetSourceLocation();
     public Vector getDirection();
+    public BlockFace getFacingDirection();
     public void setDirection(Vector direction);
     public World getWorld();
     public Plugin getPlugin();
