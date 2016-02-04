@@ -500,17 +500,27 @@ public class PlayerController implements Listener {
         }
     }
 
-    @EventHandler(priority=EventPriority.LOWEST)
+    @EventHandler(priority=EventPriority.HIGHEST, ignoreCancelled = true)
     public void onPlayerPickupItem(PlayerPickupItemEvent event)
     {
-        if (event.isCancelled()) return;
-
         Player player = event.getPlayer();
         Mage apiMage = controller.getMage(player);
 
         if (!(apiMage instanceof com.elmakers.mine.bukkit.magic.Mage)) return;
         com.elmakers.mine.bukkit.magic.Mage mage = (com.elmakers.mine.bukkit.magic.Mage)apiMage;
 
+        // If a wand's inventory is active, add the item there
+        if (mage.hasStoredInventory()) {
+            event.setCancelled(true);
+            if (mage.addToStoredInventory(event.getItem().getItemStack())) {
+                event.getItem().remove();
+            }
+        }
+    }
+
+    @EventHandler(priority=EventPriority.LOWEST, ignoreCancelled = true)
+    public void onPlayerPrePickupItem(PlayerPickupItemEvent event)
+    {
         Item item = event.getItem();
         ItemStack pickup = item.getItemStack();
         if (NMSUtils.isTemporary(pickup) || item.hasMetadata("temporary"))
@@ -527,6 +537,12 @@ public class PlayerController implements Listener {
             event.setCancelled(true);
             return;
         }
+        
+        Player player = event.getPlayer();
+        Mage apiMage = controller.getMage(player);
+
+        if (!(apiMage instanceof com.elmakers.mine.bukkit.magic.Mage)) return;
+        com.elmakers.mine.bukkit.magic.Mage mage = (com.elmakers.mine.bukkit.magic.Mage)apiMage;
 
         // Remove lost wands from records
         Messages messages = controller.getMessages();
@@ -556,15 +572,9 @@ public class PlayerController implements Listener {
             event.getItem().remove();
             event.setCancelled(true);
             return;
-        }
-
-        // If a wand's inventory is active, add the item there
-        if (mage.hasStoredInventory()) {
-            event.setCancelled(true);
-            if (mage.addToStoredInventory(event.getItem().getItemStack())) {
-                event.getItem().remove();
-            }
-        } else {
+        } 
+        
+        if (!mage.hasStoredInventory()) {
             // Hackiness needed because we don't get an equip event for this!
             PlayerInventory inventory = event.getPlayer().getInventory();
             ItemStack inHand = inventory.getItemInHand();

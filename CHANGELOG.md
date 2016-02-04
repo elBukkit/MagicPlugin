@@ -16,6 +16,7 @@
  - Skulls and banners now work better with the Hat spell, Hat spell can level up
  - Update Stream spell
  - Rebalance emeralds in deposits/withdrawals, added iron ingots and blocks
+ - Fix incompatibilities with Wizards pickups (and possibly other special plugin drops)
 
 ## 5.4.6
 
