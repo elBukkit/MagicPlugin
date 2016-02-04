@@ -5675,20 +5675,19 @@ blink:
          - class: EffectSingle
            sound: magic.teleport
            location: origin
-           particle_override: particleOrbital
+           particle_override: particleNucleus
            color_override: colorOrbital
            use_wand_location: false
            effectlib:
                class: AtomEffect
-               particleNucleus: smoke_large
+               particleNucleus: mob_spell
                particleOrbital: redstone
                iterations: 8
          - class: EffectSingle
-           particle_override: particle
            color_override: color
            effectlib:
                class: LineEffect
-               particle: redstonee
+               particle: redstone
     parameters:
         target: block
         allow_max_range: true
@@ -5979,32 +5978,45 @@ stream:
     actions:
       cast:
       - class: DisablePhysics
-      - class: Line
-        actions:
+        ignore_result: true
+      - class: CustomProjectile
+        tick:
         - class: ModifyBlock
+          ignore_result: true
+        - class: Undo
+          ignore_result: true
         - class: AreaOfEffect
           actions:
           - class: Damage
           - class: Velocity
-        - class: Delay
     effects:
       cast:
       - class: EffectSingle
         sound: water
+      projectile:
+       - location: origin
+         effectlib:
+           class: SphereEffect
+           particle: drip_water
+           radius: 1
+           particles: 10
     parameters:
       target: none
-      reorient: true
       target_type: LivingEntity
       radius: 2
-      size: 8
+      velocity: 10
+      track_range: 8
+      lifetime: 5000
+      range: 32
+      duration: 10000
       brush: stationary_water
       increment_data: true
-      undo: 800
-      player_damage: 1
-      entity_damage: 2
+      player_damage: 0.25
+      entity_damage: 0.5
       cooldown: 5000
-      delay: 1
       destructible: destructible_replace
+      undo: 50
+      undo_to: 3
     costs:
         mana: 30
 
@@ -6012,17 +6024,15 @@ stream|2:
     upgrade_required_path: apprentice
     upgrade_required_casts: 30
     parameters:
-        range: 8
-        size: 8
-        player_damage: 2
-        entity_damage: 4
+        player_damage: 0.5
+        entity_damage: 0.75
+        undo_to: 4
 
 stream|3:
     parameters:
-        range: 16
-        size: 16
-        player_damage: 4
-        entity_damage: 8
+        player_damage: 0.75
+        entity_damage: 1
+        undo_to: 5
 
 earth:
     icon_url: http://textures.minecraft.net/texture/5d9ddb39f5cd587f63bb175dfaf55baaa917c1a2a3ca987a18d90c9e1a578d
@@ -9035,14 +9045,18 @@ deposits:
             cost: 9
           - item: gold_block
             cost: 81
+          - item: iron_ingot
+            cost: 1
+          - item: iron_block
+            cost: 9
+          - item: emerald
+            cost: 8
+          - item: emerald_block
+            cost: 72
           - item: diamond
             cost: 16
           - item: diamond_block
             cost: 144
-          - item: emerald
-            cost: 64
-          - item: emerald_block
-            cost: 576
 
 withdrawals:
     icon: emerald
@@ -9063,14 +9077,18 @@ withdrawals:
             cost: 9
           - item: gold_block
             cost: 81
+          - item: iron_ingot
+            cost: 1
+          - item: iron_block
+            cost: 9
+          - item: emerald
+            cost: 8
+          - item: emerald_block
+            cost: 72
           - item: diamond
             cost: 16
           - item: diamond_block
             cost: 144
-          - item: emerald
-            cost: 64
-          - item: emerald_block
-            cost: 576
 
 ledgershop:
     icon: paper

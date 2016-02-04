@@ -14,6 +14,8 @@
  - Prevent locked wands from learning new spells
  - Placing a Recall marker requires build permission
  - Skulls and banners now work better with the Hat spell, Hat spell can level up
+ - Update Stream spell
+ - Rebalance emeralds in deposits/withdrawals, added iron ingots and blocks
 
 ## 5.4.6
 
