@@ -238,6 +238,14 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
         }
         return getLocation().getDirection();
     }
+    
+    @Override
+    public BlockFace getFacingDirection() {
+        if (baseSpell != null) {
+            return baseSpell.getFacing(getLocation());
+        }
+        return BlockFace.UP;
+    }
 
     @Override
     public void setDirection(Vector direction) {
