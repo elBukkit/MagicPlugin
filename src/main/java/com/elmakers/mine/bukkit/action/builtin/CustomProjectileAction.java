@@ -550,10 +550,11 @@ public class CustomProjectileAction extends CompoundAction
         boolean continueProjectile = false;
         if (!bypassBackfire && actionContext.isReflective(block)) {
             double reflective = actionContext.getReflective(block);
-            if (actionContext.getRandom().nextDouble() < reflective) {
+            if (reflective >= 1 || actionContext.getRandom().nextDouble() < reflective) {
                 trackEntity = false;
                 reorient = false;
                 distanceTravelled = 0;
+                trackCursorRange = 0;
                 actionContext.setTargetsCaster(true);
 
                 // Calculate angle of reflection

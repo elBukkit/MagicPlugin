@@ -7208,6 +7208,7 @@ homing:
           message: lock_on
           message_target: true
         - class: CustomProjectile
+          hitbox: true
           actions:
           - class: Damage
     effects:
