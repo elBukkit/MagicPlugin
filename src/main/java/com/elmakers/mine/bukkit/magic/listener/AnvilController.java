@@ -5,6 +5,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.inventory.InventoryType.SlotType;
@@ -14,7 +15,6 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.magic.MagicController;
-import com.elmakers.mine.bukkit.utility.Messages;
 import com.elmakers.mine.bukkit.wand.Wand;
 
 public class AnvilController implements Listener {
@@ -48,6 +48,42 @@ public class AnvilController implements Listener {
 			ItemStack cursor = event.getCursor();
 			ItemStack current = event.getCurrentItem();
 			Inventory anvilInventory = event.getInventory();
+			InventoryAction action = event.getAction();
+			
+			org.bukkit.Bukkit.getLogger().info("cursor? " + Wand.isWand(cursor) + 
+					" current?" + Wand.isWand(current) + " action: " + action + " slot: " + slotType);
+			
+			// Handle direct movement
+			if (action == InventoryAction.MOVE_TO_OTHER_INVENTORY)
+			{
+				if (!Wand.isWand(current)) return;
+				// Moving from anvil back to inventory
+				if (slotType == SlotType.CRAFTING) {
+					Wand wand = new Wand(controller, current);
+					wand.updateName(true);
+				} else if (slotType == SlotType.RESULT) {
+					// Taking from result slot
+					ItemMeta meta = current.getItemMeta();
+					String newName = meta.getDisplayName();
+
+					Wand wand = new Wand(controller, current);
+					if (!wand.canUse(player)) {
+						event.setCancelled(true);
+						mage.sendMessage(controller.getMessages().get("wand.bound").replace("$name", wand.getOwner()));
+						return;
+					}
+					wand.setName(newName);
+					if (organizingEnabled) {
+						wand.organizeInventory(controller.getMage(player));
+					}
+					wand.tryToOwn(player);
+				} else {
+					// Moving from inventory to anvil
+					Wand wand = new Wand(controller, current);
+					wand.updateName(false);
+				}
+				return;
+			}
 			
 			// Set/unset active names when starting to craft
 			if (slotType == SlotType.CRAFTING) {

@@ -1756,7 +1756,11 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
     }
 
 	public void updateName(boolean isActive) {
-        CompatibilityUtils.setDisplayName(item, isActive && !isUpgrade ? getActiveWandName() : ChatColor.GOLD + getDisplayName());
+		if (isActive) {
+			CompatibilityUtils.setDisplayName(item, !isUpgrade ? getActiveWandName() : ChatColor.GOLD + getDisplayName());
+		} else {
+			CompatibilityUtils.setDisplayName(item, ChatColor.stripColor(getDisplayName()));
+		}
 
 		// Reset Enchantment glow
 		if (glow) {
