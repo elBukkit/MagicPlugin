@@ -30,6 +30,7 @@ import java.util.Map;
 public class InventoryController implements Listener {
     private final MagicController controller;
     private boolean	enableItemHacks	= true;
+    private boolean dropChangesPages = false;
 
     public InventoryController(MagicController controller) {
         this.controller = controller;
@@ -37,6 +38,9 @@ public class InventoryController implements Listener {
 
     public void setEnableItemHacks(boolean hack) {
         enableItemHacks = hack;
+    }
+    public void setDropChangesPages(boolean drop) {
+        dropChangesPages = drop;
     }
 
     @EventHandler(ignoreCancelled = true)
@@ -187,7 +191,11 @@ public class InventoryController implements Listener {
             if (clickedWand)
             {
                 event.setCancelled(true);
-                activeWand.cycleHotbar(1);
+                if (dropChangesPages) {
+                    activeWand.cycleInventory();
+                } else {
+                    activeWand.cycleHotbar(1);
+                }
                 return;
             }
 

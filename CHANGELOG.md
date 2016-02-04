@@ -17,6 +17,7 @@
  - Update Stream spell
  - Rebalance emeralds in deposits/withdrawals, added iron ingots and blocks
  - Fix incompatibilities with Wizards pickups (and possibly other special plugin drops)
+ - Add "drop_changes_pages" config option, to work-around compatibility issues with UltraCosmetics plugin.
 
 ## 5.4.6
 

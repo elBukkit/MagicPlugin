@@ -309,6 +309,9 @@ default_wand_mode: inventory
 default_brush_mode: chest
 # The spell to cast on shift+right-click
 brush_select_spell: brushselect
+# This will make hitting the drop button over a wand while open change pages instead of
+# cycling the hotbar
+drop_changes_pages: false
 
 # When wands are in "inventory" mode, players' inventories will be backed up
 # so that if the server crashes it is not lost.
