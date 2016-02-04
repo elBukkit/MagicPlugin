@@ -15,6 +15,8 @@ import java.util.logging.Level;
 import com.elmakers.mine.bukkit.api.block.BrushMode;
 import com.elmakers.mine.bukkit.api.event.AddSpellEvent;
 import com.elmakers.mine.bukkit.api.event.SpellUpgradeEvent;
+import com.elmakers.mine.bukkit.api.event.WandActivatedEvent;
+import com.elmakers.mine.bukkit.api.event.WandPreActivateEvent;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.magic.Messages;
 import com.elmakers.mine.bukkit.api.spell.CastingCost;
@@ -483,12 +485,12 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 
     @Override
     public void setMana(float mana) {
-        this.xp = Math.min(0, xp);
+        this.xp = Math.max(0, mana);
     }
 
     @Override
     public void setManaMax(int manaMax) {
-        this.xpMax = Math.min(0, manaMax);
+        this.xpMax = Math.max(0, manaMax);
     }
 
 	@Override
@@ -4042,6 +4044,12 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
             return;
         }
 
+        WandPreActivateEvent preActivateEvent = new WandPreActivateEvent(mage, this);
+        Bukkit.getPluginManager().callEvent(preActivateEvent);
+        if (preActivateEvent.isCancelled()) {
+            return;
+        }
+
         // Update held item, it may have been copied since this wand was created.
         this.mage = mage;
         boolean forceUpdate = false;
@@ -4141,6 +4149,9 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         if (forceUpdate) {
             player.updateInventory();
         }
+
+        WandActivatedEvent activatedEvent = new WandActivatedEvent(mage, this);
+        Bukkit.getPluginManager().callEvent(activatedEvent);
     }
 
 	@Override
