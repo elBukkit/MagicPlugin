@@ -138,4 +138,7 @@ public interface CastContext {
     public boolean canCast(Location location);
     public String parameterize(String command);
     public boolean isConsumeFree();
+    public void addHandler(ActionHandler handler);
+    public SpellResult processHandlers();
+    public boolean hasHandlers();
 }
