@@ -94,6 +94,7 @@ public class CustomProjectileAction extends CompoundAction
     private DynamicLocation effectLocation = null;
     private Collection<EffectPlay> activeProjectileEffects;
     private Queue<PlanStep> plan;
+    private Collection<ConfigurationSection> planConfiguration;
     
     private class PlanStep {
         public double distance;
@@ -103,7 +104,7 @@ public class CustomProjectileAction extends CompoundAction
         public PlanStep(ConfigurationSection planConfig) {
             distance = planConfig.getDouble("distance");
             time = planConfig.getLong("time");
-            parameters = ConfigurationUtils.getConfigurationSection(planConfig, "parameters");
+            parameters = planConfig;
         }
     };
 
@@ -136,7 +137,12 @@ public class CustomProjectileAction extends CompoundAction
         trackSpeed = parameters.getDouble("track_speed", trackSpeed);
         if (parameters.isConfigurationSection("velocity_transform")) {
             velocityTransform = new VectorTransform(ConfigurationUtils.getConfigurationSection(parameters, "velocity_transform"));
+        } else if (parameters.contains("velocity_transform")) {
+            velocityTransform = null;
         }
+
+        speed = parameters.getDouble("speed", speed);
+        speed = parameters.getDouble("velocity", speed * 20);
     }
 
     @Override
@@ -152,6 +158,7 @@ public class CustomProjectileAction extends CompoundAction
         trackCursorRange = 0;
         trackSpeed = 0;
         velocityTransform = null;
+        speed = 1;
         modifyParameters(parameters);
         
         // These parameters can't be changed mid-flight
@@ -188,9 +195,6 @@ public class CustomProjectileAction extends CompoundAction
         
         range *= context.getMage().getRangeMultiplier();
 
-        speed = parameters.getDouble("speed", 1);
-        speed = parameters.getDouble("velocity", speed * 20);
-
         // Some parameter tweaks to make sure things are sane
         TargetType targetType = targeting.getTargetType();
         if (targetType == TargetType.NONE) {
@@ -205,16 +209,7 @@ public class CustomProjectileAction extends CompoundAction
 
         ActionHandler handler = getHandler("tick");
         hasTickActions = handler != null && handler.size() > 0;
-        
-        Collection<ConfigurationSection> planStepConfigs = ConfigurationUtils.getNodeList(parameters, "plan");
-        if (planStepConfigs != null && !planStepConfigs.isEmpty()) {
-            plan = new LinkedList<PlanStep>();
-            for (ConfigurationSection planStepConfig : planStepConfigs) {
-                plan.add(new PlanStep(planStepConfig));
-            }
-        } else {
-            plan = null;
-        }
+        planConfiguration = ConfigurationUtils.getNodeList(parameters, "plan");
     }
 
     @Override
@@ -226,6 +221,7 @@ public class CustomProjectileAction extends CompoundAction
     public void reset(CastContext context)
     {
         super.reset(context);
+        
         targeting.reset();
         long now = System.currentTimeMillis();
         nextUpdate = 0;
@@ -241,6 +237,16 @@ public class CustomProjectileAction extends CompoundAction
         attachedDeadline = 0;
         attachedOffset = null;
         missed = false;
+        
+        // This has to be done here, so that the plan is not shared across parallel instances
+        if (planConfiguration != null && !planConfiguration.isEmpty()) {
+            plan = new LinkedList<PlanStep>();
+            for (ConfigurationSection planStepConfig : planConfiguration) {
+                plan.add(new PlanStep(planStepConfig));
+            }
+        } else {
+            plan = null;
+        }
     }
 
     @Override
@@ -391,7 +397,7 @@ public class CustomProjectileAction extends CompoundAction
                 if (next.parameters != null) {
                     modifyParameters(next.parameters);
                 }
-                context.getMage().sendDebugMessage("Changing flight plan at distance " + ((int)distanceTravelled) + " and time " + flightTime, 1);
+                context.getMage().sendDebugMessage("Changing flight plan at distance " + ((int)distanceTravelled) + " and time " + flightTime, 4);
             }
         }
 
@@ -500,7 +506,7 @@ public class CustomProjectileAction extends CompoundAction
 
             targetLocation = projectileLocation.clone().add(velocity.clone().multiply(distanceTravelledThisTick));
             context.getMage().sendDebugMessage(ChatColor.DARK_BLUE + "Projectile miss: " + ChatColor.DARK_PURPLE
-                    + " at " + targetLocation.getBlock().getType() + " : " + targetLocation.toVector() + " from range of " + distanceTravelledThisTick + " over time " + delta, 7);
+                    + " at " + targetLocation.getBlock().getType() + " : " + targetLocation.toVector() + " from range of " + distanceTravelledThisTick + " over time " + delta, 14);
         } else {
             if (hasPreHitEffects) {
                 actionContext.playEffects("prehit");
@@ -516,7 +522,7 @@ public class CustomProjectileAction extends CompoundAction
                 + ChatColor.BLUE + " at " + ChatColor.GOLD + targetLocation.getBlock().getType()
                 + ChatColor.BLUE + " from " + ChatColor.GRAY + projectileLocation.getBlock() + ChatColor.BLUE + " to "
                 + ChatColor.GRAY + targetLocation.toVector() + ChatColor.BLUE
-                + " from range of " + ChatColor.GOLD + distanceTravelledThisTick + ChatColor.BLUE + " over time " + ChatColor.DARK_PURPLE + delta, 4);
+                + " from range of " + ChatColor.GOLD + distanceTravelledThisTick + ChatColor.BLUE + " over time " + ChatColor.DARK_PURPLE + delta, 8);
             distanceTravelledThisTick = targetLocation.distance(projectileLocation);
         }
         distanceTravelled += distanceTravelledThisTick;
