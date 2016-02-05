@@ -2,6 +2,8 @@
 
 ## 5.5
 
+ - Added Fury spell (uses new Asynchronous action, and "plan" CustomProjectile flight plan config)
+
 ## 5.4.7
 
  - Engineer and Architect spells being re-balanced to consume blocks required for building

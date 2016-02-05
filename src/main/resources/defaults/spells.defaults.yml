@@ -7220,6 +7220,102 @@ railgun:
     costs:
         mana: 150
 
+fury:
+    upgrade_required_path: master
+    upgrade_required_casts: 50
+    icon: ink_sack:1
+    icon_url: http://textures.minecraft.net/texture/c64f6eeb78485e49b219f40a9d6a8131c539fef932f1cbb5f379adfebdd8c31
+    category: combat
+    worth_sp: 2000
+    earns_sp: 8
+    actions:
+        cast:
+        - class: AreaOfEffect
+          actions:
+          - class: Asynchronous
+            actions:
+            - class: CustomProjectile
+              target: other
+              actions:
+              - class: Damage
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: magic.zap_crack
+           location: origin
+           color_override: color
+           effectlib:
+             class: SphereEffect
+             duration: 100
+             particle: smoke_normal
+             radius: 0.5
+             offset: 0,0.5,0
+        tick:
+        - particle: fireworks_spark
+          particle_count: 5
+          particle_offset_x: 0.05
+          particle_offset_y: 0.05
+          particle_offset_z: 0.05
+          location: target
+        hit:
+        -  class: EffectSingle
+           sound: magic.zap
+           sound_volume: .3
+           location: target
+           color2: FF0000
+           firework: burst
+        target:
+        -  class: EffectSingle
+           sound: firework_launch
+           sound_volume: 0.5
+           location: source
+           particle: fireworks_spark
+           particle_count: 30
+           particle_offset_x: 2
+           particle_offset_y: 2
+           particle_offset_z: 2
+    parameters:
+        target: self
+        target_self: false
+        range: 64
+        velocity: 8
+        radius: 24
+        tick_size: 0.2
+        target_count: 3
+        target_type: LivingEntity
+        player_damage: 4
+        entity_damage: 8
+        target_breakables: 1
+        cooldown: 30000
+        lifetime: 10000
+        target_self_timeout: 2000
+        track_speed: 10
+        use_target_location: false
+        velocity_transform:
+            x: rand(-3,3) * cos(t)
+            y: rand(3,10)
+            z: rand(-3,3) * sin(t)
+        plan:
+        - time: 2000
+          track_target: true
+          velocity_transform: ""
+          velocity: 30
+          effects: target
+        - time: 3000
+          track_speed: 0.1
+    costs:
+        mana: 100
+
+fury|2:
+    upgrade_required_path: master
+    upgrade_required_casts: 50
+    parameters:
+      target_count: 6
+      
+fury|3:
+    parameters:
+      target_count: 8
+
 homing:
     upgrade_required_path: apprentice
     upgrade_required_casts: 50

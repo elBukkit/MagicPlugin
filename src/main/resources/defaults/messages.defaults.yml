@@ -1419,6 +1419,12 @@ spells:
         lock_on: "&d&o$player&r&5 has locked on to you!"
         cast_player_message: "&d&o$player&r&5's $spell hit you"
         upgrade_description: "&r&b&bull; &6Faster missile, more damage"
+    fury:
+        name: Fury
+        description: Launch several homing missiles into the air
+        cast: You launch of a fury of missiles
+        cast_player_message: "&d&o$player&r&5's $spell hit you"
+        upgrade_description: "&r&b&bull; &6More missiles"
     blind:
         name: Blind
         description: Blind your target

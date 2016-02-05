@@ -362,6 +362,7 @@ master:
       2: 0,   70,  10
       3: 0,   10,   90
     spells:
+      fury: 0,0,1
       blessing: 0,0,1
       cluster: 0,0,5
       bomb: 0,0,1
