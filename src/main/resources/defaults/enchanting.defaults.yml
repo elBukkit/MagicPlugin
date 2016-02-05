@@ -302,6 +302,7 @@ apprentice:
       disarm: 0,0,2
       laser: 0,0,10
       wave: 5,20,30
+      chainlightning: 5,20,30
       ghast: 0,0,5
 
 master:

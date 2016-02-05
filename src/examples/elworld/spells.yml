@@ -720,24 +720,3 @@ spraypaint:
     allow_max_range: true
     repeat: 100
     delay: 50
-
-
-projectile:
-  parameters:
-     range: 200
-     lifetime: 20000
-     track_target: false
-     plan:
-     - distance: 5
-       parameters:
-         reorient: true
-     - distance: 20
-       parameters:
-         reorient: false
-         track_range: 5
-     - distance: 30
-       parameters:
-         reorient: false
-         track_range: 0
-         track_target: true
-         

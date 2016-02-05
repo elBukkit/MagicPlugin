@@ -7426,6 +7426,91 @@ homing|4:
         track_speed: 0.4
         velocity: 8
 
+chainlightning:
+    upgrade_required_path: apprentice
+    upgrade_required_casts: 50
+    icon: ink_sack:1
+    icon_url: http://textures.minecraft.net/texture/1e5b76818c576079939b5a4b033ddfb5c2364fc9f764e573c59508b811e365
+    category: combat
+    worth_sp: 2000
+    earns_sp: 8
+    actions:
+        cast:
+        - class: CustomProjectile
+          actions:
+          - class: Damage
+          - class: AreaOfEffect
+            actions:
+            - class: Asynchronous
+              actions:
+              - class: CustomProjectile
+                velocity: 10
+                actions:
+                - class: Damage
+                  player_damage: 2
+                  entity_damage: 4
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: magic.zap
+           location: origin
+        projectile:
+        - class: EffectSingle
+          effectlib:
+             class: LineEffect
+             isZigZag: true
+             zigZags: 2
+             length: 0.5
+             particles: 10
+             particle: redstone
+             color: "FFF000"
+             duration: 10000
+        tick:
+        - particle: fireworks_spark
+          particle_count: 2
+          particle_offset_x: 0.2
+          particle_offset_y: 0.2
+          particle_offset_z: 0.2
+          location: target
+        hit:
+        -  class: EffectSingle
+           sound: magic.zap_crack
+           sound_volume: 0.5
+           location: target
+           particle: fireworks_spark
+           particle_count: 30
+           particle_offset_x: 1
+           particle_offset_y: 1
+           particle_offset_z: 1
+           location: target
+    parameters:
+        target: other
+        target_self: false
+        target_source: false
+        range: 48
+        velocity: 100
+        radius: 8
+        target_count: 3
+        target_type: LivingEntity
+        player_damage: 6
+        entity_damage: 8
+        target_breakables: 1
+        cooldown: 20000
+    costs:
+        mana: 75
+
+chainlightning|2:
+    upgrade_required_path: master
+    upgrade_required_casts: 50
+    parameters:
+        target_count: 5
+
+chainlightning|3:
+    upgrade_required_path: master
+    upgrade_required_casts: 50
+    parameters:
+        target_count: 8
+
 sticky:
     upgrade_required_path: apprentice
     upgrade_required_casts: 50

@@ -23,6 +23,7 @@ public class AreaOfEffectAction extends CompoundEntityAction
 {
     private int radius;
     private int targetCount;
+    private boolean targetSource;
 
     @Override
     public void reset(CastContext context) {
@@ -35,6 +36,7 @@ public class AreaOfEffectAction extends CompoundEntityAction
     {
         radius = parameters.getInt("radius", 8);
         targetCount = parameters.getInt("target_count", -1);
+        targetSource = parameters.getBoolean("target_source", true);
 
         Mage mage = context.getMage();
         if (mage != null)
@@ -62,9 +64,10 @@ public class AreaOfEffectAction extends CompoundEntityAction
         if (targetCount > 0)
         {
             List<Target> targets = new ArrayList<Target>();
+            Entity targetEntity = context.getTargetEntity();
             for (Entity entity : candidates)
             {
-                if ((context.getTargetsCaster() || entity != sourceEntity) && context.canTarget(entity))
+                if ((context.getTargetsCaster() || entity != sourceEntity) && (targetSource || entity != targetEntity) && context.canTarget(entity))
                 {
                     Target target = new Target(sourceLocation, entity, radius, 0);
                     targets.add(target);
@@ -104,6 +107,7 @@ public class AreaOfEffectAction extends CompoundEntityAction
         super.getParameterNames(spell, parameters);
         parameters.add("radius");
         parameters.add("target_count");
+        parameters.add("target_source");
     }
 
     @Override

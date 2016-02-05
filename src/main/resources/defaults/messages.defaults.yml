@@ -1425,6 +1425,12 @@ spells:
         cast: You launch of a fury of missiles
         cast_player_message: "&d&o$player&r&5's $spell hit you"
         upgrade_description: "&r&b&bull; &6More missiles"
+    chainlightning:
+        name: Chain Lightning
+        description: Shoot a bolt of electricity that splits to hit multiple targets
+        cast: You create some chain lightning
+        cast_player_message: "&d&o$player&r&5's $spell hit you"
+        upgrade_description: "&r&b&bull; &6Chains to more targets"
     blind:
         name: Blind
         description: Blind your target
