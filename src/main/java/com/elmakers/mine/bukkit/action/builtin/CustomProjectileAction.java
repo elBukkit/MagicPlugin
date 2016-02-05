@@ -100,10 +100,12 @@ public class CustomProjectileAction extends CompoundAction
         public double distance;
         public long time;
         public ConfigurationSection parameters;
+        public String effectsKey;
         
         public PlanStep(ConfigurationSection planConfig) {
             distance = planConfig.getDouble("distance");
             time = planConfig.getLong("time");
+            effectsKey = planConfig.getString("effects");
             parameters = planConfig;
         }
     };
@@ -143,6 +145,8 @@ public class CustomProjectileAction extends CompoundAction
 
         speed = parameters.getDouble("speed", speed);
         speed = parameters.getDouble("velocity", speed * 20);
+        tickSize = parameters.getDouble("tick_size",tickSize);
+        ignoreTargeting = parameters.getBoolean("ignore_targeting", ignoreTargeting);
     }
 
     @Override
@@ -159,6 +163,8 @@ public class CustomProjectileAction extends CompoundAction
         trackSpeed = 0;
         velocityTransform = null;
         speed = 1;
+        tickSize = 0.5;
+        ignoreTargeting = false;
         modifyParameters(parameters);
         
         // These parameters can't be changed mid-flight
@@ -167,7 +173,6 @@ public class CustomProjectileAction extends CompoundAction
         lifetime = parameters.getInt("lifetime", 8000);
         attachDuration = parameters.getInt("attach_duration", 0);
         reverseDirection = parameters.getBoolean("reverse", false);
-        ignoreTargeting = parameters.getBoolean("ignore_targeting", false);
         startDistance = parameters.getInt("start", 0);
         range = parameters.getInt("range", 0);
         projectileEffectKey = parameters.getString("projectile_effects", "projectile");
@@ -175,7 +180,6 @@ public class CustomProjectileAction extends CompoundAction
         hitEffectKey = parameters.getString("hit_effects", "hit");
         missEffectKey = parameters.getString("miss_effects", "miss");
         tickEffectKey = parameters.getString("tick_effects", "tick");
-        tickSize = parameters.getDouble("tick_size", 0.5);
         useWandLocation = parameters.getBoolean("use_wand_location", true);
         useEyeLocation = parameters.getBoolean("use_eye_location", true);
         useTargetLocation = parameters.getBoolean("use_target_location", true);
@@ -359,24 +363,7 @@ public class CustomProjectileAction extends CompoundAction
             actionContext.setDirection(velocity);
 
             // Start up projectile FX
-            Collection<EffectPlayer> projectileEffects = context.getEffects(projectileEffectKey);
-            for (EffectPlayer apiEffectPlayer : projectileEffects)
-            {
-                if (effectLocation == null) {
-                    effectLocation = new DynamicLocation(projectileLocation);
-                    effectLocation.setDirection(velocity);
-                }
-                if (activeProjectileEffects == null) {
-                    activeProjectileEffects = new ArrayList<EffectPlay>();
-                }
-                // Hrm- this is ugly, but I don't want the API to depend on EffectLib.
-                if (apiEffectPlayer instanceof com.elmakers.mine.bukkit.effect.EffectPlayer)
-                {
-                    com.elmakers.mine.bukkit.effect.EffectPlayer effectPlayer = (com.elmakers.mine.bukkit.effect.EffectPlayer)apiEffectPlayer;
-                    effectPlayer.setEffectPlayList(activeProjectileEffects);
-                    effectPlayer.startEffects(effectLocation, null);
-                }
-            }
+            startProjectileEffects(context, projectileEffectKey);
         }
         else
         {
@@ -396,6 +383,9 @@ public class CustomProjectileAction extends CompoundAction
                 plan.remove();
                 if (next.parameters != null) {
                     modifyParameters(next.parameters);
+                }
+                if (next.effectsKey != null) {
+                    startProjectileEffects(context, next.effectsKey);
                 }
                 context.getMage().sendDebugMessage("Changing flight plan at distance " + ((int)distanceTravelled) + " and time " + flightTime, 4);
             }
@@ -729,6 +719,28 @@ public class CustomProjectileAction extends CompoundAction
             examples.addAll(Arrays.asList(BaseSpell.EXAMPLE_SIZES));
         } else if (parameterKey.equals("target_entities") || parameterKey.equals("track_target")) {
             examples.addAll(Arrays.asList(BaseSpell.EXAMPLE_BOOLEANS));
+        }
+    }
+    
+    protected void startProjectileEffects(CastContext context, String effectKey) {
+
+        Collection<EffectPlayer> projectileEffects = context.getEffects(effectKey);
+        for (EffectPlayer apiEffectPlayer : projectileEffects)
+        {
+            if (effectLocation == null) {
+                effectLocation = new DynamicLocation(actionContext.getTargetLocation());
+                effectLocation.setDirection(velocity);
+            }
+            if (activeProjectileEffects == null) {
+                activeProjectileEffects = new ArrayList<EffectPlay>();
+            }
+            // Hrm- this is ugly, but I don't want the API to depend on EffectLib.
+            if (apiEffectPlayer instanceof com.elmakers.mine.bukkit.effect.EffectPlayer)
+            {
+                com.elmakers.mine.bukkit.effect.EffectPlayer effectPlayer = (com.elmakers.mine.bukkit.effect.EffectPlayer)apiEffectPlayer;
+                effectPlayer.setEffectPlayList(activeProjectileEffects);
+                effectPlayer.startEffects(effectLocation, null);
+            }
         }
     }
 }
