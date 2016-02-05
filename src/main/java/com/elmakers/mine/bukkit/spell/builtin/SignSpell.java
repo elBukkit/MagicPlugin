@@ -76,9 +76,11 @@ public class SignSpell extends BlockSpell
 			else
 			{
 				targetBlock.setType(Material.SIGN_POST);
-				float yaw = getLocation().getYaw();
-                while (yaw < 0) yaw += 180;
-                while (yaw > 180) yaw -= 180;
+				// This is -180 + 22.5, the number of degrees between
+				// increments, effectively rounding up.
+				float yaw = getLocation().getYaw() - 157.5f;
+                while (yaw < 0) yaw += 360;
+                while (yaw >= 360) yaw -= 360;
 				targetBlock.setData((byte)(yaw * 15 / 360));
 			}
 			if (targetBlock.getState() instanceof Sign)

@@ -4,6 +4,9 @@
 
  - Added Fury spell (uses new Asynchronous action, and "plan" CustomProjectile flight plan config)
  - Added Chain Lightning spells
+ - Update FX on all Engineering Spells
+ - Tag signs and SuperTorch torches are returned when broken or rolled back
+ - Fix Tag signs sometimes facing the wrong way
 
 ## 5.4.7
 
