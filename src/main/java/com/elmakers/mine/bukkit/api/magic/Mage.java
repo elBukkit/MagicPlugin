@@ -369,8 +369,10 @@ public interface Mage extends CostReducer {
     public boolean prepareForUndo(UndoList blocks);
 
     public Inventory getInventory();
-    public Map<Integer, ItemStack> removeItem(ItemStack item);
+    public int removeItem(ItemStack item);
     public boolean hasItem(ItemStack item);
+    public int removeItem(ItemStack item, boolean allowVariants);
+    public boolean hasItem(ItemStack item, boolean allowVariants);
 
     public MaterialBrush getBrush();
 
