@@ -112,9 +112,13 @@ public class TNTAction extends BaseProjectileAction
         return true;
     }
 
-    @Override
-    public boolean requiresBreakPermission()
-    {
-        return true;
-    }
+	@Override
+	public boolean requiresBuildPermission() {
+		return useFire;
+	}
+
+	@Override
+	public boolean requiresBreakPermission() {
+		return breakBlocks;
+	}
 }
