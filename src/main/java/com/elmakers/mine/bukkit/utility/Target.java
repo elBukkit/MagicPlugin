@@ -313,7 +313,7 @@ public class Target implements Comparable<Target>
                 org.bukkit.Bukkit.getLogger().info("HIT: " + hit);
             }
         }
-        else
+        else if (maxAngle > 0)
         {
             angle = targetDirection.angle(sourceDirection);
 
@@ -347,7 +347,7 @@ public class Target implements Comparable<Target>
 
         // Apply scoring weights
         if (maxDistanceSquared > 0) score += (maxDistanceSquared - distanceSquared) * distanceWeight;
-        if (!useHitbox && angle > 0) score += (3 - angle) * fovWeight;
+        if (!useHitbox && angle > 0 && maxAngle > 0) score += (3 - angle) * fovWeight;
 
         if (entity != null && mage != null && mage.getController().isNPC(entity))
         {
