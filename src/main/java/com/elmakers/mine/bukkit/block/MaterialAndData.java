@@ -510,7 +510,9 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
     public ItemStack applyToItem(ItemStack stack)
     {
         stack.setType(material);
-        stack.setDurability(data);
+        if (data != null) {
+            stack.setDurability(data);
+        }
         if (material == Material.SKULL_ITEM)
         {
             ItemMeta meta = stack.getItemMeta();
