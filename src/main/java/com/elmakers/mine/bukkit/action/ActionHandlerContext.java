@@ -1,44 +1,26 @@
 package com.elmakers.mine.bukkit.action;
 
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
-import org.bukkit.Location;
-import org.bukkit.configuration.ConfigurationSection;
 import com.elmakers.mine.bukkit.api.action.CastContext;
-import org.bukkit.entity.Entity;
 
 public class ActionHandlerContext {
-    private final ActionHandler actions;
+    private final com.elmakers.mine.bukkit.api.action.ActionHandler actions;
     private final CastContext context;
-    private final ConfigurationSection parameters;
-    private final String messageKey;
-
-    public ActionHandlerContext(ActionHandler handler, CastContext context, ConfigurationSection parameters, String messageKey) {
-        this.actions = (ActionHandler)handler.clone();
+    
+    public ActionHandlerContext(com.elmakers.mine.bukkit.api.action.ActionHandler handler, CastContext context) {
+        this.actions = handler;
         this.context = context;
-        this.parameters = parameters;
-        this.messageKey = messageKey;
     }
 
     public SpellResult perform() {
-        return perform(context);
+        return actions.perform(context);
     }
-
-    public SpellResult perform(Entity sourceEntity, Location sourceLocation, Entity targetEntity, Location targetLocation) {
-        CastContext newContext = new com.elmakers.mine.bukkit.action.CastContext(context, sourceEntity, sourceLocation);
-        newContext.setTargetEntity(targetEntity);
-        newContext.setTargetLocation(targetLocation);
-        return perform(newContext);
+    
+    public void setWorkAllowed(int work) {
+        context.setWorkAllowed(work);
     }
-
-    public SpellResult perform(CastContext context) {
-        SpellResult result = this.actions.start(context, parameters);
-        if (messageKey != null) {
-            context.messageTargets(messageKey);
-        }
-        return result;
-    }
-
-    public CastContext getContext() {
-        return context;
+    
+    public void finish() {
+        actions.finish(context);
     }
 }

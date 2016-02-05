@@ -20,7 +20,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ActionHandler implements Cloneable
+public class ActionHandler implements com.elmakers.mine.bukkit.api.action.ActionHandler, Cloneable
 {
     private static final String ACTION_BUILTIN_CLASSPATH = "com.elmakers.mine.bukkit.action.builtin";
     private static Map<String, Class<?>> actionClasses = new HashMap<String, Class<?>>();
@@ -194,6 +194,7 @@ public class ActionHandler implements Cloneable
         return handlerResult;
     }
 
+    @Override
     public SpellResult perform(CastContext context)
     {
         Location targetLocation = context.getTargetLocation();
@@ -265,6 +266,12 @@ public class ActionHandler implements Cloneable
 
         SpellResult currentResult = context.getResult();
         context.addResult(result);
+        SpellResult contextResult = context.processHandlers();
+        if (contextResult == SpellResult.PENDING) {
+            isPending = true;
+        } else {
+            context.addResult(contextResult);
+        }
         SpellResult newResult = context.getResult();
         if (showDebug && newResult != currentResult) {
             mage.sendDebugMessage(ChatColor.AQUA + debugIndent + "Result changed from " +
@@ -296,6 +303,7 @@ public class ActionHandler implements Cloneable
         currentAction = null;
     }
 
+    @Override
     public void finish(CastContext context)
     {
         for (ActionContext action : actions)
@@ -372,6 +380,7 @@ public class ActionHandler implements Cloneable
         return currentAction == null;
     }
 
+    @Override
     public int size() {
         return actions.size();
     }

@@ -34,6 +34,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
@@ -69,6 +71,9 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
     private CastContext base;
     private Wand wand;
 
+    private List<ActionHandlerContext> handlers = null;
+    private List<ActionHandlerContext> finishedHandlers = null;
+
     // Base Context
     private int workAllowed = 500;
     private int actionsPerformed;
@@ -81,7 +86,6 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
         this.result = SpellResult.NO_ACTION;
         targetMessagesSent = new HashSet<UUID>();
         currentEffects = new ArrayList<EffectPlay>();
-
     }
 
     public CastContext(com.elmakers.mine.bukkit.api.action.CastContext copy) {
@@ -860,13 +864,19 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
     public int getActionsPerformed() {
         return base.actionsPerformed;
     }
-
+    
     @Override
     public void finish() {
         if (finished) return;
         finished = true;
         Mage mage = getMage();
 
+        if (finishedHandlers != null) {
+            for (ActionHandlerContext context : finishedHandlers) {
+                context.finish();
+            }
+            finishedHandlers = null;
+        }
         if (undoSpell != null && undoSpell.isUndoable())
         {
             if (!undoList.isScheduled())
@@ -1128,5 +1138,47 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
         }
 
         return ChatColor.translateAlternateColorCodes('&', command);
+    }
+    
+    @Override
+    public void addHandler(com.elmakers.mine.bukkit.api.action.ActionHandler handler) {
+        if (base.handlers == null) {
+            base.handlers = new ArrayList<ActionHandlerContext>();
+        }
+        base.handlers.add(new ActionHandlerContext(handler, this));
+    }
+    
+    @Override 
+    public boolean hasHandlers() {
+        return handlers != null;
+    }
+
+    @Override
+    public SpellResult processHandlers() {
+        SpellResult result = SpellResult.NO_ACTION;
+        if (handlers == null) return result;
+
+        if (finishedHandlers == null) {
+            finishedHandlers = new ArrayList<ActionHandlerContext>();
+        }
+        int startingWork = getWorkAllowed();
+        int splitWork = Math.max(1, startingWork / handlers.size());
+        for (Iterator<ActionHandlerContext> iterator = handlers.iterator(); iterator.hasNext();) {
+            ActionHandlerContext handler = iterator.next();
+            handler.setWorkAllowed(splitWork);
+            SpellResult actionResult = handler.perform();
+            if (actionResult != SpellResult.PENDING) {
+                result = result.min(actionResult);
+                finishedHandlers.add(handler);
+                iterator.remove();
+            }
+        }
+        
+        if (handlers.isEmpty()) {
+            handlers = null;
+            return result;
+        }
+
+        return SpellResult.PENDING;
     }
 }

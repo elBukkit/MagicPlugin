@@ -28,7 +28,7 @@ public class ActionBatch implements com.elmakers.mine.bukkit.api.batch.SpellBatc
         if (finished) return 0;
         context.setWorkAllowed(maxBlocks);
         handler.perform(context);
-        if (handler.isFinished()) {
+        if (handler.isFinished() && !context.hasHandlers()) {
             handler.finish(context);
             context.finish();
         }
@@ -37,7 +37,7 @@ public class ActionBatch implements com.elmakers.mine.bukkit.api.batch.SpellBatc
 
     @Override
     public boolean isFinished() {
-        return finished || handler.isFinished();
+        return finished;
     }
 
     @Override
