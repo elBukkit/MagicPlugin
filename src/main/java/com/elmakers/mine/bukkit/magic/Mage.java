@@ -691,7 +691,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                 restoreExperience = data.getStoredExperience();
             }
         } catch (Exception ex) {
-            controller.getLogger().warning("Failed to load player data for " + playerName + ": " + ex.getMessage());
+            controller.getLogger().log(Level.WARNING, "Failed to load player data for " + playerName, ex);
             return false;
         }
 
@@ -1390,15 +1390,56 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     }
 
     @Override
-    public Map<Integer, ItemStack> removeItem(ItemStack itemStack) {
+    public int removeItem(ItemStack itemStack, boolean allowVariants) {
+        int amount = itemStack == null ? 0 :itemStack.getAmount();
         Inventory inventory = getInventory();
-        return inventory.removeItem(itemStack);
+        ItemStack[] contents = inventory.getContents();
+        for (int index = 0; amount > 0 && index < contents.length; index++) {
+            ItemStack item = contents[index];
+            if (item == null) continue;
+            
+            if ((!allowVariants && itemStack.isSimilar(item)) || (allowVariants && itemStack.getType() == item.getType() && (item.getItemMeta() == null || item.getItemMeta().getDisplayName() == null)))
+            {
+                if (amount >= item.getAmount()) {
+                    amount -= item.getAmount();
+                    inventory.setItem(index, null);
+                } else {
+                    item.setAmount(item.getAmount() - amount);
+                    amount = 0;
+                }
+            }
+        }
+        
+        return amount;   
     }
 
     @Override
-    public boolean hasItem(ItemStack item) {
+    public boolean hasItem(ItemStack itemStack, boolean allowVariants) {
+        int amount = itemStack == null ? 0 :itemStack.getAmount();
+        if (amount <= 0 ) {
+            return true;
+        }
         Inventory inventory = getInventory();
-        return inventory.containsAtLeast(item, item.getAmount());
+        ItemStack[] contents = inventory.getContents();
+        for (ItemStack item : contents) {
+            if (item != null
+                && ((!allowVariants && itemStack.isSimilar(item)) || (allowVariants && itemStack.getType() == item.getType() && (item.getItemMeta() == null || item.getItemMeta().getDisplayName() == null)))
+                && (amount -= item.getAmount()) <= 0) 
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public int removeItem(ItemStack itemStack) {
+        return removeItem(itemStack, false);
+    }
+
+    @Override
+    public boolean hasItem(ItemStack itemStack) {
+        return hasItem(itemStack, false);
     }
 
     @Override

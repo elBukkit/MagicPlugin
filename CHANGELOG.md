@@ -7,6 +7,8 @@
  - Update FX on all Engineering Spells
  - Tag signs and SuperTorch torches are returned when broken or rolled back
  - Fix Tag signs sometimes facing the wrong way
+ - Tree spell will work with any sapling type
+ - Engineering brushes can mix block variants (data values)
 
 ## 5.4.7
 

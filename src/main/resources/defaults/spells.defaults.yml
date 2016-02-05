@@ -1904,7 +1904,7 @@ tree:
         destructible: destructible,destructible_replace
     costs:
         mana: 20
-        sapling: 1
+        sapling|*: 1
 
 forest:
     icon: sapling
@@ -5072,7 +5072,7 @@ rollback:
            sound_volume: 1
            location: both
         -  class: EffectSingle
-           particle_override: particleOrbital
+           particle_override: particleBase2
            color_override: colorHelix
            effectlib:
              class: DnaEffect

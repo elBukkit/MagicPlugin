@@ -217,7 +217,7 @@ wand:
     brush_instructions: "&r&bMaterial brushes have been added to your $wand. Shift+Right Click to select a brush."
     sp_instructions: "&r&6You have earned some Skill Points! SP's are displayed above your mana bar, and may be spent at an enchanting table to learn new spells. Repeat casts earn fewer SP's, try mixing it up once you have more spells!"
 material:
-    wildcard: " (All Types)"
+    wildcard: " (Any Type)"
 economy:
     missing: "&cMy shop is closed, sorry!"
     insufficient: "Costs: &6$cost"
