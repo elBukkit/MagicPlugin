@@ -26,10 +26,9 @@ import org.bukkit.util.Vector;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.Random;
-import java.util.Set;
-import java.util.UUID;
 
 public class CustomProjectileAction extends CompoundAction
 {
@@ -94,16 +93,24 @@ public class CustomProjectileAction extends CompoundAction
     private long targetSelfDeadline;
     private DynamicLocation effectLocation = null;
     private Collection<EffectPlay> activeProjectileEffects;
+    private Queue<PlanStep> plan;
+    
+    private class PlanStep {
+        public double distance;
+        public long time;
+        public ConfigurationSection parameters;
+        
+        public PlanStep(ConfigurationSection planConfig) {
+            distance = planConfig.getDouble("distance");
+            time = planConfig.getLong("time");
+            parameters = ConfigurationUtils.getConfigurationSection(planConfig, "parameters");
+        }
+    };
 
     @Override
     public void initialize(Spell spell, ConfigurationSection parameters) {
         super.initialize(spell, parameters);
         targeting = new Targeting();
-        if (parameters.isConfigurationSection("velocity_transform")) {
-            velocityTransform = new VectorTransform(ConfigurationUtils.getConfigurationSection(parameters, "velocity_transform"));
-        } else {
-            velocityTransform = null;
-        }
     }
 
     @Override
@@ -119,10 +126,35 @@ public class CustomProjectileAction extends CompoundAction
         addHandler(spell, "miss");
         addHandler(spell, "tick");
     }
+    
+    public void modifyParameters(ConfigurationSection parameters) {
+        gravity = parameters.getDouble("gravity", gravity);
+        drag = parameters.getDouble("drag", drag);
+        reorient = parameters.getBoolean("reorient", reorient);
+        trackEntity = parameters.getBoolean("track_target", trackEntity);
+        trackCursorRange = parameters.getDouble("track_range", trackCursorRange);
+        trackSpeed = parameters.getDouble("track_speed", trackSpeed);
+        if (parameters.isConfigurationSection("velocity_transform")) {
+            velocityTransform = new VectorTransform(ConfigurationUtils.getConfigurationSection(parameters, "velocity_transform"));
+        }
+    }
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters) {
         super.prepare(context, parameters);
+        
+        // Parameters that can be modified by a flight plan need
+        // to be reset here.
+        gravity = 0;
+        drag = 0;
+        reorient = false;
+        trackEntity = false;
+        trackCursorRange = 0;
+        trackSpeed = 0;
+        velocityTransform = null;
+        modifyParameters(parameters);
+        
+        // These parameters can't be changed mid-flight
         targeting.processParameters(parameters);
         interval = parameters.getInt("interval", 30);
         lifetime = parameters.getInt("lifetime", 8000);
@@ -136,14 +168,10 @@ public class CustomProjectileAction extends CompoundAction
         hitEffectKey = parameters.getString("hit_effects", "hit");
         missEffectKey = parameters.getString("miss_effects", "miss");
         tickEffectKey = parameters.getString("tick_effects", "tick");
-        gravity = parameters.getDouble("gravity", 0);
-        drag = parameters.getDouble("drag", 0);
         tickSize = parameters.getDouble("tick_size", 0.5);
-        reorient = parameters.getBoolean("reorient", false);
         useWandLocation = parameters.getBoolean("use_wand_location", true);
         useEyeLocation = parameters.getBoolean("use_eye_location", true);
         useTargetLocation = parameters.getBoolean("use_target_location", true);
-        trackEntity = parameters.getBoolean("track_target", false);
         targetSelfTimeout = parameters.getInt("target_self_timeout", 0);
         breaksBlocks = parameters.getBoolean("break_blocks", true);
         targetBreakables = parameters.getDouble("target_breakables", 1);
@@ -152,8 +180,6 @@ public class CustomProjectileAction extends CompoundAction
         spread = parameters.getDouble("spread", 0);
         maxSpread = parameters.getDouble("spread_max", 0);
         movementSpread = parameters.getDouble("spread_movement", 0);
-        trackCursorRange = parameters.getDouble("track_range", 0);
-        trackSpeed = parameters.getDouble("track_speed", 0);
         int hitLimit = parameters.getInt("hit_count", 1);
         entityHitLimit = parameters.getInt("entity_hit_count", hitLimit);
         blockHitLimit = parameters.getInt("block_hit_count", hitLimit);
@@ -179,6 +205,16 @@ public class CustomProjectileAction extends CompoundAction
 
         ActionHandler handler = getHandler("tick");
         hasTickActions = handler != null && handler.size() > 0;
+        
+        Collection<ConfigurationSection> planStepConfigs = ConfigurationUtils.getNodeList(parameters, "plan");
+        if (planStepConfigs != null && !planStepConfigs.isEmpty()) {
+            plan = new LinkedList<PlanStep>();
+            for (ConfigurationSection planStepConfig : planStepConfigs) {
+                plan.add(new PlanStep(planStepConfig));
+            }
+        } else {
+            plan = null;
+        }
     }
 
     @Override
@@ -343,6 +379,19 @@ public class CustomProjectileAction extends CompoundAction
             {
                 effectLocation.updateFrom(projectileLocation);
                 effectLocation.setDirection(velocity);
+            }
+        }
+        
+        // Check plan
+        if (plan != null && !plan.isEmpty()) {
+            PlanStep next = plan.peek();
+            if ((next.distance > 0 && distanceTravelled > next.distance) || next.time > 0 && flightTime > next.time)
+            {
+                plan.remove();
+                if (next.parameters != null) {
+                    modifyParameters(next.parameters);
+                }
+                context.getMage().sendDebugMessage("Changing flight plan at distance " + ((int)distanceTravelled) + " and time " + flightTime, 1);
             }
         }
 
