@@ -29,8 +29,7 @@ public class ActionBatch implements com.elmakers.mine.bukkit.api.batch.SpellBatc
         context.setWorkAllowed(maxBlocks);
         handler.perform(context);
         if (handler.isFinished() && !context.hasHandlers()) {
-            handler.finish(context);
-            context.finish();
+            finish();
         }
         return maxBlocks - context.getWorkAllowed();
     }
