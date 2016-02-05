@@ -420,7 +420,7 @@ public class CustomProjectileAction extends CompoundAction
         }
         else if (reorient)
         {
-            targetVelocity = context.getDirection().clone().normalize();
+            targetVelocity = context.getMage().getDirection().clone().normalize();
         }
         else
         {
