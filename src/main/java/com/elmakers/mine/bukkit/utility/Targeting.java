@@ -246,7 +246,7 @@ public class Targeting {
         }
 
         Mage mage = context.getMage();
-        if (mage != null && mage.getDebugLevel() > 6)
+        if (mage != null && mage.getDebugLevel() > 15)
         {
             Location targetLocation = target.getLocation();
             String message = ChatColor.GREEN + "Targeted from " + ChatColor.GRAY + source.getBlockX() +
@@ -469,7 +469,7 @@ public class Targeting {
             }
 
             entities = CompatibilityUtils.getNearbyEntities(sourceLocation, queryRange.getX() / 2, queryRange.getY() / 2, queryRange.getZ() / 2);
-            if (mage != null && mage.getDebugLevel() > 8)
+            if (mage != null && mage.getDebugLevel() > 16)
             {
                 mage.sendDebugMessage(ChatColor.GREEN + "Targeting " + ChatColor.GOLD + entities.size() + ChatColor.GREEN + " entities from " +
                         ChatColor.GRAY + source.getBlockX() +
@@ -484,7 +484,7 @@ public class Targeting {
             }
         }
 
-        if (debugMessage && mage != null && mage.getDebugLevel() > 8)
+        if (debugMessage && mage != null && mage.getDebugLevel() > 17)
         {
             mage.sendDebugMessage(ChatColor.GREEN + "Targeting entities from " +
                     ChatColor.GRAY + source.getBlockX() +
@@ -511,11 +511,11 @@ public class Targeting {
                 newScore = new Target(source, entity, useRange, fov, closeRange, closeFOV,
                         distanceWeight, fovWeight, mageWeight, npcWeight, playerWeight, livingEntityWeight);
             }
-            int requiredDebug = 15;
+            int requiredDebug = 20;
             if (newScore.getScore() > 0)
             {
                 targets.add(newScore);
-                requiredDebug = 5;
+                requiredDebug = 11;
             }
             if (mage != null && mage.getDebugLevel() > requiredDebug)
             {
