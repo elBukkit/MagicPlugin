@@ -502,7 +502,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
             case SPRUCE_DOOR: material = Material.SPRUCE_DOOR_ITEM; break;
             default:
         }
-        ItemStack stack = new ItemStack(material, amount, data);
+        ItemStack stack = new ItemStack(material, amount, data == null ? 0 : data);
         applyToItem(stack);
         return stack;
     }
@@ -573,8 +573,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
     public String getName() {
         return getName(null);
     }
-
-
+    
     @SuppressWarnings("deprecation")
     public String getBaseName() {
         if (material == null) {
@@ -647,7 +646,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
                      materialName = color.name().toLowerCase() + " " + materialName;
                  }
             }
-        } else {
+        } else if (messages != null) {
             materialName = materialName + messages.get("material.wildcard");
         }
 

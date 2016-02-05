@@ -72,7 +72,7 @@ public class CastingCost implements com.elmakers.mine.bukkit.api.spell.CastingCo
         boolean hasItem = true;
         if (item != null && amount > 0 && !isConsumeFree(spell))
         {
-            hasItem = mage.hasItem(item.getItemStack(amount));
+            hasItem = mage.hasItem(item.getItemStack(amount), item.getData() == null);
         }
         boolean hasXp = xp <= 0 || mage.getExperience() >= getXP(spell);
         boolean hasMana = mana <= 0 || mage.getMana() >= getMana(spell);
@@ -92,7 +92,7 @@ public class CastingCost implements com.elmakers.mine.bukkit.api.spell.CastingCo
         int amount = getAmount(spell);
         if (item != null && amount > 0 && !isConsumeFree(spell)) {
             ItemStack itemStack = getItemStack(spell);
-            mage.removeItem(itemStack);
+            mage.removeItem(itemStack, item.getData() == null);
         }
         int xp = getXP(spell);
         if (xp > 0) {
@@ -216,7 +216,7 @@ public class CastingCost implements com.elmakers.mine.bukkit.api.spell.CastingCo
     public String getFullDescription(Messages messages, CostReducer reducer)
     {
         if (item != null && !isConsumeFree(reducer)) {
-            return getAmount(reducer) + " " + item.getName();
+            return getAmount(reducer) + " " + item.getName(messages);
         }
         if (xp > 0) {
             return messages.get("costs.xp_amount").replace("$amount", ((Integer)getXP(reducer)).toString());
