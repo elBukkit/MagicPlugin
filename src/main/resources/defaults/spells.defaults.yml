@@ -2270,7 +2270,7 @@ healing:
     parameters:
         target_type: Player
         target: self
-        target_self: true
+        target_self: false
         radius: 5
         amount: 1
         bypass_pvp: true
@@ -5706,7 +5706,7 @@ blink:
            use_wand_location: false
            effectlib:
                class: AtomEffect
-               particleNucleus: mob_spell
+               particleNucleus: spell_mob
                particleOrbital: redstone
                iterations: 8
          - class: EffectSingle
