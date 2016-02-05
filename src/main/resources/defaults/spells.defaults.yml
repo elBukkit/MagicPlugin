@@ -3002,7 +3002,7 @@ fling|4:
         cooldown: 0
     costs:
         mana: 90
-
+  
 supertorch:
     icon_url: http://textures.minecraft.net/texture/15f098d4bc88ca9b11ddb6b3acb08dad7a3fc62929ec27adcedb667c61faa3
     icon: torch
@@ -3018,6 +3018,10 @@ supertorch:
            sound: fire_ignite
         -  class: EffectTrail
            particle: block_crack
+           particle_count: 10
+           particle_offset_x: 0.2
+           particle_offset_y: 0.2
+           particle_offset_z: 0.2
            material: glowstone
     parameters:
         allow_max_range: false
@@ -3047,6 +3051,11 @@ torch:
            sound: fire_ignite
         -  class: EffectTrail
            particle: block_crack
+           material: glowstone
+           particle_count: 4
+           particle_offset_x: 0.2
+           particle_offset_y: 0.2
+           particle_offset_z: 0.2
            material: glowstone
     parameters:
         allow_max_range: false
@@ -3757,8 +3766,12 @@ paint:
       - class: ModifyBlock
     effects:
         cast:
+        -  class: EffectSingle
+           effect: step_sound
+           location: target
         -  class: EffectTrail
            particle: block_crack
+           particle_count: 10
     parameters:
         target: block
         allow_max_range: false
@@ -3805,8 +3818,20 @@ recurse:
           - class: ModifyBlock
     effects:
         cast:
-        -  class: EffectTrail
-           particle: block_crack
+        -  class: EffectSingle
+           sound: dig_stone
+           effectlib:
+             class: ConeEffect
+             iterations: 10
+             particle: block_crack
+             particleCount: 8
+             particleOffsetX: 0.8
+             particleOffsetY: 0.8
+             particleOffsetZ: 0.8
+             lengthGrow: 0.2
+             radiusGrow: 0.004
+             updateLocations: false
+             updateDirections: false
     parameters:
         allow_max_range: false
         range: 32
@@ -4014,11 +4039,18 @@ bridge:
         cast:
         -  class: EffectSingle
            sound: dig_stone
-           location: origin
         built:
         -  class: EffectSingle
            effect: step_sound
            location: target
+        -  class: EffectSingle
+           sound: dig_stone
+           effectlib:
+             class: LineEffect
+             particle: block_crack
+             particleCount: 8
+             particles: 40
+             offset: 0,-1,0
     parameters:
         effects: built
         target: self
@@ -4048,6 +4080,9 @@ pillar:
         -  class: EffectSingle
            sound: dig_stone
            location: origin
+        -  class: EffectTrail
+           particle: block_crack
+           particle_count: 4
         built:
         -  class: EffectSingle
            effect: step_sound
@@ -4071,15 +4106,20 @@ place:
     earns_sp: 10
     actions:
         cast:
-        - class: ChangeContext
-          target_attachment: true
-          actions:
-          - class: ModifyBlock
+        -  class: EffectSingle
+           effect: step_sound
+           location: target
+        -  class: EffectTrail
+           particle: block_crack
+           particle_count: 10
     effects:
         cast:
         -  class: EffectSingle
-           particle: block_crack
+           effect: step_sound
            location: target
+        -  class: EffectTrail
+           particle: block_crack
+           particle_count: 10
     parameters:
         allow_max_range: false
         range: 64
@@ -4821,10 +4861,18 @@ convert:
     effects:
         cast:
         -  class: EffectSingle
-           sound: level_up
-        -  class: EffectTrail
-           particle: block_crack
+           sound: dig_stone
+           effectlib:
+             class: ConeEffect
+             iterations: 10
+             particle: block_crack
+             particleCount: 3
+             lengthGrow: 0.1
+             radiusGrow: 0.003
+             updateLocations: false
+             updateDirections: false
     parameters:
+        target: block
         allow_max_range: false
         range: 32
         check_destructible: false
@@ -4984,7 +5032,7 @@ cloak:
         duration: 8000
         cooldown: 30000
         effect_invisibility: 5
-
+    
 rollback:
     alias: undo
     icon_url: http://textures.minecraft.net/texture/9be3ca3c869345a6f2a3be3391615dca1ea1c631d86e3938dbff57f11cbb61
@@ -5002,9 +5050,46 @@ rollback:
         -  class: Undo
            target_down: true
     effects:
+        no_target: 
+        -  class: EffectSingle
+           sound: magic.bonk
+           sound_volume: 1
+           effectlib:
+             class: SmokeEffect
+             duration: 1000
+        alternate_up:
+        - class: EffectSingle
+          sound: magic.shimmer
+          sound_volume: 1
+          location: both
+          particle_override: particleNucleus
+          color_override: colorOrbital
+          effectlib:
+               class: AtomEffect
+               particleNucleus: enchantment_table
+               particleOrbital: redstone
+               iterations: 8
         cast:
         -  class: EffectSingle
            sound: magic.shimmer
+           sound_volume: 1
+           location: both
+        -  class: EffectSingle
+           particle_override: particleOrbital
+           color_override: colorHelix
+           effectlib:
+             class: DnaEffect
+             particlesBase: 0
+             particlesHelix: 7
+             particleHelix: redstone
+             particleBase1: drip_lava
+             particleBase2: enchantment_table
+             iterations: 10
+             radius: 0.5
+             grow: 0.2
+             baseInterval: 5
+             length: 16
+             particlesBase: 5
     parameters:
         target: block
         allow_max_range: true
@@ -5356,8 +5441,18 @@ alter:
         cast:
         -  class: EffectSingle
            sound: dig_wool
+           effectlib:
+             class: ConeEffect
+             iterations: 10
+             particle: redstone
+             speed: 2
+             lengthGrow: 0.1
+             radiusGrow: 0.003
+             updateLocations: false
+             updateDirections: false
         -  class: EffectTrail
-           particle: flame
+           particle: redstone
+           particle_data: 2
     parameters:
         target_type: Entity
         allow_max_range: false
@@ -5366,7 +5461,7 @@ alter:
         transparent: transparent_to_construction
         check_destructible: false
     costs:
-        mana: 3
+        mana: 10
 
 superalter:
     icon_url: http://textures.minecraft.net/texture/b5ccb1a5547f7d1beb4896c6fad4fedbb17ebced53a86b7e96e417114a0cae4
@@ -6106,6 +6201,18 @@ iterate:
         -  class: Line
            actions:
            -  class: ModifyBlock
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: step_grass
+        iterate:
+        -  class: EffectSingle
+           particle: block_crack
+           particle_count: 21
+           particle_offset_x: 0.5
+           particle_offset_y: 0.5
+           particle_offset_z: 0.5
+           location: target
     parameters:
         transparent: transparent_to_construction
         allow_max_range: true
