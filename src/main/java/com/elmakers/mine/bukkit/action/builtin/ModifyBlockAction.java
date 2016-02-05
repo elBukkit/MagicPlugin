@@ -34,6 +34,7 @@ public class ModifyBlockAction extends BaseSpellAction {
     private boolean commit = false;
     private boolean usePhysicsBlocks = false;
     private boolean consumeBlocks = false;
+    private boolean consumeVariants = true;
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters) {
@@ -47,6 +48,7 @@ public class ModifyBlockAction extends BaseSpellAction {
         fallingBlockSpeed = parameters.getDouble("speed", 0);
         fallingProbability = parameters.getDouble("falling_probability", 1);
         consumeBlocks = parameters.getBoolean("consume", false);
+        consumeVariants = parameters.getBoolean("consume_variants", true);
         fallingBlockDirection = null;
         if (spawnFallingBlocks && parameters.contains("direction"))
         {
@@ -115,12 +117,12 @@ public class ModifyBlockAction extends BaseSpellAction {
                 undoList.setConsumed(true);
             }
             ItemStack requires = brush.getItemStack(1);
-            if (!mage.hasItem(requires)) {
+            if (!mage.hasItem(requires, consumeVariants)) {
                 String requiresMessage = context.getMessage("insufficient_resources");
                 context.sendMessage(requiresMessage.replace("$cost", brush.getName()));
                 return SpellResult.STOP;
             }
-            mage.removeItem(requires);
+            mage.removeItem(requires, consumeVariants);
         }
 
         if (!commit) {
