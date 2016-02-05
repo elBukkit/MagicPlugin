@@ -1,5 +1,7 @@
 # CHANGELOG
 
+## 5.5
+
 ## 5.4.7
 
  - Engineer and Architect spells being re-balanced to consume blocks required for building
