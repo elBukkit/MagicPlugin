@@ -108,6 +108,10 @@ public class CastingCost implements com.elmakers.mine.bukkit.api.spell.CastingCo
             vault.withdrawPlayer(mage.getPlayer(), currency);
         }
     }
+    
+    public boolean isItem() {
+        return amount > 0 && item != null;
+    }
 
     protected ItemStack getItemStack()
     {

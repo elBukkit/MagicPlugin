@@ -1267,6 +1267,9 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
             if (costs != null && !mage.isCostFree()) {
                 for (CastingCost cost : costs)
                 {
+                    if (cost.isItem() && currentCast != null) {
+                        currentCast.getUndoList().setConsumed(true);
+                    }
                     cost.use(this);
                 }
             }
