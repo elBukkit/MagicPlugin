@@ -66,7 +66,7 @@ public class AreaOfEffectAction extends CompoundEntityAction
             {
                 if ((context.getTargetsCaster() || entity != sourceEntity) && context.canTarget(entity))
                 {
-                    Target target = new Target(sourceLocation, entity, radius);
+                    Target target = new Target(sourceLocation, entity, radius, 0);
                     targets.add(target);
                     mage.sendDebugMessage(ChatColor.DARK_GREEN + "Target " + ChatColor.GREEN + entity.getType() + ChatColor.DARK_GREEN + ": " + ChatColor.YELLOW + target.getScore(), 6);
                 }
