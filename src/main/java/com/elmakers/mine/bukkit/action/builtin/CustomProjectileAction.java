@@ -15,6 +15,8 @@ import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.Target;
 import com.elmakers.mine.bukkit.utility.Targeting;
 import de.slikey.effectlib.util.DynamicLocation;
+import de.slikey.effectlib.util.VectorUtils;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
@@ -103,10 +105,20 @@ public class CustomProjectileAction extends CompoundAction
     private Collection<EffectPlay> activeProjectileEffects;
     private Queue<PlanStep> plan;
     private Collection<ConfigurationSection> planConfiguration;
+
+    private boolean returnToCaster;
+    private Vector returnOffset;
+    private Vector returnRelativeOffset;
+    private boolean resetTimeOnPathChange;
+    private Double returnDistanceAway = null;
+    private boolean updateLaunchLocation;
+    private Vector previousLocation;
+    private boolean projectileFollowPlayer;
     
     private class PlanStep {
         public double distance;
         public long time;
+        public double returnBuffer;
         public ConfigurationSection parameters;
         public String effectsKey;
         
@@ -114,6 +126,7 @@ public class CustomProjectileAction extends CompoundAction
             distance = planConfig.getDouble("distance");
             time = planConfig.getLong("time");
             effectsKey = planConfig.getString("effects");
+            returnBuffer = planConfig.getDouble("return_buffer");
             parameters = planConfig;
         }
     };
@@ -159,6 +172,10 @@ public class CustomProjectileAction extends CompoundAction
         speed = parameters.getDouble("velocity", speed * 20);
         tickSize = parameters.getDouble("tick_size",tickSize);
         ignoreTargeting = parameters.getBoolean("ignore_targeting", ignoreTargeting);
+        returnToCaster = parameters.getBoolean("return_to_caster", returnToCaster);
+        resetTimeOnPathChange = parameters.getBoolean("reset_time_on_path_change", resetTimeOnPathChange);
+        updateLaunchLocation = parameters.getBoolean("update_launch_location", updateLaunchLocation);
+        projectileFollowPlayer = parameters.getBoolean("projectile_follow_player", projectileFollowPlayer);
     }
 
     @Override
@@ -177,6 +194,10 @@ public class CustomProjectileAction extends CompoundAction
         speed = 1;
         tickSize = 0.5;
         ignoreTargeting = false;
+        returnToCaster = false;
+        resetTimeOnPathChange = false;
+        updateLaunchLocation = false;
+        projectileFollowPlayer = false;
         modifyParameters(parameters);
         
         // These parameters can't be changed mid-flight
@@ -209,11 +230,15 @@ public class CustomProjectileAction extends CompoundAction
         reflectLimit = parameters.getInt("reflect_count", -1);
         pitchMin = parameters.getInt("pitch_min", 90);
         pitchMax = parameters.getInt("pitch_max", -90);
+
         reflectReorient = parameters.getBoolean("reflect_reorient", false);
         reflectResetDistanceTraveled = parameters.getBoolean("reflect_reset_distance_traveled", true);
         reflectTargetCaster = parameters.getBoolean("reflect_target_caster", true);
         reflectTrackEntity = parameters.getBoolean("reflect_track_target", false);
         reflectTrackCursorRange = parameters.getDouble("reflect_track_range", 0D);
+
+        returnOffset = ConfigurationUtils.getVector(parameters, "return_offset");
+        returnRelativeOffset = ConfigurationUtils.getVector(parameters, "return_relative_offset");
 
         range *= context.getMage().getRangeMultiplier();
 
@@ -260,6 +285,7 @@ public class CustomProjectileAction extends CompoundAction
         attachedDeadline = 0;
         attachedOffset = null;
         missed = false;
+        returnDistanceAway = null;
         
         // This has to be done here, so that the plan is not shared across parallel instances
         if (planConfiguration != null && !planConfiguration.isEmpty()) {
@@ -397,7 +423,7 @@ public class CustomProjectileAction extends CompoundAction
         // Check plan
         if (plan != null && !plan.isEmpty()) {
             PlanStep next = plan.peek();
-            if ((next.distance > 0 && distanceTravelled > next.distance) || next.time > 0 && flightTime > next.time)
+            if ((next.distance > 0 && distanceTravelled > next.distance) || (next.time > 0 && flightTime > next.time) || (next.returnBuffer > 0 && returnDistanceAway != null && returnDistanceAway < next.returnBuffer))
             {
                 plan.remove();
                 if (next.parameters != null) {
@@ -407,15 +433,21 @@ public class CustomProjectileAction extends CompoundAction
                     startProjectileEffects(context, next.effectsKey);
                 }
                 context.getMage().sendDebugMessage("Changing flight plan at distance " + ((int)distanceTravelled) + " and time " + flightTime, 4);
+                if (resetTimeOnPathChange)
+                {
+                    flightTime = 0;
+                }
             }
         }
-
+        if (updateLaunchLocation)
+        {
+            launchLocation = context.getMage().getWandLocation().clone();
+        }
         // Advance position
         // We default to 50 ms travel time (one tick) for the first iteration.
         long delta = lastUpdate > 0 ? now - lastUpdate : 50;
         lastUpdate = now;
         flightTime += delta;
-
         // Apply gravity, drag or other velocity modifiers
         Vector targetVelocity = null;
         if (trackEntity)
@@ -431,11 +463,13 @@ public class CustomProjectileAction extends CompoundAction
         else if (trackCursorRange > 0)
         {
             /* We need to first find out where the player is looking and multiply it by how far the player wants the whip to extend
-        	 * Finally after all that, we adjust the velocity of the projectile to go towards the cursor point
-        	 */
-            Vector playerCursor = context.getDirection().clone().normalize().multiply(trackCursorRange);
-            playerCursor = context.getEyeLocation().toVector().add(playerCursor);
-            targetVelocity = playerCursor.subtract(projectileLocation.toVector()).normalize();
+             * Finally after all that, we adjust the velocity of the projectile to go towards the cursor point
+             */
+            Vector playerCursor = context.getMage().getDirection().clone().normalize();
+            Vector targetPoint = playerCursor.multiply(trackCursorRange);
+            Vector worldPoint = targetPoint.add(context.getMage().getEyeLocation().clone().toVector());
+            Vector projectileOffset = worldPoint.subtract(projectileLocation.clone().toVector());
+            targetVelocity = projectileOffset.normalize();
         }
         else if (reorient)
         {
@@ -473,7 +507,6 @@ public class CustomProjectileAction extends CompoundAction
             }
             launchLocation.setDirection(velocity);
         }
-
         if (velocityTransform != null)
         {
             targetVelocity = velocityTransform.get(launchLocation, (double)flightTime / 1000);
@@ -488,6 +521,39 @@ public class CustomProjectileAction extends CompoundAction
                     targetVelocity.setX(1);
                 }
                 velocity = targetVelocity;
+            }
+        }
+        if (returnToCaster)
+        {
+            Vector targetLocation = context.getMage().getEyeLocation().toVector();
+
+            if (returnOffset != null)
+            {
+                targetLocation.add(returnOffset);
+            }
+            if (returnRelativeOffset != null)
+            {
+                Vector relativeOffset = VectorUtils.rotateVector(returnRelativeOffset, context.getMage().getEyeLocation());
+                targetLocation.add(relativeOffset);
+            }
+
+            Vector projectileOffset = targetLocation.clone().subtract(projectileLocation.toVector());
+            returnDistanceAway = projectileOffset.length();
+            velocity = projectileOffset.normalize();
+        }
+
+        if (projectileFollowPlayer)
+        {
+            Vector currentLocation = context.getMage().getLocation().toVector();
+            if (previousLocation != null)
+            {
+                Vector offset = currentLocation.clone().subtract(previousLocation);
+                previousLocation = currentLocation;
+                velocity = velocity.add(offset);
+            }
+            else
+            {
+                previousLocation = currentLocation;
             }
         }
 
