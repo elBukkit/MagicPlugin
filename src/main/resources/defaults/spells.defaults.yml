@@ -7536,7 +7536,7 @@ chainlightning:
     icon: ink_sack:1
     icon_url: http://textures.minecraft.net/texture/1e5b76818c576079939b5a4b033ddfb5c2364fc9f764e573c59508b811e365
     category: combat
-    worth_sp: 2000
+    worth_sp: 600
     earns_sp: 8
     actions:
         cast:
