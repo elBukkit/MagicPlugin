@@ -233,6 +233,7 @@ arresto:
         min_speed: 0
         max_speed: 0
         cooldown: 3000
+        duration: 20000
     costs:
         mana: 5
 
