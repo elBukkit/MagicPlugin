@@ -4547,21 +4547,18 @@ workbench:
     icon: workbench
     icon_url: http://textures.minecraft.net/texture/a5bf87cdeeefecb473472dc7c858ffa2e3ec5bd48c3718df49e2798e4aeff
     category: engineering
-    class: PillarSpell
     worth_sp: 80
+    actions:
+        cast:
+        - class: Inventory  
     effects:
         cast:
         -  class: EffectSingle
            sound: piston_extend
-        -  class: EffectTrail
-           particle: block_crack
     parameters:
-        allow_max_range: false
-        range: 5
-        transparent: transparent_to_construction
-        cooldown: 70000
-        undo: 60000
-        brush: workbench
+        target: none
+        cooldown: 5000
+        type: workbench
     costs:
         mana: 30
 
@@ -4569,11 +4566,13 @@ stash:
     icon: ender_chest
     icon_url: http://textures.minecraft.net/texture/a6cc486c2be1cb9dfcb2e53dd9a3e9a883bfadb27cb956f1896d602b4067
     category: utility
-    class: StashSpell
     worth_sp: 2000
     earns_sp: 1
     show_undoable: false
     quick_cast: true
+    actions:
+        cast:
+        - class: Inventory
     effects:
         cast:
         -  class: EffectSingle
@@ -4588,18 +4587,20 @@ stash:
             particleOffsetZ: 1
             particleOffsetY: 1
     parameters:
-        target_type: Player
         target: self
-        cooldown: 500
+        type: ender_chest
+        cooldown: 2000
 
 pickpocket:
     icon_url: http://textures.minecraft.net/texture/3bc9de58822a3f7c6c23e212cf954fc728a6b2e45c54a89b4af5e453d39b1
     hidden: true
     icon: shears
     category: staff
-    class: StashSpell
     worth_sp: 2000
     show_undoable: false
+    actions:
+        cast:
+        - class: Inventory
     effects:
         cast:
         -  class: EffectSingle
@@ -4607,6 +4608,8 @@ pickpocket:
         -  class: EffectTrail
            particle: block_crack
            material: obsidian
+    alternate_sneak_parameters:
+        type: ender_chest
     parameters:
         target_type: Player
         target: other

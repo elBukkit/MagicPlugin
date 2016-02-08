@@ -154,6 +154,7 @@ beginner:
       fire: 50,70,60
       frost: 80,70,50
       gather: 0,0,5
+      workbench: 50,70,100
 
 student:
     upgrade: apprentice

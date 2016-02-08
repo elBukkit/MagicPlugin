@@ -1209,7 +1209,7 @@ spells:
     workbench:
         name: Workbench
         description: Crafting on the go
-        cast: You create a temporary workbench
+        cast: Get to work!
     laser:
         name: Laser
         description: Destroy a line of blocks

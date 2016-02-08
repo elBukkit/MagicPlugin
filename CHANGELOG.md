@@ -10,6 +10,8 @@
  - Tree spell will work with any sapling type
  - Engineering brushes can mix block variants (data values)
  - Cooldowns fixed, they were slightly (up to 1 second) shorter than they should've been.
+ - Added Workbench spell to Beginner rank, now just opens a workbench inventory directly
+ - Pickpocket can now shift+cast to view target player's Ender chest
 
 ## 5.4.7
 
