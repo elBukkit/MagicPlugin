@@ -37,6 +37,8 @@ public class ChangeContextAction extends CompoundAction {
     private boolean persistTarget;
     private boolean attachBlock;
     private int snapTargetToSize;
+    private int sourcePitchMin;
+    private int sourcePitchMax;
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters) {
@@ -60,6 +62,8 @@ public class ChangeContextAction extends CompoundAction {
         snapTargetToSize = parameters.getInt("target_snap", 0);
         targetLocation = parameters.getString("target_location");
         sourceLocation = parameters.getString("source_location");
+        sourcePitchMin = parameters.getInt("source_pitch_min", 90);
+        sourcePitchMax = parameters.getInt("source_pitch_max", -90);
         if (parameters.contains("target_direction_speed"))
         {
             targetDirectionSpeed = parameters.getDouble("target_direction_speed");
@@ -129,6 +133,14 @@ public class ChangeContextAction extends CompoundAction {
         if (sourcePitch != null)
         {
             sourceLocation.setPitch((float)(double)sourcePitch);
+        }
+        if (sourceLocation.getPitch() > sourcePitchMin) 
+        {
+            sourceLocation.setPitch(sourcePitchMin);
+        }
+        else if (sourceLocation.getPitch() < sourcePitchMax)
+        {
+            sourceLocation.setPitch(sourcePitchMax);
         }
         if (sourceOffset != null)
         {
