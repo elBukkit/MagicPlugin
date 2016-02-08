@@ -9,6 +9,7 @@
  - Fix Tag signs sometimes facing the wrong way
  - Tree spell will work with any sapling type
  - Engineering brushes can mix block variants (data values)
+ - Cooldowns fixed, they were slightly (up to 1 second) shorter than they should've been.
 
 ## 5.4.7
 
