@@ -1104,25 +1104,26 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         color = ConfigurationUtils.getColor(workingParameters, "color", color);
         particle = workingParameters.getString("particle", null);
 
-        long cooldownRemaining = getRemainingCooldown() / 1000;
+        double cooldownRemaining = (double)getRemainingCooldown() / 1000.0;
         String timeDescription = "";
         if (cooldownRemaining > 0) {
             if (cooldownRemaining > 60 * 60 ) {
-                long hours = cooldownRemaining / (60 * 60);
+                long hours = (long)Math.ceil(cooldownRemaining / (60 * 60));
                 if (hours == 1) {
                     timeDescription = controller.getMessages().get("cooldown.wait_hour");
                 } else {
                     timeDescription = controller.getMessages().get("cooldown.wait_hours").replace("$hours", ((Long) hours).toString());
                 }
             } else if (cooldownRemaining > 60) {
-                long minutes = cooldownRemaining / 60;
+                long minutes = (long)Math.ceil(cooldownRemaining / 60);
                 if (minutes == 1) {
                     timeDescription = controller.getMessages().get("cooldown.wait_minute");
                 } else {
                     timeDescription = controller.getMessages().get("cooldown.wait_minutes").replace("$minutes", ((Long) minutes).toString());
                 }
             } else if (cooldownRemaining > 1) {
-                timeDescription = controller.getMessages().get("cooldown.wait_seconds").replace("$seconds", ((Long)cooldownRemaining).toString());
+                long seconds = (long)Math.ceil(cooldownRemaining);
+                timeDescription = controller.getMessages().get("cooldown.wait_seconds").replace("$seconds", ((Long)seconds).toString());
             } else {
                 timeDescription = controller.getMessages().get("cooldown.wait_moment");
             }
