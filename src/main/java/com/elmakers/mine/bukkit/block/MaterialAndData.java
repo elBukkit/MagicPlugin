@@ -219,7 +219,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
     @Override
     public int hashCode() {
         // Note that this does not incorporate any metadata!
-        return (material.getId() << 16) | data;
+        return (material == null ? -1 : (material.getId() << 16)) | (data == null ? -1 : data);
     }
 
     @Override
