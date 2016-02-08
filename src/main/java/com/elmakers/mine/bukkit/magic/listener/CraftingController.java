@@ -33,7 +33,7 @@ public class CraftingController implements Listener {
 	private final MagicController controller;
 	private boolean craftingEnabled = false;
     private Map<Material, List<MagicRecipe>> recipes = new HashMap<Material, List<MagicRecipe>>();
-    int recipeCount = 0;
+    private int recipeCount = 0;
 
 	public CraftingController(MagicController controller) {
 		this.controller = controller;
@@ -41,6 +41,7 @@ public class CraftingController implements Listener {
 	
 	public void load(ConfigurationSection configuration) {
         recipes.clear();
+        recipeCount = 0;
         if (!craftingEnabled) {
             return;
         }
