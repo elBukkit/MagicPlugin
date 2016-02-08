@@ -169,7 +169,10 @@ public class RecurseAction extends CompoundAction {
             }
             Block targetBlock = context.getTargetBlock();
             replaceable.clear();
-            replaceable.add(new MaterialAndData(targetBlock));
+            MaterialAndData targetMaterialAndData = new MaterialAndData(targetBlock);
+            if (targetMaterialAndData.isValid()) {
+                replaceable.add(targetMaterialAndData);
+            }
             Material targetMaterial = targetBlock.getType();
             if (parameters.getBoolean("auto_water", true))
             {
