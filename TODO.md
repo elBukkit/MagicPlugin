@@ -1,6 +1,7 @@
 # TODO
 
- - Would be nice to tie consume into item costs? So e.g. Tag is undoable, but returns the item?
+ - Can still drop your wand by holding while closing your inv
+ - Can also move your wand into a hopper/dropper directly
  - Spell organization by path?
 
  - Use hunger for mana.. ?

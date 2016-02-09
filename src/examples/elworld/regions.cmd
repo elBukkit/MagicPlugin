@@ -1,25 +1,25 @@
 region flag __global__ -w world blocked-spell-categories automata
-region flag capital -w world server-enter-command /castp @p recall unlock town
-region flag lodge -w world server-enter-command /castp @p recall unlock lodge
-region flag battle -w world server-enter-command /castp @p recall unlock battle
-region flag engineering -w world server-enter-command /castp @p recall unlock engineer
-region flag other -w world_other server-enter-command /castp @p recall unlock other
-region flag bastion -w world_other server-enter-command /castp @p recall unlock bastion
-region flag magic_spawn -w world server-enter-command /castp @p recall unlock black
-region flag magic_spawn2 -w world server-enter-command /castp @p recall unlock white
-region flag magic_spawn3 -w world server-enter-command /castp @p recall unlock blue
-region flag magic_spawn5 -w world server-enter-command /castp @p recall unlock iron
-region flag magic_spawn4 -w world server-enter-command /castp @p recall unlock frozen
-region flag magic_spawn6 -w world server-enter-command /castp @p recall unlock brick
-region flag refugee -w world server-enter-command /castp @p recall unlock refugee
-region flag redwood -w world server-enter-command /castp @p recall unlock redwood
-region flag gold -w world server-enter-command /castp @p recall unlock gold
-region flag hall -w world server-enter-command /castp @p recall unlock hall
-region flag seaside -w world server-enter-command /castp @p recall unlock seaside
-region flag wolfcastle -w world server-enter-command /castp @p recall unlock wolfcastle
-region flag spleef -w world server-enter-command /castp @p recall unlock spleef
-region flag dueling -w world server-enter-command /castp @p recall unlock dueling
-region flag end_temple -w world server-enter-command /castp @p recall unlock endtemple
+region flag capital -w world server-enter-command /castp @p warpunlock unlock town
+region flag lodge -w world server-enter-command /castp @p warpunlock unlock lodge
+region flag battle -w world server-enter-command /castp @p warpunlock unlock battle
+region flag engineering -w world server-enter-command /castp @p warpunlock unlock engineer
+region flag other -w world_other server-enter-command /castp @p warpunlock unlock other
+region flag bastion -w world_other server-enter-command /castp @p warpunlock unlock bastion
+region flag magic_spawn -w world server-enter-command /castp @p warpunlock unlock black
+region flag magic_spawn2 -w world server-enter-command /castp @p warpunlock unlock white
+region flag magic_spawn3 -w world server-enter-command /castp @p warpunlock unlock blue
+region flag magic_spawn5 -w world server-enter-command /castp @p warpunlock unlock iron
+region flag magic_spawn4 -w world server-enter-command /castp @p warpunlock unlock frozen
+region flag magic_spawn6 -w world server-enter-command /castp @p warpunlock unlock brick
+region flag refugee -w world server-enter-command /castp @p warpunlock unlock refugee
+region flag redwood -w world server-enter-command /castp @p warpunlock unlock redwood
+region flag gold -w world server-enter-command /castp @p warpunlock unlock gold
+region flag hall -w world server-enter-command /castp @p warpunlock unlock hall
+region flag seaside -w world server-enter-command /castp @p warpunlock unlock seaside
+region flag wolfcastle -w world server-enter-command /castp @p warpunlock unlock wolfcastle
+region flag spleef -w world server-enter-command /castp @p warpunlock unlock spleef
+region flag dueling -w world server-enter-command /castp @p warpunlock unlock dueling
+region flag end_temple -w world server-enter-command /castp @p warpunlock unlock endtemple
 region flag welcome -w world allowed-spells missile,recall,blast
 region flag arena -w world blocked-spell-categories master,engineering
 region flag arena -w world allowed-spells * blocked-spell-categories master,engineering
@@ -37,4 +37,4 @@ region flag spleef -w world  keep-inventory allow
 region flag spleef -w world  keep-level allow
 region flag refugees -w world  keep-inventory allow
 region flag refugees -w world  keep-level allow
-region flag atlantis server-enter-command /castp @p recall unlock atlantis
+region flag atlantis server-enter-command /castp @p warpunlock unlock atlantis
