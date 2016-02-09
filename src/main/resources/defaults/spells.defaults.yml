@@ -7326,7 +7326,7 @@ railgun:
         transparent: air,water,stationary_water
     costs:
         mana: 150
-
+                
 fury:
     upgrade_required_path: master
     upgrade_required_casts: 50
@@ -7358,7 +7358,7 @@ fury:
              radius: 0.5
              offset: 0,0.5,0
         tick:
-        - particle: fireworks_spark
+        - particle: smoke_normal
           particle_count: 5
           particle_offset_x: 0.05
           particle_offset_y: 0.05
@@ -7381,6 +7381,17 @@ fury:
            particle_offset_x: 2
            particle_offset_y: 2
            particle_offset_z: 2
+           effectlib:
+             class: LineEffect
+             length: 3
+             duration: 5000
+             particle: fireworks_spark
+             particles: 5
+             particleCount: 5
+             particleOffsetX: 0.5
+             particleOffsetY: 0.5
+             particleOffsetZ: 0.5
+             yOffset: 0
     parameters:
         target: self
         target_self: false
@@ -7399,6 +7410,7 @@ fury:
         track_speed: 10
         use_target_location: false
         velocity_transform:
+            orient: false
             x: rand(-3,3) * cos(t)
             y: rand(3,10)
             z: rand(-3,3) * sin(t)
@@ -7412,7 +7424,7 @@ fury:
           track_speed: 0.1
     costs:
         mana: 100
-
+        
 fury|2:
     upgrade_required_path: master
     upgrade_required_casts: 50

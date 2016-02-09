@@ -137,10 +137,14 @@ public class CustomProjectileAction extends CompoundAction
         trackEntity = parameters.getBoolean("track_target", trackEntity);
         trackCursorRange = parameters.getDouble("track_range", trackCursorRange);
         trackSpeed = parameters.getDouble("track_speed", trackSpeed);
-        if (parameters.isConfigurationSection("velocity_transform")) {
-            velocityTransform = new VectorTransform(ConfigurationUtils.getConfigurationSection(parameters, "velocity_transform"));
-        } else if (parameters.contains("velocity_transform")) {
-            velocityTransform = null;
+        
+        if (parameters.contains("velocity_transform")) {
+            ConfigurationSection transformParameters = ConfigurationUtils.getConfigurationSection(parameters, "velocity_transform");
+            if (transformParameters != null) {
+                velocityTransform = new VectorTransform(transformParameters);
+            } else if (parameters.contains("velocity_transform")) {
+                velocityTransform = null;
+            }
         }
 
         speed = parameters.getDouble("speed", speed);
