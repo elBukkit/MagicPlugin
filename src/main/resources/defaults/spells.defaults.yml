@@ -7391,7 +7391,6 @@ fury:
              particleOffsetX: 0.5
              particleOffsetY: 0.5
              particleOffsetZ: 0.5
-             yOffset: 0
     parameters:
         target: self
         target_self: false
