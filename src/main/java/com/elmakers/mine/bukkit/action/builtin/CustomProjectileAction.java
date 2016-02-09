@@ -21,6 +21,7 @@ import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
@@ -647,9 +648,17 @@ public class CustomProjectileAction extends CompoundAction
 
     protected void finishEffects() {
         if (activeProjectileEffects != null) {
-            for (EffectPlay play : activeProjectileEffects) {
-                play.cancel();
-            }
+            final Collection<EffectPlay> cancelEffects = activeProjectileEffects;
+            activeProjectileEffects = null;
+            Plugin plugin = actionContext.getPlugin();
+            plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
+                @Override
+                public void run() {
+                    for (EffectPlay play : cancelEffects) {
+                        play.cancel();
+                    }
+                }
+            }, 1L);
         }
     }
 
