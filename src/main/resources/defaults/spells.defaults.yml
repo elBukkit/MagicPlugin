@@ -7562,7 +7562,7 @@ chainlightning:
             - class: Asynchronous
               actions:
               - class: CustomProjectile
-                velocity: 10
+                velocity: 150
                 actions:
                 - class: Damage
                   player_damage: 2
@@ -7578,11 +7578,12 @@ chainlightning:
              class: LineEffect
              isZigZag: true
              zigZags: 2
-             length: 0.5
-             particles: 10
+             zigZagOffset: 0,0.05,0
+             length: 6
+             particles: 50
              particle: redstone
              color: "FFF000"
-             duration: 10000
+             duration: 2000
         tick:
         - particle: fireworks_spark
           particle_count: 2
@@ -7596,17 +7597,18 @@ chainlightning:
            sound_volume: 0.5
            location: target
            particle: fireworks_spark
-           particle_count: 30
+           particle_count: 10
            particle_offset_x: 1
            particle_offset_y: 1
            particle_offset_z: 1
            location: target
     parameters:
+        tick_size: 5
         target: other
         target_self: false
         target_source: false
         range: 48
-        velocity: 100
+        velocity: 175
         radius: 8
         target_count: 3
         target_type: LivingEntity
