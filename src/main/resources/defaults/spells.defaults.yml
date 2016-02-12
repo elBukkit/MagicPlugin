@@ -7557,6 +7557,7 @@ chainlightning:
         - class: CustomProjectile
           actions:
           - class: Damage
+          - class: Delay
           - class: AreaOfEffect
             actions:
             - class: Asynchronous
@@ -7564,9 +7565,18 @@ chainlightning:
               - class: CustomProjectile
                 velocity: 150
                 actions:
-                - class: Damage
-                  player_damage: 2
-                  entity_damage: 4
+                - class: Repeat
+                  actions:
+                  - class: Electrify
+                  - class: Damage
+                    player_damage: 0.5
+                    entity_damage: 1
+                  - class: Delay
+          - class: Electrify
+          - class: Repeat
+            actions:
+            - class: Damage
+            - class: Delay
     effects:
         cast:
         -  class: EffectSingle
@@ -7612,8 +7622,10 @@ chainlightning:
         radius: 8
         target_count: 3
         target_type: LivingEntity
-        player_damage: 6
-        entity_damage: 8
+        player_damage: 1.5
+        entity_damage: 2
+        delay: 250
+        repeat: 4
         target_breakables: 1
         cooldown: 20000
     costs:

@@ -12,6 +12,7 @@
  - Cooldowns fixed, they were slightly (up to 1 second) shorter than they should've been.
  - Added Workbench spell to Beginner rank, now just opens a workbench inventory directly
  - Pickpocket can now shift+cast to view target player's Ender chest
+ - Chain Lightning now electrifies creepers
 
 ## 5.4.7
 
