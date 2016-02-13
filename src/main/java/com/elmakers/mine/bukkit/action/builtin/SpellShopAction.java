@@ -4,15 +4,20 @@ import com.elmakers.mine.bukkit.action.BaseShopAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
+import com.elmakers.mine.bukkit.api.spell.MageSpell;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.api.wand.Wand;
 import com.elmakers.mine.bukkit.api.wand.WandUpgradePath;
+import com.elmakers.mine.bukkit.magic.MagicPlugin;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
+import com.elmakers.mine.bukkit.utility.InventoryUtils;
+import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -26,6 +31,7 @@ public class SpellShopAction extends BaseShopAction
 {
     private boolean showRequired = false;
     private boolean showFree = false;
+    private boolean showUpgrades = false;
     private Map<String, Double> spells = new HashMap<String, Double>();
 
     @Override
@@ -66,6 +72,7 @@ public class SpellShopAction extends BaseShopAction
         super.prepare(context, parameters);
         showRequired = parameters.getBoolean("show_required", false);
         showFree = parameters.getBoolean("show_free", false);
+        showUpgrades = parameters.getBoolean("show_upgrades", false);
         if (!castsSpells) {
             requireWand = true;
             applyToWand = true;
@@ -109,6 +116,44 @@ public class SpellShopAction extends BaseShopAction
                 Collection<String> requiredSpells = path.getRequiredSpells();
                 for (String requiredSpell : requiredSpells) {
                     spellPrices.put(requiredSpell, null);
+                }
+            }
+            if (showUpgrades) {
+                Collection<String> spells = wand.getSpells();
+                for (String spellKey : spells) {
+                    MageSpell spell = mage.getSpell(spellKey);
+                    SpellTemplate upgradeSpell = spell.getUpgrade();
+                    if (upgradeSpell != null) {
+                        ItemStack spellItem = MagicPlugin.getAPI().createSpellItem(upgradeSpell.getKey());
+                        if (spellItem != null) {
+                            ItemMeta meta = spellItem.getItemMeta();
+                            List<String> lore = new ArrayList<String>();
+
+                            String levelDescription = upgradeSpell.getLevelDescription();
+                            if (levelDescription == null || levelDescription.isEmpty()) {
+                                levelDescription = upgradeSpell.getName();
+                            }
+
+                            lore.add(levelDescription);
+                            String upgradeDescription = upgradeSpell.getUpgradeDescription();
+                            if (upgradeDescription != null && !upgradeDescription.isEmpty()) {
+                                InventoryUtils.wrapText(upgradeDescription, BaseSpell.MAX_LORE_LENGTH, lore);
+                            }
+                            String requiredPathKey = spell.getRequiredUpgradePath();
+                            WandUpgradePath currentPath = wand.getPath();
+                            if (requiredPathKey != null && !currentPath.hasPath(requiredPathKey))
+                            {
+                                requiredPathKey = currentPath.translatePath(requiredPathKey);
+                                com.elmakers.mine.bukkit.wand.WandUpgradePath upgradePath = com.elmakers.mine.bukkit.wand.WandUpgradePath.getPath(requiredPathKey);
+                                if (upgradePath == null) continue;
+                                lore.add(context.getMessage("level_requirement").replace("$path", upgradePath.getName()));
+                            }
+
+                            meta.setLore(lore);
+                            spellItem.setItemMeta(meta);
+                            spellPrices.put(upgradeSpell.getKey(), null);
+                        }
+                    }
                 }
             }
         }
