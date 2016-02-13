@@ -2176,7 +2176,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
 
     @Override
     public SpellTemplate getUpgrade() {
-        if (requiredUpgradeCasts <= 0) {
+        if (requiredUpgradeCasts <= 0 && (requiredUpgradePath == null || requiredUpgradePath.isEmpty())) {
             return null;
         }
         SpellKey upgradeKey = new SpellKey(spellKey.getBaseKey(), spellKey.getLevel() + 1);
