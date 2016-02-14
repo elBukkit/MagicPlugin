@@ -938,7 +938,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
                 addToInventory(itemStack, slot);
             }
 		}
-		hasInventory = spellNames.length + materialNames.length > 1;
+		updateHasInventory();
         if (openInventoryPage >= inventories.size()) {
             openInventoryPage = 0;
         }
@@ -2964,7 +2964,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 			if (activeSpell == null || activeSpell.length() == 0) {
 				Set<String> spells = getSpells();
 				// Sanity check, so it'll switch to inventory next time
-				if (spells.size() > 1) hasInventory = true;
+				updateHasInventory();
 				if (spells.size() > 0) {
 					activeSpell = spells.iterator().next();
 				}
@@ -2977,6 +2977,11 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		} else {
 			closeInventory();
 		}
+	}
+	
+	public void updateHasInventory() {
+		int inventorySize = getSpells().size() + getBrushes().size();
+		hasInventory = inventorySize > 1 || (inventorySize == 1 && hasPath());
 	}
 	
 	@SuppressWarnings("deprecation")
@@ -4299,7 +4304,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         spells.put(template.getKey(), inventorySlot);
 		addToInventory(spellItem, inventorySlot);
 		updateInventory();
-		hasInventory = getSpells().size() + getBrushes().size() > 1;
+		updateHasInventory();
         saveItemState();
 		updateLore();
 
@@ -4382,7 +4387,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		} else {
 			updateInventory();
 		}
-        hasInventory = getSpells().size() + getBrushes().size() > 1;
+		updateHasInventory();
         saveItemState();
 		updateLore();
 
@@ -4526,6 +4531,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 			}
 		}
         updateInventory();
+		updateHasInventory();
         saveItemState();
         updateName();
         updateLore();
