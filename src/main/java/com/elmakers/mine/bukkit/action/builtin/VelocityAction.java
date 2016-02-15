@@ -33,6 +33,9 @@ public class VelocityAction extends BaseSpellAction
     private double pushDirection;
     private int yOffset;
     private int exemptionDuration;
+    private double maxMagnitude;
+    private double maxLength;
+    private boolean additive;
     private Vector direction;
 
     @Override
@@ -48,6 +51,9 @@ public class VelocityAction extends BaseSpellAction
         yOffset = parameters.getInt("y_offset", 0);
         direction = ConfigurationUtils.getVector(parameters, "direction");
         exemptionDuration = parameters.getInt("exemption_duration", (int)(maxSpeed * 2000));
+        maxMagnitude = parameters.getDouble("max_magnitude", 0);
+        maxLength = Math.pow(maxMagnitude, 2);
+        additive = parameters.getBoolean("additive", false);
     }
 
     @Override
@@ -123,6 +129,15 @@ public class VelocityAction extends BaseSpellAction
                 ChatColor.AQUA + " to " + ChatColor.DARK_AQUA + entity.getType() +
                 ChatColor.AQUA + " from magnitude of " + ChatColor.BLUE + magnitude
                 , 11);
+
+        if (additive) {
+            velocity = entity.getVelocity().clone().add(velocity);
+        }
+
+        if (maxLength != 0D && velocity.lengthSquared() > maxLength) {
+            velocity = velocity.normalize().multiply(maxMagnitude);
+        }
+
         entity.setVelocity(velocity);
 
         return SpellResult.CAST;
