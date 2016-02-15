@@ -93,7 +93,7 @@ public class ItemShopAction extends BaseShopAction
                 context.getLogger().warning("Invalid item amount in shop: " + pieces[1] + " for item " + itemKey + " shop " + context.getSpell().getKey());
             }
         }
-        ItemStack item = controller.createItem(itemKey);
+        ItemStack item = controller.createItem(itemKey, castsSpells);
         if (item == null) return null;
         
         // This is kinda ugly.. :|

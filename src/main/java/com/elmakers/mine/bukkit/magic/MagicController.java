@@ -3835,6 +3835,11 @@ public Set<Material> getMaterialSet(String name)
 
     @Override
     public ItemStack createItem(String magicItemKey) {
+        return createItem(magicItemKey, false);
+    }
+
+    @Override
+    public ItemStack createItem(String magicItemKey, boolean brief) {
         ItemStack itemStack = null;
 
         // Check for amounts
@@ -3883,7 +3888,7 @@ public Set<Material> getMaterialSet(String name)
                 InventoryUtils.setMeta(itemStack, "sp", spAmount);
             } else if (magicItemKey.contains("spell:")) {
                 String spellKey = magicItemKey.substring(6);
-                itemStack = createSpellItem(spellKey);
+                itemStack = createSpellItem(spellKey, brief);
             } else if (magicItemKey.contains("wand:")) {
                 String wandKey = magicItemKey.substring(5);
                 com.elmakers.mine.bukkit.api.wand.Wand wand = createWand(wandKey);
@@ -3915,7 +3920,7 @@ public Set<Material> getMaterialSet(String name)
                 // Spells may be using the | delimiter for levels
                 // I am regretting overloading this delimiter!
                 String spellKey = magicItemKey.replace(":", "|");
-                itemStack = createSpellItem(spellKey);
+                itemStack = createSpellItem(spellKey, brief);
                 if (itemStack != null) {
                     return itemStack;
                 }
