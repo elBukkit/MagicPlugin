@@ -79,6 +79,7 @@ public interface MageController {
      */
     public Wand createWand(String wandKey);
     public ItemStack createItem(String magicItemKey);
+    public ItemStack createItem(String magicItemKey, boolean brief);
     public ItemStack createGenericItem(String itemKey);
     public Wand createUpgrade(String wandKey);
     public ItemStack createSpellItem(String spellKey);
