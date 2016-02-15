@@ -18,20 +18,7 @@ import java.util.List;
 
 public class ItemShopAction extends BaseShopAction
 {
-    private class ShopItemConfiguration
-    {
-        ShopItemConfiguration(String key, double cost)
-        {
-            this.cost = cost;
-            this.itemKey = key;
-        }
-
-        public String itemKey;
-        public double cost;
-        public String name;
-        public List<String> lore;
-    }
-    private List<ShopItemConfiguration> items = new ArrayList<ShopItemConfiguration>();
+    private List<ShopItem> items = new ArrayList<ShopItem>();
 
     @Override
     public void initialize(Spell spell, ConfigurationSection parameters)
@@ -44,87 +31,89 @@ public class ItemShopAction extends BaseShopAction
                 ConfigurationSection itemSection = ConfigurationUtils.getConfigurationSection(parameters, "items");
                 Collection<String> itemKeys = itemSection.getKeys(false);
                 for (String itemKey : itemKeys) {
-                    items.add(new ShopItemConfiguration(itemKey, itemSection.getDouble(itemKey)));
+                    items.add(parseItemKey(spell.getController(), itemKey, itemSection.getDouble(itemKey)));
                 }
             } else {
                 Collection<ConfigurationSection> itemList = ConfigurationUtils.getNodeList(parameters, "items");
                 for (ConfigurationSection itemConfig : itemList)
                 {
+                    ShopItem shopItem = null;
                     if (itemConfig != null) {
-                        ShopItemConfiguration shopItem = new ShopItemConfiguration(itemConfig.getString("item"), itemConfig.getDouble("cost"));
-                        shopItem.name = itemConfig.getString("name");
-                        shopItem.lore = ConfigurationUtils.getStringList(itemConfig, "lore");
-                        items.add(shopItem);
-                    } else {
-                        items.add(null);
+                        double cost = itemConfig.getDouble("cost");
+                        if (itemConfig.isString("item")) {
+                            shopItem = parseItemKey(spell.getController(), itemConfig.getString("item"), cost);
+                            if (shopItem != null) {
+                                String name = itemConfig.getString("name");
+                                List<String> lore = ConfigurationUtils.getStringList(itemConfig, "lore");
+
+                                if (name != null || lore != null) {
+                                    ItemStack item = shopItem.getItem();
+                                    ItemMeta meta = item.getItemMeta();
+                                    if (name != null) {
+                                        meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', name));
+                                    }
+                                    if (lore != null) {
+                                        List<String> translatedLore = new ArrayList<String>();
+                                        for (String line : lore) {
+                                            if (line != null) {
+                                                translatedLore.add(ChatColor.translateAlternateColorCodes('&', line));
+                                            }
+                                        }
+                                        meta.setLore(translatedLore);
+                                    }
+                                    item.setItemMeta(meta);
+                                }
+                            }
+                        } else {
+                            ItemStack itemStack = itemConfig.getItemStack("item");
+                            if (itemStack != null) {
+                                shopItem = new ShopItem(itemStack, cost);
+                            }
+                        }
                     }
+                    items.add(shopItem);
                 }
             }
         }
     }
 
+    protected ShopItem parseItemKey(MageController controller, String itemKey, double worth) {
+        if (itemKey == null || itemKey.isEmpty() || itemKey.equalsIgnoreCase("none"))
+        {
+            return null;
+        }
+
+        String[] pieces = StringUtils.split(itemKey, '@');
+        int amount = 1;
+        if (pieces.length > 1) {
+            itemKey = pieces[0];
+            try {
+                amount = Integer.parseInt(pieces[1]);
+            } catch (Exception ex) {
+                context.getLogger().warning("Invalid item amount in shop: " + pieces[1] + " for item " + itemKey + " shop " + context.getSpell().getKey());
+            }
+        }
+        ItemStack item = controller.createItem(itemKey);
+        if (item == null) return null;
+        
+        // This is kinda ugly.. :|
+        // This is here to undo the scaling of whatever type of currency is selected
+        // So, for an SP shop- SP is converted to virtual economy units
+        // and then converted back into SP by BaseShopAction.
+        if (costScale > 0) {
+            worth /= costScale;
+        }
+        
+        item.setAmount(amount);
+        return new ShopItem(item, worth);
+    }
+    
     @Override
     public SpellResult perform(CastContext context) {
         SpellResult contextResult = checkContext(context);
         if (!contextResult.isSuccess()) {
             return contextResult;
         }
-        List<ShopItem> shopItems = new ArrayList<ShopItem>();
-        MageController controller = context.getController();
-        for (ShopItemConfiguration itemConfig : items) {
-            if (itemConfig == null)
-            {
-                shopItems.add(null);
-                continue;
-            }
-            String itemKey = itemConfig.itemKey;
-            if (itemKey == null || itemKey.isEmpty() || itemKey.equalsIgnoreCase("none"))
-            {
-                shopItems.add(null);
-                continue;
-            }
-            double worth = itemConfig.cost;
-
-            // This is kinda ugly.. :|
-            // This is here to undo the scaling of whatever type of currency is selected
-            // So, for an SP shop- SP is converted to virtual economy units
-            // and then converted back into SP by BaseShopAction.
-            if (costScale > 0) {
-                worth /= costScale;
-            }
-
-            String[] pieces = StringUtils.split(itemKey, '@');
-            int amount = 1;
-            if (pieces.length > 1) {
-                itemKey = pieces[0];
-                try {
-                    amount = Integer.parseInt(pieces[1]);
-                } catch (Exception ex) {
-                    context.getLogger().warning("Invalid item amount in shop: " + pieces[1] + " for item " + itemKey + " shop " + context.getSpell().getKey());
-                }
-            }
-            ItemStack item = controller.createItem(itemKey);
-            if (item == null) continue;
-
-            if (itemConfig.name != null || itemConfig.lore != null) {
-                ItemMeta meta = item.getItemMeta();
-                if (itemConfig.name != null) {
-                    meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', itemConfig.name));
-                }
-                if (itemConfig.lore != null) {
-                    List<String> lore = new ArrayList<String>();
-                    for (String line : itemConfig.lore) {
-                        if (line != null) {
-                            lore.add(ChatColor.translateAlternateColorCodes('&', line));
-                        }
-                    }
-                    meta.setLore(lore);
-                }
-                item.setItemMeta(meta);
-            }
-            item.setAmount(amount);
-            shopItems.add(new ShopItem(item, worth));
-        }
-        return showItems(context, shopItems);
+        return showItems(context, items);
 	}
 }

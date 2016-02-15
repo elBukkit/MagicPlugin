@@ -519,14 +519,18 @@ public class WandCommandExecutor extends MagicTabExecutor {
             sender.sendMessage(ChatColor.AQUA + "Id: " + ChatColor.DARK_AQUA + Long.toHexString(wandId));
             Wand activeWand = api.getMage(player).getActiveWand();
             if (activeWand == null) {
-                sender.sendMessage(ChatColor.RED + "Mis-match - player has no active wand!");
+				if (api.isWand(itemInHand) && !api.isUpgrade(itemInHand)) {
+					sender.sendMessage(ChatColor.RED + "Mis-match - player has no active wand!");
+				}
             } else {
                 long activeWandId = System.identityHashCode(NMSUtils.getHandle(activeWand.getItem()));
                 if (activeWandId != wandId) {
                     sender.sendMessage(ChatColor.RED + " Mis-match - Active wand id: " + ChatColor.DARK_RED + Long.toHexString(activeWandId));
                 }
             }
-            String itemString = itemInHand.toString();
+			YamlConfiguration configuration = new YamlConfiguration();
+			configuration.set("item", itemInHand);
+            String itemString = configuration.saveToString().replace("item:", "").replace(ChatColor.COLOR_CHAR, '&');
             sender.sendMessage(itemString);
         }
 
