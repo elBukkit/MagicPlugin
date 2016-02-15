@@ -49,9 +49,10 @@ public class AnvilController implements Listener {
 			ItemStack current = event.getCurrentItem();
 			Inventory anvilInventory = event.getInventory();
 			InventoryAction action = event.getAction();
+			ItemStack firstItem = anvilInventory.getItem(0);
+			ItemStack secondItem = anvilInventory.getItem(1);
 			
-			org.bukkit.Bukkit.getLogger().info("cursor? " + Wand.isWand(cursor) + 
-					" current?" + Wand.isWand(current) + " action: " + action + " slot: " + slotType);
+			//org.bukkit.Bukkit.getLogger().info("cursor? " + Wand.isWand(cursor) + " current?" + Wand.isWand(current) + " action: " + action + " slot: " + slotType + " first: " + firstItem + ", second: " + secondItem);
 			
 			// Handle direct movement
 			if (action == InventoryAction.MOVE_TO_OTHER_INVENTORY)
@@ -62,6 +63,13 @@ public class AnvilController implements Listener {
 					Wand wand = new Wand(controller, current);
 					wand.updateName(true);
 				} else if (slotType == SlotType.RESULT) {
+					// Don't allow combining
+					if (!combiningEnabled) {
+						if (firstItem != null && secondItem != null) {
+							event.setCancelled(true);
+							return;
+						}
+					}
 					// Taking from result slot
 					ItemMeta meta = current.getItemMeta();
 					String newName = meta.getDisplayName();
@@ -109,6 +117,12 @@ public class AnvilController implements Listener {
 			
 			// Rename wand when taking from result slot
 			if (slotType == SlotType.RESULT && Wand.isWand(current)) {
+				if (!combiningEnabled) {
+					if (firstItem != null && secondItem != null) {
+						event.setCancelled(true);
+						return;
+					}
+				}
 				ItemMeta meta = current.getItemMeta();
 				String newName = meta.getDisplayName();
 				
@@ -130,8 +144,6 @@ public class AnvilController implements Listener {
 				// Check for wands in both slots
 				// ...... arg. So close.. and yet, not.
 				// I guess I need to wait for the long-awaited anvil API?
-				ItemStack firstItem = anvilInventory.getItem(0);
-				ItemStack secondItem = anvilInventory.getItem(1);
 				if (Wand.isWand(firstItem) && Wand.isWand(secondItem)) 
 				{
 					Wand firstWand = new Wand(controller, firstItem);

@@ -4,6 +4,8 @@
 
  - Added Fury spell (uses new Asynchronous action, and "plan" CustomProjectile flight plan config)
  - Added Chain Lightning spells
+ - Wands (including the Master Sword and magic armor) can no longer be enchanted via an anvil.
+   Set enable_combining: true in config.yml if you want this back.
  - Update FX on all Engineering Spells
  - Tag signs and SuperTorch torches are returned when broken or rolled back
  - Fix Tag signs sometimes facing the wrong way
