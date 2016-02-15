@@ -118,6 +118,16 @@ public class VelocityAction extends BaseSpellAction
         }
 
         velocity.multiply(magnitude);
+
+        if (additive) {
+            velocity = entity.getVelocity().clone().add(velocity);
+        }
+
+        if (maxLength != 0D && velocity.lengthSquared() > maxLength) {
+            velocity = velocity.normalize().multiply(maxMagnitude);
+            magnitude = maxMagnitude;
+        }
+
         context.registerVelocity(entity);
         context.registerMoved(entity);
 
@@ -129,14 +139,6 @@ public class VelocityAction extends BaseSpellAction
                 ChatColor.AQUA + " to " + ChatColor.DARK_AQUA + entity.getType() +
                 ChatColor.AQUA + " from magnitude of " + ChatColor.BLUE + magnitude
                 , 11);
-
-        if (additive) {
-            velocity = entity.getVelocity().clone().add(velocity);
-        }
-
-        if (maxLength != 0D && velocity.lengthSquared() > maxLength) {
-            velocity = velocity.normalize().multiply(maxMagnitude);
-        }
 
         entity.setVelocity(velocity);
 
