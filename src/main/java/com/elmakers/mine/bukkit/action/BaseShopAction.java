@@ -352,19 +352,19 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
                     }
                 }
 
+                Spell spell = null;
                 if (castsSpells) {
                     String spellKey = controller.getSpell(item);
                     String spellArgs = controller.getSpellArgs(item);
-                    Spell spell = mage.getSpell(spellKey);
-                    // spell should never be null but just in case...
-                    if (spell == null|| (spellArgs != null ? !spell.cast(spellArgs.split(" ")) : !spell.cast())) {
+                    spell = mage.getSpell(spellKey);
+                    if (spell != null && (spellArgs != null ? !spell.cast(spellArgs.split(" ")) : !spell.cast())) {
                         context.showMessage("cast_fail", "Sorry, please try again!");
                         mage.deactivateGUI();
                         return;
                     }
                 }
                 takeCosts(context, shopItem);
-                if (!castsSpells && !requireWand) {
+                if (spell == null || (!castsSpells && !requireWand)) {
                     context.getController().giveItemToPlayer(mage.getPlayer(), InventoryUtils.getCopy(item));
                 }
 
