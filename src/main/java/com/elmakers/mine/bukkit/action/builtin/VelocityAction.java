@@ -52,7 +52,7 @@ public class VelocityAction extends BaseSpellAction
         direction = ConfigurationUtils.getVector(parameters, "direction");
         exemptionDuration = parameters.getInt("exemption_duration", (int)(maxSpeed * 2000));
         maxMagnitude = parameters.getDouble("max_magnitude", 0);
-        maxLength = Math.pow(maxMagnitude, 2);
+        maxLength = maxMagnitude * maxMagnitude;
         additive = parameters.getBoolean("additive", false);
     }
 
