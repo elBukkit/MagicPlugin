@@ -397,6 +397,12 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
 
     }
 
+    @Override
+    public void initialize(Spell spell, ConfigurationSection parameters) {
+        super.initialize(spell, parameters);
+        castsSpells = parameters.getBoolean("cast_spells", false);
+    }
+
     public void prepare(CastContext context, ConfigurationSection parameters) {
         super.prepare(context, parameters);
         permissionNode = parameters.getString("permission", null);
@@ -408,7 +414,6 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
         requiresCompletedPath = parameters.getString("path_end", null);
         requiredTemplate = parameters.getString("require_template", null);
         autoUpgrade = parameters.getBoolean("auto_upgrade", false);
-        castsSpells = parameters.getBoolean("cast_spells", false);
         upgradeLevels = parameters.getInt("upgrade_levels", 0);
         requireWand = parameters.getBoolean("require_wand", false);
         autoClose = parameters.getBoolean("auto_close", true);
