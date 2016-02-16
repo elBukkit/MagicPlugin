@@ -667,6 +667,7 @@ architectstaff:
   active_spell: pillar
   active_material: copy
   protected: true
+  powered: true
   cost_reduction: 2
   consume_reduction: 1
   effect_color: 8af553b2025f,0,8af553b2025f
@@ -676,16 +677,17 @@ architectstaff:
   effect_particle_offset: 0.9
   keep: true
   bound: true
+  locked: true
   indestructible: true
   undroppable: true
   effect_particle: REDSTONE
   icon: gold_pickaxe
-  path: architect
+  path: conduit
   spells:
     - absorb@8
     - alter@22
     - backup@23
-    - blink|3@0
+    - blink|6@0
     - box@24
     - bridge@9
     - cloak@47
@@ -696,7 +698,7 @@ architectstaff:
     - gather@4
     - heal@5
     - iterate@28
-    - levitate@1
+    - levitate|4@1
     - missile|4@2
     - paint@12
     - phasebackup@49
@@ -721,6 +723,9 @@ architectstaff:
     - supershell@19
     - time@6
     - torch|4@31
+    - supertorch
+    - fling|4
+    - lockpick
   materials:
     - clone@43
     - cobblestone
@@ -760,7 +765,36 @@ architectstaff:
     - thin_glass
     - wood
 
-
+staff:
+  hotbar_count: 2
+  active_spell: levitate|4
+  cost_reduction: 2
+  effect_color: 00FFAA
+  effect_particle_count: 8
+  effect_particle_interval: 100
+  effect_particle_radius: 0.6
+  effect_particle_offset: 0.9
+  keep: true
+  bound: true
+  locked: true
+  indestructible: true
+  undroppable: true
+  protected: true
+  icon: gold_pickaxe
+  path: master
+  spells:
+    - blink|6
+    - cloak
+    - gather
+    - heal
+    - levitate|4
+    - missile|4
+    - pickpocket
+    - lockpick
+    - time
+    - torch|4
+    - fling|4
+    
 developer:
     icon: monster_eggs:4
     path: master

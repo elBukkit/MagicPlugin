@@ -1187,6 +1187,7 @@ spells:
     iterate:
         name: Iterate
         description: Construct a line of blocks
+        usage: Must aim at a target block
         cast: Filled $count blocks
     column:
         name: Column
@@ -1618,17 +1619,18 @@ spells:
         title: "Emeralds ($balance)"
         description: Trade XP for Emeralds
     withdrawals:
+      name: Withdrawals
+      description: Exchange money for precious metals and gems
       cost_lore: "Withdraw $cost"
       deducted: "&d&oYou withdrew &r&a$cost &r&d&oof &r&6$item"
     deposits:
+      name: Deposits
+      description: Earn money for precious metals and gems
       cost_lore: "Deposit $cost"
       deducted: "&d&oYou deposited &r&a$cost &r&d&oof &r&6$item"
     lootshop:
-      cost_lore: "Earn $cost"
-      deducted: "&d&oYou deposited &r&a$cost &r&d&oof &r&6$item"
-      insufficient: "&cRequires &4$cost"
-      confirm_title: "Sell $item"
-      deducted: "&d&oYou sold &r&6$item &r&d&ofor &r&a$cost"
+      name: Loot Shop
+      description: Earn money for mob drops
     wandshop:
         name: Wand Shop
         title: "Wands ($balance)"
@@ -1645,6 +1647,18 @@ spells:
         name: Item Shop
         title: "Shop ($balance)"
         description: Buy Buy Buy!
+    buyshop:
+        name: Buy Shop
+        title: "Shop ($balance)"
+        description: Buy Buy Buy!
+    sellshop:
+        name: Sell Shop
+        title: "Sell ($balance)"
+        description: Sell Sell Sell!
+        cost_lore: "Earn $cost"
+        insufficient: "&cRequires &4$cost"
+        confirm_title: "Sell $item"
+        deducted: "&d&oYou sold &r&6$item &r&d&ofor &r&a$cost"
     automatashop:
         name: Automata Shop
         title: "Sell Automata Hearts"
@@ -1702,6 +1716,9 @@ wands:
     architectstaff:
         name: The Architect
         description: With Great Power Comes Great Responsibility
+    staff:
+        name: The Staff
+        description: Use it Wisely!
     admin:
         name: The Shusher
         description: For admins only

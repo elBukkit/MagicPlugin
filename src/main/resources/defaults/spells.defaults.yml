@@ -6215,9 +6215,9 @@ iterate:
            location: target
     parameters:
         transparent: transparent_to_construction
-        allow_max_range: true
-        range: 64
-        size: 32
+        allow_max_range: false
+        range: 16
+        size: 8
         increment_data: false
         destructible: destructible_replace
         consume: true
@@ -9201,6 +9201,33 @@ itemshop:
           cost: 100
         - item: bed
           cost: 200
+  
+buyshop:
+    icon: sulphur
+    category: shop
+    hidden: true
+    actions:
+        cast:
+        -  class: ItemShop
+    parameters:
+        quiet: true
+        confirm: false
+        auto_close: false
+        use_items: false
+        
+sellshop:
+    icon: sulphur
+    category: shop
+    hidden: true
+    actions:
+        cast:
+        -  class: ItemShop
+    parameters:
+        quiet: true
+        confirm: false
+        auto_close: false
+        use_items: false
+        sell: true
 
 automatashop:
     icon: command
@@ -9446,18 +9473,8 @@ ledgershop:
           wand|ledger: 2
 
 lootshop:
-    icon: emerald
-    category: npc
-    hidden: true
-    actions:
-        cast:
-        -  class: ItemShop
+    inherit: sellshop
     parameters:
-        sell: true
-        quiet: true
-        confirm: false
-        use_items: false
-        auto_close: false
         items:
           - item: spider_eye@4
             cost: 1
