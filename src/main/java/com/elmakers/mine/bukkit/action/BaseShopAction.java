@@ -358,8 +358,8 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
                     }
                 }
 
-                Spell spell = null;
                 if (castsSpells) {
+                    Spell spell = null;
                     String spellKey = controller.getSpell(item);
                     String spellArgs = controller.getSpellArgs(item);
                     spell = mage.getSpell(spellKey);
@@ -370,7 +370,7 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
                     }
                 }
                 takeCosts(context, shopItem);
-                if (spell == null || (!castsSpells && !requireWand)) {
+                if (!castsSpells && !requireWand) {
                     context.getController().giveItemToPlayer(mage.getPlayer(), InventoryUtils.getCopy(item));
                 }
 
