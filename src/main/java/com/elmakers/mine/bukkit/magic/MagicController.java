@@ -11,6 +11,7 @@ import com.elmakers.mine.bukkit.api.data.SpellData;
 import com.elmakers.mine.bukkit.api.event.SaveEvent;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
+import com.elmakers.mine.bukkit.api.magic.MagicAPI;
 import com.elmakers.mine.bukkit.api.spell.CastingCost;
 import com.elmakers.mine.bukkit.api.spell.CostReducer;
 import com.elmakers.mine.bukkit.api.spell.MageSpell;
@@ -3215,8 +3216,13 @@ public Set<Material> getMaterialSet(String name)
 	{
 		return plugin;
 	}
-	
-	@Override
+
+    @Override
+    public MagicAPI getAPI() {
+        return plugin;
+    }
+
+    @Override
 	public Collection<Mage> getMages()
 	{
 		return mages.values();
