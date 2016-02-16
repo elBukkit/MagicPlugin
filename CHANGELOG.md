@@ -1,6 +1,6 @@
 # CHANGELOG
 
-## 5.5
+## 5.4.8
 
  - Added Fury spell (uses new Asynchronous action, and "plan" CustomProjectile flight plan config)
  - Added Chain Lightning spell
