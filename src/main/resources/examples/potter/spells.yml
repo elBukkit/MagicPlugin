@@ -878,7 +878,7 @@ flagrate:
     icon_url: http://textures.minecraft.net/texture/c5acc4b5a7079df3f51cd9388508a5860fc60e9bcde97f9abee62b457d7e
     icon: sign
     category: charms
-    worth_sp: 20
+    worth: 20
     earns_sp: 1
     effects:
         cast:
@@ -2917,7 +2917,7 @@ patronus:
     icon_url: http://textures.minecraft.net/texture/615baaf7223ce4ff011aa2db6b71c3022151c7f2b873c85d62ef69a36785a61
     icon: ink_sack:12
     category: charms
-    worth_sp: 200
+    worth: 200
     actions:
       cast:
       - class: PlaySound

@@ -738,34 +738,17 @@ worth_effect_sound: 8
 worth_base: 1
 
 # This is how much Skill Points are worth, relative to virtual currency.
-# This is set to 10 to scale skill points relative to the currency costs,
-# so we don't break users who have already set up an economy-based spell shop.
-worth_sp: 10
+worth_sp: 1
 
 # If using XP as a currency, how much one XP is worth
 worth_xp: 1
 
-# By default the Magic ecnonomy is set up for a physical, item-based ecnonomy. I have chosen to use a tiered
-# set of items: emerald, diamond, gold_nugget.
-#
-# I did some research into various economies- looked at MC item distribution statistics, Essentials' item db valuations,
-# anything I could find. I think this may over-value emeralds given the variable of Villager trading, but
-# I figure there are plugins that can re-balance that if you wish.
-#
-# Other than via trading, emeralds are incredibly rare so I feel like is a good choice for the "top tier" currency.
-# I've tried to balance them against diamonds and gold in a natural way, but also in a way that will hopefully result
-# in item prices that stack well.
-#
-# I also decide to make the values even multiples of 10 for convenicence.
-#
-# This setup will work very well with the Shopkeepers plugin, or any other item-based trading shop. It could also
-# be used as a basis for player trading of wands, spells, and items.
-#
-# Currently only the first entry is used by shops.
-#
+# By default the Magic ecnonomy is set up for a physical, emerald-based ecnonomy.
+# Future versions may support additional denominations, but currently only one item is supported,
+# though you can change that item here and/or give it a custom name.
 currency:
   emerald:
-    worth: 100
+    worth: 1
     name: Emerald
     name_plural: Emeralds
 

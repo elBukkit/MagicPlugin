@@ -1,9 +1,15 @@
 # CHANGELOG
 
+## 5.5
+
+ - All economy values scaled to be the same by default. This means that 1 SP = 1 XP = $1 = 1 Emerald. You can use the
+   following config.yml options to re-scale if needed: worth_sp, worth_xp, currency (see config.defaults.yml!)
+ - Add scale parameter to SpellShop and ItemShop for easy price scaling up/down
+
 ## 5.4.8
 
  - Added Fury spell (uses new Asynchronous action, and "plan" CustomProjectile flight plan config)
- - Added Chain Lightning spell
+ - Added Chain Lightning spell 
  - Wands (including the Master Sword and magic armor) can no longer be enchanted via an anvil.
    Set enable_combining: true in config.yml if you want this back.
  - Update FX on all Engineering Spells

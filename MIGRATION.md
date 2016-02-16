@@ -4,6 +4,7 @@
 
  - Glass is no longer transparent by default (spells won't shoot through glass, too exploitable!)
    This can be modified by copying the "transparent" list into your materials.yml and adding glass, etc back in.
+ - The price of SP, XP, Vault currency and Emeralds are now equivalent by default. This can be tweaked via config.yml.
 
 ## 5.4
 

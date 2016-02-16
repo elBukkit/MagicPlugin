@@ -28,17 +28,12 @@
  - Alter *really* needs an update!
  - Fix block targeting cast messages
  - Fix Shrink/Grow losing track of entities (zombie->giant)
- - Super-undroppable option? Not droppable at all, or allowed to put in chests, etc?
 
  - Fix that horrible inv-dupe issue :(
  
  - Add spell or brush or something to auto-convert from MagicWorlds configs
-   
- - Fix shop price scaling
  
  - Try to support projectile hitbox modifiers that aren't cubes
- 
- - Additive Velocity parameter?
  
  - Overrides with commas in them are broken again
  
@@ -60,7 +55,6 @@
  - Goggles deactivate on death (maybe only in Azkaban?)
  - Can we save 1 slot in wand inv?
  - Test out silent firework entities
- - Can magic items stack somehow ... ?
  - Test baby/giant wither bosses:
    You have to set (every tick) the invulnerability of the wither.
    Either you get the data watcher and watch 20 with a value big but below than 1000. I use 600 not to have a too small wither. But there is an easier method which is r() which does it.
@@ -69,7 +63,6 @@
    - Add list of cast-command params?
    - Would be nice to replace the current toggleCastCommand stuff, but need something special for NPCs.. ?
  - Aliases are broken /wand add doesn't activate, spell items don't work
- - Fix Anvil renaming + binding (KingBohica1)
 
  - Show countdown in hotbar for duration-based or active-cost spells
  - Add templates to messages.yml for all the various forms a wand and spell

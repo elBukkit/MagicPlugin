@@ -96,14 +96,6 @@ public class ItemShopAction extends BaseShopAction
         ItemStack item = controller.createItem(itemKey, castsSpells);
         if (item == null) return null;
         
-        // This is kinda ugly.. :|
-        // This is here to undo the scaling of whatever type of currency is selected
-        // So, for an SP shop- SP is converted to virtual economy units
-        // and then converted back into SP by BaseShopAction.
-        if (costScale > 0) {
-            worth /= costScale;
-        }
-        
         item.setAmount(amount);
         return new ShopItem(item, worth);
     }
