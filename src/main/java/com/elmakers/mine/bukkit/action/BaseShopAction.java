@@ -293,6 +293,12 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
         if (shopItem == null) {
             return;
         }
+        String unpurchasableMessage = InventoryUtils.getMeta(shopItem.getItem(), "unpurchasable");
+        if (unpurchasableMessage != null && !unpurchasableMessage.isEmpty()) {
+            context.showMessage(unpurchasableMessage);
+            mage.deactivateGUI();
+            return;
+        }
         boolean hasCosts = sell ? getItemAmount(controller, shopItem.getItem(), mage) >= shopItem.getItem().getAmount()
                 : hasItemCosts(context, shopItem);
 
