@@ -47,6 +47,7 @@ public interface MageController {
      * @return The owning plugin instance
      */
     public Plugin getPlugin();
+    public MagicAPI getAPI();
     public File getConfigFolder();
 
     /**
