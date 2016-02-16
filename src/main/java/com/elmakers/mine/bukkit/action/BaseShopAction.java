@@ -7,6 +7,7 @@ import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.magic.Messages;
 import com.elmakers.mine.bukkit.api.spell.Spell;
+import com.elmakers.mine.bukkit.api.spell.SpellKey;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.api.wand.Wand;
 import com.elmakers.mine.bukkit.api.wand.WandUpgradePath;
@@ -594,6 +595,14 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
     }
 
     protected String formatItemAmount(MageController controller, ItemStack item, double amount) {
+        String spellKey = controller.getSpell(item);
+        if (spellKey != null) {
+            SpellKey key = new SpellKey(spellKey);
+            if (key.getLevel() > 1) {
+                return controller.describeItem(item) + " " + controller.getMessages().get("spell.level_description").replace("$level", Integer.toString(key.getLevel()));
+            }
+            return controller.describeItem(item);
+        }
         return Integer.toString((int)Math.ceil(amount)) + " " + controller.describeItem(item);
     }
 
