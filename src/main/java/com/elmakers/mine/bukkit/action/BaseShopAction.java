@@ -42,6 +42,7 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
     private String requiresCompletedPath = null;
     private String exactPath = null;
     protected int upgradeLevels = 0;
+    protected double costScale = 1;
     protected boolean autoClose = true;
     protected boolean autoUpgrade = false;
     protected boolean castsSpells = false;
@@ -50,7 +51,6 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
     protected boolean isSkillPoints = false;
     protected boolean sell = false;
     protected boolean isItems = false;
-    protected double costScale = 1;
     protected boolean showConfirmation = true;
     protected MaterialAndData confirmFillMaterial;
     protected CastContext context;
@@ -165,17 +165,17 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
         boolean hasCosts = true;
         if (worth > 0) {
             if (isXP) {
-                worth = worth * controller.getWorthXP();
+                worth = Math.ceil(costScale * worth * controller.getWorthBase() / controller.getWorthXP());
                 hasCosts = mage.getExperience() >= (int)(double)worth;
             } else if (isItems) {
-                worth = worth * controller.getWorthBase() / controller.getWorthItemAmount();
+                worth = Math.ceil(costScale * worth * controller.getWorthBase() / controller.getWorthItemAmount());
                 int hasAmount = getItemAmount(controller, mage);
                 hasCosts = hasAmount >= worth;
             } else if (isSkillPoints) {
-                worth = worth * controller.getWorthBase() / controller.getWorthSkillPoints();
+                worth = Math.ceil(costScale * worth * controller.getWorthBase() / controller.getWorthSkillPoints());
                 hasCosts = mage.getSkillPoints() >= Math.ceil(worth);
             } else {
-                worth = worth * controller.getWorthBase();
+                worth = Math.ceil(costScale * worth * controller.getWorthBase());
                 hasCosts = VaultController.getInstance().has(mage.getPlayer(), worth);
             }
         }
@@ -190,23 +190,23 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
         double worth = shopItem.getWorth();
 
         if (isXP) {
-            worth = worth * controller.getWorthXP();
+            worth = Math.ceil(costScale * worth * controller.getWorthBase() / controller.getWorthXP());
             amountString = Integer.toString((int)(double)worth);
             amountString = messages.get("costs.xp_amount").replace("$amount", amountString);
         }
         else if (isItems)
         {
-            worth = worth * controller.getWorthBase() / controller.getWorthItemAmount();
+            worth = Math.ceil(costScale * worth * controller.getWorthBase() / controller.getWorthItemAmount());
             amountString = formatItemAmount(controller, worth);
         }
         else if (isSkillPoints) {
-            worth = worth * controller.getWorthBase() / controller.getWorthSkillPoints();
+            worth = Math.ceil(costScale * worth * controller.getWorthBase() / controller.getWorthSkillPoints());
             amountString = Integer.toString((int)Math.ceil(worth));
             amountString = messages.get("costs.sp_amount").replace("$amount", amountString);
         }
         else
         {
-            worth = worth * controller.getWorthBase();
+            worth = Math.ceil(costScale * worth * controller.getWorthBase());
             amountString = VaultController.getInstance().format(worth);
         }
 
@@ -218,12 +218,12 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
         MageController controller = context.getController();
         double worth = shopItem.getWorth();
         if (isXP) {
-            worth = worth * controller.getWorthXP();
+            worth = Math.ceil(costScale * worth * controller.getWorthBase() / controller.getWorthXP());
             mage.giveExperience((int) (double) worth);
         }
         else if (isItems)
         {
-            worth = worth * controller.getWorthBase() / controller.getWorthItemAmount();
+            worth = Math.ceil(costScale * worth * controller.getWorthBase() / controller.getWorthItemAmount());
             int amount = (int)Math.ceil(worth);
             ItemStack worthItem = controller.getWorthItem();
             while (amount > 0) {
@@ -235,13 +235,13 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
         }
         else if (isSkillPoints)
         {
-            worth = worth * controller.getWorthBase() / controller.getWorthSkillPoints();
+            worth = Math.ceil(costScale * worth * controller.getWorthBase() / controller.getWorthSkillPoints());
             int amount = (int)Math.ceil(worth);
             mage.addSkillPoints(amount);
         }
         else
         {
-            worth = worth * controller.getWorthBase();
+            worth = Math.ceil(costScale * worth * controller.getWorthBase());
             VaultController.getInstance().depositPlayer(mage.getPlayer(), worth);
         }
     }
@@ -252,22 +252,22 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
         double worth = shopItem.getWorth();
 
         if (isXP) {
-            worth = worth * controller.getWorthXP();
+            worth = Math.ceil(costScale * worth * controller.getWorthBase() / controller.getWorthXP());
             mage.removeExperience((int)(double)worth);
         }
         else if (isItems)
         {
-            worth = worth * controller.getWorthBase() / controller.getWorthItemAmount();
+            worth = Math.ceil(costScale * worth * controller.getWorthBase() / controller.getWorthItemAmount());
             removeItems(controller, mage, (int)Math.ceil(worth));
         }
         else if (isSkillPoints)
         {
-            worth = worth * controller.getWorthBase() / controller.getWorthSkillPoints();
+            worth = Math.ceil(costScale * worth * controller.getWorthBase() / controller.getWorthSkillPoints());
             mage.addSkillPoints(-(int)Math.ceil(worth));
         }
         else
         {
-            worth = worth * controller.getWorthBase();
+            worth = Math.ceil(costScale * worth * controller.getWorthBase());
             VaultController.getInstance().withdrawPlayer(mage.getPlayer(), worth);
         }
     }
@@ -423,6 +423,7 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
         upgradeLevels = parameters.getInt("upgrade_levels", 0);
         requireWand = parameters.getBoolean("require_wand", false);
         autoClose = parameters.getBoolean("auto_close", true);
+        costScale = parameters.getDouble("scale", 1);
         if (!autoClose) {
             showConfirmation = false;
         }
@@ -449,12 +450,6 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
             {
                 isSkillPoints = true;
             }
-        }
-
-        if (isSkillPoints) {
-            costScale = controller.getWorthBase() / controller.getWorthSkillPoints();
-        } else {
-            costScale = 1;
         }
     }
 
