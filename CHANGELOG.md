@@ -3,7 +3,7 @@
 ## 5.5
 
  - Added Fury spell (uses new Asynchronous action, and "plan" CustomProjectile flight plan config)
- - Added Chain Lightning spells
+ - Added Chain Lightning spell
  - Wands (including the Master Sword and magic armor) can no longer be enchanted via an anvil.
    Set enable_combining: true in config.yml if you want this back.
  - Update FX on all Engineering Spells
@@ -14,7 +14,7 @@
  - Cooldowns fixed, they were slightly (up to 1 second) shorter than they should've been.
  - Added Workbench spell to Beginner rank, now just opens a workbench inventory directly
  - Pickpocket can now shift+cast to view target player's Ender chest
- - Chain Lightning now electrifies creepers
+ - Add ability to sell spell upgrades in SpellShop
 
 ## 5.4.7
 

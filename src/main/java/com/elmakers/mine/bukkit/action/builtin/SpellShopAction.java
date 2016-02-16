@@ -124,35 +124,7 @@ public class SpellShopAction extends BaseShopAction
                     MageSpell spell = mage.getSpell(spellKey);
                     SpellTemplate upgradeSpell = spell.getUpgrade();
                     if (upgradeSpell != null) {
-                        ItemStack spellItem = MagicPlugin.getAPI().createSpellItem(upgradeSpell.getKey());
-                        if (spellItem != null) {
-                            ItemMeta meta = spellItem.getItemMeta();
-                            List<String> lore = new ArrayList<String>();
-
-                            String levelDescription = upgradeSpell.getLevelDescription();
-                            if (levelDescription == null || levelDescription.isEmpty()) {
-                                levelDescription = upgradeSpell.getName();
-                            }
-
-                            lore.add(levelDescription);
-                            String upgradeDescription = upgradeSpell.getUpgradeDescription();
-                            if (upgradeDescription != null && !upgradeDescription.isEmpty()) {
-                                InventoryUtils.wrapText(upgradeDescription, BaseSpell.MAX_LORE_LENGTH, lore);
-                            }
-                            String requiredPathKey = spell.getRequiredUpgradePath();
-                            WandUpgradePath currentPath = wand.getPath();
-                            if (requiredPathKey != null && !currentPath.hasPath(requiredPathKey))
-                            {
-                                requiredPathKey = currentPath.translatePath(requiredPathKey);
-                                com.elmakers.mine.bukkit.wand.WandUpgradePath upgradePath = com.elmakers.mine.bukkit.wand.WandUpgradePath.getPath(requiredPathKey);
-                                if (upgradePath == null) continue;
-                                lore.add(context.getMessage("level_requirement").replace("$path", upgradePath.getName()));
-                            }
-
-                            meta.setLore(lore);
-                            spellItem.setItemMeta(meta);
-                            spellPrices.put(upgradeSpell.getKey(), null);
-                        }
+                        spellPrices.put(upgradeSpell.getKey(), null);
                     }
                 }
             }
@@ -178,6 +150,35 @@ public class SpellShopAction extends BaseShopAction
             if (!spell.hasCastPermission(mage.getCommandSender())) continue;
 
             ItemStack spellItem = controller.createSpellItem(key, castsSpells);
+            String requiredPathKey = spell.getRequiredUpgradePath();
+            WandUpgradePath currentPath = wand.getPath();
+            if (requiredPathKey != null && !currentPath.hasPath(requiredPathKey))
+            {
+                requiredPathKey = currentPath.translatePath(requiredPathKey);
+                com.elmakers.mine.bukkit.wand.WandUpgradePath upgradePath = com.elmakers.mine.bukkit.wand.WandUpgradePath.getPath(requiredPathKey);
+                if (upgradePath == null) continue;
+                ItemMeta meta = spellItem.getItemMeta();
+                List<String> itemLore = meta.getLore();
+                List<String> lore = new ArrayList<String>();
+                if (itemLore.size() > 0) {
+                    lore.add(itemLore.get(0));
+                }
+                String upgradeDescription = spell.getUpgradeDescription();
+                if (upgradeDescription != null && !upgradeDescription.isEmpty()) {
+                    InventoryUtils.wrapText(upgradeDescription, BaseSpell.MAX_LORE_LENGTH, lore);
+                }
+                
+                String message = context.getMessage("level_requirement", "&r&cRequires: &6$path").replace("$path", upgradePath.getName());
+                lore.add(message);
+                
+                for (int i = 1; i < itemLore.size(); i++) {
+                    lore.add(itemLore.get(i));
+                }
+                meta.setLore(lore);
+                spellItem.setItemMeta(meta);
+                InventoryUtils.setMeta(spellItem, "unpurchasable", message);
+            }
+            
             shopItems.add(new ShopItem(spellItem, worth));
         }
 
