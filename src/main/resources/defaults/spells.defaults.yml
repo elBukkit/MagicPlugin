@@ -6247,6 +6247,7 @@ column:
         reverse: true
         increment_data: false
         orient: true
+        consume: true
         destructible: destructible_replace
     costs:
         mana: 200
