@@ -1,12 +1,14 @@
 # CHANGELOG
 
-## 5.5
+## 5.4.8.1
 
+ - Fixed a progression-stopping bug in the spell shop from 5.4.8
  - All economy values scaled to be the same by default. This means that 1 SP = 1 XP = $1 = 1 Emerald. You can use the
    following config.yml options to re-scale if needed: worth_sp, worth_xp, currency (see config.defaults.yml!)
  - Add scale parameter to SpellShop and ItemShop for easy price scaling up/down
  - Fix some issues with Flood Fill, Recurse, Mine and Chop
- - Architect spells now consume blocks like Engineer spells. WIP, not all spells are enabled.
+ - Architect spells now consume blocks like Engineer spells.
+ - Re-enabled Toss in Engineer rank.
 
 ## 5.4.8
 
