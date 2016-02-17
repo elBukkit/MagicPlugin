@@ -1,7 +1,7 @@
 package com.elmakers.mine.bukkit.effect.builtin;
 
 import com.elmakers.mine.bukkit.effect.EffectRepeating;
-import com.elmakers.mine.bukkit.math.VectorTransform;
+import de.slikey.effectlib.math.VectorTransform;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import de.slikey.effectlib.util.DynamicLocation;
 import org.bukkit.Location;
