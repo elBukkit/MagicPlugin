@@ -6,6 +6,7 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.FallingBlock;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.api.block.MaterialBrush;
@@ -30,6 +31,9 @@ public class FillBatch extends BrushBatch {
 	private int ix = 0;
 	private int iy = 0;
 	private int iz = 0;
+	
+	private boolean consume = false;
+	private boolean consumeVariants = true;
 	
 	private final BoundingBox bounds;
 	
@@ -99,6 +103,17 @@ public class FillBatch extends BrushBatch {
 				byte previousData = block.getData();
 				
 				if (brush.isDifferent(block)) {
+					if (consume && !context.isConsumeFree() && brush.getMaterial() != Material.AIR) {
+						ItemStack requires = brush.getItemStack(1);
+						if (!mage.hasItem(requires, consumeVariants)) {
+							String requiresMessage = context.getMessage("insufficient_resources");
+							context.sendMessage(requiresMessage.replace("$cost", brush.getName()));
+							finish();
+							return processedBlocks;
+						}
+						mage.removeItem(requires, consumeVariants);
+					}
+					
 					registerForUndo(block);
 					brush.modify(block);
 					
@@ -141,6 +156,13 @@ public class FillBatch extends BrushBatch {
 	
 	public int getZSize() {
 		return absz;
+	}
+	
+	public void setConsume(boolean consume) {
+		this.consume = consume;
+	}
+	public void setConsumeVariants(boolean variants) {
+		this.consumeVariants = variants;
 	}
 
 	@Override

@@ -3823,6 +3823,7 @@ fill:
         max_dimension: 64
         check_destructible: false
         transparent: transparent_to_construction
+        consume: true
     costs:
         mana: 100
 

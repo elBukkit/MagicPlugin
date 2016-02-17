@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Set;
 
 import com.elmakers.mine.bukkit.block.MaterialAndData;
+import com.elmakers.mine.bukkit.block.UndoList;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -168,7 +169,10 @@ public class ConstructSpell extends BrushSpell
 
         batch.setCommit(commit);
 		batch.setConsume(consume);
-		getUndoList().setConsumed(consume);
+		UndoList undoList = getUndoList();
+		if (undoList != null) {
+			undoList.setConsumed(consume);
+		}
 
 		if (parameters.getBoolean("replace", false)) {
 			List<com.elmakers.mine.bukkit.api.block.MaterialAndData> replaceMaterials = new ArrayList<com.elmakers.mine.bukkit.api.block.MaterialAndData>();

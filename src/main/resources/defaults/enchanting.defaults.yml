@@ -559,7 +559,7 @@ architect:
       supercube: 0,0,5
       superpyramid: 0,0,5
       superblob: 0,1,10
-      #fill: 0,0,5
+      fill: 0,0,5
       superemp: 0,5,20
       superdisc: 0,0,5
       superring: 0,0,5

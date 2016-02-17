@@ -1,6 +1,7 @@
 package com.elmakers.mine.bukkit.spell.builtin;
 
 import com.elmakers.mine.bukkit.api.block.BrushMode;
+import com.elmakers.mine.bukkit.block.UndoList;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -77,7 +78,13 @@ public class FillSpell extends BrushSpell
 			buildWith.setTarget(this.targetBlock.getLocation(), centerLocation);
 			
 			FillBatch batch = new FillBatch(this, secondLocation, targetBlock.getLocation(), buildWith);
-
+			boolean consumeBlocks = parameters.getBoolean("consume", false);
+			batch.setConsume(consumeBlocks);
+			UndoList undoList = getUndoList();
+			if (undoList != null) {
+				undoList.setConsumed(consumeBlocks);
+			}
+			
 			int maxDimension = parameters.getInt("max_dimension", DEFAULT_MAX_DIMENSION);	
 			maxDimension = parameters.getInt("md", maxDimension);	
 			maxDimension = (int)(mage.getConstructionMultiplier() * maxDimension);
