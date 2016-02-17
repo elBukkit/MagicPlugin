@@ -209,6 +209,11 @@ public class RecurseAction extends CompoundAction {
 
     @Override
     public boolean next(CastContext context) {
+        StackEntry current = stack.peek();
+        while (!stack.isEmpty() && current.face >= directions.size()) {
+            stack.pop();
+            current = stack.peek();
+        }
         return !stack.isEmpty();
     }
 
@@ -221,9 +226,7 @@ public class RecurseAction extends CompoundAction {
         if (faceIndex >= 0) {
             block = directions.get(faceIndex).getRelative(block);
         }
-        if (current.face >= directions.size()) {
-            stack.pop();
-        }
+        
         long id = BlockData.getBlockId(block);
         if (touched.contains(id))
         {
