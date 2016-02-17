@@ -20,6 +20,7 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.FallingBlock;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.Button;
 import org.bukkit.material.Lever;
 import org.bukkit.material.MaterialData;
@@ -65,6 +66,8 @@ public class ConstructBatch extends BrushBatch {
     private double backfireChance = 0;
     private Vector bounds = null;
 	private boolean applyPhysics = false;
+	private boolean consume = false;
+	private boolean consumeVariants = true;
 
 	private int x = 0;
 	private int y = 0;
@@ -146,7 +149,7 @@ public class ConstructBatch extends BrushBatch {
 		if (finishedAttached) {
 			if (delayedBlockIndex >= delayedBlocks.size()) {
 				finish();
-			} else while (delayedBlockIndex < delayedBlocks.size() && processedBlocks <  maxBlocks) {
+			} else while (delayedBlockIndex < delayedBlocks.size() && processedBlocks <  maxBlocks && !finished) {
 				BlockData delayed = delayedBlocks.get(delayedBlockIndex);
 				Block block = delayed.getBlock();
 				if (!block.getChunk().isLoaded()) {
@@ -159,7 +162,7 @@ public class ConstructBatch extends BrushBatch {
 				delayedBlockIndex++;
 			}
 		} else if (finishedNonAttached) {
-			while (attachedBlockIndex < attachedBlockList.size() && processedBlocks <  maxBlocks) {
+			while (attachedBlockIndex < attachedBlockList.size() && processedBlocks <  maxBlocks && !finished) {
 				BlockData attach = attachedBlockList.get(attachedBlockIndex);
 				Block block = attach.getBlock();
 				if (!block.getChunk().isLoaded()) {
@@ -223,7 +226,7 @@ public class ConstructBatch extends BrushBatch {
             }
 			yBounds = Math.min(yBounds, center.getWorld().getMaxHeight());
 
-			while (processedBlocks <= maxBlocks && !finishedNonAttached) {
+			while (processedBlocks <= maxBlocks && !finishedNonAttached && !finished) {
 				if (!fillBlock(x, y, z)) {
 					return processedBlocks;
 				}
@@ -495,6 +498,17 @@ public class ConstructBatch extends BrushBatch {
         byte previousData = block.getData();
 
         if (brush.isValid() && (brush.isDifferent(block) || commit)) {
+			if (consume && !context.isConsumeFree() && brush.getMaterial() != Material.AIR) {
+				ItemStack requires = brush.getItemStack(1);
+				if (!mage.hasItem(requires, consumeVariants)) {
+					String requiresMessage = context.getMessage("insufficient_resources");
+					context.sendMessage(requiresMessage.replace("$cost", brush.getName()));
+					finish();
+					return;
+				}
+				mage.removeItem(requires, consumeVariants);
+			}
+			
             if (!commit) {
                 registerForUndo(block);
             }
@@ -574,4 +588,10 @@ public class ConstructBatch extends BrushBatch {
     public void setCommit(boolean commit) {
         this.commit = commit;
     }
+	public void setConsume(boolean consume) {
+		this.consume = consume;
+	}
+	public void setConsumeVariants(boolean variants) {
+		this.consumeVariants = variants;
+	}
 }

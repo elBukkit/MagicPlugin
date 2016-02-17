@@ -6,6 +6,7 @@
    following config.yml options to re-scale if needed: worth_sp, worth_xp, currency (see config.defaults.yml!)
  - Add scale parameter to SpellShop and ItemShop for easy price scaling up/down
  - Fix some issues with Flood Fill, Recurse, Mine and Chop
+ - Architect spells now consume blocks like Engineer spells. WIP, not all spells are enabled.
 
 ## 5.4.8
 

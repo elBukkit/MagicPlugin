@@ -25,7 +25,7 @@ import org.bukkit.util.Vector;
 public class ConstructSpell extends BrushSpell
 {
 	public final static String[] CONSTRUCT_PARAMETERS = {
-		"radius", "falling", "speed", "max_dimension", "replace",
+		"radius", "falling", "speed", "max_dimension", "replace", "consume",
 		"type", "thickness", "orient_dimension_max", "orient_dimension_min",
 		"power", "breakable", "backfire", "select_self", "use_brush_size", "falling_direction"
 	};
@@ -66,6 +66,7 @@ public class ConstructSpell extends BrushSpell
 		boolean falling = parameters.getBoolean("falling", false);
 		boolean physics = parameters.getBoolean("physics", false);
         boolean commit = parameters.getBoolean("commit", false);
+		boolean consume = parameters.getBoolean("consume", false);
         double breakable = parameters.getDouble("breakable", 0);
         double backfireChance = parameters.getDouble("reflect_chance", 0);
 		Vector orientTo = null;
@@ -166,6 +167,8 @@ public class ConstructSpell extends BrushSpell
 		ConstructBatch batch = new ConstructBatch(this, target.getLocation(), conType, radius, thickness, falling, orientTo);
 
         batch.setCommit(commit);
+		batch.setConsume(consume);
+		getUndoList().setConsumed(consume);
 
 		if (parameters.getBoolean("replace", false)) {
 			List<com.elmakers.mine.bukkit.api.block.MaterialAndData> replaceMaterials = new ArrayList<com.elmakers.mine.bukkit.api.block.MaterialAndData>();

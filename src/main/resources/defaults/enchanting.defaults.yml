@@ -553,19 +553,20 @@ architect:
     spells:
       absorb: 0,1,2
       superalter: 0,1,5
-      #supershell: 0,0,5
-      #superblast: 0,0,5
-      #superbox: 0,0,5
-      #superpyramid: 0,0,5
-      #superblob: 0,1,10
+      supershell: 0,0,5
+      superblast: 0,0,5
+      superbox: 0,0,5
+      supercube: 0,0,5
+      superpyramid: 0,0,5
+      superblob: 0,1,10
       #fill: 0,0,5
       superemp: 0,5,20
-      #superdisc: 0,0,5
-      #superring: 0,0,5
-      #superconvert: 0,20,50
-      #supercylinder: 0,20,50
+      superdisc: 0,0,5
+      superring: 0,0,5
+      superconvert: 0,20,50
+      supercylinder: 0,20,50
       column: 5,50,100
-      #superdome: 0,0,2
+      superdome: 0,0,2
       #volley: 2,25,35
       floodfill: 1,10,20
     material_count:

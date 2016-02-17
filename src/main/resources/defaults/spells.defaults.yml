@@ -95,12 +95,18 @@ default:
          sound_volume: 0.5
        - class: EffectSingle
          location: target
-         particle: villager_happy
-         particle_offset_x: 0.5
-         particle_offset_y: 0.5
-         particle_offset_z: 0.5
+         use_block_location: true
+         color_override: color
+         effectlib:
+           class: CubeEffect
+           iterations: 15
+           particle: redstone
+           color: "00FFAA"
+           edgeLength: 1.2
+           enableRotation: false
+           offset: 0.5,0.5,0.5
        - class: EffectTrail
-         particle: drip_water
+         particle: spell_mob
        fail:
        - class: EffectSingle
          location: origin
@@ -1063,6 +1069,7 @@ superdisc:
         transparent: transparent_to_construction
         destructible: destructible_replace
         orient: true
+        consume: true
     costs:
         mana: 200
 
@@ -1090,6 +1097,7 @@ superring:
         thickness: 1
         orient: true
         transparent: transparent_to_construction
+        consume: true
     costs:
         mana: 200
 
@@ -1115,6 +1123,7 @@ supershell:
         type: sphere
         destructible: destructible_replace
         transparent: transparent_to_construction
+        consume: true
     costs:
         mana: 250
 
@@ -1141,6 +1150,7 @@ superdome:
         orient_dimension_min: 0
         destructible: destructible_replace
         transparent: transparent_to_construction
+        consume: true
     costs:
         mana: 200
 
@@ -1218,6 +1228,7 @@ volley:
       repeat: 8
       pitch_max: 5
       yaw_max: 45
+      consume: true
     costs:
         mana: 40
 
@@ -4267,6 +4278,7 @@ superblob:
         target: select
         type: sphere
         transparent: transparent_to_construction
+        consume: true
     costs:
         mana: 400
 
@@ -4293,6 +4305,7 @@ superhemisphere:
         type: sphere
         transparent: transparent_to_construction
         orient_dimension_min: 0
+        consume: true
     costs:
         mana: 400
 
@@ -4318,6 +4331,7 @@ superpyramid:
         type: pyramid
         transparent: transparent_to_construction
         destructible: destructible_replace
+        consume: true
     costs:
         mana: 400
 
@@ -4343,6 +4357,7 @@ supercylinder:
         type: cylinder
         transparent: transparent_to_construction
         destructible: destructible_replace
+        consume: true
     costs:
         mana: 400
 
@@ -4394,6 +4409,7 @@ superbox:
         type: cuboid
         destructible: destructible_replace
         transparent: transparent_to_construction
+        consume: true
     costs:
         mana: 400
 
@@ -4419,6 +4435,7 @@ supercube:
         transparent: transparent_to_construction
         check_destructible: false
         orient_dimension_min: 0
+        consume: true
     costs:
         mana: 400
 
@@ -4905,6 +4922,7 @@ superconvert:
         type: sphere
         replace: true
         transparent: transparent_to_construction
+        consume: true
     costs:
         mana: 300
 
