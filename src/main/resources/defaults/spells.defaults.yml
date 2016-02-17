@@ -1049,6 +1049,7 @@ superdisc:
     icon_url: http://textures.minecraft.net/texture/89791581eeeb253cd59a2bda0615d78da15f218e475b192bbffc8bb16bd8f
     icon: ink_sack:13
     category: engineering
+    tags: noduel
     class: ConstructSpell
     cancellable: false
     worth: 800
@@ -1077,6 +1078,7 @@ superring:
     icon_url: http://textures.minecraft.net/texture/94d8a4b21f84bb65fb9f3a656d4518f0662fcabc44d01c1e435787ca542a9dd
     icon: ink_sack:9
     category: engineering
+    tags: noduel
     class: ConstructSpell
     cancellable: false
     worth: 600
@@ -1105,6 +1107,7 @@ supershell:
     icon: magma_cream
     icon_url: http://textures.minecraft.net/texture/281923adf47a8ca699f6d09593e36d154acc707735eb25fd89d282f1f3bb2078
     category: engineering
+    tags: noduel
     class: ConstructSpell
     cancellable: false
     worth: 1000
@@ -1131,6 +1134,7 @@ superdome:
     icon: mushroom_soup
     icon_url: http://textures.minecraft.net/texture/e468c9623ed74bc829f985d46d4646241daa2a682fec5f2343d55cd7a63693d
     category: engineering
+    tags: noduel
     class: ConstructSpell
     cancellable: false
     worth: 900
@@ -1191,6 +1195,7 @@ toss:
     icon_url: http://textures.minecraft.net/texture/44471f5f9792fd21dd1e652f2ac5f47e49eeebd4fb289f4174ec20dc7b57e6
     icon: wood_button
     category: engineering
+    tags: noduel
     worth: 100
     actions:
         cast:
@@ -1210,6 +1215,7 @@ volley:
     icon_url: http://textures.minecraft.net/texture/c7c963831339c9e82e91cd29bfa36ab616d78555dfbe7e72983e2e254180a2ab
     icon: stone_button
     category: engineering
+    tags: noduel
     worth: 300
     actions:
         cast:
@@ -1739,6 +1745,7 @@ permafrost:
     icon_url: http://textures.minecraft.net/texture/872d9b98a6b34a2762aac1af915873c066c43c2b2b8d689d27626cc5afcb11
     icon: snow_ball
     category: engineering
+    tags: noduel
     worth: 2000
     earns_sp: 10
     actions:
@@ -3017,6 +3024,7 @@ supertorch:
     icon_url: http://textures.minecraft.net/texture/15f098d4bc88ca9b11ddb6b3acb08dad7a3fc62929ec27adcedb667c61faa3
     icon: torch
     category: engineering
+    tags: noduel
     worth: 500
     earns_sp: 15
     actions:
@@ -3726,6 +3734,7 @@ regenerate:
     icon_url: http://textures.minecraft.net/texture/43e6aef534bc455c1d13d692fa193cac6efcce7c875b185375114b71c63929
     icon: gold_hoe
     category: engineering
+    tags: noduel
     class: RegenerateSpell
     cancellable: false
     worth: 1000
@@ -3747,6 +3756,7 @@ superregenerate:
     icon_url: http://textures.minecraft.net/texture/a98cd720917c3d48a165c0418515e58d52c81f4b5271ff8d23790cca43f9b
     icon: diamond_hoe
     category: engineering
+    tags: noduel
     class: RegenerateSpell
     cancellable: false
     worth: 1500
@@ -3769,6 +3779,7 @@ paint:
     icon_url: http://textures.minecraft.net/texture/719e9875ffb35adfbd135c416e51dcf80dec38bf3d0dca2f94eb6595b90c0b5
     icon: painting
     category: engineering
+    tags: noduel
     worth: 1000
     earns_sp: 10
     actions:
@@ -3796,6 +3807,7 @@ fill:
     icon: iron_hoe
     icon_url: http://textures.minecraft.net/texture/ce31cd14d873d1579b633646be683b5e1201512e593ca61595e33a5ef17b374
     category: engineering
+    tags: noduel
     class: FillSpell
     cancellable: false
     worth: 500
@@ -3818,6 +3830,7 @@ recurse:
     icon: wood_spade
     icon_url: http://textures.minecraft.net/texture/ce31cd14d873d1579b633646be683b5e1201512e593ca61595e33a5ef17b374
     category: engineering
+    tags: noduel
     cancellable: false
     worth: 4000
     earns_sp: 15
@@ -3859,6 +3872,7 @@ floodfill:
     icon: wood_spade
     icon_url: http://textures.minecraft.net/texture/ce31cd14d873d1579b633646be683b5e1201512e593ca61595e33a5ef17b374
     category: engineering
+    tags: noduel
     cancellable: false
     worth: 1000
     actions:
@@ -4034,6 +4048,7 @@ bridge:
     icon_url: http://textures.minecraft.net/texture/328d3a15afbc7f95d64179bb6154aa2e9ce7212462145c3344fda754b12c61e7
     icon: stone_hoe
     category: engineering
+    tags: noduel
     cancellable: false
     worth: 1000
     earns_sp: 10
@@ -4076,6 +4091,7 @@ pillar:
     icon_url: http://textures.minecraft.net/texture/8a37d68a64b72c169586e55e885784f61ba6ca62246b5dff877656c6c2f657e
     icon: iron_axe
     category: engineering
+    tags: noduel
     worth: 1000
     earns_sp: 10
     consume: true
@@ -4112,6 +4128,7 @@ place:
     icon_url: http://textures.minecraft.net/texture/c79136be2c1ed4c89e21bfc7846486c516d9b4d32965edfd5877fafa8aeb6
     icon: diamond_axe
     category: engineering
+    tags: noduel
     worth: 1000
     earns_sp: 10
     actions:
@@ -4260,6 +4277,7 @@ superblob:
     icon: slime_ball
     icon_url: http://textures.minecraft.net/texture/812a772ef923c597e12f41986d7bea9a9387055eb17eeebb1d8c6de3ca25f
     category: engineering
+    tags: noduel
     class: ConstructSpell
     worth: 800
     earns_sp: 2
@@ -4286,6 +4304,7 @@ superhemisphere:
     icon: slime_ball
     icon_url: http://textures.minecraft.net/texture/812a772ef923c597e12f41986d7bea9a9387055eb17eeebb1d8c6de3ca25f
     category: engineering
+    tags: noduel
     class: ConstructSpell
     worth: 800
     earns_sp: 2
@@ -4313,6 +4332,7 @@ superpyramid:
     icon_url: http://textures.minecraft.net/texture/295775b75c70891a42d7d8fac699da5ec2ad6c419fd1ccafd32668713dace2e6
     icon: speckled_melon
     category: engineering
+    tags: noduel
     cancellable: false
     class: ConstructSpell
     worth: 700
@@ -4339,6 +4359,7 @@ supercylinder:
     icon_url: http://textures.minecraft.net/texture/86b54c2be72abec1bb595f3acea2e1ef3dffb94f7d316212ced492b72a164cb2
     icon: speckled_melon
     category: engineering
+    tags: noduel
     cancellable: false
     class: ConstructSpell
     worth: 700
@@ -4365,6 +4386,7 @@ box:
     icon_url: http://textures.minecraft.net/texture/35b7d887a08bb8eb927b58f452becf8d349cd46e6a2ea18dffb2776d676df5
     icon: gold_helmet
     category: engineering
+    tags: noduel
     cancellable: false
     class: ConstructSpell
     worth: 300
@@ -4391,6 +4413,7 @@ superbox:
     icon_url: http://textures.minecraft.net/texture/35b7d887a08bb8eb927b58f452becf8d349cd46e6a2ea18dffb2776d676df5
     icon: diamond_helmet
     category: engineering
+    tags: noduel
     cancellable: false
     class: ConstructSpell
     worth: 600
@@ -4417,6 +4440,7 @@ supercube:
     icon_url: http://textures.minecraft.net/texture/35b7d887a08bb8eb927b58f452becf8d349cd46e6a2ea18dffb2776d676df5
     icon: nether_brick_item
     category: engineering
+    tags: noduel
     cancellable: false
     class: ConstructSpell
     worth: 650
@@ -4443,6 +4467,7 @@ backup:
     icon_url: http://textures.minecraft.net/texture/1ba8664ebb95136081e296baa6b384b975ee864e61398a6dfe4915fcafd1f3eb
     icon: diamond_pickaxe
     category: engineering
+    tags: noduel
     cancellable: false
     class: ConstructSpell
     worth: 9999
@@ -4474,6 +4499,7 @@ superbackup:
     icon_url: http://textures.minecraft.net/texture/1ba8664ebb95136081e296baa6b384b975ee864e61398a6dfe4915fcafd1f3eb
     icon: diamond_pickaxe
     category: engineering
+    tags: noduel
     cancellable: false
     class: ConstructSpell
     worth: 1000
@@ -4504,6 +4530,7 @@ repair:
     icon: gold_pickaxe
     icon_url: http://textures.minecraft.net/texture/19b2a0ec54345ba8de3964a5ae74ef89c53a2922c527f96fb9238ecf761242a4
     category: engineering
+    tags: noduel
     cancellable: false
     class: ConstructSpell
     worth: 300
@@ -4534,6 +4561,7 @@ superrepair:
     icon_url: http://textures.minecraft.net/texture/2298724dfb9d1599590f4e8c3647c2c5532e8fae48fca12fe32a410bb4437a9
     icon: gold_pickaxe
     category: engineering
+    tags: noduel
     cancellable: false
     class: ConstructSpell
     worth: 500
@@ -4564,6 +4592,7 @@ workbench:
     icon: workbench
     icon_url: http://textures.minecraft.net/texture/a5bf87cdeeefecb473472dc7c858ffa2e3ec5bd48c3718df49e2798e4aeff
     category: engineering
+    tags: noduel
     worth: 80
     actions:
         cast:
@@ -4819,6 +4848,7 @@ tunnel:
     icon_url: http://textures.minecraft.net/texture/c94772c7eca88e1128b71f71f8951233f7ea79dbc80e02bb407acffe175e
     icon: iron_pickaxe
     category: engineering
+    tags: noduel
     cancellable: false
     class: TunnelSpell
     worth: 200
@@ -4839,6 +4869,7 @@ superblast:
     icon_url: http://textures.minecraft.net/texture/eab81081362ed39651bb47e8650dc6bbc3d8a1db56827c186267e546df0743f
     icon: red_mushroom
     category: engineering
+    tags: noduel
     cancellable: false
     class: ConstructSpell
     worth: 400
@@ -4868,6 +4899,7 @@ convert:
     icon_url: http://textures.minecraft.net/texture/b55a449b825c375ab91571e7e8a67856d212f756824bdfe43178eaea035bc
     icon: iron_spade
     category: engineering
+    tags: noduel
     cancellable: false
     worth: 250
     actions:
@@ -4904,6 +4936,7 @@ superconvert:
     icon: diamond_spade
     icon_url: http://textures.minecraft.net/texture/2734f67095a837ec19069f23cae3e82516fab4e29afc157bd99d370179ca0c3
     category: engineering
+    tags: noduel
     cancellable: false
     class: ConstructSpell
     worth: 700
@@ -4997,6 +5030,7 @@ supercollapse:
     icon: gold_plate
     icon_url: http://textures.minecraft.net/texture/a4cdbaa4de8eecc6363d760442688762daf588238f83a9da624eaa51e82bbb
     category: engineering
+    tags: noduel
     cancellable: false
     class: ConstructSpell
     worth: 900
@@ -5056,6 +5090,7 @@ rollback:
     icon_url: http://textures.minecraft.net/texture/9be3ca3c869345a6f2a3be3391615dca1ea1c631d86e3938dbff57f11cbb61
     icon: book_and_quill
     category: engineering
+    tags: noduel
     cancellable: false
     worth: 9999
     actions:
@@ -5124,6 +5159,7 @@ commit:
     icon_url: http://textures.minecraft.net/texture/8767f81fd66cc826827de81f3d12a3fee1fd6cfee11a43bb438404cd3391f
     icon: enchanted_book
     category: engineering
+    tags: noduel
     cancellable: false
     class: CommitSpell
     worth: 400
@@ -5451,6 +5487,7 @@ alter:
     icon_url: http://textures.minecraft.net/texture/4e693cf3b7bf83248527aacc2714638b55587cde593963d1f861884f5be1638
     icon: ink_sack
     category: engineering
+    tags: noduel
     cancellable: false
     class: AlterSpell
     worth: 1500
@@ -5485,6 +5522,7 @@ superalter:
     icon_url: http://textures.minecraft.net/texture/b5ccb1a5547f7d1beb4896c6fad4fedbb17ebced53a86b7e96e417114a0cae4
     icon: ink_sack:1
     category: engineering
+    tags: noduel
     cancellable: false
     class: AlterSpell
     worth: 200
@@ -5507,6 +5545,7 @@ sphere:
     icon_url: http://textures.minecraft.net/texture/c4c932901eaf61a741a8fa8a786fa9e509b13ba518f384c6c731086ffdc829e
     icon: snow_ball
     category: engineering
+    tags: noduel
     cancellable: false
     class: ShapeSpell
     worth: 200
@@ -5894,6 +5933,7 @@ absorb:
     icon: bucket
     icon_url: http://textures.minecraft.net/texture/8b50be531940368e173db018d2ead9d2cdeec8e39c7a51b681dcad4c4d41d
     category: engineering
+    tags: noduel
     worth: 9999
     brush_selection: true
     actions:
@@ -6211,6 +6251,7 @@ iterate:
     icon_url: http://textures.minecraft.net/texture/ce5eef24e2cf406bcd9d2b44f418ac72e26731b9a7e7402490e473af8145e0ba
     icon: ink_sack:2
     category: engineering
+    tags: noduel
     cancellable: false
     worth: 3000
     earns_sp: 13
@@ -6247,6 +6288,7 @@ column:
     icon_url: http://textures.minecraft.net/texture/58c328c062df8bb125e7bb2cca6dce38c24236733a9f95ca75b04c162c64cb8
     icon: ink_sack:4
     category: engineering
+    tags: noduel
     cancellable: false
     worth: 400
     actions:
@@ -8054,6 +8096,7 @@ paste:
     icon_url: http://textures.minecraft.net/texture/6eb68dc909b12ef5fb397c23fdecbc416d9a76825170c106b1faeb97b4749
     icon: iron_pickaxe
     category: engineering
+    tags: noduel
     class: ConstructSpell
     cancellable: false
     worth: 850
@@ -8304,7 +8347,7 @@ torture|3:
 rubberize:
     icon: slime_ball
     icon_url: http://textures.minecraft.net/texture/fced4114232f1aff90c5fbb3535e89c546858b14bae3fea7ecc896b2bd51
-    category: engineering
+    category: utility
     cancellable: false
     worth: 150
     earns_sp: 2
