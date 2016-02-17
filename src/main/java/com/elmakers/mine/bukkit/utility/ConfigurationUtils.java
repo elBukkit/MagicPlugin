@@ -3,6 +3,7 @@ package com.elmakers.mine.bukkit.utility;
 import java.util.*;
 import java.util.Map.Entry;
 
+import de.slikey.effectlib.util.ConfigUtils;
 import de.slikey.effectlib.util.ParticleEffect;
 
 import org.apache.commons.lang.StringUtils;
@@ -20,7 +21,7 @@ import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 
-public class ConfigurationUtils {
+public class ConfigurationUtils extends ConfigUtils {
 
     public static Random random = new Random();
 
@@ -89,25 +90,6 @@ public class ConfigurationUtils {
 
     public static Material getMaterial(ConfigurationSection node, String path) {
         return getMaterial(node, path, null);
-    }
-
-    public static Collection<ConfigurationSection> getNodeList(ConfigurationSection node, String path) {
-        Collection<ConfigurationSection> results = new ArrayList<ConfigurationSection>();
-        List<Map<?, ?>> mapList = node.getMapList(path);
-        for (Map<?, ?> map : mapList) {
-            results.add(toNodeList(map));
-        }
-
-        return results;
-    }
-
-    public static ConfigurationSection toNodeList(Map<?, ?> nodeMap) {
-        ConfigurationSection newSection = new MemoryConfiguration();
-        for (Entry<?, ?> entry : nodeMap.entrySet()) {
-            set(newSection, entry.getKey().toString(), entry.getValue());
-        }
-
-        return newSection;
     }
 
     public static String fromLocation(Location location) {
@@ -280,37 +262,10 @@ public class ConfigurationUtils {
     {
         return addConfigurations(new MemoryConfiguration(), section);
     }
-
-
+    
     public static ConfigurationSection addConfigurations(ConfigurationSection first, ConfigurationSection second)
     {
         return addConfigurations(first, second, true);
-    }
-
-    public static ConfigurationSection getConfigurationSection(ConfigurationSection base, String key)
-    {
-        Object value = base.get(key);
-        if (value == null) return null;
-
-        if (value instanceof ConfigurationSection)
-        {
-            return (ConfigurationSection)value;
-        }
-
-        if (value instanceof Map)
-        {
-            ConfigurationSection newChild = base.createSection(key);
-            @SuppressWarnings("unchecked")
-            Map<String, Object> map = (Map<String, Object>)value;
-            for (Entry<String, Object> entry : map.entrySet())
-            {
-                newChild.set(entry.getKey(), entry.getValue());
-            }
-            base.set(key, newChild);
-            return newChild;
-        }
-
-        return null;
     }
 
     public static ConfigurationSection addConfigurations(ConfigurationSection first, ConfigurationSection second, boolean override)
@@ -570,32 +525,6 @@ public class ConfigurationUtils {
     {
         if (node.contains(path)) return node.getBoolean(path);
         return def;
-    }
-
-    public static void set(ConfigurationSection node, String path, Object value)
-    {
-        // This is a bunch of hackery... I suppose I ought to change the NBT
-        // types to match and make this smarter?
-        boolean isTrue = value.equals("true");
-        boolean isFalse = value.equals("false");
-        if (isTrue || isFalse) {
-            node.set(path, isTrue);
-        } else {
-            try {
-                Double d = (value instanceof Double) ? (Double)value : (
-                        (value instanceof Float) ? (Float)value :
-                        Double.parseDouble(value.toString())
-                    );
-                node.set(path, d);
-            } catch (Exception ex) {
-                try {
-                    Integer i = (value instanceof Integer) ? (Integer)value : Integer.parseInt(value.toString());
-                    node.set(path, i);
-                } catch (Exception ex2) {
-                    node.set(path, value);
-                }
-            }
-        }
     }
 
     @SuppressWarnings("unchecked")
