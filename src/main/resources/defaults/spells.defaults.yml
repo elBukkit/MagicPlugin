@@ -1208,6 +1208,7 @@ toss:
     parameters:
       speed_min: 1.2
       speed_max: 2.2
+      consume: true
     costs:
         mana: 20
 
@@ -1219,7 +1220,7 @@ volley:
     worth: 300
     actions:
         cast:
-        -  class: Repeat
+        -  class: Multiply
            actions:
            -  class: Spread
               actions:
@@ -1231,7 +1232,7 @@ volley:
            location: origin
     parameters:
       speed: 1.5
-      repeat: 8
+      multiply: 8
       pitch_max: 5
       yaw_max: 45
       consume: true

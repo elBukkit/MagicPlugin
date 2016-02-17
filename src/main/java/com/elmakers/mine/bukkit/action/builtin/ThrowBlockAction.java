@@ -3,6 +3,8 @@ package com.elmakers.mine.bukkit.action.builtin;
 import com.elmakers.mine.bukkit.action.BaseProjectileAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.block.MaterialBrush;
+import com.elmakers.mine.bukkit.api.block.UndoList;
+import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
@@ -11,6 +13,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.FallingBlock;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
 import java.util.Arrays;
@@ -22,6 +25,8 @@ public class ThrowBlockAction extends BaseProjectileAction
     private double speedMax;
     private float fallDamage;
     private int maxDamage;
+    private boolean consumeBlocks = false;
+    private boolean consumeVariants = true;
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters)
@@ -33,6 +38,8 @@ public class ThrowBlockAction extends BaseProjectileAction
         int damage = parameters.getInt("damage", 0);
         fallDamage = (float)parameters.getDouble("fall_damage", damage);
         maxDamage = parameters.getInt("max_damage", damage);
+        consumeBlocks = parameters.getBoolean("consume", false);
+        consumeVariants = parameters.getBoolean("consume_variants", true);
     }
 
 	@Override
@@ -46,6 +53,25 @@ public class ThrowBlockAction extends BaseProjectileAction
 		location.setY(location.getY() - 1);
 		MaterialBrush buildWith = context.getBrush();
 		buildWith.setTarget(location);
+        
+        if (buildWith.isErase() || buildWith.getMaterial() == Material.AIR) {
+            return SpellResult.NO_TARGET;
+        }
+
+        if (consumeBlocks && !context.isConsumeFree()) {
+            Mage mage = context.getMage();
+            UndoList undoList = context.getUndoList();
+            if (undoList != null) {
+                undoList.setConsumed(true);
+            }
+            ItemStack requires = buildWith.getItemStack(1);
+            if (!mage.hasItem(requires, consumeVariants)) {
+                String requiresMessage = context.getMessage("insufficient_resources");
+                context.sendMessage(requiresMessage.replace("$cost", buildWith.getName()));
+                return SpellResult.STOP;
+            }
+            mage.removeItem(requires, consumeVariants);
+        }
 
 		Material material = buildWith.getMaterial();
 		byte data = buildWith.getBlockData();
