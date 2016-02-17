@@ -149,7 +149,7 @@ public class SpellShopAction extends BaseShopAction
             ItemStack spellItem = controller.createSpellItem(key, castsSpells);
             String requiredPathKey = spell.getRequiredUpgradePath();
             WandUpgradePath currentPath = wand.getPath();
-            if (requiredPathKey != null && !currentPath.hasPath(requiredPathKey))
+            if (requiredPathKey != null && spell.getSpellKey().getLevel() > 1 && !currentPath.hasPath(requiredPathKey))
             {
                 requiredPathKey = currentPath.translatePath(requiredPathKey);
                 com.elmakers.mine.bukkit.wand.WandUpgradePath upgradePath = com.elmakers.mine.bukkit.wand.WandUpgradePath.getPath(requiredPathKey);
