@@ -91,7 +91,9 @@ public class ThrowBlockAction extends BaseProjectileAction
             return SpellResult.FAIL;
         }
         track(context, falling);
-        falling.setDropItem(false);
+        if (!consumeBlocks) {
+            falling.setDropItem(false);
+        }
         falling.setVelocity(direction);
         if (maxDamage > 0 && fallDamage > 0) {
             CompatibilityUtils.setFallingBlockDamage(falling, fallDamage, maxDamage);
