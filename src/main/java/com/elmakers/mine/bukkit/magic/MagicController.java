@@ -1983,6 +1983,7 @@ public class MagicController implements MageController {
 		// Reset existing spells.
 		spells.clear();
         spellAliases.clear();
+        categories.clear();
 
 		for (Entry<String, ConfigurationSection> entry : spellConfigs.entrySet())
 		{

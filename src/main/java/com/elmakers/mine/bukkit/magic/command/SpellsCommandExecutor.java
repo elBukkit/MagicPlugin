@@ -133,12 +133,7 @@ public class SpellsCommandExecutor extends MagicTabExecutor {
 
 		// Kinda hacky internals-reaching
 		Collection<SpellCategory> allCategories = api.getController().getCategories();
-		List<com.elmakers.mine.bukkit.spell.SpellCategory> sortedGroups = new ArrayList<com.elmakers.mine.bukkit.spell.SpellCategory>();
-		for (SpellCategory checkCategory : allCategories) {
-			if (checkCategory instanceof com.elmakers.mine.bukkit.spell.SpellCategory) {
-				sortedGroups.add((com.elmakers.mine.bukkit.spell.SpellCategory)checkCategory);
-			}
-		}
+		List<SpellCategory> sortedGroups = new ArrayList<SpellCategory>(allCategories);
 		Collections.sort(sortedGroups);
 
 		int maxLines = -1;
@@ -163,7 +158,7 @@ public class SpellsCommandExecutor extends MagicTabExecutor {
 		int currentPage = 1;
 		int lineCount = 0;
 		int printedCount = 0;
-		for (com.elmakers.mine.bukkit.spell.SpellCategory group : sortedGroups)
+		for (SpellCategory group : sortedGroups)
 		{
 			if (printedCount > maxLines && maxLines > 0) break;
 
