@@ -41,6 +41,7 @@ public class SpellCategory implements com.elmakers.mine.bukkit.api.spell.SpellCa
         spells.add(template);
     }
 
+    @Override
     public Collection<SpellTemplate> getSpells()
     {
         return spells;
