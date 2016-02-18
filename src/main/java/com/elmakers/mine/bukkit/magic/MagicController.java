@@ -3791,8 +3791,16 @@ public Set<Material> getMaterialSet(String name)
         for (int i = 0; i < contents.length; i++) {
             ItemStack item = contents[i];
             if (itemsAreEqual(item, requireItem)) {
+                Wand wand = null;
+                if (Wand.isWand(item) && Wand.isBound(item)) {
+                    wand = new Wand(this, item);
+                    if (!wand.canUse(player)) continue;
+                }
                 if (take) {
                     player.getInventory().setItem(i, null);
+                    if (wand != null) {
+                        wand.unbind();
+                    }
                 }
                 foundItem = true;
                 break;
