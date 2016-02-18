@@ -115,6 +115,8 @@ public interface Wand extends CostReducer {
     public void damageDealt(double damage, Entity target);
     public int getSpellLevel(String spellKey);
     public boolean hasTag(String tag);
+    public void bind();
+    public void unbind();
 
     /**
      * Save this Wand to a Configuartion Section.
