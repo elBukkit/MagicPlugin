@@ -1,14 +1,14 @@
 package com.elmakers.mine.bukkit.magic;
 
-public class BlockUpdateTask implements Runnable {
+public class BatchUpdateTask implements Runnable {
     private final MagicController controller;
 
-    public BlockUpdateTask(MagicController controller) {
+    public BatchUpdateTask(MagicController controller) {
         this.controller = controller;
     }
 
     @Override
     public void run() {
-        controller.processBlockUpdates();
+        controller.processPendingBatches();
     }
 }

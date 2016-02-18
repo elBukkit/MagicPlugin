@@ -983,7 +983,7 @@ public class MagicController implements MageController {
         Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, mageTask, 0, mageUpdateFrequency);
 
         // Set up the Block update timer
-        final BlockUpdateTask blockTask = new BlockUpdateTask(this);
+        final BatchUpdateTask blockTask = new BatchUpdateTask(this);
         Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, blockTask, 0, workFrequency);
 
         // Set up the Update check timer
@@ -1045,7 +1045,7 @@ public class MagicController implements MageController {
         }
     }
 
-    protected void processBlockUpdates()
+    protected void processPendingBatches()
     {
         int remainingWork = workPerUpdate;
         if (pendingConstruction.isEmpty()) return;
