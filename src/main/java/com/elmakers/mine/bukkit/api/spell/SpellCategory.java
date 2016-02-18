@@ -2,6 +2,8 @@ package com.elmakers.mine.bukkit.api.spell;
 
 import org.bukkit.Color;
 
+import java.util.Collection;
+
 public interface SpellCategory extends Comparable<SpellCategory> {
     public abstract String getKey();
     public abstract String getName();
@@ -11,4 +13,5 @@ public interface SpellCategory extends Comparable<SpellCategory> {
     public abstract void addCasts(long castCount, long lastCastTime);
     public abstract long getCastCount();
     public abstract long getLastCast();
+    public Collection<SpellTemplate> getSpells();
 }
