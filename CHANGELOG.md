@@ -2,6 +2,9 @@
 
 ## 5.5
 
+ - Added /wand commands: bind, unbind
+ - Added /mage command: unbindall
+
 ## 5.4.8.1
 
  - Fixed a progression-stopping bug in the spell shop from 5.4.8

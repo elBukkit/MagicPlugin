@@ -129,6 +129,8 @@ public class WandCommandExecutor extends MagicTabExecutor {
             addIfPermissible(sender, options, "Magic.commands." + permissionKey + ".", "duplicate");
             addIfPermissible(sender, options, "Magic.commands." + permissionKey + ".", "restore");
             addIfPermissible(sender, options, "Magic.commands." + permissionKey + ".", "unlock");
+			addIfPermissible(sender, options, "Magic.commands." + permissionKey + ".", "bind");
+			addIfPermissible(sender, options, "Magic.commands." + permissionKey + ".", "unbind");
 			addIfPermissible(sender, options, "Magic.commands." + permissionKey + ".", "save");
 
 			Collection<String> allWands = api.getWandKeys();
@@ -331,6 +333,20 @@ public class WandCommandExecutor extends MagicTabExecutor {
 			if (!api.hasPermission(sender, "Magic.commands." + command + "." + subCommand)) return true;
 
 			onWandUnenchant(sender, player);
+			return true;
+		}
+		if (subCommand.equalsIgnoreCase("bind"))
+		{
+			if (!api.hasPermission(sender, "Magic.commands." + command + "." + subCommand)) return true;
+
+			onWandBind(sender, player);
+			return true;
+		}
+		if (subCommand.equalsIgnoreCase("unbind"))
+		{
+			if (!api.hasPermission(sender, "Magic.commands." + command + "." + subCommand)) return true;
+
+			onWandUnbind(sender, player);
 			return true;
 		}
 		if (subCommand.equalsIgnoreCase("duplicate"))
@@ -642,6 +658,40 @@ public class WandCommandExecutor extends MagicTabExecutor {
 			));
 		}
 		
+		return true;
+	}
+
+	public boolean onWandBind(CommandSender sender, Player player)
+	{
+		if (!checkWand(sender, player)) {
+			return true;
+		}
+		Mage mage = api.getMage(player);
+		Wand wand = mage.getActiveWand();
+
+		wand.bind();
+
+		mage.sendMessage(api.getMessages().get("wand.setbound"));
+		if (sender != player) {
+			sender.sendMessage(api.getMessages().getParameterized("wand.player_setbound", "$name", player.getName()));
+		}
+		return true;
+	}
+
+	public boolean onWandUnbind(CommandSender sender, Player player)
+	{
+		if (!checkWand(sender, player)) {
+			return true;
+		}
+		Mage mage = api.getMage(player);
+		Wand wand = mage.getActiveWand();
+
+		wand.unbind();
+
+		mage.sendMessage(api.getMessages().get("wand.unbound"));
+		if (sender != player) {
+			sender.sendMessage(api.getMessages().getParameterized("wand.player_unbound", "$name", player.getName()));
+		}
 		return true;
 	}
 	

@@ -383,6 +383,19 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             }
         }
     }
+    
+    @Override
+    public void unbindAll() {
+        boundWands.clear();
+    }
+
+    @Override
+    public void unbind(com.elmakers.mine.bukkit.api.wand.Wand wand) {
+        String template = wand.getTemplateKey();
+        if (template != null) {
+            boundWands.remove(template);
+        }
+    }
 
     public void setActiveWand(Wand activeWand) {
         // Avoid deactivating a wand by mistake, and avoid infinite recursion on null!

@@ -191,6 +191,12 @@ wand:
     player_restored: $name's wands have been restored
     not_restored: You have no missing wands on record
     player_not_restored: $name's wand has no missing wands on record
+    setbound: Your wand has been bound
+    player_setbound: $name's wand has been bound
+    unbound: Your wand has been unbound
+    player_unbound: $name's wand has been unbound
+    unboundall: All of your bound wands have been forgotten
+    player_unboundall: All of $name's bound wands have been forgotten. Their inventory was not cleared!
     unlocked: Your wand has been unlocked
     player_unlocked: $name's wand has been unlocked
     unknown_template: Unknown wand name $name

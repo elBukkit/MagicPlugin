@@ -95,6 +95,11 @@ public class MageCommandExecutor extends MagicMapExecutor {
 		{
 			return onMagicConfigure(sender, player, args2);
 		}
+        if (subCommand.equalsIgnoreCase("unbind"))
+        {
+            onMageUnbind(sender, player);
+            return true;
+        }
 
 		sender.sendMessage("Unknown mage command: " + subCommand);
 		return true;
@@ -109,6 +114,7 @@ public class MageCommandExecutor extends MagicMapExecutor {
             addIfPermissible(sender, options, "Magic.commands.mage.", "check");
             addIfPermissible(sender, options, "Magic.commands.mage.", "debug");
 			addIfPermissible(sender, options, "Magic.commands.mage.", "delete");
+            addIfPermissible(sender, options, "Magic.commands.mage.", "unbind");
 		} else if (args.length == 2) {
 			options.addAll(api.getPlayerNames());
 		} else if (args.length == 3) {
@@ -275,6 +281,18 @@ public class MageCommandExecutor extends MagicMapExecutor {
         String value = args[1];
         data.set(key, value);
         sender.sendMessage(ChatColor.GOLD + "Set " + ChatColor.AQUA + key + ChatColor.GOLD + " to " + ChatColor.AQUA + value + ChatColor.GOLD + " for " + ChatColor.DARK_AQUA + player.getDisplayName());
+        return true;
+    }
+
+    public boolean onMageUnbind(CommandSender sender, Player player)
+    {
+        Mage mage = api.getMage(player);
+        mage.unbindAll();
+
+        mage.sendMessage(api.getMessages().get("wand.unboundall"));
+        if (sender != player) {
+            sender.sendMessage(api.getMessages().getParameterized("wand.player_unboundall", "$name", player.getName()));
+        }
         return true;
     }
 }

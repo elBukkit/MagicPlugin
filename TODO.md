@@ -9,9 +9,6 @@
  - Pull/Accio on top of an entity sends it skyrocketing
  - Column's radius doesn't seem to work
  - Action to turn spell into a spawn egg
- - Add an unbind command
- - Add option for bound wands to not restore (ollivander's ticket)
-   or to get unbound automatically on sell? Better.
    
  - CoreProtect integration
    http://minerealm.com/community/viewtopic.php?f=32&t=16362
@@ -71,7 +68,6 @@
  - Can't hitbox-target entities standing in a corner? Issues with spiders?
  - Look at/expand "item" parameter to SpawnEntity (why do wither skellies start with a bow?)
  - Add "drops" parameter to Damage action to prevent mobs dropping loot.
- - Add Music action, with disc parameter
 
  - Add /mmap reload command
 

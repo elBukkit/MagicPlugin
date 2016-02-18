@@ -38,6 +38,8 @@ commands:
         /wand unlock     Allow a locked wand to be modified
         /wand override   Set or check cast overrides on a wand
         /wand upgrade    Upgrade properties of a wand
+        /wand bind       Bind a wand to the person holding it
+        /wand unbind     Unbind a wand, including backups
     permission: Magic.commands.wand
   "wand add":
     description: Add a spell or brush to a wand
@@ -94,6 +96,14 @@ commands:
     description: Clear the "locked" setting on a wand so it can be used with /wand configure
     permission: Magic.commands.wand.unlock
     usage: /wand unlock
+  "wand bind":
+    description: Binds a wand to the player holding it. Only works on unbound wands.
+    permission: Magic.commands.wand.bind
+    usage: /wand bind
+  "wand unbind":
+    description: Unbinds a wand, turning off binding for that wand. Also removes /wand restore backups of the wand, only if the owner is online.
+    permission: Magic.commands.wand.unbind
+    usage: /wand unbind
   "wand override":
     description: Check or set cast overrides, which modify how a wand casts a specific spell, or all spells
     usage: |
@@ -116,7 +126,7 @@ commands:
     permission: Magic.commands.wand.upgrade
   wandp:
     description: Create and modify wands for another player
-    usage: /wandp <player> [add|remove|upgrade|configure|describe|organize|enchant|unenchant|duplicate|unlock|override] [<spellname>|material] <materialname>
+    usage: /wandp <player> [add|remove|upgrade|configure|describe|organize|enchant|unenchant|duplicate|unlock|override|bind|unbind] [<spellname>|material] <materialname>
     permission: Magic.commands.wandp
   magic:
     description: Administer the Magic plugin
@@ -178,6 +188,7 @@ commands:
         /mage check       Check player permissions
         /mage debug       Enable/disable debug for a player
         /mage delete      Delete all data for a Mage
+        /mage unbind      Delete all of a mage's bound wands
   "mage configure":
     description: Configure Mage player data or spell cast counts
     permission: Magic.commands.mage.configure
@@ -215,6 +226,10 @@ commands:
         /mage debug
         /mage debug NathanWolf
         /mage debug NathanWolf 10
+  "mage unbind":
+    description: Unbinds all stored wands for a player. Does not clear their inventory.
+    permission: Magic.commands.mage.unbind
+    usage: /mage unbind
   mgive:
     description: Give players items
     usage: /mgive <Player> [itemname] <amount>
@@ -400,6 +415,14 @@ permissions:
     description: Player may unlock a locked wand
     type: boolean
     default: op
+  Magic.commands.wand.bind:
+    description: Player may bind an unbound wand to themselves
+    type: boolean
+    default: op
+  Magic.commands.wand.unbind:
+    description: Player may unbind the wand they are holding
+    type: boolean
+    default: op
   Magic.commands.wandp:
     description: Player may use the wandp commands
     type: boolean
@@ -476,6 +499,14 @@ permissions:
     default: op
   Magic.commands.wandp.unlock:
     description: Player may unlock an existing wand held by another player
+    type: boolean
+    default: op
+  Magic.commands.wandp.bind:
+    description: Player may bind an unbound wand to its holder
+    type: boolean
+    default: op
+  Magic.commands.wandp.unbind:
+    description: Player may unbind the wand another player is holding
     type: boolean
     default: op
   Magic.commands.magic:
@@ -576,6 +607,10 @@ permissions:
     default: op
   Magic.commands.mage.delete:
     description: Player may delete player data
+    type: boolean
+    default: op
+  Magic.commands.mage.unbind:
+    description: Player may unbind all of a player's stored wands
     type: boolean
     default: op
   Magic.commands.mskills:

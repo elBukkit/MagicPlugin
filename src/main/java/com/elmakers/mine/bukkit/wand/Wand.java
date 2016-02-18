@@ -2089,6 +2089,14 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         return item != null && InventoryUtils.hasMeta(item, WAND_KEY) && !isUpgrade(item);
 	}
 
+	public static boolean isBound(ItemStack item) {
+		Object wandSection = InventoryUtils.getNode(item, WAND_KEY);
+		if (wandSection == null) return false;
+		
+		String boundValue = InventoryUtils.getMeta(wandSection, "bound");
+		return boundValue != null && boundValue.equalsIgnoreCase("true");
+	}
+
     public static boolean isSelfDestructWand(ItemStack item) {
         return item != null && WAND_SELF_DESTRUCT_KEY != null && InventoryUtils.hasMeta(item, WAND_SELF_DESTRUCT_KEY);
     }
@@ -3479,6 +3487,41 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	@Override
 	public boolean isInventoryOpen() {
 		return mage != null && inventoryIsOpen;
+	}
+	
+	@Override
+	public void unbind() {
+		if (!bound) return;
+		com.elmakers.mine.bukkit.api.magic.Mage owningMage = this.mage;
+		deactivate();
+		
+		if (ownerId != null) {
+			if (owningMage == null || !owningMage.getId().equals(ownerId)) {
+				owningMage = controller.getRegisteredMage(ownerId);
+			}
+			
+			if (owningMage != null) {
+				owningMage.unbind(this);
+			}
+			ownerId = null;
+		}
+		bound = false;
+		owner = null;
+		saveState();
+	}
+	
+	@Override
+	public void bind() {
+		if (bound) return;
+		
+		Mage holdingMage = mage;
+		deactivate();
+		bound = true;
+		saveState();
+		
+		if (holdingMage != null) {
+			holdingMage.checkWand();
+		}
 	}
 	
 	public void deactivate() {
