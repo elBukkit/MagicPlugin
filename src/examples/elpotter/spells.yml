@@ -33,18 +33,6 @@ enchantwand:
   parameters:
     cooldown: 1200000
 
-ollivander:
-  hidden: true
-  actions:
-    conditional: fail
-    cast:
-    - class: GiveItem
-    - class: Command
-      console: true
-      commands:
-      - pex user @pn group add year1
-      - broadcast &6@pd &3has enrolled at &bHogwarts&3!
-
 broom:
   parameters:
     cooldown: 0

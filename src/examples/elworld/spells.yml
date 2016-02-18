@@ -720,3 +720,153 @@ spraypaint:
     allow_max_range: true
     repeat: 100
     delay: 50
+    
+base_trap:
+  icon_url: http://textures.minecraft.net/texture/c7a8e7c9d3375135e39aa6d57b4e60539cf8f6efc5b58c83a13caf40561560
+  icon: ender_pearl
+  category: combat
+  actions:
+    cast:
+      - class: Delay
+        delay: $delay1
+      - class: Repeat
+        stop_on_success: true
+        actions:
+          - class: AreaOfEffect
+            stop_on_success: false
+            actions:
+              - class: Serial
+                actions: $trap_actions
+              - class: PlayEffects
+                effects: hit
+          - class: Delay
+            delay: $delay2
+  effects:
+    cast:
+      - location: target
+        particle: smoke_normal
+    tick:
+      - class: EffectSingle
+        location: target
+        particle: smoke_normal
+        particle_count: 20
+        particle_offset_x: 1
+        particle_offset_y: 1
+        particle_offset_z: 1
+    hit:
+      - class: EffectSingle
+        location: target
+        color: 2E2E2E
+        firework: ball
+      - class: EffectSingle
+        location: target
+        use_hit_location: false
+        requires_entity_target: true
+        effectlib:
+          class: SphereEffect
+          iterations: 17
+          period: 4
+          particle: smoke_normal
+          radius: 0.5
+          particles: 20
+  parameters:
+    radius: 5
+    range: 1
+    #reorient: true
+    target: other
+    target_type: LivingEntity
+    allow_max_range: true
+    delay1: 10000
+    delay2: 250
+    
+blind_trap:
+  inherit: base_trap
+  parameters:
+    trap_actions:
+    - class: PotionEffect
+    effect_blind: 1
+    duration: 10000
+    
+force:
+    icon_url: http://textures.minecraft.net/texture/c7142a19d8c84389da74b69641542b8b2fafbed8f7515d1d36c63c96bd749
+    icon: leash
+    category: master
+    worth: 2500
+    actions:
+        cast:
+        -  class: Velocity
+           item_speed: 2
+           living_entity_speed: 3
+           direction: 0,1,0
+        -  class: Repeat
+           actions:
+           - class: Delay
+           - class: Retarget
+             range: 8
+             actions:
+             - class: ChangeContext
+               source_at_target: true
+               actions:
+               - class: Velocity
+                 push: -1
+    effects:
+        cast:
+        -  class: EffectSingle
+           location: origin
+           sound: magic.zap_big
+           sound_pitch: 2
+           effectlib:
+             class: ConeEffect
+             iterations: 8
+             particles: 2
+             particle: spell_mob
+             lengthGrow: 0.4
+        -  class: EffectSingle
+           location: origin
+           effectlib:
+             class: LineEffect
+             duration: 5000
+             particle: spell_mob
+        -  class: EffectSingle
+           location: target
+           use_block_location: true
+           effectlib:
+             class: SphereEffect
+             duration: 5000
+             period: 2
+             particle: spell
+             radius: 0.8
+        -  class: EffectSingle
+           location: target
+           effectlib:
+             class: ConeEffect
+             iterations: 8
+             particle: spell_mob
+             autoOrient: false
+        no_target:
+        -  class: EffectSingle
+           location: origin
+           sound: enderdragon_wings
+           sound_pitch: 2
+           effectlib:
+             class: ConeEffect
+             iterations: 8
+             particles: 2
+             particle: spell
+             lengthGrow: 0.4
+    parameters:
+        hitbox: true
+        target: other
+        target_type: LivingEntity
+        allow_max_range: false
+        range: 16
+        target_breakables: 2
+        delay: 100
+        repeat: 50
+        living_entity_speed: 0.1
+        item_speed: 0.05
+        cancel_on_damage: 0.5
+        cooldown: 45000
+    costs:
+        mana: 200
+  
