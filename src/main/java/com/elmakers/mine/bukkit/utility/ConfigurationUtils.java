@@ -263,6 +263,91 @@ public class ConfigurationUtils extends ConfigUtils {
         return addConfigurations(new MemoryConfiguration(), section);
     }
     
+    private static Map<String, Object> replaceParameters(Map<String, Object> configuration, ConfigurationSection parameters)
+    {
+        if (configuration == null || configuration.isEmpty()) return configuration;
+        
+        Map<String, Object> replaced = new HashMap<String, Object>();
+        for (Map.Entry<String, Object> entry : configuration.entrySet())
+        {
+            Object entryValue = entry.getValue();
+            Object replacement = replaceParameters(entryValue, parameters);
+            if (replacement != null) {
+                replaced.put(entry.getKey(), replacement);
+            }
+        }
+        
+        return replaced;
+    }
+
+    private static Object replaceParameters(Object value, ConfigurationSection parameters)
+    {
+        if (value == null) return null;
+        if (value instanceof Map)
+        {
+            @SuppressWarnings("unchecked")
+            Map<String, Object> map = (Map<String, Object>)value;
+            value = replaceParameters(map, parameters);
+        }
+        else if (value instanceof ConfigurationSection)
+        {
+            value = replaceParameters((ConfigurationSection)value, parameters);
+        }
+        else if (value instanceof List)
+        {
+            @SuppressWarnings("unchecked")
+            List<Object> list = (List<Object>)value;
+            value = replaceParameters(list, parameters);
+        }
+        else if (value instanceof String)
+        {
+            value = replaceParameter((String)value, parameters);
+        }
+        
+        return value;
+    }
+
+    private static List<Object> replaceParameters(List<Object> configurations, ConfigurationSection parameters)
+    {
+        if (configurations == null || configurations.size() == 0) return configurations;
+        
+        List<Object> replaced = new ArrayList<Object>();
+        for (Object value : configurations)
+        {
+            Object replacement = replaceParameters(value, parameters);
+            if (replacement != null) {
+                replaced.add(replacement);
+            }
+        }
+        
+        return replaced;
+    }
+
+    private static Object replaceParameter(String value, ConfigurationSection parameters)
+    {
+        if (value.length() < 2 || value.charAt(0) != '$') return value;
+        return parameters.get(value.substring(1));
+    }
+
+    public static ConfigurationSection replaceParameters(ConfigurationSection configuration, ConfigurationSection parameters)
+    {
+        if (configuration == null) return null;
+        
+        ConfigurationSection replaced = new MemoryConfiguration();
+        Set<String> keys = configuration.getKeys(false);
+        for (String key : keys) {
+            Object value = configuration.get(key);
+            if (value == null) continue;
+            
+            Object replacement = replaceParameters(value, parameters);
+            if (replacement != null) {
+                replaced.set(key, replacement);
+            }
+        }
+        
+        return replaced;
+    }
+    
     public static ConfigurationSection addConfigurations(ConfigurationSection first, ConfigurationSection second)
     {
         return addConfigurations(first, second, true);

@@ -189,6 +189,7 @@ public class ActionSpell extends BrushSpell
                 }
             }
 
+            actionsNode = ConfigurationUtils.replaceParameters(actionsNode, parameters);
             if (actionsNode != null)
             {
                 Collection<String> actionKeys = actionsNode.getKeys(false);
