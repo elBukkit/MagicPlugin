@@ -32,6 +32,7 @@ public class SpellShopAction extends BaseShopAction
     private boolean showRequired = false;
     private boolean showFree = false;
     private boolean showUpgrades = false;
+    private boolean allowLocked = false;
     private Map<String, Double> spells = new HashMap<String, Double>();
 
     @Override
@@ -73,6 +74,7 @@ public class SpellShopAction extends BaseShopAction
         showRequired = parameters.getBoolean("show_required", false);
         showFree = parameters.getBoolean("show_free", false);
         showUpgrades = parameters.getBoolean("show_upgrades", false);
+        allowLocked = parameters.getBoolean("allow_locked", false);
         if (!castsSpells) {
             requireWand = true;
             applyToWand = true;
@@ -90,7 +92,7 @@ public class SpellShopAction extends BaseShopAction
         Wand wand = mage.getActiveWand();
         WandUpgradePath path = wand == null ? null : wand.getPath();
 
-        if (!castsSpells && wand.isLocked()) {
+        if (!castsSpells && !allowLocked && wand.isLocked()) {
             context.showMessage(context.getMessage("no_path", "You may not learn with that $wand.").replace("$wand", wand.getName()));
             return SpellResult.FAIL;
         }
