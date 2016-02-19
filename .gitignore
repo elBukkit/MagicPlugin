@@ -2,7 +2,7 @@
 .DS_Store
 target
 .idea
-Magic.iml
+*.iml
 src/main/resources/spells.defaults.yml
 src/main/resources/wands.defaults.yml
 **/original_skin.png

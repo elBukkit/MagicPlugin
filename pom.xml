@@ -78,9 +78,28 @@
             <scope>provided</scope>
         </dependency>
 		<dependency>
+			<groupId>de.slikey</groupId>
+			<artifactId>EffectLib</artifactId>
+			<version>3.9-SNAPSHOT</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
 			<groupId>com.elmakers.mine.bukkit</groupId>
-			<artifactId>MagicLib</artifactId>
+			<artifactId>MagicAPI</artifactId>
 			<version>3.5-SNAPSHOT</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>net.milkbowl.vault</groupId>
+			<artifactId>VaultAPI</artifactId>
+			<version>1.5</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava-collections</artifactId>
+			<version>r03</version>
+			<scope>provided</scope>
 		</dependency>
         <dependency>
             <groupId>com.sk89q</groupId>
@@ -302,6 +321,10 @@
                                     <pattern>de.slikey</pattern>
                                     <shadedPattern>com.elmakers.mine.bukkit.slikey</shadedPattern>
                                 </relocation>
+								<relocation>
+									<pattern>de.slikey</pattern>
+									<shadedPattern>com.elmakers.mine.bukkit.slikey</shadedPattern>
+								</relocation>
 							</relocations>
 						</configuration>
 					</execution>
