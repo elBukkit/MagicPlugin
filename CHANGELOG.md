@@ -4,6 +4,7 @@
 
  - Added /wand commands: bind, unbind
  - Added /mage command: unbindall
+ - Re-balanced Engineer and Architect mana, Architect spell prices. All icons made unique.
 
 ## 5.4.8.1
 

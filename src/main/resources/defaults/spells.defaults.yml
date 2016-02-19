@@ -1052,7 +1052,7 @@ superdisc:
     tags: noduel
     class: ConstructSpell
     cancellable: false
-    worth: 800
+    worth: 2500
     effects:
         cast:
         -  class: EffectSingle
@@ -1081,7 +1081,7 @@ superring:
     tags: noduel
     class: ConstructSpell
     cancellable: false
-    worth: 600
+    worth: 4000
     effects:
         cast:
         -  class: EffectSingle
@@ -1110,7 +1110,7 @@ supershell:
     tags: noduel
     class: ConstructSpell
     cancellable: false
-    worth: 1000
+    worth: 3500
     effects:
         cast:
         -  class: EffectSingle
@@ -1137,7 +1137,7 @@ superdome:
     tags: noduel
     class: ConstructSpell
     cancellable: false
-    worth: 900
+    worth: 3000
     effects:
         cast:
         -  class: EffectSingle
@@ -3811,7 +3811,7 @@ fill:
     tags: noduel
     class: FillSpell
     cancellable: false
-    worth: 500
+    worth: 5000
     effects:
         cast:
         -  class: EffectTrail
@@ -3830,7 +3830,7 @@ fill:
 
 recurse:
     icon: wood_spade
-    icon_url: http://textures.minecraft.net/texture/ce31cd14d873d1579b633646be683b5e1201512e593ca61595e33a5ef17b374
+    icon_url: http://textures.minecraft.net/texture/d5b284f190a8d48c60481e2a1cd2b2557eeeaccfb02ef183affd6e02de8c51
     category: engineering
     tags: noduel
     cancellable: false
@@ -3871,11 +3871,11 @@ recurse:
 
 floodfill:
     icon: wood_spade
-    icon_url: http://textures.minecraft.net/texture/ce31cd14d873d1579b633646be683b5e1201512e593ca61595e33a5ef17b374
+    icon_url: http://textures.minecraft.net/texture/3eae564a9cf283d1b95d45f82674bc7327d6f91ab8cd3458cabbe2c84db
     category: engineering
     tags: noduel
     cancellable: false
-    worth: 1000
+    worth: 6000
     actions:
         cast:
         - class: ChangeContext
@@ -4279,7 +4279,7 @@ superblob:
     category: engineering
     tags: noduel
     class: ConstructSpell
-    worth: 800
+    worth: 4500
     earns_sp: 2
     cancellable: false
     effects:
@@ -4335,7 +4335,7 @@ superpyramid:
     tags: noduel
     cancellable: false
     class: ConstructSpell
-    worth: 700
+    worth: 3000
     effects:
         cast:
         -  class: EffectSingle
@@ -4362,7 +4362,7 @@ supercylinder:
     tags: noduel
     cancellable: false
     class: ConstructSpell
-    worth: 700
+    worth: 3000
     effects:
         cast:
         -  class: EffectSingle
@@ -4416,7 +4416,7 @@ superbox:
     tags: noduel
     cancellable: false
     class: ConstructSpell
-    worth: 600
+    worth: 4000
     effects:
         cast:
         -  class: EffectSingle
@@ -4437,13 +4437,13 @@ superbox:
         mana: 400
 
 supercube:
-    icon_url: http://textures.minecraft.net/texture/35b7d887a08bb8eb927b58f452becf8d349cd46e6a2ea18dffb2776d676df5
+    icon_url: http://textures.minecraft.net/texture/b02fa9c938deafc7777eefefc6b614a68423e1c4a899a993f78ef7817517f9
     icon: nether_brick_item
     category: engineering
     tags: noduel
     cancellable: false
     class: ConstructSpell
-    worth: 650
+    worth: 5000
     effects:
         cast:
         -  class: EffectSingle
@@ -4872,7 +4872,7 @@ superblast:
     tags: noduel
     cancellable: false
     class: ConstructSpell
-    worth: 400
+    worth: 3000
     effects:
         cast:
         -  class: EffectSingle
@@ -4939,7 +4939,7 @@ superconvert:
     tags: noduel
     cancellable: false
     class: ConstructSpell
-    worth: 700
+    worth: 4000
     effects:
         cast:
         -  class: EffectSingle
@@ -5525,7 +5525,7 @@ superalter:
     tags: noduel
     cancellable: false
     class: AlterSpell
-    worth: 200
+    worth: 2000
     effects:
         cast:
         -  class: EffectSingle
