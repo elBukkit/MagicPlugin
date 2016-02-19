@@ -11,6 +11,7 @@ import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.TargetingSpell;
 import com.elmakers.mine.bukkit.utility.Target;
 
+@Deprecated
 public class MusicSpell extends TargetingSpell 
 {
 	protected Random random = new Random();

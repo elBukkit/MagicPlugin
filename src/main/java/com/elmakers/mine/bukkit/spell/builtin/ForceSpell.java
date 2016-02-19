@@ -14,6 +14,7 @@ import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.spell.TargetingSpell;
 import com.elmakers.mine.bukkit.utility.Target;
 
+@Deprecated
 public class ForceSpell extends TargetingSpell
 {
 	LivingEntity targetEntity = null;
