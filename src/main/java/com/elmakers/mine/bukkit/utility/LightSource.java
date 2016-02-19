@@ -1,4 +1,4 @@
-package com.elmakers.mine.bukkit.utilities;
+package com.elmakers.mine.bukkit.utility;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
@@ -9,8 +9,6 @@ import java.util.List;
 import org.bukkit.Location;
 import org.bukkit.Server;
 import org.bukkit.entity.Player;
-
-import com.elmakers.mine.bukkit.utility.NMSUtils;
 
 public class LightSource extends NMSUtils {
 	/*

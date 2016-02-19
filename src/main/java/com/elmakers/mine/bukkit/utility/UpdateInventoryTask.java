@@ -1,4 +1,4 @@
-package com.elmakers.mine.bukkit.utilities;
+package com.elmakers.mine.bukkit.utility;
 
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
