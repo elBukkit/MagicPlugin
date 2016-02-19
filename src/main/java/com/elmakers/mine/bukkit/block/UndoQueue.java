@@ -1,0 +1,275 @@
+package com.elmakers.mine.bukkit.block;
+
+import com.elmakers.mine.bukkit.api.data.UndoData;
+import com.elmakers.mine.bukkit.api.magic.Mage;
+import com.elmakers.mine.bukkit.api.magic.MageController;
+import com.elmakers.mine.bukkit.api.spell.Spell;
+import org.bukkit.block.Block;
+
+import java.util.List;
+
+public class UndoQueue implements com.elmakers.mine.bukkit.api.block.UndoQueue
+{
+    private final Mage					owner;
+    private UndoList                    head = null;
+    private UndoList                    tail = null;
+    private int                         size = 0;
+    private int                         maxSize    = 0;
+
+    public UndoQueue(Mage mage)
+    {
+        this.owner = mage;
+    }
+
+    @Override
+    public void add(com.elmakers.mine.bukkit.api.block.UndoList blocks)
+    {
+        if (!(blocks instanceof UndoList)) return;
+        UndoList addList = (UndoList)blocks;
+        if (addList.hasUndoQueue()) {
+            return;
+        }
+        addList.setMage(owner);
+
+        int iterations = 100;
+        while (owner != null && !owner.isLoading() && maxSize > 0 && size > maxSize && iterations-- > 0)
+        {
+            UndoList expired = tail;
+            if (expired != null)
+            {
+                if (expired.isScheduled())
+                {
+                    expired.undo();
+                }
+                else
+                {
+                    expired.commit();
+                }
+            }
+        }
+
+        addList.setUndoQueue(this);
+        size++;
+        if (head == null) {
+            head = addList;
+            tail = addList;
+        } else {
+            addList.setPrevious(head);
+            head.setNext(addList);
+            head = addList;
+        }
+    }
+
+    public void removed(UndoList list)
+    {
+        if (list == head) {
+            head = list.getPrevious();
+        }
+        if (list == tail) {
+            tail = list.getNext();
+        }
+        size--;
+    }
+
+    public int undoScheduled()
+    {
+        int undid = 0;
+        UndoList nextList = tail;
+        while (nextList != null) {
+            UndoList checkList = nextList;
+            nextList = nextList.getNext();
+            if (checkList.isScheduled()) {
+                checkList.undoScheduled(true);
+                undid++;
+            }
+        }
+
+        return undid;
+    }
+
+    public boolean isEmpty()
+    {
+         return head == null;
+    }
+
+    public UndoList getLast()
+    {
+        return head;
+    }
+
+    public UndoList getLast(Block target)
+    {
+        UndoList checkList = head;
+        while (checkList != null)
+        {
+            if (checkList.contains(target))
+            {
+                return checkList;
+            }
+            checkList = checkList.getPrevious();
+        }
+
+        return null;
+    }
+
+    public void setMaxSize(int size)
+    {
+        maxSize = size;
+    }
+
+    public UndoList undo()
+    {
+        return undoRecent(0);
+    }
+
+    public UndoList undo(Block target)
+    {
+        return undoRecent(target, 0);
+    }
+
+    /**
+     * Undo a recent construction performed by this Mage.
+     *
+     * This will restore anything changed by the last-cast
+     * construction spell, and remove that construction from
+     * the Mage's UndoQueue.
+     *
+     * It will skip undoing if the UndoList is older than
+     * the specified timeout.
+     *
+     * @param timeout How long ago the UndoList may have been modified
+     * @return The UndoList that was undone, or null if none.
+     */
+    public UndoList undoRecent(int timeout)
+    {
+        return undoRecent(timeout, null);
+    }
+
+    public UndoList undoRecent(int timeout, String spellKey)
+    {
+        UndoList undo = head;
+        while (undo != null)
+        {
+            if (timeout > 0 && System.currentTimeMillis() - timeout > undo.getModifiedTime())
+            {
+                return null;
+            }
+
+            if (spellKey != null) {
+                Spell spell = undo.getSpell();
+                if (spell == null || !spell.getSpellKey().getBaseKey().equalsIgnoreCase(spellKey)) {
+                    undo = head.getNext();
+                    continue;
+                }
+            }
+
+            undo.undo();
+            return undo;
+        }
+        return null;
+    }
+
+    /**
+     * Undo a recent construction performed by this Mage against the
+     * given Block
+     *
+     * This will restore anything changed by the last-cast
+     * construction spell by this Mage that targeted the specific Block,
+     * even if it was not the most recent Spell cast by that Mage.
+     *
+     * It will skip undoing if the UndoList is older than
+     * the specified timeout.
+     *
+     * @param block The block to check for modifications.
+     * @param timeout How long ago the UndoList may have been modified
+     * @return The UndoList that was undone, or null if the Mage has no constructions for the given Block.
+     */
+    public UndoList undoRecent(Block block, int timeout)
+    {
+        UndoList lastActionOnTarget = getLast(block);
+
+        if (lastActionOnTarget == null)
+        {
+            return null;
+        }
+
+        if (timeout > 0 && System.currentTimeMillis() - timeout > lastActionOnTarget.getModifiedTime())
+        {
+            return null;
+        }
+
+        lastActionOnTarget.undo();
+        return lastActionOnTarget;
+    }
+
+    @Override
+    public void load(UndoData data)
+    {
+        try {
+            if (data == null) return;
+            List<com.elmakers.mine.bukkit.api.block.UndoList> undoList = data.getBlockList();
+            if (undoList != null) {
+                for (com.elmakers.mine.bukkit.api.block.UndoList list : undoList) {
+                    add(list);
+                    if (list.isScheduled())
+                    {
+                        owner.getController().scheduleUndo(list);
+                    }
+                }
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            owner.getController().getLogger().warning("Failed to load undo data: " + ex.getMessage());
+        }
+    }
+
+    @Override
+    public void save(UndoData data)
+    {
+        MageController controller = owner.getController();
+        int maxSize = controller.getMaxUndoPersistSize();
+        try {
+            int discarded = 0;
+            List<com.elmakers.mine.bukkit.api.block.UndoList> undoList = data.getBlockList();
+            UndoList list = tail;
+            while (list != null) {
+                if (maxSize > 0 && list.size() > maxSize) {
+                    discarded++;
+                } else {
+                    undoList.add(list);
+                }
+
+                list = list.getNext();
+            }
+
+            if (discarded > 0) {
+                controller.getLogger().info("Not saving " + discarded + " undo batches for mage " + owner.getName() + ", over max size of " + maxSize);
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            controller.getLogger().warning("Failed to save undo data: " + ex.getMessage());
+        }
+    }
+
+    public int getSize()
+    {
+        return size;
+    }
+
+    @Override
+    public boolean commit()
+    {
+        UndoList nextList = tail;
+        while (nextList != null) {
+            UndoList list = nextList;
+            nextList = nextList.getNext();
+
+            list.commit();
+        }
+
+        head = null;
+        tail = null;
+        size = 0;
+        return true;
+    }
+}
