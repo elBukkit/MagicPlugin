@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.spell.builtin;
 
+import com.elmakers.mine.bukkit.api.block.UndoList;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -116,10 +117,17 @@ public class ShrinkSpell extends BlockSpell
 				}
 			}
 			else if (li.getType() == EntityType.GIANT) {
+				UndoList spawnedList = com.elmakers.mine.bukkit.block.UndoList.getUndoList(li);
 				registerModified(li);
 				li.remove();
 				Entity zombie = targetLocation.getWorld().spawnEntity(targetLocation, EntityType.ZOMBIE);
+				if (zombie instanceof Zombie) {
+					((Zombie)zombie).setBaby(false);
+				}
 				registerForUndo(zombie);
+				if (spawnedList != null) {
+					spawnedList.add(zombie);
+				}
 			}
 			else if (li instanceof Ageable && ((Ageable)li).isAdult() && !(li instanceof Player)) {
 				registerModified(li);

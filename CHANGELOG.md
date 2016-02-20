@@ -5,6 +5,7 @@
  - Added /wand commands: bind, unbind
  - Added /mage command: unbindall
  - Re-balanced Engineer and Architect mana, Architect spell prices. All icons made unique.
+ - Fixed exploit with Monster+Shrink/Grow, added Shrink and Grow back into spell paths.
 
 ## 5.4.8.1
 

@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.spell.builtin;
 
+import com.elmakers.mine.bukkit.api.block.UndoList;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.BlockSpell;
 import com.elmakers.mine.bukkit.utility.Target;
@@ -39,10 +40,14 @@ public class GrowSpell extends BlockSpell
             registerModified(li);
             Zombie zombie = (Zombie)li;
             if (!zombie.isBaby()) {
+                UndoList spawnedList = com.elmakers.mine.bukkit.block.UndoList.getUndoList(li);
                 Location targetLocation = li.getLocation();
                 li.remove();
                 Entity giant = targetLocation.getWorld().spawnEntity(targetLocation, EntityType.GIANT);
                 registerForUndo(giant);
+                if (spawnedList != null) {
+                    spawnedList.add(giant);
+                }
             } else {
                 ((Zombie) li).setBaby(false);
             }

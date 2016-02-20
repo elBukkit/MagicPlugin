@@ -230,6 +230,7 @@ student:
       curse: 0,0,10
       tag: 1,4,5
       phase: 0,0,1
+      grow: 1,10,20
 
 apprentice:
     upgrade: master
@@ -389,6 +390,7 @@ master:
       tame: 0,0,5
       railgun: 10,20,30
       levitate: 0,0,10
+      shrink: 5,20,30
 
 #
 # The move from "master" to engineer requires the player to aquire some basic
@@ -674,8 +676,6 @@ conduit:
       forest: 0,0,10
       permafrost: 0,5,10
       anvil: 0,0,10
-      shrink: 5,20,30
-      grow: 1,10,20
       day: 0,5,10
       night: 0,0,1
       weather: 0,0,5
