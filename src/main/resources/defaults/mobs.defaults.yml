@@ -1,0 +1,59 @@
+mutant_captain:
+  type: pig_zombie
+  item: iron_sword
+  chestplate: gold_chestplate
+  leggings: gold_leggings
+  helmet: gold_helmet
+  boots: gold_boots
+  name: Mutant Captain
+  health: 100
+  default_drops: false
+  drops:
+  - gold_nugget@10
+  - sp:8
+  potion_effects:
+  - type: speed
+    amplifier: 1
+mutant:
+  type: pig_zombie
+  item: iron_sword
+  chestplate: iron_chestplate
+  leggings: iron_leggings
+  helmet: iron_helmet
+  boots: iron_boots
+  name: Mutant
+  health: 50
+  default_drops: false
+  drops:
+  - gold_nugget@5
+mutant_spider:
+  type: cave_spider
+  name: Mutant Spider
+  health: 50
+  drops:
+  - gold_nugget@8
+  - spider_eye@2
+polterghast:
+  type: ghast
+  health: 100
+  name: Polterghast
+  drops:
+  - gold_nugget@10
+  - sp:5
+  potion_effects:
+  - type: speed
+    amplifier: 2
+undead_overlord:
+  type: skeleton
+  skeleton_type: wither
+  item: iron_sword
+  name: Undead Overlord
+  health: 150
+  potion_effects:
+  - type: speed
+    amplifier: 1
+undead_minion:
+  type: skeleton
+  item: iron_sword
+  name: Undead Minion
+  health: 50

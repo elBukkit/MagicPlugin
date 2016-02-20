@@ -18,6 +18,7 @@ public class ConfigurationLoadTask implements Runnable {
     protected ConfigurationSection wands;
     protected ConfigurationSection enchanting;
     protected ConfigurationSection crafting;
+    protected ConfigurationSection mobs;
     protected Map<String, ConfigurationSection> spells;
 
     protected boolean success;
@@ -96,7 +97,15 @@ public class ConfigurationLoadTask implements Runnable {
             logger.log(Level.WARNING, "Error loading crafting.yml", ex);
             success = false;
         }
-
+        // Load mobs
+        try {
+            mobs = controller.loadMobsConfiguration();
+        } catch (Exception ex) {
+            logger.log(Level.WARNING, "Error loading mobs.yml", ex);
+            success = false;
+        }
+        
+        // Finalize configuration load
         if (synchronous) {
             controller.finalizeLoad(this, sender);
         } else {
@@ -105,7 +114,7 @@ public class ConfigurationLoadTask implements Runnable {
             plugin.getServer().getScheduler().runTask(plugin, new Runnable() {
                 @Override
                 public void run() {
-                controller.finalizeLoad(result, sender);
+                    controller.finalizeLoad(result, sender);
                 }
             });
         }

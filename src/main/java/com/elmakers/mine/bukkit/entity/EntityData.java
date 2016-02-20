@@ -14,6 +14,7 @@ import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import org.bukkit.Art;
+import org.bukkit.ChatColor;
 import org.bukkit.DyeColor;
 import org.bukkit.Location;
 import org.bukkit.Rotation;
@@ -201,7 +202,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     }
 
     public EntityData(MageController controller, ConfigurationSection parameters) {
-        name = parameters.getString("name");
+        name = ChatColor.translateAlternateColorCodes('&', parameters.getString("name"));
         if (parameters.contains("health")) {
             health = parameters.getDouble("health", 1);
             maxHealth = health;
@@ -613,6 +614,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         return entity == null ? null : entity.get();
     }
     
+    @Override
     public String getName() {
         return name;
     }
@@ -660,6 +662,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         }
     }
 
+    @Override
     public String describe() {
         if (name != null && !name.isEmpty()) {
             return name;

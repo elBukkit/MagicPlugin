@@ -1,0 +1,16 @@
+#
+# Modify this file to change, add or disable custom mob types.
+#
+# See mobs.defaults.yml for the default mobs. 
+#
+
+#
+# General format:
+#
+# <mobkey>:
+#       enabled: true/false
+#       type: <mob type enum/name>
+#       health: 100
+
+
+
