@@ -1,6 +1,7 @@
 package com.elmakers.mine.bukkit.entity;
 
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -42,6 +43,7 @@ import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.Colorable;
 import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 
 /**
@@ -212,9 +214,28 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         if (entityName != null) {
             type = parseEntityType(entityName);
             if (type == null) {
-                Thread.dumpStack();
-                controller.getLogger().warning(" Invalid entity type: " + entityName);
+                controller.getLogger().log(Level.WARNING, " Invalid entity type: " + entityName);
             }
+        }
+
+        Collection<ConfigurationSection> potionEffectList = ConfigurationUtils.getNodeList(parameters, "potion_effects");
+        if (potionEffectList != null) {
+            potionEffects = new ArrayList<PotionEffect>();
+            for (ConfigurationSection potionEffectSection : potionEffectList) {
+                try {
+                    PotionEffectType effectType = PotionEffectType.getByName(potionEffectSection.getString("type").toUpperCase());
+                    int ticks = (int)(potionEffectSection.getLong("duration", 3600000) / 50);
+                    ticks = potionEffectSection.getInt("ticks", ticks);
+                    int amplifier = potionEffectSection.getInt("amplifier", 0);
+                    boolean ambient = potionEffectSection.getBoolean("ambient", true);
+                    boolean particles = potionEffectSection.getBoolean("particles", true);
+
+                    potionEffects.add(new PotionEffect(effectType, ticks, amplifier, ambient, particles));
+                } catch (Exception ex) {
+                    controller.getLogger().log(Level.WARNING, "Invalid potion effect type: " + potionEffectSection.getString("type", "(null)"), ex);
+                }
+            }
+            hasPotionEffects = !potionEffects.isEmpty();
         }
 
         defaultDrops = parameters.getBoolean("default_drops", true);
@@ -243,7 +264,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
                         String colorString = parameters.getString("horse_color");
                         horseData.color = Horse.Color.valueOf(colorString.toUpperCase());
                     } catch (Exception ex) {
-                        ex.printStackTrace();
+                        controller.getLogger().log(Level.WARNING, "Invalid horse_color: " + parameters.getString("horse_color"), ex);
                     }
                 }
     
@@ -252,7 +273,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
                         String styleString = parameters.getString("horse_style");
                         horseData.style = Horse.Style.valueOf(styleString.toUpperCase());
                     } catch (Exception ex) {
-                        ex.printStackTrace();
+                        controller.getLogger().log(Level.WARNING, "Invalid horse_style: " + parameters.getString("horse_style"), ex);
                     }
                 }
     
@@ -272,7 +293,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
                 rabbitType = Rabbit.Type.valueOf(parameters.getString("rabbit_type").toUpperCase());
             }
         } catch (Exception ex) {
-            ex.printStackTrace();
+            controller.getLogger().log(Level.WARNING, "Invalid entity type or sub-type", ex);
         }
         
         MaterialAndData itemData = ConfigurationUtils.getMaterialAndData(parameters, "item");
