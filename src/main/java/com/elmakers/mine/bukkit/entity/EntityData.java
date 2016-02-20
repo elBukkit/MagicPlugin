@@ -3,20 +3,26 @@ package com.elmakers.mine.bukkit.entity;
 import java.lang.ref.WeakReference;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.logging.Level;
 
+import com.elmakers.mine.bukkit.api.magic.MageController;
+import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
+import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import org.bukkit.Art;
 import org.bukkit.DyeColor;
 import org.bukkit.Location;
 import org.bukkit.Rotation;
 import org.bukkit.block.BlockFace;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Ageable;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.ExperienceOrb;
 import org.bukkit.entity.Hanging;
 import org.bukkit.entity.Horse;
 import org.bukkit.entity.Item;
@@ -26,10 +32,12 @@ import org.bukkit.entity.Ocelot;
 import org.bukkit.entity.Painting;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
+import org.bukkit.entity.Rabbit;
 import org.bukkit.entity.Skeleton;
 import org.bukkit.entity.Skeleton.SkeletonType;
 import org.bukkit.entity.Villager;
 import org.bukkit.entity.Wolf;
+import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.Colorable;
 import org.bukkit.potion.PotionEffect;
@@ -44,6 +52,8 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
 
     protected WeakReference<Entity> entity = null;
     protected UUID uuid = null;
+    
+    protected EntityType type;
     protected EntityExtraData extraData;
     protected Location location;
     protected Vector relativeLocation;
@@ -51,26 +61,43 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     protected boolean isTemporary = false;
     private boolean respawn = false;
     protected String name = null;
-    protected EntityType type;
     protected Art art;
     protected BlockFace facing;
     protected Rotation rotation;
     protected ItemStack item;
-    protected double health = 1;
+
+    protected Double maxHealth;
+    protected Double health;
+    protected Integer airLevel;
     protected boolean isBaby;
     protected int fireTicks;
-    protected int airLevel;
+    
     protected DyeColor dyeColor;
     protected SkeletonType skeletonType;
     protected Ocelot.Type ocelotType;
     protected Villager.Profession villagerProfession;
+    protected Rabbit.Type rabbitType = null;
+    
     protected Collection<PotionEffect> potionEffects = null;
-    protected boolean hasPotionEffects = false;
+
     protected Vector velocity = null;
+    protected boolean hasPotionEffects = false;
     protected boolean hasVelocity = false;
     protected boolean isHanging = false;
     protected boolean isLiving = false;
     protected boolean isProjectile = false;
+
+    protected MaterialAndData itemInHand;
+    protected MaterialAndData helmet;
+    protected MaterialAndData chestplate;
+    protected MaterialAndData leggings;
+    protected MaterialAndData boots;
+    
+    protected Integer xp;
+    protected Integer dropXp;
+
+    protected boolean defaultDrops;
+    protected List<String> drops;
 
     public EntityData(Entity entity) {
         this(entity.getLocation(), entity);
@@ -85,6 +112,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         this.type = entity.getType();
         this.location = location;
         this.fireTicks = entity.getFireTicks();
+        name = entity.getCustomName();
 
         // This can sometimes throw an exception on an invalid
         // entity velocity!
@@ -105,10 +133,16 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
 
         if (entity instanceof LivingEntity) {
             LivingEntity li = (LivingEntity)entity;
-            name = li.getCustomName();
             this.health = li.getHealth();
             this.potionEffects = li.getActivePotionEffects();
             this.airLevel = li.getRemainingAir();
+            this.maxHealth = li.getMaxHealth();
+            
+            itemInHand = getItem(li.getEquipment().getItemInHand());
+            helmet = getItem(li.getEquipment().getHelmet());
+            chestplate = getItem(li.getEquipment().getChestplate());
+            leggings = getItem(li.getEquipment().getLeggings());
+            boots = getItem(li.getEquipment().getBoots());
         }
 
         if (entity instanceof Ageable) {
@@ -145,13 +179,83 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         } else if (entity instanceof Ocelot) {
             Ocelot ocelot = (Ocelot)entity;
             ocelotType = ocelot.getCatType();
+        } else if (entity instanceof Rabbit) {
+            Rabbit rabbit = (Rabbit)entity;
+            rabbitType = rabbit.getRabbitType();
         } else if (entity instanceof ArmorStand) {
             extraData = new EntityArmorStandData((ArmorStand)entity);
+        } else if (entity instanceof ExperienceOrb) {
+            xp = ((ExperienceOrb)entity).getExperience();
         }
+    }
+    
+    private MaterialAndData getItem(ItemStack item) {
+        return item == null ? null : new MaterialAndData(item);
     }
 
     private EntityData(EntityType type) {
         this.type = type;
+    }
+
+    public EntityData(MageController controller, ConfigurationSection parameters) {
+        name = parameters.getString("name");
+        if (parameters.contains("health")) {
+            health = parameters.getDouble("health", 1);
+            maxHealth = health;
+        }
+        if (parameters.contains("max_health")) {
+            maxHealth = parameters.getDouble("max_health", 1);
+        }
+
+        String entityName = parameters.getString("type");
+        if (entityName != null) {
+            type = parseEntityType(entityName);
+            if (type == null) {
+                Thread.dumpStack();
+                controller.getLogger().warning(" Invalid entity type: " + entityName);
+            }
+        }
+
+        defaultDrops = parameters.getBoolean("default_drops", true);
+        if (parameters.contains("xp")) {
+            xp = parameters.getInt("xp");
+        }
+        if (parameters.contains("drop_xp")) {
+            dropXp = parameters.getInt("drop_xp");
+        }
+        drops = ConfigurationUtils.getStringList(parameters, "drops");
+
+        String entitySubType = parameters.getString("sub_type");
+        if (entitySubType != null && entitySubType.length() > 0) {
+            try {
+                switch (type) {
+                    case HORSE:
+                        EntityHorseData horseData = new EntityHorseData();
+                        horseData.variant = Horse.Variant.valueOf(entitySubType.toUpperCase());
+                        extraData = horseData;
+                        break;
+                    case SKELETON:
+                        skeletonType = Skeleton.SkeletonType.valueOf(entitySubType.toUpperCase());
+                        break;
+                    case OCELOT:
+                        ocelotType = Ocelot.Type.valueOf(entitySubType.toUpperCase());
+                        break;
+                    case RABBIT:
+                        rabbitType = Rabbit.Type.valueOf(entitySubType.toUpperCase());
+                        break;
+                }
+            } catch (Throwable ex) {
+            }
+        }
+        
+        MaterialAndData itemData = ConfigurationUtils.getMaterialAndData(parameters, "item");
+        item = itemData == null ? null : itemData.getItemStack(parameters.getInt("amount", 1));
+        
+        itemInHand = ConfigurationUtils.getMaterialAndData(parameters, "item");
+        helmet = ConfigurationUtils.getMaterialAndData(parameters, "helmet");
+        chestplate = ConfigurationUtils.getMaterialAndData(parameters, "chestplate");
+        leggings = ConfigurationUtils.getMaterialAndData(parameters, "leggings");
+        boots = ConfigurationUtils.getMaterialAndData(parameters, "boots");
     }
 
     public static EntityData loadPainting(Vector location, Art art, BlockFace direction) {
@@ -174,6 +278,23 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     public void setEntity(Entity entity) {
         this.entity = entity == null ? null : new WeakReference<Entity>(entity);
         this.uuid = entity == null ? null : entity.getUniqueId();
+    }
+
+    @SuppressWarnings("deprecation")
+    public static EntityType parseEntityType(String typeString)
+    {
+        if (typeString == null) return null;
+
+        EntityType returnType = null;
+        try {
+            returnType = EntityType.valueOf(typeString.toUpperCase());
+        } catch (Exception ex) {
+            returnType = null;
+        }
+        if (returnType == null) {
+            returnType = EntityType.fromName(typeString);
+        }
+        return returnType;
     }
 
     /**
@@ -247,6 +368,11 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
             }
         }
         return copy;
+    }
+    
+    public Entity spawn(Location location) {
+        this.location = location;
+        return spawn();
     }
 
     @Override
@@ -330,6 +456,11 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         } else if (entity instanceof Ocelot) {
             Ocelot ocelot = (Ocelot)entity;
             ocelot.setCatType(ocelotType);
+        } else if (entity instanceof Rabbit) {
+            Rabbit rabbit = (Rabbit)entity;
+            rabbit.setRabbitType(rabbitType);
+        } else if (entity instanceof ExperienceOrb && xp != null) {
+            ((ExperienceOrb)entity).setExperience(xp);
         }
 
         if (entity instanceof LivingEntity) {
@@ -346,15 +477,23 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
                 }
             }
 
-            if (name != null && name.length() > 0) {
-                li.setCustomName(name);
-            }
-
             try {
-                li.setHealth(Math.min(health, li.getMaxHealth()));
-                li.setRemainingAir(Math.min(airLevel, li.getRemainingAir()));
+                copyEquipmentTo(li);
+                if (maxHealth != null) {
+                    li.setMaxHealth(maxHealth);
+                }
+                if (health != null) {
+                    li.setHealth(Math.min(health, li.getMaxHealth()));
+                }
+                if (airLevel != null) {
+                    li.setRemainingAir(Math.min(airLevel, li.getRemainingAir()));
+                }
             } catch (Throwable ex) {
             }
+        }
+
+        if (name != null && name.length() > 0) {
+            entity.setCustomName(name);
         }
 
         if (hasMoved && location != null) {
@@ -366,6 +505,24 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         }
 
         return true;
+    }
+
+    public void copyEquipmentTo(LivingEntity entity) {
+        if (itemInHand != null) {
+            entity.getEquipment().setItemInHand(itemInHand.getItemStack(1));
+        }
+        if (helmet != null) {
+            entity.getEquipment().setHelmet(helmet.getItemStack(1));
+        }
+        if (chestplate != null) {
+            entity.getEquipment().setChestplate(chestplate.getItemStack(1));
+        }
+        if (leggings != null) {
+            entity.getEquipment().setLeggings(leggings.getItemStack(1));
+        }
+        if (boots != null) {
+            entity.getEquipment().setBoots(boots.getItemStack(1));
+        }
     }
 
     public void setHasMoved(boolean moved) {
@@ -395,6 +552,10 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     public Entity getEntity() {
         return entity == null ? null : entity.get();
     }
+    
+    public String getName() {
+        return name;
+    }
 
     public EntityData clone() {
         try {
@@ -418,5 +579,43 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
 
     public void setRespawn(boolean respawn) {
         this.respawn = respawn;
+    }
+
+    public void modifyDrops(MageController controller, EntityDeathEvent event) {
+        if (dropXp != null) {
+            event.setDroppedExp(dropXp);
+        }
+
+        List<ItemStack> dropList = event.getDrops();
+        if (!defaultDrops) {
+            dropList.clear();
+        }
+        if (drops != null) {
+            for (String key : drops) {
+                ItemStack item = controller.createItem(key);
+                if (item != null) {
+                    dropList.add(item);
+                }
+            }
+        }
+    }
+
+    public String describe() {
+        if (name != null && !name.isEmpty()) {
+            return name;
+        }
+        if (type == null) return "Unknown";
+
+        String name = type.name();
+        if (skeletonType != null) {
+            name += ":" + skeletonType;
+        } else if (type != null) {
+            name += ":" + type;
+        } else if (ocelotType != null) {
+            name += ":" + ocelotType;
+        } else if (rabbitType != null) {
+            name += ":" + rabbitType;
+        }
+        return name;
     }
 }

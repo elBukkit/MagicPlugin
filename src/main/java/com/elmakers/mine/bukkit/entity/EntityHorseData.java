@@ -10,9 +10,9 @@ public class EntityHorseData extends EntityExtraData {
     public Horse.Style style;
     public ItemStack saddle;
     public ItemStack armor;
-    public int domestication;
-    public int maxDomestication;
-    public double jumpStrength;
+    public Integer domestication;
+    public Integer maxDomestication;
+    public Double jumpStrength;
 
     public EntityHorseData() {
 
@@ -39,9 +39,15 @@ public class EntityHorseData extends EntityExtraData {
         horse.setStyle(style);
         horse.getInventory().setSaddle(saddle);
         horse.getInventory().setArmor(armor);
-        horse.setDomestication(domestication);
-        horse.setMaxDomestication(maxDomestication);
-        horse.setJumpStrength(jumpStrength);
+        if (domestication != null) {
+            horse.setDomestication(domestication);
+        }
+        if (maxDomestication != null) {
+            horse.setMaxDomestication(maxDomestication);
+        }
+        if (jumpStrength != null) {
+            horse.setJumpStrength(jumpStrength);
+        }
     }
 
     @Override
