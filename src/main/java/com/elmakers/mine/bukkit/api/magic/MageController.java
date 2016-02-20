@@ -308,7 +308,7 @@ public interface MageController {
     public String getSpellArgs(ItemStack item);
     
     public Set<String> getMobKeys();
-    public Entity spawnMob(String key);
+    public Entity spawnMob(String key, Location location);
     public EntityData getMob(String key);
     public EntityData loadMob(ConfigurationSection configuration);
 }
