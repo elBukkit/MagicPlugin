@@ -232,7 +232,6 @@ commands:
     usage: /mage unbind
   mgive:
     description: Give players items
-    usage: /mgive <Player> [itemname] <amount>
     permission: Magic.commands.mgive
     usage: |
         /mgive <Player> [itemname] <amount>
@@ -241,6 +240,13 @@ commands:
         /mgive brush:sea_lantern
         /mgive sea_lantern 32
         /mgive NathanWolf wolf
+  mmob:
+    description: Manage Magic Mobs
+    permission: Magic.commands.mmob
+    usage: |
+        /mmob spawn mutant    Spawn a custom Mutant mob
+        /mmob spawn creeper   Spawn a vanilla creeper
+        /mmob clear           Remove all tracked mobs
   mmap:
     description: Create and manage Magic image maps
     permission: Magic.commands.mmap
@@ -319,6 +325,10 @@ permissions:
     default: op
   Magic.commands.mtrait:
     description: Player may manage Magic NPCs
+    type: boolean
+    default: op
+  Magic.commands.mmob:
+    description: Player may spawn vanilla and magic mobs
     type: boolean
     default: op
   Magic.commands.cast:

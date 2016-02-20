@@ -4291,9 +4291,16 @@ public Set<Material> getMaterialSet(String name)
     }
 
     @Override
-    public Entity spawnMob(String key) {
+    public Entity spawnMob(String key, Location location) {
         EntityData mobType = mobs.get(key);
-        return mobType == null ? null : mobType.spawn();
+        if (mobType != null) {
+            return mobType.spawn(location);
+        }
+        EntityType entityType = com.elmakers.mine.bukkit.entity.EntityData.parseEntityType(key);
+        if (entityType == null) {
+            return null;
+        }
+        return location.getWorld().spawnEntity(location, entityType);
     }
 
     @Override
