@@ -6,7 +6,7 @@ import com.elmakers.mine.bukkit.api.effect.EffectPlayer;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
-import com.elmakers.mine.bukkit.block.MaterialAndData;
+import com.elmakers.mine.bukkit.entity.EntityData;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
@@ -17,21 +17,13 @@ import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.entity.Ageable;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
-import org.bukkit.entity.ExperienceOrb;
 import org.bukkit.entity.Horse;
-import org.bukkit.entity.Item;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Ocelot;
-import org.bukkit.entity.PigZombie;
 import org.bukkit.entity.Rabbit;
-import org.bukkit.entity.Sheep;
 import org.bukkit.entity.Skeleton;
-import org.bukkit.entity.Slime;
-import org.bukkit.entity.Wolf;
-import org.bukkit.entity.Zombie;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.util.Vector;
@@ -51,44 +43,25 @@ public class SpawnEntityAction extends BaseSpellAction
     private boolean track = true;
     private boolean loot = false;
     private boolean setTarget = false;
-    private String entityName;
-    private EntityType entityType;
-    private boolean spawnBaby = false;
+    
     private Vector direction = null;
     private double speed;
     private double dyOffset;
-    private MaterialAndData item = null;
-    private int amount;
-    private Skeleton.SkeletonType skeletonType = null;
-    private Horse.Variant horseVariant = null;
-    private Horse.Color horseColor = null;
-    private Horse.Style horseStyle = null;
-    private Double horseJumpStrength;
-    private Ocelot.Type ocelotType = null;
-    private Rabbit.Type rabbitType = null;
-    private DyeColor color = null;
-    private Double health;
+    
+    private EntityData entityData;
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters) {
         track = parameters.getBoolean("track", true);
         loot = parameters.getBoolean("loot", false);
-        entityName = parameters.getString("name", "");
-        spawnBaby = parameters.getBoolean("baby", false);
         setTarget = parameters.getBoolean("set_target", false);
         speed = parameters.getDouble("speed", 0);
         direction = ConfigurationUtils.getVector(parameters, "direction");
         dyOffset = parameters.getDouble("dy_offset", 0);
-        item = ConfigurationUtils.getMaterialAndData(parameters, "item");
-        amount = parameters.getInt("amount", 1);
-        try {
-            String entityTypeName = parameters.getString("type", "");
-            if (!entityTypeName.isEmpty())
-            {
-                entityType = EntityType.valueOf(entityTypeName.toUpperCase());
-            }
-        } catch(Exception ex) {
-            entityType = null;
+        
+        if (parameters.contains("type"))
+        {
+            entityData = new EntityData(context.getController(), parameters);
         }
 
         if (parameters.contains("reason"))
@@ -99,82 +72,6 @@ public class SpawnEntityAction extends BaseSpellAction
             } catch (Exception ex) {
                 spawnReason = CreatureSpawnEvent.SpawnReason.EGG;
             }
-        }
-
-        horseVariant = null;
-        if (parameters.contains("horse_variant")) {
-            try {
-                String variantString = parameters.getString("horse_variant");
-                horseVariant = Horse.Variant.valueOf(variantString.toUpperCase());
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
-        }
-
-        horseColor = null;
-        if (parameters.contains("horse_color")) {
-            try {
-                String colorString = parameters.getString("horse_color");
-                horseColor = Horse.Color.valueOf(colorString.toUpperCase());
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
-        }
-
-        horseStyle = null;
-        if (parameters.contains("horse_style")) {
-            try {
-                String styleString = parameters.getString("horse_style");
-                horseStyle = Horse.Style.valueOf(styleString.toUpperCase());
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
-        }
-
-        horseJumpStrength = null;
-        if (parameters.contains("horse_jump_strength")) {
-            horseJumpStrength = parameters.getDouble("horse_jump_strength");
-        }
-
-        ocelotType = null;
-        if (parameters.contains("ocelot_type")) {
-            try {
-                String variantString = parameters.getString("ocelot_type");
-                ocelotType = Ocelot.Type.valueOf(variantString.toUpperCase());
-            } catch (Exception ex) {
-            }
-        }
-
-        color = null;
-        if (parameters.contains("color")) {
-            try {
-                String colorString = parameters.getString("color");
-                color = DyeColor.valueOf(colorString.toUpperCase());
-            } catch (Exception ex) {
-            }
-        }
-
-        skeletonType = null;
-        if (parameters.contains("skeleton_type")) {
-            try {
-                String skeletonString = parameters.getString("skeleton_type");
-                skeletonType = Skeleton.SkeletonType.valueOf(skeletonString.toUpperCase());
-            } catch (Exception ex) {
-            }
-        }
-
-        rabbitType = null;
-        if (parameters.contains("rabbit_type")) {
-            try {
-                String rabbitString = parameters.getString("rabbit_type");
-                rabbitType = Rabbit.Type.valueOf(rabbitString.toUpperCase());
-            } catch (Exception ex) {
-            }
-        }
-
-        health = null;
-        if (parameters.contains("health")) {
-            health = parameters.getDouble("health");
         }
     }
 
@@ -195,98 +92,31 @@ public class SpawnEntityAction extends BaseSpellAction
         spawnLocation.setPitch(sourceLocation.getPitch());
         spawnLocation.setYaw(sourceLocation.getYaw());
 
-        EntityType useType = entityType;
-        if (useType == null)
+        if (entityData == null)
         {
             String randomType = RandomUtils.weightedRandom(entityTypeProbability);
             try {
-                useType = EntityType.valueOf(randomType.toUpperCase());
+                entityData = new EntityData(EntityType.valueOf(randomType.toUpperCase()));
             } catch (Throwable ex) {
-                useType = null;
+                entityData = null;
             }
         }
-        if (useType == null)
+        if (entityData == null)
         {
             return SpellResult.FAIL;
         }
 
-        final Entity spawnedEntity = spawnEntity(spawnLocation, entityType);
+        final Entity spawnedEntity = entityData.spawn(spawnLocation, spawnReason);
         if (spawnedEntity == null) {
             return SpellResult.FAIL;
         }
 
         MageController controller = context.getController();
         LivingEntity livingEntity = spawnedEntity instanceof LivingEntity ? (LivingEntity)spawnedEntity : null;
-        if (entityName != null && !entityName.isEmpty() && livingEntity != null)
-        {
-            livingEntity.setCustomName(entityName);
-        }
         if (!loot)
         {
-            livingEntity.setMetadata("nodrops", new FixedMetadataValue(controller.getPlugin(), true));
+            spawnedEntity.setMetadata("nodrops", new FixedMetadataValue(controller.getPlugin(), true));
         }
-        if (spawnedEntity instanceof Ageable) {
-            if (spawnBaby) {
-                ((Ageable)spawnedEntity).setBaby();
-            } else {
-                ((Ageable)spawnedEntity).setAdult();
-            }
-        } else if (spawnedEntity instanceof Zombie) {
-            ((Zombie)spawnedEntity).setBaby(spawnBaby);
-        } else if (spawnedEntity instanceof PigZombie) {
-            ((PigZombie)spawnedEntity).setBaby(spawnBaby);
-        } else if (spawnedEntity instanceof Slime && spawnBaby) {
-            Slime slime = (Slime)spawnedEntity;
-            slime.setSize(slime.getSize() - 2);
-        }
-
-        if (spawnedEntity instanceof Horse) {
-            Horse horse = (Horse)spawnedEntity;
-            if (horseVariant != null) {
-                horse.setVariant(horseVariant);
-            }
-            if (horseColor != null) {
-                horse.setColor(horseColor);
-            }
-            if (horseStyle != null) {
-                horse.setStyle(horseStyle);
-            }
-            if (horseJumpStrength != null) {
-                horse.setJumpStrength(horseJumpStrength);
-            }
-        }
-
-        if (spawnedEntity instanceof Rabbit && rabbitType != null) {
-            Rabbit rabbit = (Rabbit)spawnedEntity;
-            rabbit.setRabbitType(rabbitType);
-        }
-        if (spawnedEntity instanceof Ocelot && ocelotType != null) {
-            Ocelot ocelot = (Ocelot)spawnedEntity;
-            ocelot.setCatType(ocelotType);
-        }
-        if (spawnedEntity instanceof Skeleton && skeletonType != null) {
-            Skeleton skeleton = (Skeleton)spawnedEntity;
-            skeleton.setSkeletonType(skeletonType);
-        }
-        if (spawnedEntity instanceof Sheep && color != null) {
-            Sheep sheep = (Sheep)spawnedEntity;
-            sheep.setColor(color);
-        }
-        if (spawnedEntity instanceof Wolf && color != null) {
-            Wolf wolf = (Wolf)spawnedEntity;
-            wolf.setCollarColor(color);
-        }
-        if (spawnedEntity instanceof Item && item != null) {
-            ((Item)spawnedEntity).setItemStack(item.getItemStack(amount));
-        }
-        if (spawnedEntity instanceof ExperienceOrb) {
-            ((ExperienceOrb)spawnedEntity).setExperience(amount);
-        }
-        if (spawnedEntity instanceof LivingEntity && health != null) {
-            ((LivingEntity)spawnedEntity).setMaxHealth(health);
-            ((LivingEntity)spawnedEntity).setHealth(health);
-        }
-
         if (speed > 0)
         {
             Vector motion = direction;
@@ -325,16 +155,6 @@ public class SpawnEntityAction extends BaseSpellAction
 
 	}
 
-	protected Entity spawnEntity(Location target, EntityType famType)
-	{
-        Entity entity = CompatibilityUtils.spawnEntity(target, famType, spawnReason);
-        if (entity != null && item != null && entity instanceof Skeleton) {
-            Skeleton skellie = (Skeleton)entity;
-            skellie.getEquipment().setItemInHand(item.getItemStack(1));
-        }
-		return entity;
-	}
-
     @Override
     public void initialize(Spell spell, ConfigurationSection parameters)
     {
@@ -370,6 +190,7 @@ public class SpawnEntityAction extends BaseSpellAction
         parameters.add("reason");
         parameters.add("skeleton_type");
         parameters.add("ocelot_type");
+        parameters.add("rabbit_type");
         parameters.add("horse_variant");
         parameters.add("horse_style");
         parameters.add("horse_color");
@@ -392,6 +213,10 @@ public class SpawnEntityAction extends BaseSpellAction
             }
         } else if (parameterKey.equals("ocelot_type")) {
             for (Ocelot.Type type : Ocelot.Type.values()) {
+                examples.add(type.name().toLowerCase());
+            }
+        } else if (parameterKey.equals("rabbity_type")) {
+            for (Rabbit.Type type : Rabbit.Type.values()) {
                 examples.add(type.name().toLowerCase());
             }
         } else if (parameterKey.equals("horse_variant")) {

@@ -34,11 +34,17 @@ public class EntityHorseData extends EntityExtraData {
         if (!(entity instanceof Horse)) return;
         Horse horse = (Horse)entity;
 
-        horse.setColor(color);
-        horse.setVariant(variant);
-        horse.setStyle(style);
         horse.getInventory().setSaddle(saddle);
         horse.getInventory().setArmor(armor);
+        if (color != null) {
+            horse.setColor(color);
+        }
+        if (variant != null) {
+            horse.setVariant(variant);
+        }
+        if (style != null) {
+            horse.setStyle(style);
+        }
         if (domestication != null) {
             horse.setDomestication(domestication);
         }

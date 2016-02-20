@@ -37,6 +37,7 @@ import org.bukkit.entity.Skeleton;
 import org.bukkit.entity.Skeleton.SkeletonType;
 import org.bukkit.entity.Villager;
 import org.bukkit.entity.Wolf;
+import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.Colorable;
@@ -193,7 +194,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         return item == null ? null : new MaterialAndData(item);
     }
 
-    private EntityData(EntityType type) {
+    public EntityData(EntityType type) {
         this.type = type;
     }
 
@@ -224,28 +225,54 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
             dropXp = parameters.getInt("drop_xp");
         }
         drops = ConfigurationUtils.getStringList(parameters, "drops");
-
-        String entitySubType = parameters.getString("sub_type");
-        if (entitySubType != null && entitySubType.length() > 0) {
-            try {
-                switch (type) {
-                    case HORSE:
-                        EntityHorseData horseData = new EntityHorseData();
-                        horseData.variant = Horse.Variant.valueOf(entitySubType.toUpperCase());
-                        extraData = horseData;
-                        break;
-                    case SKELETON:
-                        skeletonType = Skeleton.SkeletonType.valueOf(entitySubType.toUpperCase());
-                        break;
-                    case OCELOT:
-                        ocelotType = Ocelot.Type.valueOf(entitySubType.toUpperCase());
-                        break;
-                    case RABBIT:
-                        rabbitType = Rabbit.Type.valueOf(entitySubType.toUpperCase());
-                        break;
+        
+        try {
+            if (type == EntityType.HORSE) {
+                EntityHorseData horseData = new EntityHorseData();
+                if (parameters.contains("horse_variant")) {
+                    try {
+                        String variantString = parameters.getString("horse_variant");
+                        horseData.variant = Horse.Variant.valueOf(variantString.toUpperCase());
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
                 }
-            } catch (Throwable ex) {
+    
+                if (parameters.contains("horse_color")) {
+                    try {
+                        String colorString = parameters.getString("horse_color");
+                        horseData.color = Horse.Color.valueOf(colorString.toUpperCase());
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
+                }
+    
+                if (parameters.contains("horse_style")) {
+                    try {
+                        String styleString = parameters.getString("horse_style");
+                        horseData.style = Horse.Style.valueOf(styleString.toUpperCase());
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
+                }
+    
+                if (parameters.contains("horse_jump_strength")) {
+                    horseData.jumpStrength = parameters.getDouble("horse_jump_strength");
+                }
+                
+                extraData = horseData;
             }
+            else if (type == EntityType.SKELETON && parameters.contains("skeleton_type")) {
+                skeletonType = Skeleton.SkeletonType.valueOf(parameters.getString("skeleton_type").toUpperCase());
+            }
+            else if (type == EntityType.OCELOT && parameters.contains("ocelot_type")) {
+                ocelotType = Ocelot.Type.valueOf(parameters.getString("ocelot_type").toUpperCase());
+            }
+            else if (type == EntityType.RABBIT && parameters.contains("rabbit_type")) {
+                rabbitType = Rabbit.Type.valueOf(parameters.getString("rabbit_type").toUpperCase());
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
         
         MaterialAndData itemData = ConfigurationUtils.getMaterialAndData(parameters, "item");
@@ -331,27 +358,29 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         return health;
     }
 
-    protected Entity trySpawn() {
+    protected Entity trySpawn(CreatureSpawnEvent.SpawnReason reason) {
         Entity spawned = null;
-        try {
-            switch (type) {
-            case PLAYER:
-                // Nope!
-            break;
-            case PAINTING:
-                spawned = CompatibilityUtils.spawnPainting(location, facing, art);
-            break;
-            case ITEM_FRAME:
-                spawned = CompatibilityUtils.spawnItemFrame(location, facing, rotation, item);
-                break;
-            case DROPPED_ITEM:
-                spawned = location.getWorld().dropItem(location, item);
-                break;
-            default:
-                spawned = location.getWorld().spawnEntity(location, type);
+        if (type != null && type != EntityType.PLAYER) {
+            try {
+                if (reason != null) {
+                    spawned = CompatibilityUtils.spawnEntity(location, type, reason);
+                } else
+                    switch (type) {
+                        case PAINTING:
+                            spawned = CompatibilityUtils.spawnPainting(location, facing, art);
+                            break;
+                        case ITEM_FRAME:
+                            spawned = CompatibilityUtils.spawnItemFrame(location, facing, rotation, item);
+                            break;
+                        case DROPPED_ITEM:
+                            spawned = location.getWorld().dropItem(location, item);
+                            break;
+                        default:
+                            spawned = location.getWorld().spawnEntity(location, type);
+                    }
+            } catch (Exception ex) {
+                org.bukkit.Bukkit.getLogger().log(Level.WARNING, "Error restoring entity type " + getType() + " at " + getLocation(), ex);
             }
-        } catch (Exception ex) {
-            org.bukkit.Bukkit.getLogger().log(Level.WARNING, "Error restoring entity type " + getType() + " at " + getLocation(), ex);
         }
         return spawned;
     }
@@ -369,16 +398,20 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         }
         return copy;
     }
-    
-    public Entity spawn(Location location) {
-        this.location = location;
-        return spawn();
-    }
 
     @Override
     public Entity spawn() {
-        if (location == null) return null;
-        Entity spawned = trySpawn();
+        return spawn(null, null);
+    }
+
+    public Entity spawn(Location location) {
+        return spawn(location, null);
+    }
+    
+    public Entity spawn(Location location, CreatureSpawnEvent.SpawnReason reason) {
+        if (location != null) this.location = location;
+        else if (location == null) return null;
+        Entity spawned = trySpawn(reason);
         if (spawned != null) {
             modify(spawned);
         }
@@ -397,7 +430,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
             if (respawnedEntity != null) {
                 entity = respawnedEntity.get();
             } else {
-                entity = trySpawn();
+                entity = trySpawn(null);
                 if (entity != null) {
                     respawned.put(uuid, new WeakReference<Entity>(entity));
                 }
@@ -427,36 +460,42 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
             }
         }
 
-        if (entity instanceof Colorable) {
+        if (entity instanceof Colorable && dyeColor != null) {
             Colorable colorable = (Colorable)entity;
             colorable.setColor(dyeColor);
         }
 
         if (entity instanceof Painting) {
             Painting painting = (Painting) entity;
-            painting.setArt(art, true);
-            painting.setFacingDirection(facing, true);
+            if (art != null) {
+                painting.setArt(art, true);
+            }
+            if (facing != null) {
+                painting.setFacingDirection(facing, true);
+            }
         }
         else if (entity instanceof ItemFrame) {
             ItemFrame itemFrame = (ItemFrame)entity;
             itemFrame.setItem(item);
-            itemFrame.setFacingDirection(facing, true);
+            if (facing != null) {
+                itemFrame.setFacingDirection(facing, true);
+            }
         } else if (entity instanceof Item) {
             Item droppedItem = (Item)entity;
             droppedItem.setItemStack(item);
-        } else if (entity instanceof Skeleton) {
+        } else if (entity instanceof Skeleton && skeletonType != null) {
             Skeleton skeleton = (Skeleton)entity;
             skeleton.setSkeletonType(skeletonType);
-        } else if (entity instanceof Villager) {
+        } else if (entity instanceof Villager && villagerProfession != null) {
             Villager villager = (Villager)entity;
             villager.setProfession(villagerProfession);
-        } else if (entity instanceof Wolf) {
+        } else if (entity instanceof Wolf && dyeColor != null) {
             Wolf wolf = (Wolf)entity;
             wolf.setCollarColor(dyeColor);
-        } else if (entity instanceof Ocelot) {
+        } else if (entity instanceof Ocelot && ocelotType != null) {
             Ocelot ocelot = (Ocelot)entity;
             ocelot.setCatType(ocelotType);
-        } else if (entity instanceof Rabbit) {
+        } else if (entity instanceof Rabbit && rabbitType != null) {
             Rabbit rabbit = (Rabbit)entity;
             rabbit.setRabbitType(rabbitType);
         } else if (entity instanceof ExperienceOrb && xp != null) {
