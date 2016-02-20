@@ -8,6 +8,7 @@ import java.util.logging.Logger;
 
 import com.elmakers.mine.bukkit.api.block.CurrencyItem;
 import com.elmakers.mine.bukkit.api.block.MaterialAndData;
+import com.elmakers.mine.bukkit.api.entity.EntityData;
 import com.elmakers.mine.bukkit.api.maps.MapController;
 import com.elmakers.mine.bukkit.api.wand.WandUpgradePath;
 import org.bukkit.Location;
@@ -305,4 +306,9 @@ public interface MageController {
     public void setForceSpawn(boolean force);
     public String getSpell(ItemStack item);
     public String getSpellArgs(ItemStack item);
+    
+    public Set<String> getMobKeys();
+    public Entity spawnMob(String key);
+    public EntityData getMob(String key);
+    public EntityData loadMob(ConfigurationSection configuration);
 }

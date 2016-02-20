@@ -10,13 +10,16 @@ import org.bukkit.inventory.ItemStack;
 public interface EntityData {
     public Location getLocation();
     public EntityType getType();
+    public String getName();
     public Art getArt();
     public BlockFace getFacing();
     public ItemStack getItem();
     public double getHealth();
     public void setHasMoved(boolean hasMoved);
     public Entity spawn();
+    public Entity spawn(Location location);
     public Entity undo();
     public boolean modify(Entity entity);
     public EntityData getRelativeTo(Location center);
+    public String describe();
 }
