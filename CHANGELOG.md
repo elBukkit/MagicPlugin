@@ -2,6 +2,8 @@
 
 ## 5.5
 
+ - Added /mmob spawn command, for spawning vanilla or custom mobs
+ - Added mobs.yml, mobs.defaults.yml - for creating custom Magic Mobs
  - Added /wand commands: bind, unbind
  - Added /mage command: unbindall
  - Re-balanced Engineer and Architect mana, Architect spell prices. All icons made unique.

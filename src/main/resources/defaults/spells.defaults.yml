@@ -6508,9 +6508,11 @@ grow:
     icon_url: http://textures.minecraft.net/texture/b54fa4fb25cef58bc69cac7292e32e449322cac2ace4810a8a0749b2fbbb154
     icon: skull_item:1
     category: combat
-    class: GrowSpell
     worth: 75
     earns_sp: 8
+    actions:
+      cast:
+      - class: GrowEntity
     effects:
         cast:
         -  class: EffectSingle
