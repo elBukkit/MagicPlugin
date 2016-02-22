@@ -6457,9 +6457,11 @@ shrink:
     icon: skull_item
     icon_url: http://textures.minecraft.net/texture/dd91c092cb93f6f4152629a02ddf617557381a16694a46eba3468446363c08e
     category: combat
-    class: ShrinkSpell
     worth: 750
     earns_sp: 8
+    actions:
+      cast:
+      - class: ShrinkEntity
     effects:
         cast:
         -  class: EffectSingle

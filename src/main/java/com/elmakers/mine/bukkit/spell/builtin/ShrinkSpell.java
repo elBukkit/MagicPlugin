@@ -26,6 +26,7 @@ import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import com.elmakers.mine.bukkit.utility.Target;
 import org.bukkit.inventory.meta.SkullMeta;
 
+@Deprecated
 public class ShrinkSpell extends BlockSpell
 {
 	private int             DEFAULT_PLAYER_DAMAGE = 1;

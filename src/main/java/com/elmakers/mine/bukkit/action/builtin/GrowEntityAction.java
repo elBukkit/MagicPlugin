@@ -30,7 +30,7 @@ public class GrowEntityAction extends BaseSpellAction
     public void prepare(CastContext context, ConfigurationSection parameters)
     {
         super.prepare(context, parameters);
-        skeletons = parameters.getBoolean("skeletons", true);
+        skeletons = parameters.getBoolean("skeletons", false);
     }
 
     @Override
@@ -110,11 +110,10 @@ public class GrowEntityAction extends BaseSpellAction
 
     @Override
     public void getParameterOptions(Spell spell, String parameterKey, Collection<String> examples) {
-        if (parameterKey.equals("skeleton")) {
+        if (parameterKey.equals("skeletons")) {
             examples.addAll(Arrays.asList((BaseSpell.EXAMPLE_BOOLEANS)));
         } else {
             super.getParameterOptions(spell, parameterKey, examples);
         }
     }
-
 }

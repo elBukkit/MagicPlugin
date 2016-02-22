@@ -588,125 +588,14 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         return (playerBlock.getType() == Material.WATER || playerBlock.getType() == Material.STATIONARY_WATER);
     }
 
-    protected String getBlockSkin(Material blockType) {
-        String skinName = null;
-        switch (blockType) {
-        case CACTUS:
-            skinName = "MHF_Cactus";
-            break;
-        case CHEST:
-            skinName = "MHF_Chest";
-            break;
-        case MELON_BLOCK:
-            skinName = "MHF_Melon";
-            break;
-        case TNT:
-            if (random.nextDouble() > 0.5) {
-                skinName = "MHF_TNT";
-            } else {
-                skinName = "MHF_TNT2";
-            }
-            break;
-        case LOG:
-            skinName = "MHF_OakLog";
-            break;
-        case PUMPKIN:
-            skinName = "MHF_Pumpkin";
-            break;
-        default:
-            // TODO .. ?
-            /*
-             * Blocks:
-                Bonus:
-                MHF_ArrowUp
-                MHF_ArrowDown
-                MHF_ArrowLeft
-                MHF_ArrowRight
-                MHF_Exclamation
-                MHF_Question
-             */
-        }
-
-        return skinName;
+    protected String getBlockSkin(Material blockType) 
+    {
+        return controller.getBlockSkin(blockType);
     }
 
     protected String getMobSkin(EntityType mobType)
     {
-        String mobSkin = null;
-        switch (mobType) {
-            case BLAZE:
-                mobSkin = "MHF_Blaze";
-                break;
-            case CAVE_SPIDER:
-                mobSkin = "MHF_CaveSpider";
-                break;
-            case CHICKEN:
-                mobSkin = "MHF_Chicken";
-                break;
-            case COW:
-                mobSkin = "MHF_Cow";
-                break;
-            case ENDERMAN:
-                mobSkin = "MHF_Enderman";
-                break;
-            case GHAST:
-                mobSkin = "MHF_Ghast";
-                break;
-            case IRON_GOLEM:
-                mobSkin = "MHF_Golem";
-                break;
-            case MAGMA_CUBE:
-                mobSkin = "MHF_LavaSlime";
-                break;
-            case MUSHROOM_COW:
-                mobSkin = "MHF_MushroomCow";
-                break;
-            case OCELOT:
-                mobSkin = "MHF_Ocelot";
-                break;
-            case PIG:
-                mobSkin = "MHF_Pig";
-                break;
-            case PIG_ZOMBIE:
-                mobSkin = "MHF_PigZombie";
-                break;
-            case SHEEP:
-                mobSkin = "MHF_Sheep";
-                break;
-            case SLIME:
-                mobSkin = "MHF_Slime";
-                break;
-            case SPIDER:
-                mobSkin = "MHF_Spider";
-                break;
-            case SQUID:
-                mobSkin = "MHF_Squid";
-                break;
-            case VILLAGER:
-                mobSkin = "MHF_Villager";
-                break;
-            case WOLF:
-                mobSkin = "MHF_Wolf";
-                break;
-            case CREEPER:
-                mobSkin = "MHF_Creeper";
-                break;
-            case ZOMBIE:
-                mobSkin = "MHF_Zombie";
-                break;
-            case SKELETON:
-                mobSkin = "MHF_Skeleton";
-                break;
-            case GUARDIAN:
-                mobSkin = "MHF_Guardian";
-                break;
-            case WITCH:
-                mobSkin = "MHF_Witch";
-                break;
-            default:
-        }
-
-        return mobSkin;
+        return controller.getMobSkin(mobType);
     }
 
     public static Collection<PotionEffect> getPotionEffects(ConfigurationSection parameters)
