@@ -24,6 +24,7 @@ public class DamageAction extends BaseSpellAction
     private boolean magicDamage;
 	private boolean magicEntityDamage;
 	private Double percentage;
+	private double knockbackResistance;
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters)
@@ -40,6 +41,7 @@ public class DamageAction extends BaseSpellAction
 		}
         magicDamage = parameters.getBoolean("magic_damage", true);
 		magicEntityDamage = parameters.getBoolean("magic_entity_damage", true);
+		knockbackResistance = parameters.getDouble("knockback_resistance", 0D);
     }
 
 	@Override
@@ -58,6 +60,11 @@ public class DamageAction extends BaseSpellAction
 		Mage mage = context.getMage();
 		MageController controller = context.getController();
 
+		double previousKnockbackResistance = 0D;
+		if (knockbackResistance > 0D) {
+			previousKnockbackResistance = CompatibilityUtils.getKnockbackResistance(targetEntity);
+			CompatibilityUtils.setKnockbackResistance(targetEntity, knockbackResistance);
+		}
 		if (controller.isElemental(entity)) {
 			damage = elementalDamage;
 			controller.damageElemental(entity, damage * mage.getDamageMultiplier(), 0, mage.getCommandSender());
@@ -75,6 +82,9 @@ public class DamageAction extends BaseSpellAction
             } else {
 				CompatibilityUtils.damage(targetEntity, damage, mage.getEntity());
             }
+		}
+		if (knockbackResistance > 0D) {
+			CompatibilityUtils.setKnockbackResistance(targetEntity, previousKnockbackResistance);
 		}
 
 		return SpellResult.CAST;
