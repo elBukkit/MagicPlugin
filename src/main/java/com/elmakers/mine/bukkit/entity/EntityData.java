@@ -202,7 +202,10 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     }
 
     public EntityData(MageController controller, ConfigurationSection parameters) {
-        name = ChatColor.translateAlternateColorCodes('&', parameters.getString("name"));
+        name = parameters.getString("name");
+        if (name != null) {
+            name = ChatColor.translateAlternateColorCodes('&', name);
+        }
         if (parameters.contains("health")) {
             health = parameters.getDouble("health", 1);
             maxHealth = health;

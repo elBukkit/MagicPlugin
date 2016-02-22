@@ -1,6 +1,5 @@
 package com.elmakers.mine.bukkit.magic.command;
 
-import com.elmakers.mine.bukkit.api.entity.EntityData;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.magic.MagicAPI;
 import org.bukkit.ChatColor;
@@ -10,6 +9,7 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.util.BlockIterator;
 
@@ -55,13 +55,6 @@ public class MagicMobCommandExecutor extends MagicTabExecutor {
         }
 
         String mobKey = args[1];
-        MageController controller = api.getController();
-        EntityData mob = controller.getMob(mobKey);
-        if (mob == null) {
-            sender.sendMessage(ChatColor.RED + "Unknown mob key " + mobKey);
-            return true;
-        }
-
         Player player = (Player)sender;
         Location location = player.getEyeLocation();
         BlockIterator iterator = new BlockIterator(location.getWorld(), location.toVector(), location.getDirection(), 0, 64);
@@ -70,12 +63,15 @@ public class MagicMobCommandExecutor extends MagicTabExecutor {
             block = iterator.next();
         }
         block = block.getRelative(BlockFace.UP);
-        try {
-            mob.spawn(block.getLocation());
-        } catch (Exception ex) {
-            ex.printStackTrace();
+
+        MageController controller = api.getController();
+        Entity spawned = controller.spawnMob(mobKey, block.getLocation());
+        if (spawned == null) {
+            sender.sendMessage(ChatColor.RED + "Unknown mob type " + mobKey);
+            return true;
         }
-        String name = mob.getName();
+        
+        String name = spawned.getName();
         if (name == null) {
             name = mobKey;
         }
