@@ -311,4 +311,6 @@ public interface MageController {
     public Entity spawnMob(String key, Location location);
     public EntityData getMob(String key);
     public EntityData loadMob(ConfigurationSection configuration);
+    public String getBlockSkin(Material blockType);
+    public String getMobSkin(EntityType mobType);
 }
