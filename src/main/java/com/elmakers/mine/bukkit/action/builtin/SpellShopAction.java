@@ -90,7 +90,7 @@ public class SpellShopAction extends BaseShopAction
             return contextResult;
         }
         Wand wand = mage.getActiveWand();
-        WandUpgradePath path = wand == null ? null : wand.getPath();
+        WandUpgradePath currentPath = wand == null ? null : wand.getPath();
 
         if (!castsSpells && !allowLocked && wand.isLocked()) {
             context.showMessage(context.getMessage("no_path", "You may not learn with that $wand.").replace("$wand", wand.getName()));
@@ -105,17 +105,17 @@ public class SpellShopAction extends BaseShopAction
         }
         else
         {
-            if (path == null) {
+            if (currentPath == null) {
                 context.showMessage(context.getMessage("no_path", "You may not learn with that $wand.").replace("$wand", wand.getName()));
                 return SpellResult.FAIL;
             }
 
-            Collection<String> pathSpells = path.getSpells();
+            Collection<String> pathSpells = currentPath.getSpells();
             for (String pathSpell : pathSpells) {
                 spellPrices.put(pathSpell, null);
             }
             if (showRequired) {
-                Collection<String> requiredSpells = path.getRequiredSpells();
+                Collection<String> requiredSpells = currentPath.getRequiredSpells();
                 for (String requiredSpell : requiredSpells) {
                     spellPrices.put(requiredSpell, null);
                 }
@@ -149,33 +149,35 @@ public class SpellShopAction extends BaseShopAction
             if (!spell.hasCastPermission(mage.getCommandSender())) continue;
 
             ItemStack spellItem = controller.createSpellItem(key, castsSpells);
-            String requiredPathKey = spell.getRequiredUpgradePath();
-            WandUpgradePath currentPath = wand.getPath();
-            if (requiredPathKey != null && spell.getSpellKey().getLevel() > 1 && !currentPath.hasPath(requiredPathKey))
+            if (!castsSpells)
             {
-                requiredPathKey = currentPath.translatePath(requiredPathKey);
-                com.elmakers.mine.bukkit.wand.WandUpgradePath upgradePath = com.elmakers.mine.bukkit.wand.WandUpgradePath.getPath(requiredPathKey);
-                if (upgradePath == null) continue;
-                ItemMeta meta = spellItem.getItemMeta();
-                List<String> itemLore = meta.getLore();
-                List<String> lore = new ArrayList<String>();
-                if (itemLore.size() > 0) {
-                    lore.add(itemLore.get(0));
+                String requiredPathKey = spell.getRequiredUpgradePath();
+                if (requiredPathKey != null && spell.getSpellKey().getLevel() > 1 && !currentPath.hasPath(requiredPathKey))
+                {
+                    requiredPathKey = currentPath.translatePath(requiredPathKey);
+                    com.elmakers.mine.bukkit.wand.WandUpgradePath upgradePath = com.elmakers.mine.bukkit.wand.WandUpgradePath.getPath(requiredPathKey);
+                    if (upgradePath == null) continue;
+                    ItemMeta meta = spellItem.getItemMeta();
+                    List<String> itemLore = meta.getLore();
+                    List<String> lore = new ArrayList<String>();
+                    if (itemLore.size() > 0) {
+                        lore.add(itemLore.get(0));
+                    }
+                    String upgradeDescription = spell.getUpgradeDescription();
+                    if (upgradeDescription != null && !upgradeDescription.isEmpty()) {
+                        InventoryUtils.wrapText(upgradeDescription, BaseSpell.MAX_LORE_LENGTH, lore);
+                    }
+
+                    String message = context.getMessage("level_requirement", "&r&cRequires: &6$path").replace("$path", upgradePath.getName());
+                    lore.add(message);
+
+                    for (int i = 1; i < itemLore.size(); i++) {
+                        lore.add(itemLore.get(i));
+                    }
+                    meta.setLore(lore);
+                    spellItem.setItemMeta(meta);
+                    InventoryUtils.setMeta(spellItem, "unpurchasable", message);
                 }
-                String upgradeDescription = spell.getUpgradeDescription();
-                if (upgradeDescription != null && !upgradeDescription.isEmpty()) {
-                    InventoryUtils.wrapText(upgradeDescription, BaseSpell.MAX_LORE_LENGTH, lore);
-                }
-                
-                String message = context.getMessage("level_requirement", "&r&cRequires: &6$path").replace("$path", upgradePath.getName());
-                lore.add(message);
-                
-                for (int i = 1; i < itemLore.size(); i++) {
-                    lore.add(itemLore.get(i));
-                }
-                meta.setLore(lore);
-                spellItem.setItemMeta(meta);
-                InventoryUtils.setMeta(spellItem, "unpurchasable", message);
             }
             
             shopItems.add(new ShopItem(spellItem, worth));
