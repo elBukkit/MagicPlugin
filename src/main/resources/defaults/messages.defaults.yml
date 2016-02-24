@@ -170,8 +170,6 @@ wand:
     no_wand: You must be holding a wand
     player_no_wand: $name is not holding a wand
     no_item: You must be holding an item
-    player_no_magic_item: $name is not holding a magic item
-    no_magic_item: That is not a magic item
     player_no_item: $name is not holding an item
     reorganized: $wand reorganized
     player_reorganized: $name's wand reorganized

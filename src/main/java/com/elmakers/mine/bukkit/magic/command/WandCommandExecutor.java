@@ -15,6 +15,7 @@ import java.util.TreeMap;
 
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
+import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import com.elmakers.mine.bukkit.utility.NMSUtils;
 import com.elmakers.mine.bukkit.wand.WandTemplate;
 import de.slikey.effectlib.util.ParticleEffect;
@@ -505,6 +506,7 @@ public class WandCommandExecutor extends MagicTabExecutor {
             return true;
         }
 
+		boolean isWand = false;
         if (api.isSpell(itemInHand)) {
             String spellKey = api.getSpell(itemInHand);
             sender.sendMessage(ChatColor.GOLD + "Spell: " + spellKey);
@@ -514,8 +516,7 @@ public class WandCommandExecutor extends MagicTabExecutor {
             } else {
                 sender.sendMessage(ChatColor.RED + " (Unknown Spell)");
             }
-        }
-        if (api.isBrush(itemInHand)) {
+        } else if (api.isBrush(itemInHand)) {
             String brushKey = api.getBrush(itemInHand);
             sender.sendMessage(ChatColor.GRAY + "Brush: " + brushKey);
             MaterialAndData brush = new MaterialAndData(brushKey);
@@ -524,38 +525,41 @@ public class WandCommandExecutor extends MagicTabExecutor {
             } else {
                 sender.sendMessage(ChatColor.RED + " (Unknown Brush)");
             }
-        }
-        if (api.isWand(itemInHand)) {
+        } else if (api.isWand(itemInHand)) {
+			isWand = true;
             Wand wand = api.getWand(itemInHand);
             wand.describe(sender);
-        }
+        } else {
+			details = true;
+		}
 
         if (details) {
-            long wandId = System.identityHashCode(NMSUtils.getHandle(itemInHand));
-            sender.sendMessage(ChatColor.AQUA + "Id: " + ChatColor.DARK_AQUA + Long.toHexString(wandId));
-            Wand activeWand = api.getMage(player).getActiveWand();
-            if (activeWand == null) {
-				if (api.isWand(itemInHand) && !api.isUpgrade(itemInHand)) {
-					sender.sendMessage(ChatColor.RED + "Mis-match - player has no active wand!");
+			if (isWand) {
+				long wandId = System.identityHashCode(NMSUtils.getHandle(itemInHand));
+				sender.sendMessage(ChatColor.AQUA + "Id: " + ChatColor.DARK_AQUA + Long.toHexString(wandId));
+				Wand activeWand = api.getMage(player).getActiveWand();
+				if (activeWand == null) {
+					if (api.isWand(itemInHand) && !api.isUpgrade(itemInHand)) {
+						sender.sendMessage(ChatColor.RED + "Mis-match - player has no active wand!");
+					}
+				} else {
+					long activeWandId = System.identityHashCode(NMSUtils.getHandle(activeWand.getItem()));
+					if (activeWandId != wandId) {
+						sender.sendMessage(ChatColor.RED + " Mis-match - Active wand id: " + ChatColor.DARK_RED + Long.toHexString(activeWandId));
+					}
 				}
-            } else {
-                long activeWandId = System.identityHashCode(NMSUtils.getHandle(activeWand.getItem()));
-                if (activeWandId != wandId) {
-                    sender.sendMessage(ChatColor.RED + " Mis-match - Active wand id: " + ChatColor.DARK_RED + Long.toHexString(activeWandId));
-                }
-            }
+			}
+			if (itemInHand.getType() == Material.SKULL_ITEM) {
+				String skullUrl = InventoryUtils.getSkullURL(itemInHand);
+				if (skullUrl != null) {
+					sender.sendMessage(ChatColor.AQUA + "Player skull:");
+					sender.sendMessage(skullUrl);
+				}
+			}
 			YamlConfiguration configuration = new YamlConfiguration();
 			configuration.set("item", itemInHand);
             String itemString = configuration.saveToString().replace("item:", "").replace(ChatColor.COLOR_CHAR, '&');
             sender.sendMessage(itemString);
-        }
-
-        if (!api.isBrush(itemInHand) && !api.isSpell(itemInHand) && !api.isWand(itemInHand)) {
-            if (sender != player) {
-                sender.sendMessage(api.getMessages().getParameterized("wand.player_no_magic_item", "$name", player.getName()));
-            } else {
-                player.sendMessage(api.getMessages().get("wand.no_magic_item"));
-            }
         }
 
         return true;
