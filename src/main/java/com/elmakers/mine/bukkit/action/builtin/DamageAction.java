@@ -24,6 +24,7 @@ public class DamageAction extends BaseSpellAction
     private boolean magicDamage;
 	private boolean magicEntityDamage;
 	private Double percentage;
+	private Double knockbackResistance;
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters)
@@ -40,6 +41,11 @@ public class DamageAction extends BaseSpellAction
 		}
         magicDamage = parameters.getBoolean("magic_damage", true);
 		magicEntityDamage = parameters.getBoolean("magic_entity_damage", true);
+        if (parameters.contains("knockback_resistance")) {
+            knockbackResistance = parameters.getDouble("knockback_resistance");
+        } else {
+            knockbackResistance = null;
+        }
     }
 
 	@Override
@@ -58,23 +64,34 @@ public class DamageAction extends BaseSpellAction
 		Mage mage = context.getMage();
 		MageController controller = context.getController();
 
-		if (controller.isElemental(entity)) {
-			damage = elementalDamage;
-			controller.damageElemental(entity, damage * mage.getDamageMultiplier(), 0, mage.getCommandSender());
-		} else {
-			if (percentage != null) {
-				damage = percentage * targetEntity.getMaxHealth();
-			} else if (targetEntity instanceof Player) {
-				damage = playerDamage;
-			} else {
-				damage = entityDamage;
+		double previousKnockbackResistance = 0D;
+		try {
+			if (knockbackResistance != null) {
+				previousKnockbackResistance = CompatibilityUtils.getKnockbackResistance(targetEntity);
+				CompatibilityUtils.setKnockbackResistance(targetEntity, knockbackResistance);
 			}
-            damage *= mage.getDamageMultiplier();
-            if (magicDamage && (magicEntityDamage || targetEntity instanceof Player)) {
-                CompatibilityUtils.magicDamage(targetEntity, damage, mage.getEntity());
-            } else {
-				CompatibilityUtils.damage(targetEntity, damage, mage.getEntity());
-            }
+			if (controller.isElemental(entity)) {
+				damage = elementalDamage;
+				controller.damageElemental(entity, damage * mage.getDamageMultiplier(), 0, mage.getCommandSender());
+			} else {
+				if (percentage != null) {
+					damage = percentage * targetEntity.getMaxHealth();
+				} else if (targetEntity instanceof Player) {
+					damage = playerDamage;
+				} else {
+					damage = entityDamage;
+				}
+				damage *= mage.getDamageMultiplier();
+				if (magicDamage && (magicEntityDamage || targetEntity instanceof Player)) {
+					CompatibilityUtils.magicDamage(targetEntity, damage, mage.getEntity());
+				} else {
+					CompatibilityUtils.damage(targetEntity, damage, mage.getEntity());
+				}
+			}
+		} finally {
+			if (knockbackResistance != null) {
+				CompatibilityUtils.setKnockbackResistance(targetEntity, previousKnockbackResistance);
+			}
 		}
 
 		return SpellResult.CAST;
