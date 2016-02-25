@@ -45,7 +45,7 @@ public abstract class TargetingSpell extends BaseSpell {
     private boolean								targetArmorStands		= false;
     private boolean								targetInvisible			= true;
     private boolean								targetUnknown			= true;
-    protected Class<? extends Entity>           targetEntityType        = null;
+    protected Class<?>                          targetEntityType        = null;
     protected Set<EntityType>                   targetEntityTypes       = null;
     protected Material                          targetContents          = null;
     protected double 		                    targetBreakables	    = 0;
@@ -522,12 +522,7 @@ public abstract class TargetingSpell extends BaseSpell {
         if (parameters.contains("target_type")) {
             String entityTypeName = parameters.getString("target_type");
             try {
-                 Class<?> typeClass = Class.forName("org.bukkit.entity." + entityTypeName);
-                 if (Entity.class.isAssignableFrom(typeClass)) {
-                     targetEntityType = (Class<? extends Entity>)typeClass;
-                 } else {
-                     controller.getLogger().warning("Entity type: " + entityTypeName + " not assignable to Entity");
-                 }
+                targetEntityType = Class.forName("org.bukkit.entity." + entityTypeName);
             } catch (Throwable ex) {
                 controller.getLogger().warning("Unknown entity type in target_type of " + getKey() + ": " + entityTypeName);
                 targetEntityType = null;
@@ -631,7 +626,7 @@ public abstract class TargetingSpell extends BaseSpell {
         return super.getEffectMaterial();
     }
 
-    public Class<? extends Entity> getTargetEntityType() {
+    public Class<?> getTargetEntityType() {
         return targetEntityType;
     }
 }
