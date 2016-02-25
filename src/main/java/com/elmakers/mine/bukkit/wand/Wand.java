@@ -2159,9 +2159,8 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
     }
 
     public static String getWandId(ItemStack item) {
-        if (isUpgrade(item) || isSingleUse(item)) return null;
         Object wandNode = InventoryUtils.getNode(item, WAND_KEY);
-        if (wandNode == null) return null;
+        if (wandNode == null || isSingleUse(item) || isUpgrade(item)) return null;
         return InventoryUtils.getMeta(wandNode, "id");
     }
 
