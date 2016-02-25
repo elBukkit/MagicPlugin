@@ -2119,6 +2119,17 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		return sp;
 	}
 
+    public static boolean isSingleUse(ItemStack item) {
+        if (item == null) return false;
+        Object wandNode = InventoryUtils.getNode(item, WAND_KEY);
+
+        if (wandNode == null) return false;
+        String useCount = InventoryUtils.getMeta(wandNode, "uses");
+        String wandId = InventoryUtils.getMeta(wandNode, "id");
+
+        return useCount != null && useCount.equals("1") && (wandId == null || wandId.isEmpty());
+    }
+
     public static boolean isUpgrade(ItemStack item) {
         if (item == null) return false;
         Object wandNode = InventoryUtils.getNode(item, WAND_KEY);
@@ -2148,7 +2159,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
     }
 
     public static String getWandId(ItemStack item) {
-        if (isUpgrade(item)) return null;
+        if (isUpgrade(item) || isSingleUse(item)) return null;
         Object wandNode = InventoryUtils.getNode(item, WAND_KEY);
         if (wandNode == null) return null;
         return InventoryUtils.getMeta(wandNode, "id");
