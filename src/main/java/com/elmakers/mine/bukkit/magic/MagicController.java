@@ -9,6 +9,7 @@ import com.elmakers.mine.bukkit.api.data.MageDataCallback;
 import com.elmakers.mine.bukkit.api.data.MageDataStore;
 import com.elmakers.mine.bukkit.api.data.SpellData;
 import com.elmakers.mine.bukkit.api.entity.EntityData;
+import com.elmakers.mine.bukkit.api.event.LoadEvent;
 import com.elmakers.mine.bukkit.api.event.SaveEvent;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
@@ -1558,6 +1559,9 @@ public class MagicController implements MageController {
         if (!initialized) {
             finalizeIntegration();
         }
+        
+        LoadEvent loadEvent = new LoadEvent();
+        Bukkit.getPluginManager().callEvent(loadEvent);
 
         loaded = true;
         if (sender != null) {
