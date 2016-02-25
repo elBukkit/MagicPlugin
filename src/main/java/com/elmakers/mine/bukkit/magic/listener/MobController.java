@@ -51,6 +51,7 @@ public class MobController implements Listener {
             event.setCancelled(true);
         }
     }
+    
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onEntityDeath(EntityDeathEvent event) {
         // TODO: fix all of this, don't reference by names.
@@ -62,7 +63,7 @@ public class MobController implements Listener {
 
         LivingEntity died = (LivingEntity)entity;
         String name = died.getCustomName();
-        if (name == null || name.isEmpty() || !died.isCustomNameVisible())
+        if (name == null || name.isEmpty())
         {
             return;
         }
@@ -75,7 +76,7 @@ public class MobController implements Listener {
 
         // Prevent double-deaths .. gg Mojang?
         // Kind of hacky to use this flag for it, but seemed easiest
-        died.setCustomNameVisible(false);
+        died.setCustomName(null);
     }
     
     public int getCount() {
