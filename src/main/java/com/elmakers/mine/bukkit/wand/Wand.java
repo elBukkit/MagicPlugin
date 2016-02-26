@@ -463,7 +463,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 
     @Override
     public String getId() {
-        return id;
+        return isSingleUse ? template : id;
     }
 
     public float getManaRegenerationBoost() {
@@ -2160,7 +2160,8 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 
     public static String getWandId(ItemStack item) {
         Object wandNode = InventoryUtils.getNode(item, WAND_KEY);
-        if (wandNode == null || isSingleUse(item) || isUpgrade(item)) return null;
+        if (wandNode == null || isUpgrade(item)) return null;
+        if (isSingleUse(item)) return getWandTemplate(item);
         return InventoryUtils.getMeta(wandNode, "id");
     }
 
