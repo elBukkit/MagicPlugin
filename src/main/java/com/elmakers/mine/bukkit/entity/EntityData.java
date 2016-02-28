@@ -471,6 +471,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     public boolean modify(Entity entity) {
         if (entity == null || entity.getType() != type || !entity.isValid()) return false;
 
+        boolean isPlayer = (entity instanceof Player);
         if (extraData != null) {
             extraData.apply(entity);
         }
@@ -542,9 +543,11 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
             }
 
             try {
-                copyEquipmentTo(li);
-                if (maxHealth != null) {
-                    li.setMaxHealth(maxHealth);
+                if (!isPlayer) {
+                    copyEquipmentTo(li);
+                    if (maxHealth != null) {
+                        li.setMaxHealth(maxHealth);
+                    }
                 }
                 if (health != null) {
                     li.setHealth(Math.min(health, li.getMaxHealth()));
@@ -556,7 +559,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
             }
         }
 
-        if (name != null && name.length() > 0) {
+        if (!isPlayer && name != null && name.length() > 0) {
             entity.setCustomName(name);
         }
 

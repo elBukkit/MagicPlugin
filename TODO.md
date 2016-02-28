@@ -1,6 +1,7 @@
 # TODO
 
  - Only bound+undroppable should not go in chests?
+ - Add option to only cast spells when damaging an entity
 
  - Can still drop your wand by holding while closing your inv
  - Can also move your wand into a hopper/dropper directly
