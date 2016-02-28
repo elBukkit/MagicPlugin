@@ -35,6 +35,7 @@ import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
+import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -881,6 +882,12 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
 
     public boolean cast(ConfigurationSection extraParameters, Location defaultLocation)
     {
+        if (mage.isPlayer() && mage.getPlayer().getGameMode() == GameMode.SPECTATOR) {
+            if (mage.getDebugLevel() > 0 && extraParameters != null) {
+                mage.sendDebugMessage("Cannot cast in spectator mode.");
+            }
+            return false;
+        }
         if (mage.getDebugLevel() > 5 && extraParameters != null) {
             Collection<String> keys = extraParameters.getKeys(false);
             if (keys.size() > 0) {
