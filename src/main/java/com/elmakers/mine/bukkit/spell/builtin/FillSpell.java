@@ -81,7 +81,7 @@ public class FillSpell extends BrushSpell
 			boolean consumeBlocks = parameters.getBoolean("consume", false);
 			batch.setConsume(consumeBlocks);
 			UndoList undoList = getUndoList();
-			if (undoList != null) {
+			if (undoList != null && !currentCast.isConsumeFree()) {
 				undoList.setConsumed(consumeBlocks);
 			}
 			

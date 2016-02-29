@@ -170,7 +170,7 @@ public class ConstructSpell extends BrushSpell
         batch.setCommit(commit);
 		batch.setConsume(consume);
 		UndoList undoList = getUndoList();
-		if (undoList != null) {
+		if (undoList != null && !currentCast.isConsumeFree()) {
 			undoList.setConsumed(consume);
 		}
 
