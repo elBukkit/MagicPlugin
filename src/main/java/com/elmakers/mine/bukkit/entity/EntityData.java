@@ -296,6 +296,9 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
             else if (type == EntityType.RABBIT && parameters.contains("rabbit_type")) {
                 rabbitType = Rabbit.Type.valueOf(parameters.getString("rabbit_type").toUpperCase());
             }
+            else if (type == EntityType.VILLAGER && parameters.contains("villager_profession")) {
+                villagerProfession = Villager.Profession.valueOf(parameters.getString("villager_profession").toUpperCase());
+            }
         } catch (Exception ex) {
             controller.getLogger().log(Level.WARNING, "Invalid entity type or sub-type", ex);
         }

@@ -24,6 +24,7 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Ocelot;
 import org.bukkit.entity.Rabbit;
 import org.bukkit.entity.Skeleton;
+import org.bukkit.entity.Villager;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.util.Vector;
@@ -188,6 +189,7 @@ public class SpawnEntityAction extends BaseSpellAction
         parameters.add("type");
         parameters.add("speed");
         parameters.add("reason");
+        parameters.add("villager_profession");
         parameters.add("skeleton_type");
         parameters.add("ocelot_type");
         parameters.add("rabbit_type");
@@ -214,6 +216,10 @@ public class SpawnEntityAction extends BaseSpellAction
         } else if (parameterKey.equals("ocelot_type")) {
             for (Ocelot.Type type : Ocelot.Type.values()) {
                 examples.add(type.name().toLowerCase());
+            }
+        } else if (parameterKey.equals("villager_profession")) {
+            for (Villager.Profession profession : Villager.Profession.values()) {
+                examples.add(profession.name().toLowerCase());
             }
         } else if (parameterKey.equals("rabbity_type")) {
             for (Rabbit.Type type : Rabbit.Type.values()) {
