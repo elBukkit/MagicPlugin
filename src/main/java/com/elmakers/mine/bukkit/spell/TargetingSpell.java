@@ -568,7 +568,8 @@ public abstract class TargetingSpell extends BaseSpell {
         }
 
         // Special hack that should work well in most casts.
-        if (isUnderwater()) {
+        boolean targetUnderwater = parameters.getBoolean("target_underwater", true);
+        if (targetUnderwater && isUnderwater()) {
             targetThroughMaterials.add(Material.WATER);
             targetThroughMaterials.add(Material.STATIONARY_WATER);
         }
