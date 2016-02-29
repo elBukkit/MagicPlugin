@@ -66,6 +66,7 @@ public class CustomProjectileAction extends CompoundAction
     private boolean reverseDirection;
     private int blockHitLimit;
     private int entityHitLimit;
+    private int reflectLimit;
     private int pitchMin;
     private int pitchMax;
     private boolean ignoreTargeting;
@@ -87,6 +88,7 @@ public class CustomProjectileAction extends CompoundAction
     private long attachedDeadline;
     private int entityHitCount;
     private int blockHitCount;
+    private int reflectCount;
     private boolean missed;
     private long lastUpdate;
     private long nextUpdate;
@@ -199,6 +201,7 @@ public class CustomProjectileAction extends CompoundAction
         int hitLimit = parameters.getInt("hit_count", 1);
         entityHitLimit = parameters.getInt("entity_hit_count", hitLimit);
         blockHitLimit = parameters.getInt("block_hit_count", hitLimit);
+        reflectLimit = parameters.getInt("reflect_count", 0);
         pitchMin = parameters.getInt("pitch_min", 90);
         pitchMax = parameters.getInt("pitch_max", -90);
         
@@ -243,6 +246,7 @@ public class CustomProjectileAction extends CompoundAction
         activeProjectileEffects = null;
         entityHitCount = 0;
         blockHitCount = 0;
+        reflectCount = 0;
         attachedDeadline = 0;
         attachedOffset = null;
         missed = false;
@@ -598,7 +602,7 @@ public class CustomProjectileAction extends CompoundAction
 
     protected SpellResult hitBlock(Block block) {
         boolean continueProjectile = false;
-        if (!bypassBackfire && actionContext.isReflective(block)) {
+        if ((reflectLimit <= 0 || reflectCount < reflectLimit) && !bypassBackfire && actionContext.isReflective(block)) {
             double reflective = actionContext.getReflective(block);
             if (reflective >= 1 || actionContext.getRandom().nextDouble() < reflective) {
                 trackEntity = false;
@@ -623,6 +627,7 @@ public class CustomProjectileAction extends CompoundAction
 
                 actionContext.playEffects("reflect");
                 continueProjectile = true;
+                reflectCount++;
             }
         }
         if (targetBreakables > 0 && breaksBlocks && actionContext.isBreakable(block)) {
