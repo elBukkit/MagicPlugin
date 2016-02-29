@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## CB 1.4
+
+ - Fix errors when damaging and targeting entities
+ 
 ## CB 1.3
 
  - Changed icon for architect wand, you may need to tweak existing ones with
@@ -7,10 +11,6 @@
  - Changed icon for invisibility cloak back to ender eye
  - Fixed PVP checks with GriefPrevention integration
  - Add Blaster item, very WIP
-
-## CB 1.4
-
- - Fix errors when damaging and targeting entities
 
 ## CB 1.2
 
