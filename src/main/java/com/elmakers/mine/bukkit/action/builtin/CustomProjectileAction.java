@@ -70,6 +70,11 @@ public class CustomProjectileAction extends CompoundAction
     private int pitchMin;
     private int pitchMax;
     private boolean ignoreTargeting;
+    private boolean reflectReorient;
+    private boolean reflectResetDistanceTraveled;
+    private boolean reflectTargetCaster;
+    private boolean reflectTrackEntity;
+    private double reflectTrackCursorRange;
 
     protected Targeting targeting;
     protected Location launchLocation;
@@ -201,10 +206,15 @@ public class CustomProjectileAction extends CompoundAction
         int hitLimit = parameters.getInt("hit_count", 1);
         entityHitLimit = parameters.getInt("entity_hit_count", hitLimit);
         blockHitLimit = parameters.getInt("block_hit_count", hitLimit);
-        reflectLimit = parameters.getInt("reflect_count", 0);
+        reflectLimit = parameters.getInt("reflect_count", -1);
         pitchMin = parameters.getInt("pitch_min", 90);
         pitchMax = parameters.getInt("pitch_max", -90);
-        
+        reflectReorient = parameters.getBoolean("reflect_reorient", false);
+        reflectResetDistanceTraveled = parameters.getBoolean("reflect_reset_distance_traveled", true);
+        reflectTargetCaster = parameters.getBoolean("reflect_target_caster", true);
+        reflectTrackEntity = parameters.getBoolean("reflect_track_target", false);
+        reflectTrackCursorRange = parameters.getDouble("reflect_track_range", 0D);
+
         range *= context.getMage().getRangeMultiplier();
 
         // Some parameter tweaks to make sure things are sane
@@ -602,14 +612,14 @@ public class CustomProjectileAction extends CompoundAction
 
     protected SpellResult hitBlock(Block block) {
         boolean continueProjectile = false;
-        if ((reflectLimit <= 0 || reflectCount < reflectLimit) && !bypassBackfire && actionContext.isReflective(block)) {
+        if ((reflectLimit < 0 || reflectCount < reflectLimit) && !bypassBackfire && actionContext.isReflective(block)) {
             double reflective = actionContext.getReflective(block);
             if (reflective >= 1 || actionContext.getRandom().nextDouble() < reflective) {
-                trackEntity = false;
-                reorient = false;
-                distanceTravelled = 0;
-                trackCursorRange = 0;
-                actionContext.setTargetsCaster(true);
+                trackEntity = reflectTrackEntity;
+                reorient = reflectReorient;
+                if (reflectResetDistanceTraveled) distanceTravelled = 0;
+                if (reflectTrackCursorRange >= 0) trackCursorRange = reflectTrackCursorRange;
+                if (reflectTargetCaster) actionContext.setTargetsCaster(true);
 
                 // Calculate angle of reflection
                 Location targetLocation = actionContext.getTargetLocation();
