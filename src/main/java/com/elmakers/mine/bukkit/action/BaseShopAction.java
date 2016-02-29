@@ -30,7 +30,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -484,7 +484,7 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
             return SpellResult.PLAYER_REQUIRED;
         }
 
-        this.showingItems = new HashMap<Integer, ShopItem>();
+        this.showingItems = new LinkedHashMap<Integer, ShopItem>();
 
         // Load items
         itemStacks = new ArrayList<ItemStack>();
