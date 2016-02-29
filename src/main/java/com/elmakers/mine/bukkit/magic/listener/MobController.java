@@ -75,7 +75,7 @@ public class MobController implements Listener {
         EntityData mob = mobsByName.get(name);
         if (mob == null) return;
 
-        MagicMobDeathEvent deathEvent = new MagicMobDeathEvent(mob, event);
+        MagicMobDeathEvent deathEvent = new MagicMobDeathEvent(controller, mob, event);
         Bukkit.getPluginManager().callEvent(deathEvent);
 
         mob.modifyDrops(controller, event);
