@@ -681,8 +681,8 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         String name = type.name();
         if (skeletonType != null) {
             name += ":" + skeletonType;
-        } else if (type != null) {
-            name += ":" + type;
+        } else if (villagerProfession != null) {
+            name += ":" + villagerProfession;
         } else if (ocelotType != null) {
             name += ":" + ocelotType;
         } else if (rabbitType != null) {
