@@ -484,7 +484,7 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
 				return SpellResult.FAIL;
 			}
 			
-			Waypoint location = getWaypoint(player, recallType, 0, parameters);
+			Waypoint location = getWaypoint(player, recallType, 0, parameters, context);
 			if (tryTeleport(player, location)) {
 				return SpellResult.CAST;
 			}
@@ -510,7 +510,7 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
             } else if (selectedType == RecallType.WAND) {
                 List<LostWand> lostWands = mage.getLostWands();
                 for (int i = 0; i < lostWands.size(); i++) {
-                    Waypoint targetLocation = getWaypoint(player, selectedType, i, parameters);
+                    Waypoint targetLocation = getWaypoint(player, selectedType, i, parameters, context);
                     if (targetLocation != null && targetLocation.isValid(allowCrossWorld, playerLocation)) {
                         allWaypoints.add(targetLocation);
                     }
@@ -529,12 +529,12 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
                                 context.getMessage("cast_field"),
                                 context.getMessage("no_target_field"),
                                 context.getMessage("description_field", ""),
-                                ConfigurationUtils.getMaterialAndData(parameters, "icon_field"),
+                                getIcon(context, parameters, "icon_field"),
                                 true));
                     }
                 }
             } else {
-                Waypoint targetLocation = getWaypoint(player, selectedType, 0, parameters);
+                Waypoint targetLocation = getWaypoint(player, selectedType, 0, parameters, context);
                 if (targetLocation != null && targetLocation.isValid(allowCrossWorld, playerLocation)) {
                     allWaypoints.add(targetLocation);
                 }
@@ -601,7 +601,7 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
         options.clear();
         String inventoryTitle = context.getMessage("move_marker_title", "Move Marker");
         Inventory displayInventory = CompatibilityUtils.createInventory(null, 9, inventoryTitle);
-        MaterialAndData iconType = ConfigurationUtils.getMaterialAndData(parameters, "icon_move_marker");
+        MaterialAndData iconType = getIcon(context, parameters, "icon_move_marker");
         ItemStack markerItem = iconType.getItemStack(1);
 
         ItemMeta meta = markerItem.getItemMeta();
@@ -635,7 +635,7 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
         String title = context.getMessage("title_warp").replace("$name", warpName);
         String description = config.getString("description");
         String iconURL = config.getString("icon_url");
-        MaterialAndData icon = ConfigurationUtils.getMaterialAndData(config, "icon");
+        MaterialAndData icon = getIcon(context, config, "icon");
 
         Location warpLocation = controller.getWarp(warpKey);
         if (warpLocation == null || warpLocation.getWorld() == null) {
@@ -665,40 +665,54 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
         String command = context.parameterize(config.getString("command"));
         boolean op = config.getBoolean("op", false);
         boolean console = config.getBoolean("console", false);
-        MaterialAndData icon = ConfigurationUtils.getMaterialAndData(config, "icon");
+        MaterialAndData icon = getIcon(context, config, "icon");
         return new Waypoint(RecallType.COMMAND, command, op, console, title, castMessage, failMessage, description, icon, iconURL);
     }
 
-	protected Waypoint getWaypoint(Player player, RecallType type, int index, ConfigurationSection parameters) {
+	protected Waypoint getWaypoint(Player player, RecallType type, int index, ConfigurationSection parameters, CastContext context) {
 		Mage mage = context.getMage();
         MageController controller = context.getController();
 		switch (type) {
 		case MARKER:
             Location location = ConfigurationUtils.getLocation(mage.getData(), markerKey);
-			return new Waypoint(type, location, context.getMessage("title_marker"), context.getMessage("cast_marker"), context.getMessage("no_target_marker"), context.getMessage("description_marker", ""), ConfigurationUtils.getMaterialAndData(parameters, "icon_marker"), true);
+			return new Waypoint(type, location, context.getMessage("title_marker"), context.getMessage("cast_marker"), context.getMessage("no_target_marker"), context.getMessage("description_marker", ""), getIcon(context, parameters, "icon_marker"), true);
 		case DEATH:
-            Waypoint death = new Waypoint(type, mage.getLastDeathLocation(), "Last Death", context.getMessage("cast_death"), context.getMessage("no_target_death"), context.getMessage("description_death", ""), ConfigurationUtils.getMaterialAndData(parameters, "icon_death"), true);
+            Waypoint death = new Waypoint(type, mage.getLastDeathLocation(), "Last Death", context.getMessage("cast_death"), context.getMessage("no_target_death"), context.getMessage("description_death", ""), getIcon(context, parameters, "icon_death"), true);
 		    death.safe = false;
             return death;
         case SPAWN:
-			return new Waypoint(type, context.getWorld().getSpawnLocation(), context.getMessage("title_spawn"), context.getMessage("cast_spawn"), context.getMessage("no_target_spawn"), context.getMessage("description_spawn", ""), ConfigurationUtils.getMaterialAndData(parameters, "icon_spawn"), false);
+			return new Waypoint(type, context.getWorld().getSpawnLocation(), context.getMessage("title_spawn"), context.getMessage("cast_spawn"), context.getMessage("no_target_spawn"), context.getMessage("description_spawn", ""), getIcon(context, parameters, "icon_spawn"), false);
         case TOWN:
-            return new Waypoint(type, controller.getTownLocation(player), context.getMessage("title_town"), context.getMessage("cast_town"), context.getMessage("no_target_town"), context.getMessage("description_town", ""), ConfigurationUtils.getMaterialAndData(parameters, "icon_town"), false);
+            return new Waypoint(type, controller.getTownLocation(player), context.getMessage("title_town"), context.getMessage("cast_town"), context.getMessage("no_target_town"), context.getMessage("description_town", ""), getIcon(context, parameters, "icon_town"), false);
         case HOME:
             Location bedLocation = player == null ? null : player.getBedSpawnLocation();
             if (bedLocation != null) {
                 bedLocation.setX(bedLocation.getX() + 0.5);
                 bedLocation.setZ(bedLocation.getZ() + 0.5);
             }
-            return new Waypoint(type, bedLocation, context.getMessage("title_home"), context.getMessage("cast_home"), context.getMessage("no_target_home"), context.getMessage("description_home", ""), ConfigurationUtils.getMaterialAndData(parameters, "icon_home"), false);
+            return new Waypoint(type, bedLocation, context.getMessage("title_home"), context.getMessage("cast_home"), context.getMessage("no_target_home"), context.getMessage("description_home", ""), getIcon(context, parameters, "icon_home"), false);
 		case WAND:
             List<LostWand> lostWands = mage.getLostWands();
 			if (lostWands == null || index < 0 || index >= lostWands.size()) return null;
-			return new Waypoint(type, lostWands.get(index).getLocation(), context.getMessage("title_wand"), context.getMessage("cast_wand"), context.getMessage("no_target_wand"), context.getMessage("description_wand", ""), ConfigurationUtils.getMaterialAndData(parameters, "icon_wand"), true);
+			return new Waypoint(type, lostWands.get(index).getLocation(), context.getMessage("title_wand"), context.getMessage("cast_wand"), context.getMessage("no_target_wand"), context.getMessage("description_wand", ""), getIcon(context, parameters, "icon_wand"), true);
 		}
 		
 		return null;
 	}
+    
+    protected MaterialAndData getIcon(CastContext context, ConfigurationSection parameters, String key)
+    {
+        String iconKey = parameters.getString(key);
+        if (iconKey.isEmpty()) return null;
+        
+        MaterialAndData material = ConfigurationUtils.getMaterialAndData(parameters, key);
+        if (material == null || !material.isValid() || material.getMaterial() == null)
+        {
+            context.getLogger().warning("Invalid material specified for " + context.getSpell().getKey() + " " + key + ": " + iconKey);
+            return null;
+        }
+        return material;
+    }
 
 	protected boolean removeMarker()
 	{
