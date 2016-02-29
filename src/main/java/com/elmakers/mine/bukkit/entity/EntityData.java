@@ -54,6 +54,7 @@ import org.bukkit.util.Vector;
 public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityData, Cloneable {
     protected static Map<UUID, WeakReference<Entity>> respawned = new HashMap<UUID, WeakReference<Entity>>();
 
+    protected String key;
     protected WeakReference<Entity> entity = null;
     protected UUID uuid = null;
     
@@ -689,5 +690,14 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
             name += ":" + rabbitType;
         }
         return name;
+    }
+    
+    public void setKey(String key) {
+        this.key = key;
+    }
+    
+    @Override
+    public String getKey() {
+        return key;
     }
 }

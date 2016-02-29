@@ -1,7 +1,9 @@
 package com.elmakers.mine.bukkit.magic.listener;
 
+import com.elmakers.mine.bukkit.api.event.MagicMobDeathEvent;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.entity.EntityData;
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
@@ -30,6 +32,7 @@ public class MobController implements Listener {
             ConfigurationSection mobConfiguration = configuration.getConfigurationSection(mobKey);
             if (!mobConfiguration.getBoolean("enabled", true));
             EntityData mob = new EntityData(controller, mobConfiguration);
+            mob.setKey(mobKey);
             mobs.put(mobKey, mob);
             
             // TODO Remove the name map
@@ -71,6 +74,9 @@ public class MobController implements Listener {
         // TODO Fix this
         EntityData mob = mobsByName.get(name);
         if (mob == null) return;
+
+        MagicMobDeathEvent deathEvent = new MagicMobDeathEvent(mob, event);
+        Bukkit.getPluginManager().callEvent(deathEvent);
 
         mob.modifyDrops(controller, event);
 
