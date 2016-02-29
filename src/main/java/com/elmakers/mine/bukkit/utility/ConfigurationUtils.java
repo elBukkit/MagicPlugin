@@ -147,6 +147,7 @@ public class ConfigurationUtils extends ConfigUtils {
         if (o instanceof String) {
             try {
                 String parse = (String)o;
+                if (parse.isEmpty()) return null;
                 if (!parse.contains(" ")) {
                     parse = parse.replace(",", " ");
                 }
