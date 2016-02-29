@@ -244,9 +244,10 @@ commands:
     description: Manage Magic Mobs
     permission: Magic.commands.mmob
     usage: |
-        /mmob spawn mutant    Spawn a custom Mutant mob
-        /mmob spawn creeper   Spawn a vanilla creeper
-        /mmob clear           Remove all tracked mobs
+        /mmob spawn mutant                Spawn a custom Mutant mob
+        /mmob spawn mutant 0 64 0 world   Spawn at a location
+        /mmob spawn creeper               Spawn a vanilla creeper
+        /mmob clear                       Remove all tracked mobs
   mmap:
     description: Create and manage Magic image maps
     permission: Magic.commands.mmap

@@ -2,9 +2,11 @@ package com.elmakers.mine.bukkit.magic.command;
 
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.magic.MagicAPI;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.command.Command;
@@ -30,7 +32,7 @@ public class MagicMobCommandExecutor extends MagicTabExecutor {
             return true;
         }
 
-        if (args.length == 0 || args.length > 2)
+        if (args.length == 0)
 		{
             sender.sendMessage(ChatColor.RED + "Usage: mmob [spawn|clear] <type>");
 			return true;
@@ -42,30 +44,56 @@ public class MagicMobCommandExecutor extends MagicTabExecutor {
             return true;
         }
 
-        if (!args[0].equalsIgnoreCase("spawn") || args.length != 2)
+        if (!args[0].equalsIgnoreCase("spawn") || args.length < 2)
         {
             sender.sendMessage(ChatColor.RED + "Usage: mmob [spawn|clear] <type>");
             return true;
         }
 
-        if (!(sender instanceof Player))
-        {
-            sender.sendMessage(ChatColor.RED + "Must be used in-game");
+        if (!(sender instanceof Player) && args.length < 6) {
+            sender.sendMessage(ChatColor.RED + "Usage: mmob spawn <type> <x> <y> <z> <world>");
             return true;
         }
-
-        String mobKey = args[1];
-        Player player = (Player)sender;
-        Location location = player.getEyeLocation();
-        BlockIterator iterator = new BlockIterator(location.getWorld(), location.toVector(), location.getDirection(), 0, 64);
-        Block block = location.getBlock();
-        while (block.getType() == Material.AIR && iterator.hasNext()) {
-            block = iterator.next();
+        
+        Location targetLocation = null;
+        World targetWorld = null;
+        Player player = (sender instanceof Player) ? (Player)sender : null;
+        if (args.length >= 6) {
+            targetWorld = Bukkit.getWorld(args[5]);
+            if (targetWorld == null) {
+                sender.sendMessage(ChatColor.RED + "Invalid world: " + ChatColor.GRAY + args[5]);
+                return true;
+            }
+        } else if (player != null) {
+            targetWorld = player.getWorld();
         }
-        block = block.getRelative(BlockFace.UP);
+
+        if (args.length >= 5) {
+            try {
+                targetLocation = new Location(targetWorld, Double.parseDouble(args[2]), Double.parseDouble(args[3]), Double.parseDouble(args[4]));
+            } catch (Exception ex) {
+                targetLocation = null;
+            }
+        } else if (player != null) {
+            Location location = player.getEyeLocation();
+            BlockIterator iterator = new BlockIterator(location.getWorld(), location.toVector(), location.getDirection(), 0, 64);
+            Block block = location.getBlock();
+            while (block.getType() == Material.AIR && iterator.hasNext()) {
+                block = iterator.next();
+            }
+            block = block.getRelative(BlockFace.UP);
+            targetLocation = block.getLocation();
+        }
+        
+        if (targetLocation == null || targetLocation.getWorld() == null) {
+            sender.sendMessage(ChatColor.RED + "Usage: mmob spawn <type> <x> <y> <z> <world>");
+            return true;
+        }
+        
+        String mobKey = args[1];
 
         MageController controller = api.getController();
-        Entity spawned = controller.spawnMob(mobKey, block.getLocation());
+        Entity spawned = controller.spawnMob(mobKey, targetLocation);
         if (spawned == null) {
             sender.sendMessage(ChatColor.RED + "Unknown mob type " + mobKey);
             return true;
