@@ -201,7 +201,7 @@ public class CustomProjectileAction extends CompoundAction
         int hitLimit = parameters.getInt("hit_count", 1);
         entityHitLimit = parameters.getInt("entity_hit_count", hitLimit);
         blockHitLimit = parameters.getInt("block_hit_count", hitLimit);
-        reflectLimit = parameters.getInt("reflect_count", 0);
+        reflectLimit = parameters.getInt("reflect_count", -1);
         pitchMin = parameters.getInt("pitch_min", 90);
         pitchMax = parameters.getInt("pitch_max", -90);
         
@@ -602,7 +602,7 @@ public class CustomProjectileAction extends CompoundAction
 
     protected SpellResult hitBlock(Block block) {
         boolean continueProjectile = false;
-        if ((reflectLimit <= 0 || reflectCount < reflectLimit) && !bypassBackfire && actionContext.isReflective(block)) {
+        if ((reflectLimit < 0 || reflectCount < reflectLimit) && !bypassBackfire && actionContext.isReflective(block)) {
             double reflective = actionContext.getReflective(block);
             if (reflective >= 1 || actionContext.getRandom().nextDouble() < reflective) {
                 trackEntity = false;
