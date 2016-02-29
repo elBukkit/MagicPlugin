@@ -8,6 +8,7 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemStack;
 
 public interface EntityData {
+    public String getKey();
     public Location getLocation();
     public EntityType getType();
     public String getName();
