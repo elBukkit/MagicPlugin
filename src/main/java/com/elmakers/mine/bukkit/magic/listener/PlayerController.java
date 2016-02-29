@@ -49,6 +49,7 @@ public class PlayerController implements Listener {
     private String enchantClickSpell = "spellshop";
     private String enchantSneakClickSpell = "upgrades";
     private boolean openOnSneakDrop;
+    private boolean cancelInteractOnCast = true;
 
     public PlayerController(MagicController controller) {
         this.controller = controller;
@@ -61,6 +62,7 @@ public class PlayerController implements Listener {
         enchantClickSpell = properties.getString("enchant_click");
         enchantSneakClickSpell = properties.getString("enchant_sneak_click");
         openOnSneakDrop = properties.getBoolean("open_wand_on_sneak_drop");
+        cancelInteractOnCast = properties.getBoolean("cancel_interact_on_cast", true);
     }
 
     public void setCreativeModeEjecting(boolean eject) {
@@ -407,7 +409,9 @@ public class PlayerController implements Listener {
         if (isSwing && !wand.isUpgrade() && !wand.isQuickCast())
         {
             wand.cast();
-            event.setCancelled(true);
+            if (cancelInteractOnCast) {
+                event.setCancelled(true);
+            }
             return;
         }
 

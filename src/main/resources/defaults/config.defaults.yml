@@ -266,6 +266,9 @@ prevent_melee_damage: false
 # A value of 1 or high will completely disable all melee damage.
 melee_damage_reduction: 0
 
+# Set this to false to allow block-breaking with a wand
+cancel_interact_on_cast: true
+
 # Turn this off to use normal damage. May be useful if you want
 # direct damage spells to effect armor.
 # This is incompatible with prevent_melee_damage: true!
