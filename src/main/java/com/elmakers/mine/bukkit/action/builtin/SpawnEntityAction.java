@@ -107,7 +107,7 @@ public class SpawnEntityAction extends BaseSpellAction
             return SpellResult.FAIL;
         }
 
-        final Entity spawnedEntity = entityData.spawn(spawnLocation, spawnReason);
+        final Entity spawnedEntity = entityData.spawn(context.getController(), spawnLocation, spawnReason);
         if (spawnedEntity == null) {
             return SpellResult.FAIL;
         }
