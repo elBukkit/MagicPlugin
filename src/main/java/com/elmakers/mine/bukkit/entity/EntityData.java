@@ -2,17 +2,24 @@ package com.elmakers.mine.bukkit.entity;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.logging.Level;
 
+import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
+import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
+import com.elmakers.mine.bukkit.utility.RandomUtils;
+import com.elmakers.mine.bukkit.utility.WeightedPair;
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.Art;
 import org.bukkit.ChatColor;
 import org.bukkit.DyeColor;
@@ -22,6 +29,7 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Ageable;
 import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.Creature;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.ExperienceOrb;
@@ -39,6 +47,7 @@ import org.bukkit.entity.Skeleton;
 import org.bukkit.entity.Skeleton.SkeletonType;
 import org.bukkit.entity.Villager;
 import org.bukkit.entity.Wolf;
+import org.bukkit.entity.Zombie;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.inventory.ItemStack;
@@ -75,6 +84,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     protected Double health;
     protected Integer airLevel;
     protected boolean isBaby;
+    protected boolean isVillager;
     protected int fireTicks;
     
     protected DyeColor dyeColor;
@@ -104,6 +114,11 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     protected boolean defaultDrops;
     protected List<String> drops;
 
+    // Spellcasting
+    protected long tickInterval;
+    protected LinkedList<WeightedPair<String>> spells;
+    protected boolean requiresTarget;
+    
     public EntityData(Entity entity) {
         this(entity.getLocation(), entity);
     }
@@ -191,6 +206,8 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
             extraData = new EntityArmorStandData((ArmorStand)entity);
         } else if (entity instanceof ExperienceOrb) {
             xp = ((ExperienceOrb)entity).getExperience();
+        } else if (entity instanceof Zombie) {
+            isVillager = ((Zombie)entity).isVillager();
         }
     }
     
@@ -222,6 +239,13 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
                 controller.getLogger().log(Level.WARNING, " Invalid entity type: " + entityName);
             }
         }
+
+        tickInterval = parameters.getLong("cast_interval", 0);
+        if (parameters.contains("cast")) {
+            spells = new LinkedList<WeightedPair<String>>();
+            RandomUtils.populateStringProbabilityMap(spells, parameters.getConfigurationSection("cast"));
+        }
+        requiresTarget = parameters.getBoolean("cast_requires_target", true);
 
         Collection<ConfigurationSection> potionEffectList = ConfigurationUtils.getNodeList(parameters, "potion_effects");
         if (potionEffectList != null) {
@@ -299,6 +323,9 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
             }
             else if (type == EntityType.VILLAGER && parameters.contains("villager_profession")) {
                 villagerProfession = Villager.Profession.valueOf(parameters.getString("villager_profession").toUpperCase());
+            }
+            else if (type == EntityType.ZOMBIE && parameters.contains("zombie_type")) {
+                isVillager = parameters.getString("zombie_type").equalsIgnoreCase("villager");
             }
         } catch (Exception ex) {
             controller.getLogger().log(Level.WARNING, "Invalid entity type or sub-type", ex);
@@ -434,15 +461,25 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     }
 
     public Entity spawn(Location location) {
-        return spawn(location, null);
+        return spawn(null, location, null);
     }
     
-    public Entity spawn(Location location, CreatureSpawnEvent.SpawnReason reason) {
+    public Entity spawn(MageController controller, Location location) {
+        return spawn(controller, location, null);
+    }
+    
+    public Entity spawn(MageController controller, Location location, CreatureSpawnEvent.SpawnReason reason) {
         if (location != null) this.location = location;
         else if (location == null) return null;
         Entity spawned = trySpawn(reason);
         if (spawned != null) {
             modify(spawned);
+            if (controller != null && spells != null && tickInterval >= 0) {
+                Mage apiMage = controller.getMage(spawned);
+                if (apiMage instanceof com.elmakers.mine.bukkit.magic.Mage) {
+                    ((com.elmakers.mine.bukkit.magic.Mage)apiMage).setEntityData(this);
+                }
+            }
         }
 
         return spawned;
@@ -699,5 +736,35 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     @Override
     public String getKey() {
         return key;
+    }
+    
+    public long getTickInterval() {
+        return tickInterval;
+    }
+    
+    public void tick(Mage mage) {
+        if (spells == null) return;
+        Entity entity = mage.getLivingEntity();
+        Creature creature = (entity instanceof Creature) ? (Creature)entity : null;
+        if (requiresTarget && (creature == null || creature.getTarget() == null)) return;
+        
+        String castSpell = RandomUtils.weightedRandom(spells);
+        if (castSpell.length() > 0) {
+
+            String[] parameters = null;
+            Spell spell = null;
+            if (!castSpell.equalsIgnoreCase("none"))
+            {
+                if (castSpell.contains(" ")) {
+                    parameters = StringUtils.split(castSpell, ' ');
+                    castSpell = parameters[0];
+                    parameters = Arrays.copyOfRange(parameters, 1, parameters.length);
+                }
+                spell = mage.getSpell(castSpell);
+            }
+            if (spell != null) {
+                spell.cast(parameters);
+            }
+        }
     }
 }

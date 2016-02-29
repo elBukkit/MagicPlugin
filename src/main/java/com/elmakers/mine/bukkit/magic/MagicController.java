@@ -4299,7 +4299,7 @@ public Set<Material> getMaterialSet(String name)
     public Entity spawnMob(String key, Location location) {
         EntityData mobType = mobs.get(key);
         if (mobType != null) {
-            return mobType.spawn(location);
+            return mobType.spawn(this, location);
         }
         EntityType entityType = com.elmakers.mine.bukkit.entity.EntityData.parseEntityType(key);
         if (entityType == null) {

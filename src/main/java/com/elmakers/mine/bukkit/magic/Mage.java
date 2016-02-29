@@ -27,6 +27,7 @@ import com.elmakers.mine.bukkit.api.spell.SpellKey;
 import com.elmakers.mine.bukkit.api.wand.WandUpgradePath;
 import com.elmakers.mine.bukkit.effect.HoloUtils;
 import com.elmakers.mine.bukkit.effect.Hologram;
+import com.elmakers.mine.bukkit.entity.EntityData;
 import com.elmakers.mine.bukkit.spell.ActionSpell;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
@@ -106,6 +107,8 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     private boolean loading = false;
     private int debugLevel = 0;
     private boolean quiet = false;
+    private EntityData entityData;
+    private long lastTick;
 
     private Map<PotionEffectType, Integer> effectivePotionEffects = new HashMap<PotionEffectType, Integer>();
     protected float damageReduction = 0;
@@ -838,9 +841,23 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
     // This gets called every second (or so - 20 ticks)
     public void tick() {
+        if (entityData != null) {
+            long now = System.currentTimeMillis();
+            if (lastTick != 0) {
+                long tickInterval = entityData.getTickInterval();
+                if (now - lastTick > tickInterval) {
+                    entityData.tick(this);
+                    lastTick = now;
+                }
+            } else {
+                lastTick = now;
+            }
+        }
+        
         Player player = getPlayer();
 
-        // We don't tick non-player or offline Mages
+        // We don't tick non-player or offline Mages, except
+        // above where entityData is ticked if present.
         if (player != null && player.isOnline()) {
             checkWand();
             if (activeWand != null) {
@@ -2353,6 +2370,10 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         }
 
         return null;
+    }
+    
+    public void setEntityData(EntityData entityData) {
+        this.entityData = entityData;
     }
 }
 

@@ -1,3 +1,31 @@
+warlock:
+  type: zombie
+  zombie_type: villager
+  item: wood_hoe
+  chestplate: chainmail_chestplate
+  leggings: chainmail_leggings
+  helmet: chainmail_helmet
+  boots: chailmail_boots
+  name: Warlock
+  health: 200
+  default_drops: false
+  cast_interval: 1000
+  cast:
+    missile: 20
+    poison: 30
+    pull: 100
+    curse: 100
+    blob: 20
+    lava: 0,10,20
+    shell: 20
+    none: 300
+  drops:
+  - gold_nugget@16
+  - sp:16
+  potion_effects:
+  - type: speed
+    amplifier: 1
+
 mutant_captain:
   type: pig_zombie
   item: iron_sword
@@ -14,6 +42,7 @@ mutant_captain:
   potion_effects:
   - type: speed
     amplifier: 1
+    
 mutant:
   type: pig_zombie
   item: iron_sword
@@ -26,6 +55,7 @@ mutant:
   default_drops: false
   drops:
   - gold_nugget@5
+  
 mutant_spider:
   type: cave_spider
   name: Mutant Spider
@@ -33,6 +63,7 @@ mutant_spider:
   drops:
   - gold_nugget@8
   - spider_eye@2
+  
 polterghast:
   type: ghast
   health: 100
@@ -43,6 +74,7 @@ polterghast:
   potion_effects:
   - type: speed
     amplifier: 2
+    
 undead_overlord:
   type: skeleton
   skeleton_type: wither
@@ -52,6 +84,7 @@ undead_overlord:
   potion_effects:
   - type: speed
     amplifier: 1
+    
 undead_minion:
   type: skeleton
   item: iron_sword
