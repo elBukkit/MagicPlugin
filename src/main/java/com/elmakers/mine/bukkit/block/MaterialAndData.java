@@ -486,6 +486,8 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
     @SuppressWarnings("deprecation")
     public ItemStack getItemStack(int amount)
     {
+        if (material == null) return null;
+        
         // TODO: Need to config-drive this?
         switch (material) {
             case SKULL: material = Material.SKULL_ITEM; break;
