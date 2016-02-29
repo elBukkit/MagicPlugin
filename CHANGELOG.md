@@ -8,6 +8,10 @@
  - Fixed PVP checks with GriefPrevention integration
  - Add Blaster item, very WIP
 
+## CB 1.4
+
+ - Fix errors when damaging and targeting entities
+
 ## CB 1.2
 
  - Add Nuke Level 2 (Breaks all block types, larger radius)
