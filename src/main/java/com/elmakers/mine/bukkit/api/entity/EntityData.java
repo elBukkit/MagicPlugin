@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.api.entity;
 
+import com.elmakers.mine.bukkit.api.magic.MageController;
 import org.bukkit.Art;
 import org.bukkit.Location;
 import org.bukkit.block.BlockFace;
@@ -19,6 +20,7 @@ public interface EntityData {
     public void setHasMoved(boolean hasMoved);
     public Entity spawn();
     public Entity spawn(Location location);
+    public Entity spawn(MageController controller, Location location);
     public Entity undo();
     public boolean modify(Entity entity);
     public EntityData getRelativeTo(Location center);
