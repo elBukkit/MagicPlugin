@@ -24,6 +24,7 @@ import org.bukkit.Art;
 import org.bukkit.ChatColor;
 import org.bukkit.DyeColor;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.Rotation;
 import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.ConfigurationSection;
@@ -51,6 +52,7 @@ import org.bukkit.entity.Zombie;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.MerchantRecipe;
 import org.bukkit.material.Colorable;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -90,7 +92,6 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     protected DyeColor dyeColor;
     protected SkeletonType skeletonType;
     protected Ocelot.Type ocelotType;
-    protected Villager.Profession villagerProfession;
     protected Rabbit.Type rabbitType = null;
     
     protected Collection<PotionEffect> potionEffects = null;
@@ -191,8 +192,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
             Skeleton skeleton = (Skeleton)entity;
             skeletonType = skeleton.getSkeletonType();
         } else if (entity instanceof Villager) {
-            Villager villager = (Villager)entity;
-            villagerProfession = villager.getProfession();
+            extraData = new EntityVillagerData((Villager)entity);
         } else if (entity instanceof Wolf) {
             Wolf wolf = (Wolf)entity;
             dyeColor = wolf.getCollarColor();
@@ -312,6 +312,43 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
                 
                 extraData = horseData;
             }
+            else if (type == EntityType.VILLAGER) {
+                EntityVillagerData villagerData = new EntityVillagerData();
+                if (parameters.contains("villager_profession")) {
+                    villagerData.profession = Villager.Profession.valueOf(parameters.getString("villager_profession").toUpperCase());
+                }
+                if (parameters.contains("villager_riches")) {
+                    villagerData.riches = parameters.getInt("villager_riches");
+                }
+                if (parameters.contains("villager_trades")) {
+                    villagerData.recipes = new ArrayList<MerchantRecipe>();
+                    Collection<ConfigurationSection> tradeList = ConfigurationUtils.getNodeList(parameters, "villager_trades");
+                    for (ConfigurationSection tradeConfiguration : tradeList) {
+                        String outputKey = tradeConfiguration.getString("output");
+                        ItemStack output = controller.createItem(outputKey);
+                        if (output == null || output.getType() == Material.AIR)
+                        {
+                            controller.getLogger().warning("Invalid output specified in villager trade: " + outputKey);
+                            continue;
+                        }
+                        MerchantRecipe recipe = new MerchantRecipe(output, tradeConfiguration.getInt("max_uses", 1));
+                        recipe.setExperienceReward(tradeConfiguration.getBoolean("experience_reward", true));
+                        List<String> ingredientConfiguration = tradeConfiguration.getStringList("ingredients");
+                        for (String ingredientKey : ingredientConfiguration) {
+                            ItemStack ingredient = controller.createItem(ingredientKey);
+                            if (ingredient == null || ingredient.getType() == Material.AIR)
+                            {
+                                controller.getLogger().warning("Invalid ingredient specified in villager trade: " + ingredientKey);
+                                continue;
+                            }
+                            recipe.addIngredient(ingredient);
+                        }
+                        villagerData.recipes.add(recipe);
+                    }
+                }
+
+                extraData = villagerData;
+            }
             else if (type == EntityType.SKELETON && parameters.contains("skeleton_type")) {
                 skeletonType = Skeleton.SkeletonType.valueOf(parameters.getString("skeleton_type").toUpperCase());
             }
@@ -320,9 +357,6 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
             }
             else if (type == EntityType.RABBIT && parameters.contains("rabbit_type")) {
                 rabbitType = Rabbit.Type.valueOf(parameters.getString("rabbit_type").toUpperCase());
-            }
-            else if (type == EntityType.VILLAGER && parameters.contains("villager_profession")) {
-                villagerProfession = Villager.Profession.valueOf(parameters.getString("villager_profession").toUpperCase());
             }
             else if (type == EntityType.ZOMBIE && parameters.contains("zombie_type")) {
                 isVillager = parameters.getString("zombie_type").equalsIgnoreCase("villager");
@@ -553,9 +587,6 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         } else if (entity instanceof Skeleton && skeletonType != null) {
             Skeleton skeleton = (Skeleton)entity;
             skeleton.setSkeletonType(skeletonType);
-        } else if (entity instanceof Villager && villagerProfession != null) {
-            Villager villager = (Villager)entity;
-            villager.setProfession(villagerProfession);
         } else if (entity instanceof Wolf && dyeColor != null) {
             Wolf wolf = (Wolf)entity;
             wolf.setCollarColor(dyeColor);
@@ -719,8 +750,6 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         String name = type.name();
         if (skeletonType != null) {
             name += ":" + skeletonType;
-        } else if (villagerProfession != null) {
-            name += ":" + villagerProfession;
         } else if (ocelotType != null) {
             name += ":" + ocelotType;
         } else if (rabbitType != null) {

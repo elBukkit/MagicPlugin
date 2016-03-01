@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 6.0
+
+ - Add custom villager recipes to magic mob spawning. Yay economy rebalance!
+
 ## 5.5.1
 
  - 1.9 Fixes: offhand/armor getting wiped, broomsticks (mostly) unbroken, offhand spell-equiping exploits
