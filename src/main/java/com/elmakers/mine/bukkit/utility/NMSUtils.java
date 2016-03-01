@@ -241,7 +241,6 @@ public class NMSUtils {
     protected static Field class_Chunk_doneField;
     protected static Field class_CraftItemStack_getHandleField;
     protected static Field class_EntityArrow_lifeField = null;
-    protected static Field class_EntityArrow_fromPlayerField;
     protected static Field class_EntityArrow_damageField;
     protected static Field class_CraftWorld_environmentField;
 
@@ -494,7 +493,6 @@ public class NMSUtils {
                 
                 class_ArmorStand_setMarker.setAccessible(true);
                 class_EntityArmorStand_disabledSlotsField.setAccessible(true);
-                class_EntityArrow_fromPlayerField = class_EntityArrow.getField("fromPlayer");
                 class_EntityArrow_damageField = class_EntityArrow.getDeclaredField("damage");
                 class_EntityArrow_damageField.setAccessible(true);
                 // This is kinda hacky, like fer reals :\

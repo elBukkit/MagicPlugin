@@ -1074,15 +1074,6 @@ public class CompatibilityUtils extends NMSUtils {
         return projectile;
     }
 
-    public static void makeInfinite(Projectile projectile) {
-        try {
-            Object handle = getHandle(projectile);
-            class_EntityArrow_fromPlayerField.setInt(handle, 2);
-        } catch (Exception ex) {
-            ex.printStackTrace();;
-        }
-    }
-
     public static void setDamage(Projectile projectile, double damage) {
         try {
             Object handle = getHandle(projectile);
