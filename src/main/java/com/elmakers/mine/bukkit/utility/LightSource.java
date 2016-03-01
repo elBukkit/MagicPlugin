@@ -95,6 +95,8 @@ public class LightSource extends NMSUtils {
 	 */
 	@SuppressWarnings("deprecation")
 	private static void updateChunk (Server server, Location l, Collection<Player> players) {
+		// This needs fixing if we ever want to use it again.
+		/*
 		// Make a list of NMS Chunks
 		try {
 			List<Object> chunks = new ArrayList<Object>();
@@ -120,5 +122,6 @@ public class LightSource extends NMSUtils {
 		} catch (Throwable ex) {
 			ex.printStackTrace();
 		}
+		*/
 	}
 }
