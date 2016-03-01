@@ -3,6 +3,7 @@ package com.elmakers.mine.bukkit.utility;
 import java.util.*;
 import java.util.Map.Entry;
 
+import com.elmakers.mine.bukkit.effect.SoundEffect;
 import de.slikey.effectlib.util.ConfigUtils;
 import de.slikey.effectlib.util.ParticleEffect;
 

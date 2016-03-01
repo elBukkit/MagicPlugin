@@ -1,4 +1,4 @@
-package com.elmakers.mine.bukkit.utility;
+package com.elmakers.mine.bukkit.effect;
 
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Location;
@@ -100,32 +100,12 @@ public class SoundEffect implements com.elmakers.mine.bukkit.api.effect.SoundEff
     public void play(Plugin plugin, Location sourceLocation) {
         if (sourceLocation == null || plugin == null) return;
 
-        if (customSound != null) {
-            int range = this.range;
-            if (range <= 0) {
-                range = (int)(volume > 1.0 ? (16.0 * volume) : 16.0);
-            }
-            int rangeSquared = range * range;
-            Collection<? extends Player> players = plugin.getServer().getOnlinePlayers();
-            for (Player player : players) {
-                Location location = player.getLocation();
-                if (location.getWorld().equals(sourceLocation.getWorld()) && location.distanceSquared(sourceLocation) <= rangeSquared) {
-                    player.playSound(sourceLocation, customSound, volume, pitch);
+        try {
+            if (customSound != null) {
+                int range = this.range;
+                if (range <= 0) {
+                    range = (int)(volume > 1.0 ? (16.0 * volume) : 16.0);
                 }
-            }
-        }
-
-        if (sound != null) {
-            sourceLocation.getWorld().playSound(sourceLocation, sound, volume, pitch);
-        }
-    }
-
-    public void play(Plugin plugin, Entity entity) {
-        if (entity == null || plugin == null) return;
-
-        Location sourceLocation = entity.getLocation();
-        if (customSound != null) {
-            if (range > 0) {
                 int rangeSquared = range * range;
                 Collection<? extends Player> players = plugin.getServer().getOnlinePlayers();
                 for (Player player : players) {
@@ -134,19 +114,47 @@ public class SoundEffect implements com.elmakers.mine.bukkit.api.effect.SoundEff
                         player.playSound(sourceLocation, customSound, volume, pitch);
                     }
                 }
-            } else if (entity instanceof Player) {
-                Player player = (Player)entity;
-                player.playSound(sourceLocation, customSound, volume, pitch);
             }
-        }
 
-        if (sound != null) {
-            if (entity instanceof Player) {
-                Player player = (Player)entity;
-                player.playSound(sourceLocation, sound, volume, pitch);
-            } else {
+            if (sound != null) {
                 sourceLocation.getWorld().playSound(sourceLocation, sound, volume, pitch);
             }
+        } catch (Exception ex) {
+            // Silent catch for now, 1.9 broke custom sounds
+        }
+    }
+
+    public void play(Plugin plugin, Entity entity) {
+        if (entity == null || plugin == null) return;
+
+        Location sourceLocation = entity.getLocation();
+        try {
+            if (customSound != null) {
+                if (range > 0) {
+                    int rangeSquared = range * range;
+                    Collection<? extends Player> players = plugin.getServer().getOnlinePlayers();
+                    for (Player player : players) {
+                        Location location = player.getLocation();
+                        if (location.getWorld().equals(sourceLocation.getWorld()) && location.distanceSquared(sourceLocation) <= rangeSquared) {
+                            player.playSound(sourceLocation, customSound, volume, pitch);
+                        }
+                    }
+                } else if (entity instanceof Player) {
+                    Player player = (Player)entity;
+                    player.playSound(sourceLocation, customSound, volume, pitch);
+                }
+            }
+    
+            if (sound != null) {
+                if (entity instanceof Player) {
+                    Player player = (Player)entity;
+                    player.playSound(sourceLocation, sound, volume, pitch);
+                } else {
+                    sourceLocation.getWorld().playSound(sourceLocation, sound, volume, pitch);
+                }
+            }
+        } catch (Exception ex) {
+            // Silent catch for now, 1.9 broke custom sounds
         }
     }
 }

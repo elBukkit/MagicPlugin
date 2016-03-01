@@ -3,7 +3,6 @@ package com.elmakers.mine.bukkit.effect;
 import java.util.*;
 
 import com.elmakers.mine.bukkit.api.effect.EffectPlay;
-import com.elmakers.mine.bukkit.utility.SoundEffect;
 
 import de.slikey.effectlib.util.DynamicLocation;
 import de.slikey.effectlib.util.ParticleEffect;
