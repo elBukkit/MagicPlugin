@@ -2,8 +2,12 @@
 
 ## 5.5
 
+ - Added support for Spigot 1.9
  - Added /mmob spawn command, for spawning vanilla or custom mobs
  - Added mobs.yml, mobs.defaults.yml - for creating custom Magic Mobs
+   - Magic Mobs can have custom equipment, health and display names
+   - They can also randomly cast spells!
+   - Use the MagicWorlds plugin if you want to spawn them randomly in your worlds
  - Added /wand commands: bind, unbind
  - Added /mage command: unbindall
  - Re-balanced Engineer and Architect mana, Architect spell prices. All icons made unique.

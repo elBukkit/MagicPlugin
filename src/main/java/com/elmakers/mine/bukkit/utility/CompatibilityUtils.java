@@ -340,6 +340,8 @@ public class CompatibilityUtils extends NMSUtils {
     }
 
     public static void watch(Object entityHandle, int key, Object data) {
+        // TODO: Fix in 1.9 .. somehow?
+        if (class_DataWatcher_watchMethod == null) return;
         try {
             Method getDataWatcherMethod = class_Entity.getMethod("getDataWatcher");
             Object dataWatcher = getDataWatcherMethod.invoke(entityHandle);
@@ -372,7 +374,7 @@ public class CompatibilityUtils extends NMSUtils {
         try {
             x = Math.min(x, CompatibilityUtils.MAX_ENTITY_RANGE);
             z = Math.min(z, CompatibilityUtils.MAX_ENTITY_RANGE);
-            Object bb = class_AxisAlignedBB_createBBMethod.invoke(null, location.getX() - x, location.getY() - y, location.getZ() - z,
+            Object bb = class_AxisAlignedBB_Constructor.newInstance(location.getX() - x, location.getY() - y, location.getZ() - z,
                     location.getX() + x, location.getY() + y, location.getZ() + z);
 
             // The input entity is only used for equivalency testing, so this "null" should be ok.

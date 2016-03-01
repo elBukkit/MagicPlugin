@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.elmakers.mine.bukkit.plugins</groupId>
 	<artifactId>Magic</artifactId>
-	<version>5.5-SNAPSHOT</version>
+	<version>5.5</version>
 	<name>Magic Bukkit Plugin</name>
 	<url>http://mine.elmakers.com</url>
 	<dependencyManagement>
@@ -80,13 +80,13 @@
 		<dependency>
 			<groupId>de.slikey</groupId>
 			<artifactId>EffectLib</artifactId>
-			<version>3.9-SNAPSHOT</version>
+			<version>4.0</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.elmakers.mine.bukkit</groupId>
 			<artifactId>MagicAPI</artifactId>
-			<version>3.5-SNAPSHOT</version>
+			<version>3.5</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
