@@ -2579,7 +2579,7 @@ arrowrain:
            sound: entity_arrow_shoot
     parameters:
         target: none
-        projectile: Arrow
+        projectile: TippedArrow
         count: 4
         fire: false
         speed: 1
@@ -2626,7 +2626,7 @@ gatling:
            particle: smoke_normal
     parameters:
       target: none
-      projectile: Arrow
+      projectile: TippedArrow
       speed: 3
       spread: 12
       cooldown: 20000
@@ -2786,7 +2786,7 @@ arrow:
            sound: magic.hit
     parameters:
       target: none
-      projectile: Arrow
+      projectile: TippedArrow
       damage: 0.75
       speed: 2
       spread: 6

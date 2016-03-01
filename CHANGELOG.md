@@ -7,6 +7,7 @@
  - Fix PermaFrost and Forest spells, biome lists needed updating
  - Add custom villager recipes to magic mob spawning. Yay economy rebalance!
  - Tracking Sense now applies the glowing effect to the target entity
+ - Fix for Arrow-based spells
 
 ## 5.5.1
 

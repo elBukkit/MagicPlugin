@@ -150,7 +150,6 @@ public class ProjectileAction  extends BaseProjectileAction
 						arrow.setFireTicks(300);
 					}
 
-					CompatibilityUtils.makeInfinite(projectile);
 					if (damage > 0) {
 						CompatibilityUtils.setDamage(projectile, damage);
 					}
@@ -203,7 +202,8 @@ public class ProjectileAction  extends BaseProjectileAction
 			examples.add("LargeFireball");
 			examples.add("SmallFireball");
 			examples.add("WitherSkull");
-			examples.add("Arrow");
+			examples.add("TippedArrow");
+			examples.add("SpectralArrow");
 			examples.add("Snowball");
 		} else {
 			super.getParameterOptions(spell, parameterKey, examples);
