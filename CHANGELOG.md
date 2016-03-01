@@ -1,5 +1,16 @@
 # CHANGELOG
 
+## 5.5.2
+
+ - Fix Recall warps with no icon set
+
+## 5.5.1
+
+ - 1.9 Fixes:
+   - offhand/armor getting wiped
+   - broomsticks (mostly) unbroken
+   - offhand spell-equiping exploits
+
 ## 5.5
 
  - Added support for Spigot 1.9
