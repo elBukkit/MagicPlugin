@@ -1,5 +1,6 @@
 # TODO
 
+ - ProtocolLib integration: client-side mana/sp display
  - Only bound+undroppable should not go in chests?
  - Add option to only cast spells when damaging an entity
 
