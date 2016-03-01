@@ -9671,6 +9671,7 @@ tracking:
     actions:
         cast:
          -  class: Orient
+         -  class: PotionEffect
     effects:
         cast:
         -  class: EffectSingle
@@ -9693,6 +9694,8 @@ tracking:
         ignore_blocks: true
         loud: true
         bypass_pvp: true
+        effect_glowing: 1
+        duration: 10000
     costs:
         mana: 20
 

@@ -6,6 +6,7 @@
  - Fix sounds not playing
  - Fix PermaFrost and Forest spells, biome lists needed updating
  - Add custom villager recipes to magic mob spawning. Yay economy rebalance!
+ - Tracking Sense now applies the glowing effect to the target entity
 
 ## 5.5.1
 
