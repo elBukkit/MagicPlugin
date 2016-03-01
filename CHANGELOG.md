@@ -2,6 +2,9 @@
 
 ## 6.0
 
+ - Dropped support for 1.8!
+ - Fix sounds not playing
+ - Fix PermaFrost and Forest spells, biome lists needed updating
  - Add custom villager recipes to magic mob spawning. Yay economy rebalance!
 
 ## 5.5.1

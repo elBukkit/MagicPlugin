@@ -42,7 +42,7 @@
 #    effects:
 #        cast:
 #        -  class: EffectSingle
-#           sound: orb_pickup 
+#           sound: entity_experience_orb_pickup 
 #           location: origin
 #       costs:
 #           mana: <xp/mana amount>
@@ -110,25 +110,25 @@ default:
        fail:
        - class: EffectSingle
          location: origin
-         sound: note_bass_drum
+         sound: block_note_basedrum
          sound_volume: 0.8
          sound_pitch: 1.2
        insufficient_resources:
        - class: EffectSingle
          location: origin
-         sound: note_bass
+         sound: block_note_bass
          sound_volume: 0.7
          sound_pitch: 1.2
        insufficient_permission:
        - class: EffectSingle
          location: origin
-         sound: note_bass
+         sound: block_note_bass
          sound_volume: 0.9
          sound_pitch: 1.5
        cooldown:
        - class: EffectSingle
          location: origin
-         sound: note_bass_drum
+         sound: block_note_basedrum
          sound_volume: 0.6
          sound_pitch: 0.8
        cursed:
@@ -146,7 +146,7 @@ default:
        upgrade:
        - class: EffectSingle
          location: origin
-         sound: level_up
+         sound: sound: entity_player_levelup
          firework: ball_large
        break:
        - class: EffectSingle
@@ -155,18 +155,18 @@ default:
        earn_sp:
        - class: EffectSingle
          location: origin
-         sound: level_up
+         sound: sound: entity_player_levelup
          sound_volume: 0.6
          sound_pitch: 0.75
        - class: EffectSingle
          location: origin
-         sound: orb_pickup
+         sound: entity_experience_orb_pickup
          sound_volume: 0.4
          sound_pitch: 1.5
        earn_scaled_sp:
        - class: EffectSingle
          location: origin
-         sound: orb_pickup
+         sound: entity_experience_orb_pickup
          sound_volume: 0.6
          sound_pitch: 1.5
        reflect:
@@ -269,7 +269,7 @@ curse:
     effects:
         cast:
         -  class: EffectSingle
-           sound: irongolem_death
+           sound: entity_irongolem_death
            effectlib:
              class: ConeEffect
              iterations: 15
@@ -347,14 +347,14 @@ blessing:
         projectile:
         -  class: EffectSingle
            location: origin
-           sound: villager_yes
+           sound: entity_villager_yes
            effectlib:
              class: SmokeEffect
              iterations: 8
              particle: heart
         hit:
         -  class: EffectSingle
-           sound: villager_yes
+           sound: entity_villager_yes
            location: origin
            effectlib:
              class: HelixEffect
@@ -391,7 +391,7 @@ boon:
     effects:
         cast:
         -  class: EffectSingle
-           sound: orb_pickup
+           sound: entity_experience_orb_pickup
         -  class: EffectTrail
            particle: redstone
            particle_data: 2
@@ -445,7 +445,7 @@ simulate:
     effects:
         cast:
         -  class: EffectSingle
-           sound: enderdragon_wings
+           sound: entity_enderdragon_flap
            sound_pitch: 0.5
            sound_volume: 0.7
     costs:
@@ -467,7 +467,7 @@ simulate3:
     effects:
         cast:
         -  class: EffectSingle
-           sound: enderman_idle
+           sound: entity_endermen_ambient
            sound_pitch: 1.5
            sound_volume: 0.8
     costs:
@@ -492,7 +492,7 @@ glider:
     effects:
         cast:
         -  class: EffectSingle
-           sound: ambience_cave
+           sound: ambient_cave
         -  class: EffectTrail
            particle: block_crack
     death_cast:
@@ -523,7 +523,7 @@ virus:
     effects:
         cast:
         -  class: EffectSingle
-           sound: enderdragon_growl
+           sound: entity_enderdragon_growl
         -  class: EffectTrail
            particle: block_crack
     levels:
@@ -644,7 +644,7 @@ hunter:
     effects:
         cast:
         -  class: EffectSingle
-           sound: enderman_scream
+           sound: entity_endermen_scream
         -  class: EffectTrail
            particle: block_crack
     levels:
@@ -702,7 +702,7 @@ defender:
     effects:
         cast:
         -  class: EffectSingle
-           sound: enderman_scream
+           sound: entity_endermen_scream
         -  class: EffectTrail
            particle: block_crack
     cast:
@@ -748,7 +748,7 @@ animate:
     effects:
         cast:
         -  class: EffectSingle
-           sound: enderdragon_growl
+           sound: entity_enderdragon_growl
         -  class: EffectTrail
            particle: block_crack
     cast:
@@ -793,7 +793,7 @@ life:
     effects:
         cast:
         -  class: EffectSingle
-           sound: ambience_cave
+           sound: ambient_cave
         -  class: EffectTrail
            particle: block_crack
     parameters:
@@ -827,7 +827,7 @@ life3:
     effects:
         cast:
         -  class: EffectSingle
-           sound: ambience_cave
+           sound: ambient_cave
         -  class: EffectTrail
            particle: block_crack
     parameters:
@@ -1056,7 +1056,7 @@ superdisc:
     effects:
         cast:
         -  class: EffectSingle
-           sound: level_up
+           sound: sound: entity_player_levelup
         -  class: EffectTrail
            particle: block_crack
     parameters:
@@ -1085,7 +1085,7 @@ superring:
     effects:
         cast:
         -  class: EffectSingle
-           sound: level_up
+           sound: sound: entity_player_levelup
         -  class: EffectTrail
            particle: block_crack
     parameters:
@@ -1114,7 +1114,7 @@ supershell:
     effects:
         cast:
         -  class: EffectSingle
-           sound: level_up
+           sound: sound: entity_player_levelup
         -  class: EffectTrail
            particle: block_crack
     parameters:
@@ -1141,7 +1141,7 @@ superdome:
     effects:
         cast:
         -  class: EffectSingle
-           sound: level_up
+           sound: sound: entity_player_levelup
         -  class: EffectTrail
            particle: block_crack
     parameters:
@@ -1168,7 +1168,7 @@ tag:
     effects:
         cast:
         -  class: EffectSingle
-           sound: fizz
+           sound: block_fire_extinguish
         -  class: EffectTrail
            particle: redstone
         -  class: EffectSingle
@@ -1262,7 +1262,7 @@ push:
     effects:
         cast:
         -  class: EffectSingle
-           sound: fizz
+           sound: block_fire_extinguish
            sound_volume: 1
            sound_pitch: -0.1
            location: origin
@@ -1329,7 +1329,7 @@ push|4:
     effects:
         alternate_down:
         -  class: EffectSingle
-           sound: fizz
+           sound: block_fire_extinguish
            sound_volume: 1
            sound_pitch: -0.1
            location: origin
@@ -1361,7 +1361,7 @@ pull:
     effects:
         cast:
         -  class: EffectSingle
-           sound: fizz
+           sound: block_fire_extinguish
         -  class: EffectTrail
            particle: spell
            reverse: true
@@ -1369,7 +1369,7 @@ pull:
            particle_count: 6
         alternate_down:
         -  class: EffectSingle
-           sound: fizz
+           sound: block_fire_extinguish
            effectlib:
              class: HelixEffect
              particle: spell
@@ -1405,7 +1405,7 @@ grab:
     effects:
         cast:
         -  class: EffectSingle
-           sound: fizz
+           sound: block_fire_extinguish
            location: targets
            effectlib:
              class: SphereEffect
@@ -1442,10 +1442,10 @@ boom:
     effects:
         cast:
         -  class: EffectSingle
-           sound: enderdragon_hit
+           sound: entity_enderdragon_hurt
            location: origin
         -  class: EffectSingle
-           sound: explode
+           sound: entity_generic_explode
            sound_pitch: 2
            location: origin
         tick:
@@ -1556,7 +1556,7 @@ nuke:
         burst:
         -  class: EffectSingle
            location: target
-           sound: explode
+           sound: entity_generic_explode
            sound_volume: 2
            effectlib:
              class: SphereEffect
@@ -1590,7 +1590,7 @@ nuke:
              offset: 0,24,0
         cast:
         -  class: EffectSingle
-           sound: explode
+           sound: entity_generic_explode
            location: both
         -  class: EffectTrail
            particle: explosion_large
@@ -1791,7 +1791,7 @@ permafrost:
         ice: ice
         cooldown: 30000
         freeze_lava: true
-        biome: ice_plains_spikes
+        biome: mutated_ice_flats
         weather: storm
     costs:
         mana: 200
@@ -1814,7 +1814,7 @@ lightning:
     effects:
         cast:
         -  class: EffectSingle
-           sound: firework_large_blast
+           sound: entity_firework_large_blast
         -  class: EffectTrail
            particle: smoke_normal
            particle_count: 2
@@ -1871,7 +1871,7 @@ smite:
     effects:
         cast:
         -  class: EffectSingle
-           sound: firework_large_blast
+           sound: entity_firework_large_blast
         -  class: EffectTrail
            particle: smoke_normal
            particle_count: 2
@@ -1911,7 +1911,7 @@ tree:
     effects:
         cast:
         -  class: EffectSingle
-           sound: splash
+           sound: entity_generic_splash
         -  class: EffectTrail
            particle: block_crack
            material: log
@@ -1942,7 +1942,7 @@ forest:
     effects:
         cast:
         -  class: EffectSingle
-           sound: splash
+           sound: entity_generic_splash
         -  class: EffectTrail
            particle: block_crack
            material: log
@@ -1955,56 +1955,55 @@ forest:
         cooldown: 30000
         destructible: destructible,destructible_replace
         biomes:
-          swampland: tree,brown_mushroom,red_mushroom
-          forest: tree,big_tree,birch,tall_birch
-          taiga: redwood,tall_redwood
           plains: tree
           extreme_hills: tree,big_tree,redwood,tall_redwood
-          ice_plains: tree,big_tree,redwood,tall_redwood
+          forest: tree,big_tree,birch,tall_birch
+          taiga: redwood,tall_redwood
+          swampland: tree,brown_mushroom,red_mushroom
+          ice_flats: tree,big_tree,redwood,tall_redwood
           ice_mountains: tree
           mushroom_island: brown_mushroom,red_mushroom
-          mushroom_shore: brown_mushroom,red_mushroom
+          mushroom_island_shore: brown_mushroom,red_mushroom
           desert_hills: tree
           forest_hills: tree
           taiga_hills: redwood,tall_redwood
-          small_mountains: tree
+          smaller_extreme_hills: tree
           jungle: jungle,jungle_bush,small_jungle,cocoa_tree
           jungle_hills: jungle,jungle_bush,small_jungle,cocoa_tree
           jungle_edge: tree,big_tree,jungle,jungle_bush,small_jungle,cocoa_tree
           birch_forest: birch,tall_birch
           birch_forest_hills: birch,tall_birch
           roofed_forest: dark_oak,brown_mushroom,red_mushroom
-          cold_taiga: redwood,tall_redwood
-          cold_taiga_hills: redwood,tall_redwood
-          mega_taiga: redwood,tall_redwood,mega_redwood
-          mega_taiga_hills: redwood,tall_redwood,mega_redwood
-          extreme_hills_plus: tree,big_tree,redwood,tall_redwood
+          taiga_cold: redwood,tall_redwood
+          taiga_cold_hills: redwood,tall_redwood
+          redwood_taiga: redwood,tall_redwood,mega_redwood
+          redwood_taiga_hills: redwood,tall_redwood,mega_redwood
+          extreme_hills_with_trees: tree,big_tree,redwood,tall_redwood
           savanna: acacia
-          savanna_plateau: acacia
+          savanna_rock: acacia
           mesa: tree
-          mesa_plateau_forest: tree
-          mesa_plateau: tree
-          sunflower_plains: tree
-          desert_mountains: tree
-          flower_forest: tree
-          taiga_mountains: redwood,tall_redwood
-          swampland_mountains: swamp
-          ice_plains_spikes: tree
-          jungle_mountains: jungle,jungle_bush,small_jungle,cocoa_tree
-          jungle_edge_mountains: tree,big_tree,jungle,jungle_bush,small_jungle,cocoa_tree
-          cold_taiga_mountains: tree
-          savanna_mountains: acacia
-          savanna_plateau_mountains: acacia
-          mesa_bryce: tree
-          mesa_plateau_forest_mountains: tree
-          mesa_plateau_mountains: tree
-          birch_forest_mountains: birch,tall_birch
-          birch_forest_hills_mountains: birch,tall_birch
-          roofed_forest_mountains: dark_oak
-          mega_spruce_taiga: redwood,tall_redwood
-          extreme_hills_mountains: redwood,tall_redwood
-          extreme_hills_plus_mountains: redwood,tall_redwood
-          mega_spruce_taiga_hills: redwood,tall_redwood
+          mesa_rock: tree
+          mesa_clear_rock: tree
+          mutated_plains: tree
+          mutated_desert: tree
+          mutated_forest: tree
+          mutated_taiga: redwood,tall_redwood
+          mutated_swampland: swamp
+          mutated_ice_flats: tree
+          mutated_jungle: jungle,jungle_bush,small_jungle,cocoa_tree
+          mutated_jungle_edge: tree,big_tree,jungle,jungle_bush,small_jungle,cocoa_tree
+          mutated_birch_forest: birch,tall_birch
+          mutated_birch_forest_hills: birch,tall_birch
+          mutated_roofed_forest: dark_oak
+          mutated_taiga_cold: redwood,tall_redwood
+          mutated_redwood_taiga: redwood,tall_redwood
+          mutated_redwood_taiga_hills: redwood,tall_redwood
+          mutated_extreme_hills_with_trees: redwood,tall_redwood
+          mutated_savanna: acacia
+          mutated_savanna_rock: acacia
+          mutated_mesa: tree
+          mutated_mesa_rock: tree
+          mutated_mesa_clear_rock: tree
     costs:
         mana: 200
 
@@ -2024,7 +2023,7 @@ disarm:
     effects:
         cast:
         -  class: EffectSingle
-           sound: enderman_teleport
+           sound: entity_endermen_teleport
            sound: magic.crack
            sound_pitch: 0.3
            sound_volume: 0.5
@@ -2044,14 +2043,14 @@ disarm:
            firework: star
         backfire:
         -  class: EffectSingle
-           sound: hurt_flesh
+           sound: entity_player_hurt
         -  class: EffectRing
            particle: spell_mob
            color: FF0000
            location: self
         fizzle:
         -  class: EffectSingle
-           sound: explode
+           sound: entity_generic_explode
         -  class: EffectRing
            particle: redstone
            color: FF0000
@@ -2201,7 +2200,7 @@ heal:
             lengthGrow: .12
             particle: heart
         - class: EffectSingle
-          sound: level_up
+          sound: sound: entity_player_levelup
           custom_sound: magic.rennervate
           location: target
           target_offset: 0,-2,0
@@ -2215,7 +2214,7 @@ heal:
             radius: 1
         cast_self:
         - class: EffectSingle
-          sound: level_up
+          sound: sound: entity_player_levelup
           custom_sound: magic.rennervate
           location: target
           target_offset: 0,-2,0
@@ -2229,7 +2228,7 @@ heal:
             radius: 1
         cast_finish:
         -  class: EffectSingle
-           custom_sound: magic.vulnera
+           custom_sound: magic.shimmer
            sound_pitch: 5
            location: origin
         -  location: origin
@@ -2342,10 +2341,10 @@ gather:
     effects:
         cast:
         -  class: EffectSingle
-           sound: level_up
+           sound: sound: entity_player_levelup
         player_selected:
         -  class: EffectSingle
-           sound: enderman_idle
+           sound: entity_endermen_ambient
         -  class: EffectTrail
            particle: portal
            particle_count: 4
@@ -2385,7 +2384,7 @@ mount:
     effects:
         cast:
         -  class: EffectSingle
-           sound: irongolem_hit
+           sound: entity_irongolem_hurt
         -  class: EffectSingle
            effectlib:
              class: ConeEffect
@@ -2413,13 +2412,13 @@ tame:
     effects:
         cast:
         -  class: EffectSingle
-           sound: irongolem_hit
+           sound: entity_irongolem_hurt
            effectlib:
              class: ConeEffect
              iterations: 20
              particle: heart
         -  class: EffectSingle
-           sound: irongolem_hit
+           sound: entity_irongolem_hurt
            location: target
            effectlib:
              class: SphereEffect
@@ -2427,7 +2426,7 @@ tame:
              particle: heart
         no_target:
         -  class: EffectSingle
-           sound: creeper_hiss
+           sound: entity_creeper_primed
            effectlib:
              class: ConeEffect
              iterations: 20
@@ -2458,7 +2457,7 @@ icbm:
     effects:
         cast:
         -  class: EffectSingle
-           sound: ghast_fireball
+           sound: entity_ghast_shoot
         hit:
         - class: EffectSingle
           effect: explosion_huge
@@ -2499,7 +2498,7 @@ neutron:
     effects:
         cast:
         -  class: EffectSingle
-           sound: creeper_hiss
+           sound: entity_creeper_primed
         hit:
         -  class: EffectSingle
            location: target
@@ -2537,7 +2536,7 @@ wither:
     effects:
         cast:
         -  class: EffectSingle
-           sound: wither_shoot
+           sound: entity_wither_shoot
     parameters:
         target: none
         projectile: WitherSkull
@@ -2577,7 +2576,7 @@ arrowrain:
     effects:
         cast:
         -  class: EffectSingle
-           sound: shoot_arrow
+           sound: entity_arrow_shoot
     parameters:
         target: none
         projectile: Arrow
@@ -2622,7 +2621,7 @@ gatling:
            sound_pitch: 0.1
         shoot:
         -  class: EffectSingle
-           sound: shoot_arrow
+           sound: entity_arrow_shoot
            sound_pitch: 0.3
            particle: smoke_normal
     parameters:
@@ -2710,7 +2709,7 @@ meteor:
           color: FE2E2E
           firework: ball_large
         - class: EffectSingle
-          sound: explode
+          sound: entity_generic_explode
           sound_volume: 2
           location: both
         - class: EffectSingle
@@ -2768,7 +2767,7 @@ arrow:
     effects:
         cast:
         -  class: EffectSingle
-           sound: shoot_arrow
+           sound: entity_arrow_shoot
            sound_pitch: 0.2
            sound_volume: 0.3
            location: origin
@@ -2883,7 +2882,7 @@ flashbang:
            location: origin
            color: CC9933
            firework: burst
-           sound: explode
+           sound: entity_generic_explode
            sound: magic.hit
            effectlib:
              class: SphereEffect
@@ -2926,7 +2925,7 @@ weather:
     effects:
         cast:
         -  class: EffectSingle
-           sound: ambience_rain
+           sound: weather_rain
            effectlib:
              offset: 0,4,0
              class: HelixEffect
@@ -2934,7 +2933,7 @@ weather:
              particle: drip_water
         alternate:
         -  class: EffectSingle
-           sound: ambience_thunder
+           sound: entity_lightning_thunder
            effectlib:
              offset: 0,4,0
              class: HelixEffect
@@ -2964,14 +2963,14 @@ fling:
     effects:
         cast:
         -  class: EffectSingle
-           sound: enderdragon_wings
+           sound: entity_enderdragon_flap
            sound_volume: 1
            effectlib:
              class: TraceEffect
              iterations: 30
              particle: spell
         land:
-        -  sound: step_stone
+        -  sound: block_stone_step
            sound_pitch: 0.7
         -  class: EffectRing
            particle: block_crack
@@ -3034,7 +3033,7 @@ supertorch:
     effects:
         cast:
         -  class: EffectSingle
-           sound: fire_ignite
+           sound: item_firecharge_use
         -  class: EffectTrail
            particle: block_crack
            particle_count: 10
@@ -3067,7 +3066,7 @@ torch:
     effects:
         cast:
         -  class: EffectSingle
-           sound: fire_ignite
+           sound: item_firecharge_use
         -  class: EffectTrail
            particle: block_crack
            material: glowstone
@@ -3120,7 +3119,7 @@ familiar:
     effects:
         cast:
         -  class: EffectSingle
-           sound: villager_yes
+           sound: entity_villager_yes
            effectlib:
              class: DnaEffect
              particleHelix: drip_lava
@@ -3167,7 +3166,7 @@ monster:
     effects:
         cast:
         -  class: EffectSingle
-           sound: ghast_moan
+           sound: entity_ghast_warn
            effectlib:
              class: DnaEffect
              particleHelix: drip_lava
@@ -3200,7 +3199,7 @@ testdummy:
     effects:
         cast:
         -  class: EffectSingle
-           sound: villager_yes
+           sound: entity_villager_yes
            effectlib:
              class: DnaEffect
              particleHelix: drip_lava
@@ -3231,7 +3230,7 @@ ghast:
     effects:
         cast:
         -  class: EffectSingle
-           sound: villager_yes
+           sound: entity_villager_yes
            effectlib:
              class: DnaEffect
              particleHelix: drip_lava
@@ -3318,7 +3317,7 @@ farm:
     effects:
         cast:
         -  class: EffectSingle
-           sound: sheep_idle
+           sound: entity_sheep_ambient
            effectlib:
              class: DnaEffect
              particleHelix: drip_lava
@@ -3350,7 +3349,7 @@ wolf:
     effects:
         cast:
         -  class: EffectSingle
-           sound: wolf_howl
+           sound: entity_wolf_howl
            effectlib:
              class: DnaEffect
              particleHelix: drip_lava
@@ -3380,7 +3379,7 @@ cat:
     effects:
         cast:
         -  class: EffectSingle
-           sound: cat_meow
+           sound: entity_cat_purreow
            effectlib:
              class: DnaEffect
              particleHelix: drip_lava
@@ -3411,7 +3410,7 @@ portal:
     effects:
         cast:
         -  class: EffectSingle
-           sound: portal_travel
+           sound: block_portal_travel
         -  class: EffectTrail
            particle: portal
            particle_count: 8
@@ -3441,7 +3440,7 @@ phase:
     effects:
         cast:
         -  class: EffectSingle
-           sound: portal_travel
+           sound: block_portal_travel
            sound_volume: 0.5
            sound_pitch: 0.4
            location: source
@@ -3511,7 +3510,7 @@ phasebackup:
     effects:
         cast:
         -  class: EffectSingle
-           sound: portal_travel
+           sound: block_portal_travel
            sound_volume: 0.1
            location: source
            effectlib:
@@ -3519,7 +3518,7 @@ phasebackup:
              particle: portal
         teleport:
         -  class: EffectSingle
-           sound: portal_travel
+           sound: block_portal_travel
            sound_volume: 0.1
            location: target
            effectlib:
@@ -3566,7 +3565,7 @@ invincible:
     effects:
         cast:
         -  class: EffectSingle
-           sound: fizz
+           sound: block_fire_extinguish
            location: target
            effectlib:
              class: SphereEffect
@@ -3691,7 +3690,7 @@ bubble:
     effects:
         cast:
         -  class: EffectSingle
-           sound: splash
+           sound: entity_generic_splash
            location: both
         tick:
         -  location: target
@@ -3844,7 +3843,7 @@ recurse:
     effects:
         cast:
         -  class: EffectSingle
-           sound: dig_stone
+           sound: block_stone_break
            effectlib:
              class: ConeEffect
              iterations: 10
@@ -3917,7 +3916,7 @@ gills:
     effects:
         cast:
         -  class: EffectSingle
-           sound: water
+           sound: block_water_ambient
            location: origin
            use_wand_location: false
            effectlib:
@@ -4063,13 +4062,13 @@ bridge:
     effects:
         cast:
         -  class: EffectSingle
-           sound: dig_stone
+           sound: block_stone_break
         built:
         -  class: EffectSingle
            effect: step_sound
            location: target
         -  class: EffectSingle
-           sound: dig_stone
+           sound: block_stone_break
            effectlib:
              class: LineEffect
              particle: block_crack
@@ -4104,7 +4103,7 @@ pillar:
     effects:
         cast:
         -  class: EffectSingle
-           sound: dig_stone
+           sound: block_stone_break
            location: origin
         -  class: EffectTrail
            particle: block_crack
@@ -4193,7 +4192,7 @@ grenade:
     effects:
         cast:
         -  class: EffectSingle
-           sound: lava_pop
+           sound: block_lava_pop
     parameters:
         target: none
         allow_max_range: true
@@ -4229,7 +4228,7 @@ cluster:
     effects:
         cast:
         -  class: EffectSingle
-           sound: creeper_hiss
+           sound: entity_creeper_primed
     parameters:
         target: none
         size: 2
@@ -4254,7 +4253,7 @@ bomb:
     effects:
         cast:
         -  class: EffectSingle
-           sound: creeper_hiss
+           sound: entity_creeper_primed
         -  class: EffectRing
            particle: drip_lava
            location: target
@@ -4285,7 +4284,7 @@ superblob:
     effects:
         cast:
         -  class: EffectSingle
-           sound: level_up
+           sound: sound: entity_player_levelup
         -  class: EffectTrail
            particle: block_crack
     parameters:
@@ -4312,7 +4311,7 @@ superhemisphere:
     effects:
         cast:
         -  class: EffectSingle
-           sound: level_up
+           sound: sound: entity_player_levelup
         -  class: EffectTrail
            particle: block_crack
     parameters:
@@ -4339,7 +4338,7 @@ superpyramid:
     effects:
         cast:
         -  class: EffectSingle
-           sound: level_up
+           sound: sound: entity_player_levelup
         -  class: EffectTrail
            particle: block_crack
     parameters:
@@ -4366,7 +4365,7 @@ supercylinder:
     effects:
         cast:
         -  class: EffectSingle
-           sound: level_up
+           sound: sound: entity_player_levelup
         -  class: EffectTrail
            particle: block_crack
     parameters:
@@ -4393,7 +4392,7 @@ box:
     effects:
         cast:
         -  class: EffectSingle
-           sound: level_up
+           sound: sound: entity_player_levelup
         -  class: EffectTrail
            particle: block_crack
     parameters:
@@ -4420,7 +4419,7 @@ superbox:
     effects:
         cast:
         -  class: EffectSingle
-           sound: level_up
+           sound: sound: entity_player_levelup
         -  class: EffectTrail
            particle: block_crack
     parameters:
@@ -4447,7 +4446,7 @@ supercube:
     effects:
         cast:
         -  class: EffectSingle
-           sound: level_up
+           sound: sound: entity_player_levelup
         -  class: EffectTrail
            particle: block_crack
     parameters:
@@ -4474,7 +4473,7 @@ backup:
     effects:
         cast:
         -  class: EffectSingle
-           sound: piston_retract
+           sound: block_piston_contract
         -  class: EffectTrail
            effect: ender_signal
     parameters:
@@ -4506,7 +4505,7 @@ superbackup:
     effects:
         cast:
         -  class: EffectSingle
-           sound: piston_retract
+           sound: block_piston_contract
         -  class: EffectTrail
            effect: ender_signal
     parameters:
@@ -4537,7 +4536,7 @@ repair:
     effects:
         cast:
         -  class: EffectSingle
-           sound: piston_extend
+           sound: block_piston_extend
         -  class: EffectTrail
            effect: ender_signal
     parameters:
@@ -4568,7 +4567,7 @@ superrepair:
     effects:
         cast:
         -  class: EffectSingle
-           sound: piston_extend
+           sound: block_piston_extend
         -  class: EffectTrail
            effect: ender_signal
     parameters:
@@ -4600,7 +4599,7 @@ workbench:
     effects:
         cast:
         -  class: EffectSingle
-           sound: piston_extend
+           sound: block_piston_extend
     parameters:
         target: none
         cooldown: 5000
@@ -4622,7 +4621,7 @@ stash:
     effects:
         cast:
         -  class: EffectSingle
-           sound: enderman_hit
+           sound: entity_enderman_hurt
            effectlib:
             class: WarpEffect
             particle: block_crack
@@ -4650,7 +4649,7 @@ pickpocket:
     effects:
         cast:
         -  class: EffectSingle
-           sound: enderman_hit
+           sound: entity_enderman_hurt
         -  class: EffectTrail
            particle: block_crack
            material: obsidian
@@ -4684,7 +4683,7 @@ blast:
     effects:
         cast:
         -  class: EffectSingle
-           sound: explode
+           sound: entity_generic_explode
            location: origin
            effectlib:
              class: ConeEffect
@@ -4855,7 +4854,7 @@ tunnel:
     effects:
         cast:
         -  class: EffectSingle
-           sound: explode
+           sound: entity_generic_explode
         -  class: EffectTrail
            particle: explosion_large
     parameters:
@@ -4876,7 +4875,7 @@ superblast:
     effects:
         cast:
         -  class: EffectSingle
-           sound: explode
+           sound: entity_generic_explode
         -  class: EffectTrail
            particle: explosion_huge
     parameters:
@@ -4910,7 +4909,7 @@ convert:
     effects:
         cast:
         -  class: EffectSingle
-           sound: dig_stone
+           sound: block_stone_break
            effectlib:
              class: ConeEffect
              iterations: 10
@@ -4943,7 +4942,7 @@ superconvert:
     effects:
         cast:
         -  class: EffectSingle
-           sound: level_up
+           sound: sound: entity_player_levelup
         -  class: EffectTrail
            particle: block_crack
     parameters:
@@ -5037,9 +5036,9 @@ supercollapse:
     effects:
         cast:
         -  class: EffectSingle
-           sound: explode
+           sound: entity_generic_explode
         -  class: EffectSingle
-           sound: explode
+           sound: entity_generic_explode
            location: target
            particle: explosion_huge
         -  class: EffectTrail
@@ -5166,7 +5165,7 @@ commit:
     effects:
         cast:
         -  class: EffectSingle
-           sound: magic.disillusion
+           sound: magic.vanish
     parameters:
         target: none
         target: self
@@ -5258,7 +5257,7 @@ breach:
     effects:
         cast:
         -  class: EffectSingle
-           sound: fizz
+           sound: block_fire_extinguish
         -  class: EffectTrail
            particle: smoke_normal
     parameters:
@@ -5303,7 +5302,7 @@ peek:
     effects:
         cast:
         -  class: EffectSingle
-           sound: fizz
+           sound: block_fire_extinguish
         -  class: EffectTrail
            particle: block_crack
     parameters:
@@ -5359,7 +5358,7 @@ sandblast:
     effects:
         cast:
         -  class: EffectSingle
-           sound: step_sand
+           sound: block_sand_step
            location: both
         tick:
         -  location: target
@@ -5405,7 +5404,7 @@ mine:
     effects:
         cast:
         -  class: EffectSingle
-           sound: item_break
+           sound: entity_item_break
         -  class: EffectTrail
            particle: block_crack
            material: diamond_ore
@@ -5454,7 +5453,7 @@ chop:
     effects:
         cast:
         -  class: EffectSingle
-           sound: step_wood
+           sound: block_wood_step
         -  class: EffectTrail
            particle: block_crack
            material: log
@@ -5495,7 +5494,7 @@ alter:
     effects:
         cast:
         -  class: EffectSingle
-           sound: dig_wool
+           sound: block_cloth_break
            effectlib:
              class: ConeEffect
              iterations: 10
@@ -5529,7 +5528,7 @@ superalter:
     effects:
         cast:
         -  class: EffectSingle
-           sound: dig_wool
+           sound: block_cloth_break
         -  class: EffectTrail
            particle: flame
     parameters:
@@ -5552,7 +5551,7 @@ sphere:
     effects:
         cast:
         -  class: EffectSingle
-           sound: slime_walk
+           sound: entity_slime_jump
         -  class: EffectTrail
            particle: block_crack
     parameters:
@@ -5757,7 +5756,7 @@ superemp:
     effects:
         cast:
         -  class: EffectSingle
-           sound:  magic.electrify
+           sound: magic.electrify
         -  class: EffectTrail
            particle: redstone
            particle_count: 5
@@ -5795,7 +5794,7 @@ disintegrate:
     effects:
         cast:
         -  class: EffectSingle
-           sound: magmacube_jump
+           sound: entity_magmacube_jump
         tick:
         -  location: target
            particle: drip_lava
@@ -5942,7 +5941,7 @@ absorb:
     effects:
         cast:
         -  class: EffectSingle
-           sound: drink
+           sound: entity_generic_drink
         -  class: EffectTrail
            particle: block_crack
            reverse: true
@@ -5969,7 +5968,7 @@ hat:
     effects:
         cast:
         -  class: EffectSingle
-           sound: drink
+           sound: entity_generic_drink
         -  class: EffectTrail
            particle: block_crack
            reverse: true
@@ -6126,7 +6125,7 @@ lava:
     effects:
         cast:
         -  class: EffectSingle
-           sound: lava
+           sound: block_lava_ambient
         iterate:
         -  class: EffectSingle
            particle: lava
@@ -6171,7 +6170,7 @@ stream:
     effects:
       cast:
       - class: EffectSingle
-        sound: water
+        sound: block_water_ambient
       projectile:
        - location: origin
          effectlib:
@@ -6228,7 +6227,7 @@ earth:
     effects:
         cast:
         -  class: EffectSingle
-           sound: step_grass
+           sound: block_grass_step
         iterate:
         -  class: EffectSingle
            particle: block_crack
@@ -6263,7 +6262,7 @@ iterate:
     effects:
         cast:
         -  class: EffectSingle
-           sound: step_grass
+           sound: block_grass_step
         iterate:
         -  class: EffectSingle
            particle: block_crack
@@ -6465,7 +6464,7 @@ shrink:
     effects:
         cast:
         -  class: EffectSingle
-           sound: enderman_teleport
+           sound: entity_endermen_teleport
            sound_pitch: 0.1
            sound_volume: 0.5
            location: origin
@@ -6480,7 +6479,7 @@ shrink:
            firework: star
         no_target:
         -  class: EffectSingle
-           sound: enderman_teleport
+           sound: entity_endermen_teleport
            sound_pitch: 0.1
            sound_volume: 0.5
            location: origin
@@ -6518,7 +6517,7 @@ grow:
     effects:
         cast:
         -  class: EffectSingle
-           sound: enderman_teleport
+           sound: entity_endermen_teleport
            sound_pitch: 0.1
            sound_volume: 0.5
            location: origin
@@ -6533,7 +6532,7 @@ grow:
            firework: ball_large
         no_target:
         -  class: EffectSingle
-           sound: enderman_teleport
+           sound: entity_endermen_teleport
            sound_pitch: 0.1
            sound_volume: 0.5
            location: origin
@@ -6571,7 +6570,7 @@ flare:
     effects:
         cast:
         -  class: EffectSingle
-           sound: firework_launch
+           sound: entity_firework_launch
     parameters:
         target_type: LivingEntity
         allow_max_range: true
@@ -6734,7 +6733,7 @@ warpunlock:
   effects:
     cast:
     -  class: EffectSingle
-       sound: level_up
+       sound: sound: entity_player_levelup
        firework: star
   parameters:
       cooldown: 5000
@@ -6750,7 +6749,7 @@ respawn:
     effects:
         cast:
         -  class: EffectSingle
-           sound: portal_travel
+           sound: block_portal_travel
            location: both
            effectlib:
              class: WarpEffect
@@ -6776,7 +6775,7 @@ levitate:
     effects:
         cast:
            - class: EffectSingle
-             sound: enderdragon_wings
+             sound: entity_enderdragon_flap
              location: origin
              color_override: color
              use_wand_location: false
@@ -6788,10 +6787,10 @@ levitate:
                  offset: 0,-0.5,0
         deactivate:
         -  class: EffectSingle
-           sound: enderdragon_wings
+           sound: entity_enderdragon_flap
            sound_pitch: 0.2
         land:
-        -  sound: step_stone
+        -  sound: block_stone_step
            sound_pitch: 0.7
         -  class: EffectRing
            particle: block_crack
@@ -6961,7 +6960,7 @@ camera:
         cast:
         -  class: EffectSingle
            effect: smoke
-           sound: fuse
+           sound: entity_tnt_primed
            location: origin
     parameters:
         target_type: LivingEntity
@@ -6982,7 +6981,7 @@ tent:
     effects:
         cast:
         -  class: EffectSingle
-           sound: anvil_use
+           sound: block_anvil_use
         -  class: EffectTrail
            particle: block_crack
     parameters:
@@ -7010,7 +7009,7 @@ cage:
     effects:
         cast:
         -  class: EffectSingle
-           sound: anvil_use
+           sound: block_anvil_use
         -  class: EffectTrail
            particle: block_crack
     parameters:
@@ -7039,7 +7038,7 @@ wolfhouse:
     effects:
         cast:
         -  class: EffectSingle
-           sound: ambience_cave
+           sound: ambient_cave
         -  class: EffectTrail
            particle: block_crack
     parameters:
@@ -7205,7 +7204,7 @@ missile:
            sound: magic.zap
            sound_volume: .3
         -  class: EffectSingle
-           sound: slime_attack
+           sound: entity_slime_attack
            sound_pitch: 0.8
            location: target
            effectlib:
@@ -7356,7 +7355,7 @@ railgun:
            sound_volume: .3
            particle_data: 0.4
         -  class: EffectSingle
-           sound: slime_attack
+           sound: entity_slime_attack
            sound_pitch: 0.8
            location: target
            effectlib:
@@ -7438,7 +7437,7 @@ fury:
            firework: burst
         target:
         -  class: EffectSingle
-           sound: firework_launch
+           sound: entity_firework_launch
            sound_volume: 0.5
            location: source
            particle: fireworks_spark
@@ -7761,7 +7760,7 @@ sticky:
         explode:
         - location: target
           particle: explosion_huge
-          sound: explode
+          sound: entity_generic_explode
     parameters:
         target: other
         hitbox: true
@@ -7908,7 +7907,7 @@ pollinate:
            location: source
         despawn:
         -  class: EffectSingle
-           sound: splash
+           sound: entity_generic_splash
            sound_volume: 0.2
            location: source
            effectlib:
@@ -7979,7 +7978,7 @@ broom:
     effects:
         cast:
         -  class: EffectSingle
-           sound: enderdragon_wings
+           sound: entity_enderdragon_flap
            sound_volume: 1.1
         -  class: EffectSingle
            effectlib:
@@ -7998,7 +7997,7 @@ broom:
              iterations: 12
         area:
         -  class: EffectSingle
-           sound: enderdragon_wings
+           sound: entity_enderdragon_flap
            sound_volume: 1.1
            effectlib:
              class: TraceEffect
@@ -8012,7 +8011,7 @@ broom:
              particle: spell
         boost:
         -  class: EffectSingle
-           sound: enderdragon_wings
+           sound: entity_enderdragon_flap
            sound_volume: 1.1
            effectlib:
              class: TraceEffect
@@ -8025,7 +8024,7 @@ broom:
              iterations: 30
              particle: spell
         land:
-        -  sound: step_stone
+        -  sound: block_stone_step
            sound_pitch: 0.7
         -  class: EffectRing
            particle: block_crack
@@ -8107,7 +8106,7 @@ paste:
     effects:
         cast:
         -  class: EffectSingle
-           sound: level_up
+           sound: sound: entity_player_levelup
         -  class: EffectTrail
            particle: block_crack
     parameters:
@@ -8305,7 +8304,7 @@ torture:
            particle: spell_mob
         hit:
         -  class: EffectSingle
-           sound: irongolem_death
+           sound: entity_irongolem_death
            sound_volume: 1
            location: target
            color: 19070B
@@ -8470,10 +8469,10 @@ superfly:
     effects:
         cast:
         -  class: EffectSingle
-           sound: enderdragon_wings
+           sound: entity_enderdragon_flap
         deactivate:
         -  class: EffectSingle
-           sound: enderdragon_wings
+           sound: entity_enderdragon_flap
            sound_pitch: 0.2
     parameters:
         speed: 1
@@ -8509,7 +8508,7 @@ petrify:
           color: F5EFFB
           firework: ball
         - class: EffectSingle
-          sound: orb_pickup
+          sound: entity_experience_orb_pickup
           location: target
           requires_entity_target: true
           particle_override: particleOrbital
@@ -8837,7 +8836,7 @@ lift:
         no_target:
         -  class: EffectSingle
            location: origin
-           sound: enderdragon_wings
+           sound: entity_enderdragon_flap
            sound_pitch: 2
            effectlib:
              class: ConeEffect
@@ -9021,7 +9020,7 @@ sponge:
     effects:
         cast:
         -  class: EffectSingle
-           sound: level_up
+           sound: sound: entity_player_levelup
         -  class: EffectTrail
            particle: block_crack
     parameters:
@@ -9787,7 +9786,7 @@ singularity:
            location: origin
            color: CC9933
            firework: burst
-           sound: explode
+           sound: entity_generic_explode
            sound: magic.hit
            effectlib:
              class: SphereEffect
@@ -9838,7 +9837,7 @@ rocket:
     effects:
         cast:
         -  class: EffectSingle
-           sound: firework_launch
+           sound: entity_firework_launch
            sound_pitch: 0.1
            sound_volume: 0.5
            location: origin
@@ -9885,7 +9884,7 @@ tornado:
     effects:
         projectile:
         -  class: EffectSingle
-           sound: fizz
+           sound: block_fire_extinguish
            sound_volume: 0.2
            sound_pitch: 0.3
            effectlib:
@@ -9898,7 +9897,7 @@ tornado:
              offset: 0,-2,0
         cast:
         -  class: EffectSingle
-           sound: fizz
+           sound: block_fire_extinguish
            sound_volume: 1
            sound_pitch: 0.2
            location: origin
@@ -9956,7 +9955,7 @@ rainbow:
     effects:
         cast:
         -  class: EffectSingle
-           sound: level_up
+           sound: sound: entity_player_levelup
     parameters:
         target: block
         allow_max_range: true
@@ -10146,7 +10145,7 @@ boomstown:
           custom_sound: magic.protego
           location: origin
        -  class: EffectSingle
-          custom_sound: magic.disillusion
+          custom_sound: magic.vanish
           location: origin
           effectlib:
             class: ConeEffect
@@ -10174,7 +10173,7 @@ boomstown:
           custom_sound: magic.protego
           location: origin
        -  class: EffectSingle
-          custom_sound: magic.disillusion
+          custom_sound: magic.vanish
           location: origin
           effectlib:
             class: ConeEffect
@@ -10831,7 +10830,7 @@ supergather:
     effects:
         cast:
         -  class: EffectSingle
-           sound: enderman_idle
+           sound: entity_endermen_ambient
         -  class: EffectTrail
            particle: portal
            particle_count: 4
