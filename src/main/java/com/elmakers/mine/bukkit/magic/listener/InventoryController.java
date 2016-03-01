@@ -152,6 +152,7 @@ public class InventoryController implements Listener {
         {
             if (Wand.isSpell(heldItem)) {
                 event.setCancelled(true);
+                return;
             }
             if (Wand.isWand(clickedItem) || Wand.isWand(heldItem)) {
                 controller.onArmorUpdated(mage);
@@ -184,6 +185,13 @@ public class InventoryController implements Listener {
 
         if (activeWand != null && activeWand.isInventoryOpen())
         {
+            // Don't allow the offhand slot to be messed with while the spell inventory is open
+            if (event.getRawSlot() == 45)
+            {
+                event.setCancelled(true);
+                return;
+            }
+            
             if (Wand.isSpell(clickedItem) && clickedItem.getAmount() != 1)
             {
                 clickedItem.setAmount(1);
