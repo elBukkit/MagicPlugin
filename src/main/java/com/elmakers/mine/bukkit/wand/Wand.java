@@ -1,6 +1,7 @@
 package com.elmakers.mine.bukkit.wand;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -34,7 +35,7 @@ import com.elmakers.mine.bukkit.utility.ColorHD;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
-import com.elmakers.mine.bukkit.utility.SoundEffect;
+import com.elmakers.mine.bukkit.effect.SoundEffect;
 import de.slikey.effectlib.util.ParticleEffect;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
@@ -4677,10 +4678,12 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
             return false;
         }
         PlayerInventory inventory = player.getInventory();
-        storedInventory = CompatibilityUtils.createInventory(null, inventory.getSize(), "Stored Inventory");
+		int inventorySize = 36;
+		// int inventorySize = inventory.getSize();
+        storedInventory = CompatibilityUtils.createInventory(null, inventorySize, "Stored Inventory");
 
         // Make sure we don't store any spells or magical materials, just in case
-        ItemStack[] contents = inventory.getContents();
+        ItemStack[] contents = Arrays.copyOf(inventory.getContents(), inventorySize);
         for (int i = 0; i < contents.length; i++) {
             if (Wand.isSpell(contents[i]) && !Wand.isSkill(contents[i])) {
                 contents[i] = null;
