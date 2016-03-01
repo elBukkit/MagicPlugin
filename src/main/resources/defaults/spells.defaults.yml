@@ -146,7 +146,7 @@ default:
        upgrade:
        - class: EffectSingle
          location: origin
-         sound: sound: entity_player_levelup
+         sound: entity_player_levelup
          firework: ball_large
        break:
        - class: EffectSingle
@@ -155,7 +155,7 @@ default:
        earn_sp:
        - class: EffectSingle
          location: origin
-         sound: sound: entity_player_levelup
+         sound: entity_player_levelup
          sound_volume: 0.6
          sound_pitch: 0.75
        - class: EffectSingle
@@ -1056,7 +1056,7 @@ superdisc:
     effects:
         cast:
         -  class: EffectSingle
-           sound: sound: entity_player_levelup
+           sound: entity_player_levelup
         -  class: EffectTrail
            particle: block_crack
     parameters:
@@ -1085,7 +1085,7 @@ superring:
     effects:
         cast:
         -  class: EffectSingle
-           sound: sound: entity_player_levelup
+           sound: entity_player_levelup
         -  class: EffectTrail
            particle: block_crack
     parameters:
@@ -1114,7 +1114,7 @@ supershell:
     effects:
         cast:
         -  class: EffectSingle
-           sound: sound: entity_player_levelup
+           sound: entity_player_levelup
         -  class: EffectTrail
            particle: block_crack
     parameters:
@@ -1141,7 +1141,7 @@ superdome:
     effects:
         cast:
         -  class: EffectSingle
-           sound: sound: entity_player_levelup
+           sound: entity_player_levelup
         -  class: EffectTrail
            particle: block_crack
     parameters:
@@ -2200,7 +2200,7 @@ heal:
             lengthGrow: .12
             particle: heart
         - class: EffectSingle
-          sound: sound: entity_player_levelup
+          sound: entity_player_levelup
           custom_sound: magic.rennervate
           location: target
           target_offset: 0,-2,0
@@ -2214,7 +2214,7 @@ heal:
             radius: 1
         cast_self:
         - class: EffectSingle
-          sound: sound: entity_player_levelup
+          sound: entity_player_levelup
           custom_sound: magic.rennervate
           location: target
           target_offset: 0,-2,0
@@ -2341,7 +2341,7 @@ gather:
     effects:
         cast:
         -  class: EffectSingle
-           sound: sound: entity_player_levelup
+           sound: entity_player_levelup
         player_selected:
         -  class: EffectSingle
            sound: entity_endermen_ambient
@@ -4284,7 +4284,7 @@ superblob:
     effects:
         cast:
         -  class: EffectSingle
-           sound: sound: entity_player_levelup
+           sound: entity_player_levelup
         -  class: EffectTrail
            particle: block_crack
     parameters:
@@ -4311,7 +4311,7 @@ superhemisphere:
     effects:
         cast:
         -  class: EffectSingle
-           sound: sound: entity_player_levelup
+           sound: entity_player_levelup
         -  class: EffectTrail
            particle: block_crack
     parameters:
@@ -4338,7 +4338,7 @@ superpyramid:
     effects:
         cast:
         -  class: EffectSingle
-           sound: sound: entity_player_levelup
+           sound: entity_player_levelup
         -  class: EffectTrail
            particle: block_crack
     parameters:
@@ -4365,7 +4365,7 @@ supercylinder:
     effects:
         cast:
         -  class: EffectSingle
-           sound: sound: entity_player_levelup
+           sound: entity_player_levelup
         -  class: EffectTrail
            particle: block_crack
     parameters:
@@ -4392,7 +4392,7 @@ box:
     effects:
         cast:
         -  class: EffectSingle
-           sound: sound: entity_player_levelup
+           sound: entity_player_levelup
         -  class: EffectTrail
            particle: block_crack
     parameters:
@@ -4419,7 +4419,7 @@ superbox:
     effects:
         cast:
         -  class: EffectSingle
-           sound: sound: entity_player_levelup
+           sound: entity_player_levelup
         -  class: EffectTrail
            particle: block_crack
     parameters:
@@ -4446,7 +4446,7 @@ supercube:
     effects:
         cast:
         -  class: EffectSingle
-           sound: sound: entity_player_levelup
+           sound: entity_player_levelup
         -  class: EffectTrail
            particle: block_crack
     parameters:
@@ -4942,7 +4942,7 @@ superconvert:
     effects:
         cast:
         -  class: EffectSingle
-           sound: sound: entity_player_levelup
+           sound: entity_player_levelup
         -  class: EffectTrail
            particle: block_crack
     parameters:
@@ -6733,7 +6733,7 @@ warpunlock:
   effects:
     cast:
     -  class: EffectSingle
-       sound: sound: entity_player_levelup
+       sound: entity_player_levelup
        firework: star
   parameters:
       cooldown: 5000
@@ -8106,7 +8106,7 @@ paste:
     effects:
         cast:
         -  class: EffectSingle
-           sound: sound: entity_player_levelup
+           sound: entity_player_levelup
         -  class: EffectTrail
            particle: block_crack
     parameters:
@@ -9020,7 +9020,7 @@ sponge:
     effects:
         cast:
         -  class: EffectSingle
-           sound: sound: entity_player_levelup
+           sound: entity_player_levelup
         -  class: EffectTrail
            particle: block_crack
     parameters:
@@ -9955,7 +9955,7 @@ rainbow:
     effects:
         cast:
         -  class: EffectSingle
-           sound: sound: entity_player_levelup
+           sound: entity_player_levelup
     parameters:
         target: block
         allow_max_range: true
