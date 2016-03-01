@@ -703,7 +703,7 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
     protected MaterialAndData getIcon(CastContext context, ConfigurationSection parameters, String key)
     {
         String iconKey = parameters.getString(key);
-        if (iconKey.isEmpty()) return null;
+        if (iconKey == null || iconKey.isEmpty()) return null;
         
         MaterialAndData material = ConfigurationUtils.getMaterialAndData(parameters, key);
         if (material == null || !material.isValid() || material.getMaterial() == null)
