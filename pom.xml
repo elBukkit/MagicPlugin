@@ -140,7 +140,7 @@
 		<dependency>
 	        <groupId>org.mcstats.bukkit</groupId>
 	        <artifactId>metrics</artifactId>
-	        <version>R7</version>
+	        <version>R8-SNAPSHOT</version>
 	    </dependency>
 		<dependency>
 			<groupId>net.sacredlabyrinth.Phaed</groupId>
