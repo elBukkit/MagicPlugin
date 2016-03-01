@@ -194,9 +194,7 @@ public class LevitateSpell extends TargetingSpell implements Listener
                 for (Spell spell : active) {
                     if (spell instanceof LevitateSpell) {
                         LevitateSpell levitate = (LevitateSpell)spell;
-                        // levitate.boost(event.getPower());
-                        // Hacked for 1.9 for now :(
-                        levitate.boost(1);
+                        levitate.boost(event.getPower());
                     }
                 }
             }
