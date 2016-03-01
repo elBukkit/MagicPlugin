@@ -64,6 +64,7 @@ import org.bukkit.util.Vector;
 
 public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand {
 	public final static int INVENTORY_SIZE = 27;
+	public final static int PLAYER_INVENTORY_SIZE = 36;
 	public final static int HOTBAR_SIZE = 9;
 	public final static int HOTBAR_INVENTORY_SIZE = HOTBAR_SIZE - 1;
 	public final static float DEFAULT_SPELL_COLOR_MIX_WEIGHT = 0.0001f;
@@ -2268,7 +2269,9 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		if (wandMode == WandMode.INVENTORY) {
 			if (!hasStoredInventory()) return;
 			PlayerInventory inventory = player.getInventory();
-            inventory.clear();
+            for (int i = 0; i < PLAYER_INVENTORY_SIZE; i++) {
+				inventory.setItem(i, null);
+			}
 			updateHotbar(inventory);
 			updateInventory(inventory, false);
 			updateName();
@@ -4678,20 +4681,17 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
             return false;
         }
         PlayerInventory inventory = player.getInventory();
-		int inventorySize = 36;
-		// int inventorySize = inventory.getSize();
-        storedInventory = CompatibilityUtils.createInventory(null, inventorySize, "Stored Inventory");
-
-        // Make sure we don't store any spells or magical materials, just in case
-        ItemStack[] contents = Arrays.copyOf(inventory.getContents(), inventorySize);
-        for (int i = 0; i < contents.length; i++) {
-            if (Wand.isSpell(contents[i]) && !Wand.isSkill(contents[i])) {
-                contents[i] = null;
-            }
-        }
-        storedInventory.setContents(contents);
-        inventory.clear();
+		storedInventory = CompatibilityUtils.createInventory(null, PLAYER_INVENTORY_SIZE, "Stored Inventory");
+		for (int i = 0; i < PLAYER_INVENTORY_SIZE; i++) {
+			// Make sure we don't store any spells or magical materials, just in case
+			ItemStack item = inventory.getItem(i);
+			if (!Wand.isSpell(item) || Wand.isSkill(item)) {
+				storedInventory.setItem(i, item);
+			}
+			inventory.setItem(i, null);
+		}
         storedSlot = inventory.getHeldItemSlot();
+		inventory.setItem(storedSlot, item);
 
         return true;
     }
@@ -4726,7 +4726,9 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		}
 		*/
 
-        inventory.setContents(storedInventory.getContents());
+		for (int i = 0; i < storedInventory.getSize(); i++) {
+			inventory.setItem(i, storedInventory.getItem(i));
+		}
         storedInventory = null;
         saveItemState();
 
