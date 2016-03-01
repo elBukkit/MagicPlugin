@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.effect;
 
+import com.elmakers.mine.bukkit.utility.NMSUtils;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Location;
 import org.bukkit.Sound;
@@ -100,8 +101,8 @@ public class SoundEffect implements com.elmakers.mine.bukkit.api.effect.SoundEff
     public void play(Plugin plugin, Location sourceLocation) {
         if (sourceLocation == null || plugin == null) return;
 
-        try {
-            if (customSound != null) {
+        if (customSound != null) {
+            try {
                 int range = this.range;
                 if (range <= 0) {
                     range = (int)(volume > 1.0 ? (16.0 * volume) : 16.0);
@@ -111,16 +112,21 @@ public class SoundEffect implements com.elmakers.mine.bukkit.api.effect.SoundEff
                 for (Player player : players) {
                     Location location = player.getLocation();
                     if (location.getWorld().equals(sourceLocation.getWorld()) && location.distanceSquared(sourceLocation) <= rangeSquared) {
-                        player.playSound(sourceLocation, customSound, volume, pitch);
+                        // player.playSound(sourceLocation, customSound, volume, pitch);
+                        NMSUtils.playCustomSound(player, sourceLocation, customSound, volume, pitch);
                     }
                 }
+            } catch (Exception ex) {
+                plugin.getLogger().warning("Failed to play custom sound: " + customSound);
             }
+        }
 
-            if (sound != null) {
+        if (sound != null) {
+            try {
                 sourceLocation.getWorld().playSound(sourceLocation, sound, volume, pitch);
+            } catch (Exception ex) {
+                plugin.getLogger().warning("Failed to play sound: " + sound);
             }
-        } catch (Exception ex) {
-            // Silent catch for now, 1.9 broke custom sounds
         }
     }
 
@@ -128,33 +134,40 @@ public class SoundEffect implements com.elmakers.mine.bukkit.api.effect.SoundEff
         if (entity == null || plugin == null) return;
 
         Location sourceLocation = entity.getLocation();
-        try {
             if (customSound != null) {
-                if (range > 0) {
-                    int rangeSquared = range * range;
-                    Collection<? extends Player> players = plugin.getServer().getOnlinePlayers();
-                    for (Player player : players) {
-                        Location location = player.getLocation();
-                        if (location.getWorld().equals(sourceLocation.getWorld()) && location.distanceSquared(sourceLocation) <= rangeSquared) {
-                            player.playSound(sourceLocation, customSound, volume, pitch);
+                try {
+                    if (range > 0) {
+                        int rangeSquared = range * range;
+                        Collection<? extends Player> players = plugin.getServer().getOnlinePlayers();
+                        for (Player player : players) {
+                            Location location = player.getLocation();
+                            if (location.getWorld().equals(sourceLocation.getWorld()) && location.distanceSquared(sourceLocation) <= rangeSquared) {
+                                // player.playSound(sourceLocation, customSound, volume, pitch);
+                                NMSUtils.playCustomSound(player, sourceLocation, customSound, volume, pitch);
+                            }
                         }
+                    } else if (entity instanceof Player) {
+                        Player player = (Player)entity;
+                        // player.playSound(sourceLocation, customSound, volume, pitch);
+                        NMSUtils.playCustomSound(player, sourceLocation, customSound, volume, pitch);
+
                     }
-                } else if (entity instanceof Player) {
-                    Player player = (Player)entity;
-                    player.playSound(sourceLocation, customSound, volume, pitch);
+                } catch (Exception ex) {
+                    plugin.getLogger().warning("Failed to play custom sound: " + customSound);
                 }
             }
     
             if (sound != null) {
-                if (entity instanceof Player) {
-                    Player player = (Player)entity;
-                    player.playSound(sourceLocation, sound, volume, pitch);
-                } else {
-                    sourceLocation.getWorld().playSound(sourceLocation, sound, volume, pitch);
+                try {
+                    if (entity instanceof Player) {
+                        Player player = (Player)entity;
+                        player.playSound(sourceLocation, sound, volume, pitch);
+                    } else {
+                        sourceLocation.getWorld().playSound(sourceLocation, sound, volume, pitch);
+                    }
+                } catch (Exception ex) {
+                    plugin.getLogger().warning("Failed to play sound: " + sound);
                 }
             }
-        } catch (Exception ex) {
-            // Silent catch for now, 1.9 broke custom sounds
-        }
     }
 }

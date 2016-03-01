@@ -106,6 +106,9 @@ public class NMSUtils {
     protected static Class<?> class_PacketPlayOutSpawnEntityLiving;
     protected static Class<?> class_PacketPlayOutEntityMetadata;
     protected static Class<?> class_PacketPlayOutEntityStatus;
+    protected static Class<?> class_PacketPlayOutCustomSoundEffect;
+    protected static Enum<?> enum_SoundCategory_PLAYERS;
+    protected static Class<Enum> class_EnumSoundCategory;
     protected static Class<?> class_EntityFallingBlock;
     protected static Class<?> class_EntityArmorStand;
     protected static Class<?> class_EntityPlayer;
@@ -202,6 +205,7 @@ public class NMSUtils {
     protected static Constructor class_PacketPlayOutEntityMetadata_Constructor;
     protected static Constructor class_PacketPlayOutEntityStatus_Constructor;
     protected static Constructor class_PacketPlayOutEntityDestroy_Constructor;
+    protected static Constructor class_PacketPlayOutCustomSoundEffect_Constructor;
     protected static Constructor class_ChestLock_Constructor;
     protected static Constructor class_ArmorStand_Constructor;
     protected static Constructor class_AxisAlignedBB_Constructor;
@@ -273,6 +277,8 @@ public class NMSUtils {
             class_World = fixBukkitClass("net.minecraft.server.World");
             class_WorldServer = fixBukkitClass("net.minecraft.server.WorldServer");
             class_EnumSkyBlock = (Class<Enum>)fixBukkitClass("net.minecraft.server.EnumSkyBlock");
+            class_EnumSoundCategory = (Class<Enum>)fixBukkitClass("net.minecraft.server.SoundCategory");
+            enum_SoundCategory_PLAYERS = Enum.valueOf(class_EnumSoundCategory, "PLAYERS");
             class_EntityPainting = fixBukkitClass("net.minecraft.server.EntityPainting");
             class_EntityCreature = fixBukkitClass("net.minecraft.server.EntityCreature");
             class_EntityItemFrame = fixBukkitClass("net.minecraft.server.EntityItemFrame");
@@ -296,6 +302,7 @@ public class NMSUtils {
             class_PacketPlayOutSpawnEntityLiving = fixBukkitClass("net.minecraft.server.PacketPlayOutSpawnEntityLiving");
             class_PacketPlayOutEntityMetadata = fixBukkitClass("net.minecraft.server.PacketPlayOutEntityMetadata");
             class_PacketPlayOutEntityStatus = fixBukkitClass("net.minecraft.server.PacketPlayOutEntityStatus");
+            class_PacketPlayOutCustomSoundEffect = fixBukkitClass("net.minecraft.server.PacketPlayOutCustomSoundEffect");
             class_EntityFallingBlock = fixBukkitClass("net.minecraft.server.EntityFallingBlock");
             class_EntityArmorStand = fixBukkitClass("net.minecraft.server.EntityArmorStand");
             class_EntityPlayer = fixBukkitClass("net.minecraft.server.EntityPlayer");
@@ -375,7 +382,8 @@ public class NMSUtils {
             class_PacketPlayOutEntityMetadata_Constructor = class_PacketPlayOutEntityMetadata.getConstructor(Integer.TYPE, class_DataWatcher, Boolean.TYPE);
             class_PacketPlayOutEntityStatus_Constructor = class_PacketPlayOutEntityStatus.getConstructor(class_Entity, Byte.TYPE);
             class_PacketPlayOutEntityDestroy_Constructor = class_PacketPlayOutEntityDestroy.getConstructor(int[].class);
-
+            class_PacketPlayOutCustomSoundEffect_Constructor = class_PacketPlayOutCustomSoundEffect.getConstructor(String.class, class_EnumSoundCategory, Double.TYPE, Double.TYPE, Double.TYPE, Float.TYPE, Float.TYPE);
+            
             class_CraftWorld_environmentField = class_CraftWorld.getDeclaredField("environment");
             class_CraftWorld_environmentField.setAccessible(true);
             class_Entity_invulnerableField = class_Entity.getDeclaredField("invulnerable");
@@ -1352,6 +1360,16 @@ public class NMSUtils {
     public static void setEnvironment(World world, World.Environment environment) {
         try {
             class_CraftWorld_environmentField.set(world, environment);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+    
+    public static void playCustomSound(Player player, Location location, String sound, float volume, float pitch)
+    {
+        try {
+            Object packet = class_PacketPlayOutCustomSoundEffect_Constructor.newInstance(sound, enum_SoundCategory_PLAYERS, location.getX(), location.getY(), location.getZ(), volume, pitch);
+            sendPacket(player, packet);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
