@@ -43,7 +43,7 @@ public class AddSpellAction extends BaseSpellAction
     @Override
     public SpellResult perform(CastContext context) {
         Mage mage = context.getMage();
-        Wand wand = mage.getActiveWand();
+        Wand wand = context.getWand();
 		Player player = mage.getPlayer();
 		if (player == null) {
             return SpellResult.PLAYER_REQUIRED;

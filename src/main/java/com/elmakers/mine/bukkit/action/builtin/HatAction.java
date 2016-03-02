@@ -105,9 +105,16 @@ public class HatAction extends BaseSpellAction
         if (useItem)
         {
             Wand activeWand = mage.getActiveWand();
-            if (activeWand != null) {
-                activeWand.deactivate();;
+            // Check for trying to wear a hat from the offhand slot
+            // Not handling this for now.
+            if (activeWand != context.getWand()) {
+                return SpellResult.NO_TARGET;
             }
+            
+            if (activeWand != null) {
+                activeWand.deactivate();
+            }
+            
             ItemStack itemInHand = player.getItemInHand();
             if (itemInHand == null || itemInHand.getType() == Material.AIR)
             {

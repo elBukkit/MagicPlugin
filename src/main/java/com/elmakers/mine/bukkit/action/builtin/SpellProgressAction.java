@@ -47,7 +47,7 @@ public class SpellProgressAction extends BaseSpellAction implements GUIAction
         if (context != null)
         {
             Mage mage = context.getMage();
-            Wand wand = mage.getActiveWand();
+            Wand wand = context.getWand();
             ItemStack item = event.getCurrentItem();
             if (wand != null && com.elmakers.mine.bukkit.wand.Wand.isSpell(item))
             {
@@ -62,7 +62,7 @@ public class SpellProgressAction extends BaseSpellAction implements GUIAction
     @Override
     public SpellResult perform(CastContext context) {
         Mage mage = context.getMage();
-        Wand wand = mage.getActiveWand();
+        Wand wand = context.getWand();
         this.context = context;
 		Player player = mage.getPlayer();
 		if (player == null) {

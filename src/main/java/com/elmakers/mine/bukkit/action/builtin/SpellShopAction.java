@@ -89,7 +89,7 @@ public class SpellShopAction extends BaseShopAction
         if (!contextResult.isSuccess()) {
             return contextResult;
         }
-        Wand wand = mage.getActiveWand();
+        Wand wand = context.getWand();
         WandUpgradePath currentPath = wand == null ? null : wand.getPath();
 
         if (!castsSpells && !allowLocked && wand.isLocked()) {
