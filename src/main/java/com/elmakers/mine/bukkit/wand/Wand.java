@@ -4709,21 +4709,14 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		// Check for the wand having been removed somehow, we don't want to put it back
 		// if that happened.
 		// This fixes dupe issues with armor stands, among other things
-		// We do need to account for the wand not being the active slot, though
-		// Though maybe not needed now with PlayerArmorStandManipulateEvent ?
-		// we'll have to see if wands disappear due to this.
-		// Turning this off for now, it does in fact seem to cause wands to disappear.
-		/*
-		int currentSlot = inventory.getHeldItemSlot();
-		ItemStack storedItem = storedInventory.getItem(currentSlot);
-		String currentId = getWandId(inventory.getItem(currentSlot));
+		// We do need to account for the wand not being the active slot anymore
+		ItemStack storedItem = storedInventory.getItem(storedSlot);
+		String currentId = getWandId(inventory.getItem(storedSlot));
 		String storedId = getWandId(storedItem);
 		if (storedId != null && storedId.equals(id) && currentId != id) {
-			storedInventory.setItem(currentSlot, null);
-			controller.getLogger().warning("Cleared wand on inv close for player " + player.getName());
-			Thread.dumpStack();
+			storedInventory.setItem(storedSlot, null);
+			controller.info("Cleared wand on inv close for player " + player.getName());
 		}
-		*/
 
 		for (int i = 0; i < storedInventory.getSize(); i++) {
 			inventory.setItem(i, storedInventory.getItem(i));
