@@ -213,7 +213,7 @@ wand:
     randomized_lore: What kind of wand will you get?
     randomized_name: Wand Box
     upgrade_name: $name Upgrade
-    inventory_instructions: "&r&bYour $wand now has more than one spell. Right-click to open/close the spell inventory. Use the hotbar buttons to select a spell."
+    inventory_instructions: "&r&bYour $wand now has more than one spell. Use the drop (Q) button to open/close the spell inventory. Use the hotbar buttons to select a spell."
     page_instructions: "&r&bYour $wand now has more than one page of spells. Click outside the spell inventory to change pages."
     bound_instructions: "&r&3Your $wand is bound to you, and is undroppable."
     spell_instructions: "&r&bSwing your $wand to cast &r&6$spell&d&o. Spells require mana, shown in the XP bar."

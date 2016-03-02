@@ -96,6 +96,7 @@ default:
     migrate_icon: wood_hoe
     effect_color: random
     path: beginner
+    mode_drop: true
     xp_max: 50
     xp: 50
     xp_regeneration: 5
@@ -132,6 +133,7 @@ beginner:
     migrate_to: default
     effect_color: random
     path: beginner
+    mode_drop: true
     xp_max: 50
     xp: 50
     xp_regeneration: 5
@@ -152,6 +154,7 @@ starter:
     icon: wood_hoe:1
     migrate_icon: wood_hoe
     effect_color: random
+    mode_drop: true
     icon: stick
     glow: true
     max_enchant_count: 3
@@ -176,6 +179,7 @@ student:
     icon: wood_hoe:2
     migrate_icon: wood_hoe
     effect_color: '00FF00'
+    mode_drop: true
     path: student
     bound: true
     keep: true
@@ -222,6 +226,7 @@ apprentice:
     effect_color: '22FF22'
     path: apprentice
     indestructible: true
+    mode_drop: true
     bound: true
     keep: true
     undroppable: true
@@ -293,6 +298,7 @@ master:
     xp: 250
     effect_particle: town_aura
     effect_particle_count: 2
+    mode_drop: true
     keep: true
     bound: true
     undroppable: true
@@ -417,6 +423,7 @@ engineer:
     path: engineer
     undroppable: true
     indestructible: true
+    mode_drop: true
     icon: wood_hoe:5
     migrate_icon: gold_axe
     xp_regeneration: 90
@@ -475,6 +482,7 @@ architect:
     bound: true
     undroppable: true
     indestructible: true
+    mode_drop: true
     icon: wood_hoe:5
     migrate_icon: gold_pickaxe
     effect_color: '00FF00'
@@ -551,6 +559,7 @@ conduit:
     keep: true
     bound: true
     undroppable: true
+    mode_drop: true
     indestructible: true
     icon: wood_hoe:6
     migrate_icon: gold_pickaxe
@@ -648,6 +657,7 @@ admin:
     keep: true
     bound: true
     undroppable: true
+    mode_drop: true
     indestructible: true
     cost_reduction: 2
     cooldown_reduction: 1
@@ -689,6 +699,7 @@ architectstaff:
   locked: true
   indestructible: true
   undroppable: true
+  mode_drop: true
   icon: wood_hoe:6
   migrate_icon: gold_pickaxe
   path: conduit
@@ -784,6 +795,7 @@ staff:
   locked: true
   indestructible: true
   undroppable: true
+  mode_drop: true
   protected: true
   icon: wood_hoe:6
   migrate_icon: gold_pickaxe
@@ -808,6 +820,7 @@ developer:
     keep: true
     bound: true
     undroppable: true
+    mode_drop: true
     indestructible: true
     cost_reduction: 2
     cooldown_reduction: 2
@@ -892,6 +905,7 @@ miniwolf:
     hotbar_count: 2
     effect_color: '00AACC'
     mode: inventory
+    mode_drop: true
     active_spell: levitate
     xp_max: 250
     xp_regeneration: 50
@@ -949,6 +963,7 @@ wolf:
   protected: true
   powered: true
   undroppable: true
+  mode_drop: true
   cost_reduction: 2.0
   cooldown_reduction: 2.0
   consume_reduction: 1
