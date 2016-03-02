@@ -159,12 +159,13 @@ public class PlayerController implements Listener {
         }
 
         final Wand activeWand = mage.getActiveWand();
-        ItemStack droppedItem = event.getItemDrop().getItemStack();
+        final ItemStack droppedItem = event.getItemDrop().getItemStack();
 
         boolean cancelEvent = false;
         String droppedId = Wand.getWandId(droppedItem);
         boolean droppedWand = droppedId != null && activeWand != null && activeWand.getId().equals(droppedId);
         if (droppedWand && activeWand.isUndroppable()) {
+            activeWand.checkItem(droppedItem);
             // Postpone cycling until after this event unwinds
             Bukkit.getScheduler().scheduleSyncDelayedTask(controller.getPlugin(), new Runnable() {
                 @Override
@@ -198,7 +199,7 @@ public class PlayerController implements Listener {
                     controller.removeItemFromWand(activeWand, droppedItem);
                 }
             }
-        } else if(openOnSneakDrop && !player.isSneaking() && event.getPlayer().getItemOnCursor().getType() == Material.AIR) {
+        } else if (openOnSneakDrop && !player.isSneaking() && event.getPlayer().getItemOnCursor().getType() == Material.AIR) {
             PlayerInventory inventory = player.getInventory();
 
             // Find a wand on the hotbar to open

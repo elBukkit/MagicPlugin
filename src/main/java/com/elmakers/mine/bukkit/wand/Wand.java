@@ -1015,6 +1015,12 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         updateBrushItem(controller.getMessages(), itemStack, brushData, wand);
 		return itemStack;
 	}
+	
+	public void checkItem(ItemStack newItem) {
+		if (newItem.getAmount() > item.getAmount()) {
+			item.setAmount(newItem.getAmount());
+		}
+	}
 
 	@Override
 	public void saveState() {
