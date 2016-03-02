@@ -502,7 +502,7 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
                 Location target = targetLocation;
                 if (target == null) {
                     target = getTargetLocation();
-                    if (player.shouldUseBlockLocation()) {
+                    if (player.shouldUseBlockLocation() && target != null) {
                         target = target.getBlock().getLocation();
                     } else if (!player.shouldUseHitLocation() && targetEntity != null) {
                         if (targetEntity instanceof LivingEntity) {
