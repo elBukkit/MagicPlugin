@@ -910,6 +910,7 @@ passthrough:
 - ladder
 
 wearable:
+- skull_item
 - gold_helmet
 - chainmail_helmet
 - iron_helmet

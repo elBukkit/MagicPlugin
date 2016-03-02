@@ -170,12 +170,6 @@ public class InventoryController implements Listener {
             }
             controller.onArmorUpdated(mage);
         }
-        if (event.getAction() == InventoryAction.MOVE_TO_OTHER_INVENTORY && clickedItem != null)
-        {
-            if (controller.isWearable(clickedItem)) {
-                controller.onArmorUpdated(mage);
-            }
-        }
 
         Wand activeWand = mage.getActiveWand();
 
@@ -250,6 +244,14 @@ public class InventoryController implements Listener {
         } else if (clickedWand && Wand.Undroppable && !player.hasPermission("Magic.wand.override_drop") && isChest && !isContainerSlot) {
             event.setCancelled(true);
             return;
+        }
+        
+        // Check for armor changing
+        if (event.getAction() == InventoryAction.MOVE_TO_OTHER_INVENTORY && clickedItem != null)
+        {
+            if (controller.isWearable(clickedItem)) {
+                controller.onArmorUpdated(mage);
+            }
         }
 
         // Check for dropping items out of a wand's inventory
