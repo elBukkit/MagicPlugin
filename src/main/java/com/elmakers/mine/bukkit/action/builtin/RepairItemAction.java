@@ -41,18 +41,18 @@ public class RepairItemAction extends BaseSpellAction
 			if (armor)
 			{
 				ItemStack item = equipment.getHelmet();
-				repaired = repair(item) || repaired;
+				repaired = repair(context, item) || repaired;
 				item = equipment.getChestplate();
-				repaired = repair(item) || repaired;
+				repaired = repair(context, item) || repaired;
 				item = equipment.getLeggings();
-				repaired = repair(item) || repaired;
+				repaired = repair(context, item) || repaired;
 				item = equipment.getBoots();
-				repaired = repair(item) || repaired;
+				repaired = repair(context, item) || repaired;
 			}
 			if (heldItem)
 			{
 				ItemStack item = equipment.getItemInHand();
-				repaired = repair(item) || repaired;
+				repaired = repair(context, item) || repaired;
 			}
 			return repaired ? SpellResult.CAST : SpellResult.NO_TARGET;
 		}
@@ -62,12 +62,12 @@ public class RepairItemAction extends BaseSpellAction
 		}
 		Item item = (Item)entity;
 		ItemStack itemStack = item.getItemStack();
-		return repair(itemStack) ? SpellResult.CAST : SpellResult.NO_TARGET;
+		return repair(context, itemStack) ? SpellResult.CAST : SpellResult.NO_TARGET;
 	}
 
-	protected boolean repair(ItemStack itemStack)
+	protected boolean repair(CastContext context, ItemStack itemStack)
 	{
-		if (itemStack == null || itemStack.getType() == Material.AIR)
+		if (itemStack == null || itemStack.getType() == Material.AIR || context.getController().getAPI().isWand(itemStack))
 		{
 			return false;
 		}
