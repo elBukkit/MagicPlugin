@@ -99,7 +99,7 @@ public class BrushSelectAction extends BaseSpellAction implements GUIAction
             }
 
             mage.deactivateGUI();
-            Wand wand = mage.getActiveWand();
+            Wand wand = context.getWand();
             if (wand != null && com.elmakers.mine.bukkit.wand.Wand.isBrush(item))
             {
                 String brushKey = com.elmakers.mine.bukkit.wand.Wand.getBrush(item);
@@ -112,7 +112,7 @@ public class BrushSelectAction extends BaseSpellAction implements GUIAction
     public SpellResult perform(CastContext context) {
         Mage mage = context.getMage();
         MageController controller = context.getController();
-        Wand wand = mage.getActiveWand();
+        Wand wand = context.getWand();
         schematics.clear();
         variants.clear();
         this.context = context;

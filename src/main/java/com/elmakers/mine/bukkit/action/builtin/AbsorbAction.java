@@ -20,7 +20,7 @@ public class AbsorbAction extends BaseSpellAction
 	{
         Block target = context.getTargetBlock();
         Mage mage = context.getMage();
-		Wand wand = mage.getActiveWand();
+		Wand wand = context.getWand();
 		if (wand == null)
 		{
 			return SpellResult.FAIL;
