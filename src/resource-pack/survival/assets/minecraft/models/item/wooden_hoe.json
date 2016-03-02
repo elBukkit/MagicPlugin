@@ -6,9 +6,9 @@
   "overrides": [
     {"predicate": {"damage": 0.01666666666667}, "model": "item/old_survival_wand1"},
     {"predicate": {"damage": 0.03333333333333}, "model": "item/old_survival_wand2"},
-    {"predicate": {"damage": 0.05}, "model": "item/staff_survival1"},
+    {"predicate": {"damage": 0.05}, "model": "item/survival_wand1"},
     {"predicate": {"damage": 0.06666666666667}, "model": "item/survival_wand2"},
-    {"predicate": {"damage": 0.08333333333333}, "model": "item/survival_wand3"},
+    {"predicate": {"damage": 0.08333333333333}, "model": "item/staff_survival1"},
     {"predicate": {"damage": 0.1}, "model": "item/staff_gandalf"},
     {"predicate": {"damage": 0.11666666666667}, "model": "item/staff_wolf"},
     {"predicate": {"damage": 0.13333333333333}, "model": "item/wolf_wand"},

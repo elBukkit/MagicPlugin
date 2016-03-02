@@ -1907,12 +1907,12 @@
     "firstperson_lefthand": {
         "rotation": [ 0, 100, -10 ],
         "translation": [ 0, 4, 2 ],
-        "scale": [ 2, 2, 2 ]
+        "scale": [ 1.2, 1.2, 1.2 ]
     },
     "firstperson_righthand": {
         "rotation": [ 0, -100, 10 ],
         "translation": [ 0, 4, 2 ],
-        "scale": [ 2, 2, 2 ]
+        "scale": [ 1.2, 1.2, 1.2 ]
     },
     "thirdperson_lefthand": {
         "rotation": [ 0, 90, 0 ],

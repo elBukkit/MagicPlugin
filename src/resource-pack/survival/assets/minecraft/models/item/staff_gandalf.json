@@ -766,7 +766,7 @@
         "scale": [ 4, 4, 4 ]
     },
     "gui": {
-        "rotation": [ -14, 135, -47 ],
+        "rotation": [ -14, 135, -44 ],
         "translation": [ 0, 0, 0 ],
         "scale": [ 2, 2, 2 ]
     }
