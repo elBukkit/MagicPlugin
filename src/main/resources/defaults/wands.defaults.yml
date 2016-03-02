@@ -92,6 +92,8 @@
 # This creates a basic starter wand.
 # 
 default:
+    icon: wood_hoe:1
+    migrate_icon: wood_hoe
     effect_color: random
     path: beginner
     xp_max: 50
@@ -125,6 +127,8 @@ default:
 #
 
 beginner:
+    icon: wood_hoe:1
+    migrate_icon: wood_hoe
     migrate_to: default
     effect_color: random
     path: beginner
@@ -145,6 +149,8 @@ beginner:
 # A wand that may only be enchanted 3 times
 #
 starter:
+    icon: wood_hoe:1
+    migrate_icon: wood_hoe
     effect_color: random
     icon: stick
     glow: true
@@ -167,6 +173,8 @@ starter:
 # A sampling of "pre-levelled up" wands
 #
 student:
+    icon: wood_hoe:2
+    migrate_icon: wood_hoe
     effect_color: '00FF00'
     path: student
     bound: true
@@ -209,6 +217,8 @@ student:
       - shrink
 
 apprentice:
+    icon: wood_hoe:3
+    migrate_icon: wood_hoe
     effect_color: '22FF22'
     path: apprentice
     indestructible: true
@@ -276,7 +286,8 @@ apprentice:
 
 master:
     path: master
-    icon: gold_axe
+    icon: wood_hoe:4
+    migrate_icon: gold_axe
     xp_regeneration: 50
     xp_max: 250
     xp: 250
@@ -344,13 +355,13 @@ master:
 # A starter battle wand
 #
 battle:
+    icon: gold_sword:1
+    migrate_icon: gold_sword
     effect_color: '11FF11'
     protection_physical: 0.3
     path: battle
     mode_drop: true
     mode_cast: true
-    migrate_icon: diamond_sword
-    icon: gold_sword
     xp_regeneration: 5
     xp_max: 50
     xp: 50
@@ -406,7 +417,8 @@ engineer:
     path: engineer
     undroppable: true
     indestructible: true
-    icon: gold_axe
+    icon: wood_hoe:5
+    migrate_icon: gold_axe
     xp_regeneration: 90
     xp_max: 400
     xp: 400
@@ -463,8 +475,8 @@ architect:
     bound: true
     undroppable: true
     indestructible: true
-    icon: gold_pickaxe
-    migrate_icon: monster_eggs:2
+    icon: wood_hoe:5
+    migrate_icon: gold_pickaxe
     effect_color: '00FF00'
     protection_falling: 1
     protection: 1
@@ -540,8 +552,8 @@ conduit:
     bound: true
     undroppable: true
     indestructible: true
-    icon: gold_pickaxe
-    migrate_icon: monster_eggs:2
+    icon: wood_hoe:6
+    migrate_icon: gold_pickaxe
     effect_color: '00FF00'
     protection_falling: 1
     protection: 1
@@ -630,7 +642,8 @@ conduit:
         - schematic:tech_tower
 
 admin:
-    icon: monster_eggs:2
+    icon: wood_hoe:6
+    migrate_icon: monster_eggs:2
     path: master
     keep: true
     bound: true
@@ -676,7 +689,8 @@ architectstaff:
   locked: true
   indestructible: true
   undroppable: true
-  icon: gold_pickaxe
+  icon: wood_hoe:6
+  migrate_icon: gold_pickaxe
   path: conduit
   spells:
     - absorb@8
@@ -771,7 +785,8 @@ staff:
   indestructible: true
   undroppable: true
   protected: true
-  icon: gold_pickaxe
+  icon: wood_hoe:6
+  migrate_icon: gold_pickaxe
   path: master
   spells:
     - blink|6
@@ -787,7 +802,8 @@ staff:
     - fling|4
     
 developer:
-    icon: monster_eggs:4
+    icon: wood_hoe:10
+    migrate_icon: monster_eggs:4
     path: master
     keep: true
     bound: true
@@ -820,8 +836,8 @@ developer:
 
 borealis:
     path: master
+    icon: wood_hoe:10
     migrate_icon: gold_axe
-    icon: monster_eggs:2
     keep: true
     bound: true
     undroppable: true
@@ -866,7 +882,8 @@ borealis:
 
 miniwolf:
     path: master
-    icon: gold_axe
+    icon: wood_hoe:8
+    migrate_icon: gold_axe
     keep: true
     bound: true
     undroppable: true
@@ -921,8 +938,9 @@ miniwolf:
         - mount
 
 wolf:
-  icon: gold_hoe
-  path: architect
+  icon: wood_hoe:7
+  migrate_icon: gold_hoe
+  path: conduit
   hotbar_count: 3
   keep: true
   bound: true
@@ -1142,6 +1160,8 @@ conway:
 #
 
 student_upgrade:
+    icon: wood_hoe:2
+    upgrade_icon: wood_hoe:2
     upgrade: true
     hidden: true
     indestructible: false
@@ -1149,6 +1169,8 @@ student_upgrade:
     xp_max: 100
     xp_regeneration: 10
 apprentice_upgrade:
+    icon: wood_hoe:3
+    upgrade_icon: wood_hoe:3
     upgrade: true
     hidden: true
     indestructible: false
@@ -1156,14 +1178,17 @@ apprentice_upgrade:
     xp_max: 150
     xp_regeneration: 30
 master_upgrade:
+    icon: wood_hoe:4
+    upgrade_icon: wood_hoe:4
     upgrade: true
     hidden: true
     indestructible: false
-    upgrade_icon: gold_axe
     xp_max: 200
     xp_regeneration: 40
     hotbar_count: 3
 engineer_upgrade:
+    icon: wood_hoe:5
+    upgrade_icon: wood_hoe:5
     upgrade: true
     hidden: true
     indestructible: false
@@ -1176,13 +1201,16 @@ engineer_upgrade:
     - dirt
     - cobblestone
 architect_upgrade:
+    icon: wood_hoe:5
+    upgrade_icon: wood_hoe:5
     upgrade: true
     hidden: true
-    upgrade_icon: gold_pickaxe
     indestructible: false
     xp_max: 350
     xp_regeneration: 70
 conduit_upgrade:
+    icon: wood_hoe:6
+    upgrade_icon: wood_hoe:6
     upgrade: true
     hidden: true
     indestructible: false
@@ -1434,8 +1462,8 @@ broomstick:
     path: broom
     mode: cast
     active_spell: broom
-    migrate_icon: monster_eggs
-    icon: gold_spade
+    migrate_icon: gold_spade
+    icon: wood_hoe:11
     indestructible: true
     undroppable: true
     bound: true
@@ -1446,7 +1474,8 @@ broomstick:
         - broom
 
 blaster:
-    icon: monster_eggs:3
+    migrate_icon: monster_eggs:3
+    icon: wood_hoe:12
     path: blaster
     mode: cast
     locked: true
@@ -1455,6 +1484,7 @@ blaster:
     xp_max: 100
     xp_regeneration: 10
     active_spell: blaster
+    indestructible: true
     spells:
         - blaster
 
@@ -1462,11 +1492,13 @@ crackedbroomstick:
     mode: cast
     uses: 10
     active_spell: broom
-    icon: gold_spade
+    migrate_icon: gold_spade
+    icon: wood_hoe:11
     indestructible: false
     locked: true
     keep: true
     effect_color: '220022'
+    indestructible: true
     spells:
         - broom
 
@@ -1475,7 +1507,8 @@ minister:
     path: broom
     bound: true
     active_spell: broom
-    icon: gold_spade
+    migrate_icon: gold_spade
+    icon: wood_hoe:11
     indestructible: true
     locked: true
     keep: true
@@ -1672,8 +1705,8 @@ magneticleggings:
 
 goggles:
     mode: cast
-    icon: monster_eggs:1
-    migrate_icon: nether_fence
+    icon: wood_hoe:16
+    migrate_icon: monster_eggs:1
     indestructible: false
     locked: true
     keep: true
@@ -1689,8 +1722,8 @@ goggles:
 invisiblecloak:
     mode: cast
     active_spell: invisiblecloak
-    icon: ender_pearl
-    migrate_icon: gold_pickaxe
+    icon: wood_hoe:15
+    migrate_icon: ender_pearl
     indestructible: true
     locked: true
     keep: true

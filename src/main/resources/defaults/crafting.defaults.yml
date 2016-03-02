@@ -259,12 +259,3 @@ coal_ink:
   row_2: "odo"
   row_3: " o "
 
-# This is here to disable crafting of other items, even if
-# they aren't craftable.
-wolf:
-  output: gold_hoe
-  disable_default: true
-
-architect:
-  output: gold_axe
-  disable_default: true
