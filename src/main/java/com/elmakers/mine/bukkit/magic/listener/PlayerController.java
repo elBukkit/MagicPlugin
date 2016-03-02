@@ -321,7 +321,7 @@ public class PlayerController implements Listener {
         // controller.getLogger().info("INTERACT: " + event.getAction() + " on " + (block == null ? "NOTHING" : block.getType()));
 
         Player player = event.getPlayer();
-
+        
         // Don't allow interacting while holding spells, brushes or upgrades
         ItemStack itemInHand = player.getItemInHand();
         if (Wand.isSpell(itemInHand) || Wand.isBrush(itemInHand) || Wand.isUpgrade(itemInHand)) {
@@ -332,7 +332,25 @@ public class PlayerController implements Listener {
         Mage apiMage = controller.getMage(player);
         if (!(apiMage instanceof com.elmakers.mine.bukkit.magic.Mage)) return;
         com.elmakers.mine.bukkit.magic.Mage mage = (com.elmakers.mine.bukkit.magic.Mage)apiMage;
-
+        
+        // Check for offhand casting
+        if (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK)
+        {
+            ItemStack itemInOffhand = player.getInventory().getItemInOffHand();
+            if (Wand.isWand(itemInOffhand)) {
+                Wand offhandWand = mage.checkOffhandWand(itemInOffhand);
+                if (offhandWand != null) {
+                    offhandWand.tickMana(player);
+                    offhandWand.setMage(mage);
+                    offhandWand.cast();
+                    if (cancelInteractOnCast) {
+                        event.setCancelled(true);
+                    }
+                    return;
+                }
+            }
+        }
+        
         Wand wand = mage.checkWand();
 
         // Check for wearing via right-click

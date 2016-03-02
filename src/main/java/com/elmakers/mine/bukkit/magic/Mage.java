@@ -97,6 +97,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     protected HashMap<String, MageSpell> spells = new HashMap<String, MageSpell>();
     private Wand activeWand = null;
     private Wand soulWand = null;
+    private Wand offhandWand = null;
     private Map<String, Wand> boundWands = new HashMap<String, Wand>();
     private final Collection<Listener> quitListeners = new HashSet<Listener>();
     private final Collection<Listener> deathListeners = new HashSet<Listener>();
@@ -830,6 +831,29 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         }
 
         return activeWand;
+    }
+
+    public Wand checkOffhandWand(ItemStack itemInHand) {
+        Player player = getPlayer();
+        if (isLoading() || player == null) return null;
+
+        String itemId = Wand.getWandId(itemInHand);
+        String activeId = offhandWand != null ? offhandWand.getId() : null;
+
+        if ((itemId != null && activeId == null)
+                || (activeId != null && itemId == null)
+                || (itemId != null && activeId != null && !itemId.equals(activeId))
+                )
+        {
+            if (itemInHand != null && itemId != null && controller.hasWandPermission(player)) {
+                offhandWand = new Wand(controller, itemInHand);
+                if (!offhandWand.canUse(player)) {
+                    offhandWand = null;
+                }
+            }
+        }
+
+        return offhandWand;
     }
 
     @Override
