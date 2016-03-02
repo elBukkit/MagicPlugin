@@ -1151,8 +1151,8 @@
     },
     "ground": {
         "rotation": [ 0, -135, -10 ],
-        "translation": [ 0, 4.3, 2 ],
-        "scale": [ 2, 2, 2 ]
+        "translation": [ 0, 0, 2 ],
+        "scale": [ 1, 1, 1 ]
     },
     "fixed": {
         "rotation": [ 0, 90, 0 ],
