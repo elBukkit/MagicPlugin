@@ -96,6 +96,7 @@ public interface Wand extends CostReducer {
     public float getHungerRegeneration();
     public float getCooldownReduction();
     public float getCostReduction();
+    public void removeMana(float mana);
     public float getMana();
     public int getManaMax();
     public void setMana(float mana);
