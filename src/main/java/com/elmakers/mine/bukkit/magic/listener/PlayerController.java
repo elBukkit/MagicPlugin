@@ -334,16 +334,6 @@ public class PlayerController implements Listener {
 
         Wand wand = mage.checkWand();
 
-        // Reset indestructible wand durability
-        if (wand != null && wand.isIndestructible())
-        {
-            ItemStack item = wand.getItem();
-            if (item.getType().getMaxDurability() > 0)
-            {
-                wand.getItem().setDurability((short)0);
-            }
-        }
-
         // Check for wearing via right-click
         Action action = event.getAction();
         if (itemInHand != null
