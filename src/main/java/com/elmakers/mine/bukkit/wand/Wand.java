@@ -402,6 +402,15 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		setIcon(icon);
 	}
 	
+	@Override
+	public void setIcon(com.elmakers.mine.bukkit.api.block.MaterialAndData materialData) {
+		if (materialData instanceof MaterialAndData) {
+			setIcon((MaterialAndData)materialData);
+		} else {
+			setIcon(new MaterialAndData(materialData));
+		}
+	}
+	
 	public void setIcon(MaterialAndData materialData) {
         if (materialData == null || !materialData.isValid()) return;
 		if (materialData.getMaterial() == Material.AIR || materialData.getMaterial() == null) {
@@ -720,6 +729,11 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	
 	public ItemStack getItem() {
 		return item;
+	}
+	
+	@Override
+	public com.elmakers.mine.bukkit.api.block.MaterialAndData getIcon() {
+		return icon;
 	}
 	
 	protected List<Inventory> getAllInventories() {
@@ -1523,13 +1537,6 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
             upgradeTemplate = wandConfig.getString("upgrade_template", upgradeTemplate);
             path = wandConfig.getString("path", path);
 
-            com.elmakers.mine.bukkit.api.wand.WandUpgradePath upgradePath = getPath();
-            if (upgradePath != null) {
-                hasSpellProgression = upgradePath.getSpells().size() > 0;
-            } else {
-                hasSpellProgression = false;
-            }
-
 			activeSpell = wandConfig.getString("active_spell", activeSpell);
 			activeMaterial = wandConfig.getString("active_material", activeMaterial);
 
@@ -1617,6 +1624,15 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
             if (wandConfig.contains("upgrade_icon")) {
                 upgradeIcon = new MaterialAndData(wandConfig.getString("upgrade_icon"));
             }
+
+			// Check for path-based migration, may update icons
+			com.elmakers.mine.bukkit.api.wand.WandUpgradePath upgradePath = getPath();
+			if (upgradePath != null) {
+				hasSpellProgression = upgradePath.getSpells().size() > 0;
+				upgradePath.checkMigration(this);
+			} else {
+				hasSpellProgression = false;
+			}
 
             if (wandConfig.contains("overrides")) {
                 castOverrides = null;

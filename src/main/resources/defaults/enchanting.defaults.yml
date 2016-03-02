@@ -101,6 +101,8 @@ default:
 # beginner -> student -> apprentice -> master
 #
 beginner:
+    icon: wood_hoe:1
+    migrate_icon: wood_hoe
     upgrade: student
     upgrade_item: student_upgrade
     inherit: default
@@ -157,6 +159,8 @@ beginner:
       workbench: 50,70,100
 
 student:
+    icon: wood_hoe:2
+    migrate_icon: wood_hoe
     upgrade: apprentice
     upgrade_item: apprentice_upgrade
     inherit: beginner
@@ -233,6 +237,8 @@ student:
       grow: 1,10,20
 
 apprentice:
+    icon: wood_hoe:3
+    migrate_icon: wood_hoe
     upgrade: master
     upgrade_item: master_upgrade
     inherit: student
@@ -308,6 +314,8 @@ apprentice:
       ghast: 0,0,5
 
 master:
+    icon: wood_hoe:4
+    migrate_icon: gold_axe
     required_spells:
       - rollback
     upgrade: engineer
@@ -404,6 +412,8 @@ master:
 #
 
 engineer:
+    icon: wood_hoe:5
+    migrate_icon: gold_axe
     required_spells:
       - absorb
     upgrade: architect
@@ -500,6 +510,8 @@ engineer:
       schematic|creeper_rug: 0,0,5
 
 architect:
+    icon: wood_hoe:6
+    migrate_icon: gold_pickaxe
     inherit: engineer
     required_spells:
     - backup
@@ -650,6 +662,8 @@ architect:
       schematic|nathanwolf: 0,0,1
 
 conduit:
+    icon: wood_hoe:7
+    migrate_icon: gold_pickaxe
     inherit: architect
     max_mana_regeneration: 150
     mana_regeneration:

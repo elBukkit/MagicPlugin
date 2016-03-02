@@ -224,12 +224,12 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
 
     @Override
     public boolean equals(Object obj) {
-        if (!(obj instanceof MaterialAndData)) {
+        if (!(obj instanceof com.elmakers.mine.bukkit.api.block.MaterialAndData)) {
             return false;
         }
 
-        MaterialAndData other = (MaterialAndData)obj;
-        return other.data == data && other.material == material;
+        com.elmakers.mine.bukkit.api.block.MaterialAndData other = (com.elmakers.mine.bukkit.api.block.MaterialAndData)obj;
+        return other.getData() == data && other.getMaterial() == material;
     }
 
     public void updateFrom(com.elmakers.mine.bukkit.api.block.MaterialAndData other) {

@@ -3,6 +3,7 @@ package com.elmakers.mine.bukkit.wand;
 import com.elmakers.mine.bukkit.api.event.WandUpgradeEvent;
 import com.elmakers.mine.bukkit.api.magic.Messages;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
+import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.effect.EffectPlayer;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
@@ -52,6 +53,8 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
     private String followsPath;
     private boolean hidden = false;
     private boolean earnsSP = true;
+    private MaterialAndData icon;
+    private MaterialAndData migrateIcon;
 
     private boolean matchSpellMana = true;
 
@@ -92,6 +95,8 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
         this.matchSpellMana = inherit.matchSpellMana;
         this.earnsSP = inherit.earnsSP;
         this.levelMap = new TreeMap<Integer, WandLevel>(inherit.levelMap);
+        this.icon = inherit.icon;
+        this.migrateIcon = inherit.migrateIcon;
         effects.putAll(inherit.effects);
         allRequiredSpells.addAll(inherit.allRequiredSpells);
         allSpells.addAll(inherit.allSpells);
@@ -138,6 +143,10 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
         upgradeItemKey = template.getString("upgrade_item");
         requiredSpells.addAll(template.getStringList("required_spells"));
         allRequiredSpells.addAll(requiredSpells);
+        
+        // Icon information for upgrading/migrating wands
+        icon = ConfigurationUtils.getMaterialAndData(template, "icon");
+        migrateIcon = ConfigurationUtils.getMaterialAndData(template, "migrate_icon");
 
         // Validate requirements - disabling a required spell disables the upgrade.
         for (String requiredKey : requiredSpells) {
@@ -433,6 +442,19 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
         }
     }
 
+    @Override
+    public void checkMigration(com.elmakers.mine.bukkit.api.wand.Wand wand) {
+        if (icon != null && migrateIcon != null && migrateIcon.equals(wand.getIcon()))
+        {
+            wand.setIcon(icon);
+        }
+    }
+
+    @Override
+    public com.elmakers.mine.bukkit.api.block.MaterialAndData getIcon() {
+        return icon;
+    }
+
     public void upgraded(com.elmakers.mine.bukkit.api.wand.Wand wand, Mage mage) {
         CommandSender sender = Bukkit.getConsoleSender();
         Location location = null;
@@ -590,6 +612,9 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
             mage.sendMessage(controller.getMessages().get("wand.level_up").replace("$wand", wand.getName()).replace("$path", newPath.getName()));
         }
         this.upgraded(wand, mage);
+        if (this.icon != null && this.icon.equals(wand.getIcon())) {
+            wand.setIcon(newPath.getIcon());
+        }
         wand.setPath(newPath.getKey());
 
         WandUpgradeEvent upgradeEvent = new WandUpgradeEvent(mage, wand, this, newPath);
