@@ -3788,13 +3788,6 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		Player player = mage.getPlayer();
 		if (player == null) return;
 
-        int maxDurability = item.getType().getMaxDurability();
-
-        // Auto-repair wands
-        if (!manaMode.useDurability() && maxDurability > 0 && indestructible) {
-            item.setDurability((short)0);
-        }
-
 		if (usesMana()) {
             long now = System.currentTimeMillis();
             if (isHeroes)
