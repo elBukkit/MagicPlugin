@@ -509,6 +509,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		return xp;
 	}
 
+	@Override
 	public void removeMana(float amount) {
         if (isHeroes && mage != null) {
             HeroesManager heroes = controller.getHeroes();

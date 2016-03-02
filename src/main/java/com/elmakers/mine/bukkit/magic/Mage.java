@@ -1387,6 +1387,10 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
     @Override
     public float getPower() {
+        if (offhandCast && offhandWand != null) {
+            float power = Math.min(controller.getMaxPower(), offhandWand.getPower());
+            return power * powerMultiplier;
+        }
         float power = Math.min(controller.getMaxPower(), activeWand == null ? 0 : activeWand.getPower());
         return power * powerMultiplier;
     }
@@ -1551,6 +1555,9 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
     @Override
     public Wand getActiveWand() {
+        if (offhandCast && offhandWand != null) {
+            return offhandWand;
+        }
         return activeWand;
     }
 
@@ -1593,11 +1600,17 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
     @Override
     public float getMana() {
+        if (offhandCast && offhandWand != null) {
+            return offhandWand.getMana();
+        }
         return activeWand == null ? 0 : activeWand.getMana();
     }
 
     @Override
     public void removeMana(float mana) {
+        if (offhandCast && offhandWand != null) {
+            offhandWand.removeMana(mana);
+        }
         if (activeWand != null) {
             activeWand.removeMana(mana);
         }

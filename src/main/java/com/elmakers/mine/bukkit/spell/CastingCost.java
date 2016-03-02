@@ -3,7 +3,9 @@ package com.elmakers.mine.bukkit.spell;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.magic.Messages;
+import com.elmakers.mine.bukkit.api.wand.Wand;
 import com.elmakers.mine.bukkit.integration.VaultController;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
@@ -66,8 +68,9 @@ public class CastingCost implements com.elmakers.mine.bukkit.api.spell.CastingCo
 
     public boolean has(Spell spell)
     {
-        if (!(spell instanceof MageSpell)) return false;
-        Mage mage = ((MageSpell)spell).getMage();
+        CastContext context = spell.getCurrentCast();
+        Mage mage = context.getMage();
+        Wand wand = context.getWand();
         int amount = getAmount(spell);
         boolean hasItem = true;
         if (item != null && amount > 0 && !isConsumeFree(spell))
@@ -75,7 +78,13 @@ public class CastingCost implements com.elmakers.mine.bukkit.api.spell.CastingCo
             hasItem = mage.hasItem(item.getItemStack(amount), item.getData() == null);
         }
         boolean hasXp = xp <= 0 || mage.getExperience() >= getXP(spell);
-        boolean hasMana = mana <= 0 || mage.getMana() >= getMana(spell);
+        boolean hasMana = mana <= 0;
+        if (!hasMana && wand != null) {
+            hasMana = wand.getMana() >= getMana(spell);
+        } else if (!hasMana) {
+            hasMana = mage.getMana() >= getMana(spell);
+        }
+        
         boolean hasCurrency = currency <= 0;
         if (!hasCurrency) {
             VaultController vault = VaultController.getInstance();
@@ -87,8 +96,9 @@ public class CastingCost implements com.elmakers.mine.bukkit.api.spell.CastingCo
 
     public void use(Spell spell)
     {
-        if (!(spell instanceof MageSpell)) return;
-        Mage mage = ((MageSpell)spell).getMage();
+        CastContext context = spell.getCurrentCast();
+        Mage mage = context.getMage();
+        Wand wand = context.getWand();
         int amount = getAmount(spell);
         if (item != null && amount > 0 && !isConsumeFree(spell)) {
             ItemStack itemStack = getItemStack(spell);
@@ -100,7 +110,11 @@ public class CastingCost implements com.elmakers.mine.bukkit.api.spell.CastingCo
         }
         float mana = getMana(spell);
         if (mana > 0) {
-            mage.removeMana(mana);
+            if (wand != null) {
+                wand.removeMana(mana);
+            } else {
+                mage.removeMana(mana);
+            }
         }
         double currency = getCurrency(spell);
         if (currency > 0) {

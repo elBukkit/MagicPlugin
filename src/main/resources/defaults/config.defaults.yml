@@ -270,8 +270,7 @@ melee_damage_reduction: 0
 cancel_interact_on_cast: true
 
 # Set this to false to disallow casting using an offhand wand
-# OFF by default for now until bugs with offhand casting are resolved.
-allow_offhand_casting: false;
+allow_offhand_casting: true
 
 # Turn this off to use normal damage. May be useful if you want
 # direct damage spells to effect armor.
