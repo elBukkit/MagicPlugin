@@ -510,7 +510,7 @@ engineer:
       schematic|creeper_rug: 0,0,5
 
 architect:
-    icon: wood_hoe:6
+    icon: wood_hoe:5
     migrate_icon: gold_pickaxe
     inherit: engineer
     required_spells:
@@ -662,7 +662,7 @@ architect:
       schematic|nathanwolf: 0,0,1
 
 conduit:
-    icon: wood_hoe:7
+    icon: wood_hoe:6
     migrate_icon: gold_pickaxe
     inherit: architect
     max_mana_regeneration: 150

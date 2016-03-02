@@ -1,7 +1,5 @@
 # TODO
 
- - Need migrate_icons - list?
- - Add "from" icon for upgrades - so path upgrades don't mess with custom icons
  - Add wand appearance shop
 
  - ProtocolLib integration: client-side mana/sp display

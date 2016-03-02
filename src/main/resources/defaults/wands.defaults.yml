@@ -1701,7 +1701,7 @@ goggles:
     mode: cast
     icon: wood_hoe:16
     migrate_icon: monster_eggs:1
-    indestructible: false
+    indestructible: true
     locked: true
     keep: true
     passive: true
