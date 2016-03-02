@@ -336,18 +336,11 @@ public class PlayerController implements Listener {
         // Check for offhand casting
         if (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK)
         {
-            ItemStack itemInOffhand = player.getInventory().getItemInOffHand();
-            if (Wand.isWand(itemInOffhand)) {
-                Wand offhandWand = mage.checkOffhandWand(itemInOffhand);
-                if (offhandWand != null) {
-                    offhandWand.tickMana(player);
-                    offhandWand.setMage(mage);
-                    offhandWand.cast();
-                    if (cancelInteractOnCast) {
-                        event.setCancelled(true);
-                    }
-                    return;
+            if (mage.offhandCast()) {
+                if (cancelInteractOnCast) {
+                    event.setCancelled(true);
                 }
+                return;
             }
         }
         

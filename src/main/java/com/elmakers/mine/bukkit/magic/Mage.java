@@ -98,6 +98,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     private Wand activeWand = null;
     private Wand soulWand = null;
     private Wand offhandWand = null;
+    private boolean offhandCast = false;
     private Map<String, Wand> boundWands = new HashMap<String, Wand>();
     private final Collection<Listener> quitListeners = new HashSet<Listener>();
     private final Collection<Listener> deathListeners = new HashSet<Listener>();
@@ -832,6 +833,30 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
         return activeWand;
     }
+    
+    public boolean offhandCast() {
+        Player player = getPlayer();
+        if (isLoading() || player == null) return false;
+        
+        ItemStack itemInOffhand = player.getInventory().getItemInOffHand();
+        if (Wand.isWand(itemInOffhand)) {
+            Wand offhandWand = checkOffhandWand(itemInOffhand);
+            if (offhandWand != null) {
+                offhandCast = true;
+                try {
+                    offhandWand.tickMana(player);
+                    offhandWand.setMage(this);
+                    offhandWand.cast();
+                } catch (Exception ex) {
+                    controller.getLogger().log(Level.WARNING, "Error casting from offhand wand", ex);
+                }
+                offhandCast = false;
+                return true;
+            }
+        }
+        
+        return false;
+    }
 
     public Wand checkOffhandWand(ItemStack itemInHand) {
         Player player = getPlayer();
@@ -1037,8 +1062,13 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         if (wandLocation == null) {
             return null;
         }
+        // TODO: Determine handedness of player
         Location toTheRight = wandLocation.clone();
-        toTheRight.setYaw(toTheRight.getYaw() + 90);
+        if (offhandCast) {
+            toTheRight.setYaw(toTheRight.getYaw() - 90);
+        } else {
+            toTheRight.setYaw(toTheRight.getYaw() + 90);
+        }
         Vector wandDirection = toTheRight.getDirection();
         wandLocation = wandLocation.clone();
         wandLocation.add(wandDirection.multiply(WAND_LOCATION_OFFSET));
@@ -1258,21 +1288,33 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                 return true;
             }
         }
+        if (offhandCast && offhandWand != null) {
+            return offhandWand.isSuperProtected();
+        }
         return activeWand != null && activeWand.isSuperProtected();
     }
 
     @Override
     public boolean isSuperPowered() {
+        if (offhandCast && offhandWand != null) {
+            return offhandWand.isSuperPowered();
+        }
         return activeWand != null && activeWand.isSuperPowered();
     }
 
     @Override
     public float getCostReduction() {
+        if (offhandCast && offhandWand != null) {
+            return offhandWand.getCostReduction() + costReduction;
+        }
         return activeWand == null ? costReduction + controller.getCostReduction() : activeWand.getCostReduction() + costReduction;
     }
 
     @Override
     public float getConsumeReduction() {
+        if (offhandCast && offhandWand != null) {
+            return offhandWand.getConsumeReduction();
+        }
         return activeWand == null ? 0 : activeWand.getConsumeReduction();
     }
 
@@ -1283,6 +1325,9 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
     @Override
     public float getCooldownReduction() {
+        if (offhandCast && offhandWand != null) {
+            return offhandWand.getCooldownReduction() + cooldownReduction;
+        }
         return activeWand == null ? cooldownReduction + controller.getCooldownReduction() : activeWand.getCooldownReduction() + cooldownReduction;
     }
 
