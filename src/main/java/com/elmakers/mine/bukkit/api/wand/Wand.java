@@ -3,6 +3,7 @@ package com.elmakers.mine.bukkit.api.wand;
 import java.util.Collection;
 import java.util.Map;
 
+import com.elmakers.mine.bukkit.api.block.MaterialAndData;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
@@ -39,6 +40,8 @@ public interface Wand extends CostReducer {
     public void organizeInventory(Mage mage);
     public void alphabetizeInventory();
     public ItemStack getItem();
+    public MaterialAndData getIcon();
+    public void setIcon(MaterialAndData icon);
     public void makeUpgrade();
     public Collection<String> getSpells();
     public Collection<String> getBrushes();
