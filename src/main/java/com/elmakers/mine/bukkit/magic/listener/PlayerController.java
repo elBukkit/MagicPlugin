@@ -50,6 +50,7 @@ public class PlayerController implements Listener {
     private String enchantSneakClickSpell = "upgrades";
     private boolean openOnSneakDrop;
     private boolean cancelInteractOnCast = true;
+    private boolean allowOffhandCasting = true;
 
     public PlayerController(MagicController controller) {
         this.controller = controller;
@@ -63,6 +64,7 @@ public class PlayerController implements Listener {
         enchantSneakClickSpell = properties.getString("enchant_sneak_click");
         openOnSneakDrop = properties.getBoolean("open_wand_on_sneak_drop");
         cancelInteractOnCast = properties.getBoolean("cancel_interact_on_cast", true);
+        allowOffhandCasting = properties.getBoolean("allow_offhand_casting", true);
     }
 
     public void setCreativeModeEjecting(boolean eject) {
@@ -336,7 +338,7 @@ public class PlayerController implements Listener {
         // Check for offhand casting
         if (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK)
         {
-            if (mage.offhandCast()) {
+            if (allowOffhandCasting && mage.offhandCast()) {
                 if (cancelInteractOnCast) {
                     event.setCancelled(true);
                 }
