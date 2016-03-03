@@ -170,7 +170,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     protected boolean bypassConfusion             = false;
     protected boolean bypassWeakness              = false;
     protected boolean bypassPermissions           = false;
-    protected boolean castOnNoTarget              = false;
+    protected boolean castOnNoTarget              = true;
     protected boolean bypassDeactivate            = false;
     protected boolean quiet                       = false;
     protected boolean loud                        = false;
@@ -800,7 +800,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         disguiseRestricted = node.getBoolean("disguise_restricted", true);
         worldBorderRestricted = node.getBoolean("world_border_restricted", false);
         usesBrushSelection = node.getBoolean("brush_selection", false);
-        castOnNoTarget = node.getBoolean("cast_on_no_target", castOnNoTarget);
+        castOnNoTarget = node.getBoolean("cast_on_no_target", true);
         hidden = node.getBoolean("hidden", false);
         showUndoable = node.getBoolean("show_undoable", true);
         cancellable = node.getBoolean("cancellable", true);
@@ -1159,7 +1159,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
 
         boolean success = result.isSuccess();
         boolean requiresCost = success || (castOnNoTarget && (result == SpellResult.NO_TARGET || result == SpellResult.NO_ACTION));
-        boolean free = !requiresCost && result.isFree();
+        boolean free = !requiresCost || result.isFree();
         if (!free) {
             if (costs != null && !mage.isCostFree()) {
                 for (CastingCost cost : costs)
