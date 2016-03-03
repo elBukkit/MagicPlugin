@@ -15,22 +15,8 @@ protection:
   output: beacon
   disable_default: true
 
-leather:
-  output: leather
-  output_type: item
-  materials:
-    o: rotten_flesh
-  row_1: ooo
-  row_2: ooo
-  row_3: ooo
+zombie_leather:
+  enabled: true
 
 blaster:
-  output: blaster
-  output_type: wand
-  materials:
-    p: wood
-    i: iron_ingot
-    g: glass
-  row_1: "iig"
-  row_2: "ii "
-  row_3: "p  "
+  enabled: true

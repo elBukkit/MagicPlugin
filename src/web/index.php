@@ -204,7 +204,7 @@ $maxXp = isset($general['max_mana']) ? $general['max_mana'] : 0;
 // Calculate worth
 // Hide hidden wands, organize upgrades
 foreach ($wands as $key => $wand) {
-	if ($key == 'default' || (isset($wand['hidden']) && $wand['hidden'])) {
+	if (isset($wand['hidden']) && $wand['hidden']) {
 		unset($wands[$key]);
 		continue;
 	}
@@ -257,16 +257,11 @@ ksort($upgrades);
 
 // Look up craftable wands
 foreach ($crafting as $key => &$recipe) {
-    if (isset($recipe['enabled']) && !$recipe['enabled']) {
-        unset($crafting[$key]);
-        continue;
-    }
     if (!isset($recipe['output_type']) || $recipe['output_type'] != 'wand')
     {
         $recipe['wand'] = null;
         continue;
     }
-
     $recipe['wand'] = $wands[$recipe['output']];
 }
 
@@ -501,27 +496,32 @@ function printIcon($iconUrl, $title) {
 			  	<div class="navigation">
 				<ol id="craftingList">
 				<?php
-					foreach ($crafting as $key => $recipe)
+					foreach ($crafting as $key => $craftingRecipe)
                     {
-                        if ($recipe['wand'])
-                        {
-                            $wand = $recipe['wand'];
-                            $name = isset($wand['name']) && $wand['name'] ? $wand['name'] : "($key)";
-                            $icon = 'wand';
-                            if (isset($wand['icon']))
-                            {
-                                $icon = $wand['icon'];
-                                if (strpos($icon, 'skull_item:') !== FALSE) {
-                                    $icon = trim(substr($icon, 11));
-                                    $icon = printIcon($icon, $name);
-                                } else {
-                                    $icon = printMaterial($icon, true);
-                                }
-                            } else {
-                                $icon = printMaterial($icon, true);
-                            }
-                            echo '<li class="ui-widget-content" id="recipe-' . $key . '">' . $icon . '<span class="recipeTitle">' . $name . '</span></li>';
-                        }
+						$wand = $craftingRecipe['wand'];
+						if ($wand) {
+							$name = isset($wand['name']) && $wand['name'] ? $wand['name'] : "($key)";
+						} else {
+							$name = $key;
+						}
+						$nameSpan = $name;
+						if (isset($craftingRecipe['enabled']) && !$craftingRecipe['enabled']) {
+							$nameSpan = '<span class="disabled">' . $name . '</span>';
+						}
+						$icon = $craftingRecipe['output'];
+						if ($wand && isset($wand['icon']))
+						{
+							$icon = $wand['icon'];
+							if (strpos($icon, 'skull_item:') !== FALSE) {
+								$icon = trim(substr($icon, 11));
+								$icon = printIcon($icon, $name);
+							} else {
+								$icon = printMaterial($icon, true);
+							}
+						} else {
+							$icon = printMaterial($icon, true);
+						}
+						echo '<li class="ui-widget-content" id="recipe-' . $key . '">' . $icon . '<span class="recipeTitle">' . $nameSpan . '</span></li>';
 					}
 				?>
 				</ol>

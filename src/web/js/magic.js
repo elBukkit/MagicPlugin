@@ -410,6 +410,28 @@ function getRecipeDetails(key)
     }
     var recipe = recipes[key];
     var wand = recipe['wand'];
+	if (!wand) {
+		var scrollingContainer = $('<div class="wandContainer"/>');
+
+		var detailsDiv = $('<div/>');
+		var title = $('<div class="wandTitleBanner"/>').text(key);
+		var scrollingContainer = $('<div class="wandContainer"/>');
+		var description = $('<div class="wandDescription"/>').text("A custom crafting recipe");
+
+		detailsDiv.append(title);
+		scrollingContainer.append(description);
+		detailsDiv.append(scrollingContainer);
+		
+		if (recipe) {
+			scrollingContainer.append(createCraftingTable(recipe));
+
+			if (recipe.hasOwnProperty('enabled') && !recipe.enabled) {
+				scrollingContainer.append($('<div class="disabled">').text("Recipe is disabled by default. Enable it in crafting.yml"))
+			}
+		}
+		
+		return detailsDiv;
+	}
     return getWandItemDetails(recipe['output'], wand, recipe);
 }
 
@@ -420,7 +442,7 @@ function createCraftingTable(recipe)
     var craftingTable = $('<div class="craftingTable"/>');
     craftingContainer.append(craftingTable);
     var craftingOutput = $('<div class="craftingOutput"/>');
-    var wandIcon = wand['icon'];
+    var wandIcon = wand == null ? recipe['output'] : wand['icon'];
     wandIcon = getMaterial(wandIcon == null || wandIcon == "" ? "wand" : wandIcon, true);
     craftingOutput.append(wandIcon);
     craftingContainer.append(craftingOutput);
@@ -492,10 +514,15 @@ function getWandItemDetails(key, wand, recipe)
 	var haste = ('haste' in wand) ? wand['haste'] : 0;
 	
 	detailsDiv.append(title);
+	
 	scrollingContainer.append(description);
 
     if (recipe) {
         scrollingContainer.append(createCraftingTable(recipe));
+
+		if (recipe.hasOwnProperty('enabled') && !recipe.enabled) {
+			scrollingContainer.append($('<div class="disabled">').text("Recipe is disabled by default. Enable it in crafting.yml"))
+		}
     }
 
     // List worth, if present

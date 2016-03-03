@@ -69,6 +69,11 @@
 	margin-right: 4px;
 }
 
+.disabled
+{
+	color: #888;	
+}
+
 .url_icon
 {
     background-size: 256px 128px;
