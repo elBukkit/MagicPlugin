@@ -4,6 +4,8 @@
 
  - If you are using the official Magic Resource Pack, clear out the resource-pack entry in your server.properties.
    Magic will automatically use the correct RP version.
+ - Broom dismounting is currently broken. Hoping for a Spigot fix.
+ - Wand "effect bubbles" are currently disabled. Will take some re-work to bring them back, but hoping for "eventually".
 
 ## 5.5
 
