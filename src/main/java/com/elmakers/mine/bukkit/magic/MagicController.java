@@ -87,6 +87,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Server;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.command.BlockCommandSender;
@@ -123,6 +124,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.ref.WeakReference;
 import java.lang.reflect.Field;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.security.CodeSource;
 import java.util.ArrayList;
@@ -743,6 +745,7 @@ public class MagicController implements MageController {
         }
 
         load();
+        checkResourcePack(Bukkit.getConsoleSender());
     }
 
 
@@ -2169,6 +2172,8 @@ public class MagicController implements MageController {
         CompatibilityUtils.USE_MAGIC_DAMAGE = properties.getBoolean("use_magic_damage", CompatibilityUtils.USE_MAGIC_DAMAGE);
         EffectPlayer.setParticleRange(properties.getInt("particle_range", EffectPlayer.PARTICLE_RANGE));
 
+        enableResourcePackCheck = properties.getBoolean("enable_resource_pack_check", true);
+        defaultResourcePack = properties.getString("default_resource_pack", null);
         showCastHoloText = properties.getBoolean("show_cast_holotext", showCastHoloText);
         showActivateHoloText = properties.getBoolean("show_activate_holotext", showCastHoloText);
         castHoloTextRange = properties.getInt("cast_holotext_range", castHoloTextRange);
@@ -4368,6 +4373,90 @@ public Set<Material> getMaterialSet(String name)
 
         return skinName;
     }
+    
+    @Override
+    public void checkResourcePack(final CommandSender sender) {
+        final Server server = plugin.getServer();
+        final boolean initialLoad = !checkedResourcePack;
+        String resourcePackURL = CompatibilityUtils.getResourcePack(server);
+        final String resourcePackHash = CompatibilityUtils.getResourcePackHash(server);
+        
+        if (!checkedResourcePack && resourcePackHash != null && !resourcePackHash.isEmpty()) {
+            sender.sendMessage("Resource pack hash already set- Magic skipping RP check");
+            return;
+        }
+        checkedResourcePack = true;
+        
+        if (resourcePackURL == null || resourcePackURL.isEmpty()) {
+            if (defaultResourcePack == null || defaultResourcePack.isEmpty()) {
+                sender.sendMessage("No resource pack set, and default has been cleared- Magic skipping RP check");
+                return;
+            }
+
+            resourcePackURL = defaultResourcePack;
+            CompatibilityUtils.setResourcePack(server, resourcePackURL, resourcePackHash);
+            sender.sendMessage("No resource pack set, using default from Magic configuration");
+        }
+
+        if (!enableResourcePackCheck) {
+            sender.sendMessage("Resource pack updates disabled, Magic not checking for updates");
+            return;
+        }
+        sender.sendMessage("Magic checking resource pack for updates: " + ChatColor.GRAY + resourcePackURL);
+
+        final String finalResourcePack = resourcePackURL;
+        server.getScheduler().runTaskAsynchronously(plugin, new Runnable() {
+            @Override
+            public void run() {
+                String response = null;
+                String newResourcePackHash = null;
+                try {
+                    HttpURLConnection.setFollowRedirects(false);
+                    HttpURLConnection connection = (HttpURLConnection)new URL(finalResourcePack).openConnection();
+                    connection.setInstanceFollowRedirects(false);
+                    connection.setRequestMethod("HEAD");
+                    if (connection.getResponseCode() == HttpURLConnection.HTTP_OK)
+                    {
+                        String newHash = connection.getHeaderField("ETag");
+                        if (newHash == null || newHash.isEmpty()) {
+                            response = ChatColor.RED + "Resource pack returned empty ETag in HTTP HEAD";
+                        } else if (resourcePackHash != null && newHash.equals(resourcePackHash)) {
+                            response = ChatColor.GREEN + "Resource pack hash has not changed";
+                        } else {
+                            if (initialLoad) {
+                                response = ChatColor.GREEN + "Resource pack hash set to " + ChatColor.GRAY + newHash;
+                            } else {
+                                response = ChatColor.YELLOW + "Resource pack hash changed, clients will see updates after relogging";
+                            }
+                            newResourcePackHash = newHash;
+                        }
+                    }
+                    else
+                    {
+                        response = ChatColor.RED + "Could not find resource pack at: " + ChatColor.DARK_RED + finalResourcePack;
+                    }
+                }
+                catch (Exception e) {
+                    response = ChatColor.RED + "An error occurred while checking your resource pack (see logs): " + ChatColor.DARK_RED + finalResourcePack;
+                    e.printStackTrace();
+                }
+                
+                final String finalResponse = response;
+                final String finalResourcePackHash = newResourcePackHash;
+                server.getScheduler().runTask(plugin, new Runnable() {
+                    @Override
+                    public void run() {
+                        if (finalResponse != null) {
+                            sender.sendMessage(finalResponse);
+                        }
+                        if (finalResourcePackHash != null) {
+                            CompatibilityUtils.setResourcePack(server, finalResourcePack, finalResourcePackHash);
+                        }
+                    }
+                });
+            }
+        });
+    }
 
     @Override
     public String getMobSkin(EntityType mobType)
@@ -4652,6 +4741,9 @@ public Set<Material> getMaterialSet(String name)
     private ExplosionController                 explosionController         = null;
     private boolean                             citizensEnabled			    = true;
     private boolean                             libsDisguiseEnabled			= true;
+    private boolean                             enableResourcePackCheck     = true;
+    private String                              defaultResourcePack         = null;
+    private boolean                             checkedResourcePack         = false;
 
     private FactionsManager					    factionsManager				= new FactionsManager();
     private LocketteManager                     locketteManager				= new LocketteManager();

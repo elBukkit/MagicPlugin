@@ -8,6 +8,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Rotation;
+import org.bukkit.Server;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -1109,5 +1110,49 @@ public class CompatibilityUtils extends NMSUtils {
             ex.printStackTrace();
         }
         return entity;
+    }
+    
+    public static String getResourcePack(Server server) {
+        String rp = null;
+        try {
+            Object minecraftServer = getHandle(server);
+            if (minecraftServer != null) {
+                rp = (String)class_MinecraftServer_getResourcePackMethod.invoke(minecraftServer);   
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return rp;
+    }
+
+    public static String getResourcePackHash(Server server) {
+        String hash = null;
+        try {
+            Object minecraftServer = getHandle(server);
+            if (minecraftServer != null) {
+                hash = (String)class_MinecraftServer_getResourcePackHashMethod.invoke(minecraftServer);
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return hash;
+    }
+
+    public static boolean setResourcePack(Server server, String rp, String hash) {
+        try {
+            Object minecraftServer = getHandle(server);
+            if (minecraftServer == null) {
+                return false;
+            }
+            class_MinecraftServer_setResourcePackMethod.invoke(minecraftServer, rp, hash);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+    
+    public static boolean checkResourcePackHack(String hash) {
+        return (hash != null && !hash.isEmpty() && hash.matches("^[a-f0-9]{40}$"));
     }
 }

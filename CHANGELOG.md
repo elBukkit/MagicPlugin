@@ -9,8 +9,9 @@
  - Tracking Sense now applies the glowing effect to the target entity
  - Fix for Arrow-based spells
  - All wand icons moved to the wooden hoe, other icons are now normal craftable items.
- - All wand templates changed to "Q to drop" by default!
+ - All wand templates changed to "Q to drop" by default! This is to support the off hand.
  - Wands in the offhand slot can cast spells with right-click
+ - Add enable_resource_pack_check option to work around new RP behavior where it won't update on changes.
 
 ## 5.5.1
 

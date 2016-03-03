@@ -121,6 +121,8 @@ public class NMSUtils {
     protected static Class<?> class_EntityFireball;
     protected static Class<?> class_EntityArrow;
     protected static Class<?> class_CraftArrow;
+    protected static Class<?> class_MinecraftServer;
+    protected static Class<?> class_CraftServer;
 
     protected static Method class_NBTTagList_addMethod;
     protected static Method class_NBTTagList_getMethod;
@@ -174,7 +176,6 @@ public class NMSUtils {
     protected static Method class_Entity_setLocationMethod;
     protected static Method class_Entity_getIdMethod;
     protected static Method class_Entity_getDataWatcherMethod;
-    protected static Method class_Server_getOnlinePlayers;
     protected static Method class_Entity_getBoundingBox;
     protected static Method class_TileEntityContainer_setLock;
     protected static Method class_TileEntityContainer_getLock;
@@ -190,6 +191,10 @@ public class NMSUtils {
     protected static Method class_CraftLivingEntity_getHandleMethod;
     protected static Method class_CraftWorld_getHandleMethod;
     protected static Method class_EntityPlayer_openSignMethod;
+    protected static Method class_CraftServer_getServerMethod;
+    protected static Method class_MinecraftServer_getResourcePackMethod;
+    protected static Method class_MinecraftServer_getResourcePackHashMethod;
+    protected static Method class_MinecraftServer_setResourcePackMethod;
 
     protected static Constructor class_NBTTagList_consructor;
     protected static Constructor class_NBTTagList_legacy_consructor;
@@ -314,7 +319,9 @@ public class NMSUtils {
             class_IAttribute = fixBukkitClass("net.minecraft.server.IAttribute");
             class_AttributeInstance = fixBukkitClass("net.minecraft.server.AttributeInstance");
             class_GenericAttributes = fixBukkitClass("net.minecraft.server.GenericAttributes");
-
+            class_CraftServer = fixBukkitClass("org.bukkit.craftbukkit.CraftServer");
+            class_MinecraftServer = fixBukkitClass("net.minecraft.server.MinecraftServer");
+                    
             class_EntityProjectile = NMSUtils.getBukkitClass("net.minecraft.server.EntityProjectile");
             class_EntityFireball = NMSUtils.getBukkitClass("net.minecraft.server.EntityFireball");
             class_EntityArrow = NMSUtils.getBukkitClass("net.minecraft.server.EntityArrow");
@@ -363,7 +370,6 @@ public class NMSUtils {
             class_Entity_setLocationMethod = class_Entity.getMethod("setLocation", Double.TYPE, Double.TYPE, Double.TYPE, Float.TYPE, Float.TYPE);
             class_Entity_getIdMethod = class_Entity.getMethod("getId");
             class_Entity_getDataWatcherMethod = class_Entity.getMethod("getDataWatcher");
-            class_Server_getOnlinePlayers = Server.class.getMethod("getOnlinePlayers");
             class_ArmorStand_setInvisible = class_EntityArmorStand.getDeclaredMethod("setInvisible", Boolean.TYPE);
             class_ArmorStand_setGravity = class_EntityArmorStand.getDeclaredMethod("setGravity", Boolean.TYPE);
             class_ArmorStand_setSmall = class_EntityArmorStand.getDeclaredMethod("setSmall", Boolean.TYPE);
@@ -373,7 +379,11 @@ public class NMSUtils {
             class_CraftLivingEntity_getHandleMethod = class_CraftLivingEntity.getMethod("getHandle");
             class_CraftWorld_getHandleMethod = class_CraftWorld.getMethod("getHandle");
             class_EntityPlayer_openSignMethod = class_EntityPlayer.getMethod("openSign", class_TileEntitySign);
-
+            class_CraftServer_getServerMethod = class_CraftServer.getMethod("getServer");
+            class_MinecraftServer_getResourcePackMethod = class_MinecraftServer.getMethod("getResourcePack");
+            class_MinecraftServer_getResourcePackHashMethod = class_MinecraftServer.getMethod("getResourcePackHash");
+            class_MinecraftServer_setResourcePackMethod = class_MinecraftServer.getMethod("setResourcePack", String.class, String.class);
+            
             class_CraftInventoryCustom_constructor = class_CraftInventoryCustom.getConstructor(InventoryHolder.class, Integer.TYPE, String.class);
             class_EntityFireworkConstructor = class_EntityFirework.getConstructor(class_World, Double.TYPE, Double.TYPE, Double.TYPE, class_ItemStack);
             class_PacketSpawnEntityConstructor = class_PacketPlayOutSpawnEntity.getConstructor(class_Entity, Integer.TYPE);
@@ -573,6 +583,16 @@ public class NMSUtils {
         }
 
         return NMSUtils.class.getClassLoader().loadClass(className);
+    }
+
+    public static Object getHandle(org.bukkit.Server server) {
+        Object handle = null;
+        try {
+            handle = class_CraftServer_getServerMethod.invoke(server);
+        } catch (Throwable ex) {
+            handle = null;
+        }
+        return handle;
     }
 
     public static Object getHandle(org.bukkit.inventory.ItemStack stack) {

@@ -1,5 +1,10 @@
 # Migration Notes
 
+## 6.0
+
+ - If you are using the official Magic Resource Pack, clear out the resource-pack entry in your server.properties.
+   Magic will automatically use the correct RP version.
+
 ## 5.5
 
  - Glass is no longer transparent by default (spells won't shoot through glass, too exploitable!)

@@ -86,6 +86,11 @@ public class MagicCommandExecutor extends MagicMapExecutor {
 				return true;
 			}
 		}
+		if (subCommand.equalsIgnoreCase("rpcheck"))
+		{
+			api.getController().checkResourcePack(sender);
+			return true;
+		}
 		if (subCommand.equalsIgnoreCase("save"))
 		{
 			api.save();
