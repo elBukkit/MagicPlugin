@@ -1152,7 +1152,7 @@ public class CompatibilityUtils extends NMSUtils {
         return true;
     }
     
-    public static boolean checkResourcePackHack(String hash) {
+    public static boolean checkResourcePackHash(String hash) {
         return (hash != null && !hash.isEmpty() && hash.matches("^[a-f0-9]{40}$"));
     }
 }

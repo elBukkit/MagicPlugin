@@ -4418,6 +4418,9 @@ public Set<Material> getMaterialSet(String name)
                     if (connection.getResponseCode() == HttpURLConnection.HTTP_OK)
                     {
                         String newHash = connection.getHeaderField("ETag");
+                        if (newHash != null) {
+                            newHash = newHash.replace("\"", "");
+                        }
                         if (newHash == null || newHash.isEmpty()) {
                             response = ChatColor.RED + "Resource pack returned empty ETag in HTTP HEAD";
                         } else if (resourcePackHash != null && newHash.equals(resourcePackHash)) {
@@ -4427,6 +4430,18 @@ public Set<Material> getMaterialSet(String name)
                                 response = ChatColor.GREEN + "Resource pack hash set to " + ChatColor.GRAY + newHash;
                             } else {
                                 response = ChatColor.YELLOW + "Resource pack hash changed, clients will see updates after relogging";
+                            }
+
+                            if (newHash.length() != 40) {
+                                response = response + ", " + ChatColor.YELLOW + "Padding resource pack hash to 40 chars";
+                                if (newHash.length() < 40) {
+                                    newHash = newHash + new String(new char[40 - newHash.length()]).replace('\0', '0');
+                                } else {
+                                    newHash = newHash.substring(0, 39);
+                                }
+                            }
+                            if (!CompatibilityUtils.checkResourcePackHash(newHash)) {
+                                response = response + ", " + ChatColor.RED + "Resource pack hash is not valid: " + newHash;
                             }
                             newResourcePackHash = newHash;
                         }
