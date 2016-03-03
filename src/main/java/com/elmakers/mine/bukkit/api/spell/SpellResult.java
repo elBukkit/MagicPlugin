@@ -111,6 +111,11 @@ public enum SpellResult {
     public boolean isStop() {
         return stop;
     }
+    
+    public boolean isFree(boolean castOnNoTarget) {
+        boolean requiresCost = isSuccess() || (castOnNoTarget && (this == SpellResult.NO_TARGET || this == SpellResult.NO_ACTION));
+        return !requiresCost || isFree();
+    }
 
     /**
      * Determine if this result is an alternate-mode cast.
