@@ -22,6 +22,7 @@ public class VolumeAction extends CompoundAction
 	public static final float DEGTORAD = 0.017453293F;
 	private static final int DEFAULT_RADIUS	= 2;
     protected boolean autoOrient;
+	protected boolean autoPitch;
 	protected double radius;
 	protected double radiusSquared;
 	protected int spiralRadius;
@@ -76,6 +77,7 @@ public class VolumeAction extends CompoundAction
 		centerZ = parameters.getBoolean("center_z", true);
         thickness = parameters.getDouble("thickness", 0);
 		autoOrient = parameters.getBoolean("orient", false);
+		autoPitch = parameters.getBoolean("orient_pitch", autoOrient);
 		centerProbability = (float)parameters.getDouble("probability", 1);
 		outerProbability = (float)parameters.getDouble("probability", 1);
 		centerProbability = (float)parameters.getDouble("center_probability", centerProbability);
@@ -315,9 +317,10 @@ public class VolumeAction extends CompoundAction
 				offset.setX(dx + xOffset);
 				offset.setY(dy);
 				offset.setZ(dz + zOffset);
+				float pitch = autoPitch ? location.getPitch() : 0;
 				Block originalBlock = block.getRelative(offset.getBlockX(), offset.getBlockY(), offset.getBlockZ());
 				actionContext.setTargetSourceLocation(originalBlock.getRelative(-xOffset, 0, -zOffset).getLocation());
-				offset = rotate(location.getYaw(), location.getPitch(), offset.getX(), offset.getY(), offset.getZ());
+				offset = rotate(location.getYaw(), pitch, offset.getX(), offset.getY(), offset.getZ());
 			} else {
 				offset.setX(dx);
 				offset.setY(dy);
