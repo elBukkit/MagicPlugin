@@ -236,6 +236,18 @@ flashboots:
   row_2: i i
   row_3: fof
 
+blaster:
+  enabled: false
+  output: blaster
+  output_type: wand
+  materials:
+    p: wood
+    i: iron_ingot
+    g: emerald
+  row_1: "iig"
+  row_2: "ii "
+  row_3: "p  "
+
 # Some off-by-default crafting options
 # for animal lovers <3
 zombie_leather:
@@ -249,7 +261,7 @@ zombie_leather:
   row_3: ooo
 
 coal_ink:
-  enabled: true
+  enabled: false
   output: ink_sack
   output_type: item
   materials:
@@ -258,13 +270,26 @@ coal_ink:
   row_1: " o "
   row_2: "odo"
   row_3: " o "
-
-# This is here to disable crafting of other items, even if
-# they aren't craftable.
-wolf:
-  output: gold_hoe
-  disable_default: true
-
-architect:
-  output: gold_axe
-  disable_default: true
+  
+saddle:
+  enabled: false
+  output: saddle
+  output_type: item
+  materials:
+    d: diamond
+    l: leather
+  row_1: "d  "
+  row_2: "lll"
+  row_3: "l l"
+  
+name_tag:
+  enabled: false
+  output: name_tag
+  output_type: item
+  materials:
+    d: diamond
+    p: paper
+    s: string
+  row_1: " ps"
+  row_2: "pdp"
+  row_3: " p "
