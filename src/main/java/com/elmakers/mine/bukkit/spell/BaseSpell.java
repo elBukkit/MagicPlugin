@@ -1158,8 +1158,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         processResult(result, parameters);
 
         boolean success = result.isSuccess();
-        boolean requiresCost = success || (castOnNoTarget && (result == SpellResult.NO_TARGET || result == SpellResult.NO_ACTION));
-        boolean free = !requiresCost || result.isFree();
+        boolean free = result.isFree(castOnNoTarget);
         if (!free) {
             if (costs != null && !mage.isCostFree()) {
                 for (CastingCost cost : costs)
@@ -2241,6 +2240,12 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         // Message targets
         if (result.isSuccess() && !mage.isQuiet()) {
             messageTargets("cast_player_message");
+        }
+        
+        // Clear cooldown on miss
+        boolean free = result.isFree(castOnNoTarget);
+        if (free) {
+            clearCooldown();
         }
 
         // Track cast counts
