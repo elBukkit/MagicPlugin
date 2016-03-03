@@ -29,7 +29,7 @@ cp -R ../../../common/assets/* .
 cd ..
 cp -R ../../potter/* .
 find . -name ".DS_Store" -type f -delete
-zip -r -X ../Magic-potter-RP.zip *
+zip -r -X ../Magic-potter-RP-6.zip *
 cd ..
 
 echo "** BUILDING BENDING **"
@@ -42,7 +42,7 @@ cp -R ../../../common/assets/* .
 cd ..
 cp -R ../../bending/* .
 find . -name ".DS_Store" -type f -delete
-zip -r -X ../Magic-bending-RP.zip *
+zip -r -X ../Magic-bending-RP-6.zip *
 cd ..
 
 echo "** BUILDING STARS **"
@@ -55,7 +55,7 @@ cp -R ../../../common/assets/* .
 cd ..
 cp -R ../../stars/* .
 find . -name ".DS_Store" -type f -delete
-zip -r -X ../Magic-stars-RP.zip *
+zip -r -X ../Magic-stars-RP-6.zip *
 cd ..
 
 echo "** BUILDING FFA **"
@@ -71,5 +71,5 @@ cp -R ../../potter/* .
 cp -R ../../stars/* .
 cp -R ../../survival/* .
 find . -name ".DS_Store" -type f -delete
-zip -r -X ../Magic-ffa-RP.zip *
+zip -r -X ../Magic-ffa-RP-6.zip *
 cd ..
