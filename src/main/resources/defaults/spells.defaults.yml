@@ -8134,7 +8134,7 @@ kill:
         - class: Delay
         - class: PlayEffects
           effect: launch
-          ignore_results: true
+          ignore_result: true
         - class: CustomProjectile
           actions:
           - class: Damage
