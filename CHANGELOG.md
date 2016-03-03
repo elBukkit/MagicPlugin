@@ -3,6 +3,10 @@
 ## 5.5.2
 
  - Fix Recall warps with no icon set
+ - Fix cast_on_no_target spell behavior
+ - Fix Kill awarding SP on miss
+ - Some fixes for 1.9 compatibility, but at this point please use Magic 6.0 for 1.9!
+ - Fix being able to wear spells from the spell inventory
 
 ## 5.5.1
 
