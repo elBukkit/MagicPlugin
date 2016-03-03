@@ -1178,16 +1178,18 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     }
 
     protected void updateCooldown() {
+        Wand wand = currentCast != null ? currentCast.getWand() : null;
+        boolean isCooldownFree = wand != null ? wand.isCooldownFree() : mage.isCooldownFree();
+        double cooldownReduction = wand != null ? wand.getCooldownReduction() : mage.getCooldownReduction();
+        cooldownReduction += this.cooldownReduction;
         lastCast = System.currentTimeMillis();
-        if (!mage.isCooldownFree() && cooldown > 0) {
-            double cooldownReduction = mage.getCooldownReduction() + this.cooldownReduction;
+        if (!isCooldownFree && cooldown > 0) {
             if (cooldownReduction < 1) {
                 int reducedCooldown = (int)Math.ceil((1.0f - cooldownReduction) * cooldown);
                 cooldownExpiration = Math.max(cooldownExpiration, System.currentTimeMillis() + reducedCooldown);
             }
         }
-        if (!mage.isCooldownFree() && mageCooldown > 0) {
-            double cooldownReduction = mage.getCooldownReduction() + this.cooldownReduction;
+        if (!isCooldownFree && mageCooldown > 0) {
             if (cooldownReduction < 1) {
                 int reducedCooldown = (int)Math.ceil((1.0f - cooldownReduction) * mageCooldown);
                 mage.setRemainingCooldown(reducedCooldown);
@@ -1553,13 +1555,15 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     @Override
     public float getConsumeReduction()
     {
-        return consumeReduction + mage.getConsumeReduction();
+        CostReducer reducer = currentCast != null ? currentCast.getWand() : mage;
+        return consumeReduction + reducer.getConsumeReduction();
     }
 
     @Override
     public float getCostReduction()
     {
-        return costReduction + mage.getCostReduction();
+        CostReducer reducer = currentCast != null ? currentCast.getWand() : mage;
+        return costReduction + reducer.getCostReduction();
     }
 
     @Override
