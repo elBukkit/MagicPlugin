@@ -236,6 +236,18 @@ flashboots:
   row_2: i i
   row_3: fof
 
+blaster:
+  enabled: false
+  output: blaster
+  output_type: wand
+  materials:
+    p: wood
+    i: iron_ingot
+    g: emerald
+  row_1: "iig"
+  row_2: "ii "
+  row_3: "p  "
+
 # Some off-by-default crafting options
 # for animal lovers <3
 zombie_leather:
@@ -281,15 +293,3 @@ name_tag:
   row_1: " ps"
   row_2: "pdp"
   row_3: " p "
-
-blaster:
-  enabled: false
-  output: blaster
-  output_type: wand
-  materials:
-    p: wood
-    i: iron_ingot
-    g: emerald
-  row_1: "iig"
-  row_2: "ii "
-  row_3: "p  "
