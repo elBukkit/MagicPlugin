@@ -313,4 +313,5 @@ public interface MageController {
     public EntityData loadMob(ConfigurationSection configuration);
     public String getBlockSkin(Material blockType);
     public String getMobSkin(EntityType mobType);
+    public void checkResourcePack(CommandSender sender);
 }
