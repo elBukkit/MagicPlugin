@@ -9483,14 +9483,32 @@ deposits:
             cost: 1
           - item: iron_block
             cost: 9
-          - item: emerald
-            cost: 8
-          - item: emerald_block
-            cost: 72
           - item: diamond
             cost: 16
           - item: diamond_block
             cost: 144
+          - item: emerald
+            cost: 32
+          - item: emerald_block
+            cost: 288
+          - item: gold_nugget@64
+            cost: 64
+          - item: gold_ingot@64
+            cost: 576
+          - item: gold_block@64
+            cost: 5184
+          - item: iron_ingot@64
+            cost: 64
+          - item: iron_block@64
+            cost: 576
+          - item: diamond@64
+            cost: 1024
+          - item: diamond_block@64
+            cost: 9216
+          - item: emerald@64
+            cost: 2048
+          - item: emerald_block@64
+            cost: 18432
 
 withdrawals:
     icon: emerald
@@ -9515,14 +9533,43 @@ withdrawals:
             cost: 1
           - item: iron_block
             cost: 9
-          - item: emerald
-            cost: 8
-          - item: emerald_block
-            cost: 72
           - item: diamond
             cost: 16
           - item: diamond_block
             cost: 144
+          - item: emerald
+            cost: 32
+          - item: emerald_block
+            cost: 288
+          - item: gold_nugget@64
+            cost: 64
+          - item: gold_ingot@64
+            cost: 576
+          - item: gold_block@64
+            cost: 5184
+          - item: iron_ingot@64
+            cost: 64
+          - item: iron_block@64
+            cost: 576
+          - item: diamond@64
+            cost: 1024
+          - item: diamond_block@64
+            cost: 9216
+          - item: emerald@64
+            cost: 2048
+          - item: emerald_block@64
+            cost: 18432
+
+spshop:
+    inherit: buyshop
+    parameters:
+        items:
+        - item: sp:10
+          cost: 100
+        - item: sp:100
+          cost: 1000
+        - item: sp:1000
+          cost: 10000
 
 ledgershop:
     icon: paper
