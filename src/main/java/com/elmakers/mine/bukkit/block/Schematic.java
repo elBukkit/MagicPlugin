@@ -47,9 +47,10 @@ public class Schematic implements com.elmakers.mine.bukkit.api.block.Schematic {
         for (Object entity : entityData) {
             String type = NMSUtils.getMeta(entity, "id");
             Vector position = NMSUtils.getPosition(entity, "Pos");
+            if (position == null) continue;
             position = position.subtract(origin).subtract(center);
 
-            if (type == null || position == null) continue;
+            if (type == null) continue;
 
             // Only doing paintings and item frames for now.
             if (type.equals("Painting")) {
