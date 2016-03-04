@@ -3,7 +3,8 @@
 ## 6.1
 
  - Fixed wands being placeable in droppers
- - Only bound+undroppable wands are completely undroppable now
+ - Only bound+undroppable wands are completely undroppable now, but can be put in ender chests
+ - /wand restore won't restore wands that you have in your ender chest
 
 ## 6.0
 

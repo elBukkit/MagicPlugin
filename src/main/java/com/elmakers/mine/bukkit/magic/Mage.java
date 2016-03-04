@@ -1933,6 +1933,16 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                 }
             }
         }
+        inventory = player.getEnderChest().getContents();
+        for (ItemStack item : inventory) {
+            if (Wand.isWand(item)) {
+                Wand tempWand = new Wand(controller, item);
+                String template = tempWand.getTemplateKey();
+                if (template != null) {
+                    foundTemplates.add(template);
+                }
+            }
+        }
 
         int givenWands = 0;
         for (Map.Entry<String, Wand> wandEntry : boundWands.entrySet()) {
