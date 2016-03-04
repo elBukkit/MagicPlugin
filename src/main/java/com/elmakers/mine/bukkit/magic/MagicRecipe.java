@@ -118,7 +118,7 @@ public class MagicRecipe {
             while (it.hasNext())
             {
                 Recipe defaultRecipe = it.next();
-                if (defaultRecipe != null && defaultRecipe.getResult().getType() == outputType)
+                if (defaultRecipe != null && defaultRecipe.getResult().getType() == outputType && defaultRecipe.getResult().getDurability() == 0)
                 {
                     plugin.getLogger().info("Disabled default crafting recipe for " + outputType);
                     it.remove();
