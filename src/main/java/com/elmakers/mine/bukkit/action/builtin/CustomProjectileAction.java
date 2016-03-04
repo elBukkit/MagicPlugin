@@ -309,7 +309,7 @@ public class CustomProjectileAction extends CompoundAction
                     + ChatColor.DARK_RED + " from speed^2 of " + ChatColor.GOLD + entitySpeed, 3);
             }
         }
-        return SpellResult.CAST;
+        return super.start(context);
     }
 
 	@Override
