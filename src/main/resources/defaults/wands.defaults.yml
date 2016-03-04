@@ -1565,7 +1565,8 @@ camera:
 magichat:
     mode: cast
     active_spell: magichat
-    icon: ender_portal_frame
+    icon: wood_hoe:17
+    migrate_icon: ender_portal_frame
     indestructible: true
     locked: true
     keep: true

@@ -2,6 +2,7 @@
 
 ## 6.1
 
+ - Fix Magic Hat appearance
  - Fixed wands being placeable in droppers
  - Only bound+undroppable wands are completely undroppable now, but can be put in ender chests
  - /wand restore won't restore wands that you have in your ender chest
