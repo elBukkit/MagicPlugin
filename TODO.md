@@ -2,6 +2,7 @@
 
  - I think action-specific parameters should not inherit down. Might be a tricky change.
  - Add wand appearance shop
+ - Add ability to load configs from a URL
 
  - ProtocolLib integration: client-side mana/sp display
  - Only bound+undroppable should not go in chests?
