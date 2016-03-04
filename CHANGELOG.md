@@ -2,6 +2,8 @@
 
 ## 6.1
 
+## 6.0.1
+
  - Fix Magic Hat appearance
  - Fix wands not being craftable
  - Fixed wands being placeable in droppers
