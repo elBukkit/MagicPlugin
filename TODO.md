@@ -1,5 +1,6 @@
 # TODO
 
+ - I think action-specific parameters should not inherit down. Might be a tricky change.
  - Add wand appearance shop
 
  - ProtocolLib integration: client-side mana/sp display

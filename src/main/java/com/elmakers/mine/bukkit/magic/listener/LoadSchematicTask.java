@@ -2,7 +2,7 @@ package com.elmakers.mine.bukkit.magic.listener;
 
 import com.elmakers.mine.bukkit.block.Schematic;
 import com.elmakers.mine.bukkit.magic.MagicController;
-import com.elmakers.mine.bukkit.utility.NMSUtils;
+import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 
 import java.io.InputStream;
 
@@ -20,7 +20,7 @@ public class LoadSchematicTask implements Runnable {
     @Override
     public void run() {
         try {
-            NMSUtils.loadSchematic(input, schematic);
+            CompatibilityUtils.loadSchematic(input, schematic);
             controller.info("Finished loading schematic");
         } catch (Exception ex) {
             ex.printStackTrace();
