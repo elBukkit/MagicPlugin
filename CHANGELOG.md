@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## 6.1
+
+ - Fixed wands being placeable in droppers
+ - Only bound+undroppable wands are completely undroppable now
+
 ## 6.0
 
  - Dropped support for 1.8!

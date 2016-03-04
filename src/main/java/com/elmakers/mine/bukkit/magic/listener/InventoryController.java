@@ -173,7 +173,7 @@ public class InventoryController implements Listener {
 
         Wand activeWand = mage.getActiveWand();
 
-        boolean isChest = inventoryType == InventoryType.CHEST || inventoryType == InventoryType.ENDER_CHEST || inventoryType == InventoryType.HOPPER || inventoryType == InventoryType.DISPENSER;
+        boolean isChest = inventoryType == InventoryType.CHEST || inventoryType == InventoryType.HOPPER || inventoryType == InventoryType.DISPENSER || inventoryType == InventoryType.DROPPER;
         boolean clickedWand = Wand.isWand(clickedItem);
         boolean isContainerSlot = event.getSlot() == event.getRawSlot();
 
@@ -242,8 +242,11 @@ public class InventoryController implements Listener {
                 activeWand = mage.getActiveWand();
             }
         } else if (clickedWand && Wand.Undroppable && !player.hasPermission("Magic.wand.override_drop") && isChest && !isContainerSlot) {
-            event.setCancelled(true);
-            return;
+            Wand wand = new Wand(controller, clickedItem);
+            if (wand.isUndroppable()) {
+                event.setCancelled(true);
+                return;
+            }
         }
         
         // Check for armor changing
