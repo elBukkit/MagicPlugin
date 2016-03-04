@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## 5.5.3
+
+ - Fixed wands being placeable in droppers
+ - Only bound+undroppable wands are completely undroppable now
+
 ## 5.5.2
 
  - Fix Recall warps with no icon set
