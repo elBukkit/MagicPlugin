@@ -325,7 +325,7 @@ public class NMSUtils {
 
             class_NBTTagList_addMethod = class_NBTTagList.getMethod("add", class_NBTBase);
             class_NBTTagList_getMethod = class_NBTTagList.getMethod("get", Integer.TYPE);
-            class_NBTTagList_getDoubleMethod = class_NBTTagList.getMethod("d", Integer.TYPE);
+            class_NBTTagList_getDoubleMethod = class_NBTTagList.getMethod("e", Integer.TYPE);
             class_NBTTagList_sizeMethod = class_NBTTagList.getMethod("size");
             class_NBTTagCompound_setMethod = class_NBTTagCompound.getMethod("set", String.class, class_NBTBase);
             class_World_getEntitiesMethod = class_World.getMethod("getEntities", class_Entity, class_AxisAlignedBB);
