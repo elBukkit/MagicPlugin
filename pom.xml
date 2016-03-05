@@ -86,7 +86,7 @@
 		<dependency>
 			<groupId>com.elmakers.mine.bukkit</groupId>
 			<artifactId>MagicAPI</artifactId>
-			<version>3.5</version>
+			<version>5.6-SNAPSHOT</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
