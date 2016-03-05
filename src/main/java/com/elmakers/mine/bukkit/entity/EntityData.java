@@ -504,7 +504,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     
     public Entity spawn(MageController controller, Location location, CreatureSpawnEvent.SpawnReason reason) {
         if (location != null) this.location = location;
-        else if (location == null) return null;
+        else if (this.location == null) return null;
         Entity spawned = trySpawn(reason);
         if (spawned != null) {
             modify(spawned);
