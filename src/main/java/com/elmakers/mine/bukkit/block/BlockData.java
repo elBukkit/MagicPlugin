@@ -55,7 +55,8 @@ public class BlockData extends MaterialAndData implements com.elmakers.mine.bukk
         // world gets 4 bits
         // y gets 8 bits
         // and x and z get 24 bits each
-        return ((world.hashCode() & 0xF) << 56)
+        long worldHashCode = world == null ? 0 : world.hashCode();
+        return ((worldHashCode & 0xF) << 56)
             | (((long)x & 0xFFFFFF) << 32)
             | (((long)z & 0xFFFFFF) << 8)
             | ((long)y & 0xFF);
@@ -123,7 +124,7 @@ public class BlockData extends MaterialAndData implements com.elmakers.mine.bukk
     public BlockData(Location location, Material material, byte data)
     {
         super(material, data);
-        if (location != null) {
+        if (location != null && location.getWorld() != null) {
             this.location = new BlockVector(location.getBlockX(), location.getBlockY(), location.getBlockZ());
             this.worldName = location.getWorld().getName();
         }
