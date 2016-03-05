@@ -26,6 +26,7 @@ import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import com.elmakers.mine.bukkit.utility.NMSUtils;
 import com.elmakers.mine.bukkit.wand.Wand;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
@@ -154,8 +155,8 @@ public class MagicPlugin extends JavaPlugin implements MagicAPI
 		}
 
         if (NMSUtils.getFailed()) {
-            getLogger().warning("Something went wrong with some Deep Magic, plugin will not load.");
-            getLogger().warning("Please make sure you are running a compatible version of CraftBukkit or Spigot (1.9 or Higher)!");
+			Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "Something went wrong with some Deep Magic, plugin will not load.");
+			Bukkit.getConsoleSender().sendMessage(ChatColor.DARK_RED + "Please make sure you are running a compatible version of " + ChatColor. RED + "Spigot (1.9 or Higher)!");
         } else {
             initialize();
         }
