@@ -2,6 +2,8 @@
 
 ## 6.1
 
+ - Fix issues with pasting signs in schematics (Fixes Wolf House crashing clients!)
+
 ## 6.0.1
 
  - Fix Magic Hat appearance
