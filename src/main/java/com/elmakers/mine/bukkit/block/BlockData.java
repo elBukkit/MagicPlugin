@@ -79,6 +79,7 @@ public class BlockData extends MaterialAndData implements com.elmakers.mine.bukk
 
     public long getId()
     {
+        if (location == null) return 0;
         return getBlockId(worldName, location.getBlockX(), location.getBlockY(), location.getBlockZ());
     }
 
