@@ -2729,6 +2729,11 @@ public class MagicController implements MageController {
         com.elmakers.mine.bukkit.magic.Mage mage = (com.elmakers.mine.bukkit.magic.Mage)apiMage;
         mage.giveItem(itemStack);
 	}
+    
+    @Override
+    public boolean commitOnQuit() {
+        return commitOnQuit;
+    }
 
     public void playerQuit(Mage mage) {
         playerQuit(mage, null);
@@ -2742,31 +2747,7 @@ public class MagicController implements MageController {
         com.elmakers.mine.bukkit.api.wand.Wand wand = mage.getActiveWand();
         boolean isOpen = wand != null && wand.isInventoryOpen();
         mage.deactivate();
-
-        // Immediately rollback any auto-undo spells
-        com.elmakers.mine.bukkit.api.block.UndoQueue undoQueue = mage.getUndoQueue();
-        if (undoQueue != null) {
-            int undid = undoQueue.undoScheduled();
-            if (undid != 0) {
-                info("Player " + mage.getName() + " logging out, auto-undid " + undid + " spells");
-            }
-        }
-
-        int finished = mage.finishPendingUndo();
-        if (finished != 0) {
-            info("Player " + mage.getName() + " logging out, fast-forwarded undo for " + finished + " spells");
-        }
-
-        if (undoQueue != null) {
-            if (!undoQueue.isEmpty()) {
-                if (commitOnQuit) {
-                    info("Player logging out, committing constructions: " + mage.getName());
-                    undoQueue.commit();
-                } else {
-                    info("Player " + mage.getName() + " logging out with " + undoQueue.getSize() + " spells in their undo queue");
-                }
-            }
-        }
+        mage.undoScheduled();
 
         // Unregister
         if (!externalPlayerData || !mage.isPlayer()) {
