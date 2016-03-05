@@ -2272,6 +2272,33 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         deactivateAllSpells(true, true);
         removeActiveEffects();
     }
+    
+    @Override
+    public void undoScheduled() {
+        // Immediately rollback any auto-undo spells
+        if (undoQueue != null) {
+            int undid = undoQueue.undoScheduled();
+            if (undid != 0) {
+                controller.info("Player " + getName() + " logging out, auto-undid " + undid + " spells");
+            }
+        }
+
+        int finished = finishPendingUndo();
+        if (finished != 0) {
+            controller.info("Player " + getName() + " logging out, fast-forwarded undo for " + finished + " spells");
+        }
+
+        if (undoQueue != null) {
+            if (!undoQueue.isEmpty()) {
+                if (controller.commitOnQuit()) {
+                    controller.info("Player logging out, committing constructions: " + getName());
+                    undoQueue.commit();
+                } else {
+                    controller.info("Player " + getName() + " logging out with " + undoQueue.getSize() + " spells in their undo queue");
+                }
+            }
+        }
+    }
 
     @Override
     public void removeItemsWithTag(String tag) {
