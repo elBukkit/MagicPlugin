@@ -440,4 +440,5 @@ public interface Mage extends CostReducer {
     public WandUpgradePath getBoundWandPath(String templateKey);
     public void unbind(Wand wand);
     public void unbindAll();
+    public void undoScheduled();
 }

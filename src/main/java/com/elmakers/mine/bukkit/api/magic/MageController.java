@@ -314,4 +314,5 @@ public interface MageController {
     public String getBlockSkin(Material blockType);
     public String getMobSkin(EntityType mobType);
     public void checkResourcePack(CommandSender sender);
+    public boolean commitOnQuit();
 }
