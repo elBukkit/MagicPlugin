@@ -243,13 +243,13 @@ public class LevitateSpell extends TargetingSpell implements Listener
         if (mountEntity != null) {
             Entity currentMount = player.getVehicle();
             if (currentMount != mountEntity && (armorStand == null || currentMount != armorStand)) {
-                crash();
+                land();
                 return;
             }
             if (armorStand != null) {
                 Entity currentPassenger = armorStand.getPassenger();
                 if (currentPassenger != mountEntity) {
-                    crash();
+                    land();
                     return;
                 }
             }

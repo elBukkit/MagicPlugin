@@ -4,6 +4,7 @@
 
  - Fix issues with pasting signs in schematics (Fixes Wolf House crashing clients!)
  - The mana bar is now completely virtual, should fix compatibility issues with other plugins
+ - Levitate deactivates on dismount rather than crashing (for now?)
 
 ## 6.0.1
 
