@@ -334,9 +334,22 @@ public class PlayerController implements Listener {
         Mage apiMage = controller.getMage(player);
         if (!(apiMage instanceof com.elmakers.mine.bukkit.magic.Mage)) return;
         com.elmakers.mine.bukkit.magic.Mage mage = (com.elmakers.mine.bukkit.magic.Mage)apiMage;
+
+        Action action = event.getAction();
+        Wand wand = mage.checkWand();
+        boolean handleRightClick = (action == Action.RIGHT_CLICK_AIR || action == Action.RIGHT_CLICK_BLOCK);
+        if (action == Action.RIGHT_CLICK_BLOCK) {
+            Material material = event.getClickedBlock().getType();
+            handleRightClick = !controller.isInteractable(event.getClickedBlock());
+
+            // This is to prevent Essentials signs from giving you an item in your wand inventory.
+            if (material== Material.SIGN_POST || material == Material.WALL_SIGN) {
+                wand.closeInventory();
+            }
+        }
         
         // Check for offhand casting
-        if (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK)
+        if (handleRightClick)
         {
             if (allowOffhandCasting && mage.offhandCast()) {
                 if (cancelInteractOnCast) {
@@ -345,11 +358,8 @@ public class PlayerController implements Listener {
                 return;
             }
         }
-        
-        Wand wand = mage.checkWand();
 
         // Check for wearing via right-click
-        Action action = event.getAction();
         if (itemInHand != null
                 && (action == Action.RIGHT_CLICK_AIR || action == Action.RIGHT_CLICK_BLOCK)
                 && controller.isWearable(itemInHand))
@@ -419,17 +429,7 @@ public class PlayerController implements Listener {
             return;
         }
 
-        boolean toggleInventory = (action == Action.RIGHT_CLICK_AIR);
-        if (!toggleInventory && action == Action.RIGHT_CLICK_BLOCK) {
-            Material material = event.getClickedBlock().getType();
-            toggleInventory = !controller.isInteractable(event.getClickedBlock());
-
-            // This is to prevent Essentials signs from giving you an item in your wand inventory.
-            if (material== Material.SIGN_POST || material == Material.WALL_SIGN) {
-                wand.closeInventory();
-            }
-        }
-        if (toggleInventory && !wand.isDropToggle())
+        if (handleRightClick && !wand.isDropToggle())
         {
             controller.onToggleInventory(mage, wand);
             event.setCancelled(true);
