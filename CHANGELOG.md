@@ -1,5 +1,7 @@
 # CHANGELOG
 
+## 6.1
+
 ## 6.0.2
 
  - Fix issues with pasting signs in schematics (Fixes Wolf House crashing clients!)
