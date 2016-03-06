@@ -2,6 +2,8 @@
 
 ## 6.1
 
+ - Add "bypass_upgrade_commands" permission, useful for staff if your command contain rank-ups
+
 ## 6.0.2
 
  - Fix issues with pasting signs in schematics (Fixes Wolf House crashing clients!)

@@ -733,6 +733,10 @@ permissions:
     description: A player may bypass restricted material checks
     default: op
     type: boolean
+  Magic.bypass_upgrade_commands:
+    description: A player will skip upgrade commands when ranking up
+    default: false
+    type: boolean
   Magic.craft:
     description: The wands a player may craft
     type: list

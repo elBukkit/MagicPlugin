@@ -16,6 +16,7 @@ import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -462,7 +463,9 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
             playEffects(mage, "upgrade");
             location = mage.getLocation();
         }
-        if (upgradeCommands != null) {
+        Player player = mage != null ? mage.getPlayer() : null;
+        boolean shouldRunCommands = (player == null || !player.hasPermission("Magic.bypass_upgrade_commands"));
+        if (upgradeCommands != null && shouldRunCommands) {
             for (String command : upgradeCommands) {
                 if (command.contains("@uuid") || command.contains("@pn") || command.contains("@pd")) {
                     if (mage == null ) {
