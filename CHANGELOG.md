@@ -5,6 +5,7 @@
  - Fixed wands being placeable in droppers
  - Only bound+undroppable wands are completely undroppable now, but can be put in ender chests
  - /wand restore won't restore wands that you have in your ender chest
+ - The mana bar is now completely virtual, should fix compatibility issues with other plugins
 
 ## 5.5.2
 

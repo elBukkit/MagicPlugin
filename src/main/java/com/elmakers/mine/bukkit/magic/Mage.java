@@ -150,6 +150,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     private boolean restoreOpenWand;
     private Float restoreExperience;
     private Integer restoreLevel;
+    private boolean virtualExperience = false;
 
     private String destinationWarp;
 
@@ -765,12 +766,6 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                 if (activeWand.hasStoredInventory()) {
                     data.setStoredInventory(Arrays.asList(activeWand.getStoredInventory().getContents()));
                 }
-                if (activeWand.usesXPNumber()) {
-                    data.setStoredLevel(activeWand.getStoredXpLevel());
-                }
-                if (activeWand.usesXPBar()) {
-                    data.setStoredExperience(activeWand.getStoredXpProgress());
-                }
                 if (activeWand.isInventoryOpen()) {
                     data.setOpenWand(true);
                 }
@@ -862,6 +857,8 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             checkWand();
             if (activeWand != null) {
                 activeWand.tick();
+            } else if (virtualExperience) {
+                resetSentExperience();
             }
 
             // Avoid getting kicked for large jump effects
@@ -1541,16 +1538,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
         float expProgress = player.getExp();
         int expLevel = player.getLevel();
-
-        if (activeWand != null) {
-            if (activeWand.usesXPBar()) {
-                expProgress = activeWand.getStoredXpProgress();
-            }
-            if (activeWand.usesXPNumber()) {
-                expLevel = activeWand.getStoredXpLevel();
-            }
-        }
-
+        
         while ((expProgress > 0 || expLevel > 0) && xp > 0) {
             if (expProgress > 0) {
                 float expToLevel = Wand.getExpToLevel(expLevel);
@@ -1575,18 +1563,10 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
         player.setExp(Math.max(0, Math.min(1.0f, expProgress)));
         player.setLevel(Math.max(0, expLevel));
-
-        if (activeWand != null) {
-            activeWand.updateExperience();
-        }
     }
 
     @Override
     public int getLevel() {
-        if (activeWand != null && activeWand.usesXPNumber()) {
-            return activeWand.getStoredXpLevel();
-        }
-
         Player player = getPlayer();
         if (player != null) {
             return player.getLevel();
@@ -1601,9 +1581,6 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         if (player != null) {
             player.setLevel(level);
         }
-        if (activeWand != null && activeWand.usesXPBar()) {
-            activeWand.setStoredXpLevel(level);
-        }
     }
 
     @Override
@@ -1614,15 +1591,6 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         float expProgress = player.getExp();
         int expLevel = player.getLevel();
 
-        if (activeWand != null) {
-            if (activeWand.usesXPBar()) {
-                expProgress = activeWand.getStoredXpProgress();
-            }
-            if (activeWand.usesXPNumber()) {
-                expLevel = activeWand.getStoredXpLevel();
-            }
-        }
-
         return Wand.getExperience(expLevel, expProgress);
     }
 
@@ -1632,11 +1600,22 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         if (player != null) {
             player.giveExp(xp);
         }
-
-        if (activeWand != null && activeWand.usesXPDisplay()) {
-            activeWand.addExperience(xp);
+    }
+    
+    public void sendExperience(float exp, int level) {
+        Player player = getPlayer();
+        if (player != null) {
+            CompatibilityUtils.sendExperienceUpdate(player, exp, level);
+            virtualExperience = true;
         }
+    }
 
+    public void resetSentExperience() {
+        Player player = getPlayer();
+        if (player != null) {
+            CompatibilityUtils.sendExperienceUpdate(player, player.getExp(), player.getLevel());
+        }
+        virtualExperience = false;
     }
 
     @Override

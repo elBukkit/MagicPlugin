@@ -212,10 +212,6 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 
     // Transient state
 
-	private int storedXpLevel = 0;
-	private float storedXpProgress = 0;
-    private Integer playerXpLevel = null;
-    private Float playerXpProgress = null;
     private boolean effectBubblesApplied = false;
     private boolean hasSpellProgression = false;
 
@@ -3469,15 +3465,6 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
             int playerLevel = player.getLevel();
             float playerProgress = player.getExp();
 
-            if (playerXpLevel != null && playerXpProgress != null && (playerLevel != playerXpLevel || playerProgress != playerXpProgress))
-            {
-                int playerXP = getExperience(playerLevel, playerProgress);
-                int wandXP = getExperience(playerXpLevel, playerXpProgress);
-                if (playerXP > wandXP) {
-                    addExperience(playerXP - wandXP);
-                }
-            }
-
             if (usesMana() && manaMode.useXPNumber())
             {
                 playerLevel = (int)xp;
@@ -3490,12 +3477,8 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
             {
                 playerLevel = mage.getSkillPoints();
             }
-
-            player.setExp(playerProgress);
-            player.setLevel(playerLevel);
-
-            playerXpLevel = player.getLevel();
-            playerXpProgress = player.getExp();
+			
+			mage.sendExperience(playerProgress, playerLevel);
         }
 	}
 
@@ -3560,16 +3543,8 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 			closeInventory();
 		}
         storedInventory = null;
-		
-		if (player != null) {
-            if (usesXPNumber()) {
-                player.setLevel(Math.max(0, storedXpLevel));
-            }
-            if (usesXPBar()) {
-                player.setExp(Math.max(0, storedXpProgress));
-            }
-			storedXpProgress = 0;
-			storedXpLevel = 0;
+		if (usesXPNumber() || usesXPBar()) {
+			mage.resetSentExperience();
 		}
         saveItemState();
 		mage.setActiveWand(null);
@@ -3689,14 +3664,6 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		}
 	}
 
-	public void onPlayerExpChange(PlayerExpChangeEvent event) {
-		if (mage == null) return;
-
-		if (addExperience(event.getAmount())) {
-			event.setAmount(0);
-		}
-	}
-
     // Taken from NMS HumanEntity
     public static int getExpToLevel(int expLevel) {
         return expLevel >= 30 ? 112 + (expLevel - 30) * 9 : (expLevel >= 15 ? 37 + (expLevel - 15) * 5 : 7 + expLevel * 2);
@@ -3708,41 +3675,6 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
             xp += Wand.getExpToLevel(level);
         }
         return xp + (int) (expProgress * Wand.getExpToLevel(expLevel));
-    }
-
-    public boolean addExperience(int xp) {
-        if (usesXPDisplay()) {
-            this.storedXpProgress += (float)xp / (float)getExpToLevel(this.storedXpLevel);
-
-            for (; this.storedXpProgress >= 1.0F; this.storedXpProgress /= (float)getExpToLevel(this.storedXpLevel)) {
-                this.storedXpProgress = (this.storedXpProgress - 1.0F) * (float)getExpToLevel(this.storedXpLevel);
-                this.storedXpLevel++;
-            }
-
-            Player player = mage == null ? null : mage.getPlayer();
-            if (player != null) {
-                if (usesXPNumber()) {
-                    player.setLevel(Math.max(0, storedXpLevel));
-                }
-                if (usesXPBar()) {
-                    player.setExp(Math.max(0, storedXpProgress));
-                }
-
-                playerXpLevel = player.getLevel();
-                playerXpProgress = player.getExp();
-            }
-            return true;
-        }
-
-        return false;
-    }
-
-    public void updateExperience() {
-        Player player = mage == null ? null : mage.getPlayer();
-        if (player != null) {
-            storedXpProgress = player.getExp();
-            storedXpLevel = player.getLevel();
-        }
     }
 
     protected void updateHotbarStatus() {
@@ -4184,7 +4116,6 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         checkActiveMaterial();
 
         mage.setActiveWand(this);
-        updateExperience();
 
         tick();
         saveItemState();
@@ -4625,18 +4556,6 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         } else {
             castOverrides.put(key, value);
         }
-    }
-
-    public void setStoredXpLevel(int level) {
-        this.storedXpLevel = level;
-    }
-
-    public int getStoredXpLevel() {
-        return storedXpLevel;
-    }
-
-    public float getStoredXpProgress() {
-        return storedXpProgress;
     }
 
     public boolean hasStoredInventory() {
