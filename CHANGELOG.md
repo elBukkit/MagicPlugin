@@ -3,6 +3,7 @@
 ## 6.1
 
  - Fix issues with pasting signs in schematics (Fixes Wolf House crashing clients!)
+ - The mana bar is now completely virtual, should fix compatibility issues with other plugins
 
 ## 6.0.1
 

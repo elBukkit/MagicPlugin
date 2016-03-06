@@ -1255,4 +1255,13 @@ public class CompatibilityUtils extends NMSUtils {
         }
         return true;
     }
+    
+    public static void sendExperienceUpdate(Player player, float experience, int level) {
+        try {
+            Object packet = class_PacketPlayOutExperience_Constructor.newInstance(experience, player.getTotalExperience(), level);
+            sendPacket(player, packet);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
 }

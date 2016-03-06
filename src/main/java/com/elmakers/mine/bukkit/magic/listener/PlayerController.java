@@ -595,22 +595,4 @@ public class PlayerController implements Listener {
             }
         }
     }
-
-    @EventHandler
-    public void onPlayerExpChange(PlayerExpChangeEvent event)
-    {
-        // We don't care about exp loss events
-        if (event.getAmount() <= 0) return;
-
-        Player player = event.getPlayer();
-        Mage apiMage = controller.getRegisteredMage(player);
-
-        if (apiMage != null && !(apiMage instanceof com.elmakers.mine.bukkit.magic.Mage)) return;
-        com.elmakers.mine.bukkit.magic.Mage mage = (com.elmakers.mine.bukkit.magic.Mage)apiMage;
-
-        Wand wand = mage.getActiveWand();
-        if (wand != null) {
-            wand.onPlayerExpChange(event);
-        }
-    }
 }
