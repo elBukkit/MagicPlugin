@@ -1,5 +1,7 @@
 # CHANGELOG
 
+## 5.5.4
+
 ## 5.5.3
 
  - Fixed wands being placeable in droppers
