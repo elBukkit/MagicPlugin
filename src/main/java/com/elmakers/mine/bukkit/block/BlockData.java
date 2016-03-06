@@ -147,6 +147,7 @@ public class BlockData extends MaterialAndData implements com.elmakers.mine.bukk
     }
 
     public void save(ConfigurationSection node) {
+        if (worldName == null) return;
         node.set("material", ConfigurationUtils.fromMaterial(material));
         node.set("data", data);
         Location location = new Location(Bukkit.getWorld(worldName), this.location.getX(), this.location.getY(), this.location.getZ());
