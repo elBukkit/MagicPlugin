@@ -5857,9 +5857,10 @@ blink:
            use_wand_location: false
            effectlib:
                class: AtomEffect
-               particleNucleus: spell_mob
+               particleNucleus: dragon_breath
                particleOrbital: redstone
                iterations: 8
+               offset: 0,-1,0
          - class: EffectSingle
            color_override: color
            effectlib:
@@ -7542,7 +7543,7 @@ homing:
              particles: 10
              offset: 0,-0.5,0
         tick:
-        - particle: redstone
+        - particle: end_rod
           color: FF0000
           location: target
         projectile:
@@ -8588,6 +8589,7 @@ wound:
         -  class: EffectSingle
            sound: magic.shimmer_crack
            sound_volume: 1
+           particle: sweep_attack
         -  class: EffectSingle
            sound: magic.electrify
            sound_volume: 5
@@ -8599,7 +8601,6 @@ wound:
         -  class: EffectSingle
            location: target
            color: 8A0829
-           firework: burst
            effectlib:
              class: BleedEffect
              iterations: 2
@@ -8615,6 +8616,7 @@ wound:
         -  class: EffectSingle
            sound: magic.crack
            sound_volume: 1
+           particle: sweep_attack
         -  class: EffectSingle
            sound: magic.electrify
            sound_volume: 5
@@ -8623,10 +8625,6 @@ wound:
              iterations: 15
              particle: drip_lava
              lengthGrow: 0.05
-        -  class: EffectSingle
-           location: target
-           color: 8A0829
-           firework: burst
     parameters:
         target_type: LivingEntity
         allow_max_range: false
