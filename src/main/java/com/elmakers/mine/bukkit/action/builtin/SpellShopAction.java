@@ -158,13 +158,10 @@ public class SpellShopAction extends BaseShopAction
                 Spell mageSpell = wand != null ? wand.getSpell(spellKey) : null;
                 long requiredCastCount = mageSpell != null ? mageSpell.getRequiredUpgradeCasts() : 0;
                 long castCount = mageSpell != null ? Math.min(mageSpell.getCastCount(), requiredCastCount) : 0;
-                if (requiredPathKey != null && spell.getSpellKey().getLevel() > 1
-                        && (!currentPath.hasPath(requiredPathKey)
+                if (spell.getSpellKey().getLevel() > 1
+                        && (requiredPathKey != null && !currentPath.hasPath(requiredPathKey)
                         || (requiresCastCounts && requiredCastCount > 0 && castCount < requiredCastCount)))
                 {
-                    requiredPathKey = currentPath.translatePath(requiredPathKey);
-                    com.elmakers.mine.bukkit.wand.WandUpgradePath upgradePath = com.elmakers.mine.bukkit.wand.WandUpgradePath.getPath(requiredPathKey);
-                    if (upgradePath == null) continue;
                     ItemMeta meta = spellItem.getItemMeta();
                     List<String> itemLore = meta.getLore();
                     List<String> lore = new ArrayList<String>();
@@ -177,12 +174,16 @@ public class SpellShopAction extends BaseShopAction
                     }
 
                     String message = null;
-                    if (!currentPath.hasPath(requiredPathKey)) {
-                        message = context.getMessage("level_requirement", "&r&cRequires: &6$path").replace("$path", upgradePath.getName());
-                        lore.add(message);
+                    if (requiredPathKey != null && !currentPath.hasPath(requiredPathKey)) {
+                        requiredPathKey = currentPath.translatePath(requiredPathKey);
+                        com.elmakers.mine.bukkit.wand.WandUpgradePath upgradePath = com.elmakers.mine.bukkit.wand.WandUpgradePath.getPath(requiredPathKey);
+                        if (upgradePath != null) {
+                            message = context.getMessage("level_requirement", "&r&cRequires: &6$path").replace("$path", upgradePath.getName());
+                            lore.add(message);
+                        }
                     }
 
-                    if (!castsSpells && requiresCastCounts && requiredCastCount > 0 && castCount < requiredCastCount) {
+                    if (requiresCastCounts && requiredCastCount > 0 && castCount < requiredCastCount) {
                         message = ChatColor.RED + context.getMessage("cast_requirement", "Casts: $current/$required")
                                 .replace("$current", Long.toString(castCount))
                                 .replace("$required", Long.toString(requiredCastCount));
