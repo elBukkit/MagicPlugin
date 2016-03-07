@@ -32,6 +32,7 @@ public class WearAction extends BaseSpellAction
     private MaterialAndData material;
     private boolean useItem;
     private Map<Enchantment, Integer> enchantments;
+    private int slotNumber;
 
     @Override
     public void initialize(Spell spell, ConfigurationSection parameters)
@@ -54,12 +55,14 @@ public class WearAction extends BaseSpellAction
         }
     }
 
-	private class HatUndoAction implements Runnable
+	private class WeearUndoAction implements Runnable
 	{
 		private final Mage mage;
+        private final int slotNumber;
 
-		public HatUndoAction(Mage mage) {
+		public WeearUndoAction(Mage mage, int slotNumber) {
 			this.mage = mage;
+            this.slotNumber = slotNumber;
 		}
 
 		@Override
@@ -67,10 +70,12 @@ public class WearAction extends BaseSpellAction
             Player player = mage.getPlayer();
             if (player == null) return;
 
-			ItemStack helmetItem = player.getInventory().getHelmet();
-			if (NMSUtils.isTemporary(helmetItem)) {
-				ItemStack replacement = NMSUtils.getReplacement(helmetItem);
-				player.getInventory().setHelmet(replacement);
+            ItemStack[] armor = player.getInventory().getArmorContents();
+			ItemStack currentItem = armor[slotNumber];
+			if (NMSUtils.isTemporary(currentItem)) {
+				ItemStack replacement = NMSUtils.getReplacement(currentItem);
+                armor[slotNumber] = replacement;
+				player.getInventory().setArmorContents(armor);
 			}
             if (mage instanceof com.elmakers.mine.bukkit.magic.Mage) {
                 ((com.elmakers.mine.bukkit.magic.Mage)mage).armorUpdated();
@@ -83,6 +88,8 @@ public class WearAction extends BaseSpellAction
     {
         material = ConfigurationUtils.getMaterialAndData(parameters, "material");
         useItem = parameters.getBoolean("use_item", false);
+        slotNumber = parameters.getInt("armor_slot", 3);
+        slotNumber = Math.max(Math.min(slotNumber, 3), 0);
     }
 
 	@Override
@@ -105,7 +112,7 @@ public class WearAction extends BaseSpellAction
         if (useItem)
         {
             Wand activeWand = mage.getActiveWand();
-            // Check for trying to wear a hat from the offhand slot
+            // Check for trying to wear an item from the offhand slot
             // Not handling this for now.
             if (activeWand != context.getWand()) {
                 return SpellResult.NO_TARGET;
@@ -120,8 +127,10 @@ public class WearAction extends BaseSpellAction
             {
                 return SpellResult.FAIL;
             }
-            ItemStack currentItem = player.getInventory().getHelmet();
-            player.getInventory().setHelmet(itemInHand);
+            ItemStack[] armor = player.getInventory().getArmorContents();
+            ItemStack currentItem = armor[slotNumber];
+            armor[slotNumber] = itemInHand;
+            player.getInventory().setArmorContents(armor);
             if (!InventoryUtils.isTemporary(currentItem)) {
                 player.setItemInHand(currentItem);
             } else {
@@ -156,28 +165,35 @@ public class WearAction extends BaseSpellAction
             return SpellResult.NO_TARGET;
         }
 
-		ItemStack hatItem = material.getItemStack(1);
-		ItemMeta meta = hatItem.getItemMeta();
-        String hatName = context.getMessage("hat_name", "");
+		ItemStack wearItem = material.getItemStack(1);
+		ItemMeta meta = wearItem.getItemMeta();
+        
+        // Legacy support
+        String displayName = context.getMessage("hat_name", "");
+        displayName = context.getMessage("wear_name", displayName);
         String materialName = material.getName();
         if (materialName == null || materialName.isEmpty())
         {
             materialName = "?";
         }
-        if (hatName != null && !hatName.isEmpty())
+        if (displayName != null && !displayName.isEmpty())
         {
-            meta.setDisplayName(hatName.replace("$hat", materialName));
+            meta.setDisplayName(displayName.replace("$hat", materialName).replace("$item", materialName));
         }
 		List<String> lore = new ArrayList<String>();
-		lore.add(context.getMessage("hat_lore"));
+        String loreLine = context.getMessage("hat_lore");
+        loreLine = context.getMessage("wear_lore", loreLine);
+		lore.add(loreLine);
 		meta.setLore(lore);
-		hatItem.setItemMeta(meta);
-		hatItem = InventoryUtils.makeReal(hatItem);
-		NMSUtils.makeTemporary(hatItem, context.getMessage("removed").replace("$hat", materialName));
+		wearItem.setItemMeta(meta);
+		wearItem = InventoryUtils.makeReal(wearItem);
+		NMSUtils.makeTemporary(wearItem, context.getMessage("removed").replace("$hat", materialName).replace("$item", materialName));
         if (enchantments != null) {
-            hatItem.addUnsafeEnchantments(enchantments);
+            wearItem.addUnsafeEnchantments(enchantments);
         }
-		ItemStack itemStack = player.getInventory().getHelmet();
+
+        ItemStack[] armor = player.getInventory().getArmorContents();
+		ItemStack itemStack = armor[slotNumber];
 		if (itemStack != null && itemStack.getType() != Material.AIR)
 		{
 			if (NMSUtils.isTemporary(itemStack))
@@ -189,20 +205,23 @@ public class WearAction extends BaseSpellAction
 			}
 			if (itemStack != null)
 			{
-				NMSUtils.setReplacement(hatItem, itemStack);
+				NMSUtils.setReplacement(wearItem, itemStack);
 			}
 		}
 
-		player.getInventory().setHelmet(hatItem);
+        armor[slotNumber] = wearItem;
+		player.getInventory().setArmorContents(armor);
 
         // Sanity check to make sure the block was allowed to be created
-        ItemStack helmetItem = player.getInventory().getHelmet();
+        armor = player.getInventory().getArmorContents();
+        ItemStack helmetItem = armor[slotNumber];
         if (!NMSUtils.isTemporary(helmetItem)) {
-            player.getInventory().setHelmet(itemStack);
+            armor[slotNumber] = itemStack;
+            player.getInventory().setArmorContents(armor);
             return SpellResult.NO_TARGET;
         }
 
-        context.registerForUndo(new HatUndoAction(mage));
+        context.registerForUndo(new WeearUndoAction(mage, slotNumber));
 
         if (mage instanceof com.elmakers.mine.bukkit.magic.Mage) {
             ((com.elmakers.mine.bukkit.magic.Mage)mage).armorUpdated();
