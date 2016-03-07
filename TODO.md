@@ -2,14 +2,10 @@
 
  - I think action-specific parameters should not inherit down. Might be a tricky change.
  - Add wand appearance shop
- - Add ability to load configs from a URL
 
- - ProtocolLib integration: client-side mana/sp display
- - Only bound+undroppable should not go in chests?
  - Add option to only cast spells when damaging an entity
 
  - Can still drop your wand by holding while closing your inv
- - Can also move your wand into a hopper/dropper directly
  - Spell organization by path?
 
  - Use hunger for mana.. ?
@@ -32,7 +28,6 @@
 
  - Alter *really* needs an update!
  - Fix block targeting cast messages
- - Fix Shrink/Grow losing track of entities (zombie->giant)
 
  - Fix that horrible inv-dupe issue :(
  
