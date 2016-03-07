@@ -79,7 +79,7 @@ public class SpellProgressAction extends BaseSpellAction implements GUIAction
             long requiredCastCount = spell.getRequiredUpgradeCasts();
             SpellTemplate upgradeSpell = spell.getUpgrade();
             if (requiredCastCount > 0 && upgradeSpell != null) {
-                ItemStack spellItem = MagicPlugin.getAPI().createSpellItem(spellKey);
+                ItemStack spellItem = MagicPlugin.getAPI().createSpellItem(upgradeSpell.getKey());
                 if (spellItem != null) {
                     ItemMeta meta = spellItem.getItemMeta();
                     List<String> lore = new ArrayList<String>();
