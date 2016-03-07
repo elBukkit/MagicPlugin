@@ -6,6 +6,7 @@ import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.spell.MageSpell;
 import com.elmakers.mine.bukkit.api.spell.Spell;
+import com.elmakers.mine.bukkit.api.spell.SpellKey;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.api.wand.Wand;
@@ -33,6 +34,7 @@ public class SpellShopAction extends BaseShopAction
     private boolean showFree = false;
     private boolean showUpgrades = false;
     private boolean allowLocked = false;
+    protected boolean requiresCastCounts = false;
     private Map<String, Double> spells = new HashMap<String, Double>();
 
     @Override
@@ -75,6 +77,7 @@ public class SpellShopAction extends BaseShopAction
         showFree = parameters.getBoolean("show_free", false);
         showUpgrades = parameters.getBoolean("show_upgrades", false);
         allowLocked = parameters.getBoolean("allow_locked", false);
+        requiresCastCounts = parameters.getBoolean("upgrade_requires_casts", false);
         if (!castsSpells) {
             requireWand = true;
             applyToWand = true;
@@ -152,11 +155,13 @@ public class SpellShopAction extends BaseShopAction
             if (!castsSpells)
             {
                 String requiredPathKey = spell.getRequiredUpgradePath();
-                if (requiredPathKey != null && spell.getSpellKey().getLevel() > 1 && !currentPath.hasPath(requiredPathKey))
+                Spell mageSpell = wand != null ? wand.getSpell(spellKey) : null;
+                long requiredCastCount = mageSpell != null ? mageSpell.getRequiredUpgradeCasts() : 0;
+                long castCount = mageSpell != null ? Math.min(mageSpell.getCastCount(), requiredCastCount) : 0;
+                if (spell.getSpellKey().getLevel() > 1
+                        && (requiredPathKey != null && !currentPath.hasPath(requiredPathKey)
+                        || (requiresCastCounts && requiredCastCount > 0 && castCount < requiredCastCount)))
                 {
-                    requiredPathKey = currentPath.translatePath(requiredPathKey);
-                    com.elmakers.mine.bukkit.wand.WandUpgradePath upgradePath = com.elmakers.mine.bukkit.wand.WandUpgradePath.getPath(requiredPathKey);
-                    if (upgradePath == null) continue;
                     ItemMeta meta = spellItem.getItemMeta();
                     List<String> itemLore = meta.getLore();
                     List<String> lore = new ArrayList<String>();
@@ -168,15 +173,33 @@ public class SpellShopAction extends BaseShopAction
                         InventoryUtils.wrapText(upgradeDescription, BaseSpell.MAX_LORE_LENGTH, lore);
                     }
 
-                    String message = context.getMessage("level_requirement", "&r&cRequires: &6$path").replace("$path", upgradePath.getName());
-                    lore.add(message);
+                    if (mageSpell != null && !spell.getName().equals(mageSpell.getName())) {
+                        lore.add(context.getMessage("upgrade_name_change", "&r&4Upgrades: &r$name").replace("$name", mageSpell.getName()));
+                    }
+
+                    String message = null;
+                    if (requiredPathKey != null && !currentPath.hasPath(requiredPathKey)) {
+                        requiredPathKey = currentPath.translatePath(requiredPathKey);
+                        com.elmakers.mine.bukkit.wand.WandUpgradePath upgradePath = com.elmakers.mine.bukkit.wand.WandUpgradePath.getPath(requiredPathKey);
+                        if (upgradePath != null) {
+                            message = context.getMessage("level_requirement", "&r&cRequires: &6$path").replace("$path", upgradePath.getName());
+                            lore.add(message);
+                        }
+                    }
+
+                    if (requiresCastCounts && requiredCastCount > 0 && castCount < requiredCastCount) {
+                        message = ChatColor.RED + context.getMessage("cast_requirement", "&r&cCasts: &6$current&f/&e$required")
+                                .replace("$current", Long.toString(castCount))
+                                .replace("$required", Long.toString(requiredCastCount));
+                        lore.add(message);
+                    }
 
                     for (int i = 1; i < itemLore.size(); i++) {
                         lore.add(itemLore.get(i));
                     }
                     meta.setLore(lore);
                     spellItem.setItemMeta(meta);
-                    InventoryUtils.setMeta(spellItem, "unpurchasable", message);
+                    if (message != null) InventoryUtils.setMeta(spellItem, "unpurchasable", message);
                 }
             }
             
