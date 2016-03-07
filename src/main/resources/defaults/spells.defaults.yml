@@ -10952,3 +10952,46 @@ tpshop:
         cast_spells: true
         spells:
           randomtp: 1
+          
+glide:
+    icon: elytra
+    icon_url: http://textures.minecraft.net/texture/0da6cb9e9cd875794b8b9f3a4b77227a18adb963b42af21d52d58d2ef24e47
+    category: utility
+    worth: 1000
+    actions:
+        cast:
+        - class: Wear
+        - class: FallProtection
+        - class: Velocity
+        - class: Delay
+        - class: Message
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: entity_enderdragon_flap
+           sound_pitch: 1.5
+           sound_volume: 0.7
+           location: origin
+           use_wand_location: false
+           effectlib:
+             class: IconEffect
+             duration: 30000
+             particle: end_rod
+             particleOffsetX: 1
+             particleOffsetY: 1
+             particleOffsetZ: 1
+             particleCount: 10
+             yOffset: 0
+    parameters:
+        target: self
+        duration: 50000
+        cooldown: 60000
+        undo: 30000
+        material: elytra
+        armor_slot: 2
+        direction: 0,1,0
+        speed: 2
+        delay: 750
+        message: Triple-jump to deploy your wings!
+    costs:
+        mana: 100

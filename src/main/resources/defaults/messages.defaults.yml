@@ -733,6 +733,12 @@ spells:
         cast: You put on your diving helmet
         hat_name: Diving Helmet
         hat_lore: Click to Remove
+    glide:
+        name: Glide
+        description: An Elytra in your pocket!
+        cast: Time to glide
+        wear_name: Collapsable Glider
+        war_lore: Click to Remove
     arrowrain:
         name: Arrow Rain
         description: Fire a volley of arrows
