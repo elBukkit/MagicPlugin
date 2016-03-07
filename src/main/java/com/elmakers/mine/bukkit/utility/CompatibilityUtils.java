@@ -1264,4 +1264,13 @@ public class CompatibilityUtils extends NMSUtils {
             ex.printStackTrace();
         }
     }
+    
+    public static void deployElytra(Player player) {
+        try {
+            Object playerHandle = getHandle(player);
+            class_EntityPlayer_deployElytraMethod.invoke(playerHandle);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
 }

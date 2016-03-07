@@ -10964,7 +10964,7 @@ glide:
         - class: FallProtection
         - class: Velocity
         - class: Delay
-        - class: Message
+        - class: DeployElytra
     effects:
         cast:
         -  class: EffectSingle
@@ -10992,6 +10992,5 @@ glide:
         direction: 0,1,0
         speed: 2
         delay: 750
-        message: Triple-jump to deploy your wings!
     costs:
         mana: 100
