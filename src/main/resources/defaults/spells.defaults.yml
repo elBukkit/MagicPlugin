@@ -8797,11 +8797,7 @@ lift:
            requires_entity_target: true
            item_speed: 2
            living_entity_speed: 3
-        -  class: Repeat
-           requires_entity_target: true
-           actions:
-           - class: Delay
-           - class: Velocity
+        -  class: PotionEffect
         -  class: MoveBlock
     effects:
         cast:
@@ -8863,6 +8859,8 @@ lift:
         instant_block_effects: true
         cooldown: 2000
         cancel_on_damage: 0.5
+        effect_levitation: 1
+        duration: 5000
     costs:
         mana: 40
 

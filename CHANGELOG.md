@@ -3,6 +3,7 @@
 ## 6.1
 
  - Add "bypass_upgrade_commands" permission, useful for staff if your command contain rank-ups
+ - Lift now applies the Levitation effect when used on a mob/player
 
 ## 6.0.2
 
