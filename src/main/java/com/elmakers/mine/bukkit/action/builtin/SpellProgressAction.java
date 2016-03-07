@@ -4,6 +4,7 @@ import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.action.GUIAction;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.spell.MageSpell;
+import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellKey;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
@@ -78,7 +79,7 @@ public class SpellProgressAction extends BaseSpellAction implements GUIAction
             long requiredCastCount = spell.getRequiredUpgradeCasts();
             SpellTemplate upgradeSpell = spell.getUpgrade();
             if (requiredCastCount > 0 && upgradeSpell != null) {
-                ItemStack spellItem = MagicPlugin.getAPI().createSpellItem(spellKey);
+                ItemStack spellItem = MagicPlugin.getAPI().createSpellItem(upgradeSpell.getKey());
                 if (spellItem != null) {
                     ItemMeta meta = spellItem.getItemMeta();
                     List<String> lore = new ArrayList<String>();
@@ -95,6 +96,9 @@ public class SpellProgressAction extends BaseSpellAction implements GUIAction
                     }
                     String requiredPathKey = spell.getRequiredUpgradePath();
                     WandUpgradePath currentPath = wand.getPath();
+                    if (!upgradeSpell.getName().equals(spell.getName())) {
+                        lore.add(context.getMessage("upgrade_name_change", "&r&4Upgrades: &r$name").replace("$name", spell.getName()));
+                    }
                     if (requiredPathKey != null && !currentPath.hasPath(requiredPathKey))
                     {
                         requiredPathKey = currentPath.translatePath(requiredPathKey);

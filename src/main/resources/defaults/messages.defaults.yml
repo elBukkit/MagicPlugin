@@ -1521,8 +1521,9 @@ spells:
         name: Spell Progress
         descriptions: Shows available upgrades
         fail: You must be holding a wand!
+        upgrade_name_change: "&r&4Upgrades: &r$name"
         level_requirement: "&r&cRequires: &6$path"
-        cast_requirement: "Casts: &6$current&f/&e$required"
+        cast_requirement: "&r&cCasts: &6$current&f/&e$required"
     brushselect:
         name: Brush Selector
         descriptions: Chooses your active brush
