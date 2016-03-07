@@ -173,6 +173,10 @@ public class SpellShopAction extends BaseShopAction
                         InventoryUtils.wrapText(upgradeDescription, BaseSpell.MAX_LORE_LENGTH, lore);
                     }
 
+                    if (mageSpell != null && !spell.getName().equals(mageSpell.getName())) {
+                        lore.add(context.getMessage("upgrade_name_change", "&r&4Upgrades: &r$name").replace("$name", mageSpell.getName()));
+                    }
+
                     String message = null;
                     if (requiredPathKey != null && !currentPath.hasPath(requiredPathKey)) {
                         requiredPathKey = currentPath.translatePath(requiredPathKey);
@@ -184,7 +188,7 @@ public class SpellShopAction extends BaseShopAction
                     }
 
                     if (requiresCastCounts && requiredCastCount > 0 && castCount < requiredCastCount) {
-                        message = ChatColor.RED + context.getMessage("cast_requirement", "Casts: $current/$required")
+                        message = ChatColor.RED + context.getMessage("cast_requirement", "&r&cCasts: &6$current&f/&e$required")
                                 .replace("$current", Long.toString(castCount))
                                 .replace("$required", Long.toString(requiredCastCount));
                         lore.add(message);
