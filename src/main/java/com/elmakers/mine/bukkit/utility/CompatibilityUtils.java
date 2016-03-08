@@ -887,37 +887,10 @@ public class CompatibilityUtils extends NMSUtils {
         }
     }
 
-    public static void setMarker(ArmorStand armorStand, boolean marker) {
-        try {
-            Object handle = getHandle(armorStand);
-            class_ArmorStand_setMarker.invoke(handle, marker);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-    }
-
-    public static void setGravity(ArmorStand armorStand, boolean marker) {
-        try {
-            Object handle = getHandle(armorStand);
-            class_ArmorStand_setGravity.invoke(handle, marker);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-    }
-
     public static void setDisabledSlots(ArmorStand armorStand, int disabledSlots) {
         try {
             Object handle = getHandle(armorStand);
             class_EntityArmorStand_disabledSlotsField.set(handle, disabledSlots);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-    }
-
-    public static void setSmall(ArmorStand armorStand, boolean marker) {
-        try {
-            Object handle = getHandle(armorStand);
-            class_ArmorStand_setSmall.invoke(handle, marker);
         } catch (Exception ex) {
             ex.printStackTrace();
         }

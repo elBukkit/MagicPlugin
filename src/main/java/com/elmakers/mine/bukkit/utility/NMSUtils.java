@@ -66,9 +66,6 @@ public class NMSUtils {
     protected static Class<?> class_DataWatcher;
     protected static Class<?> class_DamageSource;
     protected static Class<?> class_EntityDamageSource;
-    protected static Class<?> class_IAttribute;
-    protected static Class<?> class_GenericAttributes;
-    protected static Class<?> class_AttributeInstance;
     protected static Class<?> class_World;
     protected static Class<?> class_WorldServer;
     protected static Class<?> class_Packet;
@@ -176,9 +173,6 @@ public class NMSUtils {
     protected static Method class_ChestLock_isEmpty;
     protected static Method class_ChestLock_getString;
     protected static Method class_ArmorStand_setInvisible;
-    protected static Method class_ArmorStand_setMarker;
-    protected static Method class_ArmorStand_setGravity;
-    protected static Method class_ArmorStand_setSmall;
     protected static Method class_CraftPlayer_getHandleMethod;
     protected static Method class_CraftChunk_getHandleMethod;
     protected static Method class_CraftEntity_getHandleMethod;
@@ -311,9 +305,6 @@ public class NMSUtils {
             class_CraftChunk = fixBukkitClass("org.bukkit.craftbukkit.CraftChunk");
             class_CraftEntity = fixBukkitClass("org.bukkit.craftbukkit.entity.CraftEntity");
             class_TileEntitySign = fixBukkitClass("net.minecraft.server.TileEntitySign");
-            class_IAttribute = fixBukkitClass("net.minecraft.server.IAttribute");
-            class_AttributeInstance = fixBukkitClass("net.minecraft.server.AttributeInstance");
-            class_GenericAttributes = fixBukkitClass("net.minecraft.server.GenericAttributes");
             class_CraftServer = fixBukkitClass("org.bukkit.craftbukkit.CraftServer");
             class_MinecraftServer = fixBukkitClass("net.minecraft.server.MinecraftServer");
                     
@@ -363,8 +354,6 @@ public class NMSUtils {
             class_Entity_getIdMethod = class_Entity.getMethod("getId");
             class_Entity_getDataWatcherMethod = class_Entity.getMethod("getDataWatcher");
             class_ArmorStand_setInvisible = class_EntityArmorStand.getDeclaredMethod("setInvisible", Boolean.TYPE);
-            class_ArmorStand_setGravity = class_EntityArmorStand.getDeclaredMethod("setGravity", Boolean.TYPE);
-            class_ArmorStand_setSmall = class_EntityArmorStand.getDeclaredMethod("setSmall", Boolean.TYPE);
             class_CraftPlayer_getHandleMethod = class_CraftPlayer.getMethod("getHandle");
             class_CraftChunk_getHandleMethod = class_CraftChunk.getMethod("getHandle");
             class_CraftEntity_getHandleMethod = class_CraftEntity.getMethod("getHandle");
@@ -481,13 +470,11 @@ public class NMSUtils {
                     // 1.9
                     // class_DataWatcher_watchMethod = class_DataWatcher.getMethod("register", Integer.TYPE, Object.class);
                     class_TileEntity_saveMethod = class_TileEntity.getMethod("save", class_NBTTagCompound);
-                    class_ArmorStand_setMarker = class_EntityArmorStand.getDeclaredMethod("setMarker", Boolean.TYPE);
                     class_EntityArmorStand_disabledSlotsField = class_EntityArmorStand.getDeclaredField("bz");
                     class_TileEntityContainer_setLock = class_TileEntityContainer.getMethod("a", class_ChestLock);
                     class_TileEntityContainer_getLock = class_TileEntityContainer.getMethod("y_");
                 } catch (Throwable ignore) {
                     // 1.8 and lower
-                    class_ArmorStand_setMarker = class_EntityArmorStand.getDeclaredMethod("n", Boolean.TYPE);
                     class_TileEntity_saveMethod = class_TileEntity.getMethod("b", class_NBTTagCompound);
                     class_DataWatcher_watchMethod = class_DataWatcher.getMethod("watch", Integer.TYPE, Object.class);
                     class_EntityArmorStand_disabledSlotsField = class_EntityArmorStand.getDeclaredField("bi");
@@ -495,7 +482,6 @@ public class NMSUtils {
                     class_TileEntityContainer_getLock = class_TileEntityContainer.getMethod("i");
                 }
                 
-                class_ArmorStand_setMarker.setAccessible(true);
                 class_EntityArmorStand_disabledSlotsField.setAccessible(true);
                 class_EntityArrow_damageField = class_EntityArrow.getDeclaredField("damage");
                 class_EntityArrow_damageField.setAccessible(true);

@@ -950,9 +950,9 @@ public class LevitateSpell extends TargetingSpell implements Listener
             CompatibilityUtils.setInvisible(armorStand, true);
         }
         if (armorStandMarker) {
-            CompatibilityUtils.setMarker(armorStand, true);
+            armorStand.setMarker(true);
         }
-        CompatibilityUtils.setGravity(armorStand, false);
+        armorStand.setGravity(false);
         CompatibilityUtils.setDisabledSlots(armorStand, 2039552);
         if (armorStandArm != null) {
             armorStand.setRightArmPose(new EulerAngle(armorStandArm.getX(), armorStandArm.getY(), armorStandArm.getZ()));
@@ -964,7 +964,7 @@ public class LevitateSpell extends TargetingSpell implements Listener
             armorStand.setBodyPose(new EulerAngle(armorStandBody.getX(), armorStandBody.getY(), armorStandBody.getZ()));
         }
         if (smallArmorStand) {
-            CompatibilityUtils.setSmall(armorStand, true);
+            armorStand.setSmall(true);
         }
         Location location = mage.getLocation();
         CompatibilityUtils.setYawPitch(armorStand, location.getYaw() + (float)yawAmount, location.getPitch());
