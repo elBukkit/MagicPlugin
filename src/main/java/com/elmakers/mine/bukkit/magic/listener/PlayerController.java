@@ -343,7 +343,7 @@ public class PlayerController implements Listener {
             handleRightClick = !controller.isInteractable(event.getClickedBlock());
 
             // This is to prevent Essentials signs from giving you an item in your wand inventory.
-            if (material== Material.SIGN_POST || material == Material.WALL_SIGN) {
+            if (wand != null && (material== Material.SIGN_POST || material == Material.WALL_SIGN)) {
                 wand.closeInventory();
             }
         }
