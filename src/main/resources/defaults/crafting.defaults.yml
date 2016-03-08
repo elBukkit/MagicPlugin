@@ -293,3 +293,15 @@ name_tag:
   row_1: " ps"
   row_2: "pdp"
   row_3: " p "
+  
+elytra:
+  enabled: false
+  output: elytra
+  output_type: item
+  materials:
+    n: nether_star
+    i: iron_ingot
+    e: end_rod
+  row_1: " e "
+  row_2: "ini"
+  row_3: "i i"

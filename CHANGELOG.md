@@ -5,6 +5,7 @@
  - Add "Glide" spell- an instant Elytra!
  - Add "bypass_upgrade_commands" permission, useful for staff if your command contain rank-ups
  - Lift now applies the Levitation effect when used on a mob/player
+ - Add Elytra crafting recipe, disabled by default
 
 ## 6.0.2
 
