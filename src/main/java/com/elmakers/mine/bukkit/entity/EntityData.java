@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 import java.util.logging.Level;
 
@@ -26,6 +27,7 @@ import org.bukkit.DyeColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Rotation;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Ageable;
@@ -95,6 +97,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     protected Rabbit.Type rabbitType = null;
     
     protected Collection<PotionEffect> potionEffects = null;
+    protected Map<Attribute, Double> attributes = null;
 
     protected Vector velocity = null;
     protected boolean hasPotionEffects = false;
@@ -364,6 +367,21 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         } catch (Exception ex) {
             controller.getLogger().log(Level.WARNING, "Invalid entity type or sub-type", ex);
         }
+        ConfigurationSection attributeConfiguration = ConfigurationUtils.getConfigurationSection(parameters, "attributes");
+        if (attributeConfiguration != null) {
+            Set<String> keys = attributeConfiguration.getKeys(false);
+            if (keys.size() > 0) {
+                attributes = new HashMap<Attribute, Double>();
+            }
+            for (String attributeKey : keys) {
+                try {
+                    Attribute attribute = Attribute.valueOf(attributeKey.toUpperCase());
+                    attributes.put(attribute, attributeConfiguration.getDouble(attributeKey));
+                } catch (Exception ex) {
+                    controller.getLogger().log(Level.WARNING, "Invalid attribute type: " + attributeKey, ex);
+                }
+            }
+        }
         
         MaterialAndData itemData = ConfigurationUtils.getMaterialAndData(parameters, "item");
         item = itemData == null ? null : itemData.getItemStack(parameters.getInt("amount", 1));
@@ -616,6 +634,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
 
             try {
                 if (!isPlayer) {
+                    applyAttributes(li);
                     copyEquipmentTo(li);
                     if (maxHealth != null) {
                         li.setMaxHealth(maxHealth);
@@ -644,6 +663,14 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         }
 
         return true;
+    }
+    
+    public void applyAttributes(LivingEntity entity) {
+        if (attributes != null) {
+            for (Map.Entry<Attribute, Double> entry : attributes.entrySet()) {
+                entity.getAttribute(entry.getKey()).setBaseValue(entry.getValue());
+            }
+        }
     }
 
     public void copyEquipmentTo(LivingEntity entity) {
