@@ -1,5 +1,7 @@
 # CHANGELOG
 
+## 6.1
+
 ## 6.0.3
 
  - Add "Glide" spell- an instant Elytra!
@@ -7,6 +9,7 @@
  - Lift now applies the Levitation effect when used on a mob/player
  - Add Elytra crafting recipe, disabled by default
  - Add attributes support for magic mobs (used only on Mutant Captain for now)
+ - Fix issues right-clicking signs
 
 ## 6.0.2
 
