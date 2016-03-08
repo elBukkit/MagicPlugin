@@ -1,6 +1,6 @@
 # CHANGELOG
 
-## 6.1
+## 6.0.3
 
  - Add "Glide" spell- an instant Elytra!
  - Add "bypass_upgrade_commands" permission, useful for staff if your command contain rank-ups
