@@ -154,8 +154,8 @@ public class SpellShopAction extends BaseShopAction
             ItemStack spellItem = controller.createSpellItem(key, castsSpells);
             if (!castsSpells)
             {
-                String requiredPathKey = spell.getRequiredUpgradePath();
                 Spell mageSpell = wand != null ? wand.getSpell(spellKey) : null;
+                String requiredPathKey = mageSpell != null ? mageSpell.getRequiredUpgradePath() : null;
                 long requiredCastCount = mageSpell != null ? mageSpell.getRequiredUpgradeCasts() : 0;
                 long castCount = mageSpell != null ? Math.min(mageSpell.getCastCount(), requiredCastCount) : 0;
                 if (spell.getSpellKey().getLevel() > 1
