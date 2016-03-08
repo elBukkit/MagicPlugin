@@ -1555,6 +1555,12 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     public float getConsumeReduction()
     {
         CostReducer reducer = currentCast != null ? currentCast.getWand() : mage;
+        if (reducer == null) {
+            reducer = mage;
+        }
+        if (reducer == null) {
+            return consumeReduction;
+        }
         return consumeReduction + reducer.getConsumeReduction();
     }
 
@@ -1562,6 +1568,12 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     public float getCostReduction()
     {
         CostReducer reducer = currentCast != null ? currentCast.getWand() : mage;
+        if (reducer == null) {
+            reducer = mage;
+        }
+        if (reducer == null) {
+            return costReduction;
+        }
         return costReduction + reducer.getCostReduction();
     }
 
