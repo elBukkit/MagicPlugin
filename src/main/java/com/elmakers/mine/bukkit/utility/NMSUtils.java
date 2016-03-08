@@ -132,9 +132,6 @@ public class NMSUtils {
     protected static Method class_Entity_setYawPitchMethod;
     protected static Method class_Entity_getBukkitEntityMethod;
     protected static Method class_EntityLiving_damageEntityMethod;
-    protected static Method class_EntityLiving_getAttributeInstanceMethod;
-    protected static Method class_AttributeInstance_getValueMethod;
-    protected static Method class_AttributeInstance_setValueMethod;
     protected static Method class_DamageSource_getMagicSourceMethod;
     protected static Method class_EntityDamageSource_setThornsMethod;
     protected static Method class_World_explodeMethod;
@@ -248,8 +245,6 @@ public class NMSUtils {
     protected static Field class_EntityArrow_damageField;
     protected static Field class_CraftWorld_environmentField;
 
-    protected static Object class_GenericAttributes_KNOCKBACK_RESISTANCE;
-
     static
     {
         // Find classes Bukkit hides from us. :-D
@@ -359,9 +354,6 @@ public class NMSUtils {
             class_NBTTagCompound_getMethod = class_NBTTagCompound.getMethod("get", String.class);
             class_NBTTagCompound_getCompoundMethod = class_NBTTagCompound.getMethod("getCompound", String.class);
             class_EntityLiving_damageEntityMethod = class_EntityLiving.getMethod("damageEntity", class_DamageSource, Float.TYPE);
-            class_EntityLiving_getAttributeInstanceMethod = class_EntityLiving.getMethod("getAttributeInstance", class_IAttribute);
-            class_AttributeInstance_getValueMethod = class_AttributeInstance.getMethod("getValue");
-            class_AttributeInstance_setValueMethod = class_AttributeInstance.getMethod("setValue", Double.TYPE);
             class_DamageSource_getMagicSourceMethod = class_DamageSource.getMethod("b", class_Entity, class_Entity);
             class_World_addEntityMethod = class_World.getMethod("addEntity", class_Entity, CreatureSpawnEvent.SpawnReason.class);
             class_NBTCompressedStreamTools_loadFileMethod = class_NBTCompressedStreamTools.getMethod("a", InputStream.class);
@@ -532,8 +524,6 @@ public class NMSUtils {
             {
                 class_EntityArrow_lifeField.setAccessible(true);
             }
-
-            class_GenericAttributes_KNOCKBACK_RESISTANCE = class_GenericAttributes.getDeclaredField("c").get(null);
         }
         catch (Throwable ex) {
             failed = true;

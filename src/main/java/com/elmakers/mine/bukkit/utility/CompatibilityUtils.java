@@ -533,43 +533,6 @@ public class CompatibilityUtils extends NMSUtils {
         isDamaging = false;
     }
 
-    public static double getKnockbackResistance(LivingEntity entity) {
-        if (entity == null || entity.isDead()) return 0D;
-
-        try {
-            Object entityHandle = getHandle(entity);
-            if (entityHandle == null) return 0D;
-
-            Object attribute = class_EntityLiving_getAttributeInstanceMethod.invoke(entityHandle, class_GenericAttributes_KNOCKBACK_RESISTANCE);
-            if (attribute == null) return 0D;
-
-            Object value = class_AttributeInstance_getValueMethod.invoke(attribute);
-            if (value instanceof Double) {
-                return (Double) value;
-            }
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        return 0D;
-    }
-
-    public static void setKnockbackResistance(LivingEntity entity, double amount) {
-        amount = Math.min(Math.max(amount, 0), 1);
-        if (entity == null || entity.isDead()) return;
-
-        try {
-            Object entityHandle = getHandle(entity);
-            if (entityHandle == null) return;
-
-            Object attribute = class_EntityLiving_getAttributeInstanceMethod.invoke(entityHandle, class_GenericAttributes_KNOCKBACK_RESISTANCE);
-            if (attribute == null) return;
-
-            class_AttributeInstance_setValueMethod.invoke(attribute, amount);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-    }
-
     @Deprecated
     public static void setTarget(LivingEntity entity, Location target)
     {

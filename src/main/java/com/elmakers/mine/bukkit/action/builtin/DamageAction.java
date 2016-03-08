@@ -8,6 +8,8 @@ import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
+import org.bukkit.attribute.Attribute;
+import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
@@ -67,8 +69,9 @@ public class DamageAction extends BaseSpellAction
 		double previousKnockbackResistance = 0D;
 		try {
 			if (knockbackResistance != null) {
-				previousKnockbackResistance = CompatibilityUtils.getKnockbackResistance(targetEntity);
-				CompatibilityUtils.setKnockbackResistance(targetEntity, knockbackResistance);
+				AttributeInstance knockBackAttribute = targetEntity.getAttribute(Attribute.GENERIC_KNOCKBACK_RESISTANCE);
+				previousKnockbackResistance = knockBackAttribute.getBaseValue();
+				knockBackAttribute.setBaseValue(knockbackResistance); 
 			}
 			if (controller.isElemental(entity)) {
 				damage = elementalDamage;
@@ -90,7 +93,8 @@ public class DamageAction extends BaseSpellAction
 			}
 		} finally {
 			if (knockbackResistance != null) {
-				CompatibilityUtils.setKnockbackResistance(targetEntity, previousKnockbackResistance);
+				AttributeInstance knockBackAttribute = targetEntity.getAttribute(Attribute.GENERIC_KNOCKBACK_RESISTANCE);
+				knockBackAttribute.setBaseValue(previousKnockbackResistance);
 			}
 		}
 
