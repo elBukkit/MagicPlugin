@@ -977,6 +977,8 @@ wolf:
   potion_effects:
     - SATURATION
     - REGENERATION
+  attributes:
+    GENERIC_ATTACK_SPEED: 10
   active_material: erase
   active_spell: missile|4
   spells:

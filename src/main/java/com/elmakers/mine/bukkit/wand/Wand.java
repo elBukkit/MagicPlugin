@@ -358,6 +358,25 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
                 }
             }
 
+			// Add vanilla attributes
+			if (wandConfig.contains("attributes") && item != null)
+			{
+				ConfigurationSection attributeConfig = wandConfig.getConfigurationSection("attributes");
+				Collection<String> attributeKeys = attributeConfig.getKeys(false);
+				for (String attributeKey : attributeKeys)
+				{
+					try {
+						Attribute attribute = Attribute.valueOf(attributeKey.toUpperCase());
+						double value = attributeConfig.getDouble(attributeKey);
+						if (!CompatibilityUtils.setItemAttribute(item, attribute, value)) {
+							controller.getLogger().warning("Failed to set attribute: " + attributeKey);
+						}
+					} catch (Exception ex) {
+						controller.getLogger().warning("Invalid attribute: " + attributeKey);
+					}
+				}
+			}
+
             // Enchant, if an enchanting level was provided
             if (level > 0) {
                 // Account for randomized locked wands
@@ -1798,8 +1817,6 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         } else {
             CompatibilityUtils.removeUnbreakable(item);
         }
-		// TODO: Generalized support for wand item attributes
-		CompatibilityUtils.setItemAttribute(item, Attribute.GENERIC_ATTACK_SPEED, 10);
 		CompatibilityUtils.hideFlags(item, HIDE_FLAGS);
 	}
 	
