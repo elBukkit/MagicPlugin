@@ -3,15 +3,13 @@ package com.elmakers.mine.bukkit.action.builtin;
 import com.elmakers.mine.bukkit.action.BaseSpellAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
+import com.elmakers.mine.bukkit.effect.SoundEffect;
 import org.bukkit.Location;
-import org.bukkit.Sound;
 import org.bukkit.configuration.ConfigurationSection;
 
 public class PlaySoundAction extends BaseSpellAction
 {
-	private Sound sound;
-	private float volume;
-	private float pitch;
+	private SoundEffect sound;
 
 	@Override
 	public SpellResult perform(CastContext context)
@@ -23,20 +21,15 @@ public class PlaySoundAction extends BaseSpellAction
 		if (sound == null || location == null) {
 			return SpellResult.FAIL;
 		}
-		location.getWorld().playSound(location, sound, volume, pitch);
+		sound.play(context.getPlugin(), location);
 		return SpellResult.CAST;
 	}
 
 	@Override
 	public void prepare(CastContext context, ConfigurationSection parameters) {
 		super.prepare(context, parameters);
-		try {
-			String soundName = parameters.getString("sound").toUpperCase();
-			sound = Sound.valueOf(soundName);
-		} catch (Exception ex) {
-			sound = null;
-		}
-        pitch = (float)parameters.getDouble("pitch", 1);
-		volume = (float)parameters.getDouble("volume", 1);
+		sound = new SoundEffect(parameters.getString("sound"));
+        sound.setPitch((float)parameters.getDouble("pitch", sound.getPitch()));
+		sound.setVolume((float)parameters.getDouble("volume", sound.getVolume()));
 	}
 }
