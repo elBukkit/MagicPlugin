@@ -238,18 +238,23 @@ public class InventoryUtils extends NMSUtils
 
     public static void wrapText(String text, int maxLength, Collection<String> list)
     {
+        wrapText("", text, maxLength, list);
+    }
+
+    public static void wrapText(String prefix, String text, int maxLength, Collection<String> list)
+    {
         while (text.length() > maxLength)
         {
             int spaceIndex = text.lastIndexOf(' ', maxLength);
             if (spaceIndex <= 0) {
-                list.add(text);
+                list.add(prefix + text);
                 return;
             }
-            list.add(text.substring(0, spaceIndex));
+            list.add(prefix + text.substring(0, spaceIndex));
             text = text.substring(spaceIndex);
         }
 
-        list.add(text);
+        list.add(prefix + text);
     }
 
     public static boolean hasItem(Mage mage, String itemName) {

@@ -1907,6 +1907,8 @@ ocarina:
     icon: wood_hoe:18
     locked: true
     keep: false
+    mode_cast: true
+    mode: inventory
     undroppable: false
     bound: false
     undroppable: false

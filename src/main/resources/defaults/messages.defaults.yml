@@ -2049,7 +2049,8 @@ wands:
       description: Tells you what to do next
     ocarina:
       name: Ocarina
-      descriptions: Plays music!
+      description: Right-click and use the hotbar buttons to play music
+      spell_count: Has $count Notes
 
 automata:
     awaken: "&c&o$name &r&5has awakened"

@@ -9199,14 +9199,14 @@ magicitemshop:
         confirm: true
         confirm_filler: stained_glass:3
         items:
-        - item: wand|camera
-          cost: 200
+        - item: wand|ocarina
+          cost: 100
         - item: wand|goggles
-          cost: 500
+          cost: 4000
         - item: wand|divinghelmet
           cost: 1000
         - item: wand|magichat
-          cost: 4000
+          cost: 5000
         - item: none
         - item: wand|wizardhelmet
           cost: 4000
@@ -9226,26 +9226,26 @@ magicitemshop:
           cost: 200
         - item: none
         - item: wand|rabbitboots
-          cost: 300
+          cost: 1000
         - item: wand|rocketboots
-          cost: 4000
+          cost: 5000
         - item: wand|hulkboots
-          cost: 8000
-        - item: wand|flashboots
-          cost: 4000
-        - item: wand|clericchestplate
-          cost: 9000
-        - item: wand|magneticleggings
           cost: 10000
+        - item: wand|flashboots
+          cost: 15000
+        - item: wand|clericchestplate
+          cost: 25000
+        - item: wand|magneticleggings
+          cost: 50000
         - item: none
         - item: none
         - item: wand|invisiblecloak
-          cost: 50000
+          cost: 100000
         - item: none
         - item: none
         - item: none
         - item: wand|wolfhouse
-          cost: 50000
+          cost: 1000000
 
 itemshop:
     icon: carrot
@@ -10999,7 +10999,7 @@ note:
     hidden: true
     icon: skull_item
     category: music
-    quick_cast: true
+    show_undoable: false
     actions:
       cast:
       - class: PlaySound

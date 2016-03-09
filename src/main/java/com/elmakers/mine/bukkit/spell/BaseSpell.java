@@ -2143,7 +2143,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     public void addLore(Messages messages, Mage mage, Wand wand, List<String> lore) {
         CostReducer reducer = wand == null ? mage : wand;
         if (levelDescription != null && levelDescription.length() > 0) {
-            InventoryUtils.wrapText(ChatColor.GOLD + levelDescription, MAX_LORE_LENGTH, lore);
+            InventoryUtils.wrapText(ChatColor.GOLD.toString(), levelDescription, MAX_LORE_LENGTH, lore);
         }
         if (description != null && description.length() > 0) {
             InventoryUtils.wrapText(description, MAX_LORE_LENGTH, lore);

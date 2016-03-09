@@ -69,6 +69,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	public final static int HOTBAR_INVENTORY_SIZE = HOTBAR_SIZE - 1;
 	public final static float DEFAULT_SPELL_COLOR_MIX_WEIGHT = 0.0001f;
 	public final static float DEFAULT_WAND_COLOR_MIX_WEIGHT = 1.0f;
+	public static int MAX_LORE_LENGTH = 24;
 
     public final static String[] EMPTY_PARAMETERS = new String[0];
 
@@ -1961,15 +1962,15 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
                 }
                 String description = this.description;
                 description = description.replace("$path", pathName);
-                lore.add(ChatColor.ITALIC + "" + ChatColor.GREEN + description);
+				InventoryUtils.wrapText(ChatColor.ITALIC + "" + ChatColor.GREEN, description, MAX_LORE_LENGTH, lore);
             }
             else if (description.contains("$")) {
                 String randomDescription = getMessage("randomized_lore");
                 if (randomDescription.length() > 0) {
-                    lore.add(ChatColor.ITALIC + "" + ChatColor.DARK_GREEN + randomDescription);
+					InventoryUtils.wrapText(ChatColor.ITALIC + "" + ChatColor.DARK_GREEN, randomDescription, MAX_LORE_LENGTH, lore);
                 }
             } else {
-                lore.add(ChatColor.ITALIC + "" + ChatColor.GREEN + description);
+				InventoryUtils.wrapText(ChatColor.ITALIC + "" + ChatColor.GREEN, description, MAX_LORE_LENGTH, lore);
             }
         }
 
@@ -2016,10 +2017,10 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         if (!isUpgrade) {
             if (owner.length() > 0) {
                 if (bound) {
-                    String ownerDescription = messages.get("wand.bound_description", "$name").replace("$name", owner);
+                    String ownerDescription = getMessage("bound_description", "$name").replace("$name", owner);
                     lore.add(ChatColor.ITALIC + "" + ChatColor.DARK_AQUA + ownerDescription);
                 } else {
-                    String ownerDescription = messages.get("wand.owner_description", "$name").replace("$name", owner);
+                    String ownerDescription = getMessage("owner_description", "$name").replace("$name", owner);
                     lore.add(ChatColor.ITALIC + "" + ChatColor.DARK_GREEN + ownerDescription);
                 }
             }
@@ -2027,32 +2028,32 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 
         if (spellCount > 0) {
             if (isUpgrade) {
-                lore.add(messages.get("wand.upgrade_spell_count").replace("$count", ((Integer)spellCount).toString()));
+                lore.add(getMessage("upgrade_spell_count").replace("$count", ((Integer)spellCount).toString()));
             } else if (spellCount > 1) {
-                lore.add(messages.get("wand.spell_count").replace("$count", ((Integer)spellCount).toString()));
+                lore.add(getMessage("spell_count").replace("$count", ((Integer)spellCount).toString()));
             }
         }
         if (materialCount > 0) {
             if (isUpgrade) {
-                lore.add(messages.get("wand.upgrade_material_count").replace("$count", ((Integer)materialCount).toString()));
+                lore.add(getMessage("upgrade_material_count").replace("$count", ((Integer)materialCount).toString()));
             } else if (materialCount > 1) {
-                lore.add(messages.get("wand.material_count").replace("$count", ((Integer)materialCount).toString()));
+                lore.add(getMessage("material_count").replace("$count", ((Integer)materialCount).toString()));
             }
         }
 
 		int remaining = getRemainingUses();
 		if (remaining > 0) {
 			if (isUpgrade) {
-				String message = (remaining == 1) ? messages.get("wand.upgrade_uses_singular") : messages.get("wand.upgrade_uses");
+				String message = (remaining == 1) ? getMessage("upgrade_uses_singular") : getMessage("upgrade_uses");
 				lore.add(ChatColor.RED + message.replace("$count", ((Integer)remaining).toString()));
 			} else {
-				String message = (remaining == 1) ? messages.get("wand.uses_remaining_singular") : messages.get("wand.uses_remaining_brief");
+				String message = (remaining == 1) ? messages.get("uses_remaining_singular") : messages.get("uses_remaining_brief");
 				lore.add(ChatColor.RED + message.replace("$count", ((Integer)remaining).toString()));
 			}
 		}
 		addPropertyLore(lore);
 		if (isUpgrade) {
-			lore.add(ChatColor.YELLOW + messages.get("wand.upgrade_item_description"));
+			lore.add(ChatColor.YELLOW + getMessage("upgrade_item_description"));
 		}
 		return lore;
 	}
