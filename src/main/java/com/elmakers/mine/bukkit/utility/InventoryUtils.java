@@ -6,7 +6,9 @@ import com.google.common.collect.Multimap;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -290,5 +292,36 @@ public class InventoryUtils extends NMSUtils
 
     public static boolean isKeep(ItemStack itemStack) {
         return hasMeta(itemStack, "keep");
+    }
+    
+    public static void applyAttributes(ItemStack item, ConfigurationSection attributeConfig, String slot) {
+        if (item == null || attributeConfig == null) return;
+        Collection<String> attributeKeys = attributeConfig.getKeys(false);
+        for (String attributeKey : attributeKeys)
+        {
+            try {
+                Attribute attribute = Attribute.valueOf(attributeKey.toUpperCase());
+                double value = attributeConfig.getDouble(attributeKey);
+                if (!CompatibilityUtils.setItemAttribute(item, attribute, value, slot)) {
+                    Bukkit.getLogger().warning("Failed to set attribute: " + attributeKey);
+                }
+            } catch (Exception ex) {
+                Bukkit.getLogger().warning("Invalid attribute: " + attributeKey);
+            }
+        }
+    }
+    
+    public static void applyEnchantments(ItemStack item, ConfigurationSection enchantConfig) {
+        if (item == null || enchantConfig == null) return;
+        Collection<String> enchantKeys = enchantConfig.getKeys(false);
+        for (String enchantKey : enchantKeys)
+        {
+            try {
+                Enchantment enchantment = Enchantment.getByName(enchantKey.toUpperCase());
+                item.addUnsafeEnchantment(enchantment, enchantConfig.getInt(enchantKey));
+            } catch (Exception ex) {
+                Bukkit.getLogger().warning("Invalid enchantment: " + enchantKey);
+            }
+        }
     }
 }

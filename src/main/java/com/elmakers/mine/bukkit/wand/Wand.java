@@ -1,7 +1,6 @@
 package com.elmakers.mine.bukkit.wand;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -49,11 +48,9 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemoryConfiguration;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryType;
-import org.bukkit.event.player.PlayerExpChangeEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
@@ -341,20 +338,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 			loadProperties(wandConfig);
 
             // Add vanilla enchantments
-            if (wandConfig.contains("enchantments") && item != null)
-            {
-                ConfigurationSection enchantConfig = wandConfig.getConfigurationSection("enchantments");
-                Collection<String> enchantKeys = enchantConfig.getKeys(false);
-                for (String enchantKey : enchantKeys)
-                {
-                    try {
-                        Enchantment enchantment = Enchantment.getByName(enchantKey.toUpperCase());
-                        item.addUnsafeEnchantment(enchantment, enchantConfig.getInt(enchantKey));
-                    } catch (Exception ex) {
-                        controller.getLogger().warning("Invalid enchantment: " + enchantKey);
-                    }
-                }
-            }
+			InventoryUtils.applyEnchantments(item, wandConfig.getConfigurationSection("enchantments"));
 
             // Enchant, if an enchanting level was provided
             if (level > 0) {
