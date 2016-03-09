@@ -1191,7 +1191,7 @@ public class CompatibilityUtils extends NMSUtils {
         return true;
     }
     
-    public static boolean setItemAttribute(ItemStack item, Attribute attribute, double value) {
+    public static boolean setItemAttribute(ItemStack item, Attribute attribute, double value, String slot) {
         try {
             Object handle = getHandle(item);
             if (handle == null) return false;
@@ -1235,6 +1235,9 @@ public class CompatibilityUtils extends NMSUtils {
                 setMetaInt(attributeNode, "Operation", attributeOperation);
                 setMetaLong(attributeNode, "UUIDMost", attributeUUID.getMostSignificantBits());
                 setMetaLong(attributeNode, "UUIDLeast", attributeUUID.getLeastSignificantBits());
+                if (slot != null) {
+                    setMeta(attributeNode, "Slot", slot);
+                }
 
                 class_NBTTagList_addMethod.invoke(attributesNode, attributeNode);
             }

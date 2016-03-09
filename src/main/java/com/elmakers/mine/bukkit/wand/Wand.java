@@ -361,6 +361,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 			// Add vanilla attributes
 			if (wandConfig.contains("attributes") && item != null)
 			{
+				String slot = wandConfig.getString("attribute_slot", null);
 				ConfigurationSection attributeConfig = wandConfig.getConfigurationSection("attributes");
 				Collection<String> attributeKeys = attributeConfig.getKeys(false);
 				for (String attributeKey : attributeKeys)
@@ -368,7 +369,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 					try {
 						Attribute attribute = Attribute.valueOf(attributeKey.toUpperCase());
 						double value = attributeConfig.getDouble(attributeKey);
-						if (!CompatibilityUtils.setItemAttribute(item, attribute, value)) {
+						if (!CompatibilityUtils.setItemAttribute(item, attribute, value, slot)) {
 							controller.getLogger().warning("Failed to set attribute: " + attributeKey);
 						}
 					} catch (Exception ex) {

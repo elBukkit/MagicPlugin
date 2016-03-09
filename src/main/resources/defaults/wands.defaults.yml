@@ -979,6 +979,7 @@ wolf:
     - REGENERATION
   attributes:
     GENERIC_ATTACK_SPEED: 10
+  attribute_slot: mainhand
   active_material: erase
   active_spell: missile|4
   spells:
