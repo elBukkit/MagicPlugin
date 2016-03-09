@@ -20,6 +20,7 @@
     {"predicate": {"damage": 0.23333333333333}, "model": "item/lightsaber_hilt"},
     {"predicate": {"damage": 0.25}, "model": "item/cloak"},
     {"predicate": {"damage": 0.26666666666667}, "model": "item/auror_eye"},
-    {"predicate": {"damage": 0.28333333333333}, "model": "item/magic_hat"}
+    {"predicate": {"damage": 0.28333333333333}, "model": "item/magic_hat"},
+    {"predicate": {"damage": 0.3}, "model": "item/ocarina"}
   ]
 }

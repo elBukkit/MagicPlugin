@@ -2,6 +2,9 @@
 
 ## 6.1
 
+ - Add craftable Ocarina item (Thank you, SexyToad!)
+ - Cloak of Invisibility is now invisible while worn
+
 ## 6.0.3
 
  - Add "Glide" spell- an instant Elytra!

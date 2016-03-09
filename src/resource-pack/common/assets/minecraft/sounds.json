@@ -773,5 +773,149 @@
       }
     ],
     "category": "player"
-  }
+  },
+  "flute.1C": {
+        "sounds": [
+            "flute/1Cmid"
+        ],
+        "category": "player"
+    },
+    "flute.2C#": {
+        "sounds": [
+            "flute/2C#"
+        ],
+        "category": "player"
+    },
+    "flute.3D": {
+        "sounds": [
+            "flute/3D"
+        ],
+        "category": "player"
+    },
+    "flute.4D#": {
+        "sounds": [
+            "flute/4D#"
+        ],
+        "category": "player"
+    },
+    "flute.5E": {
+        "sounds": [
+            "flute/5E"
+        ],
+        "category": "player"
+    },
+    "flute.6F": {
+        "sounds": [
+            "flute/6F"
+        ],
+        "category": "player"
+    },
+    "flute.7F#": {
+        "sounds": [
+            "flute/7F#"
+        ],
+        "category": "player"
+    },
+    "flute.8G": {
+        "sounds": [
+            "flute/8G"
+        ],
+        "category": "player"
+    },
+    "flute.9G#": {
+        "sounds": [
+            "flute/9G#"
+        ],
+        "category": "player"
+    },
+    "flute.10A": {
+        "sounds": [
+            "flute/10A"
+        ],
+        "category": "player"
+    },
+    "flute.11A#": {
+        "sounds": [
+            "flute/11A#"
+        ],
+        "category": "player"
+    },
+    "flute.12B": {
+        "sounds": [
+            "flute/12B"
+        ],
+        "category": "player"
+    },
+    "flute.13Coctave": {
+        "sounds": [
+            "flute/13Coctave"
+        ],
+        "category": "player"
+    },
+    "flute.14C#": {
+        "sounds": [
+            "flute/14C#"
+        ],
+        "category": "player"
+    },
+    "flute.15D": {
+        "sounds": [
+            "flute/15D"
+        ],
+        "category": "player"
+    },
+    "flute.16D#": {
+        "sounds": [
+            "flute/16D#"
+        ],
+        "category": "player"
+    },
+    "flute.17E": {
+        "sounds": [
+            "flute/17E"
+        ],
+        "category": "player"
+    },
+    "flute.18F": {
+        "sounds": [
+            "flute/18F"
+        ],
+        "category": "player"
+    },
+    "flute.19F#": {
+        "sounds": [
+            "flute/19F#"
+        ],
+        "category": "player"
+    },
+    "flute.20G": {
+        "sounds": [
+            "flute/20G"
+        ],
+        "category": "player"
+    },
+    "flute.21G#": {
+        "sounds": [
+            "flute/21G#"
+        ],
+        "category": "player"
+    },
+    "flute.22A": {
+        "sounds": [
+            "flute/22A"
+        ],
+        "category": "player"
+    },
+    "flute.23A#": {
+        "sounds": [
+            "flute/23A#"
+        ],
+        "category": "player"
+    },
+    "flute.24B": {
+        "sounds": [
+            "flute/24B"
+        ],
+        "category": "player"
+    }
 }

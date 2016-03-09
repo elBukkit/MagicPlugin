@@ -328,6 +328,9 @@ categories:
     specialty:
         name: Specialty
         description: Spells meant for item or npc use
+    music:
+        name: Music
+        description: Used for playing music
 skills:
     inventory_title: "Skills"
     inventory_title_heroes: "$class Skills ($page/$pages)"
@@ -1687,7 +1690,55 @@ spells:
         description: Show off various EffectLib effects
     randomtp:
       name: Random Teleport
-      description: Teleports you to a random location
+      description: Teleports you to a random location    
+    note01:
+      name: 1 Note C Middle
+    note02:
+      name: 2 Note C#
+    note03:
+      name: 3 Note D
+    note04:
+      name: 4 Note D#
+    note05:
+      name: 5 Note E
+    note06:
+      name: 6 Note F
+    note07:
+      name: 7 Note F#
+    note08:
+      name: 8 Note G
+    note09:
+      name: 9 Note G#
+    note10:
+      name: 10 Note A
+    note11:
+      name: 11 Note A#
+    note12:
+      name: 12 Note B
+    note13:
+      name: 13 Note C Octave
+    note14:
+      name: 14 Note C#
+    note15:
+      name: 15 Note D
+    note16:
+      name: 16 Note D#
+    note17:
+      name: 17 Note E
+    note18:
+      name: 18 Note F
+    note19:
+      name: 19 Note F#
+    note20:
+      name: 20 Note G
+    note21:
+      name: 21 Note G#
+    note22:
+      name: 22 Note A
+    note23:
+      name: 23 Note A#
+    note24:
+      name: 24 Note B
 
 wands:
     default:
@@ -1996,6 +2047,9 @@ wands:
     questscompass:
       name: Quest Compass
       description: Tells you what to do next
+    ocarina:
+      name: Ocarina
+      descriptions: Plays music!
 
 automata:
     awaken: "&c&o$name &r&5has awakened"
