@@ -11,6 +11,7 @@ import org.bukkit.Location;
 import org.bukkit.Rotation;
 import org.bukkit.Server;
 import org.bukkit.World;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.Skull;
@@ -1183,6 +1184,61 @@ public class CompatibilityUtils extends NMSUtils {
             int offsetZ = (Integer)class_NBTTagCompound_getIntMethod.invoke(nbtData, "WEOffsetZ");
 
             schematic.load(width, height, length, blocks, data, tileEntityData, entityData, new Vector(originX, originY, originZ), new Vector(offsetX, offsetY, offsetZ));
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+    
+    public static boolean setItemAttribute(ItemStack item, Attribute attribute, double value) {
+        try {
+            Object handle = getHandle(item);
+            if (handle == null) return false;
+            Object tag = getTag(handle);
+            if (tag == null) return false;
+            
+            Object attributesNode = getNode(tag, "AttributeModifiers");
+            Object attributeNode = null;
+            String attributeName = null;
+            UUID attributeUUID = null;
+            int attributeOperation = 0;
+            
+            switch (attribute) {
+                case GENERIC_ATTACK_SPEED:
+                    attributeName = "generic.attackSpeed";
+                    attributeUUID = UUID.fromString("FA233E1C-4180-4865-B01B-BCCE9785ACA3");
+                    break;
+            }
+            
+            if (attributeName == null) {
+                return false;
+            }
+            if (attributesNode == null) {
+                attributesNode = class_NBTTagList.newInstance();
+                class_NBTTagCompound_setMethod.invoke(tag, "AttributeModifiers", attributesNode);
+            } else {
+                int size = (Integer)class_NBTTagList_sizeMethod.invoke(attributesNode);
+                for (int i = 0; i < size; i++) {
+                    Object candidate = class_NBTTagList_getMethod.invoke(attributesNode, i);
+                    String key = getMeta(candidate, "AttributeName");
+                    if (key.equals(attributeName)) {
+                        attributeNode = candidate;
+                        break;
+                    }
+                }
+            }
+            if (attributeNode == null) {
+                attributeNode = class_NBTTagCompound.newInstance();
+                setMeta(attributeNode, "AttributeName", attributeName);
+                setMeta(attributeNode, "Name", "Equipment Modifier");
+                setMetaInt(attributeNode, "Operation", attributeOperation);
+                setMetaLong(attributeNode, "UUIDMost", attributeUUID.getMostSignificantBits());
+                setMetaLong(attributeNode, "UUIDLeast", attributeUUID.getLeastSignificantBits());
+
+                class_NBTTagList_addMethod.invoke(attributesNode, attributeNode);
+            }
+            setMetaDouble(attributeNode, "Amount", value);
         } catch (Exception ex) {
             ex.printStackTrace();
             return false;

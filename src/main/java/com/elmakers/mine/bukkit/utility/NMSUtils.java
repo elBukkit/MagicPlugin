@@ -136,6 +136,7 @@ public class NMSUtils {
     protected static Method class_NBTTagCompound_setBooleanMethod;
     protected static Method class_NBTTagCompound_setStringMethod;
     protected static Method class_NBTTagCompound_setDoubleMethod;
+    protected static Method class_NBTTagCompound_setLongMethod;
     protected static Method class_NBTTagCompound_setIntMethod;
     protected static Method class_NBTTagCompound_removeMethod;
     protected static Method class_NBTTagCompound_getStringMethod;
@@ -187,8 +188,7 @@ public class NMSUtils {
     protected static Method class_MinecraftServer_getResourcePackHashMethod;
     protected static Method class_MinecraftServer_setResourcePackMethod;
 
-    protected static Constructor class_NBTTagList_consructor;
-    protected static Constructor class_NBTTagList_legacy_consructor;
+    protected static Constructor class_NBTTagString_consructor;
     protected static Constructor class_CraftInventoryCustom_constructor;
     protected static Constructor class_NBTTagByte_constructor;
     protected static Constructor class_NBTTagByte_legacy_constructor;
@@ -334,6 +334,7 @@ public class NMSUtils {
             class_NBTTagCompound_setBooleanMethod = class_NBTTagCompound.getMethod("setBoolean", String.class, Boolean.TYPE);
             class_NBTTagCompound_setStringMethod = class_NBTTagCompound.getMethod("setString", String.class, String.class);
             class_NBTTagCompound_setDoubleMethod = class_NBTTagCompound.getMethod("setDouble", String.class, Double.TYPE);
+            class_NBTTagCompound_setLongMethod = class_NBTTagCompound.getMethod("setLong", String.class, Long.TYPE);
             class_NBTTagCompound_setIntMethod = class_NBTTagCompound.getMethod("setInt", String.class, Integer.TYPE);
             class_NBTTagCompound_removeMethod = class_NBTTagCompound.getMethod("remove", String.class);
             class_NBTTagCompound_getStringMethod = class_NBTTagCompound.getMethod("getString", String.class);
@@ -413,7 +414,7 @@ public class NMSUtils {
             class_Firework_expectedLifespanField = class_EntityFirework.getDeclaredField("expectedLifespan");
             class_Firework_expectedLifespanField.setAccessible(true);
 
-            class_NBTTagList_consructor = class_NBTTagString.getConstructor(String.class);
+            class_NBTTagString_consructor = class_NBTTagString.getConstructor(String.class);
             class_NBTTagByte_constructor = class_NBTTagByte.getConstructor(Byte.TYPE);
             class_ItemStack_count = class_ItemStack.getDeclaredField("count");
             class_ItemStack_count.setAccessible(true);
@@ -897,10 +898,28 @@ public class NMSUtils {
         }
     }
 
+    public static void setMetaLong(Object node, String tag, long value) {
+        if (node == null|| !class_NBTTagCompound.isInstance(node)) return;
+        try {
+            class_NBTTagCompound_setLongMethod.invoke(node, tag, value);
+        } catch (Throwable ex) {
+            ex.printStackTrace();
+        }
+    }
+
     public static void setMetaDouble(Object node, String tag, double value) {
         if (node == null|| !class_NBTTagCompound.isInstance(node)) return;
         try {
             class_NBTTagCompound_setDoubleMethod.invoke(node, tag, value);
+        } catch (Throwable ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public static void setMetaInt(Object node, String tag, int value) {
+        if (node == null|| !class_NBTTagCompound.isInstance(node)) return;
+        try {
+            class_NBTTagCompound_setIntMethod.invoke(node, tag, value);
         } catch (Throwable ex) {
             ex.printStackTrace();
         }
@@ -1108,10 +1127,7 @@ public class NMSUtils {
 
     protected static Object getTagString(String value) {
         try {
-            if (class_NBTTagList_legacy_consructor != null) {
-                return class_NBTTagList_legacy_consructor.newInstance("", value);
-            }
-            return class_NBTTagList_consructor.newInstance(value);
+            return class_NBTTagString_consructor.newInstance(value);
         } catch (Exception ex) {
             ex.printStackTrace();
 
