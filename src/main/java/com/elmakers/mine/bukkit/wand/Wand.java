@@ -45,6 +45,7 @@ import org.bukkit.Color;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.block.BlockFace;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
@@ -1797,7 +1798,9 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         } else {
             CompatibilityUtils.removeUnbreakable(item);
         }
-        CompatibilityUtils.hideFlags(item, HIDE_FLAGS);
+		// TODO: Generalized support for wand item attributes
+		CompatibilityUtils.setItemAttribute(item, Attribute.GENERIC_ATTACK_SPEED, 10);
+		CompatibilityUtils.hideFlags(item, HIDE_FLAGS);
 	}
 	
 	private void updateName() {
