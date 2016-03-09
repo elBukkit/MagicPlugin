@@ -1,7 +1,6 @@
 package com.elmakers.mine.bukkit.wand;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -45,16 +44,13 @@ import org.bukkit.Color;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.attribute.Attribute;
 import org.bukkit.block.BlockFace;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemoryConfiguration;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryType;
-import org.bukkit.event.player.PlayerExpChangeEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
@@ -343,20 +339,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 			loadProperties(wandConfig);
 
             // Add vanilla enchantments
-            if (wandConfig.contains("enchantments") && item != null)
-            {
-                ConfigurationSection enchantConfig = wandConfig.getConfigurationSection("enchantments");
-                Collection<String> enchantKeys = enchantConfig.getKeys(false);
-                for (String enchantKey : enchantKeys)
-                {
-                    try {
-                        Enchantment enchantment = Enchantment.getByName(enchantKey.toUpperCase());
-                        item.addUnsafeEnchantment(enchantment, enchantConfig.getInt(enchantKey));
-                    } catch (Exception ex) {
-                        controller.getLogger().warning("Invalid enchantment: " + enchantKey);
-                    }
-                }
-            }
+			InventoryUtils.applyEnchantments(item, wandConfig.getConfigurationSection("enchantments"));
 
             // Enchant, if an enchanting level was provided
             if (level > 0) {
@@ -1594,24 +1577,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 			
 			if (templateConfig != null) {
 				// Add vanilla attributes
-				if (templateConfig.contains("attributes") && item != null)
-				{
-					String slot = templateConfig.getString("attribute_slot", null);
-					ConfigurationSection attributeConfig = templateConfig.getConfigurationSection("attributes");
-					Collection<String> attributeKeys = attributeConfig.getKeys(false);
-					for (String attributeKey : attributeKeys)
-					{
-						try {
-							Attribute attribute = Attribute.valueOf(attributeKey.toUpperCase());
-							double value = attributeConfig.getDouble(attributeKey);
-							if (!CompatibilityUtils.setItemAttribute(item, attribute, value, slot)) {
-								controller.getLogger().warning("Failed to set attribute: " + attributeKey);
-							}
-						} catch (Exception ex) {
-							controller.getLogger().warning("Invalid attribute: " + attributeKey);
-						}
-					}
-				}
+				InventoryUtils.applyAttributes(item, templateConfig.getConfigurationSection("attributes"), templateConfig.getString("attribute_slot", null));
 			}
 
             if (wandConfig.contains("randomize_icon")) {
