@@ -117,13 +117,14 @@ public class NMSUtils {
     protected static Class<?> class_CraftArrow;
     protected static Class<?> class_MinecraftServer;
     protected static Class<?> class_CraftServer;
+    protected static Class<?> class_DataWatcherObject;
 
     protected static Method class_NBTTagList_addMethod;
     protected static Method class_NBTTagList_getMethod;
     protected static Method class_NBTTagList_getDoubleMethod;
     protected static Method class_NBTTagList_sizeMethod;
     protected static Method class_NBTTagCompound_setMethod;
-    protected static Method class_DataWatcher_watchMethod;
+    protected static Method class_DataWatcher_setMethod;
     protected static Method class_World_getEntitiesMethod;
     protected static Method class_Entity_setSilentMethod;
     protected static Method class_Entity_setYawPitchMethod;
@@ -134,6 +135,7 @@ public class NMSUtils {
     protected static Method class_World_explodeMethod;
     protected static Method class_NBTTagCompound_setBooleanMethod;
     protected static Method class_NBTTagCompound_setStringMethod;
+    protected static Method class_NBTTagCompound_setDoubleMethod;
     protected static Method class_NBTTagCompound_setIntMethod;
     protected static Method class_NBTTagCompound_removeMethod;
     protected static Method class_NBTTagCompound_getStringMethod;
@@ -238,6 +240,7 @@ public class NMSUtils {
     protected static Field class_EntityArrow_lifeField = null;
     protected static Field class_EntityArrow_damageField;
     protected static Field class_CraftWorld_environmentField;
+    protected static Field class_EntityLiving_potionBubblesField;
 
     static
     {
@@ -254,6 +257,7 @@ public class NMSUtils {
             class_EntityLiving = fixBukkitClass("net.minecraft.server.EntityLiving");
             class_ItemStack = fixBukkitClass("net.minecraft.server.ItemStack");
             class_DataWatcher = fixBukkitClass("net.minecraft.server.DataWatcher");
+            class_DataWatcherObject = fixBukkitClass("net.minecraft.server.DataWatcherObject");
             class_NBTBase = fixBukkitClass("net.minecraft.server.NBTBase");
             class_NBTTagCompound = fixBukkitClass("net.minecraft.server.NBTTagCompound");
             class_NBTTagList = fixBukkitClass("net.minecraft.server.NBTTagList");
@@ -329,6 +333,7 @@ public class NMSUtils {
             class_World_explodeMethod = class_World.getMethod("createExplosion", class_Entity, Double.TYPE, Double.TYPE, Double.TYPE, Float.TYPE, Boolean.TYPE, Boolean.TYPE);
             class_NBTTagCompound_setBooleanMethod = class_NBTTagCompound.getMethod("setBoolean", String.class, Boolean.TYPE);
             class_NBTTagCompound_setStringMethod = class_NBTTagCompound.getMethod("setString", String.class, String.class);
+            class_NBTTagCompound_setDoubleMethod = class_NBTTagCompound.getMethod("setDouble", String.class, Double.TYPE);
             class_NBTTagCompound_setIntMethod = class_NBTTagCompound.getMethod("setInt", String.class, Integer.TYPE);
             class_NBTTagCompound_removeMethod = class_NBTTagCompound.getMethod("remove", String.class);
             class_NBTTagCompound_getStringMethod = class_NBTTagCompound.getMethod("getString", String.class);
@@ -428,6 +433,9 @@ public class NMSUtils {
             class_CraftItemStack_getHandleField = class_CraftItemStack.getDeclaredField("handle");
             class_CraftItemStack_getHandleField.setAccessible(true);
 
+            class_EntityLiving_potionBubblesField = class_EntityLiving.getDeclaredField("f");
+            class_EntityLiving_potionBubblesField.setAccessible(true);
+
             class_TileEntityContainer = fixBukkitClass("net.minecraft.server.TileEntityContainer");
             class_ChestLock = fixBukkitClass("net.minecraft.server.ChestLock");
             class_ChestLock_isEmpty = class_ChestLock.getMethod("a");
@@ -468,7 +476,7 @@ public class NMSUtils {
             try {
                 try {
                     // 1.9
-                    // class_DataWatcher_watchMethod = class_DataWatcher.getMethod("register", Integer.TYPE, Object.class);
+                    class_DataWatcher_setMethod = class_DataWatcher.getMethod("set", class_DataWatcherObject, Object.class);
                     class_TileEntity_saveMethod = class_TileEntity.getMethod("save", class_NBTTagCompound);
                     class_EntityArmorStand_disabledSlotsField = class_EntityArmorStand.getDeclaredField("bz");
                     class_TileEntityContainer_setLock = class_TileEntityContainer.getMethod("a", class_ChestLock);
@@ -476,7 +484,6 @@ public class NMSUtils {
                 } catch (Throwable ignore) {
                     // 1.8 and lower
                     class_TileEntity_saveMethod = class_TileEntity.getMethod("b", class_NBTTagCompound);
-                    class_DataWatcher_watchMethod = class_DataWatcher.getMethod("watch", Integer.TYPE, Object.class);
                     class_EntityArmorStand_disabledSlotsField = class_EntityArmorStand.getDeclaredField("bi");
                     class_TileEntityContainer_setLock = class_TileEntityContainer.getMethod("a", class_ChestLock);
                     class_TileEntityContainer_getLock = class_TileEntityContainer.getMethod("i");
@@ -885,6 +892,15 @@ public class NMSUtils {
             } else {
                 class_NBTTagCompound_setStringMethod.invoke(node, tag, value);
             }
+        } catch (Throwable ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public static void setMetaDouble(Object node, String tag, double value) {
+        if (node == null|| !class_NBTTagCompound.isInstance(node)) return;
+        try {
+            class_NBTTagCompound_setDoubleMethod.invoke(node, tag, value);
         } catch (Throwable ex) {
             ex.printStackTrace();
         }

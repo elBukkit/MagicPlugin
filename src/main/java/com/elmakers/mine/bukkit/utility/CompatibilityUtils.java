@@ -174,10 +174,6 @@ public class CompatibilityUtils extends NMSUtils {
         }
     }
 
-    public static void removePotionEffect(LivingEntity entity) {
-        watch(entity, 7, 0);
-    }
-
     /**
      * Thanks you, Chilinot!
      * @param loc
@@ -343,33 +339,32 @@ public class CompatibilityUtils extends NMSUtils {
         return true;
     }
 
-    public static void watch(Object entityHandle, int key, Object data) {
-        // TODO: Fix in 1.9 .. somehow?
-        if (class_DataWatcher_watchMethod == null) return;
+    public static void removePotionEffect(LivingEntity entity) {
+        if (entity == null || class_DataWatcher_setMethod == null) return;
         try {
-            Method getDataWatcherMethod = class_Entity.getMethod("getDataWatcher");
-            Object dataWatcher = getDataWatcherMethod.invoke(entityHandle);
-            class_DataWatcher_watchMethod.invoke(dataWatcher, key, data);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-    }
-
-    public static void watch(Entity entity, int key, Object data) {
-        try {
-            Method geHandleMethod = entity.getClass().getMethod("getHandle");
-            watch(geHandleMethod.invoke(entity), key, data);
+            Object entityHandle = getHandle(entity);
+            Object dataWatcher = class_Entity_getDataWatcherMethod.invoke(entityHandle);
+            Object bubblesField = class_EntityLiving_potionBubblesField.get(null);
+            class_DataWatcher_setMethod.invoke(dataWatcher, bubblesField, 0);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
 
     public static void addPotionEffect(LivingEntity entity, int color) {
+        if (entity == null || class_DataWatcher_setMethod == null) return;
         // Hacky safety check
         if (color == 0) {
             color = 0x010101;
         }
-        watch(entity, 7, color);
+        try {
+            Object entityHandle = getHandle(entity);
+            Object dataWatcher = class_Entity_getDataWatcherMethod.invoke(entityHandle);
+            Object bubblesField = class_EntityLiving_potionBubblesField.get(null);
+            class_DataWatcher_setMethod.invoke(dataWatcher, bubblesField, color);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 
     public static List<Entity> getNearbyEntities(Location location, double x, double y, double z) {
@@ -411,6 +406,8 @@ public class CompatibilityUtils extends NMSUtils {
                 setPositionRotationMethod.invoke(newEntity, location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch());
 
                 // Set tile material id, pack into NMS 3-byte format
+                // TODO: Unbreak this maybe one day?
+                /*
                 int materialId = (display.getMaterial().getId() & 0xFFFF) | (display.getData() << 16);
                 watch(newEntity, 20, materialId);
 
@@ -419,6 +416,7 @@ public class CompatibilityUtils extends NMSUtils {
 
                 // Finalize custom display tile
                 watch(newEntity, 22, (byte)1);
+                */
 
                 addEntity.invoke(worldHandle, newEntity, CreatureSpawnEvent.SpawnReason.CUSTOM);
                 Entity bukkitEntity = getBukkitEntity(newEntity);
