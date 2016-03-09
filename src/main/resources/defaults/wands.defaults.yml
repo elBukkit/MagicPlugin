@@ -107,6 +107,9 @@ default:
     indestructible: true
     effect_bubbles: false
     active_spell: missile
+    attributes:
+      GENERIC_ATTACK_SPEED: 10
+    attribute_slot: mainhand
     spells:
      - missile
 
