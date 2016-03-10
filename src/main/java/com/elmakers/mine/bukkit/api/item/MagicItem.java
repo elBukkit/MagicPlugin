@@ -5,5 +5,5 @@ import org.bukkit.inventory.ItemStack;
 public interface MagicItem {
     public String getKey();
     public double getWorth();
-    public ItemStack getItem(int amount);
+    public ItemStack getItemStack(int amount);
 }
