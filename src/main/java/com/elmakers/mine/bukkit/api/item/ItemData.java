@@ -6,4 +6,6 @@ public interface ItemData {
     public String getKey();
     public double getWorth();
     public ItemStack getItemStack(int amount);
+    public String getCreator();
+    public String getCreatorId();
 }
