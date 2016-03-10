@@ -11,6 +11,7 @@ import com.elmakers.mine.bukkit.api.data.SpellData;
 import com.elmakers.mine.bukkit.api.entity.EntityData;
 import com.elmakers.mine.bukkit.api.event.LoadEvent;
 import com.elmakers.mine.bukkit.api.event.SaveEvent;
+import com.elmakers.mine.bukkit.api.item.MagicItem;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.magic.MagicAPI;
@@ -46,6 +47,7 @@ import com.elmakers.mine.bukkit.magic.listener.EntityController;
 import com.elmakers.mine.bukkit.magic.listener.ExplosionController;
 import com.elmakers.mine.bukkit.magic.listener.HangingController;
 import com.elmakers.mine.bukkit.magic.listener.InventoryController;
+import com.elmakers.mine.bukkit.magic.listener.ItemController;
 import com.elmakers.mine.bukkit.magic.listener.LoadSchematicTask;
 import com.elmakers.mine.bukkit.magic.listener.MinigamesListener;
 import com.elmakers.mine.bukkit.magic.listener.MobController;
@@ -722,6 +724,7 @@ public class MagicController implements MageController {
         warpController = new WarpController();
         crafting = new CraftingController(this);
         mobs = new MobController(this);
+        items = new ItemController(this);
         enchanting = new EnchantingController(this);
         anvil = new AnvilController(this);
         blockController = new BlockController(this);
@@ -1257,6 +1260,7 @@ public class MagicController implements MageController {
         PluginManager pm = plugin.getServer().getPluginManager();
         pm.registerEvents(crafting, plugin);
         pm.registerEvents(mobs, plugin);
+        pm.registerEvents(items, plugin);
         pm.registerEvents(enchanting, plugin);
         pm.registerEvents(anvil, plugin);
         pm.registerEvents(blockController, plugin);
@@ -1449,6 +1453,7 @@ public class MagicController implements MageController {
         loadDefaultCrafting = properties.getBoolean("load_default_crafting", loadDefaultCrafting);
         loadDefaultEnchanting = properties.getBoolean("load_default_enchanting", loadDefaultEnchanting);
         loadDefaultMobs = properties.getBoolean("load_default_mobs", loadDefaultMobs);
+        loadDefaultItems = properties.getBoolean("load_default_items", loadDefaultItems);
 
         return properties;
     }
@@ -1478,7 +1483,11 @@ public class MagicController implements MageController {
     }
 
     protected ConfigurationSection loadMobsConfiguration() throws InvalidConfigurationException, IOException {
-        return loadConfigFile(MOBS_FILE, loadDefaultMobs);
+        return loadConfigFile(MOBS_FILE, loadDefaultItems);
+    }
+
+    protected ConfigurationSection loadItemsConfiguration() throws InvalidConfigurationException, IOException {
+        return loadConfigFile(ITEMS_FILE, loadDefaultMobs);
     }
 
     protected Map<String, ConfigurationSection> loadAndMapSpells()  throws InvalidConfigurationException, IOException {
@@ -1557,6 +1566,9 @@ public class MagicController implements MageController {
 
         mobs.load(loader.mobs);
         getLogger().info("Loaded " + mobs.getCount() + " mob templates");
+
+        items.load(loader.items);
+        getLogger().info("Loaded " + items.getCount() + " items");
 
         // Finalize integrations, we only do this one time at startup.
         if (!initialized) {
@@ -4308,6 +4320,21 @@ public Set<Material> getMaterialSet(String name)
         return new com.elmakers.mine.bukkit.entity.EntityData(this, configuration);
     }
 
+    @Override
+    public Set<String> getItemKeys() {
+        return items.getKeys();
+    }
+    
+    @Override
+    public MagicItem getItem(String key) {
+        return items.get(key);
+    }
+    
+    @Override
+    public MagicItem getItem(ItemStack match) {
+        return items.get(match);
+    }
+
     public boolean isInventoryBackupEnabled() {
         return backupInventories;
     }
@@ -4547,6 +4574,7 @@ public Set<Material> getMaterialSet(String name)
     private final String                        MESSAGES_FILE             	= "messages";
     private final String                        MATERIALS_FILE             	= "materials";
     private final String                        MOBS_FILE             	    = "mobs";
+    private final String                        ITEMS_FILE             	    = "items";
     
     private final String						LOST_WANDS_FILE				= "lostwands";
     private final String						SPELLS_DATA_FILE			= "spells";
@@ -4561,6 +4589,7 @@ public Set<Material> getMaterialSet(String name)
     private boolean 							loadDefaultEnchanting		= true;
     private boolean 							loadDefaultCrafting			= true;
     private boolean 							loadDefaultMobs 			= true;
+    private boolean 							loadDefaultItems 			= true;
 
     private MaterialAndData                     redstoneReplacement             = new MaterialAndData(Material.OBSIDIAN);
     private Set<Material>                       buildingMaterials               = new HashSet<Material>();
@@ -4721,6 +4750,7 @@ public Set<Material> getMaterialSet(String name)
     // Sub-Controllers
     private CraftingController					crafting					= null;
     private MobController                       mobs    					= null;
+    private ItemController                      items    					= null;
     private EnchantingController				enchanting					= null;
     private AnvilController					    anvil						= null;
     private Messages                            messages                    = null;
