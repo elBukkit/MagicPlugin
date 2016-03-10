@@ -326,6 +326,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		WandTemplate migrateTemplate = template.getMigrateTemplate();
 		if (migrateTemplate != null) {
 			template = migrateTemplate;
+			templateName = migrateTemplate.getKey();
 		}
 		ConfigurationSection wandConfig = template.getConfiguration();
 
