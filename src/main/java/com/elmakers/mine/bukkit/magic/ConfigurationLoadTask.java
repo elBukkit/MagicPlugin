@@ -19,6 +19,7 @@ public class ConfigurationLoadTask implements Runnable {
     protected ConfigurationSection enchanting;
     protected ConfigurationSection crafting;
     protected ConfigurationSection mobs;
+    protected ConfigurationSection items;
     protected Map<String, ConfigurationSection> spells;
 
     protected boolean success;
@@ -102,6 +103,13 @@ public class ConfigurationLoadTask implements Runnable {
             mobs = controller.loadMobsConfiguration();
         } catch (Exception ex) {
             logger.log(Level.WARNING, "Error loading mobs.yml", ex);
+            success = false;
+        }
+        // Load items
+        try {
+            items = controller.loadItemsConfiguration();
+        } catch (Exception ex) {
+            logger.log(Level.WARNING, "Error loading items.yml", ex);
             success = false;
         }
         

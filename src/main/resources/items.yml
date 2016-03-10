@@ -1,0 +1,22 @@
+#
+# Modify this file to change, add or disable custom item types.
+# These items are not wands and don't have any non-vanilla data attached.
+#
+# You can also specify the worth of items in this file, so that all shops
+# can be balanced by using the same costs as described here.
+#
+# See items.defaults.yml for the default items. 
+#
+# Items defined in here may be given in-game with the /mgive command
+#
+
+#
+# General format:
+#
+# <itemkey>:
+#   item: <item type, itemkey used if omitted>
+#   worth: currency value per item
+#
+
+
+

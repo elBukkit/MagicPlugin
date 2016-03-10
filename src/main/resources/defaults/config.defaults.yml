@@ -106,6 +106,9 @@ load_default_crafting: true
 # Set to false to skip loading defaults/mobs.defaults.yml entirely.
 load_default_mobs: true
 
+# Set to false to skip loading defaults/items.defaults.yml entirely.
+load_default_items: true
+
 # Whether or not to show any messages (in chat)
 show_messages: true
 
