@@ -74,3 +74,20 @@ emerald:
   
 emerald_block:
   worth: 288
+  
+# Some fun/special items
+hylian_shield:
+  worth: 100
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    type: SHIELD
+    meta:
+      ==: ItemMeta
+      meta-type: TILE_ENTITY
+      display-name: §aHylian Shield
+      lore:
+      - Link's Shield
+      ItemFlags: !!set
+        HIDE_POTION_EFFECTS: null
+      internal: H4sIAAAAAAAAAHXOTQ5AMBQE4KFoVeJQxN7CBUrqJxpN9G3cnojFI7GcfDPJaECjrJwf1majhY7OTDlUa4jsvgUNIFOQT4YYei+Q1t75/SIJbqPjFnGL55lR8iIiRsWbwu/q80MgqUywdw0n1U4Sy9UAAAA=
+      blockMaterial: SHIELD
