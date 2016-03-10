@@ -1552,23 +1552,23 @@ public class MagicController implements MageController {
         messages.load(loader.messages);
         loadMaterials(loader.materials);
 
-        loadSpells(loader.spells);
-        getLogger().info("Loaded " + spells.size() + " spells");
-
         enchanting.load(loader.enchanting);
         getLogger().info("Loaded " + enchanting.getCount() + " enchanting paths");
-
-        Wand.loadTemplates(this, loader.wands);
-        getLogger().info("Loaded " + Wand.getWandTemplates().size() + " wands");
-
-        crafting.load(loader.crafting);
-        getLogger().info("Loaded " + crafting.getCount() + " crafting recipes");
 
         mobs.load(loader.mobs);
         getLogger().info("Loaded " + mobs.getCount() + " mob templates");
 
         items.load(loader.items);
         getLogger().info("Loaded " + items.getCount() + " items");
+
+        loadSpells(loader.spells);
+        getLogger().info("Loaded " + spells.size() + " spells");
+
+        Wand.loadTemplates(this, loader.wands);
+        getLogger().info("Loaded " + Wand.getWandTemplates().size() + " wands");
+
+        crafting.load(loader.crafting);
+        getLogger().info("Loaded " + crafting.getCount() + " crafting recipes");
 
         // Finalize integrations, we only do this one time at startup.
         if (!initialized) {
@@ -3943,6 +3943,10 @@ public Set<Material> getMaterialSet(String name)
                 String itemKey = magicItemKey.substring(5);
                 itemStack = createGenericItem(itemKey);
             } else {
+                MagicItem magicItem = items.get(magicItemKey);
+                if (magicItem != null) {
+                    return magicItem.getItemStack(amount);
+                }
                 MaterialAndData item = new MaterialAndData(magicItemKey);
                 if (item.isValid()) {
                     return item.getItemStack(amount);

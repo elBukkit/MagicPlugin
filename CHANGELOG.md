@@ -5,6 +5,7 @@
  - Add craftable Ocarina item (Thank you, SexyToad!)
  - Cloak of Invisibility is now invisible while worn
  - Fix wand effect_bubbles 
+ - Add items.yml, configuration for setting up non-wand items and item values
 
 ## 6.0.3
 
