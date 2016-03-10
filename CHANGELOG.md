@@ -10,6 +10,16 @@
  - Add "allow_pvp_restricted" config option, to allow pvp-restricted spells to be cast anywhere.
  - Add items.yml, configuration for setting up non-wand items and item values
  - Add new permissions: Magic.wand.overwrite, Magic.wand.overwrite_own for controlling "/wand save" 
+ - Default wand is now called "wand" rather than "default"
+ - Added "/wand delete" command for deleting saved wands
+ - Add /mitem command:
+   - save : Save your held item, can be used in crafting, /mgive, etc
+   - delete : Delete a saved item
+   - describe : Show item details
+   - name : Set a custom display name for an item
+   - duplicate : Clone an item
+   - worth : Show how much an item is worth, can be defined with /mitem save
+   - add/remove : Add and remove lore, flags (soon: enchants, attributes)
 
 
 ## 5.5.4

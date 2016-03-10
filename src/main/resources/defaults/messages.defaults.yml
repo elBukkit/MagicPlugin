@@ -92,6 +92,14 @@ item:
     duplicated: Your item has been duplicated
     no_item: You must be holding an item!
     renamed: Your item has been renamed
+    rename_clear: Removed the custom name from your item
+    flag_added: "Add the $flag to your item"
+    flag_removed: "Removed the $flag from your item"
+    no_flags: That item has no flags
+    no_flag: "That item does not have the $flag flag"
+    lore_added: "Added lore: $lore"
+    lore_removed: "Removed lore: $lore"
+    no_lore: That item has no lore
 wand:
     default_name: Wand
     upgrade_default_description: Will upgrade your wand.
