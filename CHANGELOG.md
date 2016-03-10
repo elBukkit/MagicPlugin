@@ -19,7 +19,7 @@
    - name : Set a custom display name for an item
    - duplicate : Clone an item
    - worth : Show how much an item is worth, can be defined with /mitem save
-   - add/remove : Add and remove lore, flags, unbreakable (soon: enchants, attributes)
+   - add/remove : Add and remove lore, flags, unbreakable, enchants (coming soon: attributes)
  - Add "hylian_shield" item (non-magical, just a cool Link shield)
 
 
