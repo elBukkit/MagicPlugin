@@ -3,12 +3,12 @@ package com.elmakers.mine.bukkit.item;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import org.bukkit.inventory.ItemStack;
 
-public class MagicItem implements com.elmakers.mine.bukkit.api.item.MagicItem {
+public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData {
     private String key;
     private ItemStack item;
     private double worth;
     
-    public MagicItem(String key, ItemStack item, double worth) {
+    public ItemData(String key, ItemStack item, double worth) {
         this.key = key;
         this.item = item;
         this.worth = worth;

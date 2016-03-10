@@ -11,7 +11,7 @@ import com.elmakers.mine.bukkit.api.data.SpellData;
 import com.elmakers.mine.bukkit.api.entity.EntityData;
 import com.elmakers.mine.bukkit.api.event.LoadEvent;
 import com.elmakers.mine.bukkit.api.event.SaveEvent;
-import com.elmakers.mine.bukkit.api.item.MagicItem;
+import com.elmakers.mine.bukkit.api.item.ItemData;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.magic.MagicAPI;
@@ -3940,9 +3940,9 @@ public class MagicController implements MageController {
                 String itemKey = magicItemKey.substring(5);
                 itemStack = createGenericItem(itemKey);
             } else {
-                MagicItem magicItem = items.get(magicItemKey);
-                if (magicItem != null) {
-                    return magicItem.getItemStack(amount);
+                ItemData itemData = items.get(magicItemKey);
+                if (itemData != null) {
+                    return itemData.getItemStack(amount);
                 }
                 MaterialAndData item = new MaterialAndData(magicItemKey);
                 if (item.isValid()) {
@@ -4343,12 +4343,12 @@ public class MagicController implements MageController {
     }
     
     @Override
-    public MagicItem getItem(String key) {
+    public ItemData getItem(String key) {
         return items.get(key);
     }
     
     @Override
-    public MagicItem getItem(ItemStack match) {
+    public ItemData getItem(ItemStack match) {
         return items.get(match);
     }
 
