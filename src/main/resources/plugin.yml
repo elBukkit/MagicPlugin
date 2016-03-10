@@ -31,6 +31,7 @@ commands:
         /wand restore    Restore a player's lost wands
         /wand configure  Set wand properties
         /wand describe   Show information about a wand
+        /wand name       Change the display name of a wand
         /wand organize   Re-organize a wand's spell inventory
         /wand enchant    Turn an item into a wand
         /wand unenchant  Turn a wand into a normal item
@@ -40,6 +41,8 @@ commands:
         /wand upgrade    Upgrade properties of a wand
         /wand bind       Bind a wand to the person holding it
         /wand unbind     Unbind a wand, including backups
+        /wand save       Save a wand as a new template
+        /wand delete     Delete a saved wand
     permission: Magic.commands.wand
   "wand add":
     description: Add a spell or brush to a wand
@@ -68,6 +71,14 @@ commands:
     description: Save a wand to a template
     usage: /wand save <template>
     permission: Magic.commands.wand.save
+  "wand delete":
+    description: Delete a saved wand
+    usage: /wand delete <template>
+    permission: Magic.commands.wand.delete
+  "wand name":
+    description: Change the display name of a wand
+    usage: /wand name <new name>
+    permission: Magic.commands.wand.name
   "wand describe":
     description: List wand properties, useful for checking what can be used with /wand configure
     permission: Magic.commands.wand.describe
@@ -128,6 +139,61 @@ commands:
     description: Create and modify wands for another player
     usage: /wandp <player> [add|remove|upgrade|configure|describe|organize|enchant|unenchant|duplicate|unlock|override|bind|unbind] [<spellname>|material] <materialname>
     permission: Magic.commands.wandp
+  mitem:
+    description: Create and modify custom items
+    usage: |
+        Use /help mitem [subcommand] for more information
+        /mitem add        Add enchantments, attributes or lore
+        /mitem remove     Remove enchantments, attributes or lore
+        /mitem describe   Show information about an item
+        /mitem duplicate  Create a copy of an item
+        /mitem save       Save an item as a new template
+        /mitem delete     Delete a saved item
+        /mitem worth      Show the value of an item
+    permission: Magic.commands.mitem
+  "mitem add":
+    description: Add enchantments, attributes or lore to an item
+    usage: |
+
+       /mitem add enchant <enchantment> <level>
+       /mitem add attribute <attribute> <value>
+       /mitem add flag <flag>
+       /mitem add lore <some text>
+  "mitem remove":
+    description: Remove enchantments, attributes or lore from an item
+    usage: |
+
+       /mitem remove enchant <enchantment>
+       /mitem remove enchant
+       /mitem remove attribute
+       /mitem remove attribute <attribute>
+       /mitem remove flag <flag>
+       /mitem remove lore 3
+       /mitem remove lore
+    permission: Magic.commands.mitem.remove
+  "mitem save":
+    description: Save an item to a template
+    usage: |
+       /mitem save <key> [worth]
+       /mitem save mycustomitem
+       /mitem save mycustomitem 1000
+    permission: Magic.commands.mitem.save
+  "mitem delete":
+    description: Delete a saved item
+    usage: /mitem delete <template>
+    permission: Magic.commands.mitem.delete
+  "mitem name":
+    description: Change the display name of an item
+    usage: /mitem name <new name>
+    permission: Magic.commands.mitem.name
+  "mitem describe":
+    description: List all item properties
+    permission: Magic.commands.mitem.describe
+    usage: /mitem describe
+  "mitem worth":
+    description: Show the value of an item
+    usage: /mitem worth
+    permission: Magic.commands.mitem.worth
   magic:
     description: Administer the Magic plugin
     permission: Magic.commands.magic
@@ -364,7 +430,11 @@ permissions:
     type: boolean
     default: op
   Magic.commands.wand.save:
-    description: Player may save a wand toa  template
+    description: Player may save a wand to a template
+    type: boolean
+    default: op
+  Magic.commands.wand.delete:
+    description: Player may delete a saved wand
     type: boolean
     default: op
   Magic.commands.wand.enchant:
@@ -520,6 +590,39 @@ permissions:
     description: Player may unbind the wand another player is holding
     type: boolean
     default: op
+  Magic.commands.mitem:
+    description: Player may use the mitem command
+    type: boolean
+    default: op
+  Magic.commands.mitem.add:
+    description: Player may add enchantments, attributes and lore to an item
+    type: boolean
+    default: op
+  Magic.commands.mitem.remove:
+    description: Player may remove enchantments, attributes and lore from an item
+    type: boolean
+    default: op
+  Magic.commands.mitem.save:
+    description: Player may save an item to a new template
+    type: boolean
+    default: op
+  Magic.commands.mitem.delete:
+    description: Player may delete a saved item template
+    type: boolean
+    default: op
+  Magic.commands.mitem.name:
+    description: Player may rename an item
+    type: boolean
+    default: op
+  Magic.commands.mitem.describe:
+    description: Player may describe an item
+    type: boolean
+    default: op
+  Magic.commands.mitem.worth:
+    description: Player may show the value of an item
+    type: boolean
+    default: op
+    permission: Magic.commands.mitem.worth
   Magic.commands.magic:
     description: Player may reload the configuration
     type: boolean
@@ -745,3 +848,24 @@ permissions:
     description: A player may delete or overwrite their own saved wands
     default: true
     type: boolean
+  Magic.item.overwrite:
+    description: A player may delete or overwrite saved items
+    default: op
+    type: boolean
+  Magic.item.overwrite_own:
+    description: A player may delete or overwrite their own saved items
+    default: true
+    type: boolean
+  Magic.item.enchant.unsafe:
+    description: A player may apply unsafe enchantments to an item
+    default: true
+    type: boolean
+  Magic.item.enchant.extreme:
+    description: A player may apply extremely unsafe enchantments to an item
+    default: true
+    type: boolean
+  Magic.item.attribute.unsafe:
+    description: A player may apply unsafe attributes to an item
+    default: true
+    type: boolean
+    

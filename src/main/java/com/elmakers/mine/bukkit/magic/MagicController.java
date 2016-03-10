@@ -4400,6 +4400,11 @@ public class MagicController implements MageController {
     public void unloadItemTemplate(String key) {
         items.remove(key);
     }
+    
+    @Override
+    public void loadItemTemplate(String key, ConfigurationSection configuration) {
+        items.loadItem(key, configuration);
+    }
 
     public boolean isInventoryBackupEnabled() {
         return backupInventories;

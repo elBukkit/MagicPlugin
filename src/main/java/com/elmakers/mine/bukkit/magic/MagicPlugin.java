@@ -13,6 +13,7 @@ import com.elmakers.mine.bukkit.magic.command.CastCommandExecutor;
 import com.elmakers.mine.bukkit.magic.command.MageCommandExecutor;
 import com.elmakers.mine.bukkit.magic.command.MagicCommandExecutor;
 import com.elmakers.mine.bukkit.magic.command.MagicGiveCommandExecutor;
+import com.elmakers.mine.bukkit.magic.command.MagicItemCommandExecutor;
 import com.elmakers.mine.bukkit.magic.command.MagicMapCommandExecutor;
 import com.elmakers.mine.bukkit.magic.command.MagicMobCommandExecutor;
 import com.elmakers.mine.bukkit.magic.command.MagicSaveCommandExecutor;
@@ -174,6 +175,9 @@ public class MagicPlugin extends JavaPlugin implements MagicAPI
         TabExecutor magicGiveCommand = new MagicGiveCommandExecutor(this);
         getCommand("mgive").setExecutor(magicGiveCommand);
         getCommand("mgive").setTabCompleter(magicGiveCommand);
+		TabExecutor magicItemCommand = new MagicItemCommandExecutor(this);
+		getCommand("mitem").setExecutor(magicItemCommand);
+		getCommand("mitem").setTabCompleter(magicItemCommand);
 		TabExecutor magicMobCommand = new MagicMobCommandExecutor(this);
 		getCommand("mmob").setExecutor(magicMobCommand);
 		getCommand("mmob").setTabCompleter(magicMobCommand);

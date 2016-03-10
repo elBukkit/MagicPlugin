@@ -24,33 +24,17 @@ public class ItemController implements Listener {
     public void load(ConfigurationSection configuration) {
         Set<String> itemKeys = configuration.getKeys(false);
         for (String itemKey : itemKeys) {
-            try {
-                ConfigurationSection itemConfiguration = configuration.getConfigurationSection(itemKey);
-                ItemStack item = null;
-                if (itemConfiguration.isItemStack("item")) {
-                    item = itemConfiguration.getItemStack("item");
-                } else {
-                    String materialKey = itemConfiguration.getString("item", itemKey);
-                    MaterialAndData material = new MaterialAndData(materialKey);
-                    if (material.isValid()) {
-                        item = material.getItemStack(1);
-                    }
-                    if (item == null) {
-                        controller.getLogger().warning("Invalid item key: " + materialKey);
-                        continue;
-                    }
-                }
-                if (item == null) {
-                    controller.getLogger().warning("Invalid item configuration: " + itemKey);
-                    continue;
-                }
-                double worth = itemConfiguration.getDouble("worth", 0);
-                ItemData magicItem = new ItemData(itemKey, item, worth);
-                items.put(itemKey, magicItem);
-                itemsByStack.put(item, magicItem);
-            } catch (Exception ex) {
-                controller.getLogger().log(Level.WARNING, "An error occurred while processing the item: " + itemKey, ex);
-            }
+            loadItem(itemKey, configuration.getConfigurationSection(itemKey));
+        }
+    }
+    
+    public void loadItem(String itemKey, ConfigurationSection configuration) {
+        try {
+            ItemData magicItem = new ItemData(itemKey, configuration);
+            items.put(itemKey, magicItem);
+            itemsByStack.put(magicItem.getItemStack(1), magicItem);
+        } catch (Exception ex) {
+            controller.getLogger().log(Level.WARNING, "An error occurred while processing the item: " + itemKey, ex);
         }
     }
     
@@ -68,5 +52,13 @@ public class ItemController implements Listener {
 
     public ItemData get(ItemStack item) {
         return itemsByStack.get(item);
+    }
+
+    public void remove(String key) {
+        ItemData existing = items.get(key);
+        if (existing != null) {
+            itemsByStack.remove(existing.getItemStack(1));
+        }
+        items.remove(key);
     }
 }
