@@ -1,13 +1,17 @@
 # Migration Notes
 
+## CURRENT 1.9 Issues
+
+ - Broom dismounting is currently broken. Hoping for a Spigot fix.
+ 
 ## 6.1
+
  - The default wand was changed to "wand", configurable via config.yml
 
 ## 6.0
 
  - If you are using the official Magic Resource Pack, clear out the resource-pack entry in your server.properties.
    Magic will automatically use the correct RP version.
- - Broom dismounting is currently broken. Hoping for a Spigot fix.
 
 ## 5.5
 

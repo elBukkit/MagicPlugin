@@ -18,6 +18,7 @@
    - worth : Show how much an item is worth, can be defined with /mitem save
    - add/remove : Add and remove lore, flags, unbreakable, enchants (coming soon: attributes)
  - Add "hylian_shield" item (non-magical, just a cool Link shield)
+ - Add "trinketshop" including several decorative player skulls (try /mgive aquarium)
 
 ## 6.0.3
 

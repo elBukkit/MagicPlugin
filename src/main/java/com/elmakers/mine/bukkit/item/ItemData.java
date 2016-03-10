@@ -4,6 +4,7 @@ import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData {
     private String key;
@@ -31,6 +32,14 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData {
         worth = configuration.getDouble("worth", 0);
         creator = configuration.getString("creator");
         creatorId = configuration.getString("creator_id");
+        
+        // Convenience method for renaming items
+        String customName = configuration.getString("name");
+        if (customName != null) {
+            ItemMeta meta = item.getItemMeta();
+            meta.setDisplayName(customName);
+            item.setItemMeta(meta);
+        }
     }
     
     public ItemData(String key, ItemStack item, double worth) throws Exception {

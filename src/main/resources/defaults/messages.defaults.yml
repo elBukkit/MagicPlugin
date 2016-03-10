@@ -1761,6 +1761,8 @@ spells:
       name: 23 Note A#
     note24:
       name: 24 Note B
+    trinketshop:
+      title: "Trinkets ($balance)"
 
 wands:
     default:

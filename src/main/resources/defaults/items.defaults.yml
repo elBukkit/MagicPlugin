@@ -91,3 +91,70 @@ hylian_shield:
         HIDE_POTION_EFFECTS: null
       internal: H4sIAAAAAAAAAHXOTQ5AMBQE4KFoVeJQxN7CBUrqJxpN9G3cnojFI7GcfDPJaECjrJwf1majhY7OTDlUa4jsvgUNIFOQT4YYei+Q1t75/SIJbqPjFnGL55lR8iIiRsWbwu/q80MgqUywdw0n1U4Sy9UAAAA=
       blockMaterial: SHIELD
+
+# Some fun player skulls for decorating with
+present_green:
+  item: "skull_item|http://textures.minecraft.net/texture/64abe81e6f4961e0f6bd82f2d4135b6b5fc845739e71cfe3b8943531d921e"
+  worth: 10
+  name: Present
+present_red:
+  item: "skull_item|http://textures.minecraft.net/texture/bd7a9f6ed08dd217fdf09f4652bf6b7af621e1d5f8963605349da73998a443"
+  worth: 10
+  name: Present
+aquarium:
+  item: "skull_item|http://textures.minecraft.net/texture/c2847cd5717e5f5a64e1ba9cb481dc9e22c78ca23f8516d553f55412fa113e0"
+  worth: 10
+  name: Aquarium
+globe:
+  item: "skull_item|http://textures.minecraft.net/texture/2e2cc42015e6678f8fd49ccc01fbf787f1ba2c32bcf559a015332fc5db50"
+  worth: 10
+  name: Globe
+clock:
+  item: "skull_item|http://textures.minecraft.net/texture/a82dc4c46d350d42d7372a2a118b9a6421f7eb2a38be3af6a7759259f6a17"
+  worth: 10
+  name: Clock
+books:
+  item: "skull_item|http://textures.minecraft.net/texture/8d1b28f886ca3c8fc4301b785bf38c619ea66b68352a882bf8080e63034e0"
+  worth: 10
+  name: Books
+mario:
+  item: "skull_item|http://textures.minecraft.net/texture/a0c2549a893726988f3428bef799875ba871688ae64eb0cfdc43f7d6e24c6c"
+  worth: 10
+  name: Mario
+luigi:
+  item: "skull_item|http://textures.minecraft.net/texture/44e18fbde3cdb6699cfcccbeaca7857cd9166e9a783b3bccbb2b05d9f11c4ed"
+  worth: 10
+  name: Luigi
+yoshi:
+  item: "skull_item|http://textures.minecraft.net/texture/5fc8b863995fb84685c273c859548c75d94f9b82cce41b1efff454fe03cc123"
+  worth: 10
+  name: Yoshi
+pokeball:
+  item: "skull_item|http://textures.minecraft.net/texture/d4422d2362662b3c61fb401aead919425a9a92ad9336d7a220147a14a1e"
+  worth: 10
+  name: Pokeball
+apple_decoration:
+  item: "skull_item|http://textures.minecraft.net/texture/f7b15fc0f89453bb9c869dbc47a66cf2e75e8d3713b5fbf7c84cbf2c632196"
+  worth: 10
+  name: Apple
+cake_decoration:
+  item: "skull_item|http://textures.minecraft.net/texture/f9136514f342e7c5208a1422506a866158ef84d2b249220139e8bf6032e193"
+  worth: 10
+  name: Cake
+hamburger:
+  item: "skull_item|http://textures.minecraft.net/texture/cdadf1744433e1c79d1d59d2777d939de159a24cf57e8a61c82bc4fe3777553c"
+  worth: 10
+  name: Hamburger
+french_fries:
+  item: "skull_item:http://textures.minecraft.net/texture/a0eacac41a9eaf051376ef2f959701e1bbe1bf4aa6715adc34b6dc29a13ea9"
+  worth: 10
+  name: French Fries
+taco:
+  item: "skull_item|http://textures.minecraft.net/texture/6eb4e9abc09e3b1bde7ee6dbaa6cf1ff58cdced6f6d0ac774c2461616684c"
+  worth: 10
+  name: Taco
+popcorn:
+  item: "skull_item|http://textures.minecraft.net/texture/7444c78cf6ba309a89e27cbab9338ae2c072bce455df4babbfa8ecd3ae7baf53"
+  worth: 10
+  name: Popcorn
+  

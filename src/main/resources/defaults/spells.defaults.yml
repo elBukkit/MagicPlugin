@@ -9201,6 +9201,8 @@ magicitemshop:
         items:
         - item: wand|ocarina
           cost: 100
+        - item: hylian_shield
+          cost: 100
         - item: wand|goggles
           cost: 4000
         - item: wand|divinghelmet
@@ -11158,3 +11160,40 @@ note24:
     icon_url: http://textures.minecraft.net/texture/d0347fcef38a2fd59eefafb5e969f8536c7c13783b822a12d02f43a9a21d56
     parameters:
       sound: flute.24B
+
+trinketshop:
+    inherit: buyshop
+    parameters:
+        items:
+        - item: present_green
+          cost: 10
+        - item: present_red
+          cost: 10
+        - item: aquarium
+          cost: 10
+        - item: globe
+          cost: 10
+        - item: clock
+          cost: 10
+        - item: books
+          cost: 10
+        - item: mario
+          cost: 10
+        - item: luigi
+          cost: 10
+        - item: yoshi
+          cost: 10
+        - item: pokeball
+          cost: 10
+        - item: apple_decoration
+          cost: 10
+        - item: cake_decoration
+          cost: 10
+        - item: hamburger
+          cost: 10
+        - item: french_fries
+          cost: 10
+        - item: taco
+          cost: 10
+        - item: popcorn
+          cost: 10
