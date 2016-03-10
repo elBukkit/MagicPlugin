@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.elmakers.mine.bukkit.magic.command;
 
 import java.io.File;
@@ -1004,8 +1001,12 @@ public class WandCommandExecutor extends MagicTabExecutor {
 		if (sender instanceof Player) {
 			Player player = (Player)sender;
 			if (!player.hasPermission("Magic.wand.overwrite")) {
-				String creatorId = existing.getCreatorId();
-				hasPermission = creatorId == null || creatorId.equalsIgnoreCase(player.getUniqueId().toString());
+				if (player.hasPermission("Magic.wand.overwrite_own")) {
+					String creatorId = existing.getCreatorId();
+					hasPermission = creatorId != null && creatorId.equalsIgnoreCase(player.getUniqueId().toString());
+				} else {
+					hasPermission = false;
+				}
 			}
 		}
 		if (!hasPermission) {
@@ -1040,19 +1041,19 @@ public class WandCommandExecutor extends MagicTabExecutor {
 		Mage mage = api.getMage(player);
 		Wand wand = mage.getActiveWand();
 		MageController controller = api.getController();
-		YamlConfiguration wandConfig = new YamlConfiguration();
 		String template = parameters[0];
 		
 		WandTemplate existing = controller.getWandTemplate(template);
 		if (existing != null && !player.hasPermission("Magic.wand.overwrite")) {
 			String creatorId = existing.getCreatorId();
-			boolean isCreator = creatorId == null || creatorId.equalsIgnoreCase(player.getUniqueId().toString());
+			boolean isCreator = creatorId != null && creatorId.equalsIgnoreCase(player.getUniqueId().toString());
 			if (!player.hasPermission("Magic.wand.overwrite_own") || !isCreator) {
 				sender.sendMessage(ChatColor.RED + "The " + template + " wand already exists and you don't have permission to overwrite it.");
 				return true;
 			}
 		}
-		
+
+		YamlConfiguration wandConfig = new YamlConfiguration();
 		ConfigurationSection wandSection = wandConfig.createSection(template);
 		wand.save(wandSection, true);
 		wandSection.set("creator_id", player.getUniqueId().toString());
