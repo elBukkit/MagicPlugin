@@ -87,11 +87,9 @@
 #
 
 #
-# "default" is a special entry that is used when a wand is created with /wand or /wandp (no name parameter)
-#
-# This creates a basic starter wand.
+# This creates a basic starter wand, and is the default wand given with the "/wand" command.
 # 
-default:
+wand:
     icon: wood_hoe:1
     migrate_icon: wood_hoe
     effect_color: random
@@ -112,6 +110,9 @@ default:
     attribute_slot: mainhand
     spells:
      - missile
+     
+default:
+  migrate_to: wand
 
 #
 #
@@ -125,15 +126,13 @@ default:
 
 #
 # A beginner wand, this is a leftover from previous configs.
-# This wand will transform into the default wand due to the
-# migrate_to settings, in terms of identity.
-# It is better to use the default wand now!
+#
+# It is probably best to use the default "wand" for this now instead!
 #
 
 beginner:
     icon: wood_hoe:1
     migrate_icon: wood_hoe
-    migrate_to: default
     effect_color: random
     path: beginner
     mode_drop: true

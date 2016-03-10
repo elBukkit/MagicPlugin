@@ -342,7 +342,7 @@ drop_changes_pages: false
 backup_player_inventory: true
 
 # The default wand, given when using "/wand"
-default_wand: default
+default_wand: wand
 
 # The default enchanting path.
 # The default default is "master" for backwards compatibility reasons

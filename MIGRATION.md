@@ -1,5 +1,8 @@
 # Migration Notes
 
+## 6.1
+ - The default wand was changed to "wand", configurable via config.yml
+
 ## 6.0
 
  - If you are using the official Magic Resource Pack, clear out the resource-pack entry in your server.properties.
