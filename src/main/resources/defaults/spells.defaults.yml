@@ -9210,6 +9210,9 @@ magicitemshop:
         - item: wand|magichat
           cost: 5000
         - item: none
+        - item: none
+        - item: none
+        - item: none
         - item: wand|wizardhelmet
           cost: 4000
         - item: wand|wizardchestplate
