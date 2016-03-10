@@ -2,7 +2,7 @@ package com.elmakers.mine.bukkit.magic.listener;
 
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
-import com.elmakers.mine.bukkit.item.MagicItem;
+import com.elmakers.mine.bukkit.item.ItemData;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
@@ -14,8 +14,8 @@ import java.util.logging.Level;
 
 public class ItemController implements Listener {
     private MageController controller;
-    private final Map<String, MagicItem> items = new HashMap<String, MagicItem>();
-    private final Map<ItemStack, MagicItem> itemsByStack = new HashMap<ItemStack, MagicItem>();
+    private final Map<String, ItemData> items = new HashMap<String, ItemData>();
+    private final Map<ItemStack, ItemData> itemsByStack = new HashMap<ItemStack, ItemData>();
     
     public ItemController(MageController controller) {
         this.controller = controller;
@@ -45,7 +45,7 @@ public class ItemController implements Listener {
                     continue;
                 }
                 double worth = itemConfiguration.getDouble("worth", 0);
-                MagicItem magicItem = new MagicItem(itemKey, item, worth);
+                ItemData magicItem = new ItemData(itemKey, item, worth);
                 items.put(itemKey, magicItem);
                 itemsByStack.put(item, magicItem);
             } catch (Exception ex) {
@@ -62,11 +62,11 @@ public class ItemController implements Listener {
         return items.keySet();
     }
     
-    public MagicItem get(String key) {
+    public ItemData get(String key) {
         return items.get(key);
     }
 
-    public MagicItem get(ItemStack item) {
+    public ItemData get(ItemStack item) {
         return itemsByStack.get(item);
     }
 }
