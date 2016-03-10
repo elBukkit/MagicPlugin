@@ -10955,3 +10955,40 @@ tpshop:
         cast_spells: true
         spells:
           randomtp: 1
+
+trinketshop:
+    inherit: buyshop
+    parameters:
+        items:
+        - item: present_green
+          cost: 10
+        - item: present_red
+          cost: 10
+        - item: aquarium
+          cost: 10
+        - item: globe
+          cost: 10
+        - item: clock
+          cost: 10
+        - item: books
+          cost: 10
+        - item: mario
+          cost: 10
+        - item: luigi
+          cost: 10
+        - item: yoshi
+          cost: 10
+        - item: pokeball
+          cost: 10
+        - item: apple_decoration
+          cost: 10
+        - item: cake_decoration
+          cost: 10
+        - item: hamburger
+          cost: 10
+        - item: french_fries
+          cost: 10
+        - item: taco
+          cost: 10
+        - item: popcorn
+          cost: 10

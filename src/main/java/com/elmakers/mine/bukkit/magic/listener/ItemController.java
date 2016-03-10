@@ -24,7 +24,12 @@ public class ItemController implements Listener {
     public void load(ConfigurationSection configuration) {
         Set<String> itemKeys = configuration.getKeys(false);
         for (String itemKey : itemKeys) {
-            loadItem(itemKey, configuration.getConfigurationSection(itemKey));
+            ConfigurationSection itemConfig = configuration.getConfigurationSection(itemKey);
+            if (itemConfig != null) {
+                loadItem(itemKey, itemConfig);
+            } else {
+                controller.getLogger().warning("Improperly formatted item: " + itemKey);
+            }
         }
     }
     
