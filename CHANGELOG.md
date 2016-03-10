@@ -9,6 +9,7 @@
  - Add "sp_earn_enabled" option
  - Add "allow_pvp_restricted" config option, to allow pvp-restricted spells to be cast anywhere.
  - Add items.yml, configuration for setting up non-wand items and item values
+ - Add new permissions: Magic.wand.overwrite, Magic.wand.overwrite_own for controlling "/wand save" 
 
 
 ## 5.5.4

@@ -17,7 +17,7 @@ import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import com.elmakers.mine.bukkit.utility.NMSUtils;
-import com.elmakers.mine.bukkit.wand.WandTemplate;
+import com.elmakers.mine.bukkit.api.wand.WandTemplate;
 import de.slikey.effectlib.util.ParticleEffect;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
@@ -472,7 +472,7 @@ public class WandCommandExecutor extends MagicTabExecutor {
 	}
 
 	public boolean onWandList(CommandSender sender) {
-		Collection<WandTemplate> templates = com.elmakers.mine.bukkit.wand.Wand.getWandTemplates();
+		Collection<WandTemplate> templates = api.getController().getWandTemplates();
 		Map<String, ConfigurationSection> nameMap = new TreeMap<String, ConfigurationSection>();
 		for (WandTemplate template : templates)
 		{
@@ -982,8 +982,21 @@ public class WandCommandExecutor extends MagicTabExecutor {
 		MageController controller = api.getController();
 		YamlConfiguration wandConfig = new YamlConfiguration();
 		String template = parameters[0];
+		
+		WandTemplate existing = controller.getWandTemplate(template);
+		if (existing != null && !player.hasPermission("Magic.wand.overwrite")) {
+			String creatorId = existing.getCreatorId();
+			boolean isCreator = creatorId == null || creatorId.equalsIgnoreCase(player.getUniqueId().toString());
+			if (!player.hasPermission("Magic.wand.overwrite_own") || !isCreator) {
+				sender.sendMessage(ChatColor.RED + "The " + template + " wand already exists and you don't have permission to overwrite it.");
+				return true;
+			}
+		}
+		
 		ConfigurationSection wandSection = wandConfig.createSection(template);
 		wand.save(wandSection, true);
+		wandSection.set("creator_id", player.getUniqueId().toString());
+		wandSection.set("creator", player.getName());
 
 		File wandFolder = new File(controller.getConfigFolder(), "wands");
 		File wandFile = new File(wandFolder, template + ".yml");
@@ -995,7 +1008,7 @@ public class WandCommandExecutor extends MagicTabExecutor {
 			sender.sendMessage(ChatColor.RED + "Can't write to file " + wandFile.getName());
 			return true;
 		}
-		com.elmakers.mine.bukkit.wand.Wand.loadTemplate(controller, template, wandSection);
+		controller.loadWandTemplate(template, wandSection);
 		sender.sendMessage("Wand saved as " + template);
 		return true;
 	}
