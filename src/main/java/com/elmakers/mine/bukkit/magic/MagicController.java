@@ -4392,6 +4392,23 @@ public Set<Material> getMaterialSet(String name)
     public void loadItemTemplate(String key, ConfigurationSection configuration) {
         items.loadItem(key, configuration);
     }
+    
+    @Override
+    public Double getWorth(ItemStack item) {
+        String spellKey = Wand.getSpell(item);
+        if (spellKey != null) {
+            SpellTemplate spell = getSpellTemplate(spellKey);
+            if (spell != null) {
+                return spell.getWorth();
+            }
+        }
+        ItemData configuredItem = items.get(item);
+        if (configuredItem != null) {
+            return configuredItem.getWorth();
+        }
+        
+        return null;
+    }
 
     public boolean isInventoryBackupEnabled() {
         return backupInventories;
