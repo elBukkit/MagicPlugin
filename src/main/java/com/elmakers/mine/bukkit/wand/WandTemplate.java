@@ -25,6 +25,7 @@ public class WandTemplate implements com.elmakers.mine.bukkit.api.wand.WandTempl
     private Set<String> tags;
     private String creator;
     private String creatorId;
+    private String migrateTemplate;
 
     public WandTemplate(MageController controller, String key, ConfigurationSection node) {
         this.key = key;
@@ -34,6 +35,7 @@ public class WandTemplate implements com.elmakers.mine.bukkit.api.wand.WandTempl
         effects.clear();
         creator = node.getString("creator");
         creatorId = node.getString("creator_id");
+        migrateTemplate = node.getString("migrate_to");
         
         if (node.contains("effects")) {
             ConfigurationSection effectsNode = node.getConfigurationSection("effects");
@@ -135,5 +137,10 @@ public class WandTemplate implements com.elmakers.mine.bukkit.api.wand.WandTempl
     @Override
     public String getCreator() {
         return creator;
+    }
+
+    @Override
+    public com.elmakers.mine.bukkit.api.wand.WandTemplate getMigrateTemplate() {
+        return migrateTemplate == null ? null : controller.getWandTemplate(migrateTemplate);
     }
 }
