@@ -874,7 +874,7 @@ permissions:
     type: boolean
   Magic.item.enchant.extreme:
     description: A player may apply extremely unsafe enchantments to an item
-    default: true
+    default: op
     type: boolean
   Magic.item.attribute.unsafe:
     description: A player may apply unsafe attributes to an item

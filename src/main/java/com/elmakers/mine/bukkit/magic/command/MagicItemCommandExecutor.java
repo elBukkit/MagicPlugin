@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 public class MagicItemCommandExecutor extends MagicTabExecutor {
@@ -413,6 +414,76 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
 		return true;
 	}
 
+	public boolean onItemAddEnchant(Player player, ItemStack item, String enchantName, String enchantValue)
+	{
+		Enchantment enchantment = null;
+		try {
+			enchantment = Enchantment.getByName(enchantName.toUpperCase());
+		} catch (Exception ex) {
+			player.sendMessage(ChatColor.RED + "Invalid enchantment: " + ChatColor.WHITE + enchantName);
+			return true;
+		}
+		int level = 0;
+		try {
+			level = Integer.parseInt(enchantValue);
+		} catch (Exception ex) {
+			player.sendMessage(ChatColor.RED + "Invalid enchantment level: " + ChatColor.WHITE + enchantValue);
+			return true;
+		}
+		if (!player.hasPermission("Magic.item.enchant.extreme")) {
+			if (level < 0 || level > 10) {
+				player.sendMessage(ChatColor.RED + "Invalid enchantment level: " + ChatColor.WHITE + enchantValue);
+				return true;
+			}	
+		}
+
+		ItemMeta itemMeta = item.getItemMeta();
+		boolean allowUnsafe = player.hasPermission("Magic.item.enchant.unsafe");
+		if (itemMeta.addEnchant(enchantment, level, allowUnsafe)) {
+			item.setItemMeta(itemMeta);
+			player.sendMessage(api.getMessages().get("item.enchant_added").replace("$enchant", enchantment.getName()));
+		} else {
+			if (!allowUnsafe && level > 5) {
+				player.sendMessage(api.getMessages().get("item.enchant_unsafe"));
+			} else {
+				player.sendMessage(api.getMessages().get("item.enchant_not_added").replace("$enchant", enchantment.getName()));
+			}
+		}
+
+		return true;
+	}
+
+	public boolean onItemRemoveEnchant(Player player, ItemStack item, String enchantName)
+	{
+		Enchantment enchantment = null;
+		ItemMeta itemMeta = item.getItemMeta();
+		if (enchantName == null) {
+			Map<Enchantment, Integer> enchants = itemMeta.getEnchants();
+			if (enchants == null || enchants.size() == 0) {
+				player.sendMessage(api.getMessages().get("item.no_enchants"));
+				return true;
+			}
+			enchantment = enchants.keySet().iterator().next();
+		} else {
+			try {
+				enchantment = Enchantment.getByName(enchantName.toUpperCase());
+			} catch (Exception ex) {
+				player.sendMessage(ChatColor.RED + "Invalid enchantment: " + ChatColor.WHITE + enchantName);
+				return true;
+			}
+		}
+
+		if (!itemMeta.hasEnchant(enchantment)) {
+			player.sendMessage(api.getMessages().get("item.no_enchant").replace("$enchant", enchantment.getName()));
+		} else {
+			itemMeta.removeEnchant(enchantment);
+			item.setItemMeta(itemMeta);
+			player.sendMessage(api.getMessages().get("item.enchant_removed").replace("$enchant", enchantment.getName()));
+		}
+
+		return true;
+	}
+
 	public boolean onItemAddUnbreakable(Player player, ItemStack item)
 	{
 		if (InventoryUtils.isUnbreakable(item)) {
@@ -508,8 +579,7 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
 			return false;
 		}
 		if (addCommand.equalsIgnoreCase("enchant")) {
-			player.sendMessage(ChatColor.RED + "Not yet implemented!");
-			return true;
+			return onItemAddEnchant(player, item, parameters[1], parameters[2]);
 		}
 		if (addCommand.equalsIgnoreCase("attribute")) {
 			player.sendMessage(ChatColor.RED + "Not yet implemented!");
@@ -537,8 +607,7 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
 			return onItemRemoveLore(player, item, firstParameter);
 		}
 		if (removeCommand.equalsIgnoreCase("enchant")) {
-			player.sendMessage(ChatColor.RED + "Not yet implemented!");
-			return true;
+			return onItemRemoveEnchant(player, item, firstParameter);
 		}
 		if (removeCommand.equalsIgnoreCase("attribute")) {
 			player.sendMessage(ChatColor.RED + "Not yet implemented!");

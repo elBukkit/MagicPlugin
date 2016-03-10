@@ -93,8 +93,8 @@ item:
     no_item: You must be holding an item!
     renamed: Your item has been renamed
     rename_clear: Removed the custom name from your item
-    flag_added: "Add the $flag to your item"
-    flag_removed: "Removed the $flag from your item"
+    flag_added: "Added the $flag flag to your item"
+    flag_removed: "Removed the $flag flag from your item"
     no_flags: That item has no flags
     no_flag: "That item does not have the $flag flag"
     lore_added: "Added lore: $lore"
@@ -104,6 +104,12 @@ item:
     already_unbreakable: That item is already unbreakable
     add_unbreakable: That item is now unbreakable
     remove_unbreakable: That item is no longer unbreakable
+    no_enchants: This item has no enchantments
+    no_enchant: "That item does not have the $enchant enchantment"
+    enchant_removed: "Removed the $enchant enchantment from your item"
+    enchant_added: "Added the $enchant enchantment to your item"
+    enchant_not_added: "Did not add the $enchant enchantment to your item"
+    enchant_unsafe: "You do not have permission to add unsafe enchantments"
 wand:
     default_name: Wand
     upgrade_default_description: Will upgrade your wand.
