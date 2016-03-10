@@ -88,6 +88,10 @@ paths:
     blaster:
         name: Blaster
         description: Blaster upgrades
+item:
+    duplicated: Your item has been duplicated
+    no_item: You must be holding an item!
+    renamed: Your item has been renamed
 wand:
     default_name: Wand
     upgrade_default_description: Will upgrade your wand.
