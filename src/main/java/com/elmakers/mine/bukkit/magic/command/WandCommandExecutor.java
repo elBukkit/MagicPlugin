@@ -77,6 +77,20 @@ public class WandCommandExecutor extends MagicTabExecutor {
 			return true;
 		}
 
+		if (commandName.equalsIgnoreCase("wand") && args.length > 0 && args[0].equalsIgnoreCase("delete"))
+		{
+			if (!api.hasPermission(sender, "Magic.commands.wand.delete")) {
+				sendNoPermission(sender);
+				return true;
+			}
+			if (args.length < 2) {
+				sender.sendMessage("Usage: /wand delete <wandkey>");
+				return true;
+			}
+			onWandDelete(sender, args[1]);
+			return true;
+		}
+
 		// Everything beyond this point is is-game only
 
 		if (!(sender instanceof Player)) {
@@ -133,6 +147,7 @@ public class WandCommandExecutor extends MagicTabExecutor {
 			addIfPermissible(sender, options, "Magic.commands." + permissionKey + ".", "bind");
 			addIfPermissible(sender, options, "Magic.commands." + permissionKey + ".", "unbind");
 			addIfPermissible(sender, options, "Magic.commands." + permissionKey + ".", "save");
+			addIfPermissible(sender, options, "Magic.commands." + permissionKey + ".", "delete");
 
 			Collection<String> allWands = api.getWandKeys();
 			for (String wandKey : allWands) {
@@ -209,6 +224,18 @@ public class WandCommandExecutor extends MagicTabExecutor {
 				Collection<String> allWands = api.getWandKeys();
 				for (String wandKey : allWands) {
 					addIfPermissible(sender, options, "Magic.commands." + permissionKey + ".combine.", wandKey, true);
+				}
+			}
+
+			if (subCommand.equalsIgnoreCase("delete")) {
+				File wandFolder = new File(api.getController().getConfigFolder(), "wands");
+				if (wandFolder.exists()) {
+					File[] files = wandFolder.listFiles();
+					for (File file : files) {
+						if (file.getName().endsWith(".yml")) {
+							options.add(file.getName().replace(".yml", ""));
+						}
+					}
 				}
 			}
 		}
@@ -965,6 +992,39 @@ public class WandCommandExecutor extends MagicTabExecutor {
 		
 		return true;
 	}
+	
+	public boolean onWandDelete(CommandSender sender, String wandKey) {
+		MageController controller = api.getController();
+		WandTemplate existing = controller.getWandTemplate(wandKey);
+		if (existing == null) {
+			sender.sendMessage(ChatColor.RED + "Unknown wand: " + wandKey);
+			return true;
+		}
+		boolean hasPermission = true;
+		if (sender instanceof Player) {
+			Player player = (Player)sender;
+			if (!player.hasPermission("Magic.wand.overwrite")) {
+				String creatorId = existing.getCreatorId();
+				hasPermission = creatorId == null || creatorId.equalsIgnoreCase(player.getUniqueId().toString());
+			}
+		}
+		if (!hasPermission) {
+			sender.sendMessage(ChatColor.RED + "You don't have permission to delete " + wandKey);
+			return true;
+		}
+
+
+		File wandFolder = new File(controller.getConfigFolder(), "wands");
+		File wandFile = new File(wandFolder, wandKey + ".yml");
+		if (!wandFile.exists()) {
+			sender.sendMessage(ChatColor.RED + "File doesn't exist: " + wandFile.getName());
+			return true;
+		}
+		wandFile.delete();
+		controller.unloadWandTemplate(wandKey);
+		sender.sendMessage("Deleted wand " + wandKey);
+		return true;
+	}
 
 	public boolean onWandSave(CommandSender sender, Player player, String[] parameters)
 	{
@@ -1009,7 +1069,11 @@ public class WandCommandExecutor extends MagicTabExecutor {
 			return true;
 		}
 		controller.loadWandTemplate(template, wandSection);
-		sender.sendMessage("Wand saved as " + template);
+		String message = "Wand saved as " + template;
+		if (existing != null) {
+			message = message + ChatColor.GOLD + " (Replaced Existing)";
+		}
+		sender.sendMessage(message);
 		return true;
 	}
 	

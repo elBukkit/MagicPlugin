@@ -3462,6 +3462,11 @@ public Set<Material> getMaterialSet(String name)
             wandTemplates.put(key, new com.elmakers.mine.bukkit.wand.WandTemplate(this, key, wandNode));
         }
     }
+    
+    @Override
+    public void unloadWandTemplate(String key) {
+        wandTemplates.remove(key);
+    }
 
     public Collection<String> getWandTemplateKeys() {
         return wandTemplates.keySet();
@@ -4376,6 +4381,11 @@ public Set<Material> getMaterialSet(String name)
     @Override
     public ItemData getItem(ItemStack match) {
         return items.get(match);
+    }
+    
+    @Override
+    public void unloadItemTemplate(String key) {
+        items.remove(key);
     }
 
     public boolean isInventoryBackupEnabled() {
