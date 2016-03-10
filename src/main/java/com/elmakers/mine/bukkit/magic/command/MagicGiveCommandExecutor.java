@@ -11,9 +11,9 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 public class MagicGiveCommandExecutor extends MagicTabExecutor {
 	public MagicGiveCommandExecutor(MagicAPI api) {
@@ -105,7 +105,7 @@ public class MagicGiveCommandExecutor extends MagicTabExecutor {
 
 	@Override
 	public Collection<String> onTabComplete(CommandSender sender, String commandName, String[] args) {
-		List<String> options = new ArrayList<String>();
+		Set<String> options = new HashSet<String>();
         if (!sender.hasPermission("Magic.commands.mgive")) return options;
 
 		if (args.length == 1) {
@@ -123,6 +123,10 @@ public class MagicGiveCommandExecutor extends MagicTabExecutor {
             }
             for (Material material : Material.values()) {
                 options.add(material.name().toLowerCase());
+            }
+            Collection<String> allItems = api.getController().getItemKeys();
+            for (String itemKey : allItems) {
+                options.add(itemKey);
             }
             options.add("xp");
             options.add("sp");

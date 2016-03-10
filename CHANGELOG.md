@@ -8,6 +8,7 @@
  - NCP integration is on by default (if NCP is present)
  - Add "sp_earn_enabled" option
  - Add "allow_pvp_restricted" config option, to allow pvp-restricted spells to be cast anywhere.
+ - Add items.yml, configuration for setting up non-wand items and item values
 
 
 ## 5.5.4
