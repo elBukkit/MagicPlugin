@@ -11,6 +11,7 @@ import com.elmakers.mine.bukkit.api.block.MaterialAndData;
 import com.elmakers.mine.bukkit.api.entity.EntityData;
 import com.elmakers.mine.bukkit.api.item.ItemData;
 import com.elmakers.mine.bukkit.api.maps.MapController;
+import com.elmakers.mine.bukkit.api.wand.WandTemplate;
 import com.elmakers.mine.bukkit.api.wand.WandUpgradePath;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -90,6 +91,9 @@ public interface MageController {
     public ItemStack createBrushItem(String brushKey);
     public Wand getWand(ItemStack item);
     public Wand getWand(ConfigurationSection config);
+    public WandTemplate getWandTemplate(String key);
+    public Collection<WandTemplate> getWandTemplates();
+    public void loadWandTemplate(String key, ConfigurationSection wandNode);
 
     public String describeItem(ItemStack item);
     public String getItemKey(ItemStack item);

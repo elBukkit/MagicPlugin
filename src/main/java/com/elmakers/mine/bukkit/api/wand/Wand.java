@@ -108,6 +108,7 @@ public interface Wand extends CostReducer {
     public boolean showCastMessages();
     public boolean showMessages();
     public String getTemplateKey();
+    public WandTemplate getTemplate();
     public boolean isIndestructible();
     public void playEffects(String key);
     public boolean cast();
