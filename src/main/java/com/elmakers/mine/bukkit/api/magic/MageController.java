@@ -9,7 +9,7 @@ import java.util.logging.Logger;
 import com.elmakers.mine.bukkit.api.block.CurrencyItem;
 import com.elmakers.mine.bukkit.api.block.MaterialAndData;
 import com.elmakers.mine.bukkit.api.entity.EntityData;
-import com.elmakers.mine.bukkit.api.item.MagicItem;
+import com.elmakers.mine.bukkit.api.item.ItemData;
 import com.elmakers.mine.bukkit.api.maps.MapController;
 import com.elmakers.mine.bukkit.api.wand.WandUpgradePath;
 import org.bukkit.Location;
@@ -318,6 +318,6 @@ public interface MageController {
     public boolean commitOnQuit();
     
     public Set<String> getItemKeys();
-    public MagicItem getItem(String key);
-    public MagicItem getItem(ItemStack match);
+    public ItemData getItem(String key);
+    public ItemData getItem(ItemStack match);
 }
