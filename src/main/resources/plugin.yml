@@ -746,3 +746,11 @@ permissions:
   Magic.protected:
     description: The spells a player is immune to
     type: list
+  Magic.wand.overwrite:
+    description: A player may delete or overwrite saved wands
+    default: op
+    type: boolean
+  Magic.wand.overwrite_own:
+    description: A player may delete or overwrite their own saved wands
+    default: true
+    type: boolean
