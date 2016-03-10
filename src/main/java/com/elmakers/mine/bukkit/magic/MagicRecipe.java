@@ -42,7 +42,7 @@ public class MagicRecipe {
         substitue = ConfigurationUtils.getMaterial(configuration, "substitue", null);
         disableDefaultRecipe = configuration.getBoolean("disable_default", false);
 
-        outputItemType = configuration.getString("output_type", "");
+        outputItemType = configuration.getString("output_type", "item");
         ItemStack item = null;
 
         if (outputItemType.equalsIgnoreCase("wand"))
@@ -64,8 +64,7 @@ public class MagicRecipe {
         }
         else if (outputItemType.equalsIgnoreCase("item"))
         {
-            MaterialAndData material = new MaterialAndData(outputKey);
-            item = material.getItemStack(1);
+            item = controller.createItem(outputKey);
         }
         else
         {
@@ -76,7 +75,6 @@ public class MagicRecipe {
         }
 
         if (item != null) {
-            // CompatibilityUtils.removeCustomData(wandItem);
             outputType = item.getType();
             ShapedRecipe shaped = new ShapedRecipe(item);
             List<String> rows = new ArrayList<String>();
@@ -169,8 +167,7 @@ public class MagicRecipe {
         }
         else if (outputItemType.equalsIgnoreCase("item"))
         {
-            MaterialAndData material = new MaterialAndData(outputKey);
-            item = material.getItemStack(1);
+            item = controller.createItem(outputKey);
         }
 
         return item;
