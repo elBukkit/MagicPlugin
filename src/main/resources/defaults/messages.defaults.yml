@@ -100,6 +100,10 @@ item:
     lore_added: "Added lore: $lore"
     lore_removed: "Removed lore: $lore"
     no_lore: That item has no lore
+    not_unbreakable: That item is not unbreakable
+    already_unbreakable: That item is already unbreakable
+    add_unbreakable: That item is now unbreakable
+    remove_unbreakable: That item is no longer unbreakable
 wand:
     default_name: Wand
     upgrade_default_description: Will upgrade your wand.

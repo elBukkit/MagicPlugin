@@ -96,6 +96,7 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
 				options.add("attribute");
 				options.add("lore");
 				options.add("flag");
+				options.add("unbreakable");
 			}
 
 			if (subCommand.equalsIgnoreCase("remove")) {
@@ -103,6 +104,7 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
 				options.add("attribute");
 				options.add("lore");
 				options.add("flag");
+				options.add("unbreakable");
 			}
 
 			if (subCommand.equalsIgnoreCase("delete")) {
@@ -411,6 +413,30 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
 		return true;
 	}
 
+	public boolean onItemAddUnbreakable(Player player, ItemStack item)
+	{
+		if (InventoryUtils.isUnbreakable(item)) {
+			player.sendMessage(api.getMessages().get("item.already_unbreakable"));
+		} else {
+			InventoryUtils.makeUnbreakable(item);
+			player.sendMessage(api.getMessages().get("item.add_unbreakable"));
+		}
+
+		return true;
+	}
+
+	public boolean onItemRemoveUnbreakable(Player player, ItemStack item)
+	{
+		if (!InventoryUtils.isUnbreakable(item)) {
+			player.sendMessage(api.getMessages().get("item.not_unbreakable"));
+		} else {
+			InventoryUtils.removeUnbreakable(item);
+			player.sendMessage(api.getMessages().get("item.remove_unbreakable"));
+		}
+
+		return true;
+	}
+
 	public boolean onItemAddLore(Player player, ItemStack item, String loreLine)
 	{
 		ItemMeta itemMeta = item.getItemMeta();
@@ -459,10 +485,16 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
 	
 	public boolean onItemAdd(Player player, ItemStack item, String[] parameters)
 	{
-		if (parameters.length < 2) {
+		if (parameters.length < 1) {
 			return false;
 		}
 		String addCommand = parameters[0];
+		if (addCommand.equalsIgnoreCase("unbreakable")) {
+			return onItemAddUnbreakable(player, item);
+		}
+		if (parameters.length < 2) {
+			return false;
+		}
 		if (addCommand.equalsIgnoreCase("flag")) {
 			return onItemAddFlag(player, item, parameters[1]);
 		}
@@ -492,6 +524,11 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
 			return false;
 		}
 		String removeCommand = parameters[0];
+
+		if (removeCommand.equalsIgnoreCase("unbreakable")) {
+			return onItemRemoveUnbreakable(player, item);
+		}
+		
 		String firstParameter = parameters.length > 1 ? parameters[1] : null;
 		if (removeCommand.equalsIgnoreCase("flag")) {
 			return onItemRemoveFlag(player, item, firstParameter);
