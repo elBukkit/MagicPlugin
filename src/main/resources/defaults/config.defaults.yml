@@ -341,6 +341,9 @@ drop_changes_pages: false
 # You can turn this feature off by setting this to false.
 backup_player_inventory: true
 
+# The default wand, given when using "/wand"
+default_wand: default
+
 # The default enchanting path.
 # The default default is "master" for backwards compatibility reasons
 # This means that wands prior to 3.3 will be counted as Master wands regardless of type.
