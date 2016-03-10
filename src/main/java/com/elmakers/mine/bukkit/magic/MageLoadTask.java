@@ -1,6 +1,8 @@
 package com.elmakers.mine.bukkit.magic;
 
 import com.elmakers.mine.bukkit.api.data.MageData;
+import com.elmakers.mine.bukkit.api.event.MageLoadEvent;
+import org.bukkit.Bukkit;
 
 public class MageLoadTask implements Runnable {
     private final Mage mage;
@@ -16,6 +18,8 @@ public class MageLoadTask implements Runnable {
         try {
             mage.onLoad(data);
             mage.setLoading(false);
+            MageLoadEvent event = new MageLoadEvent(mage, data == null);
+            Bukkit.getPluginManager().callEvent(event);
         } catch (Exception ex) {
             mage.getController().getLogger().warning("Failed to load mage data for player " + mage.getName());
             mage.setLoading(true);
