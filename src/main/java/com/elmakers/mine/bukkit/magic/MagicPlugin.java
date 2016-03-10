@@ -454,7 +454,7 @@ public class MagicPlugin extends JavaPlugin implements MagicAPI
 
 	@Override
 	public Collection<String> getWandKeys() {
-		return Wand.getWandKeys();
+		return controller.getWandTemplateKeys();
 	}
 
 	@Override

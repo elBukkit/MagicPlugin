@@ -24,6 +24,7 @@ import com.elmakers.mine.bukkit.api.spell.CostReducer;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellKey;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
+import com.elmakers.mine.bukkit.api.wand.WandTemplate;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.block.MaterialBrush;
 import com.elmakers.mine.bukkit.effect.builtin.EffectRing;
@@ -66,6 +67,8 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	public final static int HOTBAR_INVENTORY_SIZE = HOTBAR_SIZE - 1;
 	public final static float DEFAULT_SPELL_COLOR_MIX_WEIGHT = 0.0001f;
 	public final static float DEFAULT_WAND_COLOR_MIX_WEIGHT = 1.0f;
+	public static int MAX_LORE_LENGTH = 24;
+	public static String DEFAULT_WAND_TEMPLATE = "default";
 
     public final static String[] EMPTY_PARAMETERS = new String[0];
 
@@ -230,10 +233,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	
 	// Kinda of a hacky initialization optimization :\
 	private boolean suspendSave = false;
-
-	// Wand configurations
-	protected static Map<String, WandTemplate> wandTemplates = new HashMap<String, WandTemplate>();
-
+	
     public static WandManaMode manaMode = WandManaMode.BAR;
     public static WandManaMode spMode = WandManaMode.NUMBER;
     public static boolean regenWhileInactive = true;
@@ -256,8 +256,6 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 
     private Inventory storedInventory = null;
     private int storedSlot;
-
-    private static final ItemStack[] itemTemplate = new ItemStack[0];
 
 	public Wand(MagicController controller, ItemStack itemStack) {
 		this.controller = controller;
@@ -303,51 +301,49 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		String wandName = controller.getMessages().get("wand.default_name");
 		String wandDescription = "";
 
-		// Check for default wand
-		if ((templateName == null || templateName.length() == 0) && wandTemplates.containsKey("default"))
+		// Default to "default" wand
+		if (templateName == null || templateName.length() == 0)
 		{
-			templateName = "default";
+			templateName = DEFAULT_WAND_TEMPLATE;
 		}
 		
-		// See if there is a template with this key
-		if (templateName != null && templateName.length() > 0) {
-            // Check for randomized/pre-enchanted wands
-            int level = 0;
-            if (templateName.contains("(")) {
-                String levelString = templateName.substring(templateName.indexOf('(') + 1, templateName.length() - 1);
-                try {
-                    level = Integer.parseInt(levelString);
-                } catch (Exception ex) {
-                    throw new IllegalArgumentException(ex);
-                }
-                templateName = templateName.substring(0, templateName.indexOf('('));
-            }
-
-			if (!wandTemplates.containsKey(templateName)) {
-				throw new UnknownWandException(templateName);
+		// Check for randomized/pre-enchanted wands
+		int level = 0;
+		if (templateName.contains("(")) {
+			String levelString = templateName.substring(templateName.indexOf('(') + 1, templateName.length() - 1);
+			try {
+				level = Integer.parseInt(levelString);
+			} catch (Exception ex) {
+				throw new IllegalArgumentException(ex);
 			}
-			ConfigurationSection wandConfig = getTemplateConfiguration(templateName);
+			templateName = templateName.substring(0, templateName.indexOf('('));
+		}
 
-			// Default to template names, override with localizations
-            wandName = wandConfig.getString("name", wandName);
-			wandName = controller.getMessages().get("wands." + templateName + ".name", wandName);
-            wandDescription = wandConfig.getString("description", wandDescription);
-			wandDescription = controller.getMessages().get("wands." + templateName + ".description", wandDescription);
+		ConfigurationSection wandConfig = controller.getWandTemplateConfiguration(templateName);
 
-			// Load all properties
-			loadProperties(wandConfig);
+		if (wandConfig == null) {
+			throw new UnknownWandException(templateName);
+		}
 
-            // Add vanilla enchantments
-			InventoryUtils.applyEnchantments(item, wandConfig.getConfigurationSection("enchantments"));
+		// Default to template names, override with localizations
+		wandName = wandConfig.getString("name", wandName);
+		wandName = controller.getMessages().get("wands." + templateName + ".name", wandName);
+		wandDescription = wandConfig.getString("description", wandDescription);
+		wandDescription = controller.getMessages().get("wands." + templateName + ".description", wandDescription);
 
-            // Enchant, if an enchanting level was provided
-            if (level > 0) {
-                // Account for randomized locked wands
-                boolean wasLocked = locked;
-                locked = false;
-                randomize(level, false, null, true);
-                locked = wasLocked;
-            }
+		// Load all properties
+		loadProperties(wandConfig);
+
+		// Add vanilla enchantments
+		InventoryUtils.applyEnchantments(item, wandConfig.getConfigurationSection("enchantments"));
+
+		// Enchant, if an enchanting level was provided
+		if (level > 0) {
+			// Account for randomized locked wands
+			boolean wasLocked = locked;
+			locked = false;
+			randomize(level, false, null, true);
+			locked = wasLocked;
 		}
 		setDescription(wandDescription);
 		setName(wandName);
@@ -1552,7 +1548,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 			// Check for migration information in the template config
 			ConfigurationSection templateConfig = null;
 			if (template != null && !template.isEmpty()) {
-				templateConfig = getTemplateConfiguration(template);
+				templateConfig = controller.getWandTemplateConfiguration(template);
 			}
 			String migrateTemplate = templateConfig == null ? null : templateConfig.getString("migrate_to");
 			if (migrateTemplate != null) {
@@ -2637,7 +2633,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		}
 
         if (other.rename && other.template != null && other.template.length() > 0) {
-            ConfigurationSection template = getTemplateConfiguration(other.template);
+            ConfigurationSection template = controller.getWandTemplateConfiguration(other.template);
 
             wandName = messages.get("wands." + other.template + ".name", wandName);
             wandName = template.getString("name", wandName);
@@ -2645,7 +2641,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         }
 
         if (other.renameDescription && other.template != null && other.template.length() > 0) {
-            ConfigurationSection template = getTemplateConfiguration(other.template);
+            ConfigurationSection template = controller.getWandTemplateConfiguration(other.template);
 
             description = messages.get("wands." + other.template + ".description", description);
             description = template.getString("description", description);
@@ -2906,40 +2902,6 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	public boolean keepOnDeath() {
 		return keep;
 	}
-	
-	public static void loadTemplates(MageController controller, ConfigurationSection properties) {
-		wandTemplates.clear();
-		
-		Set<String> wandKeys = properties.getKeys(false);
-		for (String key : wandKeys)
-		{
-            loadTemplate(controller, key, properties.getConfigurationSection(key));
-		}
-	}
-
-    public static void loadTemplate(MageController controller, String key, ConfigurationSection wandNode) {
-        wandNode.set("key", key);
-        if (wandNode.getBoolean("enabled", true)) {
-            wandTemplates.put(key, new WandTemplate(controller, key, wandNode));
-        }
-    }
-	
-	public static Collection<String> getWandKeys() {
-		return wandTemplates.keySet();
-	}
-	
-	public static Collection<WandTemplate> getWandTemplates() {
-		return wandTemplates.values();
-	}
-
-    public static ConfigurationSection getTemplateConfiguration(String key) {
-        WandTemplate template = getWandTemplate(key);
-        return template == null ? null : template.getConfiguration();
-    }
-
-    public static WandTemplate getWandTemplate(String key) {
-        return wandTemplates.get(key);
-    }
 
     public static WandMode parseWandMode(String modeString, WandMode defaultValue) {
 		for (WandMode testMode : WandMode.values()) {
@@ -3171,7 +3133,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         }
 
         if (template != null && template.length() > 0) {
-            ConfigurationSection wandConfig = getTemplateConfiguration(template);
+            ConfigurationSection wandConfig = controller.getWandTemplateConfiguration(template);
             if (wandConfig != null && wandConfig.contains("icon")) {
                 String iconKey = wandConfig.getString("icon");
                 if (iconKey.contains(",")) {
@@ -3245,7 +3207,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 			Wand wand = new Wand(controller, item);
             if (wand.isForcedUpgrade()) {
                 String template = wand.getTemplateKey();
-                ConfigurationSection templateConfig = getTemplateConfiguration(template);
+                ConfigurationSection templateConfig = controller.getWandTemplateConfiguration(template);
                 if (templateConfig == null) {
                     return false;
                 }
@@ -4716,9 +4678,10 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         return level != null && level > 0 ? (float)level : 0;
     }
 
+	@Override
 	public WandTemplate getTemplate() {
 		if (template == null || template.isEmpty()) return null;
-		return getWandTemplate(template);
+		return controller.getWandTemplate(template);
 	}
 
     public void playEffects(String effects) {

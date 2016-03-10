@@ -16,13 +16,15 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-public class WandTemplate {
+public class WandTemplate implements com.elmakers.mine.bukkit.api.wand.WandTemplate {
     private final MageController controller;
     private final String key;
     private final ConfigurationSection configuration;
     private Map<String, Collection<EffectPlayer>> effects = new HashMap<String, Collection<EffectPlayer>>();
     private Collection<EffectPlay> currentEffects = new ArrayList<EffectPlay>();
     private Set<String> tags;
+    private String creator;
+    private String creatorId;
 
     public WandTemplate(MageController controller, String key, ConfigurationSection node) {
         this.key = key;
@@ -30,6 +32,9 @@ public class WandTemplate {
         this.controller = controller;
 
         effects.clear();
+        creator = node.getString("creator");
+        creatorId = node.getString("creator_id");
+        
         if (node.contains("effects")) {
             ConfigurationSection effectsNode = node.getConfigurationSection("effects");
             Collection<String> effectKeys = effectsNode.getKeys(false);
@@ -55,14 +60,17 @@ public class WandTemplate {
         }
     }
 
+    @Override
     public String getKey() {
         return key;
     }
 
+    @Override
     public ConfigurationSection getConfiguration() {
         return configuration;
     }
 
+    @Override
     public Collection<com.elmakers.mine.bukkit.api.effect.EffectPlayer> getEffects(String key) {
         Collection<EffectPlayer> effectList = effects.get(key);
         if (effectList == null) {
@@ -71,11 +79,13 @@ public class WandTemplate {
         return new ArrayList<com.elmakers.mine.bukkit.api.effect.EffectPlayer>(effectList);
     }
 
+    @Override
     public void playEffects(Mage mage, String key)
     {
         playEffects(mage, key, 1.0f);
     }
 
+    @Override
     public void playEffects(Mage mage, String effectName, float scale)
     {
         currentEffects.clear();
@@ -112,7 +122,18 @@ public class WandTemplate {
         }
     }
 
+    @Override
     public boolean hasTag(String tag) {
         return tags != null && tags.contains(tag);
+    }
+
+    @Override
+    public String getCreatorId() {
+        return creatorId;
+    }
+
+    @Override
+    public String getCreator() {
+        return creator;
     }
 }

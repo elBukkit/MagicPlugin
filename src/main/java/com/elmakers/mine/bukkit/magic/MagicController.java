@@ -22,6 +22,7 @@ import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellKey;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
+import com.elmakers.mine.bukkit.api.wand.WandTemplate;
 import com.elmakers.mine.bukkit.block.Automaton;
 import com.elmakers.mine.bukkit.block.BlockData;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
@@ -1563,8 +1564,8 @@ public class MagicController implements MageController {
         enchanting.load(loader.enchanting);
         getLogger().info("Loaded " + enchanting.getCount() + " enchanting paths");
 
-        Wand.loadTemplates(this, loader.wands);
-        getLogger().info("Loaded " + Wand.getWandTemplates().size() + " wands");
+        loadWandTemplates(loader.wands);
+        getLogger().info("Loaded " + getWandTemplates().size() + " wands");
 
         crafting.load(loader.crafting);
         getLogger().info("Loaded " + crafting.getCount() + " crafting recipes");
@@ -2200,6 +2201,7 @@ public class MagicController implements MageController {
 		commitOnQuit = properties.getBoolean("commit_on_quit", commitOnQuit);
         saveNonPlayerMages = properties.getBoolean("save_non_player_mages", saveNonPlayerMages);
         defaultWandPath = properties.getString("default_wand_path", "");
+        Wand.DEFAULT_WAND_TEMPLATE = properties.getString("default_wand", "");
         defaultWandMode = Wand.parseWandMode(properties.getString("default_wand_mode", ""), defaultWandMode);
         defaultBrushMode = Wand.parseWandMode(properties.getString("default_brush_mode", ""), defaultBrushMode);
         backupInventories = properties.getBoolean("backup_player_inventory", true);
@@ -3430,6 +3432,43 @@ public class MagicController implements MageController {
 		return Wand.createWand(this, wandKey);
 	}
 
+    @Override
+    public WandTemplate getWandTemplate(String key) {
+        return wandTemplates.get(key);
+    }
+    
+    @Override
+    public Collection<WandTemplate> getWandTemplates() {
+        return wandTemplates.values();
+    }
+
+    public void loadWandTemplates(ConfigurationSection properties) {
+        wandTemplates.clear();
+
+        Set<String> wandKeys = properties.getKeys(false);
+        for (String key : wandKeys)
+        {
+            loadWandTemplate(key, properties.getConfigurationSection(key));
+        }
+    }
+
+    @Override
+    public void loadWandTemplate(String key, ConfigurationSection wandNode) {
+        wandNode.set("key", key);
+        if (wandNode.getBoolean("enabled", true)) {
+            wandTemplates.put(key, new com.elmakers.mine.bukkit.wand.WandTemplate(this, key, wandNode));
+        }
+    }
+
+    public Collection<String> getWandTemplateKeys() {
+        return wandTemplates.keySet();
+    }
+
+    public ConfigurationSection getWandTemplateConfiguration(String key) {
+        WandTemplate template = getWandTemplate(key);
+        return template == null ? null : template.getConfiguration();
+    }
+    
 	@Override
 	public boolean elementalsEnabled() 
 	{
@@ -3970,7 +4009,7 @@ public class MagicController implements MageController {
     }
 
     public ItemStack createGenericItem(String key) {
-        ConfigurationSection template = Wand.getTemplateConfiguration(key);
+        ConfigurationSection template = getWandTemplateConfiguration(key);
         if (template == null || !template.contains("icon")) {
             return null;
         }
@@ -4591,6 +4630,7 @@ public class MagicController implements MageController {
     private boolean                             asynchronousSaving              = true;
     private WarpController						warpController					= null;
 
+    private final Map<String, WandTemplate>     wandTemplates               = new HashMap<String, WandTemplate>();
     private final Map<String, SpellTemplate>    spells              		= new HashMap<String, SpellTemplate>();
     private final Map<String, SpellTemplate>    spellAliases                = new HashMap<String, SpellTemplate>();
     private final Map<String, SpellCategory>    categories              	= new HashMap<String, SpellCategory>();
