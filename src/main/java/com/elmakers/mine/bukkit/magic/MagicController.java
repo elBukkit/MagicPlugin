@@ -1552,9 +1552,6 @@ public class MagicController implements MageController {
         messages.load(loader.messages);
         loadMaterials(loader.materials);
 
-        enchanting.load(loader.enchanting);
-        getLogger().info("Loaded " + enchanting.getCount() + " enchanting paths");
-
         mobs.load(loader.mobs);
         getLogger().info("Loaded " + mobs.getCount() + " mob templates");
 
@@ -1563,6 +1560,9 @@ public class MagicController implements MageController {
 
         loadSpells(loader.spells);
         getLogger().info("Loaded " + spells.size() + " spells");
+
+        enchanting.load(loader.enchanting);
+        getLogger().info("Loaded " + enchanting.getCount() + " enchanting paths");
 
         Wand.loadTemplates(this, loader.wands);
         getLogger().info("Loaded " + Wand.getWandTemplates().size() + " wands");
