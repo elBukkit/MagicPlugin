@@ -138,6 +138,7 @@ public class NMSUtils {
     protected static Method class_NBTTagCompound_setIntMethod;
     protected static Method class_NBTTagCompound_removeMethod;
     protected static Method class_NBTTagCompound_getStringMethod;
+    protected static Method class_NBTTagCompound_getBooleanMethod;
     protected static Method class_NBTTagCompound_getIntMethod;
     protected static Method class_NBTTagCompound_getByteMethod;
     protected static Method class_NBTTagCompound_getMethod;
@@ -334,6 +335,7 @@ public class NMSUtils {
             class_NBTTagCompound_getStringMethod = class_NBTTagCompound.getMethod("getString", String.class);
             class_NBTTagCompound_getShortMethod = class_NBTTagCompound.getMethod("getShort", String.class);
             class_NBTTagCompound_getIntMethod = class_NBTTagCompound.getMethod("getInt", String.class);
+            class_NBTTagCompound_getBooleanMethod = class_NBTTagCompound.getMethod("getBoolean", String.class);
             class_NBTTagCompound_getByteMethod = class_NBTTagCompound.getMethod("getByte", String.class);
             class_NBTTagCompound_getByteArrayMethod = class_NBTTagCompound.getMethod("getByteArray", String.class);
             class_NBTTagCompound_getListMethod = class_NBTTagCompound.getMethod("getList", String.class, Integer.TYPE);
@@ -873,6 +875,17 @@ public class NMSUtils {
         return meta;
     }
 
+    public static Boolean getMetaBoolean(Object node, String tag) {
+        if (node == null || !class_NBTTagCompound.isInstance(node)) return null;
+        Boolean meta = null;
+        try {
+            meta = (Boolean)class_NBTTagCompound_getBooleanMethod.invoke(node, tag);
+        } catch (Throwable ex) {
+            ex.printStackTrace();
+        }
+        return meta;
+    }
+
     public static void setMeta(Object node, String tag, String value) {
         if (node == null|| !class_NBTTagCompound.isInstance(node)) return;
         try {
@@ -978,6 +991,22 @@ public class NMSUtils {
         } catch (Throwable ex) {
 
         }
+    }
+
+    public static boolean isUnbreakable(ItemStack stack) {
+        if (stack == null) return false;
+        Boolean unbreakableFlag = null;
+        try {
+            Object craft = getHandle(stack);
+            if (craft == null) return false;
+            Object tagObject = getTag(craft);
+            if (tagObject == null) return false;
+            unbreakableFlag = getMetaBoolean(tagObject, "Unbreakable");
+        } catch (Throwable ex) {
+
+        }
+        
+        return unbreakableFlag != null && unbreakableFlag;
     }
 
     public static void makeUnbreakable(ItemStack stack) {

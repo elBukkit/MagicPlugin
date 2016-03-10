@@ -159,17 +159,20 @@ commands:
        /mitem add attribute <attribute> <value>
        /mitem add flag <flag>
        /mitem add lore <some text>
+       /mitem add unbreakable
   "mitem remove":
     description: Remove enchantments, attributes or lore from an item
     usage: |
 
-       /mitem remove enchant <enchantment>
        /mitem remove enchant
+       /mitem remove enchant <enchantment>
        /mitem remove attribute
        /mitem remove attribute <attribute>
+       /mitem remove flag
        /mitem remove flag <flag>
        /mitem remove lore 3
        /mitem remove lore
+       /mitem remove unbreakable
     permission: Magic.commands.mitem.remove
   "mitem save":
     description: Save an item to a template
