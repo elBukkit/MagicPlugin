@@ -1,5 +1,7 @@
 # CHANGELOG
 
+## 6.1
+
 ## 6.0.4
 
  - Add craftable Ocarina item (Thank you, SexyToad!)
