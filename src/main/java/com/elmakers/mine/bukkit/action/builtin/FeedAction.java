@@ -34,7 +34,11 @@ public class FeedAction extends BaseSpellAction
 		}
 
         Player player = (Player)targetEntity;
-        if (feedAmount != 0 && player.getFoodLevel() >= MAX_FOOD_LEVEL)
+        if (feedAmount > 0 && player.getFoodLevel() >= MAX_FOOD_LEVEL)
+        {
+            return SpellResult.NO_TARGET;
+        }
+        if (feedAmount < 0 && player.getFoodLevel() == 0)
         {
             return SpellResult.NO_TARGET;
         }
