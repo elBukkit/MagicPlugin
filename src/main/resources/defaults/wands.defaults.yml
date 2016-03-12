@@ -90,29 +90,43 @@
 # This creates a basic starter wand, and is the default wand given with the "/wand" command.
 # 
 wand:
+    inherit: base_wand
     icon: wood_hoe:1
     migrate_icon: wood_hoe
     effect_color: random
     path: beginner
+    active_spell: missile
+    spells:
+     - missile
+     
+default:
+  migrate_to: wand
+
+#
+# Base templates
+# These are used to specify defaults for wands and other magic items.
+#
+base_wand:
     mode_drop: true
-    xp_max: 50
-    xp: 50
-    xp_regeneration: 5
     quiet: 1
     bound: true
     keep: true
     undroppable: true
     indestructible: true
     effect_bubbles: false
-    active_spell: missile
     attributes:
       GENERIC_ATTACK_SPEED: 10
     attribute_slot: mainhand
-    spells:
-     - missile
-     
-default:
-  migrate_to: wand
+  
+base_sword:
+    mode_drop: true
+    mode_cast: true
+    quiet: 1
+    bound: true
+    keep: true
+    undroppable: true
+    indestructible: true
+
 
 #
 #
@@ -131,62 +145,23 @@ default:
 #
 
 beginner:
-    icon: wood_hoe:1
-    migrate_icon: wood_hoe
-    effect_color: random
-    path: beginner
-    mode_drop: true
-    xp_max: 50
-    xp: 50
-    xp_regeneration: 5
-    quiet: 1
-    bound: true
-    keep: true
-    undroppable: true
-    indestructible: true
-    effect_bubbles: false
-    active_spell: missile
-    spells:
-     - missile
+    inherit: wand
 
 #
 # A wand that may only be enchanted 3 times
 #
 starter:
-    icon: wood_hoe:1
-    migrate_icon: wood_hoe
-    effect_color: random
-    mode_drop: true
-    icon: stick
-    glow: true
+    inherit: wand
     max_enchant_count: 3
-    path: beginner
-    xp_max: 50
-    xp: 50
-    xp_regeneration: 5
-    quiet: 1
-    bound: true
-    keep: false
-    undroppable: false
-    indestructible: false
-    effect_bubbles: false
-    active_spell: missile
-    spells:
-     - missile
 
 #
 # A sampling of "pre-levelled up" wands
 #
 student:
+    inherit: beginner
     icon: wood_hoe:2
     migrate_icon: wood_hoe
     effect_color: '00FF00'
-    mode_drop: true
-    path: student
-    bound: true
-    keep: true
-    undroppable: true
-    indestructible: true
     xp_regeneration: 30
     protection_falling: 0.5
     xp_max: 150
@@ -223,15 +198,12 @@ student:
       - shrink
 
 apprentice:
+    inherit: student
     icon: wood_hoe:3
     migrate_icon: wood_hoe
     effect_color: '22FF22'
     path: apprentice
-    indestructible: true
-    mode_drop: true
-    bound: true
-    keep: true
-    undroppable: true
+    hotbar_count: 2
     xp_regeneration: 40
     xp_max: 200
     xp: 200
@@ -239,7 +211,6 @@ apprentice:
     protection_physical: 0.8
     protection_fire: 0.5
     protection_explosions: 0.5
-    effect_bubbles: true
     spells:
       - missile
       - blink
@@ -292,19 +263,14 @@ apprentice:
       - walls
 
 master:
+    inherit: apprentice
     path: master
     icon: wood_hoe:4
     migrate_icon: gold_axe
     xp_regeneration: 50
     xp_max: 250
     xp: 250
-    effect_particle: town_aura
-    effect_particle_count: 2
-    mode_drop: true
-    keep: true
-    bound: true
-    undroppable: true
-    indestructible: true
+    hotbar_count: 3
     protection_falling: 1
     protection_physical: 0.8
     protection_fire: 0.8
@@ -363,22 +329,15 @@ master:
 # A starter battle wand
 #
 battle:
+    inherit: base_sword
     icon: gold_sword:1
     migrate_icon: gold_sword
     effect_color: '11FF11'
     protection_physical: 0.3
     path: battle
-    mode_drop: true
-    mode_cast: true
     xp_regeneration: 5
     xp_max: 50
     xp: 50
-    quiet: 1
-    bound: true
-    keep: true
-    undroppable: true
-    indestructible: true
-    glow: true
     spells:
       - missile
       - arrow
@@ -390,22 +349,16 @@ battle:
       - push
 
 rage:
+    inherit: base_sword
+    icon: diamond_sword
     effect_color: '11FF11'
     protection_physical: 0.3
     path: battle
     locked: true
-    mode_drop: true
-    mode_cast: true
-    icon: diamond_sword
     xp_regeneration: 0
     xp_max: 200
-    mana_per_damage: 5
     xp: 100
-    quiet: 1
-    bound: true
-    keep: true
-    undroppable: true
-    indestructible: true
+    mana_per_damage: 5
     glow: true
     spells:
       - missile
@@ -421,16 +374,15 @@ rage:
 # A starter engineering wand
 #
 engineer:
+    inherit: master
     effect_color: '00FF00'
     path: engineer
-    undroppable: true
-    indestructible: true
-    mode_drop: true
     icon: wood_hoe:5
     migrate_icon: gold_axe
     xp_regeneration: 90
     xp_max: 400
     xp: 400
+    organize: true
     spells:
       - rollback
       - alter
@@ -474,28 +426,17 @@ engineer:
       - schematic|rainbow_blocks
       - schematic|creeper_rug
 
-#
-# Super powered wands
-#
-
 architect:
+    inherit: engineer
     path: architect
-    keep: true
-    bound: true
-    undroppable: true
-    indestructible: true
-    mode_drop: true
     icon: wood_hoe:5
     migrate_icon: gold_pickaxe
-    effect_color: '00FF00'
+    effect_color: '8B008B'
     protection_falling: 1
     protection: 1
     xp_max: 500
     xp: 500
     xp_regeneration: 100
-    power: 0
-    effect_color: '8B008B'
-    effect_bubbles: true
     organize: true
     active_spell: levitate
     spells:
@@ -555,24 +496,22 @@ architect:
         - redstone_block
         - obsidian
 
+#
+# Super powered wands
+#
+
 conduit:
+    inherit: architect
     path: conduit
     consume_reduction: 1
-    keep: true
-    bound: true
-    undroppable: true
-    mode_drop: true
-    indestructible: true
     icon: wood_hoe:6
     migrate_icon: gold_pickaxe
-    effect_color: '00FF00'
+    effect_color: '8B008B'
     protection_falling: 1
     protection: 1
     xp_max: 600
     xp: 600
     xp_regeneration: 120
-    power: 0
-    effect_color: '8B008B'
     effect_bubbles: true
     organize: true
     active_spell: levitate
@@ -653,17 +592,11 @@ conduit:
         - schematic:tech_tower
 
 admin:
+    inherit: conduit
     icon: wood_hoe:6
     migrate_icon: monster_eggs:2
-    path: master
-    keep: true
-    bound: true
-    undroppable: true
-    mode_drop: true
-    indestructible: true
     cost_reduction: 2
     cooldown_reduction: 1
-    consume_reduction: 1
     protected: true
     effect_color: '888888'
     effect_bubbles: true
@@ -688,23 +621,15 @@ admin:
         - superrepair
 
 architectstaff:
-  hotbar_count: 3
+  inherit: conduit
   active_spell: pillar
   active_material: copy
   protected: true
   powered: true
   cost_reduction: 2
-  consume_reduction: 1
   effect_color: 8af553b2025f,0,8af553b2025f
-  keep: true
-  bound: true
-  locked: true
-  indestructible: true
-  undroppable: true
-  mode_drop: true
   icon: wood_hoe:6
   migrate_icon: gold_pickaxe
-  path: conduit
   spells:
     - absorb@8
     - alter@22
@@ -788,20 +713,14 @@ architectstaff:
     - wood
 
 staff:
+  inherit: master
   hotbar_count: 2
   active_spell: levitate|4
   cost_reduction: 2
   effect_color: 00FFAA
-  keep: true
-  bound: true
-  locked: true
-  indestructible: true
-  undroppable: true
-  mode_drop: true
   protected: true
   icon: wood_hoe:6
   migrate_icon: gold_pickaxe
-  path: master
   spells:
     - blink|6
     - cloak
@@ -816,17 +735,11 @@ staff:
     - fling|4
     
 developer:
+    inherit: conduit
     icon: wood_hoe:10
     migrate_icon: monster_eggs:4
-    path: master
-    keep: true
-    bound: true
-    undroppable: true
-    mode_drop: true
-    indestructible: true
     cost_reduction: 2
     cooldown_reduction: 2
-    consume_reduction: 1
     protected: true
     effect_color: 'FFAA00'
     effect_bubbles: true
@@ -850,13 +763,9 @@ developer:
         - superrepair
 
 borealis:
-    path: master
+    inherit: master
     icon: wood_hoe:10
     migrate_icon: gold_axe
-    keep: true
-    bound: true
-    undroppable: true
-    indestructible: true
     quiet: 2
     effect_color: '00AACC'
     mode: chest
@@ -896,14 +805,9 @@ borealis:
         - force
 
 miniwolf:
-    path: master
+    inherit: master
     icon: wood_hoe:8
     migrate_icon: gold_axe
-    keep: true
-    bound: true
-    undroppable: true
-    indestructible: true
-    quiet: 1
     hotbar_count: 2
     effect_color: '00AACC'
     mode: inventory
@@ -954,22 +858,19 @@ miniwolf:
         - mount
 
 wolf:
+  inherit: conduit
   icon: wood_hoe:7
   migrate_icon: gold_hoe
   path: conduit
   hotbar_count: 3
-  keep: true
-  bound: true
   fill: true
-  indestructible: true
   protected: true
   powered: true
-  undroppable: true
   mode_drop: true
   cost_reduction: 2.0
   cooldown_reduction: 2.0
   consume_reduction: 1
-  mode: INVENTORY
+  mode: inventory
   effect_color: 0,aa0000000000,cc0000000000
   effect_particle_radius: 0.2
   effect_particle_offset: 0.3
@@ -979,9 +880,6 @@ wolf:
   potion_effects:
     - SATURATION
     - REGENERATION
-  attributes:
-    GENERIC_ATTACK_SPEED: 10
-  attribute_slot: mainhand
   active_material: erase
   active_spell: missile|4
   spells:
@@ -1141,6 +1039,7 @@ wolf:
     - wool
 
 conway:
+    inherit: architect
     effect_color: 'FFFFFF'
     xp_regeneration: 50
     xp_max: 500

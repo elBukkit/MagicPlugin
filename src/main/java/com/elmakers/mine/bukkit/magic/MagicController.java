@@ -3445,13 +3445,40 @@ public Set<Material> getMaterialSet(String name)
         return wandTemplates.values();
     }
 
+    protected ConfigurationSection resolveConfiguration(String key, ConfigurationSection properties, Map<String, ConfigurationSection> configurations) {
+        ConfigurationSection configuration = configurations.get(key);
+        if (configuration == null) {
+            configuration = properties.getConfigurationSection(key);
+            if (configuration == null) {
+                return null;
+            }
+            String inherits = configuration.getString("inherit");
+            if (inherits != null) {
+                ConfigurationSection baseConfiguration = resolveConfiguration(inherits, properties, configurations);
+                if (baseConfiguration != null) {
+                    ConfigurationSection newConfiguration = new MemoryConfiguration();
+                    ConfigurationUtils.addConfigurations(newConfiguration, baseConfiguration);
+                    ConfigurationUtils.addConfigurations(newConfiguration, configuration);
+                    
+                    // Some properties don't inherit, this is kind of hacky.
+                    newConfiguration.set("hidden", configuration.get("hidden"));
+                    configuration = newConfiguration;
+                }
+            }
+            configurations.put(key, configuration);
+        }
+        
+        return configuration;
+    }
+    
     public void loadWandTemplates(ConfigurationSection properties) {
         wandTemplates.clear();
 
         Set<String> wandKeys = properties.getKeys(false);
+        Map<String, ConfigurationSection> templateConfigurations = new HashMap<String, ConfigurationSection>();
         for (String key : wandKeys)
         {
-            loadWandTemplate(key, properties.getConfigurationSection(key));
+            loadWandTemplate(key, resolveConfiguration(key, properties, templateConfigurations));
         }
     }
 
