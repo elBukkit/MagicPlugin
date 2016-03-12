@@ -1698,6 +1698,7 @@ frost:
         entity_undo: false
         freeze_lava: false
         breakable: 4
+        ice: frosted_ice
     costs:
         mana: 40
 
@@ -1724,7 +1725,7 @@ frost|3:
         entity_damage: 6
         duration: 3000
         effect_slow: 1
-        undo: 5000
+        undo: 8000
         cooldown: 8000
     costs:
         mana: 60
@@ -1736,7 +1737,7 @@ frost|4:
         entity_damage: 8
         duration: 3500
         effect_slow: 1
-        undo: 6000
+        undo: 10000
         cooldown: 7000
         freeze_lava: true
     costs:
