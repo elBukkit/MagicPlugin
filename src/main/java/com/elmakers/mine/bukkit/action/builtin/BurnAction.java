@@ -18,7 +18,7 @@ public class BurnAction extends BaseSpellAction
 			return SpellResult.NO_TARGET;
 		}
 		Material material = Material.FIRE;
-		if (block.getType() == Material.ICE || block.getType() == Material.SNOW)
+		if (block.getType() == Material.ICE || block.getType() == Material.SNOW || block.getType() == Material.PACKED_ICE || block.getType() == Material.FROSTED_ICE)
 		{
 			material = Material.AIR;
 		}
