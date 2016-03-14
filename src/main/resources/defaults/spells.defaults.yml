@@ -2461,7 +2461,8 @@ icbm:
            sound: entity_ghast_shoot
         hit:
         - class: EffectSingle
-          effect: explosion_huge
+          particle: explosion_huge
+          sound: entity_generic_explode
     parameters:
         target: none
         size: 1
