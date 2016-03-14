@@ -216,8 +216,14 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         cooldownReduction = reduction;
     }
 
+    @Override
     public void setPowerMultiplier(float mutliplier) {
         powerMultiplier = mutliplier;
+    }
+
+    @Override
+    public float getPowerMultiplier() {
+        return powerMultiplier;
     }
 
     public boolean usesMana() {
