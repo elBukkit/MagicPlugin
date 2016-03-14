@@ -336,6 +336,8 @@ public interface Mage extends CostReducer {
     public Color getEffectColor();
     public String getEffectParticleName();
     public float getPower();
+    public float getPowerMultiplier();
+    public void setPowerMultiplier(float power);
 
     public boolean isPlayer();
     public boolean isOnline();
