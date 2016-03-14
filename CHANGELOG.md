@@ -1,5 +1,7 @@
 # CHANGELOG
 
+## 6.1
+
 ## 6.0.5
 
  - REQUIRES Spigot build 697 or higher!
