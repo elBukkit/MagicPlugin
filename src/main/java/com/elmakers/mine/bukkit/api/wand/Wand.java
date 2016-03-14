@@ -117,6 +117,9 @@ public interface Wand extends CostReducer {
     public boolean isUndroppable();
     public boolean isQuickCastDisabled();
     public boolean isInventoryOpen();
+    public boolean isQuickCast();
+    public boolean isDropToggle();
+    public void cycleHotbar();
     public void damageDealt(double damage, Entity target);
     public int getSpellLevel(String spellKey);
     public boolean hasTag(String tag);
