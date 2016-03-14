@@ -3938,6 +3938,9 @@ public Set<Material> getMaterialSet(String name)
     @Override
     public ItemStack createItem(String magicItemKey, boolean brief) {
         ItemStack itemStack = null;
+        if (magicItemKey == null) {
+            return null;
+        }
 
         // Check for amounts
         int amount = 1;
