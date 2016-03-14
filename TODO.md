@@ -3,6 +3,7 @@
  - Offhand items disappear on death?
  - Casting while standing on a gold pressure plate doesn't work :|
  - Arenas preventing last death Recall isn't working?
+ - Some kind of gliding-without-Elytra mechanic involving cancelling the glide event?
 
  - I think action-specific parameters should not inherit down. Might be a tricky change.
  - Add wand appearance shop

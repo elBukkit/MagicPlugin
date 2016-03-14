@@ -1,9 +1,10 @@
 # CHANGELOG
 
-## 6.1
+## 6.0.5
 
  - REQUIRES Spigot build 697 or higher!
  - The offhand swap button (F) is now used to cycle hotbars
+ - Fix brooms
 
 ## 6.0.4
 
