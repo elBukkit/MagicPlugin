@@ -952,7 +952,9 @@ public class LevitateSpell extends TargetingSpell implements Listener
         if (armorStandMarker) {
             armorStand.setMarker(true);
         }
-        armorStand.setGravity(false);
+        // WTF, API? Why is noclip related to gravity?
+        // Note to self: don't use the API here, it breaks all the things.
+        CompatibilityUtils.setGravity(armorStand, false);
         CompatibilityUtils.setDisabledSlots(armorStand, 2039552);
         if (armorStandArm != null) {
             armorStand.setRightArmPose(new EulerAngle(armorStandArm.getX(), armorStandArm.getY(), armorStandArm.getZ()));

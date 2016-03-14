@@ -177,6 +177,7 @@ public class NMSUtils {
     protected static Method class_ChestLock_isEmpty;
     protected static Method class_ChestLock_getString;
     protected static Method class_ArmorStand_setInvisible;
+    protected static Method class_ArmorStand_setGravity;
     protected static Method class_CraftPlayer_getHandleMethod;
     protected static Method class_CraftChunk_getHandleMethod;
     protected static Method class_CraftEntity_getHandleMethod;
@@ -362,6 +363,7 @@ public class NMSUtils {
             class_Entity_getIdMethod = class_Entity.getMethod("getId");
             class_Entity_getDataWatcherMethod = class_Entity.getMethod("getDataWatcher");
             class_ArmorStand_setInvisible = class_EntityArmorStand.getDeclaredMethod("setInvisible", Boolean.TYPE);
+            class_ArmorStand_setGravity = class_EntityArmorStand.getDeclaredMethod("setGravity", Boolean.TYPE);
             class_CraftPlayer_getHandleMethod = class_CraftPlayer.getMethod("getHandle");
             class_CraftChunk_getHandleMethod = class_CraftChunk.getMethod("getHandle");
             class_CraftEntity_getHandleMethod = class_CraftEntity.getMethod("getHandle");

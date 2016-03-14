@@ -886,6 +886,15 @@ public class CompatibilityUtils extends NMSUtils {
         }
     }
 
+    public static void setGravity(ArmorStand armorStand, boolean gravity) {
+        try {
+            Object handle = getHandle(armorStand);
+            class_ArmorStand_setGravity.invoke(handle, gravity);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
     public static void setDisabledSlots(ArmorStand armorStand, int disabledSlots) {
         try {
             Object handle = getHandle(armorStand);
