@@ -184,7 +184,7 @@ wand:
     spell_override_upgraded: "&r&6$name &d&ohas been upgraded"
     upgraded_property: "&r&dYour $wand has been upgraded to &r&b$name"
     mana_added: "&r&dYour $wand now has $value mana"
-    hotbar_added: "&r&aYour $wand's hotbar has been upgraded! &r&bPress Q while your $wand is active"
+    hotbar_added: "&r&aYour $wand's hotbar has been upgraded! &r&bPress F while your $wand is active"
     player_upgraded: $name's wand upgraded
     player_not_upgraded: $name's wand not upgraded
     no_item: You are not holding an item

@@ -3006,6 +3006,11 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		}
 	}
 
+	@Override
+	public void cycleHotbar() {
+		cycleHotbar(1);
+	}
+
 	public void cycleHotbar(int direction) {
 		if (!hasInventory || getMode() != WandMode.INVENTORY) {
 			return;
@@ -3013,11 +3018,6 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		if (isInventoryOpen() && mage != null && hotbars.size() > 1) {
 			saveInventory();
 			int hotbarCount = hotbars.size();
-            if (dropToggle && currentHotbar + direction >= hotbarCount) {
-                closeInventory();
-                currentHotbar = 0;
-                return;
-            }
 			currentHotbar = hotbarCount == 0 ? 0 : (currentHotbar + hotbarCount + direction) % hotbarCount;
 			updateHotbar();
 			if (inventoryCycleSound != null) {
@@ -3907,10 +3907,12 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         return manualQuickCastDisabled;
     }
 
+	@Override
     public boolean isQuickCast() {
         return quickCast;
     }
 
+	@Override
     public boolean isDropToggle() {
         return dropToggle;
     }

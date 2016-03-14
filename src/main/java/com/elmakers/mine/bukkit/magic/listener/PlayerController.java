@@ -36,6 +36,7 @@ import org.bukkit.event.player.PlayerKickEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
+import org.bukkit.event.player.PlayerSwapHandItemsEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
@@ -143,6 +144,22 @@ public class PlayerController implements Listener {
             if (next.getType() == Material.MAP) {
                 mage.setLastHeldMapId(next.getDurability());
             }
+        }
+    }
+    
+    @EventHandler
+    public void onPlayerSwapItem(PlayerSwapHandItemsEvent event) {
+
+        final Player player = event.getPlayer();
+        Mage mage = controller.getRegisteredMage(player);
+        if (mage == null) return;
+        
+        final com.elmakers.mine.bukkit.api.wand.Wand activeWand = mage.getActiveWand();
+        if (activeWand == null) return;
+        
+        if (activeWand.isDropToggle() && activeWand.isInventoryOpen()) {
+            activeWand.cycleHotbar();
+            event.setCancelled(true);
         }
     }
 

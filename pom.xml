@@ -216,14 +216,14 @@
 		</dependency>
 	</dependencies>
 	<repositories>
-        <repository>
-            <id>elMakers</id>
-            <url>http://maven.elmakers.com/repository/</url>
-        </repository>
 		<repository>
 			<id>spigot-repo</id>
 			<url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
 		</repository>
+        <repository>
+            <id>elMakers</id>
+            <url>http://maven.elmakers.com/repository/</url>
+        </repository>
         <repository>
             <id>sk89q</id>
             <url>http://maven.sk89q.com/repo/</url>

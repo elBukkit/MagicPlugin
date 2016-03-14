@@ -2,6 +2,9 @@
 
 ## 6.1
 
+ - REQUIRES Spigot build 697 or higher!
+ - The offhand swap button (F) is now used to cycle hotbars
+
 ## 6.0.4
 
  - Add craftable Ocarina item (Thank you, SexyToad!)

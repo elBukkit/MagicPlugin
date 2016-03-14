@@ -2719,15 +2719,7 @@ public class MagicController implements MageController {
                 }
                 else
                 {
-                    if (wand.isDropToggle() && wand.isInventoryOpen() && wand.getHotbarCount() > 1) {
-                        if (player.isSneaking()) {
-                            wand.closeInventory();
-                        } else {
-                            wand.cycleHotbar(1);
-                        }
-                    } else {
-                        wand.toggleInventory();
-                    }
+                    wand.toggleInventory();
                 }
             }
         } else {
