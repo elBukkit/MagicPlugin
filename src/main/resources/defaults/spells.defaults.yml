@@ -10970,7 +10970,7 @@ glide:
         - class: FallProtection
         - class: Velocity
         - class: Delay
-        - class: DeployElytra
+        - class: Glide
     effects:
         cast:
         -  class: EffectSingle

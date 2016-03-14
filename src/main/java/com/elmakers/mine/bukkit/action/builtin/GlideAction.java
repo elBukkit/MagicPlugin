@@ -3,23 +3,22 @@ package com.elmakers.mine.bukkit.action.builtin;
 import com.elmakers.mine.bukkit.action.BaseSpellAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
-import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.Player;
+import org.bukkit.entity.LivingEntity;
 
-public class DeployElytraAction extends BaseSpellAction
+public class GlideAction extends BaseSpellAction
 {
 	@Override
 	public SpellResult perform(CastContext context)
 	{
         Entity targetEntity = context.getTargetEntity();
-		if (!(targetEntity instanceof Player))
+		if (!(targetEntity instanceof LivingEntity))
 		{
 			return SpellResult.NO_TARGET;
 		}
 
-        Player player = (Player)targetEntity;
-        CompatibilityUtils.deployElytra(player);
+		LivingEntity livingEntity = (LivingEntity)targetEntity;
+		livingEntity.setGliding(true);
 
 		return SpellResult.CAST;
 	}
