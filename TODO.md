@@ -4,6 +4,8 @@
  - Casting while standing on a gold pressure plate doesn't work :|
  - Arenas preventing last death Recall isn't working?
  - Some kind of gliding-without-Elytra mechanic involving cancelling the glide event?
+ - Support SP in CastingCost. Maybe part of the Cost/CastingCost refactor.
+ - Spell count limit on wands or paths?
 
  - I think action-specific parameters should not inherit down. Might be a tricky change.
  - Add wand appearance shop

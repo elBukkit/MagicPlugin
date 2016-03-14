@@ -39,6 +39,11 @@ public class MagicRecipe {
 
     public boolean load(ConfigurationSection configuration) {
         outputKey = configuration.getString("output");
+
+        if (outputKey == null) {
+            return false;
+        }
+        
         substitue = ConfigurationUtils.getMaterial(configuration, "substitue", null);
         disableDefaultRecipe = configuration.getBoolean("disable_default", false);
 
@@ -68,10 +73,7 @@ public class MagicRecipe {
         }
         else
         {
-            // Backwards-compatibility
-            outputType = ConfigurationUtils.getMaterial(configuration, "input", null);
-            outputType = ConfigurationUtils.getMaterial(configuration, "output", outputType);
-            return outputType != null;
+            return false;
         }
 
         if (item != null) {
