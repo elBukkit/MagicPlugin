@@ -3,6 +3,7 @@ package com.elmakers.mine.bukkit.magic.command;
 import com.elmakers.mine.bukkit.api.item.ItemData;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.magic.MagicAPI;
+import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.integration.VaultController;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import org.apache.commons.lang.StringUtils;
@@ -12,6 +13,7 @@ import org.bukkit.attribute.Attribute;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
@@ -201,6 +203,18 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
 	}
 
 	public boolean onItemDescribe(Player player, ItemStack item) {
+		MaterialAndData material = new MaterialAndData(item);
+		player.sendMessage(ChatColor.GOLD + material.getKey());
+		YamlConfiguration configuration = new YamlConfiguration();
+		if (InventoryUtils.loadAllTagsFromNBT(configuration, item)) {
+			player.sendMessage(ChatColor.YELLOW + " ---- EXTRA DATA ---- ");
+			String itemString = configuration.saveToString().replace(ChatColor.COLOR_CHAR, '&');
+			player.sendMessage(itemString);
+		}
+		return true;
+	}
+	
+	public boolean onItemSerialize(Player player, ItemStack item) {
 		YamlConfiguration configuration = new YamlConfiguration();
 		configuration.set("item", item);
 		String itemString = configuration.saveToString().replace("item:", "").replace(ChatColor.COLOR_CHAR, '&');
