@@ -165,10 +165,10 @@ public class ActionSpell extends BrushSpell
         requiresBuildPermission = false;
         requiresBreakPermission = false;
         usesBrush = template.getBoolean("uses_brush", false);
-        if (template.contains("actions"))
+        ConfigurationSection actionsNode = template.getConfigurationSection("actions");
+        if (actionsNode != null)
         {
             ConfigurationSection parameters = template.getConfigurationSection("parameters");
-            ConfigurationSection actionsNode = template.getConfigurationSection("actions");
             Object baseActions = actionsNode.get("cast");
 
             Collection<String> templateKeys = template.getKeys(false);
