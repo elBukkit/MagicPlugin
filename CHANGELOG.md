@@ -3,6 +3,7 @@
 ## 6.1
 
  - Add "Capture" spell- Conduit (staff) only for now. Captures any mob into a spawn egg.
+ - Add support for a few attributes to the /mitem command (attack damage, attack speed, movement speed)
 
 ## 6.0.5
 

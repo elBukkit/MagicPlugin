@@ -1199,11 +1199,63 @@ public class CompatibilityUtils extends NMSUtils {
         }
         return true;
     }
+
+    public static boolean removeItemAttribute(ItemStack item, Attribute attribute) {
+        try {
+            Object handle = getHandle(item);
+            if (handle == null) return false;
+            Object tag = getTag(handle);
+            if (tag == null) return false;
+
+            // Well this is ugly. 
+            // TODO Replace with API!
+            String attributeName = null;
+            switch (attribute) {
+                case GENERIC_ATTACK_SPEED:
+                    attributeName = "generic.attackSpeed";
+                    break;
+                case GENERIC_ATTACK_DAMAGE:
+                    attributeName = "generic.attackDamage";
+                    break;
+                case GENERIC_MOVEMENT_SPEED:
+                    attributeName = "generic.movementSpeed";
+                    break;
+            }
+
+            if (attributeName == null) {
+                return false;
+            }
+            
+            Object attributesNode = getNode(tag, "AttributeModifiers");
+            if (attributesNode == null) {
+                return false;
+            }
+            int size = (Integer)class_NBTTagList_sizeMethod.invoke(attributesNode);
+            for (int i = 0; i < size; i++) {
+                Object candidate = class_NBTTagList_getMethod.invoke(attributesNode, i);
+                String key = getMeta(candidate, "AttributeName");
+                if (key.equals(attributeName)) {
+                    if (size == 1) {
+                        removeMeta(tag, "AttributeModifiers");
+                    } else {
+                        class_NBTTagList_removeMethod.invoke(attributesNode, i);
+                    }
+                    return true;
+                }
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return false;
+        }
+        return true;
+    }
     
     public static boolean setItemAttribute(ItemStack item, Attribute attribute, double value, String slot) {
         try {
             Object handle = getHandle(item);
-            if (handle == null) return false;
+            if (handle == null) {
+                return false;
+            }
             Object tag = getTag(handle);
             if (tag == null) return false;
             
@@ -1217,6 +1269,14 @@ public class CompatibilityUtils extends NMSUtils {
                 case GENERIC_ATTACK_SPEED:
                     attributeName = "generic.attackSpeed";
                     attributeUUID = UUID.fromString("FA233E1C-4180-4865-B01B-BCCE9785ACA3");
+                    break;
+                case GENERIC_ATTACK_DAMAGE:
+                    attributeName = "generic.attackDamage";
+                    attributeUUID = UUID.fromString("CB3F55D3-645C-4F38-A497-9C13A33DB5CF");
+                    break;
+                case GENERIC_MOVEMENT_SPEED:
+                    attributeName = "generic.movementSpeed";
+                    attributeUUID = UUID.fromString("662A6B8D-DA3E-4C1C-8813-96EA6097278D");
                     break;
             }
             

@@ -123,6 +123,7 @@ public class NMSUtils {
     protected static Method class_NBTTagList_getMethod;
     protected static Method class_NBTTagList_getDoubleMethod;
     protected static Method class_NBTTagList_sizeMethod;
+    protected static Method class_NBTTagList_removeMethod;
     protected static Method class_NBTTagCompound_getKeysMethod;
     protected static Method class_NBTTagCompound_setMethod;
     protected static Method class_DataWatcher_setMethod;
@@ -325,6 +326,7 @@ public class NMSUtils {
             class_NBTTagList_getMethod = class_NBTTagList.getMethod("get", Integer.TYPE);
             class_NBTTagList_getDoubleMethod = class_NBTTagList.getMethod("e", Integer.TYPE);
             class_NBTTagList_sizeMethod = class_NBTTagList.getMethod("size");
+            class_NBTTagList_removeMethod = class_NBTTagList.getMethod("remove", Integer.TYPE);
             class_NBTTagCompound_setMethod = class_NBTTagCompound.getMethod("set", String.class, class_NBTBase);
             class_World_getEntitiesMethod = class_World.getMethod("getEntities", class_Entity, class_AxisAlignedBB);
             class_CraftWorld_getTileEntityAtMethod = class_CraftWorld.getMethod("getTileEntityAt", Integer.TYPE, Integer.TYPE, Integer.TYPE);

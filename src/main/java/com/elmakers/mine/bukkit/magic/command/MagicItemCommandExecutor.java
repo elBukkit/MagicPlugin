@@ -5,6 +5,7 @@ import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.magic.MagicAPI;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.integration.VaultController;
+import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
@@ -514,6 +515,63 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
 		return true;
 	}
 
+	public boolean onItemAddAttribute(Player player, ItemStack item, String attributeName, String attributeValue, String attributeSlot)
+	{
+		Attribute attribute = null;
+		if (attributeName == null) return false;
+
+		try {
+			attribute = Attribute.valueOf(attributeName.toUpperCase());
+		} catch (Exception ex) {
+			player.sendMessage(ChatColor.RED + "Invalid attribute: " + ChatColor.WHITE + attributeName);
+			return true;
+		}
+
+		double value = 0;
+		try {
+			value = Double.parseDouble(attributeValue);
+		} catch (Exception ex) {
+			player.sendMessage(ChatColor.RED + "Invalid attribute value: " + ChatColor.WHITE + attributeValue);
+			return true;
+		}
+		
+		if (CompatibilityUtils.setItemAttribute(item, attribute, value, attributeSlot)) {
+			if (attributeSlot == null) {
+				attributeSlot = "(All Slots)";
+			}
+
+			player.sendMessage(api.getMessages().get("item.attribute_added")
+					.replace("$attribute", attribute.name())
+					.replace("$value", Double.toString(value))
+					.replace("$slot", attributeSlot));
+		} else {
+			player.sendMessage(api.getMessages().get("item.attribute_not_added").replace("$attribute", attribute.name()));
+		}
+
+		return true;
+	}
+
+	public boolean onItemRemoveAttribute(Player player, ItemStack item, String attributeName)
+	{
+		Attribute attribute = null;
+		if (attributeName == null) return false;
+		
+		try {
+			attribute = Attribute.valueOf(attributeName.toUpperCase());
+		} catch (Exception ex) {
+			player.sendMessage(ChatColor.RED + "Invalid attribute: " + ChatColor.WHITE + attributeName);
+			return true;
+		}
+
+		if (!CompatibilityUtils.removeItemAttribute(item, attribute)) {
+			player.sendMessage(api.getMessages().get("item.no_attribute").replace("$attribute", attribute.name()));
+		} else {
+			player.sendMessage(api.getMessages().get("item.attribute_removed").replace("$attribute", attribute.name()));
+		}
+
+		return true;
+	}
+
 	public boolean onItemAddUnbreakable(Player player, ItemStack item)
 	{
 		if (InventoryUtils.isUnbreakable(item)) {
@@ -612,8 +670,8 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
 			return onItemAddEnchant(player, item, parameters[1], parameters[2]);
 		}
 		if (addCommand.equalsIgnoreCase("attribute")) {
-			player.sendMessage(ChatColor.RED + "Not yet implemented!");
-			return true;
+			String slot = parameters.length > 3 ? parameters[3] : null;
+			return onItemAddAttribute(player, item, parameters[1], parameters[2], slot);
 		}
 		return false;
 	}
@@ -640,8 +698,7 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
 			return onItemRemoveEnchant(player, item, firstParameter);
 		}
 		if (removeCommand.equalsIgnoreCase("attribute")) {
-			player.sendMessage(ChatColor.RED + "Not yet implemented!");
-			return true;
+			return onItemRemoveAttribute(player, item, firstParameter);
 		}
 		return false;
 	}
