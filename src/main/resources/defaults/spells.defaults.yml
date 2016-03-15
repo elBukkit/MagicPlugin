@@ -9298,6 +9298,21 @@ sellshop:
         use_items: false
         sell: true
 
+mobshop:
+  inherit: buyshop
+  parameters:
+    items:
+    - item: philbertegg
+      cost: 500
+    - item: mutantegg
+      cost: 400
+    - item: witherarcheregg
+      cost: 300
+    - item: zombiehorseegg
+      cost: 1000
+    - item: skelliehorseegg
+      cost: 1000
+
 automatashop:
     icon: command
     category: npc

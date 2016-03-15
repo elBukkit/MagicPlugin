@@ -4,6 +4,8 @@
 
  - Add "Capture" spell- Conduit (staff) only for now. Captures any mob into a spawn egg.
  - Add support for a few attributes to the /mitem command (attack damage, attack speed, movement speed)
+ - Add "Philbert Egg" item, a charged creeper egg. DANGER! 
+ - Add "mobshop" for selling mob eggs, several more custom spawn eggs
 
 ## 6.0.5
 
