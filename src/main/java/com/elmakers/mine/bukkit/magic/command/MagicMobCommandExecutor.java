@@ -2,6 +2,7 @@ package com.elmakers.mine.bukkit.magic.command;
 
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.magic.MagicAPI;
+import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -9,6 +10,7 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.command.BlockCommandSender;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
@@ -50,7 +52,7 @@ public class MagicMobCommandExecutor extends MagicTabExecutor {
             return true;
         }
 
-        if (!(sender instanceof Player) && args.length < 6) {
+        if (!(sender instanceof Player) && !(sender instanceof BlockCommandSender) && args.length < 6) {
             sender.sendMessage(ChatColor.RED + "Usage: mmob spawn <type> <x> <y> <z> <world>");
             return true;
         }
@@ -58,6 +60,8 @@ public class MagicMobCommandExecutor extends MagicTabExecutor {
         Location targetLocation = null;
         World targetWorld = null;
         Player player = (sender instanceof Player) ? (Player)sender : null;
+        BlockCommandSender commandBlock = (sender instanceof BlockCommandSender) ? (BlockCommandSender)sender : null;
+
         if (args.length >= 6) {
             targetWorld = Bukkit.getWorld(args[5]);
             if (targetWorld == null) {
@@ -66,11 +70,32 @@ public class MagicMobCommandExecutor extends MagicTabExecutor {
             }
         } else if (player != null) {
             targetWorld = player.getWorld();
+        } else if (commandBlock != null) {
+            Block block = commandBlock.getBlock();
+            targetWorld = block.getWorld();
+            targetLocation = block.getLocation();
         }
 
         if (args.length >= 5) {
             try {
-                targetLocation = new Location(targetWorld, Double.parseDouble(args[2]), Double.parseDouble(args[3]), Double.parseDouble(args[4]));
+                double currentX = 0;
+                double currentY = 0;
+                double currentZ = 0;
+                if (player != null) {
+                    Location currentLocation = player.getLocation();
+                    currentX = currentLocation.getX();
+                    currentY = currentLocation.getY();
+                    currentZ = currentLocation.getZ();
+                } else if (commandBlock != null) {
+                    Block blockLocation = commandBlock.getBlock();
+                    currentX = blockLocation.getX();
+                    currentY = blockLocation.getY();
+                    currentZ = blockLocation.getZ();
+                }
+                targetLocation = new Location(targetWorld,
+                        ConfigurationUtils.overrideDouble(args[2], currentX),
+                        ConfigurationUtils.overrideDouble(args[3], currentY),
+                        ConfigurationUtils.overrideDouble(args[4], currentZ));
             } catch (Exception ex) {
                 targetLocation = null;
             }

@@ -452,9 +452,8 @@ public class ConfigurationUtils extends ConfigUtils {
         return 0;
     }
 
-    protected static double overrideDouble(ConfigurationSection node, double value, String nodeName)
+    public static double overrideDouble(String override, double value)
     {
-        String override = node.getString(nodeName);
         if (override == null || override.length() == 0) return value;
         try {
             if (override.startsWith("~")) {
@@ -471,6 +470,12 @@ public class ConfigurationUtils extends ConfigUtils {
         }
 
         return value;
+    }
+
+    protected static double overrideDouble(ConfigurationSection node, double value, String nodeName)
+    {
+        String override = node.getString(nodeName);
+        return overrideDouble(override, value);
     }
 
     public static World overrideWorld(ConfigurationSection node, String path, World world, boolean canCreateWorlds) {

@@ -6,6 +6,7 @@
  - Some kind of gliding-without-Elytra mechanic involving cancelling the glide event?
  - Support SP in CastingCost. Maybe part of the Cost/CastingCost refactor.
  - Spell count limit on wands or paths?
+ - Add support for relative coordinates (~) to mmob command
  
  - "Triggered" spells.. ? Apparently MagicSpells does this or somesuch.
    Examples- Activated spells/ passive spells Upon taking damage- activate a heal spell effect Upon dealing damage- explosion in line of sight
