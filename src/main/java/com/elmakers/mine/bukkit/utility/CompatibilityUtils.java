@@ -1266,13 +1266,34 @@ public class CompatibilityUtils extends NMSUtils {
             ex.printStackTrace();
         }
     }
-    
-    public static void deployElytra(Player player) {
+
+    public static Object getEntityData(Entity entity) {
+        if (class_Entity_saveMethod == null) return null;
+        
+        Object data = null;
         try {
-            Object playerHandle = getHandle(player);
-            class_EntityPlayer_deployElytraMethod.invoke(playerHandle);
+            Object nmsEntity = getHandle(entity);
+            if (nmsEntity != null) {
+                data = class_NBTTagCompound.newInstance();
+                class_Entity_saveMethod.invoke(nmsEntity, data);
+            }
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+        return data;
+    }
+    
+    public static String getEntityType(Entity entity) {
+        if (class_Entity_getTypeMethod == null) return null;
+        String entityType = null;
+        try {
+            Object nmsEntity = getHandle(entity);
+            if (nmsEntity != null) {
+                entityType = (String)class_Entity_getTypeMethod.invoke(nmsEntity);
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return entityType;
     }
 }

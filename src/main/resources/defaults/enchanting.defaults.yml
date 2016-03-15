@@ -694,6 +694,7 @@ conduit:
       day: 0,5,10
       night: 0,0,1
       weather: 0,0,5
+      capture: 10,20,30
     material_count:
       1:  50, 20, 20
       3:  1,  10, 30

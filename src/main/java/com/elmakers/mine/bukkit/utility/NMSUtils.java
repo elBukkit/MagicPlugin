@@ -123,6 +123,7 @@ public class NMSUtils {
     protected static Method class_NBTTagList_getMethod;
     protected static Method class_NBTTagList_getDoubleMethod;
     protected static Method class_NBTTagList_sizeMethod;
+    protected static Method class_NBTTagCompound_getKeysMethod;
     protected static Method class_NBTTagCompound_setMethod;
     protected static Method class_DataWatcher_setMethod;
     protected static Method class_World_getEntitiesMethod;
@@ -148,6 +149,8 @@ public class NMSUtils {
     protected static Method class_NBTTagCompound_getShortMethod;
     protected static Method class_NBTTagCompound_getByteArrayMethod;
     protected static Method class_NBTTagCompound_getListMethod;
+    protected static Method class_Entity_saveMethod;
+    protected static Method class_Entity_getTypeMethod;
     protected static Method class_TileEntity_loadMethod;
     protected static Method class_TileEntity_saveMethod;
     protected static Method class_TileEntity_updateMethod;
@@ -184,7 +187,6 @@ public class NMSUtils {
     protected static Method class_CraftLivingEntity_getHandleMethod;
     protected static Method class_CraftWorld_getHandleMethod;
     protected static Method class_EntityPlayer_openSignMethod;
-    protected static Method class_EntityPlayer_deployElytraMethod;
     protected static Method class_CraftServer_getServerMethod;
     protected static Method class_MinecraftServer_getResourcePackMethod;
     protected static Method class_MinecraftServer_getResourcePackHashMethod;
@@ -370,7 +372,6 @@ public class NMSUtils {
             class_CraftLivingEntity_getHandleMethod = class_CraftLivingEntity.getMethod("getHandle");
             class_CraftWorld_getHandleMethod = class_CraftWorld.getMethod("getHandle");
             class_EntityPlayer_openSignMethod = class_EntityPlayer.getMethod("openSign", class_TileEntitySign);
-            class_EntityPlayer_deployElytraMethod = class_EntityPlayer.getMethod("M");
             class_CraftServer_getServerMethod = class_CraftServer.getMethod("getServer");
             class_MinecraftServer_getResourcePackMethod = class_MinecraftServer.getMethod("getResourcePack");
             class_MinecraftServer_getResourcePackHashMethod = class_MinecraftServer.getMethod("getResourcePackHash");
@@ -486,6 +487,10 @@ public class NMSUtils {
                     class_EntityArmorStand_disabledSlotsField = class_EntityArmorStand.getDeclaredField("bz");
                     class_TileEntityContainer_setLock = class_TileEntityContainer.getMethod("a", class_ChestLock);
                     class_TileEntityContainer_getLock = class_TileEntityContainer.getMethod("y_");
+                    class_Entity_saveMethod = class_Entity.getMethod("e", class_NBTTagCompound);
+                    class_Entity_getTypeMethod = class_Entity.getDeclaredMethod("as");
+                    class_Entity_getTypeMethod.setAccessible(true);
+                    class_NBTTagCompound_getKeysMethod = class_NBTTagCompound.getMethod("c");
                 } catch (Throwable ignore) {
                     // 1.8 and lower
                     class_TileEntity_saveMethod = class_TileEntity.getMethod("b", class_NBTTagCompound);
@@ -961,6 +966,39 @@ public class NMSUtils {
         } catch (Throwable ex) {
             ex.printStackTrace();
         }
+    }
+
+    public static void setMetaNode(Object node, String tag, Object child) {
+        if (node == null || !class_NBTTagCompound.isInstance(node)) return;
+        try {
+            if (child == null) {
+                class_NBTTagCompound_removeMethod.invoke(node, tag);
+            } else {
+                class_NBTTagCompound_setMethod.invoke(node, tag, child);
+            }
+        } catch (Throwable ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public static boolean setMetaNode(ItemStack stack, String tag, Object child) {
+        if (stack == null) return false;
+        try {
+            Object craft = getHandle(stack);
+            if (craft == null) return false;
+            Object node = getTag(craft);
+            if (node == null) return false;
+            if (child == null) {
+                class_NBTTagCompound_removeMethod.invoke(node, tag);
+            } else {
+                class_NBTTagCompound_setMethod.invoke(node, tag, child);
+            }
+        } catch (Throwable ex) {
+            ex.printStackTrace();
+            return false;
+        }
+        
+        return true;
     }
 
     public static String getMeta(ItemStack stack, String tag) {

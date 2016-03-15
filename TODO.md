@@ -6,6 +6,9 @@
  - Some kind of gliding-without-Elytra mechanic involving cancelling the glide event?
  - Support SP in CastingCost. Maybe part of the Cost/CastingCost refactor.
  - Spell count limit on wands or paths?
+ 
+ - "Triggered" spells.. ? Apparently MagicSpells does this or somesuch.
+   Examples- Activated spells/ passive spells Upon taking damage- activate a heal spell effect Upon dealing damage- explosion in line of sight
 
  - I think action-specific parameters should not inherit down. Might be a tricky change.
  - Add wand appearance shop

@@ -1283,6 +1283,11 @@ spells:
         usage: Must kill the target to receive skull
         cast: Shrink!
         cast_entity: You shrink $target
+    capture:
+        name: Capture
+        description: Captures the target entity into a spawn egg
+        cast: Catch 'em all!
+        cast_entity: You capture $target
     grow:
         name: Grow
         description: Grows certain entities

@@ -11202,3 +11202,27 @@ trinketshop:
           cost: 10
         - item: popcorn
           cost: 10
+          
+capture:
+  icon: monster_egg
+  actions:
+    cast:
+    - class: Capture
+  effects:
+      cast:
+      -  class: EffectSingle
+         sound: entity_endermen_teleport
+         sound_pitch: 0.1
+         sound_volume: 0.5
+         location: origin
+         effectlib:
+           class: ConeEffect
+           iterations: 11
+           particle: spell_instant
+           lengthGrow: 0.4
+      -  class: EffectSingle
+         location: target
+         color: "81F7D8"
+         firework: star
+  parameters:
+    range: 32

@@ -2,6 +2,8 @@
 
 ## 6.1
 
+ - Add "Capture" spell- Conduit (staff) only for now. Captures any mob into a spawn egg.
+
 ## 6.0.5
 
  - REQUIRES Spigot build 697 or higher!
