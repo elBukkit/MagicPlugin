@@ -75,7 +75,8 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
 	public Collection<String> onTabComplete(CommandSender sender, String commandName, String[] args) {
 		List<String> options = new ArrayList<String>();
 
-		if (args.length == 1) {
+		if (args.length == 1) 
+		{
 			addIfPermissible(sender, options, "Magic.commands.mitem.", "add");
 			addIfPermissible(sender, options, "Magic.commands.mitem.", "remove");
 			addIfPermissible(sender, options, "Magic.commands.mitem.", "name");
@@ -86,7 +87,8 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
 			addIfPermissible(sender, options, "Magic.commands.mitem.", "worth");
 		}
 
-		if (args.length == 2) {
+		if (args.length == 2) 
+		{
 			String subCommand = args[0];
 			String subCommandPNode = "Magic.commands.mitem." + subCommand;
 
@@ -158,6 +160,20 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
 				options.add("1");
 				options.add("2");
 				options.add("3");
+			}
+		}
+		
+		if (args.length == 5)
+		{
+			String subCommand = args[0];
+			String subCommand2 = args[1];
+			if (subCommand.equalsIgnoreCase("add") && subCommand2.equalsIgnoreCase("attribute")) {
+				options.add("mainhand");
+				options.add("offhand");
+				options.add("feet");
+				options.add("legs");
+				options.add("chest");
+				options.add("head");
 			}
 		}
 
