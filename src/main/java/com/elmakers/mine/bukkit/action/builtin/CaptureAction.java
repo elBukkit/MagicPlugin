@@ -55,12 +55,11 @@ public class CaptureAction extends BaseSpellAction {
         ItemStack spawnEgg = new ItemStack(Material.MONSTER_EGG);
         
         String entityName = targetEntity.getCustomName();
-        if (entityName == null || entityName.isEmpty()) {
-            entityName = targetEntity.getType().name().toLowerCase().replace("_", " ");
+        if (entityName != null && !entityName.isEmpty()) {
+            ItemMeta meta = spawnEgg.getItemMeta();
+            meta.setDisplayName("Spawn " + entityName);
+            spawnEgg.setItemMeta(meta);
         }
-        ItemMeta meta = spawnEgg.getItemMeta();
-        meta.setDisplayName("Spawn " + entityName);
-        spawnEgg.setItemMeta(meta);
         spawnEgg = InventoryUtils.makeReal(spawnEgg);
         
         // Add entity type attribute
