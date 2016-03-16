@@ -32,6 +32,7 @@ public class MageData {
     private Float storedExperience;
     private Integer storedLevel;
     private boolean openWand;
+    private boolean gaveWelcomeWand;
 
     public MageData(String id) {
         this.id = id;
@@ -206,5 +207,13 @@ public class MageData {
 
     public void setOpenWand(boolean openWand) {
         this.openWand = openWand;
+    }
+
+    public boolean getGaveWelcomeWand() {
+        return gaveWelcomeWand;
+    }
+
+    public void setGaveWelcomeWand(boolean gaveWelcomeWand) {
+        this.gaveWelcomeWand = gaveWelcomeWand;
     }
 }
