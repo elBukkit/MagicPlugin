@@ -613,13 +613,10 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
                 if (activeWand == null) {
                     String welcomeWand = controller.getWelcomeWand();
-                    org.bukkit.Bukkit.getLogger().info("No active wand: " + gaveWelcomeWand + ", " + welcomeWand);
                     Wand wand = Wand.getActiveWand(controller, player);
                     if (wand != null) {
-                        org.bukkit.Bukkit.getLogger().info("Has wand, activating");
                         wand.activate(this);
                     } else if (!gaveWelcomeWand && welcomeWand.length() > 0) {
-                        org.bukkit.Bukkit.getLogger().info("Is new player, welcome: " + welcomeWand);
                         gaveWelcomeWand = true;
                         wand = Wand.createWand(controller, welcomeWand);
                         if (wand != null) {
