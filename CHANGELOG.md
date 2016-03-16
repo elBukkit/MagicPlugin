@@ -1,6 +1,6 @@
 # CHANGELOG
 
-## 6.1
+## 6.0.6
 
  - Add "Capture" spell- Conduit (staff) only for now. Captures any mob into a spawn egg.
  - Add support for a few attributes to the /mitem command (attack damage, attack speed, movement speed)
