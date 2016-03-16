@@ -58,6 +58,7 @@ public interface CastContext {
     public void registerDamaged(Entity entity);
     public void registerForUndo(Entity entity);
     public void registerForUndo(Block block);
+    public void clearAttachables(Block block);
     public void updateBlock(Block block);
     public void registerVelocity(Entity entity);
     public void registerMoved(Entity entity);

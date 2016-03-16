@@ -58,6 +58,7 @@ public interface UndoList extends BlockList, Comparable<UndoList> {
     public void cancelExplosion(Entity entity);
     public void setBatch(Batch batch);
     public void setSpell(Spell spell);
+    public void clearAttachables(Block block);
 
     public boolean contains(Location location, int threshold);
 
