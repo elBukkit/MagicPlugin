@@ -126,6 +126,7 @@ public class MagicTraitCommandExecutor extends MagicTabExecutor {
             options.add("cost");
             options.add("permission");
             options.add("invisible");
+            options.add("command");
 
             Collection<SpellTemplate> spellList = api.getSpellTemplates(sender.hasPermission("Magic.bypass_hidden"));
             for (SpellTemplate spell : spellList) {
