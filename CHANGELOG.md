@@ -1,5 +1,7 @@
 # CHANGELOG
 
+## 6.1
+
 ## 6.0.7
 
  - Falling blocks won't cause physics updates if the spell that launched them doesn't
@@ -7,12 +9,14 @@
 
 ## 6.0.6
 
+ - Fix the default wand having no mana- SORRY about that!
+ - Fix issues with cooldowns resetting when they shouldn't
+ - Fix welcome_wand feature
  - Add "Capture" spell- Conduit (staff) only for now. Captures any mob into a spawn egg.
  - Add support for a few attributes to the /mitem command (attack damage, attack speed, movement speed)
  - Add "Philbert Egg" item, a charged creeper egg. DANGER! 
  - Add "mobshop" for selling mob eggs, several more custom spawn eggs
  - Add relative location support to the "mmob spawn" command
- - Fix welcome_wand feature
 
 ## 6.0.5
 
