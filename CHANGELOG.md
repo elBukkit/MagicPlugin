@@ -2,6 +2,8 @@
 
 ## 6.1
 
+ - Falling blocks won't cause physics updates if the spell that launched them doesn't
+
 ## 6.0.6
 
  - Add "Capture" spell- Conduit (staff) only for now. Captures any mob into a spawn egg.
