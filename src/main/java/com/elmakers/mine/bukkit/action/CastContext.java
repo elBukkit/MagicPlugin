@@ -337,6 +337,16 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
             undoList.add(entity);
         }
     }
+    
+    @Override
+    public void clearAttachables(Block block)
+    {
+        addWork(50);
+        if (undoList != null)
+        {
+            undoList.clearAttachables(block);
+        }
+    }
 
     @Override
     public void registerForUndo(Block block)

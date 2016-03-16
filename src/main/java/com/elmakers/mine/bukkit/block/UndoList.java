@@ -154,6 +154,41 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
     }
 
     @Override
+    public void clearAttachables(Block block)
+    {
+        clearAttachables(block, BlockFace.NORTH, attachablesWall);
+        clearAttachables(block, BlockFace.SOUTH, attachablesWall);
+        clearAttachables(block, BlockFace.EAST, attachablesWall);
+        clearAttachables(block, BlockFace.WEST, attachablesWall);
+        clearAttachables(block, BlockFace.UP, attachables);
+        clearAttachables(block, BlockFace.DOWN, attachables);
+    }
+
+    protected boolean clearAttachables(Block block, BlockFace direction, Set<Material> materials)
+    {
+        if (materials == null) return false;
+        
+        Block testBlock = block.getRelative(direction);
+        Long blockId = com.elmakers.mine.bukkit.block.BlockData.getBlockId(testBlock);
+        
+        if (!materials.contains(testBlock.getType()))
+        {
+            return false;
+        }
+        
+        // Don't clear it if we've already modified it
+        if (blockIdMap != null && blockIdMap.contains(blockId))
+        {
+            return false;
+        }
+        
+        add(testBlock);
+        testBlock.setTypeIdAndData(Material.AIR.getId(), (byte)0, false);
+        
+        return true;
+    }
+    
+    @Override
     public boolean add(BlockData blockData)
     {
         if (bypass) return true;
@@ -165,7 +200,6 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
             BlockData attachedBlock = attached.remove(blockData.getId());
             if (attachedBlock != null) {
                 removeFromWatched(attachedBlock);
-
             }
         }
         register(blockData);

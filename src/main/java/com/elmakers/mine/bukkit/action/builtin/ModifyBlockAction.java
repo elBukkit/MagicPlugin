@@ -127,6 +127,9 @@ public class ModifyBlockAction extends BaseSpellAction {
 
         if (!commit) {
             context.registerForUndo(block);
+            if (brush.isErase()) {
+                context.clearAttachables(block);
+            }
         }
 
         brush.modify(block, applyPhysics);

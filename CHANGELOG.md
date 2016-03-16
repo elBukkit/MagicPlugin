@@ -3,6 +3,7 @@
 ## 5.5.5
 
  - Falling blocks won't cause physics updates if the spell that launched them doesn't
+ - Some fixes to tracking attached blocks, particularly fire, for undo
 
 ## 5.5.4
 
