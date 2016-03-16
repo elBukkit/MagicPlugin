@@ -96,6 +96,9 @@ wand:
     effect_color: random
     path: beginner
     active_spell: missile
+    xp_max: 50
+    xp: 50
+    xp_regeneration: 5
     spells:
      - missile
      
