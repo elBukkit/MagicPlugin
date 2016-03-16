@@ -1,6 +1,6 @@
 # CHANGELOG
 
-## 6.1
+## 6.0.7
 
  - Falling blocks won't cause physics updates if the spell that launched them doesn't
  - Some fixes to tracking attached blocks, particularly fire, for undo
