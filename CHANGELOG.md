@@ -3,7 +3,8 @@
 ## 5.5.4
 
  - Add "bypass_upgrade_commands" permission, useful for staff if your command contain rank-ups
-
+ - Fix welcome_wand feature
+ 
 ## 5.5.3
 
  - Fixed wands being placeable in droppers

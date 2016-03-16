@@ -142,6 +142,7 @@ public abstract class ConfigurationMageDataStore implements MageDataStore {
         saveFile.set("experience", mage.getStoredExperience());
         saveFile.set("level", mage.getStoredLevel());
         saveFile.set("open_wand", mage.isOpenWand());
+        saveFile.set("gave_welcome_wand", mage.getGaveWelcomeWand());
 
         Wand soulWand = mage.getSoulWand();
         if (soulWand != null) {
@@ -317,6 +318,7 @@ public abstract class ConfigurationMageDataStore implements MageDataStore {
             data.setStoredLevel(saveFile.getInt("level"));
         }
         data.setOpenWand(saveFile.getBoolean("open_wand", false));
+        data.setGaveWelcomeWand(saveFile.getBoolean("gave_welcome_wand", false));
 
         if (saveFile.contains("soul")) {
             ConfigurationSection soulNode = saveFile.getConfigurationSection("soul");
