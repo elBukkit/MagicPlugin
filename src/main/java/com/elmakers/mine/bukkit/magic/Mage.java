@@ -15,7 +15,6 @@ import java.util.Set;
 import java.util.logging.Level;
 
 import com.elmakers.mine.bukkit.action.TeleportTask;
-import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.action.GUIAction;
 import com.elmakers.mine.bukkit.api.batch.SpellBatch;
 import com.elmakers.mine.bukkit.api.data.BrushData;
@@ -23,7 +22,6 @@ import com.elmakers.mine.bukkit.api.data.MageData;
 import com.elmakers.mine.bukkit.api.data.SpellData;
 import com.elmakers.mine.bukkit.api.data.UndoData;
 import com.elmakers.mine.bukkit.api.effect.SoundEffect;
-import com.elmakers.mine.bukkit.api.spell.SpellKey;
 import com.elmakers.mine.bukkit.api.wand.WandUpgradePath;
 import com.elmakers.mine.bukkit.effect.HoloUtils;
 import com.elmakers.mine.bukkit.effect.Hologram;
@@ -138,7 +136,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     private long fallProtectionCount = 1;
     private BaseSpell fallingSpell = null;
 
-    private boolean isNewPlayer = true;
+    private boolean gaveWelcomeWand = false;
 
     private GUIAction gui = null;
 
@@ -615,11 +613,14 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
                 if (activeWand == null) {
                     String welcomeWand = controller.getWelcomeWand();
+                    org.bukkit.Bukkit.getLogger().info("No active wand: " + gaveWelcomeWand + ", " + welcomeWand);
                     Wand wand = Wand.getActiveWand(controller, player);
                     if (wand != null) {
+                        org.bukkit.Bukkit.getLogger().info("Has wand, activating");
                         wand.activate(this);
-                    } else if (isNewPlayer && welcomeWand.length() > 0) {
-                        isNewPlayer = false;
+                    } else if (!gaveWelcomeWand && welcomeWand.length() > 0) {
+                        org.bukkit.Bukkit.getLogger().info("Is new player, welcome: " + welcomeWand);
+                        gaveWelcomeWand = true;
                         wand = Wand.createWand(controller, welcomeWand);
                         if (wand != null) {
                             wand.takeOwnership(player, false, false);
@@ -679,7 +680,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                 fallProtection = System.currentTimeMillis() + fallProtection;
             }
 
-            isNewPlayer = false;
+            gaveWelcomeWand = data.getGaveWelcomeWand();
             playerName = data.getName();
             lastDeathLocation = data.getLastDeathLocation();
             lastCast = data.getLastCast();
@@ -778,6 +779,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                     data.setOpenWand(true);
                 }
             }
+            data.setGaveWelcomeWand(gaveWelcomeWand);
             data.setExtraData(this.data);
         } catch (Exception ex) {
             controller.getPlugin().getLogger().log(Level.WARNING, "Failed to save player data for " + playerName, ex);
@@ -992,14 +994,6 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                 spells.remove(key);
             }
         }
-    }
-
-    public boolean isNewPlayer() {
-        return this.isNewPlayer;
-    }
-
-    public void clearNewPlayer() {
-        this.isNewPlayer = false;
     }
 
 	/*

@@ -15,3 +15,5 @@ auto_rollback_speed: 0.5
 auto_rollback_explosions:
 - creeper
 - primed_tnt
+
+welcome_wand: ocarina

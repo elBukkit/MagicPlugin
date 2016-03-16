@@ -6,6 +6,8 @@
  - Add support for a few attributes to the /mitem command (attack damage, attack speed, movement speed)
  - Add "Philbert Egg" item, a charged creeper egg. DANGER! 
  - Add "mobshop" for selling mob eggs, several more custom spawn eggs
+ - Add relative location support to the "mmob spawn" command
+ - Fix welcome_wand feature
 
 ## 6.0.5
 
