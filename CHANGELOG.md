@@ -1,5 +1,7 @@
 # CHANGELOG
 
+## 5.5.5
+
 ## 5.5.4
 
  - Add "bypass_upgrade_commands" permission, useful for staff if your command contain rank-ups
