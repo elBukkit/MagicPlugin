@@ -4,6 +4,7 @@
 
  - Add "bypass_upgrade_commands" permission, useful for staff if your command contain rank-ups
  - Fix welcome_wand feature
+ - Fix some cooldown issues
  
 ## 5.5.3
 
