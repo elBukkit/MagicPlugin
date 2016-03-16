@@ -2,6 +2,8 @@
 
 ## 5.5.5
 
+ - Falling blocks won't cause physics updates if the spell that launched them doesn't
+
 ## 5.5.4
 
  - Add "bypass_upgrade_commands" permission, useful for staff if your command contain rank-ups

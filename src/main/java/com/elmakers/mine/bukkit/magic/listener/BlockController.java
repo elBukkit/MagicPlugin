@@ -244,7 +244,13 @@ public class BlockController implements Listener {
                 if (context != null && !context.hasBuildPermission(entity.getLocation().getBlock())) {
                     event.setCancelled(true);
                 } else {
-                    blockList.convert(entity, event.getBlock());
+                    Block block = event.getBlock();
+                    blockList.convert(entity, block);
+                    if (!blockList.getApplyPhysics()) {
+                        FallingBlock falling = (FallingBlock)entity;
+                        block.setTypeIdAndData(falling.getMaterial().getId(), falling.getBlockData(), false);
+                        event.setCancelled(true);
+                    }
                 }
             } else {
                 controller.registerFallingBlock(entity, event.getBlock());
