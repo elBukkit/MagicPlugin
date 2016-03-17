@@ -1,12 +1,12 @@
 # TODO
  
+ - Alter/grow/shrink should prevent mobs dropping loot
  - Offhand items disappear on death?
  - Casting while standing on a gold pressure plate doesn't work :|
  - Arenas preventing last death Recall isn't working?
  - Some kind of gliding-without-Elytra mechanic involving cancelling the glide event?
  - Support SP in CastingCost. Maybe part of the Cost/CastingCost refactor.
  - Spell count limit on wands or paths?
- - Add support for relative coordinates (~) to mmob command
  
  - "Triggered" spells.. ? Apparently MagicSpells does this or somesuch.
    Examples- Activated spells/ passive spells Upon taking damage- activate a heal spell effect Upon dealing damage- explosion in line of sight
@@ -23,7 +23,6 @@
 
  - Pull/Accio on top of an entity sends it skyrocketing
  - Column's radius doesn't seem to work
- - Action to turn spell into a spawn egg
    
  - CoreProtect integration
    http://minerealm.com/community/viewtopic.php?f=32&t=16362

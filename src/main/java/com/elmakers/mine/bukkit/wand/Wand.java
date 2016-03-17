@@ -1050,6 +1050,16 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 
         ConfigurationSection stateNode = new MemoryConfiguration();
         saveProperties(stateNode);
+		
+		if (isSoul() && mage != null) {
+			Wand soul = mage.getSoulWand();
+			MemoryConfiguration soulConfiguration = new MemoryConfiguration();
+			
+			// TODO: Config-driven list
+			soulConfiguration.set("spells", stateNode.get("spells"));
+			stateNode.set("spells", null);
+			soul.loadProperties(soulConfiguration);
+		}
 
 		Object wandNode = InventoryUtils.createNode(item, WAND_KEY);
 		if (wandNode == null) {
@@ -4122,6 +4132,16 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 
         mage.setActiveWand(this);
 
+		if (isSoul()) {
+			Wand soul = mage.getSoulWand();
+			MemoryConfiguration soulConfiguration = new MemoryConfiguration();
+			soul.saveProperties(soulConfiguration);
+			MemoryConfiguration soulProperties = new MemoryConfiguration();
+			
+			// TODO: Config-driven list
+			soulProperties.set("spells", soulConfiguration.getString("spells"));
+			loadProperties(soulProperties);
+		}
         tick();
         saveItemState();
 
