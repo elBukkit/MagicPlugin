@@ -101,6 +101,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         // For legacy wands
         "haste",
         "health_regeneration", "hunger_regeneration",
+		"xp", "xp_regeneration", "xp_max", "xp_max_boost", "xp_regeneration_boost",
     };
 	public final static String[] ALL_PROPERTY_KEYS = (String[])ArrayUtils.addAll(PROPERTY_KEYS, HIDDEN_PROPERTY_KEYS);
 	
