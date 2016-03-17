@@ -75,7 +75,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	public final static String[] PROPERTY_KEYS = {
 		"active_spell", "active_material",
         "path",  "template", "passive",
-		"xp", "xp_regeneration", "xp_max", "xp_max_boost", "xp_regeneration_boost",
+		"mana", "mana_regeneration", "mana_max", "mana_max_boost", "mana_regeneration_boost",
         "mana_per_damage",
 		"bound", "soul", "has_uses", "uses", "upgrade", "indestructible", "undroppable",
 		"consume_reduction", "cost_reduction", "cooldown_reduction", "effect_bubbles", "effect_color",
@@ -97,7 +97,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 
 	public final static String[] HIDDEN_PROPERTY_KEYS = {
 		"id", "owner", "owner_id", "name", "description",
-		"organize", "alphabetize", "fill", "stored", "upgrade_icon", "xp_timestamp", "upgrade_template",
+		"organize", "alphabetize", "fill", "stored", "upgrade_icon", "mana_timestamp", "upgrade_template",
         // For legacy wands
         "haste",
         "health_regeneration", "hunger_regeneration",
@@ -172,16 +172,16 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	private int uses = 0;
     private boolean hasUses = false;
     private boolean isSingleUse = false;
-	private float xp = 0;
+	private float mana = 0;
 
-    private float xpMaxBoost = 0;
-    private float xpRegenerationBoost = 0;
-	private int xpRegeneration = 0;
-	private int xpMax = 0;
-    private long lastXpRegeneration = 0;
+    private float manaMaxBoost = 0;
+    private float manaRegenerationBoost = 0;
+	private int manaRegeneration = 0;
+	private int manaMax = 0;
+    private long lastManaRegeneration = 0;
     private float manaPerDamage = 0;
-    private int effectiveXpMax = 0;
-    private int effectiveXpRegeneration = 0;
+    private int effectiveManaMax = 0;
+    private int effectiveManaRegeneration = 0;
 	
 	private ColorHD effectColor = null;
 	private float effectColorSpellMixWeight = DEFAULT_SPELL_COLOR_MIX_WEIGHT;
@@ -463,35 +463,35 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
     }
 
     public float getManaRegenerationBoost() {
-        return xpRegenerationBoost;
+        return manaRegenerationBoost;
     }
 
     public float getManaMaxBoost() {
-        return xpMaxBoost;
+        return manaMaxBoost;
     }
 	
 	public int getManaRegeneration() {
-		return xpRegeneration;
+		return manaRegeneration;
 	}
 
 	@Override
 	public int getManaMax() {
-		return xpMax;
+		return manaMax;
 	}
 
     @Override
     public void setMana(float mana) {
-        this.xp = Math.max(0, mana);
+        this.mana = Math.max(0, mana);
     }
 
     @Override
     public void setManaMax(int manaMax) {
-        this.xpMax = Math.max(0, manaMax);
+        this.manaMax = Math.max(0, manaMax);
     }
 
 	@Override
 	public float getMana() {
-		return xp;
+		return mana;
 	}
 
 	@Override
@@ -502,7 +502,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
                 heroes.removeMana(mage.getPlayer(), (int)Math.ceil(amount));
             }
         }
-		xp = Math.max(0,  xp - amount);
+		mana = Math.max(0,  mana - amount);
 		updateMana();
 	}
 	
@@ -526,7 +526,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	
 	public boolean usesMana() {
         if (isCostFree()) return false;
-		return xpMax > 0 || isHeroes;
+		return manaMax > 0 || isHeroes;
 	}
 
 	public float getCooldownReduction() {
@@ -1177,12 +1177,12 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		node.set("protection_falling", damageReductionFalling);
 		node.set("protection_fire", damageReductionFire);
 		node.set("protection_explosions", damageReductionExplosions);
-		node.set("xp", xp);
-		node.set("xp_regeneration", xpRegeneration);
-		node.set("xp_max", xpMax);
-        node.set("xp_max_boost", xpMaxBoost);
-        node.set("xp_regeneration_boost", xpRegenerationBoost);
-        node.set("xp_timestamp", lastXpRegeneration);
+		node.set("mana", mana);
+		node.set("mana_regeneration", manaRegeneration);
+		node.set("mana_max", manaMax);
+        node.set("mana_max_boost", manaMaxBoost);
+        node.set("mana_regeneration_boost", manaRegenerationBoost);
+        node.set("mana_timestamp", lastManaRegeneration);
         node.set("mana_per_damage", manaPerDamage);
 		node.set("uses", uses);
         node.set("has_uses", hasUses);
@@ -1395,16 +1395,17 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		damageReductionFire = safe ? Math.max(_damageReductionFire, damageReductionFire) : _damageReductionFire;
 		float _damageReductionExplosions = (float)wandConfig.getDouble("protection_explosions", damageReductionExplosions);
 		damageReductionExplosions = safe ? Math.max(_damageReductionExplosions, damageReductionExplosions) : _damageReductionExplosions;
-		int _xpRegeneration = wandConfig.getInt("xp_regeneration", xpRegeneration);
-		xpRegeneration = safe ? Math.max(_xpRegeneration, xpRegeneration) : _xpRegeneration;
-		int _xpMax = wandConfig.getInt("xp_max", xpMax);
-		xpMax = safe ? Math.max(_xpMax, xpMax) : _xpMax;
-		int _xp = wandConfig.getInt("xp", (int)xp);
-		xp = safe ? Math.max(_xp, xp) : _xp;
-        float _xpMaxBoost = (float)wandConfig.getDouble("xp_max_boost", xpMaxBoost);
-        xpMaxBoost = safe ? Math.max(_xpMaxBoost, xpMaxBoost) : _xpMaxBoost;
-        float _xpRegenerationBoost = (float)wandConfig.getDouble("xp_regeneration_boost", xpRegenerationBoost);
-        xpRegenerationBoost = safe ? Math.max(_xpRegenerationBoost, xpRegenerationBoost) : _xpRegenerationBoost;
+		
+		int _manaRegeneration = wandConfig.getInt("mana_regeneration", wandConfig.getInt("xp_regeneration", manaRegeneration));
+		manaRegeneration = safe ? Math.max(_manaRegeneration, manaRegeneration) : _manaRegeneration;
+		int _manaMax = wandConfig.getInt("mana_max", wandConfig.getInt("xp_max", manaMax));
+		manaMax = safe ? Math.max(_manaMax, manaMax) : _manaMax;
+		int _mana = wandConfig.getInt("mana", wandConfig.getInt("xp", (int) mana));
+		mana = safe ? Math.max(_mana, mana) : _mana;
+        float _manaMaxBoost = (float)wandConfig.getDouble("mana_max_boost", wandConfig.getDouble("xp_max_boost", manaMaxBoost));
+        manaMaxBoost = safe ? Math.max(_manaMaxBoost, manaMaxBoost) : _manaMaxBoost;
+        float _manaRegenerationBoost = (float)wandConfig.getDouble("mana_regeneration_boost", wandConfig.getDouble("xp_regeneration_boost", manaRegenerationBoost));
+        manaRegenerationBoost = safe ? Math.max(_manaRegenerationBoost, manaRegenerationBoost) : _manaRegenerationBoost;
         int _uses = wandConfig.getInt("uses", uses);
         uses = safe ? Math.max(_uses, uses) : _uses;
         String tempId = wandConfig.getString("id", id);
@@ -1430,9 +1431,9 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         }
 
         if (regenWhileInactive) {
-            lastXpRegeneration = wandConfig.getLong("xp_timestamp");
+            lastManaRegeneration = wandConfig.getLong("mana_timestamp");
         } else {
-            lastXpRegeneration = System.currentTimeMillis();
+            lastManaRegeneration = System.currentTimeMillis();
         }
 
 		if (wandConfig.contains("effect_color") && !safe) {
@@ -1854,18 +1855,18 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	protected void addPropertyLore(List<String> lore)
 	{
 		if (usesMana()) {
-            if (effectiveXpMax != xpMax) {
-                String fullMessage = getLevelString(controller.getMessages(), "wand.mana_amount_boosted", xpMax, controller.getMaxMana());
-                lore.add(ChatColor.LIGHT_PURPLE + "" + ChatColor.ITALIC + fullMessage.replace("$mana", Integer.toString(effectiveXpMax)));
+            if (effectiveManaMax != manaMax) {
+                String fullMessage = getLevelString(controller.getMessages(), "wand.mana_amount_boosted", manaMax, controller.getMaxMana());
+                lore.add(ChatColor.LIGHT_PURPLE + "" + ChatColor.ITALIC + fullMessage.replace("$mana", Integer.toString(effectiveManaMax)));
             } else {
-                lore.add(ChatColor.LIGHT_PURPLE + "" + ChatColor.ITALIC + getLevelString(controller.getMessages(), "wand.mana_amount", xpMax, controller.getMaxMana()));
+                lore.add(ChatColor.LIGHT_PURPLE + "" + ChatColor.ITALIC + getLevelString(controller.getMessages(), "wand.mana_amount", manaMax, controller.getMaxMana()));
             }
-            if (xpRegeneration > 0) {
-                if (effectiveXpRegeneration != xpRegeneration) {
-                    String fullMessage = getLevelString(controller.getMessages(), "wand.mana_regeneration_boosted", xpRegeneration, controller.getMaxManaRegeneration());
-                    lore.add(ChatColor.LIGHT_PURPLE + "" + ChatColor.ITALIC + fullMessage.replace("$mana", Integer.toString(effectiveXpRegeneration)));
+            if (manaRegeneration > 0) {
+                if (effectiveManaRegeneration != manaRegeneration) {
+                    String fullMessage = getLevelString(controller.getMessages(), "wand.mana_regeneration_boosted", manaRegeneration, controller.getMaxManaRegeneration());
+                    lore.add(ChatColor.LIGHT_PURPLE + "" + ChatColor.ITALIC + fullMessage.replace("$mana", Integer.toString(effectiveManaRegeneration)));
                 } else {
-                    lore.add(ChatColor.RESET + "" + ChatColor.LIGHT_PURPLE + getLevelString(controller.getMessages(), "wand.mana_regeneration", xpRegeneration, controller.getMaxManaRegeneration()));
+                    lore.add(ChatColor.RESET + "" + ChatColor.LIGHT_PURPLE + getLevelString(controller.getMessages(), "wand.mana_regeneration", manaRegeneration, controller.getMaxManaRegeneration()));
                 }
             }
             if (manaPerDamage > 0) {
@@ -1875,11 +1876,11 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         if (superPowered) {
             lore.add(ChatColor.DARK_AQUA + getMessage("super_powered"));
         }
-        if (xpMaxBoost != 0) {
-            lore.add(ChatColor.LIGHT_PURPLE + "" + ChatColor.ITALIC + getPercentageString(controller.getMessages(), "wand.mana_boost", xpMaxBoost));
+        if (manaMaxBoost != 0) {
+            lore.add(ChatColor.LIGHT_PURPLE + "" + ChatColor.ITALIC + getPercentageString(controller.getMessages(), "wand.mana_boost", manaMaxBoost));
         }
-        if (xpRegenerationBoost != 0) {
-            lore.add(ChatColor.LIGHT_PURPLE + "" + ChatColor.ITALIC + getPercentageString(controller.getMessages(), "wand.mana_regeneration_boost", xpRegenerationBoost));
+        if (manaRegenerationBoost != 0) {
+            lore.add(ChatColor.LIGHT_PURPLE + "" + ChatColor.ITALIC + getPercentageString(controller.getMessages(), "wand.mana_regeneration_boost", manaRegenerationBoost));
         }
         if (castSpell != null) {
             SpellTemplate spell = controller.getSpellTemplate(castSpell);
@@ -2651,8 +2652,8 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		if (other.damageReductionFalling > damageReductionFalling) { damageReductionFalling = other.damageReductionFalling; modified = true; if (damageReductionFalling > 0) sendAddMessage(mage, "upgraded_property", getLevelString(messages, "wand.protection_fall", damageReductionFalling)); }
 		if (other.damageReductionFire > damageReductionFire) { damageReductionFire = other.damageReductionFire; modified = true; if (damageReductionFire > 0) sendAddMessage(mage, "upgraded_property", getLevelString(messages, "wand.protection_fire", damageReductionFire)); }
 		if (other.damageReductionExplosions > damageReductionExplosions) { damageReductionExplosions = other.damageReductionExplosions; modified = true; if (damageReductionExplosions > 0) sendAddMessage(mage, "upgraded_property", getLevelString(messages, "wand.protection_blast", damageReductionExplosions)); }
-        if (other.xpRegenerationBoost > xpRegenerationBoost) { xpRegenerationBoost = other.xpRegenerationBoost; modified = true; if (xpRegenerationBoost > 0) sendAddMessage(mage, "upgraded_property", getLevelString(messages, "wand.mana_regeneration_boost", xpRegenerationBoost)); }
-        if (other.xpMaxBoost > xpMaxBoost) { xpMaxBoost = other.xpMaxBoost; modified = true; if (xpMaxBoost > 0) sendAddMessage(mage, "upgraded_property", getLevelString(messages, "wand.mana_boost", xpMaxBoost)); }
+        if (other.manaRegenerationBoost > manaRegenerationBoost) { manaRegenerationBoost = other.manaRegenerationBoost; modified = true; if (manaRegenerationBoost > 0) sendAddMessage(mage, "upgraded_property", getLevelString(messages, "wand.mana_regeneration_boost", manaRegenerationBoost)); }
+        if (other.manaMaxBoost > manaMaxBoost) { manaMaxBoost = other.manaMaxBoost; modified = true; if (manaMaxBoost > 0) sendAddMessage(mage, "upgraded_property", getLevelString(messages, "wand.mana_boost", manaMaxBoost)); }
 
         boolean needsInventoryUpdate = false;
 		if (other.hotbars.size() > hotbars.size()) {
@@ -2816,20 +2817,20 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		
 		// Don't need mana if cost-free
 		if (isCostFree()) {
-			xpRegeneration = 0;
-			xpMax = 0;
-			xp = 0;
+			manaRegeneration = 0;
+			manaMax = 0;
+			mana = 0;
 		} else {
-			if (other.xpRegeneration > xpRegeneration) { xpRegeneration = other.xpRegeneration; modified = true; sendAddMessage(mage, "upgraded_property", getLevelString(messages, "wand.mana_regeneration", xpRegeneration, controller.getMaxManaRegeneration())); }
+			if (other.manaRegeneration > manaRegeneration) { manaRegeneration = other.manaRegeneration; modified = true; sendAddMessage(mage, "upgraded_property", getLevelString(messages, "wand.mana_regeneration", manaRegeneration, controller.getMaxManaRegeneration())); }
             if (other.manaPerDamage > manaPerDamage) { manaPerDamage = other.manaPerDamage; modified = true; sendAddMessage(mage, "upgraded_property", getLevelString(messages, "wand.mana_per_damage", manaPerDamage, controller.getMaxManaRegeneration())); }
-			if (other.xpMax > xpMax) { xpMax = other.xpMax; modified = true; sendAddMessage(mage, "upgraded_property", getLevelString(messages, "wand.mana_amount", xpMax, controller.getMaxMana())); }
-			if (other.xp > xp) {
-                float previousXP = xp;
-                xp = Math.min(xpMax, other.xp);
-                if (xp > previousXP) {
+			if (other.manaMax > manaMax) { manaMax = other.manaMax; modified = true; sendAddMessage(mage, "upgraded_property", getLevelString(messages, "wand.mana_amount", manaMax, controller.getMaxMana())); }
+			if (other.mana > mana) {
+                float previousMana = mana;
+                mana = Math.min(manaMax, other.mana);
+                if (mana > previousMana) {
                     if (mage != null)
                     {
-                        String message = getMessage("mana_added").replace("$value", Integer.toString((int)xp)).replace("$wand", getName());
+                        String message = getMessage("mana_added").replace("$value", Integer.toString((int) mana)).replace("$wand", getName());
                         mage.sendMessage(message);
                     }
                     modified = true;
@@ -3412,8 +3413,8 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 
     protected void updateDurability() {
         int maxDurability = item.getType().getMaxDurability();
-        if (maxDurability > 0 && effectiveXpMax > 0) {
-            int durability = (short)(xp * maxDurability / effectiveXpMax);
+        if (maxDurability > 0 && effectiveManaMax > 0) {
+            int durability = (short)(mana * maxDurability / effectiveManaMax);
             durability = maxDurability - durability;
             if (durability >= maxDurability) {
                 durability = maxDurability - 1;
@@ -3450,7 +3451,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 
 		if (usesMana()) {
             if (manaMode.useGlow()) {
-                if (xp == effectiveXpMax) {
+                if (mana == effectiveManaMax) {
                     CompatibilityUtils.addGlow(item);
                 } else {
                     CompatibilityUtils.removeGlow(item);
@@ -3467,11 +3468,11 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 
             if (usesMana() && manaMode.useXPNumber())
             {
-                playerLevel = (int)xp;
+                playerLevel = (int) mana;
             }
             if (usesMana() && manaMode.useXPBar())
             {
-                playerProgress = Math.max(0, xp / (float)effectiveXpMax);
+                playerProgress = Math.max(0, mana / (float) effectiveManaMax);
             }
             if (controller.isSPEnabled() && spMode.useXPNumber() && hasSpellProgression)
             {
@@ -3579,11 +3580,11 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 
     @Override
     public void damageDealt(double damage, Entity target) {
-        if (effectiveXpMax == 0 && xpMax > 0) {
-            effectiveXpMax = xpMax;
+        if (effectiveManaMax == 0 && manaMax > 0) {
+            effectiveManaMax = manaMax;
         }
-        if (manaPerDamage > 0 && effectiveXpMax > 0 && xp < effectiveXpMax) {
-            xp = Math.min(effectiveXpMax, xp + (float)damage * manaPerDamage);
+        if (manaPerDamage > 0 && effectiveManaMax > 0 && mana < effectiveManaMax) {
+            mana = Math.min(effectiveManaMax, mana + (float)damage * manaPerDamage);
             updateMana();
         }
     }
@@ -3697,9 +3698,9 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
                             int targetAmount = LiveHotbarCooldown ? (int)Math.min(Math.ceil((double)remainingCooldown / 1000), 99) : 0;
                             if (LiveHotbarCooldown && requiredCost != null) {
                                 int mana = requiredCost.getMana();
-                                if (mana <= effectiveXpMax && effectiveXpRegeneration > 0) {
-                                    float remainingMana = (float)mana - xp;
-                                    int targetManaTime = (int)Math.min(Math.ceil(remainingMana / effectiveXpRegeneration), 99);
+                                if (mana <= effectiveManaMax && effectiveManaRegeneration > 0) {
+                                    float remainingMana = (float)mana - this.mana;
+                                    int targetManaTime = (int)Math.min(Math.ceil(remainingMana / effectiveManaRegeneration), 99);
                                     targetAmount = Math.max(targetManaTime, targetAmount);
                                 }
                             }
@@ -3723,24 +3724,24 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 				HeroesManager heroes = controller.getHeroes();
 				if (heroes != null)
 				{
-					effectiveXpMax = heroes.getMaxMana(player);
-					effectiveXpRegeneration = heroes.getManaRegen(player);
-					xpMax = effectiveXpMax;
-					xpRegeneration = effectiveXpRegeneration;
-					xp = heroes.getMana(player);
+					effectiveManaMax = heroes.getMaxMana(player);
+					effectiveManaRegeneration = heroes.getManaRegen(player);
+					manaMax = effectiveManaMax;
+					manaRegeneration = effectiveManaRegeneration;
+					mana = heroes.getMana(player);
 					updated = true;
 				}
 			}
-			else if (xpRegeneration > 0 && lastXpRegeneration > 0 && effectiveXpRegeneration > 0)
+			else if (manaRegeneration > 0 && lastManaRegeneration > 0 && effectiveManaRegeneration > 0)
 			{
-				long delta = now - lastXpRegeneration;
-				if (effectiveXpMax == 0 && xpMax > 0) {
-					effectiveXpMax = xpMax;
+				long delta = now - lastManaRegeneration;
+				if (effectiveManaMax == 0 && manaMax > 0) {
+					effectiveManaMax = manaMax;
 				}
-				xp = Math.min(effectiveXpMax, xp + (float)effectiveXpRegeneration * (float)delta / 1000);
+				mana = Math.min(effectiveManaMax, mana + (float) effectiveManaRegeneration * (float)delta / 1000);
 				updated = true;
 			}
-			lastXpRegeneration = now;
+			lastManaRegeneration = now;
 		}
 		
 		return updated;
@@ -3776,11 +3777,11 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
     protected void updateMaxMana(boolean updateLore) {
         if (isHeroes) return;
 
-		int currentMana = effectiveXpMax;
-		int currentManaRegen = effectiveXpRegeneration;
+		int currentMana = effectiveManaMax;
+		int currentManaRegen = effectiveManaRegeneration;
 
-        float effectiveBoost = xpMaxBoost;
-        float effectiveRegenBoost = xpRegenerationBoost;
+        float effectiveBoost = manaMaxBoost;
+        float effectiveRegenBoost = manaRegenerationBoost;
         if (mage != null)
         {
             Collection<Wand> activeArmor = mage.getActiveArmor();
@@ -3789,16 +3790,16 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
                 effectiveRegenBoost += armorWand.getManaRegenerationBoost();
             }
         }
-        effectiveXpMax = xpMax;
+        effectiveManaMax = manaMax;
         if (effectiveBoost != 0) {
-            effectiveXpMax = (int)Math.ceil(effectiveXpMax + effectiveBoost * effectiveXpMax);
+            effectiveManaMax = (int)Math.ceil(effectiveManaMax + effectiveBoost * effectiveManaMax);
         }
-        effectiveXpRegeneration = xpRegeneration;
+        effectiveManaRegeneration = manaRegeneration;
         if (effectiveRegenBoost != 0) {
-            effectiveXpRegeneration = (int)Math.ceil(effectiveXpRegeneration + effectiveRegenBoost * effectiveXpRegeneration);
+            effectiveManaRegeneration = (int)Math.ceil(effectiveManaRegeneration + effectiveRegenBoost * effectiveManaRegeneration);
         }
 
-		if (updateLore && (currentMana != effectiveXpMax || effectiveXpRegeneration != currentManaRegen)) {
+		if (updateLore && (currentMana != effectiveManaMax || effectiveManaRegeneration != currentManaRegen)) {
 			updateLore();
 		}
     }

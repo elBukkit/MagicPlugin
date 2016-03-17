@@ -2,6 +2,8 @@
 
 ## 6.1
 
+ - All mana-related configuration and properties changed from "xp" to "mana". Should be backwards-compatible.
+
 ## 6.0.7
 
  - Falling blocks won't cause physics updates if the spell that launched them doesn't
