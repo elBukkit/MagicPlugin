@@ -9,9 +9,9 @@ default:
     keep: true
     undroppable: true
     quiet: 1
-    xp_max: 50
-    xp: 50
-    xp_regeneration: 6
+    mana_max: 50
+    mana: 50
+    mana_regeneration: 6
     effect_color: '888888'
     effect_bubbles: false
 
@@ -24,9 +24,9 @@ wandbox:
     keep: true
     undroppable: true
     quiet: 1
-    xp_max: 50
-    xp: 50
-    xp_regeneration: 6
+    mana_max: 50
+    mana: 50
+    mana_regeneration: 6
     effect_color: '888888'
     effect_bubbles: false
     spells:
@@ -155,9 +155,9 @@ crudwand:
     icon: stick
     indestructible: false
     locked: true
-    xp: 50
-    xp_max: 50
-    xp_regeneration: 5
+    mana: 50
+    mana_max: 50
+    mana_regeneration: 5
     uses: 20
     effect_color: '440044'
 
@@ -167,9 +167,9 @@ video:
     indestructible: true
     bound: true
     locked: true
-    xp: 50
-    xp_max: 50
-    xp_regeneration: 5
+    mana: 50
+    mana_max: 50
+    mana_regeneration: 5
     effect_color: '440044'
     spells:
       - superfly
@@ -182,9 +182,9 @@ flappy:
     icon: feather
     indestructible: false
     locked: true
-    xp: 45
-    xp_max: 45
-    xp_regeneration: 20
+    mana: 45
+    mana_max: 45
+    mana_regeneration: 20
     uses: 50
     quiet: 2
     effect_color: '000088'
@@ -196,9 +196,9 @@ squib:
     icon: stick
     indestructible: false
     locked: true
-    xp: 100
-    xp_max: 100
-    xp_regeneration: 12
+    mana: 100
+    mana_max: 100
+    mana_regeneration: 12
     uses: 40
     quiet: 2
     effect_color: 'FF0000'
@@ -232,9 +232,9 @@ camera:
     icon: skull_item:http://textures.minecraft.net/texture/e49b4f3261328c05350ee4031212d2fc7555f211af91c0f0278a5aaf9cec65
     indestructible: false
     locked: true
-    xp: 5
-    xp_max: 5
-    xp_regeneration: 2
+    mana: 5
+    mana_max: 5
+    mana_regeneration: 2
     effect_color: '888888'
     spells:
         - camera
@@ -308,9 +308,9 @@ deluminator:
     indestructible: false
     locked: true
     effect_color: '111111'
-    xp: 100
-    xp_max: 100
-    xp_regeneration: 5
+    mana: 100
+    mana_max: 100
+    mana_regeneration: 5
     spells:
         - deluminate
 
@@ -478,9 +478,9 @@ beater:
     icon: stick
     indestructible: false
     locked: true
-    xp_max: 20
-    xp: 10
-    xp_regeneration: 10
+    mana_max: 20
+    mana: 10
+    mana_regeneration: 10
     effect_color: 'FF0000'
     spells:
         - beat
@@ -651,8 +651,8 @@ year2:
     upgrade_path: year2
     indestructible: false
     icon: nether_star
-    xp_max: 75
-    xp_regeneration: 10
+    mana_max: 75
+    mana_regeneration: 10
 year3:
     upgrade: true
     hidden: true
@@ -660,8 +660,8 @@ year3:
     upgrade_path: year3
     indestructible: false
     icon: nether_star
-    xp_max: 100
-    xp_regeneration: 15
+    mana_max: 100
+    mana_regeneration: 15
 year4:
     upgrade: true
     hidden: true
@@ -669,8 +669,8 @@ year4:
     upgrade_path: year4
     indestructible: false
     icon: nether_star
-    xp_max: 120
-    xp_regeneration: 20
+    mana_max: 120
+    mana_regeneration: 20
 year5:
     upgrade: true
     hidden: true
@@ -678,8 +678,8 @@ year5:
     upgrade_path: year5
     indestructible: false
     icon: nether_star
-    xp_max: 140
-    xp_regeneration: 25
+    mana_max: 140
+    mana_regeneration: 25
 year6:
     upgrade: true
     hidden: true
@@ -687,8 +687,8 @@ year6:
     upgrade_path: year6
     indestructible: false
     icon: nether_star
-    xp_max: 160
-    xp_regeneration: 30
+    mana_max: 160
+    mana_regeneration: 30
 year7:
     upgrade: true
     hidden: true
@@ -696,8 +696,8 @@ year7:
     upgrade_path: year7
     indestructible: false
     icon: nether_star
-    xp_max: 180
-    xp_regeneration: 35
+    mana_max: 180
+    mana_regeneration: 35
 graduate:
     upgrade: true
     hidden: true
@@ -705,8 +705,8 @@ graduate:
     upgrade_path: graduate
     indestructible: false
     icon: nether_star
-    xp_max: 200
-    xp_regeneration: 40
+    mana_max: 200
+    mana_regeneration: 40
     spells:
      - protego|3
      - stupefy|3
@@ -758,8 +758,8 @@ staff:
     icon: nether_star
     upgrade: true
     upgrade_path: graduate
-    xp_max: 220
-    xp_regeneration: 40
+    mana_max: 220
+    mana_regeneration: 40
     spells:
      - silencio
      - silenciomaxima
@@ -792,8 +792,8 @@ headstaff:
     icon: nether_star
     upgrade: true
     upgrade_path: graduate
-    xp_max: 200
-    xp_regeneration: 40
+    mana_max: 200
+    mana_regeneration: 40
     spells:
      - expulsion
      - silencio
@@ -833,7 +833,7 @@ manaboost:
     upgrade: true
     indestructible: false
     icon: glass_bottle
-    xp: 1000
+    mana: 1000
 antihunger:
     upgrade: true
     hunger_regeneration: 0.5

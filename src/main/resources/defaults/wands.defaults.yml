@@ -66,10 +66,10 @@
 #
 #       potion_effects: <list,of,effects>
 #
-#       # If non-zero, this wand will use the Mana system instead of XP
+#       # If non-zero, this wand will use the Mana system
 #
-#       xp_regeneration: (0-200)
-#       xp_max: (0-?)
+#       mana_regeneration: (0-200)
+#       mana_max: (0-?)
 #
 #       # This provides bonus damage and effects to some spells
 #       # and increases the overall range of all targeted spells
@@ -96,9 +96,9 @@ wand:
     effect_color: random
     path: beginner
     active_spell: missile
-    xp_max: 50
-    xp: 50
-    xp_regeneration: 5
+    mana_max: 50
+    mana: 50
+    mana_regeneration: 5
     spells:
      - missile
      
@@ -165,10 +165,10 @@ student:
     icon: wood_hoe:2
     migrate_icon: wood_hoe
     effect_color: '00FF00'
-    xp_regeneration: 30
+    mana_regeneration: 30
     protection_falling: 0.5
-    xp_max: 150
-    xp: 150
+    mana_max: 150
+    mana: 150
     spells:
       - missile
       - blink
@@ -207,9 +207,9 @@ apprentice:
     effect_color: '22FF22'
     path: apprentice
     hotbar_count: 2
-    xp_regeneration: 40
-    xp_max: 200
-    xp: 200
+    mana_regeneration: 40
+    mana_max: 200
+    mana: 200
     protection_falling: 0.8
     protection_physical: 0.8
     protection_fire: 0.5
@@ -270,9 +270,9 @@ master:
     path: master
     icon: wood_hoe:4
     migrate_icon: gold_axe
-    xp_regeneration: 50
-    xp_max: 250
-    xp: 250
+    mana_regeneration: 50
+    mana_max: 250
+    mana: 250
     hotbar_count: 3
     protection_falling: 1
     protection_physical: 0.8
@@ -338,9 +338,9 @@ battle:
     effect_color: '11FF11'
     protection_physical: 0.3
     path: battle
-    xp_regeneration: 5
-    xp_max: 50
-    xp: 50
+    mana_regeneration: 5
+    mana_max: 50
+    mana: 50
     spells:
       - missile
       - arrow
@@ -358,9 +358,9 @@ rage:
     protection_physical: 0.3
     path: battle
     locked: true
-    xp_regeneration: 0
-    xp_max: 200
-    xp: 100
+    mana_regeneration: 0
+    mana_max: 200
+    mana: 100
     mana_per_damage: 5
     glow: true
     spells:
@@ -382,9 +382,9 @@ engineer:
     path: engineer
     icon: wood_hoe:5
     migrate_icon: gold_axe
-    xp_regeneration: 90
-    xp_max: 400
-    xp: 400
+    mana_regeneration: 90
+    mana_max: 400
+    mana: 400
     organize: true
     spells:
       - rollback
@@ -437,9 +437,9 @@ architect:
     effect_color: '8B008B'
     protection_falling: 1
     protection: 1
-    xp_max: 500
-    xp: 500
-    xp_regeneration: 100
+    mana_max: 500
+    mana: 500
+    mana_regeneration: 100
     organize: true
     active_spell: levitate
     spells:
@@ -512,9 +512,9 @@ conduit:
     effect_color: '8B008B'
     protection_falling: 1
     protection: 1
-    xp_max: 600
-    xp: 600
-    xp_regeneration: 120
+    mana_max: 600
+    mana: 600
+    mana_regeneration: 120
     effect_bubbles: true
     organize: true
     active_spell: levitate
@@ -816,8 +816,8 @@ miniwolf:
     mode: inventory
     mode_drop: true
     active_spell: levitate
-    xp_max: 250
-    xp_regeneration: 50
+    mana_max: 250
+    mana_regeneration: 50
     spells:
         - blast|3@0
         - collapse|2@1
@@ -1044,8 +1044,8 @@ wolf:
 conway:
     inherit: architect
     effect_color: 'FFFFFF'
-    xp_regeneration: 50
-    xp_max: 500
+    mana_regeneration: 50
+    mana_max: 500
     effect_particle: portal
     effect_particle_count: 3
     icon: sapling:2
@@ -1087,31 +1087,31 @@ student_upgrade:
     hidden: true
     indestructible: false
     hotbar_count: 2
-    xp_max: 100
-    xp_regeneration: 10
+    mana_max: 100
+    mana_regeneration: 10
 apprentice_upgrade:
     icon: wood_hoe:3
     upgrade: true
     hidden: true
     indestructible: false
     hotbar_count: 2
-    xp_max: 150
-    xp_regeneration: 30
+    mana_max: 150
+    mana_regeneration: 30
 master_upgrade:
     icon: wood_hoe:4
     upgrade: true
     hidden: true
     indestructible: false
-    xp_max: 200
-    xp_regeneration: 40
+    mana_max: 200
+    mana_regeneration: 40
     hotbar_count: 3
 engineer_upgrade:
     icon: wood_hoe:5
     upgrade: true
     hidden: true
     indestructible: false
-    xp_max: 250
-    xp_regeneration: 50
+    mana_max: 250
+    mana_regeneration: 50
     spells:
     - brushselect
     - place
@@ -1123,8 +1123,8 @@ architect_upgrade:
     upgrade: true
     hidden: true
     indestructible: false
-    xp_max: 350
-    xp_regeneration: 70
+    mana_max: 350
+    mana_regeneration: 70
 conduit_upgrade:
     icon: wood_hoe:6
     upgrade: true
@@ -1137,21 +1137,21 @@ squire_upgrade:
     hidden: true
     indestructible: false
     hotbar_count: 2
-    xp_max: 100
-    xp_regeneration: 10
+    mana_max: 100
+    mana_regeneration: 10
 soldier_upgrade:
     upgrade: true
     hidden: true
     indestructible: false
     hotbar_count: 2
-    xp_max: 150
-    xp_regeneration: 30
+    mana_max: 150
+    mana_regeneration: 30
 knight_upgrade:
     upgrade: true
     hidden: true
     indestructible: false
-    xp_max: 200
-    xp_regeneration: 40
+    mana_max: 200
+    mana_regeneration: 40
     hotbar_count: 3
 
 #
@@ -1396,9 +1396,9 @@ blaster:
     mode: cast
     locked: true
     quiet: 2
-    xp: 100
-    xp_max: 100
-    xp_regeneration: 10
+    mana: 100
+    mana_max: 100
+    mana_regeneration: 10
     active_spell: blaster
     indestructible: true
     spells:
@@ -1448,8 +1448,8 @@ spleef:
     uses: 100
     effect_color: '880000'
     indestructible: false;
-    xp_max: 100
-    xp_regeneration: 10
+    mana_max: 100
+    mana_regeneration: 10
     active_spell: blast
     spells:
       - blast
@@ -1462,9 +1462,9 @@ camera:
     icon: skull_item:http://textures.minecraft.net/texture/e49b4f3261328c05350ee4031212d2fc7555f211af91c0f0278a5aaf9cec65
     indestructible: false
     locked: true
-    xp: 5
-    xp_max: 5
-    xp_regeneration: 2
+    mana: 5
+    mana_max: 5
+    mana_regeneration: 2
     effect_color: '888888'
     spells:
         - camera
@@ -1478,8 +1478,8 @@ magichat:
     locked: true
     keep: true
     effect_color: '888888'
-    xp_max_boost: 0.2
-    xp_regeneration_boost: 0.1
+    mana_max_boost: 0.2
+    mana_regeneration_boost: 0.1
     spells:
         - magichat
 
@@ -1488,35 +1488,35 @@ apprenticechestplate:
     indestructible: false
     locked: true
     keep: true
-    xp_max_boost: 0.05
+    mana_max_boost: 0.05
 
 apprenticehelmet:
     icon: chainmail_helmet
     indestructible: false
     locked: true
     keep: true
-    xp_max_boost: 0.05
+    mana_max_boost: 0.05
 
 apprenticeleggings:
     icon: chainmail_leggings
     indestructible: false
     locked: true
     keep: true
-    xp_max_boost: 0.05
+    mana_max_boost: 0.05
 
 apprenticeboots:
     icon: chainmail_boots
     indestructible: false
     locked: true
     keep: true
-    xp_max_boost: 0.05
+    mana_max_boost: 0.05
 
 wizardchestplate:
     icon: chainmail_chestplate
     indestructible: true
     locked: true
     keep: true
-    xp_max_boost: 0.1
+    mana_max_boost: 0.1
     enchantments:
       protection_explosions: 2
       protection_environmental: 1
@@ -1526,7 +1526,7 @@ wizardhelmet:
     indestructible: true
     locked: true
     keep: true
-    xp_max_boost: 0.1
+    mana_max_boost: 0.1
     enchantments:
       protection_projectile: 2
 
@@ -1535,7 +1535,7 @@ wizardleggings:
     indestructible: true
     locked: true
     keep: true
-    xp_max_boost: 0.1
+    mana_max_boost: 0.1
     enchantments:
       protection_fire: 2
 
@@ -1544,7 +1544,7 @@ wizardboots:
     indestructible: true
     locked: true
     keep: true
-    xp_max_boost: 0.1
+    mana_max_boost: 0.1
     enchantments:
       protection_fall: 5
 
@@ -1554,7 +1554,7 @@ rabbitboots:
     locked: true
     keep: false
     passive: true
-    xp_regeneration_boost: -0.1
+    mana_regeneration_boost: -0.1
     potion_effects: speed:4,jump:4
     enchantments:
       protection_fall: 5
@@ -1565,7 +1565,7 @@ rocketboots:
     locked: true
     keep: true
     passive: true
-    xp_regeneration_boost: -0.1
+    mana_regeneration_boost: -0.1
     potion_effects: speed:2,jump:20
     glow: true
     protection_falling: 1
@@ -1576,7 +1576,7 @@ hulkboots:
     locked: true
     keep: true
     passive: true
-    xp_regeneration_boost: -0.3
+    mana_regeneration_boost: -0.3
     glow: true
     protection_falling: 1
     cast_spell: fling
@@ -1591,7 +1591,7 @@ flashboots:
     locked: true
     keep: true
     passive: true
-    xp_regeneration_boost: -0.5
+    mana_regeneration_boost: -0.5
     potion_effects: speed:10,jump:2
     glow: true
     effect_particle: lava
@@ -1606,7 +1606,7 @@ clericchestplate:
     locked: true
     keep: true
     passive: true
-    xp_regeneration_boost: -0.2
+    mana_regeneration_boost: -0.2
     cast_spell: healing
     cast_interval: 2000
 
@@ -1616,7 +1616,7 @@ magneticleggings:
     locked: true
     keep: true
     passive: true
-    xp_regeneration_boost: -0.3
+    mana_regeneration_boost: -0.3
     cast_spell: grab
     cast_interval: 5000
 
@@ -1628,7 +1628,7 @@ goggles:
     locked: true
     keep: true
     passive: true
-    xp_regeneration_boost: -0.1
+    mana_regeneration_boost: -0.1
     potion_effects: night_vision:3
     glow: true
     active_spell: wear
@@ -1644,7 +1644,7 @@ invisiblecloak:
     indestructible: true
     locked: true
     keep: true
-    xp_regeneration_boost: -0.5
+    mana_regeneration_boost: -0.5
     potion_effects: invisibility
     passive: true
     glow: true
@@ -1659,7 +1659,7 @@ divinghelmet:
     locked: true
     keep: true
     quiet: 2
-    xp_regeneration_boost: -0.1
+    mana_regeneration_boost: -0.1
     potion_effects: water_breathing
     passive: true
     enchantments:

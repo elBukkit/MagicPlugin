@@ -5,8 +5,8 @@
 guest:
     path: beginner
     effect_color: '00FF00'
-    xp_regeneration: 5
-    xp_max: 50
+    mana_regeneration: 5
+    mana_max: 50
     icon: stick
     spells:
         - perk
@@ -17,9 +17,9 @@ guest:
 villager:
     path: student
     effect_color: '00FF00'
-    xp_regeneration: 10
+    mana_regeneration: 10
     protection_falling: 0.1
-    xp_max: 60
+    mana_max: 60
     icon: stick
     spells:
         - arrow
@@ -32,8 +32,8 @@ villager:
 knight:
     path: battle
     effect_color: '11FF11'
-    xp_regeneration: 15
-    xp_max: 80
+    mana_regeneration: 15
+    mana_max: 80
     icon: diamond_sword
     protection_falling: 0.2
     protection_physical: 0.1
@@ -50,8 +50,8 @@ knight:
 baron:
     path: battle
     effect_color: '11FF11'
-    xp_regeneration: 18
-    xp_max: 100
+    mana_regeneration: 18
+    mana_max: 100
     icon: diamond_sword
     protection_falling: 0.3
     protection_physical: 0.2
@@ -71,8 +71,8 @@ baron:
 lord:
     path: battle
     effect_color: '11FF11'
-    xp_regeneration: 20
-    xp_max: 130
+    mana_regeneration: 20
+    mana_max: 130
     icon: diamond_sword
     protection_falling: 0.5
     protection_physical: 0.3
@@ -95,8 +95,8 @@ lord:
 hero:
     path: battle
     effect_color: '11FF11'
-    xp_regeneration: 25
-    xp_max: 150
+    mana_regeneration: 25
+    mana_max: 150
     icon: diamond_sword
     protection_falling: 0.5
     protection_physical: 0.5
@@ -123,8 +123,8 @@ hero:
 king:
     path: battle
     effect_color: '22FF22'
-    xp_regeneration: 30
-    xp_max: 175
+    mana_regeneration: 30
+    mana_max: 175
     icon: diamond_sword
     protection_falling: 0.7
     protection_physical: 0.6
@@ -154,8 +154,8 @@ king:
 legend:
     path: apprentice
     effect_color: '22FF22'
-    xp_regeneration: 40
-    xp_max: 200
+    mana_regeneration: 40
+    mana_max: 200
     effect_particle: town_aura
     effect_particle_count: 2
     icon: blaze_rod
@@ -190,8 +190,8 @@ legend:
 overseer:
     path: apprentice
     effect_color: '22FF22'
-    xp_regeneration: 50
-    xp_max: 250
+    mana_regeneration: 50
+    mana_max: 250
     effect_particle: town_aura
     effect_particle_count: 2
     icon: blaze_rod
@@ -230,8 +230,8 @@ overseer:
 wizard:
     path: master
     effect_color: '89A0D5'
-    xp_regeneration: 75
-    xp_max: 400
+    mana_regeneration: 75
+    mana_max: 400
     effect_particle: portal
     effect_particle_count: 2
     protection_falling: 1.0
@@ -271,8 +271,8 @@ wizard:
 nether:
     path: master
     effect_color: 'B40404'
-    xp_regeneration: 100
-    xp_max: 500
+    mana_regeneration: 100
+    mana_max: 500
     effect_particle: portal
     effect_particle_count: 3
     effect_particle_data: 2
@@ -318,8 +318,8 @@ nether:
 ender:
     path: master
     effect_color: 'AC58FA'
-    xp_regeneration: 150
-    xp_max: 800
+    mana_regeneration: 150
+    mana_max: 800
     effect_particle: drip_lava
     effect_particle_count: 4
     effect_bubbles: true
@@ -369,9 +369,9 @@ ender:
 
 explorer:
     active_spell: flare
-    xp_regeneration: 1
+    mana_regeneration: 1
     effect_color: '008800'
-    xp_max: 50
+    mana_max: 50
     spells:
         - tesseract
         - torch
@@ -380,9 +380,9 @@ explorer:
 
 psychic:
     protection_falling: 0.9
-    xp_regeneration: 1
+    mana_regeneration: 1
     effect_color: '000088'
-    xp_max: 50
+    mana_max: 50
     active_spell: push
     spells:
         - fling
@@ -392,9 +392,9 @@ psychic:
         - pull
         - force
 painter:
-    xp_regeneration: 10
+    mana_regeneration: 10
     effect_color: '118811'
-    xp_max: 200
+    mana_max: 200
     active_spell: paint
     spells:
         - paint
@@ -540,9 +540,9 @@ decorator:
         - stained_glass_pane:15
 
 mining:
-    xp_regeneration: 10
+    mana_regeneration: 10
     effect_color: '888888'
-    xp_max: 100
+    mana_max: 100
     active_spell: mine
     spells:
         - peek
@@ -552,9 +552,9 @@ mining:
         - torch
 
 farming:
-    xp_regeneration: 10
+    mana_regeneration: 10
     effect_color: '0000EE'
-    xp_max: 100
+    mana_max: 100
     active_spell: farm
     spells:
         - farm
@@ -569,9 +569,9 @@ farming:
         - water
 
 alchemist:
-    xp_regeneration: 10
+    mana_regeneration: 10
     effect_color: 'EE00EE'
-    xp_max: 100
+    mana_max: 100
     active_spell: alter
     spells:
         - alter
@@ -589,9 +589,9 @@ alchemist:
         - sand
 
 elementalist:
-    xp_regeneration: 10
+    mana_regeneration: 10
     effect_color: '0000FF'
-    xp_max: 100
+    mana_max: 100
     active_spell: weather
     spells:
         - fire
@@ -602,9 +602,9 @@ elementalist:
         - weather
 
 necromancer:
-    xp_regeneration: 10
+    mana_regeneration: 10
     effect_color: '111111'
-    xp_max: 100
+    mana_max: 100
     active_spell: monster
     spells:
         - fire
@@ -617,8 +617,8 @@ necromancer:
 white:
     cost_reduction: 0.5
     protection: 0.9
-    xp_regeneration: 50
-    xp_max: 300
+    mana_regeneration: 50
+    mana_max: 300
     health_regeneration: 1
     hunger_regeneration: 1
     haste: 0.1
@@ -677,8 +677,8 @@ white:
 black:
     cost_reduction: 0.5
     protection: 0.9
-    xp_regeneration: 50
-    xp_max: 300
+    mana_regeneration: 50
+    mana_max: 300
     health_regeneration: 1
     hunger_regeneration: 1
     haste: 0.1
@@ -742,8 +742,8 @@ black:
 red:
     protection_fire: 1
     protection: 0.6
-    xp_regeneration: 40
-    xp_max: 300
+    mana_regeneration: 40
+    mana_max: 300
     power: 0.2
     effect_color: 'FF0000'
     effect_bubbles: true
@@ -777,8 +777,8 @@ red:
 
 blue:
     protection: 0.8
-    xp_regeneration: 40
-    xp_max: 300
+    mana_regeneration: 40
+    mana_max: 300
     power: 0.2
     effect_color: '0000FF'
     effect_bubbles: true
@@ -817,8 +817,8 @@ blue:
 
 green:
     protection: 0.8
-    xp_regeneration: 40
-    xp_max: 300
+    mana_regeneration: 40
+    mana_max: 300
     power: 0.2
     effect_color: '00FF00'
     effect_bubbles: true

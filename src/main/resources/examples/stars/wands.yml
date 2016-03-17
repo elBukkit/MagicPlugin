@@ -8,9 +8,9 @@ lightsaber_red:
     icon_inactive: monster_eggs
     mode_drop: true
     mode_cast: true
-    xp_max: 50
-    xp: 50
-    xp_regeneration: 5
+    mana_max: 50
+    mana: 50
+    mana_regeneration: 5
     protection_physical: 0.5
     quiet: 1
     bound: true
@@ -92,9 +92,9 @@ lightsaber_green:
     icon_inactive_delay: 2000
     mode_drop: true
     mode_cast: true
-    xp_max: 50
-    xp: 50
-    xp_regeneration: 5
+    mana_max: 50
+    mana: 50
+    mana_regeneration: 5
     protection_physical: 0.5
     quiet: 1
     bound: true
@@ -114,9 +114,9 @@ lightsaber_blue:
     icon_inactive: monster_eggs
     mode_drop: true
     mode_cast: true
-    xp_max: 50
-    xp: 50
-    xp_regeneration: 5
+    mana_max: 50
+    mana: 50
+    mana_regeneration: 5
     protection_physical: 0.5
     quiet: 1
     bound: true
@@ -136,9 +136,9 @@ lightsaber_purple:
     icon_inactive: monster_eggs
     mode_drop: true
     mode_cast: true
-    xp_max: 50
-    xp: 50
-    xp_regeneration: 5
+    mana_max: 50
+    mana: 50
+    mana_regeneration: 5
     protection_physical: 0.5
     quiet: 1
     bound: true
@@ -158,9 +158,9 @@ lightsaber_orange:
     icon_inactive: monster_eggs
     mode_drop: true
     mode_cast: true
-    xp_max: 50
-    xp: 50
-    xp_regeneration: 5
+    mana_max: 50
+    mana: 50
+    mana_regeneration: 5
     protection_physical: 0.5
     quiet: 1
     bound: true

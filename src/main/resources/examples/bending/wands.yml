@@ -5,9 +5,9 @@
 airbending:
     path: airbending
     icon: gold_axe
-    xp_max: 50
-    xp: 50
-    xp_regeneration: 5
+    mana_max: 50
+    mana: 50
+    mana_regeneration: 5
     quiet: 1
     bound: true
     keep: true
@@ -25,9 +25,9 @@ airbending:
 waterbending:
     path: waterbending
     icon: gold_spade
-    xp_max: 50
-    xp: 50
-    xp_regeneration: 5
+    mana_max: 50
+    mana: 50
+    mana_regeneration: 5
     quiet: 1
     bound: true
     keep: true
@@ -43,9 +43,9 @@ waterbending:
 earthbending:
     path: earthbending
     icon: gold_hoe
-    xp_max: 50
-    xp: 50
-    xp_regeneration: 5
+    mana_max: 50
+    mana: 50
+    mana_regeneration: 5
     quiet: 1
     bound: true
     keep: true
@@ -54,7 +54,7 @@ earthbending:
     effect_bubbles: false
     protection_physical: 0.3
     protection_blast: 0.2
-    xp_regeneration: 2
+    mana_regeneration: 2
     effect_color: 'CD853F'
     active_spell: block
     spells:
@@ -64,9 +64,9 @@ earthbending:
 firebending:
     path: firebending
     icon: gold_pickaxe
-    xp_max: 50
-    xp: 50
-    xp_regeneration: 5
+    mana_max: 50
+    mana: 50
+    mana_regeneration: 5
     quiet: 1
     bound: true
     keep: true
@@ -85,8 +85,8 @@ avatar:
     protection: 0.9
     protection_fire: 0.9
     protection_falling: 1
-    xp_regeneration: 40
-    xp_max: 500
+    mana_regeneration: 40
+    mana_max: 500
     power: 0.5
     bound: true
     keep: true
