@@ -60,8 +60,8 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
     private boolean matchSpellMana = true;
 
     private int maxUses = 500;
-    private int maxMaxXp = 1500;
-    private int maxXpRegeneration = 150;
+    private int maxMaxMana = 1500;
+    private int maxManaRegeneration = 150;
     private float maxDamageReduction = 0.4f;
     private float maxDamageReductionExplosions = 0.3f;
     private float maxDamageReductionFalling = 0.9f;
@@ -81,8 +81,8 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
         this.parent = inherit;
         this.key = key;
         this.levels = inherit.levels;
-        this.maxMaxXp = inherit.maxMaxXp;
-        this.maxXpRegeneration = inherit.maxXpRegeneration;
+        this.maxMaxMana = inherit.maxMaxMana;
+        this.maxManaRegeneration = inherit.maxManaRegeneration;
         this.maxDamageReduction = inherit.maxDamageReduction;
         this.maxDamageReductionExplosions = inherit.maxDamageReductionExplosions;
         this.maxDamageReductionFalling = inherit.maxDamageReductionFalling;
@@ -191,8 +191,8 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
 
         // Fetch overall limits
         maxUses = template.getInt("max_uses", maxUses);
-        maxMaxXp = template.getInt("max_mana", maxMaxXp);
-        maxXpRegeneration = template.getInt("max_mana_regeneration", maxXpRegeneration);
+        maxMaxMana = template.getInt("max_mana", maxMaxMana);
+        maxManaRegeneration = template.getInt("max_mana_regeneration", maxManaRegeneration);
 
         minLevel = template.getInt("min_enchant_level", minLevel);
         maxLevel = template.getInt("max_enchant_level", maxLevel);
@@ -339,12 +339,12 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
         return maxUses;
     }
 
-    public int getMaxMaxXp() {
-        return maxMaxXp;
+    public int getMaxMaxMana() {
+        return maxMaxMana;
     }
 
-    public int getMaxXpRegeneration() {
-        return maxXpRegeneration;
+    public int getMaxManaRegeneration() {
+        return maxManaRegeneration;
     }
 
     public float getMaxDamageReduction() {

@@ -38,8 +38,8 @@ public class WandLevel {
 	private LinkedList<WeightedPair<Float>> damageReductionFireProbability = new LinkedList<WeightedPair<Float>>();
 	private LinkedList<WeightedPair<Float>> damageReductionExplosionsProbability = new LinkedList<WeightedPair<Float>>();
 	
-	private LinkedList<WeightedPair<Integer>> xpRegenerationProbability = new LinkedList<WeightedPair<Integer>>();
-	private LinkedList<WeightedPair<Integer>> xpMaxProbability = new LinkedList<WeightedPair<Integer>>();
+	private LinkedList<WeightedPair<Integer>> manaRegenerationProbability = new LinkedList<WeightedPair<Integer>>();
+	private LinkedList<WeightedPair<Integer>> manaMaxProbability = new LinkedList<WeightedPair<Integer>>();
 
 	protected WandLevel(WandUpgradePath path, MageController controller, ConfigurationSection template, int levelIndex, int nextLevelIndex, float distance) {
         this.path = path;
@@ -80,8 +80,8 @@ public class WandLevel {
 		com.elmakers.mine.bukkit.utility.RandomUtils.populateFloatProbabilityMap(damageReductionExplosionsProbability, template, "protection_explosions", levelIndex, nextLevelIndex, distance);
 
 		// Fetch regeneration
-		com.elmakers.mine.bukkit.utility.RandomUtils.populateIntegerProbabilityMap(xpRegenerationProbability, template, "mana_regeneration", levelIndex, nextLevelIndex, distance);
-		com.elmakers.mine.bukkit.utility.RandomUtils.populateIntegerProbabilityMap(xpMaxProbability, template, "mana_max", levelIndex, nextLevelIndex, distance);
+		com.elmakers.mine.bukkit.utility.RandomUtils.populateIntegerProbabilityMap(manaRegenerationProbability, template, "mana_regeneration", levelIndex, nextLevelIndex, distance);
+		com.elmakers.mine.bukkit.utility.RandomUtils.populateIntegerProbabilityMap(manaMaxProbability, template, "mana_max", levelIndex, nextLevelIndex, distance);
 		
 		// Fetch power
 		com.elmakers.mine.bukkit.utility.RandomUtils.populateFloatProbabilityMap(powerProbability, template, "power", levelIndex, nextLevelIndex, distance);
@@ -104,8 +104,8 @@ public class WandLevel {
         this.damageReductionFallingProbability = damageReductionFallingProbability.isEmpty() ? other.damageReductionFallingProbability : damageReductionFallingProbability;
         this.damageReductionFireProbability = damageReductionFireProbability.isEmpty() ? other.damageReductionFireProbability : damageReductionFireProbability;
         this.damageReductionExplosionsProbability = damageReductionExplosionsProbability.isEmpty() ? other.damageReductionExplosionsProbability : damageReductionExplosionsProbability;
-        this.xpRegenerationProbability = xpRegenerationProbability.isEmpty() ? other.xpRegenerationProbability : xpRegenerationProbability;
-        this.xpMaxProbability = xpMaxProbability.isEmpty() ? other.xpMaxProbability : xpMaxProbability;
+        this.manaRegenerationProbability = manaRegenerationProbability.isEmpty() ? other.manaRegenerationProbability : manaRegenerationProbability;
+        this.manaMaxProbability = manaMaxProbability.isEmpty() ? other.manaMaxProbability : manaMaxProbability;
     }
 
     protected void sendAddMessage(Mage mage,  Wand wand, String messageKey, String nameParam) {
@@ -204,10 +204,10 @@ public class WandLevel {
             }
         }
 		
-		// Look through all spells for the max XP casting cost
+		// Look through all spells for the max mana casting cost
 		// Also look for any material-using spells
 		boolean needsMaterials = false;
-		int maxXpCost = 0;
+		int maxManaCost = 0;
 		Set<String> spells = wand.getSpells();
 		for (String spellName : spells) {
 			SpellTemplate spell = wand.getMaster().getSpellTemplate(spellName);
@@ -216,7 +216,7 @@ public class WandLevel {
 				Collection<CastingCost> costs = spell.getCosts();
 				if (costs != null) {
 					for (CastingCost cost : costs) {
-						maxXpCost = Math.max(maxXpCost, cost.getXP());
+						maxManaCost = Math.max(maxManaCost, cost.getMana());
 					}
 				}
 			}
@@ -395,37 +395,37 @@ public class WandLevel {
 
 		if (costReduction >= 1) {
 			// Cost-Free wands don't need mana.
-			wandProperties.set("xp_regeneration", 0);
-			wandProperties.set("xp_max", 0);
-			wandProperties.set("xp", 0);
+			wandProperties.set("mana_regeneration", 0);
+			wandProperties.set("mana_max", 0);
+			wandProperties.set("mana", 0);
 		} else {
-			int xpRegeneration = wand.getManaRegeneration();
-			if (xpRegenerationProbability.size() > 0 && xpRegeneration < path.getMaxXpRegeneration()) {
+			int manaRegeneration = wand.getManaRegeneration();
+			if (manaRegenerationProbability.size() > 0 && manaRegeneration < path.getMaxManaRegeneration()) {
                 addedProperties = true;
-                xpRegeneration = Math.min(path.getMaxXpRegeneration(), xpRegeneration + RandomUtils.weightedRandom(xpRegenerationProbability));
-                wandProperties.set("xp_regeneration", xpRegeneration);
+                manaRegeneration = Math.min(path.getMaxManaRegeneration(), manaRegeneration + RandomUtils.weightedRandom(manaRegenerationProbability));
+                wandProperties.set("mana_regeneration", manaRegeneration);
 
                 String updateString = messages.get("wand.mana_regeneration");
-                updateString = updateString.replace("$amount", Integer.toString(xpRegeneration));
+                updateString = updateString.replace("$amount", Integer.toString(manaRegeneration));
                 sendAddMessage(mage, wand, "wand.upgraded_property", updateString);
 			}
-			int xpMax = wand.getManaMax();
-			if (xpMaxProbability.size() > 0 && xpMax < path.getMaxMaxXp()) {
-				xpMax = (Integer)(int)(Math.min(path.getMaxMaxXp(), xpMax + RandomUtils.weightedRandom(xpMaxProbability)));
+			int manaMax = wand.getManaMax();
+			if (manaMaxProbability.size() > 0 && manaMax < path.getMaxMaxMana()) {
+				manaMax = (Integer)(int)(Math.min(path.getMaxMaxMana(), manaMax + RandomUtils.weightedRandom(manaMaxProbability)));
                 if (path.getMatchSpellMana()) {
-                    // Make sure the wand has at least enough xp to cast the highest costing spell it has.
-                    xpMax = Math.max(maxXpCost, xpMax);
+                    // Make sure the wand has at least enough mana to cast the highest costing spell it has.
+                    manaMax = Math.max(maxManaCost, manaMax);
                 }
-				wandProperties.set("xp_max", xpMax);
+				wandProperties.set("mana_max", manaMax);
                 addedProperties = true;
 
                 String updateString = messages.get("wand.mana_amount");
-                updateString = updateString.replace("$amount", Integer.toString(xpMax));
+                updateString = updateString.replace("$amount", Integer.toString(manaMax));
                 sendAddMessage(mage, wand, "wand.upgraded_property", updateString);
 			}
 			
-			// Refill the wand's xp, why not
-			wandProperties.set("xp", xpMax);
+			// Refill the wand's mana, why not
+			wandProperties.set("mana", manaMax);
 		}
 		
 		// Add or set uses to the wand
