@@ -75,3 +75,5 @@ spells:
   cleanup:
     name: Anomaly Cleanup
     description: We thank you for your service!
+  ajshop:
+    title: "Inventory"

@@ -8,6 +8,11 @@
  - Support SP in CastingCost. Maybe part of the Cost/CastingCost refactor.
  - Spell count limit on wands or paths?
  
+ - Show mana from offhand wand (if no wand in main hand)
+ - Account for offhand items in "armor" checks
+ - Add builtin "help" command, check messaging for missing commands- shows "no permission"?
+ - Expand armor to include power, other modifiers?
+ 
  - "Triggered" spells.. ? Apparently MagicSpells does this or somesuch.
    Examples- Activated spells/ passive spells Upon taking damage- activate a heal spell effect Upon dealing damage- explosion in line of sight
 
