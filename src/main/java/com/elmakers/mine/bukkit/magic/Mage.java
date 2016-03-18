@@ -127,6 +127,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     private float cooldownReduction = 0;
     private long cooldownExpiration = 0;
     private float powerMultiplier = 1;
+    private float magePowerBonus = 0;
     private long lastClick = 0;
     private long lastCast = 0;
     private long blockPlaceTimeout = 0;
@@ -1382,11 +1383,19 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     @Override
     public float getPower() {
         if (offhandCast && offhandWand != null) {
-            float power = Math.min(controller.getMaxPower(), offhandWand.getPower());
+            float power = Math.min(controller.getMaxPower(), offhandWand.getPower() + getMagePowerBonus());
             return power * powerMultiplier;
         }
-        float power = Math.min(controller.getMaxPower(), activeWand == null ? 0 : activeWand.getPower());
+        float power = Math.min(controller.getMaxPower(), activeWand == null ? getMagePowerBonus() : activeWand.getPower() + getMagePowerBonus());
         return power * powerMultiplier;
+    }
+
+    public float getMagePowerBonus() {
+        return magePowerBonus;
+    }
+
+    public void setMagePowerBonus(float magePowerBonus) {
+        this.magePowerBonus = magePowerBonus;
     }
 
     @Override
