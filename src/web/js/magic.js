@@ -397,7 +397,6 @@ function formatRecipeLine(line) {
     if (line == "" || line == null) {
         return "   ";
     }
-    var line = line.trim();
     if (line.length == 1) {
         return " " + line + " ";
     }
