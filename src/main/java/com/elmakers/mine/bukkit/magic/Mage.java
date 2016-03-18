@@ -215,8 +215,8 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     }
 
     @Override
-    public void setPowerMultiplier(float mutliplier) {
-        powerMultiplier = mutliplier;
+    public void setPowerMultiplier(float multiplier) {
+        powerMultiplier = multiplier;
     }
 
     @Override
