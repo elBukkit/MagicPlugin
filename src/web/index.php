@@ -83,6 +83,9 @@ foreach ($allSpells as $key => $spell) {
     {
         $spell = array_merge($spell, $allSpells[$spell['inherit']]);
     }
+	if ((isset($spell['hidden']) && $spell['hidden']) || (isset($spell['enabled']) && !$spell['enabled'])) {
+		continue;
+	}
     if (!isset($spell['name']))
     {
         $spell['name'] = isset($messages['spells'][$key]['name']) ? $messages['spells'][$key]['name'] : $key;

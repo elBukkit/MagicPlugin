@@ -185,6 +185,10 @@ function createSpellDetails(spell, showTitle, useMana, costReduction, probabilit
         for (var spellLevel in spellLevels)
         {
             var level = spellLevels[spellLevel];
+			
+			// This can happen when inheriting from a spell that has levels :|
+			if (level == null) continue;
+			
             levelsList.append($('<h3/>').text("Level " + spellLevel));
             var levelDiv = $('<div/>');
 
