@@ -115,8 +115,8 @@ public interface CastContext {
     public void performedActions(int count);
     public int getActionsPerformed();
     public void finish();
-    public void retarget(int range, double fov, double closeRange, double closeFOV, boolean useHitbox);
-    public void retarget(int range, double fov, double closeRange, double closeFOV, boolean useHitbox, int yOffset, boolean targetSpaceRequired, int targetMinOffset);
+    public void retarget(double range, double fov, double closeRange, double closeFOV, boolean useHitbox);
+    public void retarget(double range, double fov, double closeRange, double closeFOV, boolean useHitbox, int yOffset, boolean targetSpaceRequired, int targetMinOffset);
     public CastContext getBaseContext();
     public Set<UUID> getTargetMessagesSent();
     public Collection<EffectPlay> getCurrentEffects();
