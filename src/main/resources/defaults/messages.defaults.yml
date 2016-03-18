@@ -1357,7 +1357,12 @@ spells:
         upgrade_description: "&r&b&bull; &6Unlock marker, aim down to set location."
         usage: Has a 5-second warmup. Cast down to set a marker
     warpunlock:
+      name: Unlock Warp
+      description: Useful in command blocks or region commands to unlock Recall waypoints when a player discovers an area
       cooldown: ""
+    warpmenu:
+      name: Warp Menu
+      description: Essentially identical to Recall, can be used in NPCs or command blocks so players don't get cast credit for Recall when using a warp menu
     levitate:
         name: Levitate
         description: Levitate yourself up into the air
