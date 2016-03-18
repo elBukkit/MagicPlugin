@@ -130,7 +130,7 @@ function createSpellDetails(spell, showTitle, useMana, costReduction, probabilit
 
     // Check for path availability
     for (var pathIndex in paths) {
-		var spAmount = spell.hasOwnProperty('worth_sp') ? spell['worth_sp'] : 0;
+		var spAmount = spell.hasOwnProperty('worth') ? spell['worth'] : 0;
         var path = paths[pathIndex];
         if ('path_spells' in path && path.path_spells != null && path.path_spells.indexOf(key) >= 0) {
             var availability = $('<div class="spellPathAvailability"/>').text("Available to: " + path.name + " for " + spAmount + " SP");
