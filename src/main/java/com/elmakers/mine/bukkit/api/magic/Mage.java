@@ -338,6 +338,8 @@ public interface Mage extends CostReducer {
     public float getPower();
     public float getPowerMultiplier();
     public void setPowerMultiplier(float power);
+    public float getMagePowerBonus();
+    public void setMagePowerBonus(float magePowerBonus);
 
     public boolean isPlayer();
     public boolean isOnline();
