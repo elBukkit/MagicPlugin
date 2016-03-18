@@ -1,0 +1,39 @@
+
+testbanner:
+  worth: 100
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    type: BANNER
+    damage: 1
+    meta:
+      ==: ItemMeta
+      meta-type: BANNER
+      base-color: RED
+      display-name: "§6Test Banner"
+      lore:
+      - "§o§3This is only a test!"
+      ItemFlags: !!set
+        HIDE_UNBREAKABLE: null
+        HIDE_PLACED_ON: null
+        HIDE_DESTROYS: null
+        HIDE_ATTRIBUTES: null
+        HIDE_POTION_EFFECTS: null
+      patterns:
+      - ==: Pattern
+        color: GREEN
+        pattern: vhr
+      - ==: Pattern
+        color: YELLOW
+        pattern: hhb
+      - ==: Pattern
+        color: BLUE
+        pattern: br
+      - ==: Pattern
+        color: ORANGE
+        pattern: cr
+      - ==: Pattern
+        color: ORANGE
+        pattern: cr
+      - ==: Pattern
+        color: BLACK
+        pattern: bri
