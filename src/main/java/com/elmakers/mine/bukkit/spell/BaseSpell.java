@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.spell;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -121,7 +122,8 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
             ),
             PERCENTAGE_PARAMETERS
         );
-
+    
+    private static final DecimalFormat RANGE_FORMATTER = new DecimalFormat("0.#");
 
     /*
      * protected members that are helpful to use
@@ -1889,7 +1891,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     }
 
     @Override
-    public int getRange()
+    public double getRange()
     {
         return 0;
     }
@@ -2180,9 +2182,9 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
             }
         }
 
-        int range = getRange();
+        double range = getRange();
         if (range > 0) {
-            lore.add(ChatColor.GRAY + messages.get("wand.range_description").replace("$range", Integer.toString(range)));
+            lore.add(ChatColor.GRAY + messages.get("wand.range_description").replace("$range", RANGE_FORMATTER.format(range)));
         }
 
         long effectiveDuration = this.getDuration();

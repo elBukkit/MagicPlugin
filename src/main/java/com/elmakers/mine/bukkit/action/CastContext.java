@@ -906,7 +906,7 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
     }
 
     @Override
-    public void retarget(int range, double fov, double closeRange, double closeFOV, boolean useHitbox) {
+    public void retarget(double range, double fov, double closeRange, double closeFOV, boolean useHitbox) {
         if (targetingSpell != null)
         {
             targetingSpell.retarget(range, fov, closeRange, closeFOV, useHitbox);
@@ -916,7 +916,7 @@ public class CastContext implements com.elmakers.mine.bukkit.api.action.CastCont
     }
 
     @Override
-    public void retarget(int range, double fov, double closeRange, double closeFOV, boolean useHitbox, int yOffset, boolean targetSpaceRequired, int targetMinOffset) {
+    public void retarget(double range, double fov, double closeRange, double closeFOV, boolean useHitbox, int yOffset, boolean targetSpaceRequired, int targetMinOffset) {
         if (targetingSpell != null)
         {
             targetingSpell.retarget(range, fov, closeRange, closeFOV, useHitbox, yOffset, targetSpaceRequired, targetMinOffset);

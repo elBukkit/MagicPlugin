@@ -16,7 +16,7 @@ import com.elmakers.mine.bukkit.api.spell.SpellResult;
 @Deprecated
 public class BlinkSpell extends UndoableSpell
 {
-	private static int DEFAULT_PASSTHROUGH_RANGE = 4;
+	private static double DEFAULT_PASSTHROUGH_RANGE = 4.0;
 
 	protected SpellResult ascend(Entity entity)
 	{
@@ -88,7 +88,7 @@ public class BlinkSpell extends UndoableSpell
 			}
 			if (firstBlock != null && firstBlock.getType() != Material.AIR && !isWater(firstBlock.getType()))
 			{
-				int passthroughRange = (int)Math.floor(mage.getRangeMultiplier() * parameters.getInt("passthrough_range", DEFAULT_PASSTHROUGH_RANGE));
+				double passthroughRange = mage.getRangeMultiplier() * parameters.getDouble("passthrough_range", DEFAULT_PASSTHROUGH_RANGE);
 				setMaxRange(passthroughRange);
 				setTargetingHeight(-1);
 				setTargetSpaceRequired();

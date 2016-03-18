@@ -11,7 +11,7 @@ import java.util.Arrays;
 import java.util.Collection;
 
 public class RetargetAction extends CompoundAction {
-    private int range;
+    private double range;
     private boolean useHitbox;
     private double fov;
     private double closeRange;
@@ -21,7 +21,7 @@ public class RetargetAction extends CompoundAction {
     public void prepare(CastContext context, ConfigurationSection parameters) {
         super.prepare(context, parameters);
         useHitbox = parameters.getBoolean("hitbox", false);
-        range = parameters.getInt("range", 32);
+        range = parameters.getDouble("range", 32);
         fov = parameters.getDouble("fov", 0.3);
         closeRange = parameters.getDouble("close_range", 1);
         closeFOV = parameters.getDouble("close_fov", 0.5);
@@ -29,7 +29,7 @@ public class RetargetAction extends CompoundAction {
 
     @Override
     public SpellResult step(CastContext context) {
-        actionContext.addWork(range);
+        actionContext.addWork((int)Math.ceil(range));
         actionContext.retarget(range, fov, closeRange, closeFOV, useHitbox);
         return startActions();
     }

@@ -50,7 +50,7 @@ public abstract class TargetingSpell extends BaseSpell {
     protected Material                          targetContents          = null;
     protected double 		                    targetBreakables	    = 0;
     protected boolean                           instantBlockEffects     = false;
-    private int                                 range                   = 0;
+    private double                              range                   = 0;
 
     private boolean                             checkProtection         = false;
     private int                                 damageResistanceProtection = 0;
@@ -166,7 +166,7 @@ public abstract class TargetingSpell extends BaseSpell {
         return targeting.getPreviousBlock();
     }
 
-    public void retarget(int range, double fov, double closeRange, double closeFOV, boolean useHitbox, int yOffset, boolean targetSpaceRequired, int targetMinOffset) {
+    public void retarget(double range, double fov, double closeRange, double closeFOV, boolean useHitbox, int yOffset, boolean targetSpaceRequired, int targetMinOffset) {
         initializeTargeting();
         this.range = range;
         targeting.setYOffset(yOffset);
@@ -179,7 +179,7 @@ public abstract class TargetingSpell extends BaseSpell {
         target();
     }
 
-    public void retarget(int range, double fov, double closeRange, double closeFOV, boolean useHitbox) {
+    public void retarget(double range, double fov, double closeRange, double closeFOV, boolean useHitbox) {
         initializeTargeting();
         this.range = range;
         targeting.setFOV(fov);
@@ -350,28 +350,28 @@ public abstract class TargetingSpell extends BaseSpell {
         return !bypassProtection && mage.isSuperProtected();
     }
 
-    protected int getMaxRange()
+    protected double getMaxRange()
     {
         if (allowMaxRange) return Math.min(MAX_RANGE, range);
         float multiplier = (mage == null) ? 1 : mage.getRangeMultiplier();
-        return Math.min(MAX_RANGE, (int)(multiplier * range));
+        return Math.min(MAX_RANGE, multiplier * range);
     }
 
     @Override
-    public int getRange()
+    public double getRange()
     {
         TargetType targetType = targeting.getTargetType();
         if (targetType == TargetType.NONE || targetType == TargetType.SELF) return 0;
         return getMaxRange();
     }
 
-    protected int getMaxRangeSquared()
+    protected double getMaxRangeSquared()
     {
-        int maxRange = getMaxRange();
+        double maxRange = getMaxRange();
         return maxRange * maxRange;
     }
 
-    protected void setMaxRange(int range)
+    protected void setMaxRange(double range)
     {
         this.range = range;
     }
@@ -447,7 +447,7 @@ public abstract class TargetingSpell extends BaseSpell {
     }
 
     protected void processTemplateParameters(ConfigurationSection parameters) {
-        range = parameters.getInt("range", 0);
+        range = parameters.getDouble("range", 0);
         boolean hasTargeting = parameters.contains("target");
         targeting.parseTargetType(parameters.getString("target"));
 
