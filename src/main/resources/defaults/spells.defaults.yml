@@ -6246,6 +6246,7 @@ earth:
         brush: dirt
         player_damage: 4
         entity_damage: 6
+        destructible: destructible_replace
     costs:
         mana: 20
 
