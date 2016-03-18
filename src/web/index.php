@@ -43,7 +43,7 @@ try {
     }
 
 	$general = parseConfigFile('config', true);
-	$spells = parseConfigFile('spells', $general['load_default_spells'], $general['disable_default_spells']);
+	$allSpells = parseConfigFile('spells', $general['load_default_spells'], $general['disable_default_spells']);
 	$wands = parseConfigFile('wands', $general['load_default_wands']);
 	$crafting = parseConfigFile('crafting', $general['load_default_crafting']);
 	$enchantingConfig = parseConfigFile('enchanting', $general['load_default_enchanting']);
@@ -55,10 +55,9 @@ try {
 $upgrades = array();
 
 // Look up localizations
-$allSpells = $spells;
-foreach ($spells as $key => &$spell) {
+$spells = array();
+foreach ($allSpells as $key => $spell) {
     if ($key == 'default' || (isset($spell['hidden']) && $spell['hidden']) || (isset($spell['enabled']) && !$spell['enabled'])) {
-        unset($spells[$key]);
         continue;
     }
     $spell['key'] = $key;
@@ -69,9 +68,8 @@ foreach ($spells as $key => &$spell) {
         $baseKey = $spellPieces[0];
         $level = $spellPieces[1];
         $spellLevel = $spells[$key];
-        unset($spells[$key]);
-        if (isset($spells[$baseKey])) {
-            $baseSpell = &$spells[$baseKey];
+        if (isset($allSpells[$baseKey])) {
+            $baseSpell = &$allSpells[$baseKey];
             if (!isset($baseSpell['spell_levels'])) {
                 $baseSpell['spell_levels'] = array($level => $spellLevel);
             } else {
@@ -85,17 +83,18 @@ foreach ($spells as $key => &$spell) {
     {
         $spell = array_merge($spell, $allSpells[$spell['inherit']]);
     }
-
     if (!isset($spell['name']))
     {
         $spell['name'] = isset($messages['spells'][$key]['name']) ? $messages['spells'][$key]['name'] : $key;
     }
+
     if (!isset($spell['description']))
     {
         $spell['description'] = isset($messages['spells'][$key]['description']) ? $messages['spells'][$key]['description'] : '';
     }
     $spell['extended_description'] = isset($messages['spells'][$key]['extended_description']) ? $messages['spells'][$key]['extended_description'] : '';
     $spell['usage'] = isset($messages['spells'][$key]['usage']) ? $messages['spells'][$key]['usage'] : '';
+	$spells[$key] = $spell;
 }
 
 ksort($spells);
@@ -473,6 +472,7 @@ function printIcon($iconUrl, $title) {
 				<?php 
 					foreach ($spells as $key => $spell) {
                         $name = isset($spell['name']) ? $spell['name'] : "($key)";
+						
                         if (isset($spell['icon_url']))
                         {
                             $icon = printIcon($spell['icon_url'], $name);
