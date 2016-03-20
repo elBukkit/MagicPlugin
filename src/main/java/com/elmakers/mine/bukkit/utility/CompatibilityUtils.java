@@ -475,7 +475,7 @@ public class CompatibilityUtils extends NMSUtils {
 
     public static void damage(LivingEntity target, double amount, Entity source) {
         if (target == null || target.isDead()) return;
-        if (target.getType() == EntityType.ENDER_DRAGON) {
+        if (USE_MAGIC_DAMAGE && target.getType() == EntityType.ENDER_DRAGON) {
             magicDamage(target, amount, source);
             return;
         }
