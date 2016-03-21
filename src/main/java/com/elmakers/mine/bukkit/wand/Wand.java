@@ -2640,6 +2640,27 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         if (isHeroes || other.isHeroes) {
             return false;
         }
+
+		// Check for forced upgrades
+		if (other.isForcedUpgrade()) {
+			String template = other.getTemplateKey();
+			ConfigurationSection templateConfig = controller.getWandTemplateConfiguration(template);
+			if (templateConfig == null) {
+				return false;
+			}
+			templateConfig = ConfigurationUtils.cloneConfiguration(templateConfig);
+			templateConfig.set("name", templateConfig.getString("upgrade_name"));
+			templateConfig.set("description", templateConfig.getString("upgrade_description"));
+			templateConfig.set("force", null);
+			templateConfig.set("upgrade", null);
+			templateConfig.set("icon", templateConfig.getString("upgrade_icon"));
+			templateConfig.set("indestructible", null);
+			templateConfig.set("key", null);
+
+			this.loadProperties(templateConfig, false);
+			this.saveItemState();
+			return true;
+		}
 		
 		boolean modified = false;
 
@@ -3261,25 +3282,6 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 			}
 		} else if (isUpgrade(item)) {
 			Wand wand = new Wand(controller, item);
-            if (wand.isForcedUpgrade()) {
-                String template = wand.getTemplateKey();
-                ConfigurationSection templateConfig = controller.getWandTemplateConfiguration(template);
-                if (templateConfig == null) {
-                    return false;
-                }
-                templateConfig = ConfigurationUtils.cloneConfiguration(templateConfig);
-                templateConfig.set("name", templateConfig.getString("upgrade_name"));
-                templateConfig.set("description", templateConfig.getString("upgrade_description"));
-                templateConfig.set("force", null);
-                templateConfig.set("upgrade", null);
-                templateConfig.set("icon", templateConfig.getString("upgrade_icon"));
-                templateConfig.set("indestructible", null);
-                templateConfig.set("key", null);
-
-                this.loadProperties(templateConfig, false);
-                this.saveItemState();
-                return true;
-            }
 			return this.add(wand);
 		}
 		if (mage != null && !mage.isAtMaxSkillPoints()) {
