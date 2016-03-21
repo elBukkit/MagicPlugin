@@ -2631,12 +2631,6 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         {
             return false;
         }
-
-        // Don't allow upgrades from an item on a different path
-        if (other.isUpgrade() && other.path != null && !other.path.isEmpty() && (this.path == null || !this.path.equals(other.path))) {
-            return false;
-        }
-
         if (isHeroes || other.isHeroes) {
             return false;
         }
@@ -2661,7 +2655,12 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 			this.saveItemState();
 			return true;
 		}
-		
+
+		// Don't allow upgrades from an item on a different path
+		if (other.isUpgrade() && other.path != null && !other.path.isEmpty() && (this.path == null || !this.path.equals(other.path))) {
+			return false;
+		}
+
 		boolean modified = false;
 
         Messages messages = controller.getMessages();
