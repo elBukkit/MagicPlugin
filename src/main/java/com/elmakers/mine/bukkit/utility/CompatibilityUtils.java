@@ -1104,7 +1104,7 @@ public class CompatibilityUtils extends NMSUtils {
     }
     
     public static boolean checkResourcePackHash(String hash) {
-        return (hash != null && !hash.isEmpty() && hash.matches("^[a-f0-9]{40}$"));
+        return (hash == null || hash.isEmpty() || hash.matches("^[a-f0-9]{40}$"));
     }
 
     public static boolean loadSchematic(File inputFile, Schematic schematic) {
