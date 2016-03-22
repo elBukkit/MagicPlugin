@@ -8258,7 +8258,7 @@ superkill:
           firework: ball_large
     parameters:
         target: other
-        target_type: LivingEntity
+        target_type: Damageable
         cooldown: 500
         target_breakables: 5
         bypass_backfire: true
