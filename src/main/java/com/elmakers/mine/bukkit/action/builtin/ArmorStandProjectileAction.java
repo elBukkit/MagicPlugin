@@ -24,6 +24,7 @@ public class ArmorStandProjectileAction extends EntityProjectileAction {
     private boolean adjustArmPitch = false;
     private boolean adjustHeadPitch = false;
     private boolean showArmorStandArms = true;
+    private boolean showArmorStandBaseplate = true;
     private ItemStack rightArmItem = null;
     private ItemStack helmetItem = null;
     private ItemStack chestplateItem = null;
@@ -68,6 +69,7 @@ public class ArmorStandProjectileAction extends EntityProjectileAction {
         armorStandInvisible = parameters.getBoolean("armor_stand_invisible", true);
         armorStandGravity = parameters.getBoolean("armor_stand_gravity", true);
         showArmorStandArms = parameters.getBoolean("armor_stand_arms", true);
+        showArmorStandBaseplate = parameters.getBoolean("armor_stand_baseplate", true);
         smallArmorStand = parameters.getBoolean("armor_stand_small", false);
         adjustHeadPitch = parameters.getBoolean("orient_head", false);
         adjustArmPitch = parameters.getBoolean("orient_right_arm", false);
@@ -95,7 +97,6 @@ public class ArmorStandProjectileAction extends EntityProjectileAction {
 
     @Override
     public SpellResult start(CastContext context) {
-        Mage mage = context.getMage();
         MageController controller = context.getController();
         Location location = context.getEyeLocation();
         ArmorStand armorStand = (ArmorStand)setEntity(controller, CompatibilityUtils.spawnArmorStand(location));
@@ -107,7 +108,8 @@ public class ArmorStandProjectileAction extends EntityProjectileAction {
         armorStand.setBoots(bootsItem);
         armorStand.setMarker(armorStandMarker);
         armorStand.setVisible(!armorStandInvisible);
-        armorStand.setGravity(armorStandGravity);
+        armorStand.setBasePlate(showArmorStandBaseplate);
+        CompatibilityUtils.setGravity(armorStand, armorStandGravity);
         armorStand.setSmall(smallArmorStand);
         armorStand.setArms(showArmorStandArms);
         CompatibilityUtils.setDisabledSlots(armorStand, 2039552);

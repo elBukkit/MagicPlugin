@@ -21,6 +21,7 @@ public class EntityArmorStandData extends EntityExtraData {
     public boolean isVisible;
     public boolean hasArms;
     public boolean isSmall;
+    public boolean hasBasePlate;
 
     public EntityArmorStandData() {
 
@@ -47,6 +48,7 @@ public class EntityArmorStandData extends EntityExtraData {
         isVisible = armorStand.isVisible();
         hasArms = armorStand.hasArms();
         isSmall = armorStand.isSmall();
+        hasBasePlate = armorStand.hasBasePlate();
     }
 
     @Override
@@ -69,6 +71,7 @@ public class EntityArmorStandData extends EntityExtraData {
         armorStand.setVisible(isVisible);
         armorStand.setArms(hasArms);
         armorStand.setSmall(isSmall);
+        armorStand.setBasePlate(hasBasePlate);
     }
 
     @Override
@@ -89,6 +92,7 @@ public class EntityArmorStandData extends EntityExtraData {
         copy.isVisible = isVisible;
         copy.hasArms = hasArms;
         copy.isSmall = isSmall;
+        copy.hasBasePlate = hasBasePlate;
         return copy;
     }
 
