@@ -19,6 +19,9 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.ComplexEntityPart;
+import org.bukkit.entity.ComplexLivingEntity;
+import org.bukkit.entity.Damageable;
 import org.bukkit.entity.Enderman;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -57,6 +60,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.Set;
 import java.util.UUID;
 import java.util.logging.Level;
 
@@ -383,7 +387,16 @@ public class CompatibilityUtils extends NMSUtils {
             List<Entity> bukkitEntityList = new java.util.ArrayList<org.bukkit.entity.Entity>(entityList.size());
 
             for (Object entity : entityList) {
-                bukkitEntityList.add((Entity)class_Entity_getBukkitEntityMethod.invoke(entity));
+                Entity bukkitEntity = (Entity)class_Entity_getBukkitEntityMethod.invoke(entity);
+                if (bukkitEntity instanceof ComplexLivingEntity) {
+                    ComplexLivingEntity complex = (ComplexLivingEntity)bukkitEntity;
+                    Set<ComplexEntityPart> parts = complex.getParts();
+                    for (ComplexEntityPart part : parts) {
+                        bukkitEntityList.add(part);
+                    }
+                } else {
+                    bukkitEntityList.add(bukkitEntity);
+                }
             }
             return bukkitEntityList;
         } catch (Exception ex) {
@@ -473,8 +486,11 @@ public class CompatibilityUtils extends NMSUtils {
 
     private static WeakReference<ThrownPotion> potionReference = null;
 
-    public static void damage(LivingEntity target, double amount, Entity source) {
+    public static void damage(Damageable target, double amount, Entity source) {
         if (target == null || target.isDead()) return;
+        while (target instanceof ComplexEntityPart) {
+            target = ((ComplexEntityPart)target).getParent();
+        }
         if (USE_MAGIC_DAMAGE && target.getType() == EntityType.ENDER_DRAGON) {
             magicDamage(target, amount, source);
             return;
@@ -488,14 +504,14 @@ public class CompatibilityUtils extends NMSUtils {
         isDamaging = false;
     }
 
-    public static void magicDamage(LivingEntity target, double amount, Entity source) {
+    public static void magicDamage(Damageable target, double amount, Entity source) {
         try {
             if (target == null || target.isDead()) return;
 
             // Special-case for witches .. witches are immune to magic damage :\
             // And endermen are immune to indirect damage .. or something.
             // Might need to config-drive this, or just go back to defaulting to normal damage
-            if (!USE_MAGIC_DAMAGE || target instanceof Witch || target instanceof Enderman)
+            if (!USE_MAGIC_DAMAGE || target instanceof Witch || target instanceof Enderman || !(target instanceof LivingEntity))
             {
                 damage(target, amount, source);
                 return;
