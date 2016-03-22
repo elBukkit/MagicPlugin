@@ -445,13 +445,13 @@ public class Targeting {
         List<Entity> entities = null;
         boolean debugMessage = true;
         if (source == null && sourceEntity != null) {
-            entities = sourceEntity.getNearbyEntities(rangePadded, rangePadded, rangePadded);
             if (sourceEntity instanceof LivingEntity) {
                 source = ((LivingEntity)sourceEntity).getEyeLocation();
             } else {
                 source = sourceEntity.getLocation();
             }
-        } else if (source != null) {
+        } 
+        if (source != null) {
             Vector queryRange = null;
             Location sourceLocation = source;
             if (useHitbox) {
