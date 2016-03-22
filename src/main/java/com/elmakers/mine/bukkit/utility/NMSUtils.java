@@ -471,7 +471,6 @@ public class NMSUtils {
             class_CraftBanner_getPatternsMethod = class_CraftBanner.getMethod("getPatterns");
             class_CraftBanner_setPatternsMethod = class_CraftBanner.getMethod("setPatterns", List.class);
             class_CraftBanner_setBaseColorMethod = class_CraftBanner.getMethod("setBaseColor", DyeColor.class);
-            class_EntityDamageSource_setThornsMethod = class_EntityDamageSource.getMethod("v");
 
             class_BlockPosition = fixBukkitClass("net.minecraft.server.BlockPosition");
             class_EnumDirection = (Class<Enum>)fixBukkitClass("net.minecraft.server.EnumDirection");
@@ -493,8 +492,10 @@ public class NMSUtils {
                     class_Entity_getTypeMethod = class_Entity.getDeclaredMethod("as");
                     class_Entity_getTypeMethod.setAccessible(true);
                     class_NBTTagCompound_getKeysMethod = class_NBTTagCompound.getMethod("c");
+                    class_EntityDamageSource_setThornsMethod = class_EntityDamageSource.getMethod("w");
                 } catch (Throwable ignore) {
                     // 1.8 and lower
+                    class_EntityDamageSource_setThornsMethod = class_EntityDamageSource.getMethod("v");
                     class_TileEntity_saveMethod = class_TileEntity.getMethod("b", class_NBTTagCompound);
                     class_EntityArmorStand_disabledSlotsField = class_EntityArmorStand.getDeclaredField("bi");
                     class_TileEntityContainer_setLock = class_TileEntityContainer.getMethod("a", class_ChestLock);
