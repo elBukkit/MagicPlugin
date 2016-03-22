@@ -11,6 +11,7 @@ import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Damageable;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -54,22 +55,23 @@ public class DamageAction extends BaseSpellAction
 	public SpellResult perform(CastContext context)
 	{
         Entity entity = context.getTargetEntity();
-		if (entity == null || !(entity instanceof LivingEntity) || !entity.isValid())
+		if (entity == null || !(entity instanceof Damageable) || !entity.isValid())
 		{
 			return SpellResult.NO_TARGET;
 		}
 
 		double damage = 1;
 
-        LivingEntity targetEntity = (LivingEntity)entity;
+		Damageable targetEntity = (Damageable)entity;
+		LivingEntity livingTarget = (entity instanceof LivingEntity) ? (LivingEntity)entity : null;
         context.registerDamaged(targetEntity);
 		Mage mage = context.getMage();
 		MageController controller = context.getController();
 
 		double previousKnockbackResistance = 0D;
 		try {
-			if (knockbackResistance != null) {
-				AttributeInstance knockBackAttribute = targetEntity.getAttribute(Attribute.GENERIC_KNOCKBACK_RESISTANCE);
+			if (knockbackResistance != null && livingTarget != null) {
+				AttributeInstance knockBackAttribute = livingTarget.getAttribute(Attribute.GENERIC_KNOCKBACK_RESISTANCE);
 				previousKnockbackResistance = knockBackAttribute.getBaseValue();
 				knockBackAttribute.setBaseValue(knockbackResistance); 
 			}
@@ -92,8 +94,8 @@ public class DamageAction extends BaseSpellAction
 				}
 			}
 		} finally {
-			if (knockbackResistance != null) {
-				AttributeInstance knockBackAttribute = targetEntity.getAttribute(Attribute.GENERIC_KNOCKBACK_RESISTANCE);
+			if (knockbackResistance != null && livingTarget != null) {
+				AttributeInstance knockBackAttribute = livingTarget.getAttribute(Attribute.GENERIC_KNOCKBACK_RESISTANCE);
 				knockBackAttribute.setBaseValue(previousKnockbackResistance);
 			}
 		}
