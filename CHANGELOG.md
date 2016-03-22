@@ -3,6 +3,7 @@
 ## 6.1
 
  - All mana-related configuration and properties changed from "xp" to "mana". Should be backwards-compatible.
+ - Improved ender dragon targeting, fixed ender dragon direct damage
 
 ## 6.0.7
 
