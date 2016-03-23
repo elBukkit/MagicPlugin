@@ -1,5 +1,7 @@
 package com.elmakers.mine.bukkit.api.magic;
 
+import org.bukkit.inventory.ItemStack;
+
 import java.util.List;
 
 public interface Messages {
@@ -10,4 +12,8 @@ public interface Messages {
     public String getParameterized(String key, String paramName, String paramValue);
     public String getParameterized(String key, String paramName1, String paramValue1, String paramName2, String paramValue2);
     public String escape(String source);
+    public String describeItem(ItemStack item);
+    public String describeCurrency(double amount);
+    public String getCurrency();
+    public String getCurrencyPlural();
 }
