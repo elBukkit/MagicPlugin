@@ -106,7 +106,7 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
         allSpells.addAll(inherit.allSpells);
         load(controller, key, template);
         
-        if (inherit.tags != null)
+        if (inherit.tags != null && !inherit.tags.isEmpty())
         {
             if (this.tags == null) {
                 this.tags = new HashSet<String>();
@@ -219,7 +219,7 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
         maxCooldownReduction = (float)template.getDouble("max_cooldown_reduction", maxCooldownReduction);
 
         Collection<String> tagList = ConfigurationUtils.getStringList(template, "tags");
-        if (tagList != null) {
+        if (tagList != null && !tagList.isEmpty()) {
             if (tags == null) {
                 tags = new HashSet<String>(tagList);
             } else {
