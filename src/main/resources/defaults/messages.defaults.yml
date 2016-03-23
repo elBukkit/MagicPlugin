@@ -1570,6 +1570,7 @@ spells:
         upgrade_name_change: "&r&4Upgrades: &r$name"
         level_requirement: "&r&cRequires: &6$path"
         cast_requirement: "&r&cCasts: &6$current&f/&e$required"
+        tags_requirement: "&r&cRequires: &6$tags"
     brushselect:
         name: Brush Selector
         descriptions: Chooses your active brush

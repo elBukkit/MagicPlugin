@@ -155,6 +155,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     private BaseSpell template;
     private long requiredUpgradeCasts;
     private String requiredUpgradePath;
+    private Set<String> requiredUpgradeTags;
     private MaterialAndData icon = new MaterialAndData(Material.AIR);
     private String iconURL = null;
     private List<CastingCost> costs = null;
@@ -740,6 +741,12 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         // The actual upgrade spell will be set externally.
         requiredUpgradePath = node.getString("upgrade_required_path");
         requiredUpgradeCasts = node.getLong("upgrade_required_casts");
+        List<String> pathTags = node.getStringList("upgrade_required_path_tags");
+        if (pathTags.isEmpty()) {
+            requiredUpgradeTags = null;
+        } else {
+            requiredUpgradeTags = new HashSet<String>(pathTags);
+        }
 
         // Inheritance, currently only used to look up messages, and only goes one level deep
         inheritKey = node.getString("inherit");
@@ -2079,6 +2086,11 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     }
 
     @Override
+    public Set<String> getRequiredUpgradeTags() {
+        return requiredUpgradeTags;
+    }
+
+    @Override
     public long getRequiredUpgradeCasts() {
         return requiredUpgradeCasts;
     }
@@ -2090,7 +2102,9 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
 
     @Override
     public SpellTemplate getUpgrade() {
-        if (requiredUpgradeCasts <= 0 && (requiredUpgradePath == null || requiredUpgradePath.isEmpty())) {
+        if (requiredUpgradeCasts <= 0
+                && ((requiredUpgradePath == null || requiredUpgradePath.isEmpty())
+                && (requiredUpgradeTags == null || requiredUpgradeTags.isEmpty()))) {
             return null;
         }
         SpellKey upgradeKey = new SpellKey(spellKey.getBaseKey(), spellKey.getLevel() + 1);
@@ -2295,32 +2309,32 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
             {
                 SpellTemplate upgrade = getUpgrade();
                 long requiredCasts = getRequiredUpgradeCasts();
-                if (upgrade != null && requiredCasts > 0 && getCastCount() >= requiredCasts)
+                String upgradePath = getRequiredUpgradePath();
+                WandUpgradePath currentPath = wand.getPath();
+                Set<String> upgradeTags = getRequiredUpgradeTags();
+                if ((upgrade != null && requiredCasts > 0 && getCastCount() >= requiredCasts)
+                        && (upgradePath == null || upgradePath.isEmpty() || (currentPath != null && currentPath.hasPath(upgradePath)))
+                        && (upgradeTags == null || upgradeTags.isEmpty() || (currentPath != null && currentPath.hasAllTags(upgradeTags))))
                 {
-                    String upgradePath = getRequiredUpgradePath();
-                    WandUpgradePath currentPath = wand.getPath();
-                    if (upgradePath == null || upgradePath.isEmpty() || (currentPath != null && currentPath.hasPath(upgradePath)))
-                    {
-                        Spell newSpell = mage.getSpell(upgrade.getKey());
-                        if (isActive()) {
-                            deactivate(true, true);
-                            if (newSpell != null && newSpell instanceof MageSpell) {
-                                ((MageSpell)newSpell).activate();
-                            }
+                    Spell newSpell = mage.getSpell(upgrade.getKey());
+                    if (isActive()) {
+                        deactivate(true, true);
+                        if (newSpell != null && newSpell instanceof MageSpell) {
+                            ((MageSpell)newSpell).activate();
                         }
-                        wand.addSpell(upgrade.getKey());
-                        Messages messages = controller.getMessages();
-                        String levelDescription = upgrade.getLevelDescription();
-                        if (levelDescription == null || levelDescription.isEmpty()) {
-                            levelDescription = upgrade.getName();
-                        }
-                        playEffects("upgrade");
-                        mage.sendMessage(messages.get("wand.spell_upgraded").replace("$name", upgrade.getName()).replace("$wand", getName()).replace("$level", levelDescription));
-                        mage.sendMessage(upgrade.getUpgradeDescription().replace("$name", upgrade.getName()));
-
-                        SpellUpgradeEvent upgradeEvent = new SpellUpgradeEvent(mage, wand, this, newSpell);
-                        Bukkit.getPluginManager().callEvent(upgradeEvent);
                     }
+                    wand.addSpell(upgrade.getKey());
+                    Messages messages = controller.getMessages();
+                    String levelDescription = upgrade.getLevelDescription();
+                    if (levelDescription == null || levelDescription.isEmpty()) {
+                        levelDescription = upgrade.getName();
+                    }
+                    playEffects("upgrade");
+                    mage.sendMessage(messages.get("wand.spell_upgraded").replace("$name", upgrade.getName()).replace("$wand", getName()).replace("$level", levelDescription));
+                    mage.sendMessage(upgrade.getUpgradeDescription().replace("$name", upgrade.getName()));
+
+                    SpellUpgradeEvent upgradeEvent = new SpellUpgradeEvent(mage, wand, this, newSpell);
+                    Bukkit.getPluginManager().callEvent(upgradeEvent);
                 }
             }
         }

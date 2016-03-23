@@ -15,6 +15,8 @@ import com.elmakers.mine.bukkit.magic.MagicPlugin;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
+import com.elmakers.mine.bukkit.utility.TextUtils;
+import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils.Text;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
@@ -25,8 +27,10 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class SpellShopAction extends BaseShopAction
 {
@@ -156,11 +160,13 @@ public class SpellShopAction extends BaseShopAction
             {
                 Spell mageSpell = wand != null ? wand.getSpell(spellKey) : null;
                 String requiredPathKey = mageSpell != null ? mageSpell.getRequiredUpgradePath() : null;
+                Set<String> requiredPathTags = mageSpell != null ? mageSpell.getRequiredUpgradeTags() : null;
                 long requiredCastCount = mageSpell != null ? mageSpell.getRequiredUpgradeCasts() : 0;
                 long castCount = mageSpell != null ? Math.min(mageSpell.getCastCount(), requiredCastCount) : 0;
                 if (spell.getSpellKey().getLevel() > 1
                         && (requiredPathKey != null && !currentPath.hasPath(requiredPathKey)
-                        || (requiresCastCounts && requiredCastCount > 0 && castCount < requiredCastCount)))
+                        || (requiresCastCounts && requiredCastCount > 0 && castCount < requiredCastCount)
+                        || (requiredPathTags != null && !currentPath.hasAllTags(requiredPathTags))))
                 {
                     ItemMeta meta = spellItem.getItemMeta();
                     List<String> itemLore = meta.getLore();
@@ -185,6 +191,10 @@ public class SpellShopAction extends BaseShopAction
                             message = context.getMessage("level_requirement", "&r&cRequires: &6$path").replace("$path", upgradePath.getName());
                             lore.add(message);
                         }
+                    } else if (requiredPathTags != null && !requiredPathTags.isEmpty() && !currentPath.hasAllTags(requiredPathTags)) {
+                        Set<String> tags = currentPath.getMissingTags(requiredPathTags);
+                        message = context.getMessage("tags_requirement").replace("$tags", TextUtils.formatTags(tags));
+                        lore.add(message);
                     }
 
                     if (requiresCastCounts && requiredCastCount > 0 && castCount < requiredCastCount) {

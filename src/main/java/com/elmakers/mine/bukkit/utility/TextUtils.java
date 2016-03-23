@@ -1,6 +1,10 @@
 package com.elmakers.mine.bukkit.utility;
 
-public class TextUtils 
+import com.google.common.base.CaseFormat;
+
+import java.util.Set;
+
+public class TextUtils
 {
     enum Numeral 
     {
@@ -32,5 +36,28 @@ public class TextUtils
             }
         }
         return buf.toString();
+    }
+
+    public static String formatTags(Set<String> tags) {
+        StringBuilder buffer = new StringBuilder();
+        for (String tag : tags) {
+            if (buffer.length() != 0) {
+                buffer.append(", ");
+            }
+            buffer.append(formatTagName(tag));
+        }
+        return buffer.toString();
+    }
+
+    public static String formatTagName(String itemName) {
+        String[] split = itemName.split("_");
+        StringBuilder builder = new StringBuilder();
+        for (String part : split) {
+            if (builder.length() > 0) {
+                builder.append(" ");
+            }
+            builder.append(CaseFormat.LOWER_UNDERSCORE.to(CaseFormat.UPPER_CAMEL, part));
+        }
+        return builder.toString();
     }
 }
