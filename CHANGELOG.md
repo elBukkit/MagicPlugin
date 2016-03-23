@@ -6,6 +6,7 @@
  - All mana-related configuration and properties changed from "xp" to "mana". Should be backwards-compatible.
  - Improved ender dragon targeting, fixed ender dragon direct damage
  - Add support for spells consuming SP to cast
+ - Tweaked Petrify spell, add 2 more levels
 
 ## 6.0.7
 

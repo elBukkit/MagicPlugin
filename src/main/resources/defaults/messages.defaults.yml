@@ -1544,6 +1544,7 @@ spells:
         name: Petrify
         description: Immobilize your target
         cast: You petrify $target.
+        upgrade_description: "&r&b&bull; &6Increased duration"
     entangle:
         name: Entangle
         description: Trap your target with ropes
