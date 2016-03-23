@@ -217,7 +217,7 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
 
         Collection<String> tagList = ConfigurationUtils.getStringList(template, "tags");
         if (tagList != null && !tagList.isEmpty()) {
-            if (tags == null || tags.isEmpty()) {
+            if (tags == null) {
                 tags = new HashSet<String>(tagList);
             } else {
                 tags.addAll(tagList);
