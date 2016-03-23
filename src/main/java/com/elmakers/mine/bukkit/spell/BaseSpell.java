@@ -741,8 +741,8 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         // The actual upgrade spell will be set externally.
         requiredUpgradePath = node.getString("upgrade_required_path");
         requiredUpgradeCasts = node.getLong("upgrade_required_casts");
-        List<String> pathTags = node.getStringList("upgrade_required_path_tags");
-        if (pathTags.isEmpty()) {
+        List<String> pathTags = ConfigurationUtils.getStringList(node, "upgrade_required_path_tags");
+        if (pathTags == null || pathTags.isEmpty()) {
             requiredUpgradeTags = null;
         } else {
             requiredUpgradeTags = new HashSet<String>(pathTags);
