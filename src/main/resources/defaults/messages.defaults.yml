@@ -283,7 +283,8 @@ costs:
     xp: XP
     sp: Skill Points
     heroes_mana: $amount Mana
-    currency: Dollars
+    currency: Dollar
+    currency_plural: Dollars
     currency_amount: "$$amount"
 cooldown:
     wait_seconds: another $seconds seconds

@@ -19,6 +19,7 @@ import com.elmakers.mine.bukkit.api.event.CastEvent;
 import com.elmakers.mine.bukkit.api.event.PreCastEvent;
 import com.elmakers.mine.bukkit.api.event.SpellUpgradeEvent;
 import com.elmakers.mine.bukkit.api.magic.Messages;
+import com.elmakers.mine.bukkit.api.spell.CastingCost;
 import com.elmakers.mine.bukkit.api.spell.CostReducer;
 import com.elmakers.mine.bukkit.api.spell.MageSpell;
 import com.elmakers.mine.bukkit.api.spell.Spell;
@@ -717,7 +718,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         Set<String> costKeys = node.getKeys(false);
         for (String key : costKeys)
         {
-            castingCosts.add(new CastingCost(key, node.getInt(key, 1)));
+            castingCosts.add(new com.elmakers.mine.bukkit.spell.CastingCost(controller, key, node.getInt(key, 1)));
         }
 
         return castingCosts;
@@ -1031,12 +1032,12 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
             return false;
         }
 
-        com.elmakers.mine.bukkit.api.spell.CastingCost required = getRequiredCost();
+        CastingCost required = getRequiredCost();
         if (required != null) {
             String baseMessage = getMessage("insufficient_resources");
             String costDescription = required.getDescription(controller.getMessages(), mage);
             // Send loud messages when items are required.
-            if (required.getAmount() > 0) {
+            if (required.isItem()) {
                 sendMessage(baseMessage.replace("$cost", costDescription));
             } else {
                 castMessage(baseMessage.replace("$cost", costDescription));
@@ -1729,17 +1730,17 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     }
 
     @Override
-    public Collection<com.elmakers.mine.bukkit.api.spell.CastingCost> getCosts() {
+    public Collection<CastingCost> getCosts() {
         if (costs == null) return null;
-        List<com.elmakers.mine.bukkit.api.spell.CastingCost> copy = new ArrayList<com.elmakers.mine.bukkit.api.spell.CastingCost>();
+        List<CastingCost> copy = new ArrayList<CastingCost>();
         copy.addAll(costs);
         return copy;
     }
 
     @Override
-    public Collection<com.elmakers.mine.bukkit.api.spell.CastingCost> getActiveCosts() {
+    public Collection<CastingCost> getActiveCosts() {
         if (activeCosts == null) return null;
-        List<com.elmakers.mine.bukkit.api.spell.CastingCost> copy = new ArrayList<com.elmakers.mine.bukkit.api.spell.CastingCost>();
+        List<CastingCost> copy = new ArrayList<CastingCost>();
         copy.addAll(activeCosts);
         return copy;
     }
@@ -2168,15 +2169,15 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
             lore.add(messages.get("cooldown.mage_description").replace("$time", mageCooldownDescription));
         }
         if (costs != null) {
-            for (com.elmakers.mine.bukkit.api.spell.CastingCost cost : costs) {
-                if (cost.hasCosts(reducer)) {
+            for (CastingCost cost : costs) {
+                if (!cost.isEmpty(reducer)) {
                     lore.add(ChatColor.YELLOW + messages.get("wand.costs_description").replace("$description", cost.getFullDescription(messages, reducer)));
                 }
             }
         }
         if (activeCosts != null) {
-            for (com.elmakers.mine.bukkit.api.spell.CastingCost cost : activeCosts) {
-                if (cost.hasCosts(reducer)) {
+            for (CastingCost cost : activeCosts) {
+                if (cost.isEmpty(reducer)) {
                     lore.add(ChatColor.YELLOW + messages.get("wand.active_costs_description").replace("$description", cost.getFullDescription(messages, reducer)));
                 }
             }

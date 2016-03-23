@@ -2,8 +2,10 @@
 
 ## 6.1
 
+ - Possible breaking API changes: Refactored casting costs, changed range values to double
  - All mana-related configuration and properties changed from "xp" to "mana". Should be backwards-compatible.
  - Improved ender dragon targeting, fixed ender dragon direct damage
+ - Add support for spells consuming SP to cast
 
 ## 6.0.7
 

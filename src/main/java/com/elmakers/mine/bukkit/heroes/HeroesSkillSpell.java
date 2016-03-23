@@ -26,7 +26,7 @@ public class HeroesSkillSpell extends BaseSpell {
     private Skill skill;
     private HeroesManager heroes;
     private MagicController magic;
-    private CastingCost manaCost = new CastingCost("mana", 1);
+    private CastingCost manaCost;
     private boolean isCasting = false;
 
     @Override
@@ -53,6 +53,7 @@ public class HeroesSkillSpell extends BaseSpell {
         skillKey = key.substring(7);
         showUndoable = false;
 
+        manaCost = new CastingCost(controller, "mana", 1);
         if (!(controller instanceof MagicController)) return;
         magic = (MagicController)controller;
         heroes = magic.getHeroes();

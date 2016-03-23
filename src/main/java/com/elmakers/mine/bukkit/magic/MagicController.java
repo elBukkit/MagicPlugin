@@ -3738,7 +3738,7 @@ public Set<Material> getMaterialSet(String name)
                 Collection<CastingCost> costs = spell.getCosts();
                 if (costs != null) {
                     for (CastingCost cost : costs) {
-                        if (cost.hasCosts(reducer)) {
+                        if (!cost.isEmpty(reducer)) {
                             lines.add(ChatColor.DARK_PURPLE + messages.get("wand.costs_description").replace("$description", cost.getFullDescription(messages, reducer)));
                         }
                     }
@@ -3746,7 +3746,7 @@ public Set<Material> getMaterialSet(String name)
                 Collection<CastingCost> activeCosts = spell.getActiveCosts();
                 if (activeCosts != null) {
                     for (CastingCost cost : activeCosts) {
-                        if (cost.hasCosts(reducer)) {
+                        if (!cost.isEmpty(reducer)) {
                             lines.add(ChatColor.DARK_PURPLE + messages.get("wand.active_costs_description").replace("$description", cost.getFullDescription(messages, reducer)));
                         }
                     }
