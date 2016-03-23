@@ -4,6 +4,7 @@ import com.elmakers.mine.bukkit.api.block.MaterialAndData;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 
 import java.util.Collection;
+import java.util.Set;
 
 public interface WandUpgradePath {
     public String getKey();
@@ -15,6 +16,11 @@ public interface WandUpgradePath {
     public boolean hasPath(String pathName);
     public boolean hasUpgrade();
     public boolean checkUpgradeRequirements(Wand wand, Mage mage);
+    public Set<String> getTags();
+    public boolean hasTag(String tag);
+    public boolean hasAnyTag(Collection<String> tagSet);
+    public boolean hasAllTags(Collection<String> tagSet);
+    public Set<String> getMissingTags(Collection<String> tagSet);
     public WandUpgradePath getUpgrade();
     public String translatePath(String path);
     public void upgrade(Wand wand, Mage mage);
