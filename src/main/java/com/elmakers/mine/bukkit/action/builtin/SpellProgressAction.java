@@ -79,8 +79,10 @@ public class SpellProgressAction extends BaseSpellAction implements GUIAction
         for (String spellKey : spells) {
             MageSpell spell = mage.getSpell(spellKey);
             long requiredCastCount = spell.getRequiredUpgradeCasts();
+            String requiredPathKey = spell.getRequiredUpgradePath();
             SpellTemplate upgradeSpell = spell.getUpgrade();
-            if (requiredCastCount > 0 && upgradeSpell != null) {
+            Set<String> requiredPathTags = spell.getRequiredUpgradeTags();
+            if (upgradeSpell != null && (requiredCastCount > 0 || requiredPathKey != null || (requiredPathTags != null && !requiredPathTags.isEmpty()))) {
                 ItemStack spellItem = MagicPlugin.getAPI().createSpellItem(upgradeSpell.getKey());
                 if (spellItem != null) {
                     ItemMeta meta = spellItem.getItemMeta();
@@ -100,7 +102,6 @@ public class SpellProgressAction extends BaseSpellAction implements GUIAction
                     if (!upgradeSpell.getName().equals(spell.getName())) {
                         lore.add(context.getMessage("upgrade_name_change", "&r&4Upgrades: &r$name").replace("$name", spell.getName()));
                     }
-                    String requiredPathKey = spell.getRequiredUpgradePath();
                     if (requiredPathKey != null && !currentPath.hasPath(requiredPathKey))
                     {
                         requiredPathKey = currentPath.translatePath(requiredPathKey);
@@ -108,7 +109,6 @@ public class SpellProgressAction extends BaseSpellAction implements GUIAction
                         if (upgradePath == null) continue;
                         lore.add(context.getMessage("level_requirement").replace("$path", upgradePath.getName()));
                     }
-                    Set<String> requiredPathTags = spell.getRequiredUpgradeTags();
                     if (requiredPathTags != null && !requiredPathTags.isEmpty() && !currentPath.hasAllTags(requiredPathTags)) {
                         Set<String> tags = currentPath.getMissingTags(requiredPathTags);
                         lore.add(context.getMessage("tags_requirement").replace("$tags", messages.formatList("tags", tags, "name")));

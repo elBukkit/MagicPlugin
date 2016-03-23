@@ -192,7 +192,7 @@ public class SpellShopAction extends BaseShopAction
                         }
                     } else if (requiredPathTags != null && !requiredPathTags.isEmpty() && !currentPath.hasAllTags(requiredPathTags)) {
                         Set<String> tags = currentPath.getMissingTags(requiredPathTags);
-                        message = context.getMessage("tags_requirement").replace("$tags", messages.formatList("tags", tags, "name"));
+                        message = context.getMessage("tags_requirement", "&r&cRequires: &6$tags").replace("$tags", messages.formatList("tags", tags, "name"));
                         lore.add(message);
                     }
 

@@ -100,19 +100,16 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
         this.levelMap = new TreeMap<Integer, WandLevel>(inherit.levelMap);
         this.icon = inherit.icon;
         this.migrateIcon = inherit.migrateIcon;
-        this.tags = inherit.tags;
         effects.putAll(inherit.effects);
         allRequiredSpells.addAll(inherit.allRequiredSpells);
         allSpells.addAll(inherit.allSpells);
-        load(controller, key, template);
-        
+
         if (inherit.tags != null && !inherit.tags.isEmpty())
         {
-            if (this.tags == null) {
-                this.tags = new HashSet<String>();
-            }
-            this.tags.addAll(inherit.tags);
+            this.tags = new HashSet<String>(inherit.tags);
         }
+
+        load(controller, key, template);
 
         if ((this.upgradeCommands == null || this.upgradeCommands.size() == 0) && inherit.upgradeCommands != null)
         {
@@ -220,7 +217,7 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
 
         Collection<String> tagList = ConfigurationUtils.getStringList(template, "tags");
         if (tagList != null && !tagList.isEmpty()) {
-            if (tags == null) {
+            if (tags == null || tags.isEmpty()) {
                 tags = new HashSet<String>(tagList);
             } else {
                 tags.addAll(tagList);
