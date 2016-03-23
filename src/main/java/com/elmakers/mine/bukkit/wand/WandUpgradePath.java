@@ -105,6 +105,14 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
         allRequiredSpells.addAll(inherit.allRequiredSpells);
         allSpells.addAll(inherit.allSpells);
         load(controller, key, template);
+        
+        if (inherit.tags != null)
+        {
+            if (this.tags == null) {
+                this.tags = new HashSet<String>();
+            }
+            this.tags.addAll(inherit.tags);
+        }
 
         if ((this.upgradeCommands == null || this.upgradeCommands.size() == 0) && inherit.upgradeCommands != null)
         {
