@@ -20,6 +20,7 @@ import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -52,6 +53,7 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
     private String name;
     private String description;
     private String followsPath;
+    private Set<String> tags;
     private boolean hidden = false;
     private boolean earnsSP = true;
     private MaterialAndData icon;
@@ -98,6 +100,7 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
         this.levelMap = new TreeMap<Integer, WandLevel>(inherit.levelMap);
         this.icon = inherit.icon;
         this.migrateIcon = inherit.migrateIcon;
+        this.tags = inherit.tags;
         effects.putAll(inherit.effects);
         allRequiredSpells.addAll(inherit.allRequiredSpells);
         allSpells.addAll(inherit.allSpells);
@@ -113,6 +116,7 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
     public WandUpgradePath(MageController controller, String key, ConfigurationSection template) {
         this.key = key;
         this.parent = null;
+        this.tags = null;
         load(controller, key, template);
     }
 
@@ -205,6 +209,15 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
         maxDamageReductionProjectiles = (float)template.getDouble("max_protection_projectiles", maxDamageReductionProjectiles);
         maxCostReduction = (float)template.getDouble("max_cost_reduction", maxCostReduction);
         maxCooldownReduction = (float)template.getDouble("max_cooldown_reduction", maxCooldownReduction);
+
+        Collection<String> tagList = ConfigurationUtils.getStringList(template, "tags");
+        if (tagList != null) {
+            if (tags == null) {
+                tags = new HashSet<String>(tagList);
+            } else {
+                tags.addAll(tagList);
+            }
+        }
 
         // Parse defined levels
         if (levelMap == null) {
@@ -385,6 +398,39 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
 
     public int getMinLevel() {
         return minLevel;
+    }
+
+    @Override
+    public Set<String> getTags() {
+        return tags;
+    }
+
+    @Override
+    public boolean hasTag(String tag) {
+        return tags != null && tags.contains(tag);
+    }
+
+    @Override
+    public boolean hasAnyTag(Collection<String> tagSet) {
+        return tags != null && !Collections.disjoint(tagSet, tags);
+    }
+
+    @Override
+    public boolean hasAllTags(Collection<String> tagSet) {
+        return tags != null && tags.containsAll(tagSet);
+    }
+
+    @Override
+    public Set<String> getMissingTags(Collection<String> tagSet) {
+        Set<String> tags = getTags();
+        if (tags != null) {
+            Set<String> s = new HashSet<String>(tagSet);
+            s.removeAll(tags);
+            tags = s;
+        } else {
+            tags = new HashSet<String>(tagSet);
+        }
+        return tags;
     }
 
     @Override
