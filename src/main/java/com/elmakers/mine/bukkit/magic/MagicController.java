@@ -3851,20 +3851,7 @@ public Set<Material> getMaterialSet(String name)
 
     @Override
     public String describeItem(ItemStack item) {
-        String displayName = null;
-        if (item.hasItemMeta()) {
-            ItemMeta meta = item.getItemMeta();
-            displayName = meta.getDisplayName();
-            if ((displayName == null || displayName.isEmpty()) && meta instanceof BookMeta) {
-                BookMeta book = (BookMeta)meta;
-                displayName = book.getTitle();
-            }
-        }
-        if (displayName == null || displayName.isEmpty()) {
-            MaterialAndData material = new MaterialAndData(item);
-            displayName = material.getName();
-        }
-        return displayName;
+        return messages.describeItem(item);
     }
 
     public boolean checkForItem(Player player, ItemStack requireItem, boolean take) {
