@@ -78,13 +78,13 @@ public class SpellProgressAction extends BaseSpellAction implements GUIAction
         Messages messages = context.getController().getMessages();
         for (String spellKey : spells) {
             MageSpell spell = mage.getSpell(spellKey);
-            long requiredCastCount = spell.getRequiredUpgradeCasts();
-            String requiredPathKey = spell.getRequiredUpgradePath();
             SpellTemplate upgradeSpell = spell.getUpgrade();
-            Set<String> requiredPathTags = spell.getRequiredUpgradeTags();
-            if (upgradeSpell != null && (requiredCastCount > 0 || requiredPathKey != null || (requiredPathTags != null && !requiredPathTags.isEmpty()))) {
+            if (upgradeSpell != null) {
                 ItemStack spellItem = MagicPlugin.getAPI().createSpellItem(upgradeSpell.getKey());
                 if (spellItem != null) {
+                    long requiredCastCount = spell.getRequiredUpgradeCasts();
+                    String requiredPathKey = spell.getRequiredUpgradePath();
+                    Set<String> requiredPathTags = spell.getRequiredUpgradeTags();
                     ItemMeta meta = spellItem.getItemMeta();
                     List<String> lore = new ArrayList<String>();
 
