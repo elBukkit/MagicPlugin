@@ -17,5 +17,5 @@ public interface Messages {
     public String describeCurrency(double amount);
     public String getCurrency();
     public String getCurrencyPlural();
-    public String formatList(String basePath, Collection<String> nodes);
+    public String formatList(String basePath, Collection<String> nodes, String nameKey);
 }
