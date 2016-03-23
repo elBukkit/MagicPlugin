@@ -4,7 +4,6 @@ import com.elmakers.mine.bukkit.api.block.MaterialAndData;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Set;
 
 public interface WandUpgradePath {

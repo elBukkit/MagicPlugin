@@ -7,7 +7,6 @@ import java.util.Set;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.Messages;
 import com.elmakers.mine.bukkit.api.wand.Wand;
-import com.google.common.base.CaseFormat;
 import org.bukkit.Color;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
