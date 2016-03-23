@@ -2,6 +2,7 @@ package com.elmakers.mine.bukkit.api.magic;
 
 import org.bukkit.inventory.ItemStack;
 
+import java.util.Collection;
 import java.util.List;
 
 public interface Messages {
@@ -16,4 +17,5 @@ public interface Messages {
     public String describeCurrency(double amount);
     public String getCurrency();
     public String getCurrencyPlural();
+    public String formatList(String basePath, Collection<String> nodes);
 }
