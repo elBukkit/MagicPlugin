@@ -1,7 +1,6 @@
 package com.elmakers.mine.bukkit.api.spell;
 
-import com.elmakers.mine.bukkit.api.block.MaterialAndData;
-import com.elmakers.mine.bukkit.api.magic.Messages;
+import com.elmakers.mine.bukkit.api.item.Cost;
 
 /**
  * This reprsents a cost required to cast a Spell.
@@ -13,42 +12,7 @@ import com.elmakers.mine.bukkit.api.magic.Messages;
  * or Material (reagents) as costs, or a combination of both.
  * 
  */
-public interface CastingCost {
-    /**
-     * Whether or not this record has any costs associated with it,
-     * after being reduced
-     *
-     * @param reducer The CostReducer to use for calculating costs
-     * @return True if this has any non-zero costs.
-     */
-    public boolean hasCosts(CostReducer reducer);
-
-    /**
-     * Get a human-readable description of this cost.
-     *
-     * For XP, display text will be determined by the
-     * CostReducer if it uses Mana.
-     *
-     * This does not include the amount, and only the label - e.g. "Bread" or "Mana" or "XP".
-     *
-     * @param reducer The CostReducer to use to calculate costs and determine display type
-     * @return A printable String to display this casting cost to a Player.
-     */
-    public String getDescription(Messages messages, CostReducer reducer);
-
-    /**
-     * Get a human-readable description of this cost.
-     *
-     * For XP, display text will be determined by the
-     * CostReducer if it uses Mana.
-     *
-     * This includes the amount as well as the label - e.g. "2 Bread" or "30 Mana" or "50 XP".
-     *
-     * @param reducer The CostReducer to use to calculate costs and determine display type
-     * @return A printable String to display this casting cost to a Player.
-     */
-    public String getFullDescription(Messages messages, CostReducer reducer);
-
+public interface CastingCost extends Cost {
     /**
      * Returns the raw XP cost.
      *
@@ -64,13 +28,6 @@ public interface CastingCost {
     public int getMana();
 
     /**
-     * Returns the raw item amount cost.
-     *
-     * @return The raw item amount cost, without reduction.
-     */
-    public int getAmount();
-
-    /**
      * Returns the XP amount to deduct
      *
      * @param reducer The CostReducer to use to calculate costs
@@ -84,20 +41,21 @@ public interface CastingCost {
      * @param reducer The CostReducer to use to calculate costs
      * @return The Mana amount cost
      */
-    public float getMana(CostReducer reducer);
+    public int getMana(CostReducer reducer);
 
     /**
-     * Returns the item amount to deduct
-     *
-     * @param reducer The CostReducer to use to calculate costs
-     * @return The item amount cost
+     * Check to see if a given spell cast should succeed, given that
+     * it has any required costs.
+     * 
+     * @param spell the spell being cast
+     * @return true if the caster of the spell has this cost
      */
-    public int getAmount(CostReducer reducer);
+    public boolean has(Spell spell);
 
     /**
-     * Get the item, if any, associated with this cost.
-     *
-     * @return The item to consume, or null if none.
+     * Use this cost, taking it from the caster of the target spell
+     * 
+     * @param spell the spell being cast
      */
-    public MaterialAndData getMaterial();
+    public void use(Spell spell);
 }
