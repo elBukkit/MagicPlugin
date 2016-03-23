@@ -73,6 +73,14 @@ public class VaultController {
 
         return economy.format(amount);
     }
+    
+    public String getCurrency() {
+        return economy == null ? "" : economy.currencyNameSingular();
+    }
+
+    public String getCurrencyPlural() {
+        return economy == null ? "" : economy.currencyNamePlural();
+    }
 
     public boolean withdrawPlayer(Player player, double amount) {
         if (economy == null || player == null) {
