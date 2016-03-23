@@ -1,21 +1,20 @@
 package com.elmakers.mine.bukkit.action.builtin;
 
+import com.elmakers.mine.bukkit.action.BaseSpellAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.action.GUIAction;
 import com.elmakers.mine.bukkit.api.magic.Mage;
+import com.elmakers.mine.bukkit.api.magic.Messages;
 import com.elmakers.mine.bukkit.api.spell.MageSpell;
-import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellKey;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.api.wand.Wand;
+import com.elmakers.mine.bukkit.api.wand.WandUpgradePath;
 import com.elmakers.mine.bukkit.magic.MagicPlugin;
-import com.elmakers.mine.bukkit.action.BaseSpellAction;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
-import com.elmakers.mine.bukkit.api.wand.WandUpgradePath;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
-import com.elmakers.mine.bukkit.utility.TextUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -26,7 +25,6 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -77,6 +75,7 @@ public class SpellProgressAction extends BaseSpellAction implements GUIAction
         }
         Collection<String> spells = wand.getSpells();
         Collection<ItemStack> upgrades = new ArrayList<ItemStack>();
+        Messages messages = context.getController().getMessages();
         for (String spellKey : spells) {
             MageSpell spell = mage.getSpell(spellKey);
             long requiredCastCount = spell.getRequiredUpgradeCasts();
@@ -112,7 +111,7 @@ public class SpellProgressAction extends BaseSpellAction implements GUIAction
                     Set<String> requiredPathTags = spell.getRequiredUpgradeTags();
                     if (requiredPathTags != null && !requiredPathTags.isEmpty() && !currentPath.hasAllTags(requiredPathTags)) {
                         Set<String> tags = currentPath.getMissingTags(requiredPathTags);
-                        lore.add(context.getMessage("tags_requirement").replace("$tags", TextUtils.formatTags(tags)));
+                        lore.add(context.getMessage("tags_requirement").replace("$tags", messages.formatList("tags", tags, "name")));
                     }
                     long castCount = Math.min(spell.getCastCount(), requiredCastCount);
                     if (castCount == requiredCastCount) {

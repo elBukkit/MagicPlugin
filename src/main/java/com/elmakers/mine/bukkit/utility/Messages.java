@@ -154,4 +154,24 @@ public class Messages implements com.elmakers.mine.bukkit.api.magic.Messages {
 
         return get("costs.currency_plural");
     }
+
+    @Override
+    public String formatList(String basePath, Collection<String> nodes, String nameKey) {
+        StringBuilder buffer = new StringBuilder();
+        for (String node : nodes) {
+            if (buffer.length() != 0) {
+                buffer.append(", ");
+            }
+            String path = node;
+            if (basePath != null) {
+                path = basePath + "." + path;
+            }
+            if (nameKey != null) {
+                path = path + "." + nameKey;
+            }
+            node = get(path, node);
+            buffer.append(node);
+        }
+        return buffer.toString();
+    }
 }

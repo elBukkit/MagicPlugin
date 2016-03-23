@@ -4,6 +4,7 @@ import com.elmakers.mine.bukkit.action.BaseShopAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
+import com.elmakers.mine.bukkit.api.magic.Messages;
 import com.elmakers.mine.bukkit.api.spell.MageSpell;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
@@ -136,6 +137,7 @@ public class SpellShopAction extends BaseShopAction
             }
         }
 
+        Messages messages = context.getController().getMessages();
         List<ShopItem> shopItems = new ArrayList<ShopItem>();
         for (Map.Entry<String, Double> spellValue : spellPrices.entrySet()) {
             String key = spellValue.getKey();
@@ -190,7 +192,7 @@ public class SpellShopAction extends BaseShopAction
                         }
                     } else if (requiredPathTags != null && !requiredPathTags.isEmpty() && !currentPath.hasAllTags(requiredPathTags)) {
                         Set<String> tags = currentPath.getMissingTags(requiredPathTags);
-                        message = context.getMessage("tags_requirement").replace("$tags", TextUtils.formatTags(tags));
+                        message = context.getMessage("tags_requirement").replace("$tags", messages.formatList("tags", tags, "name"));
                         lore.add(message);
                     }
 
