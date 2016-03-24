@@ -1,5 +1,10 @@
 # TODO
  
+ - Check case of a projectile total miss- 
+    it reports no_action and then fails the cast_on_no_target test? 
+    Should return no-target, right?
+ - Update CheckBlock to be a CompoundAction, or optionally send STOP
+ 
  - Alter/grow/shrink should prevent mobs dropping loot
  - Offhand items disappear on death?
  - Casting while standing on a gold pressure plate doesn't work :|

@@ -86,6 +86,7 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
 			addIfPermissible(sender, options, "Magic.commands.mitem.", "save");
 			addIfPermissible(sender, options, "Magic.commands.mitem.", "delete");
 			addIfPermissible(sender, options, "Magic.commands.mitem.", "worth");
+			addIfPermissible(sender, options, "Magic.commands.mitem.", "type");
 		}
 
 		if (args.length == 2) 
@@ -111,6 +112,12 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
 				options.add("lore");
 				options.add("flag");
 				options.add("unbreakable");
+			}
+
+			if (subCommand.equalsIgnoreCase("type")) {
+				for (Material material : Material.values()) {
+					options.add(material.name().toLowerCase());
+				}
 			}
 
 			if (subCommand.equalsIgnoreCase("delete")) {
@@ -191,27 +198,31 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
 		{
 			return onItemAdd(player, item, args);
 		}
-		if (subCommand.equalsIgnoreCase("remove"))
+		else if (subCommand.equalsIgnoreCase("remove"))
 		{
 			return onItemRemove(player, item, args);
 		}
-		if (subCommand.equalsIgnoreCase("worth"))
+		else if (subCommand.equalsIgnoreCase("worth"))
 		{
 			return onItemWorth(player, item);
 		}
-		if (subCommand.equalsIgnoreCase("duplicate"))
+		else if (subCommand.equalsIgnoreCase("type"))
+		{
+			return onItemType(player, item, args);
+		}
+		else if (subCommand.equalsIgnoreCase("duplicate"))
 		{
 			return onItemDuplicate(player, item);
 		}
-		if (subCommand.equalsIgnoreCase("save"))
+		else if (subCommand.equalsIgnoreCase("save"))
 		{
 			return onItemSave(player, item, args);
 		}
-		if (subCommand.equalsIgnoreCase("describe"))
+		else if (subCommand.equalsIgnoreCase("describe"))
 		{
 			return onItemDescribe(player, item);
 		}
-		if (subCommand.equalsIgnoreCase("name"))
+		else if (subCommand.equalsIgnoreCase("name"))
 		{
 			return onItemName(player, item, args);
 		}
@@ -639,6 +650,21 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
 		itemMeta.setLore(lore);
 		item.setItemMeta(itemMeta);
 		player.sendMessage(api.getMessages().get("item.lore_removed").replace("$lore", line));
+		return true;
+	}
+
+	public boolean onItemType(Player player, ItemStack item, String[] parameters) 
+	{
+		if (parameters.length < 1) {
+			return false;
+		}
+		String materialKey = parameters[0];
+		MaterialAndData material = new MaterialAndData(materialKey);
+		if (!material.isValid() || material.getMaterial() == Material.AIR) {
+			player.sendMessage(ChatColor.RED + "Invalid material key: " + ChatColor.DARK_RED + materialKey);
+			return true;
+		}
+		material.applyToItem(item);
 		return true;
 	}
 	

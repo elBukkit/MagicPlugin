@@ -7,6 +7,7 @@
  - Improved ender dragon targeting, fixed ender dragon direct damage
  - Add support for spells consuming SP to cast
  - Tweaked Petrify spell, add 2 more levels
+ - Add "/mitem type" sub-command for changing an item's type
 
 ## 6.0.7
 

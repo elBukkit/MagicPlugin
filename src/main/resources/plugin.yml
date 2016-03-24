@@ -150,6 +150,7 @@ commands:
         /mitem save       Save an item as a new template
         /mitem delete     Delete a saved item
         /mitem worth      Show the value of an item
+        /mitem type       Change the type of an item
     permission: Magic.commands.mitem
   "mitem add":
     description: Add enchantments, attributes or lore to an item
@@ -180,6 +181,12 @@ commands:
        /mitem save <key> [worth]
        /mitem save mycustomitem
        /mitem save mycustomitem 1000
+  "mitem type":
+    description: Change the type of an item
+    usage: |
+       /mitem type <material>[:data]
+       /mitem type gold_nugget
+       /mitem type wool:12
     permission: Magic.commands.mitem.save
   "mitem delete":
     description: Delete a saved item
@@ -631,6 +638,11 @@ permissions:
     type: boolean
     default: op
     permission: Magic.commands.mitem.worth
+  Magic.commands.mitem.type:
+    description: Player may change the type of an item
+    type: boolean
+    default: op
+    permission: Magic.commands.mitem.type
   Magic.commands.magic:
     description: Player may reload the configuration
     type: boolean
