@@ -9,6 +9,7 @@ import com.elmakers.mine.bukkit.api.block.MaterialAndData;
 import com.elmakers.mine.bukkit.action.BaseSpellAction;
 import com.elmakers.mine.bukkit.api.wand.Wand;
 import com.elmakers.mine.bukkit.magic.MagicPlugin;
+import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import com.elmakers.mine.bukkit.utility.NMSUtils;
@@ -22,6 +23,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -30,6 +32,7 @@ import java.util.Map;
 public class WearAction extends BaseSpellAction
 {
     private MaterialAndData material;
+    private ItemStack item;
     private boolean useItem;
     private Map<Enchantment, Integer> enchantments;
     private int slotNumber;
@@ -87,6 +90,7 @@ public class WearAction extends BaseSpellAction
     public void prepare(CastContext context, ConfigurationSection parameters)
     {
         material = ConfigurationUtils.getMaterialAndData(parameters, "material");
+        item = context.getController().createItem(parameters.getString("item"));
         useItem = parameters.getBoolean("use_item", false);
         slotNumber = parameters.getInt("armor_slot", 3);
         slotNumber = Math.max(Math.min(slotNumber, 3), 0);
@@ -142,36 +146,48 @@ public class WearAction extends BaseSpellAction
             }
             return SpellResult.CAST;
         }
-        if (material == null && (context.getSpell().usesBrush() || context.getSpell().hasBrushOverride())) {
-            material = context.getBrush();
-        }
-		if (material == null)
-		{
-			Block targetBlock = context.getTargetBlock();
-            if (targetBlock != null)
+        
+        ItemStack wearItem = null;
+        String materialName = null;
+        if (item == null)
+        {
+            if (material == null && (context.getSpell().usesBrush() || context.getSpell().hasBrushOverride())) {
+                material = context.getBrush();
+            }
+            if (material == null)
             {
-                material = new com.elmakers.mine.bukkit.block.MaterialAndData(targetBlock);
-                // Check for Banners with 1.7 support
-                Material baseMaterial = material.getMaterial();
-                if (baseMaterial.getId() == 176 || baseMaterial.getId() == 177)
+                Block targetBlock = context.getTargetBlock();
+                if (targetBlock != null)
                 {
-                    ((com.elmakers.mine.bukkit.block.MaterialAndData)material).setMaterialId(425);
+                    material = new com.elmakers.mine.bukkit.block.MaterialAndData(targetBlock);
+                    // Check for Banners with 1.7 support
+                    Material baseMaterial = material.getMaterial();
+                    if (baseMaterial.getId() == 176 || baseMaterial.getId() == 177)
+                    {
+                        ((com.elmakers.mine.bukkit.block.MaterialAndData)material).setMaterialId(425);
+                    }
                 }
             }
-		}
 
-        if (entity == null || !(entity instanceof Player) || material == null || material.getMaterial() == Material.AIR)
-        {
-            return SpellResult.NO_TARGET;
+            if ( material == null || material.getMaterial() == Material.AIR)
+            {
+                return SpellResult.NO_TARGET;
+            }
+
+            wearItem = material.getItemStack(1);
+            materialName = material.getName();
         }
-
-		ItemStack wearItem = material.getItemStack(1);
+        else
+        {
+            wearItem = InventoryUtils.getCopy(item);
+            materialName = context.getController().describeItem(wearItem);
+        }
+        
 		ItemMeta meta = wearItem.getItemMeta();
         
         // Legacy support
         String displayName = context.getMessage("hat_name", "");
         displayName = context.getMessage("wear_name", displayName);
-        String materialName = material.getName();
         if (materialName == null || materialName.isEmpty())
         {
             materialName = "?";
@@ -234,6 +250,9 @@ public class WearAction extends BaseSpellAction
     {
         super.getParameterNames(spell, parameters);
         parameters.add("material");
+        parameters.add("item");
+        parameters.add("use_item");
+        parameters.add("armor_slot");
     }
 
     @Override
@@ -241,6 +260,21 @@ public class WearAction extends BaseSpellAction
     {
         if (parameterKey.equals("material")) {
             examples.addAll(MagicPlugin.getAPI().getBrushes());
+        } else if (parameterKey.equals("item")) {
+            for (Material material : Material.values()) {
+                examples.add(material.name().toLowerCase());
+            }
+            Collection<String> allItems = spell.getController().getItemKeys();
+            for (String itemKey : allItems) {
+                examples.add(itemKey);
+            }
+        } else if (parameterKey.equals("armor_slot")) {
+            examples.add("0");
+            examples.add("1");
+            examples.add("2");
+            examples.add("3");
+        } else if (parameterKey.equals("use_item")) {
+            examples.addAll(Arrays.asList(BaseSpell.EXAMPLE_BOOLEANS));
         } else {
             super.getParameterOptions(spell, parameterKey, examples);
         }
