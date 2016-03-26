@@ -2277,6 +2277,9 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         damageReductionFalling = 0;
         damageReductionFire = 0;
         damageReductionExplosions = 0;
+        
+        List<PotionEffectType> currentEffects = new ArrayList<PotionEffectType>(effectivePotionEffects.keySet());
+        LivingEntity entity = getLivingEntity();
         effectivePotionEffects.clear();
         if (activeWand != null && !activeWand.isPassive())
         {
@@ -2307,15 +2310,11 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         damageReductionFire = Math.min(damageReductionFire, 1);
         damageReductionExplosions = Math.min(damageReductionExplosions, 1);
 
-        LivingEntity entity = getLivingEntity();
         if (entity != null)
         {
-            Collection<PotionEffect> activeEffects = entity.getActivePotionEffects();
-            for (PotionEffect effect : activeEffects)
-            {
-                if (!effectivePotionEffects.containsKey(effect.getType()) && effect.getDuration() > Integer.MAX_VALUE / 4)
-                {
-                    entity.removePotionEffect(effect.getType());
+            for (PotionEffectType effectType : currentEffects) {
+                if (!effectivePotionEffects.containsKey(effectType)) {
+                    entity.removePotionEffect(effectType);
                 }
             }
             for (Map.Entry<PotionEffectType, Integer> effects : effectivePotionEffects.entrySet()) {

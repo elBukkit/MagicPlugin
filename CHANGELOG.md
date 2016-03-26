@@ -8,6 +8,7 @@
  - Add support for spells consuming SP to cast
  - Tweaked Petrify spell, add 2 more levels
  - Add "/mitem type" sub-command for changing an item's type
+ - Fix wands interfering with infinite potion effects added by other plugins
 
 ## 6.0.7
 
