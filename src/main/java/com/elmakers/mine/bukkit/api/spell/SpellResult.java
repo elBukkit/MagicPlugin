@@ -116,6 +116,10 @@ public enum SpellResult {
         boolean requiresCost = isSuccess() || (castOnNoTarget && (this == SpellResult.NO_TARGET || this == SpellResult.NO_ACTION));
         return !requiresCost || isFree();
     }
+    
+    public boolean shouldRefundCooldown(boolean castOnNoTarget) {
+        return  (!castOnNoTarget && (this == SpellResult.NO_TARGET || this == SpellResult.NO_ACTION));
+    }
 
     /**
      * Determine if this result is an alternate-mode cast.
