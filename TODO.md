@@ -1,9 +1,10 @@
 # TODO
  
- - Check case of a projectile total miss- 
-    it reports no_action and then fails the cast_on_no_target test? 
-    Should return no-target, right?
  - Update CheckBlock to be a CompoundAction, or optionally send STOP
+ 
+ - Fix wands removing max duration potion effects applied by other plugins... :|
+ 
+ - Undo bugs with pistons.. yuck. https://youtu.be/S-d-XT2r_vM
  
  - Alter/grow/shrink should prevent mobs dropping loot
  - Offhand items disappear on death?
@@ -39,6 +40,7 @@
 
  - PS TODO:
    - Fix formatting of allowed list, single-column
+   - Limit on repeat rentals of a plot
 
  - Add effects template, for wands to stay one template but act like another (? - for cane)
  - Prevent TNT breaking secured chests
