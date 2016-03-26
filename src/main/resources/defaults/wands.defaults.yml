@@ -123,7 +123,7 @@ base_wand:
   
 base_sword:
     mode_drop: true
-    mode_cast: true
+    quick_cast: true
     quiet: 1
     bound: true
     keep: true
@@ -1304,22 +1304,22 @@ quickcast_enable:
     icon: skull_item:http://textures.minecraft.net/texture/c16952d9b5a5d7cb3b62ec6ebab76737aa9863019cc9e387522a18df306856
     upgrade: true
     force: true
-    mode_cast: true
+    quick_cast: true
 quickcast_disable:
     icon: skull_item:http://textures.minecraft.net/texture/c16952d9b5a5d7cb3b62ec6ebab76737aa9863019cc9e387522a18df306856
     upgrade: true
     force: true
-    mode_cast: disable
+    quick_cast: disable
 quickcast_manual:
     icon: skull_item:http://textures.minecraft.net/texture/c16952d9b5a5d7cb3b62ec6ebab76737aa9863019cc9e387522a18df306856
     upgrade: true
     force: true
-    mode_cast: manual
+    quick_cast: manual
 quickcast_normal:
     icon: skull_item:http://textures.minecraft.net/texture/c16952d9b5a5d7cb3b62ec6ebab76737aa9863019cc9e387522a18df306856
     upgrade: true
     force: true
-    mode_cast: normal
+    quick_cast: normal
 mode_drop:
     icon: skull_item:http://textures.minecraft.net/texture/c16952d9b5a5d7cb3b62ec6ebab76737aa9863019cc9e387522a18df306856
     upgrade: true
@@ -1814,7 +1814,7 @@ ocarina:
     icon: wood_hoe:18
     locked: true
     keep: false
-    mode_cast: true
+    quick_cast: true
     mode: inventory
     undroppable: false
     bound: false

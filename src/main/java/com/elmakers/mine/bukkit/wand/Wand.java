@@ -85,14 +85,15 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         "effect_sound", "effect_sound_interval", "effect_sound_pitch", "effect_sound_volume",
         "cast_spell", "cast_parameters", "cast_interval", "cast_min_velocity", "cast_velocity_direction",
 		"hotbar_count", "hotbar",
-		"icon", "icon_inactive", "icon_inactive_delay", "mode", "brush_mode", "mode_cast", "mode_drop",
+		"icon", "icon_inactive", "icon_inactive_delay", "mode", "brush_mode", "mode_drop",
         "keep", "locked", "quiet", "force", "randomize", "rename", "rename_description",
 		"power", "overrides",
 		"protection", "protection_physical", "protection_projectiles", 
 		"protection_falling", "protection_fire", "protection_explosions",
         "potion_effects",
 		"materials", "spells", "powered", "protected", "heroes",
-        "enchant_count", "max_enchant_count"
+        "enchant_count", "max_enchant_count",
+		"quick_cast"
 	};
 
 	public final static String[] HIDDEN_PROPERTY_KEYS = {
@@ -102,6 +103,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         "haste",
         "health_regeneration", "hunger_regeneration",
 		"xp", "xp_regeneration", "xp_max", "xp_max_boost", "xp_regeneration_boost",
+		"mode_cast"
     };
 	public final static String[] ALL_PROPERTY_KEYS = (String[])ArrayUtils.addAll(PROPERTY_KEYS, HIDDEN_PROPERTY_KEYS);
 	
@@ -1258,15 +1260,15 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		}
         node.set("mode_drop", dropToggle);
         if (quickCast) {
-            node.set("mode_cast", "true");
+            node.set("quick_cast", "true");
         } else if (quickCastDisabled) {
             if (manualQuickCastDisabled) {
-                node.set("mode_cast", "disable");
+                node.set("quick_cast", "disable");
             } else {
-                node.set("mode_cast", "manual");
+                node.set("quick_cast", "manual");
             }
         } else {
-            node.set("mode_cast", null);
+            node.set("quick_cast", null);
         }
         if (brushMode != null) {
             node.set("brush_mode", brushMode.name());
@@ -1504,7 +1506,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
             if (wandConfig.contains("brush_mode")) {
                 setBrushMode(parseWandMode(wandConfig.getString("brush_mode"), brushMode));
             }
-            String quickCastType = wandConfig.getString("mode_cast");
+            String quickCastType = wandConfig.getString("quick_cast", wandConfig.getString("mode_cast"));
             if (quickCastType != null) {
                 if (quickCastType.equalsIgnoreCase("true")) {
                     quickCast = true;

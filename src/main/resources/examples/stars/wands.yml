@@ -7,7 +7,7 @@ lightsaber_red:
     icon: diamond_sword
     icon_inactive: monster_eggs
     mode_drop: true
-    mode_cast: true
+    quick_cast: true
     mana_max: 50
     mana: 50
     mana_regeneration: 5
@@ -91,7 +91,7 @@ lightsaber_green:
     icon_inactive: monster_eggs
     icon_inactive_delay: 2000
     mode_drop: true
-    mode_cast: true
+    quick_cast: true
     mana_max: 50
     mana: 50
     mana_regeneration: 5
@@ -113,7 +113,7 @@ lightsaber_blue:
     icon: stone_sword
     icon_inactive: monster_eggs
     mode_drop: true
-    mode_cast: true
+    quick_cast: true
     mana_max: 50
     mana: 50
     mana_regeneration: 5
@@ -135,7 +135,7 @@ lightsaber_purple:
     icon: iron_sword
     icon_inactive: monster_eggs
     mode_drop: true
-    mode_cast: true
+    quick_cast: true
     mana_max: 50
     mana: 50
     mana_regeneration: 5
@@ -157,7 +157,7 @@ lightsaber_orange:
     icon: gold_sword
     icon_inactive: monster_eggs
     mode_drop: true
-    mode_cast: true
+    quick_cast: true
     mana_max: 50
     mana: 50
     mana_regeneration: 5
@@ -177,7 +177,7 @@ lightsaber_orange:
 lightsaber_hilt:
     icon: monster_eggs
     mode_drop: true
-    mode_cast: true
+    quick_cast: true
     quiet: 1
     bound: true
     keep: true

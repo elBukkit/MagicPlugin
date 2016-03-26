@@ -9,6 +9,7 @@
  - Tweaked Petrify spell, add 2 more levels
  - Add "/mitem type" sub-command for changing an item's type
  - Fix wands interfering with infinite potion effects added by other plugins
+ - Changed "mode_cast" property of wands to "quick_cast". Backwards compatible.
 
 ## 6.0.7
 
