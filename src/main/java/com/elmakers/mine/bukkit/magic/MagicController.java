@@ -2208,7 +2208,7 @@ public class MagicController implements MageController {
         defaultWandMode = Wand.parseWandMode(properties.getString("default_wand_mode", ""), defaultWandMode);
         defaultBrushMode = Wand.parseWandMode(properties.getString("default_brush_mode", ""), defaultBrushMode);
         backupInventories = properties.getBoolean("backup_player_inventory", true);
-        brushSelectSpell = properties.getString("brush_select_spell", brushSelectSpell);
+        Wand.brushSelectSpell = properties.getString("brush_select_spell", Wand.brushSelectSpell);
 		showMessages = properties.getBoolean("show_messages", showMessages);
         showCastMessages = properties.getBoolean("show_cast_messages", showCastMessages);
 		messageThrottle = properties.getInt("message_throttle", 0);
@@ -2417,7 +2417,7 @@ public class MagicController implements MageController {
         Wand.inventoryOpenSound = ConfigurationUtils.toSoundEffect(properties.getString("wand_inventory_open_sound"));
         Wand.inventoryCloseSound = ConfigurationUtils.toSoundEffect(properties.getString("wand_inventory_close_sound"));
         Wand.inventoryCycleSound = ConfigurationUtils.toSoundEffect(properties.getString("wand_inventory_cycle_sound"));
-        wandNoActionSound = ConfigurationUtils.toSoundEffect(properties.getString("wand_no_action_sound"));
+        Wand.noActionSound = ConfigurationUtils.toSoundEffect(properties.getString("wand_no_action_sound"));
 
         if (blockPhysicsManager != null) {
             blockPhysicsManager.setVelocityScale(properties.getDouble("block_physics_velocity_scale", 1));
@@ -2678,55 +2678,7 @@ public class MagicController implements MageController {
 		}
         mage.getPlayer().updateInventory();
 	}
-
-    public void onToggleInventory(com.elmakers.mine.bukkit.magic.Mage mage, Wand wand) {
-        // Check for spell cancel first, e.g. fill or force
-        if (!mage.cancel()) {
-            Player player = mage.getPlayer();
-
-            // Check for wand cycling
-            WandMode wandMode = wand.getMode();
-            if (wandMode == WandMode.CYCLE) {
-                if (player != null && player.isSneaking()) {
-                    com.elmakers.mine.bukkit.api.spell.Spell activeSpell = wand.getActiveSpell();
-                    boolean cycleMaterials = false;
-                    if (activeSpell != null) {
-                        cycleMaterials = activeSpell.usesBrushSelection();
-                    }
-                    if (cycleMaterials) {
-                        wand.cycleMaterials();
-                    } else {
-                        wand.cycleSpells();
-                    }
-                } else {
-                    wand.cycleSpells();
-                }
-            } else if (wandMode == WandMode.CAST) {
-                wand.cast();
-            } else {
-                Spell currentSpell = wand.getActiveSpell();
-                if (wand.getBrushMode() == WandMode.CHEST && brushSelectSpell != null && !brushSelectSpell.isEmpty() && player.isSneaking() && currentSpell != null && currentSpell.usesBrushSelection())
-                {
-                    Spell brushSelect = mage.getSpell(brushSelectSpell);
-                    if (brushSelect == null)
-                    {
-                        wand.toggleInventory();
-                    }
-                    else
-                    {
-                        brushSelect.cast();
-                    }
-                }
-                else
-                {
-                    wand.toggleInventory();
-                }
-            }
-        } else {
-            mage.playSoundEffect(wandNoActionSound);
-        }
-    }
-
+    
 	@Override
 	public void giveItemToPlayer(Player player, ItemStack itemStack) {
         // Check for wand inventory
@@ -4665,8 +4617,6 @@ public Set<Material> getMaterialSet(String name)
     private final String						AUTOMATA_FILE				= "automata";
     private final String						URL_MAPS_FILE				= "imagemaps";
 
-    public static SoundEffect                   wandNoActionSound           = null;
-
     private boolean                             disableDefaultSpells        = false;
     private boolean 							loadDefaultSpells			= true;
     private boolean 							loadDefaultWands			= true;
@@ -4696,7 +4646,6 @@ public Set<Material> getMaterialSet(String name)
     private String                              defaultWandPath                 = "";
     private WandMode							defaultWandMode				    = WandMode.INVENTORY;
     private WandMode							defaultBrushMode				= WandMode.CHEST;
-    private String                              brushSelectSpell                = "";
     private boolean                             showMessages                    = true;
     private boolean                             showCastMessages                = false;
     private String								messagePrefix					= "";

@@ -26,7 +26,6 @@ import org.bukkit.event.player.PlayerArmorStandManipulateEvent;
 import org.bukkit.event.player.PlayerChangedWorldEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerEvent;
-import org.bukkit.event.player.PlayerExpChangeEvent;
 import org.bukkit.event.player.PlayerGameModeChangeEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -66,10 +65,6 @@ public class PlayerController implements Listener {
         openOnSneakDrop = properties.getBoolean("open_wand_on_sneak_drop");
         cancelInteractOnCast = properties.getBoolean("cancel_interact_on_cast", true);
         allowOffhandCasting = properties.getBoolean("allow_offhand_casting", true);
-    }
-
-    public void setCreativeModeEjecting(boolean eject) {
-        enableCreativeModeEjecting = eject;
     }
 
     @EventHandler
@@ -154,11 +149,11 @@ public class PlayerController implements Listener {
         Mage mage = controller.getRegisteredMage(player);
         if (mage == null) return;
         
-        final com.elmakers.mine.bukkit.api.wand.Wand activeWand = mage.getActiveWand();
-        if (activeWand == null) return;
+        final com.elmakers.mine.bukkit.api.wand.Wand apiWand = mage.getActiveWand();
+        if (apiWand == null || !(apiWand instanceof Wand)) return;
         
-        if (activeWand.isDropToggle() && activeWand.isInventoryOpen()) {
-            activeWand.cycleHotbar();
+        Wand activeWand = (Wand)apiWand;
+        if (activeWand.performAction(activeWand.getSwapAction())) {
             event.setCancelled(true);
         }
     }
@@ -189,13 +184,7 @@ public class PlayerController implements Listener {
             Bukkit.getScheduler().scheduleSyncDelayedTask(controller.getPlugin(), new Runnable() {
                 @Override
                 public void run() {
-                    if (activeWand.isDropToggle()) {
-                        controller.onToggleInventory(mage, activeWand);
-                    } else if (activeWand.getHotbarCount() > 1) {
-                        activeWand.cycleHotbar(1);
-                    } else if (activeWand.isInventoryOpen()) {
-                        activeWand.closeInventory();
-                    }
+                    activeWand.performAction(activeWand.getDropAction());
                 }
             });
             cancelEvent = true;
@@ -437,18 +426,16 @@ public class PlayerController implements Listener {
             wand.playEffects("swing");
         }
 
-        if (isSwing && !wand.isUpgrade() && !wand.isQuickCast())
+        if (isSwing && !wand.isUpgrade())
         {
-            wand.cast();
-            if (cancelInteractOnCast) {
+            if (wand.performAction(wand.getLeftClickAction()) && cancelInteractOnCast) {
                 event.setCancelled(true);
             }
             return;
         }
 
-        if (handleRightClick && !wand.isDropToggle())
+        if (handleRightClick && wand.performAction(wand.getRightClickAction()))
         {
-            controller.onToggleInventory(mage, wand);
             event.setCancelled(true);
         }
     }

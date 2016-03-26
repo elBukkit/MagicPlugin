@@ -15,6 +15,8 @@ import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import com.elmakers.mine.bukkit.utility.NMSUtils;
 import com.elmakers.mine.bukkit.api.wand.WandTemplate;
+import com.elmakers.mine.bukkit.wand.WandAction;
+import com.elmakers.mine.bukkit.wand.WandMode;
 import de.slikey.effectlib.util.ParticleEffect;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
@@ -271,7 +273,16 @@ public class WandCommandExecutor extends MagicTabExecutor {
                     for (ParticleEffect particleType : particleTypes) {
                         options.add(particleType.name().toLowerCase());
                     }
-                }
+                } else if (subCommand2.equals("mode")) {
+					for (WandMode mode : WandMode.values()) {
+						options.add(mode.name().toLowerCase());
+					}
+				} else if (subCommand2.equals("left_click") || subCommand2.equals("right_click") ||
+						   subCommand2.equals("drop") || subCommand2.equals("swap")) {
+					for (WandAction action : WandAction.values()) {
+						options.add(action.name().toLowerCase());
+					}
+				}
             }
 			
 			String subCommandPNode = "Magic.commands." + permissionKey + "." + subCommand + "." + subCommand2;

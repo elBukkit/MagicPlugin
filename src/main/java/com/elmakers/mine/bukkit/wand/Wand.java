@@ -85,7 +85,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         "effect_sound", "effect_sound_interval", "effect_sound_pitch", "effect_sound_volume",
         "cast_spell", "cast_parameters", "cast_interval", "cast_min_velocity", "cast_velocity_direction",
 		"hotbar_count", "hotbar",
-		"icon", "icon_inactive", "icon_inactive_delay", "mode", "brush_mode", "mode_drop",
+		"icon", "icon_inactive", "icon_inactive_delay", "mode", "brush_mode",
         "keep", "locked", "quiet", "force", "randomize", "rename", "rename_description",
 		"power", "overrides",
 		"protection", "protection_physical", "protection_projectiles", 
@@ -93,7 +93,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         "potion_effects",
 		"materials", "spells", "powered", "protected", "heroes",
         "enchant_count", "max_enchant_count",
-		"quick_cast"
+		"quick_cast", "left_click", "right_click", "drop", "swap"
 	};
 
 	public final static String[] HIDDEN_PROPERTY_KEYS = {
@@ -103,7 +103,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         "haste",
         "health_regeneration", "hunger_regeneration",
 		"xp", "xp_regeneration", "xp_max", "xp_max_boost", "xp_regeneration_boost",
-		"mode_cast"
+		"mode_cast", "mode_drop"
     };
 	public final static String[] ALL_PROPERTY_KEYS = (String[])ArrayUtils.addAll(PROPERTY_KEYS, HIDDEN_PROPERTY_KEYS);
 	
@@ -146,8 +146,12 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
     private boolean quickCast = false;
     private boolean quickCastDisabled = false;
     private boolean manualQuickCastDisabled = false;
-    private boolean dropToggle = false;
 	
+	private WandAction leftClickAction = WandAction.CAST;
+	private WandAction rightClickAction = WandAction.TOGGLE;
+	private WandAction dropAction = WandAction.CYCLE_HOTBAR;
+	private WandAction swapAction = WandAction.NONE;
+
 	private MaterialAndData icon = null;
     private MaterialAndData upgradeIcon = null;
     private MaterialAndData inactiveIcon = null;
@@ -253,9 +257,11 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
     public static SoundEffect inventoryOpenSound = null;
     public static SoundEffect inventoryCloseSound = null;
     public static SoundEffect inventoryCycleSound = null;
+	public static SoundEffect noActionSound = null;
     public static String WAND_KEY = "wand";
     public static String WAND_SELF_DESTRUCT_KEY = null;
     public static byte HIDE_FLAGS = 60;
+	public static String brushSelectSpell = "";
 
     private Inventory storedInventory = null;
     private int storedSlot;
@@ -1257,7 +1263,12 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		} else {
 			node.set("mode", null);
 		}
-        node.set("mode_drop", dropToggle);
+		
+		node.set("left_click", leftClickAction.name());
+		node.set("right_click", rightClickAction.name());
+		node.set("drop", dropAction.name());
+		node.set("swap", swapAction.name());
+		
         if (quickCast) {
             node.set("quick_cast", "true");
         } else if (quickCastDisabled) {
@@ -1526,7 +1537,16 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
                     manualQuickCastDisabled = false;
                 }
             }
-            dropToggle = wandConfig.getBoolean("mode_drop", dropToggle);
+			
+			// Backwards compatibility
+			if (wandConfig.getBoolean("mode_drop", false)) {
+				dropAction = WandAction.TOGGLE;
+				rightClickAction = WandAction.NONE;
+			}
+			leftClickAction = parseWandAction(wandConfig.getString("left_click"), leftClickAction);
+			rightClickAction = parseWandAction(wandConfig.getString("right_click"), rightClickAction);
+			dropAction = parseWandAction(wandConfig.getString("drop"), dropAction);
+			swapAction = parseWandAction(wandConfig.getString("swap"), swapAction);
 
 			owner = wandConfig.getString("owner", owner);
             ownerId = wandConfig.getString("owner_id", ownerId);
@@ -2975,12 +2995,26 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	}
 
     public static WandMode parseWandMode(String modeString, WandMode defaultValue) {
-		for (WandMode testMode : WandMode.values()) {
-			if (testMode.name().equalsIgnoreCase(modeString)) {
-				return testMode;
+		if (modeString != null && !modeString.isEmpty()) {
+			try {
+				defaultValue = WandMode.valueOf(modeString.toUpperCase());
+			} catch(Exception ex) {
+				
 			}
 		}
 		
+		return defaultValue;
+	}
+	
+	public static WandAction parseWandAction(String actionString, WandAction defaultValue) {
+		if (actionString != null && !actionString.isEmpty()) {
+			try {
+				defaultValue = WandAction.valueOf(actionString.toUpperCase());
+			} catch(Exception ex) {
+
+			}
+		}
+
 		return defaultValue;
 	}
 	
@@ -2995,7 +3029,42 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		}
 	}
 	
+	public void cycleActive(int direction) {
+		Player player = mage != null ? mage.getPlayer() : null;
+		if (player != null && player.isSneaking()) {
+			com.elmakers.mine.bukkit.api.spell.Spell activeSpell = getActiveSpell();
+			boolean cycleMaterials = false;
+			if (activeSpell != null) {
+				cycleMaterials = activeSpell.usesBrushSelection();
+			}
+			if (cycleMaterials) {
+				cycleMaterials(direction);
+			} else {
+				cycleSpells(direction);
+			}
+		} else {
+			cycleSpells(direction);
+		}
+	}
+	
 	public void toggleInventory() {
+		if (mage != null && mage.cancel()) {
+			mage.playSoundEffect(noActionSound);
+			return;
+		}
+		Player player = mage == null ? null : mage.getPlayer();
+		boolean isSneaking = player != null && player.isSneaking();
+		Spell currentSpell = getActiveSpell();
+		if (getBrushMode() == WandMode.CHEST && brushSelectSpell != null && !brushSelectSpell.isEmpty() && isSneaking && currentSpell != null && currentSpell.usesBrushSelection())
+		{
+			Spell brushSelect = mage.getSpell(brushSelectSpell);
+			if (brushSelect != null)
+			{
+				brushSelect.cast();
+				return;
+			}
+		}
+		
 		if (!hasInventory) {
 			if (activeSpell == null || activeSpell.length() == 0) {
 				Set<String> spells = getSpells();
@@ -3838,7 +3907,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 		return controller;
 	}
 	
-	public void cycleSpells() {
+	public void cycleSpells(int direction) {
 		Set<String> spellsSet = getSpells();
 		ArrayList<String> spells = new ArrayList<String>(spellsSet);
 		if (spells.size() == 0) return;
@@ -3855,11 +3924,11 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 			}
 		}
 		
-		spellIndex = (spellIndex + 1) % spells.size();
+		spellIndex = (spellIndex + direction) % spells.size();
 		setActiveSpell(spells.get(spellIndex).split("@")[0]);
 	}
 	
-	public void cycleMaterials() {
+	public void cycleMaterials(int direction) {
 		Set<String> materialsSet = getBrushes();
 		ArrayList<String> materials = new ArrayList<String>(materialsSet);
 		if (materials.size() == 0) return;
@@ -3876,7 +3945,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 			}
 		}
 		
-		materialIndex = (materialIndex + 1) % materials.size();
+		materialIndex = (materialIndex + direction) % materials.size();
 		setActiveBrush(materials.get(materialIndex).split("@")[0]);
 	}
 
@@ -3923,11 +3992,6 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	@Override
     public boolean isQuickCast() {
         return quickCast;
-    }
-
-	@Override
-    public boolean isDropToggle() {
-        return dropToggle;
     }
 	
 	public WandMode getMode() {
@@ -4767,4 +4831,63 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
             wandTemplate.playEffects(mage, effects);
         }
     }
+	
+	public WandAction getDropAction() {
+		return dropAction;
+	}
+	
+	public WandAction getRightClickAction() {
+		return rightClickAction;
+	}
+
+	public WandAction getLeftClickAction() {
+		return leftClickAction;
+	}
+
+	public WandAction getSwapAction() {
+		return swapAction;
+	}
+	
+	public boolean performAction(WandAction action) {
+		WandMode mode = getMode();
+		switch (action) {
+			case CAST:
+				cast();
+				break;
+			case TOGGLE:
+				if (mode != WandMode.CHEST && mode != WandMode.INVENTORY) return false;
+				toggleInventory();
+				break;
+			case CYCLE:
+				cycleActive(1);
+				break;
+			case CYCLE_REVERSE:
+				cycleActive(-1);
+				break;
+			case CYCLE_HOTBAR:
+				if (mode != WandMode.INVENTORY) return false;
+				if (getHotbarCount() > 1) {
+					cycleHotbar(1);
+				} else if (isInventoryOpen()) {
+					closeInventory();
+				} else {
+					return false;
+				}
+				break;
+			case CYCLE_HOTBAR_REVERSE:
+				if (mode != WandMode.INVENTORY) return false;
+				if (getHotbarCount() > 1) {
+					cycleHotbar(-1);
+				} else if (isInventoryOpen()) {
+					closeInventory();
+				} else {
+					return false;
+				}
+				break;
+			default:
+				return false;
+		}
+		
+		return true;
+	}
 }

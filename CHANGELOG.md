@@ -10,6 +10,8 @@
  - Add "/mitem type" sub-command for changing an item's type
  - Fix wands interfering with infinite potion effects added by other plugins
  - Changed "mode_cast" property of wands to "quick_cast". Backwards compatible.
+ - Add more customization options for wands, each of left/right click, drop and swap can now
+   be assigned a specific function from cast, toggle inv, cycle hotbar, cycle spells.
 
 ## 6.0.7
 
