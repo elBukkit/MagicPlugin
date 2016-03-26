@@ -2239,7 +2239,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         }
         
         // Clear cooldown on miss
-        if (result == SpellResult.NO_TARGET && !castOnNoTarget) {
+        if (result.shouldRefundCooldown(castOnNoTarget)) {
             clearCooldown();
         }
 
