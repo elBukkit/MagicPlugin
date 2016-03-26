@@ -851,3 +851,38 @@ blaster:
     hidden: true
     min_enchant_level: 50
     max_enchant_level: 50
+
+
+
+#
+# Lightsaber progression
+# beginner -> student -> apprentice -> master
+#
+jedi:
+    inherit: default
+    max_mana: 200
+    max_mana_regeneration: 20
+    mana_regeneration:
+      1: 100
+    mana_max:
+      2: 100
+    spell_count:
+      1: 100
+    spells:
+      fling: 100
+      push: 80
+      pull: 10
+      
+sith:
+    inherit: default
+    max_mana: 200
+    max_mana_regeneration: 20
+    mana_regeneration:
+      1: 100
+    mana_max:
+      2: 100
+    spell_count:
+      1: 100
+    spells:
+      fire: 100
+      force: 10

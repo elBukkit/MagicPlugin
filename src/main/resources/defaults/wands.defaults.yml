@@ -1870,3 +1870,115 @@ ocarina:
     -   note22
     -   note23
     -   note24
+
+# Lightsabers!
+
+lightsaber_base:
+    icon_inactive: wood_hoe:14
+    icon_inactive_delay: 2000
+    drop: toggle
+    left_click: none
+    swap: cycle_hotbar
+    quick_cast: true
+    mana_max: 50
+    mana: 50
+    mana_regeneration: 5
+    protection_physical: 0.5
+    quiet: 1
+    bound: true
+    keep: true
+    undroppable: true
+    indestructible: true
+    effect_bubbles: false
+    effects:
+        open:
+        -  class: EffectSingle
+           sound: magic.ignite
+           sound_volume: 1
+           location: origin
+           effectlib:
+             class: HelixEffect
+             iterations: 1
+             radius: 0.3
+             particle: flame
+        close:
+        -  class: EffectSingle
+           sound: magic.zap
+           sound_volume: 1
+           location: origin
+           effectlib:
+             class: HelixEffect
+             iterations: 1
+             radius: 0.3
+             particle: smoke_normal
+        swing:
+        -  class: EffectSingle
+           sound: magic.ignite
+           sound_volume: 1
+           location: origin
+           effectlib:
+             class: HelixEffect
+             iterations: 1
+             radius: 0.3
+             particle: flame
+        hit_entity:
+        -  class: EffectSingle
+           sound: magic.ignite
+           sound_volume: 1
+           location: origin
+           effectlib:
+             class: HelixEffect
+             iterations: 1
+             radius: 0.3
+             particle: smoke_large
+        hit_block:
+        -  class: EffectSingle
+           sound: magic.ignite
+           sound_volume: 1
+           location: origin
+           effectlib:
+             class: HelixEffect
+             iterations: 1
+             radius: 0.3
+             particle: smoke_normal
+        hit_blocked:
+        -  class: EffectSingle
+           sound: magic.ignite
+           sound_volume: 1
+           location: origin
+           effectlib:
+             class: HelixEffect
+             iterations: 1
+             radius: 0.3
+             particle: smoke_normal
+             
+
+lightsaber_red:
+    inherit: lightsaber_base
+    path: sith
+    icon: gold_sword:4
+    effect_color: 'FF0000'
+    active_spell: push
+    spells:
+        - push
+        - fire
+
+lightsaber_green:
+    inherit: lightsaber_base
+    path: jedi
+    icon: gold_sword:2
+    effect_color: '00FF00'
+    active_spell: push
+    spells:
+        - push
+        - pull
+
+lightsaber_blue:
+    inherit: lightsaber_base
+    path: jedi
+    icon: gold_sword:3
+    effect_color: '0000FF'
+    active_spell: push
+    spells:
+        - push
+        - pull

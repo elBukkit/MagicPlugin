@@ -88,6 +88,13 @@ paths:
     blaster:
         name: Blaster
         description: Blaster upgrades
+    jedi:
+        name: Jedi
+        description: Jedi force powers
+    sith:
+        name: Sith
+        description: Sith force powers
+        
 item:
     duplicated: Your item has been duplicated
     no_item: You must be holding an item!
@@ -2109,6 +2116,15 @@ wands:
       name: Ocarina
       description: Right-click and use the hotbar buttons to play music
       spell_count: Has $count Notes
+    lightsaber_red:
+        name: Lighsaber
+        description: Chosen weapon of the Sith
+    lightsaber_green:
+        name: Lighsaber
+        description: Chosen weapon of the Jedi
+    lightsaber_blue:
+        name: Lighsaber
+        description: Chosen weapon of the Jedi
 
 automata:
     awaken: "&c&o$name &r&5has awakened"
