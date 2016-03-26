@@ -2020,17 +2020,23 @@ wands:
         name: Quick Cast (None)
         description: Disable quick-cast on all spells
     quickcast_normal:
-        name: Quick Cast (Select)
-        description: Enable quick-cast on select spells
+        name: Quick Cast (Some)
+        description: Enable quick-cast on some pre-selected spells
     quickcast_manual:
         name: Quick Cast (Manual)
         description: Quick-cast only by pressing Q in inventory
     mode_drop:
         name: Drop Mode
-        description: Use the Drop (Q) Button to open the spell inventory
+        description: Use the Drop (Q) Button to open the spell inventory, the Swap (F) button to cycle hotbars and left-click to cast
     mode_rightclick:
         name: Right-Click Mode
-        description: Right-Click to open the spell inventory
+        description: Right-Click to open the spell inventory, the Drop (Q) button to cycle hotbars and left-click to cast
+    mode_sword:
+        name: Sword Mode
+        description: Use the Drop (Q) Button to open the spell inventory, hotbar buttons to cast and the Swap (F) button to cycle the hotbar
+    mode_swap:
+        name: Swap Mode
+        description: Use the Swap (F) Button to open the spell inventory, the Drop (Q) button to cycle hotbars, left-click to cast
     loud:
         name: Loud Wand
         description: Turn on all wand chat messages

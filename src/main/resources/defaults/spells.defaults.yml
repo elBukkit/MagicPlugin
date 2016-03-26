@@ -8551,7 +8551,6 @@ petrify|3:
     parameters:
       duration: 7000
 
-
 entangle:
     icon_url: http://textures.minecraft.net/texture/b2545861d5871f75caa3b378ec44655bcb3d6cabe697b27303dbdaa8b5b5
     icon: gold_ingot
@@ -9368,11 +9367,11 @@ tweakshop:
           - item: wand|quickcast_manual
           - item: wand|mode_drop
           - item: wand|mode_rightclick
+          - item: wand|mode_sword
+          - item: wand|mode_swap
           - item: none
           - item: wand|organizer
           - item: wand|alphabetizer
-          - item: none
-          - item: none
           - item: none
           - item: none
           - item: wand|loud

@@ -2,11 +2,12 @@
 # Lightsabers, which are represented as wands
 #
 
-lightsaber_red:
-    path: acolyte
-    icon: diamond_sword
+lightsaber_base:
     icon_inactive: monster_eggs
-    mode_drop: true
+    icon_inactive_delay: 2000
+    drop: toggle
+    left_click: none
+    swap: cycle_hotbar
     quick_cast: true
     mana_max: 50
     mana: 50
@@ -18,8 +19,6 @@ lightsaber_red:
     undroppable: true
     indestructible: true
     effect_bubbles: false
-    effect_color: 'FF0000'
-    active_spell: push
     effects:
         open:
         -  class: EffectSingle
@@ -81,27 +80,21 @@ lightsaber_red:
              iterations: 1
              radius: 0.3
              particle: smoke_normal
+    
+lightsaber_red:
+    inherit: lightsaber_base
+    path: acolyte
+    icon: diamond_sword
+    effect_color: 'FF0000'
+    active_spell: push
     spells:
         - push
         - fire
 
 lightsaber_green:
+    inherit: lightsaber_base
     path: youngling
     icon: wood_sword
-    icon_inactive: monster_eggs
-    icon_inactive_delay: 2000
-    mode_drop: true
-    quick_cast: true
-    mana_max: 50
-    mana: 50
-    mana_regeneration: 5
-    protection_physical: 0.5
-    quiet: 1
-    bound: true
-    keep: true
-    undroppable: true
-    indestructible: true
-    effect_bubbles: false
     effect_color: '00FF00'
     active_spell: push
     spells:
@@ -109,21 +102,9 @@ lightsaber_green:
         - pull
 
 lightsaber_blue:
+    inherit: lightsaber_base
     path: youngling
     icon: stone_sword
-    icon_inactive: monster_eggs
-    mode_drop: true
-    quick_cast: true
-    mana_max: 50
-    mana: 50
-    mana_regeneration: 5
-    protection_physical: 0.5
-    quiet: 1
-    bound: true
-    keep: true
-    undroppable: true
-    indestructible: true
-    effect_bubbles: false
     effect_color: '0000FF'
     active_spell: push
     spells:
@@ -131,21 +112,9 @@ lightsaber_blue:
         - pull
 
 lightsaber_purple:
+    inherit: lightsaber_base
     path: youngling
     icon: iron_sword
-    icon_inactive: monster_eggs
-    mode_drop: true
-    quick_cast: true
-    mana_max: 50
-    mana: 50
-    mana_regeneration: 5
-    protection_physical: 0.5
-    quiet: 1
-    bound: true
-    keep: true
-    undroppable: true
-    indestructible: true
-    effect_bubbles: false
     effect_color: 'FFFF00'
     active_spell: push
     spells:
@@ -153,21 +122,9 @@ lightsaber_purple:
         - pull
 
 lightsaber_orange:
+    inherit: lightsaber_base
     path: youngling
     icon: gold_sword
-    icon_inactive: monster_eggs
-    mode_drop: true
-    quick_cast: true
-    mana_max: 50
-    mana: 50
-    mana_regeneration: 5
-    protection_physical: 0.5
-    quiet: 1
-    bound: true
-    keep: true
-    undroppable: true
-    indestructible: true
-    effect_bubbles: false
     effect_color: 'FF00FF'
     active_spell: push
     spells:
@@ -175,20 +132,12 @@ lightsaber_orange:
         - pull
 
 lightsaber_hilt:
+    inherit: lightsaber_base
     icon: monster_eggs
-    mode_drop: true
-    quick_cast: true
-    quiet: 1
-    bound: true
-    keep: true
-    undroppable: true
-    indestructible: true
-    effect_bubbles: false
     effect_color: '00FF00'
     active_spell: push
     spells:
         - push
-
 
 ### Special wands
 

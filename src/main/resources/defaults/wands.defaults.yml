@@ -110,7 +110,9 @@ default:
 # These are used to specify defaults for wands and other magic items.
 #
 base_wand:
-    mode_drop: true
+    drop: toggle
+    left_click: cast
+    swap: cycle_hotbar
     quiet: 1
     bound: true
     keep: true
@@ -122,7 +124,9 @@ base_wand:
     attribute_slot: mainhand
   
 base_sword:
-    mode_drop: true
+    drop: toggle
+    left_click: none
+    swap: cycle_hotbar
     quick_cast: true
     quiet: 1
     bound: true
@@ -772,7 +776,6 @@ borealis:
     quiet: 2
     effect_color: '00AACC'
     mode: chest
-    mode_drop: true
     active_spell: levitate
     cost_reduction: 2
     cooldown_reduction: 2
@@ -814,7 +817,6 @@ miniwolf:
     hotbar_count: 2
     effect_color: '00AACC'
     mode: inventory
-    mode_drop: true
     active_spell: levitate
     mana_max: 250
     mana_regeneration: 50
@@ -869,7 +871,6 @@ wolf:
   fill: true
   protected: true
   powered: true
-  mode_drop: true
   cost_reduction: 2.0
   cooldown_reduction: 2.0
   consume_reduction: 1
@@ -1324,12 +1325,35 @@ mode_drop:
     icon: skull_item:http://textures.minecraft.net/texture/c16952d9b5a5d7cb3b62ec6ebab76737aa9863019cc9e387522a18df306856
     upgrade: true
     force: true
-    mode_drop: true
+    drop: toggle
+    right_click: none
+    left_click: cast
+    swap: cycle_hotbar
 mode_rightclick:
     icon: skull_item:http://textures.minecraft.net/texture/c16952d9b5a5d7cb3b62ec6ebab76737aa9863019cc9e387522a18df306856
     upgrade: true
     force: true
-    mode_drop: false
+    drop: cycle_hotbar
+    right_click: toggle
+    left_click: cast
+    swap: none
+mode_sword:
+    icon: skull_item:http://textures.minecraft.net/texture/df4396a2bc47bc4dd545fc787a3ad8a0a75b8783cb5d81482c2016fab9cd2a
+    upgrade: true
+    force: true
+    drop: toggle
+    right_click: none
+    left_click: none
+    swap: cycle_hotbar
+    quick_cast: true
+mode_swap:
+    icon: skull_item:http://textures.minecraft.net/texture/c16952d9b5a5d7cb3b62ec6ebab76737aa9863019cc9e387522a18df306856
+    upgrade: true
+    force: true
+    drop: cycle_hotbar
+    right_click: none
+    left_click: cast
+    swap: toggle
 inventorymode:
     icon: skull_item:http://textures.minecraft.net/texture/c16952d9b5a5d7cb3b62ec6ebab76737aa9863019cc9e387522a18df306856
     upgrade: true
