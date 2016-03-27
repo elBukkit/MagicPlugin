@@ -1541,6 +1541,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 			// Backwards compatibility
 			if (wandConfig.getBoolean("mode_drop", false)) {
 				dropAction = WandAction.TOGGLE;
+				swapAction = WandAction.CYCLE_HOTBAR;
 				rightClickAction = WandAction.NONE;
 			}
 			leftClickAction = parseWandAction(wandConfig.getString("left_click"), leftClickAction);
