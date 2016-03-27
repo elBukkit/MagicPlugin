@@ -418,7 +418,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 				durability = item.getDurability();
 			}
 			try {
-				if (inactiveIcon == null || mage != null) {
+				if (inactiveIcon == null || (mage != null && getMode() == WandMode.INVENTORY && isInventoryOpen())) {
 					icon.applyToItem(item);
 				} else {
 					inactiveIcon.applyToItem(item);
@@ -3607,14 +3607,11 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 			CompatibilityUtils.removePotionEffect(player);
             effectBubblesApplied = false;
 		}
-
-        if (getMode() != WandMode.INVENTORY) {
-            showActiveIcon(false);
-        }
 		
 		if (isInventoryOpen()) {
 			closeInventory();
 		}
+		showActiveIcon(false);
         storedInventory = null;
 		if (usesXPNumber() || usesXPBar()) {
 			mage.resetSentExperience();
@@ -4071,7 +4068,14 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
                 plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
                     @Override
                     public void run() {
-                        icon.applyToItem(item);
+                        updateIcon();
+						// Needed because if the inventory has opened the item reference may be stale (?)
+						if (mage != null) {
+							Player player = mage.getPlayer();
+							if (player != null) {
+								player.getInventory().setItem(storedSlot, item);
+							}
+						}
                     }
                 }, inactiveIconDelay * 20 / 1000);
             } else {
