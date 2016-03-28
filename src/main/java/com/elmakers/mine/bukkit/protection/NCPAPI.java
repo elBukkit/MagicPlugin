@@ -47,4 +47,12 @@ public class NCPAPI implements Runnable {
             flyExemptions.put(id, newTimeout);
         }
     }
+
+    public void addFlightExemption(Player player) {
+        NCPExemptionManager.exemptPermanently(player, CheckType.MOVING_SURVIVALFLY);
+    }
+
+    public void removeFlightExemption(Player player) {
+        NCPExemptionManager.unexempt(player, CheckType.MOVING_SURVIVALFLY);
+    }
 }

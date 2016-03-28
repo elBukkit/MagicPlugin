@@ -36,4 +36,16 @@ public class NCPManager {
             ncp.addFlightExemption(player, duration);
         }
     }
+    
+    public void addFlightExemption(Player player) {
+        if (ncp != null) {
+            ncp.addFlightExemption(player);
+        }
+    }
+    
+    public void removeFlightExemption(Player player) {
+        if (ncp != null) {
+            ncp.removeFlightExemption(player);
+        }
+    }
 }

@@ -2,6 +2,9 @@
 
 ## 6.1
 
+ - Add survival_fly NCP exemptions to brooms/levitate
+ - NCP integration is on by default (if NCP is present)
+
 ## 6.0.8
 
  - Possible breaking API changes: Refactored casting costs, changed range values to double
