@@ -410,7 +410,7 @@ spells:
         name: Secure
         description: Secures containers
         usage: Aim up and cast for a replacement key, sneak-cast to unlock
-        cast: Container is now locked- you must have your key to unlock it!
+        cast: Container is now locked- you must hold your key to unlock it!
         acquire: Lock changed!
         already: That is already locked
         alternate_up: You summon a replacement key
