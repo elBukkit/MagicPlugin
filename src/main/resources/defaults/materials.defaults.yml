@@ -973,14 +973,6 @@ not_attachable:
 - leaves
 - leaves_2
 
-containers:
-- chest
-- furnace
-- brewing_stand
-- dispenser
-- hopper
-- dropper
-
 unsafe:
 - lava
 - stationary_lava
