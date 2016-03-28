@@ -6916,7 +6916,7 @@ dragonball:
            firework: ball
     parameters:
         projectile: DragonFireball
-        cooldown: 60000
+        cooldown: 140000
         start: 1
         break_blocks: false
     costs:

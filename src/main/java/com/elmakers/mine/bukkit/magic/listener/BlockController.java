@@ -1,6 +1,5 @@
 package com.elmakers.mine.bukkit.magic.listener;
 
-import com.elmakers.mine.bukkit.action.ActionHandler;
 import com.elmakers.mine.bukkit.api.block.UndoList;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.magic.MagicController;
