@@ -4146,9 +4146,20 @@ public Set<Material> getMaterialSet(String name)
         return skillsUseHeroes;
     }
 
+    @Override
     public void addFlightExemption(Player player, int duration) {
         ncpManager.addFlightExemption(player, duration);
         CompatibilityUtils.addFlightExemption(player, duration * 20 / 1000);
+    }
+
+    @Override
+    public void addFlightExemption(Player player) {
+        ncpManager.addFlightExemption(player);
+    }
+
+    @Override
+    public void removeFlightExemption(Player player) {
+        ncpManager.removeFlightExemption(player);
     }
 
     public String getExtraSchematicFilePath() {

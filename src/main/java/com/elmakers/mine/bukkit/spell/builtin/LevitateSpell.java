@@ -717,7 +717,8 @@ public class LevitateSpell extends TargetingSpell implements Listener
         }
         final Player player = mage.getPlayer();
         if (player == null) return;
-		
+
+        controller.removeFlightExemption(player);
 		if (flySpeed > 0 && flight) {
 			player.setFlySpeed(defaultFlySpeed);
 		}
@@ -751,6 +752,8 @@ public class LevitateSpell extends TargetingSpell implements Listener
         direction = null;
         mountBoostTicksRemaining = 0;
         boostTicksRemaining = 0;
+
+        controller.addFlightExemption(player);
 
         if (stashItem) {
             final PlayerInventory inventory = player.getInventory();

@@ -4,6 +4,8 @@
 
  - Falling blocks won't cause physics updates if the spell that launched them doesn't
  - Some fixes to tracking attached blocks, particularly fire, for undo
+ - Add survival_fly NCP exemptions to brooms/levitate
+ - NCP integration is on by default (if NCP is present)
 
 ## 5.5.4
 
