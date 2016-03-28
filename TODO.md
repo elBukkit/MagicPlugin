@@ -1,11 +1,9 @@
 # TODO
  
  - Mount no longer works on Ender Dragon (parts... grrr)
- - SuperKill doesn't hit endermen.. or anything?
- - F to swap broken on wands - or only The Wolf.. ?- lingering potions
- - DragonFireball !!!!!!!!
- 
- 
+ - F to swap broken on wands - or only The Wolf.. ?
+ - lingering potions
+  
  - Update CheckBlock to be a CompoundAction, or optionally send STOP
  
  - Undo bugs with pistons.. yuck. https://youtu.be/S-d-XT2r_vM

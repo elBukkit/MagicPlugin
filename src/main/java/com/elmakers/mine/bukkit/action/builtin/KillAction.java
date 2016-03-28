@@ -1,12 +1,10 @@
 package com.elmakers.mine.bukkit.action.builtin;
 
-import com.elmakers.mine.bukkit.api.action.CastContext;
-import com.elmakers.mine.bukkit.api.magic.Mage;
-import com.elmakers.mine.bukkit.api.magic.MageController;
-import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.action.BaseSpellAction;
+import com.elmakers.mine.bukkit.api.action.CastContext;
+import com.elmakers.mine.bukkit.api.spell.SpellResult;
+import org.bukkit.entity.Damageable;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.LivingEntity;
 
 public class KillAction extends BaseSpellAction
 {
@@ -14,16 +12,16 @@ public class KillAction extends BaseSpellAction
 	public SpellResult perform(CastContext context)
 	{
         Entity entity = context.getTargetEntity();
-		if (!(entity instanceof LivingEntity))
+		if (!(entity instanceof Damageable))
 		{
 			return SpellResult.NO_TARGET;
 		}
 
-        LivingEntity targetEntity = (LivingEntity)entity;
-        // Overkill to bypass protection
-        if (!targetEntity.isDead()) {
+		Damageable targetEntity = (Damageable)entity;
+		if (targetEntity.isDead()) {
 			return SpellResult.NO_TARGET;
-        }
+		}
+        // Overkill to bypass protection
 		context.registerModified(targetEntity);
 		targetEntity.damage(targetEntity.getMaxHealth() * 100);
 		return SpellResult.CAST;
