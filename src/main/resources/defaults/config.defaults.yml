@@ -632,10 +632,9 @@ enable_block_physics: true
 # This applies to the Blast spell, mainly.
 block_physics_velocity_scale: 10
 
-# Enable NCP integration- testing with the current version of NCP,
-# this does not seem to be necessary. But if you are having issues
-# with Magic causing violations, try turning this on.
-ncp_enabled: false
+# Enable NCP integration- set to false to disable Magic adding
+# exemptions to players when casting spells. (e.g. survival_fly on brooms)
+ncp_enabled: true
 
 # Enable Lockette integration for Build checks
 lockette_enabled: true
