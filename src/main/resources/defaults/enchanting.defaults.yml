@@ -400,6 +400,7 @@ master:
       railgun: 10,20,30
       levitate: 0,0,10
       shrink: 5,20,30
+      dragonball: 1,10,20
 
 #
 # The move from "master" to engineer requires the player to aquire some basic

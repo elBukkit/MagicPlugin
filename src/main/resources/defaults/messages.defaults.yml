@@ -1410,6 +1410,10 @@ spells:
         usage: Cast to select and throw an entity
         cancel: Released target
         target_selected: You captured $target
+    dragonball:
+        name: Dragon Ball
+        description: Launch an ender dragon fireball.
+        usage: Be careful, don't fall into the dragon's breath!
     fireball:
         name: Fireball
         description: Cast an exploding fireball

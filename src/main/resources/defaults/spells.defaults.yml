@@ -6876,6 +6876,52 @@ force:
     costs:
         mana: 200
 
+dragonball:
+    icon_url: http://textures.minecraft.net/texture/c52264ac4e5621668c43e87aed7918ed6b883abc5018769c9536d27b77f
+    icon: sulphur
+    category: combat
+    pvp_restricted: true
+    worth: 800
+    earns_sp: 12
+    actions:
+        cast:
+        -  class: Projectile
+    effects:
+        cast:
+        -  class: EffectSingle
+           effectlib:
+             class: ConeEffect
+             iterations: 15
+             particle: dragon_breath
+             lengthGrow: 0.1
+           sound: entity_enderdragon_shoot 
+           sound_volume: 1
+           sound_pitch: 0.25
+        -  class: EffectSingle
+           sound: entity_enderdragon_growl
+           sound_volume: 0.9
+           sound_pitch: 0.5
+        projectile:
+        -  class: EffectSingle
+           location: origin
+           effectlib:
+             class: SmokeEffect
+             iterations: 4
+             period: 5
+             particle: dragon_breath
+        hit:
+        -  class: EffectSingle
+           location: target
+           color: FF00FF
+           firework: ball
+    parameters:
+        projectile: DragonFireball
+        cooldown: 60000
+        start: 1
+        break_blocks: false
+    costs:
+        mana: 100
+        
 fireball:
     upgrade_required_path: beginner
     upgrade_required_casts: 15
