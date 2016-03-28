@@ -2393,7 +2393,7 @@ mount:
              iterations: 20
              particle: slime
     parameters:
-        target_type: LivingEntity
+        target_type: Entity
         allow_max_range: false
         range: 16
         bypass_friendly_fire: true

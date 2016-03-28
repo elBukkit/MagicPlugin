@@ -1,6 +1,5 @@
 # TODO
  
- - Mount no longer works on Ender Dragon (parts... grrr)
  - F to swap broken on wands - or only The Wolf.. ?
  - lingering potions
   

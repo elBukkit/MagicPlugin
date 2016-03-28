@@ -2,9 +2,9 @@ package com.elmakers.mine.bukkit.action.builtin;
 
 import com.elmakers.mine.bukkit.action.BaseSpellAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
-import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.ComplexEntityPart;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 
@@ -38,6 +38,9 @@ public class MountAction extends BaseSpellAction {
 			return SpellResult.NO_TARGET;
 		}
 		
+        while (targetEntity instanceof ComplexEntityPart) {
+            targetEntity = ((ComplexEntityPart)targetEntity).getParent();
+        }
 		targetEntity.setPassenger(source);
 		
 		return SpellResult.CAST;
