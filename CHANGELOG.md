@@ -1,6 +1,6 @@
 # CHANGELOG
 
-## 6.1
+## 6.0.8
 
  - Possible breaking API changes: Refactored casting costs, changed range values to double
  - Add Dragon Ball spell (shoots an Ender Dragon fireball)
