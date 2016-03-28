@@ -104,8 +104,10 @@ public class EffectLibManager {
             if (!parameters.contains("material"))
             {
                 MaterialAndData mat = player.getWorkingMaterial();
-                effect.material = mat.getMaterial();
-                effect.materialData = mat.getBlockData();
+                if (mat != null) {
+                    effect.material = mat.getMaterial();
+                    effect.materialData = mat.getBlockData();
+                }
             }
         } catch (Throwable ex) {
             Bukkit.getLogger().warning("Error playing effects of class: " + effectClass);

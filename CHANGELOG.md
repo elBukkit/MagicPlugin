@@ -13,6 +13,7 @@
  - Add more customization options for wands, each of left/right click, drop and swap can now
    be assigned a specific function from cast, toggle inv, cycle hotbar, cycle spells.
  - Add Lightsaber configs (W.I.P.)
+ - Added EquationEffect to EffectLib, for creating custom effects
 
 ## 6.0.7
 
