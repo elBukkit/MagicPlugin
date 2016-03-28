@@ -192,6 +192,8 @@ public interface MageController {
     public boolean itemsAreEqual(ItemStack first, ItemStack second);
 
     public void addFlightExemption(Player player, int duration);
+    public void addFlightExemption(Player player);
+    public void removeFlightExemption(Player player);
 
     /**
      * Check to see if the Elementals plugin is present an enabled.
