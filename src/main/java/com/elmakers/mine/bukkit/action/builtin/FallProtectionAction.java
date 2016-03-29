@@ -21,7 +21,7 @@ public class FallProtectionAction extends BaseSpellAction {
     public void prepare(CastContext context, ConfigurationSection parameters) {
         super.prepare(context, parameters);
         fallProtection = parameters.getInt("duration", 5000);
-        fallProtectionCount = parameters.getInt("protection_count", 1);
+        fallProtectionCount = parameters.getInt("protection_count", Integer.MAX_VALUE);
     }
 
     @Override

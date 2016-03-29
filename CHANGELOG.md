@@ -7,6 +7,8 @@
  - NCP integration is on by default (if NCP is present)
  - Fix for magic wearables not getting worn on right-click
  - Add /mitem export command, dump items, names and costs to a CSV file
+ - The FallProtection action will now work an unlimited number of times by default (within the given duration)
+   Use the protection_count parameter to reduce this.
 
 ## 6.0.8
 
