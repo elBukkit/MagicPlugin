@@ -2,6 +2,7 @@
  
  - F to swap broken on wands - or only The Wolf.. ?
  - lingering potions
+ - Add a global flag for making all spells not pvp-restricted
   
  - Update CheckBlock to be a CompoundAction, or optionally send STOP
  

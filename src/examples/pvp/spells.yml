@@ -1,0 +1,82 @@
+
+# Allow all spells in PVP areas
+dragonball:
+  pvp_restricted: false
+  
+fireball:
+  pvp_restricted: false
+
+entangle:
+  pvp_restricted: false
+
+singularity:
+  pvp_restricted: false
+
+tornado:
+  pvp_restricted: false
+
+wave:
+  pvp_restricted: false
+
+boom:
+  pvp_restricted: false
+
+nuke:
+  pvp_restricted: false
+
+lightning:
+  pvp_restricted: false
+
+smite:
+  pvp_restricted: false
+
+icbm:
+  pvp_restricted: false
+
+wither:
+  pvp_restricted: false
+
+flashbang:
+  pvp_restricted: false
+
+monster:
+  pvp_restricted: false
+
+ghast:
+  pvp_restricted: false
+
+mob:
+  pvp_restricted: false
+
+wolf:
+  pvp_restricted: false
+
+fire:
+  pvp_restricted: false
+
+grenade:
+  pvp_restricted: false
+
+cluster:
+  pvp_restricted: false
+
+bomb:
+  pvp_restricted: false
+
+sandblast:
+  pvp_restricted: false
+
+tendril:
+  pvp_restricted: false
+
+lava:
+  pvp_restricted: false
+
+stream:
+  pvp_restricted: false
+
+earth:
+  pvp_restricted: false
+
+laser:
+  pvp_restricted: false
