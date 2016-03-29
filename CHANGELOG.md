@@ -2,8 +2,10 @@
 
 ## 6.1
 
+ - Default emerald worth changed to 100 to make Vault-less economy less expensive
  - Add survival_fly NCP exemptions to brooms/levitate
  - NCP integration is on by default (if NCP is present)
+ - Fix for magic wearables not getting worn on right-click
 
 ## 6.0.8
 
