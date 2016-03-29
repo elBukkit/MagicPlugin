@@ -20,16 +20,20 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 
 public class MagicItemCommandExecutor extends MagicTabExecutor {
 	
@@ -226,6 +230,10 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
 		{
 			return onItemName(player, item, args);
 		}
+		else if (subCommand.equalsIgnoreCase("export"))
+		{
+			return onItemExport(player, item, args);
+		}
 		
 		return false;
 	}
@@ -239,6 +247,64 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
 			String itemString = configuration.saveToString().replace(ChatColor.COLOR_CHAR, '&');
 			player.sendMessage(itemString);
 		}
+		return true;
+	}
+
+	public boolean onItemExport(Player player, ItemStack item, String[] parameters) {
+		if (parameters.length == 0) {
+			player.sendMessage(ChatColor.RED + "Usage: /mitem export filename");
+			return true;
+		}
+		PlayerInventory inventory = player.getInventory();
+		int itemSlot = inventory.getHeldItemSlot();
+		Map<String, MaterialAndData> items = new TreeMap<String, MaterialAndData>();
+		VaultController vault = VaultController.getInstance();
+
+		for (Material material : Material.values()) {
+			ItemStack testItem = new ItemStack(material, 1);
+			inventory.setItem(itemSlot, testItem);
+			ItemStack setItem = inventory.getItem(itemSlot);
+			if (setItem == null || setItem.getType() != testItem.getType()) {
+				player.sendMessage("Skipped: " + material.name());
+				continue;
+			}
+
+			MaterialAndData mat = new MaterialAndData(material);
+			items.put(mat.getKey(), mat);
+			
+			String baseName = mat.getName();
+			for (short data = 1; data < 32; data++) {
+				testItem = new ItemStack(material, 1, data);
+				inventory.setItem(itemSlot, testItem);
+				setItem = inventory.getItem(itemSlot);
+				if (setItem == null || setItem.getType() != testItem.getType() || setItem.getDurability() != testItem.getDurability()) break;
+
+				mat = new MaterialAndData(material, data);
+				if (mat.getName().equals(baseName)) break;
+				String testVaultName = vault.getItemName(material, data);
+				if (testVaultName == null || testVaultName.isEmpty()) break;
+				items.put(mat.getKey(), mat);
+			}
+		}
+		
+		File file = new File(api.getPlugin().getDataFolder(), parameters[0] + ".csv");
+		try {
+			FileWriter output = new FileWriter(file);
+			output.append("Name,Key,Cost\n");
+			
+			for (MaterialAndData material : items.values()) {
+				Double worth = api.getController().getWorth(material.getItemStack(1));
+				String worthString = worth == null ? "" : worth.toString();
+				output.append(material.getName() + "," + material.getKey() + "," + worthString + "\n");
+			}
+			
+			output.flush();
+			output.close();
+		} catch (Exception ex) {
+			player.sendMessage(ChatColor.RED + "Error exporting data: " + ex.getMessage());
+			ex.printStackTrace();
+		}
+		inventory.setItem(itemSlot, item);
 		return true;
 	}
 	

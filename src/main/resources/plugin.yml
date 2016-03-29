@@ -151,6 +151,7 @@ commands:
         /mitem delete     Delete a saved item
         /mitem worth      Show the value of an item
         /mitem type       Change the type of an item
+        /mitem export     Export all items, names and worth a CSV file
     permission: Magic.commands.mitem
   "mitem add":
     description: Add enchantments, attributes or lore to an item
@@ -181,6 +182,10 @@ commands:
        /mitem save <key> [worth]
        /mitem save mycustomitem
        /mitem save mycustomitem 1000
+  "mitem export":
+    description: Save a list of items to a CSV file
+    usage: |
+       /mitem export items
   "mitem type":
     description: Change the type of an item
     usage: |
@@ -619,6 +624,10 @@ permissions:
     default: op
   Magic.commands.mitem.save:
     description: Player may save an item to a new template
+    type: boolean
+    default: op
+  Magic.commands.mitem.export:
+    description: Player may export all items to a CSV file
     type: boolean
     default: op
   Magic.commands.mitem.delete:

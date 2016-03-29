@@ -6,6 +6,7 @@
  - Add survival_fly NCP exemptions to brooms/levitate
  - NCP integration is on by default (if NCP is present)
  - Fix for magic wearables not getting worn on right-click
+ - Add /mitem export command, dump items, names and costs to a CSV file
 
 ## 6.0.8
 
