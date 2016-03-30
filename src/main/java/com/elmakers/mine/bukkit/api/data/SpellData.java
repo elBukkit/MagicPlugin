@@ -17,7 +17,6 @@ public class SpellData {
         this.spellKey = new SpellKey(spellKey.getBaseKey());
     }
 
-    // TODO: check where this is called.
     public SpellData(String spellKey) {
         this(new SpellKey(spellKey));
     }
@@ -63,6 +62,10 @@ public class SpellData {
 
     public void setCastCount(long castCount) {
         this.castCount = castCount;
+    }
+
+    public void incCastCount() {
+        castCount++;
     }
 
     public long getCooldownExpiration() {
