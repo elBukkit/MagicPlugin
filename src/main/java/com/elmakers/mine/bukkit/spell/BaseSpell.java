@@ -138,6 +138,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
      * Variant properties
      */
     private SpellKey spellKey;
+    private SpellData spellData;
     private String inheritKey;
     private String name;
     private String alias;
@@ -206,17 +207,11 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     private boolean                             bypassMageCooldown      = false;
     private int                                 mageCooldown            = 0;
     private int                                 cooldown                = 0;
-    private long                                cooldownExpiration      = 0;
     private int                                 earnCooldown            = 0;
     private int                                 duration                = 0;
     private int                                 totalDuration           = -1;
-    private long                                lastCast                = 0;
-    private long                                lastEarn                = 0;
     private long                                lastActiveCost          = 0;
     private float                               activeCostScale         = 1;
-    private long								castCount				= 0;
-
-    private boolean								isActive				= false;
 
     private Map<String, Collection<EffectPlayer>>     effects				= new HashMap<String, Collection<EffectPlayer>>();
 
@@ -706,7 +701,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     }
 
     public void checkActiveDuration() {
-        if (duration > 0 && lastCast < System.currentTimeMillis() - duration) {
+        if (duration > 0 && spellData.getLastCast() < System.currentTimeMillis() - duration) {
             deactivate();
         }
     }
@@ -870,7 +865,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
 
         backfired = false;
 
-        if (!this.isActive)
+        if (!this.spellData.isActive())
         {
             this.currentCast = null;
         }
@@ -1191,11 +1186,11 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         boolean isCooldownFree = wand != null ? wand.isCooldownFree() : mage.isCooldownFree();
         double cooldownReduction = wand != null ? wand.getCooldownReduction() : mage.getCooldownReduction();
         cooldownReduction += this.cooldownReduction;
-        lastCast = System.currentTimeMillis();
+        spellData.setLastCast(System.currentTimeMillis());
         if (!isCooldownFree && cooldown > 0) {
             if (cooldownReduction < 1) {
                 int reducedCooldown = (int)Math.ceil((1.0f - cooldownReduction) * cooldown);
-                cooldownExpiration = Math.max(cooldownExpiration, System.currentTimeMillis() + reducedCooldown);
+                spellData.setCooldownExpiration(Math.max(spellData.getCooldownExpiration(), System.currentTimeMillis() + reducedCooldown));
             }
         }
         if (!isCooldownFree && mageCooldown > 0) {
@@ -1506,12 +1501,12 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     @Override
     public long getCastCount()
     {
-        return castCount;
+        return spellData.getCastCount();
     }
 
     @Override
     public void setCastCount(long count) {
-        castCount = count;
+        spellData.setCastCount(count);
     }
 
     public void onActivate() {
@@ -1847,7 +1842,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     public CastingCost getRequiredCost() {
         if (!mage.isCostFree())
         {
-            if (costs != null && !isActive)
+            if (costs != null && !spellData.isActive())
             {
                 for (CastingCost cost : costs)
                 {
@@ -1864,25 +1859,25 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
 
     @Override
     public void clearCooldown() {
-        cooldownExpiration = 0;
+        spellData.setCooldownExpiration(0);
     }
 
     @Override
     public void setRemainingCooldown(long ms) {
-        cooldownExpiration = Math.max(ms + System.currentTimeMillis(), cooldownExpiration);
+        spellData.setCooldownExpiration(Math.max(ms + System.currentTimeMillis(), spellData.getCooldownExpiration()));
     }
 
     @Override
     public long getRemainingCooldown() {
         long remaining = 0;
         if (mage.isCooldownFree()) return 0;
-        if (cooldownExpiration > 0)
+        if (spellData.getCooldownExpiration() > 0)
         {
             long now = System.currentTimeMillis();
-            if (cooldownExpiration > now) {
-                remaining = cooldownExpiration - now;
+            if (spellData.getCooldownExpiration() > now) {
+                remaining = spellData.getCooldownExpiration() - now;
             } else {
-                cooldownExpiration = 0;
+                spellData.setCooldownExpiration(0);
             }
         }
 
@@ -1925,18 +1920,18 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
 
     @Override
     public void setActive(boolean active) {
-        if (active && !isActive) {
+        if (active && !spellData.isActive()) {
             onActivate();
-        } else if (!active && isActive) {
+        } else if (!active && spellData.isActive()) {
             onDeactivate();
         }
-        isActive = active;
+        spellData.setIsActive(active);
         lastActiveCost = System.currentTimeMillis();
     }
 
     @Override
     public void activate() {
-        if (!isActive) {
+        if (!spellData.isActive()) {
             mage.activateSpell(this);
         }
     }
@@ -1952,8 +1947,8 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         if (!force && bypassDeactivate) {
             return false;
         }
-        if (isActive) {
-            isActive = false;
+        if (spellData.isActive()) {
+            spellData.setIsActive(false);
             onDeactivate();
 
             mage.deactivateSpell(this);
@@ -1976,12 +1971,12 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     @Override
     public void load(SpellData spellData) {
         try {
-            castCount = spellData.getCastCount();
-            lastCast = spellData.getLastCast();
-            lastEarn = spellData.getLastEarn();
-            cooldownExpiration = spellData.getCooldownExpiration();
+            if (spellData == null) {
+                spellData = new SpellData(getSpellKey());
+            }
+            this.spellData = spellData;
             if (category != null && template == null) {
-                category.addCasts(castCount, lastCast);
+                category.addCasts(spellData.getCastCount(), spellData.getLastCast());
             }
             onLoad(spellData.getExtraData());
         } catch (Exception ex) {
@@ -1992,12 +1987,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     @Override
     public void save(SpellData spellData) {
         try {
-            spellData.setCastCount(castCount);
-            spellData.setLastCast(lastCast);
-            spellData.setLastEarn(lastEarn);
-            spellData.setCooldownExpiration(cooldownExpiration);
-            spellData.setIsActive(isActive);
-            onSave(spellData.getExtraData());
+            onSave(this.spellData.getExtraData());
         } catch (Exception ex) {
             controller.getPlugin().getLogger().warning("Failed to save data for spell " + name);
             ex.printStackTrace();
@@ -2022,7 +2012,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     @Override
     public boolean isActive()
     {
-         return isActive;
+         return spellData.isActive();
     }
 
     @Override
@@ -2278,9 +2268,9 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
 
         // Track cast counts
         if (result.isSuccess() && trackCasts) {
-            castCount++;
+            spellData.incCastCount();
             if (template != null) {
-                template.castCount++;
+                template.spellData.incCastCount();
             }
 
             // Reward SP
@@ -2289,8 +2279,8 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
             if (earns > 0 && wand != null && path != null && path.earnsSP() && controller.isSPEnabled() && !mage.isAtMaxSkillPoints()) {
                 long now = System.currentTimeMillis();
                 int scaledEarn = earns;
-                if (lastEarn > 0 && earnCooldown > 0 && now < lastEarn + earnCooldown) {
-                    scaledEarn = (int)Math.floor((double)earns * (now - lastEarn) / earnCooldown);
+                if (spellData.getLastEarn() > 0 && earnCooldown > 0 && now < spellData.getLastEarn() + earnCooldown) {
+                    scaledEarn = (int)Math.floor((double)earns * (now - spellData.getLastEarn()) / earnCooldown);
                     if (scaledEarn > 0) {
                         context.playEffects("earn_scaled_sp");
                     }
@@ -2299,7 +2289,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
                 }
                 if (scaledEarn > 0) {
                     mage.addSkillPoints(scaledEarn);
-                    lastEarn = now;
+                    spellData.setLastEarn(now);
                 }
             }
 
