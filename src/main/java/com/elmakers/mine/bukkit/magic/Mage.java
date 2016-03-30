@@ -578,7 +578,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             Collection<SpellData> spellDataList = data == null ? null : data.getSpellData();
             if (spellDataList != null) {
                 for (SpellData spellData : spellDataList) {
-                    this.spellData.put(spellData.getKey(), spellData);
+                    this.spellData.put(spellData.getKey().getBaseKey(), spellData);
                 }
             }
 
@@ -752,9 +752,9 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             data.setUndoData(undoData);
 
             for (MageSpell spell : spells.values()) {
-                SpellData spellData = new SpellData(spell.getKey());
+                SpellData spellData = new SpellData(spell.getSpellKey());
                 spell.save(spellData);
-                this.spellData.put(spellData.getKey(), spellData);
+                this.spellData.put(spellData.getKey().getBaseKey(), spellData);
             }
             data.setSpellData(this.spellData.values());
 
@@ -980,6 +980,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                     className = ActionSpell.class.getName();
                 }
                 // Check for spells that have changed class
+                // TODO: This will need to change.
                 if (!spell.getClass().getName().contains(className)) {
                     SpellData spellData = new SpellData(key);
                     spell.save(spellData);

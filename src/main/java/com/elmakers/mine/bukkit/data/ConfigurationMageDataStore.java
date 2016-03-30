@@ -8,6 +8,7 @@ import com.elmakers.mine.bukkit.api.data.MageDataStore;
 import com.elmakers.mine.bukkit.api.data.SpellData;
 import com.elmakers.mine.bukkit.api.data.UndoData;
 import com.elmakers.mine.bukkit.api.magic.MageController;
+import com.elmakers.mine.bukkit.api.spell.SpellKey;
 import com.elmakers.mine.bukkit.api.wand.Wand;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 
@@ -96,7 +97,7 @@ public abstract class ConfigurationMageDataStore implements MageDataStore {
         Collection<SpellData> spellData = mage.getSpellData();
         if (spellData != null) {
             for (SpellData spell : spellData) {
-                ConfigurationSection node = spellNode.createSection(spell.getKey());
+                ConfigurationSection node = spellNode.createSection(spell.getKey().getBaseKey());
                 node.set("cast_count", spell.getCastCount());
                 node.set("last_cast", spell.getLastCast());
                 node.set("last_earn", spell.getLastEarn());
@@ -238,18 +239,22 @@ public abstract class ConfigurationMageDataStore implements MageDataStore {
         ConfigurationSection spellSection = saveFile.getConfigurationSection("spells");
         if (spellSection != null) {
             Set<String> keys = spellSection.getKeys(false);
-            List<SpellData> spellDataList = new ArrayList<SpellData>();
+            Map<String, SpellData> spellDataMap = new HashMap<String, SpellData>();
             for (String key : keys) {
                 ConfigurationSection node = spellSection.getConfigurationSection(key);
-                SpellData spellData = new SpellData(key);
-                spellData.setCastCount(node.getLong("cast_count", 0));
-                spellData.setLastCast(node.getLong("last_cast", 0));
-                spellData.setLastEarn(node.getLong("last_earn", 0));
-                spellData.setCooldownExpiration(node.getLong("cooldown_expiration", 0));
+                SpellKey spellKey = new SpellKey(key);
+                SpellData spellData = spellDataMap.get(spellKey.getBaseKey());
+                if (spellData == null) {
+                    spellData = new SpellData(spellKey.getBaseKey());
+                }
+                spellData.setCastCount(spellData.getCastCount() + node.getLong("cast_count", 0));
+                spellData.setLastCast(Math.max(spellData.getLastCast(), node.getLong("last_cast", 0)));
+                spellData.setLastEarn(Math.max(spellData.getLastEarn(), node.getLong("last_earn", 0)));
+                spellData.setCooldownExpiration(Math.max(spellData.getCooldownExpiration(), node.getLong("cooldown_expiration", 0)));
                 spellData.setExtraData(node);
-                spellDataList.add(spellData);
+                spellDataMap.put(spellData.getKey().getBaseKey(), spellData);
             }
-            data.setSpellData(spellDataList);
+            data.setSpellData(spellDataMap.values());
         }
 
         // Load respawn inventory

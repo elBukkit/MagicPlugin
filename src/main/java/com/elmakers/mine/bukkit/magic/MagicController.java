@@ -1607,6 +1607,7 @@ public class MagicController implements MageController {
             for (String key : keys) {
                 SpellTemplate spell = getSpellTemplate(key);
                 // Bit hacky to use the Spell load method on a SpellTemplate, but... meh!
+                // TODO: This will need to change.
                 if (spell != null && spell instanceof MageSpell) {
                     SpellData templateData = new SpellData(key);
                     ConfigurationSection spellSection = configNode.getConfigurationSection(key);
@@ -1681,6 +1682,7 @@ public class MagicController implements MageController {
                     continue;
                 }
                 // Hackily re-using save
+                // TODO: This will need to change.
                 if (spell != null && spell instanceof MageSpell) {
                     SpellData templateData = new SpellData(lastKey);
                     ((MageSpell) spell).save(templateData);
