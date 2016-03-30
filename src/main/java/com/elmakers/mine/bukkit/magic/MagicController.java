@@ -2005,14 +2005,6 @@ public class MagicController implements MageController {
             }
         }
 
-        if (!spellNode.contains("previous_level_cast_count")) {
-            // Initialize first minimum cast count
-            spellNode.set("previous_level_cast_count", 0);
-            if (!spellNode.contains("upgrade_required_casts")) {
-                spellNode.set("upgrade_required_casts", 0);
-            }
-        }
-
         if (addInherited) {
             spellConfigurations.put(key, spellNode);
         } else {
