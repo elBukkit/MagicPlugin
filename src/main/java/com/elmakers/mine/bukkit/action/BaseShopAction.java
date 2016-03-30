@@ -247,7 +247,7 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
         }
     }
 
-    protected void takeCosts(CastContext context, ShopItem shopItem) {
+    protected boolean takeCosts(CastContext context, ShopItem shopItem) {
         Mage mage = context.getMage();
         MageController controller = context.getController();
         double worth = shopItem.getWorth();
@@ -271,6 +271,8 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
             worth = Math.ceil(costScale * worth * controller.getWorthBase());
             VaultController.getInstance().withdrawPlayer(mage.getPlayer(), worth);
         }
+        
+        return true;
     }
 
     @Override
@@ -370,7 +372,11 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
                         return;
                     }
                 }
-                takeCosts(context, shopItem);
+                if (!takeCosts(context, shopItem)) {
+                    costString = costString.replace("$cost", getItemCost(context, shopItem));
+                    context.showMessage(costString);
+                    return;
+                }
                 if (!castsSpells && !requireWand) {
                     context.getController().giveItemToPlayer(mage.getPlayer(), InventoryUtils.getCopy(item));
                 }
