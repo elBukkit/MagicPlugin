@@ -1975,9 +1975,6 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         }
         try {
             this.spellData = spellData;
-            if (category != null && template == null) {
-                category.addCasts(spellData.getCastCount(), spellData.getLastCast());
-            }
             onLoad(spellData.getExtraData());
         } catch (Exception ex) {
             controller.getPlugin().getLogger().warning("Failed to load data for spell " + name + ": " + ex.getMessage());
@@ -1992,6 +1989,16 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
             controller.getPlugin().getLogger().warning("Failed to save data for spell " + name);
             ex.printStackTrace();
         }
+    }
+
+    @Override
+    public SpellData getSpellData() {
+        return spellData;
+    }
+
+    @Override
+    public void setSpellData(SpellData data) {
+        this.spellData = data;
     }
 
     @Override
@@ -2271,6 +2278,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
             spellData.incCastCount();
             if (template != null) {
                 template.spellData.incCastCount();
+                template.getCategory().addCast();
             }
 
             // Reward SP

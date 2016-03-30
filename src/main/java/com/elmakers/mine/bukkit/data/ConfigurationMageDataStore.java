@@ -246,13 +246,17 @@ public abstract class ConfigurationMageDataStore implements MageDataStore {
                 SpellData spellData = spellDataMap.get(spellKey.getBaseKey());
                 if (spellData == null) {
                     spellData = new SpellData(spellKey.getBaseKey());
+                    spellDataMap.put(spellData.getKey().getBaseKey(), spellData);
                 }
                 spellData.setCastCount(spellData.getCastCount() + node.getLong("cast_count", 0));
                 spellData.setLastCast(Math.max(spellData.getLastCast(), node.getLong("last_cast", 0)));
                 spellData.setLastEarn(Math.max(spellData.getLastEarn(), node.getLong("last_earn", 0)));
                 spellData.setCooldownExpiration(Math.max(spellData.getCooldownExpiration(), node.getLong("cooldown_expiration", 0)));
+                node.set("cast_count", null);
+                node.set("last_cast", null);
+                node.set("last_earn", null);
+                node.set("cooldown_expiration", null);
                 spellData.setExtraData(node);
-                spellDataMap.put(spellData.getKey().getBaseKey(), spellData);
             }
             data.setSpellData(spellDataMap.values());
         }

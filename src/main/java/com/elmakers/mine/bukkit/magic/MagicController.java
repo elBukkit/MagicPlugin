@@ -338,6 +338,14 @@ public class MagicController implements MageController {
             getLogger().log(Level.WARNING, "Duplicate spell key: '" + conflict.getKey() + "'");
         } else {
             spells.put(variant.getKey(), variant);
+            SpellData data = templateDataMap.get(variant.getSpellKey().getBaseKey());
+            if (data == null) {
+                data = new SpellData(variant.getSpellKey().getBaseKey());
+                templateDataMap.put(variant.getSpellKey().getBaseKey(), data);
+            }
+            if (variant instanceof MageSpell) {
+                ((MageSpell) variant).setSpellData(data);
+            }
             String alias = variant.getAlias();
             if (alias != null && alias.length() > 0) {
                 spellAliases.put(alias, variant);
@@ -1601,20 +1609,21 @@ public class MagicController implements MageController {
     protected void loadSpellData() {
         try {
             ConfigurationSection configNode = loadDataFile(SPELLS_DATA_FILE);
+
             if (configNode == null) return;
 
             Set<String> keys = configNode.getKeys(false);
+
             for (String key : keys) {
-                SpellTemplate spell = getSpellTemplate(key);
-                // Bit hacky to use the Spell load method on a SpellTemplate, but... meh!
-                // TODO: This will need to change.
-                if (spell != null && spell instanceof MageSpell) {
-                    SpellData templateData = new SpellData(key);
-                    ConfigurationSection spellSection = configNode.getConfigurationSection(key);
-                    templateData.setCastCount(spellSection.getLong("cast_count"));
-                    templateData.setLastCast(spellSection.getLong("last_cast"));
-                    ((MageSpell) spell).load(templateData);
+                ConfigurationSection node = configNode.getConfigurationSection(key);
+                SpellKey spellKey = new SpellKey(key);
+                SpellData templateData = templateDataMap.get(spellKey.getBaseKey());
+                if (templateData == null) {
+                    templateData = new SpellData(spellKey.getBaseKey());
+                    templateDataMap.put(templateData.getKey().getBaseKey(), templateData);
                 }
+                templateData.setCastCount(templateData.getCastCount() + node.getLong("cast_count", 0));
+                templateData.setLastCast(Math.max(templateData.getLastCast(), node.getLong("last_cast", 0)));
             }
         } catch (Exception ex) {
             getLogger().warning("Failed to load spell metrics");
@@ -1674,21 +1683,15 @@ public class MagicController implements MageController {
         String lastKey = "";
         try {
             YamlDataFile spellsDataFile = createDataFile(SPELLS_DATA_FILE);
-            for (SpellTemplate spell : spells.values()) {
-                lastKey = spell.getKey();
+            for (SpellData data : templateDataMap.values()) {
+                lastKey = data.getKey().getBaseKey();
                 ConfigurationSection spellNode = spellsDataFile.createSection(lastKey);
                 if (spellNode == null) {
                     getLogger().warning("Error saving spell data for " + lastKey);
                     continue;
                 }
-                // Hackily re-using save
-                // TODO: This will need to change.
-                if (spell != null && spell instanceof MageSpell) {
-                    SpellData templateData = new SpellData(lastKey);
-                    ((MageSpell) spell).save(templateData);
-                    spellNode.set("cast_count", templateData.getCastCount());
-                    spellNode.set("last_cast", templateData.getLastCast());
-                }
+                spellNode.set("cast_count", data.getCastCount());
+                spellNode.set("last_cast", data.getLastCast());
             }
             stores.add(spellsDataFile);
         } catch (Throwable ex) {
@@ -4724,6 +4727,7 @@ public Set<Material> getMaterialSet(String name)
     private final Map<String, WandTemplate>     wandTemplates               = new HashMap<String, WandTemplate>();
     private final Map<String, SpellTemplate>    spells              		= new HashMap<String, SpellTemplate>();
     private final Map<String, SpellTemplate>    spellAliases                = new HashMap<String, SpellTemplate>();
+    private final Map<String, SpellData>        templateDataMap             = new HashMap<String, SpellData>();
     private final Map<String, SpellCategory>    categories              	= new HashMap<String, SpellCategory>();
     private final Map<String, ConfigurationSection> spellConfigurations     = new HashMap<String, ConfigurationSection>();
     private final Map<String, ConfigurationSection> baseSpellConfigurations = new HashMap<String, ConfigurationSection>();
