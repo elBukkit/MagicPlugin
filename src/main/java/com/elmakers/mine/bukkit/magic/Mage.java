@@ -1189,9 +1189,11 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             playerSpell = createSpell(key);
             if (playerSpell != null) {
                 SpellData spellData = this.spellData.get(playerSpell.getSpellKey().getBaseKey());
-                if (spellData != null) {
-                    playerSpell.load(spellData);
+                if (spellData == null) {
+                    spellData = new SpellData(playerSpell.getSpellKey());
+                    this.spellData.put(spellData.getKey().getBaseKey(), spellData);
                 }
+                playerSpell.load(spellData);
             }
         } else {
             playerSpell.setMage(this);

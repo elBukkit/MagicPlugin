@@ -1970,10 +1970,10 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
 
     @Override
     public void load(SpellData spellData) {
+        if (spellData == null) {
+            throw new IllegalArgumentException("SpellData may not be null");
+        }
         try {
-            if (spellData == null) {
-                spellData = new SpellData(getSpellKey());
-            }
             this.spellData = spellData;
             if (category != null && template == null) {
                 category.addCasts(spellData.getCastCount(), spellData.getLastCast());
