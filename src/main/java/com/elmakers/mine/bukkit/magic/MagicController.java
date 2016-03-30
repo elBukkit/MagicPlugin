@@ -1992,6 +1992,8 @@ public class MagicController implements MageController {
                 {
                     ConfigurationSection baseInheritConfig = getSpellConfig(upgradeInheritsFrom, config, inheritFrom == null);
                     spellNode = ConfigurationUtils.addConfigurations(spellNode, baseInheritConfig, inheritFrom != null);
+                    spellNode.set("previous_level_cast_count", baseInheritConfig.getLong("upgrade_required_casts"));
+                    spellNode.set("upgrade_required_casts", baseInheritConfig.getLong("upgrade_required_casts") + spellNode.getLong("upgrade_required_casts"));
                 } else {
                     getLogger().warning("Spell upgrade " + key + " inherits from unknown level " + upgradeInheritsFrom);
                 }
@@ -2002,6 +2004,15 @@ public class MagicController implements MageController {
                 spellNode = ConfigurationUtils.addConfigurations(spellNode, defaults, false);
             }
         }
+
+        if (!spellNode.contains("previous_level_cast_count")) {
+            // Initialize first minimum cast count
+            spellNode.set("previous_level_cast_count", 0);
+            if (!spellNode.contains("upgrade_required_casts")) {
+                spellNode.set("upgrade_required_casts", 0);
+            }
+        }
+
         if (addInherited) {
             spellConfigurations.put(key, spellNode);
         } else {
