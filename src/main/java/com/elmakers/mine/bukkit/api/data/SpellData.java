@@ -1,10 +1,11 @@
 package com.elmakers.mine.bukkit.api.data;
 
+import com.elmakers.mine.bukkit.api.spell.SpellKey;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemoryConfiguration;
 
 public class SpellData {
-    private String spellKey;
+    private SpellKey spellKey;
     private boolean isActive;
     private long lastCast;
     private long lastEarn;
@@ -12,8 +13,12 @@ public class SpellData {
     private long cooldownExpiration;
     private ConfigurationSection data;
 
+    public SpellData(SpellKey spellKey) {
+        this.spellKey = new SpellKey(spellKey.getBaseKey());
+    }
+
     public SpellData(String spellKey) {
-        this.spellKey = spellKey;
+        this(new SpellKey(spellKey));
     }
 
     public void setExtraData(ConfigurationSection data) {
@@ -27,12 +32,12 @@ public class SpellData {
         return data;
     }
 
-    public String getKey() {
+    public SpellKey getKey() {
         return spellKey;
     }
 
     public void setKey(String spellKey) {
-        this.spellKey = spellKey;
+        this.spellKey = new SpellKey(spellKey);
     }
 
     public boolean isActive() {
@@ -57,6 +62,10 @@ public class SpellData {
 
     public void setCastCount(long castCount) {
         this.castCount = castCount;
+    }
+
+    public void incCastCount() {
+        castCount++;
     }
 
     public long getCooldownExpiration() {

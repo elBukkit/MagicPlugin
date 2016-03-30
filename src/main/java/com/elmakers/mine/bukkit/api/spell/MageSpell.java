@@ -40,6 +40,8 @@ public interface MageSpell extends Spell, CostReducer {
 
     public void load(SpellData spellData);
     public void save(SpellData spellData);
+    public SpellData getSpellData();
+    public void setSpellData(SpellData data);
 
     public void tick();
     public void initialize(MageController controller);
