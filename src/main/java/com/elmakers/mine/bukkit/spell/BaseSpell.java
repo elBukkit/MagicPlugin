@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Random;
 import java.util.Set;
 import java.util.logging.Level;
@@ -32,6 +33,8 @@ import com.elmakers.mine.bukkit.api.wand.WandUpgradePath;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
 
+import com.elmakers.mine.bukkit.utility.NMSUtils;
+import de.slikey.effectlib.math.EquationTransform;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
@@ -190,6 +193,8 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     private boolean hidden                      = false;
     private boolean trackCasts                  = true;
 
+    protected ConfigurationSection progressLevels = null;
+    protected ConfigurationSection progressLevelParameters = null;
     protected ConfigurationSection parameters = null;
     protected ConfigurationSection workingParameters = null;
     protected ConfigurationSection configuration = null;
@@ -199,6 +204,12 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     /*
      * private data
      */
+
+    private long                                previousUpgradeCastCount= 0;
+
+    private long                                requiredCastsPerLevel   = 0;
+    private long                                maxLevels               = 0;
+    private Map<String, EquationTransform>      progressLevelEquations  = new HashMap<String, EquationTransform>();
 
     private float                               cooldownReduction       = 0;
     private float                               costReduction           = 0;
@@ -810,6 +821,31 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         showUndoable = node.getBoolean("show_undoable", true);
         cancellable = node.getBoolean("cancellable", true);
 
+        previousUpgradeCastCount = node.getLong("previous_upgrade_cast_count");
+
+        progressLevels = node.getConfigurationSection("progress_levels");
+        if (progressLevels != null) {
+            requiredCastsPerLevel = progressLevels.getLong("required_casts_per_level");
+            maxLevels = progressLevels.getLong("max_levels");
+            if (requiredCastsPerLevel <= 0 && maxLevels > 0) {
+                if (requiredUpgradeCasts <= 0) {
+                    maxLevels = 0;
+                } else {
+                    // auto determine casts per level
+                    requiredCastsPerLevel = requiredUpgradeCasts / maxLevels;
+                }
+            }
+
+            progressLevelParameters = progressLevels.getConfigurationSection("parameters");
+            if (progressLevelParameters != null) {
+                Map<String, Object> params = NMSUtils.getMap(progressLevelParameters);
+                progressLevelEquations = new HashMap<String, EquationTransform>(params.size());
+                for (Entry<String, Object> entry : params.entrySet()) {
+                    progressLevelEquations.put(entry.getKey(), new EquationTransform(entry.getValue().toString(), "x"));
+                }
+            }
+        }
+
         // Preload some parameters
         parameters = node.getConfigurationSection("parameters");
         if (parameters != null) {
@@ -1049,7 +1085,21 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
             return false;
         }
 
+        long progressLevel = getProgressLevel();
+
+        for (Entry<String, EquationTransform> entry : progressLevelEquations.entrySet()) {
+            workingParameters.set(entry.getKey(), entry.getValue().get(progressLevel));
+        }
+
         return finalizeCast(workingParameters);
+    }
+
+    public long getProgressLevel() {
+        return Math.min(getRelativeCastCount() / requiredCastsPerLevel + 1, maxLevels);
+    }
+
+    private long getPreviousCastProgressLevel() {
+        return Math.min(Math.max((getRelativeCastCount() - 1), 0) / requiredCastsPerLevel + 1, maxLevels);
     }
 
     public boolean canCast(Location location) {
@@ -1502,6 +1552,10 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     public long getCastCount()
     {
         return spellData.getCastCount();
+    }
+
+    public long getRelativeCastCount() {
+        return spellData.getCastCount() - previousUpgradeCastCount;
     }
 
     @Override
@@ -2333,6 +2387,8 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
 
                     SpellUpgradeEvent upgradeEvent = new SpellUpgradeEvent(mage, wand, this, newSpell);
                     Bukkit.getPluginManager().callEvent(upgradeEvent);
+                } else if (maxLevels > 0) {
+                    // TODO: Check for progress level changes
                 }
             }
         }
