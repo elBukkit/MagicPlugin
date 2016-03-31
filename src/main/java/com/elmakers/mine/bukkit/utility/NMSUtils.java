@@ -6,6 +6,8 @@ import org.bukkit.Location;
 import org.bukkit.Server;
 import org.bukkit.World;
 import org.bukkit.block.BlockFace;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.MemorySection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Entity;
@@ -20,8 +22,10 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 
 /**
@@ -246,6 +250,7 @@ public class NMSUtils {
     protected static Field class_EntityArrow_damageField;
     protected static Field class_CraftWorld_environmentField;
     protected static Field class_EntityLiving_potionBubblesField;
+    protected static Field class_MemorySection_mapField;
 
     static
     {
@@ -444,6 +449,9 @@ public class NMSUtils {
             class_EntityLiving_potionBubblesField = class_EntityLiving.getDeclaredField("f");
             class_EntityLiving_potionBubblesField.setAccessible(true);
 
+            class_MemorySection_mapField = MemorySection.class.getDeclaredField("map");
+            class_MemorySection_mapField.setAccessible(true);
+            
             class_TileEntityContainer = fixBukkitClass("net.minecraft.server.TileEntityContainer");
             class_ChestLock = fixBukkitClass("net.minecraft.server.ChestLock");
             class_ChestLock_isEmpty = class_ChestLock.getMethod("a");
@@ -1376,6 +1384,30 @@ public class NMSUtils {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+    }
+
+    public static Map<String, Object> getMap(ConfigurationSection section)
+    {
+        if (section instanceof MemorySection)
+        {
+            try {
+                Object mapObject = class_MemorySection_mapField.get(section);
+                if (mapObject instanceof Map) {
+                    return (Map<String, Object>)mapObject; 
+                }
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
+
+        // Do it the slow way
+        Map<String, Object> map = new HashMap<String, Object>();
+        Set<String> keys = section.getKeys(false);
+        for (String key : keys) {
+            map.put(key, section.get(key));
+        }
+        
+        return map;
     }
 }
 

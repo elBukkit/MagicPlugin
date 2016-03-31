@@ -336,14 +336,14 @@ public class ConfigurationUtils extends ConfigUtils {
         if (configuration == null) return null;
         
         ConfigurationSection replaced = new MemoryConfiguration();
-        Set<String> keys = configuration.getKeys(false);
-        for (String key : keys) {
-            Object value = configuration.get(key);
+        Map<String, Object> map = NMSUtils.getMap(configuration);
+        for (Map.Entry<String, Object> entry : map.entrySet()) {
+            Object value = entry.getValue();
             if (value == null) continue;
             
             Object replacement = replaceParameters(value, parameters);
             if (replacement != null) {
-                replaced.set(key, replacement);
+                replaced.set(entry.getKey(), replacement);
             }
         }
         
@@ -358,10 +358,11 @@ public class ConfigurationUtils extends ConfigUtils {
     public static ConfigurationSection addConfigurations(ConfigurationSection first, ConfigurationSection second, boolean override)
     {
         if (second == null) return first;
-        Set<String> keys = second.getKeys(false);
-        for (String key : keys) {
-            Object value = second.get(key);
+        Map<String, Object> map = NMSUtils.getMap(second);
+        for (Map.Entry<String, Object> entry : map.entrySet()) {
+            Object value = entry.getValue();
             if (value == null) continue;
+            String key = entry.getKey();
 
             Object existingValue = first.get(key);
             if (value instanceof Map)
@@ -391,10 +392,9 @@ public class ConfigurationUtils extends ConfigUtils {
     public static ConfigurationSection replaceConfigurations(ConfigurationSection first, ConfigurationSection second)
     {
         if (second == null) return first;
-        Set<String> keys = second.getKeys(false);
-        for (String key : keys) {
-            Object value = second.get(key);
-            first.set(key, value);
+        Map<String, Object> map = NMSUtils.getMap(second);
+        for (Map.Entry<String, Object> entry : map.entrySet()) {
+            first.set(entry.getKey(), entry.getValue());
         }
 
         return first;
@@ -734,10 +734,10 @@ public class ConfigurationUtils extends ConfigUtils {
 
     static public String getParameters(ConfigurationSection parameters) {
         Collection<String> parameterStrings = new ArrayList<String>();
-        Collection<String> keys = parameters.getKeys(false);
-        for (String key : keys) {
-            parameterStrings.add(key);
-            parameterStrings.add(parameters.getString(key));
+        Map<String, Object> map = NMSUtils.getMap(parameters);
+        for (Map.Entry<String, Object> entry : map.entrySet()) {
+            parameterStrings.add(entry.getKey());
+            parameterStrings.add(entry.getValue().toString());
         }
         return StringUtils.join(parameterStrings, ' ');
     }
