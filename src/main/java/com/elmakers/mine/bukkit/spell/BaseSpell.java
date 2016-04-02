@@ -1095,6 +1095,9 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     }
 
     public long getProgressLevel() {
+        if (requiredCastsPerLevel == 0) {
+            return 1;
+        }
         return Math.min(getRelativeCastCount() / requiredCastsPerLevel + 1, maxLevels);
     }
 
