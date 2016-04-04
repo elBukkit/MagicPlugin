@@ -4875,13 +4875,11 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 				cycleActive(-1);
 				break;
 			case CYCLE_HOTBAR:
-				if (mode != WandMode.INVENTORY) return false;
+				if (mode != WandMode.INVENTORY || !isInventoryOpen()) return false;
 				if (getHotbarCount() > 1) {
 					cycleHotbar(1);
-				} else if (isInventoryOpen()) {
-					closeInventory();
 				} else {
-					return false;
+					closeInventory();
 				}
 				break;
 			case CYCLE_HOTBAR_REVERSE:
