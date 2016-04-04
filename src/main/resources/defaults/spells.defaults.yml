@@ -148,6 +148,11 @@ default:
          location: origin
          sound: entity_player_levelup
          firework: ball_large
+       progress:
+       - class: EffectSingle
+         location: origin
+         sound: entity_player_levelup
+         firework: ball_large
        break:
        - class: EffectSingle
          location: target
