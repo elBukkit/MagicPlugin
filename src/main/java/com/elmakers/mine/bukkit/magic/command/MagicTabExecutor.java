@@ -92,6 +92,7 @@ public abstract class MagicTabExecutor implements TabExecutor {
 
 	public boolean giveWand(CommandSender sender, Player player, String wandKey, boolean quiet, boolean giveItem, boolean giveValue, boolean showWorth)
 	{
+        if (wandKey == null) return false;
 		Mage mage = api.getMage(player);
 		Wand currentWand =  mage.getActiveWand();
 		if (currentWand != null) {
