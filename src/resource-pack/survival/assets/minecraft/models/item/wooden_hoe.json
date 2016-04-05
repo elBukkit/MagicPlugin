@@ -18,8 +18,8 @@
     {"predicate": {"damage": 0.2}, "model": "item/custom/blaster"},
     {"predicate": {"damage": 0.21666666666667}, "model": "item/custom/time_turner"},
     {"predicate": {"damage": 0.23333333333333}, "model": "item/custom/lightsaber_hilt"},
-    {"predicate": {"damage": 0.25}, "model": "item/custom/cloak"},
-    {"predicate": {"damage": 0.26666666666667}, "model": "item/custom/auror_eye"},
+    {"predicate": {"damage": 0.25}, "model": "item/custom/hat_cloak"},
+    {"predicate": {"damage": 0.26666666666667}, "model": "item/custom/hat_eye"},
     {"predicate": {"damage": 0.28333333333333}, "model": "item/custom/magic_hat"},
     {"predicate": {"damage": 0.3}, "model": "item/custom/ocarina"}
   ]
