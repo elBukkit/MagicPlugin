@@ -16,4 +16,5 @@ public interface WandTemplate {
     public void playEffects(Mage mage, String key);
     public void playEffects(Mage mage, String key, float scale);
     public WandTemplate getMigrateTemplate();
+    public String migrateIcon(String icon);
 }
