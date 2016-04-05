@@ -25,6 +25,7 @@ import com.elmakers.mine.bukkit.api.spell.CostReducer;
 import com.elmakers.mine.bukkit.api.spell.MageSpell;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellKey;
+import com.elmakers.mine.bukkit.api.spell.PrerequisiteSpell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.api.spell.TargetType;
@@ -148,6 +149,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     private String description;
     private String extendedDescription;
     private String levelDescription;
+    private String progressDescription;
     private String upgradeDescription;
     private String usage;
     private double worth;
@@ -160,6 +162,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     private long requiredUpgradeCasts;
     private String requiredUpgradePath;
     private Set<String> requiredUpgradeTags;
+    private Collection<PrerequisiteSpell> requiredSpells;
     private MaterialAndData icon = new MaterialAndData(Material.AIR);
     private String iconURL = null;
     private List<CastingCost> costs = null;
@@ -754,28 +757,66 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
             requiredUpgradeTags = new HashSet<String>(pathTags);
         }
 
+        List<?> spells;
+        if (node.isString("required_spells")) {
+            spells = ConfigurationUtils.getStringList(node, "required_spells");
+        } else {
+            spells = node.getList("required_spells");
+        }
+        if (spells == null) {
+            spells = new ArrayList<Object>(0);
+        }
+        requiredSpells = new ArrayList<PrerequisiteSpell>(spells.size());
+        for (Object o : spells) {
+            if (o instanceof String) {
+                requiredSpells.add(new PrerequisiteSpell(new SpellKey((String) o), 0));
+            } else if (o instanceof ConfigurationSection) {
+                ConfigurationSection section = (ConfigurationSection) o;
+                String spell = section.getString("spell");
+                long progressLevel = section.getLong("progress_level");
+                if (spell != null) {
+                    requiredSpells.add(new PrerequisiteSpell(new SpellKey(spell), progressLevel));
+                }
+            } else if (o instanceof Map) {
+                Map<?, ?> map = (Map<?, ?>) o;
+                String spell = map.get("spell").toString();
+                String progressLevelString = map.get("progress_level").toString();
+                if (spell != null && StringUtils.isNumeric(progressLevelString)) {
+                    long progressLevel = 0;
+                    try {
+                        progressLevel = Long.parseLong(progressLevelString);
+                    } catch (NumberFormatException ignore) { }
+                    requiredSpells.add(new PrerequisiteSpell(new SpellKey(spell), progressLevel));
+                }
+            }
+        }
+
         // Inheritance, currently only used to look up messages, and only goes one level deep
         inheritKey = node.getString("inherit");
 
+        progressDescription = controller.getMessages().get("spell.progress_description", progressDescription);
+
         // Can be overridden by the base spell, or the variant spell
         levelDescription = controller.getMessages().get("spells." + baseKey + ".level_description", levelDescription);
+        progressDescription = controller.getMessages().get("spells." + baseKey + ".progress_description", progressDescription);
         upgradeDescription = controller.getMessages().get("spells." + baseKey + ".upgrade_description", upgradeDescription);
 
         // Spell level variants can override
         if (spellKey.isVariant()) {
+            // Level description defaults to pre-formatted text
+            levelDescription = controller.getMessages().get("spell.level_description", levelDescription);
+
             String variantKey = spellKey.getKey();
             name = controller.getMessages().get("spells." + variantKey + ".name", name);
             description = controller.getMessages().get("spells." + variantKey + ".description", description);
             extendedDescription = controller.getMessages().get("spells." + variantKey + ".extended_description", extendedDescription);
             usage = controller.getMessages().get("spells." + variantKey + ".usage", usage);
 
-            // Level description defaults to pre-formatted text
-            levelDescription = controller.getMessages().get("spell.level_description", levelDescription);
-
             // Any spell may have a level description, including base spells if chosen.
             // Base spells must specify their own level in each spell config though,
             // they don't get an auto-generated one.
             levelDescription = controller.getMessages().get("spells." + variantKey + ".level_description", levelDescription);
+            progressDescription = controller.getMessages().get("spells." + variantKey + ".progress_description", progressDescription);
             upgradeDescription = controller.getMessages().get("spells." + variantKey + ".upgrade_description", upgradeDescription);
         }
 
@@ -785,6 +826,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         extendedDescription = node.getString("extended_description", extendedDescription);
         description = node.getString("description", description);
         levelDescription = node.getString("level_description", levelDescription);
+        progressDescription = node.getString("progress_description", progressDescription);
 
         // Parameterize level description
         if (levelDescription != null && !levelDescription.isEmpty()) {
@@ -1094,11 +1136,16 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         return finalizeCast(workingParameters);
     }
 
+    @Override
     public long getProgressLevel() {
         if (requiredCastsPerLevel == 0) {
             return 1;
         }
         return Math.min(getRelativeCastCount() / requiredCastsPerLevel + 1, maxLevels);
+    }
+
+    public long getMaxProgressLevel() {
+        return maxLevels;
     }
 
     private long getPreviousCastProgressLevel() {
@@ -1727,6 +1774,11 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         return levelDescription;
     }
 
+    public final String getProgressDescription()
+    {
+        return progressDescription;
+    }
+
     @Override
     public final SpellKey getSpellKey()
     {
@@ -2150,6 +2202,11 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     }
 
     @Override
+    public Collection<PrerequisiteSpell> getPrerequisiteSpells() {
+        return requiredSpells;
+    }
+
+    @Override
     public String getUpgradeDescription() {
         return upgradeDescription == null ? "" : upgradeDescription;
     }
@@ -2296,6 +2353,12 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
                 lore.add(earnsText);
             }
         }
+        if (progressDescription != null && progressDescription.length() > 0 && maxLevels > 0) {
+            InventoryUtils.wrapText(progressDescription
+                    .replace("$level", Long.toString(Math.max(0, getProgressLevel())))
+                    .replace("$max_level", Long.toString(maxLevels)),
+                    MAX_LORE_LENGTH, lore);
+        }
     }
 
     @Override
@@ -2335,7 +2398,10 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
             spellData.incCastCount();
             if (template != null) {
                 template.spellData.incCastCount();
-                template.getCategory().addCast();
+                SpellCategory category = template.getCategory();
+                if (category != null) {
+                    category.addCast();
+                }
             }
 
             // Reward SP
@@ -2360,38 +2426,59 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
 
             // Check for level up
             // This currently only works on wands.
-            if (wand != null && !wand.isLocked() && controller.isSpellUpgradingEnabled() && wand.getSpellLevel(spellKey.getKey()) == spellKey.getLevel())
+            if (wand != null && !wand.isLocked() && wand.getSpellLevel(spellKey.getKey()) == spellKey.getLevel())
             {
-                SpellTemplate upgrade = getUpgrade();
-                long requiredCasts = getRequiredUpgradeCasts();
-                String upgradePath = getRequiredUpgradePath();
-                WandUpgradePath currentPath = wand.getPath();
-                Set<String> upgradeTags = getRequiredUpgradeTags();
-                if ((upgrade != null && requiredCasts > 0 && getCastCount() >= requiredCasts)
-                        && (upgradePath == null || upgradePath.isEmpty() || (currentPath != null && currentPath.hasPath(upgradePath)))
-                        && (upgradeTags == null || upgradeTags.isEmpty() || (currentPath != null && currentPath.hasAllTags(upgradeTags))))
-                {
-                    Spell newSpell = mage.getSpell(upgrade.getKey());
-                    if (isActive()) {
-                        deactivate(true, true);
-                        if (newSpell != null && newSpell instanceof MageSpell) {
-                            ((MageSpell)newSpell).activate();
+                if (controller.isSpellUpgradingEnabled()) {
+                    SpellTemplate upgrade = getUpgrade();
+                    long requiredCasts = getRequiredUpgradeCasts();
+                    String upgradePath = getRequiredUpgradePath();
+                    WandUpgradePath currentPath = wand.getPath();
+                    Set<String> upgradeTags = getRequiredUpgradeTags();
+                    if ((upgrade != null && requiredCasts > 0 && getCastCount() >= requiredCasts)
+                            && (upgradePath == null || upgradePath.isEmpty() || (currentPath != null && currentPath.hasPath(upgradePath)))
+                            && (upgradeTags == null || upgradeTags.isEmpty() || (currentPath != null && currentPath.hasAllTags(upgradeTags))))
+                    {
+                        Spell newSpell = mage.getSpell(upgrade.getKey());
+                        if (isActive()) {
+                            deactivate(true, true);
+                            if (newSpell != null && newSpell instanceof MageSpell) {
+                                ((MageSpell)newSpell).activate();
+                            }
+                        }
+                        wand.addSpell(upgrade.getKey());
+                        Messages messages = controller.getMessages();
+                        String levelDescription = upgrade.getLevelDescription();
+                        if (levelDescription == null || levelDescription.isEmpty()) {
+                            levelDescription = upgrade.getName();
+                        }
+                        playEffects("upgrade");
+                        mage.sendMessage(messages.get("wand.spell_upgraded").replace("$name", upgrade.getName()).replace("$wand", getName()).replace("$level", levelDescription));
+                        mage.sendMessage(upgrade.getUpgradeDescription().replace("$name", upgrade.getName()));
+
+                        SpellUpgradeEvent upgradeEvent = new SpellUpgradeEvent(mage, wand, this, newSpell);
+                        Bukkit.getPluginManager().callEvent(upgradeEvent);
+                        return; // return so progress upgrade doesn't also happen
+                    }
+                }
+                if (maxLevels > 0) {
+                    long previousLevel = getPreviousCastProgressLevel();
+                    long currentLevel = getProgressLevel();
+
+                    if (currentLevel != previousLevel) {
+                        wand.addSpell(getKey());
+                        if (currentLevel > previousLevel) {
+                            Messages messages = controller.getMessages();
+                            String progressDescription = getProgressDescription();
+                            playEffects("progress");
+                            if (progressDescription != null && !progressDescription.isEmpty()) {
+                                mage.sendMessage(messages.get("wand.spell_progression")
+                                        .replace("$name", getName())
+                                        .replace("$wand", getName())
+                                        .replace("$level", Long.toString(getProgressLevel()))
+                                        .replace("$max_level", Long.toString(maxLevels)));
+                            }
                         }
                     }
-                    wand.addSpell(upgrade.getKey());
-                    Messages messages = controller.getMessages();
-                    String levelDescription = upgrade.getLevelDescription();
-                    if (levelDescription == null || levelDescription.isEmpty()) {
-                        levelDescription = upgrade.getName();
-                    }
-                    playEffects("upgrade");
-                    mage.sendMessage(messages.get("wand.spell_upgraded").replace("$name", upgrade.getName()).replace("$wand", getName()).replace("$level", levelDescription));
-                    mage.sendMessage(upgrade.getUpgradeDescription().replace("$name", upgrade.getName()));
-
-                    SpellUpgradeEvent upgradeEvent = new SpellUpgradeEvent(mage, wand, this, newSpell);
-                    Bukkit.getPluginManager().callEvent(upgradeEvent);
-                } else if (maxLevels > 0) {
-                    // TODO: Check for progress level changes
                 }
             }
         }

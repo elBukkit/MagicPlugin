@@ -7,6 +7,7 @@ import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.magic.Messages;
 import com.elmakers.mine.bukkit.api.spell.MageSpell;
 import com.elmakers.mine.bukkit.api.spell.Spell;
+import com.elmakers.mine.bukkit.api.spell.PrerequisiteSpell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.api.wand.Wand;
@@ -14,7 +15,7 @@ import com.elmakers.mine.bukkit.api.wand.WandUpgradePath;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
-import com.elmakers.mine.bukkit.utility.TextUtils;
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
@@ -25,7 +26,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -162,15 +163,16 @@ public class SpellShopAction extends BaseShopAction
                 Set<String> requiredPathTags = mageSpell != null ? mageSpell.getRequiredUpgradeTags() : null;
                 long requiredCastCount = mageSpell != null ? mageSpell.getRequiredUpgradeCasts() : 0;
                 long castCount = mageSpell != null ? Math.min(mageSpell.getCastCount(), requiredCastCount) : 0;
-                if (spell.getSpellKey().getLevel() > 1
-                        && (requiredPathKey != null && !currentPath.hasPath(requiredPathKey)
+                Collection<PrerequisiteSpell> missingSpells = getMissingRequirements(spell, wand);
+
+                if (requiredPathKey != null && !currentPath.hasPath(requiredPathKey)
                         || (requiresCastCounts && requiredCastCount > 0 && castCount < requiredCastCount)
-                        || (requiredPathTags != null && !currentPath.hasAllTags(requiredPathTags))))
-                {
+                        || (requiredPathTags != null && !currentPath.hasAllTags(requiredPathTags))
+                        || !missingSpells.isEmpty()) {
                     ItemMeta meta = spellItem.getItemMeta();
                     List<String> itemLore = meta.getLore();
                     List<String> lore = new ArrayList<String>();
-                    if (itemLore.size() > 0) {
+                    if (spell.getSpellKey().getLevel() > 1 && itemLore.size() > 0) {
                         lore.add(itemLore.get(0));
                     }
                     String upgradeDescription = spell.getUpgradeDescription();
@@ -188,12 +190,12 @@ public class SpellShopAction extends BaseShopAction
                         com.elmakers.mine.bukkit.wand.WandUpgradePath upgradePath = com.elmakers.mine.bukkit.wand.WandUpgradePath.getPath(requiredPathKey);
                         if (upgradePath != null) {
                             message = context.getMessage("level_requirement", "&r&cRequires: &6$path").replace("$path", upgradePath.getName());
-                            lore.add(message);
+                            InventoryUtils.wrapText(message, BaseSpell.MAX_LORE_LENGTH, lore);
                         }
                     } else if (requiredPathTags != null && !requiredPathTags.isEmpty() && !currentPath.hasAllTags(requiredPathTags)) {
                         Set<String> tags = currentPath.getMissingTags(requiredPathTags);
                         message = context.getMessage("tags_requirement", "&r&cRequires: &6$tags").replace("$tags", messages.formatList("tags", tags, "name"));
-                        lore.add(message);
+                        InventoryUtils.wrapText(message, BaseSpell.MAX_LORE_LENGTH, lore);
                     }
 
                     if (requiresCastCounts && requiredCastCount > 0 && castCount < requiredCastCount) {
@@ -203,7 +205,27 @@ public class SpellShopAction extends BaseShopAction
                         lore.add(message);
                     }
 
-                    for (int i = 1; i < itemLore.size(); i++) {
+                    if (!missingSpells.isEmpty()) {
+                        List<String> spells = new ArrayList<String>(missingSpells.size());
+                        for (PrerequisiteSpell s : missingSpells) {
+                            SpellTemplate template = context.getController().getSpellTemplate(s.getSpellKey().getKey());
+                            String spellMessage = context.getMessage("prerequisite_spell_level", "&6Level $level $name")
+                                    .replace("$name", template.getName())
+                                    .replace("$level", Integer.toString(s.getSpellKey().getLevel()));
+                            if (s.getProgressLevel() > 1) {
+                                spellMessage += context.getMessage("prerequisite_spell_progress_level", " (Progress $level/$max_level)")
+                                        .replace("$level", Long.toString(s.getProgressLevel()))
+                                        // This max level should never return 0 here but just in case we'll make the min 1.
+                                        .replace("$max_level", Long.toString(Math.max(1, template.getMaxProgressLevel())));
+                            }
+                            spells.add(spellMessage);
+                        }
+                        message = ChatColor.RED + context.getMessage("required_spells", "&r&cRequires: $spells")
+                                .replace("$spells", StringUtils.join(spells, ", "));
+                        InventoryUtils.wrapText(ChatColor.GOLD.toString(), message, BaseSpell.MAX_LORE_LENGTH, lore);
+                    }
+
+                    for (int i = (spell.getSpellKey().getLevel() > 1 ? 1 : 0); i < itemLore.size(); i++) {
                         lore.add(itemLore.get(i));
                     }
                     meta.setLore(lore);
@@ -218,6 +240,23 @@ public class SpellShopAction extends BaseShopAction
         Collections.sort(shopItems);
         return showItems(context, shopItems);
 	}
+
+    public Collection<PrerequisiteSpell> getMissingRequirements(SpellTemplate spell, Wand wand) {
+        Collection<PrerequisiteSpell> missingRequirements = new ArrayList<PrerequisiteSpell>(spell.getPrerequisiteSpells());
+        if (wand == null) {
+            return missingRequirements;
+        }
+        Iterator<PrerequisiteSpell> it = missingRequirements.iterator();
+        while (it.hasNext()) {
+            PrerequisiteSpell prereq = it.next();
+            Spell mageSpell = wand.getSpell(prereq.getSpellKey().getKey());
+            if (mageSpell != null && mageSpell.getProgressLevel() >= prereq.getProgressLevel()
+                    && mageSpell.getSpellKey().getLevel() >= prereq.getSpellKey().getLevel()) {
+                it.remove();
+            }
+        }
+        return missingRequirements;
+    }
 
     @Override
     public void getParameterNames(Spell spell, Collection<String> parameters) {

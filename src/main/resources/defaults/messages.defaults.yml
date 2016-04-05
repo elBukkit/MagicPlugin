@@ -194,6 +194,7 @@ wand:
     spell_upgraded: "&r&6$name &d&ohas been upgraded to &3$level"
     spell_override_upgraded: "&r&6$name &d&ohas been upgraded"
     upgraded_property: "&r&dYour $wand has been upgraded to &r&b$name"
+    spell_progression: "&r&6$name &d&ohas progressed to &3$level&d&o/&3$max_level"
     mana_added: "&r&dYour $wand now has $value mana"
     hotbar_added: "&r&aYour $wand's hotbar has been upgraded! &r&bPress F while your $wand is active"
     player_upgraded: $name's wand upgraded
@@ -270,6 +271,7 @@ spell:
     required_spell: "&cNothing new to learn for now! &4What mystery lies ahead?"
     #required_spell: "You must learn &r&4$spell &d&oto advance to &b$path"
     level_description: Level $level
+    progress_description: "&6Progress: &b$level&6/&3$max_level"
     quick_cast: "&2Quick Cast"
     earns: "&2Earns up to &6$earns &eSP"
 worlds:
