@@ -157,15 +157,11 @@ public class WandTemplate implements com.elmakers.mine.bukkit.api.wand.WandTempl
     
     @Override
     public String migrateIcon(String icon) {
-        org.bukkit.Bukkit.getLogger().info("Checking icon migration for " + icon + " with " + migrateIcon + " and " + migrateIcons);
-        
         if (migrateIcon != null && migrateIcon.equals(icon)) {
             return migrateIcon;
         }
         if (migrateIcons != null) {
             String newIcon = migrateIcons.get(icon);
-            org.bukkit.Bukkit.getLogger().info("  FOUND: " + newIcon);
-            
             if (newIcon != null) {
                 return newIcon;
             }
