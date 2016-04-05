@@ -10,6 +10,7 @@
  - The FallProtection action will now work an unlimited number of times by default (within the given duration)
    Use the protection_count parameter to reduce this.
  - Fix wands still having right-click turned on by default (Toggle button is Q now)
+ - Fix for "circular riding" issues with Mount
 
 ## 6.0.8
 

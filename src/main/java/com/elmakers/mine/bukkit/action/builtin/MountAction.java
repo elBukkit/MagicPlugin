@@ -37,6 +37,10 @@ public class MountAction extends BaseSpellAction {
 		if (targetEntity == null) {
 			return SpellResult.NO_TARGET;
 		}
+        
+        if (targetEntity == source.getPassenger() || source == targetEntity.getPassenger()) {
+            return SpellResult.NO_TARGET;
+        }
 		
         while (targetEntity instanceof ComplexEntityPart) {
             targetEntity = ((ComplexEntityPart)targetEntity).getParent();
