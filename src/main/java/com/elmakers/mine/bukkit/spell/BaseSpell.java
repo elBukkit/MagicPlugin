@@ -25,6 +25,7 @@ import com.elmakers.mine.bukkit.api.spell.CostReducer;
 import com.elmakers.mine.bukkit.api.spell.MageSpell;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellKey;
+import com.elmakers.mine.bukkit.api.spell.PrerequisiteSpell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.api.spell.TargetType;
@@ -161,6 +162,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     private long requiredUpgradeCasts;
     private String requiredUpgradePath;
     private Set<String> requiredUpgradeTags;
+    private Collection<PrerequisiteSpell> requiredSpells;
     private MaterialAndData icon = new MaterialAndData(Material.AIR);
     private String iconURL = null;
     private List<CastingCost> costs = null;
@@ -755,6 +757,40 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
             requiredUpgradeTags = new HashSet<String>(pathTags);
         }
 
+        List<?> spells;
+        if (node.isString("required_spells")) {
+            spells = ConfigurationUtils.getStringList(node, "required_spells");
+        } else {
+            spells = node.getList("required_spells");
+        }
+        if (spells == null) {
+            spells = new ArrayList<Object>(0);
+        }
+        requiredSpells = new ArrayList<PrerequisiteSpell>(spells.size());
+        for (Object o : spells) {
+            if (o instanceof String) {
+                requiredSpells.add(new PrerequisiteSpell(new SpellKey((String) o), 0));
+            } else if (o instanceof ConfigurationSection) {
+                ConfigurationSection section = (ConfigurationSection) o;
+                String spell = section.getString("spell");
+                long progressLevel = section.getLong("progress_level");
+                if (spell != null) {
+                    requiredSpells.add(new PrerequisiteSpell(new SpellKey(spell), progressLevel));
+                }
+            } else if (o instanceof Map) {
+                Map<?, ?> map = (Map<?, ?>) o;
+                String spell = map.get("spell").toString();
+                String progressLevelString = map.get("progress_level").toString();
+                if (spell != null && StringUtils.isNumeric(progressLevelString)) {
+                    long progressLevel = 0;
+                    try {
+                        progressLevel = Long.parseLong(progressLevelString);
+                    } catch (NumberFormatException ignore) { }
+                    requiredSpells.add(new PrerequisiteSpell(new SpellKey(spell), progressLevel));
+                }
+            }
+        }
+
         // Inheritance, currently only used to look up messages, and only goes one level deep
         inheritKey = node.getString("inherit");
 
@@ -1100,11 +1136,16 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         return finalizeCast(workingParameters);
     }
 
+    @Override
     public long getProgressLevel() {
         if (requiredCastsPerLevel == 0) {
             return 1;
         }
         return Math.min(getRelativeCastCount() / requiredCastsPerLevel + 1, maxLevels);
+    }
+
+    public long getMaxProgressLevel() {
+        return maxLevels;
     }
 
     private long getPreviousCastProgressLevel() {
@@ -2161,6 +2202,11 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     }
 
     @Override
+    public Collection<PrerequisiteSpell> getPrerequisiteSpells() {
+        return requiredSpells;
+    }
+
+    @Override
     public String getUpgradeDescription() {
         return upgradeDescription == null ? "" : upgradeDescription;
     }
@@ -2309,7 +2355,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         }
         if (progressDescription != null && progressDescription.length() > 0 && maxLevels > 0) {
             InventoryUtils.wrapText(progressDescription
-                    .replace("$level", Long.toString(getProgressLevel()))
+                    .replace("$level", Long.toString(Math.max(0, getProgressLevel())))
                     .replace("$max_level", Long.toString(maxLevels)),
                     MAX_LORE_LENGTH, lore);
         }
