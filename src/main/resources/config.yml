@@ -77,3 +77,6 @@
 # If you have a default Gringott's install, you may want to change this to "0.01" to make the emeralds
 # match up.
 # worth_base: 1
+
+# Disable the resource pack
+# default_resource_pack: ""
