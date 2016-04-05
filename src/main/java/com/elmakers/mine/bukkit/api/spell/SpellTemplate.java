@@ -59,10 +59,19 @@ public interface SpellTemplate extends Comparable<SpellTemplate>, CostReducer {
     public String getRequiredUpgradePath();
     public Set<String> getRequiredUpgradeTags();
     public long getRequiredUpgradeCasts();
+    public Collection<PrerequisiteSpell> getPrerequisiteSpells();
     public String getUpgradeDescription();
     public ConfigurationSection getConfiguration();
     public void addLore(Messages messages, Mage mage, Wand wand, List<String> lore);
     public boolean hasTag(String tag);
     public boolean hasAnyTag(Collection<String> tags);
     public SpellTemplate getUpgrade();
+
+    /**
+     * Returns the maximum progress level for this spell.
+     * <p/>
+     * This may return 0 even though a spell's current progress level is always 1 or greater. A result of 0 indicates
+     * that progress levels are not used for this spell.
+     */
+    public long getMaxProgressLevel();
 }
