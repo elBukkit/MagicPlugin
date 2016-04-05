@@ -1617,6 +1617,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 				template = migrateTemplate;
 				templateConfig = controller.getWandTemplateConfiguration(template);
 			}
+            WandTemplate wandTemplate = getTemplate();
 			
 			if (templateConfig != null) {
 				// Add vanilla attributes
@@ -1628,16 +1629,9 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
                 randomize = true;
             } else if (!randomize && wandConfig.contains("icon")) {
                 String iconKey = wandConfig.getString("icon");
-                String migrateIcon = null;
-                if (templateConfig != null && item != null) {
-                    migrateIcon = templateConfig.getString("migrate_icon");
-                    if (migrateIcon != null) {
-                        MaterialAndData icon = new MaterialAndData(migrateIcon);
-                        if (icon.getMaterial() == item.getType() && icon.getData() == item.getDurability()) {
-                            iconKey = templateConfig.getString("icon");
-                        }
-                    }
-                }
+				if (wandTemplate != null) {
+					iconKey = wandTemplate.migrateIcon(iconKey);
+				}
                 if (iconKey.contains(",")) {
                     Random r = new Random();
                     String[] keys = StringUtils.split(iconKey, ',');

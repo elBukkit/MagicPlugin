@@ -26,6 +26,8 @@ public class WandTemplate implements com.elmakers.mine.bukkit.api.wand.WandTempl
     private String creator;
     private String creatorId;
     private String migrateTemplate;
+    private String migrateIcon;
+    private Map<String, String> migrateIcons;
 
     public WandTemplate(MageController controller, String key, ConfigurationSection node) {
         this.key = key;
@@ -36,6 +38,15 @@ public class WandTemplate implements com.elmakers.mine.bukkit.api.wand.WandTempl
         creator = node.getString("creator");
         creatorId = node.getString("creator_id");
         migrateTemplate = node.getString("migrate_to");
+        migrateIcon = node.getString("migrate_icon");
+        ConfigurationSection migrateConfig = node.getConfigurationSection("migrate_icons");
+        if (migrateConfig != null) {
+            migrateIcons = new HashMap<String, String>();
+            Set<String> keys = migrateConfig.getKeys(false);
+            for (String migrateKey : keys) {
+                migrateIcons.put(migrateKey, migrateConfig.getString(migrateKey));
+            }
+        }
         
         if (node.contains("effects")) {
             ConfigurationSection effectsNode = node.getConfigurationSection("effects");
@@ -142,5 +153,23 @@ public class WandTemplate implements com.elmakers.mine.bukkit.api.wand.WandTempl
     @Override
     public com.elmakers.mine.bukkit.api.wand.WandTemplate getMigrateTemplate() {
         return migrateTemplate == null ? null : controller.getWandTemplate(migrateTemplate);
+    }
+    
+    @Override
+    public String migrateIcon(String icon) {
+        org.bukkit.Bukkit.getLogger().info("Checking icon migration for " + icon + " with " + migrateIcon + " and " + migrateIcons);
+        
+        if (migrateIcon != null && migrateIcon.equals(icon)) {
+            return migrateIcon;
+        }
+        if (migrateIcons != null) {
+            String newIcon = migrateIcons.get(icon);
+            org.bukkit.Bukkit.getLogger().info("  FOUND: " + newIcon);
+            
+            if (newIcon != null) {
+                return newIcon;
+            }
+        }
+        return icon;
     }
 }
