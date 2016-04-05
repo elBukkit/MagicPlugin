@@ -2,8 +2,8 @@
 "__comment": "Created by Droobledore with BDcraft Cubik PRO 0.93 Beta",
 "ambientocclusion": false,
 "textures": {
-    "texture": "items/hat_auror",
-    "hat_auror2": "items/hat_auror2"
+    "texture": "items/custom/hat_auror",
+    "hat_auror2": "items/custom/hat_auror2"
 },
 "elements": [ 
 {

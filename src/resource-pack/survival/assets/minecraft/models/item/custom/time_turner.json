@@ -1,9 +1,9 @@
 {
 "__comment": "Created by Droobledore with BDcraft Cubik PRO 0.95 Beta",
 "textures": {
-    "particle": "items/timeturner",
-    "texture": "items/timeturner",
-    "timeturner_anim": "items/timeturner_anim"
+    "particle": "items/custom/timeturner",
+    "texture": "items/custom/timeturner",
+    "timeturner_anim": "items/custom/timeturner_anim"
 },
 "elements": [ 
 {

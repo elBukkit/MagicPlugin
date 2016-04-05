@@ -2,9 +2,9 @@
 "__comment": "Created by Droobledore with BDcraft Cubik PRO 0.93 Beta",
 "ambientocclusion": false,
 "textures": {
-    "texture": "items/staff_wolf",
-    "staff_wolf_top": "items/staff_wolf_top",
-    "staff_wolf_bottom": "items/staff_wolf_bottom"
+    "texture": "items/custom/staff_wolf",
+    "staff_wolf_top": "items/custom/staff_wolf_top",
+    "staff_wolf_bottom": "items/custom/staff_wolf_bottom"
 },
 "elements": [ 
 {
