@@ -2438,26 +2438,28 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
                             && (upgradePath == null || upgradePath.isEmpty() || (currentPath != null && currentPath.hasPath(upgradePath)))
                             && (upgradeTags == null || upgradeTags.isEmpty() || (currentPath != null && currentPath.hasAllTags(upgradeTags))))
                     {
-                        Spell newSpell = mage.getSpell(upgrade.getKey());
-                        if (isActive()) {
-                            deactivate(true, true);
-                            if (newSpell != null && newSpell instanceof MageSpell) {
-                                ((MageSpell)newSpell).activate();
+                        if (PrerequisiteSpell.hasPrerequisites(wand, upgrade)) {
+                            Spell newSpell = mage.getSpell(upgrade.getKey());
+                            if (isActive()) {
+                                deactivate(true, true);
+                                if (newSpell != null && newSpell instanceof MageSpell) {
+                                    ((MageSpell)newSpell).activate();
+                                }
                             }
-                        }
-                        wand.addSpell(upgrade.getKey());
-                        Messages messages = controller.getMessages();
-                        String levelDescription = upgrade.getLevelDescription();
-                        if (levelDescription == null || levelDescription.isEmpty()) {
-                            levelDescription = upgrade.getName();
-                        }
-                        playEffects("upgrade");
-                        mage.sendMessage(messages.get("wand.spell_upgraded").replace("$name", upgrade.getName()).replace("$wand", getName()).replace("$level", levelDescription));
-                        mage.sendMessage(upgrade.getUpgradeDescription().replace("$name", upgrade.getName()));
+                            wand.addSpell(upgrade.getKey());
+                            Messages messages = controller.getMessages();
+                            String levelDescription = upgrade.getLevelDescription();
+                            if (levelDescription == null || levelDescription.isEmpty()) {
+                                levelDescription = upgrade.getName();
+                            }
+                            playEffects("upgrade");
+                            mage.sendMessage(messages.get("wand.spell_upgraded").replace("$name", upgrade.getName()).replace("$wand", getName()).replace("$level", levelDescription));
+                            mage.sendMessage(upgrade.getUpgradeDescription().replace("$name", upgrade.getName()));
 
-                        SpellUpgradeEvent upgradeEvent = new SpellUpgradeEvent(mage, wand, this, newSpell);
-                        Bukkit.getPluginManager().callEvent(upgradeEvent);
-                        return; // return so progress upgrade doesn't also happen
+                            SpellUpgradeEvent upgradeEvent = new SpellUpgradeEvent(mage, wand, this, newSpell);
+                            Bukkit.getPluginManager().callEvent(upgradeEvent);
+                            return; // return so progress upgrade doesn't also happen
+                        }
                     }
                 }
                 if (maxLevels > 0) {
