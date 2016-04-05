@@ -163,7 +163,7 @@ public class SpellShopAction extends BaseShopAction
                 Set<String> requiredPathTags = mageSpell != null ? mageSpell.getRequiredUpgradeTags() : null;
                 long requiredCastCount = mageSpell != null ? mageSpell.getRequiredUpgradeCasts() : 0;
                 long castCount = mageSpell != null ? Math.min(mageSpell.getCastCount(), requiredCastCount) : 0;
-                Collection<PrerequisiteSpell> missingSpells = getMissingRequirements(spell, wand);
+                Collection<PrerequisiteSpell> missingSpells = PrerequisiteSpell.getMissingRequirements(wand, spell);
 
                 if (requiredPathKey != null && !currentPath.hasPath(requiredPathKey)
                         || (requiresCastCounts && requiredCastCount > 0 && castCount < requiredCastCount)
@@ -240,23 +240,6 @@ public class SpellShopAction extends BaseShopAction
         Collections.sort(shopItems);
         return showItems(context, shopItems);
 	}
-
-    public Collection<PrerequisiteSpell> getMissingRequirements(SpellTemplate spell, Wand wand) {
-        Collection<PrerequisiteSpell> missingRequirements = new ArrayList<PrerequisiteSpell>(spell.getPrerequisiteSpells());
-        if (wand == null) {
-            return missingRequirements;
-        }
-        Iterator<PrerequisiteSpell> it = missingRequirements.iterator();
-        while (it.hasNext()) {
-            PrerequisiteSpell prereq = it.next();
-            Spell mageSpell = wand.getSpell(prereq.getSpellKey().getKey());
-            if (mageSpell != null && mageSpell.getProgressLevel() >= prereq.getProgressLevel()
-                    && mageSpell.getSpellKey().getLevel() >= prereq.getSpellKey().getLevel()) {
-                it.remove();
-            }
-        }
-        return missingRequirements;
-    }
 
     @Override
     public void getParameterNames(Spell spell, Collection<String> parameters) {
