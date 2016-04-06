@@ -3139,8 +3139,10 @@ public class MagicController implements MageController {
 	}
 
 	@Override
-public Set<Material> getMaterialSet(String name)
+    public Set<Material> getMaterialSet(String name)
 	{
+        if (name == null || name.isEmpty()) return null;
+        
         Set<Material> materials = materialSets.get(name);
         if (materials == null) {
             String materialString = name;
