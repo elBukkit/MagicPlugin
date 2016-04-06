@@ -72,10 +72,15 @@ public class PrerequisiteSpell {
     }
 
     public static boolean isSpellSatisfyingPrerequisite(Spell spell, PrerequisiteSpell prerequisiteSpell) {
-        return spell != null
-                && (spell.getSpellKey().getLevel() > prerequisiteSpell.getSpellKey().getLevel()
+        if (spell == null) {
+            return false;
+        } else if (!spell.getController().isSpellProgressionEnabled()) {
+            return spell.getSpellKey().getLevel() >= prerequisiteSpell.getSpellKey().getLevel();
+        } else {
+            return spell.getSpellKey().getLevel() > prerequisiteSpell.getSpellKey().getLevel()
                 || (spell.getProgressLevel() >= prerequisiteSpell.getProgressLevel()
-                && spell.getSpellKey().getLevel() == prerequisiteSpell.getSpellKey().getLevel()));
+                && spell.getSpellKey().getLevel() == prerequisiteSpell.getSpellKey().getLevel());
+        }
     }
 
 }

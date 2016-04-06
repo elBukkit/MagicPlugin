@@ -306,6 +306,7 @@ public interface MageController {
     public boolean spawnPhysicsBlock(Location location, Material material, short data, Vector velocity);
     public boolean isDisguised(Entity entity);
     public boolean isSpellUpgradingEnabled();
+    public boolean isSpellProgressionEnabled();
     public boolean isSPEnabled();
     public int getSPMaximum();
     public void deleteMage(final String id);
