@@ -145,7 +145,7 @@ public interface Wand extends CostReducer {
     /**
      * Checks if the wand can be upgraded to the next {@link WandUpgradePath} and if so upgrades it.
      *
-     * @return the upgrade path the wand was upgrade to or null if not upgraded.
+     * @return false if the player is blocked based on a path requirement
      */
-    public WandUpgradePath checkAndUpgrade();
+    public boolean checkAndUpgrade(boolean quiet);
 }
