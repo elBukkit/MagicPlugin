@@ -13,6 +13,7 @@
    Use the protection_count parameter to reduce this.
  - Fix wands still having right-click turned on by default (Toggle button is Q now)
  - Fix for "circular riding" issues with Mount
+ - Add "sp_earn_enabled" option
 
 ## 6.0.8
 

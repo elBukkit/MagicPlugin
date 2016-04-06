@@ -365,6 +365,9 @@ sp_display: number
 # Set this to false to disable the Skill Point system completely.
 sp_enabled: true
 
+# Set this to false so players do not naturally earn Skill Points
+sp_earn_enabled: true
+
 # How to display SP items
 sp_item_icon_url: http://textures.minecraft.net/texture/ce6ed0a5f7e23bc3d34d73baa0b9c3f838e85014d2ff290801dc7486dd4da6
 

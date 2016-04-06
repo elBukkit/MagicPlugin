@@ -2368,6 +2368,7 @@ public class MagicController implements MageController {
             }
         }
         spEnabled = properties.getBoolean("sp_enabled", true);
+        spEarnEnabled = properties.getBoolean("sp_earn_enabled", true);
         spMaximum = properties.getInt("sp_max", 9999);
 
         undoEntityTypes.clear();
@@ -4296,6 +4297,11 @@ public class MagicController implements MageController {
     }
 
     @Override
+    public boolean isSPEarnEnabled() {
+        return spEarnEnabled;
+    }
+
+    @Override
     public int getSPMaximum() {
         return spMaximum;
     }
@@ -4719,6 +4725,7 @@ public class MagicController implements MageController {
     private double                              worthXP                         = 1;
     private CurrencyItem                        currencyItem                    = null;
     private boolean                             spEnabled                       = true;
+    private boolean                             spEarnEnabled                   = true;
     private int                                 spMaximum                       = 0;
 
     private float							 	castCommandCostReduction	    = 1.0f;

@@ -2385,7 +2385,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
             // Reward SP
             Wand wand = context.getWand();
             WandUpgradePath path = wand == null ? null : wand.getPath();
-            if (earns > 0 && wand != null && path != null && path.earnsSP() && controller.isSPEnabled() && !mage.isAtMaxSkillPoints()) {
+            if (earns > 0 && wand != null && path != null && path.earnsSP() && controller.isSPEnabled() && controller.isSPEarnEnabled() && !mage.isAtMaxSkillPoints()) {
                 long now = System.currentTimeMillis();
                 int scaledEarn = earns;
                 if (spellData.getLastEarn() > 0 && earnCooldown > 0 && now < spellData.getLastEarn() + earnCooldown) {
