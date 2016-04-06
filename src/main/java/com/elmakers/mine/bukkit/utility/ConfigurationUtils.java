@@ -3,6 +3,8 @@ package com.elmakers.mine.bukkit.utility;
 import java.util.*;
 import java.util.Map.Entry;
 
+import com.elmakers.mine.bukkit.api.spell.PrerequisiteSpell;
+import com.elmakers.mine.bukkit.api.spell.SpellKey;
 import com.elmakers.mine.bukkit.effect.SoundEffect;
 import de.slikey.effectlib.util.ConfigUtils;
 import de.slikey.effectlib.util.ParticleEffect;
@@ -757,6 +759,49 @@ public class ConfigurationUtils extends ConfigUtils {
         }
 
         return effectParticle;
+    }
+
+    public static Collection<PrerequisiteSpell> getPrerequisiteSpells(ConfigurationSection node, String key) {
+        if (node == null || key == null) {
+            return new ArrayList<PrerequisiteSpell>(0);
+        }
+
+        List<?> spells;
+        if (node.isString(key)) {
+            spells = ConfigurationUtils.getStringList(node, key);
+        } else {
+            spells = node.getList(key);
+        }
+        if (spells == null) {
+            spells = new ArrayList<Object>(0);
+        }
+
+        List<PrerequisiteSpell> requiredSpells = new ArrayList<PrerequisiteSpell>(spells.size());
+        for (Object o : spells) {
+            if (o instanceof String) {
+                requiredSpells.add(new PrerequisiteSpell(new SpellKey((String) o), 0));
+            } else if (o instanceof ConfigurationSection) {
+                ConfigurationSection section = (ConfigurationSection) o;
+                String spell = section.getString("spell");
+                long progressLevel = section.getLong("progress_level");
+                if (spell != null) {
+                    requiredSpells.add(new PrerequisiteSpell(new SpellKey(spell), progressLevel));
+                }
+            } else if (o instanceof Map) {
+                Map<?, ?> map = (Map<?, ?>) o;
+                String spell = map.get("spell").toString();
+                String progressLevelString = map.get("progress_level").toString();
+                if (spell != null && StringUtils.isNumeric(progressLevelString)) {
+                    long progressLevel = 0;
+                    try {
+                        progressLevel = Long.parseLong(progressLevelString);
+                    } catch (NumberFormatException ignore) { }
+                    requiredSpells.add(new PrerequisiteSpell(new SpellKey(spell), progressLevel));
+                }
+            }
+        }
+
+        return requiredSpells;
     }
 
 }

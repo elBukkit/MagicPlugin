@@ -49,6 +49,7 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
     private final WandUpgradePath parent;
     private final Set<String> spells = new HashSet<String>();
     private Collection<PrerequisiteSpell> requiredSpells = new HashSet<PrerequisiteSpell>();
+    private Set<String> requiredSpellKeys = new HashSet<String>();
     private final Set<String> allSpells = new HashSet<String>();
     private final Set<String> allRequiredSpells = new HashSet<String>();
     private String upgradeKey;
@@ -130,22 +131,12 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
 
     protected void load(MageController controller, String key, ConfigurationSection template) {
         // Cache spells, mainly used for spellbooks
-        Collection<String> spellKeys = null;
-        if (template.isConfigurationSection("spells")) {
-            ConfigurationSection spellSection = template.getConfigurationSection("spells");
-            if (spellSection != null) {
-                spellKeys = spellSection.getKeys(false);
-            }
-        } else {
-            spellKeys = ConfigurationUtils.getStringList(template, "spells");
-        }
-        if (spellKeys != null) {
-            for (String spellKey : spellKeys) {
-                if (controller.getSpellTemplate(spellKey) != null) {
-                    spells.add(spellKey);
-                } else {
-                    controller.getLogger().warning("Unknown or disabled spell " + spellKey + " in enchanting path " + key +", ignoring");
-                }
+        Collection<PrerequisiteSpell> pathSpells = ConfigurationUtils.getPrerequisiteSpells(template, "spells");
+        for (PrerequisiteSpell prereq : pathSpells) {
+            if (controller.getSpellTemplate(prereq.getSpellKey().getKey()) != null) {
+                spells.add(prereq.getSpellKey().getKey());
+            } else {
+                controller.getLogger().warning("Unknown or disabled spell " + prereq.getSpellKey().getKey() + " in enchanting path " + key +", ignoring");
             }
         }
         allSpells.addAll(spells);
@@ -155,32 +146,14 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
         upgradeKey = template.getString("upgrade");
         upgradeItemKey = template.getString("upgrade_item");
 
-        requiredSpells = new HashSet<PrerequisiteSpell>(spells.size());
-        for (Object o : spells) {
-            if (o instanceof String) {
-                requiredSpells.add(new PrerequisiteSpell(new SpellKey((String) o), 0));
-            } else if (o instanceof ConfigurationSection) {
-                ConfigurationSection section = (ConfigurationSection) o;
-                String spell = section.getString("spell");
-                long progressLevel = section.getLong("progress_level");
-                if (spell != null) {
-                    requiredSpells.add(new PrerequisiteSpell(new SpellKey(spell), progressLevel));
-                }
-            } else if (o instanceof Map) {
-                Map<?, ?> map = (Map<?, ?>) o;
-                String spell = map.get("spell").toString();
-                String progressLevelString = map.get("progress_level").toString();
-                if (spell != null && StringUtils.isNumeric(progressLevelString)) {
-                    long progressLevel = 0;
-                    try {
-                        progressLevel = Long.parseLong(progressLevelString);
-                    } catch (NumberFormatException ignore) { }
-                    requiredSpells.add(new PrerequisiteSpell(new SpellKey(spell), progressLevel));
-                }
-            }
-        }
+        Collection<PrerequisiteSpell> prerequisiteSpells = ConfigurationUtils.getPrerequisiteSpells(template, "required_spells");
+        this.requiredSpells = new ArrayList<PrerequisiteSpell>();
+        requiredSpells.addAll(pathSpells);
+        requiredSpells.addAll(prerequisiteSpells);
 
-        for (PrerequisiteSpell prereq : requiredSpells) {
+        requiredSpellKeys = new HashSet<String>(prerequisiteSpells.size());
+        for (PrerequisiteSpell prereq : prerequisiteSpells) {
+            requiredSpellKeys.add(prereq.getSpellKey().getKey());
             allRequiredSpells.add(prereq.getSpellKey().getKey());
         }
 
@@ -480,7 +453,7 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
 
     @Override
     public boolean requiresSpell(String spellKey) {
-        return requiredSpells.contains(new PrerequisiteSpell(spellKey, 0));
+        return requiredSpellKeys.contains(spellKey);
     }
 
     @Override
