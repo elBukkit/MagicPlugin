@@ -1811,6 +1811,9 @@ wands:
     default:
         name: Wand
         description: $path Magic Wand
+    wand:
+        name: Wand
+        description: $path Magic Wand
     beginner:
         name: Wand
         description: $path Magic Wand
