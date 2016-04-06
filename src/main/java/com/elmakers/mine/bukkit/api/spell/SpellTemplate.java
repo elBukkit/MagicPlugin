@@ -60,6 +60,11 @@ public interface SpellTemplate extends Comparable<SpellTemplate>, CostReducer {
     public Set<String> getRequiredUpgradeTags();
     public long getRequiredUpgradeCasts();
     public Collection<PrerequisiteSpell> getPrerequisiteSpells();
+
+    /**
+     * Returns a collection of spell keys of spells that should be removed when this spell is added to a wand.
+     */
+    public Collection<SpellKey> getSpellsToRemove();
     public String getUpgradeDescription();
     public ConfigurationSection getConfiguration();
     public void addLore(Messages messages, Mage mage, Wand wand, List<String> lore);
