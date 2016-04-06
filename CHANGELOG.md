@@ -6,6 +6,7 @@
  - Some fixes to tracking attached blocks, particularly fire, for undo
  - Add survival_fly NCP exemptions to brooms/levitate
  - NCP integration is on by default (if NCP is present)
+ - Add "sp_earn_enabled" option
 
 ## 5.5.4
 
