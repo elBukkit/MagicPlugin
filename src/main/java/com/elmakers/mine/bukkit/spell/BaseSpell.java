@@ -2438,7 +2438,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
                             Bukkit.getPluginManager().callEvent(upgradeEvent);
 
                             if (controller.isPathUpgradingEnabled()) {
-                                wand.checkAndUpgrade();
+                                wand.checkAndUpgrade(true);
                             }
                             return; // return so progress upgrade doesn't also happen
                         }
@@ -2463,7 +2463,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
                             }
                         }
                         if (controller.isPathUpgradingEnabled()) {
-                            wand.checkAndUpgrade();
+                            wand.checkAndUpgrade(true);
                         }
                     }
                 }

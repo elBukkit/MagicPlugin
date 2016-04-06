@@ -92,7 +92,9 @@ public class SpellShopAction extends BaseShopAction
         Mage mage = context.getMage();
         Wand wand = mage.getActiveWand();
         if (wand != null && autoUpgrade) {
-            wand.checkAndUpgrade();
+            if (!wand.checkAndUpgrade(false)) {
+                return SpellResult.FAIL;
+            }
         }
 
         MageController controller = context.getController();
