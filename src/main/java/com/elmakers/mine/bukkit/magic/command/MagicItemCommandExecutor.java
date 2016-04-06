@@ -654,7 +654,10 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
 		if (InventoryUtils.isUnbreakable(item)) {
 			player.sendMessage(api.getMessages().get("item.already_unbreakable"));
 		} else {
-			InventoryUtils.makeUnbreakable(item);
+			// Need API!
+			ItemStack newItem = InventoryUtils.makeReal(item);
+			InventoryUtils.makeUnbreakable(newItem);
+			item.setItemMeta(newItem.getItemMeta());
 			player.sendMessage(api.getMessages().get("item.add_unbreakable"));
 		}
 
