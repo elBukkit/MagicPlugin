@@ -64,7 +64,7 @@ public class SpellData {
         this.castCount = castCount;
     }
 
-    public void incCastCount() {
+    public void addCast() {
         castCount++;
     }
 
