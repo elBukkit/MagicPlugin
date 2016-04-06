@@ -163,6 +163,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     private String requiredUpgradePath;
     private Set<String> requiredUpgradeTags;
     private Collection<PrerequisiteSpell> requiredSpells;
+    private List<SpellKey> removesSpells;
     private MaterialAndData icon = new MaterialAndData(Material.AIR);
     private String iconURL = null;
     private List<CastingCost> costs = null;
@@ -756,6 +757,16 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         }
 
         requiredSpells = new ArrayList<PrerequisiteSpell>(ConfigurationUtils.getPrerequisiteSpells(node, "required_spells"));
+
+        List<String> removesSpellKeys = ConfigurationUtils.getStringList(node, "removes_spells");
+        if (removesSpellKeys != null) {
+            removesSpells = new ArrayList<SpellKey>(removesSpellKeys.size());
+            for (String key : removesSpellKeys) {
+                removesSpells.add(new SpellKey(key));
+            }
+        } else {
+            removesSpells = new ArrayList<SpellKey>(0);
+        }
 
         // Inheritance, currently only used to look up messages, and only goes one level deep
         inheritKey = node.getString("inherit");
@@ -2165,6 +2176,11 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     @Override
     public Collection<PrerequisiteSpell> getPrerequisiteSpells() {
         return requiredSpells;
+    }
+
+    @Override
+    public Collection<SpellKey> getSpellsToRemove() {
+        return removesSpells;
     }
 
     @Override

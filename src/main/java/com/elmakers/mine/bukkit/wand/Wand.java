@@ -4346,7 +4346,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         int inventoryCount = inventories.size();
         int spellCount = spells.size();
 
-        // Special handling for spell upgrades
+        // Special handling for spell upgrades and spells to remove
         Integer inventorySlot = null;
         Integer currentLevel = spellLevels.get(spellKey.getBaseKey());
         if (currentLevel != null) {
@@ -4356,6 +4356,14 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
                     activeSpell = spellKey.getKey();
                 }
             }
+        }
+        List<SpellKey> spellsToRemove = new ArrayList<SpellKey>(template.getSpellsToRemove().size());
+        for (SpellKey key : template.getSpellsToRemove()) {
+            if (spellLevels.get(key.getBaseKey()) != null) {
+                spellsToRemove.add(key);
+            }
+        }
+        if (currentLevel != null || !spellsToRemove.isEmpty()) {
             List<Inventory> allInventories = getAllInventories();
             int currentSlot = 0;
             for (Inventory inventory : allInventories) {
@@ -4368,6 +4376,14 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
                             inventorySlot = currentSlot;
                             inventory.setItem(index, null);
                             spells.remove(checkKey.getKey());
+                        } else {
+                            for (SpellKey key : spellsToRemove) {
+                                if (checkKey.getBaseKey().equals(key.getBaseKey())) {
+                                    inventory.setItem(index, null);
+                                    spells.remove(key.getKey());
+                                    spellLevels.remove(key.getBaseKey());
+                                }
+                            }
                         }
                     }
                     currentSlot++;
