@@ -2201,6 +2201,7 @@ public class MagicController implements MageController {
         spellUpgradesEnabled = properties.getBoolean("enable_spell_upgrades", spellUpgradesEnabled);
         spellProgressionEnabled = properties.getBoolean("enable_spell_progression", spellProgressionEnabled);
         autoSpellUpgradesEnabled = properties.getBoolean("enable_automatic_spell_upgrades", autoSpellUpgradesEnabled);
+        autoPathUpgradesEnabled = properties.getBoolean("enable_automatic_spell_upgrades", autoPathUpgradesEnabled);
 		undoQueueDepth = properties.getInt("undo_depth", undoQueueDepth);
         workPerUpdate = properties.getInt("work_per_update", workPerUpdate);
         workFrequency = properties.getInt("work_frequency", workFrequency);
@@ -4245,6 +4246,11 @@ public Set<Material> getMaterialSet(String name)
     }
 
     @Override
+    public boolean isPathUpgradingEnabled() {
+        return autoPathUpgradesEnabled;
+    }
+
+    @Override
     public boolean isSpellUpgradingEnabled() {
         return autoSpellUpgradesEnabled;
     }
@@ -4763,6 +4769,7 @@ public Set<Material> getMaterialSet(String name)
     private boolean							    urlIconsEnabled             = true;
     private boolean                             spellUpgradesEnabled        = true;
     private boolean                             autoSpellUpgradesEnabled    = true;
+    private boolean                             autoPathUpgradesEnabled     = true;
     private boolean                             spellProgressionEnabled     = true;
 
     private boolean							    bypassBuildPermissions      = false;

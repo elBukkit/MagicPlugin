@@ -145,8 +145,11 @@ enable_spell_upgrades: true
 # levels always function as if their progress level is 1
 enable_spell_progression: true
 
-# Automatically level up spells based on cast count
+# Automatically upgrades spells based on cast count
 enable_automatic_spell_upgrades: true
+
+# Automatically upgrade wand paths when a spell upgrades or progresses
+enable_automatic_path_upgrades: true
 
 # Whether wands can be combined on an anvil
 enable_combining: false

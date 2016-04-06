@@ -2420,6 +2420,10 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
 
                             SpellUpgradeEvent upgradeEvent = new SpellUpgradeEvent(mage, wand, this, newSpell);
                             Bukkit.getPluginManager().callEvent(upgradeEvent);
+
+                            if (controller.isPathUpgradingEnabled()) {
+                                wand.checkAndUpgrade();
+                            }
                             return; // return so progress upgrade doesn't also happen
                         }
                     }
@@ -2441,6 +2445,9 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
                                         .replace("$level", Long.toString(getProgressLevel()))
                                         .replace("$max_level", Long.toString(maxLevels)));
                             }
+                        }
+                        if (controller.isPathUpgradingEnabled()) {
+                            wand.checkAndUpgrade();
                         }
                     }
                 }
