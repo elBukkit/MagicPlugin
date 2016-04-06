@@ -309,6 +309,7 @@ public interface MageController {
     public boolean isSpellUpgradingEnabled();
     public boolean isSpellProgressionEnabled();
     public boolean isSPEnabled();
+    public boolean isSPEarnEnabled();
     public int getSPMaximum();
     public void deleteMage(final String id);
     public void disableItemSpawn();
