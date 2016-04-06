@@ -5,7 +5,6 @@ import com.elmakers.mine.bukkit.api.wand.Wand;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.Objects;
 
 /**
  * Represents a spell that is required to learn another spell or path.
@@ -79,17 +78,4 @@ public class PrerequisiteSpell {
                 && spell.getSpellKey().getLevel() == prerequisiteSpell.getSpellKey().getLevel()));
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof PrerequisiteSpell)) return false;
-        final PrerequisiteSpell that = (PrerequisiteSpell) o;
-        return progressLevel == that.progressLevel &&
-                Objects.equals(spellKey.getKey(), that.spellKey.getKey());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(spellKey, progressLevel);
-    }
 }
