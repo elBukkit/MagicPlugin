@@ -141,4 +141,11 @@ public interface Wand extends CostReducer {
      * you need to force an update right away.
      */
     public void saveState();
+
+    /**
+     * Checks if the wand can be upgraded to the next {@link WandUpgradePath} and if so upgrades it.
+     *
+     * @return the upgrade path the wand was upgrade to or null if not upgraded.
+     */
+    public WandUpgradePath checkAndUpgrade();
 }
