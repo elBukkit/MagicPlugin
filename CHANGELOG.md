@@ -1,6 +1,6 @@
 # CHANGELOG
 
-## 6.0.7
+## 6.0.9
 
  - No longer blocking crafing of the wood hoe and diamond sword
  - Default emerald worth changed to 100 to make Vault-less economy less expensive
