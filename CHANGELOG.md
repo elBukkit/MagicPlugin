@@ -1,5 +1,7 @@
 # CHANGELOG
 
+## 6.1
+
 ## 6.0.9
 
  - No longer blocking crafing of the wood hoe and diamond sword
