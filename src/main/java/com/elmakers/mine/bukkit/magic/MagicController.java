@@ -2203,6 +2203,7 @@ public class MagicController implements MageController {
         activateHoloTextRange = properties.getInt("activate_holotext_range", activateHoloTextRange);
         urlIconsEnabled = properties.getBoolean("url_icons_enabled", urlIconsEnabled);
         spellUpgradesEnabled = properties.getBoolean("enable_spell_upgrades", spellUpgradesEnabled);
+        spellProgressionEnabled = properties.getBoolean("enable_spell_progression", spellProgressionEnabled);
         autoSpellUpgradesEnabled = properties.getBoolean("enable_automatic_spell_upgrades", autoSpellUpgradesEnabled);
 		undoQueueDepth = properties.getInt("undo_depth", undoQueueDepth);
         workPerUpdate = properties.getInt("work_per_update", workPerUpdate);
@@ -4252,6 +4253,11 @@ public Set<Material> getMaterialSet(String name)
         return autoSpellUpgradesEnabled;
     }
 
+    @Override
+    public boolean isSpellProgressionEnabled() {
+        return spellProgressionEnabled;
+    }
+
     public boolean isLoaded() {
         return loaded;
     }
@@ -4761,6 +4767,7 @@ public Set<Material> getMaterialSet(String name)
     private boolean							    urlIconsEnabled             = true;
     private boolean                             spellUpgradesEnabled        = true;
     private boolean                             autoSpellUpgradesEnabled    = true;
+    private boolean                             spellProgressionEnabled     = true;
 
     private boolean							    bypassBuildPermissions      = false;
     private boolean							    bypassBreakPermissions      = false;

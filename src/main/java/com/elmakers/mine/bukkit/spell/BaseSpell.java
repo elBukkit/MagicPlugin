@@ -1095,10 +1095,11 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
             return false;
         }
 
-        long progressLevel = getProgressLevel();
-
-        for (Entry<String, EquationTransform> entry : progressLevelEquations.entrySet()) {
-            workingParameters.set(entry.getKey(), entry.getValue().get(progressLevel));
+        if (controller.isSpellProgressionEnabled()) {
+            long progressLevel = getProgressLevel();
+            for (Entry<String, EquationTransform> entry : progressLevelEquations.entrySet()) {
+                workingParameters.set(entry.getKey(), entry.getValue().get(progressLevel));
+            }
         }
 
         return finalizeCast(workingParameters);
@@ -2321,7 +2322,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
                 lore.add(earnsText);
             }
         }
-        if (progressDescription != null && progressDescription.length() > 0 && maxLevels > 0) {
+        if (controller.isSpellProgressionEnabled() && progressDescription != null && progressDescription.length() > 0 && maxLevels > 0) {
             InventoryUtils.wrapText(progressDescription
                     .replace("$level", Long.toString(Math.max(0, getProgressLevel())))
                     .replace("$max_level", Long.toString(maxLevels)),
@@ -2430,7 +2431,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
                         }
                     }
                 }
-                if (maxLevels > 0) {
+                if (maxLevels > 0 && controller.isSpellProgressionEnabled()) {
                     long previousLevel = getPreviousCastProgressLevel();
                     long currentLevel = getProgressLevel();
 

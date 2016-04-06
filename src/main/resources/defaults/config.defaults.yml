@@ -141,6 +141,10 @@ enable_enchanting: true
 # unobtainable.
 enable_spell_upgrades: true
 
+# Enable spell progression. Turning this off will make any spells with progress
+# levels always function as if their progress level is 1
+enable_spell_progression: true
+
 # Automatically level up spells based on cast count
 enable_automatic_spell_upgrades: true
 
