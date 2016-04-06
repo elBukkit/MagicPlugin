@@ -2,6 +2,9 @@ package com.elmakers.mine.bukkit.wand;
 
 import com.elmakers.mine.bukkit.api.event.WandUpgradeEvent;
 import com.elmakers.mine.bukkit.api.magic.Messages;
+import com.elmakers.mine.bukkit.api.spell.PrerequisiteSpell;
+import com.elmakers.mine.bukkit.api.spell.Spell;
+import com.elmakers.mine.bukkit.api.spell.SpellKey;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.effect.EffectPlayer;
@@ -45,7 +48,7 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
     private final String key;
     private final WandUpgradePath parent;
     private final Set<String> spells = new HashSet<String>();
-    private final Set<String> requiredSpells = new HashSet<String>();
+    private Collection<PrerequisiteSpell> requiredSpells = new HashSet<PrerequisiteSpell>();
     private final Set<String> allSpells = new HashSet<String>();
     private final Set<String> allRequiredSpells = new HashSet<String>();
     private String upgradeKey;
@@ -151,18 +154,45 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
         followsPath = template.getString("follows");
         upgradeKey = template.getString("upgrade");
         upgradeItemKey = template.getString("upgrade_item");
-        requiredSpells.addAll(template.getStringList("required_spells"));
-        allRequiredSpells.addAll(requiredSpells);
-        
+
+        requiredSpells = new HashSet<PrerequisiteSpell>(spells.size());
+        for (Object o : spells) {
+            if (o instanceof String) {
+                requiredSpells.add(new PrerequisiteSpell(new SpellKey((String) o), 0));
+            } else if (o instanceof ConfigurationSection) {
+                ConfigurationSection section = (ConfigurationSection) o;
+                String spell = section.getString("spell");
+                long progressLevel = section.getLong("progress_level");
+                if (spell != null) {
+                    requiredSpells.add(new PrerequisiteSpell(new SpellKey(spell), progressLevel));
+                }
+            } else if (o instanceof Map) {
+                Map<?, ?> map = (Map<?, ?>) o;
+                String spell = map.get("spell").toString();
+                String progressLevelString = map.get("progress_level").toString();
+                if (spell != null && StringUtils.isNumeric(progressLevelString)) {
+                    long progressLevel = 0;
+                    try {
+                        progressLevel = Long.parseLong(progressLevelString);
+                    } catch (NumberFormatException ignore) { }
+                    requiredSpells.add(new PrerequisiteSpell(new SpellKey(spell), progressLevel));
+                }
+            }
+        }
+
+        for (PrerequisiteSpell prereq : requiredSpells) {
+            allRequiredSpells.add(prereq.getSpellKey().getKey());
+        }
+
         // Icon information for upgrading/migrating wands
         icon = ConfigurationUtils.getMaterialAndData(template, "icon");
         migrateIcon = ConfigurationUtils.getMaterialAndData(template, "migrate_icon");
 
         // Validate requirements - disabling a required spell disables the upgrade.
-        for (String requiredKey : requiredSpells) {
-            SpellTemplate spell = controller.getSpellTemplate(requiredKey);
+        for (PrerequisiteSpell requiredSpell : requiredSpells) {
+            SpellTemplate spell = controller.getSpellTemplate(requiredSpell.getSpellKey().getKey());
             if (spell == null) {
-                controller.getLogger().warning("Invalid spell required for upgrade: " + requiredKey + ", upgrade path " + key + " will disable upgrades");
+                controller.getLogger().warning("Invalid spell required for upgrade: " + requiredSpell.getSpellKey().getKey() + ", upgrade path " + key + " will disable upgrades");
                 upgradeKey = null;
             }
         }
@@ -445,12 +475,12 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
 
     @Override
     public Collection<String> getRequiredSpells() {
-        return new ArrayList(allRequiredSpells);
+        return new ArrayList<String>(allRequiredSpells);
     }
 
     @Override
     public boolean requiresSpell(String spellKey) {
-        return requiredSpells.contains(spellKey);
+        return requiredSpells.contains(new PrerequisiteSpell(spellKey, 0));
     }
 
     @Override
@@ -593,14 +623,14 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
 
     @Override
     public boolean checkUpgradeRequirements(com.elmakers.mine.bukkit.api.wand.Wand wand, com.elmakers.mine.bukkit.api.magic.Mage mage) {
-        if (requiredSpells == null && requiredSpells.isEmpty()) return true;
+        if (requiredSpells == null || requiredSpells.isEmpty()) return true;
 
         // Then check for spell requirements to advance
-        for (String requiredKey : requiredSpells) {
-            if (!wand.hasSpell(requiredKey)) {
-                SpellTemplate spell = wand.getController().getSpellTemplate(requiredKey);
+        for (PrerequisiteSpell prereq : requiredSpells) {
+            if (!wand.hasSpell(prereq.getSpellKey().getKey())) {
+                SpellTemplate spell = wand.getController().getSpellTemplate(prereq.getSpellKey().getKey());
                 if (spell == null) {
-                    wand.getController().getLogger().warning("Invalid spell required for upgrade: " + requiredKey);
+                    wand.getController().getLogger().warning("Invalid spell required for upgrade: " + prereq.getSpellKey().getKey());
                     return false;
                 }
                 if (mage != null)
@@ -613,6 +643,23 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
                     mage.sendMessage(message);
                 }
                 return false;
+            } else {
+                Spell spell = wand.getSpell(prereq.getSpellKey().getKey());
+                if (!PrerequisiteSpell.isSpellSatisfyingPrerequisite(spell, prereq)) {
+                    if (mage != null && spell != null) {
+                        String message = wand.getController().getMessages().get("spell.prerequisite_spell_level")
+                                .replace("$name", spell.getName())
+                                .replace("$level", Integer.toString(prereq.getSpellKey().getLevel()));
+                        if (prereq.getProgressLevel() > 1) {
+                            message += wand.getController().getMessages().get("spell.prerequisite_spell_progress_level")
+                                    .replace("$level", Long.toString(prereq.getProgressLevel()))
+                                    // This max level should never return 0 here but just in case we'll make the min 1.
+                                    .replace("$max_level", Long.toString(Math.max(1, spell.getMaxProgressLevel())));
+                        }
+                        mage.sendMessage(message);
+                    }
+                    return false;
+                }
             }
         }
 

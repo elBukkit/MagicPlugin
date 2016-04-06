@@ -528,15 +528,6 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
         }
 
         if (itemStacks.size() == 0) {
-            Wand wand = mage.getActiveWand();
-            if (wand != null && autoUpgrade) {
-                com.elmakers.mine.bukkit.api.wand.WandUpgradePath path = wand.getPath();
-                WandUpgradePath nextPath = path != null ? path.getUpgrade(): null;
-                if (nextPath != null && path.checkUpgradeRequirements(wand, null) && !path.canEnchant(wand)) {
-                    path.upgrade(wand, mage);
-                    return SpellResult.CAST;
-                }
-            }
             context.showMessage("no_items", "There is nothing for you to buy here");
             return SpellResult.FAIL;
         }

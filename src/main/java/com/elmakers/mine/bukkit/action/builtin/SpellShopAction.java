@@ -90,12 +90,20 @@ public class SpellShopAction extends BaseShopAction
     @Override
     public SpellResult perform(CastContext context) {
         Mage mage = context.getMage();
+        Wand wand = mage.getActiveWand();
+        if (wand != null && autoUpgrade) {
+            com.elmakers.mine.bukkit.api.wand.WandUpgradePath path = wand.getPath();
+            WandUpgradePath nextPath = path != null ? path.getUpgrade(): null;
+            if (nextPath != null && path.checkUpgradeRequirements(wand, null) && !path.canEnchant(wand)) {
+                path.upgrade(wand, mage);
+            }
+        }
+
         MageController controller = context.getController();
         SpellResult contextResult = checkContext(context);
         if (!contextResult.isSuccess()) {
             return contextResult;
         }
-        Wand wand = context.getWand();
         WandUpgradePath currentPath = wand == null ? null : wand.getPath();
 
         if (!castsSpells && !allowLocked && wand.isLocked()) {
