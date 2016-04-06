@@ -14,7 +14,7 @@ public class SpellData {
     private ConfigurationSection data;
 
     public SpellData(SpellKey spellKey) {
-        this.spellKey = new SpellKey(spellKey.getBaseKey());
+        this.spellKey = spellKey;
     }
 
     public SpellData(String spellKey) {
