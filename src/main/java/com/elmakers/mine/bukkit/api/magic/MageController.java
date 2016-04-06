@@ -305,6 +305,7 @@ public interface MageController {
     public void warpPlayerToServer(final Player player, final String server, final String warp);
     public boolean spawnPhysicsBlock(Location location, Material material, short data, Vector velocity);
     public boolean isDisguised(Entity entity);
+    public boolean isPathUpgradingEnabled();
     public boolean isSpellUpgradingEnabled();
     public boolean isSpellProgressionEnabled();
     public boolean isSPEnabled();
