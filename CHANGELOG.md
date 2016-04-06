@@ -2,7 +2,9 @@
 
 ## 6.1
 
+ - No longer blocking crafing of the wood hoe and diamond sword
  - Default emerald worth changed to 100 to make Vault-less economy less expensive
+ - Currency system tweaked, deposits/withdrawals only work with emeralds and gold nuggets
  - Add survival_fly NCP exemptions to brooms/levitate
  - NCP integration is on by default (if NCP is present)
  - Fix for magic wearables not getting worn on right-click

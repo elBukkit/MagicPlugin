@@ -70,10 +70,10 @@ diamond_block:
   worth: 144
   
 emerald:
-  worth: 32
+  worth: 100
   
 emerald_block:
-  worth: 288
+  worth: 900
   
 # Some fun/special items
 hylian_shield:
