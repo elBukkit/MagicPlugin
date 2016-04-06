@@ -132,11 +132,24 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
     protected void load(MageController controller, String key, ConfigurationSection template) {
         // Cache spells, mainly used for spellbooks
         Collection<PrerequisiteSpell> pathSpells = ConfigurationUtils.getPrerequisiteSpells(template, "spells");
-        for (PrerequisiteSpell prereq : pathSpells) {
-            if (controller.getSpellTemplate(prereq.getSpellKey().getKey()) != null) {
-                spells.add(prereq.getSpellKey().getKey());
-            } else {
-                controller.getLogger().warning("Unknown or disabled spell " + prereq.getSpellKey().getKey() + " in enchanting path " + key +", ignoring");
+        if (!pathSpells.isEmpty()) {
+            for (PrerequisiteSpell prereq : pathSpells) {
+                if (controller.getSpellTemplate(prereq.getSpellKey().getKey()) != null) {
+                    spells.add(prereq.getSpellKey().getKey());
+                } else {
+                    controller.getLogger().warning("Unknown or disabled spell " + prereq.getSpellKey().getKey() + " in enchanting path " + key + ", ignoring");
+                }
+            }
+        } else {
+            if (template.isConfigurationSection("spells")) {
+                ConfigurationSection spellSection = template.getConfigurationSection("spells");
+                if (spellSection != null) {
+                    Collection<String> keys = spellSection.getKeys(false);
+                    pathSpells = new ArrayList<PrerequisiteSpell>(keys.size());
+                    for (String k : keys) {
+                        pathSpells.add(new PrerequisiteSpell(k, 0));
+                    }
+                }
             }
         }
         allSpells.addAll(spells);
