@@ -766,9 +766,14 @@ public class ConfigurationUtils extends ConfigUtils {
             return new ArrayList<PrerequisiteSpell>(0);
         }
 
-        List<?> spells;
+        Collection<?> spells = null;
         if (node.isString(key)) {
             spells = ConfigurationUtils.getStringList(node, key);
+        } else if (node.isConfigurationSection(key)) {
+            ConfigurationSection spellSection = node.getConfigurationSection(key);
+            if (spellSection != null) {
+                spells = spellSection.getKeys(false);
+            }
         } else {
             spells = node.getList(key);
         }

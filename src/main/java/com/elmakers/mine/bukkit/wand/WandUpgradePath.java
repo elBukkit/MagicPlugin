@@ -140,17 +140,6 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
                     controller.getLogger().warning("Unknown or disabled spell " + prereq.getSpellKey().getKey() + " in enchanting path " + key + ", ignoring");
                 }
             }
-        } else {
-            if (template.isConfigurationSection("spells")) {
-                ConfigurationSection spellSection = template.getConfigurationSection("spells");
-                if (spellSection != null) {
-                    Collection<String> keys = spellSection.getKeys(false);
-                    pathSpells = new ArrayList<PrerequisiteSpell>(keys.size());
-                    for (String k : keys) {
-                        pathSpells.add(new PrerequisiteSpell(k, 0));
-                    }
-                }
-            }
         }
         allSpells.addAll(spells);
 
