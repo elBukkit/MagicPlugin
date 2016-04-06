@@ -92,7 +92,6 @@ public abstract class MagicTabExecutor implements TabExecutor {
 
 	public boolean giveWand(CommandSender sender, Player player, String wandKey, boolean quiet, boolean giveItem, boolean giveValue, boolean showWorth)
 	{
-        if (wandKey == null) return false;
 		Mage mage = api.getMage(player);
 		Wand currentWand =  mage.getActiveWand();
 		if (currentWand != null) {
@@ -111,7 +110,12 @@ public abstract class MagicTabExecutor implements TabExecutor {
                 showWorth(sender, wand.getItem());
             }
 		} else {
-			if (!quiet) sender.sendMessage(api.getMessages().getParameterized("wand.unknown_template", "$name", wandKey));
+			if (!quiet) {
+                if (wandKey == null) {
+                    wandKey = "(default)";
+                }
+                sender.sendMessage(api.getMessages().getParameterized("wand.unknown_template", "$name", wandKey));
+            }
 			return false;
 		}
 		return true;
