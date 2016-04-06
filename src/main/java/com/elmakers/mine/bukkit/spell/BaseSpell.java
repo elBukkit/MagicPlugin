@@ -208,8 +208,6 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
      * private data
      */
 
-    private long                                previousUpgradeCastCount= 0;
-
     private long                                requiredCastsPerLevel   = 0;
     private long                                maxLevels               = 0;
     private Map<String, EquationTransform>      progressLevelEquations  = new HashMap<String, EquationTransform>();
@@ -831,8 +829,6 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         showUndoable = node.getBoolean("show_undoable", true);
         cancellable = node.getBoolean("cancellable", true);
 
-        previousUpgradeCastCount = node.getLong("previous_upgrade_cast_count");
-
         progressLevels = node.getConfigurationSection("progress_levels");
         if (progressLevels != null) {
             requiredCastsPerLevel = progressLevels.getLong("required_casts_per_level");
@@ -1110,7 +1106,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         if (requiredCastsPerLevel == 0) {
             return 1;
         }
-        return Math.min(getRelativeCastCount() / requiredCastsPerLevel + 1, maxLevels);
+        return Math.min(getCastCount() / requiredCastsPerLevel + 1, maxLevels);
     }
 
     public long getMaxProgressLevel() {
@@ -1118,7 +1114,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     }
 
     private long getPreviousCastProgressLevel() {
-        return Math.min(Math.max((getRelativeCastCount() - 1), 0) / requiredCastsPerLevel + 1, maxLevels);
+        return Math.min(Math.max((getCastCount() - 1), 0) / requiredCastsPerLevel + 1, maxLevels);
     }
 
     public boolean canCast(Location location) {
@@ -1571,10 +1567,6 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     public long getCastCount()
     {
         return spellData.getCastCount();
-    }
-
-    public long getRelativeCastCount() {
-        return spellData.getCastCount() - previousUpgradeCastCount;
     }
 
     @Override
@@ -2322,7 +2314,8 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
                 lore.add(earnsText);
             }
         }
-        if (controller.isSpellProgressionEnabled() && progressDescription != null && progressDescription.length() > 0 && maxLevels > 0) {
+        if (controller.isSpellProgressionEnabled() && progressDescription != null
+                && progressDescription.length() > 0 && maxLevels > 0 && template != null) {
             InventoryUtils.wrapText(progressDescription
                     .replace("$level", Long.toString(Math.max(0, getProgressLevel())))
                     .replace("$max_level", Long.toString(maxLevels)),
