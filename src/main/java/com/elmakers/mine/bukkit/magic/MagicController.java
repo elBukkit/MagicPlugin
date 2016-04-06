@@ -1995,10 +1995,6 @@ public class MagicController implements MageController {
                 {
                     ConfigurationSection baseInheritConfig = getSpellConfig(upgradeInheritsFrom, config, inheritFrom == null);
                     spellNode = ConfigurationUtils.addConfigurations(spellNode, baseInheritConfig, inheritFrom != null);
-                    spellNode.set("previous_upgrade_cast_count", baseInheritConfig.getLong("upgrade_required_casts"));
-                    spellNode.set("upgrade_required_casts", baseInheritConfig.getLong("upgrade_required_casts") + spellNode.getLong("upgrade_required_casts"));
-                    spellNode.set("progress_levels.previous_upgrade_max_levels", baseInheritConfig.getLong("progress_levels.max_levels"));
-                    spellNode.set("progress_levels.required_casts_per_level", baseInheritConfig.getLong("progress_levels.required_casts_per_level") + spellNode.getLong("progress_levels.required_casts_per_level"));
                 } else {
                     getLogger().warning("Spell upgrade " + key + " inherits from unknown level " + upgradeInheritsFrom);
                 }
@@ -2203,7 +2199,9 @@ public class MagicController implements MageController {
         activateHoloTextRange = properties.getInt("activate_holotext_range", activateHoloTextRange);
         urlIconsEnabled = properties.getBoolean("url_icons_enabled", urlIconsEnabled);
         spellUpgradesEnabled = properties.getBoolean("enable_spell_upgrades", spellUpgradesEnabled);
+        spellProgressionEnabled = properties.getBoolean("enable_spell_progression", spellProgressionEnabled);
         autoSpellUpgradesEnabled = properties.getBoolean("enable_automatic_spell_upgrades", autoSpellUpgradesEnabled);
+        autoPathUpgradesEnabled = properties.getBoolean("enable_automatic_spell_upgrades", autoPathUpgradesEnabled);
 		undoQueueDepth = properties.getInt("undo_depth", undoQueueDepth);
         workPerUpdate = properties.getInt("work_per_update", workPerUpdate);
         workFrequency = properties.getInt("work_frequency", workFrequency);
@@ -4250,8 +4248,18 @@ public class MagicController implements MageController {
     }
 
     @Override
+    public boolean isPathUpgradingEnabled() {
+        return autoPathUpgradesEnabled;
+    }
+
+    @Override
     public boolean isSpellUpgradingEnabled() {
         return autoSpellUpgradesEnabled;
+    }
+
+    @Override
+    public boolean isSpellProgressionEnabled() {
+        return spellProgressionEnabled;
     }
 
     public boolean isLoaded() {
@@ -4763,6 +4771,8 @@ public class MagicController implements MageController {
     private boolean							    urlIconsEnabled             = true;
     private boolean                             spellUpgradesEnabled        = true;
     private boolean                             autoSpellUpgradesEnabled    = true;
+    private boolean                             autoPathUpgradesEnabled     = true;
+    private boolean                             spellProgressionEnabled     = true;
 
     private boolean							    bypassBuildPermissions      = false;
     private boolean							    bypassBreakPermissions      = false;

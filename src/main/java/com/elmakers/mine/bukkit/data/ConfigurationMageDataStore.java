@@ -97,7 +97,7 @@ public abstract class ConfigurationMageDataStore implements MageDataStore {
         Collection<SpellData> spellData = mage.getSpellData();
         if (spellData != null) {
             for (SpellData spell : spellData) {
-                ConfigurationSection node = spellNode.createSection(spell.getKey().getBaseKey());
+                ConfigurationSection node = spellNode.createSection(spell.getKey().getKey());
                 node.set("cast_count", spell.getCastCount());
                 node.set("last_cast", spell.getLastCast());
                 node.set("last_earn", spell.getLastEarn());
@@ -242,11 +242,10 @@ public abstract class ConfigurationMageDataStore implements MageDataStore {
             Map<String, SpellData> spellDataMap = new HashMap<String, SpellData>();
             for (String key : keys) {
                 ConfigurationSection node = spellSection.getConfigurationSection(key);
-                SpellKey spellKey = new SpellKey(key);
-                SpellData spellData = spellDataMap.get(spellKey.getBaseKey());
+                SpellData spellData = spellDataMap.get(key);
                 if (spellData == null) {
-                    spellData = new SpellData(spellKey.getBaseKey());
-                    spellDataMap.put(spellData.getKey().getBaseKey(), spellData);
+                    spellData = new SpellData(key);
+                    spellDataMap.put(key, spellData);
                 }
                 spellData.setCastCount(spellData.getCastCount() + node.getLong("cast_count", 0));
                 spellData.setLastCast(Math.max(spellData.getLastCast(), node.getLong("last_cast", 0)));

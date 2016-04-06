@@ -163,6 +163,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     private String requiredUpgradePath;
     private Set<String> requiredUpgradeTags;
     private Collection<PrerequisiteSpell> requiredSpells;
+    private List<SpellKey> removesSpells;
     private MaterialAndData icon = new MaterialAndData(Material.AIR);
     private String iconURL = null;
     private List<CastingCost> costs = null;
@@ -207,8 +208,6 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     /*
      * private data
      */
-
-    private long                                previousUpgradeCastCount= 0;
 
     private long                                requiredCastsPerLevel   = 0;
     private long                                maxLevels               = 0;
@@ -757,38 +756,16 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
             requiredUpgradeTags = new HashSet<String>(pathTags);
         }
 
-        List<?> spells;
-        if (node.isString("required_spells")) {
-            spells = ConfigurationUtils.getStringList(node, "required_spells");
-        } else {
-            spells = node.getList("required_spells");
-        }
-        if (spells == null) {
-            spells = new ArrayList<Object>(0);
-        }
-        requiredSpells = new ArrayList<PrerequisiteSpell>(spells.size());
-        for (Object o : spells) {
-            if (o instanceof String) {
-                requiredSpells.add(new PrerequisiteSpell(new SpellKey((String) o), 0));
-            } else if (o instanceof ConfigurationSection) {
-                ConfigurationSection section = (ConfigurationSection) o;
-                String spell = section.getString("spell");
-                long progressLevel = section.getLong("progress_level");
-                if (spell != null) {
-                    requiredSpells.add(new PrerequisiteSpell(new SpellKey(spell), progressLevel));
-                }
-            } else if (o instanceof Map) {
-                Map<?, ?> map = (Map<?, ?>) o;
-                String spell = map.get("spell").toString();
-                String progressLevelString = map.get("progress_level").toString();
-                if (spell != null && StringUtils.isNumeric(progressLevelString)) {
-                    long progressLevel = 0;
-                    try {
-                        progressLevel = Long.parseLong(progressLevelString);
-                    } catch (NumberFormatException ignore) { }
-                    requiredSpells.add(new PrerequisiteSpell(new SpellKey(spell), progressLevel));
-                }
+        requiredSpells = new ArrayList<PrerequisiteSpell>(ConfigurationUtils.getPrerequisiteSpells(node, "required_spells"));
+
+        List<String> removesSpellKeys = ConfigurationUtils.getStringList(node, "removes_spells");
+        if (removesSpellKeys != null) {
+            removesSpells = new ArrayList<SpellKey>(removesSpellKeys.size());
+            for (String key : removesSpellKeys) {
+                removesSpells.add(new SpellKey(key));
             }
+        } else {
+            removesSpells = new ArrayList<SpellKey>(0);
         }
 
         // Inheritance, currently only used to look up messages, and only goes one level deep
@@ -862,8 +839,6 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         hidden = node.getBoolean("hidden", false);
         showUndoable = node.getBoolean("show_undoable", true);
         cancellable = node.getBoolean("cancellable", true);
-
-        previousUpgradeCastCount = node.getLong("previous_upgrade_cast_count");
 
         progressLevels = node.getConfigurationSection("progress_levels");
         if (progressLevels != null) {
@@ -1127,10 +1102,11 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
             return false;
         }
 
-        long progressLevel = getProgressLevel();
-
-        for (Entry<String, EquationTransform> entry : progressLevelEquations.entrySet()) {
-            workingParameters.set(entry.getKey(), entry.getValue().get(progressLevel));
+        if (controller.isSpellProgressionEnabled()) {
+            long progressLevel = getProgressLevel();
+            for (Entry<String, EquationTransform> entry : progressLevelEquations.entrySet()) {
+                workingParameters.set(entry.getKey(), entry.getValue().get(progressLevel));
+            }
         }
 
         return finalizeCast(workingParameters);
@@ -1141,7 +1117,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         if (requiredCastsPerLevel == 0) {
             return 1;
         }
-        return Math.min(getRelativeCastCount() / requiredCastsPerLevel + 1, maxLevels);
+        return Math.min(getCastCount() / requiredCastsPerLevel + 1, maxLevels);
     }
 
     public long getMaxProgressLevel() {
@@ -1149,7 +1125,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     }
 
     private long getPreviousCastProgressLevel() {
-        return Math.min(Math.max((getRelativeCastCount() - 1), 0) / requiredCastsPerLevel + 1, maxLevels);
+        return Math.min(Math.max((getCastCount() - 1), 0) / requiredCastsPerLevel + 1, maxLevels);
     }
 
     public boolean canCast(Location location) {
@@ -1602,10 +1578,6 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     public long getCastCount()
     {
         return spellData.getCastCount();
-    }
-
-    public long getRelativeCastCount() {
-        return spellData.getCastCount() - previousUpgradeCastCount;
     }
 
     @Override
@@ -2207,6 +2179,11 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
     }
 
     @Override
+    public Collection<SpellKey> getSpellsToRemove() {
+        return removesSpells;
+    }
+
+    @Override
     public String getUpgradeDescription() {
         return upgradeDescription == null ? "" : upgradeDescription;
     }
@@ -2353,7 +2330,8 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
                 lore.add(earnsText);
             }
         }
-        if (progressDescription != null && progressDescription.length() > 0 && maxLevels > 0) {
+        if (controller.isSpellProgressionEnabled() && progressDescription != null
+                && progressDescription.length() > 0 && maxLevels > 0 && template != null) {
             InventoryUtils.wrapText(progressDescription
                     .replace("$level", Long.toString(Math.max(0, getProgressLevel())))
                     .replace("$max_level", Long.toString(maxLevels)),
@@ -2458,11 +2436,15 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
 
                             SpellUpgradeEvent upgradeEvent = new SpellUpgradeEvent(mage, wand, this, newSpell);
                             Bukkit.getPluginManager().callEvent(upgradeEvent);
+
+                            if (controller.isPathUpgradingEnabled()) {
+                                wand.checkAndUpgrade();
+                            }
                             return; // return so progress upgrade doesn't also happen
                         }
                     }
                 }
-                if (maxLevels > 0) {
+                if (maxLevels > 0 && controller.isSpellProgressionEnabled()) {
                     long previousLevel = getPreviousCastProgressLevel();
                     long currentLevel = getProgressLevel();
 
@@ -2479,6 +2461,9 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
                                         .replace("$level", Long.toString(getProgressLevel()))
                                         .replace("$max_level", Long.toString(maxLevels)));
                             }
+                        }
+                        if (controller.isPathUpgradingEnabled()) {
+                            wand.checkAndUpgrade();
                         }
                     }
                 }
