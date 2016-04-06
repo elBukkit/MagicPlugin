@@ -373,6 +373,7 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
                     }
                 }
                 if (!takeCosts(context, shopItem)) {
+                    costString = context.getMessage("insufficient", ChatColor.RED + "Costs $cost");
                     costString = costString.replace("$cost", getItemCost(context, shopItem));
                     context.showMessage(costString);
                     return;
@@ -380,22 +381,23 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
                 if (!castsSpells && !requireWand) {
                     context.getController().giveItemToPlayer(mage.getPlayer(), InventoryUtils.getCopy(item));
                 }
-
-                if (wand != null && autoUpgrade) {
-                    if (upgradeLevels <= 0) {
-                        com.elmakers.mine.bukkit.api.wand.WandUpgradePath path = wand.getPath();
-                        WandUpgradePath nextPath = path != null ? path.getUpgrade(): null;
-                        if (nextPath != null && path.checkUpgradeRequirements(wand, null) && !path.canEnchant(wand)) {
-                            path.upgrade(wand, mage);
-                        }
-                    } else {
-                        wand.enchant(upgradeLevels, mage, false);
-                    }
-                }
             }
 
             costString = costString.replace("$item", itemName);
             context.showMessage(costString);
+
+            if (!sell && wand != null && autoUpgrade) {
+                if (upgradeLevels <= 0) {
+                    com.elmakers.mine.bukkit.api.wand.WandUpgradePath path = wand.getPath();
+                    WandUpgradePath nextPath = path != null ? path.getUpgrade(): null;
+                    if (nextPath != null && path.checkUpgradeRequirements(wand, null) && !path.canEnchant(wand)) {
+                        path.upgrade(wand, mage);
+                    }
+                } else {
+                    wand.enchant(upgradeLevels, mage, false);
+                }
+            }
+            
             onPurchase(context, item);
         }
         if (autoClose) {
