@@ -1,0 +1,61 @@
+{
+    "__comment": "Designed by Droobledore - with BDcraft Cubik PRO 0.96 Beta - http://bdcraft.net",
+    "ambientocclusion": false,
+    "textures": {
+        "particle": "items/custom/hat_wizard",
+        "texture": "items/custom/hat_wizard"
+    },
+    "elements": [
+        {
+            "__comment": "icon",
+            "from": [ 0, 0, 8 ],
+            "to": [ 16, 16, 8.0625 ],
+            "faces": {
+                "north": { "uv": [ 0.001, 0.001, 15.999, 15.999 ], "texture": "#texture" },
+                "south": { "uv": [ 0.001, 0.001, 15.999, 15.999 ], "texture": "#texture" }
+            }
+        }
+    ],
+    "display": {
+        "thirdperson_righthand": {
+            "rotation": [ 0, 0, 0 ],
+            "translation": [ 0, 0, 0 ],
+            "scale": [ 0.2, 0.2, 0.2 ]
+        },
+        "thirdperson_lefthand": {
+            "rotation": [ 0, 0, 0 ],
+            "translation": [ 0, 0, 0 ],
+            "scale": [ 0.2, 0.2, 0.2 ]
+        },
+        "head": {
+            "rotation": [ 0, 0, 0 ],
+            "translation": [ 0, 0, 0 ],
+            "scale": [ 0.2, 0.2, 0.2 ]
+        },
+        "ground": {
+            "rotation": [ 0, 0, 0 ],
+            "translation": [ 0, 3, 0 ],
+            "scale": [ 0.5, 0.5, 0.5 ]
+        },
+        "fixed": {
+            "rotation": [ 0, 0, 0 ],
+            "translation": [ 0, 0, -0.57 ],
+            "scale": [ 1, 1, 1 ]
+        },
+        "firstperson_righthand": {
+            "rotation": [ 0, 0, 0 ],
+            "translation": [ 0, 0, 0 ],
+            "scale": [ 0.5, 0.5, 0.5 ]
+        },
+        "firstperson_lefthand": {
+            "rotation": [ 0, 0, 0 ],
+            "translation": [ 0, 0, 0 ],
+            "scale": [ 0.5, 0.5, 0.5 ]
+        },
+        "gui": {
+            "rotation": [ 0, 0, 0 ],
+            "translation": [ 0, 0, 0 ],
+            "scale": [ 1, 1, 1 ]
+        }
+    }
+}
