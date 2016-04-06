@@ -26,6 +26,9 @@ public class CheckBlockAction extends BaseSpellAction {
     public SpellResult perform(CastContext context) {
         MaterialBrush brush = context.getBrush();
         Block block = context.getTargetBlock();
+        if (block == null) {
+            return SpellResult.STOP;
+        }
         if (allowed != null) {
             if (!allowed.contains(block.getType())) return SpellResult.STOP;
         } else {
@@ -47,6 +50,6 @@ public class CheckBlockAction extends BaseSpellAction {
 
     @Override
     public boolean requiresTarget() {
-        return true;
+        return false;
     }
 }
