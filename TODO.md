@@ -1,5 +1,6 @@
 # TODO
  
+ - Is Blink passthrough broken?
  - lingering potions
  - Add a global flag for making all spells not pvp-restricted
  - Option to turn off SP earning

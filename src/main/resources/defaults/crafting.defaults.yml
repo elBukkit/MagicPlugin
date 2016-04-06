@@ -27,8 +27,8 @@ wand:
   # If you don't want this behavior, just empty out this field.
   # substitute: iron_hoe
 
-  # Just disable the default recipe
-  disable_default: true
+  # Don't disable the default recipe
+  disable_default: false
 
   # This defines the materials that will be required to craft this wand
   materials:
@@ -44,7 +44,6 @@ wand:
 # Other default craftable items
 
 battle:
-  disable_default: true
   output: battle
   output_type: wand
   materials:
@@ -55,7 +54,6 @@ battle:
   row_3: i
 
 broomstick:
-  disable_default: true
   output: broomstick
   output_type: wand
   materials:
