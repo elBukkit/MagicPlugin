@@ -88,7 +88,6 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     protected Double health;
     protected Integer airLevel;
     protected boolean isBaby;
-    protected boolean isVillager;
     protected int fireTicks;
     
     protected DyeColor dyeColor;
@@ -210,7 +209,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         } else if (entity instanceof ExperienceOrb) {
             xp = ((ExperienceOrb)entity).getExperience();
         } else if (entity instanceof Zombie) {
-            isVillager = ((Zombie)entity).isVillager();
+            extraData = new EntityZombieData((Zombie)entity);
         }
     }
     
@@ -243,6 +242,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
             }
         }
 
+        isBaby = parameters.getBoolean("baby", false);
         tickInterval = parameters.getLong("cast_interval", 0);
         if (parameters.contains("cast")) {
             spells = new LinkedList<WeightedPair<String>>();
@@ -361,8 +361,13 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
             else if (type == EntityType.RABBIT && parameters.contains("rabbit_type")) {
                 rabbitType = Rabbit.Type.valueOf(parameters.getString("rabbit_type").toUpperCase());
             }
-            else if (type == EntityType.ZOMBIE && parameters.contains("zombie_type")) {
-                isVillager = parameters.getString("zombie_type").equalsIgnoreCase("villager");
+            else if (type == EntityType.ZOMBIE) {
+                EntityZombieData zombieData = new EntityZombieData();
+                if (parameters.contains("villager_profession")) {
+                    zombieData.profession = Villager.Profession.valueOf(parameters.getString("villager_profession").toUpperCase());
+                }
+                zombieData.isBaby = isBaby;
+                extraData = zombieData;
             }
         } catch (Exception ex) {
             controller.getLogger().log(Level.WARNING, "Invalid entity type or sub-type", ex);

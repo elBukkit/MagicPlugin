@@ -50,7 +50,7 @@
 
 warlock:
   type: zombie
-  zombie_type: villager
+  villager_profession: butcher
   item: wood_hoe
   chestplate: chainmail_chestplate
   leggings: chainmail_leggings
@@ -66,7 +66,7 @@ warlock:
     pull: 100
     curse: 100
     blob: 20
-    lava: 0,10,20
+    lava: 10
     shell: 20
     none: 300
   drops:
