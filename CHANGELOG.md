@@ -2,6 +2,8 @@
 
 ## 6.1
 
+ - Update brooms, the boost power (space bar) will now directly affect speed.
+
 ## 6.0.9
 
  - No longer blocking crafing of the wood hoe and diamond sword

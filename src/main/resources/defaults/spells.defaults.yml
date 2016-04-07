@@ -8120,14 +8120,14 @@ broom:
         mount_health: 2
         power_mount_health: 10
         mount_boost: 0.3
+        mount_boost_minimum: 0.5
         power_mount_boost: 1
         slow_ticks: 2
         power_slow_ticks: 10
-        steer_speed: 0.01
+        steer_speed: 0.05
         power_steer_speed: 0.3
         slow_steer_speed: 2
-        mount_boost_per_jump: 0.3
-        power_mount_boost_per_jump: 1
+        mount_boost_from_jump: true
         sound: magic.flying
         effect_sound_interval: 120
         effect_sound_volume: 15

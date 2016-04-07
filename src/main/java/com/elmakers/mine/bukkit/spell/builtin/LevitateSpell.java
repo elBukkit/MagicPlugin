@@ -90,7 +90,9 @@ public class LevitateSpell extends TargetingSpell implements Listener
     private Horse.Color mountHorseColor = null;
     private Horse.Style mountHorseStyle = null;
     private double maxMountBoost = 1;
+    private boolean mountBoostFromJump = false;
     private double mountBoostPerJump = 0.5;
+    private double mountBoostMinimum = 0.5;
     private double mountHealth = 8;
     private int slowReduceBoostTicks = 4;
     private int mountBoostTicks = 80;
@@ -194,7 +196,8 @@ public class LevitateSpell extends TargetingSpell implements Listener
                 for (Spell spell : active) {
                     if (spell instanceof LevitateSpell) {
                         LevitateSpell levitate = (LevitateSpell)spell;
-                        levitate.boost(event.getPower());
+                        double amount = Math.max(0, (event.getPower() - mountBoostMinimum) / (1 - mountBoostMinimum));
+                        levitate.boost(amount);
                     }
                 }
             }
@@ -482,6 +485,8 @@ public class LevitateSpell extends TargetingSpell implements Listener
 
         maxMountBoost = parameters.getDouble("mount_boost", 1);
         mountBoostPerJump = parameters.getDouble("mount_boost_per_jump", 0.5);
+        mountBoostMinimum = parameters.getDouble("mount_boost_minimum", 0.5);
+        mountBoostFromJump = parameters.getBoolean("mount_boost_from_jump", false);
         mountBoostTicks = parameters.getInt("mount_boost_ticks", 40);
         mountHealth = parameters.getDouble("mount_health", 2);
         mountInvisible = parameters.getBoolean("mount_invisible", true);
@@ -655,10 +660,16 @@ public class LevitateSpell extends TargetingSpell implements Listener
     public void boost(double amount)
     {
         if (maxMountBoost > 0 && mountBoostTicks > 0) {
-            if (mountBoostTicksRemaining == 0) {
+            int previousBoost = mountBoostTicksRemaining;
+            if (mountBoostFromJump) {
+                mountBoostTicksRemaining = (int)(Math.floor((double)mountBoostTicks * amount));
+            } else {
+                mountBoostTicksRemaining = (int)Math.min((double)mountBoostTicksRemaining + mountBoostPerJump * mountBoostTicks * amount, mountBoostTicks);
+            }
+            if (previousBoost < mountBoostTicksRemaining) {
                 playEffects("boost");
             }
-            mountBoostTicksRemaining = (int)Math.min((double)mountBoostTicksRemaining + mountBoostPerJump * mountBoostTicks * amount, mountBoostTicks);
+            
             updateMountHealth();
         }
     }
