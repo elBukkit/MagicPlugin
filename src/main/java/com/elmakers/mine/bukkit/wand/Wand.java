@@ -1653,7 +1653,9 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 			// Check for path-based migration, may update icons
 			com.elmakers.mine.bukkit.api.wand.WandUpgradePath upgradePath = getPath();
 			if (upgradePath != null) {
-				hasSpellProgression = upgradePath.getSpells().size() > 0;
+				hasSpellProgression = upgradePath.getSpells().size() > 0
+						|| upgradePath.getExtraSpells().size() > 0
+						|| upgradePath.getRequiredSpells().size() > 0;
 				upgradePath.checkMigration(this);
 			} else {
 				hasSpellProgression = false;

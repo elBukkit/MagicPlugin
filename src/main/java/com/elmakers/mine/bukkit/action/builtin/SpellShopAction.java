@@ -33,6 +33,8 @@ import java.util.Set;
 
 public class SpellShopAction extends BaseShopAction
 {
+    private boolean showPath = true;
+    private boolean showExtra = true;
     private boolean showRequired = false;
     private boolean showFree = false;
     private boolean showUpgrades = false;
@@ -76,7 +78,9 @@ public class SpellShopAction extends BaseShopAction
 
     public void prepare(CastContext context, ConfigurationSection parameters) {
         super.prepare(context, parameters);
-        showRequired = parameters.getBoolean("show_required", false);
+        showPath = parameters.getBoolean("show_path_spells", true);
+        showExtra = parameters.getBoolean("show_extra_spells", true);
+        showRequired = parameters.getBoolean("show_required_spells", false);
         showFree = parameters.getBoolean("show_free", false);
         showUpgrades = parameters.getBoolean("show_upgrades", false);
         allowLocked = parameters.getBoolean("allow_locked", false);
@@ -122,9 +126,17 @@ public class SpellShopAction extends BaseShopAction
                 return SpellResult.FAIL;
             }
 
-            Collection<String> pathSpells = currentPath.getSpells();
-            for (String pathSpell : pathSpells) {
-                spellPrices.put(pathSpell, null);
+            if (showPath) {
+                Collection<String> pathSpells = currentPath.getSpells();
+                for (String pathSpell : pathSpells) {
+                    spellPrices.put(pathSpell, null);
+                }
+            }
+            if (showExtra) {
+                Collection<String> extraSpells = currentPath.getExtraSpells();
+                for (String extraSpell : extraSpells) {
+                    spellPrices.put(extraSpell, null);
+                }
             }
             if (showRequired) {
                 Collection<String> requiredSpells = currentPath.getRequiredSpells();
@@ -251,7 +263,12 @@ public class SpellShopAction extends BaseShopAction
     public void getParameterNames(Spell spell, Collection<String> parameters) {
         super.getParameterNames(spell, parameters);
         parameters.add("show_free");
-        parameters.add("show_required");
+        parameters.add("show_path_spells");
+        parameters.add("show_extra_spells");
+        parameters.add("show_required_spells");
+        parameters.add("show_upgrades");
+        parameters.add("allow_locked");
+        parameters.add("upgrade_requires_casts");
     }
 
     @Override

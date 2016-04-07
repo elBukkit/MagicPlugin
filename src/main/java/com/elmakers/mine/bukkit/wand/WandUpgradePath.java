@@ -48,9 +48,11 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
     private final String key;
     private final WandUpgradePath parent;
     private final Set<String> spells = new HashSet<String>();
+    private final Set<String> extraSpells = new HashSet<String>();
     private Collection<PrerequisiteSpell> requiredSpells = new HashSet<PrerequisiteSpell>();
     private Set<String> requiredSpellKeys = new HashSet<String>();
     private final Set<String> allSpells = new HashSet<String>();
+    private final Set<String> allExtraSpells = new HashSet<String>();
     private final Set<String> allRequiredSpells = new HashSet<String>();
     private String upgradeKey;
     private String upgradeItemKey;
@@ -107,6 +109,7 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
         effects.putAll(inherit.effects);
         allRequiredSpells.addAll(inherit.allRequiredSpells);
         allSpells.addAll(inherit.allSpells);
+        allExtraSpells.addAll(inherit.allExtraSpells);
 
         if (inherit.tags != null && !inherit.tags.isEmpty())
         {
@@ -132,16 +135,23 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
     protected void load(MageController controller, String key, ConfigurationSection template) {
         // Cache spells, mainly used for spellbooks
         Collection<PrerequisiteSpell> pathSpells = ConfigurationUtils.getPrerequisiteSpells(template, "spells");
-        if (!pathSpells.isEmpty()) {
-            for (PrerequisiteSpell prereq : pathSpells) {
-                if (controller.getSpellTemplate(prereq.getSpellKey().getKey()) != null) {
-                    spells.add(prereq.getSpellKey().getKey());
-                } else {
-                    controller.getLogger().warning("Unknown or disabled spell " + prereq.getSpellKey().getKey() + " in enchanting path " + key + ", ignoring");
-                }
+        for (PrerequisiteSpell prereq : pathSpells) {
+            if (controller.getSpellTemplate(prereq.getSpellKey().getKey()) != null) {
+                spells.add(prereq.getSpellKey().getKey());
+            } else {
+                controller.getLogger().warning("Unknown or disabled spell " + prereq.getSpellKey().getKey() + " in enchanting path " + key + ", ignoring");
             }
         }
         allSpells.addAll(spells);
+        Collection<PrerequisiteSpell> pathExtraSpells = ConfigurationUtils.getPrerequisiteSpells(template, "extra_spells");
+        for (PrerequisiteSpell prereq : pathExtraSpells) {
+            if (controller.getSpellTemplate(prereq.getSpellKey().getKey()) != null) {
+                extraSpells.add(prereq.getSpellKey().getKey());
+            } else {
+                controller.getLogger().warning("Unknown or disabled spell " + prereq.getSpellKey().getKey() + " in enchanting path " + key + ", ignoring");
+            }
+        }
+        allExtraSpells.addAll(extraSpells);
 
         // Upgrade information
         followsPath = template.getString("follows");
@@ -149,7 +159,7 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
         upgradeItemKey = template.getString("upgrade_item");
 
         Collection<PrerequisiteSpell> prerequisiteSpells = ConfigurationUtils.getPrerequisiteSpells(template, "required_spells");
-        this.requiredSpells = new ArrayList<PrerequisiteSpell>();
+        this.requiredSpells = new ArrayList<PrerequisiteSpell>(pathSpells.size() + prerequisiteSpells.size());
         requiredSpells.addAll(pathSpells);
         requiredSpells.addAll(prerequisiteSpells);
 
@@ -445,7 +455,12 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
 
     @Override
     public Collection<String> getSpells() {
-        return new ArrayList(allSpells);
+        return new ArrayList<String>(allSpells);
+    }
+
+    @Override
+    public Collection<String> getExtraSpells() {
+        return new ArrayList<String>(allExtraSpells);
     }
 
     @Override
@@ -461,6 +476,11 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
     @Override
     public boolean hasSpell(String spellKey) {
         return spells.contains(spellKey);
+    }
+
+    @Override
+    public boolean hasExtraSpell(String spellKey) {
+        return extraSpells.contains(spellKey);
     }
 
     @Override
