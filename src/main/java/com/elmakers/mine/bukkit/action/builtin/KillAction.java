@@ -21,7 +21,7 @@ public class KillAction extends BaseSpellAction
 
         LivingEntity targetEntity = (LivingEntity)entity;
         // Overkill to bypass protection
-        if (!targetEntity.isDead()) {
+        if (targetEntity.isDead()) {
 			return SpellResult.NO_TARGET;
         }
 		context.registerModified(targetEntity);
