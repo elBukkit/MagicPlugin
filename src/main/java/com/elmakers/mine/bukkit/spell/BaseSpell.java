@@ -34,7 +34,6 @@ import com.elmakers.mine.bukkit.api.wand.WandUpgradePath;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
 
-import com.elmakers.mine.bukkit.utility.NMSUtils;
 import de.slikey.effectlib.math.EquationTransform;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
@@ -855,10 +854,13 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
 
             progressLevelParameters = progressLevels.getConfigurationSection("parameters");
             if (progressLevelParameters != null) {
-                Map<String, Object> params = NMSUtils.getMap(progressLevelParameters);
-                progressLevelEquations = new HashMap<String, EquationTransform>(params.size());
-                for (Entry<String, Object> entry : params.entrySet()) {
-                    progressLevelEquations.put(entry.getKey(), new EquationTransform(entry.getValue().toString(), "x"));
+                Set<String> keys = progressLevelParameters.getKeys(true);
+                progressLevelEquations = new HashMap<String, EquationTransform>(keys.size());
+                for (String key : keys) {
+                    if (progressLevelParameters.isString(key)) {
+                        String value = progressLevelParameters.getString(key, "");
+                        progressLevelEquations.put(key, new EquationTransform(value, "x"));
+                    }
                 }
             }
         }
