@@ -22,6 +22,7 @@
    - add/remove : Add and remove lore, flags, unbreakable, enchants (coming soon: attributes)
  - Add "hylian_shield" item (non-magical, just a cool Link shield)
  - Add "trinketshop" including several decorative player skulls (try /mgive aquarium)
+ - Add /mmob list command, to list all custom mob types. Tab-complete now includes vanilla mobs.
 
 
 ## 5.5.4
