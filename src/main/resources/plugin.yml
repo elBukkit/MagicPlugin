@@ -333,7 +333,7 @@ commands:
         /mmob spawn mutant                Spawn a custom Mutant mob
         /mmob spawn mutant 0 64 0 world   Spawn at a location
         /mmob spawn creeper               Spawn a vanilla creeper
-        /mmob clear                       Remove all tracked mobs
+        /mmob list                        List custom mob types
   mmap:
     description: Create and manage Magic image maps
     permission: Magic.commands.mmap

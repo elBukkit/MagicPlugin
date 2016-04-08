@@ -3,6 +3,7 @@
 ## 6.1
 
  - Update brooms, the boost power (space bar) will now directly affect speed.
+ - Add /mmob list command, to list all custom mob types. Tab-complete now includes vanilla mobs.
 
 ## 6.0.9
 

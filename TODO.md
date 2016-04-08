@@ -1,7 +1,5 @@
 # TODO
  
-  - Add /mmob list command
- 
  - Is Blink passthrough broken?
  - lingering potions
  - Add a global flag for making all spells not pvp-restricted

@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.magic.command;
 
+import com.elmakers.mine.bukkit.api.entity.EntityData;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.magic.MagicAPI;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
@@ -14,12 +15,14 @@ import org.bukkit.command.BlockCommandSender;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.util.BlockIterator;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 public class MagicMobCommandExecutor extends MagicTabExecutor {
 	public MagicMobCommandExecutor(MagicAPI api) {
@@ -40,9 +43,9 @@ public class MagicMobCommandExecutor extends MagicTabExecutor {
 			return true;
 		}
         
-        if (args[0].equalsIgnoreCase("clear"))
+        if (args[0].equalsIgnoreCase("list"))
         {
-            sender.sendMessage(ChatColor.RED + "Not yet implemented, sorry!");
+            onListMobs(sender);
             return true;
         }
 
@@ -131,6 +134,14 @@ public class MagicMobCommandExecutor extends MagicTabExecutor {
         sender.sendMessage(ChatColor.AQUA + "Spawned mob: " + ChatColor.LIGHT_PURPLE + name);
         return true;
 	}
+    
+    protected void onListMobs(CommandSender sender) {
+        Set<String> keys = api.getController().getMobKeys();
+        for (String key : keys) {
+            EntityData mobType = api.getController().getMob(key);
+            sender.sendMessage(ChatColor.AQUA + key + ChatColor.WHITE + " : " + ChatColor.DARK_AQUA + mobType.describe());
+        }
+    }
 
 	@Override
 	public Collection<String> onTabComplete(CommandSender sender, String commandName, String[] args) {
@@ -139,11 +150,16 @@ public class MagicMobCommandExecutor extends MagicTabExecutor {
 
 		if (args.length == 1) {
             options.add("spawn");
-            options.add("clear");
+            options.add("list");
 		}
 
         if (args.length == 2 && args[0].equalsIgnoreCase("spawn")) {
             options.addAll(api.getController().getMobKeys());
+            for (EntityType entityType : EntityType.values()) {
+                if (entityType.isAlive() && entityType.isSpawnable()) {
+                    options.add(entityType.name().toLowerCase());
+                }
+            }
 		}
 		return options;
 	}
