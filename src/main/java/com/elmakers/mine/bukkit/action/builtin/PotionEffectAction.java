@@ -12,8 +12,10 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -72,6 +74,35 @@ public class PotionEffectAction extends BaseSpellAction
             {
                 addEffects = BaseSpell.getPotionEffects(parameters, durationOverride);
             }
+        }
+        if (addEffects == null) {
+            addEffects = Collections.emptyList();
+        }
+        Collection<PotionEffect> mappedEffects = getMappedPotionEffects(parameters);
+        if (!mappedEffects.isEmpty()) {
+            Collection<PotionEffect> newEffects = new ArrayList<PotionEffect>(addEffects.size() + mappedEffects.size());
+            newEffects.addAll(addEffects);
+            newEffects.addAll(mappedEffects);
+            addEffects = newEffects;
+        }
+    }
+
+    private Collection<PotionEffect> getMappedPotionEffects(ConfigurationSection parameters) {
+        ConfigurationSection section = parameters.getConfigurationSection("add_effects");
+        if (section != null) {
+            Collection<String> keys = section.getKeys(false);
+            Collection<PotionEffect> effects = new ArrayList<PotionEffect>(keys.size());
+            int ticks = parameters.getInt("duration", 500) / 50;
+            for (String key : keys) {
+                int strength = section.getInt(key, 0);
+                PotionEffectType type = PotionEffectType.getByName(key);
+                if (type != null) {
+                    effects.add(type.createEffect(ticks, strength));
+                }
+            }
+            return effects;
+        } else {
+            return Collections.emptyList();
         }
     }
 
