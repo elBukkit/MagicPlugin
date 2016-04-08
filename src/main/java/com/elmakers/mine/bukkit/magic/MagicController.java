@@ -1518,7 +1518,9 @@ public class MagicController implements MageController {
             }
 
             // Kind of a hacky way to do this, and only works with BaseSpell spells.
-            if (allPvpRestricted) {
+            if (noPvpRestricted) {
+                spellNode.set("pvp_restricted", false);
+            } else if (allPvpRestricted) {
                 spellNode.set("pvp_restricted", true);
             }
 
@@ -2311,6 +2313,7 @@ public class MagicController implements MageController {
 		bypassPvpPermissions = properties.getBoolean("bypass_pvp", bypassPvpPermissions);
         bypassFriendlyFire = properties.getBoolean("bypass_friendly_fire", bypassFriendlyFire);
         allPvpRestricted = properties.getBoolean("pvp_restricted", allPvpRestricted);
+        noPvpRestricted = properties.getBoolean("allow_pvp_restricted", noPvpRestricted);
         useScoreboardTeams = properties.getBoolean("use_scoreboard_teams", useScoreboardTeams);
 		extraSchematicFilePath = properties.getString("schematic_files", extraSchematicFilePath);
 		createWorldsEnabled = properties.getBoolean("enable_world_creation", createWorldsEnabled);
@@ -4786,6 +4789,7 @@ public class MagicController implements MageController {
     private boolean							    bypassPvpPermissions        = false;
     private boolean							    bypassFriendlyFire          = false;
     private boolean							    allPvpRestricted            = false;
+    private boolean							    noPvpRestricted             = false;
     private boolean                             useScoreboardTeams          = false;
     private boolean							    protectLocked               = true;
 

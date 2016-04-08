@@ -1,20 +1,18 @@
 # TODO
  
- - Is Blink passthrough broken?
  - lingering potions
- - Add a global flag for making all spells not pvp-restricted
- - Option to turn off SP earning
   
  - Update CheckBlock to be a CompoundAction, or optionally send STOP
  
  - Undo bugs with pistons.. yuck. https://youtu.be/S-d-XT2r_vM
  
  - Alter/grow/shrink should prevent mobs dropping loot
- - Offhand items disappear on death?
  - Casting while standing on a gold pressure plate doesn't work :|
  - Arenas preventing last death Recall isn't working?
  - Some kind of gliding-without-Elytra mechanic involving cancelling the glide event?
  - Spell count limit on wands or paths?
+ 
+ - Trying to place a block with a wand in the offhand is super glitchy
  
  - Show mana from offhand wand (if no wand in main hand)
  - Account for offhand items in "armor" checks
