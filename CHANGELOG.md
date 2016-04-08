@@ -7,6 +7,8 @@
  - Add survival_fly NCP exemptions to brooms/levitate
  - NCP integration is on by default (if NCP is present)
  - Add "sp_earn_enabled" option
+ - Add "allow_pvp_restricted" config option, to allow pvp-restricted spells to be cast anywhere.
+
 
 ## 5.5.4
 

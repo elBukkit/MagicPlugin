@@ -635,6 +635,9 @@ bypass_break: false
 # Disable all pvp-related checks
 bypass_pvp: false
 
+# Set to "true" to ignore pvp_restricted on any spells
+allow_pvp_restricted: false
+
 # Will consider all spells as pvp spells
 pvp_restricted: false
 
