@@ -23,6 +23,7 @@ public class Cost implements com.elmakers.mine.bukkit.api.item.Cost {
     };
     
     protected ItemStack item;
+    protected boolean itemWildcard;
     protected double amount;
     protected Type type;
 
@@ -42,6 +43,12 @@ public class Cost implements com.elmakers.mine.bukkit.api.item.Cost {
         } else if (key.toLowerCase().equals("hunger")) {
             this.type = Type.HUNGER;
         } else {
+            if (key.endsWith(":*")) {
+                key = key.substring(0,key.length() - 2);
+                itemWildcard = true;
+            } else {
+                itemWildcard = false;
+            }
             this.item = controller.createItem(key, true);
             if (this.item != null) {
                 this.item.setAmount((int)Math.ceil(amount));
@@ -71,7 +78,7 @@ public class Cost implements com.elmakers.mine.bukkit.api.item.Cost {
     public boolean has(Mage mage, Wand wand, CostReducer reducer) {
         switch (type) {
             case ITEM:
-                return isConsumeFree(reducer) || mage.hasItem(getItemStack(reducer), true);
+                return isConsumeFree(reducer) || mage.hasItem(getItemStack(reducer), itemWildcard);
             case XP:
                 return mage.getExperience() >= getXP(reducer);
             case MANA:
@@ -103,7 +110,7 @@ public class Cost implements com.elmakers.mine.bukkit.api.item.Cost {
             case ITEM:
                 if (!isConsumeFree(reducer)) {
                     ItemStack itemStack = getItemStack(reducer);
-                    mage.removeItem(itemStack, true);
+                    mage.removeItem(itemStack, itemWildcard);
                 }
                 break;
             case XP:
