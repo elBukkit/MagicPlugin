@@ -110,6 +110,7 @@ default:
 # These are used to specify defaults for wands and other magic items.
 #
 base_wand:
+    hidden: true
     drop: toggle
     left_click: cast
     right_click: none
@@ -125,6 +126,7 @@ base_wand:
     attribute_slot: mainhand
   
 base_sword:
+    hidden: true
     drop: toggle
     left_click: none
     right_click: none
