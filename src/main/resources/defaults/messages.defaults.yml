@@ -293,6 +293,10 @@ costs:
     mana: Mana
     xp: XP
     sp: Skill Points
+    hunger: Energy
+    health: Health
+    health_amount: $amount Health
+    hunger_amount: $amount Energy
     heroes_mana: $amount Mana
     currency: Dollar
     currency_plural: Dollars

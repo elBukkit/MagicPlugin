@@ -5,6 +5,7 @@
  - Update brooms, the boost power (space bar) will now directly affect speed.
  - Add /mmob list command, to list all custom mob types. Tab-complete now includes vanilla mobs.
  - Add "allow_pvp_restricted" config option, to allow pvp-restricted spells to be cast anywhere.
+ - Add health and hunger options for spell casting costs
 
 ## 6.0.9
 

@@ -7,6 +7,8 @@ import com.elmakers.mine.bukkit.api.spell.CostReducer;
 import com.elmakers.mine.bukkit.api.wand.Wand;
 import com.elmakers.mine.bukkit.integration.VaultController;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 public class Cost implements com.elmakers.mine.bukkit.api.item.Cost {
@@ -15,7 +17,9 @@ public class Cost implements com.elmakers.mine.bukkit.api.item.Cost {
         XP,
         SP,
         MANA,
-        CURRENCY
+        CURRENCY,
+        HEALTH,
+        HUNGER
     };
     
     protected ItemStack item;
@@ -33,6 +37,10 @@ public class Cost implements com.elmakers.mine.bukkit.api.item.Cost {
             this.type = Type.MANA;
         } else if (key.toLowerCase().equals("currency")) {
             this.type = Type.CURRENCY;
+        } else if (key.toLowerCase().equals("health")) {
+            this.type = Type.HEALTH;
+        } else if (key.toLowerCase().equals("hunger")) {
+            this.type = Type.HUNGER;
         } else {
             this.item = controller.createItem(key, true);
             if (this.item != null) {
@@ -56,8 +64,7 @@ public class Cost implements com.elmakers.mine.bukkit.api.item.Cost {
             case SP:
                 return getSkillPoints(reducer) == 0;
         }
-        
-        return true;
+        return getReducedCost(amount, reducer) == 0;
     }
     
     @Override
@@ -74,6 +81,12 @@ public class Cost implements com.elmakers.mine.bukkit.api.item.Cost {
                 return vault.has(mage.getPlayer(), getCurrency(reducer));
             case SP:
                 return mage.getSkillPoints() >= getSkillPoints(reducer);
+            case HEALTH:
+                LivingEntity living = mage.getLivingEntity();
+                return living != null && living.getHealth() >= getReducedCost(amount, reducer);
+            case HUNGER:
+                Player player = mage.getPlayer();
+                return player != null && player.getFoodLevel() >= getReducedCost(amount, reducer);
         }
         
         return false;
@@ -109,6 +122,17 @@ public class Cost implements com.elmakers.mine.bukkit.api.item.Cost {
                 break;
             case SP:
                 mage.addSkillPoints(-getSkillPoints(reducer));
+                break;
+            case HEALTH:
+                LivingEntity living = mage.getLivingEntity();
+                if (living != null) {
+                    living.setHealth(Math.max(0, living.getHealth() - getReducedCost(amount, reducer)));
+                }
+            case HUNGER:
+                Player player = mage.getPlayer();
+                if (player != null) {
+                    player.setFoodLevel(Math.max(0, player.getFoodLevel() - getRoundedCost(amount, reducer)));
+                }
                 break;
         }
     }
@@ -175,6 +199,10 @@ public class Cost implements com.elmakers.mine.bukkit.api.item.Cost {
                 return messages.get("costs.sp");
             case MANA:
                 return messages.get("costs.mana");
+            case HUNGER:
+                return messages.get("costs.hunger");
+            case HEALTH:
+                return messages.get("costs.health");
             case CURRENCY:
                 return messages.getCurrencyPlural();
         }
@@ -197,6 +225,10 @@ public class Cost implements com.elmakers.mine.bukkit.api.item.Cost {
                 return messages.get("costs.sp_amount").replace("$amount", ((Integer)(int)Math.ceil(getSkillPoints(reducer))).toString());
             case MANA:
                 return messages.get("costs.mana_amount").replace("$amount", ((Integer)(int)Math.ceil(getMana(reducer))).toString());
+            case HEALTH:
+                return messages.get("costs.health_amount").replace("$amount", ((Integer)(int)Math.ceil(getMana(reducer))).toString());
+            case HUNGER:
+                return messages.get("costs.hunger_amount").replace("$amount", ((Integer)(int)Math.ceil(getMana(reducer))).toString());
             case CURRENCY:
                 return messages.get("costs.currency_amount").replace("$amount", ((Integer)(int)Math.ceil(getCurrency(reducer))).toString());
         }
