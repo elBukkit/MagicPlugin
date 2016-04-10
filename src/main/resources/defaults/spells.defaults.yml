@@ -1168,6 +1168,7 @@ tag:
     icon: sign
     category: dark
     class: SignSpell
+    tags: noduel
     worth: 20
     earns_sp: 1
     effects:
