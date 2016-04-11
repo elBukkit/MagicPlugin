@@ -17,6 +17,7 @@ import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Collection;
+import java.util.Set;
 import java.util.UUID;
 import java.util.logging.Level;
 
@@ -65,6 +66,46 @@ public class InventoryUtils extends NMSUtils
         }
 
         return true;
+    }
+
+    public static boolean loadAllTagsFromNBT(ConfigurationSection tags, Object tag)
+    {
+        if (tag == null || class_NBTTagCompound_getKeysMethod == null) {
+            return false;
+        }
+
+        try {
+            Set<String> keys = (Set<String>)class_NBTTagCompound_getKeysMethod.invoke(tag);
+            for (String tagName : keys) {
+                Object metaBase = class_NBTTagCompound_getMethod.invoke(tag, tagName);
+                if (metaBase != null) {
+                    if (class_NBTTagCompound.isAssignableFrom(metaBase.getClass())) {
+                        ConfigurationSection newSection = tags.createSection(tagName);
+                        loadAllTagsFromNBT(newSection, metaBase);
+                    } else {
+                        tags.set(tagName, metaBase.toString());
+                    }
+                }
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return false;
+        }
+
+        return true;
+    }
+
+    public static boolean loadAllTagsFromNBT(ConfigurationSection tags, ItemStack item)
+    {
+        if (item == null) {
+            return false;
+        }
+        Object handle = getHandle(item);
+        if (handle == null) return false;
+        Object tag = getTag(handle);
+        if (tag == null) return false;
+
+        return loadAllTagsFromNBT(tags, tag);
     }
 
     public static boolean inventorySetItem(Inventory inventory, int index, ItemStack item) {
