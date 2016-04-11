@@ -1,5 +1,7 @@
 # TODO
  
+ - See if snow that falls on something undoable can undo?
+ - Prevent mine/chop from working on temporary blocks
  - lingering potions
   
  - Update CheckBlock to be a CompoundAction, or optionally send STOP
