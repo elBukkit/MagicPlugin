@@ -131,10 +131,6 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
 			if (!api.hasPermission(sender, commandPNode)) {
 				return options;
 			}
-			String subCommandPNode = "Magic.commands.mitem." + subCommand + "." + subCommand2;
-			if (!api.hasPermission(sender, subCommandPNode)) {
-				return options;
-			}
 
 			boolean isAddRemove = subCommand.equalsIgnoreCase("remove") || subCommand.equalsIgnoreCase("add");
 			if (isAddRemove && subCommand2.equalsIgnoreCase("enchant")) {
