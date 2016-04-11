@@ -1,6 +1,6 @@
 # CHANGELOG
 
-## 6.1
+## 6.0.10
 
  - Fix wand enchanting (when sp is disabled), was broken in 6.0.9
  - Update brooms, the boost power (space bar) will now directly affect speed.
