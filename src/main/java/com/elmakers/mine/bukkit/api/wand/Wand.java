@@ -50,6 +50,8 @@ public interface Wand extends CostReducer {
     public void unlock();
     public Wand duplicate();
     public Spell getSpell(String key);
+    public Spell getSpell(String key, Mage mage);
+    public SpellTemplate getSpellTemplate(String key);
     public boolean hasSpell(String key);
     public boolean hasBrush(String key);
     public boolean isLocked();
