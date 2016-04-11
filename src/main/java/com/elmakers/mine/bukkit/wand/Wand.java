@@ -4775,6 +4775,9 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
     }
 
     public Spell getSpell(String spellKey) {
+		if (mage == null) {
+			return null;
+		}
         SpellKey key = new SpellKey(spellKey);
         String baseKey = key.getBaseKey();
         Integer level = spellLevels.get(baseKey);
