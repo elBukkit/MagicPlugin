@@ -639,7 +639,7 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
                 }
                 return false;
             } else if (mage != null) { 
-                Spell spell =  wand.getSpell(prereq.getSpellKey().getKey());
+                Spell spell = wand.getSpell(prereq.getSpellKey().getKey(), mage);
                 if (!PrerequisiteSpell.isSpellSatisfyingPrerequisite(spell, prereq)) {
                     if (spell != null) {
                         String message = wand.getController().getMessages().get("spell.prerequisite_spell_level")
