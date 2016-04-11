@@ -9,11 +9,9 @@ import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.attribute.Attribute;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
@@ -65,7 +63,7 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
 		if (!checkItem(player)) {
 			return true;
 		}
-		ItemStack itemInHand = player.getInventory().getItemInMainHand();
+		ItemStack itemInHand = player.getInventory().getItemInHand();
 		String subCommand = args[0];
 		String[] args2 = Arrays.copyOfRange(args, 1, args.length);
 		return processItemCommand(player, itemInHand, subCommand, args2);
@@ -142,11 +140,6 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
 			if (isAddRemove && subCommand2.equalsIgnoreCase("enchant")) {
 				for (Enchantment enchantment : Enchantment.values()) {
 					options.add(enchantment.getName().toLowerCase());
-				}
-			}
-			if (isAddRemove && subCommand2.equalsIgnoreCase("attribute")) {
-				for (Attribute attribute : Attribute.values()) {
-					options.add(attribute.name().toLowerCase());
 				}
 			}
 			if (isAddRemove && subCommand2.equalsIgnoreCase("flag")) {
@@ -262,7 +255,7 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
 
 	protected boolean checkItem(Player player)
 	{
-		ItemStack itemInHand = player.getInventory().getItemInMainHand();
+		ItemStack itemInHand = player.getInventory().getItemInHand();
 		if (itemInHand == null || itemInHand.getType() == Material.AIR) {
 			player.sendMessage(api.getMessages().get("item.no_item"));
 			return false;
