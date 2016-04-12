@@ -80,7 +80,7 @@
 		<dependency>
 			<groupId>de.slikey</groupId>
 			<artifactId>EffectLib</artifactId>
-			<version>4.0</version>
+			<version>4.3-SNAPSHOT</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
