@@ -667,18 +667,6 @@ conduit:
     icon: wood_hoe:6
     migrate_icon: gold_pickaxe
     inherit: architect
-    max_mana_regeneration: 150
-    mana_regeneration:
-      1: 100, 30, 5
-      2: 20, 30, 40
-      3: 0 , 10, 10
-      5: 0 ,  0, 1
-    max_mana: 700
-    mana_max:
-      5:  100,10,  0
-      20: 20, 30, 50
-      30: 5 , 20, 30
-      50: 0 , 0,   5
     spell_count:
       1: 100, 0,   0
       2: 0,   50,  10
