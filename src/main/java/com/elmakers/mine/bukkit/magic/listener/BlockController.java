@@ -173,6 +173,7 @@ public class BlockController implements Listener {
                 }
             }
             targetBlock.setTypeIdAndData(Material.AIR.ordinal(), (byte) 0, false);
+            event.setCancelled(true);
         }
     }
 
