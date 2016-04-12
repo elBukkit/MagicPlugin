@@ -186,7 +186,7 @@ public class EntityProjectileAction extends CustomProjectileAction {
     @Override
     public SpellResult step(CastContext context) {
         if (entity == null) {
-            return null;
+            return SpellResult.FAIL;
         }
         SpellResult result = super.step(context);
         Location target = actionContext.getTargetLocation();

@@ -1,5 +1,7 @@
 # TODO
  
+ - Force and Blink passthrough broken (5.5 only, maybe?)
+ 
  - See if snow that falls on something undoable can undo?
  - Prevent mine/chop from working on temporary blocks
  - lingering potions
