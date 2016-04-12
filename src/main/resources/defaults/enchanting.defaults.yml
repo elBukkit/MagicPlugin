@@ -661,8 +661,6 @@ conduit:
       repair: 1,10,30
       superrepair: 0,0,5
       paste: 0,1,10
-      forest: 0,0,10
-      permafrost: 0,5,10
       anvil: 0,0,10
       day: 0,5,10
       night: 0,0,1
