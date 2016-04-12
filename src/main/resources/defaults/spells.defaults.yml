@@ -7628,7 +7628,7 @@ homing:
         player_damage: 4
         entity_damage: 6
         target_breakables: 1
-        cooldown: 5000
+        cooldown: 10000
         track_target: true
         lifetime: 20000
         target_self_timeout: 2000
