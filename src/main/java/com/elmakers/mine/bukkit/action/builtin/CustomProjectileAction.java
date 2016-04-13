@@ -592,6 +592,7 @@ public class CustomProjectileAction extends CompoundAction
             
             while (keepGoing)
             {
+                // TODO if all of these distance() calls are necessary, they should be optimized to distanceSquared()
             	if (targetingResult == Targeting.TargetingResult.MISS) {
             		keepGoing = false;
             	} 
@@ -612,7 +613,7 @@ public class CustomProjectileAction extends CompoundAction
             	}
             	else {
             		
-            		if(tempLocation.distance(projectileLocation)<targetLocation.distance(projectileLocation)) {
+            		if (tempLocation.distance(projectileLocation)<targetLocation.distance(projectileLocation)) {
             			tempLocation.add(velocity.clone().multiply(targetLocation.distance(projectileLocation)+0.1));
             		}
             		else {
@@ -623,6 +624,8 @@ public class CustomProjectileAction extends CompoundAction
                     actionContext.setTargetEntity(null);
                     actionContext.setDirection(velocity);
             		
+                    // TODO: This whole procedure, particularly retargeting, is going to be very costly
+                    // This is hopefully an easier way
                     targeting.start(tempLocation);
                     target = targeting.target(actionContext, distanceTravelledThisTick-tempLocation.distance(projectileLocation));
                     targetingResult = targeting.getResult();
@@ -709,6 +712,7 @@ public class CustomProjectileAction extends CompoundAction
         }
         
         if (distanceTravelled < minRange && targetingResult != null) {
+            // TODO : Should this be < ?
         	if (distanceTravelled >= minBlockRange && targetingResult == Targeting.TargetingResult.BLOCK) {
         		return miss();
         	}
