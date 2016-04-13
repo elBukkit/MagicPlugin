@@ -39,9 +39,9 @@ public class CustomProjectileAction extends CompoundAction
     private int lifetime;
     private int attachDuration;
     private int range;
-    private double min_range;
-    private double min_entity_range;
-    private double min_block_range;
+    private double minRange;
+    private double minEntityRange;
+    private double minBlockRange;
     private double speed;
     private VectorTransform velocityTransform;
     private double spread;
@@ -211,12 +211,12 @@ public class CustomProjectileAction extends CompoundAction
         reverseDirection = parameters.getBoolean("reverse", false);
         startDistance = parameters.getInt("start", 0);
         range = parameters.getInt("range", 0);
-        min_entity_range = parameters.getDouble("min_entity_range",0);
-        min_block_range = parameters.getDouble("min_block_range",0);
-        min_range = parameters.getDouble("min_entity_range",Math.max(min_entity_range,min_block_range));
+        minEntityRange = parameters.getDouble("min_entity_range",0);
+        minBlockRange = parameters.getDouble("min_block_range",0);
+        minRange = parameters.getDouble("min_entity_range", Math.max(minEntityRange, minBlockRange));
         
-        if(min_range<Math.max(min_entity_range,min_block_range)) {
-        	min_range = Math.max(min_entity_range,min_block_range);
+        if (minRange < Math.max(minEntityRange, minBlockRange)) {
+        	minRange = Math.max(minEntityRange, minBlockRange);
         }
         
         projectileEffectKey = parameters.getString("projectile_effects", "projectile");
@@ -586,31 +586,28 @@ public class CustomProjectileAction extends CompoundAction
             targetingResult = targeting.getResult();
             targetLocation = target.getLocation();
             
-            boolean keepGoing = distanceTravelled<min_range;
+            boolean keepGoing = distanceTravelled < minRange;
             Location tempLocation = projectileLocation.clone();
-            int iter = 0;
+            int checkIterations = 0;
             
-            while(keepGoing)
+            while (keepGoing)
             {
-            	if(targetingResult == Targeting.TargetingResult.MISS) {
+            	if (targetingResult == Targeting.TargetingResult.MISS) {
+            		keepGoing = false;
+            	} 
+                else if (targetingResult != null && targetLocation.distance(projectileLocation) + distanceTravelled >= minRange) {
+            		keepGoing = false;
+            	} 
+                else if (targetLocation.distance(projectileLocation) + distanceTravelled >= minEntityRange && targetingResult == Targeting.TargetingResult.ENTITY) {
             		keepGoing = false;
             	}
-            	else if(targetingResult != null && targetLocation.distance(projectileLocation)+distanceTravelled >= min_range) {
+            	else if (targetLocation.distance(projectileLocation) + distanceTravelled >= minBlockRange && targetingResult == Targeting.TargetingResult.BLOCK) {
             		keepGoing = false;
             	}
-            	else if(targetLocation.distance(projectileLocation)+distanceTravelled >= min_entity_range && targetingResult == Targeting.TargetingResult.ENTITY)
-            	{
+            	else if (targetLocation.distance(projectileLocation) >= distanceTravelledThisTick) {
             		keepGoing = false;
             	}
-            	else if(targetLocation.distance(projectileLocation)+distanceTravelled >= min_block_range && targetingResult == Targeting.TargetingResult.BLOCK)
-            	{
-            		keepGoing = false;
-            	}
-            	else if(targetLocation.distance(projectileLocation) >= distanceTravelledThisTick)
-            	{
-            		keepGoing = false;
-            	}
-            	else if(iter > 1000) {
+            	else if(checkIterations > 1000) {
             		keepGoing = false;
             	}
             	else {
@@ -630,7 +627,7 @@ public class CustomProjectileAction extends CompoundAction
                     target = targeting.target(actionContext, distanceTravelledThisTick-tempLocation.distance(projectileLocation));
                     targetingResult = targeting.getResult();
                     targetLocation = target.getLocation();
-                    iter++;
+                    checkIterations++;
             	}
             }
         }
@@ -711,12 +708,12 @@ public class CustomProjectileAction extends CompoundAction
             return miss();
         }
         
-        if(distanceTravelled<min_range && targetingResult != null) {
-        	if(distanceTravelled>=min_block_range && targetingResult == Targeting.TargetingResult.BLOCK) {
+        if (distanceTravelled < minRange && targetingResult != null) {
+        	if (distanceTravelled >= minBlockRange && targetingResult == Targeting.TargetingResult.BLOCK) {
         		return miss();
         	}
         	
-        	if(distanceTravelled>=min_entity_range && targetingResult == Targeting.TargetingResult.ENTITY) {
+        	if (distanceTravelled >= minEntityRange && targetingResult == Targeting.TargetingResult.ENTITY) {
         		return miss();
         	}
         }
