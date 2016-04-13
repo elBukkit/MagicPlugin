@@ -147,9 +147,12 @@ commands:
         /mitem remove     Remove enchantments, attributes or lore
         /mitem describe   Show information about an item
         /mitem duplicate  Create a copy of an item
+        /mitem skull      Create a custom skull based on data in a book
         /mitem save       Save an item as a new template
         /mitem delete     Delete a saved item
         /mitem worth      Show the value of an item
+        /mitem type       Change the type of an item
+        /mitem export     Export all items, names and worth a CSV file
     permission: Magic.commands.mitem
   "mitem add":
     description: Add enchantments, attributes or lore to an item
@@ -180,6 +183,16 @@ commands:
        /mitem save <key> [worth]
        /mitem save mycustomitem
        /mitem save mycustomitem 1000
+  "mitem export":
+    description: Save a list of items to a CSV file
+    usage: |
+       /mitem export items
+  "mitem type":
+    description: Change the type of an item
+    usage: |
+       /mitem type <material>[:data]
+       /mitem type gold_nugget
+       /mitem type wool:12
     permission: Magic.commands.mitem.save
   "mitem delete":
     description: Delete a saved item
@@ -316,7 +329,7 @@ commands:
         /mmob spawn mutant                Spawn a custom Mutant mob
         /mmob spawn mutant 0 64 0 world   Spawn at a location
         /mmob spawn creeper               Spawn a vanilla creeper
-        /mmob clear                       Remove all tracked mobs
+        /mmob list                        List custom mob types
   mmap:
     description: Create and manage Magic image maps
     permission: Magic.commands.mmap
@@ -609,6 +622,10 @@ permissions:
     description: Player may save an item to a new template
     type: boolean
     default: op
+  Magic.commands.mitem.export:
+    description: Player may export all items to a CSV file
+    type: boolean
+    default: op
   Magic.commands.mitem.delete:
     description: Player may delete a saved item template
     type: boolean
@@ -626,6 +643,15 @@ permissions:
     type: boolean
     default: op
     permission: Magic.commands.mitem.worth
+  Magic.commands.mitem.type:
+    description: Player may change the type of an item
+    type: boolean
+    default: op
+  Magic.commands.mitem.skull:
+    description: Player may create a player skull from a written book
+    type: boolean
+    default: op
+    permission: Magic.commands.mitem.type
   Magic.commands.magic:
     description: Player may reload the configuration
     type: boolean

@@ -88,6 +88,7 @@ paths:
     blaster:
         name: Blaster
         description: Blaster upgrades
+        
 item:
     duplicated: Your item has been duplicated
     no_item: You must be holding an item!
@@ -110,6 +111,9 @@ item:
     enchant_added: "Added the $enchant enchantment to your item"
     enchant_not_added: "Did not add the $enchant enchantment to your item"
     enchant_unsafe: "You do not have permission to add unsafe enchantments"
+    skull: Your book has been turned into a skull
+    skull_no_book: You must hold a written book with skull data in it
+    skull_invalid_book: "That book does not have skull data in it! Paste in just the text in 'Textures.Value', it is a long string of random characters normally ending in =="
 wand:
     default_name: Wand
     upgrade_default_description: Will upgrade your wand.
@@ -1339,7 +1343,12 @@ spells:
         upgrade_description: "&r&b&bull; &6Unlock marker, aim down to set location."
         usage: Has a 5-second warmup. Cast down to set a marker
     warpunlock:
+      name: Unlock Warp
+      description: Useful in command blocks or region commands to unlock Recall waypoints when a player discovers an area
       cooldown: ""
+    warpmenu:
+      name: Warp Menu
+      description: Essentially identical to Recall, can be used in NPCs or command blocks so players don't get cast credit for Recall when using a warp menu
     levitate:
         name: Levitate
         description: Levitate yourself up into the air
