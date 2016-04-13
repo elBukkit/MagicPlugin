@@ -147,6 +147,7 @@ commands:
         /mitem remove     Remove enchantments, attributes or lore
         /mitem describe   Show information about an item
         /mitem duplicate  Create a copy of an item
+        /mitem skull      Create a custom skull based on data in a book
         /mitem save       Save an item as a new template
         /mitem delete     Delete a saved item
         /mitem worth      Show the value of an item
@@ -649,6 +650,10 @@ permissions:
     permission: Magic.commands.mitem.worth
   Magic.commands.mitem.type:
     description: Player may change the type of an item
+    type: boolean
+    default: op
+  Magic.commands.mitem.skull:
+    description: Player may create a player skull from a written book
     type: boolean
     default: op
     permission: Magic.commands.mitem.type

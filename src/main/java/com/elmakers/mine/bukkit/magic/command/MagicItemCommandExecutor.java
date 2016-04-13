@@ -5,6 +5,7 @@ import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.magic.MagicAPI;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.integration.VaultController;
+import com.elmakers.mine.bukkit.utility.Base64Coder;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import org.apache.commons.lang.StringUtils;
@@ -20,6 +21,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.inventory.meta.BookMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.io.File;
@@ -90,6 +92,7 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
 			addIfPermissible(sender, options, "Magic.commands.mitem.", "delete");
 			addIfPermissible(sender, options, "Magic.commands.mitem.", "worth");
 			addIfPermissible(sender, options, "Magic.commands.mitem.", "type");
+			addIfPermissible(sender, options, "Magic.commands.mitem.", "skull");
 		}
 
 		if (args.length == 2) 
@@ -228,6 +231,10 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
 		{
 			return onItemExport(player, item, args);
 		}
+		else if (subCommand.equalsIgnoreCase("skull"))
+		{
+			return onItemSkull(player, item);
+		}
 		
 		return false;
 	}
@@ -345,6 +352,49 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
 		api.giveItemToPlayer(player, newItem);
 
 		player.sendMessage(api.getMessages().get("item.duplicated"));
+		return true;
+	}
+
+	public boolean onItemSkull(Player player, ItemStack item)
+	{
+		if (item.getType() != Material.BOOK_AND_QUILL) {
+			player.sendMessage(api.getMessages().get("item.skull_no_book"));
+			return true;
+		}
+		
+		ItemMeta meta = item.getItemMeta();
+		if (meta == null || !(meta instanceof BookMeta)) {
+			player.sendMessage(api.getMessages().get("item.skull_invalid_book"));
+			return true;
+		}
+		
+		BookMeta bookMeta = (BookMeta)meta;
+		List<String> pages = bookMeta.getPages();
+		if (pages.isEmpty()) {
+			player.sendMessage(api.getMessages().get("item.skull_invalid_book"));
+			return true;
+		}
+		
+		String pageText = pages.get(0);
+		try {
+			String decoded = Base64Coder.decodeString(pageText);
+			if (decoded == null || decoded.isEmpty()) {
+				player.sendMessage(api.getMessages().get("item.skull_invalid_book"));
+				return true;
+			}
+			String url = decoded.replace("\"", "").replace("{textures:{SKIN:{url:", "").replace("}}}", "").trim();
+			ItemStack skullItem = InventoryUtils.getURLSkull(url);
+			if (skullItem == null) {
+				player.sendMessage(api.getMessages().get("item.skull_invalid_book"));
+				return true;
+			}
+			player.setItemInHand(skullItem);
+		} catch (Exception ex) {
+			player.sendMessage(api.getMessages().get("item.skull_invalid_book"));
+			return true;
+		}
+
+		player.sendMessage(api.getMessages().get("item.skull"));
 		return true;
 	}
 
