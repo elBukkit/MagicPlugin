@@ -187,6 +187,10 @@ commands:
     description: Save a list of items to a CSV file
     usage: |
        /mitem export items
+  "mitem skull":
+    description: Convert a book containing skull profile data to a skull
+    usage: |
+       /mitem skull
   "mitem type":
     description: Change the type of an item
     usage: |
