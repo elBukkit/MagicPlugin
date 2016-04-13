@@ -713,12 +713,10 @@ public class CustomProjectileAction extends CompoundAction
         
         if(distanceTravelled<min_range && targetingResult != null) {
         	if(distanceTravelled>=min_block_range && targetingResult == Targeting.TargetingResult.BLOCK) {
-        		Bukkit.getConsoleSender().sendMessage(ChatColor.RED+ "hit a block");
         		return miss();
         	}
         	
         	if(distanceTravelled>=min_entity_range && targetingResult == Targeting.TargetingResult.ENTITY) {
-        		Bukkit.getConsoleSender().sendMessage(ChatColor.RED+ "hit an entity");
         		return miss();
         	}
         }
