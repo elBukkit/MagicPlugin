@@ -1,0 +1,17 @@
+#
+# Set up for a permissions-based server.
+
+# Don't allow crafting
+enable_crafting: false
+
+# Don't allow combining
+enable_combining: false
+
+# Don't allow enchanting
+enable_enchanting: false
+
+# Disable the SP system
+sp_enabled: false
+
+# Will wands with a player's available spells on creation
+fill_wands: true
