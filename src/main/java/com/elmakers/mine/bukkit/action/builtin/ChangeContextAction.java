@@ -56,7 +56,7 @@ public class ChangeContextAction extends CompoundAction {
         sourceDirection = ConfigurationUtils.getVector(parameters, "source_direction");
         targetDirection = ConfigurationUtils.getVector(parameters, "target_direction");
         sourceDirectionOffset = ConfigurationUtils.getVector(parameters, "source_direction_offset");
-        targetDirectionOffset = ConfigurationUtils.getVector(parameters, "source_direction_offset");
+        targetDirectionOffset = ConfigurationUtils.getVector(parameters, "target_direction_offset");
         persistTarget = parameters.getBoolean("persist_target", false);
         attachBlock = parameters.getBoolean("target_attachment", false);
         snapTargetToSize = parameters.getInt("target_snap", 0);
