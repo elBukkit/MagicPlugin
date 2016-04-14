@@ -1,6 +1,7 @@
 # TODO
  
  - Force and Blink passthrough broken (5.5 only, maybe?)
+ - Use Entity tags ("Tags" tag, NBTList, see nms.Entity.P()) for tracking magic mobs
  
  - See if snow that falls on something undoable can undo?
  - Prevent mine/chop from working on temporary blocks
