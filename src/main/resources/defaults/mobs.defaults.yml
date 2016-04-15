@@ -51,7 +51,7 @@
 warlock:
   type: zombie
   villager_profession: butcher
-  item: wood_hoe
+  item: warlock_wand
   chestplate: warlock_chestplate
   leggings: warlock_leggings
   helmet: chainmail_helmet

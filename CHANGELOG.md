@@ -2,6 +2,8 @@
 
 ## 6.1
 
+ - Fix warlock wand appearance
+
 ## 6.0.11
 
  - Don't allow water spreading when water naturally flows as a result of magic
