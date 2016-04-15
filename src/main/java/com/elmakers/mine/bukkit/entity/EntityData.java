@@ -337,11 +337,13 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         MaterialAndData itemData = ConfigurationUtils.getMaterialAndData(parameters, "item");
         item = itemData == null ? null : itemData.getItemStack(parameters.getInt("amount", 1));
         
-        itemInHand = controller.getOrCreateItem(parameters.getString("item"));
-        helmet = controller.getOrCreateItem(parameters.getString("helmet"));
-        chestplate = controller.getOrCreateItem(parameters.getString("chestplate"));
-        leggings = controller.getOrCreateItem(parameters.getString("leggings"));
-        boots = controller.getOrCreateItem(parameters.getString("boots"));
+        if (controller != null) {
+            itemInHand = controller.getOrCreateItem(parameters.getString("item"));
+            helmet = controller.getOrCreateItem(parameters.getString("helmet"));
+            chestplate = controller.getOrCreateItem(parameters.getString("chestplate"));
+            leggings = controller.getOrCreateItem(parameters.getString("leggings"));
+            boots = controller.getOrCreateItem(parameters.getString("boots"));
+        }
     }
 
     public static EntityData loadPainting(Vector location, Art art, BlockFace direction) {
