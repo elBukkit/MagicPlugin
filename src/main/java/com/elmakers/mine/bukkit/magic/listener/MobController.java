@@ -93,7 +93,9 @@ public class MobController implements Listener {
         MagicMobDeathEvent deathEvent = new MagicMobDeathEvent(controller, mob, event);
         Bukkit.getPluginManager().callEvent(deathEvent);
 
-        mob.modifyDrops(controller, event);
+        if (!died.hasMetadata("nodrops")) {
+            mob.modifyDrops(controller, event);
+        }
 
         // Prevent double-deaths .. gg Mojang?
         // Kind of hacky to use this flag for it, but seemed easiest
