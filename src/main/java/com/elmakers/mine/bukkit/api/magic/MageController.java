@@ -330,6 +330,7 @@ public interface MageController {
     
     public Set<String> getItemKeys();
     public ItemData getItem(String key);
+    public ItemData getOrCreateItem(String key);
     public ItemData getItem(ItemStack match);
     public void unloadItemTemplate(String key);
     public void loadItemTemplate(String key, ConfigurationSection itemNode);
