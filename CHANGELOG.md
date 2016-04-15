@@ -4,6 +4,8 @@
 
  - Fix warlock wand appearance
  - Add /mitem add/remove unplaceable command, for making a block unplaceable
+ - Add Dark Wizard, Mega Spider and Dark Spider mobs
+ - Add Webbing spell (for spider mobs)
 
 ## 6.0.11
 

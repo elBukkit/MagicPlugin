@@ -1585,6 +1585,10 @@ spells:
         description: Stun and damage your target
         cast: You throw a stun ball
         upgrade_description: "&r&b&bull; &6Increased damage and stun duration"
+    webbing:
+        name: Web Attack
+        description: An annoying spider attack
+        cast_player_message: "&r&5You got caught in &d&o$player&r&5's web"
     lift:
         name: Lift
         description: Lift up your target

@@ -143,3 +143,84 @@ undead_minion:
   item: iron_sword
   name: Undead Minion
   health: 50
+  
+dark_wizard:
+  name: Dark Wizard
+  type: zombie
+  zombie_type: villager
+  item: wizard_wand
+  chestplate: warlock_chestplate
+  leggings: warlock_leggings
+  helmet: iron_helmet
+  boots: warlock_boots
+  health: 1000
+  default_drops: false
+  cast_interval: 1000
+  cast:
+    missile|4: 20
+    railgun: 10
+    poison: 30
+    pull: 100
+    push|4: 150
+    curse: 100
+    blob: 20
+    lava: 10
+    shell: 20
+    torture: 1
+    arrow: 50
+    arrowrain: 20
+    fury: 5
+    chainlightning: 2
+    blink: 10
+    fling: 50
+    blind: 10
+    disarm: 5
+    frost|2: 10
+    gatling: 5
+    homing: 10
+    petrify: 10
+    none: 20
+  drops:
+  - gold_ingot@24
+  - sp:100
+  potion_effects:
+  - type: speed
+    amplifier: 1
+    
+dark_spider:
+  type: cave_spider
+  name: Dark Spider
+  health: 100
+  default_drops: false
+  cast_interval: 1000
+  cast:
+    webbing: 100
+    poison|3: 100
+    none: 50
+  drops:
+  - gold_nugget@8
+  - sp:8
+  potion_effects:
+  - type: speed
+    amplifier: 1
+  - type: increase_damage
+    amplifier: 2
+    
+mega_spider:
+  type: spider
+  name: Mega Spider
+  health: 200
+  default_drops: false
+  cast_interval: 1000
+  cast:
+    webbing: 100
+    poison|3: 100
+    none: 50
+  drops:
+  - gold_nugget@10
+  - sp:10
+  potion_effects:
+  - type: speed
+    amplifier: 0
+  - type: increase_damage
+    amplifier: 3
