@@ -17,6 +17,22 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData {
     private String creatorId;
     private String creator;
     
+    public ItemData(ItemStack itemStack) {
+        this.item = NMSUtils.getCopy(itemStack);
+        this.key = itemStack.getType().toString();
+    }
+    
+    public ItemData(String materialKey) throws Exception {
+        MaterialAndData material = new MaterialAndData(materialKey);
+        if (material.isValid()) {
+            item = material.getItemStack(1);
+        }
+        if (item == null) {
+            throw new Exception("Invalid item key: " + materialKey);
+        }
+        key = materialKey;
+    }
+    
     public ItemData(String key, ConfigurationSection configuration) throws Exception {
         if (configuration.isItemStack("item")) {
             item = configuration.getItemStack("item");

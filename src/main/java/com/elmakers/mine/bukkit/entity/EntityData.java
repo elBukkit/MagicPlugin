@@ -11,6 +11,7 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.logging.Level;
 
+import com.elmakers.mine.bukkit.api.item.ItemData;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.spell.Spell;
@@ -104,11 +105,11 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     protected boolean isLiving = false;
     protected boolean isProjectile = false;
 
-    protected MaterialAndData itemInHand;
-    protected MaterialAndData helmet;
-    protected MaterialAndData chestplate;
-    protected MaterialAndData leggings;
-    protected MaterialAndData boots;
+    protected ItemData itemInHand;
+    protected ItemData helmet;
+    protected ItemData chestplate;
+    protected ItemData leggings;
+    protected ItemData boots;
     
     protected Integer xp;
     protected Integer dropXp;
@@ -213,8 +214,8 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         }
     }
     
-    private MaterialAndData getItem(ItemStack item) {
-        return item == null ? null : new MaterialAndData(item);
+    private ItemData getItem(ItemStack item) {
+        return item == null ? null : new com.elmakers.mine.bukkit.item.ItemData(item);
     }
 
     public EntityData(EntityType type) {
@@ -336,11 +337,11 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         MaterialAndData itemData = ConfigurationUtils.getMaterialAndData(parameters, "item");
         item = itemData == null ? null : itemData.getItemStack(parameters.getInt("amount", 1));
         
-        itemInHand = ConfigurationUtils.getMaterialAndData(parameters, "item");
-        helmet = ConfigurationUtils.getMaterialAndData(parameters, "helmet");
-        chestplate = ConfigurationUtils.getMaterialAndData(parameters, "chestplate");
-        leggings = ConfigurationUtils.getMaterialAndData(parameters, "leggings");
-        boots = ConfigurationUtils.getMaterialAndData(parameters, "boots");
+        itemInHand = controller.getOrCreateItem(parameters.getString("item"));
+        helmet = controller.getOrCreateItem(parameters.getString("helmet"));
+        chestplate = controller.getOrCreateItem(parameters.getString("chestplate"));
+        leggings = controller.getOrCreateItem(parameters.getString("leggings"));
+        boots = controller.getOrCreateItem(parameters.getString("boots"));
     }
 
     public static EntityData loadPainting(Vector location, Art art, BlockFace direction) {

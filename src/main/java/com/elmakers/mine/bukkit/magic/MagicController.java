@@ -1552,11 +1552,11 @@ public class MagicController implements MageController {
         messages.load(loader.messages);
         loadMaterials(loader.materials);
 
-        mobs.load(loader.mobs);
-        getLogger().info("Loaded " + mobs.getCount() + " mob templates");
-
         items.load(loader.items);
         getLogger().info("Loaded " + items.getCount() + " items");
+
+        mobs.load(loader.mobs);
+        getLogger().info("Loaded " + mobs.getCount() + " mob templates");
 
         loadSpells(loader.spells);
         getLogger().info("Loaded " + spells.size() + " spells");
@@ -4381,6 +4381,14 @@ public class MagicController implements MageController {
     @Override
     public ItemData getItem(String key) {
         return items.get(key);
+    }
+    
+    @Override
+    public ItemData getOrCreateItem(String key) {
+        if (key == null) {
+            return null;
+        }
+        return items.getOrCreate(key);
     }
     
     @Override
