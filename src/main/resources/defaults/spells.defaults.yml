@@ -6719,6 +6719,7 @@ warpmenu:
       alternate_sneak:
   parameters:
       cooldown: 500
+      allow_marker: false
 
 # Use this with /castp <player> warpunlock unlock <warp>
 # This can be done, for example, on region enter using the WGRegionEvents plugin
@@ -6739,6 +6740,7 @@ warpunlock:
        firework: star
   parameters:
       cooldown: 5000
+      allow_marker: false
 
 respawn:
     hidden: true
