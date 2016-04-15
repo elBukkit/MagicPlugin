@@ -39,7 +39,7 @@ public class MagicMobCommandExecutor extends MagicTabExecutor {
 
         if (args.length == 0)
 		{
-            sender.sendMessage(ChatColor.RED + "Usage: mmob [spawn|clear] <type>");
+            sender.sendMessage(ChatColor.RED + "Usage: mmob [spawn|list] <type>");
 			return true;
 		}
         
@@ -51,7 +51,7 @@ public class MagicMobCommandExecutor extends MagicTabExecutor {
 
         if (!args[0].equalsIgnoreCase("spawn") || args.length < 2)
         {
-            sender.sendMessage(ChatColor.RED + "Usage: mmob [spawn|clear] <type>");
+            sender.sendMessage(ChatColor.RED + "Usage: mmob [spawn|list] <type>");
             return true;
         }
 
