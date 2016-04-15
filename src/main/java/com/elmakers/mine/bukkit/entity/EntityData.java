@@ -530,13 +530,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         else if (this.location == null) return null;
         Entity spawned = trySpawn(reason);
         if (spawned != null) {
-            modify(spawned);
-            if (controller != null && spells != null && tickInterval >= 0) {
-                Mage apiMage = controller.getMage(spawned);
-                if (apiMage instanceof com.elmakers.mine.bukkit.magic.Mage) {
-                    ((com.elmakers.mine.bukkit.magic.Mage)apiMage).setEntityData(this);
-                }
-            }
+            modify(controller, spawned);
         }
 
         return spawned;
@@ -567,7 +561,12 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
 
     @Override
     public boolean modify(Entity entity) {
-        if (entity == null || entity.getType() != type || !entity.isValid()) return false;
+        return modify(null, entity);
+    }
+
+    @Override
+    public boolean modify(MageController controller, Entity entity) {
+        if (entity == null || entity.getType() != type) return false;
 
         boolean isPlayer = (entity instanceof Player);
         if (extraData != null) {
@@ -665,6 +664,13 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
 
         if (hasVelocity && velocity != null) {
             entity.setVelocity(velocity);
+        }
+
+        if (controller != null && spells != null && tickInterval >= 0) {
+            Mage apiMage = controller.getMage(entity);
+            if (apiMage instanceof com.elmakers.mine.bukkit.magic.Mage) {
+                ((com.elmakers.mine.bukkit.magic.Mage)apiMage).setEntityData(this);
+            }
         }
 
         return true;
