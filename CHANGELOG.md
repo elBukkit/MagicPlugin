@@ -1,5 +1,7 @@
 # CHANGELOG
 
+## 5.5.6
+
 ## 5.5.5
 
  - Falling blocks won't cause physics updates if the spell that launched them doesn't
