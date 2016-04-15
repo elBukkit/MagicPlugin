@@ -3,6 +3,7 @@
 ## 6.1
 
  - Fix warlock wand appearance
+ - Add /mitem add/remove unplaceable command, for making a block unplaceable
 
 ## 6.0.11
 
