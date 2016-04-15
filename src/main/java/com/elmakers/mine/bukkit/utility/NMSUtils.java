@@ -901,6 +901,42 @@ public class NMSUtils {
         }
     }
 
+    public static void setMetaLong(Object node, String tag, long value) {
+        if (node == null|| !class_NBTTagCompound.isInstance(node)) return;
+        try {
+            class_NBTTagCompound_setLongMethod.invoke(node, tag, value);
+        } catch (Throwable ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public static void setMetaBoolean(Object node, String tag, boolean value) {
+        if (node == null|| !class_NBTTagCompound.isInstance(node)) return;
+        try {
+            class_NBTTagCompound_setBooleanMethod.invoke(node, tag, value);
+        } catch (Throwable ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public static void setMetaDouble(Object node, String tag, double value) {
+        if (node == null|| !class_NBTTagCompound.isInstance(node)) return;
+        try {
+            class_NBTTagCompound_setDoubleMethod.invoke(node, tag, value);
+        } catch (Throwable ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public static void setMetaInt(Object node, String tag, int value) {
+        if (node == null|| !class_NBTTagCompound.isInstance(node)) return;
+        try {
+            class_NBTTagCompound_setIntMethod.invoke(node, tag, value);
+        } catch (Throwable ex) {
+            ex.printStackTrace();
+        }
+    }
+
     public static void removeMeta(Object node, String tag) {
         if (node == null|| !class_NBTTagCompound.isInstance(node)) return;
         try {
