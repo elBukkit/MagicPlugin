@@ -55,6 +55,18 @@ public class ItemController implements Listener {
         return items.get(key);
     }
 
+    public ItemData getOrCreate(String key) {
+        ItemData data = get(key);
+        if (data == null) {
+            try {
+                data = new ItemData(key);
+            } catch (Exception ex) {
+                controller.getLogger().log(Level.WARNING, "Error creating item: " + key, ex);
+            }
+        }
+        return data;
+    }
+
     public ItemData get(ItemStack item) {
         return itemsByStack.get(item);
     }

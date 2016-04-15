@@ -6,6 +6,7 @@
    This fixes a server-crashing issue with player skulls and flowing water (Triggers internal Spigot bug)
  - Add support for custom mob spawners that spawn magic mobs
  - Add spawnershop and custom mob spawners (including Warlocks) 
+ - Warlocks now have fall protection and thorns armor
 
 ## 6.0.10
 

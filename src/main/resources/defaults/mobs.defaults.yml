@@ -52,10 +52,10 @@ warlock:
   type: zombie
   villager_profession: butcher
   item: wood_hoe
-  chestplate: chainmail_chestplate
-  leggings: chainmail_leggings
+  chestplate: warlock_chestplate
+  leggings: warlock_leggings
   helmet: chainmail_helmet
-  boots: chailmail_boots
+  boots: warlock_boots
   name: Warlock
   health: 200
   default_drops: false
