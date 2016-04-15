@@ -1673,6 +1673,10 @@ spells:
         name: Wand Shop
         title: "Wands ($balance)"
         description: Buy Wands
+    spawnershop:
+        name: Spawner Shop
+        title: "Spawners ($balance)"
+        description: Buy Mob Spawners
     broomshop:
         name: Broom Shop
         title: "Brooms ($balance)"

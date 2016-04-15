@@ -70,10 +70,10 @@ diamond_block:
   worth: 144
   
 emerald:
-  worth: 32
+  worth: 100
   
 emerald_block:
-  worth: 288
+  worth: 900
   
 # Some fun player skulls for decorating with
 present_green:
@@ -141,3 +141,105 @@ popcorn:
   worth: 10
   name: Popcorn
   
+# Mob spawners     
+warlockspawner:
+  worth: 50000.0
+  item:
+    type: MOB_SPAWNER
+    tags:
+      display:
+        Name: Warlock Spawner
+      BlockEntityTag:
+        SpawnPotentials: []
+        SpawnCount: 1
+        MaxNearbyEntities: 5
+        SpawnRange: 8
+        Delay: 100
+        MinSpawnDelay: 200
+        MaxSpawnDelay: 500
+        RequiredPlayerRange: 12
+        EntityId: Zombie
+        SpawnData:
+          id: Zombie
+          CustomName: Warlock
+          IsVillager: 1
+          
+cavespiderspawner:
+  worth: 20000.0
+  item:
+    type: MOB_SPAWNER
+    tags:
+      display:
+        Name: Cave Spider Spawner
+      BlockEntityTag:
+        SpawnPotentials: []
+        SpawnCount: 1
+        MaxNearbyEntities: 5
+        SpawnRange: 8
+        Delay: 100
+        MinSpawnDelay: 200
+        MaxSpawnDelay: 500
+        RequiredPlayerRange: 12
+        EntityId: CaveSpider
+        SpawnData:
+          id: CaveSpider
+             
+spiderspawner:
+  worth: 20000.0
+  item:
+    type: MOB_SPAWNER
+    tags:
+      display:
+        Name: Spider Spawner
+      BlockEntityTag:
+        SpawnPotentials: []
+        SpawnCount: 1
+        MaxNearbyEntities: 5
+        SpawnRange: 8
+        Delay: 100
+        MinSpawnDelay: 200
+        MaxSpawnDelay: 500
+        RequiredPlayerRange: 12
+        EntityId: Spider
+        SpawnData:
+          id: Spider
+                
+zombiespawner:
+  worth: 20000.0
+  item:
+    type: MOB_SPAWNER
+    tags:
+      display:
+        Name: Zombie Spawner
+      BlockEntityTag:
+        SpawnPotentials: []
+        SpawnCount: 1
+        MaxNearbyEntities: 5
+        SpawnRange: 8
+        Delay: 100
+        MinSpawnDelay: 200
+        MaxSpawnDelay: 500
+        RequiredPlayerRange: 12
+        EntityId: Zombie
+        SpawnData:
+          id: Zombie
+                  
+skeletonspawner:
+  worth: 20000.0
+  item:
+    type: MOB_SPAWNER
+    tags:
+      display:
+        Name: Skeleton Spawner
+      BlockEntityTag:
+        SpawnPotentials: []
+        SpawnCount: 1
+        MaxNearbyEntities: 5
+        SpawnRange: 8
+        Delay: 100
+        MinSpawnDelay: 200
+        MaxSpawnDelay: 500
+        RequiredPlayerRange: 12
+        EntityId: Skeleton
+        SpawnData:
+          id: Skeleton

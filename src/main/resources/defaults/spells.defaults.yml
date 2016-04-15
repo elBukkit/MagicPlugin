@@ -9297,6 +9297,21 @@ sellshop:
         use_items: false
         sell: true
 
+spawnershop:
+  inherit: buyshop
+  parameters:
+    items:
+    - item: warlockspawner
+      cost: 50000
+    - item: spiderspawner
+      cost: 10000
+    - item: skeletonspawner
+      cost: 10000
+    - item: zombiespawner
+      cost: 10000
+    - item: cavespiderspawner
+      cost: 10000
+
 automatashop:
     icon: command
     category: npc

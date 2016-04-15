@@ -24,6 +24,7 @@
  - Add "trinketshop" including several decorative player skulls (try /mgive aquarium)
  - Add /mmob list command, to list all custom mob types. Tab-complete now includes vanilla mobs.
  - Add support for custom mob spawners that spawn magic mobs
+ - Add spawnershop and custom mob spawners (including Warlocks) 
 
 ## 5.5.4
 
