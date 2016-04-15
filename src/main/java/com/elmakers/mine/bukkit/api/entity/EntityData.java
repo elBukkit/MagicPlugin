@@ -22,6 +22,7 @@ public interface EntityData {
     public Entity spawn(Location location);
     public Entity spawn(MageController controller, Location location);
     public Entity undo();
+    public boolean modify(MageController controller, Entity entity);
     public boolean modify(Entity entity);
     public EntityData getRelativeTo(Location center);
     public String describe();
