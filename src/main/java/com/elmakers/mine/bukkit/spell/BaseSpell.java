@@ -170,7 +170,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
 
     protected double cancelOnDamage             = 0;
     protected boolean pvpRestricted           	= false;
-    protected boolean disguiseRestricted        = true;
+    protected boolean disguiseRestricted        = false;
     protected boolean worldBorderRestricted     = true;
     protected boolean usesBrushSelection        = false;
     protected boolean bypassFriendlyFire    	= false;
@@ -831,7 +831,7 @@ public abstract class BaseSpell implements MageSpell, Cloneable {
         activeCosts = parseCosts(node.getConfigurationSection("active_costs"));
         pvpRestricted = node.getBoolean("pvp_restricted", false);
         quickCast = node.getBoolean("quick_cast", false);
-        disguiseRestricted = node.getBoolean("disguise_restricted", true);
+        disguiseRestricted = node.getBoolean("disguise_restricted", false);
         worldBorderRestricted = node.getBoolean("world_border_restricted", false);
         usesBrushSelection = node.getBoolean("brush_selection", false);
         castOnNoTarget = node.getBoolean("cast_on_no_target", true);
