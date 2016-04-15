@@ -136,6 +136,8 @@ public class NMSUtils {
     protected static Method class_World_explodeMethod;
     protected static Method class_NBTTagCompound_setBooleanMethod;
     protected static Method class_NBTTagCompound_setStringMethod;
+    protected static Method class_NBTTagCompound_setDoubleMethod;
+    protected static Method class_NBTTagCompound_setLongMethod;
     protected static Method class_NBTTagCompound_setIntMethod;
     protected static Method class_NBTTagCompound_removeMethod;
     protected static Method class_NBTTagCompound_getStringMethod;
@@ -332,6 +334,8 @@ public class NMSUtils {
             class_World_explodeMethod = class_World.getMethod("createExplosion", class_Entity, Double.TYPE, Double.TYPE, Double.TYPE, Float.TYPE, Boolean.TYPE, Boolean.TYPE);
             class_NBTTagCompound_setBooleanMethod = class_NBTTagCompound.getMethod("setBoolean", String.class, Boolean.TYPE);
             class_NBTTagCompound_setStringMethod = class_NBTTagCompound.getMethod("setString", String.class, String.class);
+            class_NBTTagCompound_setDoubleMethod = class_NBTTagCompound.getMethod("setDouble", String.class, Double.TYPE);
+            class_NBTTagCompound_setLongMethod = class_NBTTagCompound.getMethod("setLong", String.class, Long.TYPE);
             class_NBTTagCompound_setIntMethod = class_NBTTagCompound.getMethod("setInt", String.class, Integer.TYPE);
             class_NBTTagCompound_removeMethod = class_NBTTagCompound.getMethod("remove", String.class);
             class_NBTTagCompound_getStringMethod = class_NBTTagCompound.getMethod("getString", String.class);
