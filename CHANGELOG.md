@@ -2,6 +2,8 @@
 
 ## 5.5.6
 
+ - Add /mitem add/remove unplaceable command, for making a block unplaceable
+
 ## 5.5.5
 
  - Don't allow water spreading when water naturally flows as a result of magic This fixes a server-crashing issue with player skulls and flowing water (Triggers internal Craftbukkit bug)

@@ -105,6 +105,10 @@ item:
     already_unbreakable: That item is already unbreakable
     add_unbreakable: That item is now unbreakable
     remove_unbreakable: That item is no longer unbreakable
+    not_unplaceable: That item is not unplaceable
+    already_unplaceable: That item is already unplaceable
+    add_unplaceable: That item is now unplaceable
+    remove_unplaceable: That item is no longer unplaceable
     no_enchants: This item has no enchantments
     no_enchant: "That item does not have the $enchant enchantment"
     enchant_removed: "Removed the $enchant enchantment from your item"

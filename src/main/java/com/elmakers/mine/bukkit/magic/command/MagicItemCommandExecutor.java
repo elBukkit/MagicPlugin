@@ -105,6 +105,7 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
 				options.add("lore");
 				options.add("flag");
 				options.add("unbreakable");
+				options.add("unplaceable");
 			}
 
 			if (subCommand.equalsIgnoreCase("remove")) {
@@ -113,6 +114,7 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
 				options.add("lore");
 				options.add("flag");
 				options.add("unbreakable");
+				options.add("unplaceable");
 			}
 
 			if (subCommand.equalsIgnoreCase("type")) {
@@ -613,6 +615,32 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
 		return true;
 	}
 
+	public boolean onItemAddUnplaceable(Player player, ItemStack item)
+	{
+		if (InventoryUtils.isUnplaceable(item)) {
+			player.sendMessage(api.getMessages().get("item.already_unplaceable"));
+		} else {
+			ItemStack newItem = InventoryUtils.makeReal(item);
+			InventoryUtils.makeUnplaceable(newItem);
+			item.setItemMeta(newItem.getItemMeta());
+			player.sendMessage(api.getMessages().get("item.add_unplaceable"));
+		}
+
+		return true;
+	}
+
+	public boolean onItemRemoveUnplaceable(Player player, ItemStack item)
+	{
+		if (!InventoryUtils.isUnplaceable(item)) {
+			player.sendMessage(api.getMessages().get("item.not_unplaceable"));
+		} else {
+			InventoryUtils.removeUnplaceable(item);
+			player.sendMessage(api.getMessages().get("item.remove_unplaceable"));
+		}
+
+		return true;
+	}
+
 	public boolean onItemAddUnbreakable(Player player, ItemStack item)
 	{
 		if (InventoryUtils.isUnbreakable(item)) {
@@ -710,6 +738,9 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
 		if (addCommand.equalsIgnoreCase("unbreakable")) {
 			return onItemAddUnbreakable(player, item);
 		}
+		if (addCommand.equalsIgnoreCase("unplaceable")) {
+			return onItemAddUnplaceable(player, item);
+		}
 		if (parameters.length < 2) {
 			return false;
 		}
@@ -740,6 +771,9 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
 
 		if (removeCommand.equalsIgnoreCase("unbreakable")) {
 			return onItemRemoveUnbreakable(player, item);
+		}
+		if (removeCommand.equalsIgnoreCase("unplaceable")) {
+			return onItemRemoveUnplaceable(player, item);
 		}
 		
 		String firstParameter = parameters.length > 1 ? parameters[1] : null;

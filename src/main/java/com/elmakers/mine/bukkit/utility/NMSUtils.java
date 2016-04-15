@@ -1126,6 +1126,10 @@ public class NMSUtils {
     public static void makeUnplaceable(ItemStack itemStack) {
         setMeta(itemStack, "unplaceable", "true");
     }
+    
+    public static void removeUnplaceable(ItemStack itemStack) {
+        removeMeta(itemStack, "unplaceable");
+    }
 
     public static boolean isUnplaceable(ItemStack itemStack) {
         return hasMeta(itemStack, "unplaceable");
