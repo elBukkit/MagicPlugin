@@ -4365,6 +4365,11 @@ public class MagicController implements MageController {
     }
 
     @Override
+    public EntityData getMobByName(String key) {
+        return mobs.getByName(key);
+    }
+
+    @Override
     public EntityData loadMob(ConfigurationSection configuration) {
         return new com.elmakers.mine.bukkit.entity.EntityData(this, configuration);
     }
