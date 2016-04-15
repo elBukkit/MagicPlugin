@@ -1,5 +1,7 @@
 # TODO
  
+ - Alter/grow/shrink/rollback should prevent mobs dropping loot
+ 
  - Force and Blink passthrough broken (5.5 only, maybe?)
  - Use Entity tags ("Tags" tag, NBTList, see nms.Entity.P()) for tracking magic mobs
  
@@ -11,7 +13,6 @@
  
  - Undo bugs with pistons.. yuck. https://youtu.be/S-d-XT2r_vM
  
- - Alter/grow/shrink should prevent mobs dropping loot
  - Casting while standing on a gold pressure plate doesn't work :|
  - Arenas preventing last death Recall isn't working?
  - Some kind of gliding-without-Elytra mechanic involving cancelling the glide event?

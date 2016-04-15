@@ -37,3 +37,24 @@ testbanner:
       - ==: Pattern
         color: BLACK
         pattern: bri
+        
+        
+# Mob spawners
+testspawner:
+  worth: 20000.0
+  item:
+    type: MOB_SPAWNER
+    tags:
+      display:
+        Name: Warlock Spawner
+      BlockEntityTag:
+        SpawnCount: 1
+        MaxNearbyEntities: 5
+        SpawnRange: 8
+        Delay: 100
+        MinSpawnDelay: 200
+        MaxSpawnDelay: 500
+        RequiredPlayerRange: 12
+        EntityId: Spider
+        SpawnData:
+          id: Spider

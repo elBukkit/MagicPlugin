@@ -1,10 +1,14 @@
 package com.elmakers.mine.bukkit.item;
 
 import com.elmakers.mine.bukkit.block.MaterialAndData;
+import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
+import com.elmakers.mine.bukkit.utility.NMSUtils;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+
+import java.util.Set;
 
 public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData {
     private String key;
@@ -16,6 +20,22 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData {
     public ItemData(String key, ConfigurationSection configuration) throws Exception {
         if (configuration.isItemStack("item")) {
             item = configuration.getItemStack("item");
+        } else if (configuration.isConfigurationSection("item")) {
+            ConfigurationSection itemConfiguration = configuration.getConfigurationSection("item");
+            String materialKey = itemConfiguration.getString("type", key);
+            MaterialAndData material = new MaterialAndData(materialKey);
+            if (material.isValid()) {
+                item = material.getItemStack(1);
+            }
+            if (item == null) {
+                throw new Exception("Invalid item key: " + materialKey);
+            }
+            
+            ConfigurationSection tagSection = itemConfiguration.getConfigurationSection("tags");
+            if (tagSection != null) {
+                item = CompatibilityUtils.makeReal(item);
+                InventoryUtils.saveTagsToItem(tagSection, item);
+            }
         } else {
             String materialKey = configuration.getString("item", key);
             MaterialAndData material = new MaterialAndData(materialKey);

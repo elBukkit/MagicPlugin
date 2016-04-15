@@ -23,8 +23,23 @@ import java.util.UUID;
 import java.util.logging.Level;
 
 public class InventoryUtils extends NMSUtils
-{	
+{
+    public static boolean saveTagsToItem(ConfigurationSection tags, ItemStack item)
+    {
+        Object handle = getHandle(item);
+        if (handle == null) return false;
+        Object tag = getTag(handle);
+        if (tag == null) return false;
+        
+        return saveTagsToNBT(tags, tag, null, false, false);
+    }
+
     public static boolean saveTagsToNBT(ConfigurationSection tags, Object node, String[] tagNames)
+    {
+        return saveTagsToNBT(tags, node, tagNames, true, true);
+    }
+    
+    public static boolean saveTagsToNBT(ConfigurationSection tags, Object node, String[] tagNames, boolean clean, boolean strings)
     {
         if (node == null) {
             Bukkit.getLogger().warning("Trying to save tags to a null node");
@@ -34,14 +49,36 @@ public class InventoryUtils extends NMSUtils
             Bukkit.getLogger().warning("Trying to save tags to a non-CompoundTag");
             return false;
         }
+        
+        if (tagNames == null) {
+            Set<String> keys = tags.getKeys(false);
+            tagNames = new String[keys.size()];
+            int index = 0;
+            for (String key : keys) {
+                tagNames[index++] = key;
+            }
+        }
+        
         for (String tagName : tagNames)
         {
             String value = tags.getString(tagName);
+           
             // This is kinda hacky, but makes for generally cleaner data.
-            if (value == null || value.length() == 0 || value.equals("0") || value.equals("0.0") || value.equals("false")) {
+            if (clean && (value == null || value.length() == 0 || value.equals("0") || value.equals("0.0") || value.equals("false"))) {
                 removeMeta(node, tagName);
-            } else {
+            } else if (strings) {
                 setMeta(node, tagName, value);
+            } else if (tags.isBoolean(tagName)) {
+                setMetaBoolean(node, tagName, tags.getBoolean(tagName));
+            } else if (tags.isDouble(tagName)) {
+                setMetaDouble(node, tagName, tags.getDouble(tagName));
+            } else if (tags.isInt(tagName)) {
+                setMetaInt(node, tagName, tags.getInt(tagName));
+            } else if (tags.isString(tagName)) {
+                setMeta(node, tagName, tags.getString(tagName));
+            } else if (tags.isConfigurationSection(tagName)) {
+                Object newNode = createNode(node, tagName);
+                saveTagsToNBT(tags.getConfigurationSection(tagName), newNode, null, clean, strings);
             }
         }
 

@@ -938,6 +938,15 @@ public class NMSUtils {
         }
     }
 
+    public static void setMetaBoolean(Object node, String tag, boolean value) {
+        if (node == null|| !class_NBTTagCompound.isInstance(node)) return;
+        try {
+            class_NBTTagCompound_setBooleanMethod.invoke(node, tag, value);
+        } catch (Throwable ex) {
+            ex.printStackTrace();
+        }
+    }
+
     public static void setMetaDouble(Object node, String tag, double value) {
         if (node == null|| !class_NBTTagCompound.isInstance(node)) return;
         try {

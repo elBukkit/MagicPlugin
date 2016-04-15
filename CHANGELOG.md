@@ -4,6 +4,7 @@
 
  - Don't allow water spreading when water naturally flows as a result of magic
    This fixes a server-crashing issue with player skulls and flowing water (Triggers internal Spigot bug)
+ - Add support for custom mob spawners that spawn magic mobs
 
 ## 6.0.10
 
