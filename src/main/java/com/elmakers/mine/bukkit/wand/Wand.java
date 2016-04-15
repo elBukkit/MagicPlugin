@@ -1065,7 +1065,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         Collection<String> effectStrings = new ArrayList<String>();
         for (Map.Entry<PotionEffectType, Integer> entry : potionEffects.entrySet()) {
             String effectString = entry.getKey().getName();
-            if (entry.getValue() > 1) {
+            if (entry.getValue() > 0) {
                 effectString += ":" + entry.getValue();
             }
             effectStrings.add(effectString);
@@ -1311,7 +1311,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
             try {
                 effectString = effectString.trim();
                 PotionEffectType type;
-                int power = 1;
+                int power = 0;
                 if (effectString.contains(":")) {
                     String[] pieces = effectString.split(":");
                     type = PotionEffectType.getByName(pieces[0].toUpperCase());
