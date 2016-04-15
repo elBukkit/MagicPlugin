@@ -270,7 +270,7 @@ warlock_leggings:
   worth: 4000
   item:
     ==: org.bukkit.inventory.ItemStack
-    type: CHAINMAIL_LEGGINS
+    type: CHAINMAIL_LEGGINGS
     meta:
       ==: ItemMeta
       meta-type: UNSPECIFIC
