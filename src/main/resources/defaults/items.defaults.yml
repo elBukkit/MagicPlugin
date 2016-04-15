@@ -276,3 +276,17 @@ warlock_leggings:
       meta-type: UNSPECIFIC
       enchants:
         THORNS: 3
+
+warlock_wand:
+  worth: 2000
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    type: WOOD_HOE
+    damage: 2
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      Unbreakable: true
+      display-name: §aWarlock wand
+      lore:
+      - It has lost its power
