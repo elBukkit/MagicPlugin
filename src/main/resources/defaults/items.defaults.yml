@@ -243,3 +243,25 @@ skeletonspawner:
         EntityId: Skeleton
         SpawnData:
           id: Skeleton
+          
+warlockboots:
+  worth: 5000
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    type: CHAINMAIL_BOOTS
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      enchants:
+        PROTECTION_FALL: 10
+        
+warlockchestplate:
+  worth: 4000
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    type: CHAINMAIL_CHESTPLATE
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      enchants:
+        THORNS: 3
