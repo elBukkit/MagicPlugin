@@ -10,6 +10,7 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityTargetEvent;
 
@@ -39,6 +40,20 @@ public class MobController implements Listener {
             String mobName = mob.getName();
             if (mobName != null && !mobName.isEmpty()) {
                 mobsByName.put(mobName, mob);
+            }
+        }
+    }
+    
+    @EventHandler(ignoreCancelled = false, priority = EventPriority.HIGHEST)
+    public void onCreatureSpawn(CreatureSpawnEvent event) {
+        Entity entity = event.getEntity();
+        String customName = entity.getCustomName();
+
+        if (customName != null) {
+            EntityData customMob = mobsByName.get(customName);
+            if (customMob != null) {
+                customMob.modify(controller, entity);
+                event.setCancelled(false);
             }
         }
     }
@@ -82,6 +97,7 @@ public class MobController implements Listener {
 
         // Prevent double-deaths .. gg Mojang?
         // Kind of hacky to use this flag for it, but seemed easiest
+        died.setCustomNameVisible(false);
         died.setCustomName(null);
     }
     
@@ -95,5 +111,9 @@ public class MobController implements Listener {
     
     public EntityData get(String key) {
         return mobs.get(key);
+    }
+
+    public EntityData getByName(String name) {
+        return mobsByName.get(name);
     }
 }
