@@ -169,6 +169,9 @@ public class RecurseAction extends CompoundAction {
             }
             Block targetBlock = context.getTargetBlock();
             replaceable.clear();
+            if (targetBlock == null) {
+                return;
+            }
             MaterialAndData targetMaterialAndData = new MaterialAndData(targetBlock);
             if (targetMaterialAndData.isValid()) {
                 replaceable.add(targetMaterialAndData);
