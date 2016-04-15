@@ -216,3 +216,106 @@ skelliehorseegg:
       meta-type: UNSPECIFIC
       display-name: Spawn Skellie Horse
       internal: H4sIAAAAAAAAAJ1UTWgkVRCunu70zrTObjZRRASJP3vbSVaT3UlE2czPbiY4MUtmonjw8Ka7MvPs7vfa16+TDZ48i3jx4s+K4kURFT0IgrignhT1IIKnRRD07DFLcK03PTMOC15s6EvXV/VVffVVewAelC4JzfVhl/VtcLsYJ6gA4N4SeDWtFe9lGlOPvrhFcJ5iMcLpPgpU3F+M2dUWskgPXHDqLMX185A/Y+R9Y2QopB/2mB/uYMpTzYSPoxyA23LunlSX+xij0J0EMRihL3734ReveT9WJujyGM1ULNV/1Zwfo/ZkFMmDHSb6Y/71czm0BKUtGfA9jmo4bWGcO0foQMYLacIOxEJPiiy1obRNKjHNpSCo5YJbi2Um9PU3GtXVP17ddqC0u7vZbCNL9etvfb360I3vmw4Uzbctmeq/P/r08V+O67/B/+K4dvRzeYl1pzk+X3+5f/zOuYMpjt+Pbpw5+1z93X9FmBtIleLi81mcdLRC0Z/s7eKf3y698s2Xn4ANdq0/lG+6+ldL1/9678EfyhaUWyzdwUTJIPMxoMpeI0u1jPNVdEKMIo4LLcNjg9M9TEwtZwbc3Ca194Eo7qlnYcj14ha72pQxppr74ykDixpSVJm20SJJNjXG+TZM4twoMUsCprGN+xjliyrwAO7IXTzk9sDrsCCI0OTn4dmYC/QV29OPpcNQAdwmi5mZ1oKZhlHWIhrnMld465YxvzHUpAHHiGLBnY0BNYzBkIZamjUzo5aiq1jS5TGOYJtiP4vIcqwXIVUtNZHpQR6nEbskl0ULviwVyThSfAZma71UqsRoka8ahpMXW5nS49zitthQFAso390UbbqRfF2TxZ9582bVfmDjMwtKVLlNdzfUc3Y4T1PJpDEw55fOmLQnPr7rxenXhlOGrX5o+OhO4ySvfvIZqaJg4oi3fzq+9tLR/bUC+YUr62yRzHpA4xoAPLzi95bPrzKsVB9Z8ysrK48uV9aW/WpltXphzceVC7jmL5OXGkxc4X64m7Sl1Ea0aS2p41PGAbc1XBg3asH8FbpU+pcgxXbwhYz2FlgWnDANDmhkB8qTpo0uN6V+dmPw5AcWeG3c06Y4oWw48TRTnBmxC64NpzsJ70u9SKYM0zbfJwjM/2rByUvkUdFvsUNSxQ+plX8A9Ht33TwFAAA=
+
+# Mob spawners     
+warlockspawner:
+  worth: 50000.0
+  item:
+    type: MOB_SPAWNER
+    tags:
+      display:
+        Name: Warlock Spawner
+      BlockEntityTag:
+        SpawnPotentials: []
+        SpawnCount: 1
+        MaxNearbyEntities: 5
+        SpawnRange: 8
+        Delay: 100
+        MinSpawnDelay: 200
+        MaxSpawnDelay: 500
+        RequiredPlayerRange: 12
+        EntityId: Zombie
+        SpawnData:
+          id: Zombie
+          CustomName: Warlock
+          IsVillager: 1
+          
+cavespiderspawner:
+  worth: 20000.0
+  item:
+    type: MOB_SPAWNER
+    tags:
+      display:
+        Name: Cave Spider Spawner
+      BlockEntityTag:
+        SpawnPotentials: []
+        SpawnCount: 1
+        MaxNearbyEntities: 5
+        SpawnRange: 8
+        Delay: 100
+        MinSpawnDelay: 200
+        MaxSpawnDelay: 500
+        RequiredPlayerRange: 12
+        EntityId: CaveSpider
+        SpawnData:
+          id: CaveSpider
+             
+spiderspawner:
+  worth: 20000.0
+  item:
+    type: MOB_SPAWNER
+    tags:
+      display:
+        Name: Spider Spawner
+      BlockEntityTag:
+        SpawnPotentials: []
+        SpawnCount: 1
+        MaxNearbyEntities: 5
+        SpawnRange: 8
+        Delay: 100
+        MinSpawnDelay: 200
+        MaxSpawnDelay: 500
+        RequiredPlayerRange: 12
+        EntityId: Spider
+        SpawnData:
+          id: Spider
+                
+zombiespawner:
+  worth: 20000.0
+  item:
+    type: MOB_SPAWNER
+    tags:
+      display:
+        Name: Zombie Spawner
+      BlockEntityTag:
+        SpawnPotentials: []
+        SpawnCount: 1
+        MaxNearbyEntities: 5
+        SpawnRange: 8
+        Delay: 100
+        MinSpawnDelay: 200
+        MaxSpawnDelay: 500
+        RequiredPlayerRange: 12
+        EntityId: Zombie
+        SpawnData:
+          id: Zombie
+                  
+skeletonspawner:
+  worth: 20000.0
+  item:
+    type: MOB_SPAWNER
+    tags:
+      display:
+        Name: Skeleton Spawner
+      BlockEntityTag:
+        SpawnPotentials: []
+        SpawnCount: 1
+        MaxNearbyEntities: 5
+        SpawnRange: 8
+        Delay: 100
+        MinSpawnDelay: 200
+        MaxSpawnDelay: 500
+        RequiredPlayerRange: 12
+        EntityId: Skeleton
+        SpawnData:
+          id: Skeleton

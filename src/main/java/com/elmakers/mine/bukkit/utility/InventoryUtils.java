@@ -74,11 +74,24 @@ public class InventoryUtils extends NMSUtils
                 setMetaDouble(node, tagName, tags.getDouble(tagName));
             } else if (tags.isInt(tagName)) {
                 setMetaInt(node, tagName, tags.getInt(tagName));
-            } else if (tags.isString(tagName)) {
-                setMeta(node, tagName, tags.getString(tagName));
             } else if (tags.isConfigurationSection(tagName)) {
                 Object newNode = createNode(node, tagName);
                 saveTagsToNBT(tags.getConfigurationSection(tagName), newNode, null, clean, strings);
+            } else if (tags.isList(tagName)) {
+                Collection<ConfigurationSection> nodeList = ConfigurationUtils.getNodeList(tags, tagName);
+                try {
+                    Object listMeta = class_NBTTagList.newInstance();
+                    for (ConfigurationSection nodeConfig : nodeList) {
+                        Object newNode = class_NBTTagCompound.newInstance();
+                        saveTagsToNBT(nodeConfig, newNode, null, clean, strings);
+                        class_NBTTagList_addMethod.invoke(listMeta, newNode);
+                    }
+                    class_NBTTagCompound_setMethod.invoke(node, tagName, listMeta);
+                } catch (Exception ex) {
+                    
+                }
+            } else if (tags.isString(tagName)) {
+                setMeta(node, tagName, tags.getString(tagName));
             }
         }
 

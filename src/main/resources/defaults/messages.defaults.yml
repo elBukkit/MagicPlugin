@@ -1724,6 +1724,10 @@ spells:
         name: Mob Shop
         title: "Mobs ($balance)"
         description: Buy Mob Eggs
+    spawnershop:
+        name: Spawner Shop
+        title: "Spawners ($balance)"
+        description: Buy Mob Spawners
     broomshop:
         name: Broom Shop
         title: "Brooms ($balance)"
