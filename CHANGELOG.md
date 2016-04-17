@@ -3,6 +3,7 @@
 ## 5.5.6
 
  - Add /mitem add/remove unplaceable command, for making a block unplaceable
+ - Add /mmob clear command, for getting rid of magic mobs
 
 ## 5.5.5
 
