@@ -6,6 +6,7 @@
  - Add /mitem add/remove unplaceable command, for making a block unplaceable
  - Add Dark Wizard, Mega Spider and Dark Spider mobs
  - Add Webbing spell (for spider mobs)
+ - Add /mmob clear command, for getting rid of magic mobs
 
 ## 6.0.11
 

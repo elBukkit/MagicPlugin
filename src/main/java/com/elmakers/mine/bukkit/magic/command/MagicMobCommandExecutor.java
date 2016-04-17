@@ -1,6 +1,7 @@
 package com.elmakers.mine.bukkit.magic.command;
 
 import com.elmakers.mine.bukkit.api.entity.EntityData;
+import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.magic.MagicAPI;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
@@ -49,10 +50,17 @@ public class MagicMobCommandExecutor extends MagicTabExecutor {
             return true;
         }
 
+        if (args[0].equalsIgnoreCase("clear"))
+        {
+            String mobType = args.length > 1 ? args[1] : null;
+            String worldName = args.length > 2 ? args[2] : null;
+            onClearMobs(sender, mobType, worldName);
+            return true;
+        }
+
         if (!args[0].equalsIgnoreCase("spawn") || args.length < 2)
         {
-            sender.sendMessage(ChatColor.RED + "Usage: mmob [spawn|list] <type>");
-            return true;
+            return false;
         }
 
         if (!(sender instanceof Player) && !(sender instanceof BlockCommandSender) && args.length < 6) {
@@ -143,6 +151,26 @@ public class MagicMobCommandExecutor extends MagicTabExecutor {
         }
     }
 
+    protected void onClearMobs(CommandSender sender, String mobType, String worldName) {
+        Collection<Mage> mages = new ArrayList<Mage>(api.getController().getMages());
+        int removed = 0;
+        for (Mage mage : mages) {
+            EntityData entityData = mage.getEntityData();
+            if (entityData == null) continue;
+            if (worldName != null && !mage.getLocation().getWorld().getName().equals(worldName)) continue;
+            if (mobType != null && !entityData.getKey().equals(mobType)) continue;
+
+            Entity entity = mage.getEntity();
+            mage.undoScheduled();
+            api.getController().removeMage(mage);
+            if (entity != null) {
+                entity.remove();
+            }
+            removed++;
+        }
+        sender.sendMessage("Removed " + removed + " magic mobs");
+    }
+
 	@Override
 	public Collection<String> onTabComplete(CommandSender sender, String commandName, String[] args) {
 		List<String> options = new ArrayList<String>();
@@ -151,16 +179,20 @@ public class MagicMobCommandExecutor extends MagicTabExecutor {
 		if (args.length == 1) {
             options.add("spawn");
             options.add("list");
-		}
-
-        if (args.length == 2 && args[0].equalsIgnoreCase("spawn")) {
+            options.add("clear");
+		} else if (args.length == 2 && (args[0].equalsIgnoreCase("spawn") || args[0].equalsIgnoreCase("clear"))) {
             options.addAll(api.getController().getMobKeys());
             for (EntityType entityType : EntityType.values()) {
                 if (entityType.isAlive() && entityType.isSpawnable()) {
                     options.add(entityType.name().toLowerCase());
                 }
             }
-		}
+		} else if (args.length == 3 && args[0].equalsIgnoreCase("clear")) {
+            List<World> worlds = api.getPlugin().getServer().getWorlds();
+            for (World world : worlds) {
+                options.add(world.getName());
+            }
+        }
 		return options;
 	}
 }
