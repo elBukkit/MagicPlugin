@@ -8,6 +8,7 @@ import com.elmakers.mine.bukkit.api.block.UndoList;
 import com.elmakers.mine.bukkit.api.block.UndoQueue;
 import com.elmakers.mine.bukkit.api.data.MageData;
 import com.elmakers.mine.bukkit.api.effect.SoundEffect;
+import com.elmakers.mine.bukkit.api.entity.EntityData;
 import com.elmakers.mine.bukkit.api.spell.CostReducer;
 import com.elmakers.mine.bukkit.api.spell.MageSpell;
 import com.elmakers.mine.bukkit.api.spell.Spell;
@@ -445,4 +446,5 @@ public interface Mage extends CostReducer {
     public void unbind(Wand wand);
     public void unbindAll();
     public void undoScheduled();
+    public EntityData getEntityData();
 }
