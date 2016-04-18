@@ -281,8 +281,7 @@ warlock_wand:
   worth: 2000
   item:
     ==: org.bukkit.inventory.ItemStack
-    type: WOOD_HOE
-    damage: 2
+    type: GOLD_AXE
     meta:
       ==: ItemMeta
       meta-type: UNSPECIFIC
