@@ -1666,7 +1666,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	}
 
     private static String getBrushDisplayName(Messages messages, MaterialBrush brush) {
-        String materialName = brush.getName(messages);
+        String materialName = brush == null ? null : brush.getName(messages);
         if (materialName == null) {
             materialName = "none";
         }
