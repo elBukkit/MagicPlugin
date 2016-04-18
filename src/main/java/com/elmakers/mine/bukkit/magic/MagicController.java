@@ -2565,6 +2565,12 @@ public class MagicController implements MageController {
         if (wand.isSuperPowered() && !player.hasPermission("Magic.wand.use.powered")) return false;
         if (wand.isSuperProtected() && !player.hasPermission("Magic.wand.use.protected")) return false;
 
+        String template = wand.getTemplateKey();
+        if (template != null && !template.isEmpty())
+        {
+            String pNode = "Magic.use." + template;
+            if (!hasPermission(player, pNode, true)) return false;
+        }
         Location location = player.getLocation();
         Boolean override = worldGuardManager.getWandPermission(player, wand, location);
         return override == null || override;
