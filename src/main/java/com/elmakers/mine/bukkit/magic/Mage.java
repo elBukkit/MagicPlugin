@@ -652,8 +652,12 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             Map<String, ItemStack> boundWandItems = data.getBoundWands();
             if (boundWandItems != null) {
                 for (ItemStack boundWandItem : boundWandItems.values()) {
-                    Wand boundWand = new Wand(controller, boundWandItem);
-                    boundWands.put(boundWand.getTemplateKey(), boundWand);
+                    try {
+                        Wand boundWand = new Wand(controller, boundWandItem);
+                        boundWands.put(boundWand.getTemplateKey(), boundWand);
+                    } catch (Exception ex) {
+                        controller.getLogger().log(Level.WARNING, "Failed to load bound wand for " + playerName +": " + boundWandItem, ex);
+                    }
                 }
             }
             this.data = data.getExtraData();
