@@ -5,6 +5,7 @@
  - Add /mitem add/remove unplaceable command, for making a block unplaceable
  - Add /mmob clear command, for getting rid of magic mobs
  - Add spsellshop, for exchanging SP for money
+ - Add "Magic.use.<wand>" permission list, for controlling individual wand permissions.
 
 ## 5.5.5
 
