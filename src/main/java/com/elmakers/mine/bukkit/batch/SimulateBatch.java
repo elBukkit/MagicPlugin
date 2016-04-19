@@ -209,7 +209,7 @@ public class SimulateBatch extends SpellBatch {
 			level.onDeath(mage, birthMaterial);
 		}
 		if (!mage.isPlayer()) {
-			controller.forgetMage(mage);
+			controller.removeMage(mage);
 		}
 	}
 	
