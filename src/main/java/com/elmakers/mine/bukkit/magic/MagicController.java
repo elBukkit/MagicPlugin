@@ -140,6 +140,7 @@ import java.util.Map.Entry;
 import java.util.PriorityQueue;
 import java.util.Random;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.zip.ZipEntry;
@@ -2760,7 +2761,7 @@ public class MagicController implements MageController {
 
         // Unregister
         if (!externalPlayerData || !mage.isPlayer()) {
-            forgetMage(mage);
+            removeMage(mage);
         }
         if (!mage.isLoading() && (mage.isPlayer() || saveNonPlayerMages) && loaded)
         {
@@ -2779,6 +2780,11 @@ public class MagicController implements MageController {
 
         mageQuit(mage, callback);
 	}
+
+    @Override
+    public void forgetMage(Mage mage) {
+        removeMage(mage);
+    }
 
     @Override
     public void removeMage(Mage mage) {
@@ -3075,11 +3081,7 @@ public class MagicController implements MageController {
 			}
 		}
 	}
-	
-	public void forgetMage(Mage mage) {
-        mages.remove(mage.getId());
-	}
-
+    
     public Automaton getAutomaton(Block block) {
         String chunkId = getChunkKey(block);
         Map<Long, Automaton> toReload = automata.get(chunkId);
@@ -4668,7 +4670,7 @@ public class MagicController implements MageController {
     private final Map<String, SpellCategory>    categories              	= new HashMap<String, SpellCategory>();
     private final Map<String, ConfigurationSection> spellConfigurations     = new HashMap<String, ConfigurationSection>();
     private final Map<String, ConfigurationSection> baseSpellConfigurations = new HashMap<String, ConfigurationSection>();
-    private final Map<String, Mage> 		    mages                  		= new HashMap<String, Mage>();
+    private final Map<String, Mage> 		    mages                  		= new ConcurrentHashMap<String, Mage>();
     private final Set<Mage>		 	            pendingConstruction			= new HashSet<Mage>();
     private final PriorityQueue<UndoList>       scheduledUndo               = new PriorityQueue<UndoList>();
     private final Map<String, WeakReference<Schematic>> schematics	= new HashMap<String, WeakReference<Schematic>>();

@@ -18,10 +18,12 @@ public class MageUpdateTask implements Runnable {
         for (Iterator<Mage> iterator = mages.iterator(); iterator.hasNext();) {
             Mage mage = iterator.next();
 
-            // Players are handled by logout
-            if (!mage.isPlayer() && !mage.isValid())
+            if (!mage.isValid())
             {
-                iterator.remove();
+                // Players are handled by logout
+                if (!mage.isPlayer()) {
+                    iterator.remove();
+                }
                 continue;
             }
             try {
