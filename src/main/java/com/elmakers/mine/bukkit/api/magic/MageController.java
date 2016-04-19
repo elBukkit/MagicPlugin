@@ -128,6 +128,9 @@ public interface MageController {
     public void removeMage(Mage mage);
     public void removeMage(String id);
 
+    @Deprecated
+    public void forgetMage(Mage mage);
+
     public String getMessagePrefix();
 
     public String getReflectiveMaterials(Mage mage, Location location);
@@ -175,7 +178,6 @@ public interface MageController {
 
     public UndoList undoAny(Block target);
     public UndoList undoRecent(Block target, int timeout);
-    public void forgetMage(Mage mage);
     public void scheduleUndo(UndoList undoList);
     public void cancelScheduledUndo(UndoList undoList);
 
