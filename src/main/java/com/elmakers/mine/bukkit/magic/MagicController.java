@@ -1458,7 +1458,9 @@ public class MagicController implements MageController {
     }
 
     protected ConfigurationSection loadMainConfiguration() throws InvalidConfigurationException, IOException {
-        return loadConfigFile(CONFIG_FILE, true);
+        ConfigurationSection configuration = loadConfigFile(CONFIG_FILE, true);
+        loadInitialProperties(configuration);
+        return configuration;
     }
 
     protected ConfigurationSection loadMessageConfiguration() throws InvalidConfigurationException, IOException {
@@ -1489,7 +1491,7 @@ public class MagicController implements MageController {
         return loadConfigFile(ITEMS_FILE, loadDefaultMobs);
     }
 
-    protected Map<String, ConfigurationSection> loadAndMapSpells()  throws InvalidConfigurationException, IOException {
+    protected Map<String, ConfigurationSection> loadAndMapSpells() throws InvalidConfigurationException, IOException {
         Map<String, ConfigurationSection> spellConfigs = new HashMap<String, ConfigurationSection>();
         ConfigurationSection config = loadConfigFile(SPELLS_FILE, loadDefaultSpells, disableDefaultSpells);
         if (config == null) return spellConfigs;
@@ -2171,6 +2173,11 @@ public class MagicController implements MageController {
         }
 	}
 
+    public void loadInitialProperties(ConfigurationSection properties) {
+        allPvpRestricted = properties.getBoolean("pvp_restricted", allPvpRestricted);
+        noPvpRestricted = properties.getBoolean("allow_pvp_restricted", noPvpRestricted);
+    }
+
 	protected void loadProperties(ConfigurationSection properties)
 	{
 		if (properties == null) return;
@@ -2300,8 +2307,6 @@ public class MagicController implements MageController {
         bypassBreakPermissions = properties.getBoolean("bypass_break", bypassBreakPermissions);
 		bypassPvpPermissions = properties.getBoolean("bypass_pvp", bypassPvpPermissions);
         bypassFriendlyFire = properties.getBoolean("bypass_friendly_fire", bypassFriendlyFire);
-        allPvpRestricted = properties.getBoolean("pvp_restricted", allPvpRestricted);
-        noPvpRestricted = properties.getBoolean("allow_pvp_restricted", noPvpRestricted);
         useScoreboardTeams = properties.getBoolean("use_scoreboard_teams", useScoreboardTeams);
 		extraSchematicFilePath = properties.getString("schematic_files", extraSchematicFilePath);
 		createWorldsEnabled = properties.getBoolean("enable_world_creation", createWorldsEnabled);
