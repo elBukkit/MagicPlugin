@@ -6,6 +6,7 @@ import org.bukkit.Location;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
+import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.inventory.ItemStack;
 
 public interface EntityData {
@@ -21,6 +22,7 @@ public interface EntityData {
     public Entity spawn();
     public Entity spawn(Location location);
     public Entity spawn(MageController controller, Location location);
+    public Entity spawn(MageController controller, Location location, CreatureSpawnEvent.SpawnReason reason);
     public Entity undo();
     public boolean modify(MageController controller, Entity entity);
     public boolean modify(Entity entity);
