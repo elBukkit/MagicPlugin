@@ -465,14 +465,17 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         return spawn(null, null);
     }
 
+    @Override
     public Entity spawn(Location location) {
         return spawn(null, location, null);
     }
-    
+
+    @Override
     public Entity spawn(MageController controller, Location location) {
         return spawn(controller, location, null);
     }
     
+    @Override
     public Entity spawn(MageController controller, Location location, CreatureSpawnEvent.SpawnReason reason) {
         if (location != null) this.location = location;
         else if (this.location == null) return null;
