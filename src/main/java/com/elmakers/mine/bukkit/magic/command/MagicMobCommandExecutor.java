@@ -21,7 +21,9 @@ import org.bukkit.util.BlockIterator;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 public class MagicMobCommandExecutor extends MagicTabExecutor {
@@ -120,10 +122,30 @@ public class MagicMobCommandExecutor extends MagicTabExecutor {
 	}
     
     protected void onListMobs(CommandSender sender) {
+        Map<String, Integer> mobCounts = new HashMap<String, Integer>();
+
+        Collection<Mage> mages = new ArrayList<Mage>(api.getController().getMages());
+        for (Mage mage : mages) {
+            EntityData entityData = mage.getEntityData();
+            if (entityData == null) continue;
+            
+            Integer mobCount = mobCounts.get(entityData.getKey());
+            if (mobCount == null) {
+                mobCounts.put(entityData.getKey(), 1);
+            } else {
+                mobCounts.put(entityData.getKey(), mobCount + 1);
+            }
+        }
+        
         Set<String> keys = api.getController().getMobKeys();
         for (String key : keys) {
             EntityData mobType = api.getController().getMob(key);
-            sender.sendMessage(ChatColor.AQUA + key + ChatColor.WHITE + " : " + ChatColor.DARK_AQUA + mobType.describe());
+            String message = ChatColor.AQUA + key + ChatColor.WHITE + " : " + ChatColor.DARK_AQUA + mobType.describe();
+            Integer mobCount = mobCounts.get(key);
+            if (mobCount != null) {
+                message = message + ChatColor.GRAY + " (" + ChatColor.GREEN + mobCount + ChatColor.DARK_GREEN + " Active" + ChatColor.GRAY + ")";
+            }
+            sender.sendMessage(message);
         }
     }
 
