@@ -1413,7 +1413,19 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
     @Override
     public int removeItem(ItemStack itemStack, boolean allowVariants) {
-        int amount = itemStack == null ? 0 :itemStack.getAmount();
+        Integer sp = Wand.getSP(itemStack);
+        if (sp != null) {
+            int currentSP = getSkillPoints();
+            int newSP = currentSP - sp;
+            if (currentSP < sp) {
+                sp = sp - currentSP;
+            } else {
+                sp = 0;
+            }
+            setSkillPoints(newSP);
+            return sp;
+        }
+        int amount = itemStack == null ? 0 : itemStack.getAmount();
         Inventory inventory = getInventory();
         ItemStack[] contents = inventory.getContents();
         for (int index = 0; amount > 0 && index < contents.length; index++) {
@@ -1437,6 +1449,11 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
     @Override
     public boolean hasItem(ItemStack itemStack, boolean allowVariants) {
+        Integer sp = Wand.getSP(itemStack);
+        if (sp != null) {
+            return getSkillPoints() >= sp;
+        }
+        
         int amount = itemStack == null ? 0 :itemStack.getAmount();
         if (amount <= 0 ) {
             return true;
