@@ -8,6 +8,7 @@
  - Add Webbing spell (for spider mobs)
  - Add /mmob clear command, for getting rid of magic mobs
  - Add "Magic.use.<wand>" permission list, for controlling individual wand permissions.
+ - Add spsellshop, for exchanging SP for money
 
 ## 6.0.11
 

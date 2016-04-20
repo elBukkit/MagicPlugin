@@ -302,9 +302,7 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
             mage.deactivateGUI();
             return;
         }
-        boolean hasCosts = sell ? getItemAmount(controller, shopItem.getItem(), mage) >= shopItem.getItem().getAmount()
-                : hasItemCosts(context, shopItem);
-
+        boolean hasCosts = sell ? hasItem(controller, mage, shopItem.getItem()) : hasItemCosts(context, shopItem);
         if (!hasCosts) {
             String costString = context.getMessage("insufficient", ChatColor.RED + "Costs $cost");
             if (sell) {
@@ -604,12 +602,23 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
         }
         return Integer.toString((int)Math.ceil(amount)) + " " + controller.describeItem(item);
     }
+    
+    protected boolean hasItem(MageController controller, Mage mage, ItemStack item) {
+        if (com.elmakers.mine.bukkit.wand.Wand.isSP(item)) {
+            return mage.hasItem(item);
+        }
+        return getItemAmount(controller, item, mage) >= item.getAmount();
+    }
 
     protected int getItemAmount(MageController controller, Mage mage) {
         return getItemAmount(controller, controller.getWorthItem(), mage);
     }
 
     protected int getItemAmount(MageController controller, ItemStack worthItem, Mage mage) {
+        // TODO: This should really all route through Mage.hasItem
+        if (com.elmakers.mine.bukkit.wand.Wand.isSP(worthItem)) {
+            return mage.getSkillPoints();
+        }
         int itemAmount = 0;
         ItemStack[] contents = mage.getInventory().getContents();
         for (int i = 0; i < contents.length; i++) {
@@ -627,6 +636,11 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
     }
 
     protected void removeItems(MageController controller, Mage mage, ItemStack worthItem, int amount) {
+        // TODO: This should really all route through Mage.hasItem
+        if (com.elmakers.mine.bukkit.wand.Wand.isSP(worthItem)) {
+            mage.removeItem(worthItem);
+            return;
+        }
         int remainingAmount = amount;
         Inventory inventory = mage.getInventory();
         ItemStack[] contents = inventory.getContents();

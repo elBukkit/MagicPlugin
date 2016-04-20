@@ -1,8 +1,9 @@
 # TODO
  
+ - When a spell fizzles it does not incur cooldown
+ 
  - Alter/grow/shrink/rollback should prevent mobs dropping loot
  
- - Force and Blink passthrough broken (5.5 only, maybe?)
  - Use Entity tags ("Tags" tag, NBTList, see nms.Entity.P()) for tracking magic mobs
  
  - See if snow that falls on something undoable can undo?
