@@ -3,10 +3,10 @@ package com.elmakers.mine.bukkit.action.builtin;
 import com.elmakers.mine.bukkit.action.BaseSpellAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.effect.EffectPlayer;
+import com.elmakers.mine.bukkit.api.entity.EntityData;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
-import com.elmakers.mine.bukkit.entity.EntityData;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
@@ -20,7 +20,6 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Horse;
-import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Ocelot;
 import org.bukkit.entity.Rabbit;
 import org.bukkit.entity.Skeleton;
@@ -64,7 +63,11 @@ public class SpawnEntityAction extends BaseSpellAction
         
         if (parameters.contains("type"))
         {
-            entityData = new EntityData(context.getController(), parameters);
+            String mobType = parameters.getString("type");
+            entityData = context.getController().getMob(mobType);
+            if (entityData == null) {
+                entityData = new com.elmakers.mine.bukkit.entity.EntityData(context.getController(), parameters);
+            }
         }
 
         if (parameters.contains("reason"))
@@ -95,11 +98,15 @@ public class SpawnEntityAction extends BaseSpellAction
         spawnLocation.setPitch(sourceLocation.getPitch());
         spawnLocation.setYaw(sourceLocation.getYaw());
 
+        MageController controller = context.getController();
         if (entityData == null)
         {
             String randomType = RandomUtils.weightedRandom(entityTypeProbability);
             try {
-                entityData = new EntityData(EntityType.valueOf(randomType.toUpperCase()));
+                entityData = controller.getMob(randomType);
+                if (entityData == null) {
+                    entityData = new com.elmakers.mine.bukkit.entity.EntityData(EntityType.valueOf(randomType.toUpperCase()));
+                }
             } catch (Throwable ex) {
                 entityData = null;
             }
@@ -110,7 +117,7 @@ public class SpawnEntityAction extends BaseSpellAction
         }
 
         if (force) {
-            context.getController().setForceSpawn(true);
+            controller.setForceSpawn(true);
         }
         Entity spawnedEntity = null;
         try {
@@ -120,14 +127,13 @@ public class SpawnEntityAction extends BaseSpellAction
         }
 
         if (force) {
-            context.getController().setForceSpawn(false);
+            controller.setForceSpawn(false);
         }
 
         if (spawnedEntity == null) {
             return SpellResult.FAIL;
         }
 
-        MageController controller = context.getController();
         if (!loot)
         {
             spawnedEntity.setMetadata("nodrops", new FixedMetadataValue(controller.getPlugin(), true));
