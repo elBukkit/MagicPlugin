@@ -113,8 +113,11 @@ public enum SpellResult {
     }
     
     public boolean isFree(boolean castOnNoTarget) {
-        boolean requiresCost = isSuccess() || (castOnNoTarget && (this == SpellResult.NO_TARGET || this == SpellResult.NO_ACTION));
-        return !requiresCost || isFree();
+        if (this == SpellResult.NO_TARGET || this == SpellResult.NO_ACTION)
+        {
+            return !castOnNoTarget;
+        }
+        return isFree();
     }
     
     public boolean shouldRefundCooldown(boolean castOnNoTarget) {
