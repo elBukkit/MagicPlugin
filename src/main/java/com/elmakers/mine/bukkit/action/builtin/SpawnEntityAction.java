@@ -44,6 +44,7 @@ public class SpawnEntityAction extends BaseSpellAction
     private boolean track = true;
     private boolean loot = false;
     private boolean setTarget = false;
+    private boolean force = false;
     
     private Vector direction = null;
     private double speed;
@@ -55,6 +56,7 @@ public class SpawnEntityAction extends BaseSpellAction
     public void prepare(CastContext context, ConfigurationSection parameters) {
         track = parameters.getBoolean("track", true);
         loot = parameters.getBoolean("loot", false);
+        force = parameters.getBoolean("force", false);
         setTarget = parameters.getBoolean("set_target", false);
         speed = parameters.getDouble("speed", 0);
         direction = ConfigurationUtils.getVector(parameters, "direction");
@@ -107,13 +109,25 @@ public class SpawnEntityAction extends BaseSpellAction
             return SpellResult.FAIL;
         }
 
-        final Entity spawnedEntity = entityData.spawn(context.getController(), spawnLocation, spawnReason);
+        if (force) {
+            context.getController().setForceSpawn(true);
+        }
+        Entity spawnedEntity = null;
+        try {
+            spawnedEntity = entityData.spawn(context.getController(), spawnLocation, spawnReason);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+        if (force) {
+            context.getController().setForceSpawn(false);
+        }
+
         if (spawnedEntity == null) {
             return SpellResult.FAIL;
         }
 
         MageController controller = context.getController();
-        LivingEntity livingEntity = spawnedEntity instanceof LivingEntity ? (LivingEntity)spawnedEntity : null;
         if (!loot)
         {
             spawnedEntity.setMetadata("nodrops", new FixedMetadataValue(controller.getPlugin(), true));
