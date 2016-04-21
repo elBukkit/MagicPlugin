@@ -1571,6 +1571,11 @@ spells:
         description: Immobilize your target
         cast: You petrify $target.
         upgrade_description: "&r&b&bull; &6Increased duration"
+    polymorph:
+        name: Polymorph
+        description: Turn your target into a sheep
+        cast: You polymorph $target.
+        upgrade_description: "&r&b&bull; &6Increased duration"
     entangle:
         name: Entangle
         description: Trap your target with ropes

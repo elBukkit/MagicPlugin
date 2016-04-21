@@ -31,6 +31,10 @@ public class LibsDisguiseManager {
     }
     
     public boolean disguise(Entity entity, ConfigurationSection configuration) {
+        if (configuration == null) {
+            DisguiseAPI.undisguiseToAll(entity);
+            return true;
+        }
         String disguiseName = configuration.getString("type");
         if (disguiseName == null || disguiseName.isEmpty()) {
             return false;

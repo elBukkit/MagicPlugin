@@ -11,6 +11,7 @@
  - Add spsellshop, for exchanging SP for money
  - Add disguise support (via LibsDisguises) to magic mobs
  - Add madscientist mob (example of using player disguises)
+ - Add DisguiseAction, Polymorph spell (not on any enchanting paths since it relies on LibsDisguises)
  - Nerfed Blessing
 
 ## 6.0.11
