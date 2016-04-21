@@ -1,0 +1,7 @@
+cowlock:
+  type: zombie
+  name: Cowlock
+  health: 200
+  default_drops: false
+  disguise:
+    type: cow

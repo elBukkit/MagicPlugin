@@ -16,7 +16,8 @@
  - Fix compatibility issues with keep-on-death wands and CombatTagPlus kill-on-quit
  - Add support for an "override" entry in spells.yml, for settings that should effect ALL spells
  - Add "filter_bound" parameter to ItemShop, to not show bound items a player already has
- 
+ - Add disguise support (via LibsDisguises) to magic mobs
+
 ## 5.5.5
 
  - Don't allow water spreading when water naturally flows as a result of magic This fixes a server-crashing issue with player skulls and flowing water (Triggers internal Craftbukkit bug)

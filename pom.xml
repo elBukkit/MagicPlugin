@@ -214,6 +214,11 @@
 			<version>1.8.0-SNAPSHOT</version>
 			<scope>provided</scope>
 		</dependency>
+		<dependency>
+			<groupId>LibsDisguises</groupId>
+			<artifactId>LibsDisguises</artifactId>
+			<version>8.2.6</version>
+		</dependency>
 	</dependencies>
 	<repositories>
         <repository>
