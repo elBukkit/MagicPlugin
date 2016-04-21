@@ -453,6 +453,15 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
 		} else if (existing != null) {
 			worth = existing.getWorth();
 		}
+		
+		// Fix up skulls to avoid issues with Spigot 1.8 bug involving missing ownernames:
+		if (item.getType() == Material.SKULL_ITEM && item.getDurability() == 3) {
+			Object skullOwner = InventoryUtils.getNode(item, "SkullOwner");
+			String ownerName = InventoryUtils.getMeta(skullOwner, "Name");
+			if ((ownerName == null || ownerName.isEmpty()) && skullOwner != null) {
+				InventoryUtils.setMeta(skullOwner, "Name", "MHF_Question");
+			}
+		}
 
 		YamlConfiguration itemConfig = new YamlConfiguration();
 		ConfigurationSection itemSection = itemConfig.createSection(template);
