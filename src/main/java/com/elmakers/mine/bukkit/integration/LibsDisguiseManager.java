@@ -41,12 +41,9 @@ public class LibsDisguiseManager {
             switch (disguiseType) {
                 case PLAYER:
                     PlayerDisguise playerDisguise = new PlayerDisguise(configuration.getString("name"));
-                    String player = configuration.getString("player");
-                    String uuidString = configuration.getString("uuid");
-                    if (player != null && uuidString != null) {
-                        UUID uuid = UUID.fromString(uuidString);
-                        WrappedGameProfile profile = new WrappedGameProfile(uuid, player);
-                        playerDisguise.setSkin(profile);
+                    String skin = configuration.getString("skin");
+                    if (skin != null) {
+                        playerDisguise.setSkin(skin);
                     }
                     disguise = playerDisguise;
                     break;

@@ -17,6 +17,8 @@
  - Add support for an "override" entry in spells.yml, for settings that should effect ALL spells
  - Add "filter_bound" parameter to ItemShop, to not show bound items a player already has
  - Add disguise support (via LibsDisguises) to magic mobs
+ - Add madscientist mob (example of using player disguises)
+ - Nerfed Blessing
 
 ## 5.5.5
 

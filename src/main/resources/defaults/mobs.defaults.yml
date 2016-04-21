@@ -178,8 +178,7 @@ madscientist:
   disguise:
     type: player
     name: Mad Scientist
-    player: NathanWolf
-    uuid: 4cb358ae-719c-4423-93c7-8769ce46e9c3
+    skin: NathanWolf
   item: madscientist_wand
   chestplate: warlock_chestplate
   leggings: warlock_leggings
