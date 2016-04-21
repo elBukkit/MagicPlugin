@@ -10,6 +10,7 @@
  - Add "Magic.use.<wand>" permission list, for controlling individual wand permissions.
  - Add spsellshop, for exchanging SP for money
  - Add disguise support (via LibsDisguises) to magic mobs
+ - Add madscientist mob (example of using player disguises)
  - Nerfed Blessing
 
 ## 6.0.11
