@@ -795,7 +795,7 @@ public class MagicController implements MageController {
             libsDisguiseManager = new LibsDisguiseManager(plugin, libsDisguisePlugin);
             if (libsDisguiseManager.initialize()) {
                 if (libsDisguiseEnabled) {
-                    getLogger().info("Integrated with LibsDisguises, most spells can't be cast while disguised");
+                    getLogger().info("Integrated with LibsDisguises, mob disguises and disguise_restricted features enabled");
                 } else {
                     getLogger().info("LibsDisguises integration disabled");
                 }
@@ -4263,6 +4263,14 @@ public class MagicController implements MageController {
     @Override
     public boolean isDisguised(Entity entity) {
         return !libsDisguiseEnabled || libsDisguiseManager == null || entity == null ? false : libsDisguiseManager.isDisguised(entity);
+    }
+    
+    @Override
+    public boolean disguise(Entity entity, ConfigurationSection configuration) {
+        if (!libsDisguiseEnabled || libsDisguiseManager == null || entity == null) {
+            return false;
+        }
+        return libsDisguiseManager.disguise(entity, configuration);
     }
 
     @Override

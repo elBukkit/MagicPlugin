@@ -125,6 +125,8 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     protected LinkedList<WeightedPair<String>> spells;
     protected boolean requiresTarget;
     
+    protected ConfigurationSection disguise;
+    
     public EntityData(Entity entity) {
         this(entity.getLocation(), entity);
     }
@@ -244,6 +246,8 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
                 controller.getLogger().log(Level.WARNING, " Invalid entity type: " + entityName);
             }
         }
+
+        disguise = ConfigurationUtils.getConfigurationSection(parameters, "disguise");
 
         isBaby = parameters.getBoolean("baby", false);
         tickInterval = parameters.getLong("cast_interval", 0);
@@ -680,6 +684,12 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
             Mage apiMage = controller.getMage(entity);
             if (apiMage instanceof com.elmakers.mine.bukkit.magic.Mage) {
                 ((com.elmakers.mine.bukkit.magic.Mage)apiMage).setEntityData(this);
+            }
+        }
+        
+        if (controller != null && disguise != null) {
+            if (!controller.disguise(entity, disguise)) {
+                controller.getLogger().warning("Invalid disguise type: " + disguise.getString("type"));
             }
         }
 

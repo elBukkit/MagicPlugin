@@ -9,6 +9,7 @@
  - Add /mmob clear command, for getting rid of magic mobs
  - Add "Magic.use.<wand>" permission list, for controlling individual wand permissions.
  - Add spsellshop, for exchanging SP for money
+ - Add disguise support (via LibsDisguises) to magic mobs
 
 ## 6.0.11
 

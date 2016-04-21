@@ -1,5 +1,11 @@
 package com.elmakers.mine.bukkit.integration;
 
+import me.libraryaddict.disguise.DisguiseAPI;
+import me.libraryaddict.disguise.LibsDisguises;
+import me.libraryaddict.disguise.disguisetypes.Disguise;
+import me.libraryaddict.disguise.disguisetypes.DisguiseType;
+import me.libraryaddict.disguise.disguisetypes.MobDisguise;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.plugin.Plugin;
 
@@ -8,42 +14,33 @@ import java.util.logging.Level;
 
 public class LibsDisguiseManager {
     private final Plugin plugin;
-    private Method isDisguisedMethod = null;
+    private final Plugin disguisePlugin;
 
     public LibsDisguiseManager(Plugin owningPlugin, Plugin disguisePlugin) {
         this.plugin = owningPlugin;
+        this.disguisePlugin = disguisePlugin;
     }
 
     public boolean initialize() {
-        try {
-            Class<?> disguiseAPI = Class.forName("me.libraryaddict.disguise.DisguiseAPI");
-            if (disguiseAPI != null) {
-                isDisguisedMethod = disguiseAPI.getMethod("isDisguised", Entity.class);
-            } else {
-                plugin.getLogger().log(Level.WARNING, "LibsDisguise plugin found, but DisguiseAPI could not be loaded");
-                return false;
-            }
-        } catch (Exception ex) {
-            plugin.getLogger().log(Level.WARNING, "LibsDisguise integration failed", ex);
-            isDisguisedMethod = null;
-            return false;
-        }
-        if (isDisguisedMethod == null) {
-            plugin.getLogger().log(Level.WARNING, "Something went wrong with LibsDisguise integration");
-            return false;
-        }
-
-        return true;
+        return (disguisePlugin != null && disguisePlugin instanceof LibsDisguises);
     }
 
     public boolean isDisguised(Entity entity) {
-        if (isDisguisedMethod == null) return false;
-        boolean disguised = false;
-        try {
-            disguised = (Boolean)isDisguisedMethod.invoke(null, entity);
-        } catch (Exception ex) {
-            disguised = false;
+        return DisguiseAPI.isDisguised(entity);
+    }
+    
+    public boolean disguise(Entity entity, ConfigurationSection configuration) {
+        String disguiseName = configuration.getString("type");
+        if (disguiseName == null || disguiseName.isEmpty()) {
+            return false;
         }
-        return disguised;
+        try {
+            DisguiseType disguiseType = DisguiseType.valueOf(disguiseName.toUpperCase());
+            Disguise disguise = new MobDisguise(disguiseType);
+            DisguiseAPI.disguiseEntity(entity, disguise);
+        } catch (Exception ex) {
+            return false;
+        }
+        return true;
     }
 }
