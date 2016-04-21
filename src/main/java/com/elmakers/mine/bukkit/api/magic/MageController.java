@@ -337,4 +337,5 @@ public interface MageController {
     public void unloadItemTemplate(String key);
     public void loadItemTemplate(String key, ConfigurationSection itemNode);
     public Double getWorth(ItemStack item);
+    public boolean disguise(Entity entity, ConfigurationSection configuration);
 }
