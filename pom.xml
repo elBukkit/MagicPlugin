@@ -217,7 +217,13 @@
 		<dependency>
 			<groupId>LibsDisguises</groupId>
 			<artifactId>LibsDisguises</artifactId>
-			<version>8.2.6</version>
+			<version>9.0.3</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>ProtocolLib</groupId>
+			<artifactId>ProtocolLib</artifactId>
+			<version>3.7.0-BETA</version>
 			<scope>provided</scope>
 		</dependency>
 	</dependencies>

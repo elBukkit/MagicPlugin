@@ -225,13 +225,13 @@ mega_spider:
   - type: increase_damage
     amplifier: 3
     
-mad_scientist:
+madscientist:
   name: Mad Scientist
   type: pig_zombie
   disguise:
     type: player
-    player: Mad Scientist
-    skin: NathanWolf
+    name: Mad Scientist
+    player: NathanWolf
     uuid: 4cb358ae-719c-4423-93c7-8769ce46e9c3
   item: madscientist_wand
   chestplate: warlock_chestplate

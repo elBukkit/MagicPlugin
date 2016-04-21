@@ -450,3 +450,4 @@ madscientist_helmet:
       meta-type: UNSPECIFIC
       enchants:
         THORNS: 3
+      Unbreakable: true

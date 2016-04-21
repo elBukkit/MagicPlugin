@@ -11,8 +11,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.plugin.Plugin;
 
-import java.lang.reflect.Method;
-import java.util.logging.Level;
+import java.util.UUID;
 
 public class LibsDisguiseManager {
     private final Plugin plugin;
@@ -41,11 +40,12 @@ public class LibsDisguiseManager {
             Disguise disguise = null;
             switch (disguiseType) {
                 case PLAYER:
-                    PlayerDisguise playerDisguise = new PlayerDisguise(configuration.getString("player"));
-                    String skin = configuration.getString("skin");
-                    String uuid = configuration.getString("uuid");
-                    if (skin != null && uuid != null) {
-                        WrappedGameProfile profile = new WrappedGameProfile(skin, uuid);
+                    PlayerDisguise playerDisguise = new PlayerDisguise(configuration.getString("name"));
+                    String player = configuration.getString("player");
+                    String uuidString = configuration.getString("uuid");
+                    if (player != null && uuidString != null) {
+                        UUID uuid = UUID.fromString(uuidString);
+                        WrappedGameProfile profile = new WrappedGameProfile(uuid, player);
                         playerDisguise.setSkin(profile);
                     }
                     disguise = playerDisguise;
