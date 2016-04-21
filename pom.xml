@@ -218,6 +218,7 @@
 			<groupId>LibsDisguises</groupId>
 			<artifactId>LibsDisguises</artifactId>
 			<version>8.2.6</version>
+			<scope>provided</scope>
 		</dependency>
 	</dependencies>
 	<repositories>
