@@ -424,3 +424,29 @@ wizard_wand:
       display-name: §aWizard wand
       lore:
       - It has lost its power
+      
+madscientist_wand:
+  worth: 2000
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    type: WOOD_HOE
+    damage: 7
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      Unbreakable: true
+      display-name: §aThe Wolf
+      lore:
+      - It has lost its power
+
+madscientist_helmet:
+  worth: 4000
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    type: WOOD_HOE
+    damage: 17
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      enchants:
+        THORNS: 3

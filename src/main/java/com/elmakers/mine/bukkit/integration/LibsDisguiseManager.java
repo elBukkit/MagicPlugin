@@ -1,10 +1,12 @@
 package com.elmakers.mine.bukkit.integration;
 
+import com.comphenix.protocol.wrappers.WrappedGameProfile;
 import me.libraryaddict.disguise.DisguiseAPI;
 import me.libraryaddict.disguise.LibsDisguises;
 import me.libraryaddict.disguise.disguisetypes.Disguise;
 import me.libraryaddict.disguise.disguisetypes.DisguiseType;
 import me.libraryaddict.disguise.disguisetypes.MobDisguise;
+import me.libraryaddict.disguise.disguisetypes.PlayerDisguise;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.plugin.Plugin;
@@ -36,7 +38,21 @@ public class LibsDisguiseManager {
         }
         try {
             DisguiseType disguiseType = DisguiseType.valueOf(disguiseName.toUpperCase());
-            Disguise disguise = new MobDisguise(disguiseType);
+            Disguise disguise = null;
+            switch (disguiseType) {
+                case PLAYER:
+                    PlayerDisguise playerDisguise = new PlayerDisguise(configuration.getString("player"));
+                    String skin = configuration.getString("skin");
+                    String uuid = configuration.getString("uuid");
+                    if (skin != null && uuid != null) {
+                        WrappedGameProfile profile = new WrappedGameProfile(skin, uuid);
+                        playerDisguise.setSkin(profile);
+                    }
+                    disguise = playerDisguise;
+                    break;
+                default:
+                    disguise = new MobDisguise(disguiseType);
+            }
             DisguiseAPI.disguiseEntity(entity, disguise);
         } catch (Exception ex) {
             return false;
