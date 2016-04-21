@@ -363,8 +363,7 @@ blessing:
     parameters:
         target_type: Player
         projectile: Snowball
-        effect_regeneration: 1
-        effect_heal: 10
+        effect_heal: 5
         effect_damage_resistance: 1
         effect_fire_resistance: 1
         duration: 5000
@@ -7575,7 +7574,7 @@ homing:
         player_damage: 4
         entity_damage: 6
         target_breakables: 1
-        cooldown: 5000
+        cooldown: 10000
         track_target: true
         lifetime: 20000
         target_self_timeout: 2000
