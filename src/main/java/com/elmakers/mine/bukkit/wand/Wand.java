@@ -4132,7 +4132,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	@Override
 	public boolean configure(Map<String, Object> properties) {
 		Map<Object, Object> convertedProperties = new HashMap<Object, Object>(properties);
-		loadProperties(ConfigurationUtils.toNodeList(convertedProperties), false);
+		loadProperties(ConfigurationUtils.toConfigurationSection(convertedProperties), false);
         saveItemState();
         updateName();
         updateLore();
@@ -4142,7 +4142,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 	@Override
 	public boolean upgrade(Map<String, Object> properties) {
 		Map<Object, Object> convertedProperties = new HashMap<Object, Object>(properties);
-		loadProperties(ConfigurationUtils.toNodeList(convertedProperties), true);
+		loadProperties(ConfigurationUtils.toConfigurationSection(convertedProperties), true);
         saveItemState();
         updateName();
         updateLore();
