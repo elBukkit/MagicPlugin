@@ -9302,16 +9302,19 @@ spawnershop:
   inherit: buyshop
   parameters:
     items:
-    - item: warlockspawner
-      cost: 50000
-    - item: spiderspawner
-      cost: 10000
-    - item: skeletonspawner
-      cost: 10000
-    - item: zombiespawner
-      cost: 10000
-    - item: cavespiderspawner
-      cost: 10000
+    - warlockspawner
+    - darkspiderspawner
+    - megaspiderspawner
+    - none
+    - none
+    - none
+    - none
+    - none
+    - none
+    - spiderspawner
+    - skeletonspawner
+    - zombiespawner
+    - cavespiderspawner
 
 automatashop:
     icon: command
@@ -9343,27 +9346,27 @@ tweakshop:
         confirm: false
         require_wand: true
         items:
-          - item: wand|inventorymode
-          - item: wand|chestmode
-          - item: wand|cyclemode
-          - item: none
-          - item: none
-          - item: wand|quickcast_enable
-          - item: wand|quickcast_disable
-          - item: wand|quickcast_normal
-          - item: wand|quickcast_manual
-          - item: wand|mode_drop
-          - item: wand|mode_rightclick
-          - item: none
-          - item: wand|organizer
-          - item: wand|alphabetizer
-          - item: none
-          - item: none
-          - item: none
-          - item: none
-          - item: wand|loud
-          - item: wand|quiet
-          - item: wand|silent
+          - wand|inventorymode
+          - wand|chestmode
+          - wand|cyclemode
+          - none
+          - none
+          - wand|quickcast_enable
+          - wand|quickcast_disable
+          - wand|quickcast_normal
+          - wand|quickcast_manual
+          - wand|mode_drop
+          - wand|mode_rightclick
+          - wand|mode_sword
+          - wand|mode_swap
+          - none
+          - wand|organizer
+          - wand|alphabetizer
+          - none
+          - none
+          - wand|loud
+          - wand|quiet
+          - wand|silent
 
 colorshop:
     icon: ink_sack
@@ -9490,42 +9493,20 @@ deposits:
         use_items: false
         auto_close: false
         items:
-          - item: gold_nugget
-            cost: 1
-          - item: gold_ingot
-            cost: 9
-          - item: gold_block
-            cost: 81
-          - item: iron_ingot
-            cost: 1
-          - item: iron_block
-            cost: 9
-          - item: diamond
-            cost: 16
-          - item: diamond_block
-            cost: 144
-          - item: emerald
-            cost: 32
-          - item: emerald_block
-            cost: 288
-          - item: gold_nugget@64
-            cost: 64
-          - item: gold_ingot@64
-            cost: 576
-          - item: gold_block@64
-            cost: 5184
-          - item: iron_ingot@64
-            cost: 64
-          - item: iron_block@64
-            cost: 576
-          - item: diamond@64
-            cost: 1024
-          - item: diamond_block@64
-            cost: 9216
-          - item: emerald@64
-            cost: 2048
-          - item: emerald_block@64
-            cost: 18432
+          - gold_nugget
+          - gold_ingot
+          - gold_block
+          - emerald
+          - emerald_block
+          - none
+          - none
+          - none
+          - none
+          - gold_nugget@64
+          - gold_ingot@64
+          - gold_block@64
+          - emerald@64
+          - emerald_block@64
 
 withdrawals:
     icon: emerald
@@ -9540,42 +9521,20 @@ withdrawals:
         use_items: false
         auto_close: false
         items:
-          - item: gold_nugget
-            cost: 1
-          - item: gold_ingot
-            cost: 9
-          - item: gold_block
-            cost: 81
-          - item: iron_ingot
-            cost: 1
-          - item: iron_block
-            cost: 9
-          - item: diamond
-            cost: 16
-          - item: diamond_block
-            cost: 144
-          - item: emerald
-            cost: 32
-          - item: emerald_block
-            cost: 288
-          - item: gold_nugget@64
-            cost: 64
-          - item: gold_ingot@64
-            cost: 576
-          - item: gold_block@64
-            cost: 5184
-          - item: iron_ingot@64
-            cost: 64
-          - item: iron_block@64
-            cost: 576
-          - item: diamond@64
-            cost: 1024
-          - item: diamond_block@64
-            cost: 9216
-          - item: emerald@64
-            cost: 2048
-          - item: emerald_block@64
-            cost: 18432
+          - gold_nugget
+          - gold_ingot
+          - gold_block
+          - emerald
+          - emerald_block
+          - none
+          - none
+          - none
+          - none
+          - gold_nugget@64
+          - gold_ingot@64
+          - gold_block@64
+          - emerald@64
+          - emerald_block@64
 
 spshop:
     inherit: buyshop
