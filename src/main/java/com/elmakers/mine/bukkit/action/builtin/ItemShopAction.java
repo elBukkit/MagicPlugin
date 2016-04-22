@@ -107,9 +107,6 @@ public class ItemShopAction extends BaseShopAction
         item.setAmount(amount);
         if (worth < 0) {
             Double defaultWorth = controller.getWorth(item);
-            
-            org.bukkit.Bukkit.getLogger().info("Checking worth: " + defaultWorth + " of " + item);
-            
             worth = defaultWorth == null ? 0 : defaultWorth;
         }
         
