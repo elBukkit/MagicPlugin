@@ -22,6 +22,7 @@ import java.util.List;
 public class AreaOfEffectAction extends CompoundEntityAction
 {
     private int radius;
+    private int yRadius;
     private int targetCount;
     private boolean targetSource;
 
@@ -35,6 +36,7 @@ public class AreaOfEffectAction extends CompoundEntityAction
     public void prepare(CastContext context, ConfigurationSection parameters)
     {
         radius = parameters.getInt("radius", 8);
+        yRadius = parameters.getInt("y_radius", radius);
         targetCount = parameters.getInt("target_count", -1);
         targetSource = parameters.getBoolean("target_source", true);
 
@@ -60,7 +62,7 @@ public class AreaOfEffectAction extends CompoundEntityAction
                     ChatColor.DARK_GRAY + "," + ChatColor.GRAY + sourceLocation.getBlockZ() +
                     ChatColor.DARK_GREEN + " with radius of " + ChatColor.GREEN + radius);
         }
-        List<Entity> candidates = CompatibilityUtils.getNearbyEntities(sourceLocation, radius, radius, radius);
+        List<Entity> candidates = CompatibilityUtils.getNearbyEntities(sourceLocation, radius, yRadius, radius);
         if (targetCount > 0)
         {
             List<Target> targets = new ArrayList<Target>();

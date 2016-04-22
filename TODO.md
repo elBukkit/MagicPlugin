@@ -1,6 +1,12 @@
 # TODO
- 
- - When a spell fizzles it does not incur cooldown
+
+ - Shops/Items:
+   - Add new command, mshop
+     - /mshop create [shoptype] [title] : Create a new shop NPC, default type "buyshop" in configs
+     - /mshop add [worth] <add item in hand to shop, or update worth if present>
+     - /mshop remove <remove item in hand from shop>
+     - Should look up itemstack (with count of 1) first, save as key if found
+     - Eventually a GUI would be nice.
  
  - Alter/grow/shrink/rollback should prevent mobs dropping loot
  
