@@ -2,6 +2,8 @@
 
 ## 5.5.6
 
+ - Removed diamonds and iron from the deposits/withdrawals shop, re-balance prices of emeralds
+ - Centralize shop prices into items.defaults.yml for some items, shops can be a simple list now
  - Add /mitem add/remove unplaceable command, for making a block unplaceable
  - Add /mmob clear command, for getting rid of magic mobs
  - Add spsellshop, for exchanging SP for money
