@@ -477,6 +477,9 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
 			worth = existing.getWorth();
 		}
 
+		// We always save items with a quantity of 1!
+		item.setAmount(1);
+		
 		YamlConfiguration itemConfig = new YamlConfiguration();
 		ConfigurationSection itemSection = itemConfig.createSection(template);
 		itemSection.set("creator_id", player.getUniqueId().toString());
