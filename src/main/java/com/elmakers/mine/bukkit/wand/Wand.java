@@ -2076,7 +2076,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
 				String message = (remaining == 1) ? getMessage("upgrade_uses_singular") : getMessage("upgrade_uses");
 				lore.add(ChatColor.RED + message.replace("$count", ((Integer)remaining).toString()));
 			} else {
-				String message = (remaining == 1) ? messages.get("uses_remaining_singular") : messages.get("uses_remaining_brief");
+				String message = (remaining == 1) ? getMessage("uses_remaining_singular") : getMessage("uses_remaining_brief");
 				lore.add(ChatColor.RED + message.replace("$count", ((Integer)remaining).toString()));
 			}
 		}
