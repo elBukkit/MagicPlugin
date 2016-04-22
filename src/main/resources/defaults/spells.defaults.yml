@@ -9421,41 +9421,29 @@ mobshop:
   inherit: buyshop
   parameters:
     items:
-    - item: philbertegg
-      cost: 500
-    - item: mutantegg
-      cost: 400
-    - item: witherarcheregg
-      cost: 300
-    - item: zombiehorseegg
-      cost: 1000
-    - item: skelliehorseegg
-      cost: 1000
+    - philbertegg
+    - mutantegg
+    - witherarcheregg
+    - zombiehorseegg
+    - skelliehorseegg
       
 spawnershop:
   inherit: buyshop
   parameters:
     items:
-    - item: warlockspawner
-      cost: 50000
-    - item: darkspiderspawner
-      cost: 20000
-    - item: megaspiderspawner
-      cost: 20000
-    - item: none
-    - item: none
-    - item: none
-    - item: none
-    - item: none
-    - item: none
-    - item: spiderspawner
-      cost: 10000
-    - item: skeletonspawner
-      cost: 10000
-    - item: zombiespawner
-      cost: 10000
-    - item: cavespiderspawner
-      cost: 10000
+    - warlockspawner
+    - darkspiderspawner
+    - megaspiderspawner
+    - none
+    - none
+    - none
+    - none
+    - none
+    - none
+    - spiderspawner
+    - skeletonspawner
+    - zombiespawner
+    - cavespiderspawner
 
 automatashop:
     icon: command
@@ -9487,27 +9475,27 @@ tweakshop:
         confirm: false
         require_wand: true
         items:
-          - item: wand|inventorymode
-          - item: wand|chestmode
-          - item: wand|cyclemode
-          - item: none
-          - item: none
-          - item: wand|quickcast_enable
-          - item: wand|quickcast_disable
-          - item: wand|quickcast_normal
-          - item: wand|quickcast_manual
-          - item: wand|mode_drop
-          - item: wand|mode_rightclick
-          - item: wand|mode_sword
-          - item: wand|mode_swap
-          - item: none
-          - item: wand|organizer
-          - item: wand|alphabetizer
-          - item: none
-          - item: none
-          - item: wand|loud
-          - item: wand|quiet
-          - item: wand|silent
+          - wand|inventorymode
+          - wand|chestmode
+          - wand|cyclemode
+          - none
+          - none
+          - wand|quickcast_enable
+          - wand|quickcast_disable
+          - wand|quickcast_normal
+          - wand|quickcast_manual
+          - wand|mode_drop
+          - wand|mode_rightclick
+          - wand|mode_sword
+          - wand|mode_swap
+          - none
+          - wand|organizer
+          - wand|alphabetizer
+          - none
+          - none
+          - wand|loud
+          - wand|quiet
+          - wand|silent
 
 colorshop:
     icon: ink_sack
@@ -9634,26 +9622,20 @@ deposits:
         use_items: false
         auto_close: false
         items:
-          - item: gold_nugget
-            cost: 1
-          - item: gold_ingot
-            cost: 9
-          - item: gold_block
-            cost: 81
-          - item: emerald
-            cost: 100
-          - item: emerald_block
-            cost: 900
-          - item: gold_nugget@64
-            cost: 64
-          - item: gold_ingot@64
-            cost: 576
-          - item: gold_block@64
-            cost: 5184
-          - item: emerald@64
-            cost: 6400
-          - item: emerald_block@64
-            cost: 57600
+          - gold_nugget
+          - gold_ingot
+          - gold_block
+          - emerald
+          - emerald_block
+          - none
+          - none
+          - none
+          - none
+          - gold_nugget@64
+          - gold_ingot@64
+          - gold_block@64
+          - emerald@64
+          - emerald_block@64
 
 withdrawals:
     icon: emerald
@@ -9668,26 +9650,20 @@ withdrawals:
         use_items: false
         auto_close: false
         items:
-          - item: gold_nugget
-            cost: 1
-          - item: gold_ingot
-            cost: 9
-          - item: gold_block
-            cost: 81
-          - item: emerald
-            cost: 100
-          - item: emerald_block
-            cost: 900
-          - item: gold_nugget@64
-            cost: 64
-          - item: gold_ingot@64
-            cost: 576
-          - item: gold_block@64
-            cost: 5184
-          - item: emerald@64
-            cost: 6400
-          - item: emerald_block@64
-            cost: 57600
+          - gold_nugget
+          - gold_ingot
+          - gold_block
+          - emerald
+          - emerald_block
+          - none
+          - none
+          - none
+          - none
+          - gold_nugget@64
+          - gold_ingot@64
+          - gold_block@64
+          - emerald@64
+          - emerald_block@64
 
 spshop:
     inherit: buyshop
