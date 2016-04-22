@@ -4438,12 +4438,15 @@ public class MagicController implements MageController {
                 return spell.getWorth();
             }
         }
+        int amount = item.getAmount();
+        item.setAmount(1);
         ItemData configuredItem = items.get(item);
-        if (configuredItem != null) {
-            return configuredItem.getWorth();
+        item.setAmount(amount);
+        if (configuredItem == null) {
+            return null;
         }
-        
-        return null;
+
+        return configuredItem.getWorth() * amount;
     }
 
     public boolean isInventoryBackupEnabled() {
