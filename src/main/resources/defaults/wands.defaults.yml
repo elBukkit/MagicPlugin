@@ -884,6 +884,7 @@ wolf:
   effect_particle_offset: 0.3
   overrides:
     - max_dimension 1024
+    - floodfill.depth 256
   effect_particle: ENCHANTMENT_TABLE
   potion_effects:
     - SATURATION
