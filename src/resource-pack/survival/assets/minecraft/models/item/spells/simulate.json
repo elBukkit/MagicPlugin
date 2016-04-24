@@ -1,0 +1,7 @@
+{
+    "parent" : "item/spells/icon",
+    "textures": {
+        "particle": "items/spells/simulate",
+        "texture": "items/spells/simulate"
+    }
+}

@@ -16,7 +16,7 @@ cp -R ../../../common/assets/* .
 cd ..
 cp -R ../../survival/* .
 find . -name ".DS_Store" -type f -delete
-zip -r -X ../Magic-RP-6.zip *
+zip -r -X ../Magic-RP-6-1.zip *
 cd ..
 
 echo "** BUILDING POTTER **"
