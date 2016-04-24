@@ -200,7 +200,7 @@ default:
        invalid_world: fail
 
 silence:
-    icon: diamond_axe:1
+    icon: diamond_axe:8
     icon_url: http://textures.minecraft.net/texture/ad7e09a7af7af5acc286e6a4dd3c2f69b55ace33b7838ca899545570e946ee
     category: dark
     worth: 750
@@ -258,7 +258,7 @@ silence:
         hitbox: true
 
 curse:
-    icon: diamond_axe:2
+    icon: diamond_axe:9
     icon_url: http://textures.minecraft.net/texture/1adaf6e6e387bc18567671bb82e948488bbacff97763ee5985442814989f5d
     category: dark
     worth: 80
@@ -336,7 +336,7 @@ curse|2:
         effect_slow: 3
 
 blessing:
-    icon: diamond_axe:3
+    icon: diamond_axe:10
     icon_url: http://textures.minecraft.net/texture/775c41bd5e4ef3cba5f9bdc5258973c95477e819cb20c163ffb378db5ae3
     category: master
     worth: 700
@@ -380,7 +380,7 @@ blessing:
         mana: 200
 
 boon:
-    icon: diamond_axe:4
+    icon: diamond_axe:11
     icon_url: http://textures.minecraft.net/texture/15987e49e7ed16df536f4dbf685e7720b88b4de6deaf614d84ab9f9884725c
     alias: perk
     category: utility
@@ -441,7 +441,7 @@ boon|4:
         mana: 100
 
 simulate:
-    icon: diamond_axe:5
+    icon: diamond_axe:12
     icon_url: http://textures.minecraft.net/texture/7ee091dbd831daca4385f481d3a0c5bf6513e47db9a0926e567e10997cfd6ce2
     category: electrical
     class: SimulateSpell
@@ -463,7 +463,7 @@ simulate:
         check_destructible: true
 
 simulate3:
-    icon: diamond_axe:6
+    icon: diamond_axe:13
     icon_url: http://textures.minecraft.net/texture/7ee091dbd831daca4385f481d3a0c5bf6513e47db9a0926e567e10997cfd6ce2
     category: electrical
     class: SimulateSpell
@@ -488,7 +488,7 @@ simulate3:
         check_destructible: true
 
 glider:
-    icon: diamond_axe:7
+    icon: diamond_axe:14
     icon_url: http://textures.minecraft.net/texture/7ee091dbd831daca4385f481d3a0c5bf6513e47db9a0926e567e10997cfd6ce2
     category: automata
     class: ConstructSpell
@@ -519,7 +519,7 @@ glider:
         mana: 400
 
 virus:
-    icon: diamond_axe:8
+    icon: diamond_axe:15
     icon_url: http://textures.minecraft.net/texture/744e11fddeff88dd749ae5ff8fe80f46b9f659817d43d673e4af3759d59ae0
     category: automata
     class: AnimateSpell
@@ -579,7 +579,7 @@ virus:
         xp: 400
 
 worm:
-    icon: diamond_axe:9
+    icon: diamond_axe:16
     icon_url: http://textures.minecraft.net/texture/744e11fddeff88dd749ae5ff8fe80f46b9f659817d43d673e4af3759d59ae0
     category: automata
     class: AnimateSpell
@@ -640,7 +640,7 @@ worm:
         xp: 250
 
 hunter:
-    icon: diamond_axe:10
+    icon: diamond_axe:17
     icon_url: http://textures.minecraft.net/texture/744e11fddeff88dd749ae5ff8fe80f46b9f659817d43d673e4af3759d59ae0
     category: automata
     class: AnimateSpell
@@ -698,7 +698,7 @@ hunter:
         xp: 200
 
 defender:
-    icon: diamond_axe:11
+    icon: diamond_axe:18
     icon_url: http://textures.minecraft.net/texture/744e11fddeff88dd749ae5ff8fe80f46b9f659817d43d673e4af3759d59ae0
     category: automata
     class: AnimateSpell
@@ -744,7 +744,7 @@ defender:
         xp: 50
 
 animate:
-    icon: diamond_axe:12
+    icon: diamond_axe:19
     icon_url: http://textures.minecraft.net/texture/744e11fddeff88dd749ae5ff8fe80f46b9f659817d43d673e4af3759d59ae0
     category: automata
     class: AnimateSpell
@@ -788,7 +788,7 @@ animate:
         xp: 50
 
 life:
-    icon: diamond_axe:13
+    icon: diamond_axe:20
     icon_url: http://textures.minecraft.net/texture/7ee091dbd831daca4385f481d3a0c5bf6513e47db9a0926e567e10997cfd6ce2
     category: electrical
     class: ConstructSpell
@@ -822,7 +822,7 @@ life:
         mana: 1000
 
 life3:
-    icon: diamond_axe:14
+    icon: diamond_axe:21
     icon_url: http://textures.minecraft.net/texture/7ee091dbd831daca4385f481d3a0c5bf6513e47db9a0926e567e10997cfd6ce2
     category: electrical
     hidden: true
@@ -856,7 +856,7 @@ life3:
         mana: 1500
 
 shell:
-    icon: diamond_axe:15
+    icon: diamond_axe:22
     icon_url: http://textures.minecraft.net/texture/3dbb78853b526f9b712b4e431fb332eae0e6cd3dea9a610e9ecf54c31f7c6d
     alias: dome
     category: combat
@@ -930,7 +930,7 @@ shell|4:
         breakable: 1
 
 reflect:
-    icon: diamond_axe:16
+    icon: diamond_axe:23
     icon_url: http://textures.minecraft.net/texture/38f77caf858c927df996e277cf6e9fbb9b3cd71aa34e4412da4d6312cc8dfc
     category: light
     worth: 100
@@ -999,7 +999,7 @@ reflect|4:
         mana: 60
 
 platform:
-    icon: diamond_axe:17
+    icon: diamond_axe:24
     icon_url: http://textures.minecraft.net/texture/48e69c5a76182441d98326284e9342c1dac2a786ba47e8226884f65594c3bd3a
     alias: disc
     upgrade_required_path: apprentice
@@ -1050,7 +1050,7 @@ platform|4:
         brush: ""
 
 superdisc:
-    icon: diamond_axe:18
+    icon: diamond_axe:25
     icon_url: http://textures.minecraft.net/texture/89791581eeeb253cd59a2bda0615d78da15f218e475b192bbffc8bb16bd8f
     category: engineering
     tags: noduel
@@ -1079,7 +1079,7 @@ superdisc:
         mana: 200
 
 superring:
-    icon: diamond_axe:19
+    icon: diamond_axe:26
     icon_url: http://textures.minecraft.net/texture/94d8a4b21f84bb65fb9f3a656d4518f0662fcabc44d01c1e435787ca542a9dd
     category: engineering
     tags: noduel
@@ -1108,7 +1108,7 @@ superring:
         mana: 200
 
 supershell:
-    icon: diamond_axe:20
+    icon: diamond_axe:27
     icon_url: http://textures.minecraft.net/texture/281923adf47a8ca699f6d09593e36d154acc707735eb25fd89d282f1f3bb2078
     category: engineering
     tags: noduel
@@ -1135,7 +1135,7 @@ supershell:
         mana: 250
 
 superdome:
-    icon: diamond_axe:21
+    icon: diamond_axe:28
     icon_url: http://textures.minecraft.net/texture/e468c9623ed74bc829f985d46d4646241daa2a682fec5f2343d55cd7a63693d
     category: engineering
     tags: noduel
@@ -1163,7 +1163,7 @@ superdome:
         mana: 200
 
 tag:
-    icon: diamond_axe:22
+    icon: diamond_axe:29
     icon_url: http://textures.minecraft.net/texture/c5acc4b5a7079df3f51cd9388508a5860fc60e9bcde97f9abee62b457d7e
     category: dark
     class: SignSpell
@@ -1197,7 +1197,7 @@ tag:
         sign: 1
 
 toss:
-    icon: diamond_axe:23
+    icon: diamond_axe:30
     icon_url: http://textures.minecraft.net/texture/44471f5f9792fd21dd1e652f2ac5f47e49eeebd4fb289f4174ec20dc7b57e6
     category: engineering
     tags: noduel
@@ -1218,7 +1218,7 @@ toss:
         mana: 20
 
 volley:
-    icon: diamond_axe:24
+    icon: diamond_axe:31
     icon_url: http://textures.minecraft.net/texture/c7c963831339c9e82e91cd29bfa36ab616d78555dfbe7e72983e2e254180a2ab
     category: engineering
     tags: noduel
@@ -1245,7 +1245,7 @@ volley:
         mana: 40
 
 push:
-    icon: diamond_axe:25
+    icon: diamond_axe:32
     icon_url: http://textures.minecraft.net/texture/44a760e06345bd9edd2475d6469dfb952278ca3ec7634aa334e1d7bfcc8644f
     category: elemental
     worth: 50
@@ -1349,7 +1349,7 @@ push|4:
         repeat: 4
 
 pull:
-    icon: diamond_axe:26
+    icon: diamond_axe:33
     icon_url: http://textures.minecraft.net/texture/e13e9af0957a9dd4995811ef3e869b4ad8fbb59ca7474e4c84ce7f6019b079
     category: elemental
     worth: 20
@@ -1391,7 +1391,7 @@ pull:
         mana: 10
 
 grab:
-    icon: diamond_axe:27
+    icon: diamond_axe:34
     icon_url: http://textures.minecraft.net/texture/e13e9af0957a9dd4995811ef3e869b4ad8fbb59ca7474e4c84ce7f6019b079
     category: elemental
     worth: 20
@@ -1430,7 +1430,7 @@ grab:
         mana: 50
 
 boom:
-    icon: diamond_axe:28
+    icon: diamond_axe:35
     icon_url: http://textures.minecraft.net/texture/70df3afc6a6035b189f83d2cfc84ff9ffe33750273247d1e41acb5a805f54
     alias: kaboom
     category: combat
@@ -1504,7 +1504,7 @@ boom|2:
         mana: 75
 
 nuke:
-    icon: diamond_axe:29
+    icon: diamond_axe:36
     icon_url: http://textures.minecraft.net/texture/f27c497b89fdcbf754b59aaadcc7e49c5217f1677bf9f8803c4cca519b3a2
     category: master
     worth: 2000
@@ -1637,7 +1637,7 @@ nuke|2:
     radius: 12
 
 frost:
-    icon: diamond_axe:30
+    icon: diamond_axe:37
     icon_url: http://textures.minecraft.net/texture/ff39da1c8acc158ee5aa7f0352e4738aefe3365f28841badd603e2ffe42a
     category: combat
     worth: 200
@@ -1750,7 +1750,7 @@ frost|4:
         mana: 70
 
 permafrost:
-    icon: diamond_axe:31
+    icon: diamond_axe:38
     icon_url: http://textures.minecraft.net/texture/872d9b98a6b34a2762aac1af915873c066c43c2b2b8d689d27626cc5afcb11
     category: engineering
     tags: noduel
@@ -1804,7 +1804,7 @@ permafrost:
         mana: 200
 
 lightning:
-    icon: diamond_axe:32
+    icon: diamond_axe:39
     icon_url: http://textures.minecraft.net/texture/c0d34b6c68eca9dae0f9dabeadeb5f72536fa20ab4ecf669be895baf1c17
     alias: storm
     upgrade_required_path: apprentice
@@ -1858,7 +1858,7 @@ lightning|3:
         repeat: 2
 
 smite:
-    icon: diamond_axe:33
+    icon: diamond_axe:40
     icon_url: http://textures.minecraft.net/texture/a31cc0ffb1e814e1c82301067ea318356befa65dc1a027afbfd498709cad58
     category: elemental
     pvp_restricted: true
@@ -1907,7 +1907,7 @@ smite:
         mana: 100
 
 tree:
-    icon: diamond_axe:34
+    icon: diamond_axe:41
     icon_url: http://textures.minecraft.net/texture/789e28cfb955a3bf9eafee3eabeca3e8bec87fc7e7489abb6281860289cec43
     category: elemental
     worth: 5000
@@ -1933,7 +1933,7 @@ tree:
         sapling|*: 1
 
 forest:
-    icon: diamond_axe:35
+    icon: diamond_axe:42
     icon_url: http://textures.minecraft.net/texture/31d45096a315b2ebe6239cbb16e7348ba8d5f93a9a37592434faeec7a5
     category: elemental
     worth: 400
@@ -2015,7 +2015,7 @@ forest:
         mana: 200
 
 disarm:
-    icon: diamond_axe:36
+    icon: diamond_axe:43
     icon_url: http://textures.minecraft.net/texture/ff418f5c02c74f8e54645d05897b954c568f22753eea5fb559b898322aa79
     category: light
     worth: 200
@@ -2098,7 +2098,7 @@ disarm|3:
         target_breakables: 2
 
 cure:
-    icon: diamond_axe:37
+    icon: diamond_axe:44
     icon_url: http://textures.minecraft.net/texture/1364e3f9597a295108d202d20c2f02539d5ad8377fef53ef622603a7f45b52f
     upgrade_required_path: student
     upgrade_required_casts: 20
@@ -2184,7 +2184,7 @@ cure|4:
         repeat: 10
 
 heal:
-    icon: diamond_axe:38
+    icon: diamond_axe:45
     icon_url: http://textures.minecraft.net/texture/6b7da98ef45cf45185d21d61f5fa3d5966a3ee52273620a6e4dfd54cf99dbc
     category: light
     upgrade_required_path: student
@@ -2273,7 +2273,7 @@ heal|3:
         cooldown: 10000
 
 healing:
-    icon: diamond_axe:39
+    icon: diamond_axe:46
     icon_url: http://textures.minecraft.net/texture/6b7da98ef45cf45185d21d61f5fa3d5966a3ee52273620a6e4dfd54cf99dbc
     category: light
     hiden: true
@@ -2303,7 +2303,7 @@ healing:
         bypass_undo: true
 
 music:
-    icon: diamond_axe:40
+    icon: diamond_axe:47
     icon_url: http://textures.minecraft.net/texture/a2ea21c79fa115b9a63625a2c9c5ec3dd92e1d1a7024162790237da9d98ee28
     category: music
     worth: 30
@@ -2332,7 +2332,7 @@ music:
         mana: 20
 
 gather:
-    icon: diamond_axe:41
+    icon: diamond_axe:48
     icon_url: http://textures.minecraft.net/texture/ff78194bb5fe3f374ca6a1727c04247b7bac331cff248bf642acc8e73647e
     category: master
     tags: noduel,nojail
@@ -2375,7 +2375,7 @@ gather|2:
         command: tpahere @tn
 
 mount:
-    icon: diamond_axe:42
+    icon: diamond_axe:49
     icon_url: http://textures.minecraft.net/texture/ddb5db33eac28ccfce38f179044575cb9de8195bc1ed843d4345da5f13b63d
     tags: noduel
     category: master
@@ -2407,7 +2407,7 @@ mount:
         mana: 60
 
 tame:
-    icon: diamond_axe:43
+    icon: diamond_axe:50
     icon_url: http://textures.minecraft.net/texture/ddb5db33eac28ccfce38f179044575cb9de8195bc1ed843d4345da5f13b63d
     category: utility
     worth: 500
@@ -2447,7 +2447,7 @@ tame:
         mana: 100
 
 icbm:
-    icon: diamond_axe:44
+    icon: diamond_axe:51
     icon_url: http://textures.minecraft.net/texture/9c2e9d8395cacd9922869c15373cf7cb16da0a5ce5f3c632b19ceb3929c9a11
     category: demolition
     pvp_restricted: true
@@ -2488,7 +2488,7 @@ icbm:
         mana: 150
 
 neutron:
-    icon: diamond_axe:45
+    icon: diamond_axe:52
     upgrade_required_path: master
     upgrade_required_casts: 50
     icon_url: http://textures.minecraft.net/texture/1eed1e4d70522ccd538b75ded4baa680e3dfe55426c560ff7b521be5cdf614f
@@ -2530,7 +2530,7 @@ neutron|2:
       probability: 0.75
 
 wither:
-    icon: diamond_axe:46
+    icon: diamond_axe:53
     upgrade_required_path: apprentice
     upgrade_required_casts: 50
     icon_url: http://textures.minecraft.net/texture/ac90eba543a9b9609c4815542e88274e50c152c837a22d3f5f64847b95e2
@@ -2571,7 +2571,7 @@ wither|3:
        radius: 4
 
 arrowrain:
-    icon: diamond_axe:47
+    icon: diamond_axe:54
     upgrade_required_path: apprentice
     upgrade_required_casts: 50
     icon_url: http://textures.minecraft.net/texture/7d89462020cc12f63d5117d37b52e642536de7fa774d2d96e80c72e1d4ff6
@@ -2605,7 +2605,7 @@ arrowrain|2:
        fire: true
 
 gatling:
-    icon: diamond_axe:48
+    icon: diamond_axe:55
     upgrade_required_path: master
     upgrade_required_casts: 50
     icon_url: http://textures.minecraft.net/texture/7134aed98232d9946f9dbd738a37e68f36a9a773a863dde206bb9115b993d78
@@ -2651,7 +2651,7 @@ gatling|2:
       damage: 0.2
 
 meteor:
-    icon: diamond_axe:49
+    icon: diamond_axe:56
     icon_url: http://textures.minecraft.net/texture/f554672caf6e5335954614fb185acb15148e71423d97d0d5ff6023c247d5eb21
     category: combat
     worth: 1500
@@ -2761,7 +2761,7 @@ meteor:
         mana: 200
 
 arrow:
-    icon: diamond_axe:50
+    icon: diamond_axe:57
     icon_url: http://textures.minecraft.net/texture/ea96e1b8c4d458f8f5443fa66eb376981f7b2ec385386db67faf3f1589094
     alias: sniper
     category: combat
@@ -2856,7 +2856,7 @@ arrow|6:
         mana: 50
 
 flashbang:
-    icon: diamond_axe:51
+    icon: diamond_axe:58
     icon_url: http://textures.minecraft.net/texture/964590674dbaf76126bd87694bfe97575be8de19aac4a8d9aa5579f8f01ed1
     category: combat
     pvp_restricted: true
@@ -2922,7 +2922,7 @@ flashbang:
         mana: 50
 
 weather:
-    icon: diamond_axe:52
+    icon: diamond_axe:59
     icon_url: http://textures.minecraft.net/texture/cd76c83453ba48a6aceac090ef4e2c8918ecd8891e91621bed2e03fad8a7f6
     category: elemental
     worth: 500
@@ -2955,7 +2955,7 @@ weather:
         mana: 150
 
 fling:
-    icon: diamond_axe:53
+    icon: diamond_axe:60
     icon_url: http://textures.minecraft.net/texture/7cc2fb583d1762a16a50fa5ac37bc09b46def63e68205116d650391f9233ed
     alias: leap
     category: utility
@@ -3029,7 +3029,7 @@ fling|4:
         mana: 90
   
 supertorch:
-    icon: diamond_axe:54
+    icon: diamond_axe:61
     icon_url: http://textures.minecraft.net/texture/15f098d4bc88ca9b11ddb6b3acb08dad7a3fc62929ec27adcedb667c61faa3
     category: engineering
     tags: noduel
@@ -3060,7 +3060,7 @@ supertorch:
         torch: 1
 
 torch:
-    icon: diamond_axe:55
+    icon: diamond_axe:62
     icon_url: http://textures.minecraft.net/texture/08f4793551132fad5bdb5d185269881a8de6fa4b86c6bde92c2bf467e097
     category: utility
     tags: noduel
@@ -3110,7 +3110,7 @@ torch|4:
         cooldown: 2000
 
 familiar:
-    icon: diamond_axe:56
+    icon: diamond_axe:63
     icon_url: http://textures.minecraft.net/texture/621668ef7cb79dd9c22ce3d1f3f4cb6e2559893b6df4a469514e667c16aa4
     category: elemental
     class: FamiliarSpell
@@ -3150,7 +3150,7 @@ familiar:
         mana: 20
 
 monster:
-    icon: diamond_axe:57
+    icon: diamond_axe:64
     icon_url: http://textures.minecraft.net/texture/cd541541daaff50896cd258bdbdd4cf80c3ba816735726078bfe393927e57f1
     category: dark
     class: FamiliarSpell
@@ -3196,7 +3196,7 @@ monster:
         mana: 40
 
 testdummy:
-    icon: diamond_axe:58
+    icon: diamond_axe:65
     icon_url: http://textures.minecraft.net/texture/f6f3e3c8aeff6128b1194ccf7e3eaddcf438e1938471a66ef76a09d4a3a1932
     category: staff
     quick_cast: true
@@ -3227,7 +3227,7 @@ testdummy:
         range: 24
 
 ghast:
-    icon: diamond_axe:59
+    icon: diamond_axe:66
     icon_url: http://textures.minecraft.net/texture/8b6a72138d69fbbd2fea3fa251cabd87152e4f1c97e5f986bf685571db3cc0
     category: elemental
     pvp_restricted: true
@@ -3264,7 +3264,7 @@ ghast:
         mana: 50
 
 mob:
-    icon: diamond_axe:60
+    icon: diamond_axe:67
     icon_url: http://textures.minecraft.net/texture/74e9c6e98582ffd8ff8feb3322cd1849c43fb16b158abb11ca7b42eda7743eb
     category: dark
     class: FamiliarSpell
@@ -3311,7 +3311,7 @@ mob:
         mana: 100
 
 farm:
-    icon: diamond_axe:61
+    icon: diamond_axe:68
     icon_url: http://textures.minecraft.net/texture/5d6c6eda942f7f5f71c3161c7306f4aed307d82895f9d2b07ab4525718edc5
     category: elemental
     class: FamiliarSpell
@@ -3348,7 +3348,7 @@ farm:
         mana: 50
 
 wolf:
-    icon: diamond_axe:62
+    icon: diamond_axe:69
     icon_url: http://textures.minecraft.net/texture/f73d8d925fd45eee331437cc496403f96516a5d35a8e62189990d8beee6a14
     category: elemental
     class: WolfSpell
@@ -3379,7 +3379,7 @@ wolf:
         mana: 50
 
 cat:
-    icon: diamond_axe:63
+    icon: diamond_axe:70
     icon_url: http://textures.minecraft.net/texture/c87fd886605b6aaf6af2b2ea5b205bcdcb60b453b0353ceece0861cfc67ada4
     category: elemental
     class: OcelotSpell
@@ -3409,7 +3409,7 @@ cat:
         mana: 30
 
 portal:
-    icon: diamond_axe:64
+    icon: diamond_axe:71
     icon_url: http://textures.minecraft.net/texture/65627b236b77eef7b4f31726ed5dbb8f3cdf29a7f8cf820fa34c6cae82f9
     category: master
     tags: noduel
@@ -3432,7 +3432,7 @@ portal:
         mana: 20
 
 phase:
-    icon: diamond_axe:65
+    icon: diamond_axe:72
     icon_url: http://textures.minecraft.net/texture/3186699cf52cb2f732b7948784b262a49d43a57c801368f776e3c9a88151d
     category: master
     tags: noduel,nojail
@@ -3507,7 +3507,7 @@ superphase:
       delay: 0
 
 phasebackup:
-    icon: diamond_axe:66
+    icon: diamond_axe:73
     icon_url: http://textures.minecraft.net/texture/3186699cf52cb2f732b7948784b262a49d43a57c801368f776e3c9a88151d
     category: staff
     worth: 1000
@@ -3562,7 +3562,7 @@ phasebackup:
         mana: 50
 
 invincible:
-    icon: diamond_axe:67
+    icon: diamond_axe:74
     icon_url: http://textures.minecraft.net/texture/4a68c3ec585277cad3da3955fac44fbe7a7f98271fd529d26ce110d8884a8a
     category: master
     tags: noduel
@@ -3595,7 +3595,7 @@ invincible:
         mana: 90
 
 fire:
-    icon: diamond_axe:68
+    icon: diamond_axe:75
     icon_url: http://textures.minecraft.net/texture/7dbb7f75e74ad4218d2af7191752b5952144436ce8aa2bb6fb27168e6f28af
     alias: inferno
     category: demolition
@@ -3679,7 +3679,7 @@ fire|3:
         mana: 70
 
 bubble:
-    icon: diamond_axe:69
+    icon: diamond_axe:76
     alias: cushion
     icon_url: http://textures.minecraft.net/texture/b750768d23e447d95b662344f426cc96228a4047f7a8ced0f4861edbbeaced
     category: utility
@@ -3739,7 +3739,7 @@ bubble|2:
         undo: 2000
 
 regenerate:
-    icon: diamond_axe:70
+    icon: diamond_axe:77
     icon_url: http://textures.minecraft.net/texture/43e6aef534bc455c1d13d692fa193cac6efcce7c875b185375114b71c63929
     category: engineering
     tags: noduel
@@ -3761,7 +3761,7 @@ regenerate:
         mana: 400
 
 superregenerate:
-    icon: diamond_axe:71
+    icon: diamond_axe:78
     icon_url: http://textures.minecraft.net/texture/a98cd720917c3d48a165c0418515e58d52c81f4b5271ff8d23790cca43f9b
     category: engineering
     tags: noduel
@@ -3784,7 +3784,7 @@ superregenerate:
         mana: 1000
 
 paint:
-    icon: diamond_axe:72
+    icon: diamond_axe:79
     icon_url: http://textures.minecraft.net/texture/719e9875ffb35adfbd135c416e51dcf80dec38bf3d0dca2f94eb6595b90c0b5
     category: engineering
     tags: noduel
@@ -3812,7 +3812,7 @@ paint:
         mana: 5
 
 fill:
-    icon: diamond_axe:73
+    icon: diamond_axe:80
     icon_url: http://textures.minecraft.net/texture/ce31cd14d873d1579b633646be683b5e1201512e593ca61595e33a5ef17b374
     category: engineering
     tags: noduel
@@ -3836,7 +3836,7 @@ fill:
         mana: 100
 
 recurse:
-    icon: diamond_axe:74
+    icon: diamond_axe:81
     icon_url: http://textures.minecraft.net/texture/d5b284f190a8d48c60481e2a1cd2b2557eeeaccfb02ef183affd6e02de8c51
     category: engineering
     tags: noduel
@@ -3877,7 +3877,7 @@ recurse:
         mana: 30
 
 floodfill:
-    icon: diamond_axe:75
+    icon: diamond_axe:82
     icon_url: http://textures.minecraft.net/texture/3eae564a9cf283d1b95d45f82674bc7327d6f91ab8cd3458cabbe2c84db
     category: engineering
     tags: noduel
@@ -3913,7 +3913,7 @@ floodfill:
         mana: 200
 
 gills:
-    icon: diamond_axe:76
+    icon: diamond_axe:83
     icon_url: http://textures.minecraft.net/texture/b47a2ebba3629cd387581f7b4b2bd471bc793f9d3b353862da8e9198e18c3193
     category: light
     worth: 100
@@ -3950,7 +3950,7 @@ gills:
         mana: 15
 
 day:
-    icon: diamond_axe:77
+    icon: diamond_axe:84
     icon_url: http://textures.minecraft.net/texture/1b5c8c12faec6646fd9cd8c610f138f51fbaaee1182baff8fa4f32d683b25eb
     category: master
     worth: 1000
@@ -3994,7 +3994,7 @@ day:
         mana: 50
 
 night:
-    icon: diamond_axe:78
+    icon: diamond_axe:85
     icon_url: http://textures.minecraft.net/texture/15f1fe5d5cc447e215243b4cf0b4eb56331f1b4f40909bb91a2963929ef1c2
     category: elemental
     quick_cast: true
@@ -4021,7 +4021,7 @@ night:
         mana: 150
 
 time:
-    icon: diamond_axe:79
+    icon: diamond_axe:86
     hidden: true
     icon_url: http://textures.minecraft.net/texture/1b5c8c12faec6646fd9cd8c610f138f51fbaaee1182baff8fa4f32d683b25eb
     category: master
@@ -4052,7 +4052,7 @@ time:
         mana: 40
 
 bridge:
-    icon: diamond_axe:80
+    icon: diamond_axe:87
     icon_url: http://textures.minecraft.net/texture/328d3a15afbc7f95d64179bb6154aa2e9ce7212462145c3344fda754b12c61e7
     category: engineering
     tags: noduel
@@ -4095,7 +4095,7 @@ bridge:
         mana: 5
     
 pillar:
-    icon: diamond_axe:81
+    icon: diamond_axe:88
     icon_url: http://textures.minecraft.net/texture/8a37d68a64b72c169586e55e885784f61ba6ca62246b5dff877656c6c2f657e
     category: engineering
     tags: noduel
@@ -4132,7 +4132,7 @@ pillar:
         mana: 5
 
 place:
-    icon: diamond_axe:82
+    icon: diamond_axe:89
     icon_url: http://textures.minecraft.net/texture/c79136be2c1ed4c89e21bfc7846486c516d9b4d32965edfd5877fafa8aeb6
     category: engineering
     tags: noduel
@@ -4162,7 +4162,7 @@ place:
         mana: 10
 
 anvil:
-    icon: diamond_axe:83
+    icon: diamond_axe:90
     icon_url: http://textures.minecraft.net/texture/505b8ba793c372d9fb45db20df80c1606b19b7421a9bbcc258ae2a65d65ea7
     category: utility
     class: PlaceSpell
@@ -4185,7 +4185,7 @@ anvil:
         mana: 100
 
 grenade:
-    icon: diamond_axe:84
+    icon: diamond_axe:91
     icon_url: http://textures.minecraft.net/texture/c6a7fcfee0ffebae25b69bd16f55c993898ba72791d3a89e58736e7bad0faa3
     alias: frag
     category: demolition
@@ -4221,7 +4221,7 @@ grenade|2:
         mana: 75
 
 cluster:
-    icon: diamond_axe:85
+    icon: diamond_axe:92
     icon_url: http://textures.minecraft.net/texture/e474575ab89654506a3928a03f70e5e0c11849dd1451e24e19c678cb1294e
     category: demolition
     pvp_restricted: true
@@ -4249,7 +4249,7 @@ cluster:
         mana: 150
 
 bomb:
-    icon: diamond_axe:86
+    icon: diamond_axe:93
     icon_url: http://textures.minecraft.net/texture/e474575ab89654506a3928a03f70e5e0c11849dd1451e24e19c678cb1294e
     category: demolition
     pvp_restricted: true
@@ -4281,7 +4281,7 @@ bomb:
         mana: 175
 
 superblob:
-    icon: diamond_axe:87
+    icon: diamond_axe:94
     icon_url: http://textures.minecraft.net/texture/812a772ef923c597e12f41986d7bea9a9387055eb17eeebb1d8c6de3ca25f
     category: engineering
     tags: noduel
@@ -4308,7 +4308,7 @@ superblob:
         mana: 400
 
 superhemisphere:
-    icon: diamond_axe:88
+    icon: diamond_axe:95
     icon_url: http://textures.minecraft.net/texture/812a772ef923c597e12f41986d7bea9a9387055eb17eeebb1d8c6de3ca25f
     category: engineering
     tags: noduel
@@ -4336,7 +4336,7 @@ superhemisphere:
         mana: 400
 
 superpyramid:
-    icon: diamond_axe:89
+    icon: diamond_axe:96
     icon_url: http://textures.minecraft.net/texture/295775b75c70891a42d7d8fac699da5ec2ad6c419fd1ccafd32668713dace2e6
     category: engineering
     tags: noduel
@@ -4363,7 +4363,7 @@ superpyramid:
         mana: 400
 
 supercylinder:
-    icon: diamond_axe:90
+    icon: diamond_axe:97
     icon_url: http://textures.minecraft.net/texture/86b54c2be72abec1bb595f3acea2e1ef3dffb94f7d316212ced492b72a164cb2
     category: engineering
     tags: noduel
@@ -4390,7 +4390,7 @@ supercylinder:
         mana: 400
 
 box:
-    icon: diamond_axe:91
+    icon: diamond_axe:98
     icon_url: http://textures.minecraft.net/texture/35b7d887a08bb8eb927b58f452becf8d349cd46e6a2ea18dffb2776d676df5
     category: engineering
     tags: noduel
@@ -4417,7 +4417,7 @@ box:
         mana: 60
 
 superbox:
-    icon: diamond_axe:92
+    icon: diamond_axe:99
     icon_url: http://textures.minecraft.net/texture/35b7d887a08bb8eb927b58f452becf8d349cd46e6a2ea18dffb2776d676df5
     category: engineering
     tags: noduel
@@ -4444,7 +4444,7 @@ superbox:
         mana: 400
 
 supercube:
-    icon: diamond_axe:93
+    icon: diamond_axe:100
     icon_url: http://textures.minecraft.net/texture/b02fa9c938deafc7777eefefc6b614a68423e1c4a899a993f78ef7817517f9
     category: engineering
     tags: noduel
@@ -4471,7 +4471,7 @@ supercube:
         mana: 400
 
 backup:
-    icon: diamond_axe:94
+    icon: diamond_axe:101
     icon_url: http://textures.minecraft.net/texture/1ba8664ebb95136081e296baa6b384b975ee864e61398a6dfe4915fcafd1f3eb
     category: engineering
     tags: noduel
@@ -4503,7 +4503,7 @@ backup:
         mana: 100
 
 superbackup:
-    icon: diamond_axe:95
+    icon: diamond_axe:102
     icon_url: http://textures.minecraft.net/texture/1ba8664ebb95136081e296baa6b384b975ee864e61398a6dfe4915fcafd1f3eb
     category: engineering
     tags: noduel
@@ -4534,7 +4534,7 @@ superbackup:
         mana: 400
 
 repair:
-    icon: diamond_axe:96
+    icon: diamond_axe:103
     icon_url: http://textures.minecraft.net/texture/19b2a0ec54345ba8de3964a5ae74ef89c53a2922c527f96fb9238ecf761242a4
     category: engineering
     tags: noduel
@@ -4565,7 +4565,7 @@ repair:
         mana: 200
 
 superrepair:
-    icon: diamond_axe:97
+    icon: diamond_axe:104
     icon_url: http://textures.minecraft.net/texture/2298724dfb9d1599590f4e8c3647c2c5532e8fae48fca12fe32a410bb4437a9
     category: engineering
     tags: noduel
@@ -4596,7 +4596,7 @@ superrepair:
         mana: 400
 
 workbench:
-    icon: diamond_axe:98
+    icon: diamond_axe:105
     icon_url: http://textures.minecraft.net/texture/a5bf87cdeeefecb473472dc7c858ffa2e3ec5bd48c3718df49e2798e4aeff
     category: engineering
     tags: noduel
@@ -4616,7 +4616,7 @@ workbench:
         mana: 30
 
 stash:
-    icon: diamond_axe:99
+    icon: diamond_axe:106
     icon_url: http://textures.minecraft.net/texture/a6cc486c2be1cb9dfcb2e53dd9a3e9a883bfadb27cb956f1896d602b4067
     category: utility
     worth: 2000
@@ -4645,7 +4645,7 @@ stash:
         cooldown: 2000
 
 pickpocket:
-    icon: diamond_axe:100
+    icon: diamond_axe:107
     icon_url: http://textures.minecraft.net/texture/3bc9de58822a3f7c6c23e212cf954fc728a6b2e45c54a89b4af5e453d39b1
     hidden: true
     category: staff
@@ -4676,7 +4676,7 @@ pickpocket:
         mana: 75
 
 blast:
-    icon: diamond_axe:101
+    icon: diamond_axe:108
     icon_url: http://textures.minecraft.net/texture/4a458a62561a9e6ab960b9bdccaddbf039429c836dfacdd39ff7c7085c9e9b9
     category: mining
     worth: 200
@@ -4755,7 +4755,7 @@ blast|4:
         undo: 30000
 
 earthquake:
-    icon: diamond_axe:102
+    icon: diamond_axe:109
     icon_url: http://textures.minecraft.net/texture/64764ad7b991afd8886d847f439b3d1753bc2632a7dbc047a9a040aa1ff98
     category: combat
     worth: 450
@@ -4852,7 +4852,7 @@ earthquake:
         mana: 150
 
 tunnel:
-    icon: diamond_axe:103
+    icon: diamond_axe:110
     icon_url: http://textures.minecraft.net/texture/c94772c7eca88e1128b71f71f8951233f7ea79dbc80e02bb407acffe175e
     category: engineering
     tags: noduel
@@ -4873,7 +4873,7 @@ tunnel:
         mana: 30
 
 superblast:
-    icon: diamond_axe:104
+    icon: diamond_axe:111
     icon_url: http://textures.minecraft.net/texture/eab81081362ed39651bb47e8650dc6bbc3d8a1db56827c186267e546df0743f
     category: engineering
     tags: noduel
@@ -4903,7 +4903,7 @@ superblast:
         mana: 100
 
 convert:
-    icon: diamond_axe:105
+    icon: diamond_axe:112
     icon_url: http://textures.minecraft.net/texture/b55a449b825c375ab91571e7e8a67856d212f756824bdfe43178eaea035bc
     category: engineering
     tags: noduel
@@ -4940,7 +4940,7 @@ convert:
         mana: 100
 
 superconvert:
-    icon: diamond_axe:106
+    icon: diamond_axe:113
     icon_url: http://textures.minecraft.net/texture/2734f67095a837ec19069f23cae3e82516fab4e29afc157bd99d370179ca0c3
     category: engineering
     tags: noduel
@@ -4967,7 +4967,7 @@ superconvert:
         mana: 300
 
 collapse:
-    icon: diamond_axe:107
+    icon: diamond_axe:114
     icon_url: http://textures.minecraft.net/texture/1789289cba5bdef5f92dee5165a99d063f8785db78bdc6b41e3c4b099c04ca4
     category: combat
     worth: 150
@@ -5034,7 +5034,7 @@ collapse|2:
        radius: 3
 
 supercollapse:
-    icon: diamond_axe:108
+    icon: diamond_axe:115
     icon_url: http://textures.minecraft.net/texture/a4cdbaa4de8eecc6363d760442688762daf588238f83a9da624eaa51e82bbb
     category: engineering
     tags: noduel
@@ -5066,7 +5066,7 @@ supercollapse:
         mana: 250
 
 cloak:
-    icon: diamond_axe:109
+    icon: diamond_axe:116
     icon_url: http://textures.minecraft.net/texture/4a68c3ec585277cad3da3955fac44fbe7a7f98271fd529d26ce110d8884a8a
     category: master
     tags: noduel
@@ -5093,7 +5093,7 @@ cloak:
         effect_invisibility: 5
     
 rollback:
-    icon: diamond_axe:110
+    icon: diamond_axe:117
     alias: undo
     icon_url: http://textures.minecraft.net/texture/9be3ca3c869345a6f2a3be3391615dca1ea1c631d86e3938dbff57f11cbb61
     category: engineering
@@ -5163,7 +5163,7 @@ rollback:
         mana: 100
 
 commit:
-    icon: diamond_axe:111
+    icon: diamond_axe:118
     icon_url: http://textures.minecraft.net/texture/8767f81fd66cc826827de81f3d12a3fee1fd6cfee11a43bb438404cd3391f
     category: engineering
     tags: noduel
@@ -5183,7 +5183,7 @@ commit:
         mana: 200
 
 counterspell:
-    icon: diamond_axe:112
+    icon: diamond_axe:119
     icon_url: http://textures.minecraft.net/texture/36cf36693ac95c88c8dd92e1d5a54c92f593e802b3ae834c6bd87628b1b83
     category: combat
     worth: 600
@@ -5250,7 +5250,7 @@ counterspell|2:
         cooldown: 10000
 
 breach:
-    icon: diamond_axe:113
+    icon: diamond_axe:120
     icon_url: http://textures.minecraft.net/texture/672e0c305074a7acf671e7644291d7f745baecf05743395e28d1f04cbbb4
     category: mining
     worth: 400
@@ -5295,7 +5295,7 @@ breach|3:
         radius: 2
 
 peek:
-    icon: diamond_axe:114
+    icon: diamond_axe:121
     icon_url: http://textures.minecraft.net/texture/42fe4273a62118f32881159ab3d6eded9fac90748deedbdb16204d107f843
     category: mining
     worth: 300
@@ -5345,7 +5345,7 @@ peek|4:
       radius: 2
 
 sandblast:
-    icon: diamond_axe:115
+    icon: diamond_axe:122
     icon_url: http://textures.minecraft.net/texture/c1dc6e8c5e3da4aed0ca478e195b8fe3a438fd8cb775b9d10fa1ff7d2dcf714
     category: combat
     pvp_restricted: true
@@ -5396,7 +5396,7 @@ sandblast|2:
       radius: 2
 
 mine:
-    icon: diamond_axe:116
+    icon: diamond_axe:123
     icon_url: http://textures.minecraft.net/texture/c688f9a3b3db226582ae3f49d34aa9077b4d4f8102dd46f21bcb784a68f2c63
     category: mining
     tags: noduel,nojail
@@ -5445,7 +5445,7 @@ mine|4:
         drop: mining
 
 chop:
-    icon: diamond_axe:117
+    icon: diamond_axe:124
     icon_url: http://textures.minecraft.net/texture/7033deb4e25f57413fb15bd3f7019d4ea659a4637d75597248590d746778f
     category: elemental
     tags: noduel,nojail
@@ -5491,7 +5491,7 @@ chop|3:
         drop_count: 32
 
 alter:
-    icon: diamond_axe:118
+    icon: diamond_axe:125
     icon_url: http://textures.minecraft.net/texture/4e693cf3b7bf83248527aacc2714638b55587cde593963d1f861884f5be1638
     category: engineering
     tags: noduel
@@ -5526,7 +5526,7 @@ alter:
         mana: 10
 
 superalter:
-    icon: diamond_axe:119
+    icon: diamond_axe:126
     icon_url: http://textures.minecraft.net/texture/b5ccb1a5547f7d1beb4896c6fad4fedbb17ebced53a86b7e96e417114a0cae4
     category: engineering
     tags: noduel
@@ -5549,7 +5549,7 @@ superalter:
         mana: 40
 
 sphere:
-    icon: diamond_axe:120
+    icon: diamond_axe:127
     icon_url: http://textures.minecraft.net/texture/c4c932901eaf61a741a8fa8a786fa9e509b13ba518f384c6c731086ffdc829e
     category: engineering
     tags: noduel
@@ -5576,7 +5576,7 @@ sphere:
         mana: 100
 
 blob:
-    icon: diamond_axe:121
+    icon: diamond_axe:128
     icon_url: http://textures.minecraft.net/texture/bc8e7e971bbac56883fe9bfe1b38c5f568ece6cbe09ca59d85f6dab4688d14
     category: combat
     worth: 100
@@ -5648,7 +5648,7 @@ blob|4:
         cooldown: 8000
 
 tendril:
-    icon: diamond_axe:122
+    icon: diamond_axe:129
     icon_url: http://textures.minecraft.net/texture/564e7e4b718a7136188385cae256de87a6cb29c85744c9c123509a4c7cec69d0
     category: combat
     worth: 400
@@ -5687,7 +5687,7 @@ tendril:
         mana: 100
 
 walls:
-    icon: diamond_axe:123
+    icon: diamond_axe:130
     icon_url: http://textures.minecraft.net/texture/4fed122b86ffaeaee36ab4a8c1c27f46fb5bddc83322c8a165d0f27aeb1830
     category: combat
     worth: 250
@@ -5720,7 +5720,7 @@ walls:
         mana: 75
 
 emp:
-    icon: diamond_axe:124
+    icon: diamond_axe:131
     icon_url: http://textures.minecraft.net/texture/615baaf7223ce4ff011aa2db6b71c3022151c7f2b873c85d62ef69a36785a61
     category: electrical
     worth: 150
@@ -5756,7 +5756,7 @@ emp:
         mana: 45
 
 superemp:
-    icon: diamond_axe:125
+    icon: diamond_axe:132
     icon_url: http://textures.minecraft.net/texture/615baaf7223ce4ff011aa2db6b71c3022151c7f2b873c85d62ef69a36785a61
     category: electrical
     class: ConstructSpell
@@ -5787,7 +5787,7 @@ superemp:
         mana: 200
 
 disintegrate:
-    icon: diamond_axe:126
+    icon: diamond_axe:133
     icon_url: http://textures.minecraft.net/texture/89f9399aceb3211c3ca1259d5b1bb1f3fb61a4d5626a757ee1a1ccec28a0ae
     category: combat
     worth: 300
@@ -5833,7 +5833,7 @@ disintegrate:
         mana: 50
 
 blink:
-    icon: diamond_axe:127
+    icon: diamond_axe:134
     icon_url: http://textures.minecraft.net/texture/a35cfb663dbde27598eebe76b0fdac2593f1d696b3e6b9e044edeb8d48c2e2
     alias: tesseract
     category: utility
@@ -5938,7 +5938,7 @@ blink|6:
       mana: 200
 
 absorb:
-    icon: diamond_axe:128
+    icon: diamond_axe:135
     icon_url: http://textures.minecraft.net/texture/8b50be531940368e173db018d2ead9d2cdeec8e39c7a51b681dcad4c4d41d
     category: engineering
     tags: noduel
@@ -5964,7 +5964,7 @@ absorb:
         mana: 30
 
 hat:
-    icon: diamond_axe:129
+    icon: diamond_axe:136
     icon_url: http://textures.minecraft.net/texture/2abee4fe341011b9a0ae2fb83644f695521fd4e4c6198fe23112f1acbf38369
     category: utility
     worth: 80
@@ -6003,7 +6003,7 @@ hat|3:
       undo: 120000
 
 wear:
-    icon: diamond_axe:130
+    icon: diamond_axe:137
     hidden: true
     icon_url: http://textures.minecraft.net/texture/2abee4fe341011b9a0ae2fb83644f695521fd4e4c6198fe23112f1acbf38369
     category: utility
@@ -6017,7 +6017,7 @@ wear:
         use_item: true
 
 magichat:
-    icon: diamond_axe:131
+    icon: diamond_axe:138
     hidden: true
     icon_url: http://textures.minecraft.net/texture/2abee4fe341011b9a0ae2fb83644f695521fd4e4c6198fe23112f1acbf38369
     category: utility
@@ -6118,7 +6118,7 @@ invisiblecloak:
       use_item: true
 
 lava:
-    icon: diamond_axe:132
+    icon: diamond_axe:139
     icon_url: http://textures.minecraft.net/texture/a9e073da36aaf2c844da428cd4a19dfde32c8cdc2404eed4a135f6095b17c
     category: combat
     pvp_restricted: true
@@ -6154,7 +6154,7 @@ lava:
         mana: 65
 
 stream:
-    icon: diamond_axe:133
+    icon: diamond_axe:140
     icon_url: http://textures.minecraft.net/texture/b750768d23e447d95b662344f426cc96228a4047f7a8ced0f4861edbbeaced
     upgrade_required_path: apprentice
     upgrade_required_casts: 30
@@ -6222,7 +6222,7 @@ stream|3:
         undo_to: 5
 
 earth:
-    icon: diamond_axe:134
+    icon: diamond_axe:141
     icon_url: http://textures.minecraft.net/texture/5d9ddb39f5cd587f63bb175dfaf55baaa917c1a2a3ca987a18d90c9e1a578d
     category: combat
     pvp_restricted: true
@@ -6257,7 +6257,7 @@ earth:
         mana: 20
 
 iterate:
-    icon: diamond_axe:135
+    icon: diamond_axe:142
     icon_url: http://textures.minecraft.net/texture/ce5eef24e2cf406bcd9d2b44f418ac72e26731b9a7e7402490e473af8145e0ba
     category: engineering
     tags: noduel
@@ -6293,7 +6293,7 @@ iterate:
         mana: 50
 
 column:
-    icon: diamond_axe:136
+    icon: diamond_axe:143
     alias: superiterate
     icon_url: http://textures.minecraft.net/texture/58c328c062df8bb125e7bb2cca6dce38c24236733a9f95ca75b04c162c64cb8
     category: engineering
@@ -6322,7 +6322,7 @@ column:
         mana: 200
 
 flamethrower:
-    icon: diamond_axe:137
+    icon: diamond_axe:144
     icon_url: http://textures.minecraft.net/texture/92d331289b5e527c540652d61561a2e90f52a8755c1c7d0cd1a1a98f49de450
     category: combat
     worth: 250
@@ -6360,7 +6360,7 @@ flamethrower:
         mana: 100
 
 laser:
-    icon: diamond_axe:138
+    icon: diamond_axe:145
     icon_url: http://textures.minecraft.net/texture/7cc8e096a2ac99bf264b3e827f1e3aa07ba688d7b4f470128f741132625e
     category: demolition
     worth: 450
@@ -6463,7 +6463,7 @@ laser|3:
         repeat: 12
 
 shrink:
-    icon: diamond_axe:139
+    icon: diamond_axe:146
     icon_url: http://textures.minecraft.net/texture/dd91c092cb93f6f4152629a02ddf617557381a16694a46eba3468446363c08e
     category: combat
     worth: 750
@@ -6516,7 +6516,7 @@ shrink:
         mana: 75
 
 grow:
-    icon: diamond_axe:140
+    icon: diamond_axe:147
     icon_url: http://textures.minecraft.net/texture/b54fa4fb25cef58bc69cac7292e32e449322cac2ace4810a8a0749b2fbbb154
     category: combat
     worth: 75
@@ -6566,7 +6566,7 @@ grow:
         mana: 110
 
 flare:
-    icon: diamond_axe:141
+    icon: diamond_axe:148
     icon_url: http://textures.minecraft.net/texture/aa7e54c1c7634bdf1118db91da9e12b6b4d17f7fb7b7d5b0d06d554feb737bf
     category: light
     worth: 20
@@ -6602,7 +6602,7 @@ flare|2:
        size: 6
 
 recall:
-    icon: diamond_axe:142
+    icon: diamond_axe:149
     icon_url: http://textures.minecraft.net/texture/58c573cefdc8cc1b8c894340cb54ab343523ec2ffa0afc7536968391ae1e7
     category: utility
     tags: noduel,nojail
@@ -6773,7 +6773,7 @@ respawn:
         cooldown: 30000
 
 levitate:
-    icon: diamond_axe:143
+    icon: diamond_axe:150
     upgrade_required_path: master
     upgrade_required_casts: 50
     icon_url: http://textures.minecraft.net/texture/d02585f4a2b47524541d67ae253cf21fde8eea1c21494f61df5f4929a76e0
@@ -6853,7 +6853,7 @@ levitate|5:
         mana: 150
 
 force:
-    icon: diamond_axe:144
+    icon: diamond_axe:151
     icon_url: http://textures.minecraft.net/texture/c7142a19d8c84389da74b69641542b8b2fafbed8f7515d1d36c63c96bd749
     category: master
     tags: noduel
@@ -6884,7 +6884,7 @@ force:
         mana: 200
 
 dragonball:
-    icon: diamond_axe:145
+    icon: diamond_axe:152
     icon_url: http://textures.minecraft.net/texture/c52264ac4e5621668c43e87aed7918ed6b883abc5018769c9536d27b77f
     category: combat
     pvp_restricted: true
@@ -6930,7 +6930,7 @@ dragonball:
         mana: 100
         
 fireball:
-    icon: diamond_axe:146
+    icon: diamond_axe:153
     upgrade_required_path: beginner
     upgrade_required_casts: 15
     icon_url: http://textures.minecraft.net/texture/e511624fac75f03cf2f3a56d5fe4582d6e74fc9f5e1e1160af1941ee144928
@@ -6996,7 +6996,7 @@ fireball|4:
         fire: true
 
 map:
-    icon: diamond_axe:147
+    icon: diamond_axe:154
     hidden: true
     icon_url: http://textures.minecraft.net/texture/c36adcbe21b520b7355936c89cd2b335ca5318e68173eaaa82e62f5fb986
     worth: 50
@@ -7008,7 +7008,7 @@ map:
         mana: 15
 
 camera:
-    icon: diamond_axe:148
+    icon: diamond_axe:155
     icon_url: http://textures.minecraft.net/texture/e49b4f3261328c05350ee4031212d2fc7555f211af91c0f0278a5aaf9cec65
     hidden: true
     category: specialty
@@ -7030,7 +7030,7 @@ camera:
         mana: 5
 
 tent:
-    icon: diamond_axe:149
+    icon: diamond_axe:156
     icon_url: http://textures.minecraft.net/texture/443e10a710998d47d238e291a8ba8f6abf42bc7e419d1d8dcc8c55707ebb19
     category: master
     class: ConstructSpell
@@ -7058,7 +7058,7 @@ tent:
         mana: 150
 
 cage:
-    icon: diamond_axe:150
+    icon: diamond_axe:157
     icon_url: http://textures.minecraft.net/texture/862a3ecb44ccf65458b5413a909cd68bb76cef8d397827eaace2d59635b9943
     category: master
     class: ConstructSpell
@@ -7086,7 +7086,7 @@ cage:
         mana: 50
 
 wolfhouse:
-    icon: diamond_axe:151
+    icon: diamond_axe:158
     hidden: true
     icon_url: http://textures.minecraft.net/texture/98abd2beac47ec40be793f4ceacf32eac91322557aedf19a81f43ad28355f8b
     category: master
@@ -7140,7 +7140,7 @@ wolfhouse:
         mana: 1000
 
 blaster:
-    icon: diamond_axe:152
+    icon: diamond_axe:159
     icon_url: http://textures.minecraft.net/texture/2ba95570c7b712713632d4c0d2fc66906613d3850a596a0267c6d763fe741ac
     category: specialty
     hidden: true
@@ -7192,7 +7192,7 @@ blaster:
         mana: 15
 
 missile:
-    icon: diamond_axe:153
+    icon: diamond_axe:160
     icon_url: http://textures.minecraft.net/texture/2ba95570c7b712713632d4c0d2fc66906613d3850a596a0267c6d763fe741ac
     upgrade_required_path: beginner
     upgrade_required_casts: 40
@@ -7335,7 +7335,7 @@ missile|4:
         mana: 80
 
 railgun:
-    icon: diamond_axe:154
+    icon: diamond_axe:161
     icon_url: http://textures.minecraft.net/texture/436cb244bd2a9c1734f2db6517a973a91b1773f02ca4b481af5f24d17bb1496
     category: combat
     worth: 1000
@@ -7450,7 +7450,7 @@ railgun:
         mana: 150
                 
 fury:
-    icon: diamond_axe:155
+    icon: diamond_axe:162
     icon_url: http://textures.minecraft.net/texture/c64f6eeb78485e49b219f40a9d6a8131c539fef932f1cbb5f379adfebdd8c31
     upgrade_required_path: master
     upgrade_required_casts: 50
@@ -7557,7 +7557,7 @@ fury|3:
       target_count: 8
 
 homing:
-    icon: diamond_axe:156
+    icon: diamond_axe:163
     icon_url: http://textures.minecraft.net/texture/e3152dba6ee22b6e89e88878acc5a01f5964946b8938e9a1470dfabbeeca
     upgrade_required_path: apprentice
     upgrade_required_casts: 50
@@ -7667,7 +7667,7 @@ homing|4:
         velocity: 8
 
 chainlightning:
-    icon: diamond_axe:157
+    icon: diamond_axe:164
     icon_url: http://textures.minecraft.net/texture/1e5b76818c576079939b5a4b033ddfb5c2364fc9f764e573c59508b811e365
     upgrade_required_path: apprentice
     upgrade_required_casts: 50
@@ -7766,7 +7766,7 @@ chainlightning|3:
         target_count: 8
 
 sticky:
-    icon: diamond_axe:158
+    icon: diamond_axe:165
     icon_url: http://textures.minecraft.net/texture/f873525428823bffa57b74bdb1251de6e7c49660b35c995d2bf5d04a1ff34b8f
     upgrade_required_path: apprentice
     upgrade_required_casts: 50
@@ -7862,7 +7862,7 @@ sticky|3:
       entity_damage: 12
 
 blind:
-    icon: diamond_axe:159
+    icon: diamond_axe:166
     icon_url: http://textures.minecraft.net/texture/c7a8e7c9d3375135e39aa6d57b4e60539cf8f6efc5b58c83a13caf40561560
     category: combat
     worth: 70
@@ -7932,7 +7932,7 @@ blind:
         hitbox: true
 
 pollinate:
-    icon: diamond_axe:160
+    icon: diamond_axe:167
     icon_url: http://textures.minecraft.net/texture/b6d7a7f167e24d166ab1d8dedd79311481d4e1ebddbaba8ec6cb394713fb
     category: engineering
     tags: noduel
@@ -8025,7 +8025,7 @@ pollinate:
         mana: 100
 
 broom:
-    icon: diamond_axe:161
+    icon: diamond_axe:168
     hidden: true
     icon_url: http://textures.minecraft.net/texture/7f4f1b4c6661ab552b21df8ed841a221296512de46c86e8dee891efbd2fba6
     category: specialty
@@ -8154,7 +8154,7 @@ superbroom:
     cooldown: 0
 
 paste:
-    icon: diamond_axe:162
+    icon: diamond_axe:169
     icon_url: http://textures.minecraft.net/texture/6eb68dc909b12ef5fb397c23fdecbc416d9a76825170c106b1faeb97b4749
     category: engineering
     tags: noduel
@@ -8179,7 +8179,7 @@ paste:
         mana: 300
 
 kill:
-    icon: diamond_axe:163
+    icon: diamond_axe:170
     icon_url: http://textures.minecraft.net/texture/71a235c48123b487e864fa21016e223ad4070c6d977b0a519f7dd743d39e47c
     category: master
     tags: noduel
@@ -8273,7 +8273,7 @@ kill|3:
         delay: 1500
 
 superkill:
-    icon: diamond_axe:164
+    icon: diamond_axe:171
     icon_url: http://textures.minecraft.net/texture/71a235c48123b487e864fa21016e223ad4070c6d977b0a519f7dd743d39e47c
     category: staff
     worth: 50000
@@ -8321,7 +8321,7 @@ superkill:
         mana: 300
 
 torture:
-    icon: diamond_axe:165
+    icon: diamond_axe:172
     upgrade_required_path: master
     upgrade_required_casts: 50
     icon_url: http://textures.minecraft.net/texture/df19b39e565b16cbdabe364b91e35894d1e9bac0ad3fa4b0905ec4f366627
@@ -8407,7 +8407,7 @@ torture|3:
         damage: 4
 
 rubberize:
-    icon: diamond_axe:166
+    icon: diamond_axe:173
     icon_url: http://textures.minecraft.net/texture/fced4114232f1aff90c5fbb3535e89c546858b14bae3fea7ecc896b2bd51
     category: utility
     cancellable: false
@@ -8518,7 +8518,7 @@ count:
         messsage_targets: false
 
 superfly:
-    icon: diamond_axe:167
+    icon: diamond_axe:174
     hidden: true
     icon_url: http://textures.minecraft.net/texture/d02585f4a2b47524541d67ae253cf21fde8eea1c21494f61df5f4929a76e0
     quick_cast: true
@@ -8537,7 +8537,7 @@ superfly:
         speed: 1
 
 petrify:
-    icon: diamond_axe:168
+    icon: diamond_axe:175
     icon_url: http://textures.minecraft.net/texture/7e453aa5908121dcf1cd8cf9f04459741f7879d99c01fb71bf243c25c3188
     category: combat
     worth: 300
@@ -8605,7 +8605,7 @@ petrify|3:
       duration: 7000
 
 polymorph:
-    icon: diamond_axe:169
+    icon: diamond_axe:176
     icon_url: http://textures.minecraft.net/texture/7e453aa5908121dcf1cd8cf9f04459741f7879d99c01fb71bf243c25c3188
     category: combat
     worth: 300
@@ -8658,7 +8658,7 @@ polymorph:
         cooldown: 30000
 
 entangle:
-    icon: diamond_axe:170
+    icon: diamond_axe:177
     icon_url: http://textures.minecraft.net/texture/b2545861d5871f75caa3b378ec44655bcb3d6cabe697b27303dbdaa8b5b5
     category: combat
     class: ConstructSpell
@@ -8695,7 +8695,7 @@ entangle:
         mana: 70
 
 wound:
-    icon: diamond_axe:171
+    icon: diamond_axe:178
     upgrade_required_path: apprentice
     upgrade_required_casts: 50
     icon_url: http://textures.minecraft.net/texture/df4396a2bc47bc4dd545fc787a3ad8a0a75b8783cb5d81482c2016fab9cd2a
@@ -8769,7 +8769,7 @@ wound|3:
     damage: 10
 
 stun:
-    icon: diamond_axe:172
+    icon: diamond_axe:179
     upgrade_required_path: student
     upgrade_required_casts: 50
     icon_url: http://textures.minecraft.net/texture/a4b47e6847d71c60d0a6453313435d61f15b1523abd9741de36366deec1f38d6
@@ -8833,7 +8833,7 @@ stun|3:
         target_breakables: 2
 
 poison:
-    icon: diamond_axe:173
+    icon: diamond_axe:180
     icon_url: http://textures.minecraft.net/texture/f441923eb636b6fbc4cfba5475fd6abae52a41593a63d99bfecdd4d845b91a
     category: combat
     worth: 100
@@ -8907,7 +8907,7 @@ poison|3:
         effect_poison: 3
 
 lift:
-    icon: diamond_axe:174
+    icon: diamond_axe:181
     icon_url: http://textures.minecraft.net/texture/111de372969a39e34c3af5e6d2392e7876a1f13cf7a37d7513ad60c168bfd7b9
     category: utility
     worth: 150
@@ -8986,7 +8986,7 @@ lift:
         mana: 40
 
 admission:
-    icon: diamond_axe:175
+    icon: diamond_axe:182
     icon_url: http://textures.minecraft.net/texture/3944e12e8e67fd67a55359df56c3c59c99550f6eaccb23813769afb2f1992
     category: utility
     worth: 20
@@ -9021,7 +9021,7 @@ admission|2:
         destructible: doors
 
 secure:
-    icon: diamond_axe:176
+    icon: diamond_axe:183
     icon_url: http://textures.minecraft.net/texture/e266e2ffa06f553ef326d8c92994c77edde2e521697b5fb4637ed644443e12
     category: utility
     upgrade_required_path: master
@@ -9060,7 +9060,7 @@ secure|2:
         destructible: containers
 
 lockpick:
-    icon: diamond_axe:177
+    icon: diamond_axe:184
     icon_url: http://textures.minecraft.net/texture/3944e12e8e67fd67a55359df56c3c59c99550f6eaccb23813769afb2f1992
     category: staff
     worth: 500
@@ -9088,7 +9088,7 @@ lockpick:
         mana: 100
 
 harden:
-    icon: diamond_axe:178
+    icon: diamond_axe:185
     icon_url: http://textures.minecraft.net/texture/25147d8c6addc07635b183ae1c4459f173bdfde239d949f56ce56d2728911e2
     category: utility
     worth: 150
@@ -9128,7 +9128,7 @@ harden|2:
         brush: obsidian
 
 sponge:
-    icon: diamond_axe:179
+    icon: diamond_axe:186
     alias: gasp
     icon_url: http://textures.minecraft.net/texture/c28bdd34810f866527daaf283da71826a8378286b2a43a626615fa1b3639e
     category: utility
@@ -9156,7 +9156,7 @@ sponge:
         mana: 65
 
 upgrades:
-    icon: diamond_axe:180
+    icon: diamond_axe:187
     icon_url: http://textures.minecraft.net/texture/ce6ed0a5f7e23bc3d34d73baa0b9c3f838e85014d2ff290801dc7486dd4da6
     category: npc
     hidden: true
@@ -9814,7 +9814,7 @@ enchantwand:
         loud: true
 
 brushselect:
-    icon: diamond_axe:181
+    icon: diamond_axe:188
     icon_url: http://textures.minecraft.net/texture/a653c2daf990459d641e5b8f6e62ef8af24b1a2da49c9ce8d9f68ab682905112
     category: specialty
     hidden: true
@@ -9826,7 +9826,7 @@ brushselect:
         -  class: BrushSelect
 
 tracking:
-    icon: diamond_axe:182
+    icon: diamond_axe:189
     upgrade_required_path: student
     upgrade_required_casts: 30
     icon_url: http://textures.minecraft.net/texture/3bc9de58822a3f7c6c23e212cf954fc728a6b2e45c54a89b4af5e453d39b1
@@ -9881,7 +9881,7 @@ tracking|4:
         target_type: Player
 
 singularity:
-    icon: diamond_axe:183
+    icon: diamond_axe:190
     icon_url: http://textures.minecraft.net/texture/ac60643368ba49652b36989878bf296e25d5b3d7526f283ef8cd7470a7a51e8
     category: master
     pvp_restricted: true
@@ -9992,7 +9992,7 @@ singularity:
         mana: 50
 
 rocket:
-    icon: diamond_axe:184
+    icon: diamond_axe:191
     icon_url: http://textures.minecraft.net/texture/5a532e9d2221b1a2ffdbc701578331c8da41c36d1487696fefa584373572
     category: utility
     worth: 100
@@ -10022,7 +10022,7 @@ rocket:
         mana: 75
 
 tornado:
-    icon: diamond_axe:185
+    icon: diamond_axe:192
     upgrade_required_path: master
     upgrade_required_casts: 50
     icon_url: http://textures.minecraft.net/texture/2362826553aaf78fd8b511fdedba941738ddd21c0f889e6bf2697d5a4f74f27
@@ -10107,7 +10107,7 @@ tornado|2:
         radius: 4
 
 rainbow:
-    icon: diamond_axe:186
+    icon: diamond_axe:193
     icon_url: http://textures.minecraft.net/texture/4e693cf3b7bf83248527aacc2714638b55587cde593963d1f861884f5be1638
     category: staff
     hidden: true
@@ -10143,7 +10143,7 @@ rainbow:
         mana: 100
 
 shuriken:
-    icon: diamond_axe:187
+    icon: diamond_axe:194
     icon_url: http://textures.minecraft.net/texture/c79a5d6fbb1fe7435edbb9e72cb1d02f6e91597eb4b79d818ae583cda21f
     category: combat
     upgrade_required_path: master
@@ -10210,7 +10210,7 @@ shuriken|3:
         radius: 5
 
 wave:
-    icon: diamond_axe:188
+    icon: diamond_axe:195
     icon_url: http://textures.minecraft.net/texture/1d7cb6f2a4b2c2059621b7f6f84b5f0bc84c19ce981d054c26cec012ac
     category: elemental
     pvp_restricted: true
@@ -10288,7 +10288,7 @@ wave|2:
         destructible: destructible,destructible2,destructible3
 
 boomstown:
-   icon: diamond_axe:189
+   icon: diamond_axe:196
    icon_url: http://textures.minecraft.net/texture/91e9bb78d29e2967d52274d370ad78cb61d15eca3d26a8d6bfc24f887072fa81
    category: combat
    worth: 6
@@ -10370,7 +10370,7 @@ boomstown:
        mana: 100
 
 projectile:
-    icon: diamond_axe:190
+    icon: diamond_axe:197
     icon_url: http://textures.minecraft.net/texture/d8532e9a6994e828df3a7236a7b3686194eba57dae3eb10789d98915cbb3336
     upgrade_required_path: beginner
     upgrade_required_casts: 15
@@ -10477,7 +10477,7 @@ projectile:
         undo: 5000
 
 whip:
-    icon: diamond_axe:191
+    icon: diamond_axe:198
     icon_url: http://textures.minecraft.net/texture/543a93796b389fc710671b62106068619b7673e7bf48a6c77bc4db921d54
     category: combat
     worth: 100
@@ -10526,7 +10526,7 @@ whip:
         mana: 25
 
 fxdemo:
-    icon: diamond_axe:192
+    icon: diamond_axe:199
     icon_url: http://textures.minecraft.net/texture/ce6ed0a5f7e23bc3d34d73baa0b9c3f838e85014d2ff290801dc7486dd4da6
     category: staff
     hidden: true
@@ -10990,7 +10990,7 @@ fxdemo:
       effect_duration: 5000
 
 supergather:
-    icon: diamond_axe:193
+    icon: diamond_axe:200
     icon_url: http://textures.minecraft.net/texture/ff78194bb5fe3f374ca6a1727c04247b7bac331cff248bf642acc8e73647e
     category: staff
     show_undoable: false
@@ -11039,7 +11039,7 @@ ledger:
       command: bal
 
 randomtp:
-  icon: diamond_axe:194
+  icon: diamond_axe:201
   icon_url: http://textures.minecraft.net/texture/1adaf6e6e387bc18567671bb82e948488bbacff97763ee5985442814989f5d
   hidden: true
   category: specialty
@@ -11076,7 +11076,7 @@ tpshop:
           randomtp: 1
           
 glide:
-    icon: diamond_axe:195
+    icon: diamond_axe:202
     icon_url: http://textures.minecraft.net/texture/0da6cb9e9cd875794b8b9f3a4b77227a18adb963b42af21d52d58d2ef24e47
     category: utility
     worth: 1000
@@ -11327,7 +11327,7 @@ capture:
     range: 32
     
 webbing:
-    icon: diamond_axe:196
+    icon: diamond_axe:203
     hidden: true
     icon_url: http://textures.minecraft.net/texture/672e0c305074a7acf671e7644291d7f745baecf05743395e28d1f04cbbb4
     category: combat
