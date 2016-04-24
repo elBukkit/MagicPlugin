@@ -4133,7 +4133,7 @@ pillar:
 
 place:
     icon_url: http://textures.minecraft.net/texture/c79136be2c1ed4c89e21bfc7846486c516d9b4d32965edfd5877fafa8aeb6
-    icon: diamond_axe
+    icon: diamond_pickaxe
     category: engineering
     tags: noduel
     worth: 1000
@@ -7192,7 +7192,7 @@ blaster:
         mana: 15
 
 missile:
-    icon: ink_sack:1
+    icon: diamond_axe:1
     icon_url: http://textures.minecraft.net/texture/2ba95570c7b712713632d4c0d2fc66906613d3850a596a0267c6d763fe741ac
     upgrade_required_path: beginner
     upgrade_required_casts: 40
@@ -11285,38 +11285,22 @@ trinketshop:
     inherit: buyshop
     parameters:
         items:
-        - item: present_green
-          cost: 10
-        - item: present_red
-          cost: 10
-        - item: aquarium
-          cost: 10
-        - item: globe
-          cost: 10
-        - item: clock
-          cost: 10
-        - item: books
-          cost: 10
-        - item: mario
-          cost: 10
-        - item: luigi
-          cost: 10
-        - item: yoshi
-          cost: 10
-        - item: pokeball
-          cost: 10
-        - item: apple_decoration
-          cost: 10
-        - item: cake_decoration
-          cost: 10
-        - item: hamburger
-          cost: 10
-        - item: french_fries
-          cost: 10
-        - item: taco
-          cost: 10
-        - item: popcorn
-          cost: 10
+        - skull_present_green
+        - skull_present_red
+        - skull_aquarium
+        - skull_globe
+        - skull_clock
+        - skull_books
+        - skull_mario
+        - skull_luigi
+        - skull_yoshi
+        - skull_pokeball
+        - skull_apple
+        - skull_cake
+        - skull_hamburger
+        - skull_fries
+        - skull_taco
+        - skull_popcorn
           
 capture:
   icon: monster_egg

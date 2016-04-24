@@ -14,6 +14,7 @@
  - Add DisguiseAction, Polymorph spell (not on any enchanting paths since it relies on LibsDisguises)
  - Nerfed Blessing
  - Item worth specified in items.yml will be used by shops, using a simple list of items
+ - All decorative player head names prefixed with "skull_"
 
 ## 6.0.11
 
