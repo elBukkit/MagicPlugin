@@ -1000,6 +1000,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
                 return originalItemStack;
             }
         }
+		InventoryUtils.makeUnbreakable(itemStack);
         InventoryUtils.hideFlags(itemStack, (byte)63);
 		updateSpellItem(controller.getMessages(), itemStack, spell, args, mage, wand, wand == null ? null : wand.activeMaterial, isItem);
 		return itemStack;
@@ -1019,6 +1020,7 @@ public class Wand implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand
         {
             CompatibilityUtils.addGlow(itemStack);
         }
+		InventoryUtils.makeUnbreakable(itemStack);
         InventoryUtils.hideFlags(itemStack, (byte)63);
         updateBrushItem(controller.getMessages(), itemStack, brushData, wand);
 		return itemStack;
