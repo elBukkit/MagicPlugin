@@ -2411,13 +2411,13 @@ public class MagicController implements MageController {
         Wand.Unbreakable = properties.getBoolean("wand_unbreakable", Wand.Unbreakable);
         Wand.Undroppable = properties.getBoolean("wand_undroppable", Wand.Undroppable);
 
-        MaterialBrush.CopyMaterial = ConfigurationUtils.getMaterial(properties, "copy_item", MaterialBrush.CopyMaterial);
-		MaterialBrush.EraseMaterial = ConfigurationUtils.getMaterial(properties, "erase_item", MaterialBrush.EraseMaterial);
-		MaterialBrush.CloneMaterial = ConfigurationUtils.getMaterial(properties, "clone_item", MaterialBrush.CloneMaterial);
-		MaterialBrush.ReplicateMaterial = ConfigurationUtils.getMaterial(properties, "replicate_item", MaterialBrush.ReplicateMaterial);
-		MaterialBrush.SchematicMaterial = ConfigurationUtils.getMaterial(properties, "schematic_item", MaterialBrush.SchematicMaterial);
-		MaterialBrush.MapMaterial = ConfigurationUtils.getMaterial(properties, "map_item", MaterialBrush.MapMaterial);
-        MaterialBrush.DefaultBrushMaterial = ConfigurationUtils.getMaterial(properties, "default_brush_item", MaterialBrush.DefaultBrushMaterial);
+        MaterialBrush.CopyMaterial = ConfigurationUtils.getMaterialAndData(properties, "copy_item", MaterialBrush.CopyMaterial);
+		MaterialBrush.EraseMaterial = ConfigurationUtils.getMaterialAndData(properties, "erase_item", MaterialBrush.EraseMaterial);
+		MaterialBrush.CloneMaterial = ConfigurationUtils.getMaterialAndData(properties, "clone_item", MaterialBrush.CloneMaterial);
+		MaterialBrush.ReplicateMaterial = ConfigurationUtils.getMaterialAndData(properties, "replicate_item", MaterialBrush.ReplicateMaterial);
+		MaterialBrush.SchematicMaterial = ConfigurationUtils.getMaterialAndData(properties, "schematic_item", MaterialBrush.SchematicMaterial);
+		MaterialBrush.MapMaterial = ConfigurationUtils.getMaterialAndData(properties, "map_item", MaterialBrush.MapMaterial);
+        MaterialBrush.DefaultBrushMaterial = ConfigurationUtils.getMaterialAndData(properties, "default_brush_item", MaterialBrush.DefaultBrushMaterial);
         MaterialBrush.configureReplacements(properties.getConfigurationSection("brush_replacements"));
 
         MaterialBrush.CopyCustomIcon = properties.getString("copy_icon_url", MaterialBrush.CopyCustomIcon);
@@ -2522,9 +2522,9 @@ public class MagicController implements MageController {
             getLogger().info("Wand anvil organizing is enabled");
         }
         if (isUrlIconsEnabled()) {
-            getLogger().info("Skin-based custom icons enabled");
+            getLogger().info("Skin-based spell icons enabled");
         } else {
-            getLogger().info("Skin-based custom icons disabled");
+            getLogger().info("Skin-based spell icons disabled");
         }
 	}
 
